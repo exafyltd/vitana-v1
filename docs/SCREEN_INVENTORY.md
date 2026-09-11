@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 299
-- **Distinct i18n keys consumed:** 4456
+- **Distinct i18n keys consumed:** 4458
 - **Namespaces in use:** 44
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -22,7 +22,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/Apply.tsx
 
@@ -34,7 +34,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/BusinessHub.tsx
 
@@ -45,7 +45,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `actionBar` — used: 1, total in shard: 5
 - `businessHub` — used: 8, total in shard: 17
 - `buttons` — used: 1, total in shard: 55
-- `screens` — used: 18, total in shard: 10090
+- `screens` — used: 18, total in shard: 10092
 
 ### src/pages/BusinessListings.tsx
 
@@ -53,7 +53,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/BusinessOpportunities.tsx
@@ -62,7 +62,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/Changelog.tsx
@@ -75,7 +75,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/CommerceAgentConnect.tsx
@@ -84,7 +84,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/CommerceConnectionDetail.tsx
 
@@ -92,7 +92,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 39, total in shard: 10090, **MISSING:** screens.partnerportal.states.${state}
+- `screens` — used: 39, total in shard: 10092, **MISSING:** screens.partnerportal.states.${state}
 
 ### src/pages/CommerceConnections.tsx
 
@@ -100,7 +100,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 22, total in shard: 10090, **MISSING:** screens.partnerportal.states.${state}
+- `screens` — used: 22, total in shard: 10092, **MISSING:** screens.partnerportal.states.${state}
 
 ### src/pages/CommerceLanding.tsx
 
@@ -108,7 +108,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090
+- `screens` — used: 4, total in shard: 10092
 
 ### src/pages/Community.tsx
 
@@ -116,7 +116,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 70, total in shard: 10090
+- `screens` — used: 70, total in shard: 10092
 - `toasts` — used: 3, total in shard: 1259
 
 ### src/pages/CreatorOnboarded.tsx
@@ -125,7 +125,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 21, total in shard: 10090
+- `screens` — used: 21, total in shard: 10092
 
 ### src/pages/Discover.tsx
 
@@ -135,7 +135,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `actionBar` — used: 1, total in shard: 5
 - `discover` — used: 8, total in shard: 106
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/DownloadFlyer.tsx
@@ -144,7 +144,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 20, total in shard: 10092
 
 ### src/pages/EditProfilePage.tsx
 
@@ -155,7 +155,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `editProfile` — used: 11, total in shard: 17
 - `profile` — used: 1, total in shard: 59
 - `profileEditor` — used: 2, total in shard: 88
-- `screens` — used: 1, total in shard: 10090
+- `screens` — used: 1, total in shard: 10092
 
 ### src/pages/EventGamePublicLanding.tsx
 
@@ -168,15 +168,15 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `health` — used: 11, total in shard: 55, **MISSING:** health.pillars.${key}, health.subtitle, health.searchPlaceholder, health.upload
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/Home.tsx
 
-**Status:** ✅ clean — keys consumed: 16, namespaces: 1
+**Status:** ✅ clean — keys consumed: 17, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 16, total in shard: 10090
+- `screens` — used: 17, total in shard: 10092
 
 ### src/pages/Index.tsx
 
@@ -184,7 +184,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 21, total in shard: 10090
+- `screens` — used: 21, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/IntentBoard.tsx
@@ -193,7 +193,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/IntentMatchDetail.tsx
@@ -202,7 +202,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 - `toasts` — used: 3, total in shard: 1259
 
 ### src/pages/IntroExperience.orb-placement.test.ts
@@ -215,7 +215,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090, **MISSING:** screens.foo.bar
+- `screens` — used: 4, total in shard: 10092, **MISSING:** screens.foo.bar
 
 ### src/pages/InviteFriends.tsx
 
@@ -223,7 +223,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 23, total in shard: 10090
+- `screens` — used: 23, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/Logout.tsx
@@ -232,7 +232,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 1, total in shard: 10090
+- `screens` — used: 1, total in shard: 10092
 
 ### src/pages/MatchesPage.tsx
 
@@ -240,7 +240,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090
+- `screens` — used: 4, total in shard: 10092
 
 ### src/pages/MaxinaAppRedirect.test.tsx
 
@@ -252,7 +252,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 13, total in shard: 10090
+- `screens` — used: 13, total in shard: 10092
 
 ### src/pages/Memory.tsx
 
@@ -260,16 +260,16 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/Messages.tsx
 
-**Status:** ✅ clean — keys consumed: 37, namespaces: 2
+**Status:** ✅ clean — keys consumed: 38, namespaces: 2
 
 **i18n namespaces:**
 
 - `inbox` — used: 17, total in shard: 99, **MISSING:** inbox.tabs.${filter}
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 21, total in shard: 10092
 
 ### src/pages/MobileDailyDiary.tsx
 
@@ -285,7 +285,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 67, total in shard: 10090
+- `screens` — used: 67, total in shard: 10092
 - `settings` — used: 9, total in shard: 31, **MISSING:** settings.updateFailed, settings.chat, settings.calendar, settings.community, settings.search
 
 ### src/pages/MobileSubscriptions.tsx
@@ -306,7 +306,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/MyTickets.tsx
@@ -316,7 +316,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `event` — **MISSING SHARD** in src/i18n/de/
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/NewsArticleDetail.tsx
 
@@ -332,7 +332,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/NotFound.tsx
 
@@ -340,7 +340,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/OAuthConsent.tsx
 
@@ -348,7 +348,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090, **MISSING:** screens.oauthconsent.scopes.${scope}
+- `screens` — used: 11, total in shard: 10092, **MISSING:** screens.oauthconsent.scopes.${scope}
 
 ### src/pages/PackagePurchaseSuccess.tsx
 
@@ -356,7 +356,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/PartnerConnectionDetail.tsx
@@ -365,7 +365,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 26, total in shard: 10090, **MISSING:** screens.partnerportal.states.${state}
+- `screens` — used: 26, total in shard: 10092, **MISSING:** screens.partnerportal.states.${state}
 
 ### src/pages/PartnerConnections.tsx
 
@@ -373,7 +373,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 16, total in shard: 10090, **MISSING:** screens.partnerportal.states.${state}
+- `screens` — used: 16, total in shard: 10092, **MISSING:** screens.partnerportal.states.${state}
 
 ### src/pages/PostDetail.tsx
 
@@ -381,7 +381,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090
+- `screens` — used: 4, total in shard: 10092
 
 ### src/pages/PrivacySettings.tsx
 
@@ -389,7 +389,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/Profile.tsx
@@ -398,7 +398,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 33, total in shard: 10090
+- `screens` — used: 33, total in shard: 10092
 
 ### src/pages/PublicCampaignLanding.tsx
 
@@ -407,7 +407,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `eventCta` — used: 2, total in shard: 20
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/PublicEventLanding.tsx
 
@@ -416,7 +416,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `eventCta` — used: 4, total in shard: 20
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/PublicProfilePage.tsx
 
@@ -424,7 +424,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/RedeemVoucher.tsx
 
@@ -432,7 +432,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/Reminders.tsx
 
@@ -440,7 +440,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/Search.tsx
 
@@ -448,7 +448,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/ShareEntry.tsx
 
@@ -460,7 +460,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/ShopFeed.tsx
 
@@ -476,7 +476,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/TicketPurchaseSuccess.tsx
 
@@ -484,7 +484,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/UniversalCart.tsx
 
@@ -502,7 +502,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `common` — used: 2, total in shard: 37
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 - `toasts` — used: 3, total in shard: 1259
 - `wallet` — used: 17, total in shard: 22
 
@@ -514,7 +514,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/Bootstrap.tsx
 
@@ -522,7 +522,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 20, total in shard: 10092
 - `toasts` — used: 13, total in shard: 1259
 
 ### src/pages/admin/CommunityRoomsAdmin.tsx
@@ -531,7 +531,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 24, total in shard: 10090
+- `screens` — used: 24, total in shard: 10092
 
 ### src/pages/admin/CommunitySupervision.tsx
 
@@ -539,7 +539,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 20, total in shard: 10092
 
 ### src/pages/admin/Dashboard.tsx
 
@@ -547,7 +547,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/admin/DevicePreview.tsx
 
@@ -555,7 +555,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 17, total in shard: 10090, **MISSING:** screens.admin.${ENVIRONMENTS[k].labelKey}
+- `screens` — used: 17, total in shard: 10092, **MISSING:** screens.admin.${ENVIRONMENTS[k].labelKey}
 
 ### src/pages/admin/InitEvents.tsx
 
@@ -563,7 +563,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/admin/LiveStreamOverview.tsx
@@ -572,7 +572,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 27, total in shard: 10090
+- `screens` — used: 27, total in shard: 10092
 
 ### src/pages/admin/MediaManagement.tsx
 
@@ -580,7 +580,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 23, total in shard: 10090
+- `screens` — used: 23, total in shard: 10092
 
 ### src/pages/admin/Releases.tsx
 
@@ -592,7 +592,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/admin/assistant/Personality.tsx
@@ -601,7 +601,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/admin/assistant/Playground.tsx
 
@@ -609,7 +609,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/assistant/Routing.tsx
 
@@ -617,7 +617,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 
 ### src/pages/admin/assistant/Sessions.tsx
 
@@ -625,7 +625,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/assistant/Speeches.tsx
 
@@ -633,7 +633,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/admin/assistant/Tools.tsx
 
@@ -641,7 +641,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 
 ### src/pages/admin/assistant/Voice.tsx
 
@@ -649,7 +649,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/admin/audit/Access.tsx
@@ -658,7 +658,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/admin/audit/Actions.tsx
 
@@ -666,7 +666,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/audit/ApiMonitor.tsx
 
@@ -674,7 +674,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/audit/DataRights.tsx
 
@@ -682,7 +682,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/audit/Events.tsx
 
@@ -690,7 +690,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/audit/OasisEvents.tsx
 
@@ -698,7 +698,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/audit/Policies.tsx
 
@@ -706,7 +706,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/audit/Security.tsx
 
@@ -714,7 +714,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/audit/UserActivity.tsx
 
@@ -722,7 +722,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/autopilot/Automations.tsx
 
@@ -730,7 +730,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/admin/autopilot/Growth.tsx
 
@@ -738,7 +738,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 17, total in shard: 10090
+- `screens` — used: 17, total in shard: 10092
 
 ### src/pages/admin/autopilot/Guardrails.tsx
 
@@ -746,7 +746,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 20, total in shard: 10092
 
 ### src/pages/admin/autopilot/Planning.tsx
 
@@ -754,7 +754,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/admin/autopilot/Recommendations.tsx
 
@@ -762,7 +762,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/admin/autopilot/Runs.tsx
 
@@ -770,7 +770,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 
 ### src/pages/admin/community/Creators.tsx
 
@@ -778,7 +778,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/admin/community/EventGameAdmin.tsx
 
@@ -794,7 +794,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 18, total in shard: 10090
+- `screens` — used: 18, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/admin/community/Groups.tsx
@@ -807,7 +807,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `empty` — used: 1, total in shard: 23
 - `loading` — used: 1, total in shard: 7
 - `privacy` — used: 2, total in shard: 2
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 - `tableHeaders` — used: 6, total in shard: 11
 - `toasts` — used: 2, total in shard: 1259
 
@@ -817,7 +817,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/admin/community/LiveRooms.tsx
 
@@ -825,7 +825,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/admin/community/Meetups.tsx
 
@@ -833,7 +833,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/admin/community/ReportedContent.tsx
 
@@ -841,7 +841,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 20, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/admin/community/ReportedContentNew.tsx
@@ -850,7 +850,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 35, total in shard: 10090
+- `screens` — used: 35, total in shard: 10092
 
 ### src/pages/admin/content/ContentAnalytics.tsx
 
@@ -858,7 +858,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/content/Music.tsx
 
@@ -866,7 +866,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/admin/content/Podcasts.tsx
 
@@ -874,7 +874,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/admin/content/Uploads.tsx
 
@@ -882,7 +882,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/admin/content/Videos.tsx
 
@@ -890,7 +890,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/admin/dashboard/ActivityFeed.tsx
 
@@ -898,7 +898,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/dashboard/SystemHealth.tsx
 
@@ -906,7 +906,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/admin/feedback/Feedback.tsx
 
@@ -914,7 +914,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 23, total in shard: 10090
+- `screens` — used: 23, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/admin/feedback/SpecialistConfigDrawer.tsx
@@ -923,7 +923,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 33, total in shard: 10090
+- `screens` — used: 33, total in shard: 10092
 - `toasts` — used: 5, total in shard: 1259
 
 ### src/pages/admin/feedback/TicketActionDrawer.tsx
@@ -932,7 +932,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 53, total in shard: 10090
+- `screens` — used: 53, total in shard: 10092
 - `toasts` — used: 7, total in shard: 1259
 
 ### src/pages/admin/feedback/VitanaConfigDrawer.tsx
@@ -941,7 +941,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 26, total in shard: 10090
+- `screens` — used: 26, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/admin/insights/AssistantUsage.tsx
@@ -950,7 +950,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 29, total in shard: 10090
+- `screens` — used: 29, total in shard: 10092
 
 ### src/pages/admin/insights/AutopilotImpact.tsx
 
@@ -958,7 +958,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/insights/Engagement.tsx
 
@@ -966,7 +966,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 13, total in shard: 10090
+- `screens` — used: 13, total in shard: 10092
 
 ### src/pages/admin/insights/Events.tsx
 
@@ -974,7 +974,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/insights/Features.tsx
 
@@ -982,7 +982,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 16, total in shard: 10090
+- `screens` — used: 16, total in shard: 10092
 
 ### src/pages/admin/insights/Growth.tsx
 
@@ -990,7 +990,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/admin/insights/Interests.tsx
 
@@ -998,7 +998,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/admin/insights/Journeys.tsx
 
@@ -1006,7 +1006,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/admin/insights/Overview.tsx
 
@@ -1014,7 +1014,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/admin/insights/Reports.tsx
 
@@ -1022,7 +1022,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/intelligence/Embeddings.tsx
 
@@ -1030,7 +1030,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/admin/intelligence/Memory.tsx
 
@@ -1038,7 +1038,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/intelligence/Relationships.tsx
 
@@ -1046,7 +1046,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/admin/intelligence/Signals.tsx
 
@@ -1054,7 +1054,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ### src/pages/admin/knowledge/Documents.tsx
 
@@ -1062,7 +1062,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 34, total in shard: 10090
+- `screens` — used: 34, total in shard: 10092
 - `toasts` — used: 5, total in shard: 1259
 
 ### src/pages/admin/knowledge/Governance.tsx
@@ -1071,7 +1071,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/knowledge/Indexing.tsx
 
@@ -1079,7 +1079,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/admin/knowledge/SearchTest.tsx
@@ -1088,7 +1088,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090
+- `screens` — used: 4, total in shard: 10092
 
 ### src/pages/admin/knowledge/Topics.tsx
 
@@ -1096,7 +1096,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090
+- `screens` — used: 4, total in shard: 10092
 
 ### src/pages/admin/live/Attendance.tsx
 
@@ -1104,7 +1104,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/live/Sessions.tsx
 
@@ -1112,7 +1112,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/marketplace/Overview.tsx
 
@@ -1120,7 +1120,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/admin/marketplace/Products.tsx
@@ -1129,7 +1129,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 22, total in shard: 10090
+- `screens` — used: 22, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/admin/media/Music.tsx
@@ -1138,7 +1138,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 18, total in shard: 10090
+- `screens` — used: 18, total in shard: 10092
 - `toasts` — used: 5, total in shard: 1259
 
 ### src/pages/admin/media/Podcasts.tsx
@@ -1149,7 +1149,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `admin` — used: 13, total in shard: 19
 - `payment` — used: 1, total in shard: 19
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259, **MISSING:** toasts.success.generic
 
 ### src/pages/admin/media/Videos.tsx
@@ -1158,7 +1158,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 18, total in shard: 10090
+- `screens` — used: 18, total in shard: 10092
 - `toasts` — used: 5, total in shard: 1259
 
 ### src/pages/admin/members/Audit.tsx
@@ -1167,7 +1167,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/members/Directory.tsx
 
@@ -1175,7 +1175,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/members/Invitations.tsx
 
@@ -1183,7 +1183,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 13, total in shard: 10090
+- `screens` — used: 13, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/admin/members/RolesAccess.tsx
@@ -1192,7 +1192,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/admin/members/Segments.tsx
@@ -1201,7 +1201,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/navigator/Catalog.tsx
 
@@ -1209,7 +1209,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090, **MISSING:** screens.admin.navRole_${r}
+- `screens` — used: 20, total in shard: 10092, **MISSING:** screens.admin.navRole_${r}
 
 ### src/pages/admin/navigator/Coverage.tsx
 
@@ -1217,7 +1217,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/admin/navigator/History.tsx
 
@@ -1225,7 +1225,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/navigator/Telemetry.tsx
 
@@ -1233,7 +1233,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/admin/navigator/components/SimulatorPanel.tsx
 
@@ -1241,7 +1241,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 21, total in shard: 10090
+- `screens` — used: 21, total in shard: 10092
 
 ### src/pages/admin/navigator/components/TriggerEditor.tsx
 
@@ -1249,7 +1249,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 29, total in shard: 10090
+- `screens` — used: 29, total in shard: 10092
 
 ### src/pages/admin/notifications/Categories.tsx
 
@@ -1257,7 +1257,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 24, total in shard: 10090
+- `screens` — used: 24, total in shard: 10092
 - `toasts` — used: 6, total in shard: 1259
 
 ### src/pages/admin/notifications/Compose.tsx
@@ -1266,7 +1266,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 1, total in shard: 10090
+- `screens` — used: 1, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/admin/notifications/ComposeNew.tsx
@@ -1275,7 +1275,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/notifications/Preferences.tsx
 
@@ -1283,7 +1283,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 12, total in shard: 10090
+- `screens` — used: 12, total in shard: 10092
 
 ### src/pages/admin/notifications/Providers.tsx
 
@@ -1291,7 +1291,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/notifications/SentLog.tsx
 
@@ -1299,7 +1299,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/notifications/SentNew.tsx
 
@@ -1307,7 +1307,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/notifications/Subscriptions.tsx
 
@@ -1315,7 +1315,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/notifications/Templates.tsx
 
@@ -1323,7 +1323,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/overview/Activity.tsx
 
@@ -1331,7 +1331,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/overview/Alerts.tsx
 
@@ -1339,7 +1339,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/overview/Dashboard.tsx
 
@@ -1347,7 +1347,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/admin/overview/Health.tsx
 
@@ -1355,7 +1355,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/settings/Billing.tsx
 
@@ -1363,7 +1363,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/settings/Branding.tsx
 
@@ -1371,7 +1371,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/admin/settings/Domains.tsx
@@ -1380,7 +1380,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/settings/FeatureFlags.tsx
 
@@ -1388,7 +1388,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/admin/settings/Integrations.tsx
 
@@ -1396,7 +1396,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/admin/settings/Profile.tsx
 
@@ -1404,7 +1404,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 - `toasts` — used: 1, total in shard: 1259
 
 ### src/pages/admin/system/Configuration.tsx
@@ -1413,7 +1413,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 
 ### src/pages/admin/system/Creators.tsx
 
@@ -1421,7 +1421,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/admin/users/AllUsers.tsx
 
@@ -1429,7 +1429,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/users/Invitations.tsx
 
@@ -1437,7 +1437,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/admin/users/RolesAccess.tsx
 
@@ -1445,7 +1445,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/admin/users/SignupFunnel.tsx
 
@@ -1453,7 +1453,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ## ai/
 
@@ -1463,7 +1463,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 10090
+- `screens` — used: 25, total in shard: 10092
 
 ### src/pages/ai/Companion.tsx
 
@@ -1471,7 +1471,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 17, total in shard: 10090
+- `screens` — used: 17, total in shard: 10092
 
 ### src/pages/ai/DailySummary.tsx
 
@@ -1479,7 +1479,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/ai/Insights.tsx
 
@@ -1487,7 +1487,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 30, total in shard: 10090
+- `screens` — used: 30, total in shard: 10092
 
 ## assistant/
 
@@ -1497,7 +1497,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10090
+- `screens` — used: 7, total in shard: 10092
 
 ## auth/
 
@@ -1507,7 +1507,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/auth/OAuthComplete.tsx
 
@@ -1515,7 +1515,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 6, total in shard: 10090
+- `screens` — used: 6, total in shard: 10092
 
 ### src/pages/auth/ResetPassword.tsx
 
@@ -1523,7 +1523,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 21, total in shard: 10090
+- `screens` — used: 21, total in shard: 10092
 
 ## community/
 
@@ -1540,7 +1540,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `actionBar` — used: 1, total in shard: 5
 - `buttons` — used: 1, total in shard: 55
 - `events` — used: 19, total in shard: 20, **MISSING:** events.titleShort, events.tabs.hot, events.filterTitle
-- `screens` — used: 5, total in shard: 10090
+- `screens` — used: 5, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/community/FindPartner.tsx
@@ -1549,7 +1549,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 28, total in shard: 10090
+- `screens` — used: 28, total in shard: 10092
 
 ### src/pages/community/GroupDetail.tsx
 
@@ -1567,7 +1567,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `buttons` — used: 1, total in shard: 55
 - `groups` — used: 1, total in shard: 1
-- `screens` — used: 11, total in shard: 10090
+- `screens` — used: 11, total in shard: 10092
 
 ### src/pages/community/LiveRoomViewer.tsx
 
@@ -1575,7 +1575,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 - `toasts` — used: 8, total in shard: 1259
 
 <details><summary>Hardcoded suspects (top 10)</summary>
@@ -1593,7 +1593,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `actionBar` — used: 1, total in shard: 5
 - `liveRooms` — used: 9, total in shard: 119
-- `screens` — used: 17, total in shard: 10090
+- `screens` — used: 17, total in shard: 10092
 - `toasts` — used: 15, total in shard: 1259
 
 ### src/pages/community/MediaHub.tsx
@@ -1604,7 +1604,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `actionBar` — used: 1, total in shard: 5
 - `mediaHub` — used: 59, total in shard: 129
-- `screens` — used: 1, total in shard: 10090
+- `screens` — used: 1, total in shard: 10092
 
 ### src/pages/community/Members.tsx
 
@@ -1612,7 +1612,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 
 ### src/pages/community/OpenAsks.tsx
 
@@ -1620,7 +1620,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 13, total in shard: 10090
+- `screens` — used: 13, total in shard: 10092
 
 ### src/pages/community/TalkToVitana.tsx
 
@@ -1629,7 +1629,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `resolver_agent` — **MISSING SHARD** in src/i18n/de/
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 - `toasts` — used: 10, total in shard: 1259
 
 ## dev/
@@ -2103,7 +2103,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `discover` — used: 16, total in shard: 106
-- `screens` — used: 1, total in shard: 10090
+- `screens` — used: 1, total in shard: 10092
 
 ### src/pages/discover/CategoryProducts.tsx
 
@@ -2119,7 +2119,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 10090
+- `screens` — used: 25, total in shard: 10092
 
 ### src/pages/discover/DoctorsCoaches.tsx
 
@@ -2127,7 +2127,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 95, total in shard: 10090
+- `screens` — used: 95, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/discover/Marketplace.tsx
@@ -2136,7 +2136,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/discover/Orders.tsx
 
@@ -2146,7 +2146,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `event` — **MISSING SHARD** in src/i18n/de/
 - `orders` — used: 18, total in shard: 65, **MISSING:** orders.filters.${key}, orders.filters.${historyFilter}
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/discover/ProductDetail.tsx
 
@@ -2154,7 +2154,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 22, total in shard: 10090
+- `screens` — used: 22, total in shard: 10092
 
 ### src/pages/discover/ProviderProfile.tsx
 
@@ -2162,7 +2162,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 24, total in shard: 10090
+- `screens` — used: 24, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/discover/Supplements.tsx
@@ -2171,7 +2171,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 24, total in shard: 10090
+- `screens` — used: 24, total in shard: 10092
 
 ### src/pages/discover/WellnessServices.tsx
 
@@ -2179,7 +2179,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 72, total in shard: 10090
+- `screens` — used: 72, total in shard: 10092
 
 ## health/
 
@@ -2189,7 +2189,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/health/EducationResources.tsx
 
@@ -2197,7 +2197,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 22, total in shard: 10090, **MISSING:** screens.health.eduArticle_vitanaIndex_title, screens.health.eduCategory_healthMetrics, screens.health.eduReadTime, screens.health.eduArticle_nutritionScience_title, screens.health.eduArticle_sleepRecovery_title…
+- `screens` — used: 22, total in shard: 10092, **MISSING:** screens.health.eduArticle_vitanaIndex_title, screens.health.eduCategory_healthMetrics, screens.health.eduReadTime, screens.health.eduArticle_nutritionScience_title, screens.health.eduArticle_sleepRecovery_title…
 
 ### src/pages/health/MyBiology.tsx
 
@@ -2205,7 +2205,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 28, total in shard: 10090
+- `screens` — used: 28, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/health/PillarsOfHealth.tsx
@@ -2214,7 +2214,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 3, total in shard: 10090
+- `screens` — used: 3, total in shard: 10092
 
 ### src/pages/health/Plans.tsx
 
@@ -2222,7 +2222,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 19, total in shard: 10090
+- `screens` — used: 19, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/health/VitanaIndexDetail.tsx
@@ -2231,7 +2231,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 37, total in shard: 10090
+- `screens` — used: 37, total in shard: 10092
 
 ### src/pages/health/WellnessServices.tsx
 
@@ -2239,7 +2239,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 16, total in shard: 10090
+- `screens` — used: 16, total in shard: 10092
 - `wellnessServices` — used: 1, total in shard: 1
 
 ## legal/
@@ -2250,7 +2250,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 34, total in shard: 10090
+- `screens` — used: 34, total in shard: 10092
 
 ### src/pages/legal/MaxinaSupport.tsx
 
@@ -2258,7 +2258,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 4, total in shard: 10090
+- `screens` — used: 4, total in shard: 10092
 - `support` — used: 14, total in shard: 34, **MISSING:** support.maxina.categories.${category.id}, support.maxina.faq.${item}.question, support.maxina.faq.${item}.answer, support.maxina.usefulLinks.${link.id}
 
 ### src/pages/legal/PrivacyPolicy.tsx
@@ -2267,7 +2267,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 115, total in shard: 10090
+- `screens` — used: 115, total in shard: 10092
 
 ### src/pages/legal/TermsOfUse.tsx
 
@@ -2275,7 +2275,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 66, total in shard: 10090
+- `screens` — used: 66, total in shard: 10092
 
 ## memory/
 
@@ -2285,7 +2285,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 18, total in shard: 10090
+- `screens` — used: 18, total in shard: 10092
 
 ### src/pages/memory/Permissions.tsx
 
@@ -2293,7 +2293,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 10090
+- `screens` — used: 25, total in shard: 10092
 
 ### src/pages/memory/Recall.tsx
 
@@ -2301,7 +2301,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 10090
+- `screens` — used: 10, total in shard: 10092
 
 ### src/pages/memory/Timeline.tsx
 
@@ -2309,7 +2309,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 - `timeline` — used: 1, total in shard: 1
 
 ## messages/
@@ -2321,7 +2321,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `archives` — used: 1, total in shard: 1
-- `screens` — used: 31, total in shard: 10090
+- `screens` — used: 31, total in shard: 10092
 
 ### src/pages/messages/GroupChat.tsx
 
@@ -2338,7 +2338,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 16, total in shard: 10090
+- `screens` — used: 16, total in shard: 10092
 
 ## onboarding/
 
@@ -2348,7 +2348,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ## patient/
 
@@ -2358,7 +2358,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 21, total in shard: 10090
+- `screens` — used: 21, total in shard: 10092
 
 ### src/pages/patient/Dashboard.tsx
 
@@ -2366,7 +2366,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 24, total in shard: 10090
+- `screens` — used: 24, total in shard: 10092
 
 ### src/pages/patient/Health.tsx
 
@@ -2374,7 +2374,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 26, total in shard: 10090
+- `screens` — used: 26, total in shard: 10092
 
 ## portals/
 
@@ -2384,7 +2384,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/portals/AlkalmaPortal.tsx
 
@@ -2392,7 +2392,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 30, total in shard: 10090
+- `screens` — used: 30, total in shard: 10092
 
 ### src/pages/portals/CommercePortalLogin.tsx
 
@@ -2400,7 +2400,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 
 ### src/pages/portals/EarthlinksConfirmed.tsx
 
@@ -2408,7 +2408,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 
 ### src/pages/portals/EarthlinksPortal.tsx
 
@@ -2416,7 +2416,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 30, total in shard: 10090
+- `screens` — used: 30, total in shard: 10092
 
 ### src/pages/portals/ExafyAdminPortal.tsx
 
@@ -2424,7 +2424,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 14, total in shard: 10090
+- `screens` — used: 14, total in shard: 10092
 
 ### src/pages/portals/MaxinaConfirmed.tsx
 
@@ -2433,7 +2433,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `discount` — used: 3, total in shard: 27
-- `screens` — used: 9, total in shard: 10090
+- `screens` — used: 9, total in shard: 10092
 
 ### src/pages/portals/MaxinaPortal.tsx
 
@@ -2443,7 +2443,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `authPage` — used: 7, total in shard: 15
 - `portals` — used: 11, total in shard: 28
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ## professional/
 
@@ -2453,7 +2453,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 26, total in shard: 10090
+- `screens` — used: 26, total in shard: 10092
 
 ### src/pages/professional/Patients.tsx
 
@@ -2461,7 +2461,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 26, total in shard: 10090
+- `screens` — used: 26, total in shard: 10092
 
 ## settings/
 
@@ -2471,7 +2471,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 2, total in shard: 10090
+- `screens` — used: 2, total in shard: 10092
 
 ### src/pages/settings/ConnectedApps.tsx
 
@@ -2479,7 +2479,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 66, total in shard: 10090
+- `screens` — used: 66, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/settings/Limitations.tsx
@@ -2488,7 +2488,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 44, total in shard: 10090
+- `screens` — used: 44, total in shard: 10092
 - `toasts` — used: 4, total in shard: 1259
 
 ### src/pages/settings/Preferences.tsx
@@ -2497,7 +2497,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 86, total in shard: 10090
+- `screens` — used: 86, total in shard: 10092
 
 ### src/pages/settings/Privacy.tsx
 
@@ -2505,7 +2505,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 101, total in shard: 10090
+- `screens` — used: 101, total in shard: 10092
 
 ### src/pages/settings/SettingsNotifications.tsx
 
@@ -2513,7 +2513,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 22, total in shard: 10090
+- `screens` — used: 22, total in shard: 10092
 - `toasts` — used: 6, total in shard: 1259
 
 ### src/pages/settings/Support.tsx
@@ -2522,7 +2522,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 78, total in shard: 10090
+- `screens` — used: 78, total in shard: 10092
 
 ### src/pages/settings/TenantRole.tsx
 
@@ -2530,7 +2530,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 17, total in shard: 10090
+- `screens` — used: 17, total in shard: 10092
 - `toasts` — used: 6, total in shard: 1259
 
 ## sharing/
@@ -2541,7 +2541,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 10090
+- `screens` — used: 20, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/sharing/Campaigns.tsx
@@ -2550,7 +2550,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 8, total in shard: 10090
+- `screens` — used: 8, total in shard: 10092
 - `toasts` — used: 2, total in shard: 1259
 
 ### src/pages/sharing/DataConsent.tsx
@@ -2559,7 +2559,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 18, total in shard: 10090
+- `screens` — used: 18, total in shard: 10092
 
 ### src/pages/sharing/Distribution.tsx
 
@@ -2567,7 +2567,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 160, total in shard: 10090
+- `screens` — used: 160, total in shard: 10092
 
 ## staff/
 
@@ -2577,7 +2577,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 10090
+- `screens` — used: 25, total in shard: 10092
 
 ### src/pages/staff/Queue.tsx
 
@@ -2585,7 +2585,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 35, total in shard: 10090
+- `screens` — used: 35, total in shard: 10092
 
 ## wallet/
 
@@ -2595,7 +2595,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 32, total in shard: 10090
+- `screens` — used: 32, total in shard: 10092
 
 ### src/pages/wallet/Rewards.tsx
 
@@ -2603,7 +2603,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 10090
+- `screens` — used: 15, total in shard: 10092
 
 ### src/pages/wallet/Subscriptions.tsx
 

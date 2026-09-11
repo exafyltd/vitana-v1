@@ -5408,7 +5408,11 @@
       "replyToComment": "Odgovori",
       "replyingTo": "Odgovaraš {name}-u",
       "cancelReply": "Otkaži odgovor",
-      "likeComment": "Lajkuj komentar"
+      "likeComment": "Lajkuj komentar",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)"
@@ -6015,7 +6019,11 @@
       "loadingOlderMessages": "Učitavanje starijih poruka…",
       "conversationStart": "Početak razgovora",
       "anonymous": "Anoniman",
-      "vitanaOpenScreen": "Otvori ekran"
+      "vitanaOpenScreen": "Otvori ekran",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "Pretražujem…",

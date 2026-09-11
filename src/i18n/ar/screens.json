@@ -5407,7 +5407,11 @@
       "replyToComment": "رد",
       "replyingTo": "ترد على {name}",
       "cancelReply": "إلغاء الرد",
-      "likeComment": "أعجبني التعليق"
+      "likeComment": "أعجبني التعليق",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (تويتر سابقًا)"
@@ -6014,7 +6018,11 @@
       "value0Members": "{value0} أعضاء",
       "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
       "anonymous": "مجهول",
-      "vitanaOpenScreen": "افتح الشاشة"
+      "vitanaOpenScreen": "افتح الشاشة",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "جاري البحث…",

@@ -49,6 +49,8 @@ import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
 import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
 import { useNewsFeedKeepAlive } from "@/hooks/useNewsFeedKeepAlive";
+import { useInboxKeepAlive } from "@/hooks/useInboxKeepAlive";
+import { useEventsKeepAlive } from "@/hooks/useEventsKeepAlive";
 
 // Route loading fallback — a full-screen clean background + delayed spinner so a
 // lazy chunk that loads instantly never flashes a placeholder, and a slow one
@@ -423,9 +425,12 @@ const AppHooksInitializer = () => {
   // Warm route chunks + React Query data for the first authenticated screens as
   // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
   usePostLoginWarmup();
-  // Holds the News Feed's queries active for the whole session so switching to
-  // Messenger/Events and back is a cache read, not a reload. See the hook.
+  // Holds the News Feed's, Inbox's, and Events' queries active for the whole
+  // session so switching between them is a cache read, not a reload. See the
+  // hooks — News's was the original fix, Inbox/Events extend the same pattern.
   useNewsFeedKeepAlive();
+  useInboxKeepAlive();
+  useEventsKeepAlive();
   const { user, session } = useAuth();
   const navigate = useNavigate();
 

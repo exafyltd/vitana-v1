@@ -5403,7 +5403,11 @@
       "replyToComment": "Responder",
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
-      "likeComment": "Me gusta el comentario"
+      "likeComment": "Me gusta el comentario",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (antes Twitter)"
@@ -6010,7 +6014,11 @@
       "loadingOlderMessages": "Cargando mensajes antiguos…",
       "conversationStart": "Inicio de la conversación",
       "anonymous": "Anónimo",
-      "vitanaOpenScreen": "Abrir pantalla"
+      "vitanaOpenScreen": "Abrir pantalla",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "Buscando…",

@@ -22,6 +22,7 @@ import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search, MoreVer
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
+import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 // VTID-03089: chat_groups appear in the unified /inbox list when in the
 // global community context. Selecting one routes to /inbox/g/<id>.
@@ -73,6 +74,19 @@ function readInboxState(): { context?: 'global' | 'tenant'; threadId?: string | 
     return {};
   }
 }
+
+/**
+ * Last window scroll offset of the mobile conversation LIST view, per
+ * context (global/tenant), kept across unmounts of this route. Mirrors
+ * Home.tsx's feedScrollMemory — the thread data now survives navigation (see
+ * useInboxKeepAlive), but the route component itself is still unmounted and
+ * remounted, so without this a long conversation list was thrown back to the
+ * top every time the user came back from News/Events. Only applies to the
+ * mobile list (desktop keeps a persistent split-pane list that doesn't remount
+ * the same way, and mobile clears the open-thread selection on unmount, so the
+ * list is always what's shown on return).
+ */
+const inboxListScrollMemory = new Map<'global' | 'tenant', number>();
 
 export default function Messages() {
   const { user } = useAuth();
@@ -345,6 +359,35 @@ export default function Messages() {
       /* private mode / storage full — restore is best-effort */
     }
   }, [messageContext, selectedThreadId]);
+
+  // Restore the mobile conversation list's scroll position on return (see
+  // inboxListScrollMemory above). Only active while the list itself is what's
+  // shown — mobile never restores a selected thread (see selectedThreadId's
+  // initializer), so `!selectedThreadId` is exactly "the list is visible".
+  const isMobileListVisible = isMobile && !selectedThreadId;
+  useEffect(() => {
+    if (!isMobileListVisible) return;
+    const saved = inboxListScrollMemory.get(messageContext);
+    if (saved == null) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [isMobileListVisible, messageContext]);
+
+  useEffect(() => {
+    if (!isMobileListVisible) return;
+    const remember = () => inboxListScrollMemory.set(messageContext, window.scrollY);
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => {
+      remember();
+      window.removeEventListener("scroll", remember);
+    };
+  }, [isMobileListVisible, messageContext]);
 
   // Reset selection when context changes. Skips the mount run — otherwise it
   // would immediately clear the selection just restored from sessionStorage.
@@ -633,6 +676,7 @@ export default function Messages() {
                             alt={getConversationDisplayTitle(thread, user?.id)}
                             className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}
                             disabled={thread.type === 'group'}
+                            loading="lazy"
                           />
                           <div className="absolute -bottom-0.5 -right-0.5">
                             <PresenceIndicator 
@@ -1125,21 +1169,29 @@ export default function Messages() {
     return (
       <div className="space-y-2">
         {sortedThreads.map((thread) => (
-          <MobileConversationCard
+          <FeedItemErrorBoundary
             key={thread.id}
-            id={thread.id}
-            name={getConversationDisplayTitle(thread, user?.id) || 'Unknown'}
-            avatarUrl={getConversationDisplayAvatar(thread, user?.id) || undefined}
-            lastMessage={thread.last_message?.body}
-            timestamp={thread.updated_at}
-            unreadCount={thread.unread_count || 0}
-            isActive={selectedThreadId === thread.id}
-            isPinned={pinnedThreads.has(thread.id)}
-            isGroup={thread.type === 'group'}
-            participantUserId={getOtherParticipant(thread, user?.id)?.user_id}
-            context={messageContext}
-            onClick={() => handleThreadOpen(thread)}
-          />
+            fallback={
+              <div className="rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
+                {t('screens.messages.conversationRowError')}
+              </div>
+            }
+          >
+            <MobileConversationCard
+              id={thread.id}
+              name={getConversationDisplayTitle(thread, user?.id) || 'Unknown'}
+              avatarUrl={getConversationDisplayAvatar(thread, user?.id) || undefined}
+              lastMessage={thread.last_message?.body}
+              timestamp={thread.updated_at}
+              unreadCount={thread.unread_count || 0}
+              isActive={selectedThreadId === thread.id}
+              isPinned={pinnedThreads.has(thread.id)}
+              isGroup={thread.type === 'group'}
+              participantUserId={getOtherParticipant(thread, user?.id)?.user_id}
+              context={messageContext}
+              onClick={() => handleThreadOpen(thread)}
+            />
+          </FeedItemErrorBoundary>
         ))}
       </div>
     );

@@ -5407,7 +5407,11 @@
       "replyToComment": "回复",
       "replyingTo": "回复 {name}",
       "cancelReply": "取消回复",
-      "likeComment": "赞评论"
+      "likeComment": "赞评论",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (前身为 Twitter)"
@@ -6014,7 +6018,11 @@
       "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。",
       "anonymous": "匿名",
       "vitanaOpenScreen": "打开屏幕",
-      "viewFullscreen": "全屏查看"
+      "viewFullscreen": "全屏查看",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "正在搜索…",

@@ -5407,7 +5407,11 @@
       "noRoutinesYetCreateYourFirst": "Henüz rutin yok. Başlamak için ilk rutinini oluştur!",
       "text4NewIdeas": "4 yeni fikir",
       "executeAllValue0": "Tümünü Çalıştır {value0}",
-      "noValue0ActionsAvailable": "{value0} eylem yok"
+      "noValue0ActionsAvailable": "{value0} eylem yok",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (eski adıyla Twitter)"
@@ -6014,7 +6018,11 @@
       "value0Participants": "{value0} katılımcı",
       "value0Members": "{value0} üye",
       "chooseConversationFromLeftStartMessaging": "Mesaj göndermek için soldan bir konuşma seç.",
-      "vitanaOpenScreen": "Ekranı aç"
+      "vitanaOpenScreen": "Ekranı aç",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "Aranıyor...",

@@ -5412,7 +5412,11 @@
       "replyToComment": "Ответить",
       "replyingTo": "Отвечаешь {name}",
       "cancelReply": "Отменить ответ",
-      "likeComment": "Лайкнуть комментарий"
+      "likeComment": "Лайкнуть комментарий",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (ранее Twitter)"
@@ -6019,7 +6023,11 @@
       "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения.",
       "anonymous": "Анонимный",
       "vitanaOpenScreen": "Открой экран",
-      "viewFullscreen": "Посмотреть на весь экран"
+      "viewFullscreen": "Посмотреть на весь экран",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "Поиск…",

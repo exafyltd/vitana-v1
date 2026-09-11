@@ -5407,7 +5407,11 @@
       "replyToComment": "Répondre",
       "replyingTo": "Répondre à {name}",
       "cancelReply": "Annuler la réponse",
-      "likeComment": "Aimer le commentaire"
+      "likeComment": "Aimer le commentaire",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (anciennement Twitter)"
@@ -6014,7 +6018,11 @@
       "chooseConversationFromLeftStartMessaging": "Sélectionne une conversation à gauche pour envoyer des messages.",
       "anonymous": "Anonyme",
       "vitanaOpenScreen": "Ouvrir l'écran",
-      "viewFullscreen": "Afficher en plein écran"
+      "viewFullscreen": "Afficher en plein écran",
+      "_pending_review": {
+        "conversationRowError": true
+      },
+      "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
       "searching": "Recherche…",
