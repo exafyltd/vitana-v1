@@ -178,10 +178,29 @@ export function FeedMedia({
       // releases the decoder; restore it once it's back in range. The
       // generous rootMargin means this only kicks in for clips genuinely far
       // away, not the next one about to scroll into view.
+      //
+      // The "not intersecting" transition is debounced (going far-away is
+      // delayed; coming back into range is immediate). A freshly-`observe()`d
+      // element can report a spurious first `isIntersecting: false` before
+      // the browser has finished laying it out — acting on that immediately
+      // would flip `src` to undefined and back within the same render burst,
+      // which forces the browser to restart loading the video from scratch.
+      // For a clip sitting at the top of the feed on mount, that reproduces
+      // exactly the "video is stuck / reloads every time" symptom this
+      // observer was never supposed to cause.
+      let farTimer: ReturnType<typeof setTimeout> | undefined;
       farObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
-            setFarFromViewport(!entry.isIntersecting);
+            if (farTimer) {
+              clearTimeout(farTimer);
+              farTimer = undefined;
+            }
+            if (entry.isIntersecting) {
+              setFarFromViewport(false);
+            } else {
+              farTimer = setTimeout(() => setFarFromViewport(true), 400);
+            }
           }
         },
         { rootMargin: "800px 0px" },
