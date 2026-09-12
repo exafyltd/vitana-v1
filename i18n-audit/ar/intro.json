@@ -44,7 +44,32 @@
       "verdict": "OK",
       "confidence": 0.98,
       "phase": "llm"
+    },
+    "intro.login": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.register": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.tapOrbHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.chooseLanguageTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.chooseLanguageSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:40:15.457Z"
+  "generatedAt": "2026-09-12T08:02:44.648Z"
 }
