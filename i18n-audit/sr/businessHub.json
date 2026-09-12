@@ -6,11 +6,10 @@
       "phase": "llm"
     },
     "businessHub.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Razvijaj svoj wellness biznis",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     },
     "businessHub.tabs.snapshot": {
       "verdict": "OK",
@@ -58,11 +57,10 @@
       "phase": "llm"
     },
     "businessHub.noServicesDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Kreiraj prvu uslugu da bi počeo da privlačiš klijente.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     },
     "businessHub.createService": {
       "verdict": "OK",
@@ -75,11 +73,10 @@
       "phase": "llm"
     },
     "businessHub.noClientsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Tvoji klijenti će se pojaviti ovde.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     },
     "businessHub.noSales": {
       "verdict": "OK",
@@ -87,12 +84,11 @@
       "phase": "llm"
     },
     "businessHub.noSalesDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Tvoja istorija prodaja će se pojaviti ovde.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T07:01:43.475Z"
+  "generatedAt": "2026-09-12T08:02:49.737Z"
 }
