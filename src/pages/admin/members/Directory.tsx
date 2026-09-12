@@ -31,6 +31,7 @@ import { fmtDate } from '@/lib/locale-format';
 const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   admin: "error",
   staff: "warning",
+  backoffice: "info",
   professional: "info",
   patient: "active",
   community: "inactive",
@@ -89,6 +90,7 @@ export default function MembersDirectory() {
                 { value: "patient", label: "Patient" },
                 { value: "professional", label: "Professional" },
                 { value: "staff", label: "Staff" },
+                { value: "backoffice", label: "Back Office" },
                 { value: "admin", label: "Admin" },
               ],
             },

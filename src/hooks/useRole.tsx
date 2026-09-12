@@ -4,17 +4,22 @@ import { useTenant } from "./useTenant";
 import { useIsMobile } from "./use-mobile";
 
 // Note: "reseller" is no longer a role - it's now a capability based on reseller_profiles table
-// VTID-01230: developer + infra are super-admin-grantable only; backend has 7 roles total
-export type UserRole = "community" | "patient" | "professional" | "staff" | "admin" | "developer" | "infra";
+// VTID-01230: developer + infra are super-admin-grantable only
+// VTID-03832: "backoffice" sits between staff and admin (BackOffice plan decision 4b):
+//   admin/developer/infra inherit BackOffice; staff needs an explicit grant;
+//   backoffice cannot reach /admin. Backend has 8 roles total; the gateway mirror
+//   is services/gateway/src/constants/vitana-roles.ts.
+export type UserRole = "community" | "patient" | "professional" | "staff" | "backoffice" | "admin" | "developer" | "infra";
 
-const ROLE_HIERARCHY: Record<UserRole, number> = {
+export const ROLE_HIERARCHY: Record<UserRole, number> = {
   community: 1,
   patient: 2,
   professional: 3,
   staff: 4,
-  admin: 5,
-  developer: 6,
-  infra: 7,
+  backoffice: 5,
+  admin: 6,
+  developer: 7,
+  infra: 8,
 };
 
 export function useRole() {

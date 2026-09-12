@@ -2593,7 +2593,8 @@
       "navRole_staff": "طاقم",
       "navRole_admin": "مسؤول",
       "navRole_developer": "مطور",
-      "navRole_infra": "بنية تحتية"
+      "navRole_infra": "بنية تحتية",
+      "navRole_backoffice": "المكتب الخلفي"
     },
     "ai-feed": {
       "noEventsFound": "لا توجد أحداث",

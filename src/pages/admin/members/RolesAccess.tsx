@@ -36,12 +36,14 @@ import { useTenant } from "@/hooks/useTenant";
 import { useMembers, useGrantRole, useRevokeRole } from "@/hooks/useAdminMembers";
 import { notifyError, t } from '@/lib/i18n-toast';
 
-const TENANT_ADMIN_ROLES = ["community", "patient", "professional", "staff", "admin"];
+// VTID-03832: backoffice is tenant-admin-grantable (decision 4b); developer/infra stay Exafy-only
+const TENANT_ADMIN_ROLES = ["community", "patient", "professional", "staff", "backoffice", "admin"];
 const SUPER_ADMIN_ROLES = [...TENANT_ADMIN_ROLES, "developer", "infra"];
 
 const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   admin: "error",
   staff: "warning",
+  backoffice: "info",
   professional: "info",
   patient: "active",
   community: "inactive",

@@ -2593,7 +2593,8 @@
       "navRole_staff": "Персонал",
       "navRole_admin": "Админ",
       "navRole_developer": "Разработчик",
-      "navRole_infra": "Инфра"
+      "navRole_infra": "Инфра",
+      "navRole_backoffice": "Бэк-офис"
     },
     "ai-feed": {
       "noEventsFound": "Событий не найдено",

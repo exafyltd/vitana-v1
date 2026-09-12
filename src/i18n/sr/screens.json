@@ -2589,7 +2589,8 @@
       "navRole_staff": "Osoblje",
       "navRole_admin": "Administrator",
       "navRole_developer": "Programer",
-      "navRole_infra": "Infrastruktura"
+      "navRole_infra": "Infrastruktura",
+      "navRole_backoffice": "Back Office"
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",

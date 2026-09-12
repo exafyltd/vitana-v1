@@ -2593,7 +2593,8 @@
       "navRole_staff": "Personel",
       "navRole_admin": "Administrator",
       "navRole_developer": "Deweloper",
-      "navRole_infra": "Infrastruktura"
+      "navRole_infra": "Infrastruktura",
+      "navRole_backoffice": "Back Office"
     },
     "ai-feed": {
       "noEventsFound": "Nie znaleziono wydarzeń",

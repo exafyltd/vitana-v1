@@ -1687,6 +1687,7 @@
       "navRole_admin": "Yönetici",
       "navRole_developer": "Geliştirici",
       "navRole_infra": "Altyapı",
+      "navRole_backoffice": "Arka Ofis",
       "vitanaNavigatorDesc": "Uygulamanın açabileceği her ekran, sekme ve mod ile Vitana'nın üyeleri konuşma sırasında oraya yönlendirmesini sağlayan tetikleyici ifadeler. Bir ekranın ne zaman ziyaret edileceği metnini düzenle, tam eşleşmeler için geçersiz kılma ifadeleri ekle ve kaydetmeden önce canlı simülatörde test et.",
       "loadingCoverageReport": "Kapsam raporu yükleniyor…",
       "allCatalogRoutesMapRealSpa": "Tüm katalog yolları gerçek SPA yollarına eşlenir.",
