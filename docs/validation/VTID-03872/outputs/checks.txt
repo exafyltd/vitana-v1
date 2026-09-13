@@ -15,3 +15,4 @@ changed-file errors:
 ## i18n:inventory
 [generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
   pages: 327, keys: 4963, namespaces: 46, suspects: 67
+## long-word guard (de, max 22): OK after rewording forms.journal.description

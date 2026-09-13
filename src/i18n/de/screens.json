@@ -11104,12 +11104,16 @@
           "payment": {
             "button": "Zahlung erfassen",
             "title": "Zahlung erfassen",
+<<<<<<< HEAD
             "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener, bestätigungspflichtiger Schritt."
           },
           "journal": {
             "button": "Neuer Buchungssatz",
             "title": "Buchungssatz anlegen",
             "description": "Soll und Haben je Zeile gegen den Kontenplan – der Satz entsteht als Entwurf und wird erst in einem eigenen, bestätigungspflichtigen Schritt gebucht."
+=======
+            "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener Schritt mit Bestätigung."
+>>>>>>> claude/practical-gates-iqwv52-vtid-03871
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
