@@ -47,7 +47,22 @@
     "monitoring": "مراقبة",
     "logout": "تسجيل الخروج",
     "myJourney": "رحلتي",
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "back": "→ الإدارة",
+      "overview": "نظرة عامة",
+      "sales": "المبيعات وإدارة العملاء",
+      "marketing": "التسويق",
+      "accounting": "المحاسبة",
+      "finance": "المالية والخزينة",
+      "hr": "الموارد البشرية",
+      "operations": "العمليات",
+      "legal": "القانونية والامتثال",
+      "reports": "التقارير",
+      "approvals": "الموافقات",
+      "audit": "التدقيق",
+      "settings": "الإعدادات"
+    }
   },
   "_pending_review": {}
 }

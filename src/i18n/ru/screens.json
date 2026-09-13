@@ -10320,6 +10320,14 @@
         "vitana:grants:write": "Предложить предоставление данных (согласие остается с тобой)",
         "vitana:settlement:write": "Запустить подготовленные расчеты Vitana"
       }
+    },
+    "backoffice": {
+      "comingWave1": "Coming in wave 1",
+      "comingWave2": "Coming in wave 2",
+      "comingWave3": "Coming in wave 3",
+      "placeholderBody": "This page is a placeholder. The sidebar, profile drawer, role switcher and ORB stay identical in every role – only the content is still to come.",
+      "noSectionMatches": "No BackOffice section matches",
+      "sidebarIsCanonical": "The sidebar is the canonical list of sections. Pick one."
     }
   }
 }

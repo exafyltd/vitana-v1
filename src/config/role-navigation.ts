@@ -1,6 +1,7 @@
 // Role-specific navigation configurations
 import { UserRole } from "@/hooks/useRole";
 import { ADMIN_SECTIONS } from "@/config/admin-navigation";
+import { BACKOFFICE_SECTIONS } from "@/config/backoffice-navigation";
 import {
   LayoutDashboard, Users, Calendar, Activity, FileText,
   Heart, Wallet, Share2, Database, Settings, Shield,
@@ -15,6 +16,9 @@ interface NavigationItem {
   path: string;
   icon: any;
   i18nKey?: string; // Translation key for internationalization
+  // VTID-03833: extra classes for the icon (e.g. `rtl:-scale-x-100` so a
+  // directional "back" arrow points the right way in Arabic).
+  iconClassName?: string;
 }
 
 // Community Role Navigation - Social platform focused
@@ -90,6 +94,31 @@ export const adminNavigation: NavigationItem[] = ADMIN_SECTIONS.map((section) =>
   };
 });
 
+// VTID-03833: BackOffice sidebar, derived from BACKOFFICE_SECTIONS in
+// @/config/backoffice-navigation (the single source of truth for /backoffice),
+// exactly as adminNavigation is derived from ADMIN_SECTIONS. The "← Admin" item
+// carries adminOnly and is filtered in AppLayout for users without the admin role.
+export const backOfficeNavigation: (NavigationItem & { adminOnly?: boolean })[] = BACKOFFICE_SECTIONS.map((section) => {
+  const defaultTab = section.tabs.find((t) => t.key === section.defaultTab) ?? section.tabs[0];
+  return {
+    title: section.label,
+    path: defaultTab?.path ?? section.basePath,
+    icon: section.icon,
+    i18nKey: `sidebar.backoffice.${section.key}`,
+    adminOnly: section.adminOnly,
+    iconClassName: section.adminOnly ? "rtl:-scale-x-100" : undefined,
+  };
+});
+
+/**
+ * VTID-03833: the BackOffice sidebar as a given user should see it. The "← Admin"
+ * link only makes sense for someone who can actually enter /admin; everyone else
+ * (a pure `backoffice` grant) gets the 12 department sections only.
+ */
+export function getVisibleBackOfficeNavigation(canEnterAdmin: boolean): NavigationItem[] {
+  return backOfficeNavigation.filter((item) => !item.adminOnly || canEnterAdmin);
+}
+
 // Function to get navigation based on user role
 export function getRoleNavigation(role: UserRole | null): NavigationItem[] {
   switch (role) {
@@ -103,6 +132,8 @@ export function getRoleNavigation(role: UserRole | null): NavigationItem[] {
       return staffNavigation;
     case "admin":
       return adminNavigation;
+    case "backoffice":
+      return backOfficeNavigation;
     default:
       return communityNavigation; // Default to community navigation
   }

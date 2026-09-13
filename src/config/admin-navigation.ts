@@ -28,6 +28,7 @@ import {
   Settings,
   ShieldCheck,
   Inbox,
+  Briefcase,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -259,6 +260,20 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "policies", label: "Policies", path: "/admin/audit/policies" },
       { key: "data-rights", label: "Data Rights", path: "/admin/audit/data-rights" },
     ],
+  },
+  {
+    // VTID-03833: entry point into the Vitanaland BackOffice (ERP/CRM) shell. The
+    // link jumps to /backoffice/dashboard; the BackOffice sidebar (its own
+    // catalog, src/config/backoffice-navigation.ts) takes over from there and
+    // offers "← Admin" as the way back. 14th admin item — admin has no fixed
+    // item-count rule (that rule is the community sidebar's).
+    key: "backoffice",
+    label: "Back Office",
+    icon: Briefcase,
+    basePath: "/backoffice",
+    defaultTab: "dashboard",
+    wave: 1,
+    tabs: [{ key: "dashboard", label: "Dashboard", path: "/backoffice/dashboard" }],
   },
 ];
 

@@ -46,6 +46,21 @@
     "monitoring": "Monitoring",
     "logout": "Abmelden",
     "connectors": "Verbundene Apps",
-    "support": "Hilfe"
+    "support": "Hilfe",
+    "backoffice": {
+      "back": "← Admin",
+      "overview": "Übersicht",
+      "sales": "Vertrieb & CRM",
+      "marketing": "Marketing",
+      "accounting": "Buchhaltung",
+      "finance": "Finanzen & Treasury",
+      "hr": "HR & Personal",
+      "operations": "Betrieb",
+      "legal": "Recht & Compliance",
+      "reports": "Berichte",
+      "approvals": "Freigaben",
+      "audit": "Audit",
+      "settings": "Einstellungen"
+    }
   }
 }

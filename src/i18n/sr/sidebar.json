@@ -47,7 +47,22 @@
     "logout": "Odjavi se",
     "connectors": "Konektori",
     "support": "Podrška",
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "back": "← Admin",
+      "overview": "Pregled",
+      "sales": "Prodaja i CRM",
+      "marketing": "Marketing",
+      "accounting": "Računovodstvo",
+      "finance": "Finansije i trezor",
+      "hr": "HR i ljudi",
+      "operations": "Operacije",
+      "legal": "Pravo i usklađenost",
+      "reports": "Izveštaji",
+      "approvals": "Odobrenja",
+      "audit": "Revizija",
+      "settings": "Podešavanja"
+    }
   },
   "_pending_review": {}
 }

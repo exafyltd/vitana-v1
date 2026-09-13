@@ -10320,6 +10320,14 @@
         "vitana:grants:write": "Proponer concesiones de datos (el consentimiento se queda contigo)",
         "vitana:settlement:write": "Activar liquidaciones VTNA preparadas"
       }
+    },
+    "backoffice": {
+      "comingWave1": "Llega en la ola 1",
+      "comingWave2": "Llega en la ola 2",
+      "comingWave3": "Llega en la ola 3",
+      "placeholderBody": "Esta página es un marcador de posición. La barra lateral, el panel de perfil, el cambio de rol y ORB son idénticos en todos los roles; solo falta el contenido.",
+      "noSectionMatches": "Ninguna sección de BackOffice coincide con",
+      "sidebarIsCanonical": "La barra lateral es la lista canónica de secciones. Elige una."
     }
   }
 }
