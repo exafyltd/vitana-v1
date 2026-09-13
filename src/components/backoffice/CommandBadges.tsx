@@ -12,7 +12,7 @@ const TIER_VARIANT: Record<CommandTier, "inactive" | "info" | "warning" | "error
 
 export function TierBadge({ tier }: { tier: CommandTier | string }) {
   const variant = TIER_VARIANT[tier as CommandTier] ?? "inactive";
-  return <AdminStatusBadge variant={variant}>{t(`screens.backoffice.tiers.${tier}`)}</AdminStatusBadge>;
+  return <AdminStatusBadge variant={variant} className="whitespace-nowrap">{t(`screens.backoffice.tiers.${tier}`)}</AdminStatusBadge>;
 }
 
 const COMMAND_STATUS_VARIANT: Record<CommandStatus, "active" | "error" | "warning" | "inactive"> = {
@@ -24,7 +24,7 @@ const COMMAND_STATUS_VARIANT: Record<CommandStatus, "active" | "error" | "warnin
 
 export function CommandStatusBadge({ status }: { status: CommandStatus | string }) {
   const variant = COMMAND_STATUS_VARIANT[status as CommandStatus] ?? "inactive";
-  return <AdminStatusBadge variant={variant}>{t(`screens.backoffice.commandStatus.${status}`)}</AdminStatusBadge>;
+  return <AdminStatusBadge variant={variant} className="whitespace-nowrap">{t(`screens.backoffice.commandStatus.${status}`)}</AdminStatusBadge>;
 }
 
 const APPROVAL_STATUS_VARIANT: Record<ApprovalStatus, "warning" | "active" | "inactive"> = {
@@ -35,7 +35,7 @@ const APPROVAL_STATUS_VARIANT: Record<ApprovalStatus, "warning" | "active" | "in
 
 export function ApprovalStatusBadge({ status }: { status: ApprovalStatus | string }) {
   const variant = APPROVAL_STATUS_VARIANT[status as ApprovalStatus] ?? "inactive";
-  return <AdminStatusBadge variant={variant}>{t(`screens.backoffice.approvalStatus.${status}`)}</AdminStatusBadge>;
+  return <AdminStatusBadge variant={variant} className="whitespace-nowrap">{t(`screens.backoffice.approvalStatus.${status}`)}</AdminStatusBadge>;
 }
 
 export function ChannelBadge({ channel }: { channel: string | null | undefined }) {

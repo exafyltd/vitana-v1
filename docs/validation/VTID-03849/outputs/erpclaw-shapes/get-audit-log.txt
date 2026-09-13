@@ -1,0 +1,122 @@
+{
+  "entries": [
+    {
+      "id": "4835fde4-f1a4-4d54-a124-58153e2f8459",
+      "timestamp": "2026-09-13 07:54:26.514586+00",
+      "user_id": null,
+      "skill": "erpclaw-journals",
+      "action": "cancel-journal-entry",
+      "entity_type": "journal_entry",
+      "entity_id": "f335019d-bc69-40ff-b0b7-22b6fd77d02e",
+      "old_values": null,
+      "new_values": {
+        "reversed_gl_entries": 2
+      },
+      "description": ""
+    },
+    {
+      "id": "1a584f08-e3a1-4fe4-90f7-7854778a588b",
+      "timestamp": "2026-09-13 07:54:26.272838+00",
+      "user_id": null,
+      "skill": "erpclaw-journals",
+      "action": "submit-journal-entry",
+      "entity_type": "journal_entry",
+      "entity_id": "f335019d-bc69-40ff-b0b7-22b6fd77d02e",
+      "old_values": null,
+      "new_values": {
+        "gl_entries_created": 2
+      },
+      "description": ""
+    },
+    {
+      "id": "42d86c0b-f586-4aa8-bcb9-8cd94675750d",
+      "timestamp": "2026-09-13 07:54:26.073502+00",
+      "user_id": null,
+      "skill": "erpclaw-journals",
+      "action": "add-journal-entry",
+      "entity_type": "journal_entry",
+      "entity_id": "f335019d-bc69-40ff-b0b7-22b6fd77d02e",
+      "old_values": null,
+      "new_values": {
+        "naming_series": "JE-2026-00080",
+        "entry_type": "journal",
+        "posting_date": "2026-09-13",
+        "lines": 2
+      },
+      "description": ""
+    },
+    {
+      "id": "17dda591-0320-44f9-be9e-a42d3b184fcc",
+      "timestamp": "2026-09-13 07:54:25.730273+00",
+      "user_id": null,
+      "skill": "erpclaw-crm",
+      "action": "add-lead",
+      "entity_type": "lead",
+      "entity_id": "5027a893-50bf-481a-903d-6fd1a8e04c4a",
+      "old_values": null,
+      "new_values": {
+        "lead_name": "Bridge Lead",
+        "source": "referral"
+      },
+      "description": "Created lead: Bridge Lead"
+    },
+    {
+      "id": "f812f16b-e467-410f-bc1f-1908c4dd0eb3",
+      "timestamp": "2026-09-13 07:43:48.536538+00",
+      "user_id": null,
+      "skill": "erpclaw-crm",
+      "action": "add-lead",
+      "entity_type": "lead",
+      "entity_id": "716a27e3-cbbe-4492-99a2-c87d4cb776e3",
+      "old_values": null,
+      "new_values": {
+        "lead_name": "Spike Lead",
+        "source": "website"
+      },
+      "description": "Created lead: Spike Lead"
+    },
+    {
+      "id": "e34de283-b7a2-4513-b26a-d00d94456d33",
+      "timestamp": "2026-09-13 07:41:13.126931+00",
+      "user_id": null,
+      "skill": "erpclaw-journals",
+      "action": "submit-journal-entry",
+      "entity_type": "journal_entry",
+      "entity_id": "42fa193b-20be-490e-a3a0-8528d7cff10f",
+      "old_values": null,
+      "new_values": {
+        "gl_entries_created": 3
+      },
+      "description": ""
+    },
+    {
+      "id": "c2309615-cca1-47ae-ae6e-1a072849a9f7",
+      "timestamp": "2026-09-13 07:41:13.122645+00",
+      "user_id": null,
+      "skill": "erpclaw-journals",
+      "action": "submit-journal-entry",
+      "entity_type": "journal_entry",
+      "entity_id": "22a108ca-594c-4b98-a7de-dbcaaa8c1536",
+      "old_values": null,
+      "new_values": {
+        "gl_entries_created": 3
+      },
+      "description": ""
+    },
+    {
+      "id": "d4aaaaf2-2a94-4c9d-abc7-01da0b118987",
+      "timestamp": "2026-09-13 07:41:13.103744+00",
+      "user_id": null,
+      "skill": "erpclaw-journals",
+      "action": "submit-journal-entry",
+      "entity_type": "journal_entry",
+      "entity_id": "10ac59d6-a2f0-4a8a-a72f-99f9c6b2031d",
+      "old_values": null,
+      "new_values": {
+        "gl_entries_created": 3
+      },
+      "description": ""
+    }
+  ],
+  "status": "ok"
+}
