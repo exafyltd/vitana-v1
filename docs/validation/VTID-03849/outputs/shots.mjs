@@ -3,7 +3,7 @@ const SUPABASE_URL = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const ANON = process.env.ANON; const OUT = process.env.OUT; const APP = 'http://127.0.0.1:8080';
 const ONLY = (process.env.ONLY || '').split(',').filter(Boolean);
 // Sign-in is the one permitted auth write (documented test user, read-only verification).
-const session = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: ANON }, body: JSON.stringify({ email: 'e2e-test@vitana.dev', password: 'VitanaE2eTest2026!' }) }).then(r => r.json());
+const session = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: ANON }, body: JSON.stringify({ email: 'e2e-test@vitana.dev', password: process.env.E2E_PASSWORD }) }).then(r => r.json());
 if (!session.access_token) { console.error('sign-in failed', session); process.exit(1); }
 const browser = await chromium.launch({ executablePath: process.env.PW_EXE });
 let blocked = 0, stubPosts = 0;
