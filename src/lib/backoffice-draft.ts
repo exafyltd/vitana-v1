@@ -9,7 +9,10 @@
  * anything is queued or executed (VTID-03842 entity resolution).
  */
 
-export type DraftFieldKind = "text" | "email" | "tel" | "date" | "textarea" | "select";
+export type DraftFieldKind = "text" | "email" | "tel" | "date" | "number" | "textarea" | "select" | "lines";
+
+/** One column of a `lines` field. `display` columns are shown but never sent; `maxFrom` caps a number at another column's value in the same row. */
+export interface LineColumn { key: string; kind: "text" | "number"; display?: boolean; hidden?: boolean; maxFrom?: string; required?: boolean }
 
 export interface DraftField {
   key: string;
@@ -18,9 +21,14 @@ export interface DraftField {
   /** `select` only — the exact values ERPClaw accepts */
   options?: readonly string[];
   default?: string;
+  /** shown on the form but not editable — a prefilled id the card is about */
+  readOnly?: boolean;
+  /** `lines` only — the row shape; rows come from `initial` values as a JSON array */
+  columns?: readonly LineColumn[];
+  min?: number;
 }
 
-export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity";
+export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote";
 
 export interface DraftFormSpec {
   id: DraftFormId;
@@ -38,6 +46,10 @@ export const CONTACT_LIFECYCLES = ["lead", "mql", "sql", "customer", "other"] as
 export const COMPANY_LIFECYCLES = ["prospect", "customer", "partner", "vendor", "other"] as const;
 export const TASK_PRIORITIES = ["low", "medium", "high", "urgent"] as const;
 export const ACTIVITY_TYPES = ["call", "email", "meeting", "note", "task"] as const;
+// Mirrors VALID_CUSTOMER_TYPES in erpclaw/scripts/erpclaw-selling/db_query.py (v4.15.0).
+export const CUSTOMER_TYPES = ["company", "individual"] as const;
+/** ERPClaw accepts a credit note only against an invoice in one of these states (create_credit_note). */
+export const CREDIT_NOTE_SOURCE_STATUSES = ["submitted", "overdue", "partially_paid", "paid"] as const;
 
 export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
   lead: {
@@ -93,7 +105,55 @@ export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
       { key: "description", kind: "textarea" },
     ],
   },
+  customer: {
+    id: "customer", type: "sales.customer.create", action: "add-customer", capability: "sales.draft",
+    fields: [
+      { key: "name", kind: "text", required: true },
+      { key: "customer_type", kind: "select", options: CUSTOMER_TYPES, default: "company" },
+      { key: "tax_id", kind: "text" },
+      { key: "credit_limit", kind: "number", min: 0 },
+      { key: "primary_address", kind: "textarea" },
+    ],
+  },
+  creditNote: {
+    id: "creditNote", type: "sales.credit_note.create", action: "create-credit-note", capability: "sales.draft",
+    fields: [
+      // The invoice the card was opened from; ERPClaw refuses anything not in CREDIT_NOTE_SOURCE_STATUSES.
+      { key: "against_invoice_id", kind: "text", required: true, readOnly: true },
+      { key: "posting_date", kind: "date", required: true },
+      { key: "reason", kind: "text" },
+      // Returned lines: only items of the original invoice, qty > 0 and ≤ the original quantity (ERPClaw validates both again).
+      { key: "items", kind: "lines", required: true, columns: [
+        { key: "item_id", kind: "text", hidden: true },
+        { key: "item_name", kind: "text", display: true },
+        { key: "original_qty", kind: "number", display: true },
+        { key: "qty", kind: "number", maxFrom: "original_qty", required: true },
+      ] },
+    ],
+  },
 };
+
+export type LineRow = Record<string, string>;
+
+export function parseLines(v: string | undefined): LineRow[] {
+  if (!v) return [];
+  try { const a = JSON.parse(v); return Array.isArray(a) ? a.map((r) => Object.fromEntries(Object.entries(r ?? {}).map(([k, x]) => [k, x == null ? "" : String(x)]))) : []; } catch { return []; }
+}
+
+/** Rows the credit-note card starts from: every line of the invoice, with the returned qty blank until the user fills it. */
+export function creditNoteLinesFromInvoice(items: Array<{ item_id: string; item_name?: string | null; item_code?: string | null; quantity: string | number }>): LineRow[] {
+  return items.map((i) => ({ item_id: i.item_id, item_name: i.item_name ?? i.item_code ?? i.item_id, original_qty: String(i.quantity), qty: "" }));
+}
+
+const numOk = (v: string) => v.trim() !== "" && Number.isFinite(Number(v));
+
+/** Rows that will be sent: qty entered and > 0, display/hidden columns stripped of what ERPClaw does not accept. */
+export function linesPayload(f: DraftField, v: string | undefined): Array<Record<string, string>> {
+  const cols = f.columns ?? [];
+  return parseLines(v)
+    .filter((r) => cols.every((c) => c.kind !== "number" || !c.required || (numOk(r[c.key] ?? "") && Number(r[c.key]) > 0)))
+    .map((r) => Object.fromEntries(cols.filter((c) => !c.display).map((c) => [c.key, (r[c.key] ?? "").trim()])));
+}
 
 export type DraftValues = Record<string, string>;
 
@@ -114,7 +174,7 @@ function isoDay(d: Date): string {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-export type DraftIssue = "required" | "invalidEmail" | "invalidDate" | "invalidOption";
+export type DraftIssue = "required" | "invalidEmail" | "invalidDate" | "invalidOption" | "invalidNumber" | "lineQtyTooHigh" | "noLines";
 
 /** Client-side validation is a courtesy for the form; the orchestrator and ERPClaw validate again. */
 export function validateDraft(spec: DraftFormSpec, values: DraftValues): Record<string, DraftIssue> {
@@ -125,16 +185,30 @@ export function validateDraft(spec: DraftFormSpec, values: DraftValues): Record<
     if (f.kind === "email" && !EMAIL_RE.test(v)) issues[f.key] = "invalidEmail";
     else if (f.kind === "date" && !DATE_RE.test(v)) issues[f.key] = "invalidDate";
     else if (f.kind === "select" && f.options && !f.options.includes(v)) issues[f.key] = "invalidOption";
+    else if (f.kind === "number" && (!numOk(v) || (f.min !== undefined && Number(v) < f.min))) issues[f.key] = "invalidNumber";
+    else if (f.kind === "lines") {
+      const rows = parseLines(v); const cols = f.columns ?? [];
+      const entered = rows.filter((r) => cols.some((c) => c.kind === "number" && !c.display && (r[c.key] ?? "").trim() !== ""));
+      if (entered.length === 0) { if (f.required) issues[f.key] = "noLines"; continue; }
+      for (const r of entered) for (const c of cols) {
+        if (c.kind !== "number" || c.display) continue;
+        const x = (r[c.key] ?? "").trim(); if (!x) continue;
+        if (!numOk(x) || Number(x) <= 0) { issues[f.key] = "invalidNumber"; break; }
+        if (c.maxFrom && numOk(r[c.maxFrom] ?? "") && Number(x) > Number(r[c.maxFrom])) { issues[f.key] = "lineQtyTooHigh"; break; }
+      }
+    }
   }
   return issues;
 }
 
 /** Only the spec's keys, trimmed, empties dropped — exactly what the review card shows and the command sends. */
-export function buildDraftPayload(spec: DraftFormSpec, values: DraftValues): Record<string, string> {
-  const out: Record<string, string> = {};
+export function buildDraftPayload(spec: DraftFormSpec, values: DraftValues): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
   for (const f of spec.fields) {
     const v = (values[f.key] ?? "").trim();
-    if (v) out[f.key] = v;
+    if (!v) continue;
+    if (f.kind === "lines") { const rows = linesPayload(f, v); if (rows.length) out[f.key] = rows; }
+    else out[f.key] = v;
   }
   return out;
 }

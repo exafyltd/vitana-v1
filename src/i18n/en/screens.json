@@ -11087,7 +11087,10 @@
           "required": "Required",
           "invalidEmail": "Not a valid e-mail address",
           "invalidDate": "Date as YYYY-MM-DD",
-          "invalidOption": "Not a valid choice"
+          "invalidOption": "Not a valid choice",
+          "invalidNumber": "Enter a valid number greater than 0",
+          "lineQtyTooHigh": "Returned quantity cannot exceed the invoiced quantity",
+          "noLines": "Enter a quantity on at least one line"
         },
         "fields": {
           "lead_name": "Lead name",
@@ -11105,7 +11108,19 @@
           "description": "Description",
           "activity_type": "Type",
           "activity_date": "Date",
-          "lead_ref": "Lead (name or number)"
+          "lead_ref": "Lead (name or number)",
+          "customer_type": "Customer type",
+          "tax_id": "Tax ID (TRN)",
+          "credit_limit": "Credit limit",
+          "primary_address": "Address",
+          "against_invoice_id": "Against invoice",
+          "posting_date": "Posting date",
+          "reason": "Reason",
+          "items": "Lines",
+          "item_name": "Item",
+          "original_qty": "Invoiced qty",
+          "qty": "Returned qty",
+          "item_id": "Item ID"
         },
         "choices": {
           "website": "Website",
@@ -11130,7 +11145,9 @@
           "email": "E-mail",
           "meeting": "Meeting",
           "note": "Note",
-          "task": "Task"
+          "task": "Task",
+          "company": "Company",
+          "individual": "Individual"
         },
         "forms": {
           "lead": {
@@ -11157,8 +11174,19 @@
             "button": "Log activity",
             "title": "Log an activity",
             "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written."
+          },
+          "customer": {
+            "button": "New customer",
+            "title": "Create a customer",
+            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted."
+          },
+          "creditNote": {
+            "button": "Create credit note",
+            "title": "Credit note against invoice",
+            "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step."
           }
-        }
+        },
+        "noLineRows": "No lines available."
       }
     }
   },

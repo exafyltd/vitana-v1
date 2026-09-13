@@ -110,7 +110,7 @@ export default function BackOfficeContacts() {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-base">{t("screens.backoffice.sales.contacts.customers")}</CardTitle></CardHeader>
+          <CardHeader className="pb-2 flex flex-row items-center justify-between gap-2 space-y-0"><CardTitle className="text-base">{t("screens.backoffice.sales.contacts.customers")}</CardTitle>{canSales && <DraftCommandButton formId="customer" variant="outline" />}</CardHeader>
           <CardContent className="space-y-2">
             {!canSales && me.data ? <p className="text-sm text-muted-foreground">{t("screens.backoffice.sales.contacts.needsSalesView")}</p> : (
               QueryState({ isLoading: me.isLoading || customers.isLoading, error: customers.error, isEmpty: customerRows.length === 0, emptyTitle: t("screens.backoffice.sales.contacts.noCustomers"), rows: 3 }) ?? (

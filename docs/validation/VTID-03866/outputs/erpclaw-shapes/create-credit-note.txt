@@ -1,0 +1,7 @@
+{
+  "credit_note_id": "5d1c0c47-derived-4c0d-9d3e-000000000001",
+  "against_invoice_id": "a2a4958f-1a1e-4d65-b978-6dd7d4d96096",
+  "grand_total": "-367.50",
+  "is_return": true,
+  "status": "ok"
+}

@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { DRAFT_FORMS, buildDraftPayload, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
+import { DRAFT_FORMS, buildDraftPayload, creditNoteLinesFromInvoice, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
 
 describe("draft forms", () => {
-  it("every form maps to a Draft typed command with crm.manage and at least one required field", () => {
+  it("every form maps to a Draft typed command with a single capability and at least one required field", () => {
     for (const spec of Object.values(DRAFT_FORMS)) {
-      expect(spec.type).toMatch(/^crm\.[a-z_]+\.create$/);
-      expect(spec.capability).toBe("crm.manage");
+      expect(spec.type).toMatch(/^(crm|sales)\.[a-z_]+\.create$/);
+      expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : "sales.draft");
       expect(spec.fields.some((f) => f.required)).toBe(true);
       for (const f of spec.fields) if (f.kind === "select") expect(f.options && f.options.length > 0).toBe(true);
     }
@@ -22,6 +22,29 @@ describe("validateDraft", () => {
     expect(validateDraft(DRAFT_FORMS.lead, { lead_name: "A", email: "nope", source: "carrier_pigeon" })).toEqual({ email: "invalidEmail", source: "invalidOption" });
     expect(validateDraft(DRAFT_FORMS.task, { subject: "x", due_date: "20/09/2026" })).toEqual({ due_date: "invalidDate" });
     expect(validateDraft(DRAFT_FORMS.task, { subject: "x", due_date: "2026-09-20", priority: "high" })).toEqual({});
+  });
+});
+
+describe("credit note lines (VTID-03866)", () => {
+  const inv = [{ item_id: "i1", item_name: "Wellness programme (per seat)", quantity: "20.00" }, { item_id: "i2", item_name: null, item_code: "SVC-X", quantity: "5.00" }];
+  const base = { against_invoice_id: "inv-1", posting_date: "2026-09-13" };
+  it("seeds one blank row per invoice line and sends only rows with a returned qty, stripped to item_id + qty", () => {
+    const rows = creditNoteLinesFromInvoice(inv);
+    expect(rows).toEqual([{ item_id: "i1", item_name: "Wellness programme (per seat)", original_qty: "20.00", qty: "" }, { item_id: "i2", item_name: "SVC-X", original_qty: "5.00", qty: "" }]);
+    rows[0].qty = "2";
+    expect(buildDraftPayload(DRAFT_FORMS.creditNote, { ...base, items: JSON.stringify(rows) })).toEqual({ ...base, items: [{ item_id: "i1", qty: "2" }] });
+  });
+  it("refuses no lines, a non-positive qty and a qty above the original", () => {
+    const rows = creditNoteLinesFromInvoice(inv);
+    expect(validateDraft(DRAFT_FORMS.creditNote, { ...base, items: JSON.stringify(rows) })).toEqual({ items: "noLines" });
+    expect(validateDraft(DRAFT_FORMS.creditNote, { ...base, items: JSON.stringify([{ ...rows[0], qty: "0" }]) })).toEqual({ items: "invalidNumber" });
+    expect(validateDraft(DRAFT_FORMS.creditNote, { ...base, items: JSON.stringify([{ ...rows[1], qty: "6" }]) })).toEqual({ items: "lineQtyTooHigh" });
+    expect(validateDraft(DRAFT_FORMS.creditNote, { ...base, items: JSON.stringify([{ ...rows[1], qty: "5" }]) })).toEqual({});
+  });
+  it("customer: credit limit must be a non-negative number", () => {
+    expect(validateDraft(DRAFT_FORMS.customer, { name: "Acme", credit_limit: "-1" })).toEqual({ credit_limit: "invalidNumber" });
+    expect(validateDraft(DRAFT_FORMS.customer, { name: "Acme", credit_limit: "25000" })).toEqual({});
+    expect(buildDraftPayload(DRAFT_FORMS.customer, { name: "Acme", customer_type: "company", credit_limit: "25000", tax_id: "" })).toEqual({ name: "Acme", customer_type: "company", credit_limit: "25000" });
   });
 });
 
