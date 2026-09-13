@@ -22,13 +22,20 @@ export const REFUSAL_KEYS: Record<string, string> = {
   FORBIDDEN: "capabilityMissing",
 };
 
-export interface DecisionResponse { ok: boolean; error?: string; status?: string; command?: unknown }
+export interface DecisionResponse { ok: boolean; error?: string; status?: string; command?: { reason?: string | null } | unknown }
+
+/** The machine reason behind a non-success answer: a top-level `error`, else the failed command's `reason` (a 502 carries it there). */
+export function decisionReason(body: DecisionResponse | null): string {
+  const cmd = body?.command as { reason?: string | null } | undefined;
+  return body?.error ?? cmd?.reason ?? "";
+}
 
 /** What to tell the approver when the decision did not go through. `executedButFailed` = approved, but ERPClaw/bridge failed on execution. */
-export function decisionOutcomeKey(status: number, body: DecisionResponse | null): { kind: "executed" | "rejected" | "refused" | "executedButFailed" | "error"; key: string } {
-  if (status === 200 && body?.ok) return { kind: "executed", key: "executed" };
-  if (status === 502 || body?.error === "erp_action_failed" || body?.error === "bridge_not_configured") return { kind: "executedButFailed", key: body?.error === "bridge_not_configured" ? "bridgeUnavailable" : "erpFailed" };
-  const reason = body?.error ?? "";
+export function decisionOutcomeKey(verdict: Verdict, status: number, body: DecisionResponse | null): { kind: "executed" | "rejected" | "refused" | "executedButFailed" | "error"; key: string } {
+  // A 200 on a rejection means "recorded, nothing ran" — never an execution, whatever the body says.
+  if (status === 200 && body?.ok) return verdict === "reject" ? { kind: "rejected", key: "rejected" } : { kind: "executed", key: "executed" };
+  const reason = decisionReason(body);
+  if (status === 502 || reason === "erp_action_failed" || reason === "bridge_not_configured") return { kind: "executedButFailed", key: reason === "bridge_not_configured" ? "bridgeUnavailable" : "erpFailed" };
   if (REFUSAL_KEYS[reason]) return { kind: "refused", key: REFUSAL_KEYS[reason] };
   if (status === 401) return { kind: "error", key: "unauthorized" };
   return { kind: "error", key: "generic" };

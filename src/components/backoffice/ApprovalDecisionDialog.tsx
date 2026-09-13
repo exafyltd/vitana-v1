@@ -17,7 +17,7 @@ import ReceiptDetail from "@/components/backoffice/ReceiptDetail";
 import { QuerySkeleton } from "@/components/backoffice/QueryState";
 import { shortId, useBackOfficeCommand, type BackOfficeApproval } from "@/hooks/useBackOfficeCommands";
 import { useApprovalDecision } from "@/hooks/useBackOfficeDecisions";
-import { validateDecisionNote, type Verdict } from "@/lib/backoffice-approvals";
+import { validateDecisionNote, type Verdict, decisionReason } from "@/lib/backoffice-approvals";
 import { fmtDateTime } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 
@@ -67,8 +67,8 @@ export function ApprovalDecisionDialog({ approval, verdict, open, onOpenChange }
             {done && out && (
               <div className="space-y-2" data-testid={`decide-outcome-${out.kind}`}>
                 <div role={out.kind === "executed" || out.kind === "rejected" ? "status" : "alert"} className={`rounded-md border px-4 py-3 text-sm ${out.kind === "executed" ? "border-emerald-500/30 bg-emerald-500/5" : out.kind === "rejected" ? "border-border bg-muted/30" : "border-destructive/30 bg-destructive/5"}`}>
-                  <div className="font-medium">{out.kind === "refused" ? t(`screens.backoffice.decide.refusals.${out.key}`) : out.kind === "executedButFailed" ? t(`screens.backoffice.errors.${out.key}`) : out.kind === "error" ? t(`screens.backoffice.errors.${out.key}`) : verdict === "reject" ? t("screens.backoffice.decide.outcome.rejectedLine") : t("screens.backoffice.decide.outcome.executedLine")}</div>
-                  {decision.result?.body.error && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.reason")} <code className="font-mono" dir="ltr">{decision.result.body.error}</code></p>}
+                  <div className="font-medium">{out.kind === "refused" ? t(`screens.backoffice.decide.refusals.${out.key}`) : out.kind === "executedButFailed" ? t("screens.backoffice.decide.outcome.executedButFailed") : out.kind === "error" ? t(`screens.backoffice.errors.${out.key}`) : out.kind === "rejected" ? t("screens.backoffice.decide.outcome.rejectedLine") : t("screens.backoffice.decide.outcome.executedLine")}</div>
+                  {decision.result && decisionReason(decision.result.body) && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.reason")} <code className="font-mono" dir="ltr">{decisionReason(decision.result.body)}</code></p>}
                   {out.kind === "executedButFailed" && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.decide.outcome.executedButFailedHint")}</p>}
                 </div>
                 {resultCmd?.receipt && <ReceiptDetail receipt={resultCmd.receipt} />}

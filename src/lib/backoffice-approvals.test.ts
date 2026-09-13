@@ -3,13 +3,16 @@ import { decisionOutcomeKey, policyChanges, validateDecisionNote, validatePolicy
 
 describe("decisionOutcomeKey", () => {
   it("maps the orchestrator's refusal reasons, an execution failure after approval, and success", () => {
-    expect(decisionOutcomeKey(200, { ok: true })).toEqual({ kind: "executed", key: "executed" });
-    expect(decisionOutcomeKey(403, { ok: false, error: "self_approval_forbidden" })).toEqual({ kind: "refused", key: "selfApproval" });
-    expect(decisionOutcomeKey(403, { ok: false, error: "mfa_required" })).toEqual({ kind: "refused", key: "mfaRequired" });
-    expect(decisionOutcomeKey(409, { ok: false, error: "ALREADY_DECIDED", status: "approved" })).toEqual({ kind: "refused", key: "alreadyDecided" });
-    expect(decisionOutcomeKey(502, { ok: false, command: {} })).toEqual({ kind: "executedButFailed", key: "erpFailed" });
-    expect(decisionOutcomeKey(503, { ok: false, error: "bridge_not_configured" })).toEqual({ kind: "executedButFailed", key: "bridgeUnavailable" });
-    expect(decisionOutcomeKey(500, { ok: false, error: "INTERNAL_ERROR" })).toEqual({ kind: "error", key: "generic" });
+    expect(decisionOutcomeKey("approve", 200, { ok: true })).toEqual({ kind: "executed", key: "executed" });
+    expect(decisionOutcomeKey("reject", 200, { ok: true, command: { status: "rejected" } })).toEqual({ kind: "rejected", key: "rejected" });
+    expect(decisionOutcomeKey("reject", 403, { ok: false, error: "self_approval_forbidden" })).toEqual({ kind: "refused", key: "selfApproval" });
+    expect(decisionOutcomeKey("approve", 403, { ok: false, error: "self_approval_forbidden" })).toEqual({ kind: "refused", key: "selfApproval" });
+    expect(decisionOutcomeKey("approve", 403, { ok: false, error: "mfa_required" })).toEqual({ kind: "refused", key: "mfaRequired" });
+    expect(decisionOutcomeKey("approve", 409, { ok: false, error: "ALREADY_DECIDED", status: "approved" })).toEqual({ kind: "refused", key: "alreadyDecided" });
+    expect(decisionOutcomeKey("approve", 502, { ok: false, command: {} })).toEqual({ kind: "executedButFailed", key: "erpFailed" });
+    expect(decisionOutcomeKey("approve", 502, { ok: false, command: { status: "failed", reason: "bridge_not_configured" } })).toEqual({ kind: "executedButFailed", key: "bridgeUnavailable" });
+    expect(decisionOutcomeKey("approve", 503, { ok: false, error: "bridge_not_configured" })).toEqual({ kind: "executedButFailed", key: "bridgeUnavailable" });
+    expect(decisionOutcomeKey("approve", 500, { ok: false, error: "INTERNAL_ERROR" })).toEqual({ kind: "error", key: "generic" });
   });
 });
 

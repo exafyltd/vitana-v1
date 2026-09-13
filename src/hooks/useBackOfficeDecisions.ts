@@ -45,7 +45,7 @@ export function useApprovalDecision(approvalId: string, verdict: Verdict) {
     ]);
   }, [approvalId, verdict, qc, activeTenantId]);
 
-  const outcome = result ? decisionOutcomeKey(result.status, result.body) : null;
+  const outcome = result ? decisionOutcomeKey(verdict, result.status, result.body) : null;
   return { phase, result, outcome, submit };
 }
 
