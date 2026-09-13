@@ -11,6 +11,7 @@ import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { hasAnyCapability, shortId, useErpRead } from "@/hooks/useBackOfficeCommands";
 import { formatMoney, fullTextMatch, type ErpCrmCompany, type ErpCrmContact, type ErpCustomer } from "@/lib/backoffice-sales";
 import { t } from "@/lib/i18n-toast";
+import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 
 const CAPS = ["crm.view", "sales.view"] as const;
 
@@ -28,7 +29,7 @@ export default function BackOfficeContacts() {
   const customerRows = (customers.data?.result?.customers ?? []).filter((c) => fullTextMatch(search, c.name, c.customer_group, c.territory, c.customer_type));
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-006" emoji="👥" title={t("screens.backoffice.sales.contacts.title")} description={t("screens.backoffice.sales.contacts.description")} capabilities={CAPS}>
+    <BackOfficePage sectionKey="sales" screenId="BO-006" emoji="👥" title={t("screens.backoffice.sales.contacts.title")} description={t("screens.backoffice.sales.contacts.description")} capabilities={CAPS} rightAction={<div className="flex flex-wrap gap-2"><DraftCommandButton formId="contact" /><DraftCommandButton formId="company" /></div>}>
       <AdminFilterBar searchValue={search} onSearchChange={setSearch} searchPlaceholder={t("screens.backoffice.sales.contacts.searchPlaceholder")} onReset={() => setSearch("")} />
 
       <Card>

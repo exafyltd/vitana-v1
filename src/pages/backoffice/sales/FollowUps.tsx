@@ -13,6 +13,7 @@ import { hasAnyCapability, shortId, useErpRead } from "@/hooks/useBackOfficeComm
 import { fullTextMatch, isTaskOverdue, type ErpActivity, type ErpCrmTask } from "@/lib/backoffice-sales";
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 
 const CAPS = ["crm.view"] as const;
 
@@ -27,7 +28,7 @@ export default function BackOfficeFollowUps() {
   const activityRows = (activities.data?.result?.activities ?? []).filter((a) => fullTextMatch(search, a.subject, a.activity_type, a.description));
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-008" emoji="📌" title={t("screens.backoffice.sales.followups.title")} description={t("screens.backoffice.sales.followups.description")} capabilities={CAPS}>
+    <BackOfficePage sectionKey="sales" screenId="BO-008" emoji="📌" title={t("screens.backoffice.sales.followups.title")} description={t("screens.backoffice.sales.followups.description")} capabilities={CAPS} rightAction={<div className="flex flex-wrap gap-2"><DraftCommandButton formId="task" /><DraftCommandButton formId="activity" /></div>}>
       <AdminFilterBar
         searchValue={search}
         onSearchChange={setSearch}

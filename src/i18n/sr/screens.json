@@ -10949,6 +10949,110 @@
           },
           "negativeNote": "Negativni iznosi su preplate: uplate ili knjižna odobrenja koja još nisu raspoređena na fakturu."
         }
+      },
+      "draft": {
+        "review": "Proveri pre upisa",
+        "reviewHint": "Ovo je tačno komanda koju će gateway izvršiti kad potvrdiš. Još ništa nije upisano.",
+        "toReview": "Nastavi na proveru",
+        "accept": "Potvrdi i kreiraj",
+        "back": "Nazad",
+        "cancel": "Otkaži",
+        "close": "Zatvori",
+        "editAndRetry": "Izmeni i pošalji ponovo",
+        "submitting": "Izvršava se …",
+        "done": "Kreirano",
+        "doneHint": "ERP je kreirao zapis, a lista iza ove kartice je ponovo učitana. Potvrda ispod je ono što je most sačuvao.",
+        "failed": "Nije kreirano",
+        "failedHint": "Ništa nije upisano. Možeš da izmeniš unos i pošalješ ponovo – isti ključ idempotentnosti garantuje da ponovni pokušaj nikad ne kreira drugi zapis.",
+        "created": "Zapis kreiran.",
+        "createdWithRef": "Kreirano kao {ref}.",
+        "replayed": "Ova potvrda je ponovljena iz ranijeg pokušaja sa istim ključem – ništa nije kreirano dvaput.",
+        "reason": "Razlog:",
+        "entityHint": "„{ref}“ u polju {field} nije moglo jednoznačno da se razreši ({count} pogodaka).",
+        "command": "Komanda",
+        "action": "ERP akcija",
+        "tier": "Nivo",
+        "capability": "Ovlašćenje",
+        "idempotencyKey": "Ključ idempotentnosti",
+        "payload": "Podaci koji se šalju",
+        "whatHappens": "Nivo nacrt: kreira neproknjižen zapis – bez stavke u knjizi, bez promene statusa, poništivo izmenom ili brisanjem.",
+        "choose": "Izaberi …",
+        "issues": {
+          "required": "Obavezno",
+          "invalidEmail": "Nevažeća e-adresa",
+          "invalidDate": "Datum u obliku GGGG-MM-DD",
+          "invalidOption": "Nevažeći izbor"
+        },
+        "fields": {
+          "lead_name": "Naziv lida",
+          "company_name": "Firma",
+          "email": "E-pošta",
+          "phone": "Telefon",
+          "source": "Izvor",
+          "industry": "Delatnost",
+          "notes": "Beleške",
+          "name": "Naziv",
+          "lifecycle": "Životni ciklus",
+          "subject": "Tema",
+          "priority": "Prioritet",
+          "due_date": "Rok",
+          "description": "Opis",
+          "activity_type": "Tip",
+          "activity_date": "Datum",
+          "lead_ref": "Lid (naziv ili broj)"
+        },
+        "choices": {
+          "website": "Veb sajt",
+          "referral": "Preporuka",
+          "campaign": "Kampanja",
+          "cold_call": "Hladni poziv",
+          "social_media": "Društvene mreže",
+          "trade_show": "Sajam",
+          "other": "Ostalo",
+          "lead": "Lid",
+          "mql": "Marketinški kvalifikovan",
+          "sql": "Prodajno kvalifikovan",
+          "customer": "Kupac",
+          "prospect": "Potencijalni",
+          "partner": "Partner",
+          "vendor": "Dobavljač",
+          "low": "Nizak",
+          "medium": "Srednji",
+          "high": "Visok",
+          "urgent": "Hitno",
+          "call": "Poziv",
+          "email": "E-pošta",
+          "meeting": "Sastanak",
+          "note": "Beleška",
+          "task": "Zadatak"
+        },
+        "forms": {
+          "lead": {
+            "button": "Novi lid",
+            "title": "Kreiraj lid",
+            "description": "Lid je neproknjižen zapis – proverava se pre nego što stigne u ERP."
+          },
+          "contact": {
+            "button": "Novi kontakt",
+            "title": "Kreiraj kontakt",
+            "description": "Osoba u CRM-u. Povezivanje sa firmom je poseban korak."
+          },
+          "company": {
+            "button": "Nova firma",
+            "title": "Kreiraj firmu",
+            "description": "Organizacija u CRM-u – još nije kupac u prodaji."
+          },
+          "task": {
+            "button": "Novi zadatak",
+            "title": "Kreiraj zadatak",
+            "description": "Zadatak praćenja za tim. Povezivanje sa lidom ili prilikom je poseban korak."
+          },
+          "activity": {
+            "button": "Zabeleži aktivnost",
+            "title": "Zabeleži aktivnost",
+            "description": "Poziv, e-pošta, sastanak ili beleška uz lid. Lid se razrešava po nazivu ili broju – kod više pogodaka ništa se ne upisuje."
+          }
+        }
       }
     }
   }

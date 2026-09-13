@@ -10949,6 +10949,110 @@
           },
           "negativeNote": "Negative amounts are credits: payments or credit notes not yet allocated to an invoice."
         }
+      },
+      "draft": {
+        "review": "Review before it is written",
+        "reviewHint": "This is exactly the command the gateway will run once you accept. Nothing has been written yet.",
+        "toReview": "Continue to review",
+        "accept": "Accept and create",
+        "back": "Back",
+        "cancel": "Cancel",
+        "close": "Close",
+        "editAndRetry": "Edit and resend",
+        "submitting": "Running …",
+        "done": "Created",
+        "doneHint": "The ERP created the record and the list behind this card has been refetched. The receipt below is what the bridge stored.",
+        "failed": "Not created",
+        "failedHint": "Nothing was written. You can change the inputs and resend – the same idempotency key guarantees a retry never creates a second record.",
+        "created": "Record created.",
+        "createdWithRef": "Created as {ref}.",
+        "replayed": "This receipt was replayed from an earlier attempt with the same key – nothing was created twice.",
+        "reason": "Reason:",
+        "entityHint": "“{ref}” in {field} could not be resolved unambiguously ({count} matches).",
+        "command": "Command",
+        "action": "ERP action",
+        "tier": "Tier",
+        "capability": "Capability",
+        "idempotencyKey": "Idempotency key",
+        "payload": "Data that will be sent",
+        "whatHappens": "Draft tier: creates an unposted record – no ledger entry, no status change, reversible by edit or delete.",
+        "choose": "Choose …",
+        "issues": {
+          "required": "Required",
+          "invalidEmail": "Not a valid e-mail address",
+          "invalidDate": "Date as YYYY-MM-DD",
+          "invalidOption": "Not a valid choice"
+        },
+        "fields": {
+          "lead_name": "Lead name",
+          "company_name": "Company",
+          "email": "E-mail",
+          "phone": "Phone",
+          "source": "Source",
+          "industry": "Industry",
+          "notes": "Notes",
+          "name": "Name",
+          "lifecycle": "Lifecycle",
+          "subject": "Subject",
+          "priority": "Priority",
+          "due_date": "Due date",
+          "description": "Description",
+          "activity_type": "Type",
+          "activity_date": "Date",
+          "lead_ref": "Lead (name or number)"
+        },
+        "choices": {
+          "website": "Website",
+          "referral": "Referral",
+          "campaign": "Campaign",
+          "cold_call": "Cold call",
+          "social_media": "Social media",
+          "trade_show": "Trade show",
+          "other": "Other",
+          "lead": "Lead",
+          "mql": "Marketing qualified",
+          "sql": "Sales qualified",
+          "customer": "Customer",
+          "prospect": "Prospect",
+          "partner": "Partner",
+          "vendor": "Vendor",
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High",
+          "urgent": "Urgent",
+          "call": "Call",
+          "email": "E-mail",
+          "meeting": "Meeting",
+          "note": "Note",
+          "task": "Task"
+        },
+        "forms": {
+          "lead": {
+            "button": "New lead",
+            "title": "Create a lead",
+            "description": "A lead is an unposted record – it is reviewed before it reaches the ERP."
+          },
+          "contact": {
+            "button": "New contact",
+            "title": "Create a contact",
+            "description": "A person in the CRM. Linking to a company is a separate step."
+          },
+          "company": {
+            "button": "New company",
+            "title": "Create a company",
+            "description": "An organisation in the CRM – not yet a sales customer."
+          },
+          "task": {
+            "button": "New task",
+            "title": "Create a task",
+            "description": "A follow-up task for the team. Linking to a lead or opportunity is a separate step."
+          },
+          "activity": {
+            "button": "Log activity",
+            "title": "Log an activity",
+            "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written."
+          }
+        }
       }
     }
   }

@@ -1,0 +1,14 @@
+{
+  "crm_task": {
+    "id": "94f4db7a-e98f-4675-8d50-d1ccfb5737a6",
+    "subject": "Call back probe",
+    "status": "open",
+    "priority": "medium",
+    "due_date": "2026-09-20",
+    "linked_count": 0
+  },
+  "links": [],
+  "overdue_on_create": false,
+  "message": "Task 'Call back probe' created",
+  "status": "ok"
+}

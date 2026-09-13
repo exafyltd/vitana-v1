@@ -10949,6 +10949,110 @@
           },
           "negativeNote": "Los importes negativos son saldos a favor: pagos o abonos aún no asignados a una factura."
         }
+      },
+      "draft": {
+        "review": "Revisa antes de escribir",
+        "reviewHint": "Este es exactamente el comando que ejecutará el gateway cuando aceptes. Aún no se ha escrito nada.",
+        "toReview": "Continuar a la revisión",
+        "accept": "Aceptar y crear",
+        "back": "Atrás",
+        "cancel": "Cancelar",
+        "close": "Cerrar",
+        "editAndRetry": "Editar y reenviar",
+        "submitting": "Ejecutando …",
+        "done": "Creado",
+        "doneHint": "El ERP creó el registro y la lista detrás de esta tarjeta se ha recargado. El recibo de abajo es lo que guardó el puente.",
+        "failed": "No creado",
+        "failedHint": "No se escribió nada. Puedes cambiar los datos y reenviar: la misma clave de idempotencia garantiza que un reintento nunca cree un segundo registro.",
+        "created": "Registro creado.",
+        "createdWithRef": "Creado como {ref}.",
+        "replayed": "Este recibo se repitió desde un intento anterior con la misma clave: no se creó nada dos veces.",
+        "reason": "Motivo:",
+        "entityHint": "«{ref}» en {field} no se pudo resolver de forma unívoca ({count} coincidencias).",
+        "command": "Comando",
+        "action": "Acción ERP",
+        "tier": "Nivel",
+        "capability": "Permiso",
+        "idempotencyKey": "Clave de idempotencia",
+        "payload": "Datos que se enviarán",
+        "whatHappens": "Nivel borrador: crea un registro sin contabilizar; sin asiento, sin cambio de estado, reversible editando o borrando.",
+        "choose": "Elegir …",
+        "issues": {
+          "required": "Obligatorio",
+          "invalidEmail": "No es un correo válido",
+          "invalidDate": "Fecha como AAAA-MM-DD",
+          "invalidOption": "Opción no válida"
+        },
+        "fields": {
+          "lead_name": "Nombre del lead",
+          "company_name": "Empresa",
+          "email": "Correo",
+          "phone": "Teléfono",
+          "source": "Origen",
+          "industry": "Sector",
+          "notes": "Notas",
+          "name": "Nombre",
+          "lifecycle": "Ciclo de vida",
+          "subject": "Asunto",
+          "priority": "Prioridad",
+          "due_date": "Vence el",
+          "description": "Descripción",
+          "activity_type": "Tipo",
+          "activity_date": "Fecha",
+          "lead_ref": "Lead (nombre o número)"
+        },
+        "choices": {
+          "website": "Sitio web",
+          "referral": "Recomendación",
+          "campaign": "Campaña",
+          "cold_call": "Llamada en frío",
+          "social_media": "Redes sociales",
+          "trade_show": "Feria",
+          "other": "Otro",
+          "lead": "Lead",
+          "mql": "Cualificado por marketing",
+          "sql": "Cualificado por ventas",
+          "customer": "Cliente",
+          "prospect": "Prospecto",
+          "partner": "Socio",
+          "vendor": "Proveedor",
+          "low": "Baja",
+          "medium": "Media",
+          "high": "Alta",
+          "urgent": "Urgente",
+          "call": "Llamada",
+          "email": "Correo",
+          "meeting": "Reunión",
+          "note": "Nota",
+          "task": "Tarea"
+        },
+        "forms": {
+          "lead": {
+            "button": "Nuevo lead",
+            "title": "Crear un lead",
+            "description": "Un lead es un registro sin contabilizar: se revisa antes de llegar al ERP."
+          },
+          "contact": {
+            "button": "Nuevo contacto",
+            "title": "Crear un contacto",
+            "description": "Una persona en el CRM. Vincularla a una empresa es un paso aparte."
+          },
+          "company": {
+            "button": "Nueva empresa",
+            "title": "Crear una empresa",
+            "description": "Una organización en el CRM; aún no es cliente de ventas."
+          },
+          "task": {
+            "button": "Nueva tarea",
+            "title": "Crear una tarea",
+            "description": "Una tarea de seguimiento para el equipo. Vincularla a un lead u oportunidad es un paso aparte."
+          },
+          "activity": {
+            "button": "Registrar actividad",
+            "title": "Registrar una actividad",
+            "description": "Una llamada, correo, reunión o nota sobre un lead. El lead se resuelve por nombre o número; con varias coincidencias no se escribe nada."
+          }
+        }
       }
     }
   }
