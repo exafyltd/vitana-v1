@@ -415,6 +415,18 @@ const InitEvents = lazy(() => import("./pages/admin/InitEvents"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
 // VTID-03833: Vitanaland BackOffice (ERP/CRM) shell — every section is a placeholder until its screens ship
 const BackOfficePlaceholder = lazy(() => import("./pages/backoffice/BackOfficePlaceholder"));
+// VTID-03849 — wave-1 Read screens
+const BackOfficeDashboard = lazy(() => import("./pages/backoffice/overview/Dashboard"));
+const BackOfficeInbox = lazy(() => import("./pages/backoffice/overview/Inbox"));
+const BackOfficeActivity = lazy(() => import("./pages/backoffice/overview/Activity"));
+const BackOfficeHealth = lazy(() => import("./pages/backoffice/overview/Health"));
+const BackOfficeApprovalsQueue = lazy(() => import("./pages/backoffice/approvals/Queue"));
+const BackOfficeMyRequests = lazy(() => import("./pages/backoffice/approvals/MyRequests"));
+const BackOfficePolicies = lazy(() => import("./pages/backoffice/approvals/Policies"));
+const BackOfficeReceipts = lazy(() => import("./pages/backoffice/audit/Receipts"));
+const BackOfficeErpLog = lazy(() => import("./pages/backoffice/audit/ErpLog"));
+const BackOfficeAuditTrail = lazy(() => import("./pages/backoffice/audit/Trail"));
+const BackOfficeCompany = lazy(() => import("./pages/backoffice/settings/Company"));
 // VTID-03834: BackOffice › Settings › Access — ERP capability grants per member
 const BackOfficeSettingsAccess = lazy(() => import("./pages/backoffice/settings/Access"));
 
@@ -2135,6 +2147,40 @@ const App = () => {
               Every section renders BackOfficePlaceholder inside AppLayout until its
               screens land. Must sit BEFORE the catch-all. */}
           <Route path="/backoffice" element={<Navigate to="/backoffice/dashboard" replace />} />
+          {/* VTID-03849 — wave-1 Read screens (Overview, Approvals, Audit, Settings › Company). */}
+          <Route path="/backoffice/dashboard" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeDashboard /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/inbox" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeInbox /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/activity" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeActivity /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/health" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeHealth /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/approvals/queue" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeApprovalsQueue /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/approvals/my-requests" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeMyRequests /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/approvals/policies" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePolicies /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/audit/receipts" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeReceipts /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/audit/erp-log" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeErpLog /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/audit/trail" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeAuditTrail /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/settings/company" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeCompany /></ProtectedRoute></AuthGuard>
+          } />
           <Route path="/backoffice/settings/access" element={
             <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeSettingsAccess /></ProtectedRoute></AuthGuard>
           } />
