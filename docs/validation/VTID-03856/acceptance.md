@@ -50,3 +50,10 @@ TEST: `outputs/checks.txt` — tsc 140 pre-existing errors on base and branch, 0
 
 - Real gateway round-trips need `#3291` on staging with its migration applied and the bridge provisioned (VTID-03840).
 - `get-payment` returns `payment_currency: "USD"` for payments created without an explicit currency (same ERPClaw default noted in VTID-03855); list rows carry no currency and render in AED. The Draft slice should pass the company currency on creation.
+
+## Notes from the screenshot review
+
+- ERPClaw's `get-payment` (like `get-sales-invoice`) puts its own `"status": "ok"` at the top level, overwriting the
+  document status; the detail panel therefore shows the status from the list row, never from the detail.
+- The stub serves one fixed `get-payment` body for every id, so screenshot 01/03 show PAY-2026-00001's detail under the
+  clicked PAY-2026-00002 row — a harness limitation, not a screen defect (the real gateway returns the selected id).
