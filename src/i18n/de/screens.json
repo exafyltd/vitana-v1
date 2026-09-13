@@ -11086,7 +11086,7 @@
           "payment": {
             "button": "Zahlung erfassen",
             "title": "Zahlung erfassen",
-            "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener, bestätigungspflichtiger Schritt."
+            "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener Schritt mit Bestätigung."
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
