@@ -1,0 +1,10 @@
+{
+  "balanced": true,
+  "total_debit": "54904.50",
+  "total_credit": "54904.50",
+  "difference": "0.00",
+  "chain_intact": false,
+  "broken_links": 121,
+  "total_entries": 180,
+  "status": "ok"
+}
