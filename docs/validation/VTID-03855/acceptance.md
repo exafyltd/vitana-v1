@@ -75,3 +75,11 @@ Same root cause as VTID-03840 patch 0002 (TEXT money columns + `decimal_sum`): c
   staging task def (VTID-03840 provisioning). Screenshots use the local stub for the gateway routes with real ERPClaw JSON.
 - Credit-note columns are assumed to mirror sales invoices (`naming_series`, `customer_name`, `posting_date`, `grand_total`,
   `status`, `return_against`); the list came back empty because no invoice could be submitted (Finding 1).
+
+## Notes from the screenshot review
+
+- List rows from ERPClaw carry no `currency`, so list amounts render in the tenant default (AED); a document's detail uses
+  its own `currency` field (the spike invoices/quotation were created without one, so ERPClaw stored `USD`). Both are
+  shown as stored — the Draft slice should pass the company currency on creation so the two agree.
+- A CRM contact linked to a company via `link-contact-to-company` gets a `crm_contact_role` row; `list-crm-contacts`
+  does not surface it, so the Company column reads "—" for such contacts today.
