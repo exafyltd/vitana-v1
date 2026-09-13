@@ -1,0 +1,17 @@
+# VTID-03873 checks — 2026-09-13T21:11:17Z, branch claude/practical-gates-iqwv52-vtid-03873, after the sweep fixes
+== eslint (changed backoffice files)
+eslint exit=0
+== tsc --noEmit -p tsconfig.app.json (error count; base has 140 pre-existing)
+140
+== tsc errors in changed files
+0
+== vitest run (full)
+ Test Files  37 passed (37)
+      Tests  251 passed (251)
+== i18n long-word guard (de, max 22)
+Flagged unique words: 0
+No long words found.
+guard exit=0
+== i18n inventory
+  pages: 327, keys: 4964, namespaces: 46, suspects: 67
+(no diff line above = inventory already current)
