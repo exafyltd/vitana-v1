@@ -10327,7 +10327,26 @@
       "comingWave3": "Llega en la ola 3",
       "placeholderBody": "Esta página es un marcador de posición. La barra lateral, el panel de perfil, el cambio de rol y ORB son idénticos en todos los roles; solo falta el contenido.",
       "noSectionMatches": "Ninguna sección de BackOffice coincide con",
-      "sidebarIsCanonical": "La barra lateral es la lista canónica de secciones. Elige una."
+      "sidebarIsCanonical": "La barra lateral es la lista canónica de secciones. Elige una.",
+      "noAccess": "No tienes acceso a esta sección. Un administrador del tenant puede concedértelo en Ajustes › Acceso.",
+      "access": {
+        "title": "Acceso",
+        "description": "Capacidades ERP por miembro. El rol abre la puerta; la capacidad define qué puede hacer cada persona dentro: aprobaciones, pagos y cierres requieren una segunda persona.",
+        "searchPlaceholder": "Buscar por correo…",
+        "member": "Miembro",
+        "role": "Rol",
+        "granted": "Capacidades concedidas",
+        "grant": "Conceder",
+        "grantAction": "Conceder",
+        "pick": "Elige una capacidad",
+        "cancel": "Cancelar",
+        "loading": "Cargando miembros…",
+        "empty": "No se encontraron miembros",
+        "revokeHint": "Clic para revocar",
+        "explicitOnly": "solo explícita (datos personales)",
+        "noManage": "Puedes ver las capacidades pero no cambiarlas: se necesita erp.admin o el rol de administrador.",
+        "mine": "Tus capacidades efectivas"
+      }
     }
   }
 }

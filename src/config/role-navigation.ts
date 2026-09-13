@@ -1,7 +1,7 @@
 // Role-specific navigation configurations
 import { UserRole } from "@/hooks/useRole";
 import { ADMIN_SECTIONS } from "@/config/admin-navigation";
-import { BACKOFFICE_SECTIONS } from "@/config/backoffice-navigation";
+import { BACKOFFICE_SECTIONS, canUseBackOfficeSection } from "@/config/backoffice-navigation";
 import {
   LayoutDashboard, Users, Calendar, Activity, FileText,
   Heart, Wallet, Share2, Database, Settings, Shield,
@@ -98,7 +98,7 @@ export const adminNavigation: NavigationItem[] = ADMIN_SECTIONS.map((section) =>
 // @/config/backoffice-navigation (the single source of truth for /backoffice),
 // exactly as adminNavigation is derived from ADMIN_SECTIONS. The "← Admin" item
 // carries adminOnly and is filtered in AppLayout for users without the admin role.
-export const backOfficeNavigation: (NavigationItem & { adminOnly?: boolean })[] = BACKOFFICE_SECTIONS.map((section) => {
+export const backOfficeNavigation: (NavigationItem & { adminOnly?: boolean; sectionBasePath?: string })[] = BACKOFFICE_SECTIONS.map((section) => {
   const defaultTab = section.tabs.find((t) => t.key === section.defaultTab) ?? section.tabs[0];
   return {
     title: section.label,
@@ -106,6 +106,7 @@ export const backOfficeNavigation: (NavigationItem & { adminOnly?: boolean })[] 
     icon: section.icon,
     i18nKey: `sidebar.backoffice.${section.key}`,
     adminOnly: section.adminOnly,
+    sectionBasePath: section.basePath,
     iconClassName: section.adminOnly ? "rtl:-scale-x-100" : undefined,
   };
 });
@@ -115,8 +116,13 @@ export const backOfficeNavigation: (NavigationItem & { adminOnly?: boolean })[] 
  * link only makes sense for someone who can actually enter /admin; everyone else
  * (a pure `backoffice` grant) gets the 12 department sections only.
  */
-export function getVisibleBackOfficeNavigation(canEnterAdmin: boolean): NavigationItem[] {
-  return backOfficeNavigation.filter((item) => !item.adminOnly || canEnterAdmin);
+export function getVisibleBackOfficeNavigation(canEnterAdmin: boolean, capabilities?: readonly string[] | null): NavigationItem[] {
+  return backOfficeNavigation.filter((item) => {
+    if (item.adminOnly && !canEnterAdmin) return false;
+    // VTID-03834: hide sections the caller holds no capability for (gateway still enforces)
+    const section = BACKOFFICE_SECTIONS.find((s) => s.basePath === item.sectionBasePath);
+    return section ? canUseBackOfficeSection(section, capabilities) : true;
+  });
 }
 
 // Function to get navigation based on user role

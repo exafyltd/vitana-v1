@@ -1418,7 +1418,13 @@
       "body": "Samo nastavi.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "capabilityGranted": "Ovlašćenje dodeljeno",
+      "capabilityRevoked": "Ovlašćenje opozvano",
+      "grantFailed": "Ovlašćenje nije moglo biti dodeljeno",
+      "revokeFailed": "Ovlašćenje nije moglo biti opozvano"
+    }
   },
   "_pending_review": {}
 }

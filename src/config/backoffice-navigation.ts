@@ -60,6 +60,10 @@ export interface BackOfficeSection {
   // "← Admin" is a link out of BackOffice, not a section: no tabs, shown only
   // when the user also holds the admin role (hasPermission('admin')).
   adminOnly?: boolean;
+  // VTID-03834: ERP capabilities (any-of) that make this section usable. Absent =
+  // visible to everyone who can enter /backoffice (Overview, Approvals). The
+  // gateway enforces on every read/command; this only hides what cannot be used.
+  capabilities?: readonly string[];
 }
 
 export const BACKOFFICE_HOME = "/backoffice/dashboard";
@@ -96,6 +100,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/sales",
     defaultTab: "leads",
     wave: 1,
+    capabilities: ["crm.view", "sales.view"],
     tabs: [
       { key: "leads", label: "Leads", path: "/backoffice/sales/leads" },
       { key: "contacts", label: "Contacts & Companies", path: "/backoffice/sales/contacts" },
@@ -115,6 +120,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/marketing",
     defaultTab: "campaigns",
     wave: 2,
+    capabilities: ["marketing.view"],
     tabs: [
       { key: "campaigns", label: "Campaigns", path: "/backoffice/marketing/campaigns" },
       { key: "outreach", label: "Outreach", path: "/backoffice/marketing/outreach" },
@@ -129,6 +135,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/accounting",
     defaultTab: "journals",
     wave: 1,
+    capabilities: ["accounting.view"],
     tabs: [
       { key: "journals", label: "Journals", path: "/backoffice/accounting/journals" },
       { key: "chart-of-accounts", label: "Chart of Accounts", path: "/backoffice/accounting/chart-of-accounts" },
@@ -146,6 +153,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/finance",
     defaultTab: "payments",
     wave: 1,
+    capabilities: ["finance.view"],
     tabs: [
       { key: "payments", label: "Payments", path: "/backoffice/finance/payments" },
       { key: "bank-reconciliation", label: "Bank Reconciliation", path: "/backoffice/finance/bank-reconciliation" },
@@ -161,6 +169,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/hr",
     defaultTab: "employees",
     wave: 2,
+    capabilities: ["hr.view", "payroll.view"],
     tabs: [
       { key: "employees", label: "Employees & Documents", path: "/backoffice/hr/employees" },
       { key: "leave", label: "Leave", path: "/backoffice/hr/leave" },
@@ -176,6 +185,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/operations",
     defaultTab: "suppliers",
     wave: 2,
+    capabilities: ["ops.view"],
     tabs: [
       { key: "suppliers", label: "Suppliers", path: "/backoffice/operations/suppliers" },
       { key: "purchase-orders", label: "Purchase Orders", path: "/backoffice/operations/purchase-orders" },
@@ -193,6 +203,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/legal",
     defaultTab: "contracts",
     wave: 2,
+    capabilities: ["legal.view"],
     tabs: [
       { key: "contracts", label: "Contracts", path: "/backoffice/legal/contracts" },
       { key: "obligations", label: "Obligations", path: "/backoffice/legal/obligations" },
@@ -207,6 +218,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/reports",
     defaultTab: "pnl",
     wave: 1,
+    capabilities: ["reports.view"],
     tabs: [
       { key: "pnl", label: "P&L", path: "/backoffice/reports/pnl" },
       { key: "balance-sheet", label: "Balance Sheet", path: "/backoffice/reports/balance-sheet", wave: 2 },
@@ -237,6 +249,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/audit",
     defaultTab: "receipts",
     wave: 1,
+    capabilities: ["audit.view"],
     tabs: [
       { key: "receipts", label: "Command Receipts", path: "/backoffice/audit/receipts" },
       { key: "erp-log", label: "ERP Audit Log", path: "/backoffice/audit/erp-log" },
@@ -250,6 +263,7 @@ export const BACKOFFICE_SECTIONS: BackOfficeSection[] = [
     basePath: "/backoffice/settings",
     defaultTab: "company",
     wave: 1,
+    capabilities: ["erp.admin", "accounting.configure"],
     tabs: [
       { key: "company", label: "Company & Legal Entities", path: "/backoffice/settings/company" },
       { key: "access", label: "Access", path: "/backoffice/settings/access" },
@@ -281,6 +295,17 @@ export function getBackOfficeTabByPath(pathname: string): BackOfficeTab | undefi
   const section = getBackOfficeSectionByPath(pathname);
   if (!section) return undefined;
   return section.tabs.find((tab) => pathname === tab.path || pathname.startsWith(tab.path + "/"));
+}
+
+/**
+ * VTID-03834: can a user with these effective capabilities use the section?
+ * `null` capabilities = not loaded yet / unknown → do not hide anything (the
+ * gateway still enforces); Exafy super-admins get the whole catalog from /me.
+ */
+export function canUseBackOfficeSection(section: BackOfficeSection, capabilities: readonly string[] | null | undefined): boolean {
+  if (!section.capabilities || section.capabilities.length === 0) return true;
+  if (capabilities == null) return true;
+  return section.capabilities.some((c) => capabilities.includes(c));
 }
 
 /** Effective wave of a tab: its own wave when set, else its section's. */

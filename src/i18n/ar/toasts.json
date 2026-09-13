@@ -1418,7 +1418,13 @@
       "body": "فقط استمر.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "capabilityGranted": "تم منح الصلاحية",
+      "capabilityRevoked": "تم إلغاء الصلاحية",
+      "grantFailed": "تعذر منح الصلاحية",
+      "revokeFailed": "تعذر إلغاء الصلاحية"
+    }
   },
   "_pending_review": {}
 }

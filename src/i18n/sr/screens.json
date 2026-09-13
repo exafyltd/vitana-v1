@@ -10327,7 +10327,26 @@
       "comingWave3": "Stiže u talasu 3",
       "placeholderBody": "Ova stranica je privremena. Bočna traka, profil, promena uloge i ORB ostaju isti u svakoj ulozi – samo sadržaj tek dolazi.",
       "noSectionMatches": "Nijedan BackOffice odeljak ne odgovara",
-      "sidebarIsCanonical": "Bočna traka je zvanična lista odeljaka. Izaberi jedan."
+      "sidebarIsCanonical": "Bočna traka je zvanična lista odeljaka. Izaberi jedan.",
+      "noAccess": "Nemaš pristup ovom odeljku. Administrator tenanta može ti ga dodeliti u Podešavanja › Pristup.",
+      "access": {
+        "title": "Pristup",
+        "description": "ERP ovlašćenja po članu. Uloga otvara vrata; ovlašćenje kaže šta neko sme da radi unutra – odobrenja, plaćanja i zatvaranja perioda traže drugu osobu.",
+        "searchPlaceholder": "Pretraži po e-pošti…",
+        "member": "Član",
+        "role": "Uloga",
+        "granted": "Dodeljena ovlašćenja",
+        "grant": "Dodeli",
+        "grantAction": "Dodeli",
+        "pick": "Izaberi ovlašćenje",
+        "cancel": "Otkaži",
+        "loading": "Učitavanje članova…",
+        "empty": "Nema pronađenih članova",
+        "revokeHint": "Klikni za opoziv",
+        "explicitOnly": "samo eksplicitno (lični podaci)",
+        "noManage": "Možeš da vidiš ovlašćenja, ali ne i da ih menjaš – za to treba erp.admin ili uloga administratora.",
+        "mine": "Tvoja važeća ovlašćenja"
+      }
     }
   }
 }

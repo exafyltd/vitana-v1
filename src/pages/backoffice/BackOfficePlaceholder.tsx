@@ -13,17 +13,20 @@ import AppLayout from "@/components/AppLayout";
 import BackOfficeTabs from "@/components/backoffice/BackOfficeTabs";
 import {
   BACKOFFICE_HOME,
+  canUseBackOfficeSection,
   getBackOfficeSectionByPath,
   getBackOfficeTabByPath,
   getBackOfficeTabWave,
 } from "@/config/backoffice-navigation";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { t } from "@/lib/i18n-toast";
 
 export default function BackOfficePlaceholder() {
   const location = useLocation();
   const pathname = location.pathname;
   const { translate } = useTranslation();
+  const erpAccess = useMyErpAccess();
 
   const section = getBackOfficeSectionByPath(pathname);
   const tab = getBackOfficeTabByPath(pathname);
@@ -58,6 +61,22 @@ export default function BackOfficePlaceholder() {
 
   const wave = getBackOfficeTabWave(section, tab);
   const sectionLabel = translate(`sidebar.backoffice.${section.key}`, section.label);
+  // VTID-03834: capability gate (mirrors the sidebar filter; the gateway enforces on data)
+  const allowed = erpAccess.isLoading || canUseBackOfficeSection(section, erpAccess.data?.capabilities ?? null);
+  if (!allowed) {
+    return (
+      <AppLayout>
+        <BackOfficeTabs sectionKey={section.key} />
+        <div className="px-6 py-10">
+          <div className="max-w-3xl mx-auto rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
+            <h1 className="text-xl font-semibold mb-2">{sectionLabel}</h1>
+            <p className="text-sm text-muted-foreground">{t("screens.backoffice.noAccess")}</p>
+            <p className="text-xs text-muted-foreground mt-2" dir="ltr">{(section.capabilities ?? []).join(" · ")}</p>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
   const effectiveTab = tab ?? section.tabs[0];
   const tabLabel = effectiveTab
     ? translate(`backoffice.${section.key}.tabs.${effectiveTab.key}`, effectiveTab.label)
