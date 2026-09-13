@@ -10841,6 +10841,63 @@
           "emptyHint": "Credit notes only exist against a posted invoice.",
           "against": "Against invoice"
         }
+      },
+      "finance": {
+        "payments": {
+          "title": "Payments",
+          "description": "Money in and out of the ERP – what is entered, posted, and already allocated to invoices.",
+          "receivedYtd": "Received (year)",
+          "receivedYtdHint": "Posted receipts since {from}",
+          "paidYtd": "Paid (year)",
+          "paidYtdHint": "Posted payments in the same window",
+          "unallocated": "Unallocated",
+          "unallocatedHint": "Posted but not yet allocated to an invoice",
+          "searchPlaceholder": "Search by party, reference or status …",
+          "type": "Type",
+          "receive": "Receipt",
+          "pay": "Payment",
+          "party": "Party",
+          "amount": "Amount",
+          "unallocatedCol": "Unallocated",
+          "empty": "No payments yet",
+          "allocations": "Allocations",
+          "bankReference": "Bank reference",
+          "referenceDate": "Reference date",
+          "fromAccount": "From account",
+          "toAccount": "To account",
+          "currency": "Currency · rate"
+        },
+        "fx": {
+          "currencies": "Currencies",
+          "currenciesHint": "Currencies marked active are enabled in the ERP.",
+          "noCurrencies": "No currencies",
+          "rates": "Exchange rates",
+          "noRates": "No exchange rates recorded yet",
+          "pair": "Pair",
+          "rate": "Rate",
+          "effective": "Effective",
+          "source": "Source"
+        },
+        "reconciliation": {
+          "title": "Bank Reconciliation",
+          "description": "What a reconciler needs to see before matching: posted but unallocated payments, drafts that never reached the ledger, and what is settled.",
+          "readOnlyNote": "Read-only in this slice – matching itself (finance.reconcile, a Commit) lands with a later one.",
+          "unmatched": "Unmatched",
+          "unmatchedHint": "Net {amount}",
+          "drafts": "Drafts",
+          "draftsHint": "Net {amount} – not in the bank ledger yet",
+          "settled": "Settled",
+          "settledHint": "Posted and fully allocated",
+          "unmatchedTitle": "Posted but not allocated to any invoice",
+          "nothingUnmatched": "Everything is allocated.",
+          "unmatchedExplain": "These amounts sit in the bank ledger with no invoice settled against them – they are what reconciliation has to match.",
+          "draftsTitle": "Drafts – not posted yet",
+          "noDrafts": "No drafts.",
+          "draftsExplain": "Entered but never posted: no bank ledger entry, no effect on outstanding balances.",
+          "settledTitle": "Settled",
+          "noSettled": "Nothing settled yet.",
+          "settledExplain": "Posted and fully allocated – nothing left to match here."
+        }
       }
     }
   },

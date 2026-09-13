@@ -10735,6 +10735,63 @@
           "emptyHint": "Knjižna odobrenja postoje samo prema proknjiženoj fakturi.",
           "against": "Prema fakturi"
         }
+      },
+      "finance": {
+        "payments": {
+          "title": "Plaćanja",
+          "description": "Prilivi i odlivi u ERP-u – šta je uneto, proknjiženo i već raspoređeno na fakture.",
+          "receivedYtd": "Primljeno (godina)",
+          "receivedYtdHint": "Proknjižene uplate od {from}",
+          "paidYtd": "Plaćeno (godina)",
+          "paidYtdHint": "Proknjižene isplate u istom periodu",
+          "unallocated": "Neraspoređeno",
+          "unallocatedHint": "Proknjiženo, ali još nije raspoređeno na fakturu",
+          "searchPlaceholder": "Pretraži po partneru, referenci ili statusu …",
+          "type": "Tip",
+          "receive": "Uplata",
+          "pay": "Isplata",
+          "party": "Partner",
+          "amount": "Iznos",
+          "unallocatedCol": "Neraspoređeno",
+          "empty": "Još nema plaćanja",
+          "allocations": "Raspoređivanja",
+          "bankReference": "Referenca banke",
+          "referenceDate": "Datum reference",
+          "fromAccount": "Sa računa",
+          "toAccount": "Na račun",
+          "currency": "Valuta · kurs"
+        },
+        "fx": {
+          "currencies": "Valute",
+          "currenciesHint": "Valute označene kao aktivne su omogućene u ERP-u.",
+          "noCurrencies": "Nema valuta",
+          "rates": "Kursevi",
+          "noRates": "Još nema unetih kurseva",
+          "pair": "Par",
+          "rate": "Kurs",
+          "effective": "Važi od",
+          "source": "Izvor"
+        },
+        "reconciliation": {
+          "title": "Usaglašavanje banke",
+          "description": "Šta mora da se vidi pre usaglašavanja: proknjižena, a neraspoređena plaćanja, nacrti koji nikad nisu stigli u knjigu i ono što je već zatvoreno.",
+          "readOnlyNote": "Samo čitanje u ovoj fazi – samo usaglašavanje (finance.reconcile, knjiženje) stiže kasnije.",
+          "unmatched": "Neusaglašeno",
+          "unmatchedHint": "Neto {amount}",
+          "drafts": "Nacrti",
+          "draftsHint": "Neto {amount} – još nije u knjizi banke",
+          "settled": "Zatvoreno",
+          "settledHint": "Proknjiženo i u potpunosti raspoređeno",
+          "unmatchedTitle": "Proknjiženo, ali nije raspoređeno ni na jednu fakturu",
+          "nothingUnmatched": "Sve je raspoređeno.",
+          "unmatchedExplain": "Ovi iznosi stoje u knjizi banke, a nijedna faktura nije njima izmirena – to je ono što usaglašavanje treba da upari.",
+          "draftsTitle": "Nacrti – još nije proknjiženo",
+          "noDrafts": "Nema nacrta.",
+          "draftsExplain": "Uneto, ali nikad proknjiženo: nema stavke u knjizi banke, nema efekta na otvorena potraživanja.",
+          "settledTitle": "Zatvoreno",
+          "noSettled": "Još ništa nije zatvoreno.",
+          "settledExplain": "Proknjiženo i u potpunosti raspoređeno – ovde nema više šta da se usaglašava."
+        }
       }
     }
   }

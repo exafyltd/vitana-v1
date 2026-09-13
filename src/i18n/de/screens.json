@@ -10729,6 +10729,63 @@
           "emptyHint": "Gutschriften entstehen nur gegen eine gebuchte Rechnung.",
           "against": "Gegen Rechnung"
         }
+      },
+      "finance": {
+        "payments": {
+          "title": "Zahlungen",
+          "description": "Ein- und Ausgänge im ERP – was angelegt, gebucht und schon Rechnungen zugeordnet ist.",
+          "receivedYtd": "Eingegangen (Jahr)",
+          "receivedYtdHint": "Gebuchte Eingänge seit {from}",
+          "paidYtd": "Bezahlt (Jahr)",
+          "paidYtdHint": "Gebuchte Ausgänge im gleichen Zeitraum",
+          "unallocated": "Nicht zugeordnet",
+          "unallocatedHint": "Gebucht, aber noch keiner Rechnung zugeordnet",
+          "searchPlaceholder": "Nach Partner, Referenz oder Status suchen …",
+          "type": "Art",
+          "receive": "Eingang",
+          "pay": "Ausgang",
+          "party": "Partner",
+          "amount": "Betrag",
+          "unallocatedCol": "Nicht zugeordnet",
+          "empty": "Noch keine Zahlungen",
+          "allocations": "Zuordnungen",
+          "bankReference": "Bankreferenz",
+          "referenceDate": "Referenzdatum",
+          "fromAccount": "Von Konto",
+          "toAccount": "Auf Konto",
+          "currency": "Währung · Kurs"
+        },
+        "fx": {
+          "currencies": "Währungen",
+          "currenciesHint": "Aktiv markierte Währungen sind im ERP freigeschaltet.",
+          "noCurrencies": "Keine Währungen",
+          "rates": "Wechselkurse",
+          "noRates": "Noch keine Wechselkurse hinterlegt",
+          "pair": "Paar",
+          "rate": "Kurs",
+          "effective": "Gültig ab",
+          "source": "Quelle"
+        },
+        "reconciliation": {
+          "title": "Bankabgleich",
+          "description": "Was vor dem Abgleich zu sehen sein muss: gebuchte, aber nicht zugeordnete Zahlungen, nie gebuchte Entwürfe und was schon abgeschlossen ist.",
+          "readOnlyNote": "Nur lesen in dieser Ausbaustufe – das Abgleichen selbst (finance.reconcile, Buchung) folgt mit einer späteren.",
+          "unmatched": "Nicht zugeordnet",
+          "unmatchedHint": "Netto {amount}",
+          "drafts": "Entwürfe",
+          "draftsHint": "Netto {amount} – noch nicht im Bankbuch",
+          "settled": "Abgeschlossen",
+          "settledHint": "Gebucht und vollständig zugeordnet",
+          "unmatchedTitle": "Gebucht, aber keiner Rechnung zugeordnet",
+          "nothingUnmatched": "Alles zugeordnet.",
+          "unmatchedExplain": "Diese Beträge stehen im Bankbuch, aber keine Rechnung ist damit beglichen – sie sind das, was der Abgleich zuordnen muss.",
+          "draftsTitle": "Entwürfe – noch nicht gebucht",
+          "noDrafts": "Keine Entwürfe.",
+          "draftsExplain": "Angelegt, aber nie gebucht: kein Bankbuch-Eintrag, kein Effekt auf offene Posten.",
+          "settledTitle": "Abgeschlossen",
+          "noSettled": "Noch nichts abgeschlossen.",
+          "settledExplain": "Gebucht und vollständig zugeordnet – hier gibt es nichts mehr abzugleichen."
+        }
       }
     }
   }
