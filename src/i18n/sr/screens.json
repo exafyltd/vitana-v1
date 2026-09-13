@@ -10984,7 +10984,10 @@
           "invalidOption": "Nevažeći izbor",
           "invalidNumber": "Unesi važeći broj veći od 0",
           "lineQtyTooHigh": "Vraćena količina ne može biti veća od fakturisane",
-          "noLines": "Unesi količinu bar na jednoj stavci"
+          "noLines": "Unesi količinu bar na jednoj stavci",
+          "tooFewLines": "Najmanje dve stavke sa kontom i iznosom",
+          "unbalanced": "Duguje i potražuje moraju biti jednaki",
+          "lineIncomplete": "Svaka stavka treba konto i dugovni ili potražni iznos"
         },
         "fields": {
           "lead_name": "Naziv lida",
@@ -11022,7 +11025,13 @@
           "paid_from_account": "Sa računa",
           "paid_to_account": "Na račun",
           "reference_number": "Referenca banke",
-          "reference_date": "Datum reference"
+          "reference_date": "Datum reference",
+          "entry_type": "Tip naloga",
+          "lines": "Stavke",
+          "account_id": "Konto",
+          "debit": "Duguje",
+          "credit": "Potražuje",
+          "remark": "Napomena"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11051,7 +11060,16 @@
           "company": "Firma",
           "individual": "Fizičko lice",
           "receive": "Uplata",
-          "pay": "Isplata"
+          "pay": "Isplata",
+          "journal": "Nalog",
+          "opening": "Početno stanje",
+          "closing": "Zaključno",
+          "depreciation": "Amortizacija",
+          "write_off": "Otpis",
+          "exchange_rate_revaluation": "Kursna razlika",
+          "inter_company": "Unutar grupe",
+          "credit_note": "Knjižno odobrenje",
+          "debit_note": "Knjižno zaduženje"
         },
         "forms": {
           "lead": {
@@ -11093,12 +11111,21 @@
             "button": "Evidentiraj plaćanje",
             "title": "Evidentiraj plaćanje",
             "description": "Uplata od kupca ili isplata kupcu, kao nacrt – knjiga banke se dira tek kad se stavka proknjiži, u posebnom koraku sa potvrdom."
+          },
+          "journal": {
+            "button": "Novi nalog za knjiženje",
+            "title": "Kreiraj nalog za knjiženje",
+            "description": "Duguje i potražuje po stavci prema kontnom planu – nalog nastaje kao nacrt i knjiži se tek u posebnom koraku sa potvrdom."
           }
         },
         "noLineRows": "Nema dostupnih stavki.",
         "lookupLoading": "Učitava se …",
         "lookupIdPlaceholder": "Unesi ID",
-        "lookupRefused": "Tvoj nalog ne može da čita listu ({command}) – unesi ID direktno."
+        "lookupRefused": "Tvoj nalog ne može da čita listu ({command}) – unesi ID direktno.",
+        "addLine": "Dodaj stavku",
+        "removeLine": "Ukloni stavku",
+        "totals": "Ukupno",
+        "differenceIs": "Razlika {amount}"
       }
     }
   }

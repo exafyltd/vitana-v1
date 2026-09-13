@@ -15,7 +15,7 @@ export type DraftFieldKind = "text" | "email" | "tel" | "date" | "number" | "tex
 export interface LookupSpec { type: string; payload: Record<string, unknown>; listKey: string; valueKey: string; labelKey: string; /** secondary label, e.g. an account number */ codeKey?: string; /** keep only rows for which this predicate holds (e.g. non-group accounts) */ keep?: (row: Record<string, unknown>) => boolean }
 
 /** One column of a `lines` field. `display` columns are shown but never sent; `maxFrom` caps a number at another column's value in the same row. */
-export interface LineColumn { key: string; kind: "text" | "number"; display?: boolean; hidden?: boolean; maxFrom?: string; required?: boolean }
+export interface LineColumn { key: string; kind: "text" | "number" | "lookup"; display?: boolean; hidden?: boolean; maxFrom?: string; required?: boolean; /** sent when the cell is blank (a `number` column of a journal line defaults to 0.00) */ default?: string; /** `lookup` columns pick their value through a typed Read, like a lookup field */ lookup?: LookupSpec }
 
 export interface DraftField {
   key: string;
@@ -31,9 +31,14 @@ export interface DraftField {
   min?: number;
   /** `lookup` only */
   lookup?: LookupSpec;
+  /** `lines` only — the user may add and remove rows (else rows come from `initial`); the card starts with `minRows` blank rows */
+  canAddRows?: boolean;
+  minRows?: number;
+  /** `lines` only — the two number columns whose totals must agree (a journal entry) */
+  balance?: { debit: string; credit: string };
 }
 
-export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote" | "payment";
+export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote" | "payment" | "journal";
 
 export interface DraftFormSpec {
   id: DraftFormId;
@@ -66,6 +71,8 @@ export const PARTY_TYPES = ["customer"] as const;
 const nonGroup = (r: Record<string, unknown>) => !(r.is_group === 1 || r.is_group === true) && !(r.disabled === 1 || r.disabled === true);
 export const CUSTOMER_LOOKUP: LookupSpec = { type: "sales.customer.list", payload: { limit: 200 }, listKey: "customers", valueKey: "id", labelKey: "name" };
 export const ACCOUNT_LOOKUP: LookupSpec = { type: "accounting.coa.list", payload: { limit: 200 }, listKey: "accounts", valueKey: "id", labelKey: "name", codeKey: "account_number", keep: nonGroup };
+// Mirrors VALID_ENTRY_TYPES in erpclaw/scripts/erpclaw-journals/db_query.py (v4.15.0).
+export const JOURNAL_ENTRY_TYPES = ["journal", "opening", "closing", "depreciation", "write_off", "exchange_rate_revaluation", "inter_company", "credit_note", "debit_note"] as const;
 /** ERPClaw accepts a credit note only against an invoice in one of these states (create_credit_note). */
 export const CREDIT_NOTE_SOURCE_STATUSES = ["submitted", "overdue", "partially_paid", "paid"] as const;
 
@@ -163,6 +170,20 @@ export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
       { key: "reference_date", kind: "date" },
     ],
   },
+  journal: {
+    id: "journal", type: "accounting.journal.create", action: "add-journal-entry", capability: "accounting.post",
+    fields: [
+      { key: "posting_date", kind: "date", required: true },
+      { key: "entry_type", kind: "select", options: JOURNAL_ENTRY_TYPES, default: "journal" },
+      { key: "remark", kind: "text" },
+      // ERPClaw validates the same rule server-side: total debit must equal total credit (add_journal_entry → _validate_lines).
+      { key: "lines", kind: "lines", required: true, canAddRows: true, minRows: 2, balance: { debit: "debit", credit: "credit" }, columns: [
+        { key: "account_id", kind: "lookup", lookup: ACCOUNT_LOOKUP, required: true },
+        { key: "debit", kind: "number", default: "0.00" },
+        { key: "credit", kind: "number", default: "0.00" },
+      ] },
+    ],
+  },
 };
 export type LineRow = Record<string, string>;
 
@@ -178,12 +199,13 @@ export function creditNoteLinesFromInvoice(items: Array<{ item_id: string; item_
 
 const numOk = (v: string) => v.trim() !== "" && Number.isFinite(Number(v));
 
-/** Rows that will be sent: qty entered and > 0, display/hidden columns stripped of what ERPClaw does not accept. */
+/** Rows that will be sent: touched rows whose required cells are all present (and required numbers > 0), display columns dropped, blank numbers defaulted. */
 export function linesPayload(f: DraftField, v: string | undefined): Array<Record<string, string>> {
   const cols = f.columns ?? [];
   return parseLines(v)
-    .filter((r) => cols.every((c) => c.kind !== "number" || !c.required || (numOk(r[c.key] ?? "") && Number(r[c.key]) > 0)))
-    .map((r) => Object.fromEntries(cols.filter((c) => !c.display).map((c) => [c.key, (r[c.key] ?? "").trim()])));
+    .filter((r) => isFilledLine(f, r))
+    .filter((r) => cols.every((c) => c.display || !c.required || ((r[c.key] ?? "").trim() !== "" && (c.kind !== "number" || Number(r[c.key]) > 0))))
+    .map((r) => Object.fromEntries(cols.filter((c) => !c.display).map((c) => [c.key, (r[c.key] ?? "").trim() || c.default || ""])));
 }
 
 export type DraftValues = Record<string, string>;
@@ -193,6 +215,7 @@ export function initialDraftValues(spec: DraftFormSpec, today: Date = new Date()
   for (const f of spec.fields) {
     if (f.default !== undefined) v[f.key] = f.default;
     else if (f.kind === "date" && f.required) v[f.key] = isoDay(today);
+    else if (f.kind === "lines" && f.canAddRows) v[f.key] = JSON.stringify(Array.from({ length: f.minRows ?? 1 }, () => emptyLine(f)));
   }
   return v;
 }
@@ -205,7 +228,26 @@ function isoDay(d: Date): string {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-export type DraftIssue = "required" | "invalidEmail" | "invalidDate" | "invalidOption" | "invalidNumber" | "lineQtyTooHigh" | "noLines";
+export type DraftIssue = "required" | "invalidEmail" | "invalidDate" | "invalidOption" | "invalidNumber" | "lineQtyTooHigh" | "noLines" | "tooFewLines" | "unbalanced" | "lineIncomplete";
+
+export function emptyLine(f: DraftField): LineRow {
+  return Object.fromEntries((f.columns ?? []).map((c) => [c.key, ""]));
+}
+
+/** A row the user has touched: any user-editable column (neither display nor hidden) filled. */
+export function isFilledLine(f: DraftField, r: LineRow): boolean {
+  return (f.columns ?? []).some((c) => !c.display && !c.hidden && (r[c.key] ?? "").trim() !== "");
+}
+
+/** Debit/credit totals over the filled rows — the live footer and the review card's totals line. */
+export function linesTotals(f: DraftField, v: string | undefined): { debit: number; credit: number; balanced: boolean } {
+  const b = f.balance;
+  if (!b) return { debit: 0, credit: 0, balanced: true };
+  const rows = parseLines(v).filter((r) => isFilledLine(f, r));
+  const sum = (k: string) => rows.reduce((a, r) => a + (Number(r[k]) || 0), 0);
+  const debit = Math.round(sum(b.debit) * 100) / 100, credit = Math.round(sum(b.credit) * 100) / 100;
+  return { debit, credit, balanced: Math.abs(debit - credit) < 0.005 };
+}
 
 /** Client-side validation is a courtesy for the form; the orchestrator and ERPClaw validate again. */
 export function validateDraft(spec: DraftFormSpec, values: DraftValues): Record<string, DraftIssue> {
@@ -219,14 +261,25 @@ export function validateDraft(spec: DraftFormSpec, values: DraftValues): Record<
     else if (f.kind === "number" && (!numOk(v) || (f.min !== undefined && Number(v) < f.min))) issues[f.key] = "invalidNumber";
     else if (f.kind === "lines") {
       const rows = parseLines(v); const cols = f.columns ?? [];
-      const entered = rows.filter((r) => cols.some((c) => c.kind === "number" && !c.display && (r[c.key] ?? "").trim() !== ""));
-      if (entered.length === 0) { if (f.required) issues[f.key] = "noLines"; continue; }
-      for (const r of entered) for (const c of cols) {
-        if (c.kind !== "number" || c.display) continue;
-        const x = (r[c.key] ?? "").trim(); if (!x) continue;
-        if (!numOk(x) || Number(x) <= 0) { issues[f.key] = "invalidNumber"; break; }
-        if (c.maxFrom && numOk(r[c.maxFrom] ?? "") && Number(x) > Number(r[c.maxFrom])) { issues[f.key] = "lineQtyTooHigh"; break; }
+      const filled = rows.filter((r) => isFilledLine(f, r));
+      if (filled.length === 0) { if (f.required) issues[f.key] = (f.minRows ?? 1) > 1 ? "tooFewLines" : "noLines"; continue; }
+      if (filled.length < (f.minRows ?? 1)) { issues[f.key] = "tooFewLines"; continue; }
+      let bad: DraftIssue | null = null;
+      for (const r of filled) {
+        for (const c of cols) {
+          if (c.display) continue;
+          const x = (r[c.key] ?? "").trim();
+          if (!x) { if (c.required) bad = "lineIncomplete"; continue; }
+          if (c.kind === "number") {
+            if (!numOk(x) || Number(x) < 0 || (c.required && Number(x) <= 0)) { bad = "invalidNumber"; break; }
+            if (c.maxFrom && numOk(r[c.maxFrom] ?? "") && Number(x) > Number(r[c.maxFrom])) { bad = "lineQtyTooHigh"; break; }
+          }
+        }
+        if (bad) break;
+        if (f.balance && (Number(r[f.balance.debit]) || 0) === 0 && (Number(r[f.balance.credit]) || 0) === 0) { bad = "lineIncomplete"; break; }
       }
+      if (bad) { issues[f.key] = bad; continue; }
+      if (f.balance && !linesTotals(f, v).balanced) issues[f.key] = "unbalanced";
     }
   }
   return issues;

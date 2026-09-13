@@ -10984,7 +10984,10 @@
           "invalidOption": "Opción no válida",
           "invalidNumber": "Introduce un número válido mayor que 0",
           "lineQtyTooHigh": "La cantidad devuelta no puede superar la facturada",
-          "noLines": "Indica una cantidad en al menos una línea"
+          "noLines": "Indica una cantidad en al menos una línea",
+          "tooFewLines": "Al menos dos líneas con cuenta e importe",
+          "unbalanced": "El debe debe ser igual al haber",
+          "lineIncomplete": "Cada línea necesita una cuenta y un importe al debe o al haber"
         },
         "fields": {
           "lead_name": "Nombre del lead",
@@ -11022,7 +11025,13 @@
           "paid_from_account": "Desde cuenta",
           "paid_to_account": "A cuenta",
           "reference_number": "Referencia bancaria",
-          "reference_date": "Fecha de referencia"
+          "reference_date": "Fecha de referencia",
+          "entry_type": "Tipo de asiento",
+          "lines": "Líneas",
+          "account_id": "Cuenta",
+          "debit": "Debe",
+          "credit": "Haber",
+          "remark": "Observación"
         },
         "choices": {
           "website": "Sitio web",
@@ -11051,7 +11060,16 @@
           "company": "Empresa",
           "individual": "Particular",
           "receive": "Cobro",
-          "pay": "Pago"
+          "pay": "Pago",
+          "journal": "Asiento",
+          "opening": "Apertura",
+          "closing": "Cierre",
+          "depreciation": "Amortización",
+          "write_off": "Baja",
+          "exchange_rate_revaluation": "Revalorización de tipo de cambio",
+          "inter_company": "Intercompañía",
+          "credit_note": "Abono",
+          "debit_note": "Nota de cargo"
         },
         "forms": {
           "lead": {
@@ -11093,12 +11111,21 @@
             "button": "Registrar pago",
             "title": "Registrar un pago",
             "description": "Un cobro de un cliente o pago a un cliente, como borrador: el libro bancario solo se toca al contabilizar el apunte, un paso aparte con confirmación."
+          },
+          "journal": {
+            "button": "Nuevo asiento",
+            "title": "Crear un asiento",
+            "description": "Debe y haber por línea contra el plan de cuentas: el asiento se crea como borrador y solo se contabiliza en un paso aparte con confirmación."
           }
         },
         "noLineRows": "No hay líneas disponibles.",
         "lookupLoading": "Cargando …",
         "lookupIdPlaceholder": "Introduce el ID",
-        "lookupRefused": "Tu cuenta no puede leer la lista ({command}): introduce el ID directamente."
+        "lookupRefused": "Tu cuenta no puede leer la lista ({command}): introduce el ID directamente.",
+        "addLine": "Añadir línea",
+        "removeLine": "Quitar línea",
+        "totals": "Totales",
+        "differenceIs": "Diferencia {amount}"
       }
     }
   }

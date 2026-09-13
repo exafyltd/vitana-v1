@@ -10984,7 +10984,10 @@
           "invalidOption": "Not a valid choice",
           "invalidNumber": "Enter a valid number greater than 0",
           "lineQtyTooHigh": "Returned quantity cannot exceed the invoiced quantity",
-          "noLines": "Enter a quantity on at least one line"
+          "noLines": "Enter a quantity on at least one line",
+          "tooFewLines": "At least two lines with an account and an amount",
+          "unbalanced": "Debits must equal credits",
+          "lineIncomplete": "Every line needs an account and a debit or credit amount"
         },
         "fields": {
           "lead_name": "Lead name",
@@ -11022,7 +11025,13 @@
           "paid_from_account": "From account",
           "paid_to_account": "To account",
           "reference_number": "Bank reference",
-          "reference_date": "Reference date"
+          "reference_date": "Reference date",
+          "entry_type": "Entry type",
+          "lines": "Lines",
+          "account_id": "Account",
+          "debit": "Debit",
+          "credit": "Credit",
+          "remark": "Remark"
         },
         "choices": {
           "website": "Website",
@@ -11051,7 +11060,16 @@
           "company": "Company",
           "individual": "Individual",
           "receive": "Receipt",
-          "pay": "Payment"
+          "pay": "Payment",
+          "journal": "Journal",
+          "opening": "Opening",
+          "closing": "Closing",
+          "depreciation": "Depreciation",
+          "write_off": "Write-off",
+          "exchange_rate_revaluation": "Exchange rate revaluation",
+          "inter_company": "Inter-company",
+          "credit_note": "Credit note",
+          "debit_note": "Debit note"
         },
         "forms": {
           "lead": {
@@ -11093,12 +11111,21 @@
             "button": "Record payment",
             "title": "Record a payment",
             "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step."
+          },
+          "journal": {
+            "button": "New journal entry",
+            "title": "Create a journal entry",
+            "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step."
           }
         },
         "noLineRows": "No lines available.",
         "lookupLoading": "Loading …",
         "lookupIdPlaceholder": "Enter the ID",
-        "lookupRefused": "Your account may not read the pick list ({command}) – enter the ID directly."
+        "lookupRefused": "Your account may not read the pick list ({command}) – enter the ID directly.",
+        "addLine": "Add line",
+        "removeLine": "Remove line",
+        "totals": "Totals",
+        "differenceIs": "Difference {amount}"
       }
     }
   }

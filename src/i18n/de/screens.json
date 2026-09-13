@@ -10978,7 +10978,10 @@
           "invalidOption": "Ungültige Auswahl",
           "invalidNumber": "Bitte eine gültige Zahl größer als 0 eingeben",
           "lineQtyTooHigh": "Rückgabemenge darf die Rechnungsmenge nicht überschreiten",
-          "noLines": "Mindestens eine Position mit Menge angeben"
+          "noLines": "Mindestens eine Position mit Menge angeben",
+          "tooFewLines": "Mindestens zwei Zeilen mit Konto und Betrag",
+          "unbalanced": "Soll und Haben müssen übereinstimmen",
+          "lineIncomplete": "Jede Zeile braucht ein Konto und einen Soll- oder Haben-Betrag"
         },
         "fields": {
           "lead_name": "Lead-Name",
@@ -11016,7 +11019,13 @@
           "paid_from_account": "Von Konto",
           "paid_to_account": "Auf Konto",
           "reference_number": "Bankreferenz",
-          "reference_date": "Referenzdatum"
+          "reference_date": "Referenzdatum",
+          "entry_type": "Buchungsart",
+          "lines": "Buchungszeilen",
+          "account_id": "Konto",
+          "debit": "Soll",
+          "credit": "Haben",
+          "remark": "Bemerkung"
         },
         "choices": {
           "website": "Website",
@@ -11045,7 +11054,16 @@
           "company": "Unternehmen",
           "individual": "Privatperson",
           "receive": "Eingang",
-          "pay": "Ausgang"
+          "pay": "Ausgang",
+          "journal": "Buchung",
+          "opening": "Eröffnung",
+          "closing": "Abschluss",
+          "depreciation": "Abschreibung",
+          "write_off": "Ausbuchung",
+          "exchange_rate_revaluation": "Kursbewertung",
+          "inter_company": "Konzernintern",
+          "credit_note": "Gutschrift",
+          "debit_note": "Belastung"
         },
         "forms": {
           "lead": {
@@ -11087,12 +11105,21 @@
             "button": "Zahlung erfassen",
             "title": "Zahlung erfassen",
             "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener, bestätigungspflichtiger Schritt."
+          },
+          "journal": {
+            "button": "Neuer Buchungssatz",
+            "title": "Buchungssatz anlegen",
+            "description": "Soll und Haben je Zeile gegen den Kontenplan – der Satz entsteht als Entwurf und wird erst in einem eigenen, bestätigungspflichtigen Schritt gebucht."
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
         "lookupLoading": "Wird geladen …",
         "lookupIdPlaceholder": "ID eingeben",
-        "lookupRefused": "Die Auswahlliste ({command}) darf dein Konto nicht lesen – trage die ID direkt ein."
+        "lookupRefused": "Die Auswahlliste ({command}) darf dein Konto nicht lesen – trage die ID direkt ein.",
+        "addLine": "Zeile hinzufügen",
+        "removeLine": "Zeile entfernen",
+        "totals": "Summen",
+        "differenceIs": "Differenz {amount}"
       }
     }
   }
