@@ -1,0 +1,18 @@
+# VTID-03858 checks — 2026-09-13T18:39:18Z
+
+## tsc --noEmit -p tsconfig.app.json (error count; base has 140 pre-existing)
+140
+new-file errors:
+0
+
+## eslint (new files)
+0 problems
+(App.tsx: 4 pre-existing no-explicit-any at lines 470/541/543/574, outside this PR's hunks — same as VTID-03857)
+
+## vitest run
+ Test Files  35 passed (35)
+      Tests  232 passed (232)
+
+## i18n:inventory
+[generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
+  pages: 327, keys: 4963, namespaces: 46, suspects: 67

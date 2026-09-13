@@ -1,0 +1,68 @@
+{
+  "as_of_date": "2026-09-13",
+  "total_debit": "54904.50",
+  "total_credit": "54904.50",
+  "accounts": [
+    {
+      "account_id": "f529f450-dbd5-4412-8bfc-3db680640de4",
+      "account_name": "Cash and Bank",
+      "account_number": "1110",
+      "root_type": "asset",
+      "opening_debit": "0.00",
+      "opening_credit": "0.00",
+      "debit": "54862.50",
+      "credit": "42.00",
+      "closing_debit": "54862.50",
+      "closing_credit": "42.00"
+    },
+    {
+      "account_id": "bb531319-4fc7-4a37-8a6d-206c0fd066fc",
+      "account_name": "Trade Receivables",
+      "account_number": "1120",
+      "root_type": "asset",
+      "opening_debit": "0.00",
+      "opening_credit": "0.00",
+      "debit": "0.00",
+      "credit": "5000.00",
+      "closing_debit": "0.00",
+      "closing_credit": "5000.00"
+    },
+    {
+      "account_id": "6898dcba-766a-4ccb-90e0-aa27e2916732",
+      "account_name": "Output VAT Payable (5%)",
+      "account_number": "2150",
+      "root_type": "liability",
+      "opening_debit": "0.00",
+      "opening_credit": "0.00",
+      "debit": "0.00",
+      "credit": "2175.00",
+      "closing_debit": "0.00",
+      "closing_credit": "2175.00"
+    },
+    {
+      "account_id": "a5ab583c-771f-4783-9fe6-dd73a5c56acf",
+      "account_name": "Sales \u2014 Standard Rated (5%)",
+      "account_number": "4100",
+      "root_type": "income",
+      "opening_debit": "0.00",
+      "opening_credit": "0.00",
+      "debit": "0.00",
+      "credit": "47675.00",
+      "closing_debit": "0.00",
+      "closing_credit": "47675.00"
+    },
+    {
+      "account_id": "04310b4d-3b19-490e-ba9e-703fd488ca16",
+      "account_name": "General & Administrative",
+      "account_number": "5300",
+      "root_type": "expense",
+      "opening_debit": "0.00",
+      "opening_credit": "0.00",
+      "debit": "42.00",
+      "credit": "12.50",
+      "closing_debit": "42.00",
+      "closing_credit": "12.50"
+    }
+  ],
+  "status": "ok"
+}

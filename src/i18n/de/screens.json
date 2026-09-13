@@ -10884,6 +10884,65 @@
           "trialBalance": "Saldenbilanz",
           "closeNote": "Der Abschluss selbst (accounting.period.close) ist eine Hochrisiko-Aktion: Vier-Augen-Prinzip, nie per Sprache allein – folgt in einer späteren Ausbaustufe."
         }
+      },
+      "reports": {
+        "common": {
+          "period": "Zeitraum",
+          "window": "{from} – {to}",
+          "preset": {
+            "ytd": "Laufendes Jahr",
+            "this_month": "Dieser Monat",
+            "last_month": "Letzter Monat",
+            "this_quarter": "Dieses Quartal",
+            "last_year": "Letztes Jahr"
+          }
+        },
+        "pnl": {
+          "title": "Gewinn & Verlust",
+          "description": "Erträge und Aufwendungen aus dem Hauptbuch für den gewählten Zeitraum – Ergebnis und Marge.",
+          "income": "Erträge",
+          "incomeHint": "{count} Konten",
+          "expenses": "Aufwendungen",
+          "expensesHint": "{count} Konten",
+          "netIncome": "Ergebnis",
+          "profit": "Gewinn im Zeitraum",
+          "loss": "Verlust im Zeitraum",
+          "margin": "Marge",
+          "marginHint": "Ergebnis im Verhältnis zu den Erträgen",
+          "empty": "Keine Daten für diesen Zeitraum",
+          "incomeTitle": "Erträge nach Konto",
+          "expensesTitle": "Aufwendungen nach Konto",
+          "noIncome": "Keine Erträge im Zeitraum.",
+          "noExpenses": "Keine Aufwendungen im Zeitraum.",
+          "amount": "Betrag",
+          "share": "Anteil"
+        },
+        "aging": {
+          "title": "Fälligkeiten (AR / AP)",
+          "description": "Offene Forderungen und Verbindlichkeiten nach Alter – was innerhalb der Frist ist und was überfällig ist.",
+          "asOf": "Stand {date}",
+          "receivables": "Offene Forderungen",
+          "receivablesHint": "{count} Kunden mit offenen Posten",
+          "payables": "Offene Verbindlichkeiten",
+          "payablesHint": "{count} Lieferanten mit offenen Posten",
+          "overdue": "Überfällig (> 30 Tage)",
+          "overdueHint": "Forderungen {ar} · Verbindlichkeiten {ap}",
+          "arTitle": "Forderungen nach Kunde",
+          "apTitle": "Verbindlichkeiten nach Lieferant",
+          "customer": "Kunde",
+          "supplier": "Lieferant",
+          "noAr": "Keine offenen Forderungen.",
+          "noAp": "Keine offenen Verbindlichkeiten.",
+          "bucket": {
+            "current": "Aktuell",
+            "days_30": "1–30 Tage",
+            "days_60": "31–60 Tage",
+            "days_90": "61–90 Tage",
+            "days_120": "91–120 Tage",
+            "days_120_plus": "> 120 Tage"
+          },
+          "negativeNote": "Negative Beträge sind Guthaben: Zahlungen oder Gutschriften, die noch keiner Rechnung zugeordnet sind."
+        }
       }
     }
   }
