@@ -11008,7 +11008,15 @@
           "item_name": "Artikel",
           "original_qty": "Rechnungsmenge",
           "qty": "Rückgabemenge",
-          "item_id": "Artikel-ID"
+          "item_id": "Artikel-ID",
+          "payment_type": "Zahlungsart",
+          "party_type": "Partnerart",
+          "party_id": "Kunde",
+          "paid_amount": "Betrag",
+          "paid_from_account": "Von Konto",
+          "paid_to_account": "Auf Konto",
+          "reference_number": "Bankreferenz",
+          "reference_date": "Referenzdatum"
         },
         "choices": {
           "website": "Website",
@@ -11035,7 +11043,9 @@
           "note": "Notiz",
           "task": "Aufgabe",
           "company": "Unternehmen",
-          "individual": "Privatperson"
+          "individual": "Privatperson",
+          "receive": "Eingang",
+          "pay": "Ausgang"
         },
         "forms": {
           "lead": {
@@ -11072,9 +11082,17 @@
             "button": "Gutschrift erstellen",
             "title": "Gutschrift zur Rechnung",
             "description": "Trage je Position die zurückgenommene Menge ein. Die Gutschrift entsteht als Entwurf; gebucht wird sie erst in einem eigenen, freigabepflichtigen Schritt."
+          },
+          "payment": {
+            "button": "Zahlung erfassen",
+            "title": "Zahlung erfassen",
+            "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener, bestätigungspflichtiger Schritt."
           }
         },
-        "noLineRows": "Keine Positionen vorhanden."
+        "noLineRows": "Keine Positionen vorhanden.",
+        "lookupLoading": "Wird geladen …",
+        "lookupIdPlaceholder": "ID eingeben",
+        "lookupRefused": "Die Auswahlliste ({command}) darf dein Konto nicht lesen – trage die ID direkt ein."
       }
     }
   }

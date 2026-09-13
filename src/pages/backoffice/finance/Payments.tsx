@@ -1,4 +1,4 @@
-/** BackOffice › Finance & Treasury › Payments (BO-025) — VTID-03856, Read tier: `finance.payment.summary`, `finance.payment.list`, `finance.payment.get`, `finance.fx.list*`. */
+/** BackOffice › Finance & Treasury › Payments (BO-025) — VTID-03856 Read tier; VTID-03871 payment Draft card: `finance.payment.summary`, `finance.payment.list`, `finance.payment.get`, `finance.fx.list*`. */
 import { useState } from "react";
 import BackOfficePage from "@/components/backoffice/BackOfficePage";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
@@ -17,6 +17,7 @@ import { formatMoney, fullTextMatch, num } from "@/lib/backoffice-sales";
 import { isEnabledCurrency, yearToDateWindow, type ErpCurrency, type ErpExchangeRate, type ErpPaymentDetail, type ErpPaymentRow, type ErpPaymentSummary } from "@/lib/backoffice-finance";
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 
 const CAPS = ["finance.view"] as const;
 
@@ -40,7 +41,7 @@ export default function BackOfficePayments() {
   const unallocatedTotal = all.filter((p) => String(p.status).toLowerCase() !== "draft" && String(p.status).toLowerCase() !== "cancelled").reduce((acc, p) => acc + num(p.unallocated_amount), 0);
 
   return (
-    <BackOfficePage sectionKey="finance" screenId="BO-025" emoji="💸" title={t("screens.backoffice.finance.payments.title")} description={t("screens.backoffice.finance.payments.description")} capabilities={CAPS}>
+    <BackOfficePage sectionKey="finance" screenId="BO-025" emoji="💸" title={t("screens.backoffice.finance.payments.title")} description={t("screens.backoffice.finance.payments.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="payment" />}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.finance.payments.receivedYtd")} value={formatMoney(s?.total_received ?? 0)} subtitle={t("screens.backoffice.finance.payments.receivedYtdHint", { from: fmtDate(window.from_date, { dateStyle: "medium" }) })} icon={ArrowDownToLine} loading={enabled && summary.isLoading} variant="success" />
         <AdminStatsCard title={t("screens.backoffice.finance.payments.paidYtd")} value={formatMoney(s?.total_paid ?? 0)} subtitle={t("screens.backoffice.finance.payments.paidYtdHint")} icon={ArrowUpFromLine} loading={enabled && summary.isLoading} />

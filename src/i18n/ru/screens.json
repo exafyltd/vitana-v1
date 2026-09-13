@@ -11014,7 +11014,15 @@
           "item_name": "Item",
           "original_qty": "Invoiced qty",
           "qty": "Returned qty",
-          "item_id": "Item ID"
+          "item_id": "Item ID",
+          "payment_type": "Payment type",
+          "party_type": "Party type",
+          "party_id": "Customer",
+          "paid_amount": "Amount",
+          "paid_from_account": "From account",
+          "paid_to_account": "To account",
+          "reference_number": "Bank reference",
+          "reference_date": "Reference date"
         },
         "choices": {
           "website": "Website",
@@ -11041,7 +11049,9 @@
           "note": "Note",
           "task": "Task",
           "company": "Company",
-          "individual": "Individual"
+          "individual": "Individual",
+          "receive": "Receipt",
+          "pay": "Payment"
         },
         "forms": {
           "lead": {
@@ -11078,9 +11088,17 @@
             "button": "Create credit note",
             "title": "Credit note against invoice",
             "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step."
+          },
+          "payment": {
+            "button": "Record payment",
+            "title": "Record a payment",
+            "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step."
           }
         },
-        "noLineRows": "No lines available."
+        "noLineRows": "No lines available.",
+        "lookupLoading": "Loading …",
+        "lookupIdPlaceholder": "Enter the ID",
+        "lookupRefused": "Your account may not read the pick list ({command}) – enter the ID directly."
       }
     }
   }
