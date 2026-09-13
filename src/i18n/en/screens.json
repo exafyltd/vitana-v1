@@ -11232,6 +11232,72 @@
         "removeLine": "Remove line",
         "totals": "Totals",
         "differenceIs": "Difference {amount}"
+      },
+      "decide": {
+        "queueHint": "Pending requests you may decide show Approve / Reject. Approving executes the command through the gateway – never from the browser.",
+        "escalations": "Escalations",
+        "payloadNote": "The gateway does not yet expose the command's submitted data to approvers – only type, action, tier and requester. This is a known gap.",
+        "note": "Decision note",
+        "approve": {
+          "button": "Approve",
+          "title": "Approve request",
+          "description": "On approval the gateway executes the High-risk command through the bridge immediately.",
+          "notePlaceholder": "Optional: why you approve",
+          "whatHappens": "Maker-checker: you are not the requester, you hold the approve capability, and you are on the web. The gateway checks all of that again.",
+          "confirm": "Approve and execute"
+        },
+        "reject": {
+          "button": "Reject",
+          "title": "Reject request",
+          "description": "The request is rejected; the command is never executed. A reason is required.",
+          "notePlaceholder": "Why are you rejecting?",
+          "whatHappens": "The rejection and your note go to the audit trail; the requester sees them in their requests.",
+          "confirm": "Reject"
+        },
+        "issues": {
+          "required": "Please give a reason for the rejection",
+          "tooLong": "At most 1000 characters"
+        },
+        "outcome": {
+          "executed": "Approved and executed",
+          "rejected": "Rejected",
+          "refused": "Not possible",
+          "executedButFailed": "Approved – execution failed",
+          "error": "Error",
+          "executedLine": "The gateway executed the command. The bridge receipt is below.",
+          "rejectedLine": "The request is rejected; nothing was executed.",
+          "executedButFailedHint": "The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."
+        },
+        "refusals": {
+          "selfApproval": "You cannot approve your own request.",
+          "webOnly": "Approvals are possible only on the web – not by voice or chat.",
+          "noCapabilityOnRequest": "The request names no approve capability.",
+          "capabilityMissing": "You do not hold this request's approve capability.",
+          "readOnlyRole": "Your role is read-only.",
+          "mfaRequired": "This approval needs a session with a second factor (MFA).",
+          "alreadyDecided": "This request has already been decided.",
+          "notFound": "Request not found."
+        }
+      },
+      "policyEdit": {
+        "button": "Edit policy",
+        "title": "Edit policy",
+        "description": "The High-risk threshold and the MFA rule for the tenant. Every change is stored as a receipt in the audit trail.",
+        "review": "Review before it is saved",
+        "reviewHint": "Only the values that change are shown. The gateway records before and after.",
+        "setting": "Setting",
+        "before": "Before",
+        "after": "After",
+        "audited": "Saved under your account as the editor – visible in the audit trail as policy.updated.",
+        "save": "Save",
+        "done": "Saved",
+        "doneLine": "The policy is updated and applies to new commands from now on.",
+        "failed": "Not saved",
+        "noChanges": "Nothing changed.",
+        "readOnlyHint": "Read-only – editing needs approvals.policy.",
+        "issues": {
+          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000"
+        }
       }
     }
   },

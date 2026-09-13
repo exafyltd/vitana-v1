@@ -1,8 +1,11 @@
 /**
  * VTID-03849 — approval rows from GET /api/v1/backoffice/approvals (Queue,
- * Approvals Inbox). Read tier: `can_decide` is shown, never acted on here —
- * approve/reject execute the High-risk command and belong to the next slice.
+ * Approvals Inbox). VTID-03873: when `onDecide` is passed, a pending row the
+ * current user may decide shows Approve / Reject (the decision itself happens
+ * in ApprovalDecisionDialog, never here).
  */
+import { Button } from "@/components/ui/button";
+import type { Verdict } from "@/lib/backoffice-approvals";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { ApprovalStatusBadge } from "@/components/backoffice/CommandBadges";
@@ -11,7 +14,7 @@ import { shortId } from "@/hooks/useBackOfficeCommands";
 import { fmtDateTime } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 
-export default function ApprovalsTable({ approvals, meUserId }: { approvals: BackOfficeApproval[]; meUserId?: string | null }) {
+export default function ApprovalsTable({ approvals, meUserId, onDecide }: { approvals: BackOfficeApproval[]; meUserId?: string | null; onDecide?: (approval: BackOfficeApproval, verdict: Verdict) => void }) {
   return (
     <div className="rounded-md border overflow-x-auto">
       <Table>
@@ -56,7 +59,14 @@ export default function ApprovalsTable({ approvals, meUserId }: { approvals: Bac
                   ) : mine ? (
                     <span className="text-muted-foreground">{t("screens.backoffice.approvals.yourOwnRequest")}</span>
                   ) : a.can_decide ? (
-                    <AdminStatusBadge variant="info">{t("screens.backoffice.approvals.youCanDecide")}</AdminStatusBadge>
+                    onDecide ? (
+                      <div className="flex flex-wrap gap-1">
+                        <Button type="button" size="sm" onClick={() => onDecide(a, "approve")} data-testid={`decide-approve-${a.id}`}>{t("screens.backoffice.decide.approve.button")}</Button>
+                        <Button type="button" size="sm" variant="outline" onClick={() => onDecide(a, "reject")} data-testid={`decide-reject-${a.id}`}>{t("screens.backoffice.decide.reject.button")}</Button>
+                      </div>
+                    ) : (
+                      <AdminStatusBadge variant="info">{t("screens.backoffice.approvals.youCanDecide")}</AdminStatusBadge>
+                    )
                   ) : (
                     <span className="text-muted-foreground">{t("screens.backoffice.approvals.youCannotDecide")}</span>
                   )}
