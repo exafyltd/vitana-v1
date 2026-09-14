@@ -79,10 +79,10 @@ const PartnerConnections = lazy(() => import("./pages/PartnerConnections"));
 const PartnerConnectionDetail = lazy(() => import("./pages/PartnerConnectionDetail"));
 // Merchant self-service Commerce Portal — commerce.vitanaland.com (VTID-03555)
 const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLogin"));
-const CommerceLanding = lazy(() => import("./pages/CommerceLanding"));
-const CommerceConnections = lazy(() => import("./pages/CommerceConnections"));
-const CommerceConnectionDetail = lazy(() => import("./pages/CommerceConnectionDetail"));
-const CommerceAgentConnect = lazy(() => import("./pages/CommerceAgentConnect"));
+// VTID-03882: one screen replaces the landing / connections / agent-connect
+// trio; the old connection-detail URL redirects into its drawer.
+const CommercePortal = lazy(() => import("./pages/CommercePortal"));
+const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnectionRedirect"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
@@ -1759,10 +1759,11 @@ const App = () => {
               /api/v1/vcaop/portal/my surface; any signed-in user manages the
               businesses THEY created (no admin role). Path-based here so PR
               previews verify it; commerce.vitanaland.com host-routes onto it. */}
-          <Route path="/commerce" element={<AuthGuard><CommerceLanding /></AuthGuard>} />
-          <Route path="/commerce/connections" element={<AuthGuard><CommerceConnections /></AuthGuard>} />
-          <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionDetail /></AuthGuard>} />
-          <Route path="/commerce/agent-connect" element={<AuthGuard><CommerceAgentConnect /></AuthGuard>} />
+          <Route path="/commerce" element={<AuthGuard><CommercePortal /></AuthGuard>} />
+          {/* VTID-03882: the three old URLs stay alive and fold into /commerce. */}
+          <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
+          <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />
+          <Route path="/commerce/agent-connect" element={<Navigate to="/commerce" replace />} />
           {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
               signed-in user consents for themselves. */}
           <Route path="/oauth/consent" element={

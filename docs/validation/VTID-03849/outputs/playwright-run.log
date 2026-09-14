@@ -1,0 +1,25 @@
+{"name":"01-dashboard-admin-en","mounted":true,"url":"/backoffice/dashboard","dir":"ltr","screenId":"BO-001","h1":"📊Dashboard","rows":5,"alerts":[],"hOverflow":false}
+{"name":"02-inbox-admin-en","mounted":true,"url":"/backoffice/inbox","dir":"ltr","screenId":"BO-002","h1":"📥Approvals Inbox","rows":1,"alerts":[],"hOverflow":false}
+{"name":"03-activity-admin-en","mounted":true,"url":"/backoffice/activity","dir":"ltr","screenId":"BO-003","h1":"🕒Activity","rows":7,"alerts":[],"hOverflow":false}
+{"name":"04-health-admin-en","mounted":true,"url":"/backoffice/health","dir":"ltr","screenId":"BO-004","h1":"🩺Health","rows":1,"alerts":[],"hOverflow":false}
+{"name":"05-approvals-queue-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+{"name":"06-my-requests-admin-en","mounted":true,"url":"/backoffice/approvals/my-requests","dir":"ltr","screenId":"BO-054","h1":"🙋My Requests","rows":3,"alerts":[],"hOverflow":false}
+{"name":"07-policies-admin-en","mounted":true,"url":"/backoffice/approvals/policies","dir":"ltr","screenId":"BO-055","h1":"📜Policies","rows":0,"alerts":[],"hOverflow":false}
+{"name":"08-audit-receipts-open-admin-en","mounted":true,"url":"/backoffice/audit/receipts","dir":"ltr","screenId":"BO-056","h1":"🧾Command Receipts","rows":7,"alerts":[],"hOverflow":false}
+{"name":"09-audit-erp-log-admin-en","mounted":true,"url":"/backoffice/audit/erp-log","dir":"ltr","screenId":"BO-057","h1":"📒ERP Audit Log","rows":8,"alerts":[],"hOverflow":false}
+{"name":"10-audit-trail-admin-en","mounted":true,"url":"/backoffice/audit/trail","dir":"ltr","screenId":"BO-058","h1":"🔏Independent Audit Trail","rows":7,"alerts":[],"hOverflow":false}
+{"name":"11-settings-company-admin-en","mounted":true,"url":"/backoffice/settings/company","dir":"ltr","screenId":"BO-059","h1":"🏢Company & Legal Entities","rows":2,"alerts":[],"hOverflow":false}
+{"name":"12-dashboard-admin-de","mounted":true,"url":"/backoffice/dashboard","dir":"ltr","screenId":"BO-001","h1":"📊Dashboard","rows":5,"alerts":[],"hOverflow":false}
+{"name":"13-settings-company-admin-ar-rtl","mounted":true,"url":"/backoffice/settings/company","dir":"ltr","screenId":"BO-059","h1":"🏢Unternehmen & Rechtsträger","rows":2,"alerts":[],"hOverflow":false}
+{"name":"14-approvals-queue-admin-ar-rtl","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Warteschlange","rows":3,"alerts":[],"hOverflow":false}
+blocked non-read requests: 162 stub read POSTs: 13
+{"name":"03-activity-admin-en","mounted":true,"url":"/backoffice/activity","dir":"ltr","screenId":"BO-003","h1":"🕒Activity","rows":7,"alerts":[],"hOverflow":false}
+{"name":"08-audit-receipts-open-admin-en","mounted":true,"url":"/backoffice/audit/receipts","dir":"ltr","screenId":"BO-056","h1":"🧾Command Receipts","rows":7,"alerts":[],"hOverflow":false}
+{"name":"13-settings-company-admin-ar-rtl","mounted":true,"url":"/backoffice/settings/company","dir":"rtl","screenId":"BO-059","h1":"🏢الشركة والكيانات القانونية","rows":2,"alerts":[],"hOverflow":false}
+{"name":"14-approvals-queue-admin-ar-rtl","mounted":true,"url":"/backoffice/approvals/queue","dir":"rtl","screenId":"BO-053","h1":"✅قائمة الانتظار","rows":3,"alerts":[],"hOverflow":false}
+blocked non-read requests: 51 stub read POSTs: 3
+{"name":"15-health-bookkeeper-no-access-en","mounted":true,"url":"/backoffice/health","dir":"ltr","screenId":"BO-004","h1":"🩺Health","rows":0,"alerts":[],"hOverflow":false}
+{"name":"16-company-bookkeeper-accounting-view-en","mounted":true,"url":"/backoffice/settings/company","dir":"ltr","screenId":"BO-059","h1":"🏢Company & Legal Entities","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 24 stub read POSTs: 3
+{"name":"17-health-bridge-down-admin-en","mounted":true,"url":"/backoffice/health","dir":"ltr","screenId":"BO-004","h1":"🩺Health","rows":0,"alerts":["The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.","The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.","The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.","The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work."],"hOverflow":false}
+blocked non-read requests: 11 stub read POSTs: 4
