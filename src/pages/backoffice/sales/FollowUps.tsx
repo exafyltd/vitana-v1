@@ -23,6 +23,8 @@ export default function BackOfficeFollowUps() {
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("open");
+  // Without crm.manage no row can offer an action, so the column itself would be dead weight (VTID-03876).
+  const canManage = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, ["crm.manage"]));
   const tasks = useErpRead<{ crm_tasks?: ErpCrmTask[] }>("crm.task.list", { limit: 100 }, { enabled });
   const activities = useErpRead<{ activities?: ErpActivity[] }>("crm.activity.list", { limit: 100 }, { enabled });
   const taskRows = (tasks.data?.result?.crm_tasks ?? []).filter((x) => (status === "all" || x.status === status) && fullTextMatch(search, x.subject, x.description, x.priority));
@@ -50,7 +52,7 @@ export default function BackOfficeFollowUps() {
                     <TableHead>{t("screens.backoffice.sales.followups.due")}</TableHead>
                     <TableHead>{t("screens.backoffice.sales.common.status")}</TableHead>
                     <TableHead>{t("screens.backoffice.sales.followups.links")}</TableHead>
-                    <TableHead className="text-end">{t("screens.backoffice.sales.common.actions")}</TableHead>
+                    {canManage && <TableHead className="text-end">{t("screens.backoffice.sales.common.actions")}</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -70,7 +72,7 @@ export default function BackOfficeFollowUps() {
                         <TableCell><DocStatusBadge status={x.status} /></TableCell>
                         <TableCell className="text-xs">{fmtNumber(x.linked_count ?? 0)}</TableCell>
                         {/* VTID-03876 — ERPClaw refuses update/complete/cancel on a done or cancelled task, so a terminal row offers nothing. */}
-                        <TableCell className="text-end">
+                        {canManage && <TableCell className="text-end">
                           {isTaskActionable(x) ? (
                             <div className="flex flex-wrap justify-end gap-1">
                               <DraftCommandButton formId="taskUpdate" variant="outline" initial={taskUpdateInitial(x)} />
@@ -78,7 +80,7 @@ export default function BackOfficeFollowUps() {
                               <DraftCommandButton formId="taskCancel" variant="outline" initial={{ crm_task_id: x.id }} />
                             </div>
                           ) : <span className="text-xs text-muted-foreground">—</span>}
-                        </TableCell>
+                        </TableCell>}
                       </TableRow>
                     );
                   })}
