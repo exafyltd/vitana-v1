@@ -1,0 +1,120 @@
+{
+  "backoffice": {
+    "back": {
+      "tabs": {
+        "admin": "← Admin"
+      }
+    },
+    "overview": {
+      "tabs": {
+        "dashboard": "Panel",
+        "inbox": "Bandeja de aprobaciones",
+        "activity": "Actividad",
+        "health": "Estado"
+      }
+    },
+    "sales": {
+      "tabs": {
+        "leads": "Leads",
+        "contacts": "Contactos y empresas",
+        "opportunities": "Oportunidades",
+        "followups": "Seguimientos",
+        "quotations": "Presupuestos",
+        "orders": "Pedidos de venta",
+        "invoices": "Facturas",
+        "credit-notes": "Notas de crédito",
+        "deliveries": "Entregas"
+      }
+    },
+    "marketing": {
+      "tabs": {
+        "campaigns": "Campañas",
+        "outreach": "Difusión",
+        "attribution": "Fuentes de leads y atribución",
+        "performance": "Rendimiento"
+      }
+    },
+    "accounting": {
+      "tabs": {
+        "journals": "Asientos",
+        "chart-of-accounts": "Plan de cuentas",
+        "periods": "Periodos y cierre",
+        "tax": "Impuestos",
+        "assets": "Activos fijos y arrendamientos",
+        "intercompany": "Intercompañía y consolidación",
+        "budgets": "Presupuestos y previsiones"
+      }
+    },
+    "finance": {
+      "tabs": {
+        "payments": "Pagos",
+        "bank-reconciliation": "Conciliación bancaria",
+        "cash": "Posición de caja y previsión",
+        "subscriptions": "Facturación recurrente",
+        "sync": "Sincronización Stripe / Shopify"
+      }
+    },
+    "hr": {
+      "tabs": {
+        "employees": "Empleados y documentos",
+        "leave": "Vacaciones",
+        "attendance": "Asistencia",
+        "expenses": "Gastos",
+        "payroll": "Nómina"
+      }
+    },
+    "operations": {
+      "tabs": {
+        "suppliers": "Proveedores",
+        "purchase-orders": "Pedidos de compra",
+        "receipts": "Recepciones",
+        "supplier-invoices": "Facturas de proveedor",
+        "items": "Artículos",
+        "warehouses": "Almacenes",
+        "stock": "Stock y movimientos"
+      }
+    },
+    "legal": {
+      "tabs": {
+        "contracts": "Contratos",
+        "obligations": "Obligaciones",
+        "compliance": "Cumplimiento",
+        "e-signature": "Firma electrónica"
+      }
+    },
+    "reports": {
+      "tabs": {
+        "pnl": "Pérdidas y ganancias",
+        "balance-sheet": "Balance",
+        "trial-balance": "Balance de comprobación",
+        "cash-flow": "Flujo de caja",
+        "aging": "Antigüedad de cobros / pagos",
+        "dimensions": "Por dimensión",
+        "board-pack": "Informe para el consejo"
+      }
+    },
+    "approvals": {
+      "tabs": {
+        "queue": "Cola",
+        "my-requests": "Mis solicitudes",
+        "policies": "Políticas"
+      }
+    },
+    "audit": {
+      "tabs": {
+        "receipts": "Recibos de comandos",
+        "erp-log": "Registro de auditoría ERP",
+        "trail": "Pista de auditoría independiente"
+      }
+    },
+    "settings": {
+      "tabs": {
+        "company": "Empresa y entidades legales",
+        "access": "Acceso",
+        "numbering": "Numeración",
+        "integrations": "Integraciones",
+        "modules": "Módulos"
+      }
+    }
+  }
+}

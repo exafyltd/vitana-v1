@@ -1,0 +1,67 @@
+# VTID-03833 checks — first pass (before the RTL arrow fix)
+== tsc
+tsc exit 0
+== vitest targeted
+11:48:56 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 /home/user/vitana-v1
+
+(node:4455) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  23:48:56
+   Duration  1.42s (transform 797ms, setup 257ms, import 944ms, tests 23ms, environment 1.16s)
+
+== vitest full
+
+ Test Files  29 passed (29)
+      Tests  191 passed (191)
+   Start at  23:48:58
+   Duration  13.63s (transform 2.52s, setup 3.83s, import 4.81s, tests 4.86s, environment 21.11s)
+
+== eslint changed files
+
+/home/user/vitana-v1/src/App.tsx
+  442:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  513:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  515:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  546:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/user/vitana-v1/src/components/AppLayout.tsx
+  559:11  error  Definition for rule 'jsx-a11y/heading-has-content' was not found  jsx-a11y/heading-has-content
+
+/home/user/vitana-v1/src/config/role-navigation.ts
+  17:9  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 6 problems (6 errors, 0 warnings)
+
+eslint exit 1
+== i18n inventory
+
+[generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
+  pages: 300, keys: 4464, namespaces: 46, suspects: 67
+== i18n tests
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  23:49:16
+   Duration  1.74s (transform 165ms, setup 244ms, import 129ms, tests 847ms, environment 1.20s)
+
+43
+
+# VTID-03833 checks — second pass (after the RTL arrow fix + helper extraction)
+== tsc
+tsc exit 0
+== vitest (nav + role + i18n)
+
+ Test Files  5 passed (5)
+      Tests  26 passed (26)
+   Start at  00:08:39
+   Duration  3.07s (transform 1.25s, setup 767ms, import 1.45s, tests 1.46s, environment 3.94s)
+
+== eslint changed files (pre-existing no-explicit-any / missing-rule hits excluded)
+eslint exit 0
+== i18n inventory
+[generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
+  pages: 300, keys: 4464, namespaces: 46, suspects: 67

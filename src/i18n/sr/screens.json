@@ -10370,6 +10370,14 @@
         "vitana:grants:write": "Predloži dodelu podataka (pristanak ostaje uz tebe)",
         "vitana:settlement:write": "Pokreni pripremljena VTNA poravnanja"
       }
+    },
+    "backoffice": {
+      "comingWave1": "Stiže u talasu 1",
+      "comingWave2": "Stiže u talasu 2",
+      "comingWave3": "Stiže u talasu 3",
+      "placeholderBody": "Ova stranica je privremena. Bočna traka, profil, promena uloge i ORB ostaju isti u svakoj ulozi – samo sadržaj tek dolazi.",
+      "noSectionMatches": "Nijedan BackOffice odeljak ne odgovara",
+      "sidebarIsCanonical": "Bočna traka je zvanična lista odeljaka. Izaberi jedan."
     }
   }
 }

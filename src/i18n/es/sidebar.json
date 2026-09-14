@@ -47,7 +47,22 @@
     "connectors": "Aplicaciones conectadas",
     "support": "Soporte",
     "myJourney": "Mi Viaje",
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "back": "← Admin",
+      "overview": "Resumen",
+      "sales": "Ventas y CRM",
+      "marketing": "Marketing",
+      "accounting": "Contabilidad",
+      "finance": "Finanzas y tesorería",
+      "hr": "RR. HH. y personas",
+      "operations": "Operaciones",
+      "legal": "Legal y cumplimiento",
+      "reports": "Informes",
+      "approvals": "Aprobaciones",
+      "audit": "Auditoría",
+      "settings": "Ajustes"
+    }
   },
   "_pending_review": {}
 }

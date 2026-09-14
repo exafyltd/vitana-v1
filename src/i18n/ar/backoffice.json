@@ -1,0 +1,120 @@
+{
+  "backoffice": {
+    "back": {
+      "tabs": {
+        "admin": "→ الإدارة"
+      }
+    },
+    "overview": {
+      "tabs": {
+        "dashboard": "لوحة التحكم",
+        "inbox": "صندوق الموافقات",
+        "activity": "النشاط",
+        "health": "الحالة"
+      }
+    },
+    "sales": {
+      "tabs": {
+        "leads": "العملاء المحتملون",
+        "contacts": "جهات الاتصال والشركات",
+        "opportunities": "الفرص",
+        "followups": "المتابعات",
+        "quotations": "عروض الأسعار",
+        "orders": "أوامر البيع",
+        "invoices": "الفواتير",
+        "credit-notes": "إشعارات الدائن",
+        "deliveries": "التسليمات"
+      }
+    },
+    "marketing": {
+      "tabs": {
+        "campaigns": "الحملات",
+        "outreach": "التواصل",
+        "attribution": "مصادر العملاء والإسناد",
+        "performance": "الأداء"
+      }
+    },
+    "accounting": {
+      "tabs": {
+        "journals": "القيود اليومية",
+        "chart-of-accounts": "دليل الحسابات",
+        "periods": "الفترات المالية والإقفال",
+        "tax": "الضرائب",
+        "assets": "الأصول الثابتة والإيجارات",
+        "intercompany": "المعاملات البينية والتوحيد",
+        "budgets": "الميزانيات والتوقعات"
+      }
+    },
+    "finance": {
+      "tabs": {
+        "payments": "المدفوعات",
+        "bank-reconciliation": "التسوية البنكية",
+        "cash": "الوضع النقدي والتوقعات",
+        "subscriptions": "الفوترة المتكررة",
+        "sync": "مزامنة Stripe / Shopify"
+      }
+    },
+    "hr": {
+      "tabs": {
+        "employees": "الموظفون والمستندات",
+        "leave": "الإجازات",
+        "attendance": "الحضور",
+        "expenses": "مطالبات المصروفات",
+        "payroll": "الرواتب"
+      }
+    },
+    "operations": {
+      "tabs": {
+        "suppliers": "الموردون",
+        "purchase-orders": "أوامر الشراء",
+        "receipts": "إيصالات الاستلام",
+        "supplier-invoices": "فواتير الموردين",
+        "items": "الأصناف",
+        "warehouses": "المستودعات",
+        "stock": "المخزون والحركات"
+      }
+    },
+    "legal": {
+      "tabs": {
+        "contracts": "العقود",
+        "obligations": "الالتزامات",
+        "compliance": "الامتثال",
+        "e-signature": "التوقيع الإلكتروني"
+      }
+    },
+    "reports": {
+      "tabs": {
+        "pnl": "الأرباح والخسائر",
+        "balance-sheet": "الميزانية العمومية",
+        "trial-balance": "ميزان المراجعة",
+        "cash-flow": "التدفق النقدي",
+        "aging": "أعمار الذمم المدينة / الدائنة",
+        "dimensions": "حسب البُعد",
+        "board-pack": "حزمة مجلس الإدارة"
+      }
+    },
+    "approvals": {
+      "tabs": {
+        "queue": "قائمة الانتظار",
+        "my-requests": "طلباتي",
+        "policies": "السياسات"
+      }
+    },
+    "audit": {
+      "tabs": {
+        "receipts": "إيصالات الأوامر",
+        "erp-log": "سجل تدقيق ERP",
+        "trail": "مسار تدقيق مستقل"
+      }
+    },
+    "settings": {
+      "tabs": {
+        "company": "الشركة والكيانات القانونية",
+        "access": "الصلاحيات",
+        "numbering": "الترقيم",
+        "integrations": "التكاملات",
+        "modules": "الوحدات"
+      }
+    }
+  }
+}

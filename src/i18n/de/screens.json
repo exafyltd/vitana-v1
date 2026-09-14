@@ -10337,6 +10337,14 @@
         "vitana:grants:write": "Daten-Freigaben vorschlagen (Zustimmung bleibt bei dir)",
         "vitana:settlement:write": "Vorbereitete VTNA-Abrechnungen anstoßen"
       }
+    },
+    "backoffice": {
+      "comingWave1": "Kommt in Welle 1",
+      "comingWave2": "Kommt in Welle 2",
+      "comingWave3": "Kommt in Welle 3",
+      "placeholderBody": "Diese Seite ist ein Platzhalter. Seitenleiste, Profil-Drawer, Rollenwechsel und ORB bleiben in jeder Rolle identisch – nur der Inhalt kommt noch.",
+      "noSectionMatches": "Kein BackOffice-Bereich passt zu",
+      "sidebarIsCanonical": "Die Seitenleiste ist die verbindliche Liste der Bereiche. Wähle einen aus."
     }
   }
 }
