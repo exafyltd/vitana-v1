@@ -14461,6 +14461,9 @@ export type Database = {
         | "reseller"
         | "staff"
         | "admin"
+        | "backoffice"
+        | "developer"
+        | "infra"
       vitana_role:
         | "community"
         | "patient"
@@ -14468,6 +14471,8 @@ export type Database = {
         | "staff"
         | "admin"
         | "developer"
+        | "infra"
+        | "backoffice"
     }
     CompositeTypes: {
       [_ in never]: never

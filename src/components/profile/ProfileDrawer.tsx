@@ -37,6 +37,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
   patient: "Patient",
   professional: "Professional",
   staff: "Staff",
+  backoffice: "Back Office",
   admin: "Admin",
   developer: "Developer",
   infra: "Infra",
@@ -72,7 +73,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   };
   
   // VTID-01230: get_my_permitted_roles() is the canonical source.
-  // Exafy super-admin safety net: ensure all 7 roles are ALWAYS visible for
+  // Exafy super-admin safety net: ensure all 8 roles are ALWAYS visible for
   // super-admins, even if the RPC hasn't rolled out yet or returns an error —
   // the role switcher must never disappear for an Exafy admin on any screen.
   const ALL_ROLES_SUPER_ADMIN: UserRole[] = [
@@ -80,6 +81,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     "patient",
     "professional",
     "staff",
+    "backoffice",
     "admin",
     "developer",
     "infra",
@@ -100,6 +102,10 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
       case "admin":
       case "staff":
         destination = "/admin";
+        break;
+      case "backoffice":
+        // VTID-03832: BackOffice home (route shell lands in the /backoffice skeleton VTID)
+        destination = "/backoffice/dashboard";
         break;
       case "professional":
         destination = "/professional/dashboard";

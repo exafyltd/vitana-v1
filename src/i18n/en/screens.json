@@ -1687,6 +1687,7 @@
       "navRole_admin": "Admin",
       "navRole_developer": "Developer",
       "navRole_infra": "Infra",
+      "navRole_backoffice": "Back Office",
       "vitanaNavigatorDesc": "Every screen, tab and mode the app can open, plus the trigger phrases that let Vitana redirect members there mid-conversation. Edit a screen's when-to-visit text, add override phrases for exact matches, and test in the live simulator before saving.",
       "loadingCoverageReport": "Loading coverage report…",
       "allCatalogRoutesMapRealSpa": "All catalog routes map to real SPA paths.",

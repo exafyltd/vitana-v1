@@ -33,6 +33,9 @@ export function useRoleRouteEnforcement() {
 
     const isOnCommunity = COMMUNITY_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
     const isOnAdmin = path === '/admin' || path.startsWith('/admin/');
+    // VTID-03832: /backoffice is enforced like /admin (community bounced to /home;
+    // backoffice/admin/developer/infra allowed via ProtectedRoute's hierarchy check)
+    const isOnBackOffice = path === '/backoffice' || path.startsWith('/backoffice/');
     const isOnStaff = path === '/staff' || path.startsWith('/staff/');
     const isOnProfessional = path === '/professional' || path.startsWith('/professional/');
     const isOnPatient = path === '/patient' || path.startsWith('/patient/');
@@ -40,6 +43,11 @@ export function useRoleRouteEnforcement() {
     // Admin/staff role but on community routes → redirect to admin
     if (isOnCommunity && (currentRole === 'admin' || currentRole === 'staff')) {
       navigate('/admin', { replace: true });
+      return;
+    }
+    // BackOffice role on community routes → redirect to BackOffice (VTID-03832)
+    if (isOnCommunity && currentRole === 'backoffice') {
+      navigate('/backoffice/dashboard', { replace: true });
       return;
     }
     // Professional role on community routes → redirect to professional dashboard
@@ -53,7 +61,7 @@ export function useRoleRouteEnforcement() {
       return;
     }
     // Community role on admin/staff/professional/patient routes → redirect to home
-    if (currentRole === 'community' && (isOnAdmin || isOnStaff || isOnProfessional || isOnPatient)) {
+    if (currentRole === 'community' && (isOnAdmin || isOnBackOffice || isOnStaff || isOnProfessional || isOnPatient)) {
       navigate('/home', { replace: true });
       return;
     }
@@ -111,6 +119,9 @@ export function useSmartRouting() {
             case "staff":
               navigate('/admin');
               break;
+            case "backoffice":
+              navigate('/backoffice/dashboard');
+              break;
             case "professional":
               navigate('/professional/dashboard');
               break;
@@ -152,6 +163,9 @@ export function useSmartRouting() {
           case "admin":
           case "staff":
             navigate("/admin");
+            break;
+          case "backoffice":
+            navigate("/backoffice/dashboard");
             break;
           case "professional":
             navigate("/professional/dashboard");
@@ -200,6 +214,8 @@ export function useRoleBasedRedirect() {
       case "admin":
       case "staff":
         return "/admin";
+      case "backoffice":
+        return "/backoffice/dashboard";
       case "professional":
         return "/professional/dashboard";
       case "patient":

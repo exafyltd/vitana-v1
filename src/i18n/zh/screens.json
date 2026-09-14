@@ -2593,7 +2593,8 @@
       "navRole_staff": "员工",
       "navRole_admin": "管理员",
       "navRole_developer": "开发者",
-      "navRole_infra": "运维"
+      "navRole_infra": "运维",
+      "navRole_backoffice": "后台"
     },
     "ai-feed": {
       "noEventsFound": "未找到事件",

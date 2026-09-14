@@ -379,6 +379,7 @@ function AppSidebar({
                     <div className="text-xs text-sidebar-foreground/50 capitalize">
                       {isExafyAdmin ? 'Exafy Admin' :
                        currentRole === 'admin' ? 'Administrator' : 
+                       currentRole === 'backoffice' ? 'Back Office' :
                        currentRole === 'staff' ? 'Staff' :
                        currentRole === 'professional' ? 'Professional' :
                        currentRole === 'patient' ? 'Patient' :
