@@ -91,3 +91,10 @@ request aborted.
   form, field or select option lacks a label in the DE source catalogue — the class of defect, not just this instance.
 - The `opportunity` payload key is deliberate, not a typo: ERPClaw names this flag `--opportunity`, not
   `--opportunity-id`, and the bridge derives the flag from the payload key.
+- The capability sweep also showed a reader looking at an empty "Actions" column header, since every button
+  self-gates. The column now renders only for someone who could act.
+- **Evidence-pack gap found while assembling this one, and fixed at the root.** The repository's `.gitignore`
+  carries a blanket `*.log`, so `outputs/playwright-run.log` and the stub logs were silently never committed —
+  in this pack and in all nine earlier BackOffice packs, each of whose acceptance documents cites a run log
+  that is not in the repository. `.gitignore` now has `!docs/validation/**/*.log`, this pack carries its logs,
+  and the earlier packs are backfilled on their own branches.

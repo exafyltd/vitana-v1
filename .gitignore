@@ -41,3 +41,8 @@ supabase/.temp/
 # Screenshot-harness scratch: the verification script is copied in here so it can resolve
 # playwright from node_modules, then deleted. It carries a test credential — never commit it.
 .*-shots.tmp.mjs
+
+# Evidence packs are the record of how a change was verified, and their run logs are part of
+# it. The `*.log` rule above was silently dropping them, so every acceptance document that
+# cited one pointed at a file that had never been committed.
+!docs/validation/**/*.log
