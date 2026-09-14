@@ -10616,7 +10616,8 @@
           "date": "Datum",
           "total": "Gesamt",
           "subtotal": "Zwischensumme",
-          "tax": "Steuer"
+          "tax": "Steuer",
+          "actions": "Aktionen"
         },
         "docs": {
           "noItems": "Keine Positionen",
@@ -10637,7 +10638,8 @@
           "toCustomer": "zum Kunden",
           "company": "Firma",
           "territory": "Gebiet",
-          "industry": "Branche"
+          "industry": "Branche",
+          "frozenHint": "Ein umgewandelter Lead ist in ERPClaw gesperrt und lässt sich nicht mehr bearbeiten."
         },
         "contacts": {
           "title": "Kontakte & Firmen",
@@ -11025,7 +11027,19 @@
           "account_id": "Konto",
           "debit": "Soll",
           "credit": "Haben",
-          "remark": "Bemerkung"
+          "remark": "Bemerkung",
+          "lead_id": "Lead-ID",
+          "crm_task_id": "Aufgaben-ID",
+          "opportunity_id": "Chancen-ID",
+          "opportunity": "Chancen-ID",
+          "stage": "Stufe",
+          "territory": "Region",
+          "status": "Status",
+          "opportunity_name": "Bezeichnung",
+          "probability": "Wahrscheinlichkeit (%)",
+          "expected_revenue": "Erwarteter Umsatz",
+          "expected_closing_date": "Voraussichtlicher Abschluss",
+          "next_follow_up_date": "Nächstes Nachfassen"
         },
         "choices": {
           "website": "Website",
@@ -11110,6 +11124,36 @@
             "button": "Neuer Buchungssatz",
             "title": "Buchungssatz anlegen",
             "description": "Soll und Haben je Zeile gegen den Kontenplan – der Satz entsteht als Entwurf und wird erst in einem eigenen Schritt mit Bestätigung gebucht."
+          },
+          "leadUpdate": {
+            "button": "Lead bearbeiten",
+            "title": "Lead bearbeiten",
+            "description": "Die Änderung geht als Entwurf an ERPClaw. Vorher siehst du genau, was gesendet wird."
+          },
+          "opportunityUpdate": {
+            "button": "Chance bearbeiten",
+            "title": "Verkaufschance bearbeiten",
+            "description": "Gewonnene und verlorene Chancen sind in ERPClaw gesperrt – dafür gibt es eigene Befehle mit Freigabe."
+          },
+          "opportunityStage": {
+            "button": "Stufe ändern",
+            "title": "Stufe im Vertriebstrichter ändern",
+            "description": "Wähle die Zielstufe aus dem Trichter deines Mandanten. Die Stufe ist eine ID, kein freies Wort."
+          },
+          "taskUpdate": {
+            "button": "Bearbeiten",
+            "title": "Aufgabe bearbeiten",
+            "description": "Betreff, Priorität, Fälligkeit und Beschreibung der offenen Aufgabe."
+          },
+          "taskComplete": {
+            "button": "Erledigt",
+            "title": "Aufgabe abschließen",
+            "description": "Die Aufgabe wird auf erledigt gesetzt. Eine Notiz ist freiwillig."
+          },
+          "taskCancel": {
+            "button": "Abbrechen",
+            "title": "Aufgabe abbrechen",
+            "description": "Die Aufgabe wird abgebrochen und bleibt sichtbar. Ein Grund ist Pflicht."
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
@@ -11119,7 +11163,13 @@
         "addLine": "Zeile hinzufügen",
         "removeLine": "Zeile entfernen",
         "totals": "Summen",
-        "differenceIs": "Differenz {amount}"
+        "differenceIs": "Differenz {amount}",
+        "keepsBlank": "Ein leeres Feld bleibt, wie es ist – ERPClaw ändert nur die Felder, die es bekommt.",
+        "acceptUpdate": "Bestätigen und speichern",
+        "whatHappensUpdate": "Stufe Entwurf: ändert einen bestehenden Datensatz – keine Buchung, kein Freigabeschritt, durch erneutes Bearbeiten umkehrbar.",
+        "updated": "Gespeichert",
+        "updatedWithRef": "Gespeichert: {ref}",
+        "doneHintUpdate": "Das ERP hat den Datensatz geändert; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat."
       },
       "decide": {
         "queueHint": "Offene Anfragen, die du entscheiden darfst, zeigen Freigeben / Ablehnen. Freigeben führt den Befehl über das Gateway aus – nie aus dem Browser heraus.",

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { ACCOUNT_LOOKUP, DRAFT_FORMS, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
+import { ACCOUNT_LOOKUP, DRAFT_FORMS, LEAD_UPDATE_STATUSES, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, isLeadEditable, isOpportunityEditable, isTaskActionable, leadUpdateInitial, opportunityUpdateInitial, taskUpdateInitial, validateDraft } from "./backoffice-draft";
 
 describe("draft forms", () => {
   it("every form maps to a Draft typed command with a single capability and at least one required field", () => {
     for (const spec of Object.values(DRAFT_FORMS)) {
-      expect(spec.type).toMatch(/^(crm|sales|accounting)\.[a-z_]+\.create$|^finance\.payment\.record$/);
+      expect(spec.type).toMatch(/^(crm|sales|accounting)\.[a-z_]+\.(create|update|set_stage|complete|cancel)$|^finance\.payment\.record$/);
       expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : spec.type.startsWith("sales.") ? "sales.draft" : spec.type.startsWith("accounting.") ? "accounting.post" : "finance.approve");
       expect(spec.fields.some((f) => f.required)).toBe(true);
       for (const f of spec.fields) if (f.kind === "select") expect(f.options && f.options.length > 0).toBe(true);
@@ -113,5 +113,80 @@ describe("draftResultSummary", () => {
     expect(draftResultSummary({ lead: { id: "l1", naming_series: "LEAD-2026-00003", lead_name: "X" }, message: "Lead 'X' created", status: "ok" })).toEqual({ message: "Lead 'X' created", reference: "LEAD-2026-00003", id: "l1" });
     expect(draftResultSummary({ crm_task: { id: "t1", subject: "s" }, links: [], message: "Task created", status: "ok" })).toEqual({ message: "Task created", reference: null, id: "t1" });
     expect(draftResultSummary(null)).toEqual({ message: null, reference: null, id: null });
+  });
+});
+
+// --- VTID-03876: the update / complete / cancel cards ---------------------------------------------
+
+describe("edit cards are offered only where ERPClaw would accept them", () => {
+  it("hides the card on a record ERPClaw has frozen", () => {
+    expect(isLeadEditable({ status: "qualified" })).toBe(true);
+    expect(isLeadEditable({ status: "Converted" })).toBe(false);
+    expect(isOpportunityEditable({ stage: "negotiation" })).toBe(true);
+    expect(isOpportunityEditable({ stage: "won" })).toBe(false);
+    expect(isOpportunityEditable({ stage: "lost" })).toBe(false);
+    expect(isTaskActionable({ status: "open" })).toBe(true);
+    expect(isTaskActionable({ status: "done" })).toBe(false);
+    expect(isTaskActionable({ status: "cancelled" })).toBe(false);
+    expect(isLeadEditable(null)).toBe(false);
+    expect(isTaskActionable(undefined)).toBe(false);
+  });
+
+  it("never offers a word ERPClaw refuses on an update", () => {
+    // Converting a lead is crm.lead.convert (Commit), which also creates the opportunity — not a word to type here.
+    expect(LEAD_UPDATE_STATUSES).not.toContain("converted");
+    expect(validateDraft(DRAFT_FORMS.leadUpdate, { lead_id: "l1", status: "converted" })).toEqual({ status: "invalidOption" });
+  });
+
+  it("keeps the stage out of the opportunity edit card — ERPClaw stores a name and validates an enum", () => {
+    // A real record carries stage "Proposal" (the pipeline stage's name) while update-opportunity accepts
+    // "proposal_sent". A select prefilled from the record would be invalid on open; moving a stage is its own card.
+    expect(DRAFT_FORMS.opportunityUpdate.fields.map((f) => f.key)).not.toContain("stage");
+    expect(opportunityUpdateInitial({ id: "o1", opportunity_name: "Acme Q4", probability: 60 }).stage).toBeUndefined();
+    expect(validateDraft(DRAFT_FORMS.opportunityUpdate, opportunityUpdateInitial({ id: "o1", opportunity_name: "Acme Q4", probability: 60, expected_revenue: "48000.00", expected_closing_date: "2026-10-31" }))).toEqual({});
+  });
+});
+
+describe("edit cards start from the record", () => {
+  it("prefills what the record has and leaves the rest blank", () => {
+    expect(leadUpdateInitial({ id: "l1", lead_name: "Draft Card Probe", company_name: "Probe Trading FZE", email: "probe@example.test", phone: null, source: "website", territory: null, industry: null, status: "new", notes: null }))
+      .toEqual({ lead_id: "l1", lead_name: "Draft Card Probe", company_name: "Probe Trading FZE", email: "probe@example.test", source: "website", status: "new" });
+    expect(opportunityUpdateInitial({ id: "o1", opportunity_name: "Acme Q4", probability: 60, expected_revenue: "48000.00", expected_closing_date: "2026-10-31", next_follow_up_date: null }))
+      .toEqual({ opportunity_id: "o1", opportunity_name: "Acme Q4", probability: "60", expected_revenue: "48000.00", expected_closing_date: "2026-10-31" });
+    expect(taskUpdateInitial({ id: "t1", subject: "Call back Spike Lead", priority: "high", due_date: "2026-09-18", description: null }))
+      .toEqual({ crm_task_id: "t1", subject: "Call back Spike Lead", priority: "high", due_date: "2026-09-18" });
+  });
+
+  it("sends only the filled fields — a blank one keeps its current value", () => {
+    expect(DRAFT_FORMS.leadUpdate.keepsBlank).toBe(true);
+    expect(buildDraftPayload(DRAFT_FORMS.leadUpdate, { lead_id: "l1", lead_name: "Draft Card Probe", phone: "  +971 50 000 0001 ", email: "", notes: "   ", status: "contacted" }))
+      .toEqual({ lead_id: "l1", lead_name: "Draft Card Probe", phone: "+971 50 000 0001", status: "contacted" });
+    // no card auto-dates an edit: initialDraftValues only fills a REQUIRED date, and an edit card has none.
+    expect(initialDraftValues(DRAFT_FORMS.taskUpdate, new Date(2026, 8, 13))).toEqual({});
+    expect(initialDraftValues(DRAFT_FORMS.opportunityUpdate, new Date(2026, 8, 13))).toEqual({});
+  });
+
+  it("cancels only with a reason, completes without one, and always carries the record id", () => {
+    expect(validateDraft(DRAFT_FORMS.taskCancel, { crm_task_id: "t1" })).toEqual({ reason: "required" });
+    expect(validateDraft(DRAFT_FORMS.taskCancel, { crm_task_id: "t1", reason: "Superseded by the new proposal" })).toEqual({});
+    expect(validateDraft(DRAFT_FORMS.taskComplete, { crm_task_id: "t1" })).toEqual({});
+    for (const id of ["leadUpdate", "opportunityUpdate", "opportunityStage", "taskUpdate", "taskComplete", "taskCancel"] as const) {
+      const first = DRAFT_FORMS[id].fields[0];
+      expect({ id, required: first.required, readOnly: first.readOnly }).toEqual({ id, required: true, readOnly: true });
+      expect(validateDraft(DRAFT_FORMS[id], {})[first.key]).toBe("required");
+    }
+  });
+
+  it("moves a stage by id, through the tenant's own pipeline stages", () => {
+    const spec = DRAFT_FORMS.opportunityStage;
+    expect(spec.action).toBe("set-opportunity-pipeline-stage");
+    // ERPClaw names this flag --opportunity, not --opportunity-id; the bridge derives the flag from the payload key.
+    expect(spec.fields.map((f) => f.key)).toEqual(["opportunity", "stage"]);
+    const stage = spec.fields[1];
+    expect(stage.kind).toBe("lookup");
+    expect(stage.lookup?.type).toBe("crm.pipeline_stage.list");
+    expect(stage.lookup?.listKey).toBe("crm_pipeline_stages");
+    expect(buildDraftPayload(spec, { opportunity: "o1", stage: "3610e60b-65f9-4f9e-9538-0a71a8494c93" }))
+      .toEqual({ opportunity: "o1", stage: "3610e60b-65f9-4f9e-9538-0a71a8494c93" });
   });
 });

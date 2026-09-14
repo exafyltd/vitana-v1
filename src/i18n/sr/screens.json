@@ -10622,7 +10622,8 @@
           "date": "Datum",
           "total": "Ukupno",
           "subtotal": "Međuzbir",
-          "tax": "Porez"
+          "tax": "Porez",
+          "actions": "Radnje"
         },
         "docs": {
           "noItems": "Nema stavki",
@@ -10643,7 +10644,8 @@
           "toCustomer": "u kupca",
           "company": "Firma",
           "territory": "Teritorija",
-          "industry": "Delatnost"
+          "industry": "Delatnost",
+          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati."
         },
         "contacts": {
           "title": "Kontakti i firme",
@@ -11031,7 +11033,19 @@
           "account_id": "Konto",
           "debit": "Duguje",
           "credit": "Potražuje",
-          "remark": "Napomena"
+          "remark": "Napomena",
+          "lead_id": "Id lida",
+          "crm_task_id": "Id zadatka",
+          "opportunity_id": "Id prilike",
+          "opportunity": "Id prilike",
+          "stage": "Faza",
+          "territory": "Teritorija",
+          "status": "Status",
+          "opportunity_name": "Naziv",
+          "probability": "Verovatnoća (%)",
+          "expected_revenue": "Očekivani prihod",
+          "expected_closing_date": "Očekivano zatvaranje",
+          "next_follow_up_date": "Sledeće praćenje"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11116,6 +11130,36 @@
             "button": "Novi nalog za knjiženje",
             "title": "Kreiraj nalog za knjiženje",
             "description": "Duguje i potražuje po stavci prema kontnom planu – nalog nastaje kao nacrt i knjiži se tek u posebnom koraku sa potvrdom."
+          },
+          "leadUpdate": {
+            "button": "Izmeni lid",
+            "title": "Izmeni lid",
+            "description": "Izmena ide u ERPClaw kao nacrt. Pre slanja vidiš tačno šta se šalje."
+          },
+          "opportunityUpdate": {
+            "button": "Izmeni priliku",
+            "title": "Izmeni priliku",
+            "description": "Dobijene i izgubljene prilike su zamrznute u ERPClaw-u — do njih se stiže posebnom komandom uz odobrenje."
+          },
+          "opportunityStage": {
+            "button": "Promeni fazu",
+            "title": "Premesti u drugu fazu toka",
+            "description": "Izaberi ciljnu fazu iz toka tvoje organizacije. Faza je id, ne slobodna reč."
+          },
+          "taskUpdate": {
+            "button": "Izmeni",
+            "title": "Izmeni zadatak",
+            "description": "Naslov, prioritet, rok i opis otvorenog zadatka."
+          },
+          "taskComplete": {
+            "button": "Završi",
+            "title": "Završi zadatak",
+            "description": "Zadatak se označava kao urađen. Beleška je opciona."
+          },
+          "taskCancel": {
+            "button": "Otkaži",
+            "title": "Otkaži zadatak",
+            "description": "Zadatak se otkazuje i ostaje vidljiv. Razlog je obavezan."
           }
         },
         "noLineRows": "Nema dostupnih stavki.",
@@ -11125,7 +11169,13 @@
         "addLine": "Dodaj stavku",
         "removeLine": "Ukloni stavku",
         "totals": "Ukupno",
-        "differenceIs": "Razlika {amount}"
+        "differenceIs": "Razlika {amount}",
+        "keepsBlank": "Prazno polje zadržava trenutnu vrednost — ERPClaw menja samo polja koja dobije.",
+        "acceptUpdate": "Potvrdi i sačuvaj",
+        "whatHappensUpdate": "Nivo nacrta: menja postojeći zapis — bez knjiženja, bez koraka odobrenja, reverzibilno ponovnim uređivanjem.",
+        "updated": "Sačuvano",
+        "updatedWithRef": "Sačuvano: {ref}",
+        "doneHintUpdate": "ERP je izmenio zapis; lista iza je ponovo učitana. Potvrda ispod je ono što je most sačuvao."
       },
       "decide": {
         "queueHint": "Otvoreni zahtevi koje smeš da odlučiš prikazuju Odobri / Odbij. Odobravanje izvršava komandu preko gateway-a – nikad iz pregledača.",
