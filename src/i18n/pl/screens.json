@@ -10271,7 +10271,15 @@
         "geminiTitle": "Połącz z Gemini",
         "geminiStep1": "Dla Gemini CLI: dodaj powyższy adres URL serwera MCP do ~/.gemini/settings.json w sekcji twoich serwerów MCP.",
         "geminiStep2": "Dla Gemini Enterprise (Business Edition): Ustawienia i pomoc → Zespół → Zarządzaj zespołem → Połączone aplikacje → „Dodaj serwer MCP”.",
-        "geminiNote": "Konsumencka aplikacja Gemini nie ma obecnie udokumentowanego sposobu na bezpośrednie dodanie własnego serwera MCP — jest to dostępne tylko dziś przez Gemini CLI i Gemini Enterprise."
+        "geminiNote": "Konsumencka aplikacja Gemini nie ma obecnie udokumentowanego sposobu na bezpośrednie dodanie własnego serwera MCP — jest to dostępne tylko dziś przez Gemini CLI i Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "Adres URL sklepu (opcjonalnie) — np. https://your-shop.com",
@@ -10294,6 +10302,48 @@
         "connecting": "Łączenie...",
         "notConfigured": "Ten typ połączenia nie jest jeszcze włączony. Spróbuj ponownie później.",
         "failed": "Nie udało się nawiązać połączenia. Sprawdź swoje dane."
+      },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentStatusPill": "Going live soon",
+      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentUrlHint": "One address. That is all your agent needs.",
+      "howItWorksTitle": "What happens next",
+      "manualIntro": "Prefer to fill it in yourself?",
+      "manualCta": "Connect a business manually",
+      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
+      "connectionsCount": "{count} connected",
+      "openWorkbench": "Open connection",
+      "closeWorkbench": "Close",
+      "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
+      "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
+        "connect": "Connect",
+        "mapping": "Mapping",
+        "tests": "Checks",
+        "live": "Live",
+        "offTrack": "Needs attention"
       }
     },
     "oauthconsent": {
@@ -10328,7 +10378,6 @@
       "placeholderBody": "This page is a placeholder. The sidebar, profile drawer, role switcher and ORB stay identical in every role – only the content is still to come.",
       "noSectionMatches": "No BackOffice section matches",
       "sidebarIsCanonical": "The sidebar is the canonical list of sections. Pick one.",
-      "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
       "access": {
         "title": "Access",
         "description": "ERP capabilities per member. The role opens the door; a capability says what someone may do inside – approvals, payments and period closes need a second person.",
@@ -10347,116 +10396,7 @@
         "noManage": "You can view capabilities but not change them – that needs erp.admin or the admin role.",
         "mine": "Your effective capabilities"
       },
-      "tiers": {
-        "read": "Read",
-        "draft": "Draft",
-        "commit": "Commit",
-        "high": "High-risk"
-      },
-      "commandStatus": {
-        "executed": "Executed",
-        "failed": "Failed",
-        "awaiting_approval": "Awaiting approval",
-        "rejected": "Rejected"
-      },
-      "approvalStatus": {
-        "pending": "Pending",
-        "approved": "Approved",
-        "rejected": "Rejected"
-      },
-      "channels": {
-        "web": "Web",
-        "chat": "Chat",
-        "voice": "Voice",
-        "system": "System"
-      },
-      "errors": {
-        "bridgeUnavailable": "The ERP bridge is not reachable.",
-        "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
-        "noCapability": "You lack a capability for this.",
-        "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
-        "erpFailed": "ERPClaw rejected the read command.",
-        "unauthorized": "Please sign in again.",
-        "noTenant": "No active tenant – pick a workspace first.",
-        "notFound": "Not found.",
-        "generic": "The data could not be loaded."
-      },
-      "common": {
-        "empty": "No entries",
-        "asOf": "as of {time}",
-        "replayed": "replayed from receipt",
-        "source": {
-          "erp": "Source: ERPClaw via the bridge",
-          "gateway": "Source: Vitana gateway"
-        },
-        "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
-        "viewAll": "View all",
-        "all": "All"
-      },
-      "receipts": {
-        "title": "Command Receipts",
-        "description": "Every command that went through the gateway – with the receipt the bridge stored for it.",
-        "searchPlaceholder": "Search by command or ID …",
-        "empty": "No commands yet",
-        "noReceipt": "No receipt",
-        "show": "Show receipt",
-        "hide": "Hide receipt"
-      },
-      "commands": {
-        "when": "When",
-        "command": "Command",
-        "tier": "Tier",
-        "status": "Status",
-        "channel": "Channel",
-        "requester": "Requester",
-        "receipt": "Receipt",
-        "reason": "Reason",
-        "you": "You"
-      },
-      "approvals": {
-        "requested": "Requested",
-        "command": "Command",
-        "requester": "Requester",
-        "approverNeeds": "Approver needs",
-        "status": "Status",
-        "decision": "Decision",
-        "you": "You",
-        "yourOwnRequest": "Your own request – you cannot approve it yourself.",
-        "youCanDecide": "You can decide",
-        "youCannotDecide": "Not yours to approve"
-      },
-      "dashboard": {
-        "title": "Dashboard",
-        "description": "What the BackOffice needs today: pending approvals, your requests, the latest commands and the state of the ERP.",
-        "pendingApprovals": "Pending approvals",
-        "pendingApprovalsHint": "Waiting for a second person",
-        "myOpenRequests": "My open requests",
-        "myOpenRequestsHint": "Requested by you, not yet decided",
-        "executed7d": "Executed (7 days)",
-        "executed7dHint": "Commands completed successfully",
-        "failed7d": "Failed (7 days)",
-        "failed7dHint": "Rejected or ended with an error",
-        "erpStatus": "ERP status",
-        "erpOk": "Ready",
-        "erpNotOk": "Unreachable",
-        "erpUnknown": "Unclear",
-        "quickAccess": "Quick access",
-        "recentActivity": "Recent activity",
-        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
-      },
-      "inbox": {
-        "title": "Approvals Inbox",
-        "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
-        "empty": "Nothing is waiting for you",
-        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
-      },
-      "activity": {
-        "title": "Activity",
-        "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
-        "searchPlaceholder": "Search by command, ID or reason …",
-        "statusFilter": "Status",
-        "empty": "No commands yet"
-      },
+      "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
       "health": {
         "title": "Health",
         "description": "State of the ERP instance behind the bridge: master data, installation, schema version and installed modules.",
@@ -10482,63 +10422,14 @@
         "installedAt": "Installed at",
         "noModules": "No modules installed"
       },
-      "queue": {
-        "title": "Queue",
-        "description": "Every approval request in the tenant – pending, approved or rejected.",
-        "searchPlaceholder": "Search by command, capability or person …",
-        "statusFilter": "Status",
-        "empty": "No approval requests"
-      },
-      "myRequests": {
-        "title": "My Requests",
-        "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
-        "awaiting": "Awaiting approval",
-        "history": "History",
-        "empty": "You have not requested any commands yet"
-      },
-      "policies": {
-        "title": "Policies",
-        "description": "The rules the gateway uses to tier commands and demand approvals.",
-        "threshold": "High-risk threshold",
-        "thresholdHint": "Any Commit at or above this amount becomes a High-risk request and needs a second person.",
-        "mfa": "MFA for approvals",
-        "mfaHint": "High-risk approvals need a session backed by a second factor.",
-        "on": "On",
-        "off": "Off",
-        "default": "Default",
-        "custom": "Custom (default: {value})",
-        "editNextSlice": "Read-only in this slice – policy edits land with the next one (every edit is itself a receipt).",
-        "rulesTitle": "Fixed rules",
-        "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
-        "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
-        "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
-        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
-      },
-      "erpLog": {
-        "title": "ERP Audit Log",
-        "description": "ERPClaw's own immutable log – every posting, every reversal, every master-data change.",
-        "empty": "No entries yet",
-        "time": "When",
-        "skill": "Module",
-        "action": "Action",
-        "entity": "Entity",
-        "user": "User",
-        "changes": "Change",
-        "system": "System"
-      },
-      "trail": {
-        "title": "Independent Audit Trail",
-        "description": "Vitana's own append-only log: every request, every decision, every policy change – independent of the ERP.",
-        "searchPlaceholder": "Search by event, command or person …",
-        "empty": "No entries yet",
-        "time": "When",
-        "event": "Event",
-        "actor": "Who",
-        "role": "Role",
-        "channel": "Channel",
-        "command": "Command",
-        "approval": "Approval",
-        "details": "Details"
+      "receipts": {
+        "title": "Command Receipts",
+        "description": "Every command that went through the gateway – with the receipt the bridge stored for it.",
+        "searchPlaceholder": "Search by command or ID …",
+        "empty": "No commands yet",
+        "noReceipt": "No receipt",
+        "show": "Show receipt",
+        "hide": "Hide receipt"
       },
       "company": {
         "title": "Company & Legal Entities",
@@ -10573,6 +10464,165 @@
         "none": "None",
         "yes": "Yes",
         "no": "No"
+      },
+      "trail": {
+        "title": "Independent Audit Trail",
+        "description": "Vitana's own append-only log: every request, every decision, every policy change – independent of the ERP.",
+        "searchPlaceholder": "Search by event, command or person …",
+        "empty": "No entries yet",
+        "time": "When",
+        "event": "Event",
+        "actor": "Who",
+        "role": "Role",
+        "channel": "Channel",
+        "command": "Command",
+        "approval": "Approval",
+        "details": "Details"
+      },
+      "inbox": {
+        "title": "Approvals Inbox",
+        "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
+        "empty": "Nothing is waiting for you",
+        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
+      },
+      "common": {
+        "empty": "No entries",
+        "asOf": "as of {time}",
+        "replayed": "replayed from receipt",
+        "source": {
+          "erp": "Source: ERPClaw via the bridge",
+          "gateway": "Source: Vitana gateway"
+        },
+        "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
+        "viewAll": "View all",
+        "all": "All"
+      },
+      "queue": {
+        "title": "Queue",
+        "description": "Every approval request in the tenant – pending, approved or rejected.",
+        "searchPlaceholder": "Search by command, capability or person …",
+        "statusFilter": "Status",
+        "empty": "No approval requests"
+      },
+      "policies": {
+        "title": "Policies",
+        "description": "The rules the gateway uses to tier commands and demand approvals.",
+        "threshold": "High-risk threshold",
+        "thresholdHint": "Any Commit at or above this amount becomes a High-risk request and needs a second person.",
+        "mfa": "MFA for approvals",
+        "mfaHint": "High-risk approvals need a session backed by a second factor.",
+        "on": "On",
+        "off": "Off",
+        "default": "Default",
+        "custom": "Custom (default: {value})",
+        "editNextSlice": "Read-only in this slice – policy edits land with the next one (every edit is itself a receipt).",
+        "rulesTitle": "Fixed rules",
+        "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
+        "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
+        "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
+        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
+      },
+      "myRequests": {
+        "title": "My Requests",
+        "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
+        "awaiting": "Awaiting approval",
+        "history": "History",
+        "empty": "You have not requested any commands yet"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "What the BackOffice needs today: pending approvals, your requests, the latest commands and the state of the ERP.",
+        "pendingApprovals": "Pending approvals",
+        "pendingApprovalsHint": "Waiting for a second person",
+        "myOpenRequests": "My open requests",
+        "myOpenRequestsHint": "Requested by you, not yet decided",
+        "executed7d": "Executed (7 days)",
+        "executed7dHint": "Commands completed successfully",
+        "failed7d": "Failed (7 days)",
+        "failed7dHint": "Rejected or ended with an error",
+        "erpStatus": "ERP status",
+        "erpOk": "Ready",
+        "erpNotOk": "Unreachable",
+        "erpUnknown": "Unclear",
+        "quickAccess": "Quick access",
+        "recentActivity": "Recent activity",
+        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
+      },
+      "errors": {
+        "bridgeUnavailable": "The ERP bridge is not reachable.",
+        "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
+        "noCapability": "You lack a capability for this.",
+        "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
+        "erpFailed": "ERPClaw rejected the read command.",
+        "unauthorized": "Please sign in again.",
+        "noTenant": "No active tenant – pick a workspace first.",
+        "notFound": "Not found.",
+        "generic": "The data could not be loaded."
+      },
+      "activity": {
+        "title": "Activity",
+        "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
+        "searchPlaceholder": "Search by command, ID or reason …",
+        "statusFilter": "Status",
+        "empty": "No commands yet"
+      },
+      "tiers": {
+        "read": "Read",
+        "draft": "Draft",
+        "commit": "Commit",
+        "high": "High-risk"
+      },
+      "erpLog": {
+        "title": "ERP Audit Log",
+        "description": "ERPClaw's own immutable log – every posting, every reversal, every master-data change.",
+        "empty": "No entries yet",
+        "time": "When",
+        "skill": "Module",
+        "action": "Action",
+        "entity": "Entity",
+        "user": "User",
+        "changes": "Change",
+        "system": "System"
+      },
+      "commandStatus": {
+        "executed": "Executed",
+        "failed": "Failed",
+        "awaiting_approval": "Awaiting approval",
+        "rejected": "Rejected"
+      },
+      "approvals": {
+        "requested": "Requested",
+        "command": "Command",
+        "requester": "Requester",
+        "approverNeeds": "Approver needs",
+        "status": "Status",
+        "decision": "Decision",
+        "you": "You",
+        "yourOwnRequest": "Your own request – you cannot approve it yourself.",
+        "youCanDecide": "You can decide",
+        "youCannotDecide": "Not yours to approve"
+      },
+      "commands": {
+        "when": "When",
+        "command": "Command",
+        "tier": "Tier",
+        "status": "Status",
+        "channel": "Channel",
+        "requester": "Requester",
+        "receipt": "Receipt",
+        "reason": "Reason",
+        "you": "You"
+      },
+      "approvalStatus": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "channels": {
+        "web": "Web",
+        "chat": "Chat",
+        "voice": "Voice",
+        "system": "System"
       },
       "sales": {
         "status": {
