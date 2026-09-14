@@ -10271,7 +10271,15 @@
         "geminiTitle": "Conectar com o Gemini",
         "geminiStep1": "Para o Gemini CLI: adicione o endereço do servidor MCP acima em ~/.gemini/settings.json, na lista de seus servidores MCP.",
         "geminiStep2": "Para o Gemini Enterprise (edição empresarial): Configurações e ajuda → Equipe → Gerenciar equipe → Aplicativos conectados → \"Adicionar servidor MCP\".",
-        "geminiNote": "O app Gemini para consumidores atualmente não tem uma forma documentada de adicionar um servidor MCP personalizado diretamente — isso só está disponível hoje via Gemini CLI e Gemini Enterprise."
+        "geminiNote": "O app Gemini para consumidores atualmente não tem uma forma documentada de adicionar um servidor MCP personalizado diretamente — isso só está disponível hoje via Gemini CLI e Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL da loja (opcional) — ex.: https://your-shop.com",
@@ -10294,6 +10302,48 @@
         "connecting": "Conectando...",
         "notConfigured": "Este tipo de conexão ainda não está disponível. Tente novamente mais tarde.",
         "failed": "Não foi possível iniciar a conexão. Verifique seus dados."
+      },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentStatusPill": "Going live soon",
+      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentUrlHint": "One address. That is all your agent needs.",
+      "howItWorksTitle": "What happens next",
+      "manualIntro": "Prefer to fill it in yourself?",
+      "manualCta": "Connect a business manually",
+      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
+      "connectionsCount": "{count} connected",
+      "openWorkbench": "Open connection",
+      "closeWorkbench": "Close",
+      "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
+      "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
+        "connect": "Connect",
+        "mapping": "Mapping",
+        "tests": "Checks",
+        "live": "Live",
+        "offTrack": "Needs attention"
       }
     },
     "oauthconsent": {

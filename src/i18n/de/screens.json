@@ -10265,7 +10265,10 @@
         "geminiTitle": "Mit Gemini verbinden",
         "geminiStep1": "Für die Gemini-CLI: Trage die MCP-Server-Adresse oben in ~/.gemini/settings.json unter deinen MCP-Servern ein.",
         "geminiStep2": "Für Gemini Enterprise (Business Edition): Einstellungen & Hilfe → Team → Team verwalten → Verbundene Apps → \"MCP-Server hinzufügen\".",
-        "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise."
+        "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise.",
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "Shop-URL (optional) — z. B. https://dein-shop.de",
@@ -10288,6 +10291,26 @@
         "connecting": "Verbinde...",
         "notConfigured": "Diese Verbindungsart ist noch nicht freigeschaltet. Bitte versuche es später erneut.",
         "failed": "Die Verbindung konnte nicht gestartet werden. Bitte überprüfe deine Angaben."
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Gib die Adresse unten in deine KI ein — Claude, ChatGPT oder Gemini — und dein Business ist mit Vitanaland verbunden.",
+      "agentStatusPill": "Bald live",
+      "agentStatusDetail": "Der MCP-Server ist fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar — die DNS-Freischaltung steht aus. Solange stellt der Server deinem Agenten nur lesende Werkzeuge bereit: Ein Business per KI anzulegen kommt mit der Freischaltung. Bis dahin führt der manuelle Weg unten zum Ziel.",
+      "agentUrlHint": "Eine Adresse. Mehr braucht dein Agent nicht.",
+      "howItWorksTitle": "Was danach passiert",
+      "manualIntro": "Lieber selbst ausfüllen?",
+      "manualCta": "Business manuell verbinden",
+      "connectionsEmptyHint": "Sobald du dein erstes Business verbunden hast, siehst du hier seinen Fortschritt bis zum Live-Gang.",
+      "connectionsCount": "{count} verbunden",
+      "openWorkbench": "Verbindung öffnen",
+      "closeWorkbench": "Schließen",
+      "sandboxDevNote": "Die Sandbox-Prüfung läuft im Entwicklungsmodus — es werden noch keine echten Aufrufe an dein System gesendet.",
+      "progress": {
+        "connect": "Verbinden",
+        "mapping": "Mapping",
+        "tests": "Prüfung",
+        "live": "Live",
+        "offTrack": "Braucht Aufmerksamkeit"
       }
     },
     "oauthconsent": {
