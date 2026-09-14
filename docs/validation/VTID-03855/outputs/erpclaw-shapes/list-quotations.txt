@@ -1,0 +1,19 @@
+{
+  "quotations": [
+    {
+      "id": "7421ec33-9b5a-46d8-9591-4043728eed79",
+      "naming_series": null,
+      "customer_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "customer_name": "Acme Trading LLC",
+      "quotation_date": "2026-09-10",
+      "grand_total": "35000.00",
+      "status": "draft",
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5"
+    }
+  ],
+  "total_count": 1,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

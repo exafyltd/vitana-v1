@@ -427,6 +427,14 @@ const BackOfficeReceipts = lazy(() => import("./pages/backoffice/audit/Receipts"
 const BackOfficeErpLog = lazy(() => import("./pages/backoffice/audit/ErpLog"));
 const BackOfficeAuditTrail = lazy(() => import("./pages/backoffice/audit/Trail"));
 const BackOfficeCompany = lazy(() => import("./pages/backoffice/settings/Company"));
+// VTID-03855 — Sales & CRM Read screens
+const BackOfficeLeads = lazy(() => import("./pages/backoffice/sales/Leads"));
+const BackOfficeContacts = lazy(() => import("./pages/backoffice/sales/Contacts"));
+const BackOfficeOpportunities = lazy(() => import("./pages/backoffice/sales/Opportunities"));
+const BackOfficeFollowUps = lazy(() => import("./pages/backoffice/sales/FollowUps"));
+const BackOfficeQuotations = lazy(() => import("./pages/backoffice/sales/Quotations"));
+const BackOfficeInvoices = lazy(() => import("./pages/backoffice/sales/Invoices"));
+const BackOfficeCreditNotes = lazy(() => import("./pages/backoffice/sales/CreditNotes"));
 // VTID-03834: BackOffice › Settings › Access — ERP capability grants per member
 const BackOfficeSettingsAccess = lazy(() => import("./pages/backoffice/settings/Access"));
 
@@ -2181,6 +2189,28 @@ const App = () => {
           } />
           <Route path="/backoffice/settings/company" element={
             <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeCompany /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03855 — Sales & CRM Read screens. */}
+          <Route path="/backoffice/sales/leads" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeLeads /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/contacts" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeContacts /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/opportunities" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeOpportunities /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/followups" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeFollowUps /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/quotations" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeQuotations /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/invoices" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeInvoices /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/credit-notes" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeCreditNotes /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/backoffice/settings/access" element={
             <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeSettingsAccess /></ProtectedRoute></AuthGuard>
