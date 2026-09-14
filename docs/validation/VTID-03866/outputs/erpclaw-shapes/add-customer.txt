@@ -1,0 +1,6 @@
+{
+  "customer_id": "cdf12234-bd8a-4060-ba07-bfe4fd896ef6",
+  "name": "Probe Customer LLC",
+  "customer_type": "company",
+  "status": "ok"
+}

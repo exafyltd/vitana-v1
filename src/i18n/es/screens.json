@@ -11031,7 +11031,10 @@
           "required": "Obligatorio",
           "invalidEmail": "No es un correo válido",
           "invalidDate": "Fecha como AAAA-MM-DD",
-          "invalidOption": "Opción no válida"
+          "invalidOption": "Opción no válida",
+          "noLines": "Indica una cantidad en al menos una línea",
+          "lineQtyTooHigh": "La cantidad devuelta no puede superar la facturada",
+          "invalidNumber": "Introduce un número válido mayor que 0"
         },
         "fields": {
           "lead_name": "Nombre del lead",
@@ -11049,7 +11052,19 @@
           "description": "Descripción",
           "activity_type": "Tipo",
           "activity_date": "Fecha",
-          "lead_ref": "Lead (nombre o número)"
+          "lead_ref": "Lead (nombre o número)",
+          "tax_id": "NIF (TRN)",
+          "posting_date": "Fecha contable",
+          "original_qty": "Cant. facturada",
+          "item_id": "ID de artículo",
+          "reason": "Motivo",
+          "credit_limit": "Límite de crédito",
+          "customer_type": "Tipo de cliente",
+          "primary_address": "Dirección",
+          "against_invoice_id": "Contra factura",
+          "qty": "Cant. devuelta",
+          "item_name": "Artículo",
+          "items": "Líneas"
         },
         "choices": {
           "website": "Sitio web",
@@ -11074,7 +11089,9 @@
           "email": "Correo",
           "meeting": "Reunión",
           "note": "Nota",
-          "task": "Tarea"
+          "task": "Tarea",
+          "company": "Empresa",
+          "individual": "Particular"
         },
         "forms": {
           "lead": {
@@ -11101,8 +11118,19 @@
             "button": "Registrar actividad",
             "title": "Registrar una actividad",
             "description": "Una llamada, correo, reunión o nota sobre un lead. El lead se resuelve por nombre o número; con varias coincidencias no se escribe nada."
+          },
+          "creditNote": {
+            "button": "Crear abono",
+            "title": "Abono contra factura",
+            "description": "Indica la cantidad devuelta por línea. El abono se crea como borrador; contabilizarlo es un paso aparte sujeto a aprobación."
+          },
+          "customer": {
+            "button": "Nuevo cliente",
+            "title": "Crear un cliente",
+            "description": "Un cliente de ventas: necesario para presupuestos y facturas. Se crea como borrador, sin contabilizar."
           }
-        }
+        },
+        "noLineRows": "No hay líneas disponibles."
       }
     }
   }

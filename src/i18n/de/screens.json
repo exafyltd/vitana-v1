@@ -10998,7 +10998,10 @@
           "required": "Pflichtfeld",
           "invalidEmail": "Keine gültige E-Mail-Adresse",
           "invalidDate": "Datum im Format JJJJ-MM-TT",
-          "invalidOption": "Ungültige Auswahl"
+          "invalidOption": "Ungültige Auswahl",
+          "noLines": "Mindestens eine Position mit Menge angeben",
+          "lineQtyTooHigh": "Rückgabemenge darf die Rechnungsmenge nicht überschreiten",
+          "invalidNumber": "Bitte eine gültige Zahl größer als 0 eingeben"
         },
         "fields": {
           "lead_name": "Lead-Name",
@@ -11016,7 +11019,19 @@
           "description": "Beschreibung",
           "activity_type": "Art",
           "activity_date": "Datum",
-          "lead_ref": "Lead (Name oder Nummer)"
+          "lead_ref": "Lead (Name oder Nummer)",
+          "tax_id": "Steuernummer (TRN)",
+          "posting_date": "Buchungsdatum",
+          "original_qty": "Rechnungsmenge",
+          "item_id": "Artikel-ID",
+          "reason": "Grund",
+          "credit_limit": "Kreditlimit",
+          "customer_type": "Kundentyp",
+          "primary_address": "Adresse",
+          "against_invoice_id": "Zur Rechnung",
+          "qty": "Rückgabemenge",
+          "item_name": "Artikel",
+          "items": "Positionen"
         },
         "choices": {
           "website": "Website",
@@ -11041,7 +11056,9 @@
           "email": "E-Mail",
           "meeting": "Termin",
           "note": "Notiz",
-          "task": "Aufgabe"
+          "task": "Aufgabe",
+          "company": "Unternehmen",
+          "individual": "Privatperson"
         },
         "forms": {
           "lead": {
@@ -11068,8 +11085,19 @@
             "button": "Aktivität erfassen",
             "title": "Aktivität erfassen",
             "description": "Anruf, E-Mail, Termin oder Notiz zu einem Lead. Der Lead wird über Name oder Nummer aufgelöst – bei mehreren Treffern wird nichts geschrieben."
+          },
+          "creditNote": {
+            "button": "Gutschrift erstellen",
+            "title": "Gutschrift zur Rechnung",
+            "description": "Trage je Position die zurückgenommene Menge ein. Die Gutschrift entsteht als Entwurf; gebucht wird sie erst in einem eigenen, freigabepflichtigen Schritt."
+          },
+          "customer": {
+            "button": "Neuer Kunde",
+            "title": "Neuen Kunden anlegen",
+            "description": "Ein Kunde im Verkauf – Voraussetzung für Angebote und Rechnungen. Wird als Entwurf angelegt, ohne Buchung."
           }
-        }
+        },
+        "noLineRows": "Keine Positionen vorhanden."
       }
     }
   }

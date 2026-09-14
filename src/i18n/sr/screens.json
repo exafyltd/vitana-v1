@@ -11031,7 +11031,10 @@
           "required": "Obavezno",
           "invalidEmail": "Nevažeća e-adresa",
           "invalidDate": "Datum u obliku GGGG-MM-DD",
-          "invalidOption": "Nevažeći izbor"
+          "invalidOption": "Nevažeći izbor",
+          "noLines": "Unesi količinu bar na jednoj stavci",
+          "lineQtyTooHigh": "Vraćena količina ne može biti veća od fakturisane",
+          "invalidNumber": "Unesi važeći broj veći od 0"
         },
         "fields": {
           "lead_name": "Naziv lida",
@@ -11049,7 +11052,19 @@
           "description": "Opis",
           "activity_type": "Tip",
           "activity_date": "Datum",
-          "lead_ref": "Lid (naziv ili broj)"
+          "lead_ref": "Lid (naziv ili broj)",
+          "tax_id": "PIB (TRN)",
+          "posting_date": "Datum knjiženja",
+          "original_qty": "Fakturisano",
+          "item_id": "ID artikla",
+          "reason": "Razlog",
+          "credit_limit": "Kreditni limit",
+          "customer_type": "Tip kupca",
+          "primary_address": "Adresa",
+          "against_invoice_id": "Uz fakturu",
+          "qty": "Vraćeno",
+          "item_name": "Artikal",
+          "items": "Stavke"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11074,7 +11089,9 @@
           "email": "E-pošta",
           "meeting": "Sastanak",
           "note": "Beleška",
-          "task": "Zadatak"
+          "task": "Zadatak",
+          "company": "Firma",
+          "individual": "Fizičko lice"
         },
         "forms": {
           "lead": {
@@ -11101,8 +11118,19 @@
             "button": "Zabeleži aktivnost",
             "title": "Zabeleži aktivnost",
             "description": "Poziv, e-pošta, sastanak ili beleška uz lid. Lid se razrešava po nazivu ili broju – kod više pogodaka ništa se ne upisuje."
+          },
+          "creditNote": {
+            "button": "Kreiraj knjižno odobrenje",
+            "title": "Knjižno odobrenje uz fakturu",
+            "description": "Unesi vraćenu količinu po stavci. Odobrenje nastaje kao nacrt; knjiži se u posebnom koraku koji zahteva odobrenje."
+          },
+          "customer": {
+            "button": "Novi kupac",
+            "title": "Kreiraj kupca",
+            "description": "Kupac u prodaji – potreban za ponude i fakture. Kreira se kao nacrt, bez knjiženja."
           }
-        }
+        },
+        "noLineRows": "Nema dostupnih stavki."
       }
     }
   }
