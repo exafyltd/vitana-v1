@@ -7359,7 +7359,15 @@
       "youExafySuperAdministratorYouCan": "You are an Exafy super administrator. You can switch between organizations and manage all tenants.",
       "roleValue0": "Role: {value0}",
       "refreshBrowserVoices": "Refresh Browser Voices",
-      "creativityValue0": "Creativity: {value0}"
+      "creativityValue0": "Creativity: {value0}",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Activate Campaign",

@@ -7361,7 +7361,15 @@
       "settingsSubnav_support": "Soporte",
       "settingsSubnav_limitations": "Limitaciones",
       "settingsSubnav_socialAccounts": "Cuentas sociales",
-      "settingsSubnav_connectedAppsAndIntegrations": "Aplicaciones conectadas e integraciones"
+      "settingsSubnav_connectedAppsAndIntegrations": "Aplicaciones conectadas e integraciones",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Activar campaña",

@@ -7361,7 +7361,15 @@
       "settingsSubnav_support": "Podrška",
       "settingsSubnav_limitations": "Ograničenja",
       "settingsSubnav_socialAccounts": "Društveni nalozi",
-      "settingsSubnav_connectedAppsAndIntegrations": "Povezane aplikacije & Integracije"
+      "settingsSubnav_connectedAppsAndIntegrations": "Povezane aplikacije & Integracije",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",

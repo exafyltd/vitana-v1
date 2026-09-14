@@ -78,6 +78,8 @@ import {
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
+// VTID-03885: Partner Health Test Integration — real "connect DoctorBox" consent flow
+import { PartnerLabsConsentDialog } from "@/components/settings/PartnerLabsConsentDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
@@ -106,6 +108,11 @@ function ConnectedApps() {
   const youtubeConnected = Boolean(youtubeConnection);
   const [googleVerifyOpen, setGoogleVerifyOpen] = useState(false);
   const manageGoogle = () => setGoogleVerifyOpen(true);
+
+  // VTID-03885: Partner Health Test Integration — DoctorBox consent state,
+  // shared by both Clinical & Lab card sections below (mobile + desktop).
+  const [doctorBoxDialogOpen, setDoctorBoxDialogOpen] = useState(false);
+  const [doctorBoxConnected, setDoctorBoxConnected] = useState(false);
 
   const startConnectorFlow = (connectorId: string) => {
     if (YOUTUBE_CONNECTOR_IDS.has(connectorId)) {
@@ -593,28 +600,48 @@ function ConnectedApps() {
         comingSoon: true,
       },
       {
-        id: 'partner-labs',
-        name: 'Partner Labs (AlKalma, Earthlinks)',
+        id: 'doctorbox',
+        name: 'DoctorBox',
         icon: TestTube,
-        connected: false,
+        connected: doctorBoxConnected,
         syncData: 'Lab test results, biomarker tracking',
-        comingSoon: true,
+        comingSoon: false,
       },
     ];
 
-    return apps.map((app) => ({
-      id: `clinical-${app.id}`,
-      screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: app.syncData,
-      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
-      expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonThisWill', { name: app.name, value1: app.syncData.toLowerCase() })}
-        </div>
-      ),
-    }));
+    return apps.map((app) => {
+      if (app.id === 'doctorbox') {
+        return {
+          id: `clinical-${app.id}`,
+          screenId: "settings-connected-apps",
+          icon: <app.icon className="w-5 h-5" />,
+          title: app.name,
+          description: app.syncData,
+          badges: app.connected ? [{ label: t('screens.settings.connected'), variant: 'default' as const }] : [],
+          primaryAction: {
+            label: app.connected ? t('screens.settings.partnerLabsRevokeAccess') : t('screens.settings.partnerLabsGrantAccess'),
+            onClick: () => setDoctorBoxDialogOpen(true),
+            variant: app.connected ? ('outline' as const) : ('default' as const),
+          },
+          expandedContent: (
+            <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.partnerLabsConnectDescription')}</div>
+          ),
+        };
+      }
+      return {
+        id: `clinical-${app.id}`,
+        screenId: "settings-connected-apps",
+        icon: <app.icon className="w-5 h-5" />,
+        title: app.name,
+        description: app.syncData,
+        badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+        primaryAction: undefined,
+        expandedContent: (
+          <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonThisWill', { name: app.name, value1: app.syncData.toLowerCase() })}
+          </div>
+        ),
+      };
+    });
   };
 
   // Mindfulness & Mental Health
@@ -1193,8 +1220,8 @@ function ConnectedApps() {
         description: 'Clinical health records',
       },
       {
-        id: 'partner-labs',
-        name: 'Partner Labs (AlKalma, Earthlinks)',
+        id: 'doctorbox',
+        name: 'DoctorBox',
         icon: TestTube,
         description: 'Lab test results, biomarker tracking',
       },
@@ -1206,24 +1233,44 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => ({
-      id: `clinical-labs-${app.id}`,
-      screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: app.description,
-      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: {
-        label: 'Connect',
-        onClick: () => console.log(`Connect ${app.name}`),
-        disabled: true,
-        variant: 'ghost' as const,
-      },
-      expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonThisWill', { name: app.name, value1: app.description.toLowerCase() })}
-        </div>
-      ),
-    }));
+    return apps.map((app) => {
+      if (app.id === 'doctorbox') {
+        return {
+          id: `clinical-labs-${app.id}`,
+          screenId: "settings-connected-apps",
+          icon: <app.icon className="w-5 h-5" />,
+          title: app.name,
+          description: app.description,
+          badges: doctorBoxConnected ? [{ label: t('screens.settings.connected'), variant: 'default' as const }] : [],
+          primaryAction: {
+            label: doctorBoxConnected ? t('screens.settings.partnerLabsRevokeAccess') : t('screens.settings.partnerLabsGrantAccess'),
+            onClick: () => setDoctorBoxDialogOpen(true),
+            variant: doctorBoxConnected ? ('outline' as const) : ('default' as const),
+          },
+          expandedContent: (
+            <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.partnerLabsConnectDescription')}</div>
+          ),
+        };
+      }
+      return {
+        id: `clinical-labs-${app.id}`,
+        screenId: "settings-connected-apps",
+        icon: <app.icon className="w-5 h-5" />,
+        title: app.name,
+        description: app.description,
+        badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+        primaryAction: {
+          label: 'Connect',
+          onClick: () => console.log(`Connect ${app.name}`),
+          disabled: true,
+          variant: 'ghost' as const,
+        },
+        expandedContent: (
+          <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonThisWill', { name: app.name, value1: app.description.toLowerCase() })}
+          </div>
+        ),
+      };
+    });
   };
 
   const getMentalHealthMindfulnessCards = (): StandardHorizontalCardProps[] => {
@@ -2348,6 +2395,12 @@ function ConnectedApps() {
       <ConnectAppPopup
         isOpen={actionPopupOpen}
         onClose={() => setActionPopupOpen(false)}
+        onConnect={(integration) => {
+          // VTID-03885: DoctorBox opens the real consent dialog from the
+          // "browse all integrations" popup too, not just the two Clinical
+          // & Lab sections further down this page.
+          if (integration.id === 'doctorbox') setDoctorBoxDialogOpen(true);
+        }}
       />
 
       {/* VTID-02403: AI Assistant paste-key modal */}
@@ -2366,6 +2419,13 @@ function ConnectedApps() {
       {/* In-app overlay shown while user is bounced to system browser
           for OAuth, so the button never feels dead. */}
       <OAuthBouncePendingOverlay />
+
+      {/* VTID-03885: Partner Health Test Integration — DoctorBox consent */}
+      <PartnerLabsConsentDialog
+        open={doctorBoxDialogOpen}
+        onOpenChange={setDoctorBoxDialogOpen}
+        onConnectedChange={setDoctorBoxConnected}
+      />
     </AppLayout>
   );
 }
