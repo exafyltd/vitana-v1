@@ -355,6 +355,75 @@ export const SCREEN_OVRL_007 = "OVRL-007"; // Wallet Popup
 export const SCREEN_OVRL_008 = "OVRL-008"; // Presence Debug Panel
 
 // ============================================================================
+// BACKOFFICE (ERP/CRM) SCREENS — VTID-03833 (63 screens, one per BACKOFFICE_SECTIONS tab)
+// Generated from src/config/backoffice-navigation.ts; a vitest fails if they drift.
+// ============================================================================
+
+export const SCREEN_BO_001 = "BO-001"; // Dashboard (overview)
+export const SCREEN_BO_002 = "BO-002"; // Approvals Inbox (overview)
+export const SCREEN_BO_003 = "BO-003"; // Activity (overview)
+export const SCREEN_BO_004 = "BO-004"; // Health (overview)
+export const SCREEN_BO_005 = "BO-005"; // Leads (sales)
+export const SCREEN_BO_006 = "BO-006"; // Contacts & Companies (sales)
+export const SCREEN_BO_007 = "BO-007"; // Opportunities (sales)
+export const SCREEN_BO_008 = "BO-008"; // Follow-ups (sales)
+export const SCREEN_BO_009 = "BO-009"; // Quotations (sales)
+export const SCREEN_BO_010 = "BO-010"; // Sales Orders (sales)
+export const SCREEN_BO_011 = "BO-011"; // Invoices (sales)
+export const SCREEN_BO_012 = "BO-012"; // Credit Notes (sales)
+export const SCREEN_BO_013 = "BO-013"; // Deliveries (sales)
+export const SCREEN_BO_014 = "BO-014"; // Campaigns (marketing)
+export const SCREEN_BO_015 = "BO-015"; // Outreach (marketing)
+export const SCREEN_BO_016 = "BO-016"; // Lead Sources & Attribution (marketing)
+export const SCREEN_BO_017 = "BO-017"; // Performance (marketing)
+export const SCREEN_BO_018 = "BO-018"; // Journals (accounting)
+export const SCREEN_BO_019 = "BO-019"; // Chart of Accounts (accounting)
+export const SCREEN_BO_020 = "BO-020"; // Fiscal Periods & Close (accounting)
+export const SCREEN_BO_021 = "BO-021"; // Tax (accounting)
+export const SCREEN_BO_022 = "BO-022"; // Fixed Assets & Leases (accounting)
+export const SCREEN_BO_023 = "BO-023"; // Intercompany & Consolidation (accounting)
+export const SCREEN_BO_024 = "BO-024"; // Budgets & Forecasts (accounting)
+export const SCREEN_BO_025 = "BO-025"; // Payments (finance)
+export const SCREEN_BO_026 = "BO-026"; // Bank Reconciliation (finance)
+export const SCREEN_BO_027 = "BO-027"; // Cash Position & Forecast (finance)
+export const SCREEN_BO_028 = "BO-028"; // Recurring Billing (finance)
+export const SCREEN_BO_029 = "BO-029"; // Stripe / Shopify Sync (finance)
+export const SCREEN_BO_030 = "BO-030"; // Employees & Documents (hr)
+export const SCREEN_BO_031 = "BO-031"; // Leave (hr)
+export const SCREEN_BO_032 = "BO-032"; // Attendance (hr)
+export const SCREEN_BO_033 = "BO-033"; // Expense Claims (hr)
+export const SCREEN_BO_034 = "BO-034"; // Payroll (hr)
+export const SCREEN_BO_035 = "BO-035"; // Suppliers (operations)
+export const SCREEN_BO_036 = "BO-036"; // Purchase Orders (operations)
+export const SCREEN_BO_037 = "BO-037"; // Goods Receipts (operations)
+export const SCREEN_BO_038 = "BO-038"; // Supplier Invoices (operations)
+export const SCREEN_BO_039 = "BO-039"; // Items (operations)
+export const SCREEN_BO_040 = "BO-040"; // Warehouses (operations)
+export const SCREEN_BO_041 = "BO-041"; // Stock & Moves (operations)
+export const SCREEN_BO_042 = "BO-042"; // Contracts (legal)
+export const SCREEN_BO_043 = "BO-043"; // Obligations (legal)
+export const SCREEN_BO_044 = "BO-044"; // Compliance (legal)
+export const SCREEN_BO_045 = "BO-045"; // E-Signature (legal)
+export const SCREEN_BO_046 = "BO-046"; // P&L (reports)
+export const SCREEN_BO_047 = "BO-047"; // Balance Sheet (reports)
+export const SCREEN_BO_048 = "BO-048"; // Trial Balance (reports)
+export const SCREEN_BO_049 = "BO-049"; // Cash Flow (reports)
+export const SCREEN_BO_050 = "BO-050"; // AR / AP Aging (reports)
+export const SCREEN_BO_051 = "BO-051"; // By Dimension (reports)
+export const SCREEN_BO_052 = "BO-052"; // Board Pack (reports)
+export const SCREEN_BO_053 = "BO-053"; // Queue (approvals)
+export const SCREEN_BO_054 = "BO-054"; // My Requests (approvals)
+export const SCREEN_BO_055 = "BO-055"; // Policies (approvals)
+export const SCREEN_BO_056 = "BO-056"; // Command Receipts (audit)
+export const SCREEN_BO_057 = "BO-057"; // ERP Audit Log (audit)
+export const SCREEN_BO_058 = "BO-058"; // Independent Audit Trail (audit)
+export const SCREEN_BO_059 = "BO-059"; // Company & Legal Entities (settings)
+export const SCREEN_BO_060 = "BO-060"; // Access (settings)
+export const SCREEN_BO_061 = "BO-061"; // Numbering (settings)
+export const SCREEN_BO_062 = "BO-062"; // Integrations (settings)
+export const SCREEN_BO_063 = "BO-063"; // Modules (settings)
+
+// ============================================================================
 // LEGACY SCREEN IDS (Maintained for backward compatibility)
 // ============================================================================
 
@@ -572,6 +641,71 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
 
   { screenId: SCREEN_DEV_001, route: "/dev", category: "dev", pattern: "3-card-header" },
   { screenId: SCREEN_DEV_002, route: "/dev/login", category: "dev", pattern: "auth" },
+
+  // BackOffice (VTID-03833)
+  { screenId: SCREEN_BO_001, route: "/backoffice/dashboard", category: "backoffice", pattern: "3-card-header" },
+  { screenId: SCREEN_BO_002, route: "/backoffice/inbox", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_003, route: "/backoffice/activity", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_004, route: "/backoffice/health", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_005, route: "/backoffice/sales/leads", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_006, route: "/backoffice/sales/contacts", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_007, route: "/backoffice/sales/opportunities", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_008, route: "/backoffice/sales/followups", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_009, route: "/backoffice/sales/quotations", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_010, route: "/backoffice/sales/orders", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_011, route: "/backoffice/sales/invoices", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_012, route: "/backoffice/sales/credit-notes", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_013, route: "/backoffice/sales/deliveries", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_014, route: "/backoffice/marketing/campaigns", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_015, route: "/backoffice/marketing/outreach", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_016, route: "/backoffice/marketing/attribution", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_017, route: "/backoffice/marketing/performance", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_018, route: "/backoffice/accounting/journals", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_019, route: "/backoffice/accounting/chart-of-accounts", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_020, route: "/backoffice/accounting/periods", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_021, route: "/backoffice/accounting/tax", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_022, route: "/backoffice/accounting/assets", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_023, route: "/backoffice/accounting/intercompany", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_024, route: "/backoffice/accounting/budgets", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_025, route: "/backoffice/finance/payments", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_026, route: "/backoffice/finance/bank-reconciliation", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_027, route: "/backoffice/finance/cash", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_028, route: "/backoffice/finance/subscriptions", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_029, route: "/backoffice/finance/sync", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_030, route: "/backoffice/hr/employees", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_031, route: "/backoffice/hr/leave", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_032, route: "/backoffice/hr/attendance", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_033, route: "/backoffice/hr/expenses", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_034, route: "/backoffice/hr/payroll", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_035, route: "/backoffice/operations/suppliers", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_036, route: "/backoffice/operations/purchase-orders", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_037, route: "/backoffice/operations/receipts", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_038, route: "/backoffice/operations/supplier-invoices", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_039, route: "/backoffice/operations/items", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_040, route: "/backoffice/operations/warehouses", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_041, route: "/backoffice/operations/stock", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_042, route: "/backoffice/legal/contracts", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_043, route: "/backoffice/legal/obligations", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_044, route: "/backoffice/legal/compliance", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_045, route: "/backoffice/legal/e-signature", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_046, route: "/backoffice/reports/pnl", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_047, route: "/backoffice/reports/balance-sheet", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_048, route: "/backoffice/reports/trial-balance", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_049, route: "/backoffice/reports/cash-flow", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_050, route: "/backoffice/reports/aging", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_051, route: "/backoffice/reports/dimensions", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_052, route: "/backoffice/reports/board-pack", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_053, route: "/backoffice/approvals/queue", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_054, route: "/backoffice/approvals/my-requests", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_055, route: "/backoffice/approvals/policies", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_056, route: "/backoffice/audit/receipts", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_057, route: "/backoffice/audit/erp-log", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_058, route: "/backoffice/audit/trail", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_059, route: "/backoffice/settings/company", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_060, route: "/backoffice/settings/access", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_061, route: "/backoffice/settings/numbering", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_062, route: "/backoffice/settings/integrations", category: "backoffice", pattern: "sub-page-header" },
+  { screenId: SCREEN_BO_063, route: "/backoffice/settings/modules", category: "backoffice", pattern: "sub-page-header" },
 ];
 
 // ============================================================================

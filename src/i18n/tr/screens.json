@@ -1687,6 +1687,7 @@
       "navRole_admin": "Yönetici",
       "navRole_developer": "Geliştirici",
       "navRole_infra": "Altyapı",
+      "navRole_backoffice": "Arka Ofis",
       "vitanaNavigatorDesc": "Uygulamanın açabileceği her ekran, sekme ve mod ile Vitana'nın üyeleri konuşma sırasında oraya yönlendirmesini sağlayan tetikleyici ifadeler. Bir ekranın ne zaman ziyaret edileceği metnini düzenle, tam eşleşmeler için geçersiz kılma ifadeleri ekle ve kaydetmeden önce canlı simülatörde test et.",
       "loadingCoverageReport": "Kapsam raporu yükleniyor…",
       "allCatalogRoutesMapRealSpa": "Tüm katalog yolları gerçek SPA yollarına eşlenir.",
@@ -10380,6 +10381,14 @@
         "vitana:grants:write": "Veri hibeleri öner (onay sende kalır)",
         "vitana:settlement:write": "Hazırlanan VTNA mutabakatlarını tetikle"
       }
+    },
+    "backoffice": {
+      "comingWave1": "Coming in wave 1",
+      "comingWave2": "Coming in wave 2",
+      "comingWave3": "Coming in wave 3",
+      "placeholderBody": "This page is a placeholder. The sidebar, profile drawer, role switcher and ORB stay identical in every role – only the content is still to come.",
+      "noSectionMatches": "No BackOffice section matches",
+      "sidebarIsCanonical": "The sidebar is the canonical list of sections. Pick one."
     }
   }
 }

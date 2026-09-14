@@ -1687,6 +1687,7 @@
       "navRole_admin": "Admin",
       "navRole_developer": "Developer",
       "navRole_infra": "Infra",
+      "navRole_backoffice": "Back Office",
       "vitanaNavigatorDesc": "Every screen, tab and mode the app can open, plus the trigger phrases that let Vitana redirect members there mid-conversation. Edit a screen's when-to-visit text, add override phrases for exact matches, and test in the live simulator before saving.",
       "loadingCoverageReport": "Loading coverage report…",
       "allCatalogRoutesMapRealSpa": "All catalog routes map to real SPA paths.",
@@ -10342,6 +10343,14 @@
         "vitana:grants:write": "Propose data grants (consent stays with you)",
         "vitana:settlement:write": "Trigger prepared VTNA settlements"
       }
+    },
+    "backoffice": {
+      "comingWave1": "Coming in wave 1",
+      "comingWave2": "Coming in wave 2",
+      "comingWave3": "Coming in wave 3",
+      "placeholderBody": "This page is a placeholder. The sidebar, profile drawer, role switcher and ORB stay identical in every role – only the content is still to come.",
+      "noSectionMatches": "No BackOffice section matches",
+      "sidebarIsCanonical": "The sidebar is the canonical list of sections. Pick one."
     }
   }
 }

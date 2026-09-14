@@ -413,6 +413,8 @@ const Bootstrap = lazy(() => import("./pages/admin/Bootstrap"));
 const TenantManagementLegacy = lazy(() => import("./pages/admin/TenantManagement"));
 const InitEvents = lazy(() => import("./pages/admin/InitEvents"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
+// VTID-03833: Vitanaland BackOffice (ERP/CRM) shell — every section is a placeholder until its screens ship
+const BackOfficePlaceholder = lazy(() => import("./pages/backoffice/BackOfficePlaceholder"));
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
@@ -2124,6 +2126,16 @@ const App = () => {
               every specific /admin/* route above and BEFORE the catch-all. */}
           <Route path="/admin/*" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminPlaceholder /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Vitanaland BackOffice (VTID-03833) — the /admin pattern one level over.
+              requiredRole="backoffice": admin/developer/infra/Exafy pass through the
+              hierarchy, staff needs an explicit backoffice grant, community is bounced.
+              Every section renders BackOfficePlaceholder inside AppLayout until its
+              screens land. Must sit BEFORE the catch-all. */}
+          <Route path="/backoffice" element={<Navigate to="/backoffice/dashboard" replace />} />
+          <Route path="/backoffice/*" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePlaceholder /></ProtectedRoute></AuthGuard>
           } />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

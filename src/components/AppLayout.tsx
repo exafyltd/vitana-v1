@@ -25,7 +25,7 @@ import { VitanaIndexSheet } from "@/components/health/VitanaIndexSheet";
 import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatcher";
 import { InviteSheet } from "@/components/InviteSheet";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
-import { getRoleNavigation } from "@/config/role-navigation";
+import { getRoleNavigation, getVisibleBackOfficeNavigation } from "@/config/role-navigation";
 import { useRoleRouteEnforcement, useInitialLandingRedirect } from "@/hooks/useSmartRouting";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
@@ -89,6 +89,11 @@ function AppSidebar({
   const getEffectiveNavigation = () => {
     const path = location.pathname;
     if (path === '/admin' || path.startsWith('/admin/')) return getRoleNavigation('admin');
+    // VTID-03833: /backoffice/* uses the BackOffice sidebar; the "← Admin" link is
+    // only shown to users who can actually enter /admin.
+    if (path === '/backoffice' || path.startsWith('/backoffice/')) {
+      return getVisibleBackOfficeNavigation(hasPermission('admin'));
+    }
     if (path === '/staff' || path.startsWith('/staff/')) return getRoleNavigation('staff');
     if (path === '/professional' || path.startsWith('/professional/')) return getRoleNavigation('professional');
     if (path === '/patient' || path.startsWith('/patient/')) return getRoleNavigation('patient');
@@ -233,7 +238,7 @@ function AppSidebar({
           </div>
 
           {/* Row 2: Quick Actions - only show when sidebar is open and NOT on admin routes */}
-          {open && !location.pathname.startsWith('/admin') && (
+          {open && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/backoffice') && (
             <div className="flex items-center justify-end px-2 pb-2 space-x-1">
               {/* VITANA Index Chip - opens shared Index Sheet */}
               <DesktopVitanaIndexChip />
@@ -343,7 +348,7 @@ function AppSidebar({
                           )}
                           <cat.icon className={`h-4 w-4 transition-colors ${
                             isActive ? "text-primary" : "text-sidebar-foreground/70 group-hover:text-foreground"
-                          }`} />
+                          } ${(cat as { iconClassName?: string }).iconClassName ?? ""}`} />
                           {open && (
                             <span className={`font-medium transition-colors ${
                               isActive ? "text-primary" : "text-sidebar-foreground group-hover:text-foreground"
@@ -379,6 +384,7 @@ function AppSidebar({
                     <div className="text-xs text-sidebar-foreground/50 capitalize">
                       {isExafyAdmin ? 'Exafy Admin' :
                        currentRole === 'admin' ? 'Administrator' : 
+                       currentRole === 'backoffice' ? 'Back Office' :
                        currentRole === 'staff' ? 'Staff' :
                        currentRole === 'professional' ? 'Professional' :
                        currentRole === 'patient' ? 'Patient' :

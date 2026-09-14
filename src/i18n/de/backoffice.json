@@ -1,0 +1,120 @@
+{
+  "backoffice": {
+    "back": {
+      "tabs": {
+        "admin": "← Admin"
+      }
+    },
+    "overview": {
+      "tabs": {
+        "dashboard": "Dashboard",
+        "inbox": "Freigabe-Eingang",
+        "activity": "Aktivität",
+        "health": "Systemstatus"
+      }
+    },
+    "sales": {
+      "tabs": {
+        "leads": "Leads",
+        "contacts": "Kontakte & Firmen",
+        "opportunities": "Chancen",
+        "followups": "Follow-ups",
+        "quotations": "Angebote",
+        "orders": "Aufträge",
+        "invoices": "Rechnungen",
+        "credit-notes": "Gutschriften",
+        "deliveries": "Lieferungen"
+      }
+    },
+    "marketing": {
+      "tabs": {
+        "campaigns": "Kampagnen",
+        "outreach": "Outreach",
+        "attribution": "Lead-Quellen & Attribution",
+        "performance": "Performance"
+      }
+    },
+    "accounting": {
+      "tabs": {
+        "journals": "Buchungen",
+        "chart-of-accounts": "Kontenplan",
+        "periods": "Perioden & Abschluss",
+        "tax": "Steuern",
+        "assets": "Anlagen & Leasing",
+        "intercompany": "Intercompany & Konsolidierung",
+        "budgets": "Budgets & Prognosen"
+      }
+    },
+    "finance": {
+      "tabs": {
+        "payments": "Zahlungen",
+        "bank-reconciliation": "Bankabgleich",
+        "cash": "Liquidität & Prognose",
+        "subscriptions": "Wiederkehrende Abrechnung",
+        "sync": "Stripe / Shopify Sync"
+      }
+    },
+    "hr": {
+      "tabs": {
+        "employees": "Mitarbeitende & Dokumente",
+        "leave": "Urlaub",
+        "attendance": "Anwesenheit",
+        "expenses": "Spesen",
+        "payroll": "Gehaltsabrechnung"
+      }
+    },
+    "operations": {
+      "tabs": {
+        "suppliers": "Lieferanten",
+        "purchase-orders": "Bestellungen",
+        "receipts": "Wareneingänge",
+        "supplier-invoices": "Lieferantenrechnungen",
+        "items": "Artikel",
+        "warehouses": "Lager",
+        "stock": "Bestand & Bewegungen"
+      }
+    },
+    "legal": {
+      "tabs": {
+        "contracts": "Verträge",
+        "obligations": "Pflichten",
+        "compliance": "Compliance",
+        "e-signature": "E-Signatur"
+      }
+    },
+    "reports": {
+      "tabs": {
+        "pnl": "GuV",
+        "balance-sheet": "Bilanz",
+        "trial-balance": "Summen- und Saldenliste",
+        "cash-flow": "Cashflow",
+        "aging": "Fälligkeiten (Debitoren / Kreditoren)",
+        "dimensions": "Nach Dimension",
+        "board-pack": "Board-Paket"
+      }
+    },
+    "approvals": {
+      "tabs": {
+        "queue": "Warteschlange",
+        "my-requests": "Meine Anfragen",
+        "policies": "Richtlinien"
+      }
+    },
+    "audit": {
+      "tabs": {
+        "receipts": "Befehlsbelege",
+        "erp-log": "ERP-Auditlog",
+        "trail": "Unabhängiger Prüfpfad"
+      }
+    },
+    "settings": {
+      "tabs": {
+        "company": "Unternehmen & Rechtsträger",
+        "access": "Zugriff",
+        "numbering": "Nummernkreise",
+        "integrations": "Integrationen",
+        "modules": "Module"
+      }
+    }
+  }
+}

@@ -47,7 +47,22 @@
     "connectors": "Łączniki",
     "support": "Wsparcie",
     "myJourney": "Moja podróż",
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "back": "← Admin",
+      "overview": "Overview",
+      "sales": "Sales & CRM",
+      "marketing": "Marketing",
+      "accounting": "Accounting",
+      "finance": "Finance & Treasury",
+      "hr": "HR & People",
+      "operations": "Operations",
+      "legal": "Legal & Compliance",
+      "reports": "Reports",
+      "approvals": "Approvals",
+      "audit": "Audit",
+      "settings": "Settings"
+    }
   },
   "_pending_review": {}
 }
