@@ -1,0 +1,38 @@
+{
+  "id": "1f4c5499-e3f0-4dd6-aabc-319a22124412",
+  "naming_series": "JE-2026-00082",
+  "posting_date": "2026-09-14",
+  "entry_type": "journal",
+  "status": "ok",
+  "total_debit": "250.00",
+  "total_credit": "250.00",
+  "remark": "Office supplies September",
+  "amended_from": null,
+  "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+  "lines": [
+    {
+      "id": "67a67ea1-74b8-492c-b8a9-fae4ce2b5980",
+      "account_id": "2cccac59-b6ab-4e30-a105-e19318a6f815",
+      "account_name": "Cost of Sales",
+      "debit": "250.00",
+      "credit": "0.00",
+      "party_type": null,
+      "party_id": null,
+      "cost_center_id": "e1b7b135-4372-4ae5-a590-5e4ddfb3ca99",
+      "project_id": null,
+      "remark": null
+    },
+    {
+      "id": "cb677bbc-011d-4ee6-a381-88d8979b6987",
+      "account_id": "f529f450-dbd5-4412-8bfc-3db680640de4",
+      "account_name": "Cash and Bank",
+      "debit": "0.00",
+      "credit": "250.00",
+      "party_type": null,
+      "party_id": null,
+      "cost_center_id": null,
+      "project_id": null,
+      "remark": null
+    }
+  ]
+}

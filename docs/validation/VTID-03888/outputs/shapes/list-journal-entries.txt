@@ -1,0 +1,509 @@
+{
+  "entries": [
+    {
+      "id": "1f4c5499-e3f0-4dd6-aabc-319a22124412",
+      "naming_series": "JE-2026-00082",
+      "posting_date": "2026-09-14",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "250.00",
+      "total_credit": "250.00",
+      "remark": "Office supplies September"
+    },
+    {
+      "id": "5eeda897-69e2-4f50-8ed9-6c792d955953",
+      "naming_series": "JE-2026-00081",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "draft",
+      "total_debit": "120.00",
+      "total_credit": "120.00",
+      "remark": "Office supplies paid from bank (VTID-03872 shape capture)"
+    },
+    {
+      "id": "f335019d-bc69-40ff-b0b7-22b6fd77d02e",
+      "naming_series": "JE-2026-00080",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "cancelled",
+      "total_debit": "12.50",
+      "total_credit": "12.50",
+      "remark": "bridge e2e"
+    },
+    {
+      "id": "42fa193b-20be-490e-a3a0-8528d7cff10f",
+      "naming_series": "JE-2026-00078",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "cancelled",
+      "total_debit": "2530.00",
+      "total_credit": "2530.00",
+      "remark": "concurrent3 22"
+    },
+    {
+      "id": "77f2a4c5-0152-4f22-9e6f-70be04ad60a5",
+      "naming_series": "JE-2026-00071",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "2640.00",
+      "total_credit": "2640.00",
+      "remark": "concurrent3 23"
+    },
+    {
+      "id": "eb44812d-8150-44e4-bc1e-fa32c2bb5927",
+      "naming_series": "JE-2026-00075",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "2310.00",
+      "total_credit": "2310.00",
+      "remark": "concurrent3 20"
+    },
+    {
+      "id": "9e3dfc0b-61e7-4e9c-a4b2-68a380832a0c",
+      "naming_series": "JE-2026-00079",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "2090.00",
+      "total_credit": "2090.00",
+      "remark": "concurrent3 18"
+    },
+    {
+      "id": "22a108ca-594c-4b98-a7de-dbcaaa8c1536",
+      "naming_series": "JE-2026-00072",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1980.00",
+      "total_credit": "1980.00",
+      "remark": "concurrent3 17"
+    },
+    {
+      "id": "609dc9e1-1969-4e75-babb-05c5fd947515",
+      "naming_series": "JE-2026-00070",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1870.00",
+      "total_credit": "1870.00",
+      "remark": "concurrent3 16"
+    },
+    {
+      "id": "1e057830-401c-4ed0-8393-a57011fa3d3a",
+      "naming_series": "JE-2026-00073",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1650.00",
+      "total_credit": "1650.00",
+      "remark": "concurrent3 14"
+    },
+    {
+      "id": "22dbd451-820d-48eb-a931-75b4964f1cea",
+      "naming_series": "JE-2026-00068",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "2200.00",
+      "total_credit": "2200.00",
+      "remark": "concurrent3 19"
+    },
+    {
+      "id": "43325f2b-6f40-4214-95e7-2b52bce2a7b0",
+      "naming_series": "JE-2026-00076",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "2420.00",
+      "total_credit": "2420.00",
+      "remark": "concurrent3 21"
+    },
+    {
+      "id": "8f7fcddb-4ca7-4b76-986d-37f30d009029",
+      "naming_series": "JE-2026-00074",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1100.00",
+      "total_credit": "1100.00",
+      "remark": "concurrent3 9"
+    },
+    {
+      "id": "a6f0947a-0714-4ff3-b8e2-f089c80f9f75",
+      "naming_series": "JE-2026-00066",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1430.00",
+      "total_credit": "1430.00",
+      "remark": "concurrent3 12"
+    },
+    {
+      "id": "ad09f0f6-d1f0-40b3-a7b5-484c8535b76e",
+      "naming_series": "JE-2026-00065",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1540.00",
+      "total_credit": "1540.00",
+      "remark": "concurrent3 13"
+    },
+    {
+      "id": "78a39e1c-49fa-4bd3-898c-30688bdda2d2",
+      "naming_series": "JE-2026-00067",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "550.00",
+      "total_credit": "550.00",
+      "remark": "concurrent3 4"
+    },
+    {
+      "id": "078aaea7-c145-4ca6-b86e-3e1c8ce95307",
+      "naming_series": "JE-2026-00064",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1760.00",
+      "total_credit": "1760.00",
+      "remark": "concurrent3 15"
+    },
+    {
+      "id": "83163f4a-d73f-4058-bf01-2cab72909e25",
+      "naming_series": "JE-2026-00063",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1320.00",
+      "total_credit": "1320.00",
+      "remark": "concurrent3 11"
+    },
+    {
+      "id": "53a035e9-fd17-4a52-abe1-ead3f18e71d0",
+      "naming_series": "JE-2026-00069",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "660.00",
+      "total_credit": "660.00",
+      "remark": "concurrent3 5"
+    },
+    {
+      "id": "10ac59d6-a2f0-4a8a-a72f-99f9c6b2031d",
+      "naming_series": "JE-2026-00077",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1210.00",
+      "total_credit": "1210.00",
+      "remark": "concurrent3 10"
+    },
+    {
+      "id": "e55fd77b-241d-4960-8144-3ea00b381c05",
+      "naming_series": "JE-2026-00062",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "990.00",
+      "total_credit": "990.00",
+      "remark": "concurrent3 8"
+    },
+    {
+      "id": "2fc1e881-bec4-4459-a548-aaded89fdb1b",
+      "naming_series": "JE-2026-00060",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "440.00",
+      "total_credit": "440.00",
+      "remark": "concurrent3 3"
+    },
+    {
+      "id": "c241e177-3f56-4fea-b667-7dd93d3aae62",
+      "naming_series": "JE-2026-00061",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "880.00",
+      "total_credit": "880.00",
+      "remark": "concurrent3 7"
+    },
+    {
+      "id": "67b9d951-d52c-4e8a-99a1-3663d4e15984",
+      "naming_series": "JE-2026-00059",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "770.00",
+      "total_credit": "770.00",
+      "remark": "concurrent3 6"
+    },
+    {
+      "id": "4dcb3122-08d4-4eee-9043-6496fe281581",
+      "naming_series": "JE-2026-00058",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "110.00",
+      "total_credit": "110.00",
+      "remark": "concurrent3 0"
+    },
+    {
+      "id": "e2280dbe-851f-4f58-9a6d-d526bfaebdec",
+      "naming_series": "JE-2026-00057",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "330.00",
+      "total_credit": "330.00",
+      "remark": "concurrent3 2"
+    },
+    {
+      "id": "d736d52b-d68d-4d8c-aa38-35e31bbfe08c",
+      "naming_series": "JE-2026-00056",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "220.00",
+      "total_credit": "220.00",
+      "remark": "concurrent3 1"
+    },
+    {
+      "id": "0857d40f-a685-4015-8a3e-9b25d8224d01",
+      "naming_series": "JE-2026-00055",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1210.00",
+      "total_credit": "1210.00",
+      "remark": "concurrent3 10"
+    },
+    {
+      "id": "c715f191-61bd-4359-91e4-7d2cc5242127",
+      "naming_series": "JE-2026-00054",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1100.00",
+      "total_credit": "1100.00",
+      "remark": "concurrent3 9"
+    },
+    {
+      "id": "5cdc575d-569f-47f6-82e6-39c30482f31b",
+      "naming_series": "JE-2026-00053",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1320.00",
+      "total_credit": "1320.00",
+      "remark": "concurrent3 11"
+    },
+    {
+      "id": "9c7bcc36-75a3-452a-a7a9-5063b8fbc81a",
+      "naming_series": "JE-2026-00052",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "990.00",
+      "total_credit": "990.00",
+      "remark": "concurrent3 8"
+    },
+    {
+      "id": "6e428ae6-b415-4bd3-a8ba-45196aa2ccd2",
+      "naming_series": "JE-2026-00051",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "220.00",
+      "total_credit": "220.00",
+      "remark": "concurrent3 1"
+    },
+    {
+      "id": "5025b69e-f89c-4aad-8421-89bb4745b182",
+      "naming_series": "JE-2026-00050",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "880.00",
+      "total_credit": "880.00",
+      "remark": "concurrent3 7"
+    },
+    {
+      "id": "a33d42f8-2ead-4134-807b-ee6ae6d52b4a",
+      "naming_series": "JE-2026-00049",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "440.00",
+      "total_credit": "440.00",
+      "remark": "concurrent3 3"
+    },
+    {
+      "id": "a1133bdf-3831-4b72-bd07-3eae35455a55",
+      "naming_series": "JE-2026-00048",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "770.00",
+      "total_credit": "770.00",
+      "remark": "concurrent3 6"
+    },
+    {
+      "id": "672940c9-b1fb-425f-9e14-eb987f248f9f",
+      "naming_series": "JE-2026-00047",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "110.00",
+      "total_credit": "110.00",
+      "remark": "concurrent3 0"
+    },
+    {
+      "id": "7a482ef1-b3b5-4f19-ae14-85b422e2af07",
+      "naming_series": "JE-2026-00046",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "550.00",
+      "total_credit": "550.00",
+      "remark": "concurrent3 4"
+    },
+    {
+      "id": "5bdc11e5-4628-498d-837b-4db15bbe9fb3",
+      "naming_series": "JE-2026-00045",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "660.00",
+      "total_credit": "660.00",
+      "remark": "concurrent3 5"
+    },
+    {
+      "id": "d2918bd9-c938-4b36-8770-4974ef3e2df4",
+      "naming_series": "JE-2026-00044",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "330.00",
+      "total_credit": "330.00",
+      "remark": "concurrent3 2"
+    },
+    {
+      "id": "4096d44b-acb3-4af1-8f2d-94d81ca5a244",
+      "naming_series": "JE-2026-00043",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "440.00",
+      "total_credit": "440.00",
+      "remark": "concurrent2 3"
+    },
+    {
+      "id": "963b49b1-0c61-4fcd-bc59-13d41326245b",
+      "naming_series": "JE-2026-00042",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "990.00",
+      "total_credit": "990.00",
+      "remark": "concurrent2 8"
+    },
+    {
+      "id": "9116675f-7fa9-43b2-9400-02d893af099c",
+      "naming_series": "JE-2026-00041",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1320.00",
+      "total_credit": "1320.00",
+      "remark": "concurrent2 11"
+    },
+    {
+      "id": "eff353d0-93b7-4add-b0a6-e4632d695dcd",
+      "naming_series": "JE-2026-00040",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "220.00",
+      "total_credit": "220.00",
+      "remark": "concurrent2 1"
+    },
+    {
+      "id": "16ddc0c4-22fc-4644-92ad-7eb1ab9b0388",
+      "naming_series": "JE-2026-00039",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "draft",
+      "total_debit": "770.00",
+      "total_credit": "770.00",
+      "remark": "concurrent2 6"
+    },
+    {
+      "id": "6b9edd37-5cfb-4aac-af16-4c6cb6cee50b",
+      "naming_series": "JE-2026-00038",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1210.00",
+      "total_credit": "1210.00",
+      "remark": "concurrent2 10"
+    },
+    {
+      "id": "ce2c9194-3034-4ac6-8a9d-4cfd6c37f8a9",
+      "naming_series": "JE-2026-00037",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "110.00",
+      "total_credit": "110.00",
+      "remark": "concurrent2 0"
+    },
+    {
+      "id": "d9c81e53-1a0f-45ad-bc40-59f0da681dfe",
+      "naming_series": "JE-2026-00036",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "1100.00",
+      "total_credit": "1100.00",
+      "remark": "concurrent2 9"
+    },
+    {
+      "id": "4053ae8f-3933-4656-9ed4-1099971fca57",
+      "naming_series": "JE-2026-00035",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "submitted",
+      "total_debit": "880.00",
+      "total_credit": "880.00",
+      "remark": "concurrent2 7"
+    },
+    {
+      "id": "8b61cec9-aa8c-4ae9-b30f-c0e56cde1ebf",
+      "naming_series": "JE-2026-00034",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "draft",
+      "total_debit": "550.00",
+      "total_credit": "550.00",
+      "remark": "concurrent2 4"
+    },
+    {
+      "id": "a8a159d1-3427-4028-beac-032e9cafb40e",
+      "naming_series": "JE-2026-00033",
+      "posting_date": "2026-09-13",
+      "entry_type": "journal",
+      "status": "draft",
+      "total_debit": "1320.00",
+      "total_credit": "1320.00",
+      "remark": "concurrent 11"
+    }
+  ],
+  "total_count": 82,
+  "limit": 50,
+  "offset": 0,
+  "has_more": true,
+  "status": "ok"
+}

@@ -10553,7 +10553,7 @@
         "bridgeUnavailableHint": "Gateway još nema podešen most (ERP_BRIDGE_URL). Do tada ERP podaci ostaju prazni – komande, odobrenja i revizioni trag i dalje rade.",
         "noCapability": "Nedostaje ti ovlašćenje za ovo.",
         "noCapabilityHint": "Administrator tenanta može da ti ga dodeli u Podešavanja › Pristup.",
-        "erpFailed": "ERPClaw je odbio komandu za čitanje.",
+        "erpFailed": "ERPClaw je odbio komandu.",
         "unauthorized": "Prijavi se ponovo.",
         "noTenant": "Nema aktivnog tenanta – prvo izaberi radni prostor.",
         "notFound": "Nije pronađeno.",
@@ -11095,7 +11095,11 @@
           "opportunity": "Id prilike",
           "crm_task_id": "Id zadatka",
           "opportunity_id": "Id prilike",
-          "expected_revenue": "Očekivani prihod"
+          "expected_revenue": "Očekivani prihod",
+          "journal_entry_id": "ID naloga",
+          "opportunity_type": "Vrsta prilike",
+          "lost_reason": "Razlog",
+          "sales_invoice_id": "ID fakture"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11138,7 +11142,10 @@
           "lost": "Izgubljen",
           "unresponsive": "Bez odgovora",
           "qualified": "Kvalifikovan",
-          "new": "Novo"
+          "new": "Novo",
+          "sales": "Prodaja",
+          "support": "Podrška",
+          "maintenance": "Održavanje"
         },
         "forms": {
           "lead": {
@@ -11215,6 +11222,41 @@
             "button": "Otkaži",
             "title": "Otkaži zadatak",
             "description": "Zadatak se otkazuje i ostaje vidljiv. Razlog je obavezan."
+          },
+          "invoiceCancel": {
+            "button": "Storniraj",
+            "title": "Storniraj fakturu",
+            "description": "Stornira proknjiženu fakturu i poništava njena knjiženja. Visok rizik: potrebno je odobrenje druge osobe."
+          },
+          "journalCancel": {
+            "button": "Storniraj",
+            "title": "Storniraj nalog za knjiženje",
+            "description": "Stornira proknjižen nalog i poništava njegova knjiženja. Visok rizik: potrebno je odobrenje druge osobe."
+          },
+          "opportunityLost": {
+            "button": "Izgubljena",
+            "title": "Označi priliku kao izgubljenu",
+            "description": "Postavlja fazu na izgubljena. Razlog je obavezan. Konačno – ERPClaw posle toga zaključava priliku."
+          },
+          "journalSubmit": {
+            "button": "Proknjiži",
+            "title": "Proknjiži nalog za knjiženje",
+            "description": "Knjiži nacrt u glavnu knjigu. Posle toga se može samo stornirati."
+          },
+          "leadConvert": {
+            "button": "Pretvori u priliku",
+            "title": "Pretvori lead u prodajnu priliku",
+            "description": "Pravi prodajnu priliku iz leada i označava ga kao pretvorenog. Lead se posle toga ne može uređivati."
+          },
+          "opportunityWon": {
+            "button": "Dobijena",
+            "title": "Označi priliku kao dobijenu",
+            "description": "Postavlja fazu na dobijena i verovatnoću na 100 %. Konačno – ERPClaw posle toga zaključava priliku."
+          },
+          "invoiceSubmit": {
+            "button": "Proknjiži",
+            "title": "Proknjiži fakturu",
+            "description": "Knjiži fakturu u nacrtu u glavnu knjigu (potraživanje i prihod). Posle toga se može samo stornirati."
           }
         },
         "noLineRows": "Nema dostupnih stavki.",
@@ -11233,7 +11275,27 @@
         "failedUpdate": "Nije sačuvano",
         "updatedWithRef": "Sačuvano: {ref}",
         "whatHappensUpdate": "Nivo nacrta: menja postojeći zapis — bez knjiženja, bez koraka odobrenja, reverzibilno ponovnim uređivanjem.",
-        "doneUpdate": "Sačuvano"
+        "doneUpdate": "Sačuvano",
+        "confirmCommitHint": "Nivo knjiženja – knjiži u glavnu knjigu ili postavlja konačan status. Ne poništava se uređivanjem; potvrda se daje samo ovde, nikad glasom.",
+        "confirmHighHint": "Visok rizik – ovde se ništa ne izvršava. Zahtev ide u red za odobrenje; može ga odlučiti samo neko drugi sa pravom odobravanja (princip četiri oka).",
+        "confirmCommit": "Potvrđujem: ova komanda se odmah izvršava u ERP-u.",
+        "queuedLine": "U redu – čeka drugu osobu",
+        "queuedHint": "Sopstveni zahtev ne možeš odobriti. Prati ga pod „Moji zahtevi“; odlučuje ga neko drugi u redu.",
+        "confirmHigh": "Potvrđujem zahtev i razumem da ga druga osoba mora odobriti.",
+        "acceptCommit": "Potvrdi i izvrši",
+        "doneHintCommit": "ERP je izvršio komandu; lista iza je ponovo učitana. Potvrda ispod je ono što je most sačuvao.",
+        "doneCommitLine": "Izvršeno",
+        "whatHappensCommit": "Nivo knjiženja: izvršava se odmah nakon tvoje potvrde – knjiži u glavnu knjigu ili postavlja konačan status i ne može se vratiti uređivanjem.",
+        "queued": "Poslato na odobrenje",
+        "doneCommitWithRef": "Izvršeno: {ref}",
+        "doneCommit": "Izvršeno",
+        "queuedWithId": "ID odobrenja: {id}",
+        "whatHappensHigh": "Visok rizik: ne izvršava se sada. Zahtev čeka u redu za odobrenje na drugu osobu sa pravom odobravanja; sopstveni zahtev ne možeš odobriti.",
+        "acceptHigh": "Pošalji na odobrenje",
+        "goToMyRequests": "Idi na „Moji zahtevi“",
+        "failedCommit": "Nije izvršeno",
+        "queuedNoApprover": "Trenutno niko drugi u ovom zakupcu nema pravo odobravanja. Zahtev ostaje otvoren dok ga neko ne dobije.",
+        "failedHintCommit": "Ništa nije proknjiženo i nijedan status nije promenjen. Proveri razlog i stanje dokumenta, pa pokušaj ponovo."
       },
       "policyEdit": {
         "button": "Uredi politiku",
@@ -11299,7 +11361,8 @@
           "mfaRequired": "Ovo odobrenje zahteva sesiju sa drugim faktorom (MFA).",
           "alreadyDecided": "O ovom zahtevu je već odlučeno.",
           "notFound": "Zahtev nije pronađen."
-        }
+        },
+        "payload": "Sadržaj zahteva"
       }
     }
   }

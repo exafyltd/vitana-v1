@@ -10553,7 +10553,7 @@
         "bridgeUnavailableHint": "El gateway aún no tiene un puente configurado (ERP_BRIDGE_URL). Hasta entonces los datos ERP quedan vacíos; comandos, aprobaciones y el registro de auditoría siguen funcionando.",
         "noCapability": "Te falta una capacidad para esto.",
         "noCapabilityHint": "Un administrador del tenant puede concedértela en Configuración › Acceso.",
-        "erpFailed": "ERPClaw rechazó el comando de lectura.",
+        "erpFailed": "ERPClaw rechazó el comando.",
         "unauthorized": "Vuelve a iniciar sesión.",
         "noTenant": "No hay tenant activo: elige primero un espacio de trabajo.",
         "notFound": "No encontrado.",
@@ -11095,7 +11095,11 @@
           "opportunity": "Id de oportunidad",
           "crm_task_id": "Id de tarea",
           "opportunity_id": "Id de oportunidad",
-          "expected_revenue": "Ingresos previstos"
+          "expected_revenue": "Ingresos previstos",
+          "journal_entry_id": "ID del asiento",
+          "opportunity_type": "Tipo de oportunidad",
+          "lost_reason": "Motivo",
+          "sales_invoice_id": "ID de factura"
         },
         "choices": {
           "website": "Sitio web",
@@ -11138,7 +11142,10 @@
           "lost": "Perdido",
           "unresponsive": "Sin respuesta",
           "qualified": "Cualificado",
-          "new": "Nuevo"
+          "new": "Nuevo",
+          "sales": "Ventas",
+          "support": "Soporte",
+          "maintenance": "Mantenimiento"
         },
         "forms": {
           "lead": {
@@ -11215,6 +11222,41 @@
             "button": "Cancelar",
             "title": "Cancelar tarea",
             "description": "La tarea se cancela y sigue visible. El motivo es obligatorio."
+          },
+          "invoiceCancel": {
+            "button": "Anular",
+            "title": "Anular factura",
+            "description": "Anula una factura contabilizada y revierte sus asientos. Alto riesgo: necesita la aprobación de una segunda persona."
+          },
+          "journalCancel": {
+            "button": "Anular",
+            "title": "Anular asiento",
+            "description": "Anula un asiento contabilizado y revierte sus apuntes. Alto riesgo: necesita la aprobación de una segunda persona."
+          },
+          "opportunityLost": {
+            "button": "Perdida",
+            "title": "Marcar oportunidad como perdida",
+            "description": "Pone la etapa en perdida. El motivo es obligatorio. Definitivo: ERPClaw bloquea la oportunidad después."
+          },
+          "journalSubmit": {
+            "button": "Contabilizar",
+            "title": "Contabilizar asiento",
+            "description": "Asienta el borrador en el libro mayor. Después solo se puede anular."
+          },
+          "leadConvert": {
+            "button": "Convertir en oportunidad",
+            "title": "Convertir lead en oportunidad",
+            "description": "Crea una oportunidad a partir del lead y lo marca como convertido. Después el lead ya no se puede editar."
+          },
+          "opportunityWon": {
+            "button": "Ganada",
+            "title": "Marcar oportunidad como ganada",
+            "description": "Pone la etapa en ganada y la probabilidad en 100 %. Definitivo: ERPClaw bloquea la oportunidad después."
+          },
+          "invoiceSubmit": {
+            "button": "Contabilizar",
+            "title": "Contabilizar factura",
+            "description": "Asienta la factura borrador en el libro mayor (cuenta a cobrar e ingreso). Después solo se puede anular."
           }
         },
         "noLineRows": "No hay líneas disponibles.",
@@ -11233,7 +11275,27 @@
         "failedUpdate": "No guardado",
         "updatedWithRef": "Guardado: {ref}",
         "whatHappensUpdate": "Nivel borrador: modifica un registro existente, sin asiento ni paso de aprobación, reversible volviendo a editar.",
-        "doneUpdate": "Guardado"
+        "doneUpdate": "Guardado",
+        "confirmCommitHint": "Nivel contabilización: asienta en el libro mayor o fija un estado final. No se deshace editando; la confirmación solo se da aquí, nunca por voz.",
+        "confirmHighHint": "Alto riesgo: aquí no se ejecuta nada. La solicitud va a la cola de aprobaciones; solo otra persona con la capacidad de aprobar puede decidirla (doble control).",
+        "confirmCommit": "Confirmo: este comando se ejecuta en el ERP ahora mismo.",
+        "queuedLine": "En cola: a la espera de una segunda persona",
+        "queuedHint": "No puedes aprobar tu propia solicitud. Síguela en «Mis solicitudes»; la decide otra persona en la cola.",
+        "confirmHigh": "Confirmo la solicitud y entiendo que una segunda persona debe aprobarla.",
+        "acceptCommit": "Confirmar y ejecutar",
+        "doneHintCommit": "El ERP ejecutó el comando; la lista de detrás se recargó. El recibo de abajo es lo que guardó el puente.",
+        "doneCommitLine": "Ejecutado",
+        "whatHappensCommit": "Nivel contabilización: se ejecuta de inmediato tras tu confirmación; asienta en el libro mayor o fija un estado final y no se revierte editando.",
+        "queued": "Enviado a aprobación",
+        "doneCommitWithRef": "Ejecutado: {ref}",
+        "doneCommit": "Ejecutado",
+        "queuedWithId": "ID de aprobación: {id}",
+        "whatHappensHigh": "Alto riesgo: no se ejecuta ahora. La solicitud espera en la cola de aprobaciones a una segunda persona con la capacidad de aprobar; no puedes aprobar tu propia solicitud.",
+        "acceptHigh": "Enviar a aprobación",
+        "goToMyRequests": "Ir a «Mis solicitudes»",
+        "failedCommit": "No ejecutado",
+        "queuedNoApprover": "Ahora mismo nadie más en este inquilino tiene la capacidad de aprobar. La solicitud queda abierta hasta que alguien la tenga.",
+        "failedHintCommit": "No se asentó nada ni cambió ningún estado. Revisa el motivo y el estado del documento e inténtalo de nuevo."
       },
       "policyEdit": {
         "button": "Editar política",
@@ -11299,7 +11361,8 @@
           "mfaRequired": "Esta aprobación necesita una sesión con segundo factor (MFA).",
           "alreadyDecided": "Esta solicitud ya fue decidida.",
           "notFound": "Solicitud no encontrada."
-        }
+        },
+        "payload": "Contenido de la solicitud"
       }
     }
   }

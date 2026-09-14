@@ -14,7 +14,7 @@ import { fullTextMatch, type ErpLead } from "@/lib/backoffice-sales";
 import { fmtDateTime } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
-import { isLeadEditable, leadUpdateInitial } from "@/lib/backoffice-draft";
+import { canConvertLead, isLeadEditable, leadConvertInitial, leadUpdateInitial } from "@/lib/backoffice-draft";
 
 const CAPS = ["crm.view"] as const;
 
@@ -106,7 +106,13 @@ export default function BackOfficeLeads() {
                 {/* VTID-03876 — editing is a Draft against the selected lead; ERPClaw freezes a converted one, so the card is not offered there. */}
                 <div className="pt-2 border-t">
                   {isLeadEditable(d!)
-                    ? <DraftCommandButton formId="leadUpdate" variant="outline" initial={leadUpdateInitial(d!)} />
+                    ? (
+                      <div className="flex flex-wrap gap-1">
+                        <DraftCommandButton formId="leadUpdate" variant="outline" initial={leadUpdateInitial(d!)} />
+                        {/* VTID-03888 — converting is Commit tier: creates the opportunity and freezes the lead, after an explicit confirmation. */}
+                        {canConvertLead(d!) && <DraftCommandButton formId="leadConvert" initial={leadConvertInitial(d!)} />}
+                      </div>
+                    )
                     : <p className="text-xs text-muted-foreground">{t("screens.backoffice.sales.leads.frozenHint")}</p>}
                 </div>
                 </>

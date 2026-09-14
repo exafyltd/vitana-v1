@@ -1,0 +1,15 @@
+{
+  "opportunity": {
+    "id": "1ccc2174-0fb6-4e4d-b4f4-fd704057844d",
+    "naming_series": "OPP-2026-00004",
+    "opportunity_name": "Saleh Dental Clinic",
+    "lead_id": "c87d141b-deaa-41d9-ad13-045a1a1096e0",
+    "stage": "new",
+    "probability": "50",
+    "expected_revenue": "0",
+    "weighted_revenue": "0.00"
+  },
+  "lead_status": "converted",
+  "message": "Lead converted to opportunity OPP-2026-00004",
+  "status": "ok"
+}

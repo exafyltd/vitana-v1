@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Cannot submit: sales invoice is 'submitted' (must be 'draft')"
+}

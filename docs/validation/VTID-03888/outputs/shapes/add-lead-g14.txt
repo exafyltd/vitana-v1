@@ -1,0 +1,15 @@
+{
+  "lead": {
+    "id": "afcbb7f6-ec44-4ee5-801c-d1f20935eea2",
+    "naming_series": "LEAD-2026-00004",
+    "lead_name": "Nadia Rahman",
+    "company_name": "Rahman Logistics FZE",
+    "email": "nadia@rahman-logistics.ae",
+    "phone": null,
+    "source": "referral",
+    "lead_source_id": null,
+    "status": "new"
+  },
+  "message": "Lead 'Nadia Rahman' created (LEAD-2026-00004)",
+  "status": "ok"
+}

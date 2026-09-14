@@ -1,0 +1,6 @@
+{
+  "sales_invoice_id": "581f87fe-b2bc-4568-ac47-bd5c0ef0baa3",
+  "status": "ok",
+  "gl_reversals": 2,
+  "sle_reversals": 0
+}

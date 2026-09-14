@@ -10553,7 +10553,7 @@
         "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
         "noCapability": "You lack a capability for this.",
         "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
-        "erpFailed": "ERPClaw rejected the read command.",
+        "erpFailed": "ERPClaw rejected the command.",
         "unauthorized": "Please sign in again.",
         "noTenant": "No active tenant – pick a workspace first.",
         "notFound": "Not found.",
@@ -11095,7 +11095,11 @@
           "opportunity": "Opportunity id",
           "crm_task_id": "Task id",
           "opportunity_id": "Opportunity id",
-          "expected_revenue": "Expected revenue"
+          "expected_revenue": "Expected revenue",
+          "journal_entry_id": "Journal entry id",
+          "opportunity_type": "Opportunity type",
+          "lost_reason": "Reason",
+          "sales_invoice_id": "Invoice id"
         },
         "choices": {
           "website": "Website",
@@ -11138,7 +11142,10 @@
           "lost": "Lost",
           "unresponsive": "Unresponsive",
           "qualified": "Qualified",
-          "new": "New"
+          "new": "New",
+          "sales": "Sales",
+          "support": "Support",
+          "maintenance": "Maintenance"
         },
         "forms": {
           "lead": {
@@ -11215,6 +11222,41 @@
             "button": "Cancel",
             "title": "Cancel task",
             "description": "The task is cancelled and stays visible. A reason is required."
+          },
+          "invoiceCancel": {
+            "button": "Cancel",
+            "title": "Cancel invoice",
+            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval."
+          },
+          "journalCancel": {
+            "button": "Cancel",
+            "title": "Cancel journal entry",
+            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval."
+          },
+          "opportunityLost": {
+            "button": "Lost",
+            "title": "Mark opportunity lost",
+            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards."
+          },
+          "journalSubmit": {
+            "button": "Post",
+            "title": "Post journal entry",
+            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled."
+          },
+          "leadConvert": {
+            "button": "Convert to opportunity",
+            "title": "Convert lead to opportunity",
+            "description": "Creates an opportunity from the lead and marks the lead converted. The lead can no longer be edited afterwards."
+          },
+          "opportunityWon": {
+            "button": "Won",
+            "title": "Mark opportunity won",
+            "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards."
+          },
+          "invoiceSubmit": {
+            "button": "Post",
+            "title": "Post invoice",
+            "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled."
           }
         },
         "noLineRows": "No lines available.",
@@ -11233,7 +11275,27 @@
         "failedUpdate": "Not saved",
         "updatedWithRef": "Saved: {ref}",
         "whatHappensUpdate": "Draft tier: changes an existing record — no posting, no approval step, reversible by editing again.",
-        "doneUpdate": "Saved"
+        "doneUpdate": "Saved",
+        "confirmCommitHint": "Commit tier — posts to the ledger or sets a final status. Not reversible by editing; the confirmation is given only here, never by voice.",
+        "confirmHighHint": "High-risk — nothing runs here. The request goes to the approvals queue; only someone else holding the approve capability can decide it (maker-checker).",
+        "confirmCommit": "I confirm: this command runs in the ERP right now.",
+        "queuedLine": "Queued — waiting for a second person",
+        "queuedHint": "You cannot approve your own request. Follow it under My requests; someone else decides it in the queue.",
+        "confirmHigh": "I confirm the request and understand a second person has to approve it.",
+        "acceptCommit": "Confirm and execute",
+        "doneHintCommit": "The ERP executed the command; the list behind this was reloaded. The receipt below is what the bridge stored.",
+        "doneCommitLine": "Executed",
+        "whatHappensCommit": "Commit tier: runs immediately after your confirmation — posts to the ledger or sets a final status, and cannot be taken back by editing.",
+        "queued": "Submitted for approval",
+        "doneCommitWithRef": "Executed: {ref}",
+        "doneCommit": "Executed",
+        "queuedWithId": "Approval id: {id}",
+        "whatHappensHigh": "High-risk: does not run now. The request waits in the approvals queue for a second person with the approve capability; you cannot approve your own request.",
+        "acceptHigh": "Submit for approval",
+        "goToMyRequests": "Go to My requests",
+        "failedCommit": "Not executed",
+        "queuedNoApprover": "Right now nobody else in this tenant holds the approve capability. The request stays open until someone does.",
+        "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again."
       },
       "policyEdit": {
         "button": "Edit policy",
@@ -11299,7 +11361,8 @@
           "mfaRequired": "This approval needs a session with a second factor (MFA).",
           "alreadyDecided": "This request has already been decided.",
           "notFound": "Request not found."
-        }
+        },
+        "payload": "Request contents"
       }
     }
   }

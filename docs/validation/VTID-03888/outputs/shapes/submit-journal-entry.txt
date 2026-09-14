@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "journal_entry_id": "1f4c5499-e3f0-4dd6-aabc-319a22124412",
+  "gl_entries_created": 2
+}

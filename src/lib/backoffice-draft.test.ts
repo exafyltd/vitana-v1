@@ -1,12 +1,17 @@
 import { describe, expect, it } from "vitest";
 import de from "@/i18n/de/screens.json";
-import { ACCOUNT_LOOKUP, DRAFT_FORMS, LEAD_UPDATE_STATUSES, draftCreates, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, isLeadEditable, isOpportunityEditable, isTaskActionable, leadUpdateInitial, opportunityUpdateInitial, taskUpdateInitial, validateDraft } from "./backoffice-draft";
+import { ACCOUNT_LOOKUP, DRAFT_FORMS, LEAD_UPDATE_STATUSES, canCancelInvoice, canCancelJournal, canConvertLead, canMarkOpportunity, canSubmitInvoice, canSubmitJournal, draftCreates, draftTier, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, isLeadEditable, isOpportunityEditable, isTaskActionable, leadConvertInitial, leadUpdateInitial, opportunityUpdateInitial, taskUpdateInitial, validateDraft } from "./backoffice-draft";
 
 describe("draft forms", () => {
-  it("every form maps to a Draft typed command with a single capability and at least one required field", () => {
+  it("every form maps to a typed command (Draft, Commit or High-risk — VTID-03888) with a single capability and at least one required field", () => {
     for (const spec of Object.values(DRAFT_FORMS)) {
-      expect(spec.type).toMatch(/^(crm|sales|accounting)\.[a-z_]+\.(create|update|set_stage|complete|cancel)$|^finance\.payment\.record$/);
-      expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : spec.type.startsWith("sales.") ? "sales.draft" : spec.type.startsWith("accounting.") ? "accounting.post" : "finance.approve");
+      expect(spec.type).toMatch(/^(crm|sales|accounting)\.[a-z_]+\.(create|update|set_stage|complete|cancel|convert|mark_won|mark_lost|submit)$|^finance\.payment\.record$/);
+      const tier = draftTier(spec);
+      const expectedCap = spec.type.startsWith("crm.") ? "crm.manage"
+        : spec.type.startsWith("sales.") ? (tier === "draft" ? "sales.draft" : "sales.commit")
+        : spec.type === "accounting.journal.cancel" ? "accounting.close"
+        : spec.type.startsWith("accounting.") ? "accounting.post" : "finance.approve";
+      expect(spec.capability, spec.id).toBe(expectedCap);
       expect(spec.fields.some((f) => f.required)).toBe(true);
       for (const f of spec.fields) if (f.kind === "select") expect(f.options && f.options.length > 0).toBe(true);
     }
@@ -224,5 +229,53 @@ describe("every draft form is fully translated in the source catalogue", () => {
     expect(draftCreates(DRAFT_FORMS.leadUpdate)).toBe(false);
     expect(draftCreates(DRAFT_FORMS.taskComplete)).toBe(false);
     expect(draftCreates(DRAFT_FORMS.opportunityStage)).toBe(false);
+  });
+});
+
+describe("Commit-tier and High-risk cards (VTID-03888)", () => {
+  it("tiers match the gateway catalog: convert/won/lost/submit are Commit, the two cancels are High-risk, everything else Draft", () => {
+    expect(["leadConvert", "opportunityWon", "opportunityLost", "invoiceSubmit", "journalSubmit"].map((id) => draftTier(DRAFT_FORMS[id as keyof typeof DRAFT_FORMS]))).toEqual(["commit", "commit", "commit", "commit", "commit"]);
+    expect(["invoiceCancel", "journalCancel"].map((id) => draftTier(DRAFT_FORMS[id as keyof typeof DRAFT_FORMS]))).toEqual(["high", "high"]);
+    for (const id of ["lead", "leadUpdate", "taskCancel", "creditNote", "payment", "journal"] as const) expect(draftTier(DRAFT_FORMS[id])).toBe("draft");
+  });
+  it("Commit/High-risk types and actions are the catalog's (backoffice-commands.ts) — the bridge maps them 1:1", () => {
+    expect(DRAFT_FORMS.leadConvert).toMatchObject({ type: "crm.lead.convert", action: "convert-lead-to-opportunity", capability: "crm.manage" });
+    expect(DRAFT_FORMS.opportunityWon).toMatchObject({ type: "crm.opportunity.mark_won", action: "mark-opportunity-won" });
+    expect(DRAFT_FORMS.opportunityLost).toMatchObject({ type: "crm.opportunity.mark_lost", action: "mark-opportunity-lost" });
+    expect(DRAFT_FORMS.invoiceSubmit).toMatchObject({ type: "sales.invoice.submit", action: "submit-sales-invoice", capability: "sales.commit" });
+    expect(DRAFT_FORMS.invoiceCancel).toMatchObject({ type: "sales.invoice.cancel", action: "cancel-sales-invoice", capability: "sales.commit", alsoCapabilities: ["finance.approve"] });
+    expect(DRAFT_FORMS.journalSubmit).toMatchObject({ type: "accounting.journal.submit", action: "submit-journal-entry", capability: "accounting.post" });
+    expect(DRAFT_FORMS.journalCancel).toMatchObject({ type: "accounting.journal.cancel", action: "cancel-journal-entry", capability: "accounting.close" });
+  });
+  it("a card never sends a field ERPClaw does not read (the bridge refuses undeclared flags)", () => {
+    // convert: lead_id, opportunity_name, opportunity_type, expected_revenue, probability, expected_closing_date — exactly the argparse fields of convert_lead_to_opportunity (v2.10.0)
+    expect(DRAFT_FORMS.leadConvert.fields.map((f) => f.key)).toEqual(["lead_id", "opportunity_name", "opportunity_type", "expected_revenue", "probability", "expected_closing_date"]);
+    expect(DRAFT_FORMS.opportunityLost.fields.map((f) => f.key)).toEqual(["opportunity_id", "lost_reason"]);
+    for (const id of ["opportunityWon", "invoiceSubmit", "invoiceCancel", "journalSubmit", "journalCancel"] as const) expect(DRAFT_FORMS[id].fields).toHaveLength(1);
+  });
+  it("the state guards mirror ERPClaw's own: submit only a draft, cancel only a posted document, never a terminal one", () => {
+    expect(canSubmitInvoice({ status: "draft" })).toBe(true);
+    expect(["submitted", "overdue", "partially_paid"].map((s) => canCancelInvoice({ status: s }))).toEqual([true, true, true]);
+    expect(["paid", "cancelled", "draft"].map((s) => canCancelInvoice({ status: s }))).toEqual([false, false, false]);
+    expect(canSubmitInvoice({ status: "Submitted" })).toBe(false);
+    expect(canSubmitJournal({ status: "draft" })).toBe(true); expect(canSubmitJournal({ status: "submitted" })).toBe(false);
+    expect(canCancelJournal({ status: "submitted" })).toBe(true); expect(canCancelJournal({ status: "cancelled" })).toBe(false);
+    expect(canSubmitInvoice(null)).toBe(false); expect(canCancelJournal(undefined)).toBe(false);
+    expect(canConvertLead({ status: "qualified" })).toBe(true); expect(canConvertLead({ status: "converted" })).toBe(false);
+    expect(canMarkOpportunity({ stage: "negotiation" })).toBe(true); expect(canMarkOpportunity({ stage: "won" })).toBe(false); expect(canMarkOpportunity({ stage: "Lost" })).toBe(false);
+  });
+  it("the convert card starts from the lead with ERPClaw's defaults and sends only what was filled", () => {
+    const initial = leadConvertInitial({ id: "lead-1", lead_name: "Amira Haddad", company_name: "Haddad Trading" });
+    expect(initial).toEqual({ lead_id: "lead-1", opportunity_name: "Haddad Trading", opportunity_type: "sales", probability: "50" });
+    expect(leadConvertInitial({ id: "lead-2", lead_name: "Solo Person", company_name: null }).opportunity_name).toBe("Solo Person");
+    const values = { ...initialDraftValues(DRAFT_FORMS.leadConvert), ...initial };
+    expect(validateDraft(DRAFT_FORMS.leadConvert, values)).toEqual({});
+    expect(buildDraftPayload(DRAFT_FORMS.leadConvert, values)).toEqual({ lead_id: "lead-1", opportunity_name: "Haddad Trading", opportunity_type: "sales", probability: "50" });
+    expect(validateDraft(DRAFT_FORMS.opportunityLost, { opportunity_id: "o1", lost_reason: "" })).toEqual({ lost_reason: "required" });
+  });
+  it("every Commit/High-risk form is fully translated in the source catalogue, incl. the tier wording", () => {
+    const draft = (de as { screens: { backoffice: { draft: Record<string, unknown>; decide: Record<string, unknown> } } }).screens.backoffice.draft;
+    for (const k of ["confirmCommit", "confirmCommitHint", "confirmHigh", "confirmHighHint", "acceptCommit", "acceptHigh", "whatHappensCommit", "whatHappensHigh", "queued", "queuedLine", "queuedWithId", "queuedNoApprover", "queuedHint", "goToMyRequests", "doneCommit", "doneCommitLine", "doneCommitWithRef", "doneHintCommit", "failedCommit", "failedHintCommit"]) expect(typeof draft[k], k).toBe("string");
+    expect(typeof (de as { screens: { backoffice: { decide: Record<string, unknown> } } }).screens.backoffice.decide.payload).toBe("string");
   });
 });

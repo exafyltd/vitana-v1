@@ -21,7 +21,7 @@ import { formatMoney, fullTextMatch, isOverdue, num, type ErpSalesInvoice } from
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
-import { CREDIT_NOTE_SOURCE_STATUSES, creditNoteLinesFromInvoice } from "@/lib/backoffice-draft";
+import { CREDIT_NOTE_SOURCE_STATUSES, canCancelInvoice, canSubmitInvoice, creditNoteLinesFromInvoice } from "@/lib/backoffice-draft";
 
 const CAPS = ["sales.view"] as const;
 
@@ -111,6 +111,13 @@ export default function BackOfficeInvoices() {
                     { label: t("screens.backoffice.sales.invoices.salesOrder"), value: d!.sales_order_id ? shortId(d!.sales_order_id) : "—", mono: true },
                   ]} />
                   <DocumentItemsTable items={d!.items ?? []} currency={d!.currency} />
+                  {/* VTID-03888 — posting is Commit tier (explicit confirmation); cancelling a posted invoice is High-risk and goes to a second approver. ERPClaw's own state guards decide which card is offered. */}
+                  {(canSubmitInvoice(listRow) || canCancelInvoice(listRow)) && (
+                    <div className="pt-2 border-t flex flex-wrap gap-1">
+                      {canSubmitInvoice(listRow) && <DraftCommandButton formId="invoiceSubmit" initial={{ sales_invoice_id: d!.id }} />}
+                      {canCancelInvoice(listRow) && <DraftCommandButton formId="invoiceCancel" variant="outline" initial={{ sales_invoice_id: d!.id }} />}
+                    </div>
+                  )}
                   {/* VTID-03866 — a credit note is a Draft against a POSTED invoice; ERPClaw refuses any other state, so the card only appears for those. */}
                   {(CREDIT_NOTE_SOURCE_STATUSES as readonly string[]).includes(String(listRow?.status ?? "").toLowerCase()) && (
                     <div className="pt-2 border-t">
