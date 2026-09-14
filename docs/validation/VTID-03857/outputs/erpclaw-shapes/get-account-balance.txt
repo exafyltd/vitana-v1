@@ -1,0 +1,7 @@
+{
+  "balance": "54820.50",
+  "debit_total": "54862.50",
+  "credit_total": "42.00",
+  "currency": "USD",
+  "status": "ok"
+}

@@ -1,0 +1,20 @@
+== tsc (tsconfig.app.json)
+140 pre-existing errors on base (claude/practical-gates-iqwv52-vtid-03855) and on this branch; 0 in src/lib/backoffice-finance*, src/pages/backoffice/finance/*, src/App.tsx
+
+== eslint (new files, incl. i18n rules)
+npx eslint src/lib/backoffice-finance.ts src/lib/backoffice-finance.test.ts src/pages/backoffice/finance -> 0 problems
+
+== vitest run (full)
+ Test Files  33 passed (33)
+      Tests  217 passed (217)
+
+== i18n:inventory
+[generate-screen-inventory] pages: 322, keys: 4834, namespaces: 46, suspects: 67 -> docs/SCREEN_INVENTORY.md regenerated and committed
+
+== i18n key coverage
+49 screens.backoffice.finance.* keys added to de (source), en/es/sr/ar translated, fr/pl/pt/ru/tr/zh mirror EN; every key referenced by the new files resolves in de (scripted check, 0 missing)
+
+== ERPClaw-on-Postgres notes while capturing shapes
+add-payment / submit-payment / list-payments / get-payment / get-outstanding / get-unallocated-payments / list-open-advances / payment-summary / list-currencies / list-exchange-rates / get-exchange-rate all worked on Postgres (unlike the selling/reports actions noted in VTID-03855).
+get-unallocated-payments and list-open-advances require --party-type and --party-id: there is no tenant-wide 'all unallocated' read, so the Bank Reconciliation workbench derives its buckets from list-payments' unallocated_amount/status instead.
+payment-summary requires --from-date/--to-date: the Payments screen passes a calendar year-to-date window.

@@ -1,0 +1,20 @@
+{
+  "crm_task": {
+    "id": "f7497f00-5fc8-4764-8dad-3d2314235733",
+    "subject": "Call back Spike Lead",
+    "description": null,
+    "status": "open",
+    "priority": "high",
+    "due_date": "2026-09-18",
+    "assigned_to_user_id": null,
+    "created_by_user_id": null,
+    "completed_at": null,
+    "cancel_reason": null,
+    "linked_count": 1,
+    "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+    "created_at": "2026-09-13 14:44:42.136378+00",
+    "updated_at": "2026-09-14 08:48:51.54399+00"
+  },
+  "message": "Task updated",
+  "status": "ok"
+}

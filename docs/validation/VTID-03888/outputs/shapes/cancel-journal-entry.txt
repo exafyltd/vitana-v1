@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "journal_entry_id": "42fa193b-20be-490e-a3a0-8528d7cff10f",
+  "reversed": true
+}

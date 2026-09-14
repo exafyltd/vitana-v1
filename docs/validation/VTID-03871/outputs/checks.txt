@@ -1,0 +1,18 @@
+# VTID-03871 checks — 2026-09-13T19:58:18Z
+
+## tsc --noEmit -p tsconfig.app.json (error count; base has 140 pre-existing)
+140
+changed-file errors:
+0
+
+## eslint (changed files)
+0 problems
+
+## vitest run
+ Test Files  36 passed (36)
+      Tests  244 passed (244)
+
+## i18n:inventory
+[generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
+  pages: 327, keys: 4963, namespaces: 46, suspects: 67
+## long-word guard (de, max 22): OK after rewording forms.payment.description

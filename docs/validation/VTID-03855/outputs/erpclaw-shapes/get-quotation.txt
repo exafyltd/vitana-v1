@@ -1,0 +1,35 @@
+{
+  "id": "7421ec33-9b5a-46d8-9591-4043728eed79",
+  "naming_series": null,
+  "customer_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+  "quotation_date": "2026-09-10",
+  "valid_until": null,
+  "currency": "USD",
+  "exchange_rate": "1",
+  "total_amount": "35000.00",
+  "tax_amount": "0",
+  "grand_total": "35000.00",
+  "tax_template_id": null,
+  "payment_terms_id": null,
+  "status": "ok",
+  "converted_to": null,
+  "terms_and_conditions": null,
+  "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+  "created_at": "2026-09-13 14:44:42.343984+00",
+  "updated_at": "2026-09-13 14:44:42.343984+00",
+  "items": [
+    {
+      "id": "6677b1f7-e514-4a6c-8568-1cb4e2ed7740",
+      "quotation_id": "7421ec33-9b5a-46d8-9591-4043728eed79",
+      "item_id": "8d1bd4bd-f1b4-4de3-b4a9-bbc929c04b8f",
+      "quantity": "100.00",
+      "uom": "Nos",
+      "rate": "350.00",
+      "amount": "35000.00",
+      "discount_percentage": "0.00",
+      "net_amount": "35000.00",
+      "description": null,
+      "item_name": "Wellness programme (per seat)"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "crm_pipelines": [
+    {
+      "id": "33896e3a-2990-446e-92e4-8f2b84ba3c77",
+      "name": "Standard Sales",
+      "description": "Default sales pipeline (the original 7 hardcoded opportunity stages)",
+      "is_default": 1,
+      "is_active": 1,
+      "created_at": "2026-09-13 07:43:19.29541+00",
+      "updated_at": "2026-09-13 07:43:19.29541+00",
+      "stage_count": 7
+    },
+    {
+      "id": "8a5e7396-add6-4728-827e-11d670fda885",
+      "name": "Sales Pipeline",
+      "description": null,
+      "is_default": 0,
+      "is_active": 1,
+      "created_at": "2026-09-13 14:44:15.112341+00",
+      "updated_at": "2026-09-13 14:44:15.112341+00",
+      "stage_count": 4
+    }
+  ],
+  "total": 2,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

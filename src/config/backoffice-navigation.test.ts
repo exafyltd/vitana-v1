@@ -13,6 +13,7 @@ import {
   getBackOfficeSectionByPath,
   getBackOfficeTabByPath,
   getBackOfficeTabWave,
+  canUseBackOfficeSection,
 } from './backoffice-navigation';
 import { ADMIN_SECTIONS } from './admin-navigation';
 import { backOfficeNavigation, getRoleNavigation, getVisibleBackOfficeNavigation } from './role-navigation';
@@ -117,6 +118,32 @@ describe('BACKOFFICE_SECTIONS (VTID-03833)', () => {
     expect(noAdmin).toHaveLength(12);
     expect(noAdmin.some((i) => i.path.startsWith('/admin'))).toBe(false);
     expect(noAdmin[0].path).toBe('/backoffice/dashboard');
+  });
+
+  it('VTID-03834: sections are gated by ERP capabilities (any-of); Overview/Approvals never; unknown = show all', () => {
+    const sales = content.find((s) => s.key === 'sales')!;
+    const overview = content.find((s) => s.key === 'overview')!;
+    const approvals = content.find((s) => s.key === 'approvals')!;
+    const hr = content.find((s) => s.key === 'hr')!;
+    expect(canUseBackOfficeSection(sales, ['crm.view'])).toBe(true);
+    expect(canUseBackOfficeSection(sales, ['sales.view'])).toBe(true);
+    expect(canUseBackOfficeSection(sales, ['reports.view'])).toBe(false);
+    expect(canUseBackOfficeSection(sales, [])).toBe(false);
+    expect(canUseBackOfficeSection(sales, null)).toBe(true);
+    expect(canUseBackOfficeSection(overview, [])).toBe(true);
+    expect(canUseBackOfficeSection(approvals, [])).toBe(true);
+    expect(canUseBackOfficeSection(hr, ['finance.view'])).toBe(false);
+    expect(canUseBackOfficeSection(hr, ['hr.view'])).toBe(true);
+    // a pure backoffice grant with nothing else sees only Overview + Approvals
+    const bare = getVisibleBackOfficeNavigation(false, []);
+    expect(bare.map((i) => i.path)).toEqual(['/backoffice/dashboard', '/backoffice/approvals/queue']);
+    // a bookkeeper: finance + accounting + reports + overview + approvals
+    const bookkeeper = getVisibleBackOfficeNavigation(false, ['finance.view', 'accounting.view', 'reports.view']);
+    expect(bookkeeper.map((i) => i.path)).toEqual([
+      '/backoffice/dashboard', '/backoffice/accounting/journals', '/backoffice/finance/payments', '/backoffice/reports/pnl', '/backoffice/approvals/queue',
+    ]);
+    // every gated section names only catalog-shaped capabilities
+    for (const s of content) for (const c of s.capabilities ?? []) expect(c).toMatch(/^[a-z]+\.[a-z_]+$/);
   });
 
   it('sidebar derivation and the /admin handshake', () => {

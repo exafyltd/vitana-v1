@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Cannot cancel: journal entry is 'cancelled' (must be 'submitted')"
+}

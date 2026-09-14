@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Total debit (120.00) must equal total credit (100.00)"
+}

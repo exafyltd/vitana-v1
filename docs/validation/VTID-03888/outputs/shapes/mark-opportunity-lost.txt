@@ -1,0 +1,13 @@
+{
+  "opportunity": {
+    "id": "1ccc2174-0fb6-4e4d-b4f4-fd704057844d",
+    "naming_series": "OPP-2026-00004",
+    "stage": "lost",
+    "probability": "0",
+    "expected_revenue": "0",
+    "weighted_revenue": "0",
+    "lost_reason": "Chose a competitor on price"
+  },
+  "message": "Opportunity OPP-2026-00004 marked as LOST",
+  "status": "ok"
+}

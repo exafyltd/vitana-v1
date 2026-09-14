@@ -1,0 +1,12 @@
+{
+  "outstanding": "-5000.00",
+  "vouchers": [
+    {
+      "voucher_type": "payment_entry",
+      "voucher_id": "3ee22e51-51c5-4d34-8a4f-8e19eb4c9ed6",
+      "outstanding_amount": "-5000.00",
+      "posting_date": "2026-09-12"
+    }
+  ],
+  "status": "ok"
+}

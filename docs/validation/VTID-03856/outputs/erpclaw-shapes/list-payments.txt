@@ -1,0 +1,33 @@
+{
+  "payments": [
+    {
+      "id": "30c6b04d-c837-4f25-8a7c-bc0da824928a",
+      "naming_series": "PAY-2026-00002",
+      "payment_type": "receive",
+      "posting_date": "2026-09-13",
+      "party_type": "customer",
+      "party_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "paid_amount": "1250.50",
+      "status": "draft",
+      "unallocated_amount": "1250.50",
+      "party_name": "Acme Trading LLC"
+    },
+    {
+      "id": "3ee22e51-51c5-4d34-8a4f-8e19eb4c9ed6",
+      "naming_series": "PAY-2026-00001",
+      "payment_type": "receive",
+      "posting_date": "2026-09-12",
+      "party_type": "customer",
+      "party_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "paid_amount": "5000.00",
+      "status": "submitted",
+      "unallocated_amount": "5000.00",
+      "party_name": "Acme Trading LLC"
+    }
+  ],
+  "total_count": 2,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

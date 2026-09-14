@@ -1,0 +1,38 @@
+{
+  "id": "f335019d-bc69-40ff-b0b7-22b6fd77d02e",
+  "naming_series": "JE-2026-00080",
+  "posting_date": "2026-09-13",
+  "entry_type": "journal",
+  "status": "ok",
+  "total_debit": "12.50",
+  "total_credit": "12.50",
+  "remark": "bridge e2e",
+  "amended_from": null,
+  "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+  "lines": [
+    {
+      "id": "3eba9f80-d48c-4748-af30-fe5527f5f5e5",
+      "account_id": "f529f450-dbd5-4412-8bfc-3db680640de4",
+      "account_name": "Cash and Bank",
+      "debit": "0.00",
+      "credit": "12.50",
+      "party_type": null,
+      "party_id": null,
+      "cost_center_id": "e1b7b135-4372-4ae5-a590-5e4ddfb3ca99",
+      "project_id": null,
+      "remark": null
+    },
+    {
+      "id": "ef4fe3b7-2012-478d-b9c4-3f57ee46e43b",
+      "account_id": "04310b4d-3b19-490e-ba9e-703fd488ca16",
+      "account_name": "General & Administrative",
+      "debit": "12.50",
+      "credit": "0.00",
+      "party_type": null,
+      "party_id": null,
+      "cost_center_id": "e1b7b135-4372-4ae5-a590-5e4ddfb3ca99",
+      "project_id": null,
+      "remark": null
+    }
+  ]
+}

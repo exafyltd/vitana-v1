@@ -1,0 +1,8 @@
+{
+  "credit_notes": [],
+  "total_count": 0,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

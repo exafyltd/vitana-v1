@@ -1,0 +1,11 @@
+{
+  "crm_contact": {
+    "id": "95f2450f-e994-4e8f-af90-8ceda06bee41",
+    "name": "Probe Contact",
+    "email": "probe.contact@example.test",
+    "lifecycle": "lead",
+    "crm_company_id": null
+  },
+  "message": "Contact 'Probe Contact' created",
+  "status": "ok"
+}

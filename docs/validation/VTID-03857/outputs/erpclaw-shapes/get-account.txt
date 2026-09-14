@@ -1,0 +1,26 @@
+{
+  "account": {
+    "id": "f529f450-dbd5-4412-8bfc-3db680640de4",
+    "name": "Cash and Bank",
+    "account_number": "1110",
+    "parent_id": "9cb7975c-a7da-4d01-9370-85180e892da1",
+    "root_type": "asset",
+    "account_type": "bank",
+    "currency": "USD",
+    "is_group": 0,
+    "is_frozen": 0,
+    "disabled": 0,
+    "balance_direction": "debit_normal",
+    "balance_must_be": null,
+    "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+    "depth": 2,
+    "lft": null,
+    "rgt": null,
+    "created_at": "2026-09-13 07:34:23.528527+00",
+    "updated_at": "2026-09-13 07:34:23.528527+00",
+    "balance": "54820.50",
+    "debit_total": "54862.50",
+    "credit_total": "42.00"
+  },
+  "status": "ok"
+}

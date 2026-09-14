@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "operator does not exist: text - text\nLINE 1: SELECT COALESCE(decimal_sum(g.credit), '0') - COALESCE(decim...\n                                                    ^\nHINT:  No operator matches the given name and argument types. You might need to add explicit type casts.\n"
+}

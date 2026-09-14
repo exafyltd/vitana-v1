@@ -1,0 +1,21 @@
+== tsc (tsconfig.app.json)
+140 pre-existing errors on base (claude/practical-gates-iqwv52-vtid-03849) and on this branch; 0 in src/lib/backoffice-sales*, src/components/backoffice/{DocStatusBadge,DetailList,DocumentItemsTable}.tsx, src/pages/backoffice/sales/*, src/App.tsx
+
+== eslint (new files, incl. i18n rules)
+npx eslint src/lib/backoffice-sales.ts src/lib/backoffice-sales.test.ts src/components/backoffice/DocStatusBadge.tsx src/components/backoffice/DetailList.tsx src/components/backoffice/DocumentItemsTable.tsx src/pages/backoffice/sales -> 0 problems
+
+== vitest run (full)
+ Test Files  32 passed (32)
+      Tests  213 passed (213)
+
+== i18n:inventory
+[generate-screen-inventory] pages: 320, keys: 4769, namespaces: 46, suspects: 67 -> docs/SCREEN_INVENTORY.md regenerated and committed
+
+== i18n key coverage
+140 screens.backoffice.sales.* keys added to de (source), en/es/sr/ar translated, fr/pl/pt/ru/tr/zh mirror EN; every key referenced by the new files resolves in de (scripted check, 0 missing)
+
+== ERPClaw-on-Postgres findings while capturing shapes (local spike DB, ERPClaw v4.15.0 @ 4d32db6 + Vitana patches 0001-0003)
+1. submit-sales-invoice: 'COALESCE types text and integer cannot be matched' on SELECT COALESCE(decimal_sum("outstanding_amount"),0) — every invoice submit fails on Postgres (works on SQLite). Blocks the future Commit slice for invoices/credit notes and any GW-1 step 7.
+2. check-credit-limit: same COALESCE(decimal_sum(...),0) error — sales.customer.check_credit (Read) is unusable on Postgres.
+3. check-overdue (erpclaw-reports): 'operator does not exist: text + integer' on si."outstanding_amount" + 0 — sales.invoice.overdue (Read) is unusable on Postgres; the Invoices screen computes overdue client-side instead.
+All three are the TEXT-typed money column + decimal_sum aggregate pattern VTID-03840 patch 0002 already handled for GL; a patch 0004 (cast decimal_sum(...)::numeric / outstanding_amount::numeric) is the fix. Raw outputs: outputs/erpclaw-shapes/submit-sales-invoice-PG-ERROR.txt, check-credit-limit.txt, check-overdue.txt

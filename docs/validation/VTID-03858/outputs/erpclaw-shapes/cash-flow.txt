@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/user/avansaber/erpclaw/scripts/erpclaw-reports/db_query.py", line 1907, in <module>
+    main()
+  File "/home/user/avansaber/erpclaw/scripts/erpclaw-reports/db_query.py", line 1901, in main
+    ACTIONS[args.action](conn, args)
+  File "/home/user/avansaber/erpclaw/scripts/erpclaw-reports/db_query.py", line 565, in cash_flow
+    opening = conn.execute(
+              ^^^^^^^^^^^^^
+  File "/tmp/erpclaw-home/lib/erpclaw_lib/db.py", line 231, in execute
+    cur.execute(_qmark_to_pyformat(sql), params)
+  File "/usr/local/lib/python3.11/dist-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: operator does not exist: text - text
+LINE 1: SELECT COALESCE(decimal_sum(g.debit), '0') - COALESCE(decima...
+                                                   ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+

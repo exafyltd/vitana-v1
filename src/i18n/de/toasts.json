@@ -1364,6 +1364,12 @@
     "dailyGoal": {
       "title": "Glückwunsch! Heutiges Ziel erreicht 🎉",
       "body": "Mach einfach weiter."
+    },
+    "backoffice": {
+      "capabilityGranted": "Berechtigung erteilt",
+      "capabilityRevoked": "Berechtigung widerrufen",
+      "grantFailed": "Berechtigung konnte nicht erteilt werden",
+      "revokeFailed": "Berechtigung konnte nicht widerrufen werden"
     }
   }
 }

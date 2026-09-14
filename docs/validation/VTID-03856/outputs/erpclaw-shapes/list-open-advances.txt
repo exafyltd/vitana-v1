@@ -1,0 +1,12 @@
+{
+  "payments": [
+    {
+      "id": "3ee22e51-51c5-4d34-8a4f-8e19eb4c9ed6",
+      "naming_series": "PAY-2026-00001",
+      "paid_amount": "5000.00",
+      "unallocated_amount": "5000.00",
+      "posting_date": "2026-09-12"
+    }
+  ],
+  "status": "ok"
+}

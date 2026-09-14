@@ -1,0 +1,19 @@
+{
+  "customers": [
+    {
+      "id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "name": "Acme Trading LLC",
+      "customer_type": "company",
+      "customer_group": null,
+      "territory": null,
+      "credit_limit": "50000.00",
+      "status": "active",
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5"
+    }
+  ],
+  "total_count": 1,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

@@ -1,0 +1,9 @@
+{
+  "crm_task": {
+    "id": "5492bafd-5d20-4ef9-84e3-a1fa47e8d13a",
+    "subject": "Send revised proposal",
+    "status": "cancelled"
+  },
+  "message": "Task 'Send revised proposal' cancelled",
+  "status": "ok"
+}

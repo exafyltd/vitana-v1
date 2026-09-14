@@ -1,0 +1,74 @@
+{"name":"01-convert-lead-en-1-detail-actions","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"01-convert-lead-en-2-form-prefilled","phase":"form","alerts":[],"status":[],"accept":null}
+{"name":"01-convert-lead-en","check":"disabled","sel":"[data-testid=\"draft-accept\"]","disabled":true}
+{"name":"01-convert-lead-en-3-review-unconfirmed","phase":"review","alerts":[],"status":[],"accept":true}
+{"name":"01-convert-lead-en-4-review-confirmed","phase":"review","alerts":[],"status":[],"accept":false}
+{"name":"01-convert-lead-en-5-executed","phase":"done","alerts":[],"status":["Executed: OPP-2026-00003Lead converted to opportunity OPP-2026-00003"],"accept":null}
+{"name":"01-convert-lead-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","hOverflow":false}
+{"name":"02-mark-won-en-1-board-actions","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"02-mark-won-en-2-review-confirmed","phase":"review","alerts":[],"status":[],"accept":false}
+{"name":"02-mark-won-en-3-executed","phase":"done","alerts":[],"status":["Executed: OPP-2026-00003Opportunity OPP-2026-00003 marked as WON"],"accept":null}
+{"name":"02-mark-won-en","mounted":true,"url":"/backoffice/sales/opportunities","dir":"ltr","screenId":"BO-007","hOverflow":false}
+{"name":"03-mark-lost-en-1-reason-required","phase":"form","alerts":["Required"],"status":[],"accept":null}
+{"name":"03-mark-lost-en-2-review-confirmed","phase":"review","alerts":[],"status":[],"accept":false}
+{"name":"03-mark-lost-en-3-executed","phase":"done","alerts":[],"status":["Executed: OPP-2026-00004Opportunity OPP-2026-00004 marked as LOST"],"accept":null}
+{"name":"03-mark-lost-en","mounted":true,"url":"/backoffice/sales/opportunities","dir":"ltr","screenId":"BO-007","hOverflow":false}
+{"name":"04-post-invoice-en-1-draft-detail-actions","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"04-post-invoice-en-2-review-unconfirmed","phase":"review","alerts":[],"status":[],"accept":true}
+{"name":"04-post-invoice-en-3-posted","phase":"done","alerts":[],"status":["Executed"],"accept":null}
+{"name":"04-post-invoice-en","mounted":true,"url":"/backoffice/sales/invoices","dir":"ltr","screenId":"BO-011","hOverflow":false}
+{"name":"05-cancel-invoice-high-en-1-posted-detail-actions","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"05-cancel-invoice-high-en","check":"disabled","sel":"[data-testid=\"draft-accept\"]","disabled":true}
+{"name":"05-cancel-invoice-high-en-2-review-high-unconfirmed","phase":"review","alerts":[],"status":[],"accept":true}
+{"name":"05-cancel-invoice-high-en-3-review-high-confirmed","phase":"review","alerts":[],"status":[],"accept":false}
+{"name":"05-cancel-invoice-high-en-4-queued","phase":"queued","alerts":[],"status":["Queued — waiting for a second personApproval id: ap-new-23"],"accept":null}
+{"name":"05-cancel-invoice-high-en","mounted":true,"url":"/backoffice/sales/invoices","dir":"ltr","screenId":"BO-011","hOverflow":false}
+{"name":"06-post-journal-fails-en-1-draft-detail-actions","phase":null,"alerts":[],"status":[],"accept":null}
+step failed {"waitFor":"[data-testid=\"draft-failed\"]","wait":800} locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-failed"]').first() to be visible[22m
+
+{"name":"06-post-journal-fails-en-2-erp-refused","phase":"done","alerts":[],"status":["Executed"],"accept":null}
+{"name":"06-post-journal-fails-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","hOverflow":false}
+{"name":"07-approver-sees-payload-en-1-decide-with-payload","phase":"confirm","alerts":[],"status":[],"accept":null}
+{"name":"07-approver-sees-payload-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","hOverflow":false}
+step failed {"clickRow":"INV-2026-00002"} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('table tbody tr').filter({ hasText: 'INV-2026-00002' }).first()[22m
+
+step failed {"click":"[data-testid=\"draft-open-invoiceCancel\"]","wait":1200} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-open-invoiceCancel"]').first()[22m
+
+step failed {"click":"[data-testid=\"draft-review\"]","wait":600} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-review"]').first()[22m
+
+{"name":"08-cancel-invoice-de-mobile-1-review-mobile","phase":null,"alerts":[],"status":[],"accept":null}
+step failed {"click":"[data-testid=\"draft-confirm\"]","wait":300} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-confirm"]').first()[22m
+
+step failed {"click":"[data-testid=\"draft-accept\"]"} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-accept"]').first()[22m
+
+step failed {"waitFor":"[data-testid=\"draft-queued\"]","wait":800} locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-queued"]').first() to be visible[22m
+
+{"name":"08-cancel-invoice-de-mobile-2-queued-mobile","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"08-cancel-invoice-de-mobile","mounted":false,"url":"/home","dir":"ltr","screenId":null,"hOverflow":false}
+{"name":"09-convert-lead-ar-rtl-1-review-rtl","phase":"review","alerts":[],"status":[],"accept":true}
+{"name":"09-convert-lead-ar-rtl","mounted":true,"url":"/backoffice/sales/leads","dir":"rtl","screenId":"BO-005","hOverflow":false}
+blocked non-read requests: 191 stub POSTs: 31
+=== rerun 06 with failure shape
+{"name":"06-post-journal-fails-en-1-draft-detail-actions","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"06-post-journal-fails-en-2-erp-refused","phase":"failed","alerts":["ERPClaw rejected the read command.Reason: erp_action_failed"],"status":[],"accept":null}
+{"name":"06-post-journal-fails-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","hOverflow":false}
+blocked non-read requests: 20 stub POSTs: 3
+=== rerun 06 with failure shape, erpFailed reworded
+{"name":"06-post-journal-fails-en-1-draft-detail-actions","phase":null,"alerts":[],"status":[],"accept":null}
+{"name":"06-post-journal-fails-en-2-erp-refused","phase":"failed","alerts":["ERPClaw rejected the command.Reason: erp_action_failed"],"status":[],"accept":null}
+{"name":"06-post-journal-fails-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","hOverflow":false}
+blocked non-read requests: 21 stub POSTs: 3

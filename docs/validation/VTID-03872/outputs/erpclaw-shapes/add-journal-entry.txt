@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "journal_entry_id": "5eeda897-69e2-4f50-8ed9-6c792d955953",
+  "naming_series": "JE-2026-00081"
+}

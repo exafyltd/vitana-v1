@@ -1,0 +1,6 @@
+{
+  "module": "erpclaw-setup",
+  "version": 1,
+  "updated_at": "2026-09-13 07:28:14.915937+00",
+  "status": "ok"
+}

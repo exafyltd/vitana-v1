@@ -1,0 +1,35 @@
+{
+  "sales_invoices": [
+    {
+      "id": "a2a4958f-1a1e-4d65-b978-6dd7d4d96096",
+      "naming_series": null,
+      "customer_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "customer_name": "Acme Trading LLC",
+      "posting_date": "2026-09-01",
+      "due_date": "2026-09-30",
+      "grand_total": "7000.00",
+      "outstanding_amount": "7000.00",
+      "status": "draft",
+      "is_return": 0,
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5"
+    },
+    {
+      "id": "581f87fe-b2bc-4568-ac47-bd5c0ef0baa3",
+      "naming_series": null,
+      "customer_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "customer_name": "Acme Trading LLC",
+      "posting_date": "2026-07-01",
+      "due_date": "2026-07-31",
+      "grand_total": "1750.00",
+      "outstanding_amount": "1750.00",
+      "status": "draft",
+      "is_return": 0,
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5"
+    }
+  ],
+  "total_count": 2,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

@@ -1,0 +1,39 @@
+{
+  "pipeline": {
+    "stages": [
+      {
+        "pipeline": "Sales Pipeline",
+        "stage": "Won",
+        "count": 1,
+        "total_expected_revenue": "48000.00",
+        "total_weighted_revenue": "48000.00"
+      },
+      {
+        "pipeline": "Standard Sales",
+        "stage": "negotiation",
+        "count": 1,
+        "total_expected_revenue": "0.00",
+        "total_weighted_revenue": "0.00"
+      },
+      {
+        "pipeline": "Standard Sales",
+        "stage": "won",
+        "count": 1,
+        "total_expected_revenue": "48000.00",
+        "total_weighted_revenue": "48000.00"
+      },
+      {
+        "pipeline": "Standard Sales",
+        "stage": "lost",
+        "count": 1,
+        "total_expected_revenue": "0.00",
+        "total_weighted_revenue": "0.00"
+      }
+    ],
+    "total_opportunities": 4,
+    "total_won": 2,
+    "total_lost": 1,
+    "conversion_rate_pct": "66.67"
+  },
+  "status": "ok"
+}
