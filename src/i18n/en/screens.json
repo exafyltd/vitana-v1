@@ -10363,7 +10363,234 @@
         "noManage": "You can view capabilities but not change them – that needs erp.admin or the admin role.",
         "mine": "Your effective capabilities"
       },
-      "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access."
+      "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
+      "health": {
+        "title": "Health",
+        "description": "State of the ERP instance behind the bridge: master data, installation, schema version and installed modules.",
+        "status": "Status",
+        "companies": "Companies",
+        "currencies": "Currencies",
+        "uoms": "Units of measure",
+        "paymentTerms": "Payment terms",
+        "schemaVersions": "Schema versions",
+        "installation": "Installation",
+        "installedSkills": "Installed skills",
+        "sharedLibrary": "Shared library",
+        "databaseTables": "Database tables",
+        "schemaVersion": "Schema version",
+        "module": "Module",
+        "version": "Version",
+        "updatedAt": "Updated",
+        "modules": "Modules",
+        "moduleName": "Module",
+        "category": "Category",
+        "actions": "Actions",
+        "installStatus": "Install status",
+        "installedAt": "Installed at",
+        "noModules": "No modules installed"
+      },
+      "receipts": {
+        "title": "Command Receipts",
+        "description": "Every command that went through the gateway – with the receipt the bridge stored for it.",
+        "searchPlaceholder": "Search by command or ID …",
+        "empty": "No commands yet",
+        "noReceipt": "No receipt",
+        "show": "Show receipt",
+        "hide": "Hide receipt"
+      },
+      "company": {
+        "title": "Company & Legal Entities",
+        "description": "The legal entity this workspace posts for, its fiscal years, and every company in the ERP.",
+        "active": "Active company",
+        "activeBadge": "Active",
+        "allCompanies": "All companies in the ERP",
+        "name": "Name",
+        "abbr": "Abbreviation",
+        "currency": "Currency",
+        "country": "Country",
+        "taxId": "Tax ID",
+        "fiscalYearStart": "Fiscal year starts",
+        "threeWayMatch": "Three-way match",
+        "receiptTolerance": "Receipt tolerance",
+        "perpetualInventory": "Perpetual inventory",
+        "negativeStock": "Negative stock allowed",
+        "frozenTill": "Accounts frozen till",
+        "createdAt": "Created",
+        "updatedAt": "Updated",
+        "id": "ID",
+        "fiscalYears": "Fiscal years",
+        "fyName": "Fiscal year",
+        "start": "Start",
+        "end": "End",
+        "state": "State",
+        "open": "Open",
+        "closed": "Closed",
+        "noFiscalYears": "No fiscal year yet",
+        "needsAccountingView": "Fiscal years are visible with accounting.view only.",
+        "empty": "No company found",
+        "none": "None",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "trail": {
+        "title": "Independent Audit Trail",
+        "description": "Vitana's own append-only log: every request, every decision, every policy change – independent of the ERP.",
+        "searchPlaceholder": "Search by event, command or person …",
+        "empty": "No entries yet",
+        "time": "When",
+        "event": "Event",
+        "actor": "Who",
+        "role": "Role",
+        "channel": "Channel",
+        "command": "Command",
+        "approval": "Approval",
+        "details": "Details"
+      },
+      "inbox": {
+        "title": "Approvals Inbox",
+        "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
+        "empty": "Nothing is waiting for you",
+        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
+      },
+      "common": {
+        "empty": "No entries",
+        "asOf": "as of {time}",
+        "replayed": "replayed from receipt",
+        "source": {
+          "erp": "Source: ERPClaw via the bridge",
+          "gateway": "Source: Vitana gateway"
+        },
+        "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
+        "viewAll": "View all",
+        "all": "All"
+      },
+      "queue": {
+        "title": "Queue",
+        "description": "Every approval request in the tenant – pending, approved or rejected.",
+        "searchPlaceholder": "Search by command, capability or person …",
+        "statusFilter": "Status",
+        "empty": "No approval requests"
+      },
+      "policies": {
+        "title": "Policies",
+        "description": "The rules the gateway uses to tier commands and demand approvals.",
+        "threshold": "High-risk threshold",
+        "thresholdHint": "Any Commit at or above this amount becomes a High-risk request and needs a second person.",
+        "mfa": "MFA for approvals",
+        "mfaHint": "High-risk approvals need a session backed by a second factor.",
+        "on": "On",
+        "off": "Off",
+        "default": "Default",
+        "custom": "Custom (default: {value})",
+        "editNextSlice": "Read-only in this slice – policy edits land with the next one (every edit is itself a receipt).",
+        "rulesTitle": "Fixed rules",
+        "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
+        "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
+        "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
+        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
+      },
+      "myRequests": {
+        "title": "My Requests",
+        "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
+        "awaiting": "Awaiting approval",
+        "history": "History",
+        "empty": "You have not requested any commands yet"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "What the BackOffice needs today: pending approvals, your requests, the latest commands and the state of the ERP.",
+        "pendingApprovals": "Pending approvals",
+        "pendingApprovalsHint": "Waiting for a second person",
+        "myOpenRequests": "My open requests",
+        "myOpenRequestsHint": "Requested by you, not yet decided",
+        "executed7d": "Executed (7 days)",
+        "executed7dHint": "Commands completed successfully",
+        "failed7d": "Failed (7 days)",
+        "failed7dHint": "Rejected or ended with an error",
+        "erpStatus": "ERP status",
+        "erpOk": "Ready",
+        "erpNotOk": "Unreachable",
+        "erpUnknown": "Unclear",
+        "quickAccess": "Quick access",
+        "recentActivity": "Recent activity",
+        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
+      },
+      "errors": {
+        "bridgeUnavailable": "The ERP bridge is not reachable.",
+        "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
+        "noCapability": "You lack a capability for this.",
+        "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
+        "erpFailed": "ERPClaw rejected the read command.",
+        "unauthorized": "Please sign in again.",
+        "noTenant": "No active tenant – pick a workspace first.",
+        "notFound": "Not found.",
+        "generic": "The data could not be loaded."
+      },
+      "activity": {
+        "title": "Activity",
+        "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
+        "searchPlaceholder": "Search by command, ID or reason …",
+        "statusFilter": "Status",
+        "empty": "No commands yet"
+      },
+      "tiers": {
+        "read": "Read",
+        "draft": "Draft",
+        "commit": "Commit",
+        "high": "High-risk"
+      },
+      "erpLog": {
+        "title": "ERP Audit Log",
+        "description": "ERPClaw's own immutable log – every posting, every reversal, every master-data change.",
+        "empty": "No entries yet",
+        "time": "When",
+        "skill": "Module",
+        "action": "Action",
+        "entity": "Entity",
+        "user": "User",
+        "changes": "Change",
+        "system": "System"
+      },
+      "commandStatus": {
+        "executed": "Executed",
+        "failed": "Failed",
+        "awaiting_approval": "Awaiting approval",
+        "rejected": "Rejected"
+      },
+      "approvals": {
+        "requested": "Requested",
+        "command": "Command",
+        "requester": "Requester",
+        "approverNeeds": "Approver needs",
+        "status": "Status",
+        "decision": "Decision",
+        "you": "You",
+        "yourOwnRequest": "Your own request – you cannot approve it yourself.",
+        "youCanDecide": "You can decide",
+        "youCannotDecide": "Not yours to approve"
+      },
+      "commands": {
+        "when": "When",
+        "command": "Command",
+        "tier": "Tier",
+        "status": "Status",
+        "channel": "Channel",
+        "requester": "Requester",
+        "receipt": "Receipt",
+        "reason": "Reason",
+        "you": "You"
+      },
+      "approvalStatus": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "channels": {
+        "web": "Web",
+        "chat": "Chat",
+        "voice": "Voice",
+        "system": "System"
+      }
     }
   }
 }

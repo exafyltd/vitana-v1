@@ -1,0 +1,31 @@
+{
+  "companies": 1,
+  "currencies": 1,
+  "uoms": 14,
+  "payment_terms": 6,
+  "schema_versions": {
+    "erpclaw-setup": 1,
+    "erpclaw-gl": 1,
+    "erpclaw-journals": 1,
+    "erpclaw-payments": 1,
+    "erpclaw-integrations": 1,
+    "erpclaw-tax": 1,
+    "erpclaw-selling": 1,
+    "erpclaw-buying": 1,
+    "erpclaw-inventory": 1,
+    "erpclaw-billing": 1,
+    "erpclaw-manufacturing": 1,
+    "erpclaw-hr": 1,
+    "erpclaw-payroll": 1,
+    "erpclaw-crm": 1,
+    "erpclaw-projects": 1,
+    "erpclaw-assets": 1,
+    "erpclaw-quality": 1,
+    "erpclaw-support": 1,
+    "erpclaw-accounting-adv": 1,
+    "erpclaw-registries": 1,
+    "erpclaw-modules": 1,
+    "erpclaw-os": 1
+  },
+  "status": "ok"
+}

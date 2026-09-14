@@ -1,0 +1,19 @@
+{
+  "modules": [
+    {
+      "name": "erpclaw-growth",
+      "display_name": "ERPClaw Growth",
+      "version": "2.10.0",
+      "category": "expansion",
+      "action_count": 164,
+      "tables_created": 0,
+      "installed_at": "2026-09-13T07:43:18+00:00",
+      "updated_at": "2026-09-13T07:43:18+00:00",
+      "git_commit": null,
+      "install_status": "installed",
+      "cached_actions": 164
+    }
+  ],
+  "total": 1,
+  "status": "ok"
+}

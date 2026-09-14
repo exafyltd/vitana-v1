@@ -1,0 +1,42 @@
+{
+  "companies": [
+    {
+      "id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+      "name": "Vitanaland Spike LLC",
+      "abbr": "VSL",
+      "default_currency": "AED",
+      "country": "United Arab Emirates",
+      "tax_id": null,
+      "default_receivable_account_id": null,
+      "default_payable_account_id": null,
+      "default_income_account_id": null,
+      "default_expense_account_id": null,
+      "default_cost_center_id": "e1b7b135-4372-4ae5-a590-5e4ddfb3ca99",
+      "default_warehouse_id": "dab5c7ca-35b1-458e-b949-6548536abf6c",
+      "default_bank_account_id": null,
+      "default_cash_account_id": null,
+      "round_off_account_id": null,
+      "exchange_gain_loss_account_id": null,
+      "stock_received_not_billed_account_id": null,
+      "stock_adjustment_account_id": null,
+      "depreciation_expense_account_id": null,
+      "accumulated_depreciation_account_id": null,
+      "perpetual_inventory": 1,
+      "enable_negative_stock": 0,
+      "accounts_frozen_till_date": null,
+      "role_allowed_for_frozen_entries": null,
+      "fiscal_year_start_month": 1,
+      "three_way_match_policy": "strict",
+      "receipt_tolerance_pct": "0",
+      "advance_from_customer_account_id": null,
+      "advance_to_supplier_account_id": null,
+      "created_at": "2026-09-13 07:32:43.231281+00",
+      "updated_at": "2026-09-13 07:32:43.231281+00"
+    }
+  ],
+  "total_count": 1,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

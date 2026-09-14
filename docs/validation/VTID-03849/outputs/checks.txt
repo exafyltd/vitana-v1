@@ -1,0 +1,18 @@
+== tsc (tsconfig.app.json) — pre-existing error count, base vs branch
+base  (claude/practical-gates-iqwv52-vtid-03834): 140 errors
+branch(claude/practical-gates-iqwv52-vtid-03849): 140 errors
+errors touching src/hooks/useBackOfficeCommands*, src/components/backoffice/*, src/pages/backoffice/*, src/lib/backoffice-format.ts, src/App.tsx: 0
+
+== eslint (new files, incl. i18n/no-raw-jsx-text, i18n/no-raw-toast-arg, i18n/no-raw-locale-call)
+npx eslint src/hooks/useBackOfficeCommands.ts src/hooks/useBackOfficeCommands.test.ts src/lib/backoffice-format.ts src/components/backoffice src/pages/backoffice -> 0 problems
+src/App.tsx: only the 4 pre-existing @typescript-eslint/no-explicit-any hits on untouched lines (456, 527, 529, 560)
+
+== vitest run (full)
+ Test Files  31 passed (31)
+      Tests  206 passed (206)
+
+== i18n:inventory
+[generate-screen-inventory] pages: 313, keys: 4633, namespaces: 46, suspects: 67 -> docs/SCREEN_INVENTORY.md regenerated and committed
+
+== i18n key coverage
+187 screens.backoffice.* keys added to de (source), en/es/sr/ar translated, fr/pl/pt/ru/tr/zh mirror EN; every key referenced by the new files resolves in de (scripted check, 0 missing)
