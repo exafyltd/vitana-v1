@@ -29,7 +29,7 @@ Stacked on the VTID-03855 branch (Sales & CRM Read screens).
 
 AC-1 — Every read is a typed Read command; payload carries only `limit`, one id (`payment_entry_id`) or the summary window (`from_date`/`to_date`)
 TEST: `grep -rn "useErpRead(" src/pages/backoffice/finance` lists only `finance.payment.summary|list|get`, `finance.fx.list`, `finance.fx.list.list_exchange_rates`; VTID-03849's hook tests pin the request shape.
-UI: `outputs/playwright-run.log` — `stub read POSTs` are exactly those types; every non-read request aborted.
+UI: `outputs/stub-reads.log` — `stub read POSTs` are exactly those types; every non-read request aborted.
 
 AC-2 — Reconciliation buckets are correct
 TEST: `src/lib/backoffice-finance.test.ts` — drafts / unallocated / settled split, cancelled skipped, totals netted by direction; empty list; year-to-date window; ERPClaw integer booleans.
@@ -41,7 +41,7 @@ AC-4 — Bank Reconciliation: three buckets with netted totals and explanations
 UI: `screenshots/02-finance-bank-reconciliation-admin-en.png`, `04-finance-bank-reconciliation-admin-ar-rtl.png` (RTL), `06-finance-bank-reconciliation-bookkeeper-en.png` (finance.view + finance.reconcile).
 
 AC-5 — Capability gate: a salesperson (crm.view + sales.view) sees the no-access body on Payments and no ERP read is attempted
-UI: `screenshots/05-finance-payments-salesperson-no-access-en.png`; `outputs/playwright-run.log` shows zero stub read POSTs for that shot.
+UI: `screenshots/05-finance-payments-salesperson-no-access-en.png`; `outputs/stub-reads.log` shows zero stub read POSTs for that shot.
 
 AC-6 — Nothing written anywhere during verification; type-check, lint (incl. i18n rules), unit tests, inventory
 TEST: `outputs/checks.txt` — tsc 140 pre-existing errors on base and branch, 0 in new files; eslint 0 problems; `vitest run` 33 files / 217 tests green (4 new); inventory regenerated. Harness: service worker blocked, Supabase auth served locally, every non-read request aborted.
@@ -57,3 +57,7 @@ TEST: `outputs/checks.txt` — tsc 140 pre-existing errors on base and branch, 0
   document status; the detail panel therefore shows the status from the list row, never from the detail.
 - The stub serves one fixed `get-payment` body for every id, so screenshot 01/03 show PAY-2026-00001's detail under the
   clicked PAY-2026-00002 row — a harness limitation, not a screen defect (the real gateway returns the selected id).
+
+- The Playwright console output of this sweep was never written to a file, so the acceptance lines above now cite
+  `outputs/stub-reads.log` — the stub gateway's own record of exactly which typed Read commands each persona's
+  browser sent — instead of a `playwright-run.log` that does not exist. Later packs save the console output too.

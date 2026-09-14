@@ -10271,7 +10271,15 @@
         "geminiTitle": "Conectar con Gemini",
         "geminiStep1": "Para Gemini CLI: añade la URL del servidor MCP de arriba a ~/.gemini/settings.json bajo tus servidores MCP.",
         "geminiStep2": "Para Gemini Enterprise (Business Edition): Ajustes y ayuda → Equipo → Gestionar equipo → Aplicaciones conectadas → \"Añadir servidor MCP\".",
-        "geminiNote": "La aplicación de consumidor de Gemini actualmente no tiene una forma documentada de añadir un servidor MCP personalizado directamente — eso solo está disponible hoy a través de Gemini CLI y Gemini Enterprise."
+        "geminiNote": "La aplicación de consumidor de Gemini actualmente no tiene una forma documentada de añadir un servidor MCP personalizado directamente — eso solo está disponible hoy a través de Gemini CLI y Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL de la tienda (opcional) — ej. https://your-shop.com",
@@ -10294,6 +10302,48 @@
         "connecting": "Conectando...",
         "notConfigured": "Este tipo de conexión aún no está habilitado. Por favor, inténtalo de nuevo más tarde.",
         "failed": "No se pudo iniciar la conexión. Por favor, verifica tus datos."
+      },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentStatusPill": "Going live soon",
+      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentUrlHint": "One address. That is all your agent needs.",
+      "howItWorksTitle": "What happens next",
+      "manualIntro": "Prefer to fill it in yourself?",
+      "manualCta": "Connect a business manually",
+      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
+      "connectionsCount": "{count} connected",
+      "openWorkbench": "Open connection",
+      "closeWorkbench": "Close",
+      "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
+      "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
+        "connect": "Connect",
+        "mapping": "Mapping",
+        "tests": "Checks",
+        "live": "Live",
+        "offTrack": "Needs attention"
       }
     },
     "oauthconsent": {
@@ -10328,7 +10378,6 @@
       "placeholderBody": "Esta página es un marcador de posición. La barra lateral, el panel de perfil, el cambio de rol y ORB son idénticos en todos los roles; solo falta el contenido.",
       "noSectionMatches": "Ninguna sección de BackOffice coincide con",
       "sidebarIsCanonical": "La barra lateral es la lista canónica de secciones. Elige una.",
-      "noAccess": "No tienes acceso a esta sección. Un administrador del tenant puede concedértelo en Ajustes › Acceso.",
       "access": {
         "title": "Acceso",
         "description": "Capacidades ERP por miembro. El rol abre la puerta; la capacidad define qué puede hacer cada persona dentro: aprobaciones, pagos y cierres requieren una segunda persona.",
@@ -10347,116 +10396,7 @@
         "noManage": "Puedes ver las capacidades pero no cambiarlas: se necesita erp.admin o el rol de administrador.",
         "mine": "Tus capacidades efectivas"
       },
-      "tiers": {
-        "read": "Lectura",
-        "draft": "Borrador",
-        "commit": "Contabilizar",
-        "high": "Alto riesgo"
-      },
-      "commandStatus": {
-        "executed": "Ejecutado",
-        "failed": "Fallido",
-        "awaiting_approval": "Pendiente de aprobación",
-        "rejected": "Rechazado"
-      },
-      "approvalStatus": {
-        "pending": "Pendiente",
-        "approved": "Aprobado",
-        "rejected": "Rechazado"
-      },
-      "channels": {
-        "web": "Web",
-        "chat": "Chat",
-        "voice": "Voz",
-        "system": "Sistema"
-      },
-      "errors": {
-        "bridgeUnavailable": "El puente ERP no está disponible.",
-        "bridgeUnavailableHint": "El gateway aún no tiene un puente configurado (ERP_BRIDGE_URL). Hasta entonces los datos ERP quedan vacíos; comandos, aprobaciones y el registro de auditoría siguen funcionando.",
-        "noCapability": "Te falta una capacidad para esto.",
-        "noCapabilityHint": "Un administrador del tenant puede concedértela en Configuración › Acceso.",
-        "erpFailed": "ERPClaw rechazó el comando de lectura.",
-        "unauthorized": "Vuelve a iniciar sesión.",
-        "noTenant": "No hay tenant activo: elige primero un espacio de trabajo.",
-        "notFound": "No encontrado.",
-        "generic": "No se pudieron cargar los datos."
-      },
-      "common": {
-        "empty": "Sin entradas",
-        "asOf": "a fecha de {time}",
-        "replayed": "repetido desde el recibo",
-        "source": {
-          "erp": "Fuente: ERPClaw a través del puente",
-          "gateway": "Fuente: gateway de Vitana"
-        },
-        "readOnlySlice": "Solo lectura en esta fase: las decisiones y los cambios llegan con la siguiente.",
-        "viewAll": "Ver todo",
-        "all": "Todos"
-      },
-      "receipts": {
-        "title": "Recibos de comandos",
-        "description": "Cada comando que pasó por el gateway, con el recibo que el puente guardó para él.",
-        "searchPlaceholder": "Buscar por comando o ID …",
-        "empty": "Aún no hay comandos",
-        "noReceipt": "Sin recibo",
-        "show": "Mostrar recibo",
-        "hide": "Ocultar recibo"
-      },
-      "commands": {
-        "when": "Cuándo",
-        "command": "Comando",
-        "tier": "Nivel",
-        "status": "Estado",
-        "channel": "Canal",
-        "requester": "Solicitante",
-        "receipt": "Recibo",
-        "reason": "Motivo",
-        "you": "Tú"
-      },
-      "approvals": {
-        "requested": "Solicitado",
-        "command": "Comando",
-        "requester": "Solicitante",
-        "approverNeeds": "El aprobador necesita",
-        "status": "Estado",
-        "decision": "Decisión",
-        "you": "Tú",
-        "yourOwnRequest": "Es tu propia solicitud: no puedes aprobarla tú.",
-        "youCanDecide": "Puedes decidir",
-        "youCannotDecide": "No te corresponde aprobarla"
-      },
-      "dashboard": {
-        "title": "Panel",
-        "description": "Lo que el BackOffice necesita hoy: aprobaciones pendientes, tus solicitudes, los últimos comandos y el estado del ERP.",
-        "pendingApprovals": "Aprobaciones pendientes",
-        "pendingApprovalsHint": "Esperan a una segunda persona",
-        "myOpenRequests": "Mis solicitudes abiertas",
-        "myOpenRequestsHint": "Solicitadas por ti, aún sin decidir",
-        "executed7d": "Ejecutados (7 días)",
-        "executed7dHint": "Comandos completados con éxito",
-        "failed7d": "Fallidos (7 días)",
-        "failed7dHint": "Rechazados o terminados con error",
-        "erpStatus": "Estado del ERP",
-        "erpOk": "Listo",
-        "erpNotOk": "No disponible",
-        "erpUnknown": "Sin determinar",
-        "quickAccess": "Acceso rápido",
-        "recentActivity": "Actividad reciente",
-        "noCapabilities": "Aún no tienes ninguna capacidad ERP. Un administrador del tenant puede concedértela en Configuración › Acceso."
-      },
-      "inbox": {
-        "title": "Bandeja de aprobaciones",
-        "description": "Solicitudes de alto riesgo que esperan tu decisión. Solicitante y aprobador son siempre dos personas.",
-        "empty": "Nada espera por ti",
-        "emptyHint": "Cuando alguien solicite un comando de alto riesgo que tú puedas aprobar, aparecerá aquí."
-      },
-      "activity": {
-        "title": "Actividad",
-        "description": "Todos los comandos de tu tenant, los más recientes primero: desde la web, el chat y la voz.",
-        "searchPlaceholder": "Buscar por comando, ID o motivo …",
-        "statusFilter": "Estado",
-        "empty": "Aún no hay comandos"
-      },
+      "noAccess": "No tienes acceso a esta sección. Un administrador del tenant puede concedértelo en Ajustes › Acceso.",
       "health": {
         "title": "Estado del sistema",
         "description": "Estado de la instancia ERP detrás del puente: datos maestros, instalación, versión del esquema y módulos instalados.",
@@ -10482,63 +10422,14 @@
         "installedAt": "Instalado el",
         "noModules": "No hay módulos instalados"
       },
-      "queue": {
-        "title": "Cola",
-        "description": "Todas las solicitudes de aprobación del tenant: pendientes, aprobadas o rechazadas.",
-        "searchPlaceholder": "Buscar por comando, capacidad o persona …",
-        "statusFilter": "Estado",
-        "empty": "No hay solicitudes de aprobación"
-      },
-      "myRequests": {
-        "title": "Mis solicitudes",
-        "description": "Comandos que has solicitado: qué sigue esperando aprobación y qué pasó con el resto.",
-        "awaiting": "Pendiente de aprobación",
-        "history": "Historial",
-        "empty": "Aún no has solicitado ningún comando"
-      },
-      "policies": {
-        "title": "Políticas",
-        "description": "Las reglas con las que el gateway clasifica los comandos y exige aprobaciones.",
-        "threshold": "Umbral de alto riesgo",
-        "thresholdHint": "Cualquier contabilización desde este importe pasa a ser una solicitud de alto riesgo y necesita una segunda persona.",
-        "mfa": "MFA para aprobaciones",
-        "mfaHint": "Las aprobaciones de alto riesgo necesitan una sesión con segundo factor.",
-        "on": "Activado",
-        "off": "Desactivado",
-        "default": "Valor por defecto",
-        "custom": "Personalizado (por defecto: {value})",
-        "editNextSlice": "Solo lectura en esta fase: los cambios de políticas llegan con la siguiente (cada cambio es en sí un recibo).",
-        "rulesTitle": "Reglas fijas",
-        "ruleMakerChecker": "Solicitante y aprobador nunca son la misma persona, ni siquiera para administradores de Exafy.",
-        "ruleCapability": "Solo puede aprobar quien tenga la capacidad de aprobación de la solicitud (p. ej. finance.pay).",
-        "ruleVoice": "Nada de alto riesgo puede confirmarse por voz: solo en la web.",
-        "ruleEscalation": "Los pagos salientes, los asientos de nómina y los importes por encima del umbral pasan automáticamente a alto riesgo."
-      },
-      "erpLog": {
-        "title": "Registro de auditoría ERP",
-        "description": "El registro inmutable del propio ERPClaw: cada asiento, cada anulación, cada cambio de datos maestros.",
-        "empty": "Aún no hay entradas",
-        "time": "Cuándo",
-        "skill": "Módulo",
-        "action": "Acción",
-        "entity": "Entidad",
-        "user": "Usuario",
-        "changes": "Cambio",
-        "system": "Sistema"
-      },
-      "trail": {
-        "title": "Pista de auditoría independiente",
-        "description": "El registro propio de Vitana, solo de anexado: cada solicitud, cada decisión, cada cambio de política, independiente del ERP.",
-        "searchPlaceholder": "Buscar por evento, comando o persona …",
-        "empty": "Aún no hay entradas",
-        "time": "Cuándo",
-        "event": "Evento",
-        "actor": "Quién",
-        "role": "Rol",
-        "channel": "Canal",
-        "command": "Comando",
-        "approval": "Aprobación",
-        "details": "Detalles"
+      "receipts": {
+        "title": "Recibos de comandos",
+        "description": "Cada comando que pasó por el gateway, con el recibo que el puente guardó para él.",
+        "searchPlaceholder": "Buscar por comando o ID …",
+        "empty": "Aún no hay comandos",
+        "noReceipt": "Sin recibo",
+        "show": "Mostrar recibo",
+        "hide": "Ocultar recibo"
       },
       "company": {
         "title": "Empresa y entidades legales",
@@ -10573,6 +10464,165 @@
         "none": "Ninguno",
         "yes": "Sí",
         "no": "No"
+      },
+      "trail": {
+        "title": "Pista de auditoría independiente",
+        "description": "El registro propio de Vitana, solo de anexado: cada solicitud, cada decisión, cada cambio de política, independiente del ERP.",
+        "searchPlaceholder": "Buscar por evento, comando o persona …",
+        "empty": "Aún no hay entradas",
+        "time": "Cuándo",
+        "event": "Evento",
+        "actor": "Quién",
+        "role": "Rol",
+        "channel": "Canal",
+        "command": "Comando",
+        "approval": "Aprobación",
+        "details": "Detalles"
+      },
+      "inbox": {
+        "title": "Bandeja de aprobaciones",
+        "description": "Solicitudes de alto riesgo que esperan tu decisión. Solicitante y aprobador son siempre dos personas.",
+        "empty": "Nada espera por ti",
+        "emptyHint": "Cuando alguien solicite un comando de alto riesgo que tú puedas aprobar, aparecerá aquí."
+      },
+      "common": {
+        "empty": "Sin entradas",
+        "asOf": "a fecha de {time}",
+        "replayed": "repetido desde el recibo",
+        "source": {
+          "erp": "Fuente: ERPClaw a través del puente",
+          "gateway": "Fuente: gateway de Vitana"
+        },
+        "readOnlySlice": "Solo lectura en esta fase: las decisiones y los cambios llegan con la siguiente.",
+        "viewAll": "Ver todo",
+        "all": "Todos"
+      },
+      "queue": {
+        "title": "Cola",
+        "description": "Todas las solicitudes de aprobación del tenant: pendientes, aprobadas o rechazadas.",
+        "searchPlaceholder": "Buscar por comando, capacidad o persona …",
+        "statusFilter": "Estado",
+        "empty": "No hay solicitudes de aprobación"
+      },
+      "policies": {
+        "title": "Políticas",
+        "description": "Las reglas con las que el gateway clasifica los comandos y exige aprobaciones.",
+        "threshold": "Umbral de alto riesgo",
+        "thresholdHint": "Cualquier contabilización desde este importe pasa a ser una solicitud de alto riesgo y necesita una segunda persona.",
+        "mfa": "MFA para aprobaciones",
+        "mfaHint": "Las aprobaciones de alto riesgo necesitan una sesión con segundo factor.",
+        "on": "Activado",
+        "off": "Desactivado",
+        "default": "Valor por defecto",
+        "custom": "Personalizado (por defecto: {value})",
+        "editNextSlice": "Solo lectura en esta fase: los cambios de políticas llegan con la siguiente (cada cambio es en sí un recibo).",
+        "rulesTitle": "Reglas fijas",
+        "ruleMakerChecker": "Solicitante y aprobador nunca son la misma persona, ni siquiera para administradores de Exafy.",
+        "ruleCapability": "Solo puede aprobar quien tenga la capacidad de aprobación de la solicitud (p. ej. finance.pay).",
+        "ruleVoice": "Nada de alto riesgo puede confirmarse por voz: solo en la web.",
+        "ruleEscalation": "Los pagos salientes, los asientos de nómina y los importes por encima del umbral pasan automáticamente a alto riesgo."
+      },
+      "myRequests": {
+        "title": "Mis solicitudes",
+        "description": "Comandos que has solicitado: qué sigue esperando aprobación y qué pasó con el resto.",
+        "awaiting": "Pendiente de aprobación",
+        "history": "Historial",
+        "empty": "Aún no has solicitado ningún comando"
+      },
+      "dashboard": {
+        "title": "Panel",
+        "description": "Lo que el BackOffice necesita hoy: aprobaciones pendientes, tus solicitudes, los últimos comandos y el estado del ERP.",
+        "pendingApprovals": "Aprobaciones pendientes",
+        "pendingApprovalsHint": "Esperan a una segunda persona",
+        "myOpenRequests": "Mis solicitudes abiertas",
+        "myOpenRequestsHint": "Solicitadas por ti, aún sin decidir",
+        "executed7d": "Ejecutados (7 días)",
+        "executed7dHint": "Comandos completados con éxito",
+        "failed7d": "Fallidos (7 días)",
+        "failed7dHint": "Rechazados o terminados con error",
+        "erpStatus": "Estado del ERP",
+        "erpOk": "Listo",
+        "erpNotOk": "No disponible",
+        "erpUnknown": "Sin determinar",
+        "quickAccess": "Acceso rápido",
+        "recentActivity": "Actividad reciente",
+        "noCapabilities": "Aún no tienes ninguna capacidad ERP. Un administrador del tenant puede concedértela en Configuración › Acceso."
+      },
+      "errors": {
+        "bridgeUnavailable": "El puente ERP no está disponible.",
+        "bridgeUnavailableHint": "El gateway aún no tiene un puente configurado (ERP_BRIDGE_URL). Hasta entonces los datos ERP quedan vacíos; comandos, aprobaciones y el registro de auditoría siguen funcionando.",
+        "noCapability": "Te falta una capacidad para esto.",
+        "noCapabilityHint": "Un administrador del tenant puede concedértela en Configuración › Acceso.",
+        "erpFailed": "ERPClaw rechazó el comando de lectura.",
+        "unauthorized": "Vuelve a iniciar sesión.",
+        "noTenant": "No hay tenant activo: elige primero un espacio de trabajo.",
+        "notFound": "No encontrado.",
+        "generic": "No se pudieron cargar los datos."
+      },
+      "activity": {
+        "title": "Actividad",
+        "description": "Todos los comandos de tu tenant, los más recientes primero: desde la web, el chat y la voz.",
+        "searchPlaceholder": "Buscar por comando, ID o motivo …",
+        "statusFilter": "Estado",
+        "empty": "Aún no hay comandos"
+      },
+      "tiers": {
+        "read": "Lectura",
+        "draft": "Borrador",
+        "commit": "Contabilizar",
+        "high": "Alto riesgo"
+      },
+      "erpLog": {
+        "title": "Registro de auditoría ERP",
+        "description": "El registro inmutable del propio ERPClaw: cada asiento, cada anulación, cada cambio de datos maestros.",
+        "empty": "Aún no hay entradas",
+        "time": "Cuándo",
+        "skill": "Módulo",
+        "action": "Acción",
+        "entity": "Entidad",
+        "user": "Usuario",
+        "changes": "Cambio",
+        "system": "Sistema"
+      },
+      "commandStatus": {
+        "executed": "Ejecutado",
+        "failed": "Fallido",
+        "awaiting_approval": "Pendiente de aprobación",
+        "rejected": "Rechazado"
+      },
+      "approvals": {
+        "requested": "Solicitado",
+        "command": "Comando",
+        "requester": "Solicitante",
+        "approverNeeds": "El aprobador necesita",
+        "status": "Estado",
+        "decision": "Decisión",
+        "you": "Tú",
+        "yourOwnRequest": "Es tu propia solicitud: no puedes aprobarla tú.",
+        "youCanDecide": "Puedes decidir",
+        "youCannotDecide": "No te corresponde aprobarla"
+      },
+      "commands": {
+        "when": "Cuándo",
+        "command": "Comando",
+        "tier": "Nivel",
+        "status": "Estado",
+        "channel": "Canal",
+        "requester": "Solicitante",
+        "receipt": "Recibo",
+        "reason": "Motivo",
+        "you": "Tú"
+      },
+      "approvalStatus": {
+        "pending": "Pendiente",
+        "approved": "Aprobado",
+        "rejected": "Rechazado"
+      },
+      "channels": {
+        "web": "Web",
+        "chat": "Chat",
+        "voice": "Voz",
+        "system": "Sistema"
       },
       "sales": {
         "status": {
@@ -10982,9 +11032,9 @@
           "invalidEmail": "No es un correo válido",
           "invalidDate": "Fecha como AAAA-MM-DD",
           "invalidOption": "Opción no válida",
-          "invalidNumber": "Introduce un número válido mayor que 0",
+          "noLines": "Indica una cantidad en al menos una línea",
           "lineQtyTooHigh": "La cantidad devuelta no puede superar la facturada",
-          "noLines": "Indica una cantidad en al menos una línea"
+          "invalidNumber": "Introduce un número válido mayor que 0"
         },
         "fields": {
           "lead_name": "Nombre del lead",
@@ -11003,18 +11053,18 @@
           "activity_type": "Tipo",
           "activity_date": "Fecha",
           "lead_ref": "Lead (nombre o número)",
-          "customer_type": "Tipo de cliente",
           "tax_id": "NIF (TRN)",
+          "posting_date": "Fecha contable",
+          "original_qty": "Cant. facturada",
+          "item_id": "ID de artículo",
+          "reason": "Motivo",
           "credit_limit": "Límite de crédito",
+          "customer_type": "Tipo de cliente",
           "primary_address": "Dirección",
           "against_invoice_id": "Contra factura",
-          "posting_date": "Fecha contable",
-          "reason": "Motivo",
-          "items": "Líneas",
-          "item_name": "Artículo",
-          "original_qty": "Cant. facturada",
           "qty": "Cant. devuelta",
-          "item_id": "ID de artículo"
+          "item_name": "Artículo",
+          "items": "Líneas"
         },
         "choices": {
           "website": "Sitio web",
@@ -11069,15 +11119,15 @@
             "title": "Registrar una actividad",
             "description": "Una llamada, correo, reunión o nota sobre un lead. El lead se resuelve por nombre o número; con varias coincidencias no se escribe nada."
           },
-          "customer": {
-            "button": "Nuevo cliente",
-            "title": "Crear un cliente",
-            "description": "Un cliente de ventas: necesario para presupuestos y facturas. Se crea como borrador, sin contabilizar."
-          },
           "creditNote": {
             "button": "Crear abono",
             "title": "Abono contra factura",
             "description": "Indica la cantidad devuelta por línea. El abono se crea como borrador; contabilizarlo es un paso aparte sujeto a aprobación."
+          },
+          "customer": {
+            "button": "Nuevo cliente",
+            "title": "Crear un cliente",
+            "description": "Un cliente de ventas: necesario para presupuestos y facturas. Se crea como borrador, sin contabilizar."
           }
         },
         "noLineRows": "No hay líneas disponibles."

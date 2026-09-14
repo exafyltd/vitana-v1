@@ -1,0 +1,53 @@
+# Read-command traffic seen by the local stub gateway (127.0.0.1:8090), per persona.
+# The Playwright console output of this sweep was not saved to a file; this is the server-side record of it.
+## stub run: admin-up
+stub on 8090 persona=admin bridge=up
+GET /api/v1/backoffice/me 200
+GET /api/v1/backoffice/me 200
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST finance.payment.get 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+GET /api/v1/backoffice/me 200
+POST finance.payment.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+GET /api/v1/backoffice/me 200
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST finance.payment.get 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+GET /api/v1/backoffice/me 200
+POST finance.payment.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+## stub run: bookkeeper-up
+stub on 8090 persona=bookkeeper bridge=up
+GET /api/v1/backoffice/me 200
+GET /api/v1/backoffice/me 200
+POST finance.payment.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+## stub run: sales-up
+stub on 8090 persona=sales bridge=up
+GET /api/v1/backoffice/me 200
+GET /api/v1/backoffice/me 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
