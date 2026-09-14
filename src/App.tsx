@@ -415,6 +415,8 @@ const InitEvents = lazy(() => import("./pages/admin/InitEvents"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
 // VTID-03833: Vitanaland BackOffice (ERP/CRM) shell — every section is a placeholder until its screens ship
 const BackOfficePlaceholder = lazy(() => import("./pages/backoffice/BackOfficePlaceholder"));
+// VTID-03834: BackOffice › Settings › Access — ERP capability grants per member
+const BackOfficeSettingsAccess = lazy(() => import("./pages/backoffice/settings/Access"));
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
@@ -2134,6 +2136,9 @@ const App = () => {
               Every section renders BackOfficePlaceholder inside AppLayout until its
               screens land. Must sit BEFORE the catch-all. */}
           <Route path="/backoffice" element={<Navigate to="/backoffice/dashboard" replace />} />
+          <Route path="/backoffice/settings/access" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeSettingsAccess /></ProtectedRoute></AuthGuard>
+          } />
           <Route path="/backoffice/*" element={
             <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePlaceholder /></ProtectedRoute></AuthGuard>
           } />

@@ -10344,7 +10344,26 @@
       "comingWave3": "Kommt in Welle 3",
       "placeholderBody": "Diese Seite ist ein Platzhalter. Seitenleiste, Profil-Drawer, Rollenwechsel und ORB bleiben in jeder Rolle identisch – nur der Inhalt kommt noch.",
       "noSectionMatches": "Kein BackOffice-Bereich passt zu",
-      "sidebarIsCanonical": "Die Seitenleiste ist die verbindliche Liste der Bereiche. Wähle einen aus."
+      "sidebarIsCanonical": "Die Seitenleiste ist die verbindliche Liste der Bereiche. Wähle einen aus.",
+      "access": {
+        "title": "Zugriff",
+        "description": "ERP-Berechtigungen pro Mitglied. Die Rolle öffnet die Tür, die Berechtigung gibt frei, was jemand darin tun darf – Freigaben, Zahlungen und Abschlüsse brauchen eine zweite Person.",
+        "searchPlaceholder": "Nach E-Mail suchen …",
+        "member": "Mitglied",
+        "role": "Rolle",
+        "granted": "Erteilte Berechtigungen",
+        "grant": "Erteilen",
+        "grantAction": "Erteilen",
+        "pick": "Berechtigung wählen",
+        "cancel": "Abbrechen",
+        "loading": "Mitglieder werden geladen …",
+        "empty": "Keine Mitglieder gefunden",
+        "revokeHint": "Klicken zum Widerrufen",
+        "explicitOnly": "nur explizit (Personendaten)",
+        "noManage": "Du kannst Berechtigungen ansehen, aber nicht ändern – dafür braucht es erp.admin oder die Admin-Rolle.",
+        "mine": "Deine wirksamen Berechtigungen"
+      },
+      "noAccess": "Für diesen Bereich hast du keine Berechtigung. Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen."
     }
   }
 }

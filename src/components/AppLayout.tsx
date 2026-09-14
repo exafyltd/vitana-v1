@@ -26,6 +26,7 @@ import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatch
 import { InviteSheet } from "@/components/InviteSheet";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation, getVisibleBackOfficeNavigation } from "@/config/role-navigation";
+import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useRoleRouteEnforcement, useInitialLandingRedirect } from "@/hooks/useSmartRouting";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
@@ -86,13 +87,18 @@ function AppSidebar({
 
   // Navigation is derived from the URL path, NOT from the stored role.
   // This ensures the sidebar always matches the content area.
+  // VTID-03834: on /backoffice the sidebar reflects the caller's ERP capabilities
+  // (the gateway enforces; this only hides what cannot be used). Asked only there.
+  const isBackOfficePath = location.pathname === '/backoffice' || location.pathname.startsWith('/backoffice/');
+  const erpAccess = useMyErpAccess(isBackOfficePath);
+
   const getEffectiveNavigation = () => {
     const path = location.pathname;
     if (path === '/admin' || path.startsWith('/admin/')) return getRoleNavigation('admin');
     // VTID-03833: /backoffice/* uses the BackOffice sidebar; the "← Admin" link is
     // only shown to users who can actually enter /admin.
     if (path === '/backoffice' || path.startsWith('/backoffice/')) {
-      return getVisibleBackOfficeNavigation(hasPermission('admin'));
+      return getVisibleBackOfficeNavigation(hasPermission('admin'), erpAccess.data?.capabilities ?? null);
     }
     if (path === '/staff' || path.startsWith('/staff/')) return getRoleNavigation('staff');
     if (path === '/professional' || path.startsWith('/professional/')) return getRoleNavigation('professional');

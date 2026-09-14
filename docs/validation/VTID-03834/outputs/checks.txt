@@ -1,0 +1,14 @@
+== tsc
+tsc exit 0
+== vitest full
+
+ Test Files  29 passed (29)
+      Tests  193 passed (193)
+   Start at  00:22:13
+   Duration  12.14s (transform 2.62s, setup 3.51s, import 4.58s, tests 4.44s, environment 18.85s)
+
+== eslint changed files (pre-existing no-explicit-any muted)
+eslint exit 0
+== i18n inventory
+[generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
+  pages: 301, keys: 4485, namespaces: 46, suspects: 67
