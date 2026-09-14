@@ -12,16 +12,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ResponsiveDialog, ResponsiveDialogBody, ResponsiveDialogContent, ResponsiveDialogDescription, ResponsiveDialogFooter, ResponsiveDialogHeader, ResponsiveDialogTitle } from "@/components/ui/responsive-dialog";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { TierBadge } from "@/components/backoffice/CommandBadges";
 import ReceiptDetail from "@/components/backoffice/ReceiptDetail";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useDraftCommand } from "@/hooks/useDraftCommand";
 import { hasAnyCapability, useErpRead } from "@/hooks/useBackOfficeCommands";
-import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftResultSummary, initialDraftValues, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
+import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftResultSummary, emptyLine, initialDraftValues, linesTotals, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
+import { formatMoney } from "@/lib/backoffice-sales";
 import { t } from "@/lib/i18n-toast";
 
-const ISSUE_KEY: Record<DraftIssue, string> = { required: "screens.backoffice.draft.issues.required", invalidEmail: "screens.backoffice.draft.issues.invalidEmail", invalidDate: "screens.backoffice.draft.issues.invalidDate", invalidOption: "screens.backoffice.draft.issues.invalidOption", invalidNumber: "screens.backoffice.draft.issues.invalidNumber", lineQtyTooHigh: "screens.backoffice.draft.issues.lineQtyTooHigh", noLines: "screens.backoffice.draft.issues.noLines" };
+const ISSUE_KEY: Record<DraftIssue, string> = { required: "screens.backoffice.draft.issues.required", invalidEmail: "screens.backoffice.draft.issues.invalidEmail", invalidDate: "screens.backoffice.draft.issues.invalidDate", invalidOption: "screens.backoffice.draft.issues.invalidOption", invalidNumber: "screens.backoffice.draft.issues.invalidNumber", lineQtyTooHigh: "screens.backoffice.draft.issues.lineQtyTooHigh", noLines: "screens.backoffice.draft.issues.noLines", tooFewLines: "screens.backoffice.draft.issues.tooFewLines", unbalanced: "screens.backoffice.draft.issues.unbalanced", lineIncomplete: "screens.backoffice.draft.issues.lineIncomplete" };
 
 function fieldLabel(key: string): string {
   return t(`screens.backoffice.draft.fields.${key}`);
@@ -35,20 +36,20 @@ function useLookupOptions(lookup: LookupSpec | undefined, enabled: boolean) {
   return { options, isLoading: q.isLoading, refused: !!q.error };
 }
 
-function LookupSelect({ id, field, value, onChange, invalid }: { id: string; field: DraftField; value: string; onChange: (v: string) => void; invalid: boolean }) {
-  const { options, isLoading, refused } = useLookupOptions(field.lookup, true);
+function LookupSelect({ id, name, lookup, value, onChange, invalid, testId, compact }: { id: string; name: string; lookup: LookupSpec | undefined; value: string; onChange: (v: string) => void; invalid: boolean; testId: string; compact?: boolean }) {
+  const { options, isLoading, refused } = useLookupOptions(lookup, true);
   if (refused) {
-    // The user may record the payment but not list the parties/accounts: keep the card usable with a typed id and say why.
+    // The user may record the entry but not list the parties/accounts: keep the card usable with a typed id and say why.
     return (
       <>
-        <Input id={id} name={field.key} value={value} onChange={(e) => onChange(e.target.value)} aria-invalid={invalid} dir="ltr" className="font-mono text-xs" placeholder={t("screens.backoffice.draft.lookupIdPlaceholder")} />
-        <p className="text-[11px] text-muted-foreground">{t("screens.backoffice.draft.lookupRefused", { command: field.lookup?.type ?? "" })}</p>
+        <Input id={id} name={name} value={value} onChange={(e) => onChange(e.target.value)} aria-invalid={invalid} dir="ltr" className={`font-mono text-xs ${compact ? "h-8" : ""}`} placeholder={t("screens.backoffice.draft.lookupIdPlaceholder")} />
+        {!compact && <p className="text-[11px] text-muted-foreground">{t("screens.backoffice.draft.lookupRefused", { command: lookup?.type ?? "" })}</p>}
       </>
     );
   }
   return (
     <Select value={value} onValueChange={onChange} disabled={isLoading}>
-      <SelectTrigger id={id} aria-invalid={invalid} data-testid={`draft-select-${field.key}`}><SelectValue placeholder={isLoading ? t("screens.backoffice.draft.lookupLoading") : t("screens.backoffice.draft.choose")} /></SelectTrigger>
+      <SelectTrigger id={id} aria-invalid={invalid} data-testid={testId} className={compact ? "h-8" : undefined}><SelectValue placeholder={isLoading ? t("screens.backoffice.draft.lookupLoading") : t("screens.backoffice.draft.choose")} /></SelectTrigger>
       <SelectContent>
         {options.map((o) => <SelectItem key={o.value} value={o.value}>{o.code ? `${o.code} · ${o.label}` : o.label}</SelectItem>)}
       </SelectContent>
@@ -57,8 +58,8 @@ function LookupSelect({ id, field, value, onChange, invalid }: { id: string; fie
 }
 
 /** Resolved label for a lookup value on the review card (the id is shown underneath either way). */
-function LookupLabel({ field, value }: { field: DraftField; value: string }) {
-  const { options } = useLookupOptions(field.lookup, true);
+function LookupLabel({ lookup, value }: { lookup: LookupSpec | undefined; value: string }) {
+  const { options } = useLookupOptions(lookup, true);
   const o = options.find((x) => x.value === value);
   return <>{o ? (o.code ? `${o.code} · ${o.label}` : o.label) : "—"}<span className="block font-mono text-[10px] text-muted-foreground break-all" dir="ltr">{value}</span></>;
 }
@@ -68,27 +69,49 @@ function LinesEditor({ field, value, onChange, invalid }: { field: DraftField; v
   const rows = parseLines(value);
   const cols = (field.columns ?? []).filter((c) => !c.hidden);
   const set = (i: number, key: string, v: string) => { const next = rows.map((r, j) => (j === i ? { ...r, [key]: v } : r)); onChange(JSON.stringify(next)); };
-  if (rows.length === 0) return <p className="text-sm text-muted-foreground">{t("screens.backoffice.draft.noLineRows")}</p>;
+  const add = () => onChange(JSON.stringify([...rows, emptyLine(field)]));
+  const remove = (i: number) => onChange(JSON.stringify(rows.filter((_, j) => j !== i)));
+  const totals = field.balance ? linesTotals(field, value) : null;
+  if (rows.length === 0 && !field.canAddRows) return <p className="text-sm text-muted-foreground">{t("screens.backoffice.draft.noLineRows")}</p>;
   return (
-    <div className="rounded-md border overflow-x-auto" data-testid={`draft-lines-${field.key}`}>
-      <table className="w-full text-sm">
-        <thead className="bg-muted/40 text-xs text-muted-foreground">
-          <tr>{cols.map((c) => <th key={c.key} scope="col" className={`px-2 py-1 font-medium ${c.kind === "number" ? "text-end" : "text-start"}`}>{fieldLabel(c.key)}</th>)}</tr>
-        </thead>
-        <tbody>
-          {rows.map((r, i) => (
-            <tr key={i} className="border-t">
-              {cols.map((c) => (
-                <td key={c.key} className={`px-2 py-1 ${c.kind === "number" ? "text-end" : ""}`}>
-                  {c.display ? <span dir={c.kind === "number" ? "ltr" : undefined}>{r[c.key] ?? ""}</span> : (
-                    <Input name={`${field.key}.${i}.${c.key}`} type={c.kind === "number" ? "number" : "text"} inputMode={c.kind === "number" ? "decimal" : undefined} min={c.kind === "number" ? 0 : undefined} max={c.maxFrom ? r[c.maxFrom] : undefined} step="any" value={r[c.key] ?? ""} onChange={(e) => set(i, c.key, e.target.value)} aria-invalid={invalid} aria-label={`${fieldLabel(c.key)} ${i + 1}`} className="h-8 w-28 text-end ms-auto" dir="ltr" />
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-2" data-testid={`draft-lines-${field.key}`}>
+      <div className="rounded-md border overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-muted/40 text-xs text-muted-foreground">
+            <tr>{cols.map((c) => <th key={c.key} scope="col" className={`px-2 py-1 font-medium ${c.kind === "number" ? "text-end" : "text-start"}`}>{fieldLabel(c.key)}</th>)}{field.canAddRows && <th scope="col" className="w-10" aria-label={t("screens.backoffice.draft.removeLine")} />}</tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={i} className="border-t">
+                {cols.map((c) => (
+                  <td key={c.key} className={`px-2 py-1 ${c.kind === "number" ? "text-end" : ""}`}>
+                    {c.display ? <span dir={c.kind === "number" ? "ltr" : undefined}>{r[c.key] ?? ""}</span> : c.kind === "lookup" ? (
+                      <LookupSelect id={`draft-${field.key}-${i}-${c.key}`} name={`${field.key}.${i}.${c.key}`} lookup={c.lookup} value={r[c.key] ?? ""} onChange={(v) => set(i, c.key, v)} invalid={invalid} testId={`draft-select-${field.key}.${i}.${c.key}`} compact />
+                    ) : (
+                      <Input name={`${field.key}.${i}.${c.key}`} type={c.kind === "number" ? "number" : "text"} inputMode={c.kind === "number" ? "decimal" : undefined} min={c.kind === "number" ? 0 : undefined} max={c.maxFrom ? r[c.maxFrom] : undefined} step="any" value={r[c.key] ?? ""} onChange={(e) => set(i, c.key, e.target.value)} aria-invalid={invalid} aria-label={`${fieldLabel(c.key)} ${i + 1}`} className="h-8 w-28 text-end ms-auto" dir="ltr" />
+                    )}
+                  </td>
+                ))}
+                {field.canAddRows && <td className="px-1 py-1 text-end"><Button type="button" variant="ghost" size="icon" className="h-8 w-8" onClick={() => remove(i)} aria-label={`${t("screens.backoffice.draft.removeLine")} ${i + 1}`} disabled={rows.length <= (field.minRows ?? 1)}><Trash2 className="h-4 w-4" aria-hidden="true" /></Button></td>}
+              </tr>
+            ))}
+          </tbody>
+          {totals && (
+            <tfoot className="bg-muted/40 text-xs">
+              <tr>
+                <td className="px-2 py-1 font-medium">{t("screens.backoffice.draft.totals")}</td>
+                <td className="px-2 py-1 text-end whitespace-nowrap" dir="ltr">{formatMoney(totals.debit)}</td>
+                <td className="px-2 py-1 text-end whitespace-nowrap" dir="ltr">{formatMoney(totals.credit)}</td>
+                {field.canAddRows && <td />}
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        {field.canAddRows ? <Button type="button" variant="outline" size="sm" onClick={add} data-testid={`draft-add-line-${field.key}`}><Plus className="h-4 w-4 me-1" aria-hidden="true" />{t("screens.backoffice.draft.addLine")}</Button> : <span />}
+        {totals && (totals.debit > 0 || totals.credit > 0) && <span className={`text-xs ${totals.balanced ? "text-emerald-700" : "text-destructive"}`} role="status">{totals.balanced ? t("screens.backoffice.accounting.common.balanced") : t("screens.backoffice.draft.differenceIs", { amount: formatMoney(Math.abs(totals.debit - totals.credit)) })}</span>}
+      </div>
     </div>
   );
 }
@@ -108,7 +131,7 @@ function DraftForm({ spec, values, issues, onChange }: { spec: DraftFormSpec; va
             ) : f.kind === "lines" ? (
               <LinesEditor field={f} value={values[f.key]} onChange={(v) => onChange(f.key, v)} invalid={!!issue} />
             ) : f.kind === "lookup" ? (
-              <LookupSelect id={id} field={f} value={values[f.key] ?? ""} onChange={(v) => onChange(f.key, v)} invalid={!!issue} />
+              <LookupSelect id={id} name={f.key} lookup={f.lookup} value={values[f.key] ?? ""} onChange={(v) => onChange(f.key, v)} invalid={!!issue} testId={`draft-select-${f.key}`} />
             ) : f.kind === "select" ? (
               <Select value={values[f.key] ?? ""} onValueChange={(v) => onChange(f.key, v)}>
                 <SelectTrigger id={id} aria-invalid={!!issue} data-testid={`draft-select-${f.key}`}><SelectValue placeholder={t("screens.backoffice.draft.choose")} /></SelectTrigger>
@@ -153,16 +176,23 @@ function PayloadValue({ spec, k, v, values }: { spec: DraftFormSpec; k: string; 
                     {j === 0 && idCols.map((ic) => <span key={ic.key} className="block font-mono text-[10px] text-muted-foreground break-all" dir="ltr">{r[ic.key]}</span>)}
                   </td>
                 ))}
-                {sent.map((c) => <td key={c.key} className="py-0.5 pe-3 whitespace-nowrap"><span className="text-muted-foreground">{fieldLabel(c.key)}: </span><span className="font-medium" dir="ltr">{r[c.key]}</span></td>)}
+                {sent.map((c) => <td key={c.key} className={`py-0.5 pe-3 ${c.kind === "lookup" ? "" : "whitespace-nowrap"}`}><span className="text-muted-foreground">{fieldLabel(c.key)}: </span>{c.kind === "lookup" ? <LookupLabel lookup={c.lookup} value={r[c.key] ?? ""} /> : <span className="font-medium" dir="ltr">{r[c.key]}</span>}</td>)}
                 {shown.length === 0 && idCols.map((c) => <td key={c.key} className="py-0.5 font-mono text-[10px] text-muted-foreground break-all" dir="ltr">{r[c.key]}</td>)}
               </tr>
             );
           })}
+          {f?.balance && (() => { const tt = linesTotals(f, values[k]); return (
+            <tr className="font-medium">
+              <td className="py-0.5 pe-3">{t("screens.backoffice.draft.totals")}</td>
+              <td className="py-0.5 pe-3 whitespace-nowrap"><span className="text-muted-foreground">{fieldLabel(f.balance.debit)}: </span><span dir="ltr">{formatMoney(tt.debit)}</span></td>
+              <td className="py-0.5 pe-3 whitespace-nowrap"><span className="text-muted-foreground">{fieldLabel(f.balance.credit)}: </span><span dir="ltr">{formatMoney(tt.credit)}</span></td>
+            </tr>
+          ); })()}
         </tbody>
       </table>
     );
   }
-  if (f?.kind === "lookup") return <LookupLabel field={f} value={String(v)} />;
+  if (f?.kind === "lookup") return <LookupLabel lookup={f.lookup} value={String(v)} />;
   return <>{f?.kind === "select" ? t(`screens.backoffice.draft.choices.${String(v)}`) : String(v)}</>;
 }
 

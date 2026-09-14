@@ -1,0 +1,27 @@
+{"name":"01-draft-journal-bookkeeper-en-1-form-empty","phase":"form","alerts":[],"status":["Balanced"]}
+{"name":"01-draft-journal-bookkeeper-en-2-validation-no-lines","phase":"form","alerts":["Enter a quantity on at least one line"],"status":["Balanced"]}
+{"name":"01-draft-journal-bookkeeper-en-3-unbalanced-live","phase":"form","alerts":["Debits must equal credits"],"status":["Difference AED 20.00"]}
+{"name":"01-draft-journal-bookkeeper-en-4-validation-unbalanced","phase":"form","alerts":["Debits must equal credits"],"status":["Difference AED 20.00"]}
+{"name":"01-draft-journal-bookkeeper-en-5-balanced-with-spare-row","phase":"form","alerts":[],"status":["Balanced"]}
+{"name":"01-draft-journal-bookkeeper-en-6-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"01-draft-journal-bookkeeper-en-7-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"01-draft-journal-bookkeeper-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journals","rows":50,"alerts":[],"hOverflow":false}
+{"name":"02-draft-journal-bookkeeper-de-1-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"02-draft-journal-bookkeeper-de","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journale","rows":53,"alerts":[],"hOverflow":false}
+{"name":"03-draft-journal-bookkeeper-ar-rtl-1-form","phase":"form","alerts":[],"status":["الفرق ‏120.00 د.إ.‏"]}
+{"name":"03-draft-journal-bookkeeper-ar-rtl","mounted":true,"url":"/backoffice/accounting/journals","dir":"rtl","screenId":"BO-018","h1":"📒اليوميات","rows":52,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 35 stub read POSTs: 9
+{"name":"04-draft-journal-hidden-salesperson-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journals","rows":0,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 0
+{"name":"01-draft-journal-bookkeeper-en-1-form-empty","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-journal-bookkeeper-en-2-validation-no-lines","phase":"form","alerts":["At least two lines with an account and an amount"],"status":[]}
+{"name":"01-draft-journal-bookkeeper-en-3-unbalanced-live","phase":"form","alerts":["Debits must equal credits"],"status":["Difference AED 20.00"]}
+{"name":"01-draft-journal-bookkeeper-en-4-validation-unbalanced","phase":"form","alerts":["Debits must equal credits"],"status":["Difference AED 20.00"]}
+{"name":"01-draft-journal-bookkeeper-en-5-balanced-with-spare-row","phase":"form","alerts":[],"status":["Balanced"]}
+{"name":"01-draft-journal-bookkeeper-en-6-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"01-draft-journal-bookkeeper-en-7-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"01-draft-journal-bookkeeper-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journals","rows":50,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 12 stub read POSTs: 5

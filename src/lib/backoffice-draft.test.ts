@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { ACCOUNT_LOOKUP, DRAFT_FORMS, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
+import { ACCOUNT_LOOKUP, DRAFT_FORMS, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
 
 describe("draft forms", () => {
   it("every form maps to a Draft typed command with a single capability and at least one required field", () => {
     for (const spec of Object.values(DRAFT_FORMS)) {
-      expect(spec.type).toMatch(/^(crm|sales)\.[a-z_]+\.create$|^finance\.payment\.record$/);
-      expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : spec.type.startsWith("sales.") ? "sales.draft" : "finance.approve");
+      expect(spec.type).toMatch(/^(crm|sales|accounting)\.[a-z_]+\.create$|^finance\.payment\.record$/);
+      expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : spec.type.startsWith("sales.") ? "sales.draft" : spec.type.startsWith("accounting.") ? "accounting.post" : "finance.approve");
       expect(spec.fields.some((f) => f.required)).toBe(true);
       for (const f of spec.fields) if (f.kind === "select") expect(f.options && f.options.length > 0).toBe(true);
     }
@@ -63,6 +63,31 @@ describe("payment card (VTID-03871)", () => {
     expect(ACCOUNT_LOOKUP.keep!({ is_group: 1, disabled: 0 })).toBe(false);
     expect(ACCOUNT_LOOKUP.keep!({ is_group: 0, disabled: 1 })).toBe(false);
     expect(ACCOUNT_LOOKUP.keep!({ is_group: 0, disabled: 0 })).toBe(true);
+  });
+});
+
+describe("journal card (VTID-03872)", () => {
+  const F = DRAFT_FORMS.journal;
+  const lines = F.fields.find((f) => f.key === "lines")!;
+  const row = (a: string, d: string, c: string) => ({ account_id: a, debit: d, credit: c });
+  const base = { posting_date: "2026-09-13", entry_type: "journal" };
+  it("starts with two blank rows and refuses fewer than two filled lines", () => {
+    const init = initialDraftValues(F, new Date(2026, 8, 13));
+    expect(JSON.parse(init.lines)).toEqual([{ account_id: "", debit: "", credit: "" }, { account_id: "", debit: "", credit: "" }]);
+    expect(validateDraft(F, { ...base, lines: init.lines })).toEqual({ lines: "tooFewLines" });
+    expect(validateDraft(F, { ...base, lines: JSON.stringify([row("a1", "120", "")]) })).toEqual({ lines: "tooFewLines" });
+  });
+  it("refuses an unbalanced entry, a line without an account, and a line with neither debit nor credit", () => {
+    expect(validateDraft(F, { ...base, lines: JSON.stringify([row("a1", "120", ""), row("a2", "", "100")]) })).toEqual({ lines: "unbalanced" });
+    expect(validateDraft(F, { ...base, lines: JSON.stringify([row("", "120", ""), row("a2", "", "120")]) })).toEqual({ lines: "lineIncomplete" });
+    expect(validateDraft(F, { ...base, lines: JSON.stringify([row("a1", "0", "0"), row("a2", "", "120")]) })).toEqual({ lines: "lineIncomplete" });
+    expect(validateDraft(F, { ...base, lines: JSON.stringify([row("a1", "120", ""), row("a2", "", "120")]) })).toEqual({});
+  });
+  it("sends every touched line with blank amounts defaulted to 0.00 and reports totals", () => {
+    const v = JSON.stringify([row("a1", "120", ""), row("a2", "", "120"), { account_id: "", debit: "", credit: "" }]);
+    expect(buildDraftPayload(F, { ...base, lines: v })).toEqual({ ...base, lines: [{ account_id: "a1", debit: "120", credit: "0.00" }, { account_id: "a2", debit: "0.00", credit: "120" }] });
+    expect(linesTotals(lines, v)).toEqual({ debit: 120, credit: 120, balanced: true });
+    expect(linesTotals(lines, JSON.stringify([row("a1", "120.10", ""), row("a2", "", "120")])).balanced).toBe(false);
   });
 });
 

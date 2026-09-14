@@ -11034,7 +11034,10 @@
           "invalidOption": "خيار غير صالح",
           "noLines": "أدخل كمية في بند واحد على الأقل",
           "lineQtyTooHigh": "لا يمكن أن تتجاوز الكمية المرتجعة الكمية المفوترة",
-          "invalidNumber": "أدخل رقمًا صالحًا أكبر من 0"
+          "invalidNumber": "أدخل رقمًا صالحًا أكبر من 0",
+          "unbalanced": "يجب أن يساوي المدين الدائن",
+          "tooFewLines": "بندان على الأقل بحساب ومبلغ",
+          "lineIncomplete": "كل بند يحتاج إلى حساب ومبلغ مدين أو دائن"
         },
         "fields": {
           "lead_name": "اسم العميل المحتمل",
@@ -11072,7 +11075,13 @@
           "paid_to_account": "إلى حساب",
           "payment_type": "نوع الدفعة",
           "reference_date": "تاريخ المرجع",
-          "paid_amount": "المبلغ"
+          "paid_amount": "المبلغ",
+          "lines": "البنود",
+          "entry_type": "نوع القيد",
+          "debit": "مدين",
+          "account_id": "الحساب",
+          "remark": "ملاحظة",
+          "credit": "دائن"
         },
         "choices": {
           "website": "الموقع الإلكتروني",
@@ -11101,7 +11110,16 @@
           "company": "شركة",
           "individual": "فرد",
           "pay": "دفع",
-          "receive": "قبض"
+          "receive": "قبض",
+          "credit_note": "إشعار دائن",
+          "exchange_rate_revaluation": "إعادة تقييم سعر الصرف",
+          "debit_note": "إشعار مدين",
+          "inter_company": "بين الشركات",
+          "write_off": "شطب",
+          "closing": "ختامي",
+          "depreciation": "إهلاك",
+          "journal": "قيد يومية",
+          "opening": "افتتاحي"
         },
         "forms": {
           "lead": {
@@ -11143,12 +11161,21 @@
             "button": "تسجيل دفعة",
             "title": "تسجيل دفعة",
             "description": "قبض من عميل أو دفع لعميل، كمسودة – لا يُمس دفتر البنك إلا عند ترحيل القيد، وهي خطوة منفصلة تتطلب تأكيدًا."
+          },
+          "journal": {
+            "button": "قيد يومية جديد",
+            "title": "إنشاء قيد يومية",
+            "description": "مدين ودائن لكل بند مقابل دليل الحسابات – يُنشأ القيد كمسودة ولا يُرحَّل إلا في خطوة منفصلة تتطلب تأكيدًا."
           }
         },
         "noLineRows": "لا توجد بنود متاحة.",
         "lookupLoading": "جارٍ التحميل …",
         "lookupRefused": "لا يملك حسابك صلاحية قراءة قائمة الاختيار ({command}) – أدخل المعرّف مباشرة.",
-        "lookupIdPlaceholder": "أدخل المعرّف"
+        "lookupIdPlaceholder": "أدخل المعرّف",
+        "removeLine": "إزالة البند",
+        "differenceIs": "الفرق {amount}",
+        "addLine": "إضافة بند",
+        "totals": "الإجماليات"
       }
     }
   }

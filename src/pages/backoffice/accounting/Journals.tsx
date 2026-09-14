@@ -1,4 +1,4 @@
-/** BackOffice › Accounting › Journals (BO-018) — VTID-03857, Read tier: `accounting.journal.list`, `accounting.journal.get`. */
+/** BackOffice › Accounting › Journals (BO-018) — VTID-03857 Read tier; VTID-03872 journal Draft card: `accounting.journal.list`, `accounting.journal.get`. */
 import { useState } from "react";
 import BackOfficePage from "@/components/backoffice/BackOfficePage";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
@@ -17,6 +17,7 @@ import { formatMoney, fullTextMatch } from "@/lib/backoffice-sales";
 import { isBalancedEntry, journalLineTotals, summarizeJournals, type ErpJournalDetail, type ErpJournalRow } from "@/lib/backoffice-accounting";
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 
 const CAPS = ["accounting.view"] as const;
 
@@ -37,7 +38,7 @@ export default function BackOfficeJournals() {
   const statusOptions = ["all", "draft", "submitted", "cancelled"].map((v) => ({ value: v, label: v === "all" ? t("screens.backoffice.common.all") : t(`screens.backoffice.sales.status.${v}`) }));
 
   return (
-    <BackOfficePage sectionKey="accounting" screenId="BO-018" emoji="📒" title={t("screens.backoffice.accounting.journals.title")} description={t("screens.backoffice.accounting.journals.description")} capabilities={CAPS}>
+    <BackOfficePage sectionKey="accounting" screenId="BO-018" emoji="📒" title={t("screens.backoffice.accounting.journals.title")} description={t("screens.backoffice.accounting.journals.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="journal" />}>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <AdminStatsCard title={t("screens.backoffice.accounting.journals.entries")} value={fmtNumber(summary.total)} subtitle={t("screens.backoffice.accounting.journals.entriesHint", { submitted: fmtNumber(summary.submitted), cancelled: fmtNumber(summary.cancelled) })} icon={BookOpenText} loading={enabled && list.isLoading} />
         <AdminStatsCard title={t("screens.backoffice.accounting.journals.posted")} value={formatMoney(summary.postedDebit)} subtitle={t("screens.backoffice.accounting.journals.postedHint")} icon={Sigma} loading={enabled && list.isLoading} variant="success" />
