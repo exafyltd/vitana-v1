@@ -35,7 +35,7 @@ Stacked on the VTID-03849 branch (wave-1 Read screens for Overview/Approvals/Aud
 
 AC-1 — Every screen reads only through typed Read commands; the payload never carries a company id and never a free-text search (search/filter are client-side)
 TEST: `grep -rn "useErpRead(" src/pages/backoffice/sales` lists only `crm.*.list/get`, `crm.pipeline.report`, `sales.*.list/get` types with `{ limit }` or one id key (`lead_id`, `quotation_id`, `sales_invoice_id`); `src/hooks/useBackOfficeCommands.test.ts` (VTID-03849) pins the request shape.
-UI: `outputs/playwright-run.log` — `stub read POSTs` are exactly those types; every non-read request aborted.
+UI: `outputs/stub-reads.log` — `stub read POSTs` are exactly those types; every non-read request aborted.
 
 AC-2 — Helpers are correct against the captured shapes
 TEST: `src/lib/backoffice-sales.test.ts` (7 tests): decimal strings → numbers; AED default and document currency; overdue only when due-date passed, outstanding > 0 and the document is live (draft/paid/cancelled never overdue); task overdue only while open; board keeps the report's stage order, uses report totals and appends unknown stages with computed totals; status → badge variant; case-insensitive multi-field search.
@@ -56,7 +56,7 @@ AC-7 — Quotations / Invoices / Credit Notes: lists with amounts and status; se
 UI: `screenshots/05-sales-quotations-admin-en.png`, `06-sales-invoices-admin-en.png`, `08-sales-invoices-admin-de.png`, `07-sales-credit-notes-admin-en.png` (empty state with the High-risk note — the spike DB has no posted invoice to credit, see Findings).
 
 AC-8 — Capability gate: a bookkeeper (no crm.view/sales.view) sees the no-access body and no ERP read is attempted
-UI: `screenshots/10-sales-leads-bookkeeper-no-access-en.png`; `outputs/playwright-run.log` shows zero stub read POSTs for that shot.
+UI: `screenshots/10-sales-leads-bookkeeper-no-access-en.png`; `outputs/stub-reads.log` shows zero stub read POSTs for that shot.
 
 AC-9 — Nothing written anywhere during verification; type-check, lint (incl. i18n rules), unit tests, inventory
 TEST: `outputs/checks.txt` — tsc 140 pre-existing errors on base and branch, 0 in new files; eslint 0 problems on new files; `vitest run` 32 files / 213 tests green (7 new); inventory regenerated. Harness: service worker blocked, Supabase auth served locally from the one permitted sign-in, every non-read request aborted.
@@ -83,3 +83,7 @@ Same root cause as VTID-03840 patch 0002 (TEXT money columns + `decimal_sum`): c
   shown as stored — the Draft slice should pass the company currency on creation so the two agree.
 - A CRM contact linked to a company via `link-contact-to-company` gets a `crm_contact_role` row; `list-crm-contacts`
   does not surface it, so the Company column reads "—" for such contacts today.
+
+- The Playwright console output of this sweep was never written to a file, so the acceptance lines above now cite
+  `outputs/stub-reads.log` — the stub gateway's own record of exactly which typed Read commands each persona's
+  browser sent — instead of a `playwright-run.log` that does not exist. Later packs save the console output too.

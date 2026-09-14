@@ -1,0 +1,29 @@
+# Decision / policy traffic seen by the local stub gateway (127.0.0.1:8090)
+## stub run: admin-1
+stub on 8090 persona=admin bridge=up
+DECIDE approve ap-0 note="Matches the signed credit note; approved."
+POST /api/v1/backoffice/approvals/ap-0/approve 200
+GET /api/v1/backoffice/policy 200
+POLICY PUT {"high_risk_amount_threshold":50000,"require_mfa_for_high":false}
+PUT /api/v1/backoffice/policy 200
+GET /api/v1/backoffice/policy 200
+## stub run: admin-2
+stub on 8090 persona=admin bridge=up
+DECIDE reject ap-0 note="Amount does not match the signed order."
+POST /api/v1/backoffice/approvals/ap-0/reject 200
+## stub run: admin-3
+stub on 8090 persona=admin bridge=up
+## stub run: admin-4
+stub on 8090 persona=admin bridge=up
+## stub run: admin-5
+stub on 8090 persona=admin bridge=up
+DECIDE reject ap-0 note="Amount does not match the signed order."
+POST /api/v1/backoffice/approvals/ap-0/reject 200
+## stub run: admin-down
+stub on 8090 persona=admin bridge=down
+DECIDE approve ap-0 note=null
+POST /api/v1/backoffice/approvals/ap-0/approve 502
+## stub run: bookkeeper
+stub on 8090 persona=bookkeeper bridge=up
+GET /api/v1/backoffice/policy 403
+GET /api/v1/backoffice/policy 403
