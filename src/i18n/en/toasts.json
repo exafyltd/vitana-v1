@@ -334,7 +334,9 @@
       "rollbackFailed": "Rollback failed",
       "ticketRejected": "{ticketNumber} rejected",
       "ticketRemovedActiveList": "Removed from the active list.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "invalidJson": "Invalid JSON.",
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
     },
     "audio": {
       "cameraStopped": "Camera stopped",

@@ -334,6 +334,8 @@
       "rollbackFailed": "Error al revertir",
       "ticketRejected": "{ticketNumber} rechazado",
       "ticketRemovedActiveList": "Eliminado de la lista activa.",
+      "invalidJson": "Invalid JSON.",
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
       "_pending_review": {}
     },
     "audio": {

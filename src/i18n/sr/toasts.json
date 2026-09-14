@@ -334,6 +334,8 @@
       "rollbackFailed": "Povratak nije uspeo",
       "ticketRejected": "{ticketNumber} odbijen",
       "ticketRemovedActiveList": "Uklonjeno sa aktivne liste.",
+      "invalidJson": "Invalid JSON.",
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
       "_pending_review": {}
     },
     "audio": {
