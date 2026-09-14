@@ -1,0 +1,16 @@
+# VTID-03878 — layout geometry measured in a real browser at 1400x900 on /backoffice/sales/followups.
+# `panel` is the sidebar's fixed element, `spacer` the element that reserves its width in the flex row,
+# `main` the content column. The defect is panel and spacer landing on opposite sides.
+
+## BEFORE
+{"name":"geo-ltr","dir":"ltr","panel":{"x":0,"right":256,"w":256},"spacer":{"x":0,"right":256,"w":256},"main":{"x":256,"right":1400,"w":1144},"table":{"x":306,"right":1350,"w":1044},"vw":1400}
+{"name":"geo-rtl","dir":"rtl","panel":{"x":0,"right":256,"w":256},"spacer":{"x":1144,"right":1400,"w":256},"main":{"x":0,"right":1144,"w":1144},"table":{"x":50,"right":1094,"w":1044},"vw":1400}
+# RTL: the panel covers x=0..256 of a content column that starts at x=0. The tasks table starts at
+# x=50, so its first 206px are under the sidebar — that is the click a Playwright row-select hit
+# during the VTID-03859 Arabic sweep, landing on a sidebar link and navigating away.
+
+## AFTER
+{"name":"geo-ltr","dir":"ltr","panel":{"x":0,"right":256,"w":256},"spacer":{"x":0,"right":256,"w":256},"main":{"x":256,"right":1400,"w":1144},"table":{"x":306,"right":1350,"w":1044},"vw":1400}
+{"name":"geo-rtl","dir":"rtl","panel":{"x":1144,"right":1400,"w":256},"spacer":{"x":1144,"right":1400,"w":256},"main":{"x":0,"right":1144,"w":1144},"table":{"x":50,"right":1094,"w":1044},"vw":1400}
+# LTR is identical in both runs. RTL: the panel now sits exactly on its spacer at x=1144..1400 and
+# the content column ends where the panel begins — no overlap.
