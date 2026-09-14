@@ -37,3 +37,7 @@ supabase/.temp/
 .mcp.json
 .vscode/mcp.json
 .vscode/extensions.json
+
+# Screenshot-harness scratch: the verification script is copied in here so it can resolve
+# playwright from node_modules, then deleted. It carries a test credential — never commit it.
+.*-shots.tmp.mjs
