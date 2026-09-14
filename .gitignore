@@ -37,3 +37,6 @@ supabase/.temp/
 .mcp.json
 .vscode/mcp.json
 .vscode/extensions.json
+
+# Graphify codebase knowledge graph (local, regenerated via `graphify extract`/`graphify update`)
+graphify-out/
