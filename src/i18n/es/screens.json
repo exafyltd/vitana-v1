@@ -10785,6 +10785,63 @@
           "emptyHint": "Las notas de crédito solo existen contra una factura contabilizada.",
           "against": "Contra factura"
         }
+      },
+      "finance": {
+        "payments": {
+          "title": "Pagos",
+          "description": "Entradas y salidas de dinero en el ERP: lo registrado, lo contabilizado y lo ya asignado a facturas.",
+          "receivedYtd": "Recibido (año)",
+          "receivedYtdHint": "Cobros contabilizados desde {from}",
+          "paidYtd": "Pagado (año)",
+          "paidYtdHint": "Pagos contabilizados en el mismo periodo",
+          "unallocated": "Sin asignar",
+          "unallocatedHint": "Contabilizado pero aún sin asignar a una factura",
+          "searchPlaceholder": "Buscar por tercero, referencia o estado …",
+          "type": "Tipo",
+          "receive": "Cobro",
+          "pay": "Pago",
+          "party": "Tercero",
+          "amount": "Importe",
+          "unallocatedCol": "Sin asignar",
+          "empty": "Aún no hay pagos",
+          "allocations": "Asignaciones",
+          "bankReference": "Referencia bancaria",
+          "referenceDate": "Fecha de referencia",
+          "fromAccount": "Desde cuenta",
+          "toAccount": "A cuenta",
+          "currency": "Moneda · tipo"
+        },
+        "fx": {
+          "currencies": "Monedas",
+          "currenciesHint": "Las monedas marcadas como activas están habilitadas en el ERP.",
+          "noCurrencies": "Sin monedas",
+          "rates": "Tipos de cambio",
+          "noRates": "Aún no hay tipos de cambio registrados",
+          "pair": "Par",
+          "rate": "Tipo",
+          "effective": "Vigente desde",
+          "source": "Fuente"
+        },
+        "reconciliation": {
+          "title": "Conciliación bancaria",
+          "description": "Lo que hay que ver antes de conciliar: pagos contabilizados sin asignar, borradores que nunca llegaron al libro y lo que ya está liquidado.",
+          "readOnlyNote": "Solo lectura en esta fase: la conciliación en sí (finance.reconcile, una contabilización) llega en una fase posterior.",
+          "unmatched": "Sin conciliar",
+          "unmatchedHint": "Neto {amount}",
+          "drafts": "Borradores",
+          "draftsHint": "Neto {amount}: aún no en el libro bancario",
+          "settled": "Liquidados",
+          "settledHint": "Contabilizados y totalmente asignados",
+          "unmatchedTitle": "Contabilizados pero sin asignar a ninguna factura",
+          "nothingUnmatched": "Todo está asignado.",
+          "unmatchedExplain": "Estos importes están en el libro bancario sin ninguna factura liquidada contra ellos: es lo que la conciliación debe casar.",
+          "draftsTitle": "Borradores: aún sin contabilizar",
+          "noDrafts": "Sin borradores.",
+          "draftsExplain": "Registrados pero nunca contabilizados: sin apunte bancario, sin efecto en los saldos pendientes.",
+          "settledTitle": "Liquidados",
+          "noSettled": "Aún nada liquidado.",
+          "settledExplain": "Contabilizados y totalmente asignados: aquí no queda nada por conciliar."
+        }
       }
     }
   }

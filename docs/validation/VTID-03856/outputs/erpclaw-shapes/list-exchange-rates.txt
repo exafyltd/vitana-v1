@@ -1,0 +1,19 @@
+{
+  "rates": [
+    {
+      "id": "e5ed06b8-29d3-4bef-bc59-fcf01c9c6119",
+      "from_currency": "USD",
+      "to_currency": "AED",
+      "rate": "3.6725",
+      "effective_date": "2026-09-13",
+      "source": "manual",
+      "created_at": "2026-09-13 15:11:44.126767+00",
+      "updated_at": "2026-09-13 15:11:44.126767+00"
+    }
+  ],
+  "total_count": 1,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

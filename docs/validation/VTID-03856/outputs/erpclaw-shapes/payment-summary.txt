@@ -1,0 +1,12 @@
+{
+  "total_received": "5000.00",
+  "total_paid": "0.00",
+  "by_party_type": [
+    {
+      "party_type": "customer",
+      "count": 1,
+      "amount": "5000.00"
+    }
+  ],
+  "status": "ok"
+}

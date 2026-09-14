@@ -435,6 +435,9 @@ const BackOfficeFollowUps = lazy(() => import("./pages/backoffice/sales/FollowUp
 const BackOfficeQuotations = lazy(() => import("./pages/backoffice/sales/Quotations"));
 const BackOfficeInvoices = lazy(() => import("./pages/backoffice/sales/Invoices"));
 const BackOfficeCreditNotes = lazy(() => import("./pages/backoffice/sales/CreditNotes"));
+// VTID-03856 — Finance & Treasury Read screens
+const BackOfficePayments = lazy(() => import("./pages/backoffice/finance/Payments"));
+const BackOfficeBankReconciliation = lazy(() => import("./pages/backoffice/finance/BankReconciliation"));
 // VTID-03834: BackOffice › Settings › Access — ERP capability grants per member
 const BackOfficeSettingsAccess = lazy(() => import("./pages/backoffice/settings/Access"));
 
@@ -2211,6 +2214,13 @@ const App = () => {
           } />
           <Route path="/backoffice/sales/credit-notes" element={
             <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeCreditNotes /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03856 — Finance & Treasury Read screens. */}
+          <Route path="/backoffice/finance/payments" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePayments /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/finance/bank-reconciliation" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeBankReconciliation /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/backoffice/settings/access" element={
             <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeSettingsAccess /></ProtectedRoute></AuthGuard>

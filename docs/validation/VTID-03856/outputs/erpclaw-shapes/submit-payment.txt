@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "payment_entry_id": "3ee22e51-51c5-4d34-8a4f-8e19eb4c9ed6",
+  "gl_entries_created": 2,
+  "documents_cleared": 0,
+  "outstanding_updated": false
+}
