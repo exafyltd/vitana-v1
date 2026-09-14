@@ -1,0 +1,18 @@
+# VTID-03876 checks — 2026-09-14T09:47:20Z, branch claude/practical-gates-iqwv52-vtid-03876, commit be66bbd
+== eslint (changed files)
+eslint exit=0
+== tsc --noEmit -p tsconfig.app.json (error count; base has 140 pre-existing)
+140
+== tsc errors in changed files
+0
+== vitest run (full)
+ Test Files  37 passed (37)
+      Tests  260 passed (260)
+== i18n long-word guard (de, max 22)
+Flagged unique words: 0
+No long words found.
+guard exit=0
+== i18n inventory
+  pages: 327, keys: 4966, namespaces: 46, suspects: 67
+ M docs/SCREEN_INVENTORY.md
+(no line above = inventory already current)
