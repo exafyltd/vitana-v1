@@ -13,6 +13,7 @@ import { hasAnyCapability, shortId, useErpRead } from "@/hooks/useBackOfficeComm
 import { fullTextMatch, type ErpLead } from "@/lib/backoffice-sales";
 import { fmtDateTime } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 
 const CAPS = ["crm.view"] as const;
 
@@ -30,7 +31,7 @@ export default function BackOfficeLeads() {
   const d = detail.data?.result?.lead;
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-005" emoji="🎯" title={t("screens.backoffice.sales.leads.title")} description={t("screens.backoffice.sales.leads.description")} capabilities={CAPS}>
+    <BackOfficePage sectionKey="sales" screenId="BO-005" emoji="🎯" title={t("screens.backoffice.sales.leads.title")} description={t("screens.backoffice.sales.leads.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="lead" />}>
       <AdminFilterBar
         searchValue={search}
         onSearchChange={setSearch}

@@ -1,0 +1,13 @@
+{
+  "activity": {
+    "id": "f9259296-3383-464c-b362-764246e3b52b",
+    "activity_type": "call",
+    "subject": "Probe call",
+    "activity_date": "2026-09-13",
+    "lead_id": "a8e36391-775e-4bd2-91d7-459a95a729f7",
+    "opportunity_id": null,
+    "customer_id": null
+  },
+  "message": "Activity 'Probe call' logged",
+  "status": "ok"
+}

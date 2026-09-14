@@ -10966,6 +10966,110 @@
           },
           "negativeNote": "Negative Beträge sind Guthaben: Zahlungen oder Gutschriften, die noch keiner Rechnung zugeordnet sind."
         }
+      },
+      "draft": {
+        "review": "Prüfen, bevor es geschrieben wird",
+        "reviewHint": "Das ist genau der Befehl, den das Gateway ausführt, sobald du bestätigst. Nichts wurde bisher geschrieben.",
+        "toReview": "Weiter zur Prüfung",
+        "accept": "Bestätigen und anlegen",
+        "back": "Zurück",
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "editAndRetry": "Bearbeiten und erneut senden",
+        "submitting": "Wird ausgeführt …",
+        "done": "Angelegt",
+        "doneHint": "Das ERP hat den Datensatz angelegt; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
+        "failed": "Nicht angelegt",
+        "failedHint": "Es wurde nichts geschrieben. Du kannst die Eingaben ändern und erneut senden – derselbe Idempotenz-Schlüssel sorgt dafür, dass ein Wiederholen nie einen zweiten Datensatz erzeugt.",
+        "created": "Datensatz angelegt.",
+        "createdWithRef": "Angelegt als {ref}.",
+        "replayed": "Dieser Beleg wurde aus einem früheren Versuch mit demselben Schlüssel wiederholt – nichts wurde doppelt angelegt.",
+        "reason": "Grund:",
+        "entityHint": "„{ref}“ im Feld {field} konnte nicht eindeutig aufgelöst werden ({count} Treffer).",
+        "command": "Befehl",
+        "action": "ERP-Aktion",
+        "tier": "Stufe",
+        "capability": "Berechtigung",
+        "idempotencyKey": "Idempotenz-Schlüssel",
+        "payload": "Daten, die gesendet werden",
+        "whatHappens": "Stufe Entwurf: legt einen ungebuchten Datensatz an – keine Buchung, kein Statuswechsel, durch Bearbeiten oder Löschen umkehrbar.",
+        "choose": "Auswählen …",
+        "issues": {
+          "required": "Pflichtfeld",
+          "invalidEmail": "Keine gültige E-Mail-Adresse",
+          "invalidDate": "Datum im Format JJJJ-MM-TT",
+          "invalidOption": "Ungültige Auswahl"
+        },
+        "fields": {
+          "lead_name": "Lead-Name",
+          "company_name": "Firma",
+          "email": "E-Mail",
+          "phone": "Telefon",
+          "source": "Quelle",
+          "industry": "Branche",
+          "notes": "Notizen",
+          "name": "Name",
+          "lifecycle": "Lebenszyklus",
+          "subject": "Betreff",
+          "priority": "Priorität",
+          "due_date": "Fällig am",
+          "description": "Beschreibung",
+          "activity_type": "Art",
+          "activity_date": "Datum",
+          "lead_ref": "Lead (Name oder Nummer)"
+        },
+        "choices": {
+          "website": "Website",
+          "referral": "Empfehlung",
+          "campaign": "Kampagne",
+          "cold_call": "Kaltakquise",
+          "social_media": "Social Media",
+          "trade_show": "Messe",
+          "other": "Sonstiges",
+          "lead": "Lead",
+          "mql": "Marketing-qualifiziert",
+          "sql": "Vertriebs-qualifiziert",
+          "customer": "Kunde",
+          "prospect": "Interessent",
+          "partner": "Partner",
+          "vendor": "Lieferant",
+          "low": "Niedrig",
+          "medium": "Mittel",
+          "high": "Hoch",
+          "urgent": "Dringend",
+          "call": "Anruf",
+          "email": "E-Mail",
+          "meeting": "Termin",
+          "note": "Notiz",
+          "task": "Aufgabe"
+        },
+        "forms": {
+          "lead": {
+            "button": "Neuer Lead",
+            "title": "Neuen Lead anlegen",
+            "description": "Ein Lead ist ein ungebuchter Datensatz – er wird geprüft, bevor er im ERP landet."
+          },
+          "contact": {
+            "button": "Neuer Kontakt",
+            "title": "Neuen Kontakt anlegen",
+            "description": "Eine Person im CRM. Die Verknüpfung mit einer Firma folgt in einem eigenen Schritt."
+          },
+          "company": {
+            "button": "Neue Firma",
+            "title": "Neue Firma anlegen",
+            "description": "Eine Organisation im CRM – noch kein Kunde im Verkauf."
+          },
+          "task": {
+            "button": "Neue Aufgabe",
+            "title": "Neue Aufgabe anlegen",
+            "description": "Eine Nachfassaufgabe für das Team. Verknüpfungen mit Lead oder Chance folgen in einem eigenen Schritt."
+          },
+          "activity": {
+            "button": "Aktivität erfassen",
+            "title": "Aktivität erfassen",
+            "description": "Anruf, E-Mail, Termin oder Notiz zu einem Lead. Der Lead wird über Name oder Nummer aufgelöst – bei mehreren Treffern wird nichts geschrieben."
+          }
+        }
       }
     }
   }
