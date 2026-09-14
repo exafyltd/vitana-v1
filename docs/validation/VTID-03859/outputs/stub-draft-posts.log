@@ -1,0 +1,62 @@
+# Draft-command traffic seen by the local stub gateway (127.0.0.1:8090)
+## stub run: sales-up
+stub on 8090 persona=sales bridge=up
+POST crm.lead.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+## stub run: salesmanager-down
+stub on 8090 persona=salesmanager bridge=down
+POST crm.lead.list 503
+DRAFT crm.lead.create key=ui.draft:crm.lead.create:4697162c23034c15b32a724d4b141b37 confirm=false payload={"lead_name":"Bridge Down Probe"}
+POST crm.lead.create 503
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST crm.lead.list 503
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+## stub run: salesmanager-up-2
+stub on 8090 persona=salesmanager bridge=up
+POST crm.task.list 200
+POST crm.activity.list 200
+DRAFT crm.task.create key=ui.draft:crm.task.create:0eaabe1e795f4a7695b244e3fb95a766 confirm=false payload={"subject":"Send corporate programme deck","priority":"high","due_date":"2026-09-20","description":"Follow up after the summit conversation."}
+POST crm.task.create 200
+POST crm.task.list 200
+POST crm.activity.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST crm.task.list 200
+POST crm.activity.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+## stub run: salesmanager-up-3
+stub on 8090 persona=salesmanager bridge=up
+POST crm.task.list 200
+POST crm.activity.list 200
+POST /api/v1/rum/beacon 403
+## stub run: salesmanager-up-4
+stub on 8090 persona=salesmanager bridge=up
+POST crm.task.list 200
+POST crm.activity.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+## stub run: salesmanager-up
+stub on 8090 persona=salesmanager bridge=up
+POST crm.lead.list 200
+DRAFT crm.lead.create key=ui.draft:crm.lead.create:0f56dda87b1341748b47f617b8c36131 confirm=false payload={"lead_name":"Fatima Al Mansoori","company_name":"Gulf Wellness Trading FZE","email":"fatima@gulfwellness.example","phone":"+971 50 123 4567","source":"referral","notes":"Met at the Abu Dhabi longevity summit; interested in the corporate programme."}
+POST crm.lead.create 200
+POST crm.lead.list 200
+POST /api/v1/rum/beacon 403
+POST crm.lead.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST crm.contact.list 200
+POST crm.company.list 200
+POST sales.customer.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
