@@ -10375,7 +10375,7 @@
         "bridgeUnavailableHint": "El gateway aún no tiene un puente configurado (ERP_BRIDGE_URL). Hasta entonces los datos ERP quedan vacíos; comandos, aprobaciones y el registro de auditoría siguen funcionando.",
         "noCapability": "Te falta una capacidad para esto.",
         "noCapabilityHint": "Un administrador del tenant puede concedértela en Configuración › Acceso.",
-        "erpFailed": "ERPClaw rechazó el comando de lectura.",
+        "erpFailed": "ERPClaw rechazó el comando.",
         "unauthorized": "Vuelve a iniciar sesión.",
         "noTenant": "No hay tenant activo: elige primero un espacio de trabajo.",
         "notFound": "No encontrado.",
@@ -11045,7 +11045,11 @@
           "probability": "Probabilidad (%)",
           "expected_revenue": "Ingresos previstos",
           "expected_closing_date": "Cierre previsto",
-          "next_follow_up_date": "Próximo seguimiento"
+          "next_follow_up_date": "Próximo seguimiento",
+          "opportunity_type": "Tipo de oportunidad",
+          "lost_reason": "Motivo",
+          "sales_invoice_id": "ID de factura",
+          "journal_entry_id": "ID del asiento"
         },
         "choices": {
           "website": "Sitio web",
@@ -11088,7 +11092,10 @@
           "contacted": "Contactado",
           "qualified": "Cualificado",
           "unresponsive": "Sin respuesta",
-          "lost": "Perdido"
+          "lost": "Perdido",
+          "sales": "Ventas",
+          "support": "Soporte",
+          "maintenance": "Mantenimiento"
         },
         "forms": {
           "lead": {
@@ -11165,6 +11172,41 @@
             "button": "Cancelar",
             "title": "Cancelar tarea",
             "description": "La tarea se cancela y sigue visible. El motivo es obligatorio."
+          },
+          "leadConvert": {
+            "button": "Convertir en oportunidad",
+            "title": "Convertir lead en oportunidad",
+            "description": "Crea una oportunidad a partir del lead y lo marca como convertido. Después el lead ya no se puede editar."
+          },
+          "opportunityWon": {
+            "button": "Ganada",
+            "title": "Marcar oportunidad como ganada",
+            "description": "Pone la etapa en ganada y la probabilidad en 100 %. Definitivo: ERPClaw bloquea la oportunidad después."
+          },
+          "opportunityLost": {
+            "button": "Perdida",
+            "title": "Marcar oportunidad como perdida",
+            "description": "Pone la etapa en perdida. El motivo es obligatorio. Definitivo: ERPClaw bloquea la oportunidad después."
+          },
+          "invoiceSubmit": {
+            "button": "Contabilizar",
+            "title": "Contabilizar factura",
+            "description": "Asienta la factura borrador en el libro mayor (cuenta a cobrar e ingreso). Después solo se puede anular."
+          },
+          "invoiceCancel": {
+            "button": "Anular",
+            "title": "Anular factura",
+            "description": "Anula una factura contabilizada y revierte sus asientos. Alto riesgo: necesita la aprobación de una segunda persona."
+          },
+          "journalSubmit": {
+            "button": "Contabilizar",
+            "title": "Contabilizar asiento",
+            "description": "Asienta el borrador en el libro mayor. Después solo se puede anular."
+          },
+          "journalCancel": {
+            "button": "Anular",
+            "title": "Anular asiento",
+            "description": "Anula un asiento contabilizado y revierte sus apuntes. Alto riesgo: necesita la aprobación de una segunda persona."
           }
         },
         "noLineRows": "No hay líneas disponibles.",
@@ -11183,7 +11225,27 @@
         "doneHintUpdate": "El ERP modificó el registro; la lista de detrás se recargó. El recibo de abajo es lo que guardó el puente.",
         "doneUpdate": "Guardado",
         "failedUpdate": "No guardado",
-        "failedHintUpdate": "No se cambió nada. Puedes ajustar los datos y reenviar: la misma clave de idempotencia garantiza que un reintento nunca escriba dos veces."
+        "failedHintUpdate": "No se cambió nada. Puedes ajustar los datos y reenviar: la misma clave de idempotencia garantiza que un reintento nunca escriba dos veces.",
+        "confirmCommit": "Confirmo: este comando se ejecuta en el ERP ahora mismo.",
+        "confirmCommitHint": "Nivel contabilización: asienta en el libro mayor o fija un estado final. No se deshace editando; la confirmación solo se da aquí, nunca por voz.",
+        "confirmHigh": "Confirmo la solicitud y entiendo que una segunda persona debe aprobarla.",
+        "confirmHighHint": "Alto riesgo: aquí no se ejecuta nada. La solicitud va a la cola de aprobaciones; solo otra persona con la capacidad de aprobar puede decidirla (doble control).",
+        "acceptCommit": "Confirmar y ejecutar",
+        "acceptHigh": "Enviar a aprobación",
+        "whatHappensCommit": "Nivel contabilización: se ejecuta de inmediato tras tu confirmación; asienta en el libro mayor o fija un estado final y no se revierte editando.",
+        "whatHappensHigh": "Alto riesgo: no se ejecuta ahora. La solicitud espera en la cola de aprobaciones a una segunda persona con la capacidad de aprobar; no puedes aprobar tu propia solicitud.",
+        "queued": "Enviado a aprobación",
+        "queuedLine": "En cola: a la espera de una segunda persona",
+        "queuedWithId": "ID de aprobación: {id}",
+        "queuedNoApprover": "Ahora mismo nadie más en este inquilino tiene la capacidad de aprobar. La solicitud queda abierta hasta que alguien la tenga.",
+        "queuedHint": "No puedes aprobar tu propia solicitud. Síguela en «Mis solicitudes»; la decide otra persona en la cola.",
+        "goToMyRequests": "Ir a «Mis solicitudes»",
+        "doneCommit": "Ejecutado",
+        "doneCommitLine": "Ejecutado",
+        "doneCommitWithRef": "Ejecutado: {ref}",
+        "doneHintCommit": "El ERP ejecutó el comando; la lista de detrás se recargó. El recibo de abajo es lo que guardó el puente.",
+        "failedCommit": "No ejecutado",
+        "failedHintCommit": "No se asentó nada ni cambió ningún estado. Revisa el motivo y el estado del documento e inténtalo de nuevo."
       },
       "decide": {
         "queueHint": "Las solicitudes pendientes que puedes decidir muestran Aprobar / Rechazar. Aprobar ejecuta el comando a través del gateway, nunca desde el navegador.",
@@ -11229,7 +11291,8 @@
           "mfaRequired": "Esta aprobación necesita una sesión con segundo factor (MFA).",
           "alreadyDecided": "Esta solicitud ya fue decidida.",
           "notFound": "Solicitud no encontrada."
-        }
+        },
+        "payload": "Contenido de la solicitud"
       },
       "policyEdit": {
         "button": "Editar política",

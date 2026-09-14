@@ -10369,7 +10369,7 @@
         "bridgeUnavailableHint": "Das Gateway hat noch keine Bridge konfiguriert (ERP_BRIDGE_URL). Bis dahin bleiben ERP-Daten leer – Befehle, Freigaben und Prüfpfad funktionieren trotzdem.",
         "noCapability": "Dafür fehlt dir eine Berechtigung.",
         "noCapabilityHint": "Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen.",
-        "erpFailed": "ERPClaw hat den Lesebefehl abgelehnt.",
+        "erpFailed": "ERPClaw hat den Befehl abgelehnt.",
         "unauthorized": "Bitte melde dich erneut an.",
         "noTenant": "Kein aktiver Tenant – wähle zuerst einen Arbeitsbereich.",
         "notFound": "Nicht gefunden.",
@@ -11039,7 +11039,11 @@
           "probability": "Wahrscheinlichkeit (%)",
           "expected_revenue": "Erwarteter Umsatz",
           "expected_closing_date": "Voraussichtlicher Abschluss",
-          "next_follow_up_date": "Nächstes Nachfassen"
+          "next_follow_up_date": "Nächstes Nachfassen",
+          "opportunity_type": "Art der Chance",
+          "lost_reason": "Grund",
+          "sales_invoice_id": "Rechnungs-ID",
+          "journal_entry_id": "Buchungssatz-ID"
         },
         "choices": {
           "website": "Website",
@@ -11082,7 +11086,10 @@
           "contacted": "Kontaktiert",
           "qualified": "Qualifiziert",
           "unresponsive": "Keine Reaktion",
-          "lost": "Verloren"
+          "lost": "Verloren",
+          "sales": "Vertrieb",
+          "support": "Support",
+          "maintenance": "Wartung"
         },
         "forms": {
           "lead": {
@@ -11159,6 +11166,41 @@
             "button": "Abbrechen",
             "title": "Aufgabe abbrechen",
             "description": "Die Aufgabe wird abgebrochen und bleibt sichtbar. Ein Grund ist Pflicht."
+          },
+          "leadConvert": {
+            "button": "In Chance umwandeln",
+            "title": "Lead in Verkaufschance umwandeln",
+            "description": "Erstellt eine Verkaufschance aus dem Lead und markiert ihn als umgewandelt. Danach lässt sich der Lead nicht mehr bearbeiten."
+          },
+          "opportunityWon": {
+            "button": "Gewonnen",
+            "title": "Chance als gewonnen markieren",
+            "description": "Setzt die Stufe auf gewonnen und die Wahrscheinlichkeit auf 100 %. Endgültig – ERPClaw sperrt die Chance danach."
+          },
+          "opportunityLost": {
+            "button": "Verloren",
+            "title": "Chance als verloren markieren",
+            "description": "Setzt die Stufe auf verloren. Ein Grund ist Pflicht. Endgültig – ERPClaw sperrt die Chance danach."
+          },
+          "invoiceSubmit": {
+            "button": "Buchen",
+            "title": "Rechnung buchen",
+            "description": "Bucht die Entwurfsrechnung ins Hauptbuch (Forderung und Erlös). Danach lässt sie sich nur noch stornieren."
+          },
+          "invoiceCancel": {
+            "button": "Stornieren",
+            "title": "Rechnung stornieren",
+            "description": "Storniert eine gebuchte Rechnung und kehrt ihre Buchungen um. Hohes Risiko: braucht die Freigabe einer zweiten Person."
+          },
+          "journalSubmit": {
+            "button": "Buchen",
+            "title": "Buchungssatz buchen",
+            "description": "Bucht den Entwurf ins Hauptbuch. Danach lässt er sich nur noch stornieren."
+          },
+          "journalCancel": {
+            "button": "Stornieren",
+            "title": "Buchungssatz stornieren",
+            "description": "Storniert einen gebuchten Satz und kehrt seine Buchungen um. Hohes Risiko: braucht die Freigabe einer zweiten Person."
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
@@ -11177,7 +11219,27 @@
         "doneHintUpdate": "Das ERP hat den Datensatz geändert; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
         "doneUpdate": "Gespeichert",
         "failedUpdate": "Nicht gespeichert",
-        "failedHintUpdate": "Es wurde nichts geändert. Du kannst die Eingaben anpassen und erneut senden – derselbe Idempotenz-Schlüssel sorgt dafür, dass ein Wiederholen nie doppelt schreibt."
+        "failedHintUpdate": "Es wurde nichts geändert. Du kannst die Eingaben anpassen und erneut senden – derselbe Idempotenz-Schlüssel sorgt dafür, dass ein Wiederholen nie doppelt schreibt.",
+        "confirmCommit": "Ich bestätige: Dieser Befehl wird sofort im ERP ausgeführt.",
+        "confirmCommitHint": "Stufe Buchung – bucht ins Hauptbuch oder setzt einen Endstatus. Nicht durch Bearbeiten umkehrbar; die Bestätigung geht nur hier, nie per Sprache.",
+        "confirmHigh": "Ich bestätige die Anfrage und weiß, dass eine zweite Person sie freigeben muss.",
+        "confirmHighHint": "Hohes Risiko – wird hier nicht ausgeführt. Die Anfrage landet in der Freigabe-Warteschlange; nur jemand anderes mit der nötigen Berechtigung kann sie freigeben (Vier-Augen-Prinzip).",
+        "acceptCommit": "Bestätigen und ausführen",
+        "acceptHigh": "Zur Freigabe einreichen",
+        "whatHappensCommit": "Stufe Buchung: wird nach deiner Bestätigung sofort ausgeführt – bucht ins Hauptbuch bzw. setzt einen Endstatus und lässt sich nicht durch Bearbeiten zurücknehmen.",
+        "whatHappensHigh": "Hohes Risiko: wird nicht sofort ausgeführt. Die Anfrage wartet in der Freigabe-Warteschlange auf eine zweite Person mit der Freigabe-Berechtigung; du selbst kannst sie nicht freigeben.",
+        "queued": "Zur Freigabe eingereicht",
+        "queuedLine": "In der Warteschlange – wartet auf eine zweite Person",
+        "queuedWithId": "Freigabe-ID: {id}",
+        "queuedNoApprover": "Im Moment hat niemand sonst in diesem Mandanten die nötige Freigabe-Berechtigung. Die Anfrage bleibt offen, bis jemand sie erhält.",
+        "queuedHint": "Du kannst deine eigene Anfrage nicht freigeben. Den Stand siehst du unter „Meine Anfragen“; entschieden wird in der Warteschlange von jemand anderem.",
+        "goToMyRequests": "Zu „Meine Anfragen“",
+        "doneCommit": "Ausgeführt",
+        "doneCommitLine": "Ausgeführt",
+        "doneCommitWithRef": "Ausgeführt: {ref}",
+        "doneHintCommit": "Das ERP hat den Befehl ausgeführt; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
+        "failedCommit": "Nicht ausgeführt",
+        "failedHintCommit": "Es wurde nichts gebucht und kein Status geändert. Prüfe den Grund und den Zustand des Belegs, dann versuche es erneut."
       },
       "decide": {
         "queueHint": "Offene Anfragen, die du entscheiden darfst, zeigen Freigeben / Ablehnen. Freigeben führt den Befehl über das Gateway aus – nie aus dem Browser heraus.",
@@ -11223,7 +11285,8 @@
           "mfaRequired": "Diese Freigabe braucht eine Sitzung mit zweitem Faktor (MFA).",
           "alreadyDecided": "Diese Anfrage wurde inzwischen schon entschieden.",
           "notFound": "Anfrage nicht gefunden."
-        }
+        },
+        "payload": "Inhalt der Anfrage"
       },
       "policyEdit": {
         "button": "Richtlinie bearbeiten",

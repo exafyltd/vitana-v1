@@ -54,6 +54,9 @@ export interface BackOfficeCommand {
   created_at: string;
   executed_at: string | null;
   replayed?: boolean;
+  /** VTID-03887 — present on GET /commands/:id and on approvals[].command for the requester, audit.view and the approver; never on the list */
+  payload?: Record<string, unknown>;
+  resolved_payload?: Record<string, unknown> | null;
 }
 
 export interface BackOfficeApproval {
@@ -70,6 +73,8 @@ export interface BackOfficeApproval {
   created_at: string;
   /** Computed by the gateway for the caller: maker-checker + capability + MFA + web. */
   can_decide: boolean;
+  /** VTID-03887 — the queued command with its payload when the caller may see it (approver, requester, audit.view); null otherwise */
+  command?: BackOfficeCommand | null;
 }
 
 export interface BackOfficeAuditRow {
@@ -93,6 +98,8 @@ export interface BackOfficePolicy {
 export interface CommandResponse {
   ok: boolean;
   command?: BackOfficeCommand;
+  /** 202 on a High-risk command: the approval it was queued under (VTID-03888 reads approval_id) */
+  approval?: { approval_id: string; approve_capability: string; status?: string; reason?: string | null };
   error?: string;
   issues?: string[];
   required_capability?: string | null;

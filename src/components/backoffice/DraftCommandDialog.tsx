@@ -4,21 +4,29 @@
  * capability, the exact payload, the idempotency key) and the outcome. The write
  * happens only when the user accepts the card; a rejected or failed command is
  * shown with its reason, never swallowed.
+ *
+ * VTID-03888 — the same dialog carries the Commit tier and High-risk (§3.3/§4.3):
+ * a Commit card demands an explicit, ticked confirmation before the accept button
+ * enables and is sent with `confirm: true` (voice can never give it); a High-risk
+ * card is queued for a second person and ends in a "queued" state with the way to
+ * the Approvals queue — it never executes from here.
  */
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ResponsiveDialog, ResponsiveDialogBody, ResponsiveDialogContent, ResponsiveDialogDescription, ResponsiveDialogFooter, ResponsiveDialogHeader, ResponsiveDialogTitle } from "@/components/ui/responsive-dialog";
-import { Check, Pencil, Plus, Trash2, X } from "lucide-react";
+import { ArrowRightLeft, Check, Pencil, Plus, Send, Trash2, Trophy, X, XCircle } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { TierBadge } from "@/components/backoffice/CommandBadges";
 import ReceiptDetail from "@/components/backoffice/ReceiptDetail";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useDraftCommand } from "@/hooks/useDraftCommand";
 import { hasAnyCapability, useErpRead } from "@/hooks/useBackOfficeCommands";
-import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftCreates, draftResultSummary, emptyLine, initialDraftValues, linesTotals, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
+import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftCreates, draftResultSummary, draftTier, emptyLine, initialDraftValues, linesTotals, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftTier, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
 import { formatMoney } from "@/lib/backoffice-sales";
 import { t } from "@/lib/i18n-toast";
 
@@ -203,7 +211,7 @@ function ReviewCard({ spec, payload, idempotencyKey, values }: { spec: DraftForm
       <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm rounded-md border p-3 bg-muted/30">
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.command")}</dt><dd className="font-mono text-xs" dir="ltr">{spec.type}</dd>
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.action")}</dt><dd className="font-mono text-xs" dir="ltr">{spec.action}</dd>
-        <dt className="text-muted-foreground">{t("screens.backoffice.draft.tier")}</dt><dd><TierBadge tier="draft" /></dd>
+        <dt className="text-muted-foreground">{t("screens.backoffice.draft.tier")}</dt><dd><TierBadge tier={draftTier(spec)} /></dd>
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.capability")}</dt><dd className="font-mono text-xs" dir="ltr">{draftCapabilities(spec).join(" | ")}</dd>
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.idempotencyKey")}</dt><dd className="font-mono text-[11px] break-all" dir="ltr">{idempotencyKey}</dd>
       </dl>
@@ -218,9 +226,24 @@ function ReviewCard({ spec, payload, idempotencyKey, values }: { spec: DraftForm
           ))}
         </dl>
       </div>
-      <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.whatHappens" : "screens.backoffice.draft.whatHappensUpdate")}</p>
+      <p className="text-xs text-muted-foreground">{t(whatHappensKey(spec))}</p>
     </div>
   );
+}
+
+/** VTID-03888 — the tier decides what accepting the card means; only the Draft tier distinguishes create vs update wording. */
+function whatHappensKey(spec: DraftFormSpec): string {
+  const tier = draftTier(spec);
+  if (tier === "commit") return "screens.backoffice.draft.whatHappensCommit";
+  if (tier === "high") return "screens.backoffice.draft.whatHappensHigh";
+  return draftCreates(spec) ? "screens.backoffice.draft.whatHappens" : "screens.backoffice.draft.whatHappensUpdate";
+}
+
+/** Wording for the done/failed/accept lines by tier: Draft keeps its create/update twins, Commit has its own, High-risk never reaches "done" here. */
+function tierKey(spec: DraftFormSpec, draftCreate: string, draftUpdate: string, commit: string): string {
+  const tier = draftTier(spec);
+  if (tier !== "draft") return commit;
+  return draftCreates(spec) ? draftCreate : draftUpdate;
 }
 
 export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { formId: DraftFormId; open: boolean; onOpenChange: (open: boolean) => void; initial?: DraftValues }) {
@@ -228,6 +251,9 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
   const draft = useDraftCommand(spec);
   const [values, setValues] = useState<DraftValues>(() => ({ ...initialDraftValues(spec), ...(initial ?? {}) }));
   const [showIssues, setShowIssues] = useState(false);
+  // VTID-03888 — Commit / High-risk need an explicit, ticked confirmation on the review card; it resets with the card.
+  const tier: DraftTier = draftTier(spec);
+  const [confirmed, setConfirmed] = useState(false);
   const issues = validateDraft(spec, values);
   const payload = buildDraftPayload(spec, values);
   const cmd = draft.outcome?.body.command ?? null;
@@ -235,7 +261,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
   const entity = (draft.outcome?.body as { entity?: { field?: string; ref?: string; candidates?: unknown[] } } | undefined)?.entity;
 
   const close = (next: boolean) => {
-    if (!next) { draft.reset(); setValues({ ...initialDraftValues(spec), ...(initial ?? {}) }); setShowIssues(false); }
+    if (!next) { draft.reset(); setValues({ ...initialDraftValues(spec), ...(initial ?? {}) }); setShowIssues(false); setConfirmed(false); }
     onOpenChange(next);
   };
   const toReview = () => {
@@ -248,7 +274,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
       <ResponsiveDialogContent data-testid={`draft-dialog-${spec.id}`} data-phase={draft.phase}>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t(`screens.backoffice.draft.forms.${spec.id}.title`)}</ResponsiveDialogTitle>
-          <ResponsiveDialogDescription>{draft.phase === "form" ? t(`screens.backoffice.draft.forms.${spec.id}.description`) : draft.phase === "review" ? t("screens.backoffice.draft.review") : draft.phase === "done" ? t(draftCreates(spec) ? "screens.backoffice.draft.done" : "screens.backoffice.draft.doneUpdate") : draft.phase === "failed" ? t(draftCreates(spec) ? "screens.backoffice.draft.failed" : "screens.backoffice.draft.failedUpdate") : t("screens.backoffice.draft.submitting")}</ResponsiveDialogDescription>
+          <ResponsiveDialogDescription>{draft.phase === "form" ? t(`screens.backoffice.draft.forms.${spec.id}.description`) : draft.phase === "review" ? t("screens.backoffice.draft.review") : draft.phase === "done" ? t(tierKey(spec, "screens.backoffice.draft.done", "screens.backoffice.draft.doneUpdate", "screens.backoffice.draft.doneCommit")) : draft.phase === "queued" ? t("screens.backoffice.draft.queued") : draft.phase === "failed" ? t(tierKey(spec, "screens.backoffice.draft.failed", "screens.backoffice.draft.failedUpdate", "screens.backoffice.draft.failedCommit")) : t("screens.backoffice.draft.submitting")}</ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody>
           {draft.phase === "form" && (
@@ -259,15 +285,34 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
             </>
           )}
           {(draft.phase === "review" || draft.phase === "submitting") && <ReviewCard spec={spec} payload={payload} idempotencyKey={draft.key} values={values} />}
+          {draft.phase === "review" && tier !== "draft" && (
+            <div className={`mt-3 flex items-start gap-3 rounded-md border px-3 py-3 ${tier === "high" ? "border-destructive/30 bg-destructive/5" : "border-amber-500/30 bg-amber-500/5"}`} data-testid="draft-confirm-box">
+              <Checkbox id={`draft-confirm-${spec.id}`} checked={confirmed} onCheckedChange={(v) => setConfirmed(v === true)} aria-describedby={`draft-confirm-${spec.id}-hint`} data-testid="draft-confirm" />
+              <div className="space-y-1">
+                <Label htmlFor={`draft-confirm-${spec.id}`} className="text-sm font-medium leading-snug">{t(tier === "high" ? "screens.backoffice.draft.confirmHigh" : "screens.backoffice.draft.confirmCommit")}</Label>
+                <p id={`draft-confirm-${spec.id}-hint`} className="text-xs text-muted-foreground">{t(tier === "high" ? "screens.backoffice.draft.confirmHighHint" : "screens.backoffice.draft.confirmCommitHint")}</p>
+              </div>
+            </div>
+          )}
           {draft.phase === "done" && (
             <div className="space-y-3" data-testid="draft-done">
               <div role="status" className="rounded-md border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm">
-                <div className="font-medium">{summary.reference ? t(draftCreates(spec) ? "screens.backoffice.draft.createdWithRef" : "screens.backoffice.draft.updatedWithRef", { ref: summary.reference }) : t(draftCreates(spec) ? "screens.backoffice.draft.created" : "screens.backoffice.draft.updated")}</div>
+                <div className="font-medium">{summary.reference ? t(tierKey(spec, "screens.backoffice.draft.createdWithRef", "screens.backoffice.draft.updatedWithRef", "screens.backoffice.draft.doneCommitWithRef"), { ref: summary.reference }) : t(tierKey(spec, "screens.backoffice.draft.created", "screens.backoffice.draft.updated", "screens.backoffice.draft.doneCommitLine"))}</div>
                 {summary.message && <p className="text-xs text-muted-foreground mt-1" dir="auto">{summary.message}</p>}
                 {cmd?.replayed && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.replayed")}</p>}
               </div>
-              <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.doneHint" : "screens.backoffice.draft.doneHintUpdate")}</p>
+              <p className="text-xs text-muted-foreground">{t(tierKey(spec, "screens.backoffice.draft.doneHint", "screens.backoffice.draft.doneHintUpdate", "screens.backoffice.draft.doneHintCommit"))}</p>
               <ReceiptDetail receipt={cmd?.receipt ?? null} />
+            </div>
+          )}
+          {draft.phase === "queued" && (
+            <div className="space-y-3" data-testid="draft-queued">
+              <div role="status" className="rounded-md border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm">
+                <div className="font-medium">{t("screens.backoffice.draft.queuedLine")}</div>
+                {draft.approvalId && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.queuedWithId", { id: draft.approvalId })}</p>}
+                {cmd?.reason === "no_eligible_approver" && <p className="text-xs text-destructive mt-1">{t("screens.backoffice.draft.queuedNoApprover")}</p>}
+              </div>
+              <p className="text-xs text-muted-foreground">{t("screens.backoffice.draft.queuedHint")}</p>
             </div>
           )}
           {draft.phase === "failed" && (
@@ -277,7 +322,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
                 {draft.reason && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.reason")} <code className="font-mono" dir="ltr">{draft.reason}</code></p>}
                 {entity?.field && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.entityHint", { field: fieldLabel(entity.field), ref: entity.ref ?? "", count: String(entity.candidates?.length ?? 0) })}</p>}
               </div>
-              <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.failedHint" : "screens.backoffice.draft.failedHintUpdate")}</p>
+              <p className="text-xs text-muted-foreground">{t(tierKey(spec, "screens.backoffice.draft.failedHint", "screens.backoffice.draft.failedHintUpdate", "screens.backoffice.draft.failedHintCommit"))}</p>
               {cmd?.receipt && <ReceiptDetail receipt={cmd.receipt} />}
             </div>
           )}
@@ -291,12 +336,18 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
           )}
           {draft.phase === "review" && (
             <>
-              <Button type="button" variant="outline" onClick={draft.back}>{t("screens.backoffice.draft.back")}</Button>
-              <Button type="button" onClick={() => draft.submit(payload)} data-testid="draft-accept">{t(draftCreates(spec) ? "screens.backoffice.draft.accept" : "screens.backoffice.draft.acceptUpdate")}</Button>
+              <Button type="button" variant="outline" onClick={() => { setConfirmed(false); draft.back(); }}>{t("screens.backoffice.draft.back")}</Button>
+              <Button type="button" variant={tier === "high" ? "destructive" : "default"} onClick={() => draft.submit(payload, tier !== "draft")} disabled={tier !== "draft" && !confirmed} data-testid="draft-accept">{t(tierKey(spec, "screens.backoffice.draft.accept", "screens.backoffice.draft.acceptUpdate", tier === "high" ? "screens.backoffice.draft.acceptHigh" : "screens.backoffice.draft.acceptCommit"))}</Button>
             </>
           )}
           {draft.phase === "submitting" && <Button type="button" disabled aria-busy="true">{t("screens.backoffice.draft.submitting")}</Button>}
           {draft.phase === "done" && <Button type="button" onClick={() => close(false)} data-testid="draft-close">{t("screens.backoffice.draft.close")}</Button>}
+          {draft.phase === "queued" && (
+            <>
+              <Button type="button" variant="outline" onClick={() => close(false)} data-testid="draft-close">{t("screens.backoffice.draft.close")}</Button>
+              <Button asChild data-testid="draft-go-my-requests"><Link to="/backoffice/approvals/my-requests">{t("screens.backoffice.draft.goToMyRequests")}</Link></Button>
+            </>
+          )}
           {draft.phase === "failed" && (
             <>
               <Button type="button" variant="outline" onClick={() => close(false)}>{t("screens.backoffice.draft.close")}</Button>
@@ -312,6 +363,10 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
 /** The icon matches what the command does, so an edit card never wears a "+" (VTID-03876). */
 function draftIcon(type: string) {
   if (type.endsWith(".complete")) return Check;
+  if (type.endsWith(".convert")) return ArrowRightLeft;
+  if (type.endsWith(".mark_won")) return Trophy;
+  if (type.endsWith(".mark_lost")) return XCircle;
+  if (type.endsWith(".submit")) return Send;
   if (type.endsWith(".cancel")) return X;
   if (type.endsWith(".update") || type.endsWith(".set_stage")) return Pencil;
   return Plus;

@@ -10481,7 +10481,7 @@
         "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
         "noCapability": "You lack a capability for this.",
         "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
-        "erpFailed": "ERPClaw rejected the read command.",
+        "erpFailed": "ERPClaw rejected the command.",
         "unauthorized": "Please sign in again.",
         "noTenant": "No active tenant – pick a workspace first.",
         "notFound": "Not found.",
@@ -11151,7 +11151,11 @@
           "probability": "Probability (%)",
           "expected_revenue": "Expected revenue",
           "expected_closing_date": "Expected closing",
-          "next_follow_up_date": "Next follow-up"
+          "next_follow_up_date": "Next follow-up",
+          "opportunity_type": "Opportunity type",
+          "lost_reason": "Reason",
+          "sales_invoice_id": "Invoice id",
+          "journal_entry_id": "Journal entry id"
         },
         "choices": {
           "website": "Website",
@@ -11194,7 +11198,10 @@
           "contacted": "Contacted",
           "qualified": "Qualified",
           "unresponsive": "Unresponsive",
-          "lost": "Lost"
+          "lost": "Lost",
+          "sales": "Sales",
+          "support": "Support",
+          "maintenance": "Maintenance"
         },
         "forms": {
           "lead": {
@@ -11271,6 +11278,41 @@
             "button": "Cancel",
             "title": "Cancel task",
             "description": "The task is cancelled and stays visible. A reason is required."
+          },
+          "leadConvert": {
+            "button": "Convert to opportunity",
+            "title": "Convert lead to opportunity",
+            "description": "Creates an opportunity from the lead and marks the lead converted. The lead can no longer be edited afterwards."
+          },
+          "opportunityWon": {
+            "button": "Won",
+            "title": "Mark opportunity won",
+            "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards."
+          },
+          "opportunityLost": {
+            "button": "Lost",
+            "title": "Mark opportunity lost",
+            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards."
+          },
+          "invoiceSubmit": {
+            "button": "Post",
+            "title": "Post invoice",
+            "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled."
+          },
+          "invoiceCancel": {
+            "button": "Cancel",
+            "title": "Cancel invoice",
+            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval."
+          },
+          "journalSubmit": {
+            "button": "Post",
+            "title": "Post journal entry",
+            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled."
+          },
+          "journalCancel": {
+            "button": "Cancel",
+            "title": "Cancel journal entry",
+            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval."
           }
         },
         "noLineRows": "No lines available.",
@@ -11289,7 +11331,27 @@
         "doneHintUpdate": "The ERP changed the record; the list behind this was reloaded. The receipt below is what the bridge stored.",
         "doneUpdate": "Saved",
         "failedUpdate": "Not saved",
-        "failedHintUpdate": "Nothing was changed. You can adjust the inputs and resend – the same idempotency key guarantees a retry never writes twice."
+        "failedHintUpdate": "Nothing was changed. You can adjust the inputs and resend – the same idempotency key guarantees a retry never writes twice.",
+        "confirmCommit": "I confirm: this command runs in the ERP right now.",
+        "confirmCommitHint": "Commit tier — posts to the ledger or sets a final status. Not reversible by editing; the confirmation is given only here, never by voice.",
+        "confirmHigh": "I confirm the request and understand a second person has to approve it.",
+        "confirmHighHint": "High-risk — nothing runs here. The request goes to the approvals queue; only someone else holding the approve capability can decide it (maker-checker).",
+        "acceptCommit": "Confirm and execute",
+        "acceptHigh": "Submit for approval",
+        "whatHappensCommit": "Commit tier: runs immediately after your confirmation — posts to the ledger or sets a final status, and cannot be taken back by editing.",
+        "whatHappensHigh": "High-risk: does not run now. The request waits in the approvals queue for a second person with the approve capability; you cannot approve your own request.",
+        "queued": "Submitted for approval",
+        "queuedLine": "Queued — waiting for a second person",
+        "queuedWithId": "Approval id: {id}",
+        "queuedNoApprover": "Right now nobody else in this tenant holds the approve capability. The request stays open until someone does.",
+        "queuedHint": "You cannot approve your own request. Follow it under My requests; someone else decides it in the queue.",
+        "goToMyRequests": "Go to My requests",
+        "doneCommit": "Executed",
+        "doneCommitLine": "Executed",
+        "doneCommitWithRef": "Executed: {ref}",
+        "doneHintCommit": "The ERP executed the command; the list behind this was reloaded. The receipt below is what the bridge stored.",
+        "failedCommit": "Not executed",
+        "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again."
       },
       "decide": {
         "queueHint": "Pending requests you may decide show Approve / Reject. Approving executes the command through the gateway – never from the browser.",
@@ -11335,7 +11397,8 @@
           "mfaRequired": "This approval needs a session with a second factor (MFA).",
           "alreadyDecided": "This request has already been decided.",
           "notFound": "Request not found."
-        }
+        },
+        "payload": "Request contents"
       },
       "policyEdit": {
         "button": "Edit policy",

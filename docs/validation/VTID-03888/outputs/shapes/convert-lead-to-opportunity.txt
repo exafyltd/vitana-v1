@@ -1,0 +1,15 @@
+{
+  "opportunity": {
+    "id": "9d221a3e-02c0-4402-975a-751475fd5199",
+    "naming_series": "OPP-2026-00003",
+    "opportunity_name": "Rahman Logistics FZE",
+    "lead_id": "afcbb7f6-ec44-4ee5-801c-d1f20935eea2",
+    "stage": "new",
+    "probability": "50",
+    "expected_revenue": "48000",
+    "weighted_revenue": "24000.00"
+  },
+  "lead_status": "converted",
+  "message": "Lead converted to opportunity OPP-2026-00003",
+  "status": "ok"
+}

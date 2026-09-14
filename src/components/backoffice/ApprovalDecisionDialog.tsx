@@ -1,7 +1,7 @@
 /**
  * VTID-03873 — the approver's dialog. Shows the queued command as the gateway
- * exposes it (type, ERPClaw action, tier, escalations, requester — the payload
- * itself is not on GET /commands/:id yet, see acceptance.md), takes a decision
+ * exposes it (type, ERPClaw action, tier, escalations, requester and — since
+ * VTID-03887/03888 — the payload the approver is deciding on), takes a decision
  * note (required to reject), and posts the verdict. The outcome is shown as it
  * is: executed with the bridge receipt, approved-but-failed, or refused with the
  * orchestrator's reason. Nothing here talks to ERPClaw directly.
@@ -55,7 +55,23 @@ export function ApprovalDecisionDialog({ approval, verdict, open, onOpenChange }
               {approval.reason && <><dt className="text-muted-foreground">{t("screens.backoffice.commands.reason")}</dt><dd className="font-mono text-xs" dir="ltr">{approval.reason}</dd></>}
             </dl>
             {cmd.isLoading && <QuerySkeleton rows={2} />}
-            <p className="text-xs text-muted-foreground">{t("screens.backoffice.decide.payloadNote")}</p>
+            {c?.payload && Object.keys(c.payload).length > 0 ? (
+              // VTID-03888 — what the approver is deciding on, as the requester sent it (VTID-03887 exposes it
+              // only to the approver, the requester and audit.view). Keys are ERPClaw flags, shown verbatim.
+              <div className="rounded-md border" data-testid="decide-payload">
+                <div className="px-3 py-2 text-xs font-medium border-b bg-muted/40">{t("screens.backoffice.decide.payload")}</div>
+                <dl className="px-3 py-1">
+                  {Object.entries(c.payload).map(([k, v]) => (
+                    <div key={k} className="grid grid-cols-[minmax(8rem,auto)_1fr] gap-3 py-1 text-sm border-b last:border-b-0">
+                      <dt className="font-mono text-xs text-muted-foreground" dir="ltr">{k}</dt>
+                      <dd className="break-words text-sm" dir="auto">{typeof v === "string" ? v : JSON.stringify(v)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground">{t("screens.backoffice.decide.payloadNote")}</p>
+            )}
             {!done && (
               <div className="space-y-1">
                 <Label htmlFor="decision-note">{t("screens.backoffice.decide.note")}{verdict === "reject" && <span aria-hidden="true" className="text-destructive"> *</span>}</Label>

@@ -1,0 +1,18 @@
+{
+  "cost_centers": [
+    {
+      "id": "e1b7b135-4372-4ae5-a590-5e4ddfb3ca99",
+      "name": "Vitanaland Spike LLC - Main",
+      "parent_id": null,
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+      "is_group": 0,
+      "created_at": "2026-09-13 07:32:43.236276+00",
+      "updated_at": "2026-09-13 07:32:43.236276+00"
+    }
+  ],
+  "total_count": 1,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

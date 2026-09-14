@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Lead LEAD-2026-00004 is already converted to opportunity 9d221a3e-02c0-4402-975a-751475fd5199"
+}

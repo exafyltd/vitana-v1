@@ -9,7 +9,7 @@ import { Target, Trophy, XCircle, Percent } from "lucide-react";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { hasAnyCapability, shortId, useErpRead } from "@/hooks/useBackOfficeCommands";
 import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
-import { isOpportunityEditable, opportunityUpdateInitial } from "@/lib/backoffice-draft";
+import { canMarkOpportunity, isOpportunityEditable, opportunityUpdateInitial } from "@/lib/backoffice-draft";
 import { formatMoney, formatPercent, groupOpportunitiesByStage, type ErpOpportunity, type ErpPipelineReport } from "@/lib/backoffice-sales";
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
@@ -64,6 +64,9 @@ export default function BackOfficeOpportunities() {
                       <div className="flex flex-wrap gap-1 pt-1">
                         <DraftCommandButton formId="opportunityUpdate" variant="outline" initial={opportunityUpdateInitial(o)} />
                         <DraftCommandButton formId="opportunityStage" variant="outline" initial={{ opportunity: o.id }} />
+                        {/* VTID-03888 — won/lost are Commit tier: terminal in ERPClaw, after an explicit confirmation. */}
+                        {canMarkOpportunity(o) && <DraftCommandButton formId="opportunityWon" initial={{ opportunity_id: o.id }} />}
+                        {canMarkOpportunity(o) && <DraftCommandButton formId="opportunityLost" variant="outline" initial={{ opportunity_id: o.id }} />}
                       </div>
                     )}
                   </div>

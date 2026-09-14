@@ -1,0 +1,15 @@
+{
+  "lead": {
+    "id": "c87d141b-deaa-41d9-ad13-045a1a1096e0",
+    "naming_series": "LEAD-2026-00005",
+    "lead_name": "Omar Saleh",
+    "company_name": "Saleh Dental Clinic",
+    "email": null,
+    "phone": null,
+    "source": "website",
+    "lead_source_id": null,
+    "status": "new"
+  },
+  "message": "Lead 'Omar Saleh' created (LEAD-2026-00005)",
+  "status": "ok"
+}

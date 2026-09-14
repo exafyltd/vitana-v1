@@ -18,6 +18,7 @@ import { isBalancedEntry, journalLineTotals, summarizeJournals, type ErpJournalD
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
+import { canCancelJournal, canSubmitJournal } from "@/lib/backoffice-draft";
 
 const CAPS = ["accounting.view"] as const;
 
@@ -106,6 +107,13 @@ export default function BackOfficeJournals() {
                     { label: t("screens.backoffice.accounting.journals.remark"), value: d!.remark ?? "—" },
                     { label: t("screens.backoffice.accounting.journals.amendedFrom"), value: d!.amended_from ? shortId(d!.amended_from) : "—", mono: true },
                   ]} />
+                  {/* VTID-03888 — posting a draft entry is Commit tier (explicit confirmation); cancelling a posted one is High-risk and goes to a second approver with accounting.close. */}
+                  {(canSubmitJournal(listRow) || canCancelJournal(listRow)) && (
+                    <div className="pt-2 border-t flex flex-wrap gap-1">
+                      {canSubmitJournal(listRow) && <DraftCommandButton formId="journalSubmit" initial={{ journal_entry_id: d!.id }} />}
+                      {canCancelJournal(listRow) && <DraftCommandButton formId="journalCancel" variant="outline" initial={{ journal_entry_id: d!.id }} />}
+                    </div>
+                  )}
                   <h3 className="text-sm font-medium pt-2">{t("screens.backoffice.accounting.journals.lines", { count: fmtNumber((d!.lines ?? []).length) })}</h3>
                   {(d!.lines ?? []).length === 0 ? <p className="text-xs text-muted-foreground">{t("screens.backoffice.accounting.journals.noLines")}</p> : (
                     <div className="rounded-md border overflow-x-auto">

@@ -39,7 +39,16 @@ export interface DraftField {
 }
 
 export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote" | "payment" | "journal"
-  | "leadUpdate" | "opportunityUpdate" | "opportunityStage" | "taskUpdate" | "taskComplete" | "taskCancel";
+  | "leadUpdate" | "opportunityUpdate" | "opportunityStage" | "taskUpdate" | "taskComplete" | "taskCancel"
+  | "leadConvert" | "opportunityWon" | "opportunityLost" | "invoiceSubmit" | "invoiceCancel" | "journalSubmit" | "journalCancel";
+
+/**
+ * VTID-03888 — the policy tier the card runs at (design gate §1.3/§3.3/§4.3). `draft` executes on
+ * accept; `commit` executes only after an explicit confirmation (never by voice) and is sent with
+ * `confirm: true`; `high` never executes here — it is queued for a second person who holds the
+ * approve capability (maker-checker, requester ≠ approver) and the card ends in a "queued" state.
+ */
+export type DraftTier = "draft" | "commit" | "high";
 
 export interface DraftFormSpec {
   id: DraftFormId;
@@ -52,7 +61,13 @@ export interface DraftFormSpec {
   alsoCapabilities?: readonly string[];
   /** an edit card: the form starts from the record and a field left blank keeps its current value (ERPClaw updates only the fields it is given) */
   keepsBlank?: boolean;
+  /** policy tier; absent = Draft (VTID-03888) */
+  tier?: DraftTier;
   fields: readonly DraftField[];
+}
+
+export function draftTier(spec: DraftFormSpec): DraftTier {
+  return spec.tier ?? "draft";
 }
 
 export function draftCapabilities(spec: DraftFormSpec): readonly string[] {
@@ -99,6 +114,16 @@ export const LEAD_FROZEN_STATUSES = ["converted"] as const;
 export const OPPORTUNITY_FROZEN_STAGES = ["won", "lost"] as const;
 export const TASK_FROZEN_STATUSES = ["done", "completed", "cancelled"] as const;
 /** The pipeline stage a `set-opportunity-pipeline-stage` moves to is an id, not a word — picked from the tenant's own stages. */
+// --- VTID-03888: Commit-tier and High-risk cards -------------------------------------------------
+// Mirrors VALID_OPP_TYPES in erpclaw-growth/scripts/erpclaw-crm/db_query.py (v2.10.0).
+export const OPPORTUNITY_TYPES = ["sales", "support", "maintenance"] as const;
+// ERPClaw's own state guards (submit_sales_invoice / cancel_sales_invoice / submit_journal_entry /
+// cancel_journal_entry, v4.15.0): anything else is refused with "Cannot submit/cancel: … is '<status>'".
+// The cards hide rather than offer a button that can only fail.
+export const INVOICE_SUBMITTABLE_STATUSES = ["draft"] as const;
+export const INVOICE_CANCELLABLE_STATUSES = ["submitted", "overdue", "partially_paid"] as const;
+export const JOURNAL_SUBMITTABLE_STATUSES = ["draft"] as const;
+export const JOURNAL_CANCELLABLE_STATUSES = ["submitted"] as const;
 export const PIPELINE_STAGE_LOOKUP: LookupSpec = { type: "crm.pipeline_stage.list", payload: { limit: 200 }, listKey: "crm_pipeline_stages", valueKey: "id", labelKey: "name" };
 
 export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
@@ -271,6 +296,48 @@ export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
       { key: "crm_task_id", kind: "text", required: true, readOnly: true },
       { key: "reason", kind: "textarea", required: true },
     ],
+  },
+  // --- VTID-03888: Commit tier — executes at once after an explicit confirmation ---------------------
+  leadConvert: {
+    id: "leadConvert", type: "crm.lead.convert", action: "convert-lead-to-opportunity", capability: "crm.manage", tier: "commit",
+    fields: [
+      { key: "lead_id", kind: "text", required: true, readOnly: true },
+      { key: "opportunity_name", kind: "text", required: true },
+      { key: "opportunity_type", kind: "select", options: OPPORTUNITY_TYPES, default: "sales" },
+      { key: "expected_revenue", kind: "number", min: 0 },
+      { key: "probability", kind: "number", min: 0, default: "50" },
+      { key: "expected_closing_date", kind: "date" },
+    ],
+  },
+  opportunityWon: {
+    id: "opportunityWon", type: "crm.opportunity.mark_won", action: "mark-opportunity-won", capability: "crm.manage", tier: "commit",
+    fields: [{ key: "opportunity_id", kind: "text", required: true, readOnly: true }],
+  },
+  opportunityLost: {
+    id: "opportunityLost", type: "crm.opportunity.mark_lost", action: "mark-opportunity-lost", capability: "crm.manage", tier: "commit",
+    fields: [
+      { key: "opportunity_id", kind: "text", required: true, readOnly: true },
+      { key: "lost_reason", kind: "textarea", required: true },
+    ],
+  },
+  invoiceSubmit: {
+    id: "invoiceSubmit", type: "sales.invoice.submit", action: "submit-sales-invoice", capability: "sales.commit", tier: "commit",
+    fields: [{ key: "sales_invoice_id", kind: "text", required: true, readOnly: true }],
+  },
+  journalSubmit: {
+    id: "journalSubmit", type: "accounting.journal.submit", action: "submit-journal-entry", capability: "accounting.post", alsoCapabilities: ["payroll.approve", "accounting.close"], tier: "commit",
+    fields: [{ key: "journal_entry_id", kind: "text", required: true, readOnly: true }],
+  },
+  // --- VTID-03888: High-risk — never executes here; queued for a second person (maker-checker) --------
+  // The payload carries only what ERPClaw accepts (the bridge refuses undeclared flags); the approver
+  // sees it through GET /commands/:id (VTID-03887) and records their own note on the decision.
+  invoiceCancel: {
+    id: "invoiceCancel", type: "sales.invoice.cancel", action: "cancel-sales-invoice", capability: "sales.commit", alsoCapabilities: ["finance.approve"], tier: "high",
+    fields: [{ key: "sales_invoice_id", kind: "text", required: true, readOnly: true }],
+  },
+  journalCancel: {
+    id: "journalCancel", type: "accounting.journal.cancel", action: "cancel-journal-entry", capability: "accounting.close", tier: "high",
+    fields: [{ key: "journal_entry_id", kind: "text", required: true, readOnly: true }],
   },
 };
 export type LineRow = Record<string, string>;
@@ -459,4 +526,33 @@ export function taskUpdateInitial(task: {
   id: string; subject?: string | null; priority?: string | null; due_date?: string | null; description?: string | null;
 }): DraftValues {
   return present({ crm_task_id: task.id, subject: task.subject, priority: task.priority, due_date: task.due_date, description: task.description });
+}
+
+// --- VTID-03888: when a Commit / High-risk card may be offered -----------------------------------------
+function statusIn(list: readonly string[], status: string | null | undefined): boolean {
+  return !!status && list.includes(String(status).toLowerCase());
+}
+/** ERPClaw refuses to convert a lead that is already converted; every other lead status may convert. */
+export function canConvertLead(lead: { status?: string | null } | null | undefined): boolean {
+  return isLeadEditable(lead);
+}
+/** won/lost are terminal in ERPClaw: an opportunity already there cannot be marked again. */
+export function canMarkOpportunity(opp: { stage?: string | null } | null | undefined): boolean {
+  return isOpportunityEditable(opp);
+}
+export function canSubmitInvoice(inv: { status?: string | null } | null | undefined): boolean {
+  return !!inv && statusIn(INVOICE_SUBMITTABLE_STATUSES, inv.status);
+}
+export function canCancelInvoice(inv: { status?: string | null } | null | undefined): boolean {
+  return !!inv && statusIn(INVOICE_CANCELLABLE_STATUSES, inv.status);
+}
+export function canSubmitJournal(je: { status?: string | null } | null | undefined): boolean {
+  return !!je && statusIn(JOURNAL_SUBMITTABLE_STATUSES, je.status);
+}
+export function canCancelJournal(je: { status?: string | null } | null | undefined): boolean {
+  return !!je && statusIn(JOURNAL_CANCELLABLE_STATUSES, je.status);
+}
+/** The convert card starts from the lead: the opportunity is named after the company (or the person), type sales, probability 50 — ERPClaw's own defaults, shown so the user can change them. */
+export function leadConvertInitial(lead: { id: string; lead_name?: string | null; company_name?: string | null }): DraftValues {
+  return { lead_id: lead.id, opportunity_name: (lead.company_name || lead.lead_name || "").trim(), opportunity_type: "sales", probability: "50" };
 }
