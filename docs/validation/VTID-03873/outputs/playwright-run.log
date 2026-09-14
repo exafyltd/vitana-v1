@@ -1,0 +1,77 @@
+{"name":"01-decide-approve-admin-en-1-queue-with-actions","phase":null,"alerts":[],"status":[]}
+{"name":"01-decide-approve-admin-en-2-dialog","phase":"confirm","alerts":[],"status":[]}
+{"name":"01-decide-approve-admin-en-3-executed","phase":"done","alerts":[],"status":["The gateway executed the command. The bridge receipt is below."]}
+{"name":"01-decide-approve-admin-en-4-queue-after","phase":null,"alerts":[],"status":[]}
+{"name":"01-decide-approve-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+{"name":"03-policy-edit-admin-en-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"03-policy-edit-admin-en-2-no-changes","phase":"form","alerts":["Nothing changed."],"status":[]}
+{"name":"03-policy-edit-admin-en-3-review-before-after","phase":"review","alerts":[],"status":[]}
+step failed {"waitFor":"[data-testid=\"policy-done\"]","wait":800} locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="policy-done"]').first() to be visible[22m
+
+{"name":"03-policy-edit-admin-en-4-saved","phase":"form","alerts":[],"status":[]}
+step failed {"click":"[data-testid=\"policy-close\"]","wait":1200} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="policy-close"]').first()[22m
+
+{"name":"03-policy-edit-admin-en-5-policies-after","phase":"form","alerts":[],"status":[]}
+{"name":"03-policy-edit-admin-en","mounted":true,"url":"/backoffice/approvals/policies","dir":"ltr","screenId":"BO-055","h1":"📜Policies","rows":0,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 30 stub read POSTs: 2
+{"name":"02-decide-reject-admin-en-1-note-required","phase":"confirm","alerts":["Please give a reason for the rejection"],"status":[]}
+{"name":"02-decide-reject-admin-en-2-rejected","phase":"done","alerts":[],"status":["The request is rejected; nothing was executed."]}
+{"name":"02-decide-reject-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+step failed {"click":"[data-testid=\"decide-approve-ap-0\"]","wait":1500} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="decide-approve-ap-0"]').first()[22m
+
+{"name":"04-decide-approve-admin-de-1-dialog","phase":null,"alerts":[],"status":[]}
+{"name":"04-decide-approve-admin-de","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Warteschlange","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 26 stub read POSTs: 1
+{"name":"05-decide-approve-admin-ar-rtl-1-dialog","phase":"confirm","alerts":[],"status":[]}
+{"name":"05-decide-approve-admin-ar-rtl","mounted":true,"url":"/backoffice/approvals/queue","dir":"rtl","screenId":"BO-053","h1":"✅قائمة الانتظار","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 0
+{"name":"06-decide-no-actions-bookkeeper-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+{"name":"07-policy-read-only-bookkeeper-en","mounted":true,"url":"/backoffice/approvals/policies","dir":"ltr","screenId":"BO-055","h1":"📜Policies","rows":0,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 23 stub read POSTs: 0
+{"name":"08-decide-approve-bridge-down-admin-en-1-approved-but-bridge-failed","phase":"done","alerts":["ERPClaw rejected the read command.The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."],"status":[]}
+{"name":"08-decide-approve-bridge-down-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":["ERPClaw rejected the read command.The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 1
+===== RERUN after fixes (policy dialog key, rejected outcome, 502 reason) =====
+{"name":"01-decide-approve-admin-en-1-queue-with-actions","phase":null,"alerts":[],"status":[]}
+{"name":"01-decide-approve-admin-en-2-dialog","phase":"confirm","alerts":[],"status":[]}
+{"name":"01-decide-approve-admin-en-3-executed","phase":"done","alerts":[],"status":["The gateway executed the command. The bridge receipt is below."]}
+{"name":"01-decide-approve-admin-en-4-queue-after","phase":null,"alerts":[],"status":[]}
+{"name":"01-decide-approve-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+{"name":"03-policy-edit-admin-en-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"03-policy-edit-admin-en-2-no-changes","phase":"form","alerts":["Nothing changed."],"status":[]}
+{"name":"03-policy-edit-admin-en-3-review-before-after","phase":"review","alerts":[],"status":[]}
+{"name":"03-policy-edit-admin-en-4-saved","phase":"done","alerts":[],"status":["The policy is updated and applies to new commands from now on."]}
+{"name":"03-policy-edit-admin-en-5-policies-after","phase":null,"alerts":[],"status":[]}
+{"name":"03-policy-edit-admin-en","mounted":true,"url":"/backoffice/approvals/policies","dir":"ltr","screenId":"BO-055","h1":"📜Policies","rows":0,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 31 stub read POSTs: 2
+{"name":"04-decide-approve-admin-de-1-dialog","phase":"confirm","alerts":[],"status":[]}
+{"name":"04-decide-approve-admin-de","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Warteschlange","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 0
+{"name":"02-decide-reject-admin-en-1-note-required","phase":"confirm","alerts":["Please give a reason for the rejection"],"status":[]}
+{"name":"02-decide-reject-admin-en-2-rejected","phase":"done","alerts":[],"status":["The request is rejected; nothing was executed.Reason: approval_rejected"]}
+{"name":"02-decide-reject-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 1
+{"name":"08-decide-approve-bridge-down-admin-en-1-approved-but-bridge-failed","phase":"done","alerts":["Approved – execution failedReason: bridge_not_configuredThe approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."],"status":[]}
+{"name":"08-decide-approve-bridge-down-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":["Approved – execution failedReason: bridge_not_configuredThe approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 13 stub read POSTs: 1
+===== RERUN 2: reject after hiding the reason code on successful outcomes =====
+{"name":"02-decide-reject-admin-en-1-note-required","phase":"confirm","alerts":["Please give a reason for the rejection"],"status":[]}
+{"name":"02-decide-reject-admin-en-2-rejected","phase":"done","alerts":[],"status":["The request is rejected; nothing was executed."]}
+{"name":"02-decide-reject-admin-en","mounted":true,"url":"/backoffice/approvals/queue","dir":"ltr","screenId":"BO-053","h1":"✅Queue","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 10 stub read POSTs: 1

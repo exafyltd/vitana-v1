@@ -1,0 +1,5 @@
+{"name":"01-settings-access-admin-en","ok":true,"meHits":1,"url":"/backoffice/settings/access","h1":"🔐Access","sidebar":["← Admin","Overview","Sales & CRM","Marketing","Accounting","Finance & Treasury","Operations","Legal & Compliance","Reports","Approvals","Audit","Settings"],"rows":3}
+{"name":"02-sidebar-gated-bookkeeper-en","ok":true,"meHits":1,"url":"/backoffice/finance/payments","h1":"Finance & Treasury","sidebar":["← Admin","Overview","Accounting","Finance & Treasury","Reports","Approvals"],"rows":0}
+{"name":"03-no-access-body-bookkeeper-de","ok":true,"meHits":1,"url":"/backoffice/sales/leads","h1":"Vertrieb & CRM","sidebar":["← Admin","Übersicht","Buchhaltung","Finanzen & Treasury","Berichte","Freigaben"],"rows":0}
+{"name":"04-settings-access-rtl-ar","ok":true,"meHits":1,"url":"/backoffice/settings/access","h1":"🔐الصلاحيات","sidebar":["→ الإدارة","نظرة عامة","المبيعات وإدارة العملاء","التسويق","المحاسبة","المالية والخزينة","العمليات","القانونية والامتثال","التقارير","الموافقات","التدقيق","الإعدادات"],"rows":3}
+aborted external requests: 267

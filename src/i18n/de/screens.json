@@ -10265,7 +10265,10 @@
         "geminiTitle": "Mit Gemini verbinden",
         "geminiStep1": "Für die Gemini-CLI: Trage die MCP-Server-Adresse oben in ~/.gemini/settings.json unter deinen MCP-Servern ein.",
         "geminiStep2": "Für Gemini Enterprise (Business Edition): Einstellungen & Hilfe → Team → Team verwalten → Verbundene Apps → \"MCP-Server hinzufügen\".",
-        "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise."
+        "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise.",
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "Shop-URL (optional) — z. B. https://dein-shop.de",
@@ -10288,6 +10291,26 @@
         "connecting": "Verbinde...",
         "notConfigured": "Diese Verbindungsart ist noch nicht freigeschaltet. Bitte versuche es später erneut.",
         "failed": "Die Verbindung konnte nicht gestartet werden. Bitte überprüfe deine Angaben."
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Gib die Adresse unten in deine KI ein — Claude, ChatGPT oder Gemini — und dein Business ist mit Vitanaland verbunden.",
+      "agentStatusPill": "Bald live",
+      "agentStatusDetail": "Der MCP-Server ist fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar — die DNS-Freischaltung steht aus. Solange stellt der Server deinem Agenten nur lesende Werkzeuge bereit: Ein Business per KI anzulegen kommt mit der Freischaltung. Bis dahin führt der manuelle Weg unten zum Ziel.",
+      "agentUrlHint": "Eine Adresse. Mehr braucht dein Agent nicht.",
+      "howItWorksTitle": "Was danach passiert",
+      "manualIntro": "Lieber selbst ausfüllen?",
+      "manualCta": "Business manuell verbinden",
+      "connectionsEmptyHint": "Sobald du dein erstes Business verbunden hast, siehst du hier seinen Fortschritt bis zum Live-Gang.",
+      "connectionsCount": "{count} verbunden",
+      "openWorkbench": "Verbindung öffnen",
+      "closeWorkbench": "Schließen",
+      "sandboxDevNote": "Die Sandbox-Prüfung läuft im Entwicklungsmodus — es werden noch keine echten Aufrufe an dein System gesendet.",
+      "progress": {
+        "connect": "Verbinden",
+        "mapping": "Mapping",
+        "tests": "Prüfung",
+        "live": "Live",
+        "offTrack": "Braucht Aufmerksamkeit"
       }
     },
     "oauthconsent": {
@@ -10322,7 +10345,6 @@
       "placeholderBody": "Diese Seite ist ein Platzhalter. Seitenleiste, Profil-Drawer, Rollenwechsel und ORB bleiben in jeder Rolle identisch – nur der Inhalt kommt noch.",
       "noSectionMatches": "Kein BackOffice-Bereich passt zu",
       "sidebarIsCanonical": "Die Seitenleiste ist die verbindliche Liste der Bereiche. Wähle einen aus.",
-      "noAccess": "Für diesen Bereich hast du keine Berechtigung. Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen.",
       "access": {
         "title": "Zugriff",
         "description": "ERP-Berechtigungen pro Mitglied. Die Rolle öffnet die Tür, die Berechtigung gibt frei, was jemand darin tun darf – Freigaben, Zahlungen und Abschlüsse brauchen eine zweite Person.",
@@ -10341,116 +10363,7 @@
         "noManage": "Du kannst Berechtigungen ansehen, aber nicht ändern – dafür braucht es erp.admin oder die Admin-Rolle.",
         "mine": "Deine wirksamen Berechtigungen"
       },
-      "tiers": {
-        "read": "Lesen",
-        "draft": "Entwurf",
-        "commit": "Buchung",
-        "high": "Hohes Risiko"
-      },
-      "commandStatus": {
-        "executed": "Ausgeführt",
-        "failed": "Fehlgeschlagen",
-        "awaiting_approval": "Wartet auf Freigabe",
-        "rejected": "Abgelehnt"
-      },
-      "approvalStatus": {
-        "pending": "Offen",
-        "approved": "Freigegeben",
-        "rejected": "Abgelehnt"
-      },
-      "channels": {
-        "web": "Web",
-        "chat": "Chat",
-        "voice": "Sprache",
-        "system": "System"
-      },
-      "errors": {
-        "bridgeUnavailable": "Die ERP-Bridge ist nicht erreichbar.",
-        "bridgeUnavailableHint": "Das Gateway hat noch keine Bridge konfiguriert (ERP_BRIDGE_URL). Bis dahin bleiben ERP-Daten leer – Befehle, Freigaben und Prüfpfad funktionieren trotzdem.",
-        "noCapability": "Dafür fehlt dir eine Berechtigung.",
-        "noCapabilityHint": "Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen.",
-        "erpFailed": "ERPClaw hat den Befehl abgelehnt.",
-        "unauthorized": "Bitte melde dich erneut an.",
-        "noTenant": "Kein aktiver Tenant – wähle zuerst einen Arbeitsbereich.",
-        "notFound": "Nicht gefunden.",
-        "generic": "Daten konnten nicht geladen werden."
-      },
-      "common": {
-        "empty": "Keine Einträge",
-        "asOf": "Stand {time}",
-        "replayed": "aus Beleg wiederholt",
-        "source": {
-          "erp": "Quelle: ERPClaw über die Bridge",
-          "gateway": "Quelle: Vitana-Gateway"
-        },
-        "readOnlySlice": "Nur lesen in dieser Ausbaustufe – Entscheidungen und Änderungen folgen mit der nächsten.",
-        "viewAll": "Alle anzeigen",
-        "all": "Alle"
-      },
-      "receipts": {
-        "title": "Befehlsbelege",
-        "description": "Jeder Befehl, der durch das Gateway lief – mit dem Beleg, den die Bridge dafür gespeichert hat.",
-        "searchPlaceholder": "Nach Befehl oder ID suchen …",
-        "empty": "Noch keine Befehle",
-        "noReceipt": "Kein Beleg",
-        "show": "Beleg anzeigen",
-        "hide": "Beleg ausblenden"
-      },
-      "commands": {
-        "when": "Zeitpunkt",
-        "command": "Befehl",
-        "tier": "Stufe",
-        "status": "Status",
-        "channel": "Kanal",
-        "requester": "Anfragende:r",
-        "receipt": "Beleg",
-        "reason": "Grund",
-        "you": "Du"
-      },
-      "approvals": {
-        "requested": "Angefragt",
-        "command": "Befehl",
-        "requester": "Anfragende:r",
-        "approverNeeds": "Freigabe braucht",
-        "status": "Status",
-        "decision": "Entscheidung",
-        "you": "Du",
-        "yourOwnRequest": "Deine eigene Anfrage – du kannst sie nicht selbst freigeben.",
-        "youCanDecide": "Du kannst entscheiden",
-        "youCannotDecide": "Nicht durch dich freigebbar"
-      },
-      "dashboard": {
-        "title": "Dashboard",
-        "description": "Was heute im BackOffice ansteht: offene Freigaben, deine Anfragen, die letzten Befehle und der Zustand des ERP.",
-        "pendingApprovals": "Offene Freigaben",
-        "pendingApprovalsHint": "Warten auf eine zweite Person",
-        "myOpenRequests": "Meine offenen Anfragen",
-        "myOpenRequestsHint": "Von dir angefragt, noch nicht entschieden",
-        "executed7d": "Ausgeführt (7 Tage)",
-        "executed7dHint": "Erfolgreich abgeschlossene Befehle",
-        "failed7d": "Fehlgeschlagen (7 Tage)",
-        "failed7dHint": "Abgelehnt oder mit Fehler beendet",
-        "erpStatus": "ERP-Status",
-        "erpOk": "Bereit",
-        "erpNotOk": "Nicht erreichbar",
-        "erpUnknown": "Unklar",
-        "quickAccess": "Schnellzugriff",
-        "recentActivity": "Letzte Aktivität",
-        "noCapabilities": "Du hast noch keine ERP-Berechtigung. Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen."
-      },
-      "inbox": {
-        "title": "Freigabe-Eingang",
-        "description": "Anfragen mit hohem Risiko, die auf deine Entscheidung warten. Anfragende und Freigebende sind immer zwei Personen.",
-        "empty": "Nichts wartet auf dich",
-        "emptyHint": "Sobald jemand einen Befehl mit hohem Risiko anfragt, den du freigeben darfst, erscheint er hier."
-      },
-      "activity": {
-        "title": "Aktivität",
-        "description": "Alle Befehle deines Tenants, neueste zuerst – vom Web, aus dem Chat und per Sprache.",
-        "searchPlaceholder": "Nach Befehl, ID oder Grund suchen …",
-        "statusFilter": "Status",
-        "empty": "Noch keine Befehle"
-      },
+      "noAccess": "Für diesen Bereich hast du keine Berechtigung. Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen.",
       "health": {
         "title": "Systemstatus",
         "description": "Zustand der ERP-Instanz hinter der Bridge: Stammdaten, Installation, Schema-Version und installierte Module.",
@@ -10476,63 +10389,14 @@
         "installedAt": "Installiert am",
         "noModules": "Keine Module installiert"
       },
-      "queue": {
-        "title": "Warteschlange",
-        "description": "Alle Freigabeanfragen des Tenants – offen, freigegeben oder abgelehnt.",
-        "searchPlaceholder": "Nach Befehl, Berechtigung oder Person suchen …",
-        "statusFilter": "Status",
-        "empty": "Keine Freigabeanfragen"
-      },
-      "myRequests": {
-        "title": "Meine Anfragen",
-        "description": "Befehle, die du angefragt hast – was noch auf Freigabe wartet und was daraus wurde.",
-        "awaiting": "Wartet auf Freigabe",
-        "history": "Verlauf",
-        "empty": "Du hast noch keine Befehle angefragt"
-      },
-      "policies": {
-        "title": "Richtlinien",
-        "description": "Die Regeln, nach denen das Gateway Befehle einstuft und Freigaben verlangt.",
-        "threshold": "Schwelle für hohes Risiko",
-        "thresholdHint": "Jede Buchung ab diesem Betrag wird zur Anfrage mit hohem Risiko und braucht eine zweite Person.",
-        "mfa": "MFA für Freigaben",
-        "mfaHint": "Freigaben mit hohem Risiko brauchen eine Sitzung mit zweitem Faktor.",
-        "on": "An",
-        "off": "Aus",
-        "default": "Standardwert",
-        "custom": "Angepasst (Standard: {value})",
-        "editNextSlice": "Nur lesen in dieser Ausbaustufe – Änderungen an Richtlinien folgen mit der nächsten (jede Änderung ist selbst ein Beleg).",
-        "rulesTitle": "Feste Regeln",
-        "ruleMakerChecker": "Anfragende:r und Freigebende:r sind nie dieselbe Person – auch nicht für Exafy-Admins.",
-        "ruleCapability": "Freigeben darf nur, wer die Freigabe-Berechtigung der Anfrage hält (z. B. finance.pay).",
-        "ruleVoice": "Per Sprache lässt sich nichts mit hohem Risiko bestätigen – nur im Web.",
-        "ruleEscalation": "Zahlungen nach außen, Gehaltsbuchungen und Beträge über der Schwelle steigen automatisch auf hohes Risiko."
-      },
-      "erpLog": {
-        "title": "ERP-Auditlog",
-        "description": "Das unveränderliche Protokoll von ERPClaw selbst – jede Buchung, jede Stornierung, jede Stammdatenänderung.",
-        "empty": "Noch keine Einträge",
-        "time": "Zeitpunkt",
-        "skill": "Modul",
-        "action": "Aktion",
-        "entity": "Objekt",
-        "user": "Nutzer:in",
-        "changes": "Änderung",
-        "system": "System"
-      },
-      "trail": {
-        "title": "Unabhängiger Prüfpfad",
-        "description": "Vitanas eigenes, nur anhängbares Protokoll: jede Anfrage, jede Entscheidung, jede Richtlinienänderung – unabhängig vom ERP.",
-        "searchPlaceholder": "Nach Ereignis, Befehl oder Person suchen …",
-        "empty": "Noch keine Einträge",
-        "time": "Zeitpunkt",
-        "event": "Ereignis",
-        "actor": "Wer",
-        "role": "Rolle",
-        "channel": "Kanal",
-        "command": "Befehl",
-        "approval": "Freigabe",
-        "details": "Details"
+      "receipts": {
+        "title": "Befehlsbelege",
+        "description": "Jeder Befehl, der durch das Gateway lief – mit dem Beleg, den die Bridge dafür gespeichert hat.",
+        "searchPlaceholder": "Nach Befehl oder ID suchen …",
+        "empty": "Noch keine Befehle",
+        "noReceipt": "Kein Beleg",
+        "show": "Beleg anzeigen",
+        "hide": "Beleg ausblenden"
       },
       "company": {
         "title": "Unternehmen & Rechtsträger",
@@ -10567,6 +10431,165 @@
         "none": "Keine",
         "yes": "Ja",
         "no": "Nein"
+      },
+      "trail": {
+        "title": "Unabhängiger Prüfpfad",
+        "description": "Vitanas eigenes, nur anhängbares Protokoll: jede Anfrage, jede Entscheidung, jede Richtlinienänderung – unabhängig vom ERP.",
+        "searchPlaceholder": "Nach Ereignis, Befehl oder Person suchen …",
+        "empty": "Noch keine Einträge",
+        "time": "Zeitpunkt",
+        "event": "Ereignis",
+        "actor": "Wer",
+        "role": "Rolle",
+        "channel": "Kanal",
+        "command": "Befehl",
+        "approval": "Freigabe",
+        "details": "Details"
+      },
+      "inbox": {
+        "title": "Freigabe-Eingang",
+        "description": "Anfragen mit hohem Risiko, die auf deine Entscheidung warten. Anfragende und Freigebende sind immer zwei Personen.",
+        "empty": "Nichts wartet auf dich",
+        "emptyHint": "Sobald jemand einen Befehl mit hohem Risiko anfragt, den du freigeben darfst, erscheint er hier."
+      },
+      "common": {
+        "empty": "Keine Einträge",
+        "asOf": "Stand {time}",
+        "replayed": "aus Beleg wiederholt",
+        "source": {
+          "erp": "Quelle: ERPClaw über die Bridge",
+          "gateway": "Quelle: Vitana-Gateway"
+        },
+        "readOnlySlice": "Nur lesen in dieser Ausbaustufe – Entscheidungen und Änderungen folgen mit der nächsten.",
+        "viewAll": "Alle anzeigen",
+        "all": "Alle"
+      },
+      "queue": {
+        "title": "Warteschlange",
+        "description": "Alle Freigabeanfragen des Tenants – offen, freigegeben oder abgelehnt.",
+        "searchPlaceholder": "Nach Befehl, Berechtigung oder Person suchen …",
+        "statusFilter": "Status",
+        "empty": "Keine Freigabeanfragen"
+      },
+      "policies": {
+        "title": "Richtlinien",
+        "description": "Die Regeln, nach denen das Gateway Befehle einstuft und Freigaben verlangt.",
+        "threshold": "Schwelle für hohes Risiko",
+        "thresholdHint": "Jede Buchung ab diesem Betrag wird zur Anfrage mit hohem Risiko und braucht eine zweite Person.",
+        "mfa": "MFA für Freigaben",
+        "mfaHint": "Freigaben mit hohem Risiko brauchen eine Sitzung mit zweitem Faktor.",
+        "on": "An",
+        "off": "Aus",
+        "default": "Standardwert",
+        "custom": "Angepasst (Standard: {value})",
+        "editNextSlice": "Nur lesen in dieser Ausbaustufe – Änderungen an Richtlinien folgen mit der nächsten (jede Änderung ist selbst ein Beleg).",
+        "rulesTitle": "Feste Regeln",
+        "ruleMakerChecker": "Anfragende:r und Freigebende:r sind nie dieselbe Person – auch nicht für Exafy-Admins.",
+        "ruleCapability": "Freigeben darf nur, wer die Freigabe-Berechtigung der Anfrage hält (z. B. finance.pay).",
+        "ruleVoice": "Per Sprache lässt sich nichts mit hohem Risiko bestätigen – nur im Web.",
+        "ruleEscalation": "Zahlungen nach außen, Gehaltsbuchungen und Beträge über der Schwelle steigen automatisch auf hohes Risiko."
+      },
+      "myRequests": {
+        "title": "Meine Anfragen",
+        "description": "Befehle, die du angefragt hast – was noch auf Freigabe wartet und was daraus wurde.",
+        "awaiting": "Wartet auf Freigabe",
+        "history": "Verlauf",
+        "empty": "Du hast noch keine Befehle angefragt"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "Was heute im BackOffice ansteht: offene Freigaben, deine Anfragen, die letzten Befehle und der Zustand des ERP.",
+        "pendingApprovals": "Offene Freigaben",
+        "pendingApprovalsHint": "Warten auf eine zweite Person",
+        "myOpenRequests": "Meine offenen Anfragen",
+        "myOpenRequestsHint": "Von dir angefragt, noch nicht entschieden",
+        "executed7d": "Ausgeführt (7 Tage)",
+        "executed7dHint": "Erfolgreich abgeschlossene Befehle",
+        "failed7d": "Fehlgeschlagen (7 Tage)",
+        "failed7dHint": "Abgelehnt oder mit Fehler beendet",
+        "erpStatus": "ERP-Status",
+        "erpOk": "Bereit",
+        "erpNotOk": "Nicht erreichbar",
+        "erpUnknown": "Unklar",
+        "quickAccess": "Schnellzugriff",
+        "recentActivity": "Letzte Aktivität",
+        "noCapabilities": "Du hast noch keine ERP-Berechtigung. Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen."
+      },
+      "errors": {
+        "bridgeUnavailable": "Die ERP-Bridge ist nicht erreichbar.",
+        "bridgeUnavailableHint": "Das Gateway hat noch keine Bridge konfiguriert (ERP_BRIDGE_URL). Bis dahin bleiben ERP-Daten leer – Befehle, Freigaben und Prüfpfad funktionieren trotzdem.",
+        "noCapability": "Dafür fehlt dir eine Berechtigung.",
+        "noCapabilityHint": "Ein Tenant-Admin kann sie dir unter Einstellungen › Zugriff erteilen.",
+        "erpFailed": "ERPClaw hat den Befehl abgelehnt.",
+        "unauthorized": "Bitte melde dich erneut an.",
+        "noTenant": "Kein aktiver Tenant – wähle zuerst einen Arbeitsbereich.",
+        "notFound": "Nicht gefunden.",
+        "generic": "Daten konnten nicht geladen werden."
+      },
+      "activity": {
+        "title": "Aktivität",
+        "description": "Alle Befehle deines Tenants, neueste zuerst – vom Web, aus dem Chat und per Sprache.",
+        "searchPlaceholder": "Nach Befehl, ID oder Grund suchen …",
+        "statusFilter": "Status",
+        "empty": "Noch keine Befehle"
+      },
+      "tiers": {
+        "read": "Lesen",
+        "draft": "Entwurf",
+        "commit": "Buchung",
+        "high": "Hohes Risiko"
+      },
+      "erpLog": {
+        "title": "ERP-Auditlog",
+        "description": "Das unveränderliche Protokoll von ERPClaw selbst – jede Buchung, jede Stornierung, jede Stammdatenänderung.",
+        "empty": "Noch keine Einträge",
+        "time": "Zeitpunkt",
+        "skill": "Modul",
+        "action": "Aktion",
+        "entity": "Objekt",
+        "user": "Nutzer:in",
+        "changes": "Änderung",
+        "system": "System"
+      },
+      "commandStatus": {
+        "executed": "Ausgeführt",
+        "failed": "Fehlgeschlagen",
+        "awaiting_approval": "Wartet auf Freigabe",
+        "rejected": "Abgelehnt"
+      },
+      "approvals": {
+        "requested": "Angefragt",
+        "command": "Befehl",
+        "requester": "Anfragende:r",
+        "approverNeeds": "Freigabe braucht",
+        "status": "Status",
+        "decision": "Entscheidung",
+        "you": "Du",
+        "yourOwnRequest": "Deine eigene Anfrage – du kannst sie nicht selbst freigeben.",
+        "youCanDecide": "Du kannst entscheiden",
+        "youCannotDecide": "Nicht durch dich freigebbar"
+      },
+      "commands": {
+        "when": "Zeitpunkt",
+        "command": "Befehl",
+        "tier": "Stufe",
+        "status": "Status",
+        "channel": "Kanal",
+        "requester": "Anfragende:r",
+        "receipt": "Beleg",
+        "reason": "Grund",
+        "you": "Du"
+      },
+      "approvalStatus": {
+        "pending": "Offen",
+        "approved": "Freigegeben",
+        "rejected": "Abgelehnt"
+      },
+      "channels": {
+        "web": "Web",
+        "chat": "Chat",
+        "voice": "Sprache",
+        "system": "System"
       },
       "sales": {
         "status": {
@@ -10978,11 +11001,11 @@
           "invalidEmail": "Keine gültige E-Mail-Adresse",
           "invalidDate": "Datum im Format JJJJ-MM-TT",
           "invalidOption": "Ungültige Auswahl",
-          "invalidNumber": "Bitte eine gültige Zahl größer als 0 eingeben",
-          "lineQtyTooHigh": "Rückgabemenge darf die Rechnungsmenge nicht überschreiten",
           "noLines": "Mindestens eine Position mit Menge angeben",
-          "tooFewLines": "Mindestens zwei Zeilen mit Konto und Betrag",
+          "lineQtyTooHigh": "Rückgabemenge darf die Rechnungsmenge nicht überschreiten",
+          "invalidNumber": "Bitte eine gültige Zahl größer als 0 eingeben",
           "unbalanced": "Soll und Haben müssen übereinstimmen",
+          "tooFewLines": "Mindestens zwei Zeilen mit Konto und Betrag",
           "lineIncomplete": "Jede Zeile braucht ein Konto und einen Soll- oder Haben-Betrag"
         },
         "fields": {
@@ -11002,48 +11025,48 @@
           "activity_type": "Art",
           "activity_date": "Datum",
           "lead_ref": "Lead (Name oder Nummer)",
-          "customer_type": "Kundentyp",
           "tax_id": "Steuernummer (TRN)",
+          "posting_date": "Buchungsdatum",
+          "original_qty": "Rechnungsmenge",
+          "item_id": "Artikel-ID",
+          "reason": "Grund",
           "credit_limit": "Kreditlimit",
+          "customer_type": "Kundentyp",
           "primary_address": "Adresse",
           "against_invoice_id": "Zur Rechnung",
-          "posting_date": "Buchungsdatum",
-          "reason": "Grund",
-          "items": "Positionen",
-          "item_name": "Artikel",
-          "original_qty": "Rechnungsmenge",
           "qty": "Rückgabemenge",
-          "item_id": "Artikel-ID",
-          "payment_type": "Zahlungsart",
+          "item_name": "Artikel",
+          "items": "Positionen",
           "party_type": "Partnerart",
           "party_id": "Kunde",
-          "paid_amount": "Betrag",
+          "reference_number": "Bankreferenz",
           "paid_from_account": "Von Konto",
           "paid_to_account": "Auf Konto",
-          "reference_number": "Bankreferenz",
+          "payment_type": "Zahlungsart",
           "reference_date": "Referenzdatum",
-          "entry_type": "Buchungsart",
+          "paid_amount": "Betrag",
           "lines": "Buchungszeilen",
-          "account_id": "Konto",
+          "entry_type": "Buchungsart",
           "debit": "Soll",
-          "credit": "Haben",
+          "account_id": "Konto",
           "remark": "Bemerkung",
+          "credit": "Haben",
+          "status": "Status",
+          "probability": "Wahrscheinlichkeit (%)",
+          "next_follow_up_date": "Nächstes Nachfassen",
           "lead_id": "Lead-ID",
-          "crm_task_id": "Aufgaben-ID",
-          "opportunity_id": "Chancen-ID",
-          "opportunity": "Chancen-ID",
+          "opportunity_name": "Bezeichnung",
           "stage": "Stufe",
           "territory": "Region",
-          "status": "Status",
-          "opportunity_name": "Bezeichnung",
-          "probability": "Wahrscheinlichkeit (%)",
-          "expected_revenue": "Erwarteter Umsatz",
           "expected_closing_date": "Voraussichtlicher Abschluss",
-          "next_follow_up_date": "Nächstes Nachfassen",
+          "opportunity": "Chancen-ID",
+          "crm_task_id": "Aufgaben-ID",
+          "opportunity_id": "Chancen-ID",
+          "expected_revenue": "Erwarteter Umsatz",
+          "journal_entry_id": "Buchungssatz-ID",
           "opportunity_type": "Art der Chance",
           "lost_reason": "Grund",
-          "sales_invoice_id": "Rechnungs-ID",
-          "journal_entry_id": "Buchungssatz-ID"
+          "sales_invoice_id": "Rechnungs-ID"
         },
         "choices": {
           "website": "Website",
@@ -11071,22 +11094,22 @@
           "task": "Aufgabe",
           "company": "Unternehmen",
           "individual": "Privatperson",
-          "receive": "Eingang",
           "pay": "Ausgang",
-          "journal": "Buchung",
-          "opening": "Eröffnung",
+          "receive": "Eingang",
+          "credit_note": "Gutschrift",
+          "exchange_rate_revaluation": "Kursbewertung",
+          "debit_note": "Belastung",
+          "inter_company": "Konzernintern",
+          "write_off": "Ausbuchung",
           "closing": "Abschluss",
           "depreciation": "Abschreibung",
-          "write_off": "Ausbuchung",
-          "exchange_rate_revaluation": "Kursbewertung",
-          "inter_company": "Konzernintern",
-          "credit_note": "Gutschrift",
-          "debit_note": "Belastung",
-          "new": "Neu",
+          "journal": "Buchung",
+          "opening": "Eröffnung",
           "contacted": "Kontaktiert",
-          "qualified": "Qualifiziert",
-          "unresponsive": "Keine Reaktion",
           "lost": "Verloren",
+          "unresponsive": "Keine Reaktion",
+          "qualified": "Qualifiziert",
+          "new": "Neu",
           "sales": "Vertrieb",
           "support": "Support",
           "maintenance": "Wartung"
@@ -11117,15 +11140,15 @@
             "title": "Aktivität erfassen",
             "description": "Anruf, E-Mail, Termin oder Notiz zu einem Lead. Der Lead wird über Name oder Nummer aufgelöst – bei mehreren Treffern wird nichts geschrieben."
           },
-          "customer": {
-            "button": "Neuer Kunde",
-            "title": "Neuen Kunden anlegen",
-            "description": "Ein Kunde im Verkauf – Voraussetzung für Angebote und Rechnungen. Wird als Entwurf angelegt, ohne Buchung."
-          },
           "creditNote": {
             "button": "Gutschrift erstellen",
             "title": "Gutschrift zur Rechnung",
             "description": "Trage je Position die zurückgenommene Menge ein. Die Gutschrift entsteht als Entwurf; gebucht wird sie erst in einem eigenen, freigabepflichtigen Schritt."
+          },
+          "customer": {
+            "button": "Neuer Kunde",
+            "title": "Neuen Kunden anlegen",
+            "description": "Ein Kunde im Verkauf – Voraussetzung für Angebote und Rechnungen. Wird als Entwurf angelegt, ohne Buchung."
           },
           "payment": {
             "button": "Zahlung erfassen",
@@ -11137,6 +11160,16 @@
             "title": "Buchungssatz anlegen",
             "description": "Soll und Haben je Zeile gegen den Kontenplan – der Satz entsteht als Entwurf und wird erst in einem eigenen Schritt mit Bestätigung gebucht."
           },
+          "opportunityStage": {
+            "button": "Stufe ändern",
+            "title": "Stufe im Vertriebstrichter ändern",
+            "description": "Wähle die Zielstufe aus dem Trichter deines Mandanten. Die Stufe ist eine ID, kein freies Wort."
+          },
+          "taskComplete": {
+            "button": "Erledigt",
+            "title": "Aufgabe abschließen",
+            "description": "Die Aufgabe wird auf erledigt gesetzt. Eine Notiz ist freiwillig."
+          },
           "leadUpdate": {
             "button": "Lead bearbeiten",
             "title": "Lead bearbeiten",
@@ -11147,25 +11180,35 @@
             "title": "Verkaufschance bearbeiten",
             "description": "Gewonnene und verlorene Chancen sind in ERPClaw gesperrt – dafür gibt es eigene Befehle mit Freigabe."
           },
-          "opportunityStage": {
-            "button": "Stufe ändern",
-            "title": "Stufe im Vertriebstrichter ändern",
-            "description": "Wähle die Zielstufe aus dem Trichter deines Mandanten. Die Stufe ist eine ID, kein freies Wort."
-          },
           "taskUpdate": {
             "button": "Bearbeiten",
             "title": "Aufgabe bearbeiten",
             "description": "Betreff, Priorität, Fälligkeit und Beschreibung der offenen Aufgabe."
           },
-          "taskComplete": {
-            "button": "Erledigt",
-            "title": "Aufgabe abschließen",
-            "description": "Die Aufgabe wird auf erledigt gesetzt. Eine Notiz ist freiwillig."
-          },
           "taskCancel": {
             "button": "Abbrechen",
             "title": "Aufgabe abbrechen",
             "description": "Die Aufgabe wird abgebrochen und bleibt sichtbar. Ein Grund ist Pflicht."
+          },
+          "invoiceCancel": {
+            "button": "Stornieren",
+            "title": "Rechnung stornieren",
+            "description": "Storniert eine gebuchte Rechnung und kehrt ihre Buchungen um. Hohes Risiko: braucht die Freigabe einer zweiten Person."
+          },
+          "journalCancel": {
+            "button": "Stornieren",
+            "title": "Buchungssatz stornieren",
+            "description": "Storniert einen gebuchten Satz und kehrt seine Buchungen um. Hohes Risiko: braucht die Freigabe einer zweiten Person."
+          },
+          "opportunityLost": {
+            "button": "Verloren",
+            "title": "Chance als verloren markieren",
+            "description": "Setzt die Stufe auf verloren. Ein Grund ist Pflicht. Endgültig – ERPClaw sperrt die Chance danach."
+          },
+          "journalSubmit": {
+            "button": "Buchen",
+            "title": "Buchungssatz buchen",
+            "description": "Bucht den Entwurf ins Hauptbuch. Danach lässt er sich nur noch stornieren."
           },
           "leadConvert": {
             "button": "In Chance umwandeln",
@@ -11177,69 +11220,69 @@
             "title": "Chance als gewonnen markieren",
             "description": "Setzt die Stufe auf gewonnen und die Wahrscheinlichkeit auf 100 %. Endgültig – ERPClaw sperrt die Chance danach."
           },
-          "opportunityLost": {
-            "button": "Verloren",
-            "title": "Chance als verloren markieren",
-            "description": "Setzt die Stufe auf verloren. Ein Grund ist Pflicht. Endgültig – ERPClaw sperrt die Chance danach."
-          },
           "invoiceSubmit": {
             "button": "Buchen",
             "title": "Rechnung buchen",
             "description": "Bucht die Entwurfsrechnung ins Hauptbuch (Forderung und Erlös). Danach lässt sie sich nur noch stornieren."
-          },
-          "invoiceCancel": {
-            "button": "Stornieren",
-            "title": "Rechnung stornieren",
-            "description": "Storniert eine gebuchte Rechnung und kehrt ihre Buchungen um. Hohes Risiko: braucht die Freigabe einer zweiten Person."
-          },
-          "journalSubmit": {
-            "button": "Buchen",
-            "title": "Buchungssatz buchen",
-            "description": "Bucht den Entwurf ins Hauptbuch. Danach lässt er sich nur noch stornieren."
-          },
-          "journalCancel": {
-            "button": "Stornieren",
-            "title": "Buchungssatz stornieren",
-            "description": "Storniert einen gebuchten Satz und kehrt seine Buchungen um. Hohes Risiko: braucht die Freigabe einer zweiten Person."
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
         "lookupLoading": "Wird geladen …",
-        "lookupIdPlaceholder": "ID eingeben",
         "lookupRefused": "Die Auswahlliste ({command}) darf dein Konto nicht lesen – trage die ID direkt ein.",
-        "addLine": "Zeile hinzufügen",
+        "lookupIdPlaceholder": "ID eingeben",
         "removeLine": "Zeile entfernen",
-        "totals": "Summen",
         "differenceIs": "Differenz {amount}",
-        "keepsBlank": "Ein leeres Feld bleibt, wie es ist – ERPClaw ändert nur die Felder, die es bekommt.",
-        "acceptUpdate": "Bestätigen und speichern",
-        "whatHappensUpdate": "Stufe Entwurf: ändert einen bestehenden Datensatz – keine Buchung, kein Freigabeschritt, durch erneutes Bearbeiten umkehrbar.",
-        "updated": "Gespeichert",
-        "updatedWithRef": "Gespeichert: {ref}",
+        "addLine": "Zeile hinzufügen",
+        "totals": "Summen",
         "doneHintUpdate": "Das ERP hat den Datensatz geändert; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
-        "doneUpdate": "Gespeichert",
-        "failedUpdate": "Nicht gespeichert",
+        "updated": "Gespeichert",
+        "acceptUpdate": "Bestätigen und speichern",
         "failedHintUpdate": "Es wurde nichts geändert. Du kannst die Eingaben anpassen und erneut senden – derselbe Idempotenz-Schlüssel sorgt dafür, dass ein Wiederholen nie doppelt schreibt.",
-        "confirmCommit": "Ich bestätige: Dieser Befehl wird sofort im ERP ausgeführt.",
+        "keepsBlank": "Ein leeres Feld bleibt, wie es ist – ERPClaw ändert nur die Felder, die es bekommt.",
+        "failedUpdate": "Nicht gespeichert",
+        "updatedWithRef": "Gespeichert: {ref}",
+        "whatHappensUpdate": "Stufe Entwurf: ändert einen bestehenden Datensatz – keine Buchung, kein Freigabeschritt, durch erneutes Bearbeiten umkehrbar.",
+        "doneUpdate": "Gespeichert",
         "confirmCommitHint": "Stufe Buchung – bucht ins Hauptbuch oder setzt einen Endstatus. Nicht durch Bearbeiten umkehrbar; die Bestätigung geht nur hier, nie per Sprache.",
-        "confirmHigh": "Ich bestätige die Anfrage und weiß, dass eine zweite Person sie freigeben muss.",
         "confirmHighHint": "Hohes Risiko – wird hier nicht ausgeführt. Die Anfrage landet in der Freigabe-Warteschlange; nur jemand anderes mit der nötigen Berechtigung kann sie freigeben (Vier-Augen-Prinzip).",
-        "acceptCommit": "Bestätigen und ausführen",
-        "acceptHigh": "Zur Freigabe einreichen",
-        "whatHappensCommit": "Stufe Buchung: wird nach deiner Bestätigung sofort ausgeführt – bucht ins Hauptbuch bzw. setzt einen Endstatus und lässt sich nicht durch Bearbeiten zurücknehmen.",
-        "whatHappensHigh": "Hohes Risiko: wird nicht sofort ausgeführt. Die Anfrage wartet in der Freigabe-Warteschlange auf eine zweite Person mit der Freigabe-Berechtigung; du selbst kannst sie nicht freigeben.",
-        "queued": "Zur Freigabe eingereicht",
+        "confirmCommit": "Ich bestätige: Dieser Befehl wird sofort im ERP ausgeführt.",
         "queuedLine": "In der Warteschlange – wartet auf eine zweite Person",
-        "queuedWithId": "Freigabe-ID: {id}",
-        "queuedNoApprover": "Im Moment hat niemand sonst in diesem Mandanten die nötige Freigabe-Berechtigung. Die Anfrage bleibt offen, bis jemand sie erhält.",
         "queuedHint": "Du kannst deine eigene Anfrage nicht freigeben. Den Stand siehst du unter „Meine Anfragen“; entschieden wird in der Warteschlange von jemand anderem.",
-        "goToMyRequests": "Zu „Meine Anfragen“",
-        "doneCommit": "Ausgeführt",
-        "doneCommitLine": "Ausgeführt",
-        "doneCommitWithRef": "Ausgeführt: {ref}",
+        "confirmHigh": "Ich bestätige die Anfrage und weiß, dass eine zweite Person sie freigeben muss.",
+        "acceptCommit": "Bestätigen und ausführen",
         "doneHintCommit": "Das ERP hat den Befehl ausgeführt; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
+        "doneCommitLine": "Ausgeführt",
+        "whatHappensCommit": "Stufe Buchung: wird nach deiner Bestätigung sofort ausgeführt – bucht ins Hauptbuch bzw. setzt einen Endstatus und lässt sich nicht durch Bearbeiten zurücknehmen.",
+        "queued": "Zur Freigabe eingereicht",
+        "doneCommitWithRef": "Ausgeführt: {ref}",
+        "doneCommit": "Ausgeführt",
+        "queuedWithId": "Freigabe-ID: {id}",
+        "whatHappensHigh": "Hohes Risiko: wird nicht sofort ausgeführt. Die Anfrage wartet in der Freigabe-Warteschlange auf eine zweite Person mit der Freigabe-Berechtigung; du selbst kannst sie nicht freigeben.",
+        "acceptHigh": "Zur Freigabe einreichen",
+        "goToMyRequests": "Zu „Meine Anfragen“",
         "failedCommit": "Nicht ausgeführt",
+        "queuedNoApprover": "Im Moment hat niemand sonst in diesem Mandanten die nötige Freigabe-Berechtigung. Die Anfrage bleibt offen, bis jemand sie erhält.",
         "failedHintCommit": "Es wurde nichts gebucht und kein Status geändert. Prüfe den Grund und den Zustand des Belegs, dann versuche es erneut."
+      },
+      "policyEdit": {
+        "button": "Richtlinie bearbeiten",
+        "title": "Richtlinie bearbeiten",
+        "description": "Schwelle für hohes Risiko und MFA-Pflicht für den Tenant. Jede Änderung wird als Beleg im Prüfpfad gespeichert.",
+        "review": "Prüfen, bevor es gespeichert wird",
+        "reviewHint": "Nur die geänderten Werte werden angezeigt. Das Gateway protokolliert vorher/nachher.",
+        "setting": "Einstellung",
+        "before": "Vorher",
+        "after": "Nachher",
+        "audited": "Gespeichert wird mit deinem Konto als Änderer:in – sichtbar im Prüfpfad als policy.updated.",
+        "save": "Speichern",
+        "done": "Gespeichert",
+        "doneLine": "Die Richtlinie ist aktualisiert und gilt ab sofort für neue Befehle.",
+        "failed": "Nicht gespeichert",
+        "noChanges": "Nichts geändert.",
+        "readOnlyHint": "Nur lesen – Ändern braucht approvals.policy.",
+        "issues": {
+          "invalidThreshold": "Bitte einen Betrag zwischen 0 und 1.000.000.000.000 eingeben"
+        }
       },
       "decide": {
         "queueHint": "Offene Anfragen, die du entscheiden darfst, zeigen Freigeben / Ablehnen. Freigeben führt den Befehl über das Gateway aus – nie aus dem Browser heraus.",
@@ -11287,26 +11330,6 @@
           "notFound": "Anfrage nicht gefunden."
         },
         "payload": "Inhalt der Anfrage"
-      },
-      "policyEdit": {
-        "button": "Richtlinie bearbeiten",
-        "title": "Richtlinie bearbeiten",
-        "description": "Schwelle für hohes Risiko und MFA-Pflicht für den Tenant. Jede Änderung wird als Beleg im Prüfpfad gespeichert.",
-        "review": "Prüfen, bevor es gespeichert wird",
-        "reviewHint": "Nur die geänderten Werte werden angezeigt. Das Gateway protokolliert vorher/nachher.",
-        "setting": "Einstellung",
-        "before": "Vorher",
-        "after": "Nachher",
-        "audited": "Gespeichert wird mit deinem Konto als Änderer:in – sichtbar im Prüfpfad als policy.updated.",
-        "save": "Speichern",
-        "done": "Gespeichert",
-        "doneLine": "Die Richtlinie ist aktualisiert und gilt ab sofort für neue Befehle.",
-        "failed": "Nicht gespeichert",
-        "noChanges": "Nichts geändert.",
-        "readOnlyHint": "Nur lesen – Ändern braucht approvals.policy.",
-        "issues": {
-          "invalidThreshold": "Bitte einen Betrag zwischen 0 und 1.000.000.000.000 eingeben"
-        }
       }
     }
   }

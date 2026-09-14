@@ -1,0 +1,58 @@
+# Draft-command traffic seen by the local stub gateway (127.0.0.1:8090)
+## stub run: admin
+stub on 8090 persona=admin bridge=up
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST sales.customer.list 200
+POST accounting.coa.list 200
+DRAFT finance.payment.record key=ui.draft:finance.payment.record:7e61fe609621466b9bd565e327e09630 confirm=false payload={"payment_type":"receive","party_type":"customer","party_id":"2a806449-489d-4a62-9598-91da50b18ff9","paid_amount":"1050","posting_date":"2026-09-13","paid_from_account":"bb531319-4fc7-4a37-8a6d-206c0fd066fc","paid_to_account":"f529f450-dbd5-4412-8bfc-3db680640de4","reference_number":"TRF-2026-0913-01","reference_date":"2026-09-13"}
+POST finance.payment.record 200
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST sales.customer.list 200
+POST accounting.coa.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST sales.customer.list 200
+POST accounting.coa.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST sales.customer.list 200
+POST accounting.coa.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+## stub run: bookkeeper
+stub on 8090 persona=bookkeeper bridge=up
+POST finance.payment.summary 200
+POST finance.payment.list 200
+POST finance.fx.list 200
+POST finance.fx.list.list_exchange_rates 200
+POST sales.customer.list 403
+POST accounting.coa.list 200
+POST sales.customer.list 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+## stub run: sales
+stub on 8090 persona=sales bridge=up
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403

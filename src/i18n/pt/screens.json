@@ -10271,7 +10271,15 @@
         "geminiTitle": "Conectar com o Gemini",
         "geminiStep1": "Para o Gemini CLI: adicione o endereço do servidor MCP acima em ~/.gemini/settings.json, na lista de seus servidores MCP.",
         "geminiStep2": "Para o Gemini Enterprise (edição empresarial): Configurações e ajuda → Equipe → Gerenciar equipe → Aplicativos conectados → \"Adicionar servidor MCP\".",
-        "geminiNote": "O app Gemini para consumidores atualmente não tem uma forma documentada de adicionar um servidor MCP personalizado diretamente — isso só está disponível hoje via Gemini CLI e Gemini Enterprise."
+        "geminiNote": "O app Gemini para consumidores atualmente não tem uma forma documentada de adicionar um servidor MCP personalizado diretamente — isso só está disponível hoje via Gemini CLI e Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL da loja (opcional) — ex.: https://your-shop.com",
@@ -10294,6 +10302,48 @@
         "connecting": "Conectando...",
         "notConfigured": "Este tipo de conexão ainda não está disponível. Tente novamente mais tarde.",
         "failed": "Não foi possível iniciar a conexão. Verifique seus dados."
+      },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentStatusPill": "Going live soon",
+      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentUrlHint": "One address. That is all your agent needs.",
+      "howItWorksTitle": "What happens next",
+      "manualIntro": "Prefer to fill it in yourself?",
+      "manualCta": "Connect a business manually",
+      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
+      "connectionsCount": "{count} connected",
+      "openWorkbench": "Open connection",
+      "closeWorkbench": "Close",
+      "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
+      "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
+        "connect": "Connect",
+        "mapping": "Mapping",
+        "tests": "Checks",
+        "live": "Live",
+        "offTrack": "Needs attention"
       }
     },
     "oauthconsent": {
@@ -10328,7 +10378,6 @@
       "placeholderBody": "This page is a placeholder. The sidebar, profile drawer, role switcher and ORB stay identical in every role – only the content is still to come.",
       "noSectionMatches": "No BackOffice section matches",
       "sidebarIsCanonical": "The sidebar is the canonical list of sections. Pick one.",
-      "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
       "access": {
         "title": "Access",
         "description": "ERP capabilities per member. The role opens the door; a capability says what someone may do inside – approvals, payments and period closes need a second person.",
@@ -10347,116 +10396,7 @@
         "noManage": "You can view capabilities but not change them – that needs erp.admin or the admin role.",
         "mine": "Your effective capabilities"
       },
-      "tiers": {
-        "read": "Read",
-        "draft": "Draft",
-        "commit": "Commit",
-        "high": "High-risk"
-      },
-      "commandStatus": {
-        "executed": "Executed",
-        "failed": "Failed",
-        "awaiting_approval": "Awaiting approval",
-        "rejected": "Rejected"
-      },
-      "approvalStatus": {
-        "pending": "Pending",
-        "approved": "Approved",
-        "rejected": "Rejected"
-      },
-      "channels": {
-        "web": "Web",
-        "chat": "Chat",
-        "voice": "Voice",
-        "system": "System"
-      },
-      "errors": {
-        "bridgeUnavailable": "The ERP bridge is not reachable.",
-        "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
-        "noCapability": "You lack a capability for this.",
-        "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
-        "erpFailed": "ERPClaw rejected the command.",
-        "unauthorized": "Please sign in again.",
-        "noTenant": "No active tenant – pick a workspace first.",
-        "notFound": "Not found.",
-        "generic": "The data could not be loaded."
-      },
-      "common": {
-        "empty": "No entries",
-        "asOf": "as of {time}",
-        "replayed": "replayed from receipt",
-        "source": {
-          "erp": "Source: ERPClaw via the bridge",
-          "gateway": "Source: Vitana gateway"
-        },
-        "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
-        "viewAll": "View all",
-        "all": "All"
-      },
-      "receipts": {
-        "title": "Command Receipts",
-        "description": "Every command that went through the gateway – with the receipt the bridge stored for it.",
-        "searchPlaceholder": "Search by command or ID …",
-        "empty": "No commands yet",
-        "noReceipt": "No receipt",
-        "show": "Show receipt",
-        "hide": "Hide receipt"
-      },
-      "commands": {
-        "when": "When",
-        "command": "Command",
-        "tier": "Tier",
-        "status": "Status",
-        "channel": "Channel",
-        "requester": "Requester",
-        "receipt": "Receipt",
-        "reason": "Reason",
-        "you": "You"
-      },
-      "approvals": {
-        "requested": "Requested",
-        "command": "Command",
-        "requester": "Requester",
-        "approverNeeds": "Approver needs",
-        "status": "Status",
-        "decision": "Decision",
-        "you": "You",
-        "yourOwnRequest": "Your own request – you cannot approve it yourself.",
-        "youCanDecide": "You can decide",
-        "youCannotDecide": "Not yours to approve"
-      },
-      "dashboard": {
-        "title": "Dashboard",
-        "description": "What the BackOffice needs today: pending approvals, your requests, the latest commands and the state of the ERP.",
-        "pendingApprovals": "Pending approvals",
-        "pendingApprovalsHint": "Waiting for a second person",
-        "myOpenRequests": "My open requests",
-        "myOpenRequestsHint": "Requested by you, not yet decided",
-        "executed7d": "Executed (7 days)",
-        "executed7dHint": "Commands completed successfully",
-        "failed7d": "Failed (7 days)",
-        "failed7dHint": "Rejected or ended with an error",
-        "erpStatus": "ERP status",
-        "erpOk": "Ready",
-        "erpNotOk": "Unreachable",
-        "erpUnknown": "Unclear",
-        "quickAccess": "Quick access",
-        "recentActivity": "Recent activity",
-        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
-      },
-      "inbox": {
-        "title": "Approvals Inbox",
-        "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
-        "empty": "Nothing is waiting for you",
-        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
-      },
-      "activity": {
-        "title": "Activity",
-        "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
-        "searchPlaceholder": "Search by command, ID or reason …",
-        "statusFilter": "Status",
-        "empty": "No commands yet"
-      },
+      "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
       "health": {
         "title": "Health",
         "description": "State of the ERP instance behind the bridge: master data, installation, schema version and installed modules.",
@@ -10482,63 +10422,14 @@
         "installedAt": "Installed at",
         "noModules": "No modules installed"
       },
-      "queue": {
-        "title": "Queue",
-        "description": "Every approval request in the tenant – pending, approved or rejected.",
-        "searchPlaceholder": "Search by command, capability or person …",
-        "statusFilter": "Status",
-        "empty": "No approval requests"
-      },
-      "myRequests": {
-        "title": "My Requests",
-        "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
-        "awaiting": "Awaiting approval",
-        "history": "History",
-        "empty": "You have not requested any commands yet"
-      },
-      "policies": {
-        "title": "Policies",
-        "description": "The rules the gateway uses to tier commands and demand approvals.",
-        "threshold": "High-risk threshold",
-        "thresholdHint": "Any Commit at or above this amount becomes a High-risk request and needs a second person.",
-        "mfa": "MFA for approvals",
-        "mfaHint": "High-risk approvals need a session backed by a second factor.",
-        "on": "On",
-        "off": "Off",
-        "default": "Default",
-        "custom": "Custom (default: {value})",
-        "editNextSlice": "Read-only in this slice – policy edits land with the next one (every edit is itself a receipt).",
-        "rulesTitle": "Fixed rules",
-        "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
-        "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
-        "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
-        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
-      },
-      "erpLog": {
-        "title": "ERP Audit Log",
-        "description": "ERPClaw's own immutable log – every posting, every reversal, every master-data change.",
-        "empty": "No entries yet",
-        "time": "When",
-        "skill": "Module",
-        "action": "Action",
-        "entity": "Entity",
-        "user": "User",
-        "changes": "Change",
-        "system": "System"
-      },
-      "trail": {
-        "title": "Independent Audit Trail",
-        "description": "Vitana's own append-only log: every request, every decision, every policy change – independent of the ERP.",
-        "searchPlaceholder": "Search by event, command or person …",
-        "empty": "No entries yet",
-        "time": "When",
-        "event": "Event",
-        "actor": "Who",
-        "role": "Role",
-        "channel": "Channel",
-        "command": "Command",
-        "approval": "Approval",
-        "details": "Details"
+      "receipts": {
+        "title": "Command Receipts",
+        "description": "Every command that went through the gateway – with the receipt the bridge stored for it.",
+        "searchPlaceholder": "Search by command or ID …",
+        "empty": "No commands yet",
+        "noReceipt": "No receipt",
+        "show": "Show receipt",
+        "hide": "Hide receipt"
       },
       "company": {
         "title": "Company & Legal Entities",
@@ -10573,6 +10464,165 @@
         "none": "None",
         "yes": "Yes",
         "no": "No"
+      },
+      "trail": {
+        "title": "Independent Audit Trail",
+        "description": "Vitana's own append-only log: every request, every decision, every policy change – independent of the ERP.",
+        "searchPlaceholder": "Search by event, command or person …",
+        "empty": "No entries yet",
+        "time": "When",
+        "event": "Event",
+        "actor": "Who",
+        "role": "Role",
+        "channel": "Channel",
+        "command": "Command",
+        "approval": "Approval",
+        "details": "Details"
+      },
+      "inbox": {
+        "title": "Approvals Inbox",
+        "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
+        "empty": "Nothing is waiting for you",
+        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
+      },
+      "common": {
+        "empty": "No entries",
+        "asOf": "as of {time}",
+        "replayed": "replayed from receipt",
+        "source": {
+          "erp": "Source: ERPClaw via the bridge",
+          "gateway": "Source: Vitana gateway"
+        },
+        "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
+        "viewAll": "View all",
+        "all": "All"
+      },
+      "queue": {
+        "title": "Queue",
+        "description": "Every approval request in the tenant – pending, approved or rejected.",
+        "searchPlaceholder": "Search by command, capability or person …",
+        "statusFilter": "Status",
+        "empty": "No approval requests"
+      },
+      "policies": {
+        "title": "Policies",
+        "description": "The rules the gateway uses to tier commands and demand approvals.",
+        "threshold": "High-risk threshold",
+        "thresholdHint": "Any Commit at or above this amount becomes a High-risk request and needs a second person.",
+        "mfa": "MFA for approvals",
+        "mfaHint": "High-risk approvals need a session backed by a second factor.",
+        "on": "On",
+        "off": "Off",
+        "default": "Default",
+        "custom": "Custom (default: {value})",
+        "editNextSlice": "Read-only in this slice – policy edits land with the next one (every edit is itself a receipt).",
+        "rulesTitle": "Fixed rules",
+        "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
+        "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
+        "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
+        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
+      },
+      "myRequests": {
+        "title": "My Requests",
+        "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
+        "awaiting": "Awaiting approval",
+        "history": "History",
+        "empty": "You have not requested any commands yet"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "What the BackOffice needs today: pending approvals, your requests, the latest commands and the state of the ERP.",
+        "pendingApprovals": "Pending approvals",
+        "pendingApprovalsHint": "Waiting for a second person",
+        "myOpenRequests": "My open requests",
+        "myOpenRequestsHint": "Requested by you, not yet decided",
+        "executed7d": "Executed (7 days)",
+        "executed7dHint": "Commands completed successfully",
+        "failed7d": "Failed (7 days)",
+        "failed7dHint": "Rejected or ended with an error",
+        "erpStatus": "ERP status",
+        "erpOk": "Ready",
+        "erpNotOk": "Unreachable",
+        "erpUnknown": "Unclear",
+        "quickAccess": "Quick access",
+        "recentActivity": "Recent activity",
+        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
+      },
+      "errors": {
+        "bridgeUnavailable": "The ERP bridge is not reachable.",
+        "bridgeUnavailableHint": "The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.",
+        "noCapability": "You lack a capability for this.",
+        "noCapabilityHint": "A tenant admin can grant it under Settings › Access.",
+        "erpFailed": "ERPClaw rejected the command.",
+        "unauthorized": "Please sign in again.",
+        "noTenant": "No active tenant – pick a workspace first.",
+        "notFound": "Not found.",
+        "generic": "The data could not be loaded."
+      },
+      "activity": {
+        "title": "Activity",
+        "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
+        "searchPlaceholder": "Search by command, ID or reason …",
+        "statusFilter": "Status",
+        "empty": "No commands yet"
+      },
+      "tiers": {
+        "read": "Read",
+        "draft": "Draft",
+        "commit": "Commit",
+        "high": "High-risk"
+      },
+      "erpLog": {
+        "title": "ERP Audit Log",
+        "description": "ERPClaw's own immutable log – every posting, every reversal, every master-data change.",
+        "empty": "No entries yet",
+        "time": "When",
+        "skill": "Module",
+        "action": "Action",
+        "entity": "Entity",
+        "user": "User",
+        "changes": "Change",
+        "system": "System"
+      },
+      "commandStatus": {
+        "executed": "Executed",
+        "failed": "Failed",
+        "awaiting_approval": "Awaiting approval",
+        "rejected": "Rejected"
+      },
+      "approvals": {
+        "requested": "Requested",
+        "command": "Command",
+        "requester": "Requester",
+        "approverNeeds": "Approver needs",
+        "status": "Status",
+        "decision": "Decision",
+        "you": "You",
+        "yourOwnRequest": "Your own request – you cannot approve it yourself.",
+        "youCanDecide": "You can decide",
+        "youCannotDecide": "Not yours to approve"
+      },
+      "commands": {
+        "when": "When",
+        "command": "Command",
+        "tier": "Tier",
+        "status": "Status",
+        "channel": "Channel",
+        "requester": "Requester",
+        "receipt": "Receipt",
+        "reason": "Reason",
+        "you": "You"
+      },
+      "approvalStatus": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "channels": {
+        "web": "Web",
+        "chat": "Chat",
+        "voice": "Voice",
+        "system": "System"
       },
       "sales": {
         "status": {
@@ -10984,11 +11034,11 @@
           "invalidEmail": "Not a valid e-mail address",
           "invalidDate": "Date as YYYY-MM-DD",
           "invalidOption": "Not a valid choice",
-          "invalidNumber": "Enter a valid number greater than 0",
-          "lineQtyTooHigh": "Returned quantity cannot exceed the invoiced quantity",
           "noLines": "Enter a quantity on at least one line",
-          "tooFewLines": "At least two lines with an account and an amount",
+          "lineQtyTooHigh": "Returned quantity cannot exceed the invoiced quantity",
+          "invalidNumber": "Enter a valid number greater than 0",
           "unbalanced": "Debits must equal credits",
+          "tooFewLines": "At least two lines with an account and an amount",
           "lineIncomplete": "Every line needs an account and a debit or credit amount"
         },
         "fields": {
@@ -11008,48 +11058,48 @@
           "activity_type": "Type",
           "activity_date": "Date",
           "lead_ref": "Lead (name or number)",
-          "customer_type": "Customer type",
           "tax_id": "Tax ID (TRN)",
+          "posting_date": "Posting date",
+          "original_qty": "Invoiced qty",
+          "item_id": "Item ID",
+          "reason": "Reason",
           "credit_limit": "Credit limit",
+          "customer_type": "Customer type",
           "primary_address": "Address",
           "against_invoice_id": "Against invoice",
-          "posting_date": "Posting date",
-          "reason": "Reason",
-          "items": "Lines",
-          "item_name": "Item",
-          "original_qty": "Invoiced qty",
           "qty": "Returned qty",
-          "item_id": "Item ID",
-          "payment_type": "Payment type",
+          "item_name": "Item",
+          "items": "Lines",
           "party_type": "Party type",
           "party_id": "Customer",
-          "paid_amount": "Amount",
+          "reference_number": "Bank reference",
           "paid_from_account": "From account",
           "paid_to_account": "To account",
-          "reference_number": "Bank reference",
+          "payment_type": "Payment type",
           "reference_date": "Reference date",
-          "entry_type": "Entry type",
+          "paid_amount": "Amount",
           "lines": "Lines",
-          "account_id": "Account",
+          "entry_type": "Entry type",
           "debit": "Debit",
-          "credit": "Credit",
+          "account_id": "Account",
           "remark": "Remark",
+          "credit": "Credit",
+          "status": "Status",
+          "probability": "Probability (%)",
+          "next_follow_up_date": "Next follow-up",
           "lead_id": "Lead id",
-          "crm_task_id": "Task id",
-          "opportunity_id": "Opportunity id",
-          "opportunity": "Opportunity id",
+          "opportunity_name": "Name",
           "stage": "Stage",
           "territory": "Territory",
-          "status": "Status",
-          "opportunity_name": "Name",
-          "probability": "Probability (%)",
-          "expected_revenue": "Expected revenue",
           "expected_closing_date": "Expected closing",
-          "next_follow_up_date": "Next follow-up",
+          "opportunity": "Opportunity id",
+          "crm_task_id": "Task id",
+          "opportunity_id": "Opportunity id",
+          "expected_revenue": "Expected revenue",
+          "journal_entry_id": "Journal entry id",
           "opportunity_type": "Opportunity type",
           "lost_reason": "Reason",
-          "sales_invoice_id": "Invoice id",
-          "journal_entry_id": "Journal entry id"
+          "sales_invoice_id": "Invoice id"
         },
         "choices": {
           "website": "Website",
@@ -11077,22 +11127,22 @@
           "task": "Task",
           "company": "Company",
           "individual": "Individual",
-          "receive": "Receipt",
           "pay": "Payment",
-          "journal": "Journal",
-          "opening": "Opening",
+          "receive": "Receipt",
+          "credit_note": "Credit note",
+          "exchange_rate_revaluation": "Exchange rate revaluation",
+          "debit_note": "Debit note",
+          "inter_company": "Inter-company",
+          "write_off": "Write-off",
           "closing": "Closing",
           "depreciation": "Depreciation",
-          "write_off": "Write-off",
-          "exchange_rate_revaluation": "Exchange rate revaluation",
-          "inter_company": "Inter-company",
-          "credit_note": "Credit note",
-          "debit_note": "Debit note",
-          "new": "New",
+          "journal": "Journal",
+          "opening": "Opening",
           "contacted": "Contacted",
-          "qualified": "Qualified",
-          "unresponsive": "Unresponsive",
           "lost": "Lost",
+          "unresponsive": "Unresponsive",
+          "qualified": "Qualified",
+          "new": "New",
           "sales": "Sales",
           "support": "Support",
           "maintenance": "Maintenance"
@@ -11123,15 +11173,15 @@
             "title": "Log an activity",
             "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written."
           },
-          "customer": {
-            "button": "New customer",
-            "title": "Create a customer",
-            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted."
-          },
           "creditNote": {
             "button": "Create credit note",
             "title": "Credit note against invoice",
             "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step."
+          },
+          "customer": {
+            "button": "New customer",
+            "title": "Create a customer",
+            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted."
           },
           "payment": {
             "button": "Record payment",
@@ -11143,6 +11193,16 @@
             "title": "Create a journal entry",
             "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step."
           },
+          "opportunityStage": {
+            "button": "Move stage",
+            "title": "Move to another pipeline stage",
+            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word."
+          },
+          "taskComplete": {
+            "button": "Complete",
+            "title": "Complete task",
+            "description": "The task is marked done. A note is optional."
+          },
           "leadUpdate": {
             "button": "Edit lead",
             "title": "Edit lead",
@@ -11153,25 +11213,35 @@
             "title": "Edit opportunity",
             "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval."
           },
-          "opportunityStage": {
-            "button": "Move stage",
-            "title": "Move to another pipeline stage",
-            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word."
-          },
           "taskUpdate": {
             "button": "Edit",
             "title": "Edit task",
             "description": "Subject, priority, due date and description of the open task."
           },
-          "taskComplete": {
-            "button": "Complete",
-            "title": "Complete task",
-            "description": "The task is marked done. A note is optional."
-          },
           "taskCancel": {
             "button": "Cancel",
             "title": "Cancel task",
             "description": "The task is cancelled and stays visible. A reason is required."
+          },
+          "invoiceCancel": {
+            "button": "Cancel",
+            "title": "Cancel invoice",
+            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval."
+          },
+          "journalCancel": {
+            "button": "Cancel",
+            "title": "Cancel journal entry",
+            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval."
+          },
+          "opportunityLost": {
+            "button": "Lost",
+            "title": "Mark opportunity lost",
+            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards."
+          },
+          "journalSubmit": {
+            "button": "Post",
+            "title": "Post journal entry",
+            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled."
           },
           "leadConvert": {
             "button": "Convert to opportunity",
@@ -11183,69 +11253,69 @@
             "title": "Mark opportunity won",
             "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards."
           },
-          "opportunityLost": {
-            "button": "Lost",
-            "title": "Mark opportunity lost",
-            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards."
-          },
           "invoiceSubmit": {
             "button": "Post",
             "title": "Post invoice",
             "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled."
-          },
-          "invoiceCancel": {
-            "button": "Cancel",
-            "title": "Cancel invoice",
-            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval."
-          },
-          "journalSubmit": {
-            "button": "Post",
-            "title": "Post journal entry",
-            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled."
-          },
-          "journalCancel": {
-            "button": "Cancel",
-            "title": "Cancel journal entry",
-            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval."
           }
         },
         "noLineRows": "No lines available.",
         "lookupLoading": "Loading …",
-        "lookupIdPlaceholder": "Enter the ID",
         "lookupRefused": "Your account may not read the pick list ({command}) – enter the ID directly.",
-        "addLine": "Add line",
+        "lookupIdPlaceholder": "Enter the ID",
         "removeLine": "Remove line",
-        "totals": "Totals",
         "differenceIs": "Difference {amount}",
-        "keepsBlank": "A field left blank keeps its current value — ERPClaw changes only the fields it is given.",
-        "acceptUpdate": "Accept and save",
-        "whatHappensUpdate": "Draft tier: changes an existing record — no posting, no approval step, reversible by editing again.",
-        "updated": "Saved",
-        "updatedWithRef": "Saved: {ref}",
+        "addLine": "Add line",
+        "totals": "Totals",
         "doneHintUpdate": "The ERP changed the record; the list behind this was reloaded. The receipt below is what the bridge stored.",
-        "doneUpdate": "Saved",
-        "failedUpdate": "Not saved",
+        "updated": "Saved",
+        "acceptUpdate": "Accept and save",
         "failedHintUpdate": "Nothing was changed. You can adjust the inputs and resend – the same idempotency key guarantees a retry never writes twice.",
-        "confirmCommit": "I confirm: this command runs in the ERP right now.",
+        "keepsBlank": "A field left blank keeps its current value — ERPClaw changes only the fields it is given.",
+        "failedUpdate": "Not saved",
+        "updatedWithRef": "Saved: {ref}",
+        "whatHappensUpdate": "Draft tier: changes an existing record — no posting, no approval step, reversible by editing again.",
+        "doneUpdate": "Saved",
         "confirmCommitHint": "Commit tier — posts to the ledger or sets a final status. Not reversible by editing; the confirmation is given only here, never by voice.",
-        "confirmHigh": "I confirm the request and understand a second person has to approve it.",
         "confirmHighHint": "High-risk — nothing runs here. The request goes to the approvals queue; only someone else holding the approve capability can decide it (maker-checker).",
-        "acceptCommit": "Confirm and execute",
-        "acceptHigh": "Submit for approval",
-        "whatHappensCommit": "Commit tier: runs immediately after your confirmation — posts to the ledger or sets a final status, and cannot be taken back by editing.",
-        "whatHappensHigh": "High-risk: does not run now. The request waits in the approvals queue for a second person with the approve capability; you cannot approve your own request.",
-        "queued": "Submitted for approval",
+        "confirmCommit": "I confirm: this command runs in the ERP right now.",
         "queuedLine": "Queued — waiting for a second person",
-        "queuedWithId": "Approval id: {id}",
-        "queuedNoApprover": "Right now nobody else in this tenant holds the approve capability. The request stays open until someone does.",
         "queuedHint": "You cannot approve your own request. Follow it under My requests; someone else decides it in the queue.",
-        "goToMyRequests": "Go to My requests",
-        "doneCommit": "Executed",
-        "doneCommitLine": "Executed",
-        "doneCommitWithRef": "Executed: {ref}",
+        "confirmHigh": "I confirm the request and understand a second person has to approve it.",
+        "acceptCommit": "Confirm and execute",
         "doneHintCommit": "The ERP executed the command; the list behind this was reloaded. The receipt below is what the bridge stored.",
+        "doneCommitLine": "Executed",
+        "whatHappensCommit": "Commit tier: runs immediately after your confirmation — posts to the ledger or sets a final status, and cannot be taken back by editing.",
+        "queued": "Submitted for approval",
+        "doneCommitWithRef": "Executed: {ref}",
+        "doneCommit": "Executed",
+        "queuedWithId": "Approval id: {id}",
+        "whatHappensHigh": "High-risk: does not run now. The request waits in the approvals queue for a second person with the approve capability; you cannot approve your own request.",
+        "acceptHigh": "Submit for approval",
+        "goToMyRequests": "Go to My requests",
         "failedCommit": "Not executed",
+        "queuedNoApprover": "Right now nobody else in this tenant holds the approve capability. The request stays open until someone does.",
         "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again."
+      },
+      "policyEdit": {
+        "button": "Edit policy",
+        "title": "Edit policy",
+        "description": "The High-risk threshold and the MFA rule for the tenant. Every change is stored as a receipt in the audit trail.",
+        "review": "Review before it is saved",
+        "reviewHint": "Only the values that change are shown. The gateway records before and after.",
+        "setting": "Setting",
+        "before": "Before",
+        "after": "After",
+        "audited": "Saved under your account as the editor – visible in the audit trail as policy.updated.",
+        "save": "Save",
+        "done": "Saved",
+        "doneLine": "The policy is updated and applies to new commands from now on.",
+        "failed": "Not saved",
+        "noChanges": "Nothing changed.",
+        "readOnlyHint": "Read-only – editing needs approvals.policy.",
+        "issues": {
+          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000"
+        }
       },
       "decide": {
         "queueHint": "Pending requests you may decide show Approve / Reject. Approving executes the command through the gateway – never from the browser.",
@@ -11293,26 +11363,6 @@
           "notFound": "Request not found."
         },
         "payload": "Request contents"
-      },
-      "policyEdit": {
-        "button": "Edit policy",
-        "title": "Edit policy",
-        "description": "The High-risk threshold and the MFA rule for the tenant. Every change is stored as a receipt in the audit trail.",
-        "review": "Review before it is saved",
-        "reviewHint": "Only the values that change are shown. The gateway records before and after.",
-        "setting": "Setting",
-        "before": "Before",
-        "after": "After",
-        "audited": "Saved under your account as the editor – visible in the audit trail as policy.updated.",
-        "save": "Save",
-        "done": "Saved",
-        "doneLine": "The policy is updated and applies to new commands from now on.",
-        "failed": "Not saved",
-        "noChanges": "Nothing changed.",
-        "readOnlyHint": "Read-only – editing needs approvals.policy.",
-        "issues": {
-          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000"
-        }
       }
     }
   }

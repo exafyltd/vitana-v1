@@ -1,0 +1,39 @@
+# Draft-command traffic seen by the local stub gateway (127.0.0.1:8090)
+## stub run: bookkeeper-2
+stub on 8090 persona=bookkeeper bridge=up
+POST accounting.journal.list 200
+POST accounting.coa.list 200
+DRAFT accounting.journal.create key=ui.draft:accounting.journal.create:9b4f701916c74b8a93146556bdd29f81 confirm=false payload={"posting_date":"2026-09-13","entry_type":"journal","remark":"Office supplies paid from bank","lines":[{"account_id":"04310b4d-3b19-490e-ba9e-703fd488ca16","debit":"120","credit":"0.00"},{"account_id":"f529f450-dbd5-4412-8bfc-3db680640de4","debit":"0.00","credit":"120"}]}
+POST accounting.journal.create 200
+POST accounting.journal.list 200
+POST accounting.coa.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+## stub run: bookkeeper
+stub on 8090 persona=bookkeeper bridge=up
+POST accounting.journal.list 200
+POST accounting.coa.list 200
+DRAFT accounting.journal.create key=ui.draft:accounting.journal.create:b847222ce88a404e8875df005fd96b50 confirm=false payload={"posting_date":"2026-09-13","entry_type":"journal","remark":"Office supplies paid from bank","lines":[{"account_id":"04310b4d-3b19-490e-ba9e-703fd488ca16","debit":"120","credit":"0.00"},{"account_id":"f529f450-dbd5-4412-8bfc-3db680640de4","debit":"0.00","credit":"120"}]}
+POST accounting.journal.create 200
+POST accounting.journal.list 200
+POST accounting.coa.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST accounting.journal.list 200
+POST accounting.coa.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST accounting.journal.list 200
+POST accounting.coa.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+## stub run: sales
+stub on 8090 persona=sales bridge=up
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403

@@ -1,0 +1,147 @@
+{"name":"01-draft-lead-salesmanager-en-1-form-empty","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-lead-salesmanager-en-2-validation","phase":"form","alerts":["Required"],"status":[]}
+{"name":"01-draft-lead-salesmanager-en-3-form-filled","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-lead-salesmanager-en-4-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"01-draft-lead-salesmanager-en-5-done","phase":"done","alerts":[],"status":["Created as LEAD-2026-00003.Lead 'Draft Card Probe' created (LEAD-2026-00003)"]}
+{"name":"01-draft-lead-salesmanager-en-6-list-refetched","phase":null,"alerts":[],"status":[]}
+{"name":"01-draft-lead-salesmanager-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+{"name":"02-draft-lead-salesmanager-de-1-form-empty-de","phase":"form","alerts":[],"status":[]}
+{"name":"02-draft-lead-salesmanager-de-2-validation-de","phase":"form","alerts":["Pflichtfeld"],"status":[]}
+{"name":"02-draft-lead-salesmanager-de-3-form-filled-de","phase":"form","alerts":[],"status":[]}
+{"name":"02-draft-lead-salesmanager-de-4-review-card-de","phase":"review","alerts":[],"status":[]}
+{"name":"02-draft-lead-salesmanager-de","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+step failed {"click":"[data-testid=\"draft-open-task\"]","wait":800} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-open-task"]').first()[22m
+
+step failed {"fill":"input[name=\"subject\"]","value":"Send corporate programme deck"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="subject"]')[22m
+
+step failed {"select":"priority","option":"High"} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-select-priority"]')[22m
+
+step failed {"fill":"input[name=\"due_date\"]","value":"2026-09-20"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="due_date"]')[22m
+
+step failed {"fill":"textarea[name=\"description\"]","value":"Follow up after the summit conversation."} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('textarea[name="description"]')[22m
+
+{"name":"03-draft-task-salesmanager-en-1-form","phase":null,"alerts":[],"status":[]}
+step failed {"click":"[data-testid=\"draft-review\"]","wait":600} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-review"]').first()[22m
+
+{"name":"03-draft-task-salesmanager-en-2-review-card","phase":null,"alerts":[],"status":[]}
+step failed {"click":"[data-testid=\"draft-accept\"]"} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-accept"]').first()[22m
+
+step failed {"waitFor":"[data-testid=\"draft-done\"]","wait":800} locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-done"]').first() to be visible[22m
+
+{"name":"03-draft-task-salesmanager-en-3-done","phase":null,"alerts":[],"status":[]}
+{"name":"03-draft-task-salesmanager-en","mounted":true,"url":"/backoffice/sales/follow-ups","dir":"ltr","screenId":"BO-sales-leads","h1":"Sales & CRM","rows":0,"alerts":[],"hOverflow":false}
+step failed {"click":"[data-testid=\"draft-open-activity\"]","wait":800} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-open-activity"]').first()[22m
+
+step failed {"fill":"input[name=\"subject\"]","value":"مكالمة تعريفية"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="subject"]')[22m
+
+step failed {"fill":"input[name=\"lead_ref\"]","value":"LEAD-2026-00003"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="lead_ref"]')[22m
+
+{"name":"04-draft-activity-salesmanager-ar-rtl-1-form","phase":null,"alerts":[],"status":[]}
+step failed {"click":"[data-testid=\"draft-review\"]","wait":600} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-review"]').first()[22m
+
+{"name":"04-draft-activity-salesmanager-ar-rtl-2-review-card","phase":null,"alerts":[],"status":[]}
+{"name":"04-draft-activity-salesmanager-ar-rtl","mounted":true,"url":"/backoffice/sales/follow-ups","dir":"rtl","screenId":"BO-sales-leads","h1":"المبيعات وإدارة العملاء","rows":0,"alerts":[],"hOverflow":false}
+{"name":"05-draft-company-salesmanager-en-1-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"05-draft-company-salesmanager-en","mounted":true,"url":"/backoffice/sales/contacts","dir":"ltr","screenId":"BO-006","h1":"👥Contacts & Companies","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 86 stub read POSTs: 7
+{"name":"06-draft-lead-bridge-down-salesmanager-en-1-failed","phase":"failed","alerts":["The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.","The ERP bridge is not reachable.Reason: bridge_not_configured"],"status":[]}
+{"name":"06-draft-lead-bridge-down-salesmanager-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":0,"alerts":["The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work.","The ERP bridge is not reachable.Reason: bridge_not_configured"],"hOverflow":false}
+{"name":"07-draft-buttons-hidden-salesperson-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":0,"alerts":["The ERP bridge is not reachable.The gateway has no bridge configured yet (ERP_BRIDGE_URL). Until then ERP data stays empty – commands, approvals and the audit trail still work."],"hOverflow":false}
+blocked non-read requests: 22 stub read POSTs: 3
+{"name":"07-draft-buttons-hidden-salesperson-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 10 stub read POSTs: 1
+{"name":"03-draft-task-salesmanager-en-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"03-draft-task-salesmanager-en-2-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"03-draft-task-salesmanager-en-3-done","phase":"done","alerts":[],"status":["Record created.Task 'Call back probe' created"]}
+{"name":"03-draft-task-salesmanager-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+step failed {"click":"[data-testid=\"draft-open-activity\"]","wait":800} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-open-activity"]').first()[22m
+[2m    - locator resolved to <button type="button" data-lov-name="Button" data-component-line="176" data-component-name="Button" data-component-content="%7B%7D" data-testid="draft-open-activity" data-component-file="DraftCommandDialog.tsx" data-lov-id="src/components/backoffice/DraftCommandDialog.tsx:176:6" data-component-path="src/components/backoffice/DraftCommandDialog.tsx" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all focus-visible:outline-none…>…</button>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <span data-lov-name="span" data-component-line="359" data-component-name="span" data-component-content="%7B%7D" data-component-file="AppLayout.tsx" data-lov-id="src/components/AppLayout.tsx:359:28" data-component-path="src/components/AppLayout.tsx" class="font-medium transition-colors text-sidebar-foreground group-hover:text-foreground">→ الإدارة</span> from <div class="dark" data-lov-name="div" data-component-line="529" data-component-name="div" data-component-file="AppLayout.tsx" data-lov-id="src/components/AppLayout.tsx:529:12" data-component-path="src/components/AppLayout.tsx" data-component-content="%7B%22className%22%3A%22dark%22%7D">…</div> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <span data-lov-name="span" data-component-line="359" data-component-name="span" data-component-content="%7B%7D" data-component-file="AppLayout.tsx" data-lov-id="src/components/AppLayout.tsx:359:28" data-component-path="src/components/AppLayout.tsx" class="font-medium transition-colors text-sidebar-foreground group-hover:text-foreground">→ الإدارة</span> from <div class="dark" data-lov-name="div" data-component-line="529" data-component-name="div" data-component-file="AppLayout.tsx" data-lov-id="src/components/AppLayout.tsx:529:12" data-component-path="src/components/AppLayout.tsx" data-component-content="%7B%22className%22%3A%22dark%22%7D">…</div> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    19 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <span data-lov-name="span" data-component-line="359" data-component-name="span" data-component-content="%7B%7D" data-component-file="AppLayout.tsx" data-lov-id="src/components/AppLayout.tsx:359:28" data-component-path="src/components/AppLayout.tsx" class="font-medium transition-colors text-sidebar-foreground group-hover:text-foreground">→ الإدارة</span> from <div class="dark" data-lov-name="div" data-component-line="529" data-component-name="div" data-component-file="AppLayout.tsx" data-lov-id="src/components/AppLayout.tsx:529:12" data-component-path="src/components/AppLayout.tsx" data-component-content="%7B%22className%22%3A%22dark%22%7D">…</div> subtree intercepts pointer events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+
+step failed {"fill":"input[name=\"subject\"]","value":"مكالمة تعريفية"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="subject"]')[22m
+
+step failed {"fill":"input[name=\"lead_ref\"]","value":"LEAD-2026-00003"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="lead_ref"]')[22m
+
+{"name":"04-draft-activity-salesmanager-ar-rtl-1-form","phase":null,"alerts":[],"status":[]}
+step failed {"click":"[data-testid=\"draft-review\"]","wait":600} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-review"]').first()[22m
+
+{"name":"04-draft-activity-salesmanager-ar-rtl-2-review-card","phase":null,"alerts":[],"status":[]}
+{"name":"04-draft-activity-salesmanager-ar-rtl","mounted":true,"url":"/backoffice/sales/followups","dir":"rtl","screenId":"BO-008","h1":"📌المتابعات","rows":2,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 31 stub read POSTs: 7
+step failed {"fill":"input[name=\"subject\"]","value":"مكالمة تعريفية"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="subject"]')[22m
+
+step failed {"fill":"input[name=\"lead_ref\"]","value":"LEAD-2026-00003"} page.fill: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('input[name="lead_ref"]')[22m
+
+{"name":"04-draft-activity-salesmanager-ar-rtl-1-form","phase":null,"alerts":[],"status":[]}
+step failed {"click":"[data-testid=\"draft-review\"]","wait":600} locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-review"]').first()[22m
+
+{"name":"04-draft-activity-salesmanager-ar-rtl-2-review-card","phase":null,"alerts":[],"status":[]}
+{"name":"04-draft-activity-salesmanager-ar-rtl","mounted":true,"url":"/admin/dashboard","dir":"rtl","screenId":null,"h1":"📊لوحة التحكم","rows":0,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 26 stub read POSTs: 2
+{"name":"04-draft-activity-salesmanager-ar-rtl-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"04-draft-activity-salesmanager-ar-rtl-2-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"04-draft-activity-salesmanager-ar-rtl","mounted":true,"url":"/backoffice/sales/followups","dir":"rtl","screenId":"BO-008","h1":"📌المتابعات","rows":2,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 12 stub read POSTs: 2
