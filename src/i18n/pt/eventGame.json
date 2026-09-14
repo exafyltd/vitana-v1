@@ -100,18 +100,6 @@
       "pointsToNext": "🔥 VOCÊ ESTÁ EM #{rank} · {points} PTS PARA #{nextRank}"
     },
     "admin": {
-      "_pending_review": {
-        "rewardDescLabel": true,
-        "save": true,
-        "saved": true,
-        "saveFailed": true,
-        "leaderboardSection": true,
-        "ledgerSection": true,
-        "adjustPoints": true,
-        "adjustReason": true,
-        "adjustApply": true,
-        "notModerator": true
-      },
       "title": "Jogo do Evento",
       "configSection": "Configuração",
       "nameLabel": "Nome",
@@ -129,16 +117,16 @@
       "pointsLikeCap": "Limite de pontos por curtida por post",
       "maxPosts": "Máx. de posts por pessoa",
       "rewardTextLabel": "Recompensa (curta)",
-      "rewardDescLabel": "Reward (description)",
-      "save": "Save",
-      "saved": "Saved",
-      "saveFailed": "Save failed",
-      "leaderboardSection": "Leaderboard & corrections",
-      "ledgerSection": "Points ledger",
-      "adjustPoints": "Adjust points",
-      "adjustReason": "Reason",
-      "adjustApply": "Apply",
-      "notModerator": "You don't have permission to manage this game."
+      "rewardDescLabel": "Recompensa (descrição)",
+      "save": "Salvar",
+      "saved": "Salvo",
+      "saveFailed": "Falha ao salvar",
+      "leaderboardSection": "Classificação e correções",
+      "ledgerSection": "Extrato de pontos",
+      "adjustPoints": "Ajustar pontos",
+      "adjustReason": "Motivo",
+      "adjustApply": "Aplicar",
+      "notModerator": "Você não tem permissão para gerenciar este jogo."
     }
   }
 }
