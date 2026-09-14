@@ -33,10 +33,11 @@ export const MY_PORTAL_API = '/api/v1/vcaop/portal/my';
  * memory and must not be pointed at by public DNS until that is durable). The
  * UI says so rather than implying a live connection.
  */
-export const MCP_SERVER_URL = (() => {
-  const base = ((import.meta.env.VITE_MCP_AS_URL as string | undefined) || 'https://mcp.vitanaland.com').replace(
-    /\/+$/,
-    '',
-  );
+export function normalizeMcpUrl(raw: string): string {
+  const base = raw.replace(/\/+$/, '');
   return base.endsWith('/mcp') ? base : `${base}/mcp`;
-})();
+}
+
+export const MCP_SERVER_URL = normalizeMcpUrl(
+  (import.meta.env.VITE_MCP_AS_URL as string | undefined) || 'https://mcp.vitanaland.com',
+);
