@@ -1,0 +1,18 @@
+{
+  "as_of_date": "2026-09-13",
+  "total_outstanding": "-5000.00",
+  "customers": [
+    {
+      "customer_id": "2a806449-489d-4a62-9598-91da50b18ff9",
+      "customer_name": "Acme Trading LLC",
+      "current": "-5000.00",
+      "days_60": "0.00",
+      "days_90": "0.00",
+      "days_120": "0.00",
+      "days_30": "-5000.00",
+      "days_120_plus": "0.00",
+      "total": "-5000.00"
+    }
+  ],
+  "status": "ok"
+}
