@@ -38,7 +38,8 @@ export interface DraftField {
   balance?: { debit: string; credit: string };
 }
 
-export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote" | "payment" | "journal";
+export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote" | "payment" | "journal"
+  | "leadUpdate" | "opportunityUpdate" | "opportunityStage" | "taskUpdate" | "taskComplete" | "taskCancel";
 
 export interface DraftFormSpec {
   id: DraftFormId;
@@ -49,11 +50,21 @@ export interface DraftFormSpec {
   capability: string;
   /** further capabilities that also admit the command (any-of, as in the gateway catalog) */
   alsoCapabilities?: readonly string[];
+  /** an edit card: the form starts from the record and a field left blank keeps its current value (ERPClaw updates only the fields it is given) */
+  keepsBlank?: boolean;
   fields: readonly DraftField[];
 }
 
 export function draftCapabilities(spec: DraftFormSpec): readonly string[] {
   return [spec.capability, ...(spec.alsoCapabilities ?? [])];
+}
+
+/**
+ * VTID-03876 — an edit card must not be described as a creation. Every "…and create / Created /
+ * creates an unposted record" line in the dialog has an update twin; this picks between them.
+ */
+export function draftCreates(spec: DraftFormSpec): boolean {
+  return spec.type.endsWith(".create") || spec.type === "finance.payment.record";
 }
 
 // Mirrors VALID_* in erpclaw-growth/scripts/erpclaw-crm/db_query.py (v2.10.0).
@@ -75,6 +86,20 @@ export const ACCOUNT_LOOKUP: LookupSpec = { type: "accounting.coa.list", payload
 export const JOURNAL_ENTRY_TYPES = ["journal", "opening", "closing", "depreciation", "write_off", "exchange_rate_revaluation", "inter_company", "credit_note", "debit_note"] as const;
 /** ERPClaw accepts a credit note only against an invoice in one of these states (create_credit_note). */
 export const CREDIT_NOTE_SOURCE_STATUSES = ["submitted", "overdue", "partially_paid", "paid"] as const;
+
+// --- VTID-03876: the update/complete/cancel cards ------------------------------------------------
+// Mirrors VALID_LEAD_STATUSES minus `converted`: converting is its own Commit-tier command
+// (crm.lead.convert) and creates the opportunity too, so setting the word by hand would leave a lead
+// marked converted with nothing behind it.
+export const LEAD_UPDATE_STATUSES = ["new", "contacted", "qualified", "unresponsive", "lost"] as const;
+// ERPClaw freezes terminal records: a converted lead, a won/lost opportunity and a done/cancelled task
+// all refuse an update. The cards hide rather than offer a button that can only fail. `completed` is not
+// an ERPClaw word but the Read screens filter on it, so it counts as terminal here too.
+export const LEAD_FROZEN_STATUSES = ["converted"] as const;
+export const OPPORTUNITY_FROZEN_STAGES = ["won", "lost"] as const;
+export const TASK_FROZEN_STATUSES = ["done", "completed", "cancelled"] as const;
+/** The pipeline stage a `set-opportunity-pipeline-stage` moves to is an id, not a word — picked from the tenant's own stages. */
+export const PIPELINE_STAGE_LOOKUP: LookupSpec = { type: "crm.pipeline_stage.list", payload: { limit: 200 }, listKey: "crm_pipeline_stages", valueKey: "id", labelKey: "name" };
 
 export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
   lead: {
@@ -182,6 +207,69 @@ export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
         { key: "debit", kind: "number", default: "0.00" },
         { key: "credit", kind: "number", default: "0.00" },
       ] },
+    ],
+  },
+  leadUpdate: {
+    id: "leadUpdate", type: "crm.lead.update", action: "update-lead", capability: "crm.manage", keepsBlank: true,
+    fields: [
+      { key: "lead_id", kind: "text", required: true, readOnly: true },
+      { key: "lead_name", kind: "text" },
+      { key: "company_name", kind: "text" },
+      { key: "email", kind: "email" },
+      { key: "phone", kind: "tel" },
+      { key: "source", kind: "select", options: LEAD_SOURCES },
+      { key: "territory", kind: "text" },
+      { key: "industry", kind: "text" },
+      { key: "status", kind: "select", options: LEAD_UPDATE_STATUSES },
+      { key: "notes", kind: "textarea" },
+    ],
+  },
+  opportunityUpdate: {
+    id: "opportunityUpdate", type: "crm.opportunity.update", action: "update-opportunity", capability: "crm.manage", keepsBlank: true,
+    fields: [
+      { key: "opportunity_id", kind: "text", required: true, readOnly: true },
+      { key: "opportunity_name", kind: "text" },
+      // No stage here on purpose. ERPClaw STORES the stage as the pipeline stage's NAME ("Proposal") but
+      // VALIDATES `update-opportunity --stage` against its own snake_case enum ("proposal_sent"), so a
+      // select prefilled from the record would be invalid the moment the card opens, and would show the
+      // user a second vocabulary for one field. Moving a stage is the `opportunityStage` card, which picks
+      // the tenant's real stages by id.
+      { key: "probability", kind: "number", min: 0 },
+      { key: "expected_revenue", kind: "number", min: 0 },
+      { key: "expected_closing_date", kind: "date" },
+      { key: "next_follow_up_date", kind: "date" },
+    ],
+  },
+  opportunityStage: {
+    // ERPClaw names this flag `--opportunity`, not `--opportunity-id`; the bridge derives the flag from the key.
+    id: "opportunityStage", type: "crm.opportunity.set_stage", action: "set-opportunity-pipeline-stage", capability: "crm.manage",
+    fields: [
+      { key: "opportunity", kind: "text", required: true, readOnly: true },
+      { key: "stage", kind: "lookup", required: true, lookup: PIPELINE_STAGE_LOOKUP },
+    ],
+  },
+  taskUpdate: {
+    id: "taskUpdate", type: "crm.task.update", action: "update-crm-task", capability: "crm.manage", keepsBlank: true,
+    fields: [
+      { key: "crm_task_id", kind: "text", required: true, readOnly: true },
+      { key: "subject", kind: "text" },
+      { key: "priority", kind: "select", options: TASK_PRIORITIES },
+      { key: "due_date", kind: "date" },
+      { key: "description", kind: "textarea" },
+    ],
+  },
+  taskComplete: {
+    id: "taskComplete", type: "crm.task.complete", action: "complete-crm-task", capability: "crm.manage",
+    fields: [
+      { key: "crm_task_id", kind: "text", required: true, readOnly: true },
+      { key: "notes", kind: "textarea" },
+    ],
+  },
+  taskCancel: {
+    id: "taskCancel", type: "crm.task.cancel", action: "cancel-crm-task", capability: "crm.manage",
+    fields: [
+      { key: "crm_task_id", kind: "text", required: true, readOnly: true },
+      { key: "reason", kind: "textarea", required: true },
     ],
   },
 };
@@ -325,4 +413,50 @@ export function draftResultSummary(result: unknown): { message: string | null; r
   const reference = record && typeof record.naming_series === "string" ? record.naming_series : null;
   const id = record && typeof record.id === "string" ? record.id : null;
   return { message, reference, id };
+}
+
+// --- VTID-03876: what an edit card starts from, and when it is offered at all --------------------
+
+const isFrozen = (list: readonly string[], v: unknown) => list.includes(String(v ?? "").toLowerCase());
+/** Only non-empty values reach the form: a blank field keeps the record's current value (`keepsBlank`). */
+const present = (v: Record<string, unknown>): DraftValues =>
+  Object.fromEntries(Object.entries(v).filter(([, x]) => x != null && String(x).trim() !== "").map(([k, x]) => [k, String(x)]));
+
+/** ERPClaw refuses update-lead on a converted lead — the card is hidden rather than offered and rejected. */
+export function isLeadEditable(lead: { status?: string | null } | null | undefined): boolean {
+  return !!lead && !isFrozen(LEAD_FROZEN_STATUSES, lead.status);
+}
+/** ERPClaw freezes a won/lost opportunity ("Terminal states cannot be updated"); reaching won/lost is Commit-tier mark-opportunity-won/lost. */
+export function isOpportunityEditable(opp: { stage?: string | null } | null | undefined): boolean {
+  return !!opp && !isFrozen(OPPORTUNITY_FROZEN_STAGES, opp.stage);
+}
+/** ERPClaw refuses update/complete/cancel on a done or cancelled task. */
+export function isTaskActionable(task: { status?: string | null } | null | undefined): boolean {
+  return !!task && !isFrozen(TASK_FROZEN_STATUSES, task.status);
+}
+
+export function leadUpdateInitial(lead: {
+  id: string; lead_name?: string | null; company_name?: string | null; email?: string | null; phone?: string | null;
+  source?: string | null; territory?: string | null; industry?: string | null; status?: string | null; notes?: string | null;
+}): DraftValues {
+  return present({
+    lead_id: lead.id, lead_name: lead.lead_name, company_name: lead.company_name, email: lead.email, phone: lead.phone,
+    source: lead.source, territory: lead.territory, industry: lead.industry, status: lead.status, notes: lead.notes,
+  });
+}
+
+export function opportunityUpdateInitial(opp: {
+  id: string; opportunity_name?: string | null; probability?: string | number | null;
+  expected_revenue?: string | number | null; expected_closing_date?: string | null; next_follow_up_date?: string | null;
+}): DraftValues {
+  return present({
+    opportunity_id: opp.id, opportunity_name: opp.opportunity_name, probability: opp.probability,
+    expected_revenue: opp.expected_revenue, expected_closing_date: opp.expected_closing_date, next_follow_up_date: opp.next_follow_up_date,
+  });
+}
+
+export function taskUpdateInitial(task: {
+  id: string; subject?: string | null; priority?: string | null; due_date?: string | null; description?: string | null;
+}): DraftValues {
+  return present({ crm_task_id: task.id, subject: task.subject, priority: task.priority, due_date: task.due_date, description: task.description });
 }

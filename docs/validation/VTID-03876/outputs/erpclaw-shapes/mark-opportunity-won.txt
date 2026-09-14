@@ -1,0 +1,12 @@
+{
+  "opportunity": {
+    "id": "e0b116f7-890f-4469-9cfa-c0c71978da11",
+    "naming_series": "OPP-2026-00001",
+    "stage": "won",
+    "probability": "100",
+    "expected_revenue": "48000",
+    "weighted_revenue": "48000"
+  },
+  "message": "Opportunity OPP-2026-00001 marked as WON",
+  "status": "ok"
+}

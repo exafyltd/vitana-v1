@@ -12,13 +12,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ResponsiveDialog, ResponsiveDialogBody, ResponsiveDialogContent, ResponsiveDialogDescription, ResponsiveDialogFooter, ResponsiveDialogHeader, ResponsiveDialogTitle } from "@/components/ui/responsive-dialog";
-import { Plus, Trash2 } from "lucide-react";
+import { Check, Pencil, Plus, Trash2, X } from "lucide-react";
 import { TierBadge } from "@/components/backoffice/CommandBadges";
 import ReceiptDetail from "@/components/backoffice/ReceiptDetail";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useDraftCommand } from "@/hooks/useDraftCommand";
 import { hasAnyCapability, useErpRead } from "@/hooks/useBackOfficeCommands";
-import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftResultSummary, emptyLine, initialDraftValues, linesTotals, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
+import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftCreates, draftResultSummary, emptyLine, initialDraftValues, linesTotals, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
 import { formatMoney } from "@/lib/backoffice-sales";
 import { t } from "@/lib/i18n-toast";
 
@@ -218,7 +218,7 @@ function ReviewCard({ spec, payload, idempotencyKey, values }: { spec: DraftForm
           ))}
         </dl>
       </div>
-      <p className="text-xs text-muted-foreground">{t("screens.backoffice.draft.whatHappens")}</p>
+      <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.whatHappens" : "screens.backoffice.draft.whatHappensUpdate")}</p>
     </div>
   );
 }
@@ -248,19 +248,25 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
       <ResponsiveDialogContent data-testid={`draft-dialog-${spec.id}`} data-phase={draft.phase}>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t(`screens.backoffice.draft.forms.${spec.id}.title`)}</ResponsiveDialogTitle>
-          <ResponsiveDialogDescription>{draft.phase === "form" ? t(`screens.backoffice.draft.forms.${spec.id}.description`) : draft.phase === "review" ? t("screens.backoffice.draft.review") : draft.phase === "done" ? t("screens.backoffice.draft.done") : draft.phase === "failed" ? t("screens.backoffice.draft.failed") : t("screens.backoffice.draft.submitting")}</ResponsiveDialogDescription>
+          <ResponsiveDialogDescription>{draft.phase === "form" ? t(`screens.backoffice.draft.forms.${spec.id}.description`) : draft.phase === "review" ? t("screens.backoffice.draft.review") : draft.phase === "done" ? t(draftCreates(spec) ? "screens.backoffice.draft.done" : "screens.backoffice.draft.doneUpdate") : draft.phase === "failed" ? t(draftCreates(spec) ? "screens.backoffice.draft.failed" : "screens.backoffice.draft.failedUpdate") : t("screens.backoffice.draft.submitting")}</ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody>
-          {draft.phase === "form" && <DraftForm spec={spec} values={values} issues={showIssues ? issues : {}} onChange={(k, v) => setValues((s) => ({ ...s, [k]: v }))} />}
+          {draft.phase === "form" && (
+            <>
+              {/* VTID-03876 — ERPClaw updates only the fields it is given, so a blank field is "leave as it is", not "clear it". Say so rather than let the user guess. */}
+              {spec.keepsBlank && <p className="text-xs text-muted-foreground mb-3">{t("screens.backoffice.draft.keepsBlank")}</p>}
+              <DraftForm spec={spec} values={values} issues={showIssues ? issues : {}} onChange={(k, v) => setValues((s) => ({ ...s, [k]: v }))} />
+            </>
+          )}
           {(draft.phase === "review" || draft.phase === "submitting") && <ReviewCard spec={spec} payload={payload} idempotencyKey={draft.key} values={values} />}
           {draft.phase === "done" && (
             <div className="space-y-3" data-testid="draft-done">
               <div role="status" className="rounded-md border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm">
-                <div className="font-medium">{summary.reference ? t("screens.backoffice.draft.createdWithRef", { ref: summary.reference }) : t("screens.backoffice.draft.created")}</div>
+                <div className="font-medium">{summary.reference ? t(draftCreates(spec) ? "screens.backoffice.draft.createdWithRef" : "screens.backoffice.draft.updatedWithRef", { ref: summary.reference }) : t(draftCreates(spec) ? "screens.backoffice.draft.created" : "screens.backoffice.draft.updated")}</div>
                 {summary.message && <p className="text-xs text-muted-foreground mt-1" dir="auto">{summary.message}</p>}
                 {cmd?.replayed && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.replayed")}</p>}
               </div>
-              <p className="text-xs text-muted-foreground">{t("screens.backoffice.draft.doneHint")}</p>
+              <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.doneHint" : "screens.backoffice.draft.doneHintUpdate")}</p>
               <ReceiptDetail receipt={cmd?.receipt ?? null} />
             </div>
           )}
@@ -271,7 +277,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
                 {draft.reason && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.reason")} <code className="font-mono" dir="ltr">{draft.reason}</code></p>}
                 {entity?.field && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.entityHint", { field: fieldLabel(entity.field), ref: entity.ref ?? "", count: String(entity.candidates?.length ?? 0) })}</p>}
               </div>
-              <p className="text-xs text-muted-foreground">{t("screens.backoffice.draft.failedHint")}</p>
+              <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.failedHint" : "screens.backoffice.draft.failedHintUpdate")}</p>
               {cmd?.receipt && <ReceiptDetail receipt={cmd.receipt} />}
             </div>
           )}
@@ -286,7 +292,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
           {draft.phase === "review" && (
             <>
               <Button type="button" variant="outline" onClick={draft.back}>{t("screens.backoffice.draft.back")}</Button>
-              <Button type="button" onClick={() => draft.submit(payload)} data-testid="draft-accept">{t("screens.backoffice.draft.accept")}</Button>
+              <Button type="button" onClick={() => draft.submit(payload)} data-testid="draft-accept">{t(draftCreates(spec) ? "screens.backoffice.draft.accept" : "screens.backoffice.draft.acceptUpdate")}</Button>
             </>
           )}
           {draft.phase === "submitting" && <Button type="button" disabled aria-busy="true">{t("screens.backoffice.draft.submitting")}</Button>}
@@ -303,17 +309,26 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
   );
 }
 
-/** The "New …" button a Read screen puts in its header. Renders nothing without the capability — the gateway enforces it anyway. */
+/** The icon matches what the command does, so an edit card never wears a "+" (VTID-03876). */
+function draftIcon(type: string) {
+  if (type.endsWith(".complete")) return Check;
+  if (type.endsWith(".cancel")) return X;
+  if (type.endsWith(".update") || type.endsWith(".set_stage")) return Pencil;
+  return Plus;
+}
+
+/** The button a Read screen puts next to the record it is about. Renders nothing without the capability — the gateway enforces it anyway. */
 export function DraftCommandButton({ formId, initial, variant = "default" }: { formId: DraftFormId; initial?: DraftValues; variant?: "default" | "outline" }) {
   const me = useMyErpAccess();
   const [open, setOpen] = useState(false);
   const spec = DRAFT_FORMS[formId];
   const allowed = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, draftCapabilities(spec)));
   if (!allowed) return null;
+  const Icon = draftIcon(spec.type);
   return (
     <>
       <Button type="button" size="sm" variant={variant} onClick={() => setOpen(true)} data-testid={`draft-open-${formId}`}>
-        <Plus className="h-4 w-4 me-1" aria-hidden="true" />{t(`screens.backoffice.draft.forms.${formId}.button`)}
+        <Icon className="h-4 w-4 me-1" aria-hidden="true" />{t(`screens.backoffice.draft.forms.${formId}.button`)}
       </Button>
       {open && <DraftCommandDialog formId={formId} open={open} onOpenChange={setOpen} initial={initial} />}
     </>

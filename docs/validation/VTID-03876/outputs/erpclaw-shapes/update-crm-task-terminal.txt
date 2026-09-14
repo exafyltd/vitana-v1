@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Task is cancelled. Terminal tasks cannot be updated."
+}

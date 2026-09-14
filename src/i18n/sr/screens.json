@@ -10672,7 +10672,8 @@
           "date": "Datum",
           "total": "Ukupno",
           "subtotal": "Međuzbir",
-          "tax": "Porez"
+          "tax": "Porez",
+          "actions": "Radnje"
         },
         "docs": {
           "noItems": "Nema stavki",
@@ -10693,7 +10694,8 @@
           "toCustomer": "u kupca",
           "company": "Firma",
           "territory": "Teritorija",
-          "industry": "Delatnost"
+          "industry": "Delatnost",
+          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati."
         },
         "contacts": {
           "title": "Kontakti i firme",
@@ -11081,7 +11083,19 @@
           "debit": "Duguje",
           "account_id": "Konto",
           "remark": "Napomena",
-          "credit": "Potražuje"
+          "credit": "Potražuje",
+          "status": "Status",
+          "probability": "Verovatnoća (%)",
+          "next_follow_up_date": "Sledeće praćenje",
+          "lead_id": "Id lida",
+          "opportunity_name": "Naziv",
+          "stage": "Faza",
+          "territory": "Teritorija",
+          "expected_closing_date": "Očekivano zatvaranje",
+          "opportunity": "Id prilike",
+          "crm_task_id": "Id zadatka",
+          "opportunity_id": "Id prilike",
+          "expected_revenue": "Očekivani prihod"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11119,7 +11133,12 @@
           "closing": "Zaključno",
           "depreciation": "Amortizacija",
           "journal": "Nalog",
-          "opening": "Početno stanje"
+          "opening": "Početno stanje",
+          "contacted": "Kontaktiran",
+          "lost": "Izgubljen",
+          "unresponsive": "Bez odgovora",
+          "qualified": "Kvalifikovan",
+          "new": "Novo"
         },
         "forms": {
           "lead": {
@@ -11166,6 +11185,36 @@
             "button": "Novi nalog za knjiženje",
             "title": "Kreiraj nalog za knjiženje",
             "description": "Duguje i potražuje po stavci prema kontnom planu – nalog nastaje kao nacrt i knjiži se tek u posebnom koraku sa potvrdom."
+          },
+          "opportunityStage": {
+            "button": "Promeni fazu",
+            "title": "Premesti u drugu fazu toka",
+            "description": "Izaberi ciljnu fazu iz toka tvoje organizacije. Faza je id, ne slobodna reč."
+          },
+          "taskComplete": {
+            "button": "Završi",
+            "title": "Završi zadatak",
+            "description": "Zadatak se označava kao urađen. Beleška je opciona."
+          },
+          "leadUpdate": {
+            "button": "Izmeni lid",
+            "title": "Izmeni lid",
+            "description": "Izmena ide u ERPClaw kao nacrt. Pre slanja vidiš tačno šta se šalje."
+          },
+          "opportunityUpdate": {
+            "button": "Izmeni priliku",
+            "title": "Izmeni priliku",
+            "description": "Dobijene i izgubljene prilike su zamrznute u ERPClaw-u — do njih se stiže posebnom komandom uz odobrenje."
+          },
+          "taskUpdate": {
+            "button": "Izmeni",
+            "title": "Izmeni zadatak",
+            "description": "Naslov, prioritet, rok i opis otvorenog zadatka."
+          },
+          "taskCancel": {
+            "button": "Otkaži",
+            "title": "Otkaži zadatak",
+            "description": "Zadatak se otkazuje i ostaje vidljiv. Razlog je obavezan."
           }
         },
         "noLineRows": "Nema dostupnih stavki.",
@@ -11175,7 +11224,16 @@
         "removeLine": "Ukloni stavku",
         "differenceIs": "Razlika {amount}",
         "addLine": "Dodaj stavku",
-        "totals": "Ukupno"
+        "totals": "Ukupno",
+        "doneHintUpdate": "ERP je izmenio zapis; lista iza je ponovo učitana. Potvrda ispod je ono što je most sačuvao.",
+        "updated": "Sačuvano",
+        "acceptUpdate": "Potvrdi i sačuvaj",
+        "failedHintUpdate": "Ništa nije promenjeno. Možeš izmeniti unos i poslati ponovo – isti ključ idempotentnosti garantuje da ponovni pokušaj nikada ne upiše dvaput.",
+        "keepsBlank": "Prazno polje zadržava trenutnu vrednost — ERPClaw menja samo polja koja dobije.",
+        "failedUpdate": "Nije sačuvano",
+        "updatedWithRef": "Sačuvano: {ref}",
+        "whatHappensUpdate": "Nivo nacrta: menja postojeći zapis — bez knjiženja, bez koraka odobrenja, reverzibilno ponovnim uređivanjem.",
+        "doneUpdate": "Sačuvano"
       },
       "policyEdit": {
         "button": "Uredi politiku",

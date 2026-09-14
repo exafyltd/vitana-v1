@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Target, Trophy, XCircle, Percent } from "lucide-react";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { hasAnyCapability, shortId, useErpRead } from "@/hooks/useBackOfficeCommands";
+import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
+import { isOpportunityEditable, opportunityUpdateInitial } from "@/lib/backoffice-draft";
 import { formatMoney, formatPercent, groupOpportunitiesByStage, type ErpOpportunity, type ErpPipelineReport } from "@/lib/backoffice-sales";
 import { fmtDate, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
@@ -57,6 +59,13 @@ export default function BackOfficeOpportunities() {
                       <span>{o.expected_closing_date ? fmtDate(o.expected_closing_date, { dateStyle: "medium" }) : "—"}</span>
                       {o.lost_reason ? <DocStatusBadge status="lost" /> : o.source ? <span>{o.source}</span> : null}
                     </div>
+                    {/* VTID-03876 — a won/lost opportunity is frozen by ERPClaw; reaching won/lost is Commit-tier mark-opportunity-won/lost, not this card. */}
+                    {isOpportunityEditable(o) && (
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        <DraftCommandButton formId="opportunityUpdate" variant="outline" initial={opportunityUpdateInitial(o)} />
+                        <DraftCommandButton formId="opportunityStage" variant="outline" initial={{ opportunity: o.id }} />
+                      </div>
+                    )}
                   </div>
                 ))}
               </CardContent>

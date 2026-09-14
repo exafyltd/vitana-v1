@@ -10672,7 +10672,8 @@
           "date": "Fecha",
           "total": "Total",
           "subtotal": "Subtotal",
-          "tax": "Impuesto"
+          "tax": "Impuesto",
+          "actions": "Acciones"
         },
         "docs": {
           "noItems": "Sin líneas",
@@ -10693,7 +10694,8 @@
           "toCustomer": "en cliente",
           "company": "Empresa",
           "territory": "Territorio",
-          "industry": "Sector"
+          "industry": "Sector",
+          "frozenHint": "Un lead convertido está congelado en ERPClaw y ya no se puede editar."
         },
         "contacts": {
           "title": "Contactos y empresas",
@@ -11081,7 +11083,19 @@
           "debit": "Debe",
           "account_id": "Cuenta",
           "remark": "Observación",
-          "credit": "Haber"
+          "credit": "Haber",
+          "status": "Estado",
+          "probability": "Probabilidad (%)",
+          "next_follow_up_date": "Próximo seguimiento",
+          "lead_id": "Id de lead",
+          "opportunity_name": "Nombre",
+          "stage": "Etapa",
+          "territory": "Territorio",
+          "expected_closing_date": "Cierre previsto",
+          "opportunity": "Id de oportunidad",
+          "crm_task_id": "Id de tarea",
+          "opportunity_id": "Id de oportunidad",
+          "expected_revenue": "Ingresos previstos"
         },
         "choices": {
           "website": "Sitio web",
@@ -11119,7 +11133,12 @@
           "closing": "Cierre",
           "depreciation": "Amortización",
           "journal": "Asiento",
-          "opening": "Apertura"
+          "opening": "Apertura",
+          "contacted": "Contactado",
+          "lost": "Perdido",
+          "unresponsive": "Sin respuesta",
+          "qualified": "Cualificado",
+          "new": "Nuevo"
         },
         "forms": {
           "lead": {
@@ -11166,6 +11185,36 @@
             "button": "Nuevo asiento",
             "title": "Crear un asiento",
             "description": "Debe y haber por línea contra el plan de cuentas: el asiento se crea como borrador y solo se contabiliza en un paso aparte con confirmación."
+          },
+          "opportunityStage": {
+            "button": "Cambiar etapa",
+            "title": "Mover a otra etapa del embudo",
+            "description": "Elige la etapa destino del embudo de tu organización. La etapa es un id, no una palabra libre."
+          },
+          "taskComplete": {
+            "button": "Completar",
+            "title": "Completar tarea",
+            "description": "La tarea se marca como hecha. La nota es opcional."
+          },
+          "leadUpdate": {
+            "button": "Editar lead",
+            "title": "Editar lead",
+            "description": "El cambio va a ERPClaw como borrador. Ves exactamente qué se envía antes de enviarlo."
+          },
+          "opportunityUpdate": {
+            "button": "Editar oportunidad",
+            "title": "Editar oportunidad",
+            "description": "Las oportunidades ganadas y perdidas están congeladas en ERPClaw: llegar a ellas es un comando aparte con aprobación."
+          },
+          "taskUpdate": {
+            "button": "Editar",
+            "title": "Editar tarea",
+            "description": "Asunto, prioridad, vencimiento y descripción de la tarea abierta."
+          },
+          "taskCancel": {
+            "button": "Cancelar",
+            "title": "Cancelar tarea",
+            "description": "La tarea se cancela y sigue visible. El motivo es obligatorio."
           }
         },
         "noLineRows": "No hay líneas disponibles.",
@@ -11175,7 +11224,16 @@
         "removeLine": "Quitar línea",
         "differenceIs": "Diferencia {amount}",
         "addLine": "Añadir línea",
-        "totals": "Totales"
+        "totals": "Totales",
+        "doneHintUpdate": "El ERP modificó el registro; la lista de detrás se recargó. El recibo de abajo es lo que guardó el puente.",
+        "updated": "Guardado",
+        "acceptUpdate": "Aceptar y guardar",
+        "failedHintUpdate": "No se cambió nada. Puedes ajustar los datos y reenviar: la misma clave de idempotencia garantiza que un reintento nunca escriba dos veces.",
+        "keepsBlank": "Un campo vacío conserva su valor actual: ERPClaw solo cambia los campos que recibe.",
+        "failedUpdate": "No guardado",
+        "updatedWithRef": "Guardado: {ref}",
+        "whatHappensUpdate": "Nivel borrador: modifica un registro existente, sin asiento ni paso de aprobación, reversible volviendo a editar.",
+        "doneUpdate": "Guardado"
       },
       "policyEdit": {
         "button": "Editar política",

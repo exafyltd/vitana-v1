@@ -10639,7 +10639,8 @@
           "date": "Datum",
           "total": "Gesamt",
           "subtotal": "Zwischensumme",
-          "tax": "Steuer"
+          "tax": "Steuer",
+          "actions": "Aktionen"
         },
         "docs": {
           "noItems": "Keine Positionen",
@@ -10660,7 +10661,8 @@
           "toCustomer": "zum Kunden",
           "company": "Firma",
           "territory": "Gebiet",
-          "industry": "Branche"
+          "industry": "Branche",
+          "frozenHint": "Ein umgewandelter Lead ist in ERPClaw gesperrt und lässt sich nicht mehr bearbeiten."
         },
         "contacts": {
           "title": "Kontakte & Firmen",
@@ -11048,7 +11050,19 @@
           "debit": "Soll",
           "account_id": "Konto",
           "remark": "Bemerkung",
-          "credit": "Haben"
+          "credit": "Haben",
+          "status": "Status",
+          "probability": "Wahrscheinlichkeit (%)",
+          "next_follow_up_date": "Nächstes Nachfassen",
+          "lead_id": "Lead-ID",
+          "opportunity_name": "Bezeichnung",
+          "stage": "Stufe",
+          "territory": "Region",
+          "expected_closing_date": "Voraussichtlicher Abschluss",
+          "opportunity": "Chancen-ID",
+          "crm_task_id": "Aufgaben-ID",
+          "opportunity_id": "Chancen-ID",
+          "expected_revenue": "Erwarteter Umsatz"
         },
         "choices": {
           "website": "Website",
@@ -11086,7 +11100,12 @@
           "closing": "Abschluss",
           "depreciation": "Abschreibung",
           "journal": "Buchung",
-          "opening": "Eröffnung"
+          "opening": "Eröffnung",
+          "contacted": "Kontaktiert",
+          "lost": "Verloren",
+          "unresponsive": "Keine Reaktion",
+          "qualified": "Qualifiziert",
+          "new": "Neu"
         },
         "forms": {
           "lead": {
@@ -11133,6 +11152,36 @@
             "button": "Neuer Buchungssatz",
             "title": "Buchungssatz anlegen",
             "description": "Soll und Haben je Zeile gegen den Kontenplan – der Satz entsteht als Entwurf und wird erst in einem eigenen Schritt mit Bestätigung gebucht."
+          },
+          "opportunityStage": {
+            "button": "Stufe ändern",
+            "title": "Stufe im Vertriebstrichter ändern",
+            "description": "Wähle die Zielstufe aus dem Trichter deines Mandanten. Die Stufe ist eine ID, kein freies Wort."
+          },
+          "taskComplete": {
+            "button": "Erledigt",
+            "title": "Aufgabe abschließen",
+            "description": "Die Aufgabe wird auf erledigt gesetzt. Eine Notiz ist freiwillig."
+          },
+          "leadUpdate": {
+            "button": "Lead bearbeiten",
+            "title": "Lead bearbeiten",
+            "description": "Die Änderung geht als Entwurf an ERPClaw. Vorher siehst du genau, was gesendet wird."
+          },
+          "opportunityUpdate": {
+            "button": "Chance bearbeiten",
+            "title": "Verkaufschance bearbeiten",
+            "description": "Gewonnene und verlorene Chancen sind in ERPClaw gesperrt – dafür gibt es eigene Befehle mit Freigabe."
+          },
+          "taskUpdate": {
+            "button": "Bearbeiten",
+            "title": "Aufgabe bearbeiten",
+            "description": "Betreff, Priorität, Fälligkeit und Beschreibung der offenen Aufgabe."
+          },
+          "taskCancel": {
+            "button": "Abbrechen",
+            "title": "Aufgabe abbrechen",
+            "description": "Die Aufgabe wird abgebrochen und bleibt sichtbar. Ein Grund ist Pflicht."
           }
         },
         "noLineRows": "Keine Positionen vorhanden.",
@@ -11142,7 +11191,16 @@
         "removeLine": "Zeile entfernen",
         "differenceIs": "Differenz {amount}",
         "addLine": "Zeile hinzufügen",
-        "totals": "Summen"
+        "totals": "Summen",
+        "doneHintUpdate": "Das ERP hat den Datensatz geändert; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
+        "updated": "Gespeichert",
+        "acceptUpdate": "Bestätigen und speichern",
+        "failedHintUpdate": "Es wurde nichts geändert. Du kannst die Eingaben anpassen und erneut senden – derselbe Idempotenz-Schlüssel sorgt dafür, dass ein Wiederholen nie doppelt schreibt.",
+        "keepsBlank": "Ein leeres Feld bleibt, wie es ist – ERPClaw ändert nur die Felder, die es bekommt.",
+        "failedUpdate": "Nicht gespeichert",
+        "updatedWithRef": "Gespeichert: {ref}",
+        "whatHappensUpdate": "Stufe Entwurf: ändert einen bestehenden Datensatz – keine Buchung, kein Freigabeschritt, durch erneutes Bearbeiten umkehrbar.",
+        "doneUpdate": "Gespeichert"
       },
       "policyEdit": {
         "button": "Richtlinie bearbeiten",

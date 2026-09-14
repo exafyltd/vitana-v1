@@ -1,0 +1,11 @@
+{
+  "opportunity": {
+    "id": "08d5cafe-3048-4315-937d-70ffa55e5825",
+    "naming_series": "OPP-2026-00002",
+    "stage": "negotiation",
+    "pipeline_stage_id": "93e71f18-d93a-44f9-80aa-8498c5879f59",
+    "crm_pipeline_id": "33896e3a-2990-446e-92e4-8f2b84ba3c77"
+  },
+  "message": "Opportunity OPP-2026-00002 moved to 'negotiation'",
+  "status": "ok"
+}

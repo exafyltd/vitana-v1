@@ -1,0 +1,67 @@
+{"name":"01-edit-lead-en-1-detail-with-edit","phase":null,"alerts":[],"status":[]}
+{"name":"01-edit-lead-en-2-form-prefilled","phase":"form","alerts":[],"status":[]}
+{"name":"01-edit-lead-en-3-review","phase":"review","alerts":[],"status":[]}
+{"name":"01-edit-lead-en-4-saved","phase":"done","alerts":[],"status":["Saved: LEAD-2026-00003Lead LEAD-2026-00003 updated"]}
+{"name":"01-edit-lead-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+{"name":"02-complete-task-en-1-actions-per-open-task","phase":null,"alerts":[],"status":[]}
+{"name":"02-complete-task-en-2-form","phase":"form","alerts":[],"status":[]}
+{"name":"02-complete-task-en-3-review","phase":"review","alerts":[],"status":[]}
+{"name":"02-complete-task-en-4-done","phase":"done","alerts":[],"status":["SavedTask 'Call back probe' completed"]}
+{"name":"02-complete-task-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 40 stub read POSTs: 10
+{"name":"03-cancel-task-en-1-reason-required","phase":"form","alerts":["Required"],"status":[]}
+{"name":"03-cancel-task-en-2-review","phase":"review","alerts":[],"status":[]}
+{"name":"03-cancel-task-en-3-cancelled","phase":"done","alerts":[],"status":["SavedTask 'Send revised proposal' cancelled"]}
+{"name":"03-cancel-task-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+{"name":"04-move-stage-en-1-board-card-actions","phase":null,"alerts":[],"status":[]}
+{"name":"04-move-stage-en-2-form","phase":"form","alerts":[],"status":[]}
+{"name":"04-move-stage-en-3-review","phase":"review","alerts":[],"status":[]}
+step failed {"waitFor":"[data-testid=\"draft-done\"]","wait":800} locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-testid="draft-done"]').first() to be visible[22m
+
+{"name":"04-move-stage-en-4-moved","phase":"failed","alerts":["The data could not be loaded."],"status":[]}
+{"name":"04-move-stage-en","mounted":true,"url":"/backoffice/sales/opportunities","dir":"ltr","screenId":"BO-007","h1":"📈Opportunities","rows":0,"alerts":["The data could not be loaded."],"hOverflow":false}
+blocked non-read requests: 37 stub read POSTs: 9
+{"name":"05-edit-opportunity-en-1-form-no-stage","phase":"form","alerts":[],"status":[]}
+{"name":"05-edit-opportunity-en-2-review","phase":"review","alerts":[],"status":[]}
+{"name":"05-edit-opportunity-en","mounted":true,"url":"/backoffice/sales/opportunities","dir":"ltr","screenId":"BO-007","h1":"📈Opportunities","rows":0,"alerts":[],"hOverflow":false}
+{"name":"06-edit-task-de-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"06-edit-task-de-2-review","phase":"review","alerts":[],"status":[]}
+{"name":"06-edit-task-de","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+{"name":"07-edit-lead-ar-rtl-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"07-edit-lead-ar-rtl","mounted":true,"url":"/backoffice/sales/leads","dir":"rtl","screenId":"BO-005","h1":"🎯العملاء المحتملون","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 34 stub read POSTs: 6
+===== RERUN of groups 1+2 after the catalogue fix and the captured set-stage receipt =====
+{"name":"08-no-actions-salesperson-en-1-tasks","phase":null,"alerts":[],"status":[]}
+{"name":"08-no-actions-salesperson-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+{"name":"09-no-edit-salesperson-en-1-lead-detail","phase":null,"alerts":[],"status":[]}
+{"name":"09-no-edit-salesperson-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 27 stub read POSTs: 4
+{"name":"01-edit-lead-en-1-detail-with-edit","phase":null,"alerts":[],"status":[]}
+{"name":"01-edit-lead-en-2-form-prefilled","phase":"form","alerts":[],"status":[]}
+{"name":"01-edit-lead-en-3-review","phase":"review","alerts":[],"status":[]}
+{"name":"01-edit-lead-en-4-saved","phase":"done","alerts":[],"status":["Saved: LEAD-2026-00003Lead LEAD-2026-00003 updated"]}
+{"name":"01-edit-lead-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+{"name":"02-complete-task-en-1-actions-per-open-task","phase":null,"alerts":[],"status":[]}
+{"name":"02-complete-task-en-2-form","phase":"form","alerts":[],"status":[]}
+{"name":"02-complete-task-en-3-review","phase":"review","alerts":[],"status":[]}
+{"name":"02-complete-task-en-4-done","phase":"done","alerts":[],"status":["SavedTask 'Call back probe' completed"]}
+{"name":"02-complete-task-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 26 stub read POSTs: 10
+{"name":"03-cancel-task-en-1-reason-required","phase":"form","alerts":["Required"],"status":[]}
+{"name":"03-cancel-task-en-2-review","phase":"review","alerts":[],"status":[]}
+{"name":"03-cancel-task-en-3-cancelled","phase":"done","alerts":[],"status":["SavedTask 'Send revised proposal' cancelled"]}
+{"name":"03-cancel-task-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+{"name":"04-move-stage-en-1-board-card-actions","phase":null,"alerts":[],"status":[]}
+{"name":"04-move-stage-en-2-form","phase":"form","alerts":[],"status":[]}
+{"name":"04-move-stage-en-3-review","phase":"review","alerts":[],"status":[]}
+{"name":"04-move-stage-en-4-moved","phase":"done","alerts":[],"status":["Saved: OPP-2026-00002Opportunity OPP-2026-00002 moved to 'negotiation'"]}
+{"name":"04-move-stage-en","mounted":true,"url":"/backoffice/sales/opportunities","dir":"ltr","screenId":"BO-007","h1":"📈Opportunities","rows":0,"alerts":[],"hOverflow":false}
+blocked non-read requests: 24 stub read POSTs: 12
+===== RERUN of the capability-gate group after hiding the empty Actions column =====
+{"name":"08-no-actions-salesperson-en-1-tasks","phase":null,"alerts":[],"status":[]}
+{"name":"08-no-actions-salesperson-en","mounted":true,"url":"/backoffice/sales/followups","dir":"ltr","screenId":"BO-008","h1":"📌Follow-ups","rows":2,"alerts":[],"hOverflow":false}
+{"name":"09-no-edit-salesperson-en-1-lead-detail","phase":null,"alerts":[],"status":[]}
+{"name":"09-no-edit-salesperson-en","mounted":true,"url":"/backoffice/sales/leads","dir":"ltr","screenId":"BO-005","h1":"🎯Leads","rows":2,"alerts":[],"hOverflow":false}
+blocked non-read requests: 28 stub read POSTs: 4

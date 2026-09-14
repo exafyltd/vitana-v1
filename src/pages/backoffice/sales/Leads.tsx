@@ -14,6 +14,7 @@ import { fullTextMatch, type ErpLead } from "@/lib/backoffice-sales";
 import { fmtDateTime } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
+import { isLeadEditable, leadUpdateInitial } from "@/lib/backoffice-draft";
 
 const CAPS = ["crm.view"] as const;
 
@@ -87,6 +88,7 @@ export default function BackOfficeLeads() {
               <p className="text-sm text-muted-foreground">{t("screens.backoffice.sales.common.selectHint")}</p>
             ) : (
               QueryState({ isLoading: detail.isLoading, error: detail.error, isEmpty: !d, emptyTitle: t("screens.backoffice.errors.notFound"), rows: 5 }) ?? (
+                <>
                 <DetailList rows={[
                   { label: t("screens.backoffice.sales.leads.lead"), value: d!.lead_name },
                   { label: t("screens.backoffice.sales.common.reference"), value: d!.naming_series ?? "—", mono: true },
@@ -101,6 +103,13 @@ export default function BackOfficeLeads() {
                   { label: t("screens.backoffice.sales.common.notes"), value: d!.notes ?? "—" },
                   { label: t("screens.backoffice.sales.common.updated"), value: fmtDateTime(d!.updated_at, { dateStyle: "medium", timeStyle: "short" }) },
                 ]} />
+                {/* VTID-03876 — editing is a Draft against the selected lead; ERPClaw freezes a converted one, so the card is not offered there. */}
+                <div className="pt-2 border-t">
+                  {isLeadEditable(d!)
+                    ? <DraftCommandButton formId="leadUpdate" variant="outline" initial={leadUpdateInitial(d!)} />
+                    : <p className="text-xs text-muted-foreground">{t("screens.backoffice.sales.leads.frozenHint")}</p>}
+                </div>
+                </>
               )
             )}
             {selected && <DataSourceNote command={detail.data?.command} />}

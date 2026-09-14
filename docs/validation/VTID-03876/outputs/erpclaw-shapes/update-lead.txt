@@ -1,0 +1,26 @@
+{
+  "lead": {
+    "id": "a8e36391-775e-4bd2-91d7-459a95a729f7",
+    "naming_series": "LEAD-2026-00003",
+    "lead_name": "Draft Card Probe",
+    "company_name": "Probe Trading FZE",
+    "email": "probe@example.test",
+    "phone": "+971 50 000 0001",
+    "source": "website",
+    "lead_source_id": null,
+    "territory": null,
+    "industry": null,
+    "status": "contacted",
+    "converted_to_customer": null,
+    "converted_to_opportunity": null,
+    "assigned_to": null,
+    "notes": "Called, follow up next week",
+    "crm_contact_id": null,
+    "crm_company_id": null,
+    "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+    "created_at": "2026-09-13 18:47:02.663274+00",
+    "updated_at": "2026-09-14 08:48:51.021951+00"
+  },
+  "message": "Lead LEAD-2026-00003 updated",
+  "status": "ok"
+}

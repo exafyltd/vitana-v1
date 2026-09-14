@@ -10639,7 +10639,8 @@
           "date": "Date",
           "total": "Total",
           "subtotal": "Subtotal",
-          "tax": "Tax"
+          "tax": "Tax",
+          "actions": "Actions"
         },
         "docs": {
           "noItems": "No line items",
@@ -10660,7 +10661,8 @@
           "toCustomer": "to customer",
           "company": "Company",
           "territory": "Territory",
-          "industry": "Industry"
+          "industry": "Industry",
+          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited."
         },
         "contacts": {
           "title": "Contacts & Companies",
@@ -11048,7 +11050,19 @@
           "debit": "Debit",
           "account_id": "Account",
           "remark": "Remark",
-          "credit": "Credit"
+          "credit": "Credit",
+          "status": "Status",
+          "probability": "Probability (%)",
+          "next_follow_up_date": "Next follow-up",
+          "lead_id": "Lead id",
+          "opportunity_name": "Name",
+          "stage": "Stage",
+          "territory": "Territory",
+          "expected_closing_date": "Expected closing",
+          "opportunity": "Opportunity id",
+          "crm_task_id": "Task id",
+          "opportunity_id": "Opportunity id",
+          "expected_revenue": "Expected revenue"
         },
         "choices": {
           "website": "Website",
@@ -11086,7 +11100,12 @@
           "closing": "Closing",
           "depreciation": "Depreciation",
           "journal": "Journal",
-          "opening": "Opening"
+          "opening": "Opening",
+          "contacted": "Contacted",
+          "lost": "Lost",
+          "unresponsive": "Unresponsive",
+          "qualified": "Qualified",
+          "new": "New"
         },
         "forms": {
           "lead": {
@@ -11133,6 +11152,36 @@
             "button": "New journal entry",
             "title": "Create a journal entry",
             "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step."
+          },
+          "opportunityStage": {
+            "button": "Move stage",
+            "title": "Move to another pipeline stage",
+            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word."
+          },
+          "taskComplete": {
+            "button": "Complete",
+            "title": "Complete task",
+            "description": "The task is marked done. A note is optional."
+          },
+          "leadUpdate": {
+            "button": "Edit lead",
+            "title": "Edit lead",
+            "description": "The change goes to ERPClaw as a Draft. You see exactly what is sent before it goes."
+          },
+          "opportunityUpdate": {
+            "button": "Edit opportunity",
+            "title": "Edit opportunity",
+            "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval."
+          },
+          "taskUpdate": {
+            "button": "Edit",
+            "title": "Edit task",
+            "description": "Subject, priority, due date and description of the open task."
+          },
+          "taskCancel": {
+            "button": "Cancel",
+            "title": "Cancel task",
+            "description": "The task is cancelled and stays visible. A reason is required."
           }
         },
         "noLineRows": "No lines available.",
@@ -11142,7 +11191,16 @@
         "removeLine": "Remove line",
         "differenceIs": "Difference {amount}",
         "addLine": "Add line",
-        "totals": "Totals"
+        "totals": "Totals",
+        "doneHintUpdate": "The ERP changed the record; the list behind this was reloaded. The receipt below is what the bridge stored.",
+        "updated": "Saved",
+        "acceptUpdate": "Accept and save",
+        "failedHintUpdate": "Nothing was changed. You can adjust the inputs and resend – the same idempotency key guarantees a retry never writes twice.",
+        "keepsBlank": "A field left blank keeps its current value — ERPClaw changes only the fields it is given.",
+        "failedUpdate": "Not saved",
+        "updatedWithRef": "Saved: {ref}",
+        "whatHappensUpdate": "Draft tier: changes an existing record — no posting, no approval step, reversible by editing again.",
+        "doneUpdate": "Saved"
       },
       "policyEdit": {
         "button": "Edit policy",
