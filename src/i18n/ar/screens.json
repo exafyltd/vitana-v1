@@ -10271,7 +10271,15 @@
         "geminiTitle": "اتصل بـ Gemini",
         "geminiStep1": "لـ Gemini CLI: أضف عنوان URL لخادم MCP أعلاه إلى ~/.gemini/settings.json ضمن خوادم MCP الخاصة بك.",
         "geminiStep2": "لـ Gemini Enterprise (إصدار الأعمال): الإعدادات والمساعدة → الفريق → إدارة الفريق → التطبيقات المتصلة → \"إضافة خادم MCP\".",
-        "geminiNote": "لا يوجد حاليًا طريقة موثقة في تطبيق Gemini للمستهلك لإضافة خادم MCP مخصص مباشرة — هذا متاح اليوم فقط عبر Gemini CLI و Gemini Enterprise."
+        "geminiNote": "لا يوجد حاليًا طريقة موثقة في تطبيق Gemini للمستهلك لإضافة خادم MCP مخصص مباشرة — هذا متاح اليوم فقط عبر Gemini CLI و Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "عنوان URL للمتجر (اختياري) — مثال: https://your-shop.com",
@@ -10294,6 +10302,48 @@
         "connecting": "جارٍ الاتصال...",
         "notConfigured": "نوع الاتصال هذا غير مفعّل بعد. يُرجى المحاولة مرة أخرى لاحقًا.",
         "failed": "تعذّر بدء الاتصال. يُرجى التحقق من التفاصيل الخاصة بك."
+      },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentStatusPill": "Going live soon",
+      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentUrlHint": "One address. That is all your agent needs.",
+      "howItWorksTitle": "What happens next",
+      "manualIntro": "Prefer to fill it in yourself?",
+      "manualCta": "Connect a business manually",
+      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
+      "connectionsCount": "{count} connected",
+      "openWorkbench": "Open connection",
+      "closeWorkbench": "Close",
+      "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
+      "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
+        "connect": "Connect",
+        "mapping": "Mapping",
+        "tests": "Checks",
+        "live": "Live",
+        "offTrack": "Needs attention"
       }
     },
     "oauthconsent": {
@@ -10328,7 +10378,6 @@
       "placeholderBody": "هذه الصفحة مؤقتة. يبقى الشريط الجانبي ولوحة الملف الشخصي وتبديل الدور وORB متطابقين في كل الأدوار – المحتوى فقط لم يصل بعد.",
       "noSectionMatches": "لا يوجد قسم في BackOffice يطابق",
       "sidebarIsCanonical": "الشريط الجانبي هو القائمة المعتمدة للأقسام. اختر واحدًا.",
-      "noAccess": "ليس لديك صلاحية الوصول إلى هذا القسم. يمكن لمسؤول المستأجر منحها لك من الإعدادات › الصلاحيات.",
       "access": {
         "title": "الصلاحيات",
         "description": "صلاحيات ERP لكل عضو. الدور يفتح الباب؛ والصلاحية تحدد ما يمكن للشخص فعله بالداخل – الموافقات والمدفوعات وإقفال الفترات تحتاج إلى شخص ثانٍ.",
@@ -10347,116 +10396,7 @@
         "noManage": "يمكنك عرض الصلاحيات دون تغييرها – يتطلب ذلك erp.admin أو دور المسؤول.",
         "mine": "صلاحياتك الفعلية"
       },
-      "tiers": {
-        "read": "قراءة",
-        "draft": "مسودة",
-        "commit": "ترحيل",
-        "high": "عالي المخاطر"
-      },
-      "commandStatus": {
-        "executed": "تم التنفيذ",
-        "failed": "فشل",
-        "awaiting_approval": "بانتظار الموافقة",
-        "rejected": "مرفوض"
-      },
-      "approvalStatus": {
-        "pending": "قيد الانتظار",
-        "approved": "تمت الموافقة",
-        "rejected": "مرفوض"
-      },
-      "channels": {
-        "web": "الويب",
-        "chat": "الدردشة",
-        "voice": "الصوت",
-        "system": "النظام"
-      },
-      "errors": {
-        "bridgeUnavailable": "جسر ERP غير متاح.",
-        "bridgeUnavailableHint": "لم يتم إعداد جسر في البوابة بعد (ERP_BRIDGE_URL). حتى ذلك الحين تبقى بيانات ERP فارغة، بينما تعمل الأوامر والموافقات وسجل التدقيق.",
-        "noCapability": "تنقصك صلاحية لهذا.",
-        "noCapabilityHint": "يمكن لمدير المستأجر منحها لك من الإعدادات › الصلاحيات.",
-        "erpFailed": "رفض ERPClaw أمر القراءة.",
-        "unauthorized": "يرجى تسجيل الدخول مجددًا.",
-        "noTenant": "لا يوجد مستأجر نشط – اختر مساحة عمل أولًا.",
-        "notFound": "غير موجود.",
-        "generic": "تعذر تحميل البيانات."
-      },
-      "common": {
-        "empty": "لا توجد إدخالات",
-        "asOf": "كما في {time}",
-        "replayed": "مُعاد من الإيصال",
-        "source": {
-          "erp": "المصدر: ERPClaw عبر الجسر",
-          "gateway": "المصدر: بوابة فيتانا"
-        },
-        "readOnlySlice": "للقراءة فقط في هذه المرحلة – القرارات والتغييرات تأتي مع المرحلة التالية.",
-        "viewAll": "عرض الكل",
-        "all": "الكل"
-      },
-      "receipts": {
-        "title": "إيصالات الأوامر",
-        "description": "كل أمر مرّ عبر البوابة، مع الإيصال الذي حفظه الجسر له.",
-        "searchPlaceholder": "ابحث حسب الأمر أو المعرّف …",
-        "empty": "لا توجد أوامر بعد",
-        "noReceipt": "لا يوجد إيصال",
-        "show": "عرض الإيصال",
-        "hide": "إخفاء الإيصال"
-      },
-      "commands": {
-        "when": "متى",
-        "command": "الأمر",
-        "tier": "المستوى",
-        "status": "الحالة",
-        "channel": "القناة",
-        "requester": "مقدّم الطلب",
-        "receipt": "الإيصال",
-        "reason": "السبب",
-        "you": "أنت"
-      },
-      "approvals": {
-        "requested": "تاريخ الطلب",
-        "command": "الأمر",
-        "requester": "مقدّم الطلب",
-        "approverNeeds": "يحتاج المُوافق إلى",
-        "status": "الحالة",
-        "decision": "القرار",
-        "you": "أنت",
-        "yourOwnRequest": "هذا طلبك أنت – لا يمكنك الموافقة عليه بنفسك.",
-        "youCanDecide": "يمكنك اتخاذ القرار",
-        "youCannotDecide": "ليس من صلاحيتك الموافقة"
-      },
-      "dashboard": {
-        "title": "لوحة التحكم",
-        "description": "ما يحتاجه المكتب الخلفي اليوم: الموافقات المعلّقة، وطلباتك، وآخر الأوامر، وحالة نظام ERP.",
-        "pendingApprovals": "موافقات معلّقة",
-        "pendingApprovalsHint": "بانتظار شخص ثانٍ",
-        "myOpenRequests": "طلباتي المفتوحة",
-        "myOpenRequestsHint": "طلبتها أنت ولم يُبتّ فيها بعد",
-        "executed7d": "نُفّذت (7 أيام)",
-        "executed7dHint": "أوامر اكتملت بنجاح",
-        "failed7d": "فشلت (7 أيام)",
-        "failed7dHint": "رُفضت أو انتهت بخطأ",
-        "erpStatus": "حالة ERP",
-        "erpOk": "جاهز",
-        "erpNotOk": "غير متاح",
-        "erpUnknown": "غير واضح",
-        "quickAccess": "وصول سريع",
-        "recentActivity": "النشاط الأخير",
-        "noCapabilities": "ليست لديك أي صلاحية ERP بعد. يمكن لمدير المستأجر منحها لك من الإعدادات › الصلاحيات."
-      },
-      "inbox": {
-        "title": "صندوق الموافقات",
-        "description": "طلبات عالية المخاطر بانتظار قرارك. مقدّم الطلب والمُوافق شخصان دائمًا.",
-        "empty": "لا شيء بانتظارك",
-        "emptyHint": "عندما يطلب أحدهم أمرًا عالي المخاطر يمكنك الموافقة عليه، سيظهر هنا."
-      },
-      "activity": {
-        "title": "النشاط",
-        "description": "كل أوامر مستأجرك، الأحدث أولًا – من الويب والدردشة والصوت.",
-        "searchPlaceholder": "ابحث حسب الأمر أو المعرّف أو السبب …",
-        "statusFilter": "الحالة",
-        "empty": "لا توجد أوامر بعد"
-      },
+      "noAccess": "ليس لديك صلاحية الوصول إلى هذا القسم. يمكن لمسؤول المستأجر منحها لك من الإعدادات › الصلاحيات.",
       "health": {
         "title": "حالة النظام",
         "description": "حالة نسخة ERP خلف الجسر: البيانات الرئيسية، والتثبيت، وإصدار المخطط، والوحدات المثبّتة.",
@@ -10482,63 +10422,14 @@
         "installedAt": "تاريخ التثبيت",
         "noModules": "لا توجد وحدات مثبّتة"
       },
-      "queue": {
-        "title": "قائمة الانتظار",
-        "description": "كل طلبات الموافقة في المستأجر – المعلّقة والموافق عليها والمرفوضة.",
-        "searchPlaceholder": "ابحث حسب الأمر أو الصلاحية أو الشخص …",
-        "statusFilter": "الحالة",
-        "empty": "لا توجد طلبات موافقة"
-      },
-      "myRequests": {
-        "title": "طلباتي",
-        "description": "الأوامر التي طلبتها – ما زال بانتظار الموافقة وما آل إليه الباقي.",
-        "awaiting": "بانتظار الموافقة",
-        "history": "السجل",
-        "empty": "لم تطلب أي أوامر بعد"
-      },
-      "policies": {
-        "title": "السياسات",
-        "description": "القواعد التي تستخدمها البوابة لتصنيف الأوامر وطلب الموافقات.",
-        "threshold": "حد المخاطر العالية",
-        "thresholdHint": "أي ترحيل بهذا المبلغ أو أكثر يصبح طلبًا عالي المخاطر ويحتاج إلى شخص ثانٍ.",
-        "mfa": "التحقق الثنائي للموافقات",
-        "mfaHint": "الموافقات عالية المخاطر تحتاج إلى جلسة مدعومة بعامل ثانٍ.",
-        "on": "مفعّل",
-        "off": "معطّل",
-        "default": "القيمة الافتراضية",
-        "custom": "مخصّص (الافتراضي: {value})",
-        "editNextSlice": "للقراءة فقط في هذه المرحلة – تعديلات السياسات تأتي مع المرحلة التالية (كل تعديل هو إيصال بحد ذاته).",
-        "rulesTitle": "قواعد ثابتة",
-        "ruleMakerChecker": "مقدّم الطلب والمُوافق ليسا الشخص نفسه أبدًا – حتى لمديري Exafy.",
-        "ruleCapability": "لا يوافق إلا من يملك صلاحية الموافقة الخاصة بالطلب (مثل finance.pay).",
-        "ruleVoice": "لا يمكن تأكيد أي شيء عالي المخاطر بالصوت – عبر الويب فقط.",
-        "ruleEscalation": "المدفوعات الصادرة وقيود الرواتب والمبالغ التي تتجاوز الحد تتصاعد تلقائيًا إلى مخاطر عالية."
-      },
-      "erpLog": {
-        "title": "سجل تدقيق ERP",
-        "description": "سجل ERPClaw الثابت نفسه – كل ترحيل، وكل عكس قيد، وكل تغيير في البيانات الرئيسية.",
-        "empty": "لا توجد إدخالات بعد",
-        "time": "متى",
-        "skill": "الوحدة",
-        "action": "الإجراء",
-        "entity": "الكيان",
-        "user": "المستخدم",
-        "changes": "التغيير",
-        "system": "النظام"
-      },
-      "trail": {
-        "title": "مسار التدقيق المستقل",
-        "description": "سجل فيتانا الخاص، للإضافة فقط: كل طلب، وكل قرار، وكل تغيير في السياسات – بمعزل عن نظام ERP.",
-        "searchPlaceholder": "ابحث حسب الحدث أو الأمر أو الشخص …",
-        "empty": "لا توجد إدخالات بعد",
-        "time": "متى",
-        "event": "الحدث",
-        "actor": "مَن",
-        "role": "الدور",
-        "channel": "القناة",
-        "command": "الأمر",
-        "approval": "الموافقة",
-        "details": "التفاصيل"
+      "receipts": {
+        "title": "إيصالات الأوامر",
+        "description": "كل أمر مرّ عبر البوابة، مع الإيصال الذي حفظه الجسر له.",
+        "searchPlaceholder": "ابحث حسب الأمر أو المعرّف …",
+        "empty": "لا توجد أوامر بعد",
+        "noReceipt": "لا يوجد إيصال",
+        "show": "عرض الإيصال",
+        "hide": "إخفاء الإيصال"
       },
       "company": {
         "title": "الشركة والكيانات القانونية",
@@ -10573,6 +10464,165 @@
         "none": "لا يوجد",
         "yes": "نعم",
         "no": "لا"
+      },
+      "trail": {
+        "title": "مسار التدقيق المستقل",
+        "description": "سجل فيتانا الخاص، للإضافة فقط: كل طلب، وكل قرار، وكل تغيير في السياسات – بمعزل عن نظام ERP.",
+        "searchPlaceholder": "ابحث حسب الحدث أو الأمر أو الشخص …",
+        "empty": "لا توجد إدخالات بعد",
+        "time": "متى",
+        "event": "الحدث",
+        "actor": "مَن",
+        "role": "الدور",
+        "channel": "القناة",
+        "command": "الأمر",
+        "approval": "الموافقة",
+        "details": "التفاصيل"
+      },
+      "inbox": {
+        "title": "صندوق الموافقات",
+        "description": "طلبات عالية المخاطر بانتظار قرارك. مقدّم الطلب والمُوافق شخصان دائمًا.",
+        "empty": "لا شيء بانتظارك",
+        "emptyHint": "عندما يطلب أحدهم أمرًا عالي المخاطر يمكنك الموافقة عليه، سيظهر هنا."
+      },
+      "common": {
+        "empty": "لا توجد إدخالات",
+        "asOf": "كما في {time}",
+        "replayed": "مُعاد من الإيصال",
+        "source": {
+          "erp": "المصدر: ERPClaw عبر الجسر",
+          "gateway": "المصدر: بوابة فيتانا"
+        },
+        "readOnlySlice": "للقراءة فقط في هذه المرحلة – القرارات والتغييرات تأتي مع المرحلة التالية.",
+        "viewAll": "عرض الكل",
+        "all": "الكل"
+      },
+      "queue": {
+        "title": "قائمة الانتظار",
+        "description": "كل طلبات الموافقة في المستأجر – المعلّقة والموافق عليها والمرفوضة.",
+        "searchPlaceholder": "ابحث حسب الأمر أو الصلاحية أو الشخص …",
+        "statusFilter": "الحالة",
+        "empty": "لا توجد طلبات موافقة"
+      },
+      "policies": {
+        "title": "السياسات",
+        "description": "القواعد التي تستخدمها البوابة لتصنيف الأوامر وطلب الموافقات.",
+        "threshold": "حد المخاطر العالية",
+        "thresholdHint": "أي ترحيل بهذا المبلغ أو أكثر يصبح طلبًا عالي المخاطر ويحتاج إلى شخص ثانٍ.",
+        "mfa": "التحقق الثنائي للموافقات",
+        "mfaHint": "الموافقات عالية المخاطر تحتاج إلى جلسة مدعومة بعامل ثانٍ.",
+        "on": "مفعّل",
+        "off": "معطّل",
+        "default": "القيمة الافتراضية",
+        "custom": "مخصّص (الافتراضي: {value})",
+        "editNextSlice": "للقراءة فقط في هذه المرحلة – تعديلات السياسات تأتي مع المرحلة التالية (كل تعديل هو إيصال بحد ذاته).",
+        "rulesTitle": "قواعد ثابتة",
+        "ruleMakerChecker": "مقدّم الطلب والمُوافق ليسا الشخص نفسه أبدًا – حتى لمديري Exafy.",
+        "ruleCapability": "لا يوافق إلا من يملك صلاحية الموافقة الخاصة بالطلب (مثل finance.pay).",
+        "ruleVoice": "لا يمكن تأكيد أي شيء عالي المخاطر بالصوت – عبر الويب فقط.",
+        "ruleEscalation": "المدفوعات الصادرة وقيود الرواتب والمبالغ التي تتجاوز الحد تتصاعد تلقائيًا إلى مخاطر عالية."
+      },
+      "myRequests": {
+        "title": "طلباتي",
+        "description": "الأوامر التي طلبتها – ما زال بانتظار الموافقة وما آل إليه الباقي.",
+        "awaiting": "بانتظار الموافقة",
+        "history": "السجل",
+        "empty": "لم تطلب أي أوامر بعد"
+      },
+      "dashboard": {
+        "title": "لوحة التحكم",
+        "description": "ما يحتاجه المكتب الخلفي اليوم: الموافقات المعلّقة، وطلباتك، وآخر الأوامر، وحالة نظام ERP.",
+        "pendingApprovals": "موافقات معلّقة",
+        "pendingApprovalsHint": "بانتظار شخص ثانٍ",
+        "myOpenRequests": "طلباتي المفتوحة",
+        "myOpenRequestsHint": "طلبتها أنت ولم يُبتّ فيها بعد",
+        "executed7d": "نُفّذت (7 أيام)",
+        "executed7dHint": "أوامر اكتملت بنجاح",
+        "failed7d": "فشلت (7 أيام)",
+        "failed7dHint": "رُفضت أو انتهت بخطأ",
+        "erpStatus": "حالة ERP",
+        "erpOk": "جاهز",
+        "erpNotOk": "غير متاح",
+        "erpUnknown": "غير واضح",
+        "quickAccess": "وصول سريع",
+        "recentActivity": "النشاط الأخير",
+        "noCapabilities": "ليست لديك أي صلاحية ERP بعد. يمكن لمدير المستأجر منحها لك من الإعدادات › الصلاحيات."
+      },
+      "errors": {
+        "bridgeUnavailable": "جسر ERP غير متاح.",
+        "bridgeUnavailableHint": "لم يتم إعداد جسر في البوابة بعد (ERP_BRIDGE_URL). حتى ذلك الحين تبقى بيانات ERP فارغة، بينما تعمل الأوامر والموافقات وسجل التدقيق.",
+        "noCapability": "تنقصك صلاحية لهذا.",
+        "noCapabilityHint": "يمكن لمدير المستأجر منحها لك من الإعدادات › الصلاحيات.",
+        "erpFailed": "رفض ERPClaw أمر القراءة.",
+        "unauthorized": "يرجى تسجيل الدخول مجددًا.",
+        "noTenant": "لا يوجد مستأجر نشط – اختر مساحة عمل أولًا.",
+        "notFound": "غير موجود.",
+        "generic": "تعذر تحميل البيانات."
+      },
+      "activity": {
+        "title": "النشاط",
+        "description": "كل أوامر مستأجرك، الأحدث أولًا – من الويب والدردشة والصوت.",
+        "searchPlaceholder": "ابحث حسب الأمر أو المعرّف أو السبب …",
+        "statusFilter": "الحالة",
+        "empty": "لا توجد أوامر بعد"
+      },
+      "tiers": {
+        "read": "قراءة",
+        "draft": "مسودة",
+        "commit": "ترحيل",
+        "high": "عالي المخاطر"
+      },
+      "erpLog": {
+        "title": "سجل تدقيق ERP",
+        "description": "سجل ERPClaw الثابت نفسه – كل ترحيل، وكل عكس قيد، وكل تغيير في البيانات الرئيسية.",
+        "empty": "لا توجد إدخالات بعد",
+        "time": "متى",
+        "skill": "الوحدة",
+        "action": "الإجراء",
+        "entity": "الكيان",
+        "user": "المستخدم",
+        "changes": "التغيير",
+        "system": "النظام"
+      },
+      "commandStatus": {
+        "executed": "تم التنفيذ",
+        "failed": "فشل",
+        "awaiting_approval": "بانتظار الموافقة",
+        "rejected": "مرفوض"
+      },
+      "approvals": {
+        "requested": "تاريخ الطلب",
+        "command": "الأمر",
+        "requester": "مقدّم الطلب",
+        "approverNeeds": "يحتاج المُوافق إلى",
+        "status": "الحالة",
+        "decision": "القرار",
+        "you": "أنت",
+        "yourOwnRequest": "هذا طلبك أنت – لا يمكنك الموافقة عليه بنفسك.",
+        "youCanDecide": "يمكنك اتخاذ القرار",
+        "youCannotDecide": "ليس من صلاحيتك الموافقة"
+      },
+      "commands": {
+        "when": "متى",
+        "command": "الأمر",
+        "tier": "المستوى",
+        "status": "الحالة",
+        "channel": "القناة",
+        "requester": "مقدّم الطلب",
+        "receipt": "الإيصال",
+        "reason": "السبب",
+        "you": "أنت"
+      },
+      "approvalStatus": {
+        "pending": "قيد الانتظار",
+        "approved": "تمت الموافقة",
+        "rejected": "مرفوض"
+      },
+      "channels": {
+        "web": "الويب",
+        "chat": "الدردشة",
+        "voice": "الصوت",
+        "system": "النظام"
       },
       "sales": {
         "status": {
@@ -10982,11 +11032,11 @@
           "invalidEmail": "بريد إلكتروني غير صالح",
           "invalidDate": "التاريخ بصيغة سنة-شهر-يوم",
           "invalidOption": "خيار غير صالح",
-          "invalidNumber": "أدخل رقمًا صالحًا أكبر من 0",
-          "lineQtyTooHigh": "لا يمكن أن تتجاوز الكمية المرتجعة الكمية المفوترة",
           "noLines": "أدخل كمية في بند واحد على الأقل",
-          "tooFewLines": "بندان على الأقل بحساب ومبلغ",
+          "lineQtyTooHigh": "لا يمكن أن تتجاوز الكمية المرتجعة الكمية المفوترة",
+          "invalidNumber": "أدخل رقمًا صالحًا أكبر من 0",
           "unbalanced": "يجب أن يساوي المدين الدائن",
+          "tooFewLines": "بندان على الأقل بحساب ومبلغ",
           "lineIncomplete": "كل بند يحتاج إلى حساب ومبلغ مدين أو دائن"
         },
         "fields": {
@@ -11006,32 +11056,32 @@
           "activity_type": "النوع",
           "activity_date": "التاريخ",
           "lead_ref": "العميل المحتمل (الاسم أو الرقم)",
-          "customer_type": "نوع العميل",
           "tax_id": "الرقم الضريبي (TRN)",
+          "posting_date": "تاريخ الترحيل",
+          "original_qty": "الكمية المفوترة",
+          "item_id": "معرّف الصنف",
+          "reason": "السبب",
           "credit_limit": "حد الائتمان",
+          "customer_type": "نوع العميل",
           "primary_address": "العنوان",
           "against_invoice_id": "مقابل الفاتورة",
-          "posting_date": "تاريخ الترحيل",
-          "reason": "السبب",
-          "items": "البنود",
-          "item_name": "الصنف",
-          "original_qty": "الكمية المفوترة",
           "qty": "الكمية المرتجعة",
-          "item_id": "معرّف الصنف",
-          "payment_type": "نوع الدفعة",
+          "item_name": "الصنف",
+          "items": "البنود",
           "party_type": "نوع الطرف",
           "party_id": "العميل",
-          "paid_amount": "المبلغ",
+          "reference_number": "المرجع البنكي",
           "paid_from_account": "من حساب",
           "paid_to_account": "إلى حساب",
-          "reference_number": "المرجع البنكي",
+          "payment_type": "نوع الدفعة",
           "reference_date": "تاريخ المرجع",
-          "entry_type": "نوع القيد",
+          "paid_amount": "المبلغ",
           "lines": "البنود",
-          "account_id": "الحساب",
+          "entry_type": "نوع القيد",
           "debit": "مدين",
-          "credit": "دائن",
-          "remark": "ملاحظة"
+          "account_id": "الحساب",
+          "remark": "ملاحظة",
+          "credit": "دائن"
         },
         "choices": {
           "website": "الموقع الإلكتروني",
@@ -11059,17 +11109,17 @@
           "task": "مهمة",
           "company": "شركة",
           "individual": "فرد",
-          "receive": "قبض",
           "pay": "دفع",
-          "journal": "قيد يومية",
-          "opening": "افتتاحي",
+          "receive": "قبض",
+          "credit_note": "إشعار دائن",
+          "exchange_rate_revaluation": "إعادة تقييم سعر الصرف",
+          "debit_note": "إشعار مدين",
+          "inter_company": "بين الشركات",
+          "write_off": "شطب",
           "closing": "ختامي",
           "depreciation": "إهلاك",
-          "write_off": "شطب",
-          "exchange_rate_revaluation": "إعادة تقييم سعر الصرف",
-          "inter_company": "بين الشركات",
-          "credit_note": "إشعار دائن",
-          "debit_note": "إشعار مدين"
+          "journal": "قيد يومية",
+          "opening": "افتتاحي"
         },
         "forms": {
           "lead": {
@@ -11097,15 +11147,15 @@
             "title": "تسجيل نشاط",
             "description": "مكالمة أو بريد أو اجتماع أو ملاحظة على عميل محتمل. يُحدَّد العميل المحتمل بالاسم أو الرقم – ومع تعدد النتائج لا يُكتب شيء."
           },
-          "customer": {
-            "button": "عميل جديد",
-            "title": "إنشاء عميل",
-            "description": "عميل مبيعات – مطلوب لعروض الأسعار والفواتير. يُنشأ كمسودة دون ترحيل."
-          },
           "creditNote": {
             "button": "إنشاء إشعار دائن",
             "title": "إشعار دائن مقابل فاتورة",
             "description": "أدخل الكمية المرتجعة لكل بند. يُنشأ الإشعار الدائن كمسودة؛ وترحيله خطوة منفصلة تخضع للموافقة."
+          },
+          "customer": {
+            "button": "عميل جديد",
+            "title": "إنشاء عميل",
+            "description": "عميل مبيعات – مطلوب لعروض الأسعار والفواتير. يُنشأ كمسودة دون ترحيل."
           },
           "payment": {
             "button": "تسجيل دفعة",
@@ -11120,12 +11170,32 @@
         },
         "noLineRows": "لا توجد بنود متاحة.",
         "lookupLoading": "جارٍ التحميل …",
-        "lookupIdPlaceholder": "أدخل المعرّف",
         "lookupRefused": "لا يملك حسابك صلاحية قراءة قائمة الاختيار ({command}) – أدخل المعرّف مباشرة.",
-        "addLine": "إضافة بند",
+        "lookupIdPlaceholder": "أدخل المعرّف",
         "removeLine": "إزالة البند",
-        "totals": "الإجماليات",
-        "differenceIs": "الفرق {amount}"
+        "differenceIs": "الفرق {amount}",
+        "addLine": "إضافة بند",
+        "totals": "الإجماليات"
+      },
+      "policyEdit": {
+        "button": "تعديل السياسة",
+        "title": "تعديل السياسة",
+        "description": "حدّ المخاطر العالية وقاعدة MFA للمستأجر. يُحفظ كل تغيير كإيصال في سجل التدقيق.",
+        "review": "راجع قبل الحفظ",
+        "reviewHint": "تُعرض القيم المتغيرة فقط. تسجّل البوابة ما قبل وما بعد.",
+        "setting": "الإعداد",
+        "before": "قبل",
+        "after": "بعد",
+        "audited": "يُحفظ باسم حسابك كمحرّر – ويظهر في سجل التدقيق باسم policy.updated.",
+        "save": "حفظ",
+        "done": "تم الحفظ",
+        "doneLine": "حُدِّثت السياسة وتسري على الأوامر الجديدة من الآن.",
+        "failed": "لم يُحفظ",
+        "noChanges": "لم يتغير شيء.",
+        "readOnlyHint": "للقراءة فقط – التعديل يتطلب approvals.policy.",
+        "issues": {
+          "invalidThreshold": "أدخل مبلغًا بين 0 و1,000,000,000,000"
+        }
       },
       "decide": {
         "queueHint": "الطلبات المعلّقة التي يمكنك البتّ فيها تُظهر موافقة / رفض. الموافقة تنفّذ الأمر عبر البوابة – وليس من المتصفح أبدًا.",
@@ -11171,26 +11241,6 @@
           "mfaRequired": "تحتاج هذه الموافقة إلى جلسة بعامل ثانٍ (MFA).",
           "alreadyDecided": "تم البتّ في هذا الطلب مسبقًا.",
           "notFound": "الطلب غير موجود."
-        }
-      },
-      "policyEdit": {
-        "button": "تعديل السياسة",
-        "title": "تعديل السياسة",
-        "description": "حدّ المخاطر العالية وقاعدة MFA للمستأجر. يُحفظ كل تغيير كإيصال في سجل التدقيق.",
-        "review": "راجع قبل الحفظ",
-        "reviewHint": "تُعرض القيم المتغيرة فقط. تسجّل البوابة ما قبل وما بعد.",
-        "setting": "الإعداد",
-        "before": "قبل",
-        "after": "بعد",
-        "audited": "يُحفظ باسم حسابك كمحرّر – ويظهر في سجل التدقيق باسم policy.updated.",
-        "save": "حفظ",
-        "done": "تم الحفظ",
-        "doneLine": "حُدِّثت السياسة وتسري على الأوامر الجديدة من الآن.",
-        "failed": "لم يُحفظ",
-        "noChanges": "لم يتغير شيء.",
-        "readOnlyHint": "للقراءة فقط – التعديل يتطلب approvals.policy.",
-        "issues": {
-          "invalidThreshold": "أدخل مبلغًا بين 0 و1,000,000,000,000"
         }
       }
     }

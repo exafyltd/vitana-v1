@@ -1,0 +1,41 @@
+{"name":"01-draft-customer-salesmanager-en-1-form-empty","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-customer-salesmanager-en-2-form-filled","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-customer-salesmanager-en-3-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"01-draft-customer-salesmanager-en-4-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"01-draft-customer-salesmanager-en","mounted":true,"url":"/backoffice/sales/contacts","dir":"ltr","screenId":"BO-006","h1":"👥Contacts & Companies","rows":3,"alerts":[],"hOverflow":false}
+{"name":"02-draft-credit-note-salesmanager-en-1-posted-invoice-detail","phase":null,"alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-2-form-lines","phase":"form","alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-3-validation-no-lines","phase":"form","alerts":["Enter a quantity on at least one line"],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-4-validation-qty-too-high","phase":"form","alerts":["Returned quantity cannot exceed the invoiced quantity"],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-5-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-6-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"02-draft-credit-note-salesmanager-en","mounted":true,"url":"/backoffice/sales/invoices","dir":"ltr","screenId":"BO-011","h1":"🧾Invoices","rows":3,"alerts":[],"hOverflow":false}
+{"name":"03-draft-customer-salesmanager-de-1-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"03-draft-customer-salesmanager-de","mounted":true,"url":"/backoffice/sales/contacts","dir":"ltr","screenId":"BO-006","h1":"👥Kontakte & Firmen","rows":3,"alerts":[],"hOverflow":false}
+{"name":"04-draft-credit-note-salesmanager-ar-rtl-1-form-lines","phase":"form","alerts":[],"status":[]}
+{"name":"04-draft-credit-note-salesmanager-ar-rtl","mounted":true,"url":"/backoffice/sales/invoices","dir":"rtl","screenId":"BO-011","h1":"🧾الفواتير","rows":4,"alerts":[],"hOverflow":false}
+{"name":"05-draft-no-buttons-draft-invoice-salesmanager-en-1-draft-invoice-no-credit-note-button","phase":null,"alerts":[],"status":[]}
+{"name":"05-draft-no-buttons-draft-invoice-salesmanager-en","mounted":true,"url":"/backoffice/sales/invoices","dir":"ltr","screenId":"BO-011","h1":"🧾Invoices","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 63 stub read POSTs: 19
+{"name":"06-draft-buttons-hidden-salesperson-en","mounted":true,"url":"/backoffice/sales/contacts","dir":"ltr","screenId":"BO-006","h1":"👥Contacts & Companies","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 3
+{"name":"02-draft-credit-note-salesmanager-en-1-posted-invoice-detail","phase":null,"alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-2-form-lines","phase":"form","alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-3-validation-no-lines","phase":"form","alerts":["Enter a quantity on at least one line"],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-4-validation-qty-too-high","phase":"form","alerts":["Returned quantity cannot exceed the invoiced quantity"],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-5-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-6-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"02-draft-credit-note-salesmanager-en","mounted":true,"url":"/backoffice/sales/invoices","dir":"ltr","screenId":"BO-011","h1":"🧾Invoices","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 14 stub read POSTs: 5
+{"name":"02-draft-credit-note-salesmanager-en-1-posted-invoice-detail","phase":null,"alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-2-form-lines","phase":"form","alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-3-validation-no-lines","phase":"form","alerts":["Enter a quantity on at least one line"],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-4-validation-qty-too-high","phase":"form","alerts":["Returned quantity cannot exceed the invoiced quantity"],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-5-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"02-draft-credit-note-salesmanager-en-6-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"02-draft-credit-note-salesmanager-en","mounted":true,"url":"/backoffice/sales/invoices","dir":"ltr","screenId":"BO-011","h1":"🧾Invoices","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 15 stub read POSTs: 5
