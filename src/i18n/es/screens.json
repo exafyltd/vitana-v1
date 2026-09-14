@@ -10940,6 +10940,65 @@
           "trialBalance": "Balance de comprobación",
           "closeNote": "El cierre en sí (accounting.period.close) es una acción de alto riesgo: doble aprobación, nunca solo por voz. Llega en una fase posterior."
         }
+      },
+      "reports": {
+        "common": {
+          "period": "Periodo",
+          "window": "{from} – {to}",
+          "preset": {
+            "ytd": "Año en curso",
+            "this_month": "Este mes",
+            "last_month": "Mes pasado",
+            "this_quarter": "Este trimestre",
+            "last_year": "Año pasado"
+          }
+        },
+        "pnl": {
+          "title": "Pérdidas y ganancias",
+          "description": "Ingresos y gastos del libro mayor para el periodo elegido: resultado y margen.",
+          "income": "Ingresos",
+          "incomeHint": "{count} cuentas",
+          "expenses": "Gastos",
+          "expensesHint": "{count} cuentas",
+          "netIncome": "Resultado",
+          "profit": "Beneficio del periodo",
+          "loss": "Pérdida del periodo",
+          "margin": "Margen",
+          "marginHint": "Resultado como parte de los ingresos",
+          "empty": "Sin datos para este periodo",
+          "incomeTitle": "Ingresos por cuenta",
+          "expensesTitle": "Gastos por cuenta",
+          "noIncome": "Sin ingresos en el periodo.",
+          "noExpenses": "Sin gastos en el periodo.",
+          "amount": "Importe",
+          "share": "Parte"
+        },
+        "aging": {
+          "title": "Antigüedad (cobros / pagos)",
+          "description": "Cobros y pagos pendientes por antigüedad: qué está dentro de plazo y qué está vencido.",
+          "asOf": "A fecha {date}",
+          "receivables": "Cobros pendientes",
+          "receivablesHint": "{count} clientes con partidas abiertas",
+          "payables": "Pagos pendientes",
+          "payablesHint": "{count} proveedores con partidas abiertas",
+          "overdue": "Vencido (> 30 días)",
+          "overdueHint": "Cobros {ar} · pagos {ap}",
+          "arTitle": "Cobros por cliente",
+          "apTitle": "Pagos por proveedor",
+          "customer": "Cliente",
+          "supplier": "Proveedor",
+          "noAr": "Sin cobros pendientes.",
+          "noAp": "Sin pagos pendientes.",
+          "bucket": {
+            "current": "Al día",
+            "days_30": "1–30 días",
+            "days_60": "31–60 días",
+            "days_90": "61–90 días",
+            "days_120": "91–120 días",
+            "days_120_plus": "> 120 días"
+          },
+          "negativeNote": "Los importes negativos son saldos a favor: pagos o abonos aún no asignados a una factura."
+        }
       }
     }
   }

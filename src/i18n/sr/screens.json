@@ -10940,6 +10940,65 @@
           "trialBalance": "Bruto bilans",
           "closeNote": "Samo zatvaranje (accounting.period.close) je radnja visokog rizika: princip četiri oka, nikad samo glasom – stiže u kasnijoj fazi."
         }
+      },
+      "reports": {
+        "common": {
+          "period": "Period",
+          "window": "{from} – {to}",
+          "preset": {
+            "ytd": "Tekuća godina",
+            "this_month": "Ovaj mesec",
+            "last_month": "Prošli mesec",
+            "this_quarter": "Ovaj kvartal",
+            "last_year": "Prošla godina"
+          }
+        },
+        "pnl": {
+          "title": "Bilans uspeha",
+          "description": "Prihodi i rashodi iz glavne knjige za izabrani period – rezultat i marža.",
+          "income": "Prihodi",
+          "incomeHint": "{count} konta",
+          "expenses": "Rashodi",
+          "expensesHint": "{count} konta",
+          "netIncome": "Rezultat",
+          "profit": "Dobit u periodu",
+          "loss": "Gubitak u periodu",
+          "margin": "Marža",
+          "marginHint": "Rezultat u odnosu na prihode",
+          "empty": "Nema podataka za ovaj period",
+          "incomeTitle": "Prihodi po kontu",
+          "expensesTitle": "Rashodi po kontu",
+          "noIncome": "Nema prihoda u periodu.",
+          "noExpenses": "Nema rashoda u periodu.",
+          "amount": "Iznos",
+          "share": "Udeo"
+        },
+        "aging": {
+          "title": "Dospelost (potraživanja / obaveze)",
+          "description": "Otvorena potraživanja i obaveze po starosti – šta je u roku, a šta je dospelo.",
+          "asOf": "Na dan {date}",
+          "receivables": "Otvorena potraživanja",
+          "receivablesHint": "{count} kupaca sa otvorenim stavkama",
+          "payables": "Otvorene obaveze",
+          "payablesHint": "{count} dobavljača sa otvorenim stavkama",
+          "overdue": "Dospelo (> 30 dana)",
+          "overdueHint": "Potraživanja {ar} · obaveze {ap}",
+          "arTitle": "Potraživanja po kupcu",
+          "apTitle": "Obaveze po dobavljaču",
+          "customer": "Kupac",
+          "supplier": "Dobavljač",
+          "noAr": "Nema otvorenih potraživanja.",
+          "noAp": "Nema otvorenih obaveza.",
+          "bucket": {
+            "current": "Tekuće",
+            "days_30": "1–30 dana",
+            "days_60": "31–60 dana",
+            "days_90": "61–90 dana",
+            "days_120": "91–120 dana",
+            "days_120_plus": "> 120 dana"
+          },
+          "negativeNote": "Negativni iznosi su preplate: uplate ili knjižna odobrenja koja još nisu raspoređena na fakturu."
+        }
       }
     }
   }

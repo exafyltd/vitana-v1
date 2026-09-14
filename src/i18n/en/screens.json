@@ -10907,6 +10907,65 @@
           "trialBalance": "Trial balance",
           "closeNote": "Closing itself (accounting.period.close) is a High-risk action: maker-checker, never by voice alone – it lands with a later slice."
         }
+      },
+      "reports": {
+        "common": {
+          "period": "Period",
+          "window": "{from} – {to}",
+          "preset": {
+            "ytd": "Year to date",
+            "this_month": "This month",
+            "last_month": "Last month",
+            "this_quarter": "This quarter",
+            "last_year": "Last year"
+          }
+        },
+        "pnl": {
+          "title": "Profit & Loss",
+          "description": "Income and expenses from the general ledger for the selected period – net income and margin.",
+          "income": "Income",
+          "incomeHint": "{count} accounts",
+          "expenses": "Expenses",
+          "expensesHint": "{count} accounts",
+          "netIncome": "Net income",
+          "profit": "Profit for the period",
+          "loss": "Loss for the period",
+          "margin": "Margin",
+          "marginHint": "Net income as a share of income",
+          "empty": "No data for this period",
+          "incomeTitle": "Income by account",
+          "expensesTitle": "Expenses by account",
+          "noIncome": "No income in the period.",
+          "noExpenses": "No expenses in the period.",
+          "amount": "Amount",
+          "share": "Share"
+        },
+        "aging": {
+          "title": "AR / AP Aging",
+          "description": "Outstanding receivables and payables by age – what is within terms and what is overdue.",
+          "asOf": "As of {date}",
+          "receivables": "Outstanding receivables",
+          "receivablesHint": "{count} customers with open items",
+          "payables": "Outstanding payables",
+          "payablesHint": "{count} suppliers with open items",
+          "overdue": "Overdue (> 30 days)",
+          "overdueHint": "Receivables {ar} · payables {ap}",
+          "arTitle": "Receivables by customer",
+          "apTitle": "Payables by supplier",
+          "customer": "Customer",
+          "supplier": "Supplier",
+          "noAr": "No outstanding receivables.",
+          "noAp": "No outstanding payables.",
+          "bucket": {
+            "current": "Current",
+            "days_30": "1–30 days",
+            "days_60": "31–60 days",
+            "days_90": "61–90 days",
+            "days_120": "91–120 days",
+            "days_120_plus": "> 120 days"
+          },
+          "negativeNote": "Negative amounts are credits: payments or credit notes not yet allocated to an invoice."
+        }
       }
     }
   }
