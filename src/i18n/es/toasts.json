@@ -1418,7 +1418,13 @@
       "body": "Sigue adelante.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "capabilityGranted": "Capacidad concedida",
+      "capabilityRevoked": "Capacidad revocada",
+      "grantFailed": "No se pudo conceder la capacidad",
+      "revokeFailed": "No se pudo revocar la capacidad"
+    }
   },
   "_pending_review": {}
 }

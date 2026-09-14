@@ -1,0 +1,29 @@
+# VTID-03888 — allocation + spec pipeline (preview-aws-gateway)
+curl -X POST .../api/v1/vtid/allocate -d '{"source":"claude-code","layer":"DEV","module":"backoffice-commit-cards"}'   -> VTID-03888 (outputs/alloc.json)
+curl -X PATCH .../api/v1/oasis/tasks/VTID-03888 -d '{"title":"Frontend: BackOffice Commit-tier and High-risk cards","status":"in_progress"}' -> 200
+curl -X POST .../api/v1/specs/VTID-03888/generate|validate|quality-check|approve   -> outputs/spec-*.json (approved)
+
+# real ERPClaw result shapes for the seven actions, captured on the VTID-03840 spike DB (local PG16, worktree pin + patches 0001-0004) — outputs/shapes/
+python3 scripts/db_query.py --action add-lead … ; convert-lead-to-opportunity (+ "-again": already converted) ; mark-opportunity-won (+ again: terminal) ; mark-opportunity-lost --lost-reason … ;
+  submit-sales-invoice (+ again: must be draft) ; cancel-sales-invoice ; add-journal-entry (cost-centre line) ; submit-journal-entry ; submit-journal-entry-cost-center-failure (a draft without cost centre: GL Validation Step 6) ; cancel-journal-entry (+ again)
+  list-leads, list-opportunities, pipeline-report, list-sales-invoices, get-sales-invoice, list-journal-entries, get-journal-entry, list-cost-centers
+# STUB EDIT (only one): outputs/shapes/list-sales-invoices.txt shows INV-2026-00001 as 'draft' (it is 'cancelled' on the spike DB after the cancel capture) so the Post card can be exercised; every other field is the real capture.
+
+# checks
+npx tsc --noEmit -p tsconfig.app.json | grep -c "error TS"   # 1 (pre-existing, src/components/RTLProvider.test.tsx / UnifiedCaptureCard.test.tsx — untouched)
+npx vitest run src/lib/backoffice-draft.test.ts src/hooks/useDraftCommand.test.ts src/lib/backoffice-approvals.test.ts src/hooks/useBackOfficeCommands.test.ts   # 4 files, 52 passed after the form-contract test was widened for the new tiers
+npx eslint <changed files>   # clean (i18n rules incl.)
+npm run i18n:inventory   # docs/SCREEN_INVENTORY.md regenerated
+npx vitest run   # full suite → outputs/vitest-full-tail.txt
+# screenshots: Vite on 8080 with VITE_GATEWAY_URL=http://127.0.0.1:8090/api/v1; stub gateway outputs/stub-gateway.mjs (tier rules: Commit/High without confirm → 403 confirmation_required; High → 202 awaiting_approval + approval; approvals carry command.payload); Playwright outputs/shots.mjs — safety net aborts every non-read request except the stub's typed commands; sign-in is the only auth write.
+
+# --- sweep follow-up (2026-09-14 18:3x–18:5x UTC)
+# scenario 06 re-run with the ERPClaw refusal shape as submit-journal-entry.txt (first pass had the success capture shadowing it)
+#   → phase: failed, alert "ERPClaw rejected the read command." — stale VTID-03849 wording now fronting a Commit-tier refusal
+#   → reworded screens.backoffice.errors.erpFailed in all 11 locales, re-shot: "ERPClaw rejected the command." (screenshots/06-…-2-erp-refused.png)
+# scenario 08 (390×844) lands on the community home: BackOffice is desktop-only by inheritance (VTID-03849) — screenshot dropped, recorded under AC-7
+npx eslint <changed .ts/.tsx>            # clean
+npx vitest run src/lib/backoffice-draft.test.ts src/hooks/useDraftCommand.test.ts src/hooks/useBackOfficeCommands.test.ts src/lib/backoffice-approvals.test.ts   # 4 files / 49 tests pass
+npm run i18n:inventory                   # pages: 327, keys: 4966, namespaces: 46 — docs/SCREEN_INVENTORY.md regenerated
+npx vitest run                           # 39 files / 271 tests pass (outputs/vitest-full-tail.txt)
+npx tsc --noEmit -p tsconfig.app.json  # 140 errors, identical set to HEAD in a clean worktree, none in changed files (outputs/tsc-baseline-vs-now.txt)

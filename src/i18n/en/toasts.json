@@ -1418,7 +1418,13 @@
       "body": "Just keep going.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "backoffice": {
+      "capabilityGranted": "Capability granted",
+      "capabilityRevoked": "Capability revoked",
+      "grantFailed": "Could not grant the capability",
+      "revokeFailed": "Could not revoke the capability"
+    }
   },
   "_pending_review": {}
 }

@@ -1,0 +1,8 @@
+{
+  "sales_invoice_id": "a2a4958f-1a1e-4d65-b978-6dd7d4d96096",
+  "naming_series": "INV-2026-00002",
+  "status": "ok",
+  "gl_entries_created": 2,
+  "sle_entries_created": 0,
+  "update_stock": true
+}

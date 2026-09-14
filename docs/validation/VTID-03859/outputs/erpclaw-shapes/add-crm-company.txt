@@ -1,0 +1,11 @@
+{
+  "crm_company": {
+    "id": "dbbf9860-9f55-4b82-b72e-77402e593ae3",
+    "name": "Probe Holdings LLC",
+    "domain": null,
+    "lifecycle": "prospect",
+    "annual_revenue": null
+  },
+  "message": "Company 'Probe Holdings LLC' created",
+  "status": "ok"
+}

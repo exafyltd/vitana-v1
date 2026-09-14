@@ -1,0 +1,120 @@
+{
+  "backoffice": {
+    "back": {
+      "tabs": {
+        "admin": "← Admin"
+      }
+    },
+    "overview": {
+      "tabs": {
+        "dashboard": "Kontrolna tabla",
+        "inbox": "Prijemno sanduče odobrenja",
+        "activity": "Aktivnost",
+        "health": "Stanje sistema"
+      }
+    },
+    "sales": {
+      "tabs": {
+        "leads": "Lidovi",
+        "contacts": "Kontakti i firme",
+        "opportunities": "Prilike",
+        "followups": "Praćenja",
+        "quotations": "Ponude",
+        "orders": "Prodajni nalozi",
+        "invoices": "Fakture",
+        "credit-notes": "Knjižna odobrenja",
+        "deliveries": "Isporuke"
+      }
+    },
+    "marketing": {
+      "tabs": {
+        "campaigns": "Kampanje",
+        "outreach": "Obraćanje",
+        "attribution": "Izvori lidova i atribucija",
+        "performance": "Učinak"
+      }
+    },
+    "accounting": {
+      "tabs": {
+        "journals": "Nalozi za knjiženje",
+        "chart-of-accounts": "Kontni plan",
+        "periods": "Periodi i zatvaranje",
+        "tax": "Porez",
+        "assets": "Osnovna sredstva i lizing",
+        "intercompany": "Međukompanijski i konsolidacija",
+        "budgets": "Budžeti i prognoze"
+      }
+    },
+    "finance": {
+      "tabs": {
+        "payments": "Plaćanja",
+        "bank-reconciliation": "Usaglašavanje sa bankom",
+        "cash": "Stanje gotovine i prognoza",
+        "subscriptions": "Ponavljajuće fakturisanje",
+        "sync": "Stripe / Shopify sinhronizacija"
+      }
+    },
+    "hr": {
+      "tabs": {
+        "employees": "Zaposleni i dokumenta",
+        "leave": "Odsustva",
+        "attendance": "Prisustvo",
+        "expenses": "Troškovi",
+        "payroll": "Obračun zarada"
+      }
+    },
+    "operations": {
+      "tabs": {
+        "suppliers": "Dobavljači",
+        "purchase-orders": "Narudžbenice",
+        "receipts": "Prijemnice",
+        "supplier-invoices": "Fakture dobavljača",
+        "items": "Artikli",
+        "warehouses": "Magacini",
+        "stock": "Zalihe i kretanja"
+      }
+    },
+    "legal": {
+      "tabs": {
+        "contracts": "Ugovori",
+        "obligations": "Obaveze",
+        "compliance": "Usklađenost",
+        "e-signature": "E-potpis"
+      }
+    },
+    "reports": {
+      "tabs": {
+        "pnl": "Bilans uspeha",
+        "balance-sheet": "Bilans stanja",
+        "trial-balance": "Bruto bilans",
+        "cash-flow": "Tok gotovine",
+        "aging": "Starost potraživanja / obaveza",
+        "dimensions": "Po dimenziji",
+        "board-pack": "Paket za upravu"
+      }
+    },
+    "approvals": {
+      "tabs": {
+        "queue": "Red",
+        "my-requests": "Moji zahtevi",
+        "policies": "Pravila"
+      }
+    },
+    "audit": {
+      "tabs": {
+        "receipts": "Potvrde komandi",
+        "erp-log": "ERP revizijski dnevnik",
+        "trail": "Nezavisni revizorski trag"
+      }
+    },
+    "settings": {
+      "tabs": {
+        "company": "Firma i pravna lica",
+        "access": "Pristup",
+        "numbering": "Numeracija",
+        "integrations": "Integracije",
+        "modules": "Moduli"
+      }
+    }
+  }
+}

@@ -79,10 +79,10 @@ const PartnerConnections = lazy(() => import("./pages/PartnerConnections"));
 const PartnerConnectionDetail = lazy(() => import("./pages/PartnerConnectionDetail"));
 // Merchant self-service Commerce Portal — commerce.vitanaland.com (VTID-03555)
 const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLogin"));
-const CommerceLanding = lazy(() => import("./pages/CommerceLanding"));
-const CommerceConnections = lazy(() => import("./pages/CommerceConnections"));
-const CommerceConnectionDetail = lazy(() => import("./pages/CommerceConnectionDetail"));
-const CommerceAgentConnect = lazy(() => import("./pages/CommerceAgentConnect"));
+// VTID-03882: one screen replaces the landing / connections / agent-connect
+// trio; the old connection-detail URL redirects into its drawer.
+const CommercePortal = lazy(() => import("./pages/CommercePortal"));
+const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnectionRedirect"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
@@ -413,6 +413,38 @@ const Bootstrap = lazy(() => import("./pages/admin/Bootstrap"));
 const TenantManagementLegacy = lazy(() => import("./pages/admin/TenantManagement"));
 const InitEvents = lazy(() => import("./pages/admin/InitEvents"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
+// VTID-03833: Vitanaland BackOffice (ERP/CRM) shell — every section is a placeholder until its screens ship
+const BackOfficePlaceholder = lazy(() => import("./pages/backoffice/BackOfficePlaceholder"));
+// VTID-03849 — wave-1 Read screens
+const BackOfficeDashboard = lazy(() => import("./pages/backoffice/overview/Dashboard"));
+const BackOfficeInbox = lazy(() => import("./pages/backoffice/overview/Inbox"));
+const BackOfficeActivity = lazy(() => import("./pages/backoffice/overview/Activity"));
+const BackOfficeHealth = lazy(() => import("./pages/backoffice/overview/Health"));
+const BackOfficeApprovalsQueue = lazy(() => import("./pages/backoffice/approvals/Queue"));
+const BackOfficeMyRequests = lazy(() => import("./pages/backoffice/approvals/MyRequests"));
+const BackOfficePolicies = lazy(() => import("./pages/backoffice/approvals/Policies"));
+const BackOfficeReceipts = lazy(() => import("./pages/backoffice/audit/Receipts"));
+const BackOfficeErpLog = lazy(() => import("./pages/backoffice/audit/ErpLog"));
+const BackOfficeAuditTrail = lazy(() => import("./pages/backoffice/audit/Trail"));
+const BackOfficeCompany = lazy(() => import("./pages/backoffice/settings/Company"));
+// VTID-03855 — Sales & CRM Read screens
+const BackOfficeLeads = lazy(() => import("./pages/backoffice/sales/Leads"));
+const BackOfficeContacts = lazy(() => import("./pages/backoffice/sales/Contacts"));
+const BackOfficeOpportunities = lazy(() => import("./pages/backoffice/sales/Opportunities"));
+const BackOfficeFollowUps = lazy(() => import("./pages/backoffice/sales/FollowUps"));
+const BackOfficeQuotations = lazy(() => import("./pages/backoffice/sales/Quotations"));
+const BackOfficeInvoices = lazy(() => import("./pages/backoffice/sales/Invoices"));
+const BackOfficeCreditNotes = lazy(() => import("./pages/backoffice/sales/CreditNotes"));
+// VTID-03856 — Finance & Treasury Read screens
+const BackOfficePayments = lazy(() => import("./pages/backoffice/finance/Payments"));
+const BackOfficeBankReconciliation = lazy(() => import("./pages/backoffice/finance/BankReconciliation"));
+const BackOfficeJournals = lazy(() => import("./pages/backoffice/accounting/Journals"));
+const BackOfficeChartOfAccounts = lazy(() => import("./pages/backoffice/accounting/ChartOfAccounts"));
+const BackOfficePeriods = lazy(() => import("./pages/backoffice/accounting/Periods"));
+const BackOfficeProfitAndLoss = lazy(() => import("./pages/backoffice/reports/ProfitAndLoss"));
+const BackOfficeAging = lazy(() => import("./pages/backoffice/reports/Aging"));
+// VTID-03834: BackOffice › Settings › Access — ERP capability grants per member
+const BackOfficeSettingsAccess = lazy(() => import("./pages/backoffice/settings/Access"));
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
@@ -1732,10 +1764,11 @@ const App = () => {
               /api/v1/vcaop/portal/my surface; any signed-in user manages the
               businesses THEY created (no admin role). Path-based here so PR
               previews verify it; commerce.vitanaland.com host-routes onto it. */}
-          <Route path="/commerce" element={<AuthGuard><CommerceLanding /></AuthGuard>} />
-          <Route path="/commerce/connections" element={<AuthGuard><CommerceConnections /></AuthGuard>} />
-          <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionDetail /></AuthGuard>} />
-          <Route path="/commerce/agent-connect" element={<AuthGuard><CommerceAgentConnect /></AuthGuard>} />
+          <Route path="/commerce" element={<AuthGuard><CommercePortal /></AuthGuard>} />
+          {/* VTID-03882: the three old URLs stay alive and fold into /commerce. */}
+          <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
+          <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />
+          <Route path="/commerce/agent-connect" element={<Navigate to="/commerce" replace />} />
           {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
               signed-in user consents for themselves. */}
           <Route path="/oauth/consent" element={
@@ -2123,6 +2156,99 @@ const App = () => {
               every specific /admin/* route above and BEFORE the catch-all. */}
           <Route path="/admin/*" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminPlaceholder /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Vitanaland BackOffice (VTID-03833) — the /admin pattern one level over.
+              requiredRole="backoffice": admin/developer/infra/Exafy pass through the
+              hierarchy, staff needs an explicit backoffice grant, community is bounced.
+              Every section renders BackOfficePlaceholder inside AppLayout until its
+              screens land. Must sit BEFORE the catch-all. */}
+          <Route path="/backoffice" element={<Navigate to="/backoffice/dashboard" replace />} />
+          {/* VTID-03849 — wave-1 Read screens (Overview, Approvals, Audit, Settings › Company). */}
+          <Route path="/backoffice/dashboard" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeDashboard /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/inbox" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeInbox /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/activity" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeActivity /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/health" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeHealth /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/approvals/queue" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeApprovalsQueue /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/approvals/my-requests" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeMyRequests /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/approvals/policies" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePolicies /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/audit/receipts" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeReceipts /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/audit/erp-log" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeErpLog /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/audit/trail" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeAuditTrail /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/settings/company" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeCompany /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03855 — Sales & CRM Read screens. */}
+          <Route path="/backoffice/sales/leads" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeLeads /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/contacts" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeContacts /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/opportunities" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeOpportunities /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/followups" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeFollowUps /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/quotations" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeQuotations /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/invoices" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeInvoices /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/sales/credit-notes" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeCreditNotes /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03856 — Finance & Treasury Read screens. */}
+          <Route path="/backoffice/finance/payments" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePayments /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/finance/bank-reconciliation" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeBankReconciliation /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03857 — Accounting Read screens. */}
+          <Route path="/backoffice/accounting/journals" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeJournals /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/accounting/chart-of-accounts" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeChartOfAccounts /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/accounting/periods" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePeriods /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03858 — Reports Read screens. */}
+          <Route path="/backoffice/reports/pnl" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeProfitAndLoss /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/reports/aging" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeAging /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/settings/access" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficeSettingsAccess /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/backoffice/*" element={
+            <AuthGuard><ProtectedRoute requiredRole="backoffice"><BackOfficePlaceholder /></ProtectedRoute></AuthGuard>
           } />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

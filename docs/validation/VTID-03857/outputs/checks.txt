@@ -1,0 +1,26 @@
+# VTID-03857 checks — 2026-09-13T18:19:31Z
+
+## tsc --noEmit -p tsconfig.app.json (error count; base has 140 pre-existing)
+140
+new-file errors:
+0
+
+## eslint (new files + App.tsx)
+
+/home/user/vitana-v1/src/App.tsx
+  470:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  541:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  543:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  574:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 4 problems (4 errors, 0 warnings)
+(all four `no-explicit-any` hits are pre-existing on the base App.tsx — lines 470/541/543/574, outside this PR's hunks at 441-443 and 2226-2236; the three new page files and the lib/test files report 0 problems)
+
+
+## vitest run
+ Test Files  34 passed (34)
+      Tests  226 passed (226)
+
+## i18n:inventory
+[generate-screen-inventory] Wrote /home/user/vitana-v1/docs/SCREEN_INVENTORY.md
+  pages: 325, keys: 4928, namespaces: 46, suspects: 67

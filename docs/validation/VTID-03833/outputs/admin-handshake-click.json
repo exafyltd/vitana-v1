@@ -1,0 +1,7 @@
+{
+  "harness": "Playwright against the local Vite dev server (127.0.0.1:8080), signed in as the documented test user, serviceWorkers: 'block', every non-read request to Supabase/the gateway aborted at the network layer",
+  "steps": [
+    { "action": "goto /admin/dashboard, click a[href=\"/backoffice/dashboard\"] (the 14th ADMIN_SECTIONS item)", "afterClick": "/backoffice/dashboard", "h1": "Overview" },
+    { "action": "click a[href=\"/admin/dashboard\"] (the BackOffice sidebar's \"← Admin\" item)", "afterBackClick": "/admin/dashboard", "h1": "📊Dashboard" }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Opportunity is won. Terminal states cannot be updated."
+}

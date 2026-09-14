@@ -1,0 +1,17 @@
+# VTID-03878 checks — 2026-09-14T10:03:41Z, branch claude/practical-gates-iqwv52-vtid-03878
+== eslint (changed files)
+  776:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+✖ 2 problems (0 errors, 2 warnings)
+
+== tsc --noEmit -p tsconfig.app.json (error count; base has 140 pre-existing)
+140
+== tsc errors in changed files
+0
+== vitest run (full)
+ Test Files  38 passed (38)
+      Tests  262 passed (262)
+== physical direction utilities left in the primitive
+0
+== i18n long-word guard (de)
+No long words found.

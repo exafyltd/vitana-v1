@@ -1,0 +1,45 @@
+# Draft-command traffic seen by the local stub gateway (127.0.0.1:8090) — final sweeps
+## stub run: sm-1
+stub on 8090 persona=salesmanager bridge=up
+POST crm.lead.list 200
+POST crm.lead.get 200
+DRAFT crm.lead.update key=ui.draft:crm.lead.update:e086ee9640684311b466e1d8a36d7a3e confirm=false payload={"lead_id":"5027a893-50bf-481a-903d-6fd1a8e04c4a","lead_name":"Bridge Lead","email":"bridge@example.invalid","phone":"+971 50 000 0001","source":"referral","status":"contacted"}
+POST crm.lead.update 200
+POST crm.lead.list 200
+POST crm.lead.get 200
+POST crm.task.list 200
+POST crm.activity.list 200
+DRAFT crm.task.complete key=ui.draft:crm.task.complete:809c5c98f4c24790a3c579d53db2a9ef confirm=false payload={"crm_task_id":"f7497f00-5fc8-4764-8dad-3d2314235733"}
+POST crm.task.complete 200
+POST crm.task.list 200
+POST crm.activity.list 200
+## stub run: sm-2
+stub on 8090 persona=salesmanager bridge=up
+POST crm.task.list 200
+POST crm.activity.list 200
+DRAFT crm.task.cancel key=ui.draft:crm.task.cancel:1c548f45f0b54b70a6316d1a12de3f0e confirm=false payload={"crm_task_id":"f7497f00-5fc8-4764-8dad-3d2314235733","reason":"Superseded by the new proposal"}
+POST crm.task.cancel 200
+POST crm.task.list 200
+POST crm.activity.list 200
+POST crm.pipeline.report 200
+POST crm.opportunity.list 200
+POST crm.pipeline_stage.list 200
+DRAFT crm.opportunity.set_stage key=ui.draft:crm.opportunity.set_stage:da23a1de36a24fb2a80f431123d40fcc confirm=false payload={"opportunity":"e0b116f7-890f-4469-9cfa-c0c71978da11","stage":"e0a60bfa-a1c3-407d-aeea-0f9bd36c03fa"}
+POST crm.opportunity.set_stage 200
+POST crm.pipeline.report 200
+POST crm.opportunity.list 200
+POST crm.pipeline_stage.list 200
+## stub run: sm-3
+stub on 8090 persona=salesmanager bridge=up
+POST crm.pipeline.report 200
+POST crm.opportunity.list 200
+POST crm.task.list 200
+POST crm.activity.list 200
+POST crm.lead.list 200
+POST crm.lead.get 200
+## stub run: salesperson
+stub on 8090 persona=sales bridge=up
+POST crm.task.list 200
+POST crm.activity.list 200
+POST crm.lead.list 200
+POST crm.lead.get 200

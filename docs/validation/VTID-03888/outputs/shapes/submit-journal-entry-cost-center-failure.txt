@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "GL posting failed: GL Validation Step 6 Failed: Income/Expense account 'General & Administrative' requires a cost_center_id for P&L tracking"
+}

@@ -1,0 +1,8 @@
+[erpclaw-selling] COALESCE types text and integer cannot be matched
+LINE 1: SELECT COALESCE(decimal_sum("outstanding_amount"),0) FROM "s...
+                                                          ^
+
+{
+  "status": "error",
+  "message": "An unexpected error occurred"
+}

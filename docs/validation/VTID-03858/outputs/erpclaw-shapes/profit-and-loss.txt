@@ -1,0 +1,21 @@
+{
+  "period": "2026-01-01 to 2026-09-13",
+  "income": [
+    {
+      "account": "Sales \u2014 Standard Rated (5%)",
+      "account_id": "a5ab583c-771f-4783-9fe6-dd73a5c56acf",
+      "amount": "47675.00"
+    }
+  ],
+  "income_total": "47675.00",
+  "expenses": [
+    {
+      "account": "General & Administrative",
+      "account_id": "04310b4d-3b19-490e-ba9e-703fd488ca16",
+      "amount": "29.50"
+    }
+  ],
+  "expense_total": "29.50",
+  "net_income": "47645.50",
+  "status": "ok"
+}

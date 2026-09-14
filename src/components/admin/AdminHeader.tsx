@@ -37,7 +37,7 @@ export default function AdminHeader({
           )}
         </div>
         {rightAction && (
-          <div className="ml-6">
+          <div className="ms-6 shrink-0">
             {rightAction}
           </div>
         )}

@@ -1,0 +1,39 @@
+{
+  "templates": [
+    {
+      "id": "d718f671-11cc-4e22-a02c-c2ada4aa0dd1",
+      "name": "UAE VAT 0% Zero-rated",
+      "tax_type": "sales",
+      "is_default": 0,
+      "tax_category_id": null,
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+      "created_at": "2026-09-13 07:34:51.122825+00",
+      "updated_at": "2026-09-13 07:34:51.122825+00"
+    },
+    {
+      "id": "bfbf1419-812e-4964-b020-681b522ea37f",
+      "name": "UAE VAT 5% Reverse Charge (imported services)",
+      "tax_type": "purchase",
+      "is_default": 0,
+      "tax_category_id": null,
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+      "created_at": "2026-09-13 07:34:51.474999+00",
+      "updated_at": "2026-09-13 07:34:51.474999+00"
+    },
+    {
+      "id": "bdb53b6e-00f9-4d5d-a7ca-d50185c7126f",
+      "name": "UAE VAT 5% Standard",
+      "tax_type": "sales",
+      "is_default": 1,
+      "tax_category_id": null,
+      "company_id": "f1de441f-7cdb-4842-9ce3-8830294b71e5",
+      "created_at": "2026-09-13 07:34:50.78981+00",
+      "updated_at": "2026-09-13 07:34:50.78981+00"
+    }
+  ],
+  "total_count": 3,
+  "limit": 20,
+  "offset": 0,
+  "has_more": false,
+  "status": "ok"
+}

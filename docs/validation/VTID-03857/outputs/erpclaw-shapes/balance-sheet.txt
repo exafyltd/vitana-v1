@@ -1,0 +1,28 @@
+{
+  "as_of_date": "2026-09-13",
+  "assets": [
+    {
+      "account": "Cash and Bank",
+      "account_id": "f529f450-dbd5-4412-8bfc-3db680640de4",
+      "amount": "54820.50"
+    },
+    {
+      "account": "Trade Receivables",
+      "account_id": "bb531319-4fc7-4a37-8a6d-206c0fd066fc",
+      "amount": "-5000.00"
+    }
+  ],
+  "total_assets": "49820.50",
+  "liabilities": [
+    {
+      "account": "Output VAT Payable (5%)",
+      "account_id": "6898dcba-766a-4ccb-90e0-aa27e2916732",
+      "amount": "2175.00"
+    }
+  ],
+  "total_liabilities": "2175.00",
+  "equity": [],
+  "total_equity": "47645.50",
+  "net_income_ytd": "47645.50",
+  "status": "ok"
+}
