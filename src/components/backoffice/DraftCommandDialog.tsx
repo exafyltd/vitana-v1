@@ -248,7 +248,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
       <ResponsiveDialogContent data-testid={`draft-dialog-${spec.id}`} data-phase={draft.phase}>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t(`screens.backoffice.draft.forms.${spec.id}.title`)}</ResponsiveDialogTitle>
-          <ResponsiveDialogDescription>{draft.phase === "form" ? t(`screens.backoffice.draft.forms.${spec.id}.description`) : draft.phase === "review" ? t("screens.backoffice.draft.review") : draft.phase === "done" ? t("screens.backoffice.draft.done") : draft.phase === "failed" ? t("screens.backoffice.draft.failed") : t("screens.backoffice.draft.submitting")}</ResponsiveDialogDescription>
+          <ResponsiveDialogDescription>{draft.phase === "form" ? t(`screens.backoffice.draft.forms.${spec.id}.description`) : draft.phase === "review" ? t("screens.backoffice.draft.review") : draft.phase === "done" ? t(draftCreates(spec) ? "screens.backoffice.draft.done" : "screens.backoffice.draft.doneUpdate") : draft.phase === "failed" ? t(draftCreates(spec) ? "screens.backoffice.draft.failed" : "screens.backoffice.draft.failedUpdate") : t("screens.backoffice.draft.submitting")}</ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody>
           {draft.phase === "form" && (
@@ -277,7 +277,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
                 {draft.reason && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.reason")} <code className="font-mono" dir="ltr">{draft.reason}</code></p>}
                 {entity?.field && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.entityHint", { field: fieldLabel(entity.field), ref: entity.ref ?? "", count: String(entity.candidates?.length ?? 0) })}</p>}
               </div>
-              <p className="text-xs text-muted-foreground">{t("screens.backoffice.draft.failedHint")}</p>
+              <p className="text-xs text-muted-foreground">{t(draftCreates(spec) ? "screens.backoffice.draft.failedHint" : "screens.backoffice.draft.failedHintUpdate")}</p>
               {cmd?.receipt && <ReceiptDetail receipt={cmd.receipt} />}
             </div>
           )}

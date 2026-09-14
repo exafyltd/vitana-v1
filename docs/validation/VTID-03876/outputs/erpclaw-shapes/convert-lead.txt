@@ -1,0 +1,15 @@
+{
+  "opportunity": {
+    "id": "08d5cafe-3048-4315-937d-70ffa55e5825",
+    "naming_series": "OPP-2026-00002",
+    "opportunity_name": "Spike Lead opportunity",
+    "lead_id": "716a27e3-cbbe-4492-99a2-c87d4cb776e3",
+    "stage": "new",
+    "probability": "50",
+    "expected_revenue": "0",
+    "weighted_revenue": "0.00"
+  },
+  "lead_status": "converted",
+  "message": "Lead converted to opportunity OPP-2026-00002",
+  "status": "ok"
+}

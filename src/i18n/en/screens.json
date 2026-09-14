@@ -11189,7 +11189,12 @@
           "exchange_rate_revaluation": "Exchange rate revaluation",
           "inter_company": "Inter-company",
           "credit_note": "Credit note",
-          "debit_note": "Debit note"
+          "debit_note": "Debit note",
+          "new": "New",
+          "contacted": "Contacted",
+          "qualified": "Qualified",
+          "unresponsive": "Unresponsive",
+          "lost": "Lost"
         },
         "forms": {
           "lead": {
@@ -11281,7 +11286,10 @@
         "whatHappensUpdate": "Draft tier: changes an existing record — no posting, no approval step, reversible by editing again.",
         "updated": "Saved",
         "updatedWithRef": "Saved: {ref}",
-        "doneHintUpdate": "The ERP changed the record; the list behind this was reloaded. The receipt below is what the bridge stored."
+        "doneHintUpdate": "The ERP changed the record; the list behind this was reloaded. The receipt below is what the bridge stored.",
+        "doneUpdate": "Saved",
+        "failedUpdate": "Not saved",
+        "failedHintUpdate": "Nothing was changed. You can adjust the inputs and resend – the same idempotency key guarantees a retry never writes twice."
       },
       "decide": {
         "queueHint": "Pending requests you may decide show Approve / Reject. Approving executes the command through the gateway – never from the browser.",

@@ -11077,7 +11077,12 @@
           "exchange_rate_revaluation": "Kursbewertung",
           "inter_company": "Konzernintern",
           "credit_note": "Gutschrift",
-          "debit_note": "Belastung"
+          "debit_note": "Belastung",
+          "new": "Neu",
+          "contacted": "Kontaktiert",
+          "qualified": "Qualifiziert",
+          "unresponsive": "Keine Reaktion",
+          "lost": "Verloren"
         },
         "forms": {
           "lead": {
@@ -11169,7 +11174,10 @@
         "whatHappensUpdate": "Stufe Entwurf: ändert einen bestehenden Datensatz – keine Buchung, kein Freigabeschritt, durch erneutes Bearbeiten umkehrbar.",
         "updated": "Gespeichert",
         "updatedWithRef": "Gespeichert: {ref}",
-        "doneHintUpdate": "Das ERP hat den Datensatz geändert; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat."
+        "doneHintUpdate": "Das ERP hat den Datensatz geändert; die Liste dahinter wurde neu geladen. Der Beleg unten ist das, was die Bridge gespeichert hat.",
+        "doneUpdate": "Gespeichert",
+        "failedUpdate": "Nicht gespeichert",
+        "failedHintUpdate": "Es wurde nichts geändert. Du kannst die Eingaben anpassen und erneut senden – derselbe Idempotenz-Schlüssel sorgt dafür, dass ein Wiederholen nie doppelt schreibt."
       },
       "decide": {
         "queueHint": "Offene Anfragen, die du entscheiden darfst, zeigen Freigeben / Ablehnen. Freigeben führt den Befehl über das Gateway aus – nie aus dem Browser heraus.",

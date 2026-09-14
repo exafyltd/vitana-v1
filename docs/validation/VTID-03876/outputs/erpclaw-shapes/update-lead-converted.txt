@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "message": "Cannot update a converted lead. Work with the opportunity instead.",
+  "suggestion": "Use 'list opportunities' to find the opportunity created from this lead."
+}

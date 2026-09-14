@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { ACCOUNT_LOOKUP, DRAFT_FORMS, LEAD_UPDATE_STATUSES, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, isLeadEditable, isOpportunityEditable, isTaskActionable, leadUpdateInitial, opportunityUpdateInitial, taskUpdateInitial, validateDraft } from "./backoffice-draft";
+import de from "@/i18n/de/screens.json";
+import { ACCOUNT_LOOKUP, DRAFT_FORMS, LEAD_UPDATE_STATUSES, draftCreates, linesTotals, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, isLeadEditable, isOpportunityEditable, isTaskActionable, leadUpdateInitial, opportunityUpdateInitial, taskUpdateInitial, validateDraft } from "./backoffice-draft";
 
 describe("draft forms", () => {
   it("every form maps to a Draft typed command with a single capability and at least one required field", () => {
@@ -188,5 +189,40 @@ describe("edit cards start from the record", () => {
     expect(stage.lookup?.listKey).toBe("crm_pipeline_stages");
     expect(buildDraftPayload(spec, { opportunity: "o1", stage: "3610e60b-65f9-4f9e-9538-0a71a8494c93" }))
       .toEqual({ opportunity: "o1", stage: "3610e60b-65f9-4f9e-9538-0a71a8494c93" });
+  });
+});
+
+// The sweep for VTID-03876 caught a select rendering "[[missing:screens.backoffice.draft.choices.contacted]]"
+// in both the form and the review card: five new option values had no label. This is the guard for that.
+describe("every draft form is fully translated in the source catalogue", () => {
+  const cat = (de as unknown as { screens: { backoffice: { draft: Record<string, unknown> } } }).screens.backoffice.draft;
+  const group = (k: string) => (cat[k] ?? {}) as Record<string, string>;
+  const line = (k: string) => cat[k];
+  it("has a label for every form, field and select option", () => {
+    const missing: string[] = [];
+    for (const spec of Object.values(DRAFT_FORMS)) {
+      const form = group("forms")[spec.id] as unknown as Record<string, string> | undefined;
+      for (const k of ["button", "title", "description"]) if (!form?.[k]) missing.push(`forms.${spec.id}.${k}`);
+      for (const f of spec.fields) {
+        if (!group("fields")[f.key]) missing.push(`fields.${f.key}`);
+        for (const o of f.options ?? []) if (!group("choices")[o]) missing.push(`choices.${o} (${spec.id}.${f.key})`);
+        for (const c of f.columns ?? []) if (!group("fields")[c.key]) missing.push(`fields.${c.key} (${spec.id}.${f.key} column)`);
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
+  // An edit card must never be worded as a creation, so every create-specific line has an update twin.
+  it("has an update twin for every create-specific line", () => {
+    const hasUpdateForm = Object.values(DRAFT_FORMS).some((spec) => !draftCreates(spec));
+    expect(hasUpdateForm).toBe(true);
+    for (const k of ["acceptUpdate", "whatHappensUpdate", "updated", "updatedWithRef", "doneUpdate", "doneHintUpdate", "failedUpdate", "failedHintUpdate", "keepsBlank"]) {
+      expect(typeof line(k) === "string" && (line(k) as string).length > 0, `draft.${k}`).toBe(true);
+    }
+    expect(draftCreates(DRAFT_FORMS.lead)).toBe(true);
+    expect(draftCreates(DRAFT_FORMS.payment)).toBe(true);
+    expect(draftCreates(DRAFT_FORMS.leadUpdate)).toBe(false);
+    expect(draftCreates(DRAFT_FORMS.taskComplete)).toBe(false);
+    expect(draftCreates(DRAFT_FORMS.opportunityStage)).toBe(false);
   });
 });

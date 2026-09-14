@@ -11083,7 +11083,12 @@
           "exchange_rate_revaluation": "Revalorización de tipo de cambio",
           "inter_company": "Intercompañía",
           "credit_note": "Abono",
-          "debit_note": "Nota de cargo"
+          "debit_note": "Nota de cargo",
+          "new": "Nuevo",
+          "contacted": "Contactado",
+          "qualified": "Cualificado",
+          "unresponsive": "Sin respuesta",
+          "lost": "Perdido"
         },
         "forms": {
           "lead": {
@@ -11175,7 +11180,10 @@
         "whatHappensUpdate": "Nivel borrador: modifica un registro existente, sin asiento ni paso de aprobación, reversible volviendo a editar.",
         "updated": "Guardado",
         "updatedWithRef": "Guardado: {ref}",
-        "doneHintUpdate": "El ERP modificó el registro; la lista de detrás se recargó. El recibo de abajo es lo que guardó el puente."
+        "doneHintUpdate": "El ERP modificó el registro; la lista de detrás se recargó. El recibo de abajo es lo que guardó el puente.",
+        "doneUpdate": "Guardado",
+        "failedUpdate": "No guardado",
+        "failedHintUpdate": "No se cambió nada. Puedes ajustar los datos y reenviar: la misma clave de idempotencia garantiza que un reintento nunca escriba dos veces."
       },
       "decide": {
         "queueHint": "Las solicitudes pendientes que puedes decidir muestran Aprobar / Rechazar. Aprobar ejecuta el comando a través del gateway, nunca desde el navegador.",

@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "message": "Use mark-opportunity-won to set terminal state"
+}

@@ -11083,7 +11083,12 @@
           "exchange_rate_revaluation": "Kursna razlika",
           "inter_company": "Unutar grupe",
           "credit_note": "Knjižno odobrenje",
-          "debit_note": "Knjižno zaduženje"
+          "debit_note": "Knjižno zaduženje",
+          "new": "Novo",
+          "contacted": "Kontaktiran",
+          "qualified": "Kvalifikovan",
+          "unresponsive": "Bez odgovora",
+          "lost": "Izgubljen"
         },
         "forms": {
           "lead": {
@@ -11175,7 +11180,10 @@
         "whatHappensUpdate": "Nivo nacrta: menja postojeći zapis — bez knjiženja, bez koraka odobrenja, reverzibilno ponovnim uređivanjem.",
         "updated": "Sačuvano",
         "updatedWithRef": "Sačuvano: {ref}",
-        "doneHintUpdate": "ERP je izmenio zapis; lista iza je ponovo učitana. Potvrda ispod je ono što je most sačuvao."
+        "doneHintUpdate": "ERP je izmenio zapis; lista iza je ponovo učitana. Potvrda ispod je ono što je most sačuvao.",
+        "doneUpdate": "Sačuvano",
+        "failedUpdate": "Nije sačuvano",
+        "failedHintUpdate": "Ništa nije promenjeno. Možeš izmeniti unos i poslati ponovo – isti ključ idempotentnosti garantuje da ponovni pokušaj nikada ne upiše dvaput."
       },
       "decide": {
         "queueHint": "Otvoreni zahtevi koje smeš da odlučiš prikazuju Odobri / Odbij. Odobravanje izvršava komandu preko gateway-a – nikad iz pregledača.",
