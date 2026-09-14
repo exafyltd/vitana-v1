@@ -11031,7 +11031,15 @@
           "against_invoice_id": "Zur Rechnung",
           "qty": "Rückgabemenge",
           "item_name": "Artikel",
-          "items": "Positionen"
+          "items": "Positionen",
+          "party_type": "Partnerart",
+          "party_id": "Kunde",
+          "reference_number": "Bankreferenz",
+          "paid_from_account": "Von Konto",
+          "paid_to_account": "Auf Konto",
+          "payment_type": "Zahlungsart",
+          "reference_date": "Referenzdatum",
+          "paid_amount": "Betrag"
         },
         "choices": {
           "website": "Website",
@@ -11058,7 +11066,9 @@
           "note": "Notiz",
           "task": "Aufgabe",
           "company": "Unternehmen",
-          "individual": "Privatperson"
+          "individual": "Privatperson",
+          "pay": "Ausgang",
+          "receive": "Eingang"
         },
         "forms": {
           "lead": {
@@ -11095,9 +11105,17 @@
             "button": "Neuer Kunde",
             "title": "Neuen Kunden anlegen",
             "description": "Ein Kunde im Verkauf – Voraussetzung für Angebote und Rechnungen. Wird als Entwurf angelegt, ohne Buchung."
+          },
+          "payment": {
+            "button": "Zahlung erfassen",
+            "title": "Zahlung erfassen",
+            "description": "Ein- oder Ausgang zu einem Kunden, als Entwurf – das Bankbuch wird erst beim gebuchten Zahlungsbeleg berührt, ein eigener Schritt mit Bestätigung."
           }
         },
-        "noLineRows": "Keine Positionen vorhanden."
+        "noLineRows": "Keine Positionen vorhanden.",
+        "lookupLoading": "Wird geladen …",
+        "lookupRefused": "Die Auswahlliste ({command}) darf dein Konto nicht lesen – trage die ID direkt ein.",
+        "lookupIdPlaceholder": "ID eingeben"
       }
     }
   }

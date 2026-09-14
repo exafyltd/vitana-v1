@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { DRAFT_FORMS, buildDraftPayload, creditNoteLinesFromInvoice, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
+import { ACCOUNT_LOOKUP, DRAFT_FORMS, buildDraftPayload, creditNoteLinesFromInvoice, draftCapabilities, draftIdempotencyKey, draftResultSummary, initialDraftValues, validateDraft } from "./backoffice-draft";
 
 describe("draft forms", () => {
   it("every form maps to a Draft typed command with a single capability and at least one required field", () => {
     for (const spec of Object.values(DRAFT_FORMS)) {
-      expect(spec.type).toMatch(/^(crm|sales)\.[a-z_]+\.create$/);
-      expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : "sales.draft");
+      expect(spec.type).toMatch(/^(crm|sales)\.[a-z_]+\.create$|^finance\.payment\.record$/);
+      expect(spec.capability).toBe(spec.type.startsWith("crm.") ? "crm.manage" : spec.type.startsWith("sales.") ? "sales.draft" : "finance.approve");
       expect(spec.fields.some((f) => f.required)).toBe(true);
       for (const f of spec.fields) if (f.kind === "select") expect(f.options && f.options.length > 0).toBe(true);
     }
@@ -45,6 +45,24 @@ describe("credit note lines (VTID-03866)", () => {
     expect(validateDraft(DRAFT_FORMS.customer, { name: "Acme", credit_limit: "-1" })).toEqual({ credit_limit: "invalidNumber" });
     expect(validateDraft(DRAFT_FORMS.customer, { name: "Acme", credit_limit: "25000" })).toEqual({});
     expect(buildDraftPayload(DRAFT_FORMS.customer, { name: "Acme", customer_type: "company", credit_limit: "25000", tax_id: "" })).toEqual({ name: "Acme", customer_type: "company", credit_limit: "25000" });
+  });
+});
+
+describe("payment card (VTID-03871)", () => {
+  const base = { payment_type: "receive", party_type: "customer", party_id: "c1", paid_amount: "1050", posting_date: "2026-09-13", paid_from_account: "a1", paid_to_account: "a2" };
+  it("is admitted by finance.approve OR accounting.post, matching the gateway catalog", () => {
+    expect(draftCapabilities(DRAFT_FORMS.payment)).toEqual(["finance.approve", "accounting.post"]);
+  });
+  it("needs a party, both accounts and a positive amount", () => {
+    expect(validateDraft(DRAFT_FORMS.payment, { ...base, paid_amount: "0" })).toEqual({ paid_amount: "invalidNumber" });
+    expect(validateDraft(DRAFT_FORMS.payment, { ...base, party_id: "", paid_to_account: "" })).toEqual({ party_id: "required", paid_to_account: "required" });
+    expect(validateDraft(DRAFT_FORMS.payment, base)).toEqual({});
+    expect(buildDraftPayload(DRAFT_FORMS.payment, { ...base, reference_number: " TRF-1 ", reference_date: "" })).toEqual({ ...base, reference_number: "TRF-1" });
+  });
+  it("account lookup keeps only enabled ledger (non-group) accounts", () => {
+    expect(ACCOUNT_LOOKUP.keep!({ is_group: 1, disabled: 0 })).toBe(false);
+    expect(ACCOUNT_LOOKUP.keep!({ is_group: 0, disabled: 1 })).toBe(false);
+    expect(ACCOUNT_LOOKUP.keep!({ is_group: 0, disabled: 0 })).toBe(true);
   });
 });
 

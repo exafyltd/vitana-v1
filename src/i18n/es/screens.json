@@ -11064,7 +11064,15 @@
           "against_invoice_id": "Contra factura",
           "qty": "Cant. devuelta",
           "item_name": "Artículo",
-          "items": "Líneas"
+          "items": "Líneas",
+          "party_type": "Tipo de tercero",
+          "party_id": "Cliente",
+          "reference_number": "Referencia bancaria",
+          "paid_from_account": "Desde cuenta",
+          "paid_to_account": "A cuenta",
+          "payment_type": "Tipo de pago",
+          "reference_date": "Fecha de referencia",
+          "paid_amount": "Importe"
         },
         "choices": {
           "website": "Sitio web",
@@ -11091,7 +11099,9 @@
           "note": "Nota",
           "task": "Tarea",
           "company": "Empresa",
-          "individual": "Particular"
+          "individual": "Particular",
+          "pay": "Pago",
+          "receive": "Cobro"
         },
         "forms": {
           "lead": {
@@ -11128,9 +11138,17 @@
             "button": "Nuevo cliente",
             "title": "Crear un cliente",
             "description": "Un cliente de ventas: necesario para presupuestos y facturas. Se crea como borrador, sin contabilizar."
+          },
+          "payment": {
+            "button": "Registrar pago",
+            "title": "Registrar un pago",
+            "description": "Un cobro de un cliente o pago a un cliente, como borrador: el libro bancario solo se toca al contabilizar el apunte, un paso aparte con confirmación."
           }
         },
-        "noLineRows": "No hay líneas disponibles."
+        "noLineRows": "No hay líneas disponibles.",
+        "lookupLoading": "Cargando …",
+        "lookupRefused": "Tu cuenta no puede leer la lista ({command}): introduce el ID directamente.",
+        "lookupIdPlaceholder": "Introduce el ID"
       }
     }
   }

@@ -11031,7 +11031,15 @@
           "against_invoice_id": "Against invoice",
           "qty": "Returned qty",
           "item_name": "Item",
-          "items": "Lines"
+          "items": "Lines",
+          "party_type": "Party type",
+          "party_id": "Customer",
+          "reference_number": "Bank reference",
+          "paid_from_account": "From account",
+          "paid_to_account": "To account",
+          "payment_type": "Payment type",
+          "reference_date": "Reference date",
+          "paid_amount": "Amount"
         },
         "choices": {
           "website": "Website",
@@ -11058,7 +11066,9 @@
           "note": "Note",
           "task": "Task",
           "company": "Company",
-          "individual": "Individual"
+          "individual": "Individual",
+          "pay": "Payment",
+          "receive": "Receipt"
         },
         "forms": {
           "lead": {
@@ -11095,9 +11105,17 @@
             "button": "New customer",
             "title": "Create a customer",
             "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted."
+          },
+          "payment": {
+            "button": "Record payment",
+            "title": "Record a payment",
+            "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step."
           }
         },
-        "noLineRows": "No lines available."
+        "noLineRows": "No lines available.",
+        "lookupLoading": "Loading …",
+        "lookupRefused": "Your account may not read the pick list ({command}) – enter the ID directly.",
+        "lookupIdPlaceholder": "Enter the ID"
       }
     }
   }

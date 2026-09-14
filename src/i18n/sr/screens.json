@@ -11064,7 +11064,15 @@
           "against_invoice_id": "Uz fakturu",
           "qty": "Vraćeno",
           "item_name": "Artikal",
-          "items": "Stavke"
+          "items": "Stavke",
+          "party_type": "Tip partnera",
+          "party_id": "Kupac",
+          "reference_number": "Referenca banke",
+          "paid_from_account": "Sa računa",
+          "paid_to_account": "Na račun",
+          "payment_type": "Tip plaćanja",
+          "reference_date": "Datum reference",
+          "paid_amount": "Iznos"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11091,7 +11099,9 @@
           "note": "Beleška",
           "task": "Zadatak",
           "company": "Firma",
-          "individual": "Fizičko lice"
+          "individual": "Fizičko lice",
+          "pay": "Isplata",
+          "receive": "Uplata"
         },
         "forms": {
           "lead": {
@@ -11128,9 +11138,17 @@
             "button": "Novi kupac",
             "title": "Kreiraj kupca",
             "description": "Kupac u prodaji – potreban za ponude i fakture. Kreira se kao nacrt, bez knjiženja."
+          },
+          "payment": {
+            "button": "Evidentiraj plaćanje",
+            "title": "Evidentiraj plaćanje",
+            "description": "Uplata od kupca ili isplata kupcu, kao nacrt – knjiga banke se dira tek kad se stavka proknjiži, u posebnom koraku sa potvrdom."
           }
         },
-        "noLineRows": "Nema dostupnih stavki."
+        "noLineRows": "Nema dostupnih stavki.",
+        "lookupLoading": "Učitava se …",
+        "lookupRefused": "Tvoj nalog ne može da čita listu ({command}) – unesi ID direktno.",
+        "lookupIdPlaceholder": "Unesi ID"
       }
     }
   }

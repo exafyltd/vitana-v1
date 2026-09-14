@@ -1,0 +1,20 @@
+{"name":"01-draft-payment-admin-en-1-form-empty","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-payment-admin-en-2-validation","phase":"form","alerts":["Required","Required","Required","Required"],"status":[]}
+{"name":"01-draft-payment-admin-en-3-form-filled","phase":"form","alerts":[],"status":[]}
+{"name":"01-draft-payment-admin-en-4-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"01-draft-payment-admin-en-5-done","phase":"done","alerts":[],"status":["Record created."]}
+{"name":"01-draft-payment-admin-en","mounted":true,"url":"/backoffice/finance/payments","dir":"ltr","screenId":"BO-025","h1":"💸Payments","rows":3,"alerts":[],"hOverflow":false}
+{"name":"02-draft-payment-admin-de-1-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"02-draft-payment-admin-de","mounted":true,"url":"/backoffice/finance/payments","dir":"ltr","screenId":"BO-025","h1":"💸Zahlungen","rows":3,"alerts":[],"hOverflow":false}
+{"name":"03-draft-payment-admin-ar-rtl-1-form","phase":"form","alerts":[],"status":[]}
+{"name":"03-draft-payment-admin-ar-rtl","mounted":true,"url":"/backoffice/finance/payments","dir":"rtl","screenId":"BO-025","h1":"💸المدفوعات","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 34 stub read POSTs: 25
+{"name":"04-draft-payment-bookkeeper-lookup-refused-en-1-form-customer-lookup-refused","phase":"form","alerts":[],"status":[]}
+{"name":"04-draft-payment-bookkeeper-lookup-refused-en-2-review-card","phase":"review","alerts":[],"status":[]}
+{"name":"04-draft-payment-bookkeeper-lookup-refused-en","mounted":true,"url":"/backoffice/finance/payments","dir":"ltr","screenId":"BO-025","h1":"💸Payments","rows":3,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 12 stub read POSTs: 7
+{"name":"05-draft-payment-hidden-salesperson-en","mounted":true,"url":"/backoffice/finance/payments","dir":"ltr","screenId":"BO-025","h1":"💸Payments","rows":0,"alerts":[],"hOverflow":false}
+--- bridge down run follows in a separate stub
+blocked non-read requests: 11 stub read POSTs: 0

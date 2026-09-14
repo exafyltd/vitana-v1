@@ -17,14 +17,50 @@ import { TierBadge } from "@/components/backoffice/CommandBadges";
 import ReceiptDetail from "@/components/backoffice/ReceiptDetail";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useDraftCommand } from "@/hooks/useDraftCommand";
-import { hasAnyCapability } from "@/hooks/useBackOfficeCommands";
-import { DRAFT_FORMS, buildDraftPayload, draftResultSummary, initialDraftValues, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues } from "@/lib/backoffice-draft";
+import { hasAnyCapability, useErpRead } from "@/hooks/useBackOfficeCommands";
+import { DRAFT_FORMS, buildDraftPayload, draftCapabilities, draftResultSummary, initialDraftValues, parseLines, validateDraft, type DraftField, type DraftFormId, type DraftFormSpec, type DraftIssue, type DraftValues, type LookupSpec } from "@/lib/backoffice-draft";
 import { t } from "@/lib/i18n-toast";
 
 const ISSUE_KEY: Record<DraftIssue, string> = { required: "screens.backoffice.draft.issues.required", invalidEmail: "screens.backoffice.draft.issues.invalidEmail", invalidDate: "screens.backoffice.draft.issues.invalidDate", invalidOption: "screens.backoffice.draft.issues.invalidOption", invalidNumber: "screens.backoffice.draft.issues.invalidNumber", lineQtyTooHigh: "screens.backoffice.draft.issues.lineQtyTooHigh", noLines: "screens.backoffice.draft.issues.noLines" };
 
 function fieldLabel(key: string): string {
   return t(`screens.backoffice.draft.fields.${key}`);
+}
+
+/** VTID-03871 — options for a `lookup` field, loaded through a typed Read; `[]` + `refused` when the read is not permitted. */
+function useLookupOptions(lookup: LookupSpec | undefined, enabled: boolean) {
+  const q = useErpRead<Record<string, unknown>>(lookup?.type ?? "noop", lookup?.payload ?? {}, { enabled: enabled && !!lookup });
+  const rows = ((q.data?.result?.[lookup?.listKey ?? ""] as Array<Record<string, unknown>> | undefined) ?? []).filter((r) => (lookup?.keep ? lookup.keep(r) : true));
+  const options = rows.map((r) => ({ value: String(r[lookup!.valueKey] ?? ""), label: String(r[lookup!.labelKey] ?? ""), code: lookup!.codeKey ? String(r[lookup!.codeKey] ?? "") : "" })).filter((o) => o.value);
+  return { options, isLoading: q.isLoading, refused: !!q.error };
+}
+
+function LookupSelect({ id, field, value, onChange, invalid }: { id: string; field: DraftField; value: string; onChange: (v: string) => void; invalid: boolean }) {
+  const { options, isLoading, refused } = useLookupOptions(field.lookup, true);
+  if (refused) {
+    // The user may record the payment but not list the parties/accounts: keep the card usable with a typed id and say why.
+    return (
+      <>
+        <Input id={id} name={field.key} value={value} onChange={(e) => onChange(e.target.value)} aria-invalid={invalid} dir="ltr" className="font-mono text-xs" placeholder={t("screens.backoffice.draft.lookupIdPlaceholder")} />
+        <p className="text-[11px] text-muted-foreground">{t("screens.backoffice.draft.lookupRefused", { command: field.lookup?.type ?? "" })}</p>
+      </>
+    );
+  }
+  return (
+    <Select value={value} onValueChange={onChange} disabled={isLoading}>
+      <SelectTrigger id={id} aria-invalid={invalid} data-testid={`draft-select-${field.key}`}><SelectValue placeholder={isLoading ? t("screens.backoffice.draft.lookupLoading") : t("screens.backoffice.draft.choose")} /></SelectTrigger>
+      <SelectContent>
+        {options.map((o) => <SelectItem key={o.value} value={o.value}>{o.code ? `${o.code} · ${o.label}` : o.label}</SelectItem>)}
+      </SelectContent>
+    </Select>
+  );
+}
+
+/** Resolved label for a lookup value on the review card (the id is shown underneath either way). */
+function LookupLabel({ field, value }: { field: DraftField; value: string }) {
+  const { options } = useLookupOptions(field.lookup, true);
+  const o = options.find((x) => x.value === value);
+  return <>{o ? (o.code ? `${o.code} · ${o.label}` : o.label) : "—"}<span className="block font-mono text-[10px] text-muted-foreground break-all" dir="ltr">{value}</span></>;
 }
 
 /** VTID-03866 — editable rows for a `lines` field; rows live in the values map as a JSON array. */
@@ -68,9 +104,11 @@ function DraftForm({ spec, values, issues, onChange }: { spec: DraftFormSpec; va
           <div key={f.key} className={`space-y-1 ${wide ? "sm:col-span-2" : ""}`}>
             <Label htmlFor={id}>{fieldLabel(f.key)}{f.required && <span aria-hidden="true" className="text-destructive"> *</span>}</Label>
             {f.readOnly ? (
-              <p id={id} className="text-sm font-mono break-all py-2" dir="ltr">{values[f.key] ?? "—"}</p>
+              f.kind === "select" ? <p id={id} className="text-sm py-2">{values[f.key] ? t(`screens.backoffice.draft.choices.${values[f.key]}`) : "—"}</p> : <p id={id} className="text-sm font-mono break-all py-2" dir="ltr">{values[f.key] ?? "—"}</p>
             ) : f.kind === "lines" ? (
               <LinesEditor field={f} value={values[f.key]} onChange={(v) => onChange(f.key, v)} invalid={!!issue} />
+            ) : f.kind === "lookup" ? (
+              <LookupSelect id={id} field={f} value={values[f.key] ?? ""} onChange={(v) => onChange(f.key, v)} invalid={!!issue} />
             ) : f.kind === "select" ? (
               <Select value={values[f.key] ?? ""} onValueChange={(v) => onChange(f.key, v)}>
                 <SelectTrigger id={id} aria-invalid={!!issue} data-testid={`draft-select-${f.key}`}><SelectValue placeholder={t("screens.backoffice.draft.choose")} /></SelectTrigger>
@@ -124,6 +162,7 @@ function PayloadValue({ spec, k, v, values }: { spec: DraftFormSpec; k: string; 
       </table>
     );
   }
+  if (f?.kind === "lookup") return <LookupLabel field={f} value={String(v)} />;
   return <>{f?.kind === "select" ? t(`screens.backoffice.draft.choices.${String(v)}`) : String(v)}</>;
 }
 
@@ -135,7 +174,7 @@ function ReviewCard({ spec, payload, idempotencyKey, values }: { spec: DraftForm
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.command")}</dt><dd className="font-mono text-xs" dir="ltr">{spec.type}</dd>
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.action")}</dt><dd className="font-mono text-xs" dir="ltr">{spec.action}</dd>
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.tier")}</dt><dd><TierBadge tier="draft" /></dd>
-        <dt className="text-muted-foreground">{t("screens.backoffice.draft.capability")}</dt><dd className="font-mono text-xs" dir="ltr">{spec.capability}</dd>
+        <dt className="text-muted-foreground">{t("screens.backoffice.draft.capability")}</dt><dd className="font-mono text-xs" dir="ltr">{draftCapabilities(spec).join(" | ")}</dd>
         <dt className="text-muted-foreground">{t("screens.backoffice.draft.idempotencyKey")}</dt><dd className="font-mono text-[11px] break-all" dir="ltr">{idempotencyKey}</dd>
       </dl>
       <div className="rounded-md border">
@@ -239,7 +278,7 @@ export function DraftCommandButton({ formId, initial, variant = "default" }: { f
   const me = useMyErpAccess();
   const [open, setOpen] = useState(false);
   const spec = DRAFT_FORMS[formId];
-  const allowed = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, [spec.capability]));
+  const allowed = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, draftCapabilities(spec)));
   if (!allowed) return null;
   return (
     <>

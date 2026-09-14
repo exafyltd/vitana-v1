@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "payment_entry_id": "855c86e3-446e-4639-a786-3986a1cc4199",
+  "naming_series": "PAY-2026-00003"
+}

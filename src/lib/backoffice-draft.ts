@@ -9,7 +9,10 @@
  * anything is queued or executed (VTID-03842 entity resolution).
  */
 
-export type DraftFieldKind = "text" | "email" | "tel" | "date" | "number" | "textarea" | "select" | "lines";
+export type DraftFieldKind = "text" | "email" | "tel" | "date" | "number" | "textarea" | "select" | "lines" | "lookup";
+
+/** VTID-03871 — a `lookup` field loads its options through a typed Read command; when that read is refused the field degrades to a typed id. */
+export interface LookupSpec { type: string; payload: Record<string, unknown>; listKey: string; valueKey: string; labelKey: string; /** secondary label, e.g. an account number */ codeKey?: string; /** keep only rows for which this predicate holds (e.g. non-group accounts) */ keep?: (row: Record<string, unknown>) => boolean }
 
 /** One column of a `lines` field. `display` columns are shown but never sent; `maxFrom` caps a number at another column's value in the same row. */
 export interface LineColumn { key: string; kind: "text" | "number"; display?: boolean; hidden?: boolean; maxFrom?: string; required?: boolean }
@@ -26,9 +29,11 @@ export interface DraftField {
   /** `lines` only — the row shape; rows come from `initial` values as a JSON array */
   columns?: readonly LineColumn[];
   min?: number;
+  /** `lookup` only */
+  lookup?: LookupSpec;
 }
 
-export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote";
+export type DraftFormId = "lead" | "contact" | "company" | "task" | "activity" | "customer" | "creditNote" | "payment";
 
 export interface DraftFormSpec {
   id: DraftFormId;
@@ -37,7 +42,13 @@ export interface DraftFormSpec {
   /** ERPClaw action the bridge runs — shown on the card so the user sees exactly what will execute */
   action: string;
   capability: string;
+  /** further capabilities that also admit the command (any-of, as in the gateway catalog) */
+  alsoCapabilities?: readonly string[];
   fields: readonly DraftField[];
+}
+
+export function draftCapabilities(spec: DraftFormSpec): readonly string[] {
+  return [spec.capability, ...(spec.alsoCapabilities ?? [])];
 }
 
 // Mirrors VALID_* in erpclaw-growth/scripts/erpclaw-crm/db_query.py (v2.10.0).
@@ -48,6 +59,13 @@ export const TASK_PRIORITIES = ["low", "medium", "high", "urgent"] as const;
 export const ACTIVITY_TYPES = ["call", "email", "meeting", "note", "task"] as const;
 // Mirrors VALID_CUSTOMER_TYPES in erpclaw/scripts/erpclaw-selling/db_query.py (v4.15.0).
 export const CUSTOMER_TYPES = ["company", "individual"] as const;
+// Mirrors VALID_PAYMENT_TYPES / VALID_PARTY_TYPES in erpclaw/scripts/erpclaw-payments/db_query.py (v4.15.0).
+// `internal_transfer` needs no party and a different card; `supplier`/`employee` parties wait for the ops/HR waves (no party read in wave 1).
+export const PAYMENT_TYPES = ["receive", "pay"] as const;
+export const PARTY_TYPES = ["customer"] as const;
+const nonGroup = (r: Record<string, unknown>) => !(r.is_group === 1 || r.is_group === true) && !(r.disabled === 1 || r.disabled === true);
+export const CUSTOMER_LOOKUP: LookupSpec = { type: "sales.customer.list", payload: { limit: 200 }, listKey: "customers", valueKey: "id", labelKey: "name" };
+export const ACCOUNT_LOOKUP: LookupSpec = { type: "accounting.coa.list", payload: { limit: 200 }, listKey: "accounts", valueKey: "id", labelKey: "name", codeKey: "account_number", keep: nonGroup };
 /** ERPClaw accepts a credit note only against an invoice in one of these states (create_credit_note). */
 export const CREDIT_NOTE_SOURCE_STATUSES = ["submitted", "overdue", "partially_paid", "paid"] as const;
 
@@ -131,8 +149,21 @@ export const DRAFT_FORMS: Record<DraftFormId, DraftFormSpec> = {
       ] },
     ],
   },
+  payment: {
+    id: "payment", type: "finance.payment.record", action: "add-payment", capability: "finance.approve", alsoCapabilities: ["accounting.post"],
+    fields: [
+      { key: "payment_type", kind: "select", options: PAYMENT_TYPES, required: true, default: "receive" },
+      { key: "party_type", kind: "select", options: PARTY_TYPES, required: true, default: "customer", readOnly: true },
+      { key: "party_id", kind: "lookup", required: true, lookup: CUSTOMER_LOOKUP },
+      { key: "paid_amount", kind: "number", required: true, min: 0.01 },
+      { key: "posting_date", kind: "date", required: true },
+      { key: "paid_from_account", kind: "lookup", required: true, lookup: ACCOUNT_LOOKUP },
+      { key: "paid_to_account", kind: "lookup", required: true, lookup: ACCOUNT_LOOKUP },
+      { key: "reference_number", kind: "text" },
+      { key: "reference_date", kind: "date" },
+    ],
+  },
 };
-
 export type LineRow = Record<string, string>;
 
 export function parseLines(v: string | undefined): LineRow[] {
