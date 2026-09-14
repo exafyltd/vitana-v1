@@ -11176,6 +11176,72 @@
         "differenceIs": "Diferencia {amount}",
         "addLine": "Añadir línea",
         "totals": "Totales"
+      },
+      "policyEdit": {
+        "button": "Editar política",
+        "title": "Editar política",
+        "description": "El umbral de alto riesgo y la regla MFA del tenant. Cada cambio se guarda como recibo en la auditoría.",
+        "review": "Revisa antes de guardar",
+        "reviewHint": "Solo se muestran los valores que cambian. El gateway registra antes y después.",
+        "setting": "Ajuste",
+        "before": "Antes",
+        "after": "Después",
+        "audited": "Se guarda con tu cuenta como editor; visible en la auditoría como policy.updated.",
+        "save": "Guardar",
+        "done": "Guardado",
+        "doneLine": "La política está actualizada y se aplica a los nuevos comandos desde ahora.",
+        "failed": "No guardado",
+        "noChanges": "Nada ha cambiado.",
+        "readOnlyHint": "Solo lectura: editar requiere approvals.policy.",
+        "issues": {
+          "invalidThreshold": "Introduce un importe entre 0 y 1.000.000.000.000"
+        }
+      },
+      "decide": {
+        "queueHint": "Las solicitudes pendientes que puedes decidir muestran Aprobar / Rechazar. Aprobar ejecuta el comando a través del gateway, nunca desde el navegador.",
+        "escalations": "Escalaciones",
+        "payloadNote": "El gateway aún no muestra a quien aprueba los datos enviados del comando: solo tipo, acción, nivel y solicitante. Es una carencia conocida.",
+        "note": "Nota de decisión",
+        "approve": {
+          "button": "Aprobar",
+          "title": "Aprobar solicitud",
+          "description": "Al aprobar, el gateway ejecuta de inmediato el comando de alto riesgo a través del puente.",
+          "notePlaceholder": "Opcional: por qué apruebas",
+          "whatHappens": "Doble aprobación: no eres quien solicita, tienes el permiso de aprobación y estás en la web. El gateway lo comprueba de nuevo.",
+          "confirm": "Aprobar y ejecutar"
+        },
+        "reject": {
+          "button": "Rechazar",
+          "title": "Rechazar solicitud",
+          "description": "La solicitud se rechaza; el comando nunca se ejecuta. El motivo es obligatorio.",
+          "notePlaceholder": "¿Por qué rechazas?",
+          "whatHappens": "El rechazo y tu nota van al registro de auditoría; quien solicitó los verá en sus solicitudes.",
+          "confirm": "Rechazar"
+        },
+        "issues": {
+          "required": "Indica el motivo del rechazo",
+          "tooLong": "Como máximo 1000 caracteres"
+        },
+        "outcome": {
+          "executed": "Aprobado y ejecutado",
+          "rejected": "Rechazado",
+          "refused": "No es posible",
+          "executedButFailed": "Aprobado: la ejecución falló",
+          "error": "Error",
+          "executedLine": "El gateway ejecutó el comando. El recibo del puente está abajo.",
+          "rejectedLine": "La solicitud está rechazada; no se ejecutó nada.",
+          "executedButFailedHint": "La aprobación queda registrada, pero el puente/ERPClaw rechazó la ejecución: el comando queda como fallido y hay que solicitarlo de nuevo."
+        },
+        "refusals": {
+          "selfApproval": "No puedes aprobar tu propia solicitud.",
+          "webOnly": "Solo se puede aprobar en la web, no por voz ni chat.",
+          "noCapabilityOnRequest": "La solicitud no indica permiso de aprobación.",
+          "capabilityMissing": "No tienes el permiso de aprobación de esta solicitud.",
+          "readOnlyRole": "Tu rol es de solo lectura.",
+          "mfaRequired": "Esta aprobación necesita una sesión con segundo factor (MFA).",
+          "alreadyDecided": "Esta solicitud ya fue decidida.",
+          "notFound": "Solicitud no encontrada."
+        }
       }
     }
   }

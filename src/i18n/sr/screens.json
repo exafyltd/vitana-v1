@@ -11176,6 +11176,72 @@
         "differenceIs": "Razlika {amount}",
         "addLine": "Dodaj stavku",
         "totals": "Ukupno"
+      },
+      "policyEdit": {
+        "button": "Uredi politiku",
+        "title": "Uredi politiku",
+        "description": "Prag visokog rizika i MFA pravilo za tenanta. Svaka izmena se čuva kao potvrda u revizijskom tragu.",
+        "review": "Proveri pre čuvanja",
+        "reviewHint": "Prikazuju se samo vrednosti koje se menjaju. Gateway beleži pre i posle.",
+        "setting": "Podešavanje",
+        "before": "Pre",
+        "after": "Posle",
+        "audited": "Čuva se pod tvojim nalogom kao urednik – vidljivo u revizijskom tragu kao policy.updated.",
+        "save": "Sačuvaj",
+        "done": "Sačuvano",
+        "doneLine": "Politika je ažurirana i od sada važi za nove komande.",
+        "failed": "Nije sačuvano",
+        "noChanges": "Ništa nije promenjeno.",
+        "readOnlyHint": "Samo čitanje – uređivanje zahteva approvals.policy.",
+        "issues": {
+          "invalidThreshold": "Unesi iznos između 0 i 1.000.000.000.000"
+        }
+      },
+      "decide": {
+        "queueHint": "Otvoreni zahtevi koje smeš da odlučiš prikazuju Odobri / Odbij. Odobravanje izvršava komandu preko gateway-a – nikad iz pregledača.",
+        "escalations": "Eskalacije",
+        "payloadNote": "Gateway još ne prikazuje odobravaocu poslate podatke komande – samo tip, akciju, nivo i podnosioca. To je poznata praznina.",
+        "note": "Napomena uz odluku",
+        "approve": {
+          "button": "Odobri",
+          "title": "Odobri zahtev",
+          "description": "Odobravanjem gateway odmah izvršava komandu visokog rizika preko mosta.",
+          "notePlaceholder": "Opciono: zašto odobravaš",
+          "whatHappens": "Princip četiri oka: nisi podnosilac, imaš ovlašćenje za odobravanje i radiš na vebu. Gateway to ponovo proverava.",
+          "confirm": "Odobri i izvrši"
+        },
+        "reject": {
+          "button": "Odbij",
+          "title": "Odbij zahtev",
+          "description": "Zahtev se odbija; komanda se nikad ne izvršava. Obrazloženje je obavezno.",
+          "notePlaceholder": "Zašto odbijaš?",
+          "whatHappens": "Odbijanje i tvoja napomena idu u revizijski trag; podnosilac ih vidi u svojim zahtevima.",
+          "confirm": "Odbij"
+        },
+        "issues": {
+          "required": "Navedi razlog odbijanja",
+          "tooLong": "Najviše 1000 znakova"
+        },
+        "outcome": {
+          "executed": "Odobreno i izvršeno",
+          "rejected": "Odbijeno",
+          "refused": "Nije moguće",
+          "executedButFailed": "Odobreno – izvršenje neuspešno",
+          "error": "Greška",
+          "executedLine": "Gateway je izvršio komandu. Potvrda mosta je ispod.",
+          "rejectedLine": "Zahtev je odbijen; ništa nije izvršeno.",
+          "executedButFailedHint": "Odobrenje je zabeleženo, ali je most/ERPClaw odbio izvršenje – komanda je označena kao neuspešna i mora se ponovo zatražiti."
+        },
+        "refusals": {
+          "selfApproval": "Ne možeš odobriti sopstveni zahtev.",
+          "webOnly": "Odobravanje je moguće samo na vebu – ne glasom ni četom.",
+          "noCapabilityOnRequest": "Zahtev ne navodi ovlašćenje za odobravanje.",
+          "capabilityMissing": "Nemaš ovlašćenje za odobravanje ovog zahteva.",
+          "readOnlyRole": "Tvoja uloga je samo za čitanje.",
+          "mfaRequired": "Ovo odobrenje zahteva sesiju sa drugim faktorom (MFA).",
+          "alreadyDecided": "O ovom zahtevu je već odlučeno.",
+          "notFound": "Zahtev nije pronađen."
+        }
       }
     }
   }

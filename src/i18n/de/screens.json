@@ -11143,6 +11143,72 @@
         "differenceIs": "Differenz {amount}",
         "addLine": "Zeile hinzufügen",
         "totals": "Summen"
+      },
+      "policyEdit": {
+        "button": "Richtlinie bearbeiten",
+        "title": "Richtlinie bearbeiten",
+        "description": "Schwelle für hohes Risiko und MFA-Pflicht für den Tenant. Jede Änderung wird als Beleg im Prüfpfad gespeichert.",
+        "review": "Prüfen, bevor es gespeichert wird",
+        "reviewHint": "Nur die geänderten Werte werden angezeigt. Das Gateway protokolliert vorher/nachher.",
+        "setting": "Einstellung",
+        "before": "Vorher",
+        "after": "Nachher",
+        "audited": "Gespeichert wird mit deinem Konto als Änderer:in – sichtbar im Prüfpfad als policy.updated.",
+        "save": "Speichern",
+        "done": "Gespeichert",
+        "doneLine": "Die Richtlinie ist aktualisiert und gilt ab sofort für neue Befehle.",
+        "failed": "Nicht gespeichert",
+        "noChanges": "Nichts geändert.",
+        "readOnlyHint": "Nur lesen – Ändern braucht approvals.policy.",
+        "issues": {
+          "invalidThreshold": "Bitte einen Betrag zwischen 0 und 1.000.000.000.000 eingeben"
+        }
+      },
+      "decide": {
+        "queueHint": "Offene Anfragen, die du entscheiden darfst, zeigen Freigeben / Ablehnen. Freigeben führt den Befehl über das Gateway aus – nie aus dem Browser heraus.",
+        "escalations": "Eskalationen",
+        "payloadNote": "Das Gateway zeigt Freigebenden noch nicht die gesendeten Daten des Befehls – nur Art, Aktion, Stufe und Anfragende:n. Das ist eine bekannte Lücke.",
+        "note": "Entscheidungsnotiz",
+        "approve": {
+          "button": "Freigeben",
+          "title": "Anfrage freigeben",
+          "description": "Mit der Freigabe führt das Gateway den Befehl mit hohem Risiko sofort über die Bridge aus.",
+          "notePlaceholder": "Optional: warum du freigibst",
+          "whatHappens": "Vier-Augen-Prinzip: du bist nicht die anfragende Person, hältst die Freigabe-Berechtigung und arbeitest im Web. Das Gateway prüft das erneut.",
+          "confirm": "Freigeben und ausführen"
+        },
+        "reject": {
+          "button": "Ablehnen",
+          "title": "Anfrage ablehnen",
+          "description": "Die Anfrage wird abgelehnt; der Befehl wird nie ausgeführt. Eine Begründung ist Pflicht.",
+          "notePlaceholder": "Warum lehnst du ab?",
+          "whatHappens": "Die Ablehnung und deine Notiz landen im Prüfpfad; die anfragende Person sieht sie in ihren Anfragen.",
+          "confirm": "Ablehnen"
+        },
+        "issues": {
+          "required": "Bitte begründe die Ablehnung",
+          "tooLong": "Höchstens 1000 Zeichen"
+        },
+        "outcome": {
+          "executed": "Freigegeben und ausgeführt",
+          "rejected": "Abgelehnt",
+          "refused": "Nicht möglich",
+          "executedButFailed": "Freigegeben – Ausführung fehlgeschlagen",
+          "error": "Fehler",
+          "executedLine": "Das Gateway hat den Befehl ausgeführt. Der Beleg der Bridge steht unten.",
+          "rejectedLine": "Die Anfrage ist abgelehnt; nichts wurde ausgeführt.",
+          "executedButFailedHint": "Die Freigabe ist gespeichert, aber die Bridge/ERPClaw hat die Ausführung abgelehnt – der Befehl steht auf fehlgeschlagen und muss neu angefragt werden."
+        },
+        "refusals": {
+          "selfApproval": "Du kannst deine eigene Anfrage nicht freigeben.",
+          "webOnly": "Freigaben sind nur im Web möglich – nicht per Sprache oder Chat.",
+          "noCapabilityOnRequest": "Die Anfrage nennt keine Freigabe-Berechtigung.",
+          "capabilityMissing": "Dir fehlt die Freigabe-Berechtigung dieser Anfrage.",
+          "readOnlyRole": "Deine Rolle darf nur lesen.",
+          "mfaRequired": "Diese Freigabe braucht eine Sitzung mit zweitem Faktor (MFA).",
+          "alreadyDecided": "Diese Anfrage wurde inzwischen schon entschieden.",
+          "notFound": "Anfrage nicht gefunden."
+        }
       }
     }
   }
