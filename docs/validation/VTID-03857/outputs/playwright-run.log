@@ -1,0 +1,10 @@
+{"name":"01-accounting-journals-admin-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journals","rows":53,"alerts":[],"hOverflow":false}
+{"name":"02-accounting-chart-of-accounts-admin-en","mounted":true,"url":"/backoffice/accounting/chart-of-accounts","dir":"ltr","screenId":"BO-019","h1":"🗂️Chart of Accounts","rows":22,"alerts":[],"hOverflow":false}
+{"name":"03-accounting-periods-admin-en","mounted":true,"url":"/backoffice/accounting/periods","dir":"ltr","screenId":"BO-020","h1":"🗓️Fiscal Periods & Close","rows":1,"alerts":["ERPClaw rejected the read command."],"hOverflow":false}
+{"name":"04-accounting-journals-admin-de","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journale","rows":53,"alerts":[],"hOverflow":false}
+{"name":"05-accounting-chart-of-accounts-admin-ar-rtl","mounted":true,"url":"/backoffice/accounting/chart-of-accounts","dir":"rtl","screenId":"BO-019","h1":"🗂️دليل الحسابات","rows":22,"alerts":[],"hOverflow":false}
+blocked non-read requests: 52 stub read POSTs: 12
+{"name":"06-accounting-periods-bookkeeper-de","mounted":true,"url":"/backoffice/accounting/periods","dir":"ltr","screenId":"BO-020","h1":"🗓️Geschäftsjahre & Abschluss","rows":1,"alerts":["ERPClaw hat den Lesebefehl abgelehnt."],"hOverflow":false}
+blocked non-read requests: 10 stub read POSTs: 4
+{"name":"07-accounting-journals-salesperson-no-access-en","mounted":true,"url":"/backoffice/accounting/journals","dir":"ltr","screenId":"BO-018","h1":"📒Journals","rows":0,"alerts":[],"hOverflow":false}
+blocked non-read requests: 11 stub read POSTs: 0

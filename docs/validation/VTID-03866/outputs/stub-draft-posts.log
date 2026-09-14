@@ -1,0 +1,63 @@
+# Draft-command traffic seen by the local stub gateway (127.0.0.1:8090)
+## stub run: sales
+stub on 8090 persona=sales bridge=up
+POST crm.contact.list 200
+POST crm.company.list 200
+POST sales.customer.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+## stub run: salesmanager-2
+stub on 8090 persona=salesmanager bridge=up
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+DRAFT sales.credit_note.create key=ui.draft:sales.credit_note.create:527d9a55274b4deaa940822465438cd0 confirm=false payload={"against_invoice_id":"a2a4958f-1a1e-4d65-b978-6dd7d4d96096","posting_date":"2026-09-13","reason":"Two seats cancelled before the programme started","items":[{"item_id":"8d1bd4bd-f1b4-4de3-b4a9-bbc929c04b8f","qty":"2"}]}
+POST sales.credit_note.create 200
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+POST /api/v1/rum/beacon 403
+## stub run: salesmanager-3
+stub on 8090 persona=salesmanager bridge=up
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+DRAFT sales.credit_note.create key=ui.draft:sales.credit_note.create:8e974184a71d453b9c87fd561d9d7208 confirm=false payload={"against_invoice_id":"a2a4958f-1a1e-4d65-b978-6dd7d4d96096","posting_date":"2026-09-13","reason":"Two seats cancelled before the programme started","items":[{"item_id":"8d1bd4bd-f1b4-4de3-b4a9-bbc929c04b8f","qty":"2"}]}
+POST sales.credit_note.create 200
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+## stub run: salesmanager
+stub on 8090 persona=salesmanager bridge=up
+POST crm.contact.list 200
+POST crm.company.list 200
+POST sales.customer.list 200
+DRAFT sales.customer.create key=ui.draft:sales.customer.create:3ab324f4e66f4d6a9b4efd8f37ce628c confirm=false payload={"name":"Gulf Wellness Trading FZE","customer_type":"company","tax_id":"100123456700003","credit_limit":"25000","primary_address":"Al Maryah Island, Abu Dhabi"}
+POST sales.customer.create 200
+POST crm.contact.list 200
+POST crm.company.list 200
+POST sales.customer.list 200
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+DRAFT sales.credit_note.create key=ui.draft:sales.credit_note.create:5424084dd9bc471cabfdbbfcd27deb10 confirm=false payload={"against_invoice_id":"a2a4958f-1a1e-4d65-b978-6dd7d4d96096","posting_date":"2026-09-13","reason":"Two seats cancelled before the programme started","items":[{"item_id":"8d1bd4bd-f1b4-4de3-b4a9-bbc929c04b8f","qty":"2"}]}
+POST sales.credit_note.create 200
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+POST /api/v1/analytics/events/batch 403
+POST crm.contact.list 200
+POST crm.company.list 200
+POST sales.customer.list 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+POST /api/v1/analytics/events/batch 403
+POST /api/v1/rum/beacon 403
+POST /api/v1/rum/beacon 403
+POST sales.invoice.list 200
+POST sales.invoice.get 200
+POST /api/v1/rum/beacon 403

@@ -10271,7 +10271,15 @@
         "geminiTitle": "Poveži se sa Gemini",
         "geminiStep1": "Za Gemini CLI: dodaj URL MCP servera iznad u ~/.gemini/settings.json pod tvoje MCP servere.",
         "geminiStep2": "Za Gemini Enterprise (Business Edition): Podešavanja i pomoć → Tim → Upravljaj timom → Povezane aplikacije → „Dodaj MCP Server“.",
-        "geminiNote": "Gemini aplikacija za korisnike trenutno nema dokumentovan način za direktno dodavanje prilagođenog MCP servera — to je danas dostupno samo putem Gemini CLI i Gemini Enterprise."
+        "geminiNote": "Gemini aplikacija za korisnike trenutno nema dokumentovan način za direktno dodavanje prilagođenog MCP servera — to je danas dostupno samo putem Gemini CLI i Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
+        "tabClaude": "Claude",
+        "tabChatgpt": "ChatGPT",
+        "tabGemini": "Gemini"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL prodavnice (opciono) — npr. https://your-shop.com",
@@ -10294,6 +10302,48 @@
         "connecting": "Povezivanje...",
         "notConfigured": "Ovaj tip veze još uvek nije omogućen. Pokušaj ponovo kasnije.",
         "failed": "Nije uspelo uspostavljanje veze. Proveri svoje podatke."
+      },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
+      "portalEyebrow": "Commerce Portal",
+      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentStatusPill": "Going live soon",
+      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentUrlHint": "One address. That is all your agent needs.",
+      "howItWorksTitle": "What happens next",
+      "manualIntro": "Prefer to fill it in yourself?",
+      "manualCta": "Connect a business manually",
+      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
+      "connectionsCount": "{count} connected",
+      "openWorkbench": "Open connection",
+      "closeWorkbench": "Close",
+      "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
+      "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
+        "connect": "Connect",
+        "mapping": "Mapping",
+        "tests": "Checks",
+        "live": "Live",
+        "offTrack": "Needs attention"
       }
     },
     "oauthconsent": {
@@ -10328,7 +10378,6 @@
       "placeholderBody": "Ova stranica je privremena. Bočna traka, profil, promena uloge i ORB ostaju isti u svakoj ulozi – samo sadržaj tek dolazi.",
       "noSectionMatches": "Nijedan BackOffice odeljak ne odgovara",
       "sidebarIsCanonical": "Bočna traka je zvanična lista odeljaka. Izaberi jedan.",
-      "noAccess": "Nemaš pristup ovom odeljku. Administrator tenanta može ti ga dodeliti u Podešavanja › Pristup.",
       "access": {
         "title": "Pristup",
         "description": "ERP ovlašćenja po članu. Uloga otvara vrata; ovlašćenje kaže šta neko sme da radi unutra – odobrenja, plaćanja i zatvaranja perioda traže drugu osobu.",
@@ -10347,116 +10396,7 @@
         "noManage": "Možeš da vidiš ovlašćenja, ali ne i da ih menjaš – za to treba erp.admin ili uloga administratora.",
         "mine": "Tvoja važeća ovlašćenja"
       },
-      "tiers": {
-        "read": "Čitanje",
-        "draft": "Nacrt",
-        "commit": "Knjiženje",
-        "high": "Visok rizik"
-      },
-      "commandStatus": {
-        "executed": "Izvršeno",
-        "failed": "Neuspešno",
-        "awaiting_approval": "Čeka odobrenje",
-        "rejected": "Odbijeno"
-      },
-      "approvalStatus": {
-        "pending": "Na čekanju",
-        "approved": "Odobreno",
-        "rejected": "Odbijeno"
-      },
-      "channels": {
-        "web": "Veb",
-        "chat": "Ćaskanje",
-        "voice": "Glas",
-        "system": "Sistem"
-      },
-      "errors": {
-        "bridgeUnavailable": "ERP most nije dostupan.",
-        "bridgeUnavailableHint": "Gateway još nema podešen most (ERP_BRIDGE_URL). Do tada ERP podaci ostaju prazni – komande, odobrenja i revizioni trag i dalje rade.",
-        "noCapability": "Nedostaje ti ovlašćenje za ovo.",
-        "noCapabilityHint": "Administrator tenanta može da ti ga dodeli u Podešavanja › Pristup.",
-        "erpFailed": "ERPClaw je odbio komandu za čitanje.",
-        "unauthorized": "Prijavi se ponovo.",
-        "noTenant": "Nema aktivnog tenanta – prvo izaberi radni prostor.",
-        "notFound": "Nije pronađeno.",
-        "generic": "Podaci nisu mogli da se učitaju."
-      },
-      "common": {
-        "empty": "Nema unosa",
-        "asOf": "stanje {time}",
-        "replayed": "ponovljeno iz potvrde",
-        "source": {
-          "erp": "Izvor: ERPClaw preko mosta",
-          "gateway": "Izvor: Vitana gateway"
-        },
-        "readOnlySlice": "Samo čitanje u ovoj fazi – odluke i izmene stižu sa sledećom.",
-        "viewAll": "Prikaži sve",
-        "all": "Sve"
-      },
-      "receipts": {
-        "title": "Potvrde komandi",
-        "description": "Svaka komanda koja je prošla kroz gateway – sa potvrdom koju je most sačuvao za nju.",
-        "searchPlaceholder": "Pretraži po komandi ili ID-u …",
-        "empty": "Još nema komandi",
-        "noReceipt": "Nema potvrde",
-        "show": "Prikaži potvrdu",
-        "hide": "Sakrij potvrdu"
-      },
-      "commands": {
-        "when": "Kada",
-        "command": "Komanda",
-        "tier": "Nivo",
-        "status": "Status",
-        "channel": "Kanal",
-        "requester": "Podnosilac",
-        "receipt": "Potvrda",
-        "reason": "Razlog",
-        "you": "Ti"
-      },
-      "approvals": {
-        "requested": "Zatraženo",
-        "command": "Komanda",
-        "requester": "Podnosilac",
-        "approverNeeds": "Odobravaocu treba",
-        "status": "Status",
-        "decision": "Odluka",
-        "you": "Ti",
-        "yourOwnRequest": "Tvoj sopstveni zahtev – ne možeš sam da ga odobriš.",
-        "youCanDecide": "Možeš da odlučiš",
-        "youCannotDecide": "Nije na tebi da odobriš"
-      },
-      "dashboard": {
-        "title": "Kontrolna tabla",
-        "description": "Šta BackOffice-u treba danas: odobrenja na čekanju, tvoji zahtevi, poslednje komande i stanje ERP-a.",
-        "pendingApprovals": "Odobrenja na čekanju",
-        "pendingApprovalsHint": "Čekaju drugu osobu",
-        "myOpenRequests": "Moji otvoreni zahtevi",
-        "myOpenRequestsHint": "Zatražio si ih, još nisu odlučeni",
-        "executed7d": "Izvršeno (7 dana)",
-        "executed7dHint": "Uspešno završene komande",
-        "failed7d": "Neuspešno (7 dana)",
-        "failed7dHint": "Odbijene ili završene greškom",
-        "erpStatus": "Status ERP-a",
-        "erpOk": "Spreman",
-        "erpNotOk": "Nedostupan",
-        "erpUnknown": "Nejasno",
-        "quickAccess": "Brzi pristup",
-        "recentActivity": "Nedavna aktivnost",
-        "noCapabilities": "Još nemaš nijedno ERP ovlašćenje. Administrator tenanta može da ti ga dodeli u Podešavanja › Pristup."
-      },
-      "inbox": {
-        "title": "Prijemno sanduče odobrenja",
-        "description": "Zahtevi visokog rizika koji čekaju tvoju odluku. Podnosilac i odobravalac su uvek dve osobe.",
-        "empty": "Ništa ne čeka na tebe",
-        "emptyHint": "Kada neko zatraži komandu visokog rizika koju smeš da odobriš, pojaviće se ovde."
-      },
-      "activity": {
-        "title": "Aktivnost",
-        "description": "Sve komande tvog tenanta, najnovije prvo – sa veba, iz ćaskanja i glasom.",
-        "searchPlaceholder": "Pretraži po komandi, ID-u ili razlogu …",
-        "statusFilter": "Status",
-        "empty": "Još nema komandi"
-      },
+      "noAccess": "Nemaš pristup ovom odeljku. Administrator tenanta može ti ga dodeliti u Podešavanja › Pristup.",
       "health": {
         "title": "Stanje sistema",
         "description": "Stanje ERP instance iza mosta: matični podaci, instalacija, verzija šeme i instalirani moduli.",
@@ -10482,63 +10422,14 @@
         "installedAt": "Instalirano",
         "noModules": "Nema instaliranih modula"
       },
-      "queue": {
-        "title": "Red",
-        "description": "Svi zahtevi za odobrenje u tenantu – na čekanju, odobreni ili odbijeni.",
-        "searchPlaceholder": "Pretraži po komandi, ovlašćenju ili osobi …",
-        "statusFilter": "Status",
-        "empty": "Nema zahteva za odobrenje"
-      },
-      "myRequests": {
-        "title": "Moji zahtevi",
-        "description": "Komande koje si zatražio – šta još čeka odobrenje i šta je bilo sa ostalima.",
-        "awaiting": "Čeka odobrenje",
-        "history": "Istorija",
-        "empty": "Još nisi zatražio nijednu komandu"
-      },
-      "policies": {
-        "title": "Politike",
-        "description": "Pravila po kojima gateway razvrstava komande i traži odobrenja.",
-        "threshold": "Prag visokog rizika",
-        "thresholdHint": "Svako knjiženje od ovog iznosa naviše postaje zahtev visokog rizika i traži drugu osobu.",
-        "mfa": "MFA za odobrenja",
-        "mfaHint": "Odobrenja visokog rizika traže sesiju sa drugim faktorom.",
-        "on": "Uključeno",
-        "off": "Isključeno",
-        "default": "Podrazumevano",
-        "custom": "Prilagođeno (podrazumevano: {value})",
-        "editNextSlice": "Samo čitanje u ovoj fazi – izmene politika stižu sa sledećom (svaka izmena je i sama potvrda).",
-        "rulesTitle": "Fiksna pravila",
-        "ruleMakerChecker": "Podnosilac i odobravalac nikad nisu ista osoba – ni za Exafy administratore.",
-        "ruleCapability": "Odobriti može samo onaj ko ima ovlašćenje za odobravanje tog zahteva (npr. finance.pay).",
-        "ruleVoice": "Ništa visokog rizika ne može da se potvrdi glasom – samo na vebu.",
-        "ruleEscalation": "Odlazna plaćanja, obračuni zarada i iznosi iznad praga automatski prelaze u visok rizik."
-      },
-      "erpLog": {
-        "title": "ERP revizioni dnevnik",
-        "description": "Nepromenljivi dnevnik samog ERPClaw-a – svako knjiženje, svako storniranje, svaka izmena matičnih podataka.",
-        "empty": "Još nema unosa",
-        "time": "Kada",
-        "skill": "Modul",
-        "action": "Akcija",
-        "entity": "Objekat",
-        "user": "Korisnik",
-        "changes": "Izmena",
-        "system": "Sistem"
-      },
-      "trail": {
-        "title": "Nezavisni revizioni trag",
-        "description": "Vitanin sopstveni dnevnik, samo za dopisivanje: svaki zahtev, svaka odluka, svaka izmena politike – nezavisno od ERP-a.",
-        "searchPlaceholder": "Pretraži po događaju, komandi ili osobi …",
-        "empty": "Još nema unosa",
-        "time": "Kada",
-        "event": "Događaj",
-        "actor": "Ko",
-        "role": "Uloga",
-        "channel": "Kanal",
-        "command": "Komanda",
-        "approval": "Odobrenje",
-        "details": "Detalji"
+      "receipts": {
+        "title": "Potvrde komandi",
+        "description": "Svaka komanda koja je prošla kroz gateway – sa potvrdom koju je most sačuvao za nju.",
+        "searchPlaceholder": "Pretraži po komandi ili ID-u …",
+        "empty": "Još nema komandi",
+        "noReceipt": "Nema potvrde",
+        "show": "Prikaži potvrdu",
+        "hide": "Sakrij potvrdu"
       },
       "company": {
         "title": "Kompanija i pravna lica",
@@ -10573,6 +10464,165 @@
         "none": "Nema",
         "yes": "Da",
         "no": "Ne"
+      },
+      "trail": {
+        "title": "Nezavisni revizioni trag",
+        "description": "Vitanin sopstveni dnevnik, samo za dopisivanje: svaki zahtev, svaka odluka, svaka izmena politike – nezavisno od ERP-a.",
+        "searchPlaceholder": "Pretraži po događaju, komandi ili osobi …",
+        "empty": "Još nema unosa",
+        "time": "Kada",
+        "event": "Događaj",
+        "actor": "Ko",
+        "role": "Uloga",
+        "channel": "Kanal",
+        "command": "Komanda",
+        "approval": "Odobrenje",
+        "details": "Detalji"
+      },
+      "inbox": {
+        "title": "Prijemno sanduče odobrenja",
+        "description": "Zahtevi visokog rizika koji čekaju tvoju odluku. Podnosilac i odobravalac su uvek dve osobe.",
+        "empty": "Ništa ne čeka na tebe",
+        "emptyHint": "Kada neko zatraži komandu visokog rizika koju smeš da odobriš, pojaviće se ovde."
+      },
+      "common": {
+        "empty": "Nema unosa",
+        "asOf": "stanje {time}",
+        "replayed": "ponovljeno iz potvrde",
+        "source": {
+          "erp": "Izvor: ERPClaw preko mosta",
+          "gateway": "Izvor: Vitana gateway"
+        },
+        "readOnlySlice": "Samo čitanje u ovoj fazi – odluke i izmene stižu sa sledećom.",
+        "viewAll": "Prikaži sve",
+        "all": "Sve"
+      },
+      "queue": {
+        "title": "Red",
+        "description": "Svi zahtevi za odobrenje u tenantu – na čekanju, odobreni ili odbijeni.",
+        "searchPlaceholder": "Pretraži po komandi, ovlašćenju ili osobi …",
+        "statusFilter": "Status",
+        "empty": "Nema zahteva za odobrenje"
+      },
+      "policies": {
+        "title": "Politike",
+        "description": "Pravila po kojima gateway razvrstava komande i traži odobrenja.",
+        "threshold": "Prag visokog rizika",
+        "thresholdHint": "Svako knjiženje od ovog iznosa naviše postaje zahtev visokog rizika i traži drugu osobu.",
+        "mfa": "MFA za odobrenja",
+        "mfaHint": "Odobrenja visokog rizika traže sesiju sa drugim faktorom.",
+        "on": "Uključeno",
+        "off": "Isključeno",
+        "default": "Podrazumevano",
+        "custom": "Prilagođeno (podrazumevano: {value})",
+        "editNextSlice": "Samo čitanje u ovoj fazi – izmene politika stižu sa sledećom (svaka izmena je i sama potvrda).",
+        "rulesTitle": "Fiksna pravila",
+        "ruleMakerChecker": "Podnosilac i odobravalac nikad nisu ista osoba – ni za Exafy administratore.",
+        "ruleCapability": "Odobriti može samo onaj ko ima ovlašćenje za odobravanje tog zahteva (npr. finance.pay).",
+        "ruleVoice": "Ništa visokog rizika ne može da se potvrdi glasom – samo na vebu.",
+        "ruleEscalation": "Odlazna plaćanja, obračuni zarada i iznosi iznad praga automatski prelaze u visok rizik."
+      },
+      "myRequests": {
+        "title": "Moji zahtevi",
+        "description": "Komande koje si zatražio – šta još čeka odobrenje i šta je bilo sa ostalima.",
+        "awaiting": "Čeka odobrenje",
+        "history": "Istorija",
+        "empty": "Još nisi zatražio nijednu komandu"
+      },
+      "dashboard": {
+        "title": "Kontrolna tabla",
+        "description": "Šta BackOffice-u treba danas: odobrenja na čekanju, tvoji zahtevi, poslednje komande i stanje ERP-a.",
+        "pendingApprovals": "Odobrenja na čekanju",
+        "pendingApprovalsHint": "Čekaju drugu osobu",
+        "myOpenRequests": "Moji otvoreni zahtevi",
+        "myOpenRequestsHint": "Zatražio si ih, još nisu odlučeni",
+        "executed7d": "Izvršeno (7 dana)",
+        "executed7dHint": "Uspešno završene komande",
+        "failed7d": "Neuspešno (7 dana)",
+        "failed7dHint": "Odbijene ili završene greškom",
+        "erpStatus": "Status ERP-a",
+        "erpOk": "Spreman",
+        "erpNotOk": "Nedostupan",
+        "erpUnknown": "Nejasno",
+        "quickAccess": "Brzi pristup",
+        "recentActivity": "Nedavna aktivnost",
+        "noCapabilities": "Još nemaš nijedno ERP ovlašćenje. Administrator tenanta može da ti ga dodeli u Podešavanja › Pristup."
+      },
+      "errors": {
+        "bridgeUnavailable": "ERP most nije dostupan.",
+        "bridgeUnavailableHint": "Gateway još nema podešen most (ERP_BRIDGE_URL). Do tada ERP podaci ostaju prazni – komande, odobrenja i revizioni trag i dalje rade.",
+        "noCapability": "Nedostaje ti ovlašćenje za ovo.",
+        "noCapabilityHint": "Administrator tenanta može da ti ga dodeli u Podešavanja › Pristup.",
+        "erpFailed": "ERPClaw je odbio komandu za čitanje.",
+        "unauthorized": "Prijavi se ponovo.",
+        "noTenant": "Nema aktivnog tenanta – prvo izaberi radni prostor.",
+        "notFound": "Nije pronađeno.",
+        "generic": "Podaci nisu mogli da se učitaju."
+      },
+      "activity": {
+        "title": "Aktivnost",
+        "description": "Sve komande tvog tenanta, najnovije prvo – sa veba, iz ćaskanja i glasom.",
+        "searchPlaceholder": "Pretraži po komandi, ID-u ili razlogu …",
+        "statusFilter": "Status",
+        "empty": "Još nema komandi"
+      },
+      "tiers": {
+        "read": "Čitanje",
+        "draft": "Nacrt",
+        "commit": "Knjiženje",
+        "high": "Visok rizik"
+      },
+      "erpLog": {
+        "title": "ERP revizioni dnevnik",
+        "description": "Nepromenljivi dnevnik samog ERPClaw-a – svako knjiženje, svako storniranje, svaka izmena matičnih podataka.",
+        "empty": "Još nema unosa",
+        "time": "Kada",
+        "skill": "Modul",
+        "action": "Akcija",
+        "entity": "Objekat",
+        "user": "Korisnik",
+        "changes": "Izmena",
+        "system": "Sistem"
+      },
+      "commandStatus": {
+        "executed": "Izvršeno",
+        "failed": "Neuspešno",
+        "awaiting_approval": "Čeka odobrenje",
+        "rejected": "Odbijeno"
+      },
+      "approvals": {
+        "requested": "Zatraženo",
+        "command": "Komanda",
+        "requester": "Podnosilac",
+        "approverNeeds": "Odobravaocu treba",
+        "status": "Status",
+        "decision": "Odluka",
+        "you": "Ti",
+        "yourOwnRequest": "Tvoj sopstveni zahtev – ne možeš sam da ga odobriš.",
+        "youCanDecide": "Možeš da odlučiš",
+        "youCannotDecide": "Nije na tebi da odobriš"
+      },
+      "commands": {
+        "when": "Kada",
+        "command": "Komanda",
+        "tier": "Nivo",
+        "status": "Status",
+        "channel": "Kanal",
+        "requester": "Podnosilac",
+        "receipt": "Potvrda",
+        "reason": "Razlog",
+        "you": "Ti"
+      },
+      "approvalStatus": {
+        "pending": "Na čekanju",
+        "approved": "Odobreno",
+        "rejected": "Odbijeno"
+      },
+      "channels": {
+        "web": "Veb",
+        "chat": "Ćaskanje",
+        "voice": "Glas",
+        "system": "Sistem"
       },
       "sales": {
         "status": {
@@ -10982,9 +11032,9 @@
           "invalidEmail": "Nevažeća e-adresa",
           "invalidDate": "Datum u obliku GGGG-MM-DD",
           "invalidOption": "Nevažeći izbor",
-          "invalidNumber": "Unesi važeći broj veći od 0",
+          "noLines": "Unesi količinu bar na jednoj stavci",
           "lineQtyTooHigh": "Vraćena količina ne može biti veća od fakturisane",
-          "noLines": "Unesi količinu bar na jednoj stavci"
+          "invalidNumber": "Unesi važeći broj veći od 0"
         },
         "fields": {
           "lead_name": "Naziv lida",
@@ -11003,26 +11053,26 @@
           "activity_type": "Tip",
           "activity_date": "Datum",
           "lead_ref": "Lid (naziv ili broj)",
-          "customer_type": "Tip kupca",
           "tax_id": "PIB (TRN)",
+          "posting_date": "Datum knjiženja",
+          "original_qty": "Fakturisano",
+          "item_id": "ID artikla",
+          "reason": "Razlog",
           "credit_limit": "Kreditni limit",
+          "customer_type": "Tip kupca",
           "primary_address": "Adresa",
           "against_invoice_id": "Uz fakturu",
-          "posting_date": "Datum knjiženja",
-          "reason": "Razlog",
-          "items": "Stavke",
-          "item_name": "Artikal",
-          "original_qty": "Fakturisano",
           "qty": "Vraćeno",
-          "item_id": "ID artikla",
-          "payment_type": "Tip plaćanja",
+          "item_name": "Artikal",
+          "items": "Stavke",
           "party_type": "Tip partnera",
           "party_id": "Kupac",
-          "paid_amount": "Iznos",
+          "reference_number": "Referenca banke",
           "paid_from_account": "Sa računa",
           "paid_to_account": "Na račun",
-          "reference_number": "Referenca banke",
-          "reference_date": "Datum reference"
+          "payment_type": "Tip plaćanja",
+          "reference_date": "Datum reference",
+          "paid_amount": "Iznos"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11050,8 +11100,8 @@
           "task": "Zadatak",
           "company": "Firma",
           "individual": "Fizičko lice",
-          "receive": "Uplata",
-          "pay": "Isplata"
+          "pay": "Isplata",
+          "receive": "Uplata"
         },
         "forms": {
           "lead": {
@@ -11079,15 +11129,15 @@
             "title": "Zabeleži aktivnost",
             "description": "Poziv, e-pošta, sastanak ili beleška uz lid. Lid se razrešava po nazivu ili broju – kod više pogodaka ništa se ne upisuje."
           },
-          "customer": {
-            "button": "Novi kupac",
-            "title": "Kreiraj kupca",
-            "description": "Kupac u prodaji – potreban za ponude i fakture. Kreira se kao nacrt, bez knjiženja."
-          },
           "creditNote": {
             "button": "Kreiraj knjižno odobrenje",
             "title": "Knjižno odobrenje uz fakturu",
             "description": "Unesi vraćenu količinu po stavci. Odobrenje nastaje kao nacrt; knjiži se u posebnom koraku koji zahteva odobrenje."
+          },
+          "customer": {
+            "button": "Novi kupac",
+            "title": "Kreiraj kupca",
+            "description": "Kupac u prodaji – potreban za ponude i fakture. Kreira se kao nacrt, bez knjiženja."
           },
           "payment": {
             "button": "Evidentiraj plaćanje",
@@ -11097,8 +11147,8 @@
         },
         "noLineRows": "Nema dostupnih stavki.",
         "lookupLoading": "Učitava se …",
-        "lookupIdPlaceholder": "Unesi ID",
-        "lookupRefused": "Tvoj nalog ne može da čita listu ({command}) – unesi ID direktno."
+        "lookupRefused": "Tvoj nalog ne može da čita listu ({command}) – unesi ID direktno.",
+        "lookupIdPlaceholder": "Unesi ID"
       }
     }
   }
