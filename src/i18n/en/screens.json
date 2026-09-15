@@ -2616,7 +2616,12 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty."
+      "inboxEmpty": "Inbox is empty.",
+      "_pending_review": {
+        "navRole_backoffice": true,
+        "testColumn": true,
+        "partner": true
+      }
     },
     "ai-feed": {
       "noEventsFound": "No events found",
@@ -10417,7 +10422,12 @@
         "actions": "Actions",
         "installStatus": "Install status",
         "installedAt": "Installed at",
-        "noModules": "No modules installed"
+        "noModules": "No modules installed",
+        "_pending_review": {
+          "status": true,
+          "installation": true,
+          "version": true
+        }
       },
       "receipts": {
         "title": "Command Receipts",
@@ -10460,7 +10470,11 @@
         "empty": "No company found",
         "none": "None",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "_pending_review": {
+          "name": true,
+          "id": true
+        }
       },
       "trail": {
         "title": "Independent Audit Trail",
@@ -10474,7 +10488,10 @@
         "channel": "Channel",
         "command": "Command",
         "approval": "Approval",
-        "details": "Details"
+        "details": "Details",
+        "_pending_review": {
+          "details": true
+        }
       },
       "inbox": {
         "title": "Approvals Inbox",
@@ -10499,7 +10516,10 @@
         "description": "Every approval request in the tenant – pending, approved or rejected.",
         "searchPlaceholder": "Search by command, capability or person …",
         "statusFilter": "Status",
-        "empty": "No approval requests"
+        "empty": "No approval requests",
+        "_pending_review": {
+          "statusFilter": true
+        }
       },
       "policies": {
         "title": "Policies",
@@ -10543,7 +10563,10 @@
         "erpUnknown": "Unclear",
         "quickAccess": "Quick access",
         "recentActivity": "Recent activity",
-        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
+        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access.",
+        "_pending_review": {
+          "title": true
+        }
       },
       "errors": {
         "bridgeUnavailable": "The ERP bridge is not reachable.",
@@ -10561,7 +10584,10 @@
         "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
         "searchPlaceholder": "Search by command, ID or reason …",
         "statusFilter": "Status",
-        "empty": "No commands yet"
+        "empty": "No commands yet",
+        "_pending_review": {
+          "statusFilter": true
+        }
       },
       "tiers": {
         "read": "Read",
@@ -10579,7 +10605,10 @@
         "entity": "Entity",
         "user": "User",
         "changes": "Change",
-        "system": "System"
+        "system": "System",
+        "_pending_review": {
+          "system": true
+        }
       },
       "commandStatus": {
         "executed": "Executed",
@@ -10597,7 +10626,10 @@
         "you": "You",
         "yourOwnRequest": "Your own request – you cannot approve it yourself.",
         "youCanDecide": "You can decide",
-        "youCannotDecide": "Not yours to approve"
+        "youCannotDecide": "Not yours to approve",
+        "_pending_review": {
+          "status": true
+        }
       },
       "commands": {
         "when": "When",
@@ -10608,7 +10640,10 @@
         "requester": "Requester",
         "receipt": "Receipt",
         "reason": "Reason",
-        "you": "You"
+        "you": "You",
+        "_pending_review": {
+          "status": true
+        }
       },
       "approvalStatus": {
         "pending": "Pending",
@@ -10619,7 +10654,12 @@
         "web": "Web",
         "chat": "Chat",
         "voice": "Voice",
-        "system": "System"
+        "system": "System",
+        "_pending_review": {
+          "web": true,
+          "chat": true,
+          "system": true
+        }
       },
       "sales": {
         "status": {
@@ -10652,7 +10692,10 @@
           "low": "Low",
           "converted": "Converted",
           "unpaid": "Unpaid",
-          "return": "Return"
+          "return": "Return",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "common": {
           "status": "Status",
@@ -10670,7 +10713,11 @@
           "total": "Total",
           "subtotal": "Subtotal",
           "tax": "Tax",
-          "actions": "Actions"
+          "actions": "Actions",
+          "_pending_review": {
+            "status": true,
+            "details": true
+          }
         },
         "docs": {
           "noItems": "No line items",
@@ -10692,7 +10739,11 @@
           "company": "Company",
           "territory": "Territory",
           "industry": "Industry",
-          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited."
+          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited.",
+          "_pending_review": {
+            "title": true,
+            "lead": true
+          }
         },
         "contacts": {
           "title": "Contacts & Companies",
@@ -10715,7 +10766,10 @@
           "noCustomers": "No customers yet",
           "type": "Type",
           "creditLimit": "Credit limit",
-          "customer": "Customer"
+          "customer": "Customer",
+          "_pending_review": {
+            "name": true
+          }
         },
         "opportunities": {
           "title": "Opportunities",
@@ -10748,7 +10802,10 @@
           "activities": "Activities",
           "noActivities": "No activities yet",
           "opportunity": "Opportunity",
-          "nextAction": "Next action"
+          "nextAction": "Next action",
+          "_pending_review": {
+            "title": true
+          }
         },
         "quotations": {
           "title": "Quotations",
@@ -10903,7 +10960,10 @@
           "direction": "Balance direction",
           "parent": "Parent",
           "accountType": "Account type",
-          "detailsHint": "Select an account on the left to see its balance and details."
+          "detailsHint": "Select an account on the left to see its balance and details.",
+          "_pending_review": {
+            "name": true
+          }
         },
         "periods": {
           "title": "Fiscal Periods & Close",
@@ -10950,6 +11010,9 @@
             "last_month": "Last month",
             "this_quarter": "This quarter",
             "last_year": "Last year"
+          },
+          "_pending_review": {
+            "window": true
           }
         },
         "pnl": {
@@ -11096,7 +11159,11 @@
           "journal_entry_id": "Journal entry id",
           "opportunity_type": "Opportunity type",
           "lost_reason": "Reason",
-          "sales_invoice_id": "Invoice id"
+          "sales_invoice_id": "Invoice id",
+          "_pending_review": {
+            "name": true,
+            "status": true
+          }
         },
         "choices": {
           "website": "Website",
@@ -11142,7 +11209,13 @@
           "new": "New",
           "sales": "Sales",
           "support": "Support",
-          "maintenance": "Maintenance"
+          "maintenance": "Maintenance",
+          "_pending_review": {
+            "website": true,
+            "lead": true,
+            "partner": true,
+            "support": true
+          }
         },
         "forms": {
           "lead": {

@@ -47,7 +47,6 @@
     "logout": "Logout",
     "connectors": "Connected Apps",
     "support": "Support",
-    "_pending_review": {},
     "backoffice": {
       "back": "← Admin",
       "overview": "Overview",
@@ -61,8 +60,12 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings"
+      "settings": "Settings",
+      "_pending_review": {
+        "back": true,
+        "marketing": true,
+        "audit": true
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }
