@@ -28,12 +28,20 @@ export default function TenantRole() {
 
   const handleRoleSwitch = async () => {
     if (!selectedRole || !activeTenantId) return;
-    
+
     setSwitching(true);
     try {
-      await setRole(selectedRole as any);
-      notify('toasts.settings.roleSwitched');
-      setSelectedRole("");
+      // VTID-03909: setRole() resolves { ok: false } on a rejected write
+      // instead of throwing, so the outcome must be checked explicitly —
+      // this used to always show "Role switched" regardless of whether the
+      // RPC actually succeeded.
+      const result = await setRole(selectedRole as any);
+      if (result.ok) {
+        notify('toasts.settings.roleSwitched');
+        setSelectedRole("");
+      } else {
+        notifyError('toasts.settings.errorSwitchingRole', 'toasts.settings.failedSwitchRolePleaseTryAgain');
+      }
     } catch (error) {
       notifyError('toasts.settings.errorSwitchingRole', 'toasts.settings.failedSwitchRolePleaseTryAgain');
     } finally {
@@ -62,6 +70,7 @@ export default function TenantRole() {
       patient: "Patient",
       professional: "Professional",
       staff: "Staff",
+      backoffice: "Back Office",
       admin: "Administrator"
     };
     return roleMap[role] || role;
@@ -73,6 +82,7 @@ export default function TenantRole() {
       patient: "Full health tracking and medical features",
       professional: "Professional tools for doctors and coaches",
       staff: "Staff management and operational features",
+      backoffice: "ERP/CRM back-office tools and approvals",
       admin: "Full administrative access and management"
     };
     return descriptions[role] || "Access to role-specific features";

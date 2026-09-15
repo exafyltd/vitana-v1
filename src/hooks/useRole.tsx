@@ -47,22 +47,29 @@ export function useRole() {
     enabled: !!activeTenantId,
   });
 
-  const setRole = (role: UserRole) => {
-    if (!activeTenantId) return;
-    
+  // Returns once the write is actually confirmed (or rejected) by the DB, so a
+  // caller that needs to navigate on the strength of the switch — e.g. the role
+  // switcher's hard reload to the new role's landing route — can await it
+  // instead of racing a fire-and-forget RPC against a fixed timeout. A caller
+  // that only wants the old fire-and-forget UX can still ignore the returned
+  // promise; the optimistic cache update + event still happen synchronously.
+  const setRole = (role: UserRole): Promise<{ ok: boolean; error?: string }> => {
+    if (!activeTenantId) return Promise.resolve({ ok: false, error: 'NO_ACTIVE_TENANT' });
+
     const previousRole = query.data;
-    
+
     // Optimistic: update cache + emit event immediately
     queryClient.setQueryData(["rolePref", activeTenantId], role);
     window.dispatchEvent(new CustomEvent("role.changed", {
       detail: { from: previousRole, to: role }
     }));
-    
-    // Fire RPC in background — don't block the caller
-    supabase.rpc("set_role_preference", { 
-      p_tenant_id: activeTenantId, 
-      p_role: role 
+
+    return supabase.rpc("set_role_preference", {
+      p_tenant_id: activeTenantId,
+      p_role: role
     }).then(({ error }) => {
+      queryClient.invalidateQueries({ queryKey: ["rolePref", activeTenantId] });
+
       if (error) {
         console.error('Error setting role preference:', error);
         // Rollback on failure
@@ -70,9 +77,9 @@ export function useRole() {
         window.dispatchEvent(new CustomEvent("role.changed", {
           detail: { from: role, to: previousRole }
         }));
+        return { ok: false, error: error.message };
       }
-      // Background revalidation
-      queryClient.invalidateQueries({ queryKey: ["rolePref", activeTenantId] });
+      return { ok: true };
     });
   };
 

@@ -3,9 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Plus } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
 
 export default function PatientAppointments() {
   return (
+    <AppLayout>
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
@@ -115,5 +117,6 @@ export default function PatientAppointments() {
         </Card>
       </div>
     </div>
+    </AppLayout>
   );
 }
