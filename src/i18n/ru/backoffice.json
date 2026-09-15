@@ -149,35 +149,28 @@
       "tabs": {
         "queue": "Queue",
         "my-requests": "My Requests",
-        "policies": "Policies",
+        "policies": "Политики",
         "_pending_review": {
           "queue": true,
-          "my-requests": true,
-          "policies": true
+          "my-requests": true
         }
       }
     },
     "audit": {
       "tabs": {
-        "receipts": "Command Receipts",
-        "erp-log": "ERP Audit Log",
-        "trail": "Independent Audit Trail",
-        "_pending_review": {
-          "receipts": true,
-          "erp-log": true,
-          "trail": true
-        }
+        "receipts": "Квитанции команд",
+        "erp-log": "Журнал аудита ERP",
+        "trail": "Независимый аудиторский след"
       }
     },
     "settings": {
       "tabs": {
-        "company": "Company & Legal Entities",
+        "company": "Компания и юридические лица",
         "access": "Access",
         "numbering": "Numbering",
         "integrations": "Integrations",
         "modules": "Modules",
         "_pending_review": {
-          "company": true,
           "access": true,
           "numbering": true,
           "integrations": true,
