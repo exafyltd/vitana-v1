@@ -10348,7 +10348,7 @@
         "live": "Live",
         "offTrack": "Needs attention"
       },
-      "addProduct": "Enter your products yourself",
+      "addProduct": "Add products yourself",
       "productForm": {
         "pickTitle": "What do you sell?",
         "pickSubtitle": "Choose once — after that we only ask about things that actually matter for your products.",
@@ -10420,9 +10420,6 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "otherSignin": "Another way to sign in"
-      },
-      "_pending_review": {
-        "addProduct": true
       },
       "orgOnboarding": {
         "registerCta": "Register your business",
