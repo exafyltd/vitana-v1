@@ -10033,7 +10033,61 @@
       "activity": "Aktivite",
       "progress": "İlerleme",
       "trend": "Eğilim",
-      "text5FromLastMonth": "Geçen aya göre +5"
+      "text5FromLastMonth": "Geçen aya göre +5",
+      "results": {
+        "_pending_review": {
+          "title": true,
+          "subtitle": true,
+          "loadFailed": true,
+          "retry": true,
+          "empty": true,
+          "selfReported": true,
+          "markerCount": true,
+          "needsAttention": true,
+          "allNormal": true,
+          "noBiomarkers": true,
+          "biomarker": true,
+          "value": true,
+          "range": true,
+          "status": true,
+          "statusLow": true,
+          "statusHigh": true,
+          "statusNormal": true,
+          "statusCritical": true,
+          "statusUnknown": true,
+          "recentResultsTitle": true,
+          "viewAll": true
+        },
+        "title": "Your results",
+        "subtitle": "Lab values and results from every partner and professional, in one place",
+        "loadFailed": "Your results couldn't be loaded.",
+        "retry": "Try again",
+        "empty": "No results yet.",
+        "selfReported": "Self-reported",
+        "markerCount": "{count} markers",
+        "needsAttention": "{count} needs attention",
+        "allNormal": "All within normal range",
+        "noBiomarkers": "No biomarkers in this report.",
+        "biomarker": "Marker",
+        "value": "Value",
+        "range": "Reference range",
+        "status": "Status",
+        "statusLow": "Low",
+        "statusHigh": "High",
+        "statusNormal": "Normal",
+        "statusCritical": "Critical",
+        "statusUnknown": "Unknown",
+        "recentResultsTitle": "Recent results",
+        "viewAll": "View all results"
+      },
+      "comingSoon": {
+        "_pending_review": {
+          "title": true,
+          "body": true
+        },
+        "title": "Coming soon",
+        "body": "We're still building this screen. Check back soon."
+      }
     },
     "portals": {
       "confirmationError": "Onay Hatası",
