@@ -60,12 +60,7 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings",
-      "_pending_review": {
-        "back": true,
-        "marketing": true,
-        "audit": true
-      }
+      "settings": "Settings"
     }
   }
 }

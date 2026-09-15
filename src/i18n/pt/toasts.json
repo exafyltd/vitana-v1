@@ -330,11 +330,7 @@
       "ticketRejected": "{ticketNumber} rejeitado",
       "ticketRemovedActiveList": "Removido da lista ativa.",
       "invalidJson": "Invalid JSON.",
-      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
-      "_pending_review": {
-        "invalidJson": true,
-        "confirmMatchRequiresFields": true
-      }
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
     },
     "audio": {
       "cameraStopped": "Câmara parada",
@@ -1375,13 +1371,7 @@
       "capabilityGranted": "Capability granted",
       "capabilityRevoked": "Capability revoked",
       "grantFailed": "Could not grant the capability",
-      "revokeFailed": "Could not revoke the capability",
-      "_pending_review": {
-        "capabilityGranted": true,
-        "capabilityRevoked": true,
-        "grantFailed": true,
-        "revokeFailed": true
-      }
+      "revokeFailed": "Could not revoke the capability"
     }
   }
 }

@@ -60,22 +60,7 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings",
-      "_pending_review": {
-        "back": true,
-        "overview": true,
-        "sales": true,
-        "marketing": true,
-        "accounting": true,
-        "finance": true,
-        "hr": true,
-        "operations": true,
-        "legal": true,
-        "reports": true,
-        "approvals": true,
-        "audit": true,
-        "settings": true
-      }
+      "settings": "Settings"
     }
   }
 }

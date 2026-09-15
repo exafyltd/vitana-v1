@@ -60,11 +60,7 @@
       "reports": "Izveštaji",
       "approvals": "Odobrenja",
       "audit": "Revizija",
-      "settings": "Podešavanja",
-      "_pending_review": {
-        "back": true,
-        "marketing": true
-      }
+      "settings": "Podešavanja"
     }
   }
 }
