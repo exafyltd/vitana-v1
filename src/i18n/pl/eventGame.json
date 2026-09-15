@@ -126,7 +126,27 @@
       "adjustPoints": "Adjust points",
       "adjustReason": "Reason",
       "adjustApply": "Apply",
-      "notModerator": "You don't have permission to manage this game."
+      "notModerator": "You don't have permission to manage this game.",
+      "_pending_review": {
+        "pointsSection": true,
+        "pointsRegistration": true,
+        "pointsEventPost": true,
+        "pointsLongevityPost": true,
+        "pointsLikeReceived": true,
+        "pointsLikeCap": true,
+        "maxPosts": true,
+        "rewardTextLabel": true,
+        "rewardDescLabel": true,
+        "save": true,
+        "saved": true,
+        "saveFailed": true,
+        "leaderboardSection": true,
+        "ledgerSection": true,
+        "adjustPoints": true,
+        "adjustReason": true,
+        "adjustApply": true,
+        "notModerator": true
+      }
     }
   }
 }

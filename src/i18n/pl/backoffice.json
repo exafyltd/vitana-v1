@@ -2,7 +2,10 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin"
+        "admin": "← Admin",
+        "_pending_review": {
+          "admin": true
+        }
       }
     },
     "overview": {
@@ -10,7 +13,13 @@
         "dashboard": "Dashboard",
         "inbox": "Approvals Inbox",
         "activity": "Activity",
-        "health": "Health"
+        "health": "Health",
+        "_pending_review": {
+          "dashboard": true,
+          "inbox": true,
+          "activity": true,
+          "health": true
+        }
       }
     },
     "sales": {
@@ -23,7 +32,18 @@
         "orders": "Sales Orders",
         "invoices": "Invoices",
         "credit-notes": "Credit Notes",
-        "deliveries": "Deliveries"
+        "deliveries": "Deliveries",
+        "_pending_review": {
+          "leads": true,
+          "contacts": true,
+          "opportunities": true,
+          "followups": true,
+          "quotations": true,
+          "orders": true,
+          "invoices": true,
+          "credit-notes": true,
+          "deliveries": true
+        }
       }
     },
     "marketing": {
@@ -31,7 +51,13 @@
         "campaigns": "Campaigns",
         "outreach": "Outreach",
         "attribution": "Lead Sources & Attribution",
-        "performance": "Performance"
+        "performance": "Performance",
+        "_pending_review": {
+          "campaigns": true,
+          "outreach": true,
+          "attribution": true,
+          "performance": true
+        }
       }
     },
     "accounting": {
@@ -42,7 +68,16 @@
         "tax": "Tax",
         "assets": "Fixed Assets & Leases",
         "intercompany": "Intercompany & Consolidation",
-        "budgets": "Budgets & Forecasts"
+        "budgets": "Budgets & Forecasts",
+        "_pending_review": {
+          "journals": true,
+          "chart-of-accounts": true,
+          "periods": true,
+          "tax": true,
+          "assets": true,
+          "intercompany": true,
+          "budgets": true
+        }
       }
     },
     "finance": {
@@ -51,7 +86,14 @@
         "bank-reconciliation": "Bank Reconciliation",
         "cash": "Cash Position & Forecast",
         "subscriptions": "Recurring Billing",
-        "sync": "Stripe / Shopify Sync"
+        "sync": "Stripe / Shopify Sync",
+        "_pending_review": {
+          "payments": true,
+          "bank-reconciliation": true,
+          "cash": true,
+          "subscriptions": true,
+          "sync": true
+        }
       }
     },
     "hr": {
@@ -60,7 +102,14 @@
         "leave": "Leave",
         "attendance": "Attendance",
         "expenses": "Expense Claims",
-        "payroll": "Payroll"
+        "payroll": "Payroll",
+        "_pending_review": {
+          "employees": true,
+          "leave": true,
+          "attendance": true,
+          "expenses": true,
+          "payroll": true
+        }
       }
     },
     "operations": {
@@ -71,7 +120,16 @@
         "supplier-invoices": "Supplier Invoices",
         "items": "Items",
         "warehouses": "Warehouses",
-        "stock": "Stock & Moves"
+        "stock": "Stock & Moves",
+        "_pending_review": {
+          "suppliers": true,
+          "purchase-orders": true,
+          "receipts": true,
+          "supplier-invoices": true,
+          "items": true,
+          "warehouses": true,
+          "stock": true
+        }
       }
     },
     "legal": {
@@ -79,7 +137,13 @@
         "contracts": "Contracts",
         "obligations": "Obligations",
         "compliance": "Compliance",
-        "e-signature": "E-Signature"
+        "e-signature": "E-Signature",
+        "_pending_review": {
+          "contracts": true,
+          "obligations": true,
+          "compliance": true,
+          "e-signature": true
+        }
       }
     },
     "reports": {
@@ -90,21 +154,40 @@
         "cash-flow": "Cash Flow",
         "aging": "AR / AP Aging",
         "dimensions": "By Dimension",
-        "board-pack": "Board Pack"
+        "board-pack": "Board Pack",
+        "_pending_review": {
+          "pnl": true,
+          "balance-sheet": true,
+          "trial-balance": true,
+          "cash-flow": true,
+          "aging": true,
+          "dimensions": true,
+          "board-pack": true
+        }
       }
     },
     "approvals": {
       "tabs": {
         "queue": "Queue",
         "my-requests": "My Requests",
-        "policies": "Policies"
+        "policies": "Policies",
+        "_pending_review": {
+          "queue": true,
+          "my-requests": true,
+          "policies": true
+        }
       }
     },
     "audit": {
       "tabs": {
         "receipts": "Command Receipts",
         "erp-log": "ERP Audit Log",
-        "trail": "Independent Audit Trail"
+        "trail": "Independent Audit Trail",
+        "_pending_review": {
+          "receipts": true,
+          "erp-log": true,
+          "trail": true
+        }
       }
     },
     "settings": {
@@ -113,7 +196,14 @@
         "access": "Access",
         "numbering": "Numbering",
         "integrations": "Integrations",
-        "modules": "Modules"
+        "modules": "Modules",
+        "_pending_review": {
+          "company": true,
+          "access": true,
+          "numbering": true,
+          "integrations": true,
+          "modules": true
+        }
       }
     }
   }

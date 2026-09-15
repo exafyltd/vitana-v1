@@ -330,7 +330,11 @@
       "ticketRejected": "تم رفض {ticketNumber}",
       "ticketRemovedActiveList": "تمت إزالته من القائمة النشطة.",
       "invalidJson": "Invalid JSON.",
-      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
+      "_pending_review": {
+        "invalidJson": true,
+        "confirmMatchRequiresFields": true
+      }
     },
     "audio": {
       "cameraStopped": "تم إيقاف الكاميرا",
