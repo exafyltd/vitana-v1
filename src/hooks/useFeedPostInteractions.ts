@@ -142,7 +142,7 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
       const userIds = [...new Set(raw.map((c) => c.user_id))];
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('user_id, display_name, avatar_url')
+        .select('user_id, display_name, full_name, avatar_url')
         .in('user_id', userIds);
       if (profilesError) {
         console.error('[useFeedPostInteractions] Failed to load comment-author profiles:', profilesError);
@@ -168,17 +168,20 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
         likedSet = new Set((myLikes || []).map((l: any) => l.comment_id));
       }
 
-      return raw.map((c) => ({
-        id: c.id,
-        user_id: c.user_id,
-        content: c.content,
-        created_at: c.created_at,
-        parent_id: c.parent_id ?? null,
-        likes_count: c.likes_count ?? 0,
-        liked_by_me: likedSet.has(c.id),
-        display_name: profileMap.get(c.user_id)?.display_name || undefined,
-        avatar_url: profileMap.get(c.user_id)?.avatar_url || null,
-      })) as FeedComment[];
+      return raw.map((c) => {
+        const p = profileMap.get(c.user_id);
+        return {
+          id: c.id,
+          user_id: c.user_id,
+          content: c.content,
+          created_at: c.created_at,
+          parent_id: c.parent_id ?? null,
+          likes_count: c.likes_count ?? 0,
+          liked_by_me: likedSet.has(c.id),
+          display_name: p?.display_name || p?.full_name || undefined,
+          avatar_url: p?.avatar_url || null,
+        };
+      }) as FeedComment[];
     },
   });
 
