@@ -1,0 +1,75 @@
+# VTID-03942 — commands run during this change
+
+## Investigation (via Explore subagent, then independently verified)
+Confirmed the exact bug by reading both files directly:
+$ grep -n "is_sold_out\|isSoldOut" src/pages/PublicCampaignLanding.tsx
+  181:    isSoldOut: false, // TODO: Fetch from event data
+$ grep -n "is_sold_out" src/pages/PublicEventLanding.tsx
+  33:  is_sold_out?: boolean;
+  169:    isSoldOut: event?.is_sold_out || false,
+Confirmed the CTA label rendering site (line 407, {ctaConfig.label}) and
+the exact label strings in src/lib/eventsCtaUtils.ts's
+getLocalizedLabel()/getPublicLandingCta() — 'Sold Out' when isSoldOut,
+'Buy Ticket' (plain, no price suffix) only when lowestPrice is
+null/undefined, otherwise 'Buy Ticket · <price>'.
+
+## Fix
+services/../src/pages/PublicCampaignLanding.tsx:
+1. Added `is_sold_out: boolean` to LinkedEventTicketInfo.
+2. Added `is_sold_out: event.is_sold_out || false` to the
+   setLinkedEventTickets(...) call.
+3. Changed `isSoldOut: false` to
+   `isSoldOut: linkedEventTickets?.is_sold_out || false`.
+
+## New test file (written from scratch)
+src/pages/PublicCampaignLanding.test.tsx — 2 tests, no existing test file
+for this page before this VTID. Mocks:
+- react-router-dom (useParams/useNavigate/useSearchParams)
+- @/integrations/supabase/client (supabase.rpc, supabase.from) — NO live
+  network/Supabase calls, per this repo's absolute rule
+- @/context/AuthProvider, @/hooks/useTranslation, @/lib/i18n-toast,
+  @/lib/locale-format, @/components/SEO, @/components/tickets/EventTicketSelector
+
+Caught one real assertion bug before finalizing: the non-sold-out test's
+fixture initially set lowest_ticket_price: 25, which makes
+getLocalizedPublicLandingCta render "Buy Ticket · $25.00" (via the
+buyTicketWithPrice branch), not plain "Buy Ticket" — the
+`screen.getByText('Buy Ticket')` assertion would have failed for a reason
+unrelated to the fix under test. Set lowest_ticket_price: null in that
+fixture instead, with an inline comment explaining why.
+
+## Setup
+$ npm ci
+(node_modules were not installed in this session's checkout; 735 packages
+installed, 29s)
+
+## Targeted test run
+$ npx vitest run src/pages/PublicCampaignLanding.test.tsx
+Test Files: 1 passed (1)
+Tests: 2 passed (2)
+(full output: outputs/vitest-new-suite.txt)
+
+## TypeScript
+$ npx tsc --noEmit
+(clean, no output — see outputs/tsc-noemit.txt)
+
+## Full frontend suite (regression check)
+$ npx vitest run
+Test Files: 116 passed (116)
+Tests: 619 passed (619)
+0 failures.
+(full output: outputs/vitest-full-suite.txt)
+
+## VTID allocation
+$ curl -sS -X POST "https://gateway.vitanaland.com/api/v1/vtid/allocate" \
+    -H "Content-Type: application/json" \
+    -d '{"source":"claude-code","layer":"frontend","module":"campaign-sold-out-cta-fix"}'
+{"ok":true,"vtid":"VTID-03942","num":3942,"id":"13e58b0f-8a20-451e-9192-f85e8a8f915c"}
+
+Followed with a direct Supabase UPDATE (project inmkhvwdcuyhnxkgfvsb) to
+set title/summary, status='in_progress', spec_status='approved'.
+
+Note: the test file/docstring were initially written under a provisional
+VTID-03941 label before the actual allocation returned VTID-03942 (this
+is a busy shared repo with concurrent sessions/allocations) — corrected
+via sed across the test file before committing.

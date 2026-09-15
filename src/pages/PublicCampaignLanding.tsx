@@ -33,6 +33,7 @@ interface LinkedEventTicketInfo {
   lowest_ticket_price: number | null;
   is_paid_event: boolean;
   event_title: string;
+  is_sold_out: boolean;
 }
 
 export default function PublicCampaignLanding() {
@@ -103,6 +104,7 @@ export default function PublicCampaignLanding() {
               lowest_ticket_price: event.lowest_ticket_price ?? null,
               is_paid_event: event.is_paid_event || false,
               event_title: event.title || campaignData.name,
+              is_sold_out: event.is_sold_out || false,
             });
           }
         }
@@ -182,7 +184,7 @@ export default function PublicCampaignLanding() {
   const ctaConfig = getLocalizedPublicLandingCta({
     hasTickets,
     isPaid: isEventPaid,
-    isSoldOut: false, // TODO: Fetch from event data
+    isSoldOut: linkedEventTickets?.is_sold_out || false,
     lowestPrice: eventPrice,
     currency: campaign?.metadata?.display_currency || 'USD',
     isAuthenticated: !!user,
