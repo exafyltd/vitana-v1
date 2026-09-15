@@ -290,6 +290,8 @@ const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 // VTID-02000: Marketplace admin (Maxina)
 const AdminMarketplaceOverview = lazy(() => import("./pages/admin/marketplace/Overview"));
 const AdminMarketplaceProducts = lazy(() => import("./pages/admin/marketplace/Products"));
+// VTID-03885: Partner Health Test Integration — admin portal (Orders + Inbox)
+const AdminPartnerHealthOrders = lazy(() => import("./pages/admin/marketplace/PartnerHealthOrders"));
 // Overview Dashboard (replaces legacy dashboard)
 const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
 const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
@@ -1803,6 +1805,12 @@ const App = () => {
           } />
           <Route path="/admin/marketplace/products" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceProducts /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-03885: Partner Health Test Integration admin portal — not
+              in adminMarketplaceCatalogNavigation (already at its 5-screen
+              cap), reached from Products/Overview or a direct link for now. */}
+          <Route path="/admin/marketplace/partner-health" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminPartnerHealthOrders /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}

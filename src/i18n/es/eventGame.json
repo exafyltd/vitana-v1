@@ -128,5 +128,6 @@
       "adjustApply": "Aplicar",
       "notModerator": "No tienes permiso para gestionar este juego."
     }
-  }
+  },
+  "_pending_review": {}
 }

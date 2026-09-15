@@ -45,6 +45,8 @@ import {
   YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
+// VTID-03885: Partner Health Test Integration — real "connect DoctorBox" consent flow
+import { PartnerLabsConsentDialog } from "@/components/settings/PartnerLabsConsentDialog";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
 import { ToastAction } from "@/components/ui/toast";
@@ -83,6 +85,8 @@ export function MobileConnectedAppsView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [connectPopupOpen, setConnectPopupOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  // VTID-03885: Partner Health Test Integration — DoctorBox consent dialog.
+  const [doctorBoxDialogOpen, setDoctorBoxDialogOpen] = useState(false);
   // VTID-NAV-CONNECTORS-TABS: the Connectors category mode pills. Vitana
   // deep-links a pill via /connectors?tab=<category>; the gateway catalog
   // routes "Connectors <Category>" here. Only an explicit valid value sets it.
@@ -276,6 +280,12 @@ export function MobileConnectedAppsView() {
       });
       return;
     }
+    // VTID-03885: Partner Health Test Integration — DoctorBox opens the
+    // real consent dialog instead of the generic placeholder toast below.
+    if (integration.id === 'doctorbox') {
+      setDoctorBoxDialogOpen(true);
+      return;
+    }
     // Check if it's a social platform
     if (socialPlatformIds.includes(integration.id)) {
       setSocialImportPlatform(integration.id as SocialPlatform);
@@ -291,6 +301,12 @@ export function MobileConnectedAppsView() {
 
   // Handle disconnect action
   const handleDisconnect = (integration: Integration) => {
+    // VTID-03885: DoctorBox disconnect is a real revoke, routed through the
+    // same consent dialog (it shows the revoke-confirm copy when already connected).
+    if (integration.id === 'doctorbox') {
+      setDoctorBoxDialogOpen(true);
+      return;
+    }
     toast({
       title: translate('connectedApps.actions.disconnect'),
       description: `${integration.name} ${translate('connectedApps.popup.connectionPlaceholder').replace('{appName}', '')}`,
@@ -504,6 +520,12 @@ export function MobileConnectedAppsView() {
       {/* In-app overlay shown while user is bounced to system browser
           for OAuth, so the button never feels dead. */}
       <OAuthBouncePendingOverlay />
+
+      {/* VTID-03885: Partner Health Test Integration — DoctorBox consent */}
+      <PartnerLabsConsentDialog
+        open={doctorBoxDialogOpen}
+        onOpenChange={setDoctorBoxDialogOpen}
+      />
     </div>
   );
 }

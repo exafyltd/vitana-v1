@@ -2594,7 +2594,29 @@
       "navRole_admin": "Admin",
       "navRole_developer": "Développeur",
       "navRole_infra": "Infra",
-      "navRole_backoffice": "Back-office"
+      "navRole_backoffice": "Back-office",
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "Aucun événement trouvé",
@@ -5398,9 +5420,6 @@
       "replyingTo": "Répondre à {name}",
       "cancelReply": "Annuler la réponse",
       "likeComment": "Aimer le commentaire",
-      "_pending_review": {
-        "feedItemError": true
-      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6009,9 +6028,6 @@
       "anonymous": "Anonyme",
       "vitanaOpenScreen": "Ouvrir l'écran",
       "viewFullscreen": "Afficher en plein écran",
-      "_pending_review": {
-        "conversationRowError": true
-      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -7365,7 +7381,15 @@
       "youExafySuperAdministratorYouCan": "Tu es un super-administrateur Exafy. Tu peux basculer entre les organisations et gérer tous les locataires.",
       "roleValue0": "Rôle : {value0}",
       "refreshBrowserVoices": "Actualiser les voix du navigateur",
-      "creativityValue0": "Créativité : {value0}"
+      "creativityValue0": "Créativité : {value0}",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Activer la campagne",
@@ -10272,11 +10296,6 @@
         "geminiStep1": "Pour Gemini CLI : ajoute l'URL du serveur MCP ci-dessus à ~/.gemini/settings.json sous tes serveurs MCP.",
         "geminiStep2": "Pour Gemini Enterprise (Édition Business) : Paramètres et aide → Équipe → Gère l'équipe → Applications connectées → « Ajoute un serveur MCP ».",
         "geminiNote": "L'application grand public Gemini n'a actuellement aucun moyen documenté d'ajouter directement un serveur MCP personnalisé — c'est uniquement disponible aujourd'hui via Gemini CLI et Gemini Enterprise.",
-        "_pending_review": {
-          "tabClaude": true,
-          "tabChatgpt": true,
-          "tabGemini": true
-        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10303,21 +10322,6 @@
         "notConfigured": "Ce type de connexion n'est pas encore activé. Réessaie plus tard.",
         "failed": "Impossible de démarrer la connexion. Vérifie tes informations."
       },
-      "_pending_review": {
-        "portalEyebrow": true,
-        "agentPromise": true,
-        "agentStatusPill": true,
-        "agentStatusDetail": true,
-        "agentUrlHint": true,
-        "howItWorksTitle": true,
-        "manualIntro": true,
-        "manualCta": true,
-        "connectionsEmptyHint": true,
-        "connectionsCount": true,
-        "openWorkbench": true,
-        "closeWorkbench": true,
-        "sandboxDevNote": true
-      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10332,13 +10336,6 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
-        "_pending_review": {
-          "connect": true,
-          "mapping": true,
-          "tests": true,
-          "live": true,
-          "offTrack": true
-        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",
