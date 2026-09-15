@@ -328,7 +328,9 @@
       "removedFromActiveList": "Aus der aktiven Liste entfernt.",
       "rollbackFailed": "Rollback fehlgeschlagen",
       "ticketRejected": "{ticketNumber} abgelehnt",
-      "ticketRemovedActiveList": "Aus der aktiven Liste entfernt."
+      "ticketRemovedActiveList": "Aus der aktiven Liste entfernt.",
+      "invalidJson": "Ungültiges JSON.",
+      "confirmMatchRequiresFields": "Nutzer-ID, Mandanten-ID und Testname sind erforderlich."
     },
     "audio": {
       "cameraStopped": "Kamera gestoppt",

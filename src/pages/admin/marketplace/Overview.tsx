@@ -125,6 +125,11 @@ export default function MarketplaceOverview() {
               title={t('screens.admin.marketplaceOverview')}
               description="Live view of what the autonomous marketplace system has done. You tune the rules here — the system picks the products."
             />
+            {/* VTID-03885: Partner Health Test Integration — not in the 5-slot
+                sidebar nav yet, so it needs a discoverable link somewhere. */}
+            <Link to="/admin/marketplace/partner-health">
+              <Button variant="outline" size="sm">{t('screens.admin.partnerHealthOrders')}</Button>
+            </Link>
             <Button variant="outline" size="sm" onClick={load}>
               <RefreshCw className="w-4 h-4 mr-2" />
               {t('screens.admin.refresh')}

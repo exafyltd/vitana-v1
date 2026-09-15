@@ -47,7 +47,6 @@
     "logout": "Odjavi se",
     "connectors": "Konektori",
     "support": "Podrška",
-    "_pending_review": {},
     "backoffice": {
       "back": "← Admin",
       "overview": "Pregled",
@@ -63,6 +62,5 @@
       "audit": "Revizija",
       "settings": "Podešavanja"
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -100,26 +100,6 @@
       "pointsToNext": "🔥 JESTEŚ #{rank} · {points} PKT DO #{nextRank}"
     },
     "admin": {
-      "_pending_review": {
-        "pointsSection": true,
-        "pointsRegistration": true,
-        "pointsEventPost": true,
-        "pointsLongevityPost": true,
-        "pointsLikeReceived": true,
-        "pointsLikeCap": true,
-        "maxPosts": true,
-        "rewardTextLabel": true,
-        "rewardDescLabel": true,
-        "save": true,
-        "saved": true,
-        "saveFailed": true,
-        "leaderboardSection": true,
-        "ledgerSection": true,
-        "adjustPoints": true,
-        "adjustReason": true,
-        "adjustApply": true,
-        "notModerator": true
-      },
       "title": "Gra eventowa",
       "configSection": "Konfiguracja",
       "nameLabel": "Nazwa",
