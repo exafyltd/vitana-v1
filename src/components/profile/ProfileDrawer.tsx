@@ -111,9 +111,6 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
 
     setOpen(false);
 
-    // Full page redirect: the rolePref cache update + useRoleRouteEnforcement
-    // + lazy-chunk Suspense race and can mount the destination shell empty
-    // (forcing the user to hit refresh). A hard navigation guarantees clean state.
     let destination: string;
     switch (newRole) {
       case "admin":
@@ -137,7 +134,24 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         destination = "/home";
         break;
     }
-    window.location.assign(destination);
+    // VTID-03916: this used to be a hard window.location.assign() — a full
+    // page reload, the actual "glitch" reported (a white flash + full app
+    // re-bootstrap on every switch). The comment it replaced justified that
+    // as a workaround for a real race: switching used to fire the
+    // set_role_preference write in the BACKGROUND and navigate ~100ms later
+    // regardless of whether it had landed, so a soft SPA navigate could reach
+    // the destination route before the role query cache reflected the new
+    // role, mounting it against the OLD role and rendering empty/wrong.
+    // VTID-03909 already closed that race for a different reason (a failed
+    // write was indistinguishable from a successful one) by making this
+    // function await setRole()'s confirmed result before ever reaching this
+    // line — so by the time we navigate, the query cache already holds the
+    // server-confirmed new role, both via the optimistic update setRole()
+    // applies synchronously and via the invalidateQueries() it runs right
+    // after the RPC resolves. The precondition the hard reload existed to
+    // patch around no longer holds, so a normal client-side navigate is safe
+    // and removes the reload glitch entirely.
+    navigate(destination);
   };
 
 
