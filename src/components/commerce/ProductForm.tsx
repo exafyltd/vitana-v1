@@ -63,6 +63,8 @@ export function ProductForm({
   options,
   userId,
   businessName,
+  affiliateNetwork,
+  affiliateAdvertiserId,
   onSaved,
   onCancel,
 }: {
@@ -71,6 +73,8 @@ export function ProductForm({
   userId: string;
   /** The SUPPLIER's business name — never the product's. */
   businessName: string;
+  affiliateNetwork: 'awin' | 'admitad' | 'other';
+  affiliateAdvertiserId: string;
   onSaved: () => void | Promise<void>;
   onCancel: () => void;
 }) {
@@ -110,6 +114,11 @@ export function ProductForm({
           name: businessName.trim().slice(0, 256),
           vertical_key: vertical.key,
           merchant_country: core.origin_country.trim().toUpperCase(),
+          affiliate_network: affiliateNetwork,
+          // Omitted for 'other': the gateway refuses a named network without
+          // an id, and sending an empty string would trip that refusal.
+          affiliate_advertiser_id:
+            affiliateNetwork === 'other' ? undefined : affiliateAdvertiserId.trim(),
         }),
       });
 

@@ -10322,7 +10322,7 @@
         "currency": "Währung",
         "photo": "Foto",
         "buyUrl": "Link zum Kaufen",
-        "buyUrlHint": "Die Adresse, auf der jemand dein Produkt kaufen kann. Ohne sie hat die Produktkarte keinen Kauf-Button.",
+        "buyUrlHint": "Die Produktseite in deinem Shop. Dorthin schicken wir Käufer — und darüber rechnen wir ab.",
         "shipsFrom": "Versand aus (Länderkürzel)",
         "shipsTo": "Versand nach",
         "shipsToHint": "Länderkürzel, durch Komma getrennt. Ohne Ziel kann dein Produkt niemandem angezeigt werden.",
@@ -10347,7 +10347,13 @@
         "imageTooLarge": "Das Bild ist zu groß (maximal 8 MB).",
         "imageFailed": "Das Bild konnte nicht hochgeladen werden.",
         "businessName": "Name deines Business",
-        "businessNameHint": "So erscheint dein Business im Marktplatz — nicht der Produktname."
+        "businessNameHint": "So erscheint dein Business im Marktplatz — nicht der Produktname.",
+        "network": "Affiliate-Netzwerk",
+        "networkOther": "Keins / noch nicht",
+        "networkHint": "Darüber rechnen wir deine Verkäufe ab. Nur Awin und Admitad sind aktuell angebunden.",
+        "networkOtherHint": "Kein Problem. Wir erfassen die Weiterleitungen zu deinem Shop; Verkäufe rechnen wir per Absprache ab, bis ein Netzwerk angebunden ist.",
+        "advertiserId": "Deine Advertiser-ID",
+        "advertiserIdHint": "Deine ID in diesem Netzwerk. Ohne sie können wir einen Verkauf nicht dir zuordnen — die Weiterleitung sehen wir, den Kauf nicht."
       },
       "join": {
         "seoTitle": "Business bei Vitanaland anmelden",

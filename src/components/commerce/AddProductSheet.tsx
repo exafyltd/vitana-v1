@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { adminFetch } from '@/lib/admin-api';
 import { MY_PORTAL_API } from '@/lib/commerce-host';
 import { Loader2, RefreshCw } from 'lucide-react';
@@ -34,6 +35,12 @@ export function AddProductSheet({
   // and never ask again; only a first-time supplier sees this field.
   const [businessName, setBusinessName] = useState('');
   const [knownMerchant, setKnownMerchant] = useState<{ name: string } | null | undefined>(undefined);
+  // How this supplier's SALES get attributed. Only these two have a real
+  // conversion path (awin is pulled, admitad is pushed); 'other' is honest
+  // rather than absent — a supplier not on a network can still list, their
+  // sales are just settled by agreement until one is connected.
+  const [network, setNetwork] = useState<'awin' | 'admitad' | 'other'>('other');
+  const [advertiserId, setAdvertiserId] = useState('');
 
   const loadMerchant = useCallback(async () => {
     try {
@@ -100,6 +107,8 @@ export function AddProductSheet({
               options={options}
               userId={user?.id ?? ''}
               businessName={businessName}
+              affiliateNetwork={network}
+              affiliateAdvertiserId={advertiserId}
               onSaved={async () => {
                 await onSaved();
                 close();
@@ -122,6 +131,47 @@ export function AddProductSheet({
                   <p className="text-xs text-slate-500">
                     {t('screens.commerceportal.productForm.businessNameHint')}
                   </p>
+
+                  <div className="space-y-1.5 pt-2">
+                    <Label htmlFor="pf-network" className="text-slate-300">
+                      {t('screens.commerceportal.productForm.network')}
+                    </Label>
+                    <Select value={network} onValueChange={(v) => setNetwork(v as typeof network)}>
+                      <SelectTrigger id="pf-network" className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="awin">Awin</SelectItem>
+                        <SelectItem value="admitad">Admitad</SelectItem>
+                        <SelectItem value="other">
+                          {t('screens.commerceportal.productForm.networkOther')}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-slate-500">
+                      {network === 'other'
+                        ? t('screens.commerceportal.productForm.networkOtherHint')
+                        : t('screens.commerceportal.productForm.networkHint')}
+                    </p>
+                  </div>
+
+                  {network !== 'other' && (
+                    <div className="space-y-1.5">
+                      <Label htmlFor="pf-advertiser" className="text-slate-300">
+                        {t('screens.commerceportal.productForm.advertiserId')}
+                      </Label>
+                      <Input
+                        id="pf-advertiser"
+                        dir="ltr"
+                        className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500"
+                        value={advertiserId}
+                        onChange={(e) => setAdvertiserId(e.target.value)}
+                      />
+                      <p className="text-xs text-slate-500">
+                        {t('screens.commerceportal.productForm.advertiserIdHint')}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -130,7 +180,10 @@ export function AddProductSheet({
                 <li key={v.key}>
                   <button
                     type="button"
-                    disabled={businessName.trim().length === 0}
+                    disabled={
+                      businessName.trim().length === 0 ||
+                      (network !== 'other' && advertiserId.trim().length === 0)
+                    }
                     onClick={() => setPicked(v)}
                     className="h-full w-full rounded-2xl border border-slate-800 bg-slate-900/50 p-4 text-start transition-colors hover:border-amber-500/40 hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
                   >
