@@ -47,7 +47,6 @@
     "monitoring": "مراقبة",
     "logout": "تسجيل الخروج",
     "myJourney": "رحلتي",
-    "_pending_review": {},
     "backoffice": {
       "back": "→ الإدارة",
       "overview": "نظرة عامة",
@@ -61,8 +60,7 @@
       "reports": "التقارير",
       "approvals": "الموافقات",
       "audit": "التدقيق",
-      "settings": "الإعدادات",
-      "_pending_review": {}
+      "settings": "الإعدادات"
     }
   },
   "_pending_review": {}

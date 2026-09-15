@@ -2612,32 +2612,7 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty.",
-      "_pending_review": {
-        "navRole_backoffice": true,
-        "partnerHealthOrders": true,
-        "orders": true,
-        "inbox": true,
-        "testColumn": true,
-        "partner": true,
-        "uploadResult": true,
-        "received": true,
-        "resolve": true,
-        "statusUpdated": true,
-        "resultUploaded": true,
-        "matchConfirmed": true,
-        "uploadResultFor": true,
-        "uploadResultHelp": true,
-        "upload": true,
-        "confirmMatch": true,
-        "confirmMatchHelp": true,
-        "matchedUserId": true,
-        "matchedTenantId": true,
-        "testName": true,
-        "externalOrderRefOptional": true,
-        "noOrdersYet": true,
-        "inboxEmpty": true
-      }
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "No se encontraron eventos",
@@ -5441,9 +5416,6 @@
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
       "likeComment": "Me gusta el comentario",
-      "_pending_review": {
-        "feedItemError": true
-      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6052,9 +6024,6 @@
       "conversationStart": "Inicio de la conversación",
       "anonymous": "Anónimo",
       "vitanaOpenScreen": "Abrir pantalla",
-      "_pending_review": {
-        "conversationRowError": true
-      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -7416,14 +7385,7 @@
       "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
       "partnerLabsGrantSuccess": "Acceso concedido — Vitana ahora puede discutir tus resultados de DoctorBox contigo.",
       "partnerLabsRevokeSuccess": "Acceso revocado.",
-      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo.",
-      "_pending_review": {
-        "partnerLabsConnectTitle": true,
-        "partnerLabsConnectDescription": true,
-        "partnerLabsGrantAccess": true,
-        "partnerLabsRevokeAccess": true,
-        "partnerLabsRevokeConfirm": true
-      }
+      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo."
     },
     "sharing": {
       "activateCampaign": "Activar campaña",
@@ -10334,11 +10296,6 @@
         "geminiStep1": "Para Gemini CLI: añade la URL del servidor MCP de arriba a ~/.gemini/settings.json bajo tus servidores MCP.",
         "geminiStep2": "Para Gemini Enterprise (Business Edition): Ajustes y ayuda → Equipo → Gestionar equipo → Aplicaciones conectadas → \"Añadir servidor MCP\".",
         "geminiNote": "La aplicación de consumidor de Gemini actualmente no tiene una forma documentada de añadir un servidor MCP personalizado directamente — eso solo está disponible hoy a través de Gemini CLI y Gemini Enterprise.",
-        "_pending_review": {
-          "tabClaude": true,
-          "tabChatgpt": true,
-          "tabGemini": true
-        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10365,9 +10322,6 @@
         "notConfigured": "Este tipo de conexión aún no está habilitado. Por favor, inténtalo de nuevo más tarde.",
         "failed": "No se pudo iniciar la conexión. Por favor, verifica tus datos."
       },
-      "_pending_review": {
-        "sandboxDevNote": true
-      },
       "portalEyebrow": "Portal de Comercio",
       "agentPromise": "Introduce la dirección de abajo en tu IA — Claude, ChatGPT o Gemini — y tu negocio estará conectado a Vitanaland.",
       "agentStatusPill": "Próximamente en vivo",
@@ -10382,13 +10336,6 @@
       "closeWorkbench": "Cerrar",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
-        "_pending_review": {
-          "connect": true,
-          "mapping": true,
-          "tests": true,
-          "live": true,
-          "offTrack": true
-        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",
@@ -10513,11 +10460,7 @@
         "empty": "No se encontró ninguna empresa",
         "none": "Ninguno",
         "yes": "Sí",
-        "no": "No",
-        "_pending_review": {
-          "id": true,
-          "no": true
-        }
+        "no": "No"
       },
       "trail": {
         "title": "Pista de auditoría independiente",
@@ -10676,11 +10619,7 @@
         "web": "Web",
         "chat": "Chat",
         "voice": "Voz",
-        "system": "Sistema",
-        "_pending_review": {
-          "web": true,
-          "chat": true
-        }
+        "system": "Sistema"
       },
       "sales": {
         "status": {
@@ -10713,10 +10652,7 @@
           "low": "Baja",
           "converted": "Convertido",
           "unpaid": "Sin pagar",
-          "return": "Devolución",
-          "_pending_review": {
-            "lead": true
-          }
+          "return": "Devolución"
         },
         "common": {
           "status": "Estado",
@@ -10734,11 +10670,7 @@
           "total": "Total",
           "subtotal": "Subtotal",
           "tax": "Impuesto",
-          "actions": "Acciones",
-          "_pending_review": {
-            "total": true,
-            "subtotal": true
-          }
+          "actions": "Acciones"
         },
         "docs": {
           "noItems": "Sin líneas",
@@ -10760,11 +10692,7 @@
           "company": "Empresa",
           "territory": "Territorio",
           "industry": "Sector",
-          "frozenHint": "Un lead convertido está congelado en ERPClaw y ya no se puede editar.",
-          "_pending_review": {
-            "title": true,
-            "lead": true
-          }
+          "frozenHint": "Un lead convertido está congelado en ERPClaw y ya no se puede editar."
         },
         "contacts": {
           "title": "Contactos y empresas",
@@ -11022,9 +10950,6 @@
             "last_month": "Mes pasado",
             "this_quarter": "Este trimestre",
             "last_year": "Año pasado"
-          },
-          "_pending_review": {
-            "window": true
           }
         },
         "pnl": {
@@ -11217,10 +11142,7 @@
           "new": "Nuevo",
           "sales": "Ventas",
           "support": "Soporte",
-          "maintenance": "Mantenimiento",
-          "_pending_review": {
-            "lead": true
-          }
+          "maintenance": "Mantenimiento"
         },
         "forms": {
           "lead": {
@@ -11425,10 +11347,7 @@
           "error": "Error",
           "executedLine": "El gateway ejecutó el comando. El recibo del puente está abajo.",
           "rejectedLine": "La solicitud está rechazada; no se ejecutó nada.",
-          "executedButFailedHint": "La aprobación queda registrada, pero el puente/ERPClaw rechazó la ejecución: el comando queda como fallido y hay que solicitarlo de nuevo.",
-          "_pending_review": {
-            "error": true
-          }
+          "executedButFailedHint": "La aprobación queda registrada, pero el puente/ERPClaw rechazó la ejecución: el comando queda como fallido y hay que solicitarlo de nuevo."
         },
         "refusals": {
           "selfApproval": "No puedes aprobar tu propia solicitud.",

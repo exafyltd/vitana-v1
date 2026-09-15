@@ -329,10 +329,6 @@
       "rollbackFailed": "回滚失败。",
       "ticketRejected": "{ticketNumber} 已拒绝。",
       "ticketRemovedActiveList": "已从活跃列表中移除。",
-      "_pending_review": {
-        "invalidJson": true,
-        "confirmMatchRequiresFields": true
-      },
       "invalidJson": "Invalid JSON.",
       "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
     },
@@ -1375,13 +1371,7 @@
       "capabilityGranted": "Capability granted",
       "capabilityRevoked": "Capability revoked",
       "grantFailed": "Could not grant the capability",
-      "revokeFailed": "Could not revoke the capability",
-      "_pending_review": {
-        "capabilityGranted": true,
-        "capabilityRevoked": true,
-        "grantFailed": true,
-        "revokeFailed": true
-      }
+      "revokeFailed": "Could not revoke the capability"
     }
   }
 }

@@ -2612,32 +2612,7 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty.",
-      "_pending_review": {
-        "navRole_backoffice": true,
-        "partnerHealthOrders": true,
-        "orders": true,
-        "inbox": true,
-        "testColumn": true,
-        "partner": true,
-        "uploadResult": true,
-        "received": true,
-        "resolve": true,
-        "statusUpdated": true,
-        "resultUploaded": true,
-        "matchConfirmed": true,
-        "uploadResultFor": true,
-        "uploadResultHelp": true,
-        "upload": true,
-        "confirmMatch": true,
-        "confirmMatchHelp": true,
-        "matchedUserId": true,
-        "matchedTenantId": true,
-        "testName": true,
-        "externalOrderRefOptional": true,
-        "noOrdersYet": true,
-        "inboxEmpty": true
-      }
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",
@@ -5441,9 +5416,6 @@
       "replyingTo": "Odgovaraš {name}-u",
       "cancelReply": "Otkaži odgovor",
       "likeComment": "Lajkuj komentar",
-      "_pending_review": {
-        "feedItemError": true
-      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6052,9 +6024,6 @@
       "conversationStart": "Početak razgovora",
       "anonymous": "Anoniman",
       "vitanaOpenScreen": "Otvori ekran",
-      "_pending_review": {
-        "conversationRowError": true
-      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -7416,17 +7385,7 @@
       "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
       "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
       "partnerLabsRevokeSuccess": "Access revoked.",
-      "partnerLabsError": "Something went wrong. Please try again.",
-      "_pending_review": {
-        "partnerLabsConnectTitle": true,
-        "partnerLabsConnectDescription": true,
-        "partnerLabsGrantAccess": true,
-        "partnerLabsRevokeAccess": true,
-        "partnerLabsRevokeConfirm": true,
-        "partnerLabsGrantSuccess": true,
-        "partnerLabsRevokeSuccess": true,
-        "partnerLabsError": true
-      }
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",
@@ -10337,11 +10296,6 @@
         "geminiStep1": "Za Gemini CLI: dodaj URL MCP servera iznad u ~/.gemini/settings.json pod tvoje MCP servere.",
         "geminiStep2": "Za Gemini Enterprise (Business Edition): Podešavanja i pomoć → Tim → Upravljaj timom → Povezane aplikacije → „Dodaj MCP Server“.",
         "geminiNote": "Gemini aplikacija za korisnike trenutno nema dokumentovan način za direktno dodavanje prilagođenog MCP servera — to je danas dostupno samo putem Gemini CLI i Gemini Enterprise.",
-        "_pending_review": {
-          "tabClaude": true,
-          "tabChatgpt": true,
-          "tabGemini": true
-        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10368,21 +10322,6 @@
         "notConfigured": "Ovaj tip veze još uvek nije omogućen. Pokušaj ponovo kasnije.",
         "failed": "Nije uspelo uspostavljanje veze. Proveri svoje podatke."
       },
-      "_pending_review": {
-        "portalEyebrow": true,
-        "agentPromise": true,
-        "agentStatusPill": true,
-        "agentStatusDetail": true,
-        "agentUrlHint": true,
-        "howItWorksTitle": true,
-        "manualIntro": true,
-        "manualCta": true,
-        "connectionsEmptyHint": true,
-        "connectionsCount": true,
-        "openWorkbench": true,
-        "closeWorkbench": true,
-        "sandboxDevNote": true
-      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10397,13 +10336,6 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
-        "_pending_review": {
-          "connect": true,
-          "mapping": true,
-          "tests": true,
-          "live": true,
-          "offTrack": true
-        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",
@@ -10485,10 +10417,7 @@
         "actions": "Akcije",
         "installStatus": "Status instalacije",
         "installedAt": "Instalirano",
-        "noModules": "Nema instaliranih modula",
-        "_pending_review": {
-          "status": true
-        }
+        "noModules": "Nema instaliranih modula"
       },
       "receipts": {
         "title": "Potvrde komandi",
@@ -10531,10 +10460,7 @@
         "empty": "Kompanija nije pronađena",
         "none": "Nema",
         "yes": "Da",
-        "no": "Ne",
-        "_pending_review": {
-          "id": true
-        }
+        "no": "Ne"
       },
       "trail": {
         "title": "Nezavisni revizioni trag",
@@ -10573,10 +10499,7 @@
         "description": "Svi zahtevi za odobrenje u tenantu – na čekanju, odobreni ili odbijeni.",
         "searchPlaceholder": "Pretraži po komandi, ovlašćenju ili osobi …",
         "statusFilter": "Status",
-        "empty": "Nema zahteva za odobrenje",
-        "_pending_review": {
-          "statusFilter": true
-        }
+        "empty": "Nema zahteva za odobrenje"
       },
       "policies": {
         "title": "Politike",
@@ -10638,10 +10561,7 @@
         "description": "Sve komande tvog tenanta, najnovije prvo – sa veba, iz ćaskanja i glasom.",
         "searchPlaceholder": "Pretraži po komandi, ID-u ili razlogu …",
         "statusFilter": "Status",
-        "empty": "Još nema komandi",
-        "_pending_review": {
-          "statusFilter": true
-        }
+        "empty": "Još nema komandi"
       },
       "tiers": {
         "read": "Čitanje",
@@ -10677,10 +10597,7 @@
         "you": "Ti",
         "yourOwnRequest": "Tvoj sopstveni zahtev – ne možeš sam da ga odobriš.",
         "youCanDecide": "Možeš da odlučiš",
-        "youCannotDecide": "Nije na tebi da odobriš",
-        "_pending_review": {
-          "status": true
-        }
+        "youCannotDecide": "Nije na tebi da odobriš"
       },
       "commands": {
         "when": "Kada",
@@ -10691,10 +10608,7 @@
         "requester": "Podnosilac",
         "receipt": "Potvrda",
         "reason": "Razlog",
-        "you": "Ti",
-        "_pending_review": {
-          "status": true
-        }
+        "you": "Ti"
       },
       "approvalStatus": {
         "pending": "Na čekanju",
@@ -10738,10 +10652,7 @@
           "low": "Nizak",
           "converted": "Konvertovano",
           "unpaid": "Neplaćeno",
-          "return": "Povrat",
-          "_pending_review": {
-            "lead": true
-          }
+          "return": "Povrat"
         },
         "common": {
           "status": "Status",
@@ -10759,10 +10670,7 @@
           "total": "Ukupno",
           "subtotal": "Međuzbir",
           "tax": "Porez",
-          "actions": "Radnje",
-          "_pending_review": {
-            "status": true
-          }
+          "actions": "Radnje"
         },
         "docs": {
           "noItems": "Nema stavki",
@@ -10784,10 +10692,7 @@
           "company": "Firma",
           "territory": "Teritorija",
           "industry": "Delatnost",
-          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati.",
-          "_pending_review": {
-            "lead": true
-          }
+          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati."
         },
         "contacts": {
           "title": "Kontakti i firme",
@@ -11045,10 +10950,6 @@
             "last_month": "Prošli mesec",
             "this_quarter": "Ovaj kvartal",
             "last_year": "Prošla godina"
-          },
-          "_pending_review": {
-            "period": true,
-            "window": true
           }
         },
         "pnl": {
@@ -11195,10 +11096,7 @@
           "journal_entry_id": "ID naloga",
           "opportunity_type": "Vrsta prilike",
           "lost_reason": "Razlog",
-          "sales_invoice_id": "ID fakture",
-          "_pending_review": {
-            "status": true
-          }
+          "sales_invoice_id": "ID fakture"
         },
         "choices": {
           "website": "Veb sajt",
@@ -11244,10 +11142,7 @@
           "new": "Novo",
           "sales": "Prodaja",
           "support": "Podrška",
-          "maintenance": "Održavanje",
-          "_pending_review": {
-            "partner": true
-          }
+          "maintenance": "Održavanje"
         },
         "forms": {
           "lead": {

@@ -329,10 +329,6 @@
       "rollbackFailed": "فشل التراجع",
       "ticketRejected": "تم رفض {ticketNumber}",
       "ticketRemovedActiveList": "تمت إزالته من القائمة النشطة.",
-      "_pending_review": {
-        "invalidJson": true,
-        "confirmMatchRequiresFields": true
-      },
       "invalidJson": "Invalid JSON.",
       "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
     },

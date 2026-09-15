@@ -2595,30 +2595,6 @@
       "navRole_developer": "开发者",
       "navRole_infra": "运维",
       "navRole_backoffice": "后台",
-      "_pending_review": {
-        "partnerHealthOrders": true,
-        "orders": true,
-        "inbox": true,
-        "testColumn": true,
-        "partner": true,
-        "uploadResult": true,
-        "received": true,
-        "resolve": true,
-        "statusUpdated": true,
-        "resultUploaded": true,
-        "matchConfirmed": true,
-        "uploadResultFor": true,
-        "uploadResultHelp": true,
-        "upload": true,
-        "confirmMatch": true,
-        "confirmMatchHelp": true,
-        "matchedUserId": true,
-        "matchedTenantId": true,
-        "testName": true,
-        "externalOrderRefOptional": true,
-        "noOrdersYet": true,
-        "inboxEmpty": true
-      },
       "partnerHealthOrders": "Partner Health Tests",
       "orders": "Orders",
       "inbox": "Inbox",
@@ -5444,9 +5420,6 @@
       "replyingTo": "回复 {name}",
       "cancelReply": "取消回复",
       "likeComment": "赞评论",
-      "_pending_review": {
-        "feedItemError": true
-      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6055,9 +6028,6 @@
       "anonymous": "匿名",
       "vitanaOpenScreen": "打开屏幕",
       "viewFullscreen": "全屏查看",
-      "_pending_review": {
-        "conversationRowError": true
-      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -7412,16 +7382,6 @@
       "roleValue0": "角色：{value0}",
       "refreshBrowserVoices": "刷新浏览器语音",
       "creativityValue0": "创造力：{value0}",
-      "_pending_review": {
-        "partnerLabsConnectTitle": true,
-        "partnerLabsConnectDescription": true,
-        "partnerLabsGrantAccess": true,
-        "partnerLabsRevokeAccess": true,
-        "partnerLabsRevokeConfirm": true,
-        "partnerLabsGrantSuccess": true,
-        "partnerLabsRevokeSuccess": true,
-        "partnerLabsError": true
-      },
       "partnerLabsConnectTitle": "Connect DoctorBox",
       "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
       "partnerLabsGrantAccess": "Grant access",
@@ -10336,11 +10296,6 @@
         "geminiStep1": "对于 Gemini CLI：将上述 MCP 服务器 URL 添加到 ~/.gemini/settings.json 中你的 MCP 服务器下。",
         "geminiStep2": "对于 Gemini Enterprise (Business Edition)：设置与帮助 → 团队 → 管理团队 → 已连接应用 → “添加 MCP 服务器”。",
         "geminiNote": "消费者 Gemini 应用目前没有直接添加自定义 MCP 服务器的官方文档方法 — 目前仅通过 Gemini CLI 和 Gemini Enterprise 提供此功能。",
-        "_pending_review": {
-          "tabClaude": true,
-          "tabChatgpt": true,
-          "tabGemini": true
-        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10367,21 +10322,6 @@
         "notConfigured": "此连接类型尚未启用。请稍后再试。",
         "failed": "无法启动连接。请检查你的详细信息。"
       },
-      "_pending_review": {
-        "portalEyebrow": true,
-        "agentPromise": true,
-        "agentStatusPill": true,
-        "agentStatusDetail": true,
-        "agentUrlHint": true,
-        "howItWorksTitle": true,
-        "manualIntro": true,
-        "manualCta": true,
-        "connectionsEmptyHint": true,
-        "connectionsCount": true,
-        "openWorkbench": true,
-        "closeWorkbench": true,
-        "sandboxDevNote": true
-      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10396,13 +10336,6 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
-        "_pending_review": {
-          "connect": true,
-          "mapping": true,
-          "tests": true,
-          "live": true,
-          "offTrack": true
-        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",
@@ -10458,25 +10391,7 @@
         "revokeHint": "Click to revoke",
         "explicitOnly": "explicit only (personal data)",
         "noManage": "You can view capabilities but not change them – that needs erp.admin or the admin role.",
-        "mine": "Your effective capabilities",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "searchPlaceholder": true,
-          "member": true,
-          "role": true,
-          "granted": true,
-          "grant": true,
-          "grantAction": true,
-          "pick": true,
-          "cancel": true,
-          "loading": true,
-          "empty": true,
-          "revokeHint": true,
-          "explicitOnly": true,
-          "noManage": true,
-          "mine": true
-        }
+        "mine": "Your effective capabilities"
       },
       "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
       "health": {
@@ -10502,32 +10417,7 @@
         "actions": "Actions",
         "installStatus": "Install status",
         "installedAt": "Installed at",
-        "noModules": "No modules installed",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "status": true,
-          "companies": true,
-          "currencies": true,
-          "uoms": true,
-          "paymentTerms": true,
-          "schemaVersions": true,
-          "installation": true,
-          "installedSkills": true,
-          "sharedLibrary": true,
-          "databaseTables": true,
-          "schemaVersion": true,
-          "module": true,
-          "version": true,
-          "updatedAt": true,
-          "modules": true,
-          "moduleName": true,
-          "category": true,
-          "actions": true,
-          "installStatus": true,
-          "installedAt": true,
-          "noModules": true
-        }
+        "noModules": "No modules installed"
       },
       "receipts": {
         "title": "Command Receipts",
@@ -10536,16 +10426,7 @@
         "empty": "No commands yet",
         "noReceipt": "No receipt",
         "show": "Show receipt",
-        "hide": "Hide receipt",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "searchPlaceholder": true,
-          "empty": true,
-          "noReceipt": true,
-          "show": true,
-          "hide": true
-        }
+        "hide": "Hide receipt"
       },
       "company": {
         "title": "Company & Legal Entities",
@@ -10579,41 +10460,7 @@
         "empty": "No company found",
         "none": "None",
         "yes": "Yes",
-        "no": "No",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "active": true,
-          "activeBadge": true,
-          "allCompanies": true,
-          "name": true,
-          "abbr": true,
-          "currency": true,
-          "country": true,
-          "taxId": true,
-          "fiscalYearStart": true,
-          "threeWayMatch": true,
-          "receiptTolerance": true,
-          "perpetualInventory": true,
-          "negativeStock": true,
-          "frozenTill": true,
-          "createdAt": true,
-          "updatedAt": true,
-          "id": true,
-          "fiscalYears": true,
-          "fyName": true,
-          "start": true,
-          "end": true,
-          "state": true,
-          "open": true,
-          "closed": true,
-          "noFiscalYears": true,
-          "needsAccountingView": true,
-          "empty": true,
-          "none": true,
-          "yes": true,
-          "no": true
-        }
+        "no": "No"
       },
       "trail": {
         "title": "Independent Audit Trail",
@@ -10627,33 +10474,13 @@
         "channel": "Channel",
         "command": "Command",
         "approval": "Approval",
-        "details": "Details",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "searchPlaceholder": true,
-          "empty": true,
-          "time": true,
-          "event": true,
-          "actor": true,
-          "role": true,
-          "channel": true,
-          "command": true,
-          "approval": true,
-          "details": true
-        }
+        "details": "Details"
       },
       "inbox": {
         "title": "Approvals Inbox",
         "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
         "empty": "Nothing is waiting for you",
-        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here.",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "empty": true,
-          "emptyHint": true
-        }
+        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
       },
       "common": {
         "empty": "No entries",
@@ -10661,37 +10488,18 @@
         "replayed": "replayed from receipt",
         "source": {
           "erp": "Source: ERPClaw via the bridge",
-          "gateway": "Source: Vitana gateway",
-          "_pending_review": {
-            "erp": true,
-            "gateway": true
-          }
+          "gateway": "Source: Vitana gateway"
         },
         "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
         "viewAll": "View all",
-        "all": "All",
-        "_pending_review": {
-          "empty": true,
-          "asOf": true,
-          "replayed": true,
-          "readOnlySlice": true,
-          "viewAll": true,
-          "all": true
-        }
+        "all": "All"
       },
       "queue": {
         "title": "Queue",
         "description": "Every approval request in the tenant – pending, approved or rejected.",
         "searchPlaceholder": "Search by command, capability or person …",
         "statusFilter": "Status",
-        "empty": "No approval requests",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "searchPlaceholder": true,
-          "statusFilter": true,
-          "empty": true
-        }
+        "empty": "No approval requests"
       },
       "policies": {
         "title": "Policies",
@@ -10709,39 +10517,14 @@
         "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
         "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
         "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
-        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically.",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "threshold": true,
-          "thresholdHint": true,
-          "mfa": true,
-          "mfaHint": true,
-          "on": true,
-          "off": true,
-          "default": true,
-          "custom": true,
-          "editNextSlice": true,
-          "rulesTitle": true,
-          "ruleMakerChecker": true,
-          "ruleCapability": true,
-          "ruleVoice": true,
-          "ruleEscalation": true
-        }
+        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
       },
       "myRequests": {
         "title": "My Requests",
         "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
         "awaiting": "Awaiting approval",
         "history": "History",
-        "empty": "You have not requested any commands yet",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "awaiting": true,
-          "history": true,
-          "empty": true
-        }
+        "empty": "You have not requested any commands yet"
       },
       "dashboard": {
         "title": "Dashboard",
@@ -10760,26 +10543,7 @@
         "erpUnknown": "Unclear",
         "quickAccess": "Quick access",
         "recentActivity": "Recent activity",
-        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access.",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "pendingApprovals": true,
-          "pendingApprovalsHint": true,
-          "myOpenRequests": true,
-          "myOpenRequestsHint": true,
-          "executed7d": true,
-          "executed7dHint": true,
-          "failed7d": true,
-          "failed7dHint": true,
-          "erpStatus": true,
-          "erpOk": true,
-          "erpNotOk": true,
-          "erpUnknown": true,
-          "quickAccess": true,
-          "recentActivity": true,
-          "noCapabilities": true
-        }
+        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
       },
       "errors": {
         "bridgeUnavailable": "The ERP bridge is not reachable.",
@@ -10790,44 +10554,20 @@
         "unauthorized": "Please sign in again.",
         "noTenant": "No active tenant – pick a workspace first.",
         "notFound": "Not found.",
-        "generic": "The data could not be loaded.",
-        "_pending_review": {
-          "bridgeUnavailable": true,
-          "bridgeUnavailableHint": true,
-          "noCapability": true,
-          "noCapabilityHint": true,
-          "erpFailed": true,
-          "unauthorized": true,
-          "noTenant": true,
-          "notFound": true,
-          "generic": true
-        }
+        "generic": "The data could not be loaded."
       },
       "activity": {
         "title": "Activity",
         "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
         "searchPlaceholder": "Search by command, ID or reason …",
         "statusFilter": "Status",
-        "empty": "No commands yet",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "searchPlaceholder": true,
-          "statusFilter": true,
-          "empty": true
-        }
+        "empty": "No commands yet"
       },
       "tiers": {
         "read": "Read",
         "draft": "Draft",
         "commit": "Commit",
-        "high": "High-risk",
-        "_pending_review": {
-          "read": true,
-          "draft": true,
-          "commit": true,
-          "high": true
-        }
+        "high": "High-risk"
       },
       "erpLog": {
         "title": "ERP Audit Log",
@@ -10839,31 +10579,13 @@
         "entity": "Entity",
         "user": "User",
         "changes": "Change",
-        "system": "System",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "empty": true,
-          "time": true,
-          "skill": true,
-          "action": true,
-          "entity": true,
-          "user": true,
-          "changes": true,
-          "system": true
-        }
+        "system": "System"
       },
       "commandStatus": {
         "executed": "Executed",
         "failed": "Failed",
         "awaiting_approval": "Awaiting approval",
-        "rejected": "Rejected",
-        "_pending_review": {
-          "executed": true,
-          "failed": true,
-          "awaiting_approval": true,
-          "rejected": true
-        }
+        "rejected": "Rejected"
       },
       "approvals": {
         "requested": "Requested",
@@ -10875,19 +10597,7 @@
         "you": "You",
         "yourOwnRequest": "Your own request – you cannot approve it yourself.",
         "youCanDecide": "You can decide",
-        "youCannotDecide": "Not yours to approve",
-        "_pending_review": {
-          "requested": true,
-          "command": true,
-          "requester": true,
-          "approverNeeds": true,
-          "status": true,
-          "decision": true,
-          "you": true,
-          "yourOwnRequest": true,
-          "youCanDecide": true,
-          "youCannotDecide": true
-        }
+        "youCannotDecide": "Not yours to approve"
       },
       "commands": {
         "when": "When",
@@ -10898,40 +10608,18 @@
         "requester": "Requester",
         "receipt": "Receipt",
         "reason": "Reason",
-        "you": "You",
-        "_pending_review": {
-          "when": true,
-          "command": true,
-          "tier": true,
-          "status": true,
-          "channel": true,
-          "requester": true,
-          "receipt": true,
-          "reason": true,
-          "you": true
-        }
+        "you": "You"
       },
       "approvalStatus": {
         "pending": "Pending",
         "approved": "Approved",
-        "rejected": "Rejected",
-        "_pending_review": {
-          "pending": true,
-          "approved": true,
-          "rejected": true
-        }
+        "rejected": "Rejected"
       },
       "channels": {
         "web": "Web",
         "chat": "Chat",
         "voice": "Voice",
-        "system": "System",
-        "_pending_review": {
-          "web": true,
-          "chat": true,
-          "voice": true,
-          "system": true
-        }
+        "system": "System"
       },
       "sales": {
         "status": {
@@ -10964,39 +10652,7 @@
           "low": "Low",
           "converted": "Converted",
           "unpaid": "Unpaid",
-          "return": "Return",
-          "_pending_review": {
-            "new": true,
-            "open": true,
-            "draft": true,
-            "prospect": true,
-            "lead": true,
-            "qualified": true,
-            "contacted": true,
-            "submitted": true,
-            "sent": true,
-            "active": true,
-            "customer": true,
-            "won": true,
-            "completed": true,
-            "paid": true,
-            "unqualified": true,
-            "cancelled": true,
-            "lost": true,
-            "closed": true,
-            "inactive": true,
-            "churned": true,
-            "overdue": true,
-            "high": true,
-            "urgent": true,
-            "on_hold": true,
-            "partially_paid": true,
-            "medium": true,
-            "low": true,
-            "converted": true,
-            "unpaid": true,
-            "return": true
-          }
+          "return": "Return"
         },
         "common": {
           "status": "Status",
@@ -11014,39 +10670,14 @@
           "total": "Total",
           "subtotal": "Subtotal",
           "tax": "Tax",
-          "actions": "Actions",
-          "_pending_review": {
-            "status": true,
-            "contact": true,
-            "created": true,
-            "updated": true,
-            "details": true,
-            "selectHint": true,
-            "reference": true,
-            "email": true,
-            "phone": true,
-            "assignedTo": true,
-            "notes": true,
-            "date": true,
-            "total": true,
-            "subtotal": true,
-            "tax": true,
-            "actions": true
-          }
+          "actions": "Actions"
         },
         "docs": {
           "noItems": "No line items",
           "item": "Item",
           "qty": "Qty",
           "rate": "Rate",
-          "amount": "Amount",
-          "_pending_review": {
-            "noItems": true,
-            "item": true,
-            "qty": true,
-            "rate": true,
-            "amount": true
-          }
+          "amount": "Amount"
         },
         "leads": {
           "title": "Leads",
@@ -11061,22 +10692,7 @@
           "company": "Company",
           "territory": "Territory",
           "industry": "Industry",
-          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited.",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "searchPlaceholder": true,
-            "empty": true,
-            "lead": true,
-            "source": true,
-            "converted": true,
-            "toOpportunity": true,
-            "toCustomer": true,
-            "company": true,
-            "territory": true,
-            "industry": true,
-            "frozenHint": true
-          }
+          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited."
         },
         "contacts": {
           "title": "Contacts & Companies",
@@ -11099,30 +10715,7 @@
           "noCustomers": "No customers yet",
           "type": "Type",
           "creditLimit": "Credit limit",
-          "customer": "Customer",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "searchPlaceholder": true,
-            "contacts": true,
-            "needsCrmView": true,
-            "noContacts": true,
-            "name": true,
-            "role": true,
-            "company": true,
-            "lifecycle": true,
-            "location": true,
-            "companies": true,
-            "industry": true,
-            "customerLink": true,
-            "noCompanies": true,
-            "customers": true,
-            "needsSalesView": true,
-            "noCustomers": true,
-            "type": true,
-            "creditLimit": true,
-            "customer": true
-          }
+          "customer": "Customer"
         },
         "opportunities": {
           "title": "Opportunities",
@@ -11140,25 +10733,7 @@
           "board": "Pipeline board",
           "expected": "Expected",
           "weighted": "Weighted",
-          "noneInStage": "Nothing in this stage",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "open": true,
-            "openHint": true,
-            "won": true,
-            "wonHint": true,
-            "lost": true,
-            "lostHint": true,
-            "conversion": true,
-            "conversionHint": true,
-            "empty": true,
-            "emptyHint": true,
-            "board": true,
-            "expected": true,
-            "weighted": true,
-            "noneInStage": true
-          }
+          "noneInStage": "Nothing in this stage"
         },
         "followups": {
           "title": "Follow-ups",
@@ -11173,22 +10748,7 @@
           "activities": "Activities",
           "noActivities": "No activities yet",
           "opportunity": "Opportunity",
-          "nextAction": "Next action",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "searchPlaceholder": true,
-            "tasks": true,
-            "noTasks": true,
-            "subject": true,
-            "priority": true,
-            "due": true,
-            "links": true,
-            "activities": true,
-            "noActivities": true,
-            "opportunity": true,
-            "nextAction": true
-          }
+          "nextAction": "Next action"
         },
         "quotations": {
           "title": "Quotations",
@@ -11196,15 +10756,7 @@
           "searchPlaceholder": "Search by customer, reference or status …",
           "empty": "No quotations yet",
           "validUntil": "Valid until",
-          "convertedTo": "Converted to",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "searchPlaceholder": true,
-            "empty": true,
-            "validUntil": true,
-            "convertedTo": true
-          }
+          "convertedTo": "Converted to"
         },
         "invoices": {
           "title": "Invoices",
@@ -11221,24 +10773,7 @@
           "due": "Due",
           "outstandingCol": "Outstanding",
           "payments": "Payments",
-          "salesOrder": "Sales order",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "count": true,
-            "countHint": true,
-            "outstanding": true,
-            "outstandingHint": true,
-            "overdue": true,
-            "overdueHint": true,
-            "searchPlaceholder": true,
-            "empty": true,
-            "posted": true,
-            "due": true,
-            "outstandingCol": true,
-            "payments": true,
-            "salesOrder": true
-          }
+          "salesOrder": "Sales order"
         },
         "creditNotes": {
           "title": "Credit Notes",
@@ -11247,16 +10782,7 @@
           "searchPlaceholder": "Search by customer, reference or invoice …",
           "empty": "No credit notes yet",
           "emptyHint": "Credit notes only exist against a posted invoice.",
-          "against": "Against invoice",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "highRiskNote": true,
-            "searchPlaceholder": true,
-            "empty": true,
-            "emptyHint": true,
-            "against": true
-          }
+          "against": "Against invoice"
         }
       },
       "finance": {
@@ -11282,31 +10808,7 @@
           "referenceDate": "Reference date",
           "fromAccount": "From account",
           "toAccount": "To account",
-          "currency": "Currency · rate",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "receivedYtd": true,
-            "receivedYtdHint": true,
-            "paidYtd": true,
-            "paidYtdHint": true,
-            "unallocated": true,
-            "unallocatedHint": true,
-            "searchPlaceholder": true,
-            "type": true,
-            "receive": true,
-            "pay": true,
-            "party": true,
-            "amount": true,
-            "unallocatedCol": true,
-            "empty": true,
-            "allocations": true,
-            "bankReference": true,
-            "referenceDate": true,
-            "fromAccount": true,
-            "toAccount": true,
-            "currency": true
-          }
+          "currency": "Currency · rate"
         },
         "fx": {
           "currencies": "Currencies",
@@ -11317,18 +10819,7 @@
           "pair": "Pair",
           "rate": "Rate",
           "effective": "Effective",
-          "source": "Source",
-          "_pending_review": {
-            "currencies": true,
-            "currenciesHint": true,
-            "noCurrencies": true,
-            "rates": true,
-            "noRates": true,
-            "pair": true,
-            "rate": true,
-            "effective": true,
-            "source": true
-          }
+          "source": "Source"
         },
         "reconciliation": {
           "title": "Bank Reconciliation",
@@ -11348,27 +10839,7 @@
           "draftsExplain": "Entered but never posted: no bank ledger entry, no effect on outstanding balances.",
           "settledTitle": "Settled",
           "noSettled": "Nothing settled yet.",
-          "settledExplain": "Posted and fully allocated – nothing left to match here.",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "readOnlyNote": true,
-            "unmatched": true,
-            "unmatchedHint": true,
-            "drafts": true,
-            "draftsHint": true,
-            "settled": true,
-            "settledHint": true,
-            "unmatchedTitle": true,
-            "nothingUnmatched": true,
-            "unmatchedExplain": true,
-            "draftsTitle": true,
-            "noDrafts": true,
-            "draftsExplain": true,
-            "settledTitle": true,
-            "noSettled": true,
-            "settledExplain": true
-          }
+          "settledExplain": "Posted and fully allocated – nothing left to match here."
         }
       },
       "accounting": {
@@ -11378,27 +10849,13 @@
             "liability": "Liabilities",
             "equity": "Equity",
             "income": "Income",
-            "expense": "Expenses",
-            "_pending_review": {
-              "asset": true,
-              "liability": true,
-              "equity": true,
-              "income": true,
-              "expense": true
-            }
+            "expense": "Expenses"
           },
           "debit": "Debit",
           "credit": "Credit",
           "balanced": "Balanced",
           "unbalanced": "Unbalanced",
-          "account": "Account",
-          "_pending_review": {
-            "debit": true,
-            "credit": true,
-            "balanced": true,
-            "unbalanced": true,
-            "account": true
-          }
+          "account": "Account"
         },
         "journals": {
           "title": "Journals",
@@ -11417,26 +10874,7 @@
           "empty": "No journal entries yet",
           "lines": "Lines ({count})",
           "noLines": "This entry has no lines.",
-          "amendedFrom": "Amends",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "entries": true,
-            "entriesHint": true,
-            "posted": true,
-            "postedHint": true,
-            "drafts": true,
-            "draftsHint": true,
-            "unbalanced": true,
-            "unbalancedHint": true,
-            "searchPlaceholder": true,
-            "type": true,
-            "remark": true,
-            "empty": true,
-            "lines": true,
-            "noLines": true,
-            "amendedFrom": true
-          }
+          "amendedFrom": "Amends"
         },
         "coa": {
           "title": "Chart of Accounts",
@@ -11465,36 +10903,7 @@
           "direction": "Balance direction",
           "parent": "Parent",
           "accountType": "Account type",
-          "detailsHint": "Select an account on the left to see its balance and details.",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "accounts": true,
-            "accountsHint": true,
-            "frozen": true,
-            "frozenHint": true,
-            "disabled": true,
-            "disabledHint": true,
-            "searchPlaceholder": true,
-            "rootType": true,
-            "number": true,
-            "name": true,
-            "type": true,
-            "currency": true,
-            "flags": true,
-            "group": true,
-            "ledger": true,
-            "frozenBadge": true,
-            "disabledBadge": true,
-            "empty": true,
-            "balance": true,
-            "debitTotal": true,
-            "creditTotal": true,
-            "direction": true,
-            "parent": true,
-            "accountType": true,
-            "detailsHint": true
-          }
+          "detailsHint": "Select an account on the left to see its balance and details."
         },
         "periods": {
           "title": "Fiscal Periods & Close",
@@ -11514,13 +10923,7 @@
             "closed": "Closed",
             "current": "Current",
             "past": "Ended, still open",
-            "future": "Upcoming",
-            "_pending_review": {
-              "closed": true,
-              "current": true,
-              "past": true,
-              "future": true
-            }
+            "future": "Upcoming"
           },
           "empty": "No fiscal years yet",
           "costCenters": "Cost centers",
@@ -11534,35 +10937,7 @@
           "expense": "Expenses",
           "netIncome": "Net income",
           "trialBalance": "Trial balance",
-          "closeNote": "Closing itself (accounting.period.close) is a High-risk action: maker-checker, never by voice alone – it lands with a later slice.",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "years": true,
-            "yearsHint": true,
-            "glBalance": true,
-            "glHint": true,
-            "chain": true,
-            "chainIntact": true,
-            "chainBroken": true,
-            "chainHint": true,
-            "name": true,
-            "start": true,
-            "end": true,
-            "empty": true,
-            "costCenters": true,
-            "noCostCenters": true,
-            "readiness": true,
-            "readinessHint": true,
-            "selectYear": true,
-            "selectedYear": true,
-            "fiscalYear": true,
-            "income": true,
-            "expense": true,
-            "netIncome": true,
-            "trialBalance": true,
-            "closeNote": true
-          }
+          "closeNote": "Closing itself (accounting.period.close) is a High-risk action: maker-checker, never by voice alone – it lands with a later slice."
         }
       },
       "reports": {
@@ -11574,18 +10949,7 @@
             "this_month": "This month",
             "last_month": "Last month",
             "this_quarter": "This quarter",
-            "last_year": "Last year",
-            "_pending_review": {
-              "ytd": true,
-              "this_month": true,
-              "last_month": true,
-              "this_quarter": true,
-              "last_year": true
-            }
-          },
-          "_pending_review": {
-            "period": true,
-            "window": true
+            "last_year": "Last year"
           }
         },
         "pnl": {
@@ -11606,27 +10970,7 @@
           "noIncome": "No income in the period.",
           "noExpenses": "No expenses in the period.",
           "amount": "Amount",
-          "share": "Share",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "income": true,
-            "incomeHint": true,
-            "expenses": true,
-            "expensesHint": true,
-            "netIncome": true,
-            "profit": true,
-            "loss": true,
-            "margin": true,
-            "marginHint": true,
-            "empty": true,
-            "incomeTitle": true,
-            "expensesTitle": true,
-            "noIncome": true,
-            "noExpenses": true,
-            "amount": true,
-            "share": true
-          }
+          "share": "Share"
         },
         "aging": {
           "title": "AR / AP Aging",
@@ -11650,35 +10994,9 @@
             "days_60": "31–60 days",
             "days_90": "61–90 days",
             "days_120": "91–120 days",
-            "days_120_plus": "> 120 days",
-            "_pending_review": {
-              "current": true,
-              "days_30": true,
-              "days_60": true,
-              "days_90": true,
-              "days_120": true,
-              "days_120_plus": true
-            }
+            "days_120_plus": "> 120 days"
           },
-          "negativeNote": "Negative amounts are credits: payments or credit notes not yet allocated to an invoice.",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "asOf": true,
-            "receivables": true,
-            "receivablesHint": true,
-            "payables": true,
-            "payablesHint": true,
-            "overdue": true,
-            "overdueHint": true,
-            "arTitle": true,
-            "apTitle": true,
-            "customer": true,
-            "supplier": true,
-            "noAr": true,
-            "noAp": true,
-            "negativeNote": true
-          }
+          "negativeNote": "Negative amounts are credits: payments or credit notes not yet allocated to an invoice."
         }
       },
       "draft": {
@@ -11718,19 +11036,7 @@
           "invalidNumber": "Enter a valid number greater than 0",
           "unbalanced": "Debits must equal credits",
           "tooFewLines": "At least two lines with an account and an amount",
-          "lineIncomplete": "Every line needs an account and a debit or credit amount",
-          "_pending_review": {
-            "required": true,
-            "invalidEmail": true,
-            "invalidDate": true,
-            "invalidOption": true,
-            "noLines": true,
-            "lineQtyTooHigh": true,
-            "invalidNumber": true,
-            "unbalanced": true,
-            "tooFewLines": true,
-            "lineIncomplete": true
-          }
+          "lineIncomplete": "Every line needs an account and a debit or credit amount"
         },
         "fields": {
           "lead_name": "Lead name",
@@ -11790,67 +11096,7 @@
           "journal_entry_id": "Journal entry id",
           "opportunity_type": "Opportunity type",
           "lost_reason": "Reason",
-          "sales_invoice_id": "Invoice id",
-          "_pending_review": {
-            "lead_name": true,
-            "company_name": true,
-            "email": true,
-            "phone": true,
-            "source": true,
-            "industry": true,
-            "notes": true,
-            "name": true,
-            "lifecycle": true,
-            "subject": true,
-            "priority": true,
-            "due_date": true,
-            "description": true,
-            "activity_type": true,
-            "activity_date": true,
-            "lead_ref": true,
-            "tax_id": true,
-            "posting_date": true,
-            "original_qty": true,
-            "item_id": true,
-            "reason": true,
-            "credit_limit": true,
-            "customer_type": true,
-            "primary_address": true,
-            "against_invoice_id": true,
-            "qty": true,
-            "item_name": true,
-            "items": true,
-            "party_type": true,
-            "party_id": true,
-            "reference_number": true,
-            "paid_from_account": true,
-            "paid_to_account": true,
-            "payment_type": true,
-            "reference_date": true,
-            "paid_amount": true,
-            "lines": true,
-            "entry_type": true,
-            "debit": true,
-            "account_id": true,
-            "remark": true,
-            "credit": true,
-            "status": true,
-            "probability": true,
-            "next_follow_up_date": true,
-            "lead_id": true,
-            "opportunity_name": true,
-            "stage": true,
-            "territory": true,
-            "expected_closing_date": true,
-            "opportunity": true,
-            "crm_task_id": true,
-            "opportunity_id": true,
-            "expected_revenue": true,
-            "journal_entry_id": true,
-            "opportunity_type": true,
-            "lost_reason": true,
-            "sales_invoice_id": true
-          }
+          "sales_invoice_id": "Invoice id"
         },
         "choices": {
           "website": "Website",
@@ -11896,274 +11142,118 @@
           "new": "New",
           "sales": "Sales",
           "support": "Support",
-          "maintenance": "Maintenance",
-          "_pending_review": {
-            "website": true,
-            "referral": true,
-            "campaign": true,
-            "cold_call": true,
-            "social_media": true,
-            "trade_show": true,
-            "other": true,
-            "lead": true,
-            "mql": true,
-            "sql": true,
-            "customer": true,
-            "prospect": true,
-            "partner": true,
-            "vendor": true,
-            "low": true,
-            "medium": true,
-            "high": true,
-            "urgent": true,
-            "call": true,
-            "email": true,
-            "meeting": true,
-            "note": true,
-            "task": true,
-            "company": true,
-            "individual": true,
-            "pay": true,
-            "receive": true,
-            "credit_note": true,
-            "exchange_rate_revaluation": true,
-            "debit_note": true,
-            "inter_company": true,
-            "write_off": true,
-            "closing": true,
-            "depreciation": true,
-            "journal": true,
-            "opening": true,
-            "contacted": true,
-            "lost": true,
-            "unresponsive": true,
-            "qualified": true,
-            "new": true,
-            "sales": true,
-            "support": true,
-            "maintenance": true
-          }
+          "maintenance": "Maintenance"
         },
         "forms": {
           "lead": {
             "button": "New lead",
             "title": "Create a lead",
-            "description": "A lead is an unposted record – it is reviewed before it reaches the ERP.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "A lead is an unposted record – it is reviewed before it reaches the ERP."
           },
           "contact": {
             "button": "New contact",
             "title": "Create a contact",
-            "description": "A person in the CRM. Linking to a company is a separate step.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "A person in the CRM. Linking to a company is a separate step."
           },
           "company": {
             "button": "New company",
             "title": "Create a company",
-            "description": "An organisation in the CRM – not yet a sales customer.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "An organisation in the CRM – not yet a sales customer."
           },
           "task": {
             "button": "New task",
             "title": "Create a task",
-            "description": "A follow-up task for the team. Linking to a lead or opportunity is a separate step.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "A follow-up task for the team. Linking to a lead or opportunity is a separate step."
           },
           "activity": {
             "button": "Log activity",
             "title": "Log an activity",
-            "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written."
           },
           "creditNote": {
             "button": "Create credit note",
             "title": "Credit note against invoice",
-            "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step."
           },
           "customer": {
             "button": "New customer",
             "title": "Create a customer",
-            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted."
           },
           "payment": {
             "button": "Record payment",
             "title": "Record a payment",
-            "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step."
           },
           "journal": {
             "button": "New journal entry",
             "title": "Create a journal entry",
-            "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step."
           },
           "opportunityStage": {
             "button": "Move stage",
             "title": "Move to another pipeline stage",
-            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word."
           },
           "taskComplete": {
             "button": "Complete",
             "title": "Complete task",
-            "description": "The task is marked done. A note is optional.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "The task is marked done. A note is optional."
           },
           "leadUpdate": {
             "button": "Edit lead",
             "title": "Edit lead",
-            "description": "The change goes to ERPClaw as a Draft. You see exactly what is sent before it goes.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "The change goes to ERPClaw as a Draft. You see exactly what is sent before it goes."
           },
           "opportunityUpdate": {
             "button": "Edit opportunity",
             "title": "Edit opportunity",
-            "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval."
           },
           "taskUpdate": {
             "button": "Edit",
             "title": "Edit task",
-            "description": "Subject, priority, due date and description of the open task.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Subject, priority, due date and description of the open task."
           },
           "taskCancel": {
             "button": "Cancel",
             "title": "Cancel task",
-            "description": "The task is cancelled and stays visible. A reason is required.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "The task is cancelled and stays visible. A reason is required."
           },
           "invoiceCancel": {
             "button": "Cancel",
             "title": "Cancel invoice",
-            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval."
           },
           "journalCancel": {
             "button": "Cancel",
             "title": "Cancel journal entry",
-            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval."
           },
           "opportunityLost": {
             "button": "Lost",
             "title": "Mark opportunity lost",
-            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards."
           },
           "journalSubmit": {
             "button": "Post",
             "title": "Post journal entry",
-            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled."
           },
           "leadConvert": {
             "button": "Convert to opportunity",
             "title": "Convert lead to opportunity",
-            "description": "Creates an opportunity from the lead and marks the lead converted. The lead can no longer be edited afterwards.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Creates an opportunity from the lead and marks the lead converted. The lead can no longer be edited afterwards."
           },
           "opportunityWon": {
             "button": "Won",
             "title": "Mark opportunity won",
-            "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards."
           },
           "invoiceSubmit": {
             "button": "Post",
             "title": "Post invoice",
-            "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled."
           }
         },
         "noLineRows": "No lines available.",
@@ -12202,72 +11292,7 @@
         "goToMyRequests": "Go to My requests",
         "failedCommit": "Not executed",
         "queuedNoApprover": "Right now nobody else in this tenant holds the approve capability. The request stays open until someone does.",
-        "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again.",
-        "_pending_review": {
-          "review": true,
-          "reviewHint": true,
-          "toReview": true,
-          "accept": true,
-          "back": true,
-          "cancel": true,
-          "close": true,
-          "editAndRetry": true,
-          "submitting": true,
-          "done": true,
-          "doneHint": true,
-          "failed": true,
-          "failedHint": true,
-          "created": true,
-          "createdWithRef": true,
-          "replayed": true,
-          "reason": true,
-          "entityHint": true,
-          "command": true,
-          "action": true,
-          "tier": true,
-          "capability": true,
-          "idempotencyKey": true,
-          "payload": true,
-          "whatHappens": true,
-          "choose": true,
-          "noLineRows": true,
-          "lookupLoading": true,
-          "lookupRefused": true,
-          "lookupIdPlaceholder": true,
-          "removeLine": true,
-          "differenceIs": true,
-          "addLine": true,
-          "totals": true,
-          "doneHintUpdate": true,
-          "updated": true,
-          "acceptUpdate": true,
-          "failedHintUpdate": true,
-          "keepsBlank": true,
-          "failedUpdate": true,
-          "updatedWithRef": true,
-          "whatHappensUpdate": true,
-          "doneUpdate": true,
-          "confirmCommitHint": true,
-          "confirmHighHint": true,
-          "confirmCommit": true,
-          "queuedLine": true,
-          "queuedHint": true,
-          "confirmHigh": true,
-          "acceptCommit": true,
-          "doneHintCommit": true,
-          "doneCommitLine": true,
-          "whatHappensCommit": true,
-          "queued": true,
-          "doneCommitWithRef": true,
-          "doneCommit": true,
-          "queuedWithId": true,
-          "whatHappensHigh": true,
-          "acceptHigh": true,
-          "goToMyRequests": true,
-          "failedCommit": true,
-          "queuedNoApprover": true,
-          "failedHintCommit": true
-        }
+        "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again."
       },
       "policyEdit": {
         "button": "Edit policy",
@@ -12286,27 +11311,7 @@
         "noChanges": "Nothing changed.",
         "readOnlyHint": "Read-only – editing needs approvals.policy.",
         "issues": {
-          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000",
-          "_pending_review": {
-            "invalidThreshold": true
-          }
-        },
-        "_pending_review": {
-          "button": true,
-          "title": true,
-          "description": true,
-          "review": true,
-          "reviewHint": true,
-          "setting": true,
-          "before": true,
-          "after": true,
-          "audited": true,
-          "save": true,
-          "done": true,
-          "doneLine": true,
-          "failed": true,
-          "noChanges": true,
-          "readOnlyHint": true
+          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000"
         }
       },
       "decide": {
@@ -12320,15 +11325,7 @@
           "description": "On approval the gateway executes the High-risk command through the bridge immediately.",
           "notePlaceholder": "Optional: why you approve",
           "whatHappens": "Maker-checker: you are not the requester, you hold the approve capability, and you are on the web. The gateway checks all of that again.",
-          "confirm": "Approve and execute",
-          "_pending_review": {
-            "button": true,
-            "title": true,
-            "description": true,
-            "notePlaceholder": true,
-            "whatHappens": true,
-            "confirm": true
-          }
+          "confirm": "Approve and execute"
         },
         "reject": {
           "button": "Reject",
@@ -12336,23 +11333,11 @@
           "description": "The request is rejected; the command is never executed. A reason is required.",
           "notePlaceholder": "Why are you rejecting?",
           "whatHappens": "The rejection and your note go to the audit trail; the requester sees them in their requests.",
-          "confirm": "Reject",
-          "_pending_review": {
-            "button": true,
-            "title": true,
-            "description": true,
-            "notePlaceholder": true,
-            "whatHappens": true,
-            "confirm": true
-          }
+          "confirm": "Reject"
         },
         "issues": {
           "required": "Please give a reason for the rejection",
-          "tooLong": "At most 1000 characters",
-          "_pending_review": {
-            "required": true,
-            "tooLong": true
-          }
+          "tooLong": "At most 1000 characters"
         },
         "outcome": {
           "executed": "Approved and executed",
@@ -12362,17 +11347,7 @@
           "error": "Error",
           "executedLine": "The gateway executed the command. The bridge receipt is below.",
           "rejectedLine": "The request is rejected; nothing was executed.",
-          "executedButFailedHint": "The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again.",
-          "_pending_review": {
-            "executed": true,
-            "rejected": true,
-            "refused": true,
-            "executedButFailed": true,
-            "error": true,
-            "executedLine": true,
-            "rejectedLine": true,
-            "executedButFailedHint": true
-          }
+          "executedButFailedHint": "The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."
         },
         "refusals": {
           "selfApproval": "You cannot approve your own request.",
@@ -12382,35 +11357,9 @@
           "readOnlyRole": "Your role is read-only.",
           "mfaRequired": "This approval needs a session with a second factor (MFA).",
           "alreadyDecided": "This request has already been decided.",
-          "notFound": "Request not found.",
-          "_pending_review": {
-            "selfApproval": true,
-            "webOnly": true,
-            "noCapabilityOnRequest": true,
-            "capabilityMissing": true,
-            "readOnlyRole": true,
-            "mfaRequired": true,
-            "alreadyDecided": true,
-            "notFound": true
-          }
+          "notFound": "Request not found."
         },
-        "payload": "Request contents",
-        "_pending_review": {
-          "queueHint": true,
-          "escalations": true,
-          "payloadNote": true,
-          "note": true,
-          "payload": true
-        }
-      },
-      "_pending_review": {
-        "comingWave1": true,
-        "comingWave2": true,
-        "comingWave3": true,
-        "placeholderBody": true,
-        "noSectionMatches": true,
-        "sidebarIsCanonical": true,
-        "noAccess": true
+        "payload": "Request contents"
       }
     }
   }

@@ -2,10 +2,7 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin",
-        "_pending_review": {
-          "admin": true
-        }
+        "admin": "← Admin"
       }
     },
     "overview": {
