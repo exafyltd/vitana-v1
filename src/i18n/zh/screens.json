@@ -10469,7 +10469,13 @@
           "salesModelReferralHint": true,
           "salesModelDirect": true,
           "salesModelSoon": true,
-          "salesModelDirectHint": true
+          "salesModelDirectHint": true,
+          "deliveryHeading": true,
+          "deliveryHint": true,
+          "deliveryEu": true,
+          "deliveryUs": true,
+          "deliveryMena": true,
+          "deliveryDaysUnit": true
         },
         "pickTitle": "What do you sell?",
         "pickSubtitle": "Choose once — after that we only ask about things that actually matter for your products.",
@@ -10516,7 +10522,13 @@
         "salesModelReferralHint": "We show your product in Discover and send buyers to your product page. You sell and ship exactly as you do today.",
         "salesModelDirect": "Sell directly through Vitanaland",
         "salesModelSoon": "Soon",
-        "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet."
+        "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet.",
+        "deliveryHeading": "How long does delivery usually take?",
+        "deliveryHint": "In days, only for the regions you ship to. Optional — you can add this later.",
+        "deliveryEu": "Europe",
+        "deliveryUs": "United States",
+        "deliveryMena": "Middle East & North Africa",
+        "deliveryDaysUnit": "days"
       },
       "join": {
         "_pending_review": {

@@ -2,16 +2,20 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin"
-      }
+        "admin": "← Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "overview": {
       "tabs": {
         "dashboard": "Panel",
         "inbox": "Bandeja de aprobaciones",
         "activity": "Actividad",
-        "health": "Estado"
-      }
+        "health": "Estado",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "sales": {
       "tabs": {
@@ -23,16 +27,20 @@
         "orders": "Pedidos de venta",
         "invoices": "Facturas",
         "credit-notes": "Notas de crédito",
-        "deliveries": "Entregas"
-      }
+        "deliveries": "Entregas",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "marketing": {
       "tabs": {
         "campaigns": "Campañas",
         "outreach": "Difusión",
         "attribution": "Fuentes de leads y atribución",
-        "performance": "Rendimiento"
-      }
+        "performance": "Rendimiento",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "accounting": {
       "tabs": {
@@ -42,8 +50,10 @@
         "tax": "Impuestos",
         "assets": "Activos fijos y arrendamientos",
         "intercompany": "Intercompañía y consolidación",
-        "budgets": "Presupuestos y previsiones"
-      }
+        "budgets": "Presupuestos y previsiones",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "finance": {
       "tabs": {
@@ -51,8 +61,10 @@
         "bank-reconciliation": "Conciliación bancaria",
         "cash": "Posición de caja y previsión",
         "subscriptions": "Facturación recurrente",
-        "sync": "Sincronización Stripe / Shopify"
-      }
+        "sync": "Sincronización Stripe / Shopify",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "hr": {
       "tabs": {
@@ -60,8 +72,10 @@
         "leave": "Vacaciones",
         "attendance": "Asistencia",
         "expenses": "Gastos",
-        "payroll": "Nómina"
-      }
+        "payroll": "Nómina",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "operations": {
       "tabs": {
@@ -71,16 +85,20 @@
         "supplier-invoices": "Facturas de proveedor",
         "items": "Artículos",
         "warehouses": "Almacenes",
-        "stock": "Stock y movimientos"
-      }
+        "stock": "Stock y movimientos",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "legal": {
       "tabs": {
         "contracts": "Contratos",
         "obligations": "Obligaciones",
         "compliance": "Cumplimiento",
-        "e-signature": "Firma electrónica"
-      }
+        "e-signature": "Firma electrónica",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "reports": {
       "tabs": {
@@ -90,22 +108,28 @@
         "cash-flow": "Flujo de caja",
         "aging": "Antigüedad de cobros / pagos",
         "dimensions": "Por dimensión",
-        "board-pack": "Informe para el consejo"
-      }
+        "board-pack": "Informe para el consejo",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "approvals": {
       "tabs": {
         "queue": "Cola",
         "my-requests": "Mis solicitudes",
-        "policies": "Políticas"
-      }
+        "policies": "Políticas",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "audit": {
       "tabs": {
         "receipts": "Recibos de comandos",
         "erp-log": "Registro de auditoría ERP",
-        "trail": "Pista de auditoría independiente"
-      }
+        "trail": "Pista de auditoría independiente",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "settings": {
       "tabs": {
@@ -113,8 +137,12 @@
         "access": "Acceso",
         "numbering": "Numeración",
         "integrations": "Integraciones",
-        "modules": "Módulos"
-      }
-    }
-  }
+        "modules": "Módulos",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
