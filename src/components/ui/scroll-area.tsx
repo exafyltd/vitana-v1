@@ -12,7 +12,17 @@ const ScrollArea = React.forwardRef<
     className={cn("relative overflow-hidden", className)}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+    {/*
+      Radix wraps children in an internal div styled `display:table;
+      min-width:100%`, which sizes to content instead of the scroll
+      container's width. That lets a non-wrapping flex row (e.g. avatar +
+      flex-1 truncated name + trailing button) grow past the viewport and
+      push its trailing element off-screen instead of letting the name
+      truncate. Forcing that wrapper to `display:block` makes it behave
+      like a normal full-width container so `flex-1 min-w-0` + `truncate`
+      work as intended. See radix-ui/primitives ScrollArea Viewport sizing.
+    */}
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] [&>div]:!block">
       {children}
     </ScrollAreaPrimitive.Viewport>
     <ScrollBar />
