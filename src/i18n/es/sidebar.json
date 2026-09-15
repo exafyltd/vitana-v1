@@ -60,7 +60,11 @@
       "reports": "Informes",
       "approvals": "Aprobaciones",
       "audit": "Auditoría",
-      "settings": "Ajustes"
+      "settings": "Ajustes",
+      "_pending_review": {
+        "back": true,
+        "marketing": true
+      }
     }
   }
 }

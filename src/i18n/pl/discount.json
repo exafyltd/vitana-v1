@@ -27,6 +27,8 @@
     "ticketEmailNote": "Twój bilet i potwierdzenie zostaną wysłane na ten adres e-mail.",
     "left": "Pozostało {count}",
     "loadFailed": "Nie udało się załadować biletów",
-    "checkFailed": "Nie udało się zweryfikować kodu — spróbuj ponownie"
-  }
+    "checkFailed": "Nie udało się zweryfikować kodu — spróbuj ponownie",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

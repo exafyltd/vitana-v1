@@ -330,7 +330,11 @@
       "ticketRejected": "{ticketNumber} отклонен",
       "ticketRemovedActiveList": "Удалено из активного списка.",
       "invalidJson": "Invalid JSON.",
-      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
+      "_pending_review": {
+        "invalidJson": true,
+        "confirmMatchRequiresFields": true
+      }
     },
     "audio": {
       "cameraStopped": "Камера остановлена",
@@ -1371,7 +1375,13 @@
       "capabilityGranted": "Capability granted",
       "capabilityRevoked": "Capability revoked",
       "grantFailed": "Could not grant the capability",
-      "revokeFailed": "Could not revoke the capability"
+      "revokeFailed": "Could not revoke the capability",
+      "_pending_review": {
+        "capabilityGranted": true,
+        "capabilityRevoked": true,
+        "grantFailed": true,
+        "revokeFailed": true
+      }
     }
   }
 }

@@ -83,6 +83,7 @@ const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLog
 // VTID-03882: one screen replaces the landing / connections / agent-connect
 // trio; the old connection-detail URL redirects into its drawer.
 const CommercePortal = lazy(() => import("./pages/CommercePortal"));
+const CommerceJoin = lazy(() => import("./pages/CommerceJoin"));
 const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnectionRedirect"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
@@ -1767,6 +1768,9 @@ const App = () => {
               /api/v1/vcaop/portal/my surface; any signed-in user manages the
               businesses THEY created (no admin role). Path-based here so PR
               previews verify it; commerce.vitanaland.com host-routes onto it. */}
+          {/* VTID-03894: the shareable supplier link. NOT behind AuthGuard —
+              it is what an unregistered supplier is handed. */}
+          <Route path="/commerce/join" element={<CommerceJoin />} />
           <Route path="/commerce" element={<AuthGuard><CommercePortal /></AuthGuard>} />
           {/* VTID-03882: the three old URLs stay alive and fold into /commerce. */}
           <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />

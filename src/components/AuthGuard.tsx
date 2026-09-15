@@ -56,6 +56,12 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
                          window.location.pathname.startsWith('/exafy-admin');
     if (isAdminRoute) return '/exafy-admin';
 
+    // VTID-03894: the Commerce Portal has its own front door. Falling through
+    // to the tenant branch below would send a supplier who followed a shared
+    // /commerce link to the COMMUNITY login — a sign-in for a different
+    // product, with no route onward to the portal they were invited to.
+    if (window.location.pathname.startsWith('/commerce')) return '/commerce/join';
+
     // Prefer the localStorage tenant slug (set after a previous visit), but
     // fall back to the hostname → tenant map so a fresh browser context (e.g.
     // a shared link opened from WhatsApp) doesn't bounce through `/` →
