@@ -17,7 +17,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Loader2, PackagePlus, ShieldCheck, Store, Workflow } from 'lucide-react';
+import { Building2, Loader2, PackagePlus, ShieldCheck, Store, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
@@ -25,8 +25,11 @@ import { ConnectionCard, type ConnectionRow } from '@/components/commerce/Connec
 import { ConnectionWorkbench } from '@/components/commerce/ConnectionWorkbench';
 import { ManualConnectDialog } from '@/components/commerce/ManualConnectDialog';
 import { AddProductSheet } from '@/components/commerce/AddProductSheet';
+import { RegisterOrgDialog } from '@/components/commerce/RegisterOrgDialog';
+import { MyOrgCard, type MyOrgRow } from '@/components/commerce/MyOrgCard';
+import { PartnerOrgRoster } from '@/components/commerce/PartnerOrgRoster';
 import { adminFetch } from '@/lib/admin-api';
-import { MY_PORTAL_API } from '@/lib/commerce-host';
+import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
 
 const STEPS = [
@@ -37,15 +40,20 @@ const STEPS = [
 
 /** The drawer is driven by the URL so a connection stays deep-linkable. */
 const CONNECTION_PARAM = 'connection';
+/** Same pattern, for the partner-org roster drawer (VTID-03936). */
+const ORG_PARAM = 'org';
 
 export default function CommercePortal() {
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
+  const [registerOrgOpen, setRegisterOrgOpen] = useState(false);
+  const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const reduce = useReducedMotion();
 
   const openConnectionId = searchParams.get(CONNECTION_PARAM);
+  const openOrgId = searchParams.get(ORG_PARAM);
 
   const load = useCallback(async () => {
     try {
@@ -57,9 +65,39 @@ export default function CommercePortal() {
     }
   }, []);
 
+  const loadMyOrgs = useCallback(async () => {
+    try {
+      const res = await adminFetch(`${PARTNER_ORGS_API}/mine`);
+      setMyOrgs(res.organizations ?? []);
+    } catch {
+      setMyOrgs([]);
+      notifyError('screens.commerceportal.orgOnboarding.orgsLoadFailed');
+    }
+  }, []);
+
   useEffect(() => {
     void load();
-  }, [load]);
+    void loadMyOrgs();
+  }, [load, loadMyOrgs]);
+
+  const openOrgRoster = (id: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set(ORG_PARAM, id);
+      return next;
+    });
+  };
+
+  const closeOrgRoster = () => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete(ORG_PARAM);
+        return next;
+      },
+      { replace: true },
+    );
+  };
 
   const openConnection = (id: string) => {
     // `replace: false` on open / `true` on close: Back should dismiss the
@@ -167,6 +205,46 @@ export default function CommercePortal() {
         </div>
       </section>
 
+      {/* YOUR ORGANIZATIONS — Commerce Partner Onboarding (VTID-03936) */}
+      <section className="mt-12 md:mt-16">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <h2 className="text-xl font-semibold text-slate-100">
+              {t('screens.commerceportal.orgOnboarding.sectionTitle')}
+            </h2>
+            <p className="text-sm text-slate-500">{t('screens.commerceportal.orgOnboarding.sectionSubtitle')}</p>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => setRegisterOrgOpen(true)}
+            className="border-amber-500/40 bg-transparent text-amber-300 hover:bg-amber-500/10"
+          >
+            <Building2 className="me-2 h-4 w-4" />
+            {t('screens.commerceportal.orgOnboarding.registerCta')}
+          </Button>
+        </div>
+
+        <div className="mt-4">
+          {myOrgs === null ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
+            </div>
+          ) : myOrgs.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/30 px-5 py-10 text-center">
+              <p className="text-sm text-slate-300">{t('screens.commerceportal.orgOnboarding.orgsEmpty')}</p>
+            </div>
+          ) : (
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {myOrgs.map((org) => (
+                <li key={org.id}>
+                  <MyOrgCard org={org} onManage={openOrgRoster} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+
       {/* MANUAL FALLBACK — quiet on purpose, but it is the path that works today. */}
       <section className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl border border-slate-800/70 bg-slate-900/30 px-4 py-4 text-center">
         <span className="text-sm text-slate-500">{t('screens.commerceportal.manualIntro')}</span>
@@ -192,12 +270,23 @@ export default function CommercePortal() {
 
       <AddProductSheet open={addProductOpen} onOpenChange={setAddProductOpen} onSaved={load} />
 
+      <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={loadMyOrgs} />
+
       {openConnectionId && (
         <ConnectionWorkbench
           key={openConnectionId}
           connectionId={openConnectionId}
           onClose={closeConnection}
           onChanged={load}
+        />
+      )}
+
+      {openOrgId && (
+        <PartnerOrgRoster
+          key={openOrgId}
+          orgId={openOrgId}
+          orgName={myOrgs?.find((o) => o.id === openOrgId)?.display_name}
+          onClose={closeOrgRoster}
         />
       )}
     </CommerceShell>

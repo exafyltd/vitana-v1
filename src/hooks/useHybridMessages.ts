@@ -22,11 +22,14 @@ export type SendMessageArgs = {
  * based on the user's current role with WhatsApp-like message persistence
  */
 export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?: string | null) {
-  const { currentRole } = useRole();
+  // VTID-03936: dbRole, not the mobile-forced currentRole — mobile was
+  // stuck in the global community inbox regardless of real role; same
+  // fix and reasoning as useSmartRouting.tsx's routing hooks.
+  const { dbRole } = useRole();
 
   // Route to appropriate context based on role or forced context
-  const isGlobalContext = forceContext === 'global' || 
-    (forceContext !== 'tenant' && currentRole === 'community');
+  const isGlobalContext = forceContext === 'global' ||
+    (forceContext !== 'tenant' && dbRole === 'community');
 
   const globalMessages = useGlobalMessages(threadId, isGlobalContext);
   const tenantMessages = useTenantMessages(threadId, !isGlobalContext);

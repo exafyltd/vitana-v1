@@ -53,7 +53,9 @@ export interface TenantMessageThread {
 
 export function useTenantMessages(activeThreadId?: string | null, forceActive?: boolean) {
   const { user } = useAuth();
-  const { currentRole } = useRole();
+  // VTID-03936: dbRole, not the mobile-forced currentRole — see
+  // useHybridMessages.ts's own comment; same fix, same reason.
+  const { dbRole } = useRole();
   const { activeTenantId } = useTenant();
   const { addEvent } = useCalendarEvents();
   const queryClient = useQueryClient();
@@ -61,7 +63,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
   const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
   // Only use tenant messages for professional roles
-  const isTenantContext = forceActive ?? (currentRole && ['patient', 'professional', 'staff', 'admin'].includes(currentRole));
+  const isTenantContext = forceActive ?? (dbRole && ['patient', 'professional', 'staff', 'admin'].includes(dbRole));
 
   // React Query for threads - cache-first rendering
   const {
