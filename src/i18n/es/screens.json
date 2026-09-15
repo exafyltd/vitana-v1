@@ -10387,8 +10387,7 @@
         "connectionsCount": true,
         "openWorkbench": true,
         "closeWorkbench": true,
-        "sandboxDevNote": true,
-        "addProduct": true
+        "sandboxDevNote": true
       },
       "portalEyebrow": "Portal de Comercio",
       "agentPromise": "Introduce la dirección de abajo en tu IA — Claude, ChatGPT o Gemini — y tu negocio estará conectado a Vitanaland.",
