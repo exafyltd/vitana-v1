@@ -1,0 +1,10 @@
+10:45:05 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 /home/user/vitana-v1
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  22:45:05
+   Duration  1.25s (transform 249ms, setup 125ms, import 337ms, tests 79ms, environment 570ms)
+
