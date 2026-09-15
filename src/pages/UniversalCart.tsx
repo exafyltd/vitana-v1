@@ -43,6 +43,11 @@ import {
   UniversalCartItem,
   isInsufficientBalanceError,
 } from "@/lib/universal-cart-client";
+import {
+  mintIdempotencyKey,
+  nextIdempotency,
+  type CheckoutIdempotencyState,
+} from "@/lib/checkout-idempotency";
 import { useUniversalCart } from "@/hooks/useUniversalCart";
 import { useShoppingAgent } from "@/hooks/useShoppingAgent";
 import { useMarketplaceProduct } from "@/hooks/useMarketplace";
@@ -218,6 +223,14 @@ export default function UniversalCartPage() {
   // Ref so an empty "Vitana fragen" tap focuses the prompt instead of doing nothing.
   const promptRef = useRef<HTMLTextAreaElement>(null);
 
+  // VTID-03919. The idempotency key for the checkout attempt in flight. Held
+  // across attempts so a retry — double-click, flaky network, pressing
+  // Checkout again after an error — reuses it and the gateway's wallet-debit
+  // uniqueness constraint can actually reject the replay. Without a key the
+  // server mints a fresh checkout_id per request, so that constraint never
+  // engaged and a retry charged the wallet a second time.
+  const idempotencyRef = useRef<CheckoutIdempotencyState | null>(null);
+
   const [addMoneyOpen, setAddMoneyOpen] = useState(false);
   const [addMoneyCurrency, setAddMoneyCurrency] = useState<WalletCurrency>("EUR");
   const [addMoneyAmount, setAddMoneyAmount] = useState<number | undefined>(undefined);
@@ -371,8 +384,25 @@ export default function UniversalCartPage() {
 
   const onCheckout = async () => {
     setAffiliateRedirects([]);
+
+    // Same cart contents -> same key (a retry is a retry). Contents changed ->
+    // a new key, because the gateway reuses intent rows under the old
+    // checkout_id and a removed line would otherwise linger there.
+    const idem = nextIdempotency(
+      idempotencyRef.current,
+      cartItems.map((i) => ({ id: i.id, quantity: i.quantity })),
+      mintIdempotencyKey,
+    );
+    idempotencyRef.current = idem;
+
     try {
-      const res = await checkout();
+      const res = await checkout({ idempotency_key: idem.key });
+
+      // The request landed, so this key is spent — the next checkout is a
+      // genuinely new purchase and must not replay this one. Cleared here
+      // rather than in the wallet_order branch: an all-affiliate cart has no
+      // wallet_order and is still a completed checkout.
+      idempotencyRef.current = null;
 
       // Partner/affiliate items: open each merchant link in a new tab and keep
       // a list rendered so the user can re-open any that the browser blocked.
