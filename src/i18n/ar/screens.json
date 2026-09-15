@@ -2595,6 +2595,9 @@
       "navRole_developer": "مطور",
       "navRole_infra": "بنية تحتية",
       "navRole_backoffice": "المكتب الخلفي",
+      "failedLoadCreatorsValue0": "تعذر تحميل المبدعين: {value0}",
+      "failedLoadGroupsValue0": "تعذر تحميل المجموعات: {value0}",
+      "failedLoadLiveRoomsValue0": "تعذر تحميل الغرف المباشرة: {value0}",
       "partnerHealthOrders": "Partner Health Tests",
       "orders": "Orders",
       "inbox": "Inbox",
@@ -5204,7 +5207,15 @@
           "business_formation": "تأسيس الأعمال"
         },
         "contractLink": "عرض عقد الهدف الأسمى"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "أولوية اليوم:",
@@ -5420,6 +5431,9 @@
       "replyingTo": "ترد على {name}",
       "cancelReply": "إلغاء الرد",
       "likeComment": "أعجبني التعليق",
+      "_pending_review": {
+        "feedItemError": true
+      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6028,6 +6042,9 @@
       "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
       "anonymous": "مجهول",
       "vitanaOpenScreen": "افتح الشاشة",
+      "_pending_review": {
+        "conversationRowError": true
+      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -10296,6 +10313,11 @@
         "geminiStep1": "لـ Gemini CLI: أضف عنوان URL لخادم MCP أعلاه إلى ~/.gemini/settings.json ضمن خوادم MCP الخاصة بك.",
         "geminiStep2": "لـ Gemini Enterprise (إصدار الأعمال): الإعدادات والمساعدة → الفريق → إدارة الفريق → التطبيقات المتصلة → \"إضافة خادم MCP\".",
         "geminiNote": "لا يوجد حاليًا طريقة موثقة في تطبيق Gemini للمستهلك لإضافة خادم MCP مخصص مباشرة — هذا متاح اليوم فقط عبر Gemini CLI و Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10322,6 +10344,21 @@
         "notConfigured": "نوع الاتصال هذا غير مفعّل بعد. يُرجى المحاولة مرة أخرى لاحقًا.",
         "failed": "تعذّر بدء الاتصال. يُرجى التحقق من التفاصيل الخاصة بك."
       },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10336,6 +10373,13 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",

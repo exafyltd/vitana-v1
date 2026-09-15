@@ -362,18 +362,28 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
     }
 
     // 3. Get all participants for these threads
-    const { data: allParticipants } = await supabase
+    const { data: allParticipants, error: allPartErr } = await supabase
       .from("global_thread_participants")
       .select("thread_id, user_id, role, last_read_at")
       .in("thread_id", threadIds) as any;
 
+    if (allPartErr || !allParticipants) {
+      console.warn("Legacy threads fallback failed (all participants):", allPartErr?.message);
+      return [];
+    }
+
     // 4. Get last message per thread
-    const { data: lastMessages } = await supabase
+    const { data: lastMessages, error: lastMsgErr } = await supabase
       .from("global_messages")
       .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
       .in("thread_id", threadIds)
       .order("created_at", { ascending: false })
       .limit(Math.max(threadIds.length * 3, 100)) as any;
+
+    if (lastMsgErr || !lastMessages) {
+      console.warn("Legacy threads fallback failed (last messages):", lastMsgErr?.message);
+      return [];
+    }
 
     // Group last messages by thread (take first per thread = most recent)
     const lastMsgByThread: Record<string, any> = {};

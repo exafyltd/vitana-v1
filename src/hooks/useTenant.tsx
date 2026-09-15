@@ -86,11 +86,18 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
           console.debug('[useTenant] Deterministic fallback to slug:', fallbackSlug);
           const version = ++tenantVersionRef.current;
           const resolveTenant = async () => {
-            const { data } = await supabase
+            const { data, error } = await supabase
               .from('tenants')
               .select('tenant_id')
               .eq('slug', fallbackSlug)
               .single();
+            if (error) {
+              // A query failure previously left this branch entirely
+              // silent — a user landing on a tenant-specific route/URL
+              // would never get switched into that tenant's context, with
+              // nothing in the console pointing at why.
+              console.warn('[useTenant] Deterministic fallback tenant lookup failed:', error.message);
+            }
             // Only apply if no newer call superseded us
             if (data && tenantVersionRef.current === version) {
               setActiveTenantIdState(data.tenant_id);
@@ -195,11 +202,20 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Always resolve tenant locally (works even if RPC failed)
-      const { data } = await supabase
+      const { data, error: resolveErr } = await supabase
         .from('tenants')
         .select('tenant_id, name')
         .eq('slug', slug)
         .single();
+
+      if (resolveErr) {
+        // Unlike the RPC branch above (which warns on failure), this
+        // fallback previously had no error captured at all — a user
+        // finishing signup on a tenant-specific portal (MaxinaConfirmed,
+        // AlkalmaConfirmed, EarthlinksPortal, etc.) would silently never
+        // get switched into that tenant's branding/context.
+        console.warn('[useTenant] Local tenant resolution failed:', resolveErr.message);
+      }
 
       if (data) {
         setActiveTenantIdState(data.tenant_id);

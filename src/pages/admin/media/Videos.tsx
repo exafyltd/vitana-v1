@@ -36,15 +36,26 @@ export default function Videos() {
         query = query.eq('status', statusFilter);
       }
 
-      const { data } = await query;
+      const { data, error } = await query;
+
+      if (error) {
+        // A DB failure here previously rendered as "no videos to review" —
+        // indistinguishable from a genuinely empty moderation queue —
+        // hiding real pending videos with nothing in the console.
+        console.error('[AdminVideos] Failed to load moderation queue:', error);
+      }
 
       // Fetch uploader profiles separately
       if (data && data.length > 0) {
         const userIds = [...new Set(data.map(v => v.user_id))];
-        const { data: profiles } = await supabase
+        const { data: profiles, error: profilesError } = await supabase
           .from('profiles')
           .select('user_id, display_name, avatar_url')
           .in('user_id', userIds);
+
+        if (profilesError) {
+          console.error('[AdminVideos] Failed to load uploader profiles:', profilesError);
+        }
 
         return data.map(video => ({
           ...video,

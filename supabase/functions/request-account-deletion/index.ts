@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { storageBridgeProvider, listFiles, removeFiles } from '../_shared/storage-bridge-client.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -51,17 +52,28 @@ async function deleteUserStorageFiles(
 ): Promise<{ bucket: string; deleted: number; error?: string }[]> {
   const results = [];
 
+  // VTID-03815 (B6): STORAGE_BRIDGE_PROVIDER=bridge routes list+remove
+  // through the gateway's storage-bridge route instead of calling Supabase
+  // Storage directly — default is byte-for-byte unchanged.
+  const useBridge = storageBridgeProvider() === 'bridge';
+
   for (const bucket of USER_STORAGE_BUCKETS) {
     try {
       // List all files under the user's folder
-      const { data: files, error: listError } = await serviceClient.storage
-        .from(bucket)
-        .list(userId, { limit: 1000 });
+      let files: { name: string }[] | null;
+      if (useBridge) {
+        files = await listFiles(bucket, userId, { limit: 1000 });
+      } else {
+        const { data, error: listError } = await serviceClient.storage
+          .from(bucket)
+          .list(userId, { limit: 1000 });
 
-      if (listError) {
-        console.warn(`[Deletion] Could not list ${bucket}/${userId}:`, listError.message);
-        results.push({ bucket, deleted: 0, error: listError.message });
-        continue;
+        if (listError) {
+          console.warn(`[Deletion] Could not list ${bucket}/${userId}:`, listError.message);
+          results.push({ bucket, deleted: 0, error: listError.message });
+          continue;
+        }
+        files = data;
       }
 
       if (!files || files.length === 0) {
@@ -70,15 +82,20 @@ async function deleteUserStorageFiles(
       }
 
       const filePaths = files.map((f: any) => `${userId}/${f.name}`);
-      const { error: removeError } = await serviceClient.storage
-        .from(bucket)
-        .remove(filePaths);
-
-      if (removeError) {
-        console.warn(`[Deletion] Could not remove files from ${bucket}:`, removeError.message);
-        results.push({ bucket, deleted: 0, error: removeError.message });
-      } else {
+      if (useBridge) {
+        await removeFiles(bucket, filePaths);
         results.push({ bucket, deleted: filePaths.length });
+      } else {
+        const { error: removeError } = await serviceClient.storage
+          .from(bucket)
+          .remove(filePaths);
+
+        if (removeError) {
+          console.warn(`[Deletion] Could not remove files from ${bucket}:`, removeError.message);
+          results.push({ bucket, deleted: 0, error: removeError.message });
+        } else {
+          results.push({ bucket, deleted: filePaths.length });
+        }
       }
     } catch (e: any) {
       console.warn(`[Deletion] Storage cleanup error for ${bucket}:`, e.message);

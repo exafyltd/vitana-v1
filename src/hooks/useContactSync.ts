@@ -130,11 +130,18 @@ export function useContactSync() {
     let profileMatches: Record<string, any> = {};
     
     if (phonesToCheck.length > 0) {
-      const { data: phoneProfiles } = await supabase
+      const { data: phoneProfiles, error: phoneError } = await supabase
         .from("profiles")
         .select("user_id, display_name, avatar_url, handle, phone")
         .in("phone", phonesToCheck);
-      
+
+      if (phoneError) {
+        // A real DB failure here previously looked identical to "none of
+        // these phone numbers matched" — the contact match pass continues
+        // and reports a false "0 of your contacts use Vitana" instead.
+        console.error("[useContactSync] Failed to match contacts by phone:", phoneError);
+      }
+
       phoneProfiles?.forEach(p => {
         if (p.phone) {
           profileMatches[p.phone.replace(/\D/g, "")] = p;
@@ -144,11 +151,17 @@ export function useContactSync() {
 
     // Also check global community profiles
     if (emailsToCheck.length > 0) {
-      const { data: emailProfiles } = await supabase
+      const { data: emailProfiles, error: emailError } = await supabase
         .from("profiles")
         .select("user_id, display_name, avatar_url, handle, email")
         .in("email", emailsToCheck);
-      
+
+      if (emailError) {
+        // Same failure shape as the phone lookup above: a real error looks
+        // identical to "no email matches" without this log.
+        console.error("[useContactSync] Failed to match contacts by email:", emailError);
+      }
+
       emailProfiles?.forEach(p => {
         if (p.email) {
           profileMatches[p.email.toLowerCase()] = p;

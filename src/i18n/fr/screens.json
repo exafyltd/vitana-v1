@@ -2595,6 +2595,9 @@
       "navRole_developer": "Développeur",
       "navRole_infra": "Infra",
       "navRole_backoffice": "Back-office",
+      "failedLoadCreatorsValue0": "Impossible de charger les créateurs : {value0}",
+      "failedLoadGroupsValue0": "Impossible de charger les groupes : {value0}",
+      "failedLoadLiveRoomsValue0": "Impossible de charger les salons en direct : {value0}",
       "partnerHealthOrders": "Partner Health Tests",
       "orders": "Orders",
       "inbox": "Inbox",
@@ -5204,7 +5207,15 @@
           "business_formation": "Création d'entreprise"
         },
         "contractLink": "Consulte le contrat de l'Objectif Ultime"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5420,6 +5431,9 @@
       "replyingTo": "Répondre à {name}",
       "cancelReply": "Annuler la réponse",
       "likeComment": "Aimer le commentaire",
+      "_pending_review": {
+        "feedItemError": true
+      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6028,6 +6042,9 @@
       "anonymous": "Anonyme",
       "vitanaOpenScreen": "Ouvrir l'écran",
       "viewFullscreen": "Afficher en plein écran",
+      "_pending_review": {
+        "conversationRowError": true
+      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -10296,6 +10313,11 @@
         "geminiStep1": "Pour Gemini CLI : ajoute l'URL du serveur MCP ci-dessus à ~/.gemini/settings.json sous tes serveurs MCP.",
         "geminiStep2": "Pour Gemini Enterprise (Édition Business) : Paramètres et aide → Équipe → Gère l'équipe → Applications connectées → « Ajoute un serveur MCP ».",
         "geminiNote": "L'application grand public Gemini n'a actuellement aucun moyen documenté d'ajouter directement un serveur MCP personnalisé — c'est uniquement disponible aujourd'hui via Gemini CLI et Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10322,6 +10344,21 @@
         "notConfigured": "Ce type de connexion n'est pas encore activé. Réessaie plus tard.",
         "failed": "Impossible de démarrer la connexion. Vérifie tes informations."
       },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10336,6 +10373,13 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",

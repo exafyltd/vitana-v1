@@ -2595,6 +2595,9 @@
       "navRole_developer": "开发者",
       "navRole_infra": "运维",
       "navRole_backoffice": "后台",
+      "failedLoadCreatorsValue0": "加载创作者失败：{value0}",
+      "failedLoadGroupsValue0": "加载群组失败：{value0}",
+      "failedLoadLiveRoomsValue0": "加载直播间失败：{value0}",
       "partnerHealthOrders": "Partner Health Tests",
       "orders": "Orders",
       "inbox": "Inbox",
@@ -5204,7 +5207,15 @@
           "business_formation": "业务建立"
         },
         "contractLink": "查看终极目标合约"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "今日优先事项：",
@@ -5420,6 +5431,9 @@
       "replyingTo": "回复 {name}",
       "cancelReply": "取消回复",
       "likeComment": "赞评论",
+      "_pending_review": {
+        "feedItemError": true
+      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6028,6 +6042,9 @@
       "anonymous": "匿名",
       "vitanaOpenScreen": "打开屏幕",
       "viewFullscreen": "全屏查看",
+      "_pending_review": {
+        "conversationRowError": true
+      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -10296,6 +10313,11 @@
         "geminiStep1": "对于 Gemini CLI：将上述 MCP 服务器 URL 添加到 ~/.gemini/settings.json 中你的 MCP 服务器下。",
         "geminiStep2": "对于 Gemini Enterprise (Business Edition)：设置与帮助 → 团队 → 管理团队 → 已连接应用 → “添加 MCP 服务器”。",
         "geminiNote": "消费者 Gemini 应用目前没有直接添加自定义 MCP 服务器的官方文档方法 — 目前仅通过 Gemini CLI 和 Gemini Enterprise 提供此功能。",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10322,6 +10344,21 @@
         "notConfigured": "此连接类型尚未启用。请稍后再试。",
         "failed": "无法启动连接。请检查你的详细信息。"
       },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10336,6 +10373,13 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",

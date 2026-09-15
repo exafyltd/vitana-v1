@@ -130,12 +130,16 @@ export async function fetchCommunityNews(
   const articles: NewsArticle[] = [];
 
   {
-      const { data: events } = await supabase
+      const { data: events, error: eventsError } = await supabase
         .from("global_community_events")
         .select("id, title, description, event_type, image_url, start_time, created_at")
         .gte("start_time", new Date().toISOString())
         .order("start_time", { ascending: true })
         .limit(limit);
+
+      if (eventsError) {
+        console.error("[useNewsFeed] Error fetching global_community_events:", eventsError);
+      }
 
       if (events) {
         for (const event of events) {
@@ -154,13 +158,17 @@ export async function fetchCommunityNews(
         }
       }
 
-      const { data: media } = await supabase
+      const { data: media, error: mediaError } = await supabase
         .from("media_uploads")
         .select("id, title, description, media_type, thumbnail_url, status, is_public, created_at")
         .eq("status", "approved")
         .eq("is_public", true)
         .order("created_at", { ascending: false })
         .limit(limit);
+
+      if (mediaError) {
+        console.error("[useNewsFeed] Error fetching media_uploads:", mediaError);
+      }
 
       if (media) {
         for (const item of media) {
@@ -180,12 +188,16 @@ export async function fetchCommunityNews(
       }
 
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: members } = await supabase
+      const { data: members, error: membersError } = await supabase
         .from("global_community_profiles")
         .select("id, display_name, avatar_url, bio, created_at")
         .gte("created_at", weekAgo)
         .order("created_at", { ascending: false })
         .limit(5);
+
+      if (membersError) {
+        console.error("[useNewsFeed] Error fetching new-member global_community_profiles:", membersError);
+      }
 
       if (members) {
         for (const member of members) {
@@ -208,23 +220,31 @@ export async function fetchCommunityNews(
       // surfaces social posts — not just events, media and new-member
       // spotlights. Mirrors the post→author resolution used by useAllNewsFeed.
       if (viewerId) {
-        const { data: follows } = await supabase
+        const { data: follows, error: followsError } = await supabase
           .from("user_follows")
           .select("following_id")
           .eq("follower_id", viewerId);
+
+        if (followsError) {
+          console.error("[useNewsFeed] Error fetching user_follows:", followsError);
+        }
 
         const followingIds = (follows || [])
           .map((f) => f.following_id)
           .filter(Boolean);
 
         if (followingIds.length) {
-          const { data: postRows } = await supabase
+          const { data: postRows, error: postRowsError } = await supabase
             .from("profile_posts" as never)
             .select("id, user_id, content, image_url, video_url, created_at")
             .eq("is_public", true)
             .in("user_id", followingIds)
             .order("created_at", { ascending: false })
             .limit(limit);
+
+          if (postRowsError) {
+            console.error("[useNewsFeed] Error fetching profile_posts:", postRowsError);
+          }
 
           const posts =
             (postRows as unknown as Array<{
@@ -238,10 +258,14 @@ export async function fetchCommunityNews(
 
           if (posts.length) {
             const authorIds = [...new Set(posts.map((p) => p.user_id))];
-            const { data: authorRows } = await supabase
+            const { data: authorRows, error: authorRowsError } = await supabase
               .from("global_community_profiles")
               .select("user_id, display_name, avatar_url")
               .in("user_id", authorIds);
+
+            if (authorRowsError) {
+              console.error("[useNewsFeed] Error fetching post-author global_community_profiles:", authorRowsError);
+            }
 
             const authorMap = new Map<
               string,

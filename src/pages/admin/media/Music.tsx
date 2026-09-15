@@ -34,7 +34,15 @@ export default function Music() {
         query = query.eq('status', statusFilter);
       }
 
-      const { data } = await query;
+      const { data, error } = await query;
+
+      if (error) {
+        // A DB failure here previously rendered as "no music to review" —
+        // indistinguishable from a genuinely empty moderation queue —
+        // hiding real pending tracks with nothing in the console.
+        console.error('[AdminMusic] Failed to load moderation queue:', error);
+      }
+
       return data || [];
     }
   });

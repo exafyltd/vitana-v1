@@ -1,6 +1,10 @@
 {
   "health": {
-    "_pending_review": {},
+    "_pending_review": {
+      "reportsLoadFailed": true,
+      "reportsLoadFailedDesc": true,
+      "reportsLoadFailedRetry": true
+    },
     "title": "Sağlık",
     "description": "Kişisel sağlık panelin",
     "overview": "Genel Bakış",
@@ -25,18 +29,15 @@
     "healthSnapshot": "Sağlık Anlık Görüntün",
     "topPercentile": "En İyi %{percent}",
     "trend": {
-      "_pending_review": {},
       "improving": "İyileşiyor",
       "declining": "Kötüleşiyor",
       "stable": "Sabit"
     },
     "suggestions": {
-      "_pending_review": {},
       "uploadBloodTestResults": "Kan testi sonuçlarını yükle",
       "startFitnessChallenge": "30 Günlük Fitness Mücadelesini Başlat"
     },
     "pillars": {
-      "_pending_review": {},
       "sleep": "Uyku",
       "exercise": "Egzersiz",
       "nutrition": "Beslenme",
@@ -44,7 +45,6 @@
       "mental": "Zihinsel"
     },
     "emptyStates": {
-      "_pending_review": {},
       "noSleepPlan": "Henüz Uyku Planı Yok",
       "noSleepPlanDesc": "Biyoritmine, iyileşme ihtiyaçlarına ve günlük performansına göre AI ile optimize edilmiş hedeflerle kişiselleştirilmiş uyku planını oluştur.",
       "noExercisePlan": "Henüz Egzersiz Planı Yok",
@@ -67,7 +67,9 @@
     "uploadDescription": "Kan testleri, görüntüleme, laboratuvar sonuçları",
     "unknownProvider": "Bilinmeyen sağlayıcı",
     "addSupplement": "Takviye Ekle",
-    "uploadFirstReport": "İlk Raporu Yükle"
-  },
-  "_pending_review": {}
+    "uploadFirstReport": "İlk Raporu Yükle",
+    "reportsLoadFailed": "Couldn't load your reports",
+    "reportsLoadFailedDesc": "There was a problem loading your health reports. Please try again.",
+    "reportsLoadFailedRetry": "Try again"
+  }
 }

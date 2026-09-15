@@ -27,7 +27,6 @@
     "ticketEmailNote": "Seu ingresso e confirmação serão enviados para este e-mail.",
     "left": "{count} restantes",
     "loadFailed": "Falha ao carregar bilhetes",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "checkFailed": "Não conseguimos verificar o código — tente novamente"
+  }
 }

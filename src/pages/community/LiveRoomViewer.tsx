@@ -48,11 +48,18 @@ export default function LiveRoomViewer() {
   const { data: dbRoom, isLoading: isLoadingHost } = useQuery({
     queryKey: ['live-room-host', roomId],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('live_rooms')
         .select('host_user_id, metadata')
         .eq('id', roomId!)
         .maybeSingle();
+      if (error) {
+        // A query failure previously left `dbRoom` undefined, indistinguishable
+        // from "no such room" — a legitimate host reloading this page would
+        // silently lose moderator controls (End Stream, Settings) with no
+        // trace of why.
+        console.error('[LiveRoomViewer] host detection query failed:', error);
+      }
       return data;
     },
     enabled: !!roomId && !!user?.id,

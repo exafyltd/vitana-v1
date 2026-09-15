@@ -62,6 +62,9 @@
     "uploadDescription": "Bluttests, Bildgebung, Laborergebnisse",
     "unknownProvider": "Unbekannter Anbieter",
     "addSupplement": "Supplement hinzufügen",
-    "uploadFirstReport": "Ersten Bericht hochladen"
+    "uploadFirstReport": "Ersten Bericht hochladen",
+    "reportsLoadFailed": "Deine Berichte konnten nicht geladen werden",
+    "reportsLoadFailedDesc": "Es gab ein Problem beim Laden deiner Gesundheitsberichte. Bitte versuche es erneut.",
+    "reportsLoadFailedRetry": "Erneut versuchen"
   }
 }

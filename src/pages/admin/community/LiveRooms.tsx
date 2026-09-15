@@ -8,7 +8,7 @@ import { useCommunityLiveRooms } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
 
 export default function LiveRooms() {
-  const { data: rooms = [], isLoading } = useCommunityLiveRooms();
+  const { data: rooms = [], isLoading, isError, error } = useCommunityLiveRooms();
   const columns = rooms.length > 0 ? Object.keys(rooms[0]).filter((k) => k !== "id") : [];
 
   return (
@@ -23,6 +23,8 @@ export default function LiveRooms() {
 
         {isLoading ? (
           <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingLiveRooms')}</p>
+        ) : isError ? (
+          <p className="text-sm text-destructive text-center py-8">{t('screens.admin.failedLoadLiveRoomsValue0', { value0: (error as Error)?.message || "Unknown error" })}</p>
         ) : rooms.length === 0 ? (
           <AdminEmptyState title={t('screens.admin.noLiveRoomsFound')} description="There are no live rooms yet." />
         ) : (

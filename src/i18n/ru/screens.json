@@ -2595,6 +2595,14 @@
       "navRole_developer": "Разработчик",
       "navRole_infra": "Инфра",
       "navRole_backoffice": "Бэк-офис",
+      "_pending_review": {
+        "failedLoadCreatorsValue0": true,
+        "failedLoadGroupsValue0": true,
+        "failedLoadLiveRoomsValue0": true
+      },
+      "failedLoadCreatorsValue0": "Failed to load creators: {value0}",
+      "failedLoadGroupsValue0": "Failed to load groups: {value0}",
+      "failedLoadLiveRoomsValue0": "Failed to load live rooms: {value0}",
       "partnerHealthOrders": "Partner Health Tests",
       "orders": "Orders",
       "inbox": "Inbox",
@@ -5204,7 +5212,15 @@
           "business_formation": "Создание бизнеса"
         },
         "contractLink": "Просмотреть договор о Конечной Цели"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Приоритет дня:",
@@ -5420,6 +5436,9 @@
       "replyingTo": "Отвечаешь {name}",
       "cancelReply": "Отменить ответ",
       "likeComment": "Лайкнуть комментарий",
+      "_pending_review": {
+        "feedItemError": true
+      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6028,6 +6047,9 @@
       "anonymous": "Анонимный",
       "vitanaOpenScreen": "Открой экран",
       "viewFullscreen": "Посмотреть на весь экран",
+      "_pending_review": {
+        "conversationRowError": true
+      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -10296,6 +10318,11 @@
         "geminiStep1": "Для Gemini CLI: добавь URL-адрес сервера MCP выше в ~/.gemini/settings.json в раздел твоих MCP-серверов.",
         "geminiStep2": "Для Gemini Enterprise (Business Edition): Настройки и помощь → Команда → Управление командой → Подключенные приложения → «Добавить MCP-сервер».",
         "geminiNote": "Пользовательское приложение Gemini в настоящее время не имеет документированного способа прямого добавления пользовательского MCP-сервера — это доступно только через Gemini CLI и Gemini Enterprise.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10322,6 +10349,21 @@
         "notConfigured": "Этот тип подключения пока не включен. Пожалуйста, попробуй позже.",
         "failed": "Не удалось начать подключение. Пожалуйста, проверь свои данные."
       },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10336,6 +10378,13 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",

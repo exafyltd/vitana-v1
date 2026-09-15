@@ -2595,6 +2595,9 @@
       "paFeedbackTotal": "Toplam geri bildirim",
       "paFeatureOpens": "Özellik açılışları",
       "paEngagementDesc": "Üye etkinliği ve katılım metrikleri",
+      "failedLoadCreatorsValue0": "Yaratıcılar yüklenemedi: {value0}",
+      "failedLoadGroupsValue0": "Gruplar yüklenemedi: {value0}",
+      "failedLoadLiveRoomsValue0": "Canlı odalar yüklenemedi: {value0}",
       "partnerHealthOrders": "Partner Health Tests",
       "orders": "Orders",
       "inbox": "Inbox",
@@ -5204,7 +5207,15 @@
           "business_formation": "İş kurma"
         },
         "contractLink": "Nihai Hedef sözleşmesini görüntüle"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Günün Önceliği:",
@@ -5420,6 +5431,9 @@
       "text4NewIdeas": "4 yeni fikir",
       "executeAllValue0": "Tümünü Çalıştır {value0}",
       "noValue0ActionsAvailable": "{value0} eylem yok",
+      "_pending_review": {
+        "feedItemError": true
+      },
       "feedItemError": "This post couldn't be shown."
     },
     "icons": {
@@ -6028,6 +6042,9 @@
       "value0Members": "{value0} üye",
       "chooseConversationFromLeftStartMessaging": "Mesaj göndermek için soldan bir konuşma seç.",
       "vitanaOpenScreen": "Ekranı aç",
+      "_pending_review": {
+        "conversationRowError": true
+      },
       "conversationRowError": "This item couldn't be shown."
     },
     "mobile": {
@@ -10296,6 +10313,11 @@
         "geminiStep1": "Gemini CLI için: yukarıdaki MCP sunucu URL'sini ~/.gemini/settings.json dosyasına MCP sunucularının altına ekle.",
         "geminiStep2": "Gemini Enterprise (Business Edition) için: Ayarlar ve yardım → Ekip → Ekibi yönet → Bağlı uygulamalar → \"MCP Sunucusu Ekle\".",
         "geminiNote": "Tüketici Gemini uygulamasında şu anda özel bir MCP sunucusu eklemenin belgelenmiş bir yolu yok - bu yalnızca Gemini CLI ve Gemini Enterprise ile kullanılabilir.",
+        "_pending_review": {
+          "tabClaude": true,
+          "tabChatgpt": true,
+          "tabGemini": true
+        },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini"
@@ -10322,6 +10344,21 @@
         "notConfigured": "Bu bağlantı türü henüz etkin değil. Lütfen daha sonra tekrar dene.",
         "failed": "Bağlantı başlatılamadı. Lütfen bilgilerini kontrol et."
       },
+      "_pending_review": {
+        "portalEyebrow": true,
+        "agentPromise": true,
+        "agentStatusPill": true,
+        "agentStatusDetail": true,
+        "agentUrlHint": true,
+        "howItWorksTitle": true,
+        "manualIntro": true,
+        "manualCta": true,
+        "connectionsEmptyHint": true,
+        "connectionsCount": true,
+        "openWorkbench": true,
+        "closeWorkbench": true,
+        "sandboxDevNote": true
+      },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
       "agentStatusPill": "Going live soon",
@@ -10336,6 +10373,13 @@
       "closeWorkbench": "Close",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
+        "_pending_review": {
+          "connect": true,
+          "mapping": true,
+          "tests": true,
+          "live": true,
+          "offTrack": true
+        },
         "connect": "Connect",
         "mapping": "Mapping",
         "tests": "Checks",

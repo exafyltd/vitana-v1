@@ -47,10 +47,18 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
       if (!memberRows?.length) { setMembers([]); return; }
 
       const userIds = memberRows.map(m => m.user_id);
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
+
+      if (profilesError) {
+        // Read/display path only — a failure here renders every member with
+        // a blank name/avatar (indistinguishable from a genuinely empty
+        // profile), so we log loudly and degrade rather than failing the
+        // whole member list.
+        console.error('Error fetching member profiles:', profilesError);
+      }
 
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
       
