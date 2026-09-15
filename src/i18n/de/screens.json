@@ -9988,7 +9988,34 @@
       "activity": "Aktivität",
       "progress": "Fortschritt",
       "trend": "Trend",
-      "text5FromLastMonth": "+5 zum letzten Monat"
+      "text5FromLastMonth": "+5 zum letzten Monat",
+      "results": {
+        "title": "Deine Ergebnisse",
+        "subtitle": "Laborwerte und Ergebnisse von allen deinen Partnern und Fachkräften an einem Ort",
+        "loadFailed": "Deine Ergebnisse konnten nicht geladen werden.",
+        "retry": "Erneut versuchen",
+        "empty": "Noch keine Ergebnisse vorhanden.",
+        "selfReported": "Selbst hochgeladen",
+        "markerCount": "{count} Marker",
+        "needsAttention": "{count} auffällig",
+        "allNormal": "Alles im normalen Bereich",
+        "noBiomarkers": "Keine Biomarker in diesem Bericht.",
+        "biomarker": "Marker",
+        "value": "Wert",
+        "range": "Referenzbereich",
+        "status": "Status",
+        "statusLow": "Niedrig",
+        "statusHigh": "Hoch",
+        "statusNormal": "Normal",
+        "statusCritical": "Kritisch",
+        "statusUnknown": "Unbekannt",
+        "recentResultsTitle": "Neueste Ergebnisse",
+        "viewAll": "Alle Ergebnisse ansehen"
+      },
+      "comingSoon": {
+        "title": "Bald verfügbar",
+        "body": "Diesen Bereich bauen wir gerade noch. Schau bald wieder vorbei."
+      }
     },
     "portals": {
       "confirmationError": "Bestätigungsfehler",

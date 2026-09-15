@@ -64,6 +64,10 @@ import ShareEntry from "./pages/ShareEntry";
 // Auth.tsx removed — login flows handled by tenant portals
 import NotFound from "./pages/NotFound";
 import { t } from '@/lib/i18n-toast';
+// VTID-03936: explicit "not available yet" state for the /patient/* routes
+// with no backing data source.
+import { ComingSoonPlaceholder } from '@/components/patient/ComingSoonPlaceholder';
+import { Bell, ClipboardCheck, ShieldCheck, Users } from 'lucide-react';
 
 // ─── Lazy imports: everything else, grouped by domain ───
 
@@ -285,6 +289,9 @@ const Diary = lazy(() => import("./pages/memory/Diary"));
 const PatientDashboard = lazy(() => import("./pages/patient/Dashboard"));
 const PatientHealth = lazy(() => import("./pages/patient/Health"));
 const PatientAppointments = lazy(() => import("./pages/patient/Appointments"));
+// VTID-03936: real cross-partner results aggregation, replacing the old
+// inline placeholder for /patient/results.
+const PatientResults = lazy(() => import("./pages/patient/Results"));
 const ProfessionalDashboard = lazy(() => import("./pages/professional/Dashboard"));
 const ProfessionalPatients = lazy(() => import("./pages/professional/Patients"));
 const StaffDashboard = lazy(() => import("./pages/staff/Dashboard"));
@@ -1605,35 +1612,35 @@ const App = () => {
           <Route path="/patient/results" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.testResults')}</h1><p className="text-muted-foreground">{t('screens.common.patientTestResultsLabReports')}</p></div></AppLayout>
+                <PatientResults />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/patient/care-team" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.careTeam')}</h1><p className="text-muted-foreground">{t('screens.common.yourHealthcareProvidersSpecialists')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Users} titleKey="screens.common.careTeam" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/patient/goals" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.healthGoals')}</h1><p className="text-muted-foreground">{t('screens.common.trackManageYourHealthObjectives')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={ClipboardCheck} titleKey="screens.common.healthGoals" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/patient/insurance" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.insurance')}</h1><p className="text-muted-foreground">{t('screens.common.insuranceInformationCoverageDetails')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={ShieldCheck} titleKey="screens.common.insurance" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/patient/notifications" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.notifications')}</h1><p className="text-muted-foreground">{t('screens.common.healthRemindersAlerts')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Bell} titleKey="screens.common.notifications" />
               </ProtectedRoute>
             </AuthGuard>
           } />
