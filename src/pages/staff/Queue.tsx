@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Clock, User, AlertCircle, CheckCircle } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
 
 export default function StaffQueue() {
   return (
+    <AppLayout>
     <div className="p-6 space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.staff.patientQueue')}</h1>
@@ -162,5 +164,6 @@ export default function StaffQueue() {
         </Card>
       </div>
     </div>
+    </AppLayout>
   );
 }
