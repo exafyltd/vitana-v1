@@ -29,6 +29,10 @@ export const CONFIRMATION_PATHS = {
   auth: '/',
   community: '/',
   maxina: '/maxina?confirmed=true',
+  // VTID-03894: a supplier who confirms their email belongs in the Commerce
+  // Portal. Without its own path they land in the community app and have to
+  // find their way back to a portal they have never seen.
+  commerce: '/commerce?confirmed=true',
   alkalma: '/alkalma',
   earthlinks: '/earthlinks'
 } as const;

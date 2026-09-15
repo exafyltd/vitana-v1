@@ -10348,6 +10348,24 @@
         "imageFailed": "Das Bild konnte nicht hochgeladen werden.",
         "businessName": "Name deines Business",
         "businessNameHint": "So erscheint dein Business im Marktplatz — nicht der Produktname."
+      },
+      "join": {
+        "seoTitle": "Business bei Vitanaland anmelden",
+        "seoDescription": "Registriere dein Business und bring deine Produkte in den Vitanaland Discover-Marktplatz.",
+        "registerLead": "Lege in zwei Minuten ein Konto an — danach kannst du deine Produkte per KI oder von Hand eintragen.",
+        "signinLead": "Willkommen zurück. Melde dich an, um deine Produkte zu verwalten.",
+        "yourName": "Dein Name",
+        "registerCta": "Konto anlegen",
+        "signinCta": "Anmelden",
+        "haveAccount": "Du hast schon ein Konto? Anmelden",
+        "noAccount": "Noch kein Konto? Jetzt registrieren",
+        "togglePassword": "Passwort anzeigen oder verbergen",
+        "checkInboxTitle": "Schau in dein Postfach",
+        "checkInboxBody": "Wir haben einen Bestätigungslink an {email} geschickt. Öffne ihn, und du landest direkt im Commerce Portal.",
+        "alreadyConfirmed": "Schon bestätigt? Hier anmelden",
+        "timeout": "Das hat zu lange gedauert. Bitte prüfe deine Verbindung und versuche es erneut.",
+        "failed": "Das hat nicht geklappt. Bitte versuche es erneut.",
+        "otherSignin": "Andere Anmeldemöglichkeit"
       }
     },
     "oauthconsent": {
