@@ -185,10 +185,20 @@ export function CommunityPostCard({
     const parentId = comment.parent_id ?? comment.id;
     return (
       <div key={comment.id} className={cn("flex items-start gap-2", isReply && "ml-8")}>
-        <Avatar className={cn("shrink-0", isReply ? "h-5 w-5" : "h-6 w-6")}>
-          {comment.avatar_url && <AvatarImage src={comment.avatar_url} alt="" />}
-          <AvatarFallback className="text-[10px]">{name.charAt(0).toUpperCase()}</AvatarFallback>
-        </Avatar>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/u/${comment.user_id}`);
+          }}
+          className="shrink-0"
+          aria-label={name}
+        >
+          <Avatar className={cn(isReply ? "h-5 w-5" : "h-6 w-6")}>
+            {comment.avatar_url && <AvatarImage src={comment.avatar_url} alt="" />}
+            <AvatarFallback className="text-[10px]">{name.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+        </button>
         <div className="flex-1 min-w-0">
           <div className="rounded-xl bg-muted/50 px-3 py-2">
             <span className="text-xs font-semibold text-foreground">{name}</span>

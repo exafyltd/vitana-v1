@@ -90,18 +90,21 @@ export function usePostInteractions(postId: string) {
       const userIds = [...new Set(rawComments.map(c => c.user_id))];
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('user_id, display_name, avatar_url')
+        .select('user_id, display_name, full_name, avatar_url')
         .in('user_id', userIds);
       if (profilesError) {
         console.error('[usePostInteractions] Failed to load comment-author profiles:', profilesError);
       }
 
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
-      return rawComments.map(c => ({
-        ...c,
-        display_name: profileMap.get(c.user_id)?.display_name || 'Unknown',
-        avatar_url: profileMap.get(c.user_id)?.avatar_url || null,
-      }));
+      return rawComments.map(c => {
+        const p = profileMap.get(c.user_id);
+        return {
+          ...c,
+          display_name: p?.display_name || p?.full_name || 'Unknown',
+          avatar_url: p?.avatar_url || null,
+        };
+      });
     },
   });
 

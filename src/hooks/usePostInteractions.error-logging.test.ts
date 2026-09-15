@@ -24,7 +24,10 @@ describe('usePostInteractions — comment-author profile enrichment error loggin
   it('logs the error before the unchanged profileMap fallback', () => {
     const idx = SRC.indexOf("const { data: profiles, error: profilesError } = await supabase");
     expect(idx).toBeGreaterThan(-1);
-    const after = SRC.slice(idx, idx + 400);
+    // VTID-03923 added full_name to the .select(...) call, lengthening it —
+    // widened from 400 with margin so this stays robust to similar future
+    // column additions on the same line.
+    const after = SRC.slice(idx, idx + 500);
     expect(after).toMatch(/if \(profilesError\) \{/);
     expect(after).toContain('console.error(');
     expect(after).toContain('const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));');
