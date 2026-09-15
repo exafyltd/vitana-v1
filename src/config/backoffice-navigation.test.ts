@@ -25,7 +25,7 @@ import deScreens from '@/i18n/de/screens.json';
 const content = getBackOfficeContentSections();
 
 /**
- * The real tab keys, excluding metadata.
+ * The real content keys of an i18n node, excluding metadata.
  *
  * `_pending_review` is a sibling of the string leaves it flags — that is the
  * shape `translate-keys.mjs --init` writes and `collectPending()` reads, and
@@ -40,7 +40,7 @@ const content = getBackOfficeContentSections();
  * French backoffice labels are still identical to English — the flags are
  * telling the truth.
  */
-function tabKeys(tabs: Record<string, unknown>): string[] {
+function contentKeys(tabs: Record<string, unknown>): string[] {
   return Object.keys(tabs).filter((k) => !k.startsWith('_')).sort();
 }
 
@@ -117,9 +117,9 @@ describe('BACKOFFICE_SECTIONS (VTID-03833)', () => {
       const other = JSON.parse(readFileSync(`src/i18n/${loc}/backoffice.json`, 'utf8')).backoffice;
       const sb = JSON.parse(readFileSync(`src/i18n/${loc}/sidebar.json`, 'utf8')).sidebar.backoffice;
       for (const s of Object.keys(deTabs)) {
-        expect(tabKeys(other[s].tabs), `${loc}:${s}`).toEqual(tabKeys(deTabs[s].tabs));
+        expect(contentKeys(other[s].tabs), `${loc}:${s}`).toEqual(contentKeys(deTabs[s].tabs));
       }
-      expect(Object.keys(sb).sort()).toEqual(BACKOFFICE_SECTIONS.map((s) => s.key).sort());
+      expect(contentKeys(sb), `${loc}:sidebar`).toEqual(BACKOFFICE_SECTIONS.map((s) => s.key).sort());
     }
   });
 
