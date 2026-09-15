@@ -19,6 +19,15 @@ export function isCommerceHost(hostname: string = window.location.hostname): boo
 export const MY_PORTAL_API = '/api/v1/vcaop/portal/my';
 
 /**
+ * Commerce Partner Onboarding — self-service partner_organizations API
+ * (gateway VTID-03932/VTID-03935, `services/gateway/src/routes/partner-orgs.ts`).
+ * Deliberately separate from MY_PORTAL_API above: a partner ORGANIZATION
+ * (business identity, staff/professional roster) is a different concept
+ * from a VCAOP mesh CONNECTION (an integration to one storefront/EHR).
+ */
+export const PARTNER_ORGS_API = '/api/v1/partner-orgs';
+
+/**
  * The Vitanaland MCP endpoint a merchant pastes into their own AI agent
  * (VTID-03600, moved here VTID-03882 so the portal and any future call site
  * read one constant).

@@ -16,7 +16,7 @@
  * comes from OWNING a merchant/partner_tenant row, not from a claim on a JWT.
  */
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { CheckCircle2, Eye, EyeOff, Loader2, ShoppingBag } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -49,6 +49,7 @@ function withDeadline<T>(work: Promise<T>): Promise<T> {
 export default function CommerceJoin() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const reduce = useReducedMotion();
 
   const [mode, setMode] = useState<'register' | 'signin'>('register');
@@ -61,9 +62,14 @@ export default function CommerceJoin() {
   const [sentTo, setSentTo] = useState('');
 
   // Someone already signed in does not need to register; send them on.
+  // VTID-03936: honor `?redirectTo=` (AuthGuard's own convention for a
+  // /commerce/* deep link, e.g. an org invite) instead of always landing on
+  // the generic portal — restricted to a /commerce path, never an open redirect.
   useEffect(() => {
-    if (!authLoading && user) navigate('/commerce', { replace: true });
-  }, [user, authLoading, navigate]);
+    if (authLoading || !user) return;
+    const redirectTo = searchParams.get('redirectTo');
+    navigate(redirectTo && redirectTo.startsWith('/commerce') ? redirectTo : '/commerce', { replace: true });
+  }, [user, authLoading, navigate, searchParams]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

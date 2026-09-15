@@ -85,6 +85,8 @@ const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLog
 const CommercePortal = lazy(() => import("./pages/CommercePortal"));
 const CommerceJoin = lazy(() => import("./pages/CommerceJoin"));
 const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnectionRedirect"));
+// VTID-03936: an org invite link's landing page.
+const CommerceAcceptInvite = lazy(() => import("./pages/CommerceAcceptInvite"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
@@ -1772,6 +1774,9 @@ const App = () => {
               it is what an unregistered supplier is handed. */}
           <Route path="/commerce/join" element={<CommerceJoin />} />
           <Route path="/commerce" element={<AuthGuard><CommercePortal /></AuthGuard>} />
+          {/* VTID-03936: an org_admin's invite link — self-service org
+              onboarding (register a business, invite staff/professionals). */}
+          <Route path="/commerce/invites/:token/accept" element={<AuthGuard><CommerceAcceptInvite /></AuthGuard>} />
           {/* VTID-03882: the three old URLs stay alive and fold into /commerce. */}
           <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
           <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />
