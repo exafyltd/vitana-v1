@@ -2615,7 +2615,32 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty."
+      "inboxEmpty": "Inbox is empty.",
+      "_pending_review": {
+        "navRole_backoffice": true,
+        "partnerHealthOrders": true,
+        "orders": true,
+        "inbox": true,
+        "testColumn": true,
+        "partner": true,
+        "uploadResult": true,
+        "received": true,
+        "resolve": true,
+        "statusUpdated": true,
+        "resultUploaded": true,
+        "matchConfirmed": true,
+        "uploadResultFor": true,
+        "uploadResultHelp": true,
+        "upload": true,
+        "confirmMatch": true,
+        "confirmMatchHelp": true,
+        "matchedUserId": true,
+        "matchedTenantId": true,
+        "testName": true,
+        "externalOrderRefOptional": true,
+        "noOrdersYet": true,
+        "inboxEmpty": true
+      }
     },
     "ai-feed": {
       "noEventsFound": "No se encontraron eventos",
@@ -7402,7 +7427,14 @@
       "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
       "partnerLabsGrantSuccess": "Acceso concedido — Vitana ahora puede discutir tus resultados de DoctorBox contigo.",
       "partnerLabsRevokeSuccess": "Acceso revocado.",
-      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo."
+      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+      "_pending_review": {
+        "partnerLabsConnectTitle": true,
+        "partnerLabsConnectDescription": true,
+        "partnerLabsGrantAccess": true,
+        "partnerLabsRevokeAccess": true,
+        "partnerLabsRevokeConfirm": true
+      }
     },
     "sharing": {
       "activateCampaign": "Activar campaña",
@@ -10386,6 +10418,54 @@
       },
       "addProduct": "Introduce tus productos tú mismo",
       "productForm": {
+        "_pending_review": {
+          "pickTitle": true,
+          "pickSubtitle": true,
+          "titleFor": true,
+          "name": true,
+          "price": true,
+          "currency": true,
+          "photo": true,
+          "buyUrl": true,
+          "buyUrlHint": true,
+          "shipsFrom": true,
+          "shipsTo": true,
+          "shipsToHint": true,
+          "description": true,
+          "aboutVertical": true,
+          "moreDetails": true,
+          "choosePlaceholder": true,
+          "strengthTitle": true,
+          "strengthComplete": true,
+          "strengthHint": true,
+          "submit": true,
+          "cancel": true,
+          "saved": true,
+          "saveFailed": true,
+          "reviewNote": true,
+          "loadFailed": true,
+          "retry": true,
+          "imageAdd": true,
+          "imageRemove": true,
+          "imageHeic": true,
+          "imageNotAnImage": true,
+          "imageTooLarge": true,
+          "imageFailed": true,
+          "businessName": true,
+          "businessNameHint": true,
+          "network": true,
+          "networkOther": true,
+          "networkHint": true,
+          "networkOtherHint": true,
+          "advertiserId": true,
+          "advertiserIdHint": true,
+          "salesModel": true,
+          "salesModelReferral": true,
+          "salesModelReferralHint": true,
+          "salesModelDirect": true,
+          "salesModelSoon": true,
+          "salesModelDirectHint": true
+        },
         "pickTitle": "What do you sell?",
         "pickSubtitle": "Choose once — after that we only ask about things that actually matter for your products.",
         "titleFor": "New product — {vertical}",
@@ -10434,6 +10514,24 @@
         "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet."
       },
       "join": {
+        "_pending_review": {
+          "seoTitle": true,
+          "seoDescription": true,
+          "registerLead": true,
+          "signinLead": true,
+          "yourName": true,
+          "registerCta": true,
+          "signinCta": true,
+          "haveAccount": true,
+          "noAccount": true,
+          "togglePassword": true,
+          "checkInboxTitle": true,
+          "checkInboxBody": true,
+          "alreadyConfirmed": true,
+          "timeout": true,
+          "failed": true,
+          "otherSignin": true
+        },
         "seoTitle": "Register your business with Vitanaland",
         "seoDescription": "Register your business and bring your products to the Vitanaland Discover marketplace.",
         "registerLead": "Create an account in two minutes — then add your products by AI or by hand.",
@@ -10569,7 +10667,11 @@
         "empty": "No se encontró ninguna empresa",
         "none": "Ninguno",
         "yes": "Sí",
-        "no": "No"
+        "no": "No",
+        "_pending_review": {
+          "id": true,
+          "no": true
+        }
       },
       "trail": {
         "title": "Pista de auditoría independiente",
@@ -10728,7 +10830,11 @@
         "web": "Web",
         "chat": "Chat",
         "voice": "Voz",
-        "system": "Sistema"
+        "system": "Sistema",
+        "_pending_review": {
+          "web": true,
+          "chat": true
+        }
       },
       "sales": {
         "status": {
@@ -10761,7 +10867,10 @@
           "low": "Baja",
           "converted": "Convertido",
           "unpaid": "Sin pagar",
-          "return": "Devolución"
+          "return": "Devolución",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "common": {
           "status": "Estado",
@@ -10779,7 +10888,11 @@
           "total": "Total",
           "subtotal": "Subtotal",
           "tax": "Impuesto",
-          "actions": "Acciones"
+          "actions": "Acciones",
+          "_pending_review": {
+            "total": true,
+            "subtotal": true
+          }
         },
         "docs": {
           "noItems": "Sin líneas",
@@ -10801,7 +10914,11 @@
           "company": "Empresa",
           "territory": "Territorio",
           "industry": "Sector",
-          "frozenHint": "Un lead convertido está congelado en ERPClaw y ya no se puede editar."
+          "frozenHint": "Un lead convertido está congelado en ERPClaw y ya no se puede editar.",
+          "_pending_review": {
+            "title": true,
+            "lead": true
+          }
         },
         "contacts": {
           "title": "Contactos y empresas",
@@ -11059,6 +11176,9 @@
             "last_month": "Mes pasado",
             "this_quarter": "Este trimestre",
             "last_year": "Año pasado"
+          },
+          "_pending_review": {
+            "window": true
           }
         },
         "pnl": {
@@ -11251,7 +11371,10 @@
           "new": "Nuevo",
           "sales": "Ventas",
           "support": "Soporte",
-          "maintenance": "Mantenimiento"
+          "maintenance": "Mantenimiento",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "forms": {
           "lead": {
@@ -11456,7 +11579,10 @@
           "error": "Error",
           "executedLine": "El gateway ejecutó el comando. El recibo del puente está abajo.",
           "rejectedLine": "La solicitud está rechazada; no se ejecutó nada.",
-          "executedButFailedHint": "La aprobación queda registrada, pero el puente/ERPClaw rechazó la ejecución: el comando queda como fallido y hay que solicitarlo de nuevo."
+          "executedButFailedHint": "La aprobación queda registrada, pero el puente/ERPClaw rechazó la ejecución: el comando queda como fallido y hay que solicitarlo de nuevo.",
+          "_pending_review": {
+            "error": true
+          }
         },
         "refusals": {
           "selfApproval": "No puedes aprobar tu propia solicitud.",

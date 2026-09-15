@@ -24,6 +24,26 @@ import deScreens from '@/i18n/de/screens.json';
 
 const content = getBackOfficeContentSections();
 
+/**
+ * The real tab keys, excluding metadata.
+ *
+ * `_pending_review` is a sibling of the string leaves it flags — that is the
+ * shape `translate-keys.mjs --init` writes and `collectPending()` reads, and
+ * it is how the translate workflow knows which keys still need a translator.
+ * Every script that walks these catalogs skips `_`-prefixed keys for exactly
+ * this reason (i18n-audit.mjs, translate-keys.mjs); this test did not, so a
+ * correctly-flagged untranslated key read as an extra TAB and the suite went
+ * red on the propagation bot doing its job.
+ *
+ * Stripping the markers to make this pass is the wrong repair and was tried:
+ * it hides genuinely untranslated keys from the pipeline for good. 56 of 64
+ * French backoffice labels are still identical to English — the flags are
+ * telling the truth.
+ */
+function tabKeys(tabs: Record<string, unknown>): string[] {
+  return Object.keys(tabs).filter((k) => !k.startsWith('_')).sort();
+}
+
 describe('BACKOFFICE_SECTIONS (VTID-03833)', () => {
   it('has 13 sidebar items: "← Admin" first (adminOnly) + the 12 department sections in plan order', () => {
     expect(BACKOFFICE_SECTIONS).toHaveLength(13);
@@ -97,7 +117,7 @@ describe('BACKOFFICE_SECTIONS (VTID-03833)', () => {
       const other = JSON.parse(readFileSync(`src/i18n/${loc}/backoffice.json`, 'utf8')).backoffice;
       const sb = JSON.parse(readFileSync(`src/i18n/${loc}/sidebar.json`, 'utf8')).sidebar.backoffice;
       for (const s of Object.keys(deTabs)) {
-        expect(Object.keys(other[s].tabs).sort(), `${loc}:${s}`).toEqual(Object.keys(deTabs[s].tabs).sort());
+        expect(tabKeys(other[s].tabs), `${loc}:${s}`).toEqual(tabKeys(deTabs[s].tabs));
       }
       expect(Object.keys(sb).sort()).toEqual(BACKOFFICE_SECTIONS.map((s) => s.key).sort());
     }

@@ -60,8 +60,10 @@
       "reports": "التقارير",
       "approvals": "الموافقات",
       "audit": "التدقيق",
-      "settings": "الإعدادات"
-    }
+      "settings": "الإعدادات",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "_pending_review": {}
 }
