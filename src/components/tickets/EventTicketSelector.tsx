@@ -88,7 +88,14 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
         .gt("expires_at", new Date().toISOString())
         .maybeSingle();
 
-      if (error || !data) {
+      if (error) {
+        // A transient DB error previously looked identical to "invalid
+        // code" — a user with a legitimate discount could be told it's
+        // invalid (and pay full price) purely because of a DB hiccup.
+        console.error('[EventTicketSelector] Failed to validate discount code:', error);
+        return { valid: false, message: translate('discount.checkFailed') };
+      }
+      if (!data) {
         return { valid: false, message: translate('discount.invalid') };
       }
 

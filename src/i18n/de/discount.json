@@ -7,6 +7,7 @@
     "applied": "Rabatt angewandt!",
     "expired": "Dieser Code ist abgelaufen",
     "invalid": "Ungültiger Rabattcode",
+    "checkFailed": "Code konnte nicht überprüft werden — versuch es noch einmal",
     "bannerAvailable": "Willkommensrabatt verfügbar",
     "tapToApply": "Anwenden",
     "discountAppliedAmount": "{percent}% Rabatt angewandt",

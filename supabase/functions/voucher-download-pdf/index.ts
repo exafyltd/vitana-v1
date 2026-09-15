@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { jsPDF } from "https://esm.sh/jspdf@2.5.2";
+import { storageBridgeProvider, uploadFile, getSignedUrl } from '../_shared/storage-bridge-client.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -372,41 +373,59 @@ serve(async (req) => {
     console.log("[voucher-download-pdf] Regenerating PDF (always fresh)");
     const pdfBuffer = generateVoucherPdf(voucherData);
     
-    // Upload to storage with upsert to overwrite any existing file
-    const { error: uploadError } = await supabaseAdmin.storage
-      .from("voucher-pdfs")
-      .upload(pdfPath, pdfBuffer, {
-        contentType: "application/pdf",
-        upsert: true,
-      });
-
-    if (uploadError) {
-      console.error("[voucher-download-pdf] Upload error:", uploadError);
-      return new Response(
-        JSON.stringify({ error: "Failed to generate PDF. Please try again." }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    console.log("[voucher-download-pdf] PDF uploaded successfully");
-
     let signedPdfUrl: string;
 
-    // Create signed URL (valid for 1 hour)
-    const { data: signedData, error: signedError } = await supabaseAdmin.storage
-      .from("voucher-pdfs")
-      .createSignedUrl(pdfPath, 3600); // 1 hour expiry
+    // VTID-03815 (B6): STORAGE_BRIDGE_PROVIDER=bridge routes the upload +
+    // signed-url through the gateway's storage-bridge route instead of
+    // calling Supabase Storage directly — default is byte-for-byte unchanged.
+    if (storageBridgeProvider() === 'bridge') {
+      try {
+        await uploadFile('voucher-pdfs', pdfPath, pdfBuffer, { contentType: 'application/pdf', upsert: true });
+        console.log("[voucher-download-pdf] PDF uploaded successfully (bridge)");
+        signedPdfUrl = await getSignedUrl('voucher-pdfs', pdfPath, 3600);
+        console.log("[voucher-download-pdf] Signed URL created successfully (bridge)");
+      } catch (bridgeErr) {
+        console.error("[voucher-download-pdf] Storage bridge error:", bridgeErr);
+        return new Response(
+          JSON.stringify({ error: "Failed to generate PDF. Please try again." }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    } else {
+      // Upload to storage with upsert to overwrite any existing file
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from("voucher-pdfs")
+        .upload(pdfPath, pdfBuffer, {
+          contentType: "application/pdf",
+          upsert: true,
+        });
 
-    if (signedError || !signedData?.signedUrl) {
-      console.error("[voucher-download-pdf] Signed URL error:", signedError);
-      return new Response(
-        JSON.stringify({ error: "Failed to create download link. Please try again." }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      if (uploadError) {
+        console.error("[voucher-download-pdf] Upload error:", uploadError);
+        return new Response(
+          JSON.stringify({ error: "Failed to generate PDF. Please try again." }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      console.log("[voucher-download-pdf] PDF uploaded successfully");
+
+      // Create signed URL (valid for 1 hour)
+      const { data: signedData, error: signedError } = await supabaseAdmin.storage
+        .from("voucher-pdfs")
+        .createSignedUrl(pdfPath, 3600); // 1 hour expiry
+
+      if (signedError || !signedData?.signedUrl) {
+        console.error("[voucher-download-pdf] Signed URL error:", signedError);
+        return new Response(
+          JSON.stringify({ error: "Failed to create download link. Please try again." }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      signedPdfUrl = signedData.signedUrl;
+      console.log("[voucher-download-pdf] Signed URL created successfully");
     }
-
-    signedPdfUrl = signedData.signedUrl;
-    console.log("[voucher-download-pdf] Signed URL created successfully");
 
     return new Response(
       JSON.stringify({ 

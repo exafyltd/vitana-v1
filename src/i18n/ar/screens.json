@@ -2594,7 +2594,32 @@
       "navRole_admin": "مسؤول",
       "navRole_developer": "مطور",
       "navRole_infra": "بنية تحتية",
-      "navRole_backoffice": "المكتب الخلفي"
+      "navRole_backoffice": "المكتب الخلفي",
+      "failedLoadCreatorsValue0": "تعذر تحميل المبدعين: {value0}",
+      "failedLoadGroupsValue0": "تعذر تحميل المجموعات: {value0}",
+      "failedLoadLiveRoomsValue0": "تعذر تحميل الغرف المباشرة: {value0}",
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "لا توجد أحداث",
@@ -5182,7 +5207,15 @@
           "business_formation": "تأسيس الأعمال"
         },
         "contractLink": "عرض عقد الهدف الأسمى"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "أولوية اليوم:",
@@ -7365,7 +7398,15 @@
       "youExafySuperAdministratorYouCan": "أنت مسؤول Exafy فائق. يمكنك التبديل بين المؤسسات وإدارة جميع العملاء.",
       "roleValue0": "الدور: {value0}",
       "refreshBrowserVoices": "تحديث أصوات المتصفح",
-      "creativityValue0": "الإبداع: {value0}"
+      "creativityValue0": "الإبداع: {value0}",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "تفعيل الحملة",

@@ -2594,7 +2594,32 @@
       "navRole_admin": "Admin",
       "navRole_developer": "Développeur",
       "navRole_infra": "Infra",
-      "navRole_backoffice": "Back-office"
+      "navRole_backoffice": "Back-office",
+      "failedLoadCreatorsValue0": "Impossible de charger les créateurs : {value0}",
+      "failedLoadGroupsValue0": "Impossible de charger les groupes : {value0}",
+      "failedLoadLiveRoomsValue0": "Impossible de charger les salons en direct : {value0}",
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "Aucun événement trouvé",
@@ -5182,7 +5207,15 @@
           "business_formation": "Création d'entreprise"
         },
         "contractLink": "Consulte le contrat de l'Objectif Ultime"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -7365,7 +7398,15 @@
       "youExafySuperAdministratorYouCan": "Tu es un super-administrateur Exafy. Tu peux basculer entre les organisations et gérer tous les locataires.",
       "roleValue0": "Rôle : {value0}",
       "refreshBrowserVoices": "Actualiser les voix du navigateur",
-      "creativityValue0": "Créativité : {value0}"
+      "creativityValue0": "Créativité : {value0}",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Activer la campagne",

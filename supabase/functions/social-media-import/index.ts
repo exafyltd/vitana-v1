@@ -65,14 +65,20 @@ serve(async (req) => {
       const userPrompt = `Analyze this ${platform} profile text and extract structured data:\n\n${bioText}`;
 
       try {
-        const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+        // Aurora migration B7 (VTID-03764 chain): see generate-enhanced-
+        // recommendations/index.ts for the full rationale. Defaults to
+        // 'gemini' — unchanged behavior until a deployment opts into 'bedrock'.
+        const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
+        const { generateContent, extractFunctionCall } = await import(
+          aiBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
+        );
         const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
-        
-        if (!GEMINI_API_KEY) {
+
+        if (aiBridgeProvider === 'gemini' && !GEMINI_API_KEY) {
           console.error('GOOGLE_GEMINI_API_KEY not configured');
         } else {
           const aiResponse = await generateContent(
-            GEMINI_API_KEY,
+            GEMINI_API_KEY ?? '',
             [
               { role: 'system', content: systemPrompts[platform] },
               { role: 'user', content: userPrompt }

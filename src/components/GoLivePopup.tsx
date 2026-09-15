@@ -78,11 +78,18 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         if (!authUser) return;
 
         // Check if user has a permanent room
-        const { data: appUser } = await supabase
+        const { data: appUser, error: appUserError } = await supabase
           .from('app_users')
           .select('live_room_id, tenant_id')
           .eq('user_id', authUser.id)
           .maybeSingle();
+
+        if (appUserError) {
+          // This runs only after the primary gateway call already failed —
+          // a further DB error here previously left the Go Live flow
+          // silently broken with no resolvable room and no visible error.
+          console.error('[GoLivePopup] Supabase fallback app_users lookup failed:', appUserError);
+        }
 
         if (appUser?.live_room_id) {
           // User already has a room

@@ -47,7 +47,6 @@
     "connectors": "Aplicaciones conectadas",
     "support": "Soporte",
     "myJourney": "Mi Viaje",
-    "_pending_review": {},
     "backoffice": {
       "back": "← Admin",
       "overview": "Resumen",
@@ -63,6 +62,5 @@
       "audit": "Auditoría",
       "settings": "Ajustes"
     }
-  },
-  "_pending_review": {}
+  }
 }

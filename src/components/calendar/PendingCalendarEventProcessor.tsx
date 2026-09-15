@@ -41,14 +41,22 @@ export default function PendingCalendarEventProcessor() {
                   
                   if (isValidUUID) {
                     // Quick check for existing event
-                    const { data: existing } = await supabase
+                    const { data: existing, error: existingError } = await supabase
                       .from('calendar_events')
                       .select('id')
                       .eq('user_id', user.id)
                       .eq('source_message_id', item.source_message_id)
                       .limit(1)
                       .maybeSingle();
-                      
+
+                    if (existingError) {
+                      // Can't confirm whether this event was already created —
+                      // don't risk inserting a duplicate. Leave it queued for
+                      // retry (falls into the outer catch below, same as any
+                      // other per-item failure).
+                      throw existingError;
+                    }
+
                     if (existing?.id) {
                       dequeueBySourceMessageId(item.source_message_id);
                       return;

@@ -2590,7 +2590,32 @@
       "navRole_admin": "Administrador",
       "navRole_developer": "Desarrollador",
       "navRole_infra": "Infraestructura",
-      "navRole_backoffice": "Back Office"
+      "navRole_backoffice": "Back Office",
+      "failedLoadCreatorsValue0": "Error al cargar creadores: {value0}",
+      "failedLoadGroupsValue0": "Error al cargar grupos: {value0}",
+      "failedLoadLiveRoomsValue0": "Error al cargar salas en vivo: {value0}",
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "No se encontraron eventos",
@@ -5178,7 +5203,15 @@
           "business_formation": "Formación de empresas"
         },
         "contractLink": "Ver el contrato del Objetivo Final"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "matchPercent": "{score} %",
@@ -7361,7 +7394,15 @@
       "settingsSubnav_support": "Soporte",
       "settingsSubnav_limitations": "Limitaciones",
       "settingsSubnav_socialAccounts": "Cuentas sociales",
-      "settingsSubnav_connectedAppsAndIntegrations": "Aplicaciones conectadas e integraciones"
+      "settingsSubnav_connectedAppsAndIntegrations": "Aplicaciones conectadas e integraciones",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Acceso concedido — Vitana ahora puede discutir tus resultados de DoctorBox contigo.",
+      "partnerLabsRevokeSuccess": "Acceso revocado.",
+      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo."
     },
     "sharing": {
       "activateCampaign": "Activar campaña",
@@ -10318,18 +10359,18 @@
         "closeWorkbench": true,
         "sandboxDevNote": true
       },
-      "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
-      "agentStatusPill": "Going live soon",
-      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
-      "agentUrlHint": "One address. That is all your agent needs.",
-      "howItWorksTitle": "What happens next",
-      "manualIntro": "Prefer to fill it in yourself?",
-      "manualCta": "Connect a business manually",
-      "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
-      "connectionsCount": "{count} connected",
-      "openWorkbench": "Open connection",
-      "closeWorkbench": "Close",
+      "portalEyebrow": "Portal de Comercio",
+      "agentPromise": "Introduce la dirección de abajo en tu IA — Claude, ChatGPT o Gemini — y tu negocio estará conectado a Vitanaland.",
+      "agentStatusPill": "Próximamente en vivo",
+      "agentStatusDetail": "El servidor MCP está construido pero aún no es públicamente accesible en esta dirección — la exposición DNS aún está pendiente. Hasta entonces, el servidor ofrece a tu agente herramientas de solo lectura: crear un negocio a través de tu IA llegará cuando se active. La ruta manual de abajo funciona hoy.",
+      "agentUrlHint": "Una dirección. Eso es todo lo que tu agente necesita.",
+      "howItWorksTitle": "¿Qué sucede después?",
+      "manualIntro": "¿Prefieres rellenarlo tú mismo?",
+      "manualCta": "Conectar un negocio manualmente",
+      "connectionsEmptyHint": "Una vez que conectes tu primer negocio, seguirás su progreso hasta que se active aquí mismo.",
+      "connectionsCount": "{count} conectado",
+      "openWorkbench": "Abrir conexión",
+      "closeWorkbench": "Cerrar",
       "sandboxDevNote": "The sandbox check runs in development mode — no real calls are sent to your system yet.",
       "progress": {
         "_pending_review": {

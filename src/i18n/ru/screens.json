@@ -2594,7 +2594,37 @@
       "navRole_admin": "Админ",
       "navRole_developer": "Разработчик",
       "navRole_infra": "Инфра",
-      "navRole_backoffice": "Бэк-офис"
+      "navRole_backoffice": "Бэк-офис",
+      "_pending_review": {
+        "failedLoadCreatorsValue0": true,
+        "failedLoadGroupsValue0": true,
+        "failedLoadLiveRoomsValue0": true
+      },
+      "failedLoadCreatorsValue0": "Failed to load creators: {value0}",
+      "failedLoadGroupsValue0": "Failed to load groups: {value0}",
+      "failedLoadLiveRoomsValue0": "Failed to load live rooms: {value0}",
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "Событий не найдено",
@@ -5182,7 +5212,15 @@
           "business_formation": "Создание бизнеса"
         },
         "contractLink": "Просмотреть договор о Конечной Цели"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Приоритет дня:",
@@ -7365,7 +7403,15 @@
       "youExafySuperAdministratorYouCan": "Ты — суперадминистратор Exafy. Ты можешь переключаться между организациями и управлять всеми арендаторами.",
       "roleValue0": "Роль: {value0}",
       "refreshBrowserVoices": "Обновить голоса браузера",
-      "creativityValue0": "Креативность: {value0}"
+      "creativityValue0": "Креативность: {value0}",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "Активировать кампанию",

@@ -349,10 +349,21 @@ export default function LiveRooms() {
       // row cascades), but the uploaded file would otherwise stay reachable via
       // its public recording_url after the UI says the room was permanently
       // deleted. Fetch every storage_path for this stream and delete the objects.
-      const { data: recs } = await supabase
+      const { data: recs, error: recsError } = await supabase
         .from('stream_recordings')
         .select('storage_path')
         .eq('stream_id', streamId);
+      if (recsError) {
+        // A real DB failure here would otherwise be indistinguishable from
+        // "this stream genuinely has no recordings" — proceeding to
+        // deleteStream() in that case would delete the DB row (and thus the
+        // "permanently deleted" claim) while leaving the actual recording
+        // file still publicly reachable at its old URL. Abort instead of
+        // silently leaving an orphaned public file.
+        console.error('[DeletePastRoom] Failed to look up stream recordings, aborting delete:', recsError);
+        notifyError('toasts.community.error');
+        return;
+      }
       const paths = (recs ?? [])
         .map((r) => r.storage_path)
         .filter((p): p is string => Boolean(p));

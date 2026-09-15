@@ -256,12 +256,16 @@ export const healthIntegrations: Integration[] = [
     category: 'health',
   },
   {
-    id: 'partner-labs',
-    name: 'Partner Labs',
+    // VTID-03885: Partner Health Test Integration — DoctorBox is Partner #001.
+    // No longer a comingSoon mock; connect/disconnect open a real consent
+    // dialog (PartnerLabsConsentDialog) backed by the gateway's
+    // /api/v1/partner-health/consent routes.
+    id: 'doctorbox',
+    name: 'DoctorBox',
     icon: TestTube,
     connected: false,
     syncData: 'Lab test results, biomarkers',
-    comingSoon: true,
+    comingSoon: false,
     category: 'health',
   },
 ];

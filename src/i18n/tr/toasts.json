@@ -42,8 +42,7 @@
       "planGenerated": "Plan oluşturuldu",
       "planGeneratedDesc": "Kişisel planın oluşturuldu.",
       "bulkEnabled": "Toplu seçim etkin",
-      "bulkEnabledDesc": "Zaman çizelgenden toplu işlemler için öğeler seç.",
-      "_pending_review": {}
+      "bulkEnabledDesc": "Zaman çizelgenden toplu işlemler için öğeler seç."
     },
     "error": {
       "generic": "Bir şeyler ters gitti",
@@ -77,8 +76,7 @@
       "importFailed": "İçe aktarma başarısız",
       "importFailedDesc": "Veriler içe aktarılamadı.",
       "exportFailed": "Dışa aktarma başarısız",
-      "exportFailedDesc": "Veriler dışa aktarılamadı.",
-      "_pending_review": {}
+      "exportFailedDesc": "Veriler dışa aktarılamadı."
     },
     "info": {
       "processing": "İşleniyor...",
@@ -88,8 +86,7 @@
       "loading": "Yükleniyor...",
       "loadingDesc": "Veriler alınıyor.",
       "syncing": "Senkronize ediliyor...",
-      "syncingDesc": "Veriler senkronize ediliyor.",
-      "_pending_review": {}
+      "syncingDesc": "Veriler senkronize ediliyor."
     },
     "warning": {
       "unsavedChanges": "Kaydedilmemiş değişiklikler",
@@ -97,8 +94,7 @@
       "limitReached": "Sınıra ulaşıldı",
       "limitReachedDesc": "Maksimuma ulaştın.",
       "slowConnection": "Yavaş bağlantı",
-      "slowConnectionDesc": "İnternet bağlantın yavaş görünüyor.",
-      "_pending_review": {}
+      "slowConnectionDesc": "İnternet bağlantın yavaş görünüyor."
     },
     "common": {
       "couldNotCompleteTask": "Görev tamamlanamadı",
@@ -177,8 +173,7 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "Yakında analiz edip önerileri güncelleyeceğiz.",
       "activityHidden": "Etkinlik gizlendi",
       "success": "Başarılı! 🎉",
-      "donTBreakStreakOneSmall": "🔥 Seriyi bozma — bugün küçük bir adım at",
-      "_pending_review": {}
+      "donTBreakStreakOneSmall": "🔥 Seriyi bozma — bugün küçük bir adım at"
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Yoldaş ayarları kaydedildi — ses önbelleği 30 sn içinde yenilenir.",
@@ -334,7 +329,8 @@
       "rollbackFailed": "Geri alma başarısız",
       "ticketRejected": "{ticketNumber} reddedildi",
       "ticketRemovedActiveList": "Aktif listeden kaldırıldı.",
-      "_pending_review": {}
+      "invalidJson": "Invalid JSON.",
+      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required."
     },
     "audio": {
       "cameraStopped": "Kamera durduruldu",
@@ -342,18 +338,15 @@
       "failedToggleCamera": "Kamera değiştirilemedi",
       "screenSharingStopped": "Ekran paylaşımı durduruldu",
       "screenSharingStarted": "Ekran paylaşımı başlatıldı",
-      "failedToggleScreenSharing": "Ekran paylaşımı değiştirilemedi",
-      "_pending_review": {}
+      "failedToggleScreenSharing": "Ekran paylaşımı değiştirilemedi"
     },
     "auth": {
       "confirmationEmailSentPleaseCheckYour": "Onay e-postası gönderildi! Lütfen gelen kutunu kontrol et.",
-      "tooManyAttemptsPleaseWaitFew": "Çok fazla deneme. Lütfen birkaç dakika bekle.",
-      "_pending_review": {}
+      "tooManyAttemptsPleaseWaitFew": "Çok fazla deneme. Lütfen birkaç dakika bekle."
     },
     "billing": {
       "paymentFailed": "Ödeme başarısız",
-      "paymentSuccessful": "Ödeme başarılı!",
-      "_pending_review": {}
+      "paymentSuccessful": "Ödeme başarılı!"
     },
     "business": {
       "noAttendeesExport": "Dışa aktarılacak katılımcı yok",
@@ -364,28 +357,23 @@
       "ticketPrintingWillAvailableSoon": "Bilet yazdırma yakında kullanılabilir olacak.",
       "confirmationSent": "Onay Gönderildi",
       "refund": "İade",
-      "refundFunctionalityWillAvailableSoon": "İade özelliği yakında kullanılabilir olacak.",
-      "_pending_review": {}
+      "refundFunctionalityWillAvailableSoon": "İade özelliği yakında kullanılabilir olacak."
     },
     "calendar": {
-      "calendarUpdated": "Takvim Güncellendi",
-      "_pending_review": {}
+      "calendarUpdated": "Takvim Güncellendi"
     },
     "cart": {
       "signRequired": "Giriş yapman gerekiyor",
-      "pleaseSignAddItemsYourCart": "Sepetine ürün eklemek için lütfen giriş yap",
-      "_pending_review": {}
+      "pleaseSignAddItemsYourCart": "Sepetine ürün eklemek için lütfen giriş yap"
     },
     "chat": {
       "error": "Hata",
       "pleaseEnterApiKey": "Lütfen bir API anahtarı gir",
       "success": "Başarılı",
-      "apiKeySavedSecurelyWithEncryption": "API anahtarı şifreleme ile güvenle kaydedildi",
-      "_pending_review": {}
+      "apiKeySavedSecurelyWithEncryption": "API anahtarı şifreleme ile güvenle kaydedildi"
     },
     "coaches": {
-      "bookingStarted": "📅 Rezervasyon başladı",
-      "_pending_review": {}
+      "bookingStarted": "📅 Rezervasyon başladı"
     },
     "community": {
       "thumbnailCaptured": "Küçük resim yakalandı",
@@ -434,8 +422,7 @@
       "vitanaWillFollowUp": "Vitana takip edecek.",
       "couldnTReopen": "Yeniden açılamadı",
       "demoRoom": "Demo Odası",
-      "thisExampleRoomCreateYourOwn": "Bu bir örnek odadır. Canlı yayına geçmek için kendi odanı oluştur!",
-      "_pending_review": {}
+      "thisExampleRoomCreateYourOwn": "Bu bir örnek odadır. Canlı yayına geçmek için kendi odanı oluştur!"
     },
     "crossover": {
       "bookingStarted": "📅 Rezervasyon başladı",
@@ -445,8 +432,7 @@
       "joined": "✓ Katıldın",
       "chatStarted": "💬 Sohbet başladı",
       "linkCopied": "Bağlantı kopyalandı",
-      "podcastLinkCopiedClipboard": "Podcast bağlantısı panoya kopyalandı",
-      "_pending_review": {}
+      "podcastLinkCopiedClipboard": "Podcast bağlantısı panoya kopyalandı"
     },
     "dev": {
       "createVtid": "VTID Oluştur",
@@ -490,8 +476,7 @@
       "documentUploaded": "Belge yüklendi",
       "frontpageUploaded": "Ön sayfa yüklendi",
       "diagnosticsCopiedClipboard": "Tanılar panoya kopyalandı",
-      "error": "Hata",
-      "_pending_review": {}
+      "error": "Hata"
     },
     "diary": {
       "notSupported": "Desteklenmiyor",
@@ -526,8 +511,7 @@
       "saveFailed": "Kaydetme başarısız",
       "failedSaveYourEntryPleaseTry": "Kaydın kaydedilemedi. Lütfen tekrar dene.",
       "undoAvailable": "Geri alma mevcut",
-      "deleteLastDiaryEntry": "Son günlük kaydını sil",
-      "_pending_review": {}
+      "deleteLastDiaryEntry": "Son günlük kaydını sil"
     },
     "discover": {
       "actionSelected": "Eylem Seçildi",
@@ -536,21 +520,18 @@
       "appointmentBooked": "Randevu Alındı! 🎉",
       "yourAppointmentHasConfirmed": "Randevun onaylandı",
       "bookingFailed": "Rezervasyon Başarısız",
-      "pleaseTryAgain": "Lütfen tekrar dene",
-      "_pending_review": {}
+      "pleaseTryAgain": "Lütfen tekrar dene"
     },
     "discovery": {
       "connectionRequestSent": "Bağlantı isteği gönderildi! 💚",
       "theyLlNotifiedYourInterest": "İlgilendiğin konusunda bilgilendirilecekler.",
       "superConnectSent": "Süper Bağlantı gönderildi! ⭐",
-      "youLlAppearAtTopTheir": "Eşleşmelerinin en üstünde görüneceksin!",
-      "_pending_review": {}
+      "youLlAppearAtTopTheir": "Eşleşmelerinin en üstünde görüneceksin!"
     },
     "events": {
       "eventDeleted": "Etkinlik silindi",
       "failedDeleteEvent": "Etkinlik silinemedi",
-      "pleaseTryAgainLater": "Lütfen daha sonra tekrar dene.",
-      "_pending_review": {}
+      "pleaseTryAgainLater": "Lütfen daha sonra tekrar dene."
     },
     "feedback": {
       "notSupported": "Desteklenmiyor",
@@ -564,8 +545,7 @@
       "reportDeleted": "Rapor silindi",
       "feedbackReportHasRemoved": "Geri bildirim raporu kaldırıldı.",
       "error": "Hata",
-      "failedDeleteReportPleaseTryAgain": "Rapor silinemedi. Lütfen tekrar dene.",
-      "_pending_review": {}
+      "failedDeleteReportPleaseTryAgain": "Rapor silinemedi. Lütfen tekrar dene."
     },
     "health": {
       "couldnTStartThatYetOpen": "Henüz başlatılamadı — tekrar denemek için Autopilot'u aç.",
@@ -594,8 +574,7 @@
       "noFileAvailable": "Dosya mevcut değil",
       "couldNotLoadFile": "Dosya yüklenemedi",
       "recalibrationStarted": "🔄 Yeniden Kalibrasyon Başladı",
-      "reportGeneration": "📊 Rapor Oluşturma",
-      "_pending_review": {}
+      "reportGeneration": "📊 Rapor Oluşturma"
     },
     "intents": {
       "moreDetailNeeded": "Daha fazla ayrıntı gerekli",
@@ -627,8 +606,7 @@
       "themedCoverReady": "Temalı kapak hazır",
       "youCanReplaceItAnyTime": "İstediğin zaman değiştirebilirsin.",
       "coverPhotoRequired": "Kapak fotoğrafı gerekli",
-      "uploadOneTapGenerateForMe": "Bir tane yükle veya ✨ Benim için oluştur'a dokun.",
-      "_pending_review": {}
+      "uploadOneTapGenerateForMe": "Bir tane yükle veya ✨ Benim için oluştur'a dokun."
     },
     "liverooms": {
       "linkCopied": "Bağlantı kopyalandı",
@@ -650,8 +628,7 @@
       "followedTitle": "Takip ediliyor!",
       "followedDesc": "Artık {name} takip ediyorsun",
       "unfollowedTitle": "Takip bırakıldı",
-      "unfollowedDesc": "{name} takibini bıraktın",
-      "_pending_review": {}
+      "unfollowedDesc": "{name} takibini bıraktın"
     },
     "meetups": {
       "signRequired": "Giriş gerekli",
@@ -666,8 +643,7 @@
       "failedSendMessage": "Mesaj gönderilemedi",
       "pleaseTryAgainLater": "Lütfen daha sonra tekrar dene",
       "addedSmartCalendar": "Akıllı Takvim'e eklendi ✓",
-      "eventSavedWeLlRemindYou": "Etkinlik kaydedildi. Başlamadan önce sana hatırlatacağız.",
-      "_pending_review": {}
+      "eventSavedWeLlRemindYou": "Etkinlik kaydedildi. Başlamadan önce sana hatırlatacağız."
     },
     "memory": {
       "voiceRecorded": "Ses Kaydedildi",
@@ -716,8 +692,7 @@
       "pleaseRecordEnterSomeContentBefore": "Kaydetmeden önce bir şey kaydet veya içerik gir.",
       "entrySaved": "Girdi Kaydedildi",
       "yourDiaryEntryHasAddedYour": "Günlük girdin hafıza zaman çizelgene eklendi.",
-      "couldNotSaveYourDiaryEntry": "Günlük girdin kaydedilemedi. Lütfen tekrar dene.",
-      "_pending_review": {}
+      "couldNotSaveYourDiaryEntry": "Günlük girdin kaydedilemedi. Lütfen tekrar dene."
     },
     "messages": {
       "newResponse": "🎉 Yeni Yanıt!",
@@ -754,21 +729,18 @@
       "selectOpenConversationBeforeAttachingFiles": "Dosya eklemeden önce bir sohbet seç veya aç.",
       "uploadFailed": "Yükleme başarısız",
       "failedSendVoiceMessage": "Sesli mesaj gönderilemedi",
-      "thereErrorSendingYourVoiceMessage": "Sesli mesajın gönderilirken bir hata oluştu",
-      "_pending_review": {}
+      "thereErrorSendingYourVoiceMessage": "Sesli mesajın gönderilirken bir hata oluştu"
     },
     "notifications": {
       "bookingConfirmed": "Rezervasyon Onaylandı! 🎉",
       "paymentReceived": "Ödeme Alındı! 💰",
       "creditsTransferred": "Krediler Aktarıldı! ✨",
       "newServiceBooking": "Yeni Hizmet Rezervasyonu! 📅",
-      "eventRegistration": "Etkinlik Kaydı! 🎊",
-      "_pending_review": {}
+      "eventRegistration": "Etkinlik Kaydı! 🎊"
     },
     "onboarding": {
       "networkError": "Ağ hatası",
-      "thisYourSpeakableIdAcrossVitana": "Bu, Vitana'daki konuşma kimliğin. Kalıcı — dikkatli seç!",
-      "_pending_review": {}
+      "thisYourSpeakableIdAcrossVitana": "Bu, Vitana'daki konuşma kimliğin. Kalıcı — dikkatli seç!"
     },
     "payment": {
       "missingInformation": "Eksik Bilgi",
@@ -817,8 +789,7 @@
       "paymentRequestSent": "Ödeme Talebi Gönderildi! 💸",
       "failedSendPaymentRequest": "Ödeme talebi gönderilemedi",
       "pleaseFillAllRequiredFields": "Lütfen tüm zorunlu alanları doldur",
-      "exchangeSendRequestSent": "Takas ve Gönderim Talebi Gönderildi! ✨",
-      "_pending_review": {}
+      "exchangeSendRequestSent": "Takas ve Gönderim Talebi Gönderildi! ✨"
     },
     "proactive": {
       "messageGenerated": "Mesaj Oluşturuldu!",
@@ -827,8 +798,7 @@
       "invitationMessageCopiedClipboard": "Davet mesajı panoya kopyalandı",
       "autoshareScheduled": "Otomatik Paylaşım Planlandı!",
       "editPost": "Gönderiyi Düzenle",
-      "postEditorComingSoon": "Gönderi düzenleyici yakında!",
-      "_pending_review": {}
+      "postEditorComingSoon": "Gönderi düzenleyici yakında!"
     },
     "profile": {
       "qrCodeDownloaded": "QR Kod İndirildi",
@@ -885,8 +855,7 @@
       "universalCoverRemoved": "Evrensel kapak fotoğrafı kaldırıldı",
       "libraryPhotoUploaded": "Fotoğraf kütüphaneye eklendi",
       "libraryPhotoRemoved": "Fotoğraf kaldırıldı",
-      "categoryRequired": "Lütfen önce bir kategori seç.",
-      "_pending_review": {}
+      "categoryRequired": "Lütfen önce bir kategori seç."
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Bu tarayıcıda bildirimler desteklenmiyor.",
@@ -902,16 +871,14 @@
       "failedToCreate": "Hatırlatıcı oluşturulamadı",
       "failedToDelete": "Hatırlatıcı silinemedi",
       "failedToMarkDone": "Tamamlandı işaretlenemedi",
-      "remindersDeleted": "{count} hatırlatıcı silindi",
-      "_pending_review": {}
+      "remindersDeleted": "{count} hatırlatıcı silindi"
     },
     "reseller": {
       "activatingYourResellerProfile": "Bayi profilin etkinleştiriliyor...",
       "linkCopiedClipboard": "Bağlantı panoya kopyalandı!",
       "failedCopyPleaseSelectCopyManually": "Kopyalama başarısız. Lütfen elle seç ve kopyala.",
       "linkCopiedPasteItYourInstagram": "Bağlantı kopyalandı! Instagram biyografine veya hikayene yapıştır.",
-      "failedCopyLink": "Bağlantı kopyalanamadı.",
-      "_pending_review": {}
+      "failedCopyLink": "Bağlantı kopyalanamadı."
     },
     "settings": {
       "googleConnected": "Google bağlandı",
@@ -936,8 +903,7 @@
       "failedSwitchRolePleaseTryAgain": "Rol değiştirilemedi. Lütfen tekrar dene.",
       "organizationSwitched": "Kuruluş değiştirildi",
       "errorSwitchingOrganization": "Kuruluş değiştirilirken hata",
-      "failedSwitchOrganizationPleaseTryAgain": "Kuruluş değiştirilemedi. Lütfen tekrar dene.",
-      "_pending_review": {}
+      "failedSwitchOrganizationPleaseTryAgain": "Kuruluş değiştirilemedi. Lütfen tekrar dene."
     },
     "sharing": {
       "channelNotConnected": "Kanal bağlı değil",
@@ -1015,8 +981,7 @@
       "postPublished": "Gönderi yayınlandı!",
       "campaignsExportedCsv": "Kampanyalar CSV olarak dışa aktarıldı",
       "smartrescheduleFeatureComingSoon": "Akıllı-Yeniden Planlama özelliği yakında!",
-      "viberNotDetectedLinkCopiedClipboard": "Viber algılanmadı. Bağlantı panoya kopyalandı!",
-      "_pending_review": {}
+      "viberNotDetectedLinkCopiedClipboard": "Viber algılanmadı. Bağlantı panoya kopyalandı!"
     },
     "tickets": {
       "ticketDownloaded": "Bilet indirildi!",
@@ -1029,8 +994,7 @@
       "ticketDownloadedOpeningEmail": "Bilet indirildi! E-posta açılıyor...",
       "ticketDownloadedOpeningMessages": "Bilet indirildi! Mesajlar açılıyor...",
       "ticketSaved": "Bilet kaydedildi!",
-      "eventDetailsCopied": "Etkinlik detayları kopyalandı!",
-      "_pending_review": {}
+      "eventDetailsCopied": "Etkinlik detayları kopyalandı!"
     },
     "wallet": {
       "invalidAmount": "Geçersiz Tutar",
@@ -1081,8 +1045,7 @@
       "withdrawalFailed": "Çekim Başarısız",
       "somethingWentWrongPleaseTryAgain": "Bir şeyler ters gitti. Lütfen tekrar dene.",
       "pleaseSelectRecipientEnterAmount": "Lütfen bir alıcı seç ve bir tutar gir",
-      "exchangeSendComplete": "✅ Döviz & Gönderim tamamlandı!",
-      "_pending_review": {}
+      "exchangeSendComplete": "✅ Döviz & Gönderim tamamlandı!"
     },
     "hooks": {
       "error": "Hata",
@@ -1347,56 +1310,45 @@
       "exchangeSendSuccessful": "Takas ve Gönder Başarılı! ✨",
       "exchangeSendFailed": "Takas ve Gönder Başarısız",
       "linkAvailable": "Bağlantı mevcut",
-      "errorUpdatingPreferences": "Tercihler güncellenirken hata",
-      "_pending_review": {}
+      "errorUpdatingPreferences": "Tercihler güncellenirken hata"
     },
     "businesslistings": {
-      "couldNotLoadListings": "Listeler yüklenemedi",
-      "_pending_review": {}
+      "couldNotLoadListings": "Listeler yüklenemedi"
     },
     "businessopportunities": {
-      "couldNotLoadOpportunities": "Fırsatlar yüklenemedi",
-      "_pending_review": {}
+      "couldNotLoadOpportunities": "Fırsatlar yüklenemedi"
     },
     "checkoutsuccess": {
       "orderConfirmed": "Sipariş onaylandı!",
-      "yourPaymentSuccessfulCheckYourEmail": "Ödemen başarılı oldu. Sipariş detayları için e-postanı kontrol et.",
-      "_pending_review": {}
+      "yourPaymentSuccessfulCheckYourEmail": "Ödemen başarılı oldu. Sipariş detayları için e-postanı kontrol et."
     },
     "intentboard": {
-      "couldNotLoadBoard": "Pano yüklenemedi",
-      "_pending_review": {}
+      "couldNotLoadBoard": "Pano yüklenemedi"
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "Eşleşme detayı yüklenemedi",
       "intentClosed": "Niyet tamamlandı",
-      "couldNotClose": "Kapatılamadı",
-      "_pending_review": {}
+      "couldNotClose": "Kapatılamadı"
     },
     "introexperience": {
       "audioPlaybackFailed": "Ses çalma başarısız oldu",
-      "audioUnavailableNow": "Ses şu anda kullanılamıyor",
-      "_pending_review": {}
+      "audioUnavailableNow": "Ses şu anda kullanılamıyor"
     },
     "invitefriends": {
       "nameRequired": "İsim gerekli",
       "pleaseProvideEmailPhone": "Lütfen e-posta veya telefon ver",
       "contactAdded": "Kişi eklendi",
-      "failedSendInvites": "Davetiyeler gönderilemedi",
-      "_pending_review": {}
+      "failedSendInvites": "Davetiyeler gönderilemedi"
     },
     "myintents": {
-      "couldNotLoadIntents": "Niyetler yüklenemedi",
-      "_pending_review": {}
+      "couldNotLoadIntents": "Niyetler yüklenemedi"
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "Ödeme Onaylandı!",
-      "yourPackagePurchaseSuccessful": "Paket satın alımın başarılı oldu.",
-      "_pending_review": {}
+      "yourPackagePurchaseSuccessful": "Paket satın alımın başarılı oldu."
     },
     "privacysettings": {
-      "couldNotSave": "Kaydedilemedi",
-      "_pending_review": {}
+      "couldNotSave": "Kaydedilemedi"
     },
     "home": {
       "removedFromMemory": "Depolamadan kaldırıldı",
@@ -1406,25 +1358,20 @@
       "actionExecuted": "Eylem Gerçekleştirildi",
       "yourActionHasCompletedSuccessfully": "Eylemin başarıyla tamamlandı.",
       "actionDismissed": "Eylem Reddedildi",
-      "thisActionHasRemovedFromYour": "Bu eylem listenizden kaldırıldı.",
-      "_pending_review": {}
+      "thisActionHasRemovedFromYour": "Bu eylem listenizden kaldırıldı."
     },
     "index": {
-      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL'si yapılandırılmamış",
-      "_pending_review": {}
+      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL'si yapılandırılmamış"
     },
     "dailyGoal": {
       "title": "Tebrikler! Bugünün hedefine ulaştın 🎉",
-      "body": "Devam et.",
-      "_pending_review": {}
+      "body": "Devam et."
     },
-    "_pending_review": {},
     "backoffice": {
       "capabilityGranted": "Capability granted",
       "capabilityRevoked": "Capability revoked",
       "grantFailed": "Could not grant the capability",
       "revokeFailed": "Could not revoke the capability"
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -74,8 +74,12 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
+    // Aurora migration B7 (VTID-03764 chain): see generate-enhanced-
+    // recommendations/index.ts for the full rationale. Defaults to
+    // 'gemini' — unchanged behavior until a deployment opts into 'bedrock'.
+    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
     const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
-    if (!GEMINI_API_KEY) {
+    if (aiBridgeProvider === 'gemini' && !GEMINI_API_KEY) {
       throw new Error('GOOGLE_GEMINI_API_KEY is not configured');
     }
 
@@ -190,9 +194,11 @@ IMPORTANT GUIDELINES:
 
 Generate a personalized greeting now.`;
 
-    const { generateContent } = await import("../_shared/gemini-client.ts");
+    const { generateContent } = await import(
+      aiBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
+    );
     const greetingResponse = await generateContent(
-      GEMINI_API_KEY,
+      GEMINI_API_KEY ?? '',
       [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: 'Generate a personalized proactive greeting for this user based on their context.' }
@@ -214,7 +220,7 @@ Generate a personalized greeting now.`;
     const targetLanguageName = LANGUAGE_NAMES[targetLanguage] || 'English';
     
     const translateResp = await generateContent(
-      GEMINI_API_KEY,
+      GEMINI_API_KEY ?? '',
       [
         {
           role: 'system',

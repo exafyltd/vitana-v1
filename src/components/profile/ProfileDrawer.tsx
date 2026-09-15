@@ -26,7 +26,7 @@ import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { t } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
@@ -90,13 +90,27 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     ? ALL_ROLES_SUPER_ADMIN
     : ((membershipRoles ?? []) as UserRole[]);
 
-  const handleRoleChange = (newRole: UserRole) => {
-    setRole(newRole);
+  const [switchingRole, setSwitchingRole] = React.useState(false);
+
+  const handleRoleChange = async (newRole: UserRole) => {
+    // VTID-03909: hard-navigating before the write is confirmed let the page
+    // unload cancel the in-flight set_role_preference RPC, so a switch could
+    // silently fail to persist — the user would land back on their PREVIOUS
+    // role's landing route with no error shown, looking identical to success.
+    // Awaiting the real result (and only navigating once it's confirmed)
+    // closes that race; a failure now surfaces as a toast and leaves the
+    // drawer open instead of reloading to the wrong place.
+    setSwitchingRole(true);
+    const result = await setRole(newRole);
+    setSwitchingRole(false);
+
+    if (!result.ok) {
+      notifyError('toasts.settings.errorSwitchingRole', 'toasts.settings.failedSwitchRolePleaseTryAgain');
+      return;
+    }
+
     setOpen(false);
 
-    // Full page redirect: the rolePref cache update + useRoleRouteEnforcement
-    // + lazy-chunk Suspense race and can mount the destination shell empty
-    // (forcing the user to hit refresh). A hard navigation guarantees clean state.
     let destination: string;
     switch (newRole) {
       case "admin":
@@ -120,9 +134,24 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         destination = "/home";
         break;
     }
-    setTimeout(() => {
-      window.location.assign(destination);
-    }, 100);
+    // VTID-03916: this used to be a hard window.location.assign() — a full
+    // page reload, the actual "glitch" reported (a white flash + full app
+    // re-bootstrap on every switch). The comment it replaced justified that
+    // as a workaround for a real race: switching used to fire the
+    // set_role_preference write in the BACKGROUND and navigate ~100ms later
+    // regardless of whether it had landed, so a soft SPA navigate could reach
+    // the destination route before the role query cache reflected the new
+    // role, mounting it against the OLD role and rendering empty/wrong.
+    // VTID-03909 already closed that race for a different reason (a failed
+    // write was indistinguishable from a successful one) by making this
+    // function await setRole()'s confirmed result before ever reaching this
+    // line — so by the time we navigate, the query cache already holds the
+    // server-confirmed new role, both via the optimistic update setRole()
+    // applies synchronously and via the invalidateQueries() it runs right
+    // after the RPC resolves. The precondition the hard reload existed to
+    // patch around no longer holds, so a normal client-side navigate is safe
+    // and removes the reload glitch entirely.
+    navigate(destination);
   };
 
 
@@ -214,7 +243,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Shield className="h-4 w-4" />{t('screens.profile.switchRole')} {isExafyAdmin && <Badge variant="outline" className="text-xs">{t('screens.profile.adminAccess')}</Badge>}
                 </label>
-                <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange}>
+                <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange} disabled={switchingRole}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

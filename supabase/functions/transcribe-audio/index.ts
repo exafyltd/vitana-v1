@@ -201,6 +201,32 @@ serve(async (req) => {
     }
 
     const lang = normalizeLanguage(language);
+
+    // Aurora migration B7 (VTID-03764 chain / AURORA-B7-EDGE-FUNCTIONS-
+    // INVENTORY.md's "Remaining: transcribe-audio" item): see
+    // generate-enhanced-recommendations/index.ts for the full rationale.
+    // Defaults to 'gemini' — unchanged behavior below until a deployment
+    // opts into 'bedrock'. Routed BEFORE the Gemini/Google-STT key lookups
+    // so a bedrock deployment never needs GOOGLE_GEMINI_API_KEY/
+    // GOOGLE_CLOUD_API_KEY configured at all.
+    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
+    if (aiBridgeProvider === 'bedrock') {
+      const { transcribeAudio } = await import('../_shared/bedrock-bridge-client.ts');
+      try {
+        const result = await transcribeAudio(audio, lang, mimeType);
+        return new Response(
+          JSON.stringify({ transcript: result.transcript, language: lang, provider: 'aws-transcribe' }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      } catch (err: any) {
+        console.error('[transcribe-audio] AWS Transcribe bridge failed:', err?.message || err);
+        return new Response(
+          JSON.stringify({ error: 'Transcription failed', details: err?.message || String(err) }),
+          { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+    }
+
     const geminiMime = normalizeMimeForGemini(mimeType);
 
     const geminiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');

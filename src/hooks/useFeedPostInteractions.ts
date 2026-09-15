@@ -140,20 +140,31 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
       if (raw.length === 0) return [] as FeedComment[];
 
       const userIds = [...new Set(raw.map((c) => c.user_id))];
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
+      if (profilesError) {
+        console.error('[useFeedPostInteractions] Failed to load comment-author profiles:', profilesError);
+      }
       const profileMap = new Map((profiles || []).map((p) => [p.user_id, p]));
 
       let likedSet = new Set<string>();
       if (user) {
         const commentIds = raw.map((c) => c.id);
-        const { data: myLikes } = await supabase
+        const { data: myLikes, error: myLikesError } = await supabase
           .from(cfg.commentLikes as any)
           .select('comment_id')
           .eq('user_id', user.id)
           .in('comment_id', commentIds);
+        if (myLikesError) {
+          // A DB error here previously resolved to `[]`, which can make an
+          // already-liked comment appear unliked. Logged only — not
+          // changing the like-state fallback here (would need a
+          // load-bearing distinction between "not liked" and "unknown"
+          // that the rest of this hook/UI doesn't carry).
+          console.error('[useFeedPostInteractions] Failed to load my-likes for comments:', myLikesError);
+        }
         likedSet = new Set((myLikes || []).map((l: any) => l.comment_id));
       }
 

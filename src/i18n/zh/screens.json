@@ -2594,7 +2594,32 @@
       "navRole_admin": "管理员",
       "navRole_developer": "开发者",
       "navRole_infra": "运维",
-      "navRole_backoffice": "后台"
+      "navRole_backoffice": "后台",
+      "failedLoadCreatorsValue0": "加载创作者失败：{value0}",
+      "failedLoadGroupsValue0": "加载群组失败：{value0}",
+      "failedLoadLiveRoomsValue0": "加载直播间失败：{value0}",
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "未找到事件",
@@ -5182,7 +5207,15 @@
           "business_formation": "业务建立"
         },
         "contractLink": "查看终极目标合约"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "今日优先事项：",
@@ -7365,7 +7398,15 @@
       "youExafySuperAdministratorYouCan": "你是Exafy超级管理员。你可以切换组织并管理所有租户。",
       "roleValue0": "角色：{value0}",
       "refreshBrowserVoices": "刷新浏览器语音",
-      "creativityValue0": "创造力：{value0}"
+      "creativityValue0": "创造力：{value0}",
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "激活营销活动",

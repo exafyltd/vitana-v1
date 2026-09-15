@@ -79,18 +79,18 @@
         "contracts": "Contracts",
         "obligations": "Obligations",
         "compliance": "Compliance",
-        "e-signature": "E-Signature"
+        "e-signature": "Signature électronique"
       }
     },
     "reports": {
       "tabs": {
-        "pnl": "P&L",
-        "balance-sheet": "Balance Sheet",
-        "trial-balance": "Trial Balance",
-        "cash-flow": "Cash Flow",
-        "aging": "AR / AP Aging",
-        "dimensions": "By Dimension",
-        "board-pack": "Board Pack"
+        "pnl": "Compte de résultat",
+        "balance-sheet": "Bilan",
+        "trial-balance": "Balance de vérification",
+        "cash-flow": "Flux de trésorerie",
+        "aging": "Ancienneté des créances / dettes",
+        "dimensions": "Par dimension",
+        "board-pack": "Dossier du conseil"
       }
     },
     "approvals": {

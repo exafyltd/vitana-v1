@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.0";
-import { generateContent, extractTextFromResponse, extractFunctionCall, type GeminiToolDeclaration } from "../_shared/gemini-client.ts";
+import { extractFunctionCall, type GeminiToolDeclaration } from "../_shared/gemini-client.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -358,12 +358,23 @@ async function extractAndStoreInsights(
 ) {
   try {
     console.log('[insights] Starting AI-powered extraction...');
-    
+
+    // Aurora migration B7 (VTID-03764 chain): see generate-enhanced-
+    // recommendations/index.ts for the full rationale. Defaults to
+    // 'gemini' — unchanged behavior until a deployment opts into 'bedrock'.
+    // Scoped to this one isolated, non-streaming call site — the main
+    // streaming chat response (a direct fetch to Gemini's SSE endpoint,
+    // further down this file) and the non-streaming Lovable-gateway
+    // fallback are deliberately untouched; see this file's own header for why.
+    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
     const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
-    if (!geminiApiKey) {
+    if (aiBridgeProvider === 'gemini' && !geminiApiKey) {
       console.warn('[insights] GOOGLE_GEMINI_API_KEY not configured, skipping extraction');
       return;
     }
+    const { generateContent } = await import(
+      aiBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
+    );
 
     // Use direct Gemini API to extract structured insights
     const tool: GeminiToolDeclaration = {
@@ -402,7 +413,7 @@ async function extractAndStoreInsights(
     };
 
     const extractionResponse = await generateContent(
-      geminiApiKey,
+      geminiApiKey ?? '',
       [
         {
           role: 'system',
@@ -1309,10 +1320,18 @@ serve(async (req) => {
             
             console.log(`[ai-chat] Phase 1 complete: ${fullText.length} chars collected`);
             
-            // RULE 4: PHASE 2 - Deterministic translation pass using Gemini
+            // RULE 4: PHASE 2 - Deterministic translation pass. Aurora
+            // migration B7 (VTID-03764 chain): this pass is a standalone,
+            // non-streaming call, independent of the streaming Gemini call
+            // above (which stays Gemini-only, untouched) — safe to make
+            // switchable on its own. See generate-enhanced-recommendations/
+            // index.ts for the full rationale.
+            const translateBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
             console.log(`[ai-chat] RULE: Translating to ${targetLanguageName} (temperature=0)`);
-            
-            const { generateContent } = await import("../_shared/gemini-client.ts");
+
+            const { generateContent } = await import(
+              translateBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
+            );
             const translateResp = await generateContent(
               GEMINI_API_KEY,
               [

@@ -27,13 +27,15 @@ export default function IntelligenceEmbeddings() {
   const factsQuery = useQuery({
     queryKey: ["admin-embeddings-facts"],
     queryFn: async () => {
-      const { count: total } = await (supabase as any)
+      const { count: total, error: totalError } = await (supabase as any)
         .from("memory_facts")
         .select("id", { count: "exact", head: true });
-      const { count: active } = await (supabase as any)
+      if (totalError) throw totalError;
+      const { count: active, error: activeError } = await (supabase as any)
         .from("memory_facts")
         .select("id", { count: "exact", head: true })
         .is("superseded_at", null);
+      if (activeError) throw activeError;
       return { total: total || 0, active: active || 0 };
     },
   });

@@ -26,21 +26,18 @@
     "trend": {
       "improving": "Poboljšanje",
       "declining": "Pogoršanje",
-      "stable": "Stabilno",
-      "_pending_review": {}
+      "stable": "Stabilno"
     },
     "suggestions": {
       "uploadBloodTestResults": "Otpremi rezultate krvnih testova",
-      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov",
-      "_pending_review": {}
+      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov"
     },
     "pillars": {
       "sleep": "San",
       "exercise": "Vežbanje",
       "nutrition": "Ishrana",
       "hydration": "Hidratacija",
-      "mental": "Mentalno",
-      "_pending_review": {}
+      "mental": "Mentalno"
     },
     "emptyStates": {
       "noSleepPlan": "Još uvek nema plana spavanja",
@@ -54,8 +51,7 @@
       "noMentalPlan": "Još uvek nema mentalnog plana",
       "noMentalPlanDesc": "Generiši svoj personalizovani plan mentalnog blagostanja, za praćenje stresa, fokusa i emocionalne ravnoteže uz podršku veštačke inteligencije.",
       "generatePlan": "Kreiraj plan",
-      "generating": "Kreiram...",
-      "_pending_review": {}
+      "generating": "Kreiram..."
     },
     "noSupplements": "Još uvek nema suplemenata",
     "noSupplementsDesc": "Prati svoje dnevne vitamine, minerale i suplemente. Dodaj svoj prvi suplement da počneš.",
@@ -67,7 +63,13 @@
     "unknownProvider": "Nepoznat pružalac usluga",
     "addSupplement": "Dodaj suplement",
     "uploadFirstReport": "Otpremi prvi izveštaj",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "reportsLoadFailed": true,
+      "reportsLoadFailedDesc": true,
+      "reportsLoadFailedRetry": true
+    },
+    "reportsLoadFailed": "Couldn't load your reports",
+    "reportsLoadFailedDesc": "There was a problem loading your health reports. Please try again.",
+    "reportsLoadFailedRetry": "Try again"
+  }
 }

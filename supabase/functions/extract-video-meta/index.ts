@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+import { storageBridgeProvider, getSignedUrl, uploadFile, getPublicUrl } from '../_shared/storage-bridge-client.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -32,21 +33,43 @@ Deno.serve(async (req) => {
 
     console.log('Processing video:', videoPath);
 
-    // Download video file from storage
-    const { data: fileData, error: downloadError } = await supabase.storage
-      .from('media')
-      .download(videoPath);
+    // VTID-03815 (B6): STORAGE_BRIDGE_PROVIDER=bridge routes all three
+    // storage operations this function does (download, thumbnail upload,
+    // thumbnail public-url) through the gateway's storage-bridge route
+    // together — storage-provider.ts's own rule is "never mixed per-call",
+    // so this function moves to the bridge as a whole, not leg-by-leg.
+    // Rather than a byte-proxying `/download` route (the gateway's 2mb JSON
+    // body limit is the wrong transport for a whole source video), this
+    // asks the bridge for a signed URL and fetches the bytes directly —
+    // the video never passes through the gateway.
+    const useBridge = storageBridgeProvider() === 'bridge';
 
-    if (downloadError) {
-      console.error('Download error:', downloadError);
-      throw new Error(`Failed to download video: ${downloadError.message}`);
+    let videoBytes: Uint8Array;
+    if (useBridge) {
+      const signedUrl = await getSignedUrl('media', videoPath, 300);
+      const dlResp = await fetch(signedUrl);
+      if (!dlResp.ok) {
+        throw new Error(`Failed to download video: ${dlResp.status}`);
+      }
+      videoBytes = new Uint8Array(await dlResp.arrayBuffer());
+      console.log('Video downloaded via signed URL, size:', videoBytes.byteLength);
+    } else {
+      const { data: fileData, error: downloadError } = await supabase.storage
+        .from('media')
+        .download(videoPath);
+
+      if (downloadError) {
+        console.error('Download error:', downloadError);
+        throw new Error(`Failed to download video: ${downloadError.message}`);
+      }
+
+      console.log('Video downloaded, size:', fileData.size);
+      videoBytes = new Uint8Array(await fileData.arrayBuffer());
     }
-
-    console.log('Video downloaded, size:', fileData.size);
 
     // Create temporary file
     const tempVideoPath = `/tmp/${crypto.randomUUID()}.mp4`;
-    await Deno.writeFile(tempVideoPath, new Uint8Array(await fileData.arrayBuffer()));
+    await Deno.writeFile(tempVideoPath, videoBytes);
 
     // Extract video metadata using ffprobe
     const probeCommand = new Deno.Command('ffprobe', {
@@ -95,25 +118,30 @@ Deno.serve(async (req) => {
     // Upload thumbnail to storage
     const thumbnailFile = await Deno.readFile(thumbnailPath);
     const thumbnailStoragePath = videoPath.replace(/\.[^.]+$/, '.jpg');
-    
-    const { error: uploadError } = await supabase.storage
-      .from('media')
-      .upload(thumbnailStoragePath, thumbnailFile, {
-        contentType: 'image/jpeg',
-        upsert: true
-      });
 
-    if (uploadError) {
-      console.error('Thumbnail upload error:', uploadError);
-      throw new Error(`Failed to upload thumbnail: ${uploadError.message}`);
+    let thumbnailUrl: string;
+    if (useBridge) {
+      await uploadFile('media', thumbnailStoragePath, thumbnailFile, { contentType: 'image/jpeg', upsert: true });
+      console.log('Thumbnail uploaded to (bridge):', thumbnailStoragePath);
+      thumbnailUrl = await getPublicUrl('media', thumbnailStoragePath);
+    } else {
+      const { error: uploadError } = await supabase.storage
+        .from('media')
+        .upload(thumbnailStoragePath, thumbnailFile, {
+          contentType: 'image/jpeg',
+          upsert: true
+        });
+
+      if (uploadError) {
+        console.error('Thumbnail upload error:', uploadError);
+        throw new Error(`Failed to upload thumbnail: ${uploadError.message}`);
+      }
+
+      console.log('Thumbnail uploaded to:', thumbnailStoragePath);
+
+      // Get public URL for thumbnail
+      thumbnailUrl = supabase.storage.from('media').getPublicUrl(thumbnailStoragePath).data.publicUrl;
     }
-
-    console.log('Thumbnail uploaded to:', thumbnailStoragePath);
-
-    // Get public URL for thumbnail
-    const { data: { publicUrl: thumbnailUrl } } = supabase.storage
-      .from('media')
-      .getPublicUrl(thumbnailStoragePath);
 
     // Cleanup temp files
     try {
