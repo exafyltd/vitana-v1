@@ -7,6 +7,7 @@ import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Heart, MessageSquare, Share, Edit3, MapPin, ExternalLink, Trash2, PenSquare, Send, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { useProfilePosts, ProfilePost } from "@/hooks/useProfilePosts";
@@ -165,6 +166,7 @@ function PostCardWithInteractions({
   translate: (key: string, fallback?: string) => string;
 }) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { isLiked, toggleLike, comments, addComment, isAddingComment, deleteComment } = usePostInteractions(post.id);
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -302,12 +304,22 @@ function PostCardWithInteractions({
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {comments.map((comment) => (
                   <div key={comment.id} className="flex items-start gap-2 px-1">
-                    <Avatar className="h-7 w-7">
-                      <AvatarImage src={getDisplayAvatarUrl(comment)} />
-                      <AvatarFallback className="text-[10px]">
-                        {(comment.display_name || '?')[0]}
-                      </AvatarFallback>
-                    </Avatar>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/u/${comment.user_id}`);
+                      }}
+                      className="shrink-0"
+                      aria-label={comment.display_name || undefined}
+                    >
+                      <Avatar className="h-7 w-7">
+                        <AvatarImage src={getDisplayAvatarUrl(comment)} />
+                        <AvatarFallback className="text-[10px]">
+                          {(comment.display_name || '?')[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                    </button>
                     <div className="flex-1 min-w-0">
                       <div className="bg-muted/50 rounded-xl px-3 py-2">
                         <span className="text-xs font-semibold text-foreground">{comment.display_name}</span>
