@@ -24,7 +24,7 @@
  * window.location.assign() to the Command Hub instead, and a rejected
  * switch does NOT navigate (via either primitive) at all.
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -104,16 +104,22 @@ function renderDrawer() {
 }
 
 describe('ProfileDrawer role switch', () => {
-  let assignSpy: ReturnType<typeof vi.spyOn>;
+  // jsdom's window.location.assign isn't configurable in this repo's test
+  // environment (vi.spyOn throws "Cannot redefine property: assign") —
+  // MaxinaAppRedirect.test.tsx hit the same wall for window.location.href
+  // and worked around it the same way: replace the whole location object
+  // with Object.defineProperty rather than spying on the existing one.
+  const assignMock = vi.fn();
 
   beforeEach(() => {
     navigateMock.mockReset();
     setRoleMock.mockReset();
-    assignSpy = vi.spyOn(window.location, 'assign').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    assignSpy.mockRestore();
+    assignMock.mockReset();
+    Object.defineProperty(window, 'location', {
+      value: { ...window.location, assign: assignMock },
+      writable: true,
+      configurable: true,
+    });
   });
 
   it('navigates via the router\'s client-side navigate() once the switch is confirmed', async () => {
@@ -143,7 +149,7 @@ describe('ProfileDrawer role switch', () => {
     renderDrawer();
     fireEvent.click(screen.getByTestId(`role-${role}`));
     await waitFor(() => expect(navigateMock).toHaveBeenCalledWith(destination));
-    expect(assignSpy).not.toHaveBeenCalled();
+    expect(assignMock).not.toHaveBeenCalled();
   });
 
   it.each(['developer', 'infra'])(
@@ -153,7 +159,7 @@ describe('ProfileDrawer role switch', () => {
       renderDrawer();
       fireEvent.click(screen.getByTestId(`role-${role}`));
 
-      await waitFor(() => expect(assignSpy).toHaveBeenCalledWith(COMMAND_HUB_URL));
+      await waitFor(() => expect(assignMock).toHaveBeenCalledWith(COMMAND_HUB_URL));
       // The whole point of this fix: developer/infra used to fall through to
       // navigate('/home') here — same branch as an unrecognized role.
       expect(navigateMock).not.toHaveBeenCalled();
@@ -169,6 +175,6 @@ describe('ProfileDrawer role switch', () => {
     // Give any (incorrect) navigation a chance to fire before asserting its absence.
     await new Promise((r) => setTimeout(r, 20));
     expect(navigateMock).not.toHaveBeenCalled();
-    expect(assignSpy).not.toHaveBeenCalled();
+    expect(assignMock).not.toHaveBeenCalled();
   });
 });
