@@ -24,6 +24,7 @@ import { useRole, UserRole } from "@/hooks/useRole";
 import { useTenant, TenantType } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
+import { getRoleSwitchDestination, isExternalRoleSwitchDestination } from "@/lib/role-switch-destination";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
@@ -111,47 +112,20 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
 
     setOpen(false);
 
-    let destination: string;
-    switch (newRole) {
-      case "admin":
-      case "staff":
-        destination = "/admin";
-        break;
-      case "backoffice":
-        // VTID-03832: BackOffice home (route shell lands in the /backoffice skeleton VTID)
-        destination = "/backoffice/dashboard";
-        break;
-      case "professional":
-        destination = "/professional/dashboard";
-        break;
-      case "patient":
-        destination = "/patient/dashboard";
-        break;
-      case "developer":
-      case "infra":
-      case "community":
-      default:
-        destination = "/home";
-        break;
+    const destination = getRoleSwitchDestination(newRole);
+    // VTID-03916: every in-app destination uses the router's client-side
+    // navigate() instead of a hard window.location.assign() reload — by the
+    // time we get here setRole() has already confirmed the write, so the
+    // query cache holds the new role and a soft navigate is safe (see that
+    // VTID's own commit message for the full race-history context).
+    // developer/infra are the one exception: VTID-03924 points them at the
+    // gateway's Command Hub, a different origin entirely — navigate() can't
+    // reach across origins, so those two still need a real page navigation.
+    if (isExternalRoleSwitchDestination(destination)) {
+      window.location.assign(destination);
+    } else {
+      navigate(destination);
     }
-    // VTID-03916: this used to be a hard window.location.assign() — a full
-    // page reload, the actual "glitch" reported (a white flash + full app
-    // re-bootstrap on every switch). The comment it replaced justified that
-    // as a workaround for a real race: switching used to fire the
-    // set_role_preference write in the BACKGROUND and navigate ~100ms later
-    // regardless of whether it had landed, so a soft SPA navigate could reach
-    // the destination route before the role query cache reflected the new
-    // role, mounting it against the OLD role and rendering empty/wrong.
-    // VTID-03909 already closed that race for a different reason (a failed
-    // write was indistinguishable from a successful one) by making this
-    // function await setRole()'s confirmed result before ever reaching this
-    // line — so by the time we navigate, the query cache already holds the
-    // server-confirmed new role, both via the optimistic update setRole()
-    // applies synchronously and via the invalidateQueries() it runs right
-    // after the RPC resolves. The precondition the hard reload existed to
-    // patch around no longer holds, so a normal client-side navigate is safe
-    // and removes the reload glitch entirely.
-    navigate(destination);
   };
 
 

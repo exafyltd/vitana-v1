@@ -11,14 +11,20 @@
  * VTID-03909 established), a normal client-side `navigate()` is safe and
  * removes the reload.
  *
+ * VTID-03924 — this file originally pinned developer/infra to `navigate('/home')`,
+ * i.e. it encoded the exact bug reported live ("developer should switch to
+ * the Command Hub... it switches to community"). developer/infra now resolve
+ * to the gateway's Command Hub, a different origin entirely — navigate()
+ * cannot reach across origins, so those two go back to a real
+ * window.location.assign() while every other role keeps the soft navigate()
+ * VTID-03916 introduced.
+ *
  * These tests pin: navigate() (not a hard reload) fires only after setRole
- * resolves ok, goes to the right destination per role, and a rejected
- * switch does NOT navigate at all (stays on the current screen, shows an
- * error) — the exact failure mode VTID-03909 fixed for backoffice/
- * developer/infra before VTID-03916 removed the CHECK constraint that was
- * the real cause of those three actually failing.
+ * resolves ok, goes to the right destination per role, developer/infra use
+ * window.location.assign() to the Command Hub instead, and a rejected
+ * switch does NOT navigate (via either primitive) at all.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -27,6 +33,11 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
   return { ...actual, useNavigate: () => navigateMock };
 });
+
+const COMMAND_HUB_URL = 'https://gateway.vitanaland.com/command-hub/';
+vi.mock('@/config/devHub.config', () => ({
+  getCommandHubUrl: () => COMMAND_HUB_URL,
+}));
 
 const setRoleMock = vi.fn();
 vi.mock('@/hooks/useRole', async () => {
@@ -93,9 +104,16 @@ function renderDrawer() {
 }
 
 describe('ProfileDrawer role switch', () => {
+  let assignSpy: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
     navigateMock.mockReset();
     setRoleMock.mockReset();
+    assignSpy = vi.spyOn(window.location, 'assign').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    assignSpy.mockRestore();
   });
 
   it('navigates via the router\'s client-side navigate() once the switch is confirmed', async () => {
@@ -119,17 +137,30 @@ describe('ProfileDrawer role switch', () => {
     ['backoffice', '/backoffice/dashboard'],
     ['professional', '/professional/dashboard'],
     ['patient', '/patient/dashboard'],
-    ['developer', '/home'],
-    ['infra', '/home'],
     ['community', '/home'],
-  ])('routes %s to %s', async (role, destination) => {
+  ])('routes %s to %s via the router\'s navigate()', async (role, destination) => {
     setRoleMock.mockResolvedValueOnce({ ok: true });
     renderDrawer();
     fireEvent.click(screen.getByTestId(`role-${role}`));
     await waitFor(() => expect(navigateMock).toHaveBeenCalledWith(destination));
+    expect(assignSpy).not.toHaveBeenCalled();
   });
 
-  it('does NOT navigate when the write is rejected (e.g. the pre-VTID-03916 backoffice/developer/infra failure)', async () => {
+  it.each(['developer', 'infra'])(
+    'VTID-03924: routes %s to the Command Hub via window.location.assign(), not navigate() to /home',
+    async (role) => {
+      setRoleMock.mockResolvedValueOnce({ ok: true });
+      renderDrawer();
+      fireEvent.click(screen.getByTestId(`role-${role}`));
+
+      await waitFor(() => expect(assignSpy).toHaveBeenCalledWith(COMMAND_HUB_URL));
+      // The whole point of this fix: developer/infra used to fall through to
+      // navigate('/home') here — same branch as an unrecognized role.
+      expect(navigateMock).not.toHaveBeenCalled();
+    },
+  );
+
+  it('does NOT navigate (via either primitive) when the write is rejected (e.g. the pre-VTID-03916 backoffice/developer/infra failure)', async () => {
     setRoleMock.mockResolvedValueOnce({ ok: false, error: 'Role not granted for this tenant or invalid role assignment' });
     renderDrawer();
     fireEvent.click(screen.getByTestId('role-infra'));
@@ -138,5 +169,6 @@ describe('ProfileDrawer role switch', () => {
     // Give any (incorrect) navigation a chance to fire before asserting its absence.
     await new Promise((r) => setTimeout(r, 20));
     expect(navigateMock).not.toHaveBeenCalled();
+    expect(assignSpy).not.toHaveBeenCalled();
   });
 });
