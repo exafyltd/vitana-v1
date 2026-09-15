@@ -85,7 +85,15 @@ export default function PostDetail() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate("/home")}
+          // "/home/notif", not "/home": this page is the deep-link target for
+          // like/comment notifications (see file header), so a fresh page load
+          // can land here directly without ever having visited a MAXINA landing
+          // route. Going to "/home" would make this the FIRST landing-route hit
+          // of the session and wrongly trigger useOrbFrontDoor's auto-open on
+          // top of the News feed. "/home/notif" renders the identical feed but
+          // is deliberately excluded from useOrbFrontDoor's MAXINA_LANDING_ROUTES
+          // (same carve-out App.tsx already uses for notification-tap deep links).
+          onClick={() => navigate("/home/notif")}
           aria-label={t("screens.postDetail.back")}
         >
           <ArrowLeft className="h-5 w-5" />
