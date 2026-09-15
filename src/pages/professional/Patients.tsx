@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Users, Search, Plus, Calendar } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
 
 export default function ProfessionalPatients() {
   return (
+    <AppLayout>
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
@@ -141,5 +143,6 @@ export default function ProfessionalPatients() {
         </Card>
       </div>
     </div>
+    </AppLayout>
   );
 }

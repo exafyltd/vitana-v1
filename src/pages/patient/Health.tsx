@@ -3,9 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, TrendingUp, Calendar } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
 
 export default function PatientHealth() {
   return (
+    <AppLayout>
     <div className="p-6 space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.patient.myHealth')}</h1>
@@ -123,5 +125,6 @@ export default function PatientHealth() {
         </CardContent>
       </Card>
     </div>
+    </AppLayout>
   );
 }

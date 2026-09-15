@@ -3,9 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClipboardList, Clock, Users, Activity } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
 
 export default function StaffDashboard() {
   return (
+    <AppLayout>
     <div className="p-6 space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.staff.staffDashboard')}</h1>
@@ -121,5 +123,6 @@ export default function StaffDashboard() {
         </Card>
       </div>
     </div>
+    </AppLayout>
   );
 }
