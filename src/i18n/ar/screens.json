@@ -2594,7 +2594,53 @@
       "navRole_admin": "مسؤول",
       "navRole_developer": "مطور",
       "navRole_infra": "بنية تحتية",
-      "navRole_backoffice": "المكتب الخلفي"
+      "navRole_backoffice": "المكتب الخلفي",
+      "_pending_review": {
+        "partnerHealthOrders": true,
+        "orders": true,
+        "inbox": true,
+        "testColumn": true,
+        "partner": true,
+        "uploadResult": true,
+        "received": true,
+        "resolve": true,
+        "statusUpdated": true,
+        "resultUploaded": true,
+        "matchConfirmed": true,
+        "uploadResultFor": true,
+        "uploadResultHelp": true,
+        "upload": true,
+        "confirmMatch": true,
+        "confirmMatchHelp": true,
+        "matchedUserId": true,
+        "matchedTenantId": true,
+        "testName": true,
+        "externalOrderRefOptional": true,
+        "noOrdersYet": true,
+        "inboxEmpty": true
+      },
+      "partnerHealthOrders": "Partner Health Tests",
+      "orders": "Orders",
+      "inbox": "Inbox",
+      "testColumn": "Test",
+      "partner": "Partner",
+      "uploadResult": "Upload Result",
+      "received": "Received",
+      "resolve": "Resolve",
+      "statusUpdated": "Status updated",
+      "resultUploaded": "Result uploaded",
+      "matchConfirmed": "Match confirmed",
+      "uploadResultFor": "Upload result for {name}",
+      "uploadResultHelp": "Paste the raw DoctorBox payload as JSON (result_date, biomarkers[]).",
+      "upload": "Upload",
+      "confirmMatch": "Confirm match",
+      "confirmMatchHelp": "Assign this inbox entry to exactly one user. There is no automatic matching.",
+      "matchedUserId": "User ID",
+      "matchedTenantId": "Tenant ID",
+      "testName": "Test name",
+      "externalOrderRefOptional": "External order reference (optional)",
+      "noOrdersYet": "No orders yet.",
+      "inboxEmpty": "Inbox is empty."
     },
     "ai-feed": {
       "noEventsFound": "لا توجد أحداث",
@@ -7365,7 +7411,25 @@
       "youExafySuperAdministratorYouCan": "أنت مسؤول Exafy فائق. يمكنك التبديل بين المؤسسات وإدارة جميع العملاء.",
       "roleValue0": "الدور: {value0}",
       "refreshBrowserVoices": "تحديث أصوات المتصفح",
-      "creativityValue0": "الإبداع: {value0}"
+      "creativityValue0": "الإبداع: {value0}",
+      "_pending_review": {
+        "partnerLabsConnectTitle": true,
+        "partnerLabsConnectDescription": true,
+        "partnerLabsGrantAccess": true,
+        "partnerLabsRevokeAccess": true,
+        "partnerLabsRevokeConfirm": true,
+        "partnerLabsGrantSuccess": true,
+        "partnerLabsRevokeSuccess": true,
+        "partnerLabsError": true
+      },
+      "partnerLabsConnectTitle": "Connect DoctorBox",
+      "partnerLabsConnectDescription": "Let Vitana receive your DoctorBox test results and discuss them with you.",
+      "partnerLabsGrantAccess": "Grant access",
+      "partnerLabsRevokeAccess": "Revoke access",
+      "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
+      "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
+      "partnerLabsRevokeSuccess": "Access revoked.",
+      "partnerLabsError": "Something went wrong. Please try again."
     },
     "sharing": {
       "activateCampaign": "تفعيل الحملة",
@@ -10953,6 +11017,9 @@
             "last_month": "الشهر الماضي",
             "this_quarter": "هذا الربع",
             "last_year": "السنة الماضية"
+          },
+          "_pending_review": {
+            "window": true
           }
         },
         "pnl": {

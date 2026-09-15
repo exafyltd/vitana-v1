@@ -2,7 +2,10 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin"
+        "admin": "← Admin",
+        "_pending_review": {
+          "admin": true
+        }
       }
     },
     "overview": {
@@ -23,7 +26,10 @@
         "orders": "Pedidos de venta",
         "invoices": "Facturas",
         "credit-notes": "Notas de crédito",
-        "deliveries": "Entregas"
+        "deliveries": "Entregas",
+        "_pending_review": {
+          "leads": true
+        }
       }
     },
     "marketing": {

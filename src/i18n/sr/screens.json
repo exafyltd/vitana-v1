@@ -2612,7 +2612,32 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty."
+      "inboxEmpty": "Inbox is empty.",
+      "_pending_review": {
+        "navRole_backoffice": true,
+        "partnerHealthOrders": true,
+        "orders": true,
+        "inbox": true,
+        "testColumn": true,
+        "partner": true,
+        "uploadResult": true,
+        "received": true,
+        "resolve": true,
+        "statusUpdated": true,
+        "resultUploaded": true,
+        "matchConfirmed": true,
+        "uploadResultFor": true,
+        "uploadResultHelp": true,
+        "upload": true,
+        "confirmMatch": true,
+        "confirmMatchHelp": true,
+        "matchedUserId": true,
+        "matchedTenantId": true,
+        "testName": true,
+        "externalOrderRefOptional": true,
+        "noOrdersYet": true,
+        "inboxEmpty": true
+      }
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",
@@ -7391,7 +7416,17 @@
       "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
       "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
       "partnerLabsRevokeSuccess": "Access revoked.",
-      "partnerLabsError": "Something went wrong. Please try again."
+      "partnerLabsError": "Something went wrong. Please try again.",
+      "_pending_review": {
+        "partnerLabsConnectTitle": true,
+        "partnerLabsConnectDescription": true,
+        "partnerLabsGrantAccess": true,
+        "partnerLabsRevokeAccess": true,
+        "partnerLabsRevokeConfirm": true,
+        "partnerLabsGrantSuccess": true,
+        "partnerLabsRevokeSuccess": true,
+        "partnerLabsError": true
+      }
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",
@@ -10450,7 +10485,10 @@
         "actions": "Akcije",
         "installStatus": "Status instalacije",
         "installedAt": "Instalirano",
-        "noModules": "Nema instaliranih modula"
+        "noModules": "Nema instaliranih modula",
+        "_pending_review": {
+          "status": true
+        }
       },
       "receipts": {
         "title": "Potvrde komandi",
@@ -10493,7 +10531,10 @@
         "empty": "Kompanija nije pronađena",
         "none": "Nema",
         "yes": "Da",
-        "no": "Ne"
+        "no": "Ne",
+        "_pending_review": {
+          "id": true
+        }
       },
       "trail": {
         "title": "Nezavisni revizioni trag",
@@ -10532,7 +10573,10 @@
         "description": "Svi zahtevi za odobrenje u tenantu – na čekanju, odobreni ili odbijeni.",
         "searchPlaceholder": "Pretraži po komandi, ovlašćenju ili osobi …",
         "statusFilter": "Status",
-        "empty": "Nema zahteva za odobrenje"
+        "empty": "Nema zahteva za odobrenje",
+        "_pending_review": {
+          "statusFilter": true
+        }
       },
       "policies": {
         "title": "Politike",
@@ -10594,7 +10638,10 @@
         "description": "Sve komande tvog tenanta, najnovije prvo – sa veba, iz ćaskanja i glasom.",
         "searchPlaceholder": "Pretraži po komandi, ID-u ili razlogu …",
         "statusFilter": "Status",
-        "empty": "Još nema komandi"
+        "empty": "Još nema komandi",
+        "_pending_review": {
+          "statusFilter": true
+        }
       },
       "tiers": {
         "read": "Čitanje",
@@ -10630,7 +10677,10 @@
         "you": "Ti",
         "yourOwnRequest": "Tvoj sopstveni zahtev – ne možeš sam da ga odobriš.",
         "youCanDecide": "Možeš da odlučiš",
-        "youCannotDecide": "Nije na tebi da odobriš"
+        "youCannotDecide": "Nije na tebi da odobriš",
+        "_pending_review": {
+          "status": true
+        }
       },
       "commands": {
         "when": "Kada",
@@ -10641,7 +10691,10 @@
         "requester": "Podnosilac",
         "receipt": "Potvrda",
         "reason": "Razlog",
-        "you": "Ti"
+        "you": "Ti",
+        "_pending_review": {
+          "status": true
+        }
       },
       "approvalStatus": {
         "pending": "Na čekanju",
@@ -10685,7 +10738,10 @@
           "low": "Nizak",
           "converted": "Konvertovano",
           "unpaid": "Neplaćeno",
-          "return": "Povrat"
+          "return": "Povrat",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "common": {
           "status": "Status",
@@ -10703,7 +10759,10 @@
           "total": "Ukupno",
           "subtotal": "Međuzbir",
           "tax": "Porez",
-          "actions": "Radnje"
+          "actions": "Radnje",
+          "_pending_review": {
+            "status": true
+          }
         },
         "docs": {
           "noItems": "Nema stavki",
@@ -10725,7 +10784,10 @@
           "company": "Firma",
           "territory": "Teritorija",
           "industry": "Delatnost",
-          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati."
+          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati.",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "contacts": {
           "title": "Kontakti i firme",
@@ -10983,6 +11045,10 @@
             "last_month": "Prošli mesec",
             "this_quarter": "Ovaj kvartal",
             "last_year": "Prošla godina"
+          },
+          "_pending_review": {
+            "period": true,
+            "window": true
           }
         },
         "pnl": {
@@ -11129,7 +11195,10 @@
           "journal_entry_id": "ID naloga",
           "opportunity_type": "Vrsta prilike",
           "lost_reason": "Razlog",
-          "sales_invoice_id": "ID fakture"
+          "sales_invoice_id": "ID fakture",
+          "_pending_review": {
+            "status": true
+          }
         },
         "choices": {
           "website": "Veb sajt",
@@ -11175,7 +11244,10 @@
           "new": "Novo",
           "sales": "Prodaja",
           "support": "Podrška",
-          "maintenance": "Održavanje"
+          "maintenance": "Održavanje",
+          "_pending_review": {
+            "partner": true
+          }
         },
         "forms": {
           "lead": {

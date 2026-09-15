@@ -47,7 +47,6 @@
     "connectors": "Bağlayıcılar",
     "support": "Destek",
     "myJourney": "Yolculuğum",
-    "_pending_review": {},
     "backoffice": {
       "back": "← Admin",
       "overview": "Overview",
@@ -61,8 +60,22 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings"
+      "settings": "Settings",
+      "_pending_review": {
+        "back": true,
+        "overview": true,
+        "sales": true,
+        "marketing": true,
+        "accounting": true,
+        "finance": true,
+        "hr": true,
+        "operations": true,
+        "legal": true,
+        "reports": true,
+        "approvals": true,
+        "audit": true,
+        "settings": true
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }
