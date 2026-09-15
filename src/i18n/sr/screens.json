@@ -2594,7 +2594,30 @@
       "_pending_review": {
         "failedLoadCreatorsValue0": true,
         "failedLoadGroupsValue0": true,
-        "failedLoadLiveRoomsValue0": true
+        "failedLoadLiveRoomsValue0": true,
+        "navRole_backoffice": true,
+        "partnerHealthOrders": true,
+        "orders": true,
+        "inbox": true,
+        "testColumn": true,
+        "partner": true,
+        "uploadResult": true,
+        "received": true,
+        "resolve": true,
+        "statusUpdated": true,
+        "resultUploaded": true,
+        "matchConfirmed": true,
+        "uploadResultFor": true,
+        "uploadResultHelp": true,
+        "upload": true,
+        "confirmMatch": true,
+        "confirmMatchHelp": true,
+        "matchedUserId": true,
+        "matchedTenantId": true,
+        "testName": true,
+        "externalOrderRefOptional": true,
+        "noOrdersYet": true,
+        "inboxEmpty": true
       },
       "failedLoadCreatorsValue0": "Failed to load creators: {value0}",
       "failedLoadGroupsValue0": "Failed to load groups: {value0}",
@@ -7407,7 +7430,17 @@
       "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
       "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
       "partnerLabsRevokeSuccess": "Access revoked.",
-      "partnerLabsError": "Something went wrong. Please try again."
+      "partnerLabsError": "Something went wrong. Please try again.",
+      "_pending_review": {
+        "partnerLabsConnectTitle": true,
+        "partnerLabsConnectDescription": true,
+        "partnerLabsGrantAccess": true,
+        "partnerLabsRevokeAccess": true,
+        "partnerLabsRevokeConfirm": true,
+        "partnerLabsGrantSuccess": true,
+        "partnerLabsRevokeSuccess": true,
+        "partnerLabsError": true
+      }
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",
@@ -10362,7 +10395,8 @@
         "connectionsCount": true,
         "openWorkbench": true,
         "closeWorkbench": true,
-        "sandboxDevNote": true
+        "sandboxDevNote": true,
+        "addProduct": true
       },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
@@ -10390,6 +10424,139 @@
         "tests": "Checks",
         "live": "Live",
         "offTrack": "Needs attention"
+      },
+      "addProduct": "Add a product",
+      "productForm": {
+        "_pending_review": {
+          "pickTitle": true,
+          "pickSubtitle": true,
+          "titleFor": true,
+          "name": true,
+          "price": true,
+          "currency": true,
+          "photo": true,
+          "buyUrl": true,
+          "buyUrlHint": true,
+          "shipsFrom": true,
+          "shipsTo": true,
+          "shipsToHint": true,
+          "description": true,
+          "aboutVertical": true,
+          "moreDetails": true,
+          "choosePlaceholder": true,
+          "strengthTitle": true,
+          "strengthComplete": true,
+          "strengthHint": true,
+          "submit": true,
+          "cancel": true,
+          "saved": true,
+          "saveFailed": true,
+          "reviewNote": true,
+          "loadFailed": true,
+          "retry": true,
+          "imageAdd": true,
+          "imageRemove": true,
+          "imageHeic": true,
+          "imageNotAnImage": true,
+          "imageTooLarge": true,
+          "imageFailed": true,
+          "businessName": true,
+          "businessNameHint": true,
+          "network": true,
+          "networkOther": true,
+          "networkHint": true,
+          "networkOtherHint": true,
+          "advertiserId": true,
+          "advertiserIdHint": true,
+          "salesModel": true,
+          "salesModelReferral": true,
+          "salesModelReferralHint": true,
+          "salesModelDirect": true,
+          "salesModelSoon": true,
+          "salesModelDirectHint": true
+        },
+        "pickTitle": "What do you sell?",
+        "pickSubtitle": "Choose once — after that we only ask about things that actually matter for your products.",
+        "titleFor": "New product — {vertical}",
+        "name": "Product name",
+        "price": "Price",
+        "currency": "Currency",
+        "photo": "Photo",
+        "buyUrl": "Link to buy",
+        "buyUrlHint": "The product page in your own shop. That is where we send buyers, and what we settle on.",
+        "shipsFrom": "Ships from (country code)",
+        "shipsTo": "Ships to",
+        "shipsToHint": "Country codes, comma separated. With no destination your product cannot be shown to anyone.",
+        "description": "Description",
+        "aboutVertical": "About your {vertical}",
+        "moreDetails": "{count} more details",
+        "choosePlaceholder": "Please choose",
+        "strengthTitle": "Listing strength",
+        "strengthComplete": "Complete. We do not need more than this.",
+        "strengthHint": "Add {fields} — your product will then show up in more searches.",
+        "submit": "Submit for review",
+        "cancel": "Cancel",
+        "saved": "Product saved",
+        "saveFailed": "Couldn't save the product.",
+        "reviewNote": "Security, consent and certification checks are never skipped. Your product appears in the marketplace only after approval.",
+        "loadFailed": "Couldn't load the categories.",
+        "retry": "Try again",
+        "imageAdd": "Photo",
+        "imageRemove": "Remove photo",
+        "imageHeic": "HEIC images are not supported. Please use JPG or PNG.",
+        "imageNotAnImage": "That is not an image file.",
+        "imageTooLarge": "That image is too large (8 MB maximum).",
+        "imageFailed": "Couldn't upload the image.",
+        "businessName": "Your business name",
+        "businessNameHint": "This is how your business appears in the marketplace — not the product name.",
+        "network": "Affiliate network",
+        "networkOther": "None / not yet",
+        "networkHint": "This is how we settle your sales. Only Awin and Admitad are connected today.",
+        "networkOtherHint": "No problem. We record the referrals we send to your shop; sales are settled by agreement until a network is connected.",
+        "advertiserId": "Your advertiser ID",
+        "advertiserIdHint": "Your id within that network. Without it we cannot match a sale back to you — we see the referral but not the purchase.",
+        "salesModel": "How do you sell?",
+        "salesModelReferral": "Send buyers to your shop",
+        "salesModelReferralHint": "We show your product in Discover and send buyers to your product page. You sell and ship exactly as you do today.",
+        "salesModelDirect": "Sell directly through Vitanaland",
+        "salesModelSoon": "Soon",
+        "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet."
+      },
+      "join": {
+        "_pending_review": {
+          "seoTitle": true,
+          "seoDescription": true,
+          "registerLead": true,
+          "signinLead": true,
+          "yourName": true,
+          "registerCta": true,
+          "signinCta": true,
+          "haveAccount": true,
+          "noAccount": true,
+          "togglePassword": true,
+          "checkInboxTitle": true,
+          "checkInboxBody": true,
+          "alreadyConfirmed": true,
+          "timeout": true,
+          "failed": true,
+          "otherSignin": true
+        },
+        "seoTitle": "Register your business with Vitanaland",
+        "seoDescription": "Register your business and bring your products to the Vitanaland Discover marketplace.",
+        "registerLead": "Create an account in two minutes — then add your products by AI or by hand.",
+        "signinLead": "Welcome back. Sign in to manage your products.",
+        "yourName": "Your name",
+        "registerCta": "Create account",
+        "signinCta": "Sign in",
+        "haveAccount": "Already have an account? Sign in",
+        "noAccount": "No account yet? Register now",
+        "togglePassword": "Show or hide password",
+        "checkInboxTitle": "Check your inbox",
+        "checkInboxBody": "We sent a confirmation link to {email}. Open it and you land straight in the Commerce Portal.",
+        "alreadyConfirmed": "Already confirmed? Sign in here",
+        "timeout": "That took too long. Please check your connection and try again.",
+        "failed": "That did not work. Please try again.",
+        "otherSignin": "Another way to sign in"
       }
     },
     "oauthconsent": {
@@ -10466,7 +10633,10 @@
         "actions": "Akcije",
         "installStatus": "Status instalacije",
         "installedAt": "Instalirano",
-        "noModules": "Nema instaliranih modula"
+        "noModules": "Nema instaliranih modula",
+        "_pending_review": {
+          "status": true
+        }
       },
       "receipts": {
         "title": "Potvrde komandi",
@@ -10509,7 +10679,10 @@
         "empty": "Kompanija nije pronađena",
         "none": "Nema",
         "yes": "Da",
-        "no": "Ne"
+        "no": "Ne",
+        "_pending_review": {
+          "id": true
+        }
       },
       "trail": {
         "title": "Nezavisni revizioni trag",
@@ -10548,7 +10721,10 @@
         "description": "Svi zahtevi za odobrenje u tenantu – na čekanju, odobreni ili odbijeni.",
         "searchPlaceholder": "Pretraži po komandi, ovlašćenju ili osobi …",
         "statusFilter": "Status",
-        "empty": "Nema zahteva za odobrenje"
+        "empty": "Nema zahteva za odobrenje",
+        "_pending_review": {
+          "statusFilter": true
+        }
       },
       "policies": {
         "title": "Politike",
@@ -10610,7 +10786,10 @@
         "description": "Sve komande tvog tenanta, najnovije prvo – sa veba, iz ćaskanja i glasom.",
         "searchPlaceholder": "Pretraži po komandi, ID-u ili razlogu …",
         "statusFilter": "Status",
-        "empty": "Još nema komandi"
+        "empty": "Još nema komandi",
+        "_pending_review": {
+          "statusFilter": true
+        }
       },
       "tiers": {
         "read": "Čitanje",
@@ -10646,7 +10825,10 @@
         "you": "Ti",
         "yourOwnRequest": "Tvoj sopstveni zahtev – ne možeš sam da ga odobriš.",
         "youCanDecide": "Možeš da odlučiš",
-        "youCannotDecide": "Nije na tebi da odobriš"
+        "youCannotDecide": "Nije na tebi da odobriš",
+        "_pending_review": {
+          "status": true
+        }
       },
       "commands": {
         "when": "Kada",
@@ -10657,7 +10839,10 @@
         "requester": "Podnosilac",
         "receipt": "Potvrda",
         "reason": "Razlog",
-        "you": "Ti"
+        "you": "Ti",
+        "_pending_review": {
+          "status": true
+        }
       },
       "approvalStatus": {
         "pending": "Na čekanju",
@@ -10701,7 +10886,10 @@
           "low": "Nizak",
           "converted": "Konvertovano",
           "unpaid": "Neplaćeno",
-          "return": "Povrat"
+          "return": "Povrat",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "common": {
           "status": "Status",
@@ -10719,7 +10907,10 @@
           "total": "Ukupno",
           "subtotal": "Međuzbir",
           "tax": "Porez",
-          "actions": "Radnje"
+          "actions": "Radnje",
+          "_pending_review": {
+            "status": true
+          }
         },
         "docs": {
           "noItems": "Nema stavki",
@@ -10741,7 +10932,10 @@
           "company": "Firma",
           "territory": "Teritorija",
           "industry": "Delatnost",
-          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati."
+          "frozenHint": "Konvertovani lid je zamrznut u ERPClaw-u i više se ne može menjati.",
+          "_pending_review": {
+            "lead": true
+          }
         },
         "contacts": {
           "title": "Kontakti i firme",
@@ -10999,6 +11193,10 @@
             "last_month": "Prošli mesec",
             "this_quarter": "Ovaj kvartal",
             "last_year": "Prošla godina"
+          },
+          "_pending_review": {
+            "period": true,
+            "window": true
           }
         },
         "pnl": {
@@ -11145,7 +11343,10 @@
           "journal_entry_id": "ID naloga",
           "opportunity_type": "Vrsta prilike",
           "lost_reason": "Razlog",
-          "sales_invoice_id": "ID fakture"
+          "sales_invoice_id": "ID fakture",
+          "_pending_review": {
+            "status": true
+          }
         },
         "choices": {
           "website": "Veb sajt",
@@ -11191,7 +11392,10 @@
           "new": "Novo",
           "sales": "Prodaja",
           "support": "Podrška",
-          "maintenance": "Održavanje"
+          "maintenance": "Održavanje",
+          "_pending_review": {
+            "partner": true
+          }
         },
         "forms": {
           "lead": {

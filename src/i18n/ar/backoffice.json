@@ -2,16 +2,20 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "→ الإدارة"
-      }
+        "admin": "→ الإدارة",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "overview": {
       "tabs": {
         "dashboard": "لوحة التحكم",
         "inbox": "صندوق الموافقات",
         "activity": "النشاط",
-        "health": "الحالة"
-      }
+        "health": "الحالة",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "sales": {
       "tabs": {
@@ -23,16 +27,20 @@
         "orders": "أوامر البيع",
         "invoices": "الفواتير",
         "credit-notes": "إشعارات الدائن",
-        "deliveries": "التسليمات"
-      }
+        "deliveries": "التسليمات",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "marketing": {
       "tabs": {
         "campaigns": "الحملات",
         "outreach": "التواصل",
         "attribution": "مصادر العملاء والإسناد",
-        "performance": "الأداء"
-      }
+        "performance": "الأداء",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "accounting": {
       "tabs": {
@@ -42,8 +50,10 @@
         "tax": "الضرائب",
         "assets": "الأصول الثابتة والإيجارات",
         "intercompany": "المعاملات البينية والتوحيد",
-        "budgets": "الميزانيات والتوقعات"
-      }
+        "budgets": "الميزانيات والتوقعات",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "finance": {
       "tabs": {
@@ -51,8 +61,10 @@
         "bank-reconciliation": "التسوية البنكية",
         "cash": "الوضع النقدي والتوقعات",
         "subscriptions": "الفوترة المتكررة",
-        "sync": "مزامنة Stripe / Shopify"
-      }
+        "sync": "مزامنة Stripe / Shopify",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "hr": {
       "tabs": {
@@ -60,8 +72,10 @@
         "leave": "الإجازات",
         "attendance": "الحضور",
         "expenses": "مطالبات المصروفات",
-        "payroll": "الرواتب"
-      }
+        "payroll": "الرواتب",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "operations": {
       "tabs": {
@@ -71,16 +85,20 @@
         "supplier-invoices": "فواتير الموردين",
         "items": "الأصناف",
         "warehouses": "المستودعات",
-        "stock": "المخزون والحركات"
-      }
+        "stock": "المخزون والحركات",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "legal": {
       "tabs": {
         "contracts": "العقود",
         "obligations": "الالتزامات",
         "compliance": "الامتثال",
-        "e-signature": "التوقيع الإلكتروني"
-      }
+        "e-signature": "التوقيع الإلكتروني",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "reports": {
       "tabs": {
@@ -90,22 +108,28 @@
         "cash-flow": "التدفق النقدي",
         "aging": "أعمار الذمم المدينة / الدائنة",
         "dimensions": "حسب البُعد",
-        "board-pack": "حزمة مجلس الإدارة"
-      }
+        "board-pack": "حزمة مجلس الإدارة",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "approvals": {
       "tabs": {
         "queue": "قائمة الانتظار",
         "my-requests": "طلباتي",
-        "policies": "السياسات"
-      }
+        "policies": "السياسات",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "audit": {
       "tabs": {
         "receipts": "إيصالات الأوامر",
         "erp-log": "سجل تدقيق ERP",
-        "trail": "مسار تدقيق مستقل"
-      }
+        "trail": "مسار تدقيق مستقل",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "settings": {
       "tabs": {
@@ -113,9 +137,12 @@
         "access": "الصلاحيات",
         "numbering": "الترقيم",
         "integrations": "التكاملات",
-        "modules": "الوحدات"
-      }
-    }
+        "modules": "الوحدات",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "_pending_review": {}
 }

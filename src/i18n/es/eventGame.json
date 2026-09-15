@@ -14,7 +14,8 @@
       "notLivePreBody": "Este juego aún no ha empezado — vuelve pronto.",
       "notLiveEndedTitle": "Juego terminado",
       "notLiveEndedBody": "Este juego ha terminado — consulta los resultados finales.",
-      "disabled": "Este juego no está disponible ahora mismo."
+      "disabled": "Este juego no está disponible ahora mismo.",
+      "_pending_review": {}
     },
     "join": {
       "celebrateTitle": "🎉 ¡ESTÁS DENTRO!",
@@ -23,7 +24,8 @@
       "celebrateRank": "Tu puesto actual: #{rank}",
       "nextTitle": "📸 HAZ TU MOVIMIENTO",
       "nextBody": "Publica una foto o un vídeo de esta noche.",
-      "nextCta": "PUBLICA AHORA"
+      "nextCta": "PUBLICA AHORA",
+      "_pending_review": {}
     },
     "home": {
       "score": "TU PUNTUACIÓN",
@@ -38,7 +40,8 @@
       "viewLeaderboard": "VER CLASIFICACIÓN",
       "rulesLink": "¿Cómo jugar?",
       "countdownLeft": "IZQUIERDA",
-      "gameOver": "🛑 JUEGO TERMINADO"
+      "gameOver": "🛑 JUEGO TERMINADO",
+      "_pending_review": {}
     },
     "post": {
       "categoryEvent": "📸 Momento del evento",
@@ -51,7 +54,8 @@
       "successScore": "Tu puntuación: {score}",
       "successRank": "Tu puesto actual: #{rank}",
       "getLikes": "❤️ AHORA CONSIGUE ALGUNOS ME GUSTA",
-      "share": "COMPARTE MI MOMENTO"
+      "share": "COMPARTE MI MOMENTO",
+      "_pending_review": {}
     },
     "leaderboard": {
       "title": "🏆 ¿QUIÉN ESTÁ EN RACHA?",
@@ -63,13 +67,15 @@
       "movingUpTitle": "🚀 ¡ESTÁS SUBIENDO!",
       "movingUpChange": "#{from} → #{to}",
       "overtakenTitle": "👀 ¡OH NO!",
-      "overtakenChange": "Te has movido al puesto #{rank}"
+      "overtakenChange": "Te has movido al puesto #{rank}",
+      "_pending_review": {}
     },
     "countdown": {
       "tenMinutes": "🚨 ¡ÚLTIMOS 10 MINUTOS!",
       "fiveMinutes": "🔥 ¡CINCO MINUTOS!",
       "oneMinute": "🚨 ¡ÚLTIMO MINUTO!",
-      "over": "🛑 JUEGO TERMINADO"
+      "over": "🛑 JUEGO TERMINADO",
+      "_pending_review": {}
     },
     "rules": {
       "title": "🎯 CÓMO JUGAR",
@@ -78,7 +84,8 @@
       "longevity": "🧬 Momento de longevidad — +{points}",
       "likes": "❤️ Obtén me gusta — +{points} cada uno",
       "win": "🏆 Sé el #1 — GANA EL PREMIO",
-      "close": "Entendido"
+      "close": "Entendido",
+      "_pending_review": {}
     },
     "results": {
       "winnerTitle": "🏆 ¡TENEMOS UN GANADOR!",
@@ -93,11 +100,13 @@
       "longevityCount": "🧬 Momentos de longevidad: {count}",
       "gap": "¡Estuviste a solo {points} puntos del Top {n}!",
       "share": "COMPARTE MI RESULTADO",
-      "notEnded": "Los resultados se mostrarán una vez que termine el juego."
+      "notEnded": "Los resultados se mostrarán una vez que termine el juego.",
+      "_pending_review": {}
     },
     "feedBadge": {
       "rankPoints": "🏆 #{rank} · {points} pts",
-      "pointsToNext": "🔥 ESTÁS EN EL PUESTO #{rank} · {points} PTS PARA EL #{nextRank}"
+      "pointsToNext": "🔥 ESTÁS EN EL PUESTO #{rank} · {points} PTS PARA EL #{nextRank}",
+      "_pending_review": {}
     },
     "admin": {
       "title": "Juego del evento",
@@ -126,8 +135,10 @@
       "adjustPoints": "Ajustar puntos",
       "adjustReason": "Motivo",
       "adjustApply": "Aplicar",
-      "notModerator": "No tienes permiso para gestionar este juego."
-    }
+      "notModerator": "No tienes permiso para gestionar este juego.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "_pending_review": {}
 }

@@ -23,7 +23,15 @@
       "celebrateRank": "Your current rank: #{rank}",
       "nextTitle": "📸 MAKE YOUR MOVE",
       "nextBody": "Post a photo or video from tonight.",
-      "nextCta": "POST NOW"
+      "nextCta": "POST NOW",
+      "_pending_review": {
+        "celebratePoints": true,
+        "celebrateScore": true,
+        "celebrateRank": true,
+        "nextTitle": true,
+        "nextBody": true,
+        "nextCta": true
+      }
     },
     "home": {
       "score": "YOUR SCORE",
@@ -38,7 +46,22 @@
       "viewLeaderboard": "VIEW LEADERBOARD",
       "rulesLink": "How to play",
       "countdownLeft": "LEFT",
-      "gameOver": "🛑 GAME OVER"
+      "gameOver": "🛑 GAME OVER",
+      "_pending_review": {
+        "score": true,
+        "rank": true,
+        "pointsToNext": true,
+        "firstPlace": true,
+        "postCtaTitle": true,
+        "postCtaBody": true,
+        "postsUsed": true,
+        "postCta": true,
+        "capReached": true,
+        "viewLeaderboard": true,
+        "rulesLink": true,
+        "countdownLeft": true,
+        "gameOver": true
+      }
     },
     "post": {
       "categoryEvent": "📸 Event Moment",
@@ -51,7 +74,20 @@
       "successScore": "Your score: {score}",
       "successRank": "Current rank: #{rank}",
       "getLikes": "❤️ NOW GET SOME LIKES",
-      "share": "SHARE MY MOMENT"
+      "share": "SHARE MY MOMENT",
+      "_pending_review": {
+        "categoryEvent": true,
+        "categoryLongevity": true,
+        "categoryPoints": true,
+        "mustJoinFirst": true,
+        "joinAndPost": true,
+        "successTitle": true,
+        "successPoints": true,
+        "successScore": true,
+        "successRank": true,
+        "getLikes": true,
+        "share": true
+      }
     },
     "leaderboard": {
       "title": "🏆 WHO'S ON FIRE?",
@@ -63,13 +99,31 @@
       "movingUpTitle": "🚀 YOU'RE MOVING UP!",
       "movingUpChange": "#{from} → #{to}",
       "overtakenTitle": "👀 OH NO!",
-      "overtakenChange": "You've moved to #{rank}"
+      "overtakenChange": "You've moved to #{rank}",
+      "_pending_review": {
+        "title": true,
+        "subtitle": true,
+        "top3": true,
+        "you": true,
+        "pointsToNext": true,
+        "empty": true,
+        "movingUpTitle": true,
+        "movingUpChange": true,
+        "overtakenTitle": true,
+        "overtakenChange": true
+      }
     },
     "countdown": {
       "tenMinutes": "🚨 FINAL 10 MINUTES!",
       "fiveMinutes": "🔥 FIVE MINUTES!",
       "oneMinute": "🚨 FINAL MINUTE!",
-      "over": "🛑 GAME OVER"
+      "over": "🛑 GAME OVER",
+      "_pending_review": {
+        "tenMinutes": true,
+        "fiveMinutes": true,
+        "oneMinute": true,
+        "over": true
+      }
     },
     "rules": {
       "title": "🎯 HOW TO PLAY",
@@ -78,7 +132,16 @@
       "longevity": "🧬 Longevity moment — +{points}",
       "likes": "❤️ Get likes — +{points} each",
       "win": "🏆 Finish #1 — WIN THE PRIZE",
-      "close": "Got it"
+      "close": "Got it",
+      "_pending_review": {
+        "title": true,
+        "join": true,
+        "event": true,
+        "longevity": true,
+        "likes": true,
+        "win": true,
+        "close": true
+      }
     },
     "results": {
       "winnerTitle": "🏆 WE HAVE A WINNER!",
@@ -93,11 +156,30 @@
       "longevityCount": "🧬 Longevity moments: {count}",
       "gap": "You were only {points} points from the Top {n}!",
       "share": "SHARE MY RESULT",
-      "notEnded": "Results will be shown once the game ends."
+      "notEnded": "Results will be shown once the game ends.",
+      "_pending_review": {
+        "winnerTitle": true,
+        "winnerCrown": true,
+        "winnerPoints": true,
+        "reward": true,
+        "yourResultTitle": true,
+        "yourRank": true,
+        "yourPoints": true,
+        "postCount": true,
+        "likesCount": true,
+        "longevityCount": true,
+        "gap": true,
+        "share": true,
+        "notEnded": true
+      }
     },
     "feedBadge": {
       "rankPoints": "🏆 #{rank} · {points} pts",
-      "pointsToNext": "🔥 YOU'RE #{rank} · {points} PTS TO #{nextRank}"
+      "pointsToNext": "🔥 YOU'RE #{rank} · {points} PTS TO #{nextRank}",
+      "_pending_review": {
+        "rankPoints": true,
+        "pointsToNext": true
+      }
     },
     "admin": {
       "title": "Event Game",
@@ -126,7 +208,36 @@
       "adjustPoints": "Adjust points",
       "adjustReason": "Reason",
       "adjustApply": "Apply",
-      "notModerator": "You don't have permission to manage this game."
+      "notModerator": "You don't have permission to manage this game.",
+      "_pending_review": {
+        "title": true,
+        "configSection": true,
+        "nameLabel": true,
+        "slugLabel": true,
+        "descriptionLabel": true,
+        "rulesLabel": true,
+        "statusLabel": true,
+        "startsAtLabel": true,
+        "endsAtLabel": true,
+        "pointsSection": true,
+        "pointsRegistration": true,
+        "pointsEventPost": true,
+        "pointsLongevityPost": true,
+        "pointsLikeReceived": true,
+        "pointsLikeCap": true,
+        "maxPosts": true,
+        "rewardTextLabel": true,
+        "rewardDescLabel": true,
+        "save": true,
+        "saved": true,
+        "saveFailed": true,
+        "leaderboardSection": true,
+        "ledgerSection": true,
+        "adjustPoints": true,
+        "adjustReason": true,
+        "adjustApply": true,
+        "notModerator": true
+      }
     }
   }
 }
