@@ -1,125 +1,53 @@
 {
   "verdicts": {
-    "wallet.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "wallet.description": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.usdBalance": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.creditsBalance": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.vtnaTokens": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.available": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.staked": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.searchWallet": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.tabs.balances": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.tabs.activity": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.tabs.actions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.commissions": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.filters.transfers": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.exchanges": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.rewards": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.purchases": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.pending": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.noActivity": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.noActivityDesc": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.creditsLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "wallet.filters.stakes": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "wallet.filters.withdrawals": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.displayCurrency": {
+    "featureAnnouncementCard.brandNew.closing": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-09-15T09:03:44.160Z"
+  "generatedAt": "2026-09-15T08:53:29.946Z"
 }
