@@ -10334,8 +10334,8 @@
       "agentStatusDetail": "Der MCP-Server ist fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar — die DNS-Freischaltung steht aus. Solange stellt der Server deinem Agenten nur lesende Werkzeuge bereit: Ein Business per KI anzulegen kommt mit der Freischaltung. Bis dahin führt der manuelle Weg unten zum Ziel.",
       "agentUrlHint": "Eine Adresse. Mehr braucht dein Agent nicht.",
       "howItWorksTitle": "Was danach passiert",
-      "manualIntro": "Lieber selbst ausfüllen?",
-      "manualCta": "Business manuell verbinden",
+      "manualIntro": "Du hast keinen KI-Assistenten? Kein Problem:",
+      "manualCta": "Stattdessen per API verbinden (für Entwickler)",
       "connectionsEmptyHint": "Sobald du dein erstes Business verbunden hast, siehst du hier seinen Fortschritt bis zum Live-Gang.",
       "connectionsCount": "{count} verbunden",
       "openWorkbench": "Verbindung öffnen",
@@ -10348,7 +10348,7 @@
         "live": "Live",
         "offTrack": "Braucht Aufmerksamkeit"
       },
-      "addProduct": "Produkt hinzufügen",
+      "addProduct": "Produkte selbst eintragen",
       "productForm": {
         "pickTitle": "Was verkaufst du?",
         "pickSubtitle": "Wähle einmal aus — danach fragen wir nur noch nach dem, was für deine Produkte wirklich zählt.",
@@ -10395,7 +10395,13 @@
         "salesModelReferralHint": "Wir zeigen dein Produkt in Discover und schicken Käufer zu deiner Produktseite. Du verkaufst und lieferst wie bisher.",
         "salesModelDirect": "Direkt über Vitanaland verkaufen",
         "salesModelSoon": "Bald",
-        "salesModelDirectHint": "Käufer bezahlen direkt in der App. Noch nicht verfügbar: Auszahlungen an Lieferanten gibt es bei uns noch nicht."
+        "salesModelDirectHint": "Käufer bezahlen direkt in der App. Noch nicht verfügbar: Auszahlungen an Lieferanten gibt es bei uns noch nicht.",
+        "deliveryHeading": "Wie lange dauert die Lieferung üblicherweise?",
+        "deliveryHint": "In Tagen, nur für die Regionen, in die du lieferst. Optional — du kannst das jederzeit nachtragen.",
+        "deliveryEu": "Europa",
+        "deliveryUs": "USA",
+        "deliveryMena": "Naher Osten & Nordafrika",
+        "deliveryDaysUnit": "Tage"
       },
       "join": {
         "seoTitle": "Business bei Vitanaland anmelden",

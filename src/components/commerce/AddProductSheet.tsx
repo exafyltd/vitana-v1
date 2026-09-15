@@ -19,6 +19,43 @@ import { useCommerceVerticals, type Vertical } from '@/hooks/useCommerceVertical
 import { ProductForm } from './ProductForm';
 import { t } from '@/lib/i18n-toast';
 
+/**
+ * The three regions `merchants` actually stores a delivery time for. Kept as a
+ * table rather than three copy-pasted blocks so adding a region later is a row,
+ * and so the field key and its label can never drift apart.
+ */
+const DELIVERY_REGIONS = [
+  { key: 'eu', labelKey: 'deliveryEu', column: 'avg_delivery_days_eu' },
+  { key: 'us', labelKey: 'deliveryUs', column: 'avg_delivery_days_us' },
+  { key: 'mena', labelKey: 'deliveryMena', column: 'avg_delivery_days_mena' },
+] as const;
+
+type DeliveryKey = (typeof DELIVERY_REGIONS)[number]['key'];
+
+/**
+ * Empty string, not 0 — an unanswered field and "delivers same day" are
+ * different facts, and sending 0 for the former would be inventing data.
+ */
+const EMPTY_DELIVERY: Record<DeliveryKey, string> = { eu: '', us: '', mena: '' };
+
+/**
+ * Only the regions the supplier actually answered, as numbers. A blank or a
+ * non-number is omitted entirely so the column stays null rather than 0.
+ */
+export function deliveryDaysPayload(
+  d: Record<DeliveryKey, string>,
+): Partial<Record<(typeof DELIVERY_REGIONS)[number]['column'], number>> {
+  const out: Record<string, number> = {};
+  for (const { key, column } of DELIVERY_REGIONS) {
+    const raw = d[key].trim();
+    if (raw === '') continue;
+    const n = Number(raw);
+    if (!Number.isInteger(n) || n < 0 || n > 120) continue;
+    out[column] = n;
+  }
+  return out;
+}
+
 export function AddProductSheet({
   open,
   onOpenChange,
@@ -41,6 +78,7 @@ export function AddProductSheet({
   // sales are just settled by agreement until one is connected.
   const [network, setNetwork] = useState<'awin' | 'admitad' | 'other'>('other');
   const [advertiserId, setAdvertiserId] = useState('');
+  const [delivery, setDelivery] = useState<Record<DeliveryKey, string>>(EMPTY_DELIVERY);
 
   const loadMerchant = useCallback(async () => {
     try {
@@ -109,6 +147,7 @@ export function AddProductSheet({
               businessName={businessName}
               affiliateNetwork={network}
               affiliateAdvertiserId={advertiserId}
+              deliveryDays={deliveryDaysPayload(delivery)}
               onSaved={async () => {
                 await onSaved();
                 close();
@@ -204,6 +243,50 @@ export function AddProductSheet({
                       </p>
                     </div>
                   )}
+
+                  {/* Delivery time, asked once per business rather than per
+                      product — that is how the columns on `merchants` are
+                      shaped, and a supplier's shipping speed does not change
+                      per SKU. All three optional: a supplier who ships only
+                      within Europe leaves the other two empty, which is what
+                      every merchant row holds today. */}
+                  <div className="space-y-1.5 pt-2">
+                    <Label className="text-slate-300">
+                      {t('screens.commerceportal.productForm.deliveryHeading')}
+                    </Label>
+                    <div className="grid gap-2 sm:grid-cols-3">
+                      {DELIVERY_REGIONS.map(({ key, labelKey }) => (
+                        <div key={key} className="space-y-1">
+                          <Label
+                            htmlFor={`pf-delivery-${key}`}
+                            className="text-xs font-normal text-slate-400"
+                          >
+                            {t(`screens.commerceportal.productForm.${labelKey}`)}
+                          </Label>
+                          <div className="flex items-center gap-2">
+                            <Input
+                              id={`pf-delivery-${key}`}
+                              type="number"
+                              min={0}
+                              max={120}
+                              inputMode="numeric"
+                              className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500"
+                              value={delivery[key]}
+                              onChange={(e) =>
+                                setDelivery((d) => ({ ...d, [key]: e.target.value }))
+                              }
+                            />
+                            <span className="shrink-0 text-xs text-slate-500">
+                              {t('screens.commerceportal.productForm.deliveryDaysUnit')}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      {t('screens.commerceportal.productForm.deliveryHint')}
+                    </p>
+                  </div>
                 </div>
               )}
 

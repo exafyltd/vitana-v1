@@ -10334,8 +10334,8 @@
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
       "howItWorksTitle": "What happens next",
-      "manualIntro": "Prefer to fill it in yourself?",
-      "manualCta": "Connect a business manually",
+      "manualIntro": "No AI assistant? No problem:",
+      "manualCta": "Connect via API instead (for developers)",
       "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
       "connectionsCount": "{count} connected",
       "openWorkbench": "Open connection",
@@ -10348,7 +10348,7 @@
         "live": "Live",
         "offTrack": "Needs attention"
       },
-      "addProduct": "Add a product",
+      "addProduct": "Enter your products yourself",
       "productForm": {
         "pickTitle": "What do you sell?",
         "pickSubtitle": "Choose once — after that we only ask about things that actually matter for your products.",
@@ -10395,7 +10395,13 @@
         "salesModelReferralHint": "We show your product in Discover and send buyers to your product page. You sell and ship exactly as you do today.",
         "salesModelDirect": "Sell directly through Vitanaland",
         "salesModelSoon": "Soon",
-        "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet."
+        "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet.",
+        "deliveryHeading": "How long does delivery usually take?",
+        "deliveryHint": "In days, only for the regions you ship to. Optional — you can add this later.",
+        "deliveryEu": "Europe",
+        "deliveryUs": "United States",
+        "deliveryMena": "Middle East & North Africa",
+        "deliveryDaysUnit": "days"
       },
       "join": {
         "seoTitle": "Register your business with Vitanaland",

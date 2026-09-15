@@ -65,6 +65,7 @@ export function ProductForm({
   businessName,
   affiliateNetwork,
   affiliateAdvertiserId,
+  deliveryDays,
   onSaved,
   onCancel,
 }: {
@@ -75,6 +76,15 @@ export function ProductForm({
   businessName: string;
   affiliateNetwork: 'awin' | 'admitad' | 'other';
   affiliateAdvertiserId: string;
+  /**
+   * Typical delivery time per region, already narrowed to the regions the
+   * supplier actually answered. Spread into the merchant row as-is: an
+   * unanswered region is absent rather than 0, so the column stays null.
+   */
+  deliveryDays: Partial<Record<
+    'avg_delivery_days_eu' | 'avg_delivery_days_us' | 'avg_delivery_days_mena',
+    number
+  >>;
   onSaved: () => void | Promise<void>;
   onCancel: () => void;
 }) {
@@ -119,6 +129,7 @@ export function ProductForm({
           // an id, and sending an empty string would trip that refusal.
           affiliate_advertiser_id:
             affiliateNetwork === 'other' ? undefined : affiliateAdvertiserId.trim(),
+          ...deliveryDays,
         }),
       });
 
