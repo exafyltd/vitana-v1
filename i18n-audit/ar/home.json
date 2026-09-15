@@ -36,12 +36,11 @@
       "phase": "llm"
     },
     "home.dailyMatches": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation 'تطابقات يومية' is awkward and not idiomatic; 'تطابقات' is a literal translation of 'matches' but in this context 'matches' refers to suggested matches, better translated as 'مقترحات يومية' or 'مطابقات يومية'.",
-      "suggested": "مقترحات يومية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-24T08:40:00.196Z"
+  "generatedAt": "2026-09-15T08:50:57.101Z"
 }
