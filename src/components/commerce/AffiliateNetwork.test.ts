@@ -3,8 +3,13 @@
  * harmless and silently promises attribution we cannot deliver: the supplier
  * answers, we store it, and none of their sales are ever matched.
  *
- * So the picker is pinned to the networks with a REAL conversion path, and the
- * gateway's own allowlist is pinned alongside it so the two cannot drift.
+ * So the picker is pinned here to the networks with a REAL conversion path.
+ * The gateway pins its own end separately —
+ * services/gateway/test/routes/supplier-attributing-networks.test.ts asserts
+ * ATTRIBUTING_NETWORKS is exactly {awin, admitad} and that each one's
+ * conversion path still exists. These are two repos, so neither test can read
+ * the other's source; the pair is what keeps the two ends from drifting, and
+ * widening one without the other fails there rather than here.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
