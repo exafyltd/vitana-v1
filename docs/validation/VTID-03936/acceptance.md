@@ -104,3 +104,20 @@ What COULD be run and was:
 **Not done, flagged rather than silently skipped:** a real browser screenshot of the register dialog and roster drawer.
 Needs a session with npm registry access (or a pre-warmed `node_modules`) to run the dev server; CI (which does have
 package-registry access) is the actual type/build/test gate for this PR.
+
+### Addendum — PR preview deploy closed part of the local-build gap (2026-09-15, same VTID)
+
+`PREVIEW-DEPLOY-FRONTEND.yml` posted a real preview
+(`https://d2w0cqhh9jhjpj.cloudfront.net/pr-1088/`, commit `0d027ca`) after the PR opened — that workflow DOES have npm
+registry access, so its build is real evidence this session's own `tsc`/build gap didn't hide a compile error. Checked
+read-only (GET only, no write — this is a static SPA preview, no live data):
+
+- `GET /pr-1088/commerce` → `200 text/html` — the SPA shell serves.
+- Its single entry chunk (`assets/index-6ACw-41z.js`, ~2.5MB) contains the literal strings `orgOnboarding`,
+  `partner-orgs`, and `commerce/invites/:token/accept` — i.e. the new i18n namespace, the new `PARTNER_ORGS_API`
+  constant, and the new route path all genuinely compiled and shipped, not a stale cached build.
+
+**Still not covered by this:** no authenticated interactive check (clicking Register, opening the roster drawer,
+actually submitting an invite) — that still needs a real session against this preview with a signed-in test user,
+which this session did not do. The AC-1 through AC-6 mappings above remain code-review-level, not interaction-level,
+verification.
