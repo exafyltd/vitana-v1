@@ -10334,7 +10334,7 @@
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
       "howItWorksTitle": "What happens next",
-      "manualIntro": "No AI assistant? No problem:",
+      "manualIntro": "You don't have an AI assistant? No problem:",
       "manualCta": "Connect via API instead (for developers)",
       "connectionsEmptyHint": "Once you connect your first business, you will follow its progress to going live right here.",
       "connectionsCount": "{count} connected",
@@ -10422,8 +10422,6 @@
         "otherSignin": "Another way to sign in"
       },
       "_pending_review": {
-        "manualIntro": true,
-        "manualCta": true,
         "addProduct": true
       }
     },
