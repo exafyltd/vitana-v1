@@ -10353,7 +10353,13 @@
         "networkHint": "Darüber rechnen wir deine Verkäufe ab. Nur Awin und Admitad sind aktuell angebunden.",
         "networkOtherHint": "Kein Problem. Wir erfassen die Weiterleitungen zu deinem Shop; Verkäufe rechnen wir per Absprache ab, bis ein Netzwerk angebunden ist.",
         "advertiserId": "Deine Advertiser-ID",
-        "advertiserIdHint": "Deine ID in diesem Netzwerk. Ohne sie können wir einen Verkauf nicht dir zuordnen — die Weiterleitung sehen wir, den Kauf nicht."
+        "advertiserIdHint": "Deine ID in diesem Netzwerk. Ohne sie können wir einen Verkauf nicht dir zuordnen — die Weiterleitung sehen wir, den Kauf nicht.",
+        "salesModel": "Wie verkaufst du?",
+        "salesModelReferral": "Käufer zu deinem Shop schicken",
+        "salesModelReferralHint": "Wir zeigen dein Produkt in Discover und schicken Käufer zu deiner Produktseite. Du verkaufst und lieferst wie bisher.",
+        "salesModelDirect": "Direkt über Vitanaland verkaufen",
+        "salesModelSoon": "Bald",
+        "salesModelDirectHint": "Käufer bezahlen direkt in der App. Noch nicht verfügbar: Auszahlungen an Lieferanten gibt es bei uns noch nicht."
       },
       "join": {
         "seoTitle": "Business bei Vitanaland anmelden",

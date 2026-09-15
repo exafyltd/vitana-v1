@@ -132,6 +132,38 @@ export function AddProductSheet({
                     {t('screens.commerceportal.productForm.businessNameHint')}
                   </p>
 
+                  {/* How this supplier sells. Direct sale is genuinely not
+                      available yet — the buyer half exists (wallet checkout)
+                      but nothing pays a supplier or tells them to ship — so it
+                      is shown as unavailable rather than hidden or, worse,
+                      offered. */}
+                  <div className="space-y-1.5 pt-2">
+                    <Label className="text-slate-300">
+                      {t('screens.commerceportal.productForm.salesModel')}
+                    </Label>
+                    <div className="grid gap-2">
+                      <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2.5">
+                        <p className="text-sm font-medium text-amber-200">
+                          {t('screens.commerceportal.productForm.salesModelReferral')}
+                        </p>
+                        <p className="mt-0.5 text-xs text-slate-400">
+                          {t('screens.commerceportal.productForm.salesModelReferralHint')}
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-2.5 opacity-60">
+                        <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-300">
+                          {t('screens.commerceportal.productForm.salesModelDirect')}
+                          <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-400">
+                            {t('screens.commerceportal.productForm.salesModelSoon')}
+                          </span>
+                        </p>
+                        <p className="mt-0.5 text-xs text-slate-500">
+                          {t('screens.commerceportal.productForm.salesModelDirectHint')}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="space-y-1.5 pt-2">
                     <Label htmlFor="pf-network" className="text-slate-300">
                       {t('screens.commerceportal.productForm.network')}
