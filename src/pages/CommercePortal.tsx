@@ -17,13 +17,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Loader2, ShieldCheck, Store, Workflow } from 'lucide-react';
+import { Loader2, PackagePlus, ShieldCheck, Store, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
 import { ConnectionCard, type ConnectionRow } from '@/components/commerce/ConnectionCard';
 import { ConnectionWorkbench } from '@/components/commerce/ConnectionWorkbench';
 import { ManualConnectDialog } from '@/components/commerce/ManualConnectDialog';
+import { AddProductSheet } from '@/components/commerce/AddProductSheet';
 import { adminFetch } from '@/lib/admin-api';
 import { MY_PORTAL_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
@@ -40,6 +41,7 @@ const CONNECTION_PARAM = 'connection';
 export default function CommercePortal() {
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
+  const [addProductOpen, setAddProductOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const reduce = useReducedMotion();
 
@@ -166,12 +168,19 @@ export default function CommercePortal() {
       </section>
 
       {/* MANUAL FALLBACK — quiet on purpose, but it is the path that works today. */}
-      <section className="mt-8 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-slate-800/70 bg-slate-900/30 px-4 py-4 text-center">
+      <section className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl border border-slate-800/70 bg-slate-900/30 px-4 py-4 text-center">
         <span className="text-sm text-slate-500">{t('screens.commerceportal.manualIntro')}</span>
+        <Button
+          onClick={() => setAddProductOpen(true)}
+          className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+        >
+          <PackagePlus className="me-2 h-4 w-4" />
+          {t('screens.commerceportal.addProduct')}
+        </Button>
         <Button
           variant="ghost"
           onClick={() => setManualOpen(true)}
-          className="h-auto px-2 py-1 text-sm font-medium text-amber-400 underline-offset-4 hover:bg-transparent hover:text-amber-300 hover:underline"
+          className="h-auto px-2 py-1 text-sm font-medium text-slate-400 underline-offset-4 hover:bg-transparent hover:text-slate-200 hover:underline"
         >
           {t('screens.commerceportal.manualCta')}
         </Button>
@@ -180,6 +189,8 @@ export default function CommercePortal() {
       <p className="mt-8 text-center text-xs text-slate-600">{t('screens.commerceportal.footNote')}</p>
 
       <ManualConnectDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={load} />
+
+      <AddProductSheet open={addProductOpen} onOpenChange={setAddProductOpen} onSaved={load} />
 
       {openConnectionId && (
         <ConnectionWorkbench
