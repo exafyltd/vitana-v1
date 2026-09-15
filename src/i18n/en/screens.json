@@ -10420,6 +10420,11 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "otherSignin": "Another way to sign in"
+      },
+      "_pending_review": {
+        "manualIntro": true,
+        "manualCta": true,
+        "addProduct": true
       }
     },
     "oauthconsent": {
