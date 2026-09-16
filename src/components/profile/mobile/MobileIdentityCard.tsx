@@ -13,6 +13,7 @@ import { useFollow } from "@/hooks/useFollow";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { FollowListDialog } from "@/components/profile/FollowListDialog";
 import { t } from '@/lib/i18n-toast';
+import { displayHandle } from '@/lib/handle-display';
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
@@ -98,6 +99,10 @@ export function MobileIdentityCard({
     if (!statsUserId) return;
     setFollowListType(type);
   };
+
+  // VTID-03978: never render the /u/:identifier routing fallback (an auth
+  // UUID) as if it were the member's handle.
+  const shownHandle = displayHandle(handle);
 
   return (
     <div className={cn("px-4 pt-safe-top pb-2", className)}>
@@ -185,8 +190,8 @@ export function MobileIdentityCard({
 
           {/* Handle + Archetype */}
           <p className="text-sm text-slate-600 text-center mt-0.5">
-            {handle && <span>@{handle}</span>}
-            {handle && archetype && <span> · </span>}
+            {shownHandle && <span>@{shownHandle}</span>}
+            {shownHandle && archetype && <span> · </span>}
             {archetype && <span>{archetype}</span>}
           </p>
 

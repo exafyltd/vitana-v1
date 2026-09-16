@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { UserRole } from "@/hooks/useRole";
 import { TenantType } from "@/hooks/useTenant";
@@ -35,6 +35,10 @@ interface ProfileData {
   coverUrl?: string;
   location?: string;
   longevityArchetype?: string;
+  // VTID-03978: true while the provider is showing the email-prefix fallback
+  // because the `profiles` fetch failed (timeout, network, RLS error). A
+  // missing row is NOT degraded — that is a real (new-user) state.
+  degraded?: boolean;
   links?: Array<{ label: string; url: string }>;
   languages?: string[];
   linkedin_url?: string;
@@ -65,15 +69,51 @@ const getDefaultProfile = (): ProfileData => ({
   initials: "GU",
 });
 
+// VTID-03978: retry schedule for a failed `profiles` fetch. The login-time
+// fetch is bounded at 10s and, before this, a single failure (a slow
+// database, a suspended WebView socket) pinned the degraded fallback profile
+// (email-prefix name, no handle, role label instead of @handle in the side
+// drawer, auth UUID rendered as the handle on the identity card) for the
+// entire session — the realtime subscription only re-fetches when the row
+// itself changes, and the effect below is keyed on user.id on purpose.
+export const PROFILE_FETCH_RETRY_DELAYS_MS = [1500, 4000, 10000] as const;
+
 export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const { user, session } = useAuth();
   const [profile, setProfile] = useState<ProfileData>(getDefaultProfile());
   const [loading, setLoading] = useState(false);
+  // VTID-03978: retry bookkeeping. A real profile, once loaded, must never be
+  // overwritten by the fallback because a later refetch happened to fail.
+  const hasRealProfileRef = useRef(false);
+  const activeUserIdRef = useRef<string | null>(null);
+  const retryTimerRef = useRef<number | null>(null);
 
-  const fetchUserProfile = async (userId: string) => {
+  const clearRetryTimer = () => {
+    if (retryTimerRef.current !== null) {
+      window.clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+    }
+  };
+
+  const scheduleRetry = (userId: string, attempt: number) => {
+    const delay: number | undefined = PROFILE_FETCH_RETRY_DELAYS_MS[attempt];
+    if (delay === undefined) {
+      console.error(`Profile fetch failed ${attempt + 1} times for ${userId}; giving up until the next trigger.`);
+      return;
+    }
+    clearRetryTimer();
+    retryTimerRef.current = window.setTimeout(() => {
+      retryTimerRef.current = null;
+      // The user may have signed out or switched in the meantime.
+      if (activeUserIdRef.current !== userId) return;
+      fetchUserProfile(userId, attempt + 1);
+    }, delay);
+  };
+
+  const fetchUserProfile = async (userId: string, attempt = 0) => {
     try {
       setLoading(true);
-      console.log('Fetching profile for user ID:', userId);
+      console.log('Fetching profile for user ID:', userId, attempt > 0 ? `(retry ${attempt})` : '');
       
       // Fetch profile data from Supabase. abortSignal bounds the request —
       // without it, a stalled connection (e.g. a WebView socket suspended by
@@ -88,8 +128,10 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         .abortSignal(AbortSignal.timeout(10000));
 
       if (error) {
-        console.error('Error fetching profile:', error);
-        // Continue with default values even if there's an error
+        // VTID-03978: a query error is a FAILURE, not "no row". It used to
+        // fall through and build the fallback profile from the null row,
+        // indistinguishable from a brand-new user, with no retry.
+        throw error;
       }
 
       console.log('Profile data from DB:', profileData);
@@ -192,17 +234,26 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       };
 
       console.log('Setting profile state:', profileState);
+      // A null row (no profiles record yet) is a legitimate state: it renders
+      // the same email-derived defaults but is NOT retried and NOT degraded.
+      hasRealProfileRef.current = !!profileData;
+      clearRetryTimer();
       setProfile(profileState);
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
-      // Set default profile even on error
-      setProfile({
-        displayName: user?.email?.split('@')[0] || "User",
-        role: "community",
-        tenantId: "maxina",
-        initials: user?.email?.charAt(0)?.toUpperCase() || "U",
-        email: user?.email,
-      });
+      // VTID-03978: only show the fallback when nothing better is on screen;
+      // a previously loaded real profile stays put. Either way, retry.
+      if (!hasRealProfileRef.current) {
+        setProfile({
+          displayName: user?.email?.split('@')[0] || "User",
+          role: "community",
+          tenantId: "maxina",
+          initials: user?.email?.charAt(0)?.toUpperCase() || "U",
+          email: user?.email,
+          degraded: true,
+        });
+      }
+      scheduleRetry(userId, attempt);
     } finally {
       setLoading(false);
     }
@@ -217,6 +268,10 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (user && session) {
+      // VTID-03978: fresh identity → fresh retry state.
+      activeUserIdRef.current = user.id;
+      hasRealProfileRef.current = false;
+      clearRetryTimer();
       fetchUserProfile(user.id);
       
       // Set up real-time subscription for profile changes
@@ -238,10 +293,14 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         .subscribe();
 
       return () => {
+        clearRetryTimer();
         supabase.removeChannel(channel);
       };
     } else {
       // Use default profile for non-authenticated users
+      activeUserIdRef.current = null;
+      hasRealProfileRef.current = false;
+      clearRetryTimer();
       setProfile(getDefaultProfile());
       setLoading(false);
     }
