@@ -1,0 +1,57 @@
+# VTID-03943 — commands run during this change
+
+## Investigation
+Cross-repo companion to exafyltd/vitana-platform VTID-03943. Confirmed via
+grep that this component already fully supports past_purchases and has no
+existing test file:
+$ grep -n "past_purchases" src/hooks/useMarketplace.ts src/components/discover/HiddenByLimitationsFooter.tsx
+  useMarketplace.ts:76        past_purchases?: number; (on HiddenBreakdown)
+  HiddenByLimitationsFooter.tsx:22   past_purchases?: number;
+  HiddenByLimitationsFooter.tsx:34   REASON_LABELS.past_purchases entry
+$ find src/components/discover -iname "HiddenByLimitationsFooter.test*"
+(no results, before this VTID)
+
+## New test file (written from scratch — no existing coverage to extend)
+src/components/discover/HiddenByLimitationsFooter.test.tsx — 5 tests: null
+breakdown renders nothing, all-zero breakdown renders nothing, a non-zero
+past_purchases count shows in the total and its row once expanded, sorts
+correctly alongside another non-zero reason, and past_purchases is safely
+omitted when absent from the breakdown object entirely.
+
+Mocks: @/lib/i18n-toast (t()) only. Wrapped in a real MemoryRouter (this
+repo's established pattern for components rendering react-router-dom's
+Link — see ProfileDrawer.test.tsx) rather than mocking Link itself, since
+this component's own Link usage is exactly what's under test (the "Adjust"
+deep-link per reason row).
+
+## Setup
+node_modules already installed from Rung 3 in this session's checkout.
+
+## Targeted test run
+$ npx vitest run src/components/discover/HiddenByLimitationsFooter.test.tsx
+Test Files: 1 passed (1)
+Tests: 5 passed (5)
+(full output: outputs/vitest-new-suite.txt)
+
+## TypeScript
+$ npx tsc --noEmit
+(clean, no output — see outputs/tsc-noemit.txt)
+
+## Full frontend suite (regression check)
+$ npx vitest run
+Test Files: 117 passed (117)
+Tests: 624 passed (624)
+0 failures.
+(full output: outputs/vitest-full-suite.txt)
+
+## VTID
+Shared with exafyltd/vitana-platform's coordinated backend fix —
+VTID-03943 (allocated there via the gateway's /api/v1/vtid/allocate
+endpoint; see that repo's commands.log for the raw allocation call). One
+VTID across both repos' PRs, per this repo's own established precedent for
+a single coordinated cross-repo fix.
+
+## Branch hygiene
+Branched fresh as `rung4-vtid-03943` from `origin/main` (post-Rung-3 merge,
+`0cbd3a0`), per this session's established per-rung pattern. Re-fetched
+origin/main after an initial fetch raced the PR #1089 merge propagation.
