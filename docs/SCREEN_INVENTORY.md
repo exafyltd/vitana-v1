@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 348
+- **Pages scanned:** 349
 - **Distinct i18n keys consumed:** 5012
 - **Namespaces in use:** 46
 - **Hardcoded string suspects (regex heuristic):** 67
@@ -91,6 +91,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 6, total in shard: 11125
 
 ### src/pages/CommerceConnectionRedirect.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/CommerceHealthOrders.responsive.test.ts
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
