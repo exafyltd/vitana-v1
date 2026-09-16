@@ -88,17 +88,30 @@ export function useRole() {
   const dbRole = (query.data as UserRole | null) || "community";
   const effectiveRole: UserRole = isMobile ? "community" : dbRole;
 
+  // VTID-03968: hasPermission() intentionally checks the real, unforced
+  // dbRole — NOT effectiveRole. A VTID-03962 change made this check use
+  // effectiveRole (mobile-forced to 'community') on the theory that
+  // "BackOffice is desktop-only" should mean mobile can never open it at
+  // all. That broke the established, deliberately-tested VTID-03936
+  // pattern every sibling of this hook already follows (useRoleRouteEnforcement,
+  // useSmartRouting, useHybridMessages, useGlobalMessages, useTenantMessages,
+  // SideDrawerNav — all read dbRole for exactly this reason, with
+  // useSmartRouting.mobile.test.ts pinning it): a mobile
+  // patient/professional/staff/admin/backoffice account is redirected to
+  // its OWN role dashboard by useRoleRouteEnforcement's dbRole-based
+  // check, same as desktop. Checking hasPermission() against
+  // effectiveRole instead meant ProtectedRoute then denied entry to the
+  // very page dbRole-based routing had just sent them to — an infinite
+  // redirect loop (/ -> /backoffice/dashboard -> NotAuthorized's "Return
+  // to Dashboard" -> / -> ...). effectiveRole exists for the COMMUNITY
+  // viewing/nav experience (bottom nav, community feature chrome), not to
+  // gate whether a role-appropriate dashboard route may render at all.
   const hasPermission = (requiredRole: UserRole): boolean => {
-    // Exafy admins have all permissions — but never on mobile, where
-    // effectiveRole is always forced to 'community' above. Without the
-    // !isMobile guard here, this bypass let an Exafy admin's session open
-    // desktop-only surfaces (e.g. BackOffice) on a phone: ProtectedRoute
-    // calls hasPermission() directly, so it must respect the same mobile
-    // enforcement effectiveRole already encodes, not re-check the raw
-    // (unmapped) dbRole/isExafyAdmin state on its own.
-    if (isExafyAdmin && !isMobile) return true;
+    // Exafy admins have all permissions, on every viewport — their access
+    // doesn't change based on screen width.
+    if (isExafyAdmin) return true;
 
-    return ROLE_HIERARCHY[effectiveRole] >= ROLE_HIERARCHY[requiredRole];
+    return ROLE_HIERARCHY[dbRole] >= ROLE_HIERARCHY[requiredRole];
   };
 
   return {

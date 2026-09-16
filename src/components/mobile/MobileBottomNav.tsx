@@ -46,6 +46,19 @@ export function MobileBottomNav() {
     '/news/',
     '/payment-checkout',
     '/kyc-verification',
+    // VTID-03968: role-dashboard sections (admin, BackOffice, staff,
+    // professional, patient) each have their own top-level navigation —
+    // BackOfficeTabs for /backoffice/*, etc. useRoleRouteEnforcement
+    // deliberately routes an elevated-role account here on mobile too
+    // (VTID-03936), so these pages DO render on mobile; showing the
+    // community News/Inbox/Journey/Events bar underneath their own
+    // navigation was the actual "this shouldn't be on mobile" bug —
+    // wrong chrome, not wrong access.
+    '/admin',
+    '/backoffice',
+    '/staff',
+    '/professional',
+    '/patient',
   ];
   
   const shouldHideNav = hideNavRoutes.some(route => 
