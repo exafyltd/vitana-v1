@@ -66,7 +66,7 @@ export default function GlobalSendFunds({
   const [isSearching, setIsSearching] = useState(false);
 
   const { transferFunds, balances, loading } = useWallet();
-  const { currentRole } = useRole();
+  const { dbRole } = useRole();
   const { activeTenantId } = useTenant();
   const { toast } = useToast();
 
@@ -78,7 +78,7 @@ export default function GlobalSendFunds({
 
     setIsSearching(true);
     try {
-      const isGlobalContext = currentRole === 'community';
+      const isGlobalContext = dbRole === 'community';
       
       if (isGlobalContext) {
         const { data, error } = await supabase.rpc('search_global_directory', {

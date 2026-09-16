@@ -20,6 +20,7 @@ import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { useRole } from '@/hooks/useRole';
+import { useMyPartnerOrgs } from '@/hooks/useOrgMembers';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useUniversalCart } from '@/hooks/useUniversalCart';
@@ -49,6 +50,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // Use unforced DB role: useRole() pins currentRole to "community" on mobile
   // for permissioning, but the drawer subtitle should reflect the real role.
   const { dbRole } = useRole();
+  // Health Test Orders is gated on org membership (partner_organization_members),
+  // an axis independent of dbRole — see CommerceHealthOrders.tsx's own header
+  // comment for why. Not org_admin/staff-only: an assigned-only professional
+  // member should still be able to find their own order queue.
+  const myPartnerOrgsQuery = useMyPartnerOrgs();
+  const isPartnerOrgMember = (myPartnerOrgsQuery.data?.length ?? 0) > 0;
   const [searchQuery, setSearchQuery] = useState('');
   const [searchActive, setSearchActive] = useState(false);
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
@@ -394,7 +401,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
             {/* Nav items */}
             <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
-              {(isIAPRestricted() ? drawerNavItems.filter(item => item.id !== 'wallet') : drawerNavItems).map((item) => {
+              {drawerNavItems
+                .filter(item => !(isIAPRestricted() && item.id === 'wallet'))
+                .filter(item => !(item.id === 'patient-results' && dbRole === 'community'))
+                .filter(item => !(item.id === 'health-orders' && !isPartnerOrgMember))
+                .map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
                 const isDestructive = item.id === 'logout';
