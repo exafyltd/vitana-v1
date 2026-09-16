@@ -901,14 +901,16 @@ export function useGlobalMessages(
   forceActive?: boolean
 ) {
   const { user } = useAuth();
-  const { currentRole } = useRole();
+  // VTID-03936: dbRole, not the mobile-forced currentRole — see
+  // useHybridMessages.ts's own comment; same fix, same reason.
+  const { dbRole } = useRole();
   const queryClient = useQueryClient();
   const [isSending, setIsSending] = useState(false);
   const [typingUsers] = useState<
     Array<{ id: string; name: string; avatar?: string }>
   >([]);
 
-  const isGlobalContext = forceActive ?? currentRole === "community";
+  const isGlobalContext = forceActive ?? dbRole === "community";
 
   // ── Threads (conversations list) ──────────────────────────────────
 

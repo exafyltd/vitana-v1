@@ -27,9 +27,6 @@
     "ticketEmailNote": "Tu entrada y confirmación se enviarán a este correo.",
     "left": "{count} restantes",
     "loadFailed": "Error al cargar las entradas",
-    "_pending_review": {
-      "checkFailed": true
-    },
-    "checkFailed": "Couldn't verify the code — try again"
+    "checkFailed": "No se pudo verificar el código — inténtalo de nuevo"
   }
 }

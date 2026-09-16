@@ -13,7 +13,13 @@ const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/co
 
 export function useRoleRouteEnforcement() {
   const { user, loading: authLoading } = useAuth();
-  const { currentRole, isLoading: roleLoading } = useRole();
+  // VTID-03936: dbRole (not the mobile-forced currentRole) — a mobile
+  // patient/professional/staff/admin must be routed by their real role,
+  // same as desktop. See useSmartRouting()'s own dbRole usage below for
+  // the sibling half of this fix; the two must move together or mobile
+  // ends up redirected to a role-appropriate dashboard here and bounced
+  // straight back to /home by whichever of these two runs second.
+  const { dbRole, isLoading: roleLoading } = useRole();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,31 +47,31 @@ export function useRoleRouteEnforcement() {
     const isOnPatient = path === '/patient' || path.startsWith('/patient/');
 
     // Admin/staff role but on community routes → redirect to admin
-    if (isOnCommunity && (currentRole === 'admin' || currentRole === 'staff')) {
+    if (isOnCommunity && (dbRole === 'admin' || dbRole === 'staff')) {
       navigate('/admin', { replace: true });
       return;
     }
     // BackOffice role on community routes → redirect to BackOffice (VTID-03832)
-    if (isOnCommunity && currentRole === 'backoffice') {
+    if (isOnCommunity && dbRole === 'backoffice') {
       navigate('/backoffice/dashboard', { replace: true });
       return;
     }
     // Professional role on community routes → redirect to professional dashboard
-    if (isOnCommunity && currentRole === 'professional') {
+    if (isOnCommunity && dbRole === 'professional') {
       navigate('/professional/dashboard', { replace: true });
       return;
     }
     // Patient role on community routes → redirect to patient dashboard
-    if (isOnCommunity && currentRole === 'patient') {
+    if (isOnCommunity && dbRole === 'patient') {
       navigate('/patient/dashboard', { replace: true });
       return;
     }
     // Community role on admin/staff/professional/patient routes → redirect to home
-    if (currentRole === 'community' && (isOnAdmin || isOnBackOffice || isOnStaff || isOnProfessional || isOnPatient)) {
+    if (dbRole === 'community' && (isOnAdmin || isOnBackOffice || isOnStaff || isOnProfessional || isOnPatient)) {
       navigate('/home', { replace: true });
       return;
     }
-  }, [user, authLoading, roleLoading, currentRole, location.pathname, navigate]);
+  }, [user, authLoading, roleLoading, dbRole, location.pathname, navigate]);
 }
 
 // News (the "All News" home feed at /home) is the default landing screen after
@@ -81,7 +87,9 @@ export function useInitialLandingRedirect() {
 export function useSmartRouting() {
   const { user, loading: authLoading } = useAuth();
   const { isExafyAdmin, activeTenantId, tenant } = useTenant();
-  const { currentRole } = useRole();
+  // VTID-03936: dbRole, not the mobile-forced currentRole — see
+  // useRoleRouteEnforcement()'s own comment above, same fix, same reason.
+  const { dbRole } = useRole();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -114,7 +122,7 @@ export function useSmartRouting() {
           // Mask the landing redirect chain (role/tenant resolution → dest).
           markRouteTransition();
           // Route based on stored role preference, not always to admin
-          switch (currentRole) {
+          switch (dbRole) {
             case "admin":
             case "staff":
               navigate('/admin');
@@ -157,9 +165,9 @@ export function useSmartRouting() {
       }
 
       // Regular users - route to appropriate dashboard based on role
-      if (currentRole && location.pathname === '/') {
+      if (dbRole && location.pathname === '/') {
         markRouteTransition();
-        switch (currentRole) {
+        switch (dbRole) {
           case "admin":
           case "staff":
             navigate("/admin");
@@ -200,17 +208,22 @@ export function useSmartRouting() {
         }
       }
     }
-  }, [user, authLoading, isExafyAdmin, currentRole, tenant, location.pathname, navigate]);
+  }, [user, authLoading, isExafyAdmin, dbRole, tenant, location.pathname, navigate]);
 }
 
 // Hook to get appropriate redirect URL based on user type
 export function useRoleBasedRedirect() {
   const { isExafyAdmin, tenant } = useTenant();
-  const { currentRole } = useRole();
+  // VTID-03936: dbRole, not the mobile-forced currentRole — this hook backs
+  // the post-email-confirmation landing pages (EmailConfirmed.tsx and the
+  // per-tenant *Confirmed.tsx pages), which a mobile patient/professional/
+  // staff/admin reaches just as often as desktop; same fix as
+  // useSmartRouting()/useRoleRouteEnforcement() above, for the same reason.
+  const { dbRole } = useRole();
 
   const getRedirectUrl = () => {
-    // Exafy Admins fall through to the same currentRole switch — no hardcoded admin redirect
-    switch (currentRole) {
+    // Exafy Admins fall through to the same dbRole switch — no hardcoded admin redirect
+    switch (dbRole) {
       case "admin":
       case "staff":
         return "/admin";

@@ -1,9 +1,53 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Calendar, TestTube, Target } from "lucide-react";
+import { Heart, Calendar, TestTube, Target, Loader2, FlaskConical } from "lucide-react";
+import { Link } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
+import { formatDate } from '@/lib/locale-format';
 import AppLayout from "@/components/AppLayout";
+import { usePatientHealthResults } from '@/hooks/usePatientHealthResults';
+
+function RecentResultsCard() {
+  const { data: results, isLoading } = usePatientHealthResults();
+  const recent = (results ?? []).slice(0, 3);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('screens.patient.results.recentResultsTitle')}</CardTitle>
+        <CardDescription>{t('screens.patient.results.subtitle')}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {isLoading ? (
+          <div className="flex justify-center py-4">
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          </div>
+        ) : recent.length === 0 ? (
+          <p className="text-sm text-muted-foreground">{t('screens.patient.results.empty')}</p>
+        ) : (
+          recent.map((r) => (
+            <div key={r.id} className="flex items-center gap-3">
+              <FlaskConical className="h-4 w-4 text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-sm font-medium">{t('screens.patient.results.markerCount', { count: r.biomarkers.length })}</p>
+                <p className="text-xs text-muted-foreground">
+                  {formatDate(new Date(r.report_date ?? r.created_at), 'MMM dd, yyyy')}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+        <Button asChild variant="outline" className="w-full justify-start">
+          <Link to="/patient/results">
+            <TestTube className="mr-2 h-4 w-4" />
+            {t('screens.patient.results.viewAll')}
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function PatientDashboard() {
   return (
@@ -15,6 +59,8 @@ export default function PatientDashboard() {
           {t('screens.patient.yourPersonalizedHealthManagementCenter')}
         </p>
       </div>
+
+      <RecentResultsCard />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
