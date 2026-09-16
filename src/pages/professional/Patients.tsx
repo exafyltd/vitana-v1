@@ -8,6 +8,10 @@
  * via Commerce Portal for a partner org's own staff/professional members,
  * a different, independent authorization axis from this route's
  * Vitana-wide `dbRole==='professional'` gate). Deliberately not fabricated.
+ *
+ * `ComingSoonPlaceholder` wraps `AppLayout` internally (VTID-03909's
+ * sidebar/avatar/role-switcher fix), so this page doesn't need its own
+ * `<AppLayout>` — the shell is still present, just one layer down.
  */
 import { Users } from "lucide-react";
 import { ComingSoonPlaceholder } from "@/components/patient/ComingSoonPlaceholder";
