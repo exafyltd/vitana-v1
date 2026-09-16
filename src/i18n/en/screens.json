@@ -10010,12 +10010,7 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results",
-        "_pending_review": {
-          "biomarker": true,
-          "status": true,
-          "statusNormal": true
-        }
+        "viewAll": "View all results"
       },
       "comingSoon": {
         "title": "Coming soon",
