@@ -17,7 +17,11 @@
     "support": "Wsparcie",
     "settings": "Ustawienia",
     "logout": "Wyloguj się",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "patientResults": true,
+      "healthOrders": true
+    },
+    "patientResults": "My Results",
+    "healthOrders": "Health Test Orders"
+  }
 }

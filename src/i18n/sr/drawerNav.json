@@ -17,7 +17,11 @@
     "support": "Podrška",
     "settings": "Podešavanja",
     "logout": "Odjavi se",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "patientResults": true,
+      "healthOrders": true
+    },
+    "patientResults": "My Results",
+    "healthOrders": "Health Test Orders"
+  }
 }

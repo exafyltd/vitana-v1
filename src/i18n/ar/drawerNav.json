@@ -17,7 +17,7 @@
     "connectors": "تطبيقات متصلة",
     "inbox": "صندوق الوارد",
     "logout": "تسجيل الخروج",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "patientResults": "نتائجي",
+    "healthOrders": "طلبات الفحوصات الصحية"
+  }
 }

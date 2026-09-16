@@ -17,7 +17,11 @@
     "support": "支持",
     "settings": "设置",
     "logout": "退出登录",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "patientResults": true,
+      "healthOrders": true
+    },
+    "patientResults": "My Results",
+    "healthOrders": "Health Test Orders"
+  }
 }
