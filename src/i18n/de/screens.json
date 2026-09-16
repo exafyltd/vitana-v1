@@ -10500,6 +10500,13 @@
         "acceptNotFound": "Diese Einladung wurde nicht gefunden.",
         "acceptFailed": "Die Einladung konnte nicht angenommen werden.",
         "goToPortal": "Zum Commerce Portal"
+      },
+      "healthOrders": {
+        "sectionTitle": "Gesundheitstest-Bestellungen",
+        "sectionSubtitle": "Bestellungen deiner Organisation(en) ansehen und bearbeiten",
+        "pageTitle": "Gesundheitstest-Bestellungen",
+        "notAMemberTitle": "Du bist noch kein Mitglied einer Partnerorganisation",
+        "notAMemberBody": "Sobald du einer Partnerorganisation beitrittst oder eine registrierst, erscheinen ihre Bestellungen hier."
       }
     },
     "oauthconsent": {

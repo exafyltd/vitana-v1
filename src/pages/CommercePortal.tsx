@@ -15,9 +15,9 @@
  * swapping state libraries is not what this change is about.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Building2, Loader2, PackagePlus, ShieldCheck, Store, Workflow } from 'lucide-react';
+import { Building2, ChevronRight, FlaskConical, Loader2, PackagePlus, ShieldCheck, Store, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
@@ -243,6 +243,21 @@ export default function CommercePortal() {
             </ul>
           )}
         </div>
+
+        {/* Health-test orders — Commerce Partner Onboarding Phase 4 (VTID-03951) */}
+        {myOrgs !== null && myOrgs.length > 0 && (
+          <Link
+            to="/commerce/health-orders"
+            className="group mt-4 flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition-colors hover:border-amber-500/40 hover:bg-slate-900"
+          >
+            <FlaskConical className="h-5 w-5 shrink-0 text-amber-400" />
+            <div className="min-w-0 flex-1">
+              <p className="font-medium text-slate-100">{t('screens.commerceportal.healthOrders.sectionTitle')}</p>
+              <p className="truncate text-xs text-slate-500">{t('screens.commerceportal.healthOrders.sectionSubtitle')}</p>
+            </div>
+            <ChevronRight className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-amber-400 rtl:rotate-180" />
+          </Link>
+        )}
       </section>
 
       {/* MANUAL FALLBACK — quiet on purpose, but it is the path that works today. */}

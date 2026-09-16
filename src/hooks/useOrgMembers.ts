@@ -13,6 +13,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminFetch } from '@/lib/admin-api';
 import { PARTNER_ORGS_API } from '@/lib/commerce-host';
+import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 
 export interface OrgMemberRow {
   id: string;
@@ -68,6 +69,23 @@ export function useCreateOrgInvite(orgId: string | null) {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['partner-org-invites', orgId] });
+    },
+  });
+}
+
+/**
+ * Every partner org the caller belongs to, with their per-org role
+ * (VTID-03951). A separate call from `CommercePortal.tsx`'s own
+ * `loadMyOrgs()`/`myOrgs` state — that page predates this hook and is left
+ * untouched; this is for the new health-orders screen, which needs the same
+ * membership data independently.
+ */
+export function useMyPartnerOrgs() {
+  return useQuery({
+    queryKey: ['partner-orgs-mine'],
+    queryFn: async () => {
+      const json = await adminFetch(`${PARTNER_ORGS_API}/mine`);
+      return (json.organizations ?? []) as MyOrgRow[];
     },
   });
 }

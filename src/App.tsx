@@ -87,6 +87,7 @@ const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLog
 // VTID-03882: one screen replaces the landing / connections / agent-connect
 // trio; the old connection-detail URL redirects into its drawer.
 const CommercePortal = lazy(() => import("./pages/CommercePortal"));
+const CommerceHealthOrders = lazy(() => import("./pages/CommerceHealthOrders"));
 const CommerceJoin = lazy(() => import("./pages/CommerceJoin"));
 const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnectionRedirect"));
 // VTID-03936: an org invite link's landing page.
@@ -1784,6 +1785,12 @@ const App = () => {
           {/* VTID-03936: an org_admin's invite link — self-service org
               onboarding (register a business, invite staff/professionals). */}
           <Route path="/commerce/invites/:token/accept" element={<AuthGuard><CommerceAcceptInvite /></AuthGuard>} />
+          {/* VTID-03951: a partner org's staff/professional members' health-
+              test orders — gated the same way as the roster drawer above
+              (any signed-in user, membership checked client-side via
+              /partner-orgs/mine, enforced server-side per-route), NOT by
+              dbRole/ProtectedRoute — org membership is an independent axis. */}
+          <Route path="/commerce/health-orders" element={<AuthGuard><CommerceHealthOrders /></AuthGuard>} />
           {/* VTID-03882: the three old URLs stay alive and fold into /commerce. */}
           <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
           <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />
