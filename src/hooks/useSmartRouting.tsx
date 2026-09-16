@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useRole } from "@/hooks/useRole";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { markRouteTransition } from "@/lib/routeTransition";
 
 // ── Role-route enforcement ──────────────────────────────────────────
@@ -20,6 +21,12 @@ export function useRoleRouteEnforcement() {
   // ends up redirected to a role-appropriate dashboard here and bounced
   // straight back to /home by whichever of these two runs second.
   const { dbRole, isLoading: roleLoading } = useRole();
+  // VTID-03973: BackOffice is desktop-only, unlike the other elevated-role
+  // dashboards (admin/staff/professional/patient) VTID-03936 deliberately
+  // routes to on mobile too. BackOffice's own screens (dense tables, a
+  // maker-checker approval flow) were never designed or tested for a phone
+  // viewport. See the isOnBackOffice-specific branches below.
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -46,13 +53,22 @@ export function useRoleRouteEnforcement() {
     const isOnProfessional = path === '/professional' || path.startsWith('/professional/');
     const isOnPatient = path === '/patient' || path.startsWith('/patient/');
 
+    // VTID-03973: a backoffice account landing on /backoffice/* on mobile
+    // (deep link, bookmark, typed URL — not just the post-login redirect
+    // below) is bounced to /home instead of the desktop-only BackOffice UI.
+    if (isOnBackOffice && isMobile) {
+      navigate('/home', { replace: true });
+      return;
+    }
+
     // Admin/staff role but on community routes → redirect to admin
     if (isOnCommunity && (dbRole === 'admin' || dbRole === 'staff')) {
       navigate('/admin', { replace: true });
       return;
     }
-    // BackOffice role on community routes → redirect to BackOffice (VTID-03832)
-    if (isOnCommunity && dbRole === 'backoffice') {
+    // BackOffice role on community routes → redirect to BackOffice, desktop
+    // only (VTID-03832 / VTID-03973) — on mobile, stay on the community route.
+    if (isOnCommunity && dbRole === 'backoffice' && !isMobile) {
       navigate('/backoffice/dashboard', { replace: true });
       return;
     }
@@ -71,7 +87,7 @@ export function useRoleRouteEnforcement() {
       navigate('/home', { replace: true });
       return;
     }
-  }, [user, authLoading, roleLoading, dbRole, location.pathname, navigate]);
+  }, [user, authLoading, roleLoading, dbRole, isMobile, location.pathname, navigate]);
 }
 
 // News (the "All News" home feed at /home) is the default landing screen after
@@ -90,6 +106,10 @@ export function useSmartRouting() {
   // VTID-03936: dbRole, not the mobile-forced currentRole — see
   // useRoleRouteEnforcement()'s own comment above, same fix, same reason.
   const { dbRole } = useRole();
+  // VTID-03973: BackOffice is desktop-only — see useRoleRouteEnforcement()'s
+  // comment above. The two `case "backoffice":` branches below route to
+  // /home instead of /backoffice/dashboard on mobile.
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -128,7 +148,7 @@ export function useSmartRouting() {
               navigate('/admin');
               break;
             case "backoffice":
-              navigate('/backoffice/dashboard');
+              navigate(isMobile ? '/home' : '/backoffice/dashboard');
               break;
             case "professional":
               navigate('/professional/dashboard');
@@ -173,7 +193,7 @@ export function useSmartRouting() {
             navigate("/admin");
             break;
           case "backoffice":
-            navigate("/backoffice/dashboard");
+            navigate(isMobile ? "/home" : "/backoffice/dashboard");
             break;
           case "professional":
             navigate("/professional/dashboard");
@@ -208,7 +228,7 @@ export function useSmartRouting() {
         }
       }
     }
-  }, [user, authLoading, isExafyAdmin, dbRole, tenant, location.pathname, navigate]);
+  }, [user, authLoading, isExafyAdmin, dbRole, isMobile, tenant, location.pathname, navigate]);
 }
 
 // Hook to get appropriate redirect URL based on user type
@@ -220,6 +240,10 @@ export function useRoleBasedRedirect() {
   // staff/admin reaches just as often as desktop; same fix as
   // useSmartRouting()/useRoleRouteEnforcement() above, for the same reason.
   const { dbRole } = useRole();
+  // VTID-03973: BackOffice is desktop-only — see useRoleRouteEnforcement()'s
+  // comment. A backoffice account confirming email on mobile lands on /home,
+  // not the desktop-only BackOffice UI.
+  const isMobile = useIsMobile();
 
   const getRedirectUrl = () => {
     // Exafy Admins fall through to the same dbRole switch — no hardcoded admin redirect
@@ -228,7 +252,7 @@ export function useRoleBasedRedirect() {
       case "staff":
         return "/admin";
       case "backoffice":
-        return "/backoffice/dashboard";
+        return isMobile ? "/home" : "/backoffice/dashboard";
       case "professional":
         return "/professional/dashboard";
       case "patient":
