@@ -1,25 +1,32 @@
 /**
- * VTID-03962 — hasPermission() used to bypass mobile enforcement entirely.
+ * VTID-03968 — hasPermission() must check the real, unforced dbRole (and an
+ * unconditional Exafy-admin bypass), matching every sibling consumer of
+ * dbRole in this codebase (useRoleRouteEnforcement, useSmartRouting,
+ * useHybridMessages, useGlobalMessages, useTenantMessages, SideDrawerNav —
+ * see useSmartRouting.mobile.test.ts for the canonical VTID-03936 fix these
+ * all follow).
  *
- * useRole()'s own comment says "MOBILE ENFORCEMENT: Mobile devices are
- * ALWAYS community role — no role switching on mobile", and effectiveRole
- * (returned as `currentRole`) correctly applied that. But hasPermission()
- * — the function ProtectedRoute actually calls to gate routes like
- * /backoffice/* — had two independent bugs that both ignored it:
+ * A prior change (VTID-03962) made hasPermission() check the mobile-forced
+ * effectiveRole instead, on the theory that "BackOffice is desktop-only"
+ * meant mobile should never pass a backoffice/admin guard at all. That
+ * broke the VTID-03936 contract: useRoleRouteEnforcement deliberately
+ * redirects a mobile patient/professional/staff/admin/backoffice account
+ * to ITS OWN role dashboard (dbRole-based, unaffected by the mobile
+ * community-force), and ProtectedRoute calls hasPermission() to decide
+ * whether that same page may render. Gating hasPermission() on
+ * effectiveRole meant a backoffice account got redirected to
+ * /backoffice/dashboard and then immediately denied entry to it —
+ * NotAuthorized's own "Return to Dashboard" link goes to "/", which
+ * useSmartRouting's (also dbRole-based) redirect sends right back to
+ * /backoffice/dashboard: an infinite loop, observed live on staging.
  *
- *   1. `if (isExafyAdmin) return true;` bypassed mobile entirely for any
- *      Exafy admin account, regardless of viewport.
- *   2. The hierarchy check below it read the raw, unmapped `query.data`
- *      (dbRole) instead of the mobile-safe effectiveRole, so even a
- *      non-Exafy-admin account with a stored 'backoffice'/'admin'/etc.
- *      role preference would also pass a role-gated route's check on
- *      mobile.
- *
- * Net effect: an Exafy admin (or any elevated-role account) who opened a
- * desktop-only surface like BackOffice on a phone — via a stale URL, deep
- * link, or the landing-redirect race — had ProtectedRoute render it in
- * full, with the mobile community bottom nav overlaid on top, instead of
- * the intended access-denied/bounce-to-home behavior.
+ * effectiveRole (currentRole) exists for the COMMUNITY viewing/nav
+ * experience on mobile (bottom nav, community feature chrome) — it does
+ * not gate whether a role-appropriate dashboard route may render. (The
+ * actual "this shouldn't look like this on mobile" complaint the
+ * VTID-03962 investigation started from was the community MobileBottomNav
+ * rendering underneath BackOffice's own navigation — fixed separately, in
+ * MobileBottomNav's hideNavRoutes.)
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -57,32 +64,33 @@ async function renderRole() {
   return result;
 }
 
-describe('useRole().hasPermission — mobile enforcement (VTID-03962)', () => {
+describe('useRole().hasPermission — dbRole-based, matches VTID-03936 (VTID-03968)', () => {
   beforeEach(() => {
     useTenantMock.mockReset();
     useIsMobileMock.mockReset();
     storedRole = 'community';
   });
 
-  it('Exafy admin, desktop, dbRole=community: still passes a backoffice guard (bypass preserved)', async () => {
+  it('Exafy admin, desktop: passes a backoffice guard', async () => {
     useTenantMock.mockReturnValue({ activeTenantId: 'tenant-1', isExafyAdmin: true });
     useIsMobileMock.mockReturnValue(false);
     storedRole = 'community';
 
     const result = await renderRole();
-    expect(result.current.currentRole).toBe('community');
     expect(result.current.hasPermission('backoffice')).toBe(true);
   });
 
-  it('Exafy admin, MOBILE: no longer passes a backoffice guard — effectiveRole is community', async () => {
+  it('Exafy admin, MOBILE: still passes a backoffice guard — access does not change with viewport', async () => {
     useTenantMock.mockReturnValue({ activeTenantId: 'tenant-1', isExafyAdmin: true });
     useIsMobileMock.mockReturnValue(true);
     storedRole = 'backoffice';
 
     const result = await renderRole();
+    // currentRole (effectiveRole) is still mobile-forced for the community
+    // viewing experience...
     expect(result.current.currentRole).toBe('community');
-    expect(result.current.hasPermission('backoffice')).toBe(false);
-    // Community-level routes must still be reachable.
+    // ...but hasPermission is a real-role check, unaffected by that force.
+    expect(result.current.hasPermission('backoffice')).toBe(true);
     expect(result.current.hasPermission('community')).toBe(true);
   });
 
@@ -95,21 +103,22 @@ describe('useRole().hasPermission — mobile enforcement (VTID-03962)', () => {
     expect(result.current.hasPermission('backoffice')).toBe(true);
   });
 
-  it('non-Exafy account with a stored backoffice role, MOBILE: no longer passes the guard (was reading raw dbRole)', async () => {
+  it('non-Exafy account with a stored backoffice role, MOBILE: still passes the guard (dbRole-based, matches useRoleRouteEnforcement redirecting it there)', async () => {
     useTenantMock.mockReturnValue({ activeTenantId: 'tenant-1', isExafyAdmin: false });
     useIsMobileMock.mockReturnValue(true);
     storedRole = 'backoffice';
 
     const result = await renderRole();
-    expect(result.current.hasPermission('backoffice')).toBe(false);
+    expect(result.current.hasPermission('backoffice')).toBe(true);
   });
 
-  it('non-Exafy account with a stored admin role, MOBILE: does not pass an admin guard either', async () => {
+  it('a plain community account, MOBILE: does not pass a backoffice/admin guard', async () => {
     useTenantMock.mockReturnValue({ activeTenantId: 'tenant-1', isExafyAdmin: false });
     useIsMobileMock.mockReturnValue(true);
-    storedRole = 'admin';
+    storedRole = 'community';
 
     const result = await renderRole();
+    expect(result.current.hasPermission('backoffice')).toBe(false);
     expect(result.current.hasPermission('admin')).toBe(false);
     expect(result.current.hasPermission('community')).toBe(true);
   });
