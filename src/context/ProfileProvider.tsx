@@ -245,7 +245,19 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       setProfile(getDefaultProfile());
       setLoading(false);
     }
-  }, [user, session]);
+    // VTID-03952: intentionally keyed on user?.id, not the `session` object.
+    // Supabase hands back a NEW session object on every token refresh
+    // (hourly auto-refresh, plus the explicit refreshSession() calls the
+    // login/tenant-switch flow makes), and this effect used to depend on
+    // `session` itself — so each of those re-fired fetchUserProfile() even
+    // though profile data has nothing to do with the access token. During
+    // login specifically, that meant this 10s-bounded `profiles` fetch could
+    // be re-triggered 2-3 times back to back, racing itself and making a
+    // transient failure/timeout on any one of them more likely to be the
+    // one that "wins" and leaves the degraded (email-prefix name, no
+    // handle) fallback profile showing for the rest of the session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   // Listen for role changes and update profile
   useEffect(() => {

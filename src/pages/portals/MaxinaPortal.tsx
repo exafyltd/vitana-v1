@@ -325,18 +325,15 @@ const MaxinaPortal = () => {
             // Preload demo images in background while user waits
             preloadDemoImages().catch(console.error);
 
-            // After successful sign-in, switch to the current tenant context
-            // This ensures users can access different tenants after login
-            try {
-              await supabase.rpc('switch_to_tenant_by_slug', {
-                p_tenant_slug: 'maxina'
-              });
-              // Refresh session to get updated metadata
-              await supabase.auth.refreshSession();
-            } catch (switchError) {
-              console.error('Error switching tenant after login:', switchError);
-              // Continue with login even if tenant switch fails
-            }
+            // VTID-03952: the post-login redirect effect below already calls
+            // setTenantBySlug('maxina') as soon as `user` is set, which does
+            // this exact switch_to_tenant_by_slug RPC + refreshSession() (and
+            // then some — it also resolves the tenant row locally and
+            // invalidates the tenant query cache, neither of which this
+            // block did). Doing it a second time here just added two more
+            // sequential round trips + a 100ms sleep to the sign-in button's
+            // own spinner for no benefit — nothing in this handler reads the
+            // result. Let the redirect effect's call be the single switch.
           }
         })(),
         timeoutPromise,
