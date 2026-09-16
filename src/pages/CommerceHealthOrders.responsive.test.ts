@@ -17,9 +17,11 @@ describe('CommerceHealthOrders mobile-responsive pass (VTID-03976)', () => {
   });
 
   it('the mobile order card still gates the status control and upload button on canActOn(o)', () => {
-    const mobileSection = SRC.slice(SRC.indexOf('Mobile: stacked cards'), SRC.indexOf('Mobile: stacked cards') + 3000);
-    expect(mobileSection).toContain('canActOn(o)');
-    expect(mobileSection).toContain('screens.admin.uploadResult');
+    const firstMarker = SRC.indexOf('Mobile: stacked cards');
+    const secondMarker = SRC.indexOf('Mobile: stacked cards', firstMarker + 1);
+    const mobileOrdersSection = SRC.slice(firstMarker, secondMarker);
+    expect(mobileOrdersSection).toContain('canActOn(o)');
+    expect(mobileOrdersSection).toContain('screens.admin.uploadResult');
   });
 
   it('the mobile inbox card still calls setResolveRow, same handler as the desktop row', () => {
