@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 347
+- **Pages scanned:** 348
 - **Distinct i18n keys consumed:** 5012
 - **Namespaces in use:** 46
 - **Hardcoded string suspects (regex heuristic):** 67
@@ -414,6 +414,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 33, total in shard: 11122
 
 ### src/pages/PublicCampaignLanding.linked-event-tickets-error-logging.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/PublicCampaignLanding.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { displayHandle } from '@/lib/handle-display';
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Button } from "@/components/ui/button";
@@ -265,7 +266,9 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           
           {/* Handle with refined typography */}
           <div className="flex items-center justify-center gap-2 mb-2 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0, animationFillMode: 'forwards' }}>
-            <p className={`text-base ${themeConfig.text.handle} font-light tracking-wide transition-colors duration-300`}>@{profile.handle}</p>
+            {displayHandle(profile.handle) && (
+              <p className={`text-base ${themeConfig.text.handle} font-light tracking-wide transition-colors duration-300`}>@{displayHandle(profile.handle)}</p>
+            )}
             {profile.longevityArchetype && (
               <>
                 <span className="text-muted-foreground/50 text-xs">•</span>
