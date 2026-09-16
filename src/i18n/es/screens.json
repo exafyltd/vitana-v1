@@ -10720,6 +10720,20 @@
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
         "goToPortal": "Go to Commerce Portal"
+      },
+      "healthOrders": {
+        "_pending_review": {
+          "sectionTitle": true,
+          "sectionSubtitle": true,
+          "pageTitle": true,
+          "notAMemberTitle": true,
+          "notAMemberBody": true
+        },
+        "sectionTitle": "Health-test orders",
+        "sectionSubtitle": "View and act on your organization(s)' orders",
+        "pageTitle": "Health-test orders",
+        "notAMemberTitle": "You're not a member of any partner organization yet",
+        "notAMemberBody": "Once you join or register a partner organization, its orders will appear here."
       }
     },
     "oauthconsent": {

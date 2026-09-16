@@ -56,107 +56,65 @@
     },
     "hr": {
       "tabs": {
-        "employees": "Employees & Documents",
-        "leave": "Leave",
-        "attendance": "Attendance",
-        "expenses": "Expense Claims",
-        "payroll": "Payroll",
-        "_pending_review": {
-          "employees": true,
-          "leave": true,
-          "attendance": true,
-          "expenses": true,
-          "payroll": true
-        }
+        "employees": "Funcionários e Documentos",
+        "leave": "Licença",
+        "attendance": "Frequência",
+        "expenses": "Reembolso de Despesas",
+        "payroll": "Folha de Pagamento"
       }
     },
     "operations": {
       "tabs": {
-        "suppliers": "Suppliers",
-        "purchase-orders": "Purchase Orders",
-        "receipts": "Goods Receipts",
-        "supplier-invoices": "Supplier Invoices",
-        "items": "Items",
-        "warehouses": "Warehouses",
-        "stock": "Stock & Moves",
-        "_pending_review": {
-          "suppliers": true,
-          "purchase-orders": true,
-          "receipts": true,
-          "supplier-invoices": true,
-          "items": true,
-          "warehouses": true,
-          "stock": true
-        }
+        "suppliers": "Fornecedores",
+        "purchase-orders": "Pedidos de Compra",
+        "receipts": "Recebimento de Mercadorias",
+        "supplier-invoices": "Faturas de Fornecedores",
+        "items": "Itens",
+        "warehouses": "Armazéns",
+        "stock": "Estoque e Movimentações"
       }
     },
     "legal": {
       "tabs": {
-        "contracts": "Contracts",
-        "obligations": "Obligations",
-        "compliance": "Compliance",
-        "e-signature": "E-Signature",
-        "_pending_review": {
-          "contracts": true,
-          "obligations": true,
-          "compliance": true,
-          "e-signature": true
-        }
+        "contracts": "Contratos",
+        "obligations": "Obrigações",
+        "compliance": "Conformidade",
+        "e-signature": "Assinatura Eletrônica"
       }
     },
     "reports": {
       "tabs": {
-        "pnl": "P&L",
-        "balance-sheet": "Balance Sheet",
-        "trial-balance": "Trial Balance",
-        "cash-flow": "Cash Flow",
-        "aging": "AR / AP Aging",
-        "dimensions": "By Dimension",
-        "board-pack": "Board Pack",
-        "_pending_review": {
-          "pnl": true,
-          "balance-sheet": true,
-          "trial-balance": true,
-          "cash-flow": true,
-          "aging": true,
-          "dimensions": true,
-          "board-pack": true
-        }
+        "pnl": "Lucros e Perdas",
+        "balance-sheet": "Balanço Patrimonial",
+        "trial-balance": "Balancete",
+        "cash-flow": "Fluxo de Caixa",
+        "aging": "Contas a Receber/Pagar - Vencimento",
+        "dimensions": "Por Dimensão",
+        "board-pack": "Pacote do Conselho"
       }
     },
     "approvals": {
       "tabs": {
-        "queue": "Queue",
-        "my-requests": "My Requests",
-        "policies": "Policies",
-        "_pending_review": {
-          "queue": true,
-          "my-requests": true,
-          "policies": true
-        }
+        "queue": "Fila",
+        "my-requests": "Minhas Solicitações",
+        "policies": "Políticas"
       }
     },
     "audit": {
       "tabs": {
-        "receipts": "Command Receipts",
-        "erp-log": "ERP Audit Log",
-        "trail": "Independent Audit Trail",
-        "_pending_review": {
-          "receipts": true,
-          "erp-log": true,
-          "trail": true
-        }
+        "receipts": "Comprovantes de Comando",
+        "erp-log": "Log de Auditoria do ERP",
+        "trail": "Trilha de Auditoria Independente"
       }
     },
     "settings": {
       "tabs": {
-        "company": "Company & Legal Entities",
+        "company": "Empresa e Pessoas Jurídicas",
         "access": "Access",
         "numbering": "Numbering",
         "integrations": "Integrations",
         "modules": "Modules",
         "_pending_review": {
-          "company": true,
           "access": true,
           "numbering": true,
           "integrations": true,
