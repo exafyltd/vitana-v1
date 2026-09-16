@@ -2,7 +2,8 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Guided Journey",
-      "fullLabel": "Full App"
+      "fullLabel": "Full App",
+      "_pending_review": {}
     },
     "guidedCatalog": {
       "allChapters": "All",
@@ -44,7 +45,8 @@
       "markDone": "Mark as done",
       "skip": "Skip for now",
       "doneToast": "Practice complete!",
-      "doneError": "Couldn't save."
+      "doneError": "Couldn't save.",
+      "_pending_review": {}
     },
     "common": {
       "languageToggleAriaLabel": "Language",
@@ -855,7 +857,8 @@
       "mental": "Mental",
       "next3": "Next 3 days",
       "month": "30 days",
-      "future": "Future"
+      "future": "Future",
+      "_pending_review": {}
     },
     "admin": {
       "usingDefaults": "Using defaults",
@@ -2619,7 +2622,8 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty."
+      "inboxEmpty": "Inbox is empty.",
+      "_pending_review": {}
     },
     "ai-feed": {
       "noEventsFound": "No events found",
@@ -2645,7 +2649,8 @@
       "confidenceConfident": "{confidence}% confident",
       "later": "Later",
       "value0Trends": "{value0}trends",
-      "lengthEventsShown": "{length}events shown"
+      "lengthEventsShown": "{length}events shown",
+      "_pending_review": {}
     },
     "analysis": {
       "topMatchFactors": "Top Match Factors",
@@ -2673,7 +2678,8 @@
       "explore": "Explore →",
       "viewSchedule": "View Schedule →",
       "findCoaches": "Find Coaches →",
-      "match_scoreMatch": "{match_score}% match"
+      "match_scoreMatch": "{match_score}% match",
+      "_pending_review": {}
     },
     "assistant": {
       "voiceProviderHint_polly": "Amazon Polly delivers high-quality, natural-sounding speech synthesis",
@@ -2762,7 +2768,8 @@
       "proactive": "Proactive",
       "referrals": "Referrals",
       "creativityValue0": "Creativity: {value0}",
-      "languageSettingControlsWhatLanguageText": "The \"Language\" setting controls which language text is generated in. The \"Voice\" setting controls which text-to-speech voice reads it aloud. They are automatically synchronized for simplicity."
+      "languageSettingControlsWhatLanguageText": "The \"Language\" setting controls which language text is generated in. The \"Voice\" setting controls which text-to-speech voice reads it aloud. They are automatically synchronized for simplicity.",
+      "_pending_review": {}
     },
     "audio": {
       "volume": "Volume",
@@ -2774,7 +2781,8 @@
       "soundscapeValue0": "Soundscape {value0}",
       "vitanaAudioMode": "VITANA Audio Mode",
       "typeYourMessage": "Type your message...",
-      "returnVoice": "Return to voice"
+      "returnVoice": "Return to voice",
+      "_pending_review": {}
     },
     "auth": {
       "bundle": "BUNDLE:",
@@ -2819,7 +2827,8 @@
       "sendResetLink": "Send reset link",
       "resendAvailableCooldownS": "Resend available in {cooldown}s",
       "ifYouArenTSentBack": "If you're not automatically redirected, tap below – or simply switch to the Vitana app, it will update within seconds.",
-      "updating": "Updating…"
+      "updating": "Updating…",
+      "_pending_review": {}
     },
     "billing": {
       "from": "From:",
@@ -2840,7 +2849,8 @@
       "invoiceId": "Invoice #{id}",
       "invoiceDateDate": "Invoice date: {date}",
       "healthCityHc12345": "Health City, HC 12345",
-      "paymentMethodPaymentmethod": "Payment Method: {paymentMethod}"
+      "paymentMethodPaymentmethod": "Payment Method: {paymentMethod}",
+      "_pending_review": {}
     },
     "business": {
       "performance": "📊 Performance",
@@ -2997,7 +3007,8 @@
       "eGLongevitySleepSupplements": "e.g. longevity, sleep, supplements",
       "autopilotHasLengthReferralDraftValue1": "Autopilot has {length}referral draft{value1}for you",
       "scoreValue0": "score {value0}",
-      "viewSource": "View source"
+      "viewSource": "View source",
+      "_pending_review": {}
     },
     "calendar": {
       "noUpcomingEvents": "No upcoming events",
@@ -3055,7 +3066,8 @@
       "suggestedValue0": "Suggested: {value0}",
       "todaySIndexPulseCompletingYour": "Today's Index pulse: completing your {totalCount}pillar-tagged event\n                              {value1}will move your Index.",
       "urgent": "urgent",
-      "highPriority": "high priority"
+      "highPriority": "high priority",
+      "_pending_review": {}
     },
     "cart": {
       "yourCart": "Your Cart",
@@ -3079,7 +3091,8 @@
       "secureCheckoutPoweredByStripe": "Secure checkout powered by Stripe",
       "startAddingItemsFromDiscoverMarketplace": "Start adding items from the Discover marketplace",
       "value0Each": "${value0}each",
-      "byProvider": "by {provider}"
+      "byProvider": "by {provider}",
+      "_pending_review": {}
     },
     "chat": {
       "googleCloudApiKey": "Google Cloud API Key",
@@ -3093,7 +3106,8 @@
       "yourApiKeyStoredSecurelyOnly": "Your API key is stored securely and only used for AI voice features.",
       "cancel": "Cancel",
       "go": "Go to",
-      "saveApiKey": "Save API Key"
+      "saveApiKey": "Save API Key",
+      "_pending_review": {}
     },
     "coaches": {
       "topMatchFactors": "Top matching factors",
@@ -3108,7 +3122,8 @@
       "fromSessions_from": "from €{sessions_from}",
       "bookSession": "Book Session",
       "member_countMembers": "{member_count}members",
-      "participant_countAttending": "{participant_count}attending"
+      "participant_countAttending": "{participant_count}attending",
+      "_pending_review": {}
     },
     "community": {
       "openAsksKind_commercialBuy": "Buying",
@@ -3577,7 +3592,8 @@
       "goalActivity": "Activity buddy",
       "goalWeightLoss": "Weight loss",
       "goalMentalWellness": "Mental wellness",
-      "goalValues": "Values aligned"
+      "goalValues": "Values aligned",
+      "_pending_review": {}
     },
     "contacts": {
       "addContact": "Add Contact",
@@ -3643,7 +3659,8 @@
       "tipUseValue0IncludeYourPersonal": "Tip: Use {value0}to include your personal invite link",
       "sendInvites": "Send Invites",
       "weFoundTotalimportedContactsMatchedThem": "We found {totalImported}contacts and matched them with VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound}of your friends are already on VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound}of your friends are already on VITANA!",
+      "_pending_review": {}
     },
     "context": {
       "aiSpotlight": "AI Spotlight 🔮",
@@ -3659,7 +3676,8 @@
       "meditationSuggestion": "Meditation Suggestion 🧘",
       "sleepReadiness": "Sleep Readiness 🌙",
       "social": "Social 👥",
-      "todaySPlan": "Today's Plan 🗓️"
+      "todaySPlan": "Today's Plan 🗓️",
+      "_pending_review": {}
     },
     "creator": {
       "paymentStatus": "Payment Status",
@@ -3682,7 +3700,8 @@
       "notEnabled": "Not Enabled",
       "completeYourPaymentSetupStartReceiving": "Complete your payment setup to start receiving earnings from paid Live Rooms.",
       "enablePaymentsCreatePaidLiveRooms": "Enable payments to create paid Live Rooms and receive 90% of the revenue. Quick 2-minute setup with Stripe Connect.",
-      "checkingStatus": "Checking status..."
+      "checkingStatus": "Checking status...",
+      "_pending_review": {}
     },
     "crossover": {
       "keyFactors": "Key Factors:",
@@ -3815,7 +3834,8 @@
       "matchCatFitness": "Fitness",
       "matchCatLongevity": "Longevity stage",
       "matchCatCommunity": "Community",
-      "matchCatWellness": "Shared wellness"
+      "matchCatWellness": "Shared wellness",
+      "_pending_review": {}
     },
     "debug": {
       "presenceDebug": "Presence Debug",
@@ -3825,7 +3845,8 @@
       "connected": "Connected:",
       "latency": "Latency:",
       "realtimelatencyMs": "{realtimeLatency}ms",
-      "value0SAgo": "{value0}s ago"
+      "value0SAgo": "{value0}s ago",
+      "_pending_review": {}
     },
     "dev": {
       "currentStep": "Current Step",
@@ -4208,7 +4229,8 @@
       "briefDescriptionDocument": "Brief description of the document",
       "whatSNewThisFrontpageVersion": "What's new in this frontpage version?",
       "tryAdjustingYourFiltersWaitFor": "Try adjusting your filters or wait for new events to arrive.",
-      "statusLastcode": "Status: {lastCode}"
+      "statusLastcode": "Status: {lastCode}",
+      "_pending_review": {}
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Start recording your wellness journey",
@@ -4261,7 +4283,8 @@
       "tagLabel_voice": "voice",
       "tagLabel_text": "text",
       "voiceTranscriptCaptured": "Voice transcript captured. Edit and save your entry.",
-      "writeYourThoughts": "Write your thoughts..."
+      "writeYourThoughts": "Write your thoughts...",
+      "_pending_review": {}
     },
     "discover": {
       "marketplaceView_open": "Open marketplace",
@@ -4557,7 +4580,8 @@
       "bookmarkedValue0": "🔖 {value0} Bookmarks",
       "exploreName": "Explore {name}",
       "exploreItem_name": "Explore {item_name}",
-      "value0Services": "{value0}Services"
+      "value0Services": "{value0}Services",
+      "_pending_review": {}
     },
     "discovery": {
       "filters": "Filters:",
@@ -4589,7 +4613,8 @@
       "value0NewTodayViewedcountTotalcount": "{value0}new today · {viewedCount}/{totalCount}viewed",
       "clearFilters": "Clear Filters",
       "checkBackTomorrowFor10New": "Check back tomorrow for 10 new matches ✨",
-      "vitanaIndexVitana_index": "Vitana Index: {vitana_index}"
+      "vitanaIndexVitana_index": "Vitana Index: {vitana_index}",
+      "_pending_review": {}
     },
     "events": {
       "searchByNameEmail": "Search by name or email...",
@@ -4612,7 +4637,8 @@
       "youSureYouWantDeleteTitle": "Are you sure you want to delete \"{title}\"? This action cannot be undone.\n              All participants, tickets, and associated data will be permanently removed.",
       "sent_countSentResponse_countResponded": "{sent_count}sent • {response_count}responded",
       "attendeesTotal": "Attendees ({total})",
-      "noInvitationsSentYetStartInviting": "No invitations sent yet. Start inviting people to see responses here."
+      "noInvitationsSentYetStartInviting": "No invitations sent yet. Start inviting people to see responses here.",
+      "_pending_review": {}
     },
     "feedback": {
       "reportSent": "Report Sent!",
@@ -4639,7 +4665,8 @@
       "interimTextAppearsGrayUntilFinalized": "Interim text appears in gray until finalized...",
       "myReportsLength": "My Reports ({length})",
       "lengthAttachmentS": "📎 {length}attachment(s)",
-      "loadMoreValue0Remaining": "Load more ({value0}remaining)"
+      "loadMoreValue0Remaining": "Load more ({value0}remaining)",
+      "_pending_review": {}
     },
     "health": {
       "pillar_hydration_title": "Hydration",
@@ -5201,16 +5228,20 @@
           "hydration": "Hydration",
           "exercise": "Exercise",
           "sleep": "Sleep",
-          "mental": "Mental Health"
+          "mental": "Mental Health",
+          "_pending_review": {}
         },
         "economyAxes": {
           "find_match": "Find a Match",
           "marketplace": "Marketplace",
           "income_generation": "Income generation",
-          "business_formation": "Business formation"
+          "business_formation": "Business formation",
+          "_pending_review": {}
         },
-        "contractLink": "View the Ultimate Goal contract"
-      }
+        "contractLink": "View the Ultimate Goal contract",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "home": {
       "priorityOfTheDay": "Priority of the Day:",
@@ -5426,10 +5457,12 @@
       "noRoutinesYetCreateYourFirst": "No routines yet. Create your first routine to get started!",
       "text4NewIdeas": "4 new ideas",
       "executeAllValue0": "Execute All {value0}",
-      "noValue0ActionsAvailable": "No {value0}actions available"
+      "noValue0ActionsAvailable": "No {value0}actions available",
+      "_pending_review": {}
     },
     "icons": {
-      "xFormerlyTwitter": "X (formerly Twitter)"
+      "xFormerlyTwitter": "X (formerly Twitter)",
+      "_pending_review": {}
     },
     "intents": {
       "kindFilter_all": "All (compass-aware)",
@@ -5509,7 +5542,8 @@
       "kindOptionActivitySeek": "Activity partner",
       "kindOptionSocialSeek": "Coffee chat / mentorship",
       "kindOptionMutualAid": "Lend / borrow / give",
-      "kindOptionPartnerSeek": "Life partner"
+      "kindOptionPartnerSeek": "Life partner",
+      "_pending_review": {}
     },
     "layout": {
       "contentRequiresConsent": "Content Requires Consent",
@@ -5517,7 +5551,8 @@
       "reviewSettings": "Review Settings",
       "tapReviewPrivacySettingsForThis": "Tap to review privacy settings for this content type",
       "kindKind": "Kind: {kind}",
-      "idId": "ID: {id}"
+      "idId": "ID: {id}",
+      "_pending_review": {}
     },
     "liverooms": {
       "createLiveRoom": "Create Live Room",
@@ -5608,17 +5643,20 @@
         "emptyHint": "Finished rooms appear here — with a recap, highlights and recording.",
         "loading": "Loading past rooms…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}"
+        "heldRange": "{date} · {start}–{end}",
+        "_pending_review": {}
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
-      "durationHourMin": "{value0} h {value1} min"
+      "durationHourMin": "{value0} h {value1} min",
+      "_pending_review": {}
     },
     "meetups": {
       "detailsProgram": "Details & Program",
       "undo": "Undo",
       "closeEventDetails": "Close event details",
-      "shareMeetup": "Share meetup"
+      "shareMeetup": "Share meetup",
+      "_pending_review": {}
     },
     "memory": {
       "updatedAgo": "Updated {distance}",
@@ -5846,7 +5884,8 @@
       "memorySubnav_diary": "Daily Diary",
       "memorySubnav_recall": "Recall & Search",
       "memorySubnav_permissions": "Permissions",
-      "wellnessDiaryMultimediaDescription": "Record and review your wellness journey through multimedia entries."
+      "wellnessDiaryMultimediaDescription": "Record and review your wellness journey through multimedia entries.",
+      "_pending_review": {}
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Morning Motivation",
@@ -6034,7 +6073,8 @@
       "value0Participants": "{value0}participants",
       "value0Members": "{value0}members",
       "chooseConversationFromLeftStartMessaging": "Select a conversation on the left to send messages.",
-      "vitanaOpenScreen": "Open screen"
+      "vitanaOpenScreen": "Open screen",
+      "_pending_review": {}
     },
     "mobile": {
       "searching": "Searching…",
@@ -6053,7 +6093,8 @@
       "openSearch": "Open search",
       "openCalendar": "Open calendar",
       "openAutopilot": "Open autopilot",
-      "closeSearch": "Close search"
+      "closeSearch": "Close search",
+      "_pending_review": {}
     },
     "notifications": {
       "markAllAsRead": "Mark all as read",
@@ -6071,7 +6112,8 @@
       "deleteThisNotification": "Delete this notification",
       "delete": "Delete",
       "close": "Close",
-      "closeNotifications": "Close notifications"
+      "closeNotifications": "Close notifications",
+      "_pending_review": {}
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Pick the name part of your Vitana ID",
@@ -6087,11 +6129,13 @@
       "typeYourOwnName": "Or type your own name",
       "eGAlex": "e.g. alex",
       "welcomeMaxina": "Welcome to Maxina",
-      "yourLongevityJourneyBeginsNow": "Your longevity journey begins now"
+      "yourLongevityJourneyBeginsNow": "Your longevity journey begins now",
+      "_pending_review": {}
     },
     "orders": {
       "friendExampleCom": "friend@example.com",
-      "friendSName": "Friend's name"
+      "friendSName": "Friend's name",
+      "_pending_review": {}
     },
     "payment": {
       "selectDate": "Select Date",
@@ -6192,7 +6236,8 @@
       "conversationspecificPaymentActionWith": "A conversation-specific payment action with",
       "alreadyActivePleaseCompleteCloseThat": "is already active. \n                    Please complete or close that action first.",
       "anotherWalletActionCurrentlyProgressPlease": "Another wallet action is currently in progress. \n                    Please complete or close that action first.",
-      "paymenttypePaymentRequest": "{paymentType}Payment Request"
+      "paymenttypePaymentRequest": "{paymentType}Payment Request",
+      "_pending_review": {}
     },
     "proactive": {
       "proTip": "Pro Tip:",
@@ -6222,7 +6267,8 @@
       "personalInvitesGet3xMoreResponses": "Personal invites get 3x more responses than generic messages. \n            Our AI crafts authentic invitations that reflect your wellness journey!",
       "dismissTip": "Dismiss tip",
       "seeNextValue0More": "See Next ({value0}more)",
-      "membersWhoAutoshareTheirWellnessWins": "Members who auto-share their wellness wins inspire 5-10 friends to join each month, \n                creating a powerful ripple effect in their network."
+      "membersWhoAutoshareTheirWellnessWins": "Members who auto-share their wellness wins inspire 5-10 friends to join each month, \n                creating a powerful ripple effect in their network.",
+      "_pending_review": {}
     },
     "profile": {
       "adminAccess": "Admin Access",
@@ -6620,7 +6666,8 @@
       "licensedVerifiedHealthcareProvider": "Licensed and verified health service provider",
       "media": "Media",
       "events": "Events",
-      "health": "Health"
+      "health": "Health",
+      "_pending_review": {}
     },
     "reminders": {
       "subtitleDefault": "What Vitana is scheduling for you. Talk to the ORB to add naturally.",
@@ -6672,7 +6719,8 @@
       "noCompleted": "No completed reminders yet.",
       "noMissed": "No missed reminders — you're all caught up.",
       "creating": "Creating…",
-      "createReminder": "Create reminder"
+      "createReminder": "Create reminder",
+      "_pending_review": {}
     },
     "reseller": {
       "noEventsYourInventory": "No events in your inventory",
@@ -6736,7 +6784,8 @@
       "viewDetails": "View details",
       "perTicketSoldViaYourReseller": "per ticket sold via your reseller link. \n              Commission is calculated on gross ticket price before platform fees.",
       "viewWallet2": "View in Wallet →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity}ticket{value1}· {value2}"
+      "ticketquantityTicketValue1Value2": "{ticketQuantity}ticket{value1}· {value2}",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnectionLiveCheck": "Google connection — live check",
@@ -7395,7 +7444,8 @@
       "partnerLabsRevokeConfirm": "Revoke DoctorBox's access to your test results? Future results will no longer be shared with Vitana.",
       "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
       "partnerLabsRevokeSuccess": "Access revoked.",
-      "partnerLabsError": "Something went wrong. Please try again."
+      "partnerLabsError": "Something went wrong. Please try again.",
+      "_pending_review": {}
     },
     "sharing": {
       "activateCampaign": "Activate Campaign",
@@ -8205,7 +8255,8 @@
       "imageSpecsHashtagStrategyPostingTimes": "Image specs, hashtag strategy, posting times",
       "canvaFigmaDirectlyInapp": "Canva, Figma, or directly in-app",
       "copypasteCustomizeForYourNeeds": "Copy and paste or customize for your needs",
-      "createCustomDataPackageBySelecting": "Create a custom data package by selecting specific health metrics, date ranges, and data types tailored to the requirements of your health service provider or participation in research studies."
+      "createCustomDataPackageBySelecting": "Create a custom data package by selecting specific health metrics, date ranges, and data types tailored to the requirements of your health service provider or participation in research studies.",
+      "_pending_review": {}
     },
     "supplements": {
       "supplementName": "Supplement Name*",
@@ -8222,7 +8273,8 @@
       "notes": "Notes",
       "cancel": "Cancel",
       "value0Supplement": "{value0}Supplement",
-      "inactive": "Inactive"
+      "inactive": "Inactive",
+      "_pending_review": {}
     },
     "templates": {
       "sendMessages": "Send to Messages",
@@ -8236,7 +8288,8 @@
       "noDataAvailable": "No data available",
       "withWith": "With {with}",
       "spotsSpots": "{spots}spots",
-      "viewAllLengthRecommendations": "View all {length}recommendations"
+      "viewAllLengthRecommendations": "View all {length}recommendations",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketsSold": "Tickets Sold",
@@ -8281,7 +8334,8 @@
       "ticketValue0": "Ticket {value0}",
       "eGGeneralAdmission": "e.g., General Admission",
       "priceValue0": "Price ({value0}) *",
-      "whatSIncludedWithThisTicket": "What's included with this ticket?"
+      "whatSIncludedWithThisTicket": "What's included with this ticket?",
+      "_pending_review": {}
     },
     "ui": {
       "reconnecting": "Reconnecting...",
@@ -8313,7 +8367,8 @@
       "learnMore": "Learn more",
       "noItemsDisplay": "No items to display",
       "pointsCredits": "+{points}credits",
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "_pending_review": {}
     },
     "vertex": {
       "debugConsole": "Debug Console",
@@ -8340,11 +8395,13 @@
       "recording": "Recording...",
       "aiSpeaking": "AI Speaking...",
       "you": "You",
-      "transcriptWillAppearHere": "Transcript will appear here..."
+      "transcriptWillAppearHere": "Transcript will appear here...",
+      "_pending_review": {}
     },
     "vitanaland": {
       "enterVitanalandK": "Enter Vitanaland (⌘K)",
-      "enterVitanalandCmdK": "Enter VITANALAND (Cmd+K)"
+      "enterVitanalandCmdK": "Enter VITANALAND (Cmd+K)",
+      "_pending_review": {}
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -8370,7 +8427,8 @@
       "inviteCardBody": "Share the download flyer and start together.",
       "inviteCardCta": "Invite friends",
       "inviteShareTitle": "MAXINA – Longevity Community",
-      "inviteShareText": "Join me on MAXINA – the longevity community! Get the app here:"
+      "inviteShareText": "Join me on MAXINA – the longevity community! Get the app here:",
+      "_pending_review": {}
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8382,7 +8440,8 @@
       "viewIndex": "View Index",
       "viewJourney": "View My Journey",
       "viewMatch": "View Match",
-      "dismissCard": "Dismiss card"
+      "dismissCard": "Dismiss card",
+      "_pending_review": {}
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -8405,7 +8464,8 @@
       "giftFrom": "Gift from",
       "claiming": "Claiming...",
       "fromBuyer_name": "From {buyer_name}",
-      "createAccount": "Create Account"
+      "createAccount": "Create Account",
+      "_pending_review": {}
     },
     "wallet": {
       "currentSubscriptionPerks": "Current subscription perks",
@@ -8928,7 +8988,8 @@
       "continueToSecureCheckout": "Continue to secure checkout",
       "cardPaymentViaStripe": "Card payment, processed securely by Stripe",
       "currentBalanceLabel": "Current {currency} Balance",
-      "amountAddCurrency": "Amount to Add ({currency})"
+      "amountAddCurrency": "Amount to Add ({currency})",
+      "_pending_review": {}
     },
     "ai": {
       "subtitle_priorityActions": "AI-curated tasks for maximum wellness impact",
@@ -9097,7 +9158,8 @@
       "impactImpact": "Impact: {impact}",
       "defineHowYourAiAgentShould": "Define how your AI agent should behave, what it should focus on, and how it should communicate with you...",
       "thisReadonlyPlaceholderForAgentPrompt": "This is a read-only placeholder for the Agent Prompt Center. \n              Future phases will enable full AI agent customization and real-time testing.",
-      "thisReadonlyPlaceholderForPersonalAi": "This is a read-only placeholder for the Personal AI Timeline. \n                Future phases will connect to real AI activity data and provide interactive insights."
+      "thisReadonlyPlaceholderForPersonalAi": "This is a read-only placeholder for the Personal AI Timeline. \n                Future phases will connect to real AI activity data and provide interactive insights.",
+      "_pending_review": {}
     },
     "authpages": {
       "fullName": "Full name",
@@ -9108,7 +9170,8 @@
       "login": "Login",
       "signUp": "Sign up",
       "alreadyHaveAccountValue0": "Already have an account? {value0}",
-      "donAposTHaveAccountValue0": "Don&apos;t have an account? {value0}"
+      "donAposTHaveAccountValue0": "Don&apos;t have an account? {value0}",
+      "_pending_review": {}
     },
     "autopilotdashboard": {
       "text999": "of 999",
@@ -9251,8 +9314,10 @@
         "advanceCareer": "Advance Career",
         "masterNewSkills": "Master New Skills",
         "spiritualLife": "Spiritual Life",
-        "earnFromRecommendations": "Earn from recommendations"
-      }
+        "earnFromRecommendations": "Earn from recommendations",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
@@ -9272,7 +9337,8 @@
       "businessHub": "Business Hub 💼",
       "growYourWellnessBusinessManageClients": "Grow your wellness business and manage clients effortlessly",
       "business": "Business",
-      "value0MoreActions": "+{value0}more actions"
+      "value0MoreActions": "+{value0}more actions",
+      "_pending_review": {}
     },
     "businesslistings": {
       "myListings": "My listings",
@@ -9282,7 +9348,8 @@
       "backBusinessHub": "Back to Business Hub",
       "listingsAvailableForProAccounts": "Offers are available for Pro accounts.",
       "noListingsYetClick": "No offers yet. Click",
-      "addOneOpenOrbJustSay": "to add one – or open ORB and just say"
+      "addOneOpenOrbJustSay": "to add one – or open ORB and just say",
+      "_pending_review": {}
     },
     "businessopportunities": {
       "myListings": "My Listings",
@@ -9290,7 +9357,8 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Opportunities are available for Pro accounts. Upgrade to access incoming leads.",
       "opportunities": "Opportunities",
       "incomingLeadsMatchingYourOfferingsExpress": "Incoming leads matching your offerings. Express interest to start a conversation.",
-      "noLeadsYetWeLlNotify": "No leads yet. We'll notify you when matching demand arrives. Make sure you have at least one commercial_sell offer under"
+      "noLeadsYetWeLlNotify": "No leads yet. We'll notify you when matching demand arrives. Make sure you have at least one commercial_sell offer under",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "whatSNext": "What's Next?",
@@ -9306,7 +9374,8 @@
       "continueShopping": "Continue Shopping",
       "ifYouHaveAnyQuestionsAbout": "If you have any questions about your order, our support team is here to help.",
       "contactSupport": "Contact Support",
-      "viewMyOrders": "View My Orders"
+      "viewMyOrders": "View My Orders",
+      "_pending_review": {}
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "Your payment status is being reviewed...",
@@ -9329,10 +9398,12 @@
       "createYourFirstPaidRoom": "Create Your First Paid Room",
       "viewPaymentSettings": "View Payment Settings",
       "value0PaymentSetupComplete": "{value0} payment setup completed!",
-      "youReAllSetStartEarning": "You're all set to start earning from your Live Rooms"
+      "youReAllSetStartEarning": "You're all set to start earning from your Live Rooms",
+      "_pending_review": {}
     },
     "editprofilepage": {
-      "editProfileVitana": "Edit Profile – VITANA"
+      "editProfileVitana": "Edit Profile – VITANA",
+      "_pending_review": {}
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "Let's track your progress together! 📊",
@@ -9382,7 +9453,8 @@
       "weeklyActivity": "Weekly Activity",
       "mentalWellness": "Mental Wellness",
       "mindfulness": "Mindfulness",
-      "vitanaIndexOverview": "Vitana Index Overview"
+      "vitanaIndexOverview": "Vitana Index Overview",
+      "_pending_review": {}
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Comprehensive health & wellness platform",
@@ -9405,7 +9477,8 @@
       "merchantSelfServiceMarketplace": "Merchant Self-Service Marketplace",
       "connectYourBusinessToDiscoverYourself": "Connect your business to the Discover marketplace yourself — no integration project, no waiting for engineers.",
       "vitanaDev": "Vitana DEV",
-      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA is a comprehensive digital health platform offering multiple specialized environments \n              for different wellness communities and professional healthcare management."
+      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA is a comprehensive digital health platform offering multiple specialized environments \n              for different wellness communities and professional healthcare management.",
+      "_pending_review": {}
     },
     "intentboard": {
       "communityBoard": "Community board",
@@ -9415,14 +9488,16 @@
       "style": "Style",
       "lookingForYourOwnIntents": "Looking for your own intents?",
       "whatOthersLookingFor": "What others are looking for.",
-      "surfacedForYour": "Surfaced for your"
+      "surfacedForYour": "Surfaced for your",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "intentNotFound": "Intent not found.",
       "backMyIntents": "Back to My Intents",
       "closeIntent": "Close intent",
       "noMatchesYetWeLlKeep": "No matches yet. We'll keep looking and notify you when someone matches.",
-      "matchesLength": "Matches ({length})"
+      "matchesLength": "Matches ({length})",
+      "_pending_review": {}
     },
     "invitefriends": {
       "phoneContacts": "Phone Contacts",
@@ -9447,10 +9522,12 @@
       "noContactsMatchSearch": "No contacts match \"{search}\"",
       "importContacts": "Import Contacts",
       "selectedcountSelected": "{selectedCount}selected",
-      "sendInvitesSelectedcount": "Send Invites ({selectedCount})"
+      "sendInvitesSelectedcount": "Send Invites ({selectedCount})",
+      "_pending_review": {}
     },
     "logout": {
-      "signingOut": "Signing out..."
+      "signingOut": "Signing out...",
+      "_pending_review": {}
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirecting to the App Store",
@@ -9463,7 +9540,8 @@
       "copyLink": "Copy link",
       "linkCopied": "Link copied — paste it into Safari",
       "copyFailed": "Couldn't copy the link",
-      "iosOpenInBrowser": "Tap “…” at the top right, then “Open in browser” — the App Store opens right away there."
+      "iosOpenInBrowser": "Tap “…” at the top right, then “Open in browser” — the App Store opens right away there.",
+      "_pending_review": {}
     },
     "mobilesettings": {
       "pushNotifications": "Push Notifications",
@@ -9550,7 +9628,8 @@
       "modeBillingPlan": "Current Plan",
       "modeBillingPayment": "Payment Method",
       "modeBillingInvoices": "Invoices & Receipts",
-      "modeBillingCreator": "Creator Payouts"
+      "modeBillingCreator": "Creator Payouts",
+      "_pending_review": {}
     },
     "myintents": {
       "myIntents": "My intents",
@@ -9561,7 +9640,8 @@
       "browseWhatOthersLookingFor": "Browse what others are looking for:",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length}open · up to {PER_KIND_SLOT_CAP}per category",
       "lengthPer_kind_slot_capSlotsUsed": "{length}of {PER_KIND_SLOT_CAP}slots used",
-      "capReachedCloseOnePostNew": "— cap reached, close one to post a new"
+      "capReachedCloseOnePostNew": "— cap reached, close one to post a new",
+      "_pending_review": {}
     },
     "mytickets": {
       "myTickets": "My Tickets",
@@ -9573,7 +9653,8 @@
       "upcomingLength": "Upcoming ({length})",
       "pastLength": "Past ({length})",
       "noUpcomingEvents": "No upcoming events",
-      "noPastEvents": "No past events"
+      "noPastEvents": "No past events",
+      "_pending_review": {}
     },
     "notauthorized": {
       "accessDenied": "Access Denied",
@@ -9581,11 +9662,13 @@
       "youDonTHavePermissionAccess": "This area is only accessible to authorized personnel.",
       "error403Forbidden": "Error 403: Forbidden",
       "returnDashboard": "Return to Dashboard",
-      "contactSupport": "Contact Support"
+      "contactSupport": "Contact Support",
+      "_pending_review": {}
     },
     "notfound": {
       "oopsPageNotFound": "Oops! Page not found",
-      "returnHome": "Return to Home"
+      "returnHome": "Return to Home",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "Missing Purchase Information",
@@ -9601,7 +9684,8 @@
       "viewMyOrders": "View My Orders",
       "redeemNow": "Redeem Now",
       "viewOrders": "View Orders",
-      "confirmationHasSent": "A confirmation has been sent to"
+      "confirmationHasSent": "A confirmation has been sent to",
+      "_pending_review": {}
     },
     "privacysettings": {
       "privacyVisibility": "Privacy & Visibility",
@@ -9609,7 +9693,8 @@
       "pleaseSignManageYourPrivacySettings": "Please log in to manage your privacy settings.",
       "serverEnforcesTheseTiersEveryCrossuser": "The server enforces these levels on every cross-departmental retrieval – your switch is binding, not advisory.",
       "back": "Back",
-      "tapAnyTierBadgeCyclePrivate": "Tap any tier badge to cycle Private → Connections → Public.\n          Defaults err on the side of privacy — you decide what to share."
+      "tapAnyTierBadgeCyclePrivate": "Tap any tier badge to cycle Private → Connections → Public.\n          Defaults err on the side of privacy — you decide what to share.",
+      "_pending_review": {}
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Campaign Not Found",
@@ -9625,7 +9710,8 @@
       "lengthChannelValue1": "{length}channel{value1}",
       "youLlSignCreateAccountNext": "You'll sign in or create an account in the next step.",
       "YourLongevityCommunity": "- Your longevity community",
-      "getTicketsForValue0": "Get Tickets for {value0}"
+      "getTicketsForValue0": "Get Tickets for {value0}",
+      "_pending_review": {}
     },
     "publiceventlanding": {
       "eventNotFound": "Event not found",
@@ -9642,12 +9728,14 @@
       "fromPricelabel": "From {priceLabel}",
       "youLlSignCreateAccountNext": "You'll sign in or create an account in the next step.",
       "YourLongevityCommunity": "- Your longevity community",
-      "getTicketsForTitle": "Get Tickets for {title}"
+      "getTicketsForTitle": "Get Tickets for {title}",
+      "_pending_review": {}
     },
     "publicprofilepage": {
       "loadingProfile": "Loading profile...",
       "userNotFound": "User Not Found",
-      "returnHome": "Return to Home"
+      "returnHome": "Return to Home",
+      "_pending_review": {}
     },
     "redeemvoucher": {
       "invalidLink": "Invalid Link",
@@ -9663,7 +9751,8 @@
       "thisVoucherHasExpiredCanNo": "This voucher has expired and can no longer be redeemed. Contact support if you need assistance.",
       "yourValue0VoucherHasAddedYour": "Your {value0}voucher has been added to your account. \n            Explore events and experiences to use your benefits.",
       "viewWallet": "View Wallet",
-      "browseEvents": "Browse Events"
+      "browseEvents": "Browse Events",
+      "_pending_review": {}
     },
     "search": {
       "viewProfile": "View Profile",
@@ -9680,7 +9769,8 @@
       "content": "🎬 Content",
       "health": "❤️ Health",
       "value0Members": "{value0}members",
-      "showingResultsFor": "Showing results for \""
+      "showingResultsFor": "Showing results for \"",
+      "_pending_review": {}
     },
     "ticketdemo": {
       "ticketPreview": "Ticket Preview",
@@ -9697,7 +9787,8 @@
       "downloadAsPngShareOptions": "Download as PNG or Share options",
       "multitenantBoardingPassDesign": "Multi-tenant boarding pass design",
       "thisDemoTicketPreview": "🎫 This is a demo ticket preview",
-      "actualTicketsWillDisplayYourReal": "Actual tickets will display your real event and purchase details"
+      "actualTicketsWillDisplayYourReal": "Actual tickets will display your real event and purchase details",
+      "_pending_review": {}
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "Invalid Request",
@@ -9709,7 +9800,8 @@
       "paymentSuccessful": "Payment Successful!",
       "viewAllMyTickets": "View All My Tickets",
       "discoverMoreEvents": "Discover More Events",
-      "yourTicketHasConfirmedConfirmationEmail": "Your ticket has been confirmed. A confirmation email has been sent to{value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Your ticket has been confirmed. A confirmation email has been sent to{value0}",
+      "_pending_review": {}
     },
     "legal": {
       "deleteAccount": "Delete Account",
@@ -9917,7 +10009,8 @@
       "legalRetentionObligations": "statutory retention obligations;",
       "securityFraudPreventionReasons": "security, fraud-prevention and abuse-protection reasons;",
       "legalClaimsDefense": "the need to establish, exercise or defend legal claims.",
-      "retentionAnonymizeDelete": "When personal data is no longer needed, we delete or anonymise it, unless statutory retention obligations require otherwise."
+      "retentionAnonymizeDelete": "When personal data is no longer needed, we delete or anonymise it, unless statutory retention obligations require otherwise.",
+      "_pending_review": {}
     },
     "patient": {
       "myAppointments": "My Appointments",
@@ -10010,12 +10103,15 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "_pending_review": {}
       },
       "comingSoon": {
         "title": "Coming soon",
-        "body": "We're still building this screen. Check back soon."
-      }
+        "body": "We're still building this screen. Check back soon.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "portals": {
       "confirmationError": "Confirmation Error",
@@ -10086,7 +10182,8 @@
       "useDifferentEmail": "← Use a different email",
       "creatingAccount": "Creating Account...",
       "tryAppleSigninAgain": "Try Apple Sign-In again",
-      "backLogin": "Back to login"
+      "backLogin": "Back to login",
+      "_pending_review": {}
     },
     "professional": {
       "professionalDashboard": "Professional Dashboard",
@@ -10135,7 +10232,8 @@
       "hypertension": "Hypertension",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "+12% from last month"
+      "text12FromLastMonth": "+12% from last month",
+      "_pending_review": {}
     },
     "staff": {
       "staffDashboard": "Staff Dashboard",
@@ -10195,27 +10293,32 @@
       "urgent2": "URGENT",
       "sj": "SJ",
       "waiting2": "WAITING",
-      "mw": "MW"
+      "mw": "MW",
+      "_pending_review": {}
     },
     "actions": {
       "doNow": "Do Now",
       "edit": "Edit",
       "details": "Details",
-      "later": "Later"
+      "later": "Later",
+      "_pending_review": {}
     },
     "introexperience": {
       "space": "Space",
       "esc": "Esc",
       "press": "Press",
       "play": "to play •",
-      "skip": "to skip"
+      "skip": "to skip",
+      "_pending_review": {}
     },
     "groups": {
       "match_scoreMatch": "{match_score}% Match",
-      "join": "Join"
+      "join": "Join",
+      "_pending_review": {}
     },
     "rewards": {
-      "earnValue0Pts": "Earn {value0}pts"
+      "earnValue0Pts": "Earn {value0}pts",
+      "_pending_review": {}
     },
     "autopilotpopup": {
       "indexLoading": "Index loading…",
@@ -10226,12 +10329,14 @@
       "preparingNextSteps": "Preparing your next steps…",
       "allCaughtUpForToday": "All caught up for today",
       "nothingNewRightNow": "Nothing new for you right now.",
-      "checkForNew": "Check for new"
+      "checkForNew": "Check for new",
+      "_pending_review": {}
     },
     "postDetail": {
       "title": "Post",
       "notFound": "Post not found",
-      "back": "Back"
+      "back": "Back",
+      "_pending_review": {}
     },
     "partnerportal": {
       "title": "Partner Portal",
@@ -10285,8 +10390,10 @@
         "degraded": "Degraded",
         "suspended": "Paused",
         "revoked": "Revoked",
-        "failed": "Failed"
-      }
+        "failed": "Failed",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "commerceportal": {
       "heroTitle": "Bring your business to Vitanaland",
@@ -10331,14 +10438,16 @@
         "geminiNote": "The consumer Gemini app currently has no documented way to add a custom MCP server directly — that's only available today via Gemini CLI and Gemini Enterprise.",
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
-        "tabGemini": "Gemini"
+        "tabGemini": "Gemini",
+        "_pending_review": {}
       },
       "detectPlatform": {
         "urlPlaceholder": "Store URL (optional) — e.g. https://your-shop.com",
         "hint": "We'll check the URL and fill in the connector and provider ID automatically if we recognize the platform.",
         "detected": "{platform} detected — fields filled in.",
         "notDetected": "Platform not recognized. Please fill in the connector and provider ID manually.",
-        "failed": "Couldn't check that address. Please fill in the connector and provider ID manually."
+        "failed": "Couldn't check that address. Please fill in the connector and provider ID manually.",
+        "_pending_review": {}
       },
       "connectOauth": {
         "title": "Connect",
@@ -10353,7 +10462,8 @@
         "fhirButton": "Connect FHIR server",
         "connecting": "Connecting...",
         "notConfigured": "This connection type isn't enabled yet. Please try again later.",
-        "failed": "Couldn't start the connection. Please check your details."
+        "failed": "Couldn't start the connection. Please check your details.",
+        "_pending_review": {}
       },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
@@ -10373,7 +10483,8 @@
         "mapping": "Mapping",
         "tests": "Checks",
         "live": "Live",
-        "offTrack": "Needs attention"
+        "offTrack": "Needs attention",
+        "_pending_review": {}
       },
       "addProduct": "Add products yourself",
       "productForm": {
@@ -10428,7 +10539,8 @@
         "deliveryEu": "Europe",
         "deliveryUs": "United States",
         "deliveryMena": "Middle East & North Africa",
-        "deliveryDaysUnit": "days"
+        "deliveryDaysUnit": "days",
+        "_pending_review": {}
       },
       "join": {
         "seoTitle": "Register your business with Vitanaland",
@@ -10446,7 +10558,8 @@
         "alreadyConfirmed": "Already confirmed? Sign in here",
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
-        "otherSignin": "Another way to sign in"
+        "otherSignin": "Another way to sign in",
+        "_pending_review": {}
       },
       "orgOnboarding": {
         "registerCta": "Register your business",
@@ -10502,15 +10615,18 @@
         "acceptExpired": "This invite has expired.",
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
-        "goToPortal": "Go to Commerce Portal"
+        "goToPortal": "Go to Commerce Portal",
+        "_pending_review": {}
       },
       "healthOrders": {
         "sectionTitle": "Health-test orders",
         "sectionSubtitle": "View and act on your organization(s)' orders",
         "pageTitle": "Health-test orders",
         "notAMemberTitle": "You're not a member of any partner organization yet",
-        "notAMemberBody": "Once you join or register a partner organization, its orders will appear here."
-      }
+        "notAMemberBody": "Once you join or register a partner organization, its orders will appear here.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "oauthconsent": {
       "title": "Allow access?",
@@ -10534,8 +10650,10 @@
         "vitana:partners:read": "View partner information",
         "vitana:connections:write": "Manage business connections",
         "vitana:grants:write": "Propose data grants (consent stays with you)",
-        "vitana:settlement:write": "Trigger prepared VTNA settlements"
-      }
+        "vitana:settlement:write": "Trigger prepared VTNA settlements",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "backoffice": {
       "comingWave1": "Coming in wave 1",
@@ -10560,7 +10678,8 @@
         "revokeHint": "Click to revoke",
         "explicitOnly": "explicit only (personal data)",
         "noManage": "You can view capabilities but not change them – that needs erp.admin or the admin role.",
-        "mine": "Your effective capabilities"
+        "mine": "Your effective capabilities",
+        "_pending_review": {}
       },
       "noAccess": "You do not have access to this section. A tenant admin can grant it under Settings › Access.",
       "health": {
@@ -10586,7 +10705,8 @@
         "actions": "Actions",
         "installStatus": "Install status",
         "installedAt": "Installed at",
-        "noModules": "No modules installed"
+        "noModules": "No modules installed",
+        "_pending_review": {}
       },
       "receipts": {
         "title": "Command Receipts",
@@ -10595,7 +10715,8 @@
         "empty": "No commands yet",
         "noReceipt": "No receipt",
         "show": "Show receipt",
-        "hide": "Hide receipt"
+        "hide": "Hide receipt",
+        "_pending_review": {}
       },
       "company": {
         "title": "Company & Legal Entities",
@@ -10629,7 +10750,8 @@
         "empty": "No company found",
         "none": "None",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "_pending_review": {}
       },
       "trail": {
         "title": "Independent Audit Trail",
@@ -10643,13 +10765,15 @@
         "channel": "Channel",
         "command": "Command",
         "approval": "Approval",
-        "details": "Details"
+        "details": "Details",
+        "_pending_review": {}
       },
       "inbox": {
         "title": "Approvals Inbox",
         "description": "High-risk requests waiting for your decision. Requester and approver are always two people.",
         "empty": "Nothing is waiting for you",
-        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here."
+        "emptyHint": "When someone requests a High-risk command you may approve, it shows up here.",
+        "_pending_review": {}
       },
       "common": {
         "empty": "No entries",
@@ -10657,18 +10781,21 @@
         "replayed": "replayed from receipt",
         "source": {
           "erp": "Source: ERPClaw via the bridge",
-          "gateway": "Source: Vitana gateway"
+          "gateway": "Source: Vitana gateway",
+          "_pending_review": {}
         },
         "readOnlySlice": "Read-only in this slice – decisions and changes land with the next one.",
         "viewAll": "View all",
-        "all": "All"
+        "all": "All",
+        "_pending_review": {}
       },
       "queue": {
         "title": "Queue",
         "description": "Every approval request in the tenant – pending, approved or rejected.",
         "searchPlaceholder": "Search by command, capability or person …",
         "statusFilter": "Status",
-        "empty": "No approval requests"
+        "empty": "No approval requests",
+        "_pending_review": {}
       },
       "policies": {
         "title": "Policies",
@@ -10686,14 +10813,16 @@
         "ruleMakerChecker": "Requester and approver are never the same person – not even for Exafy admins.",
         "ruleCapability": "Only someone holding the request's approve-level capability (e.g. finance.pay) may approve.",
         "ruleVoice": "Nothing High-risk can be confirmed by voice – web only.",
-        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically."
+        "ruleEscalation": "Outbound payments, payroll journals and amounts above the threshold escalate to High-risk automatically.",
+        "_pending_review": {}
       },
       "myRequests": {
         "title": "My Requests",
         "description": "Commands you requested – what is still waiting for approval and what became of the rest.",
         "awaiting": "Awaiting approval",
         "history": "History",
-        "empty": "You have not requested any commands yet"
+        "empty": "You have not requested any commands yet",
+        "_pending_review": {}
       },
       "dashboard": {
         "title": "Dashboard",
@@ -10712,7 +10841,8 @@
         "erpUnknown": "Unclear",
         "quickAccess": "Quick access",
         "recentActivity": "Recent activity",
-        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access."
+        "noCapabilities": "You have no ERP capability yet. A tenant admin can grant one under Settings › Access.",
+        "_pending_review": {}
       },
       "errors": {
         "bridgeUnavailable": "The ERP bridge is not reachable.",
@@ -10723,20 +10853,23 @@
         "unauthorized": "Please sign in again.",
         "noTenant": "No active tenant – pick a workspace first.",
         "notFound": "Not found.",
-        "generic": "The data could not be loaded."
+        "generic": "The data could not be loaded.",
+        "_pending_review": {}
       },
       "activity": {
         "title": "Activity",
         "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
         "searchPlaceholder": "Search by command, ID or reason …",
         "statusFilter": "Status",
-        "empty": "No commands yet"
+        "empty": "No commands yet",
+        "_pending_review": {}
       },
       "tiers": {
         "read": "Read",
         "draft": "Draft",
         "commit": "Commit",
-        "high": "High-risk"
+        "high": "High-risk",
+        "_pending_review": {}
       },
       "erpLog": {
         "title": "ERP Audit Log",
@@ -10748,13 +10881,15 @@
         "entity": "Entity",
         "user": "User",
         "changes": "Change",
-        "system": "System"
+        "system": "System",
+        "_pending_review": {}
       },
       "commandStatus": {
         "executed": "Executed",
         "failed": "Failed",
         "awaiting_approval": "Awaiting approval",
-        "rejected": "Rejected"
+        "rejected": "Rejected",
+        "_pending_review": {}
       },
       "approvals": {
         "requested": "Requested",
@@ -10766,7 +10901,8 @@
         "you": "You",
         "yourOwnRequest": "Your own request – you cannot approve it yourself.",
         "youCanDecide": "You can decide",
-        "youCannotDecide": "Not yours to approve"
+        "youCannotDecide": "Not yours to approve",
+        "_pending_review": {}
       },
       "commands": {
         "when": "When",
@@ -10777,18 +10913,21 @@
         "requester": "Requester",
         "receipt": "Receipt",
         "reason": "Reason",
-        "you": "You"
+        "you": "You",
+        "_pending_review": {}
       },
       "approvalStatus": {
         "pending": "Pending",
         "approved": "Approved",
-        "rejected": "Rejected"
+        "rejected": "Rejected",
+        "_pending_review": {}
       },
       "channels": {
         "web": "Web",
         "chat": "Chat",
         "voice": "Voice",
-        "system": "System"
+        "system": "System",
+        "_pending_review": {}
       },
       "sales": {
         "status": {
@@ -10821,7 +10960,8 @@
           "low": "Low",
           "converted": "Converted",
           "unpaid": "Unpaid",
-          "return": "Return"
+          "return": "Return",
+          "_pending_review": {}
         },
         "common": {
           "status": "Status",
@@ -10839,14 +10979,16 @@
           "total": "Total",
           "subtotal": "Subtotal",
           "tax": "Tax",
-          "actions": "Actions"
+          "actions": "Actions",
+          "_pending_review": {}
         },
         "docs": {
           "noItems": "No line items",
           "item": "Item",
           "qty": "Qty",
           "rate": "Rate",
-          "amount": "Amount"
+          "amount": "Amount",
+          "_pending_review": {}
         },
         "leads": {
           "title": "Leads",
@@ -10861,7 +11003,8 @@
           "company": "Company",
           "territory": "Territory",
           "industry": "Industry",
-          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited."
+          "frozenHint": "A converted lead is frozen in ERPClaw and can no longer be edited.",
+          "_pending_review": {}
         },
         "contacts": {
           "title": "Contacts & Companies",
@@ -10884,7 +11027,8 @@
           "noCustomers": "No customers yet",
           "type": "Type",
           "creditLimit": "Credit limit",
-          "customer": "Customer"
+          "customer": "Customer",
+          "_pending_review": {}
         },
         "opportunities": {
           "title": "Opportunities",
@@ -10902,7 +11046,8 @@
           "board": "Pipeline board",
           "expected": "Expected",
           "weighted": "Weighted",
-          "noneInStage": "Nothing in this stage"
+          "noneInStage": "Nothing in this stage",
+          "_pending_review": {}
         },
         "followups": {
           "title": "Follow-ups",
@@ -10917,7 +11062,8 @@
           "activities": "Activities",
           "noActivities": "No activities yet",
           "opportunity": "Opportunity",
-          "nextAction": "Next action"
+          "nextAction": "Next action",
+          "_pending_review": {}
         },
         "quotations": {
           "title": "Quotations",
@@ -10925,7 +11071,8 @@
           "searchPlaceholder": "Search by customer, reference or status …",
           "empty": "No quotations yet",
           "validUntil": "Valid until",
-          "convertedTo": "Converted to"
+          "convertedTo": "Converted to",
+          "_pending_review": {}
         },
         "invoices": {
           "title": "Invoices",
@@ -10942,7 +11089,8 @@
           "due": "Due",
           "outstandingCol": "Outstanding",
           "payments": "Payments",
-          "salesOrder": "Sales order"
+          "salesOrder": "Sales order",
+          "_pending_review": {}
         },
         "creditNotes": {
           "title": "Credit Notes",
@@ -10951,8 +11099,10 @@
           "searchPlaceholder": "Search by customer, reference or invoice …",
           "empty": "No credit notes yet",
           "emptyHint": "Credit notes only exist against a posted invoice.",
-          "against": "Against invoice"
-        }
+          "against": "Against invoice",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "finance": {
         "payments": {
@@ -10977,7 +11127,8 @@
           "referenceDate": "Reference date",
           "fromAccount": "From account",
           "toAccount": "To account",
-          "currency": "Currency · rate"
+          "currency": "Currency · rate",
+          "_pending_review": {}
         },
         "fx": {
           "currencies": "Currencies",
@@ -10988,7 +11139,8 @@
           "pair": "Pair",
           "rate": "Rate",
           "effective": "Effective",
-          "source": "Source"
+          "source": "Source",
+          "_pending_review": {}
         },
         "reconciliation": {
           "title": "Bank Reconciliation",
@@ -11008,8 +11160,10 @@
           "draftsExplain": "Entered but never posted: no bank ledger entry, no effect on outstanding balances.",
           "settledTitle": "Settled",
           "noSettled": "Nothing settled yet.",
-          "settledExplain": "Posted and fully allocated – nothing left to match here."
-        }
+          "settledExplain": "Posted and fully allocated – nothing left to match here.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "accounting": {
         "common": {
@@ -11018,13 +11172,15 @@
             "liability": "Liabilities",
             "equity": "Equity",
             "income": "Income",
-            "expense": "Expenses"
+            "expense": "Expenses",
+            "_pending_review": {}
           },
           "debit": "Debit",
           "credit": "Credit",
           "balanced": "Balanced",
           "unbalanced": "Unbalanced",
-          "account": "Account"
+          "account": "Account",
+          "_pending_review": {}
         },
         "journals": {
           "title": "Journals",
@@ -11043,7 +11199,8 @@
           "empty": "No journal entries yet",
           "lines": "Lines ({count})",
           "noLines": "This entry has no lines.",
-          "amendedFrom": "Amends"
+          "amendedFrom": "Amends",
+          "_pending_review": {}
         },
         "coa": {
           "title": "Chart of Accounts",
@@ -11072,7 +11229,8 @@
           "direction": "Balance direction",
           "parent": "Parent",
           "accountType": "Account type",
-          "detailsHint": "Select an account on the left to see its balance and details."
+          "detailsHint": "Select an account on the left to see its balance and details.",
+          "_pending_review": {}
         },
         "periods": {
           "title": "Fiscal Periods & Close",
@@ -11092,7 +11250,8 @@
             "closed": "Closed",
             "current": "Current",
             "past": "Ended, still open",
-            "future": "Upcoming"
+            "future": "Upcoming",
+            "_pending_review": {}
           },
           "empty": "No fiscal years yet",
           "costCenters": "Cost centers",
@@ -11106,8 +11265,10 @@
           "expense": "Expenses",
           "netIncome": "Net income",
           "trialBalance": "Trial balance",
-          "closeNote": "Closing itself (accounting.period.close) is a High-risk action: maker-checker, never by voice alone – it lands with a later slice."
-        }
+          "closeNote": "Closing itself (accounting.period.close) is a High-risk action: maker-checker, never by voice alone – it lands with a later slice.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "reports": {
         "common": {
@@ -11118,8 +11279,10 @@
             "this_month": "This month",
             "last_month": "Last month",
             "this_quarter": "This quarter",
-            "last_year": "Last year"
-          }
+            "last_year": "Last year",
+            "_pending_review": {}
+          },
+          "_pending_review": {}
         },
         "pnl": {
           "title": "Profit & Loss",
@@ -11139,7 +11302,8 @@
           "noIncome": "No income in the period.",
           "noExpenses": "No expenses in the period.",
           "amount": "Amount",
-          "share": "Share"
+          "share": "Share",
+          "_pending_review": {}
         },
         "aging": {
           "title": "AR / AP Aging",
@@ -11163,10 +11327,13 @@
             "days_60": "31–60 days",
             "days_90": "61–90 days",
             "days_120": "91–120 days",
-            "days_120_plus": "> 120 days"
+            "days_120_plus": "> 120 days",
+            "_pending_review": {}
           },
-          "negativeNote": "Negative amounts are credits: payments or credit notes not yet allocated to an invoice."
-        }
+          "negativeNote": "Negative amounts are credits: payments or credit notes not yet allocated to an invoice.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "draft": {
         "review": "Review before it is written",
@@ -11205,7 +11372,8 @@
           "invalidNumber": "Enter a valid number greater than 0",
           "unbalanced": "Debits must equal credits",
           "tooFewLines": "At least two lines with an account and an amount",
-          "lineIncomplete": "Every line needs an account and a debit or credit amount"
+          "lineIncomplete": "Every line needs an account and a debit or credit amount",
+          "_pending_review": {}
         },
         "fields": {
           "lead_name": "Lead name",
@@ -11265,7 +11433,8 @@
           "journal_entry_id": "Journal entry id",
           "opportunity_type": "Opportunity type",
           "lost_reason": "Reason",
-          "sales_invoice_id": "Invoice id"
+          "sales_invoice_id": "Invoice id",
+          "_pending_review": {}
         },
         "choices": {
           "website": "Website",
@@ -11311,119 +11480,143 @@
           "new": "New",
           "sales": "Sales",
           "support": "Support",
-          "maintenance": "Maintenance"
+          "maintenance": "Maintenance",
+          "_pending_review": {}
         },
         "forms": {
           "lead": {
             "button": "New lead",
             "title": "Create a lead",
-            "description": "A lead is an unposted record – it is reviewed before it reaches the ERP."
+            "description": "A lead is an unposted record – it is reviewed before it reaches the ERP.",
+            "_pending_review": {}
           },
           "contact": {
             "button": "New contact",
             "title": "Create a contact",
-            "description": "A person in the CRM. Linking to a company is a separate step."
+            "description": "A person in the CRM. Linking to a company is a separate step.",
+            "_pending_review": {}
           },
           "company": {
             "button": "New company",
             "title": "Create a company",
-            "description": "An organisation in the CRM – not yet a sales customer."
+            "description": "An organisation in the CRM – not yet a sales customer.",
+            "_pending_review": {}
           },
           "task": {
             "button": "New task",
             "title": "Create a task",
-            "description": "A follow-up task for the team. Linking to a lead or opportunity is a separate step."
+            "description": "A follow-up task for the team. Linking to a lead or opportunity is a separate step.",
+            "_pending_review": {}
           },
           "activity": {
             "button": "Log activity",
             "title": "Log an activity",
-            "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written."
+            "description": "A call, e-mail, meeting or note against a lead. The lead is resolved by name or number – with several matches nothing is written.",
+            "_pending_review": {}
           },
           "creditNote": {
             "button": "Create credit note",
             "title": "Credit note against invoice",
-            "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step."
+            "description": "Enter the returned quantity per line. The credit note is created as a draft; posting it is a separate, approval-gated step.",
+            "_pending_review": {}
           },
           "customer": {
             "button": "New customer",
             "title": "Create a customer",
-            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted."
+            "description": "A sales customer – required for quotations and invoices. Created as a draft, nothing posted.",
+            "_pending_review": {}
           },
           "payment": {
             "button": "Record payment",
             "title": "Record a payment",
-            "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step."
+            "description": "A receipt from or payment to a customer, as a draft – the bank ledger is touched only when the entry is submitted, a separate confirmation-gated step.",
+            "_pending_review": {}
           },
           "journal": {
             "button": "New journal entry",
             "title": "Create a journal entry",
-            "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step."
+            "description": "Debit and credit per line against the chart of accounts – the entry is created as a draft and posted only in a separate, confirmation-gated step.",
+            "_pending_review": {}
           },
           "opportunityStage": {
             "button": "Move stage",
             "title": "Move to another pipeline stage",
-            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word."
+            "description": "Pick the target stage from your tenant's own pipeline. The stage is an id, not a free word.",
+            "_pending_review": {}
           },
           "taskComplete": {
             "button": "Complete",
             "title": "Complete task",
-            "description": "The task is marked done. A note is optional."
+            "description": "The task is marked done. A note is optional.",
+            "_pending_review": {}
           },
           "leadUpdate": {
             "button": "Edit lead",
             "title": "Edit lead",
-            "description": "The change goes to ERPClaw as a Draft. You see exactly what is sent before it goes."
+            "description": "The change goes to ERPClaw as a Draft. You see exactly what is sent before it goes.",
+            "_pending_review": {}
           },
           "opportunityUpdate": {
             "button": "Edit opportunity",
             "title": "Edit opportunity",
-            "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval."
+            "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval.",
+            "_pending_review": {}
           },
           "taskUpdate": {
             "button": "Edit",
             "title": "Edit task",
-            "description": "Subject, priority, due date and description of the open task."
+            "description": "Subject, priority, due date and description of the open task.",
+            "_pending_review": {}
           },
           "taskCancel": {
             "button": "Cancel",
             "title": "Cancel task",
-            "description": "The task is cancelled and stays visible. A reason is required."
+            "description": "The task is cancelled and stays visible. A reason is required.",
+            "_pending_review": {}
           },
           "invoiceCancel": {
             "button": "Cancel",
             "title": "Cancel invoice",
-            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval."
+            "description": "Cancels a posted invoice and reverses its postings. High-risk: needs a second person's approval.",
+            "_pending_review": {}
           },
           "journalCancel": {
             "button": "Cancel",
             "title": "Cancel journal entry",
-            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval."
+            "description": "Cancels a posted entry and reverses its postings. High-risk: needs a second person's approval.",
+            "_pending_review": {}
           },
           "opportunityLost": {
             "button": "Lost",
             "title": "Mark opportunity lost",
-            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards."
+            "description": "Sets the stage to lost. A reason is required. Final — ERPClaw freezes the opportunity afterwards.",
+            "_pending_review": {}
           },
           "journalSubmit": {
             "button": "Post",
             "title": "Post journal entry",
-            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled."
+            "description": "Posts the draft entry to the ledger. Afterwards it can only be cancelled.",
+            "_pending_review": {}
           },
           "leadConvert": {
             "button": "Convert to opportunity",
             "title": "Convert lead to opportunity",
-            "description": "Creates an opportunity from the lead and marks the lead converted. The lead can no longer be edited afterwards."
+            "description": "Creates an opportunity from the lead and marks the lead converted. The lead can no longer be edited afterwards.",
+            "_pending_review": {}
           },
           "opportunityWon": {
             "button": "Won",
             "title": "Mark opportunity won",
-            "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards."
+            "description": "Sets the stage to won and the probability to 100%. Final — ERPClaw freezes the opportunity afterwards.",
+            "_pending_review": {}
           },
           "invoiceSubmit": {
             "button": "Post",
             "title": "Post invoice",
-            "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled."
-          }
+            "description": "Posts the draft invoice to the ledger (receivable and revenue). Afterwards it can only be cancelled.",
+            "_pending_review": {}
+          },
+          "_pending_review": {}
         },
         "noLineRows": "No lines available.",
         "lookupLoading": "Loading …",
@@ -11461,7 +11654,8 @@
         "goToMyRequests": "Go to My requests",
         "failedCommit": "Not executed",
         "queuedNoApprover": "Right now nobody else in this tenant holds the approve capability. The request stays open until someone does.",
-        "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again."
+        "failedHintCommit": "Nothing was posted and no status changed. Check the reason and the document's state, then try again.",
+        "_pending_review": {}
       },
       "policyEdit": {
         "button": "Edit policy",
@@ -11480,8 +11674,10 @@
         "noChanges": "Nothing changed.",
         "readOnlyHint": "Read-only – editing needs approvals.policy.",
         "issues": {
-          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000"
-        }
+          "invalidThreshold": "Enter an amount between 0 and 1,000,000,000,000",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "decide": {
         "queueHint": "Pending requests you may decide show Approve / Reject. Approving executes the command through the gateway – never from the browser.",
@@ -11494,7 +11690,8 @@
           "description": "On approval the gateway executes the High-risk command through the bridge immediately.",
           "notePlaceholder": "Optional: why you approve",
           "whatHappens": "Maker-checker: you are not the requester, you hold the approve capability, and you are on the web. The gateway checks all of that again.",
-          "confirm": "Approve and execute"
+          "confirm": "Approve and execute",
+          "_pending_review": {}
         },
         "reject": {
           "button": "Reject",
@@ -11502,11 +11699,13 @@
           "description": "The request is rejected; the command is never executed. A reason is required.",
           "notePlaceholder": "Why are you rejecting?",
           "whatHappens": "The rejection and your note go to the audit trail; the requester sees them in their requests.",
-          "confirm": "Reject"
+          "confirm": "Reject",
+          "_pending_review": {}
         },
         "issues": {
           "required": "Please give a reason for the rejection",
-          "tooLong": "At most 1000 characters"
+          "tooLong": "At most 1000 characters",
+          "_pending_review": {}
         },
         "outcome": {
           "executed": "Approved and executed",
@@ -11516,7 +11715,8 @@
           "error": "Error",
           "executedLine": "The gateway executed the command. The bridge receipt is below.",
           "rejectedLine": "The request is rejected; nothing was executed.",
-          "executedButFailedHint": "The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again."
+          "executedButFailedHint": "The approval is recorded, but the bridge/ERPClaw refused the execution – the command is marked failed and has to be requested again.",
+          "_pending_review": {}
         },
         "refusals": {
           "selfApproval": "You cannot approve your own request.",
@@ -11526,10 +11726,15 @@
           "readOnlyRole": "Your role is read-only.",
           "mfaRequired": "This approval needs a session with a second factor (MFA).",
           "alreadyDecided": "This request has already been decided.",
-          "notFound": "Request not found."
+          "notFound": "Request not found.",
+          "_pending_review": {}
         },
-        "payload": "Request contents"
-      }
-    }
-  }
+        "payload": "Request contents",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
