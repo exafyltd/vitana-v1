@@ -83,18 +83,23 @@ export function useRole() {
     });
   };
 
-  const hasPermission = (requiredRole: UserRole): boolean => {
-    // Exafy admins have all permissions
-    if (isExafyAdmin) return true;
-    
-    const currentRole = query.data as UserRole || "community";
-    return ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[requiredRole];
-  };
-
   // Default to 'community' while loading so inbox/global threads are visible immediately
   // MOBILE ENFORCEMENT: Mobile devices are ALWAYS community role — no role switching on mobile
   const dbRole = (query.data as UserRole | null) || "community";
   const effectiveRole: UserRole = isMobile ? "community" : dbRole;
+
+  const hasPermission = (requiredRole: UserRole): boolean => {
+    // Exafy admins have all permissions — but never on mobile, where
+    // effectiveRole is always forced to 'community' above. Without the
+    // !isMobile guard here, this bypass let an Exafy admin's session open
+    // desktop-only surfaces (e.g. BackOffice) on a phone: ProtectedRoute
+    // calls hasPermission() directly, so it must respect the same mobile
+    // enforcement effectiveRole already encodes, not re-check the raw
+    // (unmapped) dbRole/isExafyAdmin state on its own.
+    if (isExafyAdmin && !isMobile) return true;
+
+    return ROLE_HIERARCHY[effectiveRole] >= ROLE_HIERARCHY[requiredRole];
+  };
 
   return {
     currentRole: effectiveRole,
