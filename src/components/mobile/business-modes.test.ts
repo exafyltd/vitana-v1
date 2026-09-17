@@ -37,6 +37,12 @@ describe('business modes on mobile (VTID-03999)', () => {
     expect(sheet).toContain('subtitle={entry.orgName}');
   });
 
+  it('the open sheet hides the ORB button and bottom bar so its last entry is tappable', () => {
+    expect(sheet).toContain("document.body.dataset.drawerOpen = 'true';");
+    expect(sheet).toContain('delete document.body.dataset.drawerOpen;');
+    expect(sheet).toContain('}, [open, isMobile]);');
+  });
+
   it('the drawer takes the business branch before the Vitana-mode branches and keeps the way back', () => {
     expect(nav).toContain('if (inBusinessMode && business.activeOrg) {');
     expect(nav.indexOf('if (inBusinessMode && business.activeOrg) {')).toBeLessThan(

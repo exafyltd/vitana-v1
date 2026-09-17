@@ -10,7 +10,9 @@
  * a role write (the two axes stay separate on purpose, see
  * lib/business-mode.ts). Exactly one entry across both groups is checked.
  */
+import { useEffect } from 'react';
 import { Check, Loader2 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { ResponsivePopover, ResponsivePopoverContent } from '@/components/ui/responsive-popover';
 import type { UserRole } from '@/hooks/useRole';
 import type { BusinessSwitchEntry } from '@/hooks/useRoleSwitch';
@@ -83,6 +85,21 @@ export function RoleSwitcherSheet({
   // Vitana mode is still the stored preference, but it is not what the app
   // is showing right now, so it must not claim the check mark as well.
   const inBusiness = activeBusinessOrgId !== null;
+
+  // VTID-03999: with the business group the list is long enough that its
+  // last entry sits under the ORB button, which floats above every bottom
+  // sheet — a tap on "Org-Admin · <business>" opened the ORB instead (seen in
+  // the preview). `data-drawer-open` is the app's own switch for hiding the
+  // bottom bar and the ORB while an overlay owns the screen
+  // (MeetupDetailsDrawer uses it the same way).
+  const isMobile = useIsMobile();
+  useEffect(() => {
+    if (!open || !isMobile) return;
+    document.body.dataset.drawerOpen = 'true';
+    return () => {
+      delete document.body.dataset.drawerOpen;
+    };
+  }, [open, isMobile]);
   return (
     <ResponsivePopover open={open} onOpenChange={onOpenChange}>
       <ResponsivePopoverContent title={t('screens.profile.switchRole')}>
