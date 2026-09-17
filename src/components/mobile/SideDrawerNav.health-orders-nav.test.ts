@@ -37,8 +37,8 @@ describe('SideDrawerNav new entries (VTID-03976)', () => {
     expect(NAV_SRC).toContain('const isPartnerOrgMember = (myPartnerOrgsQuery.data?.length ?? 0) > 0;');
   });
 
-  it('patient-results is filtered on dbRole, not org membership', () => {
-    expect(NAV_SRC).toContain("!(item.id === 'patient-results' && dbRole === 'community')");
+  it('patient-results is filtered on dbRole OR the patient_profiles flag (VTID-03988), not org membership', () => {
+    expect(NAV_SRC).toContain("!(item.id === 'patient-results' && dbRole === 'community' && !isPatient)");
   });
 
   it('health-orders is filtered on partner-org membership, not dbRole', () => {

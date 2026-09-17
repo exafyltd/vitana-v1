@@ -6088,7 +6088,21 @@
       "openSearch": "打开搜索",
       "openCalendar": "打开日历",
       "openAutopilot": "打开自动驾驶",
-      "closeSearch": "关闭搜索"
+      "closeSearch": "关闭搜索",
+      "_pending_review": {
+        "roleExafyAdmin": true,
+        "roleAdministrator": true,
+        "roleStaff": true,
+        "roleProfessional": true,
+        "rolePatient": true,
+        "roleCommunity": true
+      },
+      "roleExafyAdmin": "Exafy Admin",
+      "roleAdministrator": "Administrator",
+      "roleStaff": "Staff",
+      "roleProfessional": "Professional",
+      "rolePatient": "Patient",
+      "roleCommunity": "Community Member"
     },
     "notifications": {
       "markAllAsRead": "全部标记为已读",

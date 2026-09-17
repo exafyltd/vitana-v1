@@ -21,6 +21,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { useRole } from '@/hooks/useRole';
 import { useMyPartnerOrgs } from '@/hooks/useOrgMembers';
+import { usePatientAccess } from '@/hooks/usePatientAccess';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useUniversalCart } from '@/hooks/useUniversalCart';
@@ -56,6 +57,10 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // member should still be able to find their own order queue.
   const myPartnerOrgsQuery = useMyPartnerOrgs();
   const isPartnerOrgMember = (myPartnerOrgsQuery.data?.length ?? 0) > 0;
+  // VTID-03988: "Meine Befunde" unlocks on the patient_profiles flag the
+  // health-order trigger sets, not only on dbRole — mobile has no role
+  // switcher, so dbRole stays 'community' here even after activation.
+  const { isPatient } = usePatientAccess();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchActive, setSearchActive] = useState(false);
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
@@ -101,16 +106,16 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
   const isMaxina = tenant?.slug === 'maxina';
   const roleLabel = isExafyAdmin
-    ? 'Exafy Admin'
+    ? t('screens.mobile.roleExafyAdmin')
     : dbRole === 'admin'
-    ? 'Administrator'
+    ? t('screens.mobile.roleAdministrator')
     : dbRole === 'staff'
-    ? 'Staff'
+    ? t('screens.mobile.roleStaff')
     : dbRole === 'professional'
-    ? 'Professional'
-    : dbRole === 'patient'
-    ? 'Patient'
-    : 'Community Member';
+    ? t('screens.mobile.roleProfessional')
+    : dbRole === 'patient' || isPatient
+    ? t('screens.mobile.rolePatient')
+    : t('screens.mobile.roleCommunity');
   const secondaryLine = profile.handle ? `@${profile.handle}` : roleLabel;
 
   const handleProfileClick = () => {
@@ -403,7 +408,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
               {drawerNavItems
                 .filter(item => !(isIAPRestricted() && item.id === 'wallet'))
-                .filter(item => !(item.id === 'patient-results' && dbRole === 'community'))
+                .filter(item => !(item.id === 'patient-results' && dbRole === 'community' && !isPatient))
                 .filter(item => !(item.id === 'health-orders' && !isPartnerOrgMember))
                 .map((item) => {
                 const active = isActive(item.route);

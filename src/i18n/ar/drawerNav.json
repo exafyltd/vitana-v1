@@ -18,6 +18,8 @@
     "inbox": "صندوق الوارد",
     "logout": "تسجيل الخروج",
     "patientResults": "نتائجي",
-    "healthOrders": "طلبات الفحوصات الصحية"
-  }
+    "healthOrders": "طلبات الفحوصات الصحية",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -17,11 +17,7 @@
     "support": "Suporte",
     "settings": "Configurações",
     "logout": "Sair",
-    "_pending_review": {
-      "patientResults": true,
-      "healthOrders": true
-    },
-    "patientResults": "My Results",
-    "healthOrders": "Health Test Orders"
+    "patientResults": "Meus Resultados",
+    "healthOrders": "Pedidos de Exames de Saúde"
   }
 }

@@ -60,7 +60,10 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings"
-    }
-  }
+      "settings": "Settings",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
