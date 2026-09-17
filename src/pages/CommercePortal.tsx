@@ -124,6 +124,69 @@ export default function CommercePortal() {
     ? {}
     : { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, ease: 'easeOut' as const } };
 
+  // VTID-03989: a returning business user wants their organization, not the
+  // merchant pitch — hoist this section above the agent card once they belong
+  // to one. A first-time visitor still gets the pitch first.
+  const hasOrgs = (myOrgs?.length ?? 0) > 0;
+  const orgsSection = (
+    <>
+      {/* YOUR ORGANIZATIONS — Commerce Partner Onboarding (VTID-03936) */}
+      <section className="mt-12 md:mt-16">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <h2 className="text-xl font-semibold text-slate-100">
+              {t('screens.commerceportal.orgOnboarding.sectionTitle')}
+            </h2>
+            <p className="text-sm text-slate-500">{t('screens.commerceportal.orgOnboarding.sectionSubtitle')}</p>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => setRegisterOrgOpen(true)}
+            className="border-amber-500/40 bg-transparent text-amber-300 hover:bg-amber-500/10"
+          >
+            <Building2 className="me-2 h-4 w-4" />
+            {t('screens.commerceportal.orgOnboarding.registerCta')}
+          </Button>
+        </div>
+
+        <div className="mt-4">
+          {myOrgs === null ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
+            </div>
+          ) : myOrgs.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/30 px-5 py-10 text-center">
+              <p className="text-sm text-slate-300">{t('screens.commerceportal.orgOnboarding.orgsEmpty')}</p>
+            </div>
+          ) : (
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {myOrgs.map((org) => (
+                <li key={org.id}>
+                  <MyOrgCard org={org} onManage={openOrgRoster} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Health-test orders — Commerce Partner Onboarding Phase 4 (VTID-03951) */}
+        {myOrgs !== null && myOrgs.length > 0 && (
+          <Link
+            to="/commerce/health-orders"
+            className="group mt-4 flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition-colors hover:border-amber-500/40 hover:bg-slate-900"
+          >
+            <FlaskConical className="h-5 w-5 shrink-0 text-amber-400" />
+            <div className="min-w-0 flex-1">
+              <p className="font-medium text-slate-100">{t('screens.commerceportal.healthOrders.sectionTitle')}</p>
+              <p className="truncate text-xs text-slate-500">{t('screens.commerceportal.healthOrders.sectionSubtitle')}</p>
+            </div>
+            <ChevronRight className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-amber-400 rtl:rotate-180" />
+          </Link>
+        )}
+      </section>
+    </>
+  );
+
   return (
     <CommerceShell>
       {/* HERO */}
@@ -135,6 +198,8 @@ export default function CommercePortal() {
           {t('screens.commerceportal.heroSubtitle')}
         </p>
       </motion.section>
+
+      {hasOrgs && orgsSection}
 
       <motion.section
         {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
@@ -205,60 +270,7 @@ export default function CommercePortal() {
         </div>
       </section>
 
-      {/* YOUR ORGANIZATIONS — Commerce Partner Onboarding (VTID-03936) */}
-      <section className="mt-12 md:mt-16">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-100">
-              {t('screens.commerceportal.orgOnboarding.sectionTitle')}
-            </h2>
-            <p className="text-sm text-slate-500">{t('screens.commerceportal.orgOnboarding.sectionSubtitle')}</p>
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => setRegisterOrgOpen(true)}
-            className="border-amber-500/40 bg-transparent text-amber-300 hover:bg-amber-500/10"
-          >
-            <Building2 className="me-2 h-4 w-4" />
-            {t('screens.commerceportal.orgOnboarding.registerCta')}
-          </Button>
-        </div>
-
-        <div className="mt-4">
-          {myOrgs === null ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
-            </div>
-          ) : myOrgs.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/30 px-5 py-10 text-center">
-              <p className="text-sm text-slate-300">{t('screens.commerceportal.orgOnboarding.orgsEmpty')}</p>
-            </div>
-          ) : (
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {myOrgs.map((org) => (
-                <li key={org.id}>
-                  <MyOrgCard org={org} onManage={openOrgRoster} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Health-test orders — Commerce Partner Onboarding Phase 4 (VTID-03951) */}
-        {myOrgs !== null && myOrgs.length > 0 && (
-          <Link
-            to="/commerce/health-orders"
-            className="group mt-4 flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition-colors hover:border-amber-500/40 hover:bg-slate-900"
-          >
-            <FlaskConical className="h-5 w-5 shrink-0 text-amber-400" />
-            <div className="min-w-0 flex-1">
-              <p className="font-medium text-slate-100">{t('screens.commerceportal.healthOrders.sectionTitle')}</p>
-              <p className="truncate text-xs text-slate-500">{t('screens.commerceportal.healthOrders.sectionSubtitle')}</p>
-            </div>
-            <ChevronRight className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-amber-400 rtl:rotate-180" />
-          </Link>
-        )}
-      </section>
+      {!hasOrgs && orgsSection}
 
       {/* MANUAL FALLBACK — quiet on purpose, but it is the path that works today. */}
       <section className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl border border-slate-800/70 bg-slate-900/30 px-4 py-4 text-center">

@@ -10513,7 +10513,13 @@
         "acceptExpired": "Diese Einladung ist abgelaufen.",
         "acceptNotFound": "Diese Einladung wurde nicht gefunden.",
         "acceptFailed": "Die Einladung konnte nicht angenommen werden.",
-        "goToPortal": "Zum Commerce Portal"
+        "goToPortal": "Zum Commerce Portal",
+        "orgKeyAuto": "Der Kurzname wird aus dem Namen erzeugt – du kannst ihn anpassen.",
+        "shareInvite": "Einladungslink teilen",
+        "backToApp": "Zurück zur App",
+        "registerAsPartnerTitle": "Dein Business als Vitanaland-Partner registrieren",
+        "registerAsPartnerBody": "Registriere dein Unternehmen, lade dein Team ein und verwalte Bestellungen – alles vom Handy aus.",
+        "openMyOrgsBody": "Team, Einladungen und Bestellungen deiner Organisation(en)"
       },
       "healthOrders": {
         "sectionTitle": "Gesundheitstest-Bestellungen",

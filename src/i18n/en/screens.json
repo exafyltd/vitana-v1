@@ -10518,7 +10518,13 @@
         "acceptExpired": "This invite has expired.",
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
-        "goToPortal": "Go to Commerce Portal"
+        "goToPortal": "Go to Commerce Portal",
+        "orgKeyAuto": "The short name is derived from the business name — you can adjust it.",
+        "shareInvite": "Share invite link",
+        "backToApp": "Back to the app",
+        "registerAsPartnerTitle": "Register your business as a Vitanaland partner",
+        "registerAsPartnerBody": "Register your business, invite your team and manage orders — all from your phone.",
+        "openMyOrgsBody": "Your organizations' team, invites and orders"
       },
       "healthOrders": {
         "sectionTitle": "Health-test orders",

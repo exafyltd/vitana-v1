@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { businessHubNavigation } from "@/config/navigation";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { BusinessHubOverview } from "@/components/business/BusinessHubOverview";
+import { CommercePartnerCard } from "@/components/business/CommercePartnerCard";
 import { ServicesSubTabs } from "@/components/business/ServicesSubTabs";
 import { ClientsSubTabs } from "@/components/business/ClientsSubTabs";
 import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
@@ -282,6 +283,10 @@ export default function BusinessHub() {
                     onCreateService={() => setShowCreateService(true)}
                     onCreatePromotion={() => setShowCampaignDialog(true)}
                   />
+                  {/* VTID-03989: the mobile on-ramp into the Commerce Partner
+                      journey — the mobile snapshot does not render
+                      BusinessHubOverview, so the card lives here too. */}
+                  <CommercePartnerCard />
                   <div className="space-y-2">
                     <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.recentActivity', 'Recent Activity')}</h3>
                     <EarningsHistoryLedger

@@ -10,6 +10,7 @@ import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
 import { BusinessAcceleratorCenterCTA } from "./BusinessAcceleratorCenterCTA";
 import { EarningsHistoryLedger } from "./EarningsHistoryLedger";
 import { MissionOpportunitiesCard } from "./MissionOpportunitiesCard";
+import { CommercePartnerCard } from "./CommercePartnerCard";
 import {
   SplitBar,
   SplitBarList,
@@ -138,6 +139,10 @@ export function BusinessHubOverview({
               sees concrete economy-aligned actions on their business surface.
               docs/GOVERNANCE/ULTIMATE-GOAL.md */}
           <MissionOpportunitiesCard />
+
+          {/* VTID-03989: on-ramp into the Commerce Partner journey (register a
+              business / open your organizations) — see CommercePartnerCard. */}
+          <CommercePartnerCard />
         </SplitBarContent>
 
         <SplitBarContent value="history" className="pt-4">
