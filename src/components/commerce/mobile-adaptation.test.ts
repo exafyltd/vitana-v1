@@ -85,8 +85,13 @@ describe('Drawer + Business Hub entry points (VTID-03989)', () => {
     expect(nav).toContain("if (route === '/commerce') return location.pathname === '/commerce';");
   });
 
-  it('Business Hub snapshot carries the register/open-organizations card', () => {
+  it('Business Hub snapshot carries the register/open-organizations card on BOTH layouts', () => {
+    // Desktop overview and the separate mobile snapshot block in BusinessHub.tsx
+    // are different trees — the card has to be in each, or phones never see it.
     expect(read('src/components/business/BusinessHubOverview.tsx')).toContain('<CommercePartnerCard />');
+    const hub = read('src/pages/BusinessHub.tsx');
+    expect(hub).toContain('<CommercePartnerCard />');
+    expect(hub.indexOf('<CommercePartnerCard />')).toBeGreaterThan(hub.indexOf('mobileTab === "snapshot"'));
     const card = read('src/components/business/CommercePartnerCard.tsx');
     expect(card).toContain('to="/commerce"');
     expect(card).toContain('registerAsPartnerTitle');
