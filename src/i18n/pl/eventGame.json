@@ -14,7 +14,8 @@
       "notLivePreBody": "Ta gra jeszcze się nie zaczęła — wróć wkrótce.",
       "notLiveEndedTitle": "Koniec gry",
       "notLiveEndedBody": "Ta gra się zakończyła — zobacz końcowe wyniki.",
-      "disabled": "Ta gra nie jest dostępna w tej chwili."
+      "disabled": "Ta gra nie jest dostępna w tej chwili.",
+      "_pending_review": {}
     },
     "join": {
       "celebrateTitle": "🎉 JESTEŚ W GRZE!",
@@ -23,7 +24,8 @@
       "celebrateRank": "Twoja obecna pozycja: #{rank}",
       "nextTitle": "📸 WYKONAJ SWÓJ RUCH",
       "nextBody": "Opublikuj zdjęcie lub wideo z dzisiejszego wieczoru.",
-      "nextCta": "OPUBLIKUJ TERAZ"
+      "nextCta": "OPUBLIKUJ TERAZ",
+      "_pending_review": {}
     },
     "home": {
       "score": "TWÓJ WYNIK",
@@ -38,7 +40,8 @@
       "viewLeaderboard": "ZOBACZ TABELĘ WYNIKÓW",
       "rulesLink": "Jak grać",
       "countdownLeft": "LEWO",
-      "gameOver": "🛑 KONIEC GRY"
+      "gameOver": "🛑 KONIEC GRY",
+      "_pending_review": {}
     },
     "post": {
       "categoryEvent": "📸 Moment Wydarzenia",
@@ -51,7 +54,8 @@
       "successScore": "Twój wynik: {score}",
       "successRank": "Obecna ranga: #{rank}",
       "getLikes": "❤️ TERAZ ZDOBĄDŹ TROCHĘ POLUBIEŃ",
-      "share": "UDOSTĘPNIJ MÓJ MOMENT"
+      "share": "UDOSTĘPNIJ MÓJ MOMENT",
+      "_pending_review": {}
     },
     "leaderboard": {
       "title": "🏆 KTO JEST NA FALI?",
@@ -63,13 +67,15 @@
       "movingUpTitle": "🚀 AWANSUJESZ!",
       "movingUpChange": "#{from} → #{to}",
       "overtakenTitle": "👀 O NIE!",
-      "overtakenChange": "Przesunąłeś się na #{rank}"
+      "overtakenChange": "Przesunąłeś się na #{rank}",
+      "_pending_review": {}
     },
     "countdown": {
       "tenMinutes": "🚨 OSTATNIE 10 MINUT!",
       "fiveMinutes": "🔥 PIĘĆ MINUT!",
       "oneMinute": "🚨 OSTATNIA MINUTA!",
-      "over": "🛑 KONIEC GRY"
+      "over": "🛑 KONIEC GRY",
+      "_pending_review": {}
     },
     "rules": {
       "title": "🎯 JAK GRAĆ",
@@ -78,7 +84,8 @@
       "longevity": "🧬 Moment długowieczności — +{points}",
       "likes": "❤️ Otrzymaj lajki — +{points} za każdy",
       "win": "🏆 Zajmij #1 miejsce — WYGRAJ NAGRODĘ",
-      "close": "Rozumiem"
+      "close": "Rozumiem",
+      "_pending_review": {}
     },
     "results": {
       "winnerTitle": "🏆 MAMY ZWYCIĘZCĘ!",
@@ -93,11 +100,13 @@
       "longevityCount": "🧬 Momenty długowieczności: {count}",
       "gap": "Byłeś tylko {points} punktów od Top {n}!",
       "share": "UDOSTĘPNIJ MÓJ WYNIK",
-      "notEnded": "Wyniki zostaną pokazane po zakończeniu gry."
+      "notEnded": "Wyniki zostaną pokazane po zakończeniu gry.",
+      "_pending_review": {}
     },
     "feedBadge": {
       "rankPoints": "🏆 #{rank} · {points} pkt",
-      "pointsToNext": "🔥 JESTEŚ #{rank} · {points} PKT DO #{nextRank}"
+      "pointsToNext": "🔥 JESTEŚ #{rank} · {points} PKT DO #{nextRank}",
+      "_pending_review": {}
     },
     "admin": {
       "title": "Gra eventowa",
@@ -126,7 +135,10 @@
       "adjustPoints": "Dostosuj punkty",
       "adjustReason": "Powód",
       "adjustApply": "Zastosuj",
-      "notModerator": "Nie masz uprawnień do zarządzania tą grą."
-    }
-  }
+      "notModerator": "Nie masz uprawnień do zarządzania tą grą.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -7,7 +7,21 @@
     "live": "En direct",
     "media": "Médias",
     "myJourney": "Parcours",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "dashboard": true,
+      "results": true,
+      "health": true,
+      "appointments": true,
+      "patients": true,
+      "schedule": true,
+      "settings": true
+    },
+    "dashboard": "Dashboard",
+    "results": "Results",
+    "health": "Health",
+    "appointments": "Appointments",
+    "patients": "Patients",
+    "schedule": "Schedule",
+    "settings": "Settings"
+  }
 }

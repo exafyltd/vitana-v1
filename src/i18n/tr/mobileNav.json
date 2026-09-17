@@ -1,13 +1,27 @@
 {
   "mobileNav": {
-    "_pending_review": {},
+    "_pending_review": {
+      "dashboard": true,
+      "results": true,
+      "health": true,
+      "appointments": true,
+      "patients": true,
+      "schedule": true,
+      "settings": true
+    },
     "news": "Haberler",
     "inbox": "Mesajlar",
     "events": "Etkinlikler",
     "business": "İş",
     "live": "Canlı",
     "media": "Medya",
-    "myJourney": "Yolculuk"
-  },
-  "_pending_review": {}
+    "myJourney": "Yolculuk",
+    "dashboard": "Dashboard",
+    "results": "Results",
+    "health": "Health",
+    "appointments": "Appointments",
+    "patients": "Patients",
+    "schedule": "Schedule",
+    "settings": "Settings"
+  }
 }

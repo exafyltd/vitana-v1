@@ -2,16 +2,20 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin"
-      }
+        "admin": "← Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "overview": {
       "tabs": {
         "dashboard": "Pulpit",
         "inbox": "Skrzynka zatwierdzeń",
         "activity": "Aktywność",
-        "health": "Zdrowie"
-      }
+        "health": "Zdrowie",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "sales": {
       "tabs": {
@@ -23,16 +27,20 @@
         "orders": "Zamówienia sprzedaży",
         "invoices": "Faktury",
         "credit-notes": "Noty kredytowe",
-        "deliveries": "Dostawy"
-      }
+        "deliveries": "Dostawy",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "marketing": {
       "tabs": {
         "campaigns": "Kampanie",
         "outreach": "Zasięg",
         "attribution": "Źródła leadów i Atrybucja",
-        "performance": "Wyniki"
-      }
+        "performance": "Wyniki",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "accounting": {
       "tabs": {
@@ -42,8 +50,10 @@
         "tax": "Podatki",
         "assets": "Środki trwałe i Leasingi",
         "intercompany": "Międzyfirmowe i Konsolidacja",
-        "budgets": "Budżety i Prognozy"
-      }
+        "budgets": "Budżety i Prognozy",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "finance": {
       "tabs": {
@@ -51,8 +61,10 @@
         "bank-reconciliation": "Uzgodnienie bankowe",
         "cash": "Stan gotówki i Prognoza",
         "subscriptions": "Fakturowanie cykliczne",
-        "sync": "Stripe / Shopify Synchronizacja"
-      }
+        "sync": "Stripe / Shopify Synchronizacja",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "hr": {
       "tabs": {
@@ -60,8 +72,10 @@
         "leave": "Urlop",
         "attendance": "Obecność",
         "expenses": "Rozliczenia wydatków",
-        "payroll": "Płace"
-      }
+        "payroll": "Płace",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "operations": {
       "tabs": {
@@ -71,16 +85,20 @@
         "supplier-invoices": "Faktury dostawców",
         "items": "Pozycje",
         "warehouses": "Magazyny",
-        "stock": "Zapasy i Przesunięcia"
-      }
+        "stock": "Zapasy i Przesunięcia",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "legal": {
       "tabs": {
         "contracts": "Umowy",
         "obligations": "Zobowiązania",
         "compliance": "Zgodność",
-        "e-signature": "E-podpis"
-      }
+        "e-signature": "E-podpis",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "reports": {
       "tabs": {
@@ -90,22 +108,28 @@
         "cash-flow": "Przepływy pieniężne",
         "aging": "Wiek należności / zobowiązań",
         "dimensions": "Wg wymiaru",
-        "board-pack": "Pakiet dla zarządu"
-      }
+        "board-pack": "Pakiet dla zarządu",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "approvals": {
       "tabs": {
         "queue": "Kolejka",
         "my-requests": "Moje wnioski",
-        "policies": "Zasady"
-      }
+        "policies": "Zasady",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "audit": {
       "tabs": {
         "receipts": "Potwierdzenia poleceń",
         "erp-log": "Dziennik audytu ERP",
-        "trail": "Niezależny rejestr audytu"
-      }
+        "trail": "Niezależny rejestr audytu",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "settings": {
       "tabs": {
@@ -113,8 +137,12 @@
         "access": "Dostęp",
         "numbering": "Numeracja",
         "integrations": "Integracje",
-        "modules": "Moduły"
-      }
-    }
-  }
+        "modules": "Moduły",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

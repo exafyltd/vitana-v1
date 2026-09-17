@@ -18,6 +18,8 @@
     "settings": "Configurações",
     "logout": "Sair",
     "patientResults": "Meus Resultados",
-    "healthOrders": "Pedidos de Exames de Saúde"
-  }
+    "healthOrders": "Pedidos de Exames de Saúde",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

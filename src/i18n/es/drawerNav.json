@@ -18,6 +18,8 @@
     "settings": "Configuración",
     "logout": "Cerrar Sesión",
     "patientResults": "Mis Resultados",
-    "healthOrders": "Pedidos de Pruebas de Salud"
-  }
+    "healthOrders": "Pedidos de Pruebas de Salud",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
