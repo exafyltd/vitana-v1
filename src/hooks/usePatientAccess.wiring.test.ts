@@ -38,7 +38,11 @@ describe('usePatientAccess wiring (VTID-03988)', () => {
     const nav = read('src/components/mobile/SideDrawerNav.tsx');
     expect(nav).toContain("import { usePatientAccess } from '@/hooks/usePatientAccess';");
     expect(nav).toContain("!(item.id === 'patient-results' && dbRole === 'community' && !isPatient)");
-    expect(nav).toContain("dbRole === 'patient' || isPatient");
+    // VTID-03993: the header label now names the ACTIVE mode; the flag feeds
+    // the role switcher instead, which offers Patient before any switch.
+    expect(nav).toContain("const { isPatient } = usePatientAccess();");
+    const roleSwitch = read('src/hooks/useRoleSwitch.ts');
+    expect(roleSwitch).toContain("if (input.isPatient) set.add('patient');");
     // The drawer role label no longer ships raw English.
     expect(nav).not.toContain("'Community Member'");
   });
