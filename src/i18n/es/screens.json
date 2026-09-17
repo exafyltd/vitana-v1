@@ -6061,13 +6061,15 @@
         "roleDeveloper": true,
         "roleInfra": true,
         "switchToCommunity": true,
-        "switchRoleHint": true
+        "switchRoleHint": true,
+        "businessModesTitle": true
       },
       "roleBackoffice": "Back Office",
       "roleDeveloper": "Developer",
       "roleInfra": "Infra",
       "switchToCommunity": "Switch to Community",
-      "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now."
+      "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now.",
+      "businessModesTitle": "Your business"
     },
     "notifications": {
       "markAllAsRead": "Marcar todo como leído",
@@ -10552,7 +10554,10 @@
           "backToApp": true,
           "registerAsPartnerTitle": true,
           "registerAsPartnerBody": true,
-          "openMyOrgsBody": true
+          "openMyOrgsBody": true,
+          "teamTitle": true,
+          "teamAdminOnlyTitle": true,
+          "teamAdminOnlyBody": true
         },
         "registerCta": "Register your business",
         "registerTitle": "Register a new business",
@@ -10613,7 +10618,10 @@
         "backToApp": "Back to the app",
         "registerAsPartnerTitle": "Register your business as a Vitanaland partner",
         "registerAsPartnerBody": "Register your business, invite your team and manage orders — all from your phone.",
-        "openMyOrgsBody": "Your organizations' team, invites and orders"
+        "openMyOrgsBody": "Your organizations' team, invites and orders",
+        "teamTitle": "Team",
+        "teamAdminOnlyTitle": "Only org admins manage the team",
+        "teamAdminOnlyBody": "Invitations and members of {org} are managed by an org admin. Your orders are under “Orders”."
       },
       "healthOrders": {
         "_pending_review": {
