@@ -17,32 +17,22 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Building, Trash2, Loader2 } from "lucide-react";
+import { User, LogOut, Shield, Trash2, Loader2, ChevronDown } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
-import { useRole, UserRole } from "@/hooks/useRole";
+import { UserRole } from "@/hooks/useRole";
 import { useTenant, TenantType } from "@/hooks/useTenant";
-import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
-import { getRoleSwitchDestination, isExternalRoleSwitchDestination } from "@/lib/role-switch-destination";
+import { useRoleSwitch } from "@/hooks/useRoleSwitch";
+import { roleLabel } from "@/lib/role-labels";
+import { RoleSwitcherSheet } from "@/components/mobile/RoleSwitcherSheet";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
 }
-
-const ROLE_LABELS: Record<UserRole, string> = {
-  community: "Community",
-  patient: "Patient",
-  professional: "Professional",
-  staff: "Staff",
-  backoffice: "Back Office",
-  admin: "Admin",
-  developer: "Developer",
-  infra: "Infra",
-};
 
 const TENANT_LABELS: Record<TenantType, string> = {
   maxina: "Maxina",
@@ -55,13 +45,15 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { profile } = useProfile();
   const { signOut, user } = useAuth();
   const { tenant, activeTenantId, isExafyAdmin } = useTenant();
-  const { currentRole, setRole } = useRole();
-  const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
+  // VTID-03993: the list and the write live in useRoleSwitch, shared with the
+  // mobile drawer's pill/sheet — desktop <Select> and phone sheet are one path.
+  const { availableRoles, activeRole, canSwitch, switching, switchRole } = useRoleSwitch();
   const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
   
   const isMobile = useIsMobile();
   
   const [open, setOpen] = React.useState(false);
+  const [roleSheetOpen, setRoleSheetOpen] = React.useState(false);
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
 
   const handleEditProfile = () => {
@@ -73,59 +65,19 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     window.location.href = target;
   };
   
-  // VTID-01230: get_my_permitted_roles() is the canonical source.
-  // Exafy super-admin safety net: ensure all 8 roles are ALWAYS visible for
-  // super-admins, even if the RPC hasn't rolled out yet or returns an error —
-  // the role switcher must never disappear for an Exafy admin on any screen.
-  const ALL_ROLES_SUPER_ADMIN: UserRole[] = [
-    "community",
-    "patient",
-    "professional",
-    "staff",
-    "backoffice",
-    "admin",
-    "developer",
-    "infra",
-  ];
-  const availableRoles: UserRole[] = isExafyAdmin
-    ? ALL_ROLES_SUPER_ADMIN
-    : ((membershipRoles ?? []) as UserRole[]);
-
-  const [switchingRole, setSwitchingRole] = React.useState(false);
-
+  // VTID-03909/03916/03924 (await the write, router vs. cross-origin
+  // destination) and the VTID-01230 exafy safety net now live in
+  // useRoleSwitch — the drawer only closes once the switch is confirmed.
   const handleRoleChange = async (newRole: UserRole) => {
-    // VTID-03909: hard-navigating before the write is confirmed let the page
-    // unload cancel the in-flight set_role_preference RPC, so a switch could
-    // silently fail to persist — the user would land back on their PREVIOUS
-    // role's landing route with no error shown, looking identical to success.
-    // Awaiting the real result (and only navigating once it's confirmed)
-    // closes that race; a failure now surfaces as a toast and leaves the
-    // drawer open instead of reloading to the wrong place.
-    setSwitchingRole(true);
-    const result = await setRole(newRole);
-    setSwitchingRole(false);
+    const result = await switchRole(newRole);
+    if (result.ok) setOpen(false);
+  };
 
-    if (!result.ok) {
-      notifyError('toasts.settings.errorSwitchingRole', 'toasts.settings.failedSwitchRolePleaseTryAgain');
-      return;
-    }
-
+  // Mobile: the badge opens the same bottom sheet the side drawer uses. The
+  // profile drawer closes first — two stacked sheets is not one tap.
+  const openRoleSheet = () => {
     setOpen(false);
-
-    const destination = getRoleSwitchDestination(newRole);
-    // VTID-03916: every in-app destination uses the router's client-side
-    // navigate() instead of a hard window.location.assign() reload — by the
-    // time we get here setRole() has already confirmed the write, so the
-    // query cache holds the new role and a soft navigate is safe (see that
-    // VTID's own commit message for the full race-history context).
-    // developer/infra are the one exception: VTID-03924 points them at the
-    // gateway's Command Hub, a different origin entirely — navigate() can't
-    // reach across origins, so those two still need a real page navigation.
-    if (isExternalRoleSwitchDestination(destination)) {
-      window.location.assign(destination);
-    } else {
-      navigate(destination);
-    }
+    setRoleSheetOpen(true);
   };
 
 
@@ -150,6 +102,18 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   };
 
   return (
+    <>
+    <RoleSwitcherSheet
+      open={roleSheetOpen}
+      onOpenChange={setRoleSheetOpen}
+      availableRoles={availableRoles}
+      activeRole={activeRole}
+      switching={switching}
+      onSelect={async (role) => {
+        const result = await switchRole(role);
+        if (result.ok) setRoleSheetOpen(false);
+      }}
+    />
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         {trigger}
@@ -172,9 +136,23 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
               {user?.email && (
                 <p className="text-xs text-muted-foreground">{user.email}</p>
               )}
-              <Badge variant="secondary" className="text-xs">
-                {ROLE_LABELS[profile.role]}
-              </Badge>
+              {isMobile && canSwitch ? (
+                <button
+                  type="button"
+                  onClick={openRoleSheet}
+                  aria-label={t('screens.profile.switchRole')}
+                  className="inline-flex items-center rounded-full"
+                >
+                  <Badge variant="secondary" className="text-xs">
+                    {roleLabel(activeRole)}
+                    <ChevronDown className="ms-1 h-3 w-3" />
+                  </Badge>
+                </button>
+              ) : (
+                <Badge variant="secondary" className="text-xs">
+                  {roleLabel(activeRole)}
+                </Badge>
+              )}
               {activeTenantId && (
                 <p className="text-xs text-muted-foreground">{t('screens.profile.tenantValue0', { value0: activeTenantId.substring(0, 8) })}
                 </p>
@@ -209,22 +187,22 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           )}
 
 
-          {/* Role Switcher - desktop only, mobile is community-only */}
-          {!isMobile && availableRoles && availableRoles.length > 0 && (
+          {/* Role Switcher — desktop <Select>; on mobile the badge above opens the sheet (VTID-03993) */}
+          {!isMobile && canSwitch && (
             <>
               <Separator />
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Shield className="h-4 w-4" />{t('screens.profile.switchRole')} {isExafyAdmin && <Badge variant="outline" className="text-xs">{t('screens.profile.adminAccess')}</Badge>}
                 </label>
-                <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange} disabled={switchingRole}>
+                <Select value={activeRole} onValueChange={handleRoleChange} disabled={switching}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {availableRoles.map(role => (
                       <SelectItem key={role} value={role}>
-                        {ROLE_LABELS[role as UserRole]}
+                        {roleLabel(role)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -254,5 +232,6 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
+    </>
   );
 }

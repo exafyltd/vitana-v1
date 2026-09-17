@@ -6,6 +6,13 @@
     "business": "Business",
     "live": "Live",
     "media": "Medien",
-    "myJourney": "Reise"
+    "myJourney": "Reise",
+    "dashboard": "Dashboard",
+    "results": "Befunde",
+    "health": "Gesundheit",
+    "appointments": "Termine",
+    "patients": "Patienten",
+    "schedule": "Zeitplan",
+    "settings": "Einstellungen"
   }
 }

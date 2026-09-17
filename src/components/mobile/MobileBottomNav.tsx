@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Calendar, Compass, Mail, Newspaper } from "lucide-react";
+import { Calendar, Compass, Heart, LayoutDashboard, Mail, Newspaper, Settings, TestTube, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRole, type UserRole } from "@/hooks/useRole";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
@@ -20,6 +21,43 @@ const navItems = [
   { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
 ];
 
+type BottomNavItem = {
+  id: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  path: string;
+  i18nKey: string;
+};
+
+// VTID-03993: the bar follows the active MODE (useRole().dbRole — the stored
+// preference, which routing already treats as the mode on mobile since
+// VTID-03936). A member in Patient or Professional mode gets that role's own
+// four items; VTID-03968 had hidden the community bar on those routes, which
+// was the right diagnosis (wrong chrome) but left the mode with no bar at
+// all. Staff/admin/BackOffice keep the hide: dense desktop consoles with
+// their own in-page navigation, nothing phone-sized to offer yet.
+// Every path here is off COMMUNITY_PREFIXES (useSmartRouting.tsx), so no
+// item bounces the user back to their dashboard when tapped.
+const ROLE_NAV_ITEMS: Partial<Record<UserRole, BottomNavItem[]>> = {
+  patient: [
+    { id: 'patient-dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/patient/dashboard', i18nKey: 'mobileNav.dashboard' },
+    { id: 'patient-results', icon: TestTube, label: 'Results', path: '/patient/results', i18nKey: 'mobileNav.results' },
+    { id: 'patient-health', icon: Heart, label: 'Health', path: '/patient/health', i18nKey: 'mobileNav.health' },
+    { id: 'patient-appointments', icon: Calendar, label: 'Appointments', path: '/patient/appointments', i18nKey: 'mobileNav.appointments' },
+  ],
+  professional: [
+    { id: 'professional-dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/professional/dashboard', i18nKey: 'mobileNav.dashboard' },
+    { id: 'professional-patients', icon: Users, label: 'Patients', path: '/professional/patients', i18nKey: 'mobileNav.patients' },
+    { id: 'professional-schedule', icon: Calendar, label: 'Schedule', path: '/professional/schedule', i18nKey: 'mobileNav.schedule' },
+    { id: 'settings', icon: Settings, label: 'Settings', path: '/settings', i18nKey: 'mobileNav.settings' },
+  ],
+};
+
+/** The bar for the active mode, or null when the mode has none (community bar / VTID-03968 hide apply). */
+export function resolveRoleBottomNav(dbRole: UserRole | null | undefined): BottomNavItem[] | null {
+  return (dbRole && ROLE_NAV_ITEMS[dbRole]) || null;
+}
+
 /**
  * Mobile bottom navigation bar — clean 4-item layout.
  * The gateway widget FAB is the sole voice entry point.
@@ -28,7 +66,9 @@ export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const location = useLocation();
   const { unreadCount } = useChatUnreadCount();
-  const items = navItems;
+  const { dbRole } = useRole();
+  const roleItems = resolveRoleBottomNav(dbRole);
+  const items = roleItems ?? navItems;
 
   // Routes where the bottom nav should be hidden
   const hideNavRoutes = [
@@ -46,26 +86,25 @@ export function MobileBottomNav() {
     '/news/',
     '/payment-checkout',
     '/kyc-verification',
-    // VTID-03968: role-dashboard sections (admin, BackOffice, staff,
-    // professional, patient) each have their own top-level navigation —
-    // BackOfficeTabs for /backoffice/*, etc. useRoleRouteEnforcement
-    // deliberately routes an elevated-role account here on mobile too
-    // (VTID-03936), so these pages DO render on mobile; showing the
-    // community News/Inbox/Journey/Events bar underneath their own
-    // navigation was the actual "this shouldn't be on mobile" bug —
-    // wrong chrome, not wrong access.
-    '/admin',
-    '/backoffice',
-    '/staff',
-    '/professional',
-    '/patient',
   ];
-  
-  const shouldHideNav = hideNavRoutes.some(route => 
-    location.pathname === route || 
+  // VTID-03968: role-dashboard sections (admin, BackOffice, staff,
+  // professional, patient) each have their own top-level navigation —
+  // BackOfficeTabs for /backoffice/*, etc. useRoleRouteEnforcement
+  // deliberately routes an elevated-role account here on mobile too
+  // (VTID-03936), so these pages DO render on mobile; showing the
+  // community News/Inbox/Journey/Events bar underneath their own
+  // navigation was the actual "this shouldn't be on mobile" bug —
+  // wrong chrome, not wrong access.
+  // VTID-03993: this hide only applies while the community bar is the one
+  // on offer — in Patient/Professional mode the role's own bar renders here.
+  const roleSectionRoutes = ['/admin', '/backoffice', '/staff', '/professional', '/patient'];
+
+  const matchesRoute = (route: string) =>
+    location.pathname === route ||
     location.pathname.startsWith(route + '/') ||
-    (route.endsWith('/') && location.pathname.startsWith(route))
-  );
+    (route.endsWith('/') && location.pathname.startsWith(route));
+  const shouldHideNav =
+    hideNavRoutes.some(matchesRoute) || (roleItems === null && roleSectionRoutes.some(matchesRoute));
   
   // Sync body attribute so external widgets (ORB) know when bottom nav is visible
   useEffect(() => {
