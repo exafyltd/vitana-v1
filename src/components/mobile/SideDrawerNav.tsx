@@ -330,11 +330,6 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       {secondaryLine}
                     </div>
                   )}
-                  {primaryOrg && (
-                    <div className="text-[11px] opacity-80 truncate">
-                      {orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}
-                    </div>
-                  )}
                 </div>
               </button>
               <button
@@ -348,21 +343,36 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 <X className="h-[18px] w-[18px]" />
               </button>
               </div>
-              {roleSwitch.canSwitch && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openRoleSheet();
-                  }}
-                  aria-label={t('screens.profile.switchRole')}
-                  className={`mt-2 inline-flex max-w-full items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
-                    isMaxina ? 'bg-white/20 hover:bg-white/30' : 'bg-muted hover:bg-muted/80'
-                  }`}
-                >
-                  <span className="truncate">{roleLabel}</span>
-                  <ChevronDown className="h-3.5 w-3.5 shrink-0" />
-                </button>
+              {/* Mode pill + org chip sit in the TEXT column, directly under
+                  the name/handle (VTID-03997). They cannot live inside the
+                  profile <button> above (a button in a button is invalid
+                  HTML), so this block is indented to the column start:
+                  ms-12 = 48px = avatar w-9 (36px) + the row's gap-3 (12px).
+                  Keep in sync if the avatar size changes. */}
+              {(roleSwitch.canSwitch || primaryOrg) && (
+                <div className="ms-12 mt-1.5 flex min-w-0 flex-col items-start gap-1">
+                  {roleSwitch.canSwitch && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openRoleSheet();
+                      }}
+                      aria-label={t('screens.profile.switchRole')}
+                      className={`inline-flex max-w-full items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
+                        isMaxina ? 'bg-white/20 hover:bg-white/30' : 'bg-muted hover:bg-muted/80'
+                      }`}
+                    >
+                      <span className="truncate">{roleLabel}</span>
+                      <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+                    </button>
+                  )}
+                  {primaryOrg && (
+                    <div className="max-w-full text-[11px] opacity-80 truncate">
+                      {orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}
+                    </div>
+                  )}
+                </div>
               )}
             </div>
 
