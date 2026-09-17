@@ -135,3 +135,31 @@ describe('VTID-03973: BackOffice is desktop-only, unlike the other elevated role
     expect(navigateMock).not.toHaveBeenCalled();
   });
 });
+
+describe('VTID-03988: /patient/results is a consumer surface, not a role dashboard', () => {
+  beforeEach(() => {
+    navigateMock.mockReset();
+    // A mobile patient whose ACTIVE role never flipped: patient_profiles is
+    // set by the health-order trigger, but role_preferences still says
+    // community because mobile has no role switcher.
+    storedRole = 'community';
+  });
+
+  it('does NOT bounce a community-role account off /patient/results', async () => {
+    locationPathname = '/patient/results';
+    const { Wrapper } = wrapper();
+    renderHook(() => useRoleRouteEnforcement(), { wrapper: Wrapper });
+
+    // Long enough for the role query to resolve and the effect to (not) fire.
+    await new Promise((r) => setTimeout(r, 50));
+    expect(navigateMock).not.toHaveBeenCalled();
+  });
+
+  it('still bounces a community-role account off /patient/dashboard — the role dashboard proper', async () => {
+    locationPathname = '/patient/dashboard';
+    const { Wrapper } = wrapper();
+    renderHook(() => useRoleRouteEnforcement(), { wrapper: Wrapper });
+
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/home', { replace: true }));
+  });
+});

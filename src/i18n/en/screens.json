@@ -6094,7 +6094,13 @@
       "openCalendar": "Open calendar",
       "openAutopilot": "Open autopilot",
       "closeSearch": "Close search",
-      "_pending_review": {}
+      "_pending_review": {},
+      "roleExafyAdmin": "Exafy Admin",
+      "roleAdministrator": "Administrator",
+      "roleStaff": "Staff",
+      "roleProfessional": "Professional",
+      "rolePatient": "Patient",
+      "roleCommunity": "Community Member"
     },
     "notifications": {
       "markAllAsRead": "Mark all as read",

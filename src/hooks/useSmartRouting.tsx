@@ -11,6 +11,11 @@ import { markRouteTransition } from "@/lib/routeTransition";
 // Ensures the user's role always matches the route they are on.
 const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
 const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
+// VTID-03988: consumer surfaces that happen to live under a role prefix.
+// /patient/results shows the caller's own RLS-scoped data and is unlocked by
+// patient_profiles (see usePatientAccess.ts), not by the active role — so a
+// dbRole of 'community' must not bounce it to /home like the rest of /patient/*.
+const CONSUMER_PATHS = ['/patient/results'];
 
 export function useRoleRouteEnforcement() {
   const { user, loading: authLoading } = useAuth();
@@ -43,6 +48,7 @@ export function useRoleRouteEnforcement() {
 
     // Don't enforce on portal, auth, settings, or dev pages (shared across roles)
     if (SHARED_PATHS.some(p => path === p || (p !== '/' && path.startsWith(p)))) return;
+    if (CONSUMER_PATHS.includes(path)) return;
 
     const isOnCommunity = COMMUNITY_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
     const isOnAdmin = path === '/admin' || path.startsWith('/admin/');

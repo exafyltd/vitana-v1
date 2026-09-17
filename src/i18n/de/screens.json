@@ -6053,7 +6053,13 @@
       "openSearch": "Suche öffnen",
       "openCalendar": "Kalender öffnen",
       "openAutopilot": "Autopilot öffnen",
-      "closeSearch": "Suche schließen"
+      "closeSearch": "Suche schließen",
+      "roleExafyAdmin": "Exafy-Admin",
+      "roleAdministrator": "Administrator",
+      "roleStaff": "Mitarbeiter",
+      "roleProfessional": "Fachkraft",
+      "rolePatient": "Patient",
+      "roleCommunity": "Community-Mitglied"
     },
     "notifications": {
       "markAllAsRead": "Alle als gelesen markieren",
