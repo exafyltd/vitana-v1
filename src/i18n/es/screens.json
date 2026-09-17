@@ -6055,7 +6055,19 @@
       "roleStaff": "Personal",
       "roleProfessional": "Profesional",
       "rolePatient": "Paciente",
-      "roleCommunity": "Miembro de la comunidad"
+      "roleCommunity": "Miembro de la comunidad",
+      "_pending_review": {
+        "roleBackoffice": true,
+        "roleDeveloper": true,
+        "roleInfra": true,
+        "switchToCommunity": true,
+        "switchRoleHint": true
+      },
+      "roleBackoffice": "Back Office",
+      "roleDeveloper": "Developer",
+      "roleInfra": "Infra",
+      "switchToCommunity": "Switch to Community",
+      "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now."
     },
     "notifications": {
       "markAllAsRead": "Marcar todo como leído",

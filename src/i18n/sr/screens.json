@@ -6095,14 +6095,24 @@
         "roleStaff": true,
         "roleProfessional": true,
         "rolePatient": true,
-        "roleCommunity": true
+        "roleCommunity": true,
+        "roleBackoffice": true,
+        "roleDeveloper": true,
+        "roleInfra": true,
+        "switchToCommunity": true,
+        "switchRoleHint": true
       },
       "roleExafyAdmin": "Exafy Admin",
       "roleAdministrator": "Administrator",
       "roleStaff": "Staff",
       "roleProfessional": "Professional",
       "rolePatient": "Patient",
-      "roleCommunity": "Community Member"
+      "roleCommunity": "Community Member",
+      "roleBackoffice": "Back Office",
+      "roleDeveloper": "Developer",
+      "roleInfra": "Infra",
+      "switchToCommunity": "Switch to Community",
+      "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now."
     },
     "notifications": {
       "markAllAsRead": "Označi sve kao pročitano",

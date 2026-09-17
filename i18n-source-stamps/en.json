@@ -15596,5 +15596,13 @@
   "screens.screens.commerceportal.orgOnboarding.backToApp": "9509dba8",
   "screens.screens.commerceportal.orgOnboarding.registerAsPartnerTitle": "3736e994",
   "screens.screens.commerceportal.orgOnboarding.registerAsPartnerBody": "187a6998",
-  "screens.screens.commerceportal.orgOnboarding.openMyOrgsBody": "4a93097c"
+  "screens.screens.commerceportal.orgOnboarding.openMyOrgsBody": "4a93097c",
+  "mobileNav.mobileNav.results": "91b967cb",
+  "mobileNav.mobileNav.health": "efb992c8",
+  "mobileNav.mobileNav.appointments": "06a21d2d",
+  "mobileNav.mobileNav.patients": "d13edaed",
+  "mobileNav.mobileNav.schedule": "def4ea05",
+  "mobileNav.mobileNav.settings": "3e5af3d1",
+  "screens.screens.mobile.switchToCommunity": "3c7abd12",
+  "screens.screens.mobile.switchRoleHint": "10247b48"
 }

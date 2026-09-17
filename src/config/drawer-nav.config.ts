@@ -54,6 +54,14 @@ export const drawerNavIconTones: Record<string, DrawerIconTone> = {
   inbox:      { base: 'hsl(210 46% 56%)', active: 'hsl(210 52% 46%)' },
   support:    { base: 'hsl(0 60% 56%)',   active: 'hsl(0 65% 46%)'   },
   settings:   { base: 'hsl(220 10% 52%)', active: 'hsl(220 12% 42%)' },
+  // VTID-03993: one tone per non-community MODE — the drawer maps that role's
+  // navigation (role-navigation.ts) into rows keyed `role:<path>`, which have
+  // no per-item tone here, so SideDrawerNav falls back to the mode's tone.
+  patient:      { base: 'hsl(345 42% 60%)', active: 'hsl(345 48% 50%)' },
+  professional: { base: 'hsl(185 38% 44%)', active: 'hsl(185 46% 36%)' },
+  staff:        { base: 'hsl(215 22% 52%)', active: 'hsl(215 28% 42%)' },
+  admin:        { base: 'hsl(265 32% 60%)', active: 'hsl(265 38% 50%)' },
+  'switch-community': { base: 'hsl(38 55% 55%)', active: 'hsl(38 62% 46%)' },
 };
 
 export const drawerNavItems: DrawerNavItem[] = [

@@ -6059,7 +6059,17 @@
       "roleStaff": "Staff",
       "roleProfessional": "Professional",
       "rolePatient": "Patient",
-      "roleCommunity": "Community Member"
+      "roleCommunity": "Community Member",
+      "roleBackoffice": "Back Office",
+      "roleDeveloper": "Developer",
+      "roleInfra": "Infra",
+      "switchToCommunity": "Switch to Community",
+      "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now.",
+      "_pending_review": {
+        "roleBackoffice": true,
+        "roleDeveloper": true,
+        "roleInfra": true
+      }
     },
     "notifications": {
       "markAllAsRead": "Mark all as read",

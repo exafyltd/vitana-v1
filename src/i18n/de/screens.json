@@ -6059,7 +6059,12 @@
       "roleStaff": "Mitarbeiter",
       "roleProfessional": "Fachkraft",
       "rolePatient": "Patient",
-      "roleCommunity": "Community-Mitglied"
+      "roleCommunity": "Community-Mitglied",
+      "roleBackoffice": "Back Office",
+      "roleDeveloper": "Developer",
+      "roleInfra": "Infra",
+      "switchToCommunity": "Zur Community wechseln",
+      "switchRoleHint": "Du hast mehrere Rollen. Wähle, in welchem Modus die App gerade für dich arbeitet."
     },
     "notifications": {
       "markAllAsRead": "Alle als gelesen markieren",

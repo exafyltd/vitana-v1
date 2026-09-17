@@ -7,7 +7,15 @@
     "live": "Live",
     "media": "Media",
     "myJourney": "Journey",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "dashboard": "Dashboard",
+    "results": "Results",
+    "health": "Health",
+    "appointments": "Appointments",
+    "patients": "Patients",
+    "schedule": "Schedule",
+    "settings": "Settings",
+    "_pending_review": {
+      "dashboard": true
+    }
+  }
 }

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight, ChevronDown, Users, type LucideIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
@@ -14,7 +14,8 @@ import { NotificationsPanel } from '@/components/notifications/NotificationsPane
 import { ResponsivePopover, ResponsivePopoverContent } from '@/components/ui/responsive-popover';
 import { LanguageOptionsList } from '@/components/language/LanguageOptionsList';
 import { LOCALE_PRESENTATION } from '@/components/language/locale-presentation';
-import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
+import { drawerNavItems, drawerNavIconTones, type DrawerNavItem } from '@/config/drawer-nav.config';
+import { getRoleNavigation } from '@/config/role-navigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
@@ -22,6 +23,9 @@ import { useProfile } from '@/context/ProfileProvider';
 import { useRole } from '@/hooks/useRole';
 import { useMyPartnerOrgs } from '@/hooks/useOrgMembers';
 import { usePatientAccess } from '@/hooks/usePatientAccess';
+import { useRoleSwitch } from '@/hooks/useRoleSwitch';
+import { RoleSwitcherSheet } from '@/components/mobile/RoleSwitcherSheet';
+import { roleLabel as vitanaRoleLabel } from '@/lib/role-labels';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useUniversalCart } from '@/hooks/useUniversalCart';
@@ -36,6 +40,19 @@ interface SideDrawerNavProps {
   open: boolean;
   onClose: () => void;
 }
+
+// VTID-03993: one drawer row. Community-mode rows come from drawer-nav.config;
+// rows for any other mode are mapped from role-navigation.ts — the same
+// source the desktop sidebar renders — so a mode's items cannot drift
+// between viewports. `fallback` is the English title for keys the catalog
+// may not carry; `action` marks the two rows that do not navigate.
+type DrawerRow = DrawerNavItem & { fallback?: string; action?: 'logout' | 'switch-community' };
+
+// Rows that stay in EVERY mode: the org axis (a business membership is
+// independent of the active Vitana role — owner decision, VTID-03993), the
+// patient-results door (VTID-03988), support, settings and logout. Rows whose
+// route the role navigation already lists are not repeated.
+const CROSS_MODE_IDS = ['commerce', 'patient-results', 'health-orders', 'support', 'settings', 'logout'];
 
 export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const location = useLocation();
@@ -67,6 +84,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // health-order trigger sets, not only on dbRole — mobile has no role
   // switcher, so dbRole stays 'community' here even after activation.
   const { isPatient } = usePatientAccess();
+  // VTID-03993: the stored preference (dbRole) is the active MODE on every
+  // viewport; the header pill opens the switcher, the sheet writes the same
+  // set_role_preference the desktop <Select> does (one hook, one path).
+  const roleSwitch = useRoleSwitch();
+  const [roleSheetOpen, setRoleSheetOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchActive, setSearchActive] = useState(false);
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
@@ -111,18 +133,21 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   };
 
   const isMaxina = tenant?.slug === 'maxina';
-  const roleLabel = isExafyAdmin
+  // The label names the ACTIVE mode. An automatically activated patient who
+  // is still in Community mode is offered Patient in the switcher instead of
+  // being labelled as one here (VTID-03993 supersedes the VTID-03988 hint):
+  // a pill that says "Patient" while the app is in Community mode would lie.
+  const roleLabel = isExafyAdmin && dbRole === 'community'
     ? t('screens.mobile.roleExafyAdmin')
-    : dbRole === 'admin'
-    ? t('screens.mobile.roleAdministrator')
-    : dbRole === 'staff'
-    ? t('screens.mobile.roleStaff')
-    : dbRole === 'professional'
-    ? t('screens.mobile.roleProfessional')
-    : dbRole === 'patient' || isPatient
-    ? t('screens.mobile.rolePatient')
-    : t('screens.mobile.roleCommunity');
-  const secondaryLine = profile.handle ? `@${profile.handle}` : roleLabel;
+    : vitanaRoleLabel(dbRole);
+  // With a switcher the pill carries the role; the second line then only
+  // shows the handle (or nothing) so the mode is not printed twice.
+  const secondaryLine = profile.handle ? `@${profile.handle}` : roleSwitch.canSwitch ? '' : roleLabel;
+
+  const openRoleSheet = () => {
+    onClose();
+    setRoleSheetOpen(true);
+  };
 
   const handleProfileClick = () => {
     onClose();
@@ -165,8 +190,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // tap, since only the bottom nav had this. Warms both the route's JS chunk
   // and its data query so Events/Discover/etc. paint from cache when opened
   // from here, not just from the bottom nav.
-  const handleTapIntent = (item: (typeof drawerNavItems)[number]) => {
-    if (item.id === 'logout' || warmedItemsRef.current.has(item.id)) return;
+  const handleTapIntent = (item: DrawerRow) => {
+    if (item.action || warmedItemsRef.current.has(item.id)) return;
     warmedItemsRef.current.add(item.id);
     ROUTE_CHUNK_IMPORTERS[item.route]?.().catch(() => {});
     if (user?.id) {
@@ -174,10 +199,16 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     }
   };
 
-  const handleItemClick = async (item: (typeof drawerNavItems)[number]) => {
+  const handleItemClick = async (item: DrawerRow) => {
     onClose();
 
-    if (item.id === 'logout') {
+    if (item.action === 'switch-community') {
+      // The explicit way back: same write as picking Community in the sheet.
+      await roleSwitch.switchRole('community');
+      return;
+    }
+
+    if (item.action === 'logout') {
       await signOut();
       // Clear caches
       const qc = (window as any).queryClient;
@@ -190,8 +221,47 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     navigate(item.route);
   };
 
+  // VTID-03993: which rows this drawer shows. Community (and BackOffice,
+  // which VTID-03973 keeps off the phone) get the existing list; any other
+  // mode gets that role's own navigation, the cross-mode rows, an explicit
+  // "switch to Community" row and logout.
+  const communityRows: DrawerRow[] = drawerNavItems
+    .filter(item => !(isIAPRestricted() && item.id === 'wallet'))
+    .filter(item => !(item.id === 'patient-results' && dbRole === 'community' && !isPatient))
+    .filter(item => !(item.id === 'health-orders' && !isPartnerOrgMember))
+    .filter(item => !(item.id === 'commerce' && !isPartnerOrgMember))
+    .map(item => (item.id === 'logout' ? { ...item, action: 'logout' as const } : item));
+  const rows: DrawerRow[] = (() => {
+    if (dbRole === 'community' || dbRole === 'backoffice') return communityRows;
+    const roleRows: DrawerRow[] = getRoleNavigation(dbRole)
+      .filter(nav => nav.path !== '/settings')
+      .map(nav => ({
+        id: `role:${nav.path}`,
+        route: nav.path,
+        icon: nav.icon as LucideIcon,
+        translationKey: nav.i18nKey ?? '',
+        fallback: nav.title,
+      }));
+    const roleRoutes = new Set(roleRows.map(row => row.route));
+    const crossRows = communityRows.filter(
+      item => CROSS_MODE_IDS.includes(item.id) && item.action !== 'logout' && !roleRoutes.has(item.route),
+    );
+    const logoutRow = communityRows.find(item => item.action === 'logout');
+    const switchRow: DrawerRow = {
+      id: 'switch-community',
+      route: '__switch__',
+      icon: Users,
+      translationKey: 'screens.mobile.switchToCommunity',
+      action: 'switch-community',
+    };
+    return [...roleRows, ...crossRows, switchRow, ...(logoutRow ? [logoutRow] : [])];
+  })();
+  // One icon tone per mode for the mapped role rows (community rows keep
+  // their per-item tones from drawer-nav.config).
+  const roleTone = drawerNavIconTones[dbRole];
+
   const isActive = (route: string) => {
-    if (route === '__logout__') return false;
+    if (route === '__logout__' || route === '__switch__') return false;
     if (location.pathname === route) return true;
     // For /discover vs /discover/orders, be exact
     if (route === '/discover') return location.pathname === '/discover';
@@ -222,9 +292,9 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
           >
-            {/* Header — profile entry */}
+            {/* Header — profile entry + role ("mode") pill */}
             <div
-              className="flex items-center gap-3 px-5 py-3.5"
+              className="px-5 py-3.5"
               style={
                 isMaxina
                   ? {
@@ -235,6 +305,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   : undefined
               }
             >
+              <div className="flex items-center gap-3">
               <button
                 onClick={handleProfileClick}
                 className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
@@ -254,9 +325,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <div className="font-bold text-base tracking-wide truncate">
                     {profile.displayName}
                   </div>
-                  <div className="text-xs opacity-80 truncate">
-                    {secondaryLine}
-                  </div>
+                  {secondaryLine && (
+                    <div className="text-xs opacity-80 truncate">
+                      {secondaryLine}
+                    </div>
+                  )}
                   {primaryOrg && (
                     <div className="text-[11px] opacity-80 truncate">
                       {orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}
@@ -274,6 +347,23 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               >
                 <X className="h-[18px] w-[18px]" />
               </button>
+              </div>
+              {roleSwitch.canSwitch && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openRoleSheet();
+                  }}
+                  aria-label={t('screens.profile.switchRole')}
+                  className={`mt-2 inline-flex max-w-full items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
+                    isMaxina ? 'bg-white/20 hover:bg-white/30' : 'bg-muted hover:bg-muted/80'
+                  }`}
+                >
+                  <span className="truncate">{roleLabel}</span>
+                  <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+                </button>
+              )}
             </div>
 
             {/* Quick actions — collapsed strip OR expanded search */}
@@ -419,16 +509,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
             {/* Nav items */}
             <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
-              {drawerNavItems
-                .filter(item => !(isIAPRestricted() && item.id === 'wallet'))
-                .filter(item => !(item.id === 'patient-results' && dbRole === 'community' && !isPatient))
-                .filter(item => !(item.id === 'health-orders' && !isPartnerOrgMember))
-                .filter(item => !(item.id === 'commerce' && !isPartnerOrgMember))
-                .map((item) => {
+              {rows.map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
-                const isDestructive = item.id === 'logout';
-                const tone = !isDestructive ? drawerNavIconTones[item.id] : undefined;
+                const isDestructive = item.action === 'logout';
+                const tone = !isDestructive ? (drawerNavIconTones[item.id] ?? roleTone) : undefined;
                 const iconStyle = tone ? { color: active ? tone.active : tone.base } : undefined;
 
                 return (
@@ -454,7 +539,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
                     )}
                     <Icon className="h-5 w-5 shrink-0" style={iconStyle} />
-                    <span className="flex-1 text-left">{translate(item.translationKey)}</span>
+                    <span className="flex-1 text-left">{translate(item.translationKey, item.fallback)}</span>
                     {item.id === 'inbox' && unreadCount > 0 && (
                       <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[11px] font-semibold text-destructive-foreground">
                         {unreadCount > 99 ? '99+' : unreadCount}
@@ -498,6 +583,19 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     <EnhancedCalendarPopup open={calendarOpen} onOpenChange={setCalendarOpen} />
     <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     {/* Phase 0: CartSidebar retired — the cart action navigates to /universal-cart. */}
+
+    {/* VTID-03993: role switcher — lives outside the drawer so it survives the drawer closing */}
+    <RoleSwitcherSheet
+      open={roleSheetOpen}
+      onOpenChange={setRoleSheetOpen}
+      availableRoles={roleSwitch.availableRoles}
+      activeRole={roleSwitch.activeRole}
+      switching={roleSwitch.switching}
+      onSelect={async (role) => {
+        const result = await roleSwitch.switchRole(role);
+        if (result.ok) setRoleSheetOpen(false);
+      }}
+    />
 
     <ResponsivePopover open={languagePickerOpen} onOpenChange={setLanguagePickerOpen}>
       <ResponsivePopoverContent title={t('screens.settings.language')}>
