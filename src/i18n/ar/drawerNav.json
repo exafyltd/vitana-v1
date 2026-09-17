@@ -20,9 +20,16 @@
     "patientResults": "نتائجي",
     "healthOrders": "طلبات الفحوصات الصحية",
     "_pending_review": {
-      "commerce": true
+      "commerce": true,
+      "businessOverview": true,
+      "businessTeam": true,
+      "businessOrders": true,
+      "businessInbox": true
     },
-    "commerce": "My business"
-  },
-  "_pending_review": {}
+    "commerce": "My business",
+    "businessOverview": "Overview",
+    "businessTeam": "Team",
+    "businessOrders": "Orders",
+    "businessInbox": "Inbox"
+  }
 }

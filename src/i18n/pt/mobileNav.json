@@ -14,7 +14,11 @@
       "appointments": true,
       "patients": true,
       "schedule": true,
-      "settings": true
+      "settings": true,
+      "overview": true,
+      "team": true,
+      "orders": true,
+      "resultsInbox": true
     },
     "dashboard": "Dashboard",
     "results": "Results",
@@ -22,6 +26,10 @@
     "appointments": "Appointments",
     "patients": "Patients",
     "schedule": "Schedule",
-    "settings": "Settings"
+    "settings": "Settings",
+    "overview": "Overview",
+    "team": "Team",
+    "orders": "Orders",
+    "resultsInbox": "Inbox"
   }
 }

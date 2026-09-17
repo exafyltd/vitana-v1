@@ -19,10 +19,18 @@
     "logout": "Wyloguj się",
     "_pending_review": {
       "patientResults": true,
-      "commerce": true
+      "commerce": true,
+      "businessOverview": true,
+      "businessTeam": true,
+      "businessOrders": true,
+      "businessInbox": true
     },
     "patientResults": "My Results",
     "healthOrders": "Zlecenia badań zdrowotnych",
-    "commerce": "My business"
+    "commerce": "My business",
+    "businessOverview": "Overview",
+    "businessTeam": "Team",
+    "businessOrders": "Orders",
+    "businessInbox": "Inbox"
   }
 }

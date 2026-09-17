@@ -19,12 +19,10 @@
     "logout": "Sair",
     "patientResults": "Meus Resultados",
     "healthOrders": "Pedidos de Exames de Saúde",
-    "_pending_review": {
-      "patientResults": true,
-      "healthOrders": true,
-      "commerce": true
-    },
-    "commerce": "My business"
-  },
-  "_pending_review": {}
+    "commerce": "Meu Negócio",
+    "businessOverview": "Visão Geral",
+    "businessTeam": "Equipe",
+    "businessOrders": "Pedidos",
+    "businessInbox": "Caixa de Entrada"
+  }
 }

@@ -18,12 +18,16 @@
     "settings": "Paramètres",
     "logout": "Se déconnecter",
     "_pending_review": {
-      "patientResults": true,
-      "healthOrders": true,
-      "commerce": true
+      "businessTeam": true,
+      "businessOrders": true,
+      "businessInbox": true
     },
-    "patientResults": "My Results",
-    "healthOrders": "Health Test Orders",
-    "commerce": "My business"
+    "patientResults": "Mes Résultats",
+    "healthOrders": "Commandes de Tests de Santé",
+    "commerce": "Mon entreprise",
+    "businessOverview": "Aperçu",
+    "businessTeam": "Team",
+    "businessOrders": "Orders",
+    "businessInbox": "Inbox"
   }
 }

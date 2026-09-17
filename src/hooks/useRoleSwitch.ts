@@ -13,6 +13,11 @@
  * `user_permitted_roles` is a plain table the health-order trigger never
  * writes (it bumps `memberships.role`), so the RPC alone would never list
  * Patient for an automatically activated patient.
+ *
+ * VTID-03999: business memberships (org_admin / staff / professional of a
+ * partner organization) are offered too, as `businessEntries` — a separate
+ * axis that never touches `set_role_preference`. Switching into one is a
+ * navigation into the business area (see useBusinessMode), not a role write.
  */
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +26,7 @@ import { useTenant } from '@/hooks/useTenant';
 import { useMemberships } from '@/hooks/useMemberships';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { usePatientAccess } from '@/hooks/usePatientAccess';
+import { useBusinessMode } from '@/hooks/useBusinessMode';
 import { getRoleSwitchDestination, isExternalRoleSwitchDestination } from '@/lib/role-switch-destination';
 import { notifyError } from '@/lib/i18n-toast';
 
@@ -49,8 +55,20 @@ export function computeAvailableRoles(input: {
   return ROLE_LADDER.filter((r) => set.has(r) && !(input.isMobile && MOBILE_EXCLUDED_ROLES.includes(r)));
 }
 
+export interface BusinessSwitchEntry {
+  orgId: string;
+  orgName: string;
+  role: string;
+}
+
+/** One sheet entry per business membership, in the order the API lists them. */
+export function computeBusinessEntries(orgs: ReadonlyArray<{ id: string; display_name: string; role: string }>): BusinessSwitchEntry[] {
+  return orgs.map((o) => ({ orgId: o.id, orgName: o.display_name, role: o.role }));
+}
+
 export function useRoleSwitch() {
   const navigate = useNavigate();
+  const business = useBusinessMode();
   const { dbRole, setRole } = useRole();
   const { activeTenantId, isExafyAdmin } = useTenant();
   const { roles: grantedRoles } = useMemberships(activeTenantId || undefined);
@@ -88,11 +106,18 @@ export function useRoleSwitch() {
     return { ok: true };
   };
 
+  const businessEntries = useMemo(() => computeBusinessEntries(business.orgs), [business.orgs]);
+
   return {
     availableRoles,
     activeRole: dbRole,
-    canSwitch: availableRoles.length > 1,
+    // VTID-03999: one business membership is already a second mode to offer.
+    canSwitch: availableRoles.length > 1 || businessEntries.length > 0,
     switching,
     switchRole,
+    businessEntries,
+    /** The business entry to mark checked — only while actually in the business area. */
+    activeBusinessOrgId: business.isBusinessMode ? business.activeOrg?.id ?? null : null,
+    switchToBusiness: business.enterBusinessMode,
   };
 }

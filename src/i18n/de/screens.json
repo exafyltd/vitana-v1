@@ -6064,7 +6064,8 @@
       "roleDeveloper": "Developer",
       "roleInfra": "Infra",
       "switchToCommunity": "Zur Community wechseln",
-      "switchRoleHint": "Du hast mehrere Rollen. Wähle, in welchem Modus die App gerade für dich arbeitet."
+      "switchRoleHint": "Du hast mehrere Rollen. Wähle, in welchem Modus die App gerade für dich arbeitet.",
+      "businessModesTitle": "Dein Unternehmen"
     },
     "notifications": {
       "markAllAsRead": "Alle als gelesen markieren",
@@ -10482,7 +10483,7 @@
         "statusSuspended": "Gesperrt",
         "statusRejected": "Abgelehnt",
         "manageRoster": "Team verwalten",
-        "roleOrgAdmin": "Admin",
+        "roleOrgAdmin": "Org-Admin",
         "roleStaff": "Mitarbeiter",
         "roleProfessional": "Fachkraft",
         "rosterTitle": "Team von {org}",
@@ -10519,7 +10520,10 @@
         "backToApp": "Zurück zur App",
         "registerAsPartnerTitle": "Dein Business als Vitanaland-Partner registrieren",
         "registerAsPartnerBody": "Registriere dein Unternehmen, lade dein Team ein und verwalte Bestellungen – alles vom Handy aus.",
-        "openMyOrgsBody": "Team, Einladungen und Bestellungen deiner Organisation(en)"
+        "openMyOrgsBody": "Team, Einladungen und Bestellungen deiner Organisation(en)",
+        "teamTitle": "Team",
+        "teamAdminOnlyTitle": "Nur Org-Admins verwalten das Team",
+        "teamAdminOnlyBody": "Einladungen und Mitglieder von {org} verwaltet ein Org-Admin. Deine Aufträge findest du unter „Aufträge“."
       },
       "healthOrders": {
         "sectionTitle": "Gesundheitstest-Bestellungen",

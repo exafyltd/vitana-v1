@@ -29,14 +29,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2 } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
 import { PARTNER_ORGS_API, slugifyOrgKey } from '@/lib/commerce-host';
+import { useCommerceSkin } from '@/components/commerce/CommerceShell';
+import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { t, notifyError } from '@/lib/i18n-toast';
 
 type CommerceVertical = 'health' | 'general';
 
 const EMPTY_FORM = { org_key: '', display_name: '', org_type: '', commerce_vertical: '' as CommerceVertical | '' };
 
-const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
+// VTID-03999: inputs use the theme's own field styles; the amber focus ring is kept.
+const fieldClass = 'focus-visible:ring-amber-500';
 
 export function RegisterOrgDialog({
   open,
@@ -45,8 +47,10 @@ export function RegisterOrgDialog({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated: () => void | Promise<void>;
+  /** VTID-03999: receives the new organization so the caller can land in its business mode. */
+  onCreated: (org: MyOrgRow | null) => void | Promise<void>;
 }) {
+  const { portalClass } = useCommerceSkin();
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   // Once the owner edits the key by hand, stop deriving it from the name.
@@ -55,7 +59,7 @@ export function RegisterOrgDialog({
   const create = async () => {
     setCreating(true);
     try {
-      await adminFetch(`${PARTNER_ORGS_API}/register`, {
+      const res = await adminFetch(`${PARTNER_ORGS_API}/register`, {
         method: 'POST',
         body: JSON.stringify({
           org_key: form.org_key.trim(),
@@ -67,7 +71,8 @@ export function RegisterOrgDialog({
       onOpenChange(false);
       setForm(EMPTY_FORM);
       setKeyTouched(false);
-      await onCreated();
+      const org = res?.organization ?? null;
+      await onCreated(org ? { ...org, role: 'org_admin' } : null);
     } catch (err) {
       if (err instanceof Error && /already taken/i.test(err.message)) {
         notifyError('screens.commerceportal.orgOnboarding.orgKeyTaken');
@@ -88,8 +93,8 @@ export function RegisterOrgDialog({
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="border-slate-800 bg-slate-900 text-slate-100">
-        <ResponsiveDialogHeader className="border-slate-800 bg-slate-900 text-start">
+      <ResponsiveDialogContent className={portalClass}>
+        <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle>{t('screens.commerceportal.orgOnboarding.registerTitle')}</ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody className="space-y-3 md:mt-4">
@@ -137,10 +142,10 @@ export function RegisterOrgDialog({
               spellCheck={false}
               className={`font-mono ${fieldClass}`}
             />
-            <p className="mt-1 text-xs text-slate-500">{t('screens.commerceportal.orgOnboarding.orgKeyAuto')}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{t('screens.commerceportal.orgOnboarding.orgKeyAuto')}</p>
           </div>
         </ResponsiveDialogBody>
-        <ResponsiveDialogFooter className="border-slate-800 bg-slate-900 md:mt-4">
+        <ResponsiveDialogFooter className="md:mt-4">
           <Button
             className="w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
             onClick={() => void create()}

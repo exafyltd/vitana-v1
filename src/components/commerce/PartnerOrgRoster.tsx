@@ -18,6 +18,7 @@
  */
 import { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { useCommerceSkin } from '@/components/commerce/CommerceShell';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -28,10 +29,10 @@ import { useOrgMembers, useOrgInvites, useCreateOrgInvite, type OrgInviteRow } f
 import { t, notifyError, notifySuccess } from '@/lib/i18n-toast';
 import { fmtDate } from '@/lib/locale-format';
 
-const panelClass = 'rounded-2xl border border-slate-800 bg-slate-900/60 p-4';
-const cardClass = 'rounded-xl border border-slate-800 bg-slate-950/50 p-3';
-const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
+const panelClass = 'rounded-2xl border border-border bg-card p-4';
+const cardClass = 'rounded-xl border border-border bg-muted/40 p-3';
+// VTID-03999: inputs use the theme's own field styles; the amber focus ring is kept.
+const fieldClass = 'focus-visible:ring-amber-500';
 
 // `org_admin` → `roleOrgAdmin`: split on the underscore, same as MyOrgCard's
 // toPascal — the previous charAt/slice version produced `roleOrg_admin`, a
@@ -49,6 +50,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
   const membersQuery = useOrgMembers(orgId);
   const invitesQuery = useOrgInvites(orgId);
   const createInvite = useCreateOrgInvite(orgId);
+  const { portalClass } = useCommerceSkin();
 
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<OrgInviteRow['role']>('staff');
@@ -92,10 +94,10 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
     <Sheet open onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-full overflow-y-auto border-slate-800 bg-slate-950 text-slate-100 sm:max-w-2xl"
+        className={`w-full overflow-y-auto sm:max-w-2xl ${portalClass}`}
       >
         <SheetHeader className="text-start">
-          <SheetTitle className="truncate pe-8 text-slate-100">
+          <SheetTitle className="truncate pe-8">
             {orgName
               ? t('screens.commerceportal.orgOnboarding.rosterTitle', { org: orgName })
               : t('screens.commerceportal.orgOnboarding.membersTitle')}
@@ -104,38 +106,38 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
 
         <div className="mt-4 space-y-4">
           <div className={panelClass}>
-            <h3 className="text-sm font-medium text-slate-100">
+            <h3 className="text-sm font-medium text-foreground">
               {t('screens.commerceportal.orgOnboarding.membersTitle')}
             </h3>
             <div className="mt-3">
               {membersQuery.isLoading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                 </div>
               ) : membersQuery.isError ? (
-                <p className="text-sm text-slate-400">{t('screens.commerceportal.orgOnboarding.membersLoadFailed')}</p>
+                <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.membersLoadFailed')}</p>
               ) : !membersQuery.data || membersQuery.data.length === 0 ? (
-                <p className="text-sm text-slate-400">{t('screens.commerceportal.orgOnboarding.noMembers')}</p>
+                <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.noMembers')}</p>
               ) : (
                 <>
                   {/* Desktop: table */}
                   <div className="hidden md:block">
                     <Table>
                       <TableHeader>
-                        <TableRow className="border-slate-800">
-                          <TableHead className="text-slate-500">{t('screens.commerceportal.orgOnboarding.inviteRole')}</TableHead>
-                          <TableHead className="text-slate-500">{t('screens.commerceportal.orgOnboarding.memberSinceHeader')}</TableHead>
+                        <TableRow>
+                          <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.inviteRole')}</TableHead>
+                          <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.memberSinceHeader')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {membersQuery.data.map((m) => (
-                          <TableRow key={m.id} className="border-slate-800/60">
+                          <TableRow key={m.id}>
                             <TableCell>
-                              <Badge variant="outline" className="border-slate-600/60 text-slate-300">
+                              <Badge variant="outline">
                                 {roleLabel(m.role)}
                               </Badge>
                             </TableCell>
-                            <TableCell className="text-xs text-slate-500">{fmtDate(new Date(m.granted_at))}</TableCell>
+                            <TableCell className="text-xs text-muted-foreground">{fmtDate(new Date(m.granted_at))}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -146,10 +148,10 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
                   <div className="flex flex-col gap-2 md:hidden">
                     {membersQuery.data.map((m) => (
                       <div key={m.id} className={`${cardClass} flex items-center justify-between gap-3`}>
-                        <Badge variant="outline" className="border-slate-600/60 text-slate-300">
+                        <Badge variant="outline">
                           {roleLabel(m.role)}
                         </Badge>
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-muted-foreground">
                           {t('screens.commerceportal.orgOnboarding.grantedAt', { date: fmtDate(new Date(m.granted_at)) })}
                         </span>
                       </div>
@@ -161,7 +163,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
           </div>
 
           <div className={panelClass}>
-            <h3 className="text-sm font-medium text-slate-100">
+            <h3 className="text-sm font-medium text-foreground">
               {t('screens.commerceportal.orgOnboarding.inviteCta')}
             </h3>
             <div className="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:items-end">
@@ -178,7 +180,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
               <Select value={role} onValueChange={(v) => setRole(v as OrgInviteRow['role'])}>
                 <SelectTrigger
                   aria-label={t('screens.commerceportal.orgOnboarding.inviteRole')}
-                  className="w-full border-slate-700 bg-slate-950/70 text-slate-100 focus-visible:ring-amber-500 md:w-[160px]"
+                  className="w-full focus-visible:ring-amber-500 md:w-[160px]"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -207,46 +209,46 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
             </div>
 
             <div className="mt-4">
-              <h4 className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              <h4 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {t('screens.commerceportal.orgOnboarding.invitesTitle')}
               </h4>
               <div className="mt-2">
                 {invitesQuery.isLoading ? (
                   <div className="flex justify-center py-6">
-                    <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
+                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                   </div>
                 ) : invitesQuery.isError ? (
-                  <p className="text-sm text-slate-400">{t('screens.commerceportal.orgOnboarding.invitesLoadFailed')}</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.invitesLoadFailed')}</p>
                 ) : pendingInvites.length === 0 ? (
-                  <p className="text-sm text-slate-400">{t('screens.commerceportal.orgOnboarding.noInvites')}</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.noInvites')}</p>
                 ) : (
                   <>
                     {/* Desktop: table */}
                     <div className="hidden md:block">
                       <Table>
                         <TableHeader>
-                          <TableRow className="border-slate-800">
-                            <TableHead className="text-slate-500">{t('screens.commerceportal.orgOnboarding.inviteEmail')}</TableHead>
-                            <TableHead className="text-slate-500">{t('screens.commerceportal.orgOnboarding.inviteRole')}</TableHead>
-                            <TableHead className="text-slate-500">{t('screens.commerceportal.orgOnboarding.expiresAtHeader')}</TableHead>
+                          <TableRow>
+                            <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.inviteEmail')}</TableHead>
+                            <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.inviteRole')}</TableHead>
+                            <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.expiresAtHeader')}</TableHead>
                             <TableHead className="w-[40px]" />
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {pendingInvites.map((inv) => (
-                            <TableRow key={inv.id} className="border-slate-800/60">
-                              <TableCell className="font-mono text-sm text-slate-300">{inv.email}</TableCell>
+                            <TableRow key={inv.id}>
+                              <TableCell className="font-mono text-sm text-muted-foreground">{inv.email}</TableCell>
                               <TableCell>
-                                <Badge variant="outline" className="border-slate-600/60 text-slate-300">
+                                <Badge variant="outline">
                                   {roleLabel(inv.role)}
                                 </Badge>
                               </TableCell>
-                              <TableCell className="text-xs text-slate-500">{fmtDate(new Date(inv.expires_at))}</TableCell>
+                              <TableCell className="text-xs text-muted-foreground">{fmtDate(new Date(inv.expires_at))}</TableCell>
                               <TableCell>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-7 px-2 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                                  className="h-7 px-2"
                                   onClick={() => void copyInviteLink(inv)}
                                   aria-label={t('screens.commerceportal.orgOnboarding.copyInviteLink')}
                                 >
@@ -265,22 +267,22 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
                         <div key={inv.id} className={cardClass}>
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0">
-                              <div className="truncate font-mono text-sm text-slate-300">{inv.email}</div>
-                              <div className="mt-0.5 text-xs text-slate-500">
+                              <div className="truncate font-mono text-sm text-muted-foreground">{inv.email}</div>
+                              <div className="mt-0.5 text-xs text-muted-foreground">
                                 {t('screens.commerceportal.orgOnboarding.expiresAt', { date: fmtDate(new Date(inv.expires_at)) })}
                               </div>
                             </div>
-                            <Badge variant="outline" className="shrink-0 border-slate-600/60 text-slate-300">
+                            <Badge variant="outline" className="shrink-0">
                               {roleLabel(inv.role)}
                             </Badge>
                           </div>
-                          <p className="mt-2 select-all break-all font-mono text-[11px] leading-snug text-slate-500">
+                          <p className="mt-2 select-all break-all font-mono text-[11px] leading-snug text-muted-foreground">
                             {acceptUrlFor(inv.token)}
                           </p>
                           <Button
                             size="sm"
                             variant="outline"
-                            className="mt-2 w-full border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800"
+                            className="mt-2 w-full"
                             onClick={() => void shareInviteLink(inv)}
                           >
                             <Share2 className="me-1.5 h-4 w-4" />

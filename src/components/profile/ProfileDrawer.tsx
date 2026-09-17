@@ -47,7 +47,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { tenant, activeTenantId, isExafyAdmin } = useTenant();
   // VTID-03993: the list and the write live in useRoleSwitch, shared with the
   // mobile drawer's pill/sheet — desktop <Select> and phone sheet are one path.
-  const { availableRoles, activeRole, canSwitch, switching, switchRole } = useRoleSwitch();
+  const { availableRoles, activeRole, canSwitch, switching, switchRole, businessEntries, activeBusinessOrgId, switchToBusiness } = useRoleSwitch();
   const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
   
   const isMobile = useIsMobile();
@@ -112,6 +112,12 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
       onSelect={async (role) => {
         const result = await switchRole(role);
         if (result.ok) setRoleSheetOpen(false);
+      }}
+      businessEntries={businessEntries}
+      activeBusinessOrgId={activeBusinessOrgId}
+      onSelectBusiness={(orgId) => {
+        switchToBusiness(orgId);
+        setRoleSheetOpen(false);
       }}
     />
     <Drawer open={open} onOpenChange={setOpen}>
