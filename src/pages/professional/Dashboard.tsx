@@ -8,7 +8,7 @@ import AppLayout from "@/components/AppLayout";
 export default function ProfessionalDashboard() {
   return (
     <AppLayout>
-    <div className="p-6 space-y-6">
+    <div className="p-6 pb-28 md:pb-6 space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.professional.professionalDashboard')}</h1>
         <p className="text-muted-foreground">

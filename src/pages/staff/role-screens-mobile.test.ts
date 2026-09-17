@@ -29,4 +29,10 @@ describe('role screens on mobile (VTID-04001)', () => {
     expect(q).not.toContain('<div className="flex justify-between items-center">');
     expect(q).toContain('<CardTitle className="truncate text-lg">');
   });
+
+  it('the role pages leave room for the fixed bottom bar so the last card stays reachable', () => {
+    for (const f of ['src/pages/staff/Queue.tsx', 'src/pages/staff/Dashboard.tsx', 'src/pages/professional/Dashboard.tsx']) {
+      expect(read(f)).toContain('<div className="p-6 pb-28 md:pb-6 space-y-6">');
+    }
+  });
 });
