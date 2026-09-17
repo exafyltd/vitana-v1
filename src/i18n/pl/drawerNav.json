@@ -19,9 +19,11 @@
     "logout": "Wyloguj się",
     "_pending_review": {
       "patientResults": true,
-      "healthOrders": true
+      "healthOrders": true,
+      "commerce": true
     },
     "patientResults": "My Results",
-    "healthOrders": "Health Test Orders"
+    "healthOrders": "Health Test Orders",
+    "commerce": "My business"
   }
 }
