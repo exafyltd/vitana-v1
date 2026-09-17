@@ -20,7 +20,11 @@
     "settings": "Settings",
     "logout": "Log Out",
     "_pending_review": {},
-    "commerce": "My business"
+    "commerce": "My business",
+    "businessOverview": "Overview",
+    "businessTeam": "Team",
+    "businessOrders": "Orders",
+    "businessInbox": "Inbox"
   },
   "_pending_review": {}
 }

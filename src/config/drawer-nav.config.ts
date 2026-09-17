@@ -62,6 +62,11 @@ export const drawerNavIconTones: Record<string, DrawerIconTone> = {
   staff:        { base: 'hsl(215 22% 52%)', active: 'hsl(215 28% 42%)' },
   admin:        { base: 'hsl(265 32% 60%)', active: 'hsl(265 38% 50%)' },
   'switch-community': { base: 'hsl(38 55% 55%)', active: 'hsl(38 62% 46%)' },
+  // VTID-03999: the business-mode rows share the commerce (amber) tone.
+  'business-overview': { base: 'hsl(28 60% 52%)',  active: 'hsl(28 66% 42%)'  },
+  'business-team':     { base: 'hsl(28 60% 52%)',  active: 'hsl(28 66% 42%)'  },
+  'business-orders':   { base: 'hsl(185 38% 44%)', active: 'hsl(185 46% 36%)' },
+  'business-inbox':    { base: 'hsl(210 46% 56%)', active: 'hsl(210 52% 46%)' },
 };
 
 export const drawerNavItems: DrawerNavItem[] = [

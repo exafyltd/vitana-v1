@@ -4,7 +4,7 @@
  * flag, minus the roles that have no phone-sized home.
  */
 import { describe, expect, it } from 'vitest';
-import { computeAvailableRoles, MOBILE_EXCLUDED_ROLES } from './useRoleSwitch';
+import { computeAvailableRoles, computeBusinessEntries, MOBILE_EXCLUDED_ROLES } from './useRoleSwitch';
 
 describe('computeAvailableRoles (VTID-03993)', () => {
   it('always includes community, even when the RPC lists nothing', () => {
@@ -30,5 +30,20 @@ describe('computeAvailableRoles (VTID-03993)', () => {
   it('an Exafy admin sees every role on desktop and the phone-sized five on mobile', () => {
     expect(computeAvailableRoles({ granted: [], isExafyAdmin: true, isPatient: false, isMobile: false })).toHaveLength(8);
     expect(computeAvailableRoles({ granted: [], isExafyAdmin: true, isPatient: false, isMobile: true })).toEqual(['community', 'patient', 'professional', 'staff', 'admin']);
+  });
+});
+
+describe('computeBusinessEntries (VTID-03999)', () => {
+  it('maps every membership to a sheet entry in API order, keeping the business role as-is', () => {
+    expect(
+      computeBusinessEntries([
+        { id: 'o1', display_name: 'Demo Labor GmbH', role: 'org_admin' },
+        { id: 'o2', display_name: 'Zweites Labor', role: 'professional' },
+      ]),
+    ).toEqual([
+      { orgId: 'o1', orgName: 'Demo Labor GmbH', role: 'org_admin' },
+      { orgId: 'o2', orgName: 'Zweites Labor', role: 'professional' },
+    ]);
+    expect(computeBusinessEntries([])).toEqual([]);
   });
 });

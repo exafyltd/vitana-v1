@@ -17,6 +17,8 @@ import { CheckCircle2, Clock, Loader2, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { adminFetch } from '@/lib/admin-api';
 import { PARTNER_ORGS_API } from '@/lib/commerce-host';
+import { CommerceShell } from '@/components/commerce/CommerceShell';
+import { businessHomeFor, setActiveOrgId } from '@/lib/business-mode';
 import { t } from '@/lib/i18n-toast';
 
 type State = 'pending' | 'success' | 'already' | 'expired' | 'notFound' | 'failed';
@@ -34,10 +36,14 @@ export default function CommerceAcceptInvite() {
     let cancelled = false;
     (async () => {
       try {
-        await adminFetch(`${PARTNER_ORGS_API}/invites/${token}/accept`, { method: 'POST' });
+        const res = await adminFetch(`${PARTNER_ORGS_API}/invites/${token}/accept`, { method: 'POST' });
         if (cancelled) return;
         setState('success');
-        navigate('/commerce', { replace: true });
+        // VTID-03999: land in the business you just joined, on that role's
+        // home — the orders for staff/professional, the team for an admin.
+        const orgId: string | undefined = res?.partner_organization_id;
+        if (orgId) setActiveOrgId(orgId);
+        navigate(orgId ? businessHomeFor(res?.role ?? 'staff') : '/commerce', { replace: true });
       } catch (err) {
         if (cancelled) return;
         const message = err instanceof Error ? err.message : '';
@@ -54,10 +60,12 @@ export default function CommerceAcceptInvite() {
 
   if (state === 'pending' || state === 'success') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-slate-950 text-slate-100">
-        <Loader2 className="h-6 w-6 animate-spin text-slate-600" />
-        <p className="text-sm text-slate-400">{t('screens.commerceportal.orgOnboarding.acceptPending')}</p>
-      </div>
+      <CommerceShell>
+        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.acceptPending')}</p>
+        </div>
+      </CommerceShell>
     );
   }
 
@@ -70,10 +78,11 @@ export default function CommerceAcceptInvite() {
   const { icon: Icon, text } = copy[state];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-950 px-6 text-center text-slate-100">
-      <div className="max-w-sm rounded-3xl border border-amber-500/25 bg-slate-900/70 p-6">
-        <Icon className="mx-auto h-8 w-8 text-amber-400" />
-        <p className="mt-3 text-sm leading-relaxed text-slate-300">{text}</p>
+    <CommerceShell>
+    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
+      <div className="max-w-sm rounded-3xl border border-amber-500/25 bg-card p-6">
+        <Icon className="mx-auto h-8 w-8 text-amber-500 dark:text-amber-400" />
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
         <Button
           onClick={() => navigate('/commerce')}
           className="mt-4 bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
@@ -83,5 +92,6 @@ export default function CommerceAcceptInvite() {
         </Button>
       </div>
     </div>
+    </CommerceShell>
   );
 }
