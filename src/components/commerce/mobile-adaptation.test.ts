@@ -62,7 +62,7 @@ describe('CommerceShell back affordance (VTID-03989)', () => {
     expect(src).toContain('<AppLayout>');
     expect(src).toContain('<div className="dark min-h-screen bg-slate-950 text-slate-100">');
     expect(src).not.toContain('to="/home"');
-    expect(src).toMatch(/className="[^"]*md:hidden"/);
+    expect(src).not.toMatch(/className="[^"]*md:hidden"/);
   });
 });
 
