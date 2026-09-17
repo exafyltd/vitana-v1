@@ -194,135 +194,222 @@ export default function CommerceHealthOrders() {
               </div>
 
               <TabsContent value="orders" className="mt-4">
-                <div className={panelClass}>
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-slate-800">
-                        <TableHead className="text-slate-500">{t('screens.admin.testColumn')}</TableHead>
-                        <TableHead className="text-slate-500">{t('screens.admin.partner')}</TableHead>
-                        <TableHead className="text-slate-500">{t('screens.admin.status')}</TableHead>
-                        <TableHead className="text-slate-500">{t('screens.admin.updated')}</TableHead>
-                        <TableHead className="w-[140px]" />
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {(ordersQuery.data ?? []).length === 0 ? (
-                        <TableRow>
-                          <TableCell colSpan={5} className="py-10 text-center text-slate-500">
-                            {t('screens.admin.noOrdersYet')}
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        ordersQuery.data!.map((o) => (
-                          <TableRow key={o.id} className="border-slate-800/60">
-                            <TableCell>
-                              <div className="font-medium text-slate-100">{o.test_name}</div>
-                              <div className="text-xs text-slate-500">{o.external_order_ref ?? '—'}</div>
-                            </TableCell>
-                            <TableCell className="text-slate-300">{partnerName(o)}</TableCell>
-                            <TableCell>
-                              {canActOn(o) ? (
-                                <Select
-                                  value={o.status}
-                                  onValueChange={(v) => submitStatus(o.id, v)}
-                                  disabled={patchStatus.isPending || o.status === 'result_ready'}
-                                >
-                                  <SelectTrigger className="w-[180px] border-slate-700 bg-slate-950/70 text-slate-100 focus-visible:ring-amber-500">
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {o.status === 'result_ready' && (
-                                      <SelectItem value="result_ready">result_ready</SelectItem>
-                                    )}
-                                    {STATUS_OPTIONS.map((s) => (
-                                      <SelectItem key={s} value={s}>
-                                        {s}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              ) : (
-                                <Badge variant="outline" className="border-slate-600/60 text-slate-300">
-                                  {o.status}
-                                </Badge>
-                              )}
-                            </TableCell>
-                            <TableCell className="text-xs text-slate-500">
-                              {new Date(o.status_updated_at).toLocaleString()}
-                            </TableCell>
-                            <TableCell className="text-end">
-                              {canActOn(o) && (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800"
-                                  onClick={() => {
-                                    setUploadOrder(o);
-                                    setUploadJson('');
-                                  }}
-                                >
-                                  <Upload className="me-1 h-4 w-4" />
-                                  {t('screens.admin.uploadResult')}
-                                </Button>
-                              )}
-                            </TableCell>
+                {(ordersQuery.data ?? []).length === 0 ? (
+                  <div className={`${panelClass} py-10 text-center text-slate-500`}>
+                    {t('screens.admin.noOrdersYet')}
+                  </div>
+                ) : (
+                  <>
+                    {/* Desktop: table */}
+                    <div className={`hidden md:block ${panelClass}`}>
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="border-slate-800">
+                            <TableHead className="text-slate-500">{t('screens.admin.testColumn')}</TableHead>
+                            <TableHead className="text-slate-500">{t('screens.admin.partner')}</TableHead>
+                            <TableHead className="text-slate-500">{t('screens.admin.status')}</TableHead>
+                            <TableHead className="text-slate-500">{t('screens.admin.updated')}</TableHead>
+                            <TableHead className="w-[140px]" />
                           </TableRow>
-                        ))
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
+                        </TableHeader>
+                        <TableBody>
+                          {ordersQuery.data!.map((o) => (
+                            <TableRow key={o.id} className="border-slate-800/60">
+                              <TableCell>
+                                <div className="font-medium text-slate-100">{o.test_name}</div>
+                                <div className="text-xs text-slate-500">{o.external_order_ref ?? '—'}</div>
+                              </TableCell>
+                              <TableCell className="text-slate-300">{partnerName(o)}</TableCell>
+                              <TableCell>
+                                {canActOn(o) ? (
+                                  <Select
+                                    value={o.status}
+                                    onValueChange={(v) => submitStatus(o.id, v)}
+                                    disabled={patchStatus.isPending || o.status === 'result_ready'}
+                                  >
+                                    <SelectTrigger className="w-[180px] border-slate-700 bg-slate-950/70 text-slate-100 focus-visible:ring-amber-500">
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {o.status === 'result_ready' && (
+                                        <SelectItem value="result_ready">result_ready</SelectItem>
+                                      )}
+                                      {STATUS_OPTIONS.map((s) => (
+                                        <SelectItem key={s} value={s}>
+                                          {s}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                ) : (
+                                  <Badge variant="outline" className="border-slate-600/60 text-slate-300">
+                                    {o.status}
+                                  </Badge>
+                                )}
+                              </TableCell>
+                              <TableCell className="text-xs text-slate-500">
+                                {new Date(o.status_updated_at).toLocaleString()}
+                              </TableCell>
+                              <TableCell className="text-end">
+                                {canActOn(o) && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800"
+                                    onClick={() => {
+                                      setUploadOrder(o);
+                                      setUploadJson('');
+                                    }}
+                                  >
+                                    <Upload className="me-1 h-4 w-4" />
+                                    {t('screens.admin.uploadResult')}
+                                  </Button>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {/* Mobile: stacked cards */}
+                    <div className="flex flex-col gap-3 md:hidden">
+                      {ordersQuery.data!.map((o) => (
+                        <div key={o.id} className={panelClass}>
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <div className="truncate font-medium text-slate-100">{o.test_name}</div>
+                              <div className="text-xs text-slate-500">{o.external_order_ref ?? '—'}</div>
+                            </div>
+                            {!canActOn(o) && (
+                              <Badge variant="outline" className="shrink-0 border-slate-600/60 text-slate-300">
+                                {o.status}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="mt-2 text-sm text-slate-300">{partnerName(o)}</div>
+                          <div className="mt-1 text-xs text-slate-500">
+                            {new Date(o.status_updated_at).toLocaleString()}
+                          </div>
+                          {canActOn(o) && (
+                            <div className="mt-3 flex flex-col gap-2">
+                              <Select
+                                value={o.status}
+                                onValueChange={(v) => submitStatus(o.id, v)}
+                                disabled={patchStatus.isPending || o.status === 'result_ready'}
+                              >
+                                <SelectTrigger className="w-full border-slate-700 bg-slate-950/70 text-slate-100 focus-visible:ring-amber-500">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {o.status === 'result_ready' && (
+                                    <SelectItem value="result_ready">result_ready</SelectItem>
+                                  )}
+                                  {STATUS_OPTIONS.map((s) => (
+                                    <SelectItem key={s} value={s}>
+                                      {s}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="w-full border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800"
+                                onClick={() => {
+                                  setUploadOrder(o);
+                                  setUploadJson('');
+                                }}
+                              >
+                                <Upload className="me-1 h-4 w-4" />
+                                {t('screens.admin.uploadResult')}
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </TabsContent>
 
               {hasFullAccess && (
                 <TabsContent value="inbox" className="mt-4">
-                  <div className={panelClass}>
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="border-slate-800">
-                          <TableHead className="text-slate-500">{t('screens.admin.partner')}</TableHead>
-                          <TableHead className="text-slate-500">{t('screens.admin.reason')}</TableHead>
-                          <TableHead className="text-slate-500">{t('screens.admin.received')}</TableHead>
-                          <TableHead className="w-[120px]" />
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {(inboxQuery.data ?? []).filter((r) => !r.resolved).length === 0 ? (
-                          <TableRow>
-                            <TableCell colSpan={4} className="py-10 text-center text-slate-500">
-                              {t('screens.admin.inboxEmpty')}
-                            </TableCell>
-                          </TableRow>
-                        ) : (
-                          inboxQuery
-                            .data!.filter((r) => !r.resolved)
-                            .map((row) => (
-                              <TableRow key={row.id} className="border-slate-800/60">
-                                <TableCell className="text-slate-300">{partnerName(row)}</TableCell>
-                                <TableCell>
-                                  <Badge variant="outline" className="border-slate-600/60 text-slate-300">
-                                    {row.reason}
-                                  </Badge>
-                                </TableCell>
-                                <TableCell className="text-xs text-slate-500">
-                                  {new Date(row.created_at).toLocaleString()}
-                                </TableCell>
-                                <TableCell className="text-end">
-                                  <Button
-                                    size="sm"
-                                    className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
-                                    onClick={() => setResolveRow(row)}
-                                  >
-                                    <CheckCircle2 className="me-1 h-4 w-4" />
-                                    {t('screens.admin.resolve')}
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            ))
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
+                  {(inboxQuery.data ?? []).filter((r) => !r.resolved).length === 0 ? (
+                    <div className={`${panelClass} py-10 text-center text-slate-500`}>
+                      {t('screens.admin.inboxEmpty')}
+                    </div>
+                  ) : (
+                    <>
+                      {/* Desktop: table */}
+                      <div className={`hidden md:block ${panelClass}`}>
+                        <Table>
+                          <TableHeader>
+                            <TableRow className="border-slate-800">
+                              <TableHead className="text-slate-500">{t('screens.admin.partner')}</TableHead>
+                              <TableHead className="text-slate-500">{t('screens.admin.reason')}</TableHead>
+                              <TableHead className="text-slate-500">{t('screens.admin.received')}</TableHead>
+                              <TableHead className="w-[120px]" />
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {inboxQuery
+                              .data!.filter((r) => !r.resolved)
+                              .map((row) => (
+                                <TableRow key={row.id} className="border-slate-800/60">
+                                  <TableCell className="text-slate-300">{partnerName(row)}</TableCell>
+                                  <TableCell>
+                                    <Badge variant="outline" className="border-slate-600/60 text-slate-300">
+                                      {row.reason}
+                                    </Badge>
+                                  </TableCell>
+                                  <TableCell className="text-xs text-slate-500">
+                                    {new Date(row.created_at).toLocaleString()}
+                                  </TableCell>
+                                  <TableCell className="text-end">
+                                    <Button
+                                      size="sm"
+                                      className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                                      onClick={() => setResolveRow(row)}
+                                    >
+                                      <CheckCircle2 className="me-1 h-4 w-4" />
+                                      {t('screens.admin.resolve')}
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      {/* Mobile: stacked cards */}
+                      <div className="flex flex-col gap-3 md:hidden">
+                        {inboxQuery
+                          .data!.filter((r) => !r.resolved)
+                          .map((row) => (
+                            <div key={row.id} className={panelClass}>
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0 truncate text-sm text-slate-300">{partnerName(row)}</div>
+                                <Badge variant="outline" className="shrink-0 border-slate-600/60 text-slate-300">
+                                  {row.reason}
+                                </Badge>
+                              </div>
+                              <div className="mt-1 text-xs text-slate-500">
+                                {new Date(row.created_at).toLocaleString()}
+                              </div>
+                              <Button
+                                size="sm"
+                                className="mt-3 w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                                onClick={() => setResolveRow(row)}
+                              >
+                                <CheckCircle2 className="me-1 h-4 w-4" />
+                                {t('screens.admin.resolve')}
+                              </Button>
+                            </div>
+                          ))}
+                      </div>
+                    </>
+                  )}
                 </TabsContent>
               )}
             </Tabs>

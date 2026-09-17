@@ -52,7 +52,7 @@ export default function AddContactDialog({
   prefilledName,
 }: AddContactDialogProps) {
   const { user } = useAuth();
-  const { currentRole } = useRole();
+  const { dbRole } = useRole();
   const { activeTenantId } = useTenant();
   
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,7 +76,7 @@ export default function AddContactDialog({
     
     setIsSearching(true);
     try {
-      const isGlobalContext = currentRole === 'community';
+      const isGlobalContext = dbRole === 'community';
       
       if (isGlobalContext) {
         const { data, error } = await supabase.rpc('search_global_directory', {
@@ -104,7 +104,7 @@ export default function AddContactDialog({
   // Debounced search
   const debouncedSearch = useMemo(
     () => debounce(searchUsers, 300),
-    [currentRole, activeTenantId]
+    [dbRole, activeTenantId]
   );
   
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function AddContactDialog({
       if (open && prefilledUserId && !selectedUser) {
         setIsSearching(true);
         try {
-          const isGlobalContext = currentRole === 'community';
+          const isGlobalContext = dbRole === 'community';
           
           if (isGlobalContext) {
             const { data, error } = await supabase
@@ -230,7 +230,7 @@ export default function AddContactDialog({
     };
 
     autoSearchUser();
-  }, [open, prefilledUserId, selectedUser, currentRole, activeTenantId, prefilledName]);
+  }, [open, prefilledUserId, selectedUser, dbRole, activeTenantId, prefilledName]);
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

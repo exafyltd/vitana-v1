@@ -13,12 +13,15 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
 import { PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
 
-const EMPTY_FORM = { org_key: '', display_name: '', org_type: '' };
+type CommerceVertical = 'health' | 'general';
+
+const EMPTY_FORM = { org_key: '', display_name: '', org_type: '', commerce_vertical: '' as CommerceVertical | '' };
 
 const fieldClass =
   'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
@@ -44,6 +47,7 @@ export function RegisterOrgDialog({
           org_key: form.org_key.trim(),
           display_name: form.display_name.trim(),
           org_type: form.org_type.trim(),
+          commerce_vertical: form.commerce_vertical,
         }),
       });
       onOpenChange(false);
@@ -88,11 +92,29 @@ export function RegisterOrgDialog({
             aria-label={t('screens.commerceportal.orgOnboarding.orgType')}
             className={fieldClass}
           />
+          <Select
+            value={form.commerce_vertical}
+            onValueChange={(value) => setForm((f) => ({ ...f, commerce_vertical: value as CommerceVertical }))}
+          >
+            <SelectTrigger className={fieldClass} aria-label={t('screens.commerceportal.orgOnboarding.commerceVertical')}>
+              <SelectValue placeholder={t('screens.commerceportal.orgOnboarding.commerceVertical')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="health">{t('screens.commerceportal.orgOnboarding.commerceVerticalHealth')}</SelectItem>
+              <SelectItem value="general">{t('screens.commerceportal.orgOnboarding.commerceVerticalGeneral')}</SelectItem>
+            </SelectContent>
+          </Select>
 
           <Button
             className="w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
             onClick={() => void create()}
-            disabled={creating || !form.display_name.trim() || !form.org_key.trim() || !form.org_type.trim()}
+            disabled={
+              creating ||
+              !form.display_name.trim() ||
+              !form.org_key.trim() ||
+              !form.org_type.trim() ||
+              !form.commerce_vertical
+            }
           >
             {creating ? (
               <>

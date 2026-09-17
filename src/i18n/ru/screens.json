@@ -10675,7 +10675,10 @@
           "acceptExpired": true,
           "acceptNotFound": true,
           "acceptFailed": true,
-          "goToPortal": true
+          "goToPortal": true,
+          "commerceVertical": true,
+          "commerceVerticalHealth": true,
+          "commerceVerticalGeneral": true
         },
         "registerCta": "Register your business",
         "registerTitle": "Register a new business",
@@ -10727,7 +10730,10 @@
         "acceptExpired": "This invite has expired.",
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
-        "goToPortal": "Go to Commerce Portal"
+        "goToPortal": "Go to Commerce Portal",
+        "commerceVertical": "Industry",
+        "commerceVerticalHealth": "Health & medical services",
+        "commerceVerticalGeneral": "General commerce"
       },
       "healthOrders": {
         "_pending_review": {

@@ -11,6 +11,8 @@
     "orders": "Orders",
     "wallet": "Wallet",
     "health": "Health",
+    "patientResults": "My Results",
+    "healthOrders": "Health Test Orders",
     "diary": "Daily Diary",
     "connectors": "Connected Apps",
     "inbox": "Inbox",

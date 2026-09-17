@@ -39,7 +39,7 @@ export default function NewConversationPopup({
   context,
 }: NewConversationPopupProps) {
   const { user } = useAuth();
-  const { currentRole } = useRole();
+  const { dbRole } = useRole();
   const { activeTenantId } = useTenant();
   const { toast } = useToast();
   const { translate } = useTranslation();
@@ -52,7 +52,7 @@ export default function NewConversationPopup({
   const [groupName, setGroupName] = useState("");
 
   // Determine context: use prop if provided, otherwise fall back to role-based logic
-  const effectiveContext = context || (currentRole === 'community' ? 'global' : 'tenant');
+  const effectiveContext = context || (dbRole === 'community' ? 'global' : 'tenant');
 
   // Auto-switch to group mode when multiple recipients are selected
   useEffect(() => {
@@ -174,7 +174,7 @@ export default function NewConversationPopup({
       user: user?.id,
       recipientId,
       effectiveContext,
-      currentRole,
+      dbRole,
       activeTenantId
     });
 

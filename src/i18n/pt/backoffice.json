@@ -110,16 +110,10 @@
     "settings": {
       "tabs": {
         "company": "Empresa e Pessoas Jurídicas",
-        "access": "Access",
-        "numbering": "Numbering",
-        "integrations": "Integrations",
-        "modules": "Modules",
-        "_pending_review": {
-          "access": true,
-          "numbering": true,
-          "integrations": true,
-          "modules": true
-        }
+        "access": "Acesso",
+        "numbering": "Numeração",
+        "integrations": "Integrações",
+        "modules": "Módulos"
       }
     }
   }
