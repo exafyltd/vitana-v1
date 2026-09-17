@@ -15,8 +15,7 @@
     "schedule": "Schedule",
     "settings": "Settings",
     "_pending_review": {
-      "dashboard": true,
-      "team": true
+      "dashboard": true
     },
     "overview": "Overview",
     "team": "Team",
