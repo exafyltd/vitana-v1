@@ -33,7 +33,11 @@ const cardClass = 'rounded-xl border border-slate-800 bg-slate-950/50 p-3';
 const fieldClass =
   'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
 
-const roleLabel = (role: string) => t(`screens.commerceportal.orgOnboarding.role${role.charAt(0).toUpperCase()}${role.slice(1)}`);
+// `org_admin` → `roleOrgAdmin`: split on the underscore, same as MyOrgCard's
+// toPascal — the previous charAt/slice version produced `roleOrg_admin`, a
+// key that does not exist, and the raw key leaked into the members list.
+const roleLabel = (role: string) =>
+  t(`screens.commerceportal.orgOnboarding.role${role.split('_').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('')}`);
 
 const ROLE_OPTIONS: OrgInviteRow['role'][] = ['org_admin', 'staff', 'professional'];
 

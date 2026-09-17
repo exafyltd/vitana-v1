@@ -34,6 +34,11 @@ describe('PartnerOrgRoster on mobile (VTID-03989)', () => {
     expect(src.match(/flex flex-col gap-2 md:hidden/g)?.length).toBe(2);
   });
 
+  it('maps org_admin to the roleOrgAdmin key (was roleOrg_admin — a raw key leaked into the members list)', () => {
+    expect(src).toContain("role.split('_').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('')");
+    expect(src).not.toContain('role.charAt(0).toUpperCase()}${role.slice(1)}');
+  });
+
   it('stacks the invite form vertically below md', () => {
     expect(src).toContain('flex flex-col gap-2 md:flex-row');
   });
