@@ -17,11 +17,7 @@
     "support": "Soporte",
     "settings": "Configuración",
     "logout": "Cerrar Sesión",
-    "_pending_review": {
-      "patientResults": true,
-      "healthOrders": true
-    },
-    "patientResults": "My Results",
-    "healthOrders": "Health Test Orders"
+    "patientResults": "Mis Resultados",
+    "healthOrders": "Pedidos de Pruebas de Salud"
   }
 }

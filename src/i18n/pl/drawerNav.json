@@ -18,10 +18,9 @@
     "settings": "Ustawienia",
     "logout": "Wyloguj się",
     "_pending_review": {
-      "patientResults": true,
-      "healthOrders": true
+      "patientResults": true
     },
     "patientResults": "My Results",
-    "healthOrders": "Health Test Orders"
+    "healthOrders": "Zlecenia badań zdrowotnych"
   }
 }

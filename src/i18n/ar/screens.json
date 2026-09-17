@@ -6088,7 +6088,21 @@
       "openSearch": "افتح البحث",
       "openCalendar": "افتح التقويم",
       "openAutopilot": "افتح الطيار الآلي",
-      "closeSearch": "أغلق البحث"
+      "closeSearch": "أغلق البحث",
+      "_pending_review": {
+        "roleExafyAdmin": true,
+        "roleAdministrator": true,
+        "roleStaff": true,
+        "roleProfessional": true,
+        "rolePatient": true,
+        "roleCommunity": true
+      },
+      "roleExafyAdmin": "Exafy Admin",
+      "roleAdministrator": "Administrator",
+      "roleStaff": "Staff",
+      "roleProfessional": "Professional",
+      "rolePatient": "Patient",
+      "roleCommunity": "Community Member"
     },
     "notifications": {
       "markAllAsRead": "وضع الكل كمقروء",

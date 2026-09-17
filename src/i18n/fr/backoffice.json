@@ -98,51 +98,30 @@
     },
     "hr": {
       "tabs": {
-        "employees": "Employees & Documents",
-        "leave": "Leave",
-        "attendance": "Attendance",
-        "expenses": "Expense Claims",
-        "payroll": "Payroll",
-        "_pending_review": {
-          "employees": true,
-          "leave": true,
-          "attendance": true,
-          "expenses": true,
-          "payroll": true
-        }
+        "employees": "Employés & Documents",
+        "leave": "Congés",
+        "attendance": "Présences",
+        "expenses": "Notes de frais",
+        "payroll": "Paie"
       }
     },
     "operations": {
       "tabs": {
-        "suppliers": "Suppliers",
-        "purchase-orders": "Purchase Orders",
-        "receipts": "Goods Receipts",
-        "supplier-invoices": "Supplier Invoices",
-        "items": "Items",
-        "warehouses": "Warehouses",
-        "stock": "Stock & Moves",
-        "_pending_review": {
-          "suppliers": true,
-          "purchase-orders": true,
-          "receipts": true,
-          "supplier-invoices": true,
-          "items": true,
-          "warehouses": true,
-          "stock": true
-        }
+        "suppliers": "Fournisseurs",
+        "purchase-orders": "Commandes d'achat",
+        "receipts": "Réceptions de marchandises",
+        "supplier-invoices": "Factures fournisseurs",
+        "items": "Articles",
+        "warehouses": "Entrepôts",
+        "stock": "Stocks & Mouvements"
       }
     },
     "legal": {
       "tabs": {
-        "contracts": "Contracts",
+        "contracts": "Contrats",
         "obligations": "Obligations",
-        "compliance": "Compliance",
-        "e-signature": "Signature électronique",
-        "_pending_review": {
-          "contracts": true,
-          "obligations": true,
-          "compliance": true
-        }
+        "compliance": "Conformité",
+        "e-signature": "Signature électronique"
       }
     },
     "reports": {
@@ -158,42 +137,25 @@
     },
     "approvals": {
       "tabs": {
-        "queue": "Queue",
-        "my-requests": "My Requests",
-        "policies": "Policies",
-        "_pending_review": {
-          "queue": true,
-          "my-requests": true,
-          "policies": true
-        }
+        "queue": "File d'attente",
+        "my-requests": "Mes demandes",
+        "policies": "Politiques"
       }
     },
     "audit": {
       "tabs": {
-        "receipts": "Command Receipts",
-        "erp-log": "ERP Audit Log",
-        "trail": "Independent Audit Trail",
-        "_pending_review": {
-          "receipts": true,
-          "erp-log": true,
-          "trail": true
-        }
+        "receipts": "Réceptions de commandes",
+        "erp-log": "Journal d'audit ERP",
+        "trail": "Piste d'audit indépendante"
       }
     },
     "settings": {
       "tabs": {
-        "company": "Company & Legal Entities",
-        "access": "Access",
-        "numbering": "Numbering",
-        "integrations": "Integrations",
-        "modules": "Modules",
-        "_pending_review": {
-          "company": true,
-          "access": true,
-          "numbering": true,
-          "integrations": true,
-          "modules": true
-        }
+        "company": "Entreprise & Entités légales",
+        "access": "Accès",
+        "numbering": "Numérotation",
+        "integrations": "Intégrations",
+        "modules": "Modules"
       }
     }
   }

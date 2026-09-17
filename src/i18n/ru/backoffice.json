@@ -29,31 +29,21 @@
     "marketing": {
       "tabs": {
         "campaigns": "Кампании",
-        "outreach": "Outreach",
-        "attribution": "Lead Sources & Attribution",
-        "performance": "Performance",
-        "_pending_review": {
-          "outreach": true,
-          "attribution": true,
-          "performance": true
-        }
+        "outreach": "Охват",
+        "attribution": "Источники лидов & Атрибуция",
+        "performance": "Производительность"
       }
     },
     "accounting": {
       "tabs": {
-        "journals": "Journals",
-        "chart-of-accounts": "Chart of Accounts",
-        "periods": "Fiscal Periods & Close",
-        "tax": "Tax",
-        "assets": "Fixed Assets & Leases",
+        "journals": "Журналы",
+        "chart-of-accounts": "План счетов",
+        "periods": "Финансовые периоды & Закрытие",
+        "tax": "Налог",
+        "assets": "Основные средства & Аренда",
         "intercompany": "Intercompany & Consolidation",
         "budgets": "Budgets & Forecasts",
         "_pending_review": {
-          "journals": true,
-          "chart-of-accounts": true,
-          "periods": true,
-          "tax": true,
-          "assets": true,
           "intercompany": true,
           "budgets": true
         }

@@ -6088,7 +6088,21 @@
       "openSearch": "Aramayı aç",
       "openCalendar": "Takvimi aç",
       "openAutopilot": "Otomatik pilotu aç",
-      "closeSearch": "Aramayı kapat"
+      "closeSearch": "Aramayı kapat",
+      "_pending_review": {
+        "roleExafyAdmin": true,
+        "roleAdministrator": true,
+        "roleStaff": true,
+        "roleProfessional": true,
+        "rolePatient": true,
+        "roleCommunity": true
+      },
+      "roleExafyAdmin": "Exafy Admin",
+      "roleAdministrator": "Administrator",
+      "roleStaff": "Staff",
+      "roleProfessional": "Professional",
+      "rolePatient": "Patient",
+      "roleCommunity": "Community Member"
     },
     "notifications": {
       "markAllAsRead": "Tümünü okundu işaretle",
