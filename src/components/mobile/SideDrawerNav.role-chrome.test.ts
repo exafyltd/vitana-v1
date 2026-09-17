@@ -31,6 +31,20 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).toContain("const CROSS_MODE_IDS = ['commerce', 'patient-results', 'health-orders', 'support', 'settings', 'logout'];");
   });
 
+  it('places the pill (and org chip) in the text column under name/handle, outside the profile button (VTID-03997)', () => {
+    // The block is indented to the text column: avatar w-9 (36px) + gap-3 (12px) = ms-12.
+    expect(nav).toContain('<div className="ms-12 mt-1.5 flex min-w-0 flex-col items-start gap-1">');
+    // Not nested inside the profile <button> — the pill appears only after it closes.
+    const profileBtn = nav.indexOf('onClick={handleProfileClick}');
+    const profileBtnEnd = nav.indexOf('</button>', profileBtn);
+    const pill = nav.indexOf("aria-label={t('screens.profile.switchRole')}");
+    const chip = nav.indexOf('{orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}');
+    expect(profileBtn).toBeGreaterThan(-1);
+    expect(pill).toBeGreaterThan(profileBtnEnd);
+    expect(chip).toBeGreaterThan(pill);
+    expect(nav).not.toContain('mt-2 inline-flex max-w-full items-center gap-1 rounded-full');
+  });
+
   it('ProfileDrawer shares the hook and no longer ships raw English role labels', () => {
     const profile = read('src/components/profile/ProfileDrawer.tsx');
     expect(profile).toContain("import { useRoleSwitch } from '@/hooks/useRoleSwitch';".replace(/'/g, '"'));
