@@ -10693,7 +10693,13 @@
           "goToPortal": true,
           "commerceVertical": true,
           "commerceVerticalHealth": true,
-          "commerceVerticalGeneral": true
+          "commerceVerticalGeneral": true,
+          "orgKeyAuto": true,
+          "shareInvite": true,
+          "backToApp": true,
+          "registerAsPartnerTitle": true,
+          "registerAsPartnerBody": true,
+          "openMyOrgsBody": true
         },
         "registerCta": "Register your business",
         "registerTitle": "Register a new business",
@@ -10748,7 +10754,13 @@
         "goToPortal": "Go to Commerce Portal",
         "commerceVertical": "Industry",
         "commerceVerticalHealth": "Health & medical services",
-        "commerceVerticalGeneral": "General commerce"
+        "commerceVerticalGeneral": "General commerce",
+        "orgKeyAuto": "The short name is derived from the business name — you can adjust it.",
+        "shareInvite": "Share invite link",
+        "backToApp": "Back to the app",
+        "registerAsPartnerTitle": "Register your business as a Vitanaland partner",
+        "registerAsPartnerBody": "Register your business, invite your team and manage orders — all from your phone.",
+        "openMyOrgsBody": "Your organizations' team, invites and orders"
       },
       "healthOrders": {
         "_pending_review": {

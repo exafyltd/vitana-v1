@@ -50,3 +50,21 @@ export function normalizeMcpUrl(raw: string): string {
 export const MCP_SERVER_URL = normalizeMcpUrl(
   (import.meta.env.VITE_MCP_AS_URL as string | undefined) || 'https://mcp.vitanaland.com',
 );
+
+/**
+ * Derive a `partner_organizations.org_key` candidate from a display name
+ * (VTID-03989). The register form used to demand the slug as a separate
+ * field — on a phone that is one more thing to type and get wrong. The
+ * gateway still validates/uniques the key; this only proposes one.
+ */
+export function slugifyOrgKey(displayName: string): string {
+  return displayName
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48)
+    .replace(/-+$/g, '');
+}
