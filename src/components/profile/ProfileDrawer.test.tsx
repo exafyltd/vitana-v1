@@ -55,6 +55,10 @@ vi.mock('@/hooks/useTenant', () => ({
   useTenant: () => ({ tenant: { slug: 'maxina', name: 'Maxina' }, activeTenantId: 'tenant-1', isExafyAdmin: true }),
 }));
 vi.mock('@/hooks/useMemberships', () => ({ useMemberships: () => ({ roles: [] }) }));
+// VTID-03993: useRoleSwitch (shared with the mobile sheet) also reads the
+// patient_profiles flag through React Query — stub it, there is no
+// QueryClientProvider in this render.
+vi.mock('@/hooks/usePatientAccess', () => ({ usePatientAccess: () => ({ isPatient: false, isLoading: false }) }));
 vi.mock('@/hooks/useSmartRouting', () => ({ useTenantLogoutRedirect: () => ({ getLogoutRedirectUrl: () => '/' }) }));
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => false }));
 vi.mock('@/lib/i18n-toast', () => ({

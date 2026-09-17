@@ -63,8 +63,11 @@ export function useRoleSwitch() {
     [grantedRoles, isExafyAdmin, isPatient, isMobile],
   );
 
+  // Always writes and navigates, even for the already-active role — picking
+  // your current mode is "take me to its home", the same contract the
+  // desktop <Select> had before this hook existed (pinned by
+  // ProfileDrawer.test.tsx's community → /home case).
   const switchRole = async (newRole: UserRole): Promise<{ ok: boolean }> => {
-    if (newRole === dbRole) return { ok: true };
     // VTID-03909: navigate only once the write is confirmed — a hard
     // navigation mid-RPC used to cancel the write and look like success.
     setSwitching(true);
