@@ -56,112 +56,64 @@
     },
     "hr": {
       "tabs": {
-        "employees": "Employees & Documents",
-        "leave": "Leave",
-        "attendance": "Attendance",
-        "expenses": "Expense Claims",
-        "payroll": "Payroll",
-        "_pending_review": {
-          "employees": true,
-          "leave": true,
-          "attendance": true,
-          "expenses": true,
-          "payroll": true
-        }
+        "employees": "Pracownicy i Dokumenty",
+        "leave": "Urlop",
+        "attendance": "Obecność",
+        "expenses": "Rozliczenia wydatków",
+        "payroll": "Płace"
       }
     },
     "operations": {
       "tabs": {
-        "suppliers": "Suppliers",
-        "purchase-orders": "Purchase Orders",
-        "receipts": "Goods Receipts",
-        "supplier-invoices": "Supplier Invoices",
-        "items": "Items",
-        "warehouses": "Warehouses",
-        "stock": "Stock & Moves",
-        "_pending_review": {
-          "suppliers": true,
-          "purchase-orders": true,
-          "receipts": true,
-          "supplier-invoices": true,
-          "items": true,
-          "warehouses": true,
-          "stock": true
-        }
+        "suppliers": "Dostawcy",
+        "purchase-orders": "Zamówienia zakupu",
+        "receipts": "Przyjęcia towarów",
+        "supplier-invoices": "Faktury dostawców",
+        "items": "Pozycje",
+        "warehouses": "Magazyny",
+        "stock": "Zapasy i Przesunięcia"
       }
     },
     "legal": {
       "tabs": {
-        "contracts": "Contracts",
-        "obligations": "Obligations",
-        "compliance": "Compliance",
-        "e-signature": "E-Signature",
-        "_pending_review": {
-          "contracts": true,
-          "obligations": true,
-          "compliance": true,
-          "e-signature": true
-        }
+        "contracts": "Umowy",
+        "obligations": "Zobowiązania",
+        "compliance": "Zgodność",
+        "e-signature": "E-podpis"
       }
     },
     "reports": {
       "tabs": {
-        "pnl": "P&L",
-        "balance-sheet": "Balance Sheet",
-        "trial-balance": "Trial Balance",
-        "cash-flow": "Cash Flow",
-        "aging": "AR / AP Aging",
-        "dimensions": "By Dimension",
-        "board-pack": "Board Pack",
-        "_pending_review": {
-          "pnl": true,
-          "balance-sheet": true,
-          "trial-balance": true,
-          "cash-flow": true,
-          "aging": true,
-          "dimensions": true,
-          "board-pack": true
-        }
+        "pnl": "RZiS",
+        "balance-sheet": "Bilans",
+        "trial-balance": "Zestawienie obrotów i sald",
+        "cash-flow": "Przepływy pieniężne",
+        "aging": "Wiek należności / zobowiązań",
+        "dimensions": "Wg wymiaru",
+        "board-pack": "Pakiet dla zarządu"
       }
     },
     "approvals": {
       "tabs": {
-        "queue": "Queue",
-        "my-requests": "My Requests",
-        "policies": "Policies",
-        "_pending_review": {
-          "queue": true,
-          "my-requests": true,
-          "policies": true
-        }
+        "queue": "Kolejka",
+        "my-requests": "Moje wnioski",
+        "policies": "Zasady"
       }
     },
     "audit": {
       "tabs": {
-        "receipts": "Command Receipts",
-        "erp-log": "ERP Audit Log",
-        "trail": "Independent Audit Trail",
-        "_pending_review": {
-          "receipts": true,
-          "erp-log": true,
-          "trail": true
-        }
+        "receipts": "Potwierdzenia poleceń",
+        "erp-log": "Dziennik audytu ERP",
+        "trail": "Niezależny rejestr audytu"
       }
     },
     "settings": {
       "tabs": {
-        "company": "Company & Legal Entities",
-        "access": "Access",
-        "numbering": "Numbering",
-        "integrations": "Integrations",
-        "modules": "Modules",
-        "_pending_review": {
-          "company": true,
-          "access": true,
-          "numbering": true,
-          "integrations": true,
-          "modules": true
-        }
+        "company": "Firma i Podmioty prawne",
+        "access": "Dostęp",
+        "numbering": "Numeracja",
+        "integrations": "Integracje",
+        "modules": "Moduły"
       }
     }
   }

@@ -17,13 +17,13 @@
     "support": "Soporte",
     "settings": "Configuración",
     "logout": "Cerrar Sesión",
+    "patientResults": "Mis Resultados",
+    "healthOrders": "Pedidos de Pruebas de Salud",
     "_pending_review": {
       "patientResults": true,
       "healthOrders": true,
       "commerce": true
     },
-    "patientResults": "My Results",
-    "healthOrders": "Health Test Orders",
     "commerce": "My business"
   }
 }

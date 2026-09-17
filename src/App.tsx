@@ -1610,11 +1610,13 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
+          {/* VTID-03988: AuthGuard only — the results endpoint is RLS-scoped to
+              the caller's own rows, and the elevated-role guard kept a mobile
+              patient (dbRole still 'community': no role switcher there) out of
+              their own results. See usePatientAccess.ts. */}
           <Route path="/patient/results" element={
             <AuthGuard>
-              <ProtectedRoute requiredRole="patient">
-                <PatientResults />
-              </ProtectedRoute>
+              <PatientResults />
             </AuthGuard>
           } />
           <Route path="/patient/care-team" element={

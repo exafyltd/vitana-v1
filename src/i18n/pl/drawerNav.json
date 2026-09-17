@@ -19,11 +19,10 @@
     "logout": "Wyloguj się",
     "_pending_review": {
       "patientResults": true,
-      "healthOrders": true,
       "commerce": true
     },
     "patientResults": "My Results",
-    "healthOrders": "Health Test Orders",
+    "healthOrders": "Zlecenia badań zdrowotnych",
     "commerce": "My business"
   }
 }

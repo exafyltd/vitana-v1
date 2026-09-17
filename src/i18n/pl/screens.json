@@ -6089,7 +6089,21 @@
       "openSearch": "Otwórz wyszukiwanie",
       "openCalendar": "Otwórz kalendarz",
       "openAutopilot": "Otwórz autopilota",
-      "closeSearch": "Zamknij wyszukiwanie"
+      "closeSearch": "Zamknij wyszukiwanie",
+      "_pending_review": {
+        "roleExafyAdmin": true,
+        "roleAdministrator": true,
+        "roleStaff": true,
+        "roleProfessional": true,
+        "rolePatient": true,
+        "roleCommunity": true
+      },
+      "roleExafyAdmin": "Exafy Admin",
+      "roleAdministrator": "Administrator",
+      "roleStaff": "Staff",
+      "roleProfessional": "Professional",
+      "rolePatient": "Patient",
+      "roleCommunity": "Community Member"
     },
     "notifications": {
       "markAllAsRead": "Oznacz wszystko jako przeczytane",
