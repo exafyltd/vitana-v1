@@ -9,7 +9,6 @@ import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
-import AppLayout from "@/components/AppLayout";
 import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
 import { GuidedModeProvider } from "@/context/GuidedModeProvider"; // VTID-03279 Guided Journey
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
@@ -67,7 +66,7 @@ import { t } from '@/lib/i18n-toast';
 // VTID-03936: explicit "not available yet" state for the /patient/* routes
 // with no backing data source.
 import { ComingSoonPlaceholder } from '@/components/patient/ComingSoonPlaceholder';
-import { Bell, ClipboardCheck, ShieldCheck, Users } from 'lucide-react';
+import { Activity, BarChart3, Bell, BookOpen, Calendar, ClipboardCheck, Clock, FileText, MessageSquare, ShieldCheck, Stethoscope, UserCheck, Users, Wallet, Zap } from 'lucide-react';
 
 // ─── Lazy imports: everything else, grouped by domain ───
 
@@ -1663,45 +1662,51 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
+          {/* VTID-04001: these role routes have no screen yet. They used to be inline
+              title+subtitle JSX evaluated right here, in App's own render — i.e. once
+              at boot, when the i18n singleton still holds its de-DE default — so they
+              stayed German whatever language the member picked. ComingSoonPlaceholder
+              translates when the route renders and says honestly that the screen is
+              not there yet. Icons match role-navigation.ts. */}
           <Route path="/professional/schedule" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.schedule')}</h1><p className="text-muted-foreground">{t('screens.common.manageYourAppointmentCalendar')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Calendar} titleKey="screens.common.schedule" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/professional/tools" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.clinicalTools')}</h1><p className="text-muted-foreground">{t('screens.common.medicalCalculatorsReferenceTools')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Stethoscope} titleKey="screens.common.clinicalTools" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/professional/referrals" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.referrals')}</h1><p className="text-muted-foreground">{t('screens.common.patientReferralsSpecialistNetworks')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={FileText} titleKey="screens.common.referrals" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/professional/billing" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.billing')}</h1><p className="text-muted-foreground">{t('screens.common.practiceBillingRevenueManagement')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Wallet} titleKey="screens.common.billing" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/professional/profile" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.professionalProfile')}</h1><p className="text-muted-foreground">{t('screens.common.manageYourProfessionalCredentialsBio')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={UserCheck} titleKey="screens.common.professionalProfile" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/professional/education" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.continuingEducation')}</h1><p className="text-muted-foreground">{t('screens.common.cmeCoursesProfessionalDevelopment')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={BookOpen} titleKey="screens.common.continuingEducation" />
               </ProtectedRoute>
             </AuthGuard>
           } />
@@ -1724,42 +1729,42 @@ const App = () => {
           <Route path="/staff/tasks" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.dailyTasks')}</h1><p className="text-muted-foreground">{t('screens.common.yourAssignedTasksResponsibilities')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Activity} titleKey="screens.common.dailyTasks" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/schedule" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.schedule')}</h1><p className="text-muted-foreground">{t('screens.common.workScheduleShiftManagement')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Calendar} titleKey="screens.common.schedule" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/reports" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.reports')}</h1><p className="text-muted-foreground">{t('screens.common.dailyWeeklyActivityReports')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={BarChart3} titleKey="screens.common.reports" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/communications" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.communications')}</h1><p className="text-muted-foreground">{t('screens.common.teamMessagesAnnouncements')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={MessageSquare} titleKey="screens.common.communications" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/tools" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.staffTools')}</h1><p className="text-muted-foreground">{t('screens.common.workflowToolsResources')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Zap} titleKey="screens.common.staffTools" />
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/time" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <AppLayout><div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.timeTracking')}</h1><p className="text-muted-foreground">{t('screens.common.clockInoutTimesheetManagement')}</p></div></AppLayout>
+                <ComingSoonPlaceholder icon={Clock} titleKey="screens.common.timeTracking" />
               </ProtectedRoute>
             </AuthGuard>
           } />
