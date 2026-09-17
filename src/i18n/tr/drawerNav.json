@@ -20,10 +20,18 @@
     "_pending_review": {
       "patientResults": true,
       "healthOrders": true,
-      "commerce": true
+      "commerce": true,
+      "businessOverview": true,
+      "businessTeam": true,
+      "businessOrders": true,
+      "businessInbox": true
     },
     "patientResults": "My Results",
     "healthOrders": "Health Test Orders",
-    "commerce": "My business"
+    "commerce": "My business",
+    "businessOverview": "Overview",
+    "businessTeam": "Team",
+    "businessOrders": "Orders",
+    "businessInbox": "Inbox"
   }
 }

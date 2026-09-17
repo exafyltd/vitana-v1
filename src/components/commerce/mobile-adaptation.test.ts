@@ -54,9 +54,15 @@ describe('CommerceShell back affordance (VTID-03989)', () => {
   const src = read('src/components/commerce/CommerceShell.tsx');
 
   it('shows a mobile-only back link to the app, suppressed on the commerce host', () => {
-    expect(src).toContain('const showBackToApp = !isCommerceHost();');
-    expect(src).toContain('to="/home"');
-    expect(src).toMatch(/className="[^"]*md:hidden"/);
+    // VTID-03999 superseded the back link: inside the phone app the shell IS
+    // the app's own chrome (AppLayout: top bar, drawer, business bottom bar),
+    // so there is nothing to go "back" to; the dark portal stays for desktop
+    // and the commerce host, wrapping token-styled children in `dark`.
+    expect(src).toContain('const inApp = isMobile && !isCommerceHost();');
+    expect(src).toContain('<AppLayout>');
+    expect(src).toContain('<div className="dark min-h-screen bg-slate-950 text-slate-100">');
+    expect(src).not.toContain('to="/home"');
+    expect(src).not.toMatch(/className="[^"]*md:hidden"/);
   });
 });
 

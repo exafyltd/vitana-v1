@@ -4,6 +4,8 @@ import { Calendar, Compass, Heart, LayoutDashboard, Mail, Newspaper, Settings, T
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useRole, type UserRole } from "@/hooks/useRole";
+import { useBusinessMode } from "@/hooks/useBusinessMode";
+import { resolveBusinessBottomNav } from "@/lib/business-mode";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
@@ -27,6 +29,8 @@ type BottomNavItem = {
   label: string;
   path: string;
   i18nKey: string;
+  /** NavLink `end`: the orders item must not light up on its /inbox child. */
+  exact?: boolean;
 };
 
 // VTID-03993: the bar follows the active MODE (useRole().dbRole — the stored
@@ -68,7 +72,15 @@ export function MobileBottomNav() {
   const { unreadCount } = useChatUnreadCount();
   const { dbRole } = useRole();
   const roleItems = resolveRoleBottomNav(dbRole);
-  const items = roleItems ?? navItems;
+  // VTID-03999: on a business route with an active org the bar is that
+  // business role's — a route-based mode independent of dbRole, so a member
+  // whose Vitana mode is Community still gets the right four items here.
+  const business = useBusinessMode();
+  const businessItems: BottomNavItem[] | null =
+    business.isBusinessMode && business.activeOrg
+      ? resolveBusinessBottomNav(business.activeOrg.role).map((i) => ({ ...i, label: i.id }))
+      : null;
+  const items = businessItems ?? roleItems ?? navItems;
 
   // Routes where the bottom nav should be hidden
   const hideNavRoutes = [
@@ -104,7 +116,8 @@ export function MobileBottomNav() {
     location.pathname.startsWith(route + '/') ||
     (route.endsWith('/') && location.pathname.startsWith(route));
   const shouldHideNav =
-    hideNavRoutes.some(matchesRoute) || (roleItems === null && roleSectionRoutes.some(matchesRoute));
+    hideNavRoutes.some(matchesRoute) ||
+    (businessItems === null && roleItems === null && roleSectionRoutes.some(matchesRoute));
   
   // Sync body attribute so external widgets (ORB) know when bottom nav is visible
   useEffect(() => {
@@ -170,9 +183,10 @@ interface NavItemProps {
   path: string;
   i18nKey?: string;
   unreadCount?: number;
+  exact?: boolean;
 }
 
-function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavItemProps) {
+function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0, exact = false }: NavItemProps) {
   const { translate } = useTranslation();
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -196,6 +210,7 @@ function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavI
   return (
     <NavLink
       to={path}
+      end={exact}
       onPointerDown={handleTapIntent}
       onTouchStart={handleTapIntent}
       className={() =>

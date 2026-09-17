@@ -24,6 +24,8 @@ import { useRole } from '@/hooks/useRole';
 import { useMyPartnerOrgs } from '@/hooks/useOrgMembers';
 import { usePatientAccess } from '@/hooks/usePatientAccess';
 import { useRoleSwitch } from '@/hooks/useRoleSwitch';
+import { useBusinessMode } from '@/hooks/useBusinessMode';
+import { businessDrawerItems, businessRoleLabelKey } from '@/lib/business-mode';
 import { RoleSwitcherSheet } from '@/components/mobile/RoleSwitcherSheet';
 import { roleLabel as vitanaRoleLabel } from '@/lib/role-labels';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
@@ -46,13 +48,22 @@ interface SideDrawerNavProps {
 // source the desktop sidebar renders — so a mode's items cannot drift
 // between viewports. `fallback` is the English title for keys the catalog
 // may not carry; `action` marks the two rows that do not navigate.
-type DrawerRow = DrawerNavItem & { fallback?: string; action?: 'logout' | 'switch-community' };
+type DrawerRow = DrawerNavItem & { fallback?: string; action?: 'logout' | 'switch-community'; exact?: boolean };
 
 // Rows that stay in EVERY mode: the org axis (a business membership is
 // independent of the active Vitana role — owner decision, VTID-03993), the
 // patient-results door (VTID-03988), support, settings and logout. Rows whose
 // route the role navigation already lists are not repeated.
 const CROSS_MODE_IDS = ['commerce', 'patient-results', 'health-orders', 'support', 'settings', 'logout'];
+
+// VTID-03999: drawer labels for the business-mode rows (the bottom bar uses
+// the shorter mobileNav.* keys for the same items).
+const BUSINESS_DRAWER_KEYS: Record<string, string> = {
+  'business-overview': 'drawerNav.businessOverview',
+  'business-team': 'drawerNav.businessTeam',
+  'business-orders': 'drawerNav.businessOrders',
+  'business-inbox': 'drawerNav.businessInbox',
+};
 
 export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const location = useLocation();
@@ -88,6 +99,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // viewport; the header pill opens the switcher, the sheet writes the same
   // set_role_preference the desktop <Select> does (one hook, one path).
   const roleSwitch = useRoleSwitch();
+  // VTID-03999: business modes live on their own axis — on a business route
+  // with an active org the drawer shows that business's rows and the header
+  // names the business role, without any Vitana role having changed.
+  const business = useBusinessMode();
+  const inBusinessMode = business.isBusinessMode && business.activeOrg !== null;
   const [roleSheetOpen, setRoleSheetOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchActive, setSearchActive] = useState(false);
@@ -137,9 +153,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // is still in Community mode is offered Patient in the switcher instead of
   // being labelled as one here (VTID-03993 supersedes the VTID-03988 hint):
   // a pill that says "Patient" while the app is in Community mode would lie.
-  const roleLabel = isExafyAdmin && dbRole === 'community'
-    ? t('screens.mobile.roleExafyAdmin')
-    : vitanaRoleLabel(dbRole);
+  const roleLabel = inBusinessMode && business.activeOrg
+    ? t(businessRoleLabelKey(business.activeOrg.role))
+    : isExafyAdmin && dbRole === 'community'
+      ? t('screens.mobile.roleExafyAdmin')
+      : vitanaRoleLabel(dbRole);
   // With a switcher the pill carries the role; the second line then only
   // shows the handle (or nothing) so the mode is not printed twice.
   const secondaryLine = profile.handle ? `@${profile.handle}` : roleSwitch.canSwitch ? '' : roleLabel;
@@ -203,6 +221,13 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     onClose();
 
     if (item.action === 'switch-community') {
+      // VTID-03999: leaving a business mode is a navigation when the Vitana
+      // mode already is Community; otherwise it is the same write as picking
+      // Community in the sheet, which also lands on /home.
+      if (inBusinessMode && dbRole === 'community') {
+        navigate('/home');
+        return;
+      }
       // The explicit way back: same write as picking Community in the sheet.
       await roleSwitch.switchRole('community');
       return;
@@ -232,6 +257,28 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     .filter(item => !(item.id === 'commerce' && !isPartnerOrgMember))
     .map(item => (item.id === 'logout' ? { ...item, action: 'logout' as const } : item));
   const rows: DrawerRow[] = (() => {
+    // VTID-03999: business mode first — it is route-based and independent of dbRole.
+    if (inBusinessMode && business.activeOrg) {
+      const bizRows: DrawerRow[] = businessDrawerItems(business.activeOrg.role).map(nav => ({
+        id: nav.id,
+        route: nav.path,
+        icon: nav.icon,
+        translationKey: BUSINESS_DRAWER_KEYS[nav.id] ?? nav.i18nKey,
+        exact: nav.exact,
+      }));
+      const crossRows = communityRows.filter(
+        item => ['patient-results', 'support', 'settings'].includes(item.id) && item.action !== 'logout',
+      );
+      const logoutRow = communityRows.find(item => item.action === 'logout');
+      const switchRow: DrawerRow = {
+        id: 'switch-community',
+        route: '__switch__',
+        icon: Users,
+        translationKey: 'screens.mobile.switchToCommunity',
+        action: 'switch-community',
+      };
+      return [...bizRows, ...crossRows, switchRow, ...(logoutRow ? [logoutRow] : [])];
+    }
     if (dbRole === 'community' || dbRole === 'backoffice') return communityRows;
     const roleRows: DrawerRow[] = getRoleNavigation(dbRole)
       .filter(nav => nav.path !== '/settings')
@@ -258,11 +305,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   })();
   // One icon tone per mode for the mapped role rows (community rows keep
   // their per-item tones from drawer-nav.config).
-  const roleTone = drawerNavIconTones[dbRole];
+  const roleTone = inBusinessMode ? drawerNavIconTones.commerce : drawerNavIconTones[dbRole];
 
-  const isActive = (route: string) => {
+  const isActive = (route: string, exact?: boolean) => {
     if (route === '__logout__' || route === '__switch__') return false;
     if (location.pathname === route) return true;
+    if (exact) return false;
     // For /discover vs /discover/orders, be exact
     if (route === '/discover') return location.pathname === '/discover';
     // /commerce vs /commerce/health-orders — same shape as discover above.
@@ -367,7 +415,9 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       <ChevronDown className="h-3.5 w-3.5 shrink-0" />
                     </button>
                   )}
-                  {primaryOrg && (
+                  {inBusinessMode && business.activeOrg ? (
+                    <div className="max-w-full text-[11px] opacity-80 truncate">{business.activeOrg.display_name}</div>
+                  ) : primaryOrg && (
                     <div className="max-w-full text-[11px] opacity-80 truncate">
                       {orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}
                     </div>
@@ -520,7 +570,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             {/* Nav items */}
             <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
               {rows.map((item) => {
-                const active = isActive(item.route);
+                const active = isActive(item.route, item.exact);
                 const Icon = item.icon;
                 const isDestructive = item.action === 'logout';
                 const tone = !isDestructive ? (drawerNavIconTones[item.id] ?? roleTone) : undefined;
@@ -604,6 +654,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
       onSelect={async (role) => {
         const result = await roleSwitch.switchRole(role);
         if (result.ok) setRoleSheetOpen(false);
+      }}
+      businessEntries={roleSwitch.businessEntries}
+      activeBusinessOrgId={roleSwitch.activeBusinessOrgId}
+      onSelectBusiness={(orgId) => {
+        roleSwitch.switchToBusiness(orgId);
+        setRoleSheetOpen(false);
       }}
     />
 

@@ -59,6 +59,12 @@ vi.mock('@/hooks/useMemberships', () => ({ useMemberships: () => ({ roles: [] })
 // patient_profiles flag through React Query — stub it, there is no
 // QueryClientProvider in this render.
 vi.mock('@/hooks/usePatientAccess', () => ({ usePatientAccess: () => ({ isPatient: false, isLoading: false }) }));
+// VTID-03999: useRoleSwitch now also reads the business memberships through
+// useBusinessMode -> useMyPartnerOrgs (React Query); stub it the same way as
+// usePatientAccess above — this suite renders without a QueryClientProvider.
+vi.mock('@/hooks/useBusinessMode', () => ({
+  useBusinessMode: () => ({ orgs: [], activeOrg: null, isBusinessMode: false, isLoading: false, enterBusinessMode: vi.fn(), selectOrg: vi.fn() }),
+}));
 vi.mock('@/hooks/useSmartRouting', () => ({ useTenantLogoutRedirect: () => ({ getLogoutRedirectUrl: () => '/' }) }));
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => false }));
 vi.mock('@/lib/i18n-toast', () => ({

@@ -87,6 +87,7 @@ const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLog
 // trio; the old connection-detail URL redirects into its drawer.
 const CommercePortal = lazy(() => import("./pages/CommercePortal"));
 const CommerceHealthOrders = lazy(() => import("./pages/CommerceHealthOrders"));
+const CommerceTeam = lazy(() => import("./pages/CommerceTeam"));
 const CommerceJoin = lazy(() => import("./pages/CommerceJoin"));
 const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnectionRedirect"));
 // VTID-03936: an org invite link's landing page.
@@ -1798,6 +1799,12 @@ const App = () => {
               /partner-orgs/mine, enforced server-side per-route), NOT by
               dbRole/ProtectedRoute — org membership is an independent axis. */}
           <Route path="/commerce/health-orders" element={<AuthGuard><CommerceHealthOrders /></AuthGuard>} />
+          {/* VTID-03999: business modes on mobile — the results inbox as its own
+              URL (so the bottom bar can point at it) and the org admin's team
+              page. Same gate as the routes above: any signed-in user, the
+              membership is checked client-side and enforced server-side. */}
+          <Route path="/commerce/health-orders/inbox" element={<AuthGuard><CommerceHealthOrders /></AuthGuard>} />
+          <Route path="/commerce/team" element={<AuthGuard><CommerceTeam /></AuthGuard>} />
           {/* VTID-03882: the three old URLs stay alive and fold into /commerce. */}
           <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
           <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />

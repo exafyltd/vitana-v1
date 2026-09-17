@@ -19,6 +19,10 @@
     "support": "Support",
     "settings": "Einstellungen",
     "logout": "Abmelden",
-    "commerce": "Mein Unternehmen"
+    "commerce": "Mein Unternehmen",
+    "businessOverview": "Übersicht",
+    "businessTeam": "Team",
+    "businessOrders": "Aufträge",
+    "businessInbox": "Eingang"
   }
 }

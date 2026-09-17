@@ -23,9 +23,9 @@ function toPascal(snake: string): string {
 }
 
 const statusTone = (status: string) => {
-  if (status === 'active') return 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300';
-  if (status === 'rejected' || status === 'suspended') return 'border-red-400/40 bg-red-400/10 text-red-300';
-  return 'border-amber-400/40 bg-amber-400/10 text-amber-300';
+  if (status === 'active') return 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300';
+  if (status === 'rejected' || status === 'suspended') return 'border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-300';
+  return 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300';
 };
 
 export function MyOrgCard({ org, onManage }: { org: MyOrgRow; onManage: (id: string) => void }) {
@@ -36,12 +36,12 @@ export function MyOrgCard({ org, onManage }: { org: MyOrgRow; onManage: (id: str
       onClick={() => canManage && onManage(org.id)}
       disabled={!canManage}
       aria-label={canManage ? `${org.display_name} — ${t('screens.commerceportal.orgOnboarding.manageRoster')}` : org.display_name}
-      className="group w-full rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-start transition-colors enabled:hover:border-amber-500/40 enabled:hover:bg-slate-900 disabled:cursor-default"
+      className="group w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors enabled:hover:border-amber-500/40 enabled:hover:bg-card disabled:cursor-default"
     >
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-slate-100">{org.display_name}</p>
-          <p className="truncate text-xs text-slate-500">
+          <p className="truncate font-medium text-foreground">{org.display_name}</p>
+          <p className="truncate text-xs text-muted-foreground">
             {org.org_type} · {roleLabel(org.role)}
           </p>
         </div>
@@ -49,7 +49,7 @@ export function MyOrgCard({ org, onManage }: { org: MyOrgRow; onManage: (id: str
           {statusLabel(org.status)}
         </Badge>
         {canManage && (
-          <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-amber-400 rtl:rotate-180" />
+          <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-amber-500 rtl:rotate-180" />
         )}
       </div>
     </button>
