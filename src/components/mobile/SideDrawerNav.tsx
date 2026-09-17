@@ -56,6 +56,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // member should still be able to find their own order queue.
   const myPartnerOrgsQuery = useMyPartnerOrgs();
   const isPartnerOrgMember = (myPartnerOrgsQuery.data?.length ?? 0) > 0;
+  // VTID-03989: the org-scoped role (org_admin/staff/professional) is a
+  // separate axis from dbRole — surface it in the header so a business owner
+  // can see what they are, without touching the Vitana-wide role ladder.
+  const primaryOrg = myPartnerOrgsQuery.data?.[0] ?? null;
+  const orgRoleLabel = (role: string) =>
+    t(`screens.commerceportal.orgOnboarding.role${role.split('_').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('')}`);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchActive, setSearchActive] = useState(false);
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
@@ -184,6 +190,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     if (location.pathname === route) return true;
     // For /discover vs /discover/orders, be exact
     if (route === '/discover') return location.pathname === '/discover';
+    // /commerce vs /commerce/health-orders — same shape as discover above.
+    if (route === '/commerce') return location.pathname === '/commerce';
     return location.pathname.startsWith(route + '/');
   };
 
@@ -244,6 +252,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <div className="text-xs opacity-80 truncate">
                     {secondaryLine}
                   </div>
+                  {primaryOrg && (
+                    <div className="text-[11px] opacity-80 truncate">
+                      {orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}
+                    </div>
+                  )}
                 </div>
               </button>
               <button
@@ -405,6 +418,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 .filter(item => !(isIAPRestricted() && item.id === 'wallet'))
                 .filter(item => !(item.id === 'patient-results' && dbRole === 'community'))
                 .filter(item => !(item.id === 'health-orders' && !isPartnerOrgMember))
+                .filter(item => !(item.id === 'commerce' && !isPartnerOrgMember))
                 .map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
