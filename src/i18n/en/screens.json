@@ -10528,7 +10528,11 @@
         "openMyOrgsBody": "Your organizations' team, invites and orders",
         "teamTitle": "Team",
         "teamAdminOnlyTitle": "Only org admins manage the team",
-        "teamAdminOnlyBody": "Invitations and members of {org} are managed by an org admin. Your orders are under “Orders”."
+        "teamAdminOnlyBody": "Invitations and members of {org} are managed by an org admin. Your orders are under “Orders”.",
+        "_pending_review": {
+          "roleOrgAdmin": true,
+          "teamTitle": true
+        }
       },
       "healthOrders": {
         "sectionTitle": "Health-test orders",
