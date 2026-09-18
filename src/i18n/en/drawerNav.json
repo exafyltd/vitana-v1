@@ -23,6 +23,8 @@
     "businessOverview": "Overview",
     "businessTeam": "Team",
     "businessOrders": "Orders",
-    "businessInbox": "Inbox"
-  }
+    "businessInbox": "Inbox",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
