@@ -45,10 +45,41 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).not.toContain('mt-2 inline-flex max-w-full items-center gap-1 rounded-full');
   });
 
+  it('shows the mode as a chip and the switch as a labelled CTA next to it (VTID-04041)', () => {
+    // The chip is information (a <span>, not a button); the CTA is the one
+    // interactive element and carries the visible "Rolle wechseln" label.
+    const chipLabel = nav.indexOf("<span className=\"sr-only\">{t('screens.mobile.currentMode')}: </span>");
+    const cta = nav.indexOf("aria-label={t('screens.profile.switchRole')}");
+    const ctaText = nav.indexOf("<span>{t('screens.profile.switchRole')}</span>");
+    expect(chipLabel).toBeGreaterThan(-1);
+    expect(cta).toBeGreaterThan(chipLabel);
+    expect(ctaText).toBeGreaterThan(cta);
+    expect(nav).toContain('ArrowLeftRight');
+    expect(nav).not.toContain('ChevronDown');
+    // Chip above CTA, always: the drawer is w-72 (column ~200px), the pair is
+    // ~260px, so a wrapping row would only ever look like an accidental wrap.
+    expect(nav).toContain('<div className="flex max-w-full flex-col items-start gap-1.5">');
+    // The sheet names the same mode label the header chip shows.
+    expect(nav).toContain('currentModeLabel={roleLabel}');
+    // The chip's dot borrows the mode's row tone; Community falls back.
+    expect(nav).toContain("const modeTone = roleTone ?? drawerNavIconTones['switch-community'];");
+  });
+
+  it('the switcher sheet names the active mode above the list (VTID-04041)', () => {
+    const sheet = read('src/components/mobile/RoleSwitcherSheet.tsx');
+    expect(sheet).toContain("t('screens.mobile.currentModeIs', { role: activeModeLabel })");
+    expect(sheet).toContain('currentModeLabel ?? roleLabel(activeRole)');
+    expect(sheet).toContain('`${t(businessRoleLabelKey(activeBusiness.role))} · ${activeBusiness.orgName}`');
+  });
+
   it('ProfileDrawer shares the hook and no longer ships raw English role labels', () => {
     const profile = read('src/components/profile/ProfileDrawer.tsx');
     expect(profile).toContain("import { useRoleSwitch } from '@/hooks/useRoleSwitch';".replace(/'/g, '"'));
     expect(profile).not.toContain('const ROLE_LABELS');
     expect(profile).toContain('<RoleSwitcherSheet');
+    // VTID-04041: same chip + CTA pair as the drawer header on mobile.
+    expect(profile).toContain("<span>{t('screens.profile.switchRole')}</span>");
+    expect(profile).toContain('ArrowLeftRight');
+    expect(profile).not.toContain('ChevronDown');
   });
 });

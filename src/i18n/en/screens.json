@@ -6065,12 +6065,9 @@
       "roleInfra": "Infra",
       "switchToCommunity": "Switch to Community",
       "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now.",
-      "_pending_review": {
-        "roleBackoffice": true,
-        "roleDeveloper": true,
-        "roleInfra": true
-      },
-      "businessModesTitle": "Your business"
+      "businessModesTitle": "Your business",
+      "currentMode": "Current mode",
+      "currentModeIs": "Current mode: {role}"
     },
     "notifications": {
       "markAllAsRead": "Mark all as read",

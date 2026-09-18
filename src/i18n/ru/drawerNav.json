@@ -17,21 +17,12 @@
     "support": "Поддержка",
     "settings": "Настройки",
     "logout": "Выйти",
-    "_pending_review": {
-      "patientResults": true,
-      "healthOrders": true,
-      "commerce": true,
-      "businessOverview": true,
-      "businessTeam": true,
-      "businessOrders": true,
-      "businessInbox": true
-    },
-    "patientResults": "My Results",
-    "healthOrders": "Health Test Orders",
-    "commerce": "My business",
-    "businessOverview": "Overview",
-    "businessTeam": "Team",
-    "businessOrders": "Orders",
-    "businessInbox": "Inbox"
+    "patientResults": "Мои Результаты",
+    "healthOrders": "Заказы тестов здоровья",
+    "commerce": "Мой бизнес",
+    "businessOverview": "Обзор",
+    "businessTeam": "Команда",
+    "businessOrders": "Заказы",
+    "businessInbox": "Входящие"
   }
 }

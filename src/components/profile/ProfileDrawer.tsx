@@ -17,7 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Trash2, Loader2, ChevronDown } from "lucide-react";
+import { User, LogOut, Shield, Trash2, Loader2, ArrowLeftRight } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { UserRole } from "@/hooks/useRole";
@@ -143,17 +143,23 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 <p className="text-xs text-muted-foreground">{user.email}</p>
               )}
               {isMobile && canSwitch ? (
-                <button
-                  type="button"
-                  onClick={openRoleSheet}
-                  aria-label={t('screens.profile.switchRole')}
-                  className="inline-flex items-center rounded-full"
-                >
+                // VTID-04041: mode chip (information) + labelled switch CTA,
+                // the same pair the side drawer header shows.
+                <div className="flex flex-wrap items-center justify-center gap-1.5">
                   <Badge variant="secondary" className="text-xs">
+                    <span className="sr-only">{t('screens.mobile.currentMode')}: </span>
                     {roleLabel(activeRole)}
-                    <ChevronDown className="ms-1 h-3 w-3" />
                   </Badge>
-                </button>
+                  <button
+                    type="button"
+                    onClick={openRoleSheet}
+                    aria-label={t('screens.profile.switchRole')}
+                    className="inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    <ArrowLeftRight className="h-3.5 w-3.5 shrink-0" />
+                    <span>{t('screens.profile.switchRole')}</span>
+                  </button>
+                </div>
               ) : (
                 <Badge variant="secondary" className="text-xs">
                   {roleLabel(activeRole)}

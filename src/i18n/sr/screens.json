@@ -6101,7 +6101,9 @@
         "roleInfra": true,
         "switchToCommunity": true,
         "switchRoleHint": true,
-        "businessModesTitle": true
+        "businessModesTitle": true,
+        "currentMode": true,
+        "currentModeIs": true
       },
       "roleExafyAdmin": "Exafy Admin",
       "roleAdministrator": "Administrator",
@@ -6114,7 +6116,9 @@
       "roleInfra": "Infra",
       "switchToCommunity": "Switch to Community",
       "switchRoleHint": "You hold more than one role. Choose which mode the app is in for you right now.",
-      "businessModesTitle": "Your business"
+      "businessModesTitle": "Your business",
+      "currentMode": "Current mode",
+      "currentModeIs": "Current mode: {role}"
     },
     "notifications": {
       "markAllAsRead": "Označi sve kao pročitano",

@@ -14,9 +14,6 @@
     "patients": "Patients",
     "schedule": "Schedule",
     "settings": "Settings",
-    "_pending_review": {
-      "dashboard": true
-    },
     "overview": "Overview",
     "team": "Team",
     "orders": "Orders",

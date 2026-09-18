@@ -2,16 +2,20 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin"
-      }
+        "admin": "← Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "overview": {
       "tabs": {
         "dashboard": "Kontrolna tabla",
         "inbox": "Prijemno sanduče odobrenja",
         "activity": "Aktivnost",
-        "health": "Stanje sistema"
-      }
+        "health": "Stanje sistema",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "sales": {
       "tabs": {
@@ -23,16 +27,20 @@
         "orders": "Prodajni nalozi",
         "invoices": "Fakture",
         "credit-notes": "Knjižna odobrenja",
-        "deliveries": "Isporuke"
-      }
+        "deliveries": "Isporuke",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "marketing": {
       "tabs": {
         "campaigns": "Kampanje",
         "outreach": "Obraćanje",
         "attribution": "Izvori lidova i atribucija",
-        "performance": "Učinak"
-      }
+        "performance": "Učinak",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "accounting": {
       "tabs": {
@@ -42,8 +50,10 @@
         "tax": "Porez",
         "assets": "Osnovna sredstva i lizing",
         "intercompany": "Međukompanijski i konsolidacija",
-        "budgets": "Budžeti i prognoze"
-      }
+        "budgets": "Budžeti i prognoze",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "finance": {
       "tabs": {
@@ -51,8 +61,10 @@
         "bank-reconciliation": "Usaglašavanje sa bankom",
         "cash": "Stanje gotovine i prognoza",
         "subscriptions": "Ponavljajuće fakturisanje",
-        "sync": "Stripe / Shopify sinhronizacija"
-      }
+        "sync": "Stripe / Shopify sinhronizacija",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "hr": {
       "tabs": {
@@ -60,8 +72,10 @@
         "leave": "Odsustva",
         "attendance": "Prisustvo",
         "expenses": "Troškovi",
-        "payroll": "Obračun zarada"
-      }
+        "payroll": "Obračun zarada",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "operations": {
       "tabs": {
@@ -71,16 +85,20 @@
         "supplier-invoices": "Fakture dobavljača",
         "items": "Artikli",
         "warehouses": "Magacini",
-        "stock": "Zalihe i kretanja"
-      }
+        "stock": "Zalihe i kretanja",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "legal": {
       "tabs": {
         "contracts": "Ugovori",
         "obligations": "Obaveze",
         "compliance": "Usklađenost",
-        "e-signature": "E-potpis"
-      }
+        "e-signature": "E-potpis",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "reports": {
       "tabs": {
@@ -90,22 +108,28 @@
         "cash-flow": "Tok gotovine",
         "aging": "Starost potraživanja / obaveza",
         "dimensions": "Po dimenziji",
-        "board-pack": "Paket za upravu"
-      }
+        "board-pack": "Paket za upravu",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "approvals": {
       "tabs": {
         "queue": "Red",
         "my-requests": "Moji zahtevi",
-        "policies": "Pravila"
-      }
+        "policies": "Pravila",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "audit": {
       "tabs": {
         "receipts": "Potvrde komandi",
         "erp-log": "ERP revizijski dnevnik",
-        "trail": "Nezavisni revizorski trag"
-      }
+        "trail": "Nezavisni revizorski trag",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "settings": {
       "tabs": {
@@ -113,8 +137,12 @@
         "access": "Pristup",
         "numbering": "Numeracija",
         "integrations": "Integracije",
-        "modules": "Moduli"
-      }
-    }
-  }
+        "modules": "Moduli",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
