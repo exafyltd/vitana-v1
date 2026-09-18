@@ -6070,7 +6070,9 @@
         "roleDeveloper": true,
         "roleInfra": true
       },
-      "businessModesTitle": "Your business"
+      "businessModesTitle": "Your business",
+      "currentMode": "Current mode",
+      "currentModeIs": "Current mode: {role}"
     },
     "notifications": {
       "markAllAsRead": "Mark all as read",

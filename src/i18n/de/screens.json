@@ -6065,7 +6065,9 @@
       "roleInfra": "Infra",
       "switchToCommunity": "Zur Community wechseln",
       "switchRoleHint": "Du hast mehrere Rollen. Wähle, in welchem Modus die App gerade für dich arbeitet.",
-      "businessModesTitle": "Dein Unternehmen"
+      "businessModesTitle": "Dein Unternehmen",
+      "currentMode": "Aktueller Modus",
+      "currentModeIs": "Aktueller Modus: {role}"
     },
     "notifications": {
       "markAllAsRead": "Alle als gelesen markieren",

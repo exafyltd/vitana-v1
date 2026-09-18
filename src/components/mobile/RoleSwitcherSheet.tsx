@@ -85,6 +85,10 @@ export function RoleSwitcherSheet({
   // Vitana mode is still the stored preference, but it is not what the app
   // is showing right now, so it must not claim the check mark as well.
   const inBusiness = activeBusinessOrgId !== null;
+  const activeBusiness = inBusiness ? businessEntries.find((e) => e.orgId === activeBusinessOrgId) ?? null : null;
+  const currentModeLabel = activeBusiness
+    ? `${t(businessRoleLabelKey(activeBusiness.role))} · ${activeBusiness.orgName}`
+    : roleLabel(activeRole);
 
   // VTID-03999: with the business group the list is long enough that its
   // last entry sits under the ORB button, which floats above every bottom
@@ -103,6 +107,11 @@ export function RoleSwitcherSheet({
   return (
     <ResponsivePopover open={open} onOpenChange={onOpenChange}>
       <ResponsivePopoverContent title={t('screens.profile.switchRole')}>
+        {/* VTID-04041: name the active mode before the list, so the sheet
+            states what is on now and not only what can be picked. */}
+        <p className="px-1 pb-1 text-sm font-semibold text-foreground">
+          {t('screens.mobile.currentModeIs', { role: currentModeLabel })}
+        </p>
         <p className="px-1 pb-2 text-xs text-muted-foreground">{t('screens.mobile.switchRoleHint')}</p>
         <div role="radiogroup" aria-label={t('screens.profile.switchRole')} className="flex flex-col gap-1">
           {availableRoles.map((role) => (
