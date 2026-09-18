@@ -23,6 +23,8 @@
     "businessOverview": "نظرة عامة",
     "businessTeam": "الفريق",
     "businessOrders": "الطلبات",
-    "businessInbox": "البريد الوارد"
-  }
+    "businessInbox": "البريد الوارد",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

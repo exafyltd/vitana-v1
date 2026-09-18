@@ -10345,7 +10345,11 @@
         "geminiNote": "La aplicación de consumidor de Gemini actualmente no tiene una forma documentada de añadir un servidor MCP personalizado directamente — eso solo está disponible hoy a través de Gemini CLI y Gemini Enterprise.",
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
-        "tabGemini": "Gemini"
+        "tabGemini": "Gemini",
+        "_pending_review": {
+          "recommendedBadge": true
+        },
+        "recommendedBadge": "Recommended"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL de la tienda (opcional) — ej. https://your-shop.com",

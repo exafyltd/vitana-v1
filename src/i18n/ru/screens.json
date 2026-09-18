@@ -10437,11 +10437,13 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true
+          "tabGemini": true,
+          "recommendedBadge": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
-        "tabGemini": "Gemini"
+        "tabGemini": "Gemini",
+        "recommendedBadge": "Recommended"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL-адрес магазина (необязательно) — напр. https://your-shop.com",

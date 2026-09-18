@@ -23,6 +23,8 @@
     "businessOverview": "Aperçu",
     "businessTeam": "Équipe",
     "businessOrders": "Commandes",
-    "businessInbox": "Boîte de réception"
-  }
+    "businessInbox": "Boîte de réception",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

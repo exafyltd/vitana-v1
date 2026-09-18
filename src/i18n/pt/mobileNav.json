@@ -17,6 +17,8 @@
     "overview": "Visão Geral",
     "team": "Equipe",
     "orders": "Pedidos",
-    "resultsInbox": "Caixa de Entrada"
-  }
+    "resultsInbox": "Caixa de Entrada",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -10435,11 +10435,13 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true
+          "tabGemini": true,
+          "recommendedBadge": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
-        "tabGemini": "Gemini"
+        "tabGemini": "Gemini",
+        "recommendedBadge": "Recommended"
       },
       "detectPlatform": {
         "urlPlaceholder": "Adres URL sklepu (opcjonalnie) — np. https://your-shop.com",

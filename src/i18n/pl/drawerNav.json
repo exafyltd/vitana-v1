@@ -23,6 +23,8 @@
     "businessOverview": "Przegląd",
     "businessTeam": "Zespół",
     "businessOrders": "Zamówienia",
-    "businessInbox": "Skrzynka Odbiorcza"
-  }
+    "businessInbox": "Skrzynka Odbiorcza",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
