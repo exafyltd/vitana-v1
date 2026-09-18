@@ -70,6 +70,7 @@ export function RoleSwitcherSheet({
   businessEntries = [],
   activeBusinessOrgId = null,
   onSelectBusiness,
+  currentModeLabel,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -80,15 +81,19 @@ export function RoleSwitcherSheet({
   businessEntries?: BusinessSwitchEntry[];
   activeBusinessOrgId?: string | null;
   onSelectBusiness?: (orgId: string) => void;
+  /** VTID-04041: the label the opener shows for the active mode (e.g. the
+   *  drawer says "Exafy-Admin" for a platform admin in Community mode); the
+   *  sheet must name the same thing, not the raw role. */
+  currentModeLabel?: string;
 }) {
   // While in a business area the business entry is the checked one; the
   // Vitana mode is still the stored preference, but it is not what the app
   // is showing right now, so it must not claim the check mark as well.
   const inBusiness = activeBusinessOrgId !== null;
   const activeBusiness = inBusiness ? businessEntries.find((e) => e.orgId === activeBusinessOrgId) ?? null : null;
-  const currentModeLabel = activeBusiness
+  const activeModeLabel = activeBusiness
     ? `${t(businessRoleLabelKey(activeBusiness.role))} · ${activeBusiness.orgName}`
-    : roleLabel(activeRole);
+    : currentModeLabel ?? roleLabel(activeRole);
 
   // VTID-03999: with the business group the list is long enough that its
   // last entry sits under the ORB button, which floats above every bottom
@@ -110,7 +115,7 @@ export function RoleSwitcherSheet({
         {/* VTID-04041: name the active mode before the list, so the sheet
             states what is on now and not only what can be picked. */}
         <p className="px-1 pb-1 text-sm font-semibold text-foreground">
-          {t('screens.mobile.currentModeIs', { role: currentModeLabel })}
+          {t('screens.mobile.currentModeIs', { role: activeModeLabel })}
         </p>
         <p className="px-1 pb-2 text-xs text-muted-foreground">{t('screens.mobile.switchRoleHint')}</p>
         <div role="radiogroup" aria-label={t('screens.profile.switchRole')} className="flex flex-col gap-1">

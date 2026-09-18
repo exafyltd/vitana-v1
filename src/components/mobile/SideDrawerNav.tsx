@@ -407,7 +407,10 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   "Staff ⌄" pill read as a status badge. */}
               {(roleSwitch.canSwitch || primaryOrg) && (
                 <div className="ms-12 mt-1.5 flex min-w-0 flex-col items-start gap-1">
-                  <div className="flex max-w-full flex-wrap items-center gap-1.5">
+                  {/* Stacked on purpose: the drawer is w-72, so this column is
+                      ~200px — chip + CTA (~260px) never fit one line, and a
+                      locale-dependent wrap would look accidental. */}
+                  <div className="flex max-w-full flex-col items-start gap-1.5">
                     <span
                       className={`inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
                         isMaxina ? 'bg-white/20' : 'bg-muted'
@@ -682,6 +685,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
       }}
       businessEntries={roleSwitch.businessEntries}
       activeBusinessOrgId={roleSwitch.activeBusinessOrgId}
+      currentModeLabel={roleLabel}
       onSelectBusiness={(orgId) => {
         roleSwitch.switchToBusiness(orgId);
         setRoleSheetOpen(false);

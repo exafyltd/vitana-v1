@@ -56,16 +56,19 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(ctaText).toBeGreaterThan(cta);
     expect(nav).toContain('ArrowLeftRight');
     expect(nav).not.toContain('ChevronDown');
-    // Chip + CTA share one wrapping row so long locales fall to a second line
-    // instead of overflowing the 390px column.
-    expect(nav).toContain('<div className="flex max-w-full flex-wrap items-center gap-1.5">');
+    // Chip above CTA, always: the drawer is w-72 (column ~200px), the pair is
+    // ~260px, so a wrapping row would only ever look like an accidental wrap.
+    expect(nav).toContain('<div className="flex max-w-full flex-col items-start gap-1.5">');
+    // The sheet names the same mode label the header chip shows.
+    expect(nav).toContain('currentModeLabel={roleLabel}');
     // The chip's dot borrows the mode's row tone; Community falls back.
     expect(nav).toContain("const modeTone = roleTone ?? drawerNavIconTones['switch-community'];");
   });
 
   it('the switcher sheet names the active mode above the list (VTID-04041)', () => {
     const sheet = read('src/components/mobile/RoleSwitcherSheet.tsx');
-    expect(sheet).toContain("t('screens.mobile.currentModeIs', { role: currentModeLabel })");
+    expect(sheet).toContain("t('screens.mobile.currentModeIs', { role: activeModeLabel })");
+    expect(sheet).toContain('currentModeLabel ?? roleLabel(activeRole)');
     expect(sheet).toContain('`${t(businessRoleLabelKey(activeBusiness.role))} · ${activeBusiness.orgName}`');
   });
 
