@@ -17,7 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Trash2, Loader2, ArrowLeftRight } from "lucide-react";
+import { User, LogOut, Shield, Trash2, Loader2, ArrowLeftRight, ChevronDown } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { UserRole } from "@/hooks/useRole";
@@ -143,21 +143,30 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 <p className="text-xs text-muted-foreground">{user.email}</p>
               )}
               {isMobile && canSwitch ? (
-                // VTID-04041: mode chip (information) + labelled switch CTA,
-                // the same pair the side drawer header shows.
+                // VTID-04081: owner feedback — it must be unmistakable an
+                // ordinary user can switch the role here. The mode "badge"
+                // is now itself a button (with a chevron) AND there's a
+                // dedicated circular switch button next to it — both open
+                // the same sheet, same redundant-cue pattern as the side
+                // drawer header (SideDrawerNav.tsx).
                 <div className="flex flex-wrap items-center justify-center gap-1.5">
-                  <Badge variant="secondary" className="text-xs">
-                    <span className="sr-only">{t('screens.mobile.currentMode')}: </span>
-                    {roleLabel(activeRole)}
-                  </Badge>
+                  <button
+                    type="button"
+                    onClick={openRoleSheet}
+                    aria-label={`${roleLabel(activeRole)} — ${t('screens.profile.switchRole')}`}
+                    className="inline-flex items-center gap-1 rounded-full border border-transparent bg-secondary px-2.5 py-1 text-xs font-semibold text-secondary-foreground transition-colors hover:bg-secondary/80"
+                  >
+                    <span>{roleLabel(activeRole)}</span>
+                    <ChevronDown className="h-3 w-3 shrink-0 opacity-70" aria-hidden="true" />
+                  </button>
                   <button
                     type="button"
                     onClick={openRoleSheet}
                     aria-label={t('screens.profile.switchRole')}
-                    className="inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                    title={t('screens.profile.switchRole')}
+                    className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
                   >
-                    <ArrowLeftRight className="h-3.5 w-3.5 shrink-0" />
-                    <span>{t('screens.profile.switchRole')}</span>
+                    <ArrowLeftRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
               ) : (
