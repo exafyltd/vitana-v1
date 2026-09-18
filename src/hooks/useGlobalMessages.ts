@@ -5,6 +5,7 @@ import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { isDevServiceAccount } from '@/lib/devServiceAccounts';
 import { notifyNewMessage } from '@/lib/pushNotifications';
 import {
   persistThreads,
@@ -60,10 +61,11 @@ const PROFILE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 type ProfileEntry = { display_name: string; avatar_url: string | null; _missing?: boolean };
 
 /**
- * Strip phantom "Unknown User" entries that slipped into a thread list — for
- * example because they were persisted to localStorage before the
- * source-level filter was in place. Only filters direct threads; group
- * threads are kept regardless of label.
+ * Strip phantom "Unknown User" entries, and internal dev/service-account
+ * threads (VTID-03982), that slipped into a thread list — for example
+ * because they were persisted to localStorage before the source-level
+ * filter was in place. Only filters direct threads; group threads are kept
+ * regardless of label.
  */
 function stripUnknownUserThreads<T extends { type?: string; participants?: { user_id: string; display_name?: string }[] }>(
   threads: T[],
@@ -73,6 +75,7 @@ function stripUnknownUserThreads<T extends { type?: string; participants?: { use
     if (t.type !== "direct") return true;
     const peer = t.participants?.find((p) => p.user_id !== currentUserId);
     if (!peer) return true;
+    if (isDevServiceAccount(peer.user_id)) return false;
     return peer.display_name !== "Unknown User";
   });
 }
@@ -312,12 +315,16 @@ function getCachedProfiles(
  * inbox. Peers with no row in either profile table create phantom
  * "Unknown User" entries that confuse users — drop them. The Vitana bot is
  * always considered real because its identity is synthetic by design.
+ * Internal dev/automation service accounts (VTID-03982) are never real
+ * peers — they exist for engineering purposes only, never for community
+ * visibility, regardless of whether they have a profile row.
  */
 function isRealPeer(
   peerId: string | undefined | null,
   profileMap: Record<string, ProfileEntry>
 ): boolean {
   if (!peerId) return false;
+  if (isDevServiceAccount(peerId)) return false;
   if (isVitanaBot(peerId)) return true;
   const profile = profileMap[peerId];
   if (!profile) return false;
