@@ -15,6 +15,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
@@ -127,6 +128,7 @@ export default withScreenId(function Health() {
   const [showPreview, setShowPreview] = useState(false);
   const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
+  const queryClient = useQueryClient();
   const { index: liveVitanaIndex } = useVitanaIndexCache();
   const vitanaScore = liveVitanaIndex?.total ?? 0;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -399,6 +401,7 @@ export default withScreenId(function Health() {
         <HealthReportUploadSheet
           open={uploadSheetOpen}
           onOpenChange={setUploadSheetOpen}
+          onUploadComplete={() => queryClient.invalidateQueries({ queryKey: ['lab-reports'] })}
         />
         
         <QuickLabOrderSheet
@@ -601,6 +604,7 @@ export default withScreenId(function Health() {
       <HealthReportUploadSheet
         open={uploadSheetOpen}
         onOpenChange={setUploadSheetOpen}
+        onUploadComplete={() => queryClient.invalidateQueries({ queryKey: ['lab-reports'] })}
       />
       
       <QuickLabOrderSheet
