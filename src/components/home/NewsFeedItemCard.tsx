@@ -89,29 +89,39 @@ export function NewsFeedItemCard({
         onOpen={() => openProfile(item.user_id)}
         onDismiss={() => setDismissed(true)}
         dismissLabel={t('screens.vitanaIdentity.dismissCard')}
-        widget={
-          <div
-            className="flex h-[4.25rem] w-[4.25rem] shrink-0 flex-col items-center justify-center rounded-full shadow-[0_2px_6px_rgba(10,95,115,0.35),inset_0_1px_2px_rgba(255,255,255,0.4)]"
-            style={{
-              background:
-                "radial-gradient(circle at 32% 26%, #8FF3E6 0%, #3FC0C2 38%, #17909F 68%, #0A5F73 100%)",
-            }}
+        cornerBadge={
+          <svg
+            viewBox="0 0 80 88"
+            className="pointer-events-none absolute right-2.5 top-[44px] h-[88px] w-[80px]"
+            aria-hidden="true"
           >
-            <svg
-              viewBox="0 0 64 36"
-              className="h-[38%] w-[38%] fill-white"
-              aria-hidden="true"
+            <defs>
+              <radialGradient id="matchQualityBadgeGradient" cx="32%" cy="24%" r="80%">
+                <stop offset="0%" stopColor="#FFD9E8" />
+                <stop offset="38%" stopColor="#FF9EC4" />
+                <stop offset="68%" stopColor="#F0629A" />
+                <stop offset="100%" stopColor="#C23E76" />
+              </radialGradient>
+            </defs>
+            <path
+              fill="url(#matchQualityBadgeGradient)"
+              d="M18,14 H29 A11,11 0 0 1 51,14 H62 A8,8 0 0 1 70,22 V66 A8,8 0 0 1 62,74 H51 A11,11 0 0 0 29,74 H18 A8,8 0 0 1 10,66 V22 A8,8 0 0 1 18,14 Z"
+            />
+            <text
+              x="40"
+              y="38.5"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontWeight="800"
+              fontSize="15"
+              fill="#ffffff"
             >
-              <path d="M8 4 H28 V13 A6 6 0 0 1 28 25 V32 H8 A6 6 0 0 1 2 26 V10 A6 6 0 0 1 8 4 Z" />
-              <path d="M36 4 H56 A6 6 0 0 1 62 10 V26 A6 6 0 0 1 56 32 H36 V25 A6 6 0 0 0 36 13 V4 Z" />
-            </svg>
-            <span className="mt-0.5 text-[15px] font-extrabold leading-none tracking-tight text-white">
               {t("screens.home.matchPercent", { score: item.compatibility_score })}
-            </span>
-          </div>
+            </text>
+          </svg>
         }
       >
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 pr-24">
           <Avatar className="h-7 w-7 shrink-0">
             {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
             <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
@@ -123,8 +133,8 @@ export function NewsFeedItemCard({
             </p>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
-        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1 pr-24">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors pr-24">
           <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
           <ArrowRight className="w-3 h-3 shrink-0" />
         </span>
