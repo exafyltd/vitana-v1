@@ -10,7 +10,7 @@
  */
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowRight, Heart, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -89,22 +89,39 @@ export function NewsFeedItemCard({
         onOpen={() => openProfile(item.user_id)}
         onDismiss={() => setDismissed(true)}
         dismissLabel={t('screens.vitanaIdentity.dismissCard')}
-        widget={
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
-            <Heart className="absolute inset-0 h-10 w-10 text-pink-400 fill-pink-400" aria-hidden="true" />
-            <Sparkles className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 text-pink-200" aria-hidden="true" />
-            <div className="relative flex flex-col items-center">
-              <span className="text-[10px] font-bold leading-none text-white">
-                {t("screens.home.matchPercent", { score: item.compatibility_score })}
-              </span>
-              <span className="mt-0.5 text-[6px] font-semibold leading-none text-white/90">
-                {t("screens.home.matchLabel")}
-              </span>
-            </div>
-          </div>
+        cornerBadge={
+          <svg
+            viewBox="0 0 80 88"
+            className="pointer-events-none absolute right-2.5 top-[44px] h-[88px] w-[80px]"
+            aria-hidden="true"
+          >
+            <defs>
+              <radialGradient id="matchQualityBadgeGradient" cx="32%" cy="24%" r="80%">
+                <stop offset="0%" stopColor="#FFD9E8" />
+                <stop offset="38%" stopColor="#FF9EC4" />
+                <stop offset="68%" stopColor="#F0629A" />
+                <stop offset="100%" stopColor="#C23E76" />
+              </radialGradient>
+            </defs>
+            <path
+              fill="url(#matchQualityBadgeGradient)"
+              d="M18,14 H29 A11,11 0 0 1 51,14 H62 A8,8 0 0 1 70,22 V66 A8,8 0 0 1 62,74 H51 A11,11 0 0 0 29,74 H18 A8,8 0 0 1 10,66 V22 A8,8 0 0 1 18,14 Z"
+            />
+            <text
+              x="40"
+              y="38.5"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontWeight="800"
+              fontSize="15"
+              fill="#ffffff"
+            >
+              {t("screens.home.matchPercent", { score: item.compatibility_score })}
+            </text>
+          </svg>
         }
       >
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 pr-24">
           <Avatar className="h-7 w-7 shrink-0">
             {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
             <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
@@ -116,8 +133,8 @@ export function NewsFeedItemCard({
             </p>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
-        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1 pr-24">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors pr-24">
           <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
           <ArrowRight className="w-3 h-3 shrink-0" />
         </span>

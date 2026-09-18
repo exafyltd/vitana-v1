@@ -29,7 +29,15 @@ export interface VitanaRecommendationCardProps {
   /** Uppercase eyebrow label (slot 5). */
   eyebrow: string;
   /** Right-column destination-preview visual (slot 9). Purely decorative. */
-  widget: ReactNode;
+  widget?: ReactNode;
+  /**
+   * Free-floating visual pinned to the card's bottom-right corner, absolutely
+   * positioned over the card rather than laid out in the content row (e.g. the
+   * match-quality badge). Purely decorative. Callers using this should reserve
+   * room for it in their own `children` (e.g. padding-right) since it overlaps
+   * normal flow.
+   */
+  cornerBadge?: ReactNode;
   /** Card tap/Enter/Space — navigates to the destination. */
   onOpen: () => void;
   /** X button handler — dismisses the card locally. */
@@ -43,6 +51,7 @@ export function VitanaRecommendationCard({
   feature,
   eyebrow,
   widget,
+  cornerBadge,
   onOpen,
   onDismiss,
   dismissLabel,
@@ -85,10 +94,14 @@ export function VitanaRecommendationCard({
 
       <div className="mt-0.5 flex flex-1 min-h-0 items-center gap-2.5">
         <div className="min-w-0 flex-1">{children}</div>
-        <div className="shrink-0 flex items-center justify-center" aria-hidden="true">
-          {widget}
-        </div>
+        {widget && (
+          <div className="shrink-0 flex items-center justify-center" aria-hidden="true">
+            {widget}
+          </div>
+        )}
       </div>
+
+      {cornerBadge}
     </div>
   );
 }
