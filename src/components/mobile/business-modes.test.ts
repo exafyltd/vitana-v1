@@ -2,7 +2,7 @@
  * VTID-03999 — source-check for the business modes on mobile: the switcher
  * sheet offers business memberships as a second group, the drawer and the
  * bottom bar follow the active business on business routes, the commerce
- * shell is the app's own chrome on a phone (dark portal elsewhere), and the
+ * shell is the app's own chrome on a phone (a separate portal shell elsewhere), and the
  * two writes that create a membership land the user in business mode. Same
  * pattern as the sibling drawer suites; the pure helpers have real unit
  * tests in src/lib/business-mode.test.ts.
@@ -62,11 +62,12 @@ describe('business modes on mobile (VTID-03999)', () => {
     expect(bottom).toContain('end={exact}');
   });
 
-  it('the commerce shell is the app chrome on a phone and the dark portal elsewhere', () => {
+  it('the commerce shell is the app chrome on a phone and a self-contained portal shell elsewhere (VTID-04055: light, not dark)', () => {
     expect(shell).toContain('const inApp = isMobile && !isCommerceHost();');
     expect(shell).toContain("import AppLayout from '@/components/AppLayout';");
-    expect(shell).toContain("portalClass: inApp ? '' : 'dark'");
-    expect(shell).toContain('<div className="dark min-h-screen bg-slate-950 text-slate-100">');
+    expect(shell).toContain("return { inApp, portalClass: '' };");
+    expect(shell).toContain('<div className="min-h-screen bg-background text-foreground">');
+    expect(shell).not.toContain('bg-slate-950');
   });
 
   it('joining or registering a business lands in its business mode, on the role home', () => {

@@ -8,6 +8,11 @@
  * today, so "create a business via your agent" is a promise with a date on it,
  * not a thing the merchant can do this minute. The manual path below the hero
  * is the one that works, which is why it was demoted rather than removed.
+ *
+ * VTID-04055: restyled light/premium (owner decision — AI-agent connect stays
+ * the PRIMARY, most-highlighted way to onboard). The copy-URL action is the
+ * one loud element on the card — its own row, a solid button — the per-host
+ * step lists are visually secondary reference material underneath.
  */
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -67,23 +72,23 @@ export function AgentConnectCard() {
       {!reduce && (
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-amber-500/10 blur-2xl"
+          className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-amber-300/25 blur-2xl"
           animate={{ opacity: [0.35, 0.6, 0.35] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         />
       )}
 
-      <div className="relative rounded-3xl border border-amber-500/25 bg-slate-900/70 p-5 shadow-2xl backdrop-blur md:p-7">
+      <div className="relative rounded-3xl border border-amber-200 bg-card p-5 shadow-xl shadow-amber-900/5 md:p-7">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
             <Sparkles className="h-3.5 w-3.5" />
-            {t('screens.commerceportal.agentConnect.title')}
+            {t('screens.commerceportal.agentConnect.recommendedBadge')}
           </span>
           <button
             type="button"
             onClick={() => setDetailOpen((v) => !v)}
             aria-expanded={detailOpen}
-            className="inline-flex items-center gap-1 rounded-full border border-slate-600/60 px-3 py-1 text-xs text-slate-300 transition-colors hover:border-slate-500 hover:text-slate-100"
+            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-slate-300 hover:text-foreground"
           >
             {t('screens.commerceportal.agentStatusPill')}
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${detailOpen ? 'rotate-180' : ''}`} />
@@ -91,26 +96,29 @@ export function AgentConnectCard() {
         </div>
 
         {detailOpen && (
-          <p className="mt-3 rounded-xl border border-slate-700/70 bg-slate-950/60 p-3 text-xs leading-relaxed text-slate-400">
+          <p className="mt-3 rounded-xl border border-border bg-muted/50 p-3 text-xs leading-relaxed text-muted-foreground">
             {t('screens.commerceportal.agentStatusDetail')}
           </p>
         )}
 
-        <p className="mt-4 text-base leading-relaxed text-slate-200 md:text-lg">
+        <h3 className="mt-4 text-lg font-semibold text-foreground md:text-xl">
+          {t('screens.commerceportal.agentConnect.title')}
+        </h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground md:text-base">
           {t('screens.commerceportal.agentPromise')}
         </p>
 
         <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <code
             dir="ltr"
-            className="min-w-0 flex-1 truncate rounded-xl border border-amber-500/25 bg-slate-950/80 px-4 py-3 text-start font-mono text-sm text-amber-200 md:text-base"
+            className="min-w-0 flex-1 truncate rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-start font-mono text-sm text-amber-900 md:text-base"
           >
             {MCP_SERVER_URL}
           </code>
           <Button
             type="button"
             onClick={copyUrl}
-            className="h-12 shrink-0 rounded-xl bg-amber-500 px-5 font-semibold text-slate-950 hover:bg-amber-400"
+            className="h-12 shrink-0 rounded-xl bg-amber-700 px-5 font-semibold text-white shadow-sm hover:bg-amber-800"
           >
             {copied ? <Check className="me-2 h-4 w-4" /> : <Copy className="me-2 h-4 w-4" />}
             {copied
@@ -118,15 +126,15 @@ export function AgentConnectCard() {
               : t('screens.commerceportal.agentConnect.copyUrl')}
           </Button>
         </div>
-        <p className="mt-2 text-xs text-slate-500">{t('screens.commerceportal.agentUrlHint')}</p>
+        <p className="mt-2 text-xs text-muted-foreground">{t('screens.commerceportal.agentUrlHint')}</p>
 
         <Tabs defaultValue="claude" className="mt-6">
-          <TabsList className="w-full justify-start gap-1 bg-slate-950/70 p-1">
+          <TabsList className="w-full justify-start gap-1 bg-muted p-1">
             {HOSTS.map((h) => (
               <TabsTrigger
                 key={h.id}
                 value={h.id}
-                className="rounded-lg px-4 text-slate-400 data-[state=active]:bg-amber-500/15 data-[state=active]:text-amber-200"
+                className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900"
               >
                 {t(h.tab)}
               </TabsTrigger>
@@ -134,12 +142,12 @@ export function AgentConnectCard() {
           </TabsList>
           {HOSTS.map((h) => (
             <TabsContent key={h.id} value={h.id} className="mt-4">
-              <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-slate-300 marker:text-amber-500/70">
+              <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-amber-700/70">
                 {h.steps.map((key) => (
                   <li key={key}>{t(key)}</li>
                 ))}
               </ol>
-              {'note' in h && h.note && <p className="mt-3 text-xs text-slate-500">{t(h.note)}</p>}
+              {'note' in h && h.note && <p className="mt-3 text-xs text-muted-foreground">{t(h.note)}</p>}
             </TabsContent>
           ))}
         </Tabs>

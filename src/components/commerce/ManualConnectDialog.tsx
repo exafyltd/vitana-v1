@@ -23,8 +23,7 @@ import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 const EMPTY_FORM = { name: '', connector_id: '', provider_id: '', jurisdiction: '', openapi: '' };
 
-const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
+const fieldClass = 'focus-visible:ring-amber-700';
 
 export function ManualConnectDialog({
   open,
@@ -105,7 +104,7 @@ export function ManualConnectDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg border-slate-800 bg-slate-900 text-slate-100">
+      <DialogContent className="max-w-lg border-border bg-card text-foreground">
         <DialogHeader>
           <DialogTitle>{t('screens.partnerportal.newConnection')}</DialogTitle>
         </DialogHeader>
@@ -123,7 +122,7 @@ export function ManualConnectDialog({
               <Button
                 type="button"
                 variant="outline"
-                className="border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                className="border-border bg-transparent text-foreground hover:bg-muted"
                 onClick={() => void detect()}
                 disabled={detecting || !storeUrl.trim()}
                 aria-label={t('screens.commerceportal.detectPlatform.urlPlaceholder')}
@@ -131,7 +130,7 @@ export function ManualConnectDialog({
                 {detecting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
               </Button>
             </div>
-            <p className="text-xs text-slate-500">{t('screens.commerceportal.detectPlatform.hint')}</p>
+            <p className="text-xs text-muted-foreground">{t('screens.commerceportal.detectPlatform.hint')}</p>
           </div>
 
           <Input
@@ -170,10 +169,10 @@ export function ManualConnectDialog({
             rows={5}
             className={fieldClass}
           />
-          <p className="text-xs text-slate-500">{t('screens.partnerportal.openapiHint')}</p>
+          <p className="text-xs text-muted-foreground">{t('screens.partnerportal.openapiHint')}</p>
 
           <Button
-            className="w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+            className="w-full bg-amber-700 font-semibold text-white hover:bg-amber-800"
             onClick={() => void create()}
             disabled={creating || !form.name.trim() || !form.connector_id.trim() || !form.provider_id.trim()}
           >
