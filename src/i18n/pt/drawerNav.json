@@ -23,6 +23,8 @@
     "businessOverview": "Visão Geral",
     "businessTeam": "Equipe",
     "businessOrders": "Pedidos",
-    "businessInbox": "Caixa de Entrada"
-  }
+    "businessInbox": "Caixa de Entrada",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

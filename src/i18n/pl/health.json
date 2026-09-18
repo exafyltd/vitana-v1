@@ -63,13 +63,8 @@
     "unknownProvider": "Nieznany dostawca",
     "addSupplement": "Dodaj Suplement",
     "uploadFirstReport": "Prześlij Pierwszy Raport",
-    "_pending_review": {
-      "reportsLoadFailed": true,
-      "reportsLoadFailedDesc": true,
-      "reportsLoadFailedRetry": true
-    },
-    "reportsLoadFailed": "Couldn't load your reports",
-    "reportsLoadFailedDesc": "There was a problem loading your health reports. Please try again.",
-    "reportsLoadFailedRetry": "Try again"
+    "reportsLoadFailed": "Nie udało się załadować twoich raportów",
+    "reportsLoadFailedDesc": "Wystąpił problem z załadowaniem twoich raportów zdrowotnych. Spróbuj ponownie.",
+    "reportsLoadFailedRetry": "Spróbuj ponownie"
   }
 }

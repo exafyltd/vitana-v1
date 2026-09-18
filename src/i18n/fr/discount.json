@@ -27,6 +27,8 @@
     "ticketEmailNote": "Ton billet et ta confirmation seront envoyés à cet e-mail.",
     "left": "{count} restant(s)",
     "loadFailed": "Échec du chargement des billets",
-    "checkFailed": "Impossible de vérifier le code — réessaie"
-  }
+    "checkFailed": "Impossible de vérifier le code — réessaie",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -117,33 +117,20 @@
     },
     "reports": {
       "tabs": {
-        "pnl": "P&L",
-        "balance-sheet": "Balance Sheet",
-        "trial-balance": "Trial Balance",
-        "cash-flow": "Cash Flow",
-        "aging": "AR / AP Aging",
-        "dimensions": "By Dimension",
-        "board-pack": "Board Pack",
-        "_pending_review": {
-          "pnl": true,
-          "balance-sheet": true,
-          "trial-balance": true,
-          "cash-flow": true,
-          "aging": true,
-          "dimensions": true,
-          "board-pack": true
-        }
+        "pnl": "Прибыли и убытки",
+        "balance-sheet": "Бухгалтерский баланс",
+        "trial-balance": "Оборотно-сальдовая ведомость",
+        "cash-flow": "Движение денежных средств",
+        "aging": "Дебиторская / Кредиторская по срокам",
+        "dimensions": "По измерениям",
+        "board-pack": "Материалы для совета"
       }
     },
     "approvals": {
       "tabs": {
-        "queue": "Queue",
-        "my-requests": "My Requests",
-        "policies": "Политики",
-        "_pending_review": {
-          "queue": true,
-          "my-requests": true
-        }
+        "queue": "Очередь",
+        "my-requests": "Мои запросы",
+        "policies": "Политики"
       }
     },
     "audit": {
@@ -156,16 +143,10 @@
     "settings": {
       "tabs": {
         "company": "Компания и юридические лица",
-        "access": "Access",
-        "numbering": "Numbering",
-        "integrations": "Integrations",
-        "modules": "Modules",
-        "_pending_review": {
-          "access": true,
-          "numbering": true,
-          "integrations": true,
-          "modules": true
-        }
+        "access": "Доступ",
+        "numbering": "Нумерация",
+        "integrations": "Интеграции",
+        "modules": "Модули"
       }
     }
   }

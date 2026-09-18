@@ -23,6 +23,8 @@
     "businessOverview": "Resumen",
     "businessTeam": "Equipo",
     "businessOrders": "Pedidos",
-    "businessInbox": "Bandeja de entrada"
-  }
+    "businessInbox": "Bandeja de entrada",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

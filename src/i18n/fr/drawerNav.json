@@ -17,17 +17,12 @@
     "support": "Aide",
     "settings": "Paramètres",
     "logout": "Se déconnecter",
-    "_pending_review": {
-      "businessTeam": true,
-      "businessOrders": true,
-      "businessInbox": true
-    },
     "patientResults": "Mes Résultats",
     "healthOrders": "Commandes de Tests de Santé",
     "commerce": "Mon entreprise",
     "businessOverview": "Aperçu",
-    "businessTeam": "Team",
-    "businessOrders": "Orders",
-    "businessInbox": "Inbox"
+    "businessTeam": "Équipe",
+    "businessOrders": "Commandes",
+    "businessInbox": "Boîte de réception"
   }
 }

@@ -2,16 +2,20 @@
   "backoffice": {
     "back": {
       "tabs": {
-        "admin": "← Admin"
-      }
+        "admin": "← Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "overview": {
       "tabs": {
         "dashboard": "Tableau de bord",
         "inbox": "Boîte d'approbations",
         "activity": "Activité",
-        "health": "Santé"
-      }
+        "health": "Santé",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "sales": {
       "tabs": {
@@ -23,16 +27,20 @@
         "orders": "Commandes de vente",
         "invoices": "Factures",
         "credit-notes": "Notes de crédit",
-        "deliveries": "Livraisons"
-      }
+        "deliveries": "Livraisons",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "marketing": {
       "tabs": {
         "campaigns": "Campagnes",
         "outreach": "Prospection",
         "attribution": "Sources de prospects & Attribution",
-        "performance": "Performance"
-      }
+        "performance": "Performance",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "accounting": {
       "tabs": {
@@ -42,8 +50,10 @@
         "tax": "Taxes",
         "assets": "Immobilisations & Locations",
         "intercompany": "Inter-sociétés & Consolidation",
-        "budgets": "Budgets & Prévisions"
-      }
+        "budgets": "Budgets & Prévisions",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "finance": {
       "tabs": {
@@ -51,8 +61,10 @@
         "bank-reconciliation": "Rapprochement bancaire",
         "cash": "Position de trésorerie & Prévisions",
         "subscriptions": "Facturation récurrente",
-        "sync": "Stripe / Shopify Synchronisation"
-      }
+        "sync": "Stripe / Shopify Synchronisation",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "hr": {
       "tabs": {
@@ -60,8 +72,10 @@
         "leave": "Congés",
         "attendance": "Présences",
         "expenses": "Notes de frais",
-        "payroll": "Paie"
-      }
+        "payroll": "Paie",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "operations": {
       "tabs": {
@@ -71,16 +85,20 @@
         "supplier-invoices": "Factures fournisseurs",
         "items": "Articles",
         "warehouses": "Entrepôts",
-        "stock": "Stocks & Mouvements"
-      }
+        "stock": "Stocks & Mouvements",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "legal": {
       "tabs": {
         "contracts": "Contrats",
         "obligations": "Obligations",
         "compliance": "Conformité",
-        "e-signature": "Signature électronique"
-      }
+        "e-signature": "Signature électronique",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "reports": {
       "tabs": {
@@ -90,22 +108,28 @@
         "cash-flow": "Flux de trésorerie",
         "aging": "Ancienneté des créances / dettes",
         "dimensions": "Par dimension",
-        "board-pack": "Dossier du conseil"
-      }
+        "board-pack": "Dossier du conseil",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "approvals": {
       "tabs": {
         "queue": "File d'attente",
         "my-requests": "Mes demandes",
-        "policies": "Politiques"
-      }
+        "policies": "Politiques",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "audit": {
       "tabs": {
         "receipts": "Réceptions de commandes",
         "erp-log": "Journal d'audit ERP",
-        "trail": "Piste d'audit indépendante"
-      }
+        "trail": "Piste d'audit indépendante",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "settings": {
       "tabs": {
@@ -113,8 +137,12 @@
         "access": "Accès",
         "numbering": "Numérotation",
         "integrations": "Intégrations",
-        "modules": "Modules"
-      }
-    }
-  }
+        "modules": "Modules",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -17,20 +17,12 @@
     "support": "Wsparcie",
     "settings": "Ustawienia",
     "logout": "Wyloguj się",
-    "_pending_review": {
-      "patientResults": true,
-      "commerce": true,
-      "businessOverview": true,
-      "businessTeam": true,
-      "businessOrders": true,
-      "businessInbox": true
-    },
-    "patientResults": "My Results",
+    "patientResults": "Moje Wyniki",
     "healthOrders": "Zlecenia badań zdrowotnych",
-    "commerce": "My business",
-    "businessOverview": "Overview",
-    "businessTeam": "Team",
-    "businessOrders": "Orders",
-    "businessInbox": "Inbox"
+    "commerce": "Mój Biznes",
+    "businessOverview": "Przegląd",
+    "businessTeam": "Zespół",
+    "businessOrders": "Zamówienia",
+    "businessInbox": "Skrzynka Odbiorcza"
   }
 }
