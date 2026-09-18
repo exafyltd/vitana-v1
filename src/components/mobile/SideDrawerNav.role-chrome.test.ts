@@ -45,20 +45,28 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).not.toContain('mt-2 inline-flex max-w-full items-center gap-1 rounded-full');
   });
 
-  it('shows the mode as a chip and the switch as a labelled CTA next to it (VTID-04041)', () => {
-    // The chip is information (a <span>, not a button); the CTA is the one
-    // interactive element and carries the visible "Rolle wechseln" label.
-    const chipLabel = nav.indexOf("<span className=\"sr-only\">{t('screens.mobile.currentMode')}: </span>");
-    const cta = nav.indexOf("aria-label={t('screens.profile.switchRole')}");
-    const ctaText = nav.indexOf("<span>{t('screens.profile.switchRole')}</span>");
-    expect(chipLabel).toBeGreaterThan(-1);
-    expect(cta).toBeGreaterThan(chipLabel);
-    expect(ctaText).toBeGreaterThan(cta);
+  it('the chip and the switch button are both interactive, on one line, unmistakably about switching (VTID-04081)', () => {
+    // Owner feedback on VTID-04041: it must be unmistakable an ordinary user
+    // can switch the role here. Both the chip AND the dedicated circular
+    // button now open the sheet — two redundant cues instead of one.
+    const rowStart = nav.indexOf('<div className="flex max-w-full items-center gap-1.5">');
+    expect(rowStart).toBeGreaterThan(-1);
+    // Old flex-col (chip stacked above CTA) is gone — single row now.
+    expect(nav).not.toContain('<div className="flex max-w-full flex-col items-start gap-1.5">');
+
+    const chipButtonAria = nav.indexOf('aria-label={`${roleLabel} — ${t(\'screens.profile.switchRole\')}`}');
+    const chevron = nav.indexOf('<ChevronDown className="h-3 w-3 shrink-0 opacity-70" aria-hidden="true" />');
+    const iconButtonAria = nav.indexOf("aria-label={t('screens.profile.switchRole')}");
+    expect(chipButtonAria).toBeGreaterThan(rowStart);
+    expect(chevron).toBeGreaterThan(chipButtonAria);
+    expect(iconButtonAria).toBeGreaterThan(chevron);
     expect(nav).toContain('ArrowLeftRight');
-    expect(nav).not.toContain('ChevronDown');
-    // Chip above CTA, always: the drawer is w-72 (column ~200px), the pair is
-    // ~260px, so a wrapping row would only ever look like an accidental wrap.
-    expect(nav).toContain('<div className="flex max-w-full flex-col items-start gap-1.5">');
+
+    // Non-interactive fallback (nothing to switch to) keeps the plain span,
+    // with its sr-only "current mode" context restored since it has no
+    // aria-label of its own.
+    expect(nav).toContain("<span className=\"sr-only\">{t('screens.mobile.currentMode')}: </span>");
+
     // The sheet names the same mode label the header chip shows.
     expect(nav).toContain('currentModeLabel={roleLabel}');
     // The chip's dot borrows the mode's row tone; Community falls back.
@@ -77,9 +85,12 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(profile).toContain("import { useRoleSwitch } from '@/hooks/useRoleSwitch';".replace(/'/g, '"'));
     expect(profile).not.toContain('const ROLE_LABELS');
     expect(profile).toContain('<RoleSwitcherSheet');
-    // VTID-04041: same chip + CTA pair as the drawer header on mobile.
-    expect(profile).toContain("<span>{t('screens.profile.switchRole')}</span>");
+    // VTID-04081: same chip-as-button + circular icon-only switch button
+    // pair as the drawer header — both call openRoleSheet.
+    expect(profile).toContain('aria-label={`${roleLabel(activeRole)} — ${t(\'screens.profile.switchRole\')}`}');
+    expect(profile).toContain('<ChevronDown className="h-3 w-3 shrink-0 opacity-70" aria-hidden="true" />');
+    expect(profile).not.toContain("<span>{t('screens.profile.switchRole')}</span>");
     expect(profile).toContain('ArrowLeftRight');
-    expect(profile).not.toContain('ChevronDown');
+    expect(profile).toContain('ChevronDown');
   });
 });

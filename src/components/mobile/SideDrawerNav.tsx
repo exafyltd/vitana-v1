@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight, ArrowLeftRight, Users, type LucideIcon } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight, ChevronDown, ArrowLeftRight, Users, type LucideIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
@@ -395,35 +395,63 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 <X className="h-[18px] w-[18px]" />
               </button>
               </div>
-              {/* Mode chip + switch CTA + org chip sit in the TEXT column,
+              {/* Mode chip + switch button + org chip sit in the TEXT column,
                   directly under the name/handle (VTID-03997). They cannot
                   live inside the profile <button> above (a button in a
                   button is invalid HTML), so this block is indented to the
                   column start: ms-12 = 48px = avatar w-9 (36px) + the row's
                   gap-3 (12px). Keep in sync if the avatar size changes.
-                  VTID-04041: the mode is a plain chip (information) and the
-                  switch is a labelled button next to it — one interactive
-                  element, unmistakably about changing the mode. The old
-                  "Staff ⌄" pill read as a status badge. */}
+                  VTID-04081: owner feedback on VTID-04041 — it must be
+                  unmistakable an ordinary user CAN switch the role here, not
+                  just that a role is shown. Both the chip (now a button, with
+                  a chevron hinting "this opens something") AND the dedicated
+                  circular switch button call openRoleSheet(), so there are
+                  two redundant, adjacent cues rather than one ambiguous one
+                  — closer to a familiar "account switcher" pattern. The
+                  switch button is icon-only (a text label + the chip no
+                  longer fit one line in this w-72 drawer — measured
+                  previously) but keeps its accessible name via aria-label.
+                  When the user can't switch (no other role, no org), the
+                  chip stays a plain, non-interactive <span> — nothing to
+                  open, so nothing should look tappable. */}
               {(roleSwitch.canSwitch || primaryOrg) && (
                 <div className="ms-12 mt-1.5 flex min-w-0 flex-col items-start gap-1">
-                  {/* Stacked on purpose: the drawer is w-72, so this column is
-                      ~200px — chip + CTA (~260px) never fit one line, and a
-                      locale-dependent wrap would look accidental. */}
-                  <div className="flex max-w-full flex-col items-start gap-1.5">
-                    <span
-                      className={`inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
-                        isMaxina ? 'bg-white/20' : 'bg-muted'
-                      }`}
-                    >
-                      <span className="sr-only">{t('screens.mobile.currentMode')}: </span>
+                  <div className="flex max-w-full items-center gap-1.5">
+                    {roleSwitch.canSwitch ? (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openRoleSheet();
+                        }}
+                        aria-label={`${roleLabel} — ${t('screens.profile.switchRole')}`}
+                        className={`inline-flex min-w-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
+                          isMaxina ? 'bg-white/20 hover:bg-white/30' : 'bg-muted hover:bg-muted/80'
+                        }`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: modeTone.active }}
+                        />
+                        <span className="truncate">{roleLabel}</span>
+                        <ChevronDown className="h-3 w-3 shrink-0 opacity-70" aria-hidden="true" />
+                      </button>
+                    ) : (
                       <span
-                        aria-hidden="true"
-                        className="h-1.5 w-1.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: modeTone.active }}
-                      />
-                      <span className="truncate">{roleLabel}</span>
-                    </span>
+                        className={`inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                          isMaxina ? 'bg-white/20' : 'bg-muted'
+                        }`}
+                      >
+                        <span className="sr-only">{t('screens.mobile.currentMode')}: </span>
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: modeTone.active }}
+                        />
+                        <span className="truncate">{roleLabel}</span>
+                      </span>
+                    )}
                     {roleSwitch.canSwitch && (
                       <button
                         type="button"
@@ -432,14 +460,14 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                           openRoleSheet();
                         }}
                         aria-label={t('screens.profile.switchRole')}
-                        className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
+                        title={t('screens.profile.switchRole')}
+                        className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-colors ${
                           isMaxina
                             ? 'bg-white text-sky-700 shadow-sm hover:bg-white/90'
                             : 'bg-primary text-primary-foreground hover:bg-primary/90'
                         }`}
                       >
-                        <ArrowLeftRight className="h-3.5 w-3.5 shrink-0" />
-                        <span>{t('screens.profile.switchRole')}</span>
+                        <ArrowLeftRight className="h-3.5 w-3.5" />
                       </button>
                     )}
                   </div>
