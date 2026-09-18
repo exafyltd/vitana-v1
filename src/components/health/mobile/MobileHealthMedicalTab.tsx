@@ -130,7 +130,7 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
             return (
               <button
                 key={report.id}
-                onClick={() => handleViewReport(report.raw_file_ref)}
+                onClick={() => handleViewReport(report.file_path ?? report.raw_file_ref)}
                 className="w-full flex items-center gap-3 p-3 rounded-xl bg-card border border-border hover:bg-accent/50 transition-colors text-left"
               >
                 <span className="text-2xl">{icon}</span>
