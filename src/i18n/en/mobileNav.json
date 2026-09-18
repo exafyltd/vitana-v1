@@ -17,6 +17,8 @@
     "overview": "Overview",
     "team": "Team",
     "orders": "Orders",
-    "resultsInbox": "Inbox"
-  }
+    "resultsInbox": "Inbox",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

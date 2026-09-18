@@ -8,19 +8,20 @@
  *   side drawer, the business bottom bar, route enforcement) and the app's
  *   theme tokens. Business people are members; their business screens should
  *   look like the rest of MAXINA, not like a second product.
- * - **Desktop and `commerce.vitanaland.com`**: the self-contained dark slate +
- *   amber portal, matching `pages/portals/CommercePortalLogin.tsx` — a merchant
- *   signs in there and lands here. The children are written in theme tokens
- *   and rendered inside a `dark` wrapper (Tailwind `darkMode: ["class"]`,
- *   every token is redefined under `.dark` in index.css), so they keep this
- *   look here without a second copy of the markup.
+ * - **Desktop and `commerce.vitanaland.com`**: a self-contained light,
+ *   premium portal shell (VTID-04055). This used to be a dark slate + amber
+ *   theme wrapped in a literal `dark` class — reverting is re-adding that
+ *   class to the wrapper below and swapping the amber-7xx/slate-* literals
+ *   in this file back to the amber-400/slate-950 family; nothing else about
+ *   this file's structure depends on which skin is active.
  *
- * Portaled content (dialogs, sheets, selects) renders outside this wrapper —
- * give it `useCommerceSkin().portalClass` so it follows the same skin.
- *
- * Explicit slate/amber classes on the dark shell itself, NOT `from-<color>-50`
- * gradient stops: the dark-mode safety net at the bottom of `src/index.css`
- * force-overrides those stops to `--background`.
+ * The children are written in theme TOKENS (`bg-card`, `border-border`,
+ * `text-foreground`, …), not hardcoded colors, so the app's global (light)
+ * theme applies to them automatically now that this wrapper no longer opts
+ * into `.dark` — including portaled dialogs/sheets/selects, which render
+ * outside this wrapper via React portals. `useCommerceSkin().portalClass`
+ * is kept as a named export for exactly that case (now always `''`), so a
+ * future dark-mode revert only has to change it in this one place.
  */
 import type { ReactNode } from 'react';
 import { ShoppingBag } from 'lucide-react';
@@ -33,7 +34,7 @@ import { t } from '@/lib/i18n-toast';
 export function useCommerceSkin(): { inApp: boolean; portalClass: string } {
   const isMobile = useIsMobile();
   const inApp = isMobile && !isCommerceHost();
-  return { inApp, portalClass: inApp ? '' : 'dark' };
+  return { inApp, portalClass: '' };
 }
 
 export function CommerceShell({ children }: { children: ReactNode }) {
@@ -48,24 +49,25 @@ export function CommerceShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="dark min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Ambient glow. Purely decorative, never interactive, never scrolls
-          horizontally — hence the clipping wrapper. */}
+          horizontally — hence the clipping wrapper. A light echo of the
+          brand color, not a background element the eye should notice. */}
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 inset-x-0 mx-auto h-[36rem] w-[36rem] rounded-full bg-amber-500/10 blur-[120px]" />
-        <div className="absolute bottom-0 start-0 h-[28rem] w-[28rem] rounded-full bg-amber-400/5 blur-[120px]" />
+        <div className="absolute -top-40 inset-x-0 mx-auto h-[36rem] w-[36rem] rounded-full bg-amber-200/40 blur-[120px]" />
+        <div className="absolute bottom-0 start-0 h-[28rem] w-[28rem] rounded-full bg-amber-100/50 blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-30 border-b border-amber-500/15 bg-slate-950/80 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-5xl items-center gap-2.5 px-4 py-3.5">
-          <ShoppingBag className="h-5 w-5 shrink-0 text-amber-400" />
-          <span className="text-sm font-bold tracking-[0.2em] text-amber-400">VITANALAND</span>
-          <span aria-hidden className="h-4 w-px bg-amber-500/25" />
-          <span className="truncate text-xs text-slate-400">{t('screens.commerceportal.portalEyebrow')}</span>
+      <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-2.5 px-4 py-3.5">
+          <ShoppingBag className="h-5 w-5 shrink-0 text-amber-700" />
+          <span className="text-sm font-bold tracking-[0.2em] text-amber-700">VITANALAND</span>
+          <span aria-hidden className="h-4 w-px bg-border" />
+          <span className="truncate text-xs text-muted-foreground">{t('screens.commerceportal.portalEyebrow')}</span>
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20">{children}</main>
+      <main className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-20">{children}</main>
     </div>
   );
 }

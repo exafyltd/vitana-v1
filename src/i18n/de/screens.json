@@ -10345,7 +10345,8 @@
         "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise.",
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
-        "tabGemini": "Gemini"
+        "tabGemini": "Gemini",
+        "recommendedBadge": "Empfohlen"
       },
       "detectPlatform": {
         "urlPlaceholder": "Shop-URL (optional) — z. B. https://dein-shop.de",

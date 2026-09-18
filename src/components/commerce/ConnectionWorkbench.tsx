@@ -53,9 +53,8 @@ interface Activation {
 }
 
 const stateLabel = (state: string) => t(`screens.partnerportal.states.${state}`);
-const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
-const panelClass = 'rounded-2xl border border-slate-800 bg-slate-900/60 p-4';
+const fieldClass = 'focus-visible:ring-amber-700';
+const panelClass = 'rounded-2xl border border-border bg-card p-4';
 
 export function ConnectionWorkbench({
   connectionId,
@@ -157,17 +156,17 @@ export function ConnectionWorkbench({
     <Sheet open={connectionId !== null} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-full overflow-y-auto border-slate-800 bg-slate-950 text-slate-100 sm:max-w-2xl"
+        className="w-full overflow-y-auto border-border bg-background text-foreground sm:max-w-2xl"
       >
         {!detail ? (
           <div className="flex justify-center py-20">
-            <Loader2 className="h-6 w-6 animate-spin text-slate-600" />
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <>
             <SheetHeader className="text-start">
-              <SheetTitle className="truncate pe-8 text-slate-100">{detail.name}</SheetTitle>
-              <p className="truncate text-xs text-slate-500">
+              <SheetTitle className="truncate pe-8 text-foreground">{detail.name}</SheetTitle>
+              <p className="truncate text-xs text-muted-foreground">
                 {detail.connector_id} · {detail.provider_id}
               </p>
             </SheetHeader>
@@ -176,7 +175,7 @@ export function ConnectionWorkbench({
               <div className={panelClass}>
                 <div className="flex items-center justify-between gap-2">
                   <ConnectionProgress state={state} className="min-w-0 flex-1" />
-                  <Badge variant="outline" className="shrink-0 border-slate-600/60 text-slate-300">
+                  <Badge variant="outline" className="shrink-0 border-border text-foreground">
                     {stateLabel(state)}
                   </Badge>
                 </div>
@@ -184,12 +183,12 @@ export function ConnectionWorkbench({
 
               {needsOauthConnect && (
                 <div className={panelClass}>
-                  <h3 className="text-sm font-medium text-slate-100">
+                  <h3 className="text-sm font-medium text-foreground">
                     {t('screens.commerceportal.connectOauth.title')}
                   </h3>
                   {detail.connector_id === 'shopify' && (
                     <div className="mt-3 space-y-2">
-                      <p className="text-sm text-slate-400">{t('screens.commerceportal.connectOauth.shopifyHint')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectOauth.shopifyHint')}</p>
                       <Input
                         value={shopDomain}
                         onChange={(e) => setShopDomain(e.target.value)}
@@ -198,7 +197,7 @@ export function ConnectionWorkbench({
                         className={fieldClass}
                       />
                       <Button
-                        className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                        className="bg-amber-700 font-semibold text-white hover:bg-amber-800"
                         disabled={connecting || !shopDomain.trim()}
                         onClick={() => void connectOauth('/shopify/authorize', { shop: shopDomain.trim() })}
                       >
@@ -211,7 +210,7 @@ export function ConnectionWorkbench({
                   )}
                   {detail.connector_id === 'smart_fhir' && (
                     <div className="mt-3 space-y-2">
-                      <p className="text-sm text-slate-400">{t('screens.commerceportal.connectOauth.fhirHint')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectOauth.fhirHint')}</p>
                       <Input
                         value={fhirBaseUrl}
                         onChange={(e) => setFhirBaseUrl(e.target.value)}
@@ -243,7 +242,7 @@ export function ConnectionWorkbench({
                         className={fieldClass}
                       />
                       <Button
-                        className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                        className="bg-amber-700 font-semibold text-white hover:bg-amber-800"
                         disabled={connecting || !fhirBaseUrl.trim() || !fhirClientId.trim()}
                         onClick={() =>
                           void connectOauth('/fhir/authorize', {
@@ -265,23 +264,23 @@ export function ConnectionWorkbench({
               )}
 
               <div className={panelClass}>
-                <h3 className="text-sm font-medium text-slate-100">{t('screens.partnerportal.mappingPreview')}</h3>
+                <h3 className="text-sm font-medium text-foreground">{t('screens.partnerportal.mappingPreview')}</h3>
                 <div className="mt-3 space-y-3">
                   {preview?.pipeline_status === 'awaiting_specification' ? (
-                    <p className="text-sm text-slate-400">{t('screens.partnerportal.awaitingSpec')}</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.partnerportal.awaitingSpec')}</p>
                   ) : preview && preview.mappings.length === 0 ? (
-                    <p className="text-sm text-slate-400">{t('screens.partnerportal.awaitingFactory')}</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.partnerportal.awaitingFactory')}</p>
                   ) : preview ? (
                     <>
                       {preview.pending_review.length > 0 && (
-                        <p className="text-sm font-medium text-amber-300">
+                        <p className="text-sm font-medium text-amber-800">
                           {t('screens.partnerportal.pendingReview', { count: preview.pending_review.length })}
                         </p>
                       )}
                       <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="border-b border-slate-800 text-start text-xs text-slate-500">
+                            <tr className="border-b border-border text-start text-xs text-muted-foreground">
                               <th className="py-2 pe-3 text-start">{t('screens.partnerportal.sourceField')}</th>
                               <th className="py-2 pe-3 text-start">{t('screens.partnerportal.canonicalField')}</th>
                               <th className="py-2 pe-3 text-start">{t('screens.partnerportal.confidence')}</th>
@@ -291,11 +290,11 @@ export function ConnectionWorkbench({
                           </thead>
                           <tbody>
                             {preview.mappings.map((m) => (
-                              <tr key={m.id} className="border-b border-slate-800/60 text-slate-300">
+                              <tr key={m.id} className="border-b border-border/60 text-foreground">
                                 <td className="py-2 pe-3">
                                   {m.source_schema}.{m.source_field}
                                   {m.sensitive && (
-                                    <Badge variant="outline" className="ms-2 border-amber-400/40 text-amber-300">
+                                    <Badge variant="outline" className="ms-2 border-amber-300 bg-amber-50 text-amber-800">
                                       {t('screens.partnerportal.sensitive')}
                                     </Badge>
                                   )}
@@ -311,7 +310,7 @@ export function ConnectionWorkbench({
                                       <Button
                                         size="sm"
                                         variant="outline"
-                                        className="border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                                        className="border-border bg-transparent text-foreground hover:bg-muted"
                                         disabled={busy !== null}
                                         onClick={() => void decide(m.id, 'approve')}
                                       >
@@ -320,7 +319,7 @@ export function ConnectionWorkbench({
                                       <Button
                                         size="sm"
                                         variant="ghost"
-                                        className="text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                                        className="text-muted-foreground hover:bg-muted hover:text-foreground"
                                         disabled={busy !== null}
                                         onClick={() => void decide(m.id, 'reject')}
                                       >
@@ -341,7 +340,7 @@ export function ConnectionWorkbench({
                     <div className="space-y-2">
                       <Button
                         variant="outline"
-                        className="border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                        className="border-border bg-transparent text-foreground hover:bg-muted"
                         disabled={busy !== null}
                         onClick={() => void act('test', '/sandbox-tests')}
                       >
@@ -357,34 +356,34 @@ export function ConnectionWorkbench({
                       {/* The gateway runs this in `gateway_dev_sandbox` mode with
                           contract_tests_executed hardcoded 0 — say so rather than
                           let a green state read as "we called your system". */}
-                      <p className="text-xs text-slate-500">{t('screens.commerceportal.sandboxDevNote')}</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.commerceportal.sandboxDevNote')}</p>
                     </div>
                   )}
                 </div>
               </div>
 
               <div className={panelClass}>
-                <h3 className="text-sm font-medium text-slate-100">{t('screens.partnerportal.activationSummary')}</h3>
+                <h3 className="text-sm font-medium text-foreground">{t('screens.partnerportal.activationSummary')}</h3>
                 <div className="mt-3 space-y-3">
                   {activation?.certification && (
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-muted-foreground">
                       {t('screens.partnerportal.certification')}: {activation.certification.status}
                       {activation.version ? ` · v${activation.version}` : ''}
                     </p>
                   )}
                   {activation?.awaiting_platform_approval ? (
-                    <p className="flex items-center gap-2 text-sm font-medium text-amber-300">
+                    <p className="flex items-center gap-2 text-sm font-medium text-amber-800">
                       <Clock className="h-4 w-4" />
                       {t('screens.commerceportal.awaitingApproval')}
                     </p>
                   ) : (
-                    <p className="text-xs text-slate-500">{t('screens.commerceportal.activationHint')}</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.commerceportal.activationHint')}</p>
                   )}
                   <div className="flex flex-wrap gap-2">
                     {state === 'active' && (
                       <Button
                         variant="outline"
-                        className="border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                        className="border-border bg-transparent text-foreground hover:bg-muted"
                         disabled={busy !== null}
                         onClick={() => void act('pause', '/pause')}
                       >
@@ -394,7 +393,7 @@ export function ConnectionWorkbench({
                     {state === 'suspended' && (
                       <Button
                         variant="outline"
-                        className="border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                        className="border-border bg-transparent text-foreground hover:bg-muted"
                         disabled={busy !== null}
                         onClick={() => void act('resume', '/resume')}
                       >
@@ -404,7 +403,7 @@ export function ConnectionWorkbench({
                     {state === 'active' && (
                       <Button
                         variant="outline"
-                        className="border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                        className="border-border bg-transparent text-foreground hover:bg-muted"
                         disabled={busy !== null}
                         onClick={() => void act('reauthorize', '/reauthorize')}
                       >
