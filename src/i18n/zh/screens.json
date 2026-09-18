@@ -10434,11 +10434,13 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true
+          "tabGemini": true,
+          "recommendedBadge": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
-        "tabGemini": "Gemini"
+        "tabGemini": "Gemini",
+        "recommendedBadge": "Recommended"
       },
       "detectPlatform": {
         "urlPlaceholder": "商店 URL（可选）— 例如 https://your-shop.com",

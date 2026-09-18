@@ -23,6 +23,8 @@
     "businessOverview": "Обзор",
     "businessTeam": "Команда",
     "businessOrders": "Заказы",
-    "businessInbox": "Входящие"
-  }
+    "businessInbox": "Входящие",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

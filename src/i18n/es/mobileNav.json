@@ -17,6 +17,8 @@
     "overview": "Resumen",
     "team": "Equipo",
     "orders": "Pedidos",
-    "resultsInbox": "Bandeja de entrada"
-  }
+    "resultsInbox": "Bandeja de entrada",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

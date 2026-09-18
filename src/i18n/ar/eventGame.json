@@ -35,35 +35,23 @@
       "postsUsed": "{used} من {max} منشورات حدث مستخدمة",
       "postCta": "انشر الآن",
       "capReached": "لقد استخدمت جميع منشوراتك لهذه اللعبة",
-      "viewLeaderboard": "VIEW LEADERBOARD",
-      "rulesLink": "How to play",
-      "countdownLeft": "LEFT",
-      "gameOver": "🛑 GAME OVER",
-      "_pending_review": {
-        "viewLeaderboard": true,
-        "rulesLink": true,
-        "countdownLeft": true,
-        "gameOver": true
-      }
+      "viewLeaderboard": "عرض لوحة الصدارة",
+      "rulesLink": "كيفية اللعب",
+      "countdownLeft": "يسار",
+      "gameOver": "🛑 انتهت اللعبة"
     },
     "post": {
-      "categoryEvent": "📸 Event Moment",
-      "categoryLongevity": "🧬 Longevity Moment",
+      "categoryEvent": "📸 لحظة الحدث",
+      "categoryLongevity": "🧬 لحظة طول العمر",
       "categoryPoints": "+{points}",
-      "mustJoinFirst": "Join the game to post your moment",
+      "mustJoinFirst": "انضم إلى اللعبة لنشر لحظتك",
       "joinAndPost": "انضمام ونشر",
       "successTitle": "🔥 أحسنت!",
       "successPoints": "+{points} نقاط",
       "successScore": "نتيجتك: {score}",
       "successRank": "الترتيب الحالي: #{rank}",
       "getLikes": "❤️ الآن، احصل على إعجابات",
-      "share": "مشاركة لحظتي",
-      "_pending_review": {
-        "categoryEvent": true,
-        "categoryLongevity": true,
-        "categoryPoints": true,
-        "mustJoinFirst": true
-      }
+      "share": "مشاركة لحظتي"
     },
     "leaderboard": {
       "title": "🏆 من هو المتألق؟",
@@ -85,46 +73,27 @@
     },
     "rules": {
       "title": "🎯 طريقة اللعب",
-      "join": "🎉 Join — +{points}",
-      "event": "📸 Event moment — +{points}",
-      "longevity": "🧬 Longevity moment — +{points}",
-      "likes": "❤️ Get likes — +{points} each",
-      "win": "🏆 Finish #1 — WIN THE PRIZE",
-      "close": "Got it",
-      "_pending_review": {
-        "join": true,
-        "event": true,
-        "longevity": true,
-        "likes": true,
-        "win": true,
-        "close": true
-      }
+      "join": "🎉 انضم — +{points}",
+      "event": "📸 لحظة الحدث — +{points}",
+      "longevity": "🧬 لحظة طول العمر — +{points}",
+      "likes": "❤️ الحصول على إعجابات — +{points} لكل منها",
+      "win": "🏆 إنهاء في المركز الأول — الفوز بالجائزة",
+      "close": "فهمت"
     },
     "results": {
-      "winnerTitle": "🏆 WE HAVE A WINNER!",
+      "winnerTitle": "🏆 لدينا فائز!",
       "winnerCrown": "👑 {name}",
-      "winnerPoints": "{points} POINTS",
+      "winnerPoints": "{points} نقاط",
       "reward": "🎁 {reward}",
-      "yourResultTitle": "✨ YOUR RESULT",
+      "yourResultTitle": "✨ النتيجة",
       "yourRank": "#{rank}",
-      "yourPoints": "{points} POINTS",
-      "postCount": "📸 Event posts: {count}",
-      "likesCount": "❤️ Likes received: {count}",
+      "yourPoints": "{points} نقاط",
+      "postCount": "📸 منشورات الحدث: {count}",
+      "likesCount": "❤️ الإعجابات المستلمة: {count}",
       "longevityCount": "🧬 لحظات طول العمر: {count}",
       "gap": "لم يفصلك سوى {points} نقطة عن أفضل {n}!",
       "share": "مشاركة نتيجتي",
-      "notEnded": "ستُعرض النتائج بمجرد انتهاء اللعبة.",
-      "_pending_review": {
-        "winnerTitle": true,
-        "winnerCrown": true,
-        "winnerPoints": true,
-        "reward": true,
-        "yourResultTitle": true,
-        "yourRank": true,
-        "yourPoints": true,
-        "postCount": true,
-        "likesCount": true
-      }
+      "notEnded": "ستُعرض النتائج بمجرد انتهاء اللعبة."
     },
     "feedBadge": {
       "rankPoints": "🏆 #{rank} · {points} نقطة",
@@ -150,22 +119,15 @@
       "rewardTextLabel": "مكافأة",
       "rewardDescLabel": "وصف المكافأة",
       "save": "حفظ",
-      "saved": "Saved",
-      "saveFailed": "Save failed",
-      "leaderboardSection": "Leaderboard & corrections",
-      "ledgerSection": "Points ledger",
-      "adjustPoints": "Adjust points",
-      "adjustReason": "Reason",
-      "adjustApply": "Apply",
+      "saved": "تم الحفظ",
+      "saveFailed": "فشل الحفظ",
+      "leaderboardSection": "لوحة الصدارة والتصحيحات",
+      "ledgerSection": "سجل النقاط",
+      "adjustPoints": "تعديل النقاط",
+      "adjustReason": "السبب",
+      "adjustApply": "تطبيق",
       "notModerator": "You don't have permission to manage this game.",
       "_pending_review": {
-        "saved": true,
-        "saveFailed": true,
-        "leaderboardSection": true,
-        "ledgerSection": true,
-        "adjustPoints": true,
-        "adjustReason": true,
-        "adjustApply": true,
         "notModerator": true
       }
     }
