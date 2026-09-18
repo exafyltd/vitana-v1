@@ -30,6 +30,12 @@ describe('CommerceShell is light, not dark, and easily revertible (VTID-04055)',
     expect(src).toContain('<AppLayout>');
     expect(src).toContain('<div className="mx-auto w-full max-w-5xl px-4 pb-24">{children}</div>');
   });
+
+  it('VTID-04079: the desktop/host container is max-w-7xl, matching every other full page in the app (Home/Discover/Health/Wallet/AI), not the narrower max-w-6xl it shipped with', () => {
+    expect(src).not.toContain('max-w-6xl');
+    expect(src).toContain('max-w-7xl items-center gap-2.5 px-4 py-3.5');
+    expect(src).toContain('max-w-7xl px-4 pb-20');
+  });
 });
 
 describe('AgentConnectCard is a light elevated card with a loud CTA (VTID-04055)', () => {
@@ -55,33 +61,60 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   const src = read('src/pages/CommercePortal.tsx');
   // Skip the file's own doc comment, which quotes these markers in prose.
   const jsxStart = src.indexOf('return (\n    <CommerceShell>');
+  const heroCopyStart = src.indexOf('const heroCopy = (twoColumn: boolean) => (');
+  const agentCardFnStart = src.indexOf('const agentCard = (className: string) => (');
+  // heroCopy/agentCard are defined once, above `return (`, and called from
+  // inside the hero JSX below — the buttons/card live in these two function
+  // bodies, not inlined at each call site.
+  const heroCopyFn = src.slice(heroCopyStart, agentCardFnStart);
   const heroStart = src.indexOf('{/* HERO', jsxStart);
-  const hoistedOrgs = src.indexOf('{hasOrgs && orgsSection}', jsxStart);
-  const agentCard = src.indexOf('<AgentConnectCard />', jsxStart);
+  const heroEnd = src.indexOf('{hasOrgs && orgsSection}', jsxStart);
+  const heroJsx = src.slice(heroStart, heroEnd);
+  const hoistedOrgs = heroEnd;
+  const standaloneAgentCard = src.indexOf("agentCard('mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10')", jsxStart);
   const originalOrgs = src.indexOf('{!hasOrgs && orgsSection}', jsxStart);
-  const hero = src.slice(heroStart, hoistedOrgs);
 
   it('markers are all present and in the VTID-03989 order (returning members see their org before the pitch)', () => {
     expect(jsxStart).toBeGreaterThan(-1);
+    expect(heroCopyStart).toBeGreaterThan(-1);
+    expect(agentCardFnStart).toBeGreaterThan(heroCopyStart);
     expect(heroStart).toBeGreaterThan(-1);
     expect(hoistedOrgs).toBeGreaterThan(-1);
-    expect(agentCard).toBeGreaterThan(-1);
+    expect(standaloneAgentCard).toBeGreaterThan(-1);
     expect(originalOrgs).toBeGreaterThan(-1);
-    expect(hoistedOrgs).toBeLessThan(agentCard);
-    expect(originalOrgs).toBeGreaterThan(agentCard);
+    // The returning-member card still renders AFTER the hoisted org section,
+    // i.e. below it in the page, same order VTID-03989 established.
+    expect(hoistedOrgs).toBeLessThan(standaloneAgentCard);
+    expect(originalOrgs).toBeGreaterThan(standaloneAgentCard);
+    // And it's gated on hasOrgs, not unconditional — a returning member
+    // never sees it duplicated from the hero above.
+    expect(src.slice(standaloneAgentCard - 20, standaloneAgentCard)).toContain('hasOrgs &&');
   });
 
-  it('the hero contains exactly the two real CTA buttons and no card of its own', () => {
-    expect((hero.match(/<Button/g) ?? []).length).toBe(2);
-    expect(hero).toContain("t('screens.commerceportal.agentConnect.title')");
-    expect(hero).toContain("t('screens.commerceportal.orgOnboarding.registerCta')");
-    expect(hero).not.toContain('<AgentConnectCard');
+  it('the hero copy renders exactly the two real CTA buttons and no eyebrow pill any more', () => {
+    expect((heroCopyFn.match(/<Button/g) ?? []).length).toBe(2);
+    expect(heroCopyFn).toContain("t('screens.commerceportal.agentConnect.title')");
+    expect(heroCopyFn).toContain("t('screens.commerceportal.orgOnboarding.registerCta')");
+    expect(heroCopyFn).not.toContain('<AgentConnectCard');
+    expect(src).not.toContain("t('screens.commerceportal.portalEyebrow')");
+  });
+
+  it('VTID-04079: a first-time visitor (!hasOrgs) gets the agent card embedded beside the hero copy at lg:, a returning member (hasOrgs) does not', () => {
+    expect(heroJsx).toContain('hasOrgs ? (');
+    expect(heroJsx).toContain('heroCopy(false)');
+    expect(heroJsx).toContain('heroCopy(true)');
+    expect(heroJsx).toContain("agentCard('mt-10 hidden scroll-mt-24 lg:mt-0 lg:block')");
+    // The card call sits inside the `!hasOrgs` branch of the ternary, i.e.
+    // after the `) : (` — not unconditional.
+    const ternaryElse = heroJsx.indexOf(') : (');
+    const cardCallInHero = heroJsx.indexOf("agentCard('mt-10");
+    expect(cardCallInHero).toBeGreaterThan(ternaryElse);
   });
 
   it('the primary CTA scrolls to the agent card instead of duplicating its state', () => {
     expect(src).toContain('agentCardRef.current?.scrollIntoView');
     expect(src).toContain('ref={agentCardRef}');
-    expect(hero).toContain('onClick={scrollToAgentCard}');
+    expect(heroCopyFn).toContain('onClick={scrollToAgentCard}');
   });
 
   it('"your organizations" is no longer lost on a narrow desktop/host window when the visitor has no org yet', () => {
