@@ -10,7 +10,7 @@
  */
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowRight, Heart, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -90,17 +90,24 @@ export function NewsFeedItemCard({
         onDismiss={() => setDismissed(true)}
         dismissLabel={t('screens.vitanaIdentity.dismissCard')}
         widget={
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
-            <Heart className="absolute inset-0 h-10 w-10 text-pink-400 fill-pink-400" aria-hidden="true" />
-            <Sparkles className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 text-pink-200" aria-hidden="true" />
-            <div className="relative flex flex-col items-center">
-              <span className="text-[10px] font-bold leading-none text-white">
-                {t("screens.home.matchPercent", { score: item.compatibility_score })}
-              </span>
-              <span className="mt-0.5 text-[6px] font-semibold leading-none text-white/90">
-                {t("screens.home.matchLabel")}
-              </span>
-            </div>
+          <div
+            className="flex h-[4.25rem] w-[4.25rem] shrink-0 flex-col items-center justify-center rounded-full shadow-[0_2px_6px_rgba(10,95,115,0.35),inset_0_1px_2px_rgba(255,255,255,0.4)]"
+            style={{
+              background:
+                "radial-gradient(circle at 32% 26%, #8FF3E6 0%, #3FC0C2 38%, #17909F 68%, #0A5F73 100%)",
+            }}
+          >
+            <svg
+              viewBox="0 0 64 36"
+              className="h-[38%] w-[38%] fill-white"
+              aria-hidden="true"
+            >
+              <path d="M8 4 H28 V13 A6 6 0 0 1 28 25 V32 H8 A6 6 0 0 1 2 26 V10 A6 6 0 0 1 8 4 Z" />
+              <path d="M36 4 H56 A6 6 0 0 1 62 10 V26 A6 6 0 0 1 56 32 H36 V25 A6 6 0 0 0 36 13 V4 Z" />
+            </svg>
+            <span className="mt-0.5 text-[15px] font-extrabold leading-none tracking-tight text-white">
+              {t("screens.home.matchPercent", { score: item.compatibility_score })}
+            </span>
           </div>
         }
       >
