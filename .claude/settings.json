@@ -53,6 +53,16 @@
             "statusMessage": "Watcher: recording session start..."
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-/home/user/vitana-v1}/.claude/hooks/session-start-codeintel-setup.sh\"",
+            "timeout": 300,
+            "statusMessage": "Installing/refreshing RepoWise + Graphify (CLAUDE.md codebase intelligence workflow)..."
+          }
+        ]
       }
     ],
     "SessionEnd": [
