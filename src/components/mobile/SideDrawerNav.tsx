@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight, ArrowLeftRight, Users, type LucideIcon } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight, ChevronDown, Users, type LucideIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
@@ -344,9 +344,9 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
           >
-            {/* Header — profile entry + role ("mode") pill */}
+            {/* Header — profile entry + role ("mode") dropdown */}
             <div
-              className="px-5 py-3.5"
+              className="px-5 py-5"
               style={
                 isMaxina
                   ? {
@@ -363,22 +363,22 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
                 aria-label={t('screens.mobile.openMyProfile')}
               >
-                <Avatar className="h-9 w-9 ring-1 ring-white/40 shrink-0">
+                <Avatar className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">
                   <AvatarImage
                     src={profile.avatar}
                     alt={profile.displayName}
                     style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)}
                   />
-                  <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
+                  <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-2xl">
                     {profile.initials}
                   </AvatarFallback>
                 </Avatar>
                 <div className="leading-tight min-w-0 flex-1">
-                  <div className="font-bold text-base tracking-wide truncate">
+                  <div className="font-bold text-xl tracking-wide truncate">
                     {profile.displayName}
                   </div>
                   {secondaryLine && (
-                    <div className="text-xs opacity-80 truncate">
+                    <div className="text-sm opacity-80 truncate">
                       {secondaryLine}
                     </div>
                   )}
@@ -395,54 +395,63 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 <X className="h-[18px] w-[18px]" />
               </button>
               </div>
-              {/* Mode chip + switch CTA + org chip sit in the TEXT column,
-                  directly under the name/handle (VTID-03997). They cannot
-                  live inside the profile <button> above (a button in a
-                  button is invalid HTML), so this block is indented to the
-                  column start: ms-12 = 48px = avatar w-9 (36px) + the row's
-                  gap-3 (12px). Keep in sync if the avatar size changes.
-                  VTID-04041: the mode is a plain chip (information) and the
-                  switch is a labelled button next to it — one interactive
-                  element, unmistakably about changing the mode. The old
-                  "Staff ⌄" pill read as a status badge. */}
+              {/* Mode dropdown + org chip sit BELOW the avatar/name row,
+                  spanning the drawer's full content width — not indented
+                  under the text column (VTID-03997's original placement).
+                  At the bigger h-24 avatar, indenting past the avatar+gap
+                  (108px) left too little room for the pill's own generous
+                  padding and caused "Exafy-Admin" to truncate to
+                  "Exafy-...", which reads as broken. Un-indented, the pill
+                  gets the drawer's full ~248px content width instead of
+                  ~140px, with room to spare — the same trade every wide
+                  profile-card reference makes on a narrower container.
+                  Supersedes VTID-04041's split chip + labelled CTA: one
+                  large, roomy pill — role label + chevron, the familiar
+                  dropdown affordance — is both the mode indicator and the
+                  control that opens the same role switcher sheet. When the
+                  account cannot switch, the pill has no chevron and is
+                  plain text, matching its non-interactive state. */}
               {(roleSwitch.canSwitch || primaryOrg) && (
-                <div className="ms-12 mt-1.5 flex min-w-0 flex-col items-start gap-1">
-                  {/* Stacked on purpose: the drawer is w-72, so this column is
-                      ~200px — chip + CTA (~260px) never fit one line, and a
-                      locale-dependent wrap would look accidental. */}
-                  <div className="flex max-w-full flex-col items-start gap-1.5">
+                <div className="mt-3 flex min-w-0 flex-col items-start gap-1.5">
+                  {roleSwitch.canSwitch ? (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openRoleSheet();
+                      }}
+                      aria-haspopup="dialog"
+                      className={`inline-flex max-w-full items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                        isMaxina
+                          ? 'bg-white/90 text-sky-700 shadow-sm hover:bg-white'
+                          : 'bg-muted hover:bg-muted/80'
+                      }`}
+                    >
+                      <span className="sr-only">{t('screens.mobile.currentMode')}: </span>
+                      <span
+                        aria-hidden="true"
+                        className="h-2.5 w-2.5 shrink-0 rounded-full"
+                        style={{ backgroundColor: modeTone.active }}
+                      />
+                      <span className="truncate">{roleLabel}</span>
+                      <ChevronDown className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span className="sr-only">. {t('screens.profile.switchRole')}</span>
+                    </button>
+                  ) : (
                     <span
-                      className={`inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                      className={`inline-flex max-w-full items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${
                         isMaxina ? 'bg-white/20' : 'bg-muted'
                       }`}
                     >
                       <span className="sr-only">{t('screens.mobile.currentMode')}: </span>
                       <span
                         aria-hidden="true"
-                        className="h-1.5 w-1.5 shrink-0 rounded-full"
+                        className="h-2.5 w-2.5 shrink-0 rounded-full"
                         style={{ backgroundColor: modeTone.active }}
                       />
                       <span className="truncate">{roleLabel}</span>
                     </span>
-                    {roleSwitch.canSwitch && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openRoleSheet();
-                        }}
-                        aria-label={t('screens.profile.switchRole')}
-                        className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
-                          isMaxina
-                            ? 'bg-white text-sky-700 shadow-sm hover:bg-white/90'
-                            : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                        }`}
-                      >
-                        <ArrowLeftRight className="h-3.5 w-3.5 shrink-0" />
-                        <span>{t('screens.profile.switchRole')}</span>
-                      </button>
-                    )}
-                  </div>
+                  )}
                   {inBusinessMode && business.activeOrg ? (
                     <div className="max-w-full text-[11px] opacity-80 truncate">{business.activeOrg.display_name}</div>
                   ) : primaryOrg && (
