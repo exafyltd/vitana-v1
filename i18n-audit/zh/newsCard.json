@@ -98,8 +98,8 @@
     "newsCard.detail.continueReading": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Ellipsis '...' is informal and may be ambiguous; suggest full phrase.",
-      "suggested": "在以下位置继续阅读",
+      "issue": "Translation is too literal and formal for a friendly app; 'on' is not best conveyed as 'at the following location'.",
+      "suggested": "继续阅读更多",
       "phase": "llm"
     },
     "newsCard.detail.openInBrowser": {
@@ -148,5 +148,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:27.810Z"
+  "generatedAt": "2026-09-19T08:12:18.742Z"
 }
