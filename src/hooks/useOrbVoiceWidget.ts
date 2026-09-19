@@ -375,19 +375,52 @@ export function useOrbVoiceWidget() {
     // it executes only after the 1.7MB main bundle finishes parsing — easily
     // 15-30s in the wild. 60s ceiling keeps the FAB appearing eventually
     // instead of permanently.
-    let attempts = 0;
-    const MAX_ATTEMPTS = 120; // 120 × 500ms = 60s
-    const interval = setInterval(() => {
-      attempts++;
-      tryInit().then((done) => {
-        if (done || attempts >= MAX_ATTEMPTS) {
-          clearInterval(interval);
-          if (attempts >= MAX_ATTEMPTS) console.warn("[ORB] Widget script never loaded");
-        }
-      });
-    }, 500);
+    // VTID-04099: poll fast first, then settle.
+    //
+    // This used to be a flat 500ms interval, so if the widget script landed
+    // 10ms after the initial tryInit() the orb still sat unusable for the rest
+    // of that 500ms tick — pure dead time between "the widget is ready" and
+    // "the user may tap it", paid on every cold load. The script usually
+    // arrives within a few hundred ms of the first attempt (and VTID-04099
+    // preloads it, so sooner), which is exactly the window the old cadence was
+    // worst at.
+    //
+    // Fast phase: 50ms × 20 = the first second, where the answer almost always
+    // is. Slow phase: 500ms thereafter, unchanged, so a genuinely slow 3G
+    // WebView is polled no harder than before. The 60s ceiling is preserved so
+    // the FAB still appears eventually rather than never.
+    const FAST_POLL_MS = 50;
+    const FAST_POLL_ATTEMPTS = 20; // 1s
+    const SLOW_POLL_MS = 500;
+    const TOTAL_BUDGET_MS = 60_000;
 
-    return () => clearInterval(interval);
+    let attempts = 0;
+    let elapsed = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let cancelled = false;
+
+    const schedule = () => {
+      const delay = attempts < FAST_POLL_ATTEMPTS ? FAST_POLL_MS : SLOW_POLL_MS;
+      timer = setTimeout(() => {
+        if (cancelled) return;
+        attempts++;
+        elapsed += delay;
+        tryInit().then((done) => {
+          if (cancelled || done) return;
+          if (elapsed >= TOTAL_BUDGET_MS) {
+            console.warn("[ORB] Widget script never loaded");
+            return;
+          }
+          schedule();
+        });
+      }, delay);
+    };
+    schedule();
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, [loading, user?.id, session?.access_token]);
 
   // Watch for auth changes — reinit widget when user logs in or out
