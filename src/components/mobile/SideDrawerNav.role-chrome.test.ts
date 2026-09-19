@@ -17,7 +17,7 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).toContain("import { useRoleSwitch } from '@/hooks/useRoleSwitch';");
     expect(nav).toContain('<RoleSwitcherSheet');
     expect(nav).toContain('setRoleSheetOpen(true)');
-    expect(nav).toContain('{roleSwitch.canSwitch && (');
+    expect(nav).toContain('roleSwitch.canSwitch ? (');
   });
 
   it('renders the role navigation in a non-community mode, community rows otherwise', () => {
@@ -32,12 +32,12 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
   });
 
   it('places the pill (and org chip) in the text column under name/handle, outside the profile button (VTID-03997)', () => {
-    // The block is indented to the text column: avatar w-9 (36px) + gap-3 (12px) = ms-12.
-    expect(nav).toContain('<div className="ms-12 mt-1.5 flex min-w-0 flex-col items-start gap-1">');
+    // The block is indented to the text column: avatar h-16/w-16 (64px) + gap-3 (12px) = ms-[76px].
+    expect(nav).toContain('<div className="ms-[76px] mt-1.5 flex min-w-0 flex-col items-start gap-1">');
     // Not nested inside the profile <button> — the pill appears only after it closes.
     const profileBtn = nav.indexOf('onClick={handleProfileClick}');
     const profileBtnEnd = nav.indexOf('</button>', profileBtn);
-    const pill = nav.indexOf("aria-label={t('screens.profile.switchRole')}");
+    const pill = nav.indexOf('aria-haspopup="dialog"');
     const chip = nav.indexOf('{orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}');
     expect(profileBtn).toBeGreaterThan(-1);
     expect(pill).toBeGreaterThan(profileBtnEnd);
@@ -45,24 +45,29 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).not.toContain('mt-2 inline-flex max-w-full items-center gap-1 rounded-full');
   });
 
-  it('shows the mode as a chip and the switch as a labelled CTA next to it (VTID-04041)', () => {
-    // The chip is information (a <span>, not a button); the CTA is the one
-    // interactive element and carries the visible "Rolle wechseln" label.
-    const chipLabel = nav.indexOf("<span className=\"sr-only\">{t('screens.mobile.currentMode')}: </span>");
-    const cta = nav.indexOf("aria-label={t('screens.profile.switchRole')}");
-    const ctaText = nav.indexOf("<span>{t('screens.profile.switchRole')}</span>");
-    expect(chipLabel).toBeGreaterThan(-1);
-    expect(cta).toBeGreaterThan(chipLabel);
-    expect(ctaText).toBeGreaterThan(cta);
-    expect(nav).toContain('ArrowLeftRight');
-    expect(nav).not.toContain('ChevronDown');
-    // Chip above CTA, always: the drawer is w-72 (column ~200px), the pair is
-    // ~260px, so a wrapping row would only ever look like an accidental wrap.
-    expect(nav).toContain('<div className="flex max-w-full flex-col items-start gap-1.5">');
-    // The sheet names the same mode label the header chip shows.
+  it('shows the mode as a single dropdown pill — role label + chevron — that opens the switcher', () => {
+    // The whole pill is the interactive element (a <button>, not a split
+    // chip + separate labelled CTA) — role label and chevron both live
+    // inside it, mirroring a native <select>/dropdown affordance.
+    const pillButton = nav.indexOf('aria-haspopup="dialog"');
+    const pillOnClick = nav.lastIndexOf('openRoleSheet();', pillButton);
+    const chevron = nav.indexOf('<ChevronDown className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />');
+    expect(pillButton).toBeGreaterThan(-1);
+    expect(pillOnClick).toBeGreaterThan(-1);
+    expect(chevron).toBeGreaterThan(pillButton);
+    expect(nav).toContain('ChevronDown');
+    expect(nav).not.toContain('ArrowLeftRight');
+    // A non-switchable account still sees the mode as a plain, non-interactive chip.
+    expect(nav).toContain('roleSwitch.canSwitch ? (');
+    // The sheet names the same mode label the header pill shows.
     expect(nav).toContain('currentModeLabel={roleLabel}');
-    // The chip's dot borrows the mode's row tone; Community falls back.
+    // The pill's dot borrows the mode's row tone; Community falls back.
     expect(nav).toContain("const modeTone = roleTone ?? drawerNavIconTones['switch-community'];");
+  });
+
+  it('renders a bigger profile avatar than the old compact header', () => {
+    expect(nav).toContain('<Avatar className="h-16 w-16 ring-2 ring-white/50 shrink-0">');
+    expect(nav).not.toContain('h-9 w-9 ring-1 ring-white/40');
   });
 
   it('the switcher sheet names the active mode above the list (VTID-04041)', () => {
