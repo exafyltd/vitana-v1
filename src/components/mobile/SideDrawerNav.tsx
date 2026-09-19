@@ -338,6 +338,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
+            data-testid="mobile-nav-drawer"
             className="fixed top-0 left-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
@@ -363,7 +364,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
                 aria-label={t('screens.mobile.openMyProfile')}
               >
-                <Avatar className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">
+                <Avatar data-testid="mobile-nav-avatar" className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">
                   <AvatarImage
                     src={profile.avatar}
                     alt={profile.displayName}

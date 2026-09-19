@@ -79,6 +79,15 @@ on:
         required: false
         default: 'vitana-community-app-awsdr'
         type: string
+      is_rollback:
+        description: 'True if this dispatch is a revert to a prior known-good commit (recorded as deploy_type=rollback in software_versions / Command Hub Versions panel).'
+        required: false
+        default: 'false'
+        type: string
+      initiator:
+        required: false
+        default: 'agent'
+        type: string
   workflow_dispatch:
     inputs:
       reason:
@@ -88,6 +97,14 @@ on:
         description: 'Exact commit SHA to build. Empty → main HEAD.'
         required: false
         default: ''
+      is_rollback:
+        description: 'True if this dispatch is a revert to a prior known-good commit (recorded as deploy_type=rollback in software_versions / Command Hub Versions panel).'
+        required: false
+        default: 'false'
+      initiator:
+        description: 'Who is dispatching this (recorded in software_versions) — "user" or "agent"'
+        required: false
+        default: 'agent'
       gateway_url:
         description: 'Gateway base URL to bake into the bundle (canonical GCP prod by default)'
         required: false
@@ -115,6 +132,9 @@ on:
 
 permissions:
   contents: read
+  # VTID-04114: needed to read the staging smoke-test commit status this
+  # workflow gates on before it builds/ships anything.
+  statuses: read
 
 concurrency:
   group: aws-prod-deploy-frontend
@@ -138,6 +158,39 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.commit_sha != '' && inputs.commit_sha || github.sha }}
+
+      # VTID-04114: $GITHUB_SHA reflects the triggering ref, not necessarily
+      # the commit actually checked out above when commit_sha is pinned —
+      # the deployment record below must name the commit that really shipped.
+      - name: Resolve checked-out commit
+        id: resolve
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # VTID-04114: the actual root-cause fix for the PR #1114 incident — that
+      # commit shipped to 100% of prod via this exact workflow with zero
+      # automated check of any kind between "merged to main" and "serving
+      # every mobile user". Refuse to build/ship unless the commit has a
+      # recorded PASSING mobile-shell-smoke-test status from staging
+      # (AWS-STAGE-DEPLOY-FRONTEND.yml). is_rollback is the one deliberate
+      # escape hatch — reverting TO a prior commit must never be blocked by
+      # this gate, or an emergency rollback could get stuck behind it.
+      - name: Require a passing staging smoke test before publishing
+        if: inputs.is_rollback != 'true'
+        run: |
+          SHA="${{ steps.resolve.outputs.sha }}"
+          RESP=$(curl -fsS \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/commits/$SHA/status") \
+            || { echo "::error::Could not read commit status for $SHA — refusing to publish. If this is a genuine emergency, re-dispatch with is_rollback=true and a known-good commit_sha instead."; exit 1; }
+          STATE=$(echo "$RESP" | jq -r --arg ctx "ci/mobile-shell-smoke-staging" \
+            '[.statuses[] | select(.context == $ctx)] | sort_by(.updated_at) | last | .state // "missing"')
+          echo "Staging smoke-test status for $SHA: $STATE"
+          if [ "$STATE" != "success" ]; then
+            echo "::error::Commit $SHA has no PASSING 'ci/mobile-shell-smoke-staging' status (found: $STATE). This commit has not been verified on staging — publish it there first via AWS-STAGE-DEPLOY-FRONTEND.yml and let the smoke test pass, or dispatch this workflow with is_rollback=true if you are deliberately reverting to a prior known-good commit."
+            exit 1
+          fi
+          echo "✓ Staging smoke test passed for $SHA — proceeding."
 
       - name: Write .env.production with the canonical prod gateway URL
         run: |
@@ -242,3 +295,30 @@ jobs:
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
             echo "- VTID: VTID-03409"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04114: the Command Hub's clock icon / Versions panel (software_versions,
+      # VTID-0510) had zero visibility into community-app deploys — every writer of
+      # that table was gateway-only (the dead EXEC-DEPLOY.yml + deploy-service.sh).
+      # A prod frontend incident could ship and roll back with no trace in the one
+      # place operators look for "what got published, when". Non-fatal: this is a
+      # visibility record, not a deploy precondition — never fail the job over it.
+      - name: Record deployment in software_versions (Command Hub Versions panel)
+        if: success()
+        run: |
+          DEPLOY_TYPE="normal"
+          if [ "${{ inputs.is_rollback }}" = "true" ]; then DEPLOY_TYPE="rollback"; fi
+          if curl -fsS "${{ env.GATEWAY_URL }}/api/v1/operator/deployments" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg service "${{ env.ECS_SERVICE }}" \
+              --arg git_commit "${{ steps.resolve.outputs.sha }}" \
+              --arg deploy_type "$DEPLOY_TYPE" \
+              --arg initiator "${{ inputs.initiator || 'agent' }}" \
+              --arg environment "production" \
+              '{service: $service, git_commit: $git_commit, deploy_type: $deploy_type, initiator: $initiator, status: "success", environment: $environment}')" \
+            > /dev/null
+          then
+            echo "VTID-0510: recorded in software_versions — visible in Command Hub → clock icon."
+          else
+            echo "::warning::VTID-0510: failed to record deployment in software_versions (non-fatal, deploy itself succeeded)."
+          fi
