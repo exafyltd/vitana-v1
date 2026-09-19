@@ -47,6 +47,20 @@
     <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin>
     <link rel="dns-prefetch" href="%VITE_SUPABASE_URL%">
 
+    <!-- VTID-04099: fetch the widget at HIGH priority, immediately.
+         `defer` gets the script fetched at LOW priority, behind the app's own
+         module graph — on a slow mobile connection that is where the delay
+         between opening the app and being able to talk actually comes from.
+         `preload` moves only the FETCH earlier and to a higher priority; the
+         execution order (deferred, after parse, before the app module) is
+         unchanged, so this cannot reorder anything or run the widget sooner
+         than the document is ready for it.
+         `crossorigin` is required and must match the script tag's fetch mode,
+         or the browser fetches the file TWICE and the preload is worse than
+         nothing. The widget is cross-origin by design (it is served by the
+         gateway, and auto-detects its gateway from its own script src). -->
+    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260825-stuck-speaking-watchdog">
+
     <!-- ORB Voice Widget -->
     <!-- BOOTSTRAP-ORB-STAGING-GATEWAY: load the widget from THIS environment's
          gateway via %VITE_GATEWAY_BASE% (Vite bakes it at build:
