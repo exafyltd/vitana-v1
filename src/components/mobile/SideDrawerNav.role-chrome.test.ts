@@ -31,9 +31,11 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).toContain("const CROSS_MODE_IDS = ['commerce', 'patient-results', 'health-orders', 'support', 'settings', 'logout'];");
   });
 
-  it('places the pill (and org chip) in the text column under name/handle, outside the profile button (VTID-03997)', () => {
-    // The block is indented to the text column: avatar h-16/w-16 (64px) + gap-3 (12px) = ms-[76px].
-    expect(nav).toContain('<div className="ms-[76px] mt-1.5 flex min-w-0 flex-col items-start gap-1">');
+  it('places the pill (and org chip) below the avatar/name row, spanning full width, outside the profile button (VTID-03997)', () => {
+    // Un-indented on purpose: at the bigger avatar size, indenting under the
+    // text column left too little room for the pill and truncated the role
+    // label (e.g. "Exafy-Admin" -> "Exafy-...").
+    expect(nav).toContain('<div className="mt-3 flex min-w-0 flex-col items-start gap-1.5">');
     // Not nested inside the profile <button> — the pill appears only after it closes.
     const profileBtn = nav.indexOf('onClick={handleProfileClick}');
     const profileBtnEnd = nav.indexOf('</button>', profileBtn);
@@ -51,7 +53,7 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     // inside it, mirroring a native <select>/dropdown affordance.
     const pillButton = nav.indexOf('aria-haspopup="dialog"');
     const pillOnClick = nav.lastIndexOf('openRoleSheet();', pillButton);
-    const chevron = nav.indexOf('<ChevronDown className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />');
+    const chevron = nav.indexOf('<ChevronDown className="h-4 w-4 shrink-0" aria-hidden="true" />');
     expect(pillButton).toBeGreaterThan(-1);
     expect(pillOnClick).toBeGreaterThan(-1);
     expect(chevron).toBeGreaterThan(pillButton);
@@ -65,9 +67,13 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     expect(nav).toContain("const modeTone = roleTone ?? drawerNavIconTones['switch-community'];");
   });
 
-  it('renders a bigger profile avatar than the old compact header', () => {
-    expect(nav).toContain('<Avatar className="h-16 w-16 ring-2 ring-white/50 shrink-0">');
+  it('renders a bigger profile avatar than the old compact header — big enough to read as the dominant element next to the name/pill', () => {
+    expect(nav).toContain('<Avatar className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">');
     expect(nav).not.toContain('h-9 w-9 ring-1 ring-white/40');
+    expect(nav).not.toContain('h-16 w-16 ring-2 ring-white/50');
+    // Name/handle scaled up to match — the pill is a roomy control, not a tiny badge.
+    expect(nav).toContain('font-bold text-xl tracking-wide truncate');
+    expect(nav).toContain('rounded-full px-4 py-2 text-sm font-semibold');
   });
 
   it('the switcher sheet names the active mode above the list (VTID-04041)', () => {
