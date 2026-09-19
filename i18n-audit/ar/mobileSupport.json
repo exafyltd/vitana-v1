@@ -371,12 +371,10 @@
       "phase": "llm"
     },
     "mobilesupport.backendRecordingHint": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender agreement: 'نسختك' should be 'نسختك' (feminine) to match 'transcription' (نسخة) in Arabic.",
-      "suggested": "ستظهر نسختك بعد النقر على إيقاف.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:19.808Z"
+  "generatedAt": "2026-09-19T08:13:16.842Z"
 }
