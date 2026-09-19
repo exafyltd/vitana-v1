@@ -68,7 +68,9 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
   });
 
   it('renders a bigger profile avatar than the old compact header — big enough to read as the dominant element next to the name/pill', () => {
-    expect(nav).toContain('<Avatar className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">');
+    // VTID-04114: data-testid added for the mobile-shell-smoke e2e check —
+    // it precedes className in source order, so the literal match includes it.
+    expect(nav).toContain('<Avatar data-testid="mobile-nav-avatar" className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">');
     expect(nav).not.toContain('h-9 w-9 ring-1 ring-white/40');
     expect(nav).not.toContain('h-16 w-16 ring-2 ring-white/50');
     // Name/handle scaled up to match — the pill is a roomy control, not a tiny badge.
