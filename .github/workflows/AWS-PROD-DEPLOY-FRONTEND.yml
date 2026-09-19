@@ -79,6 +79,15 @@ on:
         required: false
         default: 'vitana-community-app-awsdr'
         type: string
+      is_rollback:
+        description: 'True if this dispatch is a revert to a prior known-good commit (recorded as deploy_type=rollback in software_versions / Command Hub Versions panel).'
+        required: false
+        default: 'false'
+        type: string
+      initiator:
+        required: false
+        default: 'agent'
+        type: string
   workflow_dispatch:
     inputs:
       reason:
@@ -88,6 +97,14 @@ on:
         description: 'Exact commit SHA to build. Empty → main HEAD.'
         required: false
         default: ''
+      is_rollback:
+        description: 'True if this dispatch is a revert to a prior known-good commit (recorded as deploy_type=rollback in software_versions / Command Hub Versions panel).'
+        required: false
+        default: 'false'
+      initiator:
+        description: 'Who is dispatching this (recorded in software_versions) — "user" or "agent"'
+        required: false
+        default: 'agent'
       gateway_url:
         description: 'Gateway base URL to bake into the bundle (canonical GCP prod by default)'
         required: false
@@ -138,6 +155,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.commit_sha != '' && inputs.commit_sha || github.sha }}
+
+      # VTID-04114: $GITHUB_SHA reflects the triggering ref, not necessarily
+      # the commit actually checked out above when commit_sha is pinned —
+      # the deployment record below must name the commit that really shipped.
+      - name: Resolve checked-out commit
+        id: resolve
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Write .env.production with the canonical prod gateway URL
         run: |
@@ -242,3 +266,30 @@ jobs:
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
             echo "- VTID: VTID-03409"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04114: the Command Hub's clock icon / Versions panel (software_versions,
+      # VTID-0510) had zero visibility into community-app deploys — every writer of
+      # that table was gateway-only (the dead EXEC-DEPLOY.yml + deploy-service.sh).
+      # A prod frontend incident could ship and roll back with no trace in the one
+      # place operators look for "what got published, when". Non-fatal: this is a
+      # visibility record, not a deploy precondition — never fail the job over it.
+      - name: Record deployment in software_versions (Command Hub Versions panel)
+        if: success()
+        run: |
+          DEPLOY_TYPE="normal"
+          if [ "${{ inputs.is_rollback }}" = "true" ]; then DEPLOY_TYPE="rollback"; fi
+          if curl -fsS "${{ env.GATEWAY_URL }}/api/v1/operator/deployments" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg service "${{ env.ECS_SERVICE }}" \
+              --arg git_commit "${{ steps.resolve.outputs.sha }}" \
+              --arg deploy_type "$DEPLOY_TYPE" \
+              --arg initiator "${{ inputs.initiator || 'agent' }}" \
+              --arg environment "production" \
+              '{service: $service, git_commit: $git_commit, deploy_type: $deploy_type, initiator: $initiator, status: "success", environment: $environment}')" \
+            > /dev/null
+          then
+            echo "VTID-0510: recorded in software_versions — visible in Command Hub → clock icon."
+          else
+            echo "::warning::VTID-0510: failed to record deployment in software_versions (non-fatal, deploy itself succeeded)."
+          fi

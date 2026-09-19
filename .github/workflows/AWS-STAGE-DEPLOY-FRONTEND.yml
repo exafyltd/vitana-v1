@@ -119,6 +119,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Resolve checked-out commit
+        id: resolve
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Write .env.production with AWS staging gateway URL
         run: |
           # Vite (production mode) lets .env.production OVERRIDE .env.
@@ -252,3 +256,23 @@ jobs:
             echo "- Verified live at: $FRONTEND"
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04114: same visibility gap as AWS-PROD-DEPLOY-FRONTEND.yml — the
+      # Command Hub Versions panel had zero record of community-app deploys on
+      # either stack. Non-fatal: a visibility record, not a deploy precondition.
+      - name: Record deployment in software_versions (Command Hub Versions panel)
+        if: success()
+        run: |
+          if curl -fsS "${{ env.GATEWAY_URL }}/api/v1/operator/deployments" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg service "${{ env.ECS_SERVICE }}" \
+              --arg git_commit "${{ steps.resolve.outputs.sha }}" \
+              --arg environment "staging" \
+              '{service: $service, git_commit: $git_commit, deploy_type: "normal", initiator: "agent", status: "success", environment: $environment}')" \
+            > /dev/null
+          then
+            echo "VTID-0510: recorded in software_versions — visible in Command Hub → clock icon."
+          else
+            echo "::warning::VTID-0510: failed to record deployment in software_versions (non-fatal, deploy itself succeeded)."
+          fi
