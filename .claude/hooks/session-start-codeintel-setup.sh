@@ -24,7 +24,7 @@
 #     the index stays current across commits within one session, not just
 #     at session start.
 #
-# VTID-04122 addition:
+# VTID-04125 addition:
 #   - RepoWise's own LLM synthesis (`get_answer`, `full_upgrade`) has no
 #     Bedrock provider at all (confirmed live: REPOWISE_PROVIDER=bedrock
 #     throws `ValueError: Unknown provider`) — it needs one of its own
