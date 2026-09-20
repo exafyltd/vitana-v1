@@ -1,0 +1,585 @@
+<!--
+VTID-04121 — this is a COMMITTED, POINT-IN-TIME SNAPSHOT of Graphify's
+community structure, not the live source of truth. `graphify-out/` itself
+is gitignored and rebuilt (with real Bedrock community labeling, see
+.claude/hooks/session-start-codeintel-setup.sh) at the start of every
+Claude Code session — this file exists so the map survives a container
+recycle and is reviewable in a diff, the same reason CLAUDE.md keeps a
+CHANGE LOG instead of relying only on git history.
+
+To refresh: `graphify label . --backend bedrock --model
+eu.anthropic.claude-sonnet-4-6` (needs AWS credentials — ambient in a
+Claude Code Remote session), then re-run this extraction:
+`sed -n '1,568p' graphify-out/GRAPH_REPORT.md > docs/codeintel/COMMUNITIES.md`
+(header excluded/re-added by hand). Stale is expected between refreshes —
+check "Built from commit" below against `git rev-parse HEAD` before trusting
+it for anything more than orientation.
+-->
+
+# Graph Report - vitana-v1  (2026-09-20)
+
+## Corpus Check
+- cluster-only mode — file stats not available
+
+## Summary
+- 13337 nodes · 45865 edges · 532 communities (480 shown, 52 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 602 edges (avg confidence: 0.93)
+- Token cost: 36,640 input · 4,852 output
+
+## Graph Freshness
+- Built from commit: `7e4b7e05`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
+
+## Community Hubs (Navigation)
+- Activity Feed Events
+- Admin Filter and Status UI
+- Admin Screen ID Registry
+- Admin Dashboard Routes
+- Notification Composer
+- AI Connect Modals
+- Wallet RPC Operations
+- Mobile KPI Earnings Strip
+- Admin Match Assistant
+- Media Upload Components
+- Mobile Screen Inventory
+- Live Room Group Feed
+- Admin UI Components
+- Partner Onboarding Acceptance
+- Autopilot Calendar Suggestions
+- Admin Page Routes
+- Error Logging Tests
+- Mobile Earning Portal
+- Autopilot Runs Views
+- Calendar and Reminders
+- Companion Fields Operations
+- Screen ID Catalog
+- Community Post Cards
+- Email Confirmation Flow
+- Supabase Edge Functions
+- Auth and Community Members
+- Approvals Audit Stubs
+- Earnings History Ledger
+- Dev Hub Screen IDs
+- Root Page Routes
+- Frontend Dependencies
+- Admin Dialog Controls
+- Admin Role Screens
+- Marketplace Product Cards
+- Soundscape Audio Manager
+- Contact Consent Sync
+- Analytics Charts
+- Package Configuration
+- Locale Chunking Scripts
+- Chat Message Bubbles
+- RTL Language Provider
+- Release Backlog Overview
+- Mobile Events Notifications
+- Component Test Suite
+- Global Overlay Screens
+- Universal Cart Flow
+- Podcast and Diary Lists
+- Settings Module Actions
+- Platform Icons Health
+- Navigation Map Flows
+- Event Game Pages
+- Command Hub Wiring
+- Universal Screen Pattern
+- i18n Locale Scripts
+- Contacts Import Dialog
+- Dev Command Hub Pages
+- Dream Journey Cards
+- Feed Prefetch Hooks
+- Shop Feed Client
+- Go Live Media Upload
+- Social Media Icons
+- Reminder Interrupt Overlay
+- AI Chat Edge Function
+- Business Hub AI Guidance
+- Paywall Modal Provider
+- Dev Session Autosave
+- i18n Registration Check
+- News Feed Mode
+- Approvals Decision Screen
+- Analytics Tracker Client
+- In-App Browser Detection
+- Matches Hub Notifications
+- Global Layout Structure
+- Wallet Cart Components
+- Discover Bookmarks Cart
+- Analytics Client Regression
+- Voice Diary Recorder
+- Commission Forecasting Cards
+- Chat Persistence Cache
+- Admin Navigator Auth
+- Business Hub Actions
+- Autopilot Architecture Docs
+- Audit Suggestions Scripts
+- Business Mode Navigation
+- Country Flag Assets
+- Platform Gap Analysis
+- Video Upload Modals
+- Horizontal Lists QA
+- Community Discovery Matching
+- Service Package Cards
+- Storage Bridge Tests
+- Wallet CTO Report
+- Feature Catalog by Role
+- ESLint i18n Plugins
+- Health Lifestyle Cards
+- Language Context Provider
+- Realtime Chat Relay
+- Detailed Action Definitions
+- Screen Inventory Pages
+- BackOffice Navigation Tabs
+- Build & Dev Scripts
+- Backoffice Draft Types
+- Community Module Actions
+- Health Module Actions
+- i18n Verification Scripts
+- Vitana Index Components
+- WebRTC Integration Docs
+- i18n Catalog Loaders
+- Backend SSE Diagnostics
+- Claude Dev Guidelines
+- Autopilot Action Catalog
+- Backoffice Page Routes
+- Events & Profile Preview
+- Exercise & Workout UI
+- Partner Match Cards
+- Auth Portal Screens
+- Dev Dependencies Config
+- Longevity & Wellness Cards
+- Google Connection Integration
+- Milestone & Celebration Events
+- App Hooks Reference
+- Message Cache & Threads
+- Incomplete Screens Tracker
+- JSX i18n Codemod
+- AI Smart Suggestions
+- Offline & i18n Providers
+- Macro & Recipe Cards
+- Voice Payments API Integrations
+- Mobile PWA Rules
+- i18n Audit Scripts
+- i18n LLM Audit
+- Presence & Conversation UI
+- Command Center View
+- Hydration Dashboard UI
+- Partner Service Offerings
+- Discover Module Actions
+- JSX Text Codemod v2
+- Cart Client Regression Tests
+- Streaming & Navigation Contexts
+- Sleep Dashboard UI
+- Live Stream Management
+- Autopilot Capabilities Docs
+- JSX Expressions Codemod
+- Capture Card Tests
+- Product & Connection Workbench
+- Match Filter Sheet
+- Role Switcher Navigation
+- Account Cards UI
+- Wallet Gateway Client
+- Shopping Agent Hook
+- Sharing Module Actions
+- Call Manager & Context
+- Task Catalog Panes
+- Conversation & Message Status
+- Bedrock Bridge Client
+- Legal Public Pages
+- Toast i18n Codemod
+- Mission Alignment Card
+- Greeting & Horizon Buckets
+- Wallet Module Actions
+- Mobile Screen Inventory
+- Role Screen Matrix
+- Multi-Language E2E Tests
+- JSX Text Codemod
+- Appilix App Integration
+- Guided Journey Progress
+- Live Room Service
+- Test User Confirmation Email
+- API Monitoring & Risk
+- Admin Dev Module Actions
+- AI Recommendation Edge Functions
+- Command Hub Reconnection Report
+- Role Cleanup Decisions
+- Screen Registry
+- Commerce Partner Onboarding
+- Dev Hub README
+- Consent & Onboarding UI
+- i18n Stamp Source
+- i18n Parity Gate
+- Group Chat API
+- Onboarding Experience Flow
+- Global Error Boundary
+- TypeScript App Config
+- Firebase Push Notifications
+- API Inventory Docs
+- Partner Health Orders
+- Vitana Index Storybook
+- Toast i18n Leftovers Codemod
+- Vaea Config Panels
+- Vitana Index Sheet
+- Profile Groups Tab
+- Dev Events Gateway Client
+- Analytics Service
+- Push Notification Manager
+- AI Module Actions
+- Stub Gateway Scaffold
+- Org Member Roster
+- Photo Carousel Modal
+- Admin Feedback Tickets
+- Admin Notifications Composer
+- Connection State & Progress
+- Notification Category Management
+- UI Component Configuration
+- Admin Role & Permission RPCs
+- Admin Shell Coordination Contract
+- Match Concierge Feature Plan
+- Tenant Screen Availability Matrix
+- Playwright Screenshot Automation
+- CI Accessibility Testing
+- Mobile Shorts Feed & Sharing
+- AI Voice & Speech Services
+- Mental Health Dashboard UI
+- Campaign Audience & Channel Setup
+- Role Switch & Access Control
+- Cover Image Processing
+- Ticket Pipeline & Actions
+- AI Intelligence API Endpoints
+- External Service Integrations
+- Confetti Animation Utility
+- Apple App Review Compliance
+- Horizontal List Design Patterns
+- i18n 8-Language Parity Plan
+- UI Pattern Enforcement Rules
+- Back Office Command Errors
+- i18n Screen Inventory Generator
+- Commerce Shell & Host Config
+- Task Stream & Analytics
+- Active VTID Command Hub
+- Shorts Feed Hook & Tests
+- TypeScript Node Config
+- Tenant Capability Matrix
+- Match Engine Refinement
+- Back Office Approval Catalog
+- Video Commerce Drawer Spec
+- React Hook Form Components
+- Offer & Recommendation Cards
+- Events Preview & Demo Data
+- Profile Provider & Retry Logic
+- AI Voice Audio Service
+- Community Module API Mapping
+- Memory Module Actions
+- Main Application Page Routes
+- Memory & Learning Architecture
+- Community Page Components
+- BackOffice CRM Draft Cards
+- Toast Notification Components
+- Locale Format Codemod
+- Health Biology & Supplements
+- Vitana Index Streak Tracking
+- Campaign Analytics & Export
+- Notification Preferences & FCM
+- Dev Hub Auth Redirect Fix
+- Navigation Headless Execution Rules
+- Emoji Icon Mapping Guide
+- Draft Form & Line Editor
+- E2E Screenshot Automation
+- Favicon Generation Script
+- Video Compression Utility
+- Inventory Report Generator
+- Admin Marketplace Overview
+- Patient Health Results
+- AI Assistant Connections
+- Personalized Plan Cards
+- Chat Groups & Inbox Threads
+- Onboarding Orb Front Door
+- SSE Connection Manager
+- Autopilot Voice Grammar
+- Per-Action Voice Grammar
+- Community Module Voice Actions
+- Autopilot Regeneration Spec
+- Activity Kind Taxonomy
+- Hollow Conversation Guardrail
+- Pre-Match Recommendation Flow
+- Stub Gateway Approvals
+- Stub Gateway Approvals
+- Stub Gateway Approvals
+- Stub Gateway Approvals
+- Screen Registry D1 Fields Script
+- Loading Flash Check Utility
+- Resizable Panel Components
+- Real User Monitoring Metrics
+- OAuth Bounce & User Interests Store
+- i18n Locale Configuration
+- Daily Summary & Event Cards
+- Feed Post Interactions & Likes
+- Mini Audio Player Hook
+- Social Share Autopilot
+- Coach Profile & Credentials
+- i18n Language Context Tests
+- Chat Unread Count Hook
+- Autopilot Capabilities by Module
+- Risk Classification & Safety Rules
+- Capability to Screen Mapping
+- SSE Connection Technical Issues
+- Orb States & Visual Architecture
+- Active Communication Assist
+- Group Orchestration Mechanics
+- Discover Page Components
+- Scripts Package Config
+- Orb Voice Client Regression Test
+- User Detail Panel
+- Partner Preferences Section
+- Guided Mode Provider
+- Orb Voice Widget
+- TypeScript Config
+- API Dependency Diagrams
+- Module-Level Command Grammar
+- Virtual Currency Architecture
+- Dev Tools Dashboard
+- Mobile Longevity Plan
+- Vitana Persona Foundation
+- News Card Moderation Menu
+- Patient Role Screens
+- Professional Role Screens
+- Staff Role Screens
+- Hidden Limitations Footer Fix
+- Journey Illustrations
+- Vitana Autopilot Training
+- Route Extraction Script
+- i18n Leak Crawler
+- Realtime Latency Probe
+- Admin All Users Panel
+- Privacy Settings Tiers
+- Activity History Hook
+- Popup Coordination System
+- Signup Funnel Hooks
+- Backoffice Draft Tests
+- Feature Flags & A11y Tests
+- Horizontal Cards SLO
+- Campaign OG Generator
+- Event OG Generator
+- Short OG Generator
+- Health Module Actions
+- Capability Classification Levels
+- Group Detail Screen Guide
+- Health Pages
+- Settings Pages
+- Backoffice Sales CRM Draft
+- Sold-Out Campaign Fix
+- Mock API Server
+- Group Chat Date Divider
+- Locale Registry Checker
+- Guided Journey Regression
+- Nav Draft Generator
+- Intro Orb Placement Verify
+- Community Post Card Tests
+- Locale Registration Tests
+- Message Date Separators
+- Gemini Live Communication Architecture
+- API Screen Registry Coverage
+- Background Automation Modes
+- Tenant-Specific Behavior
+- Live Rooms Screen Guide
+- Media Hub Screen Guide
+- Community Feed Guide
+- Challenges Screen Guide
+- Groups Screen Guide
+- Matchmaking Screen Guide
+- Events Meetups Screen Guide
+- Orb Mobile Visual Spec
+- Orb Visual Parity
+- Who-Is Consultant Service
+- E2E Guided Journey Tests
+- Settings Mode Pill Fix
+- Email & Voucher Sending
+- UI Latency Probe
+- Community Open Asks
+- Vitana Index Lift Watcher
+- Identity Redirect Listener
+- Route Transition Overlay
+- Backend Status Hook
+- Dev Docs Backlog
+- Share OG Generator
+- Campaign Queue Processor
+- Appointment Email Sender
+- Analytics Source Map
+- Campaign Distribution APIs
+- Utilities Module APIs
+- Profile Social RPCs
+- Error Recovery Grammar
+- Autopilot Action Dependencies
+- Icon Selection Guidelines
+- Dev Dashboard Sections
+- Community Overview Screen
+- Longevity Entry Animation
+- Vitana Index Visibility Rules
+- Floating Input Bar Spec
+- Trust Handshake Chips
+- Backoffice Sales CRM Read
+- Backoffice Sales Document Draft
+- Backoffice Finance Payment Draft
+- E2E Live Verify
+- Project README
+- Vitana Card Inventory Reports
+- Campaign Actions Tests
+- Popup Coordination & Performance
+- Intro Orb Placement Tests
+- Daily Match Generator
+- API Integration Tests
+- Card Inventory Generator
+- Admin & Tenant Management
+- AI & Voice Hooks
+- Messaging Operations
+- Grammar & Parsing Rules
+- Wallet & Billing Actions
+- Admin User Management
+- User Settings Sections
+- Community Guide & Navigation
+- Implementation Phases Plan
+- UI Wireframes Appendix
+- Experience Gravity Changes
+- Navigation Reorder & Layout
+- Overlay & Modal Rules
+- Screen Registry Template
+- Frontend Test Coverage Plan
+- Finance Treasury Acceptance Criteria
+- BackOffice Accounting Screens
+- BackOffice Reports Screens
+- Accounting Journal Draft
+- Sidebar Overlap Fix
+- E2E Debug Setup
+- Session Hook Script
+- Dev Error Boundary
+- Resize Observer & State
+- Query Chain Utilities
+- Mock Reseller Sales Data
+- Meetup Capacity & Pricing
+- Public Changelog Component
+- User Context Fetcher
+- Social Media Import
+- Event Generation Module
+- Campaign & Sharing Hooks
+- Events & Tickets Hooks
+- Health & Biomarkers Hooks
+- Discover & Cart Actions
+- Campaign Sharing Actions
+- AI Module Actions
+- Arabic i18n Audit
+- German i18n Audit
+- Spanish i18n Audit
+- French i18n Audit
+- Polish i18n Audit
+- Portuguese i18n Audit
+- Russian i18n Audit
+- Serbian i18n Audit
+- Turkish i18n Audit
+- Chinese i18n Audit
+- Mobile PWA Longevity Rules
+- Success Criteria Metrics
+- Vitanaland Home Surface
+- i18n Localization Rules
+- Floating Input Bar
+- Bottom Navigation Bar
+- Activity Concierge Autopilot
+- Notification Rules & Types
+- AI Pages
+- Legal Pages
+- Memory Pages
+- Patient Health Pages
+- Sharing & Campaign Pages
+- Screenshot Output Steps
+- Guided Journey Teaching Tests
+- Conversation Error Boundary
+- Mobile Wallet Quick Actions
+- Appointment Reminder Email
+- Stripe Voucher Checkout
+- Frontend Media Controls
+- Media Services Layer
+- Error Handling & Recovery
+- Quick Reference Appendix
+- Code Intel Session Setup
+- Messages Section Routes
+- German Long Word Audit
+- Longevity Core Thesis
+- Structural Foundation Rules
+- Share System Rules
+- Live Rooms Feature
+- Staff Role Screens
+- ERP Access Acceptance Criteria
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Screenshot Output Shots
+- Geometry Probe Utility
+- Screenshot Output Shots
+- Audio Processor Module
+- Firebase Messaging Service Worker
+- Daily Video Room Integration
+- Tailwind CSS Configuration
+- Orb Voice Widget Tests
+- Route Tracker Hook
+- Event API Slug Handler
+- Gemini TTS Audio Service
+- Testing and Debugging Docs
+- Future Improvements Roadmap
+- Performance Considerations Docs
+- Security Architecture Docs
+- AI Memory Features
+- Shot Output Script B
+- Shot Output Script C
+- Pull Request Template
+- PR Preview Setup Script
+- Package Payment Verification
+- Notification System Docs
+- Agents Repository Scope
+- Arabic i18n Deferred Audit
+- German i18n Deferred Audit
+- Spanish i18n Deferred Audit
+- Serbian i18n Deferred Audit
+- Turkish i18n Deferred Audit
+- Chinese i18n Deferred Audit
+- ESLint Pattern Rules
+- Web App Manifest
+- D1 Completion Script
+
+## God Nodes (most connected - your core abstractions)
+1. `t` - 1742 edges
+2. `react` - 882 edges
+3. `lucide-react` - 840 edges
+4. `Button` - 653 edges
+5. `cn()` - 587 edges
+6. `Card` - 410 edges
+7. `notifyError()` - 402 edges
+8. `useAuth()` - 361 edges
+9. `Badge()` - 346 edges
+10. `useTranslation()` - 340 edges
+
+## Surprising Connections (you probably didn't know these)
+- `Shared files — touch only with coordination` --references--> `UserRole`  [INFERRED]
+  docs/plans/admin-shell.md → src/hooks/useRole.tsx
+- `Acceptance criteria` --references--> `useErpRead()`  [INFERRED]
+  docs/validation/VTID-03849/acceptance.md → src/hooks/useBackOfficeCommands.ts
+- `Notes from the screenshot review` --references--> `overdueShare()`  [INFERRED]
+  docs/validation/VTID-03858/acceptance.md → src/lib/backoffice-reports.ts
+- `What does not change` --references--> `MobileModePill()`  [INFERRED]
+  .lovable/plan.md → src/components/ui/MobileModePill.tsx
+- `A5-AI-015: Multi-Action Autopilot` --references--> `useAutopilot()`  [INFERRED]
+  docs/AUTOPILOT_ACTION_CATALOG.md → src/hooks/use-autopilot.ts
