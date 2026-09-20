@@ -1,0 +1,40 @@
+# Accepted architectural decisions for this repository.
+#
+# Generated and rewritten by repowise; edits survive, comments do not.
+# Commit this file: it is the source of truth, and the index is a copy.
+# Candidates and evidence stay out of it on purpose.
+version: 1
+decisions:
+- id: 376f96d4ad00858c2d29048482519f4d
+  title: .mcp.json and .repowise/decisions.yaml must be committed, not gitignored
+  decision: Un-ignore .mcp.json entirely, and carve out .repowise/decisions.yaml specifically from the
+    .repowise/ ignore rule (.repowise/* + !.repowise/decisions.yaml, since a trailing-slash directory
+    ignore blocks git from ever looking inside for a negation).
+  reason: The rest of .repowise/ and graphify-out/ are large, machine-specific, rebuilt-every-session
+    generated indexes that genuinely should not be committed; .mcp.json (a small static config) and decisions.yaml
+    (repowise's own durable decision store) are not in that category.
+  scope:
+  - .gitignore
+  - .mcp.json
+  currency: active
+  source: cli
+  accepted_at: '2026-09-20T09:29:55.674919'
+  accepted_by: Claude
+  evidence:
+  - accepted by Claude
+- id: 62a4b7549e500f35e467c57e2eb913c7
+  title: RepoWise MCP server needs explicit settings trust to load
+  decision: 'Add "enableAllProjectMcpServers": true to .claude/settings.json (verified: repowise mcp /home/user/vitana-v1
+    --transport stdio correctly answers an MCP initialize + tools/list handshake with all 10 tools; the
+    server itself was never the problem).'
+  reason: Claude Code requires an explicit trust setting before it will auto-load a project-declared .mcp.json
+    server in a non-interactive/remote session; without it the declaration is inert.
+  scope:
+  - .claude/settings.json
+  - .mcp.json
+  currency: active
+  source: cli
+  accepted_at: '2026-09-20T09:29:40.606301'
+  accepted_by: Claude
+  evidence:
+  - accepted by Claude

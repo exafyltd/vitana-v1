@@ -2,6 +2,7 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "enableAllProjectMcpServers": true,
   "permissions": {
     "defaultMode": "bypassPermissions",
     "allow": [
@@ -73,6 +74,28 @@
             "command": "bash \"${CLAUDE_PROJECT_DIR:-/home/user/vitana-v1}/scripts/watcher/session-hook.sh\" end",
             "timeout": 10,
             "statusMessage": "Watcher: reconciling session end..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/root/.local/bin/graphify hook-guard search",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/root/.local/bin/graphify hook-guard read",
+            "timeout": 10
           }
         ]
       }
