@@ -1,319 +1,561 @@
 {
   "verdicts": {
-    "sidebar.home": {
+    "eventGame.home.viewLeaderboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.home.rulesLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.home.countdownLeft": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.home.gameOver": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.post.categoryEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.post.categoryLongevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.post.categoryPoints": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.post.mustJoinFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.leaderboard.movingUpChange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.rules.join": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.rules.event": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.rules.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.rules.likes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.rules.win": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.rules.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.winnerTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.winnerCrown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.winnerPoints": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.reward": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.yourResultTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.yourRank": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.yourPoints": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.postCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.results.likesCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.leaderboardSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.ledgerSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.adjustPoints": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.adjustReason": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.adjustApply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.admin.notModerator": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventGame.landing.kicker": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.news": {
+    "eventGame.landing.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.community": {
+    "eventGame.landing.bulletPost": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.discover": {
+    "eventGame.landing.bulletLikes": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.inbox": {
+    "eventGame.landing.bulletClimb": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.health": {
+    "eventGame.landing.bulletWin": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.wallet": {
+    "eventGame.landing.playing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.sharing": {
+    "eventGame.landing.ctaJoin": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.memory": {
+    "eventGame.landing.ctaLeaderboard": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.settings": {
+    "eventGame.landing.notLivePreTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.admin": {
+    "eventGame.landing.notLivePreBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.businessHub": {
+    "eventGame.landing.notLiveEndedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.aiAssistant": {
+    "eventGame.landing.notLiveEndedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.dashboard": {
+    "eventGame.landing.disabled": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myHealth": {
+    "eventGame.join.celebrateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.appointments": {
+    "eventGame.join.celebratePoints": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.testResults": {
+    "eventGame.join.celebrateScore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.careTeam": {
+    "eventGame.join.celebrateRank": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.healthGoals": {
+    "eventGame.join.nextTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.insurance": {
+    "eventGame.join.nextBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.notifications": {
+    "eventGame.join.nextCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myPatients": {
+    "eventGame.home.score": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.schedule": {
+    "eventGame.home.rank": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.clinicalTools": {
+    "eventGame.home.pointsToNext": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.referrals": {
+    "eventGame.home.firstPlace": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.billing": {
+    "eventGame.home.postCtaTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.professionalProfile": {
+    "eventGame.home.postCtaBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.education": {
+    "eventGame.home.postsUsed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.patientQueue": {
+    "eventGame.home.postCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.dailyTasks": {
+    "eventGame.home.capReached": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.reports": {
+    "eventGame.post.joinAndPost": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.communications": {
+    "eventGame.post.successTitle": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.staffTools": {
+    "eventGame.post.successPoints": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.timeTracking": {
+    "eventGame.post.successScore": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.userManagement": {
+    "eventGame.post.successRank": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.communitySupervision": {
+    "eventGame.post.getLikes": {
       "verdict": "OK",
-      "confidence": 0.9,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.mediaManagement": {
+    "eventGame.post.share": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.automation": {
+    "eventGame.leaderboard.title": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.liveStream": {
+    "eventGame.leaderboard.subtitle": {
       "verdict": "OK",
-      "confidence": 0.9,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.tenantManagement": {
+    "eventGame.leaderboard.top3": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.systemAdmin": {
+    "eventGame.leaderboard.you": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.clinicalOps": {
+    "eventGame.leaderboard.pointsToNext": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.monitoring": {
+    "eventGame.leaderboard.empty": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.logout": {
+    "eventGame.leaderboard.movingUpTitle": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.connectors": {
+    "eventGame.leaderboard.overtakenTitle": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.support": {
+    "eventGame.leaderboard.overtakenChange": {
       "verdict": "OK",
-      "confidence": 0.95,
+      "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myJourney": {
+    "eventGame.countdown.tenMinutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.countdown.fiveMinutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.countdown.oneMinute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.countdown.over": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.rules.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.results.longevityCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.results.gap": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.results.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.results.notEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.feedBadge.rankPoints": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.feedBadge.pointsToNext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.admin.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.admin.configSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.admin.nameLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventGame.admin.slugLabel": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.back": {
+    "eventGame.admin.descriptionLabel": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.overview": {
+    "eventGame.admin.rulesLabel": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.sales": {
+    "eventGame.admin.statusLabel": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.marketing": {
+    "eventGame.admin.startsAtLabel": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.accounting": {
+    "eventGame.admin.endsAtLabel": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.finance": {
+    "eventGame.admin.pointsSection": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.hr": {
+    "eventGame.admin.pointsRegistration": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.operations": {
+    "eventGame.admin.pointsEventPost": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.legal": {
+    "eventGame.admin.pointsLongevityPost": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.reports": {
+    "eventGame.admin.pointsLikeReceived": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.approvals": {
+    "eventGame.admin.pointsLikeCap": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.audit": {
+    "eventGame.admin.maxPosts": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "sidebar.backoffice.settings": {
+    "eventGame.admin.rewardTextLabel": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "eventGame.admin.rewardDescLabel": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "eventGame.admin.save": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-09-20T08:48:48.400Z"
+  "generatedAt": "2026-09-20T08:45:17.764Z"
 }
