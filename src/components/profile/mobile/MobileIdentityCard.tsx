@@ -304,54 +304,59 @@ export function MobileIdentityCard({
             </div>
           )}
 
-          {/* Vitana Index — turquoise circle, the same treatment as the
-              shared Index drawer (VitanaIndexSheet) so the score reads
-              identically everywhere it appears in the app. */}
-          <div className="flex items-center gap-3 rounded-2xl bg-gradient-to-b from-white/90 via-white/80 to-white/65 border border-white/80 backdrop-blur-sm px-3.5 py-3 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
-            <div
-              className="relative shrink-0 h-20 w-20 rounded-full flex items-center justify-center shadow-md"
-              style={{ background: "linear-gradient(160deg, hsl(var(--sys-vitana-accent) / 1) 0%, hsl(199, 42%, 34%) 100%)" }}
-              role="img"
-              aria-label={`Vitana Index ${vitanaIndex}`}
-            >
-              <div className="text-center">
-                <div className="text-xl font-extrabold text-white leading-none">{vitanaIndex}</div>
-                <div className="text-[9px] font-medium text-white/85 leading-none mt-1">
-                  {t('screens.health.text999')}
-                </div>
-              </div>
-            </div>
+          {/* Vitana Index — centered, with a soft turquoise glow behind a
+              big bold score, the same treatment as the shared Index drawer
+              (VitanaIndexSheet) so it reads identically everywhere it
+              appears in the app. */}
+          <div className="flex flex-col items-center w-full rounded-2xl bg-gradient-to-b from-white/90 via-white/80 to-white/65 border border-white/80 backdrop-blur-sm px-4 pt-4 pb-3 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
+            <span className="text-lg font-extrabold tracking-wide text-slate-900 uppercase">
+              {translate('profile.identity.vitanaIndex')}
+            </span>
 
-            <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-semibold tracking-[0.18em] text-teal-700 uppercase block">
-                {translate('profile.identity.vitanaIndex')}
-              </span>
-              <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
-                <div
-                  className="px-2.5 py-1 rounded-full text-[11px] font-semibold text-slate-900 shadow-sm"
-                  style={{
-                    backgroundColor: tier.color,
-                    backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%)`,
-                  }}
-                >{t(tier.labelKey)}
-                </div>
-                <div className="px-2.5 py-1 rounded-full text-[11px] font-semibold text-slate-900 bg-white/80 border border-white/90 shadow-sm">
-                  {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
-                </div>
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-              </div>
-              <button
-                type="button"
-                className="mt-1.5 inline-flex items-center gap-0.5 text-xs font-semibold text-teal-800 active:opacity-70"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate('/health/vitana-index');
+            <div className="relative flex items-center justify-center my-1">
+              <div
+                className="absolute w-28 h-28 rounded-full blur-2xl opacity-50"
+                style={{ background: "radial-gradient(circle, hsl(199, 70%, 62%), hsl(160, 65%, 55%) 55%, transparent 75%)" }}
+              />
+              <span
+                className="relative text-5xl font-extrabold"
+                style={{
+                  background: "linear-gradient(160deg, hsl(160, 70%, 42%) 0%, hsl(190, 65%, 38%) 60%, hsl(199, 70%, 30%) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
-                {translate('profile.identity.understandIndex', 'Understand index')}
-                <ChevronRight className="h-3.5 w-3.5" />
-              </button>
+                {vitanaIndex}
+              </span>
             </div>
+
+            <span className="text-sm font-bold text-slate-600 mb-2">
+              {t('screens.health.text999')}
+            </span>
+
+            <div className="flex items-center justify-center gap-2 flex-wrap">
+              <div
+                className="px-3 py-1 rounded-full text-xs font-semibold text-slate-900"
+                style={{ backgroundColor: `${tier.color}40` }}
+              >{t(tier.labelKey)}
+              </div>
+              <div className="px-3 py-1 rounded-full text-xs font-semibold text-slate-900 bg-white/80 border border-white/90">
+                {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
+              </div>
+              <TrendingUp className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+            </div>
+
+            <button
+              type="button"
+              className="mt-2 inline-flex items-center gap-0.5 text-xs font-semibold text-teal-800 active:opacity-70"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate('/health/vitana-index');
+              }}
+            >
+              {translate('profile.identity.understandIndex', 'Understand index')}
+              <ChevronRight className="h-3.5 w-3.5" />
+            </button>
           </div>
 
           {/* View Full ID CTA */}
