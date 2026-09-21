@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Share2, TrendingUp, UserPlus, UserCheck, MessageSquare, QrCode } from "lucide-react";
+import { ChevronRight, Share2, TrendingUp, UserPlus, UserCheck, MessageSquare, QrCode, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -170,75 +170,89 @@ export function MobileIdentityCard({
           </Button>
         )}
 
-        <div className="p-6 flex flex-col items-center">
-          {/* Avatar with subtle glow */}
-          <div className="relative mb-4">
-            <div
-              className="absolute inset-0 rounded-full blur-xl opacity-40"
-              style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
-            />
-            <Avatar className="relative h-24 w-24 border-[3px] border-white/90 shadow-lg">
-              <AvatarImage
-                src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(handle ?? displayName ?? "vitana")}
-                alt={displayName}
-                style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
+        <div className="p-4 pt-11 flex flex-col gap-3">
+          {/* Header row: bigger avatar on the left, name/handle/stats on the right */}
+          <div className="flex items-center gap-4">
+            <div className="relative shrink-0">
+              <div
+                className="absolute inset-0 rounded-full blur-lg opacity-40"
+                style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
               />
-              <AvatarFallback className="text-xl font-semibold bg-white/60 text-slate-600">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-          </div>
-
-          {/* Name */}
-          <h1 className="text-2xl font-bold text-slate-900 text-center">
-            {displayName}
-          </h1>
-
-          {/* Handle + Archetype */}
-          <p className="text-sm text-slate-600 text-center mt-0.5">
-            {shownHandle && <span>@{shownHandle}</span>}
-            {shownHandle && archetype && <span> · </span>}
-            {archetype && <span>{archetype}</span>}
-          </p>
-
-          {/* Follower / Following inline stats */}
-          {showStats && (
-            <div className="flex items-center justify-center gap-3 mt-3">
-              <button
-                type="button"
-                className="flex items-baseline gap-1.5 active:opacity-70"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openFollowList("followers");
-                }}
-              >
-                <span className="text-base font-bold text-slate-900">{followersCount ?? 0}</span>
-                <span className="text-sm text-slate-600">{translate('profileStats.followers', 'Followers')}</span>
-              </button>
-              <span className="w-px h-4 bg-slate-400/40" />
-              <button
-                type="button"
-                className="flex items-baseline gap-1.5 active:opacity-70"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openFollowList("following");
-                }}
-              >
-                <span className="text-base font-bold text-slate-900">{followingCount ?? 0}</span>
-                <span className="text-sm text-slate-600">{translate('profileStats.following', 'Following')}</span>
-              </button>
+              <Avatar className="relative h-28 w-28 border-[3px] border-white/90 shadow-lg">
+                <AvatarImage
+                  src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(handle ?? displayName ?? "vitana")}
+                  alt={displayName}
+                  style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
+                />
+                <AvatarFallback className="text-2xl font-semibold bg-white/60 text-slate-600">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              {isOwner && editMode && onEdit && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit();
+                  }}
+                  aria-label={translate('profile.identity.editPhoto', 'Edit profile photo')}
+                  className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-900 shadow-md flex items-center justify-center transition-colors"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              )}
             </div>
-          )}
+
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl font-bold text-slate-900 truncate">
+                {displayName}
+              </h1>
+              <p className="text-sm text-slate-600 truncate mt-0.5">
+                {shownHandle && <span>@{shownHandle}</span>}
+                {shownHandle && archetype && <span> · </span>}
+                {archetype && <span>{archetype}</span>}
+              </p>
+
+              {/* Follower / Following inline stats */}
+              {showStats && (
+                <div className="flex items-center gap-3 mt-2">
+                  <button
+                    type="button"
+                    className="flex items-baseline gap-1.5 active:opacity-70"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openFollowList("followers");
+                    }}
+                  >
+                    <span className="text-sm font-bold text-slate-900">{followersCount ?? 0}</span>
+                    <span className="text-xs text-slate-600">{translate('profileStats.followers', 'Followers')}</span>
+                  </button>
+                  <span className="w-px h-3.5 bg-slate-400/40" />
+                  <button
+                    type="button"
+                    className="flex items-baseline gap-1.5 active:opacity-70"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openFollowList("following");
+                    }}
+                  >
+                    <span className="text-sm font-bold text-slate-900">{followingCount ?? 0}</span>
+                    <span className="text-xs text-slate-600">{translate('profileStats.following', 'Following')}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* Action buttons row for non-owner */}
           {!isOwner && (
-            <div className="flex gap-2 justify-center mt-4">
+            <div className="flex gap-2 justify-center">
               {onFollow && (
                 <Button
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "h-10 px-5 rounded-full backdrop-blur-sm text-sm font-semibold gap-2",
+                    "h-9 px-5 rounded-full backdrop-blur-sm text-sm font-semibold gap-2",
                     isFollowing
                       ? "bg-gradient-to-b from-white/95 to-white/75 border border-white/80 text-teal-900 hover:from-white hover:to-white/80 shadow-sm"
                       : "bg-gradient-to-br from-teal-50 via-emerald-100 to-emerald-300 border border-emerald-200/70 text-teal-900 hover:from-teal-100 hover:to-emerald-400 shadow-[0_4px_14px_rgba(16,185,129,0.25)]"
@@ -263,7 +277,7 @@ export function MobileIdentityCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-10 px-5 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
+                  className="h-9 px-5 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onMessage();
@@ -278,7 +292,7 @@ export function MobileIdentityCard({
                   variant="ghost"
                   size="icon"
                   aria-label={translate('common.showQrCode', 'Show QR code')}
-                  className="h-10 w-10 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
+                  className="h-9 w-9 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onShowQr();
@@ -290,75 +304,54 @@ export function MobileIdentityCard({
             </div>
           )}
 
-          {/* Vitana Index Section — frosted inner card */}
-          <div className="flex flex-col items-center w-full mt-6 rounded-3xl bg-gradient-to-b from-white/90 via-white/75 to-white/60 border border-white/80 backdrop-blur-sm px-4 pt-5 pb-4 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
-            {/* Label */}
-            <span className="text-[11px] font-semibold tracking-[0.2em] text-teal-700 uppercase mb-3">
-              {translate('profile.identity.vitanaIndex')}
-            </span>
+          {/* Vitana Index — turquoise circle, the same treatment as the
+              shared Index drawer (VitanaIndexSheet) so the score reads
+              identically everywhere it appears in the app. */}
+          <div className="flex items-center gap-3 rounded-2xl bg-gradient-to-b from-white/90 via-white/80 to-white/65 border border-white/80 backdrop-blur-sm px-3.5 py-3 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
+            <div
+              className="relative shrink-0 h-20 w-20 rounded-full flex items-center justify-center shadow-md"
+              style={{ background: "linear-gradient(160deg, hsl(var(--sys-vitana-accent) / 1) 0%, hsl(199, 42%, 34%) 100%)" }}
+              role="img"
+              aria-label={`Vitana Index ${vitanaIndex}`}
+            >
+              <div className="text-center">
+                <div className="text-xl font-extrabold text-white leading-none">{vitanaIndex}</div>
+                <div className="text-[9px] font-medium text-white/85 leading-none mt-1">
+                  {t('screens.health.text999')}
+                </div>
+              </div>
+            </div>
 
-            {/* Score with ambient glow */}
-            <div className="relative flex items-center justify-center mb-2">
-              {/* Ambient halo */}
-              <div
-                className="absolute w-28 h-28 rounded-full blur-2xl opacity-25"
-                style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
-              />
-
-              {/* Score number */}
-              <span
-                className="relative text-6xl font-extrabold"
-                style={{
-                  background: "linear-gradient(160deg, hsl(150, 75%, 55%) 0%, hsl(163, 70%, 42%) 45%, hsl(175, 75%, 28%) 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  filter: "drop-shadow(0 2px 10px rgba(16, 185, 129, 0.25))"
+            <div className="min-w-0 flex-1">
+              <span className="text-[10px] font-semibold tracking-[0.18em] text-teal-700 uppercase block">
+                {translate('profile.identity.vitanaIndex')}
+              </span>
+              <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
+                <div
+                  className="px-2.5 py-1 rounded-full text-[11px] font-semibold text-slate-900 shadow-sm"
+                  style={{
+                    backgroundColor: tier.color,
+                    backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%)`,
+                  }}
+                >{t(tier.labelKey)}
+                </div>
+                <div className="px-2.5 py-1 rounded-full text-[11px] font-semibold text-slate-900 bg-white/80 border border-white/90 shadow-sm">
+                  {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
+                </div>
+                <TrendingUp className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+              </div>
+              <button
+                type="button"
+                className="mt-1.5 inline-flex items-center gap-0.5 text-xs font-semibold text-teal-800 active:opacity-70"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/health/vitana-index');
                 }}
               >
-                {vitanaIndex}
-              </span>
+                {translate('profile.identity.understandIndex', 'Understand index')}
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
             </div>
-
-            {/* Out of max — "von 999" */}
-            <span className="text-xs font-medium text-slate-500 -mt-1 mb-3">
-              {t('profile.identity.scoreOutOfMax', { max: 999 })}
-            </span>
-
-            {/* Tier badge + percentile badge + trend chip */}
-            <div className="flex items-center gap-2 mb-3">
-              <div
-                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900 shadow-sm"
-                style={{
-                  backgroundColor: tier.color,
-                  backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%), linear-gradient(135deg, #ffffff, #ffffff)`,
-                }}
-              >{t(tier.labelKey)}
-              </div>
-              <div className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900 bg-white/80 border border-white/90 shadow-sm">
-                {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
-              </div>
-              <div className="h-7 w-7 rounded-full bg-gradient-to-b from-white to-white/70 border border-white/90 flex items-center justify-center shadow-sm">
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
-              </div>
-            </div>
-
-            {/* Explanation */}
-            <p className="text-xs text-slate-600 text-center px-4">
-              {translate('profile.identity.basedOnActivity')}
-            </p>
-
-            {/* Understand index link */}
-            <button
-              type="button"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-teal-800 hover:text-teal-900 active:opacity-70"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate('/health/vitana-index');
-              }}
-            >
-              {translate('profile.identity.understandIndex', 'Understand index')}
-              <ChevronRight className="h-4 w-4" />
-            </button>
           </div>
 
           {/* View Full ID CTA */}
@@ -366,7 +359,7 @@ export function MobileIdentityCard({
             <Button
               variant="ghost"
               size="sm"
-              className="mt-4 text-slate-600 hover:text-slate-800 hover:bg-black/5 text-xs gap-1"
+              className="self-center text-slate-600 hover:text-slate-800 hover:bg-black/5 text-xs gap-1 h-8"
               onClick={(e) => {
                 e.stopPropagation();
                 onViewFullId();
@@ -376,11 +369,6 @@ export function MobileIdentityCard({
               <ChevronRight className="h-3 w-3" />
             </Button>
           )}
-
-          {/* Brand footer */}
-          <span className="mt-5 text-[11px] font-semibold tracking-[0.3em] text-slate-500 uppercase">
-            {translate('profile.identity.brandFooter', 'MAXINA × VITANA')}
-          </span>
         </div>
       </div>
 

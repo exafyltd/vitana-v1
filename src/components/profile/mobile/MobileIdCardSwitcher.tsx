@@ -128,6 +128,8 @@ export function MobileIdCardSwitcher({
                 vitanaIndex={profile.vitanaIndex}
                 vitanaPercentile={profile.vitanaPercentile}
                 isOwner={isOwner}
+                editMode={editMode}
+                onEdit={onEditIdentity}
                 onShare={onShare}
                 onGetMaxina={onGetMaxina}
                 onFollow={onFollow}
