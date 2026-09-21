@@ -15,6 +15,7 @@
       "viewLongevityId": "Pogledaj moj Longevity ID",
       "follow": "Zaprati",
       "followingState": "Pratim",
+      "scoreOutOfMax": "od {max}",
       "understandIndex": "Razumi indeks",
       "brandFooter": "MAXINA × VITANA",
       "_pending_review": {}

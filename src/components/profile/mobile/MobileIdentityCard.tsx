@@ -34,6 +34,11 @@ interface MobileIdentityCardProps {
   onGetMaxina?: () => void;
   onFollow?: () => void;
   onMessage?: () => void;
+  /** Opens the QR share screen in "profile" mode — lets a visitor pull up
+   * this profile's own scannable QR (distinct from `onGetMaxina`, which is
+   * the owner-only app-invite shortcut). Rendered in the Follow/Message
+   * action row for non-owner views. */
+  onShowQr?: () => void;
   isFollowing?: boolean;
   followLoading?: boolean;
   onViewFullId?: () => void;
@@ -62,6 +67,7 @@ export function MobileIdentityCard({
   onGetMaxina,
   onFollow,
   onMessage,
+  onShowQr,
   isFollowing = false,
   followLoading = false,
   onViewFullId,
@@ -267,18 +273,18 @@ export function MobileIdentityCard({
                   {t('screens.profile.message')}
                 </Button>
               )}
-              {onShare && (
+              {onShowQr && (
                 <Button
                   variant="ghost"
                   size="icon"
-                  aria-label={translate('common.share', 'Share')}
+                  aria-label={translate('common.showQrCode', 'Show QR code')}
                   className="h-10 w-10 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onShare();
+                    onShowQr();
                   }}
                 >
-                  <Share2 className="h-4 w-4" />
+                  <QrCode className="h-4 w-4" />
                 </Button>
               )}
             </div>
@@ -313,7 +319,12 @@ export function MobileIdentityCard({
               </span>
             </div>
 
-            {/* Tier badge + trend chip */}
+            {/* Out of max — "von 999" */}
+            <span className="text-xs font-medium text-slate-500 -mt-1 mb-3">
+              {t('profile.identity.scoreOutOfMax', { max: 999 })}
+            </span>
+
+            {/* Tier badge + percentile badge + trend chip */}
             <div className="flex items-center gap-2 mb-3">
               <div
                 className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900 shadow-sm"
@@ -321,7 +332,10 @@ export function MobileIdentityCard({
                   backgroundColor: tier.color,
                   backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%), linear-gradient(135deg, #ffffff, #ffffff)`,
                 }}
-              >{t('screens.profile.labelTopVitanapercentile', { label: t(tier.labelKey), vitanaPercentile })}
+              >{t(tier.labelKey)}
+              </div>
+              <div className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900 bg-white/80 border border-white/90 shadow-sm">
+                {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
               </div>
               <div className="h-7 w-7 rounded-full bg-gradient-to-b from-white to-white/70 border border-white/90 flex items-center justify-center shadow-sm">
                 <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />

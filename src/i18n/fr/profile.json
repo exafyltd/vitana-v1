@@ -15,6 +15,7 @@
       "viewLongevityId": "Voir mon ID Longévité",
       "follow": "Suivre",
       "followingState": "Abonné(e)",
+      "scoreOutOfMax": "sur {max}",
       "understandIndex": "Comprendre l'index",
       "brandFooter": "MAXINA × VITANA",
       "_pending_review": {}

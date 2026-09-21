@@ -15,6 +15,7 @@
       "viewLongevityId": "查看我的长寿 ID",
       "follow": "关注",
       "followingState": "已关注",
+      "scoreOutOfMax": "／{max}",
       "understandIndex": "了解指数",
       "brandFooter": "MAXINA × VITANA",
       "_pending_review": {}

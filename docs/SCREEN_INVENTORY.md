@@ -186,7 +186,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `editProfile` — used: 11, total in shard: 17
-- `profile` — used: 1, total in shard: 59
+- `profile` — used: 1, total in shard: 60
 - `profileEditor` — used: 2, total in shard: 88
 - `screens` — used: 1, total in shard: 11149
 
@@ -550,7 +550,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `common` — used: 2, total in shard: 37
+- `common` — used: 2, total in shard: 38
 - `screens` — used: 14, total in shard: 11149
 - `toasts` — used: 3, total in shard: 1265
 - `wallet` — used: 17, total in shard: 22

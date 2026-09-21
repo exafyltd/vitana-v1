@@ -15,6 +15,7 @@
       "viewLongevityId": "Посмотреть мой ID долголетия",
       "follow": "Подписаться",
       "followingState": "Ты подписан",
+      "scoreOutOfMax": "из {max}",
       "understandIndex": "Понять индекс",
       "brandFooter": "MAXINA × VITANA",
       "_pending_review": {}
