@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "mobileNav.business": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "In a wellness app, 'Business' likely refers to business-related features, but '业务' is too generic and may not convey the intended meaning. Consider '商务' for business context.",
-      "suggested": "商务",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mobileNav.live": {
@@ -36,7 +34,62 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.dashboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.results": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.appointments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.patients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.schedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.team": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobileNav.resultsInbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-24T08:41:10.906Z"
+  "generatedAt": "2026-09-21T09:10:47.301Z"
 }

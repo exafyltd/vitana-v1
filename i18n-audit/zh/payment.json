@@ -18,8 +18,8 @@
     "payment.requestIs": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Literal translation '此请求是 {status}。' is awkward; should use '此请求的状态为 {status}。'",
-      "suggested": "此请求的状态为 {status}。",
+      "issue": "Register is too formal for a friendly, informal app. '此' is formal, and '的状态为' is more verbose than needed.",
+      "suggested": "这个请求是 {status}。",
       "phase": "llm"
     },
     "payment.alreadyAccepted": {
@@ -98,5 +98,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:47.541Z"
+  "generatedAt": "2026-09-21T09:11:11.713Z"
 }
