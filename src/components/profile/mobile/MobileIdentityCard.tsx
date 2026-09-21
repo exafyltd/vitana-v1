@@ -126,8 +126,11 @@ export function MobileIdentityCard({
           // on-brand even if the gradient layer fails to paint, and promote
           // the card onto its own stable compositing layer so the child
           // filters can't knock out its background.
+          // The header (avatar/name) sits on the blue tint; everything from
+          // the Vitana Index block down sits on plain white — one seamless
+          // card, not a white card nested inside this one.
           backgroundColor: "hsl(218, 65%, 92%)",
-          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
+          backgroundImage: "linear-gradient(180deg, hsl(205, 85%, 89%) 0%, hsl(210, 65%, 93%) 22%, hsl(210, 40%, 98%) 38%, hsl(0, 0%, 100%) 55%, hsl(0, 0%, 100%) 100%)",
           boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)"
@@ -136,38 +139,38 @@ export function MobileIdentityCard({
         role={onViewFullId ? "button" : undefined}
         tabIndex={onViewFullId ? 0 : undefined}
       >
-        {/* Share button - top left (only for owner view) */}
-        {isOwner && onShare && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 text-xs font-medium gap-1.5 shadow-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onShare();
-            }}
-          >
-            <Share2 className="h-3.5 w-3.5" />
-            {translate('common.share', 'Share')}
-          </Button>
-        )}
-
-        {/* Get MAXINA — top right (owner view only), mirrors the Share
-            button. One tap straight to the app-invite QR, no Share sheet
-            or in-screen mode toggle in between. */}
-        {isOwner && onGetMaxina && (
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={translate('common.getMaxina', 'Get MAXINA')}
-            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 shadow-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onGetMaxina();
-            }}
-          >
-            <QrCode className="h-3.5 w-3.5" />
-          </Button>
+        {/* Share + Get MAXINA — top right, together, as bare icons (owner
+            view only). Get MAXINA is one tap straight to the app-invite QR,
+            no Share sheet or in-screen mode toggle in between. */}
+        {isOwner && (onShare || onGetMaxina) && (
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-3">
+            {onShare && (
+              <button
+                type="button"
+                aria-label={translate('common.share', 'Share')}
+                className="text-slate-700 hover:text-slate-900 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onShare();
+                }}
+              >
+                <Share2 className="h-5 w-5" />
+              </button>
+            )}
+            {onGetMaxina && (
+              <button
+                type="button"
+                aria-label={translate('common.getMaxina', 'Get MAXINA')}
+                className="text-slate-700 hover:text-slate-900 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onGetMaxina();
+                }}
+              >
+                <QrCode className="h-5 w-5" />
+              </button>
+            )}
+          </div>
         )}
 
         <div className="p-4 pt-11 flex flex-col gap-3">
@@ -307,16 +310,18 @@ export function MobileIdentityCard({
           {/* Vitana Index — centered, with a soft turquoise glow behind a
               big bold score, the same treatment as the shared Index drawer
               (VitanaIndexSheet) so it reads identically everywhere it
-              appears in the app. */}
-          <div className="flex flex-col items-center w-full rounded-2xl bg-gradient-to-b from-white/90 via-white/80 to-white/65 border border-white/80 backdrop-blur-sm px-4 pt-4 pb-3 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
+              appears in the app. Sits directly on the card's own (by-here
+              white) background — no separate nested card/border, so this
+              reads as one continuous card, not a card inside a card. */}
+          <div className="flex flex-col items-center w-full px-2 pt-1 pb-1">
             <span className="text-lg font-extrabold tracking-wide text-slate-900 uppercase">
               {translate('profile.identity.vitanaIndex')}
             </span>
 
             <div className="relative flex items-center justify-center my-1">
               <div
-                className="absolute w-28 h-28 rounded-full blur-2xl opacity-50"
-                style={{ background: "radial-gradient(circle, hsl(199, 70%, 62%), hsl(160, 65%, 55%) 55%, transparent 75%)" }}
+                className="absolute w-40 h-40 rounded-full blur-2xl opacity-70"
+                style={{ background: "radial-gradient(circle, hsl(199, 75%, 68%) 0%, hsl(175, 65%, 62%) 45%, hsl(150, 60%, 65%) 70%, transparent 85%)" }}
               />
               <span
                 className="relative text-5xl font-extrabold"
@@ -340,7 +345,10 @@ export function MobileIdentityCard({
                 style={{ backgroundColor: `${tier.color}40` }}
               >{t(tier.labelKey)}
               </div>
-              <div className="px-3 py-1 rounded-full text-xs font-semibold text-slate-900 bg-white/80 border border-white/90">
+              <div
+                className="px-3 py-1 rounded-full text-xs font-semibold text-slate-900"
+                style={{ backgroundColor: "hsl(220, 45%, 95%)" }}
+              >
                 {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
               </div>
               <TrendingUp className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
