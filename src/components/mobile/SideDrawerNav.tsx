@@ -149,18 +149,34 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   };
 
   const isMaxina = tenant?.slug === 'maxina';
-  // The label names the ACTIVE mode. An automatically activated patient who
-  // is still in Community mode is offered Patient in the switcher instead of
-  // being labelled as one here (VTID-03993 supersedes the VTID-03988 hint):
-  // a pill that says "Patient" while the app is in Community mode would lie.
+  // The label names the ACTIVE mode, always — never overridden. An
+  // automatically activated patient who is still in Community mode is
+  // offered Patient in the switcher instead of being labelled as one here
+  // (VTID-03993 supersedes the VTID-03988 hint): a pill that says "Patient"
+  // while the app is in Community mode would lie. An Exafy super-admin in
+  // Community mode was the same lie in the other direction — the pill and
+  // the switcher's "Current mode" line said "Exafy Admin" while the sheet's
+  // own checked entry was "Community Member". ProfileDrawer's desktop
+  // <Select> never made this mistake: it shows the real role and surfaces
+  // super-admin status as a separate "Admin Access" badge instead of
+  // replacing the mode. `pillSecondaryLine` below does the same here.
   const roleLabel = inBusinessMode && business.activeOrg
     ? t(businessRoleLabelKey(business.activeOrg.role))
-    : isExafyAdmin && dbRole === 'community'
-      ? t('screens.mobile.roleExafyAdmin')
-      : vitanaRoleLabel(dbRole);
+    : vitanaRoleLabel(dbRole);
   // With a switcher the pill carries the role; the second line then only
   // shows the handle (or nothing) so the mode is not printed twice.
   const secondaryLine = profile.handle ? `@${profile.handle}` : roleSwitch.canSwitch ? '' : roleLabel;
+  // Superuser status is a fact about the ACCOUNT, independent of the active
+  // mode — never worth hiding once the org-membership line takes the slot
+  // this used to overload the mode label to communicate.
+  const orgLine = inBusinessMode && business.activeOrg
+    ? business.activeOrg.display_name
+    : primaryOrg
+      ? `${orgRoleLabel(primaryOrg.role)} · ${primaryOrg.display_name}`
+      : null;
+  const pillSecondaryLine = [orgLine, isExafyAdmin ? t('screens.profile.adminAccess') : null]
+    .filter(Boolean)
+    .join(' · ') || null;
 
   const openRoleSheet = () => {
     onClose();
@@ -452,12 +468,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       <span className="truncate">{roleLabel}</span>
                     </span>
                   )}
-                  {inBusinessMode && business.activeOrg ? (
-                    <div className="max-w-full text-[11px] opacity-80 truncate">{business.activeOrg.display_name}</div>
-                  ) : primaryOrg && (
-                    <div className="max-w-full text-[11px] opacity-80 truncate">
-                      {orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}
-                    </div>
+                  {pillSecondaryLine && (
+                    <div className="max-w-full text-[11px] opacity-80 truncate">{pillSecondaryLine}</div>
                   )}
                 </div>
               )}
