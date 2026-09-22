@@ -36,6 +36,7 @@
     "retry": "Pokušaj ponovo",
     "follow": "Prati",
     "getMaxina": "Nabavi MAXINA",
+    "showQrCode": "Prikaži QR kod",
     "uploading": "Otpremam...",
     "_pending_review": {}
   },

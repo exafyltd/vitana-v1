@@ -36,6 +36,7 @@
     "retry": "Reintentar",
     "follow": "Seguir",
     "getMaxina": "Conseguir MAXINA",
+    "showQrCode": "Mostrar código QR",
     "uploading": "Subiendo...",
     "_pending_review": {}
   },

@@ -216,6 +216,10 @@ export function ProfileLayout({
           } : undefined}
           onFollow={!isOwner ? handleFollowClick : undefined}
           onMessage={!isOwner ? handleMessageClick : undefined}
+          onShowQr={!isOwner ? () => {
+            setQrInitialMode("profile");
+            setShowQRScreen(true);
+          } : undefined}
           isFollowing={isFollowing}
           followLoading={followLoading}
           followersCount={followersCount}
