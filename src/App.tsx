@@ -1789,7 +1789,7 @@ const App = () => {
           {/* VTID-03894: the shareable supplier link. NOT behind AuthGuard —
               it is what an unregistered supplier is handed. */}
           <Route path="/commerce/join" element={<CommerceJoin />} />
-          <Route path="/commerce" element={<AuthGuard><CommercePortal /></AuthGuard>} />
+          <Route path="/commerce" element={<AuthGuard allowGuest><CommercePortal /></AuthGuard>} />
           {/* VTID-03936: an org_admin's invite link — self-service org
               onboarding (register a business, invite staff/professionals). */}
           <Route path="/commerce/invites/:token/accept" element={<AuthGuard><CommerceAcceptInvite /></AuthGuard>} />

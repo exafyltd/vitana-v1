@@ -69,11 +69,17 @@ describe('CommerceShell back affordance (VTID-03989)', () => {
 
 describe('CommercePortal hoists "Your organizations" for members (VTID-03989)', () => {
   const src = read('src/pages/CommercePortal.tsx');
+  // Skip the file's own doc comment, which quotes these same markers in
+  // prose — an unscoped indexOf would match the comment, not the JSX.
+  const jsxStart = src.indexOf('return (\n    <CommerceShell>');
 
   it('renders the section above the agent card only when the user belongs to an org', () => {
-    const hoisted = src.indexOf('{hasOrgs && orgsSection}');
-    const agent = src.indexOf('<AgentConnectCard />');
-    const original = src.indexOf('{!hasOrgs && orgsSection}');
+    // VTID follow-up (guest/personalized hero): both the hoist and the
+    // fallback are now gated on `user` too — a guest has no org to hoist.
+    const hoisted = src.indexOf('{user && hasOrgs && orgsSection}', jsxStart);
+    const agent = src.indexOf('<AgentConnectCard />', jsxStart);
+    const original = src.indexOf('{user && !hasOrgs && orgsSection}', jsxStart);
+    expect(jsxStart).toBeGreaterThan(-1);
     expect(hoisted).toBeGreaterThan(-1);
     expect(hoisted).toBeLessThan(agent);
     expect(original).toBeGreaterThan(agent);

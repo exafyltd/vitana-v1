@@ -56,9 +56,11 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   // Skip the file's own doc comment, which quotes these markers in prose.
   const jsxStart = src.indexOf('return (\n    <CommerceShell>');
   const heroStart = src.indexOf('{/* HERO', jsxStart);
-  const hoistedOrgs = src.indexOf('{hasOrgs && orgsSection}', jsxStart);
+  // VTID follow-up (guest/personalized hero): both the org hoist and the org
+  // fallback are now gated on `user` too — a guest has no org to hoist.
+  const hoistedOrgs = src.indexOf('{user && hasOrgs && orgsSection}', jsxStart);
   const agentCard = src.indexOf('<AgentConnectCard />', jsxStart);
-  const originalOrgs = src.indexOf('{!hasOrgs && orgsSection}', jsxStart);
+  const originalOrgs = src.indexOf('{user && !hasOrgs && orgsSection}', jsxStart);
   const hero = src.slice(heroStart, hoistedOrgs);
 
   it('markers are all present and in the VTID-03989 order (returning members see their org before the pitch)', () => {
@@ -71,8 +73,12 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
     expect(originalOrgs).toBeGreaterThan(agentCard);
   });
 
-  it('the hero contains exactly the two real CTA buttons and no card of its own', () => {
-    expect((hero.match(/<Button/g) ?? []).length).toBe(2);
+  it('the hero contains the guest CTA and the two signed-in CTAs, and no card of its own', () => {
+    // 1 guest button (!user branch) + 2 signed-in buttons (agent-connect,
+    // register) = 3 <Button in the static source; only one branch ever
+    // renders for a given session.
+    expect((hero.match(/<Button/g) ?? []).length).toBe(3);
+    expect(hero).toContain("t('screens.commerceportal.guestCta')");
     expect(hero).toContain("t('screens.commerceportal.agentConnect.title')");
     expect(hero).toContain("t('screens.commerceportal.orgOnboarding.registerCta')");
     expect(hero).not.toContain('<AgentConnectCard');
@@ -87,11 +93,23 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   it('"your organizations" is no longer lost on a narrow desktop/host window when the visitor has no org yet', () => {
     // Previously nested inside the lg:-only merchant-integration block, so a
     // first-time visitor on a <1024px browser window saw no register CTA at
-    // all. Now renders unconditionally, same as the hasOrgs===true branch
-    // already did.
-    const lgOnlyBlockEnd = src.indexOf('</div>\n\n      {!hasOrgs && orgsSection}');
-    expect(lgOnlyBlockEnd).toBeGreaterThan(-1);
-    expect(originalOrgs).toBeGreaterThan(lgOnlyBlockEnd);
+    // all. Now renders unconditionally for a signed-in visitor, same as the
+    // hasOrgs===true branch already did — outside the guest/signed-in ternary
+    // entirely (guests never see it, per the "minimum available information"
+    // decision).
+    const ternaryEnd = src.indexOf(')}\n\n      {user && !hasOrgs && orgsSection}');
+    expect(ternaryEnd).toBeGreaterThan(-1);
+    expect(originalOrgs).toBeGreaterThan(ternaryEnd);
+  });
+
+  it('a guest sees the pitch and the steps only — no live agent card, no org data, one CTA to sign up', () => {
+    const guestBranchStart = src.indexOf('!user ? (', jsxStart);
+    const guestBranchEnd = src.indexOf(') : (', guestBranchStart);
+    const guestBody = src.slice(guestBranchStart, guestBranchEnd);
+    expect(guestBranchStart).toBeGreaterThan(-1);
+    expect(guestBody).toContain('whatHappensNextSection');
+    expect(guestBody).not.toContain('<AgentConnectCard');
+    expect(guestBody).not.toContain('ManualConnectDialog');
   });
 });
 

@@ -18,10 +18,12 @@
  * text" complaint); then the existing organizations/connections sections.
  * Owner decision: AI-agent connect is always the primary CTA, manual
  * registration a clear secondary one — never removed, never equal weight.
- * The relative order of `{hasOrgs && orgsSection}` / `<AgentConnectCard />` /
- * `{!hasOrgs && orgsSection}` is preserved exactly (VTID-03989's returning-
- * member hoist, pinned by `business-modes.test.ts`) — only the styling and
- * the hero above it changed.
+ * The relative order of `{user && hasOrgs && orgsSection}` /
+ * `<AgentConnectCard />` / `{user && !hasOrgs && orgsSection}` is preserved
+ * exactly (VTID-03989's returning-member hoist, pinned by
+ * `mobile-adaptation.test.ts`) — only the styling and the hero above it
+ * changed. Both org branches are additionally gated on `user` — a guest has
+ * no org to hoist (see the guest/personalized-hero follow-up below).
  *
  * Data layer unchanged: plain useState + `adminFetch` against the owner-scoped
  * `/api/v1/vcaop/portal/my` surface. These screens never used React Query and
@@ -42,6 +44,8 @@ import {
   Workflow,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthProvider';
+import { useProfile } from '@/context/ProfileProvider';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
 import { ConnectionCard, type ConnectionRow } from '@/components/commerce/ConnectionCard';
@@ -68,6 +72,14 @@ const CONNECTION_PARAM = 'connection';
 const ORG_PARAM = 'org';
 
 export default function CommercePortal() {
+  // VTID follow-up: `/commerce` now allows guests (App.tsx's AuthGuard
+  // `allowGuest`) — the pitch itself must be visible pre-login, but every
+  // action here (register, connect, view orgs/connections) still needs an
+  // account. A signed-in visitor gets a personalized headline (first name,
+  // and their own org once they have one) instead of the generic pitch.
+  const { user } = useAuth();
+  const { profile } = useProfile();
+  const firstName = user ? profile?.displayName?.trim().split(/\s+/)[0] || '' : '';
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
@@ -118,9 +130,12 @@ export default function CommercePortal() {
   );
 
   useEffect(() => {
+    // Guests have nothing to load — both endpoints require an account, and
+    // calling them would just be a wasted 401.
+    if (!user) return;
     void load();
     void loadMyOrgs();
-  }, [load, loadMyOrgs]);
+  }, [user, load, loadMyOrgs]);
 
   const openOrgRoster = (id: string) => {
     setSearchParams((prev) => {
@@ -178,6 +193,49 @@ export default function CommercePortal() {
   // entirely when the visitor had no org yet, which is the opposite of
   // "clear how to register" at every width.
   const hasOrgs = (myOrgs?.length ?? 0) > 0;
+
+  // Personalized hero headline for a signed-in visitor: greet by first name,
+  // and reference their own org once they have one. A guest (no session)
+  // always gets the generic pitch — there's nothing to personalize with.
+  const heroHeadline =
+    user && hasOrgs && myOrgs
+      ? t('screens.commerceportal.heroTitlePersonalizedWithOrg', { name: firstName, orgName: myOrgs[0].display_name })
+      : user && firstName
+        ? t('screens.commerceportal.heroTitlePersonalizedNoOrg', { name: firstName })
+        : t('screens.commerceportal.heroTitle');
+
+  // WHAT HAPPENS NEXT — shared between the guest view (always visible, any
+  // width) and the signed-in merchant-integration block (lg:-gated, unchanged
+  // scope). Enlarged per owner feedback: bigger numbers/titles, bolder cards,
+  // so each step reads at a glance instead of needing to be read closely.
+  const whatHappensNextSection = (
+    <section className="mt-4 md:mt-6">
+      <h2 className="text-xl font-bold text-foreground md:text-2xl">{t('screens.commerceportal.howItWorksTitle')}</h2>
+      <ol className="relative mt-6 grid gap-5 sm:grid-cols-3">
+        {STEPS.map(({ icon: Icon, title, body }, i) => (
+          <li key={title} className="relative">
+            {i < STEPS.length - 1 && (
+              <span
+                aria-hidden
+                className="absolute start-full top-8 hidden h-px w-8 -translate-x-4 bg-border sm:block rtl:translate-x-4"
+              />
+            )}
+            <div className="h-full rounded-2xl border-2 border-amber-200 bg-card p-6 shadow-sm transition-colors hover:border-amber-400">
+              <div className="flex items-center gap-3">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-500 text-lg font-bold text-white">
+                  {i + 1}
+                </span>
+                <Icon className="h-6 w-6 shrink-0 text-amber-700" />
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-foreground">{t(title)}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t(body)}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+
   const orgsSection = (
     <>
       {/* YOUR ORGANIZATIONS — Commerce Partner Onboarding (VTID-03936) */}
@@ -247,144 +305,141 @@ export default function CommercePortal() {
           {t('screens.commerceportal.portalEyebrow')}
         </span>
         <h1 className="mx-auto mt-4 max-w-3xl text-2xl font-semibold leading-tight text-foreground lg:text-5xl">
-          {t('screens.commerceportal.heroTitle')}
+          {heroHeadline}
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-base">
           {t('screens.commerceportal.heroSubtitle')}
         </p>
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button
-            size="lg"
-            onClick={scrollToAgentCard}
-            className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
-          >
-            <Sparkles className="me-2 h-4 w-4" />
-            {t('screens.commerceportal.agentConnect.title')}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => setRegisterOrgOpen(true)}
-            className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
-          >
-            <Building2 className="me-2 h-4 w-4" />
-            {t('screens.commerceportal.orgOnboarding.registerCta')}
-          </Button>
+          {!user ? (
+            // Guest: one clear CTA, not the two-button row — neither
+            // "connect an agent" nor "register a business" can actually do
+            // anything without an account, so this leads straight to it.
+            <Button
+              size="lg"
+              onClick={() => navigate(`/commerce/join?redirectTo=${encodeURIComponent('/commerce')}`)}
+              className="h-12 w-full rounded-xl bg-amber-700 px-8 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+            >
+              {t('screens.commerceportal.guestCta')}
+            </Button>
+          ) : (
+            <>
+              <Button
+                size="lg"
+                onClick={scrollToAgentCard}
+                className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+              >
+                <Sparkles className="me-2 h-4 w-4" />
+                {t('screens.commerceportal.agentConnect.title')}
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => setRegisterOrgOpen(true)}
+                className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+              >
+                <Building2 className="me-2 h-4 w-4" />
+                {t('screens.commerceportal.orgOnboarding.registerCta')}
+              </Button>
+            </>
+          )}
         </div>
       </motion.section>
 
-      {hasOrgs && orgsSection}
+      {user && hasOrgs && orgsSection}
 
-      {/* VTID-03999: the merchant-integration pitch, steps, VCAOP connections
-          and manual fallback are desktop-portal surfaces (`ConnectionWorkbench`,
-          `AgentConnectCard` keep this skin). In the phone app the page is the
-          business overview: hero + your organizations. `lg:` matches
-          useIsMobile's 1024px breakpoint, not Tailwind's md. */}
-      <div className="hidden lg:block">
-        {/* CONNECT VIA AI AGENT — the primary CTA's scroll target, and still
-            the first thing shown among the merchant-integration surfaces, so
-            it stays the visual focal point exactly as before (VTID-03882's
-            own framing: "this is what the product is"). */}
-        <motion.section
-          ref={agentCardRef}
-          {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
-          className="mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10"
-        >
-          <AgentConnectCard />
-        </motion.section>
+      {!user ? (
+        // Guest: minimum available information — the pitch above plus a
+        // plain explanation of what happens once you register. No live
+        // mechanism details (agent URL, manual dialogs) and no org/
+        // connections data, none of which exist for a session that isn't
+        // signed in yet.
+        whatHappensNextSection
+      ) : (
+        /* VTID-03999: the merchant-integration pitch, steps, VCAOP connections
+           and manual fallback are desktop-portal surfaces (`ConnectionWorkbench`,
+           `AgentConnectCard` keep this skin). In the phone app the page is the
+           business overview: hero + your organizations. `lg:` matches
+           useIsMobile's 1024px breakpoint, not Tailwind's md. */
+        <div className="hidden lg:block">
+          {/* CONNECT VIA AI AGENT — the primary CTA's scroll target, and still
+              the first thing shown among the merchant-integration surfaces, so
+              it stays the visual focal point exactly as before (VTID-03882's
+              own framing: "this is what the product is"). */}
+          <motion.section
+            ref={agentCardRef}
+            {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
+            className="mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10"
+          >
+            <AgentConnectCard />
+          </motion.section>
 
-        {/* WHAT HAPPENS NEXT */}
-        <section className="mt-4 md:mt-6">
-          <h2 className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            {t('screens.commerceportal.howItWorksTitle')}
-          </h2>
-          <ol className="relative mt-5 grid gap-6 sm:grid-cols-3">
-            {STEPS.map(({ icon: Icon, title, body }, i) => (
-              <li key={title} className="relative">
-                {i < STEPS.length - 1 && (
-                  <span
-                    aria-hidden
-                    className="absolute start-full top-6 hidden h-px w-6 -translate-x-3 bg-border sm:block rtl:translate-x-3"
-                  />
-                )}
-                <div className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-amber-300">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full border border-amber-300 bg-amber-50 text-sm font-semibold text-amber-800">
-                      {i + 1}
-                    </span>
-                    <Icon className="h-4 w-4 text-amber-700" />
-                  </div>
-                  <h3 className="mt-3.5 font-medium text-foreground">{t(title)}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(body)}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
+          {whatHappensNextSection}
 
-        {/* PREFER TO DO IT YOURSELF — a real, bounded secondary card. Both
-            options are equal-weight real buttons now, replacing the old
-            solid-button-next-to-ghost-link row. */}
-        <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
-          <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-            <Button
-              onClick={() => setAddProductOpen(true)}
-              className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
-            >
-              <PackagePlus className="me-2 h-4 w-4" />
-              {t('screens.commerceportal.addProduct')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setManualOpen(true)}
-              className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
-            >
-              {t('screens.commerceportal.manualCta')}
-            </Button>
-          </div>
-        </section>
-
-        {/* YOUR CONNECTIONS */}
-        <section className="mt-12 md:mt-16">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <div>
-              <h2 className="text-xl font-semibold text-foreground">{t('screens.commerceportal.connectionsTitle')}</h2>
-              <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectionsSubtitle')}</p>
+          {/* PREFER TO DO IT YOURSELF — a real, bounded secondary card. Both
+              options are equal-weight real buttons now, replacing the old
+              solid-button-next-to-ghost-link row. */}
+          <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
+            <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <Button
+                onClick={() => setAddProductOpen(true)}
+                className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+              >
+                <PackagePlus className="me-2 h-4 w-4" />
+                {t('screens.commerceportal.addProduct')}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setManualOpen(true)}
+                className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
+              >
+                {t('screens.commerceportal.manualCta')}
+              </Button>
             </div>
-            {rows !== null && rows.length > 0 && (
-              <span className="text-xs text-muted-foreground">
-                {t('screens.commerceportal.connectionsCount', { count: rows.length })}
-              </span>
-            )}
-          </div>
+          </section>
 
-          <div className="mt-4">
-            {rows === null ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          {/* YOUR CONNECTIONS */}
+          <section className="mt-12 md:mt-16">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">{t('screens.commerceportal.connectionsTitle')}</h2>
+                <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectionsSubtitle')}</p>
               </div>
-            ) : rows.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border bg-card px-5 py-10 text-center">
-                <p className="text-sm text-muted-foreground">{t('screens.commerceportal.empty')}</p>
-                <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
-                  {t('screens.commerceportal.connectionsEmptyHint')}
-                </p>
-              </div>
-            ) : (
-              <ul className="grid gap-3 sm:grid-cols-2">
-                {rows.map((row) => (
-                  <li key={row.id}>
-                    <ConnectionCard row={row} onOpen={openConnection} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </section>
-      </div>
+              {rows !== null && rows.length > 0 && (
+                <span className="text-xs text-muted-foreground">
+                  {t('screens.commerceportal.connectionsCount', { count: rows.length })}
+                </span>
+              )}
+            </div>
 
-      {!hasOrgs && orgsSection}
+            <div className="mt-4">
+              {rows === null ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                </div>
+              ) : rows.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-border bg-card px-5 py-10 text-center">
+                  <p className="text-sm text-muted-foreground">{t('screens.commerceportal.empty')}</p>
+                  <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
+                    {t('screens.commerceportal.connectionsEmptyHint')}
+                  </p>
+                </div>
+              ) : (
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {rows.map((row) => (
+                    <li key={row.id}>
+                      <ConnectionCard row={row} onOpen={openConnection} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+        </div>
+      )}
+
+      {user && !hasOrgs && orgsSection}
 
       <p className="mt-8 text-center text-xs text-muted-foreground">{t('screens.commerceportal.footNote')}</p>
 
