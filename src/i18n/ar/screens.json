@@ -10478,7 +10478,10 @@
         "openWorkbench": true,
         "closeWorkbench": true,
         "sandboxDevNote": true,
-        "addProduct": true
+        "addProduct": true,
+        "heroTitlePersonalizedNoOrg": true,
+        "heroTitlePersonalizedWithOrg": true,
+        "guestCta": true
       },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
@@ -10716,7 +10719,23 @@
           "openMyOrgsBody": true,
           "teamTitle": true,
           "teamAdminOnlyTitle": true,
-          "teamAdminOnlyBody": true
+          "teamAdminOnlyBody": true,
+          "categoryHealth": true,
+          "categoryFitness": true,
+          "categoryLifestyle": true,
+          "categoryTextiles": true,
+          "categorySupplements": true,
+          "categoryTravel": true,
+          "categoryGeneral": true,
+          "wizardStepOf": true,
+          "wizardStep1Title": true,
+          "wizardStep2Title": true,
+          "wizardStep3Title": true,
+          "wizardBack": true,
+          "wizardNext": true,
+          "wizardReviewCategory": true,
+          "wizardReviewName": true,
+          "wizardReviewKey": true
         },
         "registerCta": "Register your business",
         "registerTitle": "Register a new business",
@@ -10780,7 +10799,23 @@
         "openMyOrgsBody": "Your organizations' team, invites and orders",
         "teamTitle": "Team",
         "teamAdminOnlyTitle": "Only org admins manage the team",
-        "teamAdminOnlyBody": "Invitations and members of {org} are managed by an org admin. Your orders are under “Orders”."
+        "teamAdminOnlyBody": "Invitations and members of {org} are managed by an org admin. Your orders are under “Orders”.",
+        "categoryHealth": "Health & medical services",
+        "categoryFitness": "Fitness & wellness",
+        "categoryLifestyle": "Lifestyle",
+        "categoryTextiles": "Textiles & apparel",
+        "categorySupplements": "Supplements & nutrition",
+        "categoryTravel": "Longevity travel & tourism",
+        "categoryGeneral": "General commerce",
+        "wizardStepOf": "Step {current} of {total}",
+        "wizardStep1Title": "What kind of business is this?",
+        "wizardStep2Title": "Tell us about your business",
+        "wizardStep3Title": "Review & confirm",
+        "wizardBack": "Back",
+        "wizardNext": "Next",
+        "wizardReviewCategory": "Category",
+        "wizardReviewName": "Name",
+        "wizardReviewKey": "Short name"
       },
       "healthOrders": {
         "_pending_review": {
@@ -10795,7 +10830,10 @@
         "pageTitle": "Health-test orders",
         "notAMemberTitle": "You're not a member of any partner organization yet",
         "notAMemberBody": "Once you join or register a partner organization, its orders will appear here."
-      }
+      },
+      "heroTitlePersonalizedNoOrg": "Welcome, {name}. Bring your business to Vitanaland.",
+      "heroTitlePersonalizedWithOrg": "Welcome back, {name}. {orgName} is ready for its next step.",
+      "guestCta": "Sign up now"
     },
     "oauthconsent": {
       "title": "هل تسمح بالوصول؟",
