@@ -237,40 +237,87 @@ export default function CommercePortal() {
     </>
   );
 
+  // VTID-04079: headline + subhead + the two real CTAs, one copy of the
+  // markup shared by both hero layouts below. `twoColumn` only changes
+  // alignment/width at `lg:` — below `lg:` both layouts read identically
+  // (centered, single column), matching the pre-existing behaviour that
+  // must not change on a narrow desktop/host window.
+  const heroCopy = (twoColumn: boolean) => (
+    <>
+      <h1
+        className={`mx-auto max-w-3xl text-center text-2xl font-semibold leading-tight text-foreground lg:text-5xl ${
+          twoColumn ? 'lg:mx-0 lg:max-w-xl lg:text-start' : ''
+        }`}
+      >
+        {t('screens.commerceportal.heroTitle')}
+      </h1>
+      <p
+        className={`mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-base ${
+          twoColumn ? 'lg:mx-0 lg:max-w-lg lg:text-start' : ''
+        }`}
+      >
+        {t('screens.commerceportal.heroSubtitle')}
+      </p>
+      <div
+        className={`mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row ${
+          twoColumn ? 'lg:justify-start' : ''
+        }`}
+      >
+        <Button
+          size="lg"
+          onClick={scrollToAgentCard}
+          className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+        >
+          <Sparkles className="me-2 h-4 w-4" />
+          {t('screens.commerceportal.agentConnect.title')}
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={() => setRegisterOrgOpen(true)}
+          className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+        >
+          <Building2 className="me-2 h-4 w-4" />
+          {t('screens.commerceportal.orgOnboarding.registerCta')}
+        </Button>
+      </div>
+    </>
+  );
+
+  // VTID-04079: the same agent-card element rendered in exactly one of two
+  // positions depending on `hasOrgs` — never both, never neither. `className`
+  // is the only thing that varies between the two call sites.
+  const agentCard = (className: string) => (
+    <motion.section
+      ref={agentCardRef}
+      {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
+      className={className}
+    >
+      <AgentConnectCard />
+    </motion.section>
+  );
+
   return (
     <CommerceShell>
-      {/* HERO — headline, subhead, and the two real CTAs. Nothing else here,
-          so both buttons read unmistakably as buttons, not as one sentence
-          among several with a button attached. Visible at every width. */}
-      <motion.section {...fade} className="pt-6 text-center lg:pt-16">
-        <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
-          {t('screens.commerceportal.portalEyebrow')}
-        </span>
-        <h1 className="mx-auto mt-4 max-w-3xl text-2xl font-semibold leading-tight text-foreground lg:text-5xl">
-          {t('screens.commerceportal.heroTitle')}
-        </h1>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-base">
-          {t('screens.commerceportal.heroSubtitle')}
-        </p>
-        <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button
-            size="lg"
-            onClick={scrollToAgentCard}
-            className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
-          >
-            <Sparkles className="me-2 h-4 w-4" />
-            {t('screens.commerceportal.agentConnect.title')}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => setRegisterOrgOpen(true)}
-            className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
-          >
-            <Building2 className="me-2 h-4 w-4" />
-            {t('screens.commerceportal.orgOnboarding.registerCta')}
-          </Button>
-        </div>
+      {/* HERO — headline, subhead, and the two real CTAs, always visible at
+          every width. VTID-04079: no eyebrow pill any more (the sticky
+          header's own "VITANALAND · Commerce Portal" already says this,
+          repeating it here read as duplicated chrome). First-time visitors
+          (`!hasOrgs`, the common landing case) get a two-column hero at
+          `lg:` with the agent card beside the copy instead of stacked below
+          — a returning member (`hasOrgs`) keeps the plain centered hero so
+          the VTID-03989 org-before-the-pitch order stays intact: the card
+          renders in its original standalone position, below the hero and
+          the hoisted org section, not embedded up here. */}
+      <motion.section {...fade} className="pt-6 lg:pt-16">
+        {hasOrgs ? (
+          heroCopy(false)
+        ) : (
+          <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
+            <div>{heroCopy(true)}</div>
+            {agentCard('mt-10 hidden scroll-mt-24 lg:mt-0 lg:block')}
+          </div>
+        )}
       </motion.section>
 
       {hasOrgs && orgsSection}
@@ -281,17 +328,12 @@ export default function CommercePortal() {
           business overview: hero + your organizations. `lg:` matches
           useIsMobile's 1024px breakpoint, not Tailwind's md. */}
       <div className="hidden lg:block">
-        {/* CONNECT VIA AI AGENT — the primary CTA's scroll target, and still
-            the first thing shown among the merchant-integration surfaces, so
-            it stays the visual focal point exactly as before (VTID-03882's
-            own framing: "this is what the product is"). */}
-        <motion.section
-          ref={agentCardRef}
-          {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
-          className="mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10"
-        >
-          <AgentConnectCard />
-        </motion.section>
+        {/* CONNECT VIA AI AGENT — for a returning member (`hasOrgs`) only;
+            a first-time visitor already got this card beside the hero above
+            (VTID-04079). Still the first thing shown among the
+            merchant-integration surfaces for a returning member, matching
+            VTID-03882's own framing: "this is what the product is". */}
+        {hasOrgs && agentCard('mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10')}
 
         {/* WHAT HAPPENS NEXT */}
         <section className="mt-4 md:mt-6">
