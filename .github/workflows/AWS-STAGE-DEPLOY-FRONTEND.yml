@@ -85,6 +85,10 @@ on:
 
 permissions:
   contents: read
+  # VTID-04114: the smoke-test result below is recorded as a commit status so
+  # AWS-PROD-DEPLOY-FRONTEND.yml can refuse to publish a commit that never
+  # passed it — write access to statuses is the whole point of this job.
+  statuses: write
 
 concurrency:
   group: aws-stage-deploy-community-app
@@ -118,6 +122,10 @@ jobs:
       DEPLOY_REASON: ${{ inputs.reason || 'auto-deploy on push to main' }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Resolve checked-out commit
+        id: resolve
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Write .env.production with AWS staging gateway URL
         run: |
@@ -252,3 +260,70 @@ jobs:
             echo "- Verified live at: $FRONTEND"
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04114: same visibility gap as AWS-PROD-DEPLOY-FRONTEND.yml — the
+      # Command Hub Versions panel had zero record of community-app deploys on
+      # either stack. Non-fatal: a visibility record, not a deploy precondition.
+      - name: Record deployment in software_versions (Command Hub Versions panel)
+        if: success()
+        run: |
+          if curl -fsS "${{ env.GATEWAY_URL }}/api/v1/operator/deployments" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg service "${{ env.ECS_SERVICE }}" \
+              --arg git_commit "${{ steps.resolve.outputs.sha }}" \
+              --arg environment "staging" \
+              '{service: $service, git_commit: $git_commit, deploy_type: "normal", initiator: "agent", status: "success", environment: $environment}')" \
+            > /dev/null
+          then
+            echo "VTID-0510: recorded in software_versions — visible in Command Hub → clock icon."
+          else
+            echo "::warning::VTID-0510: failed to record deployment in software_versions (non-fatal, deploy itself succeeded)."
+          fi
+
+      # VTID-04114: this is the real gate. PR #1114 shipped a broken mobile
+      # sidebar straight to 100% of prod because nothing automated ever
+      # checked it — the only "test" on that component was a source-text
+      # grep that never rendered anything. This actually opens the drawer on
+      # staging and checks it. AWS-PROD-DEPLOY-FRONTEND.yml refuses to
+      # publish a commit that hasn't passed this (see the commit-status step
+      # below), so a failure here must be loud, not swallowed.
+      - name: Install Playwright (chromium only)
+        if: success()
+        run: |
+          npm install --no-save @playwright/test@1.51.0
+          npx playwright install --with-deps chromium
+
+      - name: Mobile shell smoke test (staging gate for prod publish)
+        id: smoke
+        if: success()
+        env:
+          STAGING_URL: ${{ env.FRONTEND_URL }}
+        run: node tests/e2e/mobile-shell-smoke.mjs
+
+      - name: Upload smoke test screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-shell-smoke-screenshots
+          path: tests/e2e/screenshots/
+          if-no-files-found: warn
+
+      - name: Record smoke-test result as a commit status (prod publish gate)
+        if: always()
+        run: |
+          STATE="success"
+          DESC="mobile shell smoke test passed on staging"
+          if [ "${{ steps.smoke.outcome }}" != "success" ]; then
+            STATE="failure"
+            DESC="mobile shell smoke test FAILED on staging — do not publish this commit to prod"
+          fi
+          curl -fsS -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.resolve.outputs.sha }}" \
+            -d "$(jq -n --arg state "$STATE" --arg desc "$DESC" \
+              --arg url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              '{state: $state, context: "ci/mobile-shell-smoke-staging", description: $desc, target_url: $url}')" \
+          || echo "::warning::failed to record the smoke-test commit status — the prod publish gate will not find a passing status for this commit until this is retried"

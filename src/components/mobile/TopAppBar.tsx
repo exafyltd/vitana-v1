@@ -60,6 +60,7 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
             navigation drawer is reachable from the App Bar in every mode. */}
         <button
           onClick={onMenuClick}
+          data-testid="mobile-nav-menu-button"
           className="relative z-10 justify-self-start flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
           aria-label={t('screens.mobile.openNavigationMenu')}
         >
