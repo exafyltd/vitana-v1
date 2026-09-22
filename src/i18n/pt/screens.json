@@ -3577,7 +3577,8 @@
       "videoRoomUnavailableHint": "A transmissão não está acessível agora. Por favor, tenta novamente.",
       "autopilotSuggestionsTitle": "Sugestões do Autopilot",
       "autopilotSuggestionsBody": "Ainda não publicaste um desejo. Entretanto, o Autopilot sugere pessoas da comunidade que podem ser uma boa opção. Publica um desejo para que a IA possa encontrar correspondências reais para ti.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "ourAnswer": "Nossa resposta"
     },
     "contacts": {
       "addContact": "Adicionar Contato",

@@ -3593,7 +3593,8 @@
       "goalWeightLoss": "Weight loss",
       "goalMentalWellness": "Mental wellness",
       "goalValues": "Values aligned",
-      "_pending_review": {}
+      "_pending_review": {},
+      "ourAnswer": "Our answer"
     },
     "contacts": {
       "addContact": "Add Contact",

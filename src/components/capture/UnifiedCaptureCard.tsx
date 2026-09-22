@@ -23,6 +23,7 @@ import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDuration, mergeFinalTranscript } from "@/utils/sttHelpers";
 import { cn } from "@/lib/utils";
+import { submitFeedbackTicket, type ReportType } from '@/lib/feedback-ticket';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
 
@@ -428,22 +429,17 @@ export function UnifiedCaptureCard({
         }
       }
 
-      const res = await fetch(`${GATEWAY_URL}/api/v1/voice-feedback/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          transcript: transcript.trim(),
-          report_type: mode,
-          severity,
-          affected_screen: affectedScreen || undefined,
-          attachments: uploadedUrls,
-        }),
+      // VTID-04313: the unified feedback_tickets pipeline, not the legacy table.
+      const result = await submitFeedbackTicket({
+        gatewayUrl: GATEWAY_URL,
+        accessToken: session.access_token,
+        transcript: transcript.trim(),
+        reportType: mode as ReportType,
+        severity,
+        affectedScreen: affectedScreen || undefined,
+        attachments: uploadedUrls,
+        source: 'capture_card',
       });
-
-      const result = await res.json();
       if (!result.ok) throw new Error(result.error || 'Submit failed');
 
       setTranscript('');

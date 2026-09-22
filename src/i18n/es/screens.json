@@ -3573,7 +3573,8 @@
       "videoRoomUnavailableHint": "La transmisión no está disponible ahora mismo. Por favor, inténtalo de nuevo.",
       "autopilotSuggestionsTitle": "Sugerencias de Piloto Automático",
       "autopilotSuggestionsBody": "Aún no has publicado un deseo. Mientras tanto, Piloto Automático sugiere personas de la comunidad que podrían encajar bien. Publica un deseo para que la IA pueda encontrarte coincidencias reales.",
-      "autopilotSuggestionBadge": "Piloto Automático"
+      "autopilotSuggestionBadge": "Piloto Automático",
+      "ourAnswer": "Nuestra respuesta"
     },
     "contacts": {
       "addContact": "Agregar contacto",

@@ -3601,7 +3601,8 @@
       "goalActivity": "活动伙伴",
       "goalWeightLoss": "减肥",
       "goalMentalWellness": "心理健康",
-      "goalValues": "价值观一致"
+      "goalValues": "价值观一致",
+      "ourAnswer": "我们的答复"
     },
     "contacts": {
       "addContact": "添加联系人",
