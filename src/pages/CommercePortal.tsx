@@ -220,15 +220,15 @@ export default function CommercePortal() {
                 className="absolute start-full top-8 hidden h-px w-8 -translate-x-4 bg-border sm:block rtl:translate-x-4"
               />
             )}
-            <div className="h-full rounded-2xl border-2 border-amber-200 bg-card p-6 shadow-sm transition-colors hover:border-amber-400">
+            <div className="h-full rounded-2xl border-2 border-amber-200 bg-card p-5 shadow-sm transition-colors hover:border-amber-400">
               <div className="flex items-center gap-3">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-500 text-lg font-bold text-white">
                   {i + 1}
                 </span>
                 <Icon className="h-6 w-6 shrink-0 text-amber-700" />
               </div>
-              <h3 className="mt-4 text-lg font-bold text-foreground">{t(title)}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t(body)}</p>
+              <h3 className="mt-3 text-lg font-bold text-foreground">{t(title)}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(body)}</p>
             </div>
           </li>
         ))}
@@ -369,7 +369,7 @@ export default function CommercePortal() {
           org-before-the-pitch order stays intact: the card renders in its
           original standalone position, below the hero and the hoisted org
           section, not embedded up here. */}
-      <motion.section {...fade} className="pt-6 lg:pt-16">
+      <motion.section {...fade} className="pt-6 lg:pt-10">
         {!user ? (
           <div className="text-center">
             <h1 className="mx-auto max-w-3xl text-2xl font-semibold leading-tight text-foreground lg:text-5xl">
