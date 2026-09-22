@@ -103,10 +103,20 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   });
 
   it('a guest sees the pitch and the steps only — no live agent card, no org data, one CTA to sign up', () => {
-    const guestBranchStart = src.indexOf('!user ? (', jsxStart);
+    // There are two `!user ? (` ternaries in this file — the hero's
+    // single-CTA-vs-two-CTA one, and this section's
+    // whatHappensNextSection-vs-merchant-integration one. Anchor on the
+    // "Guest: minimum available information" comment, which only exists
+    // right after this section's ternary, so this can't silently re-match
+    // the hero's ternary instead (that's exactly what happened before this
+    // fix — the unscoped search matched the hero's first).
+    const guestCommentStart = src.indexOf('// Guest: minimum available information', jsxStart);
+    const guestBranchStart = src.lastIndexOf('!user ? (', guestCommentStart);
     const guestBranchEnd = src.indexOf(') : (', guestBranchStart);
     const guestBody = src.slice(guestBranchStart, guestBranchEnd);
+    expect(guestCommentStart).toBeGreaterThan(-1);
     expect(guestBranchStart).toBeGreaterThan(-1);
+    expect(guestBranchStart).toBeLessThan(guestCommentStart);
     expect(guestBody).toContain('whatHappensNextSection');
     expect(guestBody).not.toContain('<AgentConnectCard');
     expect(guestBody).not.toContain('ManualConnectDialog');
