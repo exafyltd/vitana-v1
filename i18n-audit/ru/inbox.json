@@ -148,7 +148,7 @@
     "inbox.newConversation.groupNamePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent: formal 'вы' form used instead of informal 'ты' form.",
+      "issue": "Incorrect register (uses 'вы' instead of 'ты' form).",
       "suggested": "Введи название группы...",
       "phase": "llm"
     },
@@ -498,5 +498,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:37:08.381Z"
+  "generatedAt": "2026-09-22T08:43:34.147Z"
 }
