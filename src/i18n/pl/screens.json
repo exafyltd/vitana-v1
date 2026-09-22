@@ -3602,7 +3602,8 @@
       "videoRoomUnavailableHint": "Strumień jest teraz niedostępny. Spróbuj ponownie.",
       "autopilotSuggestionsTitle": "Sugestie Autopilota",
       "autopilotSuggestionsBody": "Nie opublikowałeś jeszcze życzenia. W międzyczasie Autopilot sugeruje osoby ze społeczności, które mogłyby pasować. Opublikuj życzenie, aby AI mogła znaleźć dla ciebie prawdziwe dopasowania.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "ourAnswer": "Nasza odpowiedź"
     },
     "contacts": {
       "addContact": "Dodaj kontakt",

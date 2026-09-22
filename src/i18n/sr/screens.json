@@ -3601,7 +3601,8 @@
       "videoRoomUnavailableHint": "Prenos trenutno nije dostupan. Molimo te, pokušaj ponovo.",
       "autopilotSuggestionsTitle": "Autopilot predlozi",
       "autopilotSuggestionsBody": "Još nisi objavio želju. U međuvremenu, Autopilot ti predlaže ljude iz zajednice koji bi ti mogli odgovarati. Objavi želju kako bi AI mogao da ti pronađe prave podudarnosti.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "ourAnswer": "Naš odgovor"
     },
     "contacts": {
       "addContact": "Dodaj kontakt",

@@ -42,6 +42,9 @@ interface Ticket {
   resolver_agent: string | null;
   resolved_at: string | null;
   user_confirmed_at: string | null;
+  // VTID-04312: returned by /mine once the ticket is resolved.
+  answer_md?: string | null;
+  resolution_md?: string | null;
   // VTID-02047: voice tool sets structured_fields.voice_origin=true so we
   // can render a "captured by voice" indicator. Backend includes this on
   // the /mine response when the field exists.
@@ -199,13 +202,13 @@ export default function TalkToVitana() {
           {ticketsQuery.data?.length === 0 && (
             <p className="text-sm text-muted-foreground">{t('screens.community.nothingHereYetYourReportsWill')}</p>
           )}
-          {ticketsQuery.data?.map(t => {
-            const pill = STATUS_PILL[t.status] ?? { label: t.status, tone: "outline" as const };
-            const awaitingConfirm = t.status === "resolved";
+          {ticketsQuery.data?.map(ticket => {
+            const pill = STATUS_PILL[ticket.status] ?? { label: ticket.status, tone: "outline" as const };
+            const awaitingConfirm = ticket.status === "resolved";
 
             const handleConfirm = async () => {
               try {
-                const res = await communityFetch(`/api/v1/feedback/tickets/${t.id}/confirm`, { method: "POST" });
+                const res = await communityFetch(`/api/v1/feedback/tickets/${ticket.id}/confirm`, { method: "POST" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
                 notify('toasts.community.thanks', 'toasts.community.weLlKeepEyeIt');
@@ -215,7 +218,7 @@ export default function TalkToVitana() {
             };
             const handleReopen = async () => {
               try {
-                const res = await communityFetch(`/api/v1/feedback/tickets/${t.id}/reopen`, { method: "POST" });
+                const res = await communityFetch(`/api/v1/feedback/tickets/${ticket.id}/reopen`, { method: "POST" });
                 if (!res.ok) {
                   const body = await res.json().catch(() => ({}));
                   throw new Error(body.details ?? body.error ?? `HTTP ${res.status}`);
@@ -228,28 +231,34 @@ export default function TalkToVitana() {
             };
 
             return (
-              <Card key={t.id} className="flex flex-col gap-2 p-3">
+              <Card key={ticket.id} className="flex flex-col gap-2 p-3">
                 <div className="flex items-center gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 text-sm flex-wrap">
-                      <span className="font-medium">{t.ticket_number}</span>
+                      <span className="font-medium">{ticket.ticket_number}</span>
                       <Badge variant={pill.tone} className="text-[10px]">{pill.label}</Badge>
-                      {t.structured_fields?.voice_origin && (
+                      {ticket.structured_fields?.voice_origin && (
                         <Badge variant="outline" className="text-[10px]">{t('screens.community.viaVoice')}</Badge>
                       )}
-                      {t.resolver_agent && (
-                        <span className="text-xs text-muted-foreground">{t('screens.community.handledByResolver_agent', { resolver_agent: t.resolver_agent })}</span>
+                      {ticket.resolver_agent && (
+                        <span className="text-xs text-muted-foreground">{t('screens.community.handledByResolver_agent', { resolver_agent: ticket.resolver_agent })}</span>
                       )}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind} · {timeAgo(t.created_at)}
+                      {KIND_OPTIONS.find(k => k.value === ticket.kind)?.label ?? ticket.kind} · {timeAgo(ticket.created_at)}
                     </div>
                   </div>
                 </div>
+                {(ticket.answer_md || ticket.resolution_md) && (ticket.status === "resolved" || ticket.status === "user_confirmed") && (
+                  <div className="rounded-md border bg-muted/40 p-3 text-sm">
+                    <div className="mb-1 text-xs font-medium text-muted-foreground">{t('screens.community.ourAnswer')}</div>
+                    <p className="whitespace-pre-wrap break-words">{ticket.answer_md || ticket.resolution_md}</p>
+                  </div>
+                )}
                 {awaitingConfirm && (
                   <div className="rounded-md border border-primary/40 bg-primary/5 p-3 text-sm">
-                    <div className="mb-2 font-medium">{t('screens.community.value0Value1DidItWork', { value0: t.resolver_agent
-                        ? `${t.resolver_agent.charAt(0).toUpperCase() + t.resolver_agent.slice(1)} says this is fixed.`
+                    <div className="mb-2 font-medium">{t('screens.community.value0Value1DidItWork', { value0: ticket.resolver_agent
+                        ? `${ticket.resolver_agent.charAt(0).toUpperCase() + ticket.resolver_agent.slice(1)} says this is fixed.`
                         : "We think this is fixed.", value1: " " })}
                     </div>
                     <div className="flex gap-2">

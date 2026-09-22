@@ -18,7 +18,8 @@ import {
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
-interface FeedbackReport {
+import { ticketToReport, type FeedbackTicketListRow } from '@/lib/feedback-ticket';
+export interface FeedbackReport {
   id: string;
   transcript: string;
   report_type: "bug_report" | "ux_improvement";
@@ -28,7 +29,10 @@ interface FeedbackReport {
   vtid: string | null;
   created_at: string;
   attachments: string[];
+  /** VTID-04313: 'ticket' rows come from feedback_tickets and can't be deleted by the member. */
+  source?: 'legacy' | 'ticket';
 }
+
 
 const STATUS_CONFIG: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; icon: any }> = {
   received: { label: "Received", variant: "secondary", icon: Clock },
@@ -63,15 +67,28 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      const { data, error } = await supabase
-        .from("user_feedback_reports" as any)
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(100);
+      // VTID-04313: new reports live in feedback_tickets; older ones stay in
+      // the legacy table (read-only history). Show both, newest first.
+      const [legacy, tickets] = await Promise.all([
+        supabase
+          .from("user_feedback_reports" as any)
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(100),
+        supabase
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- feedback_tickets is not in the generated types yet
+          .from("feedback_tickets" as any)
+          .select("id, kind, status, raw_transcript, structured_fields, screen_path, linked_vtid, created_at")
+          .eq("user_id", user.id)
+          .in("kind", ["bug", "ux_issue"])
+          .order("created_at", { ascending: false })
+          .limit(100),
+      ]);
 
-      if (error) return [];
-      return (data as unknown as FeedbackReport[]) || [];
+      const legacyRows = legacy.error ? [] : ((legacy.data as unknown as FeedbackReport[]) || []).map(r => ({ ...r, source: 'legacy' as const }));
+      const ticketRows = tickets.error ? [] : ((tickets.data as unknown as FeedbackTicketListRow[]) || []).map(ticketToReport);
+      return [...ticketRows, ...legacyRows].sort((a, b) => b.created_at.localeCompare(a.created_at));
     },
   });
 
@@ -173,13 +190,15 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
                       <span className="text-xs text-muted-foreground ml-auto">
                         {formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}
                       </span>
-                      <button
-                        onClick={() => setDeleteTarget(report.id)}
-                        className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                        aria-label={t('screens.feedback.deleteReport')}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      {report.source !== 'ticket' && (
+                        <button
+                          onClick={() => setDeleteTarget(report.id)}
+                          className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                          aria-label={t('screens.feedback.deleteReport')}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                     </div>
                     <p className="text-sm line-clamp-2">
                       {report.transcript.slice(0, 120)}

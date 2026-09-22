@@ -17,6 +17,7 @@ import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { submitFeedbackTicket, type ReportType } from '@/lib/feedback-ticket';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
 
@@ -284,22 +285,17 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         }
       }
 
-      const res = await fetch(`${GATEWAY_URL}/api/v1/voice-feedback/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          transcript: transcript.trim(),
-          report_type: reportType,
-          severity,
-          affected_screen: affectedScreen || undefined,
-          attachments: uploadedUrls,
-        }),
+      // VTID-04313: the unified feedback_tickets pipeline, not the legacy table.
+      const result = await submitFeedbackTicket({
+        gatewayUrl: GATEWAY_URL,
+        accessToken: session.access_token,
+        transcript: transcript.trim(),
+        reportType: reportType as ReportType,
+        severity,
+        affectedScreen: affectedScreen || undefined,
+        attachments: uploadedUrls,
+        source: 'diary_recorder',
       });
-
-      const result = await res.json();
       if (!result.ok) throw new Error(result.error || 'Submit failed');
 
       // Reset form and show confirmation

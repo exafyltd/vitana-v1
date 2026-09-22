@@ -3604,7 +3604,8 @@
       "videoRoomUnavailableHint": "Поток сейчас недоступен. Пожалуйста, попробуй снова.",
       "autopilotSuggestionsTitle": "Предложения Автопилота",
       "autopilotSuggestionsBody": "Ты ещё не опубликовал желание. Тем временем Автопилот предлагает людей из сообщества, которые могли бы подойти. Опубликуй желание, чтобы ИИ мог найти для тебя настоящие совпадения.",
-      "autopilotSuggestionBadge": "Автопилот"
+      "autopilotSuggestionBadge": "Автопилот",
+      "ourAnswer": "Наш ответ"
     },
     "contacts": {
       "addContact": "Добавить контакт",

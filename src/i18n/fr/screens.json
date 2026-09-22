@@ -3601,7 +3601,8 @@
       "videoRoomUnavailableHint": "Le flux n'est pas accessible pour le moment. Merci de réessayer.",
       "autopilotSuggestionsTitle": "Suggestions Autopilot",
       "autopilotSuggestionsBody": "Tu n'as pas encore publié de souhait. En attendant, Autopilot te suggère des personnes de la communauté qui pourraient te correspondre. Publie un souhait pour que l'IA puisse te trouver de vraies correspondances.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "ourAnswer": "Notre réponse"
     },
     "contacts": {
       "addContact": "Ajouter un contact",
