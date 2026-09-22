@@ -88,7 +88,11 @@ describe('Drawer + Business Hub entry points (VTID-03989)', () => {
   it('SideDrawerNav gates the commerce item on partner-org membership and shows the org role chip', () => {
     const nav = read('src/components/mobile/SideDrawerNav.tsx');
     expect(nav).toContain("!(item.id === 'commerce' && !isPartnerOrgMember)");
-    expect(nav).toContain('{orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}');
+    // The org-role/display-name composition moved from an inline JSX
+    // interpolation into the `orgLine` variable (still rendered via the same
+    // secondary-line slot) so it can be joined with the "Admin Access" fact
+    // — see SideDrawerNav.role-chrome.test.ts's own regression test.
+    expect(nav).toContain('`${orgRoleLabel(primaryOrg.role)} · ${primaryOrg.display_name}`');
     expect(nav).toContain("if (route === '/commerce') return location.pathname === '/commerce';");
   });
 
