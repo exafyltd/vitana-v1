@@ -121,19 +121,19 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/CommercePortal.light-redesign.test.ts
 
-**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 11168
+- `screens` — used: 8, total in shard: 11168
 
 ### src/pages/CommercePortal.tsx
 
-**Status:** ✅ clean — keys consumed: 25, namespaces: 1
+**Status:** ✅ clean — keys consumed: 24, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 11168
+- `screens` — used: 24, total in shard: 11168
 
 ### src/pages/CommerceTeam.tsx
 
