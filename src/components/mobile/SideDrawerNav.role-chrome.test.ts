@@ -40,11 +40,27 @@ describe('SideDrawerNav role chrome (VTID-03993)', () => {
     const profileBtn = nav.indexOf('onClick={handleProfileClick}');
     const profileBtnEnd = nav.indexOf('</button>', profileBtn);
     const pill = nav.indexOf('aria-haspopup="dialog"');
-    const chip = nav.indexOf('{orgRoleLabel(primaryOrg.role)} · {primaryOrg.display_name}');
+    const chip = nav.indexOf('{pillSecondaryLine}');
     expect(profileBtn).toBeGreaterThan(-1);
     expect(pill).toBeGreaterThan(profileBtnEnd);
     expect(chip).toBeGreaterThan(pill);
     expect(nav).not.toContain('mt-2 inline-flex max-w-full items-center gap-1 rounded-full');
+  });
+
+  it('never overrides the mode label with "Exafy Admin" — super-admin status is a separate badge, not a replacement (fixes the pill/switcher contradiction)', () => {
+    // Before this fix: `isExafyAdmin && dbRole === 'community' ? roleExafyAdmin : ...`
+    // made the pill and the switcher's "Current mode" line say "Exafy Admin"
+    // while the switcher's own checked radio entry was "Community Member" —
+    // the exact lie this file's Patient precedent (line above) says to avoid,
+    // just in the other direction.
+    expect(nav).not.toContain("isExafyAdmin && dbRole === 'community'");
+    expect(nav).not.toContain("t('screens.mobile.roleExafyAdmin')");
+    const roleLabelDecl = nav.indexOf('const roleLabel = inBusinessMode && business.activeOrg');
+    expect(roleLabelDecl).toBeGreaterThan(-1);
+    expect(nav.slice(roleLabelDecl, roleLabelDecl + 200)).toContain(': vitanaRoleLabel(dbRole);');
+    // Super-admin status instead rides the existing org-chip line, matching
+    // ProfileDrawer's desktop "Admin Access" badge (screens.profile.adminAccess).
+    expect(nav).toContain("isExafyAdmin ? t('screens.profile.adminAccess') : null");
   });
 
   it('shows the mode as a single dropdown pill — role label + chevron — that opens the switcher', () => {
