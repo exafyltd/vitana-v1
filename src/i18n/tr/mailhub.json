@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "E-postanı, takvimini ve kişilerini tek dokunuşla bağla. Vitana böylece e-postalarını okuyabilir, randevularını görebilir ve kişilerini bulabilir — yalnızca burada açtığın uygulamalar için.",
+    "kinds": {
+      "mail": "E-posta",
+      "calendar": "Takvim",
+      "contacts": "Kişiler"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "Vitana senin için e-posta okur ve yazar"
+      },
+      "outlook-mail": {
+        "name": "Outlook Mail",
+        "what": "Microsoft gelen kutunu oku ve e-posta gönder"
+      },
+      "apple-mail": {
+        "name": "Apple Mail (iCloud)",
+        "what": "iCloud gelen kutundaki yeni e-postaları oku"
+      },
+      "google-calendar": {
+        "name": "Google Takvim",
+        "what": "Randevuları gör ve ekle, Vitanaland ile eşitlenir"
+      },
+      "outlook-calendar": {
+        "name": "Outlook Takvim",
+        "what": "Randevuları gör ve takviminde dolu saatleri göster"
+      },
+      "apple-calendar": {
+        "name": "Apple Takvim (iCloud)",
+        "what": "Randevuları gör ve takviminde dolu saatleri göster"
+      },
+      "google-contacts": {
+        "name": "Google Kişiler",
+        "what": "Kişilerini Vitanaland'e aktar"
+      },
+      "iphone-contacts": {
+        "name": "iPhone Kişileri (iCloud)",
+        "what": "iCloud kişilerini Vitanaland'e aktar"
+      },
+      "android-contacts": {
+        "name": "Android Kişileri",
+        "what": "Telefonunda kişileri seç ve aktar"
+      }
+    },
+    "status": {
+      "loading": "Yükleniyor …",
+      "on": "Açık",
+      "notAvailable": "Henüz kullanılamıyor",
+      "needsReconnect": "Erişimin süresi doldu — yeniden bağlan",
+      "syncProblem": "Son eşitleme olmadı",
+      "finishInBrowser": "Tarayıcıda girişi tamamla, sonra geri dön",
+      "contactsCount": "{count} kişi",
+      "busyCount": "{count} dolu saat",
+      "syncedAgo": "eşitlendi {ago}"
+    },
+    "actions": {
+      "toggleAria": "{app} uygulamasını aç veya kapat",
+      "syncNow": "Şimdi eşitle",
+      "reconnect": "Yeniden bağlan",
+      "addMore": "Daha fazla kişi ekle",
+      "cancel": "İptal",
+      "keepOn": "Açık kalsın",
+      "turnOff": "Kapat",
+      "gotIt": "Tamam"
+    },
+    "toasts": {
+      "turnedOn": "{app} açık",
+      "turnedOff": "{app} kapalı",
+      "contactsImported": "{count} kişi eklendi",
+      "synced": "Eşitleme bitti",
+      "syncFailed": "Eşitleme olmadı — biraz sonra tekrar dene",
+      "firstSyncFailed": "Açık, ama ilk eşitleme olmadı",
+      "consentFailed": "Giriş tamamlanmadı — tekrar dene",
+      "notAvailable": "Bu uygulama bizde henüz kullanılamıyor",
+      "couldNotTurnOn": "Olmadı — biraz sonra tekrar dene",
+      "couldNotTurnOff": "Kapatılamadı — biraz sonra tekrar dene"
+    },
+    "apple": {
+      "title": "Apple iCloud'u bağla",
+      "intro": "Apple, diğer uygulamaların iCloud Mail, Takvim ve Kişiler'i yalnızca uygulamaya özel parolayla kullanmasına izin verir. Bir kez ayarlarsın, üç Apple uygulamasının hepsinde geçerlidir.",
+      "step1": "Giriş yap:",
+      "step2": "“Giriş ve Güvenlik” → “Uygulamaya Özel Parolalar”ı aç ve “Vitanaland” adında bir tane oluştur.",
+      "step3": "Apple kimliğini ve yeni parolayı buraya gir.",
+      "appleId": "Apple Kimliği (e-posta)",
+      "appPassword": "Uygulamaya özel parola",
+      "privacy": "Parolayı şifreli saklıyoruz ve yalnızca okumak için kullanıyoruz. İstediğin zaman Apple'da iptal edebilirsin.",
+      "connect": "Bağla",
+      "checking": "Kontrol ediliyor …",
+      "wrongPassword": "Apple girişi reddetti — Apple kimliğini ve uygulamaya özel parolayı kontrol et",
+      "unreachable": "iCloud'a şu anda ulaşılamıyor — biraz sonra tekrar dene",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "Android telefonunda aç",
+      "body": "Android kişileri doğrudan telefonundan gelir. Android telefonunda Chrome ile Vitanaland'i aç ve oradaki anahtara dokun — hangi kişilerin aktarılacağını sen seçersin."
+    },
+    "off": {
+      "title": "{app} kapatılsın mı?",
+      "body": {
+        "mail": "Vitana bu uygulama üzerinden artık e-posta okumaz ve göndermez.",
+        "calendar": "Bu takvimdeki dolu saatler Vitanaland takviminden kaybolur.",
+        "contacts": "Artık yeni kişi aktarılmaz. Aktarılmış kişiler, burada kaldırmadıkça kalır."
+      },
+      "removeContacts": "Aktarılan kişileri Vitanaland'den de kaldır"
+    },
+    "errors": {
+      "sessionExpired": "Oturumunun süresi doldu. Uygulamalarını yönetmek için yeniden giriş yap.",
+      "loadFailed": "Uygulamaların şu anda yüklenemedi. Biraz sonra tekrar dene."
+    }
+  }
+}

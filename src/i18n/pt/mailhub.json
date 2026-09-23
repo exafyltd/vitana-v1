@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "Conecta o teu e-mail, a tua agenda e os teus contatos com um toque. A Vitana poderá ler os teus e-mails, ver os teus compromissos e encontrar os teus contatos — só nos apps que ativares aqui.",
+    "kinds": {
+      "mail": "E-mail",
+      "calendar": "Agenda",
+      "contacts": "Contatos"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "A Vitana lê e escreve e-mails por ti"
+      },
+      "outlook-mail": {
+        "name": "Outlook Mail",
+        "what": "Ler a tua caixa Microsoft e enviar e-mails"
+      },
+      "apple-mail": {
+        "name": "Apple Mail (iCloud)",
+        "what": "Ler e-mails novos na tua caixa do iCloud"
+      },
+      "google-calendar": {
+        "name": "Google Agenda",
+        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
+      },
+      "outlook-calendar": {
+        "name": "Calendário do Outlook",
+        "what": "Ver compromissos e mostrar horários ocupados na tua agenda"
+      },
+      "apple-calendar": {
+        "name": "Calendário da Apple (iCloud)",
+        "what": "Ver compromissos e mostrar horários ocupados na tua agenda"
+      },
+      "google-contacts": {
+        "name": "Contatos do Google",
+        "what": "Trazer os teus contatos para a Vitanaland"
+      },
+      "iphone-contacts": {
+        "name": "Contatos do iPhone (iCloud)",
+        "what": "Trazer os teus contatos do iCloud para a Vitanaland"
+      },
+      "android-contacts": {
+        "name": "Contatos do Android",
+        "what": "Escolher contatos no celular e trazê-los"
+      }
+    },
+    "status": {
+      "loading": "Carregando …",
+      "on": "Ativado",
+      "notAvailable": "Ainda não disponível",
+      "needsReconnect": "O acesso expirou — conecta de novo",
+      "syncProblem": "A última sincronização não funcionou",
+      "finishInBrowser": "Termina o login no navegador e volta",
+      "contactsCount": "{count} contatos",
+      "busyCount": "{count} horários ocupados",
+      "syncedAgo": "sincronizado {ago}"
+    },
+    "actions": {
+      "toggleAria": "Ativar ou desativar {app}",
+      "syncNow": "Sincronizar agora",
+      "reconnect": "Conectar de novo",
+      "addMore": "Adicionar mais contatos",
+      "cancel": "Cancelar",
+      "keepOn": "Manter ativado",
+      "turnOff": "Desativar",
+      "gotIt": "Entendi"
+    },
+    "toasts": {
+      "turnedOn": "{app} está ativado",
+      "turnedOff": "{app} está desativado",
+      "contactsImported": "{count} contatos adicionados",
+      "synced": "Sincronização concluída",
+      "syncFailed": "A sincronização não funcionou — tenta de novo daqui a pouco",
+      "firstSyncFailed": "Ativado, mas a primeira sincronização não funcionou",
+      "consentFailed": "O login não foi concluído — tenta de novo",
+      "notAvailable": "Este app ainda não está disponível conosco",
+      "couldNotTurnOn": "Não funcionou — tenta de novo daqui a pouco",
+      "couldNotTurnOff": "Não foi possível desativar — tenta de novo daqui a pouco"
+    },
+    "apple": {
+      "title": "Conectar Apple iCloud",
+      "intro": "A Apple só deixa outros apps usarem o Mail, o Calendário e os Contatos do iCloud com uma senha de app. Configuras uma vez e serve para os três apps da Apple.",
+      "step1": "Faz login em",
+      "step2": "Abre «Início de sessão e segurança» → «Senhas de app» e cria uma chamada «Vitanaland».",
+      "step3": "Escreve aqui o teu ID Apple e a nova senha.",
+      "appleId": "ID Apple (e-mail)",
+      "appPassword": "Senha de app",
+      "privacy": "Guardamos a senha cifrada e só a usamos para ler. Podes revogá-la na Apple quando quiseres.",
+      "connect": "Conectar",
+      "checking": "Verificando …",
+      "wrongPassword": "A Apple recusou o login — verifica o teu ID Apple e a senha de app",
+      "unreachable": "O iCloud não está acessível agora — tenta de novo daqui a pouco",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "Abre no teu celular Android",
+      "body": "Os contatos do Android vêm diretamente do teu celular. Abre a Vitanaland no Chrome do teu celular Android e toca no interruptor lá — escolhes tu que contatos entram."
+    },
+    "off": {
+      "title": "Desativar {app}?",
+      "body": {
+        "mail": "A Vitana deixa de ler e enviar e-mails por este app.",
+        "calendar": "Os horários ocupados desta agenda desaparecem da tua agenda da Vitanaland.",
+        "contacts": "Não entram contatos novos. Os que já foram adicionados ficam, a não ser que os removas aqui."
+      },
+      "removeContacts": "Remover também da Vitanaland os contatos adicionados"
+    },
+    "errors": {
+      "sessionExpired": "A tua sessão expirou. Faz login de novo para gerir os teus apps.",
+      "loadFailed": "Não foi possível carregar os teus apps agora. Tenta de novo daqui a pouco."
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "一键连接你的邮箱、日历和通讯录。之后 Vitana 就能读取你的邮件、查看你的日程并找到你的联系人——仅限你在这里开启的应用。",
+    "kinds": {
+      "mail": "邮件",
+      "calendar": "日历",
+      "contacts": "通讯录"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "Vitana 替你读写邮件"
+      },
+      "outlook-mail": {
+        "name": "Outlook 邮件",
+        "what": "读取你的 Microsoft 收件箱并发送邮件"
+      },
+      "apple-mail": {
+        "name": "Apple 邮件（iCloud）",
+        "what": "读取 iCloud 收件箱中的新邮件"
+      },
+      "google-calendar": {
+        "name": "Google 日历",
+        "what": "查看并添加日程，与 Vitanaland 保持同步"
+      },
+      "outlook-calendar": {
+        "name": "Outlook 日历",
+        "what": "查看日程，并在日历中显示忙碌时间"
+      },
+      "apple-calendar": {
+        "name": "Apple 日历（iCloud）",
+        "what": "查看日程，并在日历中显示忙碌时间"
+      },
+      "google-contacts": {
+        "name": "Google 通讯录",
+        "what": "把你的联系人导入 Vitanaland"
+      },
+      "iphone-contacts": {
+        "name": "iPhone 通讯录（iCloud）",
+        "what": "把你的 iCloud 联系人导入 Vitanaland"
+      },
+      "android-contacts": {
+        "name": "Android 通讯录",
+        "what": "在手机上选择联系人并导入"
+      }
+    },
+    "status": {
+      "loading": "加载中 …",
+      "on": "已开启",
+      "notAvailable": "暂不可用",
+      "needsReconnect": "访问已过期——请重新连接",
+      "syncProblem": "上次同步没有成功",
+      "finishInBrowser": "在浏览器中完成登录后再回来",
+      "contactsCount": "{count} 位联系人",
+      "busyCount": "{count} 个忙碌时段",
+      "syncedAgo": "{ago}已同步"
+    },
+    "actions": {
+      "toggleAria": "开启或关闭{app}",
+      "syncNow": "立即同步",
+      "reconnect": "重新连接",
+      "addMore": "添加更多联系人",
+      "cancel": "取消",
+      "keepOn": "保持开启",
+      "turnOff": "关闭",
+      "gotIt": "知道了"
+    },
+    "toasts": {
+      "turnedOn": "{app}已开启",
+      "turnedOff": "{app}已关闭",
+      "contactsImported": "已添加 {count} 位联系人",
+      "synced": "同步完成",
+      "syncFailed": "同步没有成功——请稍后再试",
+      "firstSyncFailed": "已开启，但首次同步没有成功",
+      "consentFailed": "登录未完成——请重试",
+      "notAvailable": "这个应用在我们这里暂不可用",
+      "couldNotTurnOn": "没有成功——请稍后再试",
+      "couldNotTurnOff": "关闭没有成功——请稍后再试"
+    },
+    "apple": {
+      "title": "连接 Apple iCloud",
+      "intro": "Apple 只允许其他应用通过 App 专用密码使用 iCloud 邮件、日历和通讯录。你只需设置一次，三个 Apple 应用都能使用。",
+      "step1": "登录",
+      "step2": "打开“登录与安全”→“App 专用密码”，创建一个名为“Vitanaland”的密码。",
+      "step3": "在这里输入你的 Apple ID 和新密码。",
+      "appleId": "Apple ID（邮箱）",
+      "appPassword": "App 专用密码",
+      "privacy": "我们加密保存密码，只用于读取。你可以随时在 Apple 撤销它。",
+      "connect": "连接",
+      "checking": "正在检查 …",
+      "wrongPassword": "Apple 拒绝了登录——请检查你的 Apple ID 和 App 专用密码",
+      "unreachable": "暂时无法连接 iCloud——请稍后再试",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "在你的 Android 手机上打开",
+      "body": "Android 联系人直接来自你的手机。在 Android 手机的 Chrome 中打开 Vitanaland，然后点那里的开关——由你决定导入哪些联系人。"
+    },
+    "off": {
+      "title": "关闭{app}？",
+      "body": {
+        "mail": "Vitana 将不再通过这个应用读取或发送邮件。",
+        "calendar": "这个日历的忙碌时间会从你的 Vitanaland 日历中消失。",
+        "contacts": "不会再导入新的联系人。已导入的联系人会保留，除非你在这里删除。"
+      },
+      "removeContacts": "同时从 Vitanaland 删除已导入的联系人"
+    },
+    "errors": {
+      "sessionExpired": "你的会话已过期。请重新登录以管理你的应用。",
+      "loadFailed": "暂时无法加载你的应用。请稍后再试。"
+    }
+  }
+}

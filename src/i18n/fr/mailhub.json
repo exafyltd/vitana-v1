@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "Connecte ta messagerie, ton agenda et tes contacts en un geste. Vitana pourra alors lire tes e-mails, voir tes rendez-vous et trouver tes contacts — seulement pour les apps que tu actives ici.",
+    "kinds": {
+      "mail": "E-mail",
+      "calendar": "Agenda",
+      "contacts": "Contacts"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "Vitana lit et écrit des e-mails pour toi"
+      },
+      "outlook-mail": {
+        "name": "Outlook Mail",
+        "what": "Lire ta boîte Microsoft et envoyer des e-mails"
+      },
+      "apple-mail": {
+        "name": "Apple Mail (iCloud)",
+        "what": "Lire les nouveaux e-mails de ta boîte iCloud"
+      },
+      "google-calendar": {
+        "name": "Google Agenda",
+        "what": "Voir et ajouter des rendez-vous, synchronisés avec Vitanaland"
+      },
+      "outlook-calendar": {
+        "name": "Calendrier Outlook",
+        "what": "Voir tes rendez-vous et afficher les créneaux occupés dans ton agenda"
+      },
+      "apple-calendar": {
+        "name": "Calendrier Apple (iCloud)",
+        "what": "Voir tes rendez-vous et afficher les créneaux occupés dans ton agenda"
+      },
+      "google-contacts": {
+        "name": "Contacts Google",
+        "what": "Importer tes contacts dans Vitanaland"
+      },
+      "iphone-contacts": {
+        "name": "Contacts de l’iPhone (iCloud)",
+        "what": "Importer tes contacts iCloud dans Vitanaland"
+      },
+      "android-contacts": {
+        "name": "Contacts Android",
+        "what": "Choisir des contacts sur ton téléphone et les importer"
+      }
+    },
+    "status": {
+      "loading": "Chargement …",
+      "on": "Activée",
+      "notAvailable": "Pas encore disponible",
+      "needsReconnect": "Accès expiré — reconnecte-toi",
+      "syncProblem": "La dernière synchronisation n’a pas marché",
+      "finishInBrowser": "Termine la connexion dans ton navigateur, puis reviens",
+      "contactsCount": "{count} contacts",
+      "busyCount": "{count} créneaux occupés",
+      "syncedAgo": "synchronisé {ago}"
+    },
+    "actions": {
+      "toggleAria": "Activer ou désactiver {app}",
+      "syncNow": "Synchroniser maintenant",
+      "reconnect": "Reconnecter",
+      "addMore": "Ajouter d’autres contacts",
+      "cancel": "Annuler",
+      "keepOn": "La garder activée",
+      "turnOff": "Désactiver",
+      "gotIt": "Compris"
+    },
+    "toasts": {
+      "turnedOn": "{app} est activée",
+      "turnedOff": "{app} est désactivée",
+      "contactsImported": "{count} contacts ajoutés",
+      "synced": "Synchronisation terminée",
+      "syncFailed": "La synchronisation n’a pas marché — réessaie dans un instant",
+      "firstSyncFailed": "Activée, mais la première synchronisation n’a pas marché",
+      "consentFailed": "La connexion n’a pas été terminée — réessaie",
+      "notAvailable": "Cette app n’est pas encore disponible chez nous",
+      "couldNotTurnOn": "Ça n’a pas marché — réessaie dans un instant",
+      "couldNotTurnOff": "La désactivation n’a pas marché — réessaie dans un instant"
+    },
+    "apple": {
+      "title": "Connecter Apple iCloud",
+      "intro": "Apple ne laisse les autres apps accéder à Mail, Calendrier et Contacts iCloud qu’avec un mot de passe pour app. Tu le crées une fois et il sert pour les trois apps Apple.",
+      "step1": "Connecte-toi sur",
+      "step2": "Ouvre « Connexion et sécurité » → « Mots de passe pour app » et crée-en un nommé « Vitanaland ».",
+      "step3": "Saisis ici ton identifiant Apple et le nouveau mot de passe.",
+      "appleId": "Identifiant Apple (e-mail)",
+      "appPassword": "Mot de passe pour app",
+      "privacy": "Nous stockons le mot de passe chiffré et ne l’utilisons que pour lire. Tu peux le révoquer chez Apple à tout moment.",
+      "connect": "Connecter",
+      "checking": "Vérification …",
+      "wrongPassword": "Apple a refusé la connexion — vérifie ton identifiant Apple et le mot de passe pour app",
+      "unreachable": "iCloud est injoignable pour le moment — réessaie dans un instant",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "Ouvre-le sur ton téléphone Android",
+      "body": "Les contacts Android viennent directement de ton téléphone. Ouvre Vitanaland dans Chrome sur ton téléphone Android et touche l’interrupteur là-bas — c’est toi qui choisis les contacts importés."
+    },
+    "off": {
+      "title": "Désactiver {app} ?",
+      "body": {
+        "mail": "Vitana ne lira et n’enverra plus d’e-mails avec cette app.",
+        "calendar": "Les créneaux occupés de cet agenda disparaissent de ton agenda Vitanaland.",
+        "contacts": "Aucun nouveau contact ne sera importé. Les contacts déjà ajoutés restent, sauf si tu les supprimes ici."
+      },
+      "removeContacts": "Supprimer aussi de Vitanaland les contacts ajoutés"
+    },
+    "errors": {
+      "sessionExpired": "Ta session a expiré. Reconnecte-toi pour gérer tes apps.",
+      "loadFailed": "Tes apps n’ont pas pu être chargées. Réessaie dans un instant."
+    }
+  }
+}

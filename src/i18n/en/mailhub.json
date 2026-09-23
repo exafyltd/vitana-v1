@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "Connect your mail, calendar and contacts with one tap. Vitana can then read your emails, see your appointments and find your contacts — only for the apps you switch on here.",
+    "kinds": {
+      "mail": "Mail",
+      "calendar": "Calendar",
+      "contacts": "Contacts"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "Vitana reads and writes emails for you"
+      },
+      "outlook-mail": {
+        "name": "Outlook Mail",
+        "what": "Read your Microsoft inbox and send mail"
+      },
+      "apple-mail": {
+        "name": "Apple Mail (iCloud)",
+        "what": "Read new mail in your iCloud inbox"
+      },
+      "google-calendar": {
+        "name": "Google Calendar",
+        "what": "See and add events, kept in step with Vitanaland"
+      },
+      "outlook-calendar": {
+        "name": "Outlook Calendar",
+        "what": "See events and show busy times in your calendar"
+      },
+      "apple-calendar": {
+        "name": "Apple Calendar (iCloud)",
+        "what": "See events and show busy times in your calendar"
+      },
+      "google-contacts": {
+        "name": "Google Contacts",
+        "what": "Bring your contacts into Vitanaland"
+      },
+      "iphone-contacts": {
+        "name": "iPhone Contacts (iCloud)",
+        "what": "Bring your iCloud contacts into Vitanaland"
+      },
+      "android-contacts": {
+        "name": "Android Contacts",
+        "what": "Pick contacts on your phone and bring them in"
+      }
+    },
+    "status": {
+      "loading": "Loading …",
+      "on": "On",
+      "notAvailable": "Not available yet",
+      "needsReconnect": "Access expired — please reconnect",
+      "syncProblem": "The last sync didn't work",
+      "finishInBrowser": "Finish signing in in your browser, then come back",
+      "contactsCount": "{count} contacts",
+      "busyCount": "{count} busy times",
+      "syncedAgo": "synced {ago}"
+    },
+    "actions": {
+      "toggleAria": "Turn {app} on or off",
+      "syncNow": "Sync now",
+      "reconnect": "Reconnect",
+      "addMore": "Add more contacts",
+      "cancel": "Cancel",
+      "keepOn": "Keep it on",
+      "turnOff": "Turn off",
+      "gotIt": "Got it"
+    },
+    "toasts": {
+      "turnedOn": "{app} is on",
+      "turnedOff": "{app} is off",
+      "contactsImported": "{count} contacts added",
+      "synced": "Sync finished",
+      "syncFailed": "Sync didn't work — try again in a moment",
+      "firstSyncFailed": "On, but the first sync didn't work",
+      "consentFailed": "Sign-in wasn't finished — please try again",
+      "notAvailable": "This app isn't available with us yet",
+      "couldNotTurnOn": "That didn't work — try again in a moment",
+      "couldNotTurnOff": "Turning off didn't work — try again in a moment"
+    },
+    "apple": {
+      "title": "Connect Apple iCloud",
+      "intro": "Apple only lets other apps use iCloud Mail, Calendar and Contacts with an app-specific password. You set it up once and it works for all three Apple apps.",
+      "step1": "Sign in at",
+      "step2": "Open “Sign-In and Security” → “App-Specific Passwords” and create one named “Vitanaland”.",
+      "step3": "Enter your Apple ID and the new password here.",
+      "appleId": "Apple ID (email)",
+      "appPassword": "App-specific password",
+      "privacy": "We store the password encrypted and only use it to read. You can revoke it at Apple at any time.",
+      "connect": "Connect",
+      "checking": "Checking …",
+      "wrongPassword": "Apple refused the sign-in — check your Apple ID and the app-specific password",
+      "unreachable": "iCloud can't be reached right now — try again in a moment",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "Open it on your Android phone",
+      "body": "Android contacts come straight from your phone. Open Vitanaland in Chrome on your Android phone and tap the switch there — you choose which contacts come in."
+    },
+    "off": {
+      "title": "Turn off {app}?",
+      "body": {
+        "mail": "Vitana will no longer read or send email through this app.",
+        "calendar": "The busy times from this calendar disappear from your Vitanaland calendar.",
+        "contacts": "No new contacts will come in. Contacts already added stay unless you remove them here."
+      },
+      "removeContacts": "Also remove the added contacts from Vitanaland"
+    },
+    "errors": {
+      "sessionExpired": "Your session has expired. Sign in again to manage your apps.",
+      "loadFailed": "Your apps couldn't be loaded right now. Try again in a moment."
+    }
+  }
+}

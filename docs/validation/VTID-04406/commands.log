@@ -1,0 +1,6 @@
+npx tsc --noEmit -p tsconfig.app.json | grep connected-apps      # no errors in the changed files
+npx eslint src/components/settings/connected-apps src/lib/connected-apps-client.ts src/components/settings/MobileConnectedAppsView.tsx   # 0 errors
+npx vitest run src/components/settings/connected-apps            # 10 passed
+npx vitest run                                                   # 149 files, 846 tests passed
+npm run i18n:inventory                                           # docs/SCREEN_INVENTORY.md regenerated
+npx vite --host 127.0.0.1 --port 8080 & node docs/validation/VTID-04406/outputs/verify-connected-apps.cjs docs/validation/VTID-04406/outputs   # hscroll 0 on all three; hub stubbed; remote writes aborted

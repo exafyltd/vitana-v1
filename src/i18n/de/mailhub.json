@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "Verbinde deine Mail, deinen Kalender und deine Kontakte mit einem Tipp. Vitana kann dann deine Mails lesen, Termine sehen und deine Kontakte finden — nur für die Apps, die du hier einschaltest.",
+    "kinds": {
+      "mail": "Mail",
+      "calendar": "Kalender",
+      "contacts": "Kontakte"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "Vitana liest und schreibt Mails für dich"
+      },
+      "outlook-mail": {
+        "name": "Outlook Mail",
+        "what": "Microsoft-Postfach lesen und Mails senden"
+      },
+      "apple-mail": {
+        "name": "Apple Mail (iCloud)",
+        "what": "Neue Mails in deinem iCloud-Postfach lesen"
+      },
+      "google-calendar": {
+        "name": "Google Kalender",
+        "what": "Termine sehen, eintragen und mit Vitanaland abgleichen"
+      },
+      "outlook-calendar": {
+        "name": "Outlook Kalender",
+        "what": "Termine sehen und belegte Zeiten im Kalender zeigen"
+      },
+      "apple-calendar": {
+        "name": "Apple Kalender (iCloud)",
+        "what": "Termine sehen und belegte Zeiten im Kalender zeigen"
+      },
+      "google-contacts": {
+        "name": "Google Kontakte",
+        "what": "Deine Kontakte nach Vitanaland übernehmen"
+      },
+      "iphone-contacts": {
+        "name": "iPhone Kontakte (iCloud)",
+        "what": "Deine iCloud-Kontakte nach Vitanaland übernehmen"
+      },
+      "android-contacts": {
+        "name": "Android Kontakte",
+        "what": "Kontakte von deinem Handy auswählen und übernehmen"
+      }
+    },
+    "status": {
+      "loading": "Wird geladen …",
+      "on": "Eingeschaltet",
+      "notAvailable": "Noch nicht verfügbar",
+      "needsReconnect": "Zugriff abgelaufen — bitte neu verbinden",
+      "syncProblem": "Letzter Abgleich hat nicht geklappt",
+      "finishInBrowser": "Schließ die Anmeldung im Browser ab und komm dann zurück",
+      "contactsCount": "{count} Kontakte",
+      "busyCount": "{count} belegte Zeiten",
+      "syncedAgo": "abgeglichen {ago}"
+    },
+    "actions": {
+      "toggleAria": "{app} ein- oder ausschalten",
+      "syncNow": "Jetzt abgleichen",
+      "reconnect": "Neu verbinden",
+      "addMore": "Weitere Kontakte hinzufügen",
+      "cancel": "Abbrechen",
+      "keepOn": "Eingeschaltet lassen",
+      "turnOff": "Ausschalten",
+      "gotIt": "Alles klar"
+    },
+    "toasts": {
+      "turnedOn": "{app} ist eingeschaltet",
+      "turnedOff": "{app} ist ausgeschaltet",
+      "contactsImported": "{count} Kontakte übernommen",
+      "synced": "Abgleich fertig",
+      "syncFailed": "Abgleich hat nicht geklappt — versuch es gleich noch einmal",
+      "firstSyncFailed": "Eingeschaltet, aber der erste Abgleich hat nicht geklappt",
+      "consentFailed": "Die Anmeldung wurde nicht abgeschlossen — versuch es noch einmal",
+      "notAvailable": "Diese App ist bei uns noch nicht verfügbar",
+      "couldNotTurnOn": "Das hat nicht geklappt — versuch es gleich noch einmal",
+      "couldNotTurnOff": "Ausschalten hat nicht geklappt — versuch es gleich noch einmal"
+    },
+    "apple": {
+      "title": "Mit Apple iCloud verbinden",
+      "intro": "Apple erlaubt anderen Apps den Zugriff auf iCloud-Mail, -Kalender und -Kontakte nur mit einem app-spezifischen Passwort. Du richtest es einmal ein, es gilt für alle drei Apple-Apps.",
+      "step1": "Melde dich an bei",
+      "step2": "Öffne „Anmeldung und Sicherheit“ → „App-spezifische Passwörter“ und erstelle eines mit dem Namen „Vitanaland“.",
+      "step3": "Trag hier deine Apple-ID und das neue Passwort ein.",
+      "appleId": "Apple-ID (E-Mail)",
+      "appPassword": "App-spezifisches Passwort",
+      "privacy": "Wir speichern das Passwort verschlüsselt und nutzen es nur zum Lesen. Du kannst es jederzeit bei Apple widerrufen.",
+      "connect": "Verbinden",
+      "checking": "Wird geprüft …",
+      "wrongPassword": "Apple hat die Anmeldung abgelehnt — prüf deine Apple-ID und das app-spezifische Passwort",
+      "unreachable": "iCloud ist gerade nicht erreichbar — versuch es gleich noch einmal",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "Auf deinem Android-Handy öffnen",
+      "body": "Android-Kontakte kommen direkt von deinem Handy. Öffne Vitanaland in Chrome auf deinem Android-Handy und tippe dort auf den Schalter — du wählst dann selbst aus, welche Kontakte übernommen werden."
+    },
+    "off": {
+      "title": "{app} ausschalten?",
+      "body": {
+        "mail": "Vitana liest und schreibt dann keine Mails mehr über diese App.",
+        "calendar": "Die belegten Zeiten aus diesem Kalender verschwinden aus deinem Vitanaland-Kalender.",
+        "contacts": "Es werden keine neuen Kontakte mehr übernommen. Bereits übernommene Kontakte bleiben, außer du entfernst sie hier."
+      },
+      "removeContacts": "Auch die übernommenen Kontakte aus Vitanaland entfernen"
+    },
+    "errors": {
+      "sessionExpired": "Deine Sitzung ist abgelaufen. Melde dich neu an, um deine Apps zu verwalten.",
+      "loadFailed": "Deine Apps konnten gerade nicht geladen werden. Versuch es gleich noch einmal."
+    }
+  }
+}
