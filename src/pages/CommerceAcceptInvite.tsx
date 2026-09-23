@@ -21,7 +21,7 @@ import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { businessHomeFor, setActiveOrgId } from '@/lib/business-mode';
 import { t } from '@/lib/i18n-toast';
 
-type State = 'pending' | 'success' | 'already' | 'expired' | 'notFound' | 'failed';
+type State = 'pending' | 'success' | 'already' | 'expired' | 'notFound' | 'wrongEmail' | 'failed';
 
 export default function CommerceAcceptInvite() {
   const { token } = useParams<{ token: string }>();
@@ -47,7 +47,10 @@ export default function CommerceAcceptInvite() {
       } catch (err) {
         if (cancelled) return;
         const message = err instanceof Error ? err.message : '';
-        if (/already accepted/i.test(message)) setState('already');
+        // VTID-04337: the gateway now binds an invite to the address it was
+        // sent to and answers 403 INVITE_EMAIL_MISMATCH / _UNVERIFIED.
+        if (/INVITE_EMAIL_(MISMATCH|UNVERIFIED)/.test(message)) setState('wrongEmail');
+        else if (/already accepted/i.test(message)) setState('already');
         else if (/expired/i.test(message)) setState('expired');
         else if (/not found/i.test(message)) setState('notFound');
         else setState('failed');
@@ -73,6 +76,7 @@ export default function CommerceAcceptInvite() {
     already: { icon: Clock, text: t('screens.commerceportal.orgOnboarding.acceptAlready') },
     expired: { icon: Clock, text: t('screens.commerceportal.orgOnboarding.acceptExpired') },
     notFound: { icon: XCircle, text: t('screens.commerceportal.orgOnboarding.acceptNotFound') },
+    wrongEmail: { icon: XCircle, text: t('screens.commerceportal.orgOnboarding.acceptWrongEmail') },
     failed: { icon: XCircle, text: t('screens.commerceportal.orgOnboarding.acceptFailed') },
   };
   const { icon: Icon, text } = copy[state];
