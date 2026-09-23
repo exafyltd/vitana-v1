@@ -25,11 +25,11 @@
       },
       "outlook-calendar": {
         "name": "Outlook kalendar",
-        "what": "Vidi termine i prikaži zauzeta vremena u kalendaru"
+        "what": "Vidi i dodaj termine, usklađene sa Vitanalandom"
       },
       "apple-calendar": {
         "name": "Apple kalendar (iCloud)",
-        "what": "Vidi termine i prikaži zauzeta vremena u kalendaru"
+        "what": "Vidi i dodaj termine, usklađene sa Vitanalandom"
       },
       "google-contacts": {
         "name": "Google kontakti",
@@ -100,7 +100,7 @@
       "title": "Isključiti {app}?",
       "body": {
         "mail": "Vitana više neće čitati ni slati mejlove preko ove aplikacije.",
-        "calendar": "Zauzeta vremena iz ovog kalendara nestaju iz tvog Vitanaland kalendara.",
+        "calendar": "Zauzeta vremena iz ovog kalendara nestaju iz tvog Vitanaland kalendara. Kalendar „Vitanaland“ ostaje na tvom nalogu — tamo ga možeš obrisati.",
         "contacts": "Novi kontakti se više neće prenositi. Već preneti kontakti ostaju, osim ako ih ovde ukloniš."
       },
       "removeContacts": "Ukloni i prenete kontakte iz Vitanalanda"

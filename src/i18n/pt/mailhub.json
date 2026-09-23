@@ -25,11 +25,11 @@
       },
       "outlook-calendar": {
         "name": "Calendário do Outlook",
-        "what": "Ver compromissos e mostrar horários ocupados na sua agenda"
+        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
       },
       "apple-calendar": {
         "name": "Calendário da Apple (iCloud)",
-        "what": "Ver compromissos e mostrar horários ocupados na sua agenda"
+        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
       },
       "google-contacts": {
         "name": "Contatos do Google",
@@ -100,7 +100,7 @@
       "title": "Desativar {app}?",
       "body": {
         "mail": "A Vitana deixa de ler e enviar e-mails por este app.",
-        "calendar": "Os horários ocupados desta agenda somem da sua agenda da Vitanaland.",
+        "calendar": "Os horários ocupados desta agenda somem da sua agenda da Vitanaland. A agenda \"Vitanaland\" continua na sua conta — você pode apagá-la lá.",
         "contacts": "Não entram contatos novos. Os que já foram adicionados ficam, a menos que você os remova aqui."
       },
       "removeContacts": "Remover também da Vitanaland os contatos adicionados"

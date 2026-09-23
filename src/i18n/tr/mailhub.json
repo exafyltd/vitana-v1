@@ -25,11 +25,11 @@
       },
       "outlook-calendar": {
         "name": "Outlook Takvim",
-        "what": "Randevuları gör ve takviminde dolu saatleri göster"
+        "what": "Randevuları gör ve ekle, Vitanaland ile eşitlenir"
       },
       "apple-calendar": {
         "name": "Apple Takvim (iCloud)",
-        "what": "Randevuları gör ve takviminde dolu saatleri göster"
+        "what": "Randevuları gör ve ekle, Vitanaland ile eşitlenir"
       },
       "google-contacts": {
         "name": "Google Kişiler",
@@ -100,7 +100,7 @@
       "title": "{app} kapatılsın mı?",
       "body": {
         "mail": "Vitana bu uygulama üzerinden artık e-posta okumaz ve göndermez.",
-        "calendar": "Bu takvimdeki dolu saatler Vitanaland takviminden kaybolur.",
+        "calendar": "Bu takvimdeki dolu saatler Vitanaland takviminden kaybolur. \"Vitanaland\" takvimi hesabında kalır — onu oradan silebilirsin.",
         "contacts": "Artık yeni kişi aktarılmaz. Aktarılmış kişiler, burada kaldırmadıkça kalır."
       },
       "removeContacts": "Aktarılan kişileri Vitanaland'den de kaldır"

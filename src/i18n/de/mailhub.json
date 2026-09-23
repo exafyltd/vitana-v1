@@ -25,11 +25,11 @@
       },
       "outlook-calendar": {
         "name": "Outlook Kalender",
-        "what": "Termine sehen und belegte Zeiten im Kalender zeigen"
+        "what": "Termine sehen, eintragen und mit Vitanaland abgleichen"
       },
       "apple-calendar": {
         "name": "Apple Kalender (iCloud)",
-        "what": "Termine sehen und belegte Zeiten im Kalender zeigen"
+        "what": "Termine sehen, eintragen und mit Vitanaland abgleichen"
       },
       "google-contacts": {
         "name": "Google Kontakte",
@@ -100,7 +100,7 @@
       "title": "{app} ausschalten?",
       "body": {
         "mail": "Vitana liest und schreibt dann keine Mails mehr über diese App.",
-        "calendar": "Die belegten Zeiten aus diesem Kalender verschwinden aus deinem Vitanaland-Kalender.",
+        "calendar": "Die belegten Zeiten aus diesem Kalender verschwinden aus deinem Vitanaland-Kalender. Der Kalender „Vitanaland“ bleibt in deinem Konto — du kannst ihn dort löschen.",
         "contacts": "Es werden keine neuen Kontakte mehr übernommen. Bereits übernommene Kontakte bleiben, außer du entfernst sie hier."
       },
       "removeContacts": "Auch die übernommenen Kontakte aus Vitanaland entfernen"

@@ -25,11 +25,11 @@
       },
       "outlook-calendar": {
         "name": "Outlook 日历",
-        "what": "查看日程，并在日历中显示忙碌时间"
+        "what": "查看并添加日程，与 Vitanaland 保持同步"
       },
       "apple-calendar": {
         "name": "Apple 日历（iCloud）",
-        "what": "查看日程，并在日历中显示忙碌时间"
+        "what": "查看并添加日程，与 Vitanaland 保持同步"
       },
       "google-contacts": {
         "name": "Google 通讯录",
@@ -100,7 +100,7 @@
       "title": "关闭{app}？",
       "body": {
         "mail": "Vitana 将不再通过这个应用读取或发送邮件。",
-        "calendar": "这个日历的忙碌时间会从你的 Vitanaland 日历中消失。",
+        "calendar": "这个日历的忙碌时间会从你的 Vitanaland 日历中消失。“Vitanaland”日历会保留在你的账户中，你可以在那里删除它。",
         "contacts": "不会再导入新的联系人。已导入的联系人会保留，除非你在这里删除。"
       },
       "removeContacts": "同时从 Vitanaland 删除已导入的联系人"

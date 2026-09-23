@@ -25,11 +25,11 @@
       },
       "outlook-calendar": {
         "name": "Calendrier Outlook",
-        "what": "Voir tes rendez-vous et afficher les créneaux occupés dans ton agenda"
+        "what": "Voir et ajouter des rendez-vous, synchronisés avec Vitanaland"
       },
       "apple-calendar": {
         "name": "Calendrier Apple (iCloud)",
-        "what": "Voir tes rendez-vous et afficher les créneaux occupés dans ton agenda"
+        "what": "Voir et ajouter des rendez-vous, synchronisés avec Vitanaland"
       },
       "google-contacts": {
         "name": "Contacts Google",
@@ -100,7 +100,7 @@
       "title": "Désactiver {app} ?",
       "body": {
         "mail": "Vitana ne lira et n’enverra plus d’e-mails avec cette app.",
-        "calendar": "Les créneaux occupés de cet agenda disparaissent de ton agenda Vitanaland.",
+        "calendar": "Les créneaux occupés de cet agenda disparaissent de ton agenda Vitanaland. Le calendrier « Vitanaland » reste dans ton compte — tu peux le supprimer là-bas.",
         "contacts": "Aucun nouveau contact ne sera importé. Les contacts déjà ajoutés restent, sauf si tu les supprimes ici."
       },
       "removeContacts": "Supprimer aussi de Vitanaland les contacts ajoutés"
