@@ -9174,7 +9174,11 @@
       "impactImpact": "影响：{impact}",
       "defineHowYourAiAgentShould": "定义你的AI代理应如何行动、关注什么以及如何与你沟通...",
       "thisReadonlyPlaceholderForAgentPrompt": "这是代理提示中心的只读占位符。\n 未来阶段将实现AI代理的完全自定义和实时测试。",
-      "thisReadonlyPlaceholderForPersonalAi": "这是个人AI时间线的只读占位符。\n 未来阶段将连接真实的AI活动数据并提供互动洞察。"
+      "thisReadonlyPlaceholderForPersonalAi": "这是个人AI时间线的只读占位符。\n 未来阶段将连接真实的AI活动数据并提供互动洞察。",
+      "dailyLearningsTitle": "Vitana 学到了什么",
+      "dailyLearningsLoading": "正在加载你的每一天 …",
+      "dailyLearningsEmpty": "还没有每日总结。写日记或和 Vitana 聊聊——每天晚上 Vitana 都会在这里总结你的一天。",
+      "dailySummaryOpenIndex": "打开 Vitana Index"
     },
     "authpages": {
       "fullName": "姓名",

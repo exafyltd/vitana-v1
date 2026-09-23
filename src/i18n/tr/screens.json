@@ -9174,7 +9174,11 @@
       "impactImpact": "Etki: {impact}",
       "defineHowYourAiAgentShould": "AI ajanının nasıl davranacağını, neye odaklanacağını ve seninle nasıl iletişim kuracağını tanımla...",
       "thisReadonlyPlaceholderForAgentPrompt": "Bu, Ajan Komut Merkezi için salt okunur bir yer tutucudur. \n              Gelecek aşamalar tam AI ajan özelleştirmesi ve gerçek zamanlı test sağlayacak.",
-      "thisReadonlyPlaceholderForPersonalAi": "Bu, Kişisel AI Zaman Çizelgesi için salt okunur bir yer tutucudur. \n                Gelecek aşamalar gerçek AI etkinlik verilerine bağlanacak ve etkileşimli içgörüler sağlayacak."
+      "thisReadonlyPlaceholderForPersonalAi": "Bu, Kişisel AI Zaman Çizelgesi için salt okunur bir yer tutucudur. \n                Gelecek aşamalar gerçek AI etkinlik verilerine bağlanacak ve etkileşimli içgörüler sağlayacak.",
+      "dailyLearningsTitle": "Vitana'nın öğrendikleri",
+      "dailyLearningsLoading": "Günlerin yükleniyor …",
+      "dailyLearningsEmpty": "Henüz günlük özet yok. Günlüğüne yaz ya da Vitana ile konuş — her akşam Vitana gününü burada özetler.",
+      "dailySummaryOpenIndex": "Vitana Index'i aç"
     },
     "authpages": {
       "fullName": "Ad Soyad",

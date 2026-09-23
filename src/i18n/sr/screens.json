@@ -9136,7 +9136,11 @@
       "unit_glasses": "čaša",
       "unit_minutes": "minuta",
       "unit_hours": "sati",
-      "unit_moments": "trenutaka"
+      "unit_moments": "trenutaka",
+      "dailyLearningsTitle": "Šta je Vitana naučila",
+      "dailyLearningsLoading": "Učitavam tvoje dane …",
+      "dailyLearningsEmpty": "Još nema dnevnog rezimea. Piši u dnevnik ili razgovaraj sa Vitanom – svake večeri Vitana ovde sažme tvoj dan.",
+      "dailySummaryOpenIndex": "Otvori Vitana Index"
     },
     "authpages": {
       "fullName": "Ime i prezime",

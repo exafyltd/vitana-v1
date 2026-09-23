@@ -9174,7 +9174,11 @@
       "impactImpact": "Impact : {impact}",
       "defineHowYourAiAgentShould": "Définis comment ton agent IA doit se comporter, sur quoi il doit se concentrer, et comment il doit communiquer avec toi...",
       "thisReadonlyPlaceholderForAgentPrompt": "Ceci est un espace réservé en lecture seule pour le Centre d'invites d'agents. \n              Les phases futures permettront une personnalisation complète des agents IA et des tests en temps réel.",
-      "thisReadonlyPlaceholderForPersonalAi": "Ceci est un espace réservé en lecture seule pour la Chronologie IA Personnelle. \n                Les phases futures se connecteront aux données d'activité IA réelles et fourniront des insights interactifs."
+      "thisReadonlyPlaceholderForPersonalAi": "Ceci est un espace réservé en lecture seule pour la Chronologie IA Personnelle. \n                Les phases futures se connecteront aux données d'activité IA réelles et fourniront des insights interactifs.",
+      "dailyLearningsTitle": "Ce que Vitana a appris",
+      "dailyLearningsLoading": "Chargement de tes journées …",
+      "dailyLearningsEmpty": "Pas encore de résumé quotidien. Écris dans ton journal ou parle à Vitana — chaque soir, Vitana résume ta journée ici.",
+      "dailySummaryOpenIndex": "Ouvrir le Vitana Index"
     },
     "authpages": {
       "fullName": "Nom complet",

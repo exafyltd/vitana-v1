@@ -9175,7 +9175,11 @@
       "defineHowYourAiAgentShould": "Define how your AI agent should behave, what it should focus on, and how it should communicate with you...",
       "thisReadonlyPlaceholderForAgentPrompt": "This is a read-only placeholder for the Agent Prompt Center. \n              Future phases will enable full AI agent customization and real-time testing.",
       "thisReadonlyPlaceholderForPersonalAi": "This is a read-only placeholder for the Personal AI Timeline. \n                Future phases will connect to real AI activity data and provide interactive insights.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "dailyLearningsTitle": "What Vitana learned",
+      "dailyLearningsLoading": "Loading your days …",
+      "dailyLearningsEmpty": "No daily summary yet. Write in your diary or talk to Vitana — each evening Vitana sums up your day here.",
+      "dailySummaryOpenIndex": "Open Vitana Index"
     },
     "authpages": {
       "fullName": "Full name",

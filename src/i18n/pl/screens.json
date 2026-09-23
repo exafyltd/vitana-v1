@@ -9175,7 +9175,11 @@
       "impactImpact": "Wpływ: {impact}",
       "defineHowYourAiAgentShould": "Zdefiniuj, jak Twój agent AI powinien się zachowywać, na czym powinien się skupić i jak powinien się z Tobą komunikować...",
       "thisReadonlyPlaceholderForAgentPrompt": "To jest tylko do odczytu, zastępczy element dla Centrum Podpowiedzi Agenta. \n              Przyszłe fazy umożliwią pełną personalizację agenta AI i testowanie w czasie rzeczywistym.",
-      "thisReadonlyPlaceholderForPersonalAi": "To jest tylko do odczytu, zastępczy element dla Osobistej Osi Czasu AI. \n                Przyszłe fazy połączą się z rzeczywistymi danymi aktywności AI i zapewnią interaktywne wnioski."
+      "thisReadonlyPlaceholderForPersonalAi": "To jest tylko do odczytu, zastępczy element dla Osobistej Osi Czasu AI. \n                Przyszłe fazy połączą się z rzeczywistymi danymi aktywności AI i zapewnią interaktywne wnioski.",
+      "dailyLearningsTitle": "Czego Vitana się nauczyła",
+      "dailyLearningsLoading": "Wczytuję twoje dni …",
+      "dailyLearningsEmpty": "Nie ma jeszcze podsumowania dnia. Pisz w dzienniku albo porozmawiaj z Vitaną — każdego wieczoru Vitana podsumuje tu twój dzień.",
+      "dailySummaryOpenIndex": "Otwórz Vitana Index"
     },
     "authpages": {
       "fullName": "Imię i nazwisko",

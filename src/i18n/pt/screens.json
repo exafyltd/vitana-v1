@@ -9113,7 +9113,11 @@
       "impactImpact": "Impacto: {impact}",
       "defineHowYourAiAgentShould": "Defina como seu agente de IA deve se comportar, no que ele deve focar e como deve se comunicar com você...",
       "thisReadonlyPlaceholderForAgentPrompt": "Este é um marcador de posição apenas de leitura para o Centro de Prompts de Agente. \n              Fases futuras permitirão a personalização completa do agente de IA e testes em tempo real.",
-      "thisReadonlyPlaceholderForPersonalAi": "Este é um marcador de posição apenas de leitura para a Linha do Tempo de IA Pessoal. \n                Fases futuras conectar-se-ão a dados de atividade de IA reais e fornecerão insights interativos."
+      "thisReadonlyPlaceholderForPersonalAi": "Este é um marcador de posição apenas de leitura para a Linha do Tempo de IA Pessoal. \n                Fases futuras conectar-se-ão a dados de atividade de IA reais e fornecerão insights interativos.",
+      "dailyLearningsTitle": "O que a Vitana aprendeu",
+      "dailyLearningsLoading": "Carregando seus dias …",
+      "dailyLearningsEmpty": "Ainda não há resumo do dia. Escreva no seu diário ou converse com a Vitana — toda noite a Vitana resume o seu dia aqui.",
+      "dailySummaryOpenIndex": "Abrir o Vitana Index"
     },
     "authpages": {
       "fullName": "Nome completo",
