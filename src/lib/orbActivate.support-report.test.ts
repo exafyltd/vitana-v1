@@ -34,4 +34,9 @@ describe('activateOrbForSupportReport', () => {
     expect(src).toContain('activateOrbForSupportReport()');
     expect(src).not.toMatch(/\bactivateOrb\(\)/);
   });
+  it('is what the mobile Support voice tile calls', () => {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'pages/MobileSupport.tsx'), 'utf8');
+    expect(src).toContain('onClick={handleVoiceReport}');
+    expect(src).toContain('if (!activateOrbForSupportReport()) notifyError("supportTickets.orbUnavailable");');
+  });
 });
