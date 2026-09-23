@@ -1,7 +1,7 @@
 import React from "react";
 import { de as deLocale } from "date-fns/locale/de";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Clock, MapPin, Users, Video, MessageSquare, UserPlus, Edit, Trash2, X, Share2, Zap, Bell, Tag, Paperclip, Calendar as CalendarIcon } from "lucide-react";
+import { Clock, MapPin, Users, Video, MessageSquare, UserPlus, Edit, Trash2, X, Share2, Zap, Tag, Calendar as CalendarIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -96,22 +96,24 @@ export function EventDetailsPanel({
         <ScrollArea className="h-[calc(100vh-180px)] mt-6">
           <div className="space-y-5 pr-4">
             {/* Primary Actions */}
-            <div className="flex gap-2">
-              {onJoin && (
-                <Button className="flex-1 gap-2" onClick={() => onJoin(event)}>
-                  <Video className="h-4 w-4" />
-                  {t('screens.calendar.join')}
-                </Button>
-              )}
-              {onMessage && (
-                <Button variant="outline" className="flex-1 gap-2" onClick={() => onMessage(event)}>
-                  <MessageSquare className="h-4 w-4" />
-                  {t('screens.calendar.message')}
-                </Button>
-              )}
-            </div>
+            {(onJoin || onMessage) && (
+              <div className="flex gap-2">
+                {onJoin && (
+                  <Button className="flex-1 gap-2" onClick={() => onJoin(event)}>
+                    <Video className="h-4 w-4" />
+                    {t('screens.calendar.join')}
+                  </Button>
+                )}
+                {onMessage && (
+                  <Button variant="outline" className="flex-1 gap-2" onClick={() => onMessage(event)}>
+                    <MessageSquare className="h-4 w-4" />
+                    {t('screens.calendar.message')}
+                  </Button>
+                )}
+              </div>
+            )}
 
-            <Separator />
+            {(onJoin || onMessage) && <Separator />}
 
             {/* Time */}
             <div className="flex items-start gap-3">
@@ -166,17 +168,6 @@ export function EventDetailsPanel({
               </>
             )}
 
-            {/* Reminders */}
-            <div className="space-y-2">
-              <p className="text-sm font-semibold flex items-center gap-2">
-                <Bell className="h-4 w-4" />
-                {t('screens.calendar.reminders')}
-              </p>
-              <div className="text-sm text-muted-foreground">
-                <p>{t('screens.calendar.text15MinutesBefore')}</p>
-              </div>
-            </div>
-
             {/* Tags */}
             <div className="space-y-2">
               <p className="text-sm font-semibold flex items-center gap-2">
@@ -189,15 +180,6 @@ export function EventDetailsPanel({
                   <Badge variant="secondary" className="text-xs capitalize">{t('screens.calendar.priorityPriority', { priority: event.priority })}</Badge>
                 )}
               </div>
-            </div>
-
-            {/* Attachments placeholder */}
-            <div className="space-y-2">
-              <p className="text-sm font-semibold flex items-center gap-2">
-                <Paperclip className="h-4 w-4" />
-                {t('screens.calendar.attachments')}
-              </p>
-              <p className="text-xs text-muted-foreground">{t('screens.calendar.noAttachments')}</p>
             </div>
 
             <Separator />
