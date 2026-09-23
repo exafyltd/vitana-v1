@@ -88,7 +88,144 @@
       "title": "我的反馈"
     },
     "admin": {
-      "copyVtid": "复制 VTID"
+      "copyVtid": "复制 VTID",
+      "kind": {
+        "bug": "缺陷",
+        "ux_issue": "UX 问题",
+        "support_question": "支持咨询",
+        "marketplace_claim": "市场索赔",
+        "account_issue": "账户问题",
+        "feedback": "反馈（无草稿）",
+        "feature_request": "功能请求"
+      },
+      "kindDesc": {
+        "bug": "代码缺陷 — 走 Devon 规格 → Dev Autopilot",
+        "ux_issue": "视觉 / 交互缺陷 — 走 Devon → Dev Autopilot",
+        "support_question": "用户需要信息 — 由 Sage 起草回答",
+        "marketplace_claim": "退款 / 争议 — 由 Atlas 起草解决方案",
+        "account_issue": "登录 / 角色 / 数据 — 由 Mira 起草解决方案",
+        "feedback": "意见 / 锦上添花 — 直接进入处理中",
+        "feature_request": "新功能 — 直接进入处理中"
+      },
+      "status": {
+        "new": "已提交",
+        "interviewing": "访谈中",
+        "triaged": "已分诊",
+        "spec_pending": "待出规格",
+        "spec_ready": "规格就绪",
+        "answer_pending": "待回答",
+        "answer_ready": "回答就绪",
+        "approved": "已批准",
+        "in_progress": "处理中",
+        "resolved": "已解决",
+        "user_confirmed": "已确认",
+        "duplicate": "重复",
+        "rejected": "已拒绝",
+        "wont_fix": "不予修复",
+        "needs_more_info": "需要更多信息",
+        "reopened": "已重新打开"
+      },
+      "stage": {
+        "cooling": "排队中",
+        "running": "编码中",
+        "ci": "CI",
+        "merging": "合并中",
+        "deploying": "部署中",
+        "verifying": "验证中",
+        "completed": "已完成"
+      },
+      "failedAt": {
+        "cooling": "在启动前",
+        "running": "在编写代码时",
+        "ci": "在 CI 中（测试 / 类型检查）",
+        "merging": "在合并时",
+        "deploying": "在部署期间",
+        "verifying": "在部署后验证期间",
+        "plan_gen": "在生成计划时",
+        "approve_safety": "在安全关卡处",
+        "other": "在 {stage} 阶段"
+      },
+      "run": {
+        "failed": "运行失败",
+        "failedWhere": "运行{where}失败",
+        "completed": "已完成 — 已部署到生产环境",
+        "running": "正在 Dev Autopilot 中运行 — {stage}"
+      },
+      "generate": {
+        "devon": "生成规格（Devon）",
+        "sage": "生成回答（Sage）",
+        "atlas": "生成解决方案（Atlas）",
+        "mira": "生成解决方案（Mira）"
+      },
+      "draftNoun": {
+        "spec_md": "规格",
+        "draft_answer_md": "回答草稿",
+        "resolution_md": "解决方案",
+        "none": "工作项"
+      },
+      "placeholder": {
+        "devon": "例如：真正的缺陷在 SSE 重连逻辑中；用户看到的是症状，根本原因在 orb-live.ts。只改动重连部分。为单句输入的情况添加一个单元测试。",
+        "sage": "例如：回答应提及 /settings 中新的 Beta 加入流程，而不是旧的开关。",
+        "atlas": "例如：这个索赔接近欺诈 — 先做资格检查，任何退款都要等操作员审核后再处理。",
+        "mira": "例如：先验证用户的邮箱；角色损坏很可能是过期的 OAuth 声明，而不是 DB 问题。",
+        "default": "你对该工作项的指示。"
+      },
+      "action": {
+        "generate": "生成",
+        "regenerate": "重新生成",
+        "regenerateWith": "用 {name} 重新生成",
+        "drafting": "起草中…",
+        "activate": "激活",
+        "activating": "激活中…",
+        "retryAutopilot": "重试 Autopilot",
+        "activateNeedsDraft": "请先生成草稿。",
+        "activateHint": "将工单推进到下一阶段。",
+        "rollback": "回滚",
+        "rollingBack": "回滚中…",
+        "rollbackConfirm": "撤销 {pr} 并重新打开 {ticket}？\n\n将创建一个 revert PR 并自动合并。这会向生产环境部署回滚。",
+        "working": "处理中 — 请稍候",
+        "close": "关闭",
+        "rejectPrompt": "拒绝 {ticket} 的原因？（可选）"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} 已重新分类",
+        "reclassifiedDesc": "类型现为 {kind}。准备好后生成新草稿。",
+        "draftedTitle": "{ticket} 已由 {name} 起草",
+        "draftedDesc": "当前状态：{status}。请查看下方草稿，然后点击激活以推进。",
+        "draftedDescFallback": "当前状态：{status}。AI 不可用，因此显示占位内容。请在下方查看，然后点击激活以推进。",
+        "activatedTitle": "{ticket} 已激活",
+        "activatedDesc": "{from} → {to}。",
+        "activatedDescDispatched": "{from} → {to}。Dev Autopilot 正在运行执行 {execution} — 此后将自主完成。",
+        "rolledBackTitle": "{ticket} 已回滚",
+        "rolledBackDesc": "Revert PR #{number}。工单已重新打开。",
+        "rolledBackDescNoNumber": "已创建 revert PR。工单已重新打开。"
+      },
+      "error": {
+        "alreadyDispatched": "此工单已在 Dev Autopilot 中运行。派发后无法重新分类。",
+        "draftRequired": "请先生成草稿 — 写下你的指示并点击生成。",
+        "alreadyInProgress": "此工单已在运行。Autopilot 完成后会将其关闭。"
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "批准来自 {customer} 的全部 {count} 个可处理工单？",
+      "approveAll": "全部批准（{count}）",
+      "approving": "批准中…",
+      "batchDoneTitle": "{customer} 的批量操作已完成",
+      "batchApproved": "已批准 {count} 个",
+      "batchSent": "已发送 {count} 条回答",
+      "batchSkipped": "已跳过 {count} 个",
+      "batchNothing": "没有需要处理的内容。",
+      "avatarAlt": "{name} 的头像",
+      "specialistEnabled": "{name} 已启用",
+      "specialistDisabled": "{name} 已停用",
+      "specialistEnabledDesc": "Vitana 现在可以将符合条件的请求转给这位专员。",
+      "specialistDisabledDesc": "Vitana 将不再把请求转给这位专员。",
+      "on": "开",
+      "off": "关",
+      "toggleOn": "开启 {name}",
+      "toggleOff": "关闭 {name}",
+      "seoDescription": "租户反馈工单与 AI 专员团队",
+      "pageDescription": "你的成员提交给 Vitana 的工单。由 AI 专员处理 — 任何操作生效前都需人工批准。"
     }
   }
 }

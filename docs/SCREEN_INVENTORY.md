@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 353
+- **Pages scanned:** 354
 - **Distinct i18n keys consumed:** 4934
 - **Namespaces in use:** 46
 - **Hardcoded string suspects (regex heuristic):** 67
@@ -1020,6 +1020,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 26, total in shard: 11151
 - `toasts` — used: 4, total in shard: 1265
+
+### src/pages/admin/feedback/admin-ticket-labels.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/admin/insights/AssistantUsage.tsx
 
@@ -2874,7 +2878,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `mobilesupport` — **MISSING SHARD** in src/i18n/de/
-- `supportTickets` — used: 1, total in shard: 74
+- `supportTickets` — used: 1, total in shard: 185
 
 ### src/pages/settings/TenantRole.tsx
 

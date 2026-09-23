@@ -88,7 +88,144 @@
       "title": "Moje zgłoszenia"
     },
     "admin": {
-      "copyVtid": "Kopiuj VTID"
+      "copyVtid": "Kopiuj VTID",
+      "kind": {
+        "bug": "Błąd",
+        "ux_issue": "Problem z UX",
+        "support_question": "Pytanie do wsparcia",
+        "marketplace_claim": "Reklamacja w marketplace",
+        "account_issue": "Problem z kontem",
+        "feedback": "Opinia (bez szkicu)",
+        "feature_request": "Prośba o funkcję"
+      },
+      "kindDesc": {
+        "bug": "Błąd w kodzie — przechodzi przez specyfikację Devona → Dev Autopilot",
+        "ux_issue": "Błąd wizualny / interakcji — przechodzi przez Devona → Dev Autopilot",
+        "support_question": "Użytkownik chce informacji — Sage przygotowuje odpowiedź",
+        "marketplace_claim": "Zwrot / spór — Atlas przygotowuje rozwiązanie",
+        "account_issue": "Logowanie / rola / dane — Mira przygotowuje rozwiązanie",
+        "feedback": "Opinia / fajnie by było — od razu w toku",
+        "feature_request": "Nowa funkcja — od razu w toku"
+      },
+      "status": {
+        "new": "Zgłoszone",
+        "interviewing": "Wywiad",
+        "triaged": "Sklasyfikowane",
+        "spec_pending": "Oczekuje na specyfikację",
+        "spec_ready": "Specyfikacja gotowa",
+        "answer_pending": "Oczekuje na odpowiedź",
+        "answer_ready": "Odpowiedź gotowa",
+        "approved": "Zatwierdzone",
+        "in_progress": "W toku",
+        "resolved": "Rozwiązane",
+        "user_confirmed": "Potwierdzone",
+        "duplicate": "Duplikat",
+        "rejected": "Odrzucone",
+        "wont_fix": "Nie zostanie naprawione",
+        "needs_more_info": "Potrzeba informacji",
+        "reopened": "Ponownie otwarte"
+      },
+      "stage": {
+        "cooling": "W kolejce",
+        "running": "Kodowanie",
+        "ci": "CI",
+        "merging": "Scalanie",
+        "deploying": "Wdrażanie",
+        "verifying": "Weryfikacja",
+        "completed": "Zakończone"
+      },
+      "failedAt": {
+        "cooling": "zanim mogło się rozpocząć",
+        "running": "podczas pisania kodu",
+        "ci": "w CI (testy / sprawdzanie typów)",
+        "merging": "podczas scalania",
+        "deploying": "podczas wdrażania",
+        "verifying": "podczas weryfikacji po wdrożeniu",
+        "plan_gen": "podczas generowania planu",
+        "approve_safety": "na bramce bezpieczeństwa",
+        "other": "na etapie {stage}"
+      },
+      "run": {
+        "failed": "Uruchomienie nie powiodło się",
+        "failedWhere": "Uruchomienie nie powiodło się {where}",
+        "completed": "Zakończone — wdrożone na produkcję",
+        "running": "Działa w Dev Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Wygeneruj specyfikację (Devon)",
+        "sage": "Wygeneruj odpowiedź (Sage)",
+        "atlas": "Wygeneruj rozwiązanie (Atlas)",
+        "mira": "Wygeneruj rozwiązanie (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "specyfikacja",
+        "draft_answer_md": "szkic odpowiedzi",
+        "resolution_md": "rozwiązanie",
+        "none": "zadanie"
+      },
+      "placeholder": {
+        "devon": "np. Prawdziwy błąd tkwi w logice ponownego łączenia SSE; użytkownik widzi objaw, ale przyczyna leży w orb-live.ts. Zmieniaj tylko część odpowiedzialną za ponowne łączenie. Dodaj test jednostkowy dla przypadku pojedynczej wypowiedzi.",
+        "sage": "np. Odpowiedź powinna wspomnieć o nowym procesie zapisu do bety w /settings, a nie o starym przełączniku.",
+        "atlas": "np. Ta reklamacja graniczy z oszustwem — zacznij od sprawdzenia uprawnień i wstrzymaj każdy zwrot do czasu weryfikacji przez operatora.",
+        "mira": "np. Najpierw zweryfikuj e-mail użytkownika; uszkodzona rola to prawdopodobnie nieaktualny claim OAuth, a nie problem z DB.",
+        "default": "Twoje wskazówki do zadania."
+      },
+      "action": {
+        "generate": "Wygeneruj",
+        "regenerate": "Wygeneruj ponownie",
+        "regenerateWith": "Wygeneruj ponownie z {name}",
+        "drafting": "Tworzę szkic…",
+        "activate": "Aktywuj",
+        "activating": "Aktywuję…",
+        "retryAutopilot": "Ponów autopilot",
+        "activateNeedsDraft": "Najpierw wygeneruj szkic.",
+        "activateHint": "Przenieś zgłoszenie do następnego etapu.",
+        "rollback": "Wycofaj",
+        "rollingBack": "Wycofuję…",
+        "rollbackConfirm": "Cofnąć {pr} i ponownie otworzyć {ticket}?\n\nZostanie utworzony PR z revertem i automatycznie scalony. To wdroży wycofanie zmian na produkcję.",
+        "working": "Pracuję — proszę czekać",
+        "close": "Zamknij",
+        "rejectPrompt": "Powód odrzucenia {ticket}? (opcjonalnie)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} przeklasyfikowane",
+        "reclassifiedDesc": "Typ to teraz {kind}. Wygeneruj nowy szkic, gdy będziesz gotowy.",
+        "draftedTitle": "Szkic {ticket} od {name}",
+        "draftedDesc": "Status: {status}. Przejrzyj szkic poniżej, a potem kliknij Aktywuj, aby przejść dalej.",
+        "draftedDescFallback": "Status: {status}. AI była niedostępna, więc pokazano treść zastępczą. Przejrzyj ją poniżej, a potem kliknij Aktywuj, aby przejść dalej.",
+        "activatedTitle": "{ticket} aktywowane",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev Autopilot realizuje wykonanie {execution} — od teraz autonomicznie.",
+        "rolledBackTitle": "{ticket} wycofane",
+        "rolledBackDesc": "PR z revertem #{number}. Zgłoszenie zostało ponownie otwarte.",
+        "rolledBackDescNoNumber": "Utworzono PR z revertem. Zgłoszenie zostało ponownie otwarte."
+      },
+      "error": {
+        "alreadyDispatched": "To zgłoszenie jest już realizowane w Dev Autopilot. Po przekazaniu zmiana klasyfikacji jest zablokowana.",
+        "draftRequired": "Najpierw wygeneruj szkic — napisz instrukcje i kliknij Wygeneruj.",
+        "alreadyInProgress": "To zgłoszenie jest już realizowane. Autopilot zamknie je po zakończeniu."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Zatwierdzić wszystkie zgłoszenia do obsługi ({count}) od {customer}?",
+      "approveAll": "Zatwierdź wszystkie ({count})",
+      "approving": "Zatwierdzanie…",
+      "batchDoneTitle": "Akcja zbiorcza zakończona dla {customer}",
+      "batchApproved": "Zatwierdzono: {count}",
+      "batchSent": "Wysłano odpowiedzi: {count}",
+      "batchSkipped": "Pominięto: {count}",
+      "batchNothing": "Nic do zrobienia.",
+      "avatarAlt": "Awatar: {name}",
+      "specialistEnabled": "{name} włączony",
+      "specialistDisabled": "{name} wyłączony",
+      "specialistEnabledDesc": "Vitana może teraz kierować pasujące prośby do tego specjalisty.",
+      "specialistDisabledDesc": "Vitana nie będzie kierować próśb do tego specjalisty.",
+      "on": "Wł.",
+      "off": "Wył.",
+      "toggleOn": "Włącz {name}",
+      "toggleOff": "Wyłącz {name}",
+      "seoDescription": "Zgłoszenia z opiniami najemcy i zespół specjalistów AI",
+      "pageDescription": "Zgłoszenia, które twoi członkowie wysłali do Vitany. Obsługują je specjaliści AI — ludzie zatwierdzają, zanim jakakolwiek akcja zostanie zastosowana."
     }
   }
 }

@@ -88,7 +88,144 @@
       "title": "Moje prijave"
     },
     "admin": {
-      "copyVtid": "Kopiraj VTID"
+      "copyVtid": "Kopiraj VTID",
+      "kind": {
+        "bug": "Greška",
+        "ux_issue": "UX problem",
+        "support_question": "Pitanje za podršku",
+        "marketplace_claim": "Reklamacija na marketplace-u",
+        "account_issue": "Problem sa nalogom",
+        "feedback": "Povratna informacija (bez nacrta)",
+        "feature_request": "Zahtev za funkciju"
+      },
+      "kindDesc": {
+        "bug": "Greška u kodu — ide kroz Devonovu specifikaciju → Dev Autopilot",
+        "ux_issue": "Vizuelna greška / greška u interakciji — ide kroz Devona → Dev Autopilot",
+        "support_question": "Korisnik želi informaciju — Sage piše nacrt odgovora",
+        "marketplace_claim": "Povraćaj novca / spor — Atlas piše nacrt rešenja",
+        "account_issue": "Prijava / uloga / podaci — Mira piše nacrt rešenja",
+        "feedback": "Mišljenje / bilo bi lepo imati — odmah u toku",
+        "feature_request": "Nova mogućnost — odmah u toku"
+      },
+      "status": {
+        "new": "Poslato",
+        "interviewing": "Razgovor u toku",
+        "triaged": "Razvrstano",
+        "spec_pending": "Specifikacija na čekanju",
+        "spec_ready": "Specifikacija spremna",
+        "answer_pending": "Odgovor na čekanju",
+        "answer_ready": "Odgovor spreman",
+        "approved": "Odobreno",
+        "in_progress": "U toku",
+        "resolved": "Rešeno",
+        "user_confirmed": "Potvrđeno",
+        "duplicate": "Duplikat",
+        "rejected": "Odbijeno",
+        "wont_fix": "Neće biti ispravljeno",
+        "needs_more_info": "Potrebno još informacija",
+        "reopened": "Ponovo otvoreno"
+      },
+      "stage": {
+        "cooling": "U redu čekanja",
+        "running": "Kodiranje",
+        "ci": "CI",
+        "merging": "Spajanje",
+        "deploying": "Postavljanje",
+        "verifying": "Provera",
+        "completed": "Završeno"
+      },
+      "failedAt": {
+        "cooling": "pre nego što je moglo da počne",
+        "running": "tokom pisanja koda",
+        "ci": "u CI-ju (testovi / provera tipova)",
+        "merging": "tokom spajanja",
+        "deploying": "tokom postavljanja",
+        "verifying": "tokom provere posle postavljanja",
+        "plan_gen": "tokom generisanja plana",
+        "approve_safety": "na bezbednosnoj kapiji",
+        "other": "u fazi {stage}"
+      },
+      "run": {
+        "failed": "Pokretanje nije uspelo",
+        "failedWhere": "Pokretanje nije uspelo {where}",
+        "completed": "Završeno — postavljeno u produkciju",
+        "running": "Radi u Dev Autopilotu — {stage}"
+      },
+      "generate": {
+        "devon": "Generiši specifikaciju (Devon)",
+        "sage": "Generiši odgovor (Sage)",
+        "atlas": "Generiši rešenje (Atlas)",
+        "mira": "Generiši rešenje (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "specifikacija",
+        "draft_answer_md": "nacrt odgovora",
+        "resolution_md": "rešenje",
+        "none": "radna stavka"
+      },
+      "placeholder": {
+        "devon": "npr. Prava greška je u SSE logici ponovnog povezivanja; korisnik vidi simptom, ali je uzrok u orb-live.ts. Diraj samo deo za ponovno povezivanje. Dodaj unit test za slučaj sa jednim iskazom.",
+        "sage": "npr. Odgovor treba da pomene novi beta opt-in tok na /settings, a ne stari prekidač.",
+        "atlas": "npr. Ova reklamacija graniči sa prevarom — počni proverom ispunjenosti uslova i zadrži svaki povraćaj novca dok ga operater ne pregleda.",
+        "mira": "npr. Prvo proveri korisnikov imejl; oštećena uloga je verovatno zastareli OAuth claim, a ne problem u DB.",
+        "default": "Tvoje uputstvo za radnu stavku."
+      },
+      "action": {
+        "generate": "Generiši",
+        "regenerate": "Generiši ponovo",
+        "regenerateWith": "Generiši ponovo sa {name}",
+        "drafting": "Pišem nacrt…",
+        "activate": "Aktiviraj",
+        "activating": "Aktiviram…",
+        "retryAutopilot": "Ponovi autopilot",
+        "activateNeedsDraft": "Prvo generiši nacrt.",
+        "activateHint": "Pomeri tiket u sledeću fazu.",
+        "rollback": "Vrati",
+        "rollingBack": "Vraćam…",
+        "rollbackConfirm": "Poništiti {pr} i ponovo otvoriti {ticket}?\n\nBiće kreiran revert PR koji će se automatski spojiti. Time se u produkciju postavlja vraćanje na prethodno stanje.",
+        "working": "Radim — sačekaj",
+        "close": "Zatvori",
+        "rejectPrompt": "Razlog za odbijanje tiketa {ticket}? (opciono)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} ponovo razvrstan",
+        "reclassifiedDesc": "Vrsta je sada {kind}. Generiši novi nacrt kad budeš spreman.",
+        "draftedTitle": "{ticket}: nacrt je pripremio {name}",
+        "draftedDesc": "Sada: {status}. Pregledaj nacrt ispod, pa klikni Aktiviraj da nastaviš.",
+        "draftedDescFallback": "Sada: {status}. AI nije bio dostupan, pa je prikazan privremeni sadržaj. Pregledaj ga ispod, pa klikni Aktiviraj da nastaviš.",
+        "activatedTitle": "{ticket} aktiviran",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev Autopilot pokreće izvršavanje {execution} — odavde samostalno.",
+        "rolledBackTitle": "{ticket} vraćen",
+        "rolledBackDesc": "Revert PR #{number}. Tiket je ponovo otvoren.",
+        "rolledBackDescNoNumber": "Revert PR je kreiran. Tiket je ponovo otvoren."
+      },
+      "error": {
+        "alreadyDispatched": "Ovaj tiket se već izvršava u Dev Autopilotu. Ponovno razvrstavanje je zaključano nakon slanja.",
+        "draftRequired": "Prvo generiši nacrt — napiši uputstva i klikni Generiši.",
+        "alreadyInProgress": "Ovaj tiket se već izvršava. Autopilot će ga zatvoriti kada završi."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Odobriti svih {count} tiketa za obradu od korisnika {customer}?",
+      "approveAll": "Odobri sve ({count})",
+      "approving": "Odobravam…",
+      "batchDoneTitle": "Grupna radnja završena za {customer}",
+      "batchApproved": "Odobreno: {count}",
+      "batchSent": "Poslato odgovora: {count}",
+      "batchSkipped": "Preskočeno: {count}",
+      "batchNothing": "Nema ništa za obradu.",
+      "avatarAlt": "Avatar za {name}",
+      "specialistEnabled": "{name} uključen",
+      "specialistDisabled": "{name} isključen",
+      "specialistEnabledDesc": "Vitana sada može da prosleđuje odgovarajuće zahteve ovom specijalisti.",
+      "specialistDisabledDesc": "Vitana neće prosleđivati zahteve ovom specijalisti.",
+      "on": "Uklj.",
+      "off": "Isklj.",
+      "toggleOn": "Uključi {name}",
+      "toggleOff": "Isključi {name}",
+      "seoDescription": "Tiketi sa povratnim informacijama zakupca i tim AI specijalista",
+      "pageDescription": "Tiketi koje su tvoji članovi poslali Vitani. AI specijalisti ih obrađuju — ljudi odobravaju pre nego što se bilo koja radnja primeni."
     }
   }
 }
