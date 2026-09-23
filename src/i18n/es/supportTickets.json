@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "Mis tickets",
+    "subtitle": "Todo lo que nos has reportado, con número de ticket y estado actual.",
+    "loading": "Cargando tickets …",
+    "loadError": "No se pudieron cargar tus tickets.",
+    "retry": "Reintentar",
+    "empty": "Aún no hay tickets.",
+    "emptyHint": "En cuanto reportes algo, por voz o por texto, aparecerá aquí con un número de ticket.",
+    "kind": {
+      "feedback": "Comentario general",
+      "bug": "Error o fallo",
+      "ux_issue": "Confuso o difícil de usar",
+      "support_question": "¿Cómo hago …?",
+      "account_issue": "Problema con la cuenta",
+      "marketplace_claim": "Pedido o pago",
+      "feature_request": "Solicitud de función",
+      "other": "Otro"
+    },
+    "kindHint": {
+      "feedback": "Ideas, pensamientos, cualquier otra cosa",
+      "bug": "Algo no funciona",
+      "ux_issue": "Comentarios sobre el uso",
+      "support_question": "Pregunta sobre cómo usar Vitana",
+      "account_issue": "Inicio de sesión, perfil, datos",
+      "marketplace_claim": "Reembolsos, marketplace",
+      "feature_request": "Algo que te gustaría tener"
+    },
+    "status": {
+      "received": "Recibido",
+      "under_review": "En revisión",
+      "in_progress": "En corrección",
+      "fixed": "Resuelto",
+      "wont_fix": "No se hará",
+      "duplicate": "Duplicado"
+    },
+    "timelineLabel": "Progreso",
+    "reportedOn": "Reportado el {date}",
+    "viaVoice": "por voz",
+    "handledBy": "Gestionado por {name}",
+    "ourAnswer": "Nuestra respuesta",
+    "confirmed": "Confirmado por ti",
+    "didItWorkNamed": "{name} dice que esto está resuelto. ¿Ha funcionado?",
+    "didItWork": "Creemos que esto está resuelto. ¿Ha funcionado?",
+    "yesFixed": "Sí, resuelto",
+    "noStillBroken": "No, sigue fallando",
+    "showMore": "Ver más ({count})",
+    "severity": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta",
+      "critical": "Crítica"
+    },
+    "submittedTitle": "Gracias, tu ticket está creado",
+    "submittedNumber": "Tu número de ticket: {number}",
+    "submittedBody": "Puedes seguir su estado en cualquier momento en «Mis tickets». Te avisaremos en cuanto haya novedades.",
+    "viewTicket": "Ver ticket",
+    "sendAnother": "Enviar otro mensaje",
+    "orbUnavailable": "Vitana no está disponible ahora mismo. Inténtalo de nuevo en un momento.",
+    "talk": {
+      "seoDescription": "Reporta errores, haz preguntas o comparte comentarios. Vitana y sus colegas te responderán.",
+      "headerDescription": "Errores, preguntas, comentarios: Vitana pasa el tema a un colega especialista cuando está fuera de su ámbito.",
+      "send": "Enviar a Vitana",
+      "sending": "Enviando …"
+    },
+    "support": {
+      "seoTitle": "Atención al cliente",
+      "seoDescription": "Ayuda con tu cuenta: abre un ticket, repórtalo por voz y sigue el estado de tus tickets.",
+      "headerTitle": "Atención al cliente",
+      "headerDescription": "Dinos con qué necesitas ayuda, por voz o por texto. Cada solicitud recibe un número de ticket.",
+      "tabContact": "Contacto",
+      "tabTickets": "Mis tickets",
+      "tabFaqs": "Preguntas frecuentes",
+      "tabCommunity": "Comunidad",
+      "contactTitle": "Escríbenos",
+      "contactSubtitle": "Describe brevemente qué pasó y qué esperabas.",
+      "messageLabel": "Tu mensaje",
+      "messagePlaceholder": "¿Qué pasó? ¿Qué has probado ya?",
+      "submit": "Enviar ticket",
+      "sending": "Enviando …",
+      "voiceTitle": "¿Prefieres hablar?",
+      "voiceBody": "Cuéntale a Vitana lo que pasa. Ella crea el ticket por ti y te dice el número de ticket.",
+      "voiceButton": "Reportar por voz",
+      "emailTitle": "Correo electrónico",
+      "emailBody": "También puedes escribirnos directamente."
+    },
+    "diary": {
+      "title": "Mis reportes"
+    },
+    "admin": {
+      "copyVtid": "Copiar VTID"
+    }
+  }
+}

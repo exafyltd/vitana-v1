@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "My tickets",
+    "subtitle": "Everything you've reported to us – with ticket number and current status.",
+    "loading": "Loading tickets …",
+    "loadError": "Couldn't load your tickets.",
+    "retry": "Try again",
+    "empty": "No tickets yet.",
+    "emptyHint": "As soon as you report something – by voice or text – it shows up here with a ticket number.",
+    "kind": {
+      "feedback": "General feedback",
+      "bug": "Bug or crash",
+      "ux_issue": "Confusing or hard to use",
+      "support_question": "How do I …?",
+      "account_issue": "Account problem",
+      "marketplace_claim": "Order or payment",
+      "feature_request": "Feature request",
+      "other": "Other"
+    },
+    "kindHint": {
+      "feedback": "Ideas, thoughts, anything else",
+      "bug": "Something is broken",
+      "ux_issue": "Feedback on how it works",
+      "support_question": "Question about using Vitana",
+      "account_issue": "Login, profile, data",
+      "marketplace_claim": "Refunds, marketplace",
+      "feature_request": "Something you wish existed"
+    },
+    "status": {
+      "received": "Received",
+      "under_review": "Under review",
+      "in_progress": "Being fixed",
+      "fixed": "Fixed",
+      "wont_fix": "Won't fix",
+      "duplicate": "Duplicate"
+    },
+    "timelineLabel": "Progress",
+    "reportedOn": "Reported on {date}",
+    "viaVoice": "by voice",
+    "handledBy": "Handled by {name}",
+    "ourAnswer": "Our answer",
+    "confirmed": "Confirmed by you",
+    "didItWorkNamed": "{name} says this is fixed. Did it work?",
+    "didItWork": "We think this is fixed. Did it work?",
+    "yesFixed": "Yes, fixed",
+    "noStillBroken": "No, still broken",
+    "showMore": "Show more ({count})",
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "submittedTitle": "Thanks – your ticket is created",
+    "submittedNumber": "Your ticket number: {number}",
+    "submittedBody": "You can follow its status any time under “My tickets”. We'll get back to you as soon as there's news.",
+    "viewTicket": "View ticket",
+    "sendAnother": "Send another message",
+    "orbUnavailable": "Vitana isn't reachable right now. Please try again in a moment.",
+    "talk": {
+      "seoDescription": "Report bugs, ask questions or share feedback. Vitana and her colleagues will follow up.",
+      "headerDescription": "Bugs, questions, feedback – Vitana hands off to a specialist colleague when the topic is outside her domain.",
+      "send": "Send to Vitana",
+      "sending": "Sending …"
+    },
+    "support": {
+      "seoTitle": "Customer Support",
+      "seoDescription": "Help with your account: open a ticket, report by voice and follow the status of your tickets.",
+      "headerTitle": "Customer Support",
+      "headerDescription": "Tell us what you need help with – by voice or text. Every request gets a ticket number.",
+      "tabContact": "Contact",
+      "tabTickets": "My tickets",
+      "tabFaqs": "FAQs",
+      "tabCommunity": "Community",
+      "contactTitle": "Write to us",
+      "contactSubtitle": "Briefly describe what happened and what you expected.",
+      "messageLabel": "Your message",
+      "messagePlaceholder": "What happened? What have you already tried?",
+      "submit": "Send ticket",
+      "sending": "Sending …",
+      "voiceTitle": "Rather talk?",
+      "voiceBody": "Just tell Vitana what's going on. She creates the ticket for you and tells you the ticket number.",
+      "voiceButton": "Report by voice",
+      "emailTitle": "Email",
+      "emailBody": "You can also write to us directly."
+    },
+    "diary": {
+      "title": "My reports"
+    },
+    "admin": {
+      "copyVtid": "Copy VTID"
+    }
+  }
+}

@@ -54,6 +54,9 @@ interface FullTicket {
   // VTID-02665: set by /activate when bug/ux_issue is dispatched through
   // the dev autopilot. Drives "Already running in autopilot" UI hint.
   linked_finding_id: string | null;
+  // VTID-04335: the ticket's own VTID (VTID-04333 adds it to the tenant
+  // ticket responses). Rendered defensively — older gateways omit it.
+  linked_vtid?: string | null;
   // VTID-02669: stamped by feedback-completion-reconciler when the
   // post-deploy visual verification (Playwright/screenshot) ran clean.
   playwright_verified?: boolean | null;
@@ -201,9 +204,39 @@ interface PipelineProgressProps {
   // playwright_verified=true (visual verification ran clean post-deploy),
   // the Completed chip gets a green "✓ Visually verified" suffix.
   playwrightVerified?: boolean;
+  // VTID-04335: the FB-… ↔ VTID-… chain, shown at a glance.
+  ticketNumber?: string;
+  linkedVtid?: string | null;
 }
 
-function PipelineProgress({ execution, findingId, playwrightVerified }: PipelineProgressProps) {
+/** VTID-04335: the ticket's VTID as a copyable chip (supervisor-facing). */
+export function LinkedVtidChip({ vtid }: { vtid: string }) {
+  return (
+    <button
+      type="button"
+      data-testid="linked-vtid"
+      dir="ltr"
+      title={t('supportTickets.admin.copyVtid')}
+      onClick={() => { void navigator.clipboard?.writeText(vtid); }}
+      className="rounded-full border border-primary/40 bg-primary/5 px-2 py-0.5 font-mono text-xs text-primary hover:bg-primary/10"
+    >
+      {vtid}
+    </button>
+  );
+}
+
+function IdChain({ ticketNumber, linkedVtid, findingId }: { ticketNumber?: string; linkedVtid?: string | null; findingId: string }) {
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground" data-testid="id-chain" dir="ltr">
+      {ticketNumber && <span className="rounded border px-1.5 py-0.5 font-mono">{ticketNumber}</span>}
+      {linkedVtid && <><span aria-hidden>→</span><LinkedVtidChip vtid={linkedVtid} /></>}
+      <span aria-hidden>→</span>
+      <span className="rounded border px-1.5 py-0.5 font-mono">{findingId.slice(0, 8)}</span>
+    </div>
+  );
+}
+
+function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumber, linkedVtid }: PipelineProgressProps) {
   // Pre-execution state — the autopilot finding exists but the execution
   // row hasn't been claimed yet (typically <30s after Activate). Show a
   // queued indicator so the supervisor knows we're waiting.
@@ -218,6 +251,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
             </div>
           </div>
         </div>
+        <IdChain ticketNumber={ticketNumber} linkedVtid={linkedVtid} findingId={findingId} />
         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
           <div className="h-full w-[5%] animate-pulse rounded-full bg-amber-500" />
         </div>
@@ -306,6 +340,8 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
           </div>
         </div>
       </div>
+
+      <IdChain ticketNumber={ticketNumber} linkedVtid={linkedVtid} findingId={findingId} />
 
       {/* Solid coloured bar showing overall % through the pipeline. */}
       <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -603,7 +639,12 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     >
       <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6 shadow-2xl">
         <div className="mb-4 flex items-start justify-between">
-          <h2 className="font-mono text-lg font-bold">{ticketNumber}</h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="font-mono text-lg font-bold" dir="ltr">{ticketNumber}</h2>
+            {detailQuery.data?.ticket?.linked_vtid && (
+              <LinkedVtidChip vtid={detailQuery.data.ticket.linked_vtid} />
+            )}
+          </div>
           <button
             onClick={safeClose}
             disabled={isBusy}
@@ -664,6 +705,8 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           execution={detailQuery.data?.execution ?? null}
           findingId={ticket.linked_finding_id}
           playwrightVerified={!!ticket.playwright_verified}
+          ticketNumber={ticketNumber}
+          linkedVtid={ticket.linked_vtid ?? null}
         />
       )}
 

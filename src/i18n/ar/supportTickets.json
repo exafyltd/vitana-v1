@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "تذاكري",
+    "subtitle": "كل ما أبلغتنا به – مع رقم التذكرة وحالتها الحالية.",
+    "loading": "جارٍ تحميل التذاكر …",
+    "loadError": "تعذّر تحميل تذاكرك.",
+    "retry": "حاول مرة أخرى",
+    "empty": "لا توجد تذاكر بعد.",
+    "emptyHint": "بمجرد أن تُبلغ عن شيء – صوتيًا أو كتابيًا – سيظهر هنا مع رقم تذكرة.",
+    "kind": {
+      "feedback": "ملاحظات عامة",
+      "bug": "خطأ أو تعطّل",
+      "ux_issue": "مربك أو صعب الاستخدام",
+      "support_question": "كيف أقوم بـ …؟",
+      "account_issue": "مشكلة في الحساب",
+      "marketplace_claim": "طلب أو دفع",
+      "feature_request": "طلب ميزة",
+      "other": "أخرى"
+    },
+    "kindHint": {
+      "feedback": "أفكار، آراء، أي شيء آخر",
+      "bug": "شيء لا يعمل",
+      "ux_issue": "ملاحظات حول الاستخدام",
+      "support_question": "سؤال عن استخدام Vitana",
+      "account_issue": "تسجيل الدخول، الملف الشخصي، البيانات",
+      "marketplace_claim": "استرداد الأموال، السوق",
+      "feature_request": "شيء تتمنى وجوده"
+    },
+    "status": {
+      "received": "تم الاستلام",
+      "under_review": "قيد المراجعة",
+      "in_progress": "قيد الإصلاح",
+      "fixed": "تم الحل",
+      "wont_fix": "لن يتم تنفيذه",
+      "duplicate": "مكرر"
+    },
+    "timelineLabel": "مراحل المعالجة",
+    "reportedOn": "أُبلغ عنه في {date}",
+    "viaVoice": "صوتيًا",
+    "handledBy": "يتولاها {name}",
+    "ourAnswer": "ردّنا",
+    "confirmed": "أكّدتَه أنت",
+    "didItWorkNamed": "يقول {name} إن هذا تم حله. هل نجح الأمر؟",
+    "didItWork": "نعتقد أن هذا تم حله. هل نجح الأمر؟",
+    "yesFixed": "نعم، تم الحل",
+    "noStillBroken": "لا، ما زالت المشكلة قائمة",
+    "showMore": "عرض المزيد ({count})",
+    "severity": {
+      "low": "منخفضة",
+      "medium": "متوسطة",
+      "high": "عالية",
+      "critical": "حرجة"
+    },
+    "submittedTitle": "شكرًا – تم إنشاء تذكرتك",
+    "submittedNumber": "رقم تذكرتك: {number}",
+    "submittedBody": "يمكنك متابعة حالتها في أي وقت ضمن «تذاكري». سنتواصل معك فور وجود جديد.",
+    "viewTicket": "عرض التذكرة",
+    "sendAnother": "إرسال رسالة أخرى",
+    "orbUnavailable": "Vitana غير متاحة حاليًا. يُرجى المحاولة مرة أخرى بعد قليل.",
+    "talk": {
+      "seoDescription": "أبلغ عن الأخطاء أو اطرح الأسئلة أو شارك ملاحظاتك. ستتابع Vitana وزملاؤها معك.",
+      "headerDescription": "أخطاء، أسئلة، ملاحظات – تحيل Vitana الموضوع إلى زميل متخصص عندما يكون خارج نطاقها.",
+      "send": "إرسال إلى Vitana",
+      "sending": "جارٍ الإرسال …"
+    },
+    "support": {
+      "seoTitle": "دعم العملاء",
+      "seoDescription": "مساعدة في حسابك: افتح تذكرة، أبلغ صوتيًا وتابع حالة تذاكرك.",
+      "headerTitle": "دعم العملاء",
+      "headerDescription": "أخبرنا بما تحتاج المساعدة فيه – صوتيًا أو كتابيًا. كل طلب يحصل على رقم تذكرة.",
+      "tabContact": "تواصل معنا",
+      "tabTickets": "تذاكري",
+      "tabFaqs": "الأسئلة الشائعة",
+      "tabCommunity": "المجتمع",
+      "contactTitle": "اكتب لنا",
+      "contactSubtitle": "صف باختصار ما حدث وما كنت تتوقعه.",
+      "messageLabel": "رسالتك",
+      "messagePlaceholder": "ماذا حدث؟ ماذا جرّبت حتى الآن؟",
+      "submit": "إرسال التذكرة",
+      "sending": "جارٍ الإرسال …",
+      "voiceTitle": "تفضّل التحدث؟",
+      "voiceBody": "فقط أخبر Vitana بما يحدث. ستنشئ التذكرة لك وتخبرك برقمها.",
+      "voiceButton": "الإبلاغ صوتيًا",
+      "emailTitle": "البريد الإلكتروني",
+      "emailBody": "يمكنك أيضًا مراسلتنا مباشرة."
+    },
+    "diary": {
+      "title": "بلاغاتي"
+    },
+    "admin": {
+      "copyVtid": "نسخ VTID"
+    }
+  }
+}
