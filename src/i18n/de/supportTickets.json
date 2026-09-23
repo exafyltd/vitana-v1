@@ -88,7 +88,144 @@
       "title": "Meine Meldungen"
     },
     "admin": {
-      "copyVtid": "VTID kopieren"
+      "copyVtid": "VTID kopieren",
+      "kind": {
+        "bug": "Fehler",
+        "ux_issue": "UX-Problem",
+        "support_question": "Support-Frage",
+        "marketplace_claim": "Marktplatz-Reklamation",
+        "account_issue": "Kontoproblem",
+        "feedback": "Feedback (kein Entwurf)",
+        "feature_request": "Funktionswunsch"
+      },
+      "kindDesc": {
+        "bug": "Code-Fehler — läuft über Devon-Spec → Dev-Autopilot",
+        "ux_issue": "Visueller / Interaktionsfehler — läuft über Devon → Dev-Autopilot",
+        "support_question": "Nutzer möchte Informationen — Sage entwirft die Antwort",
+        "marketplace_claim": "Erstattung / Streitfall — Atlas entwirft die Lösung",
+        "account_issue": "Login / Rolle / Daten — Mira entwirft die Lösung",
+        "feedback": "Meinung / Nice-to-have — direkt in Bearbeitung",
+        "feature_request": "Neue Funktion — direkt in Bearbeitung"
+      },
+      "status": {
+        "new": "Eingereicht",
+        "interviewing": "Im Gespräch",
+        "triaged": "Eingestuft",
+        "spec_pending": "Spec ausstehend",
+        "spec_ready": "Spec bereit",
+        "answer_pending": "Antwort ausstehend",
+        "answer_ready": "Antwort bereit",
+        "approved": "Genehmigt",
+        "in_progress": "In Bearbeitung",
+        "resolved": "Gelöst",
+        "user_confirmed": "Bestätigt",
+        "duplicate": "Duplikat",
+        "rejected": "Abgelehnt",
+        "wont_fix": "Wird nicht behoben",
+        "needs_more_info": "Infos benötigt",
+        "reopened": "Wiedereröffnet"
+      },
+      "stage": {
+        "cooling": "In Warteschlange",
+        "running": "Programmiert",
+        "ci": "CI",
+        "merging": "Wird gemergt",
+        "deploying": "Wird deployt",
+        "verifying": "Wird geprüft",
+        "completed": "Abgeschlossen"
+      },
+      "failedAt": {
+        "cooling": "bevor er starten konnte",
+        "running": "beim Schreiben des Codes",
+        "ci": "in der CI (Tests / Typprüfung)",
+        "merging": "beim Mergen",
+        "deploying": "beim Deploy",
+        "verifying": "bei der Prüfung nach dem Deploy",
+        "plan_gen": "beim Erstellen des Plans",
+        "approve_safety": "am Sicherheits-Gate",
+        "other": "bei {stage}"
+      },
+      "run": {
+        "failed": "Lauf fehlgeschlagen",
+        "failedWhere": "Lauf fehlgeschlagen {where}",
+        "completed": "Abgeschlossen — in Produktion deployt",
+        "running": "Läuft im Dev-Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Spec erstellen (Devon)",
+        "sage": "Antwort erstellen (Sage)",
+        "atlas": "Lösung erstellen (Atlas)",
+        "mira": "Lösung erstellen (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "Spec",
+        "draft_answer_md": "Antwortentwurf",
+        "resolution_md": "Lösung",
+        "none": "Arbeitspaket"
+      },
+      "placeholder": {
+        "devon": "z. B. Der eigentliche Fehler liegt in der SSE-Reconnect-Logik; der Nutzer sieht das Symptom, aber die Ursache steckt in orb-live.ts. Fass nur den Reconnect-Bereich an. Füge einen Unit-Test für den Fall mit einer einzelnen Äußerung hinzu.",
+        "sage": "z. B. Die Antwort sollte den neuen Beta-Opt-in-Ablauf unter /settings erwähnen, nicht den alten Schalter.",
+        "atlas": "z. B. Diese Reklamation grenzt an Betrug — beginne mit einer Berechtigungsprüfung und halte jede Erstattung bis zur Prüfung durch einen Operator zurück.",
+        "mira": "z. B. Prüf zuerst die E-Mail des Nutzers; die beschädigte Rolle ist wahrscheinlich ein veralteter OAuth-Claim, kein DB-Problem.",
+        "default": "Deine Vorgabe für das Arbeitspaket."
+      },
+      "action": {
+        "generate": "Erstellen",
+        "regenerate": "Neu erstellen",
+        "regenerateWith": "Mit {name} neu erstellen",
+        "drafting": "Entwurf wird erstellt…",
+        "activate": "Aktivieren",
+        "activating": "Wird aktiviert…",
+        "retryAutopilot": "Autopilot erneut versuchen",
+        "activateNeedsDraft": "Erstelle zuerst einen Entwurf.",
+        "activateHint": "Bring das Ticket in die nächste Phase.",
+        "rollback": "Zurückrollen",
+        "rollingBack": "Wird zurückgerollt…",
+        "rollbackConfirm": "{pr} rückgängig machen und {ticket} wieder öffnen?\n\nEin Revert-PR wird erstellt und automatisch gemergt. Dadurch wird ein Rollback in Produktion deployt.",
+        "working": "Wird bearbeitet — bitte warten",
+        "close": "Schließen",
+        "rejectPrompt": "Grund für die Ablehnung von {ticket}? (optional)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} neu eingestuft",
+        "reclassifiedDesc": "Die Art ist jetzt {kind}. Erstelle den neuen Entwurf, wenn du bereit bist.",
+        "draftedTitle": "{ticket} entworfen von {name}",
+        "draftedDesc": "Jetzt {status}. Prüf den Entwurf unten und klick dann auf Aktivieren, um weiterzumachen.",
+        "draftedDescFallback": "Jetzt {status}. Die KI war nicht verfügbar, daher wird ein Platzhalter angezeigt. Prüf ihn unten und klick dann auf Aktivieren, um weiterzumachen.",
+        "activatedTitle": "{ticket} aktiviert",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Der Dev-Autopilot führt Ausführung {execution} aus — ab hier autonom.",
+        "rolledBackTitle": "{ticket} zurückgerollt",
+        "rolledBackDesc": "Revert-PR #{number}. Das Ticket wurde wieder geöffnet.",
+        "rolledBackDescNoNumber": "Revert-PR erstellt. Das Ticket wurde wieder geöffnet."
+      },
+      "error": {
+        "alreadyDispatched": "Dieses Ticket läuft bereits im Dev-Autopilot. Neu einstufen ist nach dem Start gesperrt.",
+        "draftRequired": "Erstelle zuerst einen Entwurf — schreib deine Anweisungen und klick auf Erstellen.",
+        "alreadyInProgress": "Dieses Ticket läuft bereits. Der Autopilot schließt es, wenn er fertig ist."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Alle {count} bearbeitbaren Tickets von {customer} genehmigen?",
+      "approveAll": "Alle genehmigen ({count})",
+      "approving": "Wird genehmigt…",
+      "batchDoneTitle": "Sammelaktion für {customer} abgeschlossen",
+      "batchApproved": "{count} genehmigt",
+      "batchSent": "{count} Antworten gesendet",
+      "batchSkipped": "{count} übersprungen",
+      "batchNothing": "Nichts zu tun.",
+      "avatarAlt": "Avatar von {name}",
+      "specialistEnabled": "{name} aktiviert",
+      "specialistDisabled": "{name} deaktiviert",
+      "specialistEnabledDesc": "Vitana kann passende Anfragen jetzt an diese Fachperson weiterleiten.",
+      "specialistDisabledDesc": "Vitana leitet keine Anfragen mehr an diese Fachperson weiter.",
+      "on": "An",
+      "off": "Aus",
+      "toggleOn": "{name} einschalten",
+      "toggleOff": "{name} ausschalten",
+      "seoDescription": "Feedback-Tickets des Mandanten und das KI-Spezialistenteam",
+      "pageDescription": "Tickets, die deine Mitglieder an Vitana geschickt haben. KI-Spezialisten bearbeiten sie — Menschen genehmigen, bevor eine Aktion wirksam wird."
     }
   }
 }

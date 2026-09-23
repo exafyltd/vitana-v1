@@ -24,6 +24,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
 import { lookup, notifyError, t } from '@/lib/i18n-toast';
+import { adminStatusLabel } from './admin-ticket-labels';
 
 import { fmtDateTime, fmtTime } from '@/lib/locale-format';
 interface IntakeMessage {
@@ -80,30 +81,27 @@ interface FullTicket {
 const ROLLBACK_WINDOW_MS = 72 * 60 * 60 * 1000;
 
 // VTID-02665: kinds the supervisor can pick from the reclassify dropdown.
-const KIND_OPTIONS: Array<{ value: string; label: string; description: string }> = [
-  { value: "bug",               label: "Bug",                 description: "Code defect — runs Devon spec → dev autopilot" },
-  { value: "ux_issue",          label: "UX issue",            description: "Visual / interaction defect — runs Devon → dev autopilot" },
-  { value: "support_question",  label: "Support question",    description: "User wants information — Sage drafts answer" },
-  { value: "marketplace_claim", label: "Marketplace claim",   description: "Refund / dispute — Atlas drafts resolution" },
-  { value: "account_issue",     label: "Account issue",       description: "Login / role / data — Mira drafts resolution" },
-  { value: "feedback",          label: "Feedback (no draft)", description: "Opinion / nice-to-have — straight to in_progress" },
-  { value: "feature_request",   label: "Feature request",     description: "New capability — straight to in_progress" },
+// VTID-04360: labels come from supportTickets.admin.kind / kindDesc.
+const KIND_OPTIONS: string[] = [
+  "bug", "ux_issue", "support_question", "marketplace_claim", "account_issue", "feedback", "feature_request",
 ];
+const kindOptionLabel = (kind: string) =>
+  KIND_OPTIONS.includes(kind) ? t(`supportTickets.admin.kind.${kind}`) : kind;
 
 // VTID-02664: per-kind labels for the supervisor flow. Drives the
 // Generate-button text + the draft preview heading + which field the
 // drawer reads to know whether a draft already exists.
 const RESOLVER_BY_KIND: Record<string, {
-  resolver: string;
+  resolver: "sage" | "devon" | "atlas" | "mira";
   draftField: "spec_md" | "draft_answer_md" | "resolution_md";
-  generateLabel: string;
-  draftLabel: string;
 }> = {
-  support_question:  { resolver: "sage",  draftField: "draft_answer_md", generateLabel: "Generate answer (Sage)",      draftLabel: "Sage's draft answer" },
-  bug:               { resolver: "devon", draftField: "spec_md",         generateLabel: "Generate spec (Devon)",       draftLabel: "Devon's spec" },
-  ux_issue:          { resolver: "devon", draftField: "spec_md",         generateLabel: "Generate spec (Devon)",       draftLabel: "Devon's spec" },
-  marketplace_claim: { resolver: "atlas", draftField: "resolution_md",   generateLabel: "Generate resolution (Atlas)", draftLabel: "Atlas's resolution" },
-  account_issue:     { resolver: "mira",  draftField: "resolution_md",   generateLabel: "Generate resolution (Mira)",  draftLabel: "Mira's resolution" },
+  // VTID-04360: button / noun text comes from supportTickets.admin.generate
+  // and supportTickets.admin.draftNoun.
+  support_question:  { resolver: "sage",  draftField: "draft_answer_md" },
+  bug:               { resolver: "devon", draftField: "spec_md" },
+  ux_issue:          { resolver: "devon", draftField: "spec_md" },
+  marketplace_claim: { resolver: "atlas", draftField: "resolution_md" },
+  account_issue:     { resolver: "mira",  draftField: "resolution_md" },
 };
 
 interface Handoff {
@@ -137,24 +135,7 @@ interface DetailResponse {
   execution: DevAutopilotExecution | null;
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  new: "Submitted",
-  interviewing: "Interviewing",
-  triaged: "Triaged",
-  spec_pending: "Spec pending",
-  spec_ready: "Spec ready",
-  answer_pending: "Answer pending",
-  answer_ready: "Answer ready",
-  approved: "Approved",
-  in_progress: "In progress",
-  resolved: "Resolved",
-  user_confirmed: "Confirmed",
-  duplicate: "Duplicate",
-  rejected: "Rejected",
-  wont_fix: "Won't fix",
-  needs_more_info: "Needs info",
-  reopened: "Reopened",
-};
+const statusLabel = adminStatusLabel;
 
 function statusVariant(status: string): "default" | "secondary" | "destructive" | "outline" {
   if (["resolved", "user_confirmed", "approved", "in_progress"].includes(status)) return "default";
@@ -172,15 +153,16 @@ const TERMINAL_STATUSES = new Set([
 // status is at or past it, "active" if it matches, "pending" otherwise.
 // On `failed`, the failed_stage segment turns red and the trailing
 // segments stay pending.
-const PIPELINE_STAGES: Array<{ key: string; label: string; pct: number }> = [
-  { key: "cooling",   label: "Queued",    pct: 10 },
-  { key: "running",   label: "Coding",    pct: 30 },
-  { key: "ci",        label: "CI",        pct: 55 },
-  { key: "merging",   label: "Merging",   pct: 75 },
-  { key: "deploying", label: "Deploying", pct: 90 },
-  { key: "verifying", label: "Verifying", pct: 97 },
-  { key: "completed", label: "Completed", pct: 100 },
+const PIPELINE_STAGES: Array<{ key: string; pct: number }> = [
+  { key: "cooling",   pct: 10 },
+  { key: "running",   pct: 30 },
+  { key: "ci",        pct: 55 },
+  { key: "merging",   pct: 75 },
+  { key: "deploying", pct: 90 },
+  { key: "verifying", pct: 97 },
+  { key: "completed", pct: 100 },
 ];
+const stageLabel = (key: string) => t(`supportTickets.admin.stage.${key}`);
 
 function stageIndex(status: string): number {
   const idx = PIPELINE_STAGES.findIndex(s => s.key === status);
@@ -208,6 +190,8 @@ interface PipelineProgressProps {
   ticketNumber?: string;
   linkedVtid?: string | null;
 }
+
+const capitalizeName = (name: string) => (name ? name.charAt(0).toUpperCase() + name.slice(1) : name);
 
 /** VTID-04335: the ticket's VTID as a copyable chip (supervisor-facing). */
 export function LinkedVtidChip({ vtid }: { vtid: string }) {
@@ -275,19 +259,13 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
     ? (failedStageIdx >= 0 ? PIPELINE_STAGES[failedStageIdx].pct : 30)
     : PIPELINE_STAGES[idxNow].pct;
   // Human-readable label for where the run died.
-  const STAGE_FAIL_LABEL: Record<string, string> = {
-    cooling: 'before it could start',
-    running: 'while writing the code',
-    ci: 'in CI (tests / typecheck)',
-    merging: 'while merging',
-    deploying: 'during deploy',
-    verifying: 'during post-deploy verification',
-    plan_gen: 'while generating the plan',
-    approve_safety: 'at the safety gate',
-  };
-  const failureCopy = isFailed
-    ? (failedAt && STAGE_FAIL_LABEL[failedAt])
-      || (failedAt && failedAt !== 'failed' ? `at ${failedAt}` : '')
+  const KNOWN_FAIL_STAGES = new Set([
+    'cooling', 'running', 'ci', 'merging', 'deploying', 'verifying', 'plan_gen', 'approve_safety',
+  ]);
+  const failureCopy = isFailed && failedAt
+    ? (KNOWN_FAIL_STAGES.has(failedAt)
+        ? t(`supportTickets.admin.failedAt.${failedAt}`)
+        : failedAt !== 'failed' ? t('supportTickets.admin.failedAt.other', { stage: failedAt }) : '')
     : '';
 
   const barClass = isFailed
@@ -317,10 +295,10 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
           <div className="font-semibold flex items-center gap-2 flex-wrap">
             <span>
               {isFailed
-                ? (failureCopy ? `Run failed ${failureCopy}` : 'Run failed')
+                ? (failureCopy ? t('supportTickets.admin.run.failedWhere', { where: failureCopy }) : t('supportTickets.admin.run.failed'))
                 : isCompleted
-                  ? "Completed — deployed to production"
-                  : `Running in dev autopilot — ${PIPELINE_STAGES[idxNow]?.label ?? status}`}
+                  ? t('supportTickets.admin.run.completed')
+                  : t('supportTickets.admin.run.running', { stage: PIPELINE_STAGES[idxNow] ? stageLabel(PIPELINE_STAGES[idxNow].key) : status })}
             </span>
             {isFailed && (
               <span className="rounded-full bg-red-500/10 text-red-700 dark:text-red-300 text-[10px] px-2 py-0.5 font-normal border border-red-500/30">{t('screens.admin.clickActivateRetry')}
@@ -377,10 +355,10 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
             <span
               key={stage.key}
               className={`flex items-center gap-1 rounded-full border px-2 py-0.5 ${tone}`}
-              title={stage.label}
+              title={stageLabel(stage.key)}
             >
               <span>{symbol}</span>
-              <span>{stage.label}</span>
+              <span>{stageLabel(stage.key)}</span>
             </span>
           );
         })}
@@ -456,8 +434,8 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     },
     onSuccess: async (r) => {
       toast({
-        title: `${ticketNumber} reclassified`,
-        description: `Kind is now ${r.kind}. Generate the new draft when ready.`,
+        title: t('supportTickets.admin.toast.reclassifiedTitle', { ticket: ticketNumber }),
+        description: t('supportTickets.admin.toast.reclassifiedDesc', { kind: kindOptionLabel(r.kind) }),
       });
       // Clear local instructions textarea so the supervisor starts fresh.
       setSupervisorInstructions("");
@@ -465,11 +443,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
     },
     onError: (err: unknown) => {
-      const raw = err instanceof Error ? err.message : "Try again.";
-      const friendly = raw === "ALREADY_DISPATCHED"
-        ? "This ticket is already running in dev autopilot. Reclassify is locked once dispatched."
-        : raw;
-      notifyError('toasts.admin.reclassifyFailed');
+      const raw = err instanceof Error ? err.message : "";
+      notifyError(
+        'toasts.admin.reclassifyFailed',
+        raw === "ALREADY_DISPATCHED" ? 'supportTickets.admin.error.alreadyDispatched' : undefined,
+      );
     },
   });
 
@@ -498,8 +476,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     },
     onSuccess: async (r) => {
       toast({
-        title: `${ticketNumber} drafted by ${r.resolver_agent}`,
-        description: `Now ${r.status}. Review the draft below, then Activate to advance.${r.provider === "fallback" ? " (LLM unavailable — placeholder shown.)" : ""}`,
+        title: t('supportTickets.admin.toast.draftedTitle', { ticket: ticketNumber, name: r.resolver_agent }),
+        description: t(
+          r.provider === "fallback" ? 'supportTickets.admin.toast.draftedDescFallback' : 'supportTickets.admin.toast.draftedDesc',
+          { status: statusLabel(r.status) },
+        ),
       });
       await queryClient.invalidateQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
@@ -538,12 +519,13 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       };
     },
     onSuccess: async (r) => {
-      const dispatched = r.dispatch?.execution_id
-        ? ` Dev autopilot is running execution ${r.dispatch.execution_id.slice(0, 8)} — autonomous from here.`
-        : "";
+      const from = statusLabel(r.from);
+      const to = statusLabel(r.to);
       toast({
-        title: `${ticketNumber} activated`,
-        description: `${r.from} → ${r.to}.${dispatched}`,
+        title: t('supportTickets.admin.toast.activatedTitle', { ticket: ticketNumber }),
+        description: r.dispatch?.execution_id
+          ? t('supportTickets.admin.toast.activatedDescDispatched', { from, to, execution: r.dispatch.execution_id.slice(0, 8) })
+          : t('supportTickets.admin.toast.activatedDesc', { from, to }),
       });
       await queryClient.invalidateQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
@@ -557,13 +539,13 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         setActivateViolations(e.violations);
         return;
       }
-      const raw = e.message ?? "Try again.";
-      const friendly = raw === "DRAFT_REQUIRED"
-        ? "Generate a draft first — write your instructions and click Generate."
-        : raw === "ALREADY_IN_PROGRESS"
-          ? "This ticket is already running. The autopilot will close it when done."
-          : raw;
-      notifyError('toasts.admin.activateFailed');
+      const raw = e.message ?? "";
+      notifyError(
+        'toasts.admin.activateFailed',
+        raw === "DRAFT_REQUIRED"
+          ? 'supportTickets.admin.error.draftRequired'
+          : raw === "ALREADY_IN_PROGRESS" ? 'supportTickets.admin.error.alreadyInProgress' : undefined,
+      );
     },
   });
 
@@ -588,7 +570,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   });
 
   const handleReject = () => {
-    const reason = window.prompt(`Reason for rejecting ${ticketNumber}? (optional)`);
+    const reason = window.prompt(t('supportTickets.admin.action.rejectPrompt', { ticket: ticketNumber }));
     if (reason === null) return; // user cancelled
     reject.mutate(reason || null);
   };
@@ -608,8 +590,10 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     },
     onSuccess: async (data) => {
       toast({
-        title: `${ticketNumber} rolled back`,
-        description: `Revert PR ${data.revert_pr_url ? `#${data.revert_pr_number}` : "created"}. The ticket has been reopened.`,
+        title: t('supportTickets.admin.toast.rolledBackTitle', { ticket: ticketNumber }),
+        description: data.revert_pr_url
+          ? t('supportTickets.admin.toast.rolledBackDesc', { number: data.revert_pr_number })
+          : t('supportTickets.admin.toast.rolledBackDescNoNumber'),
       });
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] }),
@@ -650,7 +634,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             disabled={isBusy}
             className="text-2xl text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={t('screens.admin.close')}
-            title={isBusy ? "Working — please wait" : "Close"}
+            title={isBusy ? t('supportTickets.admin.action.working') : t('supportTickets.admin.action.close')}
           >
             ×
           </button>
@@ -684,7 +668,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     <div className="space-y-4">
       {/* Status row */}
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <Badge variant={statusVariant(ticket.status)}>{STATUS_LABEL[ticket.status] ?? ticket.status}</Badge>
+        <Badge variant={statusVariant(ticket.status)}>{statusLabel(ticket.status)}</Badge>
         <span className="text-muted-foreground">{ticket.kind} · {(ticket.priority || "p2").toUpperCase()}</span>
         {ticket.resolver_agent && (
           <span className="text-muted-foreground">{t('screens.admin.handledByResolver_agent', { resolver_agent: ticket.resolver_agent })}</span>
@@ -741,11 +725,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   className="border-amber-500 text-amber-900 hover:bg-amber-100 dark:text-amber-100 dark:hover:bg-amber-900/40"
                   disabled={isBusy || rollback.isPending}
                   onClick={() => {
-                    if (!window.confirm(`Revert ${ticket.linked_pr_url} and reopen ${ticketNumber}?\n\nA revert PR will be created and auto-merged. This deploys a rollback to production.`)) return;
+                    if (!window.confirm(t('supportTickets.admin.action.rollbackConfirm', { pr: ticket.linked_pr_url ?? "", ticket: ticketNumber }))) return;
                     rollback.mutate();
                   }}
                 >
-                  {rollback.isPending ? "Rolling back…" : "Rollback"}
+                  {rollback.isPending ? t('supportTickets.admin.action.rollingBack') : t('supportTickets.admin.action.rollback')}
                 </Button>
               </div>
             </Card>
@@ -779,7 +763,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           <div className="flex items-center justify-between gap-2">
             <div>
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.kind')}</div>
-              <div className="text-sm">{KIND_OPTIONS.find(k => k.value === ticket.kind)?.label ?? ticket.kind}</div>
+              <div className="text-sm">{kindOptionLabel(ticket.kind)}</div>
             </div>
             <Select
               disabled={isBusy}
@@ -792,11 +776,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 <SelectValue placeholder={t('screens.admin.reclassify')} />
               </SelectTrigger>
               <SelectContent>
-                {KIND_OPTIONS.map(opt => (
-                  <SelectItem key={opt.value} value={opt.value}>
+                {KIND_OPTIONS.map(kind => (
+                  <SelectItem key={kind} value={kind}>
                     <div className="flex flex-col">
-                      <span className="font-medium">{opt.label}</span>
-                      <span className="text-[11px] text-muted-foreground">{opt.description}</span>
+                      <span className="font-medium">{t(`supportTickets.admin.kind.${kind}`)}</span>
+                      <span className="text-[11px] text-muted-foreground">{t(`supportTickets.admin.kindDesc.${kind}`)}</span>
                     </div>
                   </SelectItem>
                 ))}
@@ -828,7 +812,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
             <div>
               <div className="text-sm font-semibold">{t('screens.admin.processThisTicket')}</div>
-              <p className="text-xs text-muted-foreground">{t('screens.admin.youReDomainExpertAddYour', { value0: cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item" })}
+              <p className="text-xs text-muted-foreground">{t('screens.admin.youReDomainExpertAddYour', { value0: t(`supportTickets.admin.draftNoun.${cfg ? cfg.draftField : "none"}`) })}
               </p>
             </div>
 
@@ -839,17 +823,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               <Textarea
                 value={supervisorInstructions}
                 onChange={(e) => setSupervisorInstructions(e.target.value)}
-                placeholder={
-                  cfg?.resolver === "devon"
-                    ? "e.g. The real bug is the SSE reconnect logic; user is seeing the symptom but the root cause is in orb-live.ts. Touch only the reconnect bucket. Add a unit test for the single-utterance case."
-                    : cfg?.resolver === "sage"
-                      ? "e.g. Answer should mention the new beta opt-in flow on /settings, not the legacy toggle."
-                      : cfg?.resolver === "atlas"
-                        ? "e.g. This claim is borderline-fraud — start with eligibility check, hold any refund pending operator review."
-                        : cfg?.resolver === "mira"
-                          ? "e.g. Verify the user's email first; the role corruption is likely a stale OAuth claim, not a DB issue."
-                          : "Your direction for the work item."
-                }
+                placeholder={t(`supportTickets.admin.placeholder.${cfg ? cfg.resolver : "default"}`)}
                 rows={4}
                 disabled={isBusy}
                 className="text-sm"
@@ -861,7 +835,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             {/* Step 2 — generate via resolver */}
             {draftKindHasResolver && (
               <div>
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.text2Value0Draft', { value0: hasDraft ? "Re-generate" : "Generate" })}
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.text2Value0Draft', { value0: hasDraft ? t('supportTickets.admin.action.regenerate') : t('supportTickets.admin.action.generate') })}
                 </label>
                 <Button
                   size="sm"
@@ -870,10 +844,10 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   disabled={isBusy}
                 >
                   {generateSpec.isPending
-                    ? "Drafting…"
+                    ? t('supportTickets.admin.action.drafting')
                     : hasDraft
-                      ? `Re-generate with ${cfg!.resolver}`
-                      : cfg!.generateLabel}
+                      ? t('supportTickets.admin.action.regenerateWith', { name: capitalizeName(cfg!.resolver) })
+                      : t(`supportTickets.admin.generate.${cfg!.resolver}`)}
                 </Button>
                 {generateSpec.isPending && (
                   <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
@@ -900,15 +874,15 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   disabled={isBusy || (draftKindHasResolver && !canActivate)}
                   title={
                     draftKindHasResolver && !canActivate
-                      ? "Generate a draft first."
-                      : "Advance the ticket to the next stage."
+                      ? t('supportTickets.admin.action.activateNeedsDraft')
+                      : t('supportTickets.admin.action.activateHint')
                   }
                 >
                   {activate.isPending
-                    ? "Activating…"
+                    ? t('supportTickets.admin.action.activating')
                     : isRetryable
-                      ? "Retry autopilot"
-                      : "Activate"}
+                      ? t('supportTickets.admin.action.retryAutopilot')
+                      : t('supportTickets.admin.action.activate')}
                 </Button>
                 <Button
                   size="sm"
@@ -950,7 +924,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         );
       })()}
       {isTerminal && (
-        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">{t('screens.admin.thisTicketTerminalStateValue0No', { value0: STATUS_LABEL[ticket.status] ?? ticket.status })}
+        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">{t('screens.admin.thisTicketTerminalStateValue0No', { value0: statusLabel(ticket.status) })}
         </Card>
       )}
 

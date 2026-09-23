@@ -88,7 +88,144 @@
       "title": "Мои сообщения"
     },
     "admin": {
-      "copyVtid": "Скопировать VTID"
+      "copyVtid": "Скопировать VTID",
+      "kind": {
+        "bug": "Баг",
+        "ux_issue": "Проблема UX",
+        "support_question": "Вопрос в поддержку",
+        "marketplace_claim": "Претензия по маркетплейсу",
+        "account_issue": "Проблема с аккаунтом",
+        "feedback": "Отзыв (без черновика)",
+        "feature_request": "Запрос функции"
+      },
+      "kindDesc": {
+        "bug": "Дефект кода — идёт через спецификацию Devon → Dev Autopilot",
+        "ux_issue": "Визуальный дефект / дефект взаимодействия — идёт через Devon → Dev Autopilot",
+        "support_question": "Пользователю нужна информация — Sage готовит ответ",
+        "marketplace_claim": "Возврат / спор — Atlas готовит решение",
+        "account_issue": "Вход / роль / данные — Mira готовит решение",
+        "feedback": "Мнение / было бы неплохо — сразу в работу",
+        "feature_request": "Новая возможность — сразу в работу"
+      },
+      "status": {
+        "new": "Отправлено",
+        "interviewing": "Опрос",
+        "triaged": "Классифицировано",
+        "spec_pending": "Ожидает спецификации",
+        "spec_ready": "Спецификация готова",
+        "answer_pending": "Ожидает ответа",
+        "answer_ready": "Ответ готов",
+        "approved": "Одобрено",
+        "in_progress": "В работе",
+        "resolved": "Решено",
+        "user_confirmed": "Подтверждено",
+        "duplicate": "Дубликат",
+        "rejected": "Отклонено",
+        "wont_fix": "Не будет исправлено",
+        "needs_more_info": "Нужны данные",
+        "reopened": "Открыто повторно"
+      },
+      "stage": {
+        "cooling": "В очереди",
+        "running": "Пишет код",
+        "ci": "CI",
+        "merging": "Слияние",
+        "deploying": "Развёртывание",
+        "verifying": "Проверка",
+        "completed": "Завершено"
+      },
+      "failedAt": {
+        "cooling": "ещё до старта",
+        "running": "при написании кода",
+        "ci": "в CI (тесты / проверка типов)",
+        "merging": "при слиянии",
+        "deploying": "при развёртывании",
+        "verifying": "при проверке после развёртывания",
+        "plan_gen": "при создании плана",
+        "approve_safety": "на проверке безопасности",
+        "other": "на этапе {stage}"
+      },
+      "run": {
+        "failed": "Запуск не удался",
+        "failedWhere": "Запуск не удался {where}",
+        "completed": "Завершено — развёрнуто в продакшене",
+        "running": "Выполняется в Dev Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Создать спецификацию (Devon)",
+        "sage": "Создать ответ (Sage)",
+        "atlas": "Создать решение (Atlas)",
+        "mira": "Создать решение (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "спецификация",
+        "draft_answer_md": "черновик ответа",
+        "resolution_md": "решение",
+        "none": "рабочая задача"
+      },
+      "placeholder": {
+        "devon": "напр. Настоящий баг — в логике переподключения SSE; пользователь видит симптом, но первопричина в orb-live.ts. Трогай только блок переподключения. Добавь модульный тест для случая с одной репликой.",
+        "sage": "напр. В ответе нужно упомянуть новый процесс подключения к бете в /settings, а не старый переключатель.",
+        "atlas": "напр. Эта претензия граничит с мошенничеством — начни с проверки права на возврат и придержи любой возврат до проверки оператором.",
+        "mira": "напр. Сначала проверь email пользователя; повреждённая роль, скорее всего, — устаревший claim OAuth, а не проблема DB.",
+        "default": "Твои указания по задаче."
+      },
+      "action": {
+        "generate": "Создать",
+        "regenerate": "Создать заново",
+        "regenerateWith": "Создать заново с {name}",
+        "drafting": "Составляю черновик…",
+        "activate": "Активировать",
+        "activating": "Активация…",
+        "retryAutopilot": "Повторить автопилот",
+        "activateNeedsDraft": "Сначала создай черновик.",
+        "activateHint": "Переведи тикет на следующий этап.",
+        "rollback": "Откатить",
+        "rollingBack": "Откат…",
+        "rollbackConfirm": "Отменить {pr} и снова открыть {ticket}?\n\nБудет создан PR с revert, который автоматически сольётся. Это развернёт откат в продакшене.",
+        "working": "Выполняется — подожди",
+        "close": "Закрыть",
+        "rejectPrompt": "Причина отклонения {ticket}? (необязательно)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} переклассифицирован",
+        "reclassifiedDesc": "Тип теперь {kind}. Создай новый черновик, когда будешь готов.",
+        "draftedTitle": "{ticket}: черновик от {name}",
+        "draftedDesc": "Статус: {status}. Проверь черновик ниже, затем нажми «Активировать», чтобы продолжить.",
+        "draftedDescFallback": "Статус: {status}. ИИ был недоступен, поэтому показана заглушка. Проверь её ниже, затем нажми «Активировать», чтобы продолжить.",
+        "activatedTitle": "{ticket} активирован",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev Autopilot выполняет запуск {execution} — дальше автономно.",
+        "rolledBackTitle": "{ticket} откачен",
+        "rolledBackDesc": "PR с revert #{number}. Тикет снова открыт.",
+        "rolledBackDescNoNumber": "PR с revert создан. Тикет снова открыт."
+      },
+      "error": {
+        "alreadyDispatched": "Этот тикет уже выполняется в Dev Autopilot. После отправки переклассификация заблокирована.",
+        "draftRequired": "Сначала создай черновик — напиши инструкции и нажми «Создать».",
+        "alreadyInProgress": "Этот тикет уже выполняется. Автопилот закроет его по завершении."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Одобрить все обрабатываемые тикеты от {customer} ({count})?",
+      "approveAll": "Одобрить все ({count})",
+      "approving": "Одобрение…",
+      "batchDoneTitle": "Пакетное действие для {customer} завершено",
+      "batchApproved": "Одобрено: {count}",
+      "batchSent": "Отправлено ответов: {count}",
+      "batchSkipped": "Пропущено: {count}",
+      "batchNothing": "Нечего обрабатывать.",
+      "avatarAlt": "Аватар: {name}",
+      "specialistEnabled": "{name} включён",
+      "specialistDisabled": "{name} выключен",
+      "specialistEnabledDesc": "Теперь Vitana может направлять подходящие запросы этому специалисту.",
+      "specialistDisabledDesc": "Vitana не будет направлять запросы этому специалисту.",
+      "on": "Вкл.",
+      "off": "Выкл.",
+      "toggleOn": "Включить {name}",
+      "toggleOff": "Выключить {name}",
+      "seoDescription": "Тикеты с отзывами тенанта и команда ИИ-специалистов",
+      "pageDescription": "Тикеты, которые твои участники отправили в Vitana. Их обрабатывают ИИ-специалисты — люди одобряют, прежде чем какое-либо действие будет применено."
     }
   }
 }
