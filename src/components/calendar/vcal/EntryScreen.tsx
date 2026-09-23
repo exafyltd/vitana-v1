@@ -29,7 +29,8 @@ export function EntryScreen({ item, now, onClose, onComplete, completing }: Prop
   const source = sourceLabel(item);
   // A recurring entry is one row with many occurrences; completing it would
   // complete the whole series, so only one-off entries get the button.
-  const canComplete = !done && item.occurrence_index === null && !!onComplete;
+  // VTID-04357: work-lens items are finished where they live, not here.
+  const canComplete = !done && item.occurrence_index === null && !item.work && !!onComplete;
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -100,6 +101,12 @@ export function EntryScreen({ item, now, onClose, onComplete, completing }: Prop
       </header>
 
       <div className="flex flex-1 flex-col gap-5 px-[22px] py-5">
+        {item.work && (
+          <p className="m-0 rounded-2xl px-4 py-3 text-[15px] font-bold" style={{ background: style.bg, color: style.ink }} data-testid="vcal-work-note">
+            {t("vcal.work.readOnly")}
+          </p>
+        )}
+
         {e.description && (
           <section className="flex flex-col gap-1.5">
             <h2 className="text-[13px] font-extrabold uppercase tracking-wide" style={{ color: SURFACE.muted }}>

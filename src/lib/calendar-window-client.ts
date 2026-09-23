@@ -55,6 +55,25 @@ export interface CalendarWindowItem {
   event: CalendarEntry | null;
   display_emoji?: string;
   reminders?: ReminderRule[];
+  /**
+   * VTID-04357: set on developer/admin work-lens items (deploys, reviews,
+   * ticket deadlines, approvals). They are read-only views of their own
+   * tables — never completed from the calendar. `event.title` is an
+   * identifier (commit, ticket number); the label comes from `vcal.work.<kind>`.
+   */
+  work?: WorkDescriptor;
+}
+
+export type WorkKind = "deploy_staging" | "deploy_prod" | "autopilot_review" | "ticket_due" | "erp_approval";
+
+export interface WorkDescriptor {
+  kind: WorkKind;
+  source_id: string;
+  params: Record<string, string>;
+}
+
+export function isWorkItem(item: Pick<CalendarWindowItem, "work">): boolean {
+  return !!item.work;
 }
 
 export interface CalendarWindow {

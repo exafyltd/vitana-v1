@@ -134,3 +134,32 @@ describe("catalog", () => {
     }
   });
 });
+
+describe("work-lens items (VTID-04357)", () => {
+  const src = (p: string) => fs.readFileSync(path.resolve(__dirname, p), "utf8");
+
+  it("deploys, reviews and deadlines are work entries", () => {
+    for (const t of ["deployment", "dev_task", "admin_task"]) {
+      expect(entryKind({ ...base, event_type: t })).toBe("work");
+    }
+  });
+
+  it("every work kind the gateway sends has a label in German", () => {
+    const de = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../i18n/de/vcal.json"), "utf8"));
+    for (const k of ["deploy_staging", "deploy_prod", "autopilot_review", "ticket_due", "erp_approval", "readOnly"]) {
+      expect(typeof de.vcal.work[k]).toBe("string");
+    }
+  });
+
+  it("the entry screen never offers 'mark done' for a work item", () => {
+    expect(src("./EntryScreen.tsx")).toMatch(/canComplete = [^;]*!item\.work/);
+  });
+
+  it("work items stay out of the personal progress ring and Next up", () => {
+    expect(src("../../../pages/Calendar.tsx")).toContain("filter((i) => i.event && !i.work)");
+  });
+
+  it("the source label comes from the work kind", () => {
+    expect(src("./labels.ts")).toContain("if (item.work) return t(`vcal.work.${item.work.kind}`)");
+  });
+});

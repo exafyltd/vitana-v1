@@ -80,6 +80,14 @@
       "noReminders": "Hatırlatma yok",
       "directions": "Yol tarifi",
       "askVitana": "Vitana'ya sor"
+    },
+    "work": {
+      "deploy_staging": "Staging dağıtımı",
+      "deploy_prod": "Üretim dağıtımı",
+      "autopilot_review": "İncelemeni bekliyor",
+      "ticket_due": "Talep süresi",
+      "erp_approval": "Onay bekliyor",
+      "readOnly": "Bunu oluştuğu yerde bitirirsin – takvim yalnızca ne zaman olduğunu gösterir."
     }
   }
 }

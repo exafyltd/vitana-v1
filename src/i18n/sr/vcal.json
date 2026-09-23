@@ -80,6 +80,14 @@
       "noReminders": "Bez podsetnika",
       "directions": "Putanja",
       "askVitana": "Pitaj Vitanu"
+    },
+    "work": {
+      "deploy_staging": "Staging deploy",
+      "deploy_prod": "Produkcijski deploy",
+      "autopilot_review": "Čeka tvoj pregled",
+      "ticket_due": "Rok tiketa",
+      "erp_approval": "Odobrenje čeka",
+      "readOnly": "Ovo završavaš tamo gde je nastalo – kalendar samo pokazuje kada je na redu."
     }
   }
 }

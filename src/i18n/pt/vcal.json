@@ -80,6 +80,14 @@
       "noReminders": "Sem lembrete",
       "directions": "Rota",
       "askVitana": "Perguntar à Vitana"
+    },
+    "work": {
+      "deploy_staging": "Deploy de staging",
+      "deploy_prod": "Deploy de produção",
+      "autopilot_review": "Aguardando sua revisão",
+      "ticket_due": "Prazo do ticket",
+      "erp_approval": "Aprovação pendente",
+      "readOnly": "Você conclui isso onde ele nasce – o calendário só mostra quando está previsto."
     }
   }
 }

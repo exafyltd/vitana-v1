@@ -80,6 +80,14 @@
       "noReminders": "Keine Erinnerung",
       "directions": "Route",
       "askVitana": "Vitana fragen"
+    },
+    "work": {
+      "deploy_staging": "Staging-Deploy",
+      "deploy_prod": "Produktions-Deploy",
+      "autopilot_review": "Wartet auf deine Prüfung",
+      "ticket_due": "Ticket-Frist",
+      "erp_approval": "Freigabe wartet",
+      "readOnly": "Das erledigst du dort, wo es entsteht – im Kalender siehst du nur, wann es ansteht."
     }
   }
 }

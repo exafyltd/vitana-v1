@@ -80,6 +80,14 @@
       "noReminders": "Aucun rappel",
       "directions": "Itinéraire",
       "askVitana": "Demander à Vitana"
+    },
+    "work": {
+      "deploy_staging": "Déploiement staging",
+      "deploy_prod": "Déploiement production",
+      "autopilot_review": "Attend ta revue",
+      "ticket_due": "Échéance du ticket",
+      "erp_approval": "Validation en attente",
+      "readOnly": "Tu le termines là où il est né – le calendrier montre seulement quand c'est prévu."
     }
   }
 }

@@ -80,6 +80,14 @@
       "noReminders": "بدون تذكير",
       "directions": "الاتجاهات",
       "askVitana": "اسأل فيتانا"
+    },
+    "work": {
+      "deploy_staging": "نشر على بيئة الاختبار",
+      "deploy_prod": "نشر على الإنتاج",
+      "autopilot_review": "بانتظار مراجعتك",
+      "ticket_due": "موعد التذكرة",
+      "erp_approval": "موافقة بانتظارك",
+      "readOnly": "تُنجز هذا حيث نشأ – التقويم يُظهر فقط موعد استحقاقه."
     }
   }
 }

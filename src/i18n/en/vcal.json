@@ -80,6 +80,14 @@
       "noReminders": "No reminder",
       "directions": "Directions",
       "askVitana": "Ask Vitana"
+    },
+    "work": {
+      "deploy_staging": "Staging deploy",
+      "deploy_prod": "Production deploy",
+      "autopilot_review": "Waiting for your review",
+      "ticket_due": "Ticket deadline",
+      "erp_approval": "Approval waiting",
+      "readOnly": "You finish this where it lives – the calendar only shows when it is due."
     }
   }
 }

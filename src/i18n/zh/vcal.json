@@ -80,6 +80,14 @@
       "noReminders": "无提醒",
       "directions": "路线",
       "askVitana": "问问 Vitana"
+    },
+    "work": {
+      "deploy_staging": "预发布部署",
+      "deploy_prod": "生产部署",
+      "autopilot_review": "等待你的审核",
+      "ticket_due": "工单截止时间",
+      "erp_approval": "等待审批",
+      "readOnly": "这件事在它所在的地方完成——日历只显示何时到期。"
     }
   }
 }

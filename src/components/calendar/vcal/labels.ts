@@ -11,6 +11,7 @@ export const HEADING_FONT = "Fredoka, Nunito, system-ui, sans-serif";
 export function sourceLabel(item: CalendarWindowItem): string | null {
   const e = item.event;
   if (!e) return null;
+  if (item.work) return t(`vcal.work.${item.work.kind}`);
   if (e.source_ref_type === "lab_order" || e.source_type === "lab_order") return t("vcal.source.lab");
   switch (e.source_type) {
     case "autopilot":

@@ -95,7 +95,9 @@ export default function CalendarPage() {
     },
     staleTime: 30_000,
   });
-  const today = (todayQuery.data?.items ?? []).filter((i) => i.event);
+  // Work-lens items (deploys, reviews, deadlines) are not the user's own
+  // to-dos, so they stay out of the progress ring and "Next up".
+  const today = (todayQuery.data?.items ?? []).filter((i) => i.event && !i.work);
   const todayDone = today.filter((i) => isDone(i.event!)).length;
   const nextUp = today.find((i) => !isDone(i.event!) && Date.parse(i.start_time) > now.getTime()) ?? null;
 

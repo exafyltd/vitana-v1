@@ -80,6 +80,14 @@
       "noReminders": "Bez przypomnienia",
       "directions": "Trasa",
       "askVitana": "Zapytaj Vitanę"
+    },
+    "work": {
+      "deploy_staging": "Wdrożenie staging",
+      "deploy_prod": "Wdrożenie produkcyjne",
+      "autopilot_review": "Czeka na twój przegląd",
+      "ticket_due": "Termin zgłoszenia",
+      "erp_approval": "Zatwierdzenie czeka",
+      "readOnly": "Kończysz to tam, gdzie powstało – kalendarz pokazuje tylko, kiedy przypada."
     }
   }
 }
