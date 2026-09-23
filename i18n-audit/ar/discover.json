@@ -27,10 +27,8 @@
       "phase": "llm"
     },
     "discover.searchPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Missing 'عن' for 'about' and informal register could be improved.",
-      "suggested": "عن ماذا تبحث؟ (مثلاً: فصول اليوغا، طبيب طول العمر، لقاءات)",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.doctorsCoaches": {
@@ -461,8 +459,8 @@
     "discover.aiPicks.recommendationsFound": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender agreement: 'توصيات' is feminine plural, but 'تم العثور' is masculine. Should be 'تم العثور على' with feminine verb or restructure.",
-      "suggested": "تم العثور على {count} توصية",
+      "issue": "Incorrect number agreement. The English 'recommendations' is plural, but the Arabic 'توصية' is singular. This is inaccurate for most plural counts.",
+      "suggested": "تم العثور على {count} توصيات",
       "phase": "llm"
     },
     "discover.aiPicks.noRecommendations": {
@@ -550,5 +548,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:05.192Z"
+  "generatedAt": "2026-09-23T08:44:53.200Z"
 }
