@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { GATEWAY_BASE } from '@/lib/gateway-base';
 import { MyTicketsList } from "@/components/support/MyTicketsList";
 import { buildSupportContactBody, type SupportCategory } from "@/lib/feedback-ticket";
+import { activateOrbForSupportReport } from "@/lib/orbActivate";
 
 // VTID-04335: canonical gateway origin (the old fallback was the deleted GCP host).
 const GATEWAY_URL = GATEWAY_BASE;
@@ -446,6 +447,11 @@ function MobileSupport() {
     window.location.href = "mailto:support@exafy.io";
   };
 
+  // VTID-04395: open the ORB as a support intake (Vitana asks what happened).
+  const handleVoiceReport = () => {
+    if (!activateOrbForSupportReport()) notifyError("supportTickets.orbUnavailable");
+  };
+
   const SUPPORT_MODES: ModeOption[] = [
     { value: "contact", label: t("mobilesupport.tabContact"), icon: "💬" },
     { value: "tickets", label: t("supportTickets.support.tabTickets"), icon: "🎫" },
@@ -704,15 +710,22 @@ function MobileSupport() {
                           {t("mobilesupport.quickContactEmailSub")}
                         </span>
                       </button>
-                      <div className="p-3 rounded-xl border border-border/50 flex flex-col items-center gap-1 text-center opacity-60 min-w-0">
+                      {/* VTID-04395: was a disabled "Chat" tile — now talks to
+                          Vitana, who asks what happened and files the ticket. */}
+                      <button
+                        type="button"
+                        onClick={handleVoiceReport}
+                        data-testid="support-voice-report"
+                        className="p-3 rounded-xl border border-border/50 hover:bg-muted/50 flex flex-col items-center gap-1 text-center min-w-0"
+                      >
                         <MessageCircle className="w-5 h-5 text-primary shrink-0" />
                         <span className="font-medium text-[11px] leading-tight">
-                          {t("mobilesupport.quickContactChat")}
+                          {t("supportTickets.support.voiceButton")}
                         </span>
                         <span className="text-[10px] text-muted-foreground leading-tight">
                           {t("mobilesupport.quickContactChatSub")}
                         </span>
-                      </div>
+                      </button>
                       <div className="p-3 rounded-xl border border-border/50 flex flex-col items-center gap-1 text-center opacity-60 min-w-0">
                         <Phone className="w-5 h-5 text-primary shrink-0" />
                         <span className="font-medium text-[11px] leading-tight">

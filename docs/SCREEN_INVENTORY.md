@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 354
-- **Distinct i18n keys consumed:** 4937
+- **Pages scanned:** 356
+- **Distinct i18n keys consumed:** 4938
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -343,11 +343,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSupport.tsx
 
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+**Status:** ✅ clean — keys consumed: 10, namespaces: 2
 
 **i18n namespaces:**
 
 - `mobilesupport` — **MISSING SHARD** in src/i18n/de/
+- `supportTickets` — used: 1, total in shard: 185
 
 ### src/pages/MyIntents.tsx
 
@@ -1028,6 +1029,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 26, total in shard: 11152
 - `toasts` — used: 4, total in shard: 1265
+
+### src/pages/admin/feedback/admin-ticket-labels.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/admin/feedback/admin-ticket-labels.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/admin/insights/AssistantUsage.tsx
 
@@ -2882,7 +2891,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `mobilesupport` — **MISSING SHARD** in src/i18n/de/
-- `supportTickets` — used: 1, total in shard: 74
+- `supportTickets` — used: 1, total in shard: 185
 
 ### src/pages/settings/TenantRole.tsx
 
@@ -2984,6 +2993,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `discover` | 3 |
 | `inbox` | 2 |
 | `mobilesupport` | 2 |
+| `supportTickets` | 2 |
 | `event` | 2 |
 | `eventCta` | 2 |
 | `sidebar` | 2 |
@@ -3023,4 +3033,3 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `discount` | 1 |
 | `portals` | 1 |
 | `authPage` | 1 |
-| `supportTickets` | 1 |

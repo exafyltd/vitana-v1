@@ -88,7 +88,144 @@
       "title": "My reports"
     },
     "admin": {
-      "copyVtid": "Copy VTID"
+      "copyVtid": "Copy VTID",
+      "kind": {
+        "bug": "Bug",
+        "ux_issue": "UX issue",
+        "support_question": "Support question",
+        "marketplace_claim": "Marketplace claim",
+        "account_issue": "Account issue",
+        "feedback": "Feedback (no draft)",
+        "feature_request": "Feature request"
+      },
+      "kindDesc": {
+        "bug": "Code defect — runs Devon spec → dev autopilot",
+        "ux_issue": "Visual / interaction defect — runs Devon → dev autopilot",
+        "support_question": "User wants information — Sage drafts answer",
+        "marketplace_claim": "Refund / dispute — Atlas drafts resolution",
+        "account_issue": "Login / role / data — Mira drafts resolution",
+        "feedback": "Opinion / nice-to-have — straight to in progress",
+        "feature_request": "New capability — straight to in progress"
+      },
+      "status": {
+        "new": "Submitted",
+        "interviewing": "Interviewing",
+        "triaged": "Triaged",
+        "spec_pending": "Spec pending",
+        "spec_ready": "Spec ready",
+        "answer_pending": "Answer pending",
+        "answer_ready": "Answer ready",
+        "approved": "Approved",
+        "in_progress": "In progress",
+        "resolved": "Resolved",
+        "user_confirmed": "Confirmed",
+        "duplicate": "Duplicate",
+        "rejected": "Rejected",
+        "wont_fix": "Won't fix",
+        "needs_more_info": "Needs info",
+        "reopened": "Reopened"
+      },
+      "stage": {
+        "cooling": "Queued",
+        "running": "Coding",
+        "ci": "CI",
+        "merging": "Merging",
+        "deploying": "Deploying",
+        "verifying": "Verifying",
+        "completed": "Completed"
+      },
+      "failedAt": {
+        "cooling": "before it could start",
+        "running": "while writing the code",
+        "ci": "in CI (tests / typecheck)",
+        "merging": "while merging",
+        "deploying": "during deploy",
+        "verifying": "during post-deploy verification",
+        "plan_gen": "while generating the plan",
+        "approve_safety": "at the safety gate",
+        "other": "at {stage}"
+      },
+      "run": {
+        "failed": "Run failed",
+        "failedWhere": "Run failed {where}",
+        "completed": "Completed — deployed to production",
+        "running": "Running in dev autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Generate spec (Devon)",
+        "sage": "Generate answer (Sage)",
+        "atlas": "Generate resolution (Atlas)",
+        "mira": "Generate resolution (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "spec",
+        "draft_answer_md": "draft answer",
+        "resolution_md": "resolution",
+        "none": "work item"
+      },
+      "placeholder": {
+        "devon": "e.g. The real bug is the SSE reconnect logic; the user sees the symptom but the root cause is in orb-live.ts. Touch only the reconnect bucket. Add a unit test for the single-utterance case.",
+        "sage": "e.g. The answer should mention the new beta opt-in flow on /settings, not the legacy toggle.",
+        "atlas": "e.g. This claim is borderline fraud — start with an eligibility check, hold any refund pending operator review.",
+        "mira": "e.g. Verify the user's email first; the role corruption is likely a stale OAuth claim, not a DB issue.",
+        "default": "Your direction for the work item."
+      },
+      "action": {
+        "generate": "Generate",
+        "regenerate": "Re-generate",
+        "regenerateWith": "Re-generate with {name}",
+        "drafting": "Drafting…",
+        "activate": "Activate",
+        "activating": "Activating…",
+        "retryAutopilot": "Retry autopilot",
+        "activateNeedsDraft": "Generate a draft first.",
+        "activateHint": "Advance the ticket to the next stage.",
+        "rollback": "Rollback",
+        "rollingBack": "Rolling back…",
+        "rollbackConfirm": "Revert {pr} and reopen {ticket}?\n\nA revert PR will be created and auto-merged. This deploys a rollback to production.",
+        "working": "Working — please wait",
+        "close": "Close",
+        "rejectPrompt": "Reason for rejecting {ticket}? (optional)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} reclassified",
+        "reclassifiedDesc": "Kind is now {kind}. Generate the new draft when ready.",
+        "draftedTitle": "{ticket} drafted by {name}",
+        "draftedDesc": "Now {status}. Review the draft below, then Activate to advance.",
+        "draftedDescFallback": "Now {status}. The AI was unavailable, so a placeholder is shown. Review it below, then Activate to advance.",
+        "activatedTitle": "{ticket} activated",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev autopilot is running execution {execution} — autonomous from here.",
+        "rolledBackTitle": "{ticket} rolled back",
+        "rolledBackDesc": "Revert PR #{number}. The ticket has been reopened.",
+        "rolledBackDescNoNumber": "Revert PR created. The ticket has been reopened."
+      },
+      "error": {
+        "alreadyDispatched": "This ticket is already running in dev autopilot. Reclassify is locked once dispatched.",
+        "draftRequired": "Generate a draft first — write your instructions and click Generate.",
+        "alreadyInProgress": "This ticket is already running. The autopilot will close it when done."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Approve all {count} actionable tickets from {customer}?",
+      "approveAll": "Approve all ({count})",
+      "approving": "Approving…",
+      "batchDoneTitle": "Batch action complete for {customer}",
+      "batchApproved": "{count} approved",
+      "batchSent": "{count} answers sent",
+      "batchSkipped": "{count} skipped",
+      "batchNothing": "Nothing to action.",
+      "avatarAlt": "Avatar for {name}",
+      "specialistEnabled": "{name} enabled",
+      "specialistDisabled": "{name} disabled",
+      "specialistEnabledDesc": "Vitana can now route eligible requests to this specialist.",
+      "specialistDisabledDesc": "Vitana will not route requests to this specialist.",
+      "on": "On",
+      "off": "Off",
+      "toggleOn": "Turn {name} on",
+      "toggleOff": "Turn {name} off",
+      "seoDescription": "Tenant feedback tickets and the AI specialist team",
+      "pageDescription": "Tickets your members submitted to Vitana. AI specialists handle them — humans approve before any action applies."
     }
   }
 }

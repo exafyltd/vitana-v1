@@ -88,7 +88,144 @@
       "title": "Mes signalements"
     },
     "admin": {
-      "copyVtid": "Copier le VTID"
+      "copyVtid": "Copier le VTID",
+      "kind": {
+        "bug": "Bug",
+        "ux_issue": "Problème d'UX",
+        "support_question": "Question d'assistance",
+        "marketplace_claim": "Réclamation marketplace",
+        "account_issue": "Problème de compte",
+        "feedback": "Retour (sans brouillon)",
+        "feature_request": "Demande de fonctionnalité"
+      },
+      "kindDesc": {
+        "bug": "Défaut de code — passe par la spec de Devon → Dev Autopilot",
+        "ux_issue": "Défaut visuel / d'interaction — passe par Devon → Dev Autopilot",
+        "support_question": "L'utilisateur veut une information — Sage rédige la réponse",
+        "marketplace_claim": "Remboursement / litige — Atlas rédige la résolution",
+        "account_issue": "Connexion / rôle / données — Mira rédige la résolution",
+        "feedback": "Avis / souhaitable — directement en cours",
+        "feature_request": "Nouvelle fonctionnalité — directement en cours"
+      },
+      "status": {
+        "new": "Soumis",
+        "interviewing": "Entretien en cours",
+        "triaged": "Trié",
+        "spec_pending": "Spec en attente",
+        "spec_ready": "Spec prête",
+        "answer_pending": "Réponse en attente",
+        "answer_ready": "Réponse prête",
+        "approved": "Approuvé",
+        "in_progress": "En cours",
+        "resolved": "Résolu",
+        "user_confirmed": "Confirmé",
+        "duplicate": "Doublon",
+        "rejected": "Rejeté",
+        "wont_fix": "Ne sera pas corrigé",
+        "needs_more_info": "Infos requises",
+        "reopened": "Rouvert"
+      },
+      "stage": {
+        "cooling": "En file d'attente",
+        "running": "Codage",
+        "ci": "CI",
+        "merging": "Fusion",
+        "deploying": "Déploiement",
+        "verifying": "Vérification",
+        "completed": "Terminé"
+      },
+      "failedAt": {
+        "cooling": "avant de pouvoir démarrer",
+        "running": "pendant l'écriture du code",
+        "ci": "en CI (tests / vérification des types)",
+        "merging": "pendant la fusion",
+        "deploying": "pendant le déploiement",
+        "verifying": "pendant la vérification après déploiement",
+        "plan_gen": "pendant la génération du plan",
+        "approve_safety": "au contrôle de sécurité",
+        "other": "à l'étape {stage}"
+      },
+      "run": {
+        "failed": "L'exécution a échoué",
+        "failedWhere": "L'exécution a échoué {where}",
+        "completed": "Terminé — déployé en production",
+        "running": "En cours dans Dev Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Générer la spec (Devon)",
+        "sage": "Générer la réponse (Sage)",
+        "atlas": "Générer la résolution (Atlas)",
+        "mira": "Générer la résolution (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "spec",
+        "draft_answer_md": "brouillon de réponse",
+        "resolution_md": "résolution",
+        "none": "tâche"
+      },
+      "placeholder": {
+        "devon": "ex. Le vrai bug est dans la logique de reconnexion SSE ; l'utilisateur voit le symptôme, mais la cause se trouve dans orb-live.ts. Ne touche qu'à la partie reconnexion. Ajoute un test unitaire pour le cas d'un seul énoncé.",
+        "sage": "ex. La réponse doit mentionner le nouveau parcours d'inscription à la bêta sur /settings, pas l'ancien interrupteur.",
+        "atlas": "ex. Cette réclamation frôle la fraude — commence par une vérification d'éligibilité et bloque tout remboursement en attendant l'examen d'un opérateur.",
+        "mira": "ex. Vérifie d'abord l'e-mail de l'utilisateur ; le rôle corrompu vient probablement d'un claim OAuth obsolète, pas d'un problème de DB.",
+        "default": "Tes consignes pour la tâche."
+      },
+      "action": {
+        "generate": "Générer",
+        "regenerate": "Régénérer",
+        "regenerateWith": "Régénérer avec {name}",
+        "drafting": "Rédaction…",
+        "activate": "Activer",
+        "activating": "Activation…",
+        "retryAutopilot": "Relancer l'autopilot",
+        "activateNeedsDraft": "Génère d'abord un brouillon.",
+        "activateHint": "Fais passer le ticket à l'étape suivante.",
+        "rollback": "Revenir en arrière",
+        "rollingBack": "Retour en arrière…",
+        "rollbackConfirm": "Annuler {pr} et rouvrir {ticket} ?\n\nUne PR de revert sera créée et fusionnée automatiquement. Cela déploie un retour en arrière en production.",
+        "working": "En cours — merci de patienter",
+        "close": "Fermer",
+        "rejectPrompt": "Motif du rejet de {ticket} ? (facultatif)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} reclassé",
+        "reclassifiedDesc": "Le type est maintenant {kind}. Génère le nouveau brouillon quand tu es prêt.",
+        "draftedTitle": "{ticket} rédigé par {name}",
+        "draftedDesc": "Statut : {status}. Vérifie le brouillon ci-dessous, puis clique sur Activer pour avancer.",
+        "draftedDescFallback": "Statut : {status}. L'IA n'était pas disponible, un contenu provisoire est donc affiché. Vérifie-le ci-dessous, puis clique sur Activer pour avancer.",
+        "activatedTitle": "{ticket} activé",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev Autopilot traite l'exécution {execution} — en autonomie à partir d'ici.",
+        "rolledBackTitle": "Retour en arrière effectué pour {ticket}",
+        "rolledBackDesc": "PR de revert #{number}. Le ticket a été rouvert.",
+        "rolledBackDescNoNumber": "PR de revert créée. Le ticket a été rouvert."
+      },
+      "error": {
+        "alreadyDispatched": "Ce ticket est déjà en cours dans Dev Autopilot. La reclassification est verrouillée une fois lancé.",
+        "draftRequired": "Génère d'abord un brouillon — écris tes instructions et clique sur Générer.",
+        "alreadyInProgress": "Ce ticket est déjà en cours. L'autopilot le fermera une fois terminé."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Approuver les {count} tickets traitables de {customer} ?",
+      "approveAll": "Tout approuver ({count})",
+      "approving": "Approbation…",
+      "batchDoneTitle": "Action groupée terminée pour {customer}",
+      "batchApproved": "{count} approuvés",
+      "batchSent": "{count} réponses envoyées",
+      "batchSkipped": "{count} ignorés",
+      "batchNothing": "Rien à traiter.",
+      "avatarAlt": "Avatar de {name}",
+      "specialistEnabled": "{name} activé",
+      "specialistDisabled": "{name} désactivé",
+      "specialistEnabledDesc": "Vitana peut désormais transmettre les demandes éligibles à ce spécialiste.",
+      "specialistDisabledDesc": "Vitana ne transmettra plus de demandes à ce spécialiste.",
+      "on": "Activé",
+      "off": "Désactivé",
+      "toggleOn": "Activer {name}",
+      "toggleOff": "Désactiver {name}",
+      "seoDescription": "Tickets de retour du locataire et équipe de spécialistes IA",
+      "pageDescription": "Tickets envoyés à Vitana par tes membres. Des spécialistes IA les traitent — des humains valident avant que la moindre action ne s'applique."
     }
   }
 }

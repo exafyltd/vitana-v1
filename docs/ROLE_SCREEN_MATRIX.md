@@ -251,7 +251,6 @@ Staff role has access to **all 286 Community screens** (see Community Role table
 | STFF-007 | Reports | Staff | `/staff/reports` | 🚧 |
 | STFF-008 | Time Tracking | Staff | `/staff/time-tracking` | 🚧 |
 | STFF-009 | Settings | Staff | `/staff/settings` | 🚧 |
-| OVRL-025 | New Ticket Popup | Staff | N/A (Dialog) | ✅ |
 | OVRL-039 | Create Service Popup | Staff | N/A (Dialog) | ✅ |
 | OVRL-040 | Create Package Popup | Staff | N/A (Dialog) | ✅ |
 | OVRL-041 | Smart Package Popup | Staff | N/A (Dialog) | ✅ |
@@ -394,7 +393,6 @@ All Professional and Staff overlays listed in those sections, PLUS:
 
 | Screen ID | Screen Name | Module | Status |
 |-----------|-------------|--------|--------|
-| OVRL-025 | New Ticket Popup | Staff | ✅ |
 | OVRL-039 | Create Service Popup | Professional | ✅ |
 | OVRL-040 | Create Package Popup | Professional | ✅ |
 | OVRL-041 | Smart Package Popup | Professional | ✅ |

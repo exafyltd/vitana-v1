@@ -7643,29 +7643,6 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ---
 
-## OVRL-025: New Ticket Popup
-
-- **Module**: Staff
-- **Portal(s)**: Staff, Admin
-- **Roles with access**: Staff, Admin
-- **External Route (client URL)**: N/A (Dialog)
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/NewTicketPopup.tsx
-- **Component Path**: src/components/NewTicketPopup.tsx
-- **UI Pattern**: dialog
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: Ticket form, Priority, Assignment
-- **Status**: ✅ Implemented
-- **Purpose**: Support ticket creation
-- **Primary APIs Used**: TBD (pending functional review)
-- **DB Tables / Models Used**: TBD (pending functional review)
-- **Compliance Notes**: TBD (pending functional review)
-- **Event Triggers**: ticket_created, ticket_creation_cancelled
-- **Dependencies**: TBD (pending functional review)
-- **Notes**: Create support ticket
-
----
-
 ## OVRL-026: Master Action Popup
 
 - **Module**: Home
