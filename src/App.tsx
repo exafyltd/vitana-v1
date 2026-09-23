@@ -44,6 +44,7 @@ import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
+import SupportTicketFiledListener from "./components/support/SupportTicketFiledListener";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
@@ -777,6 +778,8 @@ const App = () => {
                         Lives inside <BrowserRouter> for useNavigate(). */}
                     <IdentityRedirectListener />
                     <MilestoneCelebration />
+                    {/* VTID-04385: ticket number on screen after a spoken report. */}
+                    <SupportTicketFiledListener />
                     {/* VTID-02601: reminder fire delivery — chime + voice + banner. */}
                     <ReminderInterruptOverlay />
                     <VitanalandNavigationProvider>
