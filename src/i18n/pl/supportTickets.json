@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "Moje zgłoszenia",
+    "subtitle": "Wszystko, co nam zgłosiłeś – z numerem zgłoszenia i aktualnym statusem.",
+    "loading": "Ładowanie zgłoszeń …",
+    "loadError": "Nie udało się wczytać Twoich zgłoszeń.",
+    "retry": "Spróbuj ponownie",
+    "empty": "Brak zgłoszeń.",
+    "emptyHint": "Gdy tylko coś zgłosisz – głosem lub tekstem – pojawi się tutaj z numerem zgłoszenia.",
+    "kind": {
+      "feedback": "Ogólna opinia",
+      "bug": "Błąd lub awaria",
+      "ux_issue": "Niejasne lub trudne w obsłudze",
+      "support_question": "Jak mam …?",
+      "account_issue": "Problem z kontem",
+      "marketplace_claim": "Zamówienie lub płatność",
+      "feature_request": "Prośba o funkcję",
+      "other": "Inne"
+    },
+    "kindHint": {
+      "feedback": "Pomysły, przemyślenia, cokolwiek innego",
+      "bug": "Coś nie działa",
+      "ux_issue": "Opinia o obsłudze",
+      "support_question": "Pytanie o korzystanie z Vitany",
+      "account_issue": "Logowanie, profil, dane",
+      "marketplace_claim": "Zwroty, marketplace",
+      "feature_request": "Coś, czego Ci brakuje"
+    },
+    "status": {
+      "received": "Przyjęte",
+      "under_review": "W analizie",
+      "in_progress": "W naprawie",
+      "fixed": "Rozwiązane",
+      "wont_fix": "Nie zostanie zrobione",
+      "duplicate": "Duplikat"
+    },
+    "timelineLabel": "Postęp",
+    "reportedOn": "Zgłoszono {date}",
+    "viaVoice": "głosem",
+    "handledBy": "Obsługuje {name}",
+    "ourAnswer": "Nasza odpowiedź",
+    "confirmed": "Potwierdzone przez Ciebie",
+    "didItWorkNamed": "{name} mówi, że to jest rozwiązane. Czy zadziałało?",
+    "didItWork": "Uważamy, że to jest rozwiązane. Czy zadziałało?",
+    "yesFixed": "Tak, rozwiązane",
+    "noStillBroken": "Nie, nadal nie działa",
+    "showMore": "Pokaż więcej ({count})",
+    "severity": {
+      "low": "Niski",
+      "medium": "Średni",
+      "high": "Wysoki",
+      "critical": "Krytyczny"
+    },
+    "submittedTitle": "Dzięki – Twoje zgłoszenie zostało utworzone",
+    "submittedNumber": "Twój numer zgłoszenia: {number}",
+    "submittedBody": "Status możesz sprawdzić w każdej chwili w „Moje zgłoszenia”. Odezwiemy się, gdy tylko będą nowości.",
+    "viewTicket": "Zobacz zgłoszenie",
+    "sendAnother": "Wyślij kolejną wiadomość",
+    "orbUnavailable": "Vitana jest teraz niedostępna. Spróbuj ponownie za chwilę.",
+    "talk": {
+      "seoDescription": "Zgłaszaj błędy, zadawaj pytania lub dziel się opinią. Vitana i jej współpracownicy odezwą się do Ciebie.",
+      "headerDescription": "Błędy, pytania, opinie – Vitana przekazuje temat specjaliście, gdy wykracza poza jej obszar.",
+      "send": "Wyślij do Vitany",
+      "sending": "Wysyłanie …"
+    },
+    "support": {
+      "seoTitle": "Obsługa klienta",
+      "seoDescription": "Pomoc z kontem: utwórz zgłoszenie, zgłoś głosem i śledź status swoich zgłoszeń.",
+      "headerTitle": "Obsługa klienta",
+      "headerDescription": "Powiedz nam, w czym potrzebujesz pomocy – głosem lub tekstem. Każda prośba dostaje numer zgłoszenia.",
+      "tabContact": "Kontakt",
+      "tabTickets": "Moje zgłoszenia",
+      "tabFaqs": "Częste pytania",
+      "tabCommunity": "Społeczność",
+      "contactTitle": "Napisz do nas",
+      "contactSubtitle": "Krótko opisz, co się stało i czego się spodziewałeś.",
+      "messageLabel": "Twoja wiadomość",
+      "messagePlaceholder": "Co się stało? Co już próbowałeś?",
+      "submit": "Wyślij zgłoszenie",
+      "sending": "Wysyłanie …",
+      "voiceTitle": "Wolisz mówić?",
+      "voiceBody": "Po prostu powiedz Vitanie, co się dzieje. Utworzy zgłoszenie za Ciebie i poda Ci jego numer.",
+      "voiceButton": "Zgłoś głosem",
+      "emailTitle": "E-mail",
+      "emailBody": "Możesz też napisać do nas bezpośrednio."
+    },
+    "diary": {
+      "title": "Moje zgłoszenia"
+    },
+    "admin": {
+      "copyVtid": "Kopiuj VTID"
+    }
+  }
+}

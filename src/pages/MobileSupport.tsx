@@ -28,25 +28,16 @@ import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from "@/lib/i18n-toast";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { cn } from "@/lib/utils";
+import { GATEWAY_BASE } from '@/lib/gateway-base';
+import { MyTicketsList } from "@/components/support/MyTicketsList";
+import { buildSupportContactBody, type SupportCategory } from "@/lib/feedback-ticket";
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
+// VTID-04335: canonical gateway origin (the old fallback was the deleted GCP host).
+const GATEWAY_URL = GATEWAY_BASE;
 
-const CATEGORY_KEYS = ["account", "billing", "technical", "feature", "privacy", "other"] as const;
-type CategoryKey = (typeof CATEGORY_KEYS)[number];
+type CategoryKey = SupportCategory;
 
-// Map the member-facing Support category onto a unified-pipeline ticket `kind`.
-// This is only a routing hint — the backend classifier is authoritative — but
-// it gives the admin dashboard a sensible kind badge from the start.
-const KIND_BY_CATEGORY: Record<CategoryKey, string> = {
-  account: "account_issue",
-  billing: "account_issue",
-  technical: "bug",
-  feature: "feature_request",
-  privacy: "support_question",
-  other: "support_question",
-};
-
-type TabKey = "contact" | "faqs" | "community";
+type TabKey = "contact" | "tickets" | "faqs" | "community";
 
 // VTID-NAV-SUPPORT-TABS: map an incoming `?tab=` value (e.g. from a Vitana
 // deep-link like /support?tab=faqs) onto a local tab. Accepts the canonical
@@ -63,6 +54,10 @@ const TAB_ALIASES: Record<string, TabKey> = {
   articles: "faqs",
   community: "community",
   "community-help": "community",
+  // VTID-04335: the member's own tickets.
+  tickets: "tickets",
+  "my-tickets": "tickets",
+  ticket: "tickets",
 };
 
 function normalizeTab(value: string | null | undefined): TabKey | null {
@@ -84,7 +79,10 @@ function MobileSupport() {
 
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<TabKey>(() => normalizeTab(searchParams.get("tab")) ?? "contact");
+  // VTID-04335: a `?ticket=` deep link (resolved-ticket notification) opens My tickets.
+  const [activeTab, setActiveTab] = useState<TabKey>(
+    () => normalizeTab(searchParams.get("tab")) ?? (searchParams.get("ticket") ? "tickets" : "contact"),
+  );
 
   // VTID-NAV-SUPPORT-TABS: honor `?tab=` deep-links. Runs on mount and whenever
   // the param changes (e.g. Vitana navigates here with ?tab=faqs).
@@ -111,6 +109,8 @@ function MobileSupport() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  // VTID-04335: the ticket the member just created, shown on the success card.
+  const [createdTicket, setCreatedTicket] = useState<{ id: string; ticket_number: string } | null>(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
 
   const sttRef = useRef<ClientSTT | null>(null);
@@ -416,24 +416,16 @@ function MobileSupport() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({
-          raw_text: message,
-          kind: category ? KIND_BY_CATEGORY[category] : "support_question",
-          // Pin the surface so these form a distinct, human-only queue that
-          // the auto-triage routine skips (no AI specialist auto-handling).
-          surface: "support",
-          screen_path: category ? `support/contact:${category}` : "support/contact",
-          screenshot_url: uploadedUrls[0] || undefined,
-          structured_fields: {
-            source: "support_contact",
-            category: category || null,
-            entry_method: usedVoiceRef.current ? "voice" : "text",
-            attachments: uploadedUrls,
-          },
-        }),
+        body: JSON.stringify(buildSupportContactBody({
+          message,
+          category,
+          entryMethod: usedVoiceRef.current ? "voice" : "text",
+          attachments: uploadedUrls,
+        })),
       });
       const result = await res.json();
       if (!result.ok) throw new Error(result.error || "Submit failed");
+      setCreatedTicket(result.id && result.ticket_number ? { id: result.id, ticket_number: result.ticket_number } : null);
 
       usedVoiceRef.current = false;
       setTranscript("");
@@ -456,6 +448,7 @@ function MobileSupport() {
 
   const SUPPORT_MODES: ModeOption[] = [
     { value: "contact", label: t("mobilesupport.tabContact"), icon: "💬" },
+    { value: "tickets", label: t("supportTickets.support.tabTickets"), icon: "🎫" },
     { value: "faqs", label: t("mobilesupport.tabFaqs"), icon: "❓" },
     { value: "community", label: t("mobilesupport.tabCommunity"), icon: "👥" },
   ];
@@ -502,9 +495,33 @@ function MobileSupport() {
                     <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
                   </div>
                   <h3 className="text-lg font-semibold">{t("mobilesupport.sentTitle")}</h3>
-                  <p className="text-sm text-muted-foreground max-w-xs">
-                    {t("mobilesupport.sentBody")}
-                  </p>
+                  {createdTicket ? (
+                    <>
+                      <p className="text-base font-semibold" data-testid="created-ticket-number">
+                        {t("supportTickets.submittedNumber", { number: createdTicket.ticket_number })}
+                      </p>
+                      <p className="text-sm text-muted-foreground max-w-xs">
+                        {t("supportTickets.submittedBody")}
+                      </p>
+                      <Button
+                        onClick={() => {
+                          const params = new URLSearchParams(searchParams);
+                          params.set("tab", "tickets");
+                          params.set("ticket", createdTicket.id);
+                          setSearchParams(params, { replace: true });
+                          setActiveTab("tickets");
+                          setShowSuccess(false);
+                        }}
+                        className="mt-2"
+                      >
+                        {t("supportTickets.viewTicket")}
+                      </Button>
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground max-w-xs">
+                      {t("mobilesupport.sentBody")}
+                    </p>
+                  )}
                   <Button variant="outline" onClick={() => setShowSuccess(false)} className="mt-2">
                     {t("mobilesupport.sendAnother")}
                   </Button>
@@ -711,6 +728,8 @@ function MobileSupport() {
               </>
             )
           )}
+
+          {activeTab === "tickets" && <MyTicketsList />}
 
           {activeTab === "faqs" && (
             <>

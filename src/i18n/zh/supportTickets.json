@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "我的工单",
+    "subtitle": "你向我们反馈的所有内容——附带工单编号和当前状态。",
+    "loading": "正在加载工单 …",
+    "loadError": "无法加载你的工单。",
+    "retry": "重试",
+    "empty": "还没有工单。",
+    "emptyHint": "你一旦反馈问题——无论是语音还是文字——它就会带着工单编号出现在这里。",
+    "kind": {
+      "feedback": "一般反馈",
+      "bug": "错误或崩溃",
+      "ux_issue": "令人困惑或难以使用",
+      "support_question": "我该如何……？",
+      "account_issue": "账户问题",
+      "marketplace_claim": "订单或付款",
+      "feature_request": "功能建议",
+      "other": "其他"
+    },
+    "kindHint": {
+      "feedback": "想法、感受，其他任何内容",
+      "bug": "某些功能坏了",
+      "ux_issue": "关于使用体验的反馈",
+      "support_question": "关于使用 Vitana 的问题",
+      "account_issue": "登录、个人资料、数据",
+      "marketplace_claim": "退款、市场",
+      "feature_request": "你希望拥有的功能"
+    },
+    "status": {
+      "received": "已收到",
+      "under_review": "审核中",
+      "in_progress": "修复中",
+      "fixed": "已解决",
+      "wont_fix": "不予处理",
+      "duplicate": "重复"
+    },
+    "timelineLabel": "进度",
+    "reportedOn": "提交于 {date}",
+    "viaVoice": "语音",
+    "handledBy": "处理人：{name}",
+    "ourAnswer": "我们的回复",
+    "confirmed": "你已确认",
+    "didItWorkNamed": "{name} 说这个问题已解决。有效吗？",
+    "didItWork": "我们认为这个问题已解决。有效吗？",
+    "yesFixed": "是的，已解决",
+    "noStillBroken": "没有，仍然有问题",
+    "showMore": "显示更多（{count}）",
+    "severity": {
+      "low": "低",
+      "medium": "中",
+      "high": "高",
+      "critical": "严重"
+    },
+    "submittedTitle": "谢谢——你的工单已创建",
+    "submittedNumber": "你的工单编号：{number}",
+    "submittedBody": "你可以随时在“我的工单”中查看状态。一有新进展我们就会通知你。",
+    "viewTicket": "查看工单",
+    "sendAnother": "再发送一条消息",
+    "orbUnavailable": "Vitana 暂时无法连接，请稍后再试。",
+    "talk": {
+      "seoDescription": "报告错误、提出问题或分享反馈。Vitana 和她的同事会跟进。",
+      "headerDescription": "错误、问题、反馈——当话题超出她的领域时，Vitana 会转交给专业同事。",
+      "send": "发送给 Vitana",
+      "sending": "正在发送 …"
+    },
+    "support": {
+      "seoTitle": "客户支持",
+      "seoDescription": "账户帮助：创建工单、语音反馈并跟踪你的工单状态。",
+      "headerTitle": "客户支持",
+      "headerDescription": "告诉我们你需要什么帮助——语音或文字都可以。每个请求都会获得一个工单编号。",
+      "tabContact": "联系我们",
+      "tabTickets": "我的工单",
+      "tabFaqs": "常见问题",
+      "tabCommunity": "社区",
+      "contactTitle": "给我们留言",
+      "contactSubtitle": "简要描述发生了什么以及你的预期。",
+      "messageLabel": "你的消息",
+      "messagePlaceholder": "发生了什么？你已经尝试过什么？",
+      "submit": "提交工单",
+      "sending": "正在发送 …",
+      "voiceTitle": "更想直接说？",
+      "voiceBody": "直接告诉 Vitana 发生了什么。她会为你创建工单并告诉你工单编号。",
+      "voiceButton": "语音反馈",
+      "emailTitle": "电子邮件",
+      "emailBody": "你也可以直接给我们写信。"
+    },
+    "diary": {
+      "title": "我的反馈"
+    },
+    "admin": {
+      "copyVtid": "复制 VTID"
+    }
+  }
+}

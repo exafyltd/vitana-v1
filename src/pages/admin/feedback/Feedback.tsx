@@ -18,7 +18,7 @@ import { communityFetch } from "@/lib/community-gateway";
 // bindings, routing keywords, intake extras, connections).
 import { SpecialistConfigDrawer } from "./SpecialistConfigDrawer";
 // VTID-02660: actionable ticket drawer — full transcript + Activate/Reject.
-import { TicketActionDrawer } from "./TicketActionDrawer";
+import { TicketActionDrawer, LinkedVtidChip } from "./TicketActionDrawer";
 // Forwarding-rules feature (VTID-02661): Vitana-specific drawer that edits
 // the global Gate A phrase lists + a test sandbox.
 import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
@@ -51,6 +51,9 @@ interface Ticket {
   // can read the gist of a claim inline and prioritise without opening
   // the actionable drawer.
   raw_transcript_excerpt?: string | null;
+  // VTID-04335: the ticket's own VTID (VTID-04333). Optional — older
+  // gateways don't return it.
+  linked_vtid?: string | null;
 }
 
 interface Persona {
@@ -286,6 +289,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                     <span className="font-mono">{g.latest.ticket_number}</span>
+                    {g.latest.linked_vtid && <LinkedVtidChip vtid={g.latest.linked_vtid} />}
                     <Badge
                       className={`text-[10px] ${headerAccent.pill}`}
                       variant={headerAccent.pill ? undefined : statusVariant(g.latest.status)}
@@ -341,6 +345,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                           {idx + 1}.
                         </span>
                         <span className="font-mono text-xs">{t.ticket_number}</span>
+                        {t.linked_vtid && <span className="font-mono text-[11px] text-primary" data-testid="row-linked-vtid">{t.linked_vtid}</span>}
                         <Badge className={`text-[10px] ${accent.pill}`} variant={accent.pill ? undefined : statusVariant(t.status)}>
                           {STATUS_LABEL[t.status] ?? t.status}
                         </Badge>

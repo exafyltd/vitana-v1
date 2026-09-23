@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "Destek taleplerim",
+    "subtitle": "Bize bildirdiğin her şey – talep numarası ve güncel durumuyla.",
+    "loading": "Talepler yükleniyor …",
+    "loadError": "Taleplerin yüklenemedi.",
+    "retry": "Tekrar dene",
+    "empty": "Henüz talep yok.",
+    "emptyHint": "Bir şey bildirdiğin anda – sesle ya da yazıyla – burada bir talep numarasıyla görünür.",
+    "kind": {
+      "feedback": "Genel geri bildirim",
+      "bug": "Hata veya çökme",
+      "ux_issue": "Kafa karıştırıcı veya kullanımı zor",
+      "support_question": "Nasıl yaparım …?",
+      "account_issue": "Hesap sorunu",
+      "marketplace_claim": "Sipariş veya ödeme",
+      "feature_request": "Özellik isteği",
+      "other": "Diğer"
+    },
+    "kindHint": {
+      "feedback": "Fikirler, düşünceler, diğer her şey",
+      "bug": "Bir şey çalışmıyor",
+      "ux_issue": "Kullanım hakkında geri bildirim",
+      "support_question": "Vitana'yı kullanma hakkında soru",
+      "account_issue": "Giriş, profil, veriler",
+      "marketplace_claim": "İadeler, pazar yeri",
+      "feature_request": "Olmasını istediğin bir şey"
+    },
+    "status": {
+      "received": "Alındı",
+      "under_review": "İnceleniyor",
+      "in_progress": "Düzeltiliyor",
+      "fixed": "Çözüldü",
+      "wont_fix": "Yapılmayacak",
+      "duplicate": "Mükerrer"
+    },
+    "timelineLabel": "İlerleme",
+    "reportedOn": "Bildirim tarihi: {date}",
+    "viaVoice": "sesle",
+    "handledBy": "İlgilenen: {name}",
+    "ourAnswer": "Yanıtımız",
+    "confirmed": "Senin tarafından onaylandı",
+    "didItWorkNamed": "{name} bunun çözüldüğünü söylüyor. İşe yaradı mı?",
+    "didItWork": "Bunun çözüldüğünü düşünüyoruz. İşe yaradı mı?",
+    "yesFixed": "Evet, çözüldü",
+    "noStillBroken": "Hayır, hâlâ bozuk",
+    "showMore": "Daha fazla göster ({count})",
+    "severity": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "critical": "Kritik"
+    },
+    "submittedTitle": "Teşekkürler – talebin oluşturuldu",
+    "submittedNumber": "Talep numaran: {number}",
+    "submittedBody": "Durumunu istediğin zaman “Destek taleplerim” altında takip edebilirsin. Yeni bir gelişme olur olmaz sana haber veririz.",
+    "viewTicket": "Talebi görüntüle",
+    "sendAnother": "Başka bir mesaj gönder",
+    "orbUnavailable": "Vitana şu anda ulaşılabilir değil. Lütfen birazdan tekrar dene.",
+    "talk": {
+      "seoDescription": "Hataları bildir, soru sor veya geri bildirim paylaş. Vitana ve meslektaşları sana dönüş yapacak.",
+      "headerDescription": "Hatalar, sorular, geri bildirim – konu Vitana'nın alanı dışındaysa bir uzman meslektaşa devreder.",
+      "send": "Vitana'ya gönder",
+      "sending": "Gönderiliyor …"
+    },
+    "support": {
+      "seoTitle": "Müşteri desteği",
+      "seoDescription": "Hesabınla ilgili yardım: talep oluştur, sesle bildir ve taleplerinin durumunu takip et.",
+      "headerTitle": "Müşteri desteği",
+      "headerDescription": "Neyle ilgili yardıma ihtiyacın olduğunu bize söyle – sesle ya da yazıyla. Her talep bir numara alır.",
+      "tabContact": "İletişim",
+      "tabTickets": "Destek taleplerim",
+      "tabFaqs": "SSS",
+      "tabCommunity": "Topluluk",
+      "contactTitle": "Bize yaz",
+      "contactSubtitle": "Ne olduğunu ve ne beklediğini kısaca anlat.",
+      "messageLabel": "Mesajın",
+      "messagePlaceholder": "Ne oldu? Neleri denedin?",
+      "submit": "Talebi gönder",
+      "sending": "Gönderiliyor …",
+      "voiceTitle": "Konuşmayı mı tercih edersin?",
+      "voiceBody": "Vitana'ya neler olduğunu anlatman yeterli. Talebi senin için oluşturur ve talep numarasını söyler.",
+      "voiceButton": "Sesle bildir",
+      "emailTitle": "E-posta",
+      "emailBody": "Bize doğrudan da yazabilirsin."
+    },
+    "diary": {
+      "title": "Bildirimlerim"
+    },
+    "admin": {
+      "copyVtid": "VTID'yi kopyala"
+    }
+  }
+}
