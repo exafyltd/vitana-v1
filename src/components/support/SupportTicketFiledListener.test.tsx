@@ -77,6 +77,9 @@ describe('wiring', () => {
     const root = path.join(__dirname, '..', '..', '..');
     expect(fs.readFileSync(path.join(root, 'src/App.tsx'), 'utf8')).toContain('<SupportTicketFiledListener />');
     const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-    expect(html.match(/orb-widget\.js\?v=20260923-vtid-04385-ticket-filed/g)).toHaveLength(2);
+    // At or after the VTID-04385 widget change (later widget changes bump it again).
+    const versions = [...html.matchAll(/orb-widget\.js\?v=\d{8}-vtid-(\d{5})/g)].map((m) => Number(m[1]));
+    expect(versions).toHaveLength(2);
+    for (const v of versions) expect(v).toBeGreaterThanOrEqual(4385);
   });
 });

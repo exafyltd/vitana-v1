@@ -20,7 +20,24 @@
 
 interface VitanaOrbApi {
   focusGuidedTopic?: (topicId: string) => void;
+  /** VTID-04395: open the ORB as a support intake (orb-widget.js). */
+  startSupportReport?: () => void;
   show?: () => void;
+}
+
+/**
+ * VTID-04395 — Support → "report by voice". Opens the ORB so Vitana asks what
+ * happened and files the ticket, instead of opening with a daily briefing.
+ * Falls back to a plain open when the loaded widget predates the method.
+ */
+export function activateOrbForSupportReport(): boolean {
+  if (typeof window === 'undefined') return false;
+  const orb = (window as unknown as { VitanaOrb?: VitanaOrbApi }).VitanaOrb;
+  if (orb && typeof orb.startSupportReport === 'function') {
+    orb.startSupportReport();
+    return true;
+  }
+  return activateOrb();
 }
 
 export function activateOrb(topicId?: string): boolean {
