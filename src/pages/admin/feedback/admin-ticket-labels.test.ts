@@ -12,8 +12,10 @@ const root = path.join(__dirname, '..', '..', '..');
 const read = (p: string) => fs.readFileSync(path.join(root, p), 'utf8');
 const catalog = (l: string) => JSON.parse(read(`i18n/${l}/supportTickets.json`)).supportTickets;
 
+// `_pending_review` (and any `_`-prefixed key) is the translate pipeline's
+// metadata, not a label — skip it, as backoffice-navigation.test.ts does.
 function flatKeys(o: Record<string, unknown>, prefix = ''): string[] {
-  return Object.entries(o).flatMap(([k, v]) =>
+  return Object.entries(o).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) =>
     v && typeof v === 'object' ? flatKeys(v as Record<string, unknown>, `${prefix}${k}.`) : [`${prefix}${k}`],
   );
 }
