@@ -1,7 +1,7 @@
 import { Shield, Lock, UserCheck, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useTranslation } from "@/hooks/useTranslation";
+import { t } from "@/lib/i18n-toast";
 
 interface ContactConsentCardProps {
   onConsent: () => void;
@@ -10,23 +10,21 @@ interface ContactConsentCardProps {
 }
 
 export function ContactConsentCard({ onConsent, onDecline, source = "all" }: ContactConsentCardProps) {
-  const { translate } = useTranslation();
-  
   const privacyBullets = [
     {
       icon: Lock,
-      title: translate('consent.privacy.neverAutoMessage', 'We never message automatically'),
-      description: translate('consent.privacy.neverAutoMessageDesc', 'You choose who to contact and when'),
+      title: t('mailhub.findFriends.consent.noAutoTitle'),
+      description: t('mailhub.findFriends.consent.noAutoBody'),
     },
     {
-      icon: Eye,
-      title: translate('consent.privacy.hashedLocally', 'Contacts are hashed locally'),
-      description: translate('consent.privacy.hashedLocallyDesc', 'We only use encrypted identifiers for matching'),
+      icon: Eye, // VTID-04440: contacts are stored in the member's account (server-side), visible only to them
+      title: t('mailhub.findFriends.consent.privateTitle'),
+      description: t('mailhub.findFriends.consent.privateBody'),
     },
     {
       icon: UserCheck,
-      title: translate('consent.privacy.youChoose', 'You choose who to invite'),
-      description: translate('consent.privacy.youChooseDesc', 'Full control over every invitation sent'),
+      title: t('mailhub.findFriends.consent.removeTitle'),
+      description: t('mailhub.findFriends.consent.removeBody'),
     },
   ];
 
@@ -43,10 +41,10 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
         </div>
         <div>
           <h3 className="text-lg font-semibold text-foreground">
-            {translate('consent.privacy.title', 'Your privacy is protected')}
+            {t('mailhub.findFriends.consent.title')}
           </h3>
           <p className="text-sm text-muted-foreground">
-            {translate('consent.privacy.subtitle', "Here's how we handle your contacts")}
+            {t('mailhub.findFriends.consent.subtitle')}
           </p>
         </div>
       </div>
@@ -56,8 +54,8 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
         {privacyBullets.map((bullet, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 * (index + 1) }}
             className="flex items-start gap-3"
           >
@@ -74,7 +72,7 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
 
       {/* Helper text */}
       <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
-        {translate('consent.privacy.helperText', 'Matches are generated from hashed contact data stored securely. Your raw contact information never leaves your device.')}
+        {t('mailhub.findFriends.consent.helper')}
       </p>
 
       {/* CTAs */}
@@ -84,13 +82,14 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
           onClick={onDecline}
           className="flex-1"
         >
-          {translate('consent.privacy.notNow', 'Not now')}
+          {t('mailhub.findFriends.consent.notNow')}
         </Button>
         <Button
+          data-testid="find-friends-consent-continue"
           onClick={onConsent}
           className="flex-1 bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
         >
-          {translate('consent.privacy.continue', 'Continue')}
+          {t('mailhub.findFriends.consent.continue')}
         </Button>
       </div>
     </motion.div>

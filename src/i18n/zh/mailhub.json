@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "你的会话已过期。请重新登录以管理你的应用。",
       "loadFailed": "暂时无法加载你的应用。请稍后再试。"
+    },
+    "findFriends": {
+      "status": {
+        "on": "已连接 — 正在检查",
+        "off": "先在“已连接应用”中开启",
+        "phone": "在手机上选择联系人",
+        "phoneUnavailable": "仅限安卓上的 Chrome"
+      },
+      "connect": {
+        "title": "{app} 尚未连接",
+        "body": "在“已连接应用”中开启一次 {app}。之后在这里点一下就能找到你的朋友。",
+        "open": "打开已连接应用"
+      },
+      "progress": {
+        "reading": "正在读取你的联系人 …",
+        "matching": "正在查看谁已经在 Vitanaland …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "连接没有成功",
+          "body": "暂时无法访问你的账户。请稍后再试，或在“已连接应用”中重新连接。"
+        },
+        "api_unavailable": {
+          "title": "此设备上无法使用",
+          "body": "你的浏览器无法打开通讯录。请在安卓手机的 Chrome 中打开 Vitanaland，或连接 Google 或 iCloud。"
+        },
+        "permission_denied": {
+          "title": "无法访问你的联系人",
+          "body": "请在手机设置中允许 Vitanaland 访问你的联系人。"
+        },
+        "rate_limited": {
+          "title": "尝试次数太多",
+          "body": "请稍等片刻再试。"
+        },
+        "cancelled": {
+          "title": "没有选择联系人",
+          "body": "再点一次，选择你想导入的联系人。"
+        },
+        "unknown": {
+          "title": "出了点问题",
+          "body": "请稍后再试。"
+        }
+      },
+      "consent": {
+        "title": "我们如何处理你的联系人",
+        "subtitle": "在你寻找朋友之前",
+        "noAutoTitle": "我们绝不会主动给任何人发消息",
+        "noAutoBody": "联系谁、何时联系，都由你决定。",
+        "privateTitle": "只有你能看到",
+        "privateBody": "你导入的联系人保存在你的 Vitanaland 账户中，只有你能看到。",
+        "removeTitle": "随时可以删除",
+        "removeBody": "在“已连接应用”中，你可以关闭某个来源并移除它的联系人。",
+        "helper": "我们会比对电子邮件地址，显示谁已经在 Vitanaland。不在的人不会收到任何通知。",
+        "notNow": "以后再说",
+        "continue": "继续"
+      }
     }
   }
 }

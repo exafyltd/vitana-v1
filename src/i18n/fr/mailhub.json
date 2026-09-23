@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "Ta session a expiré. Reconnecte-toi pour gérer tes apps.",
       "loadFailed": "Tes apps n’ont pas pu être chargées. Réessaie dans un instant."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Connecté — vérifié maintenant",
+        "off": "Active-le d'abord dans Apps connectées",
+        "phone": "Choisis des contacts sur ton téléphone",
+        "phoneUnavailable": "Seulement dans Chrome sur Android"
+      },
+      "connect": {
+        "title": "{app} n'est pas encore connecté",
+        "body": "Active {app} une fois dans Apps connectées. Ensuite, tu retrouveras tes amis ici en un geste.",
+        "open": "Ouvrir Apps connectées"
+      },
+      "progress": {
+        "reading": "Lecture de tes contacts …",
+        "matching": "On regarde qui est déjà sur Vitanaland …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "La connexion n'a pas marché",
+          "body": "Ton compte n'était pas joignable. Réessaie dans un instant ou reconnecte-le dans Apps connectées."
+        },
+        "api_unavailable": {
+          "title": "Impossible sur cet appareil",
+          "body": "Ton navigateur ne peut pas ouvrir ton carnet d'adresses. Ouvre Vitanaland dans Chrome sur ton téléphone Android, ou connecte Google ou iCloud."
+        },
+        "permission_denied": {
+          "title": "Pas d'accès à tes contacts",
+          "body": "Autorise Vitanaland à accéder à tes contacts dans les réglages de ton téléphone."
+        },
+        "rate_limited": {
+          "title": "Trop d'essais",
+          "body": "Attends un instant, puis réessaie."
+        },
+        "cancelled": {
+          "title": "Aucun contact choisi",
+          "body": "Touche de nouveau et choisis les contacts à importer."
+        },
+        "unknown": {
+          "title": "Un problème est survenu",
+          "body": "Réessaie dans un instant."
+        }
+      },
+      "consent": {
+        "title": "Comment on gère tes contacts",
+        "subtitle": "Avant de chercher tes amis",
+        "noAutoTitle": "On n'écrit jamais à personne de nous-mêmes",
+        "noAutoBody": "Tu décides qui contacter et quand.",
+        "privateTitle": "Visibles par toi seul",
+        "privateBody": "Les contacts que tu importes sont enregistrés dans ton compte Vitanaland. Toi seul peux les voir.",
+        "removeTitle": "Supprime-les quand tu veux",
+        "removeBody": "Dans Apps connectées, tu peux désactiver une source et retirer ses contacts.",
+        "helper": "On compare les adresses e-mail pour montrer qui est déjà sur Vitanaland. Les autres n'en savent jamais rien.",
+        "notNow": "Pas maintenant",
+        "continue": "Continuer"
+      }
     }
   }
 }

@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "Deine Sitzung ist abgelaufen. Melde dich neu an, um deine Apps zu verwalten.",
       "loadFailed": "Deine Apps konnten gerade nicht geladen werden. Versuch es gleich noch einmal."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Verbunden – wird jetzt abgeglichen",
+        "off": "Erst unter „Verbundene Apps“ einschalten",
+        "phone": "Kontakte auf dem Handy auswählen",
+        "phoneUnavailable": "Nur in Chrome auf Android"
+      },
+      "connect": {
+        "title": "{app} ist noch nicht verbunden",
+        "body": "Schalte {app} einmal unter „Verbundene Apps“ ein. Danach findest du deine Freunde hier mit einem Tipp.",
+        "open": "Verbundene Apps öffnen"
+      },
+      "progress": {
+        "reading": "Kontakte werden gelesen …",
+        "matching": "Wir schauen, wer schon auf Vitanaland ist …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "Verbindung hat nicht geklappt",
+          "body": "Dein Konto war gerade nicht erreichbar. Versuch es gleich noch einmal oder verbinde es unter „Verbundene Apps“ neu."
+        },
+        "api_unavailable": {
+          "title": "Auf diesem Gerät nicht möglich",
+          "body": "Dein Browser kann das Adressbuch nicht öffnen. Öffne Vitanaland in Chrome auf deinem Android-Handy oder verbinde Google oder iCloud."
+        },
+        "permission_denied": {
+          "title": "Kein Zugriff auf deine Kontakte",
+          "body": "Erlaube Vitanaland in den Einstellungen deines Handys den Zugriff auf deine Kontakte."
+        },
+        "rate_limited": {
+          "title": "Zu viele Versuche",
+          "body": "Warte kurz und versuch es dann noch einmal."
+        },
+        "cancelled": {
+          "title": "Keine Kontakte ausgewählt",
+          "body": "Tippe noch einmal und wähle die Kontakte aus, die du übernehmen möchtest."
+        },
+        "unknown": {
+          "title": "Da ist etwas schiefgelaufen",
+          "body": "Versuch es gleich noch einmal."
+        }
+      },
+      "consent": {
+        "title": "So gehen wir mit deinen Kontakten um",
+        "subtitle": "Bevor du nach Freunden suchst",
+        "noAutoTitle": "Wir schreiben niemandem von selbst",
+        "noAutoBody": "Du entscheidest, wen du kontaktierst und wann.",
+        "privateTitle": "Nur für dich sichtbar",
+        "privateBody": "Übernommene Kontakte werden in deinem Vitanaland-Konto gespeichert. Nur du siehst sie.",
+        "removeTitle": "Jederzeit wieder löschen",
+        "removeBody": "Unter „Verbundene Apps“ schaltest du eine Quelle aus und entfernst ihre Kontakte.",
+        "helper": "Wir gleichen E-Mail-Adressen ab, um zu zeigen, wer schon auf Vitanaland ist. Wer nicht dabei ist, erfährt davon nichts.",
+        "notNow": "Jetzt nicht",
+        "continue": "Weiter"
+      }
     }
   }
 }

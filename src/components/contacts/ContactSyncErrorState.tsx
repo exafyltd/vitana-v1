@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { t } from '@/lib/i18n-toast';
 
-type ErrorType = "oauth_failed" | "api_unavailable" | "permission_denied" | "rate_limited" | "unknown";
+export type ContactSyncErrorType = "oauth_failed" | "api_unavailable" | "permission_denied" | "rate_limited" | "cancelled" | "unknown";
+type ErrorType = ContactSyncErrorType;
 
 interface ContactSyncErrorStateProps {
   errorType: ErrorType;
@@ -13,38 +14,14 @@ interface ContactSyncErrorStateProps {
   retryAfter?: number; // seconds for rate limit
 }
 
-const errorConfig: Record<ErrorType, {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  showSettings?: boolean;
-}> = {
-  oauth_failed: {
-    icon: <ShieldX className="w-8 h-8 text-destructive" />,
-    title: "Connection Failed",
-    description: "We couldn't connect to your account. This might be due to expired permissions or a temporary issue.",
-  },
-  api_unavailable: {
-    icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" />,
-    title: "Service Unavailable",
-    description: "The contact import feature is not available on your device or browser. Try using our mobile app instead.",
-  },
-  permission_denied: {
-    icon: <ShieldX className="w-8 h-8 text-destructive" />,
-    title: "Permission Denied",
-    description: "VITANA needs permission to access your contacts. Please enable contacts access in your device settings.",
-    showSettings: true,
-  },
-  rate_limited: {
-    icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" />,
-    title: "Too Many Requests",
-    description: "Please wait a moment before trying again.",
-  },
-  unknown: {
-    icon: <AlertCircle className="w-8 h-8 text-destructive" />,
-    title: "Something Went Wrong",
-    description: "An unexpected error occurred. Please try again.",
-  },
+// VTID-04440: titles and texts come from mailhub.findFriends.errors.<type>.
+const errorConfig: Record<ErrorType, { icon: React.ReactNode; showSettings?: boolean }> = {
+  oauth_failed: { icon: <ShieldX className="w-8 h-8 text-destructive" /> },
+  api_unavailable: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
+  permission_denied: { icon: <ShieldX className="w-8 h-8 text-destructive" />, showSettings: true },
+  rate_limited: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
+  cancelled: { icon: <AlertCircle className="w-8 h-8 text-muted-foreground" /> },
+  unknown: { icon: <AlertCircle className="w-8 h-8 text-destructive" /> },
 };
 
 export function ContactSyncErrorState({
@@ -83,10 +60,10 @@ export function ContactSyncErrorState({
       {/* Title & Description */}
       <div className="space-y-2">
         <h3 className="text-lg font-semibold text-foreground">
-          {config.title}
+          {t(`mailhub.findFriends.errors.${errorType}.title`)}
         </h3>
         <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-          {message || config.description}
+          {t(`mailhub.findFriends.errors.${errorType}.body`)}
         </p>
       </div>
 
@@ -104,7 +81,7 @@ export function ContactSyncErrorState({
             className="w-full"
             variant="outline"
           >
-            <Settings className="w-4 h-4 mr-2" />
+            <Settings className="w-4 h-4 me-2" />
             {t('screens.contacts.openSettings')}
           </Button>
         )}
@@ -114,7 +91,7 @@ export function ContactSyncErrorState({
           disabled={errorType === "rate_limited" && !!retryAfter}
           className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
         >
-          <RefreshCw className="w-4 h-4 mr-2" />
+          <RefreshCw className="w-4 h-4 me-2" />
           {t('screens.contacts.tryAgain')}
         </Button>
 

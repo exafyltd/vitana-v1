@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "Sua sessão expirou. Faça login de novo para gerenciar seus apps.",
       "loadFailed": "Não foi possível carregar seus apps agora. Tente de novo daqui a pouco."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Conectado — verificando agora",
+        "off": "Ative primeiro em Apps conectados",
+        "phone": "Escolha contatos no seu celular",
+        "phoneUnavailable": "Só no Chrome no Android"
+      },
+      "connect": {
+        "title": "{app} ainda não está conectado",
+        "body": "Ative {app} uma vez em Apps conectados. Depois disso, você encontra seus amigos aqui com um toque.",
+        "open": "Abrir Apps conectados"
+      },
+      "progress": {
+        "reading": "Lendo seus contatos …",
+        "matching": "Vendo quem já está na Vitanaland …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "A conexão não deu certo",
+          "body": "Não conseguimos acessar sua conta agora. Tente de novo daqui a pouco ou conecte-a de novo em Apps conectados."
+        },
+        "api_unavailable": {
+          "title": "Não é possível neste aparelho",
+          "body": "Seu navegador não consegue abrir sua agenda. Abra a Vitanaland no Chrome do seu celular Android ou conecte o Google ou o iCloud."
+        },
+        "permission_denied": {
+          "title": "Sem acesso aos seus contatos",
+          "body": "Permita que a Vitanaland acesse seus contatos nas configurações do seu celular."
+        },
+        "rate_limited": {
+          "title": "Tentativas demais",
+          "body": "Espere um pouco e tente de novo."
+        },
+        "cancelled": {
+          "title": "Nenhum contato escolhido",
+          "body": "Toque de novo e escolha os contatos que você quer trazer."
+        },
+        "unknown": {
+          "title": "Algo deu errado",
+          "body": "Tente de novo daqui a pouco."
+        }
+      },
+      "consent": {
+        "title": "Como cuidamos dos seus contatos",
+        "subtitle": "Antes de você procurar amigos",
+        "noAutoTitle": "Nunca escrevemos para ninguém por conta própria",
+        "noAutoBody": "Você decide com quem falar e quando.",
+        "privateTitle": "Só você vê",
+        "privateBody": "Os contatos que você traz ficam salvos na sua conta da Vitanaland. Só você pode vê-los.",
+        "removeTitle": "Apague quando quiser",
+        "removeBody": "Em Apps conectados você pode desativar uma fonte e remover os contatos dela.",
+        "helper": "Comparamos endereços de e-mail para mostrar quem já está na Vitanaland. Quem não está nunca fica sabendo.",
+        "notNow": "Agora não",
+        "continue": "Continuar"
+      }
     }
   }
 }

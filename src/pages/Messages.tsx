@@ -1276,9 +1276,11 @@ export default function Messages() {
                 {/* Sub-filter pills + overflow menu */}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex gap-2 overflow-x-auto pb-1">
-                    {['all', 'direct', 'groups'].map((filter) => (
+                    {/* VTID-04440: Contacts on mobile too — imported contacts were only reachable on desktop. */}
+                    {['all', 'direct', 'groups', 'contacts'].map((filter) => (
                       <Button
                         key={filter}
+                        data-testid={`inbox-filter-${filter}`}
                         variant={conversationFilter === filter ? "default" : "ghost"}
                         size="sm"
                         onClick={() => setConversationFilter(filter as any)}
@@ -1312,7 +1314,19 @@ export default function Messages() {
                   </DropdownMenu>
                 </div>
 
-                {renderMobileConversationList()}
+                {conversationFilter === 'contacts' ? (
+                  <div className="ps-0 pe-0">
+                    <ContactsTabContent
+                      onStartConversation={(userId) => {
+                        setSelectedRecipientId(userId);
+                        setShowNewConversation(true);
+                      }}
+                      messageContext={messageContext}
+                    />
+                  </div>
+                ) : (
+                  renderMobileConversationList()
+                )}
               </div>
             )}
           </div>

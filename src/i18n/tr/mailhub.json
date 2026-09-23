@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "Oturumunun süresi doldu. Uygulamalarını yönetmek için yeniden giriş yap.",
       "loadFailed": "Uygulamaların şu anda yüklenemedi. Biraz sonra tekrar dene."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Bağlı — şimdi kontrol ediliyor",
+        "off": "Önce Bağlı Uygulamalar'da aç",
+        "phone": "Telefonundaki kişileri seç",
+        "phoneUnavailable": "Yalnızca Android'de Chrome'da"
+      },
+      "connect": {
+        "title": "{app} henüz bağlı değil",
+        "body": "{app} uygulamasını Bağlı Uygulamalar'da bir kez aç. Sonra arkadaşlarını burada tek dokunuşla bulursun.",
+        "open": "Bağlı Uygulamalar'ı aç"
+      },
+      "progress": {
+        "reading": "Kişilerin okunuyor …",
+        "matching": "Kimlerin zaten Vitanaland'de olduğuna bakıyoruz …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "Bağlantı olmadı",
+          "body": "Hesabına şu an ulaşılamadı. Biraz sonra tekrar dene ya da Bağlı Uygulamalar'da yeniden bağla."
+        },
+        "api_unavailable": {
+          "title": "Bu cihazda mümkün değil",
+          "body": "Tarayıcın rehberini açamıyor. Vitanaland'i Android telefonunda Chrome ile aç ya da Google veya iCloud'u bağla."
+        },
+        "permission_denied": {
+          "title": "Kişilerine erişim yok",
+          "body": "Telefonunun ayarlarında Vitanaland'in kişilerine erişmesine izin ver."
+        },
+        "rate_limited": {
+          "title": "Çok fazla deneme",
+          "body": "Biraz bekle, sonra tekrar dene."
+        },
+        "cancelled": {
+          "title": "Kişi seçilmedi",
+          "body": "Tekrar dokun ve eklemek istediğin kişileri seç."
+        },
+        "unknown": {
+          "title": "Bir şeyler ters gitti",
+          "body": "Biraz sonra tekrar dene."
+        }
+      },
+      "consent": {
+        "title": "Kişilerini nasıl kullanıyoruz",
+        "subtitle": "Arkadaşlarını aramadan önce",
+        "noAutoTitle": "Kimseye kendiliğimizden yazmayız",
+        "noAutoBody": "Kime, ne zaman ulaşacağına sen karar verirsin.",
+        "privateTitle": "Yalnızca sen görürsün",
+        "privateBody": "Eklediğin kişiler Vitanaland hesabında saklanır. Onları yalnızca sen görebilirsin.",
+        "removeTitle": "İstediğin zaman sil",
+        "removeBody": "Bağlı Uygulamalar'da bir kaynağı kapatıp kişilerini kaldırabilirsin.",
+        "helper": "Kimlerin zaten Vitanaland'de olduğunu göstermek için e-posta adreslerini karşılaştırırız. Olmayanlar bundan hiç haberdar olmaz.",
+        "notNow": "Şimdi değil",
+        "continue": "Devam"
+      }
     }
   }
 }

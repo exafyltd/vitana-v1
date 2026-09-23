@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "Tvoja sesija je istekla. Prijavi se ponovo da upravljaš aplikacijama.",
       "loadFailed": "Tvoje aplikacije trenutno nisu mogle da se učitaju. Pokušaj ponovo za trenutak."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Povezano — proveravamo sada",
+        "off": "Prvo uključi u „Povezanim aplikacijama“",
+        "phone": "Izaberi kontakte na telefonu",
+        "phoneUnavailable": "Samo u Chrome-u na Androidu"
+      },
+      "connect": {
+        "title": "{app} još nije povezan",
+        "body": "Uključi {app} jednom u „Povezanim aplikacijama“. Posle toga ovde nalaziš prijatelje jednim dodirom.",
+        "open": "Otvori Povezane aplikacije"
+      },
+      "progress": {
+        "reading": "Čitamo tvoje kontakte …",
+        "matching": "Gledamo ko je već na Vitanalandu …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "Povezivanje nije uspelo",
+          "body": "Tvoj nalog trenutno nije dostupan. Pokušaj ponovo za trenutak ili ga ponovo poveži u „Povezanim aplikacijama“."
+        },
+        "api_unavailable": {
+          "title": "Nije moguće na ovom uređaju",
+          "body": "Tvoj pregledač ne može da otvori imenik. Otvori Vitanaland u Chrome-u na Android telefonu ili poveži Google ili iCloud."
+        },
+        "permission_denied": {
+          "title": "Nema pristupa kontaktima",
+          "body": "Dozvoli Vitanalandu pristup kontaktima u podešavanjima telefona."
+        },
+        "rate_limited": {
+          "title": "Previše pokušaja",
+          "body": "Sačekaj malo pa pokušaj ponovo."
+        },
+        "cancelled": {
+          "title": "Nisi izabrao kontakte",
+          "body": "Dodirni ponovo i izaberi kontakte koje želiš da preneseš."
+        },
+        "unknown": {
+          "title": "Nešto nije u redu",
+          "body": "Pokušaj ponovo za trenutak."
+        }
+      },
+      "consent": {
+        "title": "Ovako postupamo s tvojim kontaktima",
+        "subtitle": "Pre nego što potražiš prijatelje",
+        "noAutoTitle": "Nikome ne pišemo sami od sebe",
+        "noAutoBody": "Ti odlučuješ koga kontaktiraš i kada.",
+        "privateTitle": "Vidljivo samo tebi",
+        "privateBody": "Kontakti koje preneseš čuvaju se na tvom Vitanaland nalogu. Samo ih ti vidiš.",
+        "removeTitle": "Obriši ih kad god želiš",
+        "removeBody": "U „Povezanim aplikacijama“ možeš isključiti izvor i ukloniti njegove kontakte.",
+        "helper": "Upoređujemo imejl adrese da bismo pokazali ko je već na Vitanalandu. Oni koji nisu nikada to ne saznaju.",
+        "notNow": "Ne sada",
+        "continue": "Nastavi"
+      }
     }
   }
 }

@@ -108,6 +108,62 @@
     "errors": {
       "sessionExpired": "Your session has expired. Sign in again to manage your apps.",
       "loadFailed": "Your apps couldn't be loaded right now. Try again in a moment."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Connected — checked now",
+        "off": "Turn it on in Connected Apps first",
+        "phone": "Pick contacts on your phone",
+        "phoneUnavailable": "Only in Chrome on Android"
+      },
+      "connect": {
+        "title": "{app} isn't connected yet",
+        "body": "Turn {app} on once in Connected Apps. After that, you can find your friends here with one tap.",
+        "open": "Open Connected Apps"
+      },
+      "progress": {
+        "reading": "Reading your contacts …",
+        "matching": "Checking who's already on Vitanaland …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "The connection didn't work",
+          "body": "Your account couldn't be reached just now. Try again in a moment, or reconnect it in Connected Apps."
+        },
+        "api_unavailable": {
+          "title": "Not possible on this device",
+          "body": "Your browser can't open your address book. Open Vitanaland in Chrome on your Android phone, or connect Google or iCloud."
+        },
+        "permission_denied": {
+          "title": "No access to your contacts",
+          "body": "Allow Vitanaland to access your contacts in your phone's settings."
+        },
+        "rate_limited": {
+          "title": "Too many tries",
+          "body": "Wait a moment, then try again."
+        },
+        "cancelled": {
+          "title": "No contacts picked",
+          "body": "Tap again and pick the contacts you want to bring in."
+        },
+        "unknown": {
+          "title": "Something went wrong",
+          "body": "Try again in a moment."
+        }
+      },
+      "consent": {
+        "title": "How we handle your contacts",
+        "subtitle": "Before you look for friends",
+        "noAutoTitle": "We never message anyone on our own",
+        "noAutoBody": "You decide who to contact and when.",
+        "privateTitle": "Visible only to you",
+        "privateBody": "Contacts you bring in are stored in your Vitanaland account. Only you can see them.",
+        "removeTitle": "Remove them any time",
+        "removeBody": "In Connected Apps you can turn a source off and remove its contacts.",
+        "helper": "We compare e-mail addresses to show who's already on Vitanaland. People who aren't are never told.",
+        "notNow": "Not now",
+        "continue": "Continue"
+      }
     }
   }
 }
