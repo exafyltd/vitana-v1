@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
+import { buildOrbScreenContext } from "@/lib/orbScreenContext";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -559,9 +560,13 @@ export function useOrbVoiceWidget() {
         // VTID-02789: re-emit is_mobile on every route change so a viewport
         // resize mid-session is reflected in the next navigate decision.
         is_mobile: isMobile,
+        // VTID-04425 (WS-3.3): the page title and view params. During a live
+        // voice session the widget forwards these as a context_update, so
+        // Vitana's get_current_screen sees the screen the user is on now.
+        ...buildOrbScreenContext(location.search, document.title, document.documentElement.lang),
       });
     }
-  }, [location.pathname, isMobile]);
+  }, [location.pathname, location.search, isMobile]);
 
   // Cleanup on unmount
   useEffect(() => {
