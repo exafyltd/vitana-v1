@@ -10631,6 +10631,7 @@
         "acceptExpired": "This invite has expired.",
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
+        "acceptWrongEmail": "This invite was sent to a different email address. Sign in with the address the invite was sent to, then open the link again.",
         "goToPortal": "Go to Commerce Portal",
         "orgKeyAuto": "The short name is derived from the business name — you can adjust it.",
         "shareInvite": "Share invite link",

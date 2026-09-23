@@ -10518,6 +10518,7 @@
         "acceptExpired": "Diese Einladung ist abgelaufen.",
         "acceptNotFound": "Diese Einladung wurde nicht gefunden.",
         "acceptFailed": "Die Einladung konnte nicht angenommen werden.",
+        "acceptWrongEmail": "Diese Einladung wurde an eine andere E-Mail-Adresse geschickt. Melde dich mit der Adresse an, an die die Einladung ging, und öffne den Link dann noch einmal.",
         "goToPortal": "Zum Commerce Portal",
         "orgKeyAuto": "Der Kurzname wird aus dem Namen erzeugt – du kannst ihn anpassen.",
         "shareInvite": "Einladungslink teilen",

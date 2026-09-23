@@ -10562,6 +10562,7 @@
         "acceptExpired": "Esta invitación ha caducado.",
         "acceptNotFound": "No se pudo encontrar esta invitación.",
         "acceptFailed": "No se pudo aceptar la invitación.",
+        "acceptWrongEmail": "Esta invitación se envió a otra dirección de correo. Inicia sesión con la dirección a la que se envió la invitación y vuelve a abrir el enlace.",
         "goToPortal": "Ir al Portal de Comercio",
         "commerceVertical": "Sector",
         "commerceVerticalHealth": "Servicios de salud y médicos",
