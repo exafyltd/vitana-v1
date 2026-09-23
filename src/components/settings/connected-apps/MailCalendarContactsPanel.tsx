@@ -55,6 +55,7 @@ const APP_EMOJI: Record<ConnectedAppId, string> = {
   "outlook-calendar": "🗓️",
   "apple-calendar": "📆",
   "google-contacts": "👥",
+  "outlook-contacts": "📇",
   "iphone-contacts": "📱",
   "android-contacts": "🤖",
 };

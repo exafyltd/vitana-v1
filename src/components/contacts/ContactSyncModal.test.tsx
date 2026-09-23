@@ -3,7 +3,7 @@
  * VTID-04440 — "Find friends" (Messages → Contacts, Invite friends) imports
  * through the Connected Apps hub instead of saying "coming soon".
  *
- * Pins: Google / iCloud that are on sync through the hub and the result is
+ * Pins: Google / Outlook (VTID-04449) / iCloud that are on sync through the hub and the result is
  * read back for the preview; one that is off opens a "connect first" step
  * that leads to Connected Apps; the phone book goes through the hub's
  * device import; nothing writes contacts from the browser; WhatsApp (no
@@ -77,15 +77,16 @@ beforeEach(() => {
 });
 
 describe("Find friends through Connected Apps", () => {
-  it("offers Google, iCloud and the phone book — not WhatsApp — and marks the ones already on", async () => {
+  it("offers Google, Outlook, iCloud and the phone book — not WhatsApp — and marks the ones already on", async () => {
     client.fetchConnectedApps.mockResolvedValue([hubApp("google-contacts", "on"), hubApp("iphone-contacts", "off")]);
     open();
     expect(await screen.findByText("mailhub.apps.google-contacts.name")).toBeTruthy();
+    expect(screen.getByText("mailhub.apps.outlook-contacts.name")).toBeTruthy();
     expect(screen.getByText("mailhub.apps.iphone-contacts.name")).toBeTruthy();
     expect(screen.getByText("mailhub.apps.android-contacts.name")).toBeTruthy();
     expect(screen.queryByText(/WhatsApp/i)).toBeNull();
     await waitFor(() => expect(screen.getByText("mailhub.findFriends.status.on")).toBeTruthy());
-    expect(screen.getByText("mailhub.findFriends.status.off")).toBeTruthy();
+    expect(screen.getAllByText("mailhub.findFriends.status.off")).toHaveLength(2); // Outlook and iCloud
   });
 
   it("Google on: syncs through the hub and previews what was imported", async () => {
@@ -100,6 +101,17 @@ describe("Find friends through Connected Apps", () => {
     await waitFor(() => expect(client.syncConnectedApp).toHaveBeenCalledWith("google-contacts"));
     expect(db.lastIn).toEqual({ col: "source", vals: ["google"] });
     expect(db.writes).toEqual([]); // nothing written from the browser
+  });
+
+  it("Outlook on (VTID-04449): syncs outlook-contacts and reads back source 'microsoft'", async () => {
+    client.fetchConnectedApps.mockResolvedValue([hubApp("outlook-contacts", "on")]);
+    client.syncConnectedApp.mockResolvedValue({ ok: true, result: { imported: 1 } });
+    db.rows = [{ id: "c1", contact_name: "Clara", contact_phone: "+49 170 1", contact_email: null, contact_user_id: null, is_on_platform: false }];
+    open();
+    await pickAndFind("mailhub.apps.outlook-contacts.name");
+    await waitFor(() => expect(client.syncConnectedApp).toHaveBeenCalledWith("outlook-contacts"));
+    expect(db.lastIn).toEqual({ col: "source", vals: ["microsoft"] });
+    expect(db.writes).toEqual([]);
   });
 
   it("iCloud off: shows a connect step that leads to Connected Apps", async () => {
@@ -142,6 +154,17 @@ describe("consent", () => {
     expect(screen.getByText("mailhub.findFriends.consent.helper")).toBeTruthy();
     const src = fs.readFileSync(path.resolve(__dirname, "ContactConsentCard.tsx"), "utf8");
     expect(src).not.toMatch(/never leaves your device|hashed locally/i);
+  });
+});
+
+describe("Outlook Contacts copy (VTID-04449)", () => {
+  it("has a name and a description in all eleven locales", () => {
+    const I18N = path.resolve(__dirname, "../../i18n");
+    for (const l of ["de", "en", "es", "fr", "pl", "pt", "ru", "sr", "tr", "zh", "ar"]) {
+      const app = JSON.parse(fs.readFileSync(path.join(I18N, l, "mailhub.json"), "utf8")).mailhub.apps["outlook-contacts"];
+      expect(app?.name).toMatch(/Outlook/);
+      expect(app?.what).toMatch(/Outlook/);
+    }
   });
 });
 

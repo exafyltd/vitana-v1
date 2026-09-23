@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 import { contactPickerSupported } from "@/lib/connected-apps-client";
 
-export type ContactSource = "google" | "icloud" | "phonebook" | "whatsapp";
+export type ContactSource = "google" | "outlook" | "icloud" | "phonebook" | "whatsapp";
 
 interface SourceConfig {
   id: ContactSource;
@@ -36,6 +36,20 @@ const sources: SourceConfig[] = [
       </svg>
     ),
     colorVar: "--contact-source-google",
+    available: true,
+  },
+  {
+    // VTID-04449: Outlook / Microsoft 365 address book, through the hub.
+    id: "outlook",
+    nameKey: "mailhub.apps.outlook-contacts.name",
+    icon: (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2" y="4" width="12" height="16" rx="2" fill="#0078D4"/>
+        <circle cx="8" cy="12" r="3.2" fill="none" stroke="#fff" strokeWidth="1.8"/>
+        <path fill="#28A8EA" d="M15 7h6.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5H15z"/>
+      </svg>
+    ),
+    colorVar: "--contact-source-outlook",
     available: true,
   },
   {

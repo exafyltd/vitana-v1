@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Read new mail in your iCloud inbox"
+        "what": "Read your iCloud inbox and send mail from your iCloud address"
       },
       "google-calendar": {
         "name": "Google Calendar",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "Outlook Calendar",
         "what": "See and add events, kept in step with Vitanaland"
+      },
+      "outlook-contacts": {
+        "name": "Outlook Contacts",
+        "what": "Bring your Outlook contacts into Vitanaland"
       },
       "apple-calendar": {
         "name": "Apple Calendar (iCloud)",
@@ -85,7 +89,7 @@
       "step3": "Enter your Apple ID and the new password here.",
       "appleId": "Apple ID (email)",
       "appPassword": "App-specific password",
-      "privacy": "We store the password encrypted and only use it to read. You can revoke it at Apple at any time.",
+      "privacy": "We store the password encrypted. Vitana uses it to read your mail, calendar and contacts, to send mail when you ask it to, and to keep your “Vitanaland” calendar up to date. You can revoke it at Apple at any time.",
       "connect": "Connect",
       "checking": "Checking …",
       "wrongPassword": "Apple refused the sign-in — check your Apple ID and the app-specific password",

@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Čitaj nove mejlove u iCloud sandučetu"
+        "what": "Čitaj iCloud sanduče i šalji mejlove sa svoje iCloud adrese"
       },
       "google-calendar": {
         "name": "Google kalendar",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "Outlook kalendar",
         "what": "Vidi i dodaj termine, usklađene sa Vitanalandom"
+      },
+      "outlook-contacts": {
+        "name": "Outlook kontakti",
+        "what": "Prenesi svoje Outlook kontakte u Vitanaland"
       },
       "apple-calendar": {
         "name": "Apple kalendar (iCloud)",
@@ -85,7 +89,7 @@
       "step3": "Unesi ovde svoj Apple ID i novu lozinku.",
       "appleId": "Apple ID (imejl)",
       "appPassword": "Lozinka za aplikaciju",
-      "privacy": "Lozinku čuvamo šifrovanu i koristimo je samo za čitanje. Možeš je bilo kad opozvati kod Apple-a.",
+      "privacy": "Lozinku čuvamo šifrovanu. Vitana je koristi da čita tvoju poštu, kalendar i kontakte, da šalje mejlove kad to zatražiš i da ažurira tvoj kalendar „Vitanaland“. Možeš je bilo kad opozvati kod Apple-a.",
       "connect": "Poveži",
       "checking": "Proverava se …",
       "wrongPassword": "Apple je odbio prijavu — proveri svoj Apple ID i lozinku za aplikaciju",

@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "اقرأ الرسائل الجديدة في صندوق iCloud"
+        "what": "اقرأ صندوق بريد iCloud وأرسل الرسائل من عنوان iCloud الخاص بك"
       },
       "google-calendar": {
         "name": "تقويم Google",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "تقويم Outlook",
         "what": "شاهد المواعيد وأضفها، متزامنة مع Vitanaland"
+      },
+      "outlook-contacts": {
+        "name": "جهات اتصال Outlook",
+        "what": "انقل جهات اتصال Outlook إلى Vitanaland"
       },
       "apple-calendar": {
         "name": "تقويم Apple (iCloud)",
@@ -85,7 +89,7 @@
       "step3": "أدخل هنا Apple ID وكلمة السر الجديدة.",
       "appleId": "Apple ID (البريد الإلكتروني)",
       "appPassword": "كلمة سر خاصة بالتطبيق",
-      "privacy": "نحفظ كلمة السر مشفّرة ولا نستخدمها إلا للقراءة. يمكنك إلغاؤها لدى Apple في أي وقت.",
+      "privacy": "نحفظ كلمة السر مشفّرة. تستخدمها Vitana لقراءة بريدك وتقويمك وجهات اتصالك، ولإرسال الرسائل عندما تطلب ذلك، ولتحديث تقويم «Vitanaland». يمكنك إلغاؤها لدى Apple في أي وقت.",
       "connect": "اربط",
       "checking": "جارٍ التحقق …",
       "wrongPassword": "رفضت Apple تسجيل الدخول — تحقّق من Apple ID وكلمة السر الخاصة بالتطبيق",

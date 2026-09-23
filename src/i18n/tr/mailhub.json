@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "iCloud gelen kutundaki yeni e-postaları oku"
+        "what": "iCloud gelen kutunu oku ve iCloud adresinden e-posta gönder"
       },
       "google-calendar": {
         "name": "Google Takvim",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "Outlook Takvim",
         "what": "Randevuları gör ve ekle, Vitanaland ile eşitlenir"
+      },
+      "outlook-contacts": {
+        "name": "Outlook Kişiler",
+        "what": "Outlook kişilerini Vitanaland'e aktar"
       },
       "apple-calendar": {
         "name": "Apple Takvim (iCloud)",
@@ -85,7 +89,7 @@
       "step3": "Apple kimliğini ve yeni parolayı buraya gir.",
       "appleId": "Apple Kimliği (e-posta)",
       "appPassword": "Uygulamaya özel parola",
-      "privacy": "Parolayı şifreli saklıyoruz ve yalnızca okumak için kullanıyoruz. İstediğin zaman Apple'da iptal edebilirsin.",
+      "privacy": "Parolayı şifreli saklıyoruz. Vitana onu e-postalarını, takvimini ve kişilerini okumak, istediğinde e-posta göndermek ve “Vitanaland” takvimini güncel tutmak için kullanır. İstediğin zaman Apple'da iptal edebilirsin.",
       "connect": "Bağla",
       "checking": "Kontrol ediliyor …",
       "wrongPassword": "Apple girişi reddetti — Apple kimliğini ve uygulamaya özel parolayı kontrol et",

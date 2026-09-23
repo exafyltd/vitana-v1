@@ -11,7 +11,7 @@ import {
   type ConnectedAppId,
 } from "@/lib/connected-apps-client";
 
-export type ContactSource = "google" | "icloud" | "phonebook" | "whatsapp";
+export type ContactSource = "google" | "outlook" | "icloud" | "phonebook" | "whatsapp";
 
 interface ConnectedSource {
   source: ContactSource;
@@ -26,7 +26,7 @@ interface SyncResult {
   totalImported: number;
 }
 
-/** Google / iCloud still have to be switched on in Connected Apps. */
+/** Google / Outlook / iCloud still have to be switched on in Connected Apps. */
 export class ConnectAppFirst extends Error {
   constructor(public app: ConnectedAppId) {
     super("connect_required");
@@ -35,7 +35,15 @@ export class ConnectAppFirst extends Error {
 
 const HUB_APP: Partial<Record<ContactSource, ConnectedAppId>> = {
   google: "google-contacts",
+  outlook: "outlook-contacts",
   icloud: "iphone-contacts",
+};
+
+/** `contacts.source` value each hub import writes (VTID-04449: Outlook → microsoft). */
+const DB_SOURCE: Partial<Record<ContactSource, string>> = {
+  google: "google",
+  outlook: "microsoft",
+  icloud: "icloud",
 };
 
 const PREVIEW_LIMIT = 500;
@@ -154,7 +162,7 @@ export function useContactSync() {
 
     try {
       const hubSources: string[] = [];
-      const needsHubState = sources.some((s) => s === "google" || s === "icloud");
+      const needsHubState = sources.some((s) => Boolean(HUB_APP[s]));
       const apps = needsHubState ? await fetchConnectedApps() : [];
 
       for (const source of sources) {
@@ -176,7 +184,7 @@ export function useContactSync() {
           if (!app || app.status !== "on") throw new ConnectAppFirst(appId);
           const r = await syncConnectedApp(appId);
           if (!r.ok) throw new Error(r.error ?? "sync_failed");
-          hubSources.push(source);
+          hubSources.push(DB_SOURCE[source] ?? source);
         }
         // whatsapp: no import path exists; the picker no longer offers it.
       }

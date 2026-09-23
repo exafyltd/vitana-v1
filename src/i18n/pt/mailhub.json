@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Ler e-mails novos na sua caixa do iCloud"
+        "what": "Ler sua caixa do iCloud e enviar e-mails do seu endereço do iCloud"
       },
       "google-calendar": {
         "name": "Google Agenda",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "Calendário do Outlook",
         "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
+      },
+      "outlook-contacts": {
+        "name": "Contatos do Outlook",
+        "what": "Trazer seus contatos do Outlook para a Vitanaland"
       },
       "apple-calendar": {
         "name": "Calendário da Apple (iCloud)",
@@ -85,7 +89,7 @@
       "step3": "Digite aqui seu ID Apple e a nova senha.",
       "appleId": "ID Apple (e-mail)",
       "appPassword": "Senha de app",
-      "privacy": "Guardamos a senha criptografada e só a usamos para ler. Você pode revogá-la na Apple quando quiser.",
+      "privacy": "Guardamos a senha criptografada. A Vitana a usa para ler seus e-mails, sua agenda e seus contatos, enviar e-mails quando você pedir e manter sua agenda “Vitanaland” atualizada. Você pode revogá-la na Apple quando quiser.",
       "connect": "Conectar",
       "checking": "Verificando …",
       "wrongPassword": "A Apple recusou o login — confira seu ID Apple e a senha de app",

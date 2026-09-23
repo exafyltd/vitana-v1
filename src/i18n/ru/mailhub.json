@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Читать новые письма в iCloud"
+        "what": "Читать почту iCloud и отправлять письма со своего адреса iCloud"
       },
       "google-calendar": {
         "name": "Google Календарь",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "Календарь Outlook",
         "what": "Видеть и добавлять встречи, синхронно с Vitanaland"
+      },
+      "outlook-contacts": {
+        "name": "Контакты Outlook",
+        "what": "Перенести контакты Outlook в Vitanaland"
       },
       "apple-calendar": {
         "name": "Календарь Apple (iCloud)",
@@ -85,7 +89,7 @@
       "step3": "Введи здесь свой Apple ID и новый пароль.",
       "appleId": "Apple ID (e-mail)",
       "appPassword": "Пароль для приложения",
-      "privacy": "Мы храним пароль в зашифрованном виде и используем его только для чтения. Ты можешь отозвать его в Apple в любой момент.",
+      "privacy": "Мы храним пароль в зашифрованном виде. Vitana использует его, чтобы читать твою почту, календарь и контакты, отправлять письма, когда ты просишь, и обновлять календарь «Vitanaland». Ты можешь отозвать его в Apple в любой момент.",
       "connect": "Подключить",
       "checking": "Проверяем …",
       "wrongPassword": "Apple отклонил вход — проверь Apple ID и пароль для приложения",

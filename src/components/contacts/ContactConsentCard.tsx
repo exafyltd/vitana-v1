@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n-toast";
 interface ContactConsentCardProps {
   onConsent: () => void;
   onDecline: () => void;
-  source?: "google" | "icloud" | "phonebook" | "whatsapp" | "all";
+  source?: "google" | "outlook" | "icloud" | "phonebook" | "whatsapp" | "all";
 }
 
 export function ContactConsentCard({ onConsent, onDecline, source = "all" }: ContactConsentCardProps) {

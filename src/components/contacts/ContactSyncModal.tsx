@@ -55,12 +55,13 @@ export function ContactSyncModal({
       setNonMatches([]);
       setSelectedForInvite([]);
       setConnectApp(null);
-      // Which of Google / iCloud are already on in Connected Apps (VTID-04440).
+      // Which of Google / Outlook / iCloud are already on in Connected Apps (VTID-04440, VTID-04449).
       fetchConnectedApps()
         .then((apps) => {
           const on = new Set(apps.filter((a) => a.status === "on").map((a) => a.id));
           setConnectedSources([
             ...(on.has("google-contacts") ? (["google"] as ContactSource[]) : []),
+            ...(on.has("outlook-contacts") ? (["outlook"] as ContactSource[]) : []),
             ...(on.has("iphone-contacts") ? (["icloud"] as ContactSource[]) : []),
           ]);
         })

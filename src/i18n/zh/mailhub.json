@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple 邮件（iCloud）",
-        "what": "读取 iCloud 收件箱中的新邮件"
+        "what": "读取 iCloud 收件箱，并从你的 iCloud 地址发送邮件"
       },
       "google-calendar": {
         "name": "Google 日历",
@@ -26,6 +26,10 @@
       "outlook-calendar": {
         "name": "Outlook 日历",
         "what": "查看并添加日程，与 Vitanaland 保持同步"
+      },
+      "outlook-contacts": {
+        "name": "Outlook 联系人",
+        "what": "把你的 Outlook 联系人导入 Vitanaland"
       },
       "apple-calendar": {
         "name": "Apple 日历（iCloud）",
@@ -85,7 +89,7 @@
       "step3": "在这里输入你的 Apple ID 和新密码。",
       "appleId": "Apple ID（邮箱）",
       "appPassword": "App 专用密码",
-      "privacy": "我们加密保存密码，只用于读取。你可以随时在 Apple 撤销它。",
+      "privacy": "我们加密保存密码。Vitana 用它读取你的邮件、日历和联系人，在你要求时发送邮件，并保持你的“Vitanaland”日历为最新。你可以随时在 Apple 撤销它。",
       "connect": "连接",
       "checking": "正在检查 …",
       "wrongPassword": "Apple 拒绝了登录——请检查你的 Apple ID 和 App 专用密码",
