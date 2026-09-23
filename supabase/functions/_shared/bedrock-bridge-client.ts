@@ -27,13 +27,10 @@
  *
  * WHAT'S DELIBERATELY DIFFERENT
  *
- * `generateEmbedding()` from `gemini-client.ts` has NO equivalent here. Only
- * `generate-memory-embedding` and `search-memories` call it, neither of which
- * is in the frontend-reachable six this bridge exists for, and this
- * codebase's Bedrock provider (`services/gateway/src/providers/bedrock.ts`)
- * has no embedding endpoint at all — Bedrock's own embedding models (Titan
- * Embeddings) are a different model family entirely. Porting those two
- * functions is real, separate follow-up work, not something to fake here.
+ * `generateEmbedding()` from `gemini-client.ts` has NO equivalent here. Its
+ * only callers were `generate-memory-embedding` and `search-memories`, both
+ * removed in VTID-04448: memory embeddings are made by the gateway with
+ * Titan V2 (`services/gateway/src/services/memory-embedding.ts`).
  *
  * AUTH
  *
