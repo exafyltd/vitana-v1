@@ -28,14 +28,14 @@ import { useProfile } from "@/context/ProfileProvider";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { Copy, Check, Share2, MessageCircle, Mail, Loader2 } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { GATEWAY_API_URL, GATEWAY_BASE } from '@/lib/gateway-base';
 
 const GATEWAY_URL =
-  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+  GATEWAY_API_URL;
 
 const PUBLIC_ORIGIN =
   (import.meta.env.VITE_PUBLIC_ORIGIN as string | undefined) ||
-  "https://gateway-86804897789.us-central1.run.app";
+  GATEWAY_BASE;
 
 interface Props {
   open: boolean;

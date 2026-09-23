@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Bot, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
 const GATEWAY_URL =
-  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+  GATEWAY_API_URL;
 
 interface AgentOutput {
   pillar: "nutrition" | "hydration" | "exercise" | "sleep" | "mental";

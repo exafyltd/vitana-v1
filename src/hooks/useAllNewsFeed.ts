@@ -34,10 +34,10 @@ import {
   type MatchFeedItem,
   type FeatureAnnouncementFeedItem,
 } from "@/lib/news-feed-ranker";
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
 const GATEWAY_URL =
-  import.meta.env.VITE_GATEWAY_URL ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+  GATEWAY_API_URL;
 
 interface RawCandidates {
   posts: PostFeedItem[];

@@ -20,7 +20,8 @@ import { SSEConnectionMonitor } from "./SSEConnectionMonitor";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
-const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
+import { resolveOperatorApi } from '@/lib/gateway-base';
+const BASE_EVENTS = resolveOperatorApi(import.meta.env.VITE_EVENTS_BASE_URL);
 
 export default function LiveConsole() {
   const { 
@@ -261,7 +262,7 @@ export default function LiveConsole() {
 
   const handleRunSmoke = async () => {
     try {
-      const BASE_OPERATOR = (import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
+      const BASE_OPERATOR = resolveOperatorApi(import.meta.env.VITE_OPERATOR_BASE_URL);
       await fetch(`${BASE_OPERATOR}/events/smoke`, { 
         method: "POST",
         mode: "cors",
