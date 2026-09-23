@@ -9070,7 +9070,11 @@
       "unit_glasses": "vasos",
       "unit_minutes": "minutos",
       "unit_hours": "horas",
-      "unit_moments": "momentos"
+      "unit_moments": "momentos",
+      "dailyLearningsTitle": "Lo que Vitana aprendió",
+      "dailyLearningsLoading": "Cargando tus días …",
+      "dailyLearningsEmpty": "Aún no hay resumen diario. Escribe en tu diario o habla con Vitana: cada noche Vitana resume aquí tu día.",
+      "dailySummaryOpenIndex": "Abrir Vitana Index"
     },
     "authpages": {
       "fullName": "Nombre completo",

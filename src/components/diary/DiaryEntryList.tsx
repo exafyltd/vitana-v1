@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
+import { deleteDiaryEntry } from "@/lib/memory-api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PhotoEntryCard } from "./PhotoEntryCard";
 import { PhotoCarouselModal } from "./PhotoCarouselModal";
@@ -111,9 +112,9 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
         }
       }
 
-      const { error } = await supabase.from('diary_entries').delete().eq('id', deleteTarget);
-      if (error) throw error;
-      
+      // VTID-04390: removes the diary row and its memory episode together.
+      await deleteDiaryEntry(deleteTarget);
+
       queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
       notify('toasts.diary.entryDeleted', 'toasts.diary.diaryEntryHasRemoved');
     } catch (error) {

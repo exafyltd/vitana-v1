@@ -1,9 +1,25 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { notify, notifyError } from '@/lib/i18n-toast';
+import {
+  fetchGardenEntries,
+  addGardenNote,
+  editGardenEntry,
+  deleteGardenEntry,
+  saveDiaryEntry,
+  toApiCategory,
+  toUiCategory,
+  type GardenEntry,
+} from '@/lib/memory-api';
 
+/**
+ * VTID-04389: the Memory Garden's items come from the canonical memory store
+ * through the gateway (/api/v1/memory/garden) — the facts and episodes
+ * Vitana actually recalls — instead of the legacy `ai_memory` /
+ * `diary_entries` tables. The shape below is unchanged so the dialogs keep
+ * working; `id` carries the entry kind (`fact:<id>` / `episode:<id>`).
+ */
 export interface KnowledgeItem {
   id: string;
   content: string;
@@ -17,7 +33,34 @@ export interface KnowledgeItem {
   metadata?: any;
 }
 
-const ITEMS_PER_PAGE = 20;
+const TAG_NOISE = new Set(["diary", "ai", "voice", "photo", "text", "manual"]);
+
+export function entryToKnowledgeItem(e: GardenEntry): KnowledgeItem {
+  const isDiary = e.kind === "episode" && e.episode_kind === "diary";
+  const category = toUiCategory(e.category);
+  return {
+    id: `${e.kind}:${e.id}`,
+    content: e.content,
+    source: isDiary ? "diary" : "ai",
+    memoryType: category,
+    tags: [category, isDiary ? "diary" : "ai"],
+    confidenceScore: e.confidence ?? undefined,
+    createdAt: e.occurred_at,
+    metadata: { kind: e.kind, fact_key: e.fact_key, episode_kind: e.episode_kind, user_confirmed: e.user_confirmed },
+  };
+}
+
+/** `fact:<id>` / `episode:<id>` → parts. A bare id is treated as an episode. */
+export function parseKnowledgeId(id: string): { kind: "fact" | "episode"; id: string } {
+  const m = /^(fact|episode):(.+)$/.exec(id);
+  return m ? { kind: m[1] as "fact" | "episode", id: m[2] } : { kind: "episode", id };
+}
+
+/** The Garden category the user picked, from memoryType or the first meaningful tag. */
+export function categoryFromItem(data: { memoryType?: string; tags?: string[] }) {
+  const tag = (data.tags || []).find((t) => !TAG_NOISE.has(t));
+  return toApiCategory(tag) ?? toApiCategory(data.memoryType);
+}
 
 export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
   const { toast } = useToast();
@@ -33,74 +76,12 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
     error,
   } = useInfiniteQuery({
     queryKey: ["knowledge-base", filter],
-    queryFn: async ({ pageParam = 0 }) => {
-      const { data: session } = await supabase.auth.getSession();
-      if (!session.session?.user?.id) {
-        throw new Error("Not authenticated");
-      }
-
-      const userId = session.session.user.id;
-      const items: KnowledgeItem[] = [];
-
-      // Fetch from ai_memory (curated knowledge only)
-      if (filter === "all" || filter === "insights") {
-        const { data: aiMemories, error: aiError } = await supabase
-          .from("ai_memory")
-          .select("*")
-          .eq("user_id", userId)
-          .eq("is_active", true) // Only active knowledge
-          .gte("confidence_score", 0.7) // Only high-confidence items
-          .order("created_at", { ascending: false })
-          .range(pageParam * ITEMS_PER_PAGE, (pageParam + 1) * ITEMS_PER_PAGE - 1);
-
-        if (aiError) throw aiError;
-
-        items.push(
-          ...(aiMemories || []).map((mem) => ({
-            id: mem.id,
-            content: mem.content,
-            source: "ai" as const,
-            memoryType: mem.memory_type,
-            tags: [mem.memory_type, "ai"].filter(Boolean) as string[],
-            confidenceScore: mem.confidence_score,
-            createdAt: mem.created_at,
-            metadata: mem.metadata,
-          }))
-        );
-      }
-
-      // Fetch from diary_entries (user's personal knowledge)
-      if (filter === "all" || filter === "diary") {
-        const { data: diaryEntries, error: diaryError } = await supabase
-          .from("diary_entries")
-          .select("*")
-          .eq("user_id", userId)
-          .order("created_at", { ascending: false })
-          .range(pageParam * ITEMS_PER_PAGE, (pageParam + 1) * ITEMS_PER_PAGE - 1);
-
-        if (diaryError) throw diaryError;
-
-        items.push(
-          ...(diaryEntries || []).map((entry) => ({
-            id: entry.id,
-            content: entry.text,
-            source: "diary" as const,
-            tags: entry.tags,
-            duration: entry.duration,
-            attachments: entry.attachments as string[],
-            createdAt: entry.created_at,
-            metadata: { source: entry.source },
-          }))
-        );
-      }
-
-      // Sort combined results by date
-      items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-      return {
-        items,
-        nextPage: items.length === ITEMS_PER_PAGE ? pageParam + 1 : undefined,
-      };
+    queryFn: async () => {
+      const entries = await fetchGardenEntries({ limit: 500 });
+      const items = entries
+        .map(entryToKnowledgeItem)
+        .filter((i) => filter === "all" || (filter === "diary" ? i.source === "diary" : i.source === "ai"));
+      return { items, nextPage: undefined as number | undefined };
     },
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 0,
@@ -108,17 +89,9 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
 
   // Delete mutation
   const deleteMutation = useMutation({
-    mutationFn: async ({ id, source }: { id: string; source: "ai" | "diary" }) => {
-      if (source === "ai") {
-        const { error } = await supabase
-          .from("ai_memory")
-          .update({ is_active: false, updated_at: new Date().toISOString() })
-          .eq("id", id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from("diary_entries").delete().eq("id", id);
-        if (error) throw error;
-      }
+    mutationFn: async ({ id }: { id: string; source: "ai" | "diary" }) => {
+      const ref = parseKnowledgeId(id);
+      await deleteGardenEntry(ref.kind, ref.id);
     },
     onMutate: async (variables) => {
       // Cancel any outgoing refetches
@@ -142,9 +115,6 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       return { previousData };
     },
     onSuccess: async (data, variables) => {
-      // Refresh metadata calculation
-      await supabase.functions.invoke('refresh-memory-metadata');
-      
       // Refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
@@ -174,33 +144,12 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async (data: any) => {
-      if (data.source === "ai") {
-        const { error } = await supabase
-          .from("ai_memory")
-          .update({
-            content: data.content,
-            memory_type: data.memoryType,
-            confidence_score: data.confidenceScore,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", data.id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from("diary_entries")
-          .update({
-            text: data.content,
-            tags: data.tags,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", data.id);
-        if (error) throw error;
-      }
+      const ref = parseKnowledgeId(data.id);
+      // A fact's category comes from its key; only episodes can be moved.
+      const category = ref.kind === "episode" ? categoryFromItem(data) : undefined;
+      await editGardenEntry(ref.kind, ref.id, data.content, category);
     },
     onSuccess: async (data, variables) => {
-      // Refresh metadata calculation
-      await supabase.functions.invoke('refresh-memory-metadata');
-      
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       notify('toasts.hooks.knowledgeUpdated', 'toasts.hooks.yourChangesHaveSaved');
@@ -226,56 +175,24 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const { data: session } = await supabase.auth.getSession();
-      if (!session.session?.user?.id) throw new Error("Not authenticated");
-
-      if (data.source === "ai") {
-        const { data: created, error } = await supabase.from("ai_memory").insert({
-          user_id: session.session.user.id,
-          content: data.content,
-          memory_type: data.memoryType || "fact",
-          confidence_score: data.confidenceScore || 0.8,
-          is_active: true,
-          metadata: data.metadata || null,
-        }).select('id').single();
-        if (error) throw error;
-        return created;
-      } else {
-        const { data: diaryEntry, error } = await supabase.from("diary_entries").insert({
-          user_id: session.session.user.id,
+      if (data.source === "diary") {
+        // VTID-04390: the one diary write path (diary row + memory episode +
+        // Vitana Index). Photo/voice media from AddMemoryDialog is kept as an
+        // attachment instead of being dropped.
+        const mediaUrl = data.metadata?.mediaUrl as string | undefined;
+        const saved = await saveDiaryEntry({
           text: data.content,
           source: "manual",
           tags: data.tags || ["diary"],
-        }).select().single();
-        
-        if (error) throw error;
-
-        // Auto-extract insights from diary entry (non-blocking)
-        if (diaryEntry?.id && data.content) {
-          console.log('[diary-insights] Triggering auto-extraction for diary entry:', diaryEntry.id);
-          supabase.functions.invoke('extract-diary-insights', {
-            body: {
-              diaryEntryId: diaryEntry.id,
-              content: data.content
-            }
-          }).then((result) => {
-            if (result.data?.success && result.data.insightsCount > 0) {
-              console.log(`[diary-insights] ✓ Auto-extracted ${result.data.insightsCount} insights`);
-              // Invalidate knowledge base to show new insights
-              queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
-            }
-          }).catch((err) => {
-            console.error('[diary-insights] Auto-extraction failed:', err);
-          });
-        }
-        
-        return diaryEntry;
+          attachments: mediaUrl ? [mediaUrl] : null,
+        });
+        return saved.entry;
       }
+      // Anything else the user adds is a Garden note in the chosen category.
+      const id = await addGardenNote(data.content, categoryFromItem(data) ?? "uncategorized");
+      return { id };
     },
     onSuccess: async (data, variables) => {
-      // Refresh metadata calculation
-      await supabase.functions.invoke('refresh-memory-metadata');
-      
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       notify('toasts.hooks.knowledgeCreated', 'toasts.hooks.newItemAddedYourKnowledgeBase');

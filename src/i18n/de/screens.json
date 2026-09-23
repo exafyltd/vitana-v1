@@ -9112,7 +9112,11 @@
       "impactImpact": "Auswirkung: {impact}",
       "defineHowYourAiAgentShould": "Definiere, wie sich dein KI-Agent verhalten soll, worauf er sich konzentrieren und wie er mit dir kommunizieren soll...",
       "thisReadonlyPlaceholderForAgentPrompt": "Dies ist ein schreibgeschützter Platzhalter für das Agent Prompt Center. \n              Zukünftige Phasen ermöglichen die vollständige Anpassung des KI-Agenten und Tests in Echtzeit.",
-      "thisReadonlyPlaceholderForPersonalAi": "Dies ist ein schreibgeschützter Platzhalter für die persönliche KI-Zeitleiste. \n                Zukünftige Phasen werden eine Verbindung zu echten KI-Aktivitätsdaten herstellen und interaktive Einblicke bieten."
+      "thisReadonlyPlaceholderForPersonalAi": "Dies ist ein schreibgeschützter Platzhalter für die persönliche KI-Zeitleiste. \n                Zukünftige Phasen werden eine Verbindung zu echten KI-Aktivitätsdaten herstellen und interaktive Einblicke bieten.",
+      "dailyLearningsTitle": "Was Vitana gelernt hat",
+      "dailyLearningsLoading": "Deine Tage werden gerade zusammengefasst …",
+      "dailyLearningsEmpty": "Noch keine Tageszusammenfassung. Schreib ins Tagebuch oder sprich mit Vitana – am Abend fasst Vitana deinen Tag hier zusammen.",
+      "dailySummaryOpenIndex": "Vitana Index öffnen"
     },
     "authpages": {
       "fullName": "Vollständiger Name",
