@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "Moji tiketi",
+    "subtitle": "Sve što si nam prijavio – sa brojem tiketa i trenutnim statusom.",
+    "loading": "Učitavanje tiketa …",
+    "loadError": "Nije moguće učitati tvoje tikete.",
+    "retry": "Pokušaj ponovo",
+    "empty": "Još nema tiketa.",
+    "emptyHint": "Čim nešto prijaviš – glasom ili tekstom – pojaviće se ovde sa brojem tiketa.",
+    "kind": {
+      "feedback": "Opšte povratne informacije",
+      "bug": "Greška ili pad",
+      "ux_issue": "Zbunjujuće ili teško za korišćenje",
+      "support_question": "Kako da …?",
+      "account_issue": "Problem sa nalogom",
+      "marketplace_claim": "Porudžbina ili plaćanje",
+      "feature_request": "Zahtev za funkciju",
+      "other": "Ostalo"
+    },
+    "kindHint": {
+      "feedback": "Ideje, misli, bilo šta drugo",
+      "bug": "Nešto ne radi",
+      "ux_issue": "Povratne informacije o korišćenju",
+      "support_question": "Pitanje o korišćenju Vitane",
+      "account_issue": "Prijava, profil, podaci",
+      "marketplace_claim": "Povraćaj novca, marketplace",
+      "feature_request": "Nešto što bi voleo da postoji"
+    },
+    "status": {
+      "received": "Primljeno",
+      "under_review": "Pregleda se",
+      "in_progress": "Ispravlja se",
+      "fixed": "Rešeno",
+      "wont_fix": "Neće biti urađeno",
+      "duplicate": "Duplikat"
+    },
+    "timelineLabel": "Napredak",
+    "reportedOn": "Prijavljeno {date}",
+    "viaVoice": "glasom",
+    "handledBy": "Obrađuje {name}",
+    "ourAnswer": "Naš odgovor",
+    "confirmed": "Ti si potvrdio",
+    "didItWorkNamed": "{name} kaže da je ovo rešeno. Da li je uspelo?",
+    "didItWork": "Mislimo da je ovo rešeno. Da li je uspelo?",
+    "yesFixed": "Da, rešeno",
+    "noStillBroken": "Ne, i dalje ne radi",
+    "showMore": "Prikaži još ({count})",
+    "severity": {
+      "low": "Nizak",
+      "medium": "Srednji",
+      "high": "Visok",
+      "critical": "Kritičan"
+    },
+    "submittedTitle": "Hvala – tvoj tiket je kreiran",
+    "submittedNumber": "Tvoj broj tiketa: {number}",
+    "submittedBody": "Status možeš pratiti bilo kada pod „Moji tiketi“. Javićemo ti se čim bude novosti.",
+    "viewTicket": "Pogledaj tiket",
+    "sendAnother": "Pošalji još jednu poruku",
+    "orbUnavailable": "Vitana trenutno nije dostupna. Pokušaj ponovo za trenutak.",
+    "talk": {
+      "seoDescription": "Prijavi greške, postavi pitanja ili podeli povratne informacije. Vitana i njene kolege će ti se javiti.",
+      "headerDescription": "Greške, pitanja, povratne informacije – Vitana predaje temu kolegi specijalisti kada je van njenog domena.",
+      "send": "Pošalji Vitani",
+      "sending": "Šalje se …"
+    },
+    "support": {
+      "seoTitle": "Korisnička podrška",
+      "seoDescription": "Pomoć za tvoj nalog: otvori tiket, prijavi glasom i prati status svojih tiketa.",
+      "headerTitle": "Korisnička podrška",
+      "headerDescription": "Reci nam s čim ti treba pomoć – glasom ili tekstom. Svaki zahtev dobija broj tiketa.",
+      "tabContact": "Kontakt",
+      "tabTickets": "Moji tiketi",
+      "tabFaqs": "Česta pitanja",
+      "tabCommunity": "Zajednica",
+      "contactTitle": "Piši nam",
+      "contactSubtitle": "Ukratko opiši šta se desilo i šta si očekivao.",
+      "messageLabel": "Tvoja poruka",
+      "messagePlaceholder": "Šta se desilo? Šta si već pokušao?",
+      "submit": "Pošalji tiket",
+      "sending": "Šalje se …",
+      "voiceTitle": "Radije bi pričao?",
+      "voiceBody": "Samo reci Vitani šta se dešava. Ona kreira tiket za tebe i kaže ti broj tiketa.",
+      "voiceButton": "Prijavi glasom",
+      "emailTitle": "Imejl",
+      "emailBody": "Možeš nam pisati i direktno."
+    },
+    "diary": {
+      "title": "Moje prijave"
+    },
+    "admin": {
+      "copyVtid": "Kopiraj VTID"
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
-export const COMMUNITY_GATEWAY = (
-  import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app"
-).replace(/\/+$/, "");
+// VTID-04335: the old fallback was the deleted GCP Cloud Run gateway.
+export const COMMUNITY_GATEWAY = GATEWAY_BASE;
 
 export async function communityFetch(path: string, options?: RequestInit): Promise<Response> {
   const { data: { session } } = await supabase.auth.getSession();

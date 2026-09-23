@@ -51,52 +51,113 @@ export async function submitFeedbackTicket(input: SubmitFeedbackTicketInput): Pr
   return { ok: true, ticket_number: body.ticket_number };
 }
 
-/** The Diary report list's row shape (FeedbackReportList). */
-export interface FeedbackListReport {
-  id: string;
-  transcript: string;
-  report_type: ReportType;
-  severity: Severity;
-  affected_screen: string | null;
-  status: string;
-  vtid: string | null;
-  created_at: string;
-  attachments: string[];
-  source?: 'legacy' | 'ticket';
-}
+/**
+ * VTID-04335 — ONE status vocabulary for every member-facing ticket list
+ * (Support → My tickets, Talk to Vitana, the Diary report list). The
+ * pipeline has ~16 internal statuses; a member only ever sees these six.
+ */
+export type MemberTicketStatus = 'received' | 'under_review' | 'in_progress' | 'fixed' | 'wont_fix' | 'duplicate';
 
-// VTID-04313: map a unified feedback_tickets row onto this list's shape.
-const TICKET_STATUS_MAP: Record<string, string> = {
-  new: 'received', interviewing: 'received', triaged: 'under_review',
-  spec_pending: 'under_review', spec_ready: 'under_review', answer_pending: 'under_review',
-  answer_ready: 'under_review', approved: 'in_progress', in_progress: 'in_progress',
+export const TICKET_STATUS_MAP: Record<string, MemberTicketStatus> = {
+  new: 'received', interviewing: 'received',
+  triaged: 'under_review', spec_pending: 'under_review', spec_ready: 'under_review',
+  answer_pending: 'under_review', answer_ready: 'under_review',
   needs_more_info: 'under_review', reopened: 'under_review',
-  resolved: 'fixed', user_confirmed: 'fixed', wont_fix: 'wont_fix', rejected: 'wont_fix', duplicate: 'duplicate',
+  approved: 'in_progress', in_progress: 'in_progress',
+  resolved: 'fixed', user_confirmed: 'fixed',
+  wont_fix: 'wont_fix', rejected: 'wont_fix',
+  duplicate: 'duplicate',
 };
 
-export interface FeedbackTicketListRow {
-  id: string;
-  kind: string;
-  status: string;
-  raw_transcript: string | null;
-  structured_fields: { severity?: Severity; attachments?: string[]; affected_screen?: string | null } | null;
-  screen_path: string | null;
-  linked_vtid: string | null;
-  created_at: string;
+/** Unknown / future pipeline statuses read as "received", never as raw internals. */
+export function memberTicketStatus(status: string | null | undefined): MemberTicketStatus {
+  return (status && TICKET_STATUS_MAP[status]) || 'received';
 }
 
-export function ticketToReport(row: FeedbackTicketListRow): FeedbackListReport {
-  const sf = row.structured_fields ?? {};
+/** The happy-path timeline shown to the member, in order. */
+export const MEMBER_TIMELINE: MemberTicketStatus[] = ['received', 'under_review', 'in_progress', 'fixed'];
+
+/** Index of `status` on the timeline, or -1 for a closed-without-fix ticket. */
+export function timelineStep(status: MemberTicketStatus): number {
+  return MEMBER_TIMELINE.indexOf(status);
+}
+
+export type TicketKind = 'bug' | 'ux_issue' | 'support_question' | 'account_issue' | 'marketplace_claim' | 'feature_request' | 'feedback';
+export const TICKET_KINDS: TicketKind[] = ['feedback', 'bug', 'ux_issue', 'support_question', 'account_issue', 'marketplace_claim', 'feature_request'];
+
+/** React Query key shared by every member ticket list (and its invalidators). */
+export const MY_TICKETS_QUERY_KEY = ['feedback-tickets-mine'] as const;
+
+/** Row shape returned by GET /api/v1/feedback/tickets/mine. */
+export interface MemberTicket {
+  id: string;
+  ticket_number: string;
+  kind: string;
+  status: string;
+  priority?: string | null;
+  surface?: string | null;
+  created_at: string;
+  resolver_agent?: string | null;
+  resolved_at?: string | null;
+  user_confirmed_at?: string | null;
+  // VTID-04312: returned once the ticket is resolved.
+  answer_md?: string | null;
+  resolution_md?: string | null;
+  // Optional — rendered only when the gateway includes it.
+  raw_transcript?: string | null;
+  structured_fields?: { voice_origin?: boolean; severity?: Severity } | null;
+}
+
+/** The text shown as "our answer": only for resolved tickets, never a draft. */
+export function ticketAnswer(ticket: Pick<MemberTicket, 'status' | 'answer_md' | 'resolution_md'>): string | null {
+  if (memberTicketStatus(ticket.status) !== 'fixed') return null;
+  const text = (ticket.answer_md || ticket.resolution_md || '').trim();
+  return text || null;
+}
+
+/** Does `highlight` (a ticket id or FB-number from ?ticket=) point at this ticket? */
+export function matchesTicketRef(ticket: Pick<MemberTicket, 'id' | 'ticket_number'>, highlight: string | null | undefined): boolean {
+  if (!highlight) return false;
+  const h = highlight.trim();
+  return h === ticket.id || h.toUpperCase() === (ticket.ticket_number || '').toUpperCase();
+}
+
+/**
+ * VTID-04335 — Support → Contact (mobile and desktop) builds the same body.
+ * `surface:'support'` pins these into the human-only queue the auto-triage
+ * routine skips.
+ */
+export const SUPPORT_CATEGORIES = ['account', 'billing', 'technical', 'feature', 'privacy', 'other'] as const;
+export type SupportCategory = (typeof SUPPORT_CATEGORIES)[number];
+
+const KIND_BY_SUPPORT_CATEGORY: Record<SupportCategory, TicketKind> = {
+  account: 'account_issue',
+  billing: 'account_issue',
+  technical: 'bug',
+  feature: 'feature_request',
+  privacy: 'support_question',
+  other: 'support_question',
+};
+
+export function buildSupportContactBody(input: {
+  message: string;
+  category: SupportCategory | '' | null;
+  entryMethod: 'voice' | 'text';
+  attachments?: string[];
+}) {
+  const attachments = (input.attachments ?? []).filter(Boolean);
+  const category = input.category || null;
   return {
-    id: row.id,
-    transcript: row.raw_transcript ?? '',
-    report_type: row.kind === 'bug' ? 'bug_report' : 'ux_improvement',
-    severity: sf.severity ?? 'medium',
-    affected_screen: sf.affected_screen ?? row.screen_path ?? null,
-    status: TICKET_STATUS_MAP[row.status] ?? 'received',
-    vtid: row.linked_vtid,
-    created_at: row.created_at,
-    attachments: Array.isArray(sf.attachments) ? sf.attachments : [],
-    source: 'ticket',
+    raw_text: input.message.trim(),
+    kind: category ? KIND_BY_SUPPORT_CATEGORY[category] : 'support_question',
+    surface: 'support',
+    screen_path: category ? `support/contact:${category}` : 'support/contact',
+    screenshot_url: attachments[0] || undefined,
+    structured_fields: {
+      source: 'support_contact',
+      category,
+      entry_method: input.entryMethod,
+      attachments,
+    },
   };
 }

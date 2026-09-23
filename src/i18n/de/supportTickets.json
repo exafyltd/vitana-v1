@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "Meine Tickets",
+    "subtitle": "Alles, was du uns gemeldet hast – mit Ticketnummer und aktuellem Stand.",
+    "loading": "Tickets werden geladen …",
+    "loadError": "Deine Tickets konnten nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "empty": "Noch keine Tickets.",
+    "emptyHint": "Sobald du etwas meldest – per Sprache oder Text – erscheint es hier mit einer Ticketnummer.",
+    "kind": {
+      "feedback": "Allgemeines Feedback",
+      "bug": "Fehler oder Absturz",
+      "ux_issue": "Verwirrend oder schwer zu bedienen",
+      "support_question": "Wie mache ich …?",
+      "account_issue": "Problem mit dem Konto",
+      "marketplace_claim": "Bestellung oder Zahlung",
+      "feature_request": "Wunsch nach einer Funktion",
+      "other": "Sonstiges"
+    },
+    "kindHint": {
+      "feedback": "Ideen, Gedanken, alles andere",
+      "bug": "Etwas funktioniert nicht",
+      "ux_issue": "Feedback zur Bedienung",
+      "support_question": "Frage zur Nutzung von Vitana",
+      "account_issue": "Anmeldung, Profil, Daten",
+      "marketplace_claim": "Erstattungen, Marktplatz",
+      "feature_request": "Etwas, das du dir wünschst"
+    },
+    "status": {
+      "received": "Eingegangen",
+      "under_review": "Wird geprüft",
+      "in_progress": "Wird behoben",
+      "fixed": "Erledigt",
+      "wont_fix": "Nicht umgesetzt",
+      "duplicate": "Duplikat"
+    },
+    "timelineLabel": "Bearbeitungsstand",
+    "reportedOn": "Gemeldet am {date}",
+    "viaVoice": "per Sprache",
+    "handledBy": "Bearbeitet von {name}",
+    "ourAnswer": "Unsere Antwort",
+    "confirmed": "Von dir bestätigt",
+    "didItWorkNamed": "{name} sagt, das ist erledigt. Hat es geklappt?",
+    "didItWork": "Wir glauben, das ist erledigt. Hat es geklappt?",
+    "yesFixed": "Ja, erledigt",
+    "noStillBroken": "Nein, besteht noch",
+    "showMore": "Mehr anzeigen ({count})",
+    "severity": {
+      "low": "Niedrig",
+      "medium": "Mittel",
+      "high": "Hoch",
+      "critical": "Kritisch"
+    },
+    "submittedTitle": "Danke – dein Ticket ist angelegt",
+    "submittedNumber": "Deine Ticketnummer: {number}",
+    "submittedBody": "Du siehst den Stand jederzeit unter „Meine Tickets“. Wir melden uns, sobald es Neuigkeiten gibt.",
+    "viewTicket": "Ticket ansehen",
+    "sendAnother": "Weitere Nachricht senden",
+    "orbUnavailable": "Vitana ist gerade nicht erreichbar. Bitte versuche es gleich noch einmal.",
+    "talk": {
+      "seoDescription": "Melde Fehler, stell Fragen oder gib Feedback. Vitana und ihre Kolleginnen und Kollegen melden sich bei dir.",
+      "headerDescription": "Fehler, Fragen, Feedback – Vitana übergibt an eine Fachkollegin oder einen Fachkollegen, wenn das Thema außerhalb ihres Bereichs liegt.",
+      "send": "An Vitana senden",
+      "sending": "Wird gesendet …"
+    },
+    "support": {
+      "seoTitle": "Kundensupport",
+      "seoDescription": "Hilfe zu deinem Konto: Ticket anlegen, per Sprache melden und den Stand deiner Tickets verfolgen.",
+      "headerTitle": "Kundensupport",
+      "headerDescription": "Sag uns, womit du Hilfe brauchst – per Sprache oder Text. Jede Anfrage bekommt eine Ticketnummer.",
+      "tabContact": "Kontakt",
+      "tabTickets": "Meine Tickets",
+      "tabFaqs": "Häufige Fragen",
+      "tabCommunity": "Community",
+      "contactTitle": "Schreib uns",
+      "contactSubtitle": "Beschreib kurz, was passiert ist und was du erwartet hast.",
+      "messageLabel": "Deine Nachricht",
+      "messagePlaceholder": "Was ist passiert? Was hast du schon ausprobiert?",
+      "submit": "Ticket senden",
+      "sending": "Wird gesendet …",
+      "voiceTitle": "Lieber sprechen?",
+      "voiceBody": "Erzähl Vitana einfach, was los ist. Sie legt das Ticket für dich an und nennt dir die Ticketnummer.",
+      "voiceButton": "Per Sprache melden",
+      "emailTitle": "E-Mail",
+      "emailBody": "Du kannst uns auch direkt schreiben."
+    },
+    "diary": {
+      "title": "Meine Meldungen"
+    },
+    "admin": {
+      "copyVtid": "VTID kopieren"
+    }
+  }
+}
