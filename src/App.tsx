@@ -44,6 +44,7 @@ import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
+import SupportTicketFiledListener from "./components/support/SupportTicketFiledListener";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
@@ -165,6 +166,7 @@ const EventGamePublicLanding = lazy(() => import("./pages/EventGamePublicLanding
 const EventGamePage = lazy(() => import("./pages/community/EventGamePage"));
 const Discover = lazy(() => import("./pages/Discover"));
 const Reminders = lazy(() => import("./pages/Reminders"));
+const CalendarPage = lazy(() => import("./pages/Calendar"));
 const Health = lazy(() => import("./pages/Health"));
 const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
@@ -777,6 +779,8 @@ const App = () => {
                         Lives inside <BrowserRouter> for useNavigate(). */}
                     <IdentityRedirectListener />
                     <MilestoneCelebration />
+                    {/* VTID-04385: ticket number on screen after a spoken report. */}
+                    <SupportTicketFiledListener />
                     {/* VTID-02601: reminder fire delivery — chime + voice + banner. */}
                     <ReminderInterruptOverlay />
                     <VitanalandNavigationProvider>
@@ -1166,6 +1170,14 @@ const App = () => {
           <Route path="/health-tracker/biomarker-results" element={<Navigate to="/health/my-health-tracker" replace />} />
           
           {/* Calendar routes */}
+          <Route path="/calendar" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <CalendarPage />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/calendar/appointments" element={<Navigate to="/calendar" replace />} />
 
           {/* VTID-02601 Reminders */}
           <Route path="/reminders" element={

@@ -1,0 +1,145 @@
+{
+  "vcal": {
+    "title": "Takvim",
+    "today": "Bugün",
+    "prev": "Önceki",
+    "next": "Sonraki",
+    "loading": "Takvimin yükleniyor",
+    "error": "Takvimin şu anda yüklenemedi.",
+    "retry": "Tekrar dene",
+    "busy": "Dolu",
+    "busyHint": "Başka bir rolden kayıt – yalnızca saat görünür",
+    "done": "Tamam",
+    "markDone": "Tamamlandı olarak işaretle",
+    "doneToast": "Tamamlandı – harika! 🎉",
+    "doneError": "Şu anda kaydedilemedi.",
+    "recurring": "Tekrarlanır",
+    "voiceAdd": "“Cuma saat 8'de kan tahlili, aç karnına” – Vitana'ya söyle",
+    "nextUp": "Sıradaki · {when}",
+    "progress": "Bugün {total} işten {done} tanesi tamam",
+    "progressAllDone": "Hepsi tamam – günün kalanının tadını çıkar ✨",
+    "progressKeepGoing": "Devam et, doğru yoldasın 💪",
+    "greeting": {
+      "morning": "Günaydın ☀️",
+      "afternoon": "İyi öğleden sonralar 🌤️",
+      "evening": "İyi akşamlar 🌙",
+      "night": "İyi geceler 🌙"
+    },
+    "views": {
+      "day": "Gün",
+      "week": "Hafta",
+      "month": "Ay"
+    },
+    "rel": {
+      "now": "şimdi",
+      "minutes": "{count} dk sonra",
+      "hours": "{count} sa sonra",
+      "days": "{count} gün sonra"
+    },
+    "reminder": {
+      "eveningBefore": "Önceki akşam {time}",
+      "atStart": "Başlangıçta",
+      "hoursBefore": "{count} sa önce",
+      "minutesBefore": "{count} dk önce"
+    },
+    "kinds": {
+      "nutrition": "Beslenme",
+      "hydration": "Su",
+      "exercise": "Hareket",
+      "sleep": "Uyku",
+      "mental": "Zihin",
+      "community": "Topluluk",
+      "lab": "Laboratuvar",
+      "work": "İş",
+      "vitana": "Vitana",
+      "personal": "Kişisel"
+    },
+    "source": {
+      "lab": "Laboratuvar isteğinden",
+      "autopilot": "Autopilot ✨",
+      "plan": "Planından",
+      "assistant": "Vitana ile eklendi",
+      "community": "Topluluk",
+      "journey": "Yolculuğun"
+    },
+    "empty": {
+      "title": "Planlanmış bir şey yok – sakin bir gün 🌿",
+      "hint": "Ne planladığını Vitana'ya söyle, o eklesin."
+    },
+    "week": {
+      "title": "{date} haftası",
+      "free": "boş"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Kapat",
+      "about": "Ne hakkında",
+      "reminders": "Hatırlatmalar",
+      "noReminders": "Hatırlatma yok",
+      "directions": "Yol tarifi",
+      "askVitana": "Vitana'ya sor"
+    },
+    "work": {
+      "deploy_staging": "Staging dağıtımı",
+      "deploy_prod": "Üretim dağıtımı",
+      "autopilot_review": "İncelemeni bekliyor",
+      "ticket_due": "Talep süresi",
+      "erp_approval": "Onay bekliyor",
+      "readOnly": "Bunu oluştuğu yerde bitirirsin – takvim yalnızca ne zaman olduğunu gösterir."
+    },
+    "subscribe": {
+      "title": "Takvim uygulamamda göster",
+      "intro": "Vitanaland takvimine Apple, Google veya Outlook'ta abone ol. Yeni kayıtlar orada kendiliğinden görünür.",
+      "privacy": "Bağlantı yalnızca başlıkları, saatleri ve yerleri gösterir – ayrıntı yok. Bağlantıya sahip herkes bu kayıtları görür, bu yüzden kimseyle paylaşma.",
+      "create": "Bağlantı oluştur",
+      "replace": "Yeni bağlantı oluştur",
+      "replaceHint": "Yeni bağlantı eskisinin yerini alır – eskisi artık çalışmaz.",
+      "revoke": "Bağlantıyı kapat",
+      "revoked": "Bağlantı kapatıldı",
+      "yourLink": "Bağlantın",
+      "onlyOnce": "Bu bağlantıyı yalnızca şimdi görüyorsun. Kopyala ya da doğrudan takvim uygulamanda aç.",
+      "copy": "Kopyala",
+      "copied": "Bağlantı kopyalandı",
+      "copyError": "Kopyalama olmadı – bağlantıyı seçip kendin kopyala.",
+      "openApp": "Takvim uygulamasında aç",
+      "activeSince": "{date} tarihinden beri bir bağlantı etkin.",
+      "error": "Şu an olmadı. Birazdan tekrar dene."
+    },
+    "move": {
+      "action": "Taşı",
+      "title": "Yeni zaman",
+      "keepsLength": "Süresi aynı kalır.",
+      "cancel": "Vazgeç",
+      "confirm": "Buraya taşı",
+      "moved": "Taşındı ✨",
+      "error": "Şu an taşınamadı. Birazdan tekrar dene.",
+      "blocked": {
+        "owned_by_source": "Bu bir rezervasyondan ya da plandan geliyor – orada taşı, yoksa geri döner.",
+        "recurring": "Bir seriyi serinin kendisinden taşırsın.",
+        "completed": "Tamamlanan yerinde kalır.",
+        "cancelled": "İptal edilen taşınamaz."
+      }
+    },
+    "google": {
+      "title": "Google Takvim ile eşitle",
+      "intro": "Vitanaland kayıtların Google hesabındaki ayrı bir \"Vitanaland\" takvimine gider. Google etkinliklerin burada başlıksız, gri dolu saatler olarak görünür.",
+      "turnOn": "Google eşitlemeyi aç",
+      "turnOff": "Google eşitlemeyi kapat",
+      "turnedOn": "Google eşitleme açık 🎉",
+      "turnedOff": "Google eşitleme kapalı",
+      "on": "Google eşitleme açık",
+      "lastSync": "son {date}",
+      "problem": "Son eşitleme başarısız oldu – otomatik olarak tekrar deneyeceğiz.",
+      "error": "Şu an olmadı. Birazdan tekrar dene.",
+      "busy": "Dolu (Google)",
+      "busyHint": "Google takviminden bir etkinlik – yalnızca saat görünür"
+    },
+    "quietHours": {
+      "title": "Sessiz saatler",
+      "body": "Sessiz saatlerinde hatırlatma gelmez – hemen öncesinde gelir.",
+      "link": "Sessiz saatleri ayarla"
+    }
+  }
+}

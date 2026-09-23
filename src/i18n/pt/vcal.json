@@ -1,0 +1,145 @@
+{
+  "vcal": {
+    "title": "Calendário",
+    "today": "Hoje",
+    "prev": "Anterior",
+    "next": "Próximo",
+    "loading": "Carregando seu calendário",
+    "error": "Não foi possível carregar seu calendário agora.",
+    "retry": "Tentar de novo",
+    "busy": "Ocupado",
+    "busyHint": "Entrada de outra função – só o horário aparece",
+    "done": "Feito",
+    "markDone": "Marcar como feito",
+    "doneToast": "Feito – mandou bem! 🎉",
+    "doneError": "Não foi possível salvar agora.",
+    "recurring": "Repete",
+    "voiceAdd": "“Exame de sangue sexta às 8h, em jejum” – fale com a Vitana",
+    "nextUp": "A seguir · {when}",
+    "progress": "{done} de {total} feitos hoje",
+    "progressAllDone": "Tudo feito – aproveite o resto do dia ✨",
+    "progressKeepGoing": "Continue assim, você está no caminho 💪",
+    "greeting": {
+      "morning": "Bom dia ☀️",
+      "afternoon": "Boa tarde 🌤️",
+      "evening": "Boa noite 🌙",
+      "night": "Boa noite 🌙"
+    },
+    "views": {
+      "day": "Dia",
+      "week": "Semana",
+      "month": "Mês"
+    },
+    "rel": {
+      "now": "agora",
+      "minutes": "em {count} min",
+      "hours": "em {count} h",
+      "days": "em {count} dias"
+    },
+    "reminder": {
+      "eveningBefore": "Na noite anterior às {time}",
+      "atStart": "No início",
+      "hoursBefore": "{count} h antes",
+      "minutesBefore": "{count} min antes"
+    },
+    "kinds": {
+      "nutrition": "Nutrição",
+      "hydration": "Hidratação",
+      "exercise": "Exercício",
+      "sleep": "Sono",
+      "mental": "Mente",
+      "community": "Comunidade",
+      "lab": "Laboratório",
+      "work": "Trabalho",
+      "vitana": "Vitana",
+      "personal": "Pessoal"
+    },
+    "source": {
+      "lab": "Do seu pedido de exame",
+      "autopilot": "Autopilot ✨",
+      "plan": "Do seu plano",
+      "assistant": "Adicionado com a Vitana",
+      "community": "Comunidade",
+      "journey": "Sua jornada"
+    },
+    "empty": {
+      "title": "Nada planejado – um dia tranquilo 🌿",
+      "hint": "Diga à Vitana o que você tem em mente e ela adiciona."
+    },
+    "week": {
+      "title": "Semana de {date}",
+      "free": "livre"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Fechar",
+      "about": "Do que se trata",
+      "reminders": "Lembretes",
+      "noReminders": "Sem lembrete",
+      "directions": "Rota",
+      "askVitana": "Perguntar à Vitana"
+    },
+    "work": {
+      "deploy_staging": "Deploy de staging",
+      "deploy_prod": "Deploy de produção",
+      "autopilot_review": "Aguardando sua revisão",
+      "ticket_due": "Prazo do ticket",
+      "erp_approval": "Aprovação pendente",
+      "readOnly": "Você conclui isso onde ele nasce – o calendário só mostra quando está previsto."
+    },
+    "subscribe": {
+      "title": "Mostrar no meu app de calendário",
+      "intro": "Assine seu calendário Vitanaland no Apple, Google ou Outlook. Os novos compromissos aparecem lá sozinhos.",
+      "privacy": "O link mostra só títulos, horários e locais – sem detalhes. Quem tiver o link vê esses compromissos, então não compartilhe.",
+      "create": "Criar link",
+      "replace": "Criar um novo link",
+      "replaceHint": "Um novo link substitui o antigo – o antigo deixa de funcionar.",
+      "revoke": "Desativar link",
+      "revoked": "Link desativado",
+      "yourLink": "Seu link",
+      "onlyOnce": "Você só vê este link agora. Copie ou abra direto no seu app de calendário.",
+      "copy": "Copiar",
+      "copied": "Link copiado",
+      "copyError": "Não deu para copiar – selecione o link e copie você mesmo.",
+      "openApp": "Abrir no app de calendário",
+      "activeSince": "Um link está ativo desde {date}.",
+      "error": "Não funcionou agora. Tente de novo em instantes."
+    },
+    "move": {
+      "action": "Mover",
+      "title": "Novo horário",
+      "keepsLength": "Mantém a mesma duração.",
+      "cancel": "Cancelar",
+      "confirm": "Mover para aqui",
+      "moved": "Movido ✨",
+      "error": "Não foi possível mover agora. Tente de novo daqui a pouco.",
+      "blocked": {
+        "owned_by_source": "Isto vem de uma reserva ou de um plano – mova lá, senão volta ao lugar.",
+        "recurring": "Uma série se move pela própria série.",
+        "completed": "O que está feito fica onde estava.",
+        "cancelled": "O que foi cancelado não pode ser movido."
+      }
+    },
+    "google": {
+      "title": "Sincronizar com o Google Agenda",
+      "intro": "Seus compromissos do Vitanaland vão para uma agenda própria \"Vitanaland\" na sua conta Google. Seus eventos do Google aparecem aqui como horários ocupados em cinza, sem títulos.",
+      "turnOn": "Ativar sincronização com o Google",
+      "turnOff": "Desativar sincronização com o Google",
+      "turnedOn": "Sincronização com o Google ativada 🎉",
+      "turnedOff": "Sincronização com o Google desativada",
+      "on": "Sincronização com o Google ativada",
+      "lastSync": "última vez {date}",
+      "problem": "A última sincronização falhou – vamos tentar de novo automaticamente.",
+      "error": "Não deu certo agora. Tente de novo daqui a pouco.",
+      "busy": "Ocupado (Google)",
+      "busyHint": "Um evento da sua agenda Google – só o horário aparece"
+    },
+    "quietHours": {
+      "title": "Horário silencioso",
+      "body": "No seu horário silencioso não chegam lembretes – eles chegam pouco antes.",
+      "link": "Definir horário silencioso"
+    }
+  }
+}

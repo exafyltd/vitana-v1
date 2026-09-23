@@ -3,6 +3,8 @@ import { Calendar, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { t } from '@/lib/i18n-toast';
+import { useCalendarEvents, type CalendarEvent as UserCalendarEvent } from "@/hooks/useCalendarEvents";
+import { formatDate } from "@/lib/locale-format";
 
 interface CalendarEvent {
   title: string;
@@ -21,13 +23,30 @@ function SmartCalendarCardBase({
 }: SmartCalendarCardProps) {
   const navigate = useNavigate();
 
-  const defaultEvents: CalendarEvent[] = [
-    { title: "Team Meeting", time: "2:00 PM", type: "work" },
-    { title: "Yoga Class", time: "6:00 PM", type: "health" },
-    { title: "AI: Take a 10min walk", time: "Now", type: "ai-suggestion" }
-  ];
+  const { getUpcomingEvents } = useCalendarEvents();
 
-  const eventList = events || defaultEvents;
+  const toCardType = (type: UserCalendarEvent["event_type"]): CalendarEvent["type"] => {
+    switch (type) {
+      case "health":
+      case "workout":
+      case "nutrition":
+        return "health";
+      case "community":
+        return "social";
+      case "autopilot":
+      case "wellness_nudge":
+        return "ai-suggestion";
+      default:
+        return "work";
+    }
+  };
+
+  // Real upcoming events for the signed-in user (no placeholder data).
+  const eventList: CalendarEvent[] = events ?? getUpcomingEvents(3).map((event) => ({
+    title: event.title,
+    time: formatDate(new Date(event.start_time), "EEE HH:mm"),
+    type: toCardType(event.event_type),
+  }));
 
   const getEventColor = (type: CalendarEvent["type"]) => {
     switch (type) {
@@ -39,7 +58,9 @@ function SmartCalendarCardBase({
     }
   };
 
-  const content = (
+  const content = eventList.length === 0 ? (
+    <p className="text-xs text-muted-foreground">{t('screens.crossover.noUpcomingEvents')}</p>
+  ) : (
     <div className="space-y-2">
       {eventList.slice(0, 3).map((event, index) => (
         <div key={index} className="flex items-center justify-between text-xs">

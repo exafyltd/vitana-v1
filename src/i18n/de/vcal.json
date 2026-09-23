@@ -1,0 +1,145 @@
+{
+  "vcal": {
+    "title": "Kalender",
+    "today": "Heute",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "loading": "Kalender wird geladen",
+    "error": "Dein Kalender konnte gerade nicht geladen werden.",
+    "retry": "Nochmal versuchen",
+    "busy": "Belegt",
+    "busyHint": "Termin aus einer anderen Rolle – nur die Zeit ist sichtbar",
+    "done": "Erledigt",
+    "markDone": "Als erledigt markieren",
+    "doneToast": "Erledigt – stark! 🎉",
+    "doneError": "Das konnte gerade nicht gespeichert werden.",
+    "recurring": "Wiederholt sich",
+    "voiceAdd": "„Bluttest Freitag 8 Uhr, nüchtern“ – sag's Vitana",
+    "nextUp": "Als Nächstes · {when}",
+    "progress": "{done} von {total} heute erledigt",
+    "progressAllDone": "Alles geschafft – genieß den Rest des Tages ✨",
+    "progressKeepGoing": "Weiter so, du bist auf gutem Weg 💪",
+    "greeting": {
+      "morning": "Guten Morgen ☀️",
+      "afternoon": "Schönen Nachmittag 🌤️",
+      "evening": "Guten Abend 🌙",
+      "night": "Gute Nacht 🌙"
+    },
+    "views": {
+      "day": "Tag",
+      "week": "Woche",
+      "month": "Monat"
+    },
+    "rel": {
+      "now": "jetzt",
+      "minutes": "in {count} Min.",
+      "hours": "in {count} Std.",
+      "days": "in {count} Tagen"
+    },
+    "reminder": {
+      "eveningBefore": "Am Vorabend um {time}",
+      "atStart": "Zum Start",
+      "hoursBefore": "{count} Std. vorher",
+      "minutesBefore": "{count} Min. vorher"
+    },
+    "kinds": {
+      "nutrition": "Ernährung",
+      "hydration": "Trinken",
+      "exercise": "Bewegung",
+      "sleep": "Schlaf",
+      "mental": "Mentales",
+      "community": "Community",
+      "lab": "Labor",
+      "work": "Arbeit",
+      "vitana": "Vitana",
+      "personal": "Persönlich"
+    },
+    "source": {
+      "lab": "Aus deiner Laborbestellung",
+      "autopilot": "Autopilot ✨",
+      "plan": "Aus deinem Plan",
+      "assistant": "Mit Vitana eingetragen",
+      "community": "Community",
+      "journey": "Deine Journey"
+    },
+    "empty": {
+      "title": "Nichts geplant – ein ruhiger Tag 🌿",
+      "hint": "Sag Vitana, was du vorhast, und sie trägt es ein."
+    },
+    "week": {
+      "title": "Woche ab {date}",
+      "free": "frei"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Schließen",
+      "about": "Worum es geht",
+      "reminders": "Erinnerungen",
+      "noReminders": "Keine Erinnerung",
+      "directions": "Route",
+      "askVitana": "Vitana fragen"
+    },
+    "work": {
+      "deploy_staging": "Staging-Deploy",
+      "deploy_prod": "Produktions-Deploy",
+      "autopilot_review": "Wartet auf deine Prüfung",
+      "ticket_due": "Ticket-Frist",
+      "erp_approval": "Freigabe wartet",
+      "readOnly": "Das erledigst du dort, wo es entsteht – im Kalender siehst du nur, wann es ansteht."
+    },
+    "subscribe": {
+      "title": "In meiner Kalender-App zeigen",
+      "intro": "Abonniere deinen Vitanaland-Kalender in Apple, Google oder Outlook. Neue Termine erscheinen dort von selbst.",
+      "privacy": "Der Link zeigt nur Titel, Zeit und Ort – keine Details. Wer den Link hat, sieht diese Termine, also teile ihn nicht.",
+      "create": "Link erstellen",
+      "replace": "Neuen Link erstellen",
+      "replaceHint": "Ein neuer Link ersetzt den alten – der alte funktioniert dann nicht mehr.",
+      "revoke": "Link ausschalten",
+      "revoked": "Link ausgeschaltet",
+      "yourLink": "Dein Link",
+      "onlyOnce": "Du siehst den Link nur jetzt. Kopier ihn oder öffne ihn direkt in deiner Kalender-App.",
+      "copy": "Kopieren",
+      "copied": "Link kopiert",
+      "copyError": "Kopieren hat nicht geklappt – markier den Link und kopier ihn selbst.",
+      "openApp": "In Kalender-App öffnen",
+      "activeSince": "Ein Link ist aktiv seit {date}.",
+      "error": "Das hat gerade nicht geklappt. Versuch es gleich nochmal."
+    },
+    "move": {
+      "action": "Verschieben",
+      "title": "Neuer Zeitpunkt",
+      "keepsLength": "Die Dauer bleibt gleich.",
+      "cancel": "Abbrechen",
+      "confirm": "Hierhin verschieben",
+      "moved": "Verschoben – passt ✨",
+      "error": "Das konnte gerade nicht verschoben werden. Versuch es gleich nochmal.",
+      "blocked": {
+        "owned_by_source": "Das kommt aus einer Buchung oder einem Plan – verschieb es dort, sonst springt es zurück.",
+        "recurring": "Eine Serie verschiebst du über die Serie selbst.",
+        "completed": "Erledigtes bleibt, wo es war.",
+        "cancelled": "Abgesagtes lässt sich nicht verschieben."
+      }
+    },
+    "google": {
+      "title": "Mit Google Kalender abgleichen",
+      "intro": "Deine Vitanaland-Termine landen in einem eigenen Kalender „Vitanaland“ in deinem Google-Konto. Deine Google-Termine siehst du hier als graue, belegte Zeiten – ohne Titel.",
+      "turnOn": "Google-Abgleich einschalten",
+      "turnOff": "Google-Abgleich ausschalten",
+      "turnedOn": "Google-Abgleich ist an 🎉",
+      "turnedOff": "Google-Abgleich ist aus",
+      "on": "Google-Abgleich ist an",
+      "lastSync": "zuletzt {date}",
+      "problem": "Der letzte Abgleich hat nicht geklappt – wir versuchen es von selbst wieder.",
+      "error": "Das hat gerade nicht geklappt. Versuch es gleich nochmal.",
+      "busy": "Belegt (Google)",
+      "busyHint": "Termin aus deinem Google-Kalender – nur die Zeit ist sichtbar"
+    },
+    "quietHours": {
+      "title": "Ruhezeiten",
+      "body": "In deinen Ruhezeiten kommen keine Erinnerungen – sie kommen kurz vorher.",
+      "link": "Ruhezeiten einstellen"
+    }
+  }
+}

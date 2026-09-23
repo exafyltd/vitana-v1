@@ -1,8 +1,9 @@
 import { Event, ChatThread, Filters } from "@/types/command-hub";
+import { resolveOperatorApi } from '@/lib/gateway-base';
 
 // Read from environment/config
-const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
-const BASE_OP = (import.meta.env.VITE_OPERATOR_BASE_URL || "/api/v1").trim();
+const BASE_EVENTS = resolveOperatorApi(import.meta.env.VITE_EVENTS_BASE_URL);
+const BASE_OP = resolveOperatorApi(import.meta.env.VITE_OPERATOR_BASE_URL);
 const DEFAULT_H = Number((import.meta.env.VITE_DEFAULT_HISTORY_HOURS || 72) as number);
 
 export async function fetchEvents(opts: { 

@@ -23,7 +23,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { notifyError, t } from "@/lib/i18n-toast";
 import { communityFetch } from "@/lib/community-gateway";
-import { activateOrb } from "@/lib/orbActivate";
+import { activateOrbForSupportReport } from "@/lib/orbActivate";
 import { buildSupportContactBody, SUPPORT_CATEGORIES, type SupportCategory } from "@/lib/feedback-ticket";
 import { MyTicketsList } from "@/components/support/MyTicketsList";
 import { useRTL } from "@/components/RTLProvider";
@@ -124,7 +124,8 @@ function Support() {
   };
 
   const handleVoice = () => {
-    if (!activateOrb()) notifyError("supportTickets.orbUnavailable");
+    // VTID-04395: open the ORB as a support intake, not a plain open.
+    if (!activateOrbForSupportReport()) notifyError("supportTickets.orbUnavailable");
   };
 
   return (

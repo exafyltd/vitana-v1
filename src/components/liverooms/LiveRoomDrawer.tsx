@@ -65,6 +65,7 @@ import { useCreateReminder } from "@/hooks/useReminders";
 import { FollowButton } from "@/components/social/FollowButton";
 
 import { formatDistanceToNow, fmtDate, fmtTime } from '@/lib/locale-format';
+import { buildIcs, downloadIcs, icsFilename } from '@/lib/ics';
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
   open: boolean;
@@ -210,7 +211,16 @@ export function LiveRoomDrawer({
       const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(room.title)}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(room.description || "")}&location=Virtual`;
       window.open(url, "_blank");
     } else if (type === "apple" || type === "ics") {
+      downloadIcs(icsFilename(room.title), buildIcs({
+        uid: `live-room-${room.id}`,
+        title: room.title,
+        start: startDate,
+        end: endDate,
+        description: room.description,
+        location: "Virtual",
+      }));
       notify('toasts.liverooms.calendarExport', 'toasts.liverooms.icsFileWillDownloaded');
+      return;
     }
 
     notify('toasts.liverooms.openingCalendar');

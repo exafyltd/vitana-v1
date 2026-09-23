@@ -21,11 +21,12 @@ import {
   useOAuthBounceStore,
   type OAuthBounceProvider,
 } from "@/hooks/useOAuthBounceStore";
+import { DEFAULT_GATEWAY_ORIGIN } from '@/lib/gateway-base';
 
 const GATEWAY_BASE = (
   import.meta.env.VITE_GATEWAY_BASE ||
   (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/api\/v1\/?$/, "") ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app"
+  DEFAULT_GATEWAY_ORIGIN
 ).replace(/\/+$/, "");
 
 async function authHeaders(): Promise<HeadersInit> {
@@ -269,7 +270,12 @@ export function useStartYouTubeConnect() {
   return useStartSocialOAuth("youtube");
 }
 
-export type GoogleSubService = "gmail" | "calendar" | "contacts" | "youtube";
+/**
+ * `calendar_sync` (VTID-04372) is the Vitanaland <-> Google calendar sync:
+ * scopes calendar.app.created + calendar.freebusy. Started from the calendar
+ * screen, so it is deliberately not in ALL_GOOGLE_SUB_SERVICES below.
+ */
+export type GoogleSubService = "gmail" | "calendar" | "contacts" | "youtube" | "calendar_sync";
 
 export const ALL_GOOGLE_SUB_SERVICES: GoogleSubService[] = ["gmail", "calendar", "contacts", "youtube"];
 
