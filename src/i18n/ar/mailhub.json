@@ -1,0 +1,113 @@
+{
+  "mailhub": {
+    "intro": "اربط بريدك وتقويمك وجهات اتصالك بلمسة واحدة. عندها تستطيع Vitana قراءة رسائلك ورؤية مواعيدك والعثور على جهات اتصالك — فقط في التطبيقات التي تشغّلها هنا.",
+    "kinds": {
+      "mail": "البريد",
+      "calendar": "التقويم",
+      "contacts": "جهات الاتصال"
+    },
+    "apps": {
+      "gmail": {
+        "name": "Gmail",
+        "what": "تقرأ Vitana الرسائل وتكتبها لك"
+      },
+      "outlook-mail": {
+        "name": "Outlook Mail",
+        "what": "اقرأ صندوق Microsoft وأرسل الرسائل"
+      },
+      "apple-mail": {
+        "name": "Apple Mail (iCloud)",
+        "what": "اقرأ الرسائل الجديدة في صندوق iCloud"
+      },
+      "google-calendar": {
+        "name": "تقويم Google",
+        "what": "شاهد المواعيد وأضفها، متزامنة مع Vitanaland"
+      },
+      "outlook-calendar": {
+        "name": "تقويم Outlook",
+        "what": "شاهد المواعيد واعرض الأوقات المشغولة في تقويمك"
+      },
+      "apple-calendar": {
+        "name": "تقويم Apple (iCloud)",
+        "what": "شاهد المواعيد واعرض الأوقات المشغولة في تقويمك"
+      },
+      "google-contacts": {
+        "name": "جهات اتصال Google",
+        "what": "انقل جهات اتصالك إلى Vitanaland"
+      },
+      "iphone-contacts": {
+        "name": "جهات اتصال iPhone (iCloud)",
+        "what": "انقل جهات اتصال iCloud إلى Vitanaland"
+      },
+      "android-contacts": {
+        "name": "جهات اتصال Android",
+        "what": "اختر جهات اتصال من هاتفك وانقلها"
+      }
+    },
+    "status": {
+      "loading": "جارٍ التحميل …",
+      "on": "مُشغّل",
+      "notAvailable": "غير متاح بعد",
+      "needsReconnect": "انتهت صلاحية الوصول — أعد الربط",
+      "syncProblem": "لم تنجح آخر مزامنة",
+      "finishInBrowser": "أكمل تسجيل الدخول في المتصفح ثم عد",
+      "contactsCount": "{count} جهة اتصال",
+      "busyCount": "{count} وقت مشغول",
+      "syncedAgo": "تمت المزامنة {ago}"
+    },
+    "actions": {
+      "toggleAria": "تشغيل {app} أو إيقافه",
+      "syncNow": "زامن الآن",
+      "reconnect": "أعد الربط",
+      "addMore": "أضف جهات اتصال أخرى",
+      "cancel": "إلغاء",
+      "keepOn": "أبقِه مُشغّلًا",
+      "turnOff": "إيقاف",
+      "gotIt": "حسنًا"
+    },
+    "toasts": {
+      "turnedOn": "تم تشغيل {app}",
+      "turnedOff": "تم إيقاف {app}",
+      "contactsImported": "أُضيفت {count} جهة اتصال",
+      "synced": "اكتملت المزامنة",
+      "syncFailed": "لم تنجح المزامنة — حاول بعد قليل",
+      "firstSyncFailed": "تم التشغيل، لكن أول مزامنة لم تنجح",
+      "consentFailed": "لم يكتمل تسجيل الدخول — حاول مرة أخرى",
+      "notAvailable": "هذا التطبيق غير متاح لدينا بعد",
+      "couldNotTurnOn": "لم ينجح ذلك — حاول بعد قليل",
+      "couldNotTurnOff": "لم ينجح الإيقاف — حاول بعد قليل"
+    },
+    "apple": {
+      "title": "اربط Apple iCloud",
+      "intro": "لا تسمح Apple للتطبيقات الأخرى باستخدام بريد iCloud وتقويمه وجهات اتصاله إلا بكلمة سر خاصة بالتطبيق. تُعدّها مرة واحدة وتعمل مع تطبيقات Apple الثلاثة.",
+      "step1": "سجّل الدخول في",
+      "step2": "افتح «تسجيل الدخول والأمان» ← «كلمات السر الخاصة بالتطبيقات» وأنشئ واحدة باسم «Vitanaland».",
+      "step3": "أدخل هنا Apple ID وكلمة السر الجديدة.",
+      "appleId": "Apple ID (البريد الإلكتروني)",
+      "appPassword": "كلمة سر خاصة بالتطبيق",
+      "privacy": "نحفظ كلمة السر مشفّرة ولا نستخدمها إلا للقراءة. يمكنك إلغاؤها لدى Apple في أي وقت.",
+      "connect": "اربط",
+      "checking": "جارٍ التحقق …",
+      "wrongPassword": "رفضت Apple تسجيل الدخول — تحقّق من Apple ID وكلمة السر الخاصة بالتطبيق",
+      "unreachable": "لا يمكن الوصول إلى iCloud الآن — حاول بعد قليل",
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+    },
+    "android": {
+      "title": "افتحه على هاتف Android",
+      "body": "تأتي جهات اتصال Android مباشرة من هاتفك. افتح Vitanaland في Chrome على هاتف Android واضغط على المفتاح هناك — أنت تختار جهات الاتصال التي تُنقل."
+    },
+    "off": {
+      "title": "إيقاف {app}؟",
+      "body": {
+        "mail": "لن تقرأ Vitana الرسائل أو ترسلها عبر هذا التطبيق بعد الآن.",
+        "calendar": "تختفي الأوقات المشغولة من هذا التقويم من تقويم Vitanaland الخاص بك.",
+        "contacts": "لن تُنقل جهات اتصال جديدة. تبقى جهات الاتصال المنقولة إلا إذا حذفتها هنا."
+      },
+      "removeContacts": "احذف أيضًا جهات الاتصال المنقولة من Vitanaland"
+    },
+    "errors": {
+      "sessionExpired": "انتهت جلستك. سجّل الدخول مجددًا لإدارة تطبيقاتك.",
+      "loadFailed": "تعذّر تحميل تطبيقاتك الآن. حاول بعد قليل."
+    }
+  }
+}

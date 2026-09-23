@@ -85,6 +85,12 @@ import { ToastAction } from "@/components/ui/toast";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+// VTID-04406: Mail, Calendar & Contacts come from the gateway hub now.
+import { MailCalendarContactsPanel } from '@/components/settings/connected-apps/MailCalendarContactsPanel';
+import { APP_ORDER } from '@/lib/connected-apps-client';
+
+/** The nine hub apps — no longer rendered as static cards (VTID-04406). */
+const HUB_APP_IDS = new Set<string>(Object.values(APP_ORDER).flat());
 function ConnectedApps() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -135,6 +141,9 @@ function ConnectedApps() {
   // Show a success / error toast when returning from the OAuth callback.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    // VTID-04406: a Connected Apps switch started this grant — the Mail,
+    // Calendar & Contacts panel shows its own toast for the app.
+    if (params.get("app")) return;
     const connected = params.get("connected");
     const errorCode = params.get("error");
     const provider = params.get("provider");
@@ -802,7 +811,7 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => {
+    return apps.filter((a) => !HUB_APP_IDS.has(a.id)).map((app) => {
       const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
       const isConnected = isGoogle && googleConnected;
       const badges = app.comingSoon
@@ -986,7 +995,7 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => {
+    return apps.filter((a) => !HUB_APP_IDS.has(a.id)).map((app) => {
       const AppIcon = app.icon;
       const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
       const isConnected = app.connected || (isGoogle && googleConnected);
@@ -1397,7 +1406,7 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => ({
+    return apps.filter((a) => !HUB_APP_IDS.has(a.id)).map((app) => ({
       id: `communication-${app.id}`,
       screenId: "settings-connected-apps",
       icon: <app.icon className="w-5 h-5" />,
@@ -2024,6 +2033,8 @@ function ConnectedApps() {
                 <Mail className="w-5 h-5" />
                 {t('screens.settings.mailCalendarContacts')}
               </h2>
+              {/* VTID-04406: the nine mail / calendar / contacts apps, one real switch each. */}
+              <MailCalendarContactsPanel className="mb-6 max-w-3xl" />
               <HorizontalCardList
                 items={getCommunicationCards()}
                 variant="standard"

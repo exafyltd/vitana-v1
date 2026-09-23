@@ -15,9 +15,10 @@ const Switch = React.forwardRef<
     {...props}
     ref={ref}
   >
+    {/* VTID-04406: in RTL the thumb must travel left, or it slides out of the track. */}
     <SwitchPrimitives.Thumb
       className={cn(
-        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 rtl:data-[state=checked]:-translate-x-5"
       )}
     />
   </SwitchPrimitives.Root>
