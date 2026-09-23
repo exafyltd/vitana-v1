@@ -106,6 +106,40 @@
       "openApp": "在日历应用中打开",
       "activeSince": "链接自 {date} 起有效。",
       "error": "刚才没有成功，请稍后再试。"
+    },
+    "move": {
+      "action": "移动",
+      "title": "新时间",
+      "keepsLength": "时长保持不变。",
+      "cancel": "取消",
+      "confirm": "移到这里",
+      "moved": "已移动 ✨",
+      "error": "暂时无法移动，请稍后再试。",
+      "blocked": {
+        "owned_by_source": "这来自预订或计划——请在那里移动，否则会恢复原位。",
+        "recurring": "系列日程请在系列本身中移动。",
+        "completed": "已完成的保持原位。",
+        "cancelled": "已取消的无法移动。"
+      }
+    },
+    "google": {
+      "title": "与 Google 日历同步",
+      "intro": "你的 Vitanaland 日程会进入你 Google 账号中一个单独的「Vitanaland」日历。你的 Google 活动在这里显示为灰色的忙碌时段——不显示标题。",
+      "turnOn": "开启 Google 同步",
+      "turnOff": "关闭 Google 同步",
+      "turnedOn": "Google 同步已开启 🎉",
+      "turnedOff": "Google 同步已关闭",
+      "on": "Google 同步已开启",
+      "lastSync": "上次 {date}",
+      "problem": "上次同步失败——我们会自动重试。",
+      "error": "暂时没有成功，请稍后再试。",
+      "busy": "忙碌（Google）",
+      "busyHint": "来自你 Google 日历的活动——仅显示时间"
+    },
+    "quietHours": {
+      "title": "免打扰时段",
+      "body": "免打扰时段内不会收到提醒——提醒会在此之前送达。",
+      "link": "设置免打扰时段"
     }
   }
 }

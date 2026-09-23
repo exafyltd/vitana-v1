@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 354
-- **Distinct i18n keys consumed:** 4936
+- **Distinct i18n keys consumed:** 4937
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -67,11 +67,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Calendar.tsx
 
-**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
 
 **i18n namespaces:**
 
-- `vcal` — used: 2, total in shard: 83
+- `vcal` — used: 3, total in shard: 109
 
 ### src/pages/Changelog.tsx
 

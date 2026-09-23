@@ -106,6 +106,40 @@
       "openApp": "Ouvrir dans l'app de calendrier",
       "activeSince": "Un lien est actif depuis le {date}.",
       "error": "Ça n'a pas marché. Réessaie dans un instant."
+    },
+    "move": {
+      "action": "Déplacer",
+      "title": "Nouvel horaire",
+      "keepsLength": "La durée reste la même.",
+      "cancel": "Annuler",
+      "confirm": "Déplacer ici",
+      "moved": "Déplacé ✨",
+      "error": "Impossible de déplacer pour le moment. Réessaie dans un instant.",
+      "blocked": {
+        "owned_by_source": "Cela vient d'une réservation ou d'un plan – déplace-le là-bas, sinon il reviendra.",
+        "recurring": "Une série se déplace depuis la série elle-même.",
+        "completed": "Ce qui est fait reste à sa place.",
+        "cancelled": "Un rendez-vous annulé ne peut pas être déplacé."
+      }
+    },
+    "google": {
+      "title": "Synchroniser avec Google Agenda",
+      "intro": "Tes rendez-vous Vitanaland vont dans leur propre agenda « Vitanaland » dans ton compte Google. Tes événements Google apparaissent ici comme des créneaux occupés gris, sans titre.",
+      "turnOn": "Activer la synchro Google",
+      "turnOff": "Désactiver la synchro Google",
+      "turnedOn": "Synchro Google activée 🎉",
+      "turnedOff": "Synchro Google désactivée",
+      "on": "Synchro Google activée",
+      "lastSync": "dernière fois {date}",
+      "problem": "La dernière synchro a échoué – nous réessaierons automatiquement.",
+      "error": "Ça n'a pas marché. Réessaie dans un instant.",
+      "busy": "Occupé (Google)",
+      "busyHint": "Un événement de ton agenda Google – seule l'heure est visible"
+    },
+    "quietHours": {
+      "title": "Heures calmes",
+      "body": "Pendant tes heures calmes, aucun rappel n'arrive – il arrive juste avant.",
+      "link": "Régler les heures calmes"
     }
   }
 }

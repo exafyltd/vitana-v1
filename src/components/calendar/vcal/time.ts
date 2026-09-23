@@ -85,3 +85,9 @@ export function nextReminderAt(rules: ReminderRule[] | undefined, startIso: stri
   const future = times.filter((d) => d.getTime() >= now.getTime()).sort((a, b) => a.getTime() - b.getTime());
   return future[0] ?? null;
 }
+
+/** VTID-04374: A Date as the value of <input type="datetime-local"> in the device's time. */
+export function toLocalInput(d: Date): string {
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+}

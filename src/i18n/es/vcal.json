@@ -106,6 +106,40 @@
       "openApp": "Abrir en la app de calendario",
       "activeSince": "Hay un enlace activo desde el {date}.",
       "error": "No ha funcionado. Inténtalo de nuevo en un momento."
+    },
+    "move": {
+      "action": "Mover",
+      "title": "Nuevo horario",
+      "keepsLength": "Mantiene la misma duración.",
+      "cancel": "Cancelar",
+      "confirm": "Mover aquí",
+      "moved": "Movido ✨",
+      "error": "No se pudo mover ahora. Inténtalo de nuevo en un momento.",
+      "blocked": {
+        "owned_by_source": "Esto viene de una reserva o un plan: muévelo allí o volverá a su sitio.",
+        "recurring": "Una serie se mueve desde la propia serie.",
+        "completed": "Lo terminado se queda donde estaba.",
+        "cancelled": "Lo cancelado no se puede mover."
+      }
+    },
+    "google": {
+      "title": "Sincronizar con Google Calendar",
+      "intro": "Tus citas de Vitanaland van a un calendario propio \"Vitanaland\" en tu cuenta de Google. Tus eventos de Google aparecen aquí como horas ocupadas en gris, sin títulos.",
+      "turnOn": "Activar sincronización con Google",
+      "turnOff": "Desactivar sincronización con Google",
+      "turnedOn": "Sincronización con Google activada 🎉",
+      "turnedOff": "Sincronización con Google desactivada",
+      "on": "Sincronización con Google activada",
+      "lastSync": "última vez {date}",
+      "problem": "La última sincronización falló; lo volveremos a intentar automáticamente.",
+      "error": "No funcionó ahora. Inténtalo de nuevo en un momento.",
+      "busy": "Ocupado (Google)",
+      "busyHint": "Un evento de tu calendario de Google: solo se ve la hora"
+    },
+    "quietHours": {
+      "title": "Horas de silencio",
+      "body": "Durante tus horas de silencio no llegan recordatorios: llegan justo antes.",
+      "link": "Configurar horas de silencio"
     }
   }
 }

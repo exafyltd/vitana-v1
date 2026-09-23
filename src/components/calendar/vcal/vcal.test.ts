@@ -185,3 +185,58 @@ describe("calendar subscription link (VTID-04358)", () => {
     }
   });
 });
+
+describe("move an entry (VTID-04374)", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("posts the new start and keeps the role header", async () => {
+    const { moveCalendarEntry } = await import("@/lib/calendar-window-client");
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+    vi.stubGlobal("fetch", fetchMock);
+    await moveCalendarEntry("ev 1", new Date("2026-10-06T08:00:00Z"), "community");
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toContain("/api/v1/calendar/events/ev%201/move");
+    expect(init.method).toBe("POST");
+    expect(JSON.parse(init.body)).toEqual({ start_time: "2026-10-06T08:00:00.000Z" });
+    expect(init.headers["X-Vitana-Active-Role"]).toBe("community");
+  });
+
+  it("a refused move carries its reason; anything else has none", async () => {
+    const { moveCalendarEntry, moveBlockReasonOf } = await import("@/lib/calendar-window-client");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 409, json: async () => ({ ok: false, error: "NOT_MOVABLE", reason: "owned_by_source" }) }));
+    const err = await moveCalendarEntry("e", new Date(), null).catch((e) => e);
+    expect(moveBlockReasonOf(err)).toBe("owned_by_source");
+    expect(moveBlockReasonOf(new Error("x"))).toBeNull();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 409, json: async () => ({ ok: false, error: "NOT_MOVABLE", reason: "weird" }) }));
+    expect(moveBlockReasonOf(await moveCalendarEntry("e", new Date(), null).catch((e) => e))).toBeNull();
+  });
+
+  it("the picker value is the device's local wall-clock time", async () => {
+    const { toLocalInput } = await import("./time");
+    const d = new Date(2026, 9, 6, 7, 5); // 6 Oct 2026 07:05 local
+    expect(toLocalInput(d)).toBe("2026-10-06T07:05");
+    expect(new Date(toLocalInput(d)).getTime()).toBe(d.getTime());
+  });
+});
+
+describe("Google Calendar sync (VTID-04372)", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("reads status, defaulting to not_configured", async () => {
+    const { fetchGoogleSyncStatus } = await import("@/lib/calendar-window-client");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true, data: { availability: "ready", enabled: true, last_push_at: "2026-10-05T10:00:00Z" } }) }));
+    expect(await fetchGoogleSyncStatus()).toEqual({ availability: "ready", enabled: true, last_push_at: "2026-10-05T10:00:00Z", last_error: null });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true, data: {} }) }));
+    expect((await fetchGoogleSyncStatus()).availability).toBe("not_configured");
+  });
+
+  it("enable: on, or 'connect Google first' on 409 not_connected; other errors throw", async () => {
+    const { enableGoogleSync } = await import("@/lib/calendar-window-client");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) }));
+    expect(await enableGoogleSync()).toBe("enabled");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 409, json: async () => ({ ok: false, error: "not_connected", connect_url: "/c" }) }));
+    expect(await enableGoogleSync()).toBe("needs_google");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 503, json: async () => ({ ok: false, error: "not_configured" }) }));
+    await expect(enableGoogleSync()).rejects.toThrow("not_configured");
+  });
+});

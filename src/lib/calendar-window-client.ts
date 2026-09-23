@@ -62,6 +62,10 @@ export interface CalendarWindowItem {
    * identifier (commit, ticket number); the label comes from `vcal.work.<kind>`.
    */
   work?: WorkDescriptor;
+  /** VTID-04374: may this member move it from the entry screen? */
+  movable?: boolean;
+  /** VTID-04372: a busy block pulled from the member's Google calendar. */
+  source?: "google";
 }
 
 export type WorkKind = "deploy_staging" | "deploy_prod" | "autopilot_review" | "ticket_due" | "erp_approval";
@@ -82,7 +86,7 @@ export interface CalendarWindow {
 }
 
 export class CalendarApiError extends Error {
-  constructor(message: string, public status: number) {
+  constructor(message: string, public status: number, public body: Record<string, unknown> = {}) {
     super(message);
     this.name = "CalendarApiError";
   }
@@ -113,7 +117,7 @@ async function authedFetch(path: string, role: string | null, init: RequestInit 
   const body: GatewayBody = await res.json().catch(() => ({}));
   if (!res.ok || body?.ok === false) {
     const msg = typeof body?.error === "string" ? body.error : `HTTP ${res.status}`;
-    throw new CalendarApiError(msg, res.status);
+    throw new CalendarApiError(msg, res.status, body as Record<string, unknown>);
   }
   return body;
 }
@@ -171,4 +175,65 @@ export function feedUrlFromPath(path: string, base: string = GATEWAY_BASE): stri
 /** The same feed as a webcal:// link, which calendar apps open as "subscribe". */
 export function webcalUrl(httpsUrl: string): string {
   return httpsUrl.replace(/^https?:\/\//, "webcal://");
+}
+
+// =============================================================================
+// VTID-04374 — move one of your own entries
+//   POST /api/v1/calendar/events/:id/move { start_time }
+// The gateway keeps the entry's length and answers 409 NOT_MOVABLE with a
+// reason for entries a source owns (a booking, a lab order, a series …).
+// =============================================================================
+
+export type MoveBlockReason = "cancelled" | "completed" | "recurring" | "owned_by_source";
+
+export async function moveCalendarEntry(eventId: string, start: Date, role: string | null): Promise<void> {
+  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/move`, role, {
+    method: "POST",
+    body: JSON.stringify({ start_time: start.toISOString() }),
+  });
+}
+
+/** The reason a move was refused, when the gateway gave one. */
+export function moveBlockReasonOf(err: unknown): MoveBlockReason | null {
+  if (!(err instanceof CalendarApiError) || err.message !== "NOT_MOVABLE") return null;
+  const r = err.body.reason;
+  return r === "cancelled" || r === "completed" || r === "recurring" || r === "owned_by_source" ? r : null;
+}
+
+// =============================================================================
+// VTID-04372 — Google Calendar two-way sync
+//   GET /api/v1/calendar/google, POST /google/enable, POST /google/disable
+// =============================================================================
+
+export interface GoogleSyncStatus {
+  availability: "ready" | "not_configured";
+  enabled: boolean;
+  last_push_at: string | null;
+  last_error: string | null;
+}
+
+export async function fetchGoogleSyncStatus(): Promise<GoogleSyncStatus> {
+  const body = await authedFetch("/api/v1/calendar/google", null);
+  const d = (body.data ?? {}) as Partial<GoogleSyncStatus>;
+  return {
+    availability: d.availability === "ready" ? "ready" : "not_configured",
+    enabled: !!d.enabled,
+    last_push_at: d.last_push_at ?? null,
+    last_error: d.last_error ?? null,
+  };
+}
+
+/** "enabled" when sync is on; "needs_google" when Google must be connected first. */
+export async function enableGoogleSync(): Promise<"enabled" | "needs_google"> {
+  try {
+    await authedFetch("/api/v1/calendar/google/enable", null, { method: "POST" });
+    return "enabled";
+  } catch (err) {
+    if (err instanceof CalendarApiError && err.status === 409 && err.message === "not_connected") return "needs_google";
+    throw err;
+  }
+}
+
+export async function disableGoogleSync(): Promise<void> {
+  await authedFetch("/api/v1/calendar/google/disable", null, { method: "POST" });
 }

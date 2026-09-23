@@ -106,6 +106,40 @@
       "openApp": "In Kalender-App öffnen",
       "activeSince": "Ein Link ist aktiv seit {date}.",
       "error": "Das hat gerade nicht geklappt. Versuch es gleich nochmal."
+    },
+    "move": {
+      "action": "Verschieben",
+      "title": "Neuer Zeitpunkt",
+      "keepsLength": "Die Dauer bleibt gleich.",
+      "cancel": "Abbrechen",
+      "confirm": "Hierhin verschieben",
+      "moved": "Verschoben – passt ✨",
+      "error": "Das konnte gerade nicht verschoben werden. Versuch es gleich nochmal.",
+      "blocked": {
+        "owned_by_source": "Das kommt aus einer Buchung oder einem Plan – verschieb es dort, sonst springt es zurück.",
+        "recurring": "Eine Serie verschiebst du über die Serie selbst.",
+        "completed": "Erledigtes bleibt, wo es war.",
+        "cancelled": "Abgesagtes lässt sich nicht verschieben."
+      }
+    },
+    "google": {
+      "title": "Mit Google Kalender abgleichen",
+      "intro": "Deine Vitanaland-Termine landen in einem eigenen Kalender „Vitanaland“ in deinem Google-Konto. Deine Google-Termine siehst du hier als graue, belegte Zeiten – ohne Titel.",
+      "turnOn": "Google-Abgleich einschalten",
+      "turnOff": "Google-Abgleich ausschalten",
+      "turnedOn": "Google-Abgleich ist an 🎉",
+      "turnedOff": "Google-Abgleich ist aus",
+      "on": "Google-Abgleich ist an",
+      "lastSync": "zuletzt {date}",
+      "problem": "Der letzte Abgleich hat nicht geklappt – wir versuchen es von selbst wieder.",
+      "error": "Das hat gerade nicht geklappt. Versuch es gleich nochmal.",
+      "busy": "Belegt (Google)",
+      "busyHint": "Termin aus deinem Google-Kalender – nur die Zeit ist sichtbar"
+    },
+    "quietHours": {
+      "title": "Ruhezeiten",
+      "body": "In deinen Ruhezeiten kommen keine Erinnerungen – sie kommen kurz vorher.",
+      "link": "Ruhezeiten einstellen"
     }
   }
 }

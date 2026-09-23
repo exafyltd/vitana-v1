@@ -3,14 +3,14 @@
  * countdown, what it is about, the reminders it will really get, and the
  * actions (mark done, directions, ask Vitana).
  */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import { activateOrb } from "@/lib/orbActivate";
 import type { CalendarWindowItem } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
 import { HEADING_FONT, itemEmoji, sourceLabel } from "./labels";
-import { reminderLabel, relativeIn, timeRange } from "./time";
+import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
 
 interface Props {
   item: CalendarWindowItem;
@@ -18,9 +18,13 @@ interface Props {
   onClose: () => void;
   onComplete?: (item: CalendarWindowItem) => void;
   completing?: boolean;
+  /** VTID-04374: move a one-off entry of the member's own to a new start. */
+  onMove?: (item: CalendarWindowItem, start: Date) => void;
+  moving?: boolean;
 }
 
-export function EntryScreen({ item, now, onClose, onComplete, completing }: Props) {
+
+export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const e = item.event!;
   const style = KIND_STYLE[entryKind(e)];
@@ -31,6 +35,13 @@ export function EntryScreen({ item, now, onClose, onComplete, completing }: Prop
   // complete the whole series, so only one-off entries get the button.
   // VTID-04357: work-lens items are finished where they live, not here.
   const canComplete = !done && item.occurrence_index === null && !item.work && !!onComplete;
+  // The gateway decides (`movable`): own one-off entries only, never a
+  // booking, lab order or series — their source would move them back.
+  const canMove = item.movable === true && !done && !item.work && !!onMove;
+  const [picking, setPicking] = useState(false);
+  const [when, setWhen] = useState(() => toLocalInput(new Date(item.start_time)));
+  const picked = when ? new Date(when) : null;
+  const pickedValid = !!picked && !Number.isNaN(picked.getTime()) && picked.getTime() !== Date.parse(item.start_time);
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -148,6 +159,54 @@ export function EntryScreen({ item, now, onClose, onComplete, completing }: Prop
             data-testid="vcal-complete"
           >
             ✅ {t("vcal.markDone")}
+          </button>
+        )}
+        {canMove && picking && (
+          <div className="flex flex-col gap-2.5 rounded-[18px] p-4" style={{ background: style.bg }} data-testid="vcal-move-picker">
+            <label htmlFor="vcal-move-when" className="text-[13px] font-extrabold uppercase tracking-wide" style={{ color: style.ink }}>
+              {t("vcal.move.title")}
+            </label>
+            <input
+              id="vcal-move-when"
+              type="datetime-local"
+              value={when}
+              onChange={(ev) => setWhen(ev.target.value)}
+              className="h-12 w-full rounded-2xl bg-white px-3 text-base font-bold"
+            />
+            <span className="text-sm font-bold" style={{ color: style.ink }}>
+              {t("vcal.move.keepsLength")}
+            </span>
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => setPicking(false)}
+                className="h-12 rounded-2xl text-[15px] font-extrabold"
+                style={{ background: SURFACE.track }}
+              >
+                {t("vcal.move.cancel")}
+              </button>
+              <button
+                type="button"
+                disabled={!pickedValid || moving}
+                onClick={() => picked && onMove!(item, picked)}
+                className="h-12 rounded-2xl text-[15px] font-extrabold text-white disabled:opacity-60"
+                style={{ background: style.accent }}
+                data-testid="vcal-move-confirm"
+              >
+                {t("vcal.move.confirm")}
+              </button>
+            </div>
+          </div>
+        )}
+        {canMove && !picking && (
+          <button
+            type="button"
+            onClick={() => setPicking(true)}
+            className="h-[52px] rounded-2xl text-[15px] font-extrabold"
+            style={{ background: SURFACE.track }}
+            data-testid="vcal-move"
+          >
+            🗓️ {t("vcal.move.action")}
           </button>
         )}
         <div className="grid grid-cols-2 gap-2.5">

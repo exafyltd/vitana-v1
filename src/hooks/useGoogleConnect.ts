@@ -269,7 +269,12 @@ export function useStartYouTubeConnect() {
   return useStartSocialOAuth("youtube");
 }
 
-export type GoogleSubService = "gmail" | "calendar" | "contacts" | "youtube";
+/**
+ * `calendar_sync` (VTID-04372) is the Vitanaland <-> Google calendar sync:
+ * scopes calendar.app.created + calendar.freebusy. Started from the calendar
+ * screen, so it is deliberately not in ALL_GOOGLE_SUB_SERVICES below.
+ */
+export type GoogleSubService = "gmail" | "calendar" | "contacts" | "youtube" | "calendar_sync";
 
 export const ALL_GOOGLE_SUB_SERVICES: GoogleSubService[] = ["gmail", "calendar", "contacts", "youtube"];
 

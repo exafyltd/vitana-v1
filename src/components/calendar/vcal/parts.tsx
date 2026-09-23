@@ -63,12 +63,12 @@ export function BusyCard({ item, compact }: { item: CalendarWindowItem; compact?
         color: SURFACE.busyInk,
       }}
       data-testid="vcal-busy"
-      title={t("vcal.busyHint")}
+      title={t(item.source === "google" ? "vcal.google.busyHint" : "vcal.busyHint")}
     >
-      <span aria-hidden>🔒</span>
+      <span aria-hidden>{item.source === "google" ? "📆" : "🔒"}</span>
       <span className="truncate">
         {compact ? hhmm(item.start_time) + " · " : ""}
-        {t("vcal.busy")}
+        {t(item.source === "google" ? "vcal.google.busy" : "vcal.busy")}
         {!compact && ` · ${timeRange(item.start_time, item.end_time)}`}
       </span>
     </div>

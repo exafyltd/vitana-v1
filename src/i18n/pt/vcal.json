@@ -106,6 +106,40 @@
       "openApp": "Abrir no app de calendário",
       "activeSince": "Um link está ativo desde {date}.",
       "error": "Não funcionou agora. Tente de novo em instantes."
+    },
+    "move": {
+      "action": "Mover",
+      "title": "Novo horário",
+      "keepsLength": "Mantém a mesma duração.",
+      "cancel": "Cancelar",
+      "confirm": "Mover para aqui",
+      "moved": "Movido ✨",
+      "error": "Não foi possível mover agora. Tente de novo daqui a pouco.",
+      "blocked": {
+        "owned_by_source": "Isto vem de uma reserva ou de um plano – mova lá, senão volta ao lugar.",
+        "recurring": "Uma série se move pela própria série.",
+        "completed": "O que está feito fica onde estava.",
+        "cancelled": "O que foi cancelado não pode ser movido."
+      }
+    },
+    "google": {
+      "title": "Sincronizar com o Google Agenda",
+      "intro": "Seus compromissos do Vitanaland vão para uma agenda própria \"Vitanaland\" na sua conta Google. Seus eventos do Google aparecem aqui como horários ocupados em cinza, sem títulos.",
+      "turnOn": "Ativar sincronização com o Google",
+      "turnOff": "Desativar sincronização com o Google",
+      "turnedOn": "Sincronização com o Google ativada 🎉",
+      "turnedOff": "Sincronização com o Google desativada",
+      "on": "Sincronização com o Google ativada",
+      "lastSync": "última vez {date}",
+      "problem": "A última sincronização falhou – vamos tentar de novo automaticamente.",
+      "error": "Não deu certo agora. Tente de novo daqui a pouco.",
+      "busy": "Ocupado (Google)",
+      "busyHint": "Um evento da sua agenda Google – só o horário aparece"
+    },
+    "quietHours": {
+      "title": "Horário silencioso",
+      "body": "No seu horário silencioso não chegam lembretes – eles chegam pouco antes.",
+      "link": "Definir horário silencioso"
     }
   }
 }

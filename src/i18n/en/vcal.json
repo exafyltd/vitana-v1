@@ -106,6 +106,40 @@
       "openApp": "Open in calendar app",
       "activeSince": "A link has been active since {date}.",
       "error": "That didn't work just now. Please try again in a moment."
+    },
+    "move": {
+      "action": "Move",
+      "title": "New time",
+      "keepsLength": "It keeps the same length.",
+      "cancel": "Cancel",
+      "confirm": "Move here",
+      "moved": "Moved ✨",
+      "error": "That couldn't be moved just now. Try again in a moment.",
+      "blocked": {
+        "owned_by_source": "This comes from a booking or a plan – move it there, or it will jump back.",
+        "recurring": "Move a series from the series itself.",
+        "completed": "Done entries stay where they were.",
+        "cancelled": "Cancelled entries can't be moved."
+      }
+    },
+    "google": {
+      "title": "Sync with Google Calendar",
+      "intro": "Your Vitanaland entries go to their own \"Vitanaland\" calendar in your Google account. Your Google events show here as grey busy times – no titles.",
+      "turnOn": "Turn on Google sync",
+      "turnOff": "Turn off Google sync",
+      "turnedOn": "Google sync is on 🎉",
+      "turnedOff": "Google sync is off",
+      "on": "Google sync is on",
+      "lastSync": "last {date}",
+      "problem": "The last sync didn't work – we'll retry automatically.",
+      "error": "That didn't work just now. Try again in a moment.",
+      "busy": "Busy (Google)",
+      "busyHint": "An event from your Google calendar – only the time is visible"
+    },
+    "quietHours": {
+      "title": "Quiet hours",
+      "body": "No reminders arrive during your quiet hours – they come just before.",
+      "link": "Set quiet hours"
     }
   }
 }

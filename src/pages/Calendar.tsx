@@ -17,8 +17,18 @@ import { activateOrb } from "@/lib/orbActivate";
 import {
   completeCalendarEntry,
   fetchCalendarWindow,
+  moveBlockReasonOf,
+  moveCalendarEntry,
   type CalendarWindowItem,
+  type MoveBlockReason,
 } from "@/lib/calendar-window-client";
+
+const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
+  cancelled: "vcal.move.blocked.cancelled",
+  completed: "vcal.move.blocked.completed",
+  recurring: "vcal.move.blocked.recurring",
+  owned_by_source: "vcal.move.blocked.owned_by_source",
+};
 import { SURFACE, isDone } from "@/components/calendar/vcal/theme";
 import { DayProgress, NextUpCard, ViewSwitch } from "@/components/calendar/vcal/parts";
 import { HEADING_FONT } from "@/components/calendar/vcal/labels";
@@ -111,6 +121,21 @@ export default function CalendarPage() {
       queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
     },
     onError: () => notifyError("vcal.doneError"),
+  });
+
+  // VTID-04374: move one of the member's own entries.
+  const move = useMutation({
+    mutationFn: ({ item, start }: { item: CalendarWindowItem; start: Date }) =>
+      moveCalendarEntry(item.event_id, start, currentRole ?? null),
+    onSuccess: () => {
+      notify("vcal.move.moved");
+      setOpenItem(null);
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: (err) => {
+      const reason = moveBlockReasonOf(err);
+      notifyError(reason ? MOVE_BLOCKED_KEY[reason] : "vcal.move.error");
+    },
   });
 
   const isTodayAnchor = sameDay(anchor, now);
@@ -239,6 +264,8 @@ export default function CalendarPage() {
           onClose={() => setOpenItem(null)}
           onComplete={(i) => complete.mutate(i)}
           completing={complete.isPending}
+          onMove={(i, start) => move.mutate({ item: i, start })}
+          moving={move.isPending}
         />
       )}
       {subscribeOpen && <SubscribeSheet onClose={() => setSubscribeOpen(false)} />}

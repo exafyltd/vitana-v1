@@ -12,6 +12,7 @@ import { fmtDate } from "@/lib/locale-format";
 import { createFeedLink, fetchFeedStatus, revokeFeedLink, webcalUrl } from "@/lib/calendar-window-client";
 import { SURFACE } from "./theme";
 import { HEADING_FONT } from "./labels";
+import { GoogleSyncCard, QuietHoursNote } from "./GoogleSyncCard";
 
 export function SubscribeSheet({ onClose }: { onClose: () => void }) {
   const queryClient = useQueryClient();
@@ -156,6 +157,9 @@ export function SubscribeSheet({ onClose }: { onClose: () => void }) {
             </span>
           )}
         </div>
+
+        <GoogleSyncCard />
+        <QuietHoursNote onNavigate={onClose} />
       </div>
     </div>
   );

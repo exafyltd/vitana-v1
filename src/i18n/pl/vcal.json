@@ -106,6 +106,40 @@
       "openApp": "Otwórz w aplikacji kalendarza",
       "activeSince": "Link jest aktywny od {date}.",
       "error": "Nie udało się. Spróbuj ponownie za chwilę."
+    },
+    "move": {
+      "action": "Przesuń",
+      "title": "Nowy termin",
+      "keepsLength": "Czas trwania zostaje ten sam.",
+      "cancel": "Anuluj",
+      "confirm": "Przesuń tutaj",
+      "moved": "Przesunięto ✨",
+      "error": "Nie udało się teraz przesunąć. Spróbuj za chwilę.",
+      "blocked": {
+        "owned_by_source": "To pochodzi z rezerwacji lub planu – przesuń to tam, inaczej wróci.",
+        "recurring": "Serię przesuwasz z poziomu samej serii.",
+        "completed": "Zrobione zostaje tam, gdzie było.",
+        "cancelled": "Odwołanego nie da się przesunąć."
+      }
+    },
+    "google": {
+      "title": "Synchronizuj z Kalendarzem Google",
+      "intro": "Twoje wpisy z Vitanaland trafiają do osobnego kalendarza „Vitanaland” na Twoim koncie Google. Wydarzenia z Google widzisz tu jako szare, zajęte godziny – bez tytułów.",
+      "turnOn": "Włącz synchronizację z Google",
+      "turnOff": "Wyłącz synchronizację z Google",
+      "turnedOn": "Synchronizacja z Google włączona 🎉",
+      "turnedOff": "Synchronizacja z Google wyłączona",
+      "on": "Synchronizacja z Google włączona",
+      "lastSync": "ostatnio {date}",
+      "problem": "Ostatnia synchronizacja się nie udała – spróbujemy ponownie automatycznie.",
+      "error": "Teraz się nie udało. Spróbuj za chwilę.",
+      "busy": "Zajęte (Google)",
+      "busyHint": "Wydarzenie z Twojego Kalendarza Google – widać tylko godzinę"
+    },
+    "quietHours": {
+      "title": "Godziny ciszy",
+      "body": "W godzinach ciszy nie przychodzą przypomnienia – przychodzą tuż przed nimi.",
+      "link": "Ustaw godziny ciszy"
     }
   }
 }

@@ -106,6 +106,40 @@
       "openApp": "Otvori u aplikaciji kalendara",
       "activeSince": "Link je aktivan od {date}.",
       "error": "Nije uspelo. Pokušaj ponovo za trenutak."
+    },
+    "move": {
+      "action": "Pomeri",
+      "title": "Novo vreme",
+      "keepsLength": "Trajanje ostaje isto.",
+      "cancel": "Otkaži",
+      "confirm": "Pomeri ovde",
+      "moved": "Pomereno ✨",
+      "error": "Trenutno nije moglo da se pomeri. Pokušaj ponovo za trenutak.",
+      "blocked": {
+        "owned_by_source": "Ovo dolazi iz rezervacije ili plana – pomeri to tamo, inače će se vratiti.",
+        "recurring": "Seriju pomeraš preko same serije.",
+        "completed": "Završeno ostaje gde je bilo.",
+        "cancelled": "Otkazano ne može da se pomeri."
+      }
+    },
+    "google": {
+      "title": "Sinhronizuj sa Google kalendarom",
+      "intro": "Tvoji Vitanaland termini idu u poseban kalendar „Vitanaland“ na tvom Google nalogu. Tvoje Google događaje ovde vidiš kao siva zauzeta vremena – bez naslova.",
+      "turnOn": "Uključi Google sinhronizaciju",
+      "turnOff": "Isključi Google sinhronizaciju",
+      "turnedOn": "Google sinhronizacija je uključena 🎉",
+      "turnedOff": "Google sinhronizacija je isključena",
+      "on": "Google sinhronizacija je uključena",
+      "lastSync": "poslednji put {date}",
+      "problem": "Poslednja sinhronizacija nije uspela – pokušaćemo ponovo automatski.",
+      "error": "Trenutno nije uspelo. Pokušaj ponovo za trenutak.",
+      "busy": "Zauzeto (Google)",
+      "busyHint": "Događaj iz tvog Google kalendara – vidi se samo vreme"
+    },
+    "quietHours": {
+      "title": "Tihi sati",
+      "body": "U tvojim tihim satima podsetnici ne stižu – stižu malo pre toga.",
+      "link": "Podesi tihe sate"
     }
   }
 }
