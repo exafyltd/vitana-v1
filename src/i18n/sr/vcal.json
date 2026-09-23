@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Kalendar",
+    "today": "Danas",
+    "prev": "Nazad",
+    "next": "Napred",
+    "loading": "Učitavanje kalendara",
+    "error": "Tvoj kalendar trenutno nije mogao da se učita.",
+    "retry": "Pokušaj ponovo",
+    "busy": "Zauzeto",
+    "busyHint": "Unos iz druge uloge – vidi se samo vreme",
+    "done": "Gotovo",
+    "markDone": "Označi kao gotovo",
+    "doneToast": "Gotovo – bravo! 🎉",
+    "doneError": "Trenutno nije moglo da se sačuva.",
+    "recurring": "Ponavlja se",
+    "voiceAdd": "„Analiza krvi u petak u 8, natašte” – reci Vitani",
+    "nextUp": "Sledeće · {when}",
+    "progress": "{done} od {total} urađeno danas",
+    "progressAllDone": "Sve je urađeno – uživaj u ostatku dana ✨",
+    "progressKeepGoing": "Samo nastavi, na dobrom si putu 💪",
+    "greeting": {
+      "morning": "Dobro jutro ☀️",
+      "afternoon": "Prijatno popodne 🌤️",
+      "evening": "Dobro veče 🌙",
+      "night": "Laku noć 🌙"
+    },
+    "views": {
+      "day": "Dan",
+      "week": "Nedelja",
+      "month": "Mesec"
+    },
+    "rel": {
+      "now": "sada",
+      "minutes": "za {count} min",
+      "hours": "za {count} h",
+      "days": "za {count} dana"
+    },
+    "reminder": {
+      "eveningBefore": "Veče pre u {time}",
+      "atStart": "Na početku",
+      "hoursBefore": "{count} h pre",
+      "minutesBefore": "{count} min pre"
+    },
+    "kinds": {
+      "nutrition": "Ishrana",
+      "hydration": "Hidratacija",
+      "exercise": "Kretanje",
+      "sleep": "San",
+      "mental": "Mentalno",
+      "community": "Zajednica",
+      "lab": "Laboratorija",
+      "work": "Posao",
+      "vitana": "Vitana",
+      "personal": "Lično"
+    },
+    "source": {
+      "lab": "Iz tvog laboratorijskog naloga",
+      "autopilot": "Autopilot ✨",
+      "plan": "Iz tvog plana",
+      "assistant": "Dodato uz Vitanu",
+      "community": "Zajednica",
+      "journey": "Tvoje putovanje"
+    },
+    "empty": {
+      "title": "Ništa nije planirano – miran dan 🌿",
+      "hint": "Reci Vitani šta planiraš i ona će to dodati."
+    },
+    "week": {
+      "title": "Nedelja od {date}",
+      "free": "slobodno"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Zatvori",
+      "about": "O čemu se radi",
+      "reminders": "Podsetnici",
+      "noReminders": "Bez podsetnika",
+      "directions": "Putanja",
+      "askVitana": "Pitaj Vitanu"
+    }
+  }
+}

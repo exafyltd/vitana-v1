@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Kalender",
+    "today": "Heute",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "loading": "Kalender wird geladen",
+    "error": "Dein Kalender konnte gerade nicht geladen werden.",
+    "retry": "Nochmal versuchen",
+    "busy": "Belegt",
+    "busyHint": "Termin aus einer anderen Rolle – nur die Zeit ist sichtbar",
+    "done": "Erledigt",
+    "markDone": "Als erledigt markieren",
+    "doneToast": "Erledigt – stark! 🎉",
+    "doneError": "Das konnte gerade nicht gespeichert werden.",
+    "recurring": "Wiederholt sich",
+    "voiceAdd": "„Bluttest Freitag 8 Uhr, nüchtern“ – sag's Vitana",
+    "nextUp": "Als Nächstes · {when}",
+    "progress": "{done} von {total} heute erledigt",
+    "progressAllDone": "Alles geschafft – genieß den Rest des Tages ✨",
+    "progressKeepGoing": "Weiter so, du bist auf gutem Weg 💪",
+    "greeting": {
+      "morning": "Guten Morgen ☀️",
+      "afternoon": "Schönen Nachmittag 🌤️",
+      "evening": "Guten Abend 🌙",
+      "night": "Gute Nacht 🌙"
+    },
+    "views": {
+      "day": "Tag",
+      "week": "Woche",
+      "month": "Monat"
+    },
+    "rel": {
+      "now": "jetzt",
+      "minutes": "in {count} Min.",
+      "hours": "in {count} Std.",
+      "days": "in {count} Tagen"
+    },
+    "reminder": {
+      "eveningBefore": "Am Vorabend um {time}",
+      "atStart": "Zum Start",
+      "hoursBefore": "{count} Std. vorher",
+      "minutesBefore": "{count} Min. vorher"
+    },
+    "kinds": {
+      "nutrition": "Ernährung",
+      "hydration": "Trinken",
+      "exercise": "Bewegung",
+      "sleep": "Schlaf",
+      "mental": "Mentales",
+      "community": "Community",
+      "lab": "Labor",
+      "work": "Arbeit",
+      "vitana": "Vitana",
+      "personal": "Persönlich"
+    },
+    "source": {
+      "lab": "Aus deiner Laborbestellung",
+      "autopilot": "Autopilot ✨",
+      "plan": "Aus deinem Plan",
+      "assistant": "Mit Vitana eingetragen",
+      "community": "Community",
+      "journey": "Deine Journey"
+    },
+    "empty": {
+      "title": "Nichts geplant – ein ruhiger Tag 🌿",
+      "hint": "Sag Vitana, was du vorhast, und sie trägt es ein."
+    },
+    "week": {
+      "title": "Woche ab {date}",
+      "free": "frei"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Schließen",
+      "about": "Worum es geht",
+      "reminders": "Erinnerungen",
+      "noReminders": "Keine Erinnerung",
+      "directions": "Route",
+      "askVitana": "Vitana fragen"
+    }
+  }
+}

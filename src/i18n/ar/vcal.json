@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "التقويم",
+    "today": "اليوم",
+    "prev": "السابق",
+    "next": "التالي",
+    "loading": "جارٍ تحميل تقويمك",
+    "error": "تعذّر تحميل تقويمك الآن.",
+    "retry": "حاول مرة أخرى",
+    "busy": "مشغول",
+    "busyHint": "موعد من دور آخر – يظهر الوقت فقط",
+    "done": "تم",
+    "markDone": "وضع علامة كمنجز",
+    "doneToast": "تم – عمل رائع! 🎉",
+    "doneError": "تعذّر الحفظ الآن.",
+    "recurring": "يتكرر",
+    "voiceAdd": "«تحليل دم الجمعة الساعة 8 صائمًا» – أخبر فيتانا",
+    "nextUp": "التالي · {when}",
+    "progress": "أنجزت {done} من {total} اليوم",
+    "progressAllDone": "أنجزت كل شيء – استمتع ببقية يومك ✨",
+    "progressKeepGoing": "واصل، أنت على الطريق الصحيح 💪",
+    "greeting": {
+      "morning": "صباح الخير ☀️",
+      "afternoon": "مساء الخير 🌤️",
+      "evening": "مساء الخير 🌙",
+      "night": "تصبح على خير 🌙"
+    },
+    "views": {
+      "day": "يوم",
+      "week": "أسبوع",
+      "month": "شهر"
+    },
+    "rel": {
+      "now": "الآن",
+      "minutes": "بعد {count} دقيقة",
+      "hours": "بعد {count} ساعة",
+      "days": "بعد {count} يوم"
+    },
+    "reminder": {
+      "eveningBefore": "في الليلة السابقة الساعة {time}",
+      "atStart": "عند البدء",
+      "hoursBefore": "قبل {count} ساعة",
+      "minutesBefore": "قبل {count} دقيقة"
+    },
+    "kinds": {
+      "nutrition": "التغذية",
+      "hydration": "الترطيب",
+      "exercise": "الحركة",
+      "sleep": "النوم",
+      "mental": "الصحة النفسية",
+      "community": "المجتمع",
+      "lab": "المختبر",
+      "work": "العمل",
+      "vitana": "Vitana",
+      "personal": "شخصي"
+    },
+    "source": {
+      "lab": "من طلب التحليل الخاص بك",
+      "autopilot": "Autopilot ✨",
+      "plan": "من خطتك",
+      "assistant": "أُضيف مع فيتانا",
+      "community": "المجتمع",
+      "journey": "رحلتك"
+    },
+    "empty": {
+      "title": "لا شيء مخطط – يوم هادئ 🌿",
+      "hint": "أخبر فيتانا بما تنوي وستضيفه."
+    },
+    "week": {
+      "title": "أسبوع {date}",
+      "free": "متاح"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "إغلاق",
+      "about": "عن ماذا",
+      "reminders": "التذكيرات",
+      "noReminders": "بدون تذكير",
+      "directions": "الاتجاهات",
+      "askVitana": "اسأل فيتانا"
+    }
+  }
+}

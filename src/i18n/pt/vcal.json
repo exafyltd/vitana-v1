@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Calendário",
+    "today": "Hoje",
+    "prev": "Anterior",
+    "next": "Próximo",
+    "loading": "Carregando seu calendário",
+    "error": "Não foi possível carregar seu calendário agora.",
+    "retry": "Tentar de novo",
+    "busy": "Ocupado",
+    "busyHint": "Entrada de outra função – só o horário aparece",
+    "done": "Feito",
+    "markDone": "Marcar como feito",
+    "doneToast": "Feito – mandou bem! 🎉",
+    "doneError": "Não foi possível salvar agora.",
+    "recurring": "Repete",
+    "voiceAdd": "“Exame de sangue sexta às 8h, em jejum” – fale com a Vitana",
+    "nextUp": "A seguir · {when}",
+    "progress": "{done} de {total} feitos hoje",
+    "progressAllDone": "Tudo feito – aproveite o resto do dia ✨",
+    "progressKeepGoing": "Continue assim, você está no caminho 💪",
+    "greeting": {
+      "morning": "Bom dia ☀️",
+      "afternoon": "Boa tarde 🌤️",
+      "evening": "Boa noite 🌙",
+      "night": "Boa noite 🌙"
+    },
+    "views": {
+      "day": "Dia",
+      "week": "Semana",
+      "month": "Mês"
+    },
+    "rel": {
+      "now": "agora",
+      "minutes": "em {count} min",
+      "hours": "em {count} h",
+      "days": "em {count} dias"
+    },
+    "reminder": {
+      "eveningBefore": "Na noite anterior às {time}",
+      "atStart": "No início",
+      "hoursBefore": "{count} h antes",
+      "minutesBefore": "{count} min antes"
+    },
+    "kinds": {
+      "nutrition": "Nutrição",
+      "hydration": "Hidratação",
+      "exercise": "Exercício",
+      "sleep": "Sono",
+      "mental": "Mente",
+      "community": "Comunidade",
+      "lab": "Laboratório",
+      "work": "Trabalho",
+      "vitana": "Vitana",
+      "personal": "Pessoal"
+    },
+    "source": {
+      "lab": "Do seu pedido de exame",
+      "autopilot": "Autopilot ✨",
+      "plan": "Do seu plano",
+      "assistant": "Adicionado com a Vitana",
+      "community": "Comunidade",
+      "journey": "Sua jornada"
+    },
+    "empty": {
+      "title": "Nada planejado – um dia tranquilo 🌿",
+      "hint": "Diga à Vitana o que você tem em mente e ela adiciona."
+    },
+    "week": {
+      "title": "Semana de {date}",
+      "free": "livre"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Fechar",
+      "about": "Do que se trata",
+      "reminders": "Lembretes",
+      "noReminders": "Sem lembrete",
+      "directions": "Rota",
+      "askVitana": "Perguntar à Vitana"
+    }
+  }
+}

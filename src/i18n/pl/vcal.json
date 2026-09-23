@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Kalendarz",
+    "today": "Dziś",
+    "prev": "Wstecz",
+    "next": "Dalej",
+    "loading": "Ładowanie kalendarza",
+    "error": "Nie udało się teraz wczytać twojego kalendarza.",
+    "retry": "Spróbuj ponownie",
+    "busy": "Zajęte",
+    "busyHint": "Wpis z innej roli – widać tylko godzinę",
+    "done": "Zrobione",
+    "markDone": "Oznacz jako zrobione",
+    "doneToast": "Zrobione – świetnie! 🎉",
+    "doneError": "Nie udało się teraz zapisać.",
+    "recurring": "Powtarza się",
+    "voiceAdd": "„Badanie krwi w piątek o 8, na czczo” – powiedz Vitanie",
+    "nextUp": "Następne · {when}",
+    "progress": "{done} z {total} zrobione dziś",
+    "progressAllDone": "Wszystko gotowe – ciesz się resztą dnia ✨",
+    "progressKeepGoing": "Tak trzymaj, idzie ci dobrze 💪",
+    "greeting": {
+      "morning": "Dzień dobry ☀️",
+      "afternoon": "Miłego popołudnia 🌤️",
+      "evening": "Dobry wieczór 🌙",
+      "night": "Dobranoc 🌙"
+    },
+    "views": {
+      "day": "Dzień",
+      "week": "Tydzień",
+      "month": "Miesiąc"
+    },
+    "rel": {
+      "now": "teraz",
+      "minutes": "za {count} min",
+      "hours": "za {count} godz.",
+      "days": "za {count} dni"
+    },
+    "reminder": {
+      "eveningBefore": "Wieczór wcześniej o {time}",
+      "atStart": "Na start",
+      "hoursBefore": "{count} godz. wcześniej",
+      "minutesBefore": "{count} min wcześniej"
+    },
+    "kinds": {
+      "nutrition": "Odżywianie",
+      "hydration": "Nawodnienie",
+      "exercise": "Ruch",
+      "sleep": "Sen",
+      "mental": "Umysł",
+      "community": "Społeczność",
+      "lab": "Laboratorium",
+      "work": "Praca",
+      "vitana": "Vitana",
+      "personal": "Osobiste"
+    },
+    "source": {
+      "lab": "Z twojego zlecenia badań",
+      "autopilot": "Autopilot ✨",
+      "plan": "Z twojego planu",
+      "assistant": "Dodane z Vitaną",
+      "community": "Społeczność",
+      "journey": "Twoja ścieżka"
+    },
+    "empty": {
+      "title": "Nic zaplanowanego – spokojny dzień 🌿",
+      "hint": "Powiedz Vitanie, co planujesz, a ona to doda."
+    },
+    "week": {
+      "title": "Tydzień od {date}",
+      "free": "wolne"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Zamknij",
+      "about": "O co chodzi",
+      "reminders": "Przypomnienia",
+      "noReminders": "Bez przypomnienia",
+      "directions": "Trasa",
+      "askVitana": "Zapytaj Vitanę"
+    }
+  }
+}

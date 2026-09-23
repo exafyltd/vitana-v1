@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Calendrier",
+    "today": "Aujourd'hui",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "loading": "Chargement de ton calendrier",
+    "error": "Ton calendrier n'a pas pu être chargé pour le moment.",
+    "retry": "Réessayer",
+    "busy": "Occupé",
+    "busyHint": "Entrée d'un autre rôle – seule l'heure est visible",
+    "done": "Fait",
+    "markDone": "Marquer comme fait",
+    "doneToast": "C'est fait, bravo ! 🎉",
+    "doneError": "Impossible d'enregistrer pour le moment.",
+    "recurring": "Se répète",
+    "voiceAdd": "« Prise de sang vendredi 8 h, à jeun » – dis-le à Vitana",
+    "nextUp": "Ensuite · {when}",
+    "progress": "{done} sur {total} faits aujourd'hui",
+    "progressAllDone": "Tout est fait – profite du reste de ta journée ✨",
+    "progressKeepGoing": "Continue, tu es sur la bonne voie 💪",
+    "greeting": {
+      "morning": "Bonjour ☀️",
+      "afternoon": "Bon après-midi 🌤️",
+      "evening": "Bonsoir 🌙",
+      "night": "Bonne nuit 🌙"
+    },
+    "views": {
+      "day": "Jour",
+      "week": "Semaine",
+      "month": "Mois"
+    },
+    "rel": {
+      "now": "maintenant",
+      "minutes": "dans {count} min",
+      "hours": "dans {count} h",
+      "days": "dans {count} jours"
+    },
+    "reminder": {
+      "eveningBefore": "La veille à {time}",
+      "atStart": "Au début",
+      "hoursBefore": "{count} h avant",
+      "minutesBefore": "{count} min avant"
+    },
+    "kinds": {
+      "nutrition": "Nutrition",
+      "hydration": "Hydratation",
+      "exercise": "Activité",
+      "sleep": "Sommeil",
+      "mental": "Mental",
+      "community": "Communauté",
+      "lab": "Laboratoire",
+      "work": "Travail",
+      "vitana": "Vitana",
+      "personal": "Personnel"
+    },
+    "source": {
+      "lab": "De ta demande d'analyse",
+      "autopilot": "Autopilot ✨",
+      "plan": "De ton plan",
+      "assistant": "Ajouté avec Vitana",
+      "community": "Communauté",
+      "journey": "Ton parcours"
+    },
+    "empty": {
+      "title": "Rien de prévu – une journée calme 🌿",
+      "hint": "Dis à Vitana ce que tu prévois, elle l'ajoutera."
+    },
+    "week": {
+      "title": "Semaine du {date}",
+      "free": "libre"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Fermer",
+      "about": "De quoi il s'agit",
+      "reminders": "Rappels",
+      "noReminders": "Aucun rappel",
+      "directions": "Itinéraire",
+      "askVitana": "Demander à Vitana"
+    }
+  }
+}

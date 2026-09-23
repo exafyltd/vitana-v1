@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Takvim",
+    "today": "Bugün",
+    "prev": "Önceki",
+    "next": "Sonraki",
+    "loading": "Takvimin yükleniyor",
+    "error": "Takvimin şu anda yüklenemedi.",
+    "retry": "Tekrar dene",
+    "busy": "Dolu",
+    "busyHint": "Başka bir rolden kayıt – yalnızca saat görünür",
+    "done": "Tamam",
+    "markDone": "Tamamlandı olarak işaretle",
+    "doneToast": "Tamamlandı – harika! 🎉",
+    "doneError": "Şu anda kaydedilemedi.",
+    "recurring": "Tekrarlanır",
+    "voiceAdd": "“Cuma saat 8'de kan tahlili, aç karnına” – Vitana'ya söyle",
+    "nextUp": "Sıradaki · {when}",
+    "progress": "Bugün {total} işten {done} tanesi tamam",
+    "progressAllDone": "Hepsi tamam – günün kalanının tadını çıkar ✨",
+    "progressKeepGoing": "Devam et, doğru yoldasın 💪",
+    "greeting": {
+      "morning": "Günaydın ☀️",
+      "afternoon": "İyi öğleden sonralar 🌤️",
+      "evening": "İyi akşamlar 🌙",
+      "night": "İyi geceler 🌙"
+    },
+    "views": {
+      "day": "Gün",
+      "week": "Hafta",
+      "month": "Ay"
+    },
+    "rel": {
+      "now": "şimdi",
+      "minutes": "{count} dk sonra",
+      "hours": "{count} sa sonra",
+      "days": "{count} gün sonra"
+    },
+    "reminder": {
+      "eveningBefore": "Önceki akşam {time}",
+      "atStart": "Başlangıçta",
+      "hoursBefore": "{count} sa önce",
+      "minutesBefore": "{count} dk önce"
+    },
+    "kinds": {
+      "nutrition": "Beslenme",
+      "hydration": "Su",
+      "exercise": "Hareket",
+      "sleep": "Uyku",
+      "mental": "Zihin",
+      "community": "Topluluk",
+      "lab": "Laboratuvar",
+      "work": "İş",
+      "vitana": "Vitana",
+      "personal": "Kişisel"
+    },
+    "source": {
+      "lab": "Laboratuvar isteğinden",
+      "autopilot": "Autopilot ✨",
+      "plan": "Planından",
+      "assistant": "Vitana ile eklendi",
+      "community": "Topluluk",
+      "journey": "Yolculuğun"
+    },
+    "empty": {
+      "title": "Planlanmış bir şey yok – sakin bir gün 🌿",
+      "hint": "Ne planladığını Vitana'ya söyle, o eklesin."
+    },
+    "week": {
+      "title": "{date} haftası",
+      "free": "boş"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Kapat",
+      "about": "Ne hakkında",
+      "reminders": "Hatırlatmalar",
+      "noReminders": "Hatırlatma yok",
+      "directions": "Yol tarifi",
+      "askVitana": "Vitana'ya sor"
+    }
+  }
+}

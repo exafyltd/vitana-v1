@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Calendar",
+    "today": "Today",
+    "prev": "Previous",
+    "next": "Next",
+    "loading": "Loading your calendar",
+    "error": "Your calendar couldn't be loaded right now.",
+    "retry": "Try again",
+    "busy": "Busy",
+    "busyHint": "Entry from another role – only the time is shown",
+    "done": "Done",
+    "markDone": "Mark as done",
+    "doneToast": "Done – nice work! 🎉",
+    "doneError": "That couldn't be saved right now.",
+    "recurring": "Repeats",
+    "voiceAdd": "“Blood test Friday 8am, fasting” – tell Vitana",
+    "nextUp": "Next up · {when}",
+    "progress": "{done} of {total} done today",
+    "progressAllDone": "All done – enjoy the rest of your day ✨",
+    "progressKeepGoing": "Keep going, you're on track 💪",
+    "greeting": {
+      "morning": "Good morning ☀️",
+      "afternoon": "Good afternoon 🌤️",
+      "evening": "Good evening 🌙",
+      "night": "Good night 🌙"
+    },
+    "views": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "rel": {
+      "now": "now",
+      "minutes": "in {count} min",
+      "hours": "in {count} h",
+      "days": "in {count} days"
+    },
+    "reminder": {
+      "eveningBefore": "Evening before at {time}",
+      "atStart": "At start",
+      "hoursBefore": "{count} h before",
+      "minutesBefore": "{count} min before"
+    },
+    "kinds": {
+      "nutrition": "Nutrition",
+      "hydration": "Hydration",
+      "exercise": "Exercise",
+      "sleep": "Sleep",
+      "mental": "Mental",
+      "community": "Community",
+      "lab": "Lab",
+      "work": "Work",
+      "vitana": "Vitana",
+      "personal": "Personal"
+    },
+    "source": {
+      "lab": "From your lab order",
+      "autopilot": "Autopilot ✨",
+      "plan": "From your plan",
+      "assistant": "Added with Vitana",
+      "community": "Community",
+      "journey": "Your journey"
+    },
+    "empty": {
+      "title": "Nothing planned – a calm day 🌿",
+      "hint": "Tell Vitana what you have in mind and she'll add it."
+    },
+    "week": {
+      "title": "Week of {date}",
+      "free": "free"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Close",
+      "about": "What it's about",
+      "reminders": "Reminders",
+      "noReminders": "No reminder",
+      "directions": "Directions",
+      "askVitana": "Ask Vitana"
+    }
+  }
+}

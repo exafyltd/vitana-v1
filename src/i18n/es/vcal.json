@@ -1,0 +1,85 @@
+{
+  "vcal": {
+    "title": "Calendario",
+    "today": "Hoy",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "loading": "Cargando tu calendario",
+    "error": "No se pudo cargar tu calendario ahora mismo.",
+    "retry": "Intentar de nuevo",
+    "busy": "Ocupado",
+    "busyHint": "Entrada de otro rol: solo se muestra la hora",
+    "done": "Hecho",
+    "markDone": "Marcar como hecho",
+    "doneToast": "¡Hecho, genial! 🎉",
+    "doneError": "No se pudo guardar ahora mismo.",
+    "recurring": "Se repite",
+    "voiceAdd": "«Análisis de sangre el viernes a las 8, en ayunas» – díselo a Vitana",
+    "nextUp": "A continuación · {when}",
+    "progress": "{done} de {total} hechos hoy",
+    "progressAllDone": "Todo listo – disfruta el resto del día ✨",
+    "progressKeepGoing": "Sigue así, vas bien 💪",
+    "greeting": {
+      "morning": "Buenos días ☀️",
+      "afternoon": "Buenas tardes 🌤️",
+      "evening": "Buenas noches 🌙",
+      "night": "Buenas noches 🌙"
+    },
+    "views": {
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes"
+    },
+    "rel": {
+      "now": "ahora",
+      "minutes": "en {count} min",
+      "hours": "en {count} h",
+      "days": "en {count} días"
+    },
+    "reminder": {
+      "eveningBefore": "La noche anterior a las {time}",
+      "atStart": "Al empezar",
+      "hoursBefore": "{count} h antes",
+      "minutesBefore": "{count} min antes"
+    },
+    "kinds": {
+      "nutrition": "Nutrición",
+      "hydration": "Hidratación",
+      "exercise": "Ejercicio",
+      "sleep": "Sueño",
+      "mental": "Mente",
+      "community": "Comunidad",
+      "lab": "Laboratorio",
+      "work": "Trabajo",
+      "vitana": "Vitana",
+      "personal": "Personal"
+    },
+    "source": {
+      "lab": "De tu orden de laboratorio",
+      "autopilot": "Autopilot ✨",
+      "plan": "De tu plan",
+      "assistant": "Añadido con Vitana",
+      "community": "Comunidad",
+      "journey": "Tu camino"
+    },
+    "empty": {
+      "title": "Nada planeado – un día tranquilo 🌿",
+      "hint": "Dile a Vitana lo que tienes en mente y ella lo añadirá."
+    },
+    "week": {
+      "title": "Semana del {date}",
+      "free": "libre"
+    },
+    "month": {
+      "more": "+{count}"
+    },
+    "entry": {
+      "close": "Cerrar",
+      "about": "De qué se trata",
+      "reminders": "Recordatorios",
+      "noReminders": "Sin recordatorio",
+      "directions": "Cómo llegar",
+      "askVitana": "Preguntar a Vitana"
+    }
+  }
+}
