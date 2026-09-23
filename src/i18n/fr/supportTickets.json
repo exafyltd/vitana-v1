@@ -1,0 +1,94 @@
+{
+  "supportTickets": {
+    "title": "Mes tickets",
+    "subtitle": "Tout ce que tu nous as signalé – avec numéro de ticket et état actuel.",
+    "loading": "Chargement des tickets …",
+    "loadError": "Impossible de charger tes tickets.",
+    "retry": "Réessayer",
+    "empty": "Pas encore de tickets.",
+    "emptyHint": "Dès que tu signales quelque chose – à la voix ou par écrit – cela apparaît ici avec un numéro de ticket.",
+    "kind": {
+      "feedback": "Avis général",
+      "bug": "Bug ou plantage",
+      "ux_issue": "Confus ou difficile à utiliser",
+      "support_question": "Comment faire …?",
+      "account_issue": "Problème de compte",
+      "marketplace_claim": "Commande ou paiement",
+      "feature_request": "Demande de fonctionnalité",
+      "other": "Autre"
+    },
+    "kindHint": {
+      "feedback": "Idées, réflexions, tout le reste",
+      "bug": "Quelque chose ne marche pas",
+      "ux_issue": "Retour sur l'utilisation",
+      "support_question": "Question sur l'utilisation de Vitana",
+      "account_issue": "Connexion, profil, données",
+      "marketplace_claim": "Remboursements, marketplace",
+      "feature_request": "Quelque chose que tu aimerais avoir"
+    },
+    "status": {
+      "received": "Reçu",
+      "under_review": "En cours d'examen",
+      "in_progress": "En correction",
+      "fixed": "Résolu",
+      "wont_fix": "Ne sera pas fait",
+      "duplicate": "Doublon"
+    },
+    "timelineLabel": "Avancement",
+    "reportedOn": "Signalé le {date}",
+    "viaVoice": "à la voix",
+    "handledBy": "Traité par {name}",
+    "ourAnswer": "Notre réponse",
+    "confirmed": "Confirmé par toi",
+    "didItWorkNamed": "{name} dit que c'est résolu. Est-ce que ça marche ?",
+    "didItWork": "Nous pensons que c'est résolu. Est-ce que ça marche ?",
+    "yesFixed": "Oui, résolu",
+    "noStillBroken": "Non, toujours cassé",
+    "showMore": "Afficher plus ({count})",
+    "severity": {
+      "low": "Faible",
+      "medium": "Moyenne",
+      "high": "Élevée",
+      "critical": "Critique"
+    },
+    "submittedTitle": "Merci – ton ticket est créé",
+    "submittedNumber": "Ton numéro de ticket : {number}",
+    "submittedBody": "Tu peux suivre son état à tout moment dans « Mes tickets ». Nous revenons vers toi dès qu'il y a du nouveau.",
+    "viewTicket": "Voir le ticket",
+    "sendAnother": "Envoyer un autre message",
+    "orbUnavailable": "Vitana n'est pas joignable pour le moment. Réessaie dans un instant.",
+    "talk": {
+      "seoDescription": "Signale des bugs, pose des questions ou partage ton avis. Vitana et ses collègues te répondront.",
+      "headerDescription": "Bugs, questions, avis – Vitana transmet à un collègue spécialiste quand le sujet sort de son domaine.",
+      "send": "Envoyer à Vitana",
+      "sending": "Envoi …"
+    },
+    "support": {
+      "seoTitle": "Service client",
+      "seoDescription": "Aide pour ton compte : ouvre un ticket, signale à la voix et suis l'état de tes tickets.",
+      "headerTitle": "Service client",
+      "headerDescription": "Dis-nous pour quoi tu as besoin d'aide – à la voix ou par écrit. Chaque demande reçoit un numéro de ticket.",
+      "tabContact": "Contact",
+      "tabTickets": "Mes tickets",
+      "tabFaqs": "FAQ",
+      "tabCommunity": "Communauté",
+      "contactTitle": "Écris-nous",
+      "contactSubtitle": "Décris brièvement ce qui s'est passé et ce que tu attendais.",
+      "messageLabel": "Ton message",
+      "messagePlaceholder": "Que s'est-il passé ? Qu'as-tu déjà essayé ?",
+      "submit": "Envoyer le ticket",
+      "sending": "Envoi …",
+      "voiceTitle": "Tu préfères parler ?",
+      "voiceBody": "Dis simplement à Vitana ce qui se passe. Elle crée le ticket pour toi et te donne le numéro de ticket.",
+      "voiceButton": "Signaler à la voix",
+      "emailTitle": "E-mail",
+      "emailBody": "Tu peux aussi nous écrire directement."
+    },
+    "diary": {
+      "title": "Mes signalements"
+    },
+    "admin": {
+      "copyVtid": "Copier le VTID"
+    }
+  }
+}

@@ -6,8 +6,8 @@
 ## Summary
 
 - **Pages scanned:** 354
-- **Distinct i18n keys consumed:** 5026
-- **Namespaces in use:** 46
+- **Distinct i18n keys consumed:** 4934
+- **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -1968,12 +1968,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/community/TalkToVitana.tsx
 
-**Status:** ✅ clean — keys consumed: 25, namespaces: 2
+**Status:** ✅ clean — keys consumed: 8, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 11151
-- `toasts` — used: 10, total in shard: 1265
+- `screens` — used: 5, total in shard: 11151
+- `toasts` — used: 3, total in shard: 1265
 
 ## dev/
 
@@ -2873,11 +2873,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/settings/Support.tsx
 
-**Status:** ✅ clean — keys consumed: 78, namespaces: 1
+**Status:** ✅ clean — keys consumed: 3, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 78, total in shard: 11151
+- `mobilesupport` — **MISSING SHARD** in src/i18n/de/
+- `supportTickets` — used: 1, total in shard: 74
 
 ### src/pages/settings/TenantRole.tsx
 
@@ -2972,12 +2973,13 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 266 |
+| `screens` | 265 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
 | `discover` | 3 |
 | `inbox` | 2 |
+| `mobilesupport` | 2 |
 | `event` | 2 |
 | `eventCta` | 2 |
 | `sidebar` | 2 |
@@ -2989,7 +2991,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `health` | 1 |
 | `diary` | 1 |
 | `settings` | 1 |
-| `mobilesupport` | 1 |
 | `newsCard` | 1 |
 | `videoShop` | 1 |
 | `universalCart` | 1 |
@@ -3018,3 +3019,4 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `discount` | 1 |
 | `portals` | 1 |
 | `authPage` | 1 |
+| `supportTickets` | 1 |
