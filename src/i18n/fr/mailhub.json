@@ -4,20 +4,32 @@
     "kinds": {
       "mail": "E-mail",
       "calendar": "Agenda",
-      "contacts": "Contacts"
+      "contacts": "Contacts",
+      "_pending_review": {
+        "contacts": true
+      }
     },
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana lit et écrit des e-mails pour toi"
+        "what": "Vitana lit et écrit des e-mails pour toi",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Lire ta boîte Microsoft et envoyer des e-mails"
+        "what": "Lire ta boîte Microsoft et envoyer des e-mails",
+        "_pending_review": {
+          "name": true
+        }
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Lire les nouveaux e-mails de ta boîte iCloud"
+        "what": "Lire les nouveaux e-mails de ta boîte iCloud",
+        "_pending_review": {
+          "name": true
+        }
       },
       "google-calendar": {
         "name": "Google Agenda",
@@ -53,7 +65,10 @@
       "finishInBrowser": "Termine la connexion dans ton navigateur, puis reviens",
       "contactsCount": "{count} contacts",
       "busyCount": "{count} créneaux occupés",
-      "syncedAgo": "synchronisé {ago}"
+      "syncedAgo": "synchronisé {ago}",
+      "_pending_review": {
+        "contactsCount": true
+      }
     },
     "actions": {
       "toggleAria": "Activer ou désactiver {app}",
@@ -90,7 +105,10 @@
       "checking": "Vérification …",
       "wrongPassword": "Apple a refusé la connexion — vérifie ton identifiant Apple et le mot de passe pour app",
       "unreachable": "iCloud est injoignable pour le moment — réessaie dans un instant",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "Ouvre-le sur ton téléphone Android",

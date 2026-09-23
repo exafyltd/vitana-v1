@@ -52,7 +52,10 @@
       "lab": "Laboratório",
       "work": "Trabalho",
       "vitana": "Vitana",
-      "personal": "Pessoal"
+      "personal": "Pessoal",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "Do seu pedido de exame",
@@ -60,7 +63,10 @@
       "plan": "Do seu plano",
       "assistant": "Adicionado com a Vitana",
       "community": "Comunidade",
-      "journey": "Sua jornada"
+      "journey": "Sua jornada",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Nada planejado – um dia tranquilo 🌿",
@@ -71,7 +77,10 @@
       "free": "livre"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Fechar",

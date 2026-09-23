@@ -52,7 +52,12 @@
       "lab": "Laboratoire",
       "work": "Travail",
       "vitana": "Vitana",
-      "personal": "Personnel"
+      "personal": "Personnel",
+      "_pending_review": {
+        "nutrition": true,
+        "mental": true,
+        "vitana": true
+      }
     },
     "source": {
       "lab": "De ta demande d'analyse",
@@ -60,7 +65,10 @@
       "plan": "De ton plan",
       "assistant": "Ajouté avec Vitana",
       "community": "Communauté",
-      "journey": "Ton parcours"
+      "journey": "Ton parcours",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Rien de prévu – une journée calme 🌿",
@@ -71,7 +79,10 @@
       "free": "libre"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Fermer",

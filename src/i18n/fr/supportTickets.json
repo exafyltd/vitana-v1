@@ -82,7 +82,10 @@
       "voiceBody": "Dis simplement à Vitana ce qui se passe. Elle crée le ticket pour toi et te donne le numéro de ticket.",
       "voiceButton": "Signaler à la voix",
       "emailTitle": "E-mail",
-      "emailBody": "Tu peux aussi nous écrire directement."
+      "emailBody": "Tu peux aussi nous écrire directement.",
+      "_pending_review": {
+        "tabContact": true
+      }
     },
     "diary": {
       "title": "Mes signalements"
@@ -96,7 +99,10 @@
         "marketplace_claim": "Réclamation marketplace",
         "account_issue": "Problème de compte",
         "feedback": "Retour (sans brouillon)",
-        "feature_request": "Demande de fonctionnalité"
+        "feature_request": "Demande de fonctionnalité",
+        "_pending_review": {
+          "bug": true
+        }
       },
       "kindDesc": {
         "bug": "Défaut de code — passe par la spec de Devon → Dev Autopilot",
@@ -132,7 +138,10 @@
         "merging": "Fusion",
         "deploying": "Déploiement",
         "verifying": "Vérification",
-        "completed": "Terminé"
+        "completed": "Terminé",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "avant de pouvoir démarrer",
@@ -161,7 +170,10 @@
         "spec_md": "spec",
         "draft_answer_md": "brouillon de réponse",
         "resolution_md": "résolution",
-        "none": "tâche"
+        "none": "tâche",
+        "_pending_review": {
+          "spec_md": true
+        }
       },
       "placeholder": {
         "devon": "ex. Le vrai bug est dans la logique de reconnexion SSE ; l'utilisateur voit le symptôme, mais la cause se trouve dans orb-live.ts. Ne touche qu'à la partie reconnexion. Ajoute un test unitaire pour le cas d'un seul énoncé.",
@@ -198,7 +210,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev Autopilot traite l'exécution {execution} — en autonomie à partir d'ici.",
         "rolledBackTitle": "Retour en arrière effectué pour {ticket}",
         "rolledBackDesc": "PR de revert #{number}. Le ticket a été rouvert.",
-        "rolledBackDescNoNumber": "PR de revert créée. Le ticket a été rouvert."
+        "rolledBackDescNoNumber": "PR de revert créée. Le ticket a été rouvert.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "Ce ticket est déjà en cours dans Dev Autopilot. La reclassification est verrouillée une fois lancé.",

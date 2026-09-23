@@ -52,7 +52,10 @@
       "lab": "Laboratorium",
       "work": "Praca",
       "vitana": "Vitana",
-      "personal": "Osobiste"
+      "personal": "Osobiste",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "Z twojego zlecenia badań",
@@ -60,7 +63,10 @@
       "plan": "Z twojego planu",
       "assistant": "Dodane z Vitaną",
       "community": "Społeczność",
-      "journey": "Twoja ścieżka"
+      "journey": "Twoja ścieżka",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Nic zaplanowanego – spokojny dzień 🌿",
@@ -71,7 +77,10 @@
       "free": "wolne"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Zamknij",
