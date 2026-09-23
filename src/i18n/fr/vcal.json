@@ -88,6 +88,24 @@
       "ticket_due": "Échéance du ticket",
       "erp_approval": "Validation en attente",
       "readOnly": "Tu le termines là où il est né – le calendrier montre seulement quand c'est prévu."
+    },
+    "subscribe": {
+      "title": "Afficher dans mon app de calendrier",
+      "intro": "Abonne-toi à ton calendrier Vitanaland dans Apple, Google ou Outlook. Les nouveaux rendez-vous y apparaissent tout seuls.",
+      "privacy": "Le lien n'affiche que les titres, horaires et lieux – aucun détail. Toute personne ayant le lien voit ces rendez-vous, alors garde-le pour toi.",
+      "create": "Créer le lien",
+      "replace": "Créer un nouveau lien",
+      "replaceHint": "Un nouveau lien remplace l'ancien – l'ancien ne fonctionne plus.",
+      "revoke": "Désactiver le lien",
+      "revoked": "Lien désactivé",
+      "yourLink": "Ton lien",
+      "onlyOnce": "Tu ne vois ce lien que maintenant. Copie-le ou ouvre-le directement dans ton app de calendrier.",
+      "copy": "Copier",
+      "copied": "Lien copié",
+      "copyError": "La copie n'a pas marché – sélectionne le lien et copie-le toi-même.",
+      "openApp": "Ouvrir dans l'app de calendrier",
+      "activeSince": "Un lien est actif depuis le {date}.",
+      "error": "Ça n'a pas marché. Réessaie dans un instant."
     }
   }
 }

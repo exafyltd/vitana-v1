@@ -24,6 +24,7 @@ import { DayProgress, NextUpCard, ViewSwitch } from "@/components/calendar/vcal/
 import { HEADING_FONT } from "@/components/calendar/vcal/labels";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
+import { SubscribeSheet } from "@/components/calendar/vcal/SubscribeSheet";
 import { greetingKey, sameDay, stepAnchor, viewRange, type CalendarView } from "@/components/calendar/vcal/time";
 
 const VIEW_KEY = "vitana.calendar.view";
@@ -68,6 +69,7 @@ export default function CalendarPage() {
   const [view, setView] = useState<CalendarView>(readSavedView);
   const [anchor, setAnchor] = useState(() => new Date());
   const [openItem, setOpenItem] = useState<CalendarWindowItem | null>(null);
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
 
   const changeView = (v: CalendarView) => {
     setView(v);
@@ -144,6 +146,16 @@ export default function CalendarPage() {
               </h1>
             </div>
             <div className="flex shrink-0 items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setSubscribeOpen(true)}
+                aria-label={t("vcal.subscribe.title")}
+                title={t("vcal.subscribe.title")}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-lg shadow-sm"
+                data-testid="vcal-subscribe-open"
+              >
+                <span aria-hidden>📲</span>
+              </button>
               <button
                 type="button"
                 onClick={() => setAnchor((a) => stepAnchor(view, a, -1))}
@@ -229,6 +241,7 @@ export default function CalendarPage() {
           completing={complete.isPending}
         />
       )}
+      {subscribeOpen && <SubscribeSheet onClose={() => setSubscribeOpen(false)} />}
     </AppLayout>
   );
 }

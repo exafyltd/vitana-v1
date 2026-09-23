@@ -88,6 +88,24 @@
       "ticket_due": "Plazo del ticket",
       "erp_approval": "Aprobación pendiente",
       "readOnly": "Esto lo terminas donde se origina: el calendario solo muestra cuándo toca."
+    },
+    "subscribe": {
+      "title": "Mostrar en mi app de calendario",
+      "intro": "Suscríbete a tu calendario de Vitanaland en Apple, Google u Outlook. Las nuevas citas aparecerán solas.",
+      "privacy": "El enlace muestra solo títulos, horas y lugares, sin detalles. Quien tenga el enlace verá estas citas, así que no lo compartas.",
+      "create": "Crear enlace",
+      "replace": "Crear un enlace nuevo",
+      "replaceHint": "Un enlace nuevo reemplaza al anterior; el anterior deja de funcionar.",
+      "revoke": "Desactivar enlace",
+      "revoked": "Enlace desactivado",
+      "yourLink": "Tu enlace",
+      "onlyOnce": "Solo ves este enlace ahora. Cópialo o ábrelo directamente en tu app de calendario.",
+      "copy": "Copiar",
+      "copied": "Enlace copiado",
+      "copyError": "No se pudo copiar: selecciona el enlace y cópialo tú.",
+      "openApp": "Abrir en la app de calendario",
+      "activeSince": "Hay un enlace activo desde el {date}.",
+      "error": "No ha funcionado. Inténtalo de nuevo en un momento."
     }
   }
 }

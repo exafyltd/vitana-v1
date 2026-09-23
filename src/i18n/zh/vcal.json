@@ -88,6 +88,24 @@
       "ticket_due": "工单截止时间",
       "erp_approval": "等待审批",
       "readOnly": "这件事在它所在的地方完成——日历只显示何时到期。"
+    },
+    "subscribe": {
+      "title": "在我的日历应用中显示",
+      "intro": "在 Apple、Google 或 Outlook 中订阅你的 Vitanaland 日历，新的日程会自动出现。",
+      "privacy": "链接只显示标题、时间和地点，不含详情。任何拿到链接的人都能看到这些日程，请不要分享。",
+      "create": "创建链接",
+      "replace": "创建新链接",
+      "replaceHint": "新链接会替换旧链接，旧链接将失效。",
+      "revoke": "关闭链接",
+      "revoked": "链接已关闭",
+      "yourLink": "你的链接",
+      "onlyOnce": "这个链接只在现在显示。复制它，或直接在日历应用中打开。",
+      "copy": "复制",
+      "copied": "链接已复制",
+      "copyError": "复制失败——请选中链接自己复制。",
+      "openApp": "在日历应用中打开",
+      "activeSince": "链接自 {date} 起有效。",
+      "error": "刚才没有成功，请稍后再试。"
     }
   }
 }

@@ -163,3 +163,25 @@ describe("work-lens items (VTID-04357)", () => {
     expect(src("./labels.ts")).toContain("if (item.work) return t(`vcal.work.${item.work.kind}`)");
   });
 });
+
+describe("calendar subscription link (VTID-04358)", () => {
+  it("builds the https and webcal URLs from the gateway path", async () => {
+    const { feedUrlFromPath, webcalUrl } = await import("@/lib/calendar-window-client");
+    const url = feedUrlFromPath("/api/v1/calendar/feed/abc.ics", "https://gw.example");
+    expect(url).toBe("https://gw.example/api/v1/calendar/feed/abc.ics");
+    expect(webcalUrl(url)).toBe("webcal://gw.example/api/v1/calendar/feed/abc.ics");
+  });
+
+  it("the sheet is reachable from the calendar header", () => {
+    const page = fs.readFileSync(path.resolve(__dirname, "../../../pages/Calendar.tsx"), "utf8");
+    expect(page).toContain("setSubscribeOpen(true)");
+    expect(page).toContain("<SubscribeSheet");
+  });
+
+  it("every locale has the subscribe strings", () => {
+    for (const loc of ["de", "en", "es", "fr", "pt", "pl", "ru", "sr", "tr", "zh", "ar"]) {
+      const j = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../../i18n/${loc}/vcal.json`), "utf8"));
+      expect(Object.keys(j.vcal.subscribe)).toHaveLength(16);
+    }
+  });
+});

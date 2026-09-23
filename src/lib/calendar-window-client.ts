@@ -132,3 +132,43 @@ export async function completeCalendarEntry(eventId: string, role: string | null
     body: JSON.stringify({ completion_status: "completed" }),
   });
 }
+
+// =============================================================================
+// VTID-04358 — private calendar subscription link (Apple / Google / Outlook)
+//   GET/POST/DELETE /api/v1/calendar/subscription
+// The gateway returns the feed as a PATH once, on creation; only a hash of the
+// token is stored, so an existing link can be replaced or revoked, not shown.
+// =============================================================================
+
+export interface FeedStatus {
+  active: boolean;
+  created_at: string | null;
+  last_used_at: string | null;
+}
+
+export async function fetchFeedStatus(): Promise<FeedStatus> {
+  const body = await authedFetch("/api/v1/calendar/subscription", null);
+  const d = (body.data ?? {}) as Partial<FeedStatus>;
+  return { active: !!d.active, created_at: d.created_at ?? null, last_used_at: d.last_used_at ?? null };
+}
+
+/** Creates a new link (the old one stops working) and returns its full https URL. */
+export async function createFeedLink(): Promise<string> {
+  const body = await authedFetch("/api/v1/calendar/subscription", null, { method: "POST" });
+  const path = (body.data as { feed_path?: string } | undefined)?.feed_path;
+  if (!path) throw new CalendarApiError("NO_FEED_PATH", 500);
+  return feedUrlFromPath(path);
+}
+
+export async function revokeFeedLink(): Promise<void> {
+  await authedFetch("/api/v1/calendar/subscription", null, { method: "DELETE" });
+}
+
+export function feedUrlFromPath(path: string, base: string = GATEWAY_BASE): string {
+  return `${base}${path}`;
+}
+
+/** The same feed as a webcal:// link, which calendar apps open as "subscribe". */
+export function webcalUrl(httpsUrl: string): string {
+  return httpsUrl.replace(/^https?:\/\//, "webcal://");
+}

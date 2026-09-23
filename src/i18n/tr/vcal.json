@@ -88,6 +88,24 @@
       "ticket_due": "Talep süresi",
       "erp_approval": "Onay bekliyor",
       "readOnly": "Bunu oluştuğu yerde bitirirsin – takvim yalnızca ne zaman olduğunu gösterir."
+    },
+    "subscribe": {
+      "title": "Takvim uygulamamda göster",
+      "intro": "Vitanaland takvimine Apple, Google veya Outlook'ta abone ol. Yeni kayıtlar orada kendiliğinden görünür.",
+      "privacy": "Bağlantı yalnızca başlıkları, saatleri ve yerleri gösterir – ayrıntı yok. Bağlantıya sahip herkes bu kayıtları görür, bu yüzden kimseyle paylaşma.",
+      "create": "Bağlantı oluştur",
+      "replace": "Yeni bağlantı oluştur",
+      "replaceHint": "Yeni bağlantı eskisinin yerini alır – eskisi artık çalışmaz.",
+      "revoke": "Bağlantıyı kapat",
+      "revoked": "Bağlantı kapatıldı",
+      "yourLink": "Bağlantın",
+      "onlyOnce": "Bu bağlantıyı yalnızca şimdi görüyorsun. Kopyala ya da doğrudan takvim uygulamanda aç.",
+      "copy": "Kopyala",
+      "copied": "Bağlantı kopyalandı",
+      "copyError": "Kopyalama olmadı – bağlantıyı seçip kendin kopyala.",
+      "openApp": "Takvim uygulamasında aç",
+      "activeSince": "{date} tarihinden beri bir bağlantı etkin.",
+      "error": "Şu an olmadı. Birazdan tekrar dene."
     }
   }
 }

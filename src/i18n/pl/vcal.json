@@ -88,6 +88,24 @@
       "ticket_due": "Termin zgłoszenia",
       "erp_approval": "Zatwierdzenie czeka",
       "readOnly": "Kończysz to tam, gdzie powstało – kalendarz pokazuje tylko, kiedy przypada."
+    },
+    "subscribe": {
+      "title": "Pokaż w mojej aplikacji kalendarza",
+      "intro": "Zasubskrybuj swój kalendarz Vitanaland w Apple, Google lub Outlook. Nowe wpisy pojawią się tam same.",
+      "privacy": "Link pokazuje tylko tytuły, godziny i miejsca – bez szczegółów. Każdy, kto ma link, widzi te wpisy, więc zachowaj go dla siebie.",
+      "create": "Utwórz link",
+      "replace": "Utwórz nowy link",
+      "replaceHint": "Nowy link zastępuje stary – stary przestaje działać.",
+      "revoke": "Wyłącz link",
+      "revoked": "Link wyłączony",
+      "yourLink": "Twój link",
+      "onlyOnce": "Widzisz ten link tylko teraz. Skopiuj go albo otwórz od razu w aplikacji kalendarza.",
+      "copy": "Kopiuj",
+      "copied": "Link skopiowany",
+      "copyError": "Kopiowanie nie zadziałało – zaznacz link i skopiuj go sam.",
+      "openApp": "Otwórz w aplikacji kalendarza",
+      "activeSince": "Link jest aktywny od {date}.",
+      "error": "Nie udało się. Spróbuj ponownie za chwilę."
     }
   }
 }

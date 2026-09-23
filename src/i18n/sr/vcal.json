@@ -88,6 +88,24 @@
       "ticket_due": "Rok tiketa",
       "erp_approval": "Odobrenje čeka",
       "readOnly": "Ovo završavaš tamo gde je nastalo – kalendar samo pokazuje kada je na redu."
+    },
+    "subscribe": {
+      "title": "Prikaži u mojoj aplikaciji kalendara",
+      "intro": "Pretplati se na svoj Vitanaland kalendar u Apple, Google ili Outlook. Novi termini će se tamo pojaviti sami.",
+      "privacy": "Link prikazuje samo naslove, vreme i mesto – bez detalja. Ko god ima link vidi ove termine, zato ga čuvaj za sebe.",
+      "create": "Napravi link",
+      "replace": "Napravi novi link",
+      "replaceHint": "Novi link zamenjuje stari – stari više ne radi.",
+      "revoke": "Isključi link",
+      "revoked": "Link isključen",
+      "yourLink": "Tvoj link",
+      "onlyOnce": "Link vidiš samo sada. Kopiraj ga ili ga odmah otvori u aplikaciji kalendara.",
+      "copy": "Kopiraj",
+      "copied": "Link kopiran",
+      "copyError": "Kopiranje nije uspelo – označi link i kopiraj ga sam.",
+      "openApp": "Otvori u aplikaciji kalendara",
+      "activeSince": "Link je aktivan od {date}.",
+      "error": "Nije uspelo. Pokušaj ponovo za trenutak."
     }
   }
 }

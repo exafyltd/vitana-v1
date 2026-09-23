@@ -88,6 +88,24 @@
       "ticket_due": "Ticket-Frist",
       "erp_approval": "Freigabe wartet",
       "readOnly": "Das erledigst du dort, wo es entsteht – im Kalender siehst du nur, wann es ansteht."
+    },
+    "subscribe": {
+      "title": "In meiner Kalender-App zeigen",
+      "intro": "Abonniere deinen Vitanaland-Kalender in Apple, Google oder Outlook. Neue Termine erscheinen dort von selbst.",
+      "privacy": "Der Link zeigt nur Titel, Zeit und Ort – keine Details. Wer den Link hat, sieht diese Termine, also teile ihn nicht.",
+      "create": "Link erstellen",
+      "replace": "Neuen Link erstellen",
+      "replaceHint": "Ein neuer Link ersetzt den alten – der alte funktioniert dann nicht mehr.",
+      "revoke": "Link ausschalten",
+      "revoked": "Link ausgeschaltet",
+      "yourLink": "Dein Link",
+      "onlyOnce": "Du siehst den Link nur jetzt. Kopier ihn oder öffne ihn direkt in deiner Kalender-App.",
+      "copy": "Kopieren",
+      "copied": "Link kopiert",
+      "copyError": "Kopieren hat nicht geklappt – markier den Link und kopier ihn selbst.",
+      "openApp": "In Kalender-App öffnen",
+      "activeSince": "Ein Link ist aktiv seit {date}.",
+      "error": "Das hat gerade nicht geklappt. Versuch es gleich nochmal."
     }
   }
 }

@@ -88,6 +88,24 @@
       "ticket_due": "Ticket deadline",
       "erp_approval": "Approval waiting",
       "readOnly": "You finish this where it lives – the calendar only shows when it is due."
+    },
+    "subscribe": {
+      "title": "Show in my calendar app",
+      "intro": "Subscribe to your Vitanaland calendar in Apple, Google or Outlook. New entries show up there on their own.",
+      "privacy": "The link shows only titles, times and places – no details. Anyone with the link can see these entries, so keep it to yourself.",
+      "create": "Create link",
+      "replace": "Create a new link",
+      "replaceHint": "A new link replaces the old one – the old one stops working.",
+      "revoke": "Turn off link",
+      "revoked": "Link turned off",
+      "yourLink": "Your link",
+      "onlyOnce": "You only see this link now. Copy it or open it straight in your calendar app.",
+      "copy": "Copy",
+      "copied": "Link copied",
+      "copyError": "Copying didn't work – select the link and copy it yourself.",
+      "openApp": "Open in calendar app",
+      "activeSince": "A link has been active since {date}.",
+      "error": "That didn't work just now. Please try again in a moment."
     }
   }
 }
