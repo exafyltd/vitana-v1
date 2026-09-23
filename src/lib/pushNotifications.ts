@@ -13,6 +13,7 @@ import {
   showNativeNotification,
   registerAppilixIdentity,
 } from '@/lib/appilix';
+import { GATEWAY_BASE } from '@/lib/gateway-base';
 
 export interface PushNotificationPayload {
   title: string;
@@ -24,7 +25,7 @@ export interface PushNotificationPayload {
   actions?: Array<{ action: string; title: string; icon?: string }>;
 }
 
-const RAW_GATEWAY_BASE = (import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app').replace(/\/+$/, '');
+const RAW_GATEWAY_BASE = GATEWAY_BASE;
 const GATEWAY_API_BASE = RAW_GATEWAY_BASE.endsWith('/api/v1')
   ? RAW_GATEWAY_BASE
   : `${RAW_GATEWAY_BASE}/api/v1`;

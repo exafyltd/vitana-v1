@@ -15,8 +15,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { t } from '@/lib/i18n-toast';
 import { formatDistanceToNow } from '@/lib/locale-format';
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'https://gateway-q74ibpv6ia-uc.a.run.app/api/v1';
+const GATEWAY_URL = GATEWAY_API_URL;
 
 interface AwarenessItem {
   kind: string;

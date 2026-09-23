@@ -21,11 +21,12 @@ import {
   useOAuthBounceStore,
   type OAuthBounceProvider,
 } from "@/hooks/useOAuthBounceStore";
+import { DEFAULT_GATEWAY_ORIGIN } from '@/lib/gateway-base';
 
 const GATEWAY_BASE = (
   import.meta.env.VITE_GATEWAY_BASE ||
   (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/api\/v1\/?$/, "") ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app"
+  DEFAULT_GATEWAY_ORIGIN
 ).replace(/\/+$/, "");
 
 async function authHeaders(): Promise<HeadersInit> {

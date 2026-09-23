@@ -6,10 +6,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
 const GATEWAY_URL =
-  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+  GATEWAY_API_URL;
 
 type Rating = 1 | 2 | 3 | 4 | 5;
 type PillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";

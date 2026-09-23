@@ -23,6 +23,7 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
+import { DEFAULT_GATEWAY_ORIGIN } from '@/lib/gateway-base';
 
 // The same env var resolution used by universal-cart-client.ts.
 type ViteEnv = { VITE_GATEWAY_BASE?: string; VITE_GATEWAY_URL?: string };
@@ -31,7 +32,7 @@ const __env: ViteEnv =
 const GATEWAY_BASE: string = (
   __env.VITE_GATEWAY_BASE ||
   __env.VITE_GATEWAY_URL ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app"
+  DEFAULT_GATEWAY_ORIGIN
 ).replace(/\/+$/, "");
 
 // =============================================================================

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useAIConsent } from "@/hooks/useAIConsent";
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
 // Reasons the gateway returns when /generate produced nothing — surfaced to
 // the UI so it can pick the right empty-state copy instead of a generic one.
@@ -16,7 +17,7 @@ export interface AutopilotGenerateResult {
   reason?: AutopilotGenerateReason;
 }
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+const GATEWAY_URL = GATEWAY_API_URL;
 
 
 export interface AutopilotRecommendation {

@@ -25,3 +25,19 @@ export function resolveGatewayBase(env: GatewayEnv): string {
 }
 
 export const GATEWAY_BASE = resolveGatewayBase(import.meta.env as GatewayEnv);
+
+/** Gateway API root (origin + `/api/v1`). VTID-04398. */
+export const GATEWAY_API_URL = `${GATEWAY_BASE}/api/v1`;
+
+/**
+ * VTID-04398 — the OASIS operator (dev-hub events, status, operator chat).
+ * Its Cloud Run host was deleted with GCP; the AWS service is
+ * `dr-oasis-operator.vitanaland.com` (platform CLAUDE.md §1b), same paths.
+ */
+export const DEFAULT_OPERATOR_API = 'https://dr-oasis-operator.vitanaland.com/api/v1';
+
+export function resolveOperatorApi(value: string | undefined): string {
+  const v = (value || '').trim().replace(/\/+$/, '');
+  if (!v || /\.run\.app(\/|$)/.test(v)) return DEFAULT_OPERATOR_API;
+  return v;
+}

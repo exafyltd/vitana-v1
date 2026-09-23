@@ -7,8 +7,9 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { GATEWAY_BASE } from '@/lib/gateway-base';
 
-const GATEWAY_BASE = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-86804897789.us-central1.run.app';
+
 const API_BASE = `${GATEWAY_BASE}/api/v1`;
 
 // ============================================================================

@@ -3,8 +3,9 @@
  */
 
 import { Task, CreateTaskPayload, UpdateTaskPayload } from "@/types/task";
+import { GATEWAY_BASE } from '@/lib/gateway-base';
 
-const BASE_URL = import.meta.env.VITE_GATEWAY_BASE || "https://oasis-operator-86804897789.us-central1.run.app";
+const BASE_URL = GATEWAY_BASE;
 
 /**
  * Fetch all tasks
