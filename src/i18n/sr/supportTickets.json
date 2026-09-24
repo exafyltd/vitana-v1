@@ -132,7 +132,10 @@
         "merging": "Spajanje",
         "deploying": "Postavljanje",
         "verifying": "Provera",
-        "completed": "Završeno"
+        "completed": "Završeno",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "pre nego što je moglo da počne",
@@ -198,7 +201,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev Autopilot pokreće izvršavanje {execution} — odavde samostalno.",
         "rolledBackTitle": "{ticket} vraćen",
         "rolledBackDesc": "Revert PR #{number}. Tiket je ponovo otvoren.",
-        "rolledBackDescNoNumber": "Revert PR je kreiran. Tiket je ponovo otvoren."
+        "rolledBackDescNoNumber": "Revert PR je kreiran. Tiket je ponovo otvoren.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "Ovaj tiket se već izvršava u Dev Autopilotu. Ponovno razvrstavanje je zaključano nakon slanja.",

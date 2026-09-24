@@ -5208,7 +5208,11 @@
       },
       "reportsLoadFailed": "No se pudieron cargar tus informes",
       "reportsLoadFailedDesc": "Hubo un problema al cargar tus informes de laboratorio. Por favor, inténtalo de nuevo.",
-      "reportsLoadFailedRetry": "Inténtalo de nuevo"
+      "reportsLoadFailedRetry": "Inténtalo de nuevo",
+      "_pending_review": {
+        "coachReplyFailed": true
+      },
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "matchPercent": "{score} %",

@@ -132,7 +132,10 @@
         "merging": "Scalanie",
         "deploying": "Wdrażanie",
         "verifying": "Weryfikacja",
-        "completed": "Zakończone"
+        "completed": "Zakończone",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "zanim mogło się rozpocząć",
@@ -198,7 +201,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev Autopilot realizuje wykonanie {execution} — od teraz autonomicznie.",
         "rolledBackTitle": "{ticket} wycofane",
         "rolledBackDesc": "PR z revertem #{number}. Zgłoszenie zostało ponownie otwarte.",
-        "rolledBackDescNoNumber": "Utworzono PR z revertem. Zgłoszenie zostało ponownie otwarte."
+        "rolledBackDescNoNumber": "Utworzono PR z revertem. Zgłoszenie zostało ponownie otwarte.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "To zgłoszenie jest już realizowane w Dev Autopilot. Po przekazaniu zmiana klasyfikacji jest zablokowana.",

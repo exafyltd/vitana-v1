@@ -52,7 +52,10 @@
       "lab": "المختبر",
       "work": "العمل",
       "vitana": "Vitana",
-      "personal": "شخصي"
+      "personal": "شخصي",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "من طلب التحليل الخاص بك",
@@ -60,7 +63,10 @@
       "plan": "من خطتك",
       "assistant": "أُضيف مع فيتانا",
       "community": "المجتمع",
-      "journey": "رحلتك"
+      "journey": "رحلتك",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "لا شيء مخطط – يوم هادئ 🌿",
@@ -71,7 +77,10 @@
       "free": "متاح"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "إغلاق",

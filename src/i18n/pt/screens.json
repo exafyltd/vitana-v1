@@ -5212,7 +5212,11 @@
       },
       "reportsLoadFailed": "Não foi possível carregar seus relatórios",
       "reportsLoadFailedDesc": "Houve um problema ao carregar seus relatórios de laboratório. Por favor, tente novamente.",
-      "reportsLoadFailedRetry": "Tentar novamente"
+      "reportsLoadFailedRetry": "Tentar novamente",
+      "_pending_review": {
+        "coachReplyFailed": true
+      },
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Prioridade do Dia:",

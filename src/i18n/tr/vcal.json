@@ -52,7 +52,10 @@
       "lab": "Laboratuvar",
       "work": "İş",
       "vitana": "Vitana",
-      "personal": "Kişisel"
+      "personal": "Kişisel",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "Laboratuvar isteğinden",
@@ -60,7 +63,10 @@
       "plan": "Planından",
       "assistant": "Vitana ile eklendi",
       "community": "Topluluk",
-      "journey": "Yolculuğun"
+      "journey": "Yolculuğun",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Planlanmış bir şey yok – sakin bir gün 🌿",
@@ -71,7 +77,10 @@
       "free": "boş"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Kapat",

@@ -5212,7 +5212,8 @@
           "business_formation": "Geschäftsgründung"
         },
         "contractLink": "Ultimate Goal-Vertrag anzeigen"
-      }
+      },
+      "coachReplyFailed": "Der Coach konnte gerade nicht antworten. Versuch es gleich noch einmal."
     },
     "home": {
       "priorityOfTheDay": "Priorität des Tages:",

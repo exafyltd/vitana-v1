@@ -52,7 +52,10 @@
       "lab": "Анализы",
       "work": "Работа",
       "vitana": "Vitana",
-      "personal": "Личное"
+      "personal": "Личное",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "Из твоего направления на анализы",
@@ -60,7 +63,10 @@
       "plan": "Из твоего плана",
       "assistant": "Добавлено с Витаной",
       "community": "Сообщество",
-      "journey": "Твой путь"
+      "journey": "Твой путь",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Ничего не запланировано – спокойный день 🌿",
@@ -71,7 +77,10 @@
       "free": "свободно"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Закрыть",
