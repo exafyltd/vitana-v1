@@ -37,6 +37,8 @@ export function ContactSyncModal({
   const [syncProgress, setSyncProgress] = useState(0);
   const [matches, setMatches] = useState<MatchedContact[]>([]);
   const [nonMatches, setNonMatches] = useState<ImportedContact[]>([]);
+  // True totals: the match lists only preview the first rows of a large import.
+  const [totals, setTotals] = useState({ imported: 0, matches: 0 });
   const [selectedForInvite, setSelectedForInvite] = useState<string[]>([]);
   const [errorType, setErrorType] = useState<ContactSyncErrorType>("unknown");
   const [connectApp, setConnectApp] = useState<ConnectedAppId | null>(null);
@@ -106,13 +108,16 @@ export function ContactSyncModal({
       // Transform results
       setMatches(result.matches || []);
       setNonMatches(result.nonMatches || []);
+      const totalImported = result.totalImported ?? (result.matches?.length || 0) + (result.nonMatches?.length || 0);
+      const totalMatches = result.totalMatches ?? (result.matches?.length || 0);
+      setTotals({ imported: totalImported, matches: totalMatches });
 
       // Short delay before showing results
       setTimeout(() => {
         setStep("success");
         onComplete?.({
-          totalImported: (result.matches?.length || 0) + (result.nonMatches?.length || 0),
-          matchesFound: result.matches?.length || 0,
+          totalImported,
+          matchesFound: totalMatches,
         });
       }, 500);
     } catch (error) {
@@ -272,9 +277,9 @@ export function ContactSyncModal({
       case "success":
         return (
           <SyncSuccessScreen
-            totalImported={matches.length + nonMatches.length}
-            matchesFound={matches.length}
-            newContacts={nonMatches.length}
+            totalImported={totals.imported}
+            matchesFound={totals.matches}
+            newContacts={Math.max(totals.imported - totals.matches, 0)}
             onViewMatches={handleViewMatches}
             onInviteFriends={handleInviteFriends}
             onClose={() => onOpenChange(false)}

@@ -23,7 +23,12 @@ interface ConnectedSource {
 interface SyncResult {
   matches: MatchedContact[];
   nonMatches: ImportedContact[];
+  /** Every contact these sources imported, not just the rows in the preview. */
   totalImported: number;
+  /** Members among all imported contacts, not just the rows in the preview. */
+  totalMatches: number;
+  /** True when the preview lists fewer rows than were imported. */
+  truncated: boolean;
 }
 
 /** Google / Outlook / iCloud still have to be switched on in Connected Apps. */
@@ -50,17 +55,28 @@ const PREVIEW_LIMIT = 500;
 
 /** What the hub imported for these sources, shaped for the preview list. */
 async function readImported(userId: string, sources: string[]): Promise<SyncResult> {
-  if (sources.length === 0) return { matches: [], nonMatches: [], totalImported: 0 };
+  if (sources.length === 0) return { matches: [], nonMatches: [], totalImported: 0, totalMatches: 0, truncated: false };
   // `source` (VTID-04405) is newer than the generated types, hence the loose client.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
-    .from("contacts")
-    .select("id, contact_name, contact_phone, contact_email, contact_user_id, is_on_platform")
-    .eq("user_id", userId)
-    .in("source", sources)
-    .order("contact_name", { ascending: true })
-    .limit(PREVIEW_LIMIT);
+  const contacts = () => (supabase as any).from("contacts");
+  // The preview stays bounded; the totals come from exact counts so a large
+  // address book is not reported as 500 contacts.
+  const [{ data, error, count }, { count: memberCount, error: memberError }] = await Promise.all([
+    contacts()
+      .select("id, contact_name, contact_phone, contact_email, contact_user_id, is_on_platform", { count: "exact" })
+      .eq("user_id", userId)
+      .in("source", sources)
+      .order("contact_name", { ascending: true })
+      .limit(PREVIEW_LIMIT),
+    contacts()
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .in("source", sources)
+      .eq("is_on_platform", true)
+      .not("contact_user_id", "is", null),
+  ]);
   if (error) throw error;
+  if (memberError) console.error("[useContactSync] Failed to count member contacts:", memberError);
   const rows = (data ?? []) as Array<{
     id: string;
     contact_name: string;
@@ -94,7 +110,9 @@ async function readImported(userId: string, sources: string[]): Promise<SyncResu
       nonMatches.push(local);
     }
   }
-  return { matches, nonMatches, totalImported: rows.length };
+  const totalImported = typeof count === "number" ? Math.max(count, rows.length) : rows.length;
+  const totalMatches = typeof memberCount === "number" ? Math.max(memberCount, matches.length) : matches.length;
+  return { matches, nonMatches, totalImported, totalMatches, truncated: totalImported > rows.length };
 }
 
 export function useContactSync() {
@@ -165,10 +183,21 @@ export function useContactSync() {
       const needsHubState = sources.some((s) => Boolean(HUB_APP[s]));
       const apps = needsHubState ? await fetchConnectedApps() : [];
 
+      // Check every selected source before importing anything, so a source
+      // that still needs connecting does not leave the others half-imported.
       for (const source of sources) {
         const appId = HUB_APP[source];
         if (source === "phonebook") {
           if (!contactPickerSupported()) throw new Error("Contact Picker API not available");
+        } else if (appId) {
+          const app = apps.find((a) => a.id === appId);
+          if (!app || app.status !== "on") throw new ConnectAppFirst(appId);
+        }
+      }
+
+      for (const source of sources) {
+        const appId = HUB_APP[source];
+        if (source === "phonebook") {
           let picked;
           try {
             picked = await pickDeviceContacts();
@@ -180,8 +209,6 @@ export function useContactSync() {
           await importAndroidContacts(picked);
           hubSources.push("android");
         } else if (appId) {
-          const app = apps.find((a) => a.id === appId);
-          if (!app || app.status !== "on") throw new ConnectAppFirst(appId);
           const r = await syncConnectedApp(appId);
           if (!r.ok) throw new Error(r.error ?? "sync_failed");
           hubSources.push(DB_SOURCE[source] ?? source);

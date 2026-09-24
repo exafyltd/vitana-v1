@@ -128,6 +128,8 @@ export default function Messages() {
     return readInboxState().threadId ?? null;
   });
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
+  // Member picked via a contact's "Message" action, pre-filled in the new-chat dialog.
+  const [contactRecipientId, setContactRecipientId] = useState<string | null>(null);
 
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
@@ -497,6 +499,26 @@ export default function Messages() {
   const handleGroupCreated = (threadId: string) => {
     setSelectedThreadId(threadId);
     setSelectedRecipientId(null);
+  };
+
+  // "Message" on a contact: open the existing direct chat with that member,
+  // otherwise open the new-chat dialog with them already selected.
+  const handleMessageContact = (userId: string) => {
+    const existing = threads.find(
+      (t) => t.type === 'direct' && (t.participants as Array<{ user_id: string }> | undefined)?.some((p) => p.user_id === userId)
+    );
+    if (existing) {
+      setSelectedThreadId(existing.id);
+      setSelectedRecipientId(userId);
+      return;
+    }
+    setContactRecipientId(userId);
+    setShowNewConversation(true);
+  };
+
+  const handleNewConversationOpenChange = (open: boolean) => {
+    setShowNewConversation(open);
+    if (!open) setContactRecipientId(null);
   };
 
   // Hide ORB only when actively inside a direct chat (chat is text-only).
@@ -996,11 +1018,7 @@ export default function Messages() {
 
         <TabsContent value="contacts" className="mt-0">
           <ContactsTabContent 
-            onStartConversation={(userId) => {
-              // Create or navigate to DM with this user
-              setSelectedRecipientId(userId);
-              setShowNewConversation(true);
-            }}
+            onStartConversation={handleMessageContact}
             messageContext={messageContext}
           />
         </TabsContent>
@@ -1317,10 +1335,7 @@ export default function Messages() {
                 {conversationFilter === 'contacts' ? (
                   <div className="ps-0 pe-0">
                     <ContactsTabContent
-                      onStartConversation={(userId) => {
-                        setSelectedRecipientId(userId);
-                        setShowNewConversation(true);
-                      }}
+                      onStartConversation={handleMessageContact}
                       messageContext={messageContext}
                     />
                   </div>
@@ -1334,7 +1349,8 @@ export default function Messages() {
           {/* Popups */}
           <NewConversationPopup
             open={showNewConversation}
-            onOpenChange={setShowNewConversation}
+            onOpenChange={handleNewConversationOpenChange}
+        initialRecipientId={contactRecipientId}
             onConversationCreated={handleConversationCreated}
             onGroupCreated={handleGroupCreated}
             context={messageContext}
@@ -1441,7 +1457,8 @@ export default function Messages() {
 
       <NewConversationPopup
         open={showNewConversation}
-        onOpenChange={setShowNewConversation}
+        onOpenChange={handleNewConversationOpenChange}
+        initialRecipientId={contactRecipientId}
         onConversationCreated={handleConversationCreated}
         onGroupCreated={handleGroupCreated}
         context={messageContext}
