@@ -20,9 +20,9 @@ interface ShareLinkResponse {
 }
 
 /**
- * Friend-invite sheet. Calls the gateway's existing
- * `/api/v1/automations/sharing/generate-link` endpoint with `target_type:
- * 'profile'` so each open mints (or returns) a real trackable share link.
+ * Friend-invite sheet. VTID-04508: shows the member's one reusable invite link
+ * (`GET /api/v1/invites/me` → `/i/<code>`); a friend who joins through it is
+ * attributed to the member, who may earn wallet credit.
  * Wired to the `referral:open` event so any milestone CTA (tier-up,
  * streak_7+) can request it without prop-drilling.
  */
@@ -45,22 +45,21 @@ export function InviteSheet() {
     setLoading(true);
     setError(null);
     try {
-      const resp = await communityFetch("/api/v1/automations/sharing/generate-link", {
-        method: "POST",
-        body: JSON.stringify({
-          target_type: "profile",
-          target_id: user.id,
-          utm_campaign: "vitana_index_referral",
-        }),
-      });
-      const json = (await resp.json()) as ShareLinkResponse;
-      if (!resp.ok || !json.ok || !json.link) {
-        setError(json.error ?? "Couldn't generate an invite link.");
+      // VTID-04508: the member's one reusable, attributed invite link.
+      const resp = await communityFetch("/api/v1/invites/me");
+      const json = (await resp.json()) as { ok: boolean; code?: string; url?: string; error?: string };
+      if (!resp.ok || !json.ok || !json.url || !json.code) {
+        setError(json.error ?? t("screens.common.tryAgain2"));
       } else {
-        setLink(json.link);
+        setLink({
+          id: json.code,
+          short_code: json.code,
+          url: json.url,
+          whatsapp_url: `https://wa.me/?text=${encodeURIComponent(json.url)}`,
+        });
       }
-    } catch (err: any) {
-      setError(err?.message ?? "Couldn't generate an invite link.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("screens.common.tryAgain2"));
     } finally {
       setLoading(false);
     }

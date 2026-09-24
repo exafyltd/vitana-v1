@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 357
+- **Pages scanned:** 358
 - **Distinct i18n keys consumed:** 4942
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
@@ -274,6 +274,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 23, total in shard: 11157
 - `toasts` — used: 4, total in shard: 1265
+
+### src/pages/InviteLanding.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/Logout.tsx
 
