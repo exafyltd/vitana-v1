@@ -1,0 +1,38 @@
+{
+  "_comment": "VTID-04459 — every calendar source file in the app and the tests that protect it. calendar-coverage.guard.test.ts fails when a calendar file is added without an entry, when a listed test is gone or no longer references the file, or when a file sits in `uncovered` that the guard does not allow. `uncovered` is the older calendar UI (popup, cards) that had no tests when this suite was built; it can only shrink.",
+  "sources": {
+    "src/pages/Calendar.tsx": ["src/components/calendar/__regression__/calendar-screen.golden.test.tsx"],
+    "src/components/calendar/vcal/time.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts", "src/components/calendar/vcal/vcal.test.ts"],
+    "src/components/calendar/vcal/labels.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
+    "src/components/calendar/vcal/theme.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts", "src/components/calendar/vcal/vcal.test.ts"],
+    "src/components/calendar/vcal/parts.tsx": ["src/components/calendar/__regression__/calendar-screen.golden.test.tsx"],
+    "src/components/calendar/vcal/views.tsx": ["src/components/calendar/__regression__/calendar-screen.golden.test.tsx"],
+    "src/components/calendar/vcal/EntryScreen.tsx": ["src/components/calendar/__regression__/calendar-screen.golden.test.tsx"],
+    "src/components/calendar/vcal/SubscribeSheet.tsx": ["src/components/calendar/__regression__/calendar-sheets.golden.test.tsx"],
+    "src/components/calendar/vcal/GoogleSyncCard.tsx": ["src/components/calendar/__regression__/calendar-sheets.golden.test.tsx"],
+    "src/lib/calendar-window-client.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts", "src/components/calendar/vcal/vcal.test.ts"],
+    "src/lib/parseCalendarNL.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
+    "src/lib/calendarPendingQueue.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
+    "src/components/calendar/calendarSmartUtils.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
+    "src/hooks/useCalendarEvents.ts": ["src/hooks/useCalendarEvents.error-logging-abort.test.ts", "src/hooks/useCalendarEvents.idempotency-error-logging.test.ts"],
+    "src/components/calendar/PendingCalendarEventProcessor.tsx": ["src/components/calendar/PendingCalendarEventProcessor.dedupe-error.test.ts"]
+  },
+  "uncovered": [
+    "src/components/calendar/AutopilotCalendarSuggestions.tsx",
+    "src/components/calendar/AutopilotTaskGroup.tsx",
+    "src/components/calendar/BookedVitanaEventsSection.tsx",
+    "src/components/calendar/CalendarFilters.tsx",
+    "src/components/calendar/CalendarSkeleton.tsx",
+    "src/components/calendar/EnhancedCalendarPopup.tsx",
+    "src/components/calendar/EventDetailsPanel.tsx",
+    "src/components/calendar/EventPillarDot.tsx",
+    "src/components/calendar/JourneyProgressStrip.tsx",
+    "src/components/calendar/MobileCalendarModal.tsx",
+    "src/components/calendar/MobileEventForm.tsx",
+    "src/components/calendar/NaturalLanguageInput.tsx",
+    "src/components/calendar/OnboardingPlanCard.tsx",
+    "src/components/calendar/SmartEventCard.tsx",
+    "src/components/calendar/TodayFocusStrip.tsx",
+    "src/components/calendar/WeekGridView.tsx"
+  ]
+}

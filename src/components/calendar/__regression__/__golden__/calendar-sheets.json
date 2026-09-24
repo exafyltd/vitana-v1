@@ -1,0 +1,67 @@
+{
+  "google.off": [
+    "#vcal-google-sync",
+    "   🔄 Mit Google Kalender abgleichen",
+    "   Deine Vitanaland-Termine landen in einem eigenen Kalender „Vitanaland“ in deinem Google-Konto. Deine Google-Termine siehst du hier als graue, belegte Zeiten – ohne Titel.",
+    "  #vcal-google-toggle <button> Google-Abgleich einschalten"
+  ],
+  "google.on": [
+    "#vcal-google-sync",
+    "   🔄 Mit Google Kalender abgleichen",
+    "   Deine Vitanaland-Termine landen in einem eigenen Kalender „Vitanaland“ in deinem Google-Konto. Deine Google-Termine siehst du hier als graue, belegte Zeiten – ohne Titel.",
+    "  #vcal-google-on ✅ Google-Abgleich ist an",
+    "     · zuletzt 5. Okt., 09:00",
+    "   ⚠️ Der letzte Abgleich hat nicht geklappt – wir versuchen es von selbst wieder.",
+    "  #vcal-google-toggle <button> Google-Abgleich ausschalten"
+  ],
+  "subscribe.active": [
+    "#vcal-subscribe-sheet <dialog>",
+    "  <h2> 📲 In meiner Kalender-App zeigen",
+    "  <button> [Schließen] ✕",
+    "   Abonniere deinen Vitanaland-Kalender in Apple, Google oder Outlook. Neue Termine erscheinen dort von selbst.",
+    "   🔒 Der Link zeigt nur Titel, Zeit und Ort – keine Details. Wer den Link hat, sieht diese Termine, also teile ihn nicht.",
+    "  #vcal-subscribe-active ✅ Ein Link ist aktiv seit 1. September 2026.",
+    "  #vcal-subscribe-create <button> 🔄 Neuen Link erstellen",
+    "  #vcal-subscribe-revoke <button> Link ausschalten",
+    "   Ein neuer Link ersetzt den alten – der alte funktioniert dann nicht mehr.",
+    "  #vcal-quiet-hours",
+    "     🌙 Ruhezeiten",
+    "     In deinen Ruhezeiten kommen keine Erinnerungen – sie kommen kurz vorher.",
+    "    <button> Ruhezeiten einstellen"
+  ],
+  "subscribe.fresh": [
+    "#vcal-subscribe-sheet <dialog>",
+    "  <h2> 📲 In meiner Kalender-App zeigen",
+    "  <button> [Schließen] ✕",
+    "   Abonniere deinen Vitanaland-Kalender in Apple, Google oder Outlook. Neue Termine erscheinen dort von selbst.",
+    "   🔒 Der Link zeigt nur Titel, Zeit und Ort – keine Details. Wer den Link hat, sieht diese Termine, also teile ihn nicht.",
+    "  #vcal-subscribe-fresh",
+    "    <label> Dein Link",
+    "    <input>=https://gateway.example/api/v1/calendar/feed/tok.ics",
+    "     Du siehst den Link nur jetzt. Kopier ihn oder öffne ihn direkt in deiner Kalender-App.",
+    "    <button> 📋 Kopieren",
+    "     📅 In Kalender-App öffnen",
+    "  #vcal-subscribe-create <button> 🔄 Neuen Link erstellen",
+    "  #vcal-subscribe-revoke <button> Link ausschalten",
+    "   Ein neuer Link ersetzt den alten – der alte funktioniert dann nicht mehr.",
+    "  #vcal-quiet-hours",
+    "     🌙 Ruhezeiten",
+    "     In deinen Ruhezeiten kommen keine Erinnerungen – sie kommen kurz vorher.",
+    "    <button> Ruhezeiten einstellen"
+  ],
+  "subscribe.fresh.links": [
+    "webcal://gateway.example/api/v1/calendar/feed/tok.ics"
+  ],
+  "subscribe.none": [
+    "#vcal-subscribe-sheet <dialog>",
+    "  <h2> 📲 In meiner Kalender-App zeigen",
+    "  <button> [Schließen] ✕",
+    "   Abonniere deinen Vitanaland-Kalender in Apple, Google oder Outlook. Neue Termine erscheinen dort von selbst.",
+    "   🔒 Der Link zeigt nur Titel, Zeit und Ort – keine Details. Wer den Link hat, sieht diese Termine, also teile ihn nicht.",
+    "  #vcal-subscribe-create <button> 🔗 Link erstellen",
+    "  #vcal-quiet-hours",
+    "     🌙 Ruhezeiten",
+    "     In deinen Ruhezeiten kommen keine Erinnerungen – sie kommen kurz vorher.",
+    "    <button> Ruhezeiten einstellen"
+  ]
+}

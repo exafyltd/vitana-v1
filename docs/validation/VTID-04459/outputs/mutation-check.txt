@@ -1,0 +1,9 @@
+Deliberate breaks, each reverted after the run (npx vitest run src/components/calendar/__regression__):
+1 "in n Std." cutoff 36 -> 48 hours         Tests: 1 failed | 73 passed (74)
+2 weeks start on Sunday                      Tests: 3 failed | 71 passed (74)
+3 completed entries offered "move"           Tests: 1 failed | 73 passed (74)
+4 one calendar text removed from French      Tests: 1 failed | 73 passed (74)
+5 client stops sending the active role       Tests: 1 failed | 73 passed (74)
+Unmodified tree:                             Tests: 74 passed (74)
+Zone independence: TZ=UTC, America/Los_Angeles, Asia/Tokyo -> 43 passed each (suite pins Europe/Berlin itself)
+Full app unit suite after the change: 153 files, 928 tests passed
