@@ -1,0 +1,6 @@
+npx vitest run                                   # 149 files, 852 passed
+npx tsc --noEmit -p tsconfig.app.json            # no errors in changed files
+npx eslint (changed files)                       # only pre-existing no-explicit-any in Messages.tsx / AddContactDialog.tsx
+node scripts/i18n-register-check.mjs --all       # no violations
+npm run i18n:inventory
+npx vite --host 127.0.0.1 --port 8080 & node docs/validation/VTID-04440/outputs/verify-find-friends.cjs docs/validation/VTID-04440/outputs   # hscroll 0 x3

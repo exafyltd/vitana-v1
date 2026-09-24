@@ -23,7 +23,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "iCloud gelen kutundaki yeni e-postaları oku",
+        "what": "iCloud gelen kutunu oku ve iCloud adresinden e-posta gönder",
         "_pending_review": {
           "name": true
         }
@@ -34,11 +34,15 @@
       },
       "outlook-calendar": {
         "name": "Outlook Takvim",
-        "what": "Randevuları gör ve takviminde dolu saatleri göster"
+        "what": "Randevuları gör ve ekle, Vitanaland ile eşitlenir"
+      },
+      "outlook-contacts": {
+        "name": "Outlook Kişiler",
+        "what": "Outlook kişilerini Vitanaland'e aktar"
       },
       "apple-calendar": {
         "name": "Apple Takvim (iCloud)",
-        "what": "Randevuları gör ve takviminde dolu saatleri göster"
+        "what": "Randevuları gör ve ekle, Vitanaland ile eşitlenir"
       },
       "google-contacts": {
         "name": "Google Kişiler",
@@ -94,7 +98,7 @@
       "step3": "Apple kimliğini ve yeni parolayı buraya gir.",
       "appleId": "Apple Kimliği (e-posta)",
       "appPassword": "Uygulamaya özel parola",
-      "privacy": "Parolayı şifreli saklıyoruz ve yalnızca okumak için kullanıyoruz. İstediğin zaman Apple'da iptal edebilirsin.",
+      "privacy": "Parolayı şifreli saklıyoruz. Vitana onu e-postalarını, takvimini ve kişilerini okumak, istediğinde e-posta göndermek ve “Vitanaland” takvimini güncel tutmak için kullanır. İstediğin zaman Apple'da iptal edebilirsin.",
       "connect": "Bağla",
       "checking": "Kontrol ediliyor …",
       "wrongPassword": "Apple girişi reddetti — Apple kimliğini ve uygulamaya özel parolayı kontrol et",
@@ -112,7 +116,7 @@
       "title": "{app} kapatılsın mı?",
       "body": {
         "mail": "Vitana bu uygulama üzerinden artık e-posta okumaz ve göndermez.",
-        "calendar": "Bu takvimdeki dolu saatler Vitanaland takviminden kaybolur.",
+        "calendar": "Bu takvimdeki dolu saatler Vitanaland takviminden kaybolur. \"Vitanaland\" takvimi hesabında kalır — onu oradan silebilirsin.",
         "contacts": "Artık yeni kişi aktarılmaz. Aktarılmış kişiler, burada kaldırmadıkça kalır."
       },
       "removeContacts": "Aktarılan kişileri Vitanaland'den de kaldır"
@@ -120,6 +124,62 @@
     "errors": {
       "sessionExpired": "Oturumunun süresi doldu. Uygulamalarını yönetmek için yeniden giriş yap.",
       "loadFailed": "Uygulamaların şu anda yüklenemedi. Biraz sonra tekrar dene."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Bağlı — şimdi kontrol ediliyor",
+        "off": "Önce Bağlı Uygulamalar'da aç",
+        "phone": "Telefonundaki kişileri seç",
+        "phoneUnavailable": "Yalnızca Android'de Chrome'da"
+      },
+      "connect": {
+        "title": "{app} henüz bağlı değil",
+        "body": "{app} uygulamasını Bağlı Uygulamalar'da bir kez aç. Sonra arkadaşlarını burada tek dokunuşla bulursun.",
+        "open": "Bağlı Uygulamalar'ı aç"
+      },
+      "progress": {
+        "reading": "Kişilerin okunuyor …",
+        "matching": "Kimlerin zaten Vitanaland'de olduğuna bakıyoruz …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "Bağlantı olmadı",
+          "body": "Hesabına şu an ulaşılamadı. Biraz sonra tekrar dene ya da Bağlı Uygulamalar'da yeniden bağla."
+        },
+        "api_unavailable": {
+          "title": "Bu cihazda mümkün değil",
+          "body": "Tarayıcın rehberini açamıyor. Vitanaland'i Android telefonunda Chrome ile aç ya da Google veya iCloud'u bağla."
+        },
+        "permission_denied": {
+          "title": "Kişilerine erişim yok",
+          "body": "Telefonunun ayarlarında Vitanaland'in kişilerine erişmesine izin ver."
+        },
+        "rate_limited": {
+          "title": "Çok fazla deneme",
+          "body": "Biraz bekle, sonra tekrar dene."
+        },
+        "cancelled": {
+          "title": "Kişi seçilmedi",
+          "body": "Tekrar dokun ve eklemek istediğin kişileri seç."
+        },
+        "unknown": {
+          "title": "Bir şeyler ters gitti",
+          "body": "Biraz sonra tekrar dene."
+        }
+      },
+      "consent": {
+        "title": "Kişilerini nasıl kullanıyoruz",
+        "subtitle": "Arkadaşlarını aramadan önce",
+        "noAutoTitle": "Kimseye kendiliğimizden yazmayız",
+        "noAutoBody": "Kime, ne zaman ulaşacağına sen karar verirsin.",
+        "privateTitle": "Yalnızca sen görürsün",
+        "privateBody": "Eklediğin kişiler Vitanaland hesabında saklanır. Onları yalnızca sen görebilirsin.",
+        "removeTitle": "İstediğin zaman sil",
+        "removeBody": "Bağlı Uygulamalar'da bir kaynağı kapatıp kişilerini kaldırabilirsin.",
+        "helper": "Kimlerin zaten Vitanaland'de olduğunu göstermek için e-posta adreslerini karşılaştırırız. Olmayanlar bundan hiç haberdar olmaz.",
+        "notNow": "Şimdi değil",
+        "continue": "Devam"
+      }
     }
   }
 }

@@ -22,6 +22,7 @@ export type ConnectedAppId =
   | "google-contacts"
   | "outlook-mail"
   | "outlook-calendar"
+  | "outlook-contacts"
   | "apple-mail"
   | "apple-calendar"
   | "iphone-contacts"
@@ -125,7 +126,7 @@ export async function pickDeviceContacts(): Promise<PickedContact[]> {
 export const APP_ORDER: Record<AppKind, ConnectedAppId[]> = {
   mail: ["gmail", "outlook-mail", "apple-mail"],
   calendar: ["google-calendar", "outlook-calendar", "apple-calendar"],
-  contacts: ["google-contacts", "iphone-contacts", "android-contacts"],
+  contacts: ["google-contacts", "outlook-contacts", "iphone-contacts", "android-contacts"],
 };
 
 /** The OAuth callback lands on …/settings/connected-apps?app=<id>&connected=<provider>. */

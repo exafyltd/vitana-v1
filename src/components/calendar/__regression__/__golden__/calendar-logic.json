@@ -1,0 +1,1146 @@
+{
+  "cards.allDay": [
+    true,
+    false,
+    true,
+    false
+  ],
+  "cards.byType": {
+    "personal": {
+      "style": "bg-sys-vitana-tint text-sys-vitana-accent",
+      "badge": {
+        "label": "calendar.categories.personal|Personal",
+        "className": "bg-sys-vitana-tint text-sys-vitana-accent"
+      },
+      "action": {
+        "label": "calendar.action.open|Open",
+        "variant": "outline",
+        "action": "open"
+      }
+    },
+    "community": {
+      "style": "bg-domain-community-tint text-domain-community-accent",
+      "badge": {
+        "label": "calendar.categories.community|Community",
+        "className": "bg-domain-community-tint text-domain-community-accent"
+      },
+      "action": {
+        "label": "calendar.action.details|Details",
+        "variant": "secondary",
+        "action": "details"
+      }
+    },
+    "professional": {
+      "style": "bg-pill-exercise-tint text-pill-exercise-accent",
+      "badge": {
+        "label": "calendar.categories.professional|Work",
+        "className": "bg-pill-exercise-tint text-pill-exercise-accent"
+      },
+      "action": {
+        "label": "calendar.action.open|Open",
+        "variant": "outline",
+        "action": "open"
+      }
+    },
+    "health": {
+      "style": "bg-pill-mental-tint text-pill-mental-accent",
+      "badge": {
+        "label": "calendar.categories.health|Health",
+        "className": "bg-pill-mental-tint text-pill-mental-accent"
+      },
+      "action": {
+        "label": "calendar.action.open|Open",
+        "variant": "outline",
+        "action": "open"
+      }
+    },
+    "workout": {
+      "style": "bg-pill-exercise-tint text-pill-exercise-accent",
+      "badge": {
+        "label": "calendar.categories.fitness|Fitness",
+        "className": "bg-pill-exercise-tint text-pill-exercise-accent"
+      },
+      "action": {
+        "label": "calendar.action.open|Open",
+        "variant": "outline",
+        "action": "open"
+      }
+    },
+    "nutrition": {
+      "style": "bg-pill-nutrition-tint text-pill-nutrition-accent",
+      "badge": {
+        "label": "calendar.categories.nutrition|Nutrition",
+        "className": "bg-pill-nutrition-tint text-pill-nutrition-accent"
+      },
+      "action": {
+        "label": "calendar.action.open|Open",
+        "variant": "outline",
+        "action": "open"
+      }
+    },
+    "autopilot": {
+      "style": "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      "badge": {
+        "label": "calendar.badge.guidedStep|Guided step",
+        "className": "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400"
+      },
+      "action": {
+        "label": "calendar.action.start|Start",
+        "variant": "default",
+        "action": "start"
+      }
+    },
+    "journey_milestone": {
+      "style": "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+      "badge": {
+        "label": "calendar.badge.milestone|Milestone",
+        "className": "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+      },
+      "action": {
+        "label": "calendar.action.viewPlan|View plan",
+        "variant": "secondary",
+        "action": "view-plan"
+      }
+    },
+    "wellness_nudge": {
+      "style": "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+      "badge": {
+        "label": "calendar.badge.wellness|Wellness",
+        "className": "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+      },
+      "action": {
+        "label": "calendar.action.open|Open",
+        "variant": "outline",
+        "action": "open"
+      }
+    }
+  },
+  "cards.focus": [
+    {
+      "type": "event",
+      "label": "Step 1",
+      "sublabel": null,
+      "id": "ap1"
+    },
+    {
+      "type": "event",
+      "label": "Milestone",
+      "sublabel": null,
+      "id": "ms"
+    },
+    {
+      "type": "event",
+      "label": "Soon",
+      "sublabel": null,
+      "id": "soon"
+    },
+    {
+      "type": "empty",
+      "label": "calendar.focus.lightDay|Light day — explore activities or catch up on your diary",
+      "sublabel": null,
+      "id": null
+    },
+    {
+      "type": "empty",
+      "label": "calendar.focus.lightDay|Light day — explore activities or catch up on your diary",
+      "sublabel": null,
+      "id": null
+    }
+  ],
+  "cards.groups": {
+    "groups": [
+      {
+        "id": "autopilot-morning_routine",
+        "label": "Morning Routine",
+        "events": [
+          "ap1"
+        ],
+        "remainingCount": 1,
+        "estimatedMinutes": 5
+      },
+      {
+        "id": "autopilot-sleep",
+        "label": "Sleep",
+        "events": [
+          "ap2"
+        ],
+        "remainingCount": 0,
+        "estimatedMinutes": 0
+      },
+      {
+        "id": "autopilot-getting-started",
+        "label": "Getting Started",
+        "events": [
+          "ap3"
+        ],
+        "remainingCount": 0,
+        "estimatedMinutes": 0
+      }
+    ],
+    "regular": [
+      "later",
+      "soon",
+      "ms"
+    ]
+  },
+  "client.errors": {
+    "http_500": {
+      "error": "HTTP 500",
+      "status": 500,
+      "name": "CalendarApiError",
+      "moveReason": null
+    },
+    "ok_false": {
+      "error": "boom",
+      "status": 200,
+      "name": "CalendarApiError",
+      "moveReason": null
+    },
+    "not_json": {
+      "error": "HTTP 502",
+      "status": 502,
+      "name": "CalendarApiError",
+      "moveReason": null
+    },
+    "move_owned": {
+      "error": "NOT_MOVABLE",
+      "status": 409,
+      "name": "CalendarApiError",
+      "moveReason": "owned_by_source"
+    },
+    "move_unknown_reason": {
+      "error": "NOT_MOVABLE",
+      "status": 409,
+      "name": "CalendarApiError",
+      "moveReason": null
+    },
+    "google_not_connected": {
+      "resolved": "needs_google"
+    },
+    "google_not_configured": {
+      "error": "not_configured",
+      "status": 503,
+      "name": "CalendarApiError",
+      "moveReason": null
+    },
+    "feed_no_path": {
+      "error": "NO_FEED_PATH",
+      "status": 500,
+      "name": "CalendarApiError",
+      "moveReason": null
+    }
+  },
+  "client.links": [
+    "https://gateway.example/api/v1/calendar/feed/t.ics",
+    "webcal://gateway.example/api/v1/calendar/feed/t.ics",
+    "webcal://x/y.ics",
+    null
+  ],
+  "client.requests": {
+    "sent": [
+      {
+        "url": "/api/v1/calendar/events/window?from=2026-10-05T00%3A00%3A00.000Z&to=2026-10-06T00%3A00%3A00.000Z",
+        "method": "GET",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok",
+          "X-Vitana-Active-Role": "professional"
+        },
+        "body": null
+      },
+      {
+        "url": "/api/v1/calendar/subscription",
+        "method": "GET",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": null
+      },
+      {
+        "url": "/api/v1/calendar/google",
+        "method": "GET",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": null
+      },
+      {
+        "url": "/api/v1/calendar/subscription",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": null
+      },
+      {
+        "url": "/api/v1/calendar/events/e%201%2F2/complete",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": {
+          "completion_status": "completed"
+        }
+      },
+      {
+        "url": "/api/v1/calendar/events/e1/move",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok",
+          "X-Vitana-Active-Role": "community"
+        },
+        "body": {
+          "start_time": "2026-10-06T07:30:00.000Z"
+        }
+      },
+      {
+        "url": "/api/v1/calendar/subscription",
+        "method": "DELETE",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": null
+      },
+      {
+        "url": "/api/v1/calendar/google/enable",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": null
+      },
+      {
+        "url": "/api/v1/calendar/google/disable",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer tok"
+        },
+        "body": null
+      }
+    ],
+    "results": {
+      "win": {
+        "items": [
+          {
+            "id": "a",
+            "start_time": "2026-10-05T07:00:00Z"
+          },
+          {
+            "id": "b",
+            "start_time": "2026-10-05T09:00:00Z"
+          }
+        ],
+        "timezone": "Europe/Berlin"
+      },
+      "feed": {
+        "active": true,
+        "created_at": "2026-10-01T00:00:00Z",
+        "last_used_at": null
+      },
+      "google": {
+        "availability": "ready",
+        "enabled": true,
+        "last_push_at": null,
+        "last_error": null
+      },
+      "link": "/api/v1/calendar/feed/tok.ics",
+      "enabled": "enabled"
+    }
+  },
+  "look.entries": [
+    {
+      "id": "plain",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "lab",
+      "kind": "lab",
+      "emoji": "🧪",
+      "source": "Aus deiner Laborbestellung",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "lab-ref",
+      "kind": "lab",
+      "emoji": "🧪",
+      "source": "Aus deiner Laborbestellung",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "pillar",
+      "kind": "sleep",
+      "emoji": "😴",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "pillar-tag",
+      "kind": "hydration",
+      "emoji": "💧",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "bad-pillar",
+      "kind": "exercise",
+      "emoji": "🏃",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-workout",
+      "kind": "exercise",
+      "emoji": "🏃",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-nutrition",
+      "kind": "nutrition",
+      "emoji": "🥗",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-community",
+      "kind": "community",
+      "emoji": "🎉",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-health",
+      "kind": "lab",
+      "emoji": "🧪",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-autopilot",
+      "kind": "vitana",
+      "emoji": "✨",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-journey_milestone",
+      "kind": "vitana",
+      "emoji": "✨",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-wellness_nudge",
+      "kind": "vitana",
+      "emoji": "✨",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-professional",
+      "kind": "work",
+      "emoji": "💼",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-admin_task",
+      "kind": "work",
+      "emoji": "💼",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-dev_task",
+      "kind": "work",
+      "emoji": "💼",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-deployment",
+      "kind": "work",
+      "emoji": "💼",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-sprint_milestone",
+      "kind": "work",
+      "emoji": "💼",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "type-personal",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-autopilot",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Autopilot ✨",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-plan",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Aus deinem Plan",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-goal",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Aus deinem Plan",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-assistant",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Mit Vitana eingetragen",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-rsvp",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Community",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-live",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Community",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "src-journey",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": "Deine Journey",
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "work",
+      "kind": "work",
+      "emoji": "🚀",
+      "source": "Produktions-Deploy",
+      "done": false,
+      "work": true
+    },
+    {
+      "id": "display-emoji",
+      "kind": "personal",
+      "emoji": "🎸",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "own-emoji",
+      "kind": "personal",
+      "emoji": "🍎",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "done-status",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": null,
+      "done": true,
+      "work": false
+    },
+    {
+      "id": "done-at",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": null,
+      "done": true,
+      "work": false
+    },
+    {
+      "id": "skipped",
+      "kind": "personal",
+      "emoji": "📌",
+      "source": null,
+      "done": false,
+      "work": false
+    },
+    {
+      "id": "busy",
+      "kind": null,
+      "emoji": "",
+      "source": null,
+      "done": null,
+      "work": false
+    }
+  ],
+  "look.itemsOn": [
+    "a",
+    "b"
+  ],
+  "look.palette": {
+    "kinds": {
+      "nutrition": {
+        "bg": "#E3F7D9",
+        "ink": "#1F5E14",
+        "accent": "#2E7D1F",
+        "emoji": "🥗"
+      },
+      "hydration": {
+        "bg": "#DDF1FF",
+        "ink": "#0B4F7A",
+        "accent": "#1172B8",
+        "emoji": "💧"
+      },
+      "exercise": {
+        "bg": "#FFE6D1",
+        "ink": "#8A3A00",
+        "accent": "#C4520A",
+        "emoji": "🏃"
+      },
+      "sleep": {
+        "bg": "#E4E3FF",
+        "ink": "#34307F",
+        "accent": "#4B45C4",
+        "emoji": "😴"
+      },
+      "mental": {
+        "bg": "#F0E4FF",
+        "ink": "#5A2A8A",
+        "accent": "#7B3FC4",
+        "emoji": "🧘"
+      },
+      "community": {
+        "bg": "#FFE0EA",
+        "ink": "#8A1440",
+        "accent": "#C22F66",
+        "emoji": "🎉"
+      },
+      "lab": {
+        "bg": "#D9F5F0",
+        "ink": "#0D5C52",
+        "accent": "#11806F",
+        "emoji": "🧪"
+      },
+      "work": {
+        "bg": "#E6EEF5",
+        "ink": "#24435E",
+        "accent": "#35607F",
+        "emoji": "💼"
+      },
+      "vitana": {
+        "bg": "#ECEBFF",
+        "ink": "#3B36A8",
+        "accent": "#5B54D6",
+        "emoji": "✨"
+      },
+      "personal": {
+        "bg": "#FFF1D6",
+        "ink": "#6B4300",
+        "accent": "#8F5B00",
+        "emoji": "📌"
+      }
+    },
+    "surface": {
+      "page": "#FFF9F2",
+      "card": "#FFFFFF",
+      "track": "#F1E9DF",
+      "ink": "#2A2233",
+      "muted": "#6B6076",
+      "faint": "#9A8FA5",
+      "busyBg": "#EEEAE5",
+      "busyInk": "#6F6878",
+      "primary": "#5B54D6"
+    }
+  },
+  "nl.parse": [
+    {
+      "p": "Zahnarzt morgen 14:30 Uhr @ Praxis Müller",
+      "title": "Zahnarzt",
+      "start": "2026-10-06T12:30:00.000Z",
+      "end": "2026-10-06T13:30:00.000Z",
+      "location": "Praxis Müller",
+      "type": "personal",
+      "description": null
+    },
+    {
+      "p": "Laufen heute 7.30h tag:sport",
+      "title": "Laufen",
+      "start": "2026-10-05T05:30:00.000Z",
+      "end": "2026-10-05T06:30:00.000Z",
+      "location": null,
+      "type": "workout",
+      "description": null
+    },
+    {
+      "p": "Meeting Freitag 14-16h tag:arbeit erinnerung 30 min",
+      "title": "Meeting 14-16h in",
+      "start": "2026-10-09T10:15:00.000Z",
+      "end": "2026-10-09T11:15:00.000Z",
+      "location": null,
+      "type": "professional",
+      "description": "Reminder: 30 minute(s) before"
+    },
+    {
+      "p": "dinner with Ana tomorrow 8pm @ Luigi's, erinnerung 2 h",
+      "title": "dinner with Ana",
+      "start": "2026-10-06T18:00:00.000Z",
+      "end": "2026-10-06T19:00:00.000Z",
+      "location": "Luigi's",
+      "type": "personal",
+      "description": "Reminder: 2 hour(s) before"
+    },
+    {
+      "p": "yoga monday 6:45am",
+      "title": "yoga",
+      "start": "2026-10-12T04:45:00.000Z",
+      "end": "2026-10-12T05:45:00.000Z",
+      "location": null,
+      "type": "personal",
+      "description": null
+    },
+    {
+      "p": "Call übermorgen 20h",
+      "title": "Call übermorgen",
+      "start": "2026-10-05T18:00:00.000Z",
+      "end": "2026-10-05T19:00:00.000Z",
+      "location": null,
+      "type": "personal",
+      "description": null
+    },
+    {
+      "p": "Team sync 2-4pm tag:work",
+      "title": "Team sync 2-4pm",
+      "start": "2026-10-05T10:15:00.000Z",
+      "end": "2026-10-05T11:15:00.000Z",
+      "location": null,
+      "type": "professional",
+      "description": null
+    },
+    {
+      "p": "Einkaufen",
+      "title": "Einkaufen",
+      "start": "2026-10-05T10:15:00.000Z",
+      "end": "2026-10-05T11:15:00.000Z",
+      "location": null,
+      "type": "personal",
+      "description": null
+    },
+    {
+      "p": "Mittag 12.00–13.00h tag:essen",
+      "title": "Mittag",
+      "start": "2026-10-05T10:00:00.000Z",
+      "end": "2026-10-05T11:00:00.000Z",
+      "location": null,
+      "type": "nutrition",
+      "description": null
+    },
+    {
+      "p": "noon thing 12pm, 12am thing",
+      "title": "noon thing 12am thing",
+      "start": "2026-10-05T10:00:00.000Z",
+      "end": "2026-10-05T11:00:00.000Z",
+      "location": null,
+      "type": "personal",
+      "description": null
+    },
+    {
+      "p": "Arzt um 9 Uhr tag:arzt remind 1 hour",
+      "title": "Arzt our",
+      "start": "2026-10-05T07:00:00.000Z",
+      "end": "2026-10-05T08:00:00.000Z",
+      "location": null,
+      "type": "health",
+      "description": "Reminder: 1 hour(s) before"
+    },
+    {
+      "p": "",
+      "title": "Calendar Event",
+      "start": "2026-10-05T10:15:00.000Z",
+      "end": "2026-10-05T11:15:00.000Z",
+      "location": null,
+      "type": "personal",
+      "description": null
+    }
+  ],
+  "queue": {
+    "afterEnqueue": [
+      {
+        "title": "Brunch (moved)",
+        "start_time": "2026-10-06T10:00:00Z",
+        "source_message_id": "m1",
+        "event_type": "community",
+        "created_at": "2026-10-05T10:00:00.000Z",
+        "ttl_hours": 24,
+        "status": "confirmed",
+        "priority": "medium",
+        "is_recurring": false,
+        "source_type": "invite"
+      },
+      {
+        "title": "Short-lived",
+        "start_time": "2026-10-06T09:00:00Z",
+        "source_message_id": "m2",
+        "ttl_hours": 1,
+        "created_at": "2026-10-05T10:00:00.000Z",
+        "event_type": "personal",
+        "status": "confirmed",
+        "priority": "medium",
+        "is_recurring": false,
+        "source_type": "invite"
+      },
+      {
+        "title": "No id",
+        "start_time": "2026-10-06T09:00:00Z",
+        "created_at": "2026-10-05T10:00:00.000Z",
+        "ttl_hours": 24,
+        "event_type": "personal",
+        "status": "confirmed",
+        "priority": "medium",
+        "is_recurring": false,
+        "source_type": "invite"
+      }
+    ],
+    "afterExpiry": [
+      "Brunch (moved)",
+      "No id"
+    ],
+    "afterDequeue": [
+      "No id"
+    ]
+  },
+  "views.range": {
+    "wednesday.day": [
+      "2026-09-22T22:00:00.000Z",
+      "2026-09-23T22:00:00.000Z"
+    ],
+    "wednesday.week": [
+      "2026-09-20T22:00:00.000Z",
+      "2026-09-27T22:00:00.000Z"
+    ],
+    "wednesday.month": [
+      "2026-08-30T22:00:00.000Z",
+      "2026-10-11T22:00:00.000Z"
+    ],
+    "sunday_before_dst_end.day": [
+      "2026-10-24T22:00:00.000Z",
+      "2026-10-25T23:00:00.000Z"
+    ],
+    "sunday_before_dst_end.week": [
+      "2026-10-18T22:00:00.000Z",
+      "2026-10-25T23:00:00.000Z"
+    ],
+    "sunday_before_dst_end.month": [
+      "2026-09-27T22:00:00.000Z",
+      "2026-11-08T23:00:00.000Z"
+    ],
+    "month_starting_monday.day": [
+      "2026-06-09T22:00:00.000Z",
+      "2026-06-10T22:00:00.000Z"
+    ],
+    "month_starting_monday.week": [
+      "2026-06-07T22:00:00.000Z",
+      "2026-06-14T22:00:00.000Z"
+    ],
+    "month_starting_monday.month": [
+      "2026-05-31T22:00:00.000Z",
+      "2026-07-12T22:00:00.000Z"
+    ],
+    "first_of_month_sunday.day": [
+      "2026-10-31T23:00:00.000Z",
+      "2026-11-01T23:00:00.000Z"
+    ],
+    "first_of_month_sunday.week": [
+      "2026-10-25T23:00:00.000Z",
+      "2026-11-01T23:00:00.000Z"
+    ],
+    "first_of_month_sunday.month": [
+      "2026-10-25T23:00:00.000Z",
+      "2026-12-06T23:00:00.000Z"
+    ],
+    "leap_feb.day": [
+      "2028-02-28T23:00:00.000Z",
+      "2028-02-29T23:00:00.000Z"
+    ],
+    "leap_feb.week": [
+      "2028-02-27T23:00:00.000Z",
+      "2028-03-05T23:00:00.000Z"
+    ],
+    "leap_feb.month": [
+      "2028-01-30T23:00:00.000Z",
+      "2028-03-12T23:00:00.000Z"
+    ],
+    "new_year.day": [
+      "2026-12-30T23:00:00.000Z",
+      "2026-12-31T23:00:00.000Z"
+    ],
+    "new_year.week": [
+      "2026-12-27T23:00:00.000Z",
+      "2027-01-03T23:00:00.000Z"
+    ],
+    "new_year.month": [
+      "2026-11-29T23:00:00.000Z",
+      "2027-01-10T23:00:00.000Z"
+    ]
+  },
+  "views.sameDay": [
+    true,
+    false,
+    true
+  ],
+  "views.step": {
+    "wednesday.day": [
+      "2026-09-22T13:00:00.000Z",
+      "2026-09-24T13:00:00.000Z"
+    ],
+    "wednesday.week": [
+      "2026-09-16T13:00:00.000Z",
+      "2026-09-30T13:00:00.000Z"
+    ],
+    "wednesday.month": [
+      "2026-07-31T22:00:00.000Z",
+      "2026-09-30T22:00:00.000Z"
+    ],
+    "sunday_before_dst_end.day": [
+      "2026-10-23T23:30:00.000Z",
+      "2026-10-26T00:30:00.000Z"
+    ],
+    "sunday_before_dst_end.week": [
+      "2026-10-17T23:30:00.000Z",
+      "2026-11-01T00:30:00.000Z"
+    ],
+    "sunday_before_dst_end.month": [
+      "2026-08-31T22:00:00.000Z",
+      "2026-10-31T23:00:00.000Z"
+    ],
+    "month_starting_monday.day": [
+      "2026-06-08T22:00:00.000Z",
+      "2026-06-10T22:00:00.000Z"
+    ],
+    "month_starting_monday.week": [
+      "2026-06-02T22:00:00.000Z",
+      "2026-06-16T22:00:00.000Z"
+    ],
+    "month_starting_monday.month": [
+      "2026-04-30T22:00:00.000Z",
+      "2026-06-30T22:00:00.000Z"
+    ],
+    "first_of_month_sunday.day": [
+      "2026-10-31T11:00:00.000Z",
+      "2026-11-02T11:00:00.000Z"
+    ],
+    "first_of_month_sunday.week": [
+      "2026-10-25T11:00:00.000Z",
+      "2026-11-08T11:00:00.000Z"
+    ],
+    "first_of_month_sunday.month": [
+      "2026-09-30T22:00:00.000Z",
+      "2026-11-30T23:00:00.000Z"
+    ],
+    "leap_feb.day": [
+      "2028-02-28T08:00:00.000Z",
+      "2028-03-01T08:00:00.000Z"
+    ],
+    "leap_feb.week": [
+      "2028-02-22T08:00:00.000Z",
+      "2028-03-07T08:00:00.000Z"
+    ],
+    "leap_feb.month": [
+      "2027-12-31T23:00:00.000Z",
+      "2028-02-29T23:00:00.000Z"
+    ],
+    "new_year.day": [
+      "2026-12-30T22:30:00.000Z",
+      "2027-01-01T22:30:00.000Z"
+    ],
+    "new_year.week": [
+      "2026-12-24T22:30:00.000Z",
+      "2027-01-07T22:30:00.000Z"
+    ],
+    "new_year.month": [
+      "2026-10-31T23:00:00.000Z",
+      "2026-12-31T23:00:00.000Z"
+    ]
+  },
+  "wording.greeting": [
+    [
+      0,
+      "vcal.greeting.night"
+    ],
+    [
+      4,
+      "vcal.greeting.night"
+    ],
+    [
+      5,
+      "vcal.greeting.morning"
+    ],
+    [
+      11,
+      "vcal.greeting.morning"
+    ],
+    [
+      12,
+      "vcal.greeting.afternoon"
+    ],
+    [
+      17,
+      "vcal.greeting.afternoon"
+    ],
+    [
+      18,
+      "vcal.greeting.evening"
+    ],
+    [
+      23,
+      "vcal.greeting.evening"
+    ]
+  ],
+  "wording.nextReminder": [
+    [
+      "2026-10-05T12:00:00Z",
+      "2026-10-05T17:00:00.000Z",
+      "2026-10-06T06:20:00.000Z"
+    ],
+    [
+      "2026-10-05T17:30:00Z",
+      "2026-10-06T05:00:00.000Z",
+      "2026-10-06T06:20:00.000Z"
+    ],
+    [
+      "2026-10-06T05:25:00Z",
+      "2026-10-06T05:30:00.000Z",
+      "2026-10-06T06:20:00.000Z"
+    ],
+    [
+      "2026-10-06T06:31:00Z",
+      null,
+      null
+    ]
+  ],
+  "wording.relative": [
+    [
+      -60,
+      "jetzt"
+    ],
+    [
+      0,
+      "jetzt"
+    ],
+    [
+      1,
+      "in 1 Min."
+    ],
+    [
+      12,
+      "in 12 Min."
+    ],
+    [
+      59,
+      "in 59 Min."
+    ],
+    [
+      60,
+      "in 1 Std."
+    ],
+    [
+      89,
+      "in 1 Std."
+    ],
+    [
+      90,
+      "in 2 Std."
+    ],
+    [
+      120,
+      "in 2 Std."
+    ],
+    [
+      2100,
+      "in 35 Std."
+    ],
+    [
+      2160,
+      "in 2 Tagen"
+    ],
+    [
+      2880,
+      "in 2 Tagen"
+    ],
+    [
+      14400,
+      "in 10 Tagen"
+    ]
+  ],
+  "wording.reminderLabel": [
+    "Zum Start",
+    "10 Min. vorher",
+    "1 Std. vorher",
+    "90 Min. vorher",
+    "24 Std. vorher",
+    "Am Vorabend um 19:00"
+  ],
+  "wording.times": {
+    "hhmm": [
+      "09:30",
+      "02:30",
+      "02:30",
+      "00:05"
+    ],
+    "range": [
+      "09:30 – 10:00",
+      "09:30"
+    ],
+    "input": [
+      "2026-10-05T09:30",
+      "2026-01-02T03:04"
+    ]
+  }
+}

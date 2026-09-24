@@ -22,6 +22,7 @@
     "nav:draft": "node scripts/nav-draft.mjs",
     "test": "vitest run",
     "test:unit": "vitest run",
+    "test:calendar": "vitest run src/components/calendar/__regression__ src/components/calendar/PendingCalendarEventProcessor.dedupe-error.test.ts src/components/calendar/vcal/vcal.test.ts src/hooks/useCalendarEvents.error-logging-abort.test.ts src/hooks/useCalendarEvents.idempotency-error-logging.test.ts",
     "test:unit:watch": "vitest",
     "test:unit:coverage": "vitest run --coverage",
     "test:orb-stop": "node scripts/orb-voice-client-stop-regression.mjs",
