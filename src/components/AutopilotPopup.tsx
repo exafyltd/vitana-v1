@@ -40,6 +40,7 @@ import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
 import { t } from '@/lib/i18n-toast';
+import { AutopilotDraftSheet, type DraftSheetItem } from "@/components/autopilot/AutopilotDraftSheet";
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -99,6 +100,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     completeRecommendation,
     setActionStatus,
     markDismissedLocally,
+    fetchDraft,
     generateRecommendations,
     generating,
     generateReason,
@@ -225,13 +227,52 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     }
   };
 
+  // VTID-04504: drafted suggestions (post, message, caption) are reviewed one
+  // by one in the preview sheet before the run; a skipped one is left as is.
+  const [draftQueue, setDraftQueue] = useState<DraftSheetItem[]>([]);
+  const [pendingRun, setPendingRun] = useState<{ ids: string[]; drafts: Record<string, string> } | null>(null);
+
   const handleExecute = async () => {
     if (selectedActions.length === 0) return;
+    const drafted = selectedActions
+      .filter((a) => a.draftKind)
+      .map((a) => ({ id: a.id, title: a.title, kind: a.draftKind! }));
+    if (drafted.length > 0) {
+      setPendingRun({ ids: selectedActions.map((a) => a.id), drafts: {} });
+      setDraftQueue(drafted);
+      return;
+    }
+    await runSelected(selectedActions.map((a) => a.id), {});
+  };
 
-    const actionIds = selectedActions.map(a => a.id);
+  const advanceDrafts = (run: { ids: string[]; drafts: Record<string, string> }) => {
+    const rest = draftQueue.slice(1);
+    setDraftQueue(rest);
+    if (rest.length === 0) {
+      setPendingRun(null);
+      if (run.ids.length > 0) void runSelected(run.ids, run.drafts);
+    } else {
+      setPendingRun(run);
+    }
+  };
 
+  const handleDraftConfirm = (id: string, text: string) => {
+    if (!pendingRun) return;
+    const run = { ids: pendingRun.ids, drafts: { ...pendingRun.drafts, [id]: text } };
+    // Media Hub has no caption prefill yet; the reviewed caption is copied.
+    const item = draftQueue.find((d) => d.id === id);
+    if (item?.kind === "media_upload" && text) navigator.clipboard?.writeText(text).catch(() => {});
+    advanceDrafts(run);
+  };
+
+  const handleDraftSkip = (id: string) => {
+    if (!pendingRun) return;
+    advanceDrafts({ ids: pendingRun.ids.filter((x) => x !== id), drafts: pendingRun.drafts });
+  };
+
+  const runSelected = async (actionIds: string[], drafts: Record<string, string>) => {
     try {
-      const results = await executeActions(actionIds);
+      const results = await executeActions(actionIds, drafts);
 
       // Check for navigate action — use the first navigate result
       const navigateResult = results.find(r => r.success && r.action_type === "navigate" && r.target);
@@ -620,6 +661,12 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           if (!isOpen && !hasConsent) onOpenChange(false);
         }}
         onConsent={grantConsent}
+      />
+      <AutopilotDraftSheet
+        item={draftQueue[0] ?? null}
+        loadDraft={(id, o) => fetchDraft(id, o ?? {})}
+        onConfirm={handleDraftConfirm}
+        onSkip={handleDraftSkip}
       />
     </ResponsiveDialog>
   );

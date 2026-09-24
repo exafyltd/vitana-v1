@@ -120,7 +120,8 @@
       "editPhotoAria": "编辑头像",
       "showQrAria": "显示二维码",
       "close": "关闭",
-      "_pending_review": {}
+      "topPercent": "前 {percent}%",
+      "topPercentAria": "{count} 位成员中的前 {percent}%"
     },
     "healthReal": {
       "loadError": "无法加载健康数据。",
@@ -146,8 +147,7 @@
       "shareHint": "类别、每周变化和成就。你的活动记录始终保持私密。",
       "shareOnlyMe": "仅我自己",
       "shareConnections": "我的联系人",
-      "shareEveryone": "所有人",
-      "_pending_review": {}
+      "shareEveryone": "所有人"
     },
     "indexBoost": {
       "mostActivePrefix": "最活跃：",
@@ -172,18 +172,15 @@
         "yoga_pilates": "瑜伽和普拉提",
         "swimming": "游泳",
         "walking": "步行",
-        "workout": "训练",
-        "_pending_review": {}
+        "workout": "训练"
       },
       "type": {
         "nutrition": "健康饮食",
         "hydration": "饮水",
         "sleep": "睡眠",
         "mindfulness": "正念",
-        "journey": "引导课程",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "journey": "引导课程"
+      }
     }
   },
   "_pending_review": {}

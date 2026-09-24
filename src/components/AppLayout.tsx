@@ -24,6 +24,7 @@ import { DesktopVitanaIndexChip } from "@/components/health/DesktopVitanaIndexCh
 import { VitanaIndexSheet } from "@/components/health/VitanaIndexSheet";
 import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatcher";
 import { InviteSheet } from "@/components/InviteSheet";
+import { InviteClaimer } from "@/components/InviteClaimer";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation, getVisibleBackOfficeNavigation } from "@/config/role-navigation";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
@@ -559,6 +560,7 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
       <VitanaIndexSheet />
       <VitanaIndexLiftWatcher />
       <InviteSheet />
+      <InviteClaimer />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}

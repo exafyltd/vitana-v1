@@ -4,61 +4,49 @@
     "kinds": {
       "mail": "E-mail",
       "calendar": "Agenda",
-      "contacts": "Contatos",
-      "_pending_review": {}
+      "contacts": "Contatos"
     },
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "A Vitana lê e escreve e-mails para você",
-        "_pending_review": {}
+        "what": "A Vitana lê e escreve e-mails para você"
       },
       "outlook-mail": {
         "name": "Outlook Email",
-        "what": "Ler sua caixa Microsoft e enviar e-mails",
-        "_pending_review": {}
+        "what": "Ler sua caixa Microsoft e enviar e-mails"
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Ler sua caixa do iCloud e enviar e-mails do seu endereço do iCloud",
-        "_pending_review": {}
+        "what": "Ler sua caixa do iCloud e enviar e-mails do seu endereço do iCloud"
       },
       "google-calendar": {
         "name": "Google Agenda",
-        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland",
-        "_pending_review": {}
+        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
       },
       "outlook-calendar": {
         "name": "Calendário do Outlook",
-        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland",
-        "_pending_review": {}
+        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
       },
       "outlook-contacts": {
         "name": "Contatos do Outlook",
-        "what": "Trazer seus contatos do Outlook para a Vitanaland",
-        "_pending_review": {}
+        "what": "Trazer seus contatos do Outlook para a Vitanaland"
       },
       "apple-calendar": {
         "name": "Calendário da Apple (iCloud)",
-        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland",
-        "_pending_review": {}
+        "what": "Ver e adicionar compromissos, sincronizados com a Vitanaland"
       },
       "google-contacts": {
         "name": "Contatos do Google",
-        "what": "Trazer seus contatos para a Vitanaland",
-        "_pending_review": {}
+        "what": "Trazer seus contatos para a Vitanaland"
       },
       "iphone-contacts": {
         "name": "Contatos do iPhone (iCloud)",
-        "what": "Trazer seus contatos do iCloud para a Vitanaland",
-        "_pending_review": {}
+        "what": "Trazer seus contatos do iCloud para a Vitanaland"
       },
       "android-contacts": {
         "name": "Contatos do Android",
-        "what": "Escolher contatos no celular e trazê-los",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "what": "Escolher contatos no celular e trazê-los"
+      }
     },
     "status": {
       "loading": "Carregando …",
@@ -69,8 +57,7 @@
       "finishInBrowser": "Termine o login no navegador e volte",
       "contactsCount": "{count} contatos",
       "busyCount": "{count} horários ocupados",
-      "syncedAgo": "sincronizado {ago}",
-      "_pending_review": {}
+      "syncedAgo": "sincronizado {ago}"
     },
     "actions": {
       "toggleAria": "Ativar ou desativar {app}",
@@ -80,8 +67,7 @@
       "cancel": "Cancelar",
       "keepOn": "Manter ativado",
       "turnOff": "Desativar",
-      "gotIt": "Entendi",
-      "_pending_review": {}
+      "gotIt": "Entendi"
     },
     "toasts": {
       "turnedOn": "{app} está ativado",
@@ -93,8 +79,7 @@
       "consentFailed": "O login não foi concluído — tente de novo",
       "notAvailable": "Este app ainda não está disponível conosco",
       "couldNotTurnOn": "Não funcionou — tente de novo daqui a pouco",
-      "couldNotTurnOff": "Não foi possível desativar — tente de novo daqui a pouco",
-      "_pending_review": {}
+      "couldNotTurnOff": "Não foi possível desativar — tente de novo daqui a pouco"
     },
     "apple": {
       "title": "Conectar Apple iCloud",
@@ -109,81 +94,66 @@
       "checking": "Verificando …",
       "wrongPassword": "A Apple recusou o login — confira seu ID Apple e a senha de app",
       "unreachable": "O iCloud não está acessível agora — tente de novo daqui a pouco",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
-      "_pending_review": {}
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
     },
     "android": {
       "title": "Abra no seu celular Android",
-      "body": "Os contatos do Android vêm direto do seu celular. Abra a Vitanaland no Chrome do seu celular Android e toque no interruptor lá — você escolhe quais contatos entram.",
-      "_pending_review": {}
+      "body": "Os contatos do Android vêm direto do seu celular. Abra a Vitanaland no Chrome do seu celular Android e toque no interruptor lá — você escolhe quais contatos entram."
     },
     "off": {
       "title": "Desativar {app}?",
       "body": {
         "mail": "A Vitana deixa de ler e enviar e-mails por este app.",
         "calendar": "Os horários ocupados desta agenda somem da sua agenda da Vitanaland. A agenda \"Vitanaland\" continua na sua conta — você pode apagá-la lá.",
-        "contacts": "Não entram contatos novos. Os que já foram adicionados ficam, a menos que você os remova aqui.",
-        "_pending_review": {}
+        "contacts": "Não entram contatos novos. Os que já foram adicionados ficam, a menos que você os remova aqui."
       },
-      "removeContacts": "Remover também da Vitanaland os contatos adicionados",
-      "_pending_review": {}
+      "removeContacts": "Remover também da Vitanaland os contatos adicionados"
     },
     "errors": {
       "sessionExpired": "Sua sessão expirou. Faça login de novo para gerenciar seus apps.",
-      "loadFailed": "Não foi possível carregar seus apps agora. Tente de novo daqui a pouco.",
-      "_pending_review": {}
+      "loadFailed": "Não foi possível carregar seus apps agora. Tente de novo daqui a pouco."
     },
     "findFriends": {
       "status": {
         "on": "Conectado — verificando agora",
         "off": "Ative primeiro em Apps conectados",
         "phone": "Escolha contatos no seu celular",
-        "phoneUnavailable": "Só no Chrome no Android",
-        "_pending_review": {}
+        "phoneUnavailable": "Só no Chrome no Android"
       },
       "connect": {
         "title": "{app} ainda não está conectado",
         "body": "Ative {app} uma vez em Apps conectados. Depois disso, você encontra seus amigos aqui com um toque.",
-        "open": "Abrir Apps conectados",
-        "_pending_review": {}
+        "open": "Abrir Apps conectados"
       },
       "progress": {
         "reading": "Lendo seus contatos …",
-        "matching": "Vendo quem já está na Vitanaland …",
-        "_pending_review": {}
+        "matching": "Vendo quem já está na Vitanaland …"
       },
       "errors": {
         "oauth_failed": {
           "title": "A conexão não deu certo",
-          "body": "Não conseguimos acessar sua conta agora. Tente de novo daqui a pouco ou conecte-a de novo em Apps conectados.",
-          "_pending_review": {}
+          "body": "Não conseguimos acessar sua conta agora. Tente de novo daqui a pouco ou conecte-a de novo em Apps conectados."
         },
         "api_unavailable": {
           "title": "Não é possível neste aparelho",
-          "body": "Seu navegador não consegue abrir sua agenda. Abra a Vitanaland no Chrome do seu celular Android ou conecte o Google ou o iCloud.",
-          "_pending_review": {}
+          "body": "Seu navegador não consegue abrir sua agenda. Abra a Vitanaland no Chrome do seu celular Android ou conecte o Google ou o iCloud."
         },
         "permission_denied": {
           "title": "Sem acesso aos seus contatos",
-          "body": "Permita que a Vitanaland acesse seus contatos nas configurações do seu celular.",
-          "_pending_review": {}
+          "body": "Permita que a Vitanaland acesse seus contatos nas configurações do seu celular."
         },
         "rate_limited": {
           "title": "Tentativas demais",
-          "body": "Espere um pouco e tente de novo.",
-          "_pending_review": {}
+          "body": "Espere um pouco e tente de novo."
         },
         "cancelled": {
           "title": "Nenhum contato escolhido",
-          "body": "Toque de novo e escolha os contatos que você quer trazer.",
-          "_pending_review": {}
+          "body": "Toque de novo e escolha os contatos que você quer trazer."
         },
         "unknown": {
           "title": "Algo deu errado",
-          "body": "Tente de novo daqui a pouco.",
-          "_pending_review": {}
-        },
-        "_pending_review": {}
+          "body": "Tente de novo daqui a pouco."
+        }
       },
       "consent": {
         "title": "Como cuidamos dos seus contatos",
@@ -196,12 +166,8 @@
         "removeBody": "Em Apps conectados você pode desativar uma fonte e remover os contatos dela.",
         "helper": "Comparamos endereços de e-mail para mostrar quem já está na Vitanaland. Quem não está nunca fica sabendo.",
         "notNow": "Agora não",
-        "continue": "Continuar",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "continue": "Continuar"
+      }
+    }
+  }
 }

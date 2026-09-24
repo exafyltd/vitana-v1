@@ -120,7 +120,8 @@
       "editPhotoAria": "Изменить фото профиля",
       "showQrAria": "Показать QR-код",
       "close": "Закрыть",
-      "_pending_review": {}
+      "topPercent": "Топ {percent}%",
+      "topPercentAria": "Топ {percent}% из {count} участников"
     },
     "healthReal": {
       "loadError": "Не удалось загрузить данные о здоровье.",
@@ -146,8 +147,7 @@
       "shareHint": "Категории, изменения за неделю и достижения. Журналы активности всегда остаются личными.",
       "shareOnlyMe": "Только я",
       "shareConnections": "Мои контакты",
-      "shareEveryone": "Все",
-      "_pending_review": {}
+      "shareEveryone": "Все"
     },
     "indexBoost": {
       "mostActivePrefix": "Больше всего:",
@@ -172,18 +172,15 @@
         "yoga_pilates": "Йога и пилатес",
         "swimming": "Плавание",
         "walking": "Ходьба",
-        "workout": "Тренировки",
-        "_pending_review": {}
+        "workout": "Тренировки"
       },
       "type": {
         "nutrition": "Здоровое питание",
         "hydration": "Вода",
         "sleep": "Сон",
         "mindfulness": "Осознанность",
-        "journey": "Программа с гидом",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "journey": "Программа с гидом"
+      }
     }
   },
   "_pending_review": {}

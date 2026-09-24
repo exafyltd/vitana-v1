@@ -58,6 +58,8 @@ vi.mock("@/hooks/useIndexBoost", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/hooks/useIndexBoost")>();
   return { ...actual, useIndexBoost: () => ({ data: boostData }) };
 });
+let standingData: unknown = null;
+vi.mock("@/hooks/useIndexStanding", () => ({ useIndexStanding: () => ({ data: standingData }) }));
 vi.mock("@/lib/locale-format", () => ({ fmtNumber: (n: number) => String(n) }));
 vi.mock("@/hooks/useVitanaStreaks", () => ({ useVitanaStreaks: () => ({ current: 0 }) }));
 vi.mock("@/hooks/useFollow", () => ({ useFollow: () => ({ followersCount: 7, followingCount: 7 }) }));
@@ -87,6 +89,7 @@ describe("MobileIdentityCard (VTID-04470)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     boostData = null;
+    standingData = null;
   });
 
   it("owner: shows the photo pencil wired to the existing identity editor", () => {
@@ -127,6 +130,19 @@ describe("MobileIdentityCard (VTID-04470)", () => {
     expect(line).toContain("pillar:exercise");
     expect(line).toContain("pillar:nutrition");
     expect(document.body.textContent).not.toMatch(/Top\s*\d+\s*%/);
+  });
+
+  it("shows the real Top X% badge only when the server vouches for it (VTID-04498)", () => {
+    standingData = { topPercent: 11, cohortSize: 66 };
+    renderCard({ isOwner: true });
+    const badge = screen.getByTestId("profile-index-top-percent");
+    expect(badge.textContent).toContain('profile.indexHero.topPercent{"percent":11}');
+    expect(badge.getAttribute("aria-label")).toContain('"count":66');
+  });
+
+  it("no badge when the server returns no standing", () => {
+    renderCard({ isOwner: true });
+    expect(screen.queryByTestId("profile-index-top-percent")).toBeNull();
   });
 
   it("the (i) icon opens the achievement drawer, not the detailed one", () => {

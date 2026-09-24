@@ -10,6 +10,7 @@ import {
   QrCode,
   Share2,
   TrendingUp,
+  Trophy,
   UserCheck,
   UserPlus,
 } from "lucide-react";
@@ -21,6 +22,7 @@ import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
 import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
 import { pillarLabel } from "@/hooks/useVitanaIndex";
 import { deriveIndexHighlights } from "@/lib/vitana-index-highlights";
+import { useIndexStanding } from "@/hooks/useIndexStanding";
 import { useIndexBoost, describeBoostDriver } from "@/hooks/useIndexBoost";
 import { fmtNumber } from "@/lib/locale-format";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
@@ -164,6 +166,8 @@ export function MobileIdentityCard({
   // VTID-04489: what drove this member's Index, in activity terms. Public
   // with numbers (owner decision) — the RPC returns `hidden` if they opted out.
   const { data: boost } = useIndexBoost(resolvedUserId);
+  // VTID-04498 — real community rank; null unless the server vouches for a badge.
+  const { data: standing } = useIndexStanding(resolvedUserId);
   // Resolved every render (cheap) so a language switch re-labels it.
   const topBoostDriver = boost && !boost.hidden ? boost.drivers[0] : undefined;
   const boostSentence = topBoostDriver
@@ -471,7 +475,7 @@ export function MobileIdentityCard({
             );
           })()}
 
-          {/* Status pills — tier always, momentum only when history shows it */}
+          {/* Status pills — tier always, real rank when the server vouches for it, momentum only when history shows it */}
           {tier && (
             <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2 [@media(max-height:720px)]:mt-1.5">
               <span
@@ -480,6 +484,16 @@ export function MobileIdentityCard({
               >
                 {t(tier.labelKey)}
               </span>
+              {standing && (
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-800 ring-1 ring-amber-200"
+                  aria-label={t("profile.indexHero.topPercentAria", { percent: standing.topPercent, count: standing.cohortSize })}
+                  data-testid="profile-index-top-percent"
+                >
+                  <Trophy className="h-4 w-4" aria-hidden />
+                  {t("profile.indexHero.topPercent", { percent: standing.topPercent })}
+                </span>
+              )}
               {highlights.momentum && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
                   <TrendingUp className="h-4 w-4" aria-hidden />
