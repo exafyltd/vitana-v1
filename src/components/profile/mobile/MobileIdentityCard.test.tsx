@@ -53,6 +53,12 @@ vi.mock("@/components/ui/drawer", () => {
     DrawerClose: ({ children }: { children?: ReactNode }) => <button type="button">{children}</button>,
   };
 });
+let boostData: unknown = null;
+vi.mock("@/hooks/useIndexBoost", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/hooks/useIndexBoost")>();
+  return { ...actual, useIndexBoost: () => ({ data: boostData }) };
+});
+vi.mock("@/lib/locale-format", () => ({ fmtNumber: (n: number) => String(n) }));
 vi.mock("@/hooks/useVitanaStreaks", () => ({ useVitanaStreaks: () => ({ current: 0 }) }));
 vi.mock("@/hooks/useFollow", () => ({ useFollow: () => ({ followersCount: 7, followingCount: 7 }) }));
 vi.mock("@/hooks/useProfileStatsCount", () => ({
@@ -78,7 +84,10 @@ function renderCard(props: Partial<ComponentProps<typeof MobileIdentityCard>> = 
 }
 
 describe("MobileIdentityCard (VTID-04470)", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    boostData = null;
+  });
 
   it("owner: shows the photo pencil wired to the existing identity editor", () => {
     const onEditIdentity = vi.fn();
@@ -136,5 +145,49 @@ describe("MobileIdentityCard (VTID-04470)", () => {
     const card = screen.getByTestId("profile-vitana-index-card");
     expect(within(card).getByText("53")).toBeTruthy();
     expect(within(card).getByText("Posts")).toBeTruthy();
+  });
+  it("real activity drives the line — for visitors too, with numbers (VTID-04489)", () => {
+    boostData = { hidden: false, windowDays: 7, kind: "boost", drivers: [{ type: "workout", activity: "running", count: 4, total: 120 }] };
+    renderCard({ isOwner: false, vitanaIndex: 200 });
+    const line = screen.getByTestId("profile-index-line").textContent ?? "";
+    expect(line).toContain("profile.indexHero.boostPrefix");
+    expect(line).toContain("profile.indexBoost.workout7");
+    expect(line).toContain('"count":4');
+    expect(line).toContain("profile.indexBoost.activity.running");
+  });
+
+  it("says 'Most active' when the Index did not rise", () => {
+    boostData = { hidden: false, windowDays: 30, kind: "active", drivers: [{ type: "journey", activity: null, count: 18, total: 36 }] };
+    renderCard({ isOwner: true });
+    const line = screen.getByTestId("profile-index-line").textContent ?? "";
+    expect(line).toContain("profile.indexBoost.mostActivePrefix");
+    expect(line).toContain("profile.indexBoost.journey30");
+    expect(line).not.toContain("profile.indexHero.boostPrefix");
+  });
+
+  it("a member who hid it falls back to the public line", () => {
+    boostData = { hidden: true, windowDays: 30, kind: "active", drivers: [] };
+    renderCard({ isOwner: false, vitanaIndex: 200 });
+    expect(screen.getByTestId("profile-index-line").textContent).toBe("profile.indexHero.publicLine");
+  });
+
+  it("the drawer lists the real top activities as 'What helped most'", () => {
+    boostData = { hidden: false, windowDays: 7, kind: "boost", drivers: [
+      { type: "workout", activity: "running", count: 4, total: 120 },
+      { type: "nutrition", activity: null, count: 5, total: null },
+    ] };
+    renderCard({ isOwner: false, vitanaIndex: 200 });
+    fireEvent.click(screen.getByTestId("profile-index-info"));
+    const chips = screen.getByTestId("achievement-drivers").textContent ?? "";
+    expect(chips).toContain("profile.indexBoost.activity.running");
+    expect(chips).toContain("profile.indexBoost.type.nutrition");
+  });
+
+  it("stretches the Index card to the fold and pins Posts/Media/Groups to its bottom", () => {
+    renderCard({ isOwner: true });
+    const card = screen.getByTestId("profile-vitana-index-card");
+    // jsdom: no bottom nav, card at top 0 → fills window.innerHeight minus the gap.
+    expect(card.style.minHeight).toBe(`${window.innerHeight - 8}px`);
+    expect(screen.getByTestId("profile-index-stats").className).toContain("mt-auto");
   });
 });

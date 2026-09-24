@@ -146,6 +146,39 @@
       "shareOnlyMe": "Только я",
       "shareConnections": "Мои контакты",
       "shareEveryone": "Все"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Больше всего:",
+      "mostActiveHeading": "Больше всего",
+      "workout7": "{activity} — {count}× за неделю",
+      "workout30": "{activity} — {count}× за последние 30 дней",
+      "nutrition7": "Здоровое питание — приёмы пищи отмечены {count}/7 дней",
+      "nutrition30": "Здоровое питание — приёмы пищи отмечены {count} из 30 дней",
+      "hydration7": "Вода — отмечено {count}/7 дней",
+      "hydration30": "Вода — отмечено {count} из 30 дней",
+      "sleep7": "Сон — в ср. {hours} ч за ночь на этой неделе",
+      "sleep30": "Сон — в ср. {hours} ч за ночь за последние 30 дней",
+      "mindfulness7": "Осознанность — {minutes} мин за неделю",
+      "mindfulness30": "Осознанность — {minutes} мин за последние 30 дней",
+      "journey7": "Программа с гидом — {count}× за неделю",
+      "journey30": "Программа с гидом — {count}× за последние 30 дней",
+      "activity": {
+        "running": "Бег",
+        "cycling": "Велосипед",
+        "strength": "Силовые",
+        "racket": "Падел и теннис",
+        "yoga_pilates": "Йога и пилатес",
+        "swimming": "Плавание",
+        "walking": "Ходьба",
+        "workout": "Тренировки"
+      },
+      "type": {
+        "nutrition": "Здоровое питание",
+        "hydration": "Вода",
+        "sleep": "Сон",
+        "mindfulness": "Осознанность",
+        "journey": "Программа с гидом"
+      }
     }
   },
   "_pending_review": {}

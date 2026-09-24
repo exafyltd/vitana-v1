@@ -146,6 +146,39 @@
       "shareOnlyMe": "Only me",
       "shareConnections": "My connections",
       "shareEveryone": "Everyone"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Most active:",
+      "mostActiveHeading": "Most active",
+      "workout7": "{activity} — {count}× this week",
+      "workout30": "{activity} — {count}× in the last 30 days",
+      "nutrition7": "Healthy eating — meals logged on {count}/7 days",
+      "nutrition30": "Healthy eating — meals logged on {count} of 30 days",
+      "hydration7": "Hydration — tracked on {count}/7 days",
+      "hydration30": "Hydration — tracked on {count} of 30 days",
+      "sleep7": "Sleep — Ø {hours} h a night this week",
+      "sleep30": "Sleep — Ø {hours} h a night over the last 30 days",
+      "mindfulness7": "Mindfulness — {minutes} min this week",
+      "mindfulness30": "Mindfulness — {minutes} min in the last 30 days",
+      "journey7": "Guided journey — {count}× this week",
+      "journey30": "Guided journey — {count}× in the last 30 days",
+      "activity": {
+        "running": "Running",
+        "cycling": "Cycling",
+        "strength": "Strength training",
+        "racket": "Padel & tennis",
+        "yoga_pilates": "Yoga & Pilates",
+        "swimming": "Swimming",
+        "walking": "Walking",
+        "workout": "Workouts"
+      },
+      "type": {
+        "nutrition": "Healthy eating",
+        "hydration": "Hydration",
+        "sleep": "Sleep",
+        "mindfulness": "Mindfulness",
+        "journey": "Guided journey"
+      }
     }
   },
   "_pending_review": {}

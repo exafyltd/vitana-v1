@@ -146,6 +146,39 @@
       "shareOnlyMe": "Só eu",
       "shareConnections": "Minhas conexões",
       "shareEveryone": "Todos"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Mais ativo:",
+      "mostActiveHeading": "Mais ativo",
+      "workout7": "{activity} — {count}× esta semana",
+      "workout30": "{activity} — {count}× nos últimos 30 dias",
+      "nutrition7": "Alimentação saudável — refeições registradas em {count}/7 dias",
+      "nutrition30": "Alimentação saudável — refeições registradas em {count} de 30 dias",
+      "hydration7": "Hidratação — registrada em {count}/7 dias",
+      "hydration30": "Hidratação — registrada em {count} de 30 dias",
+      "sleep7": "Sono — Ø {hours} h por noite esta semana",
+      "sleep30": "Sono — Ø {hours} h por noite nos últimos 30 dias",
+      "mindfulness7": "Mindfulness — {minutes} min esta semana",
+      "mindfulness30": "Mindfulness — {minutes} min nos últimos 30 dias",
+      "journey7": "Jornada guiada — {count}× esta semana",
+      "journey30": "Jornada guiada — {count}× nos últimos 30 dias",
+      "activity": {
+        "running": "Corrida",
+        "cycling": "Ciclismo",
+        "strength": "Musculação",
+        "racket": "Padel e tênis",
+        "yoga_pilates": "Yoga e Pilates",
+        "swimming": "Natação",
+        "walking": "Caminhada",
+        "workout": "Treino"
+      },
+      "type": {
+        "nutrition": "Alimentação saudável",
+        "hydration": "Hidratação",
+        "sleep": "Sono",
+        "mindfulness": "Mindfulness",
+        "journey": "Jornada guiada"
+      }
     }
   },
   "_pending_review": {}

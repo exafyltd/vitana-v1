@@ -146,6 +146,39 @@
       "shareOnlyMe": "Samo ja",
       "shareConnections": "Moji kontakti",
       "shareEveryone": "Svi"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Najaktivnije:",
+      "mostActiveHeading": "Najaktivnije",
+      "workout7": "{activity} — {count}× ove nedelje",
+      "workout30": "{activity} — {count}× u poslednjih 30 dana",
+      "nutrition7": "Zdrava ishrana — obroci zabeleženi {count}/7 dana",
+      "nutrition30": "Zdrava ishrana — obroci zabeleženi {count} od 30 dana",
+      "hydration7": "Hidratacija — zabeleženo {count}/7 dana",
+      "hydration30": "Hidratacija — zabeleženo {count} od 30 dana",
+      "sleep7": "San — Ø {hours} h po noći ove nedelje",
+      "sleep30": "San — Ø {hours} h po noći u poslednjih 30 dana",
+      "mindfulness7": "Svesnost — {minutes} min ove nedelje",
+      "mindfulness30": "Svesnost — {minutes} min u poslednjih 30 dana",
+      "journey7": "Vođeni program — {count}× ove nedelje",
+      "journey30": "Vođeni program — {count}× u poslednjih 30 dana",
+      "activity": {
+        "running": "Trčanje",
+        "cycling": "Vožnja bicikla",
+        "strength": "Trening snage",
+        "racket": "Padel i tenis",
+        "yoga_pilates": "Joga i pilates",
+        "swimming": "Plivanje",
+        "walking": "Hodanje",
+        "workout": "Trening"
+      },
+      "type": {
+        "nutrition": "Zdrava ishrana",
+        "hydration": "Hidratacija",
+        "sleep": "San",
+        "mindfulness": "Svesnost",
+        "journey": "Vođeni program"
+      }
     }
   },
   "_pending_review": {}

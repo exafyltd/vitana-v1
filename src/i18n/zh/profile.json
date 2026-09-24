@@ -146,6 +146,39 @@
       "shareOnlyMe": "仅我自己",
       "shareConnections": "我的联系人",
       "shareEveryone": "所有人"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "最活跃：",
+      "mostActiveHeading": "最活跃",
+      "workout7": "{activity} — 本周 {count} 次",
+      "workout30": "{activity} — 最近 30 天 {count} 次",
+      "nutrition7": "健康饮食 — {count}/7 天记录了餐食",
+      "nutrition30": "健康饮食 — 30 天中有 {count} 天记录了餐食",
+      "hydration7": "饮水 — {count}/7 天有记录",
+      "hydration30": "饮水 — 30 天中有 {count} 天有记录",
+      "sleep7": "睡眠 — 本周平均每晚 {hours} 小时",
+      "sleep30": "睡眠 — 最近 30 天平均每晚 {hours} 小时",
+      "mindfulness7": "正念 — 本周 {minutes} 分钟",
+      "mindfulness30": "正念 — 最近 30 天 {minutes} 分钟",
+      "journey7": "引导课程 — 本周 {count} 次",
+      "journey30": "引导课程 — 最近 30 天 {count} 次",
+      "activity": {
+        "running": "跑步",
+        "cycling": "骑行",
+        "strength": "力量训练",
+        "racket": "板式网球和网球",
+        "yoga_pilates": "瑜伽和普拉提",
+        "swimming": "游泳",
+        "walking": "步行",
+        "workout": "训练"
+      },
+      "type": {
+        "nutrition": "健康饮食",
+        "hydration": "饮水",
+        "sleep": "睡眠",
+        "mindfulness": "正念",
+        "journey": "引导课程"
+      }
     }
   },
   "_pending_review": {}

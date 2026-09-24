@@ -146,6 +146,39 @@
       "shareOnlyMe": "Tylko ja",
       "shareConnections": "Moje kontakty",
       "shareEveryone": "Wszyscy"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Najaktywniej:",
+      "mostActiveHeading": "Najaktywniej",
+      "workout7": "{activity} — {count}× w tym tygodniu",
+      "workout30": "{activity} — {count}× w ostatnich 30 dniach",
+      "nutrition7": "Zdrowe jedzenie — posiłki zapisane w {count}/7 dni",
+      "nutrition30": "Zdrowe jedzenie — posiłki zapisane w {count} z 30 dni",
+      "hydration7": "Nawodnienie — zapisane w {count}/7 dni",
+      "hydration30": "Nawodnienie — zapisane w {count} z 30 dni",
+      "sleep7": "Sen — śr. {hours} godz. na noc w tym tygodniu",
+      "sleep30": "Sen — śr. {hours} godz. na noc w ostatnich 30 dniach",
+      "mindfulness7": "Uważność — {minutes} min w tym tygodniu",
+      "mindfulness30": "Uważność — {minutes} min w ostatnich 30 dniach",
+      "journey7": "Prowadzona ścieżka — {count}× w tym tygodniu",
+      "journey30": "Prowadzona ścieżka — {count}× w ostatnich 30 dniach",
+      "activity": {
+        "running": "Bieganie",
+        "cycling": "Rower",
+        "strength": "Trening siłowy",
+        "racket": "Padel i tenis",
+        "yoga_pilates": "Joga i pilates",
+        "swimming": "Pływanie",
+        "walking": "Spacery",
+        "workout": "Trening"
+      },
+      "type": {
+        "nutrition": "Zdrowe jedzenie",
+        "hydration": "Nawodnienie",
+        "sleep": "Sen",
+        "mindfulness": "Uważność",
+        "journey": "Prowadzona ścieżka"
+      }
     }
   },
   "_pending_review": {}

@@ -146,6 +146,39 @@
       "shareOnlyMe": "Yalnızca ben",
       "shareConnections": "Bağlantılarım",
       "shareEveryone": "Herkes"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "En aktif:",
+      "mostActiveHeading": "En aktif",
+      "workout7": "{activity} — bu hafta {count}×",
+      "workout30": "{activity} — son 30 günde {count}×",
+      "nutrition7": "Sağlıklı beslenme — {count}/7 günde öğün kaydı",
+      "nutrition30": "Sağlıklı beslenme — 30 günün {count} gününde öğün kaydı",
+      "hydration7": "Su — {count}/7 günde kayıt",
+      "hydration30": "Su — 30 günün {count} gününde kayıt",
+      "sleep7": "Uyku — bu hafta gecede ort. {hours} sa",
+      "sleep30": "Uyku — son 30 günde gecede ort. {hours} sa",
+      "mindfulness7": "Farkındalık — bu hafta {minutes} dk",
+      "mindfulness30": "Farkındalık — son 30 günde {minutes} dk",
+      "journey7": "Rehberli yolculuk — bu hafta {count}×",
+      "journey30": "Rehberli yolculuk — son 30 günde {count}×",
+      "activity": {
+        "running": "Koşu",
+        "cycling": "Bisiklet",
+        "strength": "Kuvvet antrenmanı",
+        "racket": "Padel ve tenis",
+        "yoga_pilates": "Yoga ve Pilates",
+        "swimming": "Yüzme",
+        "walking": "Yürüyüş",
+        "workout": "Antrenman"
+      },
+      "type": {
+        "nutrition": "Sağlıklı beslenme",
+        "hydration": "Su",
+        "sleep": "Uyku",
+        "mindfulness": "Farkındalık",
+        "journey": "Rehberli yolculuk"
+      }
     }
   },
   "_pending_review": {}

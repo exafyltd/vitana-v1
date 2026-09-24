@@ -51,7 +51,11 @@ export type AccountFieldKey =
   // VTID-04483 — share the profile Health tab (Vitana Index categories,
   // 7-day change, achievements). Health data: private until opted in.
   // Server: get_profile_health_summary() + gateway FIELD_DEFAULTS.
-  | 'vitanaHealth';
+  | 'vitanaHealth'
+  // VTID-04489 — the Vitana Index card's "Biggest boost" line (top
+  // activities with counts). Public by the owner's decision: it exists to be
+  // shared and compared. Server: get_index_boost() + gateway FIELD_DEFAULTS.
+  | 'indexBoost';
 
 export type AccountVisibility = Record<AccountFieldKey, FieldVisibility>;
 
@@ -123,6 +127,7 @@ export const DEFAULT_ACCOUNT_VISIBILITY: AccountVisibility = {
   'myPosts.commercial': 'public',
   derivedAgeBand: 'connections',
   vitanaHealth: 'private',
+  indexBoost: 'public',
 };
 
 export interface ServiceOffering {

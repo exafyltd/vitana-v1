@@ -146,6 +146,39 @@
       "shareOnlyMe": "Solo yo",
       "shareConnections": "Mis contactos",
       "shareEveryone": "Todos"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Más activo:",
+      "mostActiveHeading": "Más activo",
+      "workout7": "{activity} — {count}× esta semana",
+      "workout30": "{activity} — {count}× en los últimos 30 días",
+      "nutrition7": "Alimentación sana — comidas registradas {count}/7 días",
+      "nutrition30": "Alimentación sana — comidas registradas {count} de 30 días",
+      "hydration7": "Hidratación — registrada {count}/7 días",
+      "hydration30": "Hidratación — registrada {count} de 30 días",
+      "sleep7": "Sueño — Ø {hours} h por noche esta semana",
+      "sleep30": "Sueño — Ø {hours} h por noche en los últimos 30 días",
+      "mindfulness7": "Mindfulness — {minutes} min esta semana",
+      "mindfulness30": "Mindfulness — {minutes} min en los últimos 30 días",
+      "journey7": "Journey guiado — {count}× esta semana",
+      "journey30": "Journey guiado — {count}× en los últimos 30 días",
+      "activity": {
+        "running": "Correr",
+        "cycling": "Ciclismo",
+        "strength": "Fuerza",
+        "racket": "Pádel y tenis",
+        "yoga_pilates": "Yoga y Pilates",
+        "swimming": "Natación",
+        "walking": "Caminar",
+        "workout": "Entrenamiento"
+      },
+      "type": {
+        "nutrition": "Alimentación sana",
+        "hydration": "Hidratación",
+        "sleep": "Sueño",
+        "mindfulness": "Mindfulness",
+        "journey": "Journey guiado"
+      }
     }
   },
   "_pending_review": {}
