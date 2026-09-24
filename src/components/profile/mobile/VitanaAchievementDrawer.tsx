@@ -11,6 +11,7 @@
 import {
   Activity,
   Brain,
+  Compass,
   ChevronRight,
   Droplet,
   Flame,
@@ -31,6 +32,8 @@ import {
 } from "@/components/ui/drawer";
 import { pillarLabel, type VitanaPillarKey } from "@/hooks/useVitanaIndex";
 import type { IndexHighlights } from "@/lib/vitana-index-highlights";
+import { boostDriverLabelKey, describeBoostDriver, type BoostDriverType, type IndexBoost } from "@/hooks/useIndexBoost";
+import { fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +53,23 @@ const PILLAR_TINT: Record<VitanaPillarKey, string> = {
   mental: "bg-violet-100 text-violet-700",
 };
 
+const DRIVER_ICONS: Record<BoostDriverType, LucideIcon> = {
+  workout: Activity,
+  nutrition: Utensils,
+  hydration: Droplet,
+  sleep: Moon,
+  mindfulness: Brain,
+  journey: Compass,
+};
+const DRIVER_TINT: Record<BoostDriverType, string> = {
+  workout: "bg-cyan-100 text-cyan-700",
+  nutrition: "bg-emerald-100 text-emerald-700",
+  hydration: "bg-sky-100 text-sky-700",
+  sleep: "bg-indigo-100 text-indigo-700",
+  mindfulness: "bg-violet-100 text-violet-700",
+  journey: "bg-amber-100 text-amber-700",
+};
+
 /** Shortest streak worth celebrating — matches the sheet's "3 days in a row". */
 const MIN_STREAK = 3;
 
@@ -59,6 +79,8 @@ interface VitanaAchievementDrawerProps {
   /** owner = the member's own data; public = another member's profile. */
   mode: "owner" | "public";
   highlights: IndexHighlights;
+  /** VTID-04489: real activity drivers (public, with numbers). */
+  boost?: IndexBoost | null;
   streakDays?: number;
   onSeeFullBreakdown?: () => void;
   onShareProgress?: () => void;
@@ -69,6 +91,7 @@ export function VitanaAchievementDrawer({
   onOpenChange,
   mode,
   highlights,
+  boost = null,
   streakDays = 0,
   onSeeFullBreakdown,
   onShareProgress,
@@ -78,6 +101,10 @@ export function VitanaAchievementDrawer({
   const showStreak = isOwner && streakDays >= MIN_STREAK;
   const standingOut = isOwner && (kind === "boost" || momentum !== null);
   const topLift = lifts[0]?.pillar ?? null;
+  const drivers = boost?.drivers ?? [];
+  const boostSentence = drivers[0]
+    ? describeBoostDriver(drivers[0], boost!.windowDays, (k) => t(k), (n, d) => fmtNumber(n, { maximumFractionDigits: d ?? 0 }))
+    : null;
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -90,7 +117,7 @@ export function VitanaAchievementDrawer({
           <div className="flex items-start gap-3">
             <Sparkles className="mt-1 h-7 w-7 shrink-0 text-sky-500" aria-hidden />
             <div className="min-w-0 flex-1">
-              <DrawerTitle className="text-start text-xl font-bold leading-tight text-slate-900">
+              <DrawerTitle className="text-start text-lg font-bold leading-tight text-slate-900 min-[420px]:text-xl">
                 {isOwner ? t("profile.indexHero.aboutTitle") : t("profile.indexHero.aboutIndexAria")}
               </DrawerTitle>
               {isOwner && (
@@ -133,13 +160,23 @@ export function VitanaAchievementDrawer({
             {isOwner ? t("profile.indexHero.aboutBody") : t("profile.indexHero.aboutBodyPublic")}
           </p>
 
-          {/* Biggest boost / strongest area / fallback */}
-          {isOwner && (
+          {/* Biggest boost — real activity first (everyone), then the owner's
+              pillar-based line, then the owner's fallback. */}
+          {(isOwner || boostSentence) && (
             <div className="mt-4 flex items-start gap-3 rounded-2xl border border-amber-100 bg-amber-50/70 p-3.5">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-orange-500">
                 <Flame className="h-5 w-5" aria-hidden />
               </span>
-              <div className="min-w-0">
+              <div className="min-w-0" data-testid="achievement-boost">
+                {boostSentence ? (
+                  <>
+                    <p className="text-sm font-semibold text-teal-800">
+                      {boost!.kind === "boost" ? t("profile.indexHero.boostHeading") : t("profile.indexBoost.mostActiveHeading")}
+                    </p>
+                    <p className="text-sm leading-snug text-slate-700">{t(boostSentence.key, boostSentence.params)}</p>
+                  </>
+                ) : (
+                <>
                 {kind !== "none" && (
                   <p className="text-sm font-semibold text-teal-800">
                     {kind === "boost"
@@ -154,12 +191,41 @@ export function VitanaAchievementDrawer({
                       ? t("profile.indexHero.strongestLine", { pillar: pillarLabel(strongest) })
                       : t("profile.indexHero.fallback")}
                 </p>
+                </>
+                )}
               </div>
             </div>
           )}
 
-          {/* What helped most — pillars that actually rose */}
-          {isOwner && kind === "boost" && lifts.length > 0 && (
+          {/* What helped most — the member's real top activities (everyone) */}
+          {drivers.length > 0 && (
+            <div className="mt-4" data-testid="achievement-drivers">
+              <h3 className="text-start text-sm font-semibold text-slate-900">
+                {t("profile.indexHero.whatHelpedMost")}
+              </h3>
+              <ul className="mt-2 grid grid-cols-3 gap-2">
+                {drivers.map((d) => {
+                  const Icon = DRIVER_ICONS[d.type];
+                  return (
+                    <li
+                      key={`${d.type}-${d.activity ?? ""}`}
+                      className="flex min-w-0 flex-col items-center gap-1.5 rounded-2xl border border-slate-100 bg-white px-2 py-2.5 text-center shadow-sm"
+                    >
+                      <span className={cn("flex h-9 w-9 items-center justify-center rounded-full", DRIVER_TINT[d.type])}>
+                        <Icon className="h-5 w-5" aria-hidden />
+                      </span>
+                      <span className="w-full break-words text-xs font-medium leading-tight text-slate-700">
+                        {t(boostDriverLabelKey(d))}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          {/* …otherwise the owner's pillars that actually rose */}
+          {isOwner && drivers.length === 0 && kind === "boost" && lifts.length > 0 && (
             <div className="mt-4">
               <h3 className="text-start text-sm font-semibold text-slate-900">
                 {t("profile.indexHero.whatHelpedMost")}

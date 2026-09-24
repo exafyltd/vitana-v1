@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,6 +21,8 @@ import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
 import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
 import { pillarLabel } from "@/hooks/useVitanaIndex";
 import { deriveIndexHighlights } from "@/lib/vitana-index-highlights";
+import { useIndexBoost, describeBoostDriver } from "@/hooks/useIndexBoost";
+import { fmtNumber } from "@/lib/locale-format";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 import { useFollow } from "@/hooks/useFollow";
@@ -33,6 +35,48 @@ import { displayHandle } from "@/lib/handle-display";
 
 /** Upper bound of the Vitana Index scale (see lib/vitanaIndex tiers). */
 const VITANA_INDEX_MAX = 999;
+/** Space kept between the Index card and the bottom navigation. */
+const FOLD_GAP_PX = 8;
+
+/**
+ * VTID-04489 — stretch the Vitana Index card so it ends exactly at the fold:
+ * the card's bottom (the Posts · Media · Groups row) sits just above the
+ * bottom navigation and nothing else is visible until the member scrolls.
+ * Measured, not hardcoded, so it holds for every phone height and for the
+ * Appilix wrapper. When the content is taller than the space (very short
+ * phones) the card simply keeps its natural height.
+ */
+function useFillToFold(ref: RefObject<HTMLElement>): number | undefined {
+  const [minHeight, setMinHeight] = useState<number | undefined>(undefined);
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const nav = document.querySelector<HTMLElement>(".mobile-bottom-nav");
+      const navRect = nav?.getBoundingClientRect();
+      const foldTop = navRect && navRect.height > 0 ? navRect.top : window.innerHeight;
+      const cardTopInDocument = el.getBoundingClientRect().top + window.scrollY;
+      const target = Math.floor(foldTop - cardTopInDocument - FOLD_GAP_PX);
+      setMinHeight((prev) => {
+        const next = target > 0 ? target : undefined;
+        return prev === next ? prev : next;
+      });
+    };
+    measure();
+    const late = window.setTimeout(measure, 400); // after the bottom nav and avatar settle
+    window.addEventListener("resize", measure);
+    window.visualViewport?.addEventListener("resize", measure);
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+    ro?.observe(document.body);
+    return () => {
+      window.clearTimeout(late);
+      window.removeEventListener("resize", measure);
+      window.visualViewport?.removeEventListener("resize", measure);
+      ro?.disconnect();
+    };
+  }, [ref]);
+  return minHeight;
+}
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
@@ -112,6 +156,16 @@ export function MobileIdentityCard({
   );
 
   const resolvedUserId = resolveProfileUserId(userId, profileId);
+  // VTID-04489: what drove this member's Index, in activity terms. Public
+  // with numbers (owner decision) — the RPC returns `hidden` if they opted out.
+  const { data: boost } = useIndexBoost(resolvedUserId);
+  // Resolved every render (cheap) so a language switch re-labels it.
+  const topBoostDriver = boost && !boost.hidden ? boost.drivers[0] : undefined;
+  const boostSentence = topBoostDriver
+    ? describeBoostDriver(topBoostDriver, boost!.windowDays, (k) => t(k), (n, d) => fmtNumber(n, { maximumFractionDigits: d ?? 0 }))
+    : null;
+  const indexCardRef = useRef<HTMLElement>(null);
+  const indexCardMinHeight = useFillToFold(indexCardRef);
   const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(resolvedUserId);
   const followersCount = propFollowers ?? hookFollowers ?? 0;
   const followingCount = propFollowing ?? hookFollowing ?? 0;
@@ -144,6 +198,16 @@ export function MobileIdentityCard({
   const cardLine = (() => {
     if (score === null) {
       return <span>{isOwner ? t("profile.indexHero.noIndexOwner") : t("profile.indexHero.noIndexPublic")}</span>;
+    }
+    if (boost && boostSentence) {
+      return (
+        <>
+          <span className="font-semibold text-teal-700">
+            {boost.kind === "boost" ? t("profile.indexHero.boostPrefix") : t("profile.indexBoost.mostActivePrefix")}
+          </span>{" "}
+          {t(boostSentence.key, boostSentence.params)}
+        </>
+      );
     }
     if (!isOwner) return <span>{t("profile.indexHero.publicLine")}</span>;
     if (highlights.kind === "boost") {
@@ -331,8 +395,9 @@ export function MobileIdentityCard({
 
       {/* ── VITANA INDEX hero ──────────────────────────────────────── */}
       <section
-        className="relative mt-3 overflow-hidden rounded-3xl border border-slate-100 bg-white px-4 pb-1 pt-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
-        style={{ isolation: "isolate", transform: "translateZ(0)" }}
+        ref={indexCardRef}
+        className="relative mt-3 flex flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white px-4 pb-1 pt-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
+        style={{ isolation: "isolate", transform: "translateZ(0)", minHeight: indexCardMinHeight }}
         data-testid="profile-vitana-index-card"
       >
         <button
@@ -348,7 +413,7 @@ export function MobileIdentityCard({
           <Info className="h-[22px] w-[22px]" />
         </button>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-1 flex-col items-center justify-center">
           <span className="text-xs font-semibold uppercase tracking-[0.28em] text-teal-800">
             {translate("profile.identity.vitanaIndex")}
           </span>
@@ -435,8 +500,8 @@ export function MobileIdentityCard({
           </button>
         </div>
 
-        {/* Posts · Media · Groups */}
-        <div className="mt-2 border-t border-slate-100">
+        {/* Posts · Media · Groups — the card's (and the first screen's) last row */}
+        <div className="mt-auto border-t border-slate-100 pt-0.5" data-testid="profile-index-stats">
           <MobileProfileStats userId={userId} profileId={profileId} variant="divided" />
         </div>
       </section>
@@ -446,6 +511,7 @@ export function MobileIdentityCard({
         onOpenChange={setAchievementOpen}
         mode={isOwner ? "owner" : "public"}
         highlights={highlights}
+        boost={boost && !boost.hidden ? boost : null}
         streakDays={streakDays}
         onSeeFullBreakdown={
           canOpenDetailed

@@ -136,6 +136,39 @@
       "shareOnlyMe": "Nur ich",
       "shareConnections": "Meine Kontakte",
       "shareEveryone": "Alle"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Am aktivsten:",
+      "mostActiveHeading": "Am aktivsten",
+      "workout7": "{activity} — {count}× diese Woche",
+      "workout30": "{activity} — {count}× in den letzten 30 Tagen",
+      "nutrition7": "Gesunde Ernährung — Mahlzeiten an {count}/7 Tagen erfasst",
+      "nutrition30": "Gesunde Ernährung — Mahlzeiten an {count} von 30 Tagen erfasst",
+      "hydration7": "Trinken — an {count}/7 Tagen erfasst",
+      "hydration30": "Trinken — an {count} von 30 Tagen erfasst",
+      "sleep7": "Schlaf — Ø {hours} Std. pro Nacht diese Woche",
+      "sleep30": "Schlaf — Ø {hours} Std. pro Nacht in den letzten 30 Tagen",
+      "mindfulness7": "Achtsamkeit — {minutes} Min. diese Woche",
+      "mindfulness30": "Achtsamkeit — {minutes} Min. in den letzten 30 Tagen",
+      "journey7": "Geführte Journey — {count}× diese Woche",
+      "journey30": "Geführte Journey — {count}× in den letzten 30 Tagen",
+      "activity": {
+        "running": "Laufen",
+        "cycling": "Radfahren",
+        "strength": "Krafttraining",
+        "racket": "Padel & Tennis",
+        "yoga_pilates": "Yoga & Pilates",
+        "swimming": "Schwimmen",
+        "walking": "Gehen",
+        "workout": "Training"
+      },
+      "type": {
+        "nutrition": "Gesunde Ernährung",
+        "hydration": "Trinken",
+        "sleep": "Schlaf",
+        "mindfulness": "Achtsamkeit",
+        "journey": "Geführte Journey"
+      }
     }
   }
 }

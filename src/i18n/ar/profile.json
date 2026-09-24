@@ -146,6 +146,39 @@
       "shareOnlyMe": "أنا فقط",
       "shareConnections": "جهات اتصالي",
       "shareEveryone": "الجميع"
+    },
+    "indexBoost": {
+      "mostActivePrefix": "الأكثر نشاطًا:",
+      "mostActiveHeading": "الأكثر نشاطًا",
+      "workout7": "{activity} — {count}× هذا الأسبوع",
+      "workout30": "{activity} — {count}× في آخر 30 يومًا",
+      "nutrition7": "أكل صحي — وجبات مسجّلة في {count}/7 أيام",
+      "nutrition30": "أكل صحي — وجبات مسجّلة في {count} من 30 يومًا",
+      "hydration7": "الترطيب — مسجّل في {count}/7 أيام",
+      "hydration30": "الترطيب — مسجّل في {count} من 30 يومًا",
+      "sleep7": "النوم — بمتوسط {hours} ساعة في الليلة هذا الأسبوع",
+      "sleep30": "النوم — بمتوسط {hours} ساعة في الليلة خلال آخر 30 يومًا",
+      "mindfulness7": "اليقظة الذهنية — {minutes} دقيقة هذا الأسبوع",
+      "mindfulness30": "اليقظة الذهنية — {minutes} دقيقة في آخر 30 يومًا",
+      "journey7": "رحلة موجّهة — {count}× هذا الأسبوع",
+      "journey30": "رحلة موجّهة — {count}× في آخر 30 يومًا",
+      "activity": {
+        "running": "الجري",
+        "cycling": "ركوب الدراجة",
+        "strength": "تمارين القوة",
+        "racket": "البادل والتنس",
+        "yoga_pilates": "اليوغا والبيلاتس",
+        "swimming": "السباحة",
+        "walking": "المشي",
+        "workout": "التمارين"
+      },
+      "type": {
+        "nutrition": "أكل صحي",
+        "hydration": "الترطيب",
+        "sleep": "النوم",
+        "mindfulness": "اليقظة الذهنية",
+        "journey": "رحلة موجّهة"
+      }
     }
   },
   "_pending_review": {}
