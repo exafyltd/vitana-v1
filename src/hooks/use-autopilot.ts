@@ -6,6 +6,7 @@ import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import { useAutopilotRole } from "@/hooks/useAutopilotRole";
 
 // Reasons the gateway returns when /generate produced nothing — surfaced to
 // the UI so it can pick the right empty-state copy instead of a generic one.
@@ -82,7 +83,7 @@ function recToAction(rec: AutopilotRecommendation, index: number): AutopilotActi
   };
 }
 
-async function getAuthHeaders(): Promise<Record<string, string>> {
+async function getAuthHeaders(role = "community"): Promise<Record<string, string>> {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token ?? "";
   const userId = data.session?.user?.id ?? "";
@@ -90,7 +91,8 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
     "X-User-ID": userId,
-    "X-Vitana-Active-Role": "community",
+    // VTID-04500: the active role is a hint; the gateway decides the lineup.
+    "X-Vitana-Active-Role": role,
   };
 }
 
@@ -102,6 +104,8 @@ export function useAutopilot() {
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
   const { hasConsent } = useAIConsent();
+  // VTID-04500 (CA-2): the lineup follows the member's active role.
+  const apRole = useAutopilotRole();
 
   const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
@@ -180,8 +184,8 @@ export function useAutopilot() {
     if (!user || countInFlight) return liveCount;
     countInFlight = true;
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count?role=community`, { headers });
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count?role=${encodeURIComponent(apRole)}`, { headers });
       if (!res.ok) return liveCount;
       const json = await res.json();
       if (json.ok) {
@@ -204,7 +208,7 @@ export function useAutopilot() {
       countInFlight = false;
     }
     return liveCount;
-  }, [user, liveCount, LAST_SEEN_KEY]);
+  }, [user, liveCount, LAST_SEEN_KEY, apRole]);
 
   // VTID-01946 Phase H.4 — mark the current badge count as "seen" so
   // hasNewRecommendations becomes false until the next delta. Call this
@@ -227,8 +231,8 @@ export function useAutopilot() {
     setLoading(true);
     setError(null);
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new,activated&limit=20&role=community`, { headers });
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new,activated&limit=20&role=${encodeURIComponent(apRole)}`, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
@@ -275,7 +279,7 @@ export function useAutopilot() {
       setLoading(false);
       setFetchedOnce(true);
     }
-  }, [user, DISMISSED_KEY]);
+  }, [user, DISMISSED_KEY, apRole]);
 
   // VTID — on-demand regeneration. Asks the gateway for a fresh batch. The
   // backend already auto-regenerates on the last /complete or /reject (queue
@@ -286,8 +290,8 @@ export function useAutopilot() {
     if (!user) return null;
     setGenerating(true);
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/generate?role=community`, {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/generate?role=${encodeURIComponent(apRole)}`, {
         method: "POST",
         headers,
       });
@@ -310,7 +314,7 @@ export function useAutopilot() {
     } finally {
       setGenerating(false);
     }
-  }, [user]);
+  }, [user, apRole]);
 
   // Activate a single recommendation — returns full API response
   const activateRecommendation = useCallback(async (id: string): Promise<{
@@ -321,8 +325,8 @@ export function useAutopilot() {
     completion_message?: string;
   } | null> => {
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate?role=community`, {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate?role=${encodeURIComponent(apRole)}`, {
         method: "POST",
         headers,
       });
@@ -336,7 +340,7 @@ export function useAutopilot() {
       console.error("[Autopilot] activate error:", e);
       return null;
     }
-  }, []);
+  }, [apRole]);
 
   // Complete — try the dedicated complete route first, then fall back to
   // reject for any non-2xx so the row always leaves the user's list. We
@@ -351,8 +355,8 @@ export function useAutopilot() {
     via?: "complete" | "reject";
     status?: number;
   } | null> => {
-    const headers = await getAuthHeaders();
-    const completeUrl = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`;
+    const headers = await getAuthHeaders(apRole);
+    const completeUrl = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=${encodeURIComponent(apRole)}`;
     let completeStatus: number | undefined;
     try {
       const res = await fetch(completeUrl, { method: "POST", headers });
@@ -379,12 +383,12 @@ export function useAutopilot() {
       console.error("[Autopilot] reject network error:", e);
       return null;
     }
-  }, []);
+  }, [apRole]);
 
   // Dismiss
   const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
     try {
-      const headers = await getAuthHeaders();
+      const headers = await getAuthHeaders(apRole);
       const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject`, {
         method: "POST",
         headers,
@@ -400,7 +404,7 @@ export function useAutopilot() {
       console.error("[Autopilot] dismiss error:", e);
       return false;
     }
-  }, []);
+  }, [apRole]);
 
   // Fetch count on mount
   useEffect(() => {
