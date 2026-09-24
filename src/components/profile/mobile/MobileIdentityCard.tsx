@@ -401,7 +401,7 @@ export function MobileIdentityCard({
       {/* ── VITANA INDEX hero ──────────────────────────────────────── */}
       <section
         ref={indexCardRef}
-        className="relative mt-3 flex flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white px-4 pb-1 pt-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
+        className="relative mt-3 flex flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white px-4 pb-1 pt-4 [@media(max-height:720px)]:pt-3 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
         style={{ isolation: "isolate", transform: "translateZ(0)", minHeight: indexCardMinHeight }}
         data-testid="profile-vitana-index-card"
       >
@@ -419,7 +419,9 @@ export function MobileIdentityCard({
         </button>
 
         {/* Label stays at the top; the score block is centred in whatever
-            space the card gets from reaching the fold. */}
+            space the card gets from reaching the fold. On short screens
+            (≤720px tall, e.g. iPhone SE) the block tightens so the whole
+            card still fits above the bottom nav and the ORB. */}
         <span className="self-center text-xs font-semibold uppercase tracking-[0.28em] text-teal-800">
           {translate("profile.identity.vitanaIndex")}
         </span>
@@ -438,7 +440,7 @@ export function MobileIdentityCard({
                   <Skeleton className="my-2 h-14 w-32 rounded-xl" />
                 ) : (
                   <span
-                    className="text-[64px] font-extrabold leading-none tabular-nums"
+                    className="text-[64px] font-extrabold leading-none tabular-nums [@media(max-height:720px)]:text-[48px]"
                     style={{
                       background: "linear-gradient(170deg, hsl(152, 70%, 42%) 0%, hsl(168, 72%, 30%) 55%, hsl(180, 75%, 22%) 100%)",
                       WebkitBackgroundClip: "text",
@@ -449,7 +451,7 @@ export function MobileIdentityCard({
                     {score ?? "—"}
                   </span>
                 )}
-                <span className="mt-1 text-sm text-slate-500">
+                <span className="mt-1 text-sm text-slate-500 [@media(max-height:720px)]:mt-0">
                   {t("profile.indexHero.ofMax", { max: VITANA_INDEX_MAX })}
                 </span>
               </>
@@ -460,18 +462,18 @@ export function MobileIdentityCard({
                 onClick={openDetailedIndex}
                 aria-label={t("profile.indexHero.openIndexAria")}
                 data-testid="profile-index-open-detailed"
-                className={cn("relative mt-2 flex flex-col items-center rounded-2xl px-6 pt-1 active:opacity-80", ICON_BUTTON_FOCUS)}
+                className={cn("relative mt-2 flex flex-col items-center rounded-2xl px-6 pt-1 active:opacity-80 [@media(max-height:720px)]:mt-1 [@media(max-height:720px)]:pt-0", ICON_BUTTON_FOCUS)}
               >
                 {scoreBody}
               </button>
             ) : (
-              <div className="relative mt-2 flex flex-col items-center px-6 pt-1">{scoreBody}</div>
+              <div className="relative mt-2 flex flex-col items-center px-6 pt-1 [@media(max-height:720px)]:mt-1 [@media(max-height:720px)]:pt-0">{scoreBody}</div>
             );
           })()}
 
           {/* Status pills — tier always, momentum only when history shows it */}
           {tier && (
-            <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
+            <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2 [@media(max-height:720px)]:mt-1.5">
               <span
                 className="rounded-full px-4 py-1 text-sm font-semibold text-slate-900"
                 style={{ backgroundColor: `${tier.color}55` }}
@@ -490,14 +492,14 @@ export function MobileIdentityCard({
           )}
 
           {/* Personalised line (owner) / public-safe line (visitor) */}
-          <p className="mt-2.5 line-clamp-3 px-2 text-center text-sm leading-snug text-slate-700" data-testid="profile-index-line">
+          <p className="mt-2.5 line-clamp-3 px-2 [@media(max-height:720px)]:mt-1.5 [@media(max-height:720px)]:line-clamp-2 text-center text-sm leading-snug text-slate-700" data-testid="profile-index-line">
             {cardLine}
           </p>
 
           <button
             type="button"
             className={cn(
-              "mt-1.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-teal-800 hover:text-teal-900 active:opacity-70",
+              "mt-1.5 inline-flex items-center gap-1 rounded-md px-2 py-1 [@media(max-height:720px)]:mt-0.5 text-sm font-semibold text-teal-800 hover:text-teal-900 active:opacity-70",
               ICON_BUTTON_FOCUS,
             )}
             onClick={() => navigate("/health/vitana-index")}
