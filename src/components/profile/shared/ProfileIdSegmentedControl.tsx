@@ -37,7 +37,7 @@ const SIZE_STYLES: Record<
   md: { containerMaxW: "max-w-md", button: "py-2.5 text-sm" },
   // VTID-04470: full-width strip for the mobile profile header. Labels can
   // run long in de/ru/pl, so text truncates rather than wrapping two lines.
-  full: { containerMaxW: "max-w-none", button: "py-2 px-1 text-[13px] min-w-0 truncate" },
+  full: { containerMaxW: "max-w-none", button: "py-2 px-0.5 text-xs min-[360px]:text-[13px] !tracking-normal min-w-0 truncate" },
 };
 
 function getPosition(index: number, total: number): { left: string; width: string } {

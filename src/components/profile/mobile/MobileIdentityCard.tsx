@@ -247,7 +247,7 @@ export function MobileIdentityCard({
                   <span className="text-[15px] font-bold text-slate-900">{followersCount}</span>
                   <span className="text-[13px] text-slate-600">{translate("profileStats.followers", "Followers")}</span>
                 </button>
-                <span className="h-3.5 w-px bg-slate-400/40" aria-hidden />
+                <span className="h-3.5 w-px bg-slate-400/40 max-[359px]:hidden" aria-hidden />
                 <button
                   type="button"
                   className="flex items-baseline gap-1 rounded active:opacity-70"
@@ -270,14 +270,14 @@ export function MobileIdentityCard({
                 onClick={onFollow}
                 disabled={followLoading}
                 className={cn(
-                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors disabled:opacity-60",
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-[13px] font-semibold transition-colors disabled:opacity-60 min-[375px]:gap-2 min-[375px]:px-3 min-[375px]:text-sm",
                   isFollowing
                     ? "bg-sky-100 text-slate-900 hover:bg-sky-200"
                     : "bg-gradient-to-r from-teal-300 to-emerald-300 text-teal-950 shadow-[0_4px_12px_rgba(16,185,129,0.22)]",
                   ICON_BUTTON_FOCUS,
                 )}
               >
-                {isFollowing ? <UserCheck className="h-4 w-4 shrink-0" /> : <UserPlus className="h-4 w-4 shrink-0" />}
+                {isFollowing ? <UserCheck className="h-4 w-4 shrink-0 max-[359px]:hidden" /> : <UserPlus className="h-4 w-4 shrink-0 max-[359px]:hidden" />}
                 <span className="truncate">
                   {isFollowing
                     ? translate("profile.identity.followingState", "Following")
@@ -290,11 +290,11 @@ export function MobileIdentityCard({
                 type="button"
                 onClick={onMessage}
                 className={cn(
-                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-white/85 px-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-white",
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-white/85 px-2 text-[13px] font-semibold text-slate-900 shadow-sm hover:bg-white min-[375px]:gap-2 min-[375px]:px-3 min-[375px]:text-sm",
                   ICON_BUTTON_FOCUS,
                 )}
               >
-                <MessageSquare className="h-4 w-4 shrink-0" />
+                <MessageSquare className="h-4 w-4 shrink-0 max-[359px]:hidden" />
                 <span className="truncate">{t("screens.profile.message")}</span>
               </button>
             )}
@@ -318,7 +318,7 @@ export function MobileIdentityCard({
                 onClick={qrAction}
                 data-testid="profile-qr"
                 className={cn(
-                  "flex h-11 w-14 shrink-0 items-center justify-center rounded-full bg-white/85 text-slate-900 shadow-sm hover:bg-white",
+                  "flex h-11 w-12 shrink-0 items-center justify-center rounded-full bg-white/85 text-slate-900 shadow-sm hover:bg-white min-[375px]:w-14",
                   ICON_BUTTON_FOCUS,
                 )}
               >
@@ -418,7 +418,7 @@ export function MobileIdentityCard({
           )}
 
           {/* Personalised line (owner) / public-safe line (visitor) */}
-          <p className="mt-2.5 line-clamp-2 px-2 text-center text-sm leading-snug text-slate-700" data-testid="profile-index-line">
+          <p className="mt-2.5 line-clamp-3 px-2 text-center text-sm leading-snug text-slate-700" data-testid="profile-index-line">
             {cardLine}
           </p>
 

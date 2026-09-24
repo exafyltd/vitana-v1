@@ -73,7 +73,7 @@ export function MobileProfileStats({
             <button
               key={stat.key}
               type="button"
-              className={cn(cellClass, "cursor-pointer rounded-md active:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400")}
+              className={cn(cellClass, "cursor-pointer active:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400", !divided && "rounded-md")}
               onClick={() => {
                 if (stat.key === "groups") setGroupListOpen(true);
               }}
