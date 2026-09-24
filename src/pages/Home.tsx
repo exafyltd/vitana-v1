@@ -99,15 +99,20 @@ export default function Home() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
   const [createPostOpen, setCreatePostOpen] = useState(false);
+  const [composeDraft, setComposeDraft] = useState<string | undefined>(undefined);
   // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
   // so a feed card can open the composer directly instead of only the header
   // button. Strips the param right after opening so back/refresh doesn't
   // reopen it.
   useEffect(() => {
     if (searchParams.get("compose") !== "1") return;
+    // VTID-04504: an Autopilot draft the member reviewed rides along as ?draft=.
+    const draft = searchParams.get("draft");
+    if (draft) setComposeDraft(draft);
     setCreatePostOpen(true);
     const next = new URLSearchParams(searchParams);
     next.delete("compose");
+    next.delete("draft");
     setSearchParams(next, { replace: true });
   }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
@@ -571,7 +576,11 @@ export default function Home() {
       {isMobile ? (
         <MobileCreatePostSheet open={createPostOpen} onOpenChange={setCreatePostOpen} />
       ) : (
-        <CreateContentPopup isOpen={createPostOpen} onClose={() => setCreatePostOpen(false)} />
+        <CreateContentPopup
+          isOpen={createPostOpen}
+          initialContent={composeDraft}
+          onClose={() => { setCreatePostOpen(false); setComposeDraft(undefined); }}
+        />
       )}
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </AppLayout>

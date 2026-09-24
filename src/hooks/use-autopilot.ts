@@ -33,7 +33,12 @@ export interface AutopilotRecommendation {
   signal_type: string;
   status: string;
   contribution_vector?: ContributionVector;
+  /** VTID-04503/04504: the typed action the suggestion carries, if any. */
+  action?: { kind: string; params?: Record<string, unknown> } | null;
 }
+
+/** VTID-04504: kinds whose text the member reviews before anything happens. */
+export const DRAFT_KINDS = new Set(["post_to_feed", "send_chat_message", "media_upload"]);
 
 // Domain → category mapping
 function domainToCategory(domain: string): AutopilotCategory {
@@ -80,6 +85,7 @@ function recToAction(rec: AutopilotRecommendation, index: number): AutopilotActi
     status: uiStatus,
     selected: uiStatus === "pending", // only pre-select new items
     contributionVector: rec.contribution_vector,
+    draftKind: rec.action && DRAFT_KINDS.has(rec.action.kind) ? rec.action.kind : undefined,
   };
 }
 
@@ -317,18 +323,21 @@ export function useAutopilot() {
   }, [user, apRole]);
 
   // Activate a single recommendation — returns full API response
-  const activateRecommendation = useCallback(async (id: string): Promise<{
+  const activateRecommendation = useCallback(async (id: string, opts: { draftText?: string } = {}): Promise<{
     ok: boolean;
     vtid?: string;
     action_type?: "navigate" | "notify";
     target?: string;
     completion_message?: string;
+    action_result?: { status: string; route?: string } | null;
   } | null> => {
     try {
       const headers = await getAuthHeaders(apRole);
       const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate?role=${encodeURIComponent(apRole)}`, {
         method: "POST",
         headers,
+        // VTID-04504: the member's reviewed draft (preview sheet), if any.
+        body: JSON.stringify(opts.draftText !== undefined ? { draft_text: opts.draftText } : {}),
       });
       if (!res.ok) throw new Error(`Activate failed: ${res.status}`);
       const json = await res.json();
@@ -338,6 +347,26 @@ export function useAutopilot() {
       return null;
     } catch (e) {
       console.error("[Autopilot] activate error:", e);
+      return null;
+    }
+  }, [apRole]);
+
+  // VTID-04504: the draft behind a create-with-me / connect suggestion.
+  // `text` saves the member's edit; `regenerate` asks for a fresh one.
+  const fetchDraft = useCallback(async (id: string, opts: { regenerate?: boolean; text?: string } = {}): Promise<{
+    ok: boolean; kind?: string; draft?: string; error?: string | null;
+  } | null> => {
+    try {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/draft?role=${encodeURIComponent(apRole)}`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(opts),
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      console.error("[Autopilot] draft error:", e);
       return null;
     }
   }, [apRole]);
@@ -455,13 +484,19 @@ export function useAutopilot() {
   }, []);
 
   // Execute selected actions — community activation is instant
-  const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
+  const executeActions = async (actionIds: string[], drafts: Record<string, string> = {}): Promise<ExecutionResult[]> => {
     setState((prev) => ({ ...prev, isExecuting: true }));
     const results: ExecutionResult[] = [];
 
     for (const id of actionIds) {
-      const response = await activateRecommendation(id);
+      const response = await activateRecommendation(id, { draftText: drafts[id] });
       const success = !!response;
+      // VTID-04503/04504: a typed action that opens a screen (e.g. the composer
+      // pre-filled with the reviewed draft) wins over the template's target.
+      if (response?.action_result?.status === "navigate" && response.action_result.route) {
+        response.action_type = "navigate";
+        response.target = response.action_result.route;
+      }
       if (success) {
         // "notify" actions have nothing the user needs to do beyond reading the
         // completion message — flush them straight to completed on the backend
@@ -517,6 +552,7 @@ export function useAutopilot() {
     error,
     fetchRecommendations,
     activateRecommendation,
+    fetchDraft,
     completeRecommendation,
     dismissRecommendation,
     markDismissedLocally,

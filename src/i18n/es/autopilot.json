@@ -112,7 +112,21 @@
       "newActionReason": "Basado en patrones de actividad recientes",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Tu publicación – borrador",
+      "titleMessage": "Tu mensaje – borrador",
+      "titleCaption": "Tu descripción – borrador",
+      "hint": "Vitana preparó un borrador. Cámbialo como quieras: nada se envía sin ti.",
+      "loading": "Escribiendo un borrador …",
+      "failed": "Ahora no hay borrador: escribe el tuyo.",
+      "regenerate": "Nueva sugerencia",
+      "skip": "Omitir",
+      "confirmPost": "Abrir en publicación",
+      "confirmMessage": "Enviar mensaje",
+      "confirmCaption": "Ir a subir",
+      "placeholder": "Escribe aquí …"
+    }
   },
   "_pending_review": {}
 }

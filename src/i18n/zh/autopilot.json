@@ -112,7 +112,21 @@
       "newActionReason": "基于最近的活动模式",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "你的帖子 – 草稿",
+      "titleMessage": "你的消息 – 草稿",
+      "titleCaption": "你的配文 – 草稿",
+      "hint": "Vitana 已为你准备了草稿。随意修改——没有你的同意不会发送任何内容。",
+      "loading": "正在撰写草稿 …",
+      "failed": "暂时没有草稿——自己写吧。",
+      "regenerate": "换一个建议",
+      "skip": "跳过",
+      "confirmPost": "在帖子中打开",
+      "confirmMessage": "发送消息",
+      "confirmCaption": "前往上传",
+      "placeholder": "在这里写 …"
+    }
   },
   "_pending_review": {}
 }

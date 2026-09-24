@@ -112,7 +112,21 @@
       "newActionReason": "Basé sur tes modèles d'activité récente",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Ta publication – brouillon",
+      "titleMessage": "Ton message – brouillon",
+      "titleCaption": "Ta légende – brouillon",
+      "hint": "Vitana a préparé un brouillon. Modifie-le comme tu veux – rien n'est envoyé sans toi.",
+      "loading": "Rédaction du brouillon …",
+      "failed": "Pas de brouillon pour l'instant – écris le tien.",
+      "regenerate": "Nouvelle suggestion",
+      "skip": "Passer",
+      "confirmPost": "Ouvrir dans la publication",
+      "confirmMessage": "Envoyer le message",
+      "confirmCaption": "Aller au téléversement",
+      "placeholder": "Écris ici …"
+    }
   },
   "_pending_review": {}
 }
