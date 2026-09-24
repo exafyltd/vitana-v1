@@ -1,0 +1,557 @@
+{
+  "AI.COMPANION": {
+    "title": "AI pratilac"
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "Dnevni pregled"
+  },
+  "AI.INSIGHTS": {
+    "title": "AI uvidi"
+  },
+  "AI.OVERVIEW": {
+    "title": "AI asistent"
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "Preporuke"
+  },
+  "ASSISTANT.AI": {
+    "title": "AI"
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot i automatizacija"
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "Vitana ćaskanje"
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "Proaktivno govorenje"
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "Preporuke"
+  },
+  "ASSISTANT.VOICE": {
+    "title": "Glas"
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "Alkalma portal"
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "Earthlinks portal"
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "Pridruži se MAXINA zajednici"
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "Moje putovanje"
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "Biznis analitika"
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "Moji klijenti"
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "Prihodi"
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "Rast"
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "Moji oglasi"
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "Poslovne prilike"
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "Biznis centar"
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "Akcije"
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "Preporuke za prodaju"
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "Prodaj i zarađuj"
+  },
+  "BUSINESS.SERVICES": {
+    "title": "Moje usluge"
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "Moji događaji"
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "Paketi usluga"
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "Moj kalendar"
+  },
+  "COMM.EVENTS": {
+    "title": "Događaji i druženja"
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "Popularni događaji"
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "Današnji događaji"
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "Predstojeći događaji"
+  },
+  "COMM.FEED": {
+    "title": "Feed zajednice koju pratiš"
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "Pronađi partnera"
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "Partnerska tabla"
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "Moji mečevi"
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "Moje partnerske objave"
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "Detalji grupe"
+  },
+  "COMM.GROUPS": {
+    "title": "Grupe"
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "Otkrij grupe"
+  },
+  "COMM.INVITE": {
+    "title": "Pozovi prijatelje"
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "Pregled određene sobe uživo"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "Sobe uživo"
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "Sve sobe"
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "Uživo sada"
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "Prošle sesije"
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "Zakazane sobe"
+  },
+  "COMM.MATCHES": {
+    "title": "Odgovarajući članovi"
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "Medija centar"
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "Muzika"
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "Podkasti"
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "Kratki video snimci"
+  },
+  "COMM.MEMBERS": {
+    "title": "Članovi zajednice"
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "Otvoreni zahtevi"
+  },
+  "COMM.OVERVIEW": {
+    "title": "Zajednica"
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "Razgovaraj sa Vitana"
+  },
+  "CONNECTORS.AGENT": {
+    "title": "Autopilot konektori"
+  },
+  "CONNECTORS.AI": {
+    "title": "AI konektori"
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "Fitnes konektori"
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "Zdravstveni konektori"
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "Konektori za muziku i video"
+  },
+  "CONNECTORS.OTHER": {
+    "title": "Ostali konektori"
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "Konektori za mejl i kalendar"
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "Konektori za društvene mreže"
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "AI izbor"
+  },
+  "DISCOVER.CART": {
+    "title": "Korpa"
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "Kategorije"
+  },
+  "DISCOVER.DEALS": {
+    "title": "Ponude i popusti"
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "AI izbor dilova"
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "Sačuvani dilovi"
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "Popularni dilovi"
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "Lekari i coachevi"
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "Pijaca"
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "Moj Market"
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "Otvoreni zahtevi"
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "Moje karte"
+  },
+  "DISCOVER.ORDERS": {
+    "title": "Moje porudžbine"
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "Aktivne porudžbine"
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "Istorija porudžbina"
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "Istraži"
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "Detalji proizvoda"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "Profil pružaoca usluga"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "Podeli i zaradi"
+  },
+  "DISCOVER.SHOP": {
+    "title": "Prodavnica"
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "Suplementi"
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "Wellness usluge"
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "Moji omiks podaci"
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "Moji suplementi (Biologija)"
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "Zdravstvena stanja"
+  },
+  "HEALTH.EDUCATION": {
+    "title": "Edukacija i nauka"
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "Edukativni podkasti"
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "Edukativni video snimci"
+  },
+  "HEALTH.MEDICAL": {
+    "title": "Medicinski podaci"
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "Moja biologija"
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "Zdravlje"
+  },
+  "HEALTH.PILLARS": {
+    "title": "Stubovi zdravlja"
+  },
+  "HEALTH.PLANS": {
+    "title": "Moji planovi"
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "Planovi treninga"
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "Planovi hidratacije"
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "Mentalni planovi"
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "Planovi ishrane"
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "Planovi spavanja"
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "Centar zdravstvenih usluga"
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "Podrška za osiguranje"
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "Medicinske usluge"
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "Moje usluge"
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "Velnes programi"
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "Zdravstveni suplementi"
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "Vitana indeks"
+  },
+  "HOME.NEWS_ALL": {
+    "title": "Sve vesti"
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "Vesti iz zajednice"
+  },
+  "HOME.OVERVIEW": {
+    "title": "Vesti o dugovečnosti"
+  },
+  "INBOX.ARCHIVED": {
+    "title": "Arhivirane poruke"
+  },
+  "INBOX.CONVERSATION": {
+    "title": "Razgovor"
+  },
+  "INBOX.GROUP": {
+    "title": "Grupni čet"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "Inspiracija"
+  },
+  "INBOX.OVERVIEW": {
+    "title": "Prijemno sanduče"
+  },
+  "INTENTS.BOARD": {
+    "title": "Tabla namera"
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "Detalji meča"
+  },
+  "INTENTS.MINE": {
+    "title": "Moji intenti"
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "Životni kompas"
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "Tok unosa za jedan dan"
+  },
+  "MEMORY.DIARY": {
+    "title": "Dnevnik"
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "Prijave grešaka"
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "Vrt sećanja"
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "Dozvole za memoriju"
+  },
+  "MEMORY.RECALL": {
+    "title": "Priseti se i pretraži"
+  },
+  "MEMORY.TIMELINE": {
+    "title": "Vremenska linija"
+  },
+  "NEWS.DETAIL": {
+    "title": "Članak vesti"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "Detalji događaja"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "Brze akcije"
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "Detalji druženja"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "Pregled profila"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "Vitana indeks"
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "Brzi novčanik"
+  },
+  "PROFILE.ME": {
+    "title": "Moj profil"
+  },
+  "PROFILE.PRIVACY": {
+    "title": "Vidljivost profila"
+  },
+  "PROFILE.PUBLIC": {
+    "title": "Javni profil"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "Profil sa sidrom podudaranja"
+  },
+  "PUBLIC.LANDING": {
+    "title": "Vitanaland početna stranica"
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "Politika privatnosti"
+  },
+  "PUBLIC.TERMS": {
+    "title": "Uslovi korišćenja"
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "Podsetnici"
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "Pretraga"
+  },
+  "SETTINGS.BILLING": {
+    "title": "Naplata"
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "Isplate za kreatore"
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "Fakture i računi"
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "Način plaćanja"
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "Trenutni plan"
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "Konektori i povezane aplikacije"
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "Zdravstvena ograničenja"
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "Obaveštenja"
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "Podešavanja"
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "Preference"
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "Pristupačnost"
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "Izgled"
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "Jezik i region"
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "Podešavanja privatnosti"
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "Deljenje podataka"
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "Bezbednost naloga"
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "Vidljivost"
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "Društveni nalozi"
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "Podrška"
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "Pomoć zajednice"
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "Kontaktiraj podršku"
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "Česta pitanja podrške"
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "Tenant i uloga"
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "Detalji kampanje"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "Kampanje"
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "Podaci i saglasnost"
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "Distribucija"
+  },
+  "SHARING.OVERVIEW": {
+    "title": "Podeli"
+  },
+  "WALLET.ACTIONS": {
+    "title": "Akcije novčanika"
+  },
+  "WALLET.ACTIVITY": {
+    "title": "Aktivnost novčanika"
+  },
+  "WALLET.BALANCE": {
+    "title": "Stanje i pogodnosti"
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "Članstvo"
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "Optimizacija"
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "Tokeni"
+  },
+  "WALLET.OVERVIEW": {
+    "title": "Novčanik"
+  },
+  "WALLET.REWARDS": {
+    "title": "Nagrade i provizije"
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "Uvidi u nagrade"
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "Nagrade na čekanju"
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "Nagrade za preporuke"
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "Pretplate"
+  }
+}

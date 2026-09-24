@@ -1,0 +1,557 @@
+{
+  "AI.COMPANION": {
+    "title": "مرافق الذكاء الاصطناعي"
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "الملخص اليومي"
+  },
+  "AI.INSIGHTS": {
+    "title": "رؤى الذكاء الاصطناعي"
+  },
+  "AI.OVERVIEW": {
+    "title": "مساعد الذكاء الاصطناعي"
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "التوصيات"
+  },
+  "ASSISTANT.AI": {
+    "title": "الذكاء الاصطناعي"
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot والأتمتة"
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "دردشة Vitana"
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "التحدث الاستباقي"
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "التوصيات"
+  },
+  "ASSISTANT.VOICE": {
+    "title": "الصوت"
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "بوابة Alkalma"
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "بوابة Earthlinks"
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "انضم لمجتمع MAXINA"
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "رحلتي"
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "تحليلات الأعمال"
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "عملائي"
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "الإيرادات"
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "النمو"
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "إعلاناتي"
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "فرص الأعمال"
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "مركز الأعمال"
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "العروض الترويجية"
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "إحالات المبيعات"
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "بيع واكسب"
+  },
+  "BUSINESS.SERVICES": {
+    "title": "خدماتي"
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "فعالياتي"
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "باقات الخدمات"
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "تقويمي"
+  },
+  "COMM.EVENTS": {
+    "title": "الفعاليات واللقاءات"
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "الفعاليات الرائجة"
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "فعاليات اليوم"
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "الفعاليات القادمة"
+  },
+  "COMM.FEED": {
+    "title": "فيد المتابَعين"
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "البحث عن شريك"
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "لوحة الشركاء"
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "تطابقاتي"
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "منشوراتي للشركاء"
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "تفاصيل المجموعة"
+  },
+  "COMM.GROUPS": {
+    "title": "المجموعات"
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "اكتشف مجموعات"
+  },
+  "COMM.INVITE": {
+    "title": "دعوة الأصدقاء"
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "عارض غرفة البث المباشر"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "الغرف المباشرة"
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "كل الغرف"
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "مباشر الآن"
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "الجلسات السابقة"
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "الغرف المجدولة"
+  },
+  "COMM.MATCHES": {
+    "title": "الأعضاء المتوافقون"
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "مركز الوسائط"
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "الموسيقى"
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "البودكاست"
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "فيديوهات قصيرة"
+  },
+  "COMM.MEMBERS": {
+    "title": "أعضاء المجتمع"
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "الطلبات المفتوحة"
+  },
+  "COMM.OVERVIEW": {
+    "title": "المجتمع"
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "تكلم مع Vitana"
+  },
+  "CONNECTORS.AGENT": {
+    "title": "موصلات Autopilot"
+  },
+  "CONNECTORS.AI": {
+    "title": "موصّلات الذكاء الاصطناعي"
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "موصلات اللياقة"
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "موصلات الصحة"
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "موصلات الموسيقى والفيديو"
+  },
+  "CONNECTORS.OTHER": {
+    "title": "موصلات أخرى"
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "موصلات البريد والتقويم"
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "موصلات التواصل الاجتماعي"
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "اختيارات الذكاء الاصطناعي"
+  },
+  "DISCOVER.CART": {
+    "title": "سلة التسوق"
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "الفئات"
+  },
+  "DISCOVER.DEALS": {
+    "title": "العروض والخصومات"
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "اختيارات الذكاء الاصطناعي"
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "العروض المحفوظة"
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "العروض الرائجة"
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "الأطباء والمدربين"
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "السوق"
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "سوقي"
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "الطلبات المفتوحة"
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "تذاكري"
+  },
+  "DISCOVER.ORDERS": {
+    "title": "طلباتي"
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "الطلبات النشطة"
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "سجل الطلبات"
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "استكشف"
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "تفاصيل المنتج"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "ملف مقدم الخدمة"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "شارك واكسب"
+  },
+  "DISCOVER.SHOP": {
+    "title": "المتجر"
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "المكملات الغذائية"
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "خدمات العافية"
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "بياناتي الجينية"
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "مكملاتي (البيولوجيا)"
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "الحالات الصحية"
+  },
+  "HEALTH.EDUCATION": {
+    "title": "التعليم والعلوم"
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "بودكاست تعليمي"
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "فيديوهات تعليمية"
+  },
+  "HEALTH.MEDICAL": {
+    "title": "السجلات الطبية"
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "بيولوجيتي"
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "الصحة"
+  },
+  "HEALTH.PILLARS": {
+    "title": "ركائز الصحة"
+  },
+  "HEALTH.PLANS": {
+    "title": "خططي"
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "خطط التمارين"
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "خطط الترطيب"
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "خطط الصحة النفسية"
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "خطط التغذية"
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "خطط النوم"
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "مركز الخدمات الصحية"
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "دعم التأمين"
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "الخدمات الطبية"
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "خدماتي"
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "برامج العافية"
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "المكملات الصحية"
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "مؤشر Vitana"
+  },
+  "HOME.NEWS_ALL": {
+    "title": "كل الأخبار"
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "أخبار المجتمع"
+  },
+  "HOME.OVERVIEW": {
+    "title": "أخبار طول العمر"
+  },
+  "INBOX.ARCHIVED": {
+    "title": "الرسائل المؤرشفة"
+  },
+  "INBOX.CONVERSATION": {
+    "title": "محادثة"
+  },
+  "INBOX.GROUP": {
+    "title": "دردشة جماعية"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "إلهام"
+  },
+  "INBOX.OVERVIEW": {
+    "title": "صندوق الوارد"
+  },
+  "INTENTS.BOARD": {
+    "title": "لوحة الطلبات"
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "تفاصيل التطابق"
+  },
+  "INTENTS.MINE": {
+    "title": "طلباتي"
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "بوصلة الحياة"
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "تسجيل يوم واحد"
+  },
+  "MEMORY.DIARY": {
+    "title": "المذكرة اليومية"
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "الإبلاغ عن الأخطاء"
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "حديقة الذاكرة"
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "صلاحيات الذاكرة"
+  },
+  "MEMORY.RECALL": {
+    "title": "تذكّر وابحث"
+  },
+  "MEMORY.TIMELINE": {
+    "title": "الخط الزمني"
+  },
+  "NEWS.DETAIL": {
+    "title": "مقال الأخبار"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "تفاصيل الفعالية"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "إجراءات سريعة"
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "تفاصيل اللقاء"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "معاينة الملف الشخصي"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "مؤشر Vitana"
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "المحفظة السريعة"
+  },
+  "PROFILE.ME": {
+    "title": "ملفي الشخصي"
+  },
+  "PROFILE.PRIVACY": {
+    "title": "ظهور الملف الشخصي"
+  },
+  "PROFILE.PUBLIC": {
+    "title": "الملف العام"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "الملف مع رابط التطابق"
+  },
+  "PUBLIC.LANDING": {
+    "title": "الصفحة الرئيسية لـ Vitanaland"
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "سياسة الخصوصية"
+  },
+  "PUBLIC.TERMS": {
+    "title": "شروط الاستخدام"
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "التذكيرات"
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "البحث"
+  },
+  "SETTINGS.BILLING": {
+    "title": "الفوترة"
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "مدفوعات صانعي المحتوى"
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "الفواتير والإيصالات"
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "طريقة الدفع"
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "الباقة الحالية"
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "الموصلات والتطبيقات المتصلة"
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "القيود الصحية"
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "الإشعارات"
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "الإعدادات"
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "التفضيلات"
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "إمكانية الوصول"
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "المظهر"
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "اللغة والمنطقة"
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "إعدادات الخصوصية"
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "مشاركة البيانات"
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "أمان الحساب"
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "الظهور"
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "الحسابات الاجتماعية"
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "الدعم"
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "مساعدة المجتمع"
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "التواصل مع الدعم"
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "الأسئلة الشائعة للدعم"
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "المستأجر والدور"
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "تفاصيل الحملة"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "الحملات"
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "البيانات والموافقة"
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "التوزيع"
+  },
+  "SHARING.OVERVIEW": {
+    "title": "مشاركة"
+  },
+  "WALLET.ACTIONS": {
+    "title": "إجراءات المحفظة"
+  },
+  "WALLET.ACTIVITY": {
+    "title": "نشاط المحفظة"
+  },
+  "WALLET.BALANCE": {
+    "title": "الرصيد والمزايا"
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "العضوية"
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "التحسين"
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "التوكنز"
+  },
+  "WALLET.OVERVIEW": {
+    "title": "المحفظة"
+  },
+  "WALLET.REWARDS": {
+    "title": "المكافآت والعمولات"
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "تحليلات المكافآت"
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "المكافآت المعلقة"
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "مكافآت الإحالة"
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "الاشتراكات"
+  }
+}

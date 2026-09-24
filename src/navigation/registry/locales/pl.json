@@ -1,0 +1,557 @@
+{
+  "AI.COMPANION": {
+    "title": "Towarzysz AI"
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "Podsumowanie dnia"
+  },
+  "AI.INSIGHTS": {
+    "title": "Spostrzeżenia AI"
+  },
+  "AI.OVERVIEW": {
+    "title": "Asystent AI"
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "Rekomendacje"
+  },
+  "ASSISTANT.AI": {
+    "title": "AI"
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot i automatyzacja"
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "Czat Vitana"
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "Proaktywne mówienie"
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "Rekomendacje"
+  },
+  "ASSISTANT.VOICE": {
+    "title": "Głos"
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "Portal Alkalma"
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "Portal Earthlinks"
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "Dołącz do społeczności MAXINA"
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "Moja podróż"
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "Analityka biznesu"
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "Moi klienci"
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "Przychody"
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "Wzrost"
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "Moje ogłoszenia"
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "Szanse biznesowe"
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "Centrum biznesu"
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "Promocje"
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "Polecenia sprzedażowe"
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "Sprzedawaj i zarabiaj"
+  },
+  "BUSINESS.SERVICES": {
+    "title": "Moje usługi"
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "Moje wydarzenia"
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "Pakiety usług"
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "Mój kalendarz"
+  },
+  "COMM.EVENTS": {
+    "title": "Wydarzenia i spotkania"
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "Popularne wydarzenia"
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "Dzisiejsze wydarzenia"
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "Nadchodzące wydarzenia"
+  },
+  "COMM.FEED": {
+    "title": "Kanał społeczności obserwowanych"
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "Znajdź partnera"
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "Tablica partnerów"
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "Moje dopasowania"
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "Moje posty partnerskie"
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "Szczegóły grupy"
+  },
+  "COMM.GROUPS": {
+    "title": "Grupy"
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "Odkrywaj grupy"
+  },
+  "COMM.INVITE": {
+    "title": "Zaproś znajomych"
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "Podgląd konkretnego pokoju na żywo"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "Pokoje na żywo"
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "Wszystkie pokoje"
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "Teraz na żywo"
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "Poprzednie sesje"
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "Zaplanowane pokoje"
+  },
+  "COMM.MATCHES": {
+    "title": "Pasujący członkowie"
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "Centrum mediów"
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "Muzyka"
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "Podcasty"
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "Shortsy"
+  },
+  "COMM.MEMBERS": {
+    "title": "Członkowie społeczności"
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "Otwarte zapytania"
+  },
+  "COMM.OVERVIEW": {
+    "title": "Społeczność"
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "Porozmawiaj z Vitana"
+  },
+  "CONNECTORS.AGENT": {
+    "title": "Konektory Autopilot"
+  },
+  "CONNECTORS.AI": {
+    "title": "Konektory AI"
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "Konektory fitness"
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "Konektory zdrowia"
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "Konektory muzyki i wideo"
+  },
+  "CONNECTORS.OTHER": {
+    "title": "Inne konektory"
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "Konektory poczty i kalendarza"
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "Konektory społecznościowe"
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "Propozycje AI"
+  },
+  "DISCOVER.CART": {
+    "title": "Koszyk"
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "Kategorie"
+  },
+  "DISCOVER.DEALS": {
+    "title": "Oferty i promocje"
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "Oferty wybrane przez AI"
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "Zapisane oferty"
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "Popularne oferty"
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "Lekarze i coachowie"
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "Marketplace"
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "Mój Marketplace"
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "Otwarte zapytania"
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "Moje bilety"
+  },
+  "DISCOVER.ORDERS": {
+    "title": "Moje zamówienia"
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "Aktywne zamówienia"
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "Historia zamówień"
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "Odkrywaj"
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "Szczegóły produktu"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "Profil dostawcy"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "Udostępnij i zarabiaj"
+  },
+  "DISCOVER.SHOP": {
+    "title": "Sklep"
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "Suplementy"
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "Usługi wellness"
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "Moje dane omiczne"
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "Moje suplementy (Biologia)"
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "Stany zdrowia"
+  },
+  "HEALTH.EDUCATION": {
+    "title": "Edukacja i nauka"
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "Podcasty edukacyjne"
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "Filmy edukacyjne"
+  },
+  "HEALTH.MEDICAL": {
+    "title": "Dokumentacja medyczna"
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "Moja biologia"
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "Zdrowie"
+  },
+  "HEALTH.PILLARS": {
+    "title": "Filary zdrowia"
+  },
+  "HEALTH.PLANS": {
+    "title": "Moje plany"
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "Plany treningowe"
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "Plany nawadniania"
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "Plany mentalne"
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "Plany żywieniowe"
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "Plany snu"
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "Centrum usług zdrowotnych"
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "Wsparcie ubezpieczeniowe"
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "Usługi medyczne"
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "Moje usługi"
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "Programy wellness"
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "Suplementy zdrowotne"
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "Indeks Vitana"
+  },
+  "HOME.NEWS_ALL": {
+    "title": "Wszystkie aktualności"
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "Aktualności społeczności"
+  },
+  "HOME.OVERVIEW": {
+    "title": "Wiadomości o długowieczności"
+  },
+  "INBOX.ARCHIVED": {
+    "title": "Zarchiwizowane wiadomości"
+  },
+  "INBOX.CONVERSATION": {
+    "title": "Rozmowa"
+  },
+  "INBOX.GROUP": {
+    "title": "Czat grupowy"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "Inspiracja"
+  },
+  "INBOX.OVERVIEW": {
+    "title": "Skrzynka odbiorcza"
+  },
+  "INTENTS.BOARD": {
+    "title": "Tablica intencji"
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "Szczegóły dopasowania"
+  },
+  "INTENTS.MINE": {
+    "title": "Moje intenty"
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "Kompas życia"
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "Rejestracja dnia"
+  },
+  "MEMORY.DIARY": {
+    "title": "Dziennik"
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "Zgłoszenia błędów"
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "Ogród Pamięci"
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "Uprawnienia pamięci"
+  },
+  "MEMORY.RECALL": {
+    "title": "Przypomnij i szukaj"
+  },
+  "MEMORY.TIMELINE": {
+    "title": "Oś czasu"
+  },
+  "NEWS.DETAIL": {
+    "title": "Artykuł newsowy"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "Szczegóły wydarzenia"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "Szybkie akcje"
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "Szczegóły spotkania"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "Podgląd profilu"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "Indeks Vitana"
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "Szybki portfel"
+  },
+  "PROFILE.ME": {
+    "title": "Mój profil"
+  },
+  "PROFILE.PRIVACY": {
+    "title": "Widoczność profilu"
+  },
+  "PROFILE.PUBLIC": {
+    "title": "Profil publiczny"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "Profil z kotwicą dopasowania"
+  },
+  "PUBLIC.LANDING": {
+    "title": "Strona główna Vitanaland"
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "Polityka prywatności"
+  },
+  "PUBLIC.TERMS": {
+    "title": "Warunki korzystania"
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "Przypomnienia"
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "Szukaj"
+  },
+  "SETTINGS.BILLING": {
+    "title": "Rozliczenia"
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "Wypłaty dla twórców"
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "Faktury i rachunki"
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "Metoda płatności"
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "Aktualny plan"
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "Konektory i połączone aplikacje"
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "Ograniczenia zdrowotne"
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "Powiadomienia"
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "Ustawienia"
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "Preferencje"
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "Dostępność"
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "Wygląd"
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "Język i region"
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "Ustawienia prywatności"
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "Udostępnianie danych"
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "Bezpieczeństwo konta"
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "Widoczność"
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "Konta społecznościowe"
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "Wsparcie"
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "Pomoc społeczności"
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "Kontakt z pomocą"
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "FAQ pomocy"
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "Tenant i rola"
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "Szczegóły kampanii"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "Kampanie"
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "Dane i zgody"
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "Dystrybucja"
+  },
+  "SHARING.OVERVIEW": {
+    "title": "Udostępnij"
+  },
+  "WALLET.ACTIONS": {
+    "title": "Akcje portfela"
+  },
+  "WALLET.ACTIVITY": {
+    "title": "Aktywność portfela"
+  },
+  "WALLET.BALANCE": {
+    "title": "Saldo i korzyści"
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "Członkostwo"
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "Optymalizacja"
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "Tokeny"
+  },
+  "WALLET.OVERVIEW": {
+    "title": "Portfel"
+  },
+  "WALLET.REWARDS": {
+    "title": "Nagrody i prowizje"
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "Analiza nagród"
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "Oczekujące nagrody"
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "Nagrody za polecenia"
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "Subskrypcje"
+  }
+}
