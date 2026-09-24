@@ -112,7 +112,21 @@
       "newActionReason": "Son aktivite desenlerine göre",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Gönderin – taslak",
+      "titleMessage": "Mesajın – taslak",
+      "titleCaption": "Açıklaman – taslak",
+      "hint": "Vitana bir taslak hazırladı. İstediğin gibi değiştir – sensiz hiçbir şey gönderilmez.",
+      "loading": "Taslak yazılıyor …",
+      "failed": "Şu an taslak yok – kendin yaz.",
+      "regenerate": "Yeni öneri",
+      "skip": "Atla",
+      "confirmPost": "Gönderide aç",
+      "confirmMessage": "Mesaj gönder",
+      "confirmCaption": "Yüklemeye git",
+      "placeholder": "Buraya yaz …"
+    }
   },
   "_pending_review": {}
 }

@@ -104,6 +104,20 @@
       "action6Reason": "Deine Seele ruft nach diesen stressschmelzenden Techniken",
       "newActionTitle": "Neuer KI-Vorschlag",
       "newActionReason": "Basierend auf aktuellen Aktivitätsmustern"
+    },
+    "draft": {
+      "titlePost": "Dein Beitrag – Entwurf",
+      "titleMessage": "Deine Nachricht – Entwurf",
+      "titleCaption": "Deine Bildunterschrift – Entwurf",
+      "hint": "Vitana hat einen Entwurf vorbereitet. Pass ihn an, wie du magst – ohne dich wird nichts gesendet.",
+      "loading": "Entwurf wird geschrieben …",
+      "failed": "Gerade kein Entwurf verfügbar – schreib einfach selbst.",
+      "regenerate": "Neuer Vorschlag",
+      "skip": "Überspringen",
+      "confirmPost": "Im Beitrag öffnen",
+      "confirmMessage": "Nachricht senden",
+      "confirmCaption": "Zum Upload",
+      "placeholder": "Schreib hier …"
     }
   }
 }

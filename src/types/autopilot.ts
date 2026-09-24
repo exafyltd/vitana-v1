@@ -28,6 +28,8 @@ export interface AutopilotAction {
   actionType?: string; // e.g., "join", "book", "review", "watch", "start"
   ctaLabel?: string; // explicit CTA override
   contributionVector?: ContributionVector;
+  /** VTID-04504: set when the suggestion's text is reviewed before it runs. */
+  draftKind?: string;
 }
 
 export interface AutopilotState {

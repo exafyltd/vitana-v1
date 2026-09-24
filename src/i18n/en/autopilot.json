@@ -112,7 +112,21 @@
       "newActionReason": "Based on recent activity patterns",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Your post – draft",
+      "titleMessage": "Your message – draft",
+      "titleCaption": "Your caption – draft",
+      "hint": "Vitana prepared a draft. Change it however you like – nothing is sent without you.",
+      "loading": "Writing a draft …",
+      "failed": "No draft right now – just write your own.",
+      "regenerate": "New suggestion",
+      "skip": "Skip",
+      "confirmPost": "Open in post",
+      "confirmMessage": "Send message",
+      "confirmCaption": "Go to upload",
+      "placeholder": "Write here …"
+    }
   },
   "_pending_review": {}
 }
