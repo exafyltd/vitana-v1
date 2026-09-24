@@ -274,7 +274,22 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "health.reportsLoadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.reportsLoadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.reportsLoadFailedRetry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-24T08:39:54.114Z"
+  "generatedAt": "2026-09-24T08:37:17.580Z"
 }
