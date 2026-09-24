@@ -18,6 +18,8 @@ import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { useAuth } from "@/context/AuthProvider";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
+import { isHealthRealDataEnabled } from "@/lib/feature-flags";
+import { useProfileHealthSummary } from "@/hooks/useProfileHealthSummary";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
@@ -38,11 +40,24 @@ interface TabConfig {
   name: string;
 }
 
+/**
+ * Whether the Health tab exists for this viewer. Flag off: the legacy rule
+ * (unchanged). Flag on (VTID-04483): the owner always; anyone else only if
+ * the member shares it — the RPC resolves their consent and relationship.
+ */
+function useShowHealthTab(profile: UserProfile, scope: Scope): boolean {
+  const { user } = useAuth();
+  const real = isHealthRealDataEnabled();
+  const userId = resolveProfileUserId(profile.user_id, profile.id, user?.id);
+  const { data } = useProfileHealthSummary(userId, real);
+  if (!real) return profile.visibility.healthShareConsent && shouldShowField("public", scope);
+  return !!data && (data.isOwner || (data.shared && data.hasIndex));
+}
+
 function useProfileTabsConfig(profile: UserProfile, scope: Scope): TabConfig[] {
   const { translate } = useTranslation();
 
-  const showHealthTab =
-    profile.visibility.healthShareConsent && shouldShowField("public", scope);
+  const showHealthTab = useShowHealthTab(profile, scope);
   const showServicesTab =
     profile.offerings &&
     profile.offerings.some((offering) => offering.status === "published");
@@ -134,8 +149,7 @@ export function ProfileSplitNavigationContent({
     deletePhoto,
   } = useProfileGallery(profileUserId);
 
-  const showHealthTab =
-    profile.visibility.healthShareConsent && shouldShowField("public", scope);
+  const showHealthTab = useShowHealthTab(profile, scope);
   const showServicesTab =
     profile.offerings &&
     profile.offerings.some((offering) => offering.status === "published");

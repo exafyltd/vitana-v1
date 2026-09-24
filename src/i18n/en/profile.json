@@ -120,6 +120,32 @@
       "editPhotoAria": "Edit profile picture",
       "showQrAria": "Show QR code",
       "close": "Close"
+    },
+    "healthReal": {
+      "loadError": "Health data couldn't load.",
+      "noIndex": "No Vitana Index yet.",
+      "topPercent": "Top {percent}%",
+      "communityStanding": "Community standing",
+      "amongMembers": "among {count} active members",
+      "communityAverage": "Community average",
+      "standingPending": "Community comparisons appear once {min} members are active.",
+      "achievements": "Achievements",
+      "personalBest": "Personal best: {score}",
+      "baselineNote": "Starting values — log activities to make them your own.",
+      "deltaThisWeek": "{delta} this week",
+      "last7Days": "Last 7 days",
+      "noActivity": "Nothing logged in the last 7 days.",
+      "daysLogged": "Logged on {days} of 7 days",
+      "sleepAvg": "Sleep: {hours} h average over {nights} nights",
+      "waterAvg": "Water: {liters} L average per day",
+      "workoutMinutes": "Workouts: {minutes} min this week",
+      "stepsAvg": "Steps: {steps} average per day",
+      "meditationMinutes": "Meditation: {minutes} min this week",
+      "shareTitle": "Who can see your Health tab?",
+      "shareHint": "Categories, weekly change and achievements. Your activity logs always stay private.",
+      "shareOnlyMe": "Only me",
+      "shareConnections": "My connections",
+      "shareEveryone": "Everyone"
     }
   },
   "_pending_review": {}

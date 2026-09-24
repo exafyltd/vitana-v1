@@ -120,6 +120,32 @@
       "editPhotoAria": "Edytuj zdjęcie profilowe",
       "showQrAria": "Pokaż kod QR",
       "close": "Zamknij"
+    },
+    "healthReal": {
+      "loadError": "Nie udało się wczytać danych zdrowotnych.",
+      "noIndex": "Brak jeszcze Vitana Index.",
+      "topPercent": "Top {percent}%",
+      "communityStanding": "Pozycja w społeczności",
+      "amongMembers": "wśród {count} aktywnych członków",
+      "communityAverage": "Średnia społeczności",
+      "standingPending": "Porównania ze społecznością pojawią się, gdy aktywnych będzie {min} członków.",
+      "achievements": "Osiągnięcia",
+      "personalBest": "Rekord osobisty: {score}",
+      "baselineNote": "Wartości startowe — zapisuj aktywności, aby stały się Twoje.",
+      "deltaThisWeek": "{delta} w tym tygodniu",
+      "last7Days": "Ostatnie 7 dni",
+      "noActivity": "Brak wpisów z ostatnich 7 dni.",
+      "daysLogged": "Wpisy w {days} z 7 dni",
+      "sleepAvg": "Sen: średnio {hours} godz. przez {nights} nocy",
+      "waterAvg": "Woda: średnio {liters} l dziennie",
+      "workoutMinutes": "Trening: {minutes} min w tym tygodniu",
+      "stepsAvg": "Kroki: średnio {steps} dziennie",
+      "meditationMinutes": "Medytacja: {minutes} min w tym tygodniu",
+      "shareTitle": "Kto widzi Twoją zakładkę Zdrowie?",
+      "shareHint": "Kategorie, zmiana tygodniowa i osiągnięcia. Twoje dzienniki aktywności zawsze pozostają prywatne.",
+      "shareOnlyMe": "Tylko ja",
+      "shareConnections": "Moje kontakty",
+      "shareEveryone": "Wszyscy"
     }
   },
   "_pending_review": {}

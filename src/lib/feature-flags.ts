@@ -72,3 +72,14 @@ export function setTestsPassed(passed: boolean) {
 export function isFeedV2Enabled(): boolean {
   return import.meta.env.VITE_FEED_V2_ENABLED !== "false";
 }
+
+/**
+ * VTID-04483 — real health data on the profile Health tab and the Health
+ * page's community standing (get_profile_health_summary). OFF by default:
+ * until VITE_HEALTH_REAL_DATA="true" the existing screens render exactly as
+ * before. When on, every figure comes from the RPC and anything without
+ * enough data hides instead of falling back to a placeholder.
+ */
+export function isHealthRealDataEnabled(): boolean {
+  return import.meta.env.VITE_HEALTH_REAL_DATA === "true";
+}

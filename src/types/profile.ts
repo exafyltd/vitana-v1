@@ -47,7 +47,11 @@ export type AccountFieldKey =
   | 'myPosts'
   | 'myPosts.commercial'
   // 'myPosts.partnerSeek' is hardcoded private — NOT user-toggleable.
-  | 'derivedAgeBand';
+  | 'derivedAgeBand'
+  // VTID-04483 — share the profile Health tab (Vitana Index categories,
+  // 7-day change, achievements). Health data: private until opted in.
+  // Server: get_profile_health_summary() + gateway FIELD_DEFAULTS.
+  | 'vitanaHealth';
 
 export type AccountVisibility = Record<AccountFieldKey, FieldVisibility>;
 
@@ -118,6 +122,7 @@ export const DEFAULT_ACCOUNT_VISIBILITY: AccountVisibility = {
   myPosts: 'public',
   'myPosts.commercial': 'public',
   derivedAgeBand: 'connections',
+  vitanaHealth: 'private',
 };
 
 export interface ServiceOffering {
