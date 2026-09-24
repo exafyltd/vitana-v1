@@ -52,9 +52,14 @@ function useFillToFold(ref: RefObject<HTMLElement>): number | undefined {
     const measure = () => {
       const el = ref.current;
       if (!el) return;
-      const nav = document.querySelector<HTMLElement>(".mobile-bottom-nav");
-      const navRect = nav?.getBoundingClientRect();
-      const foldTop = navRect && navRect.height > 0 ? navRect.top : window.innerHeight;
+      // The fold is the highest fixed bottom element: the bottom navigation or
+      // the ORB button that rises above it (it would otherwise cover the
+      // Posts · Media · Groups row).
+      let foldTop = window.innerHeight;
+      document.querySelectorAll<HTMLElement>(".mobile-bottom-nav, .vtorb-fab").forEach((node) => {
+        const r = node.getBoundingClientRect();
+        if (r.height > 0 && r.top > window.innerHeight / 2) foldTop = Math.min(foldTop, r.top);
+      });
       const cardTopInDocument = el.getBoundingClientRect().top + window.scrollY;
       const target = Math.floor(foldTop - cardTopInDocument - FOLD_GAP_PX);
       setMinHeight((prev) => {
@@ -413,10 +418,12 @@ export function MobileIdentityCard({
           <Info className="h-[22px] w-[22px]" />
         </button>
 
+        {/* Label stays at the top; the score block is centred in whatever
+            space the card gets from reaching the fold. */}
+        <span className="self-center text-xs font-semibold uppercase tracking-[0.28em] text-teal-800">
+          {translate("profile.identity.vitanaIndex")}
+        </span>
         <div className="flex flex-1 flex-col items-center justify-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.28em] text-teal-800">
-            {translate("profile.identity.vitanaIndex")}
-          </span>
 
           {/* Score — gateway to the existing detailed Index drawer (owner) */}
           {(() => {
