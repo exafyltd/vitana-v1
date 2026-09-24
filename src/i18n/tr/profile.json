@@ -86,7 +86,41 @@
       "viewProduct": "Görüntüle",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "/ {max}",
+      "noIndexOwner": "Endeksin, ilk aktiviten kaydedildiğinde görünür.",
+      "noIndexPublic": "Henüz herkese açık Vitana Index yok",
+      "boostPrefix": "En büyük artış:",
+      "strongestPrefix": "En güçlü alan:",
+      "momentumRisingFast": "Bu hafta +{delta} — böyle devam!",
+      "momentumImproving": "Endeksin bu hafta yükseliyor — böyle devam!",
+      "fallback": "Endeksini en çok neyin hareket ettirdiğini keşfetmek için uzun yaşam alışkanlıklarını geliştirmeye devam et.",
+      "publicLine": "MAXINA topluluğuyla uzun yaşam alışkanlıkları geliştiriyor.",
+      "pillarListTwo": "{a} ve {b}",
+      "aboutTitle": "VITANA INDEX'in hakkında",
+      "subtitleStandingOut": "Bu hafta neden öne çıkıyorsun",
+      "subtitleNeutral": "Endeksin şu an nerede",
+      "aboutBody": "VITANA INDEX'in, beş uzun yaşam sütunundaki son ilerlemeni yansıtır.",
+      "aboutBodyPublic": "VITANA INDEX, beş uzun yaşam sütunundaki ilerlemeyi yansıtır.",
+      "boostHeading": "En büyük artış",
+      "strongestHeading": "En güçlü alan",
+      "boostLine": "{pillar} endeksine en güçlü desteği verdi.",
+      "strongestLine": "{pillar} şu an en güçlü sütunun.",
+      "whatHelpedMost": "En çok ne yardımcı oldu",
+      "risingFast": "Hızla yükseliyor",
+      "improving": "Gelişiyor",
+      "streak": "{count} günlük seri",
+      "shareProgress": "İlerlemeyi paylaş",
+      "seeFullBreakdown": "Tüm ayrıntıları gör",
+      "editProfile": "Profili düzenle",
+      "aboutIndexAria": "VITANA INDEX hakkında",
+      "openIndexAria": "Vitana Index ayrıntılarını aç",
+      "shareProfileAria": "Profili paylaş",
+      "editPhotoAria": "Profil fotoğrafını düzenle",
+      "showQrAria": "QR kodunu göster",
+      "close": "Kapat"
+    }
   },
   "_pending_review": {}
 }

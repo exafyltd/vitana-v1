@@ -1,19 +1,38 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, Share2, TrendingUp, UserPlus, UserCheck, MessageSquare, QrCode } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  ChevronRight,
+  Info,
+  MessageSquare,
+  Pencil,
+  QrCode,
+  Share2,
+  TrendingUp,
+  UserCheck,
+  UserPlus,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
+import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
+import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
+import { pillarLabel } from "@/hooks/useVitanaIndex";
+import { deriveIndexHighlights } from "@/lib/vitana-index-highlights";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 import { useFollow } from "@/hooks/useFollow";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { FollowListDialog } from "@/components/profile/FollowListDialog";
-import { t } from '@/lib/i18n-toast';
-import { displayHandle } from '@/lib/handle-display';
+import { MobileProfileStats } from "./MobileProfileStats";
+import { VitanaAchievementDrawer } from "./VitanaAchievementDrawer";
+import { t } from "@/lib/i18n-toast";
+import { displayHandle } from "@/lib/handle-display";
+
+/** Upper bound of the Vitana Index scale (see lib/vitanaIndex tiers). */
+const VITANA_INDEX_MAX = 999;
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
@@ -22,21 +41,21 @@ interface MobileIdentityCardProps {
   displayName: string;
   handle?: string;
   archetype?: string;
+  /** The profile's Index. For another member this is the public RPC value
+   *  (undefined when none / not public) — never the viewer's own Index. */
   vitanaIndex?: number;
-  vitanaPercentile?: number;
-  editMode?: boolean;
   isOwner?: boolean;
-  onEdit?: () => void;
+  /** Owner only: the existing identity editor (name, handle, photo). */
+  onEditIdentity?: () => void;
   onShare?: () => void;
-  /** Opens the QR share screen directly in "Get MAXINA" (app-invite) mode —
-   * a one-tap shortcut so a member can hand their phone to someone and let
-   * them scan straight to the app store, without going through Share. */
+  /** Owner QR: opens the QR screen in "Get MAXINA" (app-invite) mode. */
   onGetMaxina?: () => void;
+  /** Visitor QR: opens the QR screen for this profile. */
+  onShowQr?: () => void;
   onFollow?: () => void;
   onMessage?: () => void;
   isFollowing?: boolean;
   followLoading?: boolean;
-  onViewFullId?: () => void;
   /** Auth user id of the profile owner — used to resolve follower counts. */
   userId?: string;
   /** Profile row id — used for the follower/following list dialogs. */
@@ -46,6 +65,9 @@ interface MobileIdentityCardProps {
   className?: string;
 }
 
+const ICON_BUTTON_FOCUS =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2";
+
 export function MobileIdentityCard({
   avatarUrl,
   avatarOffsetX,
@@ -54,327 +76,402 @@ export function MobileIdentityCard({
   handle,
   archetype,
   vitanaIndex: vitanaIndexProp,
-  vitanaPercentile = 15,
-  editMode = false,
   isOwner = true,
-  onEdit,
+  onEditIdentity,
   onShare,
   onGetMaxina,
+  onShowQr,
   onFollow,
   onMessage,
   isFollowing = false,
   followLoading = false,
-  onViewFullId,
   userId,
   profileId,
   followersCount: propFollowers,
   followingCount: propFollowing,
-  className
+  className,
 }: MobileIdentityCardProps) {
   const { translate } = useTranslation();
   const navigate = useNavigate();
-  const { index: liveIndex } = useVitanaIndexCache();
-  const vitanaIndex = vitanaIndexProp ?? liveIndex?.total ?? 0;
+  const { index: liveIndex, isLoading: liveLoading } = useVitanaIndexCache();
+  const { current: streakDays } = useVitanaStreaks();
   const [followListType, setFollowListType] = useState<"followers" | "following" | null>(null);
+  const [achievementOpen, setAchievementOpen] = useState(false);
 
-  // Same count resolution as the old stats strip: explicit props win,
-  // otherwise fall back to the live counts from useFollow.
+  // VTID-04470: the live Index cache is the SIGNED-IN member's own Index.
+  // Only the owner may fall back to it — on someone else's profile a missing
+  // public Index must read as "none", not as the viewer's score.
+  const rawScore = isOwner ? (vitanaIndexProp || liveIndex?.total) : vitanaIndexProp;
+  const score = typeof rawScore === "number" && Number.isFinite(rawScore) && rawScore > 0 ? rawScore : null;
+  const scoreLoading = isOwner && score === null && liveLoading;
+
+  // Personalised praise is owner-only: another member's pillar data is private.
+  const highlights = useMemo(
+    () => deriveIndexHighlights(isOwner && liveIndex ? liveIndex : null),
+    [isOwner, liveIndex],
+  );
+
   const resolvedUserId = resolveProfileUserId(userId, profileId);
   const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(resolvedUserId);
-  const followersCount = propFollowers ?? hookFollowers;
-  const followingCount = propFollowing ?? hookFollowing;
+  const followersCount = propFollowers ?? hookFollowers ?? 0;
+  const followingCount = propFollowing ?? hookFollowing ?? 0;
   const statsUserId = profileId || userId || "";
+  const showFollowStats = !!resolvedUserId || propFollowers !== undefined || propFollowing !== undefined;
 
-  const initials = displayName
-    ?.split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2) || "??";
+  const initials =
+    displayName
+      ?.split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "??";
 
-  const tier = getVitanaIndexTier(vitanaIndex);
-  const showStats = !!resolvedUserId || propFollowers !== undefined || propFollowing !== undefined;
-
-  const openFollowList = (type: "followers" | "following") => {
-    if (!statsUserId) return;
-    setFollowListType(type);
-  };
-
+  const tier = score !== null ? getVitanaIndexTier(score) : null;
   // VTID-03978: never render the /u/:identifier routing fallback (an auth
   // UUID) as if it were the member's handle.
   const shownHandle = displayHandle(handle);
+  const qrAction = isOwner ? onGetMaxina : onShowQr;
+
+  const openDetailedIndex = () => window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT));
+  const openFollowList = (type: "followers" | "following") => {
+    if (statsUserId) setFollowListType(type);
+  };
+
+  // The detailed drawer only knows the signed-in member's own Index, so it is
+  // the score's destination on the owner's profile only.
+  const canOpenDetailed = isOwner && score !== null;
+
+  const cardLine = (() => {
+    if (score === null) {
+      return <span>{isOwner ? t("profile.indexHero.noIndexOwner") : t("profile.indexHero.noIndexPublic")}</span>;
+    }
+    if (!isOwner) return <span>{t("profile.indexHero.publicLine")}</span>;
+    if (highlights.kind === "boost") {
+      const [a, b] = highlights.lifts;
+      const names = b
+        ? t("profile.indexHero.pillarListTwo", { a: pillarLabel(a.pillar), b: pillarLabel(b.pillar) })
+        : pillarLabel(a.pillar);
+      return (
+        <>
+          <span className="font-semibold text-teal-700">{t("profile.indexHero.boostPrefix")}</span> {names}
+        </>
+      );
+    }
+    if (highlights.kind === "strongest" && highlights.strongest) {
+      return (
+        <>
+          <span className="font-semibold text-teal-700">{t("profile.indexHero.strongestPrefix")}</span>{" "}
+          {pillarLabel(highlights.strongest)}
+        </>
+      );
+    }
+    return <span>{t("profile.indexHero.fallback")}</span>;
+  })();
 
   return (
-    <div className={cn("px-4 pt-safe-top pb-2", className)}>
-      {/* Pastel Identity Card */}
-      <div
-        className="relative rounded-2xl border border-white/60 overflow-hidden"
+    <div className={cn("px-4 pb-2", className)}>
+      {/* ── Profile header ─────────────────────────────────────────── */}
+      <section
+        className="relative rounded-3xl border border-white/70 p-4"
         style={{
-          // Android WebView (Appilix) drops this card's gradient `background`
-          // because of the heavy blur/backdrop-blur/drop-shadow layers it
-          // contains (avatar glow, score halo, glass buttons): a descendant
-          // compositing layer makes the ancestor gradient paint transparent,
-          // so the card washes out to the page underneath — while the
-          // Social/Account cards (no such filters) render fine. Keep a SOLID
-          // pastel `backgroundColor` as a fallback so the card still renders
-          // on-brand even if the gradient layer fails to paint, and promote
-          // the card onto its own stable compositing layer so the child
-          // filters can't knock out its background.
-          backgroundColor: "hsl(218, 65%, 92%)",
-          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
-          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
+          // Solid fallback + own compositing layer: Android WebView (Appilix)
+          // can drop a gradient background under blurred descendants.
+          backgroundColor: "hsl(208, 72%, 93%)",
+          backgroundImage: "linear-gradient(165deg, hsl(200, 80%, 91%) 0%, hsl(212, 72%, 94%) 55%, hsl(225, 65%, 95%) 100%)",
+          boxShadow: "0 6px 22px rgba(56, 132, 214, 0.12)",
           isolation: "isolate",
-          transform: "translateZ(0)"
+          transform: "translateZ(0)",
         }}
-        onClick={onViewFullId}
-        role={onViewFullId ? "button" : undefined}
-        tabIndex={onViewFullId ? 0 : undefined}
       >
-        {/* Share button - top left (only for owner view) */}
-        {isOwner && onShare && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 text-xs font-medium gap-1.5 shadow-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onShare();
-            }}
+        {onShare && (
+          <button
+            type="button"
+            aria-label={t("profile.indexHero.shareProfileAria")}
+            onClick={onShare}
+            data-testid="profile-share-icon"
+            className={cn(
+              "absolute end-2 top-2 flex h-10 w-10 items-center justify-center rounded-full text-slate-800 active:opacity-60",
+              ICON_BUTTON_FOCUS,
+            )}
           >
-            <Share2 className="h-3.5 w-3.5" />
-            {translate('common.share', 'Share')}
-          </Button>
+            <Share2 className="h-[22px] w-[22px]" strokeWidth={2} />
+          </button>
         )}
 
-        {/* Get MAXINA — top right (owner view only), mirrors the Share
-            button. One tap straight to the app-invite QR, no Share sheet
-            or in-screen mode toggle in between. */}
-        {isOwner && onGetMaxina && (
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={translate('common.getMaxina', 'Get MAXINA')}
-            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 shadow-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onGetMaxina();
-            }}
-          >
-            <QrCode className="h-3.5 w-3.5" />
-          </Button>
-        )}
-
-        <div className="p-6 flex flex-col items-center">
-          {/* Avatar with subtle glow */}
-          <div className="relative mb-4">
-            <div
-              className="absolute inset-0 rounded-full blur-xl opacity-40"
-              style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
-            />
-            <Avatar className="relative h-24 w-24 border-[3px] border-white/90 shadow-lg">
+        <div className="flex items-center gap-3.5 min-[375px]:gap-4">
+          {/* Avatar (+ owner-only edit pencil) */}
+          <div className="relative shrink-0">
+            <Avatar className="h-20 w-20 border-[3px] border-white shadow-md min-[375px]:h-[88px] min-[375px]:w-[88px]">
               <AvatarImage
                 src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(handle ?? displayName ?? "vitana")}
                 alt={displayName}
                 style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
               />
-              <AvatarFallback className="text-xl font-semibold bg-white/60 text-slate-600">
-                {initials}
-              </AvatarFallback>
+              <AvatarFallback className="bg-white/70 text-xl font-semibold text-slate-600">{initials}</AvatarFallback>
             </Avatar>
+            {isOwner && onEditIdentity && (
+              <button
+                type="button"
+                aria-label={t("profile.indexHero.editPhotoAria")}
+                onClick={onEditIdentity}
+                data-testid="profile-edit-photo"
+                className={cn(
+                  "absolute -bottom-0.5 -end-0.5 flex h-8 w-8 items-center justify-center rounded-full border border-slate-100 bg-white text-slate-700 shadow-md active:opacity-70",
+                  ICON_BUTTON_FOCUS,
+                )}
+              >
+                <Pencil className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
 
-          {/* Name */}
-          <h1 className="text-2xl font-bold text-slate-900 text-center">
-            {displayName}
-          </h1>
+          {/* Name, handle, follow counts */}
+          <div className={cn("min-w-0 flex-1", onShare && "pe-8")}>
+            <h1 className="line-clamp-2 break-words text-[21px] font-bold leading-tight text-slate-900 min-[375px]:text-[22px]">
+              {displayName}
+            </h1>
+            {(shownHandle || archetype) && (
+              <p className="mt-0.5 line-clamp-2 break-words text-[13px] leading-snug text-slate-600">
+                {shownHandle && <span dir="ltr">@{shownHandle}</span>}
+                {shownHandle && archetype && <span aria-hidden> · </span>}
+                {archetype && <span>{archetype}</span>}
+              </p>
+            )}
+            {showFollowStats && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <button
+                  type="button"
+                  className="flex items-baseline gap-1 rounded active:opacity-70"
+                  onClick={() => openFollowList("followers")}
+                >
+                  <span className="text-[15px] font-bold text-slate-900">{followersCount}</span>
+                  <span className="text-[13px] text-slate-600">{translate("profileStats.followers", "Followers")}</span>
+                </button>
+                <span className="h-3.5 w-px bg-slate-400/40 max-[359px]:hidden" aria-hidden />
+                <button
+                  type="button"
+                  className="flex items-baseline gap-1 rounded active:opacity-70"
+                  onClick={() => openFollowList("following")}
+                >
+                  <span className="text-[15px] font-bold text-slate-900">{followingCount}</span>
+                  <span className="text-[13px] text-slate-600">{translate("profileStats.following", "Following")}</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
-          {/* Handle + Archetype */}
-          <p className="text-sm text-slate-600 text-center mt-0.5">
-            {shownHandle && <span>@{shownHandle}</span>}
-            {shownHandle && archetype && <span> · </span>}
-            {archetype && <span>{archetype}</span>}
+        {/* Action row: visitor = Follow · Message · QR, owner = Edit · QR */}
+        {(isOwner ? onEditIdentity || qrAction : onFollow || onMessage || qrAction) && (
+          <div className="mt-3 flex gap-2">
+            {!isOwner && onFollow && (
+              <button
+                type="button"
+                onClick={onFollow}
+                disabled={followLoading}
+                className={cn(
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-[13px] font-semibold transition-colors disabled:opacity-60 min-[375px]:gap-2 min-[375px]:px-3 min-[375px]:text-sm",
+                  isFollowing
+                    ? "bg-sky-100 text-slate-900 hover:bg-sky-200"
+                    : "bg-gradient-to-r from-teal-300 to-emerald-300 text-teal-950 shadow-[0_4px_12px_rgba(16,185,129,0.22)]",
+                  ICON_BUTTON_FOCUS,
+                )}
+              >
+                {isFollowing ? <UserCheck className="h-4 w-4 shrink-0 max-[359px]:hidden" /> : <UserPlus className="h-4 w-4 shrink-0 max-[359px]:hidden" />}
+                <span className="truncate">
+                  {isFollowing
+                    ? translate("profile.identity.followingState", "Following")
+                    : translate("profile.identity.follow", "Follow")}
+                </span>
+              </button>
+            )}
+            {!isOwner && onMessage && (
+              <button
+                type="button"
+                onClick={onMessage}
+                className={cn(
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-white/85 px-2 text-[13px] font-semibold text-slate-900 shadow-sm hover:bg-white min-[375px]:gap-2 min-[375px]:px-3 min-[375px]:text-sm",
+                  ICON_BUTTON_FOCUS,
+                )}
+              >
+                <MessageSquare className="h-4 w-4 shrink-0 max-[359px]:hidden" />
+                <span className="truncate">{t("screens.profile.message")}</span>
+              </button>
+            )}
+            {isOwner && onEditIdentity && (
+              <button
+                type="button"
+                onClick={onEditIdentity}
+                className={cn(
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-white/85 px-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-white",
+                  ICON_BUTTON_FOCUS,
+                )}
+              >
+                <Pencil className="h-4 w-4 shrink-0" />
+                <span className="truncate">{t("profile.indexHero.editProfile")}</span>
+              </button>
+            )}
+            {qrAction && (
+              <button
+                type="button"
+                aria-label={isOwner ? translate("common.getMaxina", "Get MAXINA") : t("profile.indexHero.showQrAria")}
+                onClick={qrAction}
+                data-testid="profile-qr"
+                className={cn(
+                  "flex h-11 w-12 shrink-0 items-center justify-center rounded-full bg-white/85 text-slate-900 shadow-sm hover:bg-white min-[375px]:w-14",
+                  ICON_BUTTON_FOCUS,
+                )}
+              >
+                <QrCode className="h-5 w-5" />
+              </button>
+            )}
+          </div>
+        )}
+      </section>
+
+      {/* ── VITANA INDEX hero ──────────────────────────────────────── */}
+      <section
+        className="relative mt-3 overflow-hidden rounded-3xl border border-slate-100 bg-white px-4 pb-1 pt-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
+        style={{ isolation: "isolate", transform: "translateZ(0)" }}
+        data-testid="profile-vitana-index-card"
+      >
+        <button
+          type="button"
+          aria-label={t("profile.indexHero.aboutIndexAria")}
+          onClick={() => setAchievementOpen(true)}
+          data-testid="profile-index-info"
+          className={cn(
+            "absolute end-2 top-2 z-10 flex h-10 w-10 items-center justify-center rounded-full text-sky-600 active:opacity-60",
+            ICON_BUTTON_FOCUS,
+          )}
+        >
+          <Info className="h-[22px] w-[22px]" />
+        </button>
+
+        <div className="flex flex-col items-center">
+          <span className="text-xs font-semibold uppercase tracking-[0.28em] text-teal-800">
+            {translate("profile.identity.vitanaIndex")}
+          </span>
+
+          {/* Score — gateway to the existing detailed Index drawer (owner) */}
+          {(() => {
+            const scoreBody = (
+              <>
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-2xl"
+                  style={{ background: "radial-gradient(circle, hsl(165, 80%, 70%), hsl(200, 80%, 80%) 55%, transparent 72%)" }}
+                />
+                {scoreLoading ? (
+                  <Skeleton className="my-2 h-14 w-32 rounded-xl" />
+                ) : (
+                  <span
+                    className="text-[64px] font-extrabold leading-none tabular-nums"
+                    style={{
+                      background: "linear-gradient(170deg, hsl(152, 70%, 42%) 0%, hsl(168, 72%, 30%) 55%, hsl(180, 75%, 22%) 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                    data-testid="profile-index-score"
+                  >
+                    {score ?? "—"}
+                  </span>
+                )}
+                <span className="mt-1 text-sm text-slate-500">
+                  {t("profile.indexHero.ofMax", { max: VITANA_INDEX_MAX })}
+                </span>
+              </>
+            );
+            return canOpenDetailed ? (
+              <button
+                type="button"
+                onClick={openDetailedIndex}
+                aria-label={t("profile.indexHero.openIndexAria")}
+                data-testid="profile-index-open-detailed"
+                className={cn("relative mt-2 flex flex-col items-center rounded-2xl px-6 pt-1 active:opacity-80", ICON_BUTTON_FOCUS)}
+              >
+                {scoreBody}
+              </button>
+            ) : (
+              <div className="relative mt-2 flex flex-col items-center px-6 pt-1">{scoreBody}</div>
+            );
+          })()}
+
+          {/* Status pills — tier always, momentum only when history shows it */}
+          {tier && (
+            <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
+              <span
+                className="rounded-full px-4 py-1 text-sm font-semibold text-slate-900"
+                style={{ backgroundColor: `${tier.color}55` }}
+              >
+                {t(tier.labelKey)}
+              </span>
+              {highlights.momentum && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
+                  <TrendingUp className="h-4 w-4" aria-hidden />
+                  {highlights.momentum === "rising_fast"
+                    ? t("profile.indexHero.risingFast")
+                    : t("profile.indexHero.improving")}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Personalised line (owner) / public-safe line (visitor) */}
+          <p className="mt-2.5 line-clamp-3 px-2 text-center text-sm leading-snug text-slate-700" data-testid="profile-index-line">
+            {cardLine}
           </p>
 
-          {/* Follower / Following inline stats */}
-          {showStats && (
-            <div className="flex items-center justify-center gap-3 mt-3">
-              <button
-                type="button"
-                className="flex items-baseline gap-1.5 active:opacity-70"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openFollowList("followers");
-                }}
-              >
-                <span className="text-base font-bold text-slate-900">{followersCount ?? 0}</span>
-                <span className="text-sm text-slate-600">{translate('profileStats.followers', 'Followers')}</span>
-              </button>
-              <span className="w-px h-4 bg-slate-400/40" />
-              <button
-                type="button"
-                className="flex items-baseline gap-1.5 active:opacity-70"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openFollowList("following");
-                }}
-              >
-                <span className="text-base font-bold text-slate-900">{followingCount ?? 0}</span>
-                <span className="text-sm text-slate-600">{translate('profileStats.following', 'Following')}</span>
-              </button>
-            </div>
-          )}
-
-          {/* Action buttons row for non-owner */}
-          {!isOwner && (
-            <div className="flex gap-2 justify-center mt-4">
-              {onFollow && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={cn(
-                    "h-10 px-5 rounded-full backdrop-blur-sm text-sm font-semibold gap-2",
-                    isFollowing
-                      ? "bg-gradient-to-b from-white/95 to-white/75 border border-white/80 text-teal-900 hover:from-white hover:to-white/80 shadow-sm"
-                      : "bg-gradient-to-br from-teal-50 via-emerald-100 to-emerald-300 border border-emerald-200/70 text-teal-900 hover:from-teal-100 hover:to-emerald-400 shadow-[0_4px_14px_rgba(16,185,129,0.25)]"
-                  )}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onFollow();
-                  }}
-                  disabled={followLoading}
-                >
-                  {isFollowing ? (
-                    <UserCheck className="h-4 w-4" />
-                  ) : (
-                    <UserPlus className="h-4 w-4" />
-                  )}
-                  {isFollowing
-                    ? translate('profile.identity.followingState', 'Following')
-                    : translate('profile.identity.follow', 'Follow')}
-                </Button>
-              )}
-              {onMessage && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-10 px-5 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onMessage();
-                  }}
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  {t('screens.profile.message')}
-                </Button>
-              )}
-              {onShare && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={translate('common.share', 'Share')}
-                  className="h-10 w-10 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onShare();
-                  }}
-                >
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          )}
-
-          {/* Vitana Index Section — frosted inner card */}
-          <div className="flex flex-col items-center w-full mt-6 rounded-3xl bg-gradient-to-b from-white/90 via-white/75 to-white/60 border border-white/80 backdrop-blur-sm px-4 pt-5 pb-4 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
-            {/* Label */}
-            <span className="text-[11px] font-semibold tracking-[0.2em] text-teal-700 uppercase mb-3">
-              {translate('profile.identity.vitanaIndex')}
-            </span>
-
-            {/* Score with ambient glow */}
-            <div className="relative flex items-center justify-center mb-2">
-              {/* Ambient halo */}
-              <div
-                className="absolute w-28 h-28 rounded-full blur-2xl opacity-25"
-                style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
-              />
-
-              {/* Score number */}
-              <span
-                className="relative text-6xl font-extrabold"
-                style={{
-                  background: "linear-gradient(160deg, hsl(150, 75%, 55%) 0%, hsl(163, 70%, 42%) 45%, hsl(175, 75%, 28%) 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  filter: "drop-shadow(0 2px 10px rgba(16, 185, 129, 0.25))"
-                }}
-              >
-                {vitanaIndex}
-              </span>
-            </div>
-
-            {/* Tier badge + trend chip */}
-            <div className="flex items-center gap-2 mb-3">
-              <div
-                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900 shadow-sm"
-                style={{
-                  backgroundColor: tier.color,
-                  backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%), linear-gradient(135deg, #ffffff, #ffffff)`,
-                }}
-              >{t('screens.profile.labelTopVitanapercentile', { label: t(tier.labelKey), vitanaPercentile })}
-              </div>
-              <div className="h-7 w-7 rounded-full bg-gradient-to-b from-white to-white/70 border border-white/90 flex items-center justify-center shadow-sm">
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
-              </div>
-            </div>
-
-            {/* Explanation */}
-            <p className="text-xs text-slate-600 text-center px-4">
-              {translate('profile.identity.basedOnActivity')}
-            </p>
-
-            {/* Understand index link */}
-            <button
-              type="button"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-teal-800 hover:text-teal-900 active:opacity-70"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate('/health/vitana-index');
-              }}
-            >
-              {translate('profile.identity.understandIndex', 'Understand index')}
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-
-          {/* View Full ID CTA */}
-          {onViewFullId && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mt-4 text-slate-600 hover:text-slate-800 hover:bg-black/5 text-xs gap-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                onViewFullId();
-              }}
-            >
-              {translate('profile.identity.viewLongevityId')}
-              <ChevronRight className="h-3 w-3" />
-            </Button>
-          )}
-
-          {/* Brand footer */}
-          <span className="mt-5 text-[11px] font-semibold tracking-[0.3em] text-slate-500 uppercase">
-            {translate('profile.identity.brandFooter', 'MAXINA × VITANA')}
-          </span>
+          <button
+            type="button"
+            className={cn(
+              "mt-1.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-teal-800 hover:text-teal-900 active:opacity-70",
+              ICON_BUTTON_FOCUS,
+            )}
+            onClick={() => navigate("/health/vitana-index")}
+          >
+            {translate("profile.identity.understandIndex", "Understand index")}
+            <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+          </button>
         </div>
-      </div>
 
-      {/* Follower / Following list dialogs */}
+        {/* Posts · Media · Groups */}
+        <div className="mt-2 border-t border-slate-100">
+          <MobileProfileStats userId={userId} profileId={profileId} variant="divided" />
+        </div>
+      </section>
+
+      <VitanaAchievementDrawer
+        open={achievementOpen}
+        onOpenChange={setAchievementOpen}
+        mode={isOwner ? "owner" : "public"}
+        highlights={highlights}
+        streakDays={streakDays}
+        onSeeFullBreakdown={
+          canOpenDetailed
+            ? () => {
+                setAchievementOpen(false);
+                // Let the drawer finish closing before the sheet takes focus.
+                window.setTimeout(openDetailedIndex, 280);
+              }
+            : undefined
+        }
+        onShareProgress={
+          isOwner && onShare && score !== null
+            ? () => {
+                setAchievementOpen(false);
+                window.setTimeout(onShare, 280);
+              }
+            : undefined
+        }
+      />
+
       {statsUserId && (
         <FollowListDialog
           open={followListType !== null}
-          onOpenChange={(open) => { if (!open) setFollowListType(null); }}
+          onOpenChange={(open) => {
+            if (!open) setFollowListType(null);
+          }}
           userId={statsUserId}
           type={followListType || "followers"}
         />

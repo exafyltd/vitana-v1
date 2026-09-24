@@ -234,7 +234,10 @@ export interface UserProfile {
 
   stats: { posts: number; followers: number; following: number; mediaUploads: number; groupsJoined: number };
   vitanaIndex?: number;          // 0–999; present only if healthShareConsent=true
-  vitanaPercentile?: number;     // optional for drawer
+  /** Rank among members (0-100, lower = better). Set ONLY from a real
+   *  community ranking — none exists for the Index today, so leave it unset.
+   *  Never derive it from the score (score/999 is not a percentile). VTID-04470 */
+  vitanaPercentile?: number;
   longevityArchetype?: string;   // e.g., "The Mindful Mover"
 
   offerings?: ServiceOffering[]; // public shows when ≥1 published

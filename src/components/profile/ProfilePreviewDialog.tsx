@@ -13,7 +13,6 @@ import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFro
 import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
 import { ProfileStats } from "@/components/profile/shared/ProfileStats";
 import { useProfileTheme } from "@/hooks/useProfileTheme";
-import { getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVitanaIndexForUser } from "@/hooks/useVitanaIndexForUser";
@@ -109,10 +108,6 @@ export function ProfilePreviewDialog() {
       healthShareConsent: true,
     },
   } : null;
-
-  if (profile && profile.vitanaIndex) {
-    profile.vitanaPercentile = 100 - getVitanaIndexPercentage(profile.vitanaIndex);
-  }
 
   const handleViewFullProfile = () => {
     if (!profile) return;

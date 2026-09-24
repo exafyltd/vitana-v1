@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 356
+- **Pages scanned:** 357
 - **Distinct i18n keys consumed:** 4942
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
@@ -198,7 +198,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `editProfile` — used: 11, total in shard: 17
-- `profile` — used: 1, total in shard: 59
+- `profile` — used: 1, total in shard: 91
 - `profileEditor` — used: 2, total in shard: 88
 - `screens` — used: 1, total in shard: 11157
 
@@ -310,6 +310,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 7, total in shard: 11157
+
+### src/pages/Messages.contact-message.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/Messages.tsx
 

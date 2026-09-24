@@ -86,7 +86,41 @@
       "viewProduct": "Ver",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "de {max}",
+      "noIndexOwner": "Seu Índice aparece assim que sua primeira atividade for registrada.",
+      "noIndexPublic": "Ainda sem Vitana Index público",
+      "boostPrefix": "Maior impulso:",
+      "strongestPrefix": "Área mais forte:",
+      "momentumRisingFast": "+{delta} esta semana — continue assim!",
+      "momentumImproving": "Seu Índice está subindo esta semana — continue assim!",
+      "fallback": "Continue construindo seus hábitos de longevidade para descobrir o que mais move seu Índice.",
+      "publicLine": "Construindo hábitos de longevidade com a comunidade MAXINA.",
+      "pillarListTwo": "{a} e {b}",
+      "aboutTitle": "Sobre seu VITANA INDEX",
+      "subtitleStandingOut": "Por que você se destaca esta semana",
+      "subtitleNeutral": "Como está seu Índice agora",
+      "aboutBody": "Seu VITANA INDEX reflete seu progresso recente nos seus cinco pilares de longevidade.",
+      "aboutBodyPublic": "O VITANA INDEX reflete o progresso em cinco pilares de longevidade.",
+      "boostHeading": "Maior impulso",
+      "strongestHeading": "Área mais forte",
+      "boostLine": "{pillar} deu o maior impulso ao seu Índice.",
+      "strongestLine": "{pillar} é seu pilar mais forte agora.",
+      "whatHelpedMost": "O que mais ajudou",
+      "risingFast": "Subindo rápido",
+      "improving": "Melhorando",
+      "streak": "Sequência de {count} dias",
+      "shareProgress": "Compartilhar progresso",
+      "seeFullBreakdown": "Ver detalhamento completo",
+      "editProfile": "Editar perfil",
+      "aboutIndexAria": "Sobre o VITANA INDEX",
+      "openIndexAria": "Abrir detalhes do Vitana Index",
+      "shareProfileAria": "Compartilhar perfil",
+      "editPhotoAria": "Editar foto do perfil",
+      "showQrAria": "Mostrar código QR",
+      "close": "Fechar"
+    }
   },
   "_pending_review": {}
 }

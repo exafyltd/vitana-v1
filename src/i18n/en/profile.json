@@ -86,7 +86,41 @@
       "viewProduct": "View",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "of {max}",
+      "noIndexOwner": "Your Index appears once your first activity is recorded.",
+      "noIndexPublic": "No public Vitana Index yet",
+      "boostPrefix": "Biggest boost:",
+      "strongestPrefix": "Strongest area:",
+      "momentumRisingFast": "Up {delta} this week — keep it up!",
+      "momentumImproving": "Your Index is climbing this week — keep it up!",
+      "fallback": "Keep building your longevity habits to discover what moves your Index most.",
+      "publicLine": "Building healthy longevity habits with the MAXINA community.",
+      "pillarListTwo": "{a} and {b}",
+      "aboutTitle": "About your VITANA INDEX",
+      "subtitleStandingOut": "Why you're standing out this week",
+      "subtitleNeutral": "Where your Index stands right now",
+      "aboutBody": "Your VITANA INDEX reflects your recent progress across your five longevity pillars.",
+      "aboutBodyPublic": "The VITANA INDEX reflects progress across five longevity pillars.",
+      "boostHeading": "Biggest boost",
+      "strongestHeading": "Strongest area",
+      "boostLine": "{pillar} gave your Index the strongest lift.",
+      "strongestLine": "{pillar} is your strongest pillar right now.",
+      "whatHelpedMost": "What helped most",
+      "risingFast": "Rising fast",
+      "improving": "Improving",
+      "streak": "{count}-day streak",
+      "shareProgress": "Share progress",
+      "seeFullBreakdown": "See full breakdown",
+      "editProfile": "Edit profile",
+      "aboutIndexAria": "About VITANA INDEX",
+      "openIndexAria": "Open Vitana Index details",
+      "shareProfileAria": "Share profile",
+      "editPhotoAria": "Edit profile picture",
+      "showQrAria": "Show QR code",
+      "close": "Close"
+    }
   },
   "_pending_review": {}
 }

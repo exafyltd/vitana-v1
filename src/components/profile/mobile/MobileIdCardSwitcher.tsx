@@ -37,6 +37,8 @@ interface MobileIdCardSwitcherProps {
   onRefreshProfile?: () => void;
   onShare?: () => void;
   onGetMaxina?: () => void;
+  /** Visitor view: open this profile's QR (VTID-04470). */
+  onShowQr?: () => void;
   onFollow?: () => void;
   onMessage?: () => void;
   isFollowing?: boolean;
@@ -56,6 +58,7 @@ export function MobileIdCardSwitcher({
   onRefreshProfile,
   onShare,
   onGetMaxina,
+  onShowQr,
   onFollow,
   onMessage,
   isFollowing = false,
@@ -99,16 +102,16 @@ export function MobileIdCardSwitcher({
 
   return (
     <div className={cn("", className)}>
-      {/* Segmented Control — soft, secondary treatment so the card below
-          stays the hero. Extra top padding gives it room to breathe
-          between the app bar and the card. */}
+      {/* Segmented Control — full width, compact (VTID-04470): it sits
+          directly under the Appilix app bar, so vertical space is spent on
+          the Vitana Index card instead of padding. */}
       <ProfileIdSegmentedControl
         segments={segments}
         value={activeSide}
         onChange={handleSegmentChange}
-        size="sm"
+        size="full"
         accent="mint"
-        className="px-4 pt-5 pb-5"
+        className="px-4 pt-3 pb-3"
       />
 
       {/* Card Container with Animation */}
@@ -124,10 +127,11 @@ export function MobileIdCardSwitcher({
                 handle={profile.handle}
                 archetype={profile.longevityArchetype}
                 vitanaIndex={profile.vitanaIndex}
-                vitanaPercentile={profile.vitanaPercentile}
                 isOwner={isOwner}
+                onEditIdentity={isOwner ? onEditIdentity : undefined}
                 onShare={onShare}
                 onGetMaxina={onGetMaxina}
+                onShowQr={onShowQr}
                 onFollow={onFollow}
                 onMessage={onMessage}
                 isFollowing={isFollowing}
