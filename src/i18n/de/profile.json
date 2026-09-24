@@ -109,7 +109,9 @@
       "shareProfileAria": "Profil teilen",
       "editPhotoAria": "Profilbild bearbeiten",
       "showQrAria": "QR-Code anzeigen",
-      "close": "Schließen"
+      "close": "Schließen",
+      "topPercent": "Top {percent}%",
+      "topPercentAria": "Top {percent}% von {count} Mitgliedern"
     },
     "healthReal": {
       "loadError": "Gesundheitsdaten konnten nicht geladen werden.",

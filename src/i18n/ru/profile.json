@@ -119,7 +119,9 @@
       "shareProfileAria": "Поделиться профилем",
       "editPhotoAria": "Изменить фото профиля",
       "showQrAria": "Показать QR-код",
-      "close": "Закрыть"
+      "close": "Закрыть",
+      "topPercent": "Топ {percent}%",
+      "topPercentAria": "Топ {percent}% из {count} участников"
     },
     "healthReal": {
       "loadError": "Не удалось загрузить данные о здоровье.",

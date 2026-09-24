@@ -119,7 +119,9 @@
       "shareProfileAria": "Compartilhar perfil",
       "editPhotoAria": "Editar foto do perfil",
       "showQrAria": "Mostrar código QR",
-      "close": "Fechar"
+      "close": "Fechar",
+      "topPercent": "Top {percent}%",
+      "topPercentAria": "Top {percent}% de {count} membros"
     },
     "healthReal": {
       "loadError": "Não foi possível carregar os dados de saúde.",
