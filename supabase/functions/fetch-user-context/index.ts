@@ -258,13 +258,9 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .order('created_at', { ascending: false })
       .limit(10),
     
-    // Autopilot action history (last 30 days)
-    supabase.from('autopilot_actions')
-      .select('title, status, category, created_at')
-      .eq('user_id', userId)
-      .gte('created_at', new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
-      .order('created_at', { ascending: false })
-      .limit(20),
+    // Autopilot action history: autopilot_actions was never written and is
+    // dropped by VTID-04514; Autopilot state lives in autopilot_recommendations.
+    Promise.resolve({ data: [] as Array<{ title: string; status: string; category: string; created_at: string }>, error: null }),
     
     // Tenant info (using profile.tenant_id)
     profile.tenant_id 
