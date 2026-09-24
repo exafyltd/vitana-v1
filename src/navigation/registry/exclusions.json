@@ -1,55 +1,203 @@
 {
   "_comment": "SPA routes that are deliberately NOT voice-navigation destinations. registry.routes.test.ts fails when App.tsx gains a route that is neither in screens.json nor listed here, so every new page forces a decision: register it (and write its phrasings) or exclude it with a reason.",
   "prefixes": [
-    { "prefix": "/admin", "reason": "Admin surface — role-specific screens, own registry section pending (navigation rebuild, role surfaces)." },
-    { "prefix": "/backoffice", "reason": "BackOffice surface — role-specific screens, own registry section pending." },
-    { "prefix": "/staff", "reason": "Staff surface — role-specific screens, own registry section pending." },
-    { "prefix": "/professional", "reason": "Professional surface — role-specific screens, own registry section pending." },
-    { "prefix": "/patient", "reason": "Patient surface — role-specific screens, own registry section pending." },
-    { "prefix": "/commerce", "reason": "Commerce partner surface — separate ORB surface, own registry section pending." },
-    { "prefix": "/partner", "reason": "Commerce partner surface — separate ORB surface, own registry section pending." },
-    { "prefix": "/dev", "reason": "Developer console — not a member destination." },
-    { "prefix": "/exafy-admin", "reason": "Platform admin — not a member destination." }
+    {
+      "prefix": "/admin",
+      "reason": "Admin surface — role-specific screens, own registry section pending (navigation rebuild, role surfaces)."
+    },
+    {
+      "prefix": "/backoffice",
+      "reason": "BackOffice surface — role-specific screens, own registry section pending."
+    },
+    {
+      "prefix": "/staff",
+      "reason": "Staff surface — role-specific screens, own registry section pending."
+    },
+    {
+      "prefix": "/professional",
+      "reason": "Professional surface — role-specific screens, own registry section pending."
+    },
+    {
+      "prefix": "/patient",
+      "reason": "Patient surface — role-specific screens, own registry section pending."
+    },
+    {
+      "prefix": "/commerce",
+      "reason": "Commerce partner surface — separate ORB surface, own registry section pending."
+    },
+    {
+      "prefix": "/partner",
+      "reason": "Commerce partner surface — separate ORB surface, own registry section pending."
+    },
+    {
+      "prefix": "/dev",
+      "reason": "Developer console — not a member destination."
+    },
+    {
+      "prefix": "/exafy-admin",
+      "reason": "Platform admin — not a member destination."
+    }
   ],
   "paths": [
-    { "path": "/_intro/:tenantSlug", "reason": "Pre-login tenant intro; reached from a link, not by voice." },
-    { "path": "/auth/confirmed", "reason": "Sign-up confirmation landing." },
-    { "path": "/maxina/confirmed", "reason": "Sign-up confirmation landing." },
-    { "path": "/alkalma/confirmed", "reason": "Sign-up confirmation landing." },
-    { "path": "/earthlinks/confirmed", "reason": "Sign-up confirmation landing." },
-    { "path": "/maxina/app", "reason": "App-store redirect for printed QR codes." },
-    { "path": "/download", "reason": "Printed-flyer download page." },
-    { "path": "/apply", "reason": "Application form reached from marketing links." },
-    { "path": "/oauth/complete", "reason": "OAuth callback." },
-    { "path": "/oauth/consent", "reason": "OAuth consent step." },
-    { "path": "/onboarding/welcome", "reason": "One-time onboarding step." },
-    { "path": "/reset-password", "reason": "Password reset link target." },
-    { "path": "/delete-account", "reason": "Account deletion flow; must be reached deliberately, never by voice redirect." },
-    { "path": "/logout", "reason": "Action, not a screen." },
-    { "path": "/redeem", "reason": "Voucher redemption link target." },
-    { "path": "/maxina_support", "reason": "Public support page for pre-login visitors." },
-    { "path": "/e/:slug", "reason": "Public event landing reached from shared links." },
-    { "path": "/e/game/:slug", "reason": "Public event-game landing reached from shared links." },
-    { "path": "/pub/events/:id", "reason": "Public event page reached from shared links." },
-    { "path": "/pub/campaigns/:id", "reason": "Public campaign page reached from shared links." },
-    { "path": "/community/event-game", "reason": "Event game — reached from its event, not a standalone destination." },
-    { "path": "/home/compose", "reason": "Push-notification deep link into the Home feed composer." },
-    { "path": "/home/comments", "reason": "Announcement-card deep link into the Home feed comments sheet." },
-    { "path": "/home/notif", "reason": "Push-notification deep link rendering the Home feed." },
-    { "path": "/post/:source/:id", "reason": "Single post detail reached from a post, needs an entity." },
-    { "path": "/discover/category/:subcategory", "reason": "Category page reached from Discover, needs an entity." },
-    { "path": "/checkout/success", "reason": "Checkout result page." },
-    { "path": "/tickets/success", "reason": "Ticket purchase result page." },
-    { "path": "/packages/success", "reason": "Package purchase result page." },
-    { "path": "/tickets/demo", "reason": "Internal demo page." },
-    { "path": "/creator/onboarded", "reason": "Creator onboarding result page." },
-    { "path": "/reminders/fire/:fireId", "reason": "Reminder firing deep link." },
-    { "path": "/comm/my-groups/:id", "reason": "Legacy group path; COMM.GROUP_DETAIL is the destination." },
-    { "path": "/inbox/t/:threadId", "reason": "Legacy thread path; INBOX.CONVERSATION / INBOX.GROUP are the destinations." },
-    { "path": "/inbox/t/:threadId/msg/:messageId", "reason": "Deep link to a single message." },
-    { "path": "/inbox/u/:recipientId/msg/:messageId", "reason": "Deep link to a single message." },
-    { "path": "/inbox/g/:groupId/msg/:messageId", "reason": "Deep link to a single message." },
-    { "path": "/profile/subscriptions", "reason": "Viewport router onto WALLET.SUBSCRIPTIONS / settings; the registry points at the destinations." },
-    { "path": "/profile/:id", "reason": "Legacy profile path redirecting to PROFILE.PUBLIC." }
+    {
+      "path": "/_intro/:tenantSlug",
+      "reason": "Pre-login tenant intro; reached from a link, not by voice."
+    },
+    {
+      "path": "/auth/confirmed",
+      "reason": "Sign-up confirmation landing."
+    },
+    {
+      "path": "/maxina/confirmed",
+      "reason": "Sign-up confirmation landing."
+    },
+    {
+      "path": "/alkalma/confirmed",
+      "reason": "Sign-up confirmation landing."
+    },
+    {
+      "path": "/earthlinks/confirmed",
+      "reason": "Sign-up confirmation landing."
+    },
+    {
+      "path": "/maxina/app",
+      "reason": "App-store redirect for printed QR codes."
+    },
+    {
+      "path": "/download",
+      "reason": "Printed-flyer download page."
+    },
+    {
+      "path": "/apply",
+      "reason": "Application form reached from marketing links."
+    },
+    {
+      "path": "/oauth/complete",
+      "reason": "OAuth callback."
+    },
+    {
+      "path": "/oauth/consent",
+      "reason": "OAuth consent step."
+    },
+    {
+      "path": "/onboarding/welcome",
+      "reason": "One-time onboarding step."
+    },
+    {
+      "path": "/reset-password",
+      "reason": "Password reset link target."
+    },
+    {
+      "path": "/delete-account",
+      "reason": "Account deletion flow; must be reached deliberately, never by voice redirect."
+    },
+    {
+      "path": "/logout",
+      "reason": "Action, not a screen."
+    },
+    {
+      "path": "/redeem",
+      "reason": "Voucher redemption link target."
+    },
+    {
+      "path": "/i/:code",
+      "reason": "Personal invite link landing (VTID-04508); reached from a shared link, not by voice."
+    },
+    {
+      "path": "/maxina_support",
+      "reason": "Public support page for pre-login visitors."
+    },
+    {
+      "path": "/e/:slug",
+      "reason": "Public event landing reached from shared links."
+    },
+    {
+      "path": "/e/game/:slug",
+      "reason": "Public event-game landing reached from shared links."
+    },
+    {
+      "path": "/pub/events/:id",
+      "reason": "Public event page reached from shared links."
+    },
+    {
+      "path": "/pub/campaigns/:id",
+      "reason": "Public campaign page reached from shared links."
+    },
+    {
+      "path": "/community/event-game",
+      "reason": "Event game — reached from its event, not a standalone destination."
+    },
+    {
+      "path": "/home/compose",
+      "reason": "Push-notification deep link into the Home feed composer."
+    },
+    {
+      "path": "/home/comments",
+      "reason": "Announcement-card deep link into the Home feed comments sheet."
+    },
+    {
+      "path": "/home/notif",
+      "reason": "Push-notification deep link rendering the Home feed."
+    },
+    {
+      "path": "/post/:source/:id",
+      "reason": "Single post detail reached from a post, needs an entity."
+    },
+    {
+      "path": "/discover/category/:subcategory",
+      "reason": "Category page reached from Discover, needs an entity."
+    },
+    {
+      "path": "/checkout/success",
+      "reason": "Checkout result page."
+    },
+    {
+      "path": "/tickets/success",
+      "reason": "Ticket purchase result page."
+    },
+    {
+      "path": "/packages/success",
+      "reason": "Package purchase result page."
+    },
+    {
+      "path": "/tickets/demo",
+      "reason": "Internal demo page."
+    },
+    {
+      "path": "/creator/onboarded",
+      "reason": "Creator onboarding result page."
+    },
+    {
+      "path": "/reminders/fire/:fireId",
+      "reason": "Reminder firing deep link."
+    },
+    {
+      "path": "/comm/my-groups/:id",
+      "reason": "Legacy group path; COMM.GROUP_DETAIL is the destination."
+    },
+    {
+      "path": "/inbox/t/:threadId",
+      "reason": "Legacy thread path; INBOX.CONVERSATION / INBOX.GROUP are the destinations."
+    },
+    {
+      "path": "/inbox/t/:threadId/msg/:messageId",
+      "reason": "Deep link to a single message."
+    },
+    {
+      "path": "/inbox/u/:recipientId/msg/:messageId",
+      "reason": "Deep link to a single message."
+    },
+    {
+      "path": "/inbox/g/:groupId/msg/:messageId",
+      "reason": "Deep link to a single message."
+    },
+    {
+      "path": "/profile/subscriptions",
+      "reason": "Viewport router onto WALLET.SUBSCRIPTIONS / settings; the registry points at the destinations."
+    },
+    {
+      "path": "/profile/:id",
+      "reason": "Legacy profile path redirecting to PROFILE.PUBLIC."
+    }
   ]
 }
