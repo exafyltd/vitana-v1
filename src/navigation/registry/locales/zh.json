@@ -1,0 +1,557 @@
+{
+  "AI.COMPANION": {
+    "title": "AI伙伴"
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "每日总结"
+  },
+  "AI.INSIGHTS": {
+    "title": "AI 洞察"
+  },
+  "AI.OVERVIEW": {
+    "title": "AI助手"
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "推荐"
+  },
+  "ASSISTANT.AI": {
+    "title": "AI"
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot 与自动化"
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "Vitana 聊天"
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "主动播报"
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "推荐"
+  },
+  "ASSISTANT.VOICE": {
+    "title": "语音"
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "Alkalma 入口"
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "Earthlinks 入口"
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "加入 MAXINA 社区"
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "我的旅程"
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "业务分析"
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "我的客户"
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "收入"
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "增长"
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "我的商品"
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "商机"
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "商业中心"
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "促销活动"
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "销售推荐收益"
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "销售与收益"
+  },
+  "BUSINESS.SERVICES": {
+    "title": "我的服务"
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "我的活动"
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "服务套餐"
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "我的日历"
+  },
+  "COMM.EVENTS": {
+    "title": "活动与聚会"
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "热门活动"
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "今日活动"
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "即将举办的活动"
+  },
+  "COMM.FEED": {
+    "title": "关注动态Feed"
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "找搭档"
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "舞伴看板"
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "我的匹配"
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "我的搭档帖子"
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "群组详情"
+  },
+  "COMM.GROUPS": {
+    "title": "群组"
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "发现群组"
+  },
+  "COMM.INVITE": {
+    "title": "邀请好友"
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "直播房间播放器"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "直播房间"
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "全部房间"
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "正在直播"
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "往期回顾"
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "预定房间"
+  },
+  "COMM.MATCHES": {
+    "title": "推荐成员"
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "媒体中心"
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "音乐"
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "播客"
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "短视频"
+  },
+  "COMM.MEMBERS": {
+    "title": "社区成员"
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "待匹配请求"
+  },
+  "COMM.OVERVIEW": {
+    "title": "社区"
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "联系 Vitana"
+  },
+  "CONNECTORS.AGENT": {
+    "title": "Autopilot 连接器"
+  },
+  "CONNECTORS.AI": {
+    "title": "AI 连接器"
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "健身连接器"
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "健康连接器"
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "音乐和视频连接器"
+  },
+  "CONNECTORS.OTHER": {
+    "title": "更多连接器"
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "邮箱和日历连接"
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "社交连接器"
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "AI 精选"
+  },
+  "DISCOVER.CART": {
+    "title": "购物车"
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "分类"
+  },
+  "DISCOVER.DEALS": {
+    "title": "优惠活动"
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "AI精选优惠"
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "已收藏优惠"
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "热门优惠"
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "医生与教练"
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "市场"
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "我的市场"
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "公开请求"
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "我的票券"
+  },
+  "DISCOVER.ORDERS": {
+    "title": "我的订单"
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "进行中的订单"
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "历史订单"
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "发现"
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "商品详情"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "服务商主页"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "分享赚奖励"
+  },
+  "DISCOVER.SHOP": {
+    "title": "商店"
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "保健品"
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "养生服务"
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "我的组学"
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "我的补剂（生物）"
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "健康状况"
+  },
+  "HEALTH.EDUCATION": {
+    "title": "知识与科学"
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "学习播客"
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "学习视频"
+  },
+  "HEALTH.MEDICAL": {
+    "title": "医疗档案"
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "我的生物数据"
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "健康"
+  },
+  "HEALTH.PILLARS": {
+    "title": "健康支柱"
+  },
+  "HEALTH.PLANS": {
+    "title": "我的计划"
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "训练计划"
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "补水计划"
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "心理计划"
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "饮食计划"
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "睡眠计划"
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "健康服务中心"
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "保险支持"
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "医疗服务"
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "我的服务"
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "健康计划"
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "健康补剂"
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "Vitana 指数"
+  },
+  "HOME.NEWS_ALL": {
+    "title": "全部资讯"
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "社区动态"
+  },
+  "HOME.OVERVIEW": {
+    "title": "长寿资讯"
+  },
+  "INBOX.ARCHIVED": {
+    "title": "已归档消息"
+  },
+  "INBOX.CONVERSATION": {
+    "title": "对话"
+  },
+  "INBOX.GROUP": {
+    "title": "群聊"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "每日灵感"
+  },
+  "INBOX.OVERVIEW": {
+    "title": "收件箱"
+  },
+  "INTENTS.BOARD": {
+    "title": "意向看板"
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "匹配详情"
+  },
+  "INTENTS.MINE": {
+    "title": "我的Intent"
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "人生罗盘"
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "单日记录流程"
+  },
+  "MEMORY.DIARY": {
+    "title": "日记本"
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "问题反馈"
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "记忆花园"
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "记忆权限"
+  },
+  "MEMORY.RECALL": {
+    "title": "回忆与搜索"
+  },
+  "MEMORY.TIMELINE": {
+    "title": "时间线"
+  },
+  "NEWS.DETAIL": {
+    "title": "新闻文章"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "活动详情"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "快捷操作"
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "聚会详情"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "资料预览"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "Vitana 指数"
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "快捷钱包"
+  },
+  "PROFILE.ME": {
+    "title": "我的资料"
+  },
+  "PROFILE.PRIVACY": {
+    "title": "资料可见性"
+  },
+  "PROFILE.PUBLIC": {
+    "title": "公开资料"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "带匹配锚点的个人资料"
+  },
+  "PUBLIC.LANDING": {
+    "title": "Vitanaland 首页"
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "隐私政策"
+  },
+  "PUBLIC.TERMS": {
+    "title": "使用条款"
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "提醒"
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "搜索"
+  },
+  "SETTINGS.BILLING": {
+    "title": "账单"
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "创作者提现"
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "账单和收据"
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "支付方式"
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "当前套餐"
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "连接器与已连接应用"
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "健康限制"
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "通知"
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "设置"
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "偏好设置"
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "无障碍"
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "外观"
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "语言和地区"
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "隐私设置"
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "数据共享"
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "账户安全"
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "可见性"
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "社交账号"
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "支持"
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "社区互助"
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "联系客服"
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "常见问题"
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "租户与角色"
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "活动详情"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "活动"
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "数据与授权"
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "传播"
+  },
+  "SHARING.OVERVIEW": {
+    "title": "分享"
+  },
+  "WALLET.ACTIONS": {
+    "title": "钱包操作"
+  },
+  "WALLET.ACTIVITY": {
+    "title": "钱包动态"
+  },
+  "WALLET.BALANCE": {
+    "title": "余额与权益"
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "会员"
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "优化"
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "代币"
+  },
+  "WALLET.OVERVIEW": {
+    "title": "钱包"
+  },
+  "WALLET.REWARDS": {
+    "title": "奖励与佣金"
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "奖励洞察"
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "待发放奖励"
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "推荐奖励"
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "订阅"
+  }
+}

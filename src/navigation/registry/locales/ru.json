@@ -1,0 +1,557 @@
+{
+  "AI.COMPANION": {
+    "title": "ИИ-компаньон"
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "Ежедневная сводка"
+  },
+  "AI.INSIGHTS": {
+    "title": "ИИ-аналитика"
+  },
+  "AI.OVERVIEW": {
+    "title": "ИИ-ассистент"
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "Рекомендации"
+  },
+  "ASSISTANT.AI": {
+    "title": "ИИ"
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot и автоматизация"
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "Чат с Vitana"
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "Проактивная речь"
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "Рекомендации"
+  },
+  "ASSISTANT.VOICE": {
+    "title": "Голос"
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "Портал Alkalma"
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "Портал Earthlinks"
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "Присоединиться к сообществу MAXINA"
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "Моё путешествие"
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "Бизнес-аналитика"
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "Мои клиенты"
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "Доходы"
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "Рост"
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "Мои объявления"
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "Бизнес-возможности"
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "Бизнес-хаб"
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "Акции"
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "Рекомендации по продажам"
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "Продавай и зарабатывай"
+  },
+  "BUSINESS.SERVICES": {
+    "title": "Мои услуги"
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "Мои мероприятия"
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "Пакеты услуг"
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "Мой календарь"
+  },
+  "COMM.EVENTS": {
+    "title": "События и встречи"
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "Популярные события"
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "Сегодняшние мероприятия"
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "Предстоящие мероприятия"
+  },
+  "COMM.FEED": {
+    "title": "Лента подписок"
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "Найти партнёра"
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "Доска партнёров"
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "Мои мэтчи"
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "Мои посты о партнёрах"
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "Детали группы"
+  },
+  "COMM.GROUPS": {
+    "title": "Группы"
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "Найти группы"
+  },
+  "COMM.INVITE": {
+    "title": "Пригласить друзей"
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "Просмотр конкретной Live-комнаты"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "Живые комнаты"
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "Все комнаты"
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "Сейчас в эфире"
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "Прошедшие сессии"
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "Запланированные комнаты"
+  },
+  "COMM.MATCHES": {
+    "title": "Подходящие участники"
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "Медиахаб"
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "Музыка"
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "Подкасты"
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "Шортсы"
+  },
+  "COMM.MEMBERS": {
+    "title": "Участники сообщества"
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "Открытые запросы"
+  },
+  "COMM.OVERVIEW": {
+    "title": "Сообщество"
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "Написать Vitana"
+  },
+  "CONNECTORS.AGENT": {
+    "title": "Коннекторы Autopilot"
+  },
+  "CONNECTORS.AI": {
+    "title": "ИИ-коннекторы"
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "Фитнес-коннекторы"
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "Коннекторы здоровья"
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "Коннекторы музыки и видео"
+  },
+  "CONNECTORS.OTHER": {
+    "title": "Другие коннекторы"
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "Коннекторы почты и календаря"
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "Коннекторы соцсетей"
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "Подборка ИИ"
+  },
+  "DISCOVER.CART": {
+    "title": "Корзина"
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "Категории"
+  },
+  "DISCOVER.DEALS": {
+    "title": "Акции и скидки"
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "Подборка ИИ"
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "Сохранённые предложения"
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "Популярные предложения"
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "Врачи и коучи"
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "Маркетплейс"
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "Мой маркетплейс"
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "Открытые запросы"
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "Мои билеты"
+  },
+  "DISCOVER.ORDERS": {
+    "title": "Мои заказы"
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "Активные заказы"
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "История заказов"
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "Обзор"
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "Детали продукта"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "Профиль поставщика"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "Делись и зарабатывай"
+  },
+  "DISCOVER.SHOP": {
+    "title": "Магазин"
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "Добавки"
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "Велнес-услуги"
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "Мои омиксы"
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "Мои добавки (биология)"
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "Состояния здоровья"
+  },
+  "HEALTH.EDUCATION": {
+    "title": "Обучение и наука"
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "Обучающие подкасты"
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "Обучающие видео"
+  },
+  "HEALTH.MEDICAL": {
+    "title": "Медицинские данные"
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "Моя биология"
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "Здоровье"
+  },
+  "HEALTH.PILLARS": {
+    "title": "Столпы здоровья"
+  },
+  "HEALTH.PLANS": {
+    "title": "Мои планы"
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "Планы тренировок"
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "Планы гидратации"
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "Ментальные планы"
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "Планы питания"
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "Планы сна"
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "Центр медицинских услуг"
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "Поддержка по страхованию"
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "Медицинские услуги"
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "Мои услуги"
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "Велнес-программы"
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "Добавки для здоровья"
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "Индекс Vitana"
+  },
+  "HOME.NEWS_ALL": {
+    "title": "Все новости"
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "Новости сообщества"
+  },
+  "HOME.OVERVIEW": {
+    "title": "Новости долголетия"
+  },
+  "INBOX.ARCHIVED": {
+    "title": "Архив сообщений"
+  },
+  "INBOX.CONVERSATION": {
+    "title": "Разговор"
+  },
+  "INBOX.GROUP": {
+    "title": "Групповой чат"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "Вдохновение"
+  },
+  "INBOX.OVERVIEW": {
+    "title": "Входящие"
+  },
+  "INTENTS.BOARD": {
+    "title": "Доска интентов"
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "Детали мэтча"
+  },
+  "INTENTS.MINE": {
+    "title": "Мои интенты"
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "Компас жизни"
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "Ввод данных за один день"
+  },
+  "MEMORY.DIARY": {
+    "title": "Дневник"
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "Отчёты об ошибках"
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "Сад памяти"
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "Разрешения памяти"
+  },
+  "MEMORY.RECALL": {
+    "title": "Вспомнить и найти"
+  },
+  "MEMORY.TIMELINE": {
+    "title": "Хронология"
+  },
+  "NEWS.DETAIL": {
+    "title": "Новостная статья"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "Детали события"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "Быстрые действия"
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "Детали встречи"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "Предпросмотр профиля"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "Индекс Vitana"
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "Быстрый кошелёк"
+  },
+  "PROFILE.ME": {
+    "title": "Мой профиль"
+  },
+  "PROFILE.PRIVACY": {
+    "title": "Видимость профиля"
+  },
+  "PROFILE.PUBLIC": {
+    "title": "Публичный профиль"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "Профиль с привязкой к мэтчу"
+  },
+  "PUBLIC.LANDING": {
+    "title": "Главная страница Vitanaland"
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "Политика конфиденциальности"
+  },
+  "PUBLIC.TERMS": {
+    "title": "Условия использования"
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "Напоминания"
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "Поиск"
+  },
+  "SETTINGS.BILLING": {
+    "title": "Оплата"
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "Выплаты авторам"
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "Счета и квитанции"
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "Способ оплаты"
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "Текущий тариф"
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "Коннекторы и подключённые приложения"
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "Ограничения по здоровью"
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "Уведомления"
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "Настройки"
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "Предпочтения"
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "Специальные возможности"
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "Внешний вид"
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "Язык и регион"
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "Настройки конфиденциальности"
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "Передача данных"
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "Безопасность аккаунта"
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "Видимость"
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "Социальные аккаунты"
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "Поддержка"
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "Помощь сообщества"
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "Связаться с поддержкой"
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "Часто задаваемые вопросы"
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "Тенант и роль"
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "Детали кампании"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "Кампании"
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "Данные и согласие"
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "Распространение"
+  },
+  "SHARING.OVERVIEW": {
+    "title": "Поделиться"
+  },
+  "WALLET.ACTIONS": {
+    "title": "Действия с кошельком"
+  },
+  "WALLET.ACTIVITY": {
+    "title": "Активность кошелька"
+  },
+  "WALLET.BALANCE": {
+    "title": "Баланс и привилегии"
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "Членство"
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "Оптимизация"
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "Токены"
+  },
+  "WALLET.OVERVIEW": {
+    "title": "Кошелёк"
+  },
+  "WALLET.REWARDS": {
+    "title": "Награды и комиссии"
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "Аналитика наград"
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "Ожидающие награды"
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "Реферальные награды"
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "Подписки"
+  }
+}

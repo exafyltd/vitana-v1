@@ -313,6 +313,17 @@ comments, likes, or chat messages themselves, which still land in the real feed
 in front of real people. Register any new test account in
 `notification_test_actors`.
 
+## Voice navigation — the screen registry (VTID-04502)
+
+`src/navigation/registry/` is the single list of screens Vitana can take a
+member to (owner decision 2026-09-24; the Command Hub navigator only adds
+tenant overrides on top). **Adding a page in `App.tsx` means adding it to
+`screens.json` with its English and German phrasings and every locale title
+— or to `exclusions.json` with a reason.** `npm test` fails until you do.
+Routes must point at the page a member lands on, never at a `<Navigate>`
+redirect. The build publishes the merged registry as `/nav-registry.json`
+for the gateway. Details: `src/navigation/registry/README.md`.
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper

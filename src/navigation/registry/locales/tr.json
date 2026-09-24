@@ -1,0 +1,557 @@
+{
+  "AI.COMPANION": {
+    "title": "Yapay Zeka Yol Arkadaşı"
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "Günlük Özet"
+  },
+  "AI.INSIGHTS": {
+    "title": "Yapay Zeka İçgörüleri"
+  },
+  "AI.OVERVIEW": {
+    "title": "Yapay Zeka Asistanı"
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "Öneriler"
+  },
+  "ASSISTANT.AI": {
+    "title": "Yapay Zeka"
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot ve Otomasyon"
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "Vitana Sohbet"
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "Proaktif Konuşma"
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "Tavsiyeler"
+  },
+  "ASSISTANT.VOICE": {
+    "title": "Ses"
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "Alkalma Portalı"
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "Earthlinks Portalı"
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "MAXINA Topluluğuna Katıl"
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "Yolculuğum"
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "İş Analitiği"
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "Müşterilerim"
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "Gelirler"
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "Büyüme"
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "İlanlarım"
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "İş Fırsatları"
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "İş Merkezi"
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "Kampanyalar"
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "Satış Tavsiyeleri"
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "Sat ve Kazan"
+  },
+  "BUSINESS.SERVICES": {
+    "title": "Hizmetlerim"
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "Etkinliklerim"
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "Hizmet Paketleri"
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "Takvimim"
+  },
+  "COMM.EVENTS": {
+    "title": "Etkinlikler ve Buluşmalar"
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "Popüler Etkinlikler"
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "Bugünkü Etkinlikler"
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "Yaklaşan Etkinlikler"
+  },
+  "COMM.FEED": {
+    "title": "Takip Ettiklerim Topluluk Akışı"
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "Partner Bul"
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "Partner Panosu"
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "Eşleşmelerim"
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "Partner Gönderilerim"
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "Grup Detayı"
+  },
+  "COMM.GROUPS": {
+    "title": "Gruplar"
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "Grupları Keşfet"
+  },
+  "COMM.INVITE": {
+    "title": "Arkadaşlarını Davet Et"
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "Belirli Canlı Oda İzleyicisi"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "Canlı Odalar"
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "Tüm Odalar"
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "Şu an canlı"
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "Geçmiş Oturumlar"
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "Planlanan Odalar"
+  },
+  "COMM.MATCHES": {
+    "title": "Uyumlu Üyeler"
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "Medya Merkezi"
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "Müzik"
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "Podcast'ler"
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "Kısa Videolar"
+  },
+  "COMM.MEMBERS": {
+    "title": "Topluluk Üyeleri"
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "Açık İstekler"
+  },
+  "COMM.OVERVIEW": {
+    "title": "Topluluk"
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "Vitana ile Konuş"
+  },
+  "CONNECTORS.AGENT": {
+    "title": "Autopilot Bağlantıları"
+  },
+  "CONNECTORS.AI": {
+    "title": "Yapay Zeka Bağlayıcıları"
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "Fitness Bağlantıları"
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "Sağlık Bağlantıları"
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "Müzik ve Video Bağlantıları"
+  },
+  "CONNECTORS.OTHER": {
+    "title": "Diğer Bağlantılar"
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "E-posta ve Takvim Bağlantıları"
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "Sosyal Medya Bağlantıları"
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "Yapay Zeka Seçimleri"
+  },
+  "DISCOVER.CART": {
+    "title": "Sepet"
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "Kategoriler"
+  },
+  "DISCOVER.DEALS": {
+    "title": "Fırsatlar ve Kampanyalar"
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "Yapay Zeka Fırsat Seçimi"
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "Kaydedilen Fırsatlar"
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "Trend Fırsatlar"
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "Doktorlar ve Koçlar"
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "Pazar Yeri"
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "Pazar Yerim"
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "Açık Talepler"
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "Biletlerim"
+  },
+  "DISCOVER.ORDERS": {
+    "title": "Siparişlerim"
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "Aktif Siparişler"
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "Sipariş Geçmişi"
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "Keşfet"
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "Ürün Detayı"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "Sağlayıcı Profili"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "Paylaş ve Kazan"
+  },
+  "DISCOVER.SHOP": {
+    "title": "Mağaza"
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "Takviyeler"
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "Wellness Hizmetleri"
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "Omik Verilerim"
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "Takviyelerim (Biyoloji)"
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "Sağlık Durumları"
+  },
+  "HEALTH.EDUCATION": {
+    "title": "Eğitim ve Bilim"
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "Eğitim Podcastleri"
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "Eğitim Videoları"
+  },
+  "HEALTH.MEDICAL": {
+    "title": "Tıbbi"
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "Biyolojim"
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "Sağlık"
+  },
+  "HEALTH.PILLARS": {
+    "title": "Sağlık Sütunları"
+  },
+  "HEALTH.PLANS": {
+    "title": "Planlarım"
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "Antrenman Planları"
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "Hidrasyon Planları"
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "Mental Planlar"
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "Beslenme Planları"
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "Uyku Planları"
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "Sağlık Hizmetleri Merkezi"
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "Sigorta Desteği"
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "Tıbbi Hizmetler"
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "Hizmetlerim"
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "Wellness Programları"
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "Sağlık Takviyeleri"
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "Vitana İndeksi"
+  },
+  "HOME.NEWS_ALL": {
+    "title": "Tüm Haberler"
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "Topluluk Haberleri"
+  },
+  "HOME.OVERVIEW": {
+    "title": "Uzun Ömür Haberleri"
+  },
+  "INBOX.ARCHIVED": {
+    "title": "Arşivlenmiş Mesajlar"
+  },
+  "INBOX.CONVERSATION": {
+    "title": "Sohbet"
+  },
+  "INBOX.GROUP": {
+    "title": "Grup Sohbeti"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "İlham"
+  },
+  "INBOX.OVERVIEW": {
+    "title": "Gelen Kutusu"
+  },
+  "INTENTS.BOARD": {
+    "title": "Talep Panosu"
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "Eşleşme Detayı"
+  },
+  "INTENTS.MINE": {
+    "title": "Intentlerim"
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "Yaşam Pusulası"
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "Tek Günlük Kayıt Akışı"
+  },
+  "MEMORY.DIARY": {
+    "title": "Günlük"
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "Hata Raporları"
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "Anı Bahçesi"
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "Hafıza İzinleri"
+  },
+  "MEMORY.RECALL": {
+    "title": "Hatırla ve Ara"
+  },
+  "MEMORY.TIMELINE": {
+    "title": "Zaman Çizelgesi"
+  },
+  "NEWS.DETAIL": {
+    "title": "Haber Makalesi"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "Etkinlik Detayları"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "Hızlı İşlemler"
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "Buluşma Detayları"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "Profil Önizlemesi"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "Vitana İndeksi"
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "Hızlı Cüzdan"
+  },
+  "PROFILE.ME": {
+    "title": "Profilim"
+  },
+  "PROFILE.PRIVACY": {
+    "title": "Profil Görünürlüğü"
+  },
+  "PROFILE.PUBLIC": {
+    "title": "Herkese Açık Profil"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "Eşleşme Bağlantılı Profil"
+  },
+  "PUBLIC.LANDING": {
+    "title": "Vitanaland Ana Sayfa"
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "Gizlilik Politikası"
+  },
+  "PUBLIC.TERMS": {
+    "title": "Kullanım Koşulları"
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "Hatırlatıcılar"
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "Ara"
+  },
+  "SETTINGS.BILLING": {
+    "title": "Faturalama"
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "İçerik Üretici Ödemeleri"
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "Faturalar Makbuzlar"
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "Ödeme Yöntemi"
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "Mevcut Plan"
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "Bağlayıcılar ve Bağlı Uygulamalar"
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "Sağlık Kısıtlamaları"
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "Bildirimler"
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "Ayarlar"
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "Tercihler"
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "Erişilebilirlik"
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "Görünüm"
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "Dil Bölge"
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "Gizlilik Ayarları"
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "Veri Paylaşımı"
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "Hesap Güvenliği"
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "Görünürlük"
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "Sosyal Hesaplar"
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "Destek"
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "Topluluk Yardımı"
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "Destek ile İletişim"
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "Destek SSS"
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "Tenant ve Rol"
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "Kampanya Detayı"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "Kampanyalar"
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "Veri ve Onay"
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "Dağılım"
+  },
+  "SHARING.OVERVIEW": {
+    "title": "Paylaş"
+  },
+  "WALLET.ACTIONS": {
+    "title": "Cüzdan İşlemleri"
+  },
+  "WALLET.ACTIVITY": {
+    "title": "Cüzdan Aktivitesi"
+  },
+  "WALLET.BALANCE": {
+    "title": "Bakiye ve Avantajlar"
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "Üyelik"
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "Optimizasyon"
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "Tokenlar"
+  },
+  "WALLET.OVERVIEW": {
+    "title": "Cüzdan"
+  },
+  "WALLET.REWARDS": {
+    "title": "Ödüller ve Komisyonlar"
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "Ödül Analizleri"
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "Bekleyen Ödüller"
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "Davet Ödülleri"
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "Abonelikler"
+  }
+}

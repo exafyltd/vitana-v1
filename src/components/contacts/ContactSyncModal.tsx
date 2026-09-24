@@ -94,12 +94,13 @@ export function ContactSyncModal({
     setStep("syncing");
     setSyncProgress(0);
 
-    try {
-      // Simulate progress for UX
-      const progressInterval = setInterval(() => {
-        setSyncProgress(prev => Math.min(prev + 10, 90));
-      }, 300);
+    // Simulate progress for UX. Cleared in `finally` so a failed sync (e.g.
+    // ConnectAppFirst) cannot leave it ticking state updates forever.
+    const progressInterval = setInterval(() => {
+      setSyncProgress(prev => Math.min(prev + 10, 90));
+    }, 300);
 
+    try {
       const result = await syncContacts(selectedSources);
 
       clearInterval(progressInterval);
@@ -136,6 +137,8 @@ export function ContactSyncModal({
       else if (/oauth|auth|not_connected/i.test(msg)) type = "oauth_failed";
       setErrorType(type);
       setStep("error");
+    } finally {
+      clearInterval(progressInterval);
     }
   };
 
