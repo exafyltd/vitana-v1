@@ -113,7 +113,6 @@ export default function EditProfilePage() {
     // useVitanaIndex() as soon as it resolves. Never render a hardcoded
     // number on the profile card.
     vitanaIndex: 0,
-    vitanaPercentile: 0,
     longevityArchetype: contextProfile.longevityArchetype || '',
     // Social URLs from context for immediate display
     linkedin_url: contextProfile.linkedin_url,
@@ -149,8 +148,9 @@ export default function EditProfilePage() {
     const score = liveVitanaIndex?.total ?? 0;
     setProfile(prev => {
       if (prev.vitanaIndex === score) return prev;
-      const percentile = score > 0 ? Math.min(99, Math.round((score / 999) * 100)) : 0;
-      return { ...prev, vitanaIndex: score, vitanaPercentile: percentile };
+      // vitanaPercentile stays unset — there is no community ranking for the Index
+      // (VTID-04470) — score/999 is not a percentile.
+      return { ...prev, vitanaIndex: score };
     });
   }, [liveVitanaIndex?.total]);
 

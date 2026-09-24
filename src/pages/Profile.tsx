@@ -42,7 +42,6 @@ export default function Profile() {
   const { themeConfig, cycleTheme } = useProfileTheme(user?.id);
   const { index: liveVitanaIndex } = useVitanaIndex();
   const liveVitanaScore = liveVitanaIndex?.total ?? 0;
-  const liveVitanaPercentile = liveVitanaScore > 0 ? Math.min(99, Math.round((liveVitanaScore / 999) * 100)) : 0;
 
   // Scroll to social connections section if hash is present
   useEffect(() => {
@@ -78,7 +77,8 @@ export default function Profile() {
     location: profile.location || "",
     stats: dummyProfileStats,
     vitanaIndex: liveVitanaScore,
-    vitanaPercentile: liveVitanaPercentile,
+    // vitanaPercentile stays unset — there is no community ranking for the Index
+    // (VTID-04470) — score/999 is not a percentile.
     longevityArchetype: profile.longevityArchetype || "",
     offerings: [],
     // Social URLs from ProfileProvider context
