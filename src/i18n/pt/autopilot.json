@@ -112,7 +112,21 @@
       "newActionReason": "Com base em padrões de atividade recente",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Sua publicação – rascunho",
+      "titleMessage": "Sua mensagem – rascunho",
+      "titleCaption": "Sua legenda – rascunho",
+      "hint": "A Vitana preparou um rascunho. Mude como quiser – nada é enviado sem você.",
+      "loading": "Escrevendo um rascunho …",
+      "failed": "Sem rascunho agora – escreva o seu.",
+      "regenerate": "Nova sugestão",
+      "skip": "Pular",
+      "confirmPost": "Abrir na publicação",
+      "confirmMessage": "Enviar mensagem",
+      "confirmCaption": "Ir para o envio",
+      "placeholder": "Escreva aqui …"
+    }
   },
   "_pending_review": {}
 }

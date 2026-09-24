@@ -112,7 +112,21 @@
       "newActionReason": "Na podstawie ostatnich wzorców aktywności",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Twój post – szkic",
+      "titleMessage": "Twoja wiadomość – szkic",
+      "titleCaption": "Twój podpis – szkic",
+      "hint": "Vitana przygotowała szkic. Zmień go, jak chcesz – nic nie zostanie wysłane bez ciebie.",
+      "loading": "Piszę szkic …",
+      "failed": "Teraz brak szkicu – napisz własny.",
+      "regenerate": "Nowa propozycja",
+      "skip": "Pomiń",
+      "confirmPost": "Otwórz w poście",
+      "confirmMessage": "Wyślij wiadomość",
+      "confirmCaption": "Przejdź do przesyłania",
+      "placeholder": "Pisz tutaj …"
+    }
   },
   "_pending_review": {}
 }

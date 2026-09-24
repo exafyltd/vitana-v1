@@ -112,7 +112,21 @@
       "newActionReason": "Na osnovu skorašnjih obrazaca aktivnosti",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Tvoja objava – nacrt",
+      "titleMessage": "Tvoja poruka – nacrt",
+      "titleCaption": "Tvoj opis – nacrt",
+      "hint": "Vitana je pripremila nacrt. Izmeni ga kako želiš – ništa se ne šalje bez tebe.",
+      "loading": "Pišem nacrt …",
+      "failed": "Trenutno nema nacrta – napiši svoj.",
+      "regenerate": "Novi predlog",
+      "skip": "Preskoči",
+      "confirmPost": "Otvori u objavi",
+      "confirmMessage": "Pošalji poruku",
+      "confirmCaption": "Idi na otpremanje",
+      "placeholder": "Piši ovde …"
+    }
   },
   "_pending_review": {}
 }

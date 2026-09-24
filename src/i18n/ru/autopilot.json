@@ -112,7 +112,21 @@
       "newActionReason": "На основе недавних моделей активности",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "Твой пост – черновик",
+      "titleMessage": "Твоё сообщение – черновик",
+      "titleCaption": "Твоя подпись – черновик",
+      "hint": "Vitana подготовила черновик. Меняй как хочешь – без тебя ничего не отправится.",
+      "loading": "Пишу черновик …",
+      "failed": "Сейчас черновика нет – напиши сам.",
+      "regenerate": "Новый вариант",
+      "skip": "Пропустить",
+      "confirmPost": "Открыть в посте",
+      "confirmMessage": "Отправить сообщение",
+      "confirmCaption": "К загрузке",
+      "placeholder": "Пиши здесь …"
+    }
   },
   "_pending_review": {}
 }
