@@ -5237,11 +5237,13 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true
+        "reportsLoadFailedRetry": true,
+        "coachReplyFailed": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
-      "reportsLoadFailedRetry": "Try again"
+      "reportsLoadFailedRetry": "Try again",
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "今日优先事项：",

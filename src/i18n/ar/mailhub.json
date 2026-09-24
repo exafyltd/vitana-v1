@@ -9,15 +9,24 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "تقرأ Vitana الرسائل وتكتبها لك"
+        "what": "تقرأ Vitana الرسائل وتكتبها لك",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "اقرأ صندوق Microsoft وأرسل الرسائل"
+        "what": "اقرأ صندوق Microsoft وأرسل الرسائل",
+        "_pending_review": {
+          "name": true
+        }
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "اقرأ صندوق بريد iCloud وأرسل الرسائل من عنوان iCloud الخاص بك"
+        "what": "اقرأ صندوق بريد iCloud وأرسل الرسائل من عنوان iCloud الخاص بك",
+        "_pending_review": {
+          "name": true
+        }
       },
       "google-calendar": {
         "name": "تقويم Google",
@@ -94,7 +103,10 @@
       "checking": "جارٍ التحقق …",
       "wrongPassword": "رفضت Apple تسجيل الدخول — تحقّق من Apple ID وكلمة السر الخاصة بالتطبيق",
       "unreachable": "لا يمكن الوصول إلى iCloud الآن — حاول بعد قليل",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "افتحه على هاتف Android",

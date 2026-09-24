@@ -9,15 +9,24 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana senin için e-posta okur ve yazar"
+        "what": "Vitana senin için e-posta okur ve yazar",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Microsoft gelen kutunu oku ve e-posta gönder"
+        "what": "Microsoft gelen kutunu oku ve e-posta gönder",
+        "_pending_review": {
+          "name": true
+        }
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "iCloud gelen kutunu oku ve iCloud adresinden e-posta gönder"
+        "what": "iCloud gelen kutunu oku ve iCloud adresinden e-posta gönder",
+        "_pending_review": {
+          "name": true
+        }
       },
       "google-calendar": {
         "name": "Google Takvim",
@@ -94,7 +103,10 @@
       "checking": "Kontrol ediliyor …",
       "wrongPassword": "Apple girişi reddetti — Apple kimliğini ve uygulamaya özel parolayı kontrol et",
       "unreachable": "iCloud'a şu anda ulaşılamıyor — biraz sonra tekrar dene",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "Android telefonunda aç",

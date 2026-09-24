@@ -52,7 +52,10 @@
       "lab": "Laboratorija",
       "work": "Posao",
       "vitana": "Vitana",
-      "personal": "Lično"
+      "personal": "Lično",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "Iz tvog laboratorijskog naloga",
@@ -60,7 +63,10 @@
       "plan": "Iz tvog plana",
       "assistant": "Dodato uz Vitanu",
       "community": "Zajednica",
-      "journey": "Tvoje putovanje"
+      "journey": "Tvoje putovanje",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Ništa nije planirano – miran dan 🌿",
@@ -71,7 +77,10 @@
       "free": "slobodno"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Zatvori",
@@ -87,7 +96,10 @@
       "autopilot_review": "Čeka tvoj pregled",
       "ticket_due": "Rok tiketa",
       "erp_approval": "Odobrenje čeka",
-      "readOnly": "Ovo završavaš tamo gde je nastalo – kalendar samo pokazuje kada je na redu."
+      "readOnly": "Ovo završavaš tamo gde je nastalo – kalendar samo pokazuje kada je na redu.",
+      "_pending_review": {
+        "deploy_staging": true
+      }
     },
     "subscribe": {
       "title": "Prikaži u mojoj aplikaciji kalendara",

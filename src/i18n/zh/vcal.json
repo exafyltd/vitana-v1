@@ -52,7 +52,10 @@
       "lab": "化验",
       "work": "工作",
       "vitana": "Vitana",
-      "personal": "个人"
+      "personal": "个人",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "来自你的化验单",
@@ -60,7 +63,10 @@
       "plan": "来自你的计划",
       "assistant": "通过 Vitana 添加",
       "community": "社区",
-      "journey": "你的旅程"
+      "journey": "你的旅程",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "没有安排——平静的一天 🌿",
@@ -71,7 +77,10 @@
       "free": "空闲"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "关闭",

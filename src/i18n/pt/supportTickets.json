@@ -96,7 +96,10 @@
         "marketplace_claim": "Reclamação no marketplace",
         "account_issue": "Problema de conta",
         "feedback": "Feedback (sem rascunho)",
-        "feature_request": "Pedido de funcionalidade"
+        "feature_request": "Pedido de funcionalidade",
+        "_pending_review": {
+          "bug": true
+        }
       },
       "kindDesc": {
         "bug": "Defeito de código — passa pela especificação do Devon → Dev Autopilot",
@@ -132,7 +135,10 @@
         "merging": "Mesclando",
         "deploying": "Implantando",
         "verifying": "Verificando",
-        "completed": "Concluído"
+        "completed": "Concluído",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "antes de conseguir começar",
@@ -198,7 +204,10 @@
         "activatedDescDispatched": "{from} → {to}. O Dev Autopilot está processando a execução {execution} — de forma autônoma a partir daqui.",
         "rolledBackTitle": "{ticket} revertido",
         "rolledBackDesc": "PR de reversão #{number}. O ticket foi reaberto.",
-        "rolledBackDescNoNumber": "PR de reversão criado. O ticket foi reaberto."
+        "rolledBackDescNoNumber": "PR de reversão criado. O ticket foi reaberto.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "Este ticket já está em execução no Dev Autopilot. A reclassificação fica bloqueada após o envio.",

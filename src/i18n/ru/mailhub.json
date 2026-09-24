@@ -9,15 +9,24 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana читает и пишет письма за тебя"
+        "what": "Vitana читает и пишет письма за тебя",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Читать почту Microsoft и отправлять письма"
+        "what": "Читать почту Microsoft и отправлять письма",
+        "_pending_review": {
+          "name": true
+        }
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Читать почту iCloud и отправлять письма со своего адреса iCloud"
+        "what": "Читать почту iCloud и отправлять письма со своего адреса iCloud",
+        "_pending_review": {
+          "name": true
+        }
       },
       "google-calendar": {
         "name": "Google Календарь",
@@ -94,7 +103,10 @@
       "checking": "Проверяем …",
       "wrongPassword": "Apple отклонил вход — проверь Apple ID и пароль для приложения",
       "unreachable": "iCloud сейчас недоступен — попробуй чуть позже",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "Открой на телефоне Android",

@@ -52,7 +52,11 @@
       "lab": "Laboratorio",
       "work": "Trabajo",
       "vitana": "Vitana",
-      "personal": "Personal"
+      "personal": "Personal",
+      "_pending_review": {
+        "vitana": true,
+        "personal": true
+      }
     },
     "source": {
       "lab": "De tu orden de laboratorio",
@@ -60,7 +64,10 @@
       "plan": "De tu plan",
       "assistant": "Añadido con Vitana",
       "community": "Comunidad",
-      "journey": "Tu camino"
+      "journey": "Tu camino",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Nada planeado – un día tranquilo 🌿",
@@ -71,7 +78,10 @@
       "free": "libre"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Cerrar",

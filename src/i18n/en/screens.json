@@ -5243,7 +5243,8 @@
         "contractLink": "View the Ultimate Goal contract",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Priority of the Day:",

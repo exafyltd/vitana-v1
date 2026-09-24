@@ -9,15 +9,24 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana čita i piše mejlove za tebe"
+        "what": "Vitana čita i piše mejlove za tebe",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Čitaj Microsoft sanduče i šalji mejlove"
+        "what": "Čitaj Microsoft sanduče i šalji mejlove",
+        "_pending_review": {
+          "name": true
+        }
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Čitaj iCloud sanduče i šalji mejlove sa svoje iCloud adrese"
+        "what": "Čitaj iCloud sanduče i šalji mejlove sa svoje iCloud adrese",
+        "_pending_review": {
+          "name": true
+        }
       },
       "google-calendar": {
         "name": "Google kalendar",
@@ -94,7 +103,10 @@
       "checking": "Proverava se …",
       "wrongPassword": "Apple je odbio prijavu — proveri svoj Apple ID i lozinku za aplikaciju",
       "unreachable": "iCloud trenutno nije dostupan — pokušaj ponovo za trenutak",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "Otvori na svom Android telefonu",

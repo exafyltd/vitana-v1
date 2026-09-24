@@ -146,8 +146,9 @@ describe("MailCalendarContactsPanel", () => {
 
 describe("mailhub strings", () => {
   const dir = path.resolve(__dirname, "../../../i18n");
+  // `_pending_review` (any `_`-prefixed key) is translate-pipeline metadata, not a string.
   const flat = (o: any, p = ""): Record<string, string> =>
-    Object.entries(o).reduce((acc, [k, v]) => (typeof v === "object" ? { ...acc, ...flat(v, `${p}${k}.`) } : { ...acc, [`${p}${k}`]: v as string }), {});
+    Object.entries(o).filter(([k]) => !k.startsWith("_")).reduce((acc, [k, v]) => (typeof v === "object" ? { ...acc, ...flat(v, `${p}${k}.`) } : { ...acc, [`${p}${k}`]: v as string }), {});
   const de = flat(JSON.parse(fs.readFileSync(path.join(dir, "de/mailhub.json"), "utf8")));
   const locales = fs.readdirSync(dir).filter((d) => fs.existsSync(path.join(dir, d, "common.json")));
 

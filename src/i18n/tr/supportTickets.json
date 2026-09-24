@@ -132,7 +132,10 @@
         "merging": "Birleştiriliyor",
         "deploying": "Dağıtılıyor",
         "verifying": "Doğrulanıyor",
-        "completed": "Tamamlandı"
+        "completed": "Tamamlandı",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "başlayamadan",
@@ -198,7 +201,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev Autopilot {execution} yürütmesini çalıştırıyor — buradan sonrası otonom.",
         "rolledBackTitle": "{ticket} geri alındı",
         "rolledBackDesc": "Geri alma PR'ı #{number}. Talep yeniden açıldı.",
-        "rolledBackDescNoNumber": "Geri alma PR'ı oluşturuldu. Talep yeniden açıldı."
+        "rolledBackDescNoNumber": "Geri alma PR'ı oluşturuldu. Talep yeniden açıldı.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "Bu talep zaten Dev Autopilot'ta çalışıyor. Gönderildikten sonra yeniden sınıflandırma kilitlenir.",

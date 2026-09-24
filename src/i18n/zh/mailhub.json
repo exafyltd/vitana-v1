@@ -9,7 +9,10 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana 替你读写邮件"
+        "what": "Vitana 替你读写邮件",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook 邮件",
@@ -94,7 +97,10 @@
       "checking": "正在检查 …",
       "wrongPassword": "Apple 拒绝了登录——请检查你的 Apple ID 和 App 专用密码",
       "unreachable": "暂时无法连接 iCloud——请稍后再试",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "在你的 Android 手机上打开",

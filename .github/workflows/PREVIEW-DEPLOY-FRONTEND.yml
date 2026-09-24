@@ -91,6 +91,8 @@ jobs:
           {
             echo "VITE_GATEWAY_BASE=${STAGING_GATEWAY_URL}"
             echo "VITE_GATEWAY_URL=${STAGING_GATEWAY_URL}/api/v1"
+            # VTID-04430: the build stamp tickets and analytics carry.
+            echo "VITE_APP_VERSION=$(git rev-parse --short=12 HEAD)"
           } > .env.production
           cat .env.production
 
