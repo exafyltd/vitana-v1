@@ -17,7 +17,7 @@
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Read your iCloud inbox and send mail from your iCloud address"
+        "what": "Read emails in your iCloud inbox and send from your iCloud address"
       },
       "google-calendar": {
         "name": "Google Calendar",
@@ -25,7 +25,7 @@
       },
       "outlook-calendar": {
         "name": "Outlook Calendar",
-        "what": "See and add events, kept in step with Vitanaland"
+        "what": "See, add, and sync appointments with Vitanaland"
       },
       "outlook-contacts": {
         "name": "Outlook Contacts",
@@ -33,7 +33,7 @@
       },
       "apple-calendar": {
         "name": "Apple Calendar (iCloud)",
-        "what": "See and add events, kept in step with Vitanaland"
+        "what": "See, add, and sync appointments with Vitanaland"
       },
       "google-contacts": {
         "name": "Google Contacts",
@@ -89,7 +89,7 @@
       "step3": "Enter your Apple ID and the new password here.",
       "appleId": "Apple ID (email)",
       "appPassword": "App-specific password",
-      "privacy": "We store the password encrypted. Vitana uses it to read your mail, calendar and contacts, to send mail when you ask it to, and to keep your “Vitanaland” calendar up to date. You can revoke it at Apple at any time.",
+      "privacy": "We store your password encrypted. Vitana uses it to read your emails, appointments, and contacts, send emails when you ask, and keep your 'Vitanaland' calendar up to date. You can revoke it at Apple anytime.",
       "connect": "Connect",
       "checking": "Checking …",
       "wrongPassword": "Apple refused the sign-in — check your Apple ID and the app-specific password",
@@ -104,7 +104,7 @@
       "title": "Turn off {app}?",
       "body": {
         "mail": "Vitana will no longer read or send email through this app.",
-        "calendar": "The busy times from this calendar disappear from your Vitanaland calendar. The “Vitanaland” calendar stays in your account — you can delete it there.",
+        "calendar": "Occupied times from this calendar will disappear from your Vitanaland calendar. The 'Vitanaland' calendar remains in your account — you can delete it there.",
         "contacts": "No new contacts will come in. Contacts already added stay unless you remove them here."
       },
       "removeContacts": "Also remove the added contacts from Vitanaland"
