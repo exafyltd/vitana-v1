@@ -119,7 +119,9 @@
       "shareProfileAria": "Profili paylaş",
       "editPhotoAria": "Profil fotoğrafını düzenle",
       "showQrAria": "QR kodunu göster",
-      "close": "Kapat"
+      "close": "Kapat",
+      "topPercent": "İlk %{percent}",
+      "topPercentAria": "{count} üye arasında ilk %{percent}"
     },
     "healthReal": {
       "loadError": "Sağlık verileri yüklenemedi.",

@@ -119,7 +119,9 @@
       "shareProfileAria": "Podeli profil",
       "editPhotoAria": "Izmeni profilnu sliku",
       "showQrAria": "Prikaži QR kod",
-      "close": "Zatvori"
+      "close": "Zatvori",
+      "topPercent": "Top {percent}%",
+      "topPercentAria": "Top {percent}% od {count} članova"
     },
     "healthReal": {
       "loadError": "Podaci o zdravlju nisu mogli da se učitaju.",
