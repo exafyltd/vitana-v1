@@ -4,49 +4,61 @@
     "kinds": {
       "mail": "Mail",
       "calendar": "Calendar",
-      "contacts": "Contacts"
+      "contacts": "Contacts",
+      "_pending_review": {}
     },
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana reads and writes emails for you"
+        "what": "Vitana reads and writes emails for you",
+        "_pending_review": {}
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Read your Microsoft inbox and send mail"
+        "what": "Read your Microsoft inbox and send mail",
+        "_pending_review": {}
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Read your iCloud inbox and send mail from your iCloud address"
+        "what": "Read your iCloud inbox and send mail from your iCloud address",
+        "_pending_review": {}
       },
       "google-calendar": {
         "name": "Google Calendar",
-        "what": "See and add events, kept in step with Vitanaland"
+        "what": "See and add events, kept in step with Vitanaland",
+        "_pending_review": {}
       },
       "outlook-calendar": {
         "name": "Outlook Calendar",
-        "what": "See and add events, kept in step with Vitanaland"
+        "what": "See and add events, kept in step with Vitanaland",
+        "_pending_review": {}
       },
       "outlook-contacts": {
         "name": "Outlook Contacts",
-        "what": "Bring your Outlook contacts into Vitanaland"
+        "what": "Bring your Outlook contacts into Vitanaland",
+        "_pending_review": {}
       },
       "apple-calendar": {
         "name": "Apple Calendar (iCloud)",
-        "what": "See and add events, kept in step with Vitanaland"
+        "what": "See and add events, kept in step with Vitanaland",
+        "_pending_review": {}
       },
       "google-contacts": {
         "name": "Google Contacts",
-        "what": "Bring your contacts into Vitanaland"
+        "what": "Bring your contacts into Vitanaland",
+        "_pending_review": {}
       },
       "iphone-contacts": {
         "name": "iPhone Contacts (iCloud)",
-        "what": "Bring your iCloud contacts into Vitanaland"
+        "what": "Bring your iCloud contacts into Vitanaland",
+        "_pending_review": {}
       },
       "android-contacts": {
         "name": "Android Contacts",
-        "what": "Pick contacts on your phone and bring them in"
-      }
+        "what": "Pick contacts on your phone and bring them in",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "status": {
       "loading": "Loading …",
@@ -57,7 +69,8 @@
       "finishInBrowser": "Finish signing in in your browser, then come back",
       "contactsCount": "{count} contacts",
       "busyCount": "{count} busy times",
-      "syncedAgo": "synced {ago}"
+      "syncedAgo": "synced {ago}",
+      "_pending_review": {}
     },
     "actions": {
       "toggleAria": "Turn {app} on or off",
@@ -67,7 +80,8 @@
       "cancel": "Cancel",
       "keepOn": "Keep it on",
       "turnOff": "Turn off",
-      "gotIt": "Got it"
+      "gotIt": "Got it",
+      "_pending_review": {}
     },
     "toasts": {
       "turnedOn": "{app} is on",
@@ -79,7 +93,8 @@
       "consentFailed": "Sign-in wasn't finished — please try again",
       "notAvailable": "This app isn't available with us yet",
       "couldNotTurnOn": "That didn't work — try again in a moment",
-      "couldNotTurnOff": "Turning off didn't work — try again in a moment"
+      "couldNotTurnOff": "Turning off didn't work — try again in a moment",
+      "_pending_review": {}
     },
     "apple": {
       "title": "Connect Apple iCloud",
@@ -94,66 +109,81 @@
       "checking": "Checking …",
       "wrongPassword": "Apple refused the sign-in — check your Apple ID and the app-specific password",
       "unreachable": "iCloud can't be reached right now — try again in a moment",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {}
     },
     "android": {
       "title": "Open it on your Android phone",
-      "body": "Android contacts come straight from your phone. Open Vitanaland in Chrome on your Android phone and tap the switch there — you choose which contacts come in."
+      "body": "Android contacts come straight from your phone. Open Vitanaland in Chrome on your Android phone and tap the switch there — you choose which contacts come in.",
+      "_pending_review": {}
     },
     "off": {
       "title": "Turn off {app}?",
       "body": {
         "mail": "Vitana will no longer read or send email through this app.",
         "calendar": "The busy times from this calendar disappear from your Vitanaland calendar. The “Vitanaland” calendar stays in your account — you can delete it there.",
-        "contacts": "No new contacts will come in. Contacts already added stay unless you remove them here."
+        "contacts": "No new contacts will come in. Contacts already added stay unless you remove them here.",
+        "_pending_review": {}
       },
-      "removeContacts": "Also remove the added contacts from Vitanaland"
+      "removeContacts": "Also remove the added contacts from Vitanaland",
+      "_pending_review": {}
     },
     "errors": {
       "sessionExpired": "Your session has expired. Sign in again to manage your apps.",
-      "loadFailed": "Your apps couldn't be loaded right now. Try again in a moment."
+      "loadFailed": "Your apps couldn't be loaded right now. Try again in a moment.",
+      "_pending_review": {}
     },
     "findFriends": {
       "status": {
         "on": "Connected — checked now",
         "off": "Turn it on in Connected Apps first",
         "phone": "Pick contacts on your phone",
-        "phoneUnavailable": "Only in Chrome on Android"
+        "phoneUnavailable": "Only in Chrome on Android",
+        "_pending_review": {}
       },
       "connect": {
         "title": "{app} isn't connected yet",
         "body": "Turn {app} on once in Connected Apps. After that, you can find your friends here with one tap.",
-        "open": "Open Connected Apps"
+        "open": "Open Connected Apps",
+        "_pending_review": {}
       },
       "progress": {
         "reading": "Reading your contacts …",
-        "matching": "Checking who's already on Vitanaland …"
+        "matching": "Checking who's already on Vitanaland …",
+        "_pending_review": {}
       },
       "errors": {
         "oauth_failed": {
           "title": "The connection didn't work",
-          "body": "Your account couldn't be reached just now. Try again in a moment, or reconnect it in Connected Apps."
+          "body": "Your account couldn't be reached just now. Try again in a moment, or reconnect it in Connected Apps.",
+          "_pending_review": {}
         },
         "api_unavailable": {
           "title": "Not possible on this device",
-          "body": "Your browser can't open your address book. Open Vitanaland in Chrome on your Android phone, or connect Google or iCloud."
+          "body": "Your browser can't open your address book. Open Vitanaland in Chrome on your Android phone, or connect Google or iCloud.",
+          "_pending_review": {}
         },
         "permission_denied": {
           "title": "No access to your contacts",
-          "body": "Allow Vitanaland to access your contacts in your phone's settings."
+          "body": "Allow Vitanaland to access your contacts in your phone's settings.",
+          "_pending_review": {}
         },
         "rate_limited": {
           "title": "Too many tries",
-          "body": "Wait a moment, then try again."
+          "body": "Wait a moment, then try again.",
+          "_pending_review": {}
         },
         "cancelled": {
           "title": "No contacts picked",
-          "body": "Tap again and pick the contacts you want to bring in."
+          "body": "Tap again and pick the contacts you want to bring in.",
+          "_pending_review": {}
         },
         "unknown": {
           "title": "Something went wrong",
-          "body": "Try again in a moment."
-        }
+          "body": "Try again in a moment.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "consent": {
         "title": "How we handle your contacts",
@@ -166,8 +196,12 @@
         "removeBody": "In Connected Apps you can turn a source off and remove its contacts.",
         "helper": "We compare e-mail addresses to show who's already on Vitanaland. People who aren't are never told.",
         "notNow": "Not now",
-        "continue": "Continue"
-      }
-    }
-  }
+        "continue": "Continue",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

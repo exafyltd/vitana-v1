@@ -52,11 +52,7 @@
       "lab": "Lab",
       "work": "Work",
       "vitana": "Vitana",
-      "personal": "Personal",
-      "_pending_review": {
-        "community": true,
-        "vitana": true
-      }
+      "personal": "Personal"
     },
     "source": {
       "lab": "From your lab order",
@@ -64,10 +60,7 @@
       "plan": "From your plan",
       "assistant": "Added with Vitana",
       "community": "Community",
-      "journey": "Your journey",
-      "_pending_review": {
-        "autopilot": true
-      }
+      "journey": "Your journey"
     },
     "empty": {
       "title": "Nothing planned – a calm day 🌿",
