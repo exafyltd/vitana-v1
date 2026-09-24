@@ -22,6 +22,7 @@
  */
 
 import { onINP, type Metric as WebVitalsMetric } from 'web-vitals';
+import { sendAnonymousBeacon } from './anon-beacon';
 
 // VITE_GATEWAY_URL includes "/api/v1" in this repo's .env. Strip it (the
 // same normalization admin-api.ts does) so the beacon posts to
@@ -75,25 +76,9 @@ function getSessionId(): string {
 }
 
 function send(beacon: RumBeacon): void {
-  const body = JSON.stringify(beacon);
-  try {
-    if (navigator.sendBeacon) {
-      const blob = new Blob([body], { type: 'application/json' });
-      navigator.sendBeacon(`${GATEWAY_URL}${BEACON_PATH}`, blob);
-      return;
-    }
-    fetch(`${GATEWAY_URL}${BEACON_PATH}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body,
-      keepalive: true,
-      // Beacons are anonymous — omitting credentials sidesteps the
-      // credentialed-CORS requirements (Access-Control-Allow-Credentials).
-      credentials: 'omit',
-    }).catch(() => undefined);
-  } catch {
-    // Beacons must NEVER throw — they run in production user paths.
-  }
+  // VTID-04516: sendBeacon's credentialed JSON POST is blocked by the
+  // gateway's CORS policy; the anonymous keepalive fetch is not.
+  sendAnonymousBeacon(`${GATEWAY_URL}${BEACON_PATH}`, JSON.stringify(beacon));
 }
 
 function emit(metric: Metric, value: number): void {
