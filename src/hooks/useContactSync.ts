@@ -66,6 +66,8 @@ async function readImported(userId: string, sources: string[]): Promise<SyncResu
       .select("id, contact_name, contact_phone, contact_email, contact_user_id, is_on_platform", { count: "exact" })
       .eq("user_id", userId)
       .in("source", sources)
+      // Members first, so matches are never pushed out of the preview by the cap.
+      .order("is_on_platform", { ascending: false })
       .order("contact_name", { ascending: true })
       .limit(PREVIEW_LIMIT),
     contacts()
