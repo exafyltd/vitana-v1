@@ -18,6 +18,16 @@ describe('VTID-04502 nav-registry build', () => {
     expect(incomplete.map((s: { id: string }) => s.id)).toEqual([]);
   });
 
+  it('keeps the build script inside the Docker build context', () => {
+    // VTID-04518: .dockerignore excluded scripts/, so `npm run build` inside
+    // the image failed with MODULE_NOT_FOUND and every frontend ECS deploy
+    // stopped at the build step. The prebuild script must stay reachable.
+    const ignore = fs.readFileSync(path.join(ROOT, '.dockerignore'), 'utf8').split('\n').map((l) => l.trim());
+    const excludesScripts = ignore.includes('scripts') || ignore.includes('scripts/') || ignore.includes('scripts/**');
+    if (excludesScripts) expect(ignore).toContain('!scripts/nav');
+    expect(ignore.filter((l) => /^src\/?$|^src\/navigation/.test(l))).toEqual([]);
+  });
+
   it('runs before every build, and the output is not committed', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
     expect(pkg.scripts.prebuild).toContain('scripts/nav/build-nav-registry.mjs');

@@ -87,12 +87,26 @@ describe('VTID-04502 screen registry — integrity', () => {
     expect(thin).toEqual([]);
   });
 
+  it('gives every voice-reachable screen at least 2 phrasings in every translated language', () => {
+    const thin = TRANSLATED_LOCALES.flatMap((l) => {
+      const loc = localeTitles(l);
+      return SCREENS.filter(isVoiceTarget)
+        .filter((s) => (loc[s.id]?.phrasings || []).filter((p) => p.trim()).length < 2)
+        .map((s) => `${l}:${s.id}`);
+    });
+    expect(thin).toEqual([]);
+  });
+
   it('does not give the same phrasing to two screens', () => {
     const seen = new Map<string, string>();
     const dupes: string[] = [];
+    const phrasingsOf = (s: (typeof SCREENS)[number], l: string): string[] =>
+      l === 'en' || l === 'de'
+        ? s.i18n[l].phrasings || []
+        : localeTitles(l as (typeof TRANSLATED_LOCALES)[number])[s.id]?.phrasings || [];
     for (const s of SCREENS) {
-      for (const l of ['en', 'de'] as const) {
-        for (const p of s.i18n[l].phrasings || []) {
+      for (const l of REGISTRY_LOCALES) {
+        for (const p of phrasingsOf(s, l)) {
           const key = `${l}:${p.toLowerCase().trim()}`;
           if (seen.has(key) && seen.get(key) !== s.id) dupes.push(`${key} → ${seen.get(key)} & ${s.id}`);
           seen.set(key, s.id);

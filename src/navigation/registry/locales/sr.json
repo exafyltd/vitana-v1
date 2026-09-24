@@ -1,246 +1,641 @@
 {
   "AI.COMPANION": {
-    "title": "AI pratilac"
+    "title": "AI pratilac",
+    "phrasings": [
+      "otvori AI pratioca",
+      "hoću da razgovaram sa Vitanom",
+      "gde je AI companion"
+    ]
   },
   "AI.DAILY_SUMMARY": {
-    "title": "Dnevni pregled"
+    "title": "Dnevni pregled",
+    "phrasings": [
+      "pokaži mi dnevni rezime",
+      "šta se danas desilo, daj mi summary",
+      "gde mogu da vidim dnevni pregled"
+    ]
   },
   "AI.INSIGHTS": {
-    "title": "AI uvidi"
+    "title": "AI uvidi",
+    "phrasings": [
+      "pokaži mi AI uvide",
+      "koje obrasce si primetila kod mene",
+      "gde su moji personalizovani uvidi"
+    ]
   },
   "AI.OVERVIEW": {
-    "title": "AI asistent"
+    "title": "AI asistent",
+    "phrasings": [
+      "otvori AI asistenta",
+      "pokaži mi AI funkcije",
+      "gde su sve AI opcije"
+    ]
   },
   "AI.RECOMMENDATIONS": {
-    "title": "Preporuke"
+    "title": "Preporuke",
+    "phrasings": [
+      "pokaži mi preporuke",
+      "šta mi preporučuješ",
+      "gde su moje personalizovane preporuke"
+    ]
   },
   "ASSISTANT.AI": {
-    "title": "AI"
+    "title": "AI",
+    "phrasings": [
+      "otvori AI tab u asistentu",
+      "pokaži podešavanja tekstualnog asistenta",
+      "gde mogu da podesim AI"
+    ]
   },
   "ASSISTANT.AUTOPILOT": {
-    "title": "Autopilot i automatizacija"
+    "title": "Autopilot i automatizacija",
+    "phrasings": [
+      "otvori Autopilot podešavanja",
+      "pokaži moje automatizacije",
+      "gde mogu da postavim Autopilot"
+    ]
   },
   "ASSISTANT.OVERVIEW": {
-    "title": "Vitana ćaskanje"
+    "title": "Vitana ćaskanje",
+    "phrasings": [
+      "otvori Vitana chat",
+      "hoću da pišem sa Vitanom",
+      "gde je chat sa Vitanom"
+    ]
   },
   "ASSISTANT.PROACTIVE": {
-    "title": "Proaktivno govorenje"
+    "title": "Proaktivno govorenje",
+    "phrasings": [
+      "gde mogu da kontrolišem kad ti sama progovoriš",
+      "isključi proaktivno govorenje",
+      "otvori podešavanja proaktivnog govora"
+    ]
   },
   "ASSISTANT.REFERRALS": {
-    "title": "Preporuke"
+    "title": "Preporuke",
+    "phrasings": [
+      "otvori tab za preporuke u asistentu",
+      "pokaži mi referrals u asistentu",
+      "gde su nagrade od asistenta"
+    ]
   },
   "ASSISTANT.VOICE": {
-    "title": "Glas"
+    "title": "Glas",
+    "phrasings": [
+      "gde mogu da promenim tvoj glas",
+      "otvori podešavanja glasa",
+      "promeni Vitanin glas"
+    ]
   },
   "AUTH.ALKALMA_PORTAL": {
-    "title": "Alkalma portal"
+    "title": "Alkalma portal",
+    "phrasings": [
+      "otvori Alkalma portal",
+      "prijavi me na Alkalma",
+      "gde mogu da se registrujem za Alkalma"
+    ]
   },
   "AUTH.EARTHLINKS_PORTAL": {
-    "title": "Earthlinks portal"
+    "title": "Earthlinks portal",
+    "phrasings": [
+      "otvori Earthlinks portal",
+      "kako da se pridružim Earthlinks-u",
+      "gde je prijava za Earthlinks"
+    ]
   },
   "AUTH.MAXINA_PORTAL": {
-    "title": "Pridruži se MAXINA zajednici"
+    "title": "Pridruži se MAXINA zajednici",
+    "phrasings": [
+      "hoću da se registrujem",
+      "kako da se pridružim zajednici",
+      "odvedi me na prijavu"
+    ]
   },
   "AUTOPILOT.MY_JOURNEY": {
-    "title": "Moje putovanje"
+    "title": "Moje putovanje",
+    "phrasings": [
+      "otvori My Journey",
+      "pokaži mi moje sesije na putovanju",
+      "gde su moji vođeni koraci"
+    ]
   },
   "BUSINESS.ANALYTICS": {
-    "title": "Biznis analitika"
+    "title": "Biznis analitika",
+    "phrasings": [
+      "pokaži mi poslovnu analitiku",
+      "kako ide moj biznis",
+      "gde su moje poslovne statistike"
+    ]
   },
   "BUSINESS.CLIENTS": {
-    "title": "Moji klijenti"
+    "title": "Moji klijenti",
+    "phrasings": [
+      "pokaži mi moje klijente",
+      "ko su moji kupci",
+      "gde je lista mojih klijenata"
+    ]
   },
   "BUSINESS.INSIGHTS_EARNINGS": {
-    "title": "Prihodi"
+    "title": "Prihodi",
+    "phrasings": [
+      "koliko sam zaradio",
+      "pokaži mi zaradu od biznisa",
+      "gde mogu da vidim prihode"
+    ]
   },
   "BUSINESS.INSIGHTS_GROWTH": {
-    "title": "Rast"
+    "title": "Rast",
+    "phrasings": [
+      "pokaži mi rast biznisa",
+      "kako raste moj doseg",
+      "gde su metrike rasta"
+    ]
   },
   "BUSINESS.LISTINGS": {
-    "title": "Moji oglasi"
+    "title": "Moji oglasi",
+    "phrasings": [
+      "pokaži mi moje oglase",
+      "gde su moji listinzi",
+      "upravljaj mojim ponudama"
+    ]
   },
   "BUSINESS.OPPORTUNITIES": {
-    "title": "Poslovne prilike"
+    "title": "Poslovne prilike",
+    "phrasings": [
+      "pokaži poslovne prilike",
+      "gde mogu da nađem nove poslovne prilike",
+      "ima li novih leadova za mene"
+    ]
   },
   "BUSINESS.OVERVIEW": {
-    "title": "Biznis centar"
+    "title": "Biznis centar",
+    "phrasings": [
+      "otvori Business Hub",
+      "pokaži mi moj biznis",
+      "gde je moj poslovni prostor"
+    ]
   },
   "BUSINESS.SALES_PROMOTIONS": {
-    "title": "Akcije"
+    "title": "Akcije",
+    "phrasings": [
+      "pokaži mi promocije",
+      "gde mogu da napravim promociju",
+      "otvori moje akcije"
+    ]
   },
   "BUSINESS.SALES_REFERRALS": {
-    "title": "Preporuke za prodaju"
+    "title": "Preporuke za prodaju",
+    "phrasings": [
+      "pokaži mi prodajne preporuke",
+      "gde vidim referral prodaju",
+      "koliko sam zaradio kroz preporuke"
+    ]
   },
   "BUSINESS.SELL_EARN": {
-    "title": "Prodaj i zarađuj"
+    "title": "Prodaj i zarađuj",
+    "phrasings": [
+      "kako mogu da prodajem i zarađujem",
+      "otvori prodaju",
+      "gde vidim svoju prodaju"
+    ]
   },
   "BUSINESS.SERVICES": {
-    "title": "Moje usluge"
+    "title": "Moje usluge",
+    "phrasings": [
+      "pokaži mi moje usluge",
+      "gde upravljam uslugama koje nudim",
+      "otvori moje usluge"
+    ]
   },
   "BUSINESS.SERVICES_EVENTS": {
-    "title": "Moji događaji"
+    "title": "Moji događaji",
+    "phrasings": [
+      "pokaži događaje koje organizujem",
+      "gde su moji eventi kao provajder",
+      "otvori moje poslovne događaje"
+    ]
   },
   "BUSINESS.SERVICES_PACKAGES": {
-    "title": "Paketi usluga"
+    "title": "Paketi usluga",
+    "phrasings": [
+      "pokaži mi moje pakete usluga",
+      "gde mogu da postavim pakete",
+      "otvori service packages"
+    ]
   },
   "CALENDAR.OVERVIEW": {
-    "title": "Moj kalendar"
+    "title": "Moj kalendar",
+    "phrasings": [
+      "otvori moj kalendar",
+      "pokaži mi zakazane termine",
+      "šta imam u rasporedu"
+    ]
   },
   "COMM.EVENTS": {
-    "title": "Događaji i druženja"
+    "title": "Događaji i druženja",
+    "phrasings": [
+      "pokaži mi događaje u zajednici",
+      "gde mogu da nađem meetupe",
+      "otvori događaje i okupljanja"
+    ]
   },
   "COMM.EVENTS_HOT": {
-    "title": "Popularni događaji"
+    "title": "Popularni događaji",
+    "phrasings": [
+      "pokaži popularne događaje",
+      "koji eventi su trenutno u trendu",
+      "šta je hot u događajima"
+    ]
   },
   "COMM.EVENTS_TODAY": {
-    "title": "Današnji događaji"
+    "title": "Današnji događaji",
+    "phrasings": [
+      "koji događaji su danas",
+      "pokaži današnje evente",
+      "ima li nečeg danas"
+    ]
   },
   "COMM.EVENTS_UPCOMING": {
-    "title": "Predstojeći događaji"
+    "title": "Predstojeći događaji",
+    "phrasings": [
+      "pokaži predstojeće događaje",
+      "koji eventi dolaze uskoro",
+      "šta ima sledeće nedelje"
+    ]
   },
   "COMM.FEED": {
-    "title": "Feed zajednice koju pratiš"
+    "title": "Feed zajednice koju pratiš",
+    "phrasings": [
+      "pokaži feed ljudi koje pratim",
+      "otvori moj following feed",
+      "šta ima novo od onih koje pratim"
+    ]
   },
   "COMM.FIND_PARTNER": {
-    "title": "Pronađi partnera"
+    "title": "Pronađi partnera",
+    "phrasings": [
+      "nađi mi partnera za trening",
+      "tražim nekoga za vežbanje",
+      "gde mogu da nađem partnera"
+    ]
   },
   "COMM.FIND_PARTNER_BOARD": {
-    "title": "Partnerska tabla"
+    "title": "Partnerska tabla",
+    "phrasings": [
+      "otvori partner board",
+      "pokaži ko traži partnera za ples ili fitnes",
+      "gde vidim tuđe zahteve za partnerom"
+    ]
   },
   "COMM.FIND_PARTNER_MATCHES": {
-    "title": "Moji mečevi"
+    "title": "Moji mečevi",
+    "phrasings": [
+      "pokaži moje matcheve za partnera",
+      "ko se poklopio sa mojim zahtevom za partnerom",
+      "gde su moji partner matchevi"
+    ]
   },
   "COMM.FIND_PARTNER_POSTS": {
-    "title": "Moje partnerske objave"
+    "title": "Moje partnerske objave",
+    "phrasings": [
+      "pokaži moje objave za partnera",
+      "gde su moji zahtevi za partnerom",
+      "otvori moje partner postove"
+    ]
   },
   "COMM.GROUP_DETAIL": {
     "title": "Detalji grupe"
   },
   "COMM.GROUPS": {
-    "title": "Grupe"
+    "title": "Grupe",
+    "phrasings": [
+      "pokaži mi grupe",
+      "otvori grupe zajednice",
+      "kojim grupama mogu da se pridružim"
+    ]
   },
   "COMM.GROUPS_DISCOVER": {
-    "title": "Otkrij grupe"
+    "title": "Otkrij grupe",
+    "phrasings": [
+      "otkrij mi nove grupe",
+      "preporuči mi grupe",
+      "gde mogu da pronađem grupe za mene"
+    ]
   },
   "COMM.INVITE": {
-    "title": "Pozovi prijatelje"
+    "title": "Pozovi prijatelje",
+    "phrasings": [
+      "pozovi prijatelja",
+      "kako da pozovem prijatelje",
+      "gde je moj invite link"
+    ]
   },
   "COMM.LIVE_ROOM_VIEWER": {
     "title": "Pregled određene sobe uživo"
   },
   "COMM.LIVE_ROOMS": {
-    "title": "Sobe uživo"
+    "title": "Sobe uživo",
+    "phrasings": [
+      "otvori live rooms",
+      "gde mogu da se pridružim live sesiji",
+      "pokaži mi live sobe"
+    ]
   },
   "COMM.LIVE_ROOMS_ALL": {
-    "title": "Sve sobe"
+    "title": "Sve sobe",
+    "phrasings": [
+      "pokaži sve live sobe",
+      "prikaži i live i zakazane sobe",
+      "gde su sve sobe, i aktivne i planirane"
+    ]
   },
   "COMM.LIVE_ROOMS_LIVE": {
-    "title": "Uživo sada"
+    "title": "Uživo sada",
+    "phrasings": [
+      "ko je trenutno live",
+      "pokaži sobe koje su sad uživo",
+      "šta se emituje u ovom trenutku"
+    ]
   },
   "COMM.LIVE_ROOMS_PAST": {
-    "title": "Prošle sesije"
+    "title": "Prošle sesije",
+    "phrasings": [
+      "pokaži prošle live sesije",
+      "gde mogu da gledam snimke live soba",
+      "otvori arhivu live roomova"
+    ]
   },
   "COMM.LIVE_ROOMS_SCHEDULED": {
-    "title": "Zakazane sobe"
+    "title": "Zakazane sobe",
+    "phrasings": [
+      "pokaži mi zakazane live sobe",
+      "koje su live sesije planirane za kasnije",
+      "gde mogu da vidim predstojeće live roomove"
+    ]
   },
   "COMM.MATCHES": {
-    "title": "Odgovarajući članovi"
+    "title": "Odgovarajući članovi",
+    "phrasings": [
+      "pokaži mi moje mečeve",
+      "ko mi odgovara u zajednici",
+      "otvori predložene članove koji se poklapaju sa mnom"
+    ]
   },
   "COMM.MEDIA_HUB": {
-    "title": "Medija centar"
+    "title": "Medija centar",
+    "phrasings": [
+      "otvori media hub",
+      "gde mogu da nađem videe i podkaste",
+      "pokaži mi medijsku biblioteku zajednice"
+    ]
   },
   "COMM.MEDIA_MUSIC": {
-    "title": "Muzika"
+    "title": "Muzika",
+    "phrasings": [
+      "pusti neku muziku iz zajednice",
+      "gde je muzika u media hubu",
+      "otvori muziku"
+    ]
   },
   "COMM.MEDIA_PODCASTS": {
-    "title": "Podkasti"
+    "title": "Podkasti",
+    "phrasings": [
+      "gde mogu da slušam podkaste",
+      "pokaži mi podkaste iz zajednice",
+      "otvori podkaste u media hubu"
+    ]
   },
   "COMM.MEDIA_SHORTS": {
-    "title": "Kratki video snimci"
+    "title": "Kratki video snimci",
+    "phrasings": [
+      "pokaži mi kratke video klipove",
+      "otvori shorts",
+      "gde su kratki snimci zajednice"
+    ]
   },
   "COMM.MEMBERS": {
-    "title": "Članovi zajednice"
+    "title": "Članovi zajednice",
+    "phrasings": [
+      "pokaži mi članove Maxina zajednice",
+      "ko je još u zajednici",
+      "gde mogu da pronađem nekog člana"
+    ]
   },
   "COMM.OPEN_ASKS": {
-    "title": "Otvoreni zahtevi"
+    "title": "Otvoreni zahtevi",
+    "phrasings": [
+      "pokaži otvorene zahteve članova",
+      "šta ljudi traže pomoć u zajednici",
+      "gde su open asks"
+    ]
   },
   "COMM.OVERVIEW": {
-    "title": "Zajednica"
+    "title": "Zajednica",
+    "phrasings": [
+      "otvori zajednicu",
+      "odvedi me u Maxina zajednicu",
+      "pokaži mi community deo"
+    ]
   },
   "COMM.TALK_TO_VITANA": {
-    "title": "Razgovaraj sa Vitana"
+    "title": "Razgovaraj sa Vitana",
+    "phrasings": [
+      "hoću da kontaktiram Vitana tim",
+      "otvori stranicu za razgovor sa Vitanom",
+      "gde mogu da pošaljem poruku Vitani"
+    ]
   },
   "CONNECTORS.AGENT": {
-    "title": "Autopilot konektori"
+    "title": "Autopilot konektori",
+    "phrasings": [
+      "pokaži Autopilot konektore",
+      "gde mogu da povežem servise za Autopilot",
+      "otvori Autopilot integracije"
+    ]
   },
   "CONNECTORS.AI": {
-    "title": "AI konektori"
+    "title": "AI konektori",
+    "phrasings": [
+      "pokaži AI konektore",
+      "gde mogu da povežem još neki AI alat",
+      "otvori integracije za veštačku inteligenciju"
+    ]
   },
   "CONNECTORS.FITNESS": {
-    "title": "Fitnes konektori"
+    "title": "Fitnes konektori",
+    "phrasings": [
+      "gde mogu da povežem fitnes traker",
+      "poveži moj pametni sat",
+      "otvori fitnes konektore"
+    ]
   },
   "CONNECTORS.HEALTH": {
-    "title": "Zdravstveni konektori"
+    "title": "Zdravstveni konektori",
+    "phrasings": [
+      "poveži moju zdravstvenu aplikaciju",
+      "gde mogu da linkujem Apple Health ili Google Fit",
+      "otvori zdravstvene konektore"
+    ]
   },
   "CONNECTORS.MEDIA": {
-    "title": "Konektori za muziku i video"
+    "title": "Konektori za muziku i video",
+    "phrasings": [
+      "poveži Spotify",
+      "gde mogu da linkujem muzičke i video aplikacije",
+      "otvori konektore za muziku i video"
+    ]
   },
   "CONNECTORS.OTHER": {
-    "title": "Ostali konektori"
+    "title": "Ostali konektori",
+    "phrasings": [
+      "pokaži mi ostale konektore",
+      "ima li još nekih integracija",
+      "otvori ostale integracije"
+    ]
   },
   "CONNECTORS.PRODUCTIVITY": {
-    "title": "Konektori za mejl i kalendar"
+    "title": "Konektori za mejl i kalendar",
+    "phrasings": [
+      "poveži moj mejl",
+      "gde mogu da povežem Google kalendar",
+      "otvori konektore za mejl i kalendar"
+    ]
   },
   "CONNECTORS.SOCIAL": {
-    "title": "Konektori za društvene mreže"
+    "title": "Konektori za društvene mreže",
+    "phrasings": [
+      "poveži moje društvene mreže",
+      "gde mogu da linkujem Instagram",
+      "otvori konektore za društvene mreže"
+    ]
   },
   "DISCOVER.AI_PICKS": {
-    "title": "AI izbor"
+    "title": "AI izbor",
+    "phrasings": [
+      "šta mi AI preporučuje",
+      "pokaži mi AI picks",
+      "koji proizvodi su predloženi za mene"
+    ]
   },
   "DISCOVER.CART": {
-    "title": "Korpa"
+    "title": "Korpa",
+    "phrasings": [
+      "otvori moju korpu",
+      "šta imam u korpi",
+      "pokaži mi šta sam dodao u košaricu"
+    ]
   },
   "DISCOVER.CATEGORIES": {
-    "title": "Kategorije"
+    "title": "Kategorije",
+    "phrasings": [
+      "pokaži mi kategorije proizvoda",
+      "gde mogu da pretražujem po kategorijama",
+      "otvori kategorije u shopu"
+    ]
   },
   "DISCOVER.DEALS": {
-    "title": "Ponude i popusti"
+    "title": "Ponude i popusti",
+    "phrasings": [
+      "ima li kakvih popusta",
+      "pokaži mi ponude i akcije",
+      "gde su specijalne ponude za članove"
+    ]
   },
   "DISCOVER.DEALS_AI": {
-    "title": "AI izbor dilova"
+    "title": "AI izbor dilova",
+    "phrasings": [
+      "pokaži mi akcije koje je AI izabrao za mene",
+      "otvori AI deal picks",
+      "koje ponude mi AI preporučuje"
+    ]
   },
   "DISCOVER.DEALS_SAVED": {
-    "title": "Sačuvani dilovi"
+    "title": "Sačuvani dilovi",
+    "phrasings": [
+      "pokaži mi sačuvane ponude",
+      "gde su akcije koje sam bookmarkovao",
+      "otvori moje sačuvane dealove"
+    ]
   },
   "DISCOVER.DEALS_TRENDING": {
-    "title": "Popularni dilovi"
+    "title": "Popularni dilovi",
+    "phrasings": [
+      "koje ponude su trenutno popularne",
+      "pokaži mi trending dealove",
+      "šta je u trendu od akcija"
+    ]
   },
   "DISCOVER.DOCTORS_COACHES": {
-    "title": "Lekari i coachevi"
+    "title": "Lekari i coachevi",
+    "phrasings": [
+      "gde mogu da nađem doktora ili kouča",
+      "pokaži mi zdravstvene kouče",
+      "otvori doktore i kouče"
+    ]
   },
   "DISCOVER.MARKETPLACE": {
-    "title": "Pijaca"
+    "title": "Pijaca",
+    "phrasings": [
+      "otvori marketplace",
+      "gde mogu da kupujem i prodajem u zajednici",
+      "pokaži mi Maxina marketplace"
+    ]
   },
   "DISCOVER.MARKETPLACE_MINE": {
-    "title": "Moj Market"
+    "title": "Moj Market",
+    "phrasings": [
+      "pokaži moje oglase na marketplaceu",
+      "gde su moji zahtevi i ponude na marketplaceu",
+      "otvori moj marketplace"
+    ]
   },
   "DISCOVER.MARKETPLACE_OPEN": {
-    "title": "Otvoreni zahtevi"
+    "title": "Otvoreni zahtevi",
+    "phrasings": [
+      "pokaži otvorene zahteve na marketplaceu",
+      "koji oglasi su dostupni svima",
+      "otvori open requests na marketplaceu"
+    ]
   },
   "DISCOVER.MY_TICKETS": {
-    "title": "Moje karte"
+    "title": "Moje karte",
+    "phrasings": [
+      "pokaži mi moje karte",
+      "gde su tiketi koje sam kupio za događaje",
+      "otvori moje tikete"
+    ]
   },
   "DISCOVER.ORDERS": {
-    "title": "Moje porudžbine"
+    "title": "Moje porudžbine",
+    "phrasings": [
+      "pokaži mi moje porudžbine",
+      "gde mogu da pratim svoju narudžbinu",
+      "šta sam sve naručio"
+    ]
   },
   "DISCOVER.ORDERS_ACTIVE": {
-    "title": "Aktivne porudžbine"
+    "title": "Aktivne porudžbine",
+    "phrasings": [
+      "pokaži mi aktivne porudžbine",
+      "koje narudžbine su još u toku",
+      "šta mi je još na putu"
+    ]
   },
   "DISCOVER.ORDERS_HISTORY": {
-    "title": "Istorija porudžbina"
+    "title": "Istorija porudžbina",
+    "phrasings": [
+      "pokaži mi istoriju porudžbina",
+      "gde su moje prethodne narudžbine",
+      "otvori stare porudžbine"
+    ]
   },
   "DISCOVER.OVERVIEW": {
-    "title": "Istraži"
+    "title": "Istraži",
+    "phrasings": [
+      "otvori discover",
+      "gde mogu da kupim nešto",
+      "pokaži mi shop"
+    ]
   },
   "DISCOVER.PRODUCT_DETAIL": {
     "title": "Detalji proizvoda"
@@ -249,97 +644,252 @@
     "title": "Profil pružaoca usluga"
   },
   "DISCOVER.SHARE_EARN": {
-    "title": "Podeli i zaradi"
+    "title": "Podeli i zaradi",
+    "phrasings": [
+      "kako mogu da zaradim deljenjem proizvoda",
+      "otvori share and earn",
+      "gde mogu da vidim kako da zaradim nagrade"
+    ]
   },
   "DISCOVER.SHOP": {
-    "title": "Prodavnica"
+    "title": "Prodavnica",
+    "phrasings": [
+      "otvori video shop",
+      "gde su video snimci sa proizvodima koje mogu da kupim",
+      "pokaži mi shoppable videe"
+    ]
   },
   "DISCOVER.SUPPLEMENTS": {
-    "title": "Suplementi"
+    "title": "Suplementi",
+    "phrasings": [
+      "gde mogu da kupim suplemente",
+      "pokaži mi suplemente u shopu",
+      "otvori vitamine i suplemente"
+    ]
   },
   "DISCOVER.WELLNESS_SERVICES": {
-    "title": "Wellness usluge"
+    "title": "Wellness usluge",
+    "phrasings": [
+      "pokaži mi wellness usluge",
+      "gde mogu da rezervišem masažu",
+      "nađi mi neki wellness tretman"
+    ]
   },
   "HEALTH.BIOLOGY_OMICS": {
-    "title": "Moji omiks podaci"
+    "title": "Moji omiks podaci",
+    "phrasings": [
+      "pokaži mi moje omics podatke",
+      "gde su moji genetski rezultati",
+      "otvori omics tab u mom biologiji"
+    ]
   },
   "HEALTH.BIOLOGY_SUPPLEMENTS": {
-    "title": "Moji suplementi (Biologija)"
+    "title": "Moji suplementi (Biologija)",
+    "phrasings": [
+      "koji suplementi su u mom biološkom profilu",
+      "pokaži mi suplemente iz moje biologije",
+      "otvori suplemente u mom biology profilu"
+    ]
   },
   "HEALTH.CONDITIONS": {
-    "title": "Zdravstvena stanja"
+    "title": "Zdravstvena stanja",
+    "phrasings": [
+      "pokaži mi moja zdravstvena stanja",
+      "gde mogu da upravljam dijagnozama",
+      "otvori health conditions"
+    ]
   },
   "HEALTH.EDUCATION": {
-    "title": "Edukacija i nauka"
+    "title": "Edukacija i nauka",
+    "phrasings": [
+      "pokaži mi edukativne zdravstvene sadržaje",
+      "gde mogu da učim o longevityju",
+      "otvori naučne članke o zdravlju"
+    ]
   },
   "HEALTH.EDUCATION_PODCASTS": {
-    "title": "Edukativni podkasti"
+    "title": "Edukativni podkasti",
+    "phrasings": [
+      "pokaži mi edukativne podkaste o zdravlju",
+      "gde su podkasti za učenje o longevityju",
+      "otvori health learning podkaste"
+    ]
   },
   "HEALTH.EDUCATION_VIDEOS": {
-    "title": "Edukativni video snimci"
+    "title": "Edukativni video snimci",
+    "phrasings": [
+      "pokaži mi edukativne videe o zdravlju",
+      "gde su video lekcije o longevityju",
+      "otvori health learning videe"
+    ]
   },
   "HEALTH.MEDICAL": {
-    "title": "Medicinski podaci"
+    "title": "Medicinski podaci",
+    "phrasings": [
+      "pokaži mi moje medicinske nalaze",
+      "gde su moji medicinski dokumenti",
+      "otvori medicinske izveštaje"
+    ]
   },
   "HEALTH.MY_BIOLOGY": {
-    "title": "Moja biologija"
+    "title": "Moja biologija",
+    "phrasings": [
+      "pokaži mi moje biološke pokazatelje",
+      "gde mogu da vidim rezultate krvnih analiza",
+      "otvori moje laboratorijske nalaze"
+    ]
   },
   "HEALTH.OVERVIEW": {
-    "title": "Zdravlje"
+    "title": "Zdravlje",
+    "phrasings": [
+      "otvori zdravlje",
+      "pokaži mi pregled mog zdravlja",
+      "gde mogu da pratim svoje zdravlje"
+    ]
   },
   "HEALTH.PILLARS": {
-    "title": "Stubovi zdravlja"
+    "title": "Stubovi zdravlja",
+    "phrasings": [
+      "pokaži stubove zdravlja",
+      "koji su stubovi dugovečnosti",
+      "otvori zdravstvene stubove"
+    ]
   },
   "HEALTH.PLANS": {
-    "title": "Moji planovi"
+    "title": "Moji planovi",
+    "phrasings": [
+      "otvori moje zdravstvene planove",
+      "pokaži mi moje planove",
+      "gde su moje zdravstvene rutine"
+    ]
   },
   "HEALTH.PLANS_EXERCISE": {
-    "title": "Planovi treninga"
+    "title": "Planovi treninga",
+    "phrasings": [
+      "pokaži mi plan treninga",
+      "otvori moj plan vežbanja",
+      "gde mogu da vidim plan za fitnes"
+    ]
   },
   "HEALTH.PLANS_HYDRATION": {
-    "title": "Planovi hidratacije"
+    "title": "Planovi hidratacije",
+    "phrasings": [
+      "pokaži mi plan hidratacije",
+      "otvori moj plan za vodu",
+      "gde mogu da vidim koliko treba da pijem"
+    ]
   },
   "HEALTH.PLANS_MENTAL": {
-    "title": "Mentalni planovi"
+    "title": "Mentalni planovi",
+    "phrasings": [
+      "pokaži mi plan za mentalno zdravlje",
+      "otvori moj plan za mindfulness",
+      "gde su planovi za mentalno blagostanje"
+    ]
   },
   "HEALTH.PLANS_NUTRITION": {
-    "title": "Planovi ishrane"
+    "title": "Planovi ishrane",
+    "phrasings": [
+      "pokaži mi plan ishrane",
+      "otvori moj plan obroka",
+      "gde mogu da vidim šta treba da jedem"
+    ]
   },
   "HEALTH.PLANS_SLEEP": {
-    "title": "Planovi spavanja"
+    "title": "Planovi spavanja",
+    "phrasings": [
+      "pokaži mi plan spavanja",
+      "otvori moju rutinu za san",
+      "gde mogu da vidim plan za spavanje"
+    ]
   },
   "HEALTH.SERVICES_HUB": {
-    "title": "Centar zdravstvenih usluga"
+    "title": "Centar zdravstvenih usluga",
+    "phrasings": [
+      "otvori zdravstvene usluge",
+      "gde mogu da rezervišem zdravstvenu uslugu",
+      "pokaži mi ponudu zdravstvenih usluga u Maxina zajednici"
+    ]
   },
   "HEALTH.SERVICES_INSURANCE": {
-    "title": "Podrška za osiguranje"
+    "title": "Podrška za osiguranje",
+    "phrasings": [
+      "treba mi pomoć oko zdravstvenog osiguranja",
+      "otvori podršku za osiguranje",
+      "gde mogu da nađem pomoć za osiguranje"
+    ]
   },
   "HEALTH.SERVICES_MEDICAL": {
-    "title": "Medicinske usluge"
+    "title": "Medicinske usluge",
+    "phrasings": [
+      "pokaži mi medicinske usluge",
+      "gde mogu da zakažem medicinski pregled",
+      "otvori medicinske usluge"
+    ]
   },
   "HEALTH.SERVICES_MINE": {
-    "title": "Moje usluge"
+    "title": "Moje usluge",
+    "phrasings": [
+      "pokaži usluge koje koristim",
+      "gde su moje zakazane zdravstvene usluge",
+      "otvori moje zdravstvene usluge"
+    ]
   },
   "HEALTH.SERVICES_WELLNESS": {
-    "title": "Velnes programi"
+    "title": "Velnes programi",
+    "phrasings": [
+      "pokaži mi wellness programe",
+      "gde mogu da se prijavim za wellness program",
+      "otvori programe za dobrobit"
+    ]
   },
   "HEALTH.SUPPLEMENTS": {
-    "title": "Zdravstveni suplementi"
+    "title": "Zdravstveni suplementi",
+    "phrasings": [
+      "pokaži mi moje suplemente",
+      "koje suplemente uzimam",
+      "otvori listu mojih suplemenata"
+    ]
   },
   "HEALTH.VITANA_INDEX": {
-    "title": "Vitana indeks"
+    "title": "Vitana indeks",
+    "phrasings": [
+      "otvori moj Vitana Index",
+      "koliki je moj Vitana Index",
+      "pokaži mi moj indeks dugovečnosti"
+    ]
   },
   "HOME.NEWS_ALL": {
-    "title": "Sve vesti"
+    "title": "Sve vesti",
+    "phrasings": [
+      "pokaži sve vesti",
+      "otvori sve izvore vesti",
+      "gde mogu da vidim sve vesti"
+    ]
   },
   "HOME.NEWS_COMMUNITY": {
-    "title": "Vesti iz zajednice"
+    "title": "Vesti iz zajednice",
+    "phrasings": [
+      "otvori vesti iz zajednice",
+      "šta ima novo u Maxina zajednici",
+      "pokaži mi vesti od članova zajednice"
+    ]
   },
   "HOME.OVERVIEW": {
-    "title": "Vesti o dugovečnosti"
+    "title": "Vesti o dugovečnosti",
+    "phrasings": [
+      "pokaži mi najnovije vesti",
+      "otvori početni ekran",
+      "vodi me na početnu stranicu"
+    ]
   },
   "INBOX.ARCHIVED": {
-    "title": "Arhivirane poruke"
+    "title": "Arhivirane poruke",
+    "phrasings": [
+      "pokaži mi arhivirane poruke",
+      "gde su moje stare arhivirane poruke",
+      "otvori arhivu poruka"
+    ]
   },
   "INBOX.CONVERSATION": {
     "title": "Razgovor"
@@ -348,43 +898,103 @@
     "title": "Grupni čet"
   },
   "INBOX.INSPIRATION": {
-    "title": "Inspiracija"
+    "title": "Inspiracija",
+    "phrasings": [
+      "pokaži mi inspirativne poruke",
+      "gde su moje dnevne inspiracije",
+      "otvori inspiraciju"
+    ]
   },
   "INBOX.OVERVIEW": {
-    "title": "Prijemno sanduče"
+    "title": "Prijemno sanduče",
+    "phrasings": [
+      "otvori moje poruke",
+      "gde mogu da vidim razgovore",
+      "imam li novih poruka"
+    ]
   },
   "INTENTS.BOARD": {
-    "title": "Tabla namera"
+    "title": "Tabla namera",
+    "phrasings": [
+      "otvori oglasnu tablu zajednice",
+      "pokaži šta drugi traže u zajednici",
+      "gde mogu da vidim sve objave u zajednici"
+    ]
   },
   "INTENTS.MATCH_DETAIL": {
     "title": "Detalji meča"
   },
   "INTENTS.MINE": {
-    "title": "Moji intenti"
+    "title": "Moji intenti",
+    "phrasings": [
+      "pokaži moje objave u zajednici",
+      "šta sam ja postavio na tabli",
+      "gde su moji intenti"
+    ]
   },
   "LIFE_COMPASS.OVERLAY": {
-    "title": "Životni kompas"
+    "title": "Životni kompas",
+    "phrasings": [
+      "otvori moj Life Compass",
+      "gde mogu da vidim svoje životne ciljeve",
+      "pokaži mi moje ciljeve"
+    ]
   },
   "MEMORY.DAILY_DIARY": {
-    "title": "Tok unosa za jedan dan"
+    "title": "Tok unosa za jedan dan",
+    "phrasings": [
+      "upiši današnji dan u dnevnik",
+      "zabeležimo danas",
+      "otvori unos za danas"
+    ]
   },
   "MEMORY.DIARY": {
-    "title": "Dnevnik"
+    "title": "Dnevnik",
+    "phrasings": [
+      "otvori moj dnevnik",
+      "gde mogu da pišem dnevnik",
+      "pokaži mi unose iz dnevnika"
+    ]
   },
   "MEMORY.DIARY_BUGS": {
-    "title": "Prijave grešaka"
+    "title": "Prijave grešaka",
+    "phrasings": [
+      "gde mogu da prijavim grešku",
+      "pokaži mi prijavljene bagove",
+      "otvori prijavu greške iz dnevnika"
+    ]
   },
   "MEMORY.OVERVIEW": {
-    "title": "Vrt sećanja"
+    "title": "Vrt sećanja",
+    "phrasings": [
+      "otvori moj Memory Garden",
+      "šta sve pamtiš o meni",
+      "pokaži mi moja sećanja"
+    ]
   },
   "MEMORY.PERMISSIONS": {
-    "title": "Dozvole za memoriju"
+    "title": "Dozvole za memoriju",
+    "phrasings": [
+      "šta smeš da pamtiš o meni",
+      "otvori podešavanja memorije",
+      "kontroliši šta pamtiš"
+    ]
   },
   "MEMORY.RECALL": {
-    "title": "Priseti se i pretraži"
+    "title": "Priseti se i pretraži",
+    "phrasings": [
+      "pretraži moja sećanja",
+      "nađi nešto što sam ti rekao",
+      "otvori pretragu memorije"
+    ]
   },
   "MEMORY.TIMELINE": {
-    "title": "Vremenska linija"
+    "title": "Vremenska linija",
+    "phrasings": [
+      "pokaži mi moju vremensku liniju",
+      "otvori tajmlajn mojih sećanja",
+      "gde mogu da vidim hronologiju svog života"
+    ]
   },
   "NEWS.DETAIL": {
     "title": "Članak vesti"
@@ -393,7 +1003,12 @@
     "title": "Detalji događaja"
   },
   "OVERLAY.MASTER_ACTION": {
-    "title": "Brze akcije"
+    "title": "Brze akcije",
+    "phrasings": [
+      "otvori brze akcije",
+      "pokaži meni brzih akcija",
+      "šta mogu brzo da uradim ovde"
+    ]
   },
   "OVERLAY.MEETUP_DRAWER": {
     "title": "Detalji druženja"
@@ -402,16 +1017,36 @@
     "title": "Pregled profila"
   },
   "OVERLAY.VITANA_INDEX": {
-    "title": "Vitana indeks"
+    "title": "Vitana indeks",
+    "phrasings": [
+      "brzi pogled na moj Vitana Index",
+      "otvori Vitana Index panel",
+      "pokaži mi breakdown indeksa"
+    ]
   },
   "OVERLAY.WALLET_POPUP": {
-    "title": "Brzi novčanik"
+    "title": "Brzi novčanik",
+    "phrasings": [
+      "brzi pogled na novčanik",
+      "otvori popup novčanika",
+      "koliko imam na novčaniku"
+    ]
   },
   "PROFILE.ME": {
-    "title": "Moj profil"
+    "title": "Moj profil",
+    "phrasings": [
+      "otvori moj profil",
+      "gde mogu da promenim profilnu sliku",
+      "uredi moj profil"
+    ]
   },
   "PROFILE.PRIVACY": {
-    "title": "Vidljivost profila"
+    "title": "Vidljivost profila",
+    "phrasings": [
+      "ko može da vidi moj profil",
+      "otvori vidljivost profila",
+      "podesi ko vidi moje podatke"
+    ]
   },
   "PROFILE.PUBLIC": {
     "title": "Javni profil"
@@ -420,138 +1055,358 @@
     "title": "Profil sa sidrom podudaranja"
   },
   "PUBLIC.LANDING": {
-    "title": "Vitanaland početna stranica"
+    "title": "Vitanaland početna stranica",
+    "phrasings": [
+      "idi na početnu stranicu Vitanaland",
+      "otvori Maxina landing page",
+      "pokaži mi ulaznu stranicu Vitanaland"
+    ]
   },
   "PUBLIC.PRIVACY": {
-    "title": "Politika privatnosti"
+    "title": "Politika privatnosti",
+    "phrasings": [
+      "pokaži mi politiku privatnosti",
+      "kako rukujete mojim podacima",
+      "otvori privacy policy"
+    ]
   },
   "PUBLIC.TERMS": {
-    "title": "Uslovi korišćenja"
+    "title": "Uslovi korišćenja",
+    "phrasings": [
+      "pokaži mi uslove korišćenja",
+      "otvori pravila i uslove",
+      "gde su terms and conditions"
+    ]
   },
   "REMINDERS.OVERVIEW": {
-    "title": "Podsetnici"
+    "title": "Podsetnici",
+    "phrasings": [
+      "pokaži mi moje podsetnike",
+      "koje podsetnike imam",
+      "otvori podsetnike"
+    ]
   },
   "SEARCH.OVERVIEW": {
-    "title": "Pretraga"
+    "title": "Pretraga",
+    "phrasings": [
+      "otvori pretragu",
+      "želim da pretražim aplikaciju",
+      "gde mogu nešto da potražim"
+    ]
   },
   "SETTINGS.BILLING": {
-    "title": "Naplata"
+    "title": "Naplata",
+    "phrasings": [
+      "otvori naplatu",
+      "gde mogu da upravljam plaćanjima",
+      "pokaži mi podešavanja naplate"
+    ]
   },
   "SETTINGS.BILLING_CREATOR": {
-    "title": "Isplate za kreatore"
+    "title": "Isplate za kreatore",
+    "phrasings": [
+      "pokaži mi moje kreatorske isplate",
+      "kada ću biti plaćen kao kreator",
+      "otvori isplate za kreatore"
+    ]
   },
   "SETTINGS.BILLING_INVOICES": {
-    "title": "Fakture i računi"
+    "title": "Fakture i računi",
+    "phrasings": [
+      "gde mogu da preuzmem fakture",
+      "pokaži mi moje račune",
+      "otvori fakture i priznanice"
+    ]
   },
   "SETTINGS.BILLING_PAYMENT": {
-    "title": "Način plaćanja"
+    "title": "Način plaćanja",
+    "phrasings": [
+      "kako da promenim način plaćanja",
+      "gde mogu da ažuriram svoju karticu",
+      "otvori podešavanja plaćanja"
+    ]
   },
   "SETTINGS.BILLING_PLAN": {
-    "title": "Trenutni plan"
+    "title": "Trenutni plan",
+    "phrasings": [
+      "koji plan koristim",
+      "gde mogu da vidim svoju pretplatu",
+      "pokaži mi moj trenutni plan"
+    ]
   },
   "SETTINGS.CONNECTED_APPS": {
-    "title": "Konektori i povezane aplikacije"
+    "title": "Konektori i povezane aplikacije",
+    "phrasings": [
+      "koje aplikacije su povezane sa mojim nalogom",
+      "pokaži mi konektore i povezane aplikacije",
+      "gde mogu da upravljam povezanim aplikacijama"
+    ]
   },
   "SETTINGS.LIMITATIONS": {
-    "title": "Zdravstvena ograničenja"
+    "title": "Zdravstvena ograničenja",
+    "phrasings": [
+      "gde unosim svoje zdravstvene ograničenja",
+      "kako da dodam alergije i povrede",
+      "pokaži mi gde se podešavaju zdravstvena ograničenja"
+    ]
   },
   "SETTINGS.NOTIFICATIONS": {
-    "title": "Obaveštenja"
+    "title": "Obaveštenja",
+    "phrasings": [
+      "kako da isključim obaveštenja",
+      "gde su podešavanja notifikacija",
+      "ne želim više da primam push obaveštenja"
+    ]
   },
   "SETTINGS.OVERVIEW": {
-    "title": "Podešavanja"
+    "title": "Podešavanja",
+    "phrasings": [
+      "otvori podešavanja",
+      "pokaži mi moja podešavanja naloga",
+      "gde su podešavanja aplikacije"
+    ]
   },
   "SETTINGS.PREFERENCES": {
-    "title": "Preference"
+    "title": "Preference",
+    "phrasings": [
+      "otvori moje preference",
+      "gde mogu da podesim preference aplikacije",
+      "pokaži preference"
+    ]
   },
   "SETTINGS.PREFERENCES_ACCESSIBILITY": {
-    "title": "Pristupačnost"
+    "title": "Pristupačnost",
+    "phrasings": [
+      "gde su podešavanja pristupačnosti",
+      "kako da povećam tekst u aplikaciji",
+      "otvori opcije pristupačnosti"
+    ]
   },
   "SETTINGS.PREFERENCES_APPEARANCE": {
-    "title": "Izgled"
+    "title": "Izgled",
+    "phrasings": [
+      "kako da prebacim na tamni mod",
+      "gde mogu da promenim temu aplikacije",
+      "otvori podešavanja izgleda"
+    ]
   },
   "SETTINGS.PREFERENCES_LANGUAGE": {
-    "title": "Jezik i region"
+    "title": "Jezik i region",
+    "phrasings": [
+      "gde mogu da promenim jezik aplikacije",
+      "kako da prebacim aplikaciju na nemački",
+      "otvori podešavanja jezika i regiona"
+    ]
   },
   "SETTINGS.PRIVACY": {
-    "title": "Podešavanja privatnosti"
+    "title": "Podešavanja privatnosti",
+    "phrasings": [
+      "otvori podešavanja privatnosti",
+      "gde mogu da vidim ko ima pristup mojim podacima",
+      "pokaži mi opcije privatnosti"
+    ]
   },
   "SETTINGS.PRIVACY_DATA": {
-    "title": "Deljenje podataka"
+    "title": "Deljenje podataka",
+    "phrasings": [
+      "koje podatke delim sa aplikacijom",
+      "gde mogu da podesim deljenje podataka",
+      "pokaži mi podešavanja deljenih podataka"
+    ]
   },
   "SETTINGS.PRIVACY_SECURITY": {
-    "title": "Bezbednost naloga"
+    "title": "Bezbednost naloga",
+    "phrasings": [
+      "kako da promenim lozinku",
+      "gde su podešavanja bezbednosti naloga",
+      "otvori dvofaktorsku autentifikaciju"
+    ]
   },
   "SETTINGS.PRIVACY_VISIBILITY": {
-    "title": "Vidljivost"
+    "title": "Vidljivost",
+    "phrasings": [
+      "podešavanja vidljivosti naloga",
+      "gde mogu da podesim vidljivost profila",
+      "kako da sakrijem profil od pretrage"
+    ]
   },
   "SETTINGS.SOCIAL": {
-    "title": "Društveni nalozi"
+    "title": "Društveni nalozi",
+    "phrasings": [
+      "pokaži mi povezane društvene mreže",
+      "gde mogu da povežem svoje društvene naloge",
+      "otvori podešavanja društvenih mreža"
+    ]
   },
   "SETTINGS.SUPPORT": {
-    "title": "Podrška"
+    "title": "Podrška",
+    "phrasings": [
+      "treba mi pomoć sa aplikacijom",
+      "otvori podršku",
+      "gde mogu da pronađem pomoć"
+    ]
   },
   "SETTINGS.SUPPORT_COMMUNITY": {
-    "title": "Pomoć zajednice"
+    "title": "Pomoć zajednice",
+    "phrasings": [
+      "gde mogu da pitam zajednicu za pomoć",
+      "otvori forum zajednice",
+      "pokaži mi pomoć od članova zajednice"
+    ]
   },
   "SETTINGS.SUPPORT_CONTACT": {
-    "title": "Kontaktiraj podršku"
+    "title": "Kontaktiraj podršku",
+    "phrasings": [
+      "kako da kontaktiram podršku",
+      "gde mogu da pošaljem poruku timu podrške",
+      "hoću da razgovaram sa nekim iz podrške"
+    ]
   },
   "SETTINGS.SUPPORT_FAQ": {
-    "title": "Česta pitanja podrške"
+    "title": "Česta pitanja podrške",
+    "phrasings": [
+      "pokaži mi često postavljana pitanja",
+      "gde su FAQ članci",
+      "otvori bazu znanja"
+    ]
   },
   "SETTINGS.TENANT_ROLE": {
-    "title": "Tenant i uloga"
+    "title": "Tenant i uloga",
+    "phrasings": [
+      "kako da promenim svoju ulogu",
+      "u kojoj sam zajednici trenutno",
+      "gde mogu da prebacim tenant ili ulogu"
+    ]
   },
   "SHARING.CAMPAIGN_DETAIL": {
     "title": "Detalji kampanje"
   },
   "SHARING.CAMPAIGNS": {
-    "title": "Kampanje"
+    "title": "Kampanje",
+    "phrasings": [
+      "pokaži mi moje kampanje deljenja",
+      "gde mogu da vidim aktivne kampanje",
+      "otvori moje kampanje"
+    ]
   },
   "SHARING.DATA_CONSENT": {
-    "title": "Podaci i saglasnost"
+    "title": "Podaci i saglasnost",
+    "phrasings": [
+      "gde mogu da vidim šta sam pristao da delim",
+      "otvori podešavanja podataka i pristanka",
+      "pokaži mi moje saglasnosti"
+    ]
   },
   "SHARING.DISTRIBUTION": {
-    "title": "Distribucija"
+    "title": "Distribucija",
+    "phrasings": [
+      "gde mogu da vidim kako se moj sadržaj distribuira",
+      "pokaži mi distribuciju sadržaja",
+      "otvori distribuciju"
+    ]
   },
   "SHARING.OVERVIEW": {
-    "title": "Podeli"
+    "title": "Podeli",
+    "phrasings": [
+      "otvori deljenje",
+      "kako da podelim Maxinu sa prijateljima",
+      "pokaži mi opcije deljenja"
+    ]
   },
   "WALLET.ACTIONS": {
-    "title": "Akcije novčanika"
+    "title": "Akcije novčanika",
+    "phrasings": [
+      "kako da pošaljem kredite",
+      "gde mogu da dopunim novčanik",
+      "otvori akcije novčanika"
+    ]
   },
   "WALLET.ACTIVITY": {
-    "title": "Aktivnost novčanika"
+    "title": "Aktivnost novčanika",
+    "phrasings": [
+      "pokaži mi istoriju transakcija",
+      "gde mogu da vidim aktivnost novčanika",
+      "otvori moje transakcije"
+    ]
   },
   "WALLET.BALANCE": {
-    "title": "Stanje i pogodnosti"
+    "title": "Stanje i pogodnosti",
+    "phrasings": [
+      "koliko kredita imam",
+      "gde mogu da vidim stanje na novčaniku",
+      "pokaži mi moje pogodnosti i balans"
+    ]
   },
   "WALLET.BALANCE_MEMBERSHIP": {
-    "title": "Članstvo"
+    "title": "Članstvo",
+    "phrasings": [
+      "pokaži mi status članstva u novčaniku",
+      "gde je kartica sa članstvom",
+      "otvori članstvo u novčaniku"
+    ]
   },
   "WALLET.BALANCE_OPTIMIZATION": {
-    "title": "Optimizacija"
+    "title": "Optimizacija",
+    "phrasings": [
+      "kako da optimizujem stanje na novčaniku",
+      "gde mogu da vidim savete za uštedu kredita",
+      "pokaži mi optimizaciju balansa"
+    ]
   },
   "WALLET.BALANCE_TOKENS": {
-    "title": "Tokeni"
+    "title": "Tokeni",
+    "phrasings": [
+      "koliko tokena imam",
+      "pokaži mi moje tokene",
+      "gde su moji tokeni u novčaniku"
+    ]
   },
   "WALLET.OVERVIEW": {
-    "title": "Novčanik"
+    "title": "Novčanik",
+    "phrasings": [
+      "otvori moj Maxina novčanik",
+      "pokaži mi novčanik",
+      "gde su moj balans i nagrade u aplikaciji"
+    ]
   },
   "WALLET.REWARDS": {
-    "title": "Nagrade i provizije"
+    "title": "Nagrade i provizije",
+    "phrasings": [
+      "koliko sam zaradio od preporuka",
+      "gde mogu da vidim svoje nagrade i provizije",
+      "pokaži mi moje zarade"
+    ]
   },
   "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Uvidi u nagrade"
+    "title": "Uvidi u nagrade",
+    "phrasings": [
+      "kako da zaradim više nagrada",
+      "pokaži mi uvide o nagradama",
+      "gde su saveti za zaradu nagrada"
+    ]
   },
   "WALLET.REWARDS_PENDING": {
-    "title": "Nagrade na čekanju"
+    "title": "Nagrade na čekanju",
+    "phrasings": [
+      "koje nagrade još nisam primio",
+      "pokaži mi nagrade na čekanju",
+      "gde su nagrade koje još nisu isplaćene"
+    ]
   },
   "WALLET.REWARDS_REFERRAL": {
-    "title": "Nagrade za preporuke"
+    "title": "Nagrade za preporuke",
+    "phrasings": [
+      "šta sam dobio za pozivanje prijatelja",
+      "pokaži mi nagrade od referala",
+      "gde su moje referral nagrade"
+    ]
   },
   "WALLET.SUBSCRIPTIONS": {
-    "title": "Pretplate"
+    "title": "Pretplate",
+    "phrasings": [
+      "koje pretplate imam aktivne",
+      "pokaži mi moje pretplate",
+      "gde mogu da vidim šta plaćam mesečno"
+    ]
   }
 }
