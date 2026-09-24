@@ -1,246 +1,640 @@
 {
   "AI.COMPANION": {
-    "title": "AI伙伴"
+    "title": "AI伙伴",
+    "phrasings": [
+      "打开AI伴侣",
+      "我想和Vitana单独聊聊",
+      "AI伴侣在哪里"
+    ]
   },
   "AI.DAILY_SUMMARY": {
-    "title": "每日总结"
+    "title": "每日总结",
+    "phrasings": [
+      "给我看今天的每日总结",
+      "今天发生了什么，帮我总结一下",
+      "我的每日摘要在哪里"
+    ]
   },
   "AI.INSIGHTS": {
-    "title": "AI 洞察"
+    "title": "AI 洞察",
+    "phrasings": [
+      "显示我的AI洞察",
+      "你从我的数据里发现了什么规律",
+      "我的个性化洞察在哪里"
+    ]
   },
   "AI.OVERVIEW": {
-    "title": "AI助手"
+    "title": "AI助手",
+    "phrasings": [
+      "打开AI助手功能区",
+      "显示所有AI功能",
+      "AI相关的功能在哪里"
+    ]
   },
   "AI.RECOMMENDATIONS": {
-    "title": "推荐"
+    "title": "推荐",
+    "phrasings": [
+      "给我看个性化推荐",
+      "你有什么建议适合我",
+      "我的专属推荐在哪里"
+    ]
   },
   "ASSISTANT.AI": {
-    "title": "AI"
+    "title": "AI",
+    "phrasings": [
+      "打开助手的AI标签页",
+      "显示文字助手设置",
+      "助手里的AI选项在哪里"
+    ]
   },
   "ASSISTANT.AUTOPILOT": {
-    "title": "Autopilot 与自动化"
+    "title": "Autopilot 与自动化",
+    "phrasings": [
+      "打开Autopilot设置",
+      "显示我的自动化任务",
+      "在哪里可以设置Autopilot"
+    ]
   },
   "ASSISTANT.OVERVIEW": {
-    "title": "Vitana 聊天"
+    "title": "Vitana 聊天",
+    "phrasings": [
+      "打开Vitana聊天窗口",
+      "我想用文字和Vitana对话",
+      "Vitana的聊天界面在哪里"
+    ]
   },
   "ASSISTANT.PROACTIVE": {
-    "title": "主动播报"
+    "title": "主动播报",
+    "phrasings": [
+      "在哪里可以控制你主动说话的时机",
+      "关掉主动发言功能",
+      "打开主动发言设置"
+    ]
   },
   "ASSISTANT.REFERRALS": {
-    "title": "推荐"
+    "title": "推荐",
+    "phrasings": [
+      "打开助手里的推荐奖励页面",
+      "显示助手的推荐记录",
+      "助手的推荐标签在哪里"
+    ]
   },
   "ASSISTANT.VOICE": {
-    "title": "语音"
+    "title": "语音",
+    "phrasings": [
+      "在哪里可以换你的声音",
+      "打开语音设置",
+      "我想修改Vitana的声音"
+    ]
   },
   "AUTH.ALKALMA_PORTAL": {
-    "title": "Alkalma 入口"
+    "title": "Alkalma 入口",
+    "phrasings": [
+      "打开Alkalma入口",
+      "我要注册Alkalma账号",
+      "Alkalma的登录页面在哪里"
+    ]
   },
   "AUTH.EARTHLINKS_PORTAL": {
-    "title": "Earthlinks 入口"
+    "title": "Earthlinks 入口",
+    "phrasings": [
+      "打开Earthlinks入口",
+      "我要加入Earthlinks",
+      "Earthlinks的注册页面在哪里"
+    ]
   },
   "AUTH.MAXINA_PORTAL": {
-    "title": "加入 MAXINA 社区"
+    "title": "加入 MAXINA 社区",
+    "phrasings": [
+      "我要注册账号",
+      "怎么加入Maxina社区",
+      "带我去登录页面"
+    ]
   },
   "AUTOPILOT.MY_JOURNEY": {
-    "title": "我的旅程"
+    "title": "我的旅程",
+    "phrasings": [
+      "打开My Journey",
+      "显示我的旅程安排",
+      "我的引导课程在哪里"
+    ]
   },
   "BUSINESS.ANALYTICS": {
-    "title": "业务分析"
+    "title": "业务分析",
+    "phrasings": [
+      "显示我的业务分析数据",
+      "我的Maxina业务表现怎么样",
+      "在哪里看业务统计"
+    ]
   },
   "BUSINESS.CLIENTS": {
-    "title": "我的客户"
+    "title": "我的客户",
+    "phrasings": [
+      "显示我的客户列表",
+      "我的客户都有哪些",
+      "在哪里管理我的客户"
+    ]
   },
   "BUSINESS.INSIGHTS_EARNINGS": {
-    "title": "收入"
+    "title": "收入",
+    "phrasings": [
+      "我赚了多少钱",
+      "显示我的业务收入明细",
+      "在哪里看我的收益"
+    ]
   },
   "BUSINESS.INSIGHTS_GROWTH": {
-    "title": "增长"
+    "title": "增长",
+    "phrasings": [
+      "显示我的业务增长情况",
+      "我的受众增长得怎么样"
+    ]
   },
   "BUSINESS.LISTINGS": {
-    "title": "我的商品"
+    "title": "我的商品",
+    "phrasings": [
+      "显示我在Maxina上的业务列表",
+      "我的上架项目在哪里",
+      "管理我的服务列表"
+    ]
   },
   "BUSINESS.OPPORTUNITIES": {
-    "title": "商机"
+    "title": "商机",
+    "phrasings": [
+      "显示商业机会",
+      "在哪里可以找到新的业务机会",
+      "有哪些适合我的商机"
+    ]
   },
   "BUSINESS.OVERVIEW": {
-    "title": "商业中心"
+    "title": "商业中心",
+    "phrasings": [
+      "打开业务中心",
+      "显示我的Maxina业务",
+      "我的业务区域在哪里"
+    ]
   },
   "BUSINESS.SALES_PROMOTIONS": {
-    "title": "促销活动"
+    "title": "促销活动",
+    "phrasings": [
+      "显示我的促销活动",
+      "在哪里创建优惠活动",
+      "我的推广方案在哪里"
+    ]
   },
   "BUSINESS.SALES_REFERRALS": {
-    "title": "销售推荐收益"
+    "title": "销售推荐收益",
+    "phrasings": [
+      "显示我的销售推荐记录",
+      "在哪里看推荐带来的销售",
+      "我的分销推荐在哪里"
+    ]
   },
   "BUSINESS.SELL_EARN": {
-    "title": "销售与收益"
+    "title": "销售与收益",
+    "phrasings": [
+      "打开销售赚钱页面",
+      "我怎么在Maxina卖东西赚钱",
+      "在哪里看我的销售情况"
+    ]
   },
   "BUSINESS.SERVICES": {
-    "title": "我的服务"
+    "title": "我的服务",
+    "phrasings": [
+      "显示我提供的服务",
+      "在哪里管理我的服务项目",
+      "我的服务列表在哪里"
+    ]
   },
   "BUSINESS.SERVICES_EVENTS": {
-    "title": "我的活动"
+    "title": "我的活动",
+    "phrasings": [
+      "显示我主办的活动",
+      "我发布的课程和活动在哪里",
+      "在哪里管理我的活动"
+    ]
   },
   "BUSINESS.SERVICES_PACKAGES": {
-    "title": "服务套餐"
+    "title": "服务套餐",
+    "phrasings": [
+      "显示我的服务套餐",
+      "在哪里设置套餐组合",
+      "我的打包服务在哪里"
+    ]
   },
   "CALENDAR.OVERVIEW": {
-    "title": "我的日历"
+    "title": "我的日历",
+    "phrasings": [
+      "打开我的日历",
+      "显示我的预约安排",
+      "我今天的日程在哪里"
+    ]
   },
   "COMM.EVENTS": {
-    "title": "活动与聚会"
+    "title": "活动与聚会",
+    "phrasings": [
+      "显示社区活动",
+      "在哪里找线下聚会",
+      "打开活动和聚会页面"
+    ]
   },
   "COMM.EVENTS_HOT": {
-    "title": "热门活动"
+    "title": "热门活动",
+    "phrasings": [
+      "显示热门活动",
+      "现在最火的活动有哪些",
+      "有什么活动特别受欢迎"
+    ]
   },
   "COMM.EVENTS_TODAY": {
-    "title": "今日活动"
+    "title": "今日活动",
+    "phrasings": [
+      "今天有什么活动",
+      "显示今天的活动",
+      "今天有没有什么聚会"
+    ]
   },
   "COMM.EVENTS_UPCOMING": {
-    "title": "即将举办的活动"
+    "title": "即将举办的活动",
+    "phrasings": [
+      "显示即将举行的活动",
+      "接下来有哪些活动可以参加",
+      "下周有什么活动"
+    ]
   },
   "COMM.FEED": {
-    "title": "关注动态Feed"
+    "title": "关注动态Feed",
+    "phrasings": [
+      "显示我关注的人的动态",
+      "打开我的关注动态流",
+      "在哪里看我关注的成员发的内容"
+    ]
   },
   "COMM.FIND_PARTNER": {
-    "title": "找搭档"
+    "title": "找搭档",
+    "phrasings": [
+      "帮我找一个搭档",
+      "在哪里可以找到训练伙伴",
+      "我想找个一起锻炼的人"
+    ]
   },
   "COMM.FIND_PARTNER_BOARD": {
-    "title": "舞伴看板"
+    "title": "舞伴看板",
+    "phrasings": [
+      "打开搭档公告板",
+      "显示其他人发的找搭档帖子",
+      "谁在找舞伴或训练伙伴"
+    ]
   },
   "COMM.FIND_PARTNER_MATCHES": {
-    "title": "我的匹配"
+    "title": "我的匹配",
+    "phrasings": [
+      "显示我的搭档匹配结果",
+      "谁和我的搭档请求匹配了",
+      "我的配对结果在哪里"
+    ]
   },
   "COMM.FIND_PARTNER_POSTS": {
-    "title": "我的搭档帖子"
+    "title": "我的搭档帖子",
+    "phrasings": [
+      "显示我发的找搭档帖子",
+      "我的搭档请求在哪里",
+      "查看我自己的搭档帖"
+    ]
   },
   "COMM.GROUP_DETAIL": {
     "title": "群组详情"
   },
   "COMM.GROUPS": {
-    "title": "群组"
+    "title": "群组",
+    "phrasings": [
+      "显示社区群组",
+      "打开群组页面",
+      "有哪些群组可以加入"
+    ]
   },
   "COMM.GROUPS_DISCOVER": {
-    "title": "发现群组"
+    "title": "发现群组",
+    "phrasings": [
+      "发现新的群组",
+      "给我推荐一些群组",
+      "在哪里可以找到适合我的群组"
+    ]
   },
   "COMM.INVITE": {
-    "title": "邀请好友"
+    "title": "邀请好友",
+    "phrasings": [
+      "邀请朋友加入",
+      "怎么邀请好友来Maxina",
+      "我的邀请链接在哪里"
+    ]
   },
   "COMM.LIVE_ROOM_VIEWER": {
     "title": "直播房间播放器"
   },
   "COMM.LIVE_ROOMS": {
-    "title": "直播房间"
+    "title": "直播房间",
+    "phrasings": [
+      "打开直播间",
+      "在哪里可以加入实时直播",
+      "显示所有直播房间"
+    ]
   },
   "COMM.LIVE_ROOMS_ALL": {
-    "title": "全部房间"
+    "title": "全部房间",
+    "phrasings": [
+      "显示全部直播间",
+      "把正在直播和预约的房间都给我看看",
+      "所有直播房间在哪里"
+    ]
   },
   "COMM.LIVE_ROOMS_LIVE": {
-    "title": "正在直播"
+    "title": "正在直播",
+    "phrasings": [
+      "现在谁在直播",
+      "显示正在进行的直播间",
+      "有哪些房间现在是直播状态"
+    ]
   },
   "COMM.LIVE_ROOMS_PAST": {
-    "title": "往期回顾"
+    "title": "往期回顾",
+    "phrasings": [
+      "显示过去的直播录像",
+      "在哪里可以看直播回放",
+      "之前的直播录制在哪里"
+    ]
   },
   "COMM.LIVE_ROOMS_SCHEDULED": {
-    "title": "预定房间"
+    "title": "预定房间",
+    "phrasings": [
+      "有哪些直播间是预约好的？",
+      "给我看看即将开始的直播安排",
+      "哪些直播还没开始、已经排好时间了？"
+    ]
   },
   "COMM.MATCHES": {
-    "title": "推荐成员"
+    "title": "推荐成员",
+    "phrasings": [
+      "给我看看系统给我推荐的匹配成员",
+      "哪些人跟我比较合得来？",
+      "打开我的匹配列表"
+    ]
   },
   "COMM.MEDIA_HUB": {
-    "title": "媒体中心"
+    "title": "媒体中心",
+    "phrasings": [
+      "打开媒体中心",
+      "社区里的视频和播客在哪里？",
+      "去媒体库看看"
+    ]
   },
   "COMM.MEDIA_MUSIC": {
-    "title": "音乐"
+    "title": "音乐",
+    "phrasings": [
+      "我想听音乐，在哪里找？",
+      "打开媒体中心里的音乐",
+      "给我放点社区里的音乐"
+    ]
   },
   "COMM.MEDIA_PODCASTS": {
-    "title": "播客"
+    "title": "播客",
+    "phrasings": [
+      "社区里的播客在哪里听？",
+      "打开播客页面",
+      "给我看看有哪些播客节目"
+    ]
   },
   "COMM.MEDIA_SHORTS": {
-    "title": "短视频"
+    "title": "短视频",
+    "phrasings": [
+      "给我看看社区里的短视频",
+      "打开短片页面",
+      "哪里可以刷短视频？"
+    ]
   },
   "COMM.MEMBERS": {
-    "title": "社区成员"
+    "title": "社区成员",
+    "phrasings": [
+      "给我看看Maxina社区里都有哪些成员",
+      "怎么找到其他社区成员？",
+      "打开成员目录"
+    ]
   },
   "COMM.OPEN_ASKS": {
-    "title": "待匹配请求"
+    "title": "待匹配请求",
+    "phrasings": [
+      "有哪些成员在公开求助？",
+      "给我看看还没有人回应的请求",
+      "打开公开求助页面"
+    ]
   },
   "COMM.OVERVIEW": {
-    "title": "社区"
+    "title": "社区",
+    "phrasings": [
+      "打开Maxina社区",
+      "带我去社区主页",
+      "社区在哪里？"
+    ]
   },
   "COMM.TALK_TO_VITANA": {
-    "title": "联系 Vitana"
+    "title": "联系 Vitana",
+    "phrasings": [
+      "我想给Vitana团队发消息",
+      "打开联系Vitana的页面",
+      "怎么向Vitana反馈问题？"
+    ]
   },
   "CONNECTORS.AGENT": {
-    "title": "Autopilot 连接器"
+    "title": "Autopilot 连接器",
+    "phrasings": [
+      "打开Autopilot的连接器设置",
+      "怎么给Autopilot接入第三方服务？",
+      "给我看看Autopilot集成页面"
+    ]
   },
   "CONNECTORS.AI": {
-    "title": "AI 连接器"
+    "title": "AI 连接器",
+    "phrasings": [
+      "我想连接一个AI工具",
+      "打开AI连接器页面",
+      "怎么接入其他AI应用？"
+    ]
   },
   "CONNECTORS.FITNESS": {
-    "title": "健身连接器"
+    "title": "健身连接器",
+    "phrasings": [
+      "怎么连接我的健身追踪器？",
+      "我想绑定我的智能手表",
+      "在哪里接入健身应用？"
+    ]
   },
   "CONNECTORS.HEALTH": {
-    "title": "健康连接器"
+    "title": "健康连接器",
+    "phrasings": [
+      "我想连接我的健康应用",
+      "怎么接入Apple Health或Google Fit？",
+      "打开健康连接器页面"
+    ]
   },
   "CONNECTORS.MEDIA": {
-    "title": "音乐和视频连接器"
+    "title": "音乐和视频连接器",
+    "phrasings": [
+      "我想连接Spotify",
+      "怎么绑定我的音乐或视频账号？",
+      "打开音乐和视频连接器"
+    ]
   },
   "CONNECTORS.OTHER": {
-    "title": "更多连接器"
+    "title": "更多连接器",
+    "phrasings": [
+      "还有哪些其他连接器可以用？",
+      "打开其他集成页面",
+      "给我看看更多可以接入的服务"
+    ]
   },
   "CONNECTORS.PRODUCTIVITY": {
-    "title": "邮箱和日历连接"
+    "title": "邮箱和日历连接",
+    "phrasings": [
+      "我想连接我的邮箱",
+      "怎么绑定Google日历？",
+      "打开邮件和日历连接器"
+    ]
   },
   "CONNECTORS.SOCIAL": {
-    "title": "社交连接器"
+    "title": "社交连接器",
+    "phrasings": [
+      "我想连接我的社交媒体账号",
+      "怎么绑定Instagram？",
+      "打开社交媒体连接器"
+    ]
   },
   "DISCOVER.AI_PICKS": {
-    "title": "AI 精选"
+    "title": "AI 精选",
+    "phrasings": [
+      "AI给我推荐了哪些产品？",
+      "打开AI精选推荐",
+      "给我看看系统为我挑选的产品"
+    ]
   },
   "DISCOVER.CART": {
-    "title": "购物车"
+    "title": "购物车",
+    "phrasings": [
+      "打开我的购物车",
+      "我购物车里有什么？",
+      "去结账页面看看"
+    ]
   },
   "DISCOVER.CATEGORIES": {
-    "title": "分类"
+    "title": "分类",
+    "phrasings": [
+      "给我看看商品分类",
+      "打开商店的分类页面",
+      "我想按类别浏览产品"
+    ]
   },
   "DISCOVER.DEALS": {
-    "title": "优惠活动"
+    "title": "优惠活动",
+    "phrasings": [
+      "现在有什么优惠活动吗？",
+      "给我看看折扣和特价信息",
+      "打开优惠页面"
+    ]
   },
   "DISCOVER.DEALS_AI": {
-    "title": "AI精选优惠"
+    "title": "AI精选优惠",
+    "phrasings": [
+      "AI给我挑了哪些优惠？",
+      "打开AI精选的折扣",
+      "给我看看专门为我推荐的优惠"
+    ]
   },
   "DISCOVER.DEALS_SAVED": {
-    "title": "已收藏优惠"
+    "title": "已收藏优惠",
+    "phrasings": [
+      "我收藏了哪些优惠？",
+      "打开我保存的折扣",
+      "给我看看我存下来的特价"
+    ]
   },
   "DISCOVER.DEALS_TRENDING": {
-    "title": "热门优惠"
+    "title": "热门优惠",
+    "phrasings": [
+      "现在哪些优惠最热门？",
+      "打开热门折扣页面",
+      "给我看看大家都在抢的特价"
+    ]
   },
   "DISCOVER.DOCTORS_COACHES": {
-    "title": "医生与教练"
+    "title": "医生与教练",
+    "phrasings": [
+      "我想找一个健康教练",
+      "哪里可以找到医生或教练？",
+      "打开医生和教练页面"
+    ]
   },
   "DISCOVER.MARKETPLACE": {
-    "title": "市场"
+    "title": "市场",
+    "phrasings": [
+      "打开Maxina市场",
+      "我想去市场买卖东西",
+      "社区市场在哪里？"
+    ]
   },
   "DISCOVER.MARKETPLACE_MINE": {
-    "title": "我的市场"
+    "title": "我的市场",
+    "phrasings": [
+      "给我看看我在市场上发布的内容",
+      "我自己的市场请求和报价在哪里？",
+      "打开我的市场页面"
+    ]
   },
   "DISCOVER.MARKETPLACE_OPEN": {
-    "title": "公开请求"
+    "title": "公开请求",
+    "phrasings": [
+      "有哪些市场请求是对所有人开放的？",
+      "打开市场里的公开请求",
+      "给我看看大家都能参与的报价"
+    ]
   },
   "DISCOVER.MY_TICKETS": {
-    "title": "我的票券"
+    "title": "我的票券",
+    "phrasings": [
+      "我买的活动票在哪里？",
+      "给我看看我的票",
+      "打开我的活动票页面"
+    ]
   },
   "DISCOVER.ORDERS": {
-    "title": "我的订单"
+    "title": "我的订单",
+    "phrasings": [
+      "给我看看我的订单",
+      "我之前买了什么？",
+      "怎么查我的订单记录？"
+    ]
   },
   "DISCOVER.ORDERS_ACTIVE": {
-    "title": "进行中的订单"
+    "title": "进行中的订单",
+    "phrasings": [
+      "我现在有哪些正在处理的订单？",
+      "给我看看还没到货的订单",
+      "打开进行中的订单"
+    ]
   },
   "DISCOVER.ORDERS_HISTORY": {
-    "title": "历史订单"
+    "title": "历史订单",
+    "phrasings": [
+      "给我看看我的历史订单",
+      "我以前买过什么？",
+      "打开已完成的订单记录"
+    ]
   },
   "DISCOVER.OVERVIEW": {
-    "title": "发现"
+    "title": "发现",
+    "phrasings": [
+      "打开发现页面",
+      "我想去商店看看",
+      "哪里可以买东西？"
+    ]
   },
   "DISCOVER.PRODUCT_DETAIL": {
     "title": "商品详情"
@@ -249,97 +643,252 @@
     "title": "服务商主页"
   },
   "DISCOVER.SHARE_EARN": {
-    "title": "分享赚奖励"
+    "title": "分享赚奖励",
+    "phrasings": [
+      "分享产品可以赚钱吗？怎么操作？",
+      "打开分享赚钱页面",
+      "我想通过分享来获得奖励"
+    ]
   },
   "DISCOVER.SHOP": {
-    "title": "商店"
+    "title": "商店",
+    "phrasings": [
+      "打开视频购物页面",
+      "哪里有可以边看视频边买东西的地方？",
+      "给我看看商品短视频"
+    ]
   },
   "DISCOVER.SUPPLEMENTS": {
-    "title": "保健品"
+    "title": "保健品",
+    "phrasings": [
+      "我想买营养补充剂",
+      "哪里可以找到保健品？",
+      "打开补充剂商店"
+    ]
   },
   "DISCOVER.WELLNESS_SERVICES": {
-    "title": "养生服务"
+    "title": "养生服务",
+    "phrasings": [
+      "我想预约一个健康服务",
+      "哪里可以找到养生或保健服务？",
+      "打开健康服务页面"
+    ]
   },
   "HEALTH.BIOLOGY_OMICS": {
-    "title": "我的组学"
+    "title": "我的组学",
+    "phrasings": [
+      "给我看看我的基因组学数据",
+      "我的omics数据在哪里？",
+      "打开我的生物学里的组学页面"
+    ]
   },
   "HEALTH.BIOLOGY_SUPPLEMENTS": {
-    "title": "我的补剂（生物）"
+    "title": "我的补剂（生物）",
+    "phrasings": [
+      "我的生物档案里有哪些补充剂？",
+      "打开生物学里的补充剂页面",
+      "给我看看我生物档案中记录的营养品"
+    ]
   },
   "HEALTH.CONDITIONS": {
-    "title": "健康状况"
+    "title": "健康状况",
+    "phrasings": [
+      "我想查看我的健康状况记录",
+      "在哪里管理我的病症信息？",
+      "打开健康状况页面"
+    ]
   },
   "HEALTH.EDUCATION": {
-    "title": "知识与科学"
+    "title": "知识与科学",
+    "phrasings": [
+      "我想了解一些长寿科学知识",
+      "哪里有健康教育内容？",
+      "打开Vitana的科学文章"
+    ]
   },
   "HEALTH.EDUCATION_PODCASTS": {
-    "title": "学习播客"
+    "title": "学习播客",
+    "phrasings": [
+      "有没有关于健康的学习播客？",
+      "打开健康教育里的播客",
+      "给我看看教育类健康播客"
+    ]
   },
   "HEALTH.EDUCATION_VIDEOS": {
-    "title": "学习视频"
+    "title": "学习视频",
+    "phrasings": [
+      "有没有健康学习视频？",
+      "打开健康教育里的视频",
+      "给我看看关于健康的教学视频"
+    ]
   },
   "HEALTH.MEDICAL": {
-    "title": "医疗档案"
+    "title": "医疗档案",
+    "phrasings": [
+      "我想查看我的病历文件",
+      "我的医疗记录在哪里？",
+      "打开医疗档案页面"
+    ]
   },
   "HEALTH.MY_BIOLOGY": {
-    "title": "我的生物数据"
+    "title": "我的生物数据",
+    "phrasings": [
+      "打开我的生物指标",
+      "在哪里能看我的化验结果",
+      "显示我的健康数据和趋势"
+    ]
   },
   "HEALTH.OVERVIEW": {
-    "title": "健康"
+    "title": "健康",
+    "phrasings": [
+      "打开健康中心",
+      "显示我的健康总览",
+      "在哪里能看我所有的健康信息"
+    ]
   },
   "HEALTH.PILLARS": {
-    "title": "健康支柱"
+    "title": "健康支柱",
+    "phrasings": [
+      "显示健康支柱",
+      "长寿的几大基础是什么",
+      "打开健康支柱页面"
+    ]
   },
   "HEALTH.PLANS": {
-    "title": "我的计划"
+    "title": "我的计划",
+    "phrasings": [
+      "打开我的健康计划",
+      "在哪里能看我的所有计划",
+      "显示我的个性化健康方案"
+    ]
   },
   "HEALTH.PLANS_EXERCISE": {
-    "title": "训练计划"
+    "title": "训练计划",
+    "phrasings": [
+      "显示我的锻炼计划",
+      "打开运动训练计划",
+      "在哪里能看我的健身方案"
+    ]
   },
   "HEALTH.PLANS_HYDRATION": {
-    "title": "补水计划"
+    "title": "补水计划",
+    "phrasings": [
+      "显示我的补水计划",
+      "打开喝水计划",
+      "在哪里能看我的饮水方案"
+    ]
   },
   "HEALTH.PLANS_MENTAL": {
-    "title": "心理计划"
+    "title": "心理计划",
+    "phrasings": [
+      "显示我的心理健康计划",
+      "打开精神健康方案",
+      "在哪里能看我的冥想计划"
+    ]
   },
   "HEALTH.PLANS_NUTRITION": {
-    "title": "饮食计划"
+    "title": "饮食计划",
+    "phrasings": [
+      "显示我的营养计划",
+      "打开饮食方案",
+      "在哪里能看我的膳食计划"
+    ]
   },
   "HEALTH.PLANS_SLEEP": {
-    "title": "睡眠计划"
+    "title": "睡眠计划",
+    "phrasings": [
+      "显示我的睡眠计划",
+      "打开睡眠方案",
+      "在哪里能看我的作息计划"
+    ]
   },
   "HEALTH.SERVICES_HUB": {
-    "title": "健康服务中心"
+    "title": "健康服务中心",
+    "phrasings": [
+      "打开健康服务中心",
+      "在哪里能预约健康服务",
+      "显示Maxina的健康服务"
+    ]
   },
   "HEALTH.SERVICES_INSURANCE": {
-    "title": "保险支持"
+    "title": "保险支持",
+    "phrasings": [
+      "我需要保险方面的帮助",
+      "打开保险支持页面",
+      "在哪里能找到医疗保险协助"
+    ]
   },
   "HEALTH.SERVICES_MEDICAL": {
-    "title": "医疗服务"
+    "title": "医疗服务",
+    "phrasings": [
+      "显示医疗服务",
+      "我想预约一个医疗项目",
+      "在哪里能找到医疗服务"
+    ]
   },
   "HEALTH.SERVICES_MINE": {
-    "title": "我的服务"
+    "title": "我的服务",
+    "phrasings": [
+      "显示我已预约的健康服务",
+      "我在用哪些健康服务",
+      "打开我的服务页面"
+    ]
   },
   "HEALTH.SERVICES_WELLNESS": {
-    "title": "健康计划"
+    "title": "健康计划",
+    "phrasings": [
+      "显示健康养生项目",
+      "我想参加一个wellness计划",
+      "在哪里能找到健康课程"
+    ]
   },
   "HEALTH.SUPPLEMENTS": {
-    "title": "健康补剂"
+    "title": "健康补剂",
+    "phrasings": [
+      "显示我的营养补充剂",
+      "我在吃哪些保健品",
+      "打开我的补剂清单"
+    ]
   },
   "HEALTH.VITANA_INDEX": {
-    "title": "Vitana 指数"
+    "title": "Vitana 指数",
+    "phrasings": [
+      "打开我的Vitana Index",
+      "我的Vitana Index得分是多少",
+      "显示我的长寿指数"
+    ]
   },
   "HOME.NEWS_ALL": {
-    "title": "全部资讯"
+    "title": "全部资讯",
+    "phrasings": [
+      "显示全部新闻",
+      "打开所有新闻来源",
+      "我想看所有的资讯"
+    ]
   },
   "HOME.NEWS_COMMUNITY": {
-    "title": "社区动态"
+    "title": "社区动态",
+    "phrasings": [
+      "打开社区新闻",
+      "Maxina社区最近有什么动态",
+      "显示社区里的最新消息"
+    ]
   },
   "HOME.OVERVIEW": {
-    "title": "长寿资讯"
+    "title": "长寿资讯",
+    "phrasings": [
+      "显示最新的长寿资讯",
+      "打开新闻首页",
+      "回到主页"
+    ]
   },
   "INBOX.ARCHIVED": {
-    "title": "已归档消息"
+    "title": "已归档消息",
+    "phrasings": [
+      "显示我已归档的消息",
+      "在哪里能找到我存档的聊天记录",
+      "打开归档消息"
+    ]
   },
   "INBOX.CONVERSATION": {
     "title": "对话"
@@ -348,43 +897,103 @@
     "title": "群聊"
   },
   "INBOX.INSPIRATION": {
-    "title": "每日灵感"
+    "title": "每日灵感",
+    "phrasings": [
+      "显示我的每日灵感",
+      "打开Vitana发给我的励志消息",
+      "在哪里能看健康小贴士"
+    ]
   },
   "INBOX.OVERVIEW": {
-    "title": "收件箱"
+    "title": "收件箱",
+    "phrasings": [
+      "打开我的收件箱",
+      "在哪里能看我的消息",
+      "我有新消息吗"
+    ]
   },
   "INTENTS.BOARD": {
-    "title": "意向看板"
+    "title": "意向看板",
+    "phrasings": [
+      "打开社区公告板",
+      "显示大家都在找什么",
+      "在哪里能浏览社区里的需求"
+    ]
   },
   "INTENTS.MATCH_DETAIL": {
     "title": "匹配详情"
   },
   "INTENTS.MINE": {
-    "title": "我的Intent"
+    "title": "我的Intent",
+    "phrasings": [
+      "显示我发布的需求",
+      "我在社区里发了哪些帖子",
+      "打开我的intents"
+    ]
   },
   "LIFE_COMPASS.OVERLAY": {
-    "title": "人生罗盘"
+    "title": "人生罗盘",
+    "phrasings": [
+      "打开我的Life Compass",
+      "在哪里能看我的人生目标",
+      "显示我的Life Compass"
+    ]
   },
   "MEMORY.DAILY_DIARY": {
-    "title": "单日记录流程"
+    "title": "单日记录流程",
+    "phrasings": [
+      "记录今天的日记",
+      "我想记录一下今天",
+      "打开今日记录"
+    ]
   },
   "MEMORY.DIARY": {
-    "title": "日记本"
+    "title": "日记本",
+    "phrasings": [
+      "打开我的日记",
+      "在哪里能写每日日记",
+      "显示我的日记记录"
+    ]
   },
   "MEMORY.DIARY_BUGS": {
-    "title": "问题反馈"
+    "title": "问题反馈",
+    "phrasings": [
+      "我想反馈一个问题",
+      "在哪里能提交bug报告",
+      "显示我的问题反馈记录"
+    ]
   },
   "MEMORY.OVERVIEW": {
-    "title": "记忆花园"
+    "title": "记忆花园",
+    "phrasings": [
+      "打开我的Memory Garden",
+      "你记住了我哪些信息",
+      "显示我的记忆库"
+    ]
   },
   "MEMORY.PERMISSIONS": {
-    "title": "记忆权限"
+    "title": "记忆权限",
+    "phrasings": [
+      "你被允许记住哪些内容",
+      "打开记忆权限设置",
+      "我想控制你能记住什么"
+    ]
   },
   "MEMORY.RECALL": {
-    "title": "回忆与搜索"
+    "title": "回忆与搜索",
+    "phrasings": [
+      "帮我搜索一下我的记忆",
+      "我想找我之前告诉过你的事",
+      "打开记忆搜索"
+    ]
   },
   "MEMORY.TIMELINE": {
-    "title": "时间线"
+    "title": "时间线",
+    "phrasings": [
+      "显示我的时间轴",
+      "打开我的人生时间线",
+      "在哪里能看我的记忆历程"
+    ]
   },
   "NEWS.DETAIL": {
     "title": "新闻文章"
@@ -393,7 +1002,12 @@
     "title": "活动详情"
   },
   "OVERLAY.MASTER_ACTION": {
-    "title": "快捷操作"
+    "title": "快捷操作",
+    "phrasings": [
+      "打开快捷操作",
+      "显示快捷菜单",
+      "我想看当前页面能做什么"
+    ]
   },
   "OVERLAY.MEETUP_DRAWER": {
     "title": "聚会详情"
@@ -402,16 +1016,36 @@
     "title": "资料预览"
   },
   "OVERLAY.VITANA_INDEX": {
-    "title": "Vitana 指数"
+    "title": "Vitana 指数",
+    "phrasings": [
+      "快速看一下我的Vitana Index",
+      "打开Vitana Index概览",
+      "显示我的五大支柱得分"
+    ]
   },
   "OVERLAY.WALLET_POPUP": {
-    "title": "快捷钱包"
+    "title": "快捷钱包",
+    "phrasings": [
+      "快速看一下我的钱包",
+      "打开钱包弹窗",
+      "我的余额和最近奖励是多少"
+    ]
   },
   "PROFILE.ME": {
-    "title": "我的资料"
+    "title": "我的资料",
+    "phrasings": [
+      "打开我的个人资料",
+      "我想修改我的头像",
+      "在哪里能编辑我的个人信息"
+    ]
   },
   "PROFILE.PRIVACY": {
-    "title": "资料可见性"
+    "title": "资料可见性",
+    "phrasings": [
+      "谁能看到我的个人资料",
+      "打开资料可见性设置",
+      "我想控制哪些人能看到我的信息"
+    ]
   },
   "PROFILE.PUBLIC": {
     "title": "公开资料"
@@ -420,138 +1054,358 @@
     "title": "带匹配锚点的个人资料"
   },
   "PUBLIC.LANDING": {
-    "title": "Vitanaland 首页"
+    "title": "Vitanaland 首页",
+    "phrasings": [
+      "去Vitanaland首页",
+      "打开Maxina社区入口",
+      "显示Vitanaland的主页"
+    ]
   },
   "PUBLIC.PRIVACY": {
-    "title": "隐私政策"
+    "title": "隐私政策",
+    "phrasings": [
+      "显示隐私政策",
+      "你们怎么处理我的个人数据",
+      "打开隐私条款页面"
+    ]
   },
   "PUBLIC.TERMS": {
-    "title": "使用条款"
+    "title": "使用条款",
+    "phrasings": [
+      "显示使用条款",
+      "打开服务条款和法律信息",
+      "在哪里能看用户协议"
+    ]
   },
   "REMINDERS.OVERVIEW": {
-    "title": "提醒"
+    "title": "提醒",
+    "phrasings": [
+      "显示我的提醒",
+      "我设置了哪些提醒",
+      "打开提醒列表"
+    ]
   },
   "SEARCH.OVERVIEW": {
-    "title": "搜索"
+    "title": "搜索",
+    "phrasings": [
+      "打开搜索",
+      "我想在应用里搜索一下",
+      "在哪里能搜索成员和内容"
+    ]
   },
   "SETTINGS.BILLING": {
-    "title": "账单"
+    "title": "账单",
+    "phrasings": [
+      "打开账单设置",
+      "在哪里能管理我的付款信息",
+      "显示我的订阅费用"
+    ]
   },
   "SETTINGS.BILLING_CREATOR": {
-    "title": "创作者提现"
+    "title": "创作者提现",
+    "phrasings": [
+      "显示我的创作者收益",
+      "我什么时候能收到创作者分成",
+      "打开创作者提现页面"
+    ]
   },
   "SETTINGS.BILLING_INVOICES": {
-    "title": "账单和收据"
+    "title": "账单和收据",
+    "phrasings": [
+      "在哪里能下载我的发票",
+      "显示我的收据记录",
+      "打开账单和收据页面"
+    ]
   },
   "SETTINGS.BILLING_PAYMENT": {
-    "title": "支付方式"
+    "title": "支付方式",
+    "phrasings": [
+      "怎么修改我的付款方式",
+      "帮我换一下绑定的银行卡",
+      "在哪里更新支付信息"
+    ]
   },
   "SETTINGS.BILLING_PLAN": {
-    "title": "当前套餐"
+    "title": "当前套餐",
+    "phrasings": [
+      "我现在用的是哪个套餐",
+      "在哪里看我的会员计划",
+      "我想升级我的订阅方案"
+    ]
   },
   "SETTINGS.CONNECTED_APPS": {
-    "title": "连接器与已连接应用"
+    "title": "连接器与已连接应用",
+    "phrasings": [
+      "查看已连接的第三方应用",
+      "我绑定了哪些外部应用",
+      "管理我的连接器"
+    ]
   },
   "SETTINGS.LIMITATIONS": {
-    "title": "健康限制"
+    "title": "健康限制",
+    "phrasings": [
+      "在哪里填写我的健康限制",
+      "我想登记我的过敏和身体限制",
+      "怎么设置我的伤病和禁忌"
+    ]
   },
   "SETTINGS.NOTIFICATIONS": {
-    "title": "通知"
+    "title": "通知",
+    "phrasings": [
+      "怎么关掉推送通知",
+      "通知设置在哪里",
+      "我不想再收到消息提醒了"
+    ]
   },
   "SETTINGS.OVERVIEW": {
-    "title": "设置"
+    "title": "设置",
+    "phrasings": [
+      "打开设置",
+      "去账户设置",
+      "我想看一下设置页面"
+    ]
   },
   "SETTINGS.PREFERENCES": {
-    "title": "偏好设置"
+    "title": "偏好设置",
+    "phrasings": [
+      "打开我的偏好设置",
+      "在哪里调整应用的个人偏好",
+      "我想改一下应用的使用偏好"
+    ]
   },
   "SETTINGS.PREFERENCES_ACCESSIBILITY": {
-    "title": "无障碍"
+    "title": "无障碍",
+    "phrasings": [
+      "无障碍设置在哪里",
+      "我想把字体调大一点",
+      "怎么设置无障碍功能"
+    ]
   },
   "SETTINGS.PREFERENCES_APPEARANCE": {
-    "title": "外观"
+    "title": "外观",
+    "phrasings": [
+      "切换到深色模式",
+      "我想换一下应用的主题颜色",
+      "外观和主题设置在哪里"
+    ]
   },
   "SETTINGS.PREFERENCES_LANGUAGE": {
-    "title": "语言和地区"
+    "title": "语言和地区",
+    "phrasings": [
+      "在哪里改应用的语言",
+      "我想把应用切换成英文",
+      "怎么修改语言和地区设置"
+    ]
   },
   "SETTINGS.PRIVACY": {
-    "title": "隐私设置"
+    "title": "隐私设置",
+    "phrasings": [
+      "打开隐私设置",
+      "谁能看到我的数据",
+      "我想管理一下Vitana的隐私选项"
+    ]
   },
   "SETTINGS.PRIVACY_DATA": {
-    "title": "数据共享"
+    "title": "数据共享",
+    "phrasings": [
+      "我共享了哪些数据",
+      "在哪里管理数据共享设置",
+      "查看我的共享数据"
+    ]
   },
   "SETTINGS.PRIVACY_SECURITY": {
-    "title": "账户安全"
+    "title": "账户安全",
+    "phrasings": [
+      "我想改密码",
+      "账户安全设置在哪里",
+      "怎么开启两步验证"
+    ]
   },
   "SETTINGS.PRIVACY_VISIBILITY": {
-    "title": "可见性"
+    "title": "可见性",
+    "phrasings": [
+      "谁能看到我的个人主页",
+      "怎么把我的账号隐藏起来",
+      "可见性设置在哪里"
+    ]
   },
   "SETTINGS.SOCIAL": {
-    "title": "社交账号"
+    "title": "社交账号",
+    "phrasings": [
+      "查看我绑定的社交账号",
+      "在哪里管理关联的社交媒体",
+      "我想看看连接了哪些社交平台"
+    ]
   },
   "SETTINGS.SUPPORT": {
-    "title": "支持"
+    "title": "支持",
+    "phrasings": [
+      "打开帮助中心",
+      "我需要联系客服",
+      "应用有问题怎么反馈"
+    ]
   },
   "SETTINGS.SUPPORT_COMMUNITY": {
-    "title": "社区互助"
+    "title": "社区互助",
+    "phrasings": [
+      "怎么向社区成员求助",
+      "社区帮助论坛在哪里",
+      "我想在社区里问问其他人"
+    ]
   },
   "SETTINGS.SUPPORT_CONTACT": {
-    "title": "联系客服"
+    "title": "联系客服",
+    "phrasings": [
+      "怎么联系客服团队",
+      "我想提交一个问题工单",
+      "在哪里给官方发消息"
+    ]
   },
   "SETTINGS.SUPPORT_FAQ": {
-    "title": "常见问题"
+    "title": "常见问题",
+    "phrasings": [
+      "常见问题在哪里看",
+      "打开FAQ页面",
+      "我想查一下帮助文章"
+    ]
   },
   "SETTINGS.TENANT_ROLE": {
-    "title": "租户与角色"
+    "title": "租户与角色",
+    "phrasings": [
+      "怎么切换我的角色",
+      "我现在在哪个社区里",
+      "在哪里切换租户或身份"
+    ]
   },
   "SHARING.CAMPAIGN_DETAIL": {
     "title": "活动详情"
   },
   "SHARING.CAMPAIGNS": {
-    "title": "活动"
+    "title": "活动",
+    "phrasings": [
+      "查看我的分享活动",
+      "我的推广活动效果怎么样",
+      "打开我的campaigns"
+    ]
   },
   "SHARING.DATA_CONSENT": {
-    "title": "数据与授权"
+    "title": "数据与授权",
+    "phrasings": [
+      "我同意共享哪些数据",
+      "在哪里管理数据授权和同意设置",
+      "查看我的数据与同意选项"
+    ]
   },
   "SHARING.DISTRIBUTION": {
-    "title": "传播"
+    "title": "传播",
+    "phrasings": [
+      "我分享的内容传播到哪里了",
+      "查看内容的分发情况",
+      "打开分发统计页面"
+    ]
   },
   "SHARING.OVERVIEW": {
-    "title": "分享"
+    "title": "分享",
+    "phrasings": [
+      "打开分享页面",
+      "我想把Maxina推荐给朋友",
+      "在哪里分享内容赚奖励"
+    ]
   },
   "WALLET.ACTIONS": {
-    "title": "钱包操作"
+    "title": "钱包操作",
+    "phrasings": [
+      "我想发送或充值积分",
+      "钱包操作在哪里",
+      "怎么提现或者兑换代币"
+    ]
   },
   "WALLET.ACTIVITY": {
-    "title": "钱包动态"
+    "title": "钱包动态",
+    "phrasings": [
+      "查看我的钱包交易记录",
+      "我最近有哪些钱包动态",
+      "打开钱包活动明细"
+    ]
   },
   "WALLET.BALANCE": {
-    "title": "余额与权益"
+    "title": "余额与权益",
+    "phrasings": [
+      "我现在有多少积分",
+      "在哪里看我的Maxina余额",
+      "查看我的余额和权益"
+    ]
   },
   "WALLET.BALANCE_MEMBERSHIP": {
-    "title": "会员"
+    "title": "会员",
+    "phrasings": [
+      "查看我的会员状态",
+      "打开钱包里的会员页签",
+      "我的Maxina会员信息在哪里"
+    ]
   },
   "WALLET.BALANCE_OPTIMIZATION": {
-    "title": "优化"
+    "title": "优化",
+    "phrasings": [
+      "怎么优化我的钱包余额",
+      "有什么方法可以让余额更划算",
+      "打开余额优化建议"
+    ]
   },
   "WALLET.BALANCE_TOKENS": {
-    "title": "代币"
+    "title": "代币",
+    "phrasings": [
+      "我有多少代币",
+      "查看我的Tokens",
+      "打开钱包里的代币页签"
+    ]
   },
   "WALLET.OVERVIEW": {
-    "title": "钱包"
+    "title": "钱包",
+    "phrasings": [
+      "打开我的钱包",
+      "查看Maxina钱包",
+      "我在应用里的余额在哪里看"
+    ]
   },
   "WALLET.REWARDS": {
-    "title": "奖励与佣金"
+    "title": "奖励与佣金",
+    "phrasings": [
+      "我赚了多少奖励",
+      "在哪里看我的佣金和奖励",
+      "查看推广收益"
+    ]
   },
   "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "奖励洞察"
+    "title": "奖励洞察",
+    "phrasings": [
+      "怎么赚更多奖励",
+      "打开奖励洞察页面",
+      "有没有提高奖励收益的建议"
+    ]
   },
   "WALLET.REWARDS_PENDING": {
-    "title": "待发放奖励"
+    "title": "待发放奖励",
+    "phrasings": [
+      "查看待到账的奖励",
+      "我有哪些奖励还没发放",
+      "打开待处理奖励页面"
+    ]
   },
   "WALLET.REWARDS_REFERRAL": {
-    "title": "推荐奖励"
+    "title": "推荐奖励",
+    "phrasings": [
+      "我邀请朋友得了多少奖励",
+      "查看推荐好友的奖励",
+      "打开推荐奖励页签"
+    ]
   },
   "WALLET.SUBSCRIPTIONS": {
-    "title": "订阅"
+    "title": "订阅",
+    "phrasings": [
+      "我订阅了哪些服务",
+      "查看我的有效订阅",
+      "我想取消某个订阅"
+    ]
   }
 }

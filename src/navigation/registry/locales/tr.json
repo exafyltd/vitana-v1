@@ -1,246 +1,641 @@
 {
   "AI.COMPANION": {
-    "title": "Yapay Zeka Yol Arkadaşı"
+    "title": "Yapay Zeka Yol Arkadaşı",
+    "phrasings": [
+      "Vitana ile konuşmak istiyorum, companion ekranını aç",
+      "AI companion'ı aç",
+      "Vitana'yla birebir sohbet edebileceğim ekran nerede"
+    ]
   },
   "AI.DAILY_SUMMARY": {
-    "title": "Günlük Özet"
+    "title": "Günlük Özet",
+    "phrasings": [
+      "Bugünkü özetimi göster",
+      "Günlük sağlık özetim nerede",
+      "Bugün ne oldu, özet olarak göster"
+    ]
   },
   "AI.INSIGHTS": {
-    "title": "Yapay Zeka İçgörüleri"
+    "title": "Yapay Zeka İçgörüleri",
+    "phrasings": [
+      "AI içgörülerimi göster",
+      "Verilerimden ne çıkardın, göster",
+      "Kişisel içgörülerim nerede"
+    ]
   },
   "AI.OVERVIEW": {
-    "title": "Yapay Zeka Asistanı"
+    "title": "Yapay Zeka Asistanı",
+    "phrasings": [
+      "AI asistan bölümünü aç",
+      "AI özelliklerini göster",
+      "Yapay zeka araçları nerede"
+    ]
   },
   "AI.RECOMMENDATIONS": {
-    "title": "Öneriler"
+    "title": "Öneriler",
+    "phrasings": [
+      "Bana ne öneriyorsun, göster",
+      "Kişisel önerilerimi görmek istiyorum",
+      "AI önerileri nerede"
+    ]
   },
   "ASSISTANT.AI": {
-    "title": "Yapay Zeka"
+    "title": "Yapay Zeka",
+    "phrasings": [
+      "Asistanın AI sekmesini aç",
+      "Metin asistanı ayarlarını göster",
+      "Asistanda AI sekmesi nerede"
+    ]
   },
   "ASSISTANT.AUTOPILOT": {
-    "title": "Autopilot ve Otomasyon"
+    "title": "Autopilot ve Otomasyon",
+    "phrasings": [
+      "Autopilot ayarlarını aç",
+      "Otomasyonlarımı göster",
+      "Autopilot'u nerede ayarlayabilirim"
+    ]
   },
   "ASSISTANT.OVERVIEW": {
-    "title": "Vitana Sohbet"
+    "title": "Vitana Sohbet",
+    "phrasings": [
+      "Vitana Chat'i aç",
+      "Seninle yazışmak istiyorum",
+      "Vitana ile sohbet ekranı nerede"
+    ]
   },
   "ASSISTANT.PROACTIVE": {
-    "title": "Proaktif Konuşma"
+    "title": "Proaktif Konuşma",
+    "phrasings": [
+      "Kendi kendine ne zaman konuşacağını nereden ayarlayabilirim",
+      "Proaktif konuşmayı kapat",
+      "Proaktif konuşma ayarlarını aç"
+    ]
   },
   "ASSISTANT.REFERRALS": {
-    "title": "Tavsiyeler"
+    "title": "Tavsiyeler",
+    "phrasings": [
+      "Asistanın referans sekmesini aç",
+      "Asistanda referanslarımı göster",
+      "Asistan referans ödülleri nerede"
+    ]
   },
   "ASSISTANT.VOICE": {
-    "title": "Ses"
+    "title": "Ses",
+    "phrasings": [
+      "Sesini nereden değiştirebilirim",
+      "Ses ayarlarını aç",
+      "Vitana'nın sesini değiştir"
+    ]
   },
   "AUTH.ALKALMA_PORTAL": {
-    "title": "Alkalma Portalı"
+    "title": "Alkalma Portalı",
+    "phrasings": [
+      "Alkalma portalını aç",
+      "Alkalma'ya kayıt olmak istiyorum",
+      "Alkalma giriş ekranı nerede"
+    ]
   },
   "AUTH.EARTHLINKS_PORTAL": {
-    "title": "Earthlinks Portalı"
+    "title": "Earthlinks Portalı",
+    "phrasings": [
+      "Earthlinks portalını aç",
+      "Earthlinks'e katılmak istiyorum",
+      "Earthlinks giriş sayfasına git"
+    ]
   },
   "AUTH.MAXINA_PORTAL": {
-    "title": "MAXINA Topluluğuna Katıl"
+    "title": "MAXINA Topluluğuna Katıl",
+    "phrasings": [
+      "Maxina'ya kayıt olmak istiyorum",
+      "Hesap oluşturmak istiyorum",
+      "Maxina giriş ekranını aç"
+    ]
   },
   "AUTOPILOT.MY_JOURNEY": {
-    "title": "Yolculuğum"
+    "title": "Yolculuğum",
+    "phrasings": [
+      "My Journey'i aç",
+      "90 günlük yolculuğumu göster",
+      "Rehberli seanslarım nerede"
+    ]
   },
   "BUSINESS.ANALYTICS": {
-    "title": "İş Analitiği"
+    "title": "İş Analitiği",
+    "phrasings": [
+      "İş analizlerimi göster",
+      "İşim nasıl gidiyor, istatistiklere bak",
+      "Maxina iş performansım nerede"
+    ]
   },
   "BUSINESS.CLIENTS": {
-    "title": "Müşterilerim"
+    "title": "Müşterilerim",
+    "phrasings": [
+      "Müşterilerimi göster",
+      "Müşteri listem nerede",
+      "Maxina'daki müşterilerimi yönetmek istiyorum"
+    ]
   },
   "BUSINESS.INSIGHTS_EARNINGS": {
-    "title": "Gelirler"
+    "title": "Gelirler",
+    "phrasings": [
+      "Ne kadar kazandım, göster",
+      "Kazançlarımı görmek istiyorum",
+      "İş gelirim nerede"
+    ]
   },
   "BUSINESS.INSIGHTS_GROWTH": {
-    "title": "Büyüme"
+    "title": "Büyüme",
+    "phrasings": [
+      "İş büyüme metriklerimi göster",
+      "Erişimim nasıl büyüyor",
+      "Maxina büyüme istatistiklerim nerede"
+    ]
   },
   "BUSINESS.LISTINGS": {
-    "title": "İlanlarım"
+    "title": "İlanlarım",
+    "phrasings": [
+      "İş ilanlarımı göster",
+      "Maxina'daki ilanlarım nerede",
+      "Aktif ilanlarımı yönetmek istiyorum"
+    ]
   },
   "BUSINESS.OPPORTUNITIES": {
-    "title": "İş Fırsatları"
+    "title": "İş Fırsatları",
+    "phrasings": [
+      "İş fırsatlarını göster",
+      "Yeni iş fırsatlarını nerede bulabilirim",
+      "Bana uygun fırsatlar var mı"
+    ]
   },
   "BUSINESS.OVERVIEW": {
-    "title": "İş Merkezi"
+    "title": "İş Merkezi",
+    "phrasings": [
+      "İş merkezini aç",
+      "İş alanım nerede",
+      "Maxina'daki işimi göster"
+    ]
   },
   "BUSINESS.SALES_PROMOTIONS": {
-    "title": "Kampanyalar"
+    "title": "Kampanyalar",
+    "phrasings": [
+      "Promosyonlarımı göster",
+      "Promosyon oluşturmak istiyorum, nereye gideyim",
+      "Maxina kampanyalarım nerede"
+    ]
   },
   "BUSINESS.SALES_REFERRALS": {
-    "title": "Satış Tavsiyeleri"
+    "title": "Satış Tavsiyeleri",
+    "phrasings": [
+      "Satış referanslarımı göster",
+      "Referans satışlarımı nerede görebilirim",
+      "Maxina satış referansları nerede"
+    ]
   },
   "BUSINESS.SELL_EARN": {
-    "title": "Sat ve Kazan"
+    "title": "Sat ve Kazan",
+    "phrasings": [
+      "Satış alanımı aç",
+      "Maxina'da nasıl para kazanabilirim",
+      "Satışlarımı nerede görebilirim"
+    ]
   },
   "BUSINESS.SERVICES": {
-    "title": "Hizmetlerim"
+    "title": "Hizmetlerim",
+    "phrasings": [
+      "Sunduğum hizmetleri göster",
+      "Hizmetlerimi nerede yönetebilirim",
+      "Maxina'daki hizmetlerimi düzenlemek istiyorum"
+    ]
   },
   "BUSINESS.SERVICES_EVENTS": {
-    "title": "Etkinliklerim"
+    "title": "Etkinliklerim",
+    "phrasings": [
+      "Düzenlediğim etkinlikleri göster",
+      "Kendi etkinliklerim nerede",
+      "Sunduğum seans ve sınıfları göster"
+    ]
   },
   "BUSINESS.SERVICES_PACKAGES": {
-    "title": "Hizmet Paketleri"
+    "title": "Hizmet Paketleri",
+    "phrasings": [
+      "Hizmet paketlerimi göster",
+      "Paket ayarlamak istiyorum, nereye gideyim",
+      "Maxina'daki paketlerim nerede"
+    ]
   },
   "CALENDAR.OVERVIEW": {
-    "title": "Takvimim"
+    "title": "Takvimim",
+    "phrasings": [
+      "Takvimimi aç",
+      "Randevularımı göster",
+      "Günlük programım nerede"
+    ]
   },
   "COMM.EVENTS": {
-    "title": "Etkinlikler ve Buluşmalar"
+    "title": "Etkinlikler ve Buluşmalar",
+    "phrasings": [
+      "Topluluk etkinliklerini göster",
+      "Buluşmaları nerede bulabilirim",
+      "Etkinlikler ve buluşmalar ekranını aç"
+    ]
   },
   "COMM.EVENTS_HOT": {
-    "title": "Popüler Etkinlikler"
+    "title": "Popüler Etkinlikler",
+    "phrasings": [
+      "Popüler etkinlikleri göster",
+      "Şu an trend olan etkinlikler neler",
+      "Öne çıkan etkinlikleri göster"
+    ]
   },
   "COMM.EVENTS_TODAY": {
-    "title": "Bugünkü Etkinlikler"
+    "title": "Bugünkü Etkinlikler",
+    "phrasings": [
+      "Bugün hangi etkinlikler var",
+      "Bugünkü etkinlikleri göster",
+      "Bugün bir şey var mı"
+    ]
   },
   "COMM.EVENTS_UPCOMING": {
-    "title": "Yaklaşan Etkinlikler"
+    "title": "Yaklaşan Etkinlikler",
+    "phrasings": [
+      "Yaklaşan etkinlikleri göster",
+      "Önümüzdeki etkinlikler neler",
+      "Gelecek haftaki etkinlikler nerede"
+    ]
   },
   "COMM.FEED": {
-    "title": "Takip Ettiklerim Topluluk Akışı"
+    "title": "Takip Ettiklerim Topluluk Akışı",
+    "phrasings": [
+      "Takip ettiklerimin akışını göster",
+      "Takip ettiğim kişilerin gönderilerini aç",
+      "Following akışım nerede"
+    ]
   },
   "COMM.FIND_PARTNER": {
-    "title": "Partner Bul"
+    "title": "Partner Bul",
+    "phrasings": [
+      "Antrenman partneri bulmak istiyorum",
+      "Partner bul ekranını aç",
+      "Egzersiz arkadaşı nerede bulabilirim"
+    ]
   },
   "COMM.FIND_PARTNER_BOARD": {
-    "title": "Partner Panosu"
+    "title": "Partner Panosu",
+    "phrasings": [
+      "Partner panosunu aç",
+      "Başkalarının partner isteklerini göster",
+      "Kim partner arıyor, göster"
+    ]
   },
   "COMM.FIND_PARTNER_MATCHES": {
-    "title": "Eşleşmelerim"
+    "title": "Eşleşmelerim",
+    "phrasings": [
+      "Partner eşleşmelerimi göster",
+      "Benimle kim eşleşti",
+      "Mevcut partner eşleşmelerim nerede"
+    ]
   },
   "COMM.FIND_PARTNER_POSTS": {
-    "title": "Partner Gönderilerim"
+    "title": "Partner Gönderilerim",
+    "phrasings": [
+      "Kendi partner ilanlarımı göster",
+      "Partner isteklerim nerede",
+      "Yayınladığım partner ilanlarını aç"
+    ]
   },
   "COMM.GROUP_DETAIL": {
     "title": "Grup Detayı"
   },
   "COMM.GROUPS": {
-    "title": "Gruplar"
+    "title": "Gruplar",
+    "phrasings": [
+      "Topluluk gruplarını göster",
+      "Hangi gruplara katılabilirim",
+      "Gruplar ekranını aç"
+    ]
   },
   "COMM.GROUPS_DISCOVER": {
-    "title": "Grupları Keşfet"
+    "title": "Grupları Keşfet",
+    "phrasings": [
+      "Yeni gruplar keşfetmek istiyorum",
+      "Bana grup öner",
+      "Keşfet sekmesini aç"
+    ]
   },
   "COMM.INVITE": {
-    "title": "Arkadaşlarını Davet Et"
+    "title": "Arkadaşlarını Davet Et",
+    "phrasings": [
+      "Arkadaşlarımı davet etmek istiyorum",
+      "Davet linkim nerede",
+      "Maxina'ya arkadaş nasıl çağırırım"
+    ]
   },
   "COMM.LIVE_ROOM_VIEWER": {
     "title": "Belirli Canlı Oda İzleyicisi"
   },
   "COMM.LIVE_ROOMS": {
-    "title": "Canlı Odalar"
+    "title": "Canlı Odalar",
+    "phrasings": [
+      "Canlı odaları aç",
+      "Canlı bir oturuma katılmak istiyorum, nerede",
+      "Live Rooms ekranını göster"
+    ]
   },
   "COMM.LIVE_ROOMS_ALL": {
-    "title": "Tüm Odalar"
+    "title": "Tüm Odalar",
+    "phrasings": [
+      "Tüm canlı odaları göster",
+      "Hem canlı hem planlı tüm odaları listele",
+      "Bütün live room'ları görmek istiyorum"
+    ]
   },
   "COMM.LIVE_ROOMS_LIVE": {
-    "title": "Şu an canlı"
+    "title": "Şu an canlı",
+    "phrasings": [
+      "Şu an kim canlı yayında",
+      "Şu an aktif olan odaları göster",
+      "Canlı yayın yapan odalar nerede"
+    ]
   },
   "COMM.LIVE_ROOMS_PAST": {
-    "title": "Geçmiş Oturumlar"
+    "title": "Geçmiş Oturumlar",
+    "phrasings": [
+      "Geçmiş canlı oturumları göster",
+      "Canlı odaların kayıtlarını nerede izleyebilirim",
+      "Tamamlanan live room kayıtları nerede"
+    ]
   },
   "COMM.LIVE_ROOMS_SCHEDULED": {
-    "title": "Planlanan Odalar"
+    "title": "Planlanan Odalar",
+    "phrasings": [
+      "Planlanmış canlı odaları göster",
+      "Hangi canlı oturumlar programlanmış?",
+      "İleride başlayacak canlı odalar nerede?"
+    ]
   },
   "COMM.MATCHES": {
-    "title": "Uyumlu Üyeler"
+    "title": "Uyumlu Üyeler",
+    "phrasings": [
+      "Bana uygun üyeleri göster",
+      "Kimler benimle eşleşiyor?",
+      "Önerilen üyeleri görmek istiyorum"
+    ]
   },
   "COMM.MEDIA_HUB": {
-    "title": "Medya Merkezi"
+    "title": "Medya Merkezi",
+    "phrasings": [
+      "Media Hub'ı aç",
+      "Video ve podcastler nerede?",
+      "Topluluk medya kütüphanesini göster"
+    ]
   },
   "COMM.MEDIA_MUSIC": {
-    "title": "Müzik"
+    "title": "Müzik",
+    "phrasings": [
+      "Biraz müzik çal",
+      "Müzik bölümü nerede?",
+      "Media Hub'daki müzikleri aç"
+    ]
   },
   "COMM.MEDIA_PODCASTS": {
-    "title": "Podcast'ler"
+    "title": "Podcast'ler",
+    "phrasings": [
+      "Podcast dinleyebileceğim yer neresi?",
+      "Podcastleri göster",
+      "Topluluk podcastlerini aç"
+    ]
   },
   "COMM.MEDIA_SHORTS": {
-    "title": "Kısa Videolar"
+    "title": "Kısa Videolar",
+    "phrasings": [
+      "Kısa videoları göster",
+      "Shorts bölümünü aç",
+      "Topluluk kısa videolarını görmek istiyorum"
+    ]
   },
   "COMM.MEMBERS": {
-    "title": "Topluluk Üyeleri"
+    "title": "Topluluk Üyeleri",
+    "phrasings": [
+      "Maxina topluluğundaki üyeleri göster",
+      "Toplulukta başka kimler var?",
+      "Üye dizinini aç"
+    ]
   },
   "COMM.OPEN_ASKS": {
-    "title": "Açık İstekler"
+    "title": "Açık İstekler",
+    "phrasings": [
+      "Açık talepleri göster",
+      "İnsanlar ne konularda yardım istiyor?",
+      "Üyelerin açık isteklerini görmek istiyorum"
+    ]
   },
   "COMM.OVERVIEW": {
-    "title": "Topluluk"
+    "title": "Topluluk",
+    "phrasings": [
+      "Maxina topluluğunu aç",
+      "Beni topluluk alanına götür",
+      "Topluluk sayfasını göster"
+    ]
   },
   "COMM.TALK_TO_VITANA": {
-    "title": "Vitana ile Konuş"
+    "title": "Vitana ile Konuş",
+    "phrasings": [
+      "Vitana ekibiyle iletişim sayfasını aç",
+      "Vitana'ya mesaj göndermek istiyorum",
+      "Talk to Vitana sayfası nerede?"
+    ]
   },
   "CONNECTORS.AGENT": {
-    "title": "Autopilot Bağlantıları"
+    "title": "Autopilot Bağlantıları",
+    "phrasings": [
+      "Autopilot bağlantılarını göster",
+      "Autopilot için servis bağlamak istiyorum",
+      "Autopilot Connectors sayfasını aç"
+    ]
   },
   "CONNECTORS.AI": {
-    "title": "Yapay Zeka Bağlayıcıları"
+    "title": "Yapay Zeka Bağlayıcıları",
+    "phrasings": [
+      "Yapay zeka bağlantılarını göster",
+      "Başka bir AI aracı bağlamak istiyorum",
+      "AI Connectors sayfasını aç"
+    ]
   },
   "CONNECTORS.FITNESS": {
-    "title": "Fitness Bağlantıları"
+    "title": "Fitness Bağlantıları",
+    "phrasings": [
+      "Fitness takipçimi nereye bağlayabilirim?",
+      "Akıllı saatimi bağla",
+      "Fitness uygulamalarını bağlama sayfasını aç"
+    ]
   },
   "CONNECTORS.HEALTH": {
-    "title": "Sağlık Bağlantıları"
+    "title": "Sağlık Bağlantıları",
+    "phrasings": [
+      "Sağlık uygulamamı bağlamak istiyorum",
+      "Apple Health veya Google Fit'i nasıl bağlarım?",
+      "Sağlık bağlantıları sayfasını göster"
+    ]
   },
   "CONNECTORS.MEDIA": {
-    "title": "Müzik ve Video Bağlantıları"
+    "title": "Müzik ve Video Bağlantıları",
+    "phrasings": [
+      "Spotify'ı bağla",
+      "Müzik ve video hesaplarımı nasıl bağlarım?",
+      "Medya bağlantıları sayfasını aç"
+    ]
   },
   "CONNECTORS.OTHER": {
-    "title": "Diğer Bağlantılar"
+    "title": "Diğer Bağlantılar",
+    "phrasings": [
+      "Diğer bağlantıları göster",
+      "Başka entegrasyonlar var mı?",
+      "Other Connectors sayfasını aç"
+    ]
   },
   "CONNECTORS.PRODUCTIVITY": {
-    "title": "E-posta ve Takvim Bağlantıları"
+    "title": "E-posta ve Takvim Bağlantıları",
+    "phrasings": [
+      "E-postamı bağlamak istiyorum",
+      "Google Takvimimi nasıl bağlarım?",
+      "Mail ve takvim bağlantıları sayfasını aç"
+    ]
   },
   "CONNECTORS.SOCIAL": {
-    "title": "Sosyal Medya Bağlantıları"
+    "title": "Sosyal Medya Bağlantıları",
+    "phrasings": [
+      "Sosyal medya hesaplarımı bağla",
+      "Instagram'ı nasıl bağlarım?",
+      "Sosyal medya bağlantıları sayfasını göster"
+    ]
   },
   "DISCOVER.AI_PICKS": {
-    "title": "Yapay Zeka Seçimleri"
+    "title": "Yapay Zeka Seçimleri",
+    "phrasings": [
+      "Benim için yapay zekanın önerdiği ürünleri göster",
+      "AI Picks sekmesini aç",
+      "Sana göre ne öneriyor yapay zeka?"
+    ]
   },
   "DISCOVER.CART": {
-    "title": "Sepet"
+    "title": "Sepet",
+    "phrasings": [
+      "Sepetimi aç",
+      "Sepetimde ne var?",
+      "Alışveriş sepetimi göster"
+    ]
   },
   "DISCOVER.CATEGORIES": {
-    "title": "Kategoriler"
+    "title": "Kategoriler",
+    "phrasings": [
+      "Ürün kategorilerini göster",
+      "Mağaza kategorilerine göz atmak istiyorum",
+      "Kategoriler sayfasını aç"
+    ]
   },
   "DISCOVER.DEALS": {
-    "title": "Fırsatlar ve Kampanyalar"
+    "title": "Fırsatlar ve Kampanyalar",
+    "phrasings": [
+      "İndirimleri ve fırsatları göster",
+      "Şu an aktif kampanyalar var mı?",
+      "Teklifler nerede?"
+    ]
   },
   "DISCOVER.DEALS_AI": {
-    "title": "Yapay Zeka Fırsat Seçimi"
+    "title": "Yapay Zeka Fırsat Seçimi",
+    "phrasings": [
+      "Yapay zekanın seçtiği fırsatları göster",
+      "Benim için seçilmiş indirimleri görmek istiyorum",
+      "AI deal picks sekmesini aç"
+    ]
   },
   "DISCOVER.DEALS_SAVED": {
-    "title": "Kaydedilen Fırsatlar"
+    "title": "Kaydedilen Fırsatlar",
+    "phrasings": [
+      "Kaydettiğim fırsatları göster",
+      "Yer imlerine eklediğim indirimleri aç",
+      "Kaydedilmiş teklifler nerede?"
+    ]
   },
   "DISCOVER.DEALS_TRENDING": {
-    "title": "Trend Fırsatlar"
+    "title": "Trend Fırsatlar",
+    "phrasings": [
+      "Trend olan fırsatları göster",
+      "Şu an en popüler teklifler hangileri?",
+      "Trending deals sekmesini aç"
+    ]
   },
   "DISCOVER.DOCTORS_COACHES": {
-    "title": "Doktorlar ve Koçlar"
+    "title": "Doktorlar ve Koçlar",
+    "phrasings": [
+      "Doktor veya koç nerede bulabilirim?",
+      "Sağlık koçu bulmak istiyorum",
+      "Doktorlar ve koçlar sayfasını aç"
+    ]
   },
   "DISCOVER.MARKETPLACE": {
-    "title": "Pazar Yeri"
+    "title": "Pazar Yeri",
+    "phrasings": [
+      "Maxina pazaryerini aç",
+      "Alıp satabildiğim yer neresi?",
+      "Marketplace'i göster"
+    ]
   },
   "DISCOVER.MARKETPLACE_MINE": {
-    "title": "Pazar Yerim"
+    "title": "Pazar Yerim",
+    "phrasings": [
+      "Pazaryerindeki kendi ilanlarımı göster",
+      "Marketplace'deki tekliflerimi görmek istiyorum",
+      "My Marketplace sayfasını aç"
+    ]
   },
   "DISCOVER.MARKETPLACE_OPEN": {
-    "title": "Açık Talepler"
+    "title": "Açık Talepler",
+    "phrasings": [
+      "Herkese açık pazaryeri taleplerini göster",
+      "Açık marketplace isteklerini görmek istiyorum",
+      "Open Requests sayfasını aç"
+    ]
   },
   "DISCOVER.MY_TICKETS": {
-    "title": "Biletlerim"
+    "title": "Biletlerim",
+    "phrasings": [
+      "Biletlerimi göster",
+      "Etkinlik biletlerim nerede?",
+      "Satın aldığım biletleri aç"
+    ]
   },
   "DISCOVER.ORDERS": {
-    "title": "Siparişlerim"
+    "title": "Siparişlerim",
+    "phrasings": [
+      "Siparişlerimi göster",
+      "Siparişimi nerede takip edebilirim?",
+      "Ne sipariş etmiştim?"
+    ]
   },
   "DISCOVER.ORDERS_ACTIVE": {
-    "title": "Aktif Siparişler"
+    "title": "Aktif Siparişler",
+    "phrasings": [
+      "Aktif siparişlerimi göster",
+      "Yolda olan siparişlerim hangileri?",
+      "Devam eden siparişlerimi aç"
+    ]
   },
   "DISCOVER.ORDERS_HISTORY": {
-    "title": "Sipariş Geçmişi"
+    "title": "Sipariş Geçmişi",
+    "phrasings": [
+      "Geçmiş siparişlerimi göster",
+      "Daha önce ne sipariş ettim?",
+      "Sipariş geçmişimi aç"
+    ]
   },
   "DISCOVER.OVERVIEW": {
-    "title": "Keşfet"
+    "title": "Keşfet",
+    "phrasings": [
+      "Discover'ı aç",
+      "Mağazayı göster",
+      "Bir şeyler satın alabileceğim yer neresi?"
+    ]
   },
   "DISCOVER.PRODUCT_DETAIL": {
     "title": "Ürün Detayı"
@@ -249,97 +644,252 @@
     "title": "Sağlayıcı Profili"
   },
   "DISCOVER.SHARE_EARN": {
-    "title": "Paylaş ve Kazan"
+    "title": "Paylaş ve Kazan",
+    "phrasings": [
+      "Paylaşarak nasıl kazanabilirim?",
+      "Share and Earn sayfasını aç",
+      "Ürün paylaşarak kazanma bölümünü göster"
+    ]
   },
   "DISCOVER.SHOP": {
-    "title": "Mağaza"
+    "title": "Mağaza",
+    "phrasings": [
+      "Video mağazasını aç",
+      "Alışveriş yapılabilir videoları göster",
+      "Maxina video shop'u aç"
+    ]
   },
   "DISCOVER.SUPPLEMENTS": {
-    "title": "Takviyeler"
+    "title": "Takviyeler",
+    "phrasings": [
+      "Takviye satın alabileceğim yer neresi?",
+      "Mağazadaki takviyeleri göster",
+      "Vitamin ve supplement bölümünü aç"
+    ]
   },
   "DISCOVER.WELLNESS_SERVICES": {
-    "title": "Wellness Hizmetleri"
+    "title": "Wellness Hizmetleri",
+    "phrasings": [
+      "Sağlık hizmetlerini göster",
+      "Masaj rezervasyonu yapabileceğim yer neresi?",
+      "Wellness hizmetlerini bulmak istiyorum"
+    ]
   },
   "HEALTH.BIOLOGY_OMICS": {
-    "title": "Omik Verilerim"
+    "title": "Omik Verilerim",
+    "phrasings": [
+      "Omik verilerimi göster",
+      "Genetik sonuçlarım nerede?",
+      "My Omics sekmesini aç"
+    ]
   },
   "HEALTH.BIOLOGY_SUPPLEMENTS": {
-    "title": "Takviyelerim (Biyoloji)"
+    "title": "Takviyelerim (Biyoloji)",
+    "phrasings": [
+      "Biyoloji profilindeki takviyelerimi göster",
+      "Biyolojik profilimde hangi takviyeler var?",
+      "My Biology'deki supplement sekmesini aç"
+    ]
   },
   "HEALTH.CONDITIONS": {
-    "title": "Sağlık Durumları"
+    "title": "Sağlık Durumları",
+    "phrasings": [
+      "Sağlık durumlarımı göster",
+      "Tanılarımı nerede yönetebilirim?",
+      "Sağlık koşulları sayfasını aç"
+    ]
   },
   "HEALTH.EDUCATION": {
-    "title": "Eğitim ve Bilim"
+    "title": "Eğitim ve Bilim",
+    "phrasings": [
+      "Sağlık eğitim içeriklerini göster",
+      "Uzun ömürlülük hakkında nerede bilgi edinebilirim?",
+      "Vitana bilgi tabanındaki bilim makalelerini aç"
+    ]
   },
   "HEALTH.EDUCATION_PODCASTS": {
-    "title": "Eğitim Podcastleri"
+    "title": "Eğitim Podcastleri",
+    "phrasings": [
+      "Sağlık eğitim podcastlerini göster",
+      "Sağlıkla ilgili eğitici podcastler nerede?",
+      "Öğrenme podcastleri sekmesini aç"
+    ]
   },
   "HEALTH.EDUCATION_VIDEOS": {
-    "title": "Eğitim Videoları"
+    "title": "Eğitim Videoları",
+    "phrasings": [
+      "Sağlık eğitim videolarını göster",
+      "Eğitici sağlık videoları nerede?",
+      "Öğrenme videoları sekmesini aç"
+    ]
   },
   "HEALTH.MEDICAL": {
-    "title": "Tıbbi"
+    "title": "Tıbbi",
+    "phrasings": [
+      "Tıbbi kayıtlarımı göster",
+      "Doktor belgelerim nerede?",
+      "Tıbbi raporlarımı görmek istiyorum"
+    ]
   },
   "HEALTH.MY_BIOLOGY": {
-    "title": "Biyolojim"
+    "title": "Biyolojim",
+    "phrasings": [
+      "biyoloji verilerimi göster",
+      "kan tahlili sonuçlarımı nerede görebilirim",
+      "biyobelirteçlerimi aç"
+    ]
   },
   "HEALTH.OVERVIEW": {
-    "title": "Sağlık"
+    "title": "Sağlık",
+    "phrasings": [
+      "sağlık sayfamı aç",
+      "genel sağlık durumumu göster",
+      "sağlık merkezine git"
+    ]
   },
   "HEALTH.PILLARS": {
-    "title": "Sağlık Sütunları"
+    "title": "Sağlık Sütunları",
+    "phrasings": [
+      "sağlık sütunlarını göster",
+      "uzun yaşamın temel sütunları neler",
+      "beslenme uyku stres sütunlarını aç"
+    ]
   },
   "HEALTH.PLANS": {
-    "title": "Planlarım"
+    "title": "Planlarım",
+    "phrasings": [
+      "sağlık planlarımı aç",
+      "planlarımı göster",
+      "kişisel sağlık programlarım nerede"
+    ]
   },
   "HEALTH.PLANS_EXERCISE": {
-    "title": "Antrenman Planları"
+    "title": "Antrenman Planları",
+    "phrasings": [
+      "egzersiz planımı göster",
+      "antrenman programımı aç",
+      "spor planım nerede"
+    ]
   },
   "HEALTH.PLANS_HYDRATION": {
-    "title": "Hidrasyon Planları"
+    "title": "Hidrasyon Planları",
+    "phrasings": [
+      "su içme planımı göster",
+      "hidrasyon programımı aç",
+      "günlük su planım nerede"
+    ]
   },
   "HEALTH.PLANS_MENTAL": {
-    "title": "Mental Planlar"
+    "title": "Mental Planlar",
+    "phrasings": [
+      "zihinsel sağlık planımı göster",
+      "mental programımı aç",
+      "mindfulness planım nerede"
+    ]
   },
   "HEALTH.PLANS_NUTRITION": {
-    "title": "Beslenme Planları"
+    "title": "Beslenme Planları",
+    "phrasings": [
+      "beslenme planımı göster",
+      "diyet programımı aç",
+      "yemek planım nerede"
+    ]
   },
   "HEALTH.PLANS_SLEEP": {
-    "title": "Uyku Planları"
+    "title": "Uyku Planları",
+    "phrasings": [
+      "uyku planımı göster",
+      "uyku programımı aç",
+      "uyku rutinime bakmak istiyorum"
+    ]
   },
   "HEALTH.SERVICES_HUB": {
-    "title": "Sağlık Hizmetleri Merkezi"
+    "title": "Sağlık Hizmetleri Merkezi",
+    "phrasings": [
+      "sağlık hizmetlerini aç",
+      "sağlık hizmeti nereden rezerve edebilirim",
+      "Maxina sağlık hizmetleri merkezine git"
+    ]
   },
   "HEALTH.SERVICES_INSURANCE": {
-    "title": "Sigorta Desteği"
+    "title": "Sigorta Desteği",
+    "phrasings": [
+      "sigorta desteğine bak",
+      "sağlık sigortamla ilgili yardım almak istiyorum",
+      "sigorta destek sekmesini aç"
+    ]
   },
   "HEALTH.SERVICES_MEDICAL": {
-    "title": "Tıbbi Hizmetler"
+    "title": "Tıbbi Hizmetler",
+    "phrasings": [
+      "tıbbi hizmetleri göster",
+      "medikal hizmet rezervasyonu yapmak istiyorum",
+      "tıbbi hizmetler sekmesini aç"
+    ]
   },
   "HEALTH.SERVICES_MINE": {
-    "title": "Hizmetlerim"
+    "title": "Hizmetlerim",
+    "phrasings": [
+      "kullandığım sağlık hizmetlerini göster",
+      "rezerve ettiğim hizmetler nerede",
+      "benim hizmetlerim sekmesini aç"
+    ]
   },
   "HEALTH.SERVICES_WELLNESS": {
-    "title": "Wellness Programları"
+    "title": "Wellness Programları",
+    "phrasings": [
+      "wellness programlarını göster",
+      "bir wellness programına katılmak istiyorum",
+      "sağlıklı yaşam programları nerede"
+    ]
   },
   "HEALTH.SUPPLEMENTS": {
-    "title": "Sağlık Takviyeleri"
+    "title": "Sağlık Takviyeleri",
+    "phrasings": [
+      "takviyelerimi göster",
+      "hangi vitaminleri aldığımı görmek istiyorum",
+      "supplement listem nerede"
+    ]
   },
   "HEALTH.VITANA_INDEX": {
-    "title": "Vitana İndeksi"
+    "title": "Vitana İndeksi",
+    "phrasings": [
+      "Vitana Index puanımı göster",
+      "Vitana Index'im nerede",
+      "longevity skoruma bakmak istiyorum"
+    ]
   },
   "HOME.NEWS_ALL": {
-    "title": "Tüm Haberler"
+    "title": "Tüm Haberler",
+    "phrasings": [
+      "tüm haberleri göster",
+      "bütün haber kaynaklarını aç",
+      "her kaynaktan haberleri listele"
+    ]
   },
   "HOME.NEWS_COMMUNITY": {
-    "title": "Topluluk Haberleri"
+    "title": "Topluluk Haberleri",
+    "phrasings": [
+      "topluluk haberlerini aç",
+      "Maxina topluluğunda neler oluyor",
+      "community haberlerini göster"
+    ]
   },
   "HOME.OVERVIEW": {
-    "title": "Uzun Ömür Haberleri"
+    "title": "Uzun Ömür Haberleri",
+    "phrasings": [
+      "ana sayfaya git",
+      "son longevity haberlerini göster",
+      "haber akışını aç"
+    ]
   },
   "INBOX.ARCHIVED": {
-    "title": "Arşivlenmiş Mesajlar"
+    "title": "Arşivlenmiş Mesajlar",
+    "phrasings": [
+      "arşivlenmiş mesajlarımı göster",
+      "eski arşiv sohbetlerim nerede",
+      "arşivimi aç"
+    ]
   },
   "INBOX.CONVERSATION": {
     "title": "Sohbet"
@@ -348,43 +898,103 @@
     "title": "Grup Sohbeti"
   },
   "INBOX.INSPIRATION": {
-    "title": "İlham"
+    "title": "İlham",
+    "phrasings": [
+      "ilham mesajlarımı göster",
+      "günlük ilham içeriklerini aç",
+      "Vitana'dan gelen motivasyon mesajları nerede"
+    ]
   },
   "INBOX.OVERVIEW": {
-    "title": "Gelen Kutusu"
+    "title": "Gelen Kutusu",
+    "phrasings": [
+      "gelen kutumu aç",
+      "mesajlarıma bakmak istiyorum",
+      "yeni mesajım var mı"
+    ]
   },
   "INTENTS.BOARD": {
-    "title": "Talep Panosu"
+    "title": "Talep Panosu",
+    "phrasings": [
+      "topluluk panosunu aç",
+      "diğer üyelerin ne aradığını görmek istiyorum",
+      "community board'u göster"
+    ]
   },
   "INTENTS.MATCH_DETAIL": {
     "title": "Eşleşme Detayı"
   },
   "INTENTS.MINE": {
-    "title": "Intentlerim"
+    "title": "Intentlerim",
+    "phrasings": [
+      "kendi ilanlarımı göster",
+      "topluluğa ne paylaştığımı görmek istiyorum",
+      "benim intent'lerim nerede"
+    ]
   },
   "LIFE_COMPASS.OVERLAY": {
-    "title": "Yaşam Pusulası"
+    "title": "Yaşam Pusulası",
+    "phrasings": [
+      "Life Compass'ımı aç",
+      "yaşam hedeflerimi nerede görebilirim",
+      "hedeflerimi göster"
+    ]
   },
   "MEMORY.DAILY_DIARY": {
-    "title": "Tek Günlük Kayıt Akışı"
+    "title": "Tek Günlük Kayıt Akışı",
+    "phrasings": [
+      "bugünü günlüğe kaydet",
+      "günlük yakalama akışını başlat",
+      "bugünkü günü kaydetmek istiyorum"
+    ]
   },
   "MEMORY.DIARY": {
-    "title": "Günlük"
+    "title": "Günlük",
+    "phrasings": [
+      "günlüğümü aç",
+      "günlük notlarımı nerede yazabilirim",
+      "journal girişlerimi göster"
+    ]
   },
   "MEMORY.DIARY_BUGS": {
-    "title": "Hata Raporları"
+    "title": "Hata Raporları",
+    "phrasings": [
+      "hata bildirmek istiyorum",
+      "bug raporlarım nerede",
+      "uygulama hatası nasıl bildiririm"
+    ]
   },
   "MEMORY.OVERVIEW": {
-    "title": "Anı Bahçesi"
+    "title": "Anı Bahçesi",
+    "phrasings": [
+      "Memory Garden'ımı aç",
+      "benim hakkımda ne hatırladığını görmek istiyorum",
+      "anılarımı göster"
+    ]
   },
   "MEMORY.PERMISSIONS": {
-    "title": "Hafıza İzinleri"
+    "title": "Hafıza İzinleri",
+    "phrasings": [
+      "ne hatırlayabileceğini kontrol etmek istiyorum",
+      "bellek izinlerimi aç",
+      "hafıza ayarlarımı göster"
+    ]
   },
   "MEMORY.RECALL": {
-    "title": "Hatırla ve Ara"
+    "title": "Hatırla ve Ara",
+    "phrasings": [
+      "anılarımda bir şey aramak istiyorum",
+      "sana söylediğim bir şeyi bul",
+      "hafıza arama ekranını aç"
+    ]
   },
   "MEMORY.TIMELINE": {
-    "title": "Zaman Çizelgesi"
+    "title": "Zaman Çizelgesi",
+    "phrasings": [
+      "zaman çizelgemi göster",
+      "yaşam timeline'ımı aç",
+      "kronolojik anı akışımı görmek istiyorum"
+    ]
   },
   "NEWS.DETAIL": {
     "title": "Haber Makalesi"
@@ -393,7 +1003,12 @@
     "title": "Etkinlik Detayları"
   },
   "OVERLAY.MASTER_ACTION": {
-    "title": "Hızlı İşlemler"
+    "title": "Hızlı İşlemler",
+    "phrasings": [
+      "hızlı işlemleri aç",
+      "quick action menüsünü göster",
+      "ne yapabileceğimi görmek istiyorum"
+    ]
   },
   "OVERLAY.MEETUP_DRAWER": {
     "title": "Buluşma Detayları"
@@ -402,16 +1017,36 @@
     "title": "Profil Önizlemesi"
   },
   "OVERLAY.VITANA_INDEX": {
-    "title": "Vitana İndeksi"
+    "title": "Vitana İndeksi",
+    "phrasings": [
+      "Vitana Index özetini aç",
+      "indeksime hızlıca bakmak istiyorum",
+      "5 sütun skorumu hızlıca göster"
+    ]
   },
   "OVERLAY.WALLET_POPUP": {
-    "title": "Hızlı Cüzdan"
+    "title": "Hızlı Cüzdan",
+    "phrasings": [
+      "cüzdanıma hızlıca bak",
+      "wallet popup'ını aç",
+      "bakiyemi ve son ödüllerimi göster"
+    ]
   },
   "PROFILE.ME": {
-    "title": "Profilim"
+    "title": "Profilim",
+    "phrasings": [
+      "profilimi aç",
+      "profil fotoğrafımı değiştirmek istiyorum",
+      "hesap bilgilerimi düzenle"
+    ]
   },
   "PROFILE.PRIVACY": {
-    "title": "Profil Görünürlüğü"
+    "title": "Profil Görünürlüğü",
+    "phrasings": [
+      "profilimi kim görebilir",
+      "profil görünürlük ayarlarını aç",
+      "profilimin hangi bölümlerinin görünür olduğunu ayarlamak istiyorum"
+    ]
   },
   "PROFILE.PUBLIC": {
     "title": "Herkese Açık Profil"
@@ -420,138 +1055,358 @@
     "title": "Eşleşme Bağlantılı Profil"
   },
   "PUBLIC.LANDING": {
-    "title": "Vitanaland Ana Sayfa"
+    "title": "Vitanaland Ana Sayfa",
+    "phrasings": [
+      "Vitanaland ana sayfasına git",
+      "Maxina giriş sayfasını aç",
+      "Vitanaland'ın başlangıç ekranını göster"
+    ]
   },
   "PUBLIC.PRIVACY": {
-    "title": "Gizlilik Politikası"
+    "title": "Gizlilik Politikası",
+    "phrasings": [
+      "gizlilik politikasını göster",
+      "verilerimi nasıl işlediğini öğrenmek istiyorum",
+      "privacy policy sayfasını aç"
+    ]
   },
   "PUBLIC.TERMS": {
-    "title": "Kullanım Koşulları"
+    "title": "Kullanım Koşulları",
+    "phrasings": [
+      "kullanım koşullarını göster",
+      "şartlar ve koşullar sayfasını aç",
+      "yasal bilgilere bakmak istiyorum"
+    ]
   },
   "REMINDERS.OVERVIEW": {
-    "title": "Hatırlatıcılar"
+    "title": "Hatırlatıcılar",
+    "phrasings": [
+      "hatırlatıcılarımı göster",
+      "hangi hatırlatıcılarım var",
+      "reminder listemi aç"
+    ]
   },
   "SEARCH.OVERVIEW": {
-    "title": "Ara"
+    "title": "Ara",
+    "phrasings": [
+      "aramayı aç",
+      "uygulamada bir şey aramak istiyorum",
+      "arama ekranına git"
+    ]
   },
   "SETTINGS.BILLING": {
-    "title": "Faturalama"
+    "title": "Faturalama",
+    "phrasings": [
+      "fatura ayarlarımı aç",
+      "ödemelerimi nerede yönetebilirim",
+      "abonelik ücretlerimi göster"
+    ]
   },
   "SETTINGS.BILLING_CREATOR": {
-    "title": "İçerik Üretici Ödemeleri"
+    "title": "İçerik Üretici Ödemeleri",
+    "phrasings": [
+      "içerik üreticisi ödemelerimi göster",
+      "creator kazançlarımı nerede görebilirim",
+      "ne zaman ödeme alacağımı görmek istiyorum"
+    ]
   },
   "SETTINGS.BILLING_INVOICES": {
-    "title": "Faturalar Makbuzlar"
+    "title": "Faturalar Makbuzlar",
+    "phrasings": [
+      "faturalarımı nerede indirebilirim",
+      "makbuzlarımı göster",
+      "geçmiş faturalarıma bakmak istiyorum"
+    ]
   },
   "SETTINGS.BILLING_PAYMENT": {
-    "title": "Ödeme Yöntemi"
+    "title": "Ödeme Yöntemi",
+    "phrasings": [
+      "ödeme yöntemimi değiştirmek istiyorum",
+      "kredi kartımı nasıl güncellerim",
+      "ödeme bilgilerimi nerede düzenleyebilirim"
+    ]
   },
   "SETTINGS.BILLING_PLAN": {
-    "title": "Mevcut Plan"
+    "title": "Mevcut Plan",
+    "phrasings": [
+      "hangi plana üyeyim",
+      "mevcut abonelik planımı göster",
+      "planımı nasıl yükseltebilirim"
+    ]
   },
   "SETTINGS.CONNECTED_APPS": {
-    "title": "Bağlayıcılar ve Bağlı Uygulamalar"
+    "title": "Bağlayıcılar ve Bağlı Uygulamalar",
+    "phrasings": [
+      "bağlı uygulamalarımı göster",
+      "hangi uygulamaları hesabıma bağladım",
+      "uygulama bağlantılarımı yönetmek istiyorum"
+    ]
   },
   "SETTINGS.LIMITATIONS": {
-    "title": "Sağlık Kısıtlamaları"
+    "title": "Sağlık Kısıtlamaları",
+    "phrasings": [
+      "sağlık kısıtlamalarımı nereye girebilirim",
+      "alerji ve sakıncalarımı nasıl kaydederim",
+      "yaralanma veya sağlık sınırlamalarımı eklemek istiyorum"
+    ]
   },
   "SETTINGS.NOTIFICATIONS": {
-    "title": "Bildirimler"
+    "title": "Bildirimler",
+    "phrasings": [
+      "bildirimleri nasıl kapatabilirim",
+      "bildirim ayarlarını aç",
+      "anlık bildirimleri durdurmak istiyorum"
+    ]
   },
   "SETTINGS.OVERVIEW": {
-    "title": "Ayarlar"
+    "title": "Ayarlar",
+    "phrasings": [
+      "ayarları aç",
+      "hesap ayarlarımı göster",
+      "ayarlar sayfasına git"
+    ]
   },
   "SETTINGS.PREFERENCES": {
-    "title": "Tercihler"
+    "title": "Tercihler",
+    "phrasings": [
+      "tercihlerimi açmak istiyorum",
+      "uygulama tercihlerimi nerede ayarlayabilirim",
+      "kişisel tercihlerimi göster"
+    ]
   },
   "SETTINGS.PREFERENCES_ACCESSIBILITY": {
-    "title": "Erişilebilirlik"
+    "title": "Erişilebilirlik",
+    "phrasings": [
+      "erişilebilirlik ayarlarını aç",
+      "yazı boyutunu nasıl büyütebilirim",
+      "erişilebilirlik seçeneklerini göster"
+    ]
   },
   "SETTINGS.PREFERENCES_APPEARANCE": {
-    "title": "Görünüm"
+    "title": "Görünüm",
+    "phrasings": [
+      "karanlık moda geçmek istiyorum",
+      "uygulamanın temasını değiştir",
+      "görünüm ayarlarını aç"
+    ]
   },
   "SETTINGS.PREFERENCES_LANGUAGE": {
-    "title": "Dil Bölge"
+    "title": "Dil Bölge",
+    "phrasings": [
+      "uygulama dilini nasıl değiştirebilirim",
+      "dil ayarlarını aç",
+      "uygulamayı Almanca'ya geçirmek istiyorum"
+    ]
   },
   "SETTINGS.PRIVACY": {
-    "title": "Gizlilik Ayarları"
+    "title": "Gizlilik Ayarları",
+    "phrasings": [
+      "gizlilik ayarlarımı aç",
+      "verilerimi kim görebilir",
+      "Vitana'daki gizlilik seçeneklerini göster"
+    ]
   },
   "SETTINGS.PRIVACY_DATA": {
-    "title": "Veri Paylaşımı"
+    "title": "Veri Paylaşımı",
+    "phrasings": [
+      "hangi verilerimi paylaşıyorum",
+      "paylaşılan veri ayarlarını göster",
+      "veri paylaşımımı nerede kontrol edebilirim"
+    ]
   },
   "SETTINGS.PRIVACY_SECURITY": {
-    "title": "Hesap Güvenliği"
+    "title": "Hesap Güvenliği",
+    "phrasings": [
+      "şifremi değiştirmek istiyorum",
+      "hesap güvenliği ayarlarını aç",
+      "iki faktörlü doğrulamayı nasıl açarım"
+    ]
   },
   "SETTINGS.PRIVACY_VISIBILITY": {
-    "title": "Görünürlük"
+    "title": "Görünürlük",
+    "phrasings": [
+      "görünürlük ayarlarımı aç",
+      "profilimi aramalardan nasıl gizlerim",
+      "beni kimler görebilir ayarına bakmak istiyorum"
+    ]
   },
   "SETTINGS.SOCIAL": {
-    "title": "Sosyal Hesaplar"
+    "title": "Sosyal Hesaplar",
+    "phrasings": [
+      "sosyal medya hesaplarımı göster",
+      "bağlı sosyal hesaplarımı yönetmek istiyorum",
+      "hangi sosyal hesaplarımı bağladım"
+    ]
   },
   "SETTINGS.SUPPORT": {
-    "title": "Destek"
+    "title": "Destek",
+    "phrasings": [
+      "destek sayfasını aç",
+      "uygulama hakkında yardım almak istiyorum",
+      "yardım merkezine git"
+    ]
   },
   "SETTINGS.SUPPORT_COMMUNITY": {
-    "title": "Topluluk Yardımı"
+    "title": "Topluluk Yardımı",
+    "phrasings": [
+      "topluluktan yardım isteyebileceğim yeri aç",
+      "topluluk yardım forumunu göster",
+      "diğer üyelerden nasıl yardım alabilirim"
+    ]
   },
   "SETTINGS.SUPPORT_CONTACT": {
-    "title": "Destek ile İletişim"
+    "title": "Destek ile İletişim",
+    "phrasings": [
+      "destek ekibiyle nasıl iletişime geçebilirim",
+      "bir yetkiliyle konuşmak istiyorum",
+      "destek talebi oluşturmak istiyorum"
+    ]
   },
   "SETTINGS.SUPPORT_FAQ": {
-    "title": "Destek SSS"
+    "title": "Destek SSS",
+    "phrasings": [
+      "sık sorulan soruları göster",
+      "SSS sayfasını aç",
+      "yardım makalelerini nerede bulabilirim"
+    ]
   },
   "SETTINGS.TENANT_ROLE": {
-    "title": "Tenant ve Rol"
+    "title": "Tenant ve Rol",
+    "phrasings": [
+      "rolümü değiştirmek istiyorum",
+      "hangi toplulukta olduğumu nerede görebilirim",
+      "tenant ve rol ayarlarını aç"
+    ]
   },
   "SHARING.CAMPAIGN_DETAIL": {
     "title": "Kampanya Detayı"
   },
   "SHARING.CAMPAIGNS": {
-    "title": "Kampanyalar"
+    "title": "Kampanyalar",
+    "phrasings": [
+      "paylaşım kampanyalarımı göster",
+      "aktif kampanyalarıma bakmak istiyorum",
+      "kampanya performansımı nerede görebilirim"
+    ]
   },
   "SHARING.DATA_CONSENT": {
-    "title": "Veri ve Onay"
+    "title": "Veri ve Onay",
+    "phrasings": [
+      "veri ve onay ayarlarımı aç",
+      "neye onay verdiğimi görmek istiyorum",
+      "paylaşım izinlerimi nerede yönetebilirim"
+    ]
   },
   "SHARING.DISTRIBUTION": {
-    "title": "Dağılım"
+    "title": "Dağılım",
+    "phrasings": [
+      "içeriğimin dağılımını göster",
+      "paylaştığım içerik nerede yayılıyor",
+      "dağıtım istatistiklerimi görmek istiyorum"
+    ]
   },
   "SHARING.OVERVIEW": {
-    "title": "Paylaş"
+    "title": "Paylaş",
+    "phrasings": [
+      "paylaşım ekranını aç",
+      "Maxina'yı arkadaşlarımla paylaşmak istiyorum",
+      "paylaşım sayfasına git"
+    ]
   },
   "WALLET.ACTIONS": {
-    "title": "Cüzdan İşlemleri"
+    "title": "Cüzdan İşlemleri",
+    "phrasings": [
+      "cüzdan işlemlerini aç",
+      "kredi göndermek ya da bakiye yüklemek istiyorum",
+      "cüzdanımda işlem yapmak istiyorum"
+    ]
   },
   "WALLET.ACTIVITY": {
-    "title": "Cüzdan Aktivitesi"
+    "title": "Cüzdan Aktivitesi",
+    "phrasings": [
+      "cüzdan hareketlerimi göster",
+      "işlem geçmişime bakmak istiyorum",
+      "son cüzdan aktivitelerimi nerede görebilirim"
+    ]
   },
   "WALLET.BALANCE": {
-    "title": "Bakiye ve Avantajlar"
+    "title": "Bakiye ve Avantajlar",
+    "phrasings": [
+      "bakiyemi nerede görebilirim",
+      "kaç kredim var",
+      "Maxina bakiyemi ve avantajlarımı göster"
+    ]
   },
   "WALLET.BALANCE_MEMBERSHIP": {
-    "title": "Üyelik"
+    "title": "Üyelik",
+    "phrasings": [
+      "üyelik durumumu göster",
+      "cüzdanımdaki üyelik sekmesini aç",
+      "membership bilgilerimi görmek istiyorum"
+    ]
   },
   "WALLET.BALANCE_OPTIMIZATION": {
-    "title": "Optimizasyon"
+    "title": "Optimizasyon",
+    "phrasings": [
+      "bakiyemi nasıl optimize edebilirim",
+      "cüzdanımdan daha fazla tasarruf etmek istiyorum",
+      "optimizasyon sekmesini aç"
+    ]
   },
   "WALLET.BALANCE_TOKENS": {
-    "title": "Tokenlar"
+    "title": "Tokenlar",
+    "phrasings": [
+      "token'larımı göster",
+      "kaç token'ım var",
+      "cüzdanımdaki token sekmesini aç"
+    ]
   },
   "WALLET.OVERVIEW": {
-    "title": "Cüzdan"
+    "title": "Cüzdan",
+    "phrasings": [
+      "cüzdanımı aç",
+      "Maxina cüzdanımı göster",
+      "uygulamadaki param nerede"
+    ]
   },
   "WALLET.REWARDS": {
-    "title": "Ödüller ve Komisyonlar"
+    "title": "Ödüller ve Komisyonlar",
+    "phrasings": [
+      "kazandığım ödülleri nerede görebilirim",
+      "komisyonlarımı göster",
+      "ne kadar ödül kazandım"
+    ]
   },
   "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Ödül Analizleri"
+    "title": "Ödül Analizleri",
+    "phrasings": [
+      "daha fazla ödül nasıl kazanabilirim",
+      "ödül içgörülerimi göster",
+      "kazanç ipuçlarını nerede bulabilirim"
+    ]
   },
   "WALLET.REWARDS_PENDING": {
-    "title": "Bekleyen Ödüller"
+    "title": "Bekleyen Ödüller",
+    "phrasings": [
+      "bekleyen ödüllerimi göster",
+      "henüz yatırılmamış ödüllerim nerede",
+      "onay bekleyen ödüllerimi görmek istiyorum"
+    ]
   },
   "WALLET.REWARDS_REFERRAL": {
-    "title": "Davet Ödülleri"
+    "title": "Davet Ödülleri",
+    "phrasings": [
+      "referans ödüllerimi göster",
+      "arkadaş davet ettiğim için ne kazandım",
+      "referral sekmesini aç"
+    ]
   },
   "WALLET.SUBSCRIPTIONS": {
-    "title": "Abonelikler"
+    "title": "Abonelikler",
+    "phrasings": [
+      "aboneliklerimi göster",
+      "hangi servislere abone olduğumu görmek istiyorum",
+      "bir aboneliği iptal etmek istiyorum"
+    ]
   }
 }

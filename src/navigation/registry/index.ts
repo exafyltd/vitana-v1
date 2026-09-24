@@ -14,8 +14,8 @@
  *     (never at a <Navigate> redirect);
  *   - every overlay event has a listener somewhere in src/;
  *   - every screen has a title in all shipped languages, and every screen a
- *     user can reach by voice (no required params) has English and German
- *     phrasings describing how people ask for it.
+ *     user can reach by voice (no required params) has phrasings describing
+ *     how people ask for it in every shipped language.
  */
 import screensFile from './screens.json';
 import ar from './locales/ar.json';
@@ -73,7 +73,13 @@ export interface ScreenDef {
   i18n: Record<'en' | 'de', ScreenText>;
 }
 
-const LOCALE_TITLES: Record<(typeof TRANSLATED_LOCALES)[number], Record<string, { title: string }>> = {
+export interface LocaleScreenText {
+  title: string;
+  /** How members ask for the screen in this language (machine-drafted from English, 2026-09-24). */
+  phrasings?: string[];
+}
+
+const LOCALE_TITLES: Record<(typeof TRANSLATED_LOCALES)[number], Record<string, LocaleScreenText>> = {
   es, fr, sr, pl, pt, ru, tr, ar, zh,
 };
 
@@ -92,10 +98,10 @@ export function isVoiceTarget(s: ScreenDef): boolean {
 
 export function screenTitle(s: ScreenDef, locale: string): string {
   if (locale === 'en' || locale === 'de') return s.i18n[locale].title;
-  const t = (LOCALE_TITLES as Record<string, Record<string, { title: string }>>)[locale]?.[s.id]?.title;
+  const t = (LOCALE_TITLES as Record<string, Record<string, LocaleScreenText>>)[locale]?.[s.id]?.title;
   return t || s.i18n.en.title;
 }
 
-export function localeTitles(locale: (typeof TRANSLATED_LOCALES)[number]): Record<string, { title: string }> {
+export function localeTitles(locale: (typeof TRANSLATED_LOCALES)[number]): Record<string, LocaleScreenText> {
   return LOCALE_TITLES[locale];
 }
