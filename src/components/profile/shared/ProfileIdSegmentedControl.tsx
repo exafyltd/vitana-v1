@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type SegmentedControlSize = "sm" | "md";
+type SegmentedControlSize = "sm" | "md" | "full";
 
 interface Segment<T extends string> {
   id: T;
@@ -35,6 +35,9 @@ const SIZE_STYLES: Record<
 > = {
   sm: { containerMaxW: "max-w-xs", button: "py-2 text-xs" },
   md: { containerMaxW: "max-w-md", button: "py-2.5 text-sm" },
+  // VTID-04470: full-width strip for the mobile profile header. Labels can
+  // run long in de/ru/pl, so text truncates rather than wrapping two lines.
+  full: { containerMaxW: "max-w-none", button: "py-2 px-1 text-[13px] min-w-0 truncate" },
 };
 
 function getPosition(index: number, total: number): { left: string; width: string } {

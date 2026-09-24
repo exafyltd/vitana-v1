@@ -441,9 +441,12 @@ export default function EditProfilePage() {
               MobileIdCardSwitcher above. */}
           {!isBusinessTab && (
           <>
-          <MobileProfileStats
-            userId={user?.id}
-          />
+          {/* On Identity the stats sit inside the Vitana Index card (VTID-04470). */}
+          {getActiveCardSide(searchParams) !== "front" && (
+            <MobileProfileStats
+              userId={user?.id}
+            />
+          )}
 
           {/* Sticky Tab Bar for content below ID card */}
           <MobileProfileTabs

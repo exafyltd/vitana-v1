@@ -86,7 +86,41 @@
       "viewProduct": "查看",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "/ {max}",
+      "noIndexOwner": "记录第一项活动后，你的指数就会出现。",
+      "noIndexPublic": "暂无公开的 Vitana 指数",
+      "boostPrefix": "最大提升：",
+      "strongestPrefix": "最强领域：",
+      "momentumRisingFast": "本周 +{delta} —— 继续保持！",
+      "momentumImproving": "本周你的指数在上升 —— 继续保持！",
+      "fallback": "继续培养长寿习惯，发现最能推动你指数的因素。",
+      "publicLine": "正与 MAXINA 社区一起培养长寿习惯。",
+      "pillarListTwo": "{a}和{b}",
+      "aboutTitle": "关于你的 VITANA INDEX",
+      "subtitleStandingOut": "为什么你本周表现突出",
+      "subtitleNeutral": "你的指数现状",
+      "aboutBody": "你的 VITANA INDEX 反映了你在五大长寿支柱上的近期进展。",
+      "aboutBodyPublic": "VITANA INDEX 反映在五大长寿支柱上的进展。",
+      "boostHeading": "最大提升",
+      "strongestHeading": "最强领域",
+      "boostLine": "{pillar}为你的指数带来了最大提升。",
+      "strongestLine": "{pillar}是你目前最强的支柱。",
+      "whatHelpedMost": "最有帮助的方面",
+      "risingFast": "快速上升",
+      "improving": "正在进步",
+      "streak": "连续 {count} 天",
+      "shareProgress": "分享进展",
+      "seeFullBreakdown": "查看完整明细",
+      "editProfile": "编辑个人资料",
+      "aboutIndexAria": "关于 VITANA INDEX",
+      "openIndexAria": "打开 Vitana 指数详情",
+      "shareProfileAria": "分享个人资料",
+      "editPhotoAria": "编辑头像",
+      "showQrAria": "显示二维码",
+      "close": "关闭"
+    }
   },
   "_pending_review": {}
 }

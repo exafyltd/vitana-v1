@@ -86,7 +86,41 @@
       "viewProduct": "Pogledaj",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "od {max}",
+      "noIndexOwner": "Tvoj Indeks se pojavljuje čim se zabeleži tvoja prva aktivnost.",
+      "noIndexPublic": "Još nema javnog Vitana Index-a",
+      "boostPrefix": "Najveći skok:",
+      "strongestPrefix": "Najjača oblast:",
+      "momentumRisingFast": "+{delta} ove nedelje — samo tako nastavi!",
+      "momentumImproving": "Tvoj Indeks raste ove nedelje — samo tako nastavi!",
+      "fallback": "Nastavi da gradiš navike dugovečnosti i otkrij šta najviše pokreće tvoj Indeks.",
+      "publicLine": "Gradi navike dugovečnosti sa MAXINA zajednicom.",
+      "pillarListTwo": "{a} i {b}",
+      "aboutTitle": "O tvom VITANA INDEX-u",
+      "subtitleStandingOut": "Zašto se ističeš ove nedelje",
+      "subtitleNeutral": "Gde je tvoj Indeks sada",
+      "aboutBody": "Tvoj VITANA INDEX odražava tvoj nedavni napredak u pet stubova dugovečnosti.",
+      "aboutBodyPublic": "VITANA INDEX odražava napredak u pet stubova dugovečnosti.",
+      "boostHeading": "Najveći skok",
+      "strongestHeading": "Najjača oblast",
+      "boostLine": "{pillar} je tvom Indeksu dao najveći podsticaj.",
+      "strongestLine": "{pillar} je trenutno tvoj najjači stub.",
+      "whatHelpedMost": "Šta je najviše pomoglo",
+      "risingFast": "Brzo raste",
+      "improving": "Napreduje",
+      "streak": "{count} dana zaredom",
+      "shareProgress": "Podeli napredak",
+      "seeFullBreakdown": "Pogledaj ceo pregled",
+      "editProfile": "Izmeni profil",
+      "aboutIndexAria": "O VITANA INDEX-u",
+      "openIndexAria": "Otvori detalje Vitana Index-a",
+      "shareProfileAria": "Podeli profil",
+      "editPhotoAria": "Izmeni profilnu sliku",
+      "showQrAria": "Prikaži QR kod",
+      "close": "Zatvori"
+    }
   },
   "_pending_review": {}
 }

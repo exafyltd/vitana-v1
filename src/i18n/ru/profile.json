@@ -86,7 +86,41 @@
       "viewProduct": "Посмотреть",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "из {max}",
+      "noIndexOwner": "Твой Индекс появится после первой зафиксированной активности.",
+      "noIndexPublic": "Публичного Vitana Index пока нет",
+      "boostPrefix": "Главный рост:",
+      "strongestPrefix": "Сильная сторона:",
+      "momentumRisingFast": "+{delta} за неделю — так держать!",
+      "momentumImproving": "Твой Индекс растёт на этой неделе — так держать!",
+      "fallback": "Продолжай развивать привычки долголетия, чтобы понять, что сильнее всего двигает твой Индекс.",
+      "publicLine": "Развивает привычки долголетия вместе с сообществом MAXINA.",
+      "pillarListTwo": "{a} и {b}",
+      "aboutTitle": "О твоём VITANA INDEX",
+      "subtitleStandingOut": "Почему ты выделяешься на этой неделе",
+      "subtitleNeutral": "Где сейчас твой Индекс",
+      "aboutBody": "Твой VITANA INDEX отражает недавний прогресс по пяти опорам долголетия.",
+      "aboutBodyPublic": "VITANA INDEX отражает прогресс по пяти опорам долголетия.",
+      "boostHeading": "Главный рост",
+      "strongestHeading": "Сильная сторона",
+      "boostLine": "{pillar} дал твоему Индексу самый сильный рост.",
+      "strongestLine": "{pillar} — сейчас твоя самая сильная опора.",
+      "whatHelpedMost": "Что помогло больше всего",
+      "risingFast": "Быстро растёт",
+      "improving": "Улучшается",
+      "streak": "{count} дней подряд",
+      "shareProgress": "Поделиться прогрессом",
+      "seeFullBreakdown": "Полная разбивка",
+      "editProfile": "Редактировать профиль",
+      "aboutIndexAria": "О VITANA INDEX",
+      "openIndexAria": "Открыть детали Vitana Index",
+      "shareProfileAria": "Поделиться профилем",
+      "editPhotoAria": "Изменить фото профиля",
+      "showQrAria": "Показать QR-код",
+      "close": "Закрыть"
+    }
   },
   "_pending_review": {}
 }

@@ -1,0 +1,140 @@
+/**
+ * VTID-04470 — owner vs visitor contract of the redesigned profile header +
+ * Vitana Index hero. These are the parts a regression would turn into a
+ * privacy or honesty bug, not a cosmetic one:
+ *   - the photo-edit pencil only ever renders for the owner;
+ *   - a visitor never sees the VIEWER's own Index when the profile has none;
+ *   - the score opens the EXISTING detailed drawer (window event), the (i)
+ *     opens the new achievement drawer — two different actions;
+ *   - no "Top X%" is rendered (there is no ranking data for the Index).
+ */
+import { render, screen, fireEvent, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { ComponentProps, ReactNode } from "react";
+import { MobileIdentityCard } from "./MobileIdentityCard";
+import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
+
+const liveIndex = {
+  total: 122,
+  tier: { labelKey: "vitanaIndex.tiers.early", color: "#fde68a" },
+  pillars: { nutrition: 30, hydration: 20, exercise: 40, sleep: 25, mental: 15 },
+  subscores: null,
+  balanceFactor: null,
+  history: [
+    { date: "d1", score: 100 },
+    { date: "d7", score: 122 },
+  ],
+  pillarHistory: [
+    { date: "d1", pillars: { nutrition: 20, hydration: 20, exercise: 25, sleep: 25, mental: 15 } },
+    { date: "d7", pillars: { nutrition: 30, hydration: 20, exercise: 40, sleep: 25, mental: 15 } },
+  ],
+  trend: "up",
+  confidence: 1,
+  isBaseline: false,
+  lastUpdated: "d7",
+};
+
+vi.mock("@/components/health/VitanaIndexProvider", () => ({
+  useVitanaIndexCache: () => ({ index: liveIndex, isLoading: false }),
+}));
+vi.mock("@/components/health/VitanaIndexSheet", () => ({
+  VITANA_INDEX_OPEN_EVENT: "vitana:open-index",
+}));
+vi.mock("@/components/ui/drawer", () => {
+  const Pass = ({ children, ...rest }: { children?: ReactNode; [k: string]: unknown }) => (
+    <div data-testid={rest["data-testid"] as string | undefined}>{children}</div>
+  );
+  return {
+    Drawer: ({ open, children }: { open: boolean; children?: ReactNode }) => (open ? <>{children}</> : null),
+    DrawerContent: Pass,
+    DrawerTitle: Pass,
+    DrawerDescription: Pass,
+    DrawerClose: ({ children }: { children?: ReactNode }) => <button type="button">{children}</button>,
+  };
+});
+vi.mock("@/hooks/useVitanaStreaks", () => ({ useVitanaStreaks: () => ({ current: 0 }) }));
+vi.mock("@/hooks/useFollow", () => ({ useFollow: () => ({ followersCount: 7, followingCount: 7 }) }));
+vi.mock("@/hooks/useProfileStatsCount", () => ({
+  useProfileStatsCount: () => ({ postsCount: 53, mediaCount: 3, groupsCount: 0, isPending: false }),
+}));
+vi.mock("@/components/profile/FollowListDialog", () => ({ FollowListDialog: () => null }));
+vi.mock("@/components/profile/GroupListDialog", () => ({ GroupListDialog: () => null }));
+vi.mock("@/lib/i18n-toast", () => ({
+  t: (k: string, p?: Record<string, unknown>) => (p ? `${k}${JSON.stringify(p)}` : k),
+  lookup: (k: string) => k,
+}));
+vi.mock("@/hooks/useVitanaIndex", () => ({ pillarLabel: (k: string) => `pillar:${k}` }));
+vi.mock("@/hooks/useTranslation", () => ({
+  useTranslation: () => ({ translate: (k: string, fallback?: string) => fallback ?? k }),
+}));
+
+function renderCard(props: Partial<ComponentProps<typeof MobileIdentityCard>> = {}) {
+  return render(
+    <MemoryRouter>
+      <MobileIdentityCard displayName="Jovana Tadić" handle="jovana4" userId="u1" profileId="u1" {...props} />
+    </MemoryRouter>,
+  );
+}
+
+describe("MobileIdentityCard (VTID-04470)", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("owner: shows the photo pencil wired to the existing identity editor", () => {
+    const onEditIdentity = vi.fn();
+    renderCard({ isOwner: true, onEditIdentity, onShare: vi.fn() });
+    fireEvent.click(screen.getByTestId("profile-edit-photo"));
+    expect(onEditIdentity).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText("Follow")).toBeNull();
+  });
+
+  it("visitor: no pencil even if an edit handler leaks through", () => {
+    renderCard({ isOwner: false, onEditIdentity: vi.fn(), onFollow: vi.fn(), onMessage: vi.fn() });
+    expect(screen.queryByTestId("profile-edit-photo")).toBeNull();
+    expect(screen.getByText("Follow")).toBeTruthy();
+    expect(screen.getByText("screens.profile.message")).toBeTruthy();
+  });
+
+  it("visitor without a public Index never shows the viewer's own score", () => {
+    renderCard({ isOwner: false, vitanaIndex: undefined });
+    expect(screen.getByTestId("profile-index-score").textContent).not.toContain("122");
+    expect(screen.getByText("profile.indexHero.noIndexPublic")).toBeTruthy();
+    expect(screen.queryByTestId("profile-index-open-detailed")).toBeNull();
+  });
+
+  it("owner: tapping the score opens the existing detailed drawer", () => {
+    const listener = vi.fn();
+    window.addEventListener(VITANA_INDEX_OPEN_EVENT, listener);
+    renderCard({ isOwner: true });
+    fireEvent.click(screen.getByTestId("profile-index-open-detailed"));
+    expect(listener).toHaveBeenCalledTimes(1);
+    window.removeEventListener(VITANA_INDEX_OPEN_EVENT, listener);
+  });
+
+  it("owner: biggest boost names the pillars that actually rose, no percentile", () => {
+    renderCard({ isOwner: true });
+    const line = screen.getByTestId("profile-index-line").textContent ?? "";
+    expect(line).toContain("profile.indexHero.boostPrefix");
+    expect(line).toContain("pillar:exercise");
+    expect(line).toContain("pillar:nutrition");
+    expect(document.body.textContent).not.toMatch(/Top\s*\d+\s*%/);
+  });
+
+  it("the (i) icon opens the achievement drawer, not the detailed one", () => {
+    const listener = vi.fn();
+    window.addEventListener(VITANA_INDEX_OPEN_EVENT, listener);
+    renderCard({ isOwner: true, onShare: vi.fn() });
+    fireEvent.click(screen.getByTestId("profile-index-info"));
+    const drawer = screen.getByTestId("vitana-achievement-drawer");
+    expect(within(drawer).getByText("profile.indexHero.aboutTitle")).toBeTruthy();
+    expect(listener).not.toHaveBeenCalled();
+    window.removeEventListener(VITANA_INDEX_OPEN_EVENT, listener);
+  });
+
+  it("renders Posts / Media / Groups inside the Index card", () => {
+    renderCard({ isOwner: true });
+    const card = screen.getByTestId("profile-vitana-index-card");
+    expect(within(card).getByText("53")).toBeTruthy();
+    expect(within(card).getByText("Posts")).toBeTruthy();
+  });
+});

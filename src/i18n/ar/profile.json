@@ -86,7 +86,41 @@
       "viewProduct": "عرض",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "indexHero": {
+      "ofMax": "من {max}",
+      "noIndexOwner": "سيظهر مؤشرك بمجرد تسجيل أول نشاط لك.",
+      "noIndexPublic": "لا يوجد مؤشر Vitana عام بعد",
+      "boostPrefix": "أكبر دفعة:",
+      "strongestPrefix": "أقوى مجال:",
+      "momentumRisingFast": "‏+{delta} هذا الأسبوع — واصل!",
+      "momentumImproving": "مؤشرك يرتفع هذا الأسبوع — واصل!",
+      "fallback": "واصل بناء عادات طول العمر لتكتشف ما يحرّك مؤشرك أكثر.",
+      "publicLine": "يبني عادات طول العمر مع مجتمع MAXINA.",
+      "pillarListTwo": "{a} و{b}",
+      "aboutTitle": "عن مؤشر VITANA INDEX الخاص بك",
+      "subtitleStandingOut": "لماذا تتميّز هذا الأسبوع",
+      "subtitleNeutral": "أين يقف مؤشرك الآن",
+      "aboutBody": "يعكس مؤشر VITANA INDEX تقدّمك الأخير في ركائز طول العمر الخمس.",
+      "aboutBodyPublic": "يعكس مؤشر VITANA INDEX التقدّم في خمس ركائز لطول العمر.",
+      "boostHeading": "أكبر دفعة",
+      "strongestHeading": "أقوى مجال",
+      "boostLine": "منح {pillar} مؤشرك أقوى دفعة.",
+      "strongestLine": "{pillar} هو أقوى ركائزك الآن.",
+      "whatHelpedMost": "ما ساعد أكثر",
+      "risingFast": "يرتفع بسرعة",
+      "improving": "يتحسّن",
+      "streak": "سلسلة {count} أيام",
+      "shareProgress": "شارك تقدّمك",
+      "seeFullBreakdown": "عرض التفاصيل الكاملة",
+      "editProfile": "تعديل الملف الشخصي",
+      "aboutIndexAria": "عن VITANA INDEX",
+      "openIndexAria": "فتح تفاصيل مؤشر Vitana",
+      "shareProfileAria": "مشاركة الملف الشخصي",
+      "editPhotoAria": "تعديل صورة الملف الشخصي",
+      "showQrAria": "عرض رمز QR",
+      "close": "إغلاق"
+    }
   },
   "_pending_review": {}
 }
