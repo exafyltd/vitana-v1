@@ -134,7 +134,7 @@ describe("MobileIdentityCard (VTID-04470)", () => {
 
   it("shows the real Top X% badge only when the server vouches for it (VTID-04498)", () => {
     standingData = { topPercent: 11, cohortSize: 66 };
-    renderCard({ isOwner: false });
+    renderCard({ isOwner: true });
     const badge = screen.getByTestId("profile-index-top-percent");
     expect(badge.textContent).toContain('profile.indexHero.topPercent{"percent":11}');
     expect(badge.getAttribute("aria-label")).toContain('"count":66');
