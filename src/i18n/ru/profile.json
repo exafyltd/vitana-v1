@@ -120,6 +120,32 @@
       "editPhotoAria": "Изменить фото профиля",
       "showQrAria": "Показать QR-код",
       "close": "Закрыть"
+    },
+    "healthReal": {
+      "loadError": "Не удалось загрузить данные о здоровье.",
+      "noIndex": "Vitana Index пока нет.",
+      "topPercent": "Топ {percent}%",
+      "communityStanding": "Положение в сообществе",
+      "amongMembers": "среди {count} активных участников",
+      "communityAverage": "Среднее по сообществу",
+      "standingPending": "Сравнения с сообществом появятся, когда активных участников будет {min}.",
+      "achievements": "Достижения",
+      "personalBest": "Личный рекорд: {score}",
+      "baselineNote": "Стартовые значения — отмечай активности, чтобы они стали твоими.",
+      "deltaThisWeek": "{delta} за неделю",
+      "last7Days": "Последние 7 дней",
+      "noActivity": "За последние 7 дней ничего не отмечено.",
+      "daysLogged": "Отмечено {days} из 7 дней",
+      "sleepAvg": "Сон: в среднем {hours} ч за {nights} ночей",
+      "waterAvg": "Вода: в среднем {liters} л в день",
+      "workoutMinutes": "Тренировки: {minutes} мин за неделю",
+      "stepsAvg": "Шаги: в среднем {steps} в день",
+      "meditationMinutes": "Медитация: {minutes} мин за неделю",
+      "shareTitle": "Кто видит твою вкладку «Здоровье»?",
+      "shareHint": "Категории, изменения за неделю и достижения. Журналы активности всегда остаются личными.",
+      "shareOnlyMe": "Только я",
+      "shareConnections": "Мои контакты",
+      "shareEveryone": "Все"
     }
   },
   "_pending_review": {}

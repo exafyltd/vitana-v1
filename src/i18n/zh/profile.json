@@ -120,6 +120,32 @@
       "editPhotoAria": "编辑头像",
       "showQrAria": "显示二维码",
       "close": "关闭"
+    },
+    "healthReal": {
+      "loadError": "无法加载健康数据。",
+      "noIndex": "暂无 Vitana 指数。",
+      "topPercent": "前 {percent}%",
+      "communityStanding": "社区排名",
+      "amongMembers": "在 {count} 名活跃成员中",
+      "communityAverage": "社区平均值",
+      "standingPending": "当活跃成员达到 {min} 名时将显示社区比较。",
+      "achievements": "成就",
+      "personalBest": "个人最佳：{score}",
+      "baselineNote": "初始值 —— 记录活动，让它们属于你。",
+      "deltaThisWeek": "本周 {delta}",
+      "last7Days": "最近 7 天",
+      "noActivity": "最近 7 天没有记录。",
+      "daysLogged": "7 天中有 {days} 天有记录",
+      "sleepAvg": "睡眠：{nights} 晚平均 {hours} 小时",
+      "waterAvg": "饮水：每天平均 {liters} 升",
+      "workoutMinutes": "训练：本周 {minutes} 分钟",
+      "stepsAvg": "步数：每天平均 {steps}",
+      "meditationMinutes": "冥想：本周 {minutes} 分钟",
+      "shareTitle": "谁可以看到你的健康页？",
+      "shareHint": "类别、每周变化和成就。你的活动记录始终保持私密。",
+      "shareOnlyMe": "仅我自己",
+      "shareConnections": "我的联系人",
+      "shareEveryone": "所有人"
     }
   },
   "_pending_review": {}

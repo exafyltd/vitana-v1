@@ -120,6 +120,32 @@
       "editPhotoAria": "Izmeni profilnu sliku",
       "showQrAria": "Prikaži QR kod",
       "close": "Zatvori"
+    },
+    "healthReal": {
+      "loadError": "Podaci o zdravlju nisu mogli da se učitaju.",
+      "noIndex": "Još nema Vitana Index-a.",
+      "topPercent": "Top {percent}%",
+      "communityStanding": "Pozicija u zajednici",
+      "amongMembers": "među {count} aktivnih članova",
+      "communityAverage": "Prosek zajednice",
+      "standingPending": "Poređenja sa zajednicom pojaviće se kada bude aktivno {min} članova.",
+      "achievements": "Dostignuća",
+      "personalBest": "Lični rekord: {score}",
+      "baselineNote": "Početne vrednosti — beleži aktivnosti da postanu tvoje.",
+      "deltaThisWeek": "{delta} ove nedelje",
+      "last7Days": "Poslednjih 7 dana",
+      "noActivity": "Ništa nije zabeleženo u poslednjih 7 dana.",
+      "daysLogged": "Zabeleženo {days} od 7 dana",
+      "sleepAvg": "San: prosečno {hours} h tokom {nights} noći",
+      "waterAvg": "Voda: prosečno {liters} l dnevno",
+      "workoutMinutes": "Trening: {minutes} min ove nedelje",
+      "stepsAvg": "Koraci: prosečno {steps} dnevno",
+      "meditationMinutes": "Meditacija: {minutes} min ove nedelje",
+      "shareTitle": "Ko vidi tvoj tab Zdravlje?",
+      "shareHint": "Kategorije, nedeljna promena i dostignuća. Tvoji dnevnici aktivnosti uvek ostaju privatni.",
+      "shareOnlyMe": "Samo ja",
+      "shareConnections": "Moji kontakti",
+      "shareEveryone": "Svi"
     }
   },
   "_pending_review": {}

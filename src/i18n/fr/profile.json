@@ -120,6 +120,32 @@
       "editPhotoAria": "Modifier la photo de profil",
       "showQrAria": "Afficher le code QR",
       "close": "Fermer"
+    },
+    "healthReal": {
+      "loadError": "Impossible de charger les données de santé.",
+      "noIndex": "Pas encore de Vitana Index.",
+      "topPercent": "Top {percent} %",
+      "communityStanding": "Position dans la communauté",
+      "amongMembers": "parmi {count} membres actifs",
+      "communityAverage": "Moyenne de la communauté",
+      "standingPending": "Les comparaisons avec la communauté apparaîtront dès que {min} membres seront actifs.",
+      "achievements": "Réussites",
+      "personalBest": "Record personnel : {score}",
+      "baselineNote": "Valeurs de départ — enregistre des activités pour qu'elles deviennent les tiennes.",
+      "deltaThisWeek": "{delta} cette semaine",
+      "last7Days": "7 derniers jours",
+      "noActivity": "Rien enregistré ces 7 derniers jours.",
+      "daysLogged": "Enregistré {days} jours sur 7",
+      "sleepAvg": "Sommeil : {hours} h en moyenne sur {nights} nuits",
+      "waterAvg": "Eau : {liters} L en moyenne par jour",
+      "workoutMinutes": "Entraînement : {minutes} min cette semaine",
+      "stepsAvg": "Pas : {steps} en moyenne par jour",
+      "meditationMinutes": "Méditation : {minutes} min cette semaine",
+      "shareTitle": "Qui peut voir ton onglet Santé ?",
+      "shareHint": "Catégories, évolution de la semaine et réussites. Tes journaux d'activité restent toujours privés.",
+      "shareOnlyMe": "Moi seul·e",
+      "shareConnections": "Mes contacts",
+      "shareEveryone": "Tout le monde"
     }
   },
   "_pending_review": {}

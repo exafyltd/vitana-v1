@@ -31,6 +31,9 @@ import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel
 import { useTranslation } from "@/hooks/useTranslation";
 import VitanaBaselineSurveyModal from "@/components/health/VitanaBaselineSurveyModal";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
+import { isHealthRealDataEnabled } from "@/lib/feature-flags";
+import { useAuth } from "@/context/AuthProvider";
+import { useProfileHealthSummary } from "@/hooks/useProfileHealthSummary";
 import { ChevronRight } from "lucide-react";
 import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
 import { weakestPillar as findWeakestPillar } from "@/hooks/useVitanaIndex";
@@ -130,6 +133,15 @@ export default withScreenId(function Health() {
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const queryClient = useQueryClient();
   const { index: liveVitanaIndex } = useVitanaIndexCache();
+  // VTID-04483: real community standing behind VITE_HEALTH_REAL_DATA. Off
+  // keeps the existing demo figure; on shows the server's "Top X%" or
+  // nothing when there are too few members to compare against.
+  const healthRealData = isHealthRealDataEnabled();
+  const { user } = useAuth();
+  const { data: healthSummary } = useProfileHealthSummary(user?.id, healthRealData);
+  const snapshotTopPercent = healthRealData
+    ? (healthSummary?.standing?.available ? healthSummary.standing.topPercent ?? undefined : undefined)
+    : 15;
   const vitanaScore = liveVitanaIndex?.total ?? 0;
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedPillar, setSelectedPillar] = useState("overview");
@@ -332,7 +344,7 @@ export default withScreenId(function Health() {
               >
                 <MobileHealthSnapshot
                   vitanaIndex={vitanaScore}
-                  vitanaPercentile={15}
+                  vitanaPercentile={snapshotTopPercent}
                   trend={liveVitanaIndex?.trend ?? "stable"}
                   pillars={livePillars}
                 />

@@ -120,6 +120,32 @@
       "editPhotoAria": "Profil fotoğrafını düzenle",
       "showQrAria": "QR kodunu göster",
       "close": "Kapat"
+    },
+    "healthReal": {
+      "loadError": "Sağlık verileri yüklenemedi.",
+      "noIndex": "Henüz Vitana Index yok.",
+      "topPercent": "İlk %{percent}",
+      "communityStanding": "Topluluk sıralaması",
+      "amongMembers": "{count} aktif üye arasında",
+      "communityAverage": "Topluluk ortalaması",
+      "standingPending": "Topluluk karşılaştırmaları {min} üye aktif olduğunda görünür.",
+      "achievements": "Başarılar",
+      "personalBest": "Kişisel rekor: {score}",
+      "baselineNote": "Başlangıç değerleri — kendine ait olmaları için etkinlik kaydet.",
+      "deltaThisWeek": "Bu hafta {delta}",
+      "last7Days": "Son 7 gün",
+      "noActivity": "Son 7 günde kayıt yok.",
+      "daysLogged": "7 günün {days} gününde kayıt",
+      "sleepAvg": "Uyku: {nights} gecede ortalama {hours} sa",
+      "waterAvg": "Su: günde ortalama {liters} L",
+      "workoutMinutes": "Antrenman: bu hafta {minutes} dk",
+      "stepsAvg": "Adım: günde ortalama {steps}",
+      "meditationMinutes": "Meditasyon: bu hafta {minutes} dk",
+      "shareTitle": "Sağlık sekmeni kimler görebilir?",
+      "shareHint": "Kategoriler, haftalık değişim ve başarılar. Etkinlik kayıtların her zaman gizli kalır.",
+      "shareOnlyMe": "Yalnızca ben",
+      "shareConnections": "Bağlantılarım",
+      "shareEveryone": "Herkes"
     }
   },
   "_pending_review": {}
