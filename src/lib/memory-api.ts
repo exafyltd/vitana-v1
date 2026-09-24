@@ -42,6 +42,14 @@ export function toApiCategory(uiId: string | undefined | null): GardenCategoryId
   return (GARDEN_CATEGORY_IDS as readonly string[]).includes(snake) ? (snake as GardenCategoryId) : undefined;
 }
 
+/**
+ * VTID-04501: "personal-identity" -> "personalIdentity", the i18n key under
+ * screens.memory.garden.categories.
+ */
+export function gardenCategoryKey(uiId: string): string {
+  return uiId.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+}
+
 export function toUiCategory(apiId: string): string {
   return API_TO_UI[apiId] ?? apiId.replace(/_/g, "-");
 }
