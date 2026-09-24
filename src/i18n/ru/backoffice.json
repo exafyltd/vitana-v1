@@ -41,78 +41,45 @@
         "periods": "Финансовые периоды & Закрытие",
         "tax": "Налог",
         "assets": "Основные средства & Аренда",
-        "intercompany": "Intercompany & Consolidation",
-        "budgets": "Budgets & Forecasts",
-        "_pending_review": {
-          "intercompany": true,
-          "budgets": true
-        }
+        "intercompany": "Меж-фирменные и Консолидация",
+        "budgets": "Бюджеты и Прогнозы"
       }
     },
     "finance": {
       "tabs": {
-        "payments": "Payments",
-        "bank-reconciliation": "Bank Reconciliation",
-        "cash": "Cash Position & Forecast",
-        "subscriptions": "Recurring Billing",
-        "sync": "Stripe / Shopify Sync",
-        "_pending_review": {
-          "payments": true,
-          "bank-reconciliation": true,
-          "cash": true,
-          "subscriptions": true,
-          "sync": true
-        }
+        "payments": "Платежи",
+        "bank-reconciliation": "Банковская сверка",
+        "cash": "Денежная позиция и Прогноз",
+        "subscriptions": "Периодический биллинг",
+        "sync": "Stripe / Shopify Синхронизация"
       }
     },
     "hr": {
       "tabs": {
-        "employees": "Employees & Documents",
-        "leave": "Leave",
-        "attendance": "Attendance",
-        "expenses": "Expense Claims",
-        "payroll": "Payroll",
-        "_pending_review": {
-          "employees": true,
-          "leave": true,
-          "attendance": true,
-          "expenses": true,
-          "payroll": true
-        }
+        "employees": "Сотрудники и Документы",
+        "leave": "Отпуска",
+        "attendance": "Посещаемость",
+        "expenses": "Отчеты о расходах",
+        "payroll": "Зарплата"
       }
     },
     "operations": {
       "tabs": {
-        "suppliers": "Suppliers",
-        "purchase-orders": "Purchase Orders",
-        "receipts": "Goods Receipts",
-        "supplier-invoices": "Supplier Invoices",
-        "items": "Items",
-        "warehouses": "Warehouses",
-        "stock": "Stock & Moves",
-        "_pending_review": {
-          "suppliers": true,
-          "purchase-orders": true,
-          "receipts": true,
-          "supplier-invoices": true,
-          "items": true,
-          "warehouses": true,
-          "stock": true
-        }
+        "suppliers": "Поставщики",
+        "purchase-orders": "Заказы на закупку",
+        "receipts": "Поступления товаров",
+        "supplier-invoices": "Счета поставщиков",
+        "items": "Товары",
+        "warehouses": "Склады",
+        "stock": "Запасы и Перемещения"
       }
     },
     "legal": {
       "tabs": {
-        "contracts": "Contracts",
-        "obligations": "Obligations",
-        "compliance": "Compliance",
-        "e-signature": "E-Signature",
-        "_pending_review": {
-          "contracts": true,
-          "obligations": true,
-          "compliance": true,
-          "e-signature": true
-        }
+        "contracts": "Договоры",
+        "obligations": "Обязательства",
+        "compliance": "Соответствие",
+        "e-signature": "Электронная подпись"
       }
     },
     "reports": {

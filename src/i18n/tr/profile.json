@@ -119,7 +119,8 @@
       "shareProfileAria": "Profili paylaş",
       "editPhotoAria": "Profil fotoğrafını düzenle",
       "showQrAria": "QR kodunu göster",
-      "close": "Kapat"
+      "close": "Kapat",
+      "_pending_review": {}
     },
     "healthReal": {
       "loadError": "Sağlık verileri yüklenemedi.",
@@ -145,7 +146,8 @@
       "shareHint": "Kategoriler, haftalık değişim ve başarılar. Etkinlik kayıtların her zaman gizli kalır.",
       "shareOnlyMe": "Yalnızca ben",
       "shareConnections": "Bağlantılarım",
-      "shareEveryone": "Herkes"
+      "shareEveryone": "Herkes",
+      "_pending_review": {}
     },
     "indexBoost": {
       "mostActivePrefix": "En aktif:",
@@ -170,15 +172,18 @@
         "yoga_pilates": "Yoga ve Pilates",
         "swimming": "Yüzme",
         "walking": "Yürüyüş",
-        "workout": "Antrenman"
+        "workout": "Antrenman",
+        "_pending_review": {}
       },
       "type": {
         "nutrition": "Sağlıklı beslenme",
         "hydration": "Su",
         "sleep": "Uyku",
         "mindfulness": "Farkındalık",
-        "journey": "Rehberli yolculuk"
-      }
+        "journey": "Rehberli yolculuk",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

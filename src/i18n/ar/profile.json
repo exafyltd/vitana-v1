@@ -119,7 +119,8 @@
       "shareProfileAria": "مشاركة الملف الشخصي",
       "editPhotoAria": "تعديل صورة الملف الشخصي",
       "showQrAria": "عرض رمز QR",
-      "close": "إغلاق"
+      "close": "إغلاق",
+      "_pending_review": {}
     },
     "healthReal": {
       "loadError": "تعذّر تحميل البيانات الصحية.",
@@ -145,7 +146,8 @@
       "shareHint": "الفئات والتغيّر الأسبوعي والإنجازات. تبقى سجلات نشاطك خاصة دائمًا.",
       "shareOnlyMe": "أنا فقط",
       "shareConnections": "جهات اتصالي",
-      "shareEveryone": "الجميع"
+      "shareEveryone": "الجميع",
+      "_pending_review": {}
     },
     "indexBoost": {
       "mostActivePrefix": "الأكثر نشاطًا:",
@@ -170,15 +172,18 @@
         "yoga_pilates": "اليوغا والبيلاتس",
         "swimming": "السباحة",
         "walking": "المشي",
-        "workout": "التمارين"
+        "workout": "التمارين",
+        "_pending_review": {}
       },
       "type": {
         "nutrition": "أكل صحي",
         "hydration": "الترطيب",
         "sleep": "النوم",
         "mindfulness": "اليقظة الذهنية",
-        "journey": "رحلة موجّهة"
-      }
+        "journey": "رحلة موجّهة",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

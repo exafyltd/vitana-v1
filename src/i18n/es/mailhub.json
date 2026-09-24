@@ -9,31 +9,19 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana lee y escribe correos por ti",
-        "_pending_review": {
-          "name": true
-        }
+        "what": "Vitana lee y escribe correos por ti"
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Lee tu bandeja de Microsoft y envía correos",
-        "_pending_review": {
-          "name": true
-        }
+        "what": "Lee tu bandeja de Microsoft y envía correos"
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Lee tu bandeja de iCloud y envía correos desde tu dirección de iCloud",
-        "_pending_review": {
-          "name": true
-        }
+        "what": "Lee tu bandeja de iCloud y envía correos desde tu dirección de iCloud"
       },
       "google-calendar": {
-        "name": "Google Calendar",
-        "what": "Ve y añade citas, sincronizadas con Vitanaland",
-        "_pending_review": {
-          "name": true
-        }
+        "name": "Calendario de Google",
+        "what": "Ve y añade citas, sincronizadas con Vitanaland"
       },
       "outlook-calendar": {
         "name": "Calendario de Outlook",
@@ -106,10 +94,7 @@
       "checking": "Comprobando …",
       "wrongPassword": "Apple rechazó el inicio de sesión — revisa tu Apple ID y la contraseña específica de app",
       "unreachable": "iCloud no responde ahora mismo — inténtalo de nuevo en un momento",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
-      "_pending_review": {
-        "passwordPlaceholder": true
-      }
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
     },
     "android": {
       "title": "Ábrelo en tu móvil Android",
