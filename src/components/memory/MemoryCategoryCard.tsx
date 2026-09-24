@@ -2,6 +2,7 @@ import { LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { t } from "@/lib/i18n-toast";
 
 interface MemoryCategoryCardProps {
   title: string;
@@ -10,6 +11,10 @@ interface MemoryCategoryCardProps {
   memoryCount: number;
   insight: string;
   gradient: string;
+  /** VTID-04501: counts are not known yet; never show them as zero. */
+  loading?: boolean;
+  /** The counts could not be loaded. */
+  failed?: boolean;
   onClick: () => void;
 }
 
@@ -21,12 +26,15 @@ export function MemoryCategoryCard({
   insight,
   gradient,
   onClick,
+  loading = false,
+  failed = false,
 }: MemoryCategoryCardProps) {
   const circumference = 2 * Math.PI * 36; // radius = 36
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
     <Card 
+      aria-busy={loading}
       className={cn(
         "relative overflow-hidden cursor-pointer transition-all duration-300",
         "hover:shadow-lg hover:scale-[1.02]"
@@ -60,7 +68,7 @@ export function MemoryCategoryCard({
                 strokeWidth="6"
                 fill="none"
                 strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
+                strokeDashoffset={loading ? circumference : strokeDashoffset}
                 className="text-primary transition-all duration-500"
                 strokeLinecap="round"
               />
@@ -74,7 +82,11 @@ export function MemoryCategoryCard({
           <div className="flex-1 min-w-0 pt-1">
             <h3 className="font-semibold text-base mb-1 truncate">{title}</h3>
             <p className="text-xs text-muted-foreground mb-2">
-              {memoryCount} {memoryCount === 1 ? "memory" : "memories"} · {progress}%
+              {loading
+                ? t(failed ? 'screens.memory.garden.loadFailed' : 'screens.memory.garden.loading')
+                : memoryCount === 1
+                  ? t('screens.memory.garden.cardCountOne', { progress })
+                  : t('screens.memory.garden.cardCountOther', { count: memoryCount, progress })}
             </p>
             <p className="text-sm text-muted-foreground line-clamp-2">
               {insight}

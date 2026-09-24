@@ -20,6 +20,7 @@ import { AddMemoryDialog } from "./AddMemoryDialog";
 import { CategoryDetailDialog } from "./CategoryDetailDialog";
 import { Button } from "@/components/ui/button";
 import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
+import { gardenCategoryKey } from "@/lib/memory-api";
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
@@ -150,7 +151,9 @@ export function MemoryCategoryGrid() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isCategoryDetailOpen, setIsCategoryDetailOpen] = useState(false);
-  const { metadata, isLoading, refreshMetadata, isRefreshing, getCategoryProgress } = useMemoryMetadata();
+  const { metadata, isLoading, isError, refreshMetadata, isRefreshing, getCategoryProgress } = useMemoryMetadata();
+  // VTID-04501: without data (loading or failed) the counts are unknown, never zero.
+  const countsUnknown = isLoading || (isError && !metadata);
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -173,10 +176,15 @@ export function MemoryCategoryGrid() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">{t('screens.memory.memoryGarden')}</h2>
-          <p className="text-sm text-muted-foreground">{t('screens.memory.value0TotalMemoriesAcrossAllCategories', { value0: metadata?.total_memories_count || 0 })}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="text-xl sm:text-2xl font-bold">{t('screens.memory.memoryGarden')}</h2>
+          <p className="text-sm text-muted-foreground">
+            {isLoading
+              ? t('screens.memory.garden.loading')
+              : countsUnknown
+                ? t('screens.memory.garden.loadFailed')
+                : t('screens.memory.value0TotalMemoriesAcrossAllCategories', { value0: metadata?.total_memories_count || 0 })}
           </p>
         </div>
         <Button
@@ -195,17 +203,20 @@ export function MemoryCategoryGrid() {
         {MEMORY_CATEGORIES.map((category) => {
           const progress = getCategoryProgress(category.id);
           const memoryCount = progress?.memoryCount || 0;
+          const key = gardenCategoryKey(category.id);
 
           return (
             <MemoryCategoryCard
               key={category.id}
-              title={category.title}
+              title={t(`screens.memory.garden.categories.${key}.title`)}
               icon={category.icon}
               progress={progress?.progress || 0}
               memoryCount={memoryCount}
-              insight={progress?.lastUpdated 
-                ? `Last updated ${fmtDate(new Date(progress.lastUpdated))}`
-                : category.defaultInsight
+              loading={countsUnknown}
+              failed={!isLoading && countsUnknown}
+              insight={progress?.lastUpdated
+                ? t('screens.memory.garden.lastUpdated', { date: fmtDate(new Date(progress.lastUpdated)) })
+                : t(`screens.memory.garden.categories.${key}.insight`)
               }
               gradient={category.gradient}
               onClick={() => handleCategoryClick(category.id)}

@@ -82,7 +82,7 @@ export function metadataFromSummary(
 export function useMemoryMetadata() {
   const queryClient = useQueryClient();
 
-  const { data: metadata, isLoading, isFetching, refetch } = useQuery({
+  const { data: metadata, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["memory-metadata"],
     queryFn: async () => {
       const { total, categories } = await fetchGardenCategories();
@@ -93,6 +93,7 @@ export function useMemoryMetadata() {
   return {
     metadata,
     isLoading,
+    isError,
     refreshMetadata: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["knowledge-base"] }),

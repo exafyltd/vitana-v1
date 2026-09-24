@@ -12,8 +12,9 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { EditMemoryDialog } from "./EditMemoryDialog";
+import { gardenCategoryKey } from "@/lib/memory-api";
 import { cn } from "@/lib/utils";
-import { t } from '@/lib/i18n-toast';
+import { t, getI18nLocale } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
 const QUICK_CATEGORY_OPTIONS = [
@@ -95,9 +96,11 @@ export function CategoryDetailDialog({
                   <Icon className="h-6 w-6" />
                 </div>
                 <div>
-                  <DialogTitle className="text-2xl">{category.title}</DialogTitle>
+                  <DialogTitle className="text-xl sm:text-2xl break-words hyphens-auto" lang={getI18nLocale()}>{t(`screens.memory.garden.categories.${gardenCategoryKey(category.id)}.title`)}</DialogTitle>
                   <p className="text-sm opacity-90 mt-1">
-                    {filteredMemories.length} {filteredMemories.length === 1 ? "memory" : "memories"}
+                    {filteredMemories.length === 1
+                      ? t('screens.memory.garden.countOne')
+                      : t('screens.memory.garden.countOther', { count: filteredMemories.length })}
                   </p>
                 </div>
               </div>
