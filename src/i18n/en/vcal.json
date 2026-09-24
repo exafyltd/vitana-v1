@@ -66,8 +66,7 @@
       "community": "Community",
       "journey": "Your journey",
       "_pending_review": {
-        "autopilot": true,
-        "community": true
+        "autopilot": true
       }
     },
     "empty": {
@@ -79,10 +78,7 @@
       "free": "free"
     },
     "month": {
-      "more": "+{count}",
-      "_pending_review": {
-        "more": true
-      }
+      "more": "+{count}"
     },
     "entry": {
       "close": "Close",
