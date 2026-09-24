@@ -10,9 +10,6 @@ const corsHeaders = {
 // Tables with user_id that do NOT cascade from auth.users
 const USER_TABLES_NO_CASCADE = [
   // Order matters: delete child rows before parents
-  { table: "autopilot_feedback", column: "user_id" },
-  { table: "autopilot_actions", column: "user_id" },
-  { table: "automation_executions", column: "user_id" },
   { table: "ai_messages", column: "conversation_id", via: "ai_conversations" },
   { table: "ai_conversations", column: "user_id" },
   { table: "diary_entries", column: "user_id" },
