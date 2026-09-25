@@ -21,7 +21,6 @@
     "i18n:inventory": "node scripts/generate-screen-inventory.mjs",
     "i18n:audit:llm": "node scripts/i18n-audit-llm.mjs",
     "i18n:verify": "node scripts/verify-i18n-end-to-end.mjs",
-    "nav:draft": "node scripts/nav-draft.mjs",
     "test": "vitest run",
     "test:unit": "vitest run",
     "test:calendar": "vitest run src/components/calendar/__regression__ src/components/calendar/PendingCalendarEventProcessor.dedupe-error.test.ts src/components/calendar/vcal/vcal.test.ts src/hooks/useCalendarEvents.error-logging-abort.test.ts src/hooks/useCalendarEvents.idempotency-error-logging.test.ts",
