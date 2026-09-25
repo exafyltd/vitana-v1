@@ -1,8 +1,9 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TopAppBar } from './TopAppBar';
 import { SideDrawerNav } from './SideDrawerNav';
 import { EnhancedCalendarPopup } from '@/components/calendar/EnhancedCalendarPopup';
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 interface MobileAppShellProps {
   children: React.ReactNode;
@@ -22,16 +23,10 @@ export function MobileAppShell({ children }: MobileAppShellProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [calendarTab, setCalendarTab] = useState<'agenda' | 'month' | 'reminders' | undefined>(undefined);
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const handleOpen = (e: Event) => {
-      const tab = (e as CustomEvent<{ tab?: 'agenda' | 'month' | 'reminders' }>).detail?.tab;
-      setCalendarTab(tab);
-      setCalendarOpen(true);
-    };
-    window.addEventListener('calendar:open', handleOpen);
-    return () => window.removeEventListener('calendar:open', handleOpen);
-  }, [isMobile]);
+  useWindowOverlay<{ tab?: 'agenda' | 'month' | 'reminders' }>('calendar:open', (detail) => {
+    setCalendarTab(detail?.tab);
+    setCalendarOpen(true);
+  }, isMobile);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };

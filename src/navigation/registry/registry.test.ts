@@ -35,7 +35,8 @@ function listenedEvents(): Set<string> {
     for (const m of src.matchAll(/(?:export\s+)?const\s+([A-Z0-9_]+)\s*=\s*['"]([^'"]+)['"]/g)) constValues.set(m[1], m[2]);
   }
   for (const src of files) {
-    for (const m of src.matchAll(/addEventListener\(\s*(?:['"]([^'"]+)['"]|([A-Z0-9_]+))/g)) {
+    // VTID-04520: overlay-bus listeners (useWindowOverlay) count too.
+    for (const m of src.matchAll(/(?:addEventListener|useWindowOverlay(?:<[^>]*>)?)\(\s*(?:['"]([^'"]+)['"]|([A-Z0-9_]+))/g)) {
       if (m[1]) events.add(m[1]);
       else if (m[2] && constValues.has(m[2])) events.add(constValues.get(m[2])!);
     }
