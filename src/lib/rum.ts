@@ -36,7 +36,7 @@ const SESSION_KEY = 'vitana-rum-session';
 type Metric = 'LCP' | 'TTFB' | 'CLS' | 'FCP' | 'INP';
 type Rating = 'good' | 'needs-improvement' | 'poor';
 
-interface RumBeacon {
+export interface RumBeacon {
   screen: string;
   metric: Metric;
   value: number;
@@ -81,8 +81,9 @@ function send(beacon: RumBeacon): void {
   sendAnonymousBeacon(`${GATEWAY_URL}${BEACON_PATH}`, JSON.stringify(beacon));
 }
 
-function emit(metric: Metric, value: number): void {
-  send({
+/** The beacon for one metric sample, exported for tests. */
+export function buildBeacon(metric: Metric, value: number): RumBeacon {
+  return {
     screen: location.pathname || '/',
     metric,
     value,
@@ -90,8 +91,14 @@ function emit(metric: Metric, value: number): void {
     session: getSessionId(),
     captured_at: new Date().toISOString(),
     user_agent: navigator.userAgent.slice(0, 512),
-    ts_origin_ms: performance.timeOrigin,
-  });
+    // VTID-04537: the gateway schema requires an integer and timeOrigin is
+    // fractional, so an unrounded value got every beacon rejected with 400.
+    ts_origin_ms: Math.round(performance.timeOrigin),
+  };
+}
+
+function emit(metric: Metric, value: number): void {
+  send(buildBeacon(metric, value));
 }
 
 let installed = false;
