@@ -206,4 +206,15 @@ describe("MobileIdentityCard (VTID-04470)", () => {
     expect(card.style.minHeight).toBe(`${window.innerHeight - 8}px`);
     expect(screen.getByTestId("profile-index-stats").className).toContain("mt-auto");
   });
+
+  it("scales the header with the viewport and the Index card with its height", () => {
+    renderCard({ isOwner: true });
+    const card = screen.getByTestId("profile-vitana-index-card");
+    const root = card.parentElement as HTMLElement;
+    // jsdom: 768px viewport → header partway up its range; card ≥ 460px → full size.
+    const hx = Number(root.style.getPropertyValue("--hx"));
+    expect(hx).toBeGreaterThan(0);
+    expect(hx).toBeLessThan(1);
+    expect(root.style.getPropertyValue("--ix")).toBe("1");
+  });
 });

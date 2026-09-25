@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
@@ -13,6 +13,11 @@ interface MobileProfileStatsProps {
    *  profile's Vitana Index card (VTID-04470). */
   variant?: "strip" | "divided";
   className?: string;
+  /** Optional size overrides (VTID-04526: the Index card scales with the
+   *  space it has). Unset = the variant's default sizes. */
+  valueStyle?: CSSProperties;
+  labelStyle?: CSSProperties;
+  rowStyle?: CSSProperties;
 }
 
 // Followers/Following moved into the identity card (MobileIdentityCard),
@@ -21,7 +26,10 @@ export function MobileProfileStats({
   userId,
   profileId,
   variant = "strip",
-  className
+  className,
+  valueStyle,
+  labelStyle,
+  rowStyle,
 }: MobileProfileStatsProps) {
   const divided = variant === "divided";
   const { translate } = useTranslation();
@@ -54,6 +62,7 @@ export function MobileProfileStats({
           divided ? "divide-x divide-slate-200 py-2.5 rtl:divide-x-reverse" : "gap-1 py-3 px-2",
           className,
         )}
+        style={rowStyle}
       >
         {stats.map((stat) => {
           const body = (
@@ -61,11 +70,11 @@ export function MobileProfileStats({
               {isPending ? (
                 <Skeleton className="h-5 w-8 mb-0.5" />
               ) : (
-                <span className={cn("font-semibold text-foreground", divided ? "text-lg leading-tight" : "text-base")}>
+                <span className={cn("font-semibold text-foreground", divided ? "text-lg leading-tight" : "text-base")} style={valueStyle}>
                   {formatCount(stat.value ?? 0)}
                 </span>
               )}
-              <span className={cn("text-muted-foreground", divided ? "text-xs" : "text-[10px]")}>{stat.label}</span>
+              <span className={cn("text-muted-foreground", divided ? "text-xs" : "text-[10px]")} style={labelStyle}>{stat.label}</span>
             </>
           );
           const cellClass = "flex min-w-0 flex-col items-center gap-0.5";
