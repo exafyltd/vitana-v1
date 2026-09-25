@@ -18,6 +18,7 @@
  * Deliberately self-contained: no React imports, no Supabase, no auth — so
  * a failure in those layers cannot suppress the beacon.
  */
+import { sendAnonymousBeacon } from './anon-beacon';
 
 type BeaconEvent =
   | 'boot'
@@ -77,23 +78,9 @@ function send(event: BeaconEvent, extra?: Record<string, unknown>): void {
     const url = `${resolveGatewayBase()}/api/v1/diag/notif-tap`;
     const body = JSON.stringify({ event, ...snapshot(), ...(extra || {}) });
 
-    // Prefer sendBeacon — it survives page unload, which matters because the
-    // Appilix WebView may be tearing the page down while we're still trying
-    // to report what went wrong.
-    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-      const blob = new Blob([body], { type: 'application/json' });
-      const ok = navigator.sendBeacon(url, blob);
-      if (ok) return;
-    }
-
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body,
-      keepalive: true,
-      mode: 'cors',
-      credentials: 'omit',
-    }).catch(() => { /* fire-and-forget */ });
+    // VTID-04516: anonymous keepalive fetch — it survives page unload like
+    // sendBeacon, without sendBeacon's credentialed CORS preflight.
+    sendAnonymousBeacon(url, body);
   } catch {
     /* never throw from a diagnostic path */
   }
