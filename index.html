@@ -61,7 +61,7 @@
          or the browser fetches the file TWICE and the preload is worse than
          nothing. The widget is cross-origin by design (it is served by the
          gateway, and auto-detects its gateway from its own script src). -->
-    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04542-orb-latency">
+    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04560-view-role">
 
     <!-- ORB Voice Widget -->
     <!-- BOOTSTRAP-ORB-STAGING-GATEWAY: load the widget from THIS environment's
@@ -74,8 +74,14 @@
          whole voice flow (widget JS + session + SSE) within one environment.
          The widget lives in the gateway repo
          (services/gateway/src/frontend/command-hub/orb-widget.js); the ?v= bump
-         forces browsers to refetch instead of serving the cached prod widget. -->
-    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04542-orb-latency" defer></script>
+         forces browsers to refetch instead of serving the cached prod widget.
+         VTID-04560: bump it on EVERY widget change this app depends on — the
+         gateway serves the widget `immutable, max-age=1y` through Cloudflare,
+         keyed by this exact URL, so an unchanged ?v= keeps serving the old
+         widget indefinitely (measured: the view-role change was live on the
+         Command Hub and invisible here until this bump). -->
+
+    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04560-view-role" defer></script>
   </head>
 
   <body>
