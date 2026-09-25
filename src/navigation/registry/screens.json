@@ -4179,8 +4179,7 @@
             "öffne das Wallet-Popup"
           ]
         }
-      },
-      "disabled": "wallet:open has no listener in the app (found 2026-09-24); the popup never opens."
+      }
     },
     {
       "id": "PROFILE.ME",

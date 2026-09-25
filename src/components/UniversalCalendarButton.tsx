@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NotificationBadge } from "@/components/ui/notification-badge";
@@ -6,6 +6,7 @@ import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPop
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useSidebarSafe } from "@/components/ui/sidebar";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -29,15 +30,10 @@ export function UniversalCalendarButton({
 
   // Listen for global calendar:open events (dispatched by ORB voice navigation
   // and by the reminder push deep-link, which requests the 'reminders' tab).
-  useEffect(() => {
-    const handleOpen = (e: Event) => {
-      const tab = (e as CustomEvent<{ tab?: 'agenda' | 'month' | 'reminders' }>).detail?.tab;
-      setRequestedMobileTab(tab);
-      setCalendarOpen(true);
-    };
-    window.addEventListener('calendar:open', handleOpen);
-    return () => window.removeEventListener('calendar:open', handleOpen);
-  }, []);
+  useWindowOverlay<{ tab?: 'agenda' | 'month' | 'reminders' }>('calendar:open', (detail) => {
+    setRequestedMobileTab(detail?.tab);
+    setCalendarOpen(true);
+  });
 
   const calendarHook = useCalendarEvents();
   const { events, getUpcomingEvents } = calendarHook;

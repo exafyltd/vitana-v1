@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
+import { planOrbNavigation, type NavDirectiveContext, type NavResult } from "@/navigation/orb-navigation";
+import { openOverlay } from "@/navigation/overlay-bus";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -67,11 +69,7 @@ async function backendAcceptsToken(token: string): Promise<boolean> {
 
 const RECENT_ROUTES_MAX = 5;
 
-type NavigationContext = {
-  screen_id?: string;
-  reason?: string;
-  title?: string;
-};
+type NavigationContext = NavDirectiveContext;
 
 // VTID-NAV-TIMEJOURNEY: Each entry tracks when the user landed on that route
 // so the backend greeting can say "you've been on the Events page for 3 min"
@@ -158,112 +156,37 @@ export function useOrbVoiceWidget() {
   // VTID-NAV-01: Called by orb-widget when the Vitana Navigator dispatches an
   // orb_directive of type 'navigate'. Uses React Router so the transition is
   // a smooth SPA change (works inside Appilix WebView with no full reload).
-  const handleNavigationRequest = (url: string, _ctx: NavigationContext) => {
+  // VTID-04520: returns what happened, which the widget reports back to the
+  // gateway as nav_result — the gateway moves the member's "current screen"
+  // only when something opened. Routing decisions live in
+  // src/navigation/orb-navigation.ts (registry-aware, unit-tested).
+  const handleNavigationRequest = (url: string, ctx: NavigationContext): NavResult => {
     try {
-      // Surface safety net: the community app serves community + admin routes
-      // only. If the Navigator ever returns a Command Hub route (it shouldn't —
-      // the backend is surface-scoped — but belt-and-suspenders against catalog
-      // drift), refuse to navigate instead of rendering a 404.
-      const pathPart = url.split('?')[0] || '';
-      if (pathPart.startsWith('/command-hub')) {
-        console.warn('[ORB] Refused cross-surface route (command-hub is developer-only):', url);
-        return;
+      const plan = planOrbNavigation(url, ctx, { isMobile: isMobileRef.current });
+      if (plan.kind === 'refuse') {
+        console.warn(`[ORB] Refused navigation (${plan.reason}):`, url);
+        return { status: 'refused', reason: plan.reason };
       }
-      // BOOTSTRAP-MOBILE-NAV-CONTAINMENT: mobile viewport net. The gateway
-      // navigation-catalog is the primary gate (viewport_only / mobile_route),
-      // but the backend deploys separately and can lag the catalog, so we also
-      // refuse known desktop-only routes here rather than stranding a mobile
-      // user on a layout that does not reflow. Overlay markers (?open=…) are
-      // handled below and are exempt. Keep this list tight — it should only
-      // contain routes with NO mobile rendering (see docs/MOBILE_SCREEN_INVENTORY.md).
-      const MOBILE_DESKTOP_ONLY_ROUTES = ['/inbox/archived'];
-      if (
-        isMobileRef.current &&
-        !url.includes('open=') &&
-        MOBILE_DESKTOP_ONLY_ROUTES.some(
-          (r) => pathPart === r || pathPart.startsWith(r + '/'),
-        )
-      ) {
-        console.warn('[ORB] Refused desktop-only route on mobile, staying in voice:', url);
-        return;
-      }
-      const parsed = new URL(url, window.location.origin);
-      const openTarget = parsed.searchParams.get('open');
-      // VTID-02770: Catalog-driven overlay dispatch. The gateway emits
-      // `${host_route}?open=<query_marker>` for any catalog entry whose
-      // `entry_kind === 'overlay'`. We route the `open` param to the
-      // matching CustomEvent so popups can render on the user's current
-      // screen without a full route change.
-      //
-      // Each entry takes the full URL detail (the entire URLSearchParams) so
-      // entity-id params like `meetup_id`, `event_id`, `user_id` arrive on the
-      // event so listeners can fetch the right resource.
-      if (openTarget) {
-        const detail = Object.fromEntries(parsed.searchParams.entries());
-        const dispatch = (eventName: string) => {
-          window.dispatchEvent(new CustomEvent(eventName, { detail }));
-        };
-        switch (openTarget) {
-          case 'calendar':
-            // VTID-CAL-OPEN
-            dispatch('calendar:open');
-            return;
-          case 'life_compass':
-          case 'goals':
-            dispatch('vitana:open-life-compass');
-            return;
-          case 'index':
-          case 'vitana_index':
-            dispatch('vitana:open-index');
-            return;
-          case 'profile_preview':
-            dispatch('profile:open');
-            return;
-          case 'meetup':
-            dispatch('meetup:open');
-            return;
-          case 'event':
-            dispatch('event:open');
-            return;
-          case 'wallet':
-            dispatch('wallet:open');
-            return;
-          case 'master_action':
-            dispatch('master_action:open');
-            return;
-          case 'presence':
-            dispatch('presence-debug:open');
-            return;
-          // Settings navigator: Vitana can jump to a specific Settings section
-          // (e.g. `?open=settings_section&section=privacy.security`) and toggle
-          // notification preferences for the user without forcing a route
-          // change. Listeners live in src/pages/MobileSettings.tsx. The
-          // settings route must already be active; otherwise we also navigate
-          // to /settings so the listener mounts.
-          case 'settings_section':
-            if (!window.location.pathname.startsWith('/settings')) {
-              navigateRef.current('/settings');
-            }
-            // Defer the dispatch one tick so the Settings page can mount its
-            // listener before the event fires.
-            setTimeout(() => dispatch('vitana:settings-navigate'), 50);
-            return;
-          case 'settings_toggle':
-            if (!window.location.pathname.startsWith('/settings')) {
-              navigateRef.current('/settings');
-            }
-            setTimeout(() => dispatch('vitana:settings-toggle'), 50);
-            return;
-          // Unknown overlay marker: log and fall through to a regular
-          // navigation so the URL is at least visible to the user.
-          default:
-            console.warn(`[ORB] Unknown overlay marker: ?open=${openTarget} — falling back to navigation`);
+      if (plan.kind === 'overlay') {
+        // The page that owns the overlay may not be mounted yet (Settings):
+        // navigate there, and the overlay bus hands the request to its
+        // listener when it mounts instead of racing a timer.
+        if (plan.ensureRoute && !window.location.pathname.startsWith(plan.ensureRoute)) {
+          navigateRef.current(plan.ensureRoute);
         }
+        const r = openOverlay(plan.event, plan.detail);
+        return { status: r === 'acknowledged' ? 'opened' : 'unknown', route: url };
       }
-      navigateRef.current(url);
+      navigateRef.current(plan.url);
+      return { status: 'opened', route: plan.url };
     } catch (err) {
       console.warn("[ORB] React Router navigate failed, falling back:", err);
-      window.location.href = url;
+      try {
+        window.location.href = url;
+        return { status: 'opened', route: url };
+      } catch (e) {
+        return { status: 'error', reason: String((e as Error)?.message || e) };
+      }
     }
   };
 

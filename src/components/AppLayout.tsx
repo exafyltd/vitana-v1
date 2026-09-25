@@ -53,6 +53,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
 import PublicAppShell from "@/components/PublicAppShell";
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -448,6 +449,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
 function AuthedAppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
+  // VTID-04520: Vitana can open the wallet popup by voice ("show my balance").
+  useWindowOverlay('wallet:open', () => setWalletPopupOpen(true));
   const isMobile = useIsMobile();
   // VTID-03279: Guided Mode hides sidebar/menu. `isGuided` is mobile-only (the
   // provider forces Full chrome on desktop), so the desktop sidebar always shows.
