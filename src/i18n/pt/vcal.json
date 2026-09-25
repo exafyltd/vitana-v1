@@ -152,37 +152,37 @@
     },
     "guide": {
       "eyebrow": "A Vitana sugere",
-      "allDone": "Tudo feito: {count} de {count}. Aproveita a noite ou vê o que a semana traz.",
-      "nextStep": "O teu próximo passo: {title}",
+      "allDone": "Tudo feito: {count} de {count}. Aproveite a noite ou veja o que a semana traz.",
+      "nextStep": "Seu próximo passo: {title}",
       "stepsOpenOne": "1 passo em aberto · cerca de 5 minutos",
       "stepsOpen": "{count} passos em aberto · cerca de 5 minutos cada",
-      "freeDay": "Nada planeado hoje. Um bom dia para algo que te faça bem.",
-      "freeWindow": "Estás livre das {from} às {to}. Um passeio, um encontro ou uma pausa?",
-      "connect": "Liga o teu calendário para que a Vitana veja o teu dia todo e planeie à volta dele.",
-      "busy": "Dia cheio: ainda tens {count} coisas pela frente. Planeia pausas curtas entre elas.",
+      "freeDay": "Nada planejado hoje. Um bom dia para algo que faça bem a você.",
+      "freeWindow": "Você está livre das {from} às {to}. Uma caminhada, um encontro ou uma pausa?",
+      "connect": "Conecte seu calendário para que a Vitana veja o seu dia inteiro e planeje em volta dele.",
+      "busy": "Dia cheio: ainda há {count} coisas pela frente. Planeje pausas curtas entre elas.",
       "start": "Começar",
       "findEvent": "Encontrar um evento",
-      "planWithVitana": "Planear com a Vitana",
+      "planWithVitana": "Planejar com a Vitana",
       "seeWeek": "Ver a semana",
-      "connectAction": "Ligar calendário"
+      "connectAction": "Conectar calendário"
     },
     "journey": {
-      "title": "A tua jornada",
+      "title": "Sua jornada",
       "open": "{count} passos em aberto",
       "openOne": "1 passo em aberto",
       "day": "Dia {day}",
       "dayOf": "Dia {day} de {total}",
-      "noneOpen": "Todos os passos feitos, boa! Aparecem novos à medida que avanças.",
+      "noneOpen": "Todos os passos feitos, ótimo! Novos aparecem conforme você avança.",
       "today": "Hoje {time}",
-      "more": "+{count} mais",
-      "openJourney": "Abrir a minha jornada"
+      "more": "+{count} a mais",
+      "openJourney": "Abrir minha jornada"
     },
     "remindersSection": {
       "title": "Lembretes",
       "none": "Nenhum agendado",
       "upcoming": "{count} próximos",
       "upcomingOne": "1 próximo",
-      "next": "seguinte {when}"
+      "next": "próximo {when}"
     },
     "calendars": {
       "title": "Calendários",
@@ -191,24 +191,24 @@
         "apple": "Apple",
         "outlook": "Outlook"
       },
-      "connectTitle": "Liga o teu calendário",
-      "connectBody": "Vê o teu dia todo num só sítio. A Vitana planeia à volta das tuas marcações.",
-      "comingSoon": "O início de sessão com Google, Apple e Outlook está a ser configurado.",
-      "connectedOne": "{name} ligado",
-      "connectedMany": "{names} ligados",
-      "needsReconnect": "{name} precisa de ser ligado de novo",
-      "connected": "Ligado",
-      "notConnected": "Não ligado",
-      "reconnectHint": "A ligação expirou",
-      "connect": "Ligar",
-      "reconnect": "Ligar de novo",
-      "manage": "Gerir em Apps ligadas",
-      "showInAppHint": "Ver as entradas da Vitanaland na tua app de calendário"
+      "connectTitle": "Conecte seu calendário",
+      "connectBody": "Veja o seu dia inteiro em um só lugar. A Vitana planeja em volta dos seus compromissos.",
+      "comingSoon": "O login com Google, Apple e Outlook está sendo configurado.",
+      "connectedOne": "{name} conectado",
+      "connectedMany": "{names} conectados",
+      "needsReconnect": "{name} precisa ser conectado de novo",
+      "connected": "Conectado",
+      "notConnected": "Não conectado",
+      "reconnectHint": "A conexão expirou",
+      "connect": "Conectar",
+      "reconnect": "Conectar de novo",
+      "manage": "Gerenciar em Apps conectados",
+      "showInAppHint": "Veja as entradas da Vitanaland no seu app de calendário"
     },
     "add": {
       "title": "Nova entrada",
       "created": "Adicionado ✨",
-      "error": "Não foi possível guardar agora. Tenta de novo daqui a pouco."
+      "error": "Não foi possível salvar agora. Tente de novo daqui a pouco."
     }
   }
 }

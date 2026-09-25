@@ -170,9 +170,9 @@
       }
     },
     "requested": {
-      "hint": "Vens do teu calendário. Toca uma vez para ligar {app}.",
+      "hint": "Você veio do seu calendário. Toque uma vez para conectar {app}.",
       "unavailable": "{app} ainda não está disponível aqui.",
-      "connect": "Ligar {app}"
+      "connect": "Conectar {app}"
     }
   }
 }
