@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 // /comm/events-meetups?tab=hot) and block desktop sessions from
 // viewport_only='mobile' entries (e.g. /daily-diary).
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRole } from "@/hooks/useRole";
+import { orbViewProfile } from "@/lib/orb-view-profile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
 import { planOrbNavigation, type NavDirectiveContext, type NavResult } from "@/navigation/orb-navigation";
@@ -146,6 +148,19 @@ export function useOrbVoiceWidget() {
   // navigation guard below (the callback is captured at init time).
   const isMobileRef = useRef(isMobile);
   isMobileRef.current = isMobile;
+  // VTID-04561: the role whose screens are shown. The widget declares it with
+  // every session start; a switch restarts an open conversation so the next
+  // words come from the new role's Vitana.
+  const { currentRole } = useRole();
+  const currentRoleRef = useRef<string | null>(currentRole ?? null);
+  currentRoleRef.current = currentRole ?? null;
+  useEffect(() => {
+    const orb = (window as unknown as { VitanaOrb?: { setViewRole?: (role: string, surface: string) => void } }).VitanaOrb;
+    if (!orb || typeof orb.setViewRole !== "function") return;
+    const p = orbViewProfile(location.pathname, currentRole);
+    orb.setViewRole(p.view_role, p.surface);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRole]);
   // BOOTSTRAP-ORB-SCREEN-TRACKING: keep the freshest current route in a ref so
   // the widget-init closures below read the LIVE route, not the route captured
   // when the init effect last ran. The init effects are keyed on
@@ -289,6 +304,9 @@ export function useOrbVoiceWidget() {
             journey_trail: journeyTrailRef.current,
             // VTID-02789: viewport flag → gateway picks mobile_route over route
             is_mobile: isMobileRef.current,
+            // VTID-04561: which Vitana this screen wants (surface + the role
+            // whose screens are shown); the gateway verifies both.
+            ...orbViewProfile(currentRouteRef.current, currentRoleRef.current),
           },
         };
 
@@ -516,6 +534,9 @@ export function useOrbVoiceWidget() {
         // VTID-02789: re-emit is_mobile on every route change so a viewport
         // resize mid-session is reflected in the next navigate decision.
         is_mobile: isMobile,
+        // VTID-04561: moving into /admin or /backoffice is a different Vitana;
+        // the widget restarts an open conversation when this changes.
+        ...orbViewProfile(path, currentRoleRef.current),
       });
     }
 
