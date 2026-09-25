@@ -23,6 +23,7 @@ function makeBuilder(result: { data: unknown; error: unknown }) {
     select: vi.fn(() => builder),
     eq: vi.fn(() => builder),
     in: vi.fn(() => builder),
+    gte: vi.fn(() => builder),
     order: vi.fn(() => builder),
     limit: vi.fn(() => Promise.resolve(result)),
     then: (resolve: any) => Promise.resolve(result).then(resolve),

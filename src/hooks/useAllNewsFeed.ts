@@ -33,6 +33,7 @@ import {
   type PerformerFeedItem,
   type MatchFeedItem,
   type FeatureAnnouncementFeedItem,
+  type NewMemberFeedItem,
 } from "@/lib/news-feed-ranker";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
@@ -41,6 +42,7 @@ const GATEWAY_URL =
 
 interface RawCandidates {
   posts: PostFeedItem[];
+  newMembers: NewMemberFeedItem[];
   performer: PerformerFeedItem | null;
   featureAnnouncements: RawFeatureAnnouncementRow[];
 }
@@ -185,9 +187,18 @@ export async function fetchNewsFeedCandidates(
       .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(5),
+    // Members who joined in the last 7 days (VTID-04584) — the same window
+    // the Community tab uses, so both tabs show the same newcomers.
+    supabase
+      .from("global_community_profiles")
+      .select("user_id, display_name, avatar_url, bio, created_at")
+      .eq("is_visible", true)
+      .gte("created_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+      .order("created_at", { ascending: false })
+      .limit(5),
   ]);
 
-  const [[postsRes, mediaRes, performer, featureAnnouncementsRes], viewerRes] =
+  const [[postsRes, mediaRes, performer, featureAnnouncementsRes, newMembersRes], viewerRes] =
     await Promise.all([contentPromise, viewerScopedPromise]);
 
   // Followed ids (for the follow-before-others ranking tier).
@@ -228,6 +239,25 @@ export async function fetchNewsFeedCandidates(
   }
   if (featureAnnouncementsRes.status === "fulfilled" && featureAnnouncementsRes.value.error) {
     console.error("[useAllNewsFeed] Error fetching feature_announcements:", featureAnnouncementsRes.value.error);
+  }
+
+  if (newMembersRes.status === "fulfilled" && newMembersRes.value.error) {
+    console.error("[useAllNewsFeed] Error fetching new-member global_community_profiles:", newMembersRes.value.error);
+  }
+  const newMembers: NewMemberFeedItem[] = [];
+  if (newMembersRes.status === "fulfilled") {
+    for (const m of newMembersRes.value.data || []) {
+      if (!m.user_id || m.user_id === userId || suppressedAuthorIds.has(m.user_id)) continue;
+      newMembers.push({
+        id: `new-member-${m.user_id}`,
+        kind: "new_member",
+        user_id: m.user_id,
+        display_name: m.display_name,
+        avatar_url: m.avatar_url,
+        bio: m.bio,
+        published_at: m.created_at,
+      });
+    }
   }
 
   const postRows: RawPostRow[] =
@@ -306,6 +336,7 @@ export async function fetchNewsFeedCandidates(
 
   return {
     posts,
+    newMembers,
     performer: performer.status === "fulfilled" ? performer.value : null,
     featureAnnouncements: featureAnnouncementRows,
   };
@@ -634,6 +665,7 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       ...featureAnnouncements,
       ...(candidates?.performer ? [candidates.performer] : []),
       ...(candidates?.posts || []),
+      ...(candidates?.newMembers || []),
       ...articles,
     ];
 
