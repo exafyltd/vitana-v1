@@ -20,6 +20,8 @@ const PENDING_TTL_MS = 5_000;
 interface Pending {
   detail: unknown;
   at: number;
+  /** VTID-04559: resolved when a listener takes the request. */
+  taken: Array<() => void>;
 }
 
 const pending = new Map<string, Pending>();
@@ -33,7 +35,7 @@ export function openOverlay(event: string, detail: unknown = {}): OverlayOpenRes
     pending.delete(event);
     return 'acknowledged';
   }
-  pending.set(event, { detail, at: Date.now() });
+  pending.set(event, { detail, at: Date.now(), taken: [] });
   return 'queued';
 }
 
@@ -42,7 +44,26 @@ export function takePendingOverlay(event: string, now = Date.now()): unknown | u
   const p = pending.get(event);
   if (!p) return undefined;
   pending.delete(event);
-  return now - p.at <= PENDING_TTL_MS ? p.detail : undefined;
+  if (now - p.at > PENDING_TTL_MS) return undefined;
+  p.taken.forEach((fn) => fn());
+  return p.detail;
+}
+
+/**
+ * VTID-04559 — wait for a queued request to be taken by the listener that
+ * mounts after a route change (Settings). Resolves true when it is taken,
+ * false after `timeoutMs` or when nothing is queued for `event`.
+ */
+export function whenOverlayTaken(event: string, timeoutMs: number): Promise<boolean> {
+  const p = pending.get(event);
+  if (!p) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => resolve(false), timeoutMs);
+    p.taken.push(() => {
+      clearTimeout(timer);
+      resolve(true);
+    });
+  });
 }
 
 /** Test helper. */

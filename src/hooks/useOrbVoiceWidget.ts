@@ -10,7 +10,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
 import { planOrbNavigation, type NavDirectiveContext, type NavResult } from "@/navigation/orb-navigation";
-import { openOverlay } from "@/navigation/overlay-bus";
+import { openOverlay, whenOverlayTaken } from "@/navigation/overlay-bus";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -160,7 +160,7 @@ export function useOrbVoiceWidget() {
   // gateway as nav_result — the gateway moves the member's "current screen"
   // only when something opened. Routing decisions live in
   // src/navigation/orb-navigation.ts (registry-aware, unit-tested).
-  const handleNavigationRequest = (url: string, ctx: NavigationContext): NavResult => {
+  const handleNavigationRequest = (url: string, ctx: NavigationContext): NavResult | Promise<NavResult> => {
     try {
       const plan = planOrbNavigation(url, ctx, { isMobile: isMobileRef.current });
       if (plan.kind === 'refuse') {
@@ -171,11 +171,20 @@ export function useOrbVoiceWidget() {
         // The page that owns the overlay may not be mounted yet (Settings):
         // navigate there, and the overlay bus hands the request to its
         // listener when it mounts instead of racing a timer.
+        let changedRoute = false;
         if (plan.ensureRoute && !window.location.pathname.startsWith(plan.ensureRoute)) {
           navigateRef.current(plan.ensureRoute);
+          changedRoute = true;
         }
         const r = openOverlay(plan.event, plan.detail);
-        return { status: r === 'acknowledged' ? 'opened' : 'unknown', route: url };
+        if (r === 'acknowledged') return { status: 'opened', route: url };
+        // VTID-04559: the page that owns it is still mounting. Report what
+        // happens once it does (the widget waits up to 1.5 s for this).
+        if (changedRoute) {
+          return whenOverlayTaken(plan.event, 1200).then((taken): NavResult =>
+            taken ? { status: 'opened', route: url } : { status: 'unknown', route: url });
+        }
+        return { status: 'unknown', route: url };
       }
       navigateRef.current(plan.url);
       return { status: 'opened', route: plan.url };
