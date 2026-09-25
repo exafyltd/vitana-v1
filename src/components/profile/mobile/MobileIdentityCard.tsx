@@ -51,7 +51,7 @@ const FOLD_GAP_PX = 8;
  */
 const ACTION_BUTTON_STYLE: CSSProperties = {
   height: lerpPx(44, 52, "--hx"),
-  fontSize: lerpPx(14, 17, "--hx"),
+  fontSize: lerpPx(14, 16, "--hx"),
 };
 const SCORE_BLOCK_STYLE: CSSProperties = {
   marginTop: lerpPx(2, 10, "--ix"),
@@ -307,7 +307,7 @@ export function MobileIdentityCard({
           <div className="relative shrink-0">
             <Avatar
               className="border-[3px] border-white shadow-md"
-              style={{ width: lerpPx(84, 108, "--hx"), height: lerpPx(84, 108, "--hx") }}
+              style={{ width: lerpPx(84, 92, "--hx"), height: lerpPx(84, 92, "--hx") }}
             >
               <AvatarImage
                 src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(handle ?? displayName ?? "vitana")}
@@ -336,14 +336,14 @@ export function MobileIdentityCard({
           <div className={cn("min-w-0 flex-1", onShare && "pe-8")}>
             <h1
               className="line-clamp-2 break-words font-bold leading-tight text-slate-900"
-              style={{ fontSize: lerpPx(21, 28, "--hx") }}
+              style={{ fontSize: lerpPx(21, 24, "--hx") }}
             >
               {displayName}
             </h1>
             {(shownHandle || archetype) && (
               <p
                 className="mt-0.5 line-clamp-2 break-words leading-snug text-slate-600"
-                style={{ fontSize: lerpPx(13, 16, "--hx") }}
+                style={{ fontSize: lerpPx(13, 14, "--hx") }}
               >
                 {shownHandle && <span dir="ltr">@{shownHandle}</span>}
                 {shownHandle && archetype && <span aria-hidden> · </span>}
@@ -357,8 +357,8 @@ export function MobileIdentityCard({
                   className="flex items-baseline gap-1 rounded active:opacity-70"
                   onClick={() => openFollowList("followers")}
                 >
-                  <span className="font-bold text-slate-900" style={{ fontSize: lerpPx(15, 18, "--hx") }}>{followersCount}</span>
-                  <span className="text-slate-600" style={{ fontSize: lerpPx(13, 16, "--hx") }}>{translate("profileStats.followers", "Followers")}</span>
+                  <span className="font-bold text-slate-900" style={{ fontSize: lerpPx(15, 16, "--hx") }}>{followersCount}</span>
+                  <span className="text-slate-600" style={{ fontSize: lerpPx(13, 14, "--hx") }}>{translate("profileStats.followers", "Followers")}</span>
                 </button>
                 <span className="h-3.5 w-px bg-slate-400/40 max-[359px]:hidden" aria-hidden />
                 <button
@@ -366,8 +366,8 @@ export function MobileIdentityCard({
                   className="flex items-baseline gap-1 rounded active:opacity-70"
                   onClick={() => openFollowList("following")}
                 >
-                  <span className="font-bold text-slate-900" style={{ fontSize: lerpPx(15, 18, "--hx") }}>{followingCount}</span>
-                  <span className="text-slate-600" style={{ fontSize: lerpPx(13, 16, "--hx") }}>{translate("profileStats.following", "Following")}</span>
+                  <span className="font-bold text-slate-900" style={{ fontSize: lerpPx(15, 16, "--hx") }}>{followingCount}</span>
+                  <span className="text-slate-600" style={{ fontSize: lerpPx(13, 14, "--hx") }}>{translate("profileStats.following", "Following")}</span>
                 </button>
               </div>
             )}
