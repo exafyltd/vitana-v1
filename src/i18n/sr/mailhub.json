@@ -180,6 +180,11 @@
         "notNow": "Ne sada",
         "continue": "Nastavi"
       }
+    },
+    "requested": {
+      "hint": "Došao si iz kalendara. Dodirni jednom da povežeš {app}.",
+      "unavailable": "{app} još nije dostupan kod nas.",
+      "connect": "Poveži {app}"
     }
   }
 }

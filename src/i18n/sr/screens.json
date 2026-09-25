@@ -6865,7 +6865,8 @@
       "noCompleted": "Još nema završenih podsetnika.",
       "noMissed": "Nema propuštenih podsetnika — sve si stigao/la.",
       "creating": "Kreiram…",
-      "createReminder": "Kreiraj podsetnik"
+      "createReminder": "Kreiraj podsetnik",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Nema događaja u tvom inventaru",

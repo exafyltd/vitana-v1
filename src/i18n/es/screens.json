@@ -6812,7 +6812,8 @@
       "noCompleted": "Aún no hay recordatorios completados.",
       "noMissed": "No hay recordatorios perdidos — estás al día.",
       "creating": "Creando…",
-      "createReminder": "Crear recordatorio"
+      "createReminder": "Crear recordatorio",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "No hay eventos en tu inventario",

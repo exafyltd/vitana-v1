@@ -183,6 +183,11 @@
         "notNow": "Ahora no",
         "continue": "Continuar"
       }
+    },
+    "requested": {
+      "hint": "Vienes de tu calendario. Toca una vez para conectar {app}.",
+      "unavailable": "{app} aún no está disponible aquí.",
+      "connect": "Conectar {app}"
     }
   }
 }

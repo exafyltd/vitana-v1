@@ -6865,7 +6865,8 @@
       "noCompleted": "还没有已完成的提醒。",
       "noMissed": "没有错过的提醒 — 你都已处理完毕。",
       "creating": "正在创建…",
-      "createReminder": "创建提醒"
+      "createReminder": "创建提醒",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "你的库存中没有事件",

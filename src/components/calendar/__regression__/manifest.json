@@ -2,6 +2,11 @@
   "_comment": "VTID-04459 — every calendar source file in the app and the tests that protect it. calendar-coverage.guard.test.ts fails when a calendar file is added without an entry, when a listed test is gone or no longer references the file, or when a file sits in `uncovered` that the guard does not allow. `uncovered` is the older calendar UI (popup, cards) that had no tests when this suite was built; it can only shrink.",
   "sources": {
     "src/components/calendar/calendar-entry.ts": ["src/components/calendar/calendar-entry.test.ts"],
+    "src/components/calendar/vcal/guidance.ts": ["src/components/calendar/vcal/guidance.test.ts"],
+    "src/components/calendar/vcal/sections.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
+    "src/components/calendar/vcal/Disclosure.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
+    "src/components/calendar/vcal/GuideCard.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
+    "src/components/calendar/vcal/AddEntrySheet.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
     "src/pages/Calendar.tsx": ["src/components/calendar/__regression__/calendar-screen.golden.test.tsx"],
     "src/components/calendar/vcal/time.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts", "src/components/calendar/vcal/vcal.test.ts"],
     "src/components/calendar/vcal/labels.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],

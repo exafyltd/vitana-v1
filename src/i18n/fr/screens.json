@@ -6865,7 +6865,8 @@
       "noCompleted": "Aucun rappel terminé pour l'instant.",
       "noMissed": "Aucun rappel manqué — tu es à jour.",
       "creating": "Création en cours…",
-      "createReminder": "Créer un rappel"
+      "createReminder": "Créer un rappel",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Aucun événement dans ton inventaire",

@@ -150,6 +150,66 @@
       "title": "Horas de silencio",
       "body": "Durante tus horas de silencio no llegan recordatorios: llegan justo antes.",
       "link": "Configurar horas de silencio"
+    },
+    "guide": {
+      "eyebrow": "Vitana sugiere",
+      "allDone": "Todo hecho: {count} de {count}. Disfruta la tarde o mira lo que trae la semana.",
+      "nextStep": "Tu siguiente paso: {title}",
+      "stepsOpenOne": "1 paso pendiente · unos 5 minutos",
+      "stepsOpen": "{count} pasos pendientes · unos 5 minutos cada uno",
+      "freeDay": "Hoy no hay nada planeado. Un buen día para algo que te haga bien.",
+      "freeWindow": "Tienes libre de {from} a {to}. ¿Un paseo, un encuentro o un descanso?",
+      "connect": "Conecta tu calendario para que Vitana vea todo tu día y planifique a su alrededor.",
+      "busy": "Día completo: aún tienes {count} cosas por delante. Planifica pausas cortas entre ellas.",
+      "start": "Empezar",
+      "findEvent": "Buscar un evento",
+      "planWithVitana": "Planificar con Vitana",
+      "seeWeek": "Ver la semana",
+      "connectAction": "Conectar calendario"
+    },
+    "journey": {
+      "title": "Tu camino",
+      "open": "{count} pasos pendientes",
+      "openOne": "1 paso pendiente",
+      "day": "Día {day}",
+      "dayOf": "Día {day} de {total}",
+      "noneOpen": "Todos los pasos hechos, ¡genial! Aparecerán nuevos a medida que avances.",
+      "today": "Hoy {time}",
+      "more": "+{count} más",
+      "openJourney": "Abrir mi camino"
+    },
+    "remindersSection": {
+      "title": "Recordatorios",
+      "none": "Ninguno programado",
+      "upcoming": "{count} próximos",
+      "upcomingOne": "1 próximo",
+      "next": "siguiente {when}"
+    },
+    "calendars": {
+      "title": "Calendarios",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "Conecta tu calendario",
+      "connectBody": "Ve todo tu día en un solo lugar. Vitana planifica alrededor de tus citas.",
+      "comingSoon": "El inicio de sesión con Google, Apple y Outlook se está configurando.",
+      "connectedOne": "{name} conectado",
+      "connectedMany": "{names} conectados",
+      "needsReconnect": "{name} necesita reconectarse",
+      "connected": "Conectado",
+      "notConnected": "No conectado",
+      "reconnectHint": "La conexión caducó",
+      "connect": "Conectar",
+      "reconnect": "Reconectar",
+      "manage": "Gestionar en Apps conectadas",
+      "showInAppHint": "Ver las entradas de Vitanaland en tu app de calendario"
+    },
+    "add": {
+      "title": "Nueva entrada",
+      "created": "Añadido ✨",
+      "error": "No se pudo guardar ahora. Inténtalo de nuevo en un momento."
     }
   }
 }

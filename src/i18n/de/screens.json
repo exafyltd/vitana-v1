@@ -6752,7 +6752,8 @@
       "noCompleted": "Noch keine erledigten Erinnerungen.",
       "noMissed": "Keine verpassten Erinnerungen — du bist auf dem Laufenden.",
       "creating": "Wird erstellt…",
-      "createReminder": "Erinnerung erstellen"
+      "createReminder": "Erinnerung erstellen",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Keine Ereignisse in deinem Inventar",

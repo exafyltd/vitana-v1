@@ -6868,7 +6868,8 @@
       "noCompleted": "Пока нет выполненных напоминаний.",
       "noMissed": "Нет пропущенных напоминаний — ты все успел(а).",
       "creating": "Создание…",
-      "createReminder": "Создать напоминание"
+      "createReminder": "Создать напоминание",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "В твоем инвентаре нет событий",

@@ -6816,7 +6816,8 @@
       "noCompleted": "Nenhum lembrete concluído ainda.",
       "noMissed": "Nenhum lembrete perdido — você está com tudo em dia.",
       "creating": "A criar…",
-      "createReminder": "Criar lembrete"
+      "createReminder": "Criar lembrete",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no seu inventário",

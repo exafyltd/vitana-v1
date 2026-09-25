@@ -14,6 +14,7 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router-dom";
 import type { ReactNode } from "react";
 import { assertBerlin, expectGolden } from "./golden";
 import { outline } from "./outline";
@@ -37,6 +38,14 @@ vi.mock("@/components/AppLayout", () => ({ default: ({ children }: { children: R
 vi.mock("@/hooks/useRole", () => ({ useRole: () => ({ currentRole: h.role }) }));
 vi.mock("@/lib/orbActivate", () => ({ activateOrb: h.activateOrb }));
 vi.mock("@/components/calendar/vcal/SubscribeSheet", () => ({ SubscribeSheet: () => <div data-testid="subscribe-sheet" /> }));
+// VTID-04536: the folding sections have their own suite (vcal/sections.test.tsx);
+// here they are stand-ins so this golden pins the screen around them.
+vi.mock("@/components/calendar/vcal/sections", () => ({
+  JourneySection: () => <div data-testid="journey-section" />,
+  RemindersSection: () => <div data-testid="reminders-section" />,
+  CalendarsSection: () => <div data-testid="calendars-section" />,
+  useCalendarApps: () => ({ apps: [], loading: false, connected: true }),
+}));
 vi.mock("@/lib/i18n-toast", async () => {
   const real = await vi.importActual<typeof import("@/lib/i18n-toast")>("@/lib/i18n-toast");
   return { ...real, notify: h.notify, notifyError: h.notifyError };
@@ -102,7 +111,9 @@ function page() {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
   return render(
     <QueryClientProvider client={qc}>
-      <CalendarPage />
+      <MemoryRouter initialEntries={["/calendar"]}>
+        <CalendarPage />
+      </MemoryRouter>
     </QueryClientProvider>,
   );
 }

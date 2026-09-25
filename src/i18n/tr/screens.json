@@ -6865,7 +6865,8 @@
       "noCompleted": "Henüz tamamlanan hatırlatıcı yok.",
       "noMissed": "Kaçırılan hatırlatıcı yok — hepsi tamam.",
       "creating": "Oluşturuluyor…",
-      "createReminder": "Hatırlatıcı oluştur"
+      "createReminder": "Hatırlatıcı oluştur",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Envanterinde etkinlik yok",

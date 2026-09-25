@@ -152,6 +152,66 @@
       "title": "Tihi sati",
       "body": "U tvojim tihim satima podsetnici ne stižu – stižu malo pre toga.",
       "link": "Podesi tihe sate"
+    },
+    "guide": {
+      "eyebrow": "Vitana predlaže",
+      "allDone": "Sve je gotovo: {count} od {count}. Uživaj u večeri ili pogledaj šta donosi nedelja.",
+      "nextStep": "Tvoj sledeći korak: {title}",
+      "stepsOpenOne": "1 otvoren korak · oko 5 minuta",
+      "stepsOpen": "Otvorenih koraka: {count} · oko 5 minuta svaki",
+      "freeDay": "Danas ništa nije planirano. Dobar dan za nešto što ti prija.",
+      "freeWindow": "Slobodan si od {from} do {to}. Šetnja, susret ili pauza?",
+      "connect": "Poveži svoj kalendar da bi Vitana videla ceo tvoj dan i planirala oko njega.",
+      "busy": "Pun dan: pred tobom je još {count} stvari. Isplaniraj kratke pauze između njih.",
+      "start": "Počni",
+      "findEvent": "Pronađi događaj",
+      "planWithVitana": "Planiraj sa Vitanom",
+      "seeWeek": "Pogledaj nedelju",
+      "connectAction": "Poveži kalendar"
+    },
+    "journey": {
+      "title": "Tvoje putovanje",
+      "open": "Otvorenih koraka: {count}",
+      "openOne": "1 otvoren korak",
+      "day": "Dan {day}",
+      "dayOf": "Dan {day} od {total}",
+      "noneOpen": "Svi koraci su gotovi, bravo! Novi stižu kako budeš napredovao.",
+      "today": "Danas {time}",
+      "more": "+još {count}",
+      "openJourney": "Otvori moje putovanje"
+    },
+    "remindersSection": {
+      "title": "Podsetnici",
+      "none": "Nema zakazanih",
+      "upcoming": "Predstojećih: {count}",
+      "upcomingOne": "1 predstojeći",
+      "next": "sledeći {when}"
+    },
+    "calendars": {
+      "title": "Kalendari",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "Poveži svoj kalendar",
+      "connectBody": "Vidi ceo dan na jednom mestu. Vitana planira oko tvojih termina.",
+      "comingSoon": "Prijava preko Google-a, Apple-a i Outlook-a se upravo podešava.",
+      "connectedOne": "{name} povezan",
+      "connectedMany": "Povezano: {names}",
+      "needsReconnect": "{name} treba ponovo povezati",
+      "connected": "Povezano",
+      "notConnected": "Nije povezano",
+      "reconnectHint": "Veza je istekla",
+      "connect": "Poveži",
+      "reconnect": "Ponovo poveži",
+      "manage": "Upravljaj u povezanim aplikacijama",
+      "showInAppHint": "Vidi Vitanaland unose u svojoj aplikaciji za kalendar"
+    },
+    "add": {
+      "title": "Novi unos",
+      "created": "Dodato ✨",
+      "error": "Trenutno nije moglo da se sačuva. Pokušaj ponovo za trenutak."
     }
   }
 }

@@ -172,4 +172,37 @@ describe("mailhub strings", () => {
     const used = Array.from(src.matchAll(/"(mailhub\.[a-zA-Z.]+)"/g)).map((m) => m[1]);
     for (const k of used) expect(Object.keys(de).some((d) => d === k || d.startsWith(`${k}.`))).toBe(true);
   });
+
+  describe("arriving from the calendar with ?connect= (VTID-04536)", () => {
+    it("offers one tap that starts the OAuth flow for the chosen app", async () => {
+      window.history.replaceState({}, "", "/connectors?tab=productivity&connect=google-calendar");
+      client.connectApp.mockResolvedValue({ status: "consent_required", auth_url: "https://accounts.google.com/o" });
+      renderPanel(IDS.map((id) => app(id)));
+      fireEvent.click(await screen.findByTestId("mailhub-requested-connect"));
+      await waitFor(() => expect(redirect).toHaveBeenCalledWith("https://accounts.google.com/o"));
+      expect(client.connectApp).toHaveBeenCalledWith("google-calendar", expect.objectContaining({ return: "web" }));
+    });
+
+    it("opens the Apple password dialog for Apple Calendar", async () => {
+      window.history.replaceState({}, "", "/connectors?tab=productivity&connect=apple-calendar");
+      renderPanel(IDS.map((id) => app(id)));
+      fireEvent.click(await screen.findByTestId("mailhub-requested-connect"));
+      expect(await screen.findByTestId("mailhub-apple-dialog")).toBeInTheDocument();
+    });
+
+    it("says the app is not available yet instead of offering a dead button", async () => {
+      window.history.replaceState({}, "", "/connectors?tab=productivity&connect=outlook-calendar");
+      renderPanel(IDS.map((id) => app(id, { availability: "not_configured" })));
+      const box = await screen.findByTestId("mailhub-requested");
+      expect(box.textContent).toContain("mailhub.requested.unavailable");
+      expect(screen.queryByTestId("mailhub-requested-connect")).toBeNull();
+    });
+
+    it("shows nothing once the app is already on", async () => {
+      window.history.replaceState({}, "", "/connectors?tab=productivity&connect=google-calendar");
+      renderPanel(IDS.map((id) => app(id, id === "google-calendar" ? { status: "on" } : {})));
+      await waitFor(() => expect(toggle("google-calendar")).toHaveAttribute("aria-checked", "true"));
+      expect(screen.queryByTestId("mailhub-requested")).toBeNull();
+    });
+  });
 });

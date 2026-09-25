@@ -147,6 +147,66 @@
       "title": "Quiet hours",
       "body": "No reminders arrive during your quiet hours – they come just before.",
       "link": "Set quiet hours"
+    },
+    "guide": {
+      "eyebrow": "Vitana suggests",
+      "allDone": "All done – {count} of {count}. Enjoy your evening or see what the week brings.",
+      "nextStep": "Your next step: {title}",
+      "stepsOpenOne": "1 step open · about 5 minutes",
+      "stepsOpen": "{count} steps open · about 5 minutes each",
+      "freeDay": "Nothing planned today. A good day for something that does you good.",
+      "freeWindow": "You're free from {from} to {to}. Time for a walk, a meetup or a break?",
+      "connect": "Connect your calendar so Vitana sees your whole day and plans around it.",
+      "busy": "Full day: {count} things still ahead. Plan short breaks in between.",
+      "start": "Start",
+      "findEvent": "Find an event",
+      "planWithVitana": "Plan with Vitana",
+      "seeWeek": "See the week",
+      "connectAction": "Connect calendar"
+    },
+    "journey": {
+      "title": "Your journey",
+      "open": "{count} steps open",
+      "openOne": "1 step open",
+      "day": "Day {day}",
+      "dayOf": "Day {day} of {total}",
+      "noneOpen": "Every step done – great! New ones appear as you go.",
+      "today": "Today {time}",
+      "more": "+{count} more",
+      "openJourney": "Open my journey"
+    },
+    "remindersSection": {
+      "title": "Reminders",
+      "none": "None scheduled",
+      "upcoming": "{count} upcoming",
+      "upcomingOne": "1 upcoming",
+      "next": "next {when}"
+    },
+    "calendars": {
+      "title": "Calendars",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "Connect your calendar",
+      "connectBody": "See your whole day in one place. Vitana plans around your appointments.",
+      "comingSoon": "Sign-in with Google, Apple and Outlook is being set up.",
+      "connectedOne": "{name} connected",
+      "connectedMany": "{names} connected",
+      "needsReconnect": "{name} needs reconnecting",
+      "connected": "Connected",
+      "notConnected": "Not connected",
+      "reconnectHint": "Connection expired",
+      "connect": "Connect",
+      "reconnect": "Reconnect",
+      "manage": "Manage in Connected Apps",
+      "showInAppHint": "See Vitanaland entries in your calendar app"
+    },
+    "add": {
+      "title": "New entry",
+      "created": "Added ✨",
+      "error": "That couldn't be saved just now. Try again in a moment."
     }
   }
 }
