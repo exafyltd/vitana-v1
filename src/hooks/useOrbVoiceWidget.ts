@@ -25,6 +25,28 @@ function isOrbAlive(): boolean {
 // VITE_GATEWAY_URL already includes "/api/v1" — see useAIAssistants.ts for the pattern.
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/+$/, "");
 
+// VTID-04548: fallback delay for a role switch that doesn't change the route.
+// Long enough for set_role_preference to commit, so the gateway reads the new role.
+export const ROLE_PREWARM_FALLBACK_MS = 1500;
+
+/**
+ * VTID-04548: ask the widget to re-warm the gateway's context cache for the
+ * route (and therefore role/surface) the next voice session will use. A no-op
+ * when the widget is not loaded or predates `prewarm` — never throws.
+ */
+type OrbPrewarmApi = { prewarm?: (opts: { current_route: string; is_mobile: boolean }) => void };
+
+export function requestRolePrewarm(currentRoute: string, isMobile: boolean): void {
+  try {
+    const orb = (window as Window & { VitanaOrb?: OrbPrewarmApi }).VitanaOrb;
+    if (orb && typeof orb.prewarm === "function") {
+      orb.prewarm({ current_route: currentRoute, is_mobile: isMobile });
+    }
+  } catch {
+    /* best-effort cache warm — never surfaces */
+  }
+}
+
 // BOOTSTRAP-ORB-STAGING-GATEWAY: the external VitanaOrb widget script is loaded
 // from a hardcoded prod URL in index.html, so it auto-detects its gateway as
 // PROD (gateway.vitanaland.com) from its own script src. Without an explicit
@@ -142,6 +164,9 @@ export function useOrbVoiceWidget() {
   // actually on.
   const currentRouteRef = useRef(location.pathname);
   currentRouteRef.current = location.pathname;
+  // VTID-04548: set by a `role.changed` event, consumed by the next route change.
+  const pendingRolePrewarmRef = useRef(false);
+  const rolePrewarmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Plain route-path ring buffer (back-compat with navigator-consult).
   const routeHistoryRef = useRef<string[]>([location.pathname]);
   // VTID-NAV-TIMEJOURNEY: Parallel ring buffer with entry timestamps for
@@ -493,7 +518,46 @@ export function useOrbVoiceWidget() {
         is_mobile: isMobile,
       });
     }
+
+    // VTID-04548: a role switch lands here via navigate(destination) once the
+    // set_role_preference RPC has committed, so this is the first moment the
+    // gateway can resolve the NEW role. Re-warm the context cache for it.
+    if (pendingRolePrewarmRef.current) {
+      pendingRolePrewarmRef.current = false;
+      if (rolePrewarmTimerRef.current) {
+        clearTimeout(rolePrewarmTimerRef.current);
+        rolePrewarmTimerRef.current = null;
+      }
+      requestRolePrewarm(path, isMobile);
+    }
   }, [location.pathname, isMobile]);
+
+  // VTID-04548: warm the orb's context cache for the role the NEXT voice
+  // session will actually use. `role.changed` fires optimistically BEFORE the
+  // role RPC commits, so the prewarm is deferred to the route change the
+  // switch navigates to (effect above). A switch that stays on the same route
+  // never changes location, so a timer covers that case. Purely a cache warm:
+  // it opens no session and changes nothing the member sees or hears.
+  useEffect(() => {
+    const onRoleChanged = () => {
+      pendingRolePrewarmRef.current = true;
+      if (rolePrewarmTimerRef.current) clearTimeout(rolePrewarmTimerRef.current);
+      rolePrewarmTimerRef.current = setTimeout(() => {
+        rolePrewarmTimerRef.current = null;
+        if (!pendingRolePrewarmRef.current) return;
+        pendingRolePrewarmRef.current = false;
+        requestRolePrewarm(currentRouteRef.current, isMobileRef.current);
+      }, ROLE_PREWARM_FALLBACK_MS);
+    };
+    window.addEventListener("role.changed", onRoleChanged);
+    return () => {
+      window.removeEventListener("role.changed", onRoleChanged);
+      if (rolePrewarmTimerRef.current) {
+        clearTimeout(rolePrewarmTimerRef.current);
+        rolePrewarmTimerRef.current = null;
+      }
+    };
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {
