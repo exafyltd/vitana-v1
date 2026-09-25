@@ -212,6 +212,30 @@
       "title": "Novi unos",
       "created": "Dodato ✨",
       "error": "Trenutno nije moglo da se sačuva. Pokušaj ponovo za trenutak."
+    },
+    "form": {
+      "title": "Naslov",
+      "titlePlaceholder": "Šta je u pitanju?",
+      "date": "Datum",
+      "today": "Danas",
+      "tomorrow": "Sutra",
+      "pickDate": "Izaberi datum",
+      "start": "Početak",
+      "end": "Kraj",
+      "location": "Mesto",
+      "optional": "opciono",
+      "locationPlaceholder": "Gde?",
+      "category": "Kategorija",
+      "cancel": "Otkaži",
+      "create": "Dodaj u kalendar",
+      "types": {
+        "personal": "Lično",
+        "professional": "Posao",
+        "health": "Zdravlje",
+        "workout": "Trening",
+        "community": "Zajednica",
+        "nutrition": "Ishrana"
+      }
     }
   }
 }

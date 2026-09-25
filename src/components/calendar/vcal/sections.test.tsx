@@ -174,8 +174,8 @@ describe("JourneySection", () => {
 
 describe("AddEntrySheet (+)", () => {
   function fill() {
-    fireEvent.change(screen.getByPlaceholderText(/What is it|Was ist es/), { target: { value: "Zumba" } });
-    fireEvent.click(screen.getByRole("button", { name: /Create Event|Termin erstellen|Erstellen/ }));
+    fireEvent.change(screen.getByPlaceholderText("vcal.form.titlePlaceholder"), { target: { value: "Zumba" } });
+    fireEvent.click(screen.getByRole("button", { name: "vcal.form.create" }));
   }
 
   it("saves through the gateway for the active role and closes", async () => {

@@ -209,6 +209,30 @@
       "title": "إدخال جديد",
       "created": "تمت الإضافة ✨",
       "error": "تعذّر الحفظ الآن. حاول مرة أخرى بعد قليل."
+    },
+    "form": {
+      "title": "العنوان",
+      "titlePlaceholder": "ما هو؟",
+      "date": "التاريخ",
+      "today": "اليوم",
+      "tomorrow": "غدًا",
+      "pickDate": "اختر تاريخًا",
+      "start": "البداية",
+      "end": "النهاية",
+      "location": "المكان",
+      "optional": "اختياري",
+      "locationPlaceholder": "أين؟",
+      "category": "الفئة",
+      "cancel": "إلغاء",
+      "create": "أضف إلى التقويم",
+      "types": {
+        "personal": "شخصي",
+        "professional": "عمل",
+        "health": "صحة",
+        "workout": "تمرين",
+        "community": "مجتمع",
+        "nutrition": "تغذية"
+      }
     }
   }
 }

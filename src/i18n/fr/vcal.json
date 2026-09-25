@@ -211,6 +211,30 @@
       "title": "Nouvelle entrée",
       "created": "Ajouté ✨",
       "error": "Impossible d'enregistrer pour le moment. Réessaie dans un instant."
+    },
+    "form": {
+      "title": "Titre",
+      "titlePlaceholder": "C'est quoi ?",
+      "date": "Date",
+      "today": "Aujourd'hui",
+      "tomorrow": "Demain",
+      "pickDate": "Choisir une date",
+      "start": "Début",
+      "end": "Fin",
+      "location": "Lieu",
+      "optional": "facultatif",
+      "locationPlaceholder": "Où ?",
+      "category": "Catégorie",
+      "cancel": "Annuler",
+      "create": "Ajouter au calendrier",
+      "types": {
+        "personal": "Personnel",
+        "professional": "Travail",
+        "health": "Santé",
+        "workout": "Sport",
+        "community": "Communauté",
+        "nutrition": "Nutrition"
+      }
     }
   }
 }

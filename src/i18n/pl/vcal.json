@@ -209,6 +209,30 @@
       "title": "Nowy wpis",
       "created": "Dodano ✨",
       "error": "Nie udało się teraz zapisać. Spróbuj ponownie za chwilę."
+    },
+    "form": {
+      "title": "Tytuł",
+      "titlePlaceholder": "Co to jest?",
+      "date": "Data",
+      "today": "Dziś",
+      "tomorrow": "Jutro",
+      "pickDate": "Wybierz datę",
+      "start": "Początek",
+      "end": "Koniec",
+      "location": "Miejsce",
+      "optional": "opcjonalnie",
+      "locationPlaceholder": "Gdzie?",
+      "category": "Kategoria",
+      "cancel": "Anuluj",
+      "create": "Dodaj do kalendarza",
+      "types": {
+        "personal": "Osobiste",
+        "professional": "Praca",
+        "health": "Zdrowie",
+        "workout": "Trening",
+        "community": "Społeczność",
+        "nutrition": "Odżywianie"
+      }
     }
   }
 }

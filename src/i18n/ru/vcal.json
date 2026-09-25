@@ -209,6 +209,30 @@
       "title": "Новая запись",
       "created": "Добавлено ✨",
       "error": "Сейчас не удалось сохранить. Попробуй ещё раз чуть позже."
+    },
+    "form": {
+      "title": "Название",
+      "titlePlaceholder": "Что это?",
+      "date": "Дата",
+      "today": "Сегодня",
+      "tomorrow": "Завтра",
+      "pickDate": "Выбрать дату",
+      "start": "Начало",
+      "end": "Конец",
+      "location": "Место",
+      "optional": "необязательно",
+      "locationPlaceholder": "Где?",
+      "category": "Категория",
+      "cancel": "Отмена",
+      "create": "Добавить в календарь",
+      "types": {
+        "personal": "Личное",
+        "professional": "Работа",
+        "health": "Здоровье",
+        "workout": "Тренировка",
+        "community": "Сообщество",
+        "nutrition": "Питание"
+      }
     }
   }
 }

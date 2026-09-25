@@ -209,6 +209,30 @@
       "title": "Yeni kayıt",
       "created": "Eklendi ✨",
       "error": "Şu anda kaydedilemedi. Biraz sonra tekrar dene."
+    },
+    "form": {
+      "title": "Başlık",
+      "titlePlaceholder": "Ne var?",
+      "date": "Tarih",
+      "today": "Bugün",
+      "tomorrow": "Yarın",
+      "pickDate": "Tarih seç",
+      "start": "Başlangıç",
+      "end": "Bitiş",
+      "location": "Yer",
+      "optional": "isteğe bağlı",
+      "locationPlaceholder": "Nerede?",
+      "category": "Kategori",
+      "cancel": "İptal",
+      "create": "Takvime ekle",
+      "types": {
+        "personal": "Kişisel",
+        "professional": "İş",
+        "health": "Sağlık",
+        "workout": "Antrenman",
+        "community": "Topluluk",
+        "nutrition": "Beslenme"
+      }
     }
   }
 }
