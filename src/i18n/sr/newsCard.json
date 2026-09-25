@@ -38,7 +38,15 @@
       "mental": "Mentalno",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "Dobro došao/la, {name}!",
+      "joinedSummary": "{name} se upravo pridružio/la MAXINA zajednici za dugovečnost.",
+      "newMember": "Novi član",
+      "sayHello": "Pozdravi",
+      "viewProfile": "Pogledaj profil",
+      "eyebrow": "Novo u zajednici"
+    }
   },
   "_pending_review": {}
 }

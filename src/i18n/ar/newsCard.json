@@ -38,7 +38,15 @@
       "mental": "نفسي",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "أهلاً بك يا {name}!",
+      "joinedSummary": "انضم {name} للتو إلى مجتمع MAXINA لطول العمر.",
+      "newMember": "عضو جديد",
+      "sayHello": "قل مرحباً",
+      "viewProfile": "عرض الملف الشخصي",
+      "eyebrow": "جديد في المجتمع"
+    }
   },
   "_pending_review": {}
 }

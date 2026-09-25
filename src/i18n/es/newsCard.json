@@ -38,7 +38,15 @@
       "mental": "Mental",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "¡Bienvenido/a, {name}!",
+      "joinedSummary": "{name} acaba de unirse a la comunidad de longevidad MAXINA.",
+      "newMember": "Nuevo miembro",
+      "sayHello": "Saludar",
+      "viewProfile": "Ver perfil",
+      "eyebrow": "Nuevo en la comunidad"
+    }
   },
   "_pending_review": {}
 }

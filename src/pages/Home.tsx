@@ -48,6 +48,7 @@ import {
 import { isFeedV2Enabled } from "@/lib/feature-flags";
 import { useAllNewsFeed } from "@/hooks/useAllNewsFeed";
 import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
+import { NewMemberCard } from "@/components/home/NewMemberCard";
 import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
@@ -451,6 +452,19 @@ export default function Home() {
       {visibleArticles.length > 0 && (
         <div className="md:hidden flex flex-col gap-3 mt-2">
           {visibleArticles.map((article) => {
+            if (article.member_user_id) {
+              return (
+                <NewMemberCard
+                  key={article.id}
+                  userId={article.member_user_id}
+                  title={article.title}
+                  summary={article.summary}
+                  avatarUrl={article.image_url}
+                  displayInitial={(article.member_display_name || "?").charAt(0).toUpperCase()}
+                  timestamp={formatTimestamp(article.published_at)}
+                />
+              );
+            }
             const { primary, fallback } = getCardImages(article);
             return (
               <NewsArticleCard
@@ -474,6 +488,19 @@ export default function Home() {
       {visibleArticles.length > 0 && (
         <div className="hidden md:grid md:grid-cols-3 gap-5 mt-5">
           {visibleArticles.map((article) => {
+            if (article.member_user_id) {
+              return (
+                <NewMemberCard
+                  key={article.id}
+                  userId={article.member_user_id}
+                  title={article.title}
+                  summary={article.summary}
+                  avatarUrl={article.image_url}
+                  displayInitial={(article.member_display_name || "?").charAt(0).toUpperCase()}
+                  timestamp={formatTimestamp(article.published_at)}
+                />
+              );
+            }
             const { primary, fallback } = getCardImages(article);
             return (
               <NewsArticleCard

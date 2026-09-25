@@ -38,7 +38,15 @@
       "mental": "Psychika",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "Witaj, {name}!",
+      "joinedSummary": "{name} właśnie dołączył(a) do społeczności długowieczności MAXINA.",
+      "newMember": "Nowy członek",
+      "sayHello": "Przywitaj się",
+      "viewProfile": "Zobacz profil",
+      "eyebrow": "Nowość w społeczności"
+    }
   },
   "_pending_review": {}
 }
