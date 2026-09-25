@@ -386,7 +386,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `newsCard` — used: 3, total in shard: 29
+- `newsCard` — used: 3, total in shard: 35
 
 ### src/pages/NotAuthorized.tsx
 

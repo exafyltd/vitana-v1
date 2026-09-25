@@ -38,7 +38,15 @@
       "mental": "心理",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "欢迎 {name}！",
+      "joinedSummary": "{name} 刚刚加入了 MAXINA 长寿社区。",
+      "newMember": "新成员",
+      "sayHello": "打个招呼",
+      "viewProfile": "查看资料",
+      "eyebrow": "社区新成员"
+    }
   },
   "_pending_review": {}
 }

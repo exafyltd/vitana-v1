@@ -27,6 +27,10 @@ export interface NewsArticle {
   published_at: string;
   tags: string[];
   category: string;
+  /** Set on new-member cards: the member the card asks the viewer to greet. */
+  member_user_id?: string | null;
+  /** New-member cards: the member's display name (for the avatar initial). */
+  member_display_name?: string | null;
 }
 
 interface LongevityNewsResponse {
@@ -190,7 +194,8 @@ export async function fetchCommunityNews(
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const { data: members, error: membersError } = await supabase
         .from("global_community_profiles")
-        .select("id, display_name, avatar_url, bio, created_at")
+        .select("id, user_id, display_name, avatar_url, bio, created_at")
+        .eq("is_visible", true)
         .gte("created_at", weekAgo)
         .order("created_at", { ascending: false })
         .limit(5);
@@ -201,13 +206,19 @@ export async function fetchCommunityNews(
 
       if (members) {
         for (const member of members) {
+          // The card invites the viewer to greet the new member, so it must
+          // carry who that member is. Without user_id the detail page had no
+          // profile link and no way to message them (VTID-04574).
+          const name = member.display_name || t("newsCard.member.newMember");
           articles.push({
             id: `member-${member.id}`,
             source: "community",
             source_name: "MAXINA Community",
-            title: `Welcome ${member.display_name || "New Member"}!`,
-            link: null,
-            summary: member.bio || `${member.display_name || "A new member"} just joined the MAXINA longevity community.`,
+            title: t("newsCard.member.welcomeTitle", { name }),
+            link: member.user_id ? `/u/${member.user_id}` : null,
+            member_user_id: member.user_id || null,
+            member_display_name: member.display_name || null,
+            summary: member.bio || t("newsCard.member.joinedSummary", { name }),
             image_url: member.avatar_url || null,
             published_at: member.created_at,
             tags: ["member_spotlight"],
