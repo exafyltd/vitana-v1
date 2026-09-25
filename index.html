@@ -61,7 +61,7 @@
          or the browser fetches the file TWICE and the preload is worse than
          nothing. The widget is cross-origin by design (it is served by the
          gateway, and auto-detects its gateway from its own script src). -->
-    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04535-nav-speak-first">
+    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04558-nav-cancel">
 
     <!-- ORB Voice Widget -->
     <!-- BOOTSTRAP-ORB-STAGING-GATEWAY: load the widget from THIS environment's
@@ -75,7 +75,7 @@
          The widget lives in the gateway repo
          (services/gateway/src/frontend/command-hub/orb-widget.js); the ?v= bump
          forces browsers to refetch instead of serving the cached prod widget. -->
-    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04535-nav-speak-first" defer></script>
+    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260925-vtid-04558-nav-cancel" defer></script>
   </head>
 
   <body>

@@ -1029,7 +1029,7 @@
     "phrasings": [
       "echa un vistazo rápido a mi cartera",
       "abre el resumen de mi wallet",
-      "¿cuánto tengo en mi cartera?"
+      "vistazo rápido al saldo de mi cartera"
     ]
   },
   "PROFILE.ME": {
@@ -1366,7 +1366,8 @@
     "phrasings": [
       "abre mi cartera de Maxina",
       "quiero ver mi wallet",
-      "¿dónde están mi saldo y recompensas?"
+      "¿dónde están mi saldo y recompensas?",
+      "abre mi billetera"
     ]
   },
   "WALLET.REWARDS": {

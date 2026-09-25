@@ -1,7 +1,7 @@
 /** VTID-04520 — the overlay bus acknowledges, and hands early requests to late listeners. */
 import { renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { __clearPendingOverlays, openOverlay, takePendingOverlay, useWindowOverlay } from './overlay-bus';
+import { __clearPendingOverlays, openOverlay, takePendingOverlay, useWindowOverlay, whenOverlayTaken } from './overlay-bus';
 
 afterEach(() => __clearPendingOverlays());
 
@@ -40,5 +40,19 @@ describe('overlay bus', () => {
     expect(openOverlay('plain:open')).toBe('queued');
     expect(plain).toHaveBeenCalled();
     window.removeEventListener('plain:open', plain);
+  });
+  it('tells a waiting caller when the page that mounts later takes the request (VTID-04559)', async () => {
+    expect(openOverlay('mount:open', { section: 'privacy' })).toBe('queued');
+    const taken = whenOverlayTaken('mount:open', 1000);
+    const handler = vi.fn();
+    renderHook(() => useWindowOverlay('mount:open', handler));
+    await expect(taken).resolves.toBe(true);
+    expect(handler).toHaveBeenCalledWith({ section: 'privacy' });
+  });
+
+  it('gives up when nothing takes the request in time', async () => {
+    openOverlay('never:open', {});
+    await expect(whenOverlayTaken('never:open', 20)).resolves.toBe(false);
+    await expect(whenOverlayTaken('nothing-queued:open', 20)).resolves.toBe(false);
   });
 });
