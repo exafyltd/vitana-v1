@@ -7,6 +7,8 @@ import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useSidebarSafe } from "@/components/ui/sidebar";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useWindowOverlay } from '@/navigation/overlay-bus';
+import { useNavigate } from "react-router-dom";
+import { CALENDAR_ROUTE, opensRemindersPopup, type CalendarOpenTab } from "@/components/calendar/calendar-entry";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -28,11 +30,18 @@ export function UniversalCalendarButton({
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [requestedMobileTab, setRequestedMobileTab] = useState<'agenda' | 'month' | 'reminders' | undefined>(undefined);
 
-  // Listen for global calendar:open events (dispatched by ORB voice navigation
-  // and by the reminder push deep-link, which requests the 'reminders' tab).
-  useWindowOverlay<{ tab?: 'agenda' | 'month' | 'reminders' }>('calendar:open', (detail) => {
-    setRequestedMobileTab(detail?.tab);
-    setCalendarOpen(true);
+  const navigate = useNavigate();
+
+  // Global calendar:open events (ORB voice navigation, deep links) go to the
+  // calendar screen; only the reminder push deep link, which asks for the
+  // 'reminders' tab, still opens the popup (VTID-04528).
+  useWindowOverlay<{ tab?: CalendarOpenTab }>('calendar:open', (detail) => {
+    if (opensRemindersPopup(detail?.tab)) {
+      setRequestedMobileTab(detail?.tab);
+      setCalendarOpen(true);
+      return;
+    }
+    navigate(CALENDAR_ROUTE);
   });
 
   const calendarHook = useCalendarEvents();
@@ -56,7 +65,7 @@ export function UniversalCalendarButton({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCalendarOpen(true)}
+          onClick={() => navigate(CALENDAR_ROUTE)}
           aria-label={translate('actionBar.calendar', 'Calendar')}
           className={`h-9 px-2.5 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1 ${className}`}
         >

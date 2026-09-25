@@ -22,6 +22,9 @@ on:
     paths:
       - 'src/components/calendar/**'
       - 'src/pages/Calendar.tsx'
+      - 'src/components/UniversalCalendarButton.tsx'
+      - 'src/components/mobile/MobileAppShell.tsx'
+      - 'src/components/mobile/SideDrawerNav.tsx'
       - 'src/lib/*alendar*'
       - 'src/lib/locale-format.ts'
       - 'src/lib/i18n-toast.ts'
@@ -41,6 +44,9 @@ on:
     paths:
       - 'src/components/calendar/**'
       - 'src/pages/Calendar.tsx'
+      - 'src/components/UniversalCalendarButton.tsx'
+      - 'src/components/mobile/MobileAppShell.tsx'
+      - 'src/components/mobile/SideDrawerNav.tsx'
       - 'src/lib/*alendar*'
       - 'src/lib/locale-format.ts'
       - 'src/lib/i18n-toast.ts'
