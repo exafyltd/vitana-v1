@@ -12,6 +12,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n-toast";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import { fetchGreetedMemberIds } from "@/lib/new-member-greeted";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -205,7 +206,13 @@ export async function fetchCommunityNews(
       }
 
       if (members) {
+        // Hide members this viewer has already greeted (VTID-04590).
+        const greeted = await fetchGreetedMemberIds(
+          viewerId ?? null,
+          members.map((m) => m.user_id).filter(Boolean) as string[],
+        );
         for (const member of members) {
+          if (member.user_id && greeted.has(member.user_id)) continue;
           // The card invites the viewer to greet the new member, so it must
           // carry who that member is. Without user_id the detail page had no
           // profile link and no way to message them (VTID-04574).

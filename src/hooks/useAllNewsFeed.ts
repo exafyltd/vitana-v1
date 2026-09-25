@@ -36,6 +36,7 @@ import {
   type NewMemberFeedItem,
 } from "@/lib/news-feed-ranker";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import { fetchGreetedMemberIds } from "@/lib/new-member-greeted";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -246,8 +247,14 @@ export async function fetchNewsFeedCandidates(
   }
   const newMembers: NewMemberFeedItem[] = [];
   if (newMembersRes.status === "fulfilled") {
-    for (const m of newMembersRes.value.data || []) {
-      if (!m.user_id || m.user_id === userId || suppressedAuthorIds.has(m.user_id)) continue;
+    const memberRows = newMembersRes.value.data || [];
+    // Hide members this viewer has already greeted (VTID-04590).
+    const greeted = await fetchGreetedMemberIds(
+      userId,
+      memberRows.map((m) => m.user_id).filter((id): id is string => !!id && id !== userId),
+    );
+    for (const m of memberRows) {
+      if (!m.user_id || m.user_id === userId || suppressedAuthorIds.has(m.user_id) || greeted.has(m.user_id)) continue;
       newMembers.push({
         id: `new-member-${m.user_id}`,
         kind: "new_member",
