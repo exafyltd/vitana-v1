@@ -207,6 +207,30 @@
       "title": "New entry",
       "created": "Added ✨",
       "error": "That couldn't be saved just now. Try again in a moment."
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "What is it?",
+      "date": "Date",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "pickDate": "Pick a date",
+      "start": "Start",
+      "end": "End",
+      "location": "Location",
+      "optional": "optional",
+      "locationPlaceholder": "Where?",
+      "category": "Category",
+      "cancel": "Cancel",
+      "create": "Add to calendar",
+      "types": {
+        "personal": "Personal",
+        "professional": "Work",
+        "health": "Health",
+        "workout": "Workout",
+        "community": "Community",
+        "nutrition": "Nutrition"
+      }
     }
   }
 }

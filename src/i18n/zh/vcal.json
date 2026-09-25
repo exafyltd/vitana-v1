@@ -209,6 +209,30 @@
       "title": "新条目",
       "created": "已添加 ✨",
       "error": "现在无法保存，请稍后再试。"
+    },
+    "form": {
+      "title": "标题",
+      "titlePlaceholder": "是什么？",
+      "date": "日期",
+      "today": "今天",
+      "tomorrow": "明天",
+      "pickDate": "选择日期",
+      "start": "开始",
+      "end": "结束",
+      "location": "地点",
+      "optional": "可选",
+      "locationPlaceholder": "在哪里？",
+      "category": "类别",
+      "cancel": "取消",
+      "create": "添加到日历",
+      "types": {
+        "personal": "个人",
+        "professional": "工作",
+        "health": "健康",
+        "workout": "锻炼",
+        "community": "社区",
+        "nutrition": "营养"
+      }
     }
   }
 }

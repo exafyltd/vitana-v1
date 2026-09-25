@@ -200,6 +200,30 @@
       "title": "Neuer Eintrag",
       "created": "Eingetragen ✨",
       "error": "Das konnte gerade nicht gespeichert werden. Versuch es gleich nochmal."
+    },
+    "form": {
+      "title": "Titel",
+      "titlePlaceholder": "Was steht an?",
+      "date": "Datum",
+      "today": "Heute",
+      "tomorrow": "Morgen",
+      "pickDate": "Datum wählen",
+      "start": "Beginn",
+      "end": "Ende",
+      "location": "Ort",
+      "optional": "optional",
+      "locationPlaceholder": "Wo?",
+      "category": "Kategorie",
+      "cancel": "Abbrechen",
+      "create": "Eintragen",
+      "types": {
+        "personal": "Persönlich",
+        "professional": "Arbeit",
+        "health": "Gesundheit",
+        "workout": "Training",
+        "community": "Community",
+        "nutrition": "Ernährung"
+      }
     }
   }
 }

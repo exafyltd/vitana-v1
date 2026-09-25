@@ -210,6 +210,30 @@
       "title": "Nueva entrada",
       "created": "Añadido ✨",
       "error": "No se pudo guardar ahora. Inténtalo de nuevo en un momento."
+    },
+    "form": {
+      "title": "Título",
+      "titlePlaceholder": "¿Qué es?",
+      "date": "Fecha",
+      "today": "Hoy",
+      "tomorrow": "Mañana",
+      "pickDate": "Elegir fecha",
+      "start": "Inicio",
+      "end": "Fin",
+      "location": "Lugar",
+      "optional": "opcional",
+      "locationPlaceholder": "¿Dónde?",
+      "category": "Categoría",
+      "cancel": "Cancelar",
+      "create": "Añadir al calendario",
+      "types": {
+        "personal": "Personal",
+        "professional": "Trabajo",
+        "health": "Salud",
+        "workout": "Entrenamiento",
+        "community": "Comunidad",
+        "nutrition": "Nutrición"
+      }
     }
   }
 }
