@@ -19,6 +19,8 @@ export interface NewMemberCardProps {
   avatarUrl?: string | null;
   displayInitial: string;
   timestamp?: string;
+  /** Analytics hook, fired on any tap before navigating. */
+  onOpen?: () => void;
 }
 
 export function NewMemberCard({
@@ -28,9 +30,13 @@ export function NewMemberCard({
   avatarUrl,
   displayInitial,
   timestamp,
+  onOpen,
 }: NewMemberCardProps) {
   const navigate = useNavigate();
-  const openProfile = () => navigate(`/u/${userId}`);
+  const openProfile = () => {
+    onOpen?.();
+    navigate(`/u/${userId}`);
+  };
 
   return (
     <Card
@@ -78,6 +84,7 @@ export function NewMemberCard({
             className="flex-1 gap-2"
             onClick={(e) => {
               e.stopPropagation();
+              onOpen?.();
               navigate(`/inbox/u/${userId}`);
             }}
           >
