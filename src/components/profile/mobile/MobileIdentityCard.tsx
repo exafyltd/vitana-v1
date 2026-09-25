@@ -51,8 +51,10 @@ const FOLD_GAP_PX = 8;
  */
 const ACTION_BUTTON_STYLE: CSSProperties = {
   height: lerpPx(44, 52, "--hx"),
-  fontSize: lerpPx(14, 16, "--hx"),
+  fontSize: lerpPx(14, 15, "--hx"),
 };
+/** Never wider than ~23% of the screen, so a narrow phone keeps room for the name. */
+const AVATAR_SIZE = `min(${lerpPx(84, 92, "--hx")}, 23vw)`;
 const SCORE_BLOCK_STYLE: CSSProperties = {
   marginTop: lerpPx(2, 10, "--ix"),
 };
@@ -307,7 +309,7 @@ export function MobileIdentityCard({
           <div className="relative shrink-0">
             <Avatar
               className="border-[3px] border-white shadow-md"
-              style={{ width: lerpPx(84, 92, "--hx"), height: lerpPx(84, 92, "--hx") }}
+              style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
             >
               <AvatarImage
                 src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(handle ?? displayName ?? "vitana")}
