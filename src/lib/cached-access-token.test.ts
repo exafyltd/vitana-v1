@@ -63,6 +63,12 @@ describe("getAccessToken (VTID-04532)", () => {
     expect(await getAccessToken()).toBeNull();
   });
 
+  it("starts with the app, not with the first screen that needs it", async () => {
+    const { readFileSync } = await import("fs");
+    const { resolve } = await import("path");
+    expect(readFileSync(resolve(__dirname, "../main.tsx"), "utf8")).toContain("import './lib/cached-access-token'");
+  });
+
   it("the calendar client no longer calls getSession() directly", async () => {
     const { readFileSync } = await import("fs");
     const { resolve } = await import("path");
