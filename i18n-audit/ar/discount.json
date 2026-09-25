@@ -134,7 +134,12 @@
       "verdict": "OK",
       "confidence": 0.95,
       "phase": "llm"
+    },
+    "discount.checkFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:38:49.877Z"
+  "generatedAt": "2026-09-25T08:59:10.233Z"
 }
