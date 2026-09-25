@@ -11,7 +11,7 @@
     "src/components/calendar/vcal/EntryScreen.tsx": ["src/components/calendar/__regression__/calendar-screen.golden.test.tsx"],
     "src/components/calendar/vcal/SubscribeSheet.tsx": ["src/components/calendar/__regression__/calendar-sheets.golden.test.tsx"],
     "src/components/calendar/vcal/GoogleSyncCard.tsx": ["src/components/calendar/__regression__/calendar-sheets.golden.test.tsx"],
-    "src/lib/calendar-window-client.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts", "src/components/calendar/vcal/vcal.test.ts"],
+    "src/lib/calendar-window-client.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts", "src/components/calendar/vcal/vcal.test.ts", "src/lib/cached-access-token.test.ts"],
     "src/lib/parseCalendarNL.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
     "src/lib/calendarPendingQueue.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
     "src/components/calendar/calendarSmartUtils.ts": ["src/components/calendar/__regression__/calendar-logic.golden.test.ts"],
