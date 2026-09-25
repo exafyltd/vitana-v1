@@ -1,0 +1,325 @@
+{
+  "verdicts": {
+    "backoffice.back.tabs.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.overview.tabs.dashboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.overview.tabs.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.overview.tabs.activity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.overview.tabs.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.leads": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.contacts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.opportunities": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.followups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.quotations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.invoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.credit-notes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.sales.tabs.deliveries": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.marketing.tabs.campaigns": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.marketing.tabs.outreach": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.marketing.tabs.attribution": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.marketing.tabs.performance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.journals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.chart-of-accounts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.periods": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.tax": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.assets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.intercompany": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.accounting.tabs.budgets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.finance.tabs.payments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.finance.tabs.bank-reconciliation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.finance.tabs.cash": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.finance.tabs.subscriptions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.finance.tabs.sync": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.employees": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.leave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.attendance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.expenses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.payroll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.suppliers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.purchase-orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.receipts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.supplier-invoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.items": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.warehouses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.stock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.contracts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.obligations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.compliance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.e-signature": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.pnl": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.balance-sheet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.trial-balance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.cash-flow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.aging": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.dimensions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.reports.tabs.board-pack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.approvals.tabs.queue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.approvals.tabs.my-requests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.approvals.tabs.policies": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.audit.tabs.receipts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.audit.tabs.erp-log": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.audit.tabs.trail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.settings.tabs.company": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.settings.tabs.access": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.settings.tabs.numbering": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.settings.tabs.integrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.settings.tabs.modules": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-09-25T08:58:29.987Z"
+}
