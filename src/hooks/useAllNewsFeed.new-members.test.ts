@@ -11,6 +11,7 @@ function makeBuilder(result: { data: unknown; error: unknown }) {
     eq: vi.fn(() => builder),
     in: vi.fn(() => builder),
     gte: vi.fn(() => builder),
+    is: vi.fn(() => builder),
     order: vi.fn(() => builder),
     limit: vi.fn(() => Promise.resolve(result)),
     then: (resolve: any) => Promise.resolve(result).then(resolve),
@@ -47,6 +48,20 @@ describe('All feed — new members (VTID-04584)', () => {
     const result = await fetchNewsFeedCandidates('viewer-1', null);
     expect(result.newMembers).toHaveLength(1);
     expect(result.newMembers[0]).toMatchObject({ kind: 'new_member', user_id: 'amy', id: 'new-member-amy' });
+  });
+
+  it('hides members the viewer has already messaged (VTID-04590)', async () => {
+    resultsByTable.chat_messages = { data: [{ receiver_id: 'amy' }], error: null };
+    const result = await fetchNewsFeedCandidates('viewer-1', null);
+    expect(result.newMembers).toHaveLength(0);
+  });
+
+  it('keeps the card when the greeted-lookup fails (fail open)', async () => {
+    resultsByTable.chat_messages = { data: null, error: { message: 'boom' } };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await fetchNewsFeedCandidates('viewer-1', null);
+    expect(result.newMembers.map((m) => m.user_id)).toEqual(['amy']);
+    spy.mockRestore();
   });
 
   it('rankFeed keeps new_member items, placed by join time among posts', () => {
