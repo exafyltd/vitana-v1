@@ -133,7 +133,7 @@ export function useOrbVoiceWidget() {
   const currentRoleRef = useRef<string | null>(currentRole ?? null);
   currentRoleRef.current = currentRole ?? null;
   useEffect(() => {
-    const orb = (window as any).VitanaOrb;
+    const orb = (window as unknown as { VitanaOrb?: { setViewRole?: (role: string, surface: string) => void } }).VitanaOrb;
     if (!orb || typeof orb.setViewRole !== "function") return;
     const p = orbViewProfile(location.pathname, currentRole);
     orb.setViewRole(p.view_role, p.surface);
