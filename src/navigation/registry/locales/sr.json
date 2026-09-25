@@ -4,7 +4,10 @@
     "phrasings": [
       "otvori AI pratioca",
       "hoću da razgovaram sa Vitanom",
-      "gde je AI companion"
+      "gde je AI companion",
+      "pokaži mi pratilac ekran gde mogu da razgovaram sa Vitanom",
+      "gde nađem fokusirani prikaz za ćaskanje sa Vitanom",
+      "hoću da otvorim onaj ekran gde je samo Vitana i ja"
     ]
   },
   "AI.DAILY_SUMMARY": {
@@ -12,7 +15,10 @@
     "phrasings": [
       "pokaži mi dnevni rezime",
       "šta se danas desilo, daj mi summary",
-      "gde mogu da vidim dnevni pregled"
+      "gde mogu da vidim dnevni pregled",
+      "otvori mi dnevni pregled za danas",
+      "gde vidim šta mi se desilo danas po zdravlju i aktivnostima",
+      "hoću da pročitam kratki pregled svog dana"
     ]
   },
   "AI.INSIGHTS": {
@@ -20,7 +26,10 @@
     "phrasings": [
       "pokaži mi AI uvide",
       "koje obrasce si primetila kod mene",
-      "gde su moji personalizovani uvidi"
+      "gde su moji personalizovani uvidi",
+      "otvori ekran sa mojim uvidima",
+      "gde mogu da vidim šta si zaključila o mom zdravlju",
+      "hoću da vidim personalizovane analize na osnovu mojih podataka"
     ]
   },
   "AI.OVERVIEW": {
@@ -28,7 +37,10 @@
     "phrasings": [
       "otvori AI asistenta",
       "pokaži mi AI funkcije",
-      "gde su sve AI opcije"
+      "gde su sve AI opcije",
+      "odvedi me na pregled svih AI funkcija",
+      "gde se nalaze sve mogućnosti AI asistenta",
+      "hoću da vidim šta sve AI asistent može da uradi za mene"
     ]
   },
   "AI.RECOMMENDATIONS": {
@@ -36,7 +48,10 @@
     "phrasings": [
       "pokaži mi preporuke",
       "šta mi preporučuješ",
-      "gde su moje personalizovane preporuke"
+      "gde su moje personalizovane preporuke",
+      "otvori moje AI preporuke",
+      "gde mogu da vidim šta mi Vitana predlaže za zdravlje i zajednicu",
+      "hoću da vidim personalizovane savete koje si mi pripremila"
     ]
   },
   "ASSISTANT.AI": {
@@ -44,7 +59,10 @@
     "phrasings": [
       "otvori AI tab u asistentu",
       "pokaži podešavanja tekstualnog asistenta",
-      "gde mogu da podesim AI"
+      "gde mogu da podesim AI",
+      "otvori AI odeljak u podešavanjima asistenta",
+      "gde u asistentu mogu da nađem opcije za tekstualnog AI asistenta",
+      "hoću da podesim AI deo asistenta, ne glas ni autopilot"
     ]
   },
   "ASSISTANT.AUTOPILOT": {
@@ -52,7 +70,10 @@
     "phrasings": [
       "otvori Autopilot podešavanja",
       "pokaži moje automatizacije",
-      "gde mogu da postavim Autopilot"
+      "gde mogu da postavim Autopilot",
+      "otvori tab za automatizacije u asistentu",
+      "gde u asistentu mogu da vidim šta Vitana radi automatski umesto mene",
+      "hoću da podesim koje stvari Vitana sama pokreće"
     ]
   },
   "ASSISTANT.OVERVIEW": {
@@ -60,7 +81,10 @@
     "phrasings": [
       "otvori Vitana chat",
       "hoću da pišem sa Vitanom",
-      "gde je chat sa Vitanom"
+      "gde je chat sa Vitanom",
+      "otvori prozor za pisanje poruka Vitani",
+      "gde mogu da kucam Vitani van orba",
+      "hoću da pišem Vitani u posebnom prozoru za razgovor"
     ]
   },
   "ASSISTANT.PROACTIVE": {
@@ -68,7 +92,10 @@
     "phrasings": [
       "gde mogu da kontrolišem kad ti sama progovoriš",
       "isključi proaktivno govorenje",
-      "otvori podešavanja proaktivnog govora"
+      "otvori podešavanja proaktivnog govora",
+      "otvori tab za proaktivno govorenje u asistentu",
+      "gde mogu da podesim kada Vitana sama počinje da priča",
+      "hoću da isključim ili promenim kad ti sama javljaš"
     ]
   },
   "ASSISTANT.REFERRALS": {
@@ -76,7 +103,10 @@
     "phrasings": [
       "otvori tab za preporuke u asistentu",
       "pokaži mi referrals u asistentu",
-      "gde su nagrade od asistenta"
+      "gde su nagrade od asistenta",
+      "otvori tab za pozivanje prijatelja u asistentu",
+      "gde u asistentu vidim nagrade za pozivanje novih članova",
+      "hoću da vidim kako da pozovem nekoga i dobijem nagradu kroz asistenta"
     ]
   },
   "ASSISTANT.VOICE": {
@@ -84,7 +114,10 @@
     "phrasings": [
       "gde mogu da promenim tvoj glas",
       "otvori podešavanja glasa",
-      "promeni Vitanin glas"
+      "promeni Vitanin glas",
+      "otvori tab za glas u asistentu",
+      "gde u asistentu mogu da podesim kako Vitana zvuči",
+      "hoću da izaberem drugi glas za Vitanu"
     ]
   },
   "AUTH.ALKALMA_PORTAL": {
@@ -92,7 +125,10 @@
     "phrasings": [
       "otvori Alkalma portal",
       "prijavi me na Alkalma",
-      "gde mogu da se registrujem za Alkalma"
+      "gde mogu da se registrujem za Alkalma",
+      "odvedi me na stranicu za registraciju na Alkalma",
+      "gde mogu da se ulogujem na Alkalma nalog",
+      "hoću da napravim Alkalma nalog"
     ]
   },
   "AUTH.EARTHLINKS_PORTAL": {
@@ -100,7 +136,10 @@
     "phrasings": [
       "otvori Earthlinks portal",
       "kako da se pridružim Earthlinks-u",
-      "gde je prijava za Earthlinks"
+      "gde je prijava za Earthlinks",
+      "odvedi me na Earthlinks stranicu za prijavu",
+      "gde mogu da se registrujem za Earthlinks",
+      "hoću da napravim nalog na Earthlinks platformi"
     ]
   },
   "AUTH.MAXINA_PORTAL": {
@@ -108,7 +147,10 @@
     "phrasings": [
       "hoću da se registrujem",
       "kako da se pridružim zajednici",
-      "odvedi me na prijavu"
+      "odvedi me na prijavu",
+      "otvori stranicu za prijavljivanje na Maxina zajednicu",
+      "gde mogu da napravim nalog u Maxina zajednici",
+      "hoću da se učlanim u Maxina zajednicu"
     ]
   },
   "AUTOPILOT.MY_JOURNEY": {
@@ -116,7 +158,10 @@
     "phrasings": [
       "otvori My Journey",
       "pokaži mi moje sesije na putovanju",
-      "gde su moji vođeni koraci"
+      "gde su moji vođeni koraci",
+      "otvori moje putovanje u autopilotu",
+      "gde mogu da vidim talase i prekretnice na mom 90-dnevnom planu",
+      "hoću da nastavim tamo gde sam stao na svom vođenom putovanju"
     ]
   },
   "BUSINESS.ANALYTICS": {
@@ -124,7 +169,10 @@
     "phrasings": [
       "pokaži mi poslovnu analitiku",
       "kako ide moj biznis",
-      "gde su moje poslovne statistike"
+      "gde su moje poslovne statistike",
+      "otvori analitiku mog biznisa",
+      "gde mogu da pratim performanse i prihode na Maxini",
+      "hoću da vidim koliko mi biznis napreduje"
     ]
   },
   "BUSINESS.CLIENTS": {
@@ -132,7 +180,10 @@
     "phrasings": [
       "pokaži mi moje klijente",
       "ko su moji kupci",
-      "gde je lista mojih klijenata"
+      "gde je lista mojih klijenata",
+      "otvori listu mojih klijenata",
+      "gde upravljam kupcima u mom biznisu",
+      "hoću da vidim ko su mi klijenti na Maxini"
     ]
   },
   "BUSINESS.INSIGHTS_EARNINGS": {
@@ -140,7 +191,10 @@
     "phrasings": [
       "koliko sam zaradio",
       "pokaži mi zaradu od biznisa",
-      "gde mogu da vidim prihode"
+      "gde mogu da vidim prihode",
+      "otvori tab sa prihodima u uvidu biznisa",
+      "gde u insights delu vidim koliko sam zaradio",
+      "hoću da proverim zaradu u sekciji prihodi"
     ]
   },
   "BUSINESS.INSIGHTS_GROWTH": {
@@ -148,7 +202,10 @@
     "phrasings": [
       "pokaži mi rast biznisa",
       "kako raste moj doseg",
-      "gde su metrike rasta"
+      "gde su metrike rasta",
+      "otvori tab rast u uvidu biznisa",
+      "gde u insights delu pratim rast svog biznisa",
+      "hoću da vidim metrike rasta, ne prihode"
     ]
   },
   "BUSINESS.LISTINGS": {
@@ -156,7 +213,10 @@
     "phrasings": [
       "pokaži mi moje oglase",
       "gde su moji listinzi",
-      "upravljaj mojim ponudama"
+      "upravljaj mojim ponudama",
+      "otvori moje aktivne oglase na Maxini",
+      "gde mogu da vidim i menjam svoje poslovne oglase",
+      "hoću da pregledam šta sam sve postavio kao ponudu"
     ]
   },
   "BUSINESS.OPPORTUNITIES": {
@@ -164,7 +224,10 @@
     "phrasings": [
       "pokaži poslovne prilike",
       "gde mogu da nađem nove poslovne prilike",
-      "ima li novih leadova za mene"
+      "ima li novih leadova za mene",
+      "otvori poslovne prilike za mene",
+      "gde vidim nove potencijalne klijente i prilike",
+      "hoću da vidim koji leadovi odgovaraju mojim uslugama"
     ]
   },
   "BUSINESS.OVERVIEW": {
@@ -172,7 +235,10 @@
     "phrasings": [
       "otvori Business Hub",
       "pokaži mi moj biznis",
-      "gde je moj poslovni prostor"
+      "gde je moj poslovni prostor",
+      "otvori biznis centar",
+      "gde je glavni ekran za moj biznis na Maxini",
+      "hoću da dođem do čvorišta gde gradim biznis i zarađujem"
     ]
   },
   "BUSINESS.SALES_PROMOTIONS": {
@@ -180,7 +246,10 @@
     "phrasings": [
       "pokaži mi promocije",
       "gde mogu da napravim promociju",
-      "otvori moje akcije"
+      "otvori moje akcije",
+      "otvori tab akcije u biznisu",
+      "gde postavljam posebne ponude i popuste za prodaju",
+      "hoću da napravim novu akciju za moje usluge"
     ]
   },
   "BUSINESS.SALES_REFERRALS": {
@@ -188,7 +257,10 @@
     "phrasings": [
       "pokaži mi prodajne preporuke",
       "gde vidim referral prodaju",
-      "koliko sam zaradio kroz preporuke"
+      "koliko sam zaradio kroz preporuke",
+      "otvori tab preporuke za prodaju",
+      "gde vidim zaradu kroz preprodaju i preporuke",
+      "hoću da proverim koliko sam dobio od preporuka, ne od direktne prodaje"
     ]
   },
   "BUSINESS.SELL_EARN": {
@@ -196,7 +268,10 @@
     "phrasings": [
       "kako mogu da prodajem i zarađujem",
       "otvori prodaju",
-      "gde vidim svoju prodaju"
+      "gde vidim svoju prodaju",
+      "otvori deo za prodaju u biznis centru",
+      "gde mogu da počnem da prodajem svoje usluge i zarađujem",
+      "hoću da vidim svoju prodajnu oblast na Maxini"
     ]
   },
   "BUSINESS.SERVICES": {
@@ -204,7 +279,10 @@
     "phrasings": [
       "pokaži mi moje usluge",
       "gde upravljam uslugama koje nudim",
-      "otvori moje usluge"
+      "otvori moje usluge",
+      "otvori moje usluge u biznisu",
+      "gde dodajem i uređujem usluge koje nudim zajednici",
+      "hoću da upravljam koučingom i sesijama koje prodajem"
     ]
   },
   "BUSINESS.SERVICES_EVENTS": {
@@ -212,7 +290,10 @@
     "phrasings": [
       "pokaži događaje koje organizujem",
       "gde su moji eventi kao provajder",
-      "otvori moje poslovne događaje"
+      "otvori moje poslovne događaje",
+      "otvori tab moji događaji u biznisu",
+      "gde vidim događaje i časove koje ja organizujem kao provajder",
+      "hoću da pregledam termine koje vodim, ne pakete usluga"
     ]
   },
   "BUSINESS.SERVICES_PACKAGES": {
@@ -220,7 +301,10 @@
     "phrasings": [
       "pokaži mi moje pakete usluga",
       "gde mogu da postavim pakete",
-      "otvori service packages"
+      "otvori service packages",
+      "otvori tab paketi usluga u biznisu",
+      "gde kreiram i uređujem pakete koje nudim klijentima",
+      "hoću da složim paket usluga, ne pojedinačne događaje"
     ]
   },
   "CALENDAR.OVERVIEW": {
@@ -228,7 +312,10 @@
     "phrasings": [
       "otvori moj kalendar",
       "pokaži mi zakazane termine",
-      "šta imam u rasporedu"
+      "šta imam u rasporedu",
+      "pokaži mi moj raspored",
+      "gde vidim sve svoje predstojeće termine",
+      "hoću da proverim šta imam zakazano"
     ]
   },
   "COMM.EVENTS": {
@@ -236,7 +323,10 @@
     "phrasings": [
       "pokaži mi događaje u zajednici",
       "gde mogu da nađem meetupe",
-      "otvori događaje i okupljanja"
+      "otvori događaje i okupljanja",
+      "otvori događaje i druženja u zajednici",
+      "gde mogu da vidim predstojeće skupove i susrete na Maxini",
+      "hoću da nađem neko okuplanje ili događaj u zajednici"
     ]
   },
   "COMM.EVENTS_HOT": {
@@ -244,7 +334,10 @@
     "phrasings": [
       "pokaži popularne događaje",
       "koji eventi su trenutno u trendu",
-      "šta je hot u događajima"
+      "šta je hot u događajima",
+      "otvori tab sa najpopularnijim događajima",
+      "gde vidim koji događaji su trenutno featured",
+      "hoću da vidim šta je u trendu od meetupa i događaja"
     ]
   },
   "COMM.EVENTS_TODAY": {
@@ -252,7 +345,10 @@
     "phrasings": [
       "koji događaji su danas",
       "pokaži današnje evente",
-      "ima li nečeg danas"
+      "ima li nečeg danas",
+      "otvori tab sa događajima za danas",
+      "gde pronađem šta se dešava danas u zajednici",
+      "hoću da vidim sve meetupe i događaje koji su danas"
     ]
   },
   "COMM.EVENTS_UPCOMING": {
@@ -260,7 +356,10 @@
     "phrasings": [
       "pokaži predstojeće događaje",
       "koji eventi dolaze uskoro",
-      "šta ima sledeće nedelje"
+      "šta ima sledeće nedelje",
+      "otvori predstojeće događaje",
+      "gde vidim šta dolazi u narednim danima",
+      "hoću da vidim buduće meetupe na koje mogu da se prijavim"
     ]
   },
   "COMM.FEED": {
@@ -268,7 +367,10 @@
     "phrasings": [
       "pokaži feed ljudi koje pratim",
       "otvori moj following feed",
-      "šta ima novo od onih koje pratim"
+      "šta ima novo od onih koje pratim",
+      "otvori following tab na događajima",
+      "gde vidim objave i događaje od članova koje pratim",
+      "hoću da vidim šta su objavili ljudi i grupe koje pratim"
     ]
   },
   "COMM.FIND_PARTNER": {
@@ -276,7 +378,10 @@
     "phrasings": [
       "nađi mi partnera za trening",
       "tražim nekoga za vežbanje",
-      "gde mogu da nađem partnera"
+      "gde mogu da nađem partnera",
+      "otvori pronalazač partnera",
+      "gde mogu da potražim partnera za ples ili fitnes",
+      "hoću da vidim preporučene partnere za trening"
     ]
   },
   "COMM.FIND_PARTNER_BOARD": {
@@ -284,7 +389,10 @@
     "phrasings": [
       "otvori partner board",
       "pokaži ko traži partnera za ples ili fitnes",
-      "gde vidim tuđe zahteve za partnerom"
+      "gde vidim tuđe zahteve za partnerom",
+      "pokaži mi partnersku tablu",
+      "gde vidim ko sve traži partnera za ples ili vežbanje",
+      "hoću da pregledam tuđe oglase za partnera"
     ]
   },
   "COMM.FIND_PARTNER_MATCHES": {
@@ -292,7 +400,10 @@
     "phrasings": [
       "pokaži moje matcheve za partnera",
       "ko se poklopio sa mojim zahtevom za partnerom",
-      "gde su moji partner matchevi"
+      "gde su moji partner matchevi",
+      "pokaži moje mečeve za partnera",
+      "gde vidim s kim sam se poklopio u traženju partnera",
+      "hoću da vidim ko mi odgovara kao partner za trening ili ples"
     ]
   },
   "COMM.FIND_PARTNER_POSTS": {
@@ -300,7 +411,10 @@
     "phrasings": [
       "pokaži moje objave za partnera",
       "gde su moji zahtevi za partnerom",
-      "otvori moje partner postove"
+      "otvori moje partner postove",
+      "otvori moje partnerske objave",
+      "gde su oglasi koje sam ja postavio za partnera",
+      "hoću da vidim i izmenim svoje zahteve za partnerom"
     ]
   },
   "COMM.GROUP_DETAIL": {
@@ -311,7 +425,10 @@
     "phrasings": [
       "pokaži mi grupe",
       "otvori grupe zajednice",
-      "kojim grupama mogu da se pridružim"
+      "kojim grupama mogu da se pridružim",
+      "otvori grupe na Maxini",
+      "gde mogu da pretražim grupe zajednice",
+      "hoću da vidim kojim grupama mogu da se pridružim"
     ]
   },
   "COMM.GROUPS_DISCOVER": {
@@ -319,7 +436,10 @@
     "phrasings": [
       "otkrij mi nove grupe",
       "preporuči mi grupe",
-      "gde mogu da pronađem grupe za mene"
+      "gde mogu da pronađem grupe za mene",
+      "otvori tab za otkrivanje grupa",
+      "gde vidim grupe koje su preporučene za mene",
+      "hoću da pronađem nove grupe koje bi mi odgovarale"
     ]
   },
   "COMM.INVITE": {
@@ -327,7 +447,10 @@
     "phrasings": [
       "pozovi prijatelja",
       "kako da pozovem prijatelje",
-      "gde je moj invite link"
+      "gde je moj invite link",
+      "otvori pozivnicu za prijatelje",
+      "gde mogu da pošaljem poziv nekome da se pridruži Maxini",
+      "hoću da pozovem drugara i vidim nagradu za preporuku"
     ]
   },
   "COMM.LIVE_ROOM_VIEWER": {
@@ -338,7 +461,10 @@
     "phrasings": [
       "otvori live rooms",
       "gde mogu da se pridružim live sesiji",
-      "pokaži mi live sobe"
+      "pokaži mi live sobe",
+      "otvori sobe uživo",
+      "gde mogu da nađem live audio i video sobe zajednice",
+      "hoću da se pridružim nekoj live sobi"
     ]
   },
   "COMM.LIVE_ROOMS_ALL": {
@@ -346,7 +472,10 @@
     "phrasings": [
       "pokaži sve live sobe",
       "prikaži i live i zakazane sobe",
-      "gde su sve sobe, i aktivne i planirane"
+      "gde su sve sobe, i aktivne i planirane",
+      "otvori tab sa svim sobama",
+      "gde vidim kompletnu listu soba, i live i zakazanih",
+      "hoću da pregledam sve sobe odjednom"
     ]
   },
   "COMM.LIVE_ROOMS_LIVE": {
@@ -354,7 +483,10 @@
     "phrasings": [
       "ko je trenutno live",
       "pokaži sobe koje su sad uživo",
-      "šta se emituje u ovom trenutku"
+      "šta se emituje u ovom trenutku",
+      "otvori tab uživo sada",
+      "gde vidim koje sobe su aktivne u ovom trenutku",
+      "hoću da uđem u neku sobu koja se trenutno emituje"
     ]
   },
   "COMM.LIVE_ROOMS_PAST": {
@@ -362,7 +494,10 @@
     "phrasings": [
       "pokaži prošle live sesije",
       "gde mogu da gledam snimke live soba",
-      "otvori arhivu live roomova"
+      "otvori arhivu live roomova",
+      "otvori tab sa prošlim sesijama",
+      "gde mogu da nađem snimke završenih live soba",
+      "hoću da pogledam neku prošlu live sesiju koju sam propustio"
     ]
   },
   "COMM.LIVE_ROOMS_SCHEDULED": {
@@ -370,7 +505,10 @@
     "phrasings": [
       "pokaži mi zakazane live sobe",
       "koje su live sesije planirane za kasnije",
-      "gde mogu da vidim predstojeće live roomove"
+      "gde mogu da vidim predstojeće live roomove",
+      "otvori tab sa zakazanim sobama",
+      "gde vidim koje su sobe rezervisane za kasnije",
+      "hoću da proverim kada su naredne live sobe"
     ]
   },
   "COMM.MATCHES": {
@@ -378,7 +516,10 @@
     "phrasings": [
       "pokaži mi moje mečeve",
       "ko mi odgovara u zajednici",
-      "otvori predložene članove koji se poklapaju sa mnom"
+      "otvori predložene članove koji se poklapaju sa mnom",
+      "otvori mi listu predloženih članova",
+      "gde mogu da vidim ko mi je preporučen kao poklapanje",
+      "hoću da vidim sa kim me aplikacija spaja po interesovanjima"
     ]
   },
   "COMM.MEDIA_HUB": {
@@ -386,7 +527,10 @@
     "phrasings": [
       "otvori media hub",
       "gde mogu da nađem videe i podkaste",
-      "pokaži mi medijsku biblioteku zajednice"
+      "pokaži mi medijsku biblioteku zajednice",
+      "otvori medija centar zajednice",
+      "gde su svi videi, podkasti i muzika od zajednice",
+      "hoću da pretražim sadržaj koji su članovi podelili"
     ]
   },
   "COMM.MEDIA_MUSIC": {
@@ -394,7 +538,10 @@
     "phrasings": [
       "pusti neku muziku iz zajednice",
       "gde je muzika u media hubu",
-      "otvori muziku"
+      "otvori muziku",
+      "pokaži mi muziku u medija centru",
+      "gde u medija centru mogu da nađem muziku",
+      "hoću da slušam muziku koju je zajednica podelila"
     ]
   },
   "COMM.MEDIA_PODCASTS": {
@@ -402,7 +549,10 @@
     "phrasings": [
       "gde mogu da slušam podkaste",
       "pokaži mi podkaste iz zajednice",
-      "otvori podkaste u media hubu"
+      "otvori podkaste u media hubu",
+      "otvori tab sa podkastima u medija centru",
+      "gde su audio epizode koje je zajednica podelila",
+      "hoću da slušam neki podkast iz zajednice"
     ]
   },
   "COMM.MEDIA_SHORTS": {
@@ -410,7 +560,10 @@
     "phrasings": [
       "pokaži mi kratke video klipove",
       "otvori shorts",
-      "gde su kratki snimci zajednice"
+      "gde su kratki snimci zajednice",
+      "otvori kratke video snimke u medija centru",
+      "gde mogu da gledam shorts od zajednice",
+      "hoću da skrolujem kroz kratke klipove članova"
     ]
   },
   "COMM.MEMBERS": {
@@ -418,7 +571,10 @@
     "phrasings": [
       "pokaži mi članove Maxina zajednice",
       "ko je još u zajednici",
-      "gde mogu da pronađem nekog člana"
+      "gde mogu da pronađem nekog člana",
+      "otvori direktorijum članova Maxine",
+      "gde mogu da pretražujem profile članova zajednice",
+      "hoću da pronađem i pogledam ko sve pripada zajednici"
     ]
   },
   "COMM.OPEN_ASKS": {
@@ -426,7 +582,10 @@
     "phrasings": [
       "pokaži otvorene zahteve članova",
       "šta ljudi traže pomoć u zajednici",
-      "gde su open asks"
+      "gde su open asks",
+      "otvori otvorene zahteve u zajednici",
+      "gde mogu da vidim kome je potrebna pomoć od članova",
+      "hoću da vidim koji zahtevi još uvek čekaju odgovor"
     ]
   },
   "COMM.OVERVIEW": {
@@ -434,7 +593,10 @@
     "phrasings": [
       "otvori zajednicu",
       "odvedi me u Maxina zajednicu",
-      "pokaži mi community deo"
+      "pokaži mi community deo",
+      "pokaži mi početnu stranicu zajednice",
+      "gde je glavni deo sa događajima i grupama u Maxini",
+      "hoću da vidim šta se dešava u zajednici"
     ]
   },
   "COMM.TALK_TO_VITANA": {
@@ -442,7 +604,10 @@
     "phrasings": [
       "hoću da kontaktiram Vitana tim",
       "otvori stranicu za razgovor sa Vitanom",
-      "gde mogu da pošaljem poruku Vitani"
+      "gde mogu da pošaljem poruku Vitani",
+      "otvori stranicu gde mogu da javim povratnu informaciju Vitani",
+      "gde mogu da prijavim problem Vitana timu",
+      "hoću da pošaljem poruku ili sugestiju Vitani"
     ]
   },
   "CONNECTORS.AGENT": {
@@ -450,7 +615,10 @@
     "phrasings": [
       "pokaži Autopilot konektore",
       "gde mogu da povežem servise za Autopilot",
-      "otvori Autopilot integracije"
+      "otvori Autopilot integracije",
+      "otvori Autopilot konektore",
+      "gde mogu da povežem integracije specifično za Autopilot",
+      "hoću da podesim servise koji rade sa Autopilotom"
     ]
   },
   "CONNECTORS.AI": {
@@ -458,7 +626,10 @@
     "phrasings": [
       "pokaži AI konektore",
       "gde mogu da povežem još neki AI alat",
-      "otvori integracije za veštačku inteligenciju"
+      "otvori integracije za veštačku inteligenciju",
+      "pokaži mi tab za AI konektore",
+      "gde mogu da dodam AI aplikaciju na nalog",
+      "hoću da povežem neki alat za veštačku inteligenciju"
     ]
   },
   "CONNECTORS.FITNESS": {
@@ -466,7 +637,10 @@
     "phrasings": [
       "gde mogu da povežem fitnes traker",
       "poveži moj pametni sat",
-      "otvori fitnes konektore"
+      "otvori fitnes konektore",
+      "pokaži mi fitnes konektore",
+      "gde mogu da povežem aplikaciju za vežbanje",
+      "hoću da sinhronijem svoj fitnes uređaj sa Maxinom"
     ]
   },
   "CONNECTORS.HEALTH": {
@@ -474,7 +648,10 @@
     "phrasings": [
       "poveži moju zdravstvenu aplikaciju",
       "gde mogu da linkujem Apple Health ili Google Fit",
-      "otvori zdravstvene konektore"
+      "otvori zdravstvene konektore",
+      "pokaži mi zdravstvene konektore",
+      "gde mogu da povežem aplikaciju za praćenje zdravlja",
+      "hoću da uvežem podatke iz laboratorijskih ili zdravstvenih aplikacija"
     ]
   },
   "CONNECTORS.MEDIA": {
@@ -482,7 +659,10 @@
     "phrasings": [
       "poveži Spotify",
       "gde mogu da linkujem muzičke i video aplikacije",
-      "otvori konektore za muziku i video"
+      "otvori konektore za muziku i video",
+      "pokaži mi konektore za muziku i video",
+      "gde mogu da povežem svoju streaming aplikaciju",
+      "hoću da linkujem muzičke i video servise koje koristim"
     ]
   },
   "CONNECTORS.OTHER": {
@@ -490,7 +670,10 @@
     "phrasings": [
       "pokaži mi ostale konektore",
       "ima li još nekih integracija",
-      "otvori ostale integracije"
+      "otvori ostale integracije",
+      "otvori tab sa ostalim konektorima",
+      "gde se nalaze konektori koji nisu fitnes ni mejl ni društvene mreže",
+      "hoću da vidim šta još mogu da povežem osim standardnih integracija"
     ]
   },
   "CONNECTORS.PRODUCTIVITY": {
@@ -498,7 +681,9 @@
     "phrasings": [
       "poveži moj mejl",
       "gde mogu da povežem Google kalendar",
-      "otvori konektore za mejl i kalendar"
+      "otvori konektore za mejl i kalendar",
+      "gde mogu da povežem svoju poštu i raspored",
+      "hoću da sinhroniziram kalendar i mejl nalog sa aplikacijom"
     ]
   },
   "CONNECTORS.SOCIAL": {
@@ -506,7 +691,10 @@
     "phrasings": [
       "poveži moje društvene mreže",
       "gde mogu da linkujem Instagram",
-      "otvori konektore za društvene mreže"
+      "otvori konektore za društvene mreže",
+      "pokaži mi tab za društvene mreže u konektorima",
+      "gde mogu da povežem svoje profile sa društvenih mreža",
+      "hoću da nakačim Facebook ili Instagram na nalog"
     ]
   },
   "DISCOVER.AI_PICKS": {
@@ -514,7 +702,10 @@
     "phrasings": [
       "šta mi AI preporučuje",
       "pokaži mi AI picks",
-      "koji proizvodi su predloženi za mene"
+      "koji proizvodi su predloženi za mene",
+      "otvori AI izbor u Discoveru",
+      "gde vidim šta mi veštačka inteligencija predlaže da kupim",
+      "hoću da vidim proizvode i usluge koje su izabrane baš za mene"
     ]
   },
   "DISCOVER.CART": {
@@ -522,7 +713,10 @@
     "phrasings": [
       "otvori moju korpu",
       "šta imam u korpi",
-      "pokaži mi šta sam dodao u košaricu"
+      "pokaži mi šta sam dodao u košaricu",
+      "pokaži mi korpu za kupovinu",
+      "gde vidim artikle koje sam stavio da kupim",
+      "hoću da proverim šta čeka na naplati pre nego što poručim"
     ]
   },
   "DISCOVER.CATEGORIES": {
@@ -530,7 +724,10 @@
     "phrasings": [
       "pokaži mi kategorije proizvoda",
       "gde mogu da pretražujem po kategorijama",
-      "otvori kategorije u shopu"
+      "otvori kategorije u shopu",
+      "pokaži mi sve kategorije u Discoveru",
+      "gde mogu da pretražujem proizvode po tipu",
+      "hoću da pregledam šta ima po oblastima u shopu"
     ]
   },
   "DISCOVER.DEALS": {
@@ -538,7 +735,10 @@
     "phrasings": [
       "ima li kakvih popusta",
       "pokaži mi ponude i akcije",
-      "gde su specijalne ponude za članove"
+      "gde su specijalne ponude za članove",
+      "otvori ponude i popuste",
+      "gde mogu da vidim sve trenutne akcije za članove",
+      "hoću da proverim ima li nekih sniženja ili specijalnih ponuda"
     ]
   },
   "DISCOVER.DEALS_AI": {
@@ -546,7 +746,10 @@
     "phrasings": [
       "pokaži mi akcije koje je AI izabrao za mene",
       "otvori AI deal picks",
-      "koje ponude mi AI preporučuje"
+      "koje ponude mi AI preporučuje",
+      "otvori tab gde AI bira popuste za mene",
+      "gde vidim dilove koje je veštačka inteligencija odabrala baš za mene",
+      "hoću da vidim AI preporuke unutar ponuda i popusta"
     ]
   },
   "DISCOVER.DEALS_SAVED": {
@@ -554,7 +757,10 @@
     "phrasings": [
       "pokaži mi sačuvane ponude",
       "gde su akcije koje sam bookmarkovao",
-      "otvori moje sačuvane dealove"
+      "otvori moje sačuvane dealove",
+      "otvori moje sačuvane dilove",
+      "gde su ponude koje sam ranije sačuvao u sekciji popusta",
+      "hoću da vidim akcije koje sam odložio za kasnije"
     ]
   },
   "DISCOVER.DEALS_TRENDING": {
@@ -562,7 +768,10 @@
     "phrasings": [
       "koje ponude su trenutno popularne",
       "pokaži mi trending dealove",
-      "šta je u trendu od akcija"
+      "šta je u trendu od akcija",
+      "otvori tab sa popularnim dilovima",
+      "gde vidim koje akcije su sada u trendu",
+      "hoću da vidim ponude koje su najpopularnije među članovima"
     ]
   },
   "DISCOVER.DOCTORS_COACHES": {
@@ -570,7 +779,10 @@
     "phrasings": [
       "gde mogu da nađem doktora ili kouča",
       "pokaži mi zdravstvene kouče",
-      "otvori doktore i kouče"
+      "otvori doktore i kouče",
+      "otvori ekran sa lekarima i koučevima",
+      "gde mogu da pronađem zdravstvenog stručnjaka ili kouča",
+      "hoću da potražim nekog ko mi može pomoći sa zdravljem ili treningom"
     ]
   },
   "DISCOVER.MARKETPLACE": {
@@ -578,7 +790,10 @@
     "phrasings": [
       "otvori marketplace",
       "gde mogu da kupujem i prodajem u zajednici",
-      "pokaži mi Maxina marketplace"
+      "pokaži mi Maxina marketplace",
+      "otvori pijacu u aplikaciji",
+      "gde mogu da vidim sve oglase zajednice",
+      "hoću da pogledam šta se nudi i traži u Maxina zajednici"
     ]
   },
   "DISCOVER.MARKETPLACE_MINE": {
@@ -586,7 +801,10 @@
     "phrasings": [
       "pokaži moje oglase na marketplaceu",
       "gde su moji zahtevi i ponude na marketplaceu",
-      "otvori moj marketplace"
+      "otvori moj marketplace",
+      "pokaži moj deo pijace",
+      "gde su moji lični oglasi i ponude na marketplaceu",
+      "hoću da vidim samo svoje zahteve i listinge na pijaci"
     ]
   },
   "DISCOVER.MARKETPLACE_OPEN": {
@@ -594,7 +812,10 @@
     "phrasings": [
       "pokaži otvorene zahteve na marketplaceu",
       "koji oglasi su dostupni svima",
-      "otvori open requests na marketplaceu"
+      "otvori open requests na marketplaceu",
+      "otvori otvorene zahteve na pijaci",
+      "gde mogu da vidim oglase dostupne svim članovima",
+      "hoću da proverim šta drugi traže ili nude na marketplaceu"
     ]
   },
   "DISCOVER.MY_TICKETS": {
@@ -602,7 +823,10 @@
     "phrasings": [
       "pokaži mi moje karte",
       "gde su tiketi koje sam kupio za događaje",
-      "otvori moje tikete"
+      "otvori moje tikete",
+      "pokaži moje kupljene karte",
+      "gde mogu da vidim tikete za događaje koje sam platio",
+      "hoću da proverim karte koje imam za predstojeće meetupe"
     ]
   },
   "DISCOVER.ORDERS": {
@@ -610,7 +834,10 @@
     "phrasings": [
       "pokaži mi moje porudžbine",
       "gde mogu da pratim svoju narudžbinu",
-      "šta sam sve naručio"
+      "šta sam sve naručio",
+      "otvori moje porudžbine",
+      "gde mogu da vidim sve što sam naručio",
+      "hoću da proverim status svojih narudžbina"
     ]
   },
   "DISCOVER.ORDERS_ACTIVE": {
@@ -618,7 +845,10 @@
     "phrasings": [
       "pokaži mi aktivne porudžbine",
       "koje narudžbine su još u toku",
-      "šta mi je još na putu"
+      "šta mi je još na putu",
+      "pokaži mi porudžbine koje su još aktivne",
+      "gde vidim narudžbine koje su u isporuci",
+      "hoću da vidim šta mi je još u obradi"
     ]
   },
   "DISCOVER.ORDERS_HISTORY": {
@@ -626,7 +856,10 @@
     "phrasings": [
       "pokaži mi istoriju porudžbina",
       "gde su moje prethodne narudžbine",
-      "otvori stare porudžbine"
+      "otvori stare porudžbine",
+      "otvori istoriju mojih narudžbina",
+      "gde mogu da vidim završene porudžbine",
+      "hoću da proverim šta sam sve ranije naručio"
     ]
   },
   "DISCOVER.OVERVIEW": {
@@ -634,7 +867,10 @@
     "phrasings": [
       "otvori discover",
       "gde mogu da kupim nešto",
-      "pokaži mi shop"
+      "pokaži mi shop",
+      "otvori Istraži sekciju",
+      "gde mogu da pronađem suplemente, doktore i ponude",
+      "hoću da pregledam šta sve mogu da kupim ili rezervišem"
     ]
   },
   "DISCOVER.PRODUCT_DETAIL": {
@@ -648,7 +884,10 @@
     "phrasings": [
       "kako mogu da zaradim deljenjem proizvoda",
       "otvori share and earn",
-      "gde mogu da vidim kako da zaradim nagrade"
+      "gde mogu da vidim kako da zaradim nagrade",
+      "otvori Podeli i zaradi",
+      "gde mogu da vidim kako da zaradim deljenjem",
+      "hoću da podelim proizvode i dobijem nagradu"
     ]
   },
   "DISCOVER.SHOP": {
@@ -656,7 +895,10 @@
     "phrasings": [
       "otvori video shop",
       "gde su video snimci sa proizvodima koje mogu da kupim",
-      "pokaži mi shoppable videe"
+      "pokaži mi shoppable videe",
+      "otvori prodavnicu sa video snimcima",
+      "gde su video snimci proizvoda iz Maxina marketplace-a",
+      "hoću da kupujem gledajući videe sa proizvodima"
     ]
   },
   "DISCOVER.SUPPLEMENTS": {
@@ -664,7 +906,10 @@
     "phrasings": [
       "gde mogu da kupim suplemente",
       "pokaži mi suplemente u shopu",
-      "otvori vitamine i suplemente"
+      "otvori vitamine i suplemente",
+      "otvori suplemente u prodavnici",
+      "gde mogu da nađem preparate za dugovečnost",
+      "hoću da naručim neki suplement"
     ]
   },
   "DISCOVER.WELLNESS_SERVICES": {
@@ -672,7 +917,10 @@
     "phrasings": [
       "pokaži mi wellness usluge",
       "gde mogu da rezervišem masažu",
-      "nađi mi neki wellness tretman"
+      "nađi mi neki wellness tretman",
+      "otvori wellness usluge",
+      "gde mogu da nađem usluge za opuštanje i zdravlje",
+      "hoću da zakažem neki wellness tretman"
     ]
   },
   "HEALTH.BIOLOGY_OMICS": {
@@ -680,7 +928,10 @@
     "phrasings": [
       "pokaži mi moje omics podatke",
       "gde su moji genetski rezultati",
-      "otvori omics tab u mom biologiji"
+      "otvori omics tab u mom biologiji",
+      "otvori omiks tab u mojoj biologiji",
+      "gde mogu da vidim svoje genomske podatke",
+      "hoću da proverim svoje omiks rezultate"
     ]
   },
   "HEALTH.BIOLOGY_SUPPLEMENTS": {
@@ -688,7 +939,10 @@
     "phrasings": [
       "koji suplementi su u mom biološkom profilu",
       "pokaži mi suplemente iz moje biologije",
-      "otvori suplemente u mom biology profilu"
+      "otvori suplemente u mom biology profilu",
+      "otvori tab sa suplementima u mojoj biologiji",
+      "gde u biološkom profilu vidim svoje suplemente",
+      "hoću da vidim koji suplementi su vezani za moj biološki profil"
     ]
   },
   "HEALTH.CONDITIONS": {
@@ -696,7 +950,10 @@
     "phrasings": [
       "pokaži mi moja zdravstvena stanja",
       "gde mogu da upravljam dijagnozama",
-      "otvori health conditions"
+      "otvori health conditions",
+      "otvori zdravstvena stanja",
+      "gde mogu da dodam ili vidim svoje dijagnoze",
+      "hoću da ažuriram svoja zdravstvena stanja"
     ]
   },
   "HEALTH.EDUCATION": {
@@ -704,7 +961,10 @@
     "phrasings": [
       "pokaži mi edukativne zdravstvene sadržaje",
       "gde mogu da učim o longevityju",
-      "otvori naučne članke o zdravlju"
+      "otvori naučne članke o zdravlju",
+      "otvori edukaciju i nauku",
+      "gde mogu da čitam naučne tekstove o zdravlju i dugovečnosti",
+      "hoću da pronađem edukativne članke, a ne podkaste ni videe"
     ]
   },
   "HEALTH.EDUCATION_PODCASTS": {
@@ -712,7 +972,10 @@
     "phrasings": [
       "pokaži mi edukativne podkaste o zdravlju",
       "gde su podkasti za učenje o longevityju",
-      "otvori health learning podkaste"
+      "otvori health learning podkaste",
+      "otvori edukativne podkaste",
+      "gde mogu da slušam podkaste o zdravlju",
+      "hoću da slušam podkast o longevitiju"
     ]
   },
   "HEALTH.EDUCATION_VIDEOS": {
@@ -720,7 +983,10 @@
     "phrasings": [
       "pokaži mi edukativne videe o zdravlju",
       "gde su video lekcije o longevityju",
-      "otvori health learning videe"
+      "otvori health learning videe",
+      "otvori edukativne video snimke",
+      "gde mogu da gledam video lekcije o zdravlju",
+      "hoću da pogledam neki video o dugovečnosti"
     ]
   },
   "HEALTH.MEDICAL": {
@@ -728,7 +994,10 @@
     "phrasings": [
       "pokaži mi moje medicinske nalaze",
       "gde su moji medicinski dokumenti",
-      "otvori medicinske izveštaje"
+      "otvori medicinske izveštaje",
+      "otvori medicinske podatke",
+      "gde mogu da otpremim svoje nalaze od lekara",
+      "hoću da dodam novi medicinski izveštaj"
     ]
   },
   "HEALTH.MY_BIOLOGY": {
@@ -736,7 +1005,10 @@
     "phrasings": [
       "pokaži mi moje biološke pokazatelje",
       "gde mogu da vidim rezultate krvnih analiza",
-      "otvori moje laboratorijske nalaze"
+      "otvori moje laboratorijske nalaze",
+      "otvori tab Moja biologija",
+      "gde vidim trendove svojih biomarkera tokom vremena",
+      "hoću da proverim svoje zdravstvene pokazatelje i nalaze"
     ]
   },
   "HEALTH.OVERVIEW": {
@@ -744,7 +1016,10 @@
     "phrasings": [
       "otvori zdravlje",
       "pokaži mi pregled mog zdravlja",
-      "gde mogu da pratim svoje zdravlje"
+      "gde mogu da pratim svoje zdravlje",
+      "otvori mi glavni ekran za zdravlje",
+      "gde se nalazi moj zdravstveni centar u aplikaciji",
+      "hoću da vidim sve što se tiče mog zdravlja na jednom mestu"
     ]
   },
   "HEALTH.PILLARS": {
@@ -752,7 +1027,10 @@
     "phrasings": [
       "pokaži stubove zdravlja",
       "koji su stubovi dugovečnosti",
-      "otvori zdravstvene stubove"
+      "otvori zdravstvene stubove",
+      "pokaži mi stubove dugovečnosti",
+      "gde mogu da vidim oblasti kao što su ishrana, fitnes i san",
+      "hoću da pročitam o temeljima zdravog života"
     ]
   },
   "HEALTH.PLANS": {
@@ -760,7 +1038,10 @@
     "phrasings": [
       "otvori moje zdravstvene planove",
       "pokaži mi moje planove",
-      "gde su moje zdravstvene rutine"
+      "gde su moje zdravstvene rutine",
+      "otvori moje personalizovane zdravstvene planove",
+      "gde mogu da pronađem sve svoje planove za zdravlje",
+      "hoću da vidim šta sve imam planirano za ishranu, trening i san"
     ]
   },
   "HEALTH.PLANS_EXERCISE": {
@@ -768,7 +1049,10 @@
     "phrasings": [
       "pokaži mi plan treninga",
       "otvori moj plan vežbanja",
-      "gde mogu da vidim plan za fitnes"
+      "gde mogu da vidim plan za fitnes",
+      "otvori tab za planove treninga",
+      "gde u mojim planovima mogu da nađem vežbanje",
+      "hoću da vidim koji su mi treninzi planirani"
     ]
   },
   "HEALTH.PLANS_HYDRATION": {
@@ -776,7 +1060,10 @@
     "phrasings": [
       "pokaži mi plan hidratacije",
       "otvori moj plan za vodu",
-      "gde mogu da vidim koliko treba da pijem"
+      "gde mogu da vidim koliko treba da pijem",
+      "otvori tab za hidrataciju u mojim planovima",
+      "gde u planovima mogu da vidim unos tečnosti",
+      "hoću da proverim preporuke za pijenje vode"
     ]
   },
   "HEALTH.PLANS_MENTAL": {
@@ -784,7 +1071,10 @@
     "phrasings": [
       "pokaži mi plan za mentalno zdravlje",
       "otvori moj plan za mindfulness",
-      "gde su planovi za mentalno blagostanje"
+      "gde su planovi za mentalno blagostanje",
+      "otvori tab mentalnih planova",
+      "gde u mojim planovima mogu da nađem mentalno blagostanje",
+      "hoću da vidim šta imam planirano za psihičko zdravlje"
     ]
   },
   "HEALTH.PLANS_NUTRITION": {
@@ -792,7 +1082,10 @@
     "phrasings": [
       "pokaži mi plan ishrane",
       "otvori moj plan obroka",
-      "gde mogu da vidim šta treba da jedem"
+      "gde mogu da vidim šta treba da jedem",
+      "otvori tab za ishranu u mojim planovima",
+      "gde u planovima mogu da vidim preporuke za obroke",
+      "hoću da proverim svoj plan obroka za danas"
     ]
   },
   "HEALTH.PLANS_SLEEP": {
@@ -800,7 +1093,10 @@
     "phrasings": [
       "pokaži mi plan spavanja",
       "otvori moju rutinu za san",
-      "gde mogu da vidim plan za spavanje"
+      "gde mogu da vidim plan za spavanje",
+      "otvori tab za san u mojim planovima",
+      "gde u planovima mogu da nađem preporuke za spavanje",
+      "hoću da vidim šta mi je planirano za bolji san"
     ]
   },
   "HEALTH.SERVICES_HUB": {
@@ -808,7 +1104,10 @@
     "phrasings": [
       "otvori zdravstvene usluge",
       "gde mogu da rezervišem zdravstvenu uslugu",
-      "pokaži mi ponudu zdravstvenih usluga u Maxina zajednici"
+      "pokaži mi ponudu zdravstvenih usluga u Maxina zajednici",
+      "otvori centar zdravstvenih usluga",
+      "gde mogu da pronađem sve dostupne zdravstvene usluge u Maxina zajednici",
+      "hoću da potražim i zakažem neku zdravstvenu uslugu"
     ]
   },
   "HEALTH.SERVICES_INSURANCE": {
@@ -816,7 +1115,10 @@
     "phrasings": [
       "treba mi pomoć oko zdravstvenog osiguranja",
       "otvori podršku za osiguranje",
-      "gde mogu da nađem pomoć za osiguranje"
+      "gde mogu da nađem pomoć za osiguranje",
+      "otvori tab za podršku oko osiguranja",
+      "gde u zdravstvenim uslugama mogu da nađem informacije o osiguranju",
+      "hoću da razjasnim nešto u vezi sa svojim zdravstvenim osiguranjem"
     ]
   },
   "HEALTH.SERVICES_MEDICAL": {
@@ -824,7 +1126,10 @@
     "phrasings": [
       "pokaži mi medicinske usluge",
       "gde mogu da zakažem medicinski pregled",
-      "otvori medicinske usluge"
+      "otvori medicinske usluge",
+      "otvori tab medicinskih usluga",
+      "gde u zdravstvenim uslugama mogu da zakažem pregled kod lekara",
+      "hoću da vidim koje medicinske usluge su dostupne"
     ]
   },
   "HEALTH.SERVICES_MINE": {
@@ -832,7 +1137,10 @@
     "phrasings": [
       "pokaži usluge koje koristim",
       "gde su moje zakazane zdravstvene usluge",
-      "otvori moje zdravstvene usluge"
+      "otvori moje zdravstvene usluge",
+      "otvori tab Moje usluge",
+      "gde mogu da vidim zdravstvene usluge koje sam već uzeo",
+      "hoću da proverim koje usluge trenutno koristim"
     ]
   },
   "HEALTH.SERVICES_WELLNESS": {
@@ -840,7 +1148,10 @@
     "phrasings": [
       "pokaži mi wellness programe",
       "gde mogu da se prijavim za wellness program",
-      "otvori programe za dobrobit"
+      "otvori programe za dobrobit",
+      "otvori tab velnes programa",
+      "gde u zdravstvenim uslugama mogu da nađem programe za dobrobit",
+      "hoću da vidim u koje velnes programe mogu da se uključim"
     ]
   },
   "HEALTH.SUPPLEMENTS": {
@@ -848,7 +1159,10 @@
     "phrasings": [
       "pokaži mi moje suplemente",
       "koje suplemente uzimam",
-      "otvori listu mojih suplemenata"
+      "otvori listu mojih suplemenata",
+      "otvori tab za suplemente u zdravlju",
+      "gde u sekciji zdravlja mogu da pratim vitamine i minerale koje uzimam",
+      "hoću da ažuriram listu suplemenata koje pijem"
     ]
   },
   "HEALTH.VITANA_INDEX": {
@@ -856,7 +1170,10 @@
     "phrasings": [
       "otvori moj Vitana Index",
       "koliki je moj Vitana Index",
-      "pokaži mi moj indeks dugovečnosti"
+      "pokaži mi moj indeks dugovečnosti",
+      "pokaži mi moj Vitana indeks",
+      "gde vidim svoje rezultate po stubovima dugovečnosti",
+      "hoću da proverim kako stojim sa ishranom, snom i ostalim stubovima"
     ]
   },
   "HOME.NEWS_ALL": {
@@ -864,7 +1181,10 @@
     "phrasings": [
       "pokaži sve vesti",
       "otvori sve izvore vesti",
-      "gde mogu da vidim sve vesti"
+      "gde mogu da vidim sve vesti",
+      "otvori tab sa svim vestima",
+      "gde mogu da vidim i vesti zajednice i vesti o dugovečnosti zajedno",
+      "hoću da čitam sve vesti odjednom, i zajedničke i longevity"
     ]
   },
   "HOME.NEWS_COMMUNITY": {
@@ -872,7 +1192,10 @@
     "phrasings": [
       "otvori vesti iz zajednice",
       "šta ima novo u Maxina zajednici",
-      "pokaži mi vesti od članova zajednice"
+      "pokaži mi vesti od članova zajednice",
+      "otvori tab vesti iz zajednice",
+      "gde vidim šta objavljuju drugi članovi Maxine",
+      "hoću da pratim novosti i objave iz Maxina zajednice"
     ]
   },
   "HOME.OVERVIEW": {
@@ -880,7 +1203,10 @@
     "phrasings": [
       "pokaži mi najnovije vesti",
       "otvori početni ekran",
-      "vodi me na početnu stranicu"
+      "vodi me na početnu stranicu",
+      "otvori vesti o dugovečnosti",
+      "gde su najnoviji članci i istraživanja o dugovečnosti",
+      "hoću da čitam longevity vesti koje su izabrane za mene"
     ]
   },
   "INBOX.ARCHIVED": {
@@ -888,7 +1214,10 @@
     "phrasings": [
       "pokaži mi arhivirane poruke",
       "gde su moje stare arhivirane poruke",
-      "otvori arhivu poruka"
+      "otvori arhivu poruka",
+      "otvori arhivirane razgovore",
+      "gde mogu da nađem poruke koje sam arhivirao",
+      "hoću da pogledam stare poruke koje sam sklonio u arhivu"
     ]
   },
   "INBOX.CONVERSATION": {
@@ -902,7 +1231,10 @@
     "phrasings": [
       "pokaži mi inspirativne poruke",
       "gde su moje dnevne inspiracije",
-      "otvori inspiraciju"
+      "otvori inspiraciju",
+      "pokaži mi Vitanine savete za zdravlje",
+      "gde su poruke inspiracije koje mi šalje Vitana",
+      "hoću da pročitam inspirativne wellness poruke"
     ]
   },
   "INBOX.OVERVIEW": {
@@ -910,7 +1242,10 @@
     "phrasings": [
       "otvori moje poruke",
       "gde mogu da vidim razgovore",
-      "imam li novih poruka"
+      "imam li novih poruka",
+      "pokaži mi prijemno sanduče",
+      "gde vidim sve svoje razgovore sa članovima zajednice",
+      "hoću da proverim da li mi je neko pisao"
     ]
   },
   "INTENTS.BOARD": {
@@ -918,7 +1253,10 @@
     "phrasings": [
       "otvori oglasnu tablu zajednice",
       "pokaži šta drugi traže u zajednici",
-      "gde mogu da vidim sve objave u zajednici"
+      "gde mogu da vidim sve objave u zajednici",
+      "otvori tablu namera",
+      "gde mogu da vidim sve što članovi zajednice nude ili traže",
+      "hoću da pregledam objave za učenje, mentoring i aktivnosti u zajednici"
     ]
   },
   "INTENTS.MATCH_DETAIL": {
@@ -929,7 +1267,10 @@
     "phrasings": [
       "pokaži moje objave u zajednici",
       "šta sam ja postavio na tabli",
-      "gde su moji intenti"
+      "gde su moji intenti",
+      "pokaži moje intente na tabli",
+      "gde su objave koje sam ja postavio u zajednici",
+      "hoću da vidim šta sam ja tražio ili nudilo na tabli namera"
     ]
   },
   "LIFE_COMPASS.OVERLAY": {
@@ -937,7 +1278,10 @@
     "phrasings": [
       "otvori moj Life Compass",
       "gde mogu da vidim svoje životne ciljeve",
-      "pokaži mi moje ciljeve"
+      "pokaži mi moje ciljeve",
+      "otvori moj životni kompas",
+      "gde mogu da podesim ili promenim svoj glavni životni cilj",
+      "hoću da vidim koji cilj usmerava moje Vitana preporuke"
     ]
   },
   "MEMORY.DAILY_DIARY": {
@@ -945,7 +1289,10 @@
     "phrasings": [
       "upiši današnji dan u dnevnik",
       "zabeležimo danas",
-      "otvori unos za danas"
+      "otvori unos za danas",
+      "pokaži unos za jedan dan",
+      "gde mogu da zabeležim šta se desilo određenog dana",
+      "hoću da unesem podatke za konkretan dan u dnevnik"
     ]
   },
   "MEMORY.DIARY": {
@@ -953,7 +1300,10 @@
     "phrasings": [
       "otvori moj dnevnik",
       "gde mogu da pišem dnevnik",
-      "pokaži mi unose iz dnevnika"
+      "pokaži mi unose iz dnevnika",
+      "otvori moj dnevnik razmišljanja i raspoloženja",
+      "gde mogu da pišem o svojim mislima i osećanjima",
+      "hoću da pregledam šta sam ranije upisivao u dnevnik"
     ]
   },
   "MEMORY.DIARY_BUGS": {
@@ -961,7 +1311,9 @@
     "phrasings": [
       "gde mogu da prijavim grešku",
       "pokaži mi prijavljene bagove",
-      "otvori prijavu greške iz dnevnika"
+      "otvori moje prijave grešaka u aplikaciji",
+      "gde mogu da javim da nešto u aplikaciji ne radi",
+      "hoću da prijavim bag"
     ]
   },
   "MEMORY.OVERVIEW": {
@@ -969,7 +1321,10 @@
     "phrasings": [
       "otvori moj Memory Garden",
       "šta sve pamtiš o meni",
-      "pokaži mi moja sećanja"
+      "pokaži mi moja sećanja",
+      "otvori vrt sećanja",
+      "gde mogu da vidim sve što Vitana zna o meni",
+      "hoću da pregledam svoja sećanja koja su sačuvana u aplikaciji"
     ]
   },
   "MEMORY.PERMISSIONS": {
@@ -977,7 +1332,10 @@
     "phrasings": [
       "šta smeš da pamtiš o meni",
       "otvori podešavanja memorije",
-      "kontroliši šta pamtiš"
+      "kontroliši šta pamtiš",
+      "otvori dozvole za memoriju",
+      "gde mogu da kontrolišem ko vidi moja sećanja",
+      "hoću da podesim šta Vitana sme da pamti o meni"
     ]
   },
   "MEMORY.RECALL": {
@@ -985,7 +1343,10 @@
     "phrasings": [
       "pretraži moja sećanja",
       "nađi nešto što sam ti rekao",
-      "otvori pretragu memorije"
+      "otvori pretragu memorije",
+      "pokaži mi pretragu sećanja",
+      "gde mogu da pronađem nešto iz starih razgovora",
+      "hoću da pretražim šta sam ranije pričao"
     ]
   },
   "MEMORY.TIMELINE": {
@@ -993,7 +1354,10 @@
     "phrasings": [
       "pokaži mi moju vremensku liniju",
       "otvori tajmlajn mojih sećanja",
-      "gde mogu da vidim hronologiju svog života"
+      "gde mogu da vidim hronologiju svog života",
+      "otvori hronologiju mojih sećanja",
+      "gde vidim sve što se desilo po datumu",
+      "hoću da prođem kroz svoja sećanja redom kako su se dešavala"
     ]
   },
   "NEWS.DETAIL": {
@@ -1021,7 +1385,10 @@
     "phrasings": [
       "brzi pogled na moj Vitana Index",
       "otvori Vitana Index panel",
-      "pokaži mi breakdown indeksa"
+      "pokaži mi breakdown indeksa",
+      "pokaži mi moj Vitana indeks sa svim stubovima",
+      "gde vidim kako stojim po svih pet oblasti Vitana indeksa",
+      "hoću da vidim skor i razlaz po stubovima"
     ]
   },
   "OVERLAY.WALLET_POPUP": {
@@ -1037,7 +1404,10 @@
     "phrasings": [
       "otvori moj profil",
       "gde mogu da promenim profilnu sliku",
-      "uredi moj profil"
+      "uredi moj profil",
+      "pokaži mi moje lične podatke i bio",
+      "gde mogu da promenim ime i opis na profilu",
+      "hoću da uredim svoju profilnu stranicu"
     ]
   },
   "PROFILE.PRIVACY": {
@@ -1045,7 +1415,10 @@
     "phrasings": [
       "ko može da vidi moj profil",
       "otvori vidljivost profila",
-      "podesi ko vidi moje podatke"
+      "podesi ko vidi moje podatke",
+      "otvori podešavanja ko može šta da vidi na mom profilu",
+      "gde mogu da sakrijem određene delove profila od drugih",
+      "hoću da podesim vidljivost pojedinih sekcija svog profila"
     ]
   },
   "PROFILE.PUBLIC": {
@@ -1059,7 +1432,10 @@
     "phrasings": [
       "idi na početnu stranicu Vitanaland",
       "otvori Maxina landing page",
-      "pokaži mi ulaznu stranicu Vitanaland"
+      "pokaži mi ulaznu stranicu Vitanaland",
+      "odvedi me na glavnu stranicu Vitanaland zajednice",
+      "gde je početna stranica Maxina platforme",
+      "hoću da vidim javni ulaz u Vitanaland"
     ]
   },
   "PUBLIC.PRIVACY": {
@@ -1067,7 +1443,10 @@
     "phrasings": [
       "pokaži mi politiku privatnosti",
       "kako rukujete mojim podacima",
-      "otvori privacy policy"
+      "otvori privacy policy",
+      "otvori stranicu o zaštiti podataka",
+      "gde piše kako čuvate moje lične podatke",
+      "hoću da pročitam vašu politiku privatnosti"
     ]
   },
   "PUBLIC.TERMS": {
@@ -1075,7 +1454,10 @@
     "phrasings": [
       "pokaži mi uslove korišćenja",
       "otvori pravila i uslove",
-      "gde su terms and conditions"
+      "gde su terms and conditions",
+      "otvori uslove korišćenja aplikacije",
+      "gde mogu da pročitam pravna pravila platforme",
+      "hoću da vidim šta piše u uslovima pre nego što nastavim"
     ]
   },
   "REMINDERS.OVERVIEW": {
@@ -1083,7 +1465,10 @@
     "phrasings": [
       "pokaži mi moje podsetnike",
       "koje podsetnike imam",
-      "otvori podsetnike"
+      "otvori podsetnike",
+      "otvori listu svih mojih podsetnika",
+      "gde mogu da dodam ili obrišem podsetnik",
+      "hoću da vidim i uredim sve zakazane podsetnike"
     ]
   },
   "SEARCH.OVERVIEW": {
@@ -1091,7 +1476,10 @@
     "phrasings": [
       "otvori pretragu",
       "želim da pretražim aplikaciju",
-      "gde mogu nešto da potražim"
+      "gde mogu nešto da potražim",
+      "pokaži mi globalnu pretragu",
+      "gde mogu da tražim članove, sadržaj i usluge u aplikaciji",
+      "hoću da pretražim celu Maxina platformu"
     ]
   },
   "SETTINGS.BILLING": {
@@ -1099,7 +1487,10 @@
     "phrasings": [
       "otvori naplatu",
       "gde mogu da upravljam plaćanjima",
-      "pokaži mi podešavanja naplate"
+      "pokaži mi podešavanja naplate",
+      "pokaži mi pregled naplate i pretplate",
+      "gde vidim koliko plaćam i za šta",
+      "hoću da proverim svoje troškove u aplikaciji"
     ]
   },
   "SETTINGS.BILLING_CREATOR": {
@@ -1107,7 +1498,10 @@
     "phrasings": [
       "pokaži mi moje kreatorske isplate",
       "kada ću biti plaćen kao kreator",
-      "otvori isplate za kreatore"
+      "otvori isplate za kreatore",
+      "otvori deo za kreatorske zarade",
+      "gde vidim koliko sam zaradio kao kreator",
+      "hoću da proverim status svojih isplata kao kreator"
     ]
   },
   "SETTINGS.BILLING_INVOICES": {
@@ -1115,7 +1509,9 @@
     "phrasings": [
       "gde mogu da preuzmem fakture",
       "pokaži mi moje račune",
-      "otvori fakture i priznanice"
+      "otvori fakture i priznanice",
+      "gde mogu da nađem potvrde o plaćanju",
+      "hoću da preuzmem račune za prethodne uplate"
     ]
   },
   "SETTINGS.BILLING_PAYMENT": {
@@ -1123,7 +1519,10 @@
     "phrasings": [
       "kako da promenim način plaćanja",
       "gde mogu da ažuriram svoju karticu",
-      "otvori podešavanja plaćanja"
+      "otvori podešavanja plaćanja",
+      "otvori podešavanja načina plaćanja",
+      "gde mogu da dodam ili zamenim karticu",
+      "hoću da promenim platnu karticu koja se koristi za pretplatu"
     ]
   },
   "SETTINGS.BILLING_PLAN": {
@@ -1131,7 +1530,10 @@
     "phrasings": [
       "koji plan koristim",
       "gde mogu da vidim svoju pretplatu",
-      "pokaži mi moj trenutni plan"
+      "pokaži mi moj trenutni plan",
+      "otvori informacije o mom trenutnom planu članstva",
+      "gde mogu da vidim ili promenim nivo pretplate",
+      "hoću da nadogradim svoj plan na viši nivo"
     ]
   },
   "SETTINGS.CONNECTED_APPS": {
@@ -1139,7 +1541,10 @@
     "phrasings": [
       "koje aplikacije su povezane sa mojim nalogom",
       "pokaži mi konektore i povezane aplikacije",
-      "gde mogu da upravljam povezanim aplikacijama"
+      "gde mogu da upravljam povezanim aplikacijama",
+      "pokaži mi sve integracije koje su vezane za moj nalog",
+      "gde mogu da vidim listu svih konektora koje koristim",
+      "hoću da dodam ili uklоnim neku aplikaciju koja je povezana sa nalogom"
     ]
   },
   "SETTINGS.LIMITATIONS": {
@@ -1147,7 +1552,10 @@
     "phrasings": [
       "gde unosim svoje zdravstvene ograničenja",
       "kako da dodam alergije i povrede",
-      "pokaži mi gde se podešavaju zdravstvena ograničenja"
+      "pokaži mi gde se podešavaju zdravstvena ograničenja",
+      "otvori zdravstvena ograničenja",
+      "gde upisujem svoje povrede i hronična stanja",
+      "hoću da naznačim šta ne smem da radim zbog zdravlja"
     ]
   },
   "SETTINGS.NOTIFICATIONS": {
@@ -1155,7 +1563,10 @@
     "phrasings": [
       "kako da isključim obaveštenja",
       "gde su podešavanja notifikacija",
-      "ne želim više da primam push obaveštenja"
+      "ne želim više da primam push obaveštenja",
+      "otvori obaveštenja",
+      "gde podešavam koja upozorenja da primam",
+      "hoću da smanjim broj poruka koje mi aplikacija šalje"
     ]
   },
   "SETTINGS.OVERVIEW": {
@@ -1163,7 +1574,10 @@
     "phrasings": [
       "otvori podešavanja",
       "pokaži mi moja podešavanja naloga",
-      "gde su podešavanja aplikacije"
+      "gde su podešavanja aplikacije",
+      "idi na podešavanja",
+      "gde su sve opcije za moj nalog",
+      "hoću da podesim nešto u aplikaciji"
     ]
   },
   "SETTINGS.PREFERENCES": {
@@ -1171,7 +1585,10 @@
     "phrasings": [
       "otvori moje preference",
       "gde mogu da podesim preference aplikacije",
-      "pokaži preference"
+      "pokaži preference",
+      "otvori moje lične preference u aplikaciji",
+      "gde mogu da pronađem opšte preference",
+      "hoću da prilagodim kako se aplikacija ponaša prema meni"
     ]
   },
   "SETTINGS.PREFERENCES_ACCESSIBILITY": {
@@ -1179,7 +1596,10 @@
     "phrasings": [
       "gde su podešavanja pristupačnosti",
       "kako da povećam tekst u aplikaciji",
-      "otvori opcije pristupačnosti"
+      "otvori opcije pristupačnosti",
+      "otvori pristupačnost u podešavanjima",
+      "gde mogu da nađem opcije za lakše korišćenje aplikacije",
+      "hoću da prilagodim prikaz teksta i kontrast"
     ]
   },
   "SETTINGS.PREFERENCES_APPEARANCE": {
@@ -1187,7 +1607,10 @@
     "phrasings": [
       "kako da prebacim na tamni mod",
       "gde mogu da promenim temu aplikacije",
-      "otvori podešavanja izgleda"
+      "otvori podešavanja izgleda",
+      "otvori izgled aplikacije",
+      "gde biram boje i temu interfejsa",
+      "hoću da uključim tamnu pozadinu u aplikaciji"
     ]
   },
   "SETTINGS.PREFERENCES_LANGUAGE": {
@@ -1195,7 +1618,9 @@
     "phrasings": [
       "gde mogu da promenim jezik aplikacije",
       "kako da prebacim aplikaciju na nemački",
-      "otvori podešavanja jezika i regiona"
+      "otvori podešavanja jezika i regiona",
+      "gde mogu da promenim region u aplikaciji",
+      "hoću da prebacim aplikaciju na drugi jezik"
     ]
   },
   "SETTINGS.PRIVACY": {
@@ -1203,7 +1628,9 @@
     "phrasings": [
       "otvori podešavanja privatnosti",
       "gde mogu da vidim ko ima pristup mojim podacima",
-      "pokaži mi opcije privatnosti"
+      "pokaži mi opcije privatnosti",
+      "gde mogu da kontrolišem šta Vitana čuva o meni",
+      "hoću da podesim šta se deli sa zajednicom"
     ]
   },
   "SETTINGS.PRIVACY_DATA": {
@@ -1211,7 +1638,10 @@
     "phrasings": [
       "koje podatke delim sa aplikacijom",
       "gde mogu da podesim deljenje podataka",
-      "pokaži mi podešavanja deljenih podataka"
+      "pokaži mi podešavanja deljenih podataka",
+      "otvori deljenje podataka",
+      "gde vidim tačno koje podatke aplikacija koristi i deli",
+      "hoću da ograničim koje informacije o meni idu dalje"
     ]
   },
   "SETTINGS.PRIVACY_SECURITY": {
@@ -1219,7 +1649,10 @@
     "phrasings": [
       "kako da promenim lozinku",
       "gde su podešavanja bezbednosti naloga",
-      "otvori dvofaktorsku autentifikaciju"
+      "otvori dvofaktorsku autentifikaciju",
+      "otvori bezbednost naloga",
+      "gde mogu da podesim dvostepenu verifikaciju",
+      "hoću da promenim šifru svog naloga"
     ]
   },
   "SETTINGS.PRIVACY_VISIBILITY": {
@@ -1227,7 +1660,9 @@
     "phrasings": [
       "podešavanja vidljivosti naloga",
       "gde mogu da podesim vidljivost profila",
-      "kako da sakrijem profil od pretrage"
+      "kako da sakrijem profil od pretrage",
+      "gde podešavam ko može da me vidi na platformi",
+      "hoću da moj profil ne bude vidljiv ostalim članovima"
     ]
   },
   "SETTINGS.SOCIAL": {
@@ -1235,7 +1670,10 @@
     "phrasings": [
       "pokaži mi povezane društvene mreže",
       "gde mogu da povežem svoje društvene naloge",
-      "otvori podešavanja društvenih mreža"
+      "otvori podešavanja društvenih mreža",
+      "otvori društvene naloge",
+      "gde mogu da vidim koje društvene mreže su vezane za moj nalog",
+      "hoću da povežem ili odvojim neki društveni nalog"
     ]
   },
   "SETTINGS.SUPPORT": {
@@ -1243,7 +1681,9 @@
     "phrasings": [
       "treba mi pomoć sa aplikacijom",
       "otvori podršku",
-      "gde mogu da pronađem pomoć"
+      "gde mogu da pronađem pomoć",
+      "gde mogu da prijavim problem sa aplikacijom",
+      "hoću da kontaktiram nekoga ko može da mi pomogne"
     ]
   },
   "SETTINGS.SUPPORT_COMMUNITY": {
@@ -1251,7 +1691,10 @@
     "phrasings": [
       "gde mogu da pitam zajednicu za pomoć",
       "otvori forum zajednice",
-      "pokaži mi pomoć od članova zajednice"
+      "pokaži mi pomoć od članova zajednice",
+      "otvori pomoć zajednice",
+      "gde mogu da vidim šta su drugi članovi pitali i odgovorili",
+      "hoću da postavim pitanje ostalim korisnicima aplikacije"
     ]
   },
   "SETTINGS.SUPPORT_CONTACT": {
@@ -1259,7 +1702,10 @@
     "phrasings": [
       "kako da kontaktiram podršku",
       "gde mogu da pošaljem poruku timu podrške",
-      "hoću da razgovaram sa nekim iz podrške"
+      "hoću da razgovaram sa nekim iz podrške",
+      "otvori ekran za kontakt sa podrškom",
+      "gde mogu da pošaljem tiket ili snimim poruku za podršku",
+      "hoću da prijavim problem direktno timu podrške"
     ]
   },
   "SETTINGS.SUPPORT_FAQ": {
@@ -1267,7 +1713,10 @@
     "phrasings": [
       "pokaži mi često postavljana pitanja",
       "gde su FAQ članci",
-      "otvori bazu znanja"
+      "otvori bazu znanja",
+      "otvori česta pitanja podrške",
+      "gde mogu da nađem pomoćne članke i odgovore na uobičajena pitanja",
+      "hoću da potražim odgovor u bazi znanja pre nego što kontaktiram podršku"
     ]
   },
   "SETTINGS.TENANT_ROLE": {
@@ -1275,7 +1724,10 @@
     "phrasings": [
       "kako da promenim svoju ulogu",
       "u kojoj sam zajednici trenutno",
-      "gde mogu da prebacim tenant ili ulogu"
+      "gde mogu da prebacim tenant ili ulogu",
+      "otvori podešavanja tenanta i uloge",
+      "gde mogu da vidim i promenim svoju trenutnu ulogu u zajednici",
+      "hoću da se prebacim na drugu ulogu, recimo na profesionalca ili admina"
     ]
   },
   "SHARING.CAMPAIGN_DETAIL": {
@@ -1286,7 +1738,9 @@
     "phrasings": [
       "pokaži mi moje kampanje deljenja",
       "gde mogu da vidim aktivne kampanje",
-      "otvori moje kampanje"
+      "otvori moje kampanje",
+      "gde mogu da pratim rezultate svojih kampanja deljenja",
+      "hoću da vidim koje mi kampanje trenutno rade i kako se pokazuju"
     ]
   },
   "SHARING.DATA_CONSENT": {
@@ -1294,7 +1748,10 @@
     "phrasings": [
       "gde mogu da vidim šta sam pristao da delim",
       "otvori podešavanja podataka i pristanka",
-      "pokaži mi moje saglasnosti"
+      "pokaži mi moje saglasnosti",
+      "otvori podešavanja podataka i saglasnosti",
+      "gde mogu da upravljam time šta delim i kojim uslovima sam dao saglasnost",
+      "hoću da izmenim šta aplikacija sme da koristi od mojih podataka"
     ]
   },
   "SHARING.DISTRIBUTION": {
@@ -1302,7 +1759,10 @@
     "phrasings": [
       "gde mogu da vidim kako se moj sadržaj distribuira",
       "pokaži mi distribuciju sadržaja",
-      "otvori distribuciju"
+      "otvori distribuciju",
+      "otvori praćenje distribucije sadržaja",
+      "gde mogu da vidim do koga je stigao moj sadržaj koji sam podelio",
+      "hoću da proverim kako se širi sadržaj koji sam objavio"
     ]
   },
   "SHARING.OVERVIEW": {
@@ -1310,7 +1770,10 @@
     "phrasings": [
       "otvori deljenje",
       "kako da podelim Maxinu sa prijateljima",
-      "pokaži mi opcije deljenja"
+      "pokaži mi opcije deljenja",
+      "otvori stranicu za deljenje Maxine",
+      "gde mogu da pozovem prijatelje i zaradim nagrade za preporuke",
+      "hoću da podelim Maxinu sa nekim i vidim kako to funkcioniše"
     ]
   },
   "WALLET.ACTIONS": {
@@ -1318,7 +1781,10 @@
     "phrasings": [
       "kako da pošaljem kredite",
       "gde mogu da dopunim novčanik",
-      "otvori akcije novčanika"
+      "otvori akcije novčanika",
+      "otvori akcije u novčaniku",
+      "gde mogu da pošaljem, zamenim ili podignem kredite iz novčanika",
+      "hoću da kupim kredite ili prebacim sredstva nekome"
     ]
   },
   "WALLET.ACTIVITY": {
@@ -1326,7 +1792,10 @@
     "phrasings": [
       "pokaži mi istoriju transakcija",
       "gde mogu da vidim aktivnost novčanika",
-      "otvori moje transakcije"
+      "otvori moje transakcije",
+      "otvori istoriju aktivnosti novčanika",
+      "gde mogu da vidim sve prošle transakcije u novčaniku",
+      "hoću da proverim šta se dešavalo na mom novčaniku u poslednje vreme"
     ]
   },
   "WALLET.BALANCE": {
@@ -1334,7 +1803,10 @@
     "phrasings": [
       "koliko kredita imam",
       "gde mogu da vidim stanje na novčaniku",
-      "pokaži mi moje pogodnosti i balans"
+      "pokaži mi moje pogodnosti i balans",
+      "otvori stanje i pogodnosti",
+      "gde mogu da vidim koliko kredita imam i koje pogodnosti mi trenutni nivo donosi",
+      "hoću da proverim šta sam otključao na svom trenutnom nivou u Maxini"
     ]
   },
   "WALLET.BALANCE_MEMBERSHIP": {
@@ -1342,7 +1814,10 @@
     "phrasings": [
       "pokaži mi status članstva u novčaniku",
       "gde je kartica sa članstvom",
-      "otvori članstvo u novčaniku"
+      "otvori članstvo u novčaniku",
+      "otvori karticu članstva u novčaniku",
+      "gde u novčaniku mogu da vidim detalje svog članstva",
+      "hoću da proverim na kom sam planu članstva unutar stanja novčanika"
     ]
   },
   "WALLET.BALANCE_OPTIMIZATION": {
@@ -1350,7 +1825,10 @@
     "phrasings": [
       "kako da optimizujem stanje na novčaniku",
       "gde mogu da vidim savete za uštedu kredita",
-      "pokaži mi optimizaciju balansa"
+      "pokaži mi optimizaciju balansa",
+      "otvori karticu optimizacije u novčaniku",
+      "gde mogu da vidim načine da bolje iskoristim kredite koje imam",
+      "hoću da vidim šta mogu da uradim da maksimiziram stanje na novčaniku"
     ]
   },
   "WALLET.BALANCE_TOKENS": {
@@ -1358,7 +1836,10 @@
     "phrasings": [
       "koliko tokena imam",
       "pokaži mi moje tokene",
-      "gde su moji tokeni u novčaniku"
+      "gde su moji tokeni u novčaniku",
+      "otvori karticu tokena u novčaniku",
+      "gde u okviru stanja novčanika mogu da vidim svoje tokene",
+      "hoću da proverim koliko tokena imam na kartici tokena"
     ]
   },
   "WALLET.OVERVIEW": {
@@ -1366,7 +1847,10 @@
     "phrasings": [
       "otvori moj Maxina novčanik",
       "pokaži mi novčanik",
-      "gde su moj balans i nagrade u aplikaciji"
+      "gde su moj balans i nagrade u aplikaciji",
+      "pokaži mi pregled celog novčanika",
+      "gde mogu da vidim balans, pretplate i nagrade na jednom mestu",
+      "hoću da otvorim glavni ekran svog Maxina novčanika"
     ]
   },
   "WALLET.REWARDS": {
@@ -1374,7 +1858,10 @@
     "phrasings": [
       "koliko sam zaradio od preporuka",
       "gde mogu da vidim svoje nagrade i provizije",
-      "pokaži mi moje zarade"
+      "pokaži mi moje zarade",
+      "otvori nagrade i provizije",
+      "gde mogu da vidim koliko sam zaradio od deljenja platforme i rada sa klijentima",
+      "hoću da proverim sve provizije i nagrade koje su mi se nakupile"
     ]
   },
   "WALLET.REWARDS_INTELLIGENCE": {
@@ -1382,7 +1869,10 @@
     "phrasings": [
       "kako da zaradim više nagrada",
       "pokaži mi uvide o nagradama",
-      "gde su saveti za zaradu nagrada"
+      "gde su saveti za zaradu nagrada",
+      "otvori tab sa uvidima o nagradama",
+      "gde mogu da vidim analize kako da povećam nagrade",
+      "hoću da proverim šta treba da radim da bih zaradio više nagrada"
     ]
   },
   "WALLET.REWARDS_PENDING": {
@@ -1390,7 +1880,10 @@
     "phrasings": [
       "koje nagrade još nisam primio",
       "pokaži mi nagrade na čekanju",
-      "gde su nagrade koje još nisu isplaćene"
+      "gde su nagrade koje još nisu isplaćene",
+      "prikaži mi tab sa nagradama na čekanju",
+      "gde vidim nagrade koje još nisu proknjižene na moj račun",
+      "hoću da vidim koje nagrade čekaju da budu odobrene"
     ]
   },
   "WALLET.REWARDS_REFERRAL": {
@@ -1398,7 +1891,10 @@
     "phrasings": [
       "šta sam dobio za pozivanje prijatelja",
       "pokaži mi nagrade od referala",
-      "gde su moje referral nagrade"
+      "gde su moje referral nagrade",
+      "otvori tab sa nagradama za preporuke",
+      "gde mogu da vidim koliko sam zaradio od preporuka",
+      "hoću da proverim nagrade koje sam dobio što sam doveo nove članove"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {
@@ -1406,7 +1902,10 @@
     "phrasings": [
       "koje pretplate imam aktivne",
       "pokaži mi moje pretplate",
-      "gde mogu da vidim šta plaćam mesečno"
+      "gde mogu da vidim šta plaćam mesečno",
+      "otvori moje pretplate",
+      "gde vidim sve servise koje plaćam",
+      "hoću da proverim koje pretplate su mi trenutno aktivne"
     ]
   }
 }

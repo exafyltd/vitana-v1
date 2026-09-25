@@ -4,7 +4,10 @@
     "phrasings": [
       "Vitana ile konuşmak istiyorum, companion ekranını aç",
       "AI companion'ı aç",
-      "Vitana'yla birebir sohbet edebileceğim ekran nerede"
+      "Vitana'yla birebir sohbet edebileceğim ekran nerede",
+      "Yol arkadaşı ekranını aç",
+      "Vitana ile birebir konuşabileceğim yer nerede",
+      "Seninle derin bir sohbet etmek istiyorum"
     ]
   },
   "AI.DAILY_SUMMARY": {
@@ -12,7 +15,10 @@
     "phrasings": [
       "Bugünkü özetimi göster",
       "Günlük sağlık özetim nerede",
-      "Bugün ne oldu, özet olarak göster"
+      "Bugün ne oldu, özet olarak göster",
+      "Günlük özetim ekranını aç",
+      "Bugünkü sağlık ve aktivite özetimi nerede bulabilirim",
+      "Bugün neler olduğunu kısaca görmek istiyorum"
     ]
   },
   "AI.INSIGHTS": {
@@ -20,7 +26,10 @@
     "phrasings": [
       "AI içgörülerimi göster",
       "Verilerimden ne çıkardın, göster",
-      "Kişisel içgörülerim nerede"
+      "Kişisel içgörülerim nerede",
+      "İçgörüler ekranını aç",
+      "Sağlık verilerimden çıkan örüntüleri nerede görebilirim",
+      "Benim hakkımda ne keşfettiğini öğrenmek istiyorum"
     ]
   },
   "AI.OVERVIEW": {
@@ -28,7 +37,10 @@
     "phrasings": [
       "AI asistan bölümünü aç",
       "AI özelliklerini göster",
-      "Yapay zeka araçları nerede"
+      "Yapay zeka araçları nerede",
+      "Yapay zeka asistanı genel bakış ekranını aç",
+      "Yapay zeka özelliklerinin hepsini bir arada nerede görebilirim",
+      "Hangi AI araçlarım var, genel bir bakış atmak istiyorum"
     ]
   },
   "AI.RECOMMENDATIONS": {
@@ -36,7 +48,10 @@
     "phrasings": [
       "Bana ne öneriyorsun, göster",
       "Kişisel önerilerimi görmek istiyorum",
-      "AI önerileri nerede"
+      "AI önerileri nerede",
+      "Öneri ekranını aç",
+      "Bana özel sağlık ve içerik önerilerini nerede görebilirim",
+      "Bugün ne yapmamı tavsiye ediyorsun, göster"
     ]
   },
   "ASSISTANT.AI": {
@@ -44,7 +59,10 @@
     "phrasings": [
       "Asistanın AI sekmesini aç",
       "Metin asistanı ayarlarını göster",
-      "Asistanda AI sekmesi nerede"
+      "Asistanda AI sekmesi nerede",
+      "Asistan ayarlarındaki yapay zeka sekmesini aç",
+      "Metin asistanımın ayarları asistanda nerede",
+      "Asistanın AI sekmesinde yazılı asistan ayarlarını düzenlemek istiyorum"
     ]
   },
   "ASSISTANT.AUTOPILOT": {
@@ -52,7 +70,10 @@
     "phrasings": [
       "Autopilot ayarlarını aç",
       "Otomasyonlarımı göster",
-      "Autopilot'u nerede ayarlayabilirim"
+      "Autopilot'u nerede ayarlayabilirim",
+      "Asistanda autopilot ve otomasyon sekmesini aç",
+      "Vitana'nın benim için otomatik çalıştırdığı şeyleri asistanda nerede görebilirim",
+      "Otomasyonlarımı asistan üzerinden ayarlamak istiyorum"
     ]
   },
   "ASSISTANT.OVERVIEW": {
@@ -60,7 +81,10 @@
     "phrasings": [
       "Vitana Chat'i aç",
       "Seninle yazışmak istiyorum",
-      "Vitana ile sohbet ekranı nerede"
+      "Vitana ile sohbet ekranı nerede",
+      "Vitana Sohbet ekranını aç",
+      "Seninle yazılı olarak konuşabileceğim sohbet penceresi nerede",
+      "Orb dışında seninle metin üzerinden konuşmak istiyorum"
     ]
   },
   "ASSISTANT.PROACTIVE": {
@@ -68,7 +92,10 @@
     "phrasings": [
       "Kendi kendine ne zaman konuşacağını nereden ayarlayabilirim",
       "Proaktif konuşmayı kapat",
-      "Proaktif konuşma ayarlarını aç"
+      "Proaktif konuşma ayarlarını aç",
+      "Asistanda proaktif konuşma sekmesini aç",
+      "Vitana'nın kendiliğinden ne zaman konuşacağını asistanda nereden ayarlayabilirim",
+      "Vitana'nın bana kendi başına bildirim gönderme sıklığını ayarlamak istiyorum"
     ]
   },
   "ASSISTANT.REFERRALS": {
@@ -76,7 +103,10 @@
     "phrasings": [
       "Asistanın referans sekmesini aç",
       "Asistanda referanslarımı göster",
-      "Asistan referans ödülleri nerede"
+      "Asistan referans ödülleri nerede",
+      "Asistanın tavsiye sekmesini aç",
+      "Asistandaki tavsiye ödüllerimi nerede görebilirim",
+      "Asistan üzerinden birini davet etmek ve ödül kazanmak istiyorum"
     ]
   },
   "ASSISTANT.VOICE": {
@@ -84,7 +114,10 @@
     "phrasings": [
       "Sesini nereden değiştirebilirim",
       "Ses ayarlarını aç",
-      "Vitana'nın sesini değiştir"
+      "Vitana'nın sesini değiştir",
+      "Asistanda ses sekmesini aç",
+      "Vitana'nın sesini ve orb deneyimini asistanda nereden özelleştirebilirim",
+      "Sesli asistan tercihlerimi düzenlemek istiyorum"
     ]
   },
   "AUTH.ALKALMA_PORTAL": {
@@ -92,7 +125,10 @@
     "phrasings": [
       "Alkalma portalını aç",
       "Alkalma'ya kayıt olmak istiyorum",
-      "Alkalma giriş ekranı nerede"
+      "Alkalma giriş ekranı nerede",
+      "Alkalma giriş ekranını aç",
+      "Alkalma'ya nasıl üye olurum, o ekran nerede",
+      "Alkalma hesabımla oturum açmak istiyorum"
     ]
   },
   "AUTH.EARTHLINKS_PORTAL": {
@@ -100,7 +136,10 @@
     "phrasings": [
       "Earthlinks portalını aç",
       "Earthlinks'e katılmak istiyorum",
-      "Earthlinks giriş sayfasına git"
+      "Earthlinks giriş sayfasına git",
+      "Earthlinks kayıt ekranını aç",
+      "Earthlinks üyelik sayfası nerede",
+      "Earthlinks hesabımla giriş yapmak istiyorum"
     ]
   },
   "AUTH.MAXINA_PORTAL": {
@@ -108,7 +147,10 @@
     "phrasings": [
       "Maxina'ya kayıt olmak istiyorum",
       "Hesap oluşturmak istiyorum",
-      "Maxina giriş ekranını aç"
+      "Maxina giriş ekranını aç",
+      "Maxina topluluğuna katılma ekranını aç",
+      "Maxina'ya üye olmak için nereye gitmem gerekiyor",
+      "Maxina'da yeni bir hesap açmak istiyorum"
     ]
   },
   "AUTOPILOT.MY_JOURNEY": {
@@ -116,7 +158,10 @@
     "phrasings": [
       "My Journey'i aç",
       "90 günlük yolculuğumu göster",
-      "Rehberli seanslarım nerede"
+      "Rehberli seanslarım nerede",
+      "Yolculuğum ekranını aç",
+      "90 günlük dalga ve kilometre taşlarımı nerede görebilirim",
+      "Rehberli adım adım yolculuğuma kaldığım yerden devam etmek istiyorum"
     ]
   },
   "BUSINESS.ANALYTICS": {
@@ -124,7 +169,10 @@
     "phrasings": [
       "İş analizlerimi göster",
       "İşim nasıl gidiyor, istatistiklere bak",
-      "Maxina iş performansım nerede"
+      "Maxina iş performansım nerede",
+      "Maxina iş performans raporlarımı aç",
+      "Gelir ve rezervasyon istatistiklerimi nerede görebilirim",
+      "İşimin büyüme ve kazanç verilerini incelemek istiyorum"
     ]
   },
   "BUSINESS.CLIENTS": {
@@ -132,7 +180,10 @@
     "phrasings": [
       "Müşterilerimi göster",
       "Müşteri listem nerede",
-      "Maxina'daki müşterilerimi yönetmek istiyorum"
+      "Maxina'daki müşterilerimi yönetmek istiyorum",
+      "Müşteri kayıtlarımı aç",
+      "Mevcut müşterilerimi nerede takip edebilirim",
+      "Maxina'daki müşteri bilgilerini düzenlemek istiyorum"
     ]
   },
   "BUSINESS.INSIGHTS_EARNINGS": {
@@ -140,7 +191,10 @@
     "phrasings": [
       "Ne kadar kazandım, göster",
       "Kazançlarımı görmek istiyorum",
-      "İş gelirim nerede"
+      "İş gelirim nerede",
+      "Gelirler sekmesini aç",
+      "İçgörüler bölümündeki kazanç dökümümü nerede görebilirim",
+      "Maxina işimden elde ettiğim gelirin ayrıntılarına bakmak istiyorum"
     ]
   },
   "BUSINESS.INSIGHTS_GROWTH": {
@@ -148,7 +202,10 @@
     "phrasings": [
       "İş büyüme metriklerimi göster",
       "Erişimim nasıl büyüyor",
-      "Maxina büyüme istatistiklerim nerede"
+      "Maxina büyüme istatistiklerim nerede",
+      "Büyüme sekmesini aç",
+      "İçgörüler bölümündeki büyüme rakamlarımı nerede bulabilirim",
+      "Maxina işimdeki abone ve erişim artışını görmek istiyorum"
     ]
   },
   "BUSINESS.LISTINGS": {
@@ -156,7 +213,10 @@
     "phrasings": [
       "İş ilanlarımı göster",
       "Maxina'daki ilanlarım nerede",
-      "Aktif ilanlarımı yönetmek istiyorum"
+      "Aktif ilanlarımı yönetmek istiyorum",
+      "Aktif ilanlarımın listesini aç",
+      "Maxina'da yayındaki ilanlarım nerede",
+      "Sunduğum teklifleri eklemek ya da düzenlemek istiyorum"
     ]
   },
   "BUSINESS.OPPORTUNITIES": {
@@ -164,7 +224,10 @@
     "phrasings": [
       "İş fırsatlarını göster",
       "Yeni iş fırsatlarını nerede bulabilirim",
-      "Bana uygun fırsatlar var mı"
+      "Bana uygun fırsatlar var mı",
+      "Bana özel iş fırsatları ekranını aç",
+      "Hizmetlerime uygun yeni fırsatları nerede görebilirim",
+      "Maxina'da yeni müşteri adaylarına ulaşmak istiyorum"
     ]
   },
   "BUSINESS.OVERVIEW": {
@@ -172,7 +235,10 @@
     "phrasings": [
       "İş merkezini aç",
       "İş alanım nerede",
-      "Maxina'daki işimi göster"
+      "Maxina'daki işimi göster",
+      "İş Merkezi ana sayfasını aç",
+      "Maxina'daki iş genel görünümüm nerede",
+      "İşimi kurup gelir elde etmek için başlangıç noktasına gitmek istiyorum"
     ]
   },
   "BUSINESS.SALES_PROMOTIONS": {
@@ -180,7 +246,10 @@
     "phrasings": [
       "Promosyonlarımı göster",
       "Promosyon oluşturmak istiyorum, nereye gideyim",
-      "Maxina kampanyalarım nerede"
+      "Maxina kampanyalarım nerede",
+      "Kampanyalar sekmesini aç",
+      "Maxina satışlarımdaki özel tekliflerimi nerede düzenleyebilirim",
+      "Yeni bir indirim kampanyası oluşturmak istiyorum"
     ]
   },
   "BUSINESS.SALES_REFERRALS": {
@@ -188,7 +257,10 @@
     "phrasings": [
       "Satış referanslarımı göster",
       "Referans satışlarımı nerede görebilirim",
-      "Maxina satış referansları nerede"
+      "Maxina satış referansları nerede",
+      "Satış Tavsiyeleri sekmesini aç",
+      "Maxina'da yeniden satıştan kazandığım tavsiyeleri nerede görebilirim",
+      "Referans yoluyla elde ettiğim satış gelirlerimi incelemek istiyorum"
     ]
   },
   "BUSINESS.SELL_EARN": {
@@ -196,7 +268,10 @@
     "phrasings": [
       "Satış alanımı aç",
       "Maxina'da nasıl para kazanabilirim",
-      "Satışlarımı nerede görebilirim"
+      "Satışlarımı nerede görebilirim",
+      "Sat ve Kazan bölümünü aç",
+      "Maxina'da hizmet satarak para kazanma alanım nerede",
+      "Yeni bir gelir akışı oluşturmak için satış ekranına gitmek istiyorum"
     ]
   },
   "BUSINESS.SERVICES": {
@@ -204,7 +279,10 @@
     "phrasings": [
       "Sunduğum hizmetleri göster",
       "Hizmetlerimi nerede yönetebilirim",
-      "Maxina'daki hizmetlerimi düzenlemek istiyorum"
+      "Maxina'daki hizmetlerimi düzenlemek istiyorum",
+      "Sunduğum hizmetlerin yönetim ekranını aç",
+      "Koçluk ve seans gibi hizmetlerimi nerede güncelleyebilirim",
+      "Maxina topluluğuna sunduğum ürün ve hizmetleri düzenlemek istiyorum"
     ]
   },
   "BUSINESS.SERVICES_EVENTS": {
@@ -212,7 +290,10 @@
     "phrasings": [
       "Düzenlediğim etkinlikleri göster",
       "Kendi etkinliklerim nerede",
-      "Sunduğum seans ve sınıfları göster"
+      "Sunduğum seans ve sınıfları göster",
+      "Kendi düzenlediğim etkinlikler sekmesini aç",
+      "Sağlayıcı olarak sunduğum seans ve sınıfları nerede görebilirim",
+      "Maxina'da ev sahipliği yaptığım etkinlikleri yönetmek istiyorum"
     ]
   },
   "BUSINESS.SERVICES_PACKAGES": {
@@ -220,7 +301,10 @@
     "phrasings": [
       "Hizmet paketlerimi göster",
       "Paket ayarlamak istiyorum, nereye gideyim",
-      "Maxina'daki paketlerim nerede"
+      "Maxina'daki paketlerim nerede",
+      "Hizmet Paketleri sekmesini aç",
+      "Maxina'da sunduğum paketleri nerede görebilir ve düzenleyebilirim",
+      "Birden fazla hizmeti bir arada sunacağım yeni bir paket oluşturmak istiyorum"
     ]
   },
   "CALENDAR.OVERVIEW": {
@@ -228,7 +312,10 @@
     "phrasings": [
       "Takvimimi aç",
       "Randevularımı göster",
-      "Günlük programım nerede"
+      "Günlük programım nerede",
+      "Planlanmış aktivitelerimi göster",
+      "Yaklaşan randevularım nerede",
+      "Bu haftaki programıma bakmak istiyorum"
     ]
   },
   "COMM.EVENTS": {
@@ -236,7 +323,9 @@
     "phrasings": [
       "Topluluk etkinliklerini göster",
       "Buluşmaları nerede bulabilirim",
-      "Etkinlikler ve buluşmalar ekranını aç"
+      "Etkinlikler ve buluşmalar ekranını aç",
+      "Maxina topluluğunun yaklaşan yüz yüze buluşmalarını nerede görebilirim",
+      "Katılabileceğim topluluk etkinliklerini keşfetmek istiyorum"
     ]
   },
   "COMM.EVENTS_HOT": {
@@ -244,7 +333,10 @@
     "phrasings": [
       "Popüler etkinlikleri göster",
       "Şu an trend olan etkinlikler neler",
-      "Öne çıkan etkinlikleri göster"
+      "Öne çıkan etkinlikleri göster",
+      "Çok konuşulan etkinlikleri aç",
+      "Hype olan etkinlikleri nerede görebilirim",
+      "Toplulukta en fazla ilgi gören buluşmaları görmek istiyorum"
     ]
   },
   "COMM.EVENTS_TODAY": {
@@ -252,7 +344,10 @@
     "phrasings": [
       "Bugün hangi etkinlikler var",
       "Bugünkü etkinlikleri göster",
-      "Bugün bir şey var mı"
+      "Bugün bir şey var mı",
+      "Bugüne ait etkinlikler sekmesini aç",
+      "Bugün katılabileceğim etkinlikler nerede",
+      "Bugün hangi buluşmalar düzenleniyor, göster"
     ]
   },
   "COMM.EVENTS_UPCOMING": {
@@ -260,7 +355,10 @@
     "phrasings": [
       "Yaklaşan etkinlikleri göster",
       "Önümüzdeki etkinlikler neler",
-      "Gelecek haftaki etkinlikler nerede"
+      "Gelecek haftaki etkinlikler nerede",
+      "Önümüzdeki günlerdeki etkinlikler sekmesini aç",
+      "İleride planlanan buluşmaları nerede görebilirim",
+      "Yakında katılabileceğim etkinlikleri listelemek istiyorum"
     ]
   },
   "COMM.FEED": {
@@ -268,7 +366,10 @@
     "phrasings": [
       "Takip ettiklerimin akışını göster",
       "Takip ettiğim kişilerin gönderilerini aç",
-      "Following akışım nerede"
+      "Following akışım nerede",
+      "Takip ettiğim üyelerin etkinlik akışını aç",
+      "Takip ettiklerimin güncellemelerini nerede görebilirim",
+      "Takip ettiğim grupların ve kişilerin paylaşımlarını görmek istiyorum"
     ]
   },
   "COMM.FIND_PARTNER": {
@@ -276,7 +377,10 @@
     "phrasings": [
       "Antrenman partneri bulmak istiyorum",
       "Partner bul ekranını aç",
-      "Egzersiz arkadaşı nerede bulabilirim"
+      "Egzersiz arkadaşı nerede bulabilirim",
+      "Bana uygun partner önerilerini göster",
+      "Dans veya fitness için eşleşme önerilerini nerede bulabilirim",
+      "Benimle antrenman yapacak birini bulmak istiyorum"
     ]
   },
   "COMM.FIND_PARTNER_BOARD": {
@@ -284,7 +388,10 @@
     "phrasings": [
       "Partner panosunu aç",
       "Başkalarının partner isteklerini göster",
-      "Kim partner arıyor, göster"
+      "Kim partner arıyor, göster",
+      "Partner ilanlarının bulunduğu panoyu aç",
+      "Diğer üyelerin partner arama ilanları nerede",
+      "Kimin dans ya da spor arkadaşı aradığını görmek istiyorum"
     ]
   },
   "COMM.FIND_PARTNER_MATCHES": {
@@ -292,7 +399,10 @@
     "phrasings": [
       "Partner eşleşmelerimi göster",
       "Benimle kim eşleşti",
-      "Mevcut partner eşleşmelerim nerede"
+      "Mevcut partner eşleşmelerim nerede",
+      "Eşleşmelerim sekmesini aç",
+      "Partner tekliflerimde kimler eşleşti, nerede görebilirim",
+      "Onaylanan partner eşleşmelerimi görmek istiyorum"
     ]
   },
   "COMM.FIND_PARTNER_POSTS": {
@@ -300,7 +410,10 @@
     "phrasings": [
       "Kendi partner ilanlarımı göster",
       "Partner isteklerim nerede",
-      "Yayınladığım partner ilanlarını aç"
+      "Yayınladığım partner ilanlarını aç",
+      "Kendi partner gönderilerimin bulunduğu sekmeyi aç",
+      "Yayımladığım partner ilanlarım nerede görünüyor",
+      "Paylaştığım dans ve spor partner ilanlarımı görmek istiyorum"
     ]
   },
   "COMM.GROUP_DETAIL": {
@@ -311,7 +424,10 @@
     "phrasings": [
       "Topluluk gruplarını göster",
       "Hangi gruplara katılabilirim",
-      "Gruplar ekranını aç"
+      "Gruplar ekranını aç",
+      "Maxina topluluğundaki gruplara göz atmak istiyorum",
+      "Katılabileceğim gruplar nerede",
+      "Gruplar sayfasını aç"
     ]
   },
   "COMM.GROUPS_DISCOVER": {
@@ -319,7 +435,10 @@
     "phrasings": [
       "Yeni gruplar keşfetmek istiyorum",
       "Bana grup öner",
-      "Keşfet sekmesini aç"
+      "Keşfet sekmesini aç",
+      "Önerilen grupları keşfet sekmesinde göster",
+      "Katılmam önerilen gruplar nerede çıkıyor",
+      "Henüz üye olmadığım ama ilgimi çekebilecek grupları görmek istiyorum"
     ]
   },
   "COMM.INVITE": {
@@ -327,7 +446,10 @@
     "phrasings": [
       "Arkadaşlarımı davet etmek istiyorum",
       "Davet linkim nerede",
-      "Maxina'ya arkadaş nasıl çağırırım"
+      "Maxina'ya arkadaş nasıl çağırırım",
+      "Arkadaş davet ekranını aç",
+      "Referans ödülü kazanmak için davet bağlantım nerede",
+      "Bir arkadaşımı Maxina'ya çağırmak istiyorum"
     ]
   },
   "COMM.LIVE_ROOM_VIEWER": {
@@ -338,7 +460,10 @@
     "phrasings": [
       "Canlı odaları aç",
       "Canlı bir oturuma katılmak istiyorum, nerede",
-      "Live Rooms ekranını göster"
+      "Live Rooms ekranını göster",
+      "Canlı odalar ana sayfasını aç",
+      "Topluluk canlı odaları nerede bulunuyor",
+      "Gerçek zamanlı sesli ya da görüntülü odalara girmek istiyorum"
     ]
   },
   "COMM.LIVE_ROOMS_ALL": {
@@ -346,7 +471,10 @@
     "phrasings": [
       "Tüm canlı odaları göster",
       "Hem canlı hem planlı tüm odaları listele",
-      "Bütün live room'ları görmek istiyorum"
+      "Bütün live room'ları görmek istiyorum",
+      "Hem canlı hem de planlanmış tüm odaları bir arada göster",
+      "Tüm odalar sekmesi nerede",
+      "Hangi odalar var, hepsini tek listede görmek istiyorum"
     ]
   },
   "COMM.LIVE_ROOMS_LIVE": {
@@ -354,7 +482,10 @@
     "phrasings": [
       "Şu an kim canlı yayında",
       "Şu an aktif olan odaları göster",
-      "Canlı yayın yapan odalar nerede"
+      "Canlı yayın yapan odalar nerede",
+      "Şu an yayında olan odalar sekmesini aç",
+      "Hâlâ devam eden canlı odalar nerede görünüyor",
+      "Tam şu an aktif olan yayınlara katılmak istiyorum"
     ]
   },
   "COMM.LIVE_ROOMS_PAST": {
@@ -362,7 +493,10 @@
     "phrasings": [
       "Geçmiş canlı oturumları göster",
       "Canlı odaların kayıtlarını nerede izleyebilirim",
-      "Tamamlanan live room kayıtları nerede"
+      "Tamamlanan live room kayıtları nerede",
+      "Geçmiş oturumlar sekmesini aç",
+      "Daha önce yapılan canlı odaların kayıtları nerede",
+      "Kaçırdığım canlı yayınları tekrar izlemek istiyorum"
     ]
   },
   "COMM.LIVE_ROOMS_SCHEDULED": {
@@ -370,7 +504,10 @@
     "phrasings": [
       "Planlanmış canlı odaları göster",
       "Hangi canlı oturumlar programlanmış?",
-      "İleride başlayacak canlı odalar nerede?"
+      "İleride başlayacak canlı odalar nerede?",
+      "Planlanan odalar sekmesini aç",
+      "Henüz başlamamış canlı odaları nerede görebilirim?",
+      "Yakında başlayacak canlı oturumlara kaydolmak istiyorum"
     ]
   },
   "COMM.MATCHES": {
@@ -378,7 +515,10 @@
     "phrasings": [
       "Bana uygun üyeleri göster",
       "Kimler benimle eşleşiyor?",
-      "Önerilen üyeleri görmek istiyorum"
+      "Önerilen üyeleri görmek istiyorum",
+      "Uyumlu üyeler ekranını aç",
+      "Hedeflerime göre önerilen üyeler nerede?",
+      "Benimle aynı ilgi alanlarını paylaşan üyeleri görmek istiyorum"
     ]
   },
   "COMM.MEDIA_HUB": {
@@ -386,7 +526,10 @@
     "phrasings": [
       "Media Hub'ı aç",
       "Video ve podcastler nerede?",
-      "Topluluk medya kütüphanesini göster"
+      "Topluluk medya kütüphanesini göster",
+      "Medya Merkezi'ni aç",
+      "Topluluğun paylaştığı içeriklerin hepsini nerede bulabilirim?",
+      "Video, podcast ve müziklerin bulunduğu ana sayfaya gitmek istiyorum"
     ]
   },
   "COMM.MEDIA_MUSIC": {
@@ -394,7 +537,10 @@
     "phrasings": [
       "Biraz müzik çal",
       "Müzik bölümü nerede?",
-      "Media Hub'daki müzikleri aç"
+      "Media Hub'daki müzikleri aç",
+      "Medya Merkezi'ndeki müzik sekmesini aç",
+      "Topluluktan paylaşılan müzikler nerede?",
+      "Biraz müzik dinlemek istiyorum, müzik bölümüne götür"
     ]
   },
   "COMM.MEDIA_PODCASTS": {
@@ -402,7 +548,10 @@
     "phrasings": [
       "Podcast dinleyebileceğim yer neresi?",
       "Podcastleri göster",
-      "Topluluk podcastlerini aç"
+      "Topluluk podcastlerini aç",
+      "Medya Merkezi'ndeki podcast sekmesini aç",
+      "Topluluk podcast'lerini nerede dinleyebilirim?",
+      "Sesli bölümleri dinlemek istiyorum, podcast'lere götür"
     ]
   },
   "COMM.MEDIA_SHORTS": {
@@ -410,7 +559,10 @@
     "phrasings": [
       "Kısa videoları göster",
       "Shorts bölümünü aç",
-      "Topluluk kısa videolarını görmek istiyorum"
+      "Topluluk kısa videolarını görmek istiyorum",
+      "Medya Merkezi'ndeki kısa video akışını aç",
+      "Topluluktan paylaşılan kısa videolar hangi sekmede?",
+      "Hızlıca izleyebileceğim kısa klipler görmek istiyorum"
     ]
   },
   "COMM.MEMBERS": {
@@ -418,7 +570,10 @@
     "phrasings": [
       "Maxina topluluğundaki üyeleri göster",
       "Toplulukta başka kimler var?",
-      "Üye dizinini aç"
+      "Üye dizinini aç",
+      "Topluluk üyeleri listesini aç",
+      "Maxina'daki tüm üyeleri nerede görebilirim?",
+      "Topluluktaki birine ulaşmak istiyorum, üye rehberini göster"
     ]
   },
   "COMM.OPEN_ASKS": {
@@ -426,7 +581,10 @@
     "phrasings": [
       "Açık talepleri göster",
       "İnsanlar ne konularda yardım istiyor?",
-      "Üyelerin açık isteklerini görmek istiyorum"
+      "Üyelerin açık isteklerini görmek istiyorum",
+      "Açık istekler sayfasını aç",
+      "Yanıt bekleyen topluluk talepleri nerede?",
+      "Birine yardım etmek istiyorum, eşleşmemiş istekleri göster"
     ]
   },
   "COMM.OVERVIEW": {
@@ -434,7 +592,10 @@
     "phrasings": [
       "Maxina topluluğunu aç",
       "Beni topluluk alanına götür",
-      "Topluluk sayfasını göster"
+      "Topluluk sayfasını göster",
+      "Topluluk ana sayfasını aç",
+      "Etkinlikler, canlı odalar ve grupların olduğu topluluk bölümü nerede?",
+      "Maxina topluluğunda neler oluyor görmek istiyorum"
     ]
   },
   "COMM.TALK_TO_VITANA": {
@@ -442,7 +603,10 @@
     "phrasings": [
       "Vitana ekibiyle iletişim sayfasını aç",
       "Vitana'ya mesaj göndermek istiyorum",
-      "Talk to Vitana sayfası nerede?"
+      "Talk to Vitana sayfası nerede?",
+      "Vitana ile Konuş sayfasını aç",
+      "Vitana ekibine geri bildirim gönderebileceğim yer neresi?",
+      "Bir sorun bildirmek istiyorum, Vitana'ya ulaşma ekranını göster"
     ]
   },
   "CONNECTORS.AGENT": {
@@ -450,7 +614,10 @@
     "phrasings": [
       "Autopilot bağlantılarını göster",
       "Autopilot için servis bağlamak istiyorum",
-      "Autopilot Connectors sayfasını aç"
+      "Autopilot Connectors sayfasını aç",
+      "Autopilot bağlayıcıları sekmesini aç",
+      "Autopilot entegrasyonlarını nerede bağlayabilirim?",
+      "Autopilot için yeni bir servis eklemek istiyorum"
     ]
   },
   "CONNECTORS.AI": {
@@ -458,7 +625,10 @@
     "phrasings": [
       "Yapay zeka bağlantılarını göster",
       "Başka bir AI aracı bağlamak istiyorum",
-      "AI Connectors sayfasını aç"
+      "AI Connectors sayfasını aç",
+      "Yapay zeka bağlayıcıları sekmesini aç",
+      "Yapay zeka uygulamalarını hesabıma nerede bağlayabilirim?",
+      "Yeni bir yapay zeka sağlayıcısı eklemek istiyorum"
     ]
   },
   "CONNECTORS.FITNESS": {
@@ -466,7 +636,10 @@
     "phrasings": [
       "Fitness takipçimi nereye bağlayabilirim?",
       "Akıllı saatimi bağla",
-      "Fitness uygulamalarını bağlama sayfasını aç"
+      "Fitness uygulamalarını bağlama sayfasını aç",
+      "Fitness bağlantıları sekmesini aç",
+      "Spor uygulamalarımı ve giyilebilir cihazlarımı nerede bağlayabilirim?",
+      "Koşu saatimi uygulamaya bağlamak istiyorum"
     ]
   },
   "CONNECTORS.HEALTH": {
@@ -474,7 +647,10 @@
     "phrasings": [
       "Sağlık uygulamamı bağlamak istiyorum",
       "Apple Health veya Google Fit'i nasıl bağlarım?",
-      "Sağlık bağlantıları sayfasını göster"
+      "Sağlık bağlantıları sayfasını göster",
+      "Sağlık bağlantıları sekmesini aç",
+      "Laboratuvar ve sağlık uygulamalarımı nerede entegre edebilirim?",
+      "Sağlık verilerimi senkronize etmek için uygulama bağlamak istiyorum"
     ]
   },
   "CONNECTORS.MEDIA": {
@@ -482,7 +658,10 @@
     "phrasings": [
       "Spotify'ı bağla",
       "Müzik ve video hesaplarımı nasıl bağlarım?",
-      "Medya bağlantıları sayfasını aç"
+      "Medya bağlantıları sayfasını aç",
+      "Müzik ve video bağlantıları sekmesini aç",
+      "Müzik ve video uygulamalarımı nerede bağlayabilirim?",
+      "Favori müzik platformumu hesabıma eklemek istiyorum"
     ]
   },
   "CONNECTORS.OTHER": {
@@ -490,7 +669,10 @@
     "phrasings": [
       "Diğer bağlantıları göster",
       "Başka entegrasyonlar var mı?",
-      "Other Connectors sayfasını aç"
+      "Other Connectors sayfasını aç",
+      "Diğer bağlantılar sekmesini açar mısın?",
+      "Fitness, sağlık veya sosyal medya dışındaki entegrasyonlar nerede?",
+      "Listede olmayan uygulamaları bağlamak istiyorum"
     ]
   },
   "CONNECTORS.PRODUCTIVITY": {
@@ -498,7 +680,10 @@
     "phrasings": [
       "E-postamı bağlamak istiyorum",
       "Google Takvimimi nasıl bağlarım?",
-      "Mail ve takvim bağlantıları sayfasını aç"
+      "Mail ve takvim bağlantıları sayfasını aç",
+      "E-posta ve takvim bağlantıları sekmesini aç",
+      "Takvim uygulamalarını bağlayabileceğim yer neresi?",
+      "Ajandamı ve e-postamı uygulamaya entegre etmek istiyorum"
     ]
   },
   "CONNECTORS.SOCIAL": {
@@ -506,7 +691,10 @@
     "phrasings": [
       "Sosyal medya hesaplarımı bağla",
       "Instagram'ı nasıl bağlarım?",
-      "Sosyal medya bağlantıları sayfasını göster"
+      "Sosyal medya bağlantıları sayfasını göster",
+      "Sosyal medya bağlantıları sekmesini aç",
+      "Sosyal medya hesaplarımı nerede entegre edebilirim?",
+      "Twitter veya Facebook gibi hesaplarımı uygulamaya bağlamak istiyorum"
     ]
   },
   "DISCOVER.AI_PICKS": {
@@ -514,7 +702,10 @@
     "phrasings": [
       "Benim için yapay zekanın önerdiği ürünleri göster",
       "AI Picks sekmesini aç",
-      "Sana göre ne öneriyor yapay zeka?"
+      "Sana göre ne öneriyor yapay zeka?",
+      "Yapay zeka seçimleri sekmesini aç",
+      "Bana özel yapay zeka önerileri nerede?",
+      "Yapay zekanın benim için derlediği ürünleri görmek istiyorum"
     ]
   },
   "DISCOVER.CART": {
@@ -522,7 +713,10 @@
     "phrasings": [
       "Sepetimi aç",
       "Sepetimde ne var?",
-      "Alışveriş sepetimi göster"
+      "Alışveriş sepetimi göster",
+      "Sepet sayfasını aç",
+      "Ödeme yapmak istiyorum, sepetim nerede?",
+      "Eklediklerimi satın almak istiyorum, kasaya gidelim"
     ]
   },
   "DISCOVER.CATEGORIES": {
@@ -530,7 +724,10 @@
     "phrasings": [
       "Ürün kategorilerini göster",
       "Mağaza kategorilerine göz atmak istiyorum",
-      "Kategoriler sayfasını aç"
+      "Kategoriler sayfasını aç",
+      "Discover'daki kategoriler sekmesini aç",
+      "Ürünlere kategoriye göre bakabileceğim yer neresi?",
+      "Hangi ürün kategorileri var, onlara göz atmak istiyorum"
     ]
   },
   "DISCOVER.DEALS": {
@@ -538,7 +735,10 @@
     "phrasings": [
       "İndirimleri ve fırsatları göster",
       "Şu an aktif kampanyalar var mı?",
-      "Teklifler nerede?"
+      "Teklifler nerede?",
+      "Fırsatlar ve kampanyalar sayfasını aç",
+      "İndirim ve özel teklifleri nerede bulabilirim?",
+      "Üyelere özel kampanyaları görmek istiyorum"
     ]
   },
   "DISCOVER.DEALS_AI": {
@@ -546,7 +746,10 @@
     "phrasings": [
       "Yapay zekanın seçtiği fırsatları göster",
       "Benim için seçilmiş indirimleri görmek istiyorum",
-      "AI deal picks sekmesini aç"
+      "AI deal picks sekmesini aç",
+      "Fırsatlar içindeki yapay zeka seçimleri sekmesini aç",
+      "Yapay zekanın benim için seçtiği indirimler hangi sekmede?",
+      "Bana özel olarak filtrelenmiş fırsatları görmek istiyorum"
     ]
   },
   "DISCOVER.DEALS_SAVED": {
@@ -554,7 +757,10 @@
     "phrasings": [
       "Kaydettiğim fırsatları göster",
       "Yer imlerine eklediğim indirimleri aç",
-      "Kaydedilmiş teklifler nerede?"
+      "Kaydedilmiş teklifler nerede?",
+      "Fırsatlar içinde kaydettiğim teklifler sekmesini aç",
+      "Daha önce kaydettiğim indirimler nerede?",
+      "Beğenip sakladığım fırsatlara tekrar bakmak istiyorum"
     ]
   },
   "DISCOVER.DEALS_TRENDING": {
@@ -562,7 +768,10 @@
     "phrasings": [
       "Trend olan fırsatları göster",
       "Şu an en popüler teklifler hangileri?",
-      "Trending deals sekmesini aç"
+      "Trending deals sekmesini aç",
+      "Fırsatlar içindeki trend sekmesini aç",
+      "Şu an çok ilgi gören indirimler hangi sekmede?",
+      "Diğer üyelerin en çok baktığı teklifleri görmek istiyorum"
     ]
   },
   "DISCOVER.DOCTORS_COACHES": {
@@ -570,7 +779,9 @@
     "phrasings": [
       "Doktor veya koç nerede bulabilirim?",
       "Sağlık koçu bulmak istiyorum",
-      "Doktorlar ve koçlar sayfasını aç"
+      "Doktorlar ve koçlar sayfasını aç",
+      "Uzman bir sağlık koçu arayabileceğim yer neresi?",
+      "Bana rehberlik edecek bir doktor ya da koç bulmak istiyorum"
     ]
   },
   "DISCOVER.MARKETPLACE": {
@@ -578,7 +789,10 @@
     "phrasings": [
       "Maxina pazaryerini aç",
       "Alıp satabildiğim yer neresi?",
-      "Marketplace'i göster"
+      "Marketplace'i göster",
+      "Pazar yeri ana sayfasını aç",
+      "Toplulukta alışveriş yapabileceğim pazar yeri nerede?",
+      "Ürün ya da hizmet alıp satmak istiyorum"
     ]
   },
   "DISCOVER.MARKETPLACE_MINE": {
@@ -586,7 +800,10 @@
     "phrasings": [
       "Pazaryerindeki kendi ilanlarımı göster",
       "Marketplace'deki tekliflerimi görmek istiyorum",
-      "My Marketplace sayfasını aç"
+      "My Marketplace sayfasını aç",
+      "Pazar yerindeki kendi sekmemi aç",
+      "Pazaryerinde benim ilanlarım ve taleplerim nerede?",
+      "Daha önce oluşturduğum teklifleri düzenlemek istiyorum"
     ]
   },
   "DISCOVER.MARKETPLACE_OPEN": {
@@ -594,7 +811,10 @@
     "phrasings": [
       "Herkese açık pazaryeri taleplerini göster",
       "Açık marketplace isteklerini görmek istiyorum",
-      "Open Requests sayfasını aç"
+      "Open Requests sayfasını aç",
+      "Pazar yerindeki açık talepler sekmesini aç",
+      "Herkese açık olan talep ve teklifler nerede?",
+      "Topluluktan gelen genel isteklere bakmak istiyorum"
     ]
   },
   "DISCOVER.MY_TICKETS": {
@@ -602,7 +822,10 @@
     "phrasings": [
       "Biletlerimi göster",
       "Etkinlik biletlerim nerede?",
-      "Satın aldığım biletleri aç"
+      "Satın aldığım biletleri aç",
+      "Biletlerim sayfasını aç",
+      "Aldığım etkinlik biletleri nerede saklanıyor?",
+      "Katılacağım etkinliklerin biletlerini görmek istiyorum"
     ]
   },
   "DISCOVER.ORDERS": {
@@ -610,7 +833,10 @@
     "phrasings": [
       "Siparişlerimi göster",
       "Siparişimi nerede takip edebilirim?",
-      "Ne sipariş etmiştim?"
+      "Ne sipariş etmiştim?",
+      "Siparişlerim ekranını aç",
+      "Hem aktif hem geçmiş siparişlerimi nerede görebilirim?",
+      "Tüm siparişlerimin listesine bakmak istiyorum"
     ]
   },
   "DISCOVER.ORDERS_ACTIVE": {
@@ -618,7 +844,10 @@
     "phrasings": [
       "Aktif siparişlerimi göster",
       "Yolda olan siparişlerim hangileri?",
-      "Devam eden siparişlerimi aç"
+      "Devam eden siparişlerimi aç",
+      "Aktif siparişler sekmesini aç",
+      "Henüz teslim edilmemiş siparişlerim nerede?",
+      "Şu an işlemde olan siparişlerimi görmek istiyorum"
     ]
   },
   "DISCOVER.ORDERS_HISTORY": {
@@ -626,7 +855,10 @@
     "phrasings": [
       "Geçmiş siparişlerimi göster",
       "Daha önce ne sipariş ettim?",
-      "Sipariş geçmişimi aç"
+      "Sipariş geçmişimi aç",
+      "Tamamlanmış siparişler sekmesini aç",
+      "Eski siparişlerimi nerede bulabilirim?",
+      "Daha önce aldığım ürünlerin listesini görmek istiyorum"
     ]
   },
   "DISCOVER.OVERVIEW": {
@@ -634,7 +866,10 @@
     "phrasings": [
       "Discover'ı aç",
       "Mağazayı göster",
-      "Bir şeyler satın alabileceğim yer neresi?"
+      "Bir şeyler satın alabileceğim yer neresi?",
+      "Keşfet bölümünü aç",
+      "Ürünlere ve hizmetlere göz atabileceğim yer neresi?",
+      "Takviye, doktor ve fırsatları birlikte görmek istiyorum"
     ]
   },
   "DISCOVER.PRODUCT_DETAIL": {
@@ -648,7 +883,10 @@
     "phrasings": [
       "Paylaşarak nasıl kazanabilirim?",
       "Share and Earn sayfasını aç",
-      "Ürün paylaşarak kazanma bölümünü göster"
+      "Ürün paylaşarak kazanma bölümünü göster",
+      "Paylaş ve Kazan sekmesini aç",
+      "Arkadaşlarıma ürün önererek ödül kazanabileceğim yer neresi?",
+      "Paylaşım yaparak puan veya ödül kazanmak istiyorum"
     ]
   },
   "DISCOVER.SHOP": {
@@ -656,7 +894,10 @@
     "phrasings": [
       "Video mağazasını aç",
       "Alışveriş yapılabilir videoları göster",
-      "Maxina video shop'u aç"
+      "Maxina video shop'u aç",
+      "Maxina video mağazasını aç",
+      "Ürün videoları izleyerek alışveriş yapabileceğim yer neresi?",
+      "Videolu alışveriş bölümüne gitmek istiyorum"
     ]
   },
   "DISCOVER.SUPPLEMENTS": {
@@ -664,7 +905,10 @@
     "phrasings": [
       "Takviye satın alabileceğim yer neresi?",
       "Mağazadaki takviyeleri göster",
-      "Vitamin ve supplement bölümünü aç"
+      "Vitamin ve supplement bölümünü aç",
+      "Takviyeler bölümünü aç",
+      "Longevity için takviye satın alabileceğim sekmeyi nerede bulabilirim?",
+      "Vitaminlere ve takviyelere göz atmak istiyorum"
     ]
   },
   "DISCOVER.WELLNESS_SERVICES": {
@@ -672,7 +916,10 @@
     "phrasings": [
       "Sağlık hizmetlerini göster",
       "Masaj rezervasyonu yapabileceğim yer neresi?",
-      "Wellness hizmetlerini bulmak istiyorum"
+      "Wellness hizmetlerini bulmak istiyorum",
+      "Wellness hizmetleri sayfasını aç",
+      "Sağlık ve iyilik hizmetlerini nerede inceleyebilirim?",
+      "Bir wellness seansı rezervasyonu yapmak istiyorum"
     ]
   },
   "HEALTH.BIOLOGY_OMICS": {
@@ -680,7 +927,10 @@
     "phrasings": [
       "Omik verilerimi göster",
       "Genetik sonuçlarım nerede?",
-      "My Omics sekmesini aç"
+      "My Omics sekmesini aç",
+      "Omik Verilerim sekmesini aç",
+      "Biyoloji bölümündeki genomik verilerimi nerede görebilirim?",
+      "DNA ve omik analiz sonuçlarıma bakmak istiyorum"
     ]
   },
   "HEALTH.BIOLOGY_SUPPLEMENTS": {
@@ -688,7 +938,10 @@
     "phrasings": [
       "Biyoloji profilindeki takviyelerimi göster",
       "Biyolojik profilimde hangi takviyeler var?",
-      "My Biology'deki supplement sekmesini aç"
+      "My Biology'deki supplement sekmesini aç",
+      "Biyoloji profilimin takviye sekmesini aç",
+      "Biyolojik profilimde kayıtlı takviyelerimi nerede bulabilirim?",
+      "My Biology içindeki takviye bilgilerimi görmek istiyorum"
     ]
   },
   "HEALTH.CONDITIONS": {
@@ -696,7 +949,10 @@
     "phrasings": [
       "Sağlık durumlarımı göster",
       "Tanılarımı nerede yönetebilirim?",
-      "Sağlık koşulları sayfasını aç"
+      "Sağlık koşulları sayfasını aç",
+      "Sağlık durumları ekranını aç",
+      "Kronik hastalıklarımı ve tanılarımı nerede takip edebilirim?",
+      "Mevcut sağlık sorunlarımı güncellemek istiyorum"
     ]
   },
   "HEALTH.EDUCATION": {
@@ -704,7 +960,10 @@
     "phrasings": [
       "Sağlık eğitim içeriklerini göster",
       "Uzun ömürlülük hakkında nerede bilgi edinebilirim?",
-      "Vitana bilgi tabanındaki bilim makalelerini aç"
+      "Vitana bilgi tabanındaki bilim makalelerini aç",
+      "Eğitim ve Bilim bölümünü aç",
+      "Uzun ömürlülükle ilgili bilimsel içerikleri nerede okuyabilirim?",
+      "Vitana'nın sağlık bilgi tabanına göz atmak istiyorum"
     ]
   },
   "HEALTH.EDUCATION_PODCASTS": {
@@ -712,7 +971,10 @@
     "phrasings": [
       "Sağlık eğitim podcastlerini göster",
       "Sağlıkla ilgili eğitici podcastler nerede?",
-      "Öğrenme podcastleri sekmesini aç"
+      "Öğrenme podcastleri sekmesini aç",
+      "Eğitim podcastleri sekmesini aç",
+      "Sağlık eğitimi için dinleyebileceğim podcastler nerede?",
+      "Longevity konusunda podcast dinlemek istiyorum"
     ]
   },
   "HEALTH.EDUCATION_VIDEOS": {
@@ -720,7 +982,10 @@
     "phrasings": [
       "Sağlık eğitim videolarını göster",
       "Eğitici sağlık videoları nerede?",
-      "Öğrenme videoları sekmesini aç"
+      "Öğrenme videoları sekmesini aç",
+      "Eğitim videoları sekmesini aç",
+      "Sağlıkla ilgili öğretici videoları nerede izleyebilirim?",
+      "Longevity hakkında video içerik izlemek istiyorum"
     ]
   },
   "HEALTH.MEDICAL": {
@@ -728,7 +993,10 @@
     "phrasings": [
       "Tıbbi kayıtlarımı göster",
       "Doktor belgelerim nerede?",
-      "Tıbbi raporlarımı görmek istiyorum"
+      "Tıbbi raporlarımı görmek istiyorum",
+      "Tıbbi kayıtlar bölümünü aç",
+      "Yüklediğim doktor raporlarını ve tahlillerimi nerede görebilirim?",
+      "Tıbbi belgelerimi yüklemek veya incelemek istiyorum"
     ]
   },
   "HEALTH.MY_BIOLOGY": {
@@ -736,7 +1004,10 @@
     "phrasings": [
       "biyoloji verilerimi göster",
       "kan tahlili sonuçlarımı nerede görebilirim",
-      "biyobelirteçlerimi aç"
+      "biyobelirteçlerimi aç",
+      "biyoloji sekmemi aç",
+      "tahlil trendlerimi nerede takip edebilirim",
+      "sağlık göstergelerimin zaman içindeki değişimine bakmak istiyorum"
     ]
   },
   "HEALTH.OVERVIEW": {
@@ -744,7 +1015,10 @@
     "phrasings": [
       "sağlık sayfamı aç",
       "genel sağlık durumumu göster",
-      "sağlık merkezine git"
+      "sağlık merkezine git",
+      "sağlık ana sayfamı göster",
+      "sağlık bölümüm nerede",
+      "beslenme, biyoloji ve eğitim içeriklerimin hepsine tek yerden ulaşmak istiyorum"
     ]
   },
   "HEALTH.PILLARS": {
@@ -752,7 +1026,10 @@
     "phrasings": [
       "sağlık sütunlarını göster",
       "uzun yaşamın temel sütunları neler",
-      "beslenme uyku stres sütunlarını aç"
+      "beslenme uyku stres sütunlarını aç",
+      "uzun yaşam sütunlarını aç",
+      "beslenme, uyku ve stres gibi temel sağlık alanlarım nerede",
+      "sağlığımın dayandığı temel alanlara göz atmak istiyorum"
     ]
   },
   "HEALTH.PLANS": {
@@ -760,7 +1037,10 @@
     "phrasings": [
       "sağlık planlarımı aç",
       "planlarımı göster",
-      "kişisel sağlık programlarım nerede"
+      "kişisel sağlık programlarım nerede",
+      "kişisel planlarım sekmesini aç",
+      "hedeflerime göre hazırlanan programlarım nerede",
+      "beslenme, uyku ve egzersiz planlarımın hepsini bir arada görmek istiyorum"
     ]
   },
   "HEALTH.PLANS_EXERCISE": {
@@ -768,7 +1048,10 @@
     "phrasings": [
       "egzersiz planımı göster",
       "antrenman programımı aç",
-      "spor planım nerede"
+      "spor planım nerede",
+      "antrenman planları sekmesini aç",
+      "planlarım içinde egzersiz bölümü nerede",
+      "bu hafta hangi antrenmanları yapmam gerektiğini görmek istiyorum"
     ]
   },
   "HEALTH.PLANS_HYDRATION": {
@@ -776,7 +1059,10 @@
     "phrasings": [
       "su içme planımı göster",
       "hidrasyon programımı aç",
-      "günlük su planım nerede"
+      "günlük su planım nerede",
+      "hidrasyon planları sekmesini aç",
+      "planlarım içinde su içme bölümü nerede",
+      "günlük ne kadar su içmem gerektiğini öğrenmek istiyorum"
     ]
   },
   "HEALTH.PLANS_MENTAL": {
@@ -784,7 +1070,10 @@
     "phrasings": [
       "zihinsel sağlık planımı göster",
       "mental programımı aç",
-      "mindfulness planım nerede"
+      "mindfulness planım nerede",
+      "mental planlar sekmesini aç",
+      "planlarım içinde zihinsel iyi oluş bölümü nerede",
+      "ruh sağlığıma yönelik programlarıma bakmak istiyorum"
     ]
   },
   "HEALTH.PLANS_NUTRITION": {
@@ -792,7 +1081,10 @@
     "phrasings": [
       "beslenme planımı göster",
       "diyet programımı aç",
-      "yemek planım nerede"
+      "yemek planım nerede",
+      "beslenme planları sekmesini aç",
+      "planlarım içinde diyet ve öğün bölümü nerede",
+      "ne yemem gerektiğine dair kişisel beslenme programıma bakmak istiyorum"
     ]
   },
   "HEALTH.PLANS_SLEEP": {
@@ -800,7 +1092,10 @@
     "phrasings": [
       "uyku planımı göster",
       "uyku programımı aç",
-      "uyku rutinime bakmak istiyorum"
+      "uyku rutinime bakmak istiyorum",
+      "uyku planları sekmesini aç",
+      "planlarım içinde uyku bölümü nerede",
+      "uyku düzenimi iyileştirmek için hazırlanan programıma bakmak istiyorum"
     ]
   },
   "HEALTH.SERVICES_HUB": {
@@ -808,7 +1103,10 @@
     "phrasings": [
       "sağlık hizmetlerini aç",
       "sağlık hizmeti nereden rezerve edebilirim",
-      "Maxina sağlık hizmetleri merkezine git"
+      "Maxina sağlık hizmetleri merkezine git",
+      "sağlık hizmetleri merkezini aç",
+      "Maxina'daki sağlık hizmetlerini nerede bulabilirim",
+      "topluluktan bir sağlık hizmeti bulmak ve randevu almak istiyorum"
     ]
   },
   "HEALTH.SERVICES_INSURANCE": {
@@ -816,7 +1114,10 @@
     "phrasings": [
       "sigorta desteğine bak",
       "sağlık sigortamla ilgili yardım almak istiyorum",
-      "sigorta destek sekmesini aç"
+      "sigorta destek sekmesini aç",
+      "sigorta desteği sekmesini aç",
+      "sağlık hizmetleri içinde sigorta yardımı nerede",
+      "sağlık sigortamla ilgili destek seçeneklerine bakmak istiyorum"
     ]
   },
   "HEALTH.SERVICES_MEDICAL": {
@@ -824,7 +1125,9 @@
     "phrasings": [
       "tıbbi hizmetleri göster",
       "medikal hizmet rezervasyonu yapmak istiyorum",
-      "tıbbi hizmetler sekmesini aç"
+      "tıbbi hizmetler sekmesini aç",
+      "sağlık hizmetleri içinde medikal bölüm nerede",
+      "doktor veya klinik gibi tıbbi hizmetlere randevu almak istiyorum"
     ]
   },
   "HEALTH.SERVICES_MINE": {
@@ -832,7 +1135,10 @@
     "phrasings": [
       "kullandığım sağlık hizmetlerini göster",
       "rezerve ettiğim hizmetler nerede",
-      "benim hizmetlerim sekmesini aç"
+      "benim hizmetlerim sekmesini aç",
+      "hizmetlerim sekmesini aç",
+      "sağlık hizmetleri içinde aktif hizmetlerim nerede",
+      "şu an kayıtlı olduğum sağlık hizmetlerini görmek istiyorum"
     ]
   },
   "HEALTH.SERVICES_WELLNESS": {
@@ -840,7 +1146,10 @@
     "phrasings": [
       "wellness programlarını göster",
       "bir wellness programına katılmak istiyorum",
-      "sağlıklı yaşam programları nerede"
+      "sağlıklı yaşam programları nerede",
+      "wellness programları sekmesini aç",
+      "sağlık hizmetleri içinde sağlıklı yaşam programları nerede",
+      "katılabileceğim wellness programlarına göz atmak istiyorum"
     ]
   },
   "HEALTH.SUPPLEMENTS": {
@@ -848,7 +1157,10 @@
     "phrasings": [
       "takviyelerimi göster",
       "hangi vitaminleri aldığımı görmek istiyorum",
-      "supplement listem nerede"
+      "supplement listem nerede",
+      "sağlık takviyeleri sekmesini aç",
+      "sağlık sayfasındaki takviye ve vitamin bölümü nerede",
+      "aldığım mineral ve vitaminlerin listesini güncellemek istiyorum"
     ]
   },
   "HEALTH.VITANA_INDEX": {
@@ -856,7 +1168,10 @@
     "phrasings": [
       "Vitana Index puanımı göster",
       "Vitana Index'im nerede",
-      "longevity skoruma bakmak istiyorum"
+      "longevity skoruma bakmak istiyorum",
+      "Vitana İndeksimi aç",
+      "beş sütunlu uzun ömür puanım nerede",
+      "beslenme, uyku, egzersiz gibi pillarlarımın skorunu görmek istiyorum"
     ]
   },
   "HOME.NEWS_ALL": {
@@ -864,7 +1179,10 @@
     "phrasings": [
       "tüm haberleri göster",
       "bütün haber kaynaklarını aç",
-      "her kaynaktan haberleri listele"
+      "her kaynaktan haberleri listele",
+      "tüm haber sekmesini aç",
+      "hem topluluk hem uzun ömür haberlerini bir arada nerede görebilirim",
+      "bütün kaynaklardan gelen haberleri okumak istiyorum"
     ]
   },
   "HOME.NEWS_COMMUNITY": {
@@ -872,7 +1190,10 @@
     "phrasings": [
       "topluluk haberlerini aç",
       "Maxina topluluğunda neler oluyor",
-      "community haberlerini göster"
+      "community haberlerini göster",
+      "topluluk sekmesini aç",
+      "Maxina üyelerinden gelen paylaşımlar nerede",
+      "topluluktaki güncellemeleri okumak istiyorum"
     ]
   },
   "HOME.OVERVIEW": {
@@ -880,7 +1201,10 @@
     "phrasings": [
       "ana sayfaya git",
       "son longevity haberlerini göster",
-      "haber akışını aç"
+      "haber akışını aç",
+      "uzun ömür haberlerini aç",
+      "benim için derlenen longevity makalelerini nerede bulabilirim",
+      "araştırma haberleri ve longevity içeriklerini okumak istiyorum"
     ]
   },
   "INBOX.ARCHIVED": {
@@ -888,7 +1212,10 @@
     "phrasings": [
       "arşivlenmiş mesajlarımı göster",
       "eski arşiv sohbetlerim nerede",
-      "arşivimi aç"
+      "arşivimi aç",
+      "arşivlediğim sohbetleri göster",
+      "sakladığım eski mesajlar nerede",
+      "arşive taşıdığım konuşmalara ulaşmak istiyorum"
     ]
   },
   "INBOX.CONVERSATION": {
@@ -902,7 +1229,10 @@
     "phrasings": [
       "ilham mesajlarımı göster",
       "günlük ilham içeriklerini aç",
-      "Vitana'dan gelen motivasyon mesajları nerede"
+      "Vitana'dan gelen motivasyon mesajları nerede",
+      "Vitana'nın wellness ipuçlarını aç",
+      "ilham ve motivasyon içerikleri nerede",
+      "sağlıklı yaşam önerilerini ve ilham mesajlarını görmek istiyorum"
     ]
   },
   "INBOX.OVERVIEW": {
@@ -910,7 +1240,10 @@
     "phrasings": [
       "gelen kutumu aç",
       "mesajlarıma bakmak istiyorum",
-      "yeni mesajım var mı"
+      "yeni mesajım var mı",
+      "sohbet geçmişimi aç",
+      "üyelerle yaptığım konuşmalar nerede",
+      "gelen kutusundaki tüm mesajlarıma bakmak istiyorum"
     ]
   },
   "INTENTS.BOARD": {
@@ -918,7 +1251,10 @@
     "phrasings": [
       "topluluk panosunu aç",
       "diğer üyelerin ne aradığını görmek istiyorum",
-      "community board'u göster"
+      "community board'u göster",
+      "talep panosunu aç",
+      "tüm kategorilerdeki açık ilanlar nerede",
+      "toplulukta öğrenme, mentorluk, etkinlik gibi taleplere göz atmak istiyorum"
     ]
   },
   "INTENTS.MATCH_DETAIL": {
@@ -929,7 +1265,10 @@
     "phrasings": [
       "kendi ilanlarımı göster",
       "topluluğa ne paylaştığımı görmek istiyorum",
-      "benim intent'lerim nerede"
+      "benim intent'lerim nerede",
+      "kendi taleplerime bak",
+      "topluluğa açtığım ilanlar nerede",
+      "paylaştığım istek ve duyurularımı görmek istiyorum"
     ]
   },
   "LIFE_COMPASS.OVERLAY": {
@@ -937,7 +1276,10 @@
     "phrasings": [
       "Life Compass'ımı aç",
       "yaşam hedeflerimi nerede görebilirim",
-      "hedeflerimi göster"
+      "hedeflerimi göster",
+      "yaşam pusulamı aç",
+      "Vitana önerilerini yönlendiren ana hedefim nerede",
+      "finansal özgürlük veya sağlık gibi yaşam hedeflerimi düzenlemek istiyorum"
     ]
   },
   "MEMORY.DAILY_DIARY": {
@@ -945,7 +1287,10 @@
     "phrasings": [
       "bugünü günlüğe kaydet",
       "günlük yakalama akışını başlat",
-      "bugünkü günü kaydetmek istiyorum"
+      "bugünkü günü kaydetmek istiyorum",
+      "tek günlük kayıt akışını başlat",
+      "belirli bir gün için günlük yakalama ekranı nerede",
+      "sadece bugünü odaklı şekilde kaydetmek istiyorum"
     ]
   },
   "MEMORY.DIARY": {
@@ -953,7 +1298,10 @@
     "phrasings": [
       "günlüğümü aç",
       "günlük notlarımı nerede yazabilirim",
-      "journal girişlerimi göster"
+      "journal girişlerimi göster",
+      "günlük defterimi aç",
+      "düşüncelerimi ve ruh halimi nereye yazabilirim",
+      "geçmiş günlük notlarıma bakmak istiyorum"
     ]
   },
   "MEMORY.DIARY_BUGS": {
@@ -961,7 +1309,10 @@
     "phrasings": [
       "hata bildirmek istiyorum",
       "bug raporlarım nerede",
-      "uygulama hatası nasıl bildiririm"
+      "uygulama hatası nasıl bildiririm",
+      "günlükten hata bildirme ekranını aç",
+      "uygulama iyileştirme önerimi nereye iletebilirim",
+      "günlükteki bir sorunu raporlamak istiyorum"
     ]
   },
   "MEMORY.OVERVIEW": {
@@ -969,7 +1320,10 @@
     "phrasings": [
       "Memory Garden'ımı aç",
       "benim hakkımda ne hatırladığını görmek istiyorum",
-      "anılarımı göster"
+      "anılarımı göster",
+      "anı bahçemi aç",
+      "Vitana'nın benim hakkımda sakladığı her şey nerede",
+      "hakkımda kayıtlı tüm bilgilere bakmak istiyorum"
     ]
   },
   "MEMORY.PERMISSIONS": {
@@ -977,7 +1331,10 @@
     "phrasings": [
       "ne hatırlayabileceğini kontrol etmek istiyorum",
       "bellek izinlerimi aç",
-      "hafıza ayarlarımı göster"
+      "hafıza ayarlarımı göster",
+      "hafıza izinleri ekranını aç",
+      "Vitana'nın ne hatırlayabileceğini ve kimin görebileceğini nerede ayarlayabilirim",
+      "hangi bilgilerimi saklayabileceğini yönetmek istiyorum"
     ]
   },
   "MEMORY.RECALL": {
@@ -985,7 +1342,10 @@
     "phrasings": [
       "anılarımda bir şey aramak istiyorum",
       "sana söylediğim bir şeyi bul",
-      "hafıza arama ekranını aç"
+      "hafıza arama ekranını aç",
+      "geçmiş konuşmalarımda bir şey aramak istiyorum",
+      "eski anılarımı nasıl arayabilirim",
+      "sana daha önce anlattığım bir şeyi bulmam lazım"
     ]
   },
   "MEMORY.TIMELINE": {
@@ -993,7 +1353,10 @@
     "phrasings": [
       "zaman çizelgemi göster",
       "yaşam timeline'ımı aç",
-      "kronolojik anı akışımı görmek istiyorum"
+      "kronolojik anı akışımı görmek istiyorum",
+      "anılarımın zaman çizelgesini aç",
+      "kronolojik hafıza akışım nerede",
+      "geçmişimi tarih sırasıyla görmek istiyorum"
     ]
   },
   "NEWS.DETAIL": {
@@ -1021,7 +1384,10 @@
     "phrasings": [
       "Vitana Index özetini aç",
       "indeksime hızlıca bakmak istiyorum",
-      "5 sütun skorumu hızlıca göster"
+      "5 sütun skorumu hızlıca göster",
+      "Vitana İndeksi panelini aç",
+      "beş sütunlu indeks özetim nerede",
+      "toplam Vitana skoruma ve sütun dağılımına hızlıca bakmak istiyorum"
     ]
   },
   "OVERLAY.WALLET_POPUP": {
@@ -1037,7 +1403,10 @@
     "phrasings": [
       "profilimi aç",
       "profil fotoğrafımı değiştirmek istiyorum",
-      "hesap bilgilerimi düzenle"
+      "hesap bilgilerimi düzenle",
+      "profil sayfamı göster",
+      "biyografimi ve hesap bilgilerimi nerede bulabilirim",
+      "adımı ve fotoğrafımı düzenlemek istiyorum"
     ]
   },
   "PROFILE.PRIVACY": {
@@ -1045,7 +1414,10 @@
     "phrasings": [
       "profilimi kim görebilir",
       "profil görünürlük ayarlarını aç",
-      "profilimin hangi bölümlerinin görünür olduğunu ayarlamak istiyorum"
+      "profilimin hangi bölümlerinin görünür olduğunu ayarlamak istiyorum",
+      "profil gizlilik ayarlarını aç",
+      "profilimin hangi bölümlerini kimlerin görebildiğini nerede ayarlayabilirim",
+      "profilimin bazı kısımlarını gizlemek istiyorum"
     ]
   },
   "PROFILE.PUBLIC": {
@@ -1059,7 +1431,10 @@
     "phrasings": [
       "Vitanaland ana sayfasına git",
       "Maxina giriş sayfasını aç",
-      "Vitanaland'ın başlangıç ekranını göster"
+      "Vitanaland'ın başlangıç ekranını göster",
+      "Vitanaland karşılama ekranını aç",
+      "Maxina topluluğunun genel giriş sayfası nerede",
+      "Vitanaland'a ilk kez girer gibi ana sayfaya gitmek istiyorum"
     ]
   },
   "PUBLIC.PRIVACY": {
@@ -1067,7 +1442,10 @@
     "phrasings": [
       "gizlilik politikasını göster",
       "verilerimi nasıl işlediğini öğrenmek istiyorum",
-      "privacy policy sayfasını aç"
+      "privacy policy sayfasını aç",
+      "gizlilik politikası sayfasını aç",
+      "kişisel verilerimin nasıl korunduğunu nerede okuyabilirim",
+      "uygulamanın veri kullanım politikasını okumak istiyorum"
     ]
   },
   "PUBLIC.TERMS": {
@@ -1075,7 +1453,10 @@
     "phrasings": [
       "kullanım koşullarını göster",
       "şartlar ve koşullar sayfasını aç",
-      "yasal bilgilere bakmak istiyorum"
+      "yasal bilgilere bakmak istiyorum",
+      "kullanım şartları sayfasını aç",
+      "üyelik sözleşmesini nerede bulabilirim",
+      "uygulamanın yasal koşullarını okumak istiyorum"
     ]
   },
   "REMINDERS.OVERVIEW": {
@@ -1083,7 +1464,10 @@
     "phrasings": [
       "hatırlatıcılarımı göster",
       "hangi hatırlatıcılarım var",
-      "reminder listemi aç"
+      "reminder listemi aç",
+      "hatırlatıcı listemi aç",
+      "ayarladığım hatırlatıcıları nerede görebilirim",
+      "yeni bir hatırlatıcı eklemek ya da mevcutları düzenlemek istiyorum"
     ]
   },
   "SEARCH.OVERVIEW": {
@@ -1091,7 +1475,10 @@
     "phrasings": [
       "aramayı aç",
       "uygulamada bir şey aramak istiyorum",
-      "arama ekranına git"
+      "arama ekranına git",
+      "uygulama içi arama ekranını aç",
+      "üye, içerik veya ürün aramak için nereye gidebilirim",
+      "Maxina'da bir şeyler aramak istiyorum"
     ]
   },
   "SETTINGS.BILLING": {
@@ -1099,7 +1486,10 @@
     "phrasings": [
       "fatura ayarlarımı aç",
       "ödemelerimi nerede yönetebilirim",
-      "abonelik ücretlerimi göster"
+      "abonelik ücretlerimi göster",
+      "faturalama genel bakış ekranını aç",
+      "abonelik ve ödeme bilgilerimi nerede görebilirim",
+      "fatura ayarlarıma genel olarak bakmak istiyorum"
     ]
   },
   "SETTINGS.BILLING_CREATOR": {
@@ -1107,7 +1497,10 @@
     "phrasings": [
       "içerik üreticisi ödemelerimi göster",
       "creator kazançlarımı nerede görebilirim",
-      "ne zaman ödeme alacağımı görmek istiyorum"
+      "ne zaman ödeme alacağımı görmek istiyorum",
+      "içerik üretici kazanç ödemeleri sekmesini aç",
+      "üretici olarak aldığım ödemeleri nerede görebilirim",
+      "içerik üreticisi olarak ne kadar kazandığımı ve çekimlerimi görmek istiyorum"
     ]
   },
   "SETTINGS.BILLING_INVOICES": {
@@ -1115,7 +1508,10 @@
     "phrasings": [
       "faturalarımı nerede indirebilirim",
       "makbuzlarımı göster",
-      "geçmiş faturalarıma bakmak istiyorum"
+      "geçmiş faturalarıma bakmak istiyorum",
+      "faturalar ve makbuzlar sekmesini aç",
+      "ödeme geçmişime ait belgeleri nerede bulabilirim",
+      "eski faturalarımı indirmek istiyorum"
     ]
   },
   "SETTINGS.BILLING_PAYMENT": {
@@ -1123,7 +1519,10 @@
     "phrasings": [
       "ödeme yöntemimi değiştirmek istiyorum",
       "kredi kartımı nasıl güncellerim",
-      "ödeme bilgilerimi nerede düzenleyebilirim"
+      "ödeme bilgilerimi nerede düzenleyebilirim",
+      "ödeme yöntemi sekmesini aç",
+      "kayıtlı kartımı nerede değiştirebilirim",
+      "ödeme için kullandığım kartı güncellemek istiyorum"
     ]
   },
   "SETTINGS.BILLING_PLAN": {
@@ -1131,7 +1530,10 @@
     "phrasings": [
       "hangi plana üyeyim",
       "mevcut abonelik planımı göster",
-      "planımı nasıl yükseltebilirim"
+      "planımı nasıl yükseltebilirim",
+      "mevcut plan sekmesini aç",
+      "şu an hangi üyelik seviyesinde olduğumu nerede görebilirim",
+      "planımı yükseltmek ya da üyelik detaylarıma bakmak istiyorum"
     ]
   },
   "SETTINGS.CONNECTED_APPS": {
@@ -1139,7 +1541,10 @@
     "phrasings": [
       "bağlı uygulamalarımı göster",
       "hangi uygulamaları hesabıma bağladım",
-      "uygulama bağlantılarımı yönetmek istiyorum"
+      "uygulama bağlantılarımı yönetmek istiyorum",
+      "üçüncü taraf uygulama bağlantılarımı göster",
+      "hesabıma entegre ettiğim uygulamalar nerede?",
+      "yeni bir uygulama bağlamak ya da mevcut bağlantıyı kesmek istiyorum"
     ]
   },
   "SETTINGS.LIMITATIONS": {
@@ -1147,7 +1552,10 @@
     "phrasings": [
       "sağlık kısıtlamalarımı nereye girebilirim",
       "alerji ve sakıncalarımı nasıl kaydederim",
-      "yaralanma veya sağlık sınırlamalarımı eklemek istiyorum"
+      "yaralanma veya sağlık sınırlamalarımı eklemek istiyorum",
+      "sağlık kısıtlamaları ekranını aç",
+      "kronik rahatsızlıklarımı ve alerji bilgilerimi nereye yazabilirim?",
+      "öneriler beni etkilemesin diye sakıncalı durumlarımı kaydetmek istiyorum"
     ]
   },
   "SETTINGS.NOTIFICATIONS": {
@@ -1155,7 +1563,10 @@
     "phrasings": [
       "bildirimleri nasıl kapatabilirim",
       "bildirim ayarlarını aç",
-      "anlık bildirimleri durdurmak istiyorum"
+      "anlık bildirimleri durdurmak istiyorum",
+      "bildirim tercihlerimi düzenlemek istiyorum",
+      "hangi bildirimleri aldığımı nerede görebilirim?",
+      "bazı bildirimleri kapatmak ya da sıklığını değiştirmek istiyorum"
     ]
   },
   "SETTINGS.OVERVIEW": {
@@ -1163,7 +1574,10 @@
     "phrasings": [
       "ayarları aç",
       "hesap ayarlarımı göster",
-      "ayarlar sayfasına git"
+      "ayarlar sayfasına git",
+      "genel ayarlar sayfasını getir",
+      "tüm hesap ayarlarım nerede?",
+      "profilimle ilgili bir şeyi değiştirmek istiyorum, ayarlara götür beni"
     ]
   },
   "SETTINGS.PREFERENCES": {
@@ -1171,7 +1585,10 @@
     "phrasings": [
       "tercihlerimi açmak istiyorum",
       "uygulama tercihlerimi nerede ayarlayabilirim",
-      "kişisel tercihlerimi göster"
+      "kişisel tercihlerimi göster",
+      "uygulama deneyimi tercihlerimi düzenlemek istiyorum",
+      "kişisel tercihler bölümü nerede?",
+      "uygulamanın bana nasıl davrandığını özelleştirmek istiyorum"
     ]
   },
   "SETTINGS.PREFERENCES_ACCESSIBILITY": {
@@ -1179,7 +1596,10 @@
     "phrasings": [
       "erişilebilirlik ayarlarını aç",
       "yazı boyutunu nasıl büyütebilirim",
-      "erişilebilirlik seçeneklerini göster"
+      "erişilebilirlik seçeneklerini göster",
+      "erişilebilirlik bölümünü aç",
+      "kontrast veya yazı tipi gibi erişilebilirlik seçenekleri nerede?",
+      "uygulamayı okumayı kolaylaştıracak ayarları yapmak istiyorum"
     ]
   },
   "SETTINGS.PREFERENCES_APPEARANCE": {
@@ -1187,7 +1607,10 @@
     "phrasings": [
       "karanlık moda geçmek istiyorum",
       "uygulamanın temasını değiştir",
-      "görünüm ayarlarını aç"
+      "görünüm ayarlarını aç",
+      "renk teması ve görünüm ayarlarını aç",
+      "açık ya da koyu tema seçeneği nerede?",
+      "uygulamanın renklerini ve genel görünümünü değiştirmek istiyorum"
     ]
   },
   "SETTINGS.PREFERENCES_LANGUAGE": {
@@ -1195,7 +1618,10 @@
     "phrasings": [
       "uygulama dilini nasıl değiştirebilirim",
       "dil ayarlarını aç",
-      "uygulamayı Almanca'ya geçirmek istiyorum"
+      "uygulamayı Almanca'ya geçirmek istiyorum",
+      "dil ve bölge ayarlarını aç",
+      "uygulamanın dilini ve bölgesini nerede değiştirebilirim?",
+      "arayüz dilini başka bir dile geçirmek istiyorum"
     ]
   },
   "SETTINGS.PRIVACY": {
@@ -1203,7 +1629,10 @@
     "phrasings": [
       "gizlilik ayarlarımı aç",
       "verilerimi kim görebilir",
-      "Vitana'daki gizlilik seçeneklerini göster"
+      "Vitana'daki gizlilik seçeneklerini göster",
+      "gizlilik ayarları ana sayfasını aç",
+      "Vitana'nın hangi verilerimi sakladığını nerede görebilirim?",
+      "toplulukla ne paylaşıldığını genel olarak gözden geçirmek istiyorum"
     ]
   },
   "SETTINGS.PRIVACY_DATA": {
@@ -1211,7 +1640,10 @@
     "phrasings": [
       "hangi verilerimi paylaşıyorum",
       "paylaşılan veri ayarlarını göster",
-      "veri paylaşımımı nerede kontrol edebilirim"
+      "veri paylaşımımı nerede kontrol edebilirim",
+      "veri paylaşımı bölümünü aç",
+      "başkalarıyla paylaşılan verilerimi nerede yönetebilirim?",
+      "hangi kişisel verilerimin dışarıya aktarıldığını kontrol etmek istiyorum"
     ]
   },
   "SETTINGS.PRIVACY_SECURITY": {
@@ -1219,7 +1651,10 @@
     "phrasings": [
       "şifremi değiştirmek istiyorum",
       "hesap güvenliği ayarlarını aç",
-      "iki faktörlü doğrulamayı nasıl açarım"
+      "iki faktörlü doğrulamayı nasıl açarım",
+      "hesap güvenliği sayfasını aç",
+      "şifre ve güvenlik ayarlarım nerede?",
+      "hesabımın güvenliğini artırmak için doğrulama yöntemlerini düzenlemek istiyorum"
     ]
   },
   "SETTINGS.PRIVACY_VISIBILITY": {
@@ -1227,7 +1662,10 @@
     "phrasings": [
       "görünürlük ayarlarımı aç",
       "profilimi aramalardan nasıl gizlerim",
-      "beni kimler görebilir ayarına bakmak istiyorum"
+      "beni kimler görebilir ayarına bakmak istiyorum",
+      "profil görünürlüğü ayarlarını aç",
+      "profilimin kimler tarafından görülebildiğini nerede ayarlayabilirim?",
+      "toplulukta ne kadar görünür olduğumu kısıtlamak istiyorum"
     ]
   },
   "SETTINGS.SOCIAL": {
@@ -1235,7 +1673,10 @@
     "phrasings": [
       "sosyal medya hesaplarımı göster",
       "bağlı sosyal hesaplarımı yönetmek istiyorum",
-      "hangi sosyal hesaplarımı bağladım"
+      "hangi sosyal hesaplarımı bağladım",
+      "sosyal hesaplar sayfasını aç",
+      "bağladığım sosyal medya hesaplarını nerede görebilirim?",
+      "yeni bir sosyal medya hesabı eklemek ya da mevcut bağlantıyı kaldırmak istiyorum"
     ]
   },
   "SETTINGS.SUPPORT": {
@@ -1243,7 +1684,10 @@
     "phrasings": [
       "destek sayfasını aç",
       "uygulama hakkında yardım almak istiyorum",
-      "yardım merkezine git"
+      "yardım merkezine git",
+      "destek bölümünü getir",
+      "sorun bildirme ya da iletişim seçenekleri nerede?",
+      "uygulamayla ilgili bir sorunum var, yardım almak istiyorum"
     ]
   },
   "SETTINGS.SUPPORT_COMMUNITY": {
@@ -1251,7 +1695,10 @@
     "phrasings": [
       "topluluktan yardım isteyebileceğim yeri aç",
       "topluluk yardım forumunu göster",
-      "diğer üyelerden nasıl yardım alabilirim"
+      "diğer üyelerden nasıl yardım alabilirim",
+      "topluluk yardımı sekmesini aç",
+      "diğer üyelerin sorularını yanıtladığı forum nerede?",
+      "bir sorunum var, toplulukta başkalarının deneyimlerine bakmak istiyorum"
     ]
   },
   "SETTINGS.SUPPORT_CONTACT": {
@@ -1259,7 +1706,10 @@
     "phrasings": [
       "destek ekibiyle nasıl iletişime geçebilirim",
       "bir yetkiliyle konuşmak istiyorum",
-      "destek talebi oluşturmak istiyorum"
+      "destek talebi oluşturmak istiyorum",
+      "destek ekibine mesaj bırakmak istiyorum",
+      "sorunum için destek ekibine nasıl ulaşabilirim",
+      "bana yardım edecek birine yazabilmek istiyorum"
     ]
   },
   "SETTINGS.SUPPORT_FAQ": {
@@ -1267,7 +1717,10 @@
     "phrasings": [
       "sık sorulan soruları göster",
       "SSS sayfasını aç",
-      "yardım makalelerini nerede bulabilirim"
+      "yardım makalelerini nerede bulabilirim",
+      "sık sorulan sorular bölümünü aç",
+      "bilgi tabanını nerede bulabilirim",
+      "kendi kendime bir sorunumu çözmek için yardım makalelerine bakmak istiyorum"
     ]
   },
   "SETTINGS.TENANT_ROLE": {
@@ -1275,7 +1728,10 @@
     "phrasings": [
       "rolümü değiştirmek istiyorum",
       "hangi toplulukta olduğumu nerede görebilirim",
-      "tenant ve rol ayarlarını aç"
+      "tenant ve rol ayarlarını aç",
+      "aktif rolümü nerede değiştirebilirim",
+      "yönetici mi yoksa profesyonel mi olduğumu nerede ayarlayabilirim",
+      "topluluk içindeki rolümü düzenlemek istiyorum"
     ]
   },
   "SHARING.CAMPAIGN_DETAIL": {
@@ -1286,7 +1742,10 @@
     "phrasings": [
       "paylaşım kampanyalarımı göster",
       "aktif kampanyalarıma bakmak istiyorum",
-      "kampanya performansımı nerede görebilirim"
+      "kampanya performansımı nerede görebilirim",
+      "paylaşım kampanyalarım nasıl gidiyor görmek istiyorum",
+      "kampanyalarımı nerede takip edebilirim",
+      "aktif kampanyalarımın performansını göster"
     ]
   },
   "SHARING.DATA_CONSENT": {
@@ -1294,7 +1753,10 @@
     "phrasings": [
       "veri ve onay ayarlarımı aç",
       "neye onay verdiğimi görmek istiyorum",
-      "paylaşım izinlerimi nerede yönetebilirim"
+      "paylaşım izinlerimi nerede yönetebilirim",
+      "hangi verilerimi paylaştığımı yönetmek istiyorum",
+      "veri izinlerimi nerede görebilirim",
+      "onay tercihlerimi düzenlemek istiyorum"
     ]
   },
   "SHARING.DISTRIBUTION": {
@@ -1302,7 +1764,10 @@
     "phrasings": [
       "içeriğimin dağılımını göster",
       "paylaştığım içerik nerede yayılıyor",
-      "dağıtım istatistiklerimi görmek istiyorum"
+      "dağıtım istatistiklerimi görmek istiyorum",
+      "paylaştığım içeriklerin nasıl yayıldığını görmek istiyorum",
+      "içerik dağılım ekranını aç",
+      "içeriklerimin kimlere ulaştığını nerede takip edebilirim"
     ]
   },
   "SHARING.OVERVIEW": {
@@ -1310,7 +1775,10 @@
     "phrasings": [
       "paylaşım ekranını aç",
       "Maxina'yı arkadaşlarımla paylaşmak istiyorum",
-      "paylaşım sayfasına git"
+      "paylaşım sayfasına git",
+      "Maxina'yı paylaşarak ödül kazanmak istiyorum",
+      "paylaşım ve davet ekranını göster",
+      "arkadaşlarımı topluluğa davet edebileceğim yeri aç"
     ]
   },
   "WALLET.ACTIONS": {
@@ -1318,7 +1786,10 @@
     "phrasings": [
       "cüzdan işlemlerini aç",
       "kredi göndermek ya da bakiye yüklemek istiyorum",
-      "cüzdanımda işlem yapmak istiyorum"
+      "cüzdanımda işlem yapmak istiyorum",
+      "kredi satın almak ya da para çekmek istiyorum",
+      "cüzdanımda para gönderme veya takas işlemi yapmak istiyorum",
+      "cüzdan işlemler sekmesini aç"
     ]
   },
   "WALLET.ACTIVITY": {
@@ -1326,7 +1797,10 @@
     "phrasings": [
       "cüzdan hareketlerimi göster",
       "işlem geçmişime bakmak istiyorum",
-      "son cüzdan aktivitelerimi nerede görebilirim"
+      "son cüzdan aktivitelerimi nerede görebilirim",
+      "geçmiş cüzdan işlemlerimi görmek istiyorum",
+      "cüzdanımdaki son hareketleri nerede bulabilirim",
+      "cüzdan aktivitesi ekranını aç"
     ]
   },
   "WALLET.BALANCE": {
@@ -1334,7 +1808,10 @@
     "phrasings": [
       "bakiyemi nerede görebilirim",
       "kaç kredim var",
-      "Maxina bakiyemi ve avantajlarımı göster"
+      "Maxina bakiyemi ve avantajlarımı göster",
+      "mevcut bakiyemi ve seviyeme göre avantajlarımı göster",
+      "hangi avantajların kilidini açtığımı nerede görebilirim",
+      "bakiye ve avantajlar ekranını aç"
     ]
   },
   "WALLET.BALANCE_MEMBERSHIP": {
@@ -1342,7 +1819,10 @@
     "phrasings": [
       "üyelik durumumu göster",
       "cüzdanımdaki üyelik sekmesini aç",
-      "membership bilgilerimi görmek istiyorum"
+      "membership bilgilerimi görmek istiyorum",
+      "cüzdanımdaki üyelik sekmesine git",
+      "üyelik planımı nerede görebilirim",
+      "üyelik durumumu bakiye ekranında görmek istiyorum"
     ]
   },
   "WALLET.BALANCE_OPTIMIZATION": {
@@ -1350,7 +1830,10 @@
     "phrasings": [
       "bakiyemi nasıl optimize edebilirim",
       "cüzdanımdan daha fazla tasarruf etmek istiyorum",
-      "optimizasyon sekmesini aç"
+      "optimizasyon sekmesini aç",
+      "bakiyemi en iyi şekilde kullanmak için önerileri görmek istiyorum",
+      "cüzdanımdaki optimizasyon sekmesine git",
+      "bakiyemi nasıl daha verimli kullanabileceğimi nerede öğrenebilirim"
     ]
   },
   "WALLET.BALANCE_TOKENS": {
@@ -1358,7 +1841,10 @@
     "phrasings": [
       "token'larımı göster",
       "kaç token'ım var",
-      "cüzdanımdaki token sekmesini aç"
+      "cüzdanımdaki token sekmesini aç",
+      "cüzdanımdaki token sekmesine git",
+      "elimdeki tokenlara nerede bakabilirim",
+      "token bakiyemi görmek istiyorum"
     ]
   },
   "WALLET.OVERVIEW": {
@@ -1366,7 +1852,10 @@
     "phrasings": [
       "cüzdanımı aç",
       "Maxina cüzdanımı göster",
-      "uygulamadaki param nerede"
+      "uygulamadaki param nerede",
+      "aboneliklerimi ve ödüllerimi görmek istiyorum",
+      "Maxina cüzdanım nerede",
+      "cüzdan genel bakış ekranını göster"
     ]
   },
   "WALLET.REWARDS": {
@@ -1374,7 +1863,10 @@
     "phrasings": [
       "kazandığım ödülleri nerede görebilirim",
       "komisyonlarımı göster",
-      "ne kadar ödül kazandım"
+      "ne kadar ödül kazandım",
+      "platform paylaşımından kazandığım komisyonları göster",
+      "ödüllerimi ve komisyonlarımı nerede görebilirim",
+      "müşterilerime hizmet vererek ne kadar kazandığımı görmek istiyorum"
     ]
   },
   "WALLET.REWARDS_INTELLIGENCE": {
@@ -1382,7 +1874,10 @@
     "phrasings": [
       "daha fazla ödül nasıl kazanabilirim",
       "ödül içgörülerimi göster",
-      "kazanç ipuçlarını nerede bulabilirim"
+      "kazanç ipuçlarını nerede bulabilirim",
+      "ödül analizleri sekmesini aç",
+      "daha fazla ödül kazanmak için önerileri nerede görebilirim",
+      "ödüllerimi artırmak için hangi adımları atmalıyım bunu görmek istiyorum"
     ]
   },
   "WALLET.REWARDS_PENDING": {
@@ -1390,7 +1885,10 @@
     "phrasings": [
       "bekleyen ödüllerimi göster",
       "henüz yatırılmamış ödüllerim nerede",
-      "onay bekleyen ödüllerimi görmek istiyorum"
+      "onay bekleyen ödüllerimi görmek istiyorum",
+      "bekleyen ödüller sekmesini aç",
+      "hesabıma henüz geçmemiş ödüllerimi nerede görebilirim",
+      "işleme alınmamış ödüllerimi kontrol etmek istiyorum"
     ]
   },
   "WALLET.REWARDS_REFERRAL": {
@@ -1398,7 +1896,10 @@
     "phrasings": [
       "referans ödüllerimi göster",
       "arkadaş davet ettiğim için ne kazandım",
-      "referral sekmesini aç"
+      "referral sekmesini aç",
+      "davet ödülleri sekmesini aç",
+      "birisini davet ederek kazandığım ödülleri nerede görebilirim",
+      "kişi davet etmekten kazandıklarımı görmek istiyorum"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {
@@ -1406,7 +1907,10 @@
     "phrasings": [
       "aboneliklerimi göster",
       "hangi servislere abone olduğumu görmek istiyorum",
-      "bir aboneliği iptal etmek istiyorum"
+      "bir aboneliği iptal etmek istiyorum",
+      "abonelikler sayfasını aç",
+      "aktif aboneliklerimi nerede görebilirim",
+      "hangi hizmetler için ödeme yaptığımı görmek istiyorum"
     ]
   }
 }

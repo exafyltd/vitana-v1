@@ -3871,7 +3871,7 @@
           "phrasings": [
             "öffne meinen Erinnerungsgarten",
             "wo sehe ich, was du dir über mich merkst",
-            "zeig mir meine Erinnerungen"
+            "zeig mir, was du dir über mich gemerkt hast"
           ]
         }
       }
@@ -4425,7 +4425,8 @@
           "phrasings": [
             "zeig mir meine Reminder",
             "welche Termin-Erinnerungen habe ich",
-            "öffne meine Erinnerungsliste"
+            "öffne meine Erinnerungsliste",
+            "zeig mir meine Erinnerungen"
           ]
         }
       }
