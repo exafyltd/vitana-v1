@@ -150,8 +150,6 @@
     "  #vcal-page",
     "     Montag, 5. Oktober",
     "    <h1> Guten Morgen ☀️",
-    "    #vcal-subscribe-open <button> [In meiner Kalender-App zeigen]",
-    "      (hidden) 📲",
     "    <button> [Zurück]",
     "       ‹",
     "    <button> [Weiter]",
@@ -170,6 +168,11 @@
     "       Als Nächstes · in 2 Std.",
     "       Spaziergang mit Ana",
     "       11:00 – 11:45 · 🔔 10:50",
+    "    #vcal-guide",
+    "       ✨ Vitana schlägt vor",
+    "       Du hast von 14:15 bis 21:00 frei. Zeit für einen Spaziergang, ein Treffen oder eine Pause?",
+    "      <button> Event finden",
+    "      <button> Mit Vitana planen",
     "    #vcal-day",
     "       07:00",
     "      #vcal-entry <button>",
@@ -200,17 +203,20 @@
     "      #vcal-busy",
     "        (hidden) 📆",
     "         Belegt (Google) · 17:00 – 18:00",
+    "    #journey-section",
+    "    #reminders-section",
+    "    #calendars-section",
     "    #vcal-voice-add <button>",
     "       „Bluttest Freitag 8 Uhr, nüchtern“ – sag's Vitana",
-    "      (hidden) 🎙️"
+    "      (hidden) 🎙️",
+    "    #vcal-add <button> [Neuer Eintrag]",
+    "      (hidden) +"
   ],
   "page.day.ar": [
     "#app-layout",
     "  #vcal-page",
     "     الاثنين، 5 أكتوبر",
     "    <h1> صباح الخير ☀️",
-    "    #vcal-subscribe-open <button> [اعرضه في تطبيق التقويم]",
-    "      (hidden) 📲",
     "    <button> [السابق]",
     "       ‹",
     "    <button> [التالي]",
@@ -229,6 +235,11 @@
     "       التالي · بعد 2 ساعة",
     "       Spaziergang mit Ana",
     "       11:00 ص – 11:45 ص · 🔔 10:50 ص",
+    "    #vcal-guide",
+    "       ✨ اقتراح من Vitana",
+    "       أنت متفرغ من 02:15 م إلى 09:00 م. نزهة أو لقاء أو استراحة؟",
+    "      <button> ابحث عن فعالية",
+    "      <button> خطط مع Vitana",
     "    #vcal-day",
     "       07:00 ص",
     "      #vcal-entry <button>",
@@ -259,9 +270,14 @@
     "      #vcal-busy",
     "        (hidden) 📆",
     "         مشغول (Google) · 05:00 م – 06:00 م",
+    "    #journey-section",
+    "    #reminders-section",
+    "    #calendars-section",
     "    #vcal-voice-add <button>",
     "       «تحليل دم الجمعة الساعة 8 صائمًا» – أخبر فيتانا",
-    "      (hidden) 🎙️"
+    "      (hidden) 🎙️",
+    "    #vcal-add <button> [إدخال جديد]",
+    "      (hidden) +"
   ],
   "page.day.requests": [
     [
@@ -271,6 +287,11 @@
     ],
     [
       "2026-10-04T22:00:00.000Z",
+      "2026-10-05T22:00:00.000Z",
+      "community"
+    ],
+    [
+      "2026-09-04T22:00:00.000Z",
       "2026-10-05T22:00:00.000Z",
       "community"
     ]
@@ -300,8 +321,6 @@
     "  #vcal-page",
     "     Montag, 5. Oktober",
     "    <h1> Woche ab 5. Okt.",
-    "    #vcal-subscribe-open <button> [In meiner Kalender-App zeigen]",
-    "      (hidden) 📲",
     "    <button> [Zurück]",
     "       ‹",
     "    <button> [Weiter]",
@@ -380,9 +399,14 @@
     "          (hidden) 😴",
     "           23:30",
     "           Schlafroutine",
+    "    #journey-section",
+    "    #reminders-section",
+    "    #calendars-section",
     "    #vcal-voice-add <button>",
     "       „Bluttest Freitag 8 Uhr, nüchtern“ – sag's Vitana",
-    "      (hidden) 🎙️"
+    "      (hidden) 🎙️",
+    "    #vcal-add <button> [Neuer Eintrag]",
+    "      (hidden) +"
   ],
   "view.day": [
     "#vcal-day",

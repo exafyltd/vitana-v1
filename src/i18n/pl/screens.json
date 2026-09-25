@@ -6866,7 +6866,8 @@
       "noCompleted": "Brak ukończonych przypomnień.",
       "noMissed": "Brak przegapionych przypomnień — wszystko masz nadrobione.",
       "creating": "Tworzenie…",
-      "createReminder": "Utwórz przypomnienie"
+      "createReminder": "Utwórz przypomnienie",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Brak wydarzeń w Twoim ekwipunku",

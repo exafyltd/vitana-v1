@@ -6815,7 +6815,8 @@
       "noMissed": "No missed reminders — you're all caught up.",
       "creating": "Creating…",
       "createReminder": "Create reminder",
-      "_pending_review": {}
+      "_pending_review": {},
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "No events in your inventory",

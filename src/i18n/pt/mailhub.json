@@ -168,6 +168,11 @@
         "notNow": "Agora não",
         "continue": "Continuar"
       }
+    },
+    "requested": {
+      "hint": "Você veio do seu calendário. Toque uma vez para conectar {app}.",
+      "unavailable": "{app} ainda não está disponível aqui.",
+      "connect": "Conectar {app}"
     }
   }
 }

@@ -130,6 +130,28 @@ export async function fetchCalendarWindow(from: Date, to: Date, role: string | n
   return { items, timezone: body.timezone ?? null };
 }
 
+/** VTID-04536: what the calendar's "+" form sends. */
+export interface NewCalendarEntry {
+  title: string;
+  start_time: string;
+  end_time: string | null;
+  location?: string | null;
+  event_type: string;
+}
+
+/**
+ * Creates an entry through the gateway (POST /api/v1/calendar/events), the
+ * same path Vitana uses, so the member's default reminders apply and the
+ * entry is written for the active role.
+ */
+export async function createCalendarEntry(input: NewCalendarEntry, role: string | null): Promise<{ id: string }> {
+  const body = await authedFetch("/api/v1/calendar/events", role, {
+    method: "POST",
+    body: JSON.stringify({ ...input, source_type: "manual", status: "confirmed" }),
+  });
+  return { id: String((body.data as { id?: string } | undefined)?.id ?? "") };
+}
+
 export async function completeCalendarEntry(eventId: string, role: string | null): Promise<void> {
   await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/complete`, role, {
     method: "POST",

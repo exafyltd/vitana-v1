@@ -6865,7 +6865,8 @@
       "noCompleted": "لا توجد تذكيرات مكتملة بعد.",
       "noMissed": "لا توجد تذكيرات فائتة — أنت على اطلاع كامل.",
       "creating": "جاري الإنشاء…",
-      "createReminder": "إنشاء تذكير"
+      "createReminder": "إنشاء تذكير",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "لا توجد أحداث في مخزونك.",
