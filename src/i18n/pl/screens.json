@@ -10462,7 +10462,10 @@
       "preparingNextSteps": "Przygotowuję twoje kolejne kroki…",
       "allCaughtUpForToday": "Wszystko na dziś załatwione",
       "nothingNewRightNow": "Nic nowego dla ciebie na razie.",
-      "checkForNew": "Sprawdź, czy są nowe"
+      "checkForNew": "Sprawdź, czy są nowe",
+      "snoozeLater": "Później",
+      "snoozedUntilTomorrow": "Pokażemy ci to jutro ponownie.",
+      "snoozeFailed": "Nie udało się odłożyć. Spróbuj ponownie."
     },
     "postDetail": {
       "title": "Wpis",

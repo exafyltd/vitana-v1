@@ -16,7 +16,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useReminderStream, ReminderFirePayload } from "@/hooks/useReminderStream";
-import { ackReminder, completeReminder, snoozeReminder, deleteReminder, getReminderById } from "@/lib/reminders-api";
+import { ackReminder, completeReminderWithSlot, autopilotSlotRoute, snoozeReminder, deleteReminder, getReminderById } from "@/lib/reminders-api";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Bell, Check, Clock, X } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
@@ -77,6 +78,7 @@ async function playMp3(ctx: AudioContext, b64: string): Promise<void> {
 }
 
 export const ReminderInterruptOverlay: React.FC = () => {
+  const navigate = useNavigate();
   const { latestFire, clear } = useReminderStream();
   const [active, setActive] = useState<ReminderFirePayload | null>(null);
   const [busy, setBusy] = useState(false);
@@ -177,13 +179,20 @@ export const ReminderInterruptOverlay: React.FC = () => {
 
   const onComplete = async () => {
     setBusy(true);
+    let route: string | null = null;
     try {
-      await completeReminder(active.reminder_id);
+      // VTID-04652 (plan §4.3): a reminder that belongs to an Autopilot slot
+      // completes the suggestion on the server and opens its screen here.
+      const { autopilotSlot } = await completeReminderWithSlot(active.reminder_id);
+      route = autopilotSlotRoute(autopilotSlot);
+    } catch (err) {
+      console.warn("[reminder-overlay] complete failed", err);
     } finally {
       setBusy(false);
       setActive(null);
       clear();
     }
+    if (route) navigate(route);
   };
 
   const onSnooze = async () => {

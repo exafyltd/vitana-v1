@@ -10461,7 +10461,10 @@
       "preparingNextSteps": "Préparation de tes prochaines étapes…",
       "allCaughtUpForToday": "Tu es à jour pour aujourd'hui",
       "nothingNewRightNow": "Rien de nouveau pour toi pour l'instant.",
-      "checkForNew": "Vérifier les nouveautés"
+      "checkForNew": "Vérifier les nouveautés",
+      "snoozeLater": "Plus tard",
+      "snoozedUntilTomorrow": "On te le remontre demain.",
+      "snoozeFailed": "Impossible de reporter. Réessaie."
     },
     "postDetail": {
       "title": "Publier",

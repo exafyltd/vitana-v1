@@ -1,0 +1,2 @@
+Overlay: "if (route) navigate(route)" removed -> 1 failed, 4 passed (the deep-link test catches it). Restored.
+Pop-up: snoozeRecommendation call replaced by "const ok = true" -> 2 failed (both Later tests catch it). Restored.

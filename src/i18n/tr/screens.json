@@ -10461,7 +10461,10 @@
       "preparingNextSteps": "Sonraki adımların hazırlanıyor…",
       "allCaughtUpForToday": "Bugün için her şey tamam",
       "nothingNewRightNow": "Şu an senin için yeni bir şey yok.",
-      "checkForNew": "Yenileri kontrol et"
+      "checkForNew": "Yenileri kontrol et",
+      "snoozeLater": "Sonra",
+      "snoozedUntilTomorrow": "Bunu yarın tekrar göstereceğiz.",
+      "snoozeFailed": "Ertelenemedi. Lütfen tekrar dene."
     },
     "postDetail": {
       "title": "Gönder",

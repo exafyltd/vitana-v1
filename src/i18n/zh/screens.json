@@ -10461,7 +10461,10 @@
       "preparingNextSteps": "正在准备你的下一步...",
       "allCaughtUpForToday": "今天已全部完成",
       "nothingNewRightNow": "暂无新内容。",
-      "checkForNew": "检查更新"
+      "checkForNew": "检查更新",
+      "snoozeLater": "稍后",
+      "snoozedUntilTomorrow": "我们明天会再提醒你。",
+      "snoozeFailed": "无法推迟，请重试。"
     },
     "postDetail": {
       "title": "发布",

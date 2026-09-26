@@ -39,7 +39,7 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
-import { t } from '@/lib/i18n-toast';
+import { t, notifySuccess, notifyError } from '@/lib/i18n-toast';
 import { AutopilotDraftSheet, type DraftSheetItem } from "@/components/autopilot/AutopilotDraftSheet";
 
 interface AutopilotPopupProps {
@@ -100,6 +100,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     completeRecommendation,
     setActionStatus,
     markDismissedLocally,
+    snoozeRecommendation,
     fetchDraft,
     generateRecommendations,
     generating,
@@ -346,6 +347,24 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     }
   };
 
+  // VTID-04652 (plan §4.2): "Later" hides the suggestion for a day; the
+  // gateway brings it back after snoozed_until.
+  const [snoozingId, setSnoozingId] = useState<string | null>(null);
+  const handleSnooze = async (actionId: string) => {
+    setSnoozingId(actionId);
+    try {
+      const ok = await snoozeRecommendation(actionId, 24);
+      if (ok) {
+        if (selectedActions.some((a) => a.id === actionId)) toggleActionSelection(actionId);
+        notifySuccess('screens.autopilotpopup.snoozedUntilTomorrow');
+      } else {
+        notifyError('screens.autopilotpopup.snoozeFailed');
+      }
+    } finally {
+      setSnoozingId(null);
+    }
+  };
+
   const ActionItem = ({ action }: { action: AutopilotAction }) => {
     const isCompleted = action.status === "completed";
     const isProcessing = action.status === "executing";
@@ -410,6 +429,25 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   <Check className="w-3 h-3 mr-1" />
                   {t('screens.common.erledigt')}
                 </Badge>
+              )}
+              {isPending && (
+                <Button
+                  size="xs"
+                  variant="ghost"
+                  data-testid={`autopilot-snooze-${action.id}`}
+                  aria-label={t('screens.autopilotpopup.snoozeLater')}
+                  disabled={snoozingId === action.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSnooze(action.id);
+                  }}
+                >
+                  {snoozingId === action.id ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <>{t('screens.autopilotpopup.snoozeLater')}</>
+                  )}
+                </Button>
               )}
               {isPending && action.timeEstimate && (
                 <Badge variant="outline" className="text-xs">
