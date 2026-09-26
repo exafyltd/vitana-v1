@@ -57,9 +57,9 @@
     },
     "autopilot.suggestions.archetypeDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation \"Movedor\" for \"Mover\" is awkward and doesn't accurately convey the sense of an active person in this context. Additionally, \"El Movedor\" assumes a male gender for a profile name that should ideally be gender-neutral.",
-      "suggested": "Tus actividades de bienestar sugieren que podrías ser \"El/La Consciente en Movimiento\" - ¿quieres actualizar?",
+      "confidence": 0.8,
+      "issue": "\"El Motor Consciente\" translates to \"The Conscious Engine\" which misrepresents \"The Mindful Mover\" (a person who moves mindfully).",
+      "suggested": "Tus actividades de bienestar sugieren que podrías ser \"El Consciente en Movimiento\" - ¿te gustaría actualizar?",
       "phase": "llm"
     },
     "autopilot.suggestions.updateArchetype": {
@@ -200,7 +200,7 @@
     "autopilot.priorities.high": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0.5,
-      "issue": "The translation \"Alta\" is feminine. Without context, it's impossible to determine the correct gender (Alto/Alta) for the adjective \"High\" as it depends on the noun it modifies.",
+      "issue": "Gender of \"Alta\" (feminine) cannot be confirmed without context of the noun it modifies. Could be \"Alto\" (masculine).",
       "phase": "llm"
     },
     "autopilot.priorities.medium": {
@@ -457,7 +457,67 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "autopilot.draft.titlePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.hint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.regenerate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:36.134Z"
+  "generatedAt": "2026-09-26T08:45:39.546Z"
 }
