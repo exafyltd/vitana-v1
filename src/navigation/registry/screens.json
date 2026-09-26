@@ -4694,7 +4694,9 @@
           "phrasings": [
             "wo schalte ich Benachrichtigungen aus",
             "Benachrichtigungseinstellungen",
-            "Push-Nachrichten abschalten"
+            "Push-Nachrichten abschalten",
+            "Benachrichtigungen verwalten",
+            "öffne die Benachrichtigungseinstellungen"
           ]
         }
       }
