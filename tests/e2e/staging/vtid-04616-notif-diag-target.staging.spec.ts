@@ -9,10 +9,7 @@
 import { test, expect } from './staging-guard';
 
 test.use({
-  allowAbortedWrites: [
-    / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/diag\/notif-tap/,
-    / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/rum\/beacon/,
-  ],
+  allowAbortedWrites: / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/(diag\/notif-tap|rum\/beacon)/,
 });
 
 test('the boot beacon targets the staging gateway', async ({ page }) => {
