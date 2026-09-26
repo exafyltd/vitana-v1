@@ -142,6 +142,40 @@ auto-deploy yet, so it is freeze-only on the auto path post-cutover; ship via
 manual dispatch). `STAGE-DEPLOY-FRONTEND.yml` is **not** gated — staging deploys
 always run. The backend half of the cutover lives in `exafyltd/vitana-platform`.
 
+### Staging Verification Gate — STANDING RULE (VTID-04610)
+
+Owner decision 2026-09-26. The full process lives in one place:
+**`exafyltd/vitana-platform` → `docs/DEPLOYMENT-PIPELINE.md`** (platform
+CLAUDE.md Part 1 rules 46–50). For this repo:
+
+1. **Merge → staging deploy → STAGING-VERIFY.** Every frontend merge that
+   deploys (`AWS-STAGE-DEPLOY-FRONTEND.yml` → `preview-aws.vitanaland.com`) is
+   followed automatically by a test run against that staging build: the
+   community-app smoke suite plus this change's own
+   `docs/validation/<VTID>/staging-tests.json`. Done means that run passed on
+   the exact deployed chunk, not "the deploy workflow is green".
+2. **No suite, no merge.** If the change has no test that proves it on
+   staging, write it (usually a Playwright spec) in the same PR.
+3. **Read-only.** Staging frontends use the production Supabase project (see
+   "Why no host is exempt" below). Staging specs sign in, navigate and read;
+   a network guard aborts every non-`GET` to the gateway and Supabase REST
+   except sign-in. Anything that needs a write is covered by Vitest. No suite
+   ever points at `vitanaland.com`.
+4. **Ready message — Claude Code session + Command Hub Operator Chat only:**
+   *"Staging verified — ready for deployment to production?"*, with the
+   verified commit, results and every commit between production and it.
+5. **"Yes" → PUBLISH directly** — the Command Hub promotion, or from Claude
+   Code the prod workflow pinned to the verified commit (`commit_sha`). The
+   commit list in the ready message is what the "yes" approves; the
+   in-session scoping rules above apply to anything outside it. Verification
+   failed → no prompt, fix forward.
+
+After PUBLISH, production gets the deploy check in "Verifying a frontend
+deploy actually shipped" above and nothing more — no test suite runs against
+production. Not built yet (follow-up VTID): `STAGING-VERIFY.yml`, the smoke
+suite and guard, and pointing `E2E-TEST-RUN.yml` (platform repo) away from
+`vitanaland.com`. Until then run the suites by hand after the staging deploy.
+
 ### GCP billing is OFF — where staging and previews live now (VTID-03658)
 
 GCP billing on `lovable-vitana-vers1` was **deliberately disabled**. Anything
@@ -262,6 +296,10 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 
 **Test user UUID:** `a27552a3-0257-4305-8ed0-351a80fd3701`
 Use this user when an authenticated user is needed for testing (e.g., Playwright screenshots, API calls, profile checks).
+
+Automated staging verification (the Staging Verification Gate above) is
+read-only by construction, and that is exactly why it can run as this user on
+staging without breaking the absolute rule. The rule itself does not change.
 
 ### Why no host is exempt from the absolute rule above (VTID-03506)
 
