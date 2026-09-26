@@ -36,3 +36,9 @@ TEST: src/components/reminders/ReminderInterruptOverlay.autopilot.test.tsx
 
 Lint is clean on the changed lines. `tsc` reports no errors in the changed files; 166 errors
 already on main elsewhere are unchanged.
+
+## Follow-up: layout on phone width
+The first staging screenshot at 390 px showed the "Later" button squeezing the
+suggestion titles in the top row until they broke mid-word. "Later" now sits on its
+own line under the reason (logical margin, so RTL is unaffected), and the top row is
+byte-for-byte what it was before this VTID.

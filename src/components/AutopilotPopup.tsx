@@ -430,25 +430,6 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   {t('screens.common.erledigt')}
                 </Badge>
               )}
-              {isPending && (
-                <Button
-                  size="xs"
-                  variant="ghost"
-                  data-testid={`autopilot-snooze-${action.id}`}
-                  aria-label={t('screens.autopilotpopup.snoozeLater')}
-                  disabled={snoozingId === action.id}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSnooze(action.id);
-                  }}
-                >
-                  {snoozingId === action.id ? (
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                  ) : (
-                    <>{t('screens.autopilotpopup.snoozeLater')}</>
-                  )}
-                </Button>
-              )}
               {isPending && action.timeEstimate && (
                 <Badge variant="outline" className="text-xs">
                   <Clock className="w-3 h-3 mr-1" />
@@ -467,6 +448,31 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             </div>
           </div>
           <p className="text-xs text-muted-foreground">{action.reason}</p>
+          {isPending && (
+            <div className="mt-1 flex">
+              <Button
+                size="xs"
+                variant="ghost"
+                className="-ms-2 h-7 px-2 text-xs text-muted-foreground"
+                data-testid={`autopilot-snooze-${action.id}`}
+                aria-label={t('screens.autopilotpopup.snoozeLater')}
+                disabled={snoozingId === action.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSnooze(action.id);
+                }}
+              >
+                {snoozingId === action.id ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : (
+                  <>
+                    <Clock className="w-3 h-3 me-1" />
+                    {t('screens.autopilotpopup.snoozeLater')}
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
           {action.contributionVector && (
             <PillarDeltaBadges
               vector={action.contributionVector}
