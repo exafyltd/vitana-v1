@@ -883,6 +883,14 @@
       "ramène-moi à l'accueil"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "Créer une publication",
+    "phrasings": [
+      "créer une nouvelle publication",
+      "je veux partager quelque chose avec tout le monde",
+      "où j'écris quelque chose pour la communauté"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "Messages archivés",
     "phrasings": [

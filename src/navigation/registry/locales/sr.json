@@ -1209,6 +1209,14 @@
       "hoću da čitam longevity vesti koje su izabrane za mene"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "Napravi objavu",
+    "phrasings": [
+      "napravi novu objavu",
+      "želim nešto da podelim sa svima",
+      "gde pišem nešto za zajednicu"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "Arhivirane poruke",
     "phrasings": [

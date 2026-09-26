@@ -1207,6 +1207,14 @@
       "araştırma haberleri ve longevity içeriklerini okumak istiyorum"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "Gönderi oluştur",
+    "phrasings": [
+      "yeni bir gönderi oluştur",
+      "herkesle bir şey paylaşmak istiyorum",
+      "topluluk için nereye bir şey yazarım"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "Arşivlenmiş Mesajlar",
     "phrasings": [

@@ -882,6 +882,14 @@
       "回到主页"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "发布帖子",
+    "phrasings": [
+      "创建一个新帖子",
+      "我想和大家分享点东西",
+      "我在哪里给社区写东西"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "已归档消息",
     "phrasings": [
