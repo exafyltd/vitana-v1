@@ -10464,7 +10464,10 @@
       "preparingNextSteps": "Подготовка твоих следующих шагов…",
       "allCaughtUpForToday": "На сегодня всё сделано",
       "nothingNewRightNow": "Сейчас для тебя ничего нового.",
-      "checkForNew": "Проверь новое"
+      "checkForNew": "Проверь новое",
+      "snoozeLater": "Позже",
+      "snoozedUntilTomorrow": "Мы покажем это снова завтра.",
+      "snoozeFailed": "Не удалось отложить. Попробуй ещё раз."
     },
     "postDetail": {
       "title": "Пост",

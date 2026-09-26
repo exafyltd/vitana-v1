@@ -10461,7 +10461,10 @@
       "preparingNextSteps": "جارٍ تحضير خطواتك التالية…",
       "allCaughtUpForToday": "كل شيء محدّث لليوم",
       "nothingNewRightNow": "لا يوجد شيء جديد لك الآن.",
-      "checkForNew": "تحقق من الجديد"
+      "checkForNew": "تحقق من الجديد",
+      "snoozeLater": "لاحقًا",
+      "snoozedUntilTomorrow": "سنعرض لك هذا مجددًا غدًا.",
+      "snoozeFailed": "تعذّر التأجيل. حاول مرة أخرى."
     },
     "postDetail": {
       "title": "نشر",

@@ -10375,7 +10375,10 @@
       "preparingNextSteps": "Preparando tus próximos pasos…",
       "allCaughtUpForToday": "Todo al día por hoy",
       "nothingNewRightNow": "Nada nuevo para ti ahora mismo.",
-      "checkForNew": "Buscar novedades"
+      "checkForNew": "Buscar novedades",
+      "snoozeLater": "Más tarde",
+      "snoozedUntilTomorrow": "Te lo mostraremos de nuevo mañana.",
+      "snoozeFailed": "No se pudo posponer. Inténtalo de nuevo."
     },
     "postDetail": {
       "title": "Publicación",

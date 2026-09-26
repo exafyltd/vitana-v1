@@ -435,6 +435,29 @@ export function useAutopilot() {
     }
   }, [apRole]);
 
+  // VTID-04652 (plan §4.2): "Later" in the pop-up. The gateway hides a
+  // snoozed row until snoozed_until and brings it back afterwards.
+  const snoozeRecommendation = useCallback(async (id: string, hours = 24): Promise<boolean> => {
+    try {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/snooze`, {
+        method: "POST",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({ hours }),
+      });
+      if (!res.ok) throw new Error(`Snooze failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        setRecommendations((prev) => prev.filter((r) => r.id !== id));
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error("[Autopilot] snooze error:", e);
+      return false;
+    }
+  }, [apRole]);
+
   // Fetch count on mount
   useEffect(() => {
     fetchCount();
@@ -556,6 +579,7 @@ export function useAutopilot() {
     completeRecommendation,
     dismissRecommendation,
     markDismissedLocally,
+    snoozeRecommendation,
     fetchCount,
     // VTID — on-demand regeneration
     generateRecommendations,

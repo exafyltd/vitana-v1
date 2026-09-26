@@ -10465,7 +10465,10 @@
       "preparingNextSteps": "Pripremamo tvoje sledeće korake…",
       "allCaughtUpForToday": "Sve je završeno za danas",
       "nothingNewRightNow": "Trenutno nema ništa novo za tebe.",
-      "checkForNew": "Proveri novo"
+      "checkForNew": "Proveri novo",
+      "snoozeLater": "Kasnije",
+      "snoozedUntilTomorrow": "Pokazaćemo ti ovo ponovo sutra.",
+      "snoozeFailed": "Nije moguće odložiti. Pokušaj ponovo."
     },
     "postDetail": {
       "title": "Objava",

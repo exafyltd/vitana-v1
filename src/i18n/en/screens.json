@@ -10430,7 +10430,10 @@
       "allCaughtUpForToday": "All caught up for today",
       "nothingNewRightNow": "Nothing new for you right now.",
       "checkForNew": "Check for new",
-      "_pending_review": {}
+      "_pending_review": {},
+      "snoozeLater": "Later",
+      "snoozedUntilTomorrow": "We'll bring this back tomorrow.",
+      "snoozeFailed": "Couldn't snooze this. Please try again."
     },
     "postDetail": {
       "title": "Post",

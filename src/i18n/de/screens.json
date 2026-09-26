@@ -10311,7 +10311,10 @@
       "preparingNextSteps": "Wir bereiten deine nächsten Schritte vor…",
       "allCaughtUpForToday": "Für heute ist alles erledigt",
       "nothingNewRightNow": "Aktuell gibt es nichts Neues für dich.",
-      "checkForNew": "Nach Neuem suchen"
+      "checkForNew": "Nach Neuem suchen",
+      "snoozeLater": "Später",
+      "snoozedUntilTomorrow": "Wir zeigen dir das morgen wieder.",
+      "snoozeFailed": "Konnte nicht verschoben werden. Versuch es noch einmal."
     },
     "postDetail": {
       "title": "Beitrag",

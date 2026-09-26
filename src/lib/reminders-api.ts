@@ -130,13 +130,38 @@ export async function ackReminder(
   });
 }
 
-export async function completeReminder(id: string): Promise<ReminderRow> {
+/** VTID-04506/04652: set when the reminder belonged to an Autopilot slot. */
+export interface AutopilotSlotResult {
+  ok: boolean;
+  recommendation_completed?: boolean;
+  route?: string | null;
+  title?: string;
+}
+
+export async function completeReminderWithSlot(
+  id: string,
+): Promise<{ reminder: ReminderRow; autopilotSlot: AutopilotSlotResult | null }> {
   const r = await communityFetch(`/api/v1/reminders/${id}/complete`, {
     method: "POST",
   });
   if (!r.ok) throw new Error(`completeReminder ${r.status}`);
   const j = await r.json();
-  return j.data as ReminderRow;
+  return { reminder: j.data as ReminderRow, autopilotSlot: (j.autopilot_slot ?? null) as AutopilotSlotResult | null };
+}
+
+export async function completeReminder(id: string): Promise<ReminderRow> {
+  return (await completeReminderWithSlot(id)).reminder;
+}
+
+/**
+ * VTID-04652 (plan §4.3): the screen a completed Autopilot slot opens.
+ * Only an in-app path is followed — never another origin.
+ */
+export function autopilotSlotRoute(slot: AutopilotSlotResult | null | undefined): string | null {
+  const route = slot?.ok ? slot.route : null;
+  if (typeof route !== "string") return null;
+  if (!route.startsWith("/") || route.startsWith("//") || route.includes("\\")) return null;
+  return route;
 }
 
 export async function deleteReminder(id: string): Promise<void> {
