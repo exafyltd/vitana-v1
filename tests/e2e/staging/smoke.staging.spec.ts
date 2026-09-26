@@ -7,10 +7,17 @@
 // on purpose: it proves the build boots against the staging gateway.
 import { test, expect } from './staging-guard';
 
-// The app sends a RUM performance beacon on every load. The guard aborts it
-// (nothing is written); declaring it keeps the test honest about everything
-// else. Any OTHER aborted write, or any request to a production host, fails.
-test.use({ allowAbortedWrites: [/ https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/rum\/beacon/] });
+// The app sends two diagnostics beacons on every load: RUM performance and
+// the notification-tap diagnostic (VTID-04616 — which must go to THIS build's
+// gateway, never production). The guard aborts both (nothing is written);
+// declaring them keeps the test honest about everything else. Any OTHER
+// aborted write, or any request to a production host, fails.
+test.use({
+  allowAbortedWrites: [
+    / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/rum\/beacon/,
+    / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/diag\/notif-tap/,
+  ],
+});
 
 test('the pre-login landing renders with no uncaught errors', async ({ page }) => {
   const errors: string[] = [];
