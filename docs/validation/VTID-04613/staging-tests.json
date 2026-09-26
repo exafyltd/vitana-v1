@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04613",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "STAGING-VERIFY smoke spec runs behind the guard: landing boots, bundle talks to the staging gateway",
+      "spec": "tests/e2e/staging/smoke.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}

@@ -68,13 +68,15 @@ jobs:
           if ! git diff --name-only "$BASE...$HEAD" | grep -Eq '^(src/|public/|index\.html$|Dockerfile$|nginx\.conf$|package\.json$|package-lock\.json$|bun\.lock$|vite\.config\.ts$|\.github/workflows/AWS-STAGE-DEPLOY-FRONTEND\.yml$)'; then
             echo "PR touches no community-app deploy path — nothing deploys, no staging suite needed."; exit 0
           fi
-          found=0
-          for v in $(echo "$TITLE" | grep -oE 'VTID-[0-9]{4,5}' | sort -u); do
+          # Every VTID in the title needs its own suite (matches the canonical check).
+          vtids=$(echo "$TITLE" | grep -oE 'VTID-[0-9]{4,5}' | sort -u)
+          [ -n "$vtids" ] || { echo "::error::PR changes community-app deploy paths but its title names no VTID."; exit 1; }
+          missing=""
+          for v in $vtids; do
             f="docs/validation/$v/staging-tests.json"
-            [ -f "$f" ] || continue
+            if [ ! -f "$f" ]; then missing="$missing $v"; continue; fi
             jq -e --arg v "$v" '.vtid == $v and .service == "community-app" and (.tests | type == "array" and length > 0)' "$f" >/dev/null \
               || { echo "::error::$f is not a valid community-app change suite"; exit 1; }
-            found=1
           done
-          [ "$found" = 1 ] || { echo "::error::PR changes community-app deploy paths but has no docs/validation/<VTID>/staging-tests.json for a VTID in its title — no suite, no merge."; exit 1; }
-          echo "✓ change suite present"
+          [ -z "$missing" ] || { echo "::error::no docs/validation/<VTID>/staging-tests.json for:$missing — every VTID in the title needs one; no suite, no merge."; exit 1; }
+          echo "✓ change suite present for every VTID in the title"
