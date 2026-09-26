@@ -1,0 +1,80 @@
+# STAGING-TESTS-REQUIRED — "no suite, no merge" for the community app
+# (VTID-04613; CLAUDE.md "Staging Verification Gate", vitana-platform
+# docs/DEPLOYMENT-PIPELINE.md §3.2).
+#
+# A PR that changes what AWS-STAGE-DEPLOY-FRONTEND deploys must carry the test
+# that proves it on staging: docs/validation/<VTID>/staging-tests.json for a
+# VTID in the PR title. STAGING-VERIFY (vitana-platform) runs it after the
+# staging deploy; this check makes sure it exists and is valid BEFORE merge.
+#
+# The validator is the canonical one from vitana-platform
+# (scripts/ci/staging-verify), fetched with PLATFORM_DISPATCH_TOKEN. If that
+# token cannot read it, a basic presence/shape check runs instead and says so;
+# STAGING-VERIFY still validates the manifest fully after the deploy.
+
+name: STAGING-TESTS-REQUIRED
+
+run-name: 'STAGING-TESTS-REQUIRED #${{ github.event.pull_request.number }} (VTID-04613)'
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  change-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fetch the canonical validator
+        id: fetch
+        env:
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/sv"
+          ok=true
+          for f in lib.cjs run.mjs staging-guard.ts; do
+            gh api -H 'Accept: application/vnd.github.raw' \
+              "repos/exafyltd/vitana-platform/contents/scripts/ci/staging-verify/$f?ref=main" \
+              > "$RUNNER_TEMP/sv/$f" 2>/dev/null || ok=false
+          done
+          echo "canonical=$ok" >> "$GITHUB_OUTPUT"
+          $ok || echo "::warning::could not read vitana-platform scripts/ci/staging-verify with PLATFORM_DISPATCH_TOKEN — running the basic check instead."
+      - name: Change suite present and valid (canonical)
+        if: steps.fetch.outputs.canonical == 'true'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          node "$RUNNER_TEMP/sv/run.mjs" check-pr --service community-app \
+            --repo-root . --base "$BASE" --head "$HEAD" --title "$TITLE"
+      - name: Change suite present (basic)
+        if: steps.fetch.outputs.canonical != 'true'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Mirrors SERVICES['community-app'].deployPaths in the canonical lib.cjs.
+          if ! git diff --name-only "$BASE...$HEAD" | grep -Eq '^(src/|public/|index\.html$|Dockerfile$|nginx\.conf$|package\.json$|package-lock\.json$|bun\.lock$|vite\.config\.ts$|\.github/workflows/AWS-STAGE-DEPLOY-FRONTEND\.yml$)'; then
+            echo "PR touches no community-app deploy path — nothing deploys, no staging suite needed."; exit 0
+          fi
+          found=0
+          for v in $(echo "$TITLE" | grep -oE 'VTID-[0-9]{4,5}' | sort -u); do
+            f="docs/validation/$v/staging-tests.json"
+            [ -f "$f" ] || continue
+            jq -e --arg v "$v" '.vtid == $v and .service == "community-app" and (.tests | type == "array" and length > 0)' "$f" >/dev/null \
+              || { echo "::error::$f is not a valid community-app change suite"; exit 1; }
+            found=1
+          done
+          [ "$found" = 1 ] || { echo "::error::PR changes community-app deploy paths but has no docs/validation/<VTID>/staging-tests.json for a VTID in its title — no suite, no merge."; exit 1; }
+          echo "✓ change suite present"

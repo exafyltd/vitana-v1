@@ -172,9 +172,17 @@ CLAUDE.md Part 1 rules 46–50). For this repo:
 
 After PUBLISH, production gets the deploy check in "Verifying a frontend
 deploy actually shipped" above and nothing more — no test suite runs against
-production. Not built yet (follow-up VTID): `STAGING-VERIFY.yml`, the smoke
-suite and guard, and pointing `E2E-TEST-RUN.yml` (platform repo) away from
-`vitanaland.com`. Until then run the suites by hand after the staging deploy.
+production.
+
+How it runs (VTID-04613): `AWS-STAGE-DEPLOY-FRONTEND.yml`'s last step
+dispatches `community-app-staging-deployed` to vitana-platform, whose
+`STAGING-VERIFY.yml` runs the smoke suite (browser part:
+`tests/e2e/staging/smoke.staging.spec.ts`) and the change suites. Browser
+specs are `tests/e2e/staging/*.staging.spec.ts` and import
+`{ test, expect } from './staging-guard'` — the runner copies that guard in
+on every run (it is git-ignored here). `STAGING-TESTS-REQUIRED` fails a PR
+that changes deploy paths without a suite. Worked example:
+`docs/validation/VTID-04616/staging-tests.json`.
 
 ### GCP billing is OFF — where staging and previews live now (VTID-03658)
 

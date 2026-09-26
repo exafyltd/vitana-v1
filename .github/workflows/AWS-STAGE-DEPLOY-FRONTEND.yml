@@ -257,3 +257,23 @@ jobs:
             echo "- Verified live at: $FRONTEND"
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04613 — hand the deployed commit to STAGING-VERIFY (vitana-
+      # platform), which runs the read-only smoke + change suites against
+      # this build and produces the ready-for-production message (CLAUDE.md
+      # "Staging Verification Gate"). Same cross-repo dispatch as
+      # SCREENS-CATALOG-TRIGGER.yml. A deploy that cannot be verified is not
+      # done, so a missing token fails loudly here.
+      - name: Trigger STAGING-VERIFY
+        if: success() && env.FRONTEND_URL == 'https://preview-aws.vitanaland.com'
+        env:
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::PLATFORM_DISPATCH_TOKEN not set — the deploy is live but STAGING-VERIFY was not triggered. Dispatch it by hand: STAGING-VERIFY.yml (service=community-app, commit_sha=$GITHUB_SHA) in exafyltd/vitana-platform."
+            exit 1
+          fi
+          gh api repos/exafyltd/vitana-platform/dispatches \
+            -f event_type=community-app-staging-deployed \
+            -f "client_payload[sha]=$GITHUB_SHA"
+          echo "✓ STAGING-VERIFY requested for community-app @ $GITHUB_SHA"
