@@ -3425,7 +3425,9 @@
         "home-overview",
         "home.ai_feed",
         "home.context",
-        "home.actions"
+        "home.actions",
+        "newsfeed",
+        "news-feed"
       ],
       "formerIds": [
         "HOME.AI_FEED",
@@ -3441,7 +3443,8 @@
             "show me the latest news",
             "open the news feed",
             "take me home",
-            "open the home screen"
+            "open the home screen",
+            "open my newsfeed"
           ]
         },
         "de": {
@@ -3452,7 +3455,52 @@
             "zeig mir die neuesten Longevity-News",
             "öffne den News-Feed",
             "bring mich zur Startseite",
-            "öffne den Home-Screen"
+            "öffne den Home-Screen",
+            "öffne meinen Newsfeed"
+          ]
+        }
+      }
+    },
+    {
+      "id": "HOME.CREATE_POST",
+      "route": "/home?compose=1",
+      "category": "home",
+      "access": "member",
+      "aliases": [
+        "create-post",
+        "new-post",
+        "compose",
+        "write-post",
+        "beitrag-erstellen",
+        "post-erstellen"
+      ],
+      "i18n": {
+        "en": {
+          "title": "Create a Post",
+          "shows": "Opens the post composer on the News feed — write a post, add a photo or video, and share it with the Maxina community.",
+          "hint": "When the user wants to make, write, create, publish or share a post with the community, asks where or how they can post something, or wants to share a photo, video or thought with other members.",
+          "phrasings": [
+            "make a post",
+            "create a new post",
+            "post something to the community feed",
+            "how do I share something with the members",
+            "share a photo with the other members",
+            "write a post for the community",
+            "where do I make a post"
+          ]
+        },
+        "de": {
+          "title": "Beitrag erstellen",
+          "shows": "Öffnet das Beitragsfenster im News-Feed — schreibe einen Beitrag, füge ein Foto oder Video hinzu und teile ihn mit der Maxina-Community.",
+          "hint": "Wenn der Nutzer einen Beitrag oder Post machen, schreiben, erstellen, veröffentlichen oder mit der Community teilen möchte, fragt, wo oder wie er etwas posten kann, oder ein Foto, Video oder einen Gedanken mit anderen Mitgliedern teilen will.",
+          "phrasings": [
+            "einen Beitrag machen",
+            "einen neuen Beitrag erstellen",
+            "etwas im Community-Feed posten",
+            "wie teile ich etwas mit den Mitgliedern",
+            "ein Foto mit den anderen Mitgliedern teilen",
+            "einen Beitrag für die Community schreiben",
+            "wo mache ich einen Post"
           ]
         }
       }

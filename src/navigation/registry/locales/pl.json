@@ -883,6 +883,14 @@
       "zabierz mnie na ekran główny"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "Utwórz post",
+    "phrasings": [
+      "utwórz nowy post",
+      "chcę coś udostępnić wszystkim",
+      "gdzie napiszę coś dla społeczności"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "Zarchiwizowane wiadomości",
     "phrasings": [

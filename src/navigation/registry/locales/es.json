@@ -883,6 +883,14 @@
       "abre el feed de noticias"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "Crear una publicación",
+    "phrasings": [
+      "crear una nueva publicación",
+      "quiero compartir algo con todos",
+      "dónde escribo algo para la comunidad"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "Mensajes archivados",
     "phrasings": [

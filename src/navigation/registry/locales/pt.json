@@ -883,6 +883,14 @@
       "vai pra tela inicial"
     ]
   },
+  "HOME.CREATE_POST": {
+    "title": "Criar uma publicação",
+    "phrasings": [
+      "criar uma nova publicação",
+      "quero partilhar algo com todos",
+      "onde escrevo algo para a comunidade"
+    ]
+  },
   "INBOX.ARCHIVED": {
     "title": "Mensagens Arquivadas",
     "phrasings": [
