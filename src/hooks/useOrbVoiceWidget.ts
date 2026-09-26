@@ -11,6 +11,7 @@ import { useRole } from "@/hooks/useRole";
 import { orbViewProfile } from "@/lib/orb-view-profile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
+import { buildOrbScreenContext } from "@/lib/orbScreenContext";
 import { planOrbNavigation, type NavDirectiveContext, type NavResult } from "@/navigation/orb-navigation";
 import { openOverlay, whenOverlayTaken } from "@/navigation/overlay-bus";
 
@@ -534,6 +535,10 @@ export function useOrbVoiceWidget() {
         // VTID-02789: re-emit is_mobile on every route change so a viewport
         // resize mid-session is reflected in the next navigate decision.
         is_mobile: isMobile,
+        // VTID-04425 (WS-3.3): the page title and view params. During a live
+        // voice session the widget forwards these as a context_update, so
+        // Vitana's get_current_screen sees the screen the user is on now.
+        ...buildOrbScreenContext(location.search, document.title, document.documentElement.lang),
         // VTID-04561: moving into /admin or /backoffice is a different Vitana;
         // the widget restarts an open conversation when this changes.
         ...orbViewProfile(path, currentRoleRef.current),
@@ -551,7 +556,7 @@ export function useOrbVoiceWidget() {
       }
       requestRolePrewarm(path, isMobile);
     }
-  }, [location.pathname, isMobile]);
+  }, [location.pathname, location.search, isMobile]);
 
   // VTID-04548: warm the orb's context cache for the role the NEXT voice
   // session will actually use. `role.changed` fires optimistically BEFORE the
