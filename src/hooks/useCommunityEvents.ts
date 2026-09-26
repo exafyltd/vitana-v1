@@ -53,28 +53,15 @@ function eventsQueryKey(userId: string | undefined) {
 }
 
 /**
- * Attendee counts per event, aggregated in the database (one tiny response)
- * instead of downloading one row per attendee across all events just to
- * count them client-side — that payload scaled with total attendance.
- * Falls back to the legacy per-row fetch if PostgREST aggregates are
- * unavailable, so counts never silently regress to zero.
+ * Attendee counts per event, counted from one row per attending participant.
+ * VTID-04594: this used to try a PostgREST aggregate (`count()`) first, but
+ * aggregates are disabled on the project, so every events load made one
+ * request that returned 400 before falling back here. Owner decision
+ * 2026-09-26: count the rows directly.
  */
-async function fetchParticipantCounts(eventIds: string[]): Promise<Map<string, number>> {
+export async function fetchParticipantCounts(eventIds: string[]): Promise<Map<string, number>> {
   const counts = new Map<string, number>();
   if (eventIds.length === 0) return counts;
-
-  const agg = await supabase
-    .from('global_event_participants')
-    .select('event_id, count()')
-    .in('event_id', eventIds)
-    .eq('status', 'attending');
-  if (!agg.error && agg.data) {
-    for (const row of agg.data as unknown as Array<{ event_id: string; count: number }>) {
-      counts.set(row.event_id, Number(row.count) || 0);
-    }
-    return counts;
-  }
-  console.warn('[CommunityEvents] Aggregate count unavailable, falling back to row fetch:', agg.error?.message);
 
   const rows = await supabase
     .from('global_event_participants')
