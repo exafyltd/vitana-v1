@@ -1,0 +1,9 @@
+{
+  "vtid": "VTID-04659",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "name": "app shell loads the widget at the VTID-04659 version", "target": "frontend", "path": "/", "expect_content_type": "text/html", "expect_body_contains": "/command-hub/orb-widget.js?v=20260926-vtid-04659-after-turn" },
+    { "kind": "http", "name": "the widget at that URL carries the VTID-04644 after-turn directive", "target": "gateway", "path": "/command-hub/orb-widget.js?v=20260926-vtid-04659-after-turn", "expect_status": 200, "expect_body_contains": "msg.after_turn === true" },
+    { "kind": "existing", "ref": "npx vitest run src/hooks/useOrbVoiceWidget.vtid-04099-load-path.test.ts", "cwd": ".", "reason": "the preload and script tags stay byte-identical, including the new ?v=" }
+  ]
+}
