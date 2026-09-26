@@ -52,7 +52,12 @@
       "lab": "Laboratoire",
       "work": "Travail",
       "vitana": "Vitana",
-      "personal": "Personnel"
+      "personal": "Personnel",
+      "_pending_review": {
+        "nutrition": true,
+        "mental": true,
+        "vitana": true
+      }
     },
     "source": {
       "lab": "De ta demande d'analyse",
@@ -60,7 +65,10 @@
       "plan": "De ton plan",
       "assistant": "Ajouté avec Vitana",
       "community": "Communauté",
-      "journey": "Ton parcours"
+      "journey": "Ton parcours",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Rien de prévu – une journée calme 🌿",
@@ -71,7 +79,10 @@
       "free": "libre"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Fermer",
@@ -140,6 +151,90 @@
       "title": "Heures calmes",
       "body": "Pendant tes heures calmes, aucun rappel n'arrive – il arrive juste avant.",
       "link": "Régler les heures calmes"
+    },
+    "guide": {
+      "eyebrow": "Vitana suggère",
+      "allDone": "Tout est fait : {count} sur {count}. Profite de ta soirée ou regarde ce que la semaine te réserve.",
+      "nextStep": "Ta prochaine étape : {title}",
+      "stepsOpenOne": "1 étape ouverte · environ 5 minutes",
+      "stepsOpen": "{count} étapes ouvertes · environ 5 minutes chacune",
+      "freeDay": "Rien de prévu aujourd'hui. Une bonne journée pour quelque chose qui te fait du bien.",
+      "freeWindow": "Tu es libre de {from} à {to}. Une balade, une rencontre ou une pause ?",
+      "connect": "Connecte ton calendrier pour que Vitana voie toute ta journée et planifie autour.",
+      "busy": "Journée chargée : encore {count} choses à venir. Prévois de courtes pauses entre elles.",
+      "start": "Commencer",
+      "findEvent": "Trouver un événement",
+      "planWithVitana": "Planifier avec Vitana",
+      "seeWeek": "Voir la semaine",
+      "connectAction": "Connecter le calendrier"
+    },
+    "journey": {
+      "title": "Ton parcours",
+      "open": "{count} étapes ouvertes",
+      "openOne": "1 étape ouverte",
+      "day": "Jour {day}",
+      "dayOf": "Jour {day} sur {total}",
+      "noneOpen": "Toutes les étapes sont faites, bravo ! De nouvelles arrivent au fur et à mesure.",
+      "today": "Aujourd'hui {time}",
+      "more": "+{count} de plus",
+      "openJourney": "Ouvrir mon parcours"
+    },
+    "remindersSection": {
+      "title": "Rappels",
+      "none": "Aucun prévu",
+      "upcoming": "{count} à venir",
+      "upcomingOne": "1 à venir",
+      "next": "prochain {when}"
+    },
+    "calendars": {
+      "title": "Calendriers",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "Connecte ton calendrier",
+      "connectBody": "Vois toute ta journée au même endroit. Vitana planifie autour de tes rendez-vous.",
+      "comingSoon": "La connexion avec Google, Apple et Outlook est en cours de configuration.",
+      "connectedOne": "{name} connecté",
+      "connectedMany": "{names} connectés",
+      "needsReconnect": "{name} doit être reconnecté",
+      "connected": "Connecté",
+      "notConnected": "Non connecté",
+      "reconnectHint": "La connexion a expiré",
+      "connect": "Connecter",
+      "reconnect": "Reconnecter",
+      "manage": "Gérer dans Apps connectées",
+      "showInAppHint": "Voir les entrées Vitanaland dans ton app de calendrier"
+    },
+    "add": {
+      "title": "Nouvelle entrée",
+      "created": "Ajouté ✨",
+      "error": "Impossible d'enregistrer pour le moment. Réessaie dans un instant."
+    },
+    "form": {
+      "title": "Titre",
+      "titlePlaceholder": "C'est quoi ?",
+      "date": "Date",
+      "today": "Aujourd'hui",
+      "tomorrow": "Demain",
+      "pickDate": "Choisir une date",
+      "start": "Début",
+      "end": "Fin",
+      "location": "Lieu",
+      "optional": "facultatif",
+      "locationPlaceholder": "Où ?",
+      "category": "Catégorie",
+      "cancel": "Annuler",
+      "create": "Ajouter au calendrier",
+      "types": {
+        "personal": "Personnel",
+        "professional": "Travail",
+        "health": "Santé",
+        "workout": "Sport",
+        "community": "Communauté",
+        "nutrition": "Nutrition"
+      }
     }
   }
 }

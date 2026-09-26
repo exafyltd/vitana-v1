@@ -1,11 +1,17 @@
 import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { useToast } from '@/hooks/use-toast';
 import { MatchedContact, ImportedContact } from "@/components/contacts/DedupePreviewList";
-import { notify } from '@/lib/i18n-toast';
+import {
+  contactPickerSupported,
+  fetchConnectedApps,
+  importAndroidContacts,
+  pickDeviceContacts,
+  syncConnectedApp,
+  type ConnectedAppId,
+} from "@/lib/connected-apps-client";
 
-export type ContactSource = "google" | "icloud" | "phonebook" | "whatsapp";
+export type ContactSource = "google" | "outlook" | "icloud" | "phonebook" | "whatsapp";
 
 interface ConnectedSource {
   source: ContactSource;
@@ -17,18 +23,102 @@ interface ConnectedSource {
 interface SyncResult {
   matches: MatchedContact[];
   nonMatches: ImportedContact[];
+  /** Every contact these sources imported, not just the rows in the preview. */
   totalImported: number;
+  /** Members among all imported contacts, not just the rows in the preview. */
+  totalMatches: number;
+  /** True when the preview lists fewer rows than were imported. */
+  truncated: boolean;
 }
 
-interface RawContact {
-  name?: string[];
-  tel?: string[];
-  email?: string[];
+/** Google / Outlook / iCloud still have to be switched on in Connected Apps. */
+export class ConnectAppFirst extends Error {
+  constructor(public app: ConnectedAppId) {
+    super("connect_required");
+  }
+}
+
+const HUB_APP: Partial<Record<ContactSource, ConnectedAppId>> = {
+  google: "google-contacts",
+  outlook: "outlook-contacts",
+  icloud: "iphone-contacts",
+};
+
+/** `contacts.source` value each hub import writes (VTID-04449: Outlook → microsoft). */
+const DB_SOURCE: Partial<Record<ContactSource, string>> = {
+  google: "google",
+  outlook: "microsoft",
+  icloud: "icloud",
+};
+
+const PREVIEW_LIMIT = 500;
+
+/** What the hub imported for these sources, shaped for the preview list. */
+async function readImported(userId: string, sources: string[]): Promise<SyncResult> {
+  if (sources.length === 0) return { matches: [], nonMatches: [], totalImported: 0, totalMatches: 0, truncated: false };
+  // `source` (VTID-04405) is newer than the generated types, hence the loose client.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const contacts = () => (supabase as any).from("contacts");
+  // The preview stays bounded; the totals come from exact counts so a large
+  // address book is not reported as 500 contacts.
+  const [{ data, error, count }, { count: memberCount, error: memberError }] = await Promise.all([
+    contacts()
+      .select("id, contact_name, contact_phone, contact_email, contact_user_id, is_on_platform", { count: "exact" })
+      .eq("user_id", userId)
+      .in("source", sources)
+      // Members first, so matches are never pushed out of the preview by the cap.
+      .order("is_on_platform", { ascending: false })
+      .order("contact_name", { ascending: true })
+      .limit(PREVIEW_LIMIT),
+    contacts()
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .in("source", sources)
+      .eq("is_on_platform", true)
+      .not("contact_user_id", "is", null),
+  ]);
+  if (error) throw error;
+  if (memberError) console.error("[useContactSync] Failed to count member contacts:", memberError);
+  const rows = (data ?? []) as Array<{
+    id: string;
+    contact_name: string;
+    contact_phone: string | null;
+    contact_email: string | null;
+    contact_user_id: string | null;
+    is_on_platform: boolean;
+  }>;
+  const memberIds = rows.filter((r) => r.is_on_platform && r.contact_user_id).map((r) => r.contact_user_id as string);
+  const profiles: Record<string, { display_name?: string; avatar_url?: string; handle?: string }> = {};
+  if (memberIds.length > 0) {
+    const { data: prof, error: profError } = await supabase
+      .from("profiles")
+      .select("user_id, display_name, avatar_url, handle")
+      .in("user_id", memberIds);
+    if (profError) console.error("[useContactSync] Failed to load member profiles:", profError);
+    for (const p of prof ?? []) profiles[p.user_id] = p;
+  }
+  const matches: MatchedContact[] = [];
+  const nonMatches: ImportedContact[] = [];
+  for (const r of rows) {
+    const local = { id: r.id, name: r.contact_name, phone: r.contact_phone ?? undefined, email: r.contact_email ?? undefined };
+    if (r.is_on_platform && r.contact_user_id) {
+      const p = profiles[r.contact_user_id] ?? {};
+      matches.push({
+        localContact: local,
+        platformUser: { user_id: r.contact_user_id, display_name: p.display_name || r.contact_name, avatar_url: p.avatar_url, handle: p.handle },
+        matchConfidence: "exact",
+      });
+    } else {
+      nonMatches.push(local);
+    }
+  }
+  const totalImported = typeof count === "number" ? Math.max(count, rows.length) : rows.length;
+  const totalMatches = typeof memberCount === "number" ? Math.max(memberCount, matches.length) : matches.length;
+  return { matches, nonMatches, totalImported, totalMatches, truncated: totalImported > rows.length };
 }
 
 export function useContactSync() {
   const { user } = useAuth();
-  const { toast } = useToast();
   const [connectedSources, setConnectedSources] = useState<ConnectedSource[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
   const [hasConsented, setHasConsented] = useState(false);
@@ -76,129 +166,11 @@ export function useContactSync() {
     console.log("[ContactSync] Consent recorded for user:", user.id);
   }, [user?.id]);
 
-  // Hash contact data for privacy-preserving matching
-  const hashContact = async (value: string): Promise<string> => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(value.toLowerCase().trim());
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-  };
-
-  // Import from device phonebook using Contact Picker API
-  const importFromPhonebook = async (): Promise<RawContact[]> => {
-    if (!("contacts" in navigator)) {
-      throw new Error("Contact Picker API not available");
-    }
-
-    try {
-      const props = ["name", "tel", "email"];
-      const opts = { multiple: true };
-      
-      // @ts-ignore - Contact Picker API not in TypeScript types
-      const contacts = await navigator.contacts.select(props, opts);
-      return contacts || [];
-    } catch (error) {
-      if ((error as Error).name === "AbortError") {
-        throw new Error("Contact selection cancelled");
-      }
-      throw error;
-    }
-  };
-
-  // Match contacts against platform users
-  const matchContacts = async (
-    rawContacts: RawContact[]
-  ): Promise<{ matches: MatchedContact[]; nonMatches: ImportedContact[] }> => {
-    const matches: MatchedContact[] = [];
-    const nonMatches: ImportedContact[] = [];
-
-    // Get all phones and emails to check
-    const phonesToCheck: string[] = [];
-    const emailsToCheck: string[] = [];
-    
-    rawContacts.forEach(contact => {
-      if (contact.tel?.[0]) {
-        phonesToCheck.push(contact.tel[0].replace(/\D/g, ""));
-      }
-      if (contact.email?.[0]) {
-        emailsToCheck.push(contact.email[0].toLowerCase());
-      }
-    });
-
-    // Query profiles for matches
-    let profileMatches: Record<string, any> = {};
-    
-    if (phonesToCheck.length > 0) {
-      const { data: phoneProfiles, error: phoneError } = await supabase
-        .from("profiles")
-        .select("user_id, display_name, avatar_url, handle, phone")
-        .in("phone", phonesToCheck);
-
-      if (phoneError) {
-        // A real DB failure here previously looked identical to "none of
-        // these phone numbers matched" — the contact match pass continues
-        // and reports a false "0 of your contacts use Vitana" instead.
-        console.error("[useContactSync] Failed to match contacts by phone:", phoneError);
-      }
-
-      phoneProfiles?.forEach(p => {
-        if (p.phone) {
-          profileMatches[p.phone.replace(/\D/g, "")] = p;
-        }
-      });
-    }
-
-    // Also check global community profiles
-    if (emailsToCheck.length > 0) {
-      const { data: emailProfiles, error: emailError } = await supabase
-        .from("profiles")
-        .select("user_id, display_name, avatar_url, handle, email")
-        .in("email", emailsToCheck);
-
-      if (emailError) {
-        // Same failure shape as the phone lookup above: a real error looks
-        // identical to "no email matches" without this log.
-        console.error("[useContactSync] Failed to match contacts by email:", emailError);
-      }
-
-      emailProfiles?.forEach(p => {
-        if (p.email) {
-          profileMatches[p.email.toLowerCase()] = p;
-        }
-      });
-    }
-
-    // Categorize contacts
-    rawContacts.forEach((contact, index) => {
-      const phone = contact.tel?.[0]?.replace(/\D/g, "");
-      const email = contact.email?.[0]?.toLowerCase();
-      const name = contact.name?.[0] || "Unknown";
-      const id = `imported-${index}-${Date.now()}`;
-
-      const matchedProfile = (phone && profileMatches[phone]) || 
-                            (email && profileMatches[email]);
-
-      if (matchedProfile) {
-        matches.push({
-          localContact: { id, name, phone, email },
-          platformUser: {
-            user_id: matchedProfile.user_id,
-            display_name: matchedProfile.display_name || name,
-            avatar_url: matchedProfile.avatar_url,
-            handle: matchedProfile.handle,
-          },
-          matchConfidence: phone && profileMatches[phone] ? "exact" : "probable",
-        });
-      } else {
-        nonMatches.push({ id, name, phone, email });
-      }
-    });
-
-    return { matches, nonMatches };
-  };
-
-  // Main sync function
+  // Main sync function — VTID-04440: every source goes through the Connected
+  // Apps hub (the gateway), which de-duplicates per source, matches members
+  // server-side and keeps test / service accounts out (CLAUDE.md rule 45).
+  // Google and iCloud must be switched on in Connected Apps first; the phone
+  // book uses the browser Contact Picker (Android Chrome).
   const syncContacts = useCallback(async (
     sources: ContactSource[]
   ): Promise<SyncResult> => {
@@ -209,101 +181,48 @@ export function useContactSync() {
     setIsSyncing(true);
 
     try {
-      let allRawContacts: RawContact[] = [];
+      const hubSources: string[] = [];
+      const needsHubState = sources.some((s) => Boolean(HUB_APP[s]));
+      const apps = needsHubState ? await fetchConnectedApps() : [];
 
-      // Import from each selected source
+      // Check every selected source before importing anything, so a source
+      // that still needs connecting does not leave the others half-imported.
       for (const source of sources) {
-        switch (source) {
-          case "phonebook":
-            const phonebookContacts = await importFromPhonebook();
-            allRawContacts.push(...phonebookContacts);
-            break;
-          
-          case "google":
-            // TODO: Implement Google OAuth flow
-            notify('toasts.hooks.comingSoon', 'toasts.hooks.googleContactsImportWillAvailableSoon');
-            break;
-          
-          case "icloud":
-            // TODO: Implement iCloud integration
-            notify('toasts.hooks.comingSoon', 'toasts.hooks.icloudImportWillAvailableSoon');
-            break;
-          
-          case "whatsapp":
-            // TODO: Implement WhatsApp export import
-            notify('toasts.hooks.comingSoon', 'toasts.hooks.whatsappImportWillAvailableSoon');
-            break;
+        const appId = HUB_APP[source];
+        if (source === "phonebook") {
+          if (!contactPickerSupported()) throw new Error("Contact Picker API not available");
+        } else if (appId) {
+          const app = apps.find((a) => a.id === appId);
+          if (!app || app.status !== "on") throw new ConnectAppFirst(appId);
         }
       }
 
-      // Match contacts
-      const { matches, nonMatches } = await matchContacts(allRawContacts);
-
-      // Save non-matched contacts to database
-      if (nonMatches.length > 0) {
-        const contactsToInsert = nonMatches.map(contact => ({
-          user_id: user.id,
-          contact_name: contact.name,
-          contact_phone: contact.phone,
-          contact_email: contact.email,
-          is_on_platform: false,
-          metadata: {
-            import_source: sources[0],
-            imported_at: new Date().toISOString(),
-            consent_given: true,
-          },
-        }));
-
-        const { error: insertError } = await supabase
-          .from("contacts")
-          .upsert(contactsToInsert, {
-            onConflict: "user_id,contact_phone",
-            ignoreDuplicates: true,
-          });
-
-        if (insertError) {
-          console.error("Error saving contacts:", insertError);
+      for (const source of sources) {
+        const appId = HUB_APP[source];
+        if (source === "phonebook") {
+          let picked;
+          try {
+            picked = await pickDeviceContacts();
+          } catch (error) {
+            if ((error as Error).name === "AbortError") throw new Error("Contact selection cancelled");
+            throw error;
+          }
+          if (picked.length === 0) throw new Error("Contact selection cancelled");
+          await importAndroidContacts(picked);
+          hubSources.push("android");
+        } else if (appId) {
+          const r = await syncConnectedApp(appId);
+          if (!r.ok) throw new Error(r.error ?? "sync_failed");
+          hubSources.push(DB_SOURCE[source] ?? source);
         }
+        // whatsapp: no import path exists; the picker no longer offers it.
       }
 
-      // Save matched contacts with platform link
-      if (matches.length > 0) {
-        const matchedToInsert = matches.map(match => ({
-          user_id: user.id,
-          contact_user_id: match.platformUser.user_id,
-          contact_name: match.platformUser.display_name,
-          contact_phone: match.localContact.phone,
-          contact_email: match.localContact.email,
-          is_on_platform: true,
-          metadata: {
-            import_source: sources[0],
-            imported_at: new Date().toISOString(),
-            consent_given: true,
-            match_confidence: match.matchConfidence,
-          },
-        }));
-
-        const { error: insertError } = await supabase
-          .from("contacts")
-          .upsert(matchedToInsert, {
-            onConflict: "user_id,contact_user_id",
-            ignoreDuplicates: true,
-          });
-
-        if (insertError) {
-          console.error("Error saving matched contacts:", insertError);
-        }
-      }
-
-      return {
-        matches,
-        nonMatches,
-        totalImported: matches.length + nonMatches.length,
-      };
+      return await readImported(user.id, hubSources);
     } finally {
       setIsSyncing(false);
     }
-  }, [user?.id, toast]);
+  }, [user?.id]);
 
   return {
     connectedSources,

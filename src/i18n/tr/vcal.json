@@ -52,7 +52,10 @@
       "lab": "Laboratuvar",
       "work": "İş",
       "vitana": "Vitana",
-      "personal": "Kişisel"
+      "personal": "Kişisel",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "Laboratuvar isteğinden",
@@ -60,7 +63,10 @@
       "plan": "Planından",
       "assistant": "Vitana ile eklendi",
       "community": "Topluluk",
-      "journey": "Yolculuğun"
+      "journey": "Yolculuğun",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "Planlanmış bir şey yok – sakin bir gün 🌿",
@@ -71,7 +77,10 @@
       "free": "boş"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Kapat",
@@ -140,6 +149,90 @@
       "title": "Sessiz saatler",
       "body": "Sessiz saatlerinde hatırlatma gelmez – hemen öncesinde gelir.",
       "link": "Sessiz saatleri ayarla"
+    },
+    "guide": {
+      "eyebrow": "Vitana öneriyor",
+      "allDone": "Hepsi tamam: {count}/{count}. Akşamın tadını çıkar ya da haftanın getirdiklerine bak.",
+      "nextStep": "Sıradaki adımın: {title}",
+      "stepsOpenOne": "1 açık adım · yaklaşık 5 dakika",
+      "stepsOpen": "{count} açık adım · her biri yaklaşık 5 dakika",
+      "freeDay": "Bugün planlanmış bir şey yok. Sana iyi gelecek bir şey için güzel bir gün.",
+      "freeWindow": "{from} ile {to} arası boştasın. Bir yürüyüş, bir buluşma ya da bir mola?",
+      "connect": "Takvimini bağla, Vitana bütün gününü görsün ve ona göre planlasın.",
+      "busy": "Dolu bir gün: önünde hâlâ {count} şey var. Aralarına kısa molalar koy.",
+      "start": "Başla",
+      "findEvent": "Etkinlik bul",
+      "planWithVitana": "Vitana ile planla",
+      "seeWeek": "Haftayı gör",
+      "connectAction": "Takvimi bağla"
+    },
+    "journey": {
+      "title": "Yolculuğun",
+      "open": "{count} açık adım",
+      "openOne": "1 açık adım",
+      "day": "{day}. gün",
+      "dayOf": "{day}. gün / {total}",
+      "noneOpen": "Tüm adımlar tamam, harika! İlerledikçe yenileri gelecek.",
+      "today": "Bugün {time}",
+      "more": "+{count} daha",
+      "openJourney": "Yolculuğumu aç"
+    },
+    "remindersSection": {
+      "title": "Hatırlatıcılar",
+      "none": "Planlanmış yok",
+      "upcoming": "{count} yaklaşan",
+      "upcomingOne": "1 yaklaşan",
+      "next": "sıradaki {when}"
+    },
+    "calendars": {
+      "title": "Takvimler",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "Takvimini bağla",
+      "connectBody": "Bütün gününü tek yerde gör. Vitana randevularına göre planlar.",
+      "comingSoon": "Google, Apple ve Outlook ile giriş şu anda ayarlanıyor.",
+      "connectedOne": "{name} bağlı",
+      "connectedMany": "{names} bağlı",
+      "needsReconnect": "{name} yeniden bağlanmalı",
+      "connected": "Bağlı",
+      "notConnected": "Bağlı değil",
+      "reconnectHint": "Bağlantının süresi doldu",
+      "connect": "Bağla",
+      "reconnect": "Yeniden bağla",
+      "manage": "Bağlı Uygulamalar'da yönet",
+      "showInAppHint": "Vitanaland kayıtlarını takvim uygulamanda gör"
+    },
+    "add": {
+      "title": "Yeni kayıt",
+      "created": "Eklendi ✨",
+      "error": "Şu anda kaydedilemedi. Biraz sonra tekrar dene."
+    },
+    "form": {
+      "title": "Başlık",
+      "titlePlaceholder": "Ne var?",
+      "date": "Tarih",
+      "today": "Bugün",
+      "tomorrow": "Yarın",
+      "pickDate": "Tarih seç",
+      "start": "Başlangıç",
+      "end": "Bitiş",
+      "location": "Yer",
+      "optional": "isteğe bağlı",
+      "locationPlaceholder": "Nerede?",
+      "category": "Kategori",
+      "cancel": "İptal",
+      "create": "Takvime ekle",
+      "types": {
+        "personal": "Kişisel",
+        "professional": "İş",
+        "health": "Sağlık",
+        "workout": "Antrenman",
+        "community": "Topluluk",
+        "nutrition": "Beslenme"
+      }
     }
   }
 }

@@ -5237,11 +5237,13 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true
+        "reportsLoadFailedRetry": true,
+        "coachReplyFailed": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
-      "reportsLoadFailedRetry": "Try again"
+      "reportsLoadFailedRetry": "Try again",
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "أولوية اليوم:",
@@ -5880,7 +5882,131 @@
       "memorySubnav_diary": "مذكرات يومية",
       "memorySubnav_recall": "استدعاء وبحث",
       "memorySubnav_permissions": "أذونات",
-      "wellnessDiaryMultimediaDescription": "سجّل وراجع رحلتك الصحية من خلال إدخالات الوسائط المتعددة."
+      "wellnessDiaryMultimediaDescription": "سجّل وراجع رحلتك الصحية من خلال إدخالات الوسائط المتعددة.",
+      "garden": {
+        "_pending_review": {
+          "lastUpdated": true,
+          "cardCountOne": true,
+          "cardCountOther": true,
+          "loading": true,
+          "countOne": true,
+          "countOther": true,
+          "loadFailed": true
+        },
+        "categories": {
+          "personalIdentity": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Personal Identity",
+            "insight": "Building your core identity profile"
+          },
+          "healthWellness": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Health & Wellness",
+            "insight": "Tracking your vitality and well-being"
+          },
+          "lifestyleRoutines": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Lifestyle & Routines",
+            "insight": "Capturing your daily patterns"
+          },
+          "businessProjects": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Business & Projects",
+            "insight": "Mapping your professional journey"
+          },
+          "networkRelationships": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Network & Relationships",
+            "insight": "Understanding your social ecosystem"
+          },
+          "learningKnowledge": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Learning & Knowledge",
+            "insight": "Growing your knowledge base"
+          },
+          "financeAssets": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity"
+          },
+          "locationEnvironment": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world"
+          },
+          "digitalFootprint": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence"
+          },
+          "valuesAspirations": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass"
+          },
+          "autopilotSettings": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion"
+          },
+          "futurePlans": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Future Plans",
+            "insight": "Designing your evolution"
+          },
+          "general": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization"
+          }
+        },
+        "lastUpdated": "Last updated {date}",
+        "cardCountOne": "1 memory · {progress}%",
+        "cardCountOther": "{count} memories · {progress}%",
+        "loading": "Loading your memories…",
+        "countOne": "1 memory",
+        "countOther": "{count} memories",
+        "loadFailed": "Your memories couldn't be loaded right now."
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "تحفيز صباحي",
@@ -6739,7 +6865,8 @@
       "noCompleted": "لا توجد تذكيرات مكتملة بعد.",
       "noMissed": "لا توجد تذكيرات فائتة — أنت على اطلاع كامل.",
       "creating": "جاري الإنشاء…",
-      "createReminder": "إنشاء تذكير"
+      "createReminder": "إنشاء تذكير",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "لا توجد أحداث في مخزونك.",
@@ -9174,7 +9301,11 @@
       "impactImpact": "التأثير: {impact}",
       "defineHowYourAiAgentShould": "حدد كيف يجب أن يتصرف وكيل الذكاء الاصطناعي الخاص بك، وماذا يجب أن يركز عليه، وكيف يجب أن يتواصل معك...",
       "thisReadonlyPlaceholderForAgentPrompt": "هذا عنصر نائب للقراءة فقط لمركز موجه الوكيل. ستتيح المراحل المستقبلية تخصيصًا كاملاً لوكيل الذكاء الاصطناعي واختبارًا في الوقت الفعلي.",
-      "thisReadonlyPlaceholderForPersonalAi": "هذا عنصر نائب للقراءة فقط للجدول الزمني الشخصي للذكاء الاصطناعي. ستتصل المراحل المستقبلية ببيانات نشاط الذكاء الاصطناعي الحقيقية وستوفر رؤى تفاعلية."
+      "thisReadonlyPlaceholderForPersonalAi": "هذا عنصر نائب للقراءة فقط للجدول الزمني الشخصي للذكاء الاصطناعي. ستتصل المراحل المستقبلية ببيانات نشاط الذكاء الاصطناعي الحقيقية وستوفر رؤى تفاعلية.",
+      "dailyLearningsTitle": "ما تعلّمته Vitana",
+      "dailyLearningsLoading": "جارٍ تحميل أيامك …",
+      "dailyLearningsEmpty": "لا يوجد ملخص يومي بعد. اكتب في مذكراتك أو تحدّث مع Vitana — كل مساء تلخّص Vitana يومك هنا.",
+      "dailySummaryOpenIndex": "افتح Vitana Index"
     },
     "authpages": {
       "fullName": "الاسم الكامل",

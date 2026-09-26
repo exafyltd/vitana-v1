@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { saveDiaryEntry as saveDiaryEntryApi } from "@/lib/memory-api";
 import { ClientSTT } from "@/utils/clientSTT";
 import {
   DiaryAudioRecorder,
@@ -370,20 +371,19 @@ export function UnifiedCaptureCard({
       return;
     }
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
-      const { error } = await supabase.from('diary_entries').insert({
-        user_id: user.id,
+      // VTID-04390: one diary write path — diary row, memory episode and the
+      // Vitana Index sync, which this surface never ran before.
+      await saveDiaryEntryApi({
         text: transcript.trim(),
-        duration: recordingDuration,
         source: 'voice',
+        tags: ['diary', 'voice'],
+        duration: recordingDuration,
       });
-      if (error) throw error;
 
       setTranscript("");
       setRecordingDuration(0);
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
+      queryClient.invalidateQueries({ queryKey: ['vitana_index'] });
       onSaveComplete?.();
 
       toast({ title: translate('capture.entrySaved'), description: translate('capture.entrySavedDesc') });

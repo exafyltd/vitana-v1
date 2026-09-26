@@ -38,7 +38,15 @@
       "exercise": "Egzersiz",
       "mental": "Zihinsel"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "Hoş geldin, {name}!",
+      "joinedSummary": "{name} az önce MAXINA uzun yaşam topluluğuna katıldı.",
+      "newMember": "Yeni üye",
+      "sayHello": "Merhaba de",
+      "viewProfile": "Profili görüntüle",
+      "eyebrow": "Toplulukta yeni"
+    }
   },
   "_pending_review": {}
 }

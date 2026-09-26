@@ -9,6 +9,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import { useRole } from "@/hooks/useRole";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
@@ -35,6 +36,10 @@ import { HEADING_FONT } from "@/components/calendar/vcal/labels";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
 import { SubscribeSheet } from "@/components/calendar/vcal/SubscribeSheet";
+import { GuideCard } from "@/components/calendar/vcal/GuideCard";
+import { AddEntrySheet } from "@/components/calendar/vcal/AddEntrySheet";
+import { pickGuidance } from "@/components/calendar/vcal/guidance";
+import { CalendarsSection, JourneySection, RemindersSection, useCalendarApps } from "@/components/calendar/vcal/sections";
 import { greetingKey, sameDay, stepAnchor, viewRange, type CalendarView } from "@/components/calendar/vcal/time";
 
 const VIEW_KEY = "vitana.calendar.view";
@@ -80,6 +85,7 @@ export default function CalendarPage() {
   const [anchor, setAnchor] = useState(() => new Date());
   const [openItem, setOpenItem] = useState<CalendarWindowItem | null>(null);
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
 
   const changeView = (v: CalendarView) => {
     setView(v);
@@ -112,6 +118,33 @@ export default function CalendarPage() {
   const today = (todayQuery.data?.items ?? []).filter((i) => i.event && !i.work);
   const todayDone = today.filter((i) => isDone(i.event!)).length;
   const nextUp = today.find((i) => !isDone(i.event!) && Date.parse(i.start_time) > now.getTime()) ?? null;
+
+  // VTID-04536: open journey steps — Autopilot steps from the last 30 days
+  // up to tonight that are neither done nor cancelled, oldest first.
+  const stepsRange = useMemo(() => {
+    const to = viewRange("day", now).to;
+    return { from: new Date(to.getTime() - 31 * 86_400_000), to };
+  }, [now]);
+  const stepsQuery = useQuery({
+    queryKey: ["calendar-window", currentRole, "journey-steps", stepsRange.to.toISOString()],
+    queryFn: () => fetchCalendarWindow(stepsRange.from, stepsRange.to, currentRole ?? null),
+    staleTime: 60_000,
+  });
+  const openSteps = useMemo(
+    () =>
+      (stepsQuery.data?.items ?? []).filter(
+        (i) => i.event && !i.busy && !i.work && i.event.event_type === "autopilot" && i.event.status !== "cancelled" && !isDone(i.event),
+      ),
+    [stepsQuery.data],
+  );
+  const calendarApps = useCalendarApps();
+  const guidance = pickGuidance({
+    now,
+    today,
+    openSteps: openSteps.map((i) => ({ id: i.id, title: i.event?.title ?? "" })),
+    calendarConnected: calendarApps.connected,
+  });
+  const navigate = useNavigate();
 
   const complete = useMutation({
     mutationFn: (item: CalendarWindowItem) => completeCalendarEntry(item.event_id, currentRole ?? null),
@@ -156,7 +189,7 @@ export default function CalendarPage() {
   return (
     <AppLayout>
       <div
-        className="min-h-full pb-28"
+        className="min-h-full pb-40"
         style={{ background: SURFACE.page, color: SURFACE.ink, fontFamily: "Nunito, system-ui, sans-serif" }}
         data-testid="vcal-page"
       >
@@ -171,16 +204,6 @@ export default function CalendarPage() {
               </h1>
             </div>
             <div className="flex shrink-0 items-center gap-1.5">
-              <button
-                type="button"
-                onClick={() => setSubscribeOpen(true)}
-                aria-label={t("vcal.subscribe.title")}
-                title={t("vcal.subscribe.title")}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-lg shadow-sm"
-                data-testid="vcal-subscribe-open"
-              >
-                <span aria-hidden>📲</span>
-              </button>
               <button
                 type="button"
                 onClick={() => setAnchor((a) => stepAnchor(view, a, -1))}
@@ -209,6 +232,18 @@ export default function CalendarPage() {
 
           {view === "day" && isTodayAnchor && today.length > 0 && <DayProgress done={todayDone} total={today.length} />}
           {view === "day" && isTodayAnchor && nextUp && <NextUpCard item={nextUp} now={now} onOpen={setOpenItem} />}
+          {view === "day" && isTodayAnchor && query.isSuccess && todayQuery.isSuccess && guidance && (
+            <GuideCard
+              guidance={guidance}
+              actions={{
+                onStartStep: (id) => setOpenItem(openSteps.find((i) => i.id === id) ?? null),
+                onFindEvent: () => navigate("/comm/events-meetups"),
+                onAskVitana: () => activateOrb(),
+                onShowWeek: () => changeView("week"),
+                onConnect: () => document.getElementById("vcal-calendars")?.scrollIntoView({ behavior: "smooth", block: "center" }),
+              }}
+            />
+          )}
 
           {query.isLoading ? (
             <div className="flex flex-col gap-2.5" aria-busy="true" aria-label={t("vcal.loading")}>
@@ -238,13 +273,22 @@ export default function CalendarPage() {
           ) : (
             <MonthView anchor={anchor} items={items} now={now} onPickDay={pickDay} />
           )}
+
+          {/* VTID-04536: folding sections — each closed header says what is inside. */}
+          <div className="flex flex-col gap-3 pt-2">
+            <JourneySection steps={openSteps} now={now} onOpenStep={setOpenItem} />
+            <RemindersSection />
+            <div id="vcal-calendars" className="scroll-mt-24">
+              <CalendarsSection onShowInApp={() => setSubscribeOpen(true)} />
+            </div>
+          </div>
         </div>
 
-        <div className="fixed inset-x-0 bottom-20 z-40 flex justify-center px-4 md:bottom-6">
+        <div className="fixed inset-x-0 bottom-20 z-40 flex justify-center gap-2 px-4 md:bottom-6">
           <button
             type="button"
             onClick={() => activateOrb()}
-            className="flex h-[52px] w-full max-w-md items-center gap-3 rounded-full bg-white ps-5 pe-1.5 text-start shadow-lg"
+            className="flex h-[52px] min-w-0 max-w-md flex-1 items-center gap-3 rounded-full bg-white ps-5 pe-1.5 text-start shadow-lg"
             data-testid="vcal-voice-add"
           >
             <span className="flex-1 truncate text-[15px]" style={{ color: SURFACE.muted }}>
@@ -253,6 +297,17 @@ export default function CalendarPage() {
             <span aria-hidden className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-white" style={{ background: "#C22F66" }}>
               🎙️
             </span>
+          </button>
+          {/* VTID-04536: add an entry by hand, saved through the gateway. */}
+          <button
+            type="button"
+            onClick={() => setAddOpen(true)}
+            aria-label={t("vcal.add.title")}
+            className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl font-bold text-white shadow-lg"
+            style={{ background: SURFACE.ink }}
+            data-testid="vcal-add"
+          >
+            <span aria-hidden className="leading-none">+</span>
           </button>
         </div>
       </div>
@@ -269,6 +324,7 @@ export default function CalendarPage() {
         />
       )}
       {subscribeOpen && <SubscribeSheet onClose={() => setSubscribeOpen(false)} />}
+      {addOpen && <AddEntrySheet day={anchor} role={currentRole ?? null} onClose={() => setAddOpen(false)} />}
     </AppLayout>
   );
 }

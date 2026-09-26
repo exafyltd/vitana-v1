@@ -5212,7 +5212,8 @@
           "business_formation": "Geschäftsgründung"
         },
         "contractLink": "Ultimate Goal-Vertrag anzeigen"
-      }
+      },
+      "coachReplyFailed": "Der Coach konnte gerade nicht antworten. Versuch es gleich noch einmal."
     },
     "home": {
       "priorityOfTheDay": "Priorität des Tages:",
@@ -5848,7 +5849,70 @@
       "memorySubnav_diary": "Tägliches Tagebuch",
       "memorySubnav_recall": "Erinnern & Suchen",
       "memorySubnav_permissions": "Berechtigungen",
-      "wellnessDiaryMultimediaDescription": "Halte deine Wellness-Reise mit Multimedia-Einträgen fest und sieh sie dir an."
+      "wellnessDiaryMultimediaDescription": "Halte deine Wellness-Reise mit Multimedia-Einträgen fest und sieh sie dir an.",
+      "garden": {
+        "categories": {
+          "personalIdentity": {
+            "title": "Persönliche Identität",
+            "insight": "Dein Identitätsprofil entsteht"
+          },
+          "healthWellness": {
+            "title": "Gesundheit & Wohlbefinden",
+            "insight": "Deine Vitalität und dein Wohlbefinden im Blick"
+          },
+          "lifestyleRoutines": {
+            "title": "Lebensstil & Routinen",
+            "insight": "Deine täglichen Muster festhalten"
+          },
+          "businessProjects": {
+            "title": "Beruf & Projekte",
+            "insight": "Deinen beruflichen Weg abbilden"
+          },
+          "networkRelationships": {
+            "title": "Netzwerk & Beziehungen",
+            "insight": "Dein soziales Umfeld verstehen"
+          },
+          "learningKnowledge": {
+            "title": "Lernen & Wissen",
+            "insight": "Dein Wissen wachsen lassen"
+          },
+          "financeAssets": {
+            "title": "Finanzen & Vermögen",
+            "insight": "Finanzielle Klarheit schaffen"
+          },
+          "locationEnvironment": {
+            "title": "Ort & Umgebung",
+            "insight": "Deine räumliche Welt abbilden"
+          },
+          "digitalFootprint": {
+            "title": "Digitaler Fußabdruck",
+            "insight": "Deine digitale Präsenz steuern"
+          },
+          "valuesAspirations": {
+            "title": "Werte & Ziele",
+            "insight": "Deinen Kompass bestimmen"
+          },
+          "autopilotSettings": {
+            "title": "Autopilot & Kontext",
+            "insight": "Deinen KI-Begleiter einrichten"
+          },
+          "futurePlans": {
+            "title": "Zukunftspläne",
+            "insight": "Deine Entwicklung gestalten"
+          },
+          "general": {
+            "title": "Nicht zugeordnet",
+            "insight": "Erinnerungen, die noch eingeordnet werden"
+          }
+        },
+        "lastUpdated": "Zuletzt aktualisiert am {date}",
+        "cardCountOne": "1 Erinnerung · {progress} %",
+        "cardCountOther": "{count} Erinnerungen · {progress} %",
+        "loading": "Deine Erinnerungen werden geladen …",
+        "countOne": "1 Erinnerung",
+        "countOther": "{count} Erinnerungen",
+        "loadFailed": "Deine Erinnerungen konnten gerade nicht geladen werden."
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Morgenmotivation",
@@ -6688,7 +6752,8 @@
       "noCompleted": "Noch keine erledigten Erinnerungen.",
       "noMissed": "Keine verpassten Erinnerungen — du bist auf dem Laufenden.",
       "creating": "Wird erstellt…",
-      "createReminder": "Erinnerung erstellen"
+      "createReminder": "Erinnerung erstellen",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Keine Ereignisse in deinem Inventar",
@@ -9113,7 +9178,11 @@
       "impactImpact": "Auswirkung: {impact}",
       "defineHowYourAiAgentShould": "Definiere, wie sich dein KI-Agent verhalten soll, worauf er sich konzentrieren und wie er mit dir kommunizieren soll...",
       "thisReadonlyPlaceholderForAgentPrompt": "Dies ist ein schreibgeschützter Platzhalter für das Agent Prompt Center. \n              Zukünftige Phasen ermöglichen die vollständige Anpassung des KI-Agenten und Tests in Echtzeit.",
-      "thisReadonlyPlaceholderForPersonalAi": "Dies ist ein schreibgeschützter Platzhalter für die persönliche KI-Zeitleiste. \n                Zukünftige Phasen werden eine Verbindung zu echten KI-Aktivitätsdaten herstellen und interaktive Einblicke bieten."
+      "thisReadonlyPlaceholderForPersonalAi": "Dies ist ein schreibgeschützter Platzhalter für die persönliche KI-Zeitleiste. \n                Zukünftige Phasen werden eine Verbindung zu echten KI-Aktivitätsdaten herstellen und interaktive Einblicke bieten.",
+      "dailyLearningsTitle": "Was Vitana gelernt hat",
+      "dailyLearningsLoading": "Deine Tage werden gerade zusammengefasst …",
+      "dailyLearningsEmpty": "Noch keine Tageszusammenfassung. Schreib ins Tagebuch oder sprich mit Vitana – am Abend fasst Vitana deinen Tag hier zusammen.",
+      "dailySummaryOpenIndex": "Vitana Index öffnen"
     },
     "authpages": {
       "fullName": "Vollständiger Name",

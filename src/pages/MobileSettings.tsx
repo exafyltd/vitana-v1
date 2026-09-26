@@ -31,6 +31,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 const VALID_SECTIONS = new Set([
   'notifications',
@@ -114,48 +115,38 @@ export default function MobileSettings() {
 
   // Vitana-driven navigation: the Orb (voice or text) can ask the Settings page
   // to jump to a specific section without a full route change.
-  useEffect(() => {
-    const handleNavigate = (e: Event) => {
-      const detail = (e as CustomEvent).detail || {};
-      const section = String(detail.section || '');
-      if (VALID_SECTIONS.has(section)) {
-        setActiveSection(section);
-        const label = settingsModes.find((m) => m.value === section.split('.')[0])?.label || section;
-        toast.success(
-          translate('settings.vitanaOpenedSection', 'Vitana opened {section}').replace('{section}', label),
-        );
-      }
-    };
-    window.addEventListener('vitana:settings-navigate', handleNavigate);
-    return () => window.removeEventListener('vitana:settings-navigate', handleNavigate);
-    // settingsModes is a stable literal redefined every render; intentionally
-    // listing only translate so the listener picks up locale changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [translate]);
+  // VTID-04520: via the overlay bus, so a request made while this page was
+  // still loading (the Orb navigates to /settings and asks in the same
+  // breath) is delivered on mount instead of racing a timer.
+  useWindowOverlay<{ section?: string }>('vitana:settings-navigate', (detail) => {
+    const section = String(detail?.section || '');
+    if (VALID_SECTIONS.has(section)) {
+      setActiveSection(section);
+      const label = settingsModes.find((m) => m.value === section.split('.')[0])?.label || section;
+      toast.success(
+        translate('settings.vitanaOpenedSection', 'Vitana opened {section}').replace('{section}', label),
+      );
+    }
+  });
 
   // Vitana can toggle notification preferences on the user's behalf. The Orb
   // dispatches `vitana:settings-toggle` with `{ field, value }` (top-level
   // notification toggles) or `{ categoryId, enabled }` (per-category).
-  useEffect(() => {
-    const handler = async (e: Event) => {
-      const detail = (e as CustomEvent).detail || {};
-      try {
-        if (detail.field && typeof detail.value === 'boolean') {
-          await updatePref(detail.field, detail.value);
-          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
-          setActiveSection('notifications');
-        } else if (detail.categoryId && typeof detail.enabled === 'boolean') {
-          await toggleCategory(detail.categoryId, detail.enabled);
-          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
-          setActiveSection('notifications');
-        }
-      } catch {
-        toast.error(translate('settings.updateFailed', 'Failed to update preference'));
+  useWindowOverlay<{ field?: keyof typeof prefs; value?: boolean; categoryId?: string; enabled?: boolean }>('vitana:settings-toggle', async (detail) => {
+    try {
+      if (detail.field && typeof detail.value === 'boolean') {
+        await updatePref(detail.field, detail.value);
+        toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+        setActiveSection('notifications');
+      } else if (detail.categoryId && typeof detail.enabled === 'boolean') {
+        await toggleCategory(detail.categoryId, detail.enabled);
+        toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+        setActiveSection('notifications');
       }
-    };
-    window.addEventListener('vitana:settings-toggle', handler);
-    return () => window.removeEventListener('vitana:settings-toggle', handler);
-  }, [updatePref, toggleCategory, translate]);
+    } catch {
+      toast.error(translate('settings.updateFailed', 'Failed to update preference'));
+    }
+  });
 
   if (!isMobile) return null;
 

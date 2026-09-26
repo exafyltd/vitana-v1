@@ -140,6 +140,90 @@
       "title": "Ruhezeiten",
       "body": "In deinen Ruhezeiten kommen keine Erinnerungen – sie kommen kurz vorher.",
       "link": "Ruhezeiten einstellen"
+    },
+    "guide": {
+      "eyebrow": "Vitana schlägt vor",
+      "allDone": "Alles erledigt – {count} von {count} geschafft. Genieß den Abend oder schau, was die Woche bringt.",
+      "nextStep": "Dein nächster Schritt: {title}",
+      "stepsOpenOne": "1 Schritt offen · etwa 5 Minuten",
+      "stepsOpen": "{count} Schritte offen · je etwa 5 Minuten",
+      "freeDay": "Heute ist nichts geplant. Ein guter Tag für etwas, das dir guttut.",
+      "freeWindow": "Du hast von {from} bis {to} frei. Zeit für einen Spaziergang, ein Treffen oder eine Pause?",
+      "connect": "Verbinde deinen Kalender, dann sieht Vitana deinen ganzen Tag und plant drumherum.",
+      "busy": "Voller Tag: noch {count} Termine vor dir. Plan kurze Pausen dazwischen ein.",
+      "start": "Starten",
+      "findEvent": "Event finden",
+      "planWithVitana": "Mit Vitana planen",
+      "seeWeek": "Woche ansehen",
+      "connectAction": "Kalender verbinden"
+    },
+    "journey": {
+      "title": "Deine Journey",
+      "open": "{count} Schritte offen",
+      "openOne": "1 Schritt offen",
+      "day": "Tag {day}",
+      "dayOf": "Tag {day} von {total}",
+      "noneOpen": "Alle Schritte erledigt – stark! Neue kommen, sobald du weitermachst.",
+      "today": "Heute {time}",
+      "more": "+{count} weitere",
+      "openJourney": "Zu meiner Journey"
+    },
+    "remindersSection": {
+      "title": "Erinnerungen",
+      "none": "Keine geplant",
+      "upcoming": "{count} anstehend",
+      "upcomingOne": "1 anstehend",
+      "next": "nächste {when}"
+    },
+    "calendars": {
+      "title": "Kalender",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "Verbinde deinen Kalender",
+      "connectBody": "Sieh deinen ganzen Tag an einem Ort. Vitana plant um deine Termine herum.",
+      "comingSoon": "Die Anmeldung bei Google, Apple und Outlook wird gerade eingerichtet.",
+      "connectedOne": "{name} verbunden",
+      "connectedMany": "{names} verbunden",
+      "needsReconnect": "{name} muss neu verbunden werden",
+      "connected": "Verbunden",
+      "notConnected": "Nicht verbunden",
+      "reconnectHint": "Verbindung abgelaufen",
+      "connect": "Verbinden",
+      "reconnect": "Neu verbinden",
+      "manage": "In Verbundene Apps verwalten",
+      "showInAppHint": "Vitanaland-Termine in deiner Kalender-App sehen"
+    },
+    "add": {
+      "title": "Neuer Eintrag",
+      "created": "Eingetragen ✨",
+      "error": "Das konnte gerade nicht gespeichert werden. Versuch es gleich nochmal."
+    },
+    "form": {
+      "title": "Titel",
+      "titlePlaceholder": "Was steht an?",
+      "date": "Datum",
+      "today": "Heute",
+      "tomorrow": "Morgen",
+      "pickDate": "Datum wählen",
+      "start": "Beginn",
+      "end": "Ende",
+      "location": "Ort",
+      "optional": "optional",
+      "locationPlaceholder": "Wo?",
+      "category": "Kategorie",
+      "cancel": "Abbrechen",
+      "create": "Eintragen",
+      "types": {
+        "personal": "Persönlich",
+        "professional": "Arbeit",
+        "health": "Gesundheit",
+        "workout": "Training",
+        "community": "Community",
+        "nutrition": "Ernährung"
+      }
     }
   }
 }

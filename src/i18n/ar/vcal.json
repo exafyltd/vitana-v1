@@ -52,7 +52,10 @@
       "lab": "المختبر",
       "work": "العمل",
       "vitana": "Vitana",
-      "personal": "شخصي"
+      "personal": "شخصي",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "source": {
       "lab": "من طلب التحليل الخاص بك",
@@ -60,7 +63,10 @@
       "plan": "من خطتك",
       "assistant": "أُضيف مع فيتانا",
       "community": "المجتمع",
-      "journey": "رحلتك"
+      "journey": "رحلتك",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "empty": {
       "title": "لا شيء مخطط – يوم هادئ 🌿",
@@ -71,7 +77,10 @@
       "free": "متاح"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "إغلاق",
@@ -140,6 +149,90 @@
       "title": "ساعات الهدوء",
       "body": "لا تصل تذكيرات خلال ساعات الهدوء – تصل قبلها بقليل.",
       "link": "ضبط ساعات الهدوء"
+    },
+    "guide": {
+      "eyebrow": "اقتراح من Vitana",
+      "allDone": "أنجزت كل شيء: {count} من {count}. استمتع بمسائك أو انظر ماذا يحمل الأسبوع.",
+      "nextStep": "خطوتك التالية: {title}",
+      "stepsOpenOne": "خطوة واحدة مفتوحة · حوالي 5 دقائق",
+      "stepsOpen": "خطوات مفتوحة: {count} · حوالي 5 دقائق لكل منها",
+      "freeDay": "لا شيء مخطط له اليوم. يوم مناسب لشيء يفيدك.",
+      "freeWindow": "أنت متفرغ من {from} إلى {to}. نزهة أو لقاء أو استراحة؟",
+      "connect": "اربط تقويمك لترى Vitana يومك كله وتخطط حوله.",
+      "busy": "يوم مزدحم: لا يزال أمامك {count} أمور. خطط لاستراحات قصيرة بينها.",
+      "start": "ابدأ",
+      "findEvent": "ابحث عن فعالية",
+      "planWithVitana": "خطط مع Vitana",
+      "seeWeek": "عرض الأسبوع",
+      "connectAction": "اربط التقويم"
+    },
+    "journey": {
+      "title": "رحلتك",
+      "open": "خطوات مفتوحة: {count}",
+      "openOne": "خطوة واحدة مفتوحة",
+      "day": "اليوم {day}",
+      "dayOf": "اليوم {day} من {total}",
+      "noneOpen": "أنجزت كل الخطوات، رائع! ستظهر خطوات جديدة كلما تقدمت.",
+      "today": "اليوم {time}",
+      "more": "+{count} أخرى",
+      "openJourney": "افتح رحلتي"
+    },
+    "remindersSection": {
+      "title": "التذكيرات",
+      "none": "لا شيء مجدول",
+      "upcoming": "قادمة: {count}",
+      "upcomingOne": "تذكير واحد قادم",
+      "next": "التالي {when}"
+    },
+    "calendars": {
+      "title": "التقويمات",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook"
+      },
+      "connectTitle": "اربط تقويمك",
+      "connectBody": "شاهد يومك كله في مكان واحد. تخطط Vitana حول مواعيدك.",
+      "comingSoon": "يجري الآن إعداد تسجيل الدخول عبر Google وApple وOutlook.",
+      "connectedOne": "{name} متصل",
+      "connectedMany": "متصل: {names}",
+      "needsReconnect": "{name} يحتاج إلى إعادة الربط",
+      "connected": "متصل",
+      "notConnected": "غير متصل",
+      "reconnectHint": "انتهت صلاحية الاتصال",
+      "connect": "اربط",
+      "reconnect": "أعد الربط",
+      "manage": "الإدارة في التطبيقات المتصلة",
+      "showInAppHint": "شاهد مواعيد Vitanaland في تطبيق التقويم لديك"
+    },
+    "add": {
+      "title": "إدخال جديد",
+      "created": "تمت الإضافة ✨",
+      "error": "تعذّر الحفظ الآن. حاول مرة أخرى بعد قليل."
+    },
+    "form": {
+      "title": "العنوان",
+      "titlePlaceholder": "ما هو؟",
+      "date": "التاريخ",
+      "today": "اليوم",
+      "tomorrow": "غدًا",
+      "pickDate": "اختر تاريخًا",
+      "start": "البداية",
+      "end": "النهاية",
+      "location": "المكان",
+      "optional": "اختياري",
+      "locationPlaceholder": "أين؟",
+      "category": "الفئة",
+      "cancel": "إلغاء",
+      "create": "أضف إلى التقويم",
+      "types": {
+        "personal": "شخصي",
+        "professional": "عمل",
+        "health": "صحة",
+        "workout": "تمرين",
+        "community": "مجتمع",
+        "nutrition": "تغذية"
+      }
     }
   }
 }

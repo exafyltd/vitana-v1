@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchGardenCategories, toUiCategory, type GardenCategorySummary } from "@/lib/memory-api";
 
 export interface CategoryProgress {
   category: string;
@@ -36,164 +36,71 @@ export const CATEGORY_TARGETS: Record<string, number> = {
   "general": 10,
 };
 
+/**
+ * Progress for one category from its count. VTID-04389 (defect D5): the old
+ * formula mixed a 0-100 "quality" term with ai_memory confidences on a 0-1
+ * scale and grouped by ai_memory.memory_type (fact/insight/…) as if it were a
+ * category, so most memories counted toward nothing. Progress is now the share
+ * of the category target the user has actually reached.
+ */
+export function progressForCount(count: number, target: number): number {
+  if (!target || target <= 0) return 0;
+  return Math.round(Math.min((count / target) * 100, 100));
+}
+
+export function metadataFromSummary(
+  total: number,
+  categories: GardenCategorySummary[],
+): MemoryMetadata {
+  const category_progress: Record<string, CategoryProgress> = {};
+  let lastSync: string | null = null;
+  for (const c of categories) {
+    const ui = toUiCategory(c.category);
+    const target = CATEGORY_TARGETS[ui] ?? 10;
+    category_progress[ui] = {
+      category: ui,
+      progress: progressForCount(c.count, target),
+      memoryCount: c.count,
+      avgConfidence: 0,
+      lastUpdated: c.last_updated_at ?? "",
+    };
+    if (c.last_updated_at && (!lastSync || c.last_updated_at > lastSync)) lastSync = c.last_updated_at;
+  }
+  const now = new Date().toISOString();
+  return {
+    id: "garden",
+    user_id: "",
+    last_ai_sync_at: lastSync,
+    total_memories_count: total,
+    category_progress,
+    created_at: now,
+    updated_at: now,
+  };
+}
+
+/** Garden category counts, straight from the canonical memory store (VTID-04389). */
 export function useMemoryMetadata() {
   const queryClient = useQueryClient();
 
-  // Fetch memory metadata
-  const { data: metadata, isLoading } = useQuery({
+  const { data: metadata, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["memory-metadata"],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      const { data, error } = await supabase
-        .from("user_memory_metadata")
-        .select("*")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if (error && error.code !== "PGRST116") throw error;
-      
-      // Initialize if doesn't exist
-      if (!data) {
-        const { data: newMetadata, error: insertError } = await supabase
-          .from("user_memory_metadata")
-          .insert({
-            user_id: user.id,
-            total_memories_count: 0,
-            category_progress: {} as any,
-          })
-          .select()
-          .single();
-
-        if (insertError) throw insertError;
-        return newMetadata as unknown as MemoryMetadata;
-      }
-
-      return data as unknown as MemoryMetadata;
-    },
-  });
-
-  // Calculate progress for a category
-  const calculateCategoryProgress = (
-    memoryCount: number,
-    avgConfidence: number,
-    target: number
-  ): number => {
-    // 60% based on quantity (memories / target)
-    const quantityScore = Math.min((memoryCount / target) * 100, 100);
-    
-    // 40% based on quality (avg confidence)
-    const qualityScore = avgConfidence;
-    
-    // Combined score
-    const totalScore = (quantityScore * 0.6) + (qualityScore * 0.4);
-    
-    return Math.round(Math.min(totalScore, 100));
-  };
-
-  // Refresh metadata by recalculating from ai_memory and diary_entries
-  const refreshMetadataMutation = useMutation({
-    mutationFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      // Fetch all memories
-      const { data: aiMemories, error: aiMemoriesError } = await supabase
-        .from("ai_memory")
-        .select("memory_type, confidence_score, created_at")
-        .eq("user_id", user.id);
-
-      if (aiMemoriesError) {
-        console.error("[useMemoryMetadata] Error fetching ai_memory:", aiMemoriesError);
-        throw aiMemoriesError;
-      }
-
-      const { data: diaryEntries, error: diaryEntriesError } = await supabase
-        .from("diary_entries")
-        .select("tags, created_at")
-        .eq("user_id", user.id);
-
-      if (diaryEntriesError) {
-        console.error("[useMemoryMetadata] Error fetching diary_entries:", diaryEntriesError);
-        throw diaryEntriesError;
-      }
-
-      // Calculate category progress
-      const categoryProgress: Record<string, CategoryProgress> = {};
-      
-      // Group memories by category (simplified mapping)
-      const categoryMemories: Record<string, { count: number; totalConfidence: number }> = {};
-      
-      aiMemories?.forEach((memory) => {
-        const category = memory.memory_type || "personal-identity";
-        if (!categoryMemories[category]) {
-          categoryMemories[category] = { count: 0, totalConfidence: 0 };
-        }
-        categoryMemories[category].count++;
-        categoryMemories[category].totalConfidence += memory.confidence_score || 50;
-      });
-
-      // Parse diary entry tags to extract categories
-      diaryEntries?.forEach((entry) => {
-        // Extract category from tags (first non-"diary" tag)
-        const categoryTag = entry.tags?.find(tag => tag !== "diary" && tag !== "voice" && tag !== "photo") || "personal-identity";
-        
-        if (!categoryMemories[categoryTag]) {
-          categoryMemories[categoryTag] = { count: 0, totalConfidence: 0 };
-        }
-        categoryMemories[categoryTag].count++;
-        categoryMemories[categoryTag].totalConfidence += 50; // Default confidence for diary entries
-      });
-
-      // Calculate progress for each category
-      Object.keys(CATEGORY_TARGETS).forEach((category) => {
-        const memories = categoryMemories[category] || { count: 0, totalConfidence: 0 };
-        const avgConfidence = memories.count > 0 
-          ? memories.totalConfidence / memories.count 
-          : 0;
-        
-        categoryProgress[category] = {
-          category,
-          progress: calculateCategoryProgress(
-            memories.count,
-            avgConfidence,
-            CATEGORY_TARGETS[category]
-          ),
-          memoryCount: memories.count,
-          avgConfidence: Math.round(avgConfidence),
-          lastUpdated: new Date().toISOString(),
-        };
-      });
-
-      // Update metadata
-      const { data, error } = await supabase
-        .from("user_memory_metadata")
-        .update({
-          category_progress: categoryProgress as any,
-          total_memories_count: (aiMemories?.length || 0) + (diaryEntries?.length || 0),
-          last_ai_sync_at: new Date().toISOString(),
-        })
-        .eq("user_id", user.id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data as unknown as MemoryMetadata;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
-    },
-    onError: (error) => {
-      console.error("[useMemoryMetadata] refreshMetadata failed, aborted before writing metadata:", error);
+      const { total, categories } = await fetchGardenCategories();
+      return metadataFromSummary(total, categories);
     },
   });
 
   return {
     metadata,
     isLoading,
-    refreshMetadata: refreshMetadataMutation.mutate,
-    isRefreshing: refreshMetadataMutation.isPending,
+    isError,
+    refreshMetadata: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["knowledge-base"] }),
+        refetch(),
+      ]);
+    },
+    isRefreshing: isFetching && !isLoading,
     getCategoryProgress: (category: string): CategoryProgress | null => {
       if (!metadata?.category_progress) return null;
       return metadata.category_progress[category] || null;

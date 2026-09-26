@@ -5240,11 +5240,13 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true
+        "reportsLoadFailedRetry": true,
+        "coachReplyFailed": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
-      "reportsLoadFailedRetry": "Try again"
+      "reportsLoadFailedRetry": "Try again",
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Приоритет дня:",
@@ -5883,7 +5885,131 @@
       "memorySubnav_diary": "Дневник",
       "memorySubnav_recall": "Вспомнить и найти",
       "memorySubnav_permissions": "Разрешения",
-      "wellnessDiaryMultimediaDescription": "Записывай и просматривай свой путь к благополучию с помощью мультимедийных записей."
+      "wellnessDiaryMultimediaDescription": "Записывай и просматривай свой путь к благополучию с помощью мультимедийных записей.",
+      "garden": {
+        "_pending_review": {
+          "lastUpdated": true,
+          "cardCountOne": true,
+          "cardCountOther": true,
+          "loading": true,
+          "countOne": true,
+          "countOther": true,
+          "loadFailed": true
+        },
+        "categories": {
+          "personalIdentity": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Personal Identity",
+            "insight": "Building your core identity profile"
+          },
+          "healthWellness": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Health & Wellness",
+            "insight": "Tracking your vitality and well-being"
+          },
+          "lifestyleRoutines": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Lifestyle & Routines",
+            "insight": "Capturing your daily patterns"
+          },
+          "businessProjects": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Business & Projects",
+            "insight": "Mapping your professional journey"
+          },
+          "networkRelationships": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Network & Relationships",
+            "insight": "Understanding your social ecosystem"
+          },
+          "learningKnowledge": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Learning & Knowledge",
+            "insight": "Growing your knowledge base"
+          },
+          "financeAssets": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity"
+          },
+          "locationEnvironment": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world"
+          },
+          "digitalFootprint": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence"
+          },
+          "valuesAspirations": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass"
+          },
+          "autopilotSettings": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion"
+          },
+          "futurePlans": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Future Plans",
+            "insight": "Designing your evolution"
+          },
+          "general": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization"
+          }
+        },
+        "lastUpdated": "Last updated {date}",
+        "cardCountOne": "1 memory · {progress}%",
+        "cardCountOther": "{count} memories · {progress}%",
+        "loading": "Loading your memories…",
+        "countOne": "1 memory",
+        "countOther": "{count} memories",
+        "loadFailed": "Your memories couldn't be loaded right now."
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Утренняя мотивация",
@@ -6742,7 +6868,8 @@
       "noCompleted": "Пока нет выполненных напоминаний.",
       "noMissed": "Нет пропущенных напоминаний — ты все успел(а).",
       "creating": "Создание…",
-      "createReminder": "Создать напоминание"
+      "createReminder": "Создать напоминание",
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "В твоем инвентаре нет событий",
@@ -9177,7 +9304,11 @@
       "impactImpact": "Влияние: {impact}",
       "defineHowYourAiAgentShould": "Определи, как твой ИИ агент должен себя вести, на чем он должен сосредоточиться и как он должен с тобой общаться...",
       "thisReadonlyPlaceholderForAgentPrompt": "Это заглушка только для чтения для Центра промптов агента. Будущие фазы позволят полную настройку ИИ агента и тестирование в реальном времени.",
-      "thisReadonlyPlaceholderForPersonalAi": "Это заглушка только для чтения для Персональной ИИ Хроники. Будущие фазы подключатся к реальным данным активности ИИ и предоставят интерактивные инсайты."
+      "thisReadonlyPlaceholderForPersonalAi": "Это заглушка только для чтения для Персональной ИИ Хроники. Будущие фазы подключатся к реальным данным активности ИИ и предоставят интерактивные инсайты.",
+      "dailyLearningsTitle": "Что Vitana узнала",
+      "dailyLearningsLoading": "Загружаю твои дни …",
+      "dailyLearningsEmpty": "Пока нет итогов дня. Пиши в дневник или поговори с Vitana — каждый вечер Vitana подводит здесь итоги твоего дня.",
+      "dailySummaryOpenIndex": "Открыть Vitana Index"
     },
     "authpages": {
       "fullName": "Полное имя",

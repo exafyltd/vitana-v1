@@ -1,8 +1,11 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TopAppBar } from './TopAppBar';
 import { SideDrawerNav } from './SideDrawerNav';
 import { EnhancedCalendarPopup } from '@/components/calendar/EnhancedCalendarPopup';
+import { useWindowOverlay } from '@/navigation/overlay-bus';
+import { useNavigate } from 'react-router-dom';
+import { CALENDAR_ROUTE, opensRemindersPopup, type CalendarOpenTab } from '@/components/calendar/calendar-entry';
 
 interface MobileAppShellProps {
   children: React.ReactNode;
@@ -22,16 +25,18 @@ export function MobileAppShell({ children }: MobileAppShellProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [calendarTab, setCalendarTab] = useState<'agenda' | 'month' | 'reminders' | undefined>(undefined);
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const handleOpen = (e: Event) => {
-      const tab = (e as CustomEvent<{ tab?: 'agenda' | 'month' | 'reminders' }>).detail?.tab;
-      setCalendarTab(tab);
+  const navigate = useNavigate();
+
+  // VTID-04528: the calendar is the /calendar screen; only a request for the
+  // reminders list still opens the popup on its Reminders tab.
+  useWindowOverlay<{ tab?: CalendarOpenTab }>('calendar:open', (detail) => {
+    if (opensRemindersPopup(detail?.tab)) {
+      setCalendarTab(detail?.tab);
       setCalendarOpen(true);
-    };
-    window.addEventListener('calendar:open', handleOpen);
-    return () => window.removeEventListener('calendar:open', handleOpen);
-  }, [isMobile]);
+      return;
+    }
+    navigate(CALENDAR_ROUTE);
+  }, isMobile);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };

@@ -5243,7 +5243,8 @@
         "contractLink": "View the Ultimate Goal contract",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Priority of the Day:",
@@ -5887,7 +5888,85 @@
       "memorySubnav_recall": "Recall & Search",
       "memorySubnav_permissions": "Permissions",
       "wellnessDiaryMultimediaDescription": "Record and review your wellness journey through multimedia entries.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "garden": {
+        "categories": {
+          "personalIdentity": {
+            "title": "Personal Identity",
+            "insight": "Building your core identity profile",
+            "_pending_review": {}
+          },
+          "healthWellness": {
+            "title": "Health & Wellness",
+            "insight": "Tracking your vitality and well-being",
+            "_pending_review": {}
+          },
+          "lifestyleRoutines": {
+            "title": "Lifestyle & Routines",
+            "insight": "Capturing your daily patterns",
+            "_pending_review": {}
+          },
+          "businessProjects": {
+            "title": "Business & Projects",
+            "insight": "Mapping your professional journey",
+            "_pending_review": {}
+          },
+          "networkRelationships": {
+            "title": "Network & Relationships",
+            "insight": "Understanding your social ecosystem",
+            "_pending_review": {}
+          },
+          "learningKnowledge": {
+            "title": "Learning & Knowledge",
+            "insight": "Growing your knowledge base",
+            "_pending_review": {}
+          },
+          "financeAssets": {
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity",
+            "_pending_review": {}
+          },
+          "locationEnvironment": {
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world",
+            "_pending_review": {}
+          },
+          "digitalFootprint": {
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence",
+            "_pending_review": {}
+          },
+          "valuesAspirations": {
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass",
+            "_pending_review": {}
+          },
+          "autopilotSettings": {
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion",
+            "_pending_review": {}
+          },
+          "futurePlans": {
+            "title": "Future Plans",
+            "insight": "Designing your evolution",
+            "_pending_review": {}
+          },
+          "general": {
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization",
+            "_pending_review": {}
+          },
+          "_pending_review": {}
+        },
+        "lastUpdated": "Last updated {date}",
+        "cardCountOne": "1 memory · {progress}%",
+        "cardCountOther": "{count} memories · {progress}%",
+        "loading": "Loading your memories…",
+        "countOne": "1 memory",
+        "countOther": "{count} memories",
+        "loadFailed": "Your memories couldn't be loaded right now.",
+        "_pending_review": {}
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Morning Motivation",
@@ -6736,7 +6815,8 @@
       "noMissed": "No missed reminders — you're all caught up.",
       "creating": "Creating…",
       "createReminder": "Create reminder",
-      "_pending_review": {}
+      "_pending_review": {},
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "No events in your inventory",
@@ -9175,7 +9255,11 @@
       "defineHowYourAiAgentShould": "Define how your AI agent should behave, what it should focus on, and how it should communicate with you...",
       "thisReadonlyPlaceholderForAgentPrompt": "This is a read-only placeholder for the Agent Prompt Center. \n              Future phases will enable full AI agent customization and real-time testing.",
       "thisReadonlyPlaceholderForPersonalAi": "This is a read-only placeholder for the Personal AI Timeline. \n                Future phases will connect to real AI activity data and provide interactive insights.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "dailyLearningsTitle": "What Vitana learned",
+      "dailyLearningsLoading": "Loading your days …",
+      "dailyLearningsEmpty": "No daily summary yet. Write in your diary or talk to Vitana — each evening Vitana sums up your day here.",
+      "dailySummaryOpenIndex": "Open Vitana Index"
     },
     "authpages": {
       "fullName": "Full name",

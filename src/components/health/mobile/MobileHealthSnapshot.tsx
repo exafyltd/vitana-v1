@@ -23,6 +23,8 @@ const PILLAR_TINT: Record<string, string> = {
 
 interface MobileHealthSnapshotProps {
   vitanaIndex: number;
+  /** "Top X%" value. Omit to hide the figure (VTID-04483: only render a
+   *  ranking the server vouched for). */
   vitanaPercentile?: number;
   trend: 'up' | 'down' | 'stable';
   pillars: PillarData;
@@ -30,7 +32,7 @@ interface MobileHealthSnapshotProps {
 
 export function MobileHealthSnapshot({ 
   vitanaIndex, 
-  vitanaPercentile = 15, 
+  vitanaPercentile, 
   trend, 
   pillars 
 }: MobileHealthSnapshotProps) {
@@ -80,10 +82,14 @@ export function MobileHealthSnapshot({
 
           {/* Status Text */}
           <div className="flex items-center gap-2 mt-3">
-            <span className="text-muted-foreground text-sm">
-              {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
-            </span>
-            <span className="text-muted-foreground/50">·</span>
+            {typeof vitanaPercentile === 'number' && Number.isFinite(vitanaPercentile) && (
+              <>
+                <span className="text-muted-foreground text-sm">
+                  {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
+                </span>
+                <span className="text-muted-foreground/50">·</span>
+              </>
+            )}
             <div className="flex items-center gap-1">
               <TrendIcon className={`w-4 h-4 ${
                 trend === 'up' ? 'text-emerald-600' :

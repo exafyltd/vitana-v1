@@ -7,9 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 // /comm/events-meetups?tab=hot) and block desktop sessions from
 // viewport_only='mobile' entries (e.g. /daily-diary).
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRole } from "@/hooks/useRole";
+import { orbViewProfile } from "@/lib/orb-view-profile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
 import { buildOrbScreenContext } from "@/lib/orbScreenContext";
+import { planOrbNavigation, type NavDirectiveContext, type NavResult } from "@/navigation/orb-navigation";
+import { openOverlay, whenOverlayTaken } from "@/navigation/overlay-bus";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -23,6 +27,28 @@ function isOrbAlive(): boolean {
 
 // VITE_GATEWAY_URL already includes "/api/v1" — see useAIAssistants.ts for the pattern.
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/+$/, "");
+
+// VTID-04548: fallback delay for a role switch that doesn't change the route.
+// Long enough for set_role_preference to commit, so the gateway reads the new role.
+export const ROLE_PREWARM_FALLBACK_MS = 1500;
+
+/**
+ * VTID-04548: ask the widget to re-warm the gateway's context cache for the
+ * route (and therefore role/surface) the next voice session will use. A no-op
+ * when the widget is not loaded or predates `prewarm` — never throws.
+ */
+type OrbPrewarmApi = { prewarm?: (opts: { current_route: string; is_mobile: boolean }) => void };
+
+export function requestRolePrewarm(currentRoute: string, isMobile: boolean): void {
+  try {
+    const orb = (window as Window & { VitanaOrb?: OrbPrewarmApi }).VitanaOrb;
+    if (orb && typeof orb.prewarm === "function") {
+      orb.prewarm({ current_route: currentRoute, is_mobile: isMobile });
+    }
+  } catch {
+    /* best-effort cache warm — never surfaces */
+  }
+}
 
 // BOOTSTRAP-ORB-STAGING-GATEWAY: the external VitanaOrb widget script is loaded
 // from a hardcoded prod URL in index.html, so it auto-detects its gateway as
@@ -68,11 +94,7 @@ async function backendAcceptsToken(token: string): Promise<boolean> {
 
 const RECENT_ROUTES_MAX = 5;
 
-type NavigationContext = {
-  screen_id?: string;
-  reason?: string;
-  title?: string;
-};
+type NavigationContext = NavDirectiveContext;
 
 // VTID-NAV-TIMEJOURNEY: Each entry tracks when the user landed on that route
 // so the backend greeting can say "you've been on the Events page for 3 min"
@@ -127,6 +149,19 @@ export function useOrbVoiceWidget() {
   // navigation guard below (the callback is captured at init time).
   const isMobileRef = useRef(isMobile);
   isMobileRef.current = isMobile;
+  // VTID-04561: the role whose screens are shown. The widget declares it with
+  // every session start; a switch restarts an open conversation so the next
+  // words come from the new role's Vitana.
+  const { currentRole } = useRole();
+  const currentRoleRef = useRef<string | null>(currentRole ?? null);
+  currentRoleRef.current = currentRole ?? null;
+  useEffect(() => {
+    const orb = (window as unknown as { VitanaOrb?: { setViewRole?: (role: string, surface: string) => void } }).VitanaOrb;
+    if (!orb || typeof orb.setViewRole !== "function") return;
+    const p = orbViewProfile(location.pathname, currentRole);
+    orb.setViewRole(p.view_role, p.surface);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRole]);
   // BOOTSTRAP-ORB-SCREEN-TRACKING: keep the freshest current route in a ref so
   // the widget-init closures below read the LIVE route, not the route captured
   // when the init effect last ran. The init effects are keyed on
@@ -145,6 +180,9 @@ export function useOrbVoiceWidget() {
   // actually on.
   const currentRouteRef = useRef(location.pathname);
   currentRouteRef.current = location.pathname;
+  // VTID-04548: set by a `role.changed` event, consumed by the next route change.
+  const pendingRolePrewarmRef = useRef(false);
+  const rolePrewarmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Plain route-path ring buffer (back-compat with navigator-consult).
   const routeHistoryRef = useRef<string[]>([location.pathname]);
   // VTID-NAV-TIMEJOURNEY: Parallel ring buffer with entry timestamps for
@@ -159,112 +197,46 @@ export function useOrbVoiceWidget() {
   // VTID-NAV-01: Called by orb-widget when the Vitana Navigator dispatches an
   // orb_directive of type 'navigate'. Uses React Router so the transition is
   // a smooth SPA change (works inside Appilix WebView with no full reload).
-  const handleNavigationRequest = (url: string, _ctx: NavigationContext) => {
+  // VTID-04520: returns what happened, which the widget reports back to the
+  // gateway as nav_result — the gateway moves the member's "current screen"
+  // only when something opened. Routing decisions live in
+  // src/navigation/orb-navigation.ts (registry-aware, unit-tested).
+  const handleNavigationRequest = (url: string, ctx: NavigationContext): NavResult | Promise<NavResult> => {
     try {
-      // Surface safety net: the community app serves community + admin routes
-      // only. If the Navigator ever returns a Command Hub route (it shouldn't —
-      // the backend is surface-scoped — but belt-and-suspenders against catalog
-      // drift), refuse to navigate instead of rendering a 404.
-      const pathPart = url.split('?')[0] || '';
-      if (pathPart.startsWith('/command-hub')) {
-        console.warn('[ORB] Refused cross-surface route (command-hub is developer-only):', url);
-        return;
+      const plan = planOrbNavigation(url, ctx, { isMobile: isMobileRef.current });
+      if (plan.kind === 'refuse') {
+        console.warn(`[ORB] Refused navigation (${plan.reason}):`, url);
+        return { status: 'refused', reason: plan.reason };
       }
-      // BOOTSTRAP-MOBILE-NAV-CONTAINMENT: mobile viewport net. The gateway
-      // navigation-catalog is the primary gate (viewport_only / mobile_route),
-      // but the backend deploys separately and can lag the catalog, so we also
-      // refuse known desktop-only routes here rather than stranding a mobile
-      // user on a layout that does not reflow. Overlay markers (?open=…) are
-      // handled below and are exempt. Keep this list tight — it should only
-      // contain routes with NO mobile rendering (see docs/MOBILE_SCREEN_INVENTORY.md).
-      const MOBILE_DESKTOP_ONLY_ROUTES = ['/inbox/archived'];
-      if (
-        isMobileRef.current &&
-        !url.includes('open=') &&
-        MOBILE_DESKTOP_ONLY_ROUTES.some(
-          (r) => pathPart === r || pathPart.startsWith(r + '/'),
-        )
-      ) {
-        console.warn('[ORB] Refused desktop-only route on mobile, staying in voice:', url);
-        return;
-      }
-      const parsed = new URL(url, window.location.origin);
-      const openTarget = parsed.searchParams.get('open');
-      // VTID-02770: Catalog-driven overlay dispatch. The gateway emits
-      // `${host_route}?open=<query_marker>` for any catalog entry whose
-      // `entry_kind === 'overlay'`. We route the `open` param to the
-      // matching CustomEvent so popups can render on the user's current
-      // screen without a full route change.
-      //
-      // Each entry takes the full URL detail (the entire URLSearchParams) so
-      // entity-id params like `meetup_id`, `event_id`, `user_id` arrive on the
-      // event so listeners can fetch the right resource.
-      if (openTarget) {
-        const detail = Object.fromEntries(parsed.searchParams.entries());
-        const dispatch = (eventName: string) => {
-          window.dispatchEvent(new CustomEvent(eventName, { detail }));
-        };
-        switch (openTarget) {
-          case 'calendar':
-            // VTID-CAL-OPEN
-            dispatch('calendar:open');
-            return;
-          case 'life_compass':
-          case 'goals':
-            dispatch('vitana:open-life-compass');
-            return;
-          case 'index':
-          case 'vitana_index':
-            dispatch('vitana:open-index');
-            return;
-          case 'profile_preview':
-            dispatch('profile:open');
-            return;
-          case 'meetup':
-            dispatch('meetup:open');
-            return;
-          case 'event':
-            dispatch('event:open');
-            return;
-          case 'wallet':
-            dispatch('wallet:open');
-            return;
-          case 'master_action':
-            dispatch('master_action:open');
-            return;
-          case 'presence':
-            dispatch('presence-debug:open');
-            return;
-          // Settings navigator: Vitana can jump to a specific Settings section
-          // (e.g. `?open=settings_section&section=privacy.security`) and toggle
-          // notification preferences for the user without forcing a route
-          // change. Listeners live in src/pages/MobileSettings.tsx. The
-          // settings route must already be active; otherwise we also navigate
-          // to /settings so the listener mounts.
-          case 'settings_section':
-            if (!window.location.pathname.startsWith('/settings')) {
-              navigateRef.current('/settings');
-            }
-            // Defer the dispatch one tick so the Settings page can mount its
-            // listener before the event fires.
-            setTimeout(() => dispatch('vitana:settings-navigate'), 50);
-            return;
-          case 'settings_toggle':
-            if (!window.location.pathname.startsWith('/settings')) {
-              navigateRef.current('/settings');
-            }
-            setTimeout(() => dispatch('vitana:settings-toggle'), 50);
-            return;
-          // Unknown overlay marker: log and fall through to a regular
-          // navigation so the URL is at least visible to the user.
-          default:
-            console.warn(`[ORB] Unknown overlay marker: ?open=${openTarget} — falling back to navigation`);
+      if (plan.kind === 'overlay') {
+        // The page that owns the overlay may not be mounted yet (Settings):
+        // navigate there, and the overlay bus hands the request to its
+        // listener when it mounts instead of racing a timer.
+        let changedRoute = false;
+        if (plan.ensureRoute && !window.location.pathname.startsWith(plan.ensureRoute)) {
+          navigateRef.current(plan.ensureRoute);
+          changedRoute = true;
         }
+        const r = openOverlay(plan.event, plan.detail);
+        if (r === 'acknowledged') return { status: 'opened', route: url };
+        // VTID-04559: the page that owns it is still mounting. Report what
+        // happens once it does (the widget waits up to 1.5 s for this).
+        if (changedRoute) {
+          return whenOverlayTaken(plan.event, 1200).then((taken): NavResult =>
+            taken ? { status: 'opened', route: url } : { status: 'unknown', route: url });
+        }
+        return { status: 'unknown', route: url };
       }
-      navigateRef.current(url);
+      navigateRef.current(plan.url);
+      return { status: 'opened', route: plan.url };
     } catch (err) {
       console.warn("[ORB] React Router navigate failed, falling back:", err);
-      window.location.href = url;
+      try {
+        window.location.href = url;
+        return { status: 'opened', route: url };
+      } catch (e) {
+        return { status: 'error', reason: String((e as Error)?.message || e) };
+      }
     }
   };
 
@@ -333,6 +305,9 @@ export function useOrbVoiceWidget() {
             journey_trail: journeyTrailRef.current,
             // VTID-02789: viewport flag → gateway picks mobile_route over route
             is_mobile: isMobileRef.current,
+            // VTID-04561: which Vitana this screen wants (surface + the role
+            // whose screens are shown); the gateway verifies both.
+            ...orbViewProfile(currentRouteRef.current, currentRoleRef.current),
           },
         };
 
@@ -564,9 +539,51 @@ export function useOrbVoiceWidget() {
         // voice session the widget forwards these as a context_update, so
         // Vitana's get_current_screen sees the screen the user is on now.
         ...buildOrbScreenContext(location.search, document.title, document.documentElement.lang),
+        // VTID-04561: moving into /admin or /backoffice is a different Vitana;
+        // the widget restarts an open conversation when this changes.
+        ...orbViewProfile(path, currentRoleRef.current),
       });
     }
+
+    // VTID-04548: a role switch lands here via navigate(destination) once the
+    // set_role_preference RPC has committed, so this is the first moment the
+    // gateway can resolve the NEW role. Re-warm the context cache for it.
+    if (pendingRolePrewarmRef.current) {
+      pendingRolePrewarmRef.current = false;
+      if (rolePrewarmTimerRef.current) {
+        clearTimeout(rolePrewarmTimerRef.current);
+        rolePrewarmTimerRef.current = null;
+      }
+      requestRolePrewarm(path, isMobile);
+    }
   }, [location.pathname, location.search, isMobile]);
+
+  // VTID-04548: warm the orb's context cache for the role the NEXT voice
+  // session will actually use. `role.changed` fires optimistically BEFORE the
+  // role RPC commits, so the prewarm is deferred to the route change the
+  // switch navigates to (effect above). A switch that stays on the same route
+  // never changes location, so a timer covers that case. Purely a cache warm:
+  // it opens no session and changes nothing the member sees or hears.
+  useEffect(() => {
+    const onRoleChanged = () => {
+      pendingRolePrewarmRef.current = true;
+      if (rolePrewarmTimerRef.current) clearTimeout(rolePrewarmTimerRef.current);
+      rolePrewarmTimerRef.current = setTimeout(() => {
+        rolePrewarmTimerRef.current = null;
+        if (!pendingRolePrewarmRef.current) return;
+        pendingRolePrewarmRef.current = false;
+        requestRolePrewarm(currentRouteRef.current, isMobileRef.current);
+      }, ROLE_PREWARM_FALLBACK_MS);
+    };
+    window.addEventListener("role.changed", onRoleChanged);
+    return () => {
+      window.removeEventListener("role.changed", onRoleChanged);
+      if (rolePrewarmTimerRef.current) {
+        clearTimeout(rolePrewarmTimerRef.current);
+        rolePrewarmTimerRef.current = null;
+      }
+    };
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {

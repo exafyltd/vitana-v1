@@ -1,0 +1,1412 @@
+{
+  "AI.COMPANION": {
+    "title": "Companheiro de IA",
+    "phrasings": [
+      "abre o meu AI companion",
+      "quero falar com meu companion de IA",
+      "onde fica o AI companion?"
+    ]
+  },
+  "AI.DAILY_SUMMARY": {
+    "title": "Resumo Diário",
+    "phrasings": [
+      "mostra meu resumo do dia",
+      "o que aconteceu hoje? me dá um resumo",
+      "onde vejo o resumo diário?"
+    ]
+  },
+  "AI.INSIGHTS": {
+    "title": "Insights de IA",
+    "phrasings": [
+      "mostra meus insights de IA",
+      "que padrões você encontrou sobre mim?",
+      "onde ficam os meus insights personalizados?"
+    ]
+  },
+  "AI.OVERVIEW": {
+    "title": "Assistente de IA",
+    "phrasings": [
+      "abre a área do assistente de IA",
+      "mostra tudo que a IA oferece",
+      "onde ficam os recursos de IA?"
+    ]
+  },
+  "AI.RECOMMENDATIONS": {
+    "title": "Recomendações",
+    "phrasings": [
+      "mostra minhas recomendações personalizadas",
+      "o que você recomenda pra mim?",
+      "onde vejo as recomendações da IA?"
+    ]
+  },
+  "ASSISTANT.AI": {
+    "title": "IA",
+    "phrasings": [
+      "abre a aba de IA do assistente",
+      "mostra as configurações do assistente de texto",
+      "onde fico as opções de IA do assistente?"
+    ]
+  },
+  "ASSISTANT.AUTOPILOT": {
+    "title": "Autopilot e Automação",
+    "phrasings": [
+      "abre as configurações do Autopilot",
+      "mostra minhas automações",
+      "onde configuro o Autopilot?"
+    ]
+  },
+  "ASSISTANT.OVERVIEW": {
+    "title": "Chat Vitana",
+    "phrasings": [
+      "abre o chat da Vitana",
+      "quero conversar com a Vitana por texto",
+      "onde fica o chat com a Vitana?"
+    ]
+  },
+  "ASSISTANT.PROACTIVE": {
+    "title": "Fala Proativa",
+    "phrasings": [
+      "onde controlo quando você fala por conta própria?",
+      "desativa o modo proativo",
+      "abre as configurações de fala proativa"
+    ]
+  },
+  "ASSISTANT.REFERRALS": {
+    "title": "Indicações",
+    "phrasings": [
+      "abre a aba de indicações do assistente",
+      "mostra as indicações e recompensas do assistente",
+      "onde vejo os referrals do assistente?"
+    ]
+  },
+  "ASSISTANT.VOICE": {
+    "title": "Voz",
+    "phrasings": [
+      "onde posso mudar sua voz?",
+      "abre as configurações de voz",
+      "quero trocar a voz da Vitana"
+    ]
+  },
+  "AUTH.ALKALMA_PORTAL": {
+    "title": "Portal Alkalma",
+    "phrasings": [
+      "abre o portal da Alkalma",
+      "quero entrar na Alkalma",
+      "como faço login na Alkalma?"
+    ]
+  },
+  "AUTH.EARTHLINKS_PORTAL": {
+    "title": "Portal Earthlinks",
+    "phrasings": [
+      "abre o portal da Earthlinks",
+      "quero entrar na Earthlinks",
+      "como me cadastro na Earthlinks?"
+    ]
+  },
+  "AUTH.MAXINA_PORTAL": {
+    "title": "Entrar para a comunidade MAXINA",
+    "phrasings": [
+      "quero criar uma conta na Maxina",
+      "como faço pra entrar na comunidade Maxina?",
+      "me leva pra tela de cadastro"
+    ]
+  },
+  "AUTOPILOT.MY_JOURNEY": {
+    "title": "Minha Jornada",
+    "phrasings": [
+      "abre o My Journey",
+      "mostra minhas sessões da jornada",
+      "onde ficam as etapas guiadas do My Journey?"
+    ]
+  },
+  "BUSINESS.ANALYTICS": {
+    "title": "Analytics do negócio",
+    "phrasings": [
+      "mostra os analytics do meu negócio",
+      "como está indo meu negócio?",
+      "onde vejo as estatísticas da minha empresa?"
+    ]
+  },
+  "BUSINESS.CLIENTS": {
+    "title": "Meus clientes",
+    "phrasings": [
+      "mostra meus clientes",
+      "quem são meus clientes na Maxina?",
+      "onde fica minha lista de clientes?"
+    ]
+  },
+  "BUSINESS.INSIGHTS_EARNINGS": {
+    "title": "Receitas",
+    "phrasings": [
+      "quanto eu ganhei até agora?",
+      "mostra meus ganhos no negócio",
+      "onde vejo minha renda na Maxina?"
+    ]
+  },
+  "BUSINESS.INSIGHTS_GROWTH": {
+    "title": "Crescimento",
+    "phrasings": [
+      "mostra o crescimento do meu negócio",
+      "como está evoluindo meu alcance?",
+      "onde vejo as métricas de crescimento?"
+    ]
+  },
+  "BUSINESS.LISTINGS": {
+    "title": "Meus anúncios",
+    "phrasings": [
+      "mostra meus anúncios ativos",
+      "onde ficam meus listings na Maxina?",
+      "quero ver o que estou oferecendo"
+    ]
+  },
+  "BUSINESS.OPPORTUNITIES": {
+    "title": "Oportunidades de negócio",
+    "phrasings": [
+      "mostra oportunidades de negócio",
+      "onde encontro novas oportunidades pra minha área?",
+      "tem alguma oportunidade nova pra mim?"
+    ]
+  },
+  "BUSINESS.OVERVIEW": {
+    "title": "Hub de negócios",
+    "phrasings": [
+      "abre o hub de negócios",
+      "mostra meu negócio na Maxina",
+      "onde fica a área do meu negócio?"
+    ]
+  },
+  "BUSINESS.SALES_PROMOTIONS": {
+    "title": "Promoções",
+    "phrasings": [
+      "mostra minhas promoções",
+      "onde crio uma promoção no meu negócio?",
+      "quero ver as ofertas especiais que tenho"
+    ]
+  },
+  "BUSINESS.SALES_REFERRALS": {
+    "title": "Indicações de Vendas",
+    "phrasings": [
+      "mostra meus referrals de vendas",
+      "onde vejo as indicações que geraram vendas?",
+      "quero ver meus ganhos por indicação de vendas"
+    ]
+  },
+  "BUSINESS.SELL_EARN": {
+    "title": "Vender e ganhar",
+    "phrasings": [
+      "como posso vender e ganhar dinheiro aqui?",
+      "abre a área de vendas do meu negócio",
+      "onde vejo minhas vendas na Maxina?"
+    ]
+  },
+  "BUSINESS.SERVICES": {
+    "title": "Meus serviços",
+    "phrasings": [
+      "mostra os serviços que ofereço",
+      "onde gerencio meus serviços na Maxina?",
+      "quero editar os serviços do meu negócio"
+    ]
+  },
+  "BUSINESS.SERVICES_EVENTS": {
+    "title": "Meus Eventos",
+    "phrasings": [
+      "mostra os eventos que eu organizo",
+      "onde ficam as aulas e sessões que eu ofereço?",
+      "quero ver meus eventos como provedor"
+    ]
+  },
+  "BUSINESS.SERVICES_PACKAGES": {
+    "title": "Pacotes de Serviços",
+    "phrasings": [
+      "mostra meus pacotes de serviços",
+      "onde configuro pacotes no meu negócio?",
+      "quero ver os pacotes que ofereço"
+    ]
+  },
+  "CALENDAR.OVERVIEW": {
+    "title": "Meu calendário",
+    "phrasings": [
+      "abre meu calendário",
+      "mostra meus compromissos",
+      "o que tenho na agenda?"
+    ]
+  },
+  "COMM.EVENTS": {
+    "title": "Eventos e encontros",
+    "phrasings": [
+      "mostra os eventos da comunidade",
+      "onde encontro meetups na Maxina?",
+      "abre a área de eventos e encontros"
+    ]
+  },
+  "COMM.EVENTS_HOT": {
+    "title": "Eventos em alta",
+    "phrasings": [
+      "mostra os eventos mais populares",
+      "quais eventos estão em alta agora?",
+      "abre os eventos em destaque"
+    ]
+  },
+  "COMM.EVENTS_TODAY": {
+    "title": "Eventos de hoje",
+    "phrasings": [
+      "que eventos têm hoje?",
+      "mostra os eventos de hoje",
+      "tem alguma coisa acontecendo hoje?"
+    ]
+  },
+  "COMM.EVENTS_UPCOMING": {
+    "title": "Próximos eventos",
+    "phrasings": [
+      "mostra os próximos eventos",
+      "que eventos estão chegando?",
+      "o que tem na semana que vem?"
+    ]
+  },
+  "COMM.FEED": {
+    "title": "Feed da Comunidade Seguindo",
+    "phrasings": [
+      "mostra o feed de quem eu sigo",
+      "abre meu feed de seguindo",
+      "quero ver as postagens de quem eu sigo"
+    ]
+  },
+  "COMM.FIND_PARTNER": {
+    "title": "Encontrar parceiro",
+    "phrasings": [
+      "quero encontrar um parceiro de treino",
+      "onde acho alguém pra treinar comigo?",
+      "me ajuda a achar um parceiro de dança ou fitness"
+    ]
+  },
+  "COMM.FIND_PARTNER_BOARD": {
+    "title": "Painel de Parceiros",
+    "phrasings": [
+      "abre o quadro de parceiros",
+      "mostra quem está procurando parceiro de treino",
+      "onde vejo os pedidos de parceiro de outros?"
+    ]
+  },
+  "COMM.FIND_PARTNER_MATCHES": {
+    "title": "Meus Matches",
+    "phrasings": [
+      "mostra meus matches de parceiro",
+      "quem deu match no meu pedido de parceiro?",
+      "onde vejo meus parceiros combinados?"
+    ]
+  },
+  "COMM.FIND_PARTNER_POSTS": {
+    "title": "Meus Posts de Parceiro",
+    "phrasings": [
+      "mostra meus posts de parceiro",
+      "onde ficam meus pedidos de parceiro?",
+      "quero ver o que postei sobre parceiro"
+    ]
+  },
+  "COMM.GROUP_DETAIL": {
+    "title": "Detalhe do Grupo"
+  },
+  "COMM.GROUPS": {
+    "title": "Grupos",
+    "phrasings": [
+      "mostra os grupos da comunidade",
+      "abre os grupos da Maxina",
+      "quais grupos posso entrar?"
+    ]
+  },
+  "COMM.GROUPS_DISCOVER": {
+    "title": "Descobrir grupos",
+    "phrasings": [
+      "quero descobrir grupos novos",
+      "me recomenda grupos pra entrar",
+      "mostra grupos que podem me interessar"
+    ]
+  },
+  "COMM.INVITE": {
+    "title": "Convidar Amigos",
+    "phrasings": [
+      "quero convidar um amigo",
+      "como faço pra indicar alguém?",
+      "onde fica meu link de convite?"
+    ]
+  },
+  "COMM.LIVE_ROOM_VIEWER": {
+    "title": "Visualizador de Sala ao Vivo Específica"
+  },
+  "COMM.LIVE_ROOMS": {
+    "title": "Salas ao vivo",
+    "phrasings": [
+      "abre as salas ao vivo",
+      "onde posso entrar em uma sessão ao vivo?",
+      "mostra as live rooms"
+    ]
+  },
+  "COMM.LIVE_ROOMS_ALL": {
+    "title": "Todas as salas",
+    "phrasings": [
+      "mostra todas as salas ao vivo",
+      "quero ver todas as live rooms, ao vivo e agendadas",
+      "lista todas as salas disponíveis"
+    ]
+  },
+  "COMM.LIVE_ROOMS_LIVE": {
+    "title": "Ao vivo agora",
+    "phrasings": [
+      "quem está ao vivo agora?",
+      "mostra as salas que estão transmitindo agora",
+      "tem alguém ao vivo no momento?"
+    ]
+  },
+  "COMM.LIVE_ROOMS_PAST": {
+    "title": "Sessões anteriores",
+    "phrasings": [
+      "mostra as sessões ao vivo passadas",
+      "onde vejo gravações das live rooms?",
+      "quero assistir uma live que já acabou"
+    ]
+  },
+  "COMM.LIVE_ROOMS_SCHEDULED": {
+    "title": "Salas agendadas",
+    "phrasings": [
+      "quais salas ao vivo estão programadas?",
+      "me mostra as salas agendadas",
+      "onde vejo as sessões ao vivo que vão acontecer?"
+    ]
+  },
+  "COMM.MATCHES": {
+    "title": "Membros Compatíveis",
+    "phrasings": [
+      "quem combina comigo aqui na comunidade?",
+      "me mostra meus matches",
+      "onde vejo os membros que o app sugeriu pra mim?"
+    ]
+  },
+  "COMM.MEDIA_HUB": {
+    "title": "Hub de mídia",
+    "phrasings": [
+      "abre o Media Hub",
+      "onde ficam os vídeos e podcasts da comunidade?",
+      "quero ver a biblioteca de mídia"
+    ]
+  },
+  "COMM.MEDIA_MUSIC": {
+    "title": "Música",
+    "phrasings": [
+      "quero ouvir música",
+      "onde fica a música no Media Hub?",
+      "me mostra as músicas da comunidade"
+    ]
+  },
+  "COMM.MEDIA_PODCASTS": {
+    "title": "Podcasts",
+    "phrasings": [
+      "onde posso ouvir podcasts?",
+      "abre os podcasts",
+      "me mostra os episódios de áudio da comunidade"
+    ]
+  },
+  "COMM.MEDIA_SHORTS": {
+    "title": "Shorts",
+    "phrasings": [
+      "me mostra os shorts",
+      "quero ver os vídeos curtos",
+      "abre o feed de shorts"
+    ]
+  },
+  "COMM.MEMBERS": {
+    "title": "Membros da comunidade",
+    "phrasings": [
+      "quem mais faz parte da comunidade Maxina?",
+      "me mostra os membros da comunidade",
+      "quero encontrar alguém na comunidade"
+    ]
+  },
+  "COMM.OPEN_ASKS": {
+    "title": "Solicitações abertas",
+    "phrasings": [
+      "o que as pessoas estão pedindo ajuda?",
+      "me mostra os pedidos abertos da comunidade",
+      "onde vejo quem está procurando parceiro ou ajuda?"
+    ]
+  },
+  "COMM.OVERVIEW": {
+    "title": "Comunidade",
+    "phrasings": [
+      "abre a comunidade",
+      "me leva pra área da comunidade Maxina",
+      "quero ver eventos, grupos e salas ao vivo"
+    ]
+  },
+  "COMM.TALK_TO_VITANA": {
+    "title": "Falar com a Vitana",
+    "phrasings": [
+      "quero falar com a Vitana",
+      "abre o Talk to Vitana",
+      "como mando uma mensagem pra equipe da Vitana?"
+    ]
+  },
+  "CONNECTORS.AGENT": {
+    "title": "Conectores do Autopilot",
+    "phrasings": [
+      "me mostra os conectores do Autopilot",
+      "quero conectar serviços pro Autopilot",
+      "onde configuro as integrações do Autopilot?"
+    ]
+  },
+  "CONNECTORS.AI": {
+    "title": "Conectores de IA",
+    "phrasings": [
+      "me mostra os conectores de IA",
+      "quero conectar uma ferramenta de inteligência artificial",
+      "onde adiciono um provedor de IA?"
+    ]
+  },
+  "CONNECTORS.FITNESS": {
+    "title": "Conectores de fitness",
+    "phrasings": [
+      "como conecto meu app de fitness?",
+      "quero vincular meu smartwatch",
+      "onde conecto meu rastreador de atividades?"
+    ]
+  },
+  "CONNECTORS.HEALTH": {
+    "title": "Conectores de saúde",
+    "phrasings": [
+      "quero conectar meu app de saúde",
+      "como vinculo o Apple Health ou Google Fit?",
+      "onde ficam os conectores de saúde?"
+    ]
+  },
+  "CONNECTORS.MEDIA": {
+    "title": "Conectores de música e vídeo",
+    "phrasings": [
+      "quero conectar o Spotify",
+      "como vinculo minha conta de música ou vídeo?",
+      "onde conecto meus apps de mídia?"
+    ]
+  },
+  "CONNECTORS.OTHER": {
+    "title": "Outros conectores",
+    "phrasings": [
+      "me mostra outros conectores",
+      "tem mais integrações disponíveis?",
+      "onde ficam os conectores que não se encaixam nas outras categorias?"
+    ]
+  },
+  "CONNECTORS.PRODUCTIVITY": {
+    "title": "Conectores de e-mail e calendário",
+    "phrasings": [
+      "quero conectar meu e-mail",
+      "como vinculo meu Google Calendar?",
+      "onde conecto meu calendário e e-mail?"
+    ]
+  },
+  "CONNECTORS.SOCIAL": {
+    "title": "Conectores sociais",
+    "phrasings": [
+      "quero conectar minhas redes sociais",
+      "como vinculo o Instagram?",
+      "onde conecto minha conta de mídia social?"
+    ]
+  },
+  "DISCOVER.AI_PICKS": {
+    "title": "Seleção IA",
+    "phrasings": [
+      "o que a IA está sugerindo pra mim?",
+      "me mostra os produtos recomendados pela IA",
+      "quais são os AI Picks pra mim?"
+    ]
+  },
+  "DISCOVER.CART": {
+    "title": "Carrinho",
+    "phrasings": [
+      "abre meu carrinho",
+      "o que tem no meu carrinho de compras?",
+      "quero ver o que separei pra comprar"
+    ]
+  },
+  "DISCOVER.CATEGORIES": {
+    "title": "Categorias",
+    "phrasings": [
+      "quero navegar por categorias",
+      "me mostra as categorias da loja",
+      "onde vejo os produtos por categoria?"
+    ]
+  },
+  "DISCOVER.DEALS": {
+    "title": "Ofertas e promoções",
+    "phrasings": [
+      "tem algum desconto disponível?",
+      "me mostra as ofertas e promoções",
+      "onde ficam os deals pra membros?"
+    ]
+  },
+  "DISCOVER.DEALS_AI": {
+    "title": "Seleção de ofertas por IA",
+    "phrasings": [
+      "quais ofertas a IA escolheu pra mim?",
+      "me mostra os deals selecionados pela IA",
+      "abre os AI picks de ofertas"
+    ]
+  },
+  "DISCOVER.DEALS_SAVED": {
+    "title": "Ofertas salvas",
+    "phrasings": [
+      "me mostra as ofertas que salvei",
+      "onde ficam os deals que eu guardei?",
+      "quero ver meus deals salvos"
+    ]
+  },
+  "DISCOVER.DEALS_TRENDING": {
+    "title": "Ofertas em alta",
+    "phrasings": [
+      "quais ofertas estão em alta?",
+      "me mostra os deals mais populares",
+      "abre as ofertas trending"
+    ]
+  },
+  "DISCOVER.DOCTORS_COACHES": {
+    "title": "Médicos e coaches",
+    "phrasings": [
+      "onde encontro um médico ou coach?",
+      "quero achar um profissional de saúde",
+      "me mostra médicos e coaches disponíveis"
+    ]
+  },
+  "DISCOVER.MARKETPLACE": {
+    "title": "Marketplace",
+    "phrasings": [
+      "abre o marketplace",
+      "onde posso comprar e vender na Maxina?",
+      "me leva pro marketplace da comunidade"
+    ]
+  },
+  "DISCOVER.MARKETPLACE_MINE": {
+    "title": "Meu marketplace",
+    "phrasings": [
+      "me mostra minhas ofertas no marketplace",
+      "onde vejo meus próprios anúncios?",
+      "quero ver meus pedidos e ofertas no marketplace"
+    ]
+  },
+  "DISCOVER.MARKETPLACE_OPEN": {
+    "title": "Pedidos abertos",
+    "phrasings": [
+      "me mostra os pedidos abertos no marketplace",
+      "quais ofertas estão disponíveis pra todo mundo?",
+      "abre os pedidos públicos do marketplace"
+    ]
+  },
+  "DISCOVER.MY_TICKETS": {
+    "title": "Meus Ingressos",
+    "phrasings": [
+      "onde estão meus ingressos?",
+      "me mostra os tickets que comprei",
+      "quero ver meus ingressos de eventos"
+    ]
+  },
+  "DISCOVER.ORDERS": {
+    "title": "Meus Pedidos",
+    "phrasings": [
+      "me mostra meus pedidos",
+      "onde acompanho meu pedido?",
+      "o que eu já pedi?"
+    ]
+  },
+  "DISCOVER.ORDERS_ACTIVE": {
+    "title": "Pedidos Ativos",
+    "phrasings": [
+      "quais pedidos ainda estão a caminho?",
+      "me mostra meus pedidos ativos",
+      "onde vejo o que ainda não chegou?"
+    ]
+  },
+  "DISCOVER.ORDERS_HISTORY": {
+    "title": "Histórico de Pedidos",
+    "phrasings": [
+      "me mostra meu histórico de pedidos",
+      "quero ver os pedidos que já finalizei",
+      "onde ficam meus pedidos anteriores?"
+    ]
+  },
+  "DISCOVER.OVERVIEW": {
+    "title": "Descobrir",
+    "phrasings": [
+      "abre o Discover",
+      "quero ver a loja",
+      "onde posso comprar suplementos e serviços?"
+    ]
+  },
+  "DISCOVER.PRODUCT_DETAIL": {
+    "title": "Detalhe do produto"
+  },
+  "DISCOVER.PROVIDER_PROFILE": {
+    "title": "Perfil do prestador"
+  },
+  "DISCOVER.SHARE_EARN": {
+    "title": "Compartilhe e Ganhe",
+    "phrasings": [
+      "como ganho recompensas compartilhando produtos?",
+      "abre o Share and Earn",
+      "onde vejo como ganhar indicando produtos?"
+    ]
+  },
+  "DISCOVER.SHOP": {
+    "title": "Loja",
+    "phrasings": [
+      "abre a loja de vídeos",
+      "quero ver os vídeos com produtos pra comprar",
+      "me mostra a video shop"
+    ]
+  },
+  "DISCOVER.SUPPLEMENTS": {
+    "title": "Suplementos",
+    "phrasings": [
+      "onde compro suplementos?",
+      "me mostra os suplementos disponíveis na loja",
+      "quero ver vitaminas e suplementos"
+    ]
+  },
+  "DISCOVER.WELLNESS_SERVICES": {
+    "title": "Serviços de bem-estar",
+    "phrasings": [
+      "me mostra os serviços de bem-estar",
+      "onde encontro tratamentos de saúde?",
+      "quero agendar um serviço de wellness"
+    ]
+  },
+  "HEALTH.BIOLOGY_OMICS": {
+    "title": "Meus Omics",
+    "phrasings": [
+      "onde vejo meus dados de ômicas?",
+      "me mostra meus resultados genéticos",
+      "abre a aba de ômicas do meu perfil biológico"
+    ]
+  },
+  "HEALTH.BIOLOGY_SUPPLEMENTS": {
+    "title": "Meus Suplementos (Biologia)",
+    "phrasings": [
+      "quais suplementos estão no meu perfil biológico?",
+      "me mostra os suplementos da minha biologia",
+      "onde vejo os suplementos ligados ao meu perfil biológico?"
+    ]
+  },
+  "HEALTH.CONDITIONS": {
+    "title": "Condições de saúde",
+    "phrasings": [
+      "onde gerencio minhas condições de saúde?",
+      "me mostra meus diagnósticos",
+      "quero acompanhar meus problemas de saúde"
+    ]
+  },
+  "HEALTH.EDUCATION": {
+    "title": "Educação e ciência",
+    "phrasings": [
+      "onde aprendo sobre longevidade?",
+      "me mostra os conteúdos educativos de saúde",
+      "quero ler artigos científicos sobre saúde"
+    ]
+  },
+  "HEALTH.EDUCATION_PODCASTS": {
+    "title": "Podcasts Educativos",
+    "phrasings": [
+      "me mostra os podcasts educativos de saúde",
+      "onde ouço podcasts sobre longevidade?",
+      "abre os podcasts de aprendizado"
+    ]
+  },
+  "HEALTH.EDUCATION_VIDEOS": {
+    "title": "Vídeos Educativos",
+    "phrasings": [
+      "me mostra os vídeos educativos de saúde",
+      "onde vejo vídeos sobre longevidade?",
+      "abre os vídeos de aprendizado"
+    ]
+  },
+  "HEALTH.MEDICAL": {
+    "title": "Médico",
+    "phrasings": [
+      "onde ficam meus documentos médicos?",
+      "quero ver meus prontuários",
+      "me mostra meus registros médicos"
+    ]
+  },
+  "HEALTH.MY_BIOLOGY": {
+    "title": "Minha biologia",
+    "phrasings": [
+      "mostra minha biologia",
+      "onde vejo meus resultados de exame de sangue",
+      "quero ver meus biomarcadores"
+    ]
+  },
+  "HEALTH.OVERVIEW": {
+    "title": "Saúde",
+    "phrasings": [
+      "abre minha área de saúde",
+      "mostra o resumo da minha saúde",
+      "onde fico de olho na minha saúde"
+    ]
+  },
+  "HEALTH.PILLARS": {
+    "title": "Pilares da saúde",
+    "phrasings": [
+      "mostra os pilares de saúde",
+      "quais são os pilares da longevidade",
+      "abre os pilares de saúde"
+    ]
+  },
+  "HEALTH.PLANS": {
+    "title": "Meus planos",
+    "phrasings": [
+      "abre meus planos de saúde",
+      "onde estão meus planos personalizados",
+      "mostra meus planos"
+    ]
+  },
+  "HEALTH.PLANS_EXERCISE": {
+    "title": "Planos de treino",
+    "phrasings": [
+      "mostra meu plano de treino",
+      "onde vejo meu plano de exercícios",
+      "abre meu plano de academia"
+    ]
+  },
+  "HEALTH.PLANS_HYDRATION": {
+    "title": "Planos de hidratação",
+    "phrasings": [
+      "mostra meu plano de hidratação",
+      "onde vejo meu plano de água",
+      "abre meu plano de hidratação"
+    ]
+  },
+  "HEALTH.PLANS_MENTAL": {
+    "title": "Planos de saúde mental",
+    "phrasings": [
+      "mostra meu plano de saúde mental",
+      "onde vejo meu plano de bem-estar mental",
+      "abre meu plano de mindfulness"
+    ]
+  },
+  "HEALTH.PLANS_NUTRITION": {
+    "title": "Planos de alimentação",
+    "phrasings": [
+      "mostra meu plano de nutrição",
+      "onde vejo meu plano alimentar",
+      "abre meu plano de dieta"
+    ]
+  },
+  "HEALTH.PLANS_SLEEP": {
+    "title": "Planos de sono",
+    "phrasings": [
+      "mostra meu plano de sono",
+      "onde vejo minha rotina de sono",
+      "abre meu plano de descanso"
+    ]
+  },
+  "HEALTH.SERVICES_HUB": {
+    "title": "Hub de serviços de saúde",
+    "phrasings": [
+      "abre os serviços de saúde",
+      "onde posso contratar serviços de saúde na Maxina",
+      "mostra os serviços de saúde disponíveis"
+    ]
+  },
+  "HEALTH.SERVICES_INSURANCE": {
+    "title": "Suporte de Seguro",
+    "phrasings": [
+      "preciso de ajuda com meu plano de saúde",
+      "onde fica o suporte de seguro saúde",
+      "abre o suporte de convênio"
+    ]
+  },
+  "HEALTH.SERVICES_MEDICAL": {
+    "title": "Serviços Médicos",
+    "phrasings": [
+      "mostra os serviços médicos",
+      "onde posso agendar um serviço médico",
+      "abre os serviços médicos"
+    ]
+  },
+  "HEALTH.SERVICES_MINE": {
+    "title": "Meus Serviços",
+    "phrasings": [
+      "mostra os serviços de saúde que eu uso",
+      "onde vejo os serviços que já contratei",
+      "abre meus serviços de saúde"
+    ]
+  },
+  "HEALTH.SERVICES_WELLNESS": {
+    "title": "Programas de Bem-Estar",
+    "phrasings": [
+      "mostra os programas de bem-estar",
+      "onde posso entrar num programa de wellness",
+      "abre os programas de wellness"
+    ]
+  },
+  "HEALTH.SUPPLEMENTS": {
+    "title": "Suplementos de Saúde",
+    "phrasings": [
+      "mostra meus suplementos",
+      "quais suplementos eu tomo",
+      "abre minha lista de suplementos"
+    ]
+  },
+  "HEALTH.VITANA_INDEX": {
+    "title": "Índice Vitana",
+    "phrasings": [
+      "abre meu Vitana Index",
+      "qual é minha pontuação no Vitana Index",
+      "mostra meu índice de longevidade"
+    ]
+  },
+  "HOME.NEWS_ALL": {
+    "title": "Todas as notícias",
+    "phrasings": [
+      "mostra todas as notícias",
+      "abre o feed completo de notícias",
+      "quero ver todas as fontes de notícia"
+    ]
+  },
+  "HOME.NEWS_COMMUNITY": {
+    "title": "Notícias da comunidade",
+    "phrasings": [
+      "abre as notícias da comunidade",
+      "o que tem de novo na comunidade Maxina",
+      "mostra as novidades da comunidade"
+    ]
+  },
+  "HOME.OVERVIEW": {
+    "title": "Notícias de Longevidade",
+    "phrasings": [
+      "mostra as últimas notícias de longevidade",
+      "abre o feed de notícias",
+      "vai pra tela inicial"
+    ]
+  },
+  "INBOX.ARCHIVED": {
+    "title": "Mensagens Arquivadas",
+    "phrasings": [
+      "mostra minhas mensagens arquivadas",
+      "onde ficam as conversas que eu arquivei",
+      "abre o arquivo de mensagens"
+    ]
+  },
+  "INBOX.CONVERSATION": {
+    "title": "Conversa"
+  },
+  "INBOX.GROUP": {
+    "title": "Chat em grupo"
+  },
+  "INBOX.INSPIRATION": {
+    "title": "Inspiração",
+    "phrasings": [
+      "mostra minhas mensagens de inspiração",
+      "onde vejo as dicas de bem-estar da Vitana",
+      "abre minha inspiração diária"
+    ]
+  },
+  "INBOX.OVERVIEW": {
+    "title": "Caixa de entrada",
+    "phrasings": [
+      "abre minhas mensagens",
+      "onde vejo minhas conversas",
+      "tenho mensagem nova"
+    ]
+  },
+  "INTENTS.BOARD": {
+    "title": "Painel de Intents",
+    "phrasings": [
+      "abre o quadro da comunidade",
+      "mostra o que as pessoas estão procurando",
+      "quero ver os pedidos da comunidade"
+    ]
+  },
+  "INTENTS.MATCH_DETAIL": {
+    "title": "Detalhe do Match"
+  },
+  "INTENTS.MINE": {
+    "title": "Meus Intents",
+    "phrasings": [
+      "mostra meus intents",
+      "onde vejo o que eu postei na comunidade",
+      "abre meus pedidos"
+    ]
+  },
+  "LIFE_COMPASS.OVERLAY": {
+    "title": "Bússola da vida",
+    "phrasings": [
+      "abre meu Life Compass",
+      "onde vejo meus objetivos de vida",
+      "mostra minha bússola de vida"
+    ]
+  },
+  "MEMORY.DAILY_DIARY": {
+    "title": "Fluxo de registro de um dia",
+    "phrasings": [
+      "quero registrar meu dia de hoje",
+      "abre o registro do dia",
+      "vou capturar meu dia agora"
+    ]
+  },
+  "MEMORY.DIARY": {
+    "title": "Diário",
+    "phrasings": [
+      "abre meu diário",
+      "onde escrevo meu diário do dia",
+      "mostra minhas anotações do diário"
+    ]
+  },
+  "MEMORY.DIARY_BUGS": {
+    "title": "Relatórios de Bugs",
+    "phrasings": [
+      "onde reporto um bug no diário",
+      "quero reportar um problema no app",
+      "mostra meus relatórios de bug"
+    ]
+  },
+  "MEMORY.OVERVIEW": {
+    "title": "Jardim da Memória",
+    "phrasings": [
+      "abre meu Memory Garden",
+      "onde vejo o que a Vitana lembra de mim",
+      "mostra minhas memórias"
+    ]
+  },
+  "MEMORY.PERMISSIONS": {
+    "title": "Permissões de Memória",
+    "phrasings": [
+      "o que você tem permissão de lembrar",
+      "abre as permissões de memória",
+      "quero controlar o que você guarda sobre mim"
+    ]
+  },
+  "MEMORY.RECALL": {
+    "title": "Lembrar e Buscar",
+    "phrasings": [
+      "pesquisa nas minhas memórias",
+      "quero achar algo que te contei",
+      "abre a busca de memórias"
+    ]
+  },
+  "MEMORY.TIMELINE": {
+    "title": "Linha do Tempo",
+    "phrasings": [
+      "mostra minha linha do tempo",
+      "abre o histórico da minha vida",
+      "quero ver minha timeline"
+    ]
+  },
+  "NEWS.DETAIL": {
+    "title": "Artigo de notícias"
+  },
+  "OVERLAY.EVENT_DRAWER": {
+    "title": "Detalhes do evento"
+  },
+  "OVERLAY.MASTER_ACTION": {
+    "title": "Ações rápidas",
+    "phrasings": [
+      "abre as ações rápidas",
+      "mostra o menu de ações rápidas",
+      "o que posso fazer aqui agora"
+    ]
+  },
+  "OVERLAY.MEETUP_DRAWER": {
+    "title": "Detalhes do encontro"
+  },
+  "OVERLAY.PROFILE_PREVIEW": {
+    "title": "Pré-visualização do perfil"
+  },
+  "OVERLAY.VITANA_INDEX": {
+    "title": "Índice Vitana",
+    "phrasings": [
+      "abre o painel do Vitana Index",
+      "dá uma olhada rápida no meu índice",
+      "mostra meu Vitana Index agora"
+    ]
+  },
+  "OVERLAY.WALLET_POPUP": {
+    "title": "Carteira rápida",
+    "phrasings": [
+      "dá uma olhada rápida na minha carteira",
+      "abre o popup da carteira",
+      "espiada rápida no saldo da carteira"
+    ]
+  },
+  "PROFILE.ME": {
+    "title": "Meu perfil",
+    "phrasings": [
+      "abre meu perfil",
+      "onde troco minha foto de perfil",
+      "quero editar meu perfil"
+    ]
+  },
+  "PROFILE.PRIVACY": {
+    "title": "Visibilidade do perfil",
+    "phrasings": [
+      "quem pode ver meu perfil",
+      "abre a visibilidade do meu perfil",
+      "quero controlar quem vê meu perfil"
+    ]
+  },
+  "PROFILE.PUBLIC": {
+    "title": "Perfil público"
+  },
+  "PROFILE.WITH_MATCH": {
+    "title": "Perfil com âncora de match"
+  },
+  "PUBLIC.LANDING": {
+    "title": "Página inicial do Vitanaland",
+    "phrasings": [
+      "vai pra página inicial da Vitanaland",
+      "abre a entrada da Maxina",
+      "mostra a página de entrada da Vitanaland"
+    ]
+  },
+  "PUBLIC.PRIVACY": {
+    "title": "Política de privacidade",
+    "phrasings": [
+      "mostra a política de privacidade",
+      "como vocês tratam meus dados",
+      "abre a política de privacidade"
+    ]
+  },
+  "PUBLIC.TERMS": {
+    "title": "Termos de uso",
+    "phrasings": [
+      "mostra os termos de uso",
+      "abre os termos e condições",
+      "onde leio as regras do app"
+    ]
+  },
+  "REMINDERS.OVERVIEW": {
+    "title": "Lembretes",
+    "phrasings": [
+      "mostra meus lembretes",
+      "que lembretes eu tenho",
+      "abre minha lista de lembretes"
+    ]
+  },
+  "SEARCH.OVERVIEW": {
+    "title": "Buscar",
+    "phrasings": [
+      "abre a busca",
+      "quero pesquisar no app",
+      "como faço uma busca aqui"
+    ]
+  },
+  "SETTINGS.BILLING": {
+    "title": "Cobrança",
+    "phrasings": [
+      "abre o faturamento",
+      "onde gerencio meus pagamentos",
+      "mostra minhas configurações de cobrança"
+    ]
+  },
+  "SETTINGS.BILLING_CREATOR": {
+    "title": "Pagamentos de criadores",
+    "phrasings": [
+      "mostra meus ganhos como criador",
+      "quando recebo como criador de conteúdo",
+      "abre meus pagamentos de criador"
+    ]
+  },
+  "SETTINGS.BILLING_INVOICES": {
+    "title": "Faturas e recibos",
+    "phrasings": [
+      "onde baixo minhas notas fiscais",
+      "mostra meus recibos de pagamento",
+      "abre minhas faturas"
+    ]
+  },
+  "SETTINGS.BILLING_PAYMENT": {
+    "title": "Forma de pagamento",
+    "phrasings": [
+      "quero trocar meu método de pagamento",
+      "como atualizo meu cartão de crédito",
+      "onde fica a forma de pagamento"
+    ]
+  },
+  "SETTINGS.BILLING_PLAN": {
+    "title": "Plano atual",
+    "phrasings": [
+      "qual plano eu tô usando",
+      "onde vejo minha assinatura atual",
+      "quero fazer upgrade do meu plano"
+    ]
+  },
+  "SETTINGS.CONNECTED_APPS": {
+    "title": "Conectores e apps conectados",
+    "phrasings": [
+      "quais apps estão conectados à minha conta",
+      "mostra os conectores e apps integrados",
+      "quero gerenciar minhas integrações"
+    ]
+  },
+  "SETTINGS.LIMITATIONS": {
+    "title": "Restrições de saúde",
+    "phrasings": [
+      "onde registro minhas restrições de saúde",
+      "quero informar minhas alergias e lesões",
+      "como cadastro minhas limitações físicas"
+    ]
+  },
+  "SETTINGS.NOTIFICATIONS": {
+    "title": "Notificações",
+    "phrasings": [
+      "onde desativo as notificações",
+      "quero ajustar as preferências de notificação",
+      "como paro de receber notificações push"
+    ]
+  },
+  "SETTINGS.OVERVIEW": {
+    "title": "Configurações",
+    "phrasings": [
+      "abre as configurações",
+      "mostra as configurações da minha conta",
+      "quero ir para as configurações"
+    ]
+  },
+  "SETTINGS.PREFERENCES": {
+    "title": "Preferências",
+    "phrasings": [
+      "abre minhas preferências",
+      "onde ficam as preferências do app",
+      "quero ajustar as preferências de uso"
+    ]
+  },
+  "SETTINGS.PREFERENCES_ACCESSIBILITY": {
+    "title": "Acessibilidade",
+    "phrasings": [
+      "onde ficam as configurações de acessibilidade",
+      "quero aumentar o tamanho da fonte",
+      "abre as opções de acessibilidade"
+    ]
+  },
+  "SETTINGS.PREFERENCES_APPEARANCE": {
+    "title": "Aparência",
+    "phrasings": [
+      "quero ativar o modo escuro",
+      "como mudo o tema do app",
+      "onde altero as cores e aparência"
+    ]
+  },
+  "SETTINGS.PREFERENCES_LANGUAGE": {
+    "title": "Idioma e região",
+    "phrasings": [
+      "onde mudo o idioma do app",
+      "quero trocar a língua para inglês",
+      "como altero a região e o idioma"
+    ]
+  },
+  "SETTINGS.PRIVACY": {
+    "title": "Configurações de privacidade",
+    "phrasings": [
+      "abre as configurações de privacidade",
+      "quero ver as opções de privacidade",
+      "quem pode ver meus dados na Vitana"
+    ]
+  },
+  "SETTINGS.PRIVACY_DATA": {
+    "title": "Compartilhamento de dados",
+    "phrasings": [
+      "quais dados eu tô compartilhando",
+      "onde controlo os dados que compartilho",
+      "abre as configurações de dados compartilhados"
+    ]
+  },
+  "SETTINGS.PRIVACY_SECURITY": {
+    "title": "Segurança da conta",
+    "phrasings": [
+      "quero trocar minha senha",
+      "onde ficam as configurações de segurança da conta",
+      "como ativo a autenticação em dois fatores"
+    ]
+  },
+  "SETTINGS.PRIVACY_VISIBILITY": {
+    "title": "Visibilidade",
+    "phrasings": [
+      "onde controlo quem vê meu perfil",
+      "quero me esconder das buscas",
+      "abre as configurações de visibilidade"
+    ]
+  },
+  "SETTINGS.SOCIAL": {
+    "title": "Contas sociais",
+    "phrasings": [
+      "mostra minhas contas sociais vinculadas",
+      "onde gerencio as redes sociais conectadas",
+      "quero vincular minha conta do Instagram"
+    ]
+  },
+  "SETTINGS.SUPPORT": {
+    "title": "Suporte",
+    "phrasings": [
+      "preciso de ajuda com o app",
+      "abre o suporte",
+      "onde fica a central de ajuda"
+    ]
+  },
+  "SETTINGS.SUPPORT_COMMUNITY": {
+    "title": "Ajuda da comunidade",
+    "phrasings": [
+      "quero pedir ajuda pra comunidade",
+      "onde fica o fórum de ajuda da comunidade",
+      "abre a ajuda comunitária"
+    ]
+  },
+  "SETTINGS.SUPPORT_CONTACT": {
+    "title": "Falar com o suporte",
+    "phrasings": [
+      "como falo com o suporte",
+      "quero entrar em contato com a equipe",
+      "onde abro um chamado de suporte"
+    ]
+  },
+  "SETTINGS.SUPPORT_FAQ": {
+    "title": "FAQ do suporte",
+    "phrasings": [
+      "mostra as perguntas frequentes",
+      "onde ficam as dúvidas mais comuns",
+      "abre o FAQ do app"
+    ]
+  },
+  "SETTINGS.TENANT_ROLE": {
+    "title": "Tenant e função",
+    "phrasings": [
+      "quero trocar meu papel na comunidade",
+      "como mudo de função aqui no app",
+      "em qual comunidade eu estou cadastrado"
+    ]
+  },
+  "SHARING.CAMPAIGN_DETAIL": {
+    "title": "Detalhe da Campanha"
+  },
+  "SHARING.CAMPAIGNS": {
+    "title": "Campanhas",
+    "phrasings": [
+      "mostra minhas campanhas de compartilhamento",
+      "quero ver o desempenho das minhas campanhas",
+      "onde ficam minhas campanhas ativas"
+    ]
+  },
+  "SHARING.DATA_CONSENT": {
+    "title": "Dados e Consentimento",
+    "phrasings": [
+      "onde vejo o que consenti em compartilhar",
+      "quero gerenciar meus dados e consentimentos",
+      "abre as configurações de dados e consentimento"
+    ]
+  },
+  "SHARING.DISTRIBUTION": {
+    "title": "Distribuição",
+    "phrasings": [
+      "onde vejo como meu conteúdo está sendo distribuído",
+      "mostra a distribuição do que compartilhei",
+      "quero acompanhar o alcance do meu conteúdo"
+    ]
+  },
+  "SHARING.OVERVIEW": {
+    "title": "Compartilhar",
+    "phrasings": [
+      "abre a área de compartilhamento",
+      "quero compartilhar a Maxina com amigos",
+      "onde fica a seção de compartilhamento"
+    ]
+  },
+  "WALLET.ACTIONS": {
+    "title": "Ações da Carteira",
+    "phrasings": [
+      "quero enviar ou recarregar créditos",
+      "onde faço operações na carteira",
+      "abre as ações da carteira"
+    ]
+  },
+  "WALLET.ACTIVITY": {
+    "title": "Atividade da Carteira",
+    "phrasings": [
+      "mostra minha movimentação na carteira",
+      "onde vejo meu histórico de transações",
+      "quero ver o extrato da minha carteira"
+    ]
+  },
+  "WALLET.BALANCE": {
+    "title": "Saldo e benefícios",
+    "phrasings": [
+      "onde vejo meu saldo atual",
+      "quantos créditos eu tenho",
+      "mostra meu saldo e benefícios"
+    ]
+  },
+  "WALLET.BALANCE_MEMBERSHIP": {
+    "title": "Assinatura",
+    "phrasings": [
+      "mostra minha associação na carteira",
+      "onde vejo o status da minha membresia",
+      "abre a aba de membership da carteira"
+    ]
+  },
+  "WALLET.BALANCE_OPTIMIZATION": {
+    "title": "Otimização",
+    "phrasings": [
+      "como otimizo meu saldo",
+      "onde vejo dicas pra aproveitar melhor minha carteira",
+      "abre a aba de otimização do saldo"
+    ]
+  },
+  "WALLET.BALANCE_TOKENS": {
+    "title": "Tokens",
+    "phrasings": [
+      "quantos tokens eu tenho",
+      "mostra meus tokens na carteira",
+      "abre a aba de tokens do saldo"
+    ]
+  },
+  "WALLET.OVERVIEW": {
+    "title": "Carteira",
+    "phrasings": [
+      "abre minha carteira",
+      "mostra minha carteira na Maxina",
+      "onde vejo meu dinheiro no app"
+    ]
+  },
+  "WALLET.REWARDS": {
+    "title": "Recompensas e comissões",
+    "phrasings": [
+      "onde vejo minhas recompensas e comissões",
+      "quanto eu ganhei de recompensa",
+      "mostra minhas comissões"
+    ]
+  },
+  "WALLET.REWARDS_INTELLIGENCE": {
+    "title": "Insights de recompensas",
+    "phrasings": [
+      "como posso ganhar mais recompensas",
+      "mostra os insights de recompensas",
+      "onde vejo dicas pra aumentar meus ganhos"
+    ]
+  },
+  "WALLET.REWARDS_PENDING": {
+    "title": "Recompensas pendentes",
+    "phrasings": [
+      "mostra as recompensas pendentes",
+      "onde vejo o que ainda não foi creditado",
+      "quais recompensas ainda não caíram"
+    ]
+  },
+  "WALLET.REWARDS_REFERRAL": {
+    "title": "Recompensas de indicação",
+    "phrasings": [
+      "mostra minhas recompensas por indicação",
+      "o que eu ganhei por convidar amigos",
+      "onde vejo os prêmios de referral"
+    ]
+  },
+  "WALLET.SUBSCRIPTIONS": {
+    "title": "Assinaturas",
+    "phrasings": [
+      "mostra minhas assinaturas ativas",
+      "quais serviços eu tô pagando",
+      "onde cancelo uma assinatura"
+    ]
+  }
+}

@@ -132,7 +132,10 @@
         "merging": "الدمج",
         "deploying": "النشر",
         "verifying": "التحقق",
-        "completed": "مكتمل"
+        "completed": "مكتمل",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "قبل أن يتمكن من البدء",
@@ -198,7 +201,10 @@
         "activatedDescDispatched": "{from} → {to}. يشغّل Dev Autopilot التنفيذ {execution} — بشكل مستقل من الآن.",
         "rolledBackTitle": "تم التراجع عن {ticket}",
         "rolledBackDesc": "PR التراجع #{number}. أُعيد فتح التذكرة.",
-        "rolledBackDescNoNumber": "تم إنشاء PR للتراجع. أُعيد فتح التذكرة."
+        "rolledBackDescNoNumber": "تم إنشاء PR للتراجع. أُعيد فتح التذكرة.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "هذه التذكرة قيد التشغيل بالفعل في Dev Autopilot. إعادة التصنيف مقفلة بعد الإرسال.",

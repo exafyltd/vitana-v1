@@ -16,6 +16,7 @@ import { confettiManager } from "@/lib/confetti";
 import { buildHorizonPoints, type ProjectedPoint } from "@/lib/vitana-projection";
 import type { ContributionVector } from "@/types/autopilot";
 import { t } from '@/lib/i18n-toast';
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 export const VITANA_INDEX_OPEN_EVENT = "vitana:open-index";
 
@@ -187,11 +188,7 @@ export function VitanaIndexSheet() {
   const { current: streakDays } = useVitanaStreaks();
   const { compass } = useLifeCompass();
 
-  useEffect(() => {
-    const handler = () => setOpen(true);
-    window.addEventListener(VITANA_INDEX_OPEN_EVENT, handler);
-    return () => window.removeEventListener(VITANA_INDEX_OPEN_EVENT, handler);
-  }, []);
+  useWindowOverlay(VITANA_INDEX_OPEN_EVENT, () => setOpen(true));
 
   const total = index?.total ?? null;
   const tierLabel = index?.tier ? t(index.tier.labelKey) : null;

@@ -12,12 +12,12 @@
         "what": "Vitana czyta i pisze maile za ciebie"
       },
       "outlook-mail": {
-        "name": "Outlook Mail",
+        "name": "Poczta Outlook",
         "what": "Czytaj skrzynkę Microsoft i wysyłaj maile"
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Czytaj nowe maile w skrzynce iCloud"
+        "what": "Czytaj skrzynkę iCloud i wysyłaj maile ze swojego adresu iCloud"
       },
       "google-calendar": {
         "name": "Kalendarz Google",
@@ -25,11 +25,15 @@
       },
       "outlook-calendar": {
         "name": "Kalendarz Outlook",
-        "what": "Zobacz terminy i pokaż zajęte godziny w kalendarzu"
+        "what": "Zobacz i dodawaj terminy, zsynchronizowane z Vitanaland"
+      },
+      "outlook-contacts": {
+        "name": "Kontakty Outlook",
+        "what": "Przenieś swoje kontakty Outlook do Vitanaland"
       },
       "apple-calendar": {
         "name": "Kalendarz Apple (iCloud)",
-        "what": "Zobacz terminy i pokaż zajęte godziny w kalendarzu"
+        "what": "Zobacz i dodawaj terminy, zsynchronizowane z Vitanaland"
       },
       "google-contacts": {
         "name": "Kontakty Google",
@@ -85,7 +89,7 @@
       "step3": "Wpisz tu swój Apple ID i nowe hasło.",
       "appleId": "Apple ID (e-mail)",
       "appPassword": "Hasło dla aplikacji",
-      "privacy": "Przechowujemy hasło zaszyfrowane i używamy go tylko do odczytu. Możesz je w każdej chwili unieważnić w Apple.",
+      "privacy": "Przechowujemy hasło zaszyfrowane. Vitana używa go do czytania twojej poczty, kalendarza i kontaktów, do wysyłania maili, gdy o to poprosisz, oraz do aktualizowania kalendarza „Vitanaland”. Możesz je w każdej chwili unieważnić w Apple.",
       "connect": "Połącz",
       "checking": "Sprawdzanie …",
       "wrongPassword": "Apple odrzuciło logowanie — sprawdź swój Apple ID i hasło dla aplikacji",
@@ -100,7 +104,7 @@
       "title": "Wyłączyć {app}?",
       "body": {
         "mail": "Vitana nie będzie już czytać ani wysyłać maili przez tę aplikację.",
-        "calendar": "Zajęte godziny z tego kalendarza znikną z twojego kalendarza Vitanaland.",
+        "calendar": "Zajęte godziny z tego kalendarza znikną z twojego kalendarza Vitanaland. Kalendarz „Vitanaland” zostaje na twoim koncie — możesz go tam usunąć.",
         "contacts": "Nowe kontakty nie będą już dodawane. Dodane kontakty zostają, chyba że usuniesz je tutaj."
       },
       "removeContacts": "Usuń też dodane kontakty z Vitanaland"
@@ -108,6 +112,67 @@
     "errors": {
       "sessionExpired": "Twoja sesja wygasła. Zaloguj się ponownie, aby zarządzać aplikacjami.",
       "loadFailed": "Nie udało się teraz wczytać twoich aplikacji. Spróbuj za chwilę."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Połączone — sprawdzamy teraz",
+        "off": "Najpierw włącz to w Połączonych aplikacjach",
+        "phone": "Wybierz kontakty na telefonie",
+        "phoneUnavailable": "Tylko w Chrome na Androidzie"
+      },
+      "connect": {
+        "title": "{app} nie jest jeszcze połączone",
+        "body": "Włącz {app} raz w Połączonych aplikacjach. Potem znajdziesz tu znajomych jednym dotknięciem.",
+        "open": "Otwórz Połączone aplikacje"
+      },
+      "progress": {
+        "reading": "Czytamy twoje kontakty …",
+        "matching": "Sprawdzamy, kto już jest w Vitanaland …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "Połączenie się nie udało",
+          "body": "Twoje konto było teraz nieosiągalne. Spróbuj za chwilę albo połącz je ponownie w Połączonych aplikacjach."
+        },
+        "api_unavailable": {
+          "title": "Na tym urządzeniu się nie da",
+          "body": "Twoja przeglądarka nie może otworzyć książki adresowej. Otwórz Vitanaland w Chrome na telefonie z Androidem albo połącz Google lub iCloud."
+        },
+        "permission_denied": {
+          "title": "Brak dostępu do kontaktów",
+          "body": "Zezwól Vitanaland na dostęp do kontaktów w ustawieniach telefonu."
+        },
+        "rate_limited": {
+          "title": "Za dużo prób",
+          "body": "Poczekaj chwilę i spróbuj ponownie."
+        },
+        "cancelled": {
+          "title": "Nie wybrano kontaktów",
+          "body": "Dotknij jeszcze raz i wybierz kontakty, które chcesz dodać."
+        },
+        "unknown": {
+          "title": "Coś poszło nie tak",
+          "body": "Spróbuj ponownie za chwilę."
+        }
+      },
+      "consent": {
+        "title": "Tak dbamy o twoje kontakty",
+        "subtitle": "Zanim poszukasz znajomych",
+        "noAutoTitle": "Nigdy nie piszemy do nikogo sami",
+        "noAutoBody": "Ty decydujesz, z kim się kontaktujesz i kiedy.",
+        "privateTitle": "Widoczne tylko dla ciebie",
+        "privateBody": "Dodane kontakty są zapisywane na twoim koncie Vitanaland. Tylko ty je widzisz.",
+        "removeTitle": "Usuń je w każdej chwili",
+        "removeBody": "W Połączonych aplikacjach możesz wyłączyć źródło i usunąć jego kontakty.",
+        "helper": "Porównujemy adresy e-mail, żeby pokazać, kto już jest w Vitanaland. Pozostałe osoby nic o tym nie wiedzą.",
+        "notNow": "Nie teraz",
+        "continue": "Dalej"
+      }
+    },
+    "requested": {
+      "hint": "Przychodzisz z kalendarza. Stuknij raz, aby połączyć {app}.",
+      "unavailable": "{app} nie jest jeszcze u nas dostępne.",
+      "connect": "Połącz {app}"
     }
   }
 }

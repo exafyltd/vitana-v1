@@ -38,7 +38,15 @@
       "mental": "Mental",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "member": {
+      "welcomeTitle": "Welcome {name}!",
+      "joinedSummary": "{name} just joined the MAXINA longevity community.",
+      "newMember": "New member",
+      "sayHello": "Say hello",
+      "viewProfile": "View profile",
+      "eyebrow": "New in the community"
+    }
   },
   "_pending_review": {}
 }

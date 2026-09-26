@@ -14,6 +14,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -55,6 +56,7 @@ const APP_EMOJI: Record<ConnectedAppId, string> = {
   "outlook-calendar": "🗓️",
   "apple-calendar": "📆",
   "google-contacts": "👥",
+  "outlook-contacts": "📇",
   "iphone-contacts": "📱",
   "android-contacts": "🤖",
 };
@@ -221,8 +223,33 @@ export function MailCalendarContactsPanel({ className = "" }: { className?: stri
     );
   }
 
+  // VTID-04536: the calendar's "Connect Google / Apple / Outlook" buttons land
+  // here with ?connect=<app>. One tap starts this panel's own connect flow —
+  // a tap, not an automatic redirect, because the Android app shell only
+  // opens the provider's page from a user gesture.
+  const requested = byId.get(new URLSearchParams(window.location.search).get("connect") as ConnectedAppId);
+
   return (
     <div className={`space-y-5 ${className}`} data-testid="mailhub-panel">
+      {requested && requested.status !== "on" && (
+        <div className="flex flex-col gap-3 rounded-2xl border-2 border-primary bg-card p-4" data-testid="mailhub-requested">
+          <div className="text-sm">
+            {requested.availability === "ready"
+              ? t("mailhub.requested.hint", { app: t(`mailhub.apps.${requested.id}.name`) })
+              : t("mailhub.requested.unavailable", { app: t(`mailhub.apps.${requested.id}.name`) })}
+          </div>
+          {requested.availability === "ready" && (
+            <Button
+              className="self-start"
+              disabled={busy?.id === requested.id}
+              onClick={() => onToggle(requested, true)}
+              data-testid="mailhub-requested-connect"
+            >
+              {t("mailhub.requested.connect", { app: t(`mailhub.apps.${requested.id}.name`) })}
+            </Button>
+          )}
+        </div>
+      )}
       <p className="text-sm text-muted-foreground">{t("mailhub.intro")}</p>
       {(Object.keys(APP_ORDER) as AppKind[]).map((kind) => (
         <section key={kind} aria-labelledby={`mailhub-${kind}`} className="space-y-2">

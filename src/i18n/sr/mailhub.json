@@ -9,15 +9,24 @@
     "apps": {
       "gmail": {
         "name": "Gmail",
-        "what": "Vitana čita i piše mejlove za tebe"
+        "what": "Vitana čita i piše mejlove za tebe",
+        "_pending_review": {
+          "name": true
+        }
       },
       "outlook-mail": {
         "name": "Outlook Mail",
-        "what": "Čitaj Microsoft sanduče i šalji mejlove"
+        "what": "Čitaj Microsoft sanduče i šalji mejlove",
+        "_pending_review": {
+          "name": true
+        }
       },
       "apple-mail": {
         "name": "Apple Mail (iCloud)",
-        "what": "Čitaj nove mejlove u iCloud sandučetu"
+        "what": "Čitaj iCloud sanduče i šalji mejlove sa svoje iCloud adrese",
+        "_pending_review": {
+          "name": true
+        }
       },
       "google-calendar": {
         "name": "Google kalendar",
@@ -25,11 +34,15 @@
       },
       "outlook-calendar": {
         "name": "Outlook kalendar",
-        "what": "Vidi termine i prikaži zauzeta vremena u kalendaru"
+        "what": "Vidi i dodaj termine, usklađene sa Vitanalandom"
+      },
+      "outlook-contacts": {
+        "name": "Outlook kontakti",
+        "what": "Prenesi svoje Outlook kontakte u Vitanaland"
       },
       "apple-calendar": {
         "name": "Apple kalendar (iCloud)",
-        "what": "Vidi termine i prikaži zauzeta vremena u kalendaru"
+        "what": "Vidi i dodaj termine, usklađene sa Vitanalandom"
       },
       "google-contacts": {
         "name": "Google kontakti",
@@ -85,12 +98,15 @@
       "step3": "Unesi ovde svoj Apple ID i novu lozinku.",
       "appleId": "Apple ID (imejl)",
       "appPassword": "Lozinka za aplikaciju",
-      "privacy": "Lozinku čuvamo šifrovanu i koristimo je samo za čitanje. Možeš je bilo kad opozvati kod Apple-a.",
+      "privacy": "Lozinku čuvamo šifrovanu. Vitana je koristi da čita tvoju poštu, kalendar i kontakte, da šalje mejlove kad to zatražiš i da ažurira tvoj kalendar „Vitanaland“. Možeš je bilo kad opozvati kod Apple-a.",
       "connect": "Poveži",
       "checking": "Proverava se …",
       "wrongPassword": "Apple je odbio prijavu — proveri svoj Apple ID i lozinku za aplikaciju",
       "unreachable": "iCloud trenutno nije dostupan — pokušaj ponovo za trenutak",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
+      "_pending_review": {
+        "passwordPlaceholder": true
+      }
     },
     "android": {
       "title": "Otvori na svom Android telefonu",
@@ -100,7 +116,7 @@
       "title": "Isključiti {app}?",
       "body": {
         "mail": "Vitana više neće čitati ni slati mejlove preko ove aplikacije.",
-        "calendar": "Zauzeta vremena iz ovog kalendara nestaju iz tvog Vitanaland kalendara.",
+        "calendar": "Zauzeta vremena iz ovog kalendara nestaju iz tvog Vitanaland kalendara. Kalendar „Vitanaland“ ostaje na tvom nalogu — tamo ga možeš obrisati.",
         "contacts": "Novi kontakti se više neće prenositi. Već preneti kontakti ostaju, osim ako ih ovde ukloniš."
       },
       "removeContacts": "Ukloni i prenete kontakte iz Vitanalanda"
@@ -108,6 +124,67 @@
     "errors": {
       "sessionExpired": "Tvoja sesija je istekla. Prijavi se ponovo da upravljaš aplikacijama.",
       "loadFailed": "Tvoje aplikacije trenutno nisu mogle da se učitaju. Pokušaj ponovo za trenutak."
+    },
+    "findFriends": {
+      "status": {
+        "on": "Povezano — proveravamo sada",
+        "off": "Prvo uključi u „Povezanim aplikacijama“",
+        "phone": "Izaberi kontakte na telefonu",
+        "phoneUnavailable": "Samo u Chrome-u na Androidu"
+      },
+      "connect": {
+        "title": "{app} još nije povezan",
+        "body": "Uključi {app} jednom u „Povezanim aplikacijama“. Posle toga ovde nalaziš prijatelje jednim dodirom.",
+        "open": "Otvori Povezane aplikacije"
+      },
+      "progress": {
+        "reading": "Čitamo tvoje kontakte …",
+        "matching": "Gledamo ko je već na Vitanalandu …"
+      },
+      "errors": {
+        "oauth_failed": {
+          "title": "Povezivanje nije uspelo",
+          "body": "Tvoj nalog trenutno nije dostupan. Pokušaj ponovo za trenutak ili ga ponovo poveži u „Povezanim aplikacijama“."
+        },
+        "api_unavailable": {
+          "title": "Nije moguće na ovom uređaju",
+          "body": "Tvoj pregledač ne može da otvori imenik. Otvori Vitanaland u Chrome-u na Android telefonu ili poveži Google ili iCloud."
+        },
+        "permission_denied": {
+          "title": "Nema pristupa kontaktima",
+          "body": "Dozvoli Vitanalandu pristup kontaktima u podešavanjima telefona."
+        },
+        "rate_limited": {
+          "title": "Previše pokušaja",
+          "body": "Sačekaj malo pa pokušaj ponovo."
+        },
+        "cancelled": {
+          "title": "Nisi izabrao kontakte",
+          "body": "Dodirni ponovo i izaberi kontakte koje želiš da preneseš."
+        },
+        "unknown": {
+          "title": "Nešto nije u redu",
+          "body": "Pokušaj ponovo za trenutak."
+        }
+      },
+      "consent": {
+        "title": "Ovako postupamo s tvojim kontaktima",
+        "subtitle": "Pre nego što potražiš prijatelje",
+        "noAutoTitle": "Nikome ne pišemo sami od sebe",
+        "noAutoBody": "Ti odlučuješ koga kontaktiraš i kada.",
+        "privateTitle": "Vidljivo samo tebi",
+        "privateBody": "Kontakti koje preneseš čuvaju se na tvom Vitanaland nalogu. Samo ih ti vidiš.",
+        "removeTitle": "Obriši ih kad god želiš",
+        "removeBody": "U „Povezanim aplikacijama“ možeš isključiti izvor i ukloniti njegove kontakte.",
+        "helper": "Upoređujemo imejl adrese da bismo pokazali ko je već na Vitanalandu. Oni koji nisu nikada to ne saznaju.",
+        "notNow": "Ne sada",
+        "continue": "Nastavi"
+      }
+    },
+    "requested": {
+      "hint": "Došao si iz kalendara. Dodirni jednom da povežeš {app}.",
+      "unavailable": "{app} još nije dostupan kod nas.",
+      "connect": "Poveži {app}"
     }
   }
 }

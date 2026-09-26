@@ -3,9 +3,8 @@ import { PenSquare, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
-import { syncDiaryToIndex } from "@/lib/diary-index-sync";
+import { saveDiaryEntry } from "@/lib/memory-api";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface TextDiaryEditorProps {
@@ -26,25 +25,10 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
 
     setIsSaving(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
       const savedText = text.trim();
-      const { error } = await supabase
-        .from('diary_entries')
-        .insert({
-          user_id: user.id,
-          text: savedText,
-          source: 'text',
-          tags: ['diary', 'text']
-        });
-
-      if (error) throw error;
-
-      // VTID-01983: fire-and-forget Index sync. Runs the deployed
-      // diary-health extractor on raw_text and recomputes the Index.
-      // Awaited (not background) so we can surface deltas in the toast.
-      const sync = await syncDiaryToIndex(savedText);
+      // VTID-04390: one diary write path — diary row, memory episode and the
+      // Vitana Index sync (VTID-01983) in a single gateway call.
+      const { index: sync } = await saveDiaryEntry({ text: savedText, source: 'text', tags: ['diary', 'text'] });
       const moved = sync?.index_delta?.total ?? 0;
       if (sync && moved > 0) {
         const { formatIndexDelta } = await import('@/lib/diary-index-sync');

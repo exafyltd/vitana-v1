@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { LifeCompassPopup } from "@/components/memory/LifeCompassPopup";
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 interface LifeCompassPopupContextValue {
   open: boolean;
@@ -28,11 +29,7 @@ export function LifeCompassPopupProvider({ children }: LifeCompassPopupProviderP
   const closePopup = useCallback(() => setOpen(false), []);
 
   // Listen for global requests to open the popup (e.g. voice commands).
-  useEffect(() => {
-    const handler = () => setOpen(true);
-    window.addEventListener(LIFE_COMPASS_OPEN_EVENT, handler);
-    return () => window.removeEventListener(LIFE_COMPASS_OPEN_EVENT, handler);
-  }, []);
+  useWindowOverlay(LIFE_COMPASS_OPEN_EVENT, () => setOpen(true));
 
   // Android hardware back button (and browser back) should close the popup
   // instead of leaving the current screen. We do this by pushing a lightweight

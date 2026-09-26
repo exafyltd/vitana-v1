@@ -112,7 +112,21 @@
       "newActionReason": "بناءً على أنماط النشاط الأخيرة",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "draft": {
+      "titlePost": "منشورك – مسودة",
+      "titleMessage": "رسالتك – مسودة",
+      "titleCaption": "تعليقك – مسودة",
+      "hint": "أعدّت فيتانا مسودة. عدّلها كما تشاء – لا يُرسل شيء بدونك.",
+      "loading": "جارٍ كتابة المسودة …",
+      "failed": "لا توجد مسودة الآن – اكتب نصك بنفسك.",
+      "regenerate": "اقتراح جديد",
+      "skip": "تخطٍّ",
+      "confirmPost": "افتح في المنشور",
+      "confirmMessage": "أرسل الرسالة",
+      "confirmCaption": "انتقل إلى الرفع",
+      "placeholder": "اكتب هنا …"
+    }
   },
   "_pending_review": {}
 }

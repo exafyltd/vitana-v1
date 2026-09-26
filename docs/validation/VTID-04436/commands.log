@@ -1,0 +1,4 @@
+node scripts/i18n-register-check.mjs --all                        # no formal-register violations
+npx vitest run src/components/settings/connected-apps src/i18n     # 3 files, 20 passed
+npm run i18n:inventory                                            # regenerated
+npx vite --host 127.0.0.1 --port 8080 & node docs/validation/VTID-04436/outputs/verify-connected-apps.cjs docs/validation/VTID-04436/outputs   # hscroll 0 x3

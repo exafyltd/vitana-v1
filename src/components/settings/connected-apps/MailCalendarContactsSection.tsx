@@ -14,7 +14,9 @@ import { fetchConnectedApps, readGrantReturn } from "@/lib/connected-apps-client
 import { CONNECTED_APPS_QUERY_KEY, MailCalendarContactsPanel } from "./MailCalendarContactsPanel";
 
 export function MailCalendarContactsSection({ title, defaultExpanded = false }: { title: string; defaultExpanded?: boolean }) {
-  const [open, setOpen] = useState(() => defaultExpanded || !!readGrantReturn(window.location.search).app);
+  const [open, setOpen] = useState(
+    () => defaultExpanded || !!readGrantReturn(window.location.search).app || new URLSearchParams(window.location.search).has("connect"),
+  );
   const apps = useQuery({ queryKey: CONNECTED_APPS_QUERY_KEY, queryFn: fetchConnectedApps, staleTime: 15_000 });
   const on = (apps.data ?? []).filter((a) => a.status === "on").length;
   const total = apps.data?.length ?? 9;

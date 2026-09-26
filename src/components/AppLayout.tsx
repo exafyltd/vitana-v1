@@ -24,6 +24,7 @@ import { DesktopVitanaIndexChip } from "@/components/health/DesktopVitanaIndexCh
 import { VitanaIndexSheet } from "@/components/health/VitanaIndexSheet";
 import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatcher";
 import { InviteSheet } from "@/components/InviteSheet";
+import { InviteClaimer } from "@/components/InviteClaimer";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation, getVisibleBackOfficeNavigation } from "@/config/role-navigation";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
@@ -52,6 +53,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
 import PublicAppShell from "@/components/PublicAppShell";
+import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -447,6 +449,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
 function AuthedAppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
+  // VTID-04520: Vitana can open the wallet popup by voice ("show my balance").
+  useWindowOverlay('wallet:open', () => setWalletPopupOpen(true));
   const isMobile = useIsMobile();
   // VTID-03279: Guided Mode hides sidebar/menu. `isGuided` is mobile-only (the
   // provider forces Full chrome on desktop), so the desktop sidebar always shows.
@@ -559,6 +563,7 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
       <VitanaIndexSheet />
       <VitanaIndexLiftWatcher />
       <InviteSheet />
+      <InviteClaimer />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}

@@ -48,6 +48,7 @@ import {
 import { isFeedV2Enabled } from "@/lib/feature-flags";
 import { useAllNewsFeed } from "@/hooks/useAllNewsFeed";
 import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
+import { NewMemberCard } from "@/components/home/NewMemberCard";
 import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
@@ -99,15 +100,20 @@ export default function Home() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
   const [createPostOpen, setCreatePostOpen] = useState(false);
+  const [composeDraft, setComposeDraft] = useState<string | undefined>(undefined);
   // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
   // so a feed card can open the composer directly instead of only the header
   // button. Strips the param right after opening so back/refresh doesn't
   // reopen it.
   useEffect(() => {
     if (searchParams.get("compose") !== "1") return;
+    // VTID-04504: an Autopilot draft the member reviewed rides along as ?draft=.
+    const draft = searchParams.get("draft");
+    if (draft) setComposeDraft(draft);
     setCreatePostOpen(true);
     const next = new URLSearchParams(searchParams);
     next.delete("compose");
+    next.delete("draft");
     setSearchParams(next, { replace: true });
   }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
@@ -446,6 +452,19 @@ export default function Home() {
       {visibleArticles.length > 0 && (
         <div className="md:hidden flex flex-col gap-3 mt-2">
           {visibleArticles.map((article) => {
+            if (article.member_user_id) {
+              return (
+                <NewMemberCard
+                  key={article.id}
+                  userId={article.member_user_id}
+                  title={article.title}
+                  summary={article.summary}
+                  avatarUrl={article.image_url}
+                  displayInitial={(article.member_display_name || "?").charAt(0).toUpperCase()}
+                  timestamp={formatTimestamp(article.published_at)}
+                />
+              );
+            }
             const { primary, fallback } = getCardImages(article);
             return (
               <NewsArticleCard
@@ -469,6 +488,19 @@ export default function Home() {
       {visibleArticles.length > 0 && (
         <div className="hidden md:grid md:grid-cols-3 gap-5 mt-5">
           {visibleArticles.map((article) => {
+            if (article.member_user_id) {
+              return (
+                <NewMemberCard
+                  key={article.id}
+                  userId={article.member_user_id}
+                  title={article.title}
+                  summary={article.summary}
+                  avatarUrl={article.image_url}
+                  displayInitial={(article.member_display_name || "?").charAt(0).toUpperCase()}
+                  timestamp={formatTimestamp(article.published_at)}
+                />
+              );
+            }
             const { primary, fallback } = getCardImages(article);
             return (
               <NewsArticleCard
@@ -571,7 +603,11 @@ export default function Home() {
       {isMobile ? (
         <MobileCreatePostSheet open={createPostOpen} onOpenChange={setCreatePostOpen} />
       ) : (
-        <CreateContentPopup isOpen={createPostOpen} onClose={() => setCreatePostOpen(false)} />
+        <CreateContentPopup
+          isOpen={createPostOpen}
+          initialContent={composeDraft}
+          onClose={() => { setCreatePostOpen(false); setComposeDraft(undefined); }}
+        />
       )}
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </AppLayout>

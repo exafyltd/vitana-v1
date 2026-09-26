@@ -13,8 +13,8 @@
  *   POST /api/v1/connected-apps/android-contacts/import
  */
 
-import { supabase } from "@/integrations/supabase/client";
 import { GATEWAY_BASE } from "@/lib/gateway-base";
+import { getAccessToken } from "@/lib/cached-access-token";
 
 export type ConnectedAppId =
   | "gmail"
@@ -22,6 +22,7 @@ export type ConnectedAppId =
   | "google-contacts"
   | "outlook-mail"
   | "outlook-calendar"
+  | "outlook-contacts"
   | "apple-mail"
   | "apple-calendar"
   | "iphone-contacts"
@@ -53,8 +54,9 @@ export class ConnectedAppsError extends Error {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- JSON bodies, narrowed by each caller below
 async function call(path: string, init: RequestInit = {}): Promise<any> {
-  const { data } = await supabase.auth.getSession();
-  const token = data.session?.access_token;
+  // VTID-04536: the in-memory token, not getSession() — that queues on the
+  // auth lock behind every other request fired when a screen opens.
+  const token = await getAccessToken();
   const resp = await fetch(`${GATEWAY_BASE}/api/v1/connected-apps${path}`, {
     ...init,
     headers: {
@@ -125,7 +127,7 @@ export async function pickDeviceContacts(): Promise<PickedContact[]> {
 export const APP_ORDER: Record<AppKind, ConnectedAppId[]> = {
   mail: ["gmail", "outlook-mail", "apple-mail"],
   calendar: ["google-calendar", "outlook-calendar", "apple-calendar"],
-  contacts: ["google-contacts", "iphone-contacts", "android-contacts"],
+  contacts: ["google-contacts", "outlook-contacts", "iphone-contacts", "android-contacts"],
 };
 
 /** The OAuth callback lands on …/settings/connected-apps?app=<id>&connected=<provider>. */

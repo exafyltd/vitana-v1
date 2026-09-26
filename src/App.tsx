@@ -103,6 +103,8 @@ const OnboardingWelcome = lazy(() => import("./pages/onboarding/OnboardingWelcom
 // Portal pages
 const ExafyAdminPortal = lazy(() => import("./pages/portals/ExafyAdminPortal"));
 const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
+// VTID-04508: personal invite links
+const InviteLanding = lazy(() => import("./pages/InviteLanding"));
 const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
 const EarthlinksPortal = lazy(() => import("./pages/portals/EarthlinksPortal"));
 // CommunityPortal removed — orphaned, login handled by tenant portals
@@ -865,6 +867,7 @@ const App = () => {
               other portal entry points above. Hands off to /commerce. */}
           <Route path="/commerce-login" element={<CommercePortalLogin />} />
           <Route path="/maxina" element={<MaxinaPortal />} />
+          <Route path="/i/:code" element={<InviteLanding />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
           <Route path="/earthlinks" element={<EarthlinksPortal />} />
           {/* /community removed — orphaned, login handled by tenant portals */}

@@ -21,6 +21,7 @@ import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { VitanaRecommendationCard } from "@/components/vitana/VitanaRecommendationCard";
 import { FeatureAnnouncementCard } from "@/components/home/FeatureAnnouncementCard";
+import { NewMemberCard } from "@/components/home/NewMemberCard";
 
 function timeAgo(iso: string): string {
   try {
@@ -75,6 +76,21 @@ export function NewsFeedItemCard({
         featureTitle={item.feature_title}
         description={item.description}
         deepLink={item.deep_link}
+        onOpen={() => onOpen?.(item)}
+      />
+    );
+  }
+
+  if (item.kind === "new_member") {
+    const name = item.display_name || t("newsCard.member.newMember");
+    return (
+      <NewMemberCard
+        userId={item.user_id}
+        title={t("newsCard.member.welcomeTitle", { name })}
+        summary={item.bio || t("newsCard.member.joinedSummary", { name })}
+        avatarUrl={item.avatar_url}
+        displayInitial={name.charAt(0).toUpperCase()}
+        timestamp={timeAgo(item.published_at)}
         onOpen={() => onOpen?.(item)}
       />
     );

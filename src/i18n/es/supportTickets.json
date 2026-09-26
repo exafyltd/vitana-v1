@@ -132,7 +132,10 @@
         "merging": "Fusionando",
         "deploying": "Desplegando",
         "verifying": "Verificando",
-        "completed": "Completado"
+        "completed": "Completado",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "antes de poder empezar",
@@ -198,7 +201,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev Autopilot está procesando la ejecución {execution} — de forma autónoma a partir de aquí.",
         "rolledBackTitle": "{ticket} revertido",
         "rolledBackDesc": "PR de reversión #{number}. El ticket se ha reabierto.",
-        "rolledBackDescNoNumber": "PR de reversión creado. El ticket se ha reabierto."
+        "rolledBackDescNoNumber": "PR de reversión creado. El ticket se ha reabierto.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "Este ticket ya se está ejecutando en Dev Autopilot. La reclasificación se bloquea una vez enviado.",

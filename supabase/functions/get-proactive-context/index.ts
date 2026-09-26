@@ -1,3 +1,4 @@
+import { fetchPersonalMemory, byConfidence } from '../_shared/personal-memory.ts';
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
@@ -108,27 +109,19 @@ serve(async (req) => {
         .select('*')
         .eq('user_id', userId)
         .maybeSingle(),
-      supabaseClient
-        .from('ai_memory')
-        .select('content, memory_type, confidence_score, created_at')
-        .eq('user_id', userId)
-        .eq('is_active', true)
-        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
-        .order('confidence_score', { ascending: false })
-        .limit(10),
+      // VTID-04453: personal memory from memory_items (was ai_memory).
+      fetchPersonalMemory(supabaseClient, userId, {
+        limit: 50,
+        sinceIso: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      }).then(r => ({ data: byConfidence(r.data).slice(0, 10), error: r.error })),
       supabaseClient
         .from('user_interests')
         .select('interest, category, strength')
         .eq('user_id', userId)
         .order('strength', { ascending: false })
         .limit(10),
-      supabaseClient
-        .from('autopilot_actions')
-        .select('title, category, priority, status, created_at')
-        .eq('user_id', userId)
-        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
-        .order('created_at', { ascending: false })
-        .limit(5),
+      // autopilot_actions was never written and is dropped by VTID-04514.
+      Promise.resolve({ data: [] as Array<{ title: string; category: string; priority: string; status: string; created_at: string }>, error: null }),
       supabaseClient
         .from('calendar_events')
         .select('title, start_time, event_type')

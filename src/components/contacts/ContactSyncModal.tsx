@@ -7,14 +7,17 @@ import { ContactSourcePicker, ContactSource } from "./ContactSourcePicker";
 import { DedupePreviewList, MatchedContact, ImportedContact } from "./DedupePreviewList";
 import { InviteComposer } from "./InviteComposer";
 import { SyncSuccessScreen } from "./SyncSuccessScreen";
-import { ContactSyncErrorState } from "./ContactSyncErrorState";
+import { ContactSyncErrorState, type ContactSyncErrorType } from "./ContactSyncErrorState";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useContactSync } from "@/hooks/useContactSync";
+import { useContactSync, ConnectAppFirst } from "@/hooks/useContactSync";
+import { fetchConnectedApps, type ConnectedAppId } from "@/lib/connected-apps-client";
+import { useNavigate } from "react-router-dom";
+import { Link2 } from "lucide-react";
 import { Contact } from "@/hooks/useContacts";
 import { t } from '@/lib/i18n-toast';
 
-type SyncStep = "consent" | "sources" | "syncing" | "preview" | "invite" | "success" | "error";
+type SyncStep = "consent" | "sources" | "syncing" | "preview" | "invite" | "success" | "error" | "connect";
 
 interface ContactSyncModalProps {
   open: boolean;
@@ -34,9 +37,13 @@ export function ContactSyncModal({
   const [syncProgress, setSyncProgress] = useState(0);
   const [matches, setMatches] = useState<MatchedContact[]>([]);
   const [nonMatches, setNonMatches] = useState<ImportedContact[]>([]);
+  // True totals: the match lists only preview the first rows of a large import.
+  const [totals, setTotals] = useState({ imported: 0, matches: 0 });
   const [selectedForInvite, setSelectedForInvite] = useState<string[]>([]);
-  const [errorType, setErrorType] = useState<"oauth_failed" | "api_unavailable" | "permission_denied" | "rate_limited" | "unknown">("unknown");
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorType, setErrorType] = useState<ContactSyncErrorType>("unknown");
+  const [connectApp, setConnectApp] = useState<ConnectedAppId | null>(null);
+  const [connectedSources, setConnectedSources] = useState<ContactSource[]>([]);
+  const navigate = useNavigate();
 
   const { hasConsented, recordConsent, syncContacts, isSyncing } = useContactSync();
 
@@ -49,6 +56,18 @@ export function ContactSyncModal({
       setMatches([]);
       setNonMatches([]);
       setSelectedForInvite([]);
+      setConnectApp(null);
+      // Which of Google / Outlook / iCloud are already on in Connected Apps (VTID-04440, VTID-04449).
+      fetchConnectedApps()
+        .then((apps) => {
+          const on = new Set(apps.filter((a) => a.status === "on").map((a) => a.id));
+          setConnectedSources([
+            ...(on.has("google-contacts") ? (["google"] as ContactSource[]) : []),
+            ...(on.has("outlook-contacts") ? (["outlook"] as ContactSource[]) : []),
+            ...(on.has("iphone-contacts") ? (["icloud"] as ContactSource[]) : []),
+          ]);
+        })
+        .catch(() => setConnectedSources([]));
     }
   }, [open, hasConsented]);
 
@@ -75,12 +94,13 @@ export function ContactSyncModal({
     setStep("syncing");
     setSyncProgress(0);
 
-    try {
-      // Simulate progress for UX
-      const progressInterval = setInterval(() => {
-        setSyncProgress(prev => Math.min(prev + 10, 90));
-      }, 300);
+    // Simulate progress for UX. Cleared in `finally` so a failed sync (e.g.
+    // ConnectAppFirst) cannot leave it ticking state updates forever.
+    const progressInterval = setInterval(() => {
+      setSyncProgress(prev => Math.min(prev + 10, 90));
+    }, 300);
 
+    try {
       const result = await syncContacts(selectedSources);
 
       clearInterval(progressInterval);
@@ -89,33 +109,36 @@ export function ContactSyncModal({
       // Transform results
       setMatches(result.matches || []);
       setNonMatches(result.nonMatches || []);
+      const totalImported = result.totalImported ?? (result.matches?.length || 0) + (result.nonMatches?.length || 0);
+      const totalMatches = result.totalMatches ?? (result.matches?.length || 0);
+      setTotals({ imported: totalImported, matches: totalMatches });
 
       // Short delay before showing results
       setTimeout(() => {
         setStep("success");
         onComplete?.({
-          totalImported: (result.matches?.length || 0) + (result.nonMatches?.length || 0),
-          matchesFound: result.matches?.length || 0,
+          totalImported,
+          matchesFound: totalMatches,
         });
       }, 500);
     } catch (error) {
       console.error("Sync error:", error);
-      
-      // Determine error type
-      if (error instanceof Error) {
-        if (error.message.includes("permission")) {
-          setErrorType("permission_denied");
-        } else if (error.message.includes("rate")) {
-          setErrorType("rate_limited");
-        } else if (error.message.includes("oauth") || error.message.includes("auth")) {
-          setErrorType("oauth_failed");
-        } else {
-          setErrorType("unknown");
-        }
-        setErrorMessage(error.message);
+      if (error instanceof ConnectAppFirst) {
+        setConnectApp(error.app);
+        setStep("connect");
+        return;
       }
-      
+      const msg = error instanceof Error ? error.message : "";
+      let type: ContactSyncErrorType = "unknown";
+      if (/cancelled/i.test(msg)) type = "cancelled";
+      else if (/Contact Picker API not available/i.test(msg)) type = "api_unavailable";
+      else if (/permission/i.test(msg)) type = "permission_denied";
+      else if (/rate|429/i.test(msg)) type = "rate_limited";
+      else if (/oauth|auth|not_connected/i.test(msg)) type = "oauth_failed";
+      setErrorType(type);
       setStep("error");
+    } finally {
+      clearInterval(progressInterval);
     }
   };
 
@@ -141,7 +164,6 @@ export function ContactSyncModal({
   const handleRetry = () => {
     setStep("sources");
     setErrorType("unknown");
-    setErrorMessage(undefined);
   };
 
   const renderStep = () => {
@@ -168,14 +190,16 @@ export function ContactSyncModal({
             <ContactSourcePicker
               selectedSources={selectedSources}
               onSourceToggle={handleSourceToggle}
+              connectedSources={connectedSources}
             />
 
             <Button
+              data-testid="find-friends-start"
               onClick={handleStartSync}
               disabled={selectedSources.length === 0}
               className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
             >
-              <Users className="w-4 h-4 mr-2" />
+              <Users className="w-4 h-4 me-2" />
               {t('screens.contacts.findFriends')}
             </Button>
           </div>
@@ -204,7 +228,7 @@ export function ContactSyncModal({
             <div className="max-w-xs mx-auto space-y-2">
               <Progress value={syncProgress} className="h-2" />
               <p className="text-xs text-muted-foreground">
-                {syncProgress < 50 ? "Hashing contacts locally..." : "Checking for matches..."}
+                {t(syncProgress < 50 ? "mailhub.findFriends.progress.reading" : "mailhub.findFriends.progress.matching")}
               </p>
             </div>
           </div>
@@ -230,7 +254,7 @@ export function ContactSyncModal({
           </div>
         );
 
-      case "invite":
+      case "invite": {
         const contactsToInvite = nonMatches
           .filter(c => selectedForInvite.includes(c.id))
           .map(c => ({
@@ -251,13 +275,14 @@ export function ContactSyncModal({
             onCancel={() => setStep("preview")}
           />
         );
+      }
 
       case "success":
         return (
           <SyncSuccessScreen
-            totalImported={matches.length + nonMatches.length}
-            matchesFound={matches.length}
-            newContacts={nonMatches.length}
+            totalImported={totals.imported}
+            matchesFound={totals.matches}
+            newContacts={Math.max(totals.imported - totals.matches, 0)}
             onViewMatches={handleViewMatches}
             onInviteFriends={handleInviteFriends}
             onClose={() => onOpenChange(false)}
@@ -268,11 +293,40 @@ export function ContactSyncModal({
         return (
           <ContactSyncErrorState
             errorType={errorType}
-            message={errorMessage}
             onRetry={handleRetry}
             onBack={() => setStep("sources")}
           />
         );
+
+      case "connect": {
+        const app = connectApp ? t(`mailhub.apps.${connectApp}.name`) : "";
+        return (
+          <div className="text-center space-y-5 py-4">
+            <div className="w-16 h-16 mx-auto rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
+              <Link2 className="w-8 h-8 text-[hsl(var(--contact-sync-accent))]" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">{t("mailhub.findFriends.connect.title", { app })}</h3>
+              <p className="text-sm text-muted-foreground max-w-sm mx-auto">{t("mailhub.findFriends.connect.body", { app })}</p>
+            </div>
+            <div className="space-y-2">
+              <Button
+                data-testid="find-friends-open-connected-apps"
+                onClick={() => {
+                  onOpenChange(false);
+                  navigate("/connectors");
+                }}
+                className="w-full min-h-11 bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
+              >
+                {t("mailhub.findFriends.connect.open")}
+              </Button>
+              <Button variant="ghost" onClick={() => setStep("sources")} className="w-full min-h-11 text-muted-foreground">
+                {t("screens.contacts.goBack")}
+              </Button>
+            </div>
+          </div>
+        );
+      }
 
       default:
         return null;

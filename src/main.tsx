@@ -15,6 +15,9 @@ import { initRum } from './lib/rum'
 initRum()
 import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
+// VTID-04532: start holding the access token from the first auth event, so
+// the first screen that needs it does not queue on the auth lock.
+import './lib/cached-access-token'
 import { ProfileProvider } from './context/ProfileProvider'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { OfflineProvider } from './context/OfflineProvider'

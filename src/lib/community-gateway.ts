@@ -1,12 +1,13 @@
-import { supabase } from "@/integrations/supabase/client";
 import { GATEWAY_BASE } from "@/lib/gateway-base";
+import { getAccessToken } from "@/lib/cached-access-token";
 
 // VTID-04335: the old fallback was the deleted GCP Cloud Run gateway.
 export const COMMUNITY_GATEWAY = GATEWAY_BASE;
 
 export async function communityFetch(path: string, options?: RequestInit): Promise<Response> {
-  const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token;
+  // VTID-04536: the in-memory token (see cached-access-token.ts), not
+  // getSession(), which waits on the auth lock when a screen opens.
+  const token = await getAccessToken();
   if (!token) throw new Error("Not authenticated");
 
   const headers: Record<string, string> = {

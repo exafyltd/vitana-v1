@@ -41,16 +41,6 @@ export default function ContactListItem({
     ? contact.contact_profile.avatar_url
     : undefined;
 
-  // Debug logging
-  if (contact.is_on_platform) {
-    console.log("🎨 ContactListItem render:", {
-      name: displayName,
-      has_profile: !!contact.contact_profile,
-      avatar_url: avatarUrl,
-      is_on_platform: contact.is_on_platform
-    });
-  }
-
   const contactInfo = contact.contact_phone || contact.contact_email;
 
   return (
@@ -67,9 +57,10 @@ export default function ContactListItem({
           <div className="flex items-center gap-2 mb-1">
             <h4 className="text-sm font-medium truncate">{displayName}</h4>
             {contact.is_on_platform && (
-              <Badge variant="secondary" className="text-xs flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3" />
-                {t('screens.contacts.vitana')}
+              <Badge variant="secondary" title={t('screens.contacts.vitana')} className="text-xs flex items-center shrink-0 px-1.5">
+                <CheckCircle2 className="w-3 h-3" aria-hidden />
+                {/* VTID-04440: icon only — the section header already says "On Vitana", and the name needs the room. */}
+                <span className="sr-only">{t('screens.contacts.vitana')}</span>
               </Badge>
             )}
           </div>
@@ -81,15 +72,16 @@ export default function ContactListItem({
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {variant === "on-platform" && onMessage && contact.contact_user_id && (
             <Button
               size="sm"
               onClick={() => onMessage(contact.contact_user_id!)}
-              className="flex items-center gap-2"
+              aria-label={t('screens.contacts.message')}
+              className="flex items-center gap-2 h-10 min-w-10 px-2.5 sm:px-3"
             >
-              <MessageSquare className="w-4 h-4" />
-              {t('screens.contacts.message')}
+              <MessageSquare className="w-4 h-4" aria-hidden />
+              <span className="sr-only sm:not-sr-only">{t('screens.contacts.message')}</span>
             </Button>
           )}
 
@@ -99,10 +91,12 @@ export default function ContactListItem({
               variant="outline"
               onClick={() => onInvite(contact.id)}
               disabled={!!contact.invite_sent_at}
-              className="flex items-center gap-2"
+              aria-label={t('screens.contacts.invite')}
+              className="flex items-center gap-2 h-10 min-w-10 px-2.5 sm:px-3"
             >
-              <Send className="w-4 h-4" />
-              {contact.invite_sent_at ? "Invited" : "Invite"}
+              <Send className="w-4 h-4 rtl:-scale-x-100" aria-hidden />
+              {/* Was a hardcoded "Invite"/"Invited"; the sent date shows under the name. */}
+              <span className="sr-only sm:not-sr-only">{t('screens.contacts.invite')}</span>
             </Button>
           )}
 
@@ -112,9 +106,10 @@ export default function ContactListItem({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  aria-label={t('screens.contacts.delete')}
+                  className="h-10 w-10 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4" aria-hidden />
                 </Button>
               </ResponsiveConfirmDialogTrigger>
               <ResponsiveConfirmDialogContent>

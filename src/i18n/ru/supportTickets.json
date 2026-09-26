@@ -132,7 +132,10 @@
         "merging": "Слияние",
         "deploying": "Развёртывание",
         "verifying": "Проверка",
-        "completed": "Завершено"
+        "completed": "Завершено",
+        "_pending_review": {
+          "ci": true
+        }
       },
       "failedAt": {
         "cooling": "ещё до старта",
@@ -198,7 +201,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev Autopilot выполняет запуск {execution} — дальше автономно.",
         "rolledBackTitle": "{ticket} откачен",
         "rolledBackDesc": "PR с revert #{number}. Тикет снова открыт.",
-        "rolledBackDescNoNumber": "PR с revert создан. Тикет снова открыт."
+        "rolledBackDescNoNumber": "PR с revert создан. Тикет снова открыт.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "Этот тикет уже выполняется в Dev Autopilot. После отправки переклассификация заблокирована.",

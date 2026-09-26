@@ -13,7 +13,7 @@
  *   recommendation, for example).
  */
 
-import { supabase } from "@/integrations/supabase/client";
+import { getAccessToken } from "@/lib/cached-access-token";
 
 const RAW_GATEWAY = (import.meta.env.VITE_GATEWAY_URL as string | undefined) || "";
 // vitana-v1's .env includes /api/v1 — strip it so paths below stay explicit.
@@ -100,16 +100,16 @@ interface GatewayBody {
 }
 
 async function authedFetch(path: string, role: string | null, init: RequestInit = {}): Promise<GatewayBody> {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session?.access_token) throw new CalendarApiError("NO_AUTH_TOKEN", 401);
+  // VTID-04532: the in-memory token, not getSession() — that waits on the
+  // auth lock behind every other request fired on a screen change.
+  const accessToken = await getAccessToken();
+  if (!accessToken) throw new CalendarApiError("NO_AUTH_TOKEN", 401);
 
   const res = await fetch(`${GATEWAY_BASE}${path}`, {
     ...init,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: `Bearer ${accessToken}`,
       ...(role ? { "X-Vitana-Active-Role": role } : {}),
       ...(init.headers || {}),
     },
@@ -128,6 +128,28 @@ export async function fetchCalendarWindow(from: Date, to: Date, role: string | n
   const items: CalendarWindowItem[] = Array.isArray(body.data) ? (body.data as CalendarWindowItem[]) : [];
   items.sort((a, b) => Date.parse(a.start_time) - Date.parse(b.start_time));
   return { items, timezone: body.timezone ?? null };
+}
+
+/** VTID-04536: what the calendar's "+" form sends. */
+export interface NewCalendarEntry {
+  title: string;
+  start_time: string;
+  end_time: string | null;
+  location?: string | null;
+  event_type: string;
+}
+
+/**
+ * Creates an entry through the gateway (POST /api/v1/calendar/events), the
+ * same path Vitana uses, so the member's default reminders apply and the
+ * entry is written for the active role.
+ */
+export async function createCalendarEntry(input: NewCalendarEntry, role: string | null): Promise<{ id: string }> {
+  const body = await authedFetch("/api/v1/calendar/events", role, {
+    method: "POST",
+    body: JSON.stringify({ ...input, source_type: "manual", status: "confirmed" }),
+  });
+  return { id: String((body.data as { id?: string } | undefined)?.id ?? "") };
 }
 
 export async function completeCalendarEntry(eventId: string, role: string | null): Promise<void> {

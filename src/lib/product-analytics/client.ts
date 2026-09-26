@@ -19,6 +19,7 @@
  *
  * Must NEVER throw — this runs on production user paths.
  */
+import { sendAnonymousBeacon } from "../anon-beacon";
 
 import type {
   AnalyticsConsentState,
@@ -126,8 +127,10 @@ async function postBatch(events: AnalyticsEvent[], useBeacon: boolean): Promise<
   const body = JSON.stringify({ events });
   const url = `${GATEWAY_BASE}${BATCH_PATH}`;
   try {
-    if (useBeacon && typeof navigator !== "undefined" && navigator.sendBeacon) {
-      return navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
+    if (useBeacon) {
+      // VTID-04516: queued keepalive fetch instead of sendBeacon, whose
+      // credentialed CORS preflight the gateway rejects.
+      return sendAnonymousBeacon(url, body);
     }
     const res = await fetch(url, {
       method: "POST",

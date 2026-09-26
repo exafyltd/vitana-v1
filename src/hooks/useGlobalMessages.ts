@@ -1246,6 +1246,10 @@ export function useGlobalMessages(
 
           const profileMap = await enrichProfiles([created.sender_id]);
           realMsg = toGlobalMessage(created, threadId, profileMap);
+          // A DM may be the viewer greeting a new member — refresh both feeds
+          // so that member's "say hello" card drops away (VTID-04590).
+          queryClient.invalidateQueries({ queryKey: ["all-news-feed"] });
+          queryClient.invalidateQueries({ queryKey: ["community-news"] });
           if (isRich) {
             // toGlobalMessage maps metadata→content_data, but be explicit
             // so the local optimistic→real swap preserves the attachment payload

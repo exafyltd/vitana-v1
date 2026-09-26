@@ -7,7 +7,13 @@ import { useState } from "react";
 import { withCardId } from "@/lib/withCardId";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
-import { t } from '@/lib/i18n-toast';
+import { t, notifyError, getI18nLocale } from '@/lib/i18n-toast';
+import { sendCoachMessage } from '@/lib/coach-chat-api';
+
+interface CoachTurn {
+  role: 'user' | 'assistant';
+  text: string;
+}
 
 interface HealthCoachChatProps {
   context?: string;
@@ -26,6 +32,7 @@ function HealthCoachChatBase({
 }: HealthCoachChatProps) {
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [turns, setTurns] = useState<CoachTurn[]>([]);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
 
   const handleSendMessage = async () => {
@@ -39,18 +46,38 @@ function HealthCoachChatBase({
     const userMessage = message.trim();
     onSendMessage?.(userMessage);
     setMessage("");
+    setTurns((prev) => [...prev, { role: 'user', text: userMessage }]);
     setIsTyping(true);
 
     try {
-      // Call the real AI backend
-      const { aiVoiceService } = await import("@/services/aiVoiceService");
-      await aiVoiceService.sendTextMessage(userMessage, 'en-US');
-      setIsTyping(false);
+      // VTID-04448: the gateway conversation API (canonical memory, user's language)
+      const { reply } = await sendCoachMessage(userMessage, getI18nLocale());
+      setTurns((prev) => [...prev, { role: 'assistant', text: reply }]);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error('[health-coach] reply failed:', error);
+      notifyError('screens.health.coachReplyFailed');
+    } finally {
       setIsTyping(false);
     }
   };
+
+  const transcript = turns.length > 0 && (
+    <div className="space-y-2 max-h-72 overflow-y-auto" aria-live="polite" data-testid="health-coach-transcript">
+      {turns.map((turn, index) => (
+        <div
+          key={index}
+          dir="auto"
+          className={
+            turn.role === 'user'
+              ? 'ms-auto max-w-[85%] rounded-lg bg-calendar-primary/10 px-3 py-2 text-sm text-start text-foreground'
+              : 'me-auto max-w-[85%] rounded-lg bg-muted px-3 py-2 text-sm text-start text-foreground whitespace-pre-wrap'
+          }
+        >
+          {turn.text}
+        </div>
+      ))}
+    </div>
+  );
 
   const quickActions = [
     t('screens.ai.coachAction_logSymptoms'),
@@ -103,6 +130,7 @@ function HealthCoachChatBase({
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
+              {transcript}
               <div className="space-y-2 max-h-32 overflow-y-auto">
                 {contextSuggestions[context as keyof typeof contextSuggestions]?.map((suggestion, index) => (
                   <Button
@@ -149,6 +177,7 @@ function HealthCoachChatBase({
             <p className="text-sm text-muted-foreground">{t('screens.health.getPersonalizedHealthGuidance')}</p>
           </div>
         </div>
+        {transcript && <div className="mb-3">{transcript}</div>}
         <div className="flex gap-2">
           <Input
             placeholder={t('screens.health.howCanIHelpWithYour')}
@@ -209,6 +238,7 @@ function HealthCoachChatBase({
         </div>
         
         <div className="space-y-2">
+          {transcript}
           <div className="flex gap-2">
             <Input
               placeholder={t('screens.health.askAboutYourHealthSymptomsGoals')}

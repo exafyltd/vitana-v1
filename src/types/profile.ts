@@ -47,7 +47,15 @@ export type AccountFieldKey =
   | 'myPosts'
   | 'myPosts.commercial'
   // 'myPosts.partnerSeek' is hardcoded private — NOT user-toggleable.
-  | 'derivedAgeBand';
+  | 'derivedAgeBand'
+  // VTID-04483 — share the profile Health tab (Vitana Index categories,
+  // 7-day change, achievements). Health data: private until opted in.
+  // Server: get_profile_health_summary() + gateway FIELD_DEFAULTS.
+  | 'vitanaHealth'
+  // VTID-04489 — the Vitana Index card's "Biggest boost" line (top
+  // activities with counts). Public by the owner's decision: it exists to be
+  // shared and compared. Server: get_index_boost() + gateway FIELD_DEFAULTS.
+  | 'indexBoost';
 
 export type AccountVisibility = Record<AccountFieldKey, FieldVisibility>;
 
@@ -118,6 +126,8 @@ export const DEFAULT_ACCOUNT_VISIBILITY: AccountVisibility = {
   myPosts: 'public',
   'myPosts.commercial': 'public',
   derivedAgeBand: 'connections',
+  vitanaHealth: 'private',
+  indexBoost: 'public',
 };
 
 export interface ServiceOffering {
@@ -234,7 +244,10 @@ export interface UserProfile {
 
   stats: { posts: number; followers: number; following: number; mediaUploads: number; groupsJoined: number };
   vitanaIndex?: number;          // 0–999; present only if healthShareConsent=true
-  vitanaPercentile?: number;     // optional for drawer
+  /** Rank among members (0-100, lower = better). Set ONLY from a real
+   *  community ranking — none exists for the Index today, so leave it unset.
+   *  Never derive it from the score (score/999 is not a percentile). VTID-04470 */
+  vitanaPercentile?: number;
   longevityArchetype?: string;   // e.g., "The Mindful Mover"
 
   offerings?: ServiceOffering[]; // public shows when ≥1 published
