@@ -12,11 +12,10 @@ import { test, expect } from './staging-guard';
 // gateway, never production). The guard aborts both (nothing is written);
 // declaring them keeps the test honest about everything else. Any OTHER
 // aborted write, or any request to a production host, fails.
+// One RegExp, alternated with | — an array of two RegExps is read by Playwright
+// as a [value, options] fixture tuple (see the guard's header).
 test.use({
-  allowAbortedWrites: [
-    / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/rum\/beacon/,
-    / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/diag\/notif-tap/,
-  ],
+  allowAbortedWrites: / https:\/\/preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap)/,
 });
 
 test('the pre-login landing renders with no uncaught errors', async ({ page }) => {
