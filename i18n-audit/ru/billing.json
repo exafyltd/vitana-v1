@@ -37,9 +37,9 @@
     },
     "billing.promises.anchorHeading": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The phrase 'Приватно по дизайну' is not idiomatic. 'Private by design' refers to a concept, better translated as 'privacy by default' or 'privacy by design'.",
-      "suggested": "Приватность по умолчанию",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'Приватно' (adverb) is less idiomatic than a noun for 'Privacy by design'.",
+      "suggested": "Приватность по дизайну.",
       "phase": "llm"
     },
     "billing.promises.subheading": {
@@ -73,10 +73,8 @@
       "phase": "llm"
     },
     "billing.promises.earn.body": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The phrase 'раскрытый прозрачно' (disclosed transparently) is grammatically correct but sounds a bit clunky. A verbal construction would be more natural.",
-      "suggested": "Когда твоя рекомендация приводит к продаже через Sell and Earn, или когда ты проводишь платную Live Room, доход твой — раскрывается прозрачно.",
       "phase": "llm"
     },
     "billing.promises.control.title": {
@@ -472,8 +470,8 @@
     "billing.earnings.net": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender mismatch. 'Net' likely refers to 'Net earnings' ('Чистый заработок'), so the adjective should be masculine.",
-      "suggested": "Чистый",
+      "issue": "Ambiguous as a standalone label; 'Чистая' implies a feminine noun. 'Нетто' is more common and unambiguous for 'Net' in financial contexts.",
+      "suggested": "Нетто",
       "phase": "llm"
     },
     "billing.earnings.withdraw": {
@@ -509,8 +507,8 @@
     "billing.launchGrant.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender mismatch (assumes male user). 'Ты получил' is gendered, 'You've received' is neutral. Better to use a gender-neutral phrasing for UI.",
-      "suggested": "Тебе предоставлено 12 месяцев Vitana Premium в благодарность за то, что ты с нами с самого начала. Действует до {endsAt}.",
+      "issue": "Gender-specific verb 'получил' (masculine) used for a general user. A gender-neutral phrasing is preferred.",
+      "suggested": "Тебе начислено 12 месяцев Vitana Premium в благодарность за то, что ты с нами с самого начала. Действует до {endsAt}.",
       "phase": "llm"
     },
     "billing.launchGrant.noAction": {
@@ -640,8 +638,8 @@
     },
     "billing.state.upgrade": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Обновить' means 'update' or 'refresh', not 'upgrade' in the sense of moving to a higher tier plan. This can be ambiguous.",
+      "confidence": 0.8,
+      "issue": "'Обновить' is generic (update/refresh). 'Upgrade' in the context of a service tier is more accurately conveyed by 'Повысить'.",
       "suggested": "Повысить",
       "phase": "llm"
     },
@@ -658,8 +656,8 @@
     "billing.state.activeBadge": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For a status label like 'Active' referring to a subscription (feminine noun 'подписка'), 'Активна' (feminine short adjective) is more appropriate.",
-      "suggested": "Активна",
+      "issue": "'Активно' is a neuter short-form adjective or adverb. As a standalone status label, 'Действует' (is active/in effect) is more common and unambiguous.",
+      "suggested": "Действует",
       "phase": "llm"
     },
     "billing.subscriptionsPage.title": {
@@ -693,10 +691,8 @@
       "phase": "llm"
     },
     "billing.faq.a1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'живого общения' (live communication) is too broad for 'live voice time'. 'Голосового общения' (voice communication) is more precise.",
-      "suggested": "Больше времени голосового общения с ORB, больше хостинга в Live Rooms, больше места для хранения и более быстрые личные дайджесты.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "billing.faq.q2": {
@@ -816,9 +812,9 @@
     },
     "paywall.match_posts.body": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои бесплатные посты в этом месяце. Премиум дает тебе больше.",
+      "confidence": 0.9,
+      "issue": "Gender-specific verb 'использовал' (masculine) used for a general user. 'Исчерпал(а)' is also more precise for 'used up'.",
+      "suggested": "Ты исчерпал(а) свои бесплатные посты в этом месяце. Премиум дает тебе больше.",
       "phase": "llm"
     },
     "paywall.match_reveals.title": {
@@ -828,9 +824,9 @@
     },
     "paywall.match_reveals.body": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои бесплатные открытия. Используй {credits} кредитов или обновись до Премиум.",
+      "confidence": 0.9,
+      "issue": "Gender-specific verb 'использовал' (masculine) used for a general user. 'Исчерпал(а)' is also more precise for 'used up'.",
+      "suggested": "Ты исчерпал(а) свои бесплатные открытия. Используй {credits} кредитов или обновись до Премиум.",
       "phase": "llm"
     },
     "paywall.lab_analyses.title": {
@@ -840,9 +836,9 @@
     },
     "paywall.lab_analyses.body": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои лабораторные анализы в этом месяце.",
+      "confidence": 0.9,
+      "issue": "Gender-specific verb 'использовал' (masculine) used for a general user. 'Исчерпал(а)' is also more precise for 'used up'.",
+      "suggested": "Ты исчерпал(а) свои лабораторные анализы в этом месяце.",
       "phase": "llm"
     },
     "paywall.photo_uploads.title": {
@@ -852,9 +848,9 @@
     },
     "paywall.photo_uploads.body": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои загрузки фото в этом месяце.",
+      "confidence": 0.9,
+      "issue": "Gender-specific verb 'использовал' (masculine) used for a general user. 'Исчерпал(а)' is also more precise for 'used up'.",
+      "suggested": "Ты исчерпал(а) свои загрузки фото в этом месяце.",
       "phase": "llm"
     },
     "paywall.memory_garden.title": {
@@ -884,9 +880,9 @@
     },
     "paywall.default.body": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свою бесплатную квоту за этот период.",
+      "confidence": 0.9,
+      "issue": "Gender-specific verb 'использовал' (masculine) used for a general user. 'Исчерпал(а)' is also more precise for 'used up'.",
+      "suggested": "Ты исчерпал(а) свою бесплатную квоту за этот период.",
       "phase": "llm"
     },
     "paywall.ctaUpgrade": {
@@ -915,5 +911,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:26:53.584Z"
+  "generatedAt": "2026-09-27T09:26:22.409Z"
 }
