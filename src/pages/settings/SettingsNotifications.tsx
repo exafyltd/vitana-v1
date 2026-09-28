@@ -5,10 +5,10 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2 } from "lucide-react";
+import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2, Lock, ShieldCheck } from "lucide-react";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
-import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { notify, notifyError, t, useI18nLocale } from '@/lib/i18n-toast';
 import { settingsNavigation } from "@/config/navigation";
 
 const TYPE_CONFIG = {
@@ -19,7 +19,8 @@ const TYPE_CONFIG = {
 
 export default function SettingsNotifications() {
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
-  const { categories, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
+  const { categories, role, roleNotifications, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
+  const locale = useI18nLocale();
 
   const loading = prefsLoading || catLoading;
 
@@ -89,6 +90,7 @@ export default function SettingsNotifications() {
               <div>
                 <h4 className="font-medium">{t('screens.settings.enablePushNotifications')}</h4>
                 <p className="text-sm text-muted-foreground">{t('screens.settings.receiveNotificationsYourDevice')}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('notificationControls.member.pushHint')}</p>
               </div>
               <Switch
                 checked={prefs.push_enabled}
@@ -116,17 +118,24 @@ export default function SettingsNotifications() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {items.map((cat) => (
-                  <div key={cat.id} className="flex items-center justify-between">
+                  <div key={cat.id} className="flex items-center justify-between gap-4" data-testid={`member-category-${cat.slug}`}>
                     <div>
                       <h4 className="font-medium">{cat.display_name}</h4>
                       {cat.description && (
                         <p className="text-sm text-muted-foreground">{cat.description}</p>
                       )}
+                      {cat.locked && (
+                        <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                          <Lock className="w-3 h-3" /> {t('notificationControls.member.alwaysOn')}
+                        </p>
+                      )}
                     </div>
+                    {/* VTID-04676: a category decides in-app AND push, so it stays switchable with push off. */}
                     <Switch
-                      checked={cat.enabled}
+                      checked={cat.locked ? true : cat.enabled}
                       onCheckedChange={() => handleCategoryToggle(cat)}
-                      disabled={!prefs.push_enabled}
+                      disabled={!!cat.locked}
+                      aria-label={cat.display_name}
                     />
                   </div>
                 ))}
@@ -134,6 +143,27 @@ export default function SettingsNotifications() {
             </Card>
           );
         })}
+
+        {/* VTID-04676: notifications the caller's role receives (admin / developer / staff) */}
+        {role && roleNotifications.length > 0 && (
+          <Card data-testid="role-notifications">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5" />
+                {t(`notificationControls.member.roleTitle.${role}`)}
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">{t('notificationControls.member.roleHint')}</p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {roleNotifications.map((n) => (
+                <div key={n.type}>
+                  <h4 className="font-medium">{locale.toLowerCase().startsWith('de') ? n.label.de : n.label.en}</h4>
+                  <p className="text-sm text-muted-foreground">{locale.toLowerCase().startsWith('de') ? n.description.de : n.description.en}</p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Quiet Hours */}
         <Card>
@@ -148,6 +178,7 @@ export default function SettingsNotifications() {
               <div>
                 <h4 className="font-medium">{t('screens.settings.enableQuietHours')}</h4>
                 <p className="text-sm text-muted-foreground">{t('screens.settings.pauseNonurgentNotificationsDuringSpecifiedTimes')}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('notificationControls.member.quietHoursHint')}</p>
               </div>
               <Switch
                 checked={prefs.dnd_enabled}

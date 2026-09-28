@@ -197,15 +197,15 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     label: "Notifications",
     icon: Bell,
     basePath: "/admin/notifications",
-    defaultTab: "compose",
+    defaultTab: "notifications",
     wave: 2,
+    // VTID-04675: one switch per notification type, the categories members
+    // choose from, real activity, and a manual send.
     tabs: [
-      { key: "compose", label: "Compose", path: "/admin/notifications/compose" },
+      { key: "notifications", label: "Notifications", path: "/admin/notifications" },
       { key: "categories", label: "Categories", path: "/admin/notifications/categories" },
-      { key: "templates", label: "Templates", path: "/admin/notifications/templates" },
-      { key: "sent", label: "Sent", path: "/admin/notifications/sent" },
-      { key: "subscriptions", label: "Subscriptions", path: "/admin/notifications/subscriptions" },
-      { key: "providers", label: "Providers", path: "/admin/notifications/providers" },
+      { key: "activity", label: "Activity", path: "/admin/notifications/activity" },
+      { key: "compose", label: "Send", path: "/admin/notifications/compose" },
     ],
   },
   {

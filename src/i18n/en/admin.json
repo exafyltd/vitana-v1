@@ -22,7 +22,17 @@
       "podcastManagementDesc": "Review and moderate podcast uploads",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "notifications": {
+      "tabs": {
+        "notifications": "Notifications",
+        "categories": "Categories",
+        "activity": "Activity",
+        "compose": "Send",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }

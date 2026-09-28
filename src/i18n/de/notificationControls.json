@@ -1,0 +1,159 @@
+{
+  "notificationControls": {
+    "pages": {
+      "notifications": {
+        "title": "Benachrichtigungen",
+        "description": "Schalte jede Benachrichtigung einzeln ein oder aus. Neue Benachrichtigungen starten ausgeschaltet und erreichen niemanden, bis du sie einschaltest."
+      },
+      "categories": {
+        "title": "Kategorien",
+        "description": "Die Gruppen, die Mitglieder in ihren Einstellungen ein- und ausschalten können."
+      },
+      "activity": {
+        "title": "Aktivität",
+        "description": "Was in den letzten Tagen wirklich verschickt, gelesen und zurückgehalten wurde."
+      },
+      "compose": {
+        "description": "Schicke eine Nachricht direkt an einzelne Mitglieder, eine Rolle oder alle."
+      }
+    },
+    "loading": "Wird geladen …",
+    "loadError": "Die Benachrichtigungen konnten nicht geladen werden: {message}",
+    "summaryOn": "Eingeschaltet",
+    "summaryNew": "Neu, wartet auf deine Entscheidung",
+    "summaryRule": "So wird entschieden",
+    "summaryRuleText": "Eine Benachrichtigung geht nur raus, wenn sie hier eingeschaltet ist und das Mitglied ihre Kategorie nicht ausgeschaltet hat. Push zusätzlich nur mit Push an und außerhalb der Ruhezeiten.",
+    "statsErrorBanner": "Die Zahlen konnten nicht gelesen werden ({message}). Die Schalter funktionieren trotzdem.",
+    "statsUnavailable": "Zahlen gerade nicht verfügbar",
+    "statsLine": "7 Tage: {sent} erstellt · {pushed} per Push · {read} gelesen · {blockedAdmin} durch den Schalter zurückgehalten · {blockedMember} vom Mitglied ausgeschaltet",
+    "lastSent": "zuletzt {when}",
+    "searchPlaceholder": "Nach Name oder Typ suchen",
+    "filterAll": "Alle",
+    "filterOn": "Nur eingeschaltete",
+    "filterOff": "Nur ausgeschaltete",
+    "filterNew": "Neu hinzugekommen",
+    "noMatch": "Keine Benachrichtigung passt zu deiner Suche.",
+    "audience": {
+      "member": "An Mitglieder",
+      "admin": "An Admins",
+      "developer": "An Entwickler",
+      "staff": "An Mitarbeitende"
+    },
+    "audienceCount": "etwa {count} Personen",
+    "groups": {
+      "posts": "Beiträge & Reaktionen",
+      "chat": "Chat",
+      "orb": "Vitana",
+      "scheduled": "Täglich & wöchentlich",
+      "matches": "Matches & Verbindungen",
+      "community": "Community",
+      "meetups": "Treffen",
+      "live_rooms": "Live-Räume",
+      "journey": "Deine Reise",
+      "recommendations": "Empfehlungen",
+      "health": "Gesundheit",
+      "account": "Konto",
+      "wallet": "Wallet",
+      "admin": "Admin",
+      "other": "Noch nicht eingeordnet"
+    },
+    "readiness": {
+      "ready": "In der Sprache des Mitglieds",
+      "notLocalized": "Nur Englisch",
+      "unverified": "Nicht geprüft"
+    },
+    "newType": "Neu – beim ersten Senden ausgeschaltet angelegt",
+    "inCategory": "Mitglieder schalten das über „{name}“",
+    "noCategory": "Keine Mitglieder-Kategorie – Mitglieder können es nicht selbst ausschalten",
+    "cannotEnableEnglish": "Kann erst eingeschaltet werden, wenn der Text übersetzt ist.",
+    "history": "Verlauf",
+    "historyEmpty": "Noch nie geändert.",
+    "historyError": "Der Verlauf konnte nicht geladen werden.",
+    "switchedOn": "eingeschaltet",
+    "switchedOff": "ausgeschaltet",
+    "system": "System",
+    "automationsTitle": "Von Automationen gesendet – jede hat ihren eigenen Schalter",
+    "confirmOnTitle": "„{name}“ einschalten?",
+    "confirmOffTitle": "„{name}“ ausschalten?",
+    "confirmOnBody": "Ab sofort geht das an {audience} – etwa {count} Personen –, wenn der Anlass eintritt. Mitglieder können es über ihre Kategorie ausschalten.",
+    "confirmOnBodyNoCount": "Ab sofort geht das an {audience}, wenn der Anlass eintritt.",
+    "confirmOffBody": "Niemand bekommt diese Benachrichtigung mehr, bis du sie wieder einschaltest. Bereits verschickte bleiben sichtbar.",
+    "reasonLabel": "Grund (optional)",
+    "reasonPlaceholder": "Warum änderst du das? Steht danach im Verlauf.",
+    "confirmOn": "Einschalten",
+    "confirmOff": "Ausschalten",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "on": "an",
+    "off": "aus",
+    "toastOn": "Eingeschaltet",
+    "toastOff": "Ausgeschaltet",
+    "toastFailed": "Das hat nicht geklappt. Bitte versuch es noch einmal.",
+    "categoryGroups": {
+      "chat": "Chat",
+      "calendar": "Kalender",
+      "community": "Community"
+    },
+    "categories": {
+      "intro": "Durchgestrichene Typen sind gerade ausgeschaltet. Mitglieder sehen eine Kategorie nur, wenn mindestens ein Typ darin eingeschaltet ist.",
+      "loadError": "Die Kategorien konnten nicht geladen werden: {message}",
+      "add": "Kategorie hinzufügen",
+      "empty": "Noch keine Kategorien.",
+      "locked": "Nicht abschaltbar",
+      "optIn": "Standardmäßig aus",
+      "shownToMembers": "Für Mitglieder sichtbar",
+      "hiddenFromMembers": "Für Mitglieder unsichtbar",
+      "active": "Aktiv",
+      "sendTest": "Test an mich senden",
+      "edit": "Bearbeiten",
+      "remove": "Deaktivieren",
+      "removeTitle": "„{name}“ deaktivieren?",
+      "removeBody": "Die Kategorie verschwindet aus den Einstellungen der Mitglieder. Die darin enthaltenen Typen steuerst du dann nur noch über die Schalter oben.",
+      "previewTitle": "So sehen Mitglieder es",
+      "previewHint": "Vorschau der Einstellungen › Benachrichtigungen, mit den Standardwerten.",
+      "addTitle": "Kategorie hinzufügen",
+      "editTitle": "Kategorie bearbeiten",
+      "name": "Name",
+      "description": "Beschreibung",
+      "defaultOn": "Für neue Mitglieder an",
+      "defaultOnHint": "Mitglieder, die nichts gewählt haben, bekommen diese Kategorie.",
+      "memberCanDisable": "Mitglieder können sie ausschalten",
+      "memberCanDisableHint": "Aus nur für Nachrichten zu Konto und Sicherheit, die jedes Mitglied bekommen muss.",
+      "types": "Enthaltene Benachrichtigungen"
+    },
+    "activity": {
+      "intro": "Echte Zahlen aus der Datenbank. Zurückgehaltene Benachrichtigungen wurden nie erstellt.",
+      "lastDays": "Letzte {days} Tage",
+      "error": "Die Aktivität konnte nicht geladen werden: {message}",
+      "byType": "Nach Benachrichtigung",
+      "byDay": "Nach Tag",
+      "type": "Benachrichtigung",
+      "day": "Tag",
+      "total": "Gesamt",
+      "sent": "Erstellt",
+      "pushed": "Per Push",
+      "read": "Gelesen",
+      "blockedAdmin": "Vom Schalter zurückgehalten",
+      "blockedMember": "Vom Mitglied ausgeschaltet",
+      "empty": "In diesem Zeitraum wurde nichts verschickt."
+    },
+    "member": {
+      "pushHint": "Push entscheidet nur, ob dein Handy klingelt. Was du überhaupt bekommst, legst du mit den Kategorien unten fest.",
+      "alwaysOn": "Immer an – wichtige Nachrichten zu Konto und Sicherheit",
+      "quietHoursHint": "Gilt in deiner Zeitzone. Dringende Nachrichten kommen trotzdem.",
+      "roleTitle": {
+        "admin": "Weil du Admin bist",
+        "developer": "Weil du Entwickler bist",
+        "staff": "Weil du zum Team gehörst"
+      },
+      "roleHint": "Diese Benachrichtigungen bekommst du wegen deiner Rolle. Ein Admin schaltet sie ein oder aus."
+    },
+    "audienceNoun": {
+      "member": "Mitglieder",
+      "admin": "Admins",
+      "developer": "Entwickler",
+      "staff": "Mitarbeitende"
+    },
+    "statsNone": "7 Tage: nichts verschickt"
+  }
+}

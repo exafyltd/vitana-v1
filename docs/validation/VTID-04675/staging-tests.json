@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04675",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "admin screen is in the build; member categories match what is switched on; switches usable with push off",
+      "spec": "tests/e2e/staging/vtid-04676-notification-settings.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "admin screen and member screen unit tests",
+      "ref": "npx vitest run src/components/admin/notifications src/lib/notifications src/pages/settings/SettingsNotifications.vtid-04676.test.tsx src/hooks/useNotificationCategoryPreferences.locale.test.tsx",
+      "cwd": ".",
+      "reason": "Switching needs a confirmation and sends the reason; English-only types cannot be switched on; automations switch separately; unreadable numbers show an error, never 0; locked categories stay on; categories stay switchable with push off."
+    }
+  ]
+}

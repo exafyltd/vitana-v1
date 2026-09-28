@@ -95,13 +95,7 @@ export const adminUsersNavigation = [
   { id: "roles", name: "Roles & Access", path: "/admin/users/roles" },
 ];
 
-// Notifications (PRIORITY 2)
-export const adminNotificationsNavigation = [
-  { id: "compose", name: "Compose", path: "/admin/notifications" },
-  { id: "categories", name: "Categories", path: "/admin/notifications/categories" },
-  { id: "sent", name: "Sent Log", path: "/admin/notifications/sent" },
-  { id: "preferences", name: "Preferences", path: "/admin/notifications/preferences" },
-];
+// Notifications: tabs live in admin-navigation.ts (VTID-04675)
 
 // Community
 export const adminCommunityNavigation = [
