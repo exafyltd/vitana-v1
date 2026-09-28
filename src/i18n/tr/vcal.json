@@ -69,7 +69,7 @@
       }
     },
     "empty": {
-      "title": "Planlanmış bir şey yok – sakin bir gün 🌿",
+      "title": "Planlanmış bir şey yok – sakin bir gün",
       "hint": "Ne planladığını Vitana'ya söyle, o eklesin."
     },
     "week": {
@@ -114,7 +114,27 @@
       "copyError": "Kopyalama olmadı – bağlantıyı seçip kendin kopyala.",
       "openApp": "Takvim uygulamasında aç",
       "activeSince": "{date} tarihinden beri bir bağlantı etkin.",
-      "error": "Şu an olmadı. Birazdan tekrar dene."
+      "error": "Şu an olmadı. Birazdan tekrar dene.",
+      "titleFor": {
+        "google": "Google Takvim'i bağla",
+        "apple": "Apple Takvim'i bağla",
+        "outlook": "Outlook'u bağla"
+      },
+      "introFor": {
+        "google": "Vitanaland kayıtların Google Takvim'inde görünür ve orada güncel kalır.",
+        "apple": "Vitanaland kayıtların iPhone, iPad ve Mac'indeki Takvim'de görünür ve orada güncel kalır.",
+        "outlook": "Vitanaland kayıtların Outlook takviminde görünür ve orada güncel kalır."
+      },
+      "createFor": {
+        "google": "Google için bağlantı oluştur",
+        "apple": "Apple için bağlantı oluştur",
+        "outlook": "Outlook için bağlantı oluştur"
+      },
+      "openIn": {
+        "google": "Google Takvim'e ekle",
+        "apple": "Apple Takvim'e ekle",
+        "outlook": "Outlook'a ekle"
+      }
     },
     "move": {
       "action": "Taşı",
@@ -164,7 +184,8 @@
       "findEvent": "Etkinlik bul",
       "planWithVitana": "Vitana ile planla",
       "seeWeek": "Haftayı gör",
-      "connectAction": "Takvimi bağla"
+      "connectAction": "Takvimi bağla",
+      "dismiss": "Bugünlük gizle"
     },
     "journey": {
       "title": "Yolculuğun",
@@ -175,7 +196,15 @@
       "noneOpen": "Tüm adımlar tamam, harika! İlerledikçe yenileri gelecek.",
       "today": "Bugün {time}",
       "more": "+{count} daha",
-      "openJourney": "Yolculuğumu aç"
+      "openJourney": "Yolculuğumu aç",
+      "habitsOne": "1 alışkanlık",
+      "habits": "{count} alışkanlık",
+      "habitsTitle": "Alışkanlıkların – yalnızca istersen takvimde",
+      "addHabit": "Takvime ekle",
+      "dailyAt": "Her gün saat",
+      "addConfirm": "Ekle",
+      "inCalendar": "Takvimde",
+      "habitAdded": "Alışkanlık takvimine eklendi"
     },
     "remindersSection": {
       "title": "Hatırlatıcılar",
@@ -192,7 +221,7 @@
         "outlook": "Outlook"
       },
       "connectTitle": "Takvimini bağla",
-      "connectBody": "Bütün gününü tek yerde gör. Vitana randevularına göre planlar.",
+      "connectBody": "Vitanaland kayıtların Google, Apple veya Outlook'ta – tek dokunuşla.",
       "comingSoon": "Google, Apple ve Outlook ile giriş şu anda ayarlanıyor.",
       "connectedOne": "{name} bağlı",
       "connectedMany": "{names} bağlı",
@@ -233,6 +262,21 @@
         "community": "Topluluk",
         "nutrition": "Beslenme"
       }
+    },
+    "milestone": "Kilometre taşı: {title}",
+    "more": "+{count} daha",
+    "summary": {
+      "nothing": "Planlanmış bir şey yok",
+      "entriesOne": "1 kayıt",
+      "entries": "{count} kayıt",
+      "next": "sıradaki {time}",
+      "done": "{count} tamamlandı"
+    },
+    "workSection": {
+      "title": "İş",
+      "waitingOne": "Seni bekleyen 1 şey var",
+      "waiting": "Seni bekleyen {count} şey var",
+      "open": "Yönetimde aç"
     }
   }
 }

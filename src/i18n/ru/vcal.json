@@ -69,7 +69,7 @@
       }
     },
     "empty": {
-      "title": "Ничего не запланировано – спокойный день 🌿",
+      "title": "Ничего не запланировано – спокойный день",
       "hint": "Скажи Витане, что задумал, и она добавит."
     },
     "week": {
@@ -114,7 +114,27 @@
       "copyError": "Не удалось скопировать – выдели ссылку и скопируй сам.",
       "openApp": "Открыть в календаре",
       "activeSince": "Ссылка активна с {date}.",
-      "error": "Не получилось. Попробуй ещё раз чуть позже."
+      "error": "Не получилось. Попробуй ещё раз чуть позже.",
+      "titleFor": {
+        "google": "Подключить Google Календарь",
+        "apple": "Подключить Календарь Apple",
+        "outlook": "Подключить Outlook"
+      },
+      "introFor": {
+        "google": "Твои записи Vitanaland появятся в Google Календаре и будут там обновляться.",
+        "apple": "Твои записи Vitanaland появятся в Календаре на iPhone, iPad и Mac и будут там обновляться.",
+        "outlook": "Твои записи Vitanaland появятся в календаре Outlook и будут там обновляться."
+      },
+      "createFor": {
+        "google": "Создать ссылку для Google",
+        "apple": "Создать ссылку для Apple",
+        "outlook": "Создать ссылку для Outlook"
+      },
+      "openIn": {
+        "google": "Добавить в Google Календарь",
+        "apple": "Добавить в Календарь Apple",
+        "outlook": "Добавить в Outlook"
+      }
     },
     "move": {
       "action": "Перенести",
@@ -164,7 +184,8 @@
       "findEvent": "Найти событие",
       "planWithVitana": "Спланировать с Vitana",
       "seeWeek": "Посмотреть неделю",
-      "connectAction": "Подключить календарь"
+      "connectAction": "Подключить календарь",
+      "dismiss": "Скрыть на сегодня"
     },
     "journey": {
       "title": "Твой путь",
@@ -175,7 +196,15 @@
       "noneOpen": "Все шаги выполнены — отлично! Новые появятся, когда пойдёшь дальше.",
       "today": "Сегодня {time}",
       "more": "+ещё {count}",
-      "openJourney": "Открыть мой путь"
+      "openJourney": "Открыть мой путь",
+      "habitsOne": "1 привычка",
+      "habits": "Привычек: {count}",
+      "habitsTitle": "Твои привычки – в календаре, только если ты хочешь",
+      "addHabit": "В календарь",
+      "dailyAt": "Каждый день в",
+      "addConfirm": "Добавить",
+      "inCalendar": "В календаре",
+      "habitAdded": "Привычка добавлена в календарь"
     },
     "remindersSection": {
       "title": "Напоминания",
@@ -192,7 +221,7 @@
         "outlook": "Outlook"
       },
       "connectTitle": "Подключи свой календарь",
-      "connectBody": "Весь твой день в одном месте. Vitana планирует с учётом твоих встреч.",
+      "connectBody": "Твои записи Vitanaland в Google, Apple или Outlook – одним касанием.",
       "comingSoon": "Вход через Google, Apple и Outlook сейчас настраивается.",
       "connectedOne": "{name} подключён",
       "connectedMany": "Подключены: {names}",
@@ -233,6 +262,21 @@
         "community": "Сообщество",
         "nutrition": "Питание"
       }
+    },
+    "milestone": "Веха: {title}",
+    "more": "Ещё {count}",
+    "summary": {
+      "nothing": "Ничего не запланировано",
+      "entriesOne": "1 запись",
+      "entries": "Записей: {count}",
+      "next": "следующая в {time}",
+      "done": "выполнено: {count}"
+    },
+    "workSection": {
+      "title": "Работа",
+      "waitingOne": "1 дело ждёт тебя",
+      "waiting": "Ждут тебя: {count}",
+      "open": "Открыть в админке"
     }
   }
 }

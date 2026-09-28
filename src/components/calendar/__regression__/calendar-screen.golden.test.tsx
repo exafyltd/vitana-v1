@@ -44,6 +44,9 @@ vi.mock("@/components/calendar/vcal/sections", () => ({
   JourneySection: () => <div data-testid="journey-section" />,
   RemindersSection: () => <div data-testid="reminders-section" />,
   CalendarsSection: () => <div data-testid="calendars-section" />,
+  ConnectCalendarCard: () => <div data-testid="connect-card" />,
+  WorkSection: () => <div data-testid="work-section" />,
+  HABIT_REF_TYPE: "goal_plan_habit",
   useCalendarApps: () => ({ apps: [], loading: false, connected: true }),
 }));
 vi.mock("@/lib/i18n-toast", async () => {
@@ -58,7 +61,7 @@ vi.mock("@/lib/calendar-window-client", async () => {
 import CalendarPage from "@/pages/Calendar";
 import { DayView, MonthView, WeekView } from "../vcal/views";
 import { EntryScreen } from "../vcal/EntryScreen";
-import { BusyCard, DayProgress, EntryCard, NextUpCard } from "../vcal/parts";
+import { BusyCard, EntryCard } from "../vcal/parts";
 import { CalendarApiError } from "@/lib/calendar-window-client";
 
 // Monday 5 Oct 2026, 09:10 in Berlin.
@@ -141,16 +144,13 @@ afterEach(() => {
 });
 
 describe("building blocks", () => {
-  it("entry cards, compact cards, busy blocks, next up, progress", () => {
+  it("entry cards, compact cards, busy blocks, milestone marker", () => {
     const { container } = render(
       <div>
         {DAY.map((i) => <EntryCard key={i.id} item={i} onOpen={() => {}} />)}
         {DAY.map((i) => <EntryCard key={`c-${i.id}`} item={i} onOpen={() => {}} compact />)}
         <BusyCard item={DAY[3]} />
-        <NextUpCard item={DAY[2]} now={NOW} onOpen={() => {}} />
-        <DayProgress done={1} total={3} />
-        <DayProgress done={3} total={3} />
-        <DayProgress done={0} total={0} />
+        <EntryCard item={it_("ms", "2026-10-05T07:00:00.000Z", null, ev("10 km laufen", { event_type: "journey_milestone", source_type: "goal_plan" }))} onOpen={() => {}} />
       </div>,
     );
     expectGolden(G, "blocks", outline(container));
@@ -182,11 +182,30 @@ describe("views", () => {
     expect(pick.mock.calls[0][0].toISOString()).toBe(new Date(2026, 9, 8).toISOString());
   });
 
-  it("month (6-week grid, 3 emoji then +n, neighbour months)", () => {
+  it("month (6-week grid, at most 3 dots, neighbour months)", () => {
     const pick = vi.fn();
     const { container } = render(<MonthView anchor={NOW} items={[...DAY, ...WEEK_EXTRA, ...MONTH_EXTRA]} now={NOW} onPickDay={pick} />);
     expect(screen.getAllByTestId("vcal-month-day")).toHaveLength(42);
     expectGolden(G, "view.month", outline(container));
+    // VTID-04681: the busiest day (5 entries) still shows only three dots.
+    const busy = screen.getAllByTestId("vcal-month-day").find((d) => d.getAttribute("aria-label")?.includes("14"))!;
+    expect(busy.querySelectorAll("span > span")).toHaveLength(3);
+  });
+
+  it("a day never floods: five entries, then +N more (VTID-04681)", () => {
+    const many = Array.from({ length: 8 }, (_, i) => it_(`m${i}`, `2026-10-05T0${i + 1}:00:00.000Z`, null, ev(`Punkt ${i}`)));
+    render(<DayView items={many} onOpen={() => {}} />);
+    expect(screen.getAllByTestId("vcal-entry")).toHaveLength(5);
+    fireEvent.click(screen.getByTestId("vcal-more"));
+    expect(screen.getAllByTestId("vcal-entry")).toHaveLength(8);
+  });
+
+  it("a milestone is a quiet marker, never counted as an entry (VTID-04681)", () => {
+    const ms = it_("ms", "2026-10-05T07:00:00.000Z", null, ev("10 km laufen", { event_type: "journey_milestone", source_type: "goal_plan" }));
+    render(<DayView items={[ms]} onOpen={() => {}} />);
+    expect(screen.getByTestId("vcal-milestone")).toBeTruthy();
+    expect(screen.queryAllByTestId("vcal-entry")).toHaveLength(0);
+    expect(screen.getByTestId("vcal-empty")).toBeTruthy();
   });
 });
 
@@ -225,10 +244,15 @@ describe("entry screen", () => {
 });
 
 describe("the /calendar page", () => {
-  it("opens on today's day view with greeting, progress and next up", async () => {
+  it("opens on today's day view: the date first, large, then a one-line summary", async () => {
     const { container } = page();
     await screen.findByTestId("vcal-day");
-    await screen.findByTestId("vcal-next-up");
+    await screen.findByTestId("vcal-summary");
+    // VTID-04681: today's date leads the screen.
+    const date = screen.getByTestId("vcal-date");
+    expect(date.textContent).toContain("5");
+    expect(date.textContent).toContain("Montag");
+    expect(date.textContent).toContain("Oktober 2026");
     expectGolden(G, "page.day", outline(container));
     // Day view asks for today and the whole local day.
     const ranges = h.fetchCalendarWindow.mock.calls.map((c) => [c[0].toISOString(), c[1].toISOString(), c[2]]);
@@ -256,7 +280,7 @@ describe("the /calendar page", () => {
   it("‹ › and 'Heute' step through days", async () => {
     const { container } = page();
     await screen.findByTestId("vcal-day");
-    const header = () => container.querySelector("h1")!.textContent!;
+    const header = () => screen.getByTestId("vcal-date").textContent!;
     const headers = [header()];
     fireEvent.click(screen.getByRole("button", { name: t("vcal.next") }));
     fireEvent.click(screen.getByRole("button", { name: t("vcal.next") }));
@@ -325,7 +349,7 @@ describe("the /calendar page", () => {
     setI18nLocale("ar-XA");
     document.documentElement.dir = "rtl";
     const { container } = page();
-    await screen.findByTestId("vcal-next-up");
+    await screen.findByTestId("vcal-summary");
     expectGolden(G, "page.day.ar", outline(container));
   });
 });

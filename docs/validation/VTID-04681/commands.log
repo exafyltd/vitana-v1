@@ -1,0 +1,9 @@
+$ npm run test:calendar
+ Test Files  13 passed (13)
+      Tests  184 passed (184)
+$ npx vitest run src/components/calendar src/pages
+ Test Files  37 passed (37)
+$ npx tsc --noEmit -p tsconfig.app.json   (no errors in calendar files)
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+$ npm run i18n:inventory

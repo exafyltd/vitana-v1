@@ -6,7 +6,8 @@ import type { CalendarWindowItem } from "@/lib/calendar-window-client";
 import { KIND_STYLE, entryKind } from "./theme";
 import { sameDay } from "./time";
 
-export const HEADING_FONT = "Fredoka, Nunito, system-ui, sans-serif";
+/** VTID-04681: one calm family; the rounded display face read as bold at every size. */
+export const HEADING_FONT = "Nunito, system-ui, sans-serif";
 
 export function sourceLabel(item: CalendarWindowItem): string | null {
   const e = item.event;

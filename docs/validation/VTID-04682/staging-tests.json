@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04682",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "each calendar app on the connect card opens its connect path (Connected Apps or its subscription sheet)",
+      "spec": "tests/e2e/staging/vtid-04682-calendar-connect.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Connect card only while nothing is connected, hand-off to Connected Apps when the app is ready, otherwise the per-app subscription sheet; per-app add-by-URL links for Google, Outlook and Apple."
+    }
+  ]
+}

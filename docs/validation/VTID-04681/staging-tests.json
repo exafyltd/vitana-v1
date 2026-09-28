@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04681",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "calendar opens on a large date, calm type, no work items, connect on screen",
+      "spec": "tests/e2e/staging/vtid-04681-calendar-clean.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Day cap (5 then +N), month dots (max 3), milestone marker, habits added only on the member's tap, per-app subscription links, and the typography guard that fails on bold."
+    }
+  ]
+}

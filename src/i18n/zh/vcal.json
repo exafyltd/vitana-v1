@@ -69,7 +69,7 @@
       }
     },
     "empty": {
-      "title": "没有安排——平静的一天 🌿",
+      "title": "没有安排——平静的一天",
       "hint": "告诉 Vitana 你的打算，她会帮你添加。"
     },
     "week": {
@@ -114,7 +114,27 @@
       "copyError": "复制失败——请选中链接自己复制。",
       "openApp": "在日历应用中打开",
       "activeSince": "链接自 {date} 起有效。",
-      "error": "刚才没有成功，请稍后再试。"
+      "error": "刚才没有成功，请稍后再试。",
+      "titleFor": {
+        "google": "连接 Google 日历",
+        "apple": "连接 Apple 日历",
+        "outlook": "连接 Outlook"
+      },
+      "introFor": {
+        "google": "你的 Vitanaland 安排会显示在 Google 日历中，并保持最新。",
+        "apple": "你的 Vitanaland 安排会显示在 iPhone、iPad 和 Mac 的日历中，并保持最新。",
+        "outlook": "你的 Vitanaland 安排会显示在 Outlook 日历中，并保持最新。"
+      },
+      "createFor": {
+        "google": "为 Google 创建链接",
+        "apple": "为 Apple 创建链接",
+        "outlook": "为 Outlook 创建链接"
+      },
+      "openIn": {
+        "google": "添加到 Google 日历",
+        "apple": "添加到 Apple 日历",
+        "outlook": "添加到 Outlook"
+      }
     },
     "move": {
       "action": "移动",
@@ -164,7 +184,8 @@
       "findEvent": "找活动",
       "planWithVitana": "和 Vitana 一起规划",
       "seeWeek": "查看本周",
-      "connectAction": "连接日历"
+      "connectAction": "连接日历",
+      "dismiss": "今天不再显示"
     },
     "journey": {
       "title": "你的旅程",
@@ -175,7 +196,15 @@
       "noneOpen": "所有步骤都完成了，太棒了！继续前进会有新的步骤。",
       "today": "今天 {time}",
       "more": "还有 {count} 个",
-      "openJourney": "打开我的旅程"
+      "openJourney": "打开我的旅程",
+      "habitsOne": "1 个习惯",
+      "habits": "{count} 个习惯",
+      "habitsTitle": "你的习惯——只有你想要时才放进日历",
+      "addHabit": "加入日历",
+      "dailyAt": "每天",
+      "addConfirm": "加入",
+      "inCalendar": "已在日历中",
+      "habitAdded": "习惯已加入你的日历"
     },
     "remindersSection": {
       "title": "提醒",
@@ -192,7 +221,7 @@
         "outlook": "Outlook"
       },
       "connectTitle": "连接你的日历",
-      "connectBody": "在一个地方看到你的整天安排。Vitana 会围绕你的预约来规划。",
+      "connectBody": "在 Google、Apple 或 Outlook 中查看你的 Vitanaland 安排——轻点一下即可。",
       "comingSoon": "Google、Apple 和 Outlook 登录正在设置中。",
       "connectedOne": "已连接 {name}",
       "connectedMany": "已连接 {names}",
@@ -233,6 +262,21 @@
         "community": "社区",
         "nutrition": "营养"
       }
+    },
+    "milestone": "里程碑：{title}",
+    "more": "还有 {count} 项",
+    "summary": {
+      "nothing": "没有安排",
+      "entriesOne": "1 项安排",
+      "entries": "{count} 项安排",
+      "next": "下一项 {time}",
+      "done": "已完成 {count} 项"
+    },
+    "workSection": {
+      "title": "工作",
+      "waitingOne": "有 1 件事在等你",
+      "waiting": "有 {count} 件事在等你",
+      "open": "在管理后台打开"
     }
   }
 }

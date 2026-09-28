@@ -49,10 +49,10 @@ export function GoogleSyncCard() {
 
   return (
     <section className="flex flex-col gap-2.5 rounded-[22px] bg-white p-4" data-testid="vcal-google-sync">
-      <h3 className="m-0 text-[17px] font-extrabold">🔄 {t("vcal.google.title")}</h3>
+      <h3 className="m-0 text-[17px] font-medium">🔄 {t("vcal.google.title")}</h3>
       <p className="m-0 text-[15px] leading-relaxed">{t("vcal.google.intro")}</p>
       {on && (
-        <p className="m-0 text-sm font-bold" data-testid="vcal-google-on">
+        <p className="m-0 text-sm" data-testid="vcal-google-on">
           ✅ {t("vcal.google.on")}
           {status.data.last_push_at && (
             <span style={{ color: SURFACE.muted }}> · {t("vcal.google.lastSync", { date: fmtDateTime(status.data.last_push_at, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) })}</span>
@@ -60,7 +60,7 @@ export function GoogleSyncCard() {
         </p>
       )}
       {on && status.data.last_error && (
-        <p className="m-0 text-sm font-bold" style={{ color: SURFACE.muted }}>
+        <p className="m-0 text-sm" style={{ color: SURFACE.muted }}>
           ⚠️ {t("vcal.google.problem")}
         </p>
       )}
@@ -68,7 +68,7 @@ export function GoogleSyncCard() {
         type="button"
         disabled={busy || status.isLoading}
         onClick={() => (on ? turnOff.mutate() : turnOn.mutate())}
-        className={`h-12 rounded-[18px] text-[15px] font-extrabold disabled:opacity-60 ${on ? "" : "text-white"}`}
+        className={`h-12 rounded-[18px] text-[15px] font-medium disabled:opacity-60 ${on ? "" : "text-white"}`}
         style={{ background: on ? SURFACE.track : SURFACE.primary }}
         data-testid="vcal-google-toggle"
       >
@@ -82,7 +82,7 @@ export function QuietHoursNote({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   return (
     <section className="flex flex-col gap-2 rounded-[22px] bg-white p-4" data-testid="vcal-quiet-hours">
-      <h3 className="m-0 text-[17px] font-extrabold">🌙 {t("vcal.quietHours.title")}</h3>
+      <h3 className="m-0 text-[17px] font-medium">🌙 {t("vcal.quietHours.title")}</h3>
       <p className="m-0 text-[15px] leading-relaxed">{t("vcal.quietHours.body")}</p>
       <button
         type="button"
@@ -90,7 +90,7 @@ export function QuietHoursNote({ onNavigate }: { onNavigate?: () => void }) {
           onNavigate?.();
           navigate("/settings/notifications");
         }}
-        className="h-12 rounded-[18px] text-[15px] font-extrabold"
+        className="h-12 rounded-[18px] text-[15px]"
         style={{ background: SURFACE.track }}
       >
         {t("vcal.quietHours.link")}

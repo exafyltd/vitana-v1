@@ -4,6 +4,8 @@
  * The closed header already tells the member what is inside ("Reminders ·
  * 3 upcoming"), so opening it is a choice, not a guess. Whether a section is
  * open is remembered per member on this device.
+ *
+ * VTID-04681: a quiet row — hairline border, no icon tile, one medium title.
  */
 import { useId, useState, type ReactNode } from "react";
 import { SURFACE } from "./theme";
@@ -30,7 +32,6 @@ function writeOpen(id: string, open: boolean): void {
 interface Props {
   /** Stable id; also the key the open state is remembered under. */
   id: string;
-  emoji: string;
   title: string;
   /** One line that says what is inside while the section is closed. */
   summary: ReactNode;
@@ -40,7 +41,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function Disclosure({ id, emoji, title, summary, tone = "normal", defaultOpen = false, children }: Props) {
+export function Disclosure({ id, title, summary, tone = "normal", defaultOpen = false, children }: Props) {
   const [open, setOpen] = useState(() => readOpen(id, defaultOpen));
   const panelId = useId();
   const toggle = () => {
@@ -50,25 +51,22 @@ export function Disclosure({ id, emoji, title, summary, tone = "normal", default
     });
   };
   return (
-    <section className="rounded-[20px] bg-white" style={{ boxShadow: "0 2px 10px rgba(42,34,51,0.06)" }} data-testid={`vcal-section-${id}`}>
+    <section className="rounded-2xl bg-white" style={{ border: `1px solid ${SURFACE.line}` }} data-testid={`vcal-section-${id}`}>
       <button
         type="button"
         onClick={toggle}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex w-full items-center gap-3 rounded-[20px] px-4 py-3.5 text-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
         style={{ outlineColor: SURFACE.primary }}
       >
-        <span aria-hidden className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-xl" style={{ background: SURFACE.track }}>
-          {emoji}
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-base font-extrabold">{title}</span>
+        <span className="flex min-w-0 flex-1 items-baseline gap-2">
+          <span className="shrink-0 text-[15px] font-medium">{title}</span>
           <span className="truncate text-sm" style={{ color: tone === "attention" ? "#A3322C" : SURFACE.muted }}>
             {summary}
           </span>
         </span>
-        <span aria-hidden className="shrink-0 text-lg transition-transform" style={{ color: SURFACE.faint, transform: open ? "rotate(180deg)" : "none" }}>
+        <span aria-hidden className="shrink-0 text-base transition-transform" style={{ color: SURFACE.faint, transform: open ? "rotate(180deg)" : "none" }}>
           ⌄
         </span>
       </button>

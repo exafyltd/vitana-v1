@@ -69,7 +69,7 @@
       }
     },
     "empty": {
-      "title": "لا شيء مخطط – يوم هادئ 🌿",
+      "title": "لا شيء مخطط – يوم هادئ",
       "hint": "أخبر فيتانا بما تنوي وستضيفه."
     },
     "week": {
@@ -114,7 +114,27 @@
       "copyError": "لم ينجح النسخ – حدّد الرابط وانسخه بنفسك.",
       "openApp": "فتح في تطبيق التقويم",
       "activeSince": "يوجد رابط نشط منذ {date}.",
-      "error": "لم ينجح ذلك الآن. حاول مرة أخرى بعد قليل."
+      "error": "لم ينجح ذلك الآن. حاول مرة أخرى بعد قليل.",
+      "titleFor": {
+        "google": "اربط تقويم Google",
+        "apple": "اربط تقويم Apple",
+        "outlook": "اربط Outlook"
+      },
+      "introFor": {
+        "google": "تظهر مواعيدك في Vitanaland في تقويم Google وتبقى محدَّثة هناك.",
+        "apple": "تظهر مواعيدك في Vitanaland في تقويم iPhone وiPad وMac وتبقى محدَّثة هناك.",
+        "outlook": "تظهر مواعيدك في Vitanaland في تقويم Outlook وتبقى محدَّثة هناك."
+      },
+      "createFor": {
+        "google": "أنشئ رابطًا لـ Google",
+        "apple": "أنشئ رابطًا لـ Apple",
+        "outlook": "أنشئ رابطًا لـ Outlook"
+      },
+      "openIn": {
+        "google": "أضف إلى تقويم Google",
+        "apple": "أضف إلى تقويم Apple",
+        "outlook": "أضف إلى Outlook"
+      }
     },
     "move": {
       "action": "نقل",
@@ -164,7 +184,8 @@
       "findEvent": "ابحث عن فعالية",
       "planWithVitana": "خطط مع Vitana",
       "seeWeek": "عرض الأسبوع",
-      "connectAction": "اربط التقويم"
+      "connectAction": "اربط التقويم",
+      "dismiss": "إخفاء لليوم"
     },
     "journey": {
       "title": "رحلتك",
@@ -175,7 +196,15 @@
       "noneOpen": "أنجزت كل الخطوات، رائع! ستظهر خطوات جديدة كلما تقدمت.",
       "today": "اليوم {time}",
       "more": "+{count} أخرى",
-      "openJourney": "افتح رحلتي"
+      "openJourney": "افتح رحلتي",
+      "habitsOne": "عادة واحدة",
+      "habits": "العادات: {count}",
+      "habitsTitle": "عاداتك – في التقويم فقط إذا أردت",
+      "addHabit": "أضف إلى التقويم",
+      "dailyAt": "يوميًا في",
+      "addConfirm": "أضف",
+      "inCalendar": "في التقويم",
+      "habitAdded": "أُضيفت العادة إلى تقويمك"
     },
     "remindersSection": {
       "title": "التذكيرات",
@@ -192,7 +221,7 @@
         "outlook": "Outlook"
       },
       "connectTitle": "اربط تقويمك",
-      "connectBody": "شاهد يومك كله في مكان واحد. تخطط Vitana حول مواعيدك.",
+      "connectBody": "مواعيدك في Vitanaland على Google أو Apple أو Outlook – بلمسة واحدة.",
       "comingSoon": "يجري الآن إعداد تسجيل الدخول عبر Google وApple وOutlook.",
       "connectedOne": "{name} متصل",
       "connectedMany": "متصل: {names}",
@@ -233,6 +262,21 @@
         "community": "مجتمع",
         "nutrition": "تغذية"
       }
+    },
+    "milestone": "محطة مهمة: {title}",
+    "more": "+{count} أخرى",
+    "summary": {
+      "nothing": "لا شيء مخطط",
+      "entriesOne": "موعد واحد",
+      "entries": "المواعيد: {count}",
+      "next": "التالي في {time}",
+      "done": "المنجز: {count}"
+    },
+    "workSection": {
+      "title": "العمل",
+      "waitingOne": "أمر واحد بانتظارك",
+      "waiting": "بانتظارك: {count}",
+      "open": "افتح في الإدارة"
     }
   }
 }

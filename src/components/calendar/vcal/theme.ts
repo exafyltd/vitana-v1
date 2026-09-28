@@ -51,7 +51,16 @@ export const SURFACE = {
   busyBg: "#EEEAE5",
   busyInk: "#6F6878",
   primary: "#5B54D6",
+  /** Hairline between rows and around sections (VTID-04681). */
+  line: "#EDE4D8",
 } as const;
+
+/**
+ * VTID-04681 — the calendar uses two weights only: normal for everything,
+ * medium for the date, entry titles and the one main button. Bold and
+ * extra-bold are not used (a test fails the build if they come back).
+ */
+export const WEIGHT = { normal: 400, medium: 500 } as const;
 
 const PILLARS = new Set(["nutrition", "hydration", "exercise", "sleep", "mental"]);
 const WORK_TYPES = new Set(["professional", "admin_task", "dev_task", "deployment", "sprint_milestone"]);

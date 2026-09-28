@@ -69,7 +69,7 @@
       }
     },
     "empty": {
-      "title": "Ništa nije planirano – miran dan 🌿",
+      "title": "Ništa nije planirano – miran dan",
       "hint": "Reci Vitani šta planiraš i ona će to dodati."
     },
     "week": {
@@ -117,7 +117,27 @@
       "copyError": "Kopiranje nije uspelo – označi link i kopiraj ga sam.",
       "openApp": "Otvori u aplikaciji kalendara",
       "activeSince": "Link je aktivan od {date}.",
-      "error": "Nije uspelo. Pokušaj ponovo za trenutak."
+      "error": "Nije uspelo. Pokušaj ponovo za trenutak.",
+      "titleFor": {
+        "google": "Poveži Google kalendar",
+        "apple": "Poveži Apple kalendar",
+        "outlook": "Poveži Outlook"
+      },
+      "introFor": {
+        "google": "Tvoji Vitanaland termini pojavljuju se u tvom Google kalendaru i tamo ostaju ažurni.",
+        "apple": "Tvoji Vitanaland termini pojavljuju se u Apple kalendaru na iPhone-u, iPad-u i Mac-u i tamo ostaju ažurni.",
+        "outlook": "Tvoji Vitanaland termini pojavljuju se u tvom Outlook kalendaru i tamo ostaju ažurni."
+      },
+      "createFor": {
+        "google": "Napravi link za Google",
+        "apple": "Napravi link za Apple",
+        "outlook": "Napravi link za Outlook"
+      },
+      "openIn": {
+        "google": "Dodaj u Google kalendar",
+        "apple": "Dodaj u Apple kalendar",
+        "outlook": "Dodaj u Outlook"
+      }
     },
     "move": {
       "action": "Pomeri",
@@ -167,7 +187,8 @@
       "findEvent": "Pronađi događaj",
       "planWithVitana": "Planiraj sa Vitanom",
       "seeWeek": "Pogledaj nedelju",
-      "connectAction": "Poveži kalendar"
+      "connectAction": "Poveži kalendar",
+      "dismiss": "Sakrij za danas"
     },
     "journey": {
       "title": "Tvoje putovanje",
@@ -178,7 +199,15 @@
       "noneOpen": "Svi koraci su gotovi, bravo! Novi stižu kako budeš napredovao.",
       "today": "Danas {time}",
       "more": "+još {count}",
-      "openJourney": "Otvori moje putovanje"
+      "openJourney": "Otvori moje putovanje",
+      "habitsOne": "1 navika",
+      "habits": "Navika: {count}",
+      "habitsTitle": "Tvoje navike – u kalendaru samo ako to želiš",
+      "addHabit": "Dodaj u kalendar",
+      "dailyAt": "Svaki dan u",
+      "addConfirm": "Dodaj",
+      "inCalendar": "U kalendaru",
+      "habitAdded": "Navika je dodata u tvoj kalendar"
     },
     "remindersSection": {
       "title": "Podsetnici",
@@ -195,7 +224,7 @@
         "outlook": "Outlook"
       },
       "connectTitle": "Poveži svoj kalendar",
-      "connectBody": "Vidi ceo dan na jednom mestu. Vitana planira oko tvojih termina.",
+      "connectBody": "Tvoji Vitanaland termini u Google-u, Apple-u ili Outlook-u – jednim dodirom.",
       "comingSoon": "Prijava preko Google-a, Apple-a i Outlook-a se upravo podešava.",
       "connectedOne": "{name} povezan",
       "connectedMany": "Povezano: {names}",
@@ -236,6 +265,21 @@
         "community": "Zajednica",
         "nutrition": "Ishrana"
       }
+    },
+    "milestone": "Prekretnica: {title}",
+    "more": "+{count} još",
+    "summary": {
+      "nothing": "Ništa nije planirano",
+      "entriesOne": "1 termin",
+      "entries": "Termina: {count}",
+      "next": "sledeći u {time}",
+      "done": "završeno: {count}"
+    },
+    "workSection": {
+      "title": "Posao",
+      "waitingOne": "1 stvar te čeka",
+      "waiting": "Čeka te: {count}",
+      "open": "Otvori u administraciji"
     }
   }
 }

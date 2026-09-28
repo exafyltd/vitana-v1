@@ -198,7 +198,10 @@
         "activatedDescDispatched": "{from} → {to}. Dev autopilot is running execution {execution} — autonomous from here.",
         "rolledBackTitle": "{ticket} rolled back",
         "rolledBackDesc": "Revert PR #{number}. The ticket has been reopened.",
-        "rolledBackDescNoNumber": "Revert PR created. The ticket has been reopened."
+        "rolledBackDescNoNumber": "Revert PR created. The ticket has been reopened.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
       },
       "error": {
         "alreadyDispatched": "This ticket is already running in dev autopilot. Reclassify is locked once dispatched.",
