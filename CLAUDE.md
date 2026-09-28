@@ -59,9 +59,77 @@ npm run preview   # Preview production build
 
 **Moved to `.claude/rules/infrastructure.md`** — loaded automatically
 when a session touches `.github/workflows/**`. Covers AWS production
-hosts, the staging-first cutover, the Staging Verification Gate,
-GCP-billing-off staging relocation, and per-PR S3+CloudFront previews.
-Pure relocation, nothing rewritten or summarized.
+hosts, the staging-first cutover mechanics, GCP-billing-off staging
+relocation, and per-PR S3+CloudFront previews. Pure relocation, nothing
+rewritten or summarized.
+
+The two deployment **gates** below stay here, unscoped, instead of in
+that file — they must apply regardless of which files a session happens
+to open, the same reasoning the platform repo's CLAUDE.md already applies
+to VTID/Governance. A session doing ordinary `src/**` work, or dispatching
+a production deploy without first opening a workflow file, still has to
+see them.
+
+### Staging Verification Gate — STANDING RULE (VTID-04610)
+
+Owner decision 2026-09-26. The full process lives in one place:
+**`exafyltd/vitana-platform` → `docs/DEPLOYMENT-PIPELINE.md`** (platform
+CLAUDE.md Part 1 rules 46–50). For this repo:
+
+1. **Merge → staging deploy → STAGING-VERIFY.** Every frontend merge that
+   deploys (`AWS-STAGE-DEPLOY-FRONTEND.yml` → `preview-aws.vitanaland.com`) is
+   followed automatically by a test run against that staging build: the
+   community-app smoke suite plus this change's own
+   `docs/validation/<VTID>/staging-tests.json`. Done means that run passed on
+   the exact deployed chunk, not "the deploy workflow is green".
+2. **No suite, no merge.** If the change has no test that proves it on
+   staging, write it (usually a Playwright spec) in the same PR.
+3. **Read-only.** Staging frontends use the production Supabase project (see
+   "Why no host is exempt" below). Staging specs sign in, navigate and read;
+   a network guard aborts every non-`GET` to the gateway and Supabase REST
+   except sign-in. Anything that needs a write is covered by Vitest. No suite
+   ever points at `vitanaland.com`.
+4. **Ready message — Claude Code session + Command Hub Operator Chat only:**
+   *"Staging verified — ready for deployment to production?"*, with the
+   verified commit, results and every commit between production and it.
+5. **"Yes" → PUBLISH directly** — the Command Hub promotion, or from Claude
+   Code the prod workflow pinned to the verified commit (`commit_sha`). The
+   commit list in the ready message is what the "yes" approves; the
+   in-session scoping rules below apply to anything outside it. Verification
+   failed → no prompt, fix forward.
+
+After PUBLISH, production gets the deploy check in "Verifying a frontend
+deploy actually shipped" (`.claude/rules/infrastructure.md`) and nothing
+more — no test suite runs against production.
+
+### Scoping a production deploy to what was actually approved
+
+**If a production deploy is approved WITHIN a Claude Code session** (the
+user approves shipping to prod in conversation, carried out via a manual
+`workflow_dispatch` rather than PUBLISH) → that approval scopes to this
+session's own change only, never to whatever else is currently sitting on
+`main`/staging. PUBLISH is a deliberate, human-operated decision to promote
+the *entire* tested staging build; an in-session approval is not that —
+it's consent for the specific fix this session produced. `DEPLOY.yml`'s
+manual dispatch takes a `commit_sha` input that defaults to `github.sha`
+(i.e. whatever `main` HEAD is at dispatch time) — **always pass this
+session's own merge commit SHA explicitly** rather than accepting that
+default, so the deploy can't silently carry along other work that lands on
+`main` AFTER it.
+
+**Pinning a commit SHA is necessary but not sufficient.** `commit_sha` is
+checked out as a full repository snapshot (`ref: ${{ inputs.commit_sha ...
+}}`), not applied as a diff — so a pinned commit still ships every commit
+that is already an ANCESTOR of it, including anything merged to `main`
+before this session's own PR that this conversation never reviewed or
+approved. Before dispatching: diff the pinned commit against the revision
+currently live in production (its build-info/health endpoint reports the
+deployed commit) and confirm every commit in that range is either this
+session's own work or something the user has separately approved for this
+deploy. If that range contains changes this conversation didn't produce or
+the user hasn't approved, and they can't be excluded (the deploy ships a
+full snapshot, never a pinned diff), stop and tell the user exactly what
+else would ship alongside theirs before proceeding.
 
 ## Project Structure
 
