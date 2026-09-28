@@ -125,7 +125,8 @@
       "confirmPost": "Abrir na publicação",
       "confirmMessage": "Enviar mensagem",
       "confirmCaption": "Ir para o envio",
-      "placeholder": "Escreva aqui …"
+      "placeholder": "Escreva aqui …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

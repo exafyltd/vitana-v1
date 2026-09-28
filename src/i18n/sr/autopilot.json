@@ -125,7 +125,8 @@
       "confirmPost": "Otvori u objavi",
       "confirmMessage": "Pošalji poruku",
       "confirmCaption": "Idi na otpremanje",
-      "placeholder": "Piši ovde …"
+      "placeholder": "Piši ovde …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

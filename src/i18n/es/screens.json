@@ -6813,7 +6813,10 @@
       "noMissed": "No hay recordatorios perdidos — estás al día.",
       "creating": "Creando…",
       "createReminder": "Crear recordatorio",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "No hay eventos en tu inventario",

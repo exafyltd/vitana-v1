@@ -6866,7 +6866,10 @@
       "noMissed": "Aucun rappel manqué — tu es à jour.",
       "creating": "Création en cours…",
       "createReminder": "Créer un rappel",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Aucun événement dans ton inventaire",
@@ -11308,7 +11311,7 @@
         "unauthorized": "Please sign in again.",
         "noTenant": "No active tenant – pick a workspace first.",
         "notFound": "Not found.",
-        "generic": "The data could not be loaded.",
+        "generic": "Les données n'ont pas pu être chargées.",
         "_pending_review": {
           "bridgeUnavailable": true,
           "bridgeUnavailableHint": true,
@@ -11317,32 +11320,22 @@
           "erpFailed": true,
           "unauthorized": true,
           "noTenant": true,
-          "notFound": true,
-          "generic": true
+          "notFound": true
         }
       },
       "activity": {
-        "title": "Activity",
-        "description": "Every command in your tenant, newest first – from the web, the chat and voice.",
-        "searchPlaceholder": "Search by command, ID or reason …",
-        "statusFilter": "Status",
-        "empty": "No commands yet",
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "searchPlaceholder": true,
-          "statusFilter": true,
-          "empty": true
-        }
+        "title": "Activité",
+        "description": "Chaque commande de ton locataire, la plus récente d'abord – du web, du chat et de la voix.",
+        "searchPlaceholder": "Recherche par commande, ID ou raison…",
+        "statusFilter": "Statut",
+        "empty": "Aucune commande pour l'instant"
       },
       "tiers": {
-        "read": "Read",
-        "draft": "Draft",
+        "read": "Lu",
+        "draft": "Brouillon",
         "commit": "Commit",
         "high": "High-risk",
         "_pending_review": {
-          "read": true,
-          "draft": true,
           "commit": true,
           "high": true
         }

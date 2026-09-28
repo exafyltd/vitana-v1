@@ -125,7 +125,8 @@
       "confirmPost": "Otwórz w poście",
       "confirmMessage": "Wyślij wiadomość",
       "confirmCaption": "Przejdź do przesyłania",
-      "placeholder": "Pisz tutaj …"
+      "placeholder": "Pisz tutaj …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

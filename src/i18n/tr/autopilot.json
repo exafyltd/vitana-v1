@@ -125,7 +125,8 @@
       "confirmPost": "Gönderide aç",
       "confirmMessage": "Mesaj gönder",
       "confirmCaption": "Yüklemeye git",
-      "placeholder": "Buraya yaz …"
+      "placeholder": "Buraya yaz …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

@@ -125,7 +125,8 @@
       "confirmPost": "Ouvrir dans la publication",
       "confirmMessage": "Envoyer le message",
       "confirmCaption": "Aller au téléversement",
-      "placeholder": "Écris ici …"
+      "placeholder": "Écris ici …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

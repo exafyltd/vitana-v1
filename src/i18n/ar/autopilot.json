@@ -125,7 +125,8 @@
       "confirmPost": "افتح في المنشور",
       "confirmMessage": "أرسل الرسالة",
       "confirmCaption": "انتقل إلى الرفع",
-      "placeholder": "اكتب هنا …"
+      "placeholder": "اكتب هنا …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

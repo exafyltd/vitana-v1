@@ -6866,7 +6866,10 @@
       "noMissed": "لا توجد تذكيرات فائتة — أنت على اطلاع كامل.",
       "creating": "جاري الإنشاء…",
       "createReminder": "إنشاء تذكير",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "لا توجد أحداث في مخزونك.",

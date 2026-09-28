@@ -6867,7 +6867,10 @@
       "noMissed": "Brak przegapionych przypomnień — wszystko masz nadrobione.",
       "creating": "Tworzenie…",
       "createReminder": "Utwórz przypomnienie",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Brak wydarzeń w Twoim ekwipunku",

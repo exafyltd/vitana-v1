@@ -221,7 +221,12 @@
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook"
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
       },
       "connectTitle": "Poveži svoj kalendar",
       "connectBody": "Tvoji Vitanaland termini u Google-u, Apple-u ili Outlook-u – jednim dodirom.",

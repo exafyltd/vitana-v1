@@ -219,7 +219,12 @@
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook"
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
       },
       "connectTitle": "Conecta tu calendario",
       "connectBody": "Tus citas de Vitanaland en Google, Apple u Outlook, con un toque.",
@@ -261,7 +266,10 @@
         "health": "Salud",
         "workout": "Entrenamiento",
         "community": "Comunidad",
-        "nutrition": "Nutrición"
+        "nutrition": "Nutrición",
+        "_pending_review": {
+          "personal": true
+        }
       }
     },
     "milestone": "Hito: {title}",

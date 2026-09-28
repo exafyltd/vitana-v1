@@ -125,7 +125,8 @@
       "confirmPost": "Открыть в посте",
       "confirmMessage": "Отправить сообщение",
       "confirmCaption": "К загрузке",
-      "placeholder": "Пиши здесь …"
+      "placeholder": "Пиши здесь …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
