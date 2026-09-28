@@ -125,7 +125,8 @@
       "confirmPost": "Open in post",
       "confirmMessage": "Send message",
       "confirmCaption": "Go to upload",
-      "placeholder": "Write here …"
+      "placeholder": "Write here …",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

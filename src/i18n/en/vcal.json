@@ -66,19 +66,26 @@
       "community": "Community",
       "journey": "Your journey",
       "_pending_review": {
-        "autopilot": true
+        "autopilot": true,
+        "community": true
       }
     },
     "empty": {
       "title": "Nothing planned – a calm day",
-      "hint": "Tell Vitana what you have in mind and she'll add it."
+      "hint": "Tell Vitana what you have in mind and she'll add it.",
+      "_pending_review": {
+        "title": true
+      }
     },
     "week": {
       "title": "Week of {date}",
       "free": "free"
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
     },
     "entry": {
       "close": "Close",
@@ -216,7 +223,12 @@
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook"
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
       },
       "connectTitle": "Connect your calendar",
       "connectBody": "Your Vitanaland entries in Google, Apple or Outlook – one tap.",
@@ -258,7 +270,13 @@
         "health": "Health",
         "workout": "Workout",
         "community": "Community",
-        "nutrition": "Nutrition"
+        "nutrition": "Nutrition",
+        "_pending_review": {
+          "community": true
+        }
+      },
+      "_pending_review": {
+        "optional": true
       }
     },
     "milestone": "Milestone: {title}",
