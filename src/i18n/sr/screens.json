@@ -6866,7 +6866,10 @@
       "noMissed": "Nema propuštenih podsetnika — sve si stigao/la.",
       "creating": "Kreiram…",
       "createReminder": "Kreiraj podsetnik",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Nema događaja u tvom inventaru",

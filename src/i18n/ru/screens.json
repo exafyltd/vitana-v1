@@ -6869,7 +6869,10 @@
       "noMissed": "Нет пропущенных напоминаний — ты все успел(а).",
       "creating": "Создание…",
       "createReminder": "Создать напоминание",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "В твоем инвентаре нет событий",

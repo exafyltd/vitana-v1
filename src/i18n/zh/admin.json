@@ -19,10 +19,21 @@
       "rejected": "已拒绝",
       "flagged": "已标记",
       "podcastManagement": "播客管理",
-      "podcastManagementDesc": "审核和管理播客上传",
-      "_pending_review": {}
+      "podcastManagementDesc": "审核和管理播客上传"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "notifications": {
+      "tabs": {
+        "_pending_review": {
+          "notifications": true,
+          "categories": true,
+          "activity": true,
+          "compose": true
+        },
+        "notifications": "Notifications",
+        "categories": "Categories",
+        "activity": "Activity",
+        "compose": "Send"
+      }
+    }
+  }
 }

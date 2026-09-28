@@ -218,7 +218,12 @@
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook"
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
       },
       "connectTitle": "连接你的日历",
       "connectBody": "在 Google、Apple 或 Outlook 中查看你的 Vitanaland 安排——轻点一下即可。",

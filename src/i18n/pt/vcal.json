@@ -218,7 +218,12 @@
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook"
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
       },
       "connectTitle": "Conecte seu calendário",
       "connectBody": "Seus compromissos do Vitanaland no Google, Apple ou Outlook – com um toque.",

@@ -6866,7 +6866,10 @@
       "noMissed": "Aucun rappel manqué — tu es à jour.",
       "creating": "Création en cours…",
       "createReminder": "Créer un rappel",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Aucun événement dans ton inventaire",

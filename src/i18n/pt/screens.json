@@ -6817,7 +6817,10 @@
       "noMissed": "Nenhum lembrete perdido — você está com tudo em dia.",
       "creating": "A criar…",
       "createReminder": "Criar lembrete",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no seu inventário",
