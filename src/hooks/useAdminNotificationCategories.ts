@@ -26,6 +26,8 @@ export interface NotificationCategory {
   is_active: boolean;
   default_enabled: boolean;
   mapped_types: string[];
+  /** VTID-04674: false = members cannot switch this category off (account/security). */
+  member_can_disable?: boolean;
   created_at: string;
   updated_at: string;
   created_by: string | null;
@@ -81,6 +83,7 @@ interface CreatePayload {
   default_enabled?: boolean;
   mapped_types?: string[];
   tenant_id?: string;
+  member_can_disable?: boolean;
 }
 
 export function useCreateCategory() {
@@ -115,6 +118,7 @@ interface UpdatePayload {
   is_active?: boolean;
   default_enabled?: boolean;
   mapped_types?: string[];
+  member_can_disable?: boolean;
 }
 
 export function useUpdateCategory() {

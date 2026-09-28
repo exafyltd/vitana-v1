@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
+import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { NotificationComposer, ComposeFormData } from "@/components/admin/NotificationComposer";
 import { NotificationPreview } from "@/components/admin/NotificationPreview";
-import { adminNotificationsNavigation } from "@/config/navigation";
+import { useTenant } from "@/hooks/useTenant";
 import { useComposeNotification } from "@/hooks/useAdminNotifications";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
-// TODO: Replace with dynamic tenant selection when multi-tenant admin is built
-const DEFAULT_TENANT_ID = "00000000-0000-0000-0000-000000000000";
-
 export default function NotificationsCompose() {
+  // VTID-04675: the admin's own tenant (was a hardcoded all-zero placeholder).
+  const { activeTenantId } = useTenant();
+  const DEFAULT_TENANT_ID = activeTenantId || "";
   const { toast } = useToast();
   const composeMutation = useComposeNotification();
   const [preview, setPreview] = useState({
@@ -33,7 +33,7 @@ export default function NotificationsCompose() {
 
   const handleSubmit = async (data: ComposeFormData) => {
     try {
-      const payload: Record<string, any> = {
+      const payload: Parameters<typeof composeMutation.mutateAsync>[0] = {
         type: data.type,
         title: data.title,
         body: data.body,
@@ -51,21 +51,21 @@ export default function NotificationsCompose() {
         payload.recipient_ids = data.recipients.userIds;
       }
 
-      const result = await composeMutation.mutateAsync(payload as any);
+      await composeMutation.mutateAsync(payload);
 
       notify('toasts.admin.notificationSent');
-    } catch (err: any) {
+    } catch {
       notifyError('toasts.admin.sendFailed2');
     }
   };
 
   return (
     <AppLayout>
-      <SubNavigation items={adminNotificationsNavigation} />
+      <AdminTabs sectionKey="notifications" />
       <div className="p-6 space-y-6">
         <AdminHeader
           title={t('screens.admin.composeNotification')}
-          description="Send push and in-app notifications to your users"
+          description={t("notificationControls.pages.compose.description")}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">

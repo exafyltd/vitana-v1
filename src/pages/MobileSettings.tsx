@@ -30,7 +30,7 @@ import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
-import { t } from '@/lib/i18n-toast';
+import { t, getI18nLocale } from '@/lib/i18n-toast';
 import { useWindowOverlay } from '@/navigation/overlay-bus';
 
 const VALID_SECTIONS = new Set([
@@ -47,7 +47,7 @@ export default function MobileSettings() {
   const { translate } = useTranslation();
   const { pendingCount } = useAutopilot();
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
-  const { categories, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
+  const { categories, role, roleNotifications, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSection, setActiveSection] = useState(() => {
@@ -216,17 +216,38 @@ export default function MobileSettings() {
                           {cat.description && (
                             <p className="text-xs text-muted-foreground mt-0.5 truncate">{cat.description}</p>
                           )}
+                          {cat.locked && (
+                            <p className="text-xs text-muted-foreground mt-0.5">{t('notificationControls.member.alwaysOn')}</p>
+                          )}
                         </div>
+                        {/* VTID-04676: categories decide in-app AND push; locked ones are always on. */}
                         <Switch
-                          checked={cat.enabled}
+                          checked={cat.locked ? true : cat.enabled}
                           onCheckedChange={() => handleCategoryToggle(cat)}
-                          disabled={catLoading || !prefs.push_enabled}
+                          disabled={catLoading || !!cat.locked}
+                          aria-label={cat.display_name}
                         />
                       </div>
                     ))}
                   </div>
                 );
               })}
+
+              {/* VTID-04676: notifications the caller's role receives (admin / developer / staff) */}
+              {role && roleNotifications.length > 0 && (
+                <div data-testid="role-notifications">
+                  <Separator className="bg-border/30" />
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground pt-3 pb-1">
+                    {t(`notificationControls.member.roleTitle.${role}`)}
+                  </p>
+                  <p className="text-xs text-muted-foreground pb-1">{t('notificationControls.member.roleHint')}</p>
+                  {roleNotifications.map((n) => (
+                    <p key={n.type} className="text-sm text-foreground/80 py-1.5">
+                      {getI18nLocale().toLowerCase().startsWith('de') ? n.label.de : n.label.en}
+                    </p>
+                  ))}
+                </div>
+              )}
 
               <Separator className="bg-border/30" />
               <div className="flex items-center justify-between py-2.5">
