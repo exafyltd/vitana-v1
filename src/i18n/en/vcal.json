@@ -72,10 +72,7 @@
     },
     "empty": {
       "title": "Nothing planned – a calm day",
-      "hint": "Tell Vitana what you have in mind and she'll add it.",
-      "_pending_review": {
-        "title": true
-      }
+      "hint": "Tell Vitana what you have in mind and she'll add it."
     },
     "week": {
       "title": "Week of {date}",
