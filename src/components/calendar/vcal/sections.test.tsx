@@ -20,6 +20,8 @@ const h = vi.hoisted(() => ({
   createCalendarEntry: vi.fn(),
   reminders: [] as Array<Record<string, unknown>>,
   journey: null as null | Record<string, unknown>,
+  plan: null as null | Record<string, unknown>,
+  fetchCalendarWindow: vi.fn(),
   notify: vi.fn(),
   notifyError: vi.fn(),
 }));
@@ -38,12 +40,13 @@ vi.mock("@/lib/locale-format", async () => ({
 vi.mock("@/hooks/useTranslation", () => ({ useTranslation: () => ({ translate: (_k: string, f: string) => f, isGerman: false }) }));
 vi.mock("@/hooks/useReminders", () => ({ useReminders: () => ({ data: h.reminders, isLoading: false }) }));
 vi.mock("@/hooks/useJourneyProgress", () => ({ useJourneyProgress: () => h.journey }));
+vi.mock("@/hooks/useGoalPlan", () => ({ useGoalPlan: () => ({ data: { ok: true, plan: h.plan } }) }));
 vi.mock("@/components/reminders/RemindersPanel", () => ({ default: () => <div data-testid="reminders-panel" /> }));
 vi.mock("@/components/settings/connected-apps/MailCalendarContactsPanel", () => ({ CONNECTED_APPS_QUERY_KEY: ["connected-apps"] }));
 vi.mock("@/lib/connected-apps-client", () => ({ fetchConnectedApps: h.fetchConnectedApps }));
-vi.mock("@/lib/calendar-window-client", () => ({ createCalendarEntry: h.createCalendarEntry }));
+vi.mock("@/lib/calendar-window-client", () => ({ createCalendarEntry: h.createCalendarEntry, fetchCalendarWindow: h.fetchCalendarWindow }));
 
-import { CalendarsSection, JourneySection, RemindersSection, connectLink } from "./sections";
+import { CalendarsSection, ConnectCalendarCard, HABIT_REF_TYPE, JourneySection, RemindersSection, WorkSection, connectLink, firstStart, untilEndOf } from "./sections";
 import { AddEntrySheet } from "./AddEntrySheet";
 
 function cal(id: "google-calendar" | "apple-calendar" | "outlook-calendar", over: Partial<ConnectedAppState> = {}): ConnectedAppState {
@@ -77,29 +80,52 @@ beforeEach(() => {
   localStorage.clear();
   h.reminders = [];
   h.journey = null;
+  h.plan = null;
 });
 
-describe("CalendarsSection", () => {
-  it("nothing connected: an open card with Google, Apple and Outlook", async () => {
+describe("ConnectCalendarCard (VTID-04682)", () => {
+  it("nothing connected: a card with Google, Apple and Outlook", async () => {
     h.fetchConnectedApps.mockResolvedValue([cal("google-calendar"), cal("apple-calendar"), cal("outlook-calendar")]);
-    wrap(<CalendarsSection onShowInApp={() => {}} />);
+    wrap(<ConnectCalendarCard onSubscribe={() => {}} />);
     expect(await screen.findByTestId("vcal-connect")).toBeInTheDocument();
     for (const p of ["google", "apple", "outlook"]) expect(screen.getByTestId(`vcal-connect-${p}`)).toBeInTheDocument();
-    expect(screen.queryByText("vcal.calendars.comingSoon")).toBeNull();
   });
 
-  it("each button hands off to Connected Apps with that app", async () => {
+  it("an app whose sign-in is set up hands off to Connected Apps", async () => {
+    const onSubscribe = vi.fn();
     h.fetchConnectedApps.mockResolvedValue([cal("google-calendar"), cal("apple-calendar"), cal("outlook-calendar")]);
-    wrap(<CalendarsSection onShowInApp={() => {}} />);
+    wrap(<ConnectCalendarCard onSubscribe={onSubscribe} />);
     fireEvent.click(await screen.findByTestId("vcal-connect-outlook"));
     expect(screen.getByTestId("where").textContent).toBe(connectLink("outlook-calendar"));
+    expect(onSubscribe).not.toHaveBeenCalled();
     expect(connectLink("google-calendar")).toBe("/connectors?tab=productivity&connect=google-calendar");
   });
 
-  it("says sign-in is being set up when no provider is ready", async () => {
-    h.fetchConnectedApps.mockResolvedValue([cal("google-calendar", { availability: "not_configured" }), cal("outlook-calendar", { availability: "not_configured" })]);
+  it("an app not set up yet still works: it opens the subscription link for that app", async () => {
+    const onSubscribe = vi.fn();
+    h.fetchConnectedApps.mockResolvedValue([cal("google-calendar", { availability: "not_configured" }), cal("apple-calendar", { availability: "not_configured" })]);
+    wrap(<ConnectCalendarCard onSubscribe={onSubscribe} />);
+    fireEvent.click(await screen.findByTestId("vcal-connect-google"));
+    expect(onSubscribe).toHaveBeenCalledWith("google");
+    expect(screen.getByTestId("where").textContent).toBe("/calendar");
+  });
+
+  it("is gone once a calendar app is connected", async () => {
+    h.fetchConnectedApps.mockResolvedValue([cal("google-calendar", { status: "on" })]);
+    wrap(<ConnectCalendarCard onSubscribe={() => {}} />);
+    await waitFor(() => expect(h.fetchConnectedApps).toHaveBeenCalled());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(screen.queryByTestId("vcal-connect")).toBeNull();
+  });
+});
+
+describe("CalendarsSection", () => {
+  it("is not shown while nothing is connected (the card at the top says it)", async () => {
+    h.fetchConnectedApps.mockResolvedValue([cal("google-calendar")]);
     wrap(<CalendarsSection onShowInApp={() => {}} />);
-    expect(await screen.findByText("vcal.calendars.comingSoon")).toBeInTheDocument();
+    await waitFor(() => expect(h.fetchConnectedApps).toHaveBeenCalled());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(screen.queryByTestId("vcal-section-calendars")).toBeNull();
   });
 
   it("connected: folds into a section that names what is connected", async () => {
@@ -120,10 +146,36 @@ describe("CalendarsSection", () => {
 
   it("'Show in my calendar app' opens the subscription sheet", async () => {
     const onShow = vi.fn();
-    h.fetchConnectedApps.mockResolvedValue([cal("google-calendar")]);
+    h.fetchConnectedApps.mockResolvedValue([cal("google-calendar", { status: "on" })]);
+    localStorage.setItem("vitana.calendar.open.calendars", "1");
     wrap(<CalendarsSection onShowInApp={onShow} />);
     fireEvent.click(await screen.findByTestId("vcal-subscribe-open"));
     expect(onShow).toHaveBeenCalled();
+  });
+});
+
+describe("WorkSection (VTID-04681)", () => {
+  const work = (id: string) => ({ id: `work:${id}`, event_id: id, start_time: "2026-10-05T08:00:00Z", end_time: null, busy: false, occurrence_index: null, event: { id, title: "#12" }, work: { kind: "autopilot_review", source_id: id, params: {} } });
+
+  it("members never ask for work items", () => {
+    wrap(<WorkSection role="community" now={new Date()} />);
+    expect(h.fetchCalendarWindow).not.toHaveBeenCalled();
+    expect(screen.queryByTestId("vcal-section-work")).toBeNull();
+  });
+
+  it("staff: one folded line with the count, asked for explicitly", async () => {
+    h.fetchCalendarWindow.mockResolvedValue({ items: [work("a"), work("b")], timezone: null });
+    wrap(<WorkSection role="developer" now={new Date()} />);
+    const s = await screen.findByTestId("vcal-section-work");
+    expect(s.textContent).toContain('vcal.workSection.waiting:{"count":2}');
+    expect(h.fetchCalendarWindow.mock.calls[0][3]).toEqual({ includeWork: true });
+  });
+
+  it("staff with nothing waiting: nothing shown", async () => {
+    h.fetchCalendarWindow.mockResolvedValue({ items: [], timezone: null });
+    wrap(<WorkSection role="admin" now={new Date()} />);
+    await waitFor(() => expect(h.fetchCalendarWindow).toHaveBeenCalled());
+    expect(screen.queryByTestId("vcal-section-work")).toBeNull();
   });
 });
 
@@ -154,21 +206,61 @@ describe("RemindersSection", () => {
 describe("JourneySection", () => {
   const step = (id: string, title: string): CalendarWindowItem =>
     ({ id, event_id: id, start_time: "2026-10-05T08:00:00Z", end_time: null, busy: false, occurrence_index: null, event: { id, title, event_type: "autopilot" } }) as never;
+  const habit = (id: string, title: string) => ({ id, kind: "habit", title, description: null, day_offset: null, scheduled_date: null, status: "pending", sort_order: 0 });
+  const base = { now: new Date("2026-10-05T07:00:00Z"), onOpenStep: () => {}, addedHabitIds: new Set<string>(), role: "community" };
 
-  it("names the wave and how many steps are open, and opens a step", () => {
+  it("says how many steps are open, and opens a step", () => {
     h.journey = { dayNumber: 3, wave: { nameKey: "k", name: "Getting Started" }, waveProgress: 40, totalProgress: 3, isActive: true };
     const onOpen = vi.fn();
-    wrap(<JourneySection steps={[step("a", "Respond to your matches"), step("b", "Say hi")]} now={new Date("2026-10-05T07:00:00Z")} onOpenStep={onOpen} />);
+    wrap(<JourneySection {...base} steps={[step("a", "Respond to your matches"), step("b", "Say hi")]} onOpenStep={onOpen} />);
     const s = screen.getByTestId("vcal-section-journey");
-    expect(s.textContent).toContain('Getting Started · vcal.journey.open:{"count":2}');
+    expect(s.textContent).toContain('vcal.journey.open:{"count":2}');
     fireEvent.click(s.querySelector("button")!);
     fireEvent.click(screen.getAllByTestId("vcal-journey-step")[0]);
     expect(onOpen).toHaveBeenCalledWith(expect.objectContaining({ id: "a" }));
   });
 
-  it("is not shown without a journey and without steps", () => {
-    wrap(<JourneySection steps={[]} now={new Date()} onOpenStep={() => {}} />);
+  it("is not shown without a journey, steps or habits", () => {
+    wrap(<JourneySection {...base} steps={[]} />);
     expect(screen.queryByTestId("vcal-section-journey")).toBeNull();
+  });
+
+  it("habits live here, not in the calendar; one goes in only when the member picks a time", async () => {
+    h.plan = { status: "active", target_date: "2026-12-31", habits: [habit("h1", "Drink water"), habit("h2", "Walk")] };
+    h.createCalendarEntry.mockResolvedValue({ id: "e1" });
+    localStorage.setItem("vitana.calendar.open.journey", "1");
+    wrap(<JourneySection {...base} steps={[]} addedHabitIds={new Set(["h2"])} />);
+    expect(screen.getByTestId("vcal-section-journey").textContent).toContain('vcal.journey.habits:{"count":2}');
+    expect(screen.getAllByTestId("vcal-habit")).toHaveLength(2);
+    expect(screen.getAllByTestId("vcal-habit-added")).toHaveLength(1);
+    expect(h.createCalendarEntry).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByTestId("vcal-habit-add"));
+    fireEvent.change(screen.getByTestId("vcal-habit-time"), { target: { value: "07:30" } });
+    fireEvent.click(screen.getByTestId("vcal-habit-confirm"));
+    await waitFor(() => expect(h.createCalendarEntry).toHaveBeenCalled());
+    const [input, role] = h.createCalendarEntry.mock.calls[0];
+    expect(role).toBe("community");
+    expect(input).toMatchObject({ title: "Drink water", event_type: "wellness_nudge", source_ref_type: HABIT_REF_TYPE, source_ref_id: "h1" });
+    expect(input.rrule).toMatch(/^FREQ=DAILY;UNTIL=\d{8}T\d{6}Z$/);
+    expect(new Date(input.start_time).getMinutes()).toBe(30);
+    expect(h.notify).toHaveBeenCalledWith("vcal.journey.habitAdded");
+  });
+
+  it("an inactive plan offers no habits", () => {
+    h.plan = { status: "completed", target_date: "2026-12-31", habits: [habit("h1", "x")] };
+    wrap(<JourneySection {...base} steps={[]} />);
+    expect(screen.queryByTestId("vcal-section-journey")).toBeNull();
+  });
+});
+
+describe("habit timing helpers", () => {
+  it("starts today when the time is still ahead, else tomorrow", () => {
+    const now = new Date(2026, 9, 5, 9, 0);
+    expect(firstStart(now, "10:00").getDate()).toBe(5);
+    expect(firstStart(now, "08:00").getDate()).toBe(6);
+  });
+  it("UNTIL is the end of the target day, in UTC form", () => {
+    expect(untilEndOf("2026-12-31")).toMatch(/^2026123[01]T\d{6}Z$/);
   });
 });
 
@@ -232,6 +324,13 @@ describe("GuideCard", () => {
     expect(a.onConnect).toHaveBeenCalled();
   });
 
+  it("can be put away for the day", () => {
+    const a = { ...actions(), onDismiss: vi.fn() };
+    wrap(<GuideCard guidance={{ kind: "freeDay" }} actions={a} />);
+    fireEvent.click(screen.getByTestId("vcal-guide-dismiss"));
+    expect(a.onDismiss).toHaveBeenCalled();
+  });
+
   it("busy: advice only, no button", () => {
     wrap(<GuideCard guidance={{ kind: "busy", count: 7 }} actions={actions()} />);
     expect(screen.getByTestId("vcal-guide").querySelectorAll("button")).toHaveLength(0);
@@ -241,7 +340,7 @@ describe("GuideCard", () => {
 describe("Disclosure", () => {
   it("shows its summary closed, exposes aria-expanded, and remembers being opened", () => {
     const { unmount } = wrap(
-      <Disclosure id="t" emoji="🧪" title="Title" summary="3 things">
+      <Disclosure id="t" title="Title" summary="3 things">
         <p>inside</p>
       </Disclosure>,
     );
@@ -253,7 +352,7 @@ describe("Disclosure", () => {
     expect(btn).toHaveAttribute("aria-expanded", "true");
     unmount();
     wrap(
-      <Disclosure id="t" emoji="🧪" title="Title" summary="3 things">
+      <Disclosure id="t" title="Title" summary="3 things">
         <p>inside</p>
       </Disclosure>,
     );

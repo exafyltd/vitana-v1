@@ -697,7 +697,8 @@
       "faint": "#9A8FA5",
       "busyBg": "#EEEAE5",
       "busyInk": "#6F6878",
-      "primary": "#5B54D6"
+      "primary": "#5B54D6",
+      "line": "#EDE4D8"
     }
   },
   "nl.parse": [

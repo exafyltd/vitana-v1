@@ -155,8 +155,8 @@ describe("work-lens items (VTID-04357)", () => {
     expect(src("./EntryScreen.tsx")).toMatch(/canComplete = [^;]*!item\.work/);
   });
 
-  it("work items stay out of the personal progress ring and Next up", () => {
-    expect(src("../../../pages/Calendar.tsx")).toContain("filter((i) => i.event && !i.work)");
+  it("work items stay out of the member's own day (and so do milestones)", () => {
+    expect(src("../../../pages/Calendar.tsx")).toContain("filter((i) => i.event && !i.work && !isMilestone(i))");
   });
 
   it("the source label comes from the work kind", () => {
@@ -174,14 +174,18 @@ describe("calendar subscription link (VTID-04358)", () => {
 
   it("the sheet is reachable from the calendar header", () => {
     const page = fs.readFileSync(path.resolve(__dirname, "../../../pages/Calendar.tsx"), "utf8");
-    expect(page).toContain("setSubscribeOpen(true)");
+    expect(page).toContain("setSubscribeOpen({ provider })");
     expect(page).toContain("<SubscribeSheet");
   });
 
   it("every locale has the subscribe strings", () => {
     for (const loc of ["de", "en", "es", "fr", "pt", "pl", "ru", "sr", "tr", "zh", "ar"]) {
       const j = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../../i18n/${loc}/vcal.json`), "utf8"));
-      expect(Object.keys(j.vcal.subscribe)).toHaveLength(16);
+      // 16 strings + the per-app wording (VTID-04682): title, intro, create, open.
+      expect(Object.keys(j.vcal.subscribe)).toHaveLength(20);
+      for (const k of ["titleFor", "introFor", "createFor", "openIn"]) {
+        expect(Object.keys(j.vcal.subscribe[k]).sort()).toEqual(["apple", "google", "outlook"]);
+      }
     }
   });
 });

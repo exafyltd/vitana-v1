@@ -34,6 +34,7 @@ export interface CalendarEntry {
   status: string;
   source_type: string;
   source_ref_type: string | null;
+  source_ref_id?: string | null;
   role_context: string;
   completion_status: string | null;
   completed_at: string | null;
@@ -122,8 +123,10 @@ async function authedFetch(path: string, role: string | null, init: RequestInit 
   return body;
 }
 
-export async function fetchCalendarWindow(from: Date, to: Date, role: string | null): Promise<CalendarWindow> {
+export async function fetchCalendarWindow(from: Date, to: Date, role: string | null, opts: { includeWork?: boolean } = {}): Promise<CalendarWindow> {
   const qs = new URLSearchParams({ from: from.toISOString(), to: to.toISOString() });
+  // VTID-04680: staff work items are opt-in; the calendar itself never asks.
+  if (opts.includeWork) qs.set("include_work", "true");
   const body = await authedFetch(`/api/v1/calendar/events/window?${qs}`, role);
   const items: CalendarWindowItem[] = Array.isArray(body.data) ? (body.data as CalendarWindowItem[]) : [];
   items.sort((a, b) => Date.parse(a.start_time) - Date.parse(b.start_time));
@@ -137,6 +140,12 @@ export interface NewCalendarEntry {
   end_time: string | null;
   location?: string | null;
   event_type: string;
+  /** VTID-04681: a habit the member chose to put in the calendar repeats daily. */
+  rrule?: string | null;
+  timezone?: string | null;
+  emoji?: string | null;
+  source_ref_type?: string | null;
+  source_ref_id?: string | null;
 }
 
 /**

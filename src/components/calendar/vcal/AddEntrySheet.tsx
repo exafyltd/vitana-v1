@@ -58,7 +58,7 @@ export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string 
         data-testid="vcal-add-sheet"
       >
         <div className="flex items-start justify-between gap-3">
-          <h2 id="vcal-add-title" className="m-0 text-[22px] font-bold" style={{ fontFamily: HEADING_FONT }}>
+          <h2 id="vcal-add-title" className="m-0 text-[22px] font-medium" style={{ fontFamily: HEADING_FONT }}>
             {t("vcal.add.title")}
           </h2>
           <button
@@ -66,7 +66,7 @@ export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string 
             type="button"
             onClick={onClose}
             aria-label={t("vcal.entry.close")}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-lg font-extrabold shadow-sm"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-lg shadow-sm"
           >
             ✕
           </button>

@@ -1,6 +1,8 @@
 /**
  * Vitana's one suggestion for today (VTID-04536). The rules live in
  * guidance.ts; this card only words them and offers the one next move.
+ *
+ * VTID-04681: a quiet card the member can put away for the day.
  */
 import { t } from "@/lib/i18n-toast";
 import { fmtTime } from "@/lib/locale-format";
@@ -13,6 +15,7 @@ export interface GuideActions {
   onAskVitana: () => void;
   onShowWeek: () => void;
   onConnect: () => void;
+  onDismiss?: () => void;
 }
 
 function wording(g: Guidance): { text: string; sub?: string } {
@@ -40,8 +43,8 @@ function Action({ label, onClick, primary }: { label: string; onClick: () => voi
     <button
       type="button"
       onClick={onClick}
-      className="h-10 rounded-full px-4 text-sm font-extrabold"
-      style={primary ? { background: SURFACE.primary, color: "#FFFFFF" } : { background: "#FFFFFF", color: SURFACE.primary }}
+      className={`h-9 rounded-full px-4 text-sm ${primary ? "font-medium" : ""}`}
+      style={primary ? { background: SURFACE.primary, color: "#FFFFFF" } : { background: "transparent", color: SURFACE.primary }}
     >
       {label}
     </button>
@@ -51,15 +54,29 @@ function Action({ label, onClick, primary }: { label: string; onClick: () => voi
 export function GuideCard({ guidance, actions }: { guidance: Guidance; actions: GuideActions }) {
   const { text, sub } = wording(guidance);
   return (
-    <div className="flex flex-col gap-3 rounded-[20px] px-4 py-3.5" style={{ background: "#ECEAFF", color: "#2F2A7A" }} data-testid="vcal-guide" data-kind={guidance.kind}>
-      <span className="text-xs font-extrabold uppercase tracking-wider" style={{ color: "#5B54D6" }}>
-        ✨ {t("vcal.guide.eyebrow")}
-      </span>
-      <div className="flex flex-col gap-0.5">
-        <span className="text-[15px] font-bold leading-snug">{text}</span>
-        {sub && <span className="text-sm opacity-80">{sub}</span>}
+    <div className="flex flex-col gap-2.5 rounded-2xl px-4 py-3" style={{ background: "#F3F2FF", color: SURFACE.ink }} data-testid="vcal-guide" data-kind={guidance.kind}>
+      <div className="flex items-start gap-2">
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="text-[13px]" style={{ color: SURFACE.primary }}>
+            ✨ {t("vcal.guide.eyebrow")}
+          </span>
+          <span className="text-[15px] leading-snug">{text}</span>
+          {sub && <span className="text-sm" style={{ color: SURFACE.muted }}>{sub}</span>}
+        </div>
+        {actions.onDismiss && (
+          <button
+            type="button"
+            onClick={actions.onDismiss}
+            aria-label={t("vcal.guide.dismiss")}
+            className="-me-1 -mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+            style={{ color: SURFACE.faint }}
+            data-testid="vcal-guide-dismiss"
+          >
+            ✕
+          </button>
+        )}
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1">
         {guidance.kind === "nextStep" && <Action primary label={t("vcal.guide.start")} onClick={() => actions.onStartStep(guidance.stepId)} />}
         {(guidance.kind === "freeDay" || guidance.kind === "freeWindow") && (
           <>
