@@ -28,8 +28,10 @@
         "notifications": "Notifications",
         "categories": "Categories",
         "activity": "Activity",
-        "compose": "Send"
-      }
+        "compose": "Send",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
