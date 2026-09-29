@@ -47,10 +47,15 @@ export function CatalogueImportSheet({ open, onOpenChange, adminOrgs }: Props) {
   const [phase, setPhase] = useState<Phase>('pick');
   const [outcome, setOutcome] = useState<ImportOutcome | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
+  // Each file or org choice starts a new generation; a check or import that
+  // answers for an older one is dropped, so a slow result can never show (or
+  // enable Import) for a file that was replaced or reset since.
+  const generation = useRef(0);
 
   const activeOrgId = adminOrgs.some((o) => o.id === orgId) ? orgId : adminOrgs[0]?.id ?? '';
 
   const reset = () => {
+    generation.current += 1;
     setFileName('');
     setCsv('');
     setPhase('pick');
@@ -73,13 +78,17 @@ export function CatalogueImportSheet({ open, onOpenChange, adminOrgs }: Props) {
   };
 
   const check = async (text: string) => {
+    const mine = generation.current;
     setPhase('checking');
     setOutcome(null);
+    let result: ImportOutcome;
     try {
-      setOutcome(await importCatalogueCsv(activeOrgId, text, true));
+      result = await importCatalogueCsv(activeOrgId, text, true);
     } catch {
-      setOutcome({ kind: 'failed' });
+      result = { kind: 'failed' };
     }
+    if (mine !== generation.current) return; // reset or replaced meanwhile
+    setOutcome(result);
     setPhase('checked');
   };
 
@@ -106,15 +115,17 @@ export function CatalogueImportSheet({ open, onOpenChange, adminOrgs }: Props) {
   };
 
   const runImport = async () => {
+    const mine = generation.current;
     setPhase('importing');
+    let result: ImportOutcome;
     try {
-      const result = await importCatalogueCsv(activeOrgId, csv, false);
-      setOutcome(result);
-      setPhase(result.kind === 'imported' ? 'done' : 'checked');
+      result = await importCatalogueCsv(activeOrgId, csv, false);
     } catch {
-      setOutcome({ kind: 'failed' });
-      setPhase('checked');
+      result = { kind: 'failed' };
     }
+    if (mine !== generation.current) return;
+    setOutcome(result);
+    setPhase(result.kind === 'imported' ? 'done' : 'checked');
   };
 
   const rowErrors = outcome && (outcome.kind === 'report' || outcome.kind === 'row_errors') ? outcome.errors : [];

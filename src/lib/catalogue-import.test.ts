@@ -84,6 +84,29 @@ describe('catalogue import: gateway answers map onto the screen', () => {
   });
 });
 
+describe('gateway address', () => {
+  it('uses the shared resolver (VITE_GATEWAY_BASE or VITE_GATEWAY_URL), not a local copy', async () => {
+    const { readFileSync } = await import('fs');
+    const src = readFileSync('src/lib/catalogue-import.ts', 'utf8');
+    expect(src).toContain("import { GATEWAY_BASE } from '@/lib/gateway-base';");
+    expect(src).not.toContain('import.meta.env.VITE_GATEWAY_URL');
+  });
+});
+
+describe('import sheet ignores stale answers', () => {
+  it('a check or import answering for a reset/replaced file is dropped', async () => {
+    const { readFileSync } = await import('fs');
+    const src = readFileSync('src/components/commerce/CatalogueImportSheet.tsx', 'utf8');
+    const reset = src.slice(src.indexOf('const reset = () => {'), src.indexOf('const close ='));
+    expect(reset).toContain('generation.current += 1;');
+    const check = src.slice(src.indexOf('const check = async'), src.indexOf('const onFile ='));
+    expect(check.indexOf('const mine = generation.current;')).toBeLessThan(check.indexOf('await importCatalogueCsv'));
+    expect(check.indexOf('if (mine !== generation.current) return;')).toBeLessThan(check.indexOf('setOutcome(result)'));
+    const run = src.slice(src.indexOf('const runImport = async'), src.indexOf('const rowErrors ='));
+    expect(run).toContain('if (mine !== generation.current) return;');
+  });
+});
+
 describe('importCatalogueCsv', () => {
   const fetchMock = vi.fn();
   beforeEach(() => {

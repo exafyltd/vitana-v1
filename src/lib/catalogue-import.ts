@@ -12,6 +12,8 @@
  */
 import { supabase } from '@/integrations/supabase/client';
 import { PARTNER_ONBOARDING_API } from '@/lib/commerce-host';
+// The shared resolver: honours VITE_GATEWAY_BASE and VITE_GATEWAY_URL alike.
+import { GATEWAY_BASE } from '@/lib/gateway-base';
 
 /** Mirrors the gateway's CSV_MAX_CHARS / CSV_MAX_ROWS. */
 export const CSV_MAX_CHARS = 1_000_000;
@@ -70,8 +72,6 @@ export function checkCsvFile(file: { name: string; size: number }): (typeof LOCA
   return null;
 }
 
-const RAW_GATEWAY = (import.meta.env.VITE_GATEWAY_URL as string | undefined) || '';
-const GATEWAY_BASE = RAW_GATEWAY.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '');
 
 /** Like adminFetch, but keeps the status and body of a 4xx (the import's report lives there). */
 async function gatewayCall(path: string, init: RequestInit): Promise<{ status: number; body: any }> {
