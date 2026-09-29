@@ -123,10 +123,24 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
     expect(heroJsx).not.toContain('<AgentConnectCard');
   });
 
-  it('the primary CTA scrolls to the agent card instead of duplicating its state', () => {
-    expect(src).toContain('agentCardRef.current?.scrollIntoView');
+  it('the primary CTA reaches the agent card instead of duplicating its state', () => {
     expect(src).toContain('ref={agentCardRef}');
-    expect(heroCopyFn).toContain('onClick={scrollToAgentCard}');
+    expect(heroCopyFn).toContain('onClick={connectViaAgent}');
+  });
+
+  it('"Connect via AI Agent" visibly does something at every width (owner: every button must work)', () => {
+    const fn = src.slice(src.indexOf('const connectViaAgent'), src.indexOf('const fade'));
+    // Card on screen (lg:, beside the button): scroll, flash it, focus its first control.
+    expect(fn).toContain('el.scrollIntoView');
+    expect(fn).toContain('setAgentHighlight(true)');
+    expect(fn).toContain(".focus({ preventScroll: true })");
+    // Card hidden (below lg: it is `hidden lg:block`, and scrolling to a hidden
+    // element does nothing): open the same card in a dialog.
+    expect(fn).toContain('el.offsetParent === null');
+    expect(fn).toContain('setAgentDialogOpen(true)');
+    const dialog = src.slice(src.indexOf('<ResponsiveDialog open={agentDialogOpen}'));
+    expect(dialog).toContain('<AgentConnectCard />');
+    expect(dialog).toContain('<ResponsiveDialogTitle');
   });
 
   it('"your organizations" is no longer lost on a narrow desktop/host window when the visitor has no org yet', () => {

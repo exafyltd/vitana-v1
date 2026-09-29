@@ -48,6 +48,12 @@ import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
+import {
+  ResponsiveDialog,
+  ResponsiveDialogBody,
+  ResponsiveDialogContent,
+  ResponsiveDialogTitle,
+} from '@/components/ui/responsive-dialog';
 import { ConnectionCard, type ConnectionRow } from '@/components/commerce/ConnectionCard';
 import { ConnectionWorkbench } from '@/components/commerce/ConnectionWorkbench';
 import { ManualConnectDialog } from '@/components/commerce/ManualConnectDialog';
@@ -89,6 +95,8 @@ export default function CommercePortal() {
   const navigate = useNavigate();
   const reduce = useReducedMotion();
   const agentCardRef = useRef<HTMLElement>(null);
+  const [agentDialogOpen, setAgentDialogOpen] = useState(false);
+  const [agentHighlight, setAgentHighlight] = useState(false);
 
   const openConnectionId = searchParams.get(CONNECTION_PARAM);
   const openOrgId = searchParams.get(ORG_PARAM);
@@ -177,8 +185,22 @@ export default function CommercePortal() {
     );
   };
 
-  const scrollToAgentCard = () => {
-    agentCardRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  // "Connect via AI Agent" must visibly do something at every width. Where the
+  // agent card is on screen (lg: two-column hero) the card sits right beside
+  // the button, so a scroll alone looked dead: bring it into view, flash it
+  // and move focus to its first control (Copy URL). Below lg: the card is not
+  // rendered visibly at all (`hidden lg:block`), and scrolling to a hidden
+  // element does nothing, so open the same card in a dialog instead.
+  const connectViaAgent = () => {
+    const el = agentCardRef.current;
+    if (!el || el.offsetParent === null) {
+      setAgentDialogOpen(true);
+      return;
+    }
+    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    setAgentHighlight(true);
+    window.setTimeout(() => setAgentHighlight(false), 1600);
+    el.querySelector<HTMLElement>('button')?.focus({ preventScroll: true });
   };
 
   const fade = reduce
@@ -323,7 +345,7 @@ export default function CommercePortal() {
       >
         <Button
           size="lg"
-          onClick={scrollToAgentCard}
+          onClick={connectViaAgent}
           className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
         >
           <Sparkles className="me-2 h-4 w-4" />
@@ -349,7 +371,9 @@ export default function CommercePortal() {
     <motion.section
       ref={agentCardRef}
       {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
-      className={className}
+      className={`${className} rounded-3xl transition-shadow duration-500 ${
+        agentHighlight ? 'ring-4 ring-amber-400/70 ring-offset-2 ring-offset-background' : ''
+      }`}
     >
       <AgentConnectCard />
     </motion.section>
@@ -500,6 +524,15 @@ export default function CommercePortal() {
       <AddProductSheet open={addProductOpen} onOpenChange={setAddProductOpen} onSaved={load} />
 
       <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={onOrgRegistered} />
+      {/* "Connect via AI Agent" below lg:, where the card itself is hidden. */}
+      <ResponsiveDialog open={agentDialogOpen} onOpenChange={setAgentDialogOpen}>
+        <ResponsiveDialogContent className="max-w-xl">
+          <ResponsiveDialogTitle className="sr-only">{t('screens.commerceportal.agentConnect.title')}</ResponsiveDialogTitle>
+          <ResponsiveDialogBody>
+            <AgentConnectCard />
+          </ResponsiveDialogBody>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
 
       {openConnectionId && (
         <ConnectionWorkbench
