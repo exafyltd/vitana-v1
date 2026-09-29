@@ -220,6 +220,15 @@ comments, likes, or chat messages themselves, which still land in the real feed
 in front of real people. Register any new test account in
 `notification_test_actors`.
 
+## What's New cards — automatic (VTID-04733)
+
+**Any user-facing addition or redesign adds one file to `src/whats-new/entries/`**
+(`<id>.json`: EN + DE du-form copy, path deep link — see
+`src/whats-new/README.md`). Same PR, no exceptions for features a member will
+notice; skip for fixes/refactors/admin-only work. Once the build is live in
+production, the gateway turns the entry into a "Brand New Feature" News Feed
+card + push, once, automatically. Do not publish these cards by hand any more.
+
 ## Voice navigation — the screen registry (VTID-04502)
 
 `src/navigation/registry/` is the single list of screens Vitana can take a
