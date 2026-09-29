@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04739",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/whats-new.json",
+      "expect_status": 200, "expect_body_contains": "\"entries\"",
+      "reason": "the build still publishes the manifest after the drafter's files were added to scripts/whats-new (Docker context and prebuild unchanged)" },
+    { "kind": "existing", "ref": "npx vitest run src/whats-new", "cwd": ".",
+      "reason": "the drafter's pre-filter, reply parsing, validation and wiring are pinned by unit tests; the Bedrock call itself needs AWS and is verified by a manual dry-run of the workflow" }
+  ]
+}

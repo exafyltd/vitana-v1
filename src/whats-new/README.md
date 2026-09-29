@@ -10,6 +10,25 @@ merge → staging → PUBLISH to prod → /whats-new.json (prod) → gateway job
         (16:00 UTC daily) → card + push, once per entry, oldest first, max 1/day
 ```
 
+## You usually don't write the file — it is drafted for you (VTID-04739)
+
+When a PR lands on `main`, `WHATS-NEW-DRAFT.yml` asks a Claude model (AWS
+Bedrock) whether members would notice it. If yes, it opens a PR named
+`What's New: <title> (VTID-…)` with a drafted EN/DE entry. **You review the
+copy and merge it** (edit the file if the wording is off, close the PR to skip
+the announcement). Nothing reaches members until that PR is merged *and* the
+build is published to production.
+
+- The source PR's title must carry a VTID (the entry PR reuses it for the
+  staging gate). Docs, tests, CI, i18n-only and admin-only changes are skipped
+  without a model call.
+- Add an entry by hand when the drafter cannot see the change, or to override
+  its wording; a PR that already adds an entry is never drafted for.
+- Inert until the repo secret `WHATS_NEW_BEDROCK_ROLE_ARN` exists
+  (`scripts/whats-new/setup-bedrock-role.sh`). Try it on any merged PR without
+  side effects: `gh workflow run WHATS-NEW-DRAFT.yml -f pr_number=<n> -f dry_run=true`
+  (the draft appears in the job summary; nothing is opened).
+
 ## Add an entry
 
 `src/whats-new/entries/<id>.json` — the file name must equal `id`:

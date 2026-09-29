@@ -1,0 +1,158 @@
+# WHATS-NEW-DRAFT — after a PR lands on main, ask a Claude model (AWS Bedrock)
+# whether members would notice it and, if so, open a PR with a drafted EN/DE
+# What's New entry for a human to approve (VTID-04739).
+#
+# Nothing here reaches members: the output is a PR. The entry only becomes a
+# News Feed card after that PR is merged AND the build is published to
+# production (the gateway's daily whats-new job reads the production manifest,
+# VTID-04733). Human approval of the copy is the gate.
+#
+# Inert until the repo secret WHATS_NEW_BEDROCK_ROLE_ARN exists (create the role
+# with scripts/whats-new/setup-bedrock-role.sh). Manual runs default to a dry
+# run: the draft is printed in the job summary and no PR is opened.
+
+name: WHATS-NEW-DRAFT
+
+run-name: 'WHATS-NEW-DRAFT ${{ github.event.inputs.pr_number || github.sha }} (VTID-04739)'
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Merged PR number to draft an entry for'
+        required: true
+      dry_run:
+        description: 'true = print the draft only; false = open the entry PR'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: whats-new-draft-${{ github.event.inputs.pr_number || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    if: github.repository == 'exafyltd/vitana-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ROLE_ARN: ${{ secrets.WHATS_NEW_BEDROCK_ROLE_ARN }}
+      # A PR opened with the default GITHUB_TOKEN does not start CI, so its
+      # required checks would never run. CROSS_REPO_PAT is the repo's existing
+      # PAT; fall back to GITHUB_TOKEN so the workflow still works without it.
+      GH_TOKEN: ${{ secrets.CROSS_REPO_PAT || secrets.GITHUB_TOKEN }}
+      DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+    steps:
+      - name: Skip until the Bedrock role is configured
+        if: env.ROLE_ARN == ''
+        run: echo "::notice::WHATS_NEW_BEDROCK_ROLE_ARN is not set — What's New drafting is inert. Run scripts/whats-new/setup-bedrock-role.sh."
+
+      - uses: actions/checkout@v4
+        if: env.ROLE_ARN != ''
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CROSS_REPO_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Find the merged PR
+        id: pr
+        if: env.ROLE_ARN != ''
+        env:
+          INPUT_PR: ${{ github.event.inputs.pr_number }}
+        run: |
+          set -euo pipefail
+          N="$INPUT_PR"
+          if [ -z "$N" ]; then
+            N="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].number // empty')"
+          fi
+          if [ -z "$N" ]; then
+            echo "No PR is associated with this commit (bot commit or direct push) — nothing to draft."
+            echo "found=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "number=$N" >> "$GITHUB_OUTPUT"
+          gh pr view "$N" --json title,body,headRefName > "$RUNNER_TEMP/pr.json"
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${N}/files" --paginate --jq '.[].filename' > "$RUNNER_TEMP/files.txt"
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${N}/files" --paginate --jq '.[] | "\(.filename) +\(.additions) -\(.deletions)"' > "$RUNNER_TEMP/diffstat.txt"
+          echo "PR #$N: $(jq -r .title "$RUNNER_TEMP/pr.json")  ($(wc -l < "$RUNNER_TEMP/files.txt") files)"
+
+      - uses: actions/setup-node@v4
+        if: env.ROLE_ARN != '' && steps.pr.outputs.found == 'true'
+        with:
+          node-version: 20
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        if: env.ROLE_ARN != '' && steps.pr.outputs.found == 'true'
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: eu-central-1
+
+      - name: Draft the entry
+        id: draft
+        if: env.ROLE_ARN != '' && steps.pr.outputs.found == 'true'
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: |
+          set -euo pipefail
+          # PR text goes in through the environment, never spliced into the script.
+          export PR_TITLE="$(jq -r .title "$RUNNER_TEMP/pr.json")"
+          export PR_BODY="$(jq -r '.body // ""' "$RUNNER_TEMP/pr.json")"
+          export PR_HEAD_REF="$(jq -r .headRefName "$RUNNER_TEMP/pr.json")"
+          export CHANGED_FILES="$RUNNER_TEMP/files.txt"
+          export DIFFSTAT="$(cat "$RUNNER_TEMP/diffstat.txt")"
+          if [ "$DRY_RUN" = "true" ]; then node scripts/whats-new/draft-entry.mjs --dry-run; else node scripts/whats-new/draft-entry.mjs; fi
+          STATUS="$(jq -r .status whats-new-draft-result.json)"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          {
+            echo "### What's New draft for PR #${PR_NUMBER}"
+            echo "Status: **$STATUS** (dry run: $DRY_RUN)"
+            echo '```json'; cat whats-new-draft-result.json; echo; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open the entry PR
+        if: steps.draft.outputs.status == 'drafted' && env.DRY_RUN != 'true'
+        env:
+          SRC_PR: ${{ steps.pr.outputs.number }}
+        run: |
+          set -euo pipefail
+          ID="$(jq -r .id whats-new-draft-result.json)"
+          VTID="$(jq -r .vtid whats-new-draft-result.json)"
+          TITLE_EN="$(jq -r .entry.title.en whats-new-draft-result.json)"
+          BRANCH="whats-new/$ID"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Branch $BRANCH already exists — an entry PR is already open for this."; exit 0
+          fi
+          # The staging gate wants a suite for the VTID in the PR title. The source
+          # change's own suite normally exists already; add a minimal one otherwise.
+          SUITE="docs/validation/$VTID/staging-tests.json"
+          if [ ! -f "$SUITE" ]; then
+            mkdir -p "docs/validation/$VTID"
+            jq -n --arg v "$VTID" '{vtid:$v, service:"community-app", tests:[{kind:"http", target:"frontend", method:"GET", path:"/whats-new.json", expect_status:200, expect_body_contains:"\"entries\"", reason:"the What'"'"'s New manifest is served by the deployed build"}]}' > "$SUITE"
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add "src/whats-new/entries/$ID.json" "docs/validation/$VTID" 2>/dev/null || git add "src/whats-new/entries/$ID.json"
+          git commit -m "What's New: $TITLE_EN ($VTID)" -m "Drafted for PR #$SRC_PR by WHATS-NEW-DRAFT (VTID-04739). Review the copy before merging."
+          git push -u origin "$BRANCH"
+          {
+            echo "Drafted automatically for #${SRC_PR} (${VTID}). **Review the copy — it goes to every member.**"
+            echo
+            echo "**Why the model thinks members will notice:** $(jq -r .reason whats-new-draft-result.json)"
+            echo
+            echo "| | English | Deutsch |"
+            echo "|---|---|---|"
+            echo "| Title | $(jq -r .entry.title.en whats-new-draft-result.json) | $(jq -r .entry.title.de whats-new-draft-result.json) |"
+            echo "| Text | $(jq -r .entry.description.en whats-new-draft-result.json) | $(jq -r .entry.description.de whats-new-draft-result.json) |"
+            echo
+            echo "Try-it link: \`$(jq -r .entry.deepLink whats-new-draft-result.json)\`"
+            echo
+            echo "**What happens next:** edit the file if the wording is off, or close this PR to skip the announcement. Once merged and the build is published to production, the gateway posts the card (one per day, oldest first)."
+          } > "$RUNNER_TEMP/body.md"
+          gh pr create --base main --head "$BRANCH" --title "What's New: $TITLE_EN ($VTID)" --body-file "$RUNNER_TEMP/body.md"
