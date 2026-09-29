@@ -6753,9 +6753,6 @@
       "noMissed": "No missed reminders — you're all caught up.",
       "creating": "Creating…",
       "createReminder": "Create reminder",
-      "_pending_review": {
-        "vitana": true
-      },
       "vitana": "Vitana"
     },
     "reseller": {

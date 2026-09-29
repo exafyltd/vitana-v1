@@ -55,14 +55,7 @@
       "account": "Account",
       "wallet": "Wallet",
       "admin": "Admin",
-      "other": "Not sorted yet",
-      "_pending_review": {
-        "chat": true,
-        "orb": true,
-        "community": true,
-        "wallet": true,
-        "admin": true
-      }
+      "other": "Not sorted yet"
     },
     "readiness": {
       "ready": "In the member's language",
@@ -99,11 +92,7 @@
     "categoryGroups": {
       "chat": "Chat",
       "calendar": "Calendar",
-      "community": "Community",
-      "_pending_review": {
-        "chat": true,
-        "community": true
-      }
+      "community": "Community"
     },
     "categories": {
       "intro": "Struck-through types are switched off right now. Members see a category only if at least one of its types is switched on.",
@@ -130,10 +119,7 @@
       "defaultOnHint": "Members who have not chosen get this category.",
       "memberCanDisable": "Members can switch it off",
       "memberCanDisableHint": "Off only for account and security messages every member must receive.",
-      "types": "Notifications in it",
-      "_pending_review": {
-        "name": true
-      }
+      "types": "Notifications in it"
     },
     "activity": {
       "intro": "Real numbers from the database. Held-back notifications were never created.",
@@ -168,9 +154,6 @@
       "developer": "developers",
       "staff": "staff"
     },
-    "statsNone": "7 days: nothing sent",
-    "_pending_review": {
-      "system": true
-    }
+    "statsNone": "7 days: nothing sent"
   }
 }
