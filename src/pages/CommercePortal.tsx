@@ -35,6 +35,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import {
   Building2,
   ChevronRight,
+  FileUp,
   FlaskConical,
   Loader2,
   PackagePlus,
@@ -59,6 +60,7 @@ import { ConnectionWorkbench } from '@/components/commerce/ConnectionWorkbench';
 import { ManualConnectDialog } from '@/components/commerce/ManualConnectDialog';
 import { AddProductSheet } from '@/components/commerce/AddProductSheet';
 import { RegisterOrgDialog } from '@/components/commerce/RegisterOrgDialog';
+import { CatalogueImportSheet } from '@/components/commerce/CatalogueImportSheet';
 import { MyOrgCard, type MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { PartnerOrgRoster } from '@/components/commerce/PartnerOrgRoster';
 import { adminFetch } from '@/lib/admin-api';
@@ -90,7 +92,10 @@ export default function CommercePortal() {
   const [manualOpen, setManualOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
   const [registerOrgOpen, setRegisterOrgOpen] = useState(false);
+  // VTID-04745: CSV catalogue import, per organization the user administers.
+  const [catalogueImportOpen, setCatalogueImportOpen] = useState(false);
   const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
+  const adminOrgs = (myOrgs ?? []).filter((o) => o.role === 'org_admin');
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const reduce = useReducedMotion();
@@ -298,6 +303,23 @@ export default function CommercePortal() {
             </ul>
           )}
         </div>
+
+        {/* VTID-04745: import many products at once — org admins only (the
+            gateway checks the role too). */}
+        {adminOrgs.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setCatalogueImportOpen(true)}
+            className="group mt-4 flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-400/60 hover:bg-card"
+          >
+            <FileUp className="h-5 w-5 shrink-0 text-amber-700" />
+            <div className="min-w-0 flex-1">
+              <p className="font-medium text-foreground">{t('screens.commerceportal.catalogueImport.entryTitle')}</p>
+              <p className="truncate text-xs text-muted-foreground">{t('screens.commerceportal.catalogueImport.entrySubtitle')}</p>
+            </div>
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-amber-700 rtl:rotate-180" />
+          </button>
+        )}
 
         {/* Health-test orders — Commerce Partner Onboarding Phase 4 (VTID-03951) */}
         {myOrgs !== null && myOrgs.length > 0 && (
@@ -524,6 +546,7 @@ export default function CommercePortal() {
       <AddProductSheet open={addProductOpen} onOpenChange={setAddProductOpen} onSaved={load} />
 
       <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={onOrgRegistered} />
+      <CatalogueImportSheet open={catalogueImportOpen} onOpenChange={setCatalogueImportOpen} adminOrgs={adminOrgs} />
       {/* "Connect via AI Agent" below lg:, where the card itself is hidden. */}
       <ResponsiveDialog open={agentDialogOpen} onOpenChange={setAgentDialogOpen}>
         <ResponsiveDialogContent className="max-w-xl">
