@@ -27,7 +27,7 @@ import { ListingStrength } from './ListingStrength';
 import { ProductImageField } from './ProductImageField';
 
 const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
+  'focus-visible:ring-amber-600';
 
 /** Kept short on purpose — a long dropdown is a worse default than typing. */
 const CURRENCIES = ['EUR', 'CHF', 'GBP', 'USD'] as const;
@@ -176,7 +176,7 @@ export function ProductForm({
       {/* THE CORE — everything here is required, and it is the whole gate. */}
       <section className="space-y-3">
         <div className="space-y-1.5">
-          <Label htmlFor="pf-title" className="text-slate-300">
+          <Label htmlFor="pf-title" className="text-foreground">
             {t('screens.commerceportal.productForm.name')}
           </Label>
           <Input
@@ -189,7 +189,7 @@ export function ProductForm({
 
         <div className="grid gap-3 sm:grid-cols-[1fr_8rem]">
           <div className="space-y-1.5">
-            <Label htmlFor="pf-price" className="text-slate-300">
+            <Label htmlFor="pf-price" className="text-foreground">
               {t('screens.commerceportal.productForm.price')}
             </Label>
             <Input
@@ -201,7 +201,7 @@ export function ProductForm({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="pf-currency" className="text-slate-300">
+            <Label htmlFor="pf-currency" className="text-foreground">
               {t('screens.commerceportal.productForm.currency')}
             </Label>
             <Select value={core.currency} onValueChange={(v) => setCore((c) => ({ ...c, currency: v }))}>
@@ -220,12 +220,12 @@ export function ProductForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label className="text-slate-300">{t('screens.commerceportal.productForm.photo')}</Label>
+          <Label className="text-foreground">{t('screens.commerceportal.productForm.photo')}</Label>
           <ProductImageField images={images} onChange={setImages} userId={userId} />
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="pf-url" className="text-slate-300">
+          <Label htmlFor="pf-url" className="text-foreground">
             {t('screens.commerceportal.productForm.buyUrl')}
           </Label>
           <Input
@@ -237,12 +237,12 @@ export function ProductForm({
             value={core.affiliate_url}
             onChange={(e) => setCore((c) => ({ ...c, affiliate_url: e.target.value }))}
           />
-          <p className="text-xs text-slate-500">{t('screens.commerceportal.productForm.buyUrlHint')}</p>
+          <p className="text-xs text-muted-foreground">{t('screens.commerceportal.productForm.buyUrlHint')}</p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="pf-origin" className="text-slate-300">
+            <Label htmlFor="pf-origin" className="text-foreground">
               {t('screens.commerceportal.productForm.shipsFrom')}
             </Label>
             <Input
@@ -255,7 +255,7 @@ export function ProductForm({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="pf-ships" className="text-slate-300">
+            <Label htmlFor="pf-ships" className="text-foreground">
               {t('screens.commerceportal.productForm.shipsTo')}
             </Label>
             <Input
@@ -265,12 +265,12 @@ export function ProductForm({
               value={core.ships_to}
               onChange={(e) => setCore((c) => ({ ...c, ships_to: e.target.value }))}
             />
-            <p className="text-xs text-slate-500">{t('screens.commerceportal.productForm.shipsToHint')}</p>
+            <p className="text-xs text-muted-foreground">{t('screens.commerceportal.productForm.shipsToHint')}</p>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="pf-desc" className="text-slate-300">
+          <Label htmlFor="pf-desc" className="text-foreground">
             {t('screens.commerceportal.productForm.description')}
           </Label>
           <Textarea
@@ -286,7 +286,7 @@ export function ProductForm({
       {/* THE VERTICAL'S OWN QUESTIONS — optional, always. */}
       {vertical.fields.length > 0 && (
         <section className="space-y-3">
-          <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-slate-500">
+          <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-muted-foreground">
             {t('screens.commerceportal.productForm.aboutVertical', { vertical: vertical.display_label })}
           </h3>
 
@@ -305,7 +305,7 @@ export function ProductForm({
               type="button"
               variant="ghost"
               onClick={() => setShowAll(true)}
-              className="h-auto px-0 text-sm text-amber-400 hover:bg-transparent hover:text-amber-300"
+              className="h-auto px-0 text-sm text-amber-400 hover:bg-transparent hover:text-amber-700"
             >
               {t('screens.commerceportal.productForm.moreDetails', { count: rest.length })}
             </Button>
@@ -330,7 +330,7 @@ export function ProductForm({
         <Button
           onClick={() => void save()}
           disabled={!canSave || saving}
-          className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+          className="bg-amber-700 font-semibold text-white hover:bg-amber-800"
         >
           {saving && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
           {t('screens.commerceportal.productForm.submit')}
@@ -339,13 +339,13 @@ export function ProductForm({
           variant="ghost"
           onClick={onCancel}
           disabled={saving}
-          className="text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+          className="text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           {t('screens.commerceportal.productForm.cancel')}
         </Button>
       </div>
 
-      <p className="text-xs text-slate-600">{t('screens.commerceportal.productForm.reviewNote')}</p>
+      <p className="text-xs text-muted-foreground">{t('screens.commerceportal.productForm.reviewNote')}</p>
     </div>
   );
 }

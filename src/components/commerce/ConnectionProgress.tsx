@@ -24,7 +24,7 @@ export function ConnectionProgress({ state, className = '' }: { state: string; c
 
   if (active === null) {
     return (
-      <p className={`text-xs text-slate-500 ${className}`}>{t('screens.commerceportal.progress.offTrack')}</p>
+      <p className={`text-xs text-muted-foreground ${className}`}>{t('screens.commerceportal.progress.offTrack')}</p>
     );
   }
 
@@ -43,23 +43,23 @@ export function ConnectionProgress({ state, className = '' }: { state: string; c
               className={[
                 'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold',
                 done
-                  ? 'border-amber-400 bg-amber-400 text-slate-950'
+                  ? 'border-amber-700 bg-amber-700 text-white'
                   : current
-                    ? 'border-amber-400 text-amber-300'
-                    : 'border-slate-700 text-slate-600',
+                    ? 'border-amber-700 text-amber-700'
+                    : 'border-border text-muted-foreground',
               ].join(' ')}
             >
               {done ? <Check className="h-3 w-3" /> : i + 1}
             </span>
             <span
-              className={`truncate text-[11px] ${done || current ? 'text-slate-300' : 'text-slate-600'}`}
+              className={`truncate text-[11px] ${done || current ? 'text-foreground' : 'text-muted-foreground'}`}
             >
               {t(STEP_LABELS[step])}
             </span>
             {i < CONNECTION_STEPS.length - 1 && (
               <span
                 aria-hidden
-                className={`hidden h-px flex-1 sm:block ${i < active ? 'bg-amber-400/60' : 'bg-slate-700/70'}`}
+                className={`hidden h-px flex-1 sm:block ${i < active ? 'bg-amber-700/60' : 'bg-border'}`}
               />
             )}
           </li>

@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04752",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/commerce",
+      "expect_status": 200,
+      "reason": "the Commerce Portal whose Add product drawer and connection cards were restyled still loads on staging" },
+    { "kind": "existing", "ref": "npx vitest run src/components/commerce/light-drawers.test.ts src/pages/CommercePortal.light-redesign.test.ts src/components/commerce/AffiliateNetwork.test.ts src/components/commerce/DeliveryDays.test.ts", "cwd": ".",
+      "reason": "pins the Add product drawer, its form, the connection cards and the org dialogs to the portal's light theme tokens; the drawer saves a product, so it is not submitted on staging" }
+  ]
+}
