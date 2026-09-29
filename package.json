@@ -6,7 +6,8 @@
   "packageManager": "npm@10.9.7",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/nav/build-nav-registry.mjs",
+    "prebuild": "node scripts/nav/build-nav-registry.mjs && node scripts/whats-new/build-whats-new.mjs",
+    "whats-new": "node scripts/whats-new/build-whats-new.mjs",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

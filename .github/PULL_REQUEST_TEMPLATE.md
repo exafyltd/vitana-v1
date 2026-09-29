@@ -9,4 +9,5 @@
 - [ ] No new hardcoded user-facing strings (CI's `i18n-check` workflow is green)
 - [ ] If new strings were added: ran `npm run i18n:inventory` and committed the updated `docs/SCREEN_INVENTORY.md`
 - [ ] If new strings were added in a non-DE language only: ran `node scripts/translate-keys.mjs --provider=deepseek` to drain `_pending_review`
+- [ ] If members will notice this change (new feature / redesign): added `src/whats-new/entries/<id>.json` (auto-publishes the News Feed card after prod deploy)
 - [ ] Manually verified the change in the deployed preview (https://community-app-q74ibpv6ia-uc.a.run.app/)
