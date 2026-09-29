@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04271",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "a signed-out visitor sees the Commerce Portal and one sign-up path",
+      "spec": "tests/e2e/staging/vtid-04271-commerce-guest.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Commerce Portal layout and mobile adaptation",
+      "ref": "npx vitest run src/pages/CommercePortal.light-redesign.test.ts src/components/commerce/mobile-adaptation.test.ts",
+      "cwd": ".",
+      "reason": "pins the guest / personalized hero branches, the two-column no-org hero, the what-happens-next stepper and the registration wizard; section order on mobile"
+    }
+  ]
+}
