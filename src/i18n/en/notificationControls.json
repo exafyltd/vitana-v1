@@ -3,19 +3,24 @@
     "pages": {
       "notifications": {
         "title": "Notifications",
-        "description": "Switch every notification on or off, one by one. New notifications start off and reach nobody until you switch them on."
+        "description": "Switch every notification on or off, one by one. New notifications start off and reach nobody until you switch them on.",
+        "_pending_review": {}
       },
       "categories": {
         "title": "Categories",
-        "description": "The groups members can switch on and off in their settings."
+        "description": "The groups members can switch on and off in their settings.",
+        "_pending_review": {}
       },
       "activity": {
         "title": "Activity",
-        "description": "What was really sent, read and held back in the last days."
+        "description": "What was really sent, read and held back in the last days.",
+        "_pending_review": {}
       },
       "compose": {
-        "description": "Send a message directly to specific members, a role, or everyone."
-      }
+        "description": "Send a message directly to specific members, a role, or everyone.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "loading": "Loading …",
     "loadError": "The notifications could not be loaded: {message}",
@@ -37,7 +42,8 @@
       "member": "To members",
       "admin": "To admins",
       "developer": "To developers",
-      "staff": "To staff"
+      "staff": "To staff",
+      "_pending_review": {}
     },
     "audienceCount": "about {count} people",
     "groups": {
@@ -56,18 +62,13 @@
       "wallet": "Wallet",
       "admin": "Admin",
       "other": "Not sorted yet",
-      "_pending_review": {
-        "chat": true,
-        "orb": true,
-        "community": true,
-        "wallet": true,
-        "admin": true
-      }
+      "_pending_review": {}
     },
     "readiness": {
       "ready": "In the member's language",
       "notLocalized": "English only",
-      "unverified": "Not checked"
+      "unverified": "Not checked",
+      "_pending_review": {}
     },
     "newType": "New – added switched off on first send",
     "inCategory": "Members switch it via “{name}”",
@@ -100,10 +101,7 @@
       "chat": "Chat",
       "calendar": "Calendar",
       "community": "Community",
-      "_pending_review": {
-        "chat": true,
-        "community": true
-      }
+      "_pending_review": {}
     },
     "categories": {
       "intro": "Struck-through types are switched off right now. Members see a category only if at least one of its types is switched on.",
@@ -131,9 +129,7 @@
       "memberCanDisable": "Members can switch it off",
       "memberCanDisableHint": "Off only for account and security messages every member must receive.",
       "types": "Notifications in it",
-      "_pending_review": {
-        "name": true
-      }
+      "_pending_review": {}
     },
     "activity": {
       "intro": "Real numbers from the database. Held-back notifications were never created.",
@@ -149,7 +145,8 @@
       "read": "Read",
       "blockedAdmin": "Held by the switch",
       "blockedMember": "Switched off by the member",
-      "empty": "Nothing was sent in this period."
+      "empty": "Nothing was sent in this period.",
+      "_pending_review": {}
     },
     "member": {
       "pushHint": "Push only decides whether your phone rings. What you receive at all is set by the categories below.",
@@ -158,19 +155,21 @@
       "roleTitle": {
         "admin": "Because you are an admin",
         "developer": "Because you are a developer",
-        "staff": "Because you are on the team"
+        "staff": "Because you are on the team",
+        "_pending_review": {}
       },
-      "roleHint": "You get these because of your role. An admin switches them on or off."
+      "roleHint": "You get these because of your role. An admin switches them on or off.",
+      "_pending_review": {}
     },
     "audienceNoun": {
       "member": "members",
       "admin": "admins",
       "developer": "developers",
-      "staff": "staff"
+      "staff": "staff",
+      "_pending_review": {}
     },
     "statsNone": "7 days: nothing sent",
-    "_pending_review": {
-      "system": true
-    }
-  }
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

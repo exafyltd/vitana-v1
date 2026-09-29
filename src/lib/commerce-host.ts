@@ -26,6 +26,8 @@ export const MY_PORTAL_API = '/api/v1/vcaop/portal/my';
  * from a VCAOP mesh CONNECTION (an integration to one storefront/EHR).
  */
 export const PARTNER_ORGS_API = '/api/v1/partner-orgs';
+/** VTID-04745: a partner organization's onboarding (catalogue, CSV import). */
+export const PARTNER_ONBOARDING_API = '/api/v1/partner-onboarding';
 
 /**
  * The Vitanaland MCP endpoint a merchant pastes into their own AI agent
