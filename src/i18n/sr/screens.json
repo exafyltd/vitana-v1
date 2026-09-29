@@ -10624,7 +10624,8 @@
         "addProduct": true,
         "heroTitlePersonalizedNoOrg": true,
         "heroTitlePersonalizedWithOrg": true,
-        "guestCta": true
+        "guestCta": true,
+        "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
       "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
@@ -11086,7 +11087,8 @@
           "ships_to_required": "Name at least one delivery country or region.",
           "invalid_value": "This value isn't valid."
         }
-      }
+      },
+      "signOut": "Sign out"
     },
     "oauthconsent": {
       "title": "Dozvoli pristup?",
