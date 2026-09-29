@@ -17,6 +17,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 
 import { MobileIntegrationSection } from "./MobileIntegrationSection";
+import { MailCalendarContactsSection } from "./connected-apps/MailCalendarContactsSection";
 import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
 import { MobileIntegrationDetailSheet } from "./MobileIntegrationDetailSheet";
 import { MobileConnectionSummary } from "./MobileConnectionSummary";
@@ -132,6 +133,9 @@ export function MobileConnectedAppsView() {
   // Surface a toast when returning from the OAuth callback.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    // VTID-04406: a Connected Apps switch started this grant — the Mail,
+    // Calendar & Contacts panel shows its own toast for the app.
+    if (params.get("app")) return;
     const connected = params.get("connected");
     const errorCode = params.get("error");
     const provider = params.get("provider");
@@ -408,13 +412,18 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {/* Mail, Calendar & Contacts — Gmail, Google Calendar, Apple Mail, iPhone/Android Contacts, Outlook */}
-          {(activeCategory === 'all' || activeCategory === 'productivity') && filteredProductivity.length > 0 && (
-            <MobileIntegrationSection
+          {/* VTID-04406: Mail, Calendar & Contacts — the nine apps, one real
+              switch each, driven by the gateway Connected Apps hub. */}
+          {(activeCategory === 'all' || activeCategory === 'productivity') && !searchQuery.trim() && (
+            <MailCalendarContactsSection
               title={translate('connectedApps.sections.productivity', 'Mail, Calendar & Contacts')}
-              emoji="📅"
-              integrations={filteredProductivity}
-              onSelect={setSelectedApp}
+              defaultExpanded={activeCategory === 'productivity'}
+            />
+          )}
+          {(activeCategory === 'all' || activeCategory === 'productivity') && searchQuery.trim() && filteredProductivity.length > 0 && (
+            <MailCalendarContactsSection
+              title={translate('connectedApps.sections.productivity', 'Mail, Calendar & Contacts')}
+              defaultExpanded
             />
           )}
 

@@ -7,8 +7,9 @@ import { useTaskStore } from "@/state/taskStore";
 import { fetchTasks, pollTasks } from "@/lib/taskApi";
 import { Task } from "@/types/task";
 import { sseManager } from "@/lib/sseConnectionManager";
+import { GATEWAY_BASE } from '@/lib/gateway-base';
 
-const STREAM_URL = import.meta.env.VITE_GATEWAY_BASE || "https://oasis-operator-86804897789.us-central1.run.app";
+const STREAM_URL = GATEWAY_BASE;
 const POLL_INTERVAL = 10000; // 10 seconds
 const MAX_BACKOFF = 30000; // 30 seconds
 

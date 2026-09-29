@@ -8,10 +8,9 @@
  * headers, and these routes are `Authorization: Bearer <jwt>`-gated via
  * the gateway's `requireAuth` middleware — the same compromise
  * `services/gateway/src/routes/reminders.ts`'s own `/stream` route
- * documents needing (it falls back to `?user_id=` instead). This project
- * already has a fetch+`ReadableStream` reader for a different streaming
- * shape (`src/services/aiVoiceService.ts`); this is the equivalent for
- * proper `id:`/`event:`/`data:` SSE framing, which that one doesn't parse.
+ * documents needing (it falls back to `?user_id=` instead). This is a
+ * fetch+`ReadableStream` reader with proper `id:`/`event:`/`data:` SSE
+ * framing.
  *
  * No component uses this yet — see the matching hook file's own header
  * comment for why that's deliberate, not an oversight.

@@ -1,0 +1,10 @@
+$ npx vitest run src/components/contacts src/components/settings/connected-apps src/hooks
+Test Files  45 passed (45)
+     Tests  219 passed (219)
+$ npx tsc --noEmit -p tsconfig.app.json | grep -c "error TS"   # before: 166, after: 166 (all pre-existing, none in changed files)
+$ npx eslint <changed files>     # 0 errors (2 pre-existing warnings)
+$ npm run i18n:register          # No formal-register violations
+$ npm run i18n:inventory
+$ E2E_EMAIL=… node docs/validation/VTID-04449/outputs/verify-outlook-contacts.cjs docs/validation/VTID-04449/outputs
+mobile-de / desktop-en / mobile-ar: hscroll 0 on /connectors and /inbox
+blocked remote writes: telemetry and presence only (aborted)

@@ -1,0 +1,290 @@
+{
+  "vcal": {
+    "title": "Kalendar",
+    "today": "Danas",
+    "prev": "Nazad",
+    "next": "Napred",
+    "loading": "Učitavanje kalendara",
+    "error": "Tvoj kalendar trenutno nije mogao da se učita.",
+    "retry": "Pokušaj ponovo",
+    "busy": "Zauzeto",
+    "busyHint": "Unos iz druge uloge – vidi se samo vreme",
+    "done": "Gotovo",
+    "markDone": "Označi kao gotovo",
+    "doneToast": "Gotovo – bravo! 🎉",
+    "doneError": "Trenutno nije moglo da se sačuva.",
+    "recurring": "Ponavlja se",
+    "voiceAdd": "„Analiza krvi u petak u 8, natašte” – reci Vitani",
+    "nextUp": "Sledeće · {when}",
+    "progress": "{done} od {total} urađeno danas",
+    "progressAllDone": "Sve je urađeno – uživaj u ostatku dana ✨",
+    "progressKeepGoing": "Samo nastavi, na dobrom si putu 💪",
+    "greeting": {
+      "morning": "Dobro jutro ☀️",
+      "afternoon": "Prijatno popodne 🌤️",
+      "evening": "Dobro veče 🌙",
+      "night": "Laku noć 🌙"
+    },
+    "views": {
+      "day": "Dan",
+      "week": "Nedelja",
+      "month": "Mesec"
+    },
+    "rel": {
+      "now": "sada",
+      "minutes": "za {count} min",
+      "hours": "za {count} h",
+      "days": "za {count} dana"
+    },
+    "reminder": {
+      "eveningBefore": "Veče pre u {time}",
+      "atStart": "Na početku",
+      "hoursBefore": "{count} h pre",
+      "minutesBefore": "{count} min pre"
+    },
+    "kinds": {
+      "nutrition": "Ishrana",
+      "hydration": "Hidratacija",
+      "exercise": "Kretanje",
+      "sleep": "San",
+      "mental": "Mentalno",
+      "community": "Zajednica",
+      "lab": "Laboratorija",
+      "work": "Posao",
+      "vitana": "Vitana",
+      "personal": "Lično",
+      "_pending_review": {
+        "vitana": true
+      }
+    },
+    "source": {
+      "lab": "Iz tvog laboratorijskog naloga",
+      "autopilot": "Autopilot ✨",
+      "plan": "Iz tvog plana",
+      "assistant": "Dodato uz Vitanu",
+      "community": "Zajednica",
+      "journey": "Tvoje putovanje",
+      "_pending_review": {
+        "autopilot": true
+      }
+    },
+    "empty": {
+      "title": "Ništa nije planirano – miran dan",
+      "hint": "Reci Vitani šta planiraš i ona će to dodati."
+    },
+    "week": {
+      "title": "Nedelja od {date}",
+      "free": "slobodno"
+    },
+    "month": {
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
+    },
+    "entry": {
+      "close": "Zatvori",
+      "about": "O čemu se radi",
+      "reminders": "Podsetnici",
+      "noReminders": "Bez podsetnika",
+      "directions": "Putanja",
+      "askVitana": "Pitaj Vitanu"
+    },
+    "work": {
+      "deploy_staging": "Staging deploy",
+      "deploy_prod": "Produkcijski deploy",
+      "autopilot_review": "Čeka tvoj pregled",
+      "ticket_due": "Rok tiketa",
+      "erp_approval": "Odobrenje čeka",
+      "readOnly": "Ovo završavaš tamo gde je nastalo – kalendar samo pokazuje kada je na redu.",
+      "_pending_review": {
+        "deploy_staging": true
+      }
+    },
+    "subscribe": {
+      "title": "Prikaži u mojoj aplikaciji kalendara",
+      "intro": "Pretplati se na svoj Vitanaland kalendar u Apple, Google ili Outlook. Novi termini će se tamo pojaviti sami.",
+      "privacy": "Link prikazuje samo naslove, vreme i mesto – bez detalja. Ko god ima link vidi ove termine, zato ga čuvaj za sebe.",
+      "create": "Napravi link",
+      "replace": "Napravi novi link",
+      "replaceHint": "Novi link zamenjuje stari – stari više ne radi.",
+      "revoke": "Isključi link",
+      "revoked": "Link isključen",
+      "yourLink": "Tvoj link",
+      "onlyOnce": "Link vidiš samo sada. Kopiraj ga ili ga odmah otvori u aplikaciji kalendara.",
+      "copy": "Kopiraj",
+      "copied": "Link kopiran",
+      "copyError": "Kopiranje nije uspelo – označi link i kopiraj ga sam.",
+      "openApp": "Otvori u aplikaciji kalendara",
+      "activeSince": "Link je aktivan od {date}.",
+      "error": "Nije uspelo. Pokušaj ponovo za trenutak.",
+      "titleFor": {
+        "google": "Poveži Google kalendar",
+        "apple": "Poveži Apple kalendar",
+        "outlook": "Poveži Outlook"
+      },
+      "introFor": {
+        "google": "Tvoji Vitanaland termini pojavljuju se u tvom Google kalendaru i tamo ostaju ažurni.",
+        "apple": "Tvoji Vitanaland termini pojavljuju se u Apple kalendaru na iPhone-u, iPad-u i Mac-u i tamo ostaju ažurni.",
+        "outlook": "Tvoji Vitanaland termini pojavljuju se u tvom Outlook kalendaru i tamo ostaju ažurni."
+      },
+      "createFor": {
+        "google": "Napravi link za Google",
+        "apple": "Napravi link za Apple",
+        "outlook": "Napravi link za Outlook"
+      },
+      "openIn": {
+        "google": "Dodaj u Google kalendar",
+        "apple": "Dodaj u Apple kalendar",
+        "outlook": "Dodaj u Outlook"
+      }
+    },
+    "move": {
+      "action": "Pomeri",
+      "title": "Novo vreme",
+      "keepsLength": "Trajanje ostaje isto.",
+      "cancel": "Otkaži",
+      "confirm": "Pomeri ovde",
+      "moved": "Pomereno ✨",
+      "error": "Trenutno nije moglo da se pomeri. Pokušaj ponovo za trenutak.",
+      "blocked": {
+        "owned_by_source": "Ovo dolazi iz rezervacije ili plana – pomeri to tamo, inače će se vratiti.",
+        "recurring": "Seriju pomeraš preko same serije.",
+        "completed": "Završeno ostaje gde je bilo.",
+        "cancelled": "Otkazano ne može da se pomeri."
+      }
+    },
+    "google": {
+      "title": "Sinhronizuj sa Google kalendarom",
+      "intro": "Tvoji Vitanaland termini idu u poseban kalendar „Vitanaland“ na tvom Google nalogu. Tvoje Google događaje ovde vidiš kao siva zauzeta vremena – bez naslova.",
+      "turnOn": "Uključi Google sinhronizaciju",
+      "turnOff": "Isključi Google sinhronizaciju",
+      "turnedOn": "Google sinhronizacija je uključena 🎉",
+      "turnedOff": "Google sinhronizacija je isključena",
+      "on": "Google sinhronizacija je uključena",
+      "lastSync": "poslednji put {date}",
+      "problem": "Poslednja sinhronizacija nije uspela – pokušaćemo ponovo automatski.",
+      "error": "Trenutno nije uspelo. Pokušaj ponovo za trenutak.",
+      "busy": "Zauzeto (Google)",
+      "busyHint": "Događaj iz tvog Google kalendara – vidi se samo vreme"
+    },
+    "quietHours": {
+      "title": "Tihi sati",
+      "body": "U tvojim tihim satima podsetnici ne stižu – stižu malo pre toga.",
+      "link": "Podesi tihe sate"
+    },
+    "guide": {
+      "eyebrow": "Vitana predlaže",
+      "allDone": "Sve je gotovo: {count} od {count}. Uživaj u večeri ili pogledaj šta donosi nedelja.",
+      "nextStep": "Tvoj sledeći korak: {title}",
+      "stepsOpenOne": "1 otvoren korak · oko 5 minuta",
+      "stepsOpen": "Otvorenih koraka: {count} · oko 5 minuta svaki",
+      "freeDay": "Danas ništa nije planirano. Dobar dan za nešto što ti prija.",
+      "freeWindow": "Slobodan si od {from} do {to}. Šetnja, susret ili pauza?",
+      "connect": "Poveži svoj kalendar da bi Vitana videla ceo tvoj dan i planirala oko njega.",
+      "busy": "Pun dan: pred tobom je još {count} stvari. Isplaniraj kratke pauze između njih.",
+      "start": "Počni",
+      "findEvent": "Pronađi događaj",
+      "planWithVitana": "Planiraj sa Vitanom",
+      "seeWeek": "Pogledaj nedelju",
+      "connectAction": "Poveži kalendar",
+      "dismiss": "Sakrij za danas"
+    },
+    "journey": {
+      "title": "Tvoje putovanje",
+      "open": "Otvorenih koraka: {count}",
+      "openOne": "1 otvoren korak",
+      "day": "Dan {day}",
+      "dayOf": "Dan {day} od {total}",
+      "noneOpen": "Svi koraci su gotovi, bravo! Novi stižu kako budeš napredovao.",
+      "today": "Danas {time}",
+      "more": "+još {count}",
+      "openJourney": "Otvori moje putovanje",
+      "habitsOne": "1 navika",
+      "habits": "Navika: {count}",
+      "habitsTitle": "Tvoje navike – u kalendaru samo ako to želiš",
+      "addHabit": "Dodaj u kalendar",
+      "dailyAt": "Svaki dan u",
+      "addConfirm": "Dodaj",
+      "inCalendar": "U kalendaru",
+      "habitAdded": "Navika je dodata u tvoj kalendar"
+    },
+    "remindersSection": {
+      "title": "Podsetnici",
+      "none": "Nema zakazanih",
+      "upcoming": "Predstojećih: {count}",
+      "upcomingOne": "1 predstojeći",
+      "next": "sledeći {when}"
+    },
+    "calendars": {
+      "title": "Kalendari",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
+      },
+      "connectTitle": "Poveži svoj kalendar",
+      "connectBody": "Tvoji Vitanaland termini u Google-u, Apple-u ili Outlook-u – jednim dodirom.",
+      "comingSoon": "Prijava preko Google-a, Apple-a i Outlook-a se upravo podešava.",
+      "connectedOne": "{name} povezan",
+      "connectedMany": "Povezano: {names}",
+      "needsReconnect": "{name} treba ponovo povezati",
+      "connected": "Povezano",
+      "notConnected": "Nije povezano",
+      "reconnectHint": "Veza je istekla",
+      "connect": "Poveži",
+      "reconnect": "Ponovo poveži",
+      "manage": "Upravljaj u povezanim aplikacijama",
+      "showInAppHint": "Vidi Vitanaland unose u svojoj aplikaciji za kalendar"
+    },
+    "add": {
+      "title": "Novi unos",
+      "created": "Dodato ✨",
+      "error": "Trenutno nije moglo da se sačuva. Pokušaj ponovo za trenutak."
+    },
+    "form": {
+      "title": "Naslov",
+      "titlePlaceholder": "Šta je u pitanju?",
+      "date": "Datum",
+      "today": "Danas",
+      "tomorrow": "Sutra",
+      "pickDate": "Izaberi datum",
+      "start": "Početak",
+      "end": "Kraj",
+      "location": "Mesto",
+      "optional": "opciono",
+      "locationPlaceholder": "Gde?",
+      "category": "Kategorija",
+      "cancel": "Otkaži",
+      "create": "Dodaj u kalendar",
+      "types": {
+        "personal": "Lično",
+        "professional": "Posao",
+        "health": "Zdravlje",
+        "workout": "Trening",
+        "community": "Zajednica",
+        "nutrition": "Ishrana"
+      }
+    },
+    "milestone": "Prekretnica: {title}",
+    "more": "+{count} još",
+    "summary": {
+      "nothing": "Ništa nije planirano",
+      "entriesOne": "1 termin",
+      "entries": "Termina: {count}",
+      "next": "sledeći u {time}",
+      "done": "završeno: {count}"
+    },
+    "workSection": {
+      "title": "Posao",
+      "waitingOne": "1 stvar te čeka",
+      "waiting": "Čeka te: {count}",
+      "open": "Otvori u administraciji"
+    }
+  }
+}

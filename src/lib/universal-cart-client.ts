@@ -22,6 +22,7 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
+import { DEFAULT_GATEWAY_ORIGIN } from '@/lib/gateway-base';
 
 // The same env var used by community-gateway.ts. Vitana-v1's CLAUDE.md lists
 // VITE_GATEWAY_URL as the canonical name, but community-gateway.ts uses
@@ -32,7 +33,7 @@ const __env: ViteEnv =
 const GATEWAY_BASE: string = (
   __env.VITE_GATEWAY_BASE ||
   __env.VITE_GATEWAY_URL ||
-  "https://gateway-q74ibpv6ia-uc.a.run.app"
+  DEFAULT_GATEWAY_ORIGIN
 ).replace(/\/+$/, "");
 
 // =============================================================================

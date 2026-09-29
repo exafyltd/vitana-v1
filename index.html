@@ -13,6 +13,8 @@
     <title>VITANA Platform</title>
     <meta name="description" content="Join MAXINA to discover and create amazing events, connect with communities, and grow together." />
     <meta name="author" content="MAXINA" />
+    <!-- VTID-04430: build stamp; the ORB widget sends it so voice-filed tickets carry the app version. -->
+    <meta name="vitana-app-version" content="%VITE_APP_VERSION%" />
 
     <!-- Default OG tags - overwritten by SEO component on specific pages -->
     <meta property="og:site_name" content="MAXINA" />
@@ -59,7 +61,7 @@
          or the browser fetches the file TWICE and the preload is worse than
          nothing. The widget is cross-origin by design (it is served by the
          gateway, and auto-detects its gateway from its own script src). -->
-    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260920-ios-audio-blocked">
+    <link rel="preload" as="script" crossorigin href="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260928-vtid-04723-refetch">
 
     <!-- ORB Voice Widget -->
     <!-- BOOTSTRAP-ORB-STAGING-GATEWAY: load the widget from THIS environment's
@@ -72,8 +74,19 @@
          whole voice flow (widget JS + session + SSE) within one environment.
          The widget lives in the gateway repo
          (services/gateway/src/frontend/command-hub/orb-widget.js); the ?v= bump
-         forces browsers to refetch instead of serving the cached prod widget. -->
-    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260920-ios-audio-blocked" defer></script>
+         forces browsers to refetch instead of serving the cached prod widget.
+         VTID-04560: bump it on EVERY widget change this app depends on — the
+         gateway serves the widget `immutable, max-age=1y` through Cloudflare,
+         keyed by this exact URL, so an unchanged ?v= keeps serving the old
+         widget indefinitely (measured: the view-role change was live on the
+         Command Hub and invisible here until this bump).
+         VTID-04723: never reuse an address the app served before the gateway
+         served the widget behind it. The VTID-04658 address went live here
+         50 minutes before production's gateway had that widget, so browsers
+         may hold the old widget under it for a year; this address was never
+         served early. -->
+
+    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260928-vtid-04723-refetch" defer></script>
   </head>
 
   <body>

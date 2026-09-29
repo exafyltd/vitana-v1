@@ -1,7 +1,8 @@
+import { resolveOperatorApi } from '@/lib/gateway-base';
 import { useState, useEffect, useCallback } from "react";
 
-const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
-const BASE_OPERATOR = (import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
+const BASE_EVENTS = resolveOperatorApi(import.meta.env.VITE_EVENTS_BASE_URL);
+const BASE_OPERATOR = resolveOperatorApi(import.meta.env.VITE_OPERATOR_BASE_URL);
 const STATUS_URL = `${BASE_EVENTS.replace('/api/v1','')}/status/cmdhub.json`;
 
 type ServiceStatus = "UP" | "DOWN";

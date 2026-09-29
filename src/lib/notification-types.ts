@@ -468,6 +468,14 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
     icon: '🎉', label: 'New Feature', category: 'system',
     channel: 'push_and_inapp', priority: 'p2',
   },
+  // VTID-04335: sent by the gateway (feedback-reporter-notify) when a
+  // member's support ticket is resolved. data = { ticket_id, url }. The
+  // route below is the fallback; resolveNotificationRoute() pins the
+  // specific ticket via ?ticket=<id> either way.
+  feedback_ticket_resolved: {
+    icon: '🛟', label: 'Support Ticket Resolved', category: 'system',
+    channel: 'push_and_inapp', priority: 'p1', route: '/comm/talk-to-vitana?ticket={id}',
+  },
 
   // ═══════════════════════════════════════════════════════════
   // 16. REMINDERS (4)
@@ -492,7 +500,21 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
 
 // ── Helper Functions ────────────────────────────────────────
 
+/** VTID-04335: append ?ticket=<id> so the ticket list scrolls to that ticket. */
+export function withTicketParam(url: string, ticketId: string): string {
+  const [pathAndQuery, hash] = url.split('#');
+  const [path, query = ''] = pathAndQuery.split('?');
+  const params = new URLSearchParams(query);
+  params.set('ticket', ticketId);
+  return `${path}?${params.toString()}${hash ? `#${hash}` : ''}`;
+}
+
 export function resolveNotificationRoute(type: string, data?: Record<string, any>): string | null {
+  // 0. Support tickets deep-link to the specific ticket, not just the list.
+  if (type === 'feedback_ticket_resolved' && data?.ticket_id) {
+    return withTicketParam((data.url as string) || '/comm/talk-to-vitana', String(data.ticket_id));
+  }
+
   // 1. Honour explicit URL from push payload
   if (data?.url) {
     const url = data.url as string;

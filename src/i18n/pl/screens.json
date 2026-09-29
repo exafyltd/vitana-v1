@@ -3602,7 +3602,8 @@
       "videoRoomUnavailableHint": "Strumień jest teraz niedostępny. Spróbuj ponownie.",
       "autopilotSuggestionsTitle": "Sugestie Autopilota",
       "autopilotSuggestionsBody": "Nie opublikowałeś jeszcze życzenia. W międzyczasie Autopilot sugeruje osoby ze społeczności, które mogłyby pasować. Opublikuj życzenie, aby AI mogła znaleźć dla ciebie prawdziwe dopasowania.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "ourAnswer": "Nasza odpowiedź"
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -3757,6 +3758,7 @@
       "quickLogging": "Szybkie Logowanie",
       "trackDailyActivities": "Śledź codzienne aktywności",
       "smartCalendar": "Inteligentny Kalendarz",
+      "noUpcomingEvents": "Brak nadchodzących wydarzeń",
       "friendsActive": "Aktywni znajomi",
       "meetingsToday": "Spotkania dzisiaj",
       "highSocialEnergyToday": "Wysoka energia społeczna dziś",
@@ -5236,11 +5238,13 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true
+        "reportsLoadFailedRetry": true,
+        "coachReplyFailed": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
-      "reportsLoadFailedRetry": "Try again"
+      "reportsLoadFailedRetry": "Try again",
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Priorytet dnia:",
@@ -5879,7 +5883,131 @@
       "memorySubnav_diary": "Codzienny dziennik",
       "memorySubnav_recall": "Wyszukaj i przypomnij",
       "memorySubnav_permissions": "Uprawnienia",
-      "wellnessDiaryMultimediaDescription": "Nagrywaj i przeglądaj swoją podróż wellness poprzez wpisy multimedialne."
+      "wellnessDiaryMultimediaDescription": "Nagrywaj i przeglądaj swoją podróż wellness poprzez wpisy multimedialne.",
+      "garden": {
+        "_pending_review": {
+          "lastUpdated": true,
+          "cardCountOne": true,
+          "cardCountOther": true,
+          "loading": true,
+          "countOne": true,
+          "countOther": true,
+          "loadFailed": true
+        },
+        "categories": {
+          "personalIdentity": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Personal Identity",
+            "insight": "Building your core identity profile"
+          },
+          "healthWellness": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Health & Wellness",
+            "insight": "Tracking your vitality and well-being"
+          },
+          "lifestyleRoutines": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Lifestyle & Routines",
+            "insight": "Capturing your daily patterns"
+          },
+          "businessProjects": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Business & Projects",
+            "insight": "Mapping your professional journey"
+          },
+          "networkRelationships": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Network & Relationships",
+            "insight": "Understanding your social ecosystem"
+          },
+          "learningKnowledge": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Learning & Knowledge",
+            "insight": "Growing your knowledge base"
+          },
+          "financeAssets": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity"
+          },
+          "locationEnvironment": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world"
+          },
+          "digitalFootprint": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence"
+          },
+          "valuesAspirations": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass"
+          },
+          "autopilotSettings": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion"
+          },
+          "futurePlans": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Future Plans",
+            "insight": "Designing your evolution"
+          },
+          "general": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization"
+          }
+        },
+        "lastUpdated": "Last updated {date}",
+        "cardCountOne": "1 memory · {progress}%",
+        "cardCountOther": "{count} memories · {progress}%",
+        "loading": "Loading your memories…",
+        "countOne": "1 memory",
+        "countOther": "{count} memories",
+        "loadFailed": "Your memories couldn't be loaded right now."
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Poranna motywacja",
@@ -6738,7 +6866,11 @@
       "noCompleted": "Brak ukończonych przypomnień.",
       "noMissed": "Brak przegapionych przypomnień — wszystko masz nadrobione.",
       "creating": "Tworzenie…",
-      "createReminder": "Utwórz przypomnienie"
+      "createReminder": "Utwórz przypomnienie",
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Brak wydarzeń w Twoim ekwipunku",
@@ -9173,7 +9305,11 @@
       "impactImpact": "Wpływ: {impact}",
       "defineHowYourAiAgentShould": "Zdefiniuj, jak Twój agent AI powinien się zachowywać, na czym powinien się skupić i jak powinien się z Tobą komunikować...",
       "thisReadonlyPlaceholderForAgentPrompt": "To jest tylko do odczytu, zastępczy element dla Centrum Podpowiedzi Agenta. \n              Przyszłe fazy umożliwią pełną personalizację agenta AI i testowanie w czasie rzeczywistym.",
-      "thisReadonlyPlaceholderForPersonalAi": "To jest tylko do odczytu, zastępczy element dla Osobistej Osi Czasu AI. \n                Przyszłe fazy połączą się z rzeczywistymi danymi aktywności AI i zapewnią interaktywne wnioski."
+      "thisReadonlyPlaceholderForPersonalAi": "To jest tylko do odczytu, zastępczy element dla Osobistej Osi Czasu AI. \n                Przyszłe fazy połączą się z rzeczywistymi danymi aktywności AI i zapewnią interaktywne wnioski.",
+      "dailyLearningsTitle": "Czego Vitana się nauczyła",
+      "dailyLearningsLoading": "Wczytuję twoje dni …",
+      "dailyLearningsEmpty": "Nie ma jeszcze podsumowania dnia. Pisz w dzienniku albo porozmawiaj z Vitaną — każdego wieczoru Vitana podsumuje tu twój dzień.",
+      "dailySummaryOpenIndex": "Otwórz Vitana Index"
     },
     "authpages": {
       "fullName": "Imię i nazwisko",
@@ -10329,7 +10465,10 @@
       "preparingNextSteps": "Przygotowuję twoje kolejne kroki…",
       "allCaughtUpForToday": "Wszystko na dziś załatwione",
       "nothingNewRightNow": "Nic nowego dla ciebie na razie.",
-      "checkForNew": "Sprawdź, czy są nowe"
+      "checkForNew": "Sprawdź, czy są nowe",
+      "snoozeLater": "Później",
+      "snoozedUntilTomorrow": "Pokażemy ci to jutro ponownie.",
+      "snoozeFailed": "Nie udało się odłożyć. Spróbuj ponownie."
     },
     "postDetail": {
       "title": "Wpis",
@@ -10708,6 +10847,7 @@
           "acceptExpired": true,
           "acceptNotFound": true,
           "acceptFailed": true,
+          "acceptWrongEmail": true,
           "goToPortal": true,
           "commerceVertical": true,
           "commerceVerticalHealth": true,
@@ -10788,6 +10928,7 @@
         "acceptExpired": "This invite has expired.",
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
+        "acceptWrongEmail": "This invite was sent to a different email address. Sign in with the address the invite was sent to, then open the link again.",
         "goToPortal": "Go to Commerce Portal",
         "commerceVertical": "Industry",
         "commerceVerticalHealth": "Health & medical services",

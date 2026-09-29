@@ -39,7 +39,7 @@ serve(async (req) => {
         base_url: 'https://ai.gateway.lovable.dev/v1/chat/completions',
         integration_type: 'ai_multimodal',
         auth_type: 'api_key',
-        is_active: true,
+        is_active: false, // VTID-04448: ai-chat removed; the Health Coach uses the gateway conversation API,
         metadata: { 
           deployment_type: 'edge_function',
           edge_function: 'ai-chat',

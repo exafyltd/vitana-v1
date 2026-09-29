@@ -17,10 +17,10 @@ export default function AdminHeader({
   rightAction
 }: AdminHeaderProps) {
   return (
-    <div className="bg-gradient-to-r from-card via-card/95 to-card border rounded-2xl shadow-lg p-8">
+    <div className="bg-gradient-to-r from-card via-card/95 to-card border rounded-2xl shadow-lg p-5 sm:p-8">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <h1 className="text-3xl font-bold tracking-tight mb-2 flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2 flex items-center gap-3 break-words hyphens-auto">
             {emoji && <span className="text-4xl">{emoji}</span>}
             {title}
           </h1>
@@ -29,7 +29,7 @@ export default function AdminHeader({
               {subtitle}
             </span>
           )}
-          <p className="text-muted-foreground text-lg max-w-3xl">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-3xl">
             {description}
           </p>
           {syncTimestamp && (

@@ -16,7 +16,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
-import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
+import { formatIndexDelta } from "@/lib/diary-index-sync";
+import { saveDiaryEntry as saveDiaryEntryApi } from "@/lib/memory-api";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface VoiceDiaryRecorderProps {
@@ -374,21 +375,15 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
 
     setIsSaving(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
       const savedText = transcribedText;
-      const { error } = await supabase.from('diary_entries').insert({
-        user_id: user.id,
+      // VTID-04390: one diary write path — diary row, memory episode and the
+      // Vitana Index sync (VTID-01983) in a single gateway call.
+      const { index: sync } = await saveDiaryEntryApi({
         text: savedText,
+        source: 'voice',
+        tags: ['diary', 'voice'],
         duration: recordingDuration,
-        source: 'voice'
       });
-
-      if (error) throw error;
-
-      // VTID-01983: run the Index sync on the transcript.
-      const sync = await syncDiaryToIndex(savedText);
       const moved = sync?.index_delta?.total ?? 0;
 
       // Reset form

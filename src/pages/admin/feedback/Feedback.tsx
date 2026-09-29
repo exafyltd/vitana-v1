@@ -18,12 +18,13 @@ import { communityFetch } from "@/lib/community-gateway";
 // bindings, routing keywords, intake extras, connections).
 import { SpecialistConfigDrawer } from "./SpecialistConfigDrawer";
 // VTID-02660: actionable ticket drawer — full transcript + Activate/Reject.
-import { TicketActionDrawer } from "./TicketActionDrawer";
+import { TicketActionDrawer, LinkedVtidChip } from "./TicketActionDrawer";
 // Forwarding-rules feature (VTID-02661): Vitana-specific drawer that edits
 // the global Gate A phrase lists + a test sandbox.
 import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
 import { Switch } from "@/components/ui/switch";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { adminStatusLabel } from './admin-ticket-labels';
 
 import { fmtDateTime } from '@/lib/locale-format';
 const TABS = [
@@ -51,6 +52,9 @@ interface Ticket {
   // can read the gist of a claim inline and prioritise without opening
   // the actionable drawer.
   raw_transcript_excerpt?: string | null;
+  // VTID-04335: the ticket's own VTID (VTID-04333). Optional — older
+  // gateways don't return it.
+  linked_vtid?: string | null;
 }
 
 interface Persona {
@@ -63,24 +67,6 @@ interface Persona {
   version: number;
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  new: "Submitted",
-  interviewing: "Interviewing",
-  triaged: "Triaged",
-  spec_pending: "Spec pending",
-  spec_ready: "Spec ready",
-  answer_pending: "Answer pending",
-  answer_ready: "Answer ready",
-  approved: "Approved",
-  in_progress: "In progress",
-  resolved: "Resolved",
-  user_confirmed: "Confirmed",
-  duplicate: "Duplicate",
-  rejected: "Rejected",
-  wont_fix: "Won't fix",
-  needs_more_info: "Needs info",
-  reopened: "Reopened",
-};
 
 // VTID-02658: helpers for the customer-grouped tickets view.
 
@@ -184,7 +170,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
   const handleApproveAll = async (g: CustomerGroup) => {
     if (!tenantId || !g.vitana_id) return;
     if (g.actionable === 0) return;
-    const confirmText = `Approve all ${g.actionable} actionable ticket${g.actionable === 1 ? "" : "s"} from ${g.vitana_id}?`;
+    const confirmText = t('supportTickets.adminList.approveAllConfirm', { count: g.actionable, customer: g.vitana_id });
     if (!window.confirm(confirmText)) return;
     setApproving(s => ({ ...s, [g.customer_key]: true }));
     try {
@@ -198,12 +184,12 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
       }
       const r = json as { approved?: number; sent?: number; skipped?: number; total?: number };
       const parts: string[] = [];
-      if ((r.approved ?? 0) > 0) parts.push(`${r.approved} approved`);
-      if ((r.sent ?? 0) > 0) parts.push(`${r.sent} answers sent`);
-      if ((r.skipped ?? 0) > 0) parts.push(`${r.skipped} skipped`);
+      if ((r.approved ?? 0) > 0) parts.push(t('supportTickets.adminList.batchApproved', { count: r.approved ?? 0 }));
+      if ((r.sent ?? 0) > 0) parts.push(t('supportTickets.adminList.batchSent', { count: r.sent ?? 0 }));
+      if ((r.skipped ?? 0) > 0) parts.push(t('supportTickets.adminList.batchSkipped', { count: r.skipped ?? 0 }));
       toast({
-        title: `Batch action complete for ${g.vitana_id}`,
-        description: parts.length > 0 ? parts.join(" · ") : "Nothing to action.",
+        title: t('supportTickets.adminList.batchDoneTitle', { customer: g.vitana_id }),
+        description: parts.length > 0 ? parts.join(" · ") : t('supportTickets.adminList.batchNothing'),
       });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
     } catch (err) {
@@ -251,7 +237,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                 {g.avatar_url ? (
                   <img
                     src={g.avatar_url}
-                    alt={`Avatar for ${g.display_name ?? g.customer_key}`}
+                    alt={t('supportTickets.adminList.avatarAlt', { name: g.display_name ?? g.customer_key })}
                     className="h-10 w-10 shrink-0 rounded-full object-cover"
                     onError={(e) => {
                       // Fallback to initials if the image 404s — common when
@@ -266,7 +252,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                 <div
                   className={`h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white ${g.avatar_url ? "hidden" : "flex"}`}
                   style={{ background: color }}
-                  aria-label={`Avatar for ${g.customer_key}`}
+                  aria-label={t('supportTickets.adminList.avatarAlt', { name: g.customer_key })}
                 >
                   {initials}
                 </div>
@@ -286,11 +272,12 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                     <span className="font-mono">{g.latest.ticket_number}</span>
+                    {g.latest.linked_vtid && <LinkedVtidChip vtid={g.latest.linked_vtid} />}
                     <Badge
                       className={`text-[10px] ${headerAccent.pill}`}
                       variant={headerAccent.pill ? undefined : statusVariant(g.latest.status)}
                     >
-                      {STATUS_LABEL[g.latest.status] ?? g.latest.status}
+                      {adminStatusLabel(g.latest.status)}
                     </Badge>
                     <span>{g.latest.kind}</span>
                     {g.latest.resolver_agent && (
@@ -313,7 +300,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                   disabled={approving[g.customer_key] === true}
                   onClick={() => handleApproveAll(g)}
                 >
-                  {approving[g.customer_key] ? "Approving…" : `Approve all (${g.actionable})`}
+                  {approving[g.customer_key] ? t('supportTickets.adminList.approving') : t('supportTickets.adminList.approveAll', { count: g.actionable })}
                 </Button>
               )}
             </div>
@@ -341,8 +328,9 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                           {idx + 1}.
                         </span>
                         <span className="font-mono text-xs">{t.ticket_number}</span>
+                        {t.linked_vtid && <span className="font-mono text-[11px] text-primary" data-testid="row-linked-vtid">{t.linked_vtid}</span>}
                         <Badge className={`text-[10px] ${accent.pill}`} variant={accent.pill ? undefined : statusVariant(t.status)}>
-                          {STATUS_LABEL[t.status] ?? t.status}
+                          {adminStatusLabel(t.status)}
                         </Badge>
                         <span className="text-muted-foreground">{t.kind}</span>
                         <span className="text-muted-foreground">{(t.priority || "p2").toUpperCase()}</span>
@@ -478,10 +466,8 @@ function SpecialistEnableToggle({
         throw new Error(body.error ?? `HTTP ${res.status}`);
       }
       toast({
-        title: next ? `${personaKey} enabled` : `${personaKey} disabled`,
-        description: next
-          ? "Vitana can now route eligible requests to this specialist."
-          : "Vitana will not route to this specialist (gate=unrouted on a match).",
+        title: t(next ? 'supportTickets.adminList.specialistEnabled' : 'supportTickets.adminList.specialistDisabled', { name: personaKey }),
+        description: next ? t('supportTickets.adminList.specialistEnabledDesc') : t('supportTickets.adminList.specialistDisabledDesc'),
       });
       onChanged();
     } catch (err) {
@@ -494,13 +480,13 @@ function SpecialistEnableToggle({
   return (
     <div onClick={e => e.stopPropagation()} className="flex items-center gap-2">
       <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-        {enabled ? "On" : "Off"}
+        {enabled ? t('supportTickets.adminList.on') : t('supportTickets.adminList.off')}
       </span>
       <Switch
         checked={enabled}
         disabled={pending}
         onCheckedChange={toggle}
-        aria-label={`Toggle ${personaKey} ${enabled ? "off" : "on"}`}
+        aria-label={t(enabled ? 'supportTickets.adminList.toggleOff' : 'supportTickets.adminList.toggleOn', { name: personaKey })}
       />
     </div>
   );
@@ -575,10 +561,10 @@ export default function AdminFeedback() {
 
   return (
     <AppLayout>
-      <SEO title={t('screens.admin.feedbackAdmin')} description="Tenant feedback tickets and the AI specialist team" />
+      <SEO title={t('screens.admin.feedbackAdmin')} description={t('supportTickets.adminList.seoDescription')} />
       <StandardHeader
         title={t('screens.admin.feedback')}
-        description="Tickets your members submitted to Vitana. AI specialists handle them — humans approve before any action applies."
+        description={t('supportTickets.adminList.pageDescription')}
       />
 
       <div className="border-b border-border">

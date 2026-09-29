@@ -1,0 +1,4 @@
+PASS  app shell is served
+PASS  reminder deep link is served by the SPA
+PASS  the snooze route the Later button calls exists and refuses an unauthenticated caller
+PASS  the reminder Mark-done route the overlay calls exists and refuses an unauthenticated caller

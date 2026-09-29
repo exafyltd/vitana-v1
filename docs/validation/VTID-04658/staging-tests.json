@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-04658",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "orb-widget.js?v=20260926-vtid-04658-after-turn",
+      "reason": "the app loads the voice widget under the new version, so browsers and the CDN fetch the widget that runs an after_turn directive at once (the gateway serves it immutable for a year)" },
+    { "kind": "http", "target": "gateway", "method": "GET", "path": "/command-hub/orb-widget.js?v=20260926-vtid-04658-after-turn",
+      "expect_status": 200, "expect_body_contains": "msg.after_turn === true",
+      "reason": "the exact widget URL the app loads carries the VTID-04644 after_turn branch" },
+    { "kind": "existing", "ref": "npx vitest run src/hooks/useOrbVoiceWidget.vtid-04099-load-path.test.ts", "cwd": ".",
+      "reason": "preload and script tag still point at one identical widget URL" }
+  ]
+}

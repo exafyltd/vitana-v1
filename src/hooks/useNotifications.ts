@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { saveDeviceTimeZone } from "@/lib/notifications/device-timezone";
 import { supabase } from '@/integrations/supabase/client';
 import { showAppilixFallbackNotification } from '@/lib/appilixNotificationFallback';
 import { useAuth } from '@/context/AuthProvider';
@@ -273,6 +274,10 @@ export function useNotificationPreferences() {
         { onConflict: 'user_id' }
       );
       if (error) throw error;
+      // VTID-04676: quiet hours are checked in the member's timezone — save the device's with them.
+      if (field === 'dnd_enabled' || field === 'dnd_start_time' || field === 'dnd_end_time') {
+        void saveDeviceTimeZone(user.id);
+      }
     } catch (err) {
       setPrefs(prefs); // rollback
       throw err;

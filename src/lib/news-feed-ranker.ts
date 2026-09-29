@@ -22,7 +22,7 @@
 
 import type { MatchReason } from "@/lib/matchReason";
 
-export type FeedItemKind = "match" | "performer" | "post" | "article" | "feature_announcement";
+export type FeedItemKind = "match" | "performer" | "post" | "article" | "feature_announcement" | "new_member";
 
 /** A member tagged in a post body via an inline @mention. */
 export interface PostMention {
@@ -104,7 +104,21 @@ export interface FeatureAnnouncementFeedItem extends FeedItemBase {
   deep_link: string;
 }
 
+/**
+ * VTID-04584 — a member who joined recently. Merged into the chronological
+ * community stream by join time so the community sees the newcomer and can
+ * greet them (rendered by NewMemberCard).
+ */
+export interface NewMemberFeedItem extends FeedItemBase {
+  kind: "new_member";
+  user_id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+}
+
 export type FeedItem =
+  | NewMemberFeedItem
   | MatchFeedItem
   | PerformerFeedItem
   | PostFeedItem
@@ -163,6 +177,7 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   const postsOnly: PostFeedItem[] = [];
   const articles: ArticleFeedItem[] = [];
   const featureAnnouncements: FeatureAnnouncementFeedItem[] = [];
+  const newMembers: NewMemberFeedItem[] = [];
 
   for (const item of items) {
     if (hidden.has(item.id)) continue;
@@ -182,6 +197,9 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
         break;
       case "feature_announcement":
         featureAnnouncements.push(item);
+        break;
+      case "new_member":
+        newMembers.push(item);
         break;
     }
   }
@@ -223,9 +241,11 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   //    media format, then engagement, then stable id. Feature-announcement
   //    cards are merged in here (0 engagement, no downrank penalty) so they
   //    sort purely by recency alongside everything else.
-  const posts: (PostFeedItem | FeatureAnnouncementFeedItem)[] = [
+  //    New-member cards join the same stream by join time (VTID-04584).
+  const posts: (PostFeedItem | FeatureAnnouncementFeedItem | NewMemberFeedItem)[] = [
     ...postsOnly,
     ...eligibleFeatureAnnouncements,
+    ...newMembers,
   ];
   posts.sort((a, b) => {
     const pa = a.kind === "post" ? downrankPenalty(a.tags, downranked) : 0;

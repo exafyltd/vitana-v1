@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+const GATEWAY_URL = GATEWAY_API_URL;
 
 export type AutonomyMode = "silent" | "draft_to_user" | "one_tap_approve" | "auto_post";
 

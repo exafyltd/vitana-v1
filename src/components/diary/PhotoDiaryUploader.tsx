@@ -5,7 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
-import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
+import { formatIndexDelta } from "@/lib/diary-index-sync";
+import { saveDiaryEntry } from "@/lib/memory-api";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PhotoDiaryUploaderProps {
@@ -81,20 +82,26 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
 
       console.log('All uploads complete. URLs:', uploadedUrls);
 
-      // Save entry to database with photo URLs
-      const { data: insertedEntry, error } = await supabase
-        .from('diary_entries')
-        .insert({
-          user_id: user.id,
-          text: caption || "Photo entry",
-          source: 'photo',
-          tags: ['diary', 'photo'],
-          attachments: uploadedUrls
-        })
-        .select('*')
-        .single();
-
-      if (error) throw error;
+      // VTID-04390: one diary write path — diary row, memory episode and the
+      // Vitana Index sync on the caption, in a single gateway call.
+      const captionText = (caption || "").trim();
+      const saved = await saveDiaryEntry({
+        text: captionText,
+        source: 'photo',
+        tags: ['diary', 'photo'],
+        attachments: uploadedUrls,
+      });
+      const insertedEntry = {
+        id: saved.entry.id,
+        user_id: user.id,
+        text: captionText,
+        source: 'photo',
+        tags: ['diary', 'photo'],
+        attachments: uploadedUrls,
+        duration: null,
+        created_at: saved.entry.created_at,
+        updated_at: saved.entry.created_at,
+      };
 
       // Optimistically update active diary caches so the new card appears instantly
       const prependIfMissing = (oldData: any[] | undefined) => {
@@ -113,11 +120,9 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       queryClient.setQueryData(['diary-entries', 'photo'], prependIfMissing);
       await queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
 
-      // VTID-01983: photo path syncs the caption to the Index when present.
-      // Photo-only entries (no caption) skip extraction but still mark the
-      // user as having journaled (the gateway always emits journal_entry).
-      const captionText = (caption || "").trim();
-      const sync = captionText.length > 0 ? await syncDiaryToIndex(captionText) : null;
+      // VTID-01983: the gateway synced the caption to the Index (photo-only
+      // entries skip extraction).
+      const sync = saved.index;
       const moved = sync?.index_delta?.total ?? 0;
       queryClient.invalidateQueries({ queryKey: ['vitana_index'] });
 

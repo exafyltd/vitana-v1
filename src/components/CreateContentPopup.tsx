@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,8 @@ import type { PostMention } from "@/lib/news-feed-ranker";
 interface CreateContentPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  /** VTID-04504: a draft the member reviewed in the Autopilot preview. */
+  initialContent?: string;
 }
 
 // Mirrors the limits enforced by MobileCreatePostSheet so both composers behave
@@ -30,7 +32,7 @@ const MAX_COMPRESSIBLE_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB
 
 type MediaKind = "image" | "video";
 
-export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps) {
+export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateContentPopupProps) {
   const [contentType, setContentType] = useState("post");
   const [formData, setFormData] = useState({
     title: "",
@@ -39,6 +41,14 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
     visibility: "public",
     allowComments: true
   });
+
+  // VTID-04504: pre-fill a reviewed Autopilot draft when the composer opens.
+  // The member still presses Post themselves — nothing is published here.
+  useEffect(() => {
+    if (!isOpen || !initialContent) return;
+    setContentType("post");
+    setFormData((prev) => (prev.content ? prev : { ...prev, content: initialContent }));
+  }, [isOpen, initialContent]);
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const availableTags = ["Tips", "Motivation", "Progress", "Question", "Achievement", "Recipe", "Workout", "Community"];

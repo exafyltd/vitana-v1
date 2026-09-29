@@ -96,6 +96,7 @@ import { EventKebabMenu } from "@/components/events/EventKebabMenu";
 import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
+import { buildIcs, downloadIcs, icsFilename } from '@/lib/ics';
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
   if (!url) return null;
@@ -638,6 +639,14 @@ export function MeetupDetailsDrawer({
       window.open(url, '_blank');
       notify('toasts.meetups.openingCalendar');
     } else if (type === 'apple' || type === 'ics') {
+      downloadIcs(icsFilename(event.title), buildIcs({
+        uid: `meetup-${event.id}`,
+        title: event.title,
+        start: startDate,
+        end: endDate,
+        description: event.description,
+        location: event.location || event.virtual_link,
+      }));
       notify('toasts.meetups.calendarExport', 'toasts.meetups.icalFileDownloaded');
     }
   };

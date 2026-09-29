@@ -6,8 +6,7 @@
       "editHighlights": "Editar Destacados",
       "saveHighlights": "Guardar Destacados",
       "highlightsDesc": "Elige tus mejores publicaciones y contenido multimedia para mostrar en la parte superior de tu perfil. El contenido destacado aparece en la sección de Destacados y atrae más seguidores.",
-      "try": "Probar",
-      "_pending_review": {}
+      "try": "Probar"
     },
     "identity": {
       "vitanaIndex": "Índice Vitana",
@@ -16,15 +15,13 @@
       "follow": "Seguir",
       "followingState": "Siguiendo",
       "understandIndex": "Entender el índice",
-      "brandFooter": "MAXINA × VITANA",
-      "_pending_review": {}
+      "brandFooter": "MAXINA × VITANA"
     },
     "tabs": {
       "identity": "Identidad",
       "social": "Social",
       "account": "Cuenta",
-      "business": "Negocio",
-      "_pending_review": {}
+      "business": "Negocio"
     },
     "account": {
       "notSet": "Sin especificar",
@@ -33,8 +30,7 @@
       "visibility": {
         "private": "Privado",
         "connections": "Contactos",
-        "public": "Público",
-        "_pending_review": {}
+        "public": "Público"
       },
       "sections": {
         "publicProfile": "Perfil público",
@@ -42,8 +38,7 @@
         "basicInfo": "Información personal básica",
         "basicInfoSubtitle": "Datos de identidad fijos",
         "contactInfo": "Información de contacto",
-        "accountDetails": "Detalles de la cuenta",
-        "_pending_review": {}
+        "accountDetails": "Detalles de la cuenta"
       },
       "fields": {
         "avatar": "Avatar",
@@ -61,14 +56,11 @@
         "city": "Ciudad",
         "memberSince": "Miembro desde",
         "accountType": "Tipo de cuenta",
-        "verificationStatus": "Estado de verificación",
-        "_pending_review": {}
+        "verificationStatus": "Estado de verificación"
       },
       "values": {
-        "uploaded": "Subido",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "uploaded": "Subido"
+      }
     },
     "business": {
       "title": "Mis recomendaciones",
@@ -83,10 +75,111 @@
       "publicTitle": "Recomendaciones",
       "publicSubtitle": "Productos recomendados por este perfil",
       "publicEmpty": "Aún no hay recomendaciones",
-      "viewProduct": "Ver",
-      "_pending_review": {}
+      "viewProduct": "Ver"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "indexHero": {
+      "ofMax": "de {max}",
+      "noIndexOwner": "Tu Índice aparecerá cuando se registre tu primera actividad.",
+      "noIndexPublic": "Aún no hay Vitana Index público",
+      "boostPrefix": "Mayor impulso:",
+      "strongestPrefix": "Área más fuerte:",
+      "momentumRisingFast": "+{delta} esta semana — ¡sigue así!",
+      "momentumImproving": "Tu Índice sube esta semana — ¡sigue así!",
+      "fallback": "Sigue construyendo tus hábitos de longevidad para descubrir qué mueve más tu Índice.",
+      "publicLine": "Construyendo hábitos de longevidad con la comunidad MAXINA.",
+      "pillarListTwo": "{a} y {b}",
+      "aboutTitle": "Sobre tu VITANA INDEX",
+      "subtitleStandingOut": "Por qué destacas esta semana",
+      "subtitleNeutral": "Así está tu Índice ahora",
+      "aboutBody": "Tu VITANA INDEX refleja tu progreso reciente en tus cinco pilares de longevidad.",
+      "aboutBodyPublic": "El VITANA INDEX refleja el progreso en cinco pilares de longevidad.",
+      "boostHeading": "Mayor impulso",
+      "strongestHeading": "Área más fuerte",
+      "boostLine": "{pillar} le dio a tu Índice el mayor impulso.",
+      "strongestLine": "{pillar} es ahora tu pilar más fuerte.",
+      "whatHelpedMost": "Lo que más ayudó",
+      "risingFast": "Subiendo rápido",
+      "improving": "Mejorando",
+      "streak": "Racha de {count} días",
+      "shareProgress": "Compartir progreso",
+      "seeFullBreakdown": "Ver desglose completo",
+      "editProfile": "Editar perfil",
+      "aboutIndexAria": "Sobre el VITANA INDEX",
+      "openIndexAria": "Abrir detalles del Vitana Index",
+      "shareProfileAria": "Compartir perfil",
+      "editPhotoAria": "Editar foto de perfil",
+      "showQrAria": "Mostrar código QR",
+      "close": "Cerrar",
+      "topPercent": "Top {percent}%",
+      "topPercentAria": "Top {percent}% de {count} miembros",
+      "_pending_review": {
+        "topPercent": true
+      }
+    },
+    "healthReal": {
+      "loadError": "No se pudieron cargar los datos de salud.",
+      "noIndex": "Aún no hay Vitana Index.",
+      "topPercent": "Top {percent}%",
+      "communityStanding": "Posición en la comunidad",
+      "amongMembers": "entre {count} miembros activos",
+      "communityAverage": "Media de la comunidad",
+      "standingPending": "Las comparaciones con la comunidad aparecerán cuando haya {min} miembros activos.",
+      "achievements": "Logros",
+      "personalBest": "Récord personal: {score}",
+      "baselineNote": "Valores iniciales — registra actividades para que sean tuyos.",
+      "deltaThisWeek": "{delta} esta semana",
+      "last7Days": "Últimos 7 días",
+      "noActivity": "No hay registros en los últimos 7 días.",
+      "daysLogged": "Registrado {days} de 7 días",
+      "sleepAvg": "Sueño: media de {hours} h en {nights} noches",
+      "waterAvg": "Agua: media de {liters} L al día",
+      "workoutMinutes": "Entrenamiento: {minutes} min esta semana",
+      "stepsAvg": "Pasos: media de {steps} al día",
+      "meditationMinutes": "Meditación: {minutes} min esta semana",
+      "shareTitle": "¿Quién puede ver tu pestaña de salud?",
+      "shareHint": "Categorías, cambio semanal y logros. Tus registros de actividad siempre son privados.",
+      "shareOnlyMe": "Solo yo",
+      "shareConnections": "Mis contactos",
+      "shareEveryone": "Todos",
+      "_pending_review": {
+        "topPercent": true
+      }
+    },
+    "indexBoost": {
+      "mostActivePrefix": "Más activo:",
+      "mostActiveHeading": "Más activo",
+      "workout7": "{activity} — {count}× esta semana",
+      "workout30": "{activity} — {count}× en los últimos 30 días",
+      "nutrition7": "Alimentación sana — comidas registradas {count}/7 días",
+      "nutrition30": "Alimentación sana — comidas registradas {count} de 30 días",
+      "hydration7": "Hidratación — registrada {count}/7 días",
+      "hydration30": "Hidratación — registrada {count} de 30 días",
+      "sleep7": "Sueño — Ø {hours} h por noche esta semana",
+      "sleep30": "Sueño — Ø {hours} h por noche en los últimos 30 días",
+      "mindfulness7": "Mindfulness — {minutes} min esta semana",
+      "mindfulness30": "Mindfulness — {minutes} min en los últimos 30 días",
+      "journey7": "Journey guiado — {count}× esta semana",
+      "journey30": "Journey guiado — {count}× en los últimos 30 días",
+      "activity": {
+        "running": "Correr",
+        "cycling": "Ciclismo",
+        "strength": "Fuerza",
+        "racket": "Pádel y tenis",
+        "yoga_pilates": "Yoga y Pilates",
+        "swimming": "Natación",
+        "walking": "Caminar",
+        "workout": "Entrenamiento"
+      },
+      "type": {
+        "nutrition": "Alimentación sana",
+        "hydration": "Hidratación",
+        "sleep": "Sueño",
+        "mindfulness": "Mindfulness",
+        "journey": "Journey guiado",
+        "_pending_review": {
+          "mindfulness": true
+        }
+      }
+    }
+  }
 }

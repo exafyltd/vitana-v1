@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04616",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "diagnostic beacon goes to the staging gateway, nothing goes to production",
+      "spec": "tests/e2e/staging/vtid-04616-notif-diag-target.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "notifDiag unit + tree-wide import.meta guard",
+      "ref": "npx vitest run src/lib/notifDiag.test.ts",
+      "cwd": ".",
+      "reason": "Pins the resolved beacon URL for staging env values and fails on any optional-chained import.meta.env read Vite cannot inline."
+    }
+  ]
+}

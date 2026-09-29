@@ -1,0 +1,237 @@
+{
+  "supportTickets": {
+    "title": "Destek taleplerim",
+    "subtitle": "Bize bildirdiğin her şey – talep numarası ve güncel durumuyla.",
+    "loading": "Talepler yükleniyor …",
+    "loadError": "Taleplerin yüklenemedi.",
+    "retry": "Tekrar dene",
+    "empty": "Henüz talep yok.",
+    "emptyHint": "Bir şey bildirdiğin anda – sesle ya da yazıyla – burada bir talep numarasıyla görünür.",
+    "kind": {
+      "feedback": "Genel geri bildirim",
+      "bug": "Hata veya çökme",
+      "ux_issue": "Kafa karıştırıcı veya kullanımı zor",
+      "support_question": "Nasıl yaparım …?",
+      "account_issue": "Hesap sorunu",
+      "marketplace_claim": "Sipariş veya ödeme",
+      "feature_request": "Özellik isteği",
+      "other": "Diğer"
+    },
+    "kindHint": {
+      "feedback": "Fikirler, düşünceler, diğer her şey",
+      "bug": "Bir şey çalışmıyor",
+      "ux_issue": "Kullanım hakkında geri bildirim",
+      "support_question": "Vitana'yı kullanma hakkında soru",
+      "account_issue": "Giriş, profil, veriler",
+      "marketplace_claim": "İadeler, pazar yeri",
+      "feature_request": "Olmasını istediğin bir şey"
+    },
+    "status": {
+      "received": "Alındı",
+      "under_review": "İnceleniyor",
+      "in_progress": "Düzeltiliyor",
+      "fixed": "Çözüldü",
+      "wont_fix": "Yapılmayacak",
+      "duplicate": "Mükerrer"
+    },
+    "timelineLabel": "İlerleme",
+    "reportedOn": "Bildirim tarihi: {date}",
+    "viaVoice": "sesle",
+    "handledBy": "İlgilenen: {name}",
+    "ourAnswer": "Yanıtımız",
+    "confirmed": "Senin tarafından onaylandı",
+    "didItWorkNamed": "{name} bunun çözüldüğünü söylüyor. İşe yaradı mı?",
+    "didItWork": "Bunun çözüldüğünü düşünüyoruz. İşe yaradı mı?",
+    "yesFixed": "Evet, çözüldü",
+    "noStillBroken": "Hayır, hâlâ bozuk",
+    "showMore": "Daha fazla göster ({count})",
+    "severity": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "critical": "Kritik"
+    },
+    "submittedTitle": "Teşekkürler – talebin oluşturuldu",
+    "submittedNumber": "Talep numaran: {number}",
+    "submittedBody": "Durumunu istediğin zaman “Destek taleplerim” altında takip edebilirsin. Yeni bir gelişme olur olmaz sana haber veririz.",
+    "viewTicket": "Talebi görüntüle",
+    "sendAnother": "Başka bir mesaj gönder",
+    "orbUnavailable": "Vitana şu anda ulaşılabilir değil. Lütfen birazdan tekrar dene.",
+    "talk": {
+      "seoDescription": "Hataları bildir, soru sor veya geri bildirim paylaş. Vitana ve meslektaşları sana dönüş yapacak.",
+      "headerDescription": "Hatalar, sorular, geri bildirim – konu Vitana'nın alanı dışındaysa bir uzman meslektaşa devreder.",
+      "send": "Vitana'ya gönder",
+      "sending": "Gönderiliyor …"
+    },
+    "support": {
+      "seoTitle": "Müşteri desteği",
+      "seoDescription": "Hesabınla ilgili yardım: talep oluştur, sesle bildir ve taleplerinin durumunu takip et.",
+      "headerTitle": "Müşteri desteği",
+      "headerDescription": "Neyle ilgili yardıma ihtiyacın olduğunu bize söyle – sesle ya da yazıyla. Her talep bir numara alır.",
+      "tabContact": "İletişim",
+      "tabTickets": "Destek taleplerim",
+      "tabFaqs": "SSS",
+      "tabCommunity": "Topluluk",
+      "contactTitle": "Bize yaz",
+      "contactSubtitle": "Ne olduğunu ve ne beklediğini kısaca anlat.",
+      "messageLabel": "Mesajın",
+      "messagePlaceholder": "Ne oldu? Neleri denedin?",
+      "submit": "Talebi gönder",
+      "sending": "Gönderiliyor …",
+      "voiceTitle": "Konuşmayı mı tercih edersin?",
+      "voiceBody": "Vitana'ya neler olduğunu anlatman yeterli. Talebi senin için oluşturur ve talep numarasını söyler.",
+      "voiceButton": "Sesle bildir",
+      "emailTitle": "E-posta",
+      "emailBody": "Bize doğrudan da yazabilirsin."
+    },
+    "diary": {
+      "title": "Bildirimlerim"
+    },
+    "admin": {
+      "copyVtid": "VTID'yi kopyala",
+      "kind": {
+        "bug": "Hata",
+        "ux_issue": "UX sorunu",
+        "support_question": "Destek sorusu",
+        "marketplace_claim": "Pazar yeri talebi",
+        "account_issue": "Hesap sorunu",
+        "feedback": "Geri bildirim (taslak yok)",
+        "feature_request": "Özellik isteği"
+      },
+      "kindDesc": {
+        "bug": "Kod hatası — Devon spesifikasyonu → Dev Autopilot üzerinden ilerler",
+        "ux_issue": "Görsel / etkileşim hatası — Devon → Dev Autopilot üzerinden ilerler",
+        "support_question": "Kullanıcı bilgi istiyor — Sage yanıt taslağı hazırlar",
+        "marketplace_claim": "İade / anlaşmazlık — Atlas çözüm taslağı hazırlar",
+        "account_issue": "Giriş / rol / veri — Mira çözüm taslağı hazırlar",
+        "feedback": "Görüş / olsa iyi olur — doğrudan devam ediyor durumuna",
+        "feature_request": "Yeni yetenek — doğrudan devam ediyor durumuna"
+      },
+      "status": {
+        "new": "Gönderildi",
+        "interviewing": "Görüşülüyor",
+        "triaged": "Sınıflandırıldı",
+        "spec_pending": "Spesifikasyon bekleniyor",
+        "spec_ready": "Spesifikasyon hazır",
+        "answer_pending": "Yanıt bekleniyor",
+        "answer_ready": "Yanıt hazır",
+        "approved": "Onaylandı",
+        "in_progress": "Devam ediyor",
+        "resolved": "Çözüldü",
+        "user_confirmed": "Doğrulandı",
+        "duplicate": "Yinelenen",
+        "rejected": "Reddedildi",
+        "wont_fix": "Düzeltilmeyecek",
+        "needs_more_info": "Bilgi gerekli",
+        "reopened": "Yeniden açıldı"
+      },
+      "stage": {
+        "cooling": "Sırada",
+        "running": "Kodlanıyor",
+        "ci": "CI",
+        "merging": "Birleştiriliyor",
+        "deploying": "Dağıtılıyor",
+        "verifying": "Doğrulanıyor",
+        "completed": "Tamamlandı",
+        "_pending_review": {
+          "ci": true
+        }
+      },
+      "failedAt": {
+        "cooling": "başlayamadan",
+        "running": "kod yazılırken",
+        "ci": "CI'da (testler / tür denetimi)",
+        "merging": "birleştirme sırasında",
+        "deploying": "dağıtım sırasında",
+        "verifying": "dağıtım sonrası doğrulamada",
+        "plan_gen": "plan oluşturulurken",
+        "approve_safety": "güvenlik kapısında",
+        "other": "{stage} aşamasında"
+      },
+      "run": {
+        "failed": "Çalıştırma başarısız oldu",
+        "failedWhere": "Çalıştırma {where} başarısız oldu",
+        "completed": "Tamamlandı — canlıya dağıtıldı",
+        "running": "Dev Autopilot'ta çalışıyor — {stage}"
+      },
+      "generate": {
+        "devon": "Spesifikasyon oluştur (Devon)",
+        "sage": "Yanıt oluştur (Sage)",
+        "atlas": "Çözüm oluştur (Atlas)",
+        "mira": "Çözüm oluştur (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "spesifikasyon",
+        "draft_answer_md": "yanıt taslağı",
+        "resolution_md": "çözüm",
+        "none": "iş öğesi"
+      },
+      "placeholder": {
+        "devon": "örn. Asıl hata SSE yeniden bağlanma mantığında; kullanıcı belirtiyi görüyor ama kök neden orb-live.ts içinde. Yalnızca yeniden bağlanma kısmına dokun. Tek ifade durumu için bir birim testi ekle.",
+        "sage": "örn. Yanıt, eski anahtarı değil /settings'teki yeni beta katılım akışını anmalı.",
+        "atlas": "örn. Bu talep dolandırıcılık sınırında — uygunluk kontrolüyle başla ve operatör incelemesine kadar her iadeyi beklet.",
+        "mira": "örn. Önce kullanıcının e-postasını doğrula; rol bozulması büyük olasılıkla bir DB sorunu değil, eskimiş bir OAuth claim'i.",
+        "default": "İş öğesi için yönlendirmen."
+      },
+      "action": {
+        "generate": "Oluştur",
+        "regenerate": "Yeniden oluştur",
+        "regenerateWith": "{name} ile yeniden oluştur",
+        "drafting": "Taslak hazırlanıyor…",
+        "activate": "Etkinleştir",
+        "activating": "Etkinleştiriliyor…",
+        "retryAutopilot": "Otopilotu yeniden dene",
+        "activateNeedsDraft": "Önce bir taslak oluştur.",
+        "activateHint": "Talebi bir sonraki aşamaya taşı.",
+        "rollback": "Geri al",
+        "rollingBack": "Geri alınıyor…",
+        "rollbackConfirm": "{pr} geri alınsın ve {ticket} yeniden açılsın mı?\n\nBir geri alma PR'ı oluşturulup otomatik olarak birleştirilecek. Bu, canlı ortama bir geri alma dağıtır.",
+        "working": "İşleniyor — lütfen bekle",
+        "close": "Kapat",
+        "rejectPrompt": "{ticket} için ret nedeni? (isteğe bağlı)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} yeniden sınıflandırıldı",
+        "reclassifiedDesc": "Tür artık {kind}. Hazır olduğunda yeni taslağı oluştur.",
+        "draftedTitle": "{ticket} taslağını {name} hazırladı",
+        "draftedDesc": "Durum: {status}. Aşağıdaki taslağı incele, ardından ilerlemek için Etkinleştir'e tıkla.",
+        "draftedDescFallback": "Durum: {status}. Yapay zekâ kullanılamadığı için yer tutucu gösteriliyor. Aşağıda incele, ardından ilerlemek için Etkinleştir'e tıkla.",
+        "activatedTitle": "{ticket} etkinleştirildi",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev Autopilot {execution} yürütmesini çalıştırıyor — buradan sonrası otonom.",
+        "rolledBackTitle": "{ticket} geri alındı",
+        "rolledBackDesc": "Geri alma PR'ı #{number}. Talep yeniden açıldı.",
+        "rolledBackDescNoNumber": "Geri alma PR'ı oluşturuldu. Talep yeniden açıldı.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
+      },
+      "error": {
+        "alreadyDispatched": "Bu talep zaten Dev Autopilot'ta çalışıyor. Gönderildikten sonra yeniden sınıflandırma kilitlenir.",
+        "draftRequired": "Önce bir taslak oluştur — talimatlarını yaz ve Oluştur'a tıkla.",
+        "alreadyInProgress": "Bu talep zaten çalışıyor. Otopilot bitince kapatacak."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "{customer} kaynaklı işlem yapılabilir {count} talebin tümü onaylansın mı?",
+      "approveAll": "Tümünü onayla ({count})",
+      "approving": "Onaylanıyor…",
+      "batchDoneTitle": "{customer} için toplu işlem tamamlandı",
+      "batchApproved": "{count} onaylandı",
+      "batchSent": "{count} yanıt gönderildi",
+      "batchSkipped": "{count} atlandı",
+      "batchNothing": "İşlem yapılacak bir şey yok.",
+      "avatarAlt": "{name} avatarı",
+      "specialistEnabled": "{name} etkinleştirildi",
+      "specialistDisabled": "{name} devre dışı bırakıldı",
+      "specialistEnabledDesc": "Vitana artık uygun talepleri bu uzmana yönlendirebilir.",
+      "specialistDisabledDesc": "Vitana bu uzmana talep yönlendirmeyecek.",
+      "on": "Açık",
+      "off": "Kapalı",
+      "toggleOn": "{name} öğesini aç",
+      "toggleOff": "{name} öğesini kapat",
+      "seoDescription": "Kiracı geri bildirim talepleri ve yapay zekâ uzman ekibi",
+      "pageDescription": "Üyelerinin Vitana'ya gönderdiği talepler. Yapay zekâ uzmanları bunları ele alır — herhangi bir işlem uygulanmadan önce insanlar onaylar."
+    }
+  }
+}

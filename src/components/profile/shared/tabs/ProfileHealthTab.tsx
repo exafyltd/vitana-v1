@@ -6,6 +6,9 @@ import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings, Share2, Trophy, 
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { t } from '@/lib/i18n-toast';
+import { isHealthRealDataEnabled } from "@/lib/feature-flags";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
+import { ProfileHealthTabReal } from "./ProfileHealthTabReal";
 
 interface ProfileHealthTabProps {
   profile: UserProfile;
@@ -15,6 +18,12 @@ interface ProfileHealthTabProps {
 }
 
 export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }: ProfileHealthTabProps) {
+  // VTID-04483: real data behind VITE_HEALTH_REAL_DATA. Off (default) keeps
+  // the demo content below exactly as it was. No hooks above this line.
+  if (isHealthRealDataEnabled()) {
+    return <ProfileHealthTabReal profile={profile} userId={resolveProfileUserId(profile.user_id, profile.id)} />;
+  }
+
   // Mock health data - replace with real data
   const healthMetrics = [
     { 

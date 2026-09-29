@@ -39,7 +39,8 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
-import { t } from '@/lib/i18n-toast';
+import { t, notifySuccess, notifyError } from '@/lib/i18n-toast';
+import { AutopilotDraftSheet, type DraftSheetItem } from "@/components/autopilot/AutopilotDraftSheet";
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -99,6 +100,8 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     completeRecommendation,
     setActionStatus,
     markDismissedLocally,
+    snoozeRecommendation,
+    fetchDraft,
     generateRecommendations,
     generating,
     generateReason,
@@ -225,13 +228,52 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     }
   };
 
+  // VTID-04504: drafted suggestions (post, message, caption) are reviewed one
+  // by one in the preview sheet before the run; a skipped one is left as is.
+  const [draftQueue, setDraftQueue] = useState<DraftSheetItem[]>([]);
+  const [pendingRun, setPendingRun] = useState<{ ids: string[]; drafts: Record<string, string> } | null>(null);
+
   const handleExecute = async () => {
     if (selectedActions.length === 0) return;
+    const drafted = selectedActions
+      .filter((a) => a.draftKind)
+      .map((a) => ({ id: a.id, title: a.title, kind: a.draftKind! }));
+    if (drafted.length > 0) {
+      setPendingRun({ ids: selectedActions.map((a) => a.id), drafts: {} });
+      setDraftQueue(drafted);
+      return;
+    }
+    await runSelected(selectedActions.map((a) => a.id), {});
+  };
 
-    const actionIds = selectedActions.map(a => a.id);
+  const advanceDrafts = (run: { ids: string[]; drafts: Record<string, string> }) => {
+    const rest = draftQueue.slice(1);
+    setDraftQueue(rest);
+    if (rest.length === 0) {
+      setPendingRun(null);
+      if (run.ids.length > 0) void runSelected(run.ids, run.drafts);
+    } else {
+      setPendingRun(run);
+    }
+  };
 
+  const handleDraftConfirm = (id: string, text: string) => {
+    if (!pendingRun) return;
+    const run = { ids: pendingRun.ids, drafts: { ...pendingRun.drafts, [id]: text } };
+    // Media Hub has no caption prefill yet; the reviewed caption is copied.
+    const item = draftQueue.find((d) => d.id === id);
+    if (item?.kind === "media_upload" && text) navigator.clipboard?.writeText(text).catch(() => {});
+    advanceDrafts(run);
+  };
+
+  const handleDraftSkip = (id: string) => {
+    if (!pendingRun) return;
+    advanceDrafts({ ids: pendingRun.ids.filter((x) => x !== id), drafts: pendingRun.drafts });
+  };
+
+  const runSelected = async (actionIds: string[], drafts: Record<string, string>) => {
     try {
-      const results = await executeActions(actionIds);
+      const results = await executeActions(actionIds, drafts);
 
       // Check for navigate action — use the first navigate result
       const navigateResult = results.find(r => r.success && r.action_type === "navigate" && r.target);
@@ -302,6 +344,24 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       fetchRecommendations();
     } finally {
       setCompletingId(null);
+    }
+  };
+
+  // VTID-04652 (plan §4.2): "Later" hides the suggestion for a day; the
+  // gateway brings it back after snoozed_until.
+  const [snoozingId, setSnoozingId] = useState<string | null>(null);
+  const handleSnooze = async (actionId: string) => {
+    setSnoozingId(actionId);
+    try {
+      const ok = await snoozeRecommendation(actionId, 24);
+      if (ok) {
+        if (selectedActions.some((a) => a.id === actionId)) toggleActionSelection(actionId);
+        notifySuccess('screens.autopilotpopup.snoozedUntilTomorrow');
+      } else {
+        notifyError('screens.autopilotpopup.snoozeFailed');
+      }
+    } finally {
+      setSnoozingId(null);
     }
   };
 
@@ -388,6 +448,31 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             </div>
           </div>
           <p className="text-xs text-muted-foreground">{action.reason}</p>
+          {isPending && (
+            <div className="mt-1 flex">
+              <Button
+                size="xs"
+                variant="ghost"
+                className="-ms-2 h-7 px-2 text-xs text-muted-foreground"
+                data-testid={`autopilot-snooze-${action.id}`}
+                aria-label={t('screens.autopilotpopup.snoozeLater')}
+                disabled={snoozingId === action.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSnooze(action.id);
+                }}
+              >
+                {snoozingId === action.id ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : (
+                  <>
+                    <Clock className="w-3 h-3 me-1" />
+                    {t('screens.autopilotpopup.snoozeLater')}
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
           {action.contributionVector && (
             <PillarDeltaBadges
               vector={action.contributionVector}
@@ -620,6 +705,12 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           if (!isOpen && !hasConsent) onOpenChange(false);
         }}
         onConsent={grantConsent}
+      />
+      <AutopilotDraftSheet
+        item={draftQueue[0] ?? null}
+        loadDraft={(id, o) => fetchDraft(id, o ?? {})}
+        onConfirm={handleDraftConfirm}
+        onSkip={handleDraftSkip}
       />
     </ResponsiveDialog>
   );

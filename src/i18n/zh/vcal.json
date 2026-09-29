@@ -1,0 +1,287 @@
+{
+  "vcal": {
+    "title": "日历",
+    "today": "今天",
+    "prev": "上一个",
+    "next": "下一个",
+    "loading": "正在加载你的日历",
+    "error": "暂时无法加载你的日历。",
+    "retry": "重试",
+    "busy": "忙碌",
+    "busyHint": "来自其他角色的安排——只显示时间",
+    "done": "已完成",
+    "markDone": "标记为已完成",
+    "doneToast": "完成啦，太棒了！🎉",
+    "doneError": "暂时无法保存。",
+    "recurring": "重复",
+    "voiceAdd": "“周五早上8点空腹验血”——告诉 Vitana",
+    "nextUp": "接下来 · {when}",
+    "progress": "今天已完成 {done}/{total}",
+    "progressAllDone": "全部完成——享受今天剩下的时光 ✨",
+    "progressKeepGoing": "继续加油，你做得很好 💪",
+    "greeting": {
+      "morning": "早上好 ☀️",
+      "afternoon": "下午好 🌤️",
+      "evening": "晚上好 🌙",
+      "night": "晚安 🌙"
+    },
+    "views": {
+      "day": "日",
+      "week": "周",
+      "month": "月"
+    },
+    "rel": {
+      "now": "现在",
+      "minutes": "{count} 分钟后",
+      "hours": "{count} 小时后",
+      "days": "{count} 天后"
+    },
+    "reminder": {
+      "eveningBefore": "前一晚 {time}",
+      "atStart": "开始时",
+      "hoursBefore": "提前 {count} 小时",
+      "minutesBefore": "提前 {count} 分钟"
+    },
+    "kinds": {
+      "nutrition": "营养",
+      "hydration": "饮水",
+      "exercise": "运动",
+      "sleep": "睡眠",
+      "mental": "心理",
+      "community": "社区",
+      "lab": "化验",
+      "work": "工作",
+      "vitana": "Vitana",
+      "personal": "个人",
+      "_pending_review": {
+        "vitana": true
+      }
+    },
+    "source": {
+      "lab": "来自你的化验单",
+      "autopilot": "Autopilot ✨",
+      "plan": "来自你的计划",
+      "assistant": "通过 Vitana 添加",
+      "community": "社区",
+      "journey": "你的旅程",
+      "_pending_review": {
+        "autopilot": true
+      }
+    },
+    "empty": {
+      "title": "没有安排——平静的一天",
+      "hint": "告诉 Vitana 你的打算，她会帮你添加。"
+    },
+    "week": {
+      "title": "{date} 这一周",
+      "free": "空闲"
+    },
+    "month": {
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
+    },
+    "entry": {
+      "close": "关闭",
+      "about": "内容",
+      "reminders": "提醒",
+      "noReminders": "无提醒",
+      "directions": "路线",
+      "askVitana": "问问 Vitana"
+    },
+    "work": {
+      "deploy_staging": "预发布部署",
+      "deploy_prod": "生产部署",
+      "autopilot_review": "等待你的审核",
+      "ticket_due": "工单截止时间",
+      "erp_approval": "等待审批",
+      "readOnly": "这件事在它所在的地方完成——日历只显示何时到期。"
+    },
+    "subscribe": {
+      "title": "在我的日历应用中显示",
+      "intro": "在 Apple、Google 或 Outlook 中订阅你的 Vitanaland 日历，新的日程会自动出现。",
+      "privacy": "链接只显示标题、时间和地点，不含详情。任何拿到链接的人都能看到这些日程，请不要分享。",
+      "create": "创建链接",
+      "replace": "创建新链接",
+      "replaceHint": "新链接会替换旧链接，旧链接将失效。",
+      "revoke": "关闭链接",
+      "revoked": "链接已关闭",
+      "yourLink": "你的链接",
+      "onlyOnce": "这个链接只在现在显示。复制它，或直接在日历应用中打开。",
+      "copy": "复制",
+      "copied": "链接已复制",
+      "copyError": "复制失败——请选中链接自己复制。",
+      "openApp": "在日历应用中打开",
+      "activeSince": "链接自 {date} 起有效。",
+      "error": "刚才没有成功，请稍后再试。",
+      "titleFor": {
+        "google": "连接 Google 日历",
+        "apple": "连接 Apple 日历",
+        "outlook": "连接 Outlook"
+      },
+      "introFor": {
+        "google": "你的 Vitanaland 安排会显示在 Google 日历中，并保持最新。",
+        "apple": "你的 Vitanaland 安排会显示在 iPhone、iPad 和 Mac 的日历中，并保持最新。",
+        "outlook": "你的 Vitanaland 安排会显示在 Outlook 日历中，并保持最新。"
+      },
+      "createFor": {
+        "google": "为 Google 创建链接",
+        "apple": "为 Apple 创建链接",
+        "outlook": "为 Outlook 创建链接"
+      },
+      "openIn": {
+        "google": "添加到 Google 日历",
+        "apple": "添加到 Apple 日历",
+        "outlook": "添加到 Outlook"
+      }
+    },
+    "move": {
+      "action": "移动",
+      "title": "新时间",
+      "keepsLength": "时长保持不变。",
+      "cancel": "取消",
+      "confirm": "移到这里",
+      "moved": "已移动 ✨",
+      "error": "暂时无法移动，请稍后再试。",
+      "blocked": {
+        "owned_by_source": "这来自预订或计划——请在那里移动，否则会恢复原位。",
+        "recurring": "系列日程请在系列本身中移动。",
+        "completed": "已完成的保持原位。",
+        "cancelled": "已取消的无法移动。"
+      }
+    },
+    "google": {
+      "title": "与 Google 日历同步",
+      "intro": "你的 Vitanaland 日程会进入你 Google 账号中一个单独的「Vitanaland」日历。你的 Google 活动在这里显示为灰色的忙碌时段——不显示标题。",
+      "turnOn": "开启 Google 同步",
+      "turnOff": "关闭 Google 同步",
+      "turnedOn": "Google 同步已开启 🎉",
+      "turnedOff": "Google 同步已关闭",
+      "on": "Google 同步已开启",
+      "lastSync": "上次 {date}",
+      "problem": "上次同步失败——我们会自动重试。",
+      "error": "暂时没有成功，请稍后再试。",
+      "busy": "忙碌（Google）",
+      "busyHint": "来自你 Google 日历的活动——仅显示时间"
+    },
+    "quietHours": {
+      "title": "免打扰时段",
+      "body": "免打扰时段内不会收到提醒——提醒会在此之前送达。",
+      "link": "设置免打扰时段"
+    },
+    "guide": {
+      "eyebrow": "Vitana 建议",
+      "allDone": "全部完成：{count}/{count}。好好享受晚上，或者看看这周还有什么。",
+      "nextStep": "你的下一步：{title}",
+      "stepsOpenOne": "1 个待完成步骤 · 约 5 分钟",
+      "stepsOpen": "{count} 个待完成步骤 · 每个约 5 分钟",
+      "freeDay": "今天没有安排。正好做点对你有益的事。",
+      "freeWindow": "你在 {from} 到 {to} 之间有空。散个步、参加聚会，还是休息一下？",
+      "connect": "连接你的日历，Vitana 就能看到你一整天的安排并据此规划。",
+      "busy": "忙碌的一天：还有 {count} 件事。记得在中间安排短暂的休息。",
+      "start": "开始",
+      "findEvent": "找活动",
+      "planWithVitana": "和 Vitana 一起规划",
+      "seeWeek": "查看本周",
+      "connectAction": "连接日历",
+      "dismiss": "今天不再显示"
+    },
+    "journey": {
+      "title": "你的旅程",
+      "open": "{count} 个待完成步骤",
+      "openOne": "1 个待完成步骤",
+      "day": "第 {day} 天",
+      "dayOf": "第 {day} 天 / 共 {total} 天",
+      "noneOpen": "所有步骤都完成了，太棒了！继续前进会有新的步骤。",
+      "today": "今天 {time}",
+      "more": "还有 {count} 个",
+      "openJourney": "打开我的旅程",
+      "habitsOne": "1 个习惯",
+      "habits": "{count} 个习惯",
+      "habitsTitle": "你的习惯——只有你想要时才放进日历",
+      "addHabit": "加入日历",
+      "dailyAt": "每天",
+      "addConfirm": "加入",
+      "inCalendar": "已在日历中",
+      "habitAdded": "习惯已加入你的日历"
+    },
+    "remindersSection": {
+      "title": "提醒",
+      "none": "暂无安排",
+      "upcoming": "{count} 个即将到来",
+      "upcomingOne": "1 个即将到来",
+      "next": "下一个 {when}"
+    },
+    "calendars": {
+      "title": "日历",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
+      },
+      "connectTitle": "连接你的日历",
+      "connectBody": "在 Google、Apple 或 Outlook 中查看你的 Vitanaland 安排——轻点一下即可。",
+      "comingSoon": "Google、Apple 和 Outlook 登录正在设置中。",
+      "connectedOne": "已连接 {name}",
+      "connectedMany": "已连接 {names}",
+      "needsReconnect": "{name} 需要重新连接",
+      "connected": "已连接",
+      "notConnected": "未连接",
+      "reconnectHint": "连接已过期",
+      "connect": "连接",
+      "reconnect": "重新连接",
+      "manage": "在已连接应用中管理",
+      "showInAppHint": "在你的日历应用中查看 Vitanaland 条目"
+    },
+    "add": {
+      "title": "新条目",
+      "created": "已添加 ✨",
+      "error": "现在无法保存，请稍后再试。"
+    },
+    "form": {
+      "title": "标题",
+      "titlePlaceholder": "是什么？",
+      "date": "日期",
+      "today": "今天",
+      "tomorrow": "明天",
+      "pickDate": "选择日期",
+      "start": "开始",
+      "end": "结束",
+      "location": "地点",
+      "optional": "可选",
+      "locationPlaceholder": "在哪里？",
+      "category": "类别",
+      "cancel": "取消",
+      "create": "添加到日历",
+      "types": {
+        "personal": "个人",
+        "professional": "工作",
+        "health": "健康",
+        "workout": "锻炼",
+        "community": "社区",
+        "nutrition": "营养"
+      }
+    },
+    "milestone": "里程碑：{title}",
+    "more": "还有 {count} 项",
+    "summary": {
+      "nothing": "没有安排",
+      "entriesOne": "1 项安排",
+      "entries": "{count} 项安排",
+      "next": "下一项 {time}",
+      "done": "已完成 {count} 项"
+    },
+    "workSection": {
+      "title": "工作",
+      "waitingOne": "有 1 件事在等你",
+      "waiting": "有 {count} 件事在等你",
+      "open": "在管理后台打开"
+    }
+  }
+}

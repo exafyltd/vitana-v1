@@ -3601,7 +3601,8 @@
       "videoRoomUnavailableHint": "Le flux n'est pas accessible pour le moment. Merci de réessayer.",
       "autopilotSuggestionsTitle": "Suggestions Autopilot",
       "autopilotSuggestionsBody": "Tu n'as pas encore publié de souhait. En attendant, Autopilot te suggère des personnes de la communauté qui pourraient te correspondre. Publie un souhait pour que l'IA puisse te trouver de vraies correspondances.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "ourAnswer": "Notre réponse"
     },
     "contacts": {
       "addContact": "Ajouter un contact",
@@ -3756,6 +3757,7 @@
       "quickLogging": "Enregistrement rapide",
       "trackDailyActivities": "Suis tes activités quotidiennes",
       "smartCalendar": "Calendrier intelligent",
+      "noUpcomingEvents": "Aucun événement à venir",
       "friendsActive": "Amis actifs",
       "meetingsToday": "Réunions aujourd'hui",
       "highSocialEnergyToday": "Énergie sociale élevée aujourd'hui",
@@ -5235,11 +5237,13 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true
+        "reportsLoadFailedRetry": true,
+        "coachReplyFailed": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
-      "reportsLoadFailedRetry": "Try again"
+      "reportsLoadFailedRetry": "Try again",
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5878,7 +5882,131 @@
       "memorySubnav_diary": "Journal quotidien",
       "memorySubnav_recall": "Rappel et recherche",
       "memorySubnav_permissions": "Autorisations",
-      "wellnessDiaryMultimediaDescription": "Enregistre et revois ton parcours bien-être avec des entrées multimédias."
+      "wellnessDiaryMultimediaDescription": "Enregistre et revois ton parcours bien-être avec des entrées multimédias.",
+      "garden": {
+        "_pending_review": {
+          "lastUpdated": true,
+          "cardCountOne": true,
+          "cardCountOther": true,
+          "loading": true,
+          "countOne": true,
+          "countOther": true,
+          "loadFailed": true
+        },
+        "categories": {
+          "personalIdentity": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Personal Identity",
+            "insight": "Building your core identity profile"
+          },
+          "healthWellness": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Health & Wellness",
+            "insight": "Tracking your vitality and well-being"
+          },
+          "lifestyleRoutines": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Lifestyle & Routines",
+            "insight": "Capturing your daily patterns"
+          },
+          "businessProjects": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Business & Projects",
+            "insight": "Mapping your professional journey"
+          },
+          "networkRelationships": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Network & Relationships",
+            "insight": "Understanding your social ecosystem"
+          },
+          "learningKnowledge": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Learning & Knowledge",
+            "insight": "Growing your knowledge base"
+          },
+          "financeAssets": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity"
+          },
+          "locationEnvironment": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world"
+          },
+          "digitalFootprint": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence"
+          },
+          "valuesAspirations": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass"
+          },
+          "autopilotSettings": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion"
+          },
+          "futurePlans": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Future Plans",
+            "insight": "Designing your evolution"
+          },
+          "general": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization"
+          }
+        },
+        "lastUpdated": "Last updated {date}",
+        "cardCountOne": "1 memory · {progress}%",
+        "cardCountOther": "{count} memories · {progress}%",
+        "loading": "Loading your memories…",
+        "countOne": "1 memory",
+        "countOther": "{count} memories",
+        "loadFailed": "Your memories couldn't be loaded right now."
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Motivation matinale",
@@ -6737,7 +6865,11 @@
       "noCompleted": "Aucun rappel terminé pour l'instant.",
       "noMissed": "Aucun rappel manqué — tu es à jour.",
       "creating": "Création en cours…",
-      "createReminder": "Créer un rappel"
+      "createReminder": "Créer un rappel",
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Aucun événement dans ton inventaire",
@@ -9172,7 +9304,11 @@
       "impactImpact": "Impact : {impact}",
       "defineHowYourAiAgentShould": "Définis comment ton agent IA doit se comporter, sur quoi il doit se concentrer, et comment il doit communiquer avec toi...",
       "thisReadonlyPlaceholderForAgentPrompt": "Ceci est un espace réservé en lecture seule pour le Centre d'invites d'agents. \n              Les phases futures permettront une personnalisation complète des agents IA et des tests en temps réel.",
-      "thisReadonlyPlaceholderForPersonalAi": "Ceci est un espace réservé en lecture seule pour la Chronologie IA Personnelle. \n                Les phases futures se connecteront aux données d'activité IA réelles et fourniront des insights interactifs."
+      "thisReadonlyPlaceholderForPersonalAi": "Ceci est un espace réservé en lecture seule pour la Chronologie IA Personnelle. \n                Les phases futures se connecteront aux données d'activité IA réelles et fourniront des insights interactifs.",
+      "dailyLearningsTitle": "Ce que Vitana a appris",
+      "dailyLearningsLoading": "Chargement de tes journées …",
+      "dailyLearningsEmpty": "Pas encore de résumé quotidien. Écris dans ton journal ou parle à Vitana — chaque soir, Vitana résume ta journée ici.",
+      "dailySummaryOpenIndex": "Ouvrir le Vitana Index"
     },
     "authpages": {
       "fullName": "Nom complet",
@@ -10328,7 +10464,10 @@
       "preparingNextSteps": "Préparation de tes prochaines étapes…",
       "allCaughtUpForToday": "Tu es à jour pour aujourd'hui",
       "nothingNewRightNow": "Rien de nouveau pour toi pour l'instant.",
-      "checkForNew": "Vérifier les nouveautés"
+      "checkForNew": "Vérifier les nouveautés",
+      "snoozeLater": "Plus tard",
+      "snoozedUntilTomorrow": "On te le remontre demain.",
+      "snoozeFailed": "Impossible de reporter. Réessaie."
     },
     "postDetail": {
       "title": "Publier",
@@ -10700,6 +10839,7 @@
           "acceptExpired": true,
           "acceptNotFound": true,
           "acceptFailed": true,
+          "acceptWrongEmail": true,
           "goToPortal": true,
           "commerceVertical": true,
           "commerceVerticalHealth": true,
@@ -10780,6 +10920,7 @@
         "acceptExpired": "This invite has expired.",
         "acceptNotFound": "This invite could not be found.",
         "acceptFailed": "Could not accept the invite.",
+        "acceptWrongEmail": "This invite was sent to a different email address. Sign in with the address the invite was sent to, then open the link again.",
         "goToPortal": "Go to Commerce Portal",
         "commerceVertical": "Industry",
         "commerceVerticalHealth": "Health & medical services",

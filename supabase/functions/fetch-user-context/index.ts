@@ -1,3 +1,4 @@
+import { fetchPersonalMemory, byConfidence } from '../_shared/personal-memory.ts';
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
@@ -177,6 +178,9 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
   const profileData = await supabase.from('profiles').select('*').eq('user_id', userId).single();
   const profile = profileData.data || {};
 
+  // VTID-04453: one read of the canonical store, three views below.
+  const personalMemory = fetchPersonalMemory(supabase, userId, { limit: 200 });
+
   // Now fetch tenant and other data in parallel
   const [
     walletsData,
@@ -228,31 +232,18 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .order('created_at', { ascending: false })
       .limit(10),
     
-    // AI Memory (active insights)
-    supabase.from('ai_memory')
-      .select('memory_type, content, confidence_score, created_at, metadata')
-      .eq('user_id', userId)
-      .eq('is_active', true)
-      .order('confidence_score', { ascending: false })
-      .limit(20),
-    
-    // High-confidence AI Memory for snapshot (≥70% confidence)
-    supabase.from('ai_memory')
-      .select('id, content, memory_type, confidence_score, created_at')
-      .eq('user_id', userId)
-      .eq('is_active', true)
-      .gte('confidence_score', 0.7)
-      .order('confidence_score', { ascending: false })
-      .order('created_at', { ascending: false })
-      .limit(10),
-    
-    // ALL AI Memory for catalog (active only)
-    supabase.from('ai_memory')
-      .select('id, memory_type, content, confidence_score, created_at')
-      .eq('user_id', userId)
-      .eq('is_active', true)
-      .order('created_at', { ascending: false }),
-    
+    // VTID-04453: personal memory from memory_items (was ai_memory).
+    personalMemory.then(r => ({ data: byConfidence(r.data).slice(0, 20), error: r.error })),
+
+    // High-confidence memory for snapshot (≥70% confidence)
+    personalMemory.then(r => ({
+      data: byConfidence(r.data).filter(m => m.confidence_score >= 0.7).slice(0, 10),
+      error: r.error,
+    })),
+
+    // ALL personal memory for catalog
+    personalMemory,
+
     // ALL Diary Entries for catalog
     supabase.from('diary_entries')
       .select('id, text, tags, created_at')
@@ -267,13 +258,9 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .order('created_at', { ascending: false })
       .limit(10),
     
-    // Autopilot action history (last 30 days)
-    supabase.from('autopilot_actions')
-      .select('title, status, category, created_at')
-      .eq('user_id', userId)
-      .gte('created_at', new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
-      .order('created_at', { ascending: false })
-      .limit(20),
+    // Autopilot action history: autopilot_actions was never written and is
+    // dropped by VTID-04514; Autopilot state lives in autopilot_recommendations.
+    Promise.resolve({ data: [] as Array<{ title: string; status: string; category: string; created_at: string }>, error: null }),
     
     // Tenant info (using profile.tenant_id)
     profile.tenant_id 

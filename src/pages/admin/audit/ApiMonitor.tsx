@@ -9,8 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtTime } from '@/lib/locale-format';
+import { GATEWAY_BASE } from '@/lib/gateway-base';
 const SERVICES = [
-  { name: "Gateway", url: "https://gateway-86804897789.us-central1.run.app/alive" },
+  { name: "Gateway", url: `${GATEWAY_BASE}/alive` },
 ];
 
 interface ServiceStatus {

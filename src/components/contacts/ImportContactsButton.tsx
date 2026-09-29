@@ -47,6 +47,7 @@ export default function ImportContactsButton({
   return (
     <>
       <Button
+        data-testid="find-friends-button"
         variant={variant === "primary" ? "default" : variant}
         onClick={handleClick}
         disabled={isLoading}

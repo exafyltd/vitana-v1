@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 // existing admin pages.
 //
 // vitana-v1's .env sets VITE_GATEWAY_URL to include the "/api/v1" suffix
-// already (e.g. "https://gateway-…run.app/api/v1"), so we must NOT append
+// already (e.g. "https://gateway.vitanaland.com/api/v1"), so we must NOT append
 // "/api/v1" again. Strip any trailing "/api/v1" (or trailing slash) from the
 // base before building the final URL to make the hook resilient to either
 // convention.

@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useAIConsent } from "@/hooks/useAIConsent";
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import { useAutopilotRole } from "@/hooks/useAutopilotRole";
 
 // Reasons the gateway returns when /generate produced nothing — surfaced to
 // the UI so it can pick the right empty-state copy instead of a generic one.
@@ -16,7 +18,7 @@ export interface AutopilotGenerateResult {
   reason?: AutopilotGenerateReason;
 }
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+const GATEWAY_URL = GATEWAY_API_URL;
 
 
 export interface AutopilotRecommendation {
@@ -31,7 +33,12 @@ export interface AutopilotRecommendation {
   signal_type: string;
   status: string;
   contribution_vector?: ContributionVector;
+  /** VTID-04503/04504: the typed action the suggestion carries, if any. */
+  action?: { kind: string; params?: Record<string, unknown> } | null;
 }
+
+/** VTID-04504: kinds whose text the member reviews before anything happens. */
+export const DRAFT_KINDS = new Set(["post_to_feed", "send_chat_message", "media_upload"]);
 
 // Domain → category mapping
 function domainToCategory(domain: string): AutopilotCategory {
@@ -78,10 +85,11 @@ function recToAction(rec: AutopilotRecommendation, index: number): AutopilotActi
     status: uiStatus,
     selected: uiStatus === "pending", // only pre-select new items
     contributionVector: rec.contribution_vector,
+    draftKind: rec.action && DRAFT_KINDS.has(rec.action.kind) ? rec.action.kind : undefined,
   };
 }
 
-async function getAuthHeaders(): Promise<Record<string, string>> {
+async function getAuthHeaders(role = "community"): Promise<Record<string, string>> {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token ?? "";
   const userId = data.session?.user?.id ?? "";
@@ -89,7 +97,8 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
     "X-User-ID": userId,
-    "X-Vitana-Active-Role": "community",
+    // VTID-04500: the active role is a hint; the gateway decides the lineup.
+    "X-Vitana-Active-Role": role,
   };
 }
 
@@ -101,6 +110,8 @@ export function useAutopilot() {
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
   const { hasConsent } = useAIConsent();
+  // VTID-04500 (CA-2): the lineup follows the member's active role.
+  const apRole = useAutopilotRole();
 
   const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
@@ -179,8 +190,8 @@ export function useAutopilot() {
     if (!user || countInFlight) return liveCount;
     countInFlight = true;
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count?role=community`, { headers });
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count?role=${encodeURIComponent(apRole)}`, { headers });
       if (!res.ok) return liveCount;
       const json = await res.json();
       if (json.ok) {
@@ -203,7 +214,7 @@ export function useAutopilot() {
       countInFlight = false;
     }
     return liveCount;
-  }, [user, liveCount, LAST_SEEN_KEY]);
+  }, [user, liveCount, LAST_SEEN_KEY, apRole]);
 
   // VTID-01946 Phase H.4 — mark the current badge count as "seen" so
   // hasNewRecommendations becomes false until the next delta. Call this
@@ -226,8 +237,8 @@ export function useAutopilot() {
     setLoading(true);
     setError(null);
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new,activated&limit=20&role=community`, { headers });
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new,activated&limit=20&role=${encodeURIComponent(apRole)}`, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
@@ -274,7 +285,7 @@ export function useAutopilot() {
       setLoading(false);
       setFetchedOnce(true);
     }
-  }, [user, DISMISSED_KEY]);
+  }, [user, DISMISSED_KEY, apRole]);
 
   // VTID — on-demand regeneration. Asks the gateway for a fresh batch. The
   // backend already auto-regenerates on the last /complete or /reject (queue
@@ -285,8 +296,8 @@ export function useAutopilot() {
     if (!user) return null;
     setGenerating(true);
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/generate?role=community`, {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/generate?role=${encodeURIComponent(apRole)}`, {
         method: "POST",
         headers,
       });
@@ -309,21 +320,24 @@ export function useAutopilot() {
     } finally {
       setGenerating(false);
     }
-  }, [user]);
+  }, [user, apRole]);
 
   // Activate a single recommendation — returns full API response
-  const activateRecommendation = useCallback(async (id: string): Promise<{
+  const activateRecommendation = useCallback(async (id: string, opts: { draftText?: string } = {}): Promise<{
     ok: boolean;
     vtid?: string;
     action_type?: "navigate" | "notify";
     target?: string;
     completion_message?: string;
+    action_result?: { status: string; route?: string } | null;
   } | null> => {
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate?role=community`, {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate?role=${encodeURIComponent(apRole)}`, {
         method: "POST",
         headers,
+        // VTID-04504: the member's reviewed draft (preview sheet), if any.
+        body: JSON.stringify(opts.draftText !== undefined ? { draft_text: opts.draftText } : {}),
       });
       if (!res.ok) throw new Error(`Activate failed: ${res.status}`);
       const json = await res.json();
@@ -335,7 +349,27 @@ export function useAutopilot() {
       console.error("[Autopilot] activate error:", e);
       return null;
     }
-  }, []);
+  }, [apRole]);
+
+  // VTID-04504: the draft behind a create-with-me / connect suggestion.
+  // `text` saves the member's edit; `regenerate` asks for a fresh one.
+  const fetchDraft = useCallback(async (id: string, opts: { regenerate?: boolean; text?: string } = {}): Promise<{
+    ok: boolean; kind?: string; draft?: string; error?: string | null;
+  } | null> => {
+    try {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/draft?role=${encodeURIComponent(apRole)}`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(opts),
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      console.error("[Autopilot] draft error:", e);
+      return null;
+    }
+  }, [apRole]);
 
   // Complete — try the dedicated complete route first, then fall back to
   // reject for any non-2xx so the row always leaves the user's list. We
@@ -350,8 +384,8 @@ export function useAutopilot() {
     via?: "complete" | "reject";
     status?: number;
   } | null> => {
-    const headers = await getAuthHeaders();
-    const completeUrl = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`;
+    const headers = await getAuthHeaders(apRole);
+    const completeUrl = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=${encodeURIComponent(apRole)}`;
     let completeStatus: number | undefined;
     try {
       const res = await fetch(completeUrl, { method: "POST", headers });
@@ -378,12 +412,12 @@ export function useAutopilot() {
       console.error("[Autopilot] reject network error:", e);
       return null;
     }
-  }, []);
+  }, [apRole]);
 
   // Dismiss
   const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
     try {
-      const headers = await getAuthHeaders();
+      const headers = await getAuthHeaders(apRole);
       const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject`, {
         method: "POST",
         headers,
@@ -399,7 +433,30 @@ export function useAutopilot() {
       console.error("[Autopilot] dismiss error:", e);
       return false;
     }
-  }, []);
+  }, [apRole]);
+
+  // VTID-04652 (plan §4.2): "Later" in the pop-up. The gateway hides a
+  // snoozed row until snoozed_until and brings it back afterwards.
+  const snoozeRecommendation = useCallback(async (id: string, hours = 24): Promise<boolean> => {
+    try {
+      const headers = await getAuthHeaders(apRole);
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/snooze`, {
+        method: "POST",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({ hours }),
+      });
+      if (!res.ok) throw new Error(`Snooze failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        setRecommendations((prev) => prev.filter((r) => r.id !== id));
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error("[Autopilot] snooze error:", e);
+      return false;
+    }
+  }, [apRole]);
 
   // Fetch count on mount
   useEffect(() => {
@@ -450,13 +507,19 @@ export function useAutopilot() {
   }, []);
 
   // Execute selected actions — community activation is instant
-  const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
+  const executeActions = async (actionIds: string[], drafts: Record<string, string> = {}): Promise<ExecutionResult[]> => {
     setState((prev) => ({ ...prev, isExecuting: true }));
     const results: ExecutionResult[] = [];
 
     for (const id of actionIds) {
-      const response = await activateRecommendation(id);
+      const response = await activateRecommendation(id, { draftText: drafts[id] });
       const success = !!response;
+      // VTID-04503/04504: a typed action that opens a screen (e.g. the composer
+      // pre-filled with the reviewed draft) wins over the template's target.
+      if (response?.action_result?.status === "navigate" && response.action_result.route) {
+        response.action_type = "navigate";
+        response.target = response.action_result.route;
+      }
       if (success) {
         // "notify" actions have nothing the user needs to do beyond reading the
         // completion message — flush them straight to completed on the backend
@@ -512,9 +575,11 @@ export function useAutopilot() {
     error,
     fetchRecommendations,
     activateRecommendation,
+    fetchDraft,
     completeRecommendation,
     dismissRecommendation,
     markDismissedLocally,
+    snoozeRecommendation,
     fetchCount,
     // VTID — on-demand regeneration
     generateRecommendations,

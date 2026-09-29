@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, MessageCircle, User } from "lucide-react";
+import { t } from "@/lib/i18n-toast";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { NewsArticleCardMenu } from "@/components/crossover/NewsArticleCardMenu";
@@ -38,6 +39,7 @@ export default function NewsArticleDetail() {
     }
   })();
   const avatarLetter = (article.source_name || "•").charAt(0).toUpperCase();
+  const isInternalLink = !!article.link && article.link.startsWith("/");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -65,7 +67,7 @@ export default function NewsArticleDetail() {
         <NewsArticleCardMenu
           articleId={article.id}
           title={article.title}
-          link={article.link}
+          link={isInternalLink ? null : article.link}
           tags={article.tags}
           sourceName={article.source_name}
         />
@@ -113,8 +115,42 @@ export default function NewsArticleDetail() {
           </div>
         </div>
 
+        {/* New-member card: the card asks the viewer to greet this member, so
+            give them the way to do it (VTID-04574). /inbox/u/:id opens the
+            direct conversation with that user. */}
+        {article.member_user_id && (
+          <div className="px-4 pt-6 pb-8 flex flex-col gap-3">
+            <Button
+              className="w-full gap-2"
+              onClick={() => navigate(`/inbox/u/${article.member_user_id}`)}
+            >
+              <MessageCircle className="h-4 w-4" />
+              {t("newsCard.member.sayHello")}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full gap-2"
+              onClick={() => navigate(`/u/${article.member_user_id}`)}
+            >
+              <User className="h-4 w-4" />
+              {t("newsCard.member.viewProfile")}
+            </Button>
+          </div>
+        )}
+
+        {/* In-app link (e.g. a community post's author profile): navigate
+            inside the app instead of opening it as an external page. */}
+        {!article.member_user_id && isInternalLink && (
+          <div className="px-4 pt-6 pb-8">
+            <Button className="w-full gap-2" onClick={() => navigate(article.link!)}>
+              <User className="h-4 w-4" />
+              {t("newsCard.member.viewProfile")}
+            </Button>
+          </div>
+        )}
+
         {/* Read full article CTA */}
-        {article.link && (
+        {article.link && !isInternalLink && (
           <div className="px-4 pt-6 pb-4">
             <Button
               className="w-full gap-2"
@@ -130,7 +166,7 @@ export default function NewsArticleDetail() {
         )}
 
         {/* Secondary open in browser */}
-        {article.link && (
+        {article.link && !isInternalLink && (
           <div className="px-4 pb-8">
             <Button
               variant="outline"

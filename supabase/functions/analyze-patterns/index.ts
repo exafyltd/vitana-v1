@@ -35,17 +35,9 @@ serve(async (req) => {
     const now = new Date();
     const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    // Get automation execution data
-    const { data: executions, error: execError } = await supabase
-      .from('automation_executions')
-      .select('*')
-      .gte('created_at', sevenDaysAgo.toISOString())
-      .order('created_at', { ascending: false })
-      .limit(500);
-
-    if (execError) {
-      console.error('[analyze-patterns] Error fetching executions:', execError);
-    }
+    // automation_executions was never written and is dropped by VTID-04514;
+    // automation runs are recorded in automation_runs by the gateway.
+    const executions: Array<{ status: string; created_at: string }> = [];
 
     // Get user activity patterns (signups, active times)
     const { data: profiles, error: profileError } = await supabase

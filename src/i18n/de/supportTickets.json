@@ -1,0 +1,231 @@
+{
+  "supportTickets": {
+    "title": "Meine Tickets",
+    "subtitle": "Alles, was du uns gemeldet hast – mit Ticketnummer und aktuellem Stand.",
+    "loading": "Tickets werden geladen …",
+    "loadError": "Deine Tickets konnten nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "empty": "Noch keine Tickets.",
+    "emptyHint": "Sobald du etwas meldest – per Sprache oder Text – erscheint es hier mit einer Ticketnummer.",
+    "kind": {
+      "feedback": "Allgemeines Feedback",
+      "bug": "Fehler oder Absturz",
+      "ux_issue": "Verwirrend oder schwer zu bedienen",
+      "support_question": "Wie mache ich …?",
+      "account_issue": "Problem mit dem Konto",
+      "marketplace_claim": "Bestellung oder Zahlung",
+      "feature_request": "Wunsch nach einer Funktion",
+      "other": "Sonstiges"
+    },
+    "kindHint": {
+      "feedback": "Ideen, Gedanken, alles andere",
+      "bug": "Etwas funktioniert nicht",
+      "ux_issue": "Feedback zur Bedienung",
+      "support_question": "Frage zur Nutzung von Vitana",
+      "account_issue": "Anmeldung, Profil, Daten",
+      "marketplace_claim": "Erstattungen, Marktplatz",
+      "feature_request": "Etwas, das du dir wünschst"
+    },
+    "status": {
+      "received": "Eingegangen",
+      "under_review": "Wird geprüft",
+      "in_progress": "Wird behoben",
+      "fixed": "Erledigt",
+      "wont_fix": "Nicht umgesetzt",
+      "duplicate": "Duplikat"
+    },
+    "timelineLabel": "Bearbeitungsstand",
+    "reportedOn": "Gemeldet am {date}",
+    "viaVoice": "per Sprache",
+    "handledBy": "Bearbeitet von {name}",
+    "ourAnswer": "Unsere Antwort",
+    "confirmed": "Von dir bestätigt",
+    "didItWorkNamed": "{name} sagt, das ist erledigt. Hat es geklappt?",
+    "didItWork": "Wir glauben, das ist erledigt. Hat es geklappt?",
+    "yesFixed": "Ja, erledigt",
+    "noStillBroken": "Nein, besteht noch",
+    "showMore": "Mehr anzeigen ({count})",
+    "severity": {
+      "low": "Niedrig",
+      "medium": "Mittel",
+      "high": "Hoch",
+      "critical": "Kritisch"
+    },
+    "submittedTitle": "Danke – dein Ticket ist angelegt",
+    "submittedNumber": "Deine Ticketnummer: {number}",
+    "submittedBody": "Du siehst den Stand jederzeit unter „Meine Tickets“. Wir melden uns, sobald es Neuigkeiten gibt.",
+    "viewTicket": "Ticket ansehen",
+    "sendAnother": "Weitere Nachricht senden",
+    "orbUnavailable": "Vitana ist gerade nicht erreichbar. Bitte versuche es gleich noch einmal.",
+    "talk": {
+      "seoDescription": "Melde Fehler, stell Fragen oder gib Feedback. Vitana und ihre Kolleginnen und Kollegen melden sich bei dir.",
+      "headerDescription": "Fehler, Fragen, Feedback – Vitana übergibt an eine Fachkollegin oder einen Fachkollegen, wenn das Thema außerhalb ihres Bereichs liegt.",
+      "send": "An Vitana senden",
+      "sending": "Wird gesendet …"
+    },
+    "support": {
+      "seoTitle": "Kundensupport",
+      "seoDescription": "Hilfe zu deinem Konto: Ticket anlegen, per Sprache melden und den Stand deiner Tickets verfolgen.",
+      "headerTitle": "Kundensupport",
+      "headerDescription": "Sag uns, womit du Hilfe brauchst – per Sprache oder Text. Jede Anfrage bekommt eine Ticketnummer.",
+      "tabContact": "Kontakt",
+      "tabTickets": "Meine Tickets",
+      "tabFaqs": "Häufige Fragen",
+      "tabCommunity": "Community",
+      "contactTitle": "Schreib uns",
+      "contactSubtitle": "Beschreib kurz, was passiert ist und was du erwartet hast.",
+      "messageLabel": "Deine Nachricht",
+      "messagePlaceholder": "Was ist passiert? Was hast du schon ausprobiert?",
+      "submit": "Ticket senden",
+      "sending": "Wird gesendet …",
+      "voiceTitle": "Lieber sprechen?",
+      "voiceBody": "Erzähl Vitana einfach, was los ist. Sie legt das Ticket für dich an und nennt dir die Ticketnummer.",
+      "voiceButton": "Per Sprache melden",
+      "emailTitle": "E-Mail",
+      "emailBody": "Du kannst uns auch direkt schreiben."
+    },
+    "diary": {
+      "title": "Meine Meldungen"
+    },
+    "admin": {
+      "copyVtid": "VTID kopieren",
+      "kind": {
+        "bug": "Fehler",
+        "ux_issue": "UX-Problem",
+        "support_question": "Support-Frage",
+        "marketplace_claim": "Marktplatz-Reklamation",
+        "account_issue": "Kontoproblem",
+        "feedback": "Feedback (kein Entwurf)",
+        "feature_request": "Funktionswunsch"
+      },
+      "kindDesc": {
+        "bug": "Code-Fehler — läuft über Devon-Spec → Dev-Autopilot",
+        "ux_issue": "Visueller / Interaktionsfehler — läuft über Devon → Dev-Autopilot",
+        "support_question": "Nutzer möchte Informationen — Sage entwirft die Antwort",
+        "marketplace_claim": "Erstattung / Streitfall — Atlas entwirft die Lösung",
+        "account_issue": "Login / Rolle / Daten — Mira entwirft die Lösung",
+        "feedback": "Meinung / Nice-to-have — direkt in Bearbeitung",
+        "feature_request": "Neue Funktion — direkt in Bearbeitung"
+      },
+      "status": {
+        "new": "Eingereicht",
+        "interviewing": "Im Gespräch",
+        "triaged": "Eingestuft",
+        "spec_pending": "Spec ausstehend",
+        "spec_ready": "Spec bereit",
+        "answer_pending": "Antwort ausstehend",
+        "answer_ready": "Antwort bereit",
+        "approved": "Genehmigt",
+        "in_progress": "In Bearbeitung",
+        "resolved": "Gelöst",
+        "user_confirmed": "Bestätigt",
+        "duplicate": "Duplikat",
+        "rejected": "Abgelehnt",
+        "wont_fix": "Wird nicht behoben",
+        "needs_more_info": "Infos benötigt",
+        "reopened": "Wiedereröffnet"
+      },
+      "stage": {
+        "cooling": "In Warteschlange",
+        "running": "Programmiert",
+        "ci": "CI",
+        "merging": "Wird gemergt",
+        "deploying": "Wird deployt",
+        "verifying": "Wird geprüft",
+        "completed": "Abgeschlossen"
+      },
+      "failedAt": {
+        "cooling": "bevor er starten konnte",
+        "running": "beim Schreiben des Codes",
+        "ci": "in der CI (Tests / Typprüfung)",
+        "merging": "beim Mergen",
+        "deploying": "beim Deploy",
+        "verifying": "bei der Prüfung nach dem Deploy",
+        "plan_gen": "beim Erstellen des Plans",
+        "approve_safety": "am Sicherheits-Gate",
+        "other": "bei {stage}"
+      },
+      "run": {
+        "failed": "Lauf fehlgeschlagen",
+        "failedWhere": "Lauf fehlgeschlagen {where}",
+        "completed": "Abgeschlossen — in Produktion deployt",
+        "running": "Läuft im Dev-Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Spec erstellen (Devon)",
+        "sage": "Antwort erstellen (Sage)",
+        "atlas": "Lösung erstellen (Atlas)",
+        "mira": "Lösung erstellen (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "Spec",
+        "draft_answer_md": "Antwortentwurf",
+        "resolution_md": "Lösung",
+        "none": "Arbeitspaket"
+      },
+      "placeholder": {
+        "devon": "z. B. Der eigentliche Fehler liegt in der SSE-Reconnect-Logik; der Nutzer sieht das Symptom, aber die Ursache steckt in orb-live.ts. Fass nur den Reconnect-Bereich an. Füge einen Unit-Test für den Fall mit einer einzelnen Äußerung hinzu.",
+        "sage": "z. B. Die Antwort sollte den neuen Beta-Opt-in-Ablauf unter /settings erwähnen, nicht den alten Schalter.",
+        "atlas": "z. B. Diese Reklamation grenzt an Betrug — beginne mit einer Berechtigungsprüfung und halte jede Erstattung bis zur Prüfung durch einen Operator zurück.",
+        "mira": "z. B. Prüf zuerst die E-Mail des Nutzers; die beschädigte Rolle ist wahrscheinlich ein veralteter OAuth-Claim, kein DB-Problem.",
+        "default": "Deine Vorgabe für das Arbeitspaket."
+      },
+      "action": {
+        "generate": "Erstellen",
+        "regenerate": "Neu erstellen",
+        "regenerateWith": "Mit {name} neu erstellen",
+        "drafting": "Entwurf wird erstellt…",
+        "activate": "Aktivieren",
+        "activating": "Wird aktiviert…",
+        "retryAutopilot": "Autopilot erneut versuchen",
+        "activateNeedsDraft": "Erstelle zuerst einen Entwurf.",
+        "activateHint": "Bring das Ticket in die nächste Phase.",
+        "rollback": "Zurückrollen",
+        "rollingBack": "Wird zurückgerollt…",
+        "rollbackConfirm": "{pr} rückgängig machen und {ticket} wieder öffnen?\n\nEin Revert-PR wird erstellt und automatisch gemergt. Dadurch wird ein Rollback in Produktion deployt.",
+        "working": "Wird bearbeitet — bitte warten",
+        "close": "Schließen",
+        "rejectPrompt": "Grund für die Ablehnung von {ticket}? (optional)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} neu eingestuft",
+        "reclassifiedDesc": "Die Art ist jetzt {kind}. Erstelle den neuen Entwurf, wenn du bereit bist.",
+        "draftedTitle": "{ticket} entworfen von {name}",
+        "draftedDesc": "Jetzt {status}. Prüf den Entwurf unten und klick dann auf Aktivieren, um weiterzumachen.",
+        "draftedDescFallback": "Jetzt {status}. Die KI war nicht verfügbar, daher wird ein Platzhalter angezeigt. Prüf ihn unten und klick dann auf Aktivieren, um weiterzumachen.",
+        "activatedTitle": "{ticket} aktiviert",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Der Dev-Autopilot führt Ausführung {execution} aus — ab hier autonom.",
+        "rolledBackTitle": "{ticket} zurückgerollt",
+        "rolledBackDesc": "Revert-PR #{number}. Das Ticket wurde wieder geöffnet.",
+        "rolledBackDescNoNumber": "Revert-PR erstellt. Das Ticket wurde wieder geöffnet."
+      },
+      "error": {
+        "alreadyDispatched": "Dieses Ticket läuft bereits im Dev-Autopilot. Neu einstufen ist nach dem Start gesperrt.",
+        "draftRequired": "Erstelle zuerst einen Entwurf — schreib deine Anweisungen und klick auf Erstellen.",
+        "alreadyInProgress": "Dieses Ticket läuft bereits. Der Autopilot schließt es, wenn er fertig ist."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Alle {count} bearbeitbaren Tickets von {customer} genehmigen?",
+      "approveAll": "Alle genehmigen ({count})",
+      "approving": "Wird genehmigt…",
+      "batchDoneTitle": "Sammelaktion für {customer} abgeschlossen",
+      "batchApproved": "{count} genehmigt",
+      "batchSent": "{count} Antworten gesendet",
+      "batchSkipped": "{count} übersprungen",
+      "batchNothing": "Nichts zu tun.",
+      "avatarAlt": "Avatar von {name}",
+      "specialistEnabled": "{name} aktiviert",
+      "specialistDisabled": "{name} deaktiviert",
+      "specialistEnabledDesc": "Vitana kann passende Anfragen jetzt an diese Fachperson weiterleiten.",
+      "specialistDisabledDesc": "Vitana leitet keine Anfragen mehr an diese Fachperson weiter.",
+      "on": "An",
+      "off": "Aus",
+      "toggleOn": "{name} einschalten",
+      "toggleOff": "{name} ausschalten",
+      "seoDescription": "Feedback-Tickets des Mandanten und das KI-Spezialistenteam",
+      "pageDescription": "Tickets, die deine Mitglieder an Vitana geschickt haben. KI-Spezialisten bearbeiten sie — Menschen genehmigen, bevor eine Aktion wirksam wird."
+    }
+  }
+}

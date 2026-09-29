@@ -3573,7 +3573,8 @@
       "videoRoomUnavailableHint": "La transmisión no está disponible ahora mismo. Por favor, inténtalo de nuevo.",
       "autopilotSuggestionsTitle": "Sugerencias de Piloto Automático",
       "autopilotSuggestionsBody": "Aún no has publicado un deseo. Mientras tanto, Piloto Automático sugiere personas de la comunidad que podrían encajar bien. Publica un deseo para que la IA pueda encontrarte coincidencias reales.",
-      "autopilotSuggestionBadge": "Piloto Automático"
+      "autopilotSuggestionBadge": "Piloto Automático",
+      "ourAnswer": "Nuestra respuesta"
     },
     "contacts": {
       "addContact": "Agregar contacto",
@@ -3728,6 +3729,7 @@
       "quickLogging": "Registro rápido",
       "trackDailyActivities": "Registra actividades diarias",
       "smartCalendar": "Calendario inteligente",
+      "noUpcomingEvents": "No hay eventos próximos",
       "friendsActive": "Amigos activos",
       "meetingsToday": "Reuniones hoy",
       "highSocialEnergyToday": "Alta energía social hoy",
@@ -5206,7 +5208,11 @@
       },
       "reportsLoadFailed": "No se pudieron cargar tus informes",
       "reportsLoadFailedDesc": "Hubo un problema al cargar tus informes de laboratorio. Por favor, inténtalo de nuevo.",
-      "reportsLoadFailedRetry": "Inténtalo de nuevo"
+      "reportsLoadFailedRetry": "Inténtalo de nuevo",
+      "_pending_review": {
+        "coachReplyFailed": true
+      },
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "matchPercent": "{score} %",
@@ -5842,7 +5848,131 @@
       "memorySubnav_diary": "Diario",
       "memorySubnav_recall": "Recordar y Buscar",
       "memorySubnav_permissions": "Permisos",
-      "wellnessDiaryMultimediaDescription": "Graba y revisa tu viaje de bienestar a través de entradas multimedia."
+      "wellnessDiaryMultimediaDescription": "Graba y revisa tu viaje de bienestar a través de entradas multimedia.",
+      "garden": {
+        "_pending_review": {
+          "lastUpdated": true,
+          "cardCountOne": true,
+          "cardCountOther": true,
+          "loading": true,
+          "countOne": true,
+          "countOther": true,
+          "loadFailed": true
+        },
+        "categories": {
+          "personalIdentity": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Personal Identity",
+            "insight": "Building your core identity profile"
+          },
+          "healthWellness": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Health & Wellness",
+            "insight": "Tracking your vitality and well-being"
+          },
+          "lifestyleRoutines": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Lifestyle & Routines",
+            "insight": "Capturing your daily patterns"
+          },
+          "businessProjects": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Business & Projects",
+            "insight": "Mapping your professional journey"
+          },
+          "networkRelationships": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Network & Relationships",
+            "insight": "Understanding your social ecosystem"
+          },
+          "learningKnowledge": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Learning & Knowledge",
+            "insight": "Growing your knowledge base"
+          },
+          "financeAssets": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity"
+          },
+          "locationEnvironment": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world"
+          },
+          "digitalFootprint": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence"
+          },
+          "valuesAspirations": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass"
+          },
+          "autopilotSettings": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion"
+          },
+          "futurePlans": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Future Plans",
+            "insight": "Designing your evolution"
+          },
+          "general": {
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization"
+          }
+        },
+        "lastUpdated": "Last updated {date}",
+        "cardCountOne": "1 memory · {progress}%",
+        "cardCountOther": "{count} memories · {progress}%",
+        "loading": "Loading your memories…",
+        "countOne": "1 memory",
+        "countOther": "{count} memories",
+        "loadFailed": "Your memories couldn't be loaded right now."
+      }
     },
     "messages": {
       "sendCalendarInvite": "Enviar invitación de calendario",
@@ -6682,7 +6812,11 @@
       "noCompleted": "Aún no hay recordatorios completados.",
       "noMissed": "No hay recordatorios perdidos — estás al día.",
       "creating": "Creando…",
-      "createReminder": "Crear recordatorio"
+      "createReminder": "Crear recordatorio",
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "No hay eventos en tu inventario",
@@ -9069,7 +9203,11 @@
       "unit_glasses": "vasos",
       "unit_minutes": "minutos",
       "unit_hours": "horas",
-      "unit_moments": "momentos"
+      "unit_moments": "momentos",
+      "dailyLearningsTitle": "Lo que Vitana aprendió",
+      "dailyLearningsLoading": "Cargando tus días …",
+      "dailyLearningsEmpty": "Aún no hay resumen diario. Escribe en tu diario o habla con Vitana: cada noche Vitana resume aquí tu día.",
+      "dailySummaryOpenIndex": "Abrir Vitana Index"
     },
     "authpages": {
       "fullName": "Nombre completo",
@@ -10240,7 +10378,10 @@
       "preparingNextSteps": "Preparando tus próximos pasos…",
       "allCaughtUpForToday": "Todo al día por hoy",
       "nothingNewRightNow": "Nada nuevo para ti ahora mismo.",
-      "checkForNew": "Buscar novedades"
+      "checkForNew": "Buscar novedades",
+      "snoozeLater": "Más tarde",
+      "snoozedUntilTomorrow": "Te lo mostraremos de nuevo mañana.",
+      "snoozeFailed": "No se pudo posponer. Inténtalo de nuevo."
     },
     "postDetail": {
       "title": "Publicación",
@@ -10577,6 +10718,7 @@
         "acceptExpired": "Esta invitación ha caducado.",
         "acceptNotFound": "No se pudo encontrar esta invitación.",
         "acceptFailed": "No se pudo aceptar la invitación.",
+        "acceptWrongEmail": "Esta invitación se envió a otra dirección de correo. Inicia sesión con la dirección a la que se envió la invitación y vuelve a abrir el enlace.",
         "goToPortal": "Ir al Portal de Comercio",
         "commerceVertical": "Sector",
         "commerceVerticalHealth": "Servicios de salud y médicos",

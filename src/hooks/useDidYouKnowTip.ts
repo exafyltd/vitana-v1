@@ -11,8 +11,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { GATEWAY_API_URL } from '@/lib/gateway-base';
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'https://gateway-q74ibpv6ia-uc.a.run.app/api/v1';
+const GATEWAY_URL = GATEWAY_API_URL;
 
 export type DykPillarLink =
   | 'Physical' | 'Mental' | 'Nutritional' | 'Social' | 'Environmental' | 'Prosperity'

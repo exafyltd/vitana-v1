@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-03509",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/i18n/locale-registration.test.ts", "cwd": ".",
+      "reason": "every locale directory the translation bot writes to is registered, so its shards reach the app instead of silently falling back to German" },
+    { "kind": "existing", "ref": "npx vitest run src/i18n/stamp-flag-contract.test.ts", "cwd": ".",
+      "reason": "the source stamps the bot propagates from stay consistent with the flags the pipeline reads" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the propagated shards is served" }
+  ]
+}

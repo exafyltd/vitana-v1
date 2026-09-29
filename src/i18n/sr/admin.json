@@ -19,10 +19,21 @@
       "rejected": "Odbijeno",
       "flagged": "Obeleženo",
       "podcastManagement": "Upravljanje podkastima",
-      "podcastManagementDesc": "Pregledaj i moderiraj podkast upload-e",
-      "_pending_review": {}
+      "podcastManagementDesc": "Pregledaj i moderiraj podkast upload-e"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "notifications": {
+      "tabs": {
+        "_pending_review": {
+          "notifications": true,
+          "categories": true,
+          "activity": true,
+          "compose": true
+        },
+        "notifications": "Notifications",
+        "categories": "Categories",
+        "activity": "Activity",
+        "compose": "Send"
+      }
+    }
+  }
 }

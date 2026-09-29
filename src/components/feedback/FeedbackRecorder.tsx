@@ -17,8 +17,12 @@ import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { submitFeedbackTicket, type ReportType } from '@/lib/feedback-ticket';
+import { GATEWAY_BASE } from '@/lib/gateway-base';
+import { Link } from 'react-router-dom';
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
+// VTID-04335: canonical gateway origin (the old fallback was the deleted GCP host).
+const GATEWAY_URL = GATEWAY_BASE;
 
 const SCREEN_OPTIONS = [
   { value: "home", label: "Home" },
@@ -61,6 +65,8 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  // VTID-04335: the FB-… number the gateway returned, shown on the confirmation.
+  const [createdTicketNumber, setCreatedTicketNumber] = useState<string | null>(null);
 
   const sttRef = useRef<ClientSTT | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -284,22 +290,17 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         }
       }
 
-      const res = await fetch(`${GATEWAY_URL}/api/v1/voice-feedback/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          transcript: transcript.trim(),
-          report_type: reportType,
-          severity,
-          affected_screen: affectedScreen || undefined,
-          attachments: uploadedUrls,
-        }),
+      // VTID-04313: the unified feedback_tickets pipeline, not the legacy table.
+      const result = await submitFeedbackTicket({
+        gatewayUrl: GATEWAY_URL,
+        accessToken: session.access_token,
+        transcript: transcript.trim(),
+        reportType: reportType as ReportType,
+        severity,
+        affectedScreen: affectedScreen || undefined,
+        attachments: uploadedUrls,
+        source: 'diary_recorder',
       });
-
-      const result = await res.json();
       if (!result.ok) throw new Error(result.error || 'Submit failed');
 
       // Reset form and show confirmation
@@ -310,6 +311,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
       setAffectedScreen('');
       setSeverity('medium');
       setReportType('bug_report');
+      setCreatedTicketNumber(result.ticket_number ?? null);
       setShowConfirmation(true);
 
       onSubmitted?.();
@@ -331,6 +333,16 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           </div>
         </div>
         <h3 className="text-lg font-semibold">{t('screens.feedback.reportSent')}</h3>
+        {createdTicketNumber && (
+          <p className="text-base font-semibold" data-testid="created-ticket-number">
+            {t('supportTickets.submittedNumber', { number: createdTicketNumber })}
+          </p>
+        )}
+        {createdTicketNumber && (
+          <Link to={`/support?tab=tickets&ticket=${encodeURIComponent(createdTicketNumber)}`} className="text-sm text-primary underline">
+            {t('supportTickets.viewTicket')}
+          </Link>
+        )}
         <p className="text-sm text-muted-foreground text-center max-w-xs">
           {t('screens.feedback.exafyTeamAppreciatesYourSupportMake')}
         </p>

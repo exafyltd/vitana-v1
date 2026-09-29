@@ -1,0 +1,29 @@
+{
+  "vtid": "VTID-04629",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "http",
+      "name": "the served registry carries the post composer screen",
+      "target": "frontend",
+      "path": "/nav-registry.json",
+      "expect_status": 200,
+      "expect_body_contains": "HOME.CREATE_POST"
+    },
+    {
+      "kind": "http",
+      "name": "the composer deep link is served by the SPA",
+      "target": "frontend",
+      "path": "/home?compose=1",
+      "expect_status": 200,
+      "expect_content_type": "text/html"
+    },
+    {
+      "kind": "existing",
+      "name": "registry integrity, routes and build",
+      "ref": "npx vitest run src/navigation/registry",
+      "cwd": ".",
+      "reason": "Checks every screen (HOME.CREATE_POST included) has en/de phrasings and every locale title, and that its route points at a real page."
+    }
+  ]
+}

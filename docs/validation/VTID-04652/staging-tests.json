@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04652",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "name": "app shell is served", "target": "frontend", "path": "/", "expect_content_type": "text/html", "expect_body_contains": "<div id=\"root\"" },
+    { "kind": "http", "name": "reminder deep link is served by the SPA", "target": "frontend", "path": "/reminders", "expect_content_type": "text/html", "expect_body_contains": "<div id=\"root\"" },
+    { "kind": "http", "name": "the snooze route the Later button calls exists and refuses an unauthenticated caller", "target": "gateway", "method": "POST", "path": "/api/v1/autopilot/recommendations/00000000-0000-0000-0000-000000000000/snooze", "rejected_probe": true, "expect_status": 401 },
+    { "kind": "http", "name": "the reminder Mark-done route the overlay calls exists and refuses an unauthenticated caller", "target": "gateway", "method": "POST", "path": "/api/v1/reminders/00000000-0000-0000-0000-000000000000/complete", "rejected_probe": true, "expect_status": 401 },
+    { "kind": "existing", "ref": "npx vitest run src/components/AutopilotPopup.snooze.test.tsx src/components/reminders/ReminderInterruptOverlay.autopilot.test.tsx", "cwd": ".", "reason": "snoozing a suggestion and marking a reminder done write the member's own rows, which a read-only staging suite cannot do; these render the real components and pin the Later call, the Mark-done navigation and the origin guard" }
+  ]
+}

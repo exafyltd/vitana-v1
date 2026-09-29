@@ -1,0 +1,92 @@
+name: CALENDAR-REGRESSION
+# VTID-04459: the app calendar regression gate. Runs on every change that
+# can touch what the calendar shows or does, and fails when any existing
+# calendar behaviour moves:
+#   - golden scenarios over the calendar logic (view ranges, stepping,
+#     wording, reminder chips, colours and emoji, the gateway client, the
+#     natural-language parser, the invite queue, the older calendar cards);
+#   - the /calendar screen rendered in German and Arabic (RTL): day, week,
+#     month, entry screen, mark done, move, refused moves, errors;
+#   - the "show in my calendar app" sheet and the Google sync card;
+#   - a guard that fails when a calendar file has no covering test, or a
+#     calendar text is missing in any of the 11 languages.
+# An intended change re-records the golden files
+# (UPDATE_CALENDAR_GOLDEN=1 npm run test:calendar) in the same PR, so the
+# change is visible line by line in review. No network, no secrets.
+# The gateway half lives in exafyltd/vitana-platform (VTID-04458).
+
+run-name: 'Calendar regression (${{ github.event_name }} on ${{ github.ref_name }})'
+
+on:
+  pull_request:
+    paths:
+      - 'src/components/calendar/**'
+      - 'src/pages/Calendar.tsx'
+      - 'src/components/UniversalCalendarButton.tsx'
+      - 'src/components/mobile/MobileAppShell.tsx'
+      - 'src/components/mobile/SideDrawerNav.tsx'
+      - 'src/lib/*alendar*'
+      - 'src/lib/locale-format.ts'
+      - 'src/lib/cached-access-token*'
+      - 'src/lib/i18n-toast.ts'
+      - 'src/lib/orbActivate.ts'
+      - 'src/hooks/*alendar*'
+      - 'src/hooks/useGoogleConnect.ts'
+      - 'src/hooks/useRole.tsx'
+      - 'src/i18n/index.ts'
+      - 'src/i18n/*/vcal.json'
+      - 'src/i18n/*/calendar.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.ts'
+      - '.github/workflows/CALENDAR-REGRESSION.yml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/components/calendar/**'
+      - 'src/pages/Calendar.tsx'
+      - 'src/components/UniversalCalendarButton.tsx'
+      - 'src/components/mobile/MobileAppShell.tsx'
+      - 'src/components/mobile/SideDrawerNav.tsx'
+      - 'src/lib/*alendar*'
+      - 'src/lib/locale-format.ts'
+      - 'src/lib/cached-access-token*'
+      - 'src/lib/i18n-toast.ts'
+      - 'src/lib/orbActivate.ts'
+      - 'src/hooks/*alendar*'
+      - 'src/hooks/useGoogleConnect.ts'
+      - 'src/hooks/useRole.tsx'
+      - 'src/i18n/index.ts'
+      - 'src/i18n/*/vcal.json'
+      - 'src/i18n/*/calendar.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.ts'
+      - '.github/workflows/CALENDAR-REGRESSION.yml'
+  workflow_dispatch: {}
+
+concurrency:
+  group: calendar-regression-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  app-calendar:
+    name: Calendar regression (app)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install
+        run: npm ci
+      - name: Run calendar regression suite
+        # The suite fixes the device zone to Europe/Berlin itself; the runner's zone does not matter.
+        run: npm run test:calendar
+      - name: Golden files were not re-recorded by the run
+        run: git diff --exit-code -- src/components/calendar/__regression__/__golden__

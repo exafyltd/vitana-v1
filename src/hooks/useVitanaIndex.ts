@@ -55,6 +55,10 @@ export interface VitanaIndexState {
   subscores: VitanaIndexSubscores | null;
   balanceFactor: number | null;
   history: Array<{ date: string; score: number }>;
+  /** Per-pillar scores for the same trailing window as `history` (oldest
+   *  first). Read from the same rows — no extra query. Used to say which
+   *  pillar moved the Index most (profile "biggest boost", VTID-04470). */
+  pillarHistory: Array<{ date: string; pillars: Partial<VitanaIndexPillars> }>;
   trend: "up" | "down" | "stable";
   confidence: number;
   isBaseline: boolean;
@@ -142,6 +146,16 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
 
   const today = rows[rows.length - 1];
   const history = rows.map((r) => ({ date: r.date, score: r.score_total }));
+  const pillarHistory = rows.map((r) => ({
+    date: r.date,
+    pillars: {
+      ...(r.score_nutrition != null ? { nutrition: r.score_nutrition } : {}),
+      ...(r.score_hydration != null ? { hydration: r.score_hydration } : {}),
+      ...(r.score_exercise != null ? { exercise: r.score_exercise } : {}),
+      ...(r.score_sleep != null ? { sleep: r.score_sleep } : {}),
+      ...(r.score_mental != null ? { mental: r.score_mental } : {}),
+    },
+  }));
 
   const rawSubscores = today.feature_inputs?.subscores as
     | Record<string, Partial<VitanaPillarSubscores>>
@@ -173,6 +187,7 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
     subscores,
     balanceFactor,
     history,
+    pillarHistory,
     trend: deriveTrend(history),
     confidence: today.confidence ?? 0,
     isBaseline: today.model_version?.startsWith("baseline") ?? false,

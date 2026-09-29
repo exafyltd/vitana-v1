@@ -65,6 +65,7 @@ export const ROUTE_CHUNK_IMPORTERS: Record<string, () => Promise<unknown>> = {
   '/autopilot': () => import('@/pages/AutopilotDashboard'),
   '/comm/events-meetups': () => import('@/pages/community/EventsAndMeetups'),
   '/discover': () => import('@/pages/Discover'),
+  '/calendar': () => import('@/pages/Calendar'),
 };
 
 /**

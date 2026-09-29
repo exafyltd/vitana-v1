@@ -4,6 +4,8 @@ docs
 reports
 stories
 scripts
+!scripts/nav
+!scripts/whats-new
 .lovable
 .claude
 *.md

@@ -20,6 +20,14 @@
       "flagged": "Markiert",
       "podcastManagement": "Podcast-Verwaltung",
       "podcastManagementDesc": "Podcast-Uploads prüfen und moderieren"
+    },
+    "notifications": {
+      "tabs": {
+        "notifications": "Benachrichtigungen",
+        "categories": "Kategorien",
+        "activity": "Aktivität",
+        "compose": "Senden"
+      }
     }
   }
 }

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { EnhancedCalendarPopup } from '@/components/calendar/EnhancedCalendarPopup';
+import { CALENDAR_ROUTE } from '@/components/calendar/calendar-entry';
 import { AutopilotPopup } from '@/components/AutopilotPopup';
 // Phase 0: CartSidebar retired from the buy path — cart action navigates to /universal-cart.
 import { NotificationsPanel } from '@/components/notifications/NotificationsPanel';
@@ -122,7 +122,6 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { selectedLanguage } = useLanguage();
   const currentLocale = LOCALE_PRESENTATION[selectedLanguage] ?? LOCALE_PRESENTATION['de-DE'];
 
-  const [calendarOpen, setCalendarOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
@@ -490,7 +489,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 </button>
 
                 <button
-                  onClick={() => openPopup(setCalendarOpen)}
+                  onClick={() => { onClose(); navigate(CALENDAR_ROUTE); }}
                   aria-label={t('screens.mobile.openCalendar')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
@@ -689,7 +688,6 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     </AnimatePresence>
 
     {/* Quick-action popups — live outside the drawer so they persist after it closes */}
-    <EnhancedCalendarPopup open={calendarOpen} onOpenChange={setCalendarOpen} />
     <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     {/* Phase 0: CartSidebar retired — the cart action navigates to /universal-cart. */}
 

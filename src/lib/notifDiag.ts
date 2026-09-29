@@ -18,6 +18,8 @@
  * Deliberately self-contained: no React imports, no Supabase, no auth — so
  * a failure in those layers cannot suppress the beacon.
  */
+import { sendAnonymousBeacon } from './anon-beacon';
+import { GATEWAY_BASE } from './gateway-base';
 
 type BeaconEvent =
   | 'boot'
@@ -27,14 +29,15 @@ type BeaconEvent =
   | 'react_error_boundary'
   | 'ping';
 
+// VTID-04616: the gateway ORIGIN, from the one shared resolver. This used to
+// read VITE_GATEWAY_URL through an optional-chained `import.meta` access —
+// Vite only inlines the literal `import.meta.env.X` form, so that read was always
+// undefined at runtime and every build (staging and PR previews included)
+// sent its beacons to the PRODUCTION gateway. It would also have doubled
+// `/api/v1`, since VITE_GATEWAY_URL already ends in it. Found by the
+// STAGING-VERIFY network guard (VTID-04613).
 function resolveGatewayBase(): string {
-  // Same precedence other client helpers use (see src/lib/celebrate.ts).
-  const env = (import.meta as any)?.env?.VITE_GATEWAY_URL as string | undefined;
-  if (env) return env.replace(/\/+$/, '');
-  // Hard fallback so the beacon still fires if VITE_GATEWAY_URL was not
-  // baked into the build for some reason. Matches the preconnect in
-  // index.html (Cloudflare-fronted gateway domain).
-  return 'https://gateway.vitanaland.com';
+  return GATEWAY_BASE;
 }
 
 function isAppilixWebView(): boolean {
@@ -77,23 +80,9 @@ function send(event: BeaconEvent, extra?: Record<string, unknown>): void {
     const url = `${resolveGatewayBase()}/api/v1/diag/notif-tap`;
     const body = JSON.stringify({ event, ...snapshot(), ...(extra || {}) });
 
-    // Prefer sendBeacon — it survives page unload, which matters because the
-    // Appilix WebView may be tearing the page down while we're still trying
-    // to report what went wrong.
-    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-      const blob = new Blob([body], { type: 'application/json' });
-      const ok = navigator.sendBeacon(url, blob);
-      if (ok) return;
-    }
-
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body,
-      keepalive: true,
-      mode: 'cors',
-      credentials: 'omit',
-    }).catch(() => { /* fire-and-forget */ });
+    // VTID-04516: anonymous keepalive fetch — it survives page unload like
+    // sendBeacon, without sendBeacon's credentialed CORS preflight.
+    sendAnonymousBeacon(url, body);
   } catch {
     /* never throw from a diagnostic path */
   }

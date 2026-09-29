@@ -1,0 +1,8 @@
+UPDATE_CALENDAR_GOLDEN=1 npx vitest run src/components/calendar/__regression__   # record once
+npx vitest run src/components/calendar/__regression__                             # 43 passed, twice, stable
+TZ=UTC|America/Los_Angeles|Asia/Tokyo npx vitest run src/components/calendar/__regression__  # 43 passed each
+npm run test:calendar                                                             # 8 files, 110 passed
+npx vitest run                                                                    # 153 files, 928 passed
+npx eslint src/components/calendar/__regression__                                 # clean
+npx tsc --noEmit -p tsconfig.app.json                                             # 166 errors before and after, none in the new files
+(mutation check: 5 deliberate source edits, each caught, each reverted)

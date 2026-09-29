@@ -29,6 +29,8 @@ interface NewConversationPopupProps {
   onConversationCreated?: (threadId: string, recipientId: string) => void;
   onGroupCreated?: (threadId: string) => void;
   context?: 'global' | 'tenant';
+  /** Pre-fill this member as the recipient (e.g. "Message" on a contact). */
+  initialRecipientId?: string | null;
 }
 
 export default function NewConversationPopup({
@@ -37,6 +39,7 @@ export default function NewConversationPopup({
   onConversationCreated,
   onGroupCreated,
   context,
+  initialRecipientId,
 }: NewConversationPopupProps) {
   const { user } = useAuth();
   const { dbRole } = useRole();
@@ -53,6 +56,34 @@ export default function NewConversationPopup({
 
   // Determine context: use prop if provided, otherwise fall back to role-based logic
   const effectiveContext = context || (dbRole === 'community' ? 'global' : 'tenant');
+
+  // Pre-fill the recipient the caller picked (a contact's "Message" action),
+  // so the user does not have to search for someone they already chose.
+  useEffect(() => {
+    if (!open || !initialRecipientId) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("user_id, display_name, avatar_url")
+        .eq("user_id", initialRecipientId)
+        .maybeSingle();
+      if (cancelled) return;
+      if (error) console.error("[NewConversationPopup] Failed to load recipient:", error);
+      const recipient: User = {
+        user_id: initialRecipientId,
+        display_name: data?.display_name || "",
+        avatar_url: data?.avatar_url || undefined,
+        email: "",
+      };
+      setSelectedRecipients((prev) =>
+        prev.some((r) => r.user_id === initialRecipientId) ? prev : [recipient]
+      );
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, initialRecipientId]);
 
   // Auto-switch to group mode when multiple recipients are selected
   useEffect(() => {

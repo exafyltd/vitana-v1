@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { saveDiaryEntry as saveDiaryEntryApi } from "@/lib/memory-api";
 import { ClientSTT } from "@/utils/clientSTT";
 import {
   DiaryAudioRecorder,
@@ -23,8 +24,13 @@ import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDuration, mergeFinalTranscript } from "@/utils/sttHelpers";
 import { cn } from "@/lib/utils";
+import { submitFeedbackTicket, type ReportType } from '@/lib/feedback-ticket';
+import { GATEWAY_BASE } from '@/lib/gateway-base';
+import { t } from '@/lib/i18n-toast';
+import { Link } from 'react-router-dom';
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
+// VTID-04335: canonical gateway origin (the old fallback was the deleted GCP host).
+const GATEWAY_URL = GATEWAY_BASE;
 
 const SCREEN_OPTIONS = [
   { value: "home", label: "Home" },
@@ -89,6 +95,8 @@ export function UnifiedCaptureCard({
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  // VTID-04335: the FB-… number the gateway returned, shown on the confirmation.
+  const [createdTicketNumber, setCreatedTicketNumber] = useState<string | null>(null);
 
   // ---- Refs ----
   const sttRef = useRef<ClientSTT | null>(null);
@@ -363,20 +371,19 @@ export function UnifiedCaptureCard({
       return;
     }
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
-      const { error } = await supabase.from('diary_entries').insert({
-        user_id: user.id,
+      // VTID-04390: one diary write path — diary row, memory episode and the
+      // Vitana Index sync, which this surface never ran before.
+      await saveDiaryEntryApi({
         text: transcript.trim(),
-        duration: recordingDuration,
         source: 'voice',
+        tags: ['diary', 'voice'],
+        duration: recordingDuration,
       });
-      if (error) throw error;
 
       setTranscript("");
       setRecordingDuration(0);
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
+      queryClient.invalidateQueries({ queryKey: ['vitana_index'] });
       onSaveComplete?.();
 
       toast({ title: translate('capture.entrySaved'), description: translate('capture.entrySavedDesc') });
@@ -428,22 +435,17 @@ export function UnifiedCaptureCard({
         }
       }
 
-      const res = await fetch(`${GATEWAY_URL}/api/v1/voice-feedback/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          transcript: transcript.trim(),
-          report_type: mode,
-          severity,
-          affected_screen: affectedScreen || undefined,
-          attachments: uploadedUrls,
-        }),
+      // VTID-04313: the unified feedback_tickets pipeline, not the legacy table.
+      const result = await submitFeedbackTicket({
+        gatewayUrl: GATEWAY_URL,
+        accessToken: session.access_token,
+        transcript: transcript.trim(),
+        reportType: mode as ReportType,
+        severity,
+        affectedScreen: affectedScreen || undefined,
+        attachments: uploadedUrls,
+        source: 'capture_card',
       });
-
-      const result = await res.json();
       if (!result.ok) throw new Error(result.error || 'Submit failed');
 
       setTranscript('');
@@ -452,6 +454,7 @@ export function UnifiedCaptureCard({
       setPreviewUrls([]);
       setAffectedScreen('');
       setSeverity('medium');
+      setCreatedTicketNumber(result.ticket_number ?? null);
       setShowConfirmation(true);
       onSubmitted?.();
     } catch (error) {
@@ -472,6 +475,16 @@ export function UnifiedCaptureCard({
           </div>
         </div>
         <h3 className="text-lg font-semibold text-foreground">{translate('capture.reportSent')}</h3>
+        {createdTicketNumber && (
+          <p className="text-base font-semibold" data-testid="created-ticket-number">
+            {t('supportTickets.submittedNumber', { number: createdTicketNumber })}
+          </p>
+        )}
+        {createdTicketNumber && (
+          <Link to={`/support?tab=tickets&ticket=${encodeURIComponent(createdTicketNumber)}`} className="text-sm text-primary underline">
+            {t('supportTickets.viewTicket')}
+          </Link>
+        )}
         <p className="text-sm text-muted-foreground text-center max-w-xs">
           {translate('capture.reportSentDesc')}
         </p>

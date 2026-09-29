@@ -28,3 +28,23 @@ describe('CommerceJoin honors redirectTo (VTID-03936)', () => {
     expect(join).toContain("redirectTo.startsWith('/commerce')");
   });
 });
+
+describe('invite bound to the invited email (VTID-04337)', () => {
+  const page = readFileSync(resolve(__dirname, './CommerceAcceptInvite.tsx'), 'utf8');
+  const de = JSON.parse(readFileSync(resolve(__dirname, '../i18n/de/screens.json'), 'utf8'));
+  const en = JSON.parse(readFileSync(resolve(__dirname, '../i18n/en/screens.json'), 'utf8'));
+
+  it('maps the gateway 403 codes to their own state instead of the generic failure', () => {
+    expect(page).toContain("/INVITE_EMAIL_(MISMATCH|UNVERIFIED)/");
+    const mismatchIdx = page.indexOf('INVITE_EMAIL_(MISMATCH|UNVERIFIED)');
+    const failedIdx = page.indexOf("else setState('failed')");
+    expect(mismatchIdx).toBeGreaterThan(-1);
+    expect(mismatchIdx).toBeLessThan(failedIdx);
+  });
+
+  it('renders a catalog string, present in DE and EN', () => {
+    expect(page).toContain("t('screens.commerceportal.orgOnboarding.acceptWrongEmail')");
+    expect(de.screens.commerceportal.orgOnboarding.acceptWrongEmail).toMatch(/E-Mail-Adresse/);
+    expect(en.screens.commerceportal.orgOnboarding.acceptWrongEmail).toMatch(/email address/);
+  });
+});

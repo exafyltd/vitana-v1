@@ -44,6 +44,7 @@ import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
+import SupportTicketFiledListener from "./components/support/SupportTicketFiledListener";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
@@ -102,6 +103,8 @@ const OnboardingWelcome = lazy(() => import("./pages/onboarding/OnboardingWelcom
 // Portal pages
 const ExafyAdminPortal = lazy(() => import("./pages/portals/ExafyAdminPortal"));
 const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
+// VTID-04508: personal invite links
+const InviteLanding = lazy(() => import("./pages/InviteLanding"));
 const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
 const EarthlinksPortal = lazy(() => import("./pages/portals/EarthlinksPortal"));
 // CommunityPortal removed — orphaned, login handled by tenant portals
@@ -165,6 +168,7 @@ const EventGamePublicLanding = lazy(() => import("./pages/EventGamePublicLanding
 const EventGamePage = lazy(() => import("./pages/community/EventGamePage"));
 const Discover = lazy(() => import("./pages/Discover"));
 const Reminders = lazy(() => import("./pages/Reminders"));
+const CalendarPage = lazy(() => import("./pages/Calendar"));
 const Health = lazy(() => import("./pages/Health"));
 const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
@@ -366,12 +370,6 @@ const ContentMusic = lazy(() => import("./pages/admin/content/Music"));
 const ContentUploads = lazy(() => import("./pages/admin/content/Uploads"));
 const ContentAnalytics = lazy(() => import("./pages/admin/content/ContentAnalytics"));
 // Wave 2: Notifications section
-const NotificationsCompose = lazy(() => import("./pages/admin/notifications/ComposeNew"));
-const NotificationsTemplates = lazy(() => import("./pages/admin/notifications/Templates"));
-const NotificationsSent = lazy(() => import("./pages/admin/notifications/SentNew"));
-const NotificationsSubscriptions = lazy(() => import("./pages/admin/notifications/Subscriptions"));
-const NotificationsProviders = lazy(() => import("./pages/admin/notifications/Providers"));
-const NotificationsCategories = lazy(() => import("./pages/admin/notifications/Categories"));
 // Wave 2: Insights section
 const InsightsGrowth = lazy(() => import("./pages/admin/insights/Growth"));
 const InsightsEngagement = lazy(() => import("./pages/admin/insights/Engagement"));
@@ -386,8 +384,8 @@ const InsightsInterests = lazy(() => import("./pages/admin/insights/Interests"))
 const InsightsOverview = lazy(() => import("./pages/admin/insights/Overview"));
 const InsightsEvents = lazy(() => import("./pages/admin/insights/Events"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
-const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
-const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
+// VTID-04675: Admin › Notifications rebuilt — one page, three tabs.
+const AdminNotificationsHome = lazy(() => import("./pages/admin/notifications/NotificationsAdmin"));
 const AdminLiveSessions = lazy(() => import("./pages/admin/live/Sessions"));
 const AdminLiveAttendance = lazy(() => import("./pages/admin/live/Attendance"));
 const AdminIntelligenceMemory = lazy(() => import("./pages/admin/intelligence/Memory"));
@@ -777,6 +775,8 @@ const App = () => {
                         Lives inside <BrowserRouter> for useNavigate(). */}
                     <IdentityRedirectListener />
                     <MilestoneCelebration />
+                    {/* VTID-04385: ticket number on screen after a spoken report. */}
+                    <SupportTicketFiledListener />
                     {/* VTID-02601: reminder fire delivery — chime + voice + banner. */}
                     <ReminderInterruptOverlay />
                     <VitanalandNavigationProvider>
@@ -861,6 +861,7 @@ const App = () => {
               other portal entry points above. Hands off to /commerce. */}
           <Route path="/commerce-login" element={<CommercePortalLogin />} />
           <Route path="/maxina" element={<MaxinaPortal />} />
+          <Route path="/i/:code" element={<InviteLanding />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
           <Route path="/earthlinks" element={<EarthlinksPortal />} />
           {/* /community removed — orphaned, login handled by tenant portals */}
@@ -1166,6 +1167,14 @@ const App = () => {
           <Route path="/health-tracker/biomarker-results" element={<Navigate to="/health/my-health-tracker" replace />} />
           
           {/* Calendar routes */}
+          <Route path="/calendar" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <CalendarPage />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/calendar/appointments" element={<Navigate to="/calendar" replace />} />
 
           {/* VTID-02601 Reminders */}
           <Route path="/reminders" element={
@@ -1990,26 +1999,6 @@ const App = () => {
             <AuthGuard><ProtectedRoute requiredRole="admin"><ContentAnalytics /></ProtectedRoute></AuthGuard>
           } />
 
-          {/* Wave 2: Notifications section (new pages) */}
-          <Route path="/admin/notifications/compose" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsCompose /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/notifications/templates" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsTemplates /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/notifications/sent" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsSent /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/notifications/subscriptions" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsSubscriptions /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/notifications/providers" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsProviders /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/notifications/categories" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsCategories /></ProtectedRoute></AuthGuard>
-          } />
-
           {/* Wave 2: Insights section */}
           <Route path="/admin/insights/overview" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsOverview /></ProtectedRoute></AuthGuard>
@@ -2042,16 +2031,24 @@ const App = () => {
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsReports /></ProtectedRoute></AuthGuard>
           } />
 
-          {/* 3. Notifications Section (legacy) */}
+          {/* 3. Notifications (VTID-04675): switches per type, member categories, activity, compose */}
           <Route path="/admin/notifications" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsHome tab="notifications" /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/notifications/categories" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsHome tab="categories" /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/notifications/activity" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsHome tab="activity" /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/notifications/compose" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsCompose /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/notifications/sent" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsSentLog /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/notifications/preferences" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsPreferences /></ProtectedRoute></AuthGuard>
-          } />
+          <Route path="/admin/notifications/sent" element={<Navigate to="/admin/notifications/activity" replace />} />
+          <Route path="/admin/notifications/preferences" element={<Navigate to="/admin/notifications/categories" replace />} />
+          <Route path="/admin/notifications/templates" element={<Navigate to="/admin/notifications" replace />} />
+          <Route path="/admin/notifications/subscriptions" element={<Navigate to="/admin/notifications" replace />} />
+          <Route path="/admin/notifications/providers" element={<Navigate to="/admin/notifications" replace />} />
 
           {/* 4. Community Section (reuses existing pages) */}
           <Route path="/admin/community" element={

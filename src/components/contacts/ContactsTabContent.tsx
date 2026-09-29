@@ -75,17 +75,18 @@ export default function ContactsTabContent({ onStartConversation, messageContext
   return (
     <>
       {/* Header Actions */}
-      <div className="mb-4 mr-3 flex gap-2">
-        <Button onClick={() => setShowAddContact(true)} className="flex-1">
-          <Plus className="w-4 h-4 mr-2" />
-          {t('screens.contacts.addContact')}
+      {/* VTID-04440: two equal columns so both fit a 390px phone. */}
+      <div className="mb-4 me-3 grid grid-cols-2 gap-2 [&>*]:min-w-0 [&_button]:w-full [&_button]:min-h-10">
+        <Button onClick={() => setShowAddContact(true)} className="truncate">
+          <Plus className="w-4 h-4 me-2 shrink-0" />
+          <span className="truncate">{t('screens.contacts.addContact')}</span>
         </Button>
-        <ImportContactsButton onImport={handleImportContacts} />
+        <div><ImportContactsButton onImport={handleImportContacts} /></div>
       </div>
 
       {/* Search Bar */}
       {contacts.length > 0 && (
-        <div className="mb-4 mr-3">
+        <div className="mb-4 me-3">
           <ExpandableSearchButton
             onSearch={handleSearch}
             placeholder={t('screens.contacts.searchContactsByNamePhone')}
@@ -104,7 +105,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
               {t('screens.contacts.addContactsEasilyFindMessageThem')}
             </p>
             <Button onClick={() => setShowAddContact(true)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.contacts.addYourFirstContact')}
             </Button>
           </div>
@@ -115,7 +116,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
               <div>
                 <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">{t('screens.contacts.vitanaLength', { length: filteredPlatformContacts.length })}
                 </h3>
-                <div className="space-y-2 mr-3">
+                <div className="space-y-2 me-3">
                   {filteredPlatformContacts.map((contact) => (
                     <ContactListItem
                       key={contact.id}
@@ -136,7 +137,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
               <div>
                 <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">{t('screens.contacts.inviteVitanaLength', { length: filteredNonPlatformContacts.length })}
                 </h3>
-                <div className="space-y-2 mr-3">
+                <div className="space-y-2 me-3">
                   {filteredNonPlatformContacts.map((contact) => (
                     <ContactListItem
                       key={contact.id}

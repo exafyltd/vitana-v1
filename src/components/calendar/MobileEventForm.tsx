@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { de as deLocale } from "date-fns/locale/de";
 import { Calendar as CalendarIcon, MapPin, Clock, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,9 +12,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
-import { useTranslation } from "@/hooks/useTranslation";
+import { t } from "@/lib/i18n-toast";
 
-import { formatDate } from '@/lib/locale-format';
+import { fmtDate, formatDate } from '@/lib/locale-format';
 interface MobileEventFormProps {
   onSubmit: (event: Partial<CalendarEvent>) => void;
   onCancel: () => void;
@@ -23,13 +22,13 @@ interface MobileEventFormProps {
   initialDate?: Date;
 }
 
-const EVENT_TYPES: { value: CalendarEvent['event_type']; labelDe: string; labelEn: string }[] = [
-  { value: 'personal',     labelDe: 'Persönlich', labelEn: 'Personal' },
-  { value: 'professional', labelDe: 'Arbeit',     labelEn: 'Work' },
-  { value: 'health',       labelDe: 'Gesundheit', labelEn: 'Health' },
-  { value: 'workout',      labelDe: 'Training',   labelEn: 'Workout' },
-  { value: 'community',    labelDe: 'Community',  labelEn: 'Community' },
-  { value: 'nutrition',    labelDe: 'Ernährung',  labelEn: 'Nutrition' },
+const EVENT_TYPES: { value: CalendarEvent['event_type'] }[] = [
+  { value: 'personal' },
+  { value: 'professional' },
+  { value: 'health' },
+  { value: 'workout' },
+  { value: 'community' },
+  { value: 'nutrition' },
 ];
 
 /** Generate 24h time options in 15-min intervals */
@@ -62,7 +61,6 @@ function addOneHour(time: string): string {
 }
 
 export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEventFormProps) {
-  const { translate, isGerman } = useTranslation();
   const now = new Date();
   const defaultStart = roundToNext15(now);
 
@@ -105,10 +103,10 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
       {/* Title */}
       <div>
         <Label className="text-xs text-muted-foreground mb-1.5 block">
-          {translate('calendar.form.title', 'Title')}
+          {t('vcal.form.title')}
         </Label>
         <Input
-          placeholder={translate('calendar.form.titlePlaceholder', 'What is it?')}
+          placeholder={t('vcal.form.titlePlaceholder')}
           value={title}
           onChange={e => setTitle(e.target.value)}
           autoFocus
@@ -119,7 +117,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
       {/* Date — quick buttons + picker */}
       <div>
         <Label className="text-xs text-muted-foreground mb-1.5 block">
-          {translate('calendar.form.date', 'Date')}
+          {t('vcal.form.date')}
         </Label>
         <div className="flex gap-2 flex-wrap">
           <Button
@@ -129,7 +127,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
             className="h-9"
             onClick={() => { setDate(new Date(now)); setShowDatePicker(false); }}
           >
-            {translate('calendar.today', 'Today')}
+            {t('vcal.form.today')}
           </Button>
           <Button
             type="button"
@@ -138,7 +136,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
             className="h-9"
             onClick={() => { setDate(new Date(tomorrow)); setShowDatePicker(false); }}
           >
-            {translate('calendar.tomorrow', 'Tomorrow')}
+            {t('vcal.form.tomorrow')}
           </Button>
           <Popover open={showDatePicker} onOpenChange={setShowDatePicker}>
             <PopoverTrigger asChild>
@@ -150,8 +148,8 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
               >
                 <CalendarIcon className="w-3.5 h-3.5" />
                 {!isToday && !isTomorrow
-                  ? formatDate(date, 'EEE, d MMM', { locale: isGerman ? deLocale : undefined })
-                  : translate('calendar.form.pickDate', 'Pick date')
+                  ? fmtDate(date, { weekday: 'short', day: 'numeric', month: 'short' })
+                  : t('vcal.form.pickDate')
                 }
                 <ChevronDown className="w-3 h-3 opacity-50" />
               </Button>
@@ -173,7 +171,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
         <div className="flex-1">
           <Label className="text-xs text-muted-foreground mb-1.5 block">
             <Clock className="w-3 h-3 inline mr-1" />
-            {translate('calendar.form.startTime', 'Start')}
+            {t('vcal.form.start')}
           </Label>
           <select
             value={startTime}
@@ -191,7 +189,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
         <div className="flex-1">
           <Label className="text-xs text-muted-foreground mb-1.5 block">
             <Clock className="w-3 h-3 inline mr-1" />
-            {translate('calendar.form.endTime', 'End')}
+            {t('vcal.form.end')}
           </Label>
           <select
             value={endTime}
@@ -209,10 +207,10 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
       <div>
         <Label className="text-xs text-muted-foreground mb-1.5 block">
           <MapPin className="w-3 h-3 inline mr-1" />
-          {translate('calendar.form.location', 'Location')} <span className="opacity-50">({translate('common.optional', 'optional')})</span>
+          {t('vcal.form.location')} <span className="opacity-50">({t('vcal.form.optional')})</span>
         </Label>
         <Input
-          placeholder={translate('calendar.form.locationPlaceholder', 'Where?')}
+          placeholder={t('vcal.form.locationPlaceholder')}
           value={location}
           onChange={e => setLocation(e.target.value)}
           className="h-10"
@@ -222,20 +220,20 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
       {/* Event type chips */}
       <div>
         <Label className="text-xs text-muted-foreground mb-1.5 block">
-          {translate('calendar.form.type', 'Category')}
+          {t('vcal.form.category')}
         </Label>
         <div className="flex gap-1.5 flex-wrap">
-          {EVENT_TYPES.map(t => (
+          {EVENT_TYPES.map(type => (
             <Badge
-              key={t.value}
-              variant={eventType === t.value ? 'default' : 'outline'}
+              key={type.value}
+              variant={eventType === type.value ? 'default' : 'outline'}
               className={cn(
                 "cursor-pointer text-xs px-2.5 py-1 transition-colors",
-                eventType === t.value && "bg-primary text-primary-foreground",
+                eventType === type.value && "bg-primary text-primary-foreground",
               )}
-              onClick={() => setEventType(t.value)}
+              onClick={() => setEventType(type.value)}
             >
-              {isGerman ? t.labelDe : t.labelEn}
+              {t(`vcal.form.types.${type.value}`)}
             </Badge>
           ))}
         </div>
@@ -244,14 +242,14 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
       {/* Actions */}
       <div className="flex gap-2 pt-1">
         <Button variant="outline" className="flex-1 h-11" onClick={onCancel}>
-          {translate('common.cancel', 'Cancel')}
+          {t('vcal.form.cancel')}
         </Button>
         <Button
           className="flex-1 h-11"
           onClick={handleSubmit}
           disabled={!title.trim()}
         >
-          {translate('calendar.form.create', 'Create Event')}
+          {t('vcal.form.create')}
         </Button>
       </div>
     </div>

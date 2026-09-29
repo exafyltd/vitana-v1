@@ -1,0 +1,295 @@
+{
+  "vcal": {
+    "title": "Calendar",
+    "today": "Today",
+    "prev": "Previous",
+    "next": "Next",
+    "loading": "Loading your calendar",
+    "error": "Your calendar couldn't be loaded right now.",
+    "retry": "Try again",
+    "busy": "Busy",
+    "busyHint": "Entry from another role – only the time is shown",
+    "done": "Done",
+    "markDone": "Mark as done",
+    "doneToast": "Done – nice work! 🎉",
+    "doneError": "That couldn't be saved right now.",
+    "recurring": "Repeats",
+    "voiceAdd": "“Blood test Friday 8am, fasting” – tell Vitana",
+    "nextUp": "Next up · {when}",
+    "progress": "{done} of {total} done today",
+    "progressAllDone": "All done – enjoy the rest of your day ✨",
+    "progressKeepGoing": "Keep going, you're on track 💪",
+    "greeting": {
+      "morning": "Good morning ☀️",
+      "afternoon": "Good afternoon 🌤️",
+      "evening": "Good evening 🌙",
+      "night": "Good night 🌙"
+    },
+    "views": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "rel": {
+      "now": "now",
+      "minutes": "in {count} min",
+      "hours": "in {count} h",
+      "days": "in {count} days"
+    },
+    "reminder": {
+      "eveningBefore": "Evening before at {time}",
+      "atStart": "At start",
+      "hoursBefore": "{count} h before",
+      "minutesBefore": "{count} min before"
+    },
+    "kinds": {
+      "nutrition": "Nutrition",
+      "hydration": "Hydration",
+      "exercise": "Exercise",
+      "sleep": "Sleep",
+      "mental": "Mental",
+      "community": "Community",
+      "lab": "Lab",
+      "work": "Work",
+      "vitana": "Vitana",
+      "personal": "Personal",
+      "_pending_review": {
+        "community": true,
+        "vitana": true
+      }
+    },
+    "source": {
+      "lab": "From your lab order",
+      "autopilot": "Autopilot ✨",
+      "plan": "From your plan",
+      "assistant": "Added with Vitana",
+      "community": "Community",
+      "journey": "Your journey",
+      "_pending_review": {
+        "autopilot": true,
+        "community": true
+      }
+    },
+    "empty": {
+      "title": "Nothing planned – a calm day",
+      "hint": "Tell Vitana what you have in mind and she'll add it."
+    },
+    "week": {
+      "title": "Week of {date}",
+      "free": "free"
+    },
+    "month": {
+      "more": "+{count}",
+      "_pending_review": {
+        "more": true
+      }
+    },
+    "entry": {
+      "close": "Close",
+      "about": "What it's about",
+      "reminders": "Reminders",
+      "noReminders": "No reminder",
+      "directions": "Directions",
+      "askVitana": "Ask Vitana"
+    },
+    "work": {
+      "deploy_staging": "Staging deploy",
+      "deploy_prod": "Production deploy",
+      "autopilot_review": "Waiting for your review",
+      "ticket_due": "Ticket deadline",
+      "erp_approval": "Approval waiting",
+      "readOnly": "You finish this where it lives – the calendar only shows when it is due."
+    },
+    "subscribe": {
+      "title": "Show in my calendar app",
+      "intro": "Subscribe to your Vitanaland calendar in Apple, Google or Outlook. New entries show up there on their own.",
+      "privacy": "The link shows only titles, times and places – no details. Anyone with the link can see these entries, so keep it to yourself.",
+      "create": "Create link",
+      "replace": "Create a new link",
+      "replaceHint": "A new link replaces the old one – the old one stops working.",
+      "revoke": "Turn off link",
+      "revoked": "Link turned off",
+      "yourLink": "Your link",
+      "onlyOnce": "You only see this link now. Copy it or open it straight in your calendar app.",
+      "copy": "Copy",
+      "copied": "Link copied",
+      "copyError": "Copying didn't work – select the link and copy it yourself.",
+      "openApp": "Open in calendar app",
+      "activeSince": "A link has been active since {date}.",
+      "error": "That didn't work just now. Please try again in a moment.",
+      "titleFor": {
+        "google": "Connect Google Calendar",
+        "apple": "Connect Apple Calendar",
+        "outlook": "Connect Outlook"
+      },
+      "introFor": {
+        "google": "Your Vitanaland entries appear in your Google Calendar and stay up to date there.",
+        "apple": "Your Vitanaland entries appear in Apple Calendar on your iPhone, iPad and Mac and stay up to date there.",
+        "outlook": "Your Vitanaland entries appear in your Outlook calendar and stay up to date there."
+      },
+      "createFor": {
+        "google": "Create link for Google",
+        "apple": "Create link for Apple",
+        "outlook": "Create link for Outlook"
+      },
+      "openIn": {
+        "google": "Add to Google Calendar",
+        "apple": "Add to Apple Calendar",
+        "outlook": "Add to Outlook"
+      }
+    },
+    "move": {
+      "action": "Move",
+      "title": "New time",
+      "keepsLength": "It keeps the same length.",
+      "cancel": "Cancel",
+      "confirm": "Move here",
+      "moved": "Moved ✨",
+      "error": "That couldn't be moved just now. Try again in a moment.",
+      "blocked": {
+        "owned_by_source": "This comes from a booking or a plan – move it there, or it will jump back.",
+        "recurring": "Move a series from the series itself.",
+        "completed": "Done entries stay where they were.",
+        "cancelled": "Cancelled entries can't be moved."
+      }
+    },
+    "google": {
+      "title": "Sync with Google Calendar",
+      "intro": "Your Vitanaland entries go to their own \"Vitanaland\" calendar in your Google account. Your Google events show here as grey busy times – no titles.",
+      "turnOn": "Turn on Google sync",
+      "turnOff": "Turn off Google sync",
+      "turnedOn": "Google sync is on 🎉",
+      "turnedOff": "Google sync is off",
+      "on": "Google sync is on",
+      "lastSync": "last {date}",
+      "problem": "The last sync didn't work – we'll retry automatically.",
+      "error": "That didn't work just now. Try again in a moment.",
+      "busy": "Busy (Google)",
+      "busyHint": "An event from your Google calendar – only the time is visible"
+    },
+    "quietHours": {
+      "title": "Quiet hours",
+      "body": "No reminders arrive during your quiet hours – they come just before.",
+      "link": "Set quiet hours"
+    },
+    "guide": {
+      "eyebrow": "Vitana suggests",
+      "allDone": "All done – {count} of {count}. Enjoy your evening or see what the week brings.",
+      "nextStep": "Your next step: {title}",
+      "stepsOpenOne": "1 step open · about 5 minutes",
+      "stepsOpen": "{count} steps open · about 5 minutes each",
+      "freeDay": "Nothing planned today. A good day for something that does you good.",
+      "freeWindow": "You're free from {from} to {to}. Time for a walk, a meetup or a break?",
+      "connect": "Connect your calendar so Vitana sees your whole day and plans around it.",
+      "busy": "Full day: {count} things still ahead. Plan short breaks in between.",
+      "start": "Start",
+      "findEvent": "Find an event",
+      "planWithVitana": "Plan with Vitana",
+      "seeWeek": "See the week",
+      "connectAction": "Connect calendar",
+      "dismiss": "Hide for today"
+    },
+    "journey": {
+      "title": "Your journey",
+      "open": "{count} steps open",
+      "openOne": "1 step open",
+      "day": "Day {day}",
+      "dayOf": "Day {day} of {total}",
+      "noneOpen": "Every step done – great! New ones appear as you go.",
+      "today": "Today {time}",
+      "more": "+{count} more",
+      "openJourney": "Open my journey",
+      "habitsOne": "1 habit",
+      "habits": "{count} habits",
+      "habitsTitle": "Your habits – in your calendar only if you want them",
+      "addHabit": "Add to calendar",
+      "dailyAt": "Daily at",
+      "addConfirm": "Add",
+      "inCalendar": "In calendar",
+      "habitAdded": "Habit added to your calendar"
+    },
+    "remindersSection": {
+      "title": "Reminders",
+      "none": "None scheduled",
+      "upcoming": "{count} upcoming",
+      "upcomingOne": "1 upcoming",
+      "next": "next {when}"
+    },
+    "calendars": {
+      "title": "Calendars",
+      "providers": {
+        "google": "Google",
+        "apple": "Apple",
+        "outlook": "Outlook",
+        "_pending_review": {
+          "google": true,
+          "apple": true,
+          "outlook": true
+        }
+      },
+      "connectTitle": "Connect your calendar",
+      "connectBody": "Your Vitanaland entries in Google, Apple or Outlook – one tap.",
+      "comingSoon": "Sign-in with Google, Apple and Outlook is being set up.",
+      "connectedOne": "{name} connected",
+      "connectedMany": "{names} connected",
+      "needsReconnect": "{name} needs reconnecting",
+      "connected": "Connected",
+      "notConnected": "Not connected",
+      "reconnectHint": "Connection expired",
+      "connect": "Connect",
+      "reconnect": "Reconnect",
+      "manage": "Manage in Connected Apps",
+      "showInAppHint": "See Vitanaland entries in your calendar app"
+    },
+    "add": {
+      "title": "New entry",
+      "created": "Added ✨",
+      "error": "That couldn't be saved just now. Try again in a moment."
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "What is it?",
+      "date": "Date",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "pickDate": "Pick a date",
+      "start": "Start",
+      "end": "End",
+      "location": "Location",
+      "optional": "optional",
+      "locationPlaceholder": "Where?",
+      "category": "Category",
+      "cancel": "Cancel",
+      "create": "Add to calendar",
+      "types": {
+        "personal": "Personal",
+        "professional": "Work",
+        "health": "Health",
+        "workout": "Workout",
+        "community": "Community",
+        "nutrition": "Nutrition",
+        "_pending_review": {
+          "community": true
+        }
+      },
+      "_pending_review": {
+        "optional": true
+      }
+    },
+    "milestone": "Milestone: {title}",
+    "more": "+{count} more",
+    "summary": {
+      "nothing": "Nothing planned",
+      "entriesOne": "1 entry",
+      "entries": "{count} entries",
+      "next": "next at {time}",
+      "done": "{count} done"
+    },
+    "workSection": {
+      "title": "Work",
+      "waitingOne": "1 thing is waiting for you",
+      "waiting": "{count} things are waiting for you",
+      "open": "Open in admin"
+    }
+  }
+}

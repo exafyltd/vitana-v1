@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-12T20:17:49.684Z",
+  "generated_at": "2026-09-24T16:09:00.552Z",
   "source": "src/App.tsx",
-  "count": 362,
+  "count": 423,
   "routes": [
     {
       "path": "*",
@@ -201,6 +201,12 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/admin/community/event-game",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/admin/community/groups",
       "requires_auth": true,
       "requires_role": "admin",
@@ -335,6 +341,12 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/admin/insights/events",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/admin/insights/features",
       "requires_auth": true,
       "requires_role": "admin",
@@ -354,6 +366,12 @@
     },
     {
       "path": "/admin/insights/journeys",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/insights/overview",
       "requires_auth": true,
       "requires_role": "admin",
       "file": "src/App.tsx"
@@ -449,6 +467,12 @@
     },
     {
       "path": "/admin/marketplace",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/marketplace/partner-health",
       "requires_auth": true,
       "requires_role": "admin",
       "file": "src/App.tsx"
@@ -747,6 +771,173 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/backoffice",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/*",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/accounting/chart-of-accounts",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/accounting/journals",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/accounting/periods",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/activity",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/approvals/my-requests",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/approvals/policies",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/approvals/queue",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/audit/erp-log",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/audit/receipts",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/audit/trail",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/dashboard",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/finance/bank-reconciliation",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/finance/payments",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/health",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/inbox",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/reports/aging",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/reports/pnl",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/contacts",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/credit-notes",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/followups",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/invoices",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/leads",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/opportunities",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/sales/quotations",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/settings/access",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/backoffice/settings/company",
+      "requires_auth": true,
+      "requires_role": "backoffice",
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/business",
       "requires_auth": true,
       "file": "src/App.tsx"
@@ -759,6 +950,17 @@
     {
       "path": "/business/opportunities",
       "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/calendar",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/calendar/appointments",
+      "requires_auth": false,
       "file": "src/App.tsx"
     },
     {
@@ -859,6 +1061,62 @@
     {
       "path": "/comm/talk-to-vitana",
       "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce-login",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/agent-connect",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/connections",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/connections/:id",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/health-orders",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/health-orders/inbox",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/invites/:token/accept",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/join",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/commerce/team",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/event-game",
+      "requires_auth": true,
+      "requires_role": "community",
       "file": "src/App.tsx"
     },
     {
@@ -982,6 +1240,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/discover/category/:subcategory",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/discover/deals-offers",
       "requires_auth": true,
       "file": "src/App.tsx"
@@ -1022,8 +1285,18 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/download",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/e/:slug",
       "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/e/game/:slug",
+      "requires_auth": true,
       "file": "src/App.tsx"
     },
     {
@@ -1168,12 +1441,35 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/home/comments",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home/compose",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/home/context",
       "requires_auth": false,
       "file": "src/App.tsx"
     },
     {
       "path": "/home/matches",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home/notif",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/i/:code",
       "requires_auth": false,
       "file": "src/App.tsx"
     },
@@ -1193,6 +1489,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/inbox/g/:groupId/msg/:messageId",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/inbox/inspiration",
       "requires_auth": true,
       "file": "src/App.tsx"
@@ -1208,7 +1509,17 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/inbox/t/:threadId/msg/:messageId",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/inbox/u/:recipientId",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/inbox/u/:recipientId/msg/:messageId",
       "requires_auth": true,
       "file": "src/App.tsx"
     },
@@ -1249,6 +1560,11 @@
     },
     {
       "path": "/maxina_support",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/maxina/app",
       "requires_auth": false,
       "file": "src/App.tsx"
     },
@@ -1319,6 +1635,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/oauth/consent",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/onboarding/welcome",
       "requires_auth": true,
       "file": "src/App.tsx"
@@ -1326,6 +1647,18 @@
     {
       "path": "/packages/success",
       "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/partner/connections",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/partner/connections/:id",
+      "requires_auth": true,
+      "requires_role": "admin",
       "file": "src/App.tsx"
     },
     {
@@ -1373,7 +1706,12 @@
     {
       "path": "/patient/results",
       "requires_auth": true,
-      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/post/:source/:id",
+      "requires_auth": true,
+      "requires_role": "community",
       "file": "src/App.tsx"
     },
     {
@@ -1471,6 +1809,11 @@
     },
     {
       "path": "/reminders",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/reminders/fire/:fireId",
       "requires_auth": true,
       "file": "src/App.tsx"
     },

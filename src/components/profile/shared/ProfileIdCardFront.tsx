@@ -20,6 +20,7 @@ import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
+import { useIndexStanding } from "@/hooks/useIndexStanding";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ProfileIdCardFrontProps {
@@ -40,6 +41,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   const resolvedId = resolveProfileUserId(profile.user_id, profile.id, user?.id);
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(resolvedId);
+  // VTID-04498 — real community rank; null unless the server vouches for a badge.
+  const { data: standing } = useIndexStanding(resolvedId);
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [qrScreenOpen, setQrScreenOpen] = useState(false);
@@ -241,8 +244,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                        }} />
                 </div>
                 
-                {/* Premium percentile badge */}
-                {profile.vitanaPercentile && (
+                {/* Premium percentile badge — real rank only (VTID-04498) */}
+                {standing && (
                   <div className="absolute -top-1.5 -right-3 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
                     <div 
                       className="relative h-5 px-2.5 py-0.5 rounded-full
@@ -253,9 +256,9 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                                  transition-transform duration-150 ease-out hover:scale-[1.02]
                                  focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
                       role="status"
-                      aria-label={`Top ${100 - profile.vitanaPercentile} percentile`}
+                      aria-label={t("profile.indexHero.topPercentAria", { percent: standing.topPercent, count: standing.cohortSize })}
                     >
-                      <span className="text-[9px] font-bold text-foreground leading-none tracking-wide">{t('screens.profile.topValue0', { value0: 100 - profile.vitanaPercentile })}
+                      <span className="text-[9px] font-bold text-foreground leading-none tracking-wide">{t('screens.profile.topValue0', { value0: standing.topPercent })}
                       </span>
                     </div>
                   </div>

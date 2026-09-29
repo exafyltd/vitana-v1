@@ -224,7 +224,6 @@ export default function PublicProfilePage() {
           links: [],
           languages: ['English'],
           vitanaIndex: vitanaScore ?? undefined,
-          vitanaPercentile: vitanaScore ? Math.min(99, Math.floor((vitanaScore / 999) * 100)) : undefined,
           longevityArchetype: dbProfile.longevity_archetype || undefined,
           // LinkedIn
           linkedin_url: dbProfile.linkedin_url || undefined,

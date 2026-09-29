@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04733",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/whats-new.json",
+      "expect_status": 200, "expect_body_contains": "\"entries\"",
+      "reason": "the deployed build publishes the manifest the gateway reads; a Docker-context or prebuild break would 404 or serve the SPA shell here" },
+    { "kind": "existing", "ref": "npx vitest run src/whats-new", "cwd": ".",
+      "reason": "entry validation (en+de, du-form, known deepLink, id==file name) and build wiring are pinned by unit tests" }
+  ]
+}

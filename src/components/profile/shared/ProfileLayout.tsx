@@ -157,7 +157,8 @@ export function ProfileLayout({
   // VTID-02950 round 2: gate the Posts/About/Media/Groups tab system off of
   // which ID-card segment is active, so it disappears under Business.
   const [searchParams] = useSearchParams();
-  const isBusinessTab = getActiveCardSide(searchParams) === "business";
+  const activeCardSide = getActiveCardSide(searchParams);
+  const isBusinessTab = activeCardSide === "business";
   const [activeDesktopSide, setActiveDesktopSide] = useState<DesktopCardSide>("identity");
   const isDesktopBusinessTab = activeDesktopSide === "business";
 
@@ -214,6 +215,10 @@ export function ProfileLayout({
             setQrInitialMode("invite");
             setShowQRScreen(true);
           } : undefined}
+          onShowQr={!isOwner ? () => {
+            setQrInitialMode("profile");
+            setShowQRScreen(true);
+          } : undefined}
           onFollow={!isOwner ? handleFollowClick : undefined}
           onMessage={!isOwner ? handleMessageClick : undefined}
           isFollowing={isFollowing}
@@ -228,10 +233,13 @@ export function ProfileLayout({
             above. */}
         {!isBusinessTab && (
         <>
-        <MobileProfileStats
-          userId={profileUserId}
-          profileId={profile.id}
-        />
+        {/* On Identity the stats sit inside the Vitana Index card (VTID-04470). */}
+        {activeCardSide !== "front" && (
+          <MobileProfileStats
+            userId={profileUserId}
+            profileId={profile.id}
+          />
+        )}
 
         {/* Sticky Tab Bar for content below ID card */}
         <MobileProfileTabs

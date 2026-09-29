@@ -1,0 +1,237 @@
+{
+  "supportTickets": {
+    "title": "تذاكري",
+    "subtitle": "كل ما أبلغتنا به – مع رقم التذكرة وحالتها الحالية.",
+    "loading": "جارٍ تحميل التذاكر …",
+    "loadError": "تعذّر تحميل تذاكرك.",
+    "retry": "حاول مرة أخرى",
+    "empty": "لا توجد تذاكر بعد.",
+    "emptyHint": "بمجرد أن تُبلغ عن شيء – صوتيًا أو كتابيًا – سيظهر هنا مع رقم تذكرة.",
+    "kind": {
+      "feedback": "ملاحظات عامة",
+      "bug": "خطأ أو تعطّل",
+      "ux_issue": "مربك أو صعب الاستخدام",
+      "support_question": "كيف أقوم بـ …؟",
+      "account_issue": "مشكلة في الحساب",
+      "marketplace_claim": "طلب أو دفع",
+      "feature_request": "طلب ميزة",
+      "other": "أخرى"
+    },
+    "kindHint": {
+      "feedback": "أفكار، آراء، أي شيء آخر",
+      "bug": "شيء لا يعمل",
+      "ux_issue": "ملاحظات حول الاستخدام",
+      "support_question": "سؤال عن استخدام Vitana",
+      "account_issue": "تسجيل الدخول، الملف الشخصي، البيانات",
+      "marketplace_claim": "استرداد الأموال، السوق",
+      "feature_request": "شيء تتمنى وجوده"
+    },
+    "status": {
+      "received": "تم الاستلام",
+      "under_review": "قيد المراجعة",
+      "in_progress": "قيد الإصلاح",
+      "fixed": "تم الحل",
+      "wont_fix": "لن يتم تنفيذه",
+      "duplicate": "مكرر"
+    },
+    "timelineLabel": "مراحل المعالجة",
+    "reportedOn": "أُبلغ عنه في {date}",
+    "viaVoice": "صوتيًا",
+    "handledBy": "يتولاها {name}",
+    "ourAnswer": "ردّنا",
+    "confirmed": "أكّدتَه أنت",
+    "didItWorkNamed": "يقول {name} إن هذا تم حله. هل نجح الأمر؟",
+    "didItWork": "نعتقد أن هذا تم حله. هل نجح الأمر؟",
+    "yesFixed": "نعم، تم الحل",
+    "noStillBroken": "لا، ما زالت المشكلة قائمة",
+    "showMore": "عرض المزيد ({count})",
+    "severity": {
+      "low": "منخفضة",
+      "medium": "متوسطة",
+      "high": "عالية",
+      "critical": "حرجة"
+    },
+    "submittedTitle": "شكرًا – تم إنشاء تذكرتك",
+    "submittedNumber": "رقم تذكرتك: {number}",
+    "submittedBody": "يمكنك متابعة حالتها في أي وقت ضمن «تذاكري». سنتواصل معك فور وجود جديد.",
+    "viewTicket": "عرض التذكرة",
+    "sendAnother": "إرسال رسالة أخرى",
+    "orbUnavailable": "Vitana غير متاحة حاليًا. يُرجى المحاولة مرة أخرى بعد قليل.",
+    "talk": {
+      "seoDescription": "أبلغ عن الأخطاء أو اطرح الأسئلة أو شارك ملاحظاتك. ستتابع Vitana وزملاؤها معك.",
+      "headerDescription": "أخطاء، أسئلة، ملاحظات – تحيل Vitana الموضوع إلى زميل متخصص عندما يكون خارج نطاقها.",
+      "send": "إرسال إلى Vitana",
+      "sending": "جارٍ الإرسال …"
+    },
+    "support": {
+      "seoTitle": "دعم العملاء",
+      "seoDescription": "مساعدة في حسابك: افتح تذكرة، أبلغ صوتيًا وتابع حالة تذاكرك.",
+      "headerTitle": "دعم العملاء",
+      "headerDescription": "أخبرنا بما تحتاج المساعدة فيه – صوتيًا أو كتابيًا. كل طلب يحصل على رقم تذكرة.",
+      "tabContact": "تواصل معنا",
+      "tabTickets": "تذاكري",
+      "tabFaqs": "الأسئلة الشائعة",
+      "tabCommunity": "المجتمع",
+      "contactTitle": "اكتب لنا",
+      "contactSubtitle": "صف باختصار ما حدث وما كنت تتوقعه.",
+      "messageLabel": "رسالتك",
+      "messagePlaceholder": "ماذا حدث؟ ماذا جرّبت حتى الآن؟",
+      "submit": "إرسال التذكرة",
+      "sending": "جارٍ الإرسال …",
+      "voiceTitle": "تفضّل التحدث؟",
+      "voiceBody": "فقط أخبر Vitana بما يحدث. ستنشئ التذكرة لك وتخبرك برقمها.",
+      "voiceButton": "الإبلاغ صوتيًا",
+      "emailTitle": "البريد الإلكتروني",
+      "emailBody": "يمكنك أيضًا مراسلتنا مباشرة."
+    },
+    "diary": {
+      "title": "بلاغاتي"
+    },
+    "admin": {
+      "copyVtid": "نسخ VTID",
+      "kind": {
+        "bug": "خطأ برمجي",
+        "ux_issue": "مشكلة في تجربة الاستخدام",
+        "support_question": "سؤال دعم",
+        "marketplace_claim": "مطالبة في السوق",
+        "account_issue": "مشكلة في الحساب",
+        "feedback": "ملاحظات (بدون مسودة)",
+        "feature_request": "طلب ميزة"
+      },
+      "kindDesc": {
+        "bug": "عيب في الكود — يمر عبر مواصفات Devon → Dev Autopilot",
+        "ux_issue": "عيب بصري / تفاعلي — يمر عبر Devon → Dev Autopilot",
+        "support_question": "المستخدم يريد معلومات — يصوغ Sage مسودة الإجابة",
+        "marketplace_claim": "استرداد / نزاع — يصوغ Atlas مسودة الحل",
+        "account_issue": "تسجيل الدخول / الدور / البيانات — تصوغ Mira مسودة الحل",
+        "feedback": "رأي / إضافة لطيفة — مباشرة إلى قيد التنفيذ",
+        "feature_request": "قدرة جديدة — مباشرة إلى قيد التنفيذ"
+      },
+      "status": {
+        "new": "مُرسَل",
+        "interviewing": "قيد المقابلة",
+        "triaged": "مُصنَّف",
+        "spec_pending": "المواصفات قيد الانتظار",
+        "spec_ready": "المواصفات جاهزة",
+        "answer_pending": "الإجابة قيد الانتظار",
+        "answer_ready": "الإجابة جاهزة",
+        "approved": "موافَق عليه",
+        "in_progress": "قيد التنفيذ",
+        "resolved": "تم الحل",
+        "user_confirmed": "مؤكَّد",
+        "duplicate": "مكرر",
+        "rejected": "مرفوض",
+        "wont_fix": "لن يُصلَح",
+        "needs_more_info": "يحتاج إلى معلومات",
+        "reopened": "أُعيد فتحه"
+      },
+      "stage": {
+        "cooling": "في قائمة الانتظار",
+        "running": "البرمجة",
+        "ci": "CI",
+        "merging": "الدمج",
+        "deploying": "النشر",
+        "verifying": "التحقق",
+        "completed": "مكتمل",
+        "_pending_review": {
+          "ci": true
+        }
+      },
+      "failedAt": {
+        "cooling": "قبل أن يتمكن من البدء",
+        "running": "أثناء كتابة الكود",
+        "ci": "في CI (الاختبارات / فحص الأنواع)",
+        "merging": "أثناء الدمج",
+        "deploying": "أثناء النشر",
+        "verifying": "أثناء التحقق بعد النشر",
+        "plan_gen": "أثناء إنشاء الخطة",
+        "approve_safety": "عند بوابة الأمان",
+        "other": "في مرحلة {stage}"
+      },
+      "run": {
+        "failed": "فشل التشغيل",
+        "failedWhere": "فشل التشغيل {where}",
+        "completed": "مكتمل — تم النشر في الإنتاج",
+        "running": "قيد التشغيل في Dev Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "إنشاء المواصفات (Devon)",
+        "sage": "إنشاء الإجابة (Sage)",
+        "atlas": "إنشاء الحل (Atlas)",
+        "mira": "إنشاء الحل (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "مواصفات",
+        "draft_answer_md": "مسودة إجابة",
+        "resolution_md": "حل",
+        "none": "عنصر عمل"
+      },
+      "placeholder": {
+        "devon": "مثال: الخطأ الحقيقي في منطق إعادة اتصال SSE؛ يرى المستخدم العَرَض لكن السبب الجذري في orb-live.ts. عدّل جزء إعادة الاتصال فقط. أضف اختبار وحدة لحالة العبارة الواحدة.",
+        "sage": "مثال: يجب أن تذكر الإجابة مسار الاشتراك الجديد في النسخة التجريبية في /settings، وليس المفتاح القديم.",
+        "atlas": "مثال: هذه المطالبة على حافة الاحتيال — ابدأ بفحص الأهلية وأوقف أي استرداد حتى يراجعه المشغّل.",
+        "mira": "مثال: تحقّق من البريد الإلكتروني للمستخدم أولًا؛ تلف الدور غالبًا سببه مطالبة OAuth قديمة، وليس مشكلة في DB.",
+        "default": "توجيهاتك لعنصر العمل."
+      },
+      "action": {
+        "generate": "إنشاء",
+        "regenerate": "إعادة الإنشاء",
+        "regenerateWith": "إعادة الإنشاء باستخدام {name}",
+        "drafting": "جارٍ الصياغة…",
+        "activate": "تفعيل",
+        "activating": "جارٍ التفعيل…",
+        "retryAutopilot": "إعادة محاولة الطيار الآلي",
+        "activateNeedsDraft": "أنشئ مسودة أولًا.",
+        "activateHint": "انقل التذكرة إلى المرحلة التالية.",
+        "rollback": "تراجع",
+        "rollingBack": "جارٍ التراجع…",
+        "rollbackConfirm": "هل تريد التراجع عن {pr} وإعادة فتح {ticket}؟\n\nسيتم إنشاء PR للتراجع ودمجه تلقائيًا. سيؤدي هذا إلى نشر التراجع في الإنتاج.",
+        "working": "جارٍ العمل — يُرجى الانتظار",
+        "close": "إغلاق",
+        "rejectPrompt": "سبب رفض {ticket}؟ (اختياري)"
+      },
+      "toast": {
+        "reclassifiedTitle": "تمت إعادة تصنيف {ticket}",
+        "reclassifiedDesc": "النوع الآن {kind}. أنشئ المسودة الجديدة عندما تكون جاهزًا.",
+        "draftedTitle": "صاغ {name} مسودة {ticket}",
+        "draftedDesc": "الحالة الآن: {status}. راجع المسودة أدناه، ثم اضغط تفعيل للمتابعة.",
+        "draftedDescFallback": "الحالة الآن: {status}. لم يكن الذكاء الاصطناعي متاحًا، لذا يُعرض محتوى مؤقت. راجعه أدناه، ثم اضغط تفعيل للمتابعة.",
+        "activatedTitle": "تم تفعيل {ticket}",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. يشغّل Dev Autopilot التنفيذ {execution} — بشكل مستقل من الآن.",
+        "rolledBackTitle": "تم التراجع عن {ticket}",
+        "rolledBackDesc": "PR التراجع #{number}. أُعيد فتح التذكرة.",
+        "rolledBackDescNoNumber": "تم إنشاء PR للتراجع. أُعيد فتح التذكرة.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
+      },
+      "error": {
+        "alreadyDispatched": "هذه التذكرة قيد التشغيل بالفعل في Dev Autopilot. إعادة التصنيف مقفلة بعد الإرسال.",
+        "draftRequired": "أنشئ مسودة أولًا — اكتب تعليماتك واضغط إنشاء.",
+        "alreadyInProgress": "هذه التذكرة قيد التشغيل بالفعل. سيغلقها الطيار الآلي عند الانتهاء."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "هل تريد الموافقة على جميع التذاكر القابلة للمعالجة وعددها {count} من {customer}؟",
+      "approveAll": "الموافقة على الكل ({count})",
+      "approving": "جارٍ الموافقة…",
+      "batchDoneTitle": "اكتمل الإجراء الجماعي لـ {customer}",
+      "batchApproved": "تمت الموافقة على {count}",
+      "batchSent": "تم إرسال {count} إجابة",
+      "batchSkipped": "تم تخطي {count}",
+      "batchNothing": "لا يوجد ما يلزم معالجته.",
+      "avatarAlt": "الصورة الرمزية لـ {name}",
+      "specialistEnabled": "تم تفعيل {name}",
+      "specialistDisabled": "تم تعطيل {name}",
+      "specialistEnabledDesc": "يمكن لـ Vitana الآن توجيه الطلبات المؤهلة إلى هذا المختص.",
+      "specialistDisabledDesc": "لن توجّه Vitana الطلبات إلى هذا المختص.",
+      "on": "تشغيل",
+      "off": "إيقاف",
+      "toggleOn": "تشغيل {name}",
+      "toggleOff": "إيقاف {name}",
+      "seoDescription": "تذاكر ملاحظات المستأجر وفريق المختصين بالذكاء الاصطناعي",
+      "pageDescription": "تذاكر أرسلها أعضاؤك إلى Vitana. يتولاها مختصون بالذكاء الاصطناعي — ويوافق عليها البشر قبل تطبيق أي إجراء."
+    }
+  }
+}

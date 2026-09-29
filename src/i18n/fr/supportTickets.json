@@ -1,0 +1,246 @@
+{
+  "supportTickets": {
+    "title": "Mes tickets",
+    "subtitle": "Tout ce que tu nous as signalé – avec numéro de ticket et état actuel.",
+    "loading": "Chargement des tickets …",
+    "loadError": "Impossible de charger tes tickets.",
+    "retry": "Réessayer",
+    "empty": "Pas encore de tickets.",
+    "emptyHint": "Dès que tu signales quelque chose – à la voix ou par écrit – cela apparaît ici avec un numéro de ticket.",
+    "kind": {
+      "feedback": "Avis général",
+      "bug": "Bug ou plantage",
+      "ux_issue": "Confus ou difficile à utiliser",
+      "support_question": "Comment faire …?",
+      "account_issue": "Problème de compte",
+      "marketplace_claim": "Commande ou paiement",
+      "feature_request": "Demande de fonctionnalité",
+      "other": "Autre"
+    },
+    "kindHint": {
+      "feedback": "Idées, réflexions, tout le reste",
+      "bug": "Quelque chose ne marche pas",
+      "ux_issue": "Retour sur l'utilisation",
+      "support_question": "Question sur l'utilisation de Vitana",
+      "account_issue": "Connexion, profil, données",
+      "marketplace_claim": "Remboursements, marketplace",
+      "feature_request": "Quelque chose que tu aimerais avoir"
+    },
+    "status": {
+      "received": "Reçu",
+      "under_review": "En cours d'examen",
+      "in_progress": "En correction",
+      "fixed": "Résolu",
+      "wont_fix": "Ne sera pas fait",
+      "duplicate": "Doublon"
+    },
+    "timelineLabel": "Avancement",
+    "reportedOn": "Signalé le {date}",
+    "viaVoice": "à la voix",
+    "handledBy": "Traité par {name}",
+    "ourAnswer": "Notre réponse",
+    "confirmed": "Confirmé par toi",
+    "didItWorkNamed": "{name} dit que c'est résolu. Est-ce que ça marche ?",
+    "didItWork": "Nous pensons que c'est résolu. Est-ce que ça marche ?",
+    "yesFixed": "Oui, résolu",
+    "noStillBroken": "Non, toujours cassé",
+    "showMore": "Afficher plus ({count})",
+    "severity": {
+      "low": "Faible",
+      "medium": "Moyenne",
+      "high": "Élevée",
+      "critical": "Critique"
+    },
+    "submittedTitle": "Merci – ton ticket est créé",
+    "submittedNumber": "Ton numéro de ticket : {number}",
+    "submittedBody": "Tu peux suivre son état à tout moment dans « Mes tickets ». Nous revenons vers toi dès qu'il y a du nouveau.",
+    "viewTicket": "Voir le ticket",
+    "sendAnother": "Envoyer un autre message",
+    "orbUnavailable": "Vitana n'est pas joignable pour le moment. Réessaie dans un instant.",
+    "talk": {
+      "seoDescription": "Signale des bugs, pose des questions ou partage ton avis. Vitana et ses collègues te répondront.",
+      "headerDescription": "Bugs, questions, avis – Vitana transmet à un collègue spécialiste quand le sujet sort de son domaine.",
+      "send": "Envoyer à Vitana",
+      "sending": "Envoi …"
+    },
+    "support": {
+      "seoTitle": "Service client",
+      "seoDescription": "Aide pour ton compte : ouvre un ticket, signale à la voix et suis l'état de tes tickets.",
+      "headerTitle": "Service client",
+      "headerDescription": "Dis-nous pour quoi tu as besoin d'aide – à la voix ou par écrit. Chaque demande reçoit un numéro de ticket.",
+      "tabContact": "Contact",
+      "tabTickets": "Mes tickets",
+      "tabFaqs": "FAQ",
+      "tabCommunity": "Communauté",
+      "contactTitle": "Écris-nous",
+      "contactSubtitle": "Décris brièvement ce qui s'est passé et ce que tu attendais.",
+      "messageLabel": "Ton message",
+      "messagePlaceholder": "Que s'est-il passé ? Qu'as-tu déjà essayé ?",
+      "submit": "Envoyer le ticket",
+      "sending": "Envoi …",
+      "voiceTitle": "Tu préfères parler ?",
+      "voiceBody": "Dis simplement à Vitana ce qui se passe. Elle crée le ticket pour toi et te donne le numéro de ticket.",
+      "voiceButton": "Signaler à la voix",
+      "emailTitle": "E-mail",
+      "emailBody": "Tu peux aussi nous écrire directement.",
+      "_pending_review": {
+        "tabContact": true
+      }
+    },
+    "diary": {
+      "title": "Mes signalements"
+    },
+    "admin": {
+      "copyVtid": "Copier le VTID",
+      "kind": {
+        "bug": "Bug",
+        "ux_issue": "Problème d'UX",
+        "support_question": "Question d'assistance",
+        "marketplace_claim": "Réclamation marketplace",
+        "account_issue": "Problème de compte",
+        "feedback": "Retour (sans brouillon)",
+        "feature_request": "Demande de fonctionnalité",
+        "_pending_review": {
+          "bug": true
+        }
+      },
+      "kindDesc": {
+        "bug": "Défaut de code — passe par la spec de Devon → Dev Autopilot",
+        "ux_issue": "Défaut visuel / d'interaction — passe par Devon → Dev Autopilot",
+        "support_question": "L'utilisateur veut une information — Sage rédige la réponse",
+        "marketplace_claim": "Remboursement / litige — Atlas rédige la résolution",
+        "account_issue": "Connexion / rôle / données — Mira rédige la résolution",
+        "feedback": "Avis / souhaitable — directement en cours",
+        "feature_request": "Nouvelle fonctionnalité — directement en cours"
+      },
+      "status": {
+        "new": "Soumis",
+        "interviewing": "Entretien en cours",
+        "triaged": "Trié",
+        "spec_pending": "Spec en attente",
+        "spec_ready": "Spec prête",
+        "answer_pending": "Réponse en attente",
+        "answer_ready": "Réponse prête",
+        "approved": "Approuvé",
+        "in_progress": "En cours",
+        "resolved": "Résolu",
+        "user_confirmed": "Confirmé",
+        "duplicate": "Doublon",
+        "rejected": "Rejeté",
+        "wont_fix": "Ne sera pas corrigé",
+        "needs_more_info": "Infos requises",
+        "reopened": "Rouvert"
+      },
+      "stage": {
+        "cooling": "En file d'attente",
+        "running": "Codage",
+        "ci": "CI",
+        "merging": "Fusion",
+        "deploying": "Déploiement",
+        "verifying": "Vérification",
+        "completed": "Terminé",
+        "_pending_review": {
+          "ci": true
+        }
+      },
+      "failedAt": {
+        "cooling": "avant de pouvoir démarrer",
+        "running": "pendant l'écriture du code",
+        "ci": "en CI (tests / vérification des types)",
+        "merging": "pendant la fusion",
+        "deploying": "pendant le déploiement",
+        "verifying": "pendant la vérification après déploiement",
+        "plan_gen": "pendant la génération du plan",
+        "approve_safety": "au contrôle de sécurité",
+        "other": "à l'étape {stage}"
+      },
+      "run": {
+        "failed": "L'exécution a échoué",
+        "failedWhere": "L'exécution a échoué {where}",
+        "completed": "Terminé — déployé en production",
+        "running": "En cours dans Dev Autopilot — {stage}"
+      },
+      "generate": {
+        "devon": "Générer la spec (Devon)",
+        "sage": "Générer la réponse (Sage)",
+        "atlas": "Générer la résolution (Atlas)",
+        "mira": "Générer la résolution (Mira)"
+      },
+      "draftNoun": {
+        "spec_md": "spec",
+        "draft_answer_md": "brouillon de réponse",
+        "resolution_md": "résolution",
+        "none": "tâche",
+        "_pending_review": {
+          "spec_md": true
+        }
+      },
+      "placeholder": {
+        "devon": "ex. Le vrai bug est dans la logique de reconnexion SSE ; l'utilisateur voit le symptôme, mais la cause se trouve dans orb-live.ts. Ne touche qu'à la partie reconnexion. Ajoute un test unitaire pour le cas d'un seul énoncé.",
+        "sage": "ex. La réponse doit mentionner le nouveau parcours d'inscription à la bêta sur /settings, pas l'ancien interrupteur.",
+        "atlas": "ex. Cette réclamation frôle la fraude — commence par une vérification d'éligibilité et bloque tout remboursement en attendant l'examen d'un opérateur.",
+        "mira": "ex. Vérifie d'abord l'e-mail de l'utilisateur ; le rôle corrompu vient probablement d'un claim OAuth obsolète, pas d'un problème de DB.",
+        "default": "Tes consignes pour la tâche."
+      },
+      "action": {
+        "generate": "Générer",
+        "regenerate": "Régénérer",
+        "regenerateWith": "Régénérer avec {name}",
+        "drafting": "Rédaction…",
+        "activate": "Activer",
+        "activating": "Activation…",
+        "retryAutopilot": "Relancer l'autopilot",
+        "activateNeedsDraft": "Génère d'abord un brouillon.",
+        "activateHint": "Fais passer le ticket à l'étape suivante.",
+        "rollback": "Revenir en arrière",
+        "rollingBack": "Retour en arrière…",
+        "rollbackConfirm": "Annuler {pr} et rouvrir {ticket} ?\n\nUne PR de revert sera créée et fusionnée automatiquement. Cela déploie un retour en arrière en production.",
+        "working": "En cours — merci de patienter",
+        "close": "Fermer",
+        "rejectPrompt": "Motif du rejet de {ticket} ? (facultatif)"
+      },
+      "toast": {
+        "reclassifiedTitle": "{ticket} reclassé",
+        "reclassifiedDesc": "Le type est maintenant {kind}. Génère le nouveau brouillon quand tu es prêt.",
+        "draftedTitle": "{ticket} rédigé par {name}",
+        "draftedDesc": "Statut : {status}. Vérifie le brouillon ci-dessous, puis clique sur Activer pour avancer.",
+        "draftedDescFallback": "Statut : {status}. L'IA n'était pas disponible, un contenu provisoire est donc affiché. Vérifie-le ci-dessous, puis clique sur Activer pour avancer.",
+        "activatedTitle": "{ticket} activé",
+        "activatedDesc": "{from} → {to}.",
+        "activatedDescDispatched": "{from} → {to}. Dev Autopilot traite l'exécution {execution} — en autonomie à partir d'ici.",
+        "rolledBackTitle": "Retour en arrière effectué pour {ticket}",
+        "rolledBackDesc": "PR de revert #{number}. Le ticket a été rouvert.",
+        "rolledBackDescNoNumber": "PR de revert créée. Le ticket a été rouvert.",
+        "_pending_review": {
+          "activatedDesc": true
+        }
+      },
+      "error": {
+        "alreadyDispatched": "Ce ticket est déjà en cours dans Dev Autopilot. La reclassification est verrouillée une fois lancé.",
+        "draftRequired": "Génère d'abord un brouillon — écris tes instructions et clique sur Générer.",
+        "alreadyInProgress": "Ce ticket est déjà en cours. L'autopilot le fermera une fois terminé."
+      }
+    },
+    "adminList": {
+      "approveAllConfirm": "Approuver les {count} tickets traitables de {customer} ?",
+      "approveAll": "Tout approuver ({count})",
+      "approving": "Approbation…",
+      "batchDoneTitle": "Action groupée terminée pour {customer}",
+      "batchApproved": "{count} approuvés",
+      "batchSent": "{count} réponses envoyées",
+      "batchSkipped": "{count} ignorés",
+      "batchNothing": "Rien à traiter.",
+      "avatarAlt": "Avatar de {name}",
+      "specialistEnabled": "{name} activé",
+      "specialistDisabled": "{name} désactivé",
+      "specialistEnabledDesc": "Vitana peut désormais transmettre les demandes éligibles à ce spécialiste.",
+      "specialistDisabledDesc": "Vitana ne transmettra plus de demandes à ce spécialiste.",
+      "on": "Activé",
+      "off": "Désactivé",
+      "toggleOn": "Activer {name}",
+      "toggleOff": "Désactiver {name}",
+      "seoDescription": "Tickets de retour du locataire et équipe de spécialistes IA",
+      "pageDescription": "Tickets envoyés à Vitana par tes membres. Des spécialistes IA les traitent — des humains valident avant que la moindre action ne s'applique."
+    }
+  }
+}

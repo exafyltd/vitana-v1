@@ -17,6 +17,23 @@ export interface CategoryPreference {
   description: string | null;
   icon: string | null;
   enabled: boolean;
+  /** VTID-04676: account/security category — always on, members cannot switch it off. */
+  locked?: boolean;
+  /** The notification types in this category that the admin has switched on. */
+  types?: string[];
+}
+
+/** VTID-04676: a notification the caller's role (admin/developer/staff) receives. */
+export interface RoleNotification {
+  type: string;
+  label: { en: string; de: string };
+  description: { en: string; de: string };
+}
+
+interface CategoryPreferencesResponse {
+  grouped: CategoryPreferencesGrouped;
+  role: string | null;
+  roleNotifications: RoleNotification[];
 }
 
 export interface CategoryPreferencesGrouped {
@@ -40,7 +57,7 @@ export function useNotificationCategoryPreferences() {
 
   const query = useQuery({
     queryKey: ["user-category-preferences", user?.id, localeBase],
-    queryFn: async (): Promise<CategoryPreferencesGrouped> => {
+    queryFn: async (): Promise<CategoryPreferencesResponse> => {
       const jwt = await getJwt();
       if (!jwt) throw new Error("Not authenticated");
 
@@ -53,7 +70,11 @@ export function useNotificationCategoryPreferences() {
         throw new Error(err.error || "Failed to fetch category preferences");
       }
       const json = await res.json();
-      return json.data as CategoryPreferencesGrouped;
+      return {
+        grouped: json.data as CategoryPreferencesGrouped,
+        role: json.role ?? null,
+        roleNotifications: (json.role_notifications ?? []) as RoleNotification[],
+      };
     },
     enabled: !!user,
   });
@@ -88,16 +109,16 @@ export function useNotificationCategoryPreferences() {
       // would silently miss the cached entry and skip the optimistic update.
       const queryKey = ["user-category-preferences", user?.id, localeBase];
       await qc.cancelQueries({ queryKey: ["user-category-preferences"] });
-      const previous = qc.getQueryData<CategoryPreferencesGrouped>(queryKey);
+      const previous = qc.getQueryData<CategoryPreferencesResponse>(queryKey);
 
       if (previous) {
-        const updated = { ...previous };
+        const grouped = { ...previous.grouped };
         for (const type of ["chat", "calendar", "community"] as const) {
-          updated[type] = updated[type].map((cat) =>
+          grouped[type] = (grouped[type] || []).map((cat) =>
             cat.id === categoryId ? { ...cat, enabled } : cat
           );
         }
-        qc.setQueryData(queryKey, updated);
+        qc.setQueryData(queryKey, { ...previous, grouped });
       }
 
       return { previous, queryKey };
@@ -113,7 +134,9 @@ export function useNotificationCategoryPreferences() {
   });
 
   return {
-    categories: query.data,
+    categories: query.data?.grouped,
+    role: query.data?.role ?? null,
+    roleNotifications: query.data?.roleNotifications ?? [],
     loading: query.isLoading,
     toggleCategory: (categoryId: string, enabled: boolean) =>
       toggleMutation.mutateAsync({ categoryId, enabled }),

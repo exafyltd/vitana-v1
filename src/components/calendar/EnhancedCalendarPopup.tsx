@@ -23,8 +23,6 @@ import {
   Heart,
   Dumbbell,
   Coffee,
-  CheckCircle2,
-  RefreshCw,
   Edit,
   Trash2,
   MessageCircle,
@@ -39,7 +37,6 @@ import { NaturalLanguageInput } from "./NaturalLanguageInput";
 import { CalendarListSkeleton } from "./CalendarSkeleton";
 import { CalendarFilters } from "./CalendarFilters";
 import { WeekGridView } from "./WeekGridView";
-import { AutopilotCalendarSuggestions, AutopilotSuggestion } from "./AutopilotCalendarSuggestions";
 import { BookedVitanaEventsSection } from "./BookedVitanaEventsSection";
 import { MobileCalendarModal } from "./MobileCalendarModal";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -159,24 +156,12 @@ export function EnhancedCalendarPopup({
   
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
   const [activeTab, setActiveTab] = useState<'today' | 'week' | 'month'>(initialView);
-  const [syncStatus, setSyncStatus] = useState<'synced' | 'needs-sync'>('synced');
   const [detailsPanelEvent, setDetailsPanelEvent] = useState<CalendarEvent | null>(null);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedMonthDay, setSelectedMonthDay] = useState<Date>(new Date());
-  const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
   const [activeFilters, setActiveFilters] = useState<CalendarEvent['event_type'][]>([]);
-  const [autopilotSuggestions, setAutopilotSuggestions] = useState<AutopilotSuggestion[]>([
-    {
-      id: '1',
-      type: 'focus-block',
-      title: translate('calendar.autopilot.recommendFocus', 'Recommend focus block'),
-      description: translate('calendar.autopilot.focusBlockDesc', 'You have a 90-minute window available. Perfect for deep work.'),
-      suggestedTime: 'Tomorrow 9:00 AM - 10:30 AM',
-    }
-  ]);
-  
   const todayEvents = getEventsForDate(new Date()).sort((a, b) => 
     new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
   );
@@ -237,22 +222,6 @@ export function EnhancedCalendarPopup({
     }
   };
 
-  const handleSyncExternal = () => {
-    setSyncStatus('needs-sync');
-    toast({
-      title: translate('calendar.toasts.syncingTitle', 'Syncing...'),
-      description: translate('calendar.toasts.syncingDesc', 'Syncing with external calendars'),
-    });
-    setTimeout(() => {
-      setSyncStatus('synced');
-      setLastSyncTime(new Date());
-      toast({
-        title: translate('calendar.toasts.syncedTitle', 'Synced'),
-        description: translate('calendar.toasts.syncedDesc', 'Calendar is up to date'),
-      });
-    }, 1500);
-  };
-
   const handleNavigateWeek = (direction: 'prev' | 'next') => {
     const days = direction === 'next' ? 7 : -7;
     setCurrentWeek(new Date(currentWeek.getTime() + days * 24 * 60 * 60 * 1000));
@@ -283,42 +252,6 @@ export function EnhancedCalendarPopup({
     });
   };
 
-  const handleAcceptSuggestion = (id: string) => {
-    setAutopilotSuggestions(prev =>
-      prev.map(s => s.id === id ? { ...s, accepted: true } : s)
-    );
-    toast({
-      title: translate('calendar.autopilot.suggestionAccepted', 'Suggestion accepted'),
-      description: translate('calendar.autopilot.calendarUpdated', 'Autopilot has updated your calendar'),
-    });
-  };
-
-  const handleDismissSuggestion = (id: string) => {
-    setAutopilotSuggestions(prev => prev.filter(s => s.id !== id));
-  };
-
-  const handleUndoSuggestion = (id: string) => {
-    setAutopilotSuggestions(prev =>
-      prev.map(s => s.id === id ? { ...s, accepted: false } : s)
-    );
-    toast({
-      title: translate('calendar.autopilot.suggestionUndone', 'Suggestion undone'),
-      description: translate('calendar.autopilot.changesReverted', 'Changes have been reverted'),
-    });
-  };
-
-  const handleSnoozeSuggestion = (id: string, until: 'later-today' | 'tomorrow') => {
-    setAutopilotSuggestions(prev =>
-      prev.map(s => s.id === id ? { ...s, snoozed: true, snoozeUntil: until } : s)
-    );
-    toast({
-      title: translate('calendar.autopilot.suggestionSnoozed', 'Suggestion snoozed'),
-      description: until === 'later-today' 
-        ? translate('calendar.autopilot.reminderLaterToday', 'Reminder set for later today')
-        : translate('calendar.autopilot.reminderTomorrow', 'Reminder set for tomorrow'),
-    });
-  };
-
   const filteredEvents = activeFilters.length === 0 
     ? events 
     : events.filter(event => activeFilters.includes(event.event_type));
@@ -327,13 +260,6 @@ export function EnhancedCalendarPopup({
     const start = new Date(startTime);
     const end = endTime ? new Date(endTime) : addMinutes(start, 60);
     return `${formatDate(start, 'HH:mm')}–${formatDate(end, 'HH:mm')}`;
-  };
-
-  const getTimeSinceSync = () => {
-    const diff = Math.floor((now.getTime() - lastSyncTime.getTime()) / 1000);
-    if (diff < 60) return translate('calendar.justNow', 'just now');
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    return `${Math.floor(diff / 3600)}h ago`;
   };
 
   useEffect(() => {
@@ -418,25 +344,6 @@ export function EnhancedCalendarPopup({
                 >
                   <Plus className="h-4 w-4" />
                   {translate('calendar.addEvent', 'Add Event')}
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={handleSyncExternal}
-                  className="gap-2 h-9"
-                >
-                  {syncStatus === 'synced' ? (
-                    <>
-                      <CheckCircle2 className="h-4 w-4 text-pill-nutrition-accent" />
-                      <span className="text-xs">{translate('calendar.synced', 'Synced')}</span>
-                    </>
-                  ) : (
-                    <>
-                      <RefreshCw className="h-4 w-4 text-sys-autopilot-accent animate-spin" />
-                      <span className="text-xs">{translate('calendar.syncing', 'Syncing')}</span>
-                    </>
-                  )}
                 </Button>
               </div>
             </div>
@@ -532,15 +439,6 @@ export function EnhancedCalendarPopup({
                       <BookedVitanaEventsSection
                         events={events}
                         onEventClick={setDetailsPanelEvent}
-                      />
-
-                      {/* Autopilot Suggestions */}
-                      <AutopilotCalendarSuggestions
-                        suggestions={autopilotSuggestions}
-                        onAccept={handleAcceptSuggestion}
-                        onDismiss={handleDismissSuggestion}
-                        onUndo={handleUndoSuggestion}
-                        onSnooze={handleSnoozeSuggestion}
                       />
 
                       {/* Now Indicator */}
@@ -865,12 +763,7 @@ export function EnhancedCalendarPopup({
           </Tabs>
 
           {/* Sticky Footer */}
-          <div className="sticky bottom-0 z-10 bg-background border-t px-6 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <p className="text-xs text-muted-foreground" title={`${translate('calendar.lastSynced', 'Last synced')} ${formatDate(lastSyncTime, 'PPpp')}`}>
-                {translate('calendar.lastSynced', 'Last synced')} {getTimeSinceSync()}
-              </p>
-            </div>
+          <div className="sticky bottom-0 z-10 bg-background border-t px-6 py-3 flex items-center justify-end">
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
@@ -897,36 +790,6 @@ export function EnhancedCalendarPopup({
         onOpenChange={(open) => !open && setDetailsPanelEvent(null)}
         event={detailsPanelEvent}
         onDelete={handleDeleteEvent}
-        onJoin={(event) => {
-          toast({
-            title: translate('calendar.toasts.joiningEvent', 'Joining event'),
-            description: translate('calendar.toasts.openingVideoCall', 'Opening video call...'),
-          });
-        }}
-        onMessage={(event) => {
-          toast({
-            title: translate('calendar.toasts.messageAttendees', 'Message attendees'),
-            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
-          });
-        }}
-        onInvite={(event) => {
-          toast({
-            title: translate('calendar.toasts.inviteFollowers', 'Invite followers'),
-            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
-          });
-        }}
-        onReschedule={(event) => {
-          toast({
-            title: translate('calendar.toasts.rescheduleEvent', 'Reschedule event'),
-            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
-          });
-        }}
-        onShare={(event) => {
-          toast({
-            title: translate('calendar.toasts.shareToGroup', 'Share to group'),
-            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
-          });
-        }}
       />
     </>
   );
