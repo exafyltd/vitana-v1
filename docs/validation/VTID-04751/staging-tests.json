@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04751",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/commerce",
+      "expect_status": 200,
+      "reason": "the Commerce Portal whose header now carries Sign out still loads on staging" },
+    { "kind": "existing", "ref": "npx vitest run src/pages/CommercePortal.light-redesign.test.ts src/components/commerce/mobile-adaptation.test.ts", "cwd": ".",
+      "reason": "pins the Sign out button in the portal header for a signed-in visitor (signOut, then back to /commerce/join), and that the in-app and light-shell branches are unchanged; signing out is a session write, so it is not exercised on staging" }
+  ]
+}

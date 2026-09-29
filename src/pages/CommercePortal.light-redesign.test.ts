@@ -15,6 +15,16 @@ const read = (p: string) => readFileSync(resolve(process.cwd(), p), 'utf8');
 describe('CommerceShell is light, not dark, and easily revertible (VTID-04055)', () => {
   const src = read('src/components/commerce/CommerceShell.tsx');
 
+  it('VTID-04751: a signed-in visitor can sign out from the portal header (the standalone portal has no app menu)', () => {
+    const header = src.slice(src.indexOf('<header'), src.indexOf('</header>'));
+    expect(header).toContain('{user && (');
+    expect(header).toContain('onClick={onSignOut}');
+    expect(header).toContain("t('screens.commerceportal.signOut')");
+    const fn = src.slice(src.indexOf('const onSignOut'), src.indexOf('if (inApp)'));
+    expect(fn).toContain('await signOut();');
+    expect(fn).toContain("navigate('/commerce/join', { replace: true });");
+  });
+
   it('drops the dark wrapper and renders the portal branch in theme tokens', () => {
     expect(src).toContain('<div className="min-h-screen bg-background text-foreground">');
     expect(src).not.toContain('className="dark');

@@ -10682,7 +10682,8 @@
           "ships_to_required": "Gib mindestens ein Lieferland oder eine Lieferregion an.",
           "invalid_value": "Dieser Wert ist nicht gültig."
         }
-      }
+      },
+      "signOut": "Abmelden"
     },
     "oauthconsent": {
       "title": "Zugriff erlauben?",

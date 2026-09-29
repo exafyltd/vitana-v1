@@ -24,7 +24,9 @@
  * future dark-mode revert only has to change it in this one place.
  */
 import type { ReactNode } from 'react';
-import { ShoppingBag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { LogOut, ShoppingBag } from 'lucide-react';
+import { useAuth } from '@/context/AuthProvider';
 import AppLayout from '@/components/AppLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isCommerceHost } from '@/lib/commerce-host';
@@ -39,6 +41,16 @@ export function useCommerceSkin(): { inApp: boolean; portalClass: string } {
 
 export function CommerceShell({ children }: { children: ReactNode }) {
   const { inApp } = useCommerceSkin();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  // VTID-04751: the standalone portal (commerce.vitanaland.com / desktop) has
+  // no app menu, so its header carries the way out. Inside the phone app the
+  // app's own menu already has it. Back to the portal's sign-in afterwards.
+  const onSignOut = async () => {
+    await signOut();
+    navigate('/commerce/join', { replace: true });
+  };
 
   if (inApp) {
     return (
@@ -64,6 +76,16 @@ export function CommerceShell({ children }: { children: ReactNode }) {
           <span className="text-sm font-bold tracking-[0.2em] text-amber-700">VITANALAND</span>
           <span aria-hidden className="h-4 w-px bg-border" />
           <span className="truncate text-xs text-muted-foreground">{t('screens.commerceportal.portalEyebrow')}</span>
+          {user && (
+            <button
+              type="button"
+              onClick={onSignOut}
+              className="ms-auto inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-800"
+            >
+              <LogOut className="h-4 w-4 rtl:rotate-180" />
+              {t('screens.commerceportal.signOut')}
+            </button>
+          )}
         </div>
       </header>
 
