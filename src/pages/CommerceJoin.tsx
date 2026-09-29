@@ -29,8 +29,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { CONFIRMATION_PATHS, getEmailRedirectUrl } from '@/utils/redirectUrls';
 import { t } from '@/lib/i18n-toast';
 
-const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
+const fieldClass = 'border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-amber-500';
 
 /**
  * Neither signUp nor signInWithPassword carries a timeout of its own, so a
@@ -110,8 +109,8 @@ export default function CommerceJoin() {
 
   if (authLoading || user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <Loader2 className="h-6 w-6 animate-spin text-slate-600" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -119,7 +118,7 @@ export default function CommerceJoin() {
   const registering = mode === 'register';
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-background text-foreground">
       <SEO
         title={t('screens.commerceportal.join.seoTitle')}
         description={t('screens.commerceportal.join.seoDescription')}
@@ -127,7 +126,7 @@ export default function CommerceJoin() {
       />
 
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 inset-x-0 mx-auto h-[32rem] w-[32rem] rounded-full bg-amber-500/10 blur-[120px]" />
+        <div className="absolute -top-40 inset-x-0 mx-auto h-[32rem] w-[32rem] rounded-full bg-amber-100/40 blur-[120px]" />
       </div>
 
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-12">
@@ -135,10 +134,10 @@ export default function CommerceJoin() {
           {...(reduce ? {} : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.45, ease: 'easeOut' as const } })}
         >
           <div className="flex items-center gap-2.5">
-            <ShoppingBag className="h-5 w-5 shrink-0 text-amber-400" />
-            <span className="text-sm font-bold tracking-[0.2em] text-amber-400">VITANALAND</span>
-            <span aria-hidden className="h-4 w-px bg-amber-500/25" />
-            <span className="truncate text-xs text-slate-400">
+            <ShoppingBag className="h-5 w-5 shrink-0 text-amber-700" />
+            <span className="text-sm font-bold tracking-[0.2em] text-amber-700">VITANALAND</span>
+            <span aria-hidden className="h-4 w-px bg-amber-300" />
+            <span className="truncate text-xs text-muted-foreground">
               {t('screens.commerceportal.portalEyebrow')}
             </span>
           </div>
@@ -147,12 +146,12 @@ export default function CommerceJoin() {
             // Registration does not end at "submitted" — it ends at a
             // confirmed mailbox, so say so plainly instead of dropping them
             // on a screen that looks like nothing happened.
-            <div className="mt-8 rounded-3xl border border-amber-500/25 bg-slate-900/70 p-6 text-center">
-              <CheckCircle2 className="mx-auto h-8 w-8 text-amber-400" />
-              <h1 className="mt-3 text-xl font-semibold text-slate-50">
+            <div className="mt-8 rounded-3xl border border-amber-300 bg-card p-6 text-center">
+              <CheckCircle2 className="mx-auto h-8 w-8 text-amber-600" />
+              <h1 className="mt-3 text-xl font-semibold text-foreground">
                 {t('screens.commerceportal.join.checkInboxTitle')}
               </h1>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {t('screens.commerceportal.join.checkInboxBody', { email: sentTo })}
               </p>
               <Button
@@ -161,17 +160,17 @@ export default function CommerceJoin() {
                   setSentTo('');
                   setMode('signin');
                 }}
-                className="mt-4 text-amber-400 hover:bg-transparent hover:text-amber-300"
+                className="mt-4 text-amber-700 hover:bg-transparent hover:text-amber-800"
               >
                 {t('screens.commerceportal.join.alreadyConfirmed')}
               </Button>
             </div>
           ) : (
             <>
-              <h1 className="mt-8 text-3xl font-semibold leading-tight text-slate-50">
+              <h1 className="mt-8 text-3xl font-semibold leading-tight text-foreground">
                 {t('screens.commerceportal.heroTitle')}
               </h1>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {registering
                   ? t('screens.commerceportal.join.registerLead')
                   : t('screens.commerceportal.join.signinLead')}
@@ -179,14 +178,14 @@ export default function CommerceJoin() {
 
               <form onSubmit={submit} className="mt-6 space-y-3">
                 {error && (
-                  <Alert variant="destructive" className="border-red-900 bg-red-950/50 text-red-200">
+                  <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
 
                 {registering && (
                   <div className="space-y-1.5">
-                    <Label htmlFor="cj-name" className="text-slate-300">
+                    <Label htmlFor="cj-name" className="text-foreground">
                       {t('screens.commerceportal.join.yourName')}
                     </Label>
                     <Input
@@ -202,7 +201,7 @@ export default function CommerceJoin() {
                 )}
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="cj-email" className="text-slate-300">
+                  <Label htmlFor="cj-email" className="text-foreground">
                     {t('screens.portals.email')}
                   </Label>
                   <Input
@@ -219,7 +218,7 @@ export default function CommerceJoin() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="cj-password" className="text-slate-300">
+                  <Label htmlFor="cj-password" className="text-foreground">
                     {t('screens.portals.password')}
                   </Label>
                   <div className="relative">
@@ -238,7 +237,7 @@ export default function CommerceJoin() {
                       tabIndex={-1}
                       onClick={() => setShowPassword((v) => !v)}
                       aria-label={t('screens.commerceportal.join.togglePassword')}
-                      className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-500 transition-colors hover:text-slate-300"
+                      className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -248,7 +247,7 @@ export default function CommerceJoin() {
                 <Button
                   type="submit"
                   disabled={busy}
-                  className="h-11 w-full rounded-xl bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                  className="h-11 w-full rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
                 >
                   {busy && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
                   {registering
@@ -263,7 +262,7 @@ export default function CommerceJoin() {
                   setMode(registering ? 'signin' : 'register');
                   setError('');
                 }}
-                className="mt-4 w-full text-center text-sm text-slate-400 underline-offset-4 transition-colors hover:text-amber-300 hover:underline"
+                className="mt-4 w-full text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-amber-700 hover:underline"
               >
                 {registering
                   ? t('screens.commerceportal.join.haveAccount')
@@ -272,11 +271,11 @@ export default function CommerceJoin() {
             </>
           )}
 
-          <p className="mt-8 text-center text-xs text-slate-600">
+          <p className="mt-8 text-center text-xs text-muted-foreground">
             {t('screens.commerceportal.footNote')}
           </p>
           <p className="mt-2 text-center text-xs">
-            <Link to="/commerce-login" className="text-slate-600 underline-offset-4 hover:text-slate-400 hover:underline">
+            <Link to="/commerce-login" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
               {t('screens.commerceportal.join.otherSignin')}
             </Link>
           </p>

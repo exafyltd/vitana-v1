@@ -59,7 +59,7 @@ export function CommerceShell({ children }: { children: ReactNode }) {
       </div>
 
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl items-center gap-2.5 px-4 py-3.5">
+        <div className="mx-auto flex w-full max-w-7xl items-center gap-2.5 px-4 py-3.5">
           <ShoppingBag className="h-5 w-5 shrink-0 text-amber-700" />
           <span className="text-sm font-bold tracking-[0.2em] text-amber-700">VITANALAND</span>
           <span aria-hidden className="h-4 w-px bg-border" />
@@ -67,7 +67,7 @@ export function CommerceShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-20">{children}</main>
+      <main className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-20">{children}</main>
     </div>
   );
 }
