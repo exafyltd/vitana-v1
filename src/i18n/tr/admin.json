@@ -19,15 +19,20 @@
       "rejected": "Reddedildi",
       "flagged": "İşaretlendi",
       "podcastManagement": "Podcast Yönetimi",
-      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle"
+      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle",
+      "_pending_review": {}
     },
     "notifications": {
       "tabs": {
         "notifications": "Bildirimler",
         "categories": "Kategoriler",
         "activity": "Etkinlik",
-        "compose": "Gönder"
-      }
-    }
-  }
+        "compose": "Gönder",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
