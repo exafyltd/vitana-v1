@@ -25,14 +25,12 @@
       "tabs": {
         "_pending_review": {
           "notifications": true,
-          "categories": true,
-          "activity": true,
-          "compose": true
+          "categories": true
         },
         "notifications": "Notifications",
         "categories": "Categories",
-        "activity": "Activity",
-        "compose": "Send"
+        "activity": "Actividad",
+        "compose": "Enviar"
       }
     }
   }
