@@ -36,12 +36,10 @@
       "phase": "llm"
     },
     "home.dailyMatches": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation 'تطابقات يومية' is awkward and not idiomatic; 'تطابقات' is a literal translation of 'matches' but in this context 'matches' refers to suggested matches, better translated as 'مقترحات يومية' or 'مطابقات يومية'.",
-      "suggested": "مقترحات يومية",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:40:00.196Z"
+  "generatedAt": "2026-09-29T10:02:28.842Z"
 }
