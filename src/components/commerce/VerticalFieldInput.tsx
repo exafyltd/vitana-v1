@@ -15,7 +15,7 @@ import type { VerticalField, VocabularyOptions } from '@/hooks/useCommerceVertic
 import { t } from '@/lib/i18n-toast';
 
 const fieldClass =
-  'border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500';
+  'focus-visible:ring-amber-600';
 
 export type AttributeValue = string | number | boolean | string[] | undefined;
 
@@ -34,17 +34,17 @@ export function VerticalFieldInput({
   const choices = field.vocabulary ? options[field.vocabulary] ?? [] : [];
 
   const label = (
-    <Label htmlFor={id} className="text-slate-300">
+    <Label htmlFor={id} className="text-foreground">
       {field.display_label}
-      {field.unit && <span className="ms-1 text-xs text-slate-500">({field.unit})</span>}
+      {field.unit && <span className="ms-1 text-xs text-muted-foreground">({field.unit})</span>}
     </Label>
   );
 
-  const help = field.help_text ? <p className="text-xs text-slate-500">{field.help_text}</p> : null;
+  const help = field.help_text ? <p className="text-xs text-muted-foreground">{field.help_text}</p> : null;
 
   if (field.data_type === 'boolean') {
     return (
-      <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-800 px-3 py-2.5">
+      <div className="flex items-center justify-between gap-3 rounded-xl border border-border px-3 py-2.5">
         <div className="min-w-0">
           {label}
           {help}
@@ -93,8 +93,8 @@ export function VerticalFieldInput({
                 onClick={() => toggle(o.value)}
                 className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                   on
-                    ? 'border-amber-400/50 bg-amber-400/15 text-amber-200'
-                    : 'border-slate-700 text-slate-400 hover:border-slate-600'
+                    ? 'border-amber-600 bg-amber-50 text-amber-900 dark:bg-amber-950/30 dark:text-amber-200'
+                    : 'border-border text-muted-foreground hover:border-foreground/30'
                 }`}
               >
                 {o.label}

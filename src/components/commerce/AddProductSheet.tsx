@@ -18,6 +18,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useCommerceVerticals, type Vertical } from '@/hooks/useCommerceVerticals';
 import { ProductForm } from './ProductForm';
 import { t } from '@/lib/i18n-toast';
+import { useCommerceSkin } from './CommerceShell';
 
 /**
  * The three regions `merchants` actually stores a delivery time for. Kept as a
@@ -66,6 +67,8 @@ export function AddProductSheet({
   onSaved: () => void | Promise<void>;
 }) {
   const { user } = useAuth();
+  // Sheets portal outside CommerceShell, so they take the portal skin here.
+  const { portalClass } = useCommerceSkin();
   const { verticals, options, failed, reload } = useCommerceVerticals();
   const [picked, setPicked] = useState<Vertical | null>(null);
   // A supplier has ONE business. If they already created it we reuse its name
@@ -106,16 +109,16 @@ export function AddProductSheet({
     <Sheet open={open} onOpenChange={(o) => (o ? onOpenChange(true) : close())}>
       <SheetContent
         side="right"
-        className="w-full overflow-y-auto border-slate-800 bg-slate-950 text-slate-100 sm:max-w-xl"
+        className={`w-full overflow-y-auto sm:max-w-xl ${portalClass}`}
       >
         <SheetHeader className="text-start">
-          <SheetTitle className="text-slate-100">
+          <SheetTitle>
             {picked
               ? t('screens.commerceportal.productForm.titleFor', { vertical: picked.display_label })
               : t('screens.commerceportal.productForm.pickTitle')}
           </SheetTitle>
           {!picked && (
-            <p className="text-sm text-slate-400">{t('screens.commerceportal.productForm.pickSubtitle')}</p>
+            <p className="text-sm text-muted-foreground">{t('screens.commerceportal.productForm.pickSubtitle')}</p>
           )}
         </SheetHeader>
 
@@ -124,12 +127,12 @@ export function AddProductSheet({
             // Without the vertical schema the form has no questions to ask, so
             // offer a retry rather than an empty form that silently discards
             // whatever the supplier types.
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 text-center">
-              <p className="text-sm text-slate-300">{t('screens.commerceportal.productForm.loadFailed')}</p>
+            <div className="rounded-2xl border border-border bg-card p-6 text-center">
+              <p className="text-sm text-foreground">{t('screens.commerceportal.productForm.loadFailed')}</p>
               <Button
                 variant="outline"
                 onClick={() => void reload()}
-                className="mt-3 border-slate-700 bg-transparent text-slate-200 hover:bg-slate-800"
+                className="mt-3"
               >
                 <RefreshCw className="me-2 h-4 w-4" />
                 {t('screens.commerceportal.productForm.retry')}
@@ -137,7 +140,7 @@ export function AddProductSheet({
             </div>
           ) : verticals === null ? (
             <div className="flex justify-center py-16">
-              <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
           ) : picked ? (
             <ProductForm
@@ -158,16 +161,16 @@ export function AddProductSheet({
             <div className="space-y-4">
               {knownMerchant === null && (
                 <div className="space-y-1.5">
-                  <Label htmlFor="pf-business" className="text-slate-300">
+                  <Label htmlFor="pf-business" className="text-foreground">
                     {t('screens.commerceportal.productForm.businessName')}
                   </Label>
                   <Input
                     id="pf-business"
-                    className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500"
+                    className="focus-visible:ring-amber-600"
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                   />
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-muted-foreground">
                     {t('screens.commerceportal.productForm.businessNameHint')}
                   </p>
 
@@ -177,26 +180,26 @@ export function AddProductSheet({
                       is shown as unavailable rather than hidden or, worse,
                       offered. */}
                   <div className="space-y-1.5 pt-2">
-                    <Label className="text-slate-300">
+                    <Label className="text-foreground">
                       {t('screens.commerceportal.productForm.salesModel')}
                     </Label>
                     <div className="grid gap-2">
-                      <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2.5">
-                        <p className="text-sm font-medium text-amber-200">
+                      <div className="rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/30 px-3 py-2.5">
+                        <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
                           {t('screens.commerceportal.productForm.salesModelReferral')}
                         </p>
-                        <p className="mt-0.5 text-xs text-slate-400">
+                        <p className="mt-0.5 text-xs text-muted-foreground">
                           {t('screens.commerceportal.productForm.salesModelReferralHint')}
                         </p>
                       </div>
-                      <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-2.5 opacity-60">
-                        <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-300">
+                      <div className="rounded-xl border border-border bg-muted/40 px-3 py-2.5 opacity-60">
+                        <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-foreground">
                           {t('screens.commerceportal.productForm.salesModelDirect')}
-                          <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-400">
+                          <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
                             {t('screens.commerceportal.productForm.salesModelSoon')}
                           </span>
                         </p>
-                        <p className="mt-0.5 text-xs text-slate-500">
+                        <p className="mt-0.5 text-xs text-muted-foreground">
                           {t('screens.commerceportal.productForm.salesModelDirectHint')}
                         </p>
                       </div>
@@ -204,11 +207,11 @@ export function AddProductSheet({
                   </div>
 
                   <div className="space-y-1.5 pt-2">
-                    <Label htmlFor="pf-network" className="text-slate-300">
+                    <Label htmlFor="pf-network" className="text-foreground">
                       {t('screens.commerceportal.productForm.network')}
                     </Label>
                     <Select value={network} onValueChange={(v) => setNetwork(v as typeof network)}>
-                      <SelectTrigger id="pf-network" className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500">
+                      <SelectTrigger id="pf-network" className="focus-visible:ring-amber-600">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -219,7 +222,7 @@ export function AddProductSheet({
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground">
                       {network === 'other'
                         ? t('screens.commerceportal.productForm.networkOtherHint')
                         : t('screens.commerceportal.productForm.networkHint')}
@@ -228,17 +231,17 @@ export function AddProductSheet({
 
                   {network !== 'other' && (
                     <div className="space-y-1.5">
-                      <Label htmlFor="pf-advertiser" className="text-slate-300">
+                      <Label htmlFor="pf-advertiser" className="text-foreground">
                         {t('screens.commerceportal.productForm.advertiserId')}
                       </Label>
                       <Input
                         id="pf-advertiser"
                         dir="ltr"
-                        className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500"
+                        className="focus-visible:ring-amber-600"
                         value={advertiserId}
                         onChange={(e) => setAdvertiserId(e.target.value)}
                       />
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-muted-foreground">
                         {t('screens.commerceportal.productForm.advertiserIdHint')}
                       </p>
                     </div>
@@ -251,7 +254,7 @@ export function AddProductSheet({
                       within Europe leaves the other two empty, which is what
                       every merchant row holds today. */}
                   <div className="space-y-1.5 pt-2">
-                    <Label className="text-slate-300">
+                    <Label className="text-foreground">
                       {t('screens.commerceportal.productForm.deliveryHeading')}
                     </Label>
                     <div className="grid gap-2 sm:grid-cols-3">
@@ -259,7 +262,7 @@ export function AddProductSheet({
                         <div key={key} className="space-y-1">
                           <Label
                             htmlFor={`pf-delivery-${key}`}
-                            className="text-xs font-normal text-slate-400"
+                            className="text-xs font-normal text-muted-foreground"
                           >
                             {t(`screens.commerceportal.productForm.${labelKey}`)}
                           </Label>
@@ -270,20 +273,20 @@ export function AddProductSheet({
                               min={0}
                               max={120}
                               inputMode="numeric"
-                              className="border-slate-700 bg-slate-950/70 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500"
+                              className="focus-visible:ring-amber-600"
                               value={delivery[key]}
                               onChange={(e) =>
                                 setDelivery((d) => ({ ...d, [key]: e.target.value }))
                               }
                             />
-                            <span className="shrink-0 text-xs text-slate-500">
+                            <span className="shrink-0 text-xs text-muted-foreground">
                               {t('screens.commerceportal.productForm.deliveryDaysUnit')}
                             </span>
                           </div>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground">
                       {t('screens.commerceportal.productForm.deliveryHint')}
                     </p>
                   </div>
@@ -300,11 +303,11 @@ export function AddProductSheet({
                       (network !== 'other' && advertiserId.trim().length === 0)
                     }
                     onClick={() => setPicked(v)}
-                    className="h-full w-full rounded-2xl border border-slate-800 bg-slate-900/50 p-4 text-start transition-colors hover:border-amber-500/40 hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="h-full w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-600/50 hover:bg-amber-50/60 dark:hover:bg-amber-950/20 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    <p className="font-medium text-slate-100">{v.display_label}</p>
+                    <p className="font-medium text-foreground">{v.display_label}</p>
                     {v.description && (
-                      <p className="mt-1 text-xs leading-relaxed text-slate-500">{v.description}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{v.description}</p>
                     )}
                   </button>
                 </li>

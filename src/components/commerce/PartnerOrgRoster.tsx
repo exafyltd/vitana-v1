@@ -193,7 +193,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
                 </SelectContent>
               </Select>
               <Button
-                className="w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400 md:w-auto"
+                className="w-full bg-amber-700 font-semibold text-white hover:bg-amber-800 md:w-auto"
                 disabled={createInvite.isPending || !email.trim()}
                 onClick={() => void invite()}
               >

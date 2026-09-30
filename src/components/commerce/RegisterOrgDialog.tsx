@@ -208,7 +208,7 @@ export function RegisterOrgDialog({
           {step < TOTAL_STEPS - 1 ? (
             <Button
               type="button"
-              className="flex-1 bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+              className="flex-1 bg-amber-700 font-semibold text-white hover:bg-amber-800"
               onClick={() => setStep((s) => s + 1)}
               disabled={!stepValid}
             >
@@ -217,7 +217,7 @@ export function RegisterOrgDialog({
           ) : (
             <Button
               type="button"
-              className="flex-1 bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+              className="flex-1 bg-amber-700 font-semibold text-white hover:bg-amber-800"
               onClick={() => void create()}
               disabled={creating}
             >
