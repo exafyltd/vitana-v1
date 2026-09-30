@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "drawerNav.findPartner": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation '找匹配' is awkward; more natural to say '寻找匹配' or '找到匹配'.",
-      "suggested": "寻找匹配",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "drawerNav.live": {
@@ -64,9 +62,9 @@
     },
     "drawerNav.connectors": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'Connectors' likely refers to connections or contacts; '联系' is too generic and may be ambiguous.",
-      "suggested": "连接",
+      "confidence": 1,
+      "issue": "Meaning is too vague; '联系' means 'contact' or 'to connect', not 'connected apps'.",
+      "suggested": "关联应用",
       "phase": "llm"
     },
     "drawerNav.inbox": {
@@ -88,7 +86,42 @@
       "verdict": "OK",
       "confidence": 0.95,
       "phase": "llm"
+    },
+    "drawerNav.patientResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.healthOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.commerce": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.businessOverview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.businessTeam": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.businessOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.businessInbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-24T08:39:13.360Z"
+  "generatedAt": "2026-09-30T09:53:05.077Z"
 }
