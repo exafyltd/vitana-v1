@@ -1,0 +1,640 @@
+{
+  "verdicts": {
+    "notificationControls.pages.notifications.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.notifications.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.categories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.categories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.activity.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.activity.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.compose.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.loadError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.summaryOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.summaryNew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.summaryRule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.summaryRuleText": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.statsErrorBanner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.statsUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.statsLine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.lastSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.filterAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.filterOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.filterOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.filterNew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.noMatch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.orb": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.scheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.matches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.meetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.live_rooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.journey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.recommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.account": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.other": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.readiness.ready": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.readiness.notLocalized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.readiness.unverified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.newType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.inCategory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.noCategory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.cannotEnableEnglish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.history": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.historyEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.historyError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.switchedOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.switchedOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.system": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.automationsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOnTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOffTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOnBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOnBodyNoCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOffBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.reasonLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.reasonPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.on": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.off": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.toastOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.toastOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.toastFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categoryGroups.chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categoryGroups.calendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categoryGroups.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.loadError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.locked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.optIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.shownToMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.hiddenFromMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.sendTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.edit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.removeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.removeBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.previewTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.previewHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.addTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.editTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.defaultOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.defaultOnHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.memberCanDisable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.memberCanDisableHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.types": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.lastDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.byType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.byDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.type": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.day": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.total": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.sent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.pushed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.blockedAdmin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.blockedMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.pushHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.alwaysOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.quietHoursHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleTitle.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleTitle.developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleTitle.staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.statsNone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-09-30T09:54:36.251Z"
+}
