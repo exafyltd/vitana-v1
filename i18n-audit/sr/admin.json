@@ -94,7 +94,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "admin.notifications.tabs.notifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "admin.notifications.tabs.categories": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "admin.notifications.tabs.activity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "admin.notifications.tabs.compose": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-05-20T07:00:26.062Z"
+  "generatedAt": "2026-09-30T09:52:14.188Z"
 }
