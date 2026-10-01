@@ -480,8 +480,14 @@ export default function AutopilotDashboard() {
             )}
           </div>
           {!isGuided && keepCheckingIn}
-          {isGuided && <div className="mt-4">{guidedHowItWorks}</div>}
-          {guidedCatalog}
+          {/* VTID-04760: the Audiobook is reachable on desktop too. Guided Mode
+              (and its chrome) stays mobile-only, so isGuided is always false
+              here; the episodes are added below the normal desktop grid
+              instead, leaving the Full-App layout above unchanged. */}
+          <section className="mt-6 space-y-4" data-testid="desktop-audiobook">
+            <JourneyHowItWorks />
+            <GuidedJourneyCatalog className="pt-1" />
+          </section>
         </div>
       </div>
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
