@@ -76,16 +76,14 @@ export function AddProductSheet({
   const close = () => onOpenChange(false);
 
   const chooseKind = (k: OfferKind) => {
-    if (k === 'product') {
-      setKind(k);
-      setPicked(null);
-      return;
-    }
-    const services = verticals?.find((v) => v.key === SERVICE_VERTICAL);
-    if (!services) return;
     setKind(k);
-    setPicked(services);
+    setPicked(null);
   };
+
+  // A service or experience is filed under the services vertical; it resolves
+  // as soon as the verticals have loaded (the kind choice never waits on them).
+  const vertical =
+    kind && kind !== 'product' ? verticals?.find((v) => v.key === SERVICE_VERTICAL) ?? null : picked;
 
   const back = () => {
     if (picked && kind === 'product') setPicked(null);
@@ -95,8 +93,8 @@ export function AddProductSheet({
     }
   };
 
-  const title = picked
-    ? t(`screens.commerceportal.addOffer.titleFor_${kind}`, { vertical: picked.display_label })
+  const title = vertical
+    ? t(`screens.commerceportal.addOffer.titleFor_${kind}`, { vertical: vertical.display_label })
     : kind === 'product'
       ? t('screens.commerceportal.productForm.pickTitle')
       : t('screens.commerceportal.addOffer.title');
@@ -155,54 +153,7 @@ export function AddProductSheet({
                 {t('screens.commerceportal.orgOnboarding.registerCta')}
               </Button>
             </div>
-          ) : failed ? (
-            // Without the vertical schema the form has no questions to ask, so
-            // offer a retry rather than an empty form that silently discards
-            // whatever the supplier types.
-            <div className="rounded-2xl border border-border bg-card p-6 text-center">
-              <p className="text-sm text-foreground">{t('screens.commerceportal.productForm.loadFailed')}</p>
-              <Button variant="outline" onClick={() => void reload()} className="mt-3">
-                <RefreshCw className="me-2 h-4 w-4" />
-                {t('screens.commerceportal.productForm.retry')}
-              </Button>
-            </div>
-          ) : verticals === null ? (
-            <div className="flex justify-center py-16">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
-          ) : picked && kind ? (
-            <ProductForm
-              vertical={picked}
-              kind={kind}
-              options={options}
-              userId={user?.id ?? ''}
-              org={org}
-              onSaved={async () => {
-                await onSaved();
-                close();
-              }}
-              onCancel={back}
-            />
-          ) : kind === 'product' ? (
-            <ul className="grid gap-2 sm:grid-cols-2">
-              {verticals
-                .filter((v) => v.key !== SERVICE_VERTICAL)
-                .map((v) => (
-                  <li key={v.key}>
-                    <button
-                      type="button"
-                      onClick={() => setPicked(v)}
-                      className="h-full min-h-14 w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-600/50 hover:bg-amber-50/60 dark:hover:bg-amber-950/20"
-                    >
-                      <p className="font-medium text-foreground">{v.display_label}</p>
-                      {v.description && (
-                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{v.description}</p>
-                      )}
-                    </button>
-                  </li>
-                ))}
-            </ul>
-          ) : (
+          ) : !kind ? (
             <div className="space-y-2">
               {KINDS.map(({ kind: k, title: kt, body, Icon }) => (
                 <button
@@ -233,6 +184,53 @@ export function AddProductSheet({
                 </button>
               )}
             </div>
+          ) : failed ? (
+            // Without the vertical schema the form has no questions to ask, so
+            // offer a retry rather than an empty form that silently discards
+            // whatever the supplier types.
+            <div className="rounded-2xl border border-border bg-card p-6 text-center">
+              <p className="text-sm text-foreground">{t('screens.commerceportal.productForm.loadFailed')}</p>
+              <Button variant="outline" onClick={() => void reload()} className="mt-3">
+                <RefreshCw className="me-2 h-4 w-4" />
+                {t('screens.commerceportal.productForm.retry')}
+              </Button>
+            </div>
+          ) : verticals === null ? (
+            <div className="flex justify-center py-16">
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            </div>
+          ) : vertical ? (
+            <ProductForm
+              vertical={vertical}
+              kind={kind}
+              options={options}
+              userId={user?.id ?? ''}
+              org={org}
+              onSaved={async () => {
+                await onSaved();
+                close();
+              }}
+              onCancel={back}
+            />
+          ) : (
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {verticals
+                .filter((v) => v.key !== SERVICE_VERTICAL)
+                .map((v) => (
+                  <li key={v.key}>
+                    <button
+                      type="button"
+                      onClick={() => setPicked(v)}
+                      className="h-full min-h-14 w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-600/50 hover:bg-amber-50/60 dark:hover:bg-amber-950/20"
+                    >
+                      <p className="font-medium text-foreground">{v.display_label}</p>
+                      {v.description && (
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{v.description}</p>
+                      )}
+                    </button>
+                  </li>
+                ))}
+            </ul>
           )}
         </div>
       </SheetContent>
