@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04781",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "ORB widget init declares surface + view_role on both init paths",
+      "ref": "npx vitest run src/hooks/useOrbVoiceWidget.vtid-04781-reinit-view-profile.test.ts src/lib/orb-view-profile.test.ts",
+      "cwd": ".",
+      "reason": "The auth-change re-init now spreads orbViewProfile(route, role) like the main init; the gateway's orb.session.profile.resolved for a session started right after login reports resolution=declared instead of route. Proven in CI (static source + unit); staging is read-only and starting a voice session there is a production write."
+    }
+  ]
+}

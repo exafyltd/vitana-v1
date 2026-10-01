@@ -1,0 +1,13 @@
+{
+  "id": "vitana-index-next-steps",
+  "added": "2026-10-01",
+  "title": {
+    "en": "Your Vitana Index, with your next steps",
+    "de": "Dein Vitana Index – mit deinen nächsten Schritten"
+  },
+  "description": {
+    "en": "Tap \"Understand index\" on your profile: see where you stand, which pillar is your biggest lever, and what to do next — upload your blood test or connect Apple Health and Samsung Health.",
+    "de": "Tippe auf deinem Profil auf „Index verstehen“: Sieh, wo du stehst, welche Säule dein größter Hebel ist und was du als Nächstes tun kannst – Blutbild hochladen oder Apple Health und Samsung Health verbinden."
+  },
+  "deepLink": "/health/vitana-index"
+}
