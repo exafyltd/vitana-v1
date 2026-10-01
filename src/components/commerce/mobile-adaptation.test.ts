@@ -19,10 +19,19 @@ describe('RegisterOrgDialog on mobile (VTID-03989)', () => {
     expect(src).not.toContain("from '@/components/ui/dialog'");
   });
 
-  it('proposes org_key from the business name until the owner edits the key by hand', () => {
-    expect(src).toContain('slugifyOrgKey(display_name)');
-    expect(src).toContain('keyTouched ? f.org_key : slugifyOrgKey(display_name)');
-    expect(src).toContain('setKeyTouched(true)');
+  it('never asks for a short name: org_key is derived from the business name, clashes retried (VTID-04793)', () => {
+    expect(src).not.toContain('orgOnboarding.orgKey');
+    expect(src).toContain('registerBusiness(');
+    const helper = read('src/lib/commerce-register.ts');
+    expect(helper).toContain('slugifyOrgKey(displayName)');
+    expect(helper).toContain('/already taken/i.test(err.message)');
+  });
+
+  it('is a full-screen sheet on phones, two steps then a success screen (VTID-04793)', () => {
+    expect(src).toContain('<ResponsiveDialogContent fullscreenOnMobile');
+    expect(src).toContain('const TOTAL_STEPS = 2;');
+    expect(src).toContain("t('screens.commerceportal.orgOnboarding.successTitle')");
+    expect(src).not.toContain('wizardStep3Title');
   });
 });
 

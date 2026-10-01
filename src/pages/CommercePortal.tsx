@@ -62,10 +62,11 @@ import { RegisterOrgDialog } from '@/components/commerce/RegisterOrgDialog';
 import { CatalogueImportSheet } from '@/components/commerce/CatalogueImportSheet';
 import { MyOrgCard, type MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { PartnerOrgRoster } from '@/components/commerce/PartnerOrgRoster';
+import { SetupHub } from '@/components/commerce/SetupHub';
 import { adminFetch } from '@/lib/admin-api';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
-import { businessHomeFor, setActiveOrgId } from '@/lib/business-mode';
+import { pickActiveOrg, readActiveOrgId, setActiveOrgId } from '@/lib/business-mode';
 
 // VTID-04791: the supplier's journey in their words — account, products,
 // verification — not the API-connection pipeline (mapping, sandbox, release),
@@ -80,6 +81,8 @@ const STEPS = [
 const CONNECTION_PARAM = 'connection';
 /** Same pattern, for the partner-org roster drawer (VTID-03936). */
 const ORG_PARAM = 'org';
+/** VTID-04793: the first-time registration sheet opens by itself once per visit. */
+const AUTO_REGISTER_KEY = 'vitana.commerce.autoRegisterShown';
 
 export default function CommercePortal() {
   // VTID follow-up: `/commerce` now allows guests (App.tsx's AuthGuard
@@ -98,6 +101,11 @@ export default function CommercePortal() {
   const [catalogueImportOpen, setCatalogueImportOpen] = useState(false);
   const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
   const adminOrgs = (myOrgs ?? []).filter((o) => o.role === 'org_admin');
+  // VTID-04793: which business the setup hub shows (same stored choice the
+  // business mode uses), and a bump to reload it after a product is added.
+  const [hubOrgId, setHubOrgId] = useState<string | null>(() => readActiveOrgId());
+  const [hubRefresh, setHubRefresh] = useState(0);
+  const hubOrg = pickActiveOrg(adminOrgs, hubOrgId);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const reduce = useReducedMotion();
@@ -132,17 +140,30 @@ export default function CommercePortal() {
   loadMyOrgsRef.current = loadMyOrgs;
 
   // VTID-03999: a freshly registered business becomes the active business
-  // mode and its admin lands on the team page, where invitations are sent.
-  const onOrgRegistered = useCallback(
-    async (org: MyOrgRow | null) => {
-      await loadMyOrgsRef.current();
-      if (org) {
-        setActiveOrgId(org.id);
-        navigate(businessHomeFor('org_admin'));
-      }
-    },
-    [navigate],
-  );
+  // mode. VTID-04793: its admin stays here — the dialog shows "You're
+  // registered" and "Continue setup" lands on the setup hub below, instead of
+  // dropping a brand-new supplier on the team page.
+  const onOrgRegistered = useCallback(async (org: MyOrgRow | null) => {
+    await loadMyOrgsRef.current();
+    if (org) {
+      setActiveOrgId(org.id);
+      setHubOrgId(org.id);
+    }
+  }, []);
+
+  // VTID-04793: a signed-in user with no business yet goes straight into
+  // registering one — decided from the server's own list, not a browser flag.
+  // Closing the sheet is respected for the rest of the visit.
+  useEffect(() => {
+    if (!user || myOrgs === null || myOrgs.length > 0) return;
+    try {
+      if (sessionStorage.getItem(AUTO_REGISTER_KEY)) return;
+      sessionStorage.setItem(AUTO_REGISTER_KEY, '1');
+    } catch {
+      /* storage unavailable: still open it once for this render */
+    }
+    setRegisterOrgOpen(true);
+  }, [user, myOrgs]);
 
   useEffect(() => {
     // Guests have nothing to load — both endpoints require an account, and
@@ -451,6 +472,21 @@ export default function CommercePortal() {
         )}
       </motion.section>
 
+      {/* VTID-04793: GET READY TO SELL — the registered business's own
+          checklist, for its admins, above everything else. */}
+      {user && hubOrg && (
+        <SetupHub
+          orgs={adminOrgs}
+          activeOrgId={hubOrg.id}
+          onSelectOrg={(id) => {
+            setActiveOrgId(id);
+            setHubOrgId(id);
+          }}
+          onAddProducts={() => setAddProductOpen(true)}
+          refreshKey={hubRefresh}
+        />
+      )}
+
       {user && hasOrgs && orgsSection}
 
       {!user ? (
@@ -546,7 +582,14 @@ export default function CommercePortal() {
 
       <ManualConnectDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={load} />
 
-      <AddProductSheet open={addProductOpen} onOpenChange={setAddProductOpen} onSaved={load} />
+      <AddProductSheet
+        open={addProductOpen}
+        onOpenChange={setAddProductOpen}
+        onSaved={async () => {
+          await load();
+          setHubRefresh((n) => n + 1);
+        }}
+      />
 
       <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={onOrgRegistered} />
       <CatalogueImportSheet open={catalogueImportOpen} onOpenChange={setCatalogueImportOpen} adminOrgs={adminOrgs} />

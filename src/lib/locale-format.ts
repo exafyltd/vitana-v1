@@ -132,3 +132,16 @@ export function fmtNumber(
   if (n == null) return '';
   return n.toLocaleString(currentBcp47(), options);
 }
+
+/**
+ * VTID-04793: a country's name in the UI language ("DE" → "Deutschland" /
+ * "Germany"). Falls back to the code itself where the runtime has no region
+ * names, so a picker never shows an empty row.
+ */
+export function fmtRegion(code: string): string {
+  try {
+    return new Intl.DisplayNames([currentBcp47()], { type: 'region' }).of(code) ?? code;
+  } catch {
+    return code;
+  }
+}

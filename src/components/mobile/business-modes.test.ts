@@ -70,15 +70,20 @@ describe('business modes on mobile (VTID-03999)', () => {
     expect(shell).not.toContain('bg-slate-950');
   });
 
-  it('joining or registering a business lands in its business mode, on the role home', () => {
+  it('joining a business lands on its role home; registering one lands on its setup hub (VTID-04793)', () => {
     const accept = read('src/pages/CommerceAcceptInvite.tsx');
     expect(accept).toContain('if (orgId) setActiveOrgId(orgId);');
     expect(accept).toContain("navigate(orgId ? businessHomeFor(res?.role ?? 'staff') : '/commerce', { replace: true });");
     const portal = read('src/pages/CommercePortal.tsx');
     expect(portal).toContain('onCreated={onOrgRegistered}');
-    expect(portal).toContain("navigate(businessHomeFor('org_admin'));");
+    // Registering makes the new business the active one and stays on /commerce,
+    // where "Continue setup" reveals its "Get ready to sell" hub.
+    expect(portal).toContain('setActiveOrgId(org.id);');
+    expect(portal).toContain('setHubOrgId(org.id);');
+    expect(portal).not.toContain("navigate(businessHomeFor('org_admin'));");
     const dialog = read('src/components/commerce/RegisterOrgDialog.tsx');
-    expect(dialog).toContain("await onCreated(org ? { ...org, role: 'org_admin' } : null);");
+    expect(dialog).toContain("res?.organization ? { ...res.organization, role: 'org_admin' } : null");
+    expect(dialog).toContain('await onCreated(org);');
   });
 
   it('the two business routes exist and are gated like every /commerce/* route (AuthGuard, no dbRole)', () => {
