@@ -44,7 +44,9 @@ describe('SetupHub reads, never invents', () => {
 describe('Commerce portal: first-time suppliers start registering right away', () => {
   const portal = readFileSync(resolve(__dirname, '../../pages/CommercePortal.tsx'), 'utf8');
   it('opens registration from the server list of businesses, once per visit', () => {
-    expect(portal).toContain('if (!user || myOrgs === null || myOrgs.length > 0) return;');
+    expect(portal).toContain('if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0) return;');
+    // A failed list load is not "no business": it never opens registration.
+    expect(portal).toContain('setMyOrgsFailed(true);');
     expect(portal).toContain('sessionStorage.setItem(AUTO_REGISTER_KEY');
     expect(portal).toContain('setRegisterOrgOpen(true);');
   });

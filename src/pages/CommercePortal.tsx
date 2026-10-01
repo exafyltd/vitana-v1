@@ -100,6 +100,8 @@ export default function CommercePortal() {
   // VTID-04745: CSV catalogue import, per organization the user administers.
   const [catalogueImportOpen, setCatalogueImportOpen] = useState(false);
   const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
+  // VTID-04793: a failed load must never read as "no business yet".
+  const [myOrgsFailed, setMyOrgsFailed] = useState(false);
   const adminOrgs = (myOrgs ?? []).filter((o) => o.role === 'org_admin');
   // VTID-04793: which business the setup hub shows (same stored choice the
   // business mode uses), and a bump to reload it after a product is added.
@@ -130,8 +132,10 @@ export default function CommercePortal() {
     try {
       const res = await adminFetch(`${PARTNER_ORGS_API}/mine`);
       setMyOrgs(res.organizations ?? []);
+      setMyOrgsFailed(false);
     } catch {
       setMyOrgs([]);
+      setMyOrgsFailed(true);
       notifyError('screens.commerceportal.orgOnboarding.orgsLoadFailed');
     }
   }, []);
@@ -155,7 +159,7 @@ export default function CommercePortal() {
   // registering one — decided from the server's own list, not a browser flag.
   // Closing the sheet is respected for the rest of the visit.
   useEffect(() => {
-    if (!user || myOrgs === null || myOrgs.length > 0) return;
+    if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0) return;
     try {
       if (sessionStorage.getItem(AUTO_REGISTER_KEY)) return;
       sessionStorage.setItem(AUTO_REGISTER_KEY, '1');
@@ -163,7 +167,7 @@ export default function CommercePortal() {
       /* storage unavailable: still open it once for this render */
     }
     setRegisterOrgOpen(true);
-  }, [user, myOrgs]);
+  }, [user, myOrgs, myOrgsFailed]);
 
   useEffect(() => {
     // Guests have nothing to load — both endpoints require an account, and
