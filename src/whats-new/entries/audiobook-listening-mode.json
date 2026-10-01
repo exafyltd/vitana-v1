@@ -1,0 +1,10 @@
+{
+  "id": "audiobook-listening-mode",
+  "added": "2026-10-01",
+  "title": { "en": "Your Longevity Audiobook", "de": "Dein Longevity-Hörbuch" },
+  "description": {
+    "en": "Press play once and Vitana explains, episode by episode, how Maxina helps you live healthier and longer. Just listen – even with your screen locked.",
+    "de": "Einmal auf Abspielen drücken und Vitana erklärt dir Folge für Folge, wie Maxina dir hilft, gesünder und länger zu leben. Einfach zuhören – auch bei gesperrtem Bildschirm."
+  },
+  "deepLink": "/autopilot"
+}

@@ -28,14 +28,26 @@ const LISTENED_SESSIONS_STORAGE_PREFIX = 'vitana.guidedJourney.listenedSessions.
  * day starts the countdown fresh at DAILY_SESSION_GOAL.
  */
 const DAILY_LISTENED_STORAGE_PREFIX = 'vitana.guidedJourney.dailyListened.v1';
-/** Sessions we encourage the user to complete each day. */
-export const DAILY_SESSION_GOAL = 5;
+/**
+ * Episodes we encourage each day. VTID-04763: one — the Audiobook is a gentle
+ * daily habit, not a quota (was 5 sessions/day).
+ */
+export const DAILY_SESSION_GOAL = 1;
 
 interface JourneyStateProgress {
   completedTopicIds: string[];
   completedListenedTopicIds: string[];
   completedSessionNumbers: number[];
   completedPracticeCount: number;
+  /** VTID-04763: episodes heard on the member's local day, synced across devices. */
+  dailyListen?: { date: string; sessions: number[] } | null;
+  /** VTID-04763: the member's daily Audiobook reminder, or null when off. */
+  audiobookReminder?: { time: string; tz: string } | null;
+}
+
+/** Today's key, exported so listen calls send the member's own calendar day. */
+export function todayLocalDayKey(): string {
+  return localDayKey();
 }
 
 export interface NextJourneySession {
@@ -167,6 +179,18 @@ function rememberDailyListen(session: number, userId?: string | null) {
   }
 }
 
+function parseDailyListen(value: unknown): { date: string; sessions: number[] } | null {
+  const v = value as { date?: unknown; sessions?: unknown } | null;
+  if (!v || typeof v.date !== 'string') return null;
+  return { date: v.date, sessions: numberArray(v.sessions) };
+}
+
+function parseReminder(value: unknown): { time: string; tz: string } | null {
+  const v = value as { time?: unknown; tz?: unknown } | null;
+  if (!v || typeof v.time !== 'string' || typeof v.tz !== 'string') return null;
+  return { time: v.time, tz: v.tz };
+}
+
 export function markSessionListenedInJourneyState(
   queryClient: QueryClient,
   session: number,
@@ -233,6 +257,8 @@ export async function fetchJourneyState(userId: string | null): Promise<JourneyS
         typeof rawState.completedPracticeCount === 'number'
           ? rawState.completedPracticeCount
           : 0,
+      dailyListen: parseDailyListen(rawState.dailyListen),
+      audiobookReminder: parseReminder(rawState.audiobookReminder),
     };
   }
   return {
@@ -307,7 +333,12 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
   // here in the body so it refreshes whenever the journey-state cache changes
   // (markSessionListenedInJourneyState updates that cache on every tap) and
   // resets on its own once the calendar day rolls over.
-  const completedToday = readDailyListenedSessions(userId).length;
+  // VTID-04763: the server keeps today's episodes per the member's own day,
+  // so a listen on the phone counts on the laptop too; the local record still
+  // covers the moment between a tap and the server's answer.
+  const serverToday =
+    state?.dailyListen && state.dailyListen.date === localDayKey() ? state.dailyListen.sessions : [];
+  const completedToday = uniqueNumbers([...serverToday, ...readDailyListenedSessions(userId)]).length;
   const dailyGoal = DAILY_SESSION_GOAL;
   const remainingToday = Math.max(0, dailyGoal - completedToday);
   const dailyGoalMet = completedToday >= dailyGoal;
