@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04769",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/commerce",
+      "expect_status": 200,
+      "reason": "the Commerce Portal whose product form and CSV import copy changed still loads on staging" },
+    { "kind": "existing", "ref": "npx vitest run src/components/commerce/go-live-copy.test.ts", "cwd": ".",
+      "reason": "pins the DE/EN copy to the go-live gate: products appear in Discover once the business is activated, no per-product review promised" }
+  ]
+}
