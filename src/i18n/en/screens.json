@@ -11971,7 +11971,8 @@
       "reminderOffOption": "Off",
       "reminderSaved": "Reminder every day at {time}",
       "reminderOff": "Daily reminder switched off",
-      "reminderError": "The reminder couldn't be saved."
+      "reminderError": "The reminder couldn't be saved.",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
