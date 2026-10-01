@@ -10559,7 +10559,7 @@
         "cancel": "Cancelar",
         "saved": "Producto guardado",
         "saveFailed": "No se pudo guardar el producto.",
-        "reviewNote": "Las comprobaciones de seguridad, consentimiento y certificación nunca se omiten. Tu producto aparece en Discover en cuanto tu empresa esté activada.",
+        "reviewNote": "Las comprobaciones de seguridad, consentimiento y certificación nunca se omiten. Tu producto aparece en el marketplace solo después de la aprobación.",
         "loadFailed": "No se pudieron cargar las categorías.",
         "retry": "Intenta de nuevo",
         "imageAdd": "Foto",
@@ -10587,7 +10587,10 @@
         "deliveryEu": "Europa",
         "deliveryUs": "Estados Unidos",
         "deliveryMena": "Oriente Medio y Norte de África",
-        "deliveryDaysUnit": "días"
+        "deliveryDaysUnit": "días",
+        "_pending_review": {
+          "reviewNote": true
+        }
       },
       "join": {
         "seoTitle": "Registra tu negocio con Vitanaland",
@@ -10799,9 +10802,9 @@
           "failed": true
         },
         "entryTitle": "Import products from a CSV file",
-        "entrySubtitle": "Añade muchos productos a la vez: aparecerán en Discover en cuanto tu empresa esté activada.",
+        "entrySubtitle": "Add many products at once — as drafts until they're reviewed.",
         "title": "Import products from a CSV file",
-        "subtitle": "Revisamos cada fila antes de guardar nada. Tus productos aparecerán en Discover en cuanto tu empresa esté activada.",
+        "subtitle": "We check every row before anything is saved. All products arrive as drafts and only go live after review.",
         "orgLabel": "For",
         "templateHint": "One row per product. Separate list values such as delivery countries with |, for example DE|AT|CH. The template shows every column.",
         "templateCta": "Download template",
@@ -10816,7 +10819,7 @@
         "colField": "Column",
         "colProblem": "Problem",
         "moreErrors": "… and {count} more",
-        "done": "{count} productos importados. Aparecerán en Discover en cuanto tu empresa esté activada; si ya lo está, ya son visibles.",
+        "done": "{count} products imported as drafts. They go live once they're reviewed.",
         "importAnother": "Import another file",
         "close": "Close",
         "locked": "This organization's catalogue can't be edited right now.",
