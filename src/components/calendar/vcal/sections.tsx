@@ -31,6 +31,7 @@ import { itemEmoji } from "./labels";
 import { SURFACE } from "./theme";
 import { sameDay, viewRange } from "./time";
 import type { SubscribeProvider } from "./SubscribeSheet";
+import { CalendarProviderLogo } from "./ProviderLogos";
 
 // ---------------------------------------------------------------- journey
 
@@ -303,11 +304,6 @@ const CAL_APP: Record<Provider, ConnectedAppId> = {
   outlook: "outlook-calendar",
 };
 const PROVIDERS: Provider[] = ["google", "apple", "outlook"];
-const PROVIDER_MARK: Record<Provider, { letter: string; bg: string; fg: string }> = {
-  google: { letter: "G", bg: "#E8F0FE", fg: "#1A56C8" },
-  apple: { letter: "A", bg: "#EFEFF2", fg: "#1D1D1F" },
-  outlook: { letter: "O", bg: "#E3F1FB", fg: "#0A5FA8" },
-};
 
 /** Opens Connected Apps with this calendar app, where its own connect flow starts. */
 export function connectLink(id: ConnectedAppId): string {
@@ -325,18 +321,7 @@ export function useCalendarApps(): { apps: ConnectedAppState[]; loading: boolean
   };
 }
 
-function ProviderMark({ p, size = 32 }: { p: Provider; size?: number }) {
-  const m = PROVIDER_MARK[p];
-  return (
-    <span
-      aria-hidden
-      className="flex shrink-0 items-center justify-center rounded-full font-medium"
-      style={{ background: m.bg, color: m.fg, width: size, height: size, fontSize: size * 0.45 }}
-    >
-      {m.letter}
-    </span>
-  );
-}
+const ProviderMark = CalendarProviderLogo;
 
 /**
  * VTID-04682: what tapping a calendar app does. Two-way sync through
@@ -377,7 +362,7 @@ export function ConnectCalendarCard({ onSubscribe }: { onSubscribe: (p: Provider
             style={{ border: `1px solid ${SURFACE.line}` }}
             data-testid={`vcal-connect-${p}`}
           >
-            <ProviderMark p={p} size={36} />
+            <ProviderMark p={p} size={44} />
             {name(p)}
           </button>
         ))}
