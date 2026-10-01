@@ -63,6 +63,8 @@ import { CatalogueImportSheet } from '@/components/commerce/CatalogueImportSheet
 import { MyOrgCard, type MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { PartnerOrgRoster } from '@/components/commerce/PartnerOrgRoster';
 import { SetupHub } from '@/components/commerce/SetupHub';
+import { SetupChooser, type SetupOption } from '@/components/commerce/SetupChooser';
+import { SalesSetupSheet } from '@/components/commerce/SalesSetupSheet';
 import { adminFetch } from '@/lib/admin-api';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
@@ -95,6 +97,9 @@ export default function CommercePortal() {
   const firstName = user ? profile?.displayName?.trim().split(/\s+/)[0] || '' : '';
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
+  // VTID-04795: the four ways to add products, and the business's sales setup.
+  const [chooserOpen, setChooserOpen] = useState(false);
+  const [salesOpen, setSalesOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
   const [registerOrgOpen, setRegisterOrgOpen] = useState(false);
   // VTID-04745: CSV catalogue import, per organization the user administers.
@@ -233,6 +238,13 @@ export default function CommercePortal() {
     setAgentHighlight(true);
     window.setTimeout(() => setAgentHighlight(false), 1600);
     el.querySelector<HTMLElement>('button')?.focus({ preventScroll: true });
+  };
+
+  // VTID-04795: each setup option opens what already exists.
+  const chooseSetup = (option: SetupOption) => {
+    if (option === 'ai') connectViaAgent();
+    else if (option === 'manual') setAddProductOpen(true);
+    else setManualOpen(true);
   };
 
   const fade = reduce
@@ -392,22 +404,30 @@ export default function CommercePortal() {
           twoColumn ? 'lg:justify-start' : ''
         }`}
       >
+        {/* VTID-04795: registering is what works today, so it leads for a
+            supplier without a business; AI-assisted setup is in development
+            and never the loud button until it really works end to end. */}
         <Button
           size="lg"
-          onClick={connectViaAgent}
-          className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+          variant={hasOrgs ? 'outline' : 'default'}
+          onClick={() => setRegisterOrgOpen(true)}
+          className={
+            hasOrgs
+              ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
+              : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+          }
         >
-          <Sparkles className="me-2 h-4 w-4" />
-          {t('screens.commerceportal.agentConnect.title')}
+          <Building2 className="me-2 h-4 w-4" />
+          {t('screens.commerceportal.orgOnboarding.registerCta')}
         </Button>
         <Button
           size="lg"
           variant="outline"
-          onClick={() => setRegisterOrgOpen(true)}
+          onClick={connectViaAgent}
           className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
         >
-          <Building2 className="me-2 h-4 w-4" />
-          {t('screens.commerceportal.orgOnboarding.registerCta')}
+          <Sparkles className="me-2 h-4 w-4" />
+          {t('screens.commerceportal.agentConnect.title')}
         </Button>
       </div>
     </>
@@ -486,7 +506,8 @@ export default function CommercePortal() {
             setActiveOrgId(id);
             setHubOrgId(id);
           }}
-          onAddProducts={() => setAddProductOpen(true)}
+          onAddProducts={() => setChooserOpen(true)}
+          onSalesSetup={() => setSalesOpen(true)}
           refreshKey={hubRefresh}
         />
       )}
@@ -593,6 +614,21 @@ export default function CommercePortal() {
           await load();
           setHubRefresh((n) => n + 1);
         }}
+        orgs={adminOrgs}
+        activeOrgId={hubOrg?.id ?? null}
+        onSelectOrg={(id) => {
+          setActiveOrgId(id);
+          setHubOrgId(id);
+        }}
+        onImportFile={() => setCatalogueImportOpen(true)}
+        onRegister={() => setRegisterOrgOpen(true)}
+      />
+      <SetupChooser open={chooserOpen} onOpenChange={setChooserOpen} onChoose={chooseSetup} />
+      <SalesSetupSheet
+        open={salesOpen}
+        onOpenChange={setSalesOpen}
+        org={hubOrg}
+        onSaved={() => setHubRefresh((n) => n + 1)}
       />
 
       <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={onOrgRegistered} />

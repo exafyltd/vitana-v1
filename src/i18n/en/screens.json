@@ -10416,7 +10416,7 @@
       "loginError": "Sign-in failed",
       "agentConnect": {
         "back": "Back to my connections",
-        "title": "Connect via AI Agent",
+        "title": "AI-assisted setup",
         "subtitle": "Point your own Claude, ChatGPT, or Gemini agent directly at the Vitanaland MCP server — your agent can then manage your catalog, orders, and availability for you instead of you filling in the manual form.",
         "notReachableYet": "The MCP server is already built, but not yet publicly reachable at this address (DNS exposure is still pending). Once it's live, the steps below work unchanged.",
         "mcpUrlLabel": "MCP server URL",
@@ -10438,7 +10438,7 @@
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "Advanced: connect manually with MCP"
       },
       "detectPlatform": {
         "urlPlaceholder": "Store URL (optional) — e.g. https://your-shop.com",
@@ -10463,7 +10463,7 @@
         "failed": "Couldn't start the connection. Please check your details."
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "Let AI help set up your business and catalog. Once this is live, you add the address below to Claude, ChatGPT or Gemini.",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -10732,7 +10732,62 @@
         "stateAttention": "Needs your attention",
         "stateTodo": "To do",
         "loadFailed": "Couldn't load your setup.",
-        "retry": "Try again"
+        "retry": "Try again",
+        "salesCta": "Set up",
+        "edit": "Edit"
+      },
+      "setupChooser": {
+        "title": "Add your products or services",
+        "aiTitle": "AI-assisted setup",
+        "aiHint": "Use AI to help set up your business and catalog.",
+        "inDevelopment": "In development",
+        "shopTitle": "Connect my existing shop",
+        "shopHint": "Connect a store or product source you already use.",
+        "manualTitle": "Add products myself",
+        "manualHint": "Create products or services manually.",
+        "apiTitle": "Connect via API",
+        "apiHint": "For technical teams and custom integrations."
+      },
+      "addOffer": {
+        "title": "What would you like to add?",
+        "product": "Product",
+        "productHint": "Something you sell and ship.",
+        "service": "Service",
+        "serviceHint": "Coaching, consultations, treatments, memberships.",
+        "experience": "Experience",
+        "experienceHint": "Retreats, trips, events and classes.",
+        "titleFor_product": "New product — {vertical}",
+        "titleFor_service": "New service",
+        "titleFor_experience": "New experience",
+        "addingTo": "Adding to:",
+        "addingToName": "Adding to {name}",
+        "registerFirst": "Products and services belong to your business. Register it first — it takes about a minute.",
+        "importFile": "Many at once? Import a file",
+        "basedIn": "Based in (country code)",
+        "availableIn": "Available in",
+        "availableInHint": "Country codes where people can book it, comma separated.",
+        "name_service": "Service name",
+        "name_experience": "Experience name",
+        "bookUrl": "Link to book"
+      },
+      "salesSetup": {
+        "title": "Sales setup",
+        "purchasesTitle": "How should Vitanaland handle purchases?",
+        "referral": "Send customers to my website",
+        "referralHint": "Customers discover your products on Vitanaland and complete purchase on your site.",
+        "direct": "Sell directly on Vitanaland",
+        "shopUrl": "Your shop’s website",
+        "keepHint": "Leave a field empty to keep what is already saved.",
+        "whereTitle": "Where do you sell?",
+        "worldwide": "Worldwide",
+        "typicalDelivery": "Typical delivery time",
+        "businessDays": "business days",
+        "byRegion": "Set different delivery times by region",
+        "advanced": "Advanced sales settings",
+        "keepCurrent": "Keep current setting",
+        "save": "Save",
+        "saved": "Sales setup saved",
+        "saveFailed": "Couldn’t save your sales setup."
       }
     },
     "oauthconsent": {

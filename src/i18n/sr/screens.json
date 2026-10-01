@@ -10574,7 +10574,7 @@
       "loginError": "Prijava neuspešna",
       "agentConnect": {
         "back": "Nazad na moje konekcije",
-        "title": "Poveži se putem AI Agenta",
+        "title": "Podešavanje uz pomoć AI",
         "subtitle": "Uperi svog Claude, ChatGPT, ili Gemini agenta direktno na Vitanaland MCP server — tvoj agent tada može da upravlja tvojim katalogom, narudžbinama i dostupnošću umesto da ti popunjavaš ručni obrazac.",
         "notReachableYet": "MCP server je već izgrađen, ali još uvek nije javno dostupan na ovoj adresi (DNS izloženost je još uvek u toku). Kada bude aktivan, koraci ispod funkcionišu nepromenjeno.",
         "mcpUrlLabel": "URL MCP servera",
@@ -10596,13 +10596,12 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true,
-          "recommendedBadge": true
+          "tabGemini": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "Napredno: ručno povezivanje preko MCP-a"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL prodavnice (opciono) — npr. https://your-shop.com",
@@ -10628,7 +10627,6 @@
       },
       "_pending_review": {
         "portalEyebrow": true,
-        "agentPromise": true,
         "agentStatusPill": true,
         "agentStatusDetail": true,
         "agentUrlHint": true,
@@ -10645,7 +10643,7 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "Neka ti AI pomogne da podesiš posao i katalog. Kada ovo postane dostupno, dodaćeš adresu ispod u Claude, ChatGPT ili Gemini.",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -11114,7 +11112,62 @@
         "stateAttention": "Potrebna je tvoja pažnja",
         "stateTodo": "Za uraditi",
         "loadFailed": "Nije uspelo učitavanje podešavanja.",
-        "retry": "Pokušaj ponovo"
+        "retry": "Pokušaj ponovo",
+        "salesCta": "Podesi",
+        "edit": "Izmeni"
+      },
+      "setupChooser": {
+        "title": "Dodaj svoje proizvode ili usluge",
+        "aiTitle": "Podešavanje uz pomoć AI",
+        "aiHint": "Iskoristi AI da podesiš posao i katalog.",
+        "inDevelopment": "U razvoju",
+        "shopTitle": "Poveži moju postojeću prodavnicu",
+        "shopHint": "Poveži prodavnicu ili izvor proizvoda koji već koristiš.",
+        "manualTitle": "Dodaću proizvode sam",
+        "manualHint": "Napravi proizvode ili usluge ručno.",
+        "apiTitle": "Poveži preko API-ja",
+        "apiHint": "Za tehničke timove i prilagođene integracije."
+      },
+      "addOffer": {
+        "title": "Šta želiš da dodaš?",
+        "product": "Proizvod",
+        "productHint": "Nešto što prodaješ i šalješ.",
+        "service": "Usluga",
+        "serviceHint": "Koučing, konsultacije, tretmani, članarine.",
+        "experience": "Doživljaj",
+        "experienceHint": "Retreati, putovanja, događaji i časovi.",
+        "titleFor_product": "Novi proizvod — {vertical}",
+        "titleFor_service": "Nova usluga",
+        "titleFor_experience": "Novi doživljaj",
+        "addingTo": "Dodaje se u:",
+        "addingToName": "Dodaje se u {name}",
+        "registerFirst": "Proizvodi i usluge pripadaju tvom poslu. Prvo ga registruj — traje oko minut.",
+        "importFile": "Više odjednom? Uvezi fajl",
+        "basedIn": "Sedište (kod države)",
+        "availableIn": "Dostupno u",
+        "availableInHint": "Kodovi država u kojima može da se rezerviše, odvojeni zarezom.",
+        "name_service": "Naziv usluge",
+        "name_experience": "Naziv doživljaja",
+        "bookUrl": "Link za rezervaciju"
+      },
+      "salesSetup": {
+        "title": "Podešavanje prodaje",
+        "purchasesTitle": "Kako Vitanaland treba da obrađuje kupovine?",
+        "referral": "Šalji kupce na moj sajt",
+        "referralHint": "Kupci otkrivaju tvoje proizvode na Vitanalandu i kupovinu završavaju na tvom sajtu.",
+        "direct": "Prodaji direktno na Vitanalandu",
+        "shopUrl": "Sajt tvoje prodavnice",
+        "keepHint": "Ostavi polje prazno da zadržiš ono što je već sačuvano.",
+        "whereTitle": "Gde prodaješ?",
+        "worldwide": "Ceo svet",
+        "typicalDelivery": "Uobičajeno vreme isporuke",
+        "businessDays": "radnih dana",
+        "byRegion": "Podesi različito vreme isporuke po regionu",
+        "advanced": "Napredna podešavanja prodaje",
+        "keepCurrent": "Zadrži trenutno podešavanje",
+        "save": "Sačuvaj",
+        "saved": "Podešavanje prodaje je sačuvano",
+        "saveFailed": "Nije uspelo čuvanje podešavanja prodaje."
       }
     },
     "oauthconsent": {

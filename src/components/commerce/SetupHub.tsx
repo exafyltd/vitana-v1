@@ -101,6 +101,7 @@ export function SetupHub({
   activeOrgId,
   onSelectOrg,
   onAddProducts,
+  onSalesSetup,
   refreshKey = 0,
 }: {
   /** The businesses the user administers (org_admin). */
@@ -108,6 +109,8 @@ export function SetupHub({
   activeOrgId: string | null;
   onSelectOrg: (id: string) => void;
   onAddProducts: () => void;
+  /** VTID-04795: opens the business-level sales setup. */
+  onSalesSetup?: () => void;
   /** Bump to reload after something elsewhere changed (e.g. a product was added). */
   refreshKey?: number;
 }) {
@@ -145,6 +148,10 @@ export function SetupHub({
   if (!org) return null;
 
   const action = (id: HubStep['id'], state: StepState) => {
+    // Sales settings stay editable once the shop record exists.
+    if (id === 'sales' && onSalesSetup) {
+      return { label: state === 'done' ? 'screens.commerceportal.setupHub.edit' : 'screens.commerceportal.setupHub.salesCta', run: onSalesSetup };
+    }
     if (state === 'done') return null;
     if (id === 'profile') return { label: 'screens.commerceportal.setupHub.profileCta', run: () => setProfileOpen(true) };
     if (id === 'products') return { label: 'screens.commerceportal.setupHub.productsCta', run: onAddProducts };
