@@ -10573,7 +10573,7 @@
       "loginError": "Вход не удался",
       "agentConnect": {
         "back": "Назад к моим подключениям",
-        "title": "Подключиться через ИИ-агента",
+        "title": "Настройка с помощью ИИ",
         "subtitle": "Направь своего агента Claude, ChatGPT или Gemini прямо на сервер MCP Vitanaland — твой агент сможет управлять твоим каталогом, заказами и доступностью вместо того, чтобы ты заполнял форму вручную.",
         "notReachableYet": "Сервер MCP уже создан, но пока не доступен публично по этому адресу (DNS-доступ еще ожидается). Как только он заработает, описанные ниже шаги будут работать без изменений.",
         "mcpUrlLabel": "URL-адрес сервера MCP",
@@ -10595,13 +10595,12 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true,
-          "recommendedBadge": true
+          "tabGemini": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "Для опытных: подключение вручную через MCP"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL-адрес магазина (необязательно) — напр. https://your-shop.com",
@@ -10627,7 +10626,6 @@
       },
       "_pending_review": {
         "portalEyebrow": true,
-        "agentPromise": true,
         "agentStatusPill": true,
         "agentStatusDetail": true,
         "agentUrlHint": true,
@@ -10644,7 +10642,7 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "Пусть ИИ поможет настроить бизнес и каталог. Когда это заработает, ты добавишь адрес ниже в Claude, ChatGPT или Gemini.",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -11113,7 +11111,62 @@
         "stateAttention": "Требует твоего внимания",
         "stateTodo": "Не начато",
         "loadFailed": "Не удалось загрузить настройку.",
-        "retry": "Повторить"
+        "retry": "Повторить",
+        "salesCta": "Настроить",
+        "edit": "Изменить"
+      },
+      "setupChooser": {
+        "title": "Добавь свои товары или услуги",
+        "aiTitle": "Настройка с помощью ИИ",
+        "aiHint": "Используй ИИ, чтобы настроить бизнес и каталог.",
+        "inDevelopment": "В разработке",
+        "shopTitle": "Подключить мой магазин",
+        "shopHint": "Подключи магазин или источник товаров, которым уже пользуешься.",
+        "manualTitle": "Добавить товары самому",
+        "manualHint": "Создай товары или услуги вручную.",
+        "apiTitle": "Подключить через API",
+        "apiHint": "Для технических команд и собственных интеграций."
+      },
+      "addOffer": {
+        "title": "Что ты хочешь добавить?",
+        "product": "Товар",
+        "productHint": "То, что ты продаёшь и отправляешь.",
+        "service": "Услуга",
+        "serviceHint": "Коучинг, консультации, процедуры, абонементы.",
+        "experience": "Впечатление",
+        "experienceHint": "Ретриты, поездки, мероприятия и занятия.",
+        "titleFor_product": "Новый товар — {vertical}",
+        "titleFor_service": "Новая услуга",
+        "titleFor_experience": "Новое впечатление",
+        "addingTo": "Добавление в:",
+        "addingToName": "Добавление в {name}",
+        "registerFirst": "Товары и услуги принадлежат твоему бизнесу. Сначала зарегистрируй его — это около минуты.",
+        "importFile": "Много сразу? Импортируй файл",
+        "basedIn": "Находится в (код страны)",
+        "availableIn": "Доступно в",
+        "availableInHint": "Коды стран, где это можно забронировать, через запятую.",
+        "name_service": "Название услуги",
+        "name_experience": "Название впечатления",
+        "bookUrl": "Ссылка для бронирования"
+      },
+      "salesSetup": {
+        "title": "Настройка продаж",
+        "purchasesTitle": "Как Vitanaland будет обрабатывать покупки?",
+        "referral": "Отправлять клиентов на мой сайт",
+        "referralHint": "Клиенты находят твои товары в Vitanaland и завершают покупку на твоём сайте.",
+        "direct": "Продавать прямо в Vitanaland",
+        "shopUrl": "Сайт твоего магазина",
+        "keepHint": "Оставь поле пустым, чтобы сохранить текущее значение.",
+        "whereTitle": "Где ты продаёшь?",
+        "worldwide": "По всему миру",
+        "typicalDelivery": "Обычный срок доставки",
+        "businessDays": "рабочих дней",
+        "byRegion": "Указать разные сроки для регионов",
+        "advanced": "Расширенные настройки продаж",
+        "keepCurrent": "Оставить текущую настройку",
+        "save": "Сохранить",
+        "saved": "Настройки продаж сохранены",
+        "saveFailed": "Не удалось сохранить настройки продаж."
       }
     },
     "oauthconsent": {

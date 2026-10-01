@@ -10570,7 +10570,7 @@
       "loginError": "登录失败",
       "agentConnect": {
         "back": "返回我的连接",
-        "title": "通过 AI 代理连接",
+        "title": "AI 辅助设置",
         "subtitle": "将你自己的 Claude、ChatGPT 或 Gemini 代理直接指向 Vitanaland MCP 服务器 — 你的代理可以为你管理商品目录、订单和可用性，而无需你手动填写表格。",
         "notReachableYet": "MCP 服务器已建成，但尚未在此地址公开访问（DNS 暴露仍在等待中）。一旦上线，以下步骤将保持不变。",
         "mcpUrlLabel": "MCP 服务器 URL",
@@ -10592,13 +10592,12 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true,
-          "recommendedBadge": true
+          "tabGemini": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "高级：通过 MCP 手动连接"
       },
       "detectPlatform": {
         "urlPlaceholder": "商店 URL（可选）— 例如 https://your-shop.com",
@@ -10624,7 +10623,6 @@
       },
       "_pending_review": {
         "portalEyebrow": true,
-        "agentPromise": true,
         "agentStatusPill": true,
         "agentStatusDetail": true,
         "agentUrlHint": true,
@@ -10641,7 +10639,7 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "让 AI 帮你设置业务和目录。上线后，你只需把下面的地址添加到 Claude、ChatGPT 或 Gemini。",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -11110,7 +11108,62 @@
         "stateAttention": "需要你处理",
         "stateTodo": "待完成",
         "loadFailed": "无法加载你的设置。",
-        "retry": "重试"
+        "retry": "重试",
+        "salesCta": "设置",
+        "edit": "编辑"
+      },
+      "setupChooser": {
+        "title": "添加你的产品或服务",
+        "aiTitle": "AI 辅助设置",
+        "aiHint": "用 AI 帮你设置业务和目录。",
+        "inDevelopment": "开发中",
+        "shopTitle": "连接我现有的店铺",
+        "shopHint": "连接你已在使用的店铺或产品来源。",
+        "manualTitle": "自己添加产品",
+        "manualHint": "手动创建产品或服务。",
+        "apiTitle": "通过 API 连接",
+        "apiHint": "适用于技术团队和自定义集成。"
+      },
+      "addOffer": {
+        "title": "你想添加什么？",
+        "product": "产品",
+        "productHint": "你销售并寄送的东西。",
+        "service": "服务",
+        "serviceHint": "教练、咨询、疗程、会员。",
+        "experience": "体验",
+        "experienceHint": "静修、旅行、活动和课程。",
+        "titleFor_product": "新产品 — {vertical}",
+        "titleFor_service": "新服务",
+        "titleFor_experience": "新体验",
+        "addingTo": "添加到：",
+        "addingToName": "添加到 {name}",
+        "registerFirst": "产品和服务属于你的业务。请先注册业务——大约只需一分钟。",
+        "importFile": "一次添加很多？导入文件",
+        "basedIn": "所在地（国家/地区代码）",
+        "availableIn": "可用地区",
+        "availableInHint": "可预订的国家/地区代码，用逗号分隔。",
+        "name_service": "服务名称",
+        "name_experience": "体验名称",
+        "bookUrl": "预订链接"
+      },
+      "salesSetup": {
+        "title": "销售设置",
+        "purchasesTitle": "Vitanaland 应如何处理购买？",
+        "referral": "把客户引导到我的网站",
+        "referralHint": "客户在 Vitanaland 上发现你的产品，并在你的网站完成购买。",
+        "direct": "直接在 Vitanaland 上销售",
+        "shopUrl": "你的店铺网站",
+        "keepHint": "留空即可保留已保存的内容。",
+        "whereTitle": "你在哪里销售？",
+        "worldwide": "全球",
+        "typicalDelivery": "通常配送时间",
+        "businessDays": "个工作日",
+        "byRegion": "按地区设置不同配送时间",
+        "advanced": "高级销售设置",
+        "keepCurrent": "保留当前设置",
+        "save": "保存",
+        "saved": "销售设置已保存",
+        "saveFailed": "无法保存你的销售设置。"
       }
     },
     "oauthconsent": {

@@ -80,9 +80,11 @@ export function AgentConnectCard() {
 
       <div className="relative rounded-3xl border border-amber-200 bg-card p-5 shadow-xl shadow-amber-900/5 md:p-7">
         <div className="flex flex-wrap items-center gap-2">
+          {/* VTID-04795: "In development", never "Recommended", until an AI
+              assistant can really register a business end to end. */}
           <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
             <Sparkles className="h-3.5 w-3.5" />
-            {t('screens.commerceportal.agentConnect.recommendedBadge')}
+            {t('screens.commerceportal.setupChooser.inDevelopment')}
           </span>
           <button
             type="button"
@@ -108,7 +110,10 @@ export function AgentConnectCard() {
           {t('screens.commerceportal.agentPromise')}
         </p>
 
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {t('screens.commerceportal.agentConnect.manualMcp')}
+        </p>
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
           <code
             dir="ltr"
             className="min-w-0 flex-1 truncate rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-start font-mono text-sm text-amber-900 md:text-base"

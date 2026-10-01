@@ -10494,7 +10494,7 @@
       "loginError": "Falha ao iniciar sessão",
       "agentConnect": {
         "back": "Voltar para minhas conexões",
-        "title": "Conectar via agente de IA",
+        "title": "Configuração com IA",
         "subtitle": "Conecte seu próprio agente Claude, ChatGPT ou Gemini diretamente ao servidor MCP da Vitanaland — seu agente poderá então cuidar do catálogo, dos pedidos e da disponibilidade para você, em vez de você preencher tudo manualmente no formulário.",
         "notReachableYet": "O servidor MCP já está pronto, mas ainda não está publicamente acessível neste endereço (a liberação de DNS ainda está pendente). Assim que estiver no ar, os passos abaixo funcionam sem alterações.",
         "mcpUrlLabel": "Endereço do servidor MCP",
@@ -10516,13 +10516,12 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true,
-          "recommendedBadge": true
+          "tabGemini": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "Avançado: conectar manualmente via MCP"
       },
       "detectPlatform": {
         "urlPlaceholder": "URL da loja (opcional) — ex.: https://your-shop.com",
@@ -10548,7 +10547,6 @@
       },
       "_pending_review": {
         "portalEyebrow": true,
-        "agentPromise": true,
         "agentStatusPill": true,
         "agentStatusDetail": true,
         "agentUrlHint": true,
@@ -10565,7 +10563,7 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "Deixe a IA ajudar a configurar seu negócio e seu catálogo. Quando estiver disponível, você adiciona o endereço abaixo no Claude, ChatGPT ou Gemini.",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -11019,7 +11017,62 @@
         "stateAttention": "Precisa da sua atenção",
         "stateTodo": "A fazer",
         "loadFailed": "Não foi possível carregar a sua configuração.",
-        "retry": "Tentar de novo"
+        "retry": "Tentar de novo",
+        "salesCta": "Configurar",
+        "edit": "Editar"
+      },
+      "setupChooser": {
+        "title": "Adicione seus produtos ou serviços",
+        "aiTitle": "Configuração com IA",
+        "aiHint": "Use IA para configurar seu negócio e seu catálogo.",
+        "inDevelopment": "Em desenvolvimento",
+        "shopTitle": "Conectar minha loja atual",
+        "shopHint": "Conecte uma loja ou fonte de produtos que você já usa.",
+        "manualTitle": "Adicionar produtos eu mesmo",
+        "manualHint": "Crie produtos ou serviços manualmente.",
+        "apiTitle": "Conectar via API",
+        "apiHint": "Para equipes técnicas e integrações personalizadas."
+      },
+      "addOffer": {
+        "title": "O que você quer adicionar?",
+        "product": "Produto",
+        "productHint": "Algo que você vende e envia.",
+        "service": "Serviço",
+        "serviceHint": "Coaching, consultas, tratamentos, assinaturas.",
+        "experience": "Experiência",
+        "experienceHint": "Retiros, viagens, eventos e aulas.",
+        "titleFor_product": "Novo produto — {vertical}",
+        "titleFor_service": "Novo serviço",
+        "titleFor_experience": "Nova experiência",
+        "addingTo": "Adicionando a:",
+        "addingToName": "Adicionando a {name}",
+        "registerFirst": "Produtos e serviços pertencem ao seu negócio. Cadastre-o primeiro — leva cerca de um minuto.",
+        "importFile": "Muitos de uma vez? Importe um arquivo",
+        "basedIn": "Sediado em (código do país)",
+        "availableIn": "Disponível em",
+        "availableInHint": "Códigos dos países onde é possível reservar, separados por vírgula.",
+        "name_service": "Nome do serviço",
+        "name_experience": "Nome da experiência",
+        "bookUrl": "Link para reservar"
+      },
+      "salesSetup": {
+        "title": "Configuração de vendas",
+        "purchasesTitle": "Como a Vitanaland deve tratar as compras?",
+        "referral": "Enviar clientes para o meu site",
+        "referralHint": "Os clientes descobrem seus produtos na Vitanaland e concluem a compra no seu site.",
+        "direct": "Vender diretamente na Vitanaland",
+        "shopUrl": "Site da sua loja",
+        "keepHint": "Deixe um campo vazio para manter o que já está salvo.",
+        "whereTitle": "Onde você vende?",
+        "worldwide": "Mundo todo",
+        "typicalDelivery": "Prazo de entrega habitual",
+        "businessDays": "dias úteis",
+        "byRegion": "Definir prazos diferentes por região",
+        "advanced": "Configurações avançadas de vendas",
+        "keepCurrent": "Manter a configuração atual",
+        "save": "Salvar",
+        "saved": "Configuração de vendas salva",
+        "saveFailed": "Não foi possível salvar sua configuração de vendas."
       }
     },
     "oauthconsent": {

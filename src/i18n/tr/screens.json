@@ -10570,7 +10570,7 @@
       "loginError": "Giriş başarısız",
       "agentConnect": {
         "back": "Bağlantılarıma geri dön",
-        "title": "AI Ajanı ile Bağlan",
+        "title": "Yapay zeka destekli kurulum",
         "subtitle": "Kendi Claude, ChatGPT veya Gemini ajanını doğrudan Vitanaland MCP sunucusuna yönlendir — ajanın, manuel formu doldurmak yerine katalogunu, siparişlerini ve müsaitliğini senin için yönetebilir.",
         "notReachableYet": "MCP sunucusu zaten oluşturuldu, ancak bu adreste henüz herkese açık değil (DNS yayını hâlâ bekleniyor). Canlıya geçtiğinde aşağıdaki adımlar değişmeden çalışır.",
         "mcpUrlLabel": "MCP sunucu URL'si",
@@ -10592,13 +10592,12 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true,
-          "recommendedBadge": true
+          "tabGemini": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "Gelişmiş: MCP ile manuel bağlan"
       },
       "detectPlatform": {
         "urlPlaceholder": "Mağaza URL'si (isteğe bağlı) - örn. https://your-shop.com",
@@ -10624,7 +10623,6 @@
       },
       "_pending_review": {
         "portalEyebrow": true,
-        "agentPromise": true,
         "agentStatusPill": true,
         "agentStatusDetail": true,
         "agentUrlHint": true,
@@ -10641,7 +10639,7 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "İşletmeni ve kataloğunu kurmak için yapay zekadan yardım al. Bu özellik yayına girince aşağıdaki adresi Claude, ChatGPT veya Gemini’ye eklersin.",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -11110,7 +11108,62 @@
         "stateAttention": "İlgini gerektiriyor",
         "stateTodo": "Yapılacak",
         "loadFailed": "Kurulumun yüklenemedi.",
-        "retry": "Tekrar dene"
+        "retry": "Tekrar dene",
+        "salesCta": "Kur",
+        "edit": "Düzenle"
+      },
+      "setupChooser": {
+        "title": "Ürünlerini veya hizmetlerini ekle",
+        "aiTitle": "Yapay zeka destekli kurulum",
+        "aiHint": "İşletmeni ve kataloğunu kurmak için yapay zekayı kullan.",
+        "inDevelopment": "Geliştiriliyor",
+        "shopTitle": "Mevcut mağazamı bağla",
+        "shopHint": "Zaten kullandığın bir mağazayı veya ürün kaynağını bağla.",
+        "manualTitle": "Ürünleri kendim ekleyeyim",
+        "manualHint": "Ürün veya hizmetleri elle oluştur.",
+        "apiTitle": "API ile bağlan",
+        "apiHint": "Teknik ekipler ve özel entegrasyonlar için."
+      },
+      "addOffer": {
+        "title": "Ne eklemek istersin?",
+        "product": "Ürün",
+        "productHint": "Sattığın ve gönderdiğin bir şey.",
+        "service": "Hizmet",
+        "serviceHint": "Koçluk, danışmanlık, tedaviler, üyelikler.",
+        "experience": "Deneyim",
+        "experienceHint": "Kamplar, geziler, etkinlikler ve dersler.",
+        "titleFor_product": "Yeni ürün — {vertical}",
+        "titleFor_service": "Yeni hizmet",
+        "titleFor_experience": "Yeni deneyim",
+        "addingTo": "Eklenecek yer:",
+        "addingToName": "{name} işletmesine ekleniyor",
+        "registerFirst": "Ürün ve hizmetler işletmene aittir. Önce işletmeni kaydet — yaklaşık bir dakika sürer.",
+        "importFile": "Birden çok mu? Dosya içe aktar",
+        "basedIn": "Bulunduğu yer (ülke kodu)",
+        "availableIn": "Şurada mevcut",
+        "availableInHint": "Rezerve edilebileceği ülke kodları, virgülle ayrılmış.",
+        "name_service": "Hizmet adı",
+        "name_experience": "Deneyim adı",
+        "bookUrl": "Rezervasyon bağlantısı"
+      },
+      "salesSetup": {
+        "title": "Satış ayarları",
+        "purchasesTitle": "Vitanaland satın almaları nasıl yönetmeli?",
+        "referral": "Müşterileri web siteme yönlendir",
+        "referralHint": "Müşteriler ürünlerini Vitanaland’de keşfeder ve satın almayı senin sitende tamamlar.",
+        "direct": "Doğrudan Vitanaland’de sat",
+        "shopUrl": "Mağazanın web sitesi",
+        "keepHint": "Kayıtlı olanı korumak için alanı boş bırak.",
+        "whereTitle": "Nerede satış yapıyorsun?",
+        "worldwide": "Dünya geneli",
+        "typicalDelivery": "Ortalama teslimat süresi",
+        "businessDays": "iş günü",
+        "byRegion": "Bölgeye göre farklı teslimat süreleri belirle",
+        "advanced": "Gelişmiş satış ayarları",
+        "keepCurrent": "Mevcut ayarı koru",
+        "save": "Kaydet",
+        "saved": "Satış ayarları kaydedildi",
+        "saveFailed": "Satış ayarların kaydedilemedi."
       }
     },
     "oauthconsent": {

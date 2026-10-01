@@ -10570,7 +10570,7 @@
       "loginError": "فشل تسجيل الدخول",
       "agentConnect": {
         "back": "عودة إلى اتصالاتي",
-        "title": "اتصل عبر وكيل الذكاء الاصطناعي",
+        "title": "إعداد بمساعدة الذكاء الاصطناعي",
         "subtitle": "وجّه وكيلك الخاص من Claude أو ChatGPT أو Gemini مباشرةً إلى خادم MCP الخاص بـ Vitanaland — يمكن لوكيلك حينها إدارة كتالوجك وطلباتك وتوافرك بدلاً من ملء النموذج اليدوي.",
         "notReachableYet": "خادم MCP مبني بالفعل، لكنه لم يصبح متاحًا للعامة بعد على هذا العنوان (لا يزال كشف DNS معلقًا). بمجرد أن يصبح مباشرًا، ستعمل الخطوات أدناه دون تغيير.",
         "mcpUrlLabel": "عنوان URL لخادم MCP",
@@ -10592,13 +10592,12 @@
         "_pending_review": {
           "tabClaude": true,
           "tabChatgpt": true,
-          "tabGemini": true,
-          "recommendedBadge": true
+          "tabGemini": true
         },
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Recommended"
+        "manualMcp": "متقدم: الاتصال يدويًا عبر MCP"
       },
       "detectPlatform": {
         "urlPlaceholder": "عنوان URL للمتجر (اختياري) — مثال: https://your-shop.com",
@@ -10624,7 +10623,6 @@
       },
       "_pending_review": {
         "portalEyebrow": true,
-        "agentPromise": true,
         "agentStatusPill": true,
         "agentStatusDetail": true,
         "agentUrlHint": true,
@@ -10641,7 +10639,7 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Enter the address below into your AI — Claude, ChatGPT or Gemini — and your business is connected to Vitanaland.",
+      "agentPromise": "دع الذكاء الاصطناعي يساعدك في إعداد نشاطك التجاري وكتالوجك. عند إطلاق الميزة، ستضيف العنوان أدناه إلى Claude أو ChatGPT أو Gemini.",
       "agentStatusPill": "Going live soon",
       "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
       "agentUrlHint": "One address. That is all your agent needs.",
@@ -11110,7 +11108,62 @@
         "stateAttention": "يحتاج إلى انتباهك",
         "stateTodo": "قيد الانتظار",
         "loadFailed": "تعذّر تحميل إعدادك.",
-        "retry": "حاول مرة أخرى"
+        "retry": "حاول مرة أخرى",
+        "salesCta": "إعداد",
+        "edit": "تعديل"
+      },
+      "setupChooser": {
+        "title": "أضف منتجاتك أو خدماتك",
+        "aiTitle": "إعداد بمساعدة الذكاء الاصطناعي",
+        "aiHint": "استخدم الذكاء الاصطناعي لإعداد نشاطك وكتالوجك.",
+        "inDevelopment": "قيد التطوير",
+        "shopTitle": "ربط متجري الحالي",
+        "shopHint": "اربط متجرًا أو مصدر منتجات تستخدمه بالفعل.",
+        "manualTitle": "إضافة المنتجات بنفسي",
+        "manualHint": "أنشئ المنتجات أو الخدمات يدويًا.",
+        "apiTitle": "الاتصال عبر API",
+        "apiHint": "للفرق التقنية والتكاملات المخصصة."
+      },
+      "addOffer": {
+        "title": "ماذا تريد أن تضيف؟",
+        "product": "منتج",
+        "productHint": "شيء تبيعه وتشحنه.",
+        "service": "خدمة",
+        "serviceHint": "تدريب واستشارات وعلاجات وعضويات.",
+        "experience": "تجربة",
+        "experienceHint": "خلوات ورحلات وفعاليات ودروس.",
+        "titleFor_product": "منتج جديد — {vertical}",
+        "titleFor_service": "خدمة جديدة",
+        "titleFor_experience": "تجربة جديدة",
+        "addingTo": "الإضافة إلى:",
+        "addingToName": "الإضافة إلى {name}",
+        "registerFirst": "المنتجات والخدمات تابعة لنشاطك التجاري. سجّله أولًا — يستغرق ذلك دقيقة تقريبًا.",
+        "importFile": "الكثير دفعة واحدة؟ استورد ملفًا",
+        "basedIn": "المقر (رمز الدولة)",
+        "availableIn": "متاح في",
+        "availableInHint": "رموز الدول التي يمكن الحجز فيها، مفصولة بفواصل.",
+        "name_service": "اسم الخدمة",
+        "name_experience": "اسم التجربة",
+        "bookUrl": "رابط الحجز"
+      },
+      "salesSetup": {
+        "title": "إعداد المبيعات",
+        "purchasesTitle": "كيف يتعامل Vitanaland مع المشتريات؟",
+        "referral": "إرسال العملاء إلى موقعي",
+        "referralHint": "يكتشف العملاء منتجاتك على Vitanaland ويكملون الشراء على موقعك.",
+        "direct": "البيع مباشرة على Vitanaland",
+        "shopUrl": "موقع متجرك",
+        "keepHint": "اترك الحقل فارغًا للاحتفاظ بما هو محفوظ.",
+        "whereTitle": "أين تبيع؟",
+        "worldwide": "حول العالم",
+        "typicalDelivery": "مدة التوصيل المعتادة",
+        "businessDays": "أيام عمل",
+        "byRegion": "تحديد مدد توصيل مختلفة حسب المنطقة",
+        "advanced": "إعدادات البيع المتقدمة",
+        "keepCurrent": "الاحتفاظ بالإعداد الحالي",
+        "save": "حفظ",
+        "saved": "تم حفظ إعداد المبيعات",
+        "saveFailed": "تعذّر حفظ إعداد المبيعات."
       }
     },
     "oauthconsent": {

@@ -19,7 +19,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { adminFetch } from '@/lib/admin-api';
-import { MY_PORTAL_API } from '@/lib/commerce-host';
+import { addOrgProduct } from '@/lib/commerce-catalogue';
+import { verticalForOrgType } from '@/lib/commerce-sales';
+import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { t, notify, notifyError } from '@/lib/i18n-toast';
 import type { Vertical, VocabularyOptions } from '@/hooks/useCommerceVerticals';
 import { VerticalFieldInput, type AttributeValue } from './VerticalFieldInput';
@@ -58,33 +60,24 @@ const parseCountries = (raw: string): string[] =>
     .map((c) => c.trim().toUpperCase())
     .filter((c) => /^[A-Z]{2}$/.test(c));
 
+/** VTID-04795: what the supplier said they are adding — changes the wording, not the data. */
+export type OfferKind = 'product' | 'service' | 'experience';
+
 export function ProductForm({
   vertical,
+  kind = 'product',
   options,
   userId,
-  businessName,
-  affiliateNetwork,
-  affiliateAdvertiserId,
-  deliveryDays,
+  org,
   onSaved,
   onCancel,
 }: {
   vertical: Vertical;
+  kind?: OfferKind;
   options: VocabularyOptions;
   userId: string;
-  /** The SUPPLIER's business name — never the product's. */
-  businessName: string;
-  affiliateNetwork: 'awin' | 'admitad' | 'other';
-  affiliateAdvertiserId: string;
-  /**
-   * Typical delivery time per region, already narrowed to the regions the
-   * supplier actually answered. Spread into the merchant row as-is: an
-   * unanswered region is absent rather than 0, so the column stays null.
-   */
-  deliveryDays: Partial<Record<
-    'avg_delivery_days_eu' | 'avg_delivery_days_us' | 'avg_delivery_days_mena',
-    number
-  >>;
+  /** The registered business this is added to (VTID-04795). */
+  org: MyOrgRow;
   onSaved: () => void | Promise<void>;
   onCancel: () => void;
 }) {
@@ -115,27 +108,13 @@ export function ProductForm({
   const save = async () => {
     setSaving(true);
     try {
-      // The merchant row is upserted on every save rather than only the first:
-      // the supplier may have changed vertical since, and one round trip is
-      // cheaper than a "which step am I on" state machine.
-      await adminFetch(`${MY_PORTAL_API}/merchants`, {
-        method: 'POST',
-        body: JSON.stringify({
-          name: businessName.trim().slice(0, 256),
-          vertical_key: vertical.key,
-          merchant_country: core.origin_country.trim().toUpperCase(),
-          affiliate_network: affiliateNetwork,
-          // Omitted for 'other': the gateway refuses a named network without
-          // an id, and sending an empty string would trip that refusal.
-          affiliate_advertiser_id:
-            affiliateNetwork === 'other' ? undefined : affiliateAdvertiserId.trim(),
-          ...deliveryDays,
-        }),
-      });
-
-      await adminFetch(`${MY_PORTAL_API}/products`, {
-        method: 'POST',
-        body: JSON.stringify({
+      // VTID-04795: saved to the registered business. Its shop record is
+      // created on first use from the business itself; business-level
+      // settings (affiliate network, delivery) are never re-sent from here,
+      // so adding a product can no longer reset them.
+      await addOrgProduct(
+        org.id,
+        {
           title: core.title.trim(),
           description: core.description.trim() || undefined,
           price_cents: priceCents,
@@ -148,8 +127,11 @@ export function ProductForm({
           // Undefined values are stripped by JSON.stringify, so an unanswered
           // question never lands as a null in `attributes`.
           attributes,
-        }),
-      });
+        },
+        // The shop record's vertical describes the business, from what it said it offers.
+        verticalForOrgType(org.org_type),
+        adminFetch,
+      );
 
       notify('screens.commerceportal.productForm.saved');
       setCore(EMPTY_CORE);
@@ -177,7 +159,9 @@ export function ProductForm({
       <section className="space-y-3">
         <div className="space-y-1.5">
           <Label htmlFor="pf-title" className="text-foreground">
-            {t('screens.commerceportal.productForm.name')}
+            {kind === 'product'
+              ? t('screens.commerceportal.productForm.name')
+              : t(`screens.commerceportal.addOffer.name_${kind}`)}
           </Label>
           <Input
             id="pf-title"
@@ -226,7 +210,9 @@ export function ProductForm({
 
         <div className="space-y-1.5">
           <Label htmlFor="pf-url" className="text-foreground">
-            {t('screens.commerceportal.productForm.buyUrl')}
+            {kind === 'product'
+              ? t('screens.commerceportal.productForm.buyUrl')
+              : t('screens.commerceportal.addOffer.bookUrl')}
           </Label>
           <Input
             id="pf-url"
@@ -243,7 +229,9 @@ export function ProductForm({
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor="pf-origin" className="text-foreground">
-              {t('screens.commerceportal.productForm.shipsFrom')}
+              {kind === 'product'
+                ? t('screens.commerceportal.productForm.shipsFrom')
+                : t('screens.commerceportal.addOffer.basedIn')}
             </Label>
             <Input
               id="pf-origin"
@@ -256,7 +244,9 @@ export function ProductForm({
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="pf-ships" className="text-foreground">
-              {t('screens.commerceportal.productForm.shipsTo')}
+              {kind === 'product'
+                ? t('screens.commerceportal.productForm.shipsTo')
+                : t('screens.commerceportal.addOffer.availableIn')}
             </Label>
             <Input
               id="pf-ships"
@@ -265,7 +255,11 @@ export function ProductForm({
               value={core.ships_to}
               onChange={(e) => setCore((c) => ({ ...c, ships_to: e.target.value }))}
             />
-            <p className="text-xs text-muted-foreground">{t('screens.commerceportal.productForm.shipsToHint')}</p>
+            <p className="text-xs text-muted-foreground">
+              {kind === 'product'
+                ? t('screens.commerceportal.productForm.shipsToHint')
+                : t('screens.commerceportal.addOffer.availableInHint')}
+            </p>
           </div>
         </div>
 

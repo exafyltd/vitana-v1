@@ -15,7 +15,10 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const sheet = readFileSync(resolve(__dirname, './AddProductSheet.tsx'), 'utf8');
+// VTID-04795: the picker moved from the per-product sheet to the business's
+// sales setup (asked once, never re-sent by a product save).
+const sheet = readFileSync(resolve(__dirname, './SalesSetupSheet.tsx'), 'utf8');
+const sales = readFileSync(resolve(__dirname, '../../lib/commerce-sales.ts'), 'utf8');
 const form = readFileSync(resolve(__dirname, './ProductForm.tsx'), 'utf8');
 
 /** Only these two are wired: awin is pulled, admitad is pushed. */
@@ -38,10 +41,17 @@ describe('the affiliate network picker', () => {
   it('will not let a named network through without an advertiser id', () => {
     // Naming a network with no id is the exact shape of "looks connected,
     // attributes nothing": conversions resolve to `<network>_unknown`.
-    expect(sheet).toContain("network !== 'other' && advertiserId.trim().length === 0");
+    expect(sales).toContain("d.network && d.network !== 'other' && d.advertiserId.trim().length === 0");
+    expect(sheet).toContain('salesDraftValid(draft)');
   });
 
   it('omits the id for "other" rather than sending an empty string', () => {
-    expect(form).toContain("affiliateNetwork === 'other' ? undefined");
+    expect(sales).toContain("if (d.network !== 'other') out.affiliate_advertiser_id = d.advertiserId.trim();");
+  });
+
+  it('a product save never re-sends the network, so it cannot reset it (VTID-04795)', () => {
+    expect(form).not.toContain('affiliate_network');
+    // An untouched picker sends nothing at all.
+    expect(sales).toContain('if (d.network) {');
   });
 });

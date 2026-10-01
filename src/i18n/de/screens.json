@@ -10416,7 +10416,7 @@
       "loginError": "Anmeldung fehlgeschlagen",
       "agentConnect": {
         "back": "Zurück zu meinen Verbindungen",
-        "title": "Per KI-Agent verbinden",
+        "title": "KI-gestützte Einrichtung",
         "subtitle": "Verbinde deinen eigenen Claude-, ChatGPT- oder Gemini-Agenten direkt mit dem Vitanaland-MCP-Server — dein Agent kann dann Katalog, Bestellungen und Verfügbarkeit für dich pflegen, statt alles manuell im Formular einzutragen.",
         "notReachableYet": "Der MCP-Server ist bereits fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar (DNS-Freischaltung steht noch aus). Sobald sie live ist, funktionieren die Schritte unten unverändert.",
         "mcpUrlLabel": "MCP-Server-Adresse",
@@ -10438,7 +10438,7 @@
         "tabClaude": "Claude",
         "tabChatgpt": "ChatGPT",
         "tabGemini": "Gemini",
-        "recommendedBadge": "Empfohlen"
+        "manualMcp": "Fortgeschritten: manuell per MCP verbinden"
       },
       "detectPlatform": {
         "urlPlaceholder": "Shop-URL (optional) — z. B. https://dein-shop.de",
@@ -10463,7 +10463,7 @@
         "failed": "Die Verbindung konnte nicht gestartet werden. Bitte überprüfe deine Angaben."
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Gib die Adresse unten in deine KI ein — Claude, ChatGPT oder Gemini — und dein Business ist mit Vitanaland verbunden.",
+      "agentPromise": "Lass dir von KI beim Einrichten deines Business und Katalogs helfen. Sobald das live ist, trägst du die Adresse unten in Claude, ChatGPT oder Gemini ein.",
       "agentStatusPill": "Bald live",
       "agentStatusDetail": "Der MCP-Server ist fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar — die DNS-Freischaltung steht aus. Solange stellt der Server deinem Agenten nur lesende Werkzeuge bereit: Ein Business per KI anzulegen kommt mit der Freischaltung. Bis dahin führt der manuelle Weg unten zum Ziel.",
       "agentUrlHint": "Eine Adresse. Mehr braucht dein Agent nicht.",
@@ -10724,7 +10724,7 @@
         "verificationTitle": "Verifizierung abschließen",
         "verificationBody": "Das Vitanaland-Team prüft dein Business, bevor es live geht.",
         "salesTitle": "Verkaufseinstellungen",
-        "salesBody": "Wie Kund:innen bei dir kaufen – wird mit deinem ersten Produkt eingerichtet.",
+        "salesBody": "Wie Kunden bei dir kaufen – wird mit deinem ersten Produkt eingerichtet.",
         "publishTitle": "Prüfen & veröffentlichen",
         "publishBody": "Nach der Verifizierung wird dein Business auf Vitanaland veröffentlicht.",
         "stateDone": "Erledigt",
@@ -10732,7 +10732,62 @@
         "stateAttention": "Braucht deine Aufmerksamkeit",
         "stateTodo": "Offen",
         "loadFailed": "Deine Einrichtung konnte nicht geladen werden.",
-        "retry": "Erneut versuchen"
+        "retry": "Erneut versuchen",
+        "salesCta": "Einrichten",
+        "edit": "Bearbeiten"
+      },
+      "setupChooser": {
+        "title": "Füge deine Produkte oder Dienstleistungen hinzu",
+        "aiTitle": "KI-gestützte Einrichtung",
+        "aiHint": "Lass dir von KI beim Einrichten von Business und Katalog helfen.",
+        "inDevelopment": "In Entwicklung",
+        "shopTitle": "Meinen bestehenden Shop verbinden",
+        "shopHint": "Verbinde einen Shop oder eine Produktquelle, die du schon nutzt.",
+        "manualTitle": "Produkte selbst hinzufügen",
+        "manualHint": "Lege Produkte oder Dienstleistungen von Hand an.",
+        "apiTitle": "Per API verbinden",
+        "apiHint": "Für technische Teams und eigene Integrationen."
+      },
+      "addOffer": {
+        "title": "Was möchtest du hinzufügen?",
+        "product": "Produkt",
+        "productHint": "Etwas, das du verkaufst und versendest.",
+        "service": "Dienstleistung",
+        "serviceHint": "Coaching, Beratung, Behandlungen, Mitgliedschaften.",
+        "experience": "Erlebnis",
+        "experienceHint": "Retreats, Reisen, Events und Kurse.",
+        "titleFor_product": "Neues Produkt – {vertical}",
+        "titleFor_service": "Neue Dienstleistung",
+        "titleFor_experience": "Neues Erlebnis",
+        "addingTo": "Hinzufügen zu:",
+        "addingToName": "Wird zu {name} hinzugefügt",
+        "registerFirst": "Produkte und Dienstleistungen gehören zu deinem Business. Registriere es zuerst – das dauert etwa eine Minute.",
+        "importFile": "Viele auf einmal? Datei importieren",
+        "basedIn": "Ansässig in (Ländercode)",
+        "availableIn": "Verfügbar in",
+        "availableInHint": "Ländercodes, in denen man es buchen kann, durch Komma getrennt.",
+        "name_service": "Name der Dienstleistung",
+        "name_experience": "Name des Erlebnisses",
+        "bookUrl": "Link zum Buchen"
+      },
+      "salesSetup": {
+        "title": "Verkaufseinstellungen",
+        "purchasesTitle": "Wie soll Vitanaland Käufe abwickeln?",
+        "referral": "Kunden auf meine Website schicken",
+        "referralHint": "Kunden entdecken deine Produkte auf Vitanaland und schließen den Kauf auf deiner Website ab.",
+        "direct": "Direkt auf Vitanaland verkaufen",
+        "shopUrl": "Website deines Shops",
+        "keepHint": "Lass ein Feld leer, um das bisher Gespeicherte zu behalten.",
+        "whereTitle": "Wo verkaufst du?",
+        "worldwide": "Weltweit",
+        "typicalDelivery": "Übliche Lieferzeit",
+        "businessDays": "Werktage",
+        "byRegion": "Unterschiedliche Lieferzeiten je Region festlegen",
+        "advanced": "Erweiterte Verkaufseinstellungen",
+        "keepCurrent": "Aktuelle Einstellung behalten",
+        "save": "Speichern",
+        "saved": "Verkaufseinstellungen gespeichert",
+        "saveFailed": "Deine Verkaufseinstellungen konnten nicht gespeichert werden."
       }
     },
     "oauthconsent": {

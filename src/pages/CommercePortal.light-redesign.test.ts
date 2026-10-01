@@ -57,8 +57,9 @@ describe('AgentConnectCard is a light elevated card with a loud CTA (VTID-04055)
     expect(src).not.toContain('text-slate-100');
   });
 
-  it('carries a "Recommended" badge distinct from the status pill', () => {
-    expect(src).toContain("t('screens.commerceportal.agentConnect.recommendedBadge')");
+  it('carries an "In development" badge distinct from the status pill, never "Recommended" (VTID-04795)', () => {
+    expect(src).toContain("t('screens.commerceportal.setupChooser.inDevelopment')");
+    expect(src).not.toContain('agentConnect.recommendedBadge');
     expect(src).toContain("t('screens.commerceportal.agentStatusPill')");
   });
 
