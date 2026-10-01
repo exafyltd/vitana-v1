@@ -11935,7 +11935,35 @@
       },
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "audiobook": {
+      "title": "Audiobook",
+      "albumTitle": "Maxina Audiobook · Episode {n}",
+      "episodeN": "Episode {n}",
+      "playerRegion": "Audiobook player",
+      "play": "Play",
+      "pause": "Pause",
+      "next": "Next track",
+      "previous": "Previous track",
+      "speed": "Speed {rate}×",
+      "sleepOff": "Sleep timer is off",
+      "sleepOn": "Sleep timer: {min} minutes",
+      "askVitana": "Ask Vitana",
+      "close": "Close player",
+      "dismiss": "Dismiss",
+      "progress": "Episode progress",
+      "loading": "Loading …",
+      "unavailable": "This episode isn't available to listen to in your language yet. Vitana is happy to explain it in a conversation.",
+      "network": "The episode couldn't be loaded.",
+      "empty": "No episodes have been published yet.",
+      "retry": "Try again",
+      "episodeDone": "Episode {n} done!",
+      "episodeDoneReward": "+2 VITANA INDEX – the next episode is already playing.",
+      "tryItNow": "Try it now",
+      "finished": "You've listened to the whole audiobook. Well done!",
+      "playAudiobook": "Play audiobook",
+      "playEpisode": "Play episode {n}"
+    }
   },
   "_pending_review": {}
 }

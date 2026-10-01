@@ -11714,6 +11714,34 @@
         },
         "payload": "Inhalt der Anfrage"
       }
+    },
+    "audiobook": {
+      "title": "Hörbuch",
+      "albumTitle": "Maxina Hörbuch · Folge {n}",
+      "episodeN": "Folge {n}",
+      "playerRegion": "Hörbuch-Player",
+      "play": "Abspielen",
+      "pause": "Pause",
+      "next": "Nächster Titel",
+      "previous": "Vorheriger Titel",
+      "speed": "Geschwindigkeit {rate}×",
+      "sleepOff": "Schlaf-Timer ist aus",
+      "sleepOn": "Schlaf-Timer: {min} Minuten",
+      "askVitana": "Vitana fragen",
+      "close": "Player schließen",
+      "dismiss": "Ausblenden",
+      "progress": "Fortschritt der Folge",
+      "loading": "Lädt …",
+      "unavailable": "Diese Folge gibt es in deiner Sprache noch nicht zum Anhören. Vitana erklärt sie dir gern im Gespräch.",
+      "network": "Die Folge konnte nicht geladen werden.",
+      "empty": "Es sind noch keine Folgen veröffentlicht.",
+      "retry": "Nochmal versuchen",
+      "episodeDone": "Folge {n} geschafft!",
+      "episodeDoneReward": "+2 VITANA INDEX – die nächste Folge läuft schon.",
+      "tryItNow": "Jetzt ausprobieren",
+      "finished": "Du hast das ganze Hörbuch gehört. Stark!",
+      "playAudiobook": "Hörbuch abspielen",
+      "playEpisode": "Folge {n} abspielen"
     }
   }
 }

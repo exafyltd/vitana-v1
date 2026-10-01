@@ -9,6 +9,7 @@ import { OnboardingNameForm } from '@/components/onboarding/OnboardingNameForm';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 import { useAuth } from '@/context/AuthProvider';
 import { t } from '@/lib/i18n-toast';
+import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
 
 // VTID-04760: 'start' — after the name form, a newcomer gets ONE clear action
 // (play Episode 1 of the Audiobook) instead of being dropped onto the feed.
@@ -26,6 +27,7 @@ export default function OnboardingWelcome() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const audiobook = useAudiobookPlayer(); // VTID-04761
   const { needsOnboarding, loading: onboardingLoading } = useOnboardingStatus();
   const [phase, setPhase] = useState<Phase>('speech');
   const [videoSrc, setVideoSrc] = useState('');
@@ -73,7 +75,17 @@ export default function OnboardingWelcome() {
     setPhase('start');
   };
 
-  const handlePlayEpisodeOne = () => navigate(AUDIOBOOK_START_ROUTE, { replace: true });
+  // Start the player inside this tap (mobile browsers only let audio start
+  // from a gesture), then open My Journey; the route param is the fallback
+  // when the player isn't mounted.
+  const handlePlayEpisodeOne = () => {
+    if (audiobook) {
+      void audiobook.start();
+      navigate('/autopilot', { replace: true });
+      return;
+    }
+    navigate(AUDIOBOOK_START_ROUTE, { replace: true });
+  };
   const handleLater = () => navigate(postOnboardingTarget, { replace: true });
 
   // Show nothing while checking onboarding status or redirecting away

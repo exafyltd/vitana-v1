@@ -11,6 +11,8 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
 import { GuidedModeProvider } from "@/context/GuidedModeProvider"; // VTID-03279 Guided Journey
+import { AudiobookPlayerProvider } from "@/context/AudiobookPlayerProvider"; // VTID-04761 Audiobook
+import { AudiobookMiniPlayer } from "@/components/audiobook/AudiobookMiniPlayer"; // VTID-04761
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
@@ -794,6 +796,8 @@ const App = () => {
                       from billingApi.ts on HTTP 402 and renders a single global PaywallModal.
                       Lives inside <BrowserRouter> so the modal's useNavigate works. */}
                   <GuidedModeProvider>{/* VTID-03279: Guided vs Full app mode */}
+                  <AudiobookPlayerProvider>{/* VTID-04761: Audiobook listening mode, app-wide */}
+                  <AudiobookMiniPlayer />
                   <PaywallProvider>
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
@@ -2300,6 +2304,7 @@ const App = () => {
                   </Suspense>
                   </GlobalErrorBoundary>
                   </PaywallProvider>{/* VTID-03107 */}
+                  </AudiobookPlayerProvider>{/* VTID-04761 */}
                   </GuidedModeProvider>{/* VTID-03279 */}
                   </GreetingProviderWrapper>
                   </LifeCompassPopupProvider>

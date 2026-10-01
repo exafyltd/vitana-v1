@@ -12,6 +12,8 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { useState, useMemo, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useAudiobookPlayer } from "@/context/AudiobookPlayerProvider"; // VTID-04761
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton, type SearchDropdownItem } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -153,7 +155,23 @@ function IndexNowCard() {
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { isGuided } = useGuidedMode(); // VTID-03280: show guided catalog below start view
+  const { isGuided, mode, setMode } = useGuidedMode(); // VTID-03280: show guided catalog below start view
+  const audiobook = useAudiobookPlayer(); // VTID-04761
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // VTID-04761: `?audiobook=play` (the welcome's "Play Episode 1", Vitana's
+  // first-time CTA, deep links) opens the Audiobook view and starts the
+  // player at the next unheard episode. Without a fresh tap the browser may
+  // hold playback; the mini player then waits on its Play button.
+  const audiobookParam = searchParams.get('audiobook');
+  useEffect(() => {
+    if (audiobookParam !== 'play' || !audiobook || !user) return;
+    if (mode !== 'guided') void setMode('guided');
+    if (!audiobook.active) void audiobook.start();
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('audiobook');
+    setSearchParams(nextParams, { replace: true });
+  }, [audiobookParam, audiobook, user, mode, setMode, searchParams, setSearchParams]);
   const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
@@ -268,6 +286,12 @@ export default function AutopilotDashboard() {
   const nextSession = guidedJourneyProgress.nextSession;
   const handleStartNextSession = () => {
     if (!nextSession) return;
+    // VTID-04761: the hero's "Play episode N" plays the Audiobook from the
+    // next unheard episode — listening, no live voice session.
+    if (audiobook) {
+      void audiobook.start({ episode: nextSession.session });
+      return;
+    }
     activateOrb(nextSession.topic.topicId);
     markSessionListenedInJourneyState(
       queryClient,

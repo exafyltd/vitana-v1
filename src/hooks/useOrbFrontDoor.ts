@@ -27,6 +27,11 @@ function isMaxinaLandingRoute(pathname: string): boolean {
 
 type OrbWidget = { show?: () => void };
 
+/** True while the Audiobook mini player is on screen (VTID-04761). */
+function isAudiobookPlaying(): boolean {
+  return typeof document !== "undefined" && !!document.querySelector('[data-testid="audiobook-mini-player"]');
+}
+
 function tryShowOrb(): boolean {
   const orb = (window as unknown as { VitanaOrb?: OrbWidget }).VitanaOrb;
   if (!orb || typeof orb.show !== "function") return false;
@@ -86,6 +91,13 @@ export function useOrbFrontDoor() {
     if (tenantSlug !== "maxina") return;
     if (!isMaxinaLandingRoute(location.pathname)) return;
     if (shownForUserRef.current === userId) return;
+    // VTID-04761: a member arriving to LISTEN (the welcome's Play Episode 1,
+    // ?audiobook=play) must not get the live voice overlay on top of the
+    // Audiobook. Count it as this session's front door.
+    if (new URLSearchParams(location.search).get("audiobook") === "play" || isAudiobookPlaying()) {
+      shownForUserRef.current = userId;
+      return;
+    }
     if (!orbAuthenticated) return;
 
     // Try once immediately; if the external widget script hasn't injected
@@ -117,6 +129,7 @@ export function useOrbFrontDoor() {
     tenantSlug,
     needsOnboarding,
     location.pathname,
+    location.search,
     orbAuthenticated,
   ]);
 }
