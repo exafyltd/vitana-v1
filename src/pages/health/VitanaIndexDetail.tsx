@@ -49,6 +49,7 @@ import {
 import { cn } from "@/lib/utils";
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 
 /*
  * VTID-04773 — "Understand index" (from the profile's Vitana Index card).
@@ -550,6 +551,9 @@ function HowItWorks({ onJourney }: { onJourney: () => void }) {
 /* ── Page ─────────────────────────────────────────────────────────── */
 
 export default function VitanaIndexDetail() {
+  // Subscribe to the language context: non-German catalogs load lazily, and
+  // without this the page keeps the German fallback it rendered first with.
+  useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { index, isLoading, isError, refetch } = useVitanaIndex();
