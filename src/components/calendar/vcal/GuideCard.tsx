@@ -43,7 +43,7 @@ function Action({ label, onClick, primary }: { label: string; onClick: () => voi
     <button
       type="button"
       onClick={onClick}
-      className={`h-9 rounded-full px-4 text-sm ${primary ? "font-medium" : ""}`}
+      className={`h-9 rounded-full px-4 text-sm ${primary ? "font-semibold" : ""}`}
       style={primary ? { background: SURFACE.primary, color: "#FFFFFF" } : { background: "transparent", color: SURFACE.primary }}
     >
       {label}
@@ -57,10 +57,10 @@ export function GuideCard({ guidance, actions }: { guidance: Guidance; actions: 
     <div className="flex flex-col gap-2.5 rounded-2xl px-4 py-3" style={{ background: "#F3F2FF", color: SURFACE.ink }} data-testid="vcal-guide" data-kind={guidance.kind}>
       <div className="flex items-start gap-2">
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-[13px]" style={{ color: SURFACE.primary }}>
+          <span className="text-xs" style={{ color: SURFACE.primary }}>
             ✨ {t("vcal.guide.eyebrow")}
           </span>
-          <span className="text-[15px] leading-snug">{text}</span>
+          <span className="text-sm leading-snug">{text}</span>
           {sub && <span className="text-sm" style={{ color: SURFACE.muted }}>{sub}</span>}
         </div>
         {actions.onDismiss && (

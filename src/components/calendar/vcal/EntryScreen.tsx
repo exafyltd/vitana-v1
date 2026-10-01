@@ -9,7 +9,7 @@ import { fmtDate } from "@/lib/locale-format";
 import { activateOrb } from "@/lib/orbActivate";
 import type { CalendarWindowItem } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
-import { HEADING_FONT, itemEmoji, sourceLabel } from "./labels";
+import { itemEmoji, sourceLabel } from "./labels";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
 
 interface Props {
@@ -68,7 +68,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
       aria-modal="true"
       aria-label={e.title}
       className="fixed inset-0 z-[60] flex flex-col overflow-y-auto"
-      style={{ background: SURFACE.page, color: SURFACE.ink, fontFamily: "Nunito, system-ui, sans-serif" }}
+      style={{ background: SURFACE.page, color: SURFACE.ink }}
       data-testid="vcal-entry-screen"
     >
       <header className="flex flex-col gap-3.5 rounded-b-[36px] px-[22px] pb-7 pt-5 text-white" style={{ background: style.accent }}>
@@ -83,16 +83,16 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             ✕
           </button>
           {source && (
-            <span className="truncate rounded-full bg-white/20 px-3 py-1.5 text-[13px]">{source}</span>
+            <span className="truncate rounded-full bg-white/20 px-3 py-1.5 text-xs">{source}</span>
           )}
         </div>
-        <div aria-hidden className="text-[76px] leading-none">
+        <div aria-hidden className="text-7xl leading-none">
           {itemEmoji(item)}
         </div>
-        <h1 className="m-0 text-[34px] font-medium leading-tight" style={{ fontFamily: HEADING_FONT }}>
+        <h1 className="m-0 text-xl font-bold leading-tight tracking-tight">
           {e.title}
         </h1>
-        <div className="flex flex-col gap-1 text-[17px]">
+        <div className="flex flex-col gap-1 text-base">
           <span>📅 {fmtDate(item.start_time, { weekday: "long", day: "numeric", month: "long" })}</span>
           <span>
             🕗 {timeRange(item.start_time, item.end_time)}
@@ -101,11 +101,11 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           {e.rrule && <span>🔁 {t("vcal.recurring")}</span>}
         </div>
         {done ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-[15px]" style={{ color: style.ink }}>
+          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ✅ {t("vcal.done")}
           </span>
         ) : future ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-[15px]" style={{ color: style.ink }}>
+          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ⏳ {relativeIn(item.start_time, now)}
           </span>
         ) : null}
@@ -113,14 +113,14 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
 
       <div className="flex flex-1 flex-col gap-5 px-[22px] py-5">
         {item.work && (
-          <p className="m-0 rounded-2xl px-4 py-3 text-[15px]" style={{ background: style.bg, color: style.ink }} data-testid="vcal-work-note">
+          <p className="m-0 rounded-2xl px-4 py-3 text-sm" style={{ background: style.bg, color: style.ink }} data-testid="vcal-work-note">
             {t("vcal.work.readOnly")}
           </p>
         )}
 
         {e.description && (
           <section className="flex flex-col gap-1.5">
-            <h2 className="text-[13px]" style={{ color: SURFACE.muted }}>
+            <h2 className="text-xs" style={{ color: SURFACE.muted }}>
               {t("vcal.entry.about")}
             </h2>
             <p className="m-0 whitespace-pre-line text-base leading-relaxed">{e.description}</p>
@@ -128,7 +128,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         )}
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-[13px]" style={{ color: SURFACE.muted }}>
+          <h2 className="text-xs" style={{ color: SURFACE.muted }}>
             {t("vcal.entry.reminders")}
           </h2>
           <div className="flex flex-wrap gap-2" data-testid="vcal-reminders">
@@ -154,7 +154,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             type="button"
             disabled={completing}
             onClick={() => onComplete!(item)}
-            className="h-14 rounded-[18px] text-lg font-medium text-white disabled:opacity-60"
+            className="h-14 rounded-[18px] text-lg font-semibold text-white disabled:opacity-60"
             style={{ background: style.accent }}
             data-testid="vcal-complete"
           >
@@ -163,7 +163,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         )}
         {canMove && picking && (
           <div className="flex flex-col gap-2.5 rounded-[18px] p-4" style={{ background: style.bg }} data-testid="vcal-move-picker">
-            <label htmlFor="vcal-move-when" className="text-[13px]" style={{ color: style.ink }}>
+            <label htmlFor="vcal-move-when" className="text-xs" style={{ color: style.ink }}>
               {t("vcal.move.title")}
             </label>
             <input
@@ -180,7 +180,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               <button
                 type="button"
                 onClick={() => setPicking(false)}
-                className="h-12 rounded-2xl text-[15px]"
+                className="h-12 rounded-2xl text-sm"
                 style={{ background: SURFACE.track }}
               >
                 {t("vcal.move.cancel")}
@@ -189,7 +189,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 type="button"
                 disabled={!pickedValid || moving}
                 onClick={() => picked && onMove!(item, picked)}
-                className="h-12 rounded-2xl text-[15px] font-medium text-white disabled:opacity-60"
+                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
                 style={{ background: style.accent }}
                 data-testid="vcal-move-confirm"
               >
@@ -202,7 +202,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <button
             type="button"
             onClick={() => setPicking(true)}
-            className="h-[52px] rounded-2xl text-[15px]"
+            className="h-[52px] rounded-2xl text-sm"
             style={{ background: SURFACE.track }}
             data-testid="vcal-move"
           >
@@ -211,14 +211,14 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         )}
         <div className="grid grid-cols-2 gap-2.5">
           {e.location && (
-            <button type="button" onClick={openDirections} className="h-[52px] rounded-2xl text-[15px]" style={{ background: SURFACE.track }}>
+            <button type="button" onClick={openDirections} className="h-[52px] rounded-2xl text-sm" style={{ background: SURFACE.track }}>
               🗺️ {t("vcal.entry.directions")}
             </button>
           )}
           <button
             type="button"
             onClick={() => activateOrb()}
-            className={`h-[52px] rounded-2xl text-[15px] ${e.location ? "" : "col-span-2"}`}
+            className={`h-[52px] rounded-2xl text-sm ${e.location ? "" : "col-span-2"}`}
             style={{ background: SURFACE.track }}
           >
             🎙️ {t("vcal.entry.askVitana")}

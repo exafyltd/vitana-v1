@@ -1,9 +1,10 @@
 /**
- * VTID-04681 — the calendar uses two font weights: normal and medium.
+ * VTID-04812 — the calendar looks like the rest of the app.
  *
- * The first redesign set almost every label in bold or extra-bold, so nothing
- * stood out. This fails the build if a heavier weight comes back into any
- * calendar screen.
+ * It uses the app's own font and the standard Tailwind text scale and weights
+ * that News, Postfach and Reise use. A separate font, a pixel size outside the
+ * scale, or a weight the other screens never use fails the build. (The app
+ * icons in ProviderLogos copy the real icons and are exempt.)
  */
 import fs from "fs";
 import path from "path";
@@ -14,7 +15,7 @@ const DIR = __dirname;
 const FILES = [
   ...fs
     .readdirSync(DIR)
-    .filter((f) => f.endsWith(".tsx") && !f.includes(".test."))
+    .filter((f) => f.endsWith(".tsx") && !f.includes(".test.") && f !== "ProviderLogos.tsx")
     .map((f) => path.join(DIR, f)),
   path.resolve(DIR, "../../../pages/Calendar.tsx"),
   path.resolve(DIR, "../MobileEventForm.tsx"),
@@ -26,12 +27,25 @@ describe("calendar typography", () => {
   });
 
   for (const file of FILES) {
-    it(`${path.basename(file)} uses no bold, extra-bold or semibold`, () => {
+    it(`${path.basename(file)} uses the app's font, sizes and weights`, () => {
       const src = fs.readFileSync(file, "utf8");
-      expect(src).not.toMatch(/\bfont-(bold|extrabold|semibold|black)\b/);
-      for (const m of src.matchAll(/fontWeight:\s*(\d+)/g)) expect(Number(m[1])).toBeLessThanOrEqual(500);
+      expect(src, "its own font family").not.toMatch(/fontFamily|font-\[|Nunito|fonts\.googleapis/);
+      expect(src, "a pixel size outside the Tailwind text scale").not.toMatch(/text-\[\d+(\.\d+)?px\]/);
+      expect(src, "inline font size or weight").not.toMatch(/fontSize\s*:|fontWeight\s*:/);
+      expect(src, "a weight the other screens do not use").not.toMatch(/\bfont-(thin|extralight|light|extrabold|black)\b/);
     });
   }
+
+  it("the page title is the app's standard header: text-lg font-bold tracking-tight", () => {
+    const page = fs.readFileSync(path.resolve(DIR, "../../../pages/Calendar.tsx"), "utf8");
+    expect(page).toMatch(/text-lg font-bold[^"]*tracking-tight/);
+  });
+
+  it("has no text or microphone bar — entries come from + and from Vitana by voice", () => {
+    const page = fs.readFileSync(path.resolve(DIR, "../../../pages/Calendar.tsx"), "utf8");
+    expect(page).not.toMatch(/vcal-voice-add|voiceAdd|🎙/);
+    expect(page).toMatch(/data-testid="vcal-add"/);
+  });
 });
 
 describe("adding Vitana to a calendar app by link (VTID-04682)", () => {

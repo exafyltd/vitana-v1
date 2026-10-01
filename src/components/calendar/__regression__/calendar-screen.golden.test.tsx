@@ -325,13 +325,13 @@ describe("the /calendar page", () => {
     expectGolden(G, "page.moveErrors", reasons);
   });
 
-  it("errors show a retry; the voice button opens Vitana", async () => {
+  it("errors show a retry; there is no text or microphone bar — entries come from + and from Vitana by voice", async () => {
     h.fetchCalendarWindow.mockRejectedValue(new Error("down"));
     const { container } = page();
     await screen.findByRole("alert");
     expectGolden(G, "page.error", outline(screen.getByRole("alert")));
-    fireEvent.click(screen.getByTestId("vcal-voice-add"));
-    expect(h.activateOrb).toHaveBeenCalled();
+    expect(screen.queryByTestId("vcal-voice-add")).toBeNull();
+    expect(screen.getByTestId("vcal-add")).toBeTruthy();
     expect(container.querySelector("[data-testid=vcal-entry]")).toBeNull();
   });
 

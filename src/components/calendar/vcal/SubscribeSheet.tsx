@@ -15,7 +15,6 @@ import { notify, notifyError, t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import { createFeedLink, fetchFeedStatus, revokeFeedLink, webcalUrl } from "@/lib/calendar-window-client";
 import { SURFACE } from "./theme";
-import { HEADING_FONT } from "./labels";
 import { GoogleSyncCard, QuietHoursNote } from "./GoogleSyncCard";
 
 export type SubscribeProvider = "google" | "apple" | "outlook";
@@ -87,12 +86,12 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
         aria-modal="true"
         aria-labelledby="vcal-subscribe-title"
         className="flex max-h-[90vh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-t-[28px] p-6 pb-28 md:rounded-[28px] md:pb-6"
-        style={{ background: SURFACE.page, color: SURFACE.ink, fontFamily: "Nunito, system-ui, sans-serif" }}
+        style={{ background: SURFACE.page, color: SURFACE.ink }}
         onClick={(e) => e.stopPropagation()}
         data-testid="vcal-subscribe-sheet"
       >
         <div className="flex items-start justify-between gap-3">
-          <h2 id="vcal-subscribe-title" className="m-0 text-[22px] font-medium" style={{ fontFamily: HEADING_FONT }}>
+          <h2 id="vcal-subscribe-title" className="m-0 text-lg font-bold leading-tight tracking-tight">
             {provider ? t(`vcal.subscribe.titleFor.${provider}`) : t("vcal.subscribe.title")}
           </h2>
           <button
@@ -106,14 +105,14 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
           </button>
         </div>
 
-        <p className="m-0 text-[15px] leading-relaxed">{provider ? t(`vcal.subscribe.introFor.${provider}`) : t("vcal.subscribe.intro")}</p>
+        <p className="m-0 text-sm leading-relaxed">{provider ? t(`vcal.subscribe.introFor.${provider}`) : t("vcal.subscribe.intro")}</p>
         <p className="m-0 rounded-2xl bg-white px-4 py-3 text-sm" style={{ color: SURFACE.muted }}>
           🔒 {t("vcal.subscribe.privacy")}
         </p>
 
         {freshUrl ? (
           <div className="flex flex-col gap-2.5" data-testid="vcal-subscribe-fresh">
-            <label className="text-[13px]" style={{ color: SURFACE.muted }} htmlFor="vcal-feed-url">
+            <label className="text-xs" style={{ color: SURFACE.muted }} htmlFor="vcal-feed-url">
               {t("vcal.subscribe.yourLink")}
             </label>
             <input
@@ -132,7 +131,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
                 href={providerAddUrl(provider, freshUrl)}
                 target={provider === "apple" ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="flex h-14 items-center justify-center rounded-[18px] px-3 text-center text-base font-medium text-white"
+                className="flex h-14 items-center justify-center rounded-[18px] px-3 text-center text-base font-semibold text-white"
                 style={{ background: SURFACE.primary }}
                 data-testid="vcal-subscribe-open-provider"
               >
@@ -140,13 +139,13 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
               </a>
             )}
             <div className="grid grid-cols-2 gap-2.5">
-              <button type="button" onClick={copy} className="h-[52px] rounded-2xl text-[15px]" style={{ background: SURFACE.track }}>
+              <button type="button" onClick={copy} className="h-[52px] rounded-2xl text-sm" style={{ background: SURFACE.track }}>
                 {t("vcal.subscribe.copy")}
               </button>
               {!provider && (
                 <a
                   href={webcalUrl(freshUrl)}
-                  className="flex h-[52px] items-center justify-center rounded-2xl px-3 text-center text-[15px] font-medium leading-tight text-white"
+                  className="flex h-[52px] items-center justify-center rounded-2xl px-3 text-center text-sm font-semibold leading-tight text-white"
                   style={{ background: SURFACE.primary }}
                 >
                   {t("vcal.subscribe.openApp")}
@@ -155,7 +154,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
             </div>
           </div>
         ) : active ? (
-          <p className="m-0 text-[15px]" data-testid="vcal-subscribe-active">
+          <p className="m-0 text-sm" data-testid="vcal-subscribe-active">
             ✓ {t("vcal.subscribe.activeSince", { date: fmtDate(status.data!.created_at!, { day: "numeric", month: "long", year: "numeric" }) })}
           </p>
         ) : null}
@@ -165,7 +164,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
             type="button"
             disabled={busy || status.isLoading}
             onClick={() => create.mutate()}
-            className="h-14 rounded-[18px] text-base font-medium text-white disabled:opacity-60"
+            className="h-14 rounded-[18px] text-base font-semibold text-white disabled:opacity-60"
             style={{ background: SURFACE.primary }}
             data-testid="vcal-subscribe-create"
           >
@@ -176,7 +175,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
               type="button"
               disabled={busy}
               onClick={() => revoke.mutate()}
-              className="h-12 rounded-[18px] text-[15px] disabled:opacity-60"
+              className="h-12 rounded-[18px] text-sm disabled:opacity-60"
               style={{ background: SURFACE.track }}
               data-testid="vcal-subscribe-revoke"
             >

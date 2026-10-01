@@ -195,9 +195,6 @@
     "    #reminders-section",
     "    #work-section",
     "    #calendars-section",
-    "    #vcal-voice-add <button>",
-    "       „Bluttest Freitag 8 Uhr, nüchtern“ – sag's Vitana",
-    "      (hidden) 🎙️",
     "    #vcal-add <button> [Neuer Eintrag]",
     "      (hidden) +"
   ],
@@ -260,9 +257,6 @@
     "    #reminders-section",
     "    #work-section",
     "    #calendars-section",
-    "    #vcal-voice-add <button>",
-    "       «تحليل دم الجمعة الساعة 8 صائمًا» – أخبر فيتانا",
-    "      (hidden) 🎙️",
     "    #vcal-add <button> [إدخال جديد]",
     "      (hidden) +"
   ],
@@ -391,9 +385,6 @@
     "    #reminders-section",
     "    #work-section",
     "    #calendars-section",
-    "    #vcal-voice-add <button>",
-    "       „Bluttest Freitag 8 Uhr, nüchtern“ – sag's Vitana",
-    "      (hidden) 🎙️",
     "    #vcal-add <button> [Neuer Eintrag]",
     "      (hidden) +"
   ],

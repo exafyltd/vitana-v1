@@ -14,7 +14,6 @@
     "doneToast": "C'est fait, bravo ! 🎉",
     "doneError": "Impossible d'enregistrer pour le moment.",
     "recurring": "Se répète",
-    "voiceAdd": "« Prise de sang vendredi 8 h, à jeun » – dis-le à Vitana",
     "nextUp": "Ensuite · {when}",
     "progress": "{done} sur {total} faits aujourd'hui",
     "progressAllDone": "Tout est fait – profite du reste de ta journée ✨",

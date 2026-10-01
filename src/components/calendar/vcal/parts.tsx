@@ -48,12 +48,12 @@ export function EntryCard({ item, onOpen, compact }: EntryCardProps) {
         {itemEmoji(item)}
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
-        {compact && <span className="text-[11px]" style={{ color: SURFACE.muted }}>{hhmm(item.start_time)}</span>}
-        <span className={`truncate font-medium ${compact ? "text-[13px]" : "text-[17px]"}`} style={{ textDecoration: done ? "line-through" : undefined }}>
+        {compact && <span className="text-xs" style={{ color: SURFACE.muted }}>{hhmm(item.start_time)}</span>}
+        <span className={`truncate font-semibold ${compact ? "text-xs" : "text-base"}`} style={{ textDecoration: done ? "line-through" : undefined }}>
           {e.title}
         </span>
         {!compact && (
-          <span className="truncate text-[13px]" style={{ color: SURFACE.muted }}>
+          <span className="truncate text-xs" style={{ color: SURFACE.muted }}>
             {sub}
           </span>
         )}
@@ -72,7 +72,7 @@ export function MilestoneMarker({ item, onOpen, compact }: EntryCardProps) {
     <button
       type="button"
       onClick={() => onOpen(item)}
-      className={`flex w-full items-center gap-2 rounded-xl text-start ${compact ? "px-1 py-1 text-[12px]" : "px-1 py-1.5 text-sm"}`}
+      className={`flex w-full items-center gap-2 rounded-xl text-start ${compact ? "px-1 py-1 text-xs" : "px-1 py-1.5 text-sm"}`}
       style={{ color: SURFACE.muted }}
       data-testid="vcal-milestone"
     >
@@ -85,7 +85,7 @@ export function MilestoneMarker({ item, onOpen, compact }: EntryCardProps) {
 export function BusyCard({ item, compact }: { item: CalendarWindowItem; compact?: boolean }) {
   return (
     <div
-      className={`flex w-full items-center gap-2 rounded-2xl ${compact ? "px-2.5 py-2 text-[12px]" : "px-3.5 py-3 text-sm"}`}
+      className={`flex w-full items-center gap-2 rounded-2xl ${compact ? "px-2.5 py-2 text-xs" : "px-3.5 py-3 text-sm"}`}
       style={{
         background: `repeating-linear-gradient(135deg, ${SURFACE.busyBg}, ${SURFACE.busyBg} 8px, #E6E1DB 8px, #E6E1DB 16px)`,
         color: SURFACE.busyInk,
@@ -116,7 +116,7 @@ export function ViewSwitch({ view, onChange }: { view: CalendarView; onChange: (
             role="tab"
             aria-selected={active}
             onClick={() => onChange(v)}
-            className={`h-9 flex-1 rounded-full text-[15px] transition-colors ${active ? "font-medium" : ""}`}
+            className={`h-9 flex-1 rounded-full text-sm transition-colors ${active ? "font-semibold" : ""}`}
             style={{
               background: active ? "#FFFFFF" : "transparent",
               color: active ? SURFACE.ink : SURFACE.muted,
