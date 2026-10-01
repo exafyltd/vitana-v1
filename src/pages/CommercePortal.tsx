@@ -41,8 +41,7 @@ import {
   PackagePlus,
   ShieldCheck,
   Sparkles,
-  Store,
-  Workflow,
+  UserPlus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
@@ -68,9 +67,12 @@ import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
 import { businessHomeFor, setActiveOrgId } from '@/lib/business-mode';
 
+// VTID-04791: the supplier's journey in their words — account, products,
+// verification — not the API-connection pipeline (mapping, sandbox, release),
+// which lives inside a connection's own drawer.
 const STEPS = [
-  { icon: Store, title: 'screens.commerceportal.step1Title', body: 'screens.commerceportal.step1Body' },
-  { icon: Workflow, title: 'screens.commerceportal.step2Title', body: 'screens.commerceportal.step2Body' },
+  { icon: UserPlus, title: 'screens.commerceportal.step1Title', body: 'screens.commerceportal.step1Body' },
+  { icon: PackagePlus, title: 'screens.commerceportal.step2Title', body: 'screens.commerceportal.step2Body' },
   { icon: ShieldCheck, title: 'screens.commerceportal.step3Title', body: 'screens.commerceportal.step3Body' },
 ] as const;
 
@@ -437,6 +439,7 @@ export default function CommercePortal() {
                 {t('screens.commerceportal.guestCta')}
               </Button>
             </div>
+            <p className="mt-3 text-xs text-muted-foreground">{t('screens.commerceportal.guestCtaHint')}</p>
           </div>
         ) : hasOrgs ? (
           heroCopy(false)
