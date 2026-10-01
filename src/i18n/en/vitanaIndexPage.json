@@ -70,7 +70,10 @@
       "streakBody": "Consistency is rewarded — day after day.",
       "balanceTitle": "Balance",
       "balanceBody": "When one pillar is far behind the others, it dampens the total. Balanced counts for more.",
-      "journeyCta": "See your 90-day journey"
+      "journeyCta": "See your 90-day journey",
+      "_pending_review": {
+        "balanceTitle": true
+      }
     }
   }
 }
