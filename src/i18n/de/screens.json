@@ -9794,7 +9794,11 @@
       "paymentSuccessful": "Zahlung erfolgreich!",
       "viewAllMyTickets": "Alle meine Tickets anzeigen",
       "discoverMoreEvents": "Weitere Events entdecken",
-      "yourTicketHasConfirmedConfirmationEmail": "Dein Ticket wurde bestätigt. Eine Bestätigungs-E-Mail wurde an {value0} gesendet."
+      "yourTicketHasConfirmedConfirmationEmail": "Dein Ticket wurde bestätigt. Eine Bestätigungs-E-Mail wurde an {value0} gesendet.",
+      "processingTitle": "Deine Zahlung wird verarbeitet",
+      "processingBody": "Das dauert normalerweise nur wenige Sekunden. Dein Ticket erscheint unter „Meine Tickets“, sobald die Zahlung bestätigt ist.",
+      "checkAgain": "Erneut prüfen",
+      "ticketConfirmed": "Dein Ticket wurde bestätigt."
     },
     "legal": {
       "deleteAccount": "Konto löschen",

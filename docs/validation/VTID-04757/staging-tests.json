@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04757",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/tickets/success?purchase_id=00000000-0000-0000-0000-000000000000",
+      "expect_status": 200,
+      "reason": "the rewritten ticket confirmation page still loads on staging (public route, read-only; an unknown purchase id only renders its not-found state)" },
+    { "kind": "existing", "ref": "npx vitest run src/lib/ticket-checkout-logic.test.ts", "cwd": ".",
+      "reason": "pins the checkout/webhook/success-page contracts and the pricing logic; the purchase flow itself writes, so it is covered by Vitest and not submitted on staging" }
+  ]
+}

@@ -10,26 +10,18 @@
     "_pending_review": {
       "dashboard": true,
       "results": true,
-      "health": true,
-      "appointments": true,
-      "patients": true,
-      "schedule": true,
-      "settings": true,
-      "overview": true,
-      "team": true,
-      "orders": true,
-      "resultsInbox": true
+      "health": true
     },
     "dashboard": "Dashboard",
     "results": "Results",
     "health": "Health",
-    "appointments": "Appointments",
+    "appointments": "Rendez-vous",
     "patients": "Patients",
-    "schedule": "Schedule",
-    "settings": "Settings",
-    "overview": "Overview",
-    "team": "Team",
-    "orders": "Orders",
-    "resultsInbox": "Inbox"
+    "schedule": "Planning",
+    "settings": "Paramètres",
+    "overview": "Aperçu",
+    "team": "Équipe",
+    "orders": "Commandes",
+    "resultsInbox": "Boîte de réception"
   }
 }
