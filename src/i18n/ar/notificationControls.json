@@ -16,14 +16,6 @@
       "filterOn": true,
       "filterOff": true,
       "filterNew": true,
-      "noMatch": true,
-      "audienceCount": true,
-      "newType": true,
-      "inCategory": true,
-      "noCategory": true,
-      "cannotEnableEnglish": true,
-      "history": true,
-      "historyEmpty": true,
       "historyError": true,
       "switchedOn": true,
       "switchedOff": true,
@@ -94,7 +86,7 @@
     "filterOn": "Switched on only",
     "filterOff": "Switched off only",
     "filterNew": "Newly added",
-    "noMatch": "No notification matches your search.",
+    "noMatch": "لا توجد إشعارات تطابق بحثك.",
     "audience": {
       "_pending_review": {
         "member": true,
@@ -107,7 +99,7 @@
       "developer": "To developers",
       "staff": "To staff"
     },
-    "audienceCount": "about {count} people",
+    "audienceCount": "حوالي {count} شخص",
     "groups": {
       "_pending_review": {
         "posts": true,
@@ -152,12 +144,12 @@
       "notLocalized": "English only",
       "unverified": "Not checked"
     },
-    "newType": "New – added switched off on first send",
-    "inCategory": "Members switch it via “{name}”",
-    "noCategory": "No member category – members cannot switch it off themselves",
-    "cannotEnableEnglish": "Can be switched on once its text is translated.",
-    "history": "History",
-    "historyEmpty": "Never changed.",
+    "newType": "جديد – أُضيف معطّلاً عند الإرسال الأول.",
+    "inCategory": "يمكن للأعضاء تبديله عبر “{name}”",
+    "noCategory": "لا توجد فئة أعضاء – لا يمكن للأعضاء إيقاف تشغيله بأنفسهم.",
+    "cannotEnableEnglish": "يمكن تشغيله بمجرد ترجمة نصه.",
+    "history": "السجل",
+    "historyEmpty": "لم يتغير أبدًا.",
     "historyError": "The history could not be loaded.",
     "switchedOn": "switched on",
     "switchedOff": "switched off",

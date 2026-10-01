@@ -1,104 +1,47 @@
 {
   "notificationControls": {
-    "_pending_review": {
-      "loading": true,
-      "loadError": true,
-      "summaryOn": true,
-      "summaryNew": true,
-      "summaryRule": true,
-      "summaryRuleText": true,
-      "statsErrorBanner": true,
-      "statsUnavailable": true,
-      "statsLine": true,
-      "lastSent": true,
-      "searchPlaceholder": true,
-      "filterAll": true,
-      "filterOn": true,
-      "filterOff": true,
-      "filterNew": true,
-      "noMatch": true,
-      "audienceCount": true,
-      "newType": true,
-      "inCategory": true,
-      "noCategory": true,
-      "cannotEnableEnglish": true,
-      "history": true,
-      "historyEmpty": true,
-      "historyError": true,
-      "switchedOn": true,
-      "switchedOff": true,
-      "system": true,
-      "automationsTitle": true,
-      "confirmOnTitle": true,
-      "confirmOffTitle": true
-    },
     "pages": {
       "notifications": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Notifications",
-        "description": "Switch every notification on or off, one by one. New notifications start off and reach nobody until you switch them on."
+        "title": "Powiadomienia",
+        "description": "Włączaj lub wyłączaj każde powiadomienie, jedno po drugim. Nowe powiadomienia są domyślnie wyłączone i nikogo nie osiągną, dopóki ich nie włączysz."
       },
       "categories": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Categories",
-        "description": "The groups members can switch on and off in their settings."
+        "title": "Kategorie",
+        "description": "Grupy, które członkowie mogą włączać i wyłączać w swoich ustawieniach."
       },
       "activity": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Activity",
-        "description": "What was really sent, read and held back in the last days."
+        "title": "Aktywność",
+        "description": "Co zostało faktycznie wysłane, przeczytane i wstrzymane w ostatnich dniach."
       },
       "compose": {
-        "_pending_review": {
-          "description": true
-        },
-        "description": "Send a message directly to specific members, a role, or everyone."
+        "description": "Wyślij wiadomość bezpośrednio do konkretnych członków, roli lub wszystkich."
       }
     },
-    "loading": "Loading …",
-    "loadError": "The notifications could not be loaded: {message}",
-    "summaryOn": "Switched on",
-    "summaryNew": "New, waiting for your decision",
-    "summaryRule": "How it is decided",
-    "summaryRuleText": "A notification goes out only if it is switched on here and the member has not switched its category off. Push additionally only with push on and outside quiet hours.",
-    "statsErrorBanner": "The numbers could not be read ({message}). The switches still work.",
-    "statsUnavailable": "Numbers not available right now",
-    "statsLine": "7 days: {sent} created · {pushed} pushed · {read} read · {blockedAdmin} held by the switch · {blockedMember} switched off by the member",
-    "lastSent": "last {when}",
-    "searchPlaceholder": "Search by name or type",
-    "filterAll": "All",
-    "filterOn": "Switched on only",
-    "filterOff": "Switched off only",
-    "filterNew": "Newly added",
-    "noMatch": "No notification matches your search.",
+    "loading": "Ładowanie…",
+    "loadError": "Nie udało się załadować powiadomień: {message}",
+    "summaryOn": "Włączone",
+    "summaryNew": "Nowe, czekające na twoją decyzję",
+    "summaryRule": "Jak zapada decyzja",
+    "summaryRuleText": "Powiadomienie jest wysyłane tylko, jeśli jest tutaj włączone i członek nie wyłączył jego kategorii. Powiadomienia push dodatkowo tylko przy włączonym pushu i poza godzinami ciszy.",
+    "statsErrorBanner": "Nie udało się odczytać liczb ({message}). Przełączniki nadal działają.",
+    "statsUnavailable": "Liczby niedostępne w tej chwili",
+    "statsLine": "7 dni: {sent} utworzonych · {pushed} wysłanych push · {read} przeczytanych · {blockedAdmin} wstrzymanych przez przełącznik · {blockedMember} wyłączonych przez członka",
+    "lastSent": "ostatnie {when}",
+    "searchPlaceholder": "Szukaj według nazwy lub typu",
+    "filterAll": "Wszystkie",
+    "filterOn": "Tylko włączone",
+    "filterOff": "Tylko wyłączone",
+    "filterNew": "Nowo dodane",
+    "noMatch": "Brak powiadomień pasujących do Twojego wyszukiwania.",
     "audience": {
-      "_pending_review": {
-        "member": true,
-        "admin": true,
-        "developer": true,
-        "staff": true
-      },
-      "member": "To members",
-      "admin": "To admins",
-      "developer": "To developers",
-      "staff": "To staff"
+      "member": "Do członków",
+      "admin": "Do administratorów",
+      "developer": "Do deweloperów",
+      "staff": "Do personelu"
     },
-    "audienceCount": "about {count} people",
+    "audienceCount": "około {count} osób",
     "groups": {
       "_pending_review": {
-        "posts": true,
-        "chat": true,
-        "orb": true,
-        "scheduled": true,
         "matches": true,
         "community": true,
         "meetups": true,
@@ -106,15 +49,12 @@
         "journey": true,
         "recommendations": true,
         "health": true,
-        "account": true,
-        "wallet": true,
-        "admin": true,
-        "other": true
+        "account": true
       },
-      "posts": "Posts & reactions",
-      "chat": "Chat",
+      "posts": "Posty i reakcje",
+      "chat": "Czat",
       "orb": "Vitana",
-      "scheduled": "Daily & weekly",
+      "scheduled": "Codzienne i tygodniowe",
       "matches": "Matches & connections",
       "community": "Community",
       "meetups": "Meetups",
@@ -123,33 +63,28 @@
       "recommendations": "Recommendations",
       "health": "Health",
       "account": "Account",
-      "wallet": "Wallet",
+      "wallet": "Portfel",
       "admin": "Admin",
-      "other": "Not sorted yet"
+      "other": "Nieposortowane"
     },
     "readiness": {
-      "_pending_review": {
-        "ready": true,
-        "notLocalized": true,
-        "unverified": true
-      },
-      "ready": "In the member's language",
-      "notLocalized": "English only",
-      "unverified": "Not checked"
+      "ready": "W języku użytkownika",
+      "notLocalized": "Tylko angielski",
+      "unverified": "Niezaznaczone"
     },
-    "newType": "New – added switched off on first send",
-    "inCategory": "Members switch it via “{name}”",
-    "noCategory": "No member category – members cannot switch it off themselves",
-    "cannotEnableEnglish": "Can be switched on once its text is translated.",
-    "history": "History",
-    "historyEmpty": "Never changed.",
-    "historyError": "The history could not be loaded.",
-    "switchedOn": "switched on",
-    "switchedOff": "switched off",
+    "newType": "Nowe – dodane, wyłączone przy pierwszym wysłaniu",
+    "inCategory": "Użytkownicy zmieniają to przez „{name}”",
+    "noCategory": "Brak kategorii użytkownika – użytkownicy nie mogą tego sami wyłączyć",
+    "cannotEnableEnglish": "Można włączyć, gdy tylko jego tekst zostanie przetłumaczony.",
+    "history": "Historia",
+    "historyEmpty": "Nigdy nie zmieniono.",
+    "historyError": "Nie udało się załadować historii.",
+    "switchedOn": "włączone",
+    "switchedOff": "wyłączone",
     "system": "System",
-    "automationsTitle": "Sent by automations – each has its own switch",
-    "confirmOnTitle": "Switch on “{name}”?",
-    "confirmOffTitle": "Switch off “{name}”?",
+    "automationsTitle": "Wysłane przez automatyzacje – każda ma swój własny przełącznik",
+    "confirmOnTitle": "Włączyć „{name}”?",
+    "confirmOffTitle": "Wyłączyć „{name}”?",
     "confirmOnBody": "Od teraz to trafia do {audience} – około {count} osób – za każdym razem, gdy zostanie uruchomione. Członkowie mogą to wyłączyć poprzez jego kategorię.",
     "confirmOnBodyNoCount": "Od teraz to trafia do {audience} za każdym razem, gdy zostanie uruchomione.",
     "confirmOffBody": "Nikt nie otrzyma tego powiadomienia, dopóki go ponownie nie włączysz. Już wysłane pozostają widoczne.",
@@ -166,11 +101,10 @@
     "toastFailed": "To się nie udało. Spróbuj ponownie.",
     "categoryGroups": {
       "_pending_review": {
-        "chat": true,
         "calendar": true,
         "community": true
       },
-      "chat": "Chat",
+      "chat": "Czat",
       "calendar": "Calendar",
       "community": "Community"
     },

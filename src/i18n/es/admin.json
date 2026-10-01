@@ -23,12 +23,8 @@
     },
     "notifications": {
       "tabs": {
-        "_pending_review": {
-          "notifications": true,
-          "categories": true
-        },
-        "notifications": "Notifications",
-        "categories": "Categories",
+        "notifications": "Notificaciones",
+        "categories": "Categorías",
         "activity": "Actividad",
         "compose": "Enviar"
       }

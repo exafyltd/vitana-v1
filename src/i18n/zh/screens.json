@@ -9920,7 +9920,17 @@
       "paymentSuccessful": "支付成功！",
       "viewAllMyTickets": "查看我的所有票券",
       "discoverMoreEvents": "发现更多活动",
-      "yourTicketHasConfirmedConfirmationEmail": "你的票券已确认。确认邮件已发送至{value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "你的票券已确认。确认邮件已发送至{value0}",
+      "_pending_review": {
+        "processingTitle": true,
+        "processingBody": true,
+        "checkAgain": true,
+        "ticketConfirmed": true
+      },
+      "processingTitle": "Your payment is being processed",
+      "processingBody": "This usually takes just a few seconds. Your ticket appears under My Tickets as soon as the payment is confirmed.",
+      "checkAgain": "Check again",
+      "ticketConfirmed": "Your ticket is confirmed."
     },
     "legal": {
       "deleteAccount": "删除账户",

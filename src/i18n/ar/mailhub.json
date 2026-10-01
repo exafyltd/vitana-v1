@@ -103,10 +103,7 @@
       "checking": "جارٍ التحقق …",
       "wrongPassword": "رفضت Apple تسجيل الدخول — تحقّق من Apple ID وكلمة السر الخاصة بالتطبيق",
       "unreachable": "لا يمكن الوصول إلى iCloud الآن — حاول بعد قليل",
-      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx",
-      "_pending_review": {
-        "passwordPlaceholder": true
-      }
+      "passwordPlaceholder": "xxxx-xxxx-xxxx-xxxx"
     },
     "android": {
       "title": "افتحه على هاتف Android",

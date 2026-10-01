@@ -78,33 +78,23 @@
         "suppliers": "Suppliers",
         "purchase-orders": "Purchase Orders",
         "receipts": "Goods Receipts",
-        "supplier-invoices": "Supplier Invoices",
-        "items": "Items",
-        "warehouses": "Warehouses",
-        "stock": "Stock & Moves",
+        "supplier-invoices": "Счета поставщиков",
+        "items": "Товары",
+        "warehouses": "Склады",
+        "stock": "Запасы и перемещения",
         "_pending_review": {
           "suppliers": true,
           "purchase-orders": true,
-          "receipts": true,
-          "supplier-invoices": true,
-          "items": true,
-          "warehouses": true,
-          "stock": true
+          "receipts": true
         }
       }
     },
     "legal": {
       "tabs": {
-        "contracts": "Contracts",
-        "obligations": "Obligations",
-        "compliance": "Compliance",
-        "e-signature": "E-Signature",
-        "_pending_review": {
-          "contracts": true,
-          "obligations": true,
-          "compliance": true,
-          "e-signature": true
-        }
+        "contracts": "Договоры",
+        "obligations": "Обязательства",
+        "compliance": "Соответствие",
+        "e-signature": "Электронная подпись"
       }
     },
     "reports": {
