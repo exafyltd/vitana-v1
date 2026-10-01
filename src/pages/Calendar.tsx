@@ -32,7 +32,6 @@ const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
 };
 import { SURFACE, isDone } from "@/components/calendar/vcal/theme";
 import { ViewSwitch, isMilestone } from "@/components/calendar/vcal/parts";
-import { HEADING_FONT } from "@/components/calendar/vcal/labels";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
 import { SubscribeSheet, type SubscribeProvider } from "@/components/calendar/vcal/SubscribeSheet";
@@ -51,8 +50,6 @@ import {
 import { hhmm, sameDay, stepAnchor, viewRange, type CalendarView } from "@/components/calendar/vcal/time";
 
 const VIEW_KEY = "vitana.calendar.view";
-const FONTS_ID = "vcal-fonts";
-const FONTS_HREF = "https://fonts.googleapis.com/css2?family=Nunito:wght@400;500&display=swap";
 const GUIDE_DISMISSED_KEY = "vitana.calendar.guide.dismissed";
 
 function localDayKey(d: Date): string {
@@ -76,18 +73,6 @@ function readSavedView(): CalendarView {
   }
 }
 
-/** Load the calendar's two typefaces once, only when the calendar is opened. */
-function useCalendarFonts() {
-  useEffect(() => {
-    if (document.getElementById(FONTS_ID)) return;
-    const link = document.createElement("link");
-    link.id = FONTS_ID;
-    link.rel = "stylesheet";
-    link.href = FONTS_HREF;
-    document.head.appendChild(link);
-  }, []);
-}
-
 function useNow(intervalMs = 60_000): Date {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
@@ -98,7 +83,6 @@ function useNow(intervalMs = 60_000): Date {
 }
 
 export default function CalendarPage() {
-  useCalendarFonts();
   const now = useNow();
   const { currentRole } = useRole();
   const queryClient = useQueryClient();
@@ -264,7 +248,7 @@ export default function CalendarPage() {
     <AppLayout>
       <div
         className="min-h-full pb-40"
-        style={{ background: SURFACE.page, color: SURFACE.ink, fontFamily: "Nunito, system-ui, sans-serif", fontWeight: 400 }}
+        style={{ background: SURFACE.page, color: SURFACE.ink }}
         data-testid="vcal-page"
       >
         <div className={`mx-auto flex w-full flex-col gap-4 px-4 pt-5 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
@@ -272,18 +256,18 @@ export default function CalendarPage() {
           <header className="flex items-start justify-between gap-3" data-testid="vcal-header">
             {view === "day" ? (
               <div className="flex min-w-0 items-end gap-3" data-testid="vcal-date">
-                <span className="text-[64px] font-medium leading-[0.85] tabular-nums" style={{ fontFamily: HEADING_FONT }}>
+                <span className="text-6xl font-bold leading-none tabular-nums tracking-tight">
                   {formatDate(anchor, "d")}
                 </span>
                 <span className="flex min-w-0 flex-col pb-0.5">
-                  <span className="truncate text-[22px] font-medium leading-tight">{formatDate(anchor, "EEEE")}</span>
-                  <span className="truncate text-[15px]" style={{ color: SURFACE.muted }}>
+                  <span className="truncate text-lg font-bold leading-tight tracking-tight">{formatDate(anchor, "EEEE")}</span>
+                  <span className="truncate text-sm" style={{ color: SURFACE.muted }}>
                     {isTodayAnchor ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}` : formatDate(anchor, "LLLL yyyy")}
                   </span>
                 </span>
               </div>
             ) : (
-              <h1 className="m-0 min-w-0 break-words text-[28px] font-medium leading-tight" style={{ fontFamily: HEADING_FONT }}>
+              <h1 className="m-0 min-w-0 break-words text-lg font-bold leading-tight tracking-tight">
                 {rangeTitle}
               </h1>
             )}
@@ -308,7 +292,7 @@ export default function CalendarPage() {
           </header>
 
           {view === "day" && query.isSuccess && (
-            <p className="-mt-2 m-0 text-[15px]" style={{ color: SURFACE.muted }} data-testid="vcal-summary">
+            <p className="-mt-2 m-0 text-sm" style={{ color: SURFACE.muted }} data-testid="vcal-summary">
               {daySummary}
             </p>
           )}
@@ -340,11 +324,11 @@ export default function CalendarPage() {
             </div>
           ) : query.isError ? (
             <div className="flex flex-col items-center gap-3 rounded-2xl bg-white px-6 py-8 text-center" role="alert" style={{ border: `1px solid ${SURFACE.line}` }}>
-              <span className="font-medium">{t("vcal.error")}</span>
+              <span className="font-semibold">{t("vcal.error")}</span>
               <button
                 type="button"
                 onClick={() => query.refetch()}
-                className="h-10 rounded-full px-5 font-medium text-white"
+                className="h-10 rounded-full px-5 font-semibold text-white"
                 style={{ background: SURFACE.primary }}
               >
                 {t("vcal.retry")}
@@ -369,26 +353,13 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        <div className="fixed inset-x-0 bottom-20 z-40 flex justify-center gap-2 px-4 md:bottom-6">
-          <button
-            type="button"
-            onClick={() => activateOrb()}
-            className="flex h-[52px] min-w-0 max-w-md flex-1 items-center gap-3 rounded-full bg-white ps-5 pe-1.5 text-start shadow-lg"
-            data-testid="vcal-voice-add"
-          >
-            <span className="flex-1 truncate text-[15px]" style={{ color: SURFACE.muted }}>
-              {t("vcal.voiceAdd")}
-            </span>
-            <span aria-hidden className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-white" style={{ background: "#C22F66" }}>
-              🎙️
-            </span>
-          </button>
+        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 flex justify-end px-4 md:bottom-6">
           {/* VTID-04536: add an entry by hand, saved through the gateway. */}
           <button
             type="button"
             onClick={() => setAddOpen(true)}
             aria-label={t("vcal.add.title")}
-            className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg"
+            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg"
             style={{ background: SURFACE.ink }}
             data-testid="vcal-add"
           >

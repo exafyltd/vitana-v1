@@ -25,7 +25,7 @@ export const MONTH_DOTS = 3;
 export function EmptyDay() {
   return (
     <div className="flex flex-col items-center gap-1 px-6 py-8 text-center" data-testid="vcal-empty">
-      <span className="text-[17px] font-medium">{t("vcal.empty.title")}</span>
+      <span className="text-base font-semibold">{t("vcal.empty.title")}</span>
       <span className="text-sm" style={{ color: SURFACE.muted }}>
         {t("vcal.empty.hint")}
       </span>
@@ -59,7 +59,7 @@ export function DayView({ items, onOpen }: { items: CalendarWindowItem[]; onOpen
         <ol className="flex flex-col gap-2">
           {shown.map((item) => (
             <li key={item.id} className="flex items-stretch gap-3">
-              <span className="w-12 shrink-0 whitespace-nowrap pt-3.5 text-[13px] tabular-nums" style={{ color: SURFACE.muted }}>
+              <span className="w-12 shrink-0 whitespace-nowrap pt-3.5 text-xs tabular-nums" style={{ color: SURFACE.muted }}>
                 {hhmm(item.start_time)}
               </span>
               <div className="min-w-0 flex-1">
@@ -103,10 +103,10 @@ export function WeekView({
             aria-label={fmtDate(day, { weekday: "long", day: "numeric", month: "long" })}
           >
             <button type="button" onClick={() => onPickDay(day)} className="flex items-baseline gap-2 text-start">
-              <span className="text-[13px]" style={{ color: SURFACE.muted }}>
+              <span className="text-xs" style={{ color: SURFACE.muted }}>
                 {formatDate(day, "EEE")}
               </span>
-              <span className={`text-lg ${isToday ? "font-medium" : ""}`}>{formatDate(day, "d")}</span>
+              <span className={`text-lg ${isToday ? "font-semibold" : ""}`}>{formatDate(day, "d")}</span>
             </button>
             {dayItems.length ? (
               <div className="flex flex-col gap-1.5">
@@ -116,7 +116,7 @@ export function WeekView({
                 {hidden > 0 && <MoreButton count={hidden} onClick={() => onPickDay(day)} />}
               </div>
             ) : (
-              <span className="text-[13px]" style={{ color: SURFACE.faint }}>
+              <span className="text-xs" style={{ color: SURFACE.faint }}>
                 {t("vcal.week.free")}
               </span>
             )}
@@ -145,7 +145,7 @@ export function MonthView({
   const month = anchor.getMonth();
   return (
     <div className="flex flex-col gap-1.5" data-testid="vcal-month">
-      <div className="grid grid-cols-7 gap-1 text-center text-[12px]" style={{ color: SURFACE.faint }}>
+      <div className="grid grid-cols-7 gap-1 text-center text-xs" style={{ color: SURFACE.faint }}>
         {Array.from({ length: 7 }, (_, i) => (
           <span key={i}>{formatDate(addDays(WEEKDAY_REF, i), "EEEEEE")}</span>
         ))}
@@ -166,7 +166,7 @@ export function MonthView({
               data-testid="vcal-month-day"
             >
               <span
-                className={`flex h-7 w-7 items-center justify-center rounded-full text-sm ${isToday ? "font-medium" : ""}`}
+                className={`flex h-7 w-7 items-center justify-center rounded-full text-sm ${isToday ? "font-semibold" : ""}`}
                 style={isToday ? { background: SURFACE.ink, color: "#FFFFFF" } : undefined}
               >
                 {formatDate(day, "d")}

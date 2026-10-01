@@ -61,7 +61,7 @@ export function Disclosure({ id, title, summary, tone = "normal", defaultOpen = 
         style={{ outlineColor: SURFACE.primary }}
       >
         <span className="flex min-w-0 flex-1 items-baseline gap-2">
-          <span className="shrink-0 text-[15px] font-medium">{title}</span>
+          <span className="shrink-0 text-sm font-semibold">{title}</span>
           <span className="truncate text-sm" style={{ color: tone === "attention" ? "#A3322C" : SURFACE.muted }}>
             {summary}
           </span>
