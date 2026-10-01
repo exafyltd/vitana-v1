@@ -10520,10 +10520,7 @@
         "deliveryEu": "Europe",
         "deliveryUs": "United States",
         "deliveryMena": "Middle East & North Africa",
-        "deliveryDaysUnit": "days",
-        "_pending_review": {
-          "reviewNote": true
-        }
+        "deliveryDaysUnit": "days"
       },
       "join": {
         "seoTitle": "Register your business with Vitanaland",
@@ -10684,11 +10681,6 @@
           "invalid_choice": "Allowed values: {options}.",
           "ships_to_required": "Name at least one delivery country or region.",
           "invalid_value": "This value isn't valid."
-        },
-        "_pending_review": {
-          "entrySubtitle": true,
-          "subtitle": true,
-          "done": true
         }
       },
       "signOut": "Sign out"
