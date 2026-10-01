@@ -86,6 +86,11 @@ describe("VitanaIndexDetail page (source check)", () => {
     expect(src).toMatch(/"Apple Health", "Samsung Health"/);
   });
 
+  it("re-renders when a lazily loaded language arrives (subscribes to the language context)", () => {
+    expect(src).toContain('import { useTranslation } from "@/hooks/useTranslation";');
+    expect(src).toMatch(/export default function VitanaIndexDetail\(\) \{[\s\S]{0,300}useTranslation\(\);/);
+  });
+
   it("follows the profile card's design language and stays RTL-safe", () => {
     expect(src).toContain("rounded-3xl border border-slate-100 bg-white");
     expect(src).toContain("hsl(200, 80%, 91%)");
