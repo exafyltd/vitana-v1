@@ -9,14 +9,14 @@
       "chapter_intelligence": "Inteligencija",
       "chapter_discovery": "Otkrivanje",
       "howItWorksTitle": "Ovako funkcioniše",
-      "howItWorksJourneyTitle": "Tvoja audio-knjiga",
-      "howItWorksJourneyBody": "Ovde ti Vitana, epizodu po epizodu, objašnjava kako ti Maxina pomaže da živiš zdravije i duže. Treba samo da slušaš.",
-      "howItWorksCatalogTitle": "Sve epizode",
-      "howItWorksCatalogBody": "Ovde ćeš naći sve epizode. Slušaj ih redom ili izaberi ono što te zanima.",
-      "clickSessionTitle": "Dodirni epizodu",
-      "clickSessionBody": "Izaberi epizodu – samo je dodirni i slušaj.",
+      "howItWorksJourneyTitle": "Vođeno putovanje",
+      "howItWorksJourneyBody": "Tvoje putovanje sa Maxinom počinje ovde. Ona te upoznaje i vodi te korak po korak.",
+      "howItWorksCatalogTitle": "Katalog sesija",
+      "howItWorksCatalogBody": "Ovde ćeš naći mnogo zanimljivih tema. Jednostavno izaberi šta te zanima!",
+      "clickSessionTitle": "Klikni na sesiju",
+      "clickSessionBody": "Izaberi sesiju koja te zanima – samo klikni!",
       "clickSessionPill": "Vitana ti objašnjava sasvim jednostavno.",
-      "sessionN": "Epizoda {n}",
+      "sessionN": "Sesija {n}",
       "statusReady": "Spremno",
       "whatItIs": "Šta je to",
       "userBenefit": "Tvoja korist",
@@ -24,14 +24,14 @@
       "tryThis": "Probaj ovo",
       "replay": "Ponovo",
       "startPractice": "Započni vežbu",
-      "backToJourney": "Nazad na audio-knjigu",
+      "backToJourney": "Nazad na putovanje",
       "close": "Zatvori",
       "congratsTitle": "Bravo!",
-      "congratsSubtitle": "Saslušao si ovu epizodu. Samo nastavi – korak po korak do svog cilja.",
+      "congratsSubtitle": "Upravo si završio ovu sesiju sa mnom. Samo nastavi – korak po korak do svog cilja.",
       "reward": "+{points} VITANA INDEKS",
-      "rewardCaption": "poena za ovu epizodu",
-      "loading": "Učitavanje epizoda …",
-      "empty": "Još nema objavljenih epizoda.",
+      "rewardCaption": "poena za ovu sesiju",
+      "loading": "Učitavanje kataloga …",
+      "empty": "Još nema objavljenih tema.",
       "practiceHeader": "Vežba",
       "openFeature": "Otvori funkciju",
       "markDone": "Označi kao završeno",
@@ -40,10 +40,7 @@
       "doneError": "Nije moguće sačuvati.",
       "statusDone": "Gotovo",
       "sessionProgress": "{done}/{total}",
-      "sessionComplete": "Epizoda završena",
-      "_pending_review": {},
-      "chapter_prolog": "Prolog",
-      "seasonLabel": "Sezona {n} · {name}"
+      "sessionComplete": "Sesija završena"
     },
     "common": {
       "languageToggleAriaLabel": "Jezik",
@@ -5353,12 +5350,12 @@
       "vitanaIndexUpSubtext": "Odličan posao!",
       "vitanaIndexDownSubtext": "Mali koraci se računaju.",
       "vitanaIndexStableSubtext": "Budi dosledan.",
-      "longevityJourneyEyebrow": "TVOJA AUDIO-KNJIGA O DUGOVEČNOSTI",
-      "longevityJourneyContinue": "Nastavi sa epizodom {session}: {topic}",
-      "longevityJourneyAllDone": "Saslušao si sve epizode. Bravo!",
+      "longevityJourneyEyebrow": "TVOJE PUTOVANJE KA DUGOVEČNOSTI",
+      "longevityJourneyContinue": "Nastavi sa Sesijom {session}: {topic}",
+      "longevityJourneyAllDone": "Završio si sve sesije. Svaka čast.",
       "longevityJourneyNextStepHeadline": "Tvoj sledeći korak:",
-      "longevityJourneySubtext": "Epizoda {session} te čeka.",
-      "longevityJourneyStartSession": "Pusti epizodu {session}",
+      "longevityJourneySubtext": "Sesija {session} te čeka.",
+      "longevityJourneyStartSession": "Započni sesiju {session}",
       "longevityJourneyDoneLabel": "Gotovo",
       "longevityJourneyNowLabel": "Sada",
       "longevityJourneyGoalLabel": "Dnevni cilj",
@@ -5465,8 +5462,7 @@
       "_pending_review": {
         "feedItemError": true
       },
-      "feedItemError": "This post couldn't be shown.",
-      "playTodaysEpisode": "Pusti epizodu {session}"
+      "feedItemError": "This post couldn't be shown."
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)"
@@ -6284,19 +6280,7 @@
       "typeYourOwnName": "Ili upiši svoje ime",
       "eGAlex": "npr. alex",
       "welcomeMaxina": "Dobrodošao u Maxinu",
-      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada",
-      "_pending_review": {},
-      "speechWelcome": "Dobro došao u Maxinu, tvoju zajednicu dugovečnosti! Ja sam Vitana, tvoja lična pratilja.",
-      "speechNoRush": "Ovde ne moraš ništa sam da otkrivaš – i nema žurbe.",
-      "speechAudiobook": "Najlakše je da počneš sa svojom audio-knjigom: kratke epizode u kojima ti korak po korak objašnjavam kako ti Maxina pomaže da živiš zdravije i duže. Treba samo da slušaš.",
-      "speechOrb": "Kad god želiš da razgovaraš sa mnom, dodirni svetleću kuglu na dnu ekrana. Pritisni X da završiš naš razgovor.",
-      "speechNavigate": "Možeš mi i samo reći kuda želiš da odeš – na primer „Otvori kalendar“ – i odvešću te tamo.",
-      "speechActions": "I mogu da završim stvari umesto tebe. Samo mi reci šta ti treba.",
-      "speechGetToKnow": "Prvo, dozvoli mi da te malo upoznam…",
-      "audiobookReadyTitle": "Tvoja audio-knjiga je spremna",
-      "audiobookReadyBody": "Pritisni pusti i poslušaj epizodu 1. Ne moraš ništa da radiš osim da slušaš.",
-      "playEpisodeOne": "Pusti epizodu 1",
-      "audiobookLater": "Kasnije"
+      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada"
     },
     "orders": {
       "friendExampleCom": "prijatelj@primer.com",
@@ -9307,11 +9291,11 @@
       "byHorizon": "Po horizontu",
       "allYourWork": "Sav tvoj rad",
       "myJourney": "Moje putovanje dugovečnosti",
-      "myGuidedJourney": "Tvoja audio-knjiga o dugovečnosti",
+      "myGuidedJourney": "Moje putovanje dugovečnosti",
       "startYourSession": "Započni svoju sesiju",
       "clickHere": "Klikni ovde",
-      "sessionNumber": "Epizoda {n}",
-      "startSessionAria": "Pusti epizodu {n}",
+      "sessionNumber": "Sesija {n}",
+      "startSessionAria": "Započni sesiju {n}",
       "searchTasks": "Pretraži zadatke...",
       "pickDirectionSoSuggestionsStayAligned": "Odaberi pravac kako bi predlozi ostali usklađeni sa onim što ti je važno.",
       "open": "Otvori",
@@ -9327,10 +9311,10 @@
       "sessionsCompletedOf": "od {total} završenih",
       "stepsLabel": "Koraci",
       "stepsCompletedOf": "od {total} završenih",
-      "guidedGoalTitle": "Upoznaj Vitanu, epizodu po epizodu",
-      "guidedGoalSubtitle": "Epizodu po epizodu, svojim tempom",
+      "guidedGoalTitle": "Uči Vitana, sesiju po sesiju",
+      "guidedGoalSubtitle": "Završi sve {total} sesije",
       "nextStepLabel": "Tvoj sledeći korak:",
-      "startSessionShort": "Pusti epizodu {n}",
+      "startSessionShort": "Započni sesiju {n}",
       "stepDone": "Gotovo",
       "stepUpNext": "Sada",
       "stepGoalLabel": "Današnji cilj",
@@ -9441,8 +9425,7 @@
         "masterNewSkills": "Savladaj nove veštine",
         "spiritualLife": "Duhovni život",
         "earnFromRecommendations": "Zaradi od preporuka"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Još Uvek Nema Usluga",
@@ -10422,9 +10405,8 @@
       "earnValue0Pts": "Zaradi {value0} poena"
     },
     "guidedMode": {
-      "guidedLabel": "Audio-knjiga",
-      "fullLabel": "Puna aplikacija",
-      "_pending_review": {}
+      "guidedLabel": "Vođeno putovanje",
+      "fullLabel": "Puna aplikacija"
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10456,14 +10438,13 @@
       "vitana": "Vitana",
       "orbAlt": "Vitana",
       "vitanaIndex": "Vitana indeks",
-      "guidedJourney": "Moja audio-knjiga",
+      "guidedJourney": "Vođeno putovanje",
       "findAMatch": "Pronađi podudarnost",
       "inviteFriend": "Pozovi prijatelje",
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu",
-      "_pending_review": {}
+      "dismissCard": "Odbaci karticu"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -12164,41 +12145,6 @@
         },
         "payload": "Sadržaj zahteva"
       }
-    },
-    "audiobook": {
-      "_pending_review": {},
-      "title": "Audio-knjiga",
-      "albumTitle": "Maxina audio-knjiga · Epizoda {n}",
-      "episodeN": "Epizoda {n}",
-      "playerRegion": "Plejer audio-knjige",
-      "play": "Pusti",
-      "pause": "Pauza",
-      "next": "Sledeća numera",
-      "previous": "Prethodna numera",
-      "speed": "Brzina {rate}×",
-      "sleepOff": "Tajmer za spavanje je isključen",
-      "sleepOn": "Tajmer za spavanje: {min} minuta",
-      "askVitana": "Pitaj Vitanu",
-      "close": "Zatvori plejer",
-      "dismiss": "Sakrij",
-      "progress": "Napredak epizode",
-      "loading": "Učitavanje …",
-      "unavailable": "Ova epizoda još nije dostupna za slušanje na tvom jeziku. Vitana će ti je rado objasniti u razgovoru.",
-      "network": "Epizoda nije mogla da se učita.",
-      "empty": "Još nije objavljena nijedna epizoda.",
-      "retry": "Pokušaj ponovo",
-      "episodeDone": "Epizoda {n} završena!",
-      "episodeDoneReward": "+2 VITANA INDEX – sledeća epizoda već ide.",
-      "tryItNow": "Isprobaj sada",
-      "finished": "Saslušao si celu audio-knjigu. Bravo!",
-      "playAudiobook": "Pusti audio-knjigu",
-      "playEpisode": "Pusti epizodu {n}",
-      "reminderTitle": "Dnevni podsetnik",
-      "reminderBody": "Podsetićemo te na tvoju epizodu – samo danima kada je još nisi slušao.",
-      "reminderOffOption": "Isključeno",
-      "reminderSaved": "Podsetnik svaki dan u {time}",
-      "reminderOff": "Dnevni podsetnik je isključen",
-      "reminderError": "Podsetnik nije mogao da se sačuva."
     }
   }
 }

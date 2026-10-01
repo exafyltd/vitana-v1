@@ -9,14 +9,14 @@
       "chapter_intelligence": "Inteligencia",
       "chapter_discovery": "Descubrir",
       "howItWorksTitle": "Así funciona",
-      "howItWorksJourneyTitle": "Tu audiolibro",
-      "howItWorksJourneyBody": "Aquí Vitana te explica, episodio a episodio, cómo Maxina te ayuda a vivir de forma más sana y más tiempo. Solo tienes que escuchar.",
-      "howItWorksCatalogTitle": "Todos los episodios",
-      "howItWorksCatalogBody": "Aquí encontrarás todos los episodios. Escúchalos en orden o elige lo que te interese.",
-      "clickSessionTitle": "Toca un episodio",
-      "clickSessionBody": "Elige un episodio: solo tócalo y escucha.",
+      "howItWorksJourneyTitle": "Viaje guiado",
+      "howItWorksJourneyBody": "Tu viaje con Vitana empieza aquí. Ella te conoce y te acompaña paso a paso.",
+      "howItWorksCatalogTitle": "Catálogo de sesiones",
+      "howItWorksCatalogBody": "Aquí encontrarás muchos temas interesantes. ¡Elige lo que te interese!",
+      "clickSessionTitle": "Toca la sesión",
+      "clickSessionBody": "Elige la sesión que te interese: ¡solo tócala!",
       "clickSessionPill": "Vitana te lo explica de forma muy sencilla.",
-      "sessionN": "Episodio {n}",
+      "sessionN": "Sesión {n}",
       "statusReady": "Listo",
       "whatItIs": "Qué es",
       "userBenefit": "Tu beneficio",
@@ -24,14 +24,14 @@
       "tryThis": "Prueba esto",
       "replay": "Repetir",
       "startPractice": "Empezar práctica",
-      "backToJourney": "Volver al audiolibro",
+      "backToJourney": "Volver al viaje",
       "close": "Cerrar",
       "congratsTitle": "¡Bien hecho!",
-      "congratsSubtitle": "Has escuchado este episodio. ¡Sigue así, paso a paso hacia tu meta!",
+      "congratsSubtitle": "Acabas de completar esta sesión conmigo. Sigue así, paso a paso hacia tu meta.",
       "reward": "+{points} ÍNDICE VITANA",
-      "rewardCaption": "puntos por este episodio",
-      "loading": "Cargando episodios …",
-      "empty": "Todavía no hay episodios publicados.",
+      "rewardCaption": "puntos por esta sesión",
+      "loading": "Cargando catálogo …",
+      "empty": "Aún no hay temas publicados.",
       "practiceHeader": "Práctica",
       "openFeature": "Abrir función",
       "markDone": "Marcar como hecho",
@@ -40,10 +40,7 @@
       "doneError": "No se pudo guardar.",
       "statusDone": "Listo",
       "sessionProgress": "{done}/{total}",
-      "sessionComplete": "Episodio completado",
-      "_pending_review": {},
-      "chapter_prolog": "Prólogo",
-      "seasonLabel": "Temporada {n} · {name}"
+      "sessionComplete": "Sesión completada"
     },
     "common": {
       "languageToggleAriaLabel": "Idioma",
@@ -5322,12 +5319,12 @@
       "vitanaIndexUpSubtext": "¡Buen trabajo!",
       "vitanaIndexDownSubtext": "Los pequeños pasos cuentan.",
       "vitanaIndexStableSubtext": "Mantén la constancia.",
-      "longevityJourneyEyebrow": "TU AUDIOLIBRO DE LONGEVIDAD",
-      "longevityJourneyContinue": "Continúa con el episodio {session}: {topic}",
-      "longevityJourneyAllDone": "Has escuchado todos los episodios. ¡Muy bien!",
+      "longevityJourneyEyebrow": "TU VIAJE DE LONGEVIDAD",
+      "longevityJourneyContinue": "Continúa con la Sesión {session}: {topic}",
+      "longevityJourneyAllDone": "Has completado todas las sesiones. ¡Bien hecho!",
       "longevityJourneyNextStepHeadline": "Tu siguiente paso:",
-      "longevityJourneySubtext": "El episodio {session} te espera.",
-      "longevityJourneyStartSession": "Reproducir episodio {session}",
+      "longevityJourneySubtext": "La Sesión {session} te espera.",
+      "longevityJourneyStartSession": "Empieza la sesión {session}",
       "longevityJourneyDoneLabel": "Hecho",
       "longevityJourneyNowLabel": "Ahora",
       "longevityJourneyGoalLabel": "Meta diaria",
@@ -5431,9 +5428,7 @@
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
       "likeComment": "Me gusta el comentario",
-      "feedItemError": "Esta publicación no se pudo mostrar.",
-      "_pending_review": {},
-      "playTodaysEpisode": "Reproducir episodio {session}"
+      "feedItemError": "Esta publicación no se pudo mostrar."
     },
     "icons": {
       "xFormerlyTwitter": "X (antes Twitter)"
@@ -6232,19 +6227,7 @@
       "typeYourOwnName": "O escribe tu propio nombre",
       "eGAlex": "ej. alex",
       "welcomeMaxina": "Bienvenido a Maxina",
-      "yourLongevityJourneyBeginsNow": "Tu viaje de longevidad comienza ahora",
-      "_pending_review": {},
-      "speechWelcome": "¡Bienvenido a Maxina, tu comunidad de longevidad! Soy Vitana, tu compañera personal.",
-      "speechNoRush": "Aquí no tienes que descubrir nada por tu cuenta, y no hay prisa.",
-      "speechAudiobook": "La forma más fácil de empezar es tu audiolibro: episodios cortos en los que te explico, paso a paso, cómo Maxina te ayuda a vivir de forma más sana y más tiempo. Solo tienes que escuchar.",
-      "speechOrb": "Cuando quieras hablar conmigo, toca el orbe brillante en la parte inferior de tu pantalla. Pulsa la X para terminar nuestra conversación.",
-      "speechNavigate": "También puedes decirme adónde quieres ir, por ejemplo «Abre el calendario», y te llevo allí.",
-      "speechActions": "Y puedo hacer cosas por ti. Solo dime lo que necesitas.",
-      "speechGetToKnow": "Primero, déjame conocerte un poco…",
-      "audiobookReadyTitle": "Tu audiolibro está listo",
-      "audiobookReadyBody": "Pulsa reproducir y escucha el episodio 1. No tienes que hacer nada más que escuchar.",
-      "playEpisodeOne": "Reproducir episodio 1",
-      "audiobookLater": "Más tarde"
+      "yourLongevityJourneyBeginsNow": "Tu viaje de longevidad comienza ahora"
     },
     "orders": {
       "friendExampleCom": "amigo@ejemplo.com",
@@ -9245,11 +9228,11 @@
       "byHorizon": "Por horizonte",
       "allYourWork": "Todo tu trabajo",
       "myJourney": "Mi viaje de longevidad",
-      "myGuidedJourney": "Tu audiolibro de longevidad",
+      "myGuidedJourney": "Mi Viaje de Longevidad",
       "startYourSession": "Empieza tu sesión",
       "clickHere": "Haz clic aquí",
-      "sessionNumber": "Episodio {n}",
-      "startSessionAria": "Reproducir episodio {n}",
+      "sessionNumber": "Sesión {n}",
+      "startSessionAria": "Empezar la sesión {n}",
       "searchTasks": "Buscar tareas...",
       "pickDirectionSoSuggestionsStayAligned": "Elige una dirección para que las sugerencias se alineen con lo que te importa.",
       "open": "Abrir",
@@ -9265,10 +9248,10 @@
       "sessionsCompletedOf": "{total} completadas",
       "stepsLabel": "Pasos",
       "stepsCompletedOf": "{total} completados",
-      "guidedGoalTitle": "Conoce a Vitana, episodio a episodio",
-      "guidedGoalSubtitle": "Episodio a episodio, a tu ritmo",
+      "guidedGoalTitle": "Aprende Vitana, una sesión a la vez",
+      "guidedGoalSubtitle": "Completa las {total} sesiones",
       "nextStepLabel": "Tu siguiente paso:",
-      "startSessionShort": "Reproducir episodio {n}",
+      "startSessionShort": "Inicia la sesión {n}",
       "stepDone": "Listo",
       "stepUpNext": "Ahora",
       "stepGoalLabel": "Meta de hoy",
@@ -9379,8 +9362,7 @@
         "masterNewSkills": "Domina nuevas habilidades",
         "spiritualLife": "Vida espiritual",
         "earnFromRecommendations": "Gana con recomendaciones"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Aún sin Servicios",
@@ -10333,9 +10315,8 @@
       "earnValue0Pts": "Gana {value0}pts"
     },
     "guidedMode": {
-      "guidedLabel": "Audiolibro",
-      "fullLabel": "Aplicación Completa",
-      "_pending_review": {}
+      "guidedLabel": "Viaje Guiado",
+      "fullLabel": "Aplicación Completa"
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10367,14 +10348,13 @@
       "vitana": "Vitana",
       "orbAlt": "Vitana",
       "vitanaIndex": "Índice Vitana",
-      "guidedJourney": "Mi audiolibro",
+      "guidedJourney": "Viaje Guiado",
       "findAMatch": "Encuentra una Pareja",
       "inviteFriend": "Invita amigos",
       "viewIndex": "Ver Índice",
       "viewJourney": "Ver Mi Viaje",
       "viewMatch": "Ver Pareja",
-      "dismissCard": "Descartar tarjeta",
-      "_pending_review": {}
+      "dismissCard": "Descartar tarjeta"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirigiendo a la App Store",
@@ -10579,7 +10559,7 @@
         "cancel": "Cancelar",
         "saved": "Producto guardado",
         "saveFailed": "No se pudo guardar el producto.",
-        "reviewNote": "Las comprobaciones de seguridad, consentimiento y certificación nunca se omiten. Tu producto aparece en Discover en cuanto tu empresa esté activada.",
+        "reviewNote": "Las comprobaciones de seguridad, consentimiento y certificación nunca se omiten. Tu producto aparece en el marketplace solo después de la aprobación.",
         "loadFailed": "No se pudieron cargar las categorías.",
         "retry": "Intenta de nuevo",
         "imageAdd": "Foto",
@@ -10607,7 +10587,10 @@
         "deliveryEu": "Europa",
         "deliveryUs": "Estados Unidos",
         "deliveryMena": "Oriente Medio y Norte de África",
-        "deliveryDaysUnit": "días"
+        "deliveryDaysUnit": "días",
+        "_pending_review": {
+          "reviewNote": true
+        }
       },
       "join": {
         "seoTitle": "Registra tu negocio con Vitanaland",
@@ -10819,9 +10802,9 @@
           "failed": true
         },
         "entryTitle": "Import products from a CSV file",
-        "entrySubtitle": "Añade muchos productos a la vez: aparecerán en Discover en cuanto tu empresa esté activada.",
+        "entrySubtitle": "Add many products at once — as drafts until they're reviewed.",
         "title": "Import products from a CSV file",
-        "subtitle": "Revisamos cada fila antes de guardar nada. Tus productos aparecerán en Discover en cuanto tu empresa esté activada.",
+        "subtitle": "We check every row before anything is saved. All products arrive as drafts and only go live after review.",
         "orgLabel": "For",
         "templateHint": "One row per product. Separate list values such as delivery countries with |, for example DE|AT|CH. The template shows every column.",
         "templateCta": "Download template",
@@ -10836,7 +10819,7 @@
         "colField": "Column",
         "colProblem": "Problem",
         "moreErrors": "… and {count} more",
-        "done": "{count} productos importados. Aparecerán en Discover en cuanto tu empresa esté activada; si ya lo está, ya son visibles.",
+        "done": "{count} products imported as drafts. They go live once they're reviewed.",
         "importAnother": "Import another file",
         "close": "Close",
         "locked": "This organization's catalogue can't be edited right now.",
@@ -11948,41 +11931,6 @@
         },
         "payload": "Contenido de la solicitud"
       }
-    },
-    "audiobook": {
-      "_pending_review": {},
-      "title": "Audiolibro",
-      "albumTitle": "Audiolibro Maxina · Episodio {n}",
-      "episodeN": "Episodio {n}",
-      "playerRegion": "Reproductor del audiolibro",
-      "play": "Reproducir",
-      "pause": "Pausa",
-      "next": "Pista siguiente",
-      "previous": "Pista anterior",
-      "speed": "Velocidad {rate}×",
-      "sleepOff": "El temporizador de sueño está desactivado",
-      "sleepOn": "Temporizador de sueño: {min} minutos",
-      "askVitana": "Preguntar a Vitana",
-      "close": "Cerrar el reproductor",
-      "dismiss": "Ocultar",
-      "progress": "Progreso del episodio",
-      "loading": "Cargando …",
-      "unavailable": "Este episodio todavía no está disponible para escuchar en tu idioma. Vitana te lo explica con gusto en una conversación.",
-      "network": "No se pudo cargar el episodio.",
-      "empty": "Todavía no se ha publicado ningún episodio.",
-      "retry": "Intentar de nuevo",
-      "episodeDone": "¡Episodio {n} completado!",
-      "episodeDoneReward": "+2 VITANA INDEX: el siguiente episodio ya está sonando.",
-      "tryItNow": "Pruébalo ahora",
-      "finished": "Has escuchado todo el audiolibro. ¡Muy bien!",
-      "playAudiobook": "Reproducir audiolibro",
-      "playEpisode": "Reproducir episodio {n}",
-      "reminderTitle": "Recordatorio diario",
-      "reminderBody": "Te recordaremos tu episodio, solo los días en que aún no lo hayas escuchado.",
-      "reminderOffOption": "Desactivado",
-      "reminderSaved": "Recordatorio todos los días a las {time}",
-      "reminderOff": "Recordatorio diario desactivado",
-      "reminderError": "No se pudo guardar el recordatorio."
     }
   }
 }
