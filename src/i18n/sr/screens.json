@@ -40,7 +40,22 @@
       "doneError": "Nije moguće sačuvati.",
       "statusDone": "Gotovo",
       "sessionProgress": "{done}/{total}",
-      "sessionComplete": "Sesija završena"
+      "sessionComplete": "Sesija završena",
+      "_pending_review": {
+        "howItWorksJourneyTitle": true,
+        "howItWorksJourneyBody": true,
+        "howItWorksCatalogTitle": true,
+        "howItWorksCatalogBody": true,
+        "clickSessionTitle": true,
+        "clickSessionBody": true,
+        "sessionN": true,
+        "backToJourney": true,
+        "congratsSubtitle": true,
+        "rewardCaption": true,
+        "loading": true,
+        "empty": true,
+        "sessionComplete": true
+      }
     },
     "common": {
       "languageToggleAriaLabel": "Jezik",
@@ -5460,7 +5475,12 @@
       "cancelReply": "Otkaži odgovor",
       "likeComment": "Lajkuj komentar",
       "_pending_review": {
-        "feedItemError": true
+        "feedItemError": true,
+        "longevityJourneyEyebrow": true,
+        "longevityJourneyContinue": true,
+        "longevityJourneyAllDone": true,
+        "longevityJourneySubtext": true,
+        "longevityJourneyStartSession": true
       },
       "feedItemError": "This post couldn't be shown."
     },
@@ -6280,7 +6300,31 @@
       "typeYourOwnName": "Ili upiši svoje ime",
       "eGAlex": "npr. alex",
       "welcomeMaxina": "Dobrodošao u Maxinu",
-      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada"
+      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada",
+      "_pending_review": {
+        "speechWelcome": true,
+        "speechNoRush": true,
+        "speechAudiobook": true,
+        "speechOrb": true,
+        "speechNavigate": true,
+        "speechActions": true,
+        "speechGetToKnow": true,
+        "audiobookReadyTitle": true,
+        "audiobookReadyBody": true,
+        "playEpisodeOne": true,
+        "audiobookLater": true
+      },
+      "speechWelcome": "Welcome to Maxina, your longevity community! I'm Vitana, your personal companion.",
+      "speechNoRush": "You don't have to figure anything out on your own here – and there's no rush.",
+      "speechAudiobook": "The easiest way to start is your Audiobook: short episodes in which I explain, step by step, how Maxina helps you live healthier and longer. All you have to do is listen.",
+      "speechOrb": "Whenever you want to talk to me, tap the glowing orb at the bottom of your screen. Press the X to end our conversation.",
+      "speechNavigate": "You can also just tell me where you want to go – for example “Open the calendar” – and I'll take you there.",
+      "speechActions": "And I can get things done for you. Just tell me what you need.",
+      "speechGetToKnow": "First, let me get to know you a little…",
+      "audiobookReadyTitle": "Your audiobook is ready",
+      "audiobookReadyBody": "Press play and listen to Episode 1. You don't have to do anything but listen.",
+      "playEpisodeOne": "Play Episode 1",
+      "audiobookLater": "Later"
     },
     "orders": {
       "friendExampleCom": "prijatelj@primer.com",
@@ -9425,6 +9469,14 @@
         "masterNewSkills": "Savladaj nove veštine",
         "spiritualLife": "Duhovni život",
         "earnFromRecommendations": "Zaradi od preporuka"
+      },
+      "_pending_review": {
+        "myGuidedJourney": true,
+        "sessionNumber": true,
+        "startSessionAria": true,
+        "guidedGoalTitle": true,
+        "guidedGoalSubtitle": true,
+        "startSessionShort": true
       }
     },
     "businesshub": {
@@ -10406,7 +10458,10 @@
     },
     "guidedMode": {
       "guidedLabel": "Vođeno putovanje",
-      "fullLabel": "Puna aplikacija"
+      "fullLabel": "Puna aplikacija",
+      "_pending_review": {
+        "guidedLabel": true
+      }
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10444,7 +10499,10 @@
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu"
+      "dismissCard": "Odbaci karticu",
+      "_pending_review": {
+        "guidedJourney": true
+      }
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",

@@ -126,10 +126,7 @@
       "adjustPoints": "تعديل النقاط",
       "adjustReason": "السبب",
       "adjustApply": "تطبيق",
-      "notModerator": "You don't have permission to manage this game.",
-      "_pending_review": {
-        "notModerator": true
-      }
+      "notModerator": "لا تملك صلاحية لإدارة هذه اللعبة."
     }
   }
 }

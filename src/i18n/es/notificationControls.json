@@ -121,10 +121,7 @@
         "journey": true,
         "recommendations": true,
         "health": true,
-        "account": true,
-        "wallet": true,
-        "admin": true,
-        "other": true
+        "account": true
       },
       "posts": "Posts & reactions",
       "chat": "Chat",
@@ -138,19 +135,14 @@
       "recommendations": "Recommendations",
       "health": "Health",
       "account": "Account",
-      "wallet": "Wallet",
+      "wallet": "Billetera",
       "admin": "Admin",
-      "other": "Not sorted yet"
+      "other": "Aún no ordenado"
     },
     "readiness": {
-      "_pending_review": {
-        "ready": true,
-        "notLocalized": true,
-        "unverified": true
-      },
-      "ready": "In the member's language",
-      "notLocalized": "English only",
-      "unverified": "Not checked"
+      "ready": "En el idioma del miembro",
+      "notLocalized": "Solo inglés",
+      "unverified": "No marcado"
     },
     "newType": "New – added switched off on first send",
     "inCategory": "Members switch it via “{name}”",
@@ -181,7 +173,6 @@
     "toastFailed": "That did not work. Please try again.",
     "categoryGroups": {
       "_pending_review": {
-        "chat": true,
         "calendar": true,
         "community": true
       },

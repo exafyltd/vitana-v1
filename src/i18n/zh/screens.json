@@ -2,7 +2,10 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "引导旅程",
-      "fullLabel": "完整应用"
+      "fullLabel": "完整应用",
+      "_pending_review": {
+        "guidedLabel": true
+      }
     },
     "guidedCatalog": {
       "allChapters": "全部",
@@ -44,7 +47,26 @@
       "markDone": "标记为已完成",
       "skip": "暂时跳过",
       "doneToast": "练习完成！",
-      "doneError": "无法保存。"
+      "doneError": "无法保存。",
+      "_pending_review": {
+        "howItWorksJourneyTitle": true,
+        "howItWorksJourneyBody": true,
+        "howItWorksCatalogTitle": true,
+        "howItWorksCatalogBody": true,
+        "clickSessionTitle": true,
+        "clickSessionBody": true,
+        "sessionN": true,
+        "sessionComplete": true,
+        "backToJourney": true,
+        "congratsSubtitle": true,
+        "rewardCaption": true,
+        "loading": true,
+        "empty": true,
+        "chapter_prolog": true,
+        "seasonLabel": true
+      },
+      "chapter_prolog": "Prologue",
+      "seasonLabel": "Season {n} · {name}"
     },
     "common": {
       "languageToggleAriaLabel": "语言",
@@ -5460,7 +5482,12 @@
       "cancelReply": "取消回复",
       "likeComment": "赞评论",
       "_pending_review": {
-        "feedItemError": true
+        "feedItemError": true,
+        "longevityJourneyEyebrow": true,
+        "longevityJourneyContinue": true,
+        "longevityJourneyAllDone": true,
+        "longevityJourneySubtext": true,
+        "longevityJourneyStartSession": true
       },
       "feedItemError": "This post couldn't be shown."
     },
@@ -6280,7 +6307,31 @@
       "typeYourOwnName": "或者输入你自己的名称",
       "eGAlex": "例如 alex",
       "welcomeMaxina": "欢迎来到 Maxina",
-      "yourLongevityJourneyBeginsNow": "你的长寿之旅现在开始"
+      "yourLongevityJourneyBeginsNow": "你的长寿之旅现在开始",
+      "_pending_review": {
+        "speechWelcome": true,
+        "speechNoRush": true,
+        "speechAudiobook": true,
+        "speechOrb": true,
+        "speechNavigate": true,
+        "speechActions": true,
+        "speechGetToKnow": true,
+        "audiobookReadyTitle": true,
+        "audiobookReadyBody": true,
+        "playEpisodeOne": true,
+        "audiobookLater": true
+      },
+      "speechWelcome": "Welcome to Maxina, your longevity community! I'm Vitana, your personal companion.",
+      "speechNoRush": "You don't have to figure anything out on your own here – and there's no rush.",
+      "speechAudiobook": "The easiest way to start is your Audiobook: short episodes in which I explain, step by step, how Maxina helps you live healthier and longer. All you have to do is listen.",
+      "speechOrb": "Whenever you want to talk to me, tap the glowing orb at the bottom of your screen. Press the X to end our conversation.",
+      "speechNavigate": "You can also just tell me where you want to go – for example “Open the calendar” – and I'll take you there.",
+      "speechActions": "And I can get things done for you. Just tell me what you need.",
+      "speechGetToKnow": "First, let me get to know you a little…",
+      "audiobookReadyTitle": "Your audiobook is ready",
+      "audiobookReadyBody": "Press play and listen to Episode 1. You don't have to do anything but listen.",
+      "playEpisodeOne": "Play Episode 1",
+      "audiobookLater": "Later"
     },
     "orders": {
       "friendExampleCom": "friend@example.com",
@@ -8589,7 +8640,10 @@
       "viewIndex": "查看指数",
       "viewJourney": "查看我的旅程",
       "viewMatch": "查看匹配",
-      "dismissCard": "关闭卡片"
+      "dismissCard": "关闭卡片",
+      "_pending_review": {
+        "guidedJourney": true
+      }
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -9463,6 +9517,14 @@
         "masterNewSkills": "掌握新技能",
         "spiritualLife": "精神生活",
         "earnFromRecommendations": "通过推荐赚取收益"
+      },
+      "_pending_review": {
+        "sessionNumber": true,
+        "startSessionAria": true,
+        "myGuidedJourney": true,
+        "guidedGoalTitle": true,
+        "guidedGoalSubtitle": true,
+        "startSessionShort": true
       }
     },
     "businesshub": {
@@ -13073,6 +13135,62 @@
         "sidebarIsCanonical": true,
         "noAccess": true
       }
+    },
+    "audiobook": {
+      "_pending_review": {
+        "title": true,
+        "albumTitle": true,
+        "episodeN": true,
+        "playerRegion": true,
+        "play": true,
+        "pause": true,
+        "next": true,
+        "previous": true,
+        "speed": true,
+        "sleepOff": true,
+        "sleepOn": true,
+        "askVitana": true,
+        "close": true,
+        "dismiss": true,
+        "progress": true,
+        "loading": true,
+        "unavailable": true,
+        "network": true,
+        "empty": true,
+        "retry": true,
+        "episodeDone": true,
+        "episodeDoneReward": true,
+        "tryItNow": true,
+        "finished": true,
+        "playAudiobook": true,
+        "playEpisode": true
+      },
+      "title": "Audiobook",
+      "albumTitle": "Maxina Audiobook · Episode {n}",
+      "episodeN": "Episode {n}",
+      "playerRegion": "Audiobook player",
+      "play": "Play",
+      "pause": "Pause",
+      "next": "Next track",
+      "previous": "Previous track",
+      "speed": "Speed {rate}×",
+      "sleepOff": "Sleep timer is off",
+      "sleepOn": "Sleep timer: {min} minutes",
+      "askVitana": "Ask Vitana",
+      "close": "Close player",
+      "dismiss": "Dismiss",
+      "progress": "Episode progress",
+      "loading": "Loading …",
+      "unavailable": "This episode isn't available to listen to in your language yet. Vitana is happy to explain it in a conversation.",
+      "network": "The episode couldn't be loaded.",
+      "empty": "No episodes have been published yet.",
+      "retry": "Try again",
+      "episodeDone": "Episode {n} done!",
+      "episodeDoneReward": "+2 VITANA INDEX – the next episode is already playing.",
+      "tryItNow": "Try it now",
+      "finished": "You've listened to the whole audiobook. Well done!",
+      "playAudiobook": "Play audiobook",
+      "playEpisode": "Play episode {n}"
     }
   }
 }

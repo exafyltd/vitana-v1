@@ -2,7 +2,10 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Jornada Guiada",
-      "fullLabel": "App Completo"
+      "fullLabel": "App Completo",
+      "_pending_review": {
+        "guidedLabel": true
+      }
     },
     "guidedCatalog": {
       "allChapters": "Tudo",
@@ -44,7 +47,22 @@
       "markDone": "Marcar como concluído",
       "skip": "Ignorar por agora",
       "doneToast": "Prática concluída!",
-      "doneError": "Não foi possível guardar."
+      "doneError": "Não foi possível guardar.",
+      "_pending_review": {
+        "howItWorksJourneyTitle": true,
+        "howItWorksJourneyBody": true,
+        "howItWorksCatalogTitle": true,
+        "howItWorksCatalogBody": true,
+        "clickSessionTitle": true,
+        "clickSessionBody": true,
+        "sessionN": true,
+        "sessionComplete": true,
+        "backToJourney": true,
+        "congratsSubtitle": true,
+        "rewardCaption": true,
+        "loading": true,
+        "empty": true
+      }
     },
     "common": {
       "languageToggleAriaLabel": "Idioma",
@@ -5432,7 +5450,14 @@
       "replyingTo": "Respondendo a {name}",
       "cancelReply": "Cancelar resposta",
       "likeComment": "Curtir comentário",
-      "feedItemError": "Esta publicação não pôde ser exibida."
+      "feedItemError": "Esta publicação não pôde ser exibida.",
+      "_pending_review": {
+        "longevityJourneyEyebrow": true,
+        "longevityJourneyContinue": true,
+        "longevityJourneyAllDone": true,
+        "longevityJourneySubtext": true,
+        "longevityJourneyStartSession": true
+      }
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"
@@ -6231,7 +6256,31 @@
       "typeYourOwnName": "Ou digite seu próprio nome",
       "eGAlex": "ex: alex",
       "welcomeMaxina": "Bem-vindo à Maxina",
-      "yourLongevityJourneyBeginsNow": "Sua jornada de longevidade começa agora"
+      "yourLongevityJourneyBeginsNow": "Sua jornada de longevidade começa agora",
+      "_pending_review": {
+        "speechWelcome": true,
+        "speechNoRush": true,
+        "speechAudiobook": true,
+        "speechOrb": true,
+        "speechNavigate": true,
+        "speechActions": true,
+        "speechGetToKnow": true,
+        "audiobookReadyTitle": true,
+        "audiobookReadyBody": true,
+        "playEpisodeOne": true,
+        "audiobookLater": true
+      },
+      "speechWelcome": "Welcome to Maxina, your longevity community! I'm Vitana, your personal companion.",
+      "speechNoRush": "You don't have to figure anything out on your own here – and there's no rush.",
+      "speechAudiobook": "The easiest way to start is your Audiobook: short episodes in which I explain, step by step, how Maxina helps you live healthier and longer. All you have to do is listen.",
+      "speechOrb": "Whenever you want to talk to me, tap the glowing orb at the bottom of your screen. Press the X to end our conversation.",
+      "speechNavigate": "You can also just tell me where you want to go – for example “Open the calendar” – and I'll take you there.",
+      "speechActions": "And I can get things done for you. Just tell me what you need.",
+      "speechGetToKnow": "First, let me get to know you a little…",
+      "audiobookReadyTitle": "Your audiobook is ready",
+      "audiobookReadyBody": "Press play and listen to Episode 1. You don't have to do anything but listen.",
+      "playEpisodeOne": "Play Episode 1",
+      "audiobookLater": "Later"
     },
     "orders": {
       "friendExampleCom": "amigo@exemplo.com",
@@ -8530,7 +8579,10 @@
       "viewIndex": "Ver Índice",
       "viewJourney": "Ver a Minha Jornada",
       "viewMatch": "Ver Par",
-      "dismissCard": "Ignorar cartão"
+      "dismissCard": "Ignorar cartão",
+      "_pending_review": {
+        "guidedJourney": true
+      }
     },
     "voucher": {
       "friendExampleCom": "amigo@exemplo.com",
@@ -9404,6 +9456,14 @@
         "masterNewSkills": "Domina Novas Habilidades",
         "spiritualLife": "Vida Espiritual",
         "earnFromRecommendations": "Ganha com recomendações"
+      },
+      "_pending_review": {
+        "sessionNumber": true,
+        "startSessionAria": true,
+        "myGuidedJourney": true,
+        "guidedGoalTitle": true,
+        "guidedGoalSubtitle": true,
+        "startSessionShort": true
       }
     },
     "businesshub": {

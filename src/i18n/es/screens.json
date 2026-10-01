@@ -40,7 +40,22 @@
       "doneError": "No se pudo guardar.",
       "statusDone": "Listo",
       "sessionProgress": "{done}/{total}",
-      "sessionComplete": "Sesión completada"
+      "sessionComplete": "Sesión completada",
+      "_pending_review": {
+        "howItWorksJourneyTitle": true,
+        "howItWorksJourneyBody": true,
+        "howItWorksCatalogTitle": true,
+        "howItWorksCatalogBody": true,
+        "clickSessionTitle": true,
+        "clickSessionBody": true,
+        "sessionN": true,
+        "backToJourney": true,
+        "congratsSubtitle": true,
+        "rewardCaption": true,
+        "loading": true,
+        "empty": true,
+        "sessionComplete": true
+      }
     },
     "common": {
       "languageToggleAriaLabel": "Idioma",
@@ -5428,7 +5443,14 @@
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
       "likeComment": "Me gusta el comentario",
-      "feedItemError": "Esta publicación no se pudo mostrar."
+      "feedItemError": "Esta publicación no se pudo mostrar.",
+      "_pending_review": {
+        "longevityJourneyEyebrow": true,
+        "longevityJourneyContinue": true,
+        "longevityJourneyAllDone": true,
+        "longevityJourneySubtext": true,
+        "longevityJourneyStartSession": true
+      }
     },
     "icons": {
       "xFormerlyTwitter": "X (antes Twitter)"
@@ -6227,7 +6249,31 @@
       "typeYourOwnName": "O escribe tu propio nombre",
       "eGAlex": "ej. alex",
       "welcomeMaxina": "Bienvenido a Maxina",
-      "yourLongevityJourneyBeginsNow": "Tu viaje de longevidad comienza ahora"
+      "yourLongevityJourneyBeginsNow": "Tu viaje de longevidad comienza ahora",
+      "_pending_review": {
+        "speechWelcome": true,
+        "speechNoRush": true,
+        "speechAudiobook": true,
+        "speechOrb": true,
+        "speechNavigate": true,
+        "speechActions": true,
+        "speechGetToKnow": true,
+        "audiobookReadyTitle": true,
+        "audiobookReadyBody": true,
+        "playEpisodeOne": true,
+        "audiobookLater": true
+      },
+      "speechWelcome": "Welcome to Maxina, your longevity community! I'm Vitana, your personal companion.",
+      "speechNoRush": "You don't have to figure anything out on your own here – and there's no rush.",
+      "speechAudiobook": "The easiest way to start is your Audiobook: short episodes in which I explain, step by step, how Maxina helps you live healthier and longer. All you have to do is listen.",
+      "speechOrb": "Whenever you want to talk to me, tap the glowing orb at the bottom of your screen. Press the X to end our conversation.",
+      "speechNavigate": "You can also just tell me where you want to go – for example “Open the calendar” – and I'll take you there.",
+      "speechActions": "And I can get things done for you. Just tell me what you need.",
+      "speechGetToKnow": "First, let me get to know you a little…",
+      "audiobookReadyTitle": "Your audiobook is ready",
+      "audiobookReadyBody": "Press play and listen to Episode 1. You don't have to do anything but listen.",
+      "playEpisodeOne": "Play Episode 1",
+      "audiobookLater": "Later"
     },
     "orders": {
       "friendExampleCom": "amigo@ejemplo.com",
@@ -9362,6 +9408,14 @@
         "masterNewSkills": "Domina nuevas habilidades",
         "spiritualLife": "Vida espiritual",
         "earnFromRecommendations": "Gana con recomendaciones"
+      },
+      "_pending_review": {
+        "myGuidedJourney": true,
+        "sessionNumber": true,
+        "startSessionAria": true,
+        "guidedGoalTitle": true,
+        "guidedGoalSubtitle": true,
+        "startSessionShort": true
       }
     },
     "businesshub": {
@@ -10316,7 +10370,10 @@
     },
     "guidedMode": {
       "guidedLabel": "Viaje Guiado",
-      "fullLabel": "Aplicación Completa"
+      "fullLabel": "Aplicación Completa",
+      "_pending_review": {
+        "guidedLabel": true
+      }
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10354,7 +10411,10 @@
       "viewIndex": "Ver Índice",
       "viewJourney": "Ver Mi Viaje",
       "viewMatch": "Ver Pareja",
-      "dismissCard": "Descartar tarjeta"
+      "dismissCard": "Descartar tarjeta",
+      "_pending_review": {
+        "guidedJourney": true
+      }
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirigiendo a la App Store",
