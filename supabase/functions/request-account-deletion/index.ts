@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { storageBridgeProvider, listFiles, removeFiles } from '../_shared/storage-bridge-client.ts';
+import { decideAfterErase } from '../_shared/erase-user-data.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -209,6 +210,32 @@ Deno.serve(async (req) => {
     const tableErrors = tableResults.filter((r) => r.error);
     if (tableErrors.length > 0) {
       console.warn("[Deletion] Some table deletions had errors:", tableErrors);
+    }
+
+    // ── Step 1b (VTID-04765): erase every other table holding user_id ──
+    // Memory, diary and health tables are not in the list above and do not
+    // cascade from auth.users. The account is deleted only when this finished
+    // cleanly, so no rows are left behind without an account to erase them.
+    console.log(`[Deletion] erase_user_data for user ${userId}`);
+    const { data: eraseResult, error: eraseError } = await serviceClient.rpc("erase_user_data", {
+      p_user_id: userId,
+    });
+    const erase = decideAfterErase(eraseError, eraseResult);
+    if (!erase.proceed) {
+      console.error(`[Deletion] ${erase.detail} — account NOT deleted, retry needed`, eraseResult);
+      await serviceClient
+        .from("account_deletion_requests")
+        .update({ status: "failed", processed_at: new Date().toISOString() })
+        .eq("user_id", userId);
+      return new Response(JSON.stringify({ error: "Failed to delete account" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (erase.erased) {
+      console.log(`[Deletion] ${erase.detail}`, eraseResult?.retained ? { retained: eraseResult.retained } : {});
+    } else {
+      console.error(`[Deletion] ${erase.detail}`);
     }
 
     // ── Step 2: Delete storage files ──
