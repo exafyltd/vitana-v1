@@ -1,0 +1,76 @@
+{
+  "vitanaIndexPage": {
+    "hero": {
+      "eyebrow": "Your Vitana Index",
+      "title": "Your health, in your hands",
+      "lineNoIndex": "Your Index starts with your first step. Let's set your baseline together.",
+      "lineUp": "You're moving up. What you've done these past days is working. Keep going!",
+      "lineDown": "A small dip is part of the journey. One step today turns the curve around.",
+      "lineSteady": "Your foundation is set. From here, every step you take shows up in this number.",
+      "trendUp": "Rising",
+      "trendDown": "Slight dip",
+      "last7Days": "last 7 days",
+      "logToday": "Log today",
+      "refreshAria": "Refresh index",
+      "updated": "Updated {date}"
+    },
+    "steps": {
+      "title": "Let's improve your health",
+      "subtitle": "Your next steps, in the order that moves you forward the most.",
+      "nextUp": "Next up",
+      "done": "Done",
+      "allDone": "All the essentials are done. Now every day counts — keep it up!",
+      "bloodTitle": "Do your blood test",
+      "bloodBody": "Your blood tells us what no tracker can. Upload your latest blood panel — Vitana reads it and tunes your plan to it.",
+      "bloodCta": "Upload blood test",
+      "bloodNoTest": "No recent blood test? Here's how to get a lab test",
+      "devicesTitle": "Connect your health tracker",
+      "devicesBody": "Let Apple Health, Samsung Health, your watch or your ring track sleep, steps and heart rate for you — automatically.",
+      "devicesCta": "Connect tracker",
+      "focusTitle": "Lift your {pillar} pillar",
+      "focusBody": "This is your biggest lever right now. Small steps here move your Index up the fastest.",
+      "focusCta": "Log it now",
+      "journeyTitle": "Complete today's actions",
+      "journeyBody": "Every action you complete on your journey adds points — and staying consistent earns the streak bonus.",
+      "journeyCta": "Open my journey"
+    },
+    "goal": {
+      "title": "Your 90-day goal",
+      "noIndex": "As soon as your baseline is set, we'll show you here how far your goal is.",
+      "toThriving": "You're {points} points away from the thriving zone. You can do this — one step at a time.",
+      "toElite": "You're in the thriving zone! {points} more points to elite.",
+      "elite": "You're elite. Keep the balance and your streaks — you're setting the example.",
+      "thrivingExplain": "The thriving zone — within reach in 90 focused days.",
+      "eliteExplain": "Elite — sustained excellence across all five pillars, over months.",
+      "compass": "We never push you to the top. Every life has different capacities — the number is a compass, not a verdict."
+    },
+    "pillars": {
+      "title": "Your five pillars",
+      "subtitle": "Each pillar adds up to 200 points. Your weakest one is your biggest lever.",
+      "biggestLever": "Biggest lever",
+      "strongest": "Your strength",
+      "logCta": "Log data"
+    },
+    "balance": {
+      "even": "Your pillars are well balanced — every point counts in full.",
+      "slight": "One pillar is lagging a little. Lift it so your Index counts in full.",
+      "uneven": "Your pillars are uneven, and that holds your Index back. Start with your biggest lever.",
+      "veryUneven": "One pillar is far behind and holds your Index back noticeably. That's where every step pays off most."
+    },
+    "how": {
+      "title": "How your Index grows",
+      "subtitle": "Five ingredients — and every one of them is in your hands.",
+      "baselineTitle": "Baseline",
+      "baselineBody": "Comes from your onboarding survey — your starting point.",
+      "actionsTitle": "Completed actions",
+      "actionsBody": "Every action from your journey in the last 30 days counts toward its pillar.",
+      "dataTitle": "Connected data",
+      "dataBody": "Trackers, blood results and your own logs show what's really happening.",
+      "streakTitle": "Streak bonus",
+      "streakBody": "Consistency is rewarded — day after day.",
+      "balanceTitle": "Balance",
+      "balanceBody": "When one pillar is far behind the others, it dampens the total. Balanced counts for more.",
+      "journeyCta": "See your 90-day journey"
+    }
+  }
+}

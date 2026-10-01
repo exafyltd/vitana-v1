@@ -1,0 +1,76 @@
+{
+  "vitanaIndexPage": {
+    "hero": {
+      "eyebrow": "Dein Vitana Index",
+      "title": "Deine Gesundheit in deiner Hand",
+      "lineNoIndex": "Dein Index beginnt mit deinem ersten Schritt. Lass uns gemeinsam deinen Ausgangswert festlegen.",
+      "lineUp": "Es geht aufwärts. Was du in den letzten Tagen getan hast, wirkt. Bleib dran!",
+      "lineDown": "Ein kleiner Rückgang gehört dazu. Ein einziger Schritt heute dreht die Kurve wieder.",
+      "lineSteady": "Dein Fundament steht. Ab jetzt zeigt sich jeder Schritt, den du gehst, in dieser Zahl.",
+      "trendUp": "Steigt",
+      "trendDown": "Leicht gesunken",
+      "last7Days": "letzte 7 Tage",
+      "logToday": "Heute eintragen",
+      "refreshAria": "Index aktualisieren",
+      "updated": "Aktualisiert am {date}"
+    },
+    "steps": {
+      "title": "Lass uns deine Gesundheit verbessern",
+      "subtitle": "Deine nächsten Schritte, in der Reihenfolge, die dich am meisten weiterbringt.",
+      "nextUp": "Als Nächstes",
+      "done": "Erledigt",
+      "allDone": "Alle Grundlagen erledigt. Jetzt zählt jeder Tag – bleib dran!",
+      "bloodTitle": "Mach dein Blutbild",
+      "bloodBody": "Dein Blut verrät, was kein Tracker messen kann. Lade dein aktuelles Blutbild hoch – Vitana liest es aus und richtet deinen Plan danach aus.",
+      "bloodCta": "Blutbild hochladen",
+      "bloodNoTest": "Kein aktuelles Blutbild? So kommst du zu einem Labortest",
+      "devicesTitle": "Verbinde deinen Gesundheits-Tracker",
+      "devicesBody": "Lass Apple Health, Samsung Health, deine Uhr oder deinen Ring Schlaf, Schritte und Herzfrequenz für dich erfassen – ganz automatisch.",
+      "devicesCta": "Tracker verbinden",
+      "focusTitle": "Stärke deine Säule {pillar}",
+      "focusBody": "Hier hast du gerade den größten Hebel. Kleine Schritte bringen deinen Index hier am schnellsten nach oben.",
+      "focusCta": "Jetzt eintragen",
+      "journeyTitle": "Erledige deine Aktionen für heute",
+      "journeyBody": "Jede erledigte Aktion auf deiner Reise bringt Punkte – und wer dranbleibt, bekommt den Serien-Bonus.",
+      "journeyCta": "Zu meiner Reise"
+    },
+    "goal": {
+      "title": "Dein 90-Tage-Ziel",
+      "noIndex": "Sobald dein Ausgangswert steht, zeigen wir dir hier, wie weit dein Ziel noch entfernt ist.",
+      "toThriving": "Dir fehlen noch {points} Punkte bis zur Wohlfühlzone. Das schaffst du – Schritt für Schritt.",
+      "toElite": "Du bist in der Wohlfühlzone! Noch {points} Punkte bis zur Elite.",
+      "elite": "Du bist in der Elite. Halte die Balance und deine Serien – du bist ein Vorbild.",
+      "thrivingExplain": "Die Wohlfühlzone – erreichbar mit 90 konzentrierten Tagen.",
+      "eliteExplain": "Elite – dauerhafte Spitzenwerte in allen fünf Säulen, über Monate.",
+      "compass": "Wir drängen dich nie an die Spitze. Jedes Leben hat andere Möglichkeiten – die Zahl ist ein Kompass, kein Urteil."
+    },
+    "pillars": {
+      "title": "Deine fünf Säulen",
+      "subtitle": "Jede Säule bringt bis zu 200 Punkte. Die schwächste ist dein größter Hebel.",
+      "biggestLever": "Größter Hebel",
+      "strongest": "Deine Stärke",
+      "logCta": "Daten eintragen"
+    },
+    "balance": {
+      "even": "Deine Säulen sind gut im Gleichgewicht – so zählt jeder Punkt voll.",
+      "slight": "Eine Säule hinkt etwas hinterher. Stärke sie, damit dein Index voll zählt.",
+      "uneven": "Deine Säulen sind unausgeglichen – das bremst deinen Index. Fang bei deinem größten Hebel an.",
+      "veryUneven": "Eine Säule liegt weit zurück und bremst deinen Index deutlich. Dort lohnt sich jeder Schritt am meisten."
+    },
+    "how": {
+      "title": "So wächst dein Index",
+      "subtitle": "Fünf Zutaten – und alle hast du selbst in der Hand.",
+      "baselineTitle": "Ausgangswert",
+      "baselineBody": "Kommt aus deiner Einstiegsumfrage – dein Startpunkt.",
+      "actionsTitle": "Erledigte Aktionen",
+      "actionsBody": "Jede Aktion aus deiner Reise in den letzten 30 Tagen zählt für ihre Säule.",
+      "dataTitle": "Verbundene Daten",
+      "dataBody": "Tracker, Blutwerte und deine Einträge zeigen, was wirklich passiert.",
+      "streakTitle": "Serien-Bonus",
+      "streakBody": "Regelmäßigkeit wird belohnt – Tag für Tag.",
+      "balanceTitle": "Balance",
+      "balanceBody": "Liegt eine Säule weit hinter den anderen, dämpft das die Gesamtzahl. Ausgewogen zählt mehr.",
+      "journeyCta": "Deine 90-Tage-Reise ansehen"
+    }
+  }
+}
