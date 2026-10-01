@@ -39,9 +39,6 @@ serve(async (req) => {
   try {
     logStep("Function started");
 
-    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not set");
-
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
@@ -105,11 +102,10 @@ serve(async (req) => {
       throw new Error("Buyer email is required");
     }
 
-    // Initialize Stripe early so we can parallelize
-    const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
-
-    // Parallelize independent calls: ticket type, Stripe customer, discount validation
-    const [ticketTypeResult, customersResult, discountResult] = await Promise.all([
+    // Parallelize independent database calls: ticket type and discount validation.
+    // Stripe is deliberately not touched until we know the purchase needs a card,
+    // so free tickets work even when Stripe is unconfigured or unreachable.
+    const [ticketTypeResult, discountResult] = await Promise.all([
       supabaseAdmin
         .from("event_ticket_types")
         .select(`
@@ -118,7 +114,6 @@ serve(async (req) => {
         `)
         .eq("id", ticket_type_id)
         .single(),
-      stripe.customers.list({ email: finalBuyerEmail, limit: 1 }),
       discount_code
         ? supabaseAdmin
             .from("user_discount_codes")
@@ -148,18 +143,11 @@ serve(async (req) => {
     // Generate unique QR code token
     const qrCodeToken = crypto.randomUUID() + "-" + Date.now().toString(36);
 
-    let customerId;
-    if (customersResult.data.length > 0) {
-      customerId = customersResult.data[0].id;
-      logStep("Existing customer found", { customerId });
-    }
-
     // Stripe amounts are minor units; zero-decimal currencies (JPY, ...) are not x100.
     const unitAmount = toMinorUnits(ticketType.price, ticketType.currency);
 
     // Process discount result from parallel call
     let validatedDiscount: any = null;
-    let stripeCouponId: string | undefined;
     if (discount_code) {
       const { data: discountData, error: discountError } = discountResult;
       logStep("Validating discount code", { discount_code });
@@ -176,23 +164,6 @@ serve(async (req) => {
 
       validatedDiscount = discountData;
       logStep("Discount code validated", { percent: discountData.discount_percent });
-
-      // Use deterministic coupon ID for direct retrieval instead of listing all coupons
-      const couponId = `maxina-${discountData.discount_percent}pct`;
-      try {
-        await stripe.coupons.retrieve(couponId);
-        stripeCouponId = couponId;
-      } catch {
-        // Coupon doesn't exist, create it
-        const coupon = await stripe.coupons.create({
-          id: couponId,
-          percent_off: discountData.discount_percent,
-          duration: 'once',
-          name: `MAXINA-${discountData.discount_percent}PCT`,
-        });
-        stripeCouponId = coupon.id;
-      }
-      logStep("Stripe coupon ready", { couponId: stripeCouponId });
     }
 
     // Atomically check availability and create the pending purchase, which also
@@ -235,6 +206,22 @@ serve(async (req) => {
       validatedDiscount?.discount_percent,
     );
     if (isFreePurchase(payableMinor)) {
+      // Claim a discount code atomically BEFORE issuing anything: of several
+      // concurrent requests with the same single-use code, only the one whose
+      // UPDATE matches the still-unused row may proceed.
+      if (validatedDiscount?.id) {
+        const { data: claimed, error: claimError } = await supabaseAdmin
+          .from("user_discount_codes")
+          .update({ used_at: new Date().toISOString(), used_on_purchase_id: purchase.id })
+          .eq("id", validatedDiscount.id)
+          .is("used_at", null)
+          .select("id");
+        if (claimError || !claimed || claimed.length === 0) {
+          await supabaseAdmin.rpc("release_ticket_reservation", { p_purchase_id: purchase.id, p_status: "cancelled" });
+          throw new Error("Invalid or expired discount code");
+        }
+      }
+
       const { error: completeError } = await supabaseAdmin.rpc("complete_ticket_purchase", {
         p_purchase_id: purchase.id,
         p_payment_intent_id: null,
@@ -242,15 +229,16 @@ serve(async (req) => {
         p_metadata: { free_ticket: true, discount_code: validatedDiscount?.code || null },
       });
       if (completeError) {
+        // Give the code back so the buyer can retry, then free the seats.
+        if (validatedDiscount?.id) {
+          await supabaseAdmin
+            .from("user_discount_codes")
+            .update({ used_at: null, used_on_purchase_id: null })
+            .eq("id", validatedDiscount.id)
+            .eq("used_on_purchase_id", purchase.id);
+        }
         await supabaseAdmin.rpc("release_ticket_reservation", { p_purchase_id: purchase.id, p_status: "cancelled" });
         throw new Error("Failed to issue free ticket");
-      }
-      if (validatedDiscount?.id) {
-        await supabaseAdmin
-          .from("user_discount_codes")
-          .update({ used_at: new Date().toISOString(), used_on_purchase_id: purchase.id })
-          .eq("id", validatedDiscount.id)
-          .is("used_at", null);
       }
       logStep("Free ticket issued", { purchaseId: purchase.id });
       return new Response(
@@ -263,54 +251,86 @@ serve(async (req) => {
       );
     }
 
-    // Create Stripe Checkout session with UTM/reseller metadata for webhook
-    const sessionParams: any = {
-      customer: customerId,
-      customer_email: customerId ? undefined : finalBuyerEmail,
-      line_items: [
-        {
-          price_data: {
-            currency: ticketType.currency.toLowerCase(),
-            product_data: {
-              name: `${ticketType.event.title} - ${ticketType.name}`,
-              description: ticketType.description || `Ticket for ${ticketType.event.title}`,
-              images: ticketType.event.image_url ? [ticketType.event.image_url] : [],
-            },
-            unit_amount: unitAmount,
-          },
-          quantity,
-        },
-      ],
-      mode: "payment",
-      expires_at: Math.floor(Date.now() / 1000) + STRIPE_SESSION_MINUTES * 60,
-      success_url: `${origin}/tickets/success?purchase_id=${purchase.id}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/comm/events-meetups?event=${event_id}&cancelled=true`,
-      metadata: {
-        purchase_id: purchase.id,
-        event_id,
-        ticket_type_id,
-        type: "event_ticket",
-        quantity: String(quantity),
-        utm_source: utm_source || "",
-        utm_medium: utm_medium || "",
-        utm_campaign: utm_campaign || "",
-        reseller_code: resellerCode || "",
-        discount_code: validatedDiscount?.code || "",
-        discount_code_id: validatedDiscount?.id || "",
-      },
-    };
-
-    // Apply discount coupon if validated
-    if (stripeCouponId) {
-      sessionParams.discounts = [{ coupon: stripeCouponId }];
-      logStep("Applying discount to session", { couponId: stripeCouponId });
-    }
-
+    // Paid checkout: only now do we need Stripe. Any failure from here on means
+    // nothing can ever complete this purchase, so the reservation is released.
     let session: Stripe.Checkout.Session;
     try {
+      const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+      if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not set");
+      const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
+
+      const customersResult = await stripe.customers.list({ email: finalBuyerEmail, limit: 1 });
+      let customerId: string | undefined;
+      if (customersResult.data.length > 0) {
+        customerId = customersResult.data[0].id;
+        logStep("Existing customer found", { customerId });
+      }
+
+      let stripeCouponId: string | undefined;
+      if (validatedDiscount) {
+        // Deterministic coupon ID for direct retrieval instead of listing all coupons
+        const couponId = `maxina-${validatedDiscount.discount_percent}pct`;
+        try {
+          await stripe.coupons.retrieve(couponId);
+          stripeCouponId = couponId;
+        } catch {
+          // Coupon doesn't exist, create it
+          const coupon = await stripe.coupons.create({
+            id: couponId,
+            percent_off: validatedDiscount.discount_percent,
+            duration: 'once',
+            name: `MAXINA-${validatedDiscount.discount_percent}PCT`,
+          });
+          stripeCouponId = coupon.id;
+        }
+        logStep("Stripe coupon ready", { couponId: stripeCouponId });
+      }
+
+      // Create Stripe Checkout session with UTM/reseller metadata for webhook
+      const sessionParams: any = {
+        customer: customerId,
+        customer_email: customerId ? undefined : finalBuyerEmail,
+        line_items: [
+          {
+            price_data: {
+              currency: ticketType.currency.toLowerCase(),
+              product_data: {
+                name: `${ticketType.event.title} - ${ticketType.name}`,
+                description: ticketType.description || `Ticket for ${ticketType.event.title}`,
+                images: ticketType.event.image_url ? [ticketType.event.image_url] : [],
+              },
+              unit_amount: unitAmount,
+            },
+            quantity,
+          },
+        ],
+        mode: "payment",
+        expires_at: Math.floor(Date.now() / 1000) + STRIPE_SESSION_MINUTES * 60,
+        success_url: `${origin}/tickets/success?purchase_id=${purchase.id}&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/comm/events-meetups?event=${event_id}&cancelled=true`,
+        metadata: {
+          purchase_id: purchase.id,
+          event_id,
+          ticket_type_id,
+          type: "event_ticket",
+          quantity: String(quantity),
+          utm_source: utm_source || "",
+          utm_medium: utm_medium || "",
+          utm_campaign: utm_campaign || "",
+          reseller_code: resellerCode || "",
+          discount_code: validatedDiscount?.code || "",
+          discount_code_id: validatedDiscount?.id || "",
+        },
+      };
+
+      // Apply discount coupon if validated
+      if (stripeCouponId) {
+        sessionParams.discounts = [{ coupon: stripeCouponId }];
+        logStep("Applying discount to session", { couponId: stripeCouponId });
+      }
+
       session = await stripe.checkout.sessions.create(sessionParams);
     } catch (stripeError) {
-      // No session means nothing can ever complete this purchase: free the reservation.
       await supabaseAdmin.rpc("release_ticket_reservation", { p_purchase_id: purchase.id, p_status: "cancelled" });
       throw stripeError;
     }

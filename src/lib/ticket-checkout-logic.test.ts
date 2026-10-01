@@ -90,6 +90,15 @@ describe('source contracts', () => {
     expect(checkout).toMatch(/release_ticket_reservation[\s\S]*throw stripeError/);
     expect(checkout).toContain('expires_at:');
   });
+  it('free path claims the discount atomically before completing, and never needs Stripe', () => {
+    const free = checkout.slice(checkout.indexOf('if (isFreePurchase('), checkout.indexOf('Free ticket issued'));
+    expect(free.indexOf('.select("id")')).toBeGreaterThan(-1);
+    expect(free.indexOf('.is("used_at", null)')).toBeLessThan(free.indexOf('"complete_ticket_purchase"'));
+    expect(free).not.toMatch(/stripe\./i);
+    // Stripe is only initialised after the free branch has returned.
+    expect(checkout.indexOf('new Stripe(')).toBeGreaterThan(checkout.indexOf('Free ticket issued'));
+    expect(checkout.indexOf('STRIPE_SECRET_KEY')).toBeGreaterThan(checkout.indexOf('Free ticket issued'));
+  });
   it('the success page never completes a purchase from the browser', () => {
     expect(success).not.toMatch(/\.update\(/);
     expect(success).not.toContain('"completed",\n          stripe_session_id');
