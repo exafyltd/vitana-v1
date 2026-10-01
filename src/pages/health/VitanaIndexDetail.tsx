@@ -419,7 +419,8 @@ function PillarsCard({ index, onLog }: { index: VitanaIndexState | null; onLog: 
   const values = keys.map((key) => index?.pillars[key] ?? 0);
   const minVal = Math.min(...values);
   const maxVal = Math.max(...values);
-  const weakest = index ? keys[values.indexOf(minVal)] : null;
+  // Only call a pillar the "biggest lever" when it actually lags behind another.
+  const weakest = index && maxVal > minVal ? keys[values.indexOf(minVal)] : null;
   const strongest = index && maxVal > minVal ? keys[values.indexOf(maxVal)] : null;
   const balance = balanceKey(index?.balanceFactor ?? null);
 
@@ -435,7 +436,7 @@ function PillarsCard({ index, onLog }: { index: VitanaIndexState | null; onLog: 
           const isWeakest = key === weakest;
           return (
             <li key={key} data-testid={`vitana-index-pillar-${key}`}>
-              <div className="flex items-center gap-3">
+              <div className="flex items-start gap-3">
                 <div
                   className={cn(
                     "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl",
@@ -557,7 +558,8 @@ export default function VitanaIndexDetail() {
   const [uploadOpen, setUploadOpen] = useState(false);
 
   const steps = useMemo(() => buildNextSteps(index, { hasBloodPanel }), [index, hasBloodPanel]);
-  const focusPillar = steps.find((s) => s.id === "focus")?.pillar;
+  const focusStep = steps.find((s) => s.id === "focus");
+  const focusPillar = focusStep?.pillar;
 
   const views: Record<NextStep["id"], StepView> = {
     blood: {
@@ -595,7 +597,7 @@ export default function VitanaIndexDetail() {
     focus: {
       icon: focusPillar ? PILLAR_ICONS[focusPillar] : Target,
       title: t(k("steps.focusTitle"), { pillar: focusPillar ? pillarLabel(focusPillar) : "" }),
-      body: t(k("steps.focusBody")),
+      body: t(k(focusStep?.even ? "steps.focusBodyEven" : "steps.focusBody")),
       cta: t(k("steps.focusCta")),
       onCta: () => setLogDialogOpen(true),
     },

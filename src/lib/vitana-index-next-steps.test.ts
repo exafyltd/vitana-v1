@@ -49,6 +49,12 @@ describe("buildNextSteps", () => {
     expect(steps.slice(2).every((s) => s.done)).toBe(true);
   });
 
+  it("level pillars have no biggest lever: the focus step says so instead of naming a false weakest", () => {
+    const level = makeIndex({ pillars: { nutrition: 25, hydration: 25, exercise: 25, sleep: 25, mental: 25 } });
+    expect(buildNextSteps(level, { hasBloodPanel: false }).find((s) => s.id === "focus")?.even).toBe(true);
+    expect(buildNextSteps(makeIndex(), { hasBloodPanel: false }).find((s) => s.id === "focus")?.even).toBe(false);
+  });
+
   it("without an Index there is no pillar to focus on", () => {
     expect(buildNextSteps(null, { hasBloodPanel: false }).map((s) => s.id)).toEqual(["blood", "devices", "journey"]);
   });
@@ -98,6 +104,11 @@ describe("VitanaIndexDetail page (source check)", () => {
       expect(typeof get(de, key), `de: ${key}`).toBe("string");
       expect(typeof get(en, key), `en: ${key}`).toBe("string");
     }
+    for (const key of ["steps.focusBody", "steps.focusBodyEven"]) {
+      expect(typeof get(de, key), `de: ${key}`).toBe("string");
+      expect(typeof get(en, key), `en: ${key}`).toBe("string");
+    }
+    expect(src).toContain("maxVal > minVal ? keys[values.indexOf(minVal)]");
     expect(JSON.stringify(de)).not.toMatch(/\b(Sie|Ihr|Ihnen|Ihre)\b/);
   });
 });

@@ -15,6 +15,14 @@ export interface NextStep {
   done: boolean;
   /** Only for `focus`: the pillar with the most room to grow. */
   pillar?: VitanaPillarKey;
+  /** Only for `focus`: all pillars are level, so there is no single biggest lever. */
+  even?: boolean;
+}
+
+/** True when every pillar has the same score (nothing lags behind). */
+export function pillarsLevel(index: VitanaIndexState): boolean {
+  const values = Object.values(index.pillars);
+  return Math.min(...values) === Math.max(...values);
 }
 
 /** True when any pillar already earns points from connected data (a tracker or regular logs). */
@@ -31,7 +39,7 @@ export function buildNextSteps(
     { id: "blood", done: opts.hasBloodPanel },
     { id: "devices", done: hasConnectedData(index) },
   ];
-  if (index) steps.push({ id: "focus", done: false, pillar: weakestPillar(index.pillars) });
+  if (index) steps.push({ id: "focus", done: false, pillar: weakestPillar(index.pillars), even: pillarsLevel(index) });
   steps.push({ id: "journey", done: false });
 
   // Stable partition: open steps keep their order, finished ones go last.
