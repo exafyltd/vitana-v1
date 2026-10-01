@@ -9901,7 +9901,11 @@
       "viewAllMyTickets": "View All My Tickets",
       "discoverMoreEvents": "Discover More Events",
       "yourTicketHasConfirmedConfirmationEmail": "Your ticket has been confirmed. A confirmation email has been sent to{value0}",
-      "_pending_review": {}
+      "_pending_review": {},
+      "processingTitle": "Your payment is being processed",
+      "processingBody": "This usually takes just a few seconds. Your ticket appears under My Tickets as soon as the payment is confirmed.",
+      "checkAgain": "Check again",
+      "ticketConfirmed": "Your ticket is confirmed."
     },
     "legal": {
       "deleteAccount": "Delete Account",

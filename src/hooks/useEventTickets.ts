@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import { notifyError } from '@/lib/i18n-toast';
@@ -130,40 +130,46 @@ export function useTicketPurchase(purchaseId: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  // `silent` refetches (polling) keep the current UI instead of flashing the spinner.
+  const refetch = useCallback(async (silent = false) => {
     if (!purchaseId) {
       setPurchase(null);
       setLoading(false);
       return;
     }
 
-    const fetchPurchase = async () => {
+    if (!silent) {
       setLoading(true);
       setError(null);
+    }
 
-      const { data, error: fetchError } = await supabase
-        .from("event_ticket_purchases")
-        .select(`
-          *,
-          ticket_type:event_ticket_types(*),
-          event:global_community_events(id, title, start_time, location, image_url)
-        `)
-        .eq("id", purchaseId)
-        .single();
+    const { data, error: fetchError } = await supabase
+      .from("event_ticket_purchases")
+      .select(`
+        *,
+        ticket_type:event_ticket_types(*),
+        event:global_community_events(id, title, start_time, location, image_url)
+      `)
+      .eq("id", purchaseId)
+      .single();
 
-      if (fetchError) {
+    if (fetchError) {
+      if (!silent) {
         setError(fetchError.message);
         setPurchase(null);
-      } else {
-        setPurchase(data);
       }
-      setLoading(false);
-    };
-
-    fetchPurchase();
+    } else {
+      setError(null);
+      setPurchase(data);
+    }
+    setLoading(false);
   }, [purchaseId]);
 
-  return { purchase, loading, error };
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  return { purchase, loading, error, refetch };
 }
 
 export interface UtmParams {
@@ -221,9 +227,13 @@ export function usePurchaseTicket() {
         throw new Error(response.error.message || "Failed to create checkout");
       }
 
-      const { url } = response.data;
+      const { url, free } = response.data;
       if (url) {
-        if (isMobile) {
+        if (free) {
+          // Free ticket: nothing to pay, go straight to the confirmation page.
+          popupWindow?.close();
+          window.location.href = url;
+        } else if (isMobile) {
           window.location.href = url;
         } else if (popupWindow) {
           popupWindow.location.href = url;

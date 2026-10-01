@@ -125,6 +125,78 @@ async function handleResellerAttribution(
   }
 }
 
+/**
+ * VTID-04757: complete an event-ticket purchase from a paid Checkout Session.
+ *
+ * Idempotent end to end, because Stripe redelivers events and the success page
+ * no longer completes purchases itself:
+ *  - complete_ticket_purchase only transitions pending/expired -> completed, and
+ *    the quantity_sold trigger fires on that transition alone (this function
+ *    never touches quantity_sold);
+ *  - the discount update is guarded by used_at IS NULL;
+ *  - reseller attribution is protected by its unique constraint.
+ * Any failure throws so the webhook answers non-2xx and Stripe retries.
+ */
+async function completeTicketPurchase(
+  supabaseClient: any,
+  session: Stripe.Checkout.Session,
+  meta: Record<string, string>
+) {
+  const purchaseId = meta.purchase_id;
+  if (!purchaseId) {
+    throw new Error(`event_ticket session ${session.id} has no purchase_id metadata`);
+  }
+
+  // Async payment methods fire checkout.session.completed while still unpaid;
+  // checkout.session.async_payment_succeeded completes them later.
+  if (session.payment_status !== 'paid' && session.payment_status !== 'no_payment_required') {
+    console.log('[TICKET] Session not paid yet, waiting:', session.id, session.payment_status);
+    return;
+  }
+
+  const { data: transitioned, error: completeError } = await supabaseClient.rpc('complete_ticket_purchase', {
+    p_purchase_id: purchaseId,
+    p_payment_intent_id: (session.payment_intent as string) || null,
+    p_session_id: session.id,
+    p_metadata: {
+      payment_completed_at: new Date().toISOString(),
+      utm_source: meta.utm_source || null,
+      utm_medium: meta.utm_medium || null,
+      utm_campaign: meta.utm_campaign || null,
+      reseller_code: meta.reseller_code || null,
+    },
+  });
+  if (completeError) throw completeError;
+  console.log('[TICKET] Purchase', purchaseId, transitioned ? 'completed' : 'already completed');
+
+  const discountCodeId = meta.discount_code_id;
+  if (discountCodeId) {
+    const { error: discountUpdateError } = await supabaseClient
+      .from('user_discount_codes')
+      .update({ used_at: new Date().toISOString(), used_on_purchase_id: purchaseId })
+      .eq('id', discountCodeId)
+      .is('used_at', null);
+    if (discountUpdateError) throw discountUpdateError;
+  }
+
+  const { data: purchaseData, error: purchaseReadError } = await supabaseClient
+    .from('event_ticket_purchases')
+    .select('total_amount')
+    .eq('id', purchaseId)
+    .single();
+  if (purchaseReadError) throw purchaseReadError;
+
+  if (purchaseData && meta.event_id) {
+    await handleResellerAttribution(
+      supabaseClient,
+      purchaseId,
+      meta.event_id,
+      purchaseData.total_amount,
+      meta
+    );
+  }
+}
+
 serve(async (req) => {
   const signature = req.headers.get('Stripe-Signature');
   
@@ -194,101 +266,7 @@ serve(async (req) => {
       
       // Handle EVENT TICKET purchases
       if (checkoutType === 'event_ticket') {
-        const purchaseId = meta.purchase_id;
-        const ticketTypeId = meta.ticket_type_id;
-        const eventId = meta.event_id;
-        const quantity = parseInt(meta.quantity || '1');
-        
-        if (purchaseId) {
-          console.log('Processing ticket purchase:', purchaseId);
-          
-          // Update ticket purchase status to completed
-          const { error: purchaseError } = await supabaseClient
-            .from('event_ticket_purchases')
-            .update({
-              status: 'completed',
-              stripe_payment_intent_id: session.payment_intent as string,
-              metadata: {
-                stripe_session_id: session.id,
-                payment_completed_at: new Date().toISOString(),
-                // Preserve UTM/reseller info
-                utm_source: meta.utm_source || null,
-                utm_medium: meta.utm_medium || null,
-                utm_campaign: meta.utm_campaign || null,
-                reseller_code: meta.reseller_code || null,
-              }
-            })
-            .eq('id', purchaseId);
-
-          if (purchaseError) {
-            console.error('Error updating ticket purchase status:', purchaseError);
-          } else {
-            console.log('Ticket purchase completed:', purchaseId);
-            
-            // Mark discount code as used if applicable
-            const discountCodeId = meta.discount_code_id;
-            if (discountCodeId) {
-              console.log('[DISCOUNT] Marking discount code as used:', discountCodeId);
-              const { error: discountUpdateError } = await supabaseClient
-                .from('user_discount_codes')
-                .update({
-                  used_at: new Date().toISOString(),
-                  used_on_purchase_id: purchaseId,
-                })
-                .eq('id', discountCodeId);
-              
-              if (discountUpdateError) {
-                console.error('[DISCOUNT] Error marking discount code as used:', discountUpdateError);
-              } else {
-                console.log('[DISCOUNT] Discount code marked as used');
-              }
-            }
-
-            // Get the purchase total_amount for attribution
-            const { data: purchaseData } = await supabaseClient
-              .from('event_ticket_purchases')
-              .select('total_amount')
-              .eq('id', purchaseId)
-              .single();
-
-            // Handle reseller attribution if applicable
-            if (purchaseData && eventId) {
-              await handleResellerAttribution(
-                supabaseClient,
-                purchaseId,
-                eventId,
-                purchaseData.total_amount,
-                meta
-              );
-            }
-            
-            // Update quantity_sold on the ticket type
-            if (ticketTypeId) {
-              const { error: updateError } = await supabaseClient
-                .rpc('increment_ticket_sold', { 
-                  p_ticket_type_id: ticketTypeId, 
-                  p_quantity: quantity 
-                });
-              
-              // Fallback if RPC doesn't exist - direct update
-              if (updateError) {
-                console.log('RPC not found, using direct update');
-                const { data: ticketType } = await supabaseClient
-                  .from('event_ticket_types')
-                  .select('quantity_sold')
-                  .eq('id', ticketTypeId)
-                  .single();
-                
-                if (ticketType) {
-                  await supabaseClient
-                    .from('event_ticket_types')
-                    .update({ quantity_sold: ticketType.quantity_sold + quantity })
-                    .eq('id', ticketTypeId);
-                }
-              }
-            }
-          }
-        }
+        await completeTicketPurchase(supabaseClient, session, meta as Record<string, string>);
       }
       // Handle VOUCHER purchases
       else if (checkoutType === 'voucher') {
@@ -450,9 +428,39 @@ serve(async (req) => {
       }
     }
 
+    // Delayed payment methods (e.g. SEPA debit) confirm later.
+    if (event.type === 'checkout.session.async_payment_succeeded') {
+      const session = event.data.object as Stripe.Checkout.Session;
+      if (session.metadata?.type === 'event_ticket') {
+        await completeTicketPurchase(supabaseClient, session, session.metadata as Record<string, string>);
+      }
+    }
+
+    // A fully refunded charge returns the seats (the quantity_sold trigger
+    // decrements on completed -> refunded).
+    if (event.type === 'charge.refunded') {
+      const charge = event.data.object as Stripe.Charge;
+      if (charge.refunded && charge.payment_intent) {
+        const { error: refundError } = await supabaseClient.rpc('refund_ticket_purchase', {
+          p_payment_intent_id: charge.payment_intent as string,
+          p_reason: 'stripe_refund',
+        });
+        if (refundError) throw refundError;
+      }
+    }
+
     // Handle other events as needed
     if (event.type === 'checkout.session.expired') {
       const session = event.data.object as Stripe.Checkout.Session;
+
+      // Release the seat reservation of an unpaid ticket checkout.
+      if (session.metadata?.type === 'event_ticket' && session.metadata.purchase_id) {
+        const { error: releaseError } = await supabaseClient.rpc('release_ticket_reservation', {
+          p_purchase_id: session.metadata.purchase_id,
+          p_status: 'expired',
+        });
+        if (releaseError) throw releaseError;
+      }
       
       const { error: updateError } = await supabaseClient
         .from('checkout_sessions')
