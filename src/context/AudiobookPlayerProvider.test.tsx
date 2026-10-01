@@ -137,7 +137,9 @@ describe('Audiobook player', () => {
     await waitFor(() => expect(screen.getByTestId('audiobook-track-title').textContent).toBe('Dein Plan'));
     expect(screen.queryByTestId('audiobook-episode-summary')).toBeNull();
     const listened = fetchCalls.filter((c) => c.path === '/api/v1/journey/session-listened');
-    expect(listened.map((c) => JSON.parse(c.body!))).toEqual([{ session: 1, topicId: 'T251' }]);
+    expect(listened).toHaveLength(1);
+    expect(JSON.parse(listened[0].body!)).toMatchObject({ session: 1, topicId: 'T251' });
+    expect(JSON.parse(listened[0].body!).localDate).toMatch(/^\d{4}-\d{2}-\d{2}$/); // VTID-04763
 
     await finishCurrentTrack();
     // Episode 1 done: the summary card shows AND episode 2 is already playing.

@@ -198,6 +198,10 @@
     {
       "path": "/profile/:id",
       "reason": "Legacy profile path redirecting to PROFILE.PUBLIC."
+    },
+    {
+      "path": "/autopilot/audiobook",
+      "reason": "VTID-04763: push deep link that starts the Audiobook player and settles on /autopilot (AUTOPILOT.MY_JOURNEY); voice reaches the Audiobook through My Journey's audiobook phrasings."
     }
   ]
 }

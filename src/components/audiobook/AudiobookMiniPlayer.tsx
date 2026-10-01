@@ -27,6 +27,7 @@ import {
 import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
 import { practiceTargetAction } from '@/lib/journeyPractice';
 import { activateOrb } from '@/lib/orbActivate';
+import { emitAudiobookEvent } from '@/lib/audiobook/events';
 import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
 
@@ -61,6 +62,10 @@ export function AudiobookMiniPlayer() {
   const tryItNow = () => {
     if (!episodeSummary) return;
     const action = practiceTargetAction(episodeSummary.practiceTarget);
+    emitAudiobookEvent('try_it_now', {
+      episode: episodeSummary.episode,
+      practiceTarget: episodeSummary.practiceTarget,
+    });
     player.dismissSummary();
     if (!action || action.kind === 'orb') {
       player.askVitana();

@@ -5431,7 +5431,8 @@
       "noRoutinesYetCreateYourFirst": "Noch keine Routinen. Erstelle deine erste Routine, um loszulegen!",
       "text4NewIdeas": "4 neue Ideen",
       "executeAllValue0": "Alle {value0} ausführen",
-      "noValue0ActionsAvailable": "Keine {value0}Aktionen verfügbar"
+      "noValue0ActionsAvailable": "Keine {value0}Aktionen verfügbar",
+      "playTodaysEpisode": "Folge {session} abspielen"
     },
     "icons": {
       "xFormerlyTwitter": "X (ehemals Twitter)"
@@ -11743,7 +11744,13 @@
       "tryItNow": "Jetzt ausprobieren",
       "finished": "Du hast das ganze Hörbuch gehört. Stark!",
       "playAudiobook": "Hörbuch abspielen",
-      "playEpisode": "Folge {n} abspielen"
+      "playEpisode": "Folge {n} abspielen",
+      "reminderTitle": "Tägliche Erinnerung",
+      "reminderBody": "Wir erinnern dich an deine Folge – nur an Tagen, an denen du noch nicht zugehört hast.",
+      "reminderOffOption": "Aus",
+      "reminderSaved": "Erinnerung täglich um {time} Uhr",
+      "reminderOff": "Tägliche Erinnerung ausgeschaltet",
+      "reminderError": "Die Erinnerung konnte nicht gespeichert werden."
     }
   }
 }

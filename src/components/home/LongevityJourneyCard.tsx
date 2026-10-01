@@ -11,7 +11,8 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Play } from 'lucide-react';
+import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
 import { useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
 import { t } from '@/lib/i18n-toast';
 import { VitanaRecommendationCard } from '@/components/vitana/VitanaRecommendationCard';
@@ -42,6 +43,7 @@ export function LongevityJourneyCard() {
   const { totalSessions, completedInOrder, nextSession, completedToday, dailyGoal, loading } =
     useGuidedJourneyProgress();
   const [dismissed, setDismissed] = useState(false);
+  const audiobook = useAudiobookPlayer(); // VTID-04763: today's episode, one tap
 
   if (loading || totalSessions === 0 || dismissed) return null;
 
@@ -91,10 +93,28 @@ export function LongevityJourneyCard() {
           {t('screens.home.longevityJourneySubtext', { session: nextSession.session })}
         </p>
       )}
-      <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
-        <span className="truncate">{t('screens.vitanaIdentity.viewJourney')}</span>
-        <ArrowRight className="w-3 h-3 shrink-0" />
-      </span>
+      {nextSession && audiobook ? (
+        // VTID-04763: today's episode plays right here — no need to find it
+        // on My Journey first. The rest of the card still opens My Journey.
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            void audiobook.start({ episode: nextSession.session });
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
+          className="mt-1.5 inline-flex h-9 max-w-full items-center gap-1.5 rounded-full bg-violet-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
+          data-testid="home-play-todays-episode"
+        >
+          <Play className="h-3.5 w-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />
+          <span className="truncate">{t('screens.home.playTodaysEpisode', { session: nextSession.session })}</span>
+        </button>
+      ) : (
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+          <span className="truncate">{t('screens.vitanaIdentity.viewJourney')}</span>
+          <ArrowRight className="w-3 h-3 shrink-0" />
+        </span>
+      )}
     </VitanaRecommendationCard>
   );
 }

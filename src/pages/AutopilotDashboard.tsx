@@ -12,8 +12,9 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { useState, useMemo, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useAudiobookPlayer } from "@/context/AudiobookPlayerProvider"; // VTID-04761
+import { AudiobookReminderControl } from "@/components/audiobook/AudiobookReminderControl"; // VTID-04763
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton, type SearchDropdownItem } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -163,15 +164,25 @@ export default function AutopilotDashboard() {
   // first-time CTA, deep links) opens the Audiobook view and starts the
   // player at the next unheard episode. Without a fresh tap the browser may
   // hold playback; the mini player then waits on its Play button.
+  // VTID-04763: the daily reminder push opens /autopilot/audiobook — a plain
+  // path, because the Android app wrapper drops notification URLs with a
+  // query string. Both entries start the player and settle on /autopilot.
+  const location = useLocation();
+  const navigate = useNavigate();
+  const audiobookPath = location.pathname.replace(/\/$/, '') === '/autopilot/audiobook';
   const audiobookParam = searchParams.get('audiobook');
   useEffect(() => {
-    if (audiobookParam !== 'play' || !audiobook || !user) return;
+    if ((audiobookParam !== 'play' && !audiobookPath) || !audiobook || !user) return;
     if (mode !== 'guided') void setMode('guided');
     if (!audiobook.active) void audiobook.start();
+    if (audiobookPath) {
+      navigate('/autopilot', { replace: true });
+      return;
+    }
     const nextParams = new URLSearchParams(searchParams);
     nextParams.delete('audiobook');
     setSearchParams(nextParams, { replace: true });
-  }, [audiobookParam, audiobook, user, mode, setMode, searchParams, setSearchParams]);
+  }, [audiobookParam, audiobookPath, audiobook, user, mode, setMode, searchParams, setSearchParams, navigate]);
   const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
@@ -413,6 +424,7 @@ export default function AutopilotDashboard() {
       {isGuided ? (
         <>
           {guidedHowItWorks}
+          <AudiobookReminderControl />{/* VTID-04763 */}
           {guidedCatalog}
         </>
       ) : (
@@ -510,6 +522,7 @@ export default function AutopilotDashboard() {
               instead, leaving the Full-App layout above unchanged. */}
           <section className="mt-6 space-y-4" data-testid="desktop-audiobook">
             <JourneyHowItWorks />
+            <AudiobookReminderControl />{/* VTID-04763 */}
             <GuidedJourneyCatalog className="pt-1" />
           </section>
         </div>

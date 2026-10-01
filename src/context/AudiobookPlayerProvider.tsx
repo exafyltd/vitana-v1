@@ -222,7 +222,11 @@ export function AudiobookPlayerProvider({ children }: { children: React.ReactNod
         audio.playbackRate = rate;
         if (resumeAt > 0) audio.currentTime = resumeAt;
         await audio.play();
-        emitAudiobookEvent('track_started', { topicId: target.topicId, episode: target.episode });
+        emitAudiobookEvent('track_started', {
+          topicId: target.topicId,
+          episode: target.episode,
+          chapterId: target.chapterId,
+        });
         prefetchNext();
       } catch (err) {
         if (seq !== loadSeq.current) return;
@@ -248,8 +252,8 @@ export function AudiobookPlayerProvider({ children }: { children: React.ReactNod
       void recordSessionListened(done.episode, done.topicId).finally(() => {
         queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
       });
-      emitAudiobookEvent('track_completed', { topicId: done.topicId, episode: done.episode });
-      if (done.endsEpisode) emitAudiobookEvent('episode_completed', { episode: done.episode });
+      emitAudiobookEvent('track_completed', { topicId: done.topicId, episode: done.episode, chapterId: done.chapterId });
+      if (done.endsEpisode) emitAudiobookEvent('episode_completed', { episode: done.episode, chapterId: done.chapterId });
     },
     [queryClient, userId],
   );

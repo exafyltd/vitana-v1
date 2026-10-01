@@ -5463,7 +5463,8 @@
       "text4NewIdeas": "4 new ideas",
       "executeAllValue0": "Execute All {value0}",
       "noValue0ActionsAvailable": "No {value0}actions available",
-      "_pending_review": {}
+      "_pending_review": {},
+      "playTodaysEpisode": "Play episode {session}"
     },
     "icons": {
       "xFormerlyTwitter": "X (formerly Twitter)",
@@ -11964,7 +11965,13 @@
       "tryItNow": "Try it now",
       "finished": "You've listened to the whole audiobook. Well done!",
       "playAudiobook": "Play audiobook",
-      "playEpisode": "Play episode {n}"
+      "playEpisode": "Play episode {n}",
+      "reminderTitle": "Daily reminder",
+      "reminderBody": "We'll remind you of your episode – only on days you haven't listened yet.",
+      "reminderOffOption": "Off",
+      "reminderSaved": "Reminder every day at {time}",
+      "reminderOff": "Daily reminder switched off",
+      "reminderError": "The reminder couldn't be saved."
     }
   },
   "_pending_review": {}

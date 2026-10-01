@@ -1521,6 +1521,12 @@ const App = () => {
               <AutopilotDashboard />
             </AuthGuard>
           } />
+          {/* VTID-04763: Audiobook push deep link (plain path) — starts the player, settles on /autopilot */}
+          <Route path="/autopilot/audiobook" element={
+            <AuthGuard>
+              <AutopilotDashboard />
+            </AuthGuard>
+          } />
           {/* Invite Friends */}
           <Route path="/invite" element={
             <AuthGuard>
