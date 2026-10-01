@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 353
-- **Distinct i18n keys consumed:** 4879
+- **Distinct i18n keys consumed:** 4844
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -2542,11 +2542,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/health/VitanaIndexDetail.tsx
 
-**Status:** ✅ clean — keys consumed: 37, namespaces: 1
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 37, total in shard: 11264
+- `screens` — used: 2, total in shard: 11264
 
 ### src/pages/health/WellnessServices.tsx
 
