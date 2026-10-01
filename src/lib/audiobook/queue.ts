@@ -140,3 +140,14 @@ export function groupTopicsBySession<
       return { session: s, chapterId: ts[0]?.chapterId ?? '', topics: ts };
     });
 }
+
+/**
+ * VTID-04762 — the Audiobook's seasons, in listening order: curriculum
+ * chapters, with the Prolog as Season 0.
+ */
+export const AUDIOBOOK_SEASONS = ['prolog', 'basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
+
+/** Season number of a chapter (Prolog = 0), or -1 for an unknown chapter. */
+export function seasonNumber(chapterId: string): number {
+  return AUDIOBOOK_SEASONS.indexOf(chapterId);
+}

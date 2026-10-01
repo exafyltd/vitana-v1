@@ -49,6 +49,7 @@ import { t, notify } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
 import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
+import { AUDIOBOOK_SEASONS, seasonNumber } from '@/lib/audiobook/queue';
 import {
   completePractice,
   practiceTargetAction,
@@ -60,7 +61,8 @@ import {
   useGuidedJourneyProgress,
 } from '@/hooks/useGuidedJourneyProgress';
 
-const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
+// VTID-04762: chapters are the Audiobook's seasons; the Prolog is Season 0.
+const CHAPTER_ORDER = AUDIOBOOK_SEASONS;
 
 /** VITANA INDEX points awarded for listening to a guided session. */
 const SESSION_INDEX_REWARD = 2;
@@ -110,6 +112,12 @@ function chapterLabel(chapterId: string): string {
   const label = t(key);
   // t() returns the key when missing; fall back to the raw id.
   return label === key ? chapterId : label;
+}
+
+/** "Staffel 1 · Grundlagen" — the episode header's season caption (VTID-04762). */
+function seasonLabel(chapterId: string): string {
+  const n = seasonNumber(chapterId);
+  return n < 0 ? chapterLabel(chapterId) : t('screens.guidedCatalog.seasonLabel', { n, name: chapterLabel(chapterId) });
 }
 
 interface GuidedJourneyCatalogProps {
@@ -370,7 +378,7 @@ export function GuidedJourneyCatalog({
                   )}
                 </span>
                 <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {chapterLabel(s.chapterId)}
+                  {seasonLabel(s.chapterId)}
                 </span>
                 {audiobook && (
                   <span

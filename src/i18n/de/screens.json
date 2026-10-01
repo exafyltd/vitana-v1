@@ -44,7 +44,9 @@
       "markDone": "Als erledigt markieren",
       "skip": "Überspringen",
       "doneToast": "Übung erledigt!",
-      "doneError": "Konnte nicht speichern."
+      "doneError": "Konnte nicht speichern.",
+      "chapter_prolog": "Prolog",
+      "seasonLabel": "Staffel {n} · {name}"
     },
     "common": {
       "languageToggleAriaLabel": "Sprache",
@@ -9225,7 +9227,7 @@
       "stepsLabel": "Schritte",
       "stepsCompletedOf": "von {total} abgeschlossen",
       "guidedGoalTitle": "Lerne Vitana kennen, Folge für Folge",
-      "guidedGoalSubtitle": "Alle {total} Folgen anhören",
+      "guidedGoalSubtitle": "Folge für Folge, ganz in deinem Tempo",
       "nextStepLabel": "Dein nächster Schritt:",
       "startSessionShort": "Folge {n} abspielen",
       "stepDone": "Erledigt",

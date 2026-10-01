@@ -86,3 +86,14 @@ describe('navigation helpers', () => {
     expect(nextSleepTimer(60)).toBe(0);
   });
 });
+
+describe('seasons (VTID-04762)', () => {
+  it('the Prolog is Season 0 and the chapters follow in order', async () => {
+    const { AUDIOBOOK_SEASONS, seasonNumber } = await import('./queue');
+    expect(AUDIOBOOK_SEASONS[0]).toBe('prolog');
+    expect(seasonNumber('prolog')).toBe(0);
+    expect(seasonNumber('basics')).toBe(1);
+    expect(seasonNumber('discovery')).toBe(6);
+    expect(seasonNumber('unknown')).toBe(-1);
+  });
+});

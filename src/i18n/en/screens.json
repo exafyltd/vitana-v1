@@ -46,7 +46,9 @@
       "skip": "Skip for now",
       "doneToast": "Practice complete!",
       "doneError": "Couldn't save.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "chapter_prolog": "Prologue",
+      "seasonLabel": "Season {n} · {name}"
     },
     "common": {
       "languageToggleAriaLabel": "Language",
@@ -9303,7 +9305,7 @@
       "stepsLabel": "Steps",
       "stepsCompletedOf": "of {total} completed",
       "guidedGoalTitle": "Get to know Vitana, one episode at a time",
-      "guidedGoalSubtitle": "Listen to all {total} episodes",
+      "guidedGoalSubtitle": "Episode by episode, at your own pace",
       "nextStepLabel": "Your next step:",
       "startSessionShort": "Play episode {n}",
       "stepDone": "Done",
