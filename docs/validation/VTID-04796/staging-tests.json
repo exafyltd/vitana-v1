@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04796",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "connect your system: one URL first, developer settings on request, not-recognised offers docs or help",
+      "spec": "tests/e2e/staging/vtid-04796-commerce-connect.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "connect dialog paths and OpenAPI parsing",
+      "ref": "npx vitest run src/components/commerce/ManualConnectDialog.test.ts src/pages/CommercePortal.light-redesign.test.ts",
+      "cwd": ".",
+      "reason": "creating a connection is a write, proven here: a detected platform connects to the business (name + jurisdiction from the business), the original developer path is kept, technical fields only inside Developer settings"
+    }
+  ]
+}

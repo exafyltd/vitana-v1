@@ -223,7 +223,11 @@ export function ProductForm({
             value={core.affiliate_url}
             onChange={(e) => setCore((c) => ({ ...c, affiliate_url: e.target.value }))}
           />
-          <p className="text-xs text-muted-foreground">{t('screens.commerceportal.productForm.buyUrlHint')}</p>
+          <p className="text-xs text-muted-foreground">
+            {kind === 'product'
+              ? t('screens.commerceportal.productForm.buyUrlHint')
+              : t('screens.commerceportal.addOffer.bookUrlHint')}
+          </p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">

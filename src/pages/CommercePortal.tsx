@@ -605,7 +605,7 @@ export default function CommercePortal() {
 
       <p className="mt-8 text-center text-xs text-muted-foreground">{t('screens.commerceportal.footNote')}</p>
 
-      <ManualConnectDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={load} />
+      <ManualConnectDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={load} org={hubOrg} />
 
       <AddProductSheet
         open={addProductOpen}

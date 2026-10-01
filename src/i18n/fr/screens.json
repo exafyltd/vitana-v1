@@ -11137,7 +11137,8 @@
         "availableInHint": "Codes pays où l’on peut le réserver, séparés par des virgules.",
         "name_service": "Nom du service",
         "name_experience": "Nom de l’expérience",
-        "bookUrl": "Lien de réservation"
+        "bookUrl": "Lien de réservation",
+        "bookUrlHint": "La page de réservation de ton site. C’est là que nous envoyons les gens."
       },
       "salesSetup": {
         "title": "Configuration des ventes",
@@ -11157,6 +11158,25 @@
         "save": "Enregistrer",
         "saved": "Configuration des ventes enregistrée",
         "saveFailed": "Impossible d’enregistrer ta configuration des ventes."
+      },
+      "connect": {
+        "title": "Connecte ton système",
+        "intro": "Tu as déjà une boutique, une base de produits ou une API ? Saisis l’adresse et nous vérifions ce que nous pouvons connecter automatiquement.",
+        "urlLabel": "URL de la boutique ou de l’API",
+        "check": "Vérifier la connexion",
+        "detected": "{platform} détecté",
+        "detectedBody": "Nous le connecterons à {name}. Le nom et le pays viennent de ton entreprise.",
+        "detectedNoOrg": "Inscris d’abord ton entreprise pour la connecter — ou utilise les paramètres développeur ci-dessous.",
+        "connect": "Connecter",
+        "notDetected": "Nous n’avons pas pu reconnaître cette plateforme automatiquement.",
+        "haveDocs": "J’ai une documentation d’API",
+        "needHelp": "J’ai besoin d’aide pour la connexion",
+        "developer": "Avancé / Paramètres développeur",
+        "jurisdictionFromBusiness": "La juridiction vient du pays de ton entreprise.",
+        "uploadOpenapi": "Importer un fichier OpenAPI",
+        "pasteOpenapi": "…ou colle la spécification OpenAPI (JSON)",
+        "openapiInvalid": "Ce n’est pas un JSON valide. Vérifie le fichier ou colle-le à nouveau.",
+        "created": "Connexion créée"
       }
     },
     "oauthconsent": {

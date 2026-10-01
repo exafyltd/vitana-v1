@@ -11144,7 +11144,8 @@
         "availableInHint": "可预订的国家/地区代码，用逗号分隔。",
         "name_service": "服务名称",
         "name_experience": "体验名称",
-        "bookUrl": "预订链接"
+        "bookUrl": "预订链接",
+        "bookUrlHint": "你网站上的预订页面。我们会把用户引导到那里。"
       },
       "salesSetup": {
         "title": "销售设置",
@@ -11164,6 +11165,25 @@
         "save": "保存",
         "saved": "销售设置已保存",
         "saveFailed": "无法保存你的销售设置。"
+      },
+      "connect": {
+        "title": "连接你的系统",
+        "intro": "已有店铺、产品数据库或 API？输入地址，我们会检查哪些可以自动连接。",
+        "urlLabel": "店铺或 API 网址",
+        "check": "检查连接",
+        "detected": "已识别 {platform}",
+        "detectedBody": "我们会把它连接到 {name}。名称和国家/地区取自你的业务。",
+        "detectedNoOrg": "请先注册你的业务再连接，或使用下方的开发者设置。",
+        "connect": "连接",
+        "notDetected": "我们无法自动识别此平台。",
+        "haveDocs": "我有 API 文档",
+        "needHelp": "我需要连接方面的帮助",
+        "developer": "高级 / 开发者设置",
+        "jurisdictionFromBusiness": "司法管辖区取自你业务所在的国家/地区。",
+        "uploadOpenapi": "上传 OpenAPI 文件",
+        "pasteOpenapi": "……或粘贴 OpenAPI 规范（JSON）",
+        "openapiInvalid": "这不是有效的 JSON。请检查文件或重新粘贴。",
+        "created": "已创建连接"
       }
     },
     "oauthconsent": {

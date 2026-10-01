@@ -11144,7 +11144,8 @@
         "availableInHint": "Rezerve edilebileceği ülke kodları, virgülle ayrılmış.",
         "name_service": "Hizmet adı",
         "name_experience": "Deneyim adı",
-        "bookUrl": "Rezervasyon bağlantısı"
+        "bookUrl": "Rezervasyon bağlantısı",
+        "bookUrlHint": "Web sitendeki rezervasyon sayfası. İnsanları oraya yönlendiririz."
       },
       "salesSetup": {
         "title": "Satış ayarları",
@@ -11164,6 +11165,25 @@
         "save": "Kaydet",
         "saved": "Satış ayarları kaydedildi",
         "saveFailed": "Satış ayarların kaydedilemedi."
+      },
+      "connect": {
+        "title": "Sistemini bağla",
+        "intro": "Zaten bir mağazan, ürün veritabanın veya API’n mı var? Adresi gir, neyi otomatik bağlayabileceğimizi kontrol edelim.",
+        "urlLabel": "Mağaza veya API URL’si",
+        "check": "Bağlantıyı kontrol et",
+        "detected": "{platform} algılandı",
+        "detectedBody": "Bunu {name} işletmesine bağlayacağız. Ad ve ülke işletmenden alınır.",
+        "detectedNoOrg": "Bağlamak için önce işletmeni kaydet — ya da aşağıdaki geliştirici ayarlarını kullan.",
+        "connect": "Bağla",
+        "notDetected": "Bu platformu otomatik olarak tanıyamadık.",
+        "haveDocs": "API dokümantasyonum var",
+        "needHelp": "Bağlamak için yardıma ihtiyacım var",
+        "developer": "Gelişmiş / Geliştirici ayarları",
+        "jurisdictionFromBusiness": "Yetki alanı işletmenin ülkesinden gelir.",
+        "uploadOpenapi": "OpenAPI dosyası yükle",
+        "pasteOpenapi": "…veya OpenAPI belirtimini (JSON) yapıştır",
+        "openapiInvalid": "Bu geçerli bir JSON değil. Dosyayı kontrol et veya tekrar yapıştır.",
+        "created": "Bağlantı oluşturuldu"
       }
     },
     "oauthconsent": {

@@ -11148,7 +11148,8 @@
         "availableInHint": "Kodovi država u kojima može da se rezerviše, odvojeni zarezom.",
         "name_service": "Naziv usluge",
         "name_experience": "Naziv doživljaja",
-        "bookUrl": "Link za rezervaciju"
+        "bookUrl": "Link za rezervaciju",
+        "bookUrlHint": "Stranica za rezervacije na tvom sajtu. Tamo šaljemo ljude."
       },
       "salesSetup": {
         "title": "Podešavanje prodaje",
@@ -11168,6 +11169,25 @@
         "save": "Sačuvaj",
         "saved": "Podešavanje prodaje je sačuvano",
         "saveFailed": "Nije uspelo čuvanje podešavanja prodaje."
+      },
+      "connect": {
+        "title": "Poveži svoj sistem",
+        "intro": "Već imaš prodavnicu, bazu proizvoda ili API? Unesi adresu i proverićemo šta možemo da povežemo automatski.",
+        "urlLabel": "URL prodavnice ili API-ja",
+        "check": "Proveri povezivanje",
+        "detected": "Prepoznato: {platform}",
+        "detectedBody": "Povezaćemo ga sa {name}. Naziv i država uzimaju se iz tvog posla.",
+        "detectedNoOrg": "Prvo registruj svoj posao da bi ga povezao — ili koristi podešavanja za programere ispod.",
+        "connect": "Poveži",
+        "notDetected": "Nismo uspeli automatski da prepoznamo ovu platformu.",
+        "haveDocs": "Imam API dokumentaciju",
+        "needHelp": "Treba mi pomoć oko povezivanja",
+        "developer": "Napredno / Podešavanja za programere",
+        "jurisdictionFromBusiness": "Jurisdikcija se određuje prema državi tvog posla.",
+        "uploadOpenapi": "Otpremi OpenAPI fajl",
+        "pasteOpenapi": "…ili nalepi OpenAPI specifikaciju (JSON)",
+        "openapiInvalid": "To nije ispravan JSON. Proveri fajl ili ga ponovo nalepi.",
+        "created": "Povezivanje je napravljeno"
       }
     },
     "oauthconsent": {

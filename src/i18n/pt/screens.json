@@ -11053,7 +11053,8 @@
         "availableInHint": "Códigos dos países onde é possível reservar, separados por vírgula.",
         "name_service": "Nome do serviço",
         "name_experience": "Nome da experiência",
-        "bookUrl": "Link para reservar"
+        "bookUrl": "Link para reservar",
+        "bookUrlHint": "A página de reservas do seu site. É para lá que enviamos as pessoas."
       },
       "salesSetup": {
         "title": "Configuração de vendas",
@@ -11073,6 +11074,25 @@
         "save": "Salvar",
         "saved": "Configuração de vendas salva",
         "saveFailed": "Não foi possível salvar sua configuração de vendas."
+      },
+      "connect": {
+        "title": "Conecte seu sistema",
+        "intro": "Já tem uma loja, um banco de produtos ou uma API? Digite o endereço e verificamos o que dá para conectar automaticamente.",
+        "urlLabel": "URL da loja ou da API",
+        "check": "Verificar conexão",
+        "detected": "{platform} detectado",
+        "detectedBody": "Vamos conectá-lo a {name}. Nome e país vêm do seu negócio.",
+        "detectedNoOrg": "Cadastre seu negócio primeiro para conectar — ou use as configurações de desenvolvedor abaixo.",
+        "connect": "Conectar",
+        "notDetected": "Não conseguimos reconhecer esta plataforma automaticamente.",
+        "haveDocs": "Tenho documentação da API",
+        "needHelp": "Preciso de ajuda para conectar",
+        "developer": "Avançado / Configurações de desenvolvedor",
+        "jurisdictionFromBusiness": "A jurisdição vem do país do seu negócio.",
+        "uploadOpenapi": "Enviar arquivo OpenAPI",
+        "pasteOpenapi": "…ou cole a especificação OpenAPI (JSON)",
+        "openapiInvalid": "Isso não é um JSON válido. Verifique o arquivo ou cole novamente.",
+        "created": "Conexão criada"
       }
     },
     "oauthconsent": {

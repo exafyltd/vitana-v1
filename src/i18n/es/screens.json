@@ -10947,7 +10947,8 @@
         "availableInHint": "Códigos de país donde se puede reservar, separados por comas.",
         "name_service": "Nombre del servicio",
         "name_experience": "Nombre de la experiencia",
-        "bookUrl": "Enlace para reservar"
+        "bookUrl": "Enlace para reservar",
+        "bookUrlHint": "La página de reservas de tu sitio web. Ahí enviamos a las personas."
       },
       "salesSetup": {
         "title": "Configuración de ventas",
@@ -10967,6 +10968,25 @@
         "save": "Guardar",
         "saved": "Configuración de ventas guardada",
         "saveFailed": "No se pudo guardar tu configuración de ventas."
+      },
+      "connect": {
+        "title": "Conecta tu sistema",
+        "intro": "¿Ya tienes una tienda, una base de datos de productos o una API? Introduce la dirección y comprobaremos qué podemos conectar automáticamente.",
+        "urlLabel": "URL de la tienda o de la API",
+        "check": "Comprobar conexión",
+        "detected": "{platform} detectado",
+        "detectedBody": "Lo conectaremos con {name}. El nombre y el país vienen de tu negocio.",
+        "detectedNoOrg": "Registra primero tu negocio para conectarlo, o usa los ajustes para desarrolladores de abajo.",
+        "connect": "Conectar",
+        "notDetected": "No pudimos reconocer esta plataforma automáticamente.",
+        "haveDocs": "Tengo documentación de la API",
+        "needHelp": "Necesito ayuda para conectar",
+        "developer": "Avanzado / Ajustes para desarrolladores",
+        "jurisdictionFromBusiness": "La jurisdicción viene del país de tu negocio.",
+        "uploadOpenapi": "Subir archivo OpenAPI",
+        "pasteOpenapi": "…o pega la especificación OpenAPI (JSON)",
+        "openapiInvalid": "No es un JSON válido. Revisa el archivo o pégalo de nuevo.",
+        "created": "Conexión creada"
       }
     },
     "oauthconsent": {
