@@ -4,6 +4,7 @@
     "src/components/calendar/calendar-entry.ts": ["src/components/calendar/calendar-entry.test.ts"],
     "src/components/calendar/vcal/guidance.ts": ["src/components/calendar/vcal/guidance.test.ts"],
     "src/components/calendar/vcal/sections.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
+    "src/components/calendar/vcal/ProviderLogos.tsx": ["src/components/calendar/vcal/ProviderLogos.test.tsx"],
     "src/components/calendar/vcal/Disclosure.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
     "src/components/calendar/vcal/GuideCard.tsx": ["src/components/calendar/vcal/sections.test.tsx"],
     "src/components/calendar/vcal/AddEntrySheet.tsx": ["src/components/calendar/vcal/sections.test.tsx"],

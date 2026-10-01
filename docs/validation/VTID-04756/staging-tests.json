@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04756",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the connect card shows the Google, Apple and Outlook icons",
+      "spec": "tests/e2e/staging/vtid-04756-calendar-app-icons.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Google, Apple (today's weekday and date) and Outlook icons are drawn as marks, not letters; no heavier font weight than 500 anywhere in the calendar."
+    }
+  ]
+}
