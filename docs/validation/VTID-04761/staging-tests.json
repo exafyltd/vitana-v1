@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04761",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Audiobook naming, episode audio, desktop episodes + reminder, player, push deep link",
+      "spec": "tests/e2e/staging/vtid-04761-audiobook.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "player queue + behaviour",
+      "ref": "npx vitest run src/lib/audiobook src/context/AudiobookPlayerProvider.test.tsx",
+      "cwd": ".",
+      "reason": "Drives the real player end to end over a mocked gateway: start at the next unheard episode, auto-advance, listen recorded per topic, one card per episode, unavailable-language fallback, the silent-unlock guard."
+    }
+  ]
+}
