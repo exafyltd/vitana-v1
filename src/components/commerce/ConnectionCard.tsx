@@ -1,4 +1,5 @@
 /** One connected business in the portal list (VTID-03882). */
+import { platformName } from '@/lib/commerce-platforms';
 import { ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ConnectionProgress } from './ConnectionProgress';
@@ -36,7 +37,7 @@ export function ConnectionCard({ row, onOpen }: { row: ConnectionRow; onOpen: (i
         <div className="min-w-0 flex-1">
           <p className="truncate font-medium text-foreground">{row.name}</p>
           <p className="truncate text-xs text-muted-foreground">
-            {row.connector_id} · {row.provider_id}
+            {platformName(row.connector_id) ?? t('screens.commerceportal.connect.customApi')}
           </p>
         </div>
         <Badge variant="outline" className={`shrink-0 ${badgeTone(row.state)}`}>

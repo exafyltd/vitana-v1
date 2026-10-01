@@ -10463,9 +10463,9 @@
         "failed": "Couldn't start the connection. Please check your details."
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Let AI help set up your business and catalog. Once this is live, you add the address below to Claude, ChatGPT or Gemini.",
+      "agentPromise": "Let AI help set up your business and catalog.",
       "agentStatusPill": "Going live soon",
-      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentStatusDetail": "AI-assisted setup is still being built. Until it’s ready, add your products yourself or connect your shop — both work today.",
       "agentUrlHint": "One address. That is all your agent needs.",
       "howItWorksTitle": "Getting started is simple",
       "manualIntro": "You don't have an AI assistant? No problem:",
@@ -10768,7 +10768,8 @@
         "availableInHint": "Country codes where people can book it, comma separated.",
         "name_service": "Service name",
         "name_experience": "Experience name",
-        "bookUrl": "Link to book"
+        "bookUrl": "Link to book",
+        "bookUrlHint": "The booking page on your website. That is where we send people."
       },
       "salesSetup": {
         "title": "Sales setup",
@@ -10788,7 +10789,29 @@
         "save": "Save",
         "saved": "Sales setup saved",
         "saveFailed": "Couldn’t save your sales setup."
-      }
+      },
+      "connect": {
+        "title": "Connect your system",
+        "intro": "Already have a shop, product database or API? Enter the address and we’ll check what we can connect automatically.",
+        "urlLabel": "Store or API URL",
+        "check": "Check connection",
+        "detected": "{platform} detected",
+        "detectedBody": "We’ll connect it to {name}. Name and country come from your business.",
+        "detectedNoOrg": "Register your business first to connect it — or use the developer settings below.",
+        "connect": "Connect",
+        "notDetected": "We couldn’t recognise this platform automatically.",
+        "haveDocs": "I have API documentation",
+        "needHelp": "I need help connecting",
+        "developer": "Advanced / Developer settings",
+        "jurisdictionFromBusiness": "Jurisdiction comes from your business’s country.",
+        "uploadOpenapi": "Upload OpenAPI file",
+        "pasteOpenapi": "…or paste the OpenAPI specification (JSON)",
+        "openapiInvalid": "That isn’t valid JSON. Check the file or paste it again.",
+        "created": "Connection created",
+        "customApi": "Custom API"
+      },
+      "forBusiness": "For {name}",
+      "forBusinessLabel": "For:"
     },
     "oauthconsent": {
       "title": "Allow access?",

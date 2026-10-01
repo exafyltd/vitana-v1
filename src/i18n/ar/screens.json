@@ -10624,7 +10624,6 @@
       "_pending_review": {
         "portalEyebrow": true,
         "agentStatusPill": true,
-        "agentStatusDetail": true,
         "agentUrlHint": true,
         "manualIntro": true,
         "manualCta": true,
@@ -10639,9 +10638,9 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "دع الذكاء الاصطناعي يساعدك في إعداد نشاطك التجاري وكتالوجك. عند إطلاق الميزة، ستضيف العنوان أدناه إلى Claude أو ChatGPT أو Gemini.",
+      "agentPromise": "دع الذكاء الاصطناعي يساعدك في إعداد نشاطك وكتالوجك.",
       "agentStatusPill": "Going live soon",
-      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentStatusDetail": "الإعداد بمساعدة الذكاء الاصطناعي ما زال قيد التطوير. حتى يصبح جاهزًا، أضف منتجاتك بنفسك أو اربط متجرك — كلاهما يعمل اليوم.",
       "agentUrlHint": "One address. That is all your agent needs.",
       "howItWorksTitle": "البدء سهل",
       "manualIntro": "Prefer to fill it in yourself?",
@@ -11144,7 +11143,8 @@
         "availableInHint": "رموز الدول التي يمكن الحجز فيها، مفصولة بفواصل.",
         "name_service": "اسم الخدمة",
         "name_experience": "اسم التجربة",
-        "bookUrl": "رابط الحجز"
+        "bookUrl": "رابط الحجز",
+        "bookUrlHint": "صفحة الحجز على موقعك. إليها نوجّه الأشخاص."
       },
       "salesSetup": {
         "title": "إعداد المبيعات",
@@ -11164,7 +11164,29 @@
         "save": "حفظ",
         "saved": "تم حفظ إعداد المبيعات",
         "saveFailed": "تعذّر حفظ إعداد المبيعات."
-      }
+      },
+      "connect": {
+        "title": "اربط نظامك",
+        "intro": "لديك متجر أو قاعدة بيانات منتجات أو API؟ أدخل العنوان وسنتحقق مما يمكن ربطه تلقائيًا.",
+        "urlLabel": "رابط المتجر أو API",
+        "check": "التحقق من الاتصال",
+        "detected": "تم التعرف على {platform}",
+        "detectedBody": "سنربطه بـ {name}. الاسم والدولة مأخوذان من نشاطك التجاري.",
+        "detectedNoOrg": "سجّل نشاطك التجاري أولًا لربطه، أو استخدم إعدادات المطوّرين أدناه.",
+        "connect": "ربط",
+        "notDetected": "لم نتمكن من التعرف على هذه المنصة تلقائيًا.",
+        "haveDocs": "لدي توثيق API",
+        "needHelp": "أحتاج إلى مساعدة في الربط",
+        "developer": "متقدم / إعدادات المطوّرين",
+        "jurisdictionFromBusiness": "تُحدَّد الولاية القضائية من دولة نشاطك التجاري.",
+        "uploadOpenapi": "رفع ملف OpenAPI",
+        "pasteOpenapi": "…أو الصق مواصفات OpenAPI (JSON)",
+        "openapiInvalid": "هذا ليس JSON صالحًا. تحقق من الملف أو الصقه مرة أخرى.",
+        "created": "تم إنشاء الاتصال",
+        "customApi": "API مخصص"
+      },
+      "forBusiness": "لـ {name}",
+      "forBusinessLabel": "لـ:"
     },
     "oauthconsent": {
       "title": "هل تسمح بالوصول؟",

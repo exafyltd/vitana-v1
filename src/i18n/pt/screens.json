@@ -10548,7 +10548,6 @@
       "_pending_review": {
         "portalEyebrow": true,
         "agentStatusPill": true,
-        "agentStatusDetail": true,
         "agentUrlHint": true,
         "manualIntro": true,
         "manualCta": true,
@@ -10563,9 +10562,9 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Deixe a IA ajudar a configurar seu negócio e seu catálogo. Quando estiver disponível, você adiciona o endereço abaixo no Claude, ChatGPT ou Gemini.",
+      "agentPromise": "Deixe a IA ajudar a configurar seu negócio e seu catálogo.",
       "agentStatusPill": "Going live soon",
-      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentStatusDetail": "A configuração com IA ainda está em desenvolvimento. Enquanto isso, adicione seus produtos você mesmo ou conecte sua loja — as duas opções já funcionam.",
       "agentUrlHint": "One address. That is all your agent needs.",
       "howItWorksTitle": "Começar é simples",
       "manualIntro": "Prefer to fill it in yourself?",
@@ -11053,7 +11052,8 @@
         "availableInHint": "Códigos dos países onde é possível reservar, separados por vírgula.",
         "name_service": "Nome do serviço",
         "name_experience": "Nome da experiência",
-        "bookUrl": "Link para reservar"
+        "bookUrl": "Link para reservar",
+        "bookUrlHint": "A página de reservas do seu site. É para lá que enviamos as pessoas."
       },
       "salesSetup": {
         "title": "Configuração de vendas",
@@ -11073,7 +11073,29 @@
         "save": "Salvar",
         "saved": "Configuração de vendas salva",
         "saveFailed": "Não foi possível salvar sua configuração de vendas."
-      }
+      },
+      "connect": {
+        "title": "Conecte seu sistema",
+        "intro": "Já tem uma loja, um banco de produtos ou uma API? Digite o endereço e verificamos o que dá para conectar automaticamente.",
+        "urlLabel": "URL da loja ou da API",
+        "check": "Verificar conexão",
+        "detected": "{platform} detectado",
+        "detectedBody": "Vamos conectá-lo a {name}. Nome e país vêm do seu negócio.",
+        "detectedNoOrg": "Cadastre seu negócio primeiro para conectar — ou use as configurações de desenvolvedor abaixo.",
+        "connect": "Conectar",
+        "notDetected": "Não conseguimos reconhecer esta plataforma automaticamente.",
+        "haveDocs": "Tenho documentação da API",
+        "needHelp": "Preciso de ajuda para conectar",
+        "developer": "Avançado / Configurações de desenvolvedor",
+        "jurisdictionFromBusiness": "A jurisdição vem do país do seu negócio.",
+        "uploadOpenapi": "Enviar arquivo OpenAPI",
+        "pasteOpenapi": "…ou cole a especificação OpenAPI (JSON)",
+        "openapiInvalid": "Isso não é um JSON válido. Verifique o arquivo ou cole novamente.",
+        "created": "Conexão criada",
+        "customApi": "API própria"
+      },
+      "forBusiness": "Para {name}",
+      "forBusinessLabel": "Para:"
     },
     "oauthconsent": {
       "title": "Permitir acesso?",

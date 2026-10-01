@@ -113,6 +113,11 @@ export default function CommercePortal() {
   const [hubOrgId, setHubOrgId] = useState<string | null>(() => readActiveOrgId());
   const [hubRefresh, setHubRefresh] = useState(0);
   const hubOrg = pickActiveOrg(adminOrgs, hubOrgId);
+  // One business choice for the hub and every setup sheet (VTID-04796).
+  const selectHubOrg = (id: string) => {
+    setActiveOrgId(id);
+    setHubOrgId(id);
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const reduce = useReducedMotion();
@@ -502,10 +507,7 @@ export default function CommercePortal() {
         <SetupHub
           orgs={adminOrgs}
           activeOrgId={hubOrg.id}
-          onSelectOrg={(id) => {
-            setActiveOrgId(id);
-            setHubOrgId(id);
-          }}
+          onSelectOrg={selectHubOrg}
           onAddProducts={() => setChooserOpen(true)}
           onSalesSetup={() => setSalesOpen(true)}
           refreshKey={hubRefresh}
@@ -605,7 +607,14 @@ export default function CommercePortal() {
 
       <p className="mt-8 text-center text-xs text-muted-foreground">{t('screens.commerceportal.footNote')}</p>
 
-      <ManualConnectDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={load} />
+      <ManualConnectDialog
+        open={manualOpen}
+        onOpenChange={setManualOpen}
+        onCreated={load}
+        org={hubOrg}
+        orgs={adminOrgs}
+        onSelectOrg={selectHubOrg}
+      />
 
       <AddProductSheet
         open={addProductOpen}
@@ -616,14 +625,18 @@ export default function CommercePortal() {
         }}
         orgs={adminOrgs}
         activeOrgId={hubOrg?.id ?? null}
-        onSelectOrg={(id) => {
-          setActiveOrgId(id);
-          setHubOrgId(id);
-        }}
+        onSelectOrg={selectHubOrg}
         onImportFile={() => setCatalogueImportOpen(true)}
         onRegister={() => setRegisterOrgOpen(true)}
       />
-      <SetupChooser open={chooserOpen} onOpenChange={setChooserOpen} onChoose={chooseSetup} />
+      <SetupChooser
+        open={chooserOpen}
+        onOpenChange={setChooserOpen}
+        onChoose={chooseSetup}
+        org={hubOrg}
+        orgs={adminOrgs}
+        onSelectOrg={selectHubOrg}
+      />
       <SalesSetupSheet
         open={salesOpen}
         onOpenChange={setSalesOpen}

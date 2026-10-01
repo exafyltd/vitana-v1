@@ -10627,7 +10627,6 @@
       "_pending_review": {
         "portalEyebrow": true,
         "agentStatusPill": true,
-        "agentStatusDetail": true,
         "agentUrlHint": true,
         "manualIntro": true,
         "manualCta": true,
@@ -10642,9 +10641,9 @@
         "signOut": true
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Пусть ИИ поможет настроить бизнес и каталог. Когда это заработает, ты добавишь адрес ниже в Claude, ChatGPT или Gemini.",
+      "agentPromise": "Пусть ИИ поможет настроить бизнес и каталог.",
       "agentStatusPill": "Going live soon",
-      "agentStatusDetail": "The MCP server is built but not yet publicly reachable at this address — DNS exposure is still pending. Until then the server offers your agent read-only tools: creating a business through your AI arrives when it goes live. The manual route below works today.",
+      "agentStatusDetail": "Настройка с помощью ИИ ещё в разработке. Пока добавь товары сам или подключи магазин — это уже работает.",
       "agentUrlHint": "One address. That is all your agent needs.",
       "howItWorksTitle": "Начать просто",
       "manualIntro": "Prefer to fill it in yourself?",
@@ -11147,7 +11146,8 @@
         "availableInHint": "Коды стран, где это можно забронировать, через запятую.",
         "name_service": "Название услуги",
         "name_experience": "Название впечатления",
-        "bookUrl": "Ссылка для бронирования"
+        "bookUrl": "Ссылка для бронирования",
+        "bookUrlHint": "Страница бронирования на твоём сайте. Туда мы направляем людей."
       },
       "salesSetup": {
         "title": "Настройка продаж",
@@ -11167,7 +11167,29 @@
         "save": "Сохранить",
         "saved": "Настройки продаж сохранены",
         "saveFailed": "Не удалось сохранить настройки продаж."
-      }
+      },
+      "connect": {
+        "title": "Подключи свою систему",
+        "intro": "Уже есть магазин, база товаров или API? Введи адрес, и мы проверим, что можно подключить автоматически.",
+        "urlLabel": "URL магазина или API",
+        "check": "Проверить подключение",
+        "detected": "Обнаружено: {platform}",
+        "detectedBody": "Мы подключим его к {name}. Название и страна берутся из твоего бизнеса.",
+        "detectedNoOrg": "Сначала зарегистрируй бизнес, чтобы подключить, или используй настройки для разработчиков ниже.",
+        "connect": "Подключить",
+        "notDetected": "Не удалось автоматически распознать эту платформу.",
+        "haveDocs": "У меня есть документация API",
+        "needHelp": "Мне нужна помощь с подключением",
+        "developer": "Дополнительно / Настройки для разработчиков",
+        "jurisdictionFromBusiness": "Юрисдикция определяется страной твоего бизнеса.",
+        "uploadOpenapi": "Загрузить файл OpenAPI",
+        "pasteOpenapi": "…или вставь спецификацию OpenAPI (JSON)",
+        "openapiInvalid": "Это не валидный JSON. Проверь файл или вставь его снова.",
+        "created": "Подключение создано",
+        "customApi": "Собственный API"
+      },
+      "forBusiness": "Для {name}",
+      "forBusinessLabel": "Для:"
     },
     "oauthconsent": {
       "title": "Разрешить доступ?",
