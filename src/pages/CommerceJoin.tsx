@@ -262,6 +262,7 @@ export default function CommerceJoin() {
                       variant="outline"
                       disabled={oauth.isPending}
                       onClick={() => continueWith(id)}
+                      data-testid={`join-option-${id}`}
                       className={optionClass}
                     >
                       <Icon />
@@ -280,6 +281,7 @@ export default function CommerceJoin() {
                       setMethod('email');
                       setError('');
                     }}
+                    data-testid="join-option-email"
                     className={optionClass}
                   >
                     <Mail className="h-5 w-5 text-amber-700" />
