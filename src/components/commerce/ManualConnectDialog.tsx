@@ -35,6 +35,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { adminFetch } from '@/lib/admin-api';
 import { MY_PORTAL_API, PARTNER_ONBOARDING_API } from '@/lib/commerce-host';
 import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
+import { BusinessContext } from '@/components/commerce/BusinessContext';
 import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 const EMPTY_FORM = { name: '', connector_id: '', provider_id: '', jurisdiction: '', openapi: '' };
@@ -56,12 +57,17 @@ export function ManualConnectDialog({
   onOpenChange,
   onCreated,
   org = null,
+  orgs = [],
+  onSelectOrg,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreated: () => void | Promise<void>;
   /** The registered business to connect (VTID-04796); without one, the developer form asks for name + jurisdiction. */
   org?: MyOrgRow | null;
+  /** All businesses the user administers — with several, the dialog offers a selector. */
+  orgs?: MyOrgRow[];
+  onSelectOrg?: (id: string) => void;
 }) {
   const [creating, setCreating] = useState(false);
   const [detecting, setDetecting] = useState(false);
@@ -186,6 +192,7 @@ export function ManualConnectDialog({
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="text-2xl font-bold">{t('screens.commerceportal.connect.title')}</ResponsiveDialogTitle>
           <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connect.intro')}</p>
+          <BusinessContext org={org} orgs={orgs} onSelectOrg={onSelectOrg} />
         </ResponsiveDialogHeader>
 
         <ResponsiveDialogBody className="space-y-4 md:mt-4">

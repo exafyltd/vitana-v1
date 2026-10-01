@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/responsive-dialog';
 import { Badge } from '@/components/ui/badge';
 import { t } from '@/lib/i18n-toast';
+import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
+import { BusinessContext } from '@/components/commerce/BusinessContext';
 
 export type SetupOption = 'ai' | 'shop' | 'manual' | 'api';
 
@@ -42,10 +44,17 @@ export function SetupChooser({
   open,
   onOpenChange,
   onChoose,
+  org = null,
+  orgs = [],
+  onSelectOrg,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onChoose: (option: SetupOption) => void;
+  /** VTID-04796: the business being set up, kept in view (selector with several). */
+  org?: MyOrgRow | null;
+  orgs?: MyOrgRow[];
+  onSelectOrg?: (id: string) => void;
 }) {
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
@@ -54,6 +63,7 @@ export function SetupChooser({
           <ResponsiveDialogTitle className="text-2xl font-bold">
             {t('screens.commerceportal.setupChooser.title')}
           </ResponsiveDialogTitle>
+          <BusinessContext org={org} orgs={orgs} onSelectOrg={onSelectOrg} />
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody className="space-y-2 md:mt-4">
           {SETUP_OPTIONS.map(({ id, title, hint, Icon, inDevelopment }) => (

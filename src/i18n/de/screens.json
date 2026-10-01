@@ -10463,9 +10463,9 @@
         "failed": "Die Verbindung konnte nicht gestartet werden. Bitte überprüfe deine Angaben."
       },
       "portalEyebrow": "Commerce Portal",
-      "agentPromise": "Lass dir von KI beim Einrichten deines Business und Katalogs helfen. Sobald das live ist, trägst du die Adresse unten in Claude, ChatGPT oder Gemini ein.",
+      "agentPromise": "Lass dir von KI beim Einrichten deines Business und Katalogs helfen.",
       "agentStatusPill": "Bald live",
-      "agentStatusDetail": "Der MCP-Server ist fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar — die DNS-Freischaltung steht aus. Solange stellt der Server deinem Agenten nur lesende Werkzeuge bereit: Ein Business per KI anzulegen kommt mit der Freischaltung. Bis dahin führt der manuelle Weg unten zum Ziel.",
+      "agentStatusDetail": "Die KI-gestützte Einrichtung ist noch in Arbeit. Bis sie fertig ist, kannst du deine Produkte selbst hinzufügen oder deinen Shop verbinden – beides funktioniert schon heute.",
       "agentUrlHint": "Eine Adresse. Mehr braucht dein Agent nicht.",
       "howItWorksTitle": "So einfach geht's los",
       "manualIntro": "Du hast keinen KI-Assistenten? Kein Problem:",
@@ -10807,8 +10807,11 @@
         "uploadOpenapi": "OpenAPI-Datei hochladen",
         "pasteOpenapi": "…oder die OpenAPI-Spezifikation (JSON) einfügen",
         "openapiInvalid": "Das ist kein gültiges JSON. Prüf die Datei oder füge sie erneut ein.",
-        "created": "Verbindung angelegt"
-      }
+        "created": "Verbindung angelegt",
+        "customApi": "Eigene API"
+      },
+      "forBusiness": "Für {name}",
+      "forBusinessLabel": "Für:"
     },
     "oauthconsent": {
       "title": "Zugriff erlauben?",

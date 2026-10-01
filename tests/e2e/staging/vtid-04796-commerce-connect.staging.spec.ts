@@ -57,7 +57,10 @@ test('connect your system: one URL first, developer settings on request, not-rec
   await page.goto('/commerce', { waitUntil: 'domcontentloaded' });
   await expect(page.getByTestId('setup-hub')).toBeVisible({ timeout: 30_000 });
   await page.getByTestId('setup-step-products').getByRole('button').click();
+  // The business being set up stays in view.
+  await expect(page.getByTestId('business-context')).toContainText('Demo Studio');
   await page.getByTestId('setup-option-shop').click();
+  await expect(page.getByTestId('business-context')).toContainText('Demo Studio');
 
   // One question first; no technical identifiers on show.
   await expect(page.locator('#mc-url')).toBeVisible();
