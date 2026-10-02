@@ -345,32 +345,6 @@
       }
     },
     {
-      "id": "AUTH.EARTHLINKS_PORTAL",
-      "route": "/earthlinks",
-      "category": "auth",
-      "access": "public",
-      "i18n": {
-        "en": {
-          "title": "Earthlinks Portal",
-          "shows": "Registration and sign-in for the Earthlinks tenant.",
-          "hint": "When the user mentions Earthlinks specifically and wants to register or sign in.",
-          "phrasings": [
-            "open the Earthlinks portal",
-            "join Earthlinks"
-          ]
-        },
-        "de": {
-          "title": "Earthlinks Portal",
-          "shows": "Registrierung und Anmeldung für den Earthlinks Tenant.",
-          "hint": "Wenn der Nutzer Earthlinks erwähnt und sich registrieren oder anmelden möchte.",
-          "phrasings": [
-            "öffne das Earthlinks-Portal",
-            "Earthlinks beitreten"
-          ]
-        }
-      }
-    },
-    {
       "id": "AUTH.MAXINA_PORTAL",
       "route": "/maxina",
       "category": "auth",

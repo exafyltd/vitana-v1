@@ -3,8 +3,12 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { canonicalTenantSlug, readStoredTenantSlug } from "@/lib/retired-tenants";
 
-export type TenantType = "maxina" | "earthlinks" | "alkalma";
+// VTID-04836: earthlinks was retired (merged into maxina, platform VTID-01985).
+// A retired slug arriving from storage, metadata or a URL is mapped to its
+// successor by canonicalTenantSlug() before it is used.
+export type TenantType = "maxina" | "alkalma";
 
 interface TenantConfig {
   id: string;
@@ -22,14 +26,6 @@ const TENANT_CONFIGS: Record<TenantType, TenantConfig> = {
     slug: "maxina",
     brandAccent: "#FF7BAC",
     brandBg: "#FFF5F8",
-    brandFg: "#1A1A1A",
-  },
-  earthlinks: {
-    id: "",
-    name: "Earthlinks",
-    slug: "earthlinks",
-    brandAccent: "#4ADE80",
-    brandBg: "#F0FDF4",
     brandFg: "#1A1A1A",
   },
   alkalma: {
@@ -79,7 +75,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
           }
           return null;
         })();
-        const slugFromStorage = localStorage.getItem('tenant_slug');
+        const slugFromStorage = readStoredTenantSlug('tenant_slug');
         const fallbackSlug = slugFromUrl || slugFromStorage;
 
         if (fallbackSlug) {
@@ -131,7 +127,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   // Map database tenant to config with styling
   const tenant = tenantData ? {
     ...tenantData,
-    ...(TENANT_CONFIGS[tenantData.slug as TenantType] || TENANT_CONFIGS.maxina)
+    ...(TENANT_CONFIGS[canonicalTenantSlug(tenantData.slug) as TenantType] || TENANT_CONFIGS.maxina)
   } : null;
 
   // Apply tenant CSS variables
@@ -170,11 +166,14 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const setTenantBySlug = async (slug: string) => {
+  const setTenantBySlug = async (requestedSlug: string) => {
     // Skip tenant switching if no authenticated user
     if (!user) {
       return;
     }
+
+    // VTID-04836: never look up or persist a retired tenant slug.
+    const slug = canonicalTenantSlug(requestedSlug);
 
     try {
       // Try the RPC to update JWT app_metadata (best path)
@@ -212,7 +211,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         // Unlike the RPC branch above (which warns on failure), this
         // fallback previously had no error captured at all — a user
         // finishing signup on a tenant-specific portal (MaxinaConfirmed,
-        // AlkalmaConfirmed, EarthlinksPortal, etc.) would silently never
+        // AlkalmaConfirmed, etc.) would silently never
         // get switched into that tenant's branding/context.
         console.warn('[useTenant] Local tenant resolution failed:', resolveErr.message);
       }

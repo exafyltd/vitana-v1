@@ -56,8 +56,8 @@
       "reason": "Sign-up confirmation landing."
     },
     {
-      "path": "/earthlinks/confirmed",
-      "reason": "Sign-up confirmation landing."
+      "path": "/earthlinks/*",
+      "reason": "Retired tenant (VTID-04836): Earthlinks was merged into Maxina (platform VTID-01985). Every /earthlinks URL is a redirect to the Maxina equivalent (RetiredTenantRedirect), never a destination."
     },
     {
       "path": "/maxina/app",

@@ -13,6 +13,10 @@ bootstrapNotifDiag()
 // until the experiment flips it on staging-only.
 import { initRum } from './lib/rum'
 initRum()
+// VTID-04836: rewrite a persisted retired tenant slug ('earthlinks') to the
+// tenant that absorbed it before anything reads it.
+import { migrateStoredTenantSlugs } from './lib/retired-tenants'
+migrateStoredTenantSlugs()
 import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
 // VTID-04532: start holding the access token from the first auth event, so

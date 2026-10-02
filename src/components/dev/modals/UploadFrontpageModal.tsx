@@ -46,7 +46,6 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
               <SelectContent>
                 <SelectItem value="maxina">Maxina</SelectItem>
                 <SelectItem value="alkalma">{t('screens.dev.alkalma')}</SelectItem>
-                <SelectItem value="earthlinks">{t('screens.dev.earthlinks')}</SelectItem>
                 <SelectItem value="community">{t('screens.dev.community')}</SelectItem>
               </SelectContent>
             </Select>

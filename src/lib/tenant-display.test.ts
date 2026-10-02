@@ -4,12 +4,16 @@ import { getInstantTenantName } from './tenant-display';
 describe('getInstantTenantName', () => {
   it('resolves the tenant from the URL path first', () => {
     expect(getInstantTenantName('/maxina/home')).toBe('Maxina');
-    expect(getInstantTenantName('/earthlinks')).toBe('Earthlinks');
     expect(getInstantTenantName('/alkalma/settings')).toBe('AlKalma');
   });
 
   it('falls back to the persisted tenant slug from localStorage', () => {
     localStorage.setItem('tenant_slug', 'maxina');
+    expect(getInstantTenantName('/some/other/path')).toBe('Maxina');
+  });
+
+  it('resolves a persisted retired slug (earthlinks) to Maxina — VTID-04836', () => {
+    localStorage.setItem('tenant_slug', 'earthlinks');
     expect(getInstantTenantName('/some/other/path')).toBe('Maxina');
   });
 

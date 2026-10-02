@@ -45,6 +45,7 @@ import { useRouteTracker } from "@/hooks/useRouteTracker";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
+import RetiredTenantRedirect from "./components/RetiredTenantRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
 import SupportTicketFiledListener from "./components/support/SupportTicketFiledListener";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
@@ -108,11 +109,9 @@ const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
 // VTID-04508: personal invite links
 const InviteLanding = lazy(() => import("./pages/InviteLanding"));
 const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
-const EarthlinksPortal = lazy(() => import("./pages/portals/EarthlinksPortal"));
 // CommunityPortal removed — orphaned, login handled by tenant portals
 const MaxinaConfirmed = lazy(() => import("./pages/portals/MaxinaConfirmed"));
 const AlkalmaConfirmed = lazy(() => import("./pages/portals/AlkalmaConfirmed"));
-const EarthlinksConfirmed = lazy(() => import("./pages/portals/EarthlinksConfirmed"));
 // CommunityConfirmed removed — orphaned parent deleted
 
 // Dev Hub
@@ -821,7 +820,6 @@ const App = () => {
           <Route path="/auth" element={<Navigate to="/maxina" replace />} />
           <Route path="/maxina/confirmed" element={<MaxinaConfirmed />} />
           <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
-          <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
           {/* /community/confirmed removed — orphaned */}
 
           {/* Onboarding — post-registration Vitana speech + name/handle form */}
@@ -867,7 +865,10 @@ const App = () => {
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/i/:code" element={<InviteLanding />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
-          <Route path="/earthlinks" element={<EarthlinksPortal />} />
+          {/* VTID-04836: Earthlinks was retired into Maxina (platform VTID-01985).
+              Old links — the portal, /earthlinks/confirmed, anything below —
+              land on the Maxina equivalent with path, query and hash kept. */}
+          <Route path="/earthlinks/*" element={<RetiredTenantRedirect />} />
           {/* /community removed — orphaned, login handled by tenant portals */}
           
           {/* Dev Hub Routes */}

@@ -1,8 +1,8 @@
 /** Synchronous tenant display name from URL or localStorage — no async needed */
+import { readStoredTenantSlug } from './retired-tenants';
 
 const SLUG_TO_NAME: Record<string, string> = {
   maxina: 'Maxina',
-  earthlinks: 'Earthlinks',
   alkalma: 'AlKalma',
 };
 
@@ -13,7 +13,8 @@ export function getInstantTenantName(pathname: string): string {
   }
 
   // 2. Try persisted slug from localStorage
-  const stored = localStorage.getItem('tenant_slug');
+  // A retired slug (VTID-04836: earthlinks) resolves to its successor.
+  const stored = readStoredTenantSlug('tenant_slug');
   if (stored && SLUG_TO_NAME[stored]) return SLUG_TO_NAME[stored];
 
   // 3. Empty string — never show wrong brand
