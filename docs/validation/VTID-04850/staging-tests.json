@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04850",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the Index drawer links to the full Vitana Index page",
+      "spec": "tests/e2e/staging/vtid-04850-index-drawer-understand.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "drawer link placement, destination and label",
+      "ref": "npx vitest run src/components/health/VitanaIndexSheet.understand-link.test.ts",
+      "cwd": ".",
+      "reason": "pins the link under the pillars, that it closes the drawer and navigates to /health/vitana-index, and the DE/EN label."
+    }
+  ]
+}
