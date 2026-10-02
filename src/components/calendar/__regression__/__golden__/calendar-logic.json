@@ -689,16 +689,17 @@
       }
     },
     "surface": {
-      "page": "#FFF9F2",
+      "page": "#F8FAFC",
       "card": "#FFFFFF",
-      "track": "#F1E9DF",
-      "ink": "#2A2233",
-      "muted": "#6B6076",
-      "faint": "#9A8FA5",
-      "busyBg": "#EEEAE5",
-      "busyInk": "#6F6878",
-      "primary": "#5B54D6",
-      "line": "#EDE4D8"
+      "track": "#F1F5F9",
+      "ink": "#0F172A",
+      "muted": "#475569",
+      "faint": "#94A3B8",
+      "busyBg": "#F1F5F9",
+      "busyInk": "#64748B",
+      "primary": "#0F172A",
+      "link": "#0F766E",
+      "line": "#E2E8F0"
     }
   },
   "nl.parse": [

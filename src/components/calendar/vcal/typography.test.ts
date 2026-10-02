@@ -1,10 +1,13 @@
 /**
  * VTID-04812 — the calendar looks like the rest of the app.
+ * VTID-04852 — and like the Vitana Index page.
  *
- * It uses the app's own font and the standard Tailwind text scale and weights
- * that News, Postfach and Reise use. A separate font, a pixel size outside the
- * scale, or a weight the other screens never use fails the build. (The app
- * icons in ProviderLogos copy the real icons and are exempt.)
+ * It uses the app's own font and the Tailwind text scale and weights that
+ * News, Postfach, Reise and the Index page use. A separate font, a pixel size
+ * the Index page does not use, or a weight the other screens never use fails
+ * the build. The only pixel sizes allowed are the Index page's own: 84px for
+ * the big number, 15px for body text. (The app icons in ProviderLogos copy the
+ * real icons and are exempt.)
  */
 import fs from "fs";
 import path from "path";
@@ -30,15 +33,20 @@ describe("calendar typography", () => {
     it(`${path.basename(file)} uses the app's font, sizes and weights`, () => {
       const src = fs.readFileSync(file, "utf8");
       expect(src, "its own font family").not.toMatch(/fontFamily|font-\[|Nunito|fonts\.googleapis/);
-      expect(src, "a pixel size outside the Tailwind text scale").not.toMatch(/text-\[\d+(\.\d+)?px\]/);
+      const pixelSizes = [...src.matchAll(/text-\[(\d+(?:\.\d+)?)px\]/g)].map((m) => m[1]);
+      expect(pixelSizes.filter((px) => !["84", "15"].includes(px)), "a pixel size the Index page does not use").toEqual([]);
       expect(src, "inline font size or weight").not.toMatch(/fontSize\s*:|fontWeight\s*:/);
-      expect(src, "a weight the other screens do not use").not.toMatch(/\bfont-(thin|extralight|light|extrabold|black)\b/);
+      expect(src, "a weight the other screens do not use").not.toMatch(/\bfont-(thin|extralight|light|black)\b/);
     });
   }
 
-  it("the page title is the app's standard header: text-lg font-bold tracking-tight", () => {
+  it("the page header is the Index page's hero: eyebrow, big number, bold title", () => {
     const page = fs.readFileSync(path.resolve(DIR, "../../../pages/Calendar.tsx"), "utf8");
-    expect(page).toMatch(/text-lg font-bold[^"]*tracking-tight/);
+    expect(page).toContain("INDEX_HERO_CLASS");
+    expect(page).toContain("INDEX_EYEBROW");
+    expect(page).toContain("INDEX_NUMBER_STYLE");
+    expect(page).toMatch(/text-\[84px\] font-extrabold/);
+    expect(page).toMatch(/text-2xl font-bold/);
   });
 
   it("has no text or microphone bar — entries come from + and from Vitana by voice", () => {
