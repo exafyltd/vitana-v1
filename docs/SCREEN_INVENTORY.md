@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 353
-- **Distinct i18n keys consumed:** 4818
+- **Pages scanned:** 348
+- **Distinct i18n keys consumed:** 4734
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -145,11 +145,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/CommercePortal.light-redesign.test.ts
 
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 9, total in shard: 11474
+- `screens` — used: 11, total in shard: 11474
 
 ### src/pages/CommercePortal.tsx
 
@@ -1346,30 +1346,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 2, total in shard: 11474
 
-### src/pages/admin/navigator/Catalog.tsx
-
-**Status:** ✅ clean — keys consumed: 20, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 20, total in shard: 11474, **MISSING:** screens.admin.navRole_${r}
-
-### src/pages/admin/navigator/Coverage.tsx
-
-**Status:** ✅ clean — keys consumed: 10, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 10, total in shard: 11474
-
-### src/pages/admin/navigator/History.tsx
-
-**Status:** ✅ clean — keys consumed: 6, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 6, total in shard: 11474
-
 ### src/pages/admin/navigator/Telemetry.tsx
 
 **Status:** ✅ clean — keys consumed: 14, namespaces: 1
@@ -1377,22 +1353,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 14, total in shard: 11474
-
-### src/pages/admin/navigator/components/SimulatorPanel.tsx
-
-**Status:** ✅ clean — keys consumed: 21, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 21, total in shard: 11474
-
-### src/pages/admin/navigator/components/TriggerEditor.tsx
-
-**Status:** ✅ clean — keys consumed: 29, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 29, total in shard: 11474
 
 ### src/pages/admin/notifications/Compose.tsx
 
@@ -2937,7 +2897,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 257 |
+| `screens` | 252 |
 | `toasts` | 56 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
