@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CreditCard, Gift, Zap, Loader2, Star } from "lucide-react";
+import { CreditCard, Zap, Loader2, Star } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
@@ -25,7 +25,7 @@ interface BuyCreditsPopupProps {
 }
 
 export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
-  const { getBalance, updateBalance, exchangeCurrency } = useWallet();
+  const { getBalance, exchangeCurrency } = useWallet();
   const { toast } = useToast();
   const [creditAmount, setCreditAmount] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,15 +40,18 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
   const creditPriceInUSD = exchangeRate?.rate || 0.01; // Fallback to $0.01 per Credit
   const usdToCreditsRate = getExchangeRate('USD', 'CREDITS')?.rate || 100;
 
-  // Credit packages at the canonical market rate (matches BuyTokensPopup/VTNA)
+  // Credit packages at the canonical market rate (matches BuyTokensPopup/VTNA).
+  // VTID-04809: no client-granted "bonus" credits any more — members can no
+  // longer add credits to their own wallet (update_user_balance refuses
+  // 'add'); earned VTNA only comes from the platform's reward ledger.
   const creditPackages = [
-    { credits: 100, cost: Math.round(100 * creditPriceInUSD), bonus: 0, popular: false },
-    { credits: 500, cost: Math.round(500 * creditPriceInUSD), bonus: 50, popular: true },
-    { credits: 1000, cost: Math.round(1000 * creditPriceInUSD), bonus: 150, popular: false },
-    { credits: 2500, cost: Math.round(2500 * creditPriceInUSD), bonus: 500, popular: false }
+    { credits: 100, cost: Math.round(100 * creditPriceInUSD), popular: false },
+    { credits: 500, cost: Math.round(500 * creditPriceInUSD), popular: true },
+    { credits: 1000, cost: Math.round(1000 * creditPriceInUSD), popular: false },
+    { credits: 2500, cost: Math.round(2500 * creditPriceInUSD), popular: false }
   ];
 
-  const handleBuyCredits = async (credits: number, cost: number, bonus: number) => {
+  const handleBuyCredits = async (credits: number, cost: number) => {
     if (cost > usdBalance) {
       notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd');
       return;
@@ -58,14 +61,8 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
     try {
       // Atomic USD -> CREDITS exchange for the paid amount (single RPC call,
-      // can't leave USD debited with no credits granted). The promotional
-      // bonus isn't paid for, so it's a separate reward credit -- worst case
-      // if this second step fails, the user still got exactly what they paid
-      // for and just missed the bonus, not a money-loss failure.
+      // can't leave USD debited with no credits granted).
       await exchangeCurrency('USD', 'CREDITS', cost, usdToCreditsRate);
-      if (bonus > 0) {
-        await updateBalance('CREDITS', bonus, 'add', 'reward', 'Bonus credits from package purchase');
-      }
 
       notify('toasts.wallet.creditsPurchasedSuccessfully');
 
@@ -138,7 +135,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                 key={index}
                 variant="outline"
                 className={`justify-between h-auto p-4 w-full ${pkg.popular ? 'border-blue-200 bg-blue-50/50' : ''}`}
-                onClick={() => handleBuyCredits(pkg.credits, pkg.cost, pkg.bonus)}
+                onClick={() => handleBuyCredits(pkg.credits, pkg.cost)}
                 disabled={loading || pkg.cost > usdBalance}
               >
                 <div className="flex items-center gap-3">
@@ -148,21 +145,11 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                     <CreditCard className="h-4 w-4 text-blue-600" />
                   )}
                   <div className="text-left">
-                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtNumber(pkg.credits) })}
-                      {pkg.bonus > 0 && (
-                        <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
-                      )}
-                    </div>
+                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtNumber(pkg.credits) })}</div>
                     <div className="text-xs text-muted-foreground">${pkg.cost}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {pkg.bonus > 0 && (
-                    <Badge variant="secondary" className="bg-green-100 text-green-700 flex items-center gap-1">
-                      <Gift className="h-3 w-3" />
-                      +{pkg.bonus}
-                    </Badge>
-                  )}
                   {pkg.popular && (
                     <Badge className="bg-blue-600 text-white flex items-center gap-1">
                       <Star className="h-3 w-3" />
