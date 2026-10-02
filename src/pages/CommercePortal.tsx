@@ -66,6 +66,8 @@ import { SetupHub } from '@/components/commerce/SetupHub';
 import { SetupChooser, type SetupOption } from '@/components/commerce/SetupChooser';
 import { SalesSetupSheet } from '@/components/commerce/SalesSetupSheet';
 import { adminFetch } from '@/lib/admin-api';
+import { fetchAiSetupEnabled } from '@/lib/commerce-ai-setup';
+import { AiSetupSheet } from '@/components/commerce/AiSetupSheet';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
 import { pickActiveOrg, readActiveOrgId, setActiveOrgId } from '@/lib/business-mode';
@@ -102,6 +104,12 @@ export default function CommercePortal() {
   const [salesOpen, setSalesOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
   const [registerOrgOpen, setRegisterOrgOpen] = useState(false);
+  // VTID-04839: "Set up with AI" leads only once the gateway has it switched
+  // on (COMMERCE_AI_SETUP_ENABLED); until then the manual-first layout stays.
+  // null = not known yet: the first-visit sheet waits for it, so the AI path
+  // is never skipped just because the business list answered first.
+  const [aiReady, setAiReady] = useState<boolean | null>(null);
+  const [aiSetupOpen, setAiSetupOpen] = useState(false);
   // VTID-04745: CSV catalogue import, per organization the user administers.
   const [catalogueImportOpen, setCatalogueImportOpen] = useState(false);
   const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
@@ -169,15 +177,16 @@ export default function CommercePortal() {
   // registering one — decided from the server's own list, not a browser flag.
   // Closing the sheet is respected for the rest of the visit.
   useEffect(() => {
-    if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0) return;
+    if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0 || aiReady === null) return;
     try {
       if (sessionStorage.getItem(AUTO_REGISTER_KEY)) return;
       sessionStorage.setItem(AUTO_REGISTER_KEY, '1');
     } catch {
       /* storage unavailable: still open it once for this render */
     }
-    setRegisterOrgOpen(true);
-  }, [user, myOrgs, myOrgsFailed]);
+    if (aiReady) setAiSetupOpen(true);
+    else setRegisterOrgOpen(true);
+  }, [user, myOrgs, myOrgsFailed, aiReady]);
 
   useEffect(() => {
     // Guests have nothing to load — both endpoints require an account, and
@@ -185,6 +194,7 @@ export default function CommercePortal() {
     if (!user) return;
     void load();
     void loadMyOrgs();
+    void fetchAiSetupEnabled(adminFetch).then(setAiReady);
   }, [user, load, loadMyOrgs]);
 
   const openOrgRoster = (id: string) => {
@@ -247,7 +257,10 @@ export default function CommercePortal() {
 
   // VTID-04795: each setup option opens what already exists.
   const chooseSetup = (option: SetupOption) => {
-    if (option === 'ai') connectViaAgent();
+    if (option === 'ai') {
+      if (aiReady) setAiSetupOpen(true);
+      else connectViaAgent();
+    }
     else if (option === 'manual') setAddProductOpen(true);
     else setManualOpen(true);
   };
@@ -409,30 +422,36 @@ export default function CommercePortal() {
           twoColumn ? 'lg:justify-start' : ''
         }`}
       >
-        {/* VTID-04795: registering is what works today, so it leads for a
-            supplier without a business; AI-assisted setup is in development
-            and never the loud button until it really works end to end. */}
+        {/* VTID-04839: once "Set up with AI" is switched on it leads (owner
+            decision 2026-10-02: AI first, manual only if someone prefers it).
+            Until then registering leads for a supplier without a business and
+            the AI button stays the quiet one (VTID-04795). Always two buttons. */}
         <Button
           size="lg"
-          variant={hasOrgs ? 'outline' : 'default'}
-          onClick={() => setRegisterOrgOpen(true)}
+          variant={aiReady ? 'default' : 'outline'}
+          onClick={aiReady ? () => setAiSetupOpen(true) : connectViaAgent}
+          data-testid="hero-ai"
           className={
-            hasOrgs
-              ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
-              : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+            aiReady
+              ? 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+              : 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:order-last sm:w-auto'
           }
         >
-          <Building2 className="me-2 h-4 w-4" />
-          {t('screens.commerceportal.orgOnboarding.registerCta')}
+          <Sparkles className="me-2 h-4 w-4" />
+          {aiReady ? t('screens.commerceportal.aiSetup.cta') : t('screens.commerceportal.agentConnect.title')}
         </Button>
         <Button
           size="lg"
-          variant="outline"
-          onClick={connectViaAgent}
-          className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+          variant={hasOrgs || aiReady ? 'outline' : 'default'}
+          onClick={() => setRegisterOrgOpen(true)}
+          className={`${
+            hasOrgs || aiReady
+              ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
+              : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+          } ${aiReady ? '' : 'order-first'}`}
         >
-          <Sparkles className="me-2 h-4 w-4" />
-          {t('screens.commerceportal.agentConnect.title')}
+          <Building2 className="me-2 h-4 w-4" />
+          {aiReady ? t('screens.commerceportal.aiSetup.manualCta') : t('screens.commerceportal.orgOnboarding.registerCta')}
         </Button>
       </div>
     </>
@@ -491,7 +510,7 @@ export default function CommercePortal() {
             </div>
             <p className="mt-3 text-xs text-muted-foreground">{t('screens.commerceportal.guestCtaHint')}</p>
           </div>
-        ) : hasOrgs ? (
+        ) : hasOrgs || aiReady ? (
           heroCopy(false)
         ) : (
           <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
@@ -542,26 +561,30 @@ export default function CommercePortal() {
 
           {/* PREFER TO DO IT YOURSELF — a real, bounded secondary card. Both
               options are equal-weight real buttons now, replacing the old
-              solid-button-next-to-ghost-link row. */}
-          <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
-            <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <Button
-                onClick={() => setAddProductOpen(true)}
-                className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
-              >
-                <PackagePlus className="me-2 h-4 w-4" />
-                {t('screens.commerceportal.addProduct')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setManualOpen(true)}
-                className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
-              >
-                {t('screens.commerceportal.manualCta')}
-              </Button>
-            </div>
-          </section>
+              solid-button-next-to-ghost-link row. VTID-04839: hidden while
+              "Set up with AI" leads — the hero already offers "Prefer to set it
+              up yourself", and this card speaks of the old assistant. */}
+          {!aiReady && (
+            <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
+              <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  onClick={() => setAddProductOpen(true)}
+                  className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                >
+                  <PackagePlus className="me-2 h-4 w-4" />
+                  {t('screens.commerceportal.addProduct')}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setManualOpen(true)}
+                  className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
+                >
+                  {t('screens.commerceportal.manualCta')}
+                </Button>
+              </div>
+            </section>
+          )}
 
           {/* YOUR CONNECTIONS */}
           <section className="mt-12 md:mt-16">
@@ -633,6 +656,7 @@ export default function CommercePortal() {
         open={chooserOpen}
         onOpenChange={setChooserOpen}
         onChoose={chooseSetup}
+        aiReady={aiReady === true}
         org={hubOrg}
         orgs={adminOrgs}
         onSelectOrg={selectHubOrg}
@@ -645,6 +669,19 @@ export default function CommercePortal() {
       />
 
       <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={onOrgRegistered} />
+      {/* VTID-04839: "Set up with AI" — website → draft → review → one tap. */}
+      <AiSetupSheet
+        open={aiSetupOpen}
+        onOpenChange={setAiSetupOpen}
+        org={hubOrg}
+        orgs={adminOrgs}
+        onSelectOrg={selectHubOrg}
+        onPreferManual={() => (hubOrg ? setAddProductOpen(true) : setRegisterOrgOpen(true))}
+        onDone={async (outcome) => {
+          await onOrgRegistered({ id: outcome.organization.id } as MyOrgRow);
+          setHubRefresh((n) => n + 1);
+        }}
+      />
       <CatalogueImportSheet open={catalogueImportOpen} onOpenChange={setCatalogueImportOpen} adminOrgs={adminOrgs} />
       {/* "Connect via AI Agent" below lg:, where the card itself is hidden. */}
       <ResponsiveDialog open={agentDialogOpen} onOpenChange={setAgentDialogOpen}>

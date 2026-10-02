@@ -47,6 +47,7 @@ export function SetupChooser({
   org = null,
   orgs = [],
   onSelectOrg,
+  aiReady = false,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -55,6 +56,8 @@ export function SetupChooser({
   org?: MyOrgRow | null;
   orgs?: MyOrgRow[];
   onSelectOrg?: (id: string) => void;
+  /** VTID-04839: AI setup is switched on — drop "in development". */
+  aiReady?: boolean;
 }) {
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
@@ -81,7 +84,7 @@ export function SetupChooser({
               <span className="min-w-0 flex-1">
                 <span className="flex flex-wrap items-center gap-2 font-semibold text-foreground">
                   {t(title)}
-                  {inDevelopment && (
+                  {inDevelopment && !aiReady && (
                     <Badge variant="outline" className="border-amber-300 text-xs font-medium text-amber-800">
                       {t('screens.commerceportal.setupChooser.inDevelopment')}
                     </Badge>

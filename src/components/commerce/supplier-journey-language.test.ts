@@ -26,6 +26,8 @@ function journeyStrings(c: any): string[] {
     ...pick(c.setupChooser),
     ...pick(c.addOffer),
     ...pick(c.salesSetup),
+    // VTID-04839: the AI setup sheet is the main path now.
+    ...pick(c.aiSetup),
     ...pick(c.connect, ['title', 'intro', 'urlLabel', 'check', 'detected', 'detectedBody', 'detectedNoOrg', 'connect', 'notDetected', 'haveDocs', 'needHelp', 'customApi', 'created']),
     ...pick(c.orgOnboarding, ['wizardStep1Title', 'wizardStep2Title', 'create', 'website', 'websiteHint', 'country', 'successTitle', 'successBody', 'successCta', 'sectionTitle']),
   ];

@@ -11172,7 +11172,37 @@
         "customApi": "Özel API"
       },
       "forBusiness": "{name} için",
-      "forBusinessLabel": "İşletme:"
+      "forBusinessLabel": "İşletme:",
+      "aiSetup": {
+        "cta": "Yapay zekâ ile kur",
+        "manualCta": "Kendim kurmayı tercih ederim",
+        "title": "Yapay zekâ ile kur",
+        "lead": "Web siteni gir. Vitana siteni okur ve işletmeni ve tekliflerini senin için hazırlar. Sen onaylamadan hiçbir şey kaydedilmez.",
+        "websiteLabel": "Web siten",
+        "websitePlaceholder": "www.web-siten.com",
+        "websiteHint": "Mağazan ya da şirketinin sitesi.",
+        "reading": "Vitana web siteni okuyor …",
+        "readCta": "Sitemi oku",
+        "reviewTitle": "Her şey doğru mu?",
+        "category": "Kategori",
+        "productsFound": "{count} teklif bulundu",
+        "noProducts": "Teklif bulunamadı – daha sonra ekleyebilirsin.",
+        "includeProduct": "{title} dahil et",
+        "productTitle": "Ad",
+        "price": "Fiyat",
+        "priceMissing": "Fiyat eksik",
+        "draftsHint": "Her şey taslak olarak kaydedilir. İncelemeden sonra görünür olur.",
+        "createCta": "İşletmemi oluştur",
+        "addCta": "{count} teklif ekle",
+        "doneTitle": "Tamam!",
+        "doneBody": "{count} teklif taslak olarak kaydedildi.",
+        "preferManual": "Kendim doldurmayı tercih ederim",
+        "errorUrl": "Bu bir web sitesi adresine benzemiyor.",
+        "errorUnreachable": "Web sitene ulaşamadık. Adresi kontrol et ya da kendin doldur.",
+        "errorRateLimited": "Az önce çok kez denedin. Lütfen biraz bekle.",
+        "errorGeneric": "Şu an olmadı. Lütfen tekrar dene.",
+        "errorCreate": "Kaydedilemedi. Tekrar dokun – hiçbir şey iki kez oluşturulmaz."
+      }
     },
     "oauthconsent": {
       "title": "Erişime izin ver?",

@@ -11081,7 +11081,37 @@
         "customApi": "API própria"
       },
       "forBusiness": "Para {name}",
-      "forBusinessLabel": "Para:"
+      "forBusinessLabel": "Para:",
+      "aiSetup": {
+        "cta": "Configurar com IA",
+        "manualCta": "Prefiro configurar eu mesmo",
+        "title": "Configurar com IA",
+        "lead": "Informe o seu site. A Vitana lê o site e prepara o seu negócio e as suas ofertas. Nada é salvo antes de você confirmar.",
+        "websiteLabel": "Seu site",
+        "websitePlaceholder": "www.seu-site.com",
+        "websiteHint": "Sua loja ou o site da sua empresa.",
+        "reading": "A Vitana está lendo o seu site …",
+        "readCta": "Ler meu site",
+        "reviewTitle": "Está tudo certo?",
+        "category": "Categoria",
+        "productsFound": "{count} ofertas encontradas",
+        "noProducts": "Nenhuma oferta encontrada – você pode adicioná-las depois.",
+        "includeProduct": "Incluir {title}",
+        "productTitle": "Nome",
+        "price": "Preço",
+        "priceMissing": "Preço em falta",
+        "draftsHint": "Tudo é salvo como rascunho. Só fica visível depois da análise.",
+        "createCta": "Criar meu negócio",
+        "addCta": "Adicionar {count} ofertas",
+        "doneTitle": "Pronto!",
+        "doneBody": "{count} ofertas salvas como rascunho.",
+        "preferManual": "Prefiro preencher eu mesmo",
+        "errorUrl": "Isso não parece um endereço de site.",
+        "errorUnreachable": "Não conseguimos abrir o seu site. Confira o endereço ou preencha você mesmo.",
+        "errorRateLimited": "Você tentou muitas vezes agora. Aguarde um pouco.",
+        "errorGeneric": "Não deu certo agora. Tente de novo.",
+        "errorCreate": "Não foi possível salvar. Toque de novo – nada será criado em dobro."
+      }
     },
     "oauthconsent": {
       "title": "Permitir acesso?",

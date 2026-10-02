@@ -10797,7 +10797,37 @@
         "customApi": "Eigene API"
       },
       "forBusiness": "Für {name}",
-      "forBusinessLabel": "Für:"
+      "forBusinessLabel": "Für:",
+      "aiSetup": {
+        "cta": "Mit KI einrichten",
+        "manualCta": "Lieber selbst einrichten",
+        "title": "Mit KI einrichten",
+        "lead": "Gib deine Website ein. Vitana liest sie und bereitet dein Business und deine Angebote für dich vor. Gespeichert wird erst, wenn du es bestätigst.",
+        "websiteLabel": "Deine Website",
+        "websitePlaceholder": "www.deine-website.de",
+        "websiteHint": "Dein Shop oder die Seite deines Unternehmens.",
+        "reading": "Vitana liest deine Website …",
+        "readCta": "Website lesen lassen",
+        "reviewTitle": "Passt das so?",
+        "category": "Kategorie",
+        "productsFound": "{count} Angebote gefunden",
+        "noProducts": "Keine Angebote gefunden – du kannst sie später hinzufügen.",
+        "includeProduct": "{title} übernehmen",
+        "productTitle": "Name",
+        "price": "Preis",
+        "priceMissing": "Preis fehlt",
+        "draftsHint": "Alles wird als Entwurf gespeichert. Sichtbar wird es erst nach der Prüfung.",
+        "createCta": "Mein Business erstellen",
+        "addCta": "{count} Angebote hinzufügen",
+        "doneTitle": "Geschafft!",
+        "doneBody": "{count} Angebote sind als Entwurf gespeichert.",
+        "preferManual": "Lieber selbst ausfüllen",
+        "errorUrl": "Das sieht nicht nach einer Website-Adresse aus.",
+        "errorUnreachable": "Wir konnten deine Website nicht öffnen. Prüf die Adresse oder füll es lieber selbst aus.",
+        "errorRateLimited": "Du hast das gerade oft versucht. Bitte warte kurz.",
+        "errorGeneric": "Das hat gerade nicht geklappt. Bitte versuch es noch einmal.",
+        "errorCreate": "Speichern hat nicht geklappt. Tipp einfach noch einmal – es wird nichts doppelt angelegt."
+      }
     },
     "oauthconsent": {
       "title": "Zugriff erlauben?",
