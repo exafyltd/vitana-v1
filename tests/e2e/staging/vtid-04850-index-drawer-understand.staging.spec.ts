@@ -6,9 +6,13 @@
 // the link — navigation only.
 import { test, expect } from './staging-guard';
 
+// The signed-in app makes its own background POSTs on load (role lookups, the
+// profile health summary, memberships, the Orb voice pre-warm, telemetry). The
+// guard still aborts every one of them — nothing is written — they are only
+// declared here as expected so the test fails on writes it causes itself.
 test.use({
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|orb\/live\/session\/prewarm)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/(thread_presence|user_activity_log|rpc\/(get_role_preference|get_my_permitted_roles|get_profile_health_summary|list_roles_for_active_tenant))|functions\/v1\/list_my_memberships))/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
