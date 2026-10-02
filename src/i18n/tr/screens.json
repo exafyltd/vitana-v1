@@ -11203,6 +11203,38 @@
         "errorGeneric": "Şu an olmadı. Lütfen tekrar dene.",
         "errorCreate": "Kaydedilemedi. Tekrar dokun – hiçbir şey iki kez oluşturulmaz.",
         "talkCta": "Vitana ile konuşmayı tercih ederim"
+      },
+      "mcpConnect": {
+        "cta": "Yapay zekâ ajanını bağla",
+        "manualCta": "Elle kaydol",
+        "badge": "Önerilen",
+        "title": "Tek adım: Vitanaland MCP adresini yapay zekâ asistanına kopyala.",
+        "lead": "Bunu bir kez yapay zekâ asistanına yapıştır. Ardından işletmeni kaydedebilir, ürünlerini veya hizmetlerini ekleyebilir ve kurulumun geri kalanında sana yol gösterebilir.",
+        "copy": "MCP adresini kopyala",
+        "copied": "Kopyalandı",
+        "copyBlocked": "Kopyalanamadı – adresi seçip kendin kopyala.",
+        "worksWith": "Şunlarla çalışır:",
+        "thenSay": "Sonra asistanına Vitanaland'e hangi işletmeyi getirmek istediğini söylemen yeterli. Gerisini o halleder.",
+        "confirmNote": "Önemli adımları sen onaylarsın: doğrulamaya gönderme ve burada, Vitanaland'deki iş ortaklığı koşulları.",
+        "help": "Bağlanmak için yardım mı lazım?",
+        "claudeStep1": "Claude'da Ayarlar → Bağlayıcılar'ı aç ve “Özel bağlayıcı ekle”yi seç.",
+        "claudeStep2": "MCP adresini yapıştır ve kaydet.",
+        "claudeStep3": "Vitanaland hesabınla giriş yap ve bağlantıya izin ver.",
+        "chatgptStep1": "ChatGPT'de Ayarlar → Uygulamalar ve bağlayıcılar'ı aç ve geliştirici modunu aç.",
+        "chatgptStep2": "Yeni bir bağlayıcı oluştur ve MCP adresini yapıştır.",
+        "chatgptStep3": "Vitanaland hesabınla giriş yap ve bağlantıya izin ver.",
+        "geminiStep1": "MCP adresini Gemini CLI'da sunucu olarak ekle (settings.json, httpUrl alanı).",
+        "geminiStep2": "Gemini'yi yeniden başlat ve Vitanaland hesabınla giriş yap.",
+        "geminiNote": "Gemini uygulaması henüz özel MCP sunucularına bağlanamıyor – bunun için Gemini CLI'ı kullan.",
+        "advanced": "Gelişmiş",
+        "advEndpoint": "Uç nokta",
+        "advTransport": "Aktarım",
+        "advTransportValue": "Streamable HTTP (JSON)",
+        "advAuth": "Giriş",
+        "advAuthValue": "Vitanaland hesabın üzerinden PKCE ile OAuth 2.1",
+        "advMetadata": "Kaynak meta verileri",
+        "advTools": "Araçlar",
+        "manualFallback": "Elle kaydolmayı tercih ederim"
       }
     },
     "oauthconsent": {
@@ -13242,6 +13274,23 @@
       "reminderSaved": "Her gün saat {time}'da hatırlatma",
       "reminderOff": "Günlük hatırlatma kapatıldı",
       "reminderError": "Hatırlatma kaydedilemedi."
+    },
+    "commerceconnect": {
+      "title": "{client} Vitanaland'e bağlansın mı?",
+      "lead": "{client}, işletmeni senin adına Vitanaland Commerce'te kurmak istiyor.",
+      "signedInAs": "{email} olarak giriş yapıldı",
+      "unknownClient": "Yapay zekâ asistanın",
+      "canDoTitle": "Asistanın şunları yapabilecek:",
+      "canDo1": "işletmeni kaydetmek ve bilgilerini güncel tutmak",
+      "canDo2": "ürün ve hizmet eklemek ve değiştirmek",
+      "canDo3": "kurulumunun ne durumda olduğunu görmek",
+      "youConfirm": "Doğrulamaya göndermeyi her zaman sen onaylarsın. İş ortaklığı koşullarını yalnızca burada, Vitanaland'de kabul edersin.",
+      "approve": "Bağla",
+      "deny": "İptal",
+      "loading": "Bir saniye …",
+      "redirecting": "Asistanına dönülüyor …",
+      "invalid": "Bu bağlantı isteği geçersiz veya süresi dolmuş. Bağlantıyı asistanında yeniden başlat.",
+      "failed": "Olmadı. Lütfen tekrar dene."
     }
   }
 }

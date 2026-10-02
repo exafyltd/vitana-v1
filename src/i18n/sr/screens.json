@@ -11207,6 +11207,38 @@
         "errorGeneric": "Nije uspelo. Pokušaj ponovo.",
         "errorCreate": "Čuvanje nije uspelo. Samo dodirni ponovo – ništa se neće napraviti dvaput.",
         "talkCta": "Radije razgovaraj sa Vitanom"
+      },
+      "mcpConnect": {
+        "cta": "Poveži svog AI agenta",
+        "manualCta": "Registruj se ručno",
+        "badge": "Preporučeno",
+        "title": "Jedan korak: kopiraj Vitanaland MCP adresu u svog AI asistenta.",
+        "lead": "Nalepi je jednom u svog AI asistenta. On onda može da registruje tvoj biznis, doda tvoje proizvode ili usluge i provede te kroz ostatak podešavanja.",
+        "copy": "Kopiraj MCP adresu",
+        "copied": "Kopirano",
+        "copyBlocked": "Kopiranje nije uspelo – označi adresu i kopiraj je sam.",
+        "worksWith": "Radi sa",
+        "thenSay": "Posle samo reci asistentu koji biznis želiš da dovedeš na Vitanaland. Ostalo preuzima on.",
+        "confirmNote": "Važne korake potvrđuješ sam: slanje na proveru i partnerske uslove ovde na Vitanalandu.",
+        "help": "Treba ti pomoć oko povezivanja?",
+        "claudeStep1": "U Claude-u otvori Podešavanja → Konektori i izaberi „Dodaj sopstveni konektor“.",
+        "claudeStep2": "Nalepi MCP adresu i sačuvaj.",
+        "claudeStep3": "Prijavi se svojim Vitanaland nalogom i dozvoli povezivanje.",
+        "chatgptStep1": "U ChatGPT-u otvori Podešavanja → Aplikacije i konektori i uključi režim za programere.",
+        "chatgptStep2": "Napravi novi konektor i nalepi MCP adresu.",
+        "chatgptStep3": "Prijavi se svojim Vitanaland nalogom i dozvoli povezivanje.",
+        "geminiStep1": "Dodaj MCP adresu kao server u Gemini CLI (settings.json, polje httpUrl).",
+        "geminiStep2": "Ponovo pokreni Gemini i prijavi se svojim Vitanaland nalogom.",
+        "geminiNote": "Gemini aplikacija još ne može da poveže sopstvene MCP servere – koristi Gemini CLI.",
+        "advanced": "Napredno",
+        "advEndpoint": "Krajnja tačka",
+        "advTransport": "Transport",
+        "advTransportValue": "Streamable HTTP (JSON)",
+        "advAuth": "Prijava",
+        "advAuthValue": "OAuth 2.1 sa PKCE preko tvog Vitanaland naloga",
+        "advMetadata": "Metapodaci resursa",
+        "advTools": "Alati",
+        "manualFallback": "Radije ću se registrovati ručno"
       }
     },
     "oauthconsent": {
@@ -12299,6 +12331,23 @@
       "reminderSaved": "Podsetnik svaki dan u {time}",
       "reminderOff": "Dnevni podsetnik je isključen",
       "reminderError": "Podsetnik nije mogao da se sačuva."
+    },
+    "commerceconnect": {
+      "title": "Povezati {client} sa Vitanalandom?",
+      "lead": "{client} želi da u tvoje ime podesi tvoj biznis na Vitanaland Commerce.",
+      "signedInAs": "Prijavljen kao {email}",
+      "unknownClient": "Tvoj AI asistent",
+      "canDoTitle": "Tvoj asistent će moći da:",
+      "canDo1": "registruje tvoj biznis i ažurira njegove podatke",
+      "canDo2": "dodaje i menja proizvode i usluge",
+      "canDo3": "vidi dokle je stiglo podešavanje",
+      "youConfirm": "Slanje na proveru uvek potvrđuješ sam. Partnerske uslove prihvataš samo ovde na Vitanalandu.",
+      "approve": "Poveži",
+      "deny": "Otkaži",
+      "loading": "Trenutak …",
+      "redirecting": "Nazad ka tvom asistentu …",
+      "invalid": "Ovaj zahtev za povezivanje nije važeći ili je istekao. Pokreni povezivanje ponovo u asistentu.",
+      "failed": "Nije uspelo. Pokušaj ponovo."
     }
   }
 }

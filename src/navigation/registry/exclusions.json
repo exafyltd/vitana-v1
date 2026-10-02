@@ -80,6 +80,10 @@
       "reason": "OAuth consent step."
     },
     {
+      "path": "/commerce/connect/authorize",
+      "reason": "OAuth consent step for a supplier's AI assistant (VTID-04848); reached only from the assistant's sign-in."
+    },
+    {
       "path": "/onboarding/welcome",
       "reason": "One-time onboarding step."
     },
