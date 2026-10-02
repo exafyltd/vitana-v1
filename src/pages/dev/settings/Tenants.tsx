@@ -54,7 +54,7 @@ export default function SettingsTenants() {
             <SplitBarContent value="list" className="mt-6">
               <DevEmptyState 
                 title="Tenant List" 
-                description="View all tenants: System, Maxina, Earthlinks, AlKalma."
+                description="View all tenants: System, Maxina, AlKalma."
                 icon={Building}
               />
             </SplitBarContent>

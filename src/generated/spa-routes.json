@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-09-24T16:09:00.552Z",
   "source": "src/App.tsx",
-  "count": 423,
+  "count": 422,
   "routes": [
     {
       "path": "*",
@@ -1300,12 +1300,7 @@
       "file": "src/App.tsx"
     },
     {
-      "path": "/earthlinks",
-      "requires_auth": false,
-      "file": "src/App.tsx"
-    },
-    {
-      "path": "/earthlinks/confirmed",
+      "path": "/earthlinks/*",
       "requires_auth": false,
       "file": "src/App.tsx"
     },

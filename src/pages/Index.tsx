@@ -6,7 +6,7 @@ import { useSmartRouting } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink, ShoppingBag } from "lucide-react";
+import { Heart, BookOpen, Shield, Terminal, ExternalLink, ShoppingBag } from "lucide-react";
 import { getCommandHubUrl } from "@/config/devHub.config";
 import { toast } from "sonner";
 import { lookup, t } from '@/lib/i18n-toast';
@@ -85,24 +85,6 @@ const Index = () => {
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.index.healthWellnessServicesDesignedWithCultural')}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-
-            {/* Earthlinks Portal */}
-            <Link to="/earthlinks">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader className="text-center">
-                  <div className="flex justify-center mb-4">
-                    <Leaf className="h-12 w-12 text-[#4ADE80] group-hover:scale-110 transition-transform" />
-                  </div>
-                  <CardTitle className="text-xl">{t('screens.index.earthlinks')}</CardTitle>
-                  <CardDescription>{t('screens.index.sustainableEcofriendlyWellness')}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    {t('screens.index.naturefocusedHealthcareSustainableWellnessSolution')}
                   </p>
                 </CardContent>
               </Card>

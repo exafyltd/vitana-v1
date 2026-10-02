@@ -35,7 +35,7 @@ export default function DevDashboard() {
     localStorage.setItem('dev_dashboard_status', statusFilter);
   }, [statusFilter]);
 
-  const tenants = ['All', 'System', 'Maxina', 'Earthlinks', 'AlKalma'];
+  const tenants = ['All', 'System', 'Maxina', 'AlKalma'];
   const statuses = ['All', 'Green', 'Blue', 'Yellow', 'Red'];
 
   return (

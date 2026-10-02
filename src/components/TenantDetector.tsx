@@ -25,7 +25,6 @@ export function TenantDetector() {
   const getTenantSlugFromPath = useCallback((): string | null => {
     if (location.pathname.startsWith('/maxina')) return 'maxina';
     if (location.pathname.startsWith('/alkalma')) return 'alkalma';
-    if (location.pathname.startsWith('/earthlinks')) return 'earthlinks';
     return null;
   }, [location.pathname]);
 

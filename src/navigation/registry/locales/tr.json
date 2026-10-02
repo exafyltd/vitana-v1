@@ -131,17 +131,6 @@
       "Alkalma hesabımla oturum açmak istiyorum"
     ]
   },
-  "AUTH.EARTHLINKS_PORTAL": {
-    "title": "Earthlinks Portalı",
-    "phrasings": [
-      "Earthlinks portalını aç",
-      "Earthlinks'e katılmak istiyorum",
-      "Earthlinks giriş sayfasına git",
-      "Earthlinks kayıt ekranını aç",
-      "Earthlinks üyelik sayfası nerede",
-      "Earthlinks hesabımla giriş yapmak istiyorum"
-    ]
-  },
   "AUTH.MAXINA_PORTAL": {
     "title": "MAXINA Topluluğuna Katıl",
     "phrasings": [
