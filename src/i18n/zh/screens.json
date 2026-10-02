@@ -11172,7 +11172,37 @@
         "customApi": "自定义 API"
       },
       "forBusiness": "用于 {name}",
-      "forBusinessLabel": "用于："
+      "forBusinessLabel": "用于：",
+      "aiSetup": {
+        "cta": "用 AI 设置",
+        "manualCta": "我想自己设置",
+        "title": "用 AI 设置",
+        "lead": "输入你的网站。Vitana 会读取网站，为你准备企业信息和产品。确认之前不会保存任何内容。",
+        "websiteLabel": "你的网站",
+        "websitePlaceholder": "www.your-website.com",
+        "websiteHint": "你的店铺或公司网站。",
+        "reading": "Vitana 正在读取你的网站 …",
+        "readCta": "读取我的网站",
+        "reviewTitle": "这样可以吗？",
+        "category": "类别",
+        "productsFound": "找到 {count} 个产品",
+        "noProducts": "未找到产品——你可以稍后添加。",
+        "includeProduct": "包含 {title}",
+        "productTitle": "名称",
+        "price": "价格",
+        "priceMissing": "缺少价格",
+        "draftsHint": "所有内容都会保存为草稿，审核后才会显示。",
+        "createCta": "创建我的企业",
+        "addCta": "添加 {count} 个产品",
+        "doneTitle": "完成！",
+        "doneBody": "已保存 {count} 个产品草稿。",
+        "preferManual": "我想自己填写",
+        "errorUrl": "这看起来不像网址。",
+        "errorUnreachable": "无法打开你的网站。请检查网址，或者自己填写。",
+        "errorRateLimited": "你刚才尝试了很多次，请稍等一下。",
+        "errorGeneric": "刚才没有成功，请再试一次。",
+        "errorCreate": "保存失败。再点一次即可——不会重复创建。"
+      }
     },
     "oauthconsent": {
       "title": "允许访问？",

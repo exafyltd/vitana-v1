@@ -11176,7 +11176,37 @@
         "customApi": "Sopstveni API"
       },
       "forBusiness": "Za {name}",
-      "forBusinessLabel": "Za:"
+      "forBusinessLabel": "Za:",
+      "aiSetup": {
+        "cta": "Podesi uz AI",
+        "manualCta": "Radije podešavam sam",
+        "title": "Podesi uz AI",
+        "lead": "Unesi svoj sajt. Vitana ga čita i priprema tvoj biznis i ponude za tebe. Ništa se ne čuva dok ne potvrdiš.",
+        "websiteLabel": "Tvoj sajt",
+        "websitePlaceholder": "www.tvoj-sajt.rs",
+        "websiteHint": "Tvoja prodavnica ili sajt tvoje firme.",
+        "reading": "Vitana čita tvoj sajt …",
+        "readCta": "Pročitaj moj sajt",
+        "reviewTitle": "Da li je sve u redu?",
+        "category": "Kategorija",
+        "productsFound": "Pronađeno ponuda: {count}",
+        "noProducts": "Nisu pronađene ponude – možeš ih dodati kasnije.",
+        "includeProduct": "Uključi {title}",
+        "productTitle": "Naziv",
+        "price": "Cena",
+        "priceMissing": "Nedostaje cena",
+        "draftsHint": "Sve se čuva kao nacrt. Vidljivo je tek posle provere.",
+        "createCta": "Napravi moj biznis",
+        "addCta": "Dodaj ponude: {count}",
+        "doneTitle": "Gotovo!",
+        "doneBody": "Sačuvano nacrta: {count}.",
+        "preferManual": "Radije popunjavam sam",
+        "errorUrl": "To ne liči na adresu sajta.",
+        "errorUnreachable": "Nismo mogli da otvorimo tvoj sajt. Proveri adresu ili popuni sam.",
+        "errorRateLimited": "Upravo si mnogo puta pokušao. Sačekaj malo.",
+        "errorGeneric": "Nije uspelo. Pokušaj ponovo.",
+        "errorCreate": "Čuvanje nije uspelo. Samo dodirni ponovo – ništa se neće napraviti dvaput."
+      }
     },
     "oauthconsent": {
       "title": "Dozvoli pristup?",

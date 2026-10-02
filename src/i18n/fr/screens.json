@@ -11165,7 +11165,37 @@
         "customApi": "API personnalisée"
       },
       "forBusiness": "Pour {name}",
-      "forBusinessLabel": "Pour :"
+      "forBusinessLabel": "Pour :",
+      "aiSetup": {
+        "cta": "Configurer avec l'IA",
+        "manualCta": "Je préfère le faire moi-même",
+        "title": "Configurer avec l'IA",
+        "lead": "Indique ton site web. Vitana le lit et prépare ton entreprise et tes offres pour toi. Rien n'est enregistré avant ta confirmation.",
+        "websiteLabel": "Ton site web",
+        "websitePlaceholder": "www.ton-site.fr",
+        "websiteHint": "Ta boutique ou le site de ton entreprise.",
+        "reading": "Vitana lit ton site web …",
+        "readCta": "Lire mon site web",
+        "reviewTitle": "Est-ce que ça te convient ?",
+        "category": "Catégorie",
+        "productsFound": "{count} offres trouvées",
+        "noProducts": "Aucune offre trouvée – tu pourras les ajouter plus tard.",
+        "includeProduct": "Inclure {title}",
+        "productTitle": "Nom",
+        "price": "Prix",
+        "priceMissing": "Prix manquant",
+        "draftsHint": "Tout est enregistré comme brouillon. Rien n'est visible avant la vérification.",
+        "createCta": "Créer mon entreprise",
+        "addCta": "Ajouter {count} offres",
+        "doneTitle": "C'est fait !",
+        "doneBody": "{count} offres enregistrées comme brouillon.",
+        "preferManual": "Je préfère remplir moi-même",
+        "errorUrl": "Ça ne ressemble pas à une adresse web.",
+        "errorUnreachable": "Impossible d'ouvrir ton site. Vérifie l'adresse ou remplis-le toi-même.",
+        "errorRateLimited": "Tu as beaucoup essayé à l'instant. Patiente un moment.",
+        "errorGeneric": "Ça n'a pas fonctionné. Réessaie.",
+        "errorCreate": "L'enregistrement a échoué. Appuie à nouveau – rien ne sera créé deux fois."
+      }
     },
     "oauthconsent": {
       "title": "Autoriser l'accès ?",

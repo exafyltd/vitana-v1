@@ -11172,7 +11172,37 @@
         "customApi": "API مخصص"
       },
       "forBusiness": "لـ {name}",
-      "forBusinessLabel": "لـ:"
+      "forBusinessLabel": "لـ:",
+      "aiSetup": {
+        "cta": "الإعداد بالذكاء الاصطناعي",
+        "manualCta": "أفضّل الإعداد بنفسي",
+        "title": "الإعداد بالذكاء الاصطناعي",
+        "lead": "أدخل موقعك الإلكتروني. تقرأه Vitana وتجهّز نشاطك التجاري وعروضك لك. لا يُحفظ أي شيء حتى تؤكد.",
+        "websiteLabel": "موقعك الإلكتروني",
+        "websitePlaceholder": "www.your-website.com",
+        "websiteHint": "متجرك أو موقع شركتك.",
+        "reading": "تقرأ Vitana موقعك الآن …",
+        "readCta": "اقرأ موقعي",
+        "reviewTitle": "هل هذا صحيح؟",
+        "category": "الفئة",
+        "productsFound": "تم العثور على {count} عروض",
+        "noProducts": "لم يتم العثور على عروض – يمكنك إضافتها لاحقًا.",
+        "includeProduct": "تضمين {title}",
+        "productTitle": "الاسم",
+        "price": "السعر",
+        "priceMissing": "السعر غير موجود",
+        "draftsHint": "يُحفظ كل شيء كمسودة، ولا يظهر إلا بعد المراجعة.",
+        "createCta": "أنشئ نشاطي التجاري",
+        "addCta": "أضف {count} عروض",
+        "doneTitle": "تم!",
+        "doneBody": "تم حفظ {count} عروض كمسودات.",
+        "preferManual": "أفضّل التعبئة بنفسي",
+        "errorUrl": "هذا لا يبدو عنوان موقع.",
+        "errorUnreachable": "تعذّر فتح موقعك. تحقق من العنوان أو أكمل التعبئة بنفسك.",
+        "errorRateLimited": "لقد حاولت عدة مرات للتو. انتظر قليلًا من فضلك.",
+        "errorGeneric": "لم ينجح ذلك الآن. حاول مرة أخرى.",
+        "errorCreate": "تعذّر الحفظ. اضغط مرة أخرى – لن يُنشأ أي شيء مرتين."
+      }
     },
     "oauthconsent": {
       "title": "هل تسمح بالوصول؟",

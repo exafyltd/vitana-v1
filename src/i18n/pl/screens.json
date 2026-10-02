@@ -11173,7 +11173,37 @@
         "customApi": "Własne API"
       },
       "forBusiness": "Dla {name}",
-      "forBusinessLabel": "Dla:"
+      "forBusinessLabel": "Dla:",
+      "aiSetup": {
+        "cta": "Skonfiguruj z AI",
+        "manualCta": "Wolę zrobić to sam",
+        "title": "Skonfiguruj z AI",
+        "lead": "Podaj swoją stronę. Vitana ją przeczyta i przygotuje twoją firmę i oferty. Nic nie zostanie zapisane, dopóki tego nie potwierdzisz.",
+        "websiteLabel": "Twoja strona",
+        "websitePlaceholder": "www.twoja-strona.pl",
+        "websiteHint": "Twój sklep lub strona twojej firmy.",
+        "reading": "Vitana czyta twoją stronę …",
+        "readCta": "Przeczytaj moją stronę",
+        "reviewTitle": "Czy wszystko się zgadza?",
+        "category": "Kategoria",
+        "productsFound": "Znalezione oferty: {count}",
+        "noProducts": "Nie znaleziono ofert – możesz dodać je później.",
+        "includeProduct": "Uwzględnij {title}",
+        "productTitle": "Nazwa",
+        "price": "Cena",
+        "priceMissing": "Brak ceny",
+        "draftsHint": "Wszystko zostanie zapisane jako szkic. Będzie widoczne dopiero po weryfikacji.",
+        "createCta": "Utwórz moją firmę",
+        "addCta": "Dodaj oferty: {count}",
+        "doneTitle": "Gotowe!",
+        "doneBody": "Oferty zapisane jako szkic: {count}.",
+        "preferManual": "Wolę wypełnić to sam",
+        "errorUrl": "To nie wygląda na adres strony.",
+        "errorUnreachable": "Nie udało się otworzyć twojej strony. Sprawdź adres albo wypełnij to sam.",
+        "errorRateLimited": "Próbowałeś tego wiele razy. Poczekaj chwilę.",
+        "errorGeneric": "Nie udało się. Spróbuj ponownie.",
+        "errorCreate": "Zapis się nie udał. Stuknij jeszcze raz – nic nie zostanie utworzone podwójnie."
+      }
     },
     "oauthconsent": {
       "title": "Zezwolić na dostęp?",

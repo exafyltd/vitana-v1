@@ -112,7 +112,8 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   });
 
   it('VTID-04079: a first-time SIGNED-IN visitor (!hasOrgs) gets the agent card embedded beside the hero copy at lg:, a returning member (hasOrgs) does not', () => {
-    expect(heroJsx).toContain('hasOrgs ? (');
+    // VTID-04839: when AI setup leads, the hero is single-column too (no MCP card beside it).
+    expect(heroJsx).toContain('hasOrgs || aiReady ? (');
     expect(heroJsx).toContain('heroCopy(false)');
     expect(heroJsx).toContain('heroCopy(true)');
     expect(heroJsx).toContain("agentCard('mt-10 hidden scroll-mt-24 lg:mt-0 lg:block')");
@@ -136,7 +137,8 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
 
   it('the primary CTA reaches the agent card instead of duplicating its state', () => {
     expect(src).toContain('ref={agentCardRef}');
-    expect(heroCopyFn).toContain('onClick={connectViaAgent}');
+    // VTID-04839: until AI setup is switched on, the AI button still reaches the agent card.
+    expect(heroCopyFn).toContain('onClick={aiReady ? () => setAiSetupOpen(true) : connectViaAgent}');
   });
 
   it('"Connect via AI Agent" visibly does something at every width (owner: every button must work)', () => {

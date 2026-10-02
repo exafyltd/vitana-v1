@@ -10797,7 +10797,37 @@
         "customApi": "Custom API"
       },
       "forBusiness": "For {name}",
-      "forBusinessLabel": "For:"
+      "forBusinessLabel": "For:",
+      "aiSetup": {
+        "cta": "Set up with AI",
+        "manualCta": "Prefer to set it up yourself",
+        "title": "Set up with AI",
+        "lead": "Enter your website. Vitana reads it and prepares your business and offers for you. Nothing is saved until you confirm.",
+        "websiteLabel": "Your website",
+        "websitePlaceholder": "www.your-website.com",
+        "websiteHint": "Your shop or your company's site.",
+        "reading": "Vitana is reading your website …",
+        "readCta": "Read my website",
+        "reviewTitle": "Does this look right?",
+        "category": "Category",
+        "productsFound": "{count} offers found",
+        "noProducts": "No offers found – you can add them later.",
+        "includeProduct": "Include {title}",
+        "productTitle": "Name",
+        "price": "Price",
+        "priceMissing": "Price missing",
+        "draftsHint": "Everything is saved as a draft. It only becomes visible after review.",
+        "createCta": "Create my business",
+        "addCta": "Add {count} offers",
+        "doneTitle": "Done!",
+        "doneBody": "{count} offers are saved as drafts.",
+        "preferManual": "Prefer to fill it in yourself",
+        "errorUrl": "That doesn't look like a website address.",
+        "errorUnreachable": "We couldn't open your website. Check the address or fill it in yourself.",
+        "errorRateLimited": "You've tried this a lot just now. Please wait a moment.",
+        "errorGeneric": "That didn't work just now. Please try again.",
+        "errorCreate": "Saving didn't work. Just tap again – nothing will be created twice."
+      }
     },
     "oauthconsent": {
       "title": "Allow access?",
