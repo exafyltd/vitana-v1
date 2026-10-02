@@ -1,4 +1,5 @@
-// VTID-04812 — the calendar has no text/mic bar and uses the app's own font.
+// VTID-04812 / VTID-04852 — the calendar has no text/mic bar, uses the app's own
+// font and follows the Vitana Index page (pale blue hero, bold weekday title).
 //
 // Read-only: './staging-guard' (copied in by the runner) aborts every write.
 // Signs in as the documented test user, opens /calendar and checks that the
@@ -55,13 +56,17 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
   expect(calFont, 'the calendar sets its own typeface').toBe(bodyFont);
   expect(calFont).not.toMatch(/nunito/i);
 
-  // The day title is the app's standard heading: bold, 18px (text-lg).
-  const title = page.getByTestId('vcal-date').locator('span').nth(1).locator('span').first();
+  // The weekday is the Index page's title: 24px (text-2xl), bold.
+  const title = page.getByTestId('vcal-weekday');
   await expect(title).toBeVisible({ timeout: 20_000 });
   const style = await title.evaluate((el) => {
     const c = getComputedStyle(el);
     return { size: c.fontSize, weight: Number(c.fontWeight) };
   });
-  expect(style.size).toBe('18px');
+  expect(style.size).toBe('24px');
   expect(style.weight).toBeGreaterThanOrEqual(700);
+
+  // The header is the pale blue hero card, as on the Index page.
+  const hero = await page.getByTestId('vcal-header').evaluate((el) => getComputedStyle(el).backgroundImage);
+  expect(hero).toContain('linear-gradient');
 });

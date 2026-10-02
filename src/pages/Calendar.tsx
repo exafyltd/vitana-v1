@@ -48,6 +48,18 @@ import {
   useCalendarApps,
 } from "@/components/calendar/vcal/sections";
 import { hhmm, sameDay, stepAnchor, viewRange, type CalendarView } from "@/components/calendar/vcal/time";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  INDEX_CARD,
+  INDEX_EYEBROW,
+  INDEX_GLOW_STYLE,
+  INDEX_HERO_CLASS,
+  INDEX_HERO_STYLE,
+  INDEX_NUMBER_STYLE,
+  INDEX_PRIMARY_BTN,
+  INDEX_SOFT_BTN,
+} from "@/lib/index-look";
 
 const VIEW_KEY = "vitana.calendar.view";
 const GUIDE_DISMISSED_KEY = "vitana.calendar.guide.dismissed";
@@ -242,60 +254,70 @@ export default function CalendarPage() {
     changeView("day");
   };
 
-  const navBtn = "flex h-10 w-10 items-center justify-center rounded-full text-xl";
+  // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, big number.
+  const heroEyebrow =
+    view === "day"
+      ? isTodayAnchor
+        ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}`
+        : formatDate(anchor, "LLLL yyyy")
+      : t("vcal.title");
 
   return (
     <AppLayout>
-      <div
-        className="min-h-full pb-40"
-        style={{ background: SURFACE.page, color: SURFACE.ink }}
-        data-testid="vcal-page"
-      >
-        <div className={`mx-auto flex w-full flex-col gap-4 px-4 pt-5 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
-          {/* VTID-04681: the date comes first, large. */}
-          <header className="flex items-start justify-between gap-3" data-testid="vcal-header">
+      <div className="min-h-screen bg-slate-50/60 px-4 pb-40 pt-4 sm:px-6 sm:pt-6" style={{ color: SURFACE.ink }} data-testid="vcal-page">
+        <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
+          <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
+            <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
             {view === "day" ? (
-              <div className="flex min-w-0 items-end gap-3" data-testid="vcal-date">
-                <span className="text-6xl font-bold leading-none tabular-nums tracking-tight">
-                  {formatDate(anchor, "d")}
-                </span>
-                <span className="flex min-w-0 flex-col pb-0.5">
-                  <span className="truncate text-lg font-bold leading-tight tracking-tight">{formatDate(anchor, "EEEE")}</span>
-                  <span className="truncate text-sm" style={{ color: SURFACE.muted }}>
-                    {isTodayAnchor ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}` : formatDate(anchor, "LLLL yyyy")}
+              <div className="mt-2 flex flex-col items-center" data-testid="vcal-date">
+                <div className="relative flex flex-col items-center">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-2xl"
+                    style={INDEX_GLOW_STYLE}
+                  />
+                  <span className="text-[84px] font-extrabold leading-none tabular-nums" style={INDEX_NUMBER_STYLE}>
+                    {formatDate(anchor, "d")}
                   </span>
-                </span>
+                </div>
+                <h1 className="mt-2 text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-weekday">
+                  {formatDate(anchor, "EEEE")}
+                </h1>
               </div>
             ) : (
-              <h1 className="m-0 min-w-0 break-words text-lg font-bold leading-tight tracking-tight">
-                {rangeTitle}
-              </h1>
+              <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900">{rangeTitle}</h1>
             )}
-            <div className="flex shrink-0 items-center gap-0.5 pt-1">
-              <button type="button" onClick={() => setAnchor((a) => stepAnchor(view, a, -1))} aria-label={t("vcal.prev")} className={navBtn}>
-                <span className="rtl:rotate-180">‹</span>
+
+            {view === "day" && query.isSuccess && (
+              <p className="mx-auto mt-3 max-w-md text-center text-[15px] leading-snug text-slate-700" data-testid="vcal-summary">
+                {daySummary}
+              </p>
+            )}
+
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setAnchor((a) => stepAnchor(view, a, -1))}
+                aria-label={t("vcal.prev")}
+                className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
+              >
+                <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
               </button>
               {!isTodayAnchor && (
-                <button
-                  type="button"
-                  onClick={() => setAnchor(new Date())}
-                  className="h-9 rounded-full px-3 text-sm"
-                  style={{ border: `1px solid ${SURFACE.line}`, background: "#FFFFFF" }}
-                >
+                <button type="button" onClick={() => setAnchor(new Date())} className={INDEX_SOFT_BTN}>
                   {t("vcal.today")}
                 </button>
               )}
-              <button type="button" onClick={() => setAnchor((a) => stepAnchor(view, a, 1))} aria-label={t("vcal.next")} className={navBtn}>
-                <span className="rtl:rotate-180">›</span>
+              <button
+                type="button"
+                onClick={() => setAnchor((a) => stepAnchor(view, a, 1))}
+                aria-label={t("vcal.next")}
+                className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
+              >
+                <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
               </button>
             </div>
           </header>
-
-          {view === "day" && query.isSuccess && (
-            <p className="-mt-2 m-0 text-sm" style={{ color: SURFACE.muted }} data-testid="vcal-summary">
-              {daySummary}
-            </p>
-          )}
 
           <ViewSwitch view={view} onChange={changeView} />
 
@@ -319,17 +341,16 @@ export default function CalendarPage() {
           {query.isLoading ? (
             <div className="flex flex-col gap-2" aria-busy="true" aria-label={t("vcal.loading")}>
               {[0, 1, 2].map((i) => (
-                <div key={i} className="h-14 animate-pulse rounded-2xl bg-white" />
+                <div key={i} className="h-16 animate-pulse rounded-2xl border border-slate-100 bg-white" />
               ))}
             </div>
           ) : query.isError ? (
-            <div className="flex flex-col items-center gap-3 rounded-2xl bg-white px-6 py-8 text-center" role="alert" style={{ border: `1px solid ${SURFACE.line}` }}>
+            <div className={`${INDEX_CARD} flex flex-col items-center gap-3 py-8 text-center`} role="alert">
               <span className="font-semibold">{t("vcal.error")}</span>
               <button
                 type="button"
                 onClick={() => query.refetch()}
-                className="h-10 rounded-full px-5 font-semibold text-white"
-                style={{ background: SURFACE.primary }}
+                className={INDEX_PRIMARY_BTN}
               >
                 {t("vcal.retry")}
               </button>
@@ -353,18 +374,20 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 flex justify-end px-4 md:bottom-6">
+        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 px-4 sm:px-6 md:bottom-6">
+          <div className={`mx-auto flex ${view === "week" ? "max-w-6xl" : "max-w-2xl"} justify-end`}>
           {/* VTID-04536: add an entry by hand, saved through the gateway. */}
           <button
             type="button"
             onClick={() => setAddOpen(true)}
             aria-label={t("vcal.add.title")}
-            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg"
+            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             style={{ background: SURFACE.ink }}
             data-testid="vcal-add"
           >
             <span aria-hidden className="leading-none">+</span>
           </button>
+          </div>
         </div>
       </div>
 
