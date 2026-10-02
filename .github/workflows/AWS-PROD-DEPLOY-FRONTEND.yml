@@ -202,7 +202,19 @@ jobs:
             | jq --arg IMG "$IMAGE" '
                 .containerDefinitions[0].image = $IMG
                 | del(.taskDefinitionArn, .revision, .status, .requiresAttributes,
-                      .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)')
+                      .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)
+                # VTID-04854: never clone forward a ref to an Aurora-managed
+                # secret (rds!cluster-…). vitana-aurora-prod no longer has a
+                # managed master secret, so the ref fails every new task with
+                # ResourceInitializationError (ResourceNotFoundException) — the
+                # same failure VTID-04849 fixed for the gateway. The SPA never
+                # reads a database secret.
+                | .containerDefinitions |= map(
+                    if .secrets then
+                      (.secrets |= map(select((.valueFrom // "") | test(":secret:rds!") | not)))
+                      | (if (.secrets | length) == 0 then del(.secrets) else . end)
+                    else . end)')
+          echo "Secrets on the new revision: $(echo "$NEW_DEF" | jq -c '[.containerDefinitions[].secrets // [] | .[].name]')"
           NEW_ARN=$(aws ecs register-task-definition --cli-input-json "$NEW_DEF" \
             --query 'taskDefinition.taskDefinitionArn' --output text)
           echo "Registered $NEW_ARN"

@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04854",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the staging frontend boots after the redeploy (smoke)",
+      "spec": "tests/e2e/staging/smoke.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "both frontend deploy workflows drop rds! managed secret refs before registering",
+      "ref": "npx vitest run src/lib/deploy-workflow.vtid-04854.test.ts",
+      "cwd": ".",
+      "reason": "the fix lives in the deploy workflow itself; the real proof is the staging deploy stabilising on a new task-definition revision, which this run only exists because of"
+    }
+  ]
+}
