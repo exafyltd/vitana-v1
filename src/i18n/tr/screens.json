@@ -11201,7 +11201,8 @@
         "errorUnreachable": "Web sitene ulaşamadık. Adresi kontrol et ya da kendin doldur.",
         "errorRateLimited": "Az önce çok kez denedin. Lütfen biraz bekle.",
         "errorGeneric": "Şu an olmadı. Lütfen tekrar dene.",
-        "errorCreate": "Kaydedilemedi. Tekrar dokun – hiçbir şey iki kez oluşturulmaz."
+        "errorCreate": "Kaydedilemedi. Tekrar dokun – hiçbir şey iki kez oluşturulmaz.",
+        "talkCta": "Vitana ile konuşmayı tercih ederim"
       }
     },
     "oauthconsent": {

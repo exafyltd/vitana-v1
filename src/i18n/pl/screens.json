@@ -11202,7 +11202,8 @@
         "errorUnreachable": "Nie udało się otworzyć twojej strony. Sprawdź adres albo wypełnij to sam.",
         "errorRateLimited": "Próbowałeś tego wiele razy. Poczekaj chwilę.",
         "errorGeneric": "Nie udało się. Spróbuj ponownie.",
-        "errorCreate": "Zapis się nie udał. Stuknij jeszcze raz – nic nie zostanie utworzone podwójnie."
+        "errorCreate": "Zapis się nie udał. Stuknij jeszcze raz – nic nie zostanie utworzone podwójnie.",
+        "talkCta": "Wolę porozmawiać z Vitaną"
       }
     },
     "oauthconsent": {

@@ -11005,7 +11005,8 @@
         "errorUnreachable": "No pudimos abrir tu sitio web. Revisa la dirección o rellénalo tú.",
         "errorRateLimited": "Lo has intentado muchas veces seguidas. Espera un momento.",
         "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
-        "errorCreate": "No se pudo guardar. Toca otra vez: no se creará nada dos veces."
+        "errorCreate": "No se pudo guardar. Toca otra vez: no se creará nada dos veces.",
+        "talkCta": "Prefiero hablar con Vitana"
       }
     },
     "oauthconsent": {
