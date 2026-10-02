@@ -10828,6 +10828,38 @@
         "errorGeneric": "Das hat gerade nicht geklappt. Bitte versuch es noch einmal.",
         "errorCreate": "Speichern hat nicht geklappt. Tipp einfach noch einmal – es wird nichts doppelt angelegt.",
         "talkCta": "Lieber mit Vitana sprechen"
+      },
+      "mcpConnect": {
+        "cta": "KI-Agent verbinden",
+        "manualCta": "Manuell registrieren",
+        "badge": "Empfohlen",
+        "title": "Ein Schritt: Kopiere die Vitanaland-MCP-Adresse in deinen KI-Assistenten.",
+        "lead": "Füge sie einmal in deinen KI-Assistenten ein. Er kann dann dein Business registrieren, deine Produkte oder Dienstleistungen hinzufügen und dich durch die restliche Einrichtung führen.",
+        "copy": "MCP-Adresse kopieren",
+        "copied": "Kopiert",
+        "copyBlocked": "Kopieren ging nicht – markier die Adresse und kopier sie selbst.",
+        "worksWith": "Funktioniert mit",
+        "thenSay": "Sag deinem Assistenten danach einfach, welches Business du bei Vitanaland anmelden möchtest. Den Rest übernimmt er.",
+        "confirmNote": "Wichtige Schritte bestätigst du selbst: das Einreichen zur Prüfung und die Partnerbedingungen hier in Vitanaland.",
+        "help": "Brauchst du Hilfe beim Verbinden?",
+        "claudeStep1": "Öffne in Claude die Einstellungen → Konnektoren und wähle „Eigenen Konnektor hinzufügen“.",
+        "claudeStep2": "Füge die MCP-Adresse ein und speichere.",
+        "claudeStep3": "Melde dich mit deinem Vitanaland-Konto an und erlaube die Verbindung.",
+        "chatgptStep1": "Öffne in ChatGPT die Einstellungen → Apps & Konnektoren und schalte den Entwicklermodus ein.",
+        "chatgptStep2": "Erstelle einen neuen Konnektor und füge die MCP-Adresse ein.",
+        "chatgptStep3": "Melde dich mit deinem Vitanaland-Konto an und erlaube die Verbindung.",
+        "geminiStep1": "Trag die MCP-Adresse in der Gemini CLI als Server ein (settings.json, Feld httpUrl).",
+        "geminiStep2": "Starte Gemini neu und melde dich mit deinem Vitanaland-Konto an.",
+        "geminiNote": "Die Gemini-App selbst kann noch keine eigenen MCP-Server verbinden – nutze dafür die Gemini CLI.",
+        "advanced": "Erweitert",
+        "advEndpoint": "Endpunkt",
+        "advTransport": "Transport",
+        "advTransportValue": "Streamable HTTP (JSON)",
+        "advAuth": "Anmeldung",
+        "advAuthValue": "OAuth 2.1 mit PKCE über dein Vitanaland-Konto",
+        "advMetadata": "Ressourcen-Metadaten",
+        "advTools": "Werkzeuge",
+        "manualFallback": "Lieber manuell registrieren"
       }
     },
     "oauthconsent": {
@@ -11882,6 +11914,23 @@
       "reminderSaved": "Erinnerung täglich um {time} Uhr",
       "reminderOff": "Tägliche Erinnerung ausgeschaltet",
       "reminderError": "Die Erinnerung konnte nicht gespeichert werden."
+    },
+    "commerceconnect": {
+      "title": "{client} mit Vitanaland verbinden?",
+      "lead": "{client} möchte in deinem Namen dein Business bei Vitanaland Commerce einrichten.",
+      "signedInAs": "Angemeldet als {email}",
+      "unknownClient": "Dein KI-Assistent",
+      "canDoTitle": "Dein Assistent kann dann:",
+      "canDo1": "dein Business registrieren und die Angaben pflegen",
+      "canDo2": "Produkte und Dienstleistungen hinzufügen und ändern",
+      "canDo3": "deinen Stand der Einrichtung sehen",
+      "youConfirm": "Das Einreichen zur Prüfung bestätigst du immer selbst. Die Partnerbedingungen akzeptierst du nur hier in Vitanaland.",
+      "approve": "Verbinden",
+      "deny": "Abbrechen",
+      "loading": "Einen Moment …",
+      "redirecting": "Zurück zu deinem Assistenten …",
+      "invalid": "Diese Verbindungsanfrage ist ungültig oder abgelaufen. Starte die Verbindung in deinem Assistenten neu.",
+      "failed": "Das hat gerade nicht geklappt. Bitte versuch es noch einmal."
     }
   }
 }

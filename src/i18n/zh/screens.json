@@ -11203,6 +11203,38 @@
         "errorGeneric": "刚才没有成功，请再试一次。",
         "errorCreate": "保存失败。再点一次即可——不会重复创建。",
         "talkCta": "改为和 Vitana 对话"
+      },
+      "mcpConnect": {
+        "cta": "连接你的 AI 助手",
+        "manualCta": "手动注册",
+        "badge": "推荐",
+        "title": "只需一步：把 Vitanaland 的 MCP 地址复制到你的 AI 助手中。",
+        "lead": "在你的 AI 助手中粘贴一次即可。之后它可以帮你注册企业、添加产品或服务，并引导你完成其余设置。",
+        "copy": "复制 MCP 地址",
+        "copied": "已复制",
+        "copyBlocked": "复制失败——请选中地址后自行复制。",
+        "worksWith": "支持",
+        "thenSay": "然后只需告诉你的助手你想把哪家企业带到 Vitanaland，其余的交给它。",
+        "confirmNote": "重要步骤由你亲自确认：提交审核，以及在 Vitanaland 上接受合作伙伴条款。",
+        "help": "连接时需要帮助？",
+        "claudeStep1": "在 Claude 中打开 设置 → 连接器，选择“添加自定义连接器”。",
+        "claudeStep2": "粘贴 MCP 地址并保存。",
+        "claudeStep3": "用你的 Vitanaland 账号登录并允许连接。",
+        "chatgptStep1": "在 ChatGPT 中打开 设置 → 应用与连接器，并开启开发者模式。",
+        "chatgptStep2": "新建一个连接器并粘贴 MCP 地址。",
+        "chatgptStep3": "用你的 Vitanaland 账号登录并允许连接。",
+        "geminiStep1": "在 Gemini CLI 中把 MCP 地址添加为服务器（settings.json，httpUrl 字段）。",
+        "geminiStep2": "重启 Gemini 并用你的 Vitanaland 账号登录。",
+        "geminiNote": "Gemini 应用本身暂不支持连接自定义 MCP 服务器——请使用 Gemini CLI。",
+        "advanced": "高级",
+        "advEndpoint": "端点",
+        "advTransport": "传输方式",
+        "advTransportValue": "Streamable HTTP (JSON)",
+        "advAuth": "登录",
+        "advAuthValue": "通过你的 Vitanaland 账号使用 OAuth 2.1 + PKCE",
+        "advMetadata": "资源元数据",
+        "advTools": "工具",
+        "manualFallback": "我更想手动注册"
       }
     },
     "oauthconsent": {
@@ -13227,6 +13259,23 @@
       "reminderSaved": "每天 {time} 提醒",
       "reminderOff": "每日提醒已关闭",
       "reminderError": "无法保存提醒。"
+    },
+    "commerceconnect": {
+      "title": "将 {client} 连接到 Vitanaland？",
+      "lead": "{client} 想代表你在 Vitanaland Commerce 上设置你的企业。",
+      "signedInAs": "已登录：{email}",
+      "unknownClient": "你的 AI 助手",
+      "canDoTitle": "你的助手将能够：",
+      "canDo1": "注册你的企业并保持信息最新",
+      "canDo2": "添加和修改产品与服务",
+      "canDo3": "查看你的设置进度",
+      "youConfirm": "提交审核始终由你亲自确认。合作伙伴条款只能在 Vitanaland 上由你接受。",
+      "approve": "连接",
+      "deny": "取消",
+      "loading": "请稍候…",
+      "redirecting": "正在返回你的助手…",
+      "invalid": "此连接请求无效或已过期。请在你的助手中重新开始连接。",
+      "failed": "刚才没有成功，请再试一次。"
     }
   }
 }

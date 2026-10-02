@@ -48,6 +48,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
+import { McpConnectPanel } from '@/components/commerce/McpConnectPanel';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -68,6 +69,7 @@ import { SalesSetupSheet } from '@/components/commerce/SalesSetupSheet';
 import { adminFetch } from '@/lib/admin-api';
 import { VOICE_SETUP_EVENTS, draftFromVoiceEvent, fetchAiSetupEnabled, type SetupDraft } from '@/lib/commerce-ai-setup';
 import { AiSetupSheet } from '@/components/commerce/AiSetupSheet';
+import { fetchMcpReady } from '@/lib/commerce-mcp';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
 import { pickActiveOrg, readActiveOrgId, setActiveOrgId } from '@/lib/business-mode';
@@ -110,6 +112,11 @@ export default function CommercePortal() {
   // is never skipped just because the business list answered first.
   const [aiReady, setAiReady] = useState<boolean | null>(null);
   const [aiSetupOpen, setAiSetupOpen] = useState(false);
+  // VTID-04848: the preferred onboarding — copy the MCP address into your own
+  // AI assistant. Leads only once the gateway serves /mcp with a sign-in
+  // server (COMMERCE_MCP_ENABLED); null = not known yet.
+  const [mcpReady, setMcpReady] = useState<boolean | null>(null);
+  const [mcpOpen, setMcpOpen] = useState(false);
   // VTID-04841: a draft Vitana made by voice opens the same review card.
   const [voiceDraft, setVoiceDraft] = useState<SetupDraft | null>(null);
   // VTID-04745: CSV catalogue import, per organization the user administers.
@@ -179,16 +186,17 @@ export default function CommercePortal() {
   // registering one — decided from the server's own list, not a browser flag.
   // Closing the sheet is respected for the rest of the visit.
   useEffect(() => {
-    if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0 || aiReady === null) return;
+    if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0 || aiReady === null || mcpReady === null) return;
     try {
       if (sessionStorage.getItem(AUTO_REGISTER_KEY)) return;
       sessionStorage.setItem(AUTO_REGISTER_KEY, '1');
     } catch {
       /* storage unavailable: still open it once for this render */
     }
-    if (aiReady) setAiSetupOpen(true);
+    if (mcpReady) setMcpOpen(true);
+    else if (aiReady) setAiSetupOpen(true);
     else setRegisterOrgOpen(true);
-  }, [user, myOrgs, myOrgsFailed, aiReady]);
+  }, [user, myOrgs, myOrgsFailed, aiReady, mcpReady]);
 
   useEffect(() => {
     // Guests have nothing to load — both endpoints require an account, and
@@ -197,6 +205,7 @@ export default function CommercePortal() {
     void load();
     void loadMyOrgs();
     void fetchAiSetupEnabled(adminFetch).then(setAiReady);
+    void fetchMcpReady().then(setMcpReady);
   }, [user, load, loadMyOrgs]);
 
   // VTID-04841: Vitana drafted the business by voice → open the review card
@@ -274,7 +283,8 @@ export default function CommercePortal() {
   // VTID-04795: each setup option opens what already exists.
   const chooseSetup = (option: SetupOption) => {
     if (option === 'ai') {
-      if (aiReady) setAiSetupOpen(true);
+      if (mcpReady) setMcpOpen(true);
+      else if (aiReady) setAiSetupOpen(true);
       else connectViaAgent();
     }
     else if (option === 'manual') setAddProductOpen(true);
@@ -438,37 +448,66 @@ export default function CommercePortal() {
           twoColumn ? 'lg:justify-start' : ''
         }`}
       >
-        {/* VTID-04839: once "Set up with AI" is switched on it leads (owner
-            decision 2026-10-02: AI first, manual only if someone prefers it).
-            Until then registering leads for a supplier without a business and
-            the AI button stays the quiet one (VTID-04795). Always two buttons. */}
-        <Button
-          size="lg"
-          variant={aiReady ? 'default' : 'outline'}
-          onClick={aiReady ? () => setAiSetupOpen(true) : connectViaAgent}
-          data-testid="hero-ai"
-          className={
-            aiReady
-              ? 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
-              : 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:order-last sm:w-auto'
-          }
-        >
-          <Sparkles className="me-2 h-4 w-4" />
-          {aiReady ? t('screens.commerceportal.aiSetup.cta') : t('screens.commerceportal.agentConnect.title')}
-        </Button>
-        <Button
-          size="lg"
-          variant={hasOrgs || aiReady ? 'outline' : 'default'}
-          onClick={() => setRegisterOrgOpen(true)}
-          className={`${
-            hasOrgs || aiReady
-              ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
-              : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
-          } ${aiReady ? '' : 'order-first'}`}
-        >
-          <Building2 className="me-2 h-4 w-4" />
-          {aiReady ? t('screens.commerceportal.aiSetup.manualCta') : t('screens.commerceportal.orgOnboarding.registerCta')}
-        </Button>
+        {mcpReady ? (
+          <>
+            {/* VTID-04848 (owner decision 2026-10-02): connecting your own AI
+                agent is THE way to onboard; registering by hand is the
+                clearly secondary fallback. No website reading, no forms first. */}
+            <Button
+              size="lg"
+              onClick={() => setMcpOpen(true)}
+              data-testid="hero-ai"
+              className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+            >
+              <Sparkles className="me-2 h-4 w-4" />
+              {t('screens.commerceportal.mcpConnect.cta')}
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setRegisterOrgOpen(true)}
+              data-testid="hero-manual"
+              className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+            >
+              <Building2 className="me-2 h-4 w-4" />
+              {t('screens.commerceportal.mcpConnect.manualCta')}
+            </Button>
+          </>
+        ) : (
+          <>
+            {/* VTID-04839: once "Set up with AI" is switched on it leads (owner
+                decision 2026-10-02: AI first, manual only if someone prefers it).
+                Until then registering leads for a supplier without a business and
+                the AI button stays the quiet one (VTID-04795). Always two buttons. */}
+            <Button
+              size="lg"
+              variant={aiReady ? 'default' : 'outline'}
+              onClick={aiReady ? () => setAiSetupOpen(true) : connectViaAgent}
+              data-testid="hero-ai"
+              className={
+                aiReady
+                  ? 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+                  : 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:order-last sm:w-auto'
+              }
+            >
+              <Sparkles className="me-2 h-4 w-4" />
+              {aiReady ? t('screens.commerceportal.aiSetup.cta') : t('screens.commerceportal.agentConnect.title')}
+            </Button>
+            <Button
+              size="lg"
+              variant={hasOrgs || aiReady ? 'outline' : 'default'}
+              onClick={() => setRegisterOrgOpen(true)}
+              className={`${
+                hasOrgs || aiReady
+                  ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
+                  : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+              } ${aiReady ? '' : 'order-first'}`}
+            >
+              <Building2 className="me-2 h-4 w-4" />
+              {aiReady ? t('screens.commerceportal.aiSetup.manualCta') : t('screens.commerceportal.orgOnboarding.registerCta')}
+            </Button>
+          </>
+        )}
       </div>
     </>
   );
@@ -484,7 +523,7 @@ export default function CommercePortal() {
         agentHighlight ? 'ring-4 ring-amber-400/70 ring-offset-2 ring-offset-background' : ''
       }`}
     >
-      <AgentConnectCard />
+      {mcpReady ? <McpConnectPanel onRegisterManually={() => setRegisterOrgOpen(true)} /> : <AgentConnectCard />}
     </motion.section>
   );
 
@@ -526,7 +565,7 @@ export default function CommercePortal() {
             </div>
             <p className="mt-3 text-xs text-muted-foreground">{t('screens.commerceportal.guestCtaHint')}</p>
           </div>
-        ) : hasOrgs || aiReady ? (
+        ) : hasOrgs || aiReady || mcpReady ? (
           heroCopy(false)
         ) : (
           <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
@@ -703,6 +742,20 @@ export default function CommercePortal() {
         }}
       />
       <CatalogueImportSheet open={catalogueImportOpen} onOpenChange={setCatalogueImportOpen} adminOrgs={adminOrgs} />
+      {/* VTID-04848: "Connect your AI agent" — the MCP address, one Copy. */}
+      <ResponsiveDialog open={mcpOpen} onOpenChange={setMcpOpen}>
+        <ResponsiveDialogContent className="max-w-xl">
+          <ResponsiveDialogTitle className="sr-only">{t('screens.commerceportal.mcpConnect.cta')}</ResponsiveDialogTitle>
+          <ResponsiveDialogBody>
+            <McpConnectPanel
+              onRegisterManually={() => {
+                setMcpOpen(false);
+                setRegisterOrgOpen(true);
+              }}
+            />
+          </ResponsiveDialogBody>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
       {/* "Connect via AI Agent" below lg:, where the card itself is hidden. */}
       <ResponsiveDialog open={agentDialogOpen} onOpenChange={setAgentDialogOpen}>
         <ResponsiveDialogContent className="max-w-xl">

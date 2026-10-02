@@ -104,7 +104,12 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   });
 
   it('the hero copy renders exactly the two real CTA buttons and no eyebrow pill any more', () => {
-    expect((heroCopyFn.match(/<Button/g) ?? []).length).toBe(2);
+    // VTID-04848: two pairs — the MCP pair (Connect your AI agent / Register
+    // manually) once the gateway serves /mcp, else the earlier pair. Each
+    // branch still renders exactly two buttons.
+    expect((heroCopyFn.match(/<Button/g) ?? []).length).toBe(4);
+    expect(heroCopyFn).toContain("t('screens.commerceportal.mcpConnect.cta')");
+    expect(heroCopyFn).toContain("t('screens.commerceportal.mcpConnect.manualCta')");
     expect(heroCopyFn).toContain("t('screens.commerceportal.agentConnect.title')");
     expect(heroCopyFn).toContain("t('screens.commerceportal.orgOnboarding.registerCta')");
     expect(heroCopyFn).not.toContain('<AgentConnectCard');
@@ -112,8 +117,8 @@ describe('CommercePortal hero: two real, distinct CTAs, nothing blended with tex
   });
 
   it('VTID-04079: a first-time SIGNED-IN visitor (!hasOrgs) gets the agent card embedded beside the hero copy at lg:, a returning member (hasOrgs) does not', () => {
-    // VTID-04839: when AI setup leads, the hero is single-column too (no MCP card beside it).
-    expect(heroJsx).toContain('hasOrgs || aiReady ? (');
+    // VTID-04839 / VTID-04848: when AI setup or the MCP connect leads, the hero is single-column too.
+    expect(heroJsx).toContain('hasOrgs || aiReady || mcpReady ? (');
     expect(heroJsx).toContain('heroCopy(false)');
     expect(heroJsx).toContain('heroCopy(true)');
     expect(heroJsx).toContain("agentCard('mt-10 hidden scroll-mt-24 lg:mt-0 lg:block')");

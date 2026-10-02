@@ -97,6 +97,7 @@ const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnection
 // VTID-03936: an org invite link's landing page.
 const CommerceAcceptInvite = lazy(() => import("./pages/CommerceAcceptInvite"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+const CommerceConnectAuthorize = lazy(() => import("./pages/CommerceConnectAuthorize"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
@@ -1829,6 +1830,10 @@ const App = () => {
           <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
           <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />
           <Route path="/commerce/agent-connect" element={<Navigate to="/commerce" replace />} />
+          {/* VTID-04848: the supplier approves their AI assistant (Supabase Auth
+              OAuth server's authorization path). Under /commerce so a supplier
+              who is not signed in goes through /commerce/join and back. */}
+          <Route path="/commerce/connect/authorize" element={<AuthGuard><CommerceConnectAuthorize /></AuthGuard>} />
           {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
               signed-in user consents for themselves. */}
           <Route path="/oauth/consent" element={
