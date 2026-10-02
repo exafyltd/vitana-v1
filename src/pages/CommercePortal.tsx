@@ -561,26 +561,30 @@ export default function CommercePortal() {
 
           {/* PREFER TO DO IT YOURSELF — a real, bounded secondary card. Both
               options are equal-weight real buttons now, replacing the old
-              solid-button-next-to-ghost-link row. */}
-          <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
-            <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <Button
-                onClick={() => setAddProductOpen(true)}
-                className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
-              >
-                <PackagePlus className="me-2 h-4 w-4" />
-                {t('screens.commerceportal.addProduct')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setManualOpen(true)}
-                className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
-              >
-                {t('screens.commerceportal.manualCta')}
-              </Button>
-            </div>
-          </section>
+              solid-button-next-to-ghost-link row. VTID-04839: hidden while
+              "Set up with AI" leads — the hero already offers "Prefer to set it
+              up yourself", and this card speaks of the old assistant. */}
+          {!aiReady && (
+            <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
+              <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  onClick={() => setAddProductOpen(true)}
+                  className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                >
+                  <PackagePlus className="me-2 h-4 w-4" />
+                  {t('screens.commerceportal.addProduct')}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setManualOpen(true)}
+                  className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
+                >
+                  {t('screens.commerceportal.manualCta')}
+                </Button>
+              </div>
+            </section>
+          )}
 
           {/* YOUR CONNECTIONS */}
           <section className="mt-12 md:mt-16">

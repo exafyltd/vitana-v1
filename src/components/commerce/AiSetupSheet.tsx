@@ -180,7 +180,7 @@ export function AiSetupSheet({
           {(step === 'website' || step === 'reading') && (
             <div className="space-y-1.5">
               <p className="text-base text-foreground">{t('screens.commerceportal.aiSetup.lead')}</p>
-              <Label htmlFor="ai-website" className="pt-2">
+              <Label htmlFor="ai-website" className="block pt-4">
                 {t('screens.commerceportal.aiSetup.websiteLabel')}
               </Label>
               <Input

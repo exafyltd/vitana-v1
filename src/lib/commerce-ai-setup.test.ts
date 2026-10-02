@@ -103,6 +103,9 @@ describe('portal and sheet wiring', () => {
     expect(portal).toContain("t('screens.commerceportal.aiSetup.manualCta')");
     expect(portal).toContain("if (aiReady) setAiSetupOpen(true);");
     expect(portal).toContain('<AiSetupSheet');
+    // The old "no AI assistant? add products yourself" card does not compete with it.
+    const manualCard = portal.slice(portal.indexOf('PREFER TO DO IT YOURSELF'), portal.indexOf('YOUR CONNECTIONS'));
+    expect(manualCard).toContain('{!aiReady && (');
   });
 
   it('only the "Create my business" tap writes; manual stays one tap away', () => {
