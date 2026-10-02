@@ -10807,7 +10807,9 @@
         "alreadyConfirmed": "已经确认？在此登录",
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
-        "oauthFailed": "无法通过 {provider} 登录。请重试，或使用邮箱继续。"
+        "oauthFailed": "无法通过 {provider} 登录。请重试，或使用邮箱继续。",
+        "oauthExpired": "登录耗时过长，已过期。请重试。",
+        "oauthRetry": "登录未完成。请重试，或使用邮箱继续。"
       },
       "orgOnboarding": {
         "_pending_review": {

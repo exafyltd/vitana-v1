@@ -10560,7 +10560,9 @@
         "alreadyConfirmed": "Schon bestätigt? Hier einloggen",
         "timeout": "Das hat zu lange gedauert. Bitte prüfe deine Verbindung und versuche es erneut.",
         "failed": "Das hat nicht geklappt. Bitte versuche es erneut.",
-        "oauthFailed": "Das Einloggen mit {provider} hat nicht geklappt. Versuch es erneut oder mach mit E-Mail weiter."
+        "oauthFailed": "Das Einloggen mit {provider} hat nicht geklappt. Versuch es erneut oder mach mit E-Mail weiter.",
+        "oauthExpired": "Die Anmeldung hat zu lange gedauert und ist abgelaufen. Bitte versuch es noch einmal.",
+        "oauthRetry": "Die Anmeldung wurde nicht abgeschlossen. Versuch es erneut oder mach mit E-Mail weiter."
       },
       "orgOnboarding": {
         "registerCta": "Business registrieren",

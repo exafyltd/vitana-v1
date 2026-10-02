@@ -10560,7 +10560,9 @@
         "alreadyConfirmed": "Already confirmed? Sign in here",
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
-        "oauthFailed": "We couldn't sign you in with {provider}. Please try again or continue with email."
+        "oauthFailed": "We couldn't sign you in with {provider}. Please try again or continue with email.",
+        "oauthExpired": "Sign-in took too long and expired. Please try again.",
+        "oauthRetry": "Sign-in wasn't completed. Please try again or continue with email."
       },
       "orgOnboarding": {
         "registerCta": "Register your business",

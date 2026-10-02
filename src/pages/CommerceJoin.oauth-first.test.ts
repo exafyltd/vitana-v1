@@ -23,7 +23,9 @@ describe('CommerceJoin: providers first, email on demand (VTID-04791)', () => {
 
   it('signs in through the shared WebView-aware OAuth hook, back into the Commerce Portal as maxina', () => {
     expect(join).toContain('useSupabaseOAuthSignIn');
-    expect(join).toContain('redirectTo: getEmailRedirectUrl(targetPath())');
+    // VTID-04832: back to the host it started on, never hardcoded production.
+    expect(join).toContain('redirectTo: oauthReturnUrl(targetPath())');
+    expect(join).toContain('rememberCommerceOAuth();');
     expect(join).toContain("queryParams: { tenant_slug: 'maxina' }");
   });
 

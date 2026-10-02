@@ -10801,6 +10801,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "Prijava preko {provider} nije uspela. Pokušaj ponovo ili nastavi sa e-poštom.",
+        "oauthExpired": "Prijava je trajala predugo i istekla je. Pokušaj ponovo.",
+        "oauthRetry": "Prijava nije završena. Pokušaj ponovo ili nastavi sa e-poštom.",
         "_pending_review": {
           "seoTitle": true,
           "seoDescription": true,
