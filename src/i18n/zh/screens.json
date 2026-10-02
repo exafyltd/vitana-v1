@@ -11201,7 +11201,8 @@
         "errorUnreachable": "无法打开你的网站。请检查网址，或者自己填写。",
         "errorRateLimited": "你刚才尝试了很多次，请稍等一下。",
         "errorGeneric": "刚才没有成功，请再试一次。",
-        "errorCreate": "保存失败。再点一次即可——不会重复创建。"
+        "errorCreate": "保存失败。再点一次即可——不会重复创建。",
+        "talkCta": "改为和 Vitana 对话"
       }
     },
     "oauthconsent": {

@@ -11,6 +11,10 @@
  * the business fields are not shown. A retry or a double tap reuses the same
  * setup key, so it never creates a second business. "Prefer to fill it in
  * yourself" is always one tap away.
+ *
+ * VTID-04841: "Talk to Vitana" opens the orb instead; Vitana asks for the
+ * website and drafts it. Her draft arrives as `initialDraft` (the portal
+ * listens for it) and opens the same review card — voice never writes.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -25,19 +29,23 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, PartyPopper, Sparkles } from 'lucide-react';
+import { Loader2, Mic, PartyPopper, Sparkles } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
 import { COMMERCE_CATEGORIES } from '@/lib/commerce-categories';
 import { countryOptions, guessCountry } from '@/lib/commerce-countries';
 import { isValidWebsite, normalizeWebsite } from '@/lib/commerce-register';
 import {
+  VOICE_SETUP_EVENTS,
   applyDraft,
   applyPayload,
+  canTalkToVitana,
   draftErrorKey,
+  errorFromVoiceEvent,
   newSetupKey,
   requestDraft,
   reviewFromDraft,
   reviewProblem,
+  startVoiceSetup,
   type ApplyOutcome,
   type BusinessCategory,
   type ReviewState,
@@ -109,6 +117,29 @@ export function AiSetupSheet({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, initialDraft]);
 
+  // VTID-04841: while Vitana reads the site by voice, the sheet shows it;
+  // her draft itself comes in through `initialDraft`.
+  useEffect(() => {
+    if (!open) return;
+    const onReading = (e: Event) => {
+      const site = (e as CustomEvent<{ website?: unknown }>).detail?.website;
+      if (typeof site === 'string') setWebsite(site);
+      setError('');
+      setStep((s) => (s === 'website' ? 'reading' : s));
+    };
+    const onFailed = (e: Event) => {
+      setError(t(draftErrorKey(errorFromVoiceEvent((e as CustomEvent).detail))));
+      setStep((s) => (s === 'reading' ? 'website' : s));
+    };
+    window.addEventListener(VOICE_SETUP_EVENTS.reading, onReading);
+    window.addEventListener(VOICE_SETUP_EVENTS.failed, onFailed);
+    return () => {
+      window.removeEventListener(VOICE_SETUP_EVENTS.reading, onReading);
+      window.removeEventListener(VOICE_SETUP_EVENTS.failed, onFailed);
+    };
+  }, [open]);
+
+  const voiceAvailable = open && canTalkToVitana();
   const websiteOk = website.trim() !== '' && isValidWebsite(website);
 
   const read = async () => {
@@ -202,6 +233,18 @@ export function AiSetupSheet({
                 data-testid="ai-website"
               />
               <p className="text-xs text-muted-foreground">{t('screens.commerceportal.aiSetup.websiteHint')}</p>
+              {voiceAvailable && step === 'website' && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mt-4 h-12 w-full border-amber-300 text-base text-amber-900 hover:bg-amber-50"
+                  onClick={() => startVoiceSetup()}
+                  data-testid="ai-talk"
+                >
+                  <Mic aria-hidden className="me-2 h-5 w-5" />
+                  {t('screens.commerceportal.aiSetup.talkCta')}
+                </Button>
+              )}
               {step === 'reading' && (
                 <p className="flex items-center gap-2 pt-2 text-sm text-foreground" role="status">
                   <Loader2 className="h-4 w-4 animate-spin text-amber-700" />

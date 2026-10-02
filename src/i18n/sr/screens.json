@@ -11205,7 +11205,8 @@
         "errorUnreachable": "Nismo mogli da otvorimo tvoj sajt. Proveri adresu ili popuni sam.",
         "errorRateLimited": "Upravo si mnogo puta pokušao. Sačekaj malo.",
         "errorGeneric": "Nije uspelo. Pokušaj ponovo.",
-        "errorCreate": "Čuvanje nije uspelo. Samo dodirni ponovo – ništa se neće napraviti dvaput."
+        "errorCreate": "Čuvanje nije uspelo. Samo dodirni ponovo – ništa se neće napraviti dvaput.",
+        "talkCta": "Radije razgovaraj sa Vitanom"
       }
     },
     "oauthconsent": {

@@ -10826,7 +10826,8 @@
         "errorUnreachable": "Wir konnten deine Website nicht öffnen. Prüf die Adresse oder füll es lieber selbst aus.",
         "errorRateLimited": "Du hast das gerade oft versucht. Bitte warte kurz.",
         "errorGeneric": "Das hat gerade nicht geklappt. Bitte versuch es noch einmal.",
-        "errorCreate": "Speichern hat nicht geklappt. Tipp einfach noch einmal – es wird nichts doppelt angelegt."
+        "errorCreate": "Speichern hat nicht geklappt. Tipp einfach noch einmal – es wird nichts doppelt angelegt.",
+        "talkCta": "Lieber mit Vitana sprechen"
       }
     },
     "oauthconsent": {

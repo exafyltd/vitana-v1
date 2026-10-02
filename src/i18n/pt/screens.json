@@ -11110,7 +11110,8 @@
         "errorUnreachable": "Não conseguimos abrir o seu site. Confira o endereço ou preencha você mesmo.",
         "errorRateLimited": "Você tentou muitas vezes agora. Aguarde um pouco.",
         "errorGeneric": "Não deu certo agora. Tente de novo.",
-        "errorCreate": "Não foi possível salvar. Toque de novo – nada será criado em dobro."
+        "errorCreate": "Não foi possível salvar. Toque de novo – nada será criado em dobro.",
+        "talkCta": "Prefiro falar com a Vitana"
       }
     },
     "oauthconsent": {

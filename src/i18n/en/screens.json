@@ -10826,7 +10826,8 @@
         "errorUnreachable": "We couldn't open your website. Check the address or fill it in yourself.",
         "errorRateLimited": "You've tried this a lot just now. Please wait a moment.",
         "errorGeneric": "That didn't work just now. Please try again.",
-        "errorCreate": "Saving didn't work. Just tap again – nothing will be created twice."
+        "errorCreate": "Saving didn't work. Just tap again – nothing will be created twice.",
+        "talkCta": "Talk to Vitana instead"
       }
     },
     "oauthconsent": {

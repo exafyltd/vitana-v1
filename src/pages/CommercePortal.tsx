@@ -66,7 +66,7 @@ import { SetupHub } from '@/components/commerce/SetupHub';
 import { SetupChooser, type SetupOption } from '@/components/commerce/SetupChooser';
 import { SalesSetupSheet } from '@/components/commerce/SalesSetupSheet';
 import { adminFetch } from '@/lib/admin-api';
-import { fetchAiSetupEnabled } from '@/lib/commerce-ai-setup';
+import { VOICE_SETUP_EVENTS, draftFromVoiceEvent, fetchAiSetupEnabled, type SetupDraft } from '@/lib/commerce-ai-setup';
 import { AiSetupSheet } from '@/components/commerce/AiSetupSheet';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
@@ -110,6 +110,8 @@ export default function CommercePortal() {
   // is never skipped just because the business list answered first.
   const [aiReady, setAiReady] = useState<boolean | null>(null);
   const [aiSetupOpen, setAiSetupOpen] = useState(false);
+  // VTID-04841: a draft Vitana made by voice opens the same review card.
+  const [voiceDraft, setVoiceDraft] = useState<SetupDraft | null>(null);
   // VTID-04745: CSV catalogue import, per organization the user administers.
   const [catalogueImportOpen, setCatalogueImportOpen] = useState(false);
   const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
@@ -196,6 +198,20 @@ export default function CommercePortal() {
     void loadMyOrgs();
     void fetchAiSetupEnabled(adminFetch).then(setAiReady);
   }, [user, load, loadMyOrgs]);
+
+  // VTID-04841: Vitana drafted the business by voice → open the review card
+  // with her draft. Only the supplier's tap there creates anything.
+  useEffect(() => {
+    if (!user || !aiReady) return;
+    const onDraft = (e: Event) => {
+      const draft = draftFromVoiceEvent((e as CustomEvent).detail);
+      if (!draft) return;
+      setVoiceDraft(draft);
+      setAiSetupOpen(true);
+    };
+    window.addEventListener(VOICE_SETUP_EVENTS.draft, onDraft);
+    return () => window.removeEventListener(VOICE_SETUP_EVENTS.draft, onDraft);
+  }, [user, aiReady]);
 
   const openOrgRoster = (id: string) => {
     setSearchParams((prev) => {
@@ -672,7 +688,11 @@ export default function CommercePortal() {
       {/* VTID-04839: "Set up with AI" — website → draft → review → one tap. */}
       <AiSetupSheet
         open={aiSetupOpen}
-        onOpenChange={setAiSetupOpen}
+        onOpenChange={(next) => {
+          setAiSetupOpen(next);
+          if (!next) setVoiceDraft(null);
+        }}
+        initialDraft={voiceDraft}
         org={hubOrg}
         orgs={adminOrgs}
         onSelectOrg={selectHubOrg}

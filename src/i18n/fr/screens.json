@@ -11194,7 +11194,8 @@
         "errorUnreachable": "Impossible d'ouvrir ton site. Vérifie l'adresse ou remplis-le toi-même.",
         "errorRateLimited": "Tu as beaucoup essayé à l'instant. Patiente un moment.",
         "errorGeneric": "Ça n'a pas fonctionné. Réessaie.",
-        "errorCreate": "L'enregistrement a échoué. Appuie à nouveau – rien ne sera créé deux fois."
+        "errorCreate": "L'enregistrement a échoué. Appuie à nouveau – rien ne sera créé deux fois.",
+        "talkCta": "Je préfère parler à Vitana"
       }
     },
     "oauthconsent": {

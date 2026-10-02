@@ -1,15 +1,20 @@
 // VTID-04839 — "Set up with AI": the review card's rules and the apply body.
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
+  VOICE_SETUP_EVENTS,
   applyPayload,
+  canTalkToVitana,
   centsToText,
   draftErrorKey,
+  draftFromVoiceEvent,
+  errorFromVoiceEvent,
   fetchAiSetupEnabled,
   newSetupKey,
   reviewFromDraft,
   reviewProblem,
+  startVoiceSetup,
   textToCents,
   type SetupDraft,
 } from './commerce-ai-setup';
@@ -114,5 +119,50 @@ describe('portal and sheet wiring', () => {
     expect(sheet).toContain('data-testid="ai-create"');
     expect(sheet).toContain('data-testid="ai-prefer-manual"');
     expect(sheet).toContain('<BusinessContext');
+  });
+});
+
+describe('setting up with Vitana by voice (VTID-04841)', () => {
+  it('offers "Talk to Vitana" only when the loaded orb can start a commerce setup', () => {
+    expect(canTalkToVitana(null)).toBe(false);
+    expect(canTalkToVitana({})).toBe(false);
+    expect(canTalkToVitana({ VitanaOrb: { show: () => {} } })).toBe(false);
+    const startCommerceSetup = vi.fn();
+    expect(canTalkToVitana({ VitanaOrb: { startCommerceSetup } })).toBe(true);
+    expect(startVoiceSetup({ VitanaOrb: { startCommerceSetup } })).toBe(true);
+    expect(startCommerceSetup).toHaveBeenCalledTimes(1);
+    expect(startVoiceSetup({})).toBe(false);
+  });
+
+  it('accepts only a well-formed draft from the widget event', () => {
+    expect(draftFromVoiceEvent({ draft: DRAFT })).toBe(DRAFT);
+    expect(draftFromVoiceEvent(null)).toBeNull();
+    expect(draftFromVoiceEvent({ draft: null })).toBeNull();
+    expect(draftFromVoiceEvent({ draft: { website: 'x' } })).toBeNull();
+    expect(draftFromVoiceEvent({ draft: { ...DRAFT, products: 'no' } })).toBeNull();
+    expect(errorFromVoiceEvent({ error: 'site_unreachable' })).toBe('site_unreachable');
+    expect(errorFromVoiceEvent({})).toBe('');
+  });
+
+  it('uses the event names the gateway widget dispatches', () => {
+    expect(VOICE_SETUP_EVENTS).toEqual({
+      reading: 'vitana:commerce-setup-reading',
+      draft: 'vitana:commerce-setup-draft',
+      failed: 'vitana:commerce-setup-failed',
+    });
+  });
+
+  it('a voice draft opens the same review card; voice never writes', () => {
+    const read = (p: string) => readFileSync(resolve(__dirname, p), 'utf8');
+    const portal = read('../pages/CommercePortal.tsx');
+    const sheet = read('../components/commerce/AiSetupSheet.tsx');
+    expect(portal).toContain('window.addEventListener(VOICE_SETUP_EVENTS.draft, onDraft)');
+    expect(portal).toContain('initialDraft={voiceDraft}');
+    expect(portal).toContain('if (!next) setVoiceDraft(null);');
+    expect(sheet).toContain('data-testid="ai-talk"');
+    expect(sheet).toContain('onClick={() => startVoiceSetup()}');
+    // Still exactly one write: the create tap.
+    expect(sheet.match(/applyDraft\(/g)).toHaveLength(1);
+    expect(portal).not.toContain('applyDraft(');
   });
 });

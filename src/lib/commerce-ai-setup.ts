@@ -155,3 +155,53 @@ export function draftErrorKey(code: string): string {
       return 'screens.commerceportal.aiSetup.errorGeneric';
   }
 }
+
+// ==================== Setting up with Vitana by voice (VTID-04841) ====================
+
+/**
+ * The orb widget (gateway VTID-04840) forwards Vitana's drafting as window
+ * events. Voice only drafts: the draft opens this review card and the
+ * supplier's own tap on "Create my business" is still the only write.
+ */
+export const VOICE_SETUP_EVENTS = {
+  reading: 'vitana:commerce-setup-reading',
+  draft: 'vitana:commerce-setup-draft',
+  failed: 'vitana:commerce-setup-failed',
+} as const;
+
+interface OrbWithCommerceSetup {
+  startCommerceSetup?: () => void;
+}
+
+function orbOf(win: unknown): OrbWithCommerceSetup | null {
+  const orb = (win as { VitanaOrb?: OrbWithCommerceSetup } | null)?.VitanaOrb;
+  return orb && typeof orb === 'object' ? orb : null;
+}
+
+/** Whether the loaded orb widget can start a commerce setup conversation. */
+export function canTalkToVitana(win: unknown = typeof window === 'undefined' ? null : window): boolean {
+  return typeof orbOf(win)?.startCommerceSetup === 'function';
+}
+
+/** Opens the orb: Vitana asks for the website and drafts the business. */
+export function startVoiceSetup(win: unknown = typeof window === 'undefined' ? null : window): boolean {
+  const orb = orbOf(win);
+  if (typeof orb?.startCommerceSetup !== 'function') return false;
+  orb.startCommerceSetup();
+  return true;
+}
+
+/** The draft in a `vitana:commerce-setup-draft` event, or null when it is not one. */
+export function draftFromVoiceEvent(detail: unknown): SetupDraft | null {
+  const d = (detail as { draft?: unknown } | null)?.draft as Partial<SetupDraft> | null | undefined;
+  if (!d || typeof d !== 'object') return null;
+  if (typeof d.website !== 'string' || !d.business || typeof d.business.display_name !== 'string') return null;
+  if (!Array.isArray(d.products)) return null;
+  return d as SetupDraft;
+}
+
+/** The error code in a `vitana:commerce-setup-failed` event. */
+export function errorFromVoiceEvent(detail: unknown): string {
+  const e = (detail as { error?: unknown } | null)?.error;
+  return typeof e === 'string' ? e : '';
+}
