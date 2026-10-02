@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-09-24T16:09:00.552Z",
   "source": "src/App.tsx",
-  "count": 422,
+  "count": 420,
   "routes": [
     {
       "path": "*",
@@ -535,18 +535,6 @@
     },
     {
       "path": "/admin/navigator",
-      "requires_auth": true,
-      "requires_role": "admin",
-      "file": "src/App.tsx"
-    },
-    {
-      "path": "/admin/navigator/coverage",
-      "requires_auth": true,
-      "requires_role": "admin",
-      "file": "src/App.tsx"
-    },
-    {
-      "path": "/admin/navigator/history",
       "requires_auth": true,
       "requires_role": "admin",
       "file": "src/App.tsx"

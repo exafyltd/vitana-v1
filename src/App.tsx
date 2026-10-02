@@ -408,10 +408,7 @@ const AdminAutopilotRuns = lazy(() => import("./pages/admin/autopilot/Runs"));
 const AdminAutopilotGuardrails = lazy(() => import("./pages/admin/autopilot/Guardrails"));
 const AdminAutopilotGrowth = lazy(() => import("./pages/admin/autopilot/Growth"));
 // VTID-NAV-02: Vitana Navigator admin
-const AdminNavigatorCatalog = lazy(() => import("./pages/admin/navigator/Catalog"));
-const AdminNavigatorCoverage = lazy(() => import("./pages/admin/navigator/Coverage"));
 const AdminNavigatorTelemetry = lazy(() => import("./pages/admin/navigator/Telemetry"));
-const AdminNavigatorHistory = lazy(() => import("./pages/admin/navigator/History"));
 const AdminDevicePreview = lazy(() => import("./pages/admin/DevicePreview"));
 const CommunitySupervision = lazy(() => import("./pages/admin/CommunitySupervision"));
 const EventsModeration = lazy(() => import("./pages/admin/community/Events"));
@@ -2153,18 +2150,14 @@ const App = () => {
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditSecurity /></ProtectedRoute></AuthGuard>
           } />
 
-          {/* VTID-NAV-02: Vitana Navigator admin screens */}
+          {/* VTID-NAV-02: Vitana Navigator admin. VTID-04853: only Telemetry
+              remains; the catalog editor, coverage and history pages edited the
+              retired nav_catalog table. /admin/navigator renders Telemetry too. */}
           <Route path="/admin/navigator" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorCatalog /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/navigator/coverage" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorCoverage /></ProtectedRoute></AuthGuard>
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorTelemetry /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/admin/navigator/telemetry" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorTelemetry /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/navigator/history" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorHistory /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Device Preview: mobile UI "simulator" for staging (UI-only, not the Appilix shell) */}
