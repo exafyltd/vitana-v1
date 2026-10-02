@@ -83,11 +83,16 @@ if (process.env.NODE_ENV === 'development') {
 import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
 import { I18nLeakDetector } from './i18n/leak-detector'
 import { preloadHotChunks } from './lib/preloadHotChunks'
+import { applyCommerceOAuthReturn } from './lib/oauth-return'
 
 // Kick off background download of Messages / FindPartner / GroupChat chunks
 // during the first idle window so they're warm when the user navigates there.
 // Skipped on save-data / 2G connections.
 preloadHotChunks();
+
+// VTID-04832: a failed Commerce sign-in returns to the Commerce join screen,
+// not the MAXINA intro. Must run before the router renders.
+applyCommerceOAuthReturn();
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>

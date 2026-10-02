@@ -10797,6 +10797,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "تعذّر تسجيل دخولك باستخدام {provider}. حاول مرة أخرى أو تابع بالبريد الإلكتروني.",
+        "oauthExpired": "استغرق تسجيل الدخول وقتًا طويلًا وانتهت صلاحيته. حاول مرة أخرى.",
+        "oauthRetry": "لم يكتمل تسجيل الدخول. حاول مرة أخرى أو تابع بالبريد الإلكتروني.",
         "_pending_review": {
           "seoTitle": true,
           "seoDescription": true,

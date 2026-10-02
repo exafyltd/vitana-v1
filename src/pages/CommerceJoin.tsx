@@ -29,6 +29,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSupabaseOAuthSignIn, type SupportedOAuthProvider } from '@/hooks/useSupabaseOAuthSignIn';
 import { CONFIRMATION_PATHS, getEmailRedirectUrl } from '@/utils/redirectUrls';
 import { t } from '@/lib/i18n-toast';
+import { oauthReturnUrl, rememberCommerceOAuth } from '@/lib/oauth-return';
 
 const fieldClass = 'border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-amber-500';
 const optionClass =
@@ -103,7 +104,14 @@ export default function CommerceJoin() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
+  // VTID-04832: a provider round-trip that failed or expired comes back here
+  // (see src/lib/oauth-return.ts) with a retry message instead of the intro.
+  const [error, setError] = useState(() => {
+    const kind = searchParams.get('oauth_error');
+    if (kind === 'expired') return t('screens.commerceportal.join.oauthExpired');
+    if (kind === 'cancelled' || kind === 'failed') return t('screens.commerceportal.join.oauthRetry');
+    return '';
+  });
   const [sentTo, setSentTo] = useState('');
 
   // Someone already signed in does not need to register; send them on.
@@ -128,10 +136,12 @@ export default function CommerceJoin() {
   const continueWith = async (provider: SupportedOAuthProvider) => {
     setError('');
     localStorage.setItem('tenant_slug', 'maxina');
+    rememberCommerceOAuth();
     try {
       await oauth.mutateAsync({
         provider,
-        redirectTo: getEmailRedirectUrl(targetPath()),
+        // VTID-04832: back to the host this started on (staging stays on staging).
+        redirectTo: oauthReturnUrl(targetPath()),
         queryParams: { tenant_slug: 'maxina' },
       });
     } catch {

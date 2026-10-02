@@ -10790,6 +10790,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "La connexion avec {provider} n'a pas abouti. Réessaie ou continue avec l'e-mail.",
+        "oauthExpired": "La connexion a pris trop de temps et a expiré. Réessaie.",
+        "oauthRetry": "La connexion n'a pas abouti. Réessaie ou continue avec l'e-mail.",
         "_pending_review": {
           "seoTitle": true,
           "seoDescription": true,

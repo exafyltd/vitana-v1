@@ -10798,6 +10798,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "Nie udało się zalogować przez {provider}. Spróbuj ponownie lub kontynuuj z e-mailem.",
+        "oauthExpired": "Logowanie trwało zbyt długo i wygasło. Spróbuj ponownie.",
+        "oauthRetry": "Logowanie nie zostało ukończone. Spróbuj ponownie lub kontynuuj z e-mailem.",
         "_pending_review": {
           "seoTitle": true,
           "seoDescription": true,

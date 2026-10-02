@@ -10807,7 +10807,9 @@
         "alreadyConfirmed": "Zaten onayladın mı? Buradan giriş yap",
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
-        "oauthFailed": "{provider} ile giriş yapılamadı. Tekrar dene veya e-posta ile devam et."
+        "oauthFailed": "{provider} ile giriş yapılamadı. Tekrar dene veya e-posta ile devam et.",
+        "oauthExpired": "Giriş çok uzun sürdü ve süresi doldu. Tekrar dene.",
+        "oauthRetry": "Giriş tamamlanmadı. Tekrar dene veya e-posta ile devam et."
       },
       "orgOnboarding": {
         "_pending_review": {

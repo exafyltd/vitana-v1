@@ -10630,6 +10630,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "No pudimos iniciar tu sesión con {provider}. Inténtalo de nuevo o continúa con tu correo electrónico.",
+        "oauthExpired": "El inicio de sesión tardó demasiado y caducó. Inténtalo de nuevo.",
+        "oauthRetry": "No se completó el inicio de sesión. Inténtalo de nuevo o continúa con tu correo electrónico.",
         "_pending_review": {
           "togglePassword": true,
           "checkInboxTitle": true,

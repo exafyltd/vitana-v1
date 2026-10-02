@@ -10721,6 +10721,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "Não foi possível entrar com {provider}. Tente de novo ou continue com e-mail.",
+        "oauthExpired": "O login demorou demais e expirou. Tente de novo.",
+        "oauthRetry": "O login não foi concluído. Tente de novo ou continue com e-mail.",
         "_pending_review": {
           "seoTitle": true,
           "seoDescription": true,

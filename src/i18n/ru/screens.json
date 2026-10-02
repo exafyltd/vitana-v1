@@ -10800,6 +10800,8 @@
         "timeout": "That took too long. Please check your connection and try again.",
         "failed": "That did not work. Please try again.",
         "oauthFailed": "Не удалось войти через {provider}. Попробуй ещё раз или продолжи с e-mail.",
+        "oauthExpired": "Вход занял слишком много времени и истёк. Попробуй ещё раз.",
+        "oauthRetry": "Вход не был завершён. Попробуй ещё раз или продолжи с e-mail.",
         "_pending_review": {
           "seoTitle": true,
           "seoDescription": true,
