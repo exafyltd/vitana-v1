@@ -22,9 +22,9 @@
     },
     "eventDrawer.following": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'تتابعه' is masculine, but the subject could be feminine. Also, it's ambiguous whether it means 'you are following' or 'he/she is following'.",
-      "suggested": "تتابع",
+      "confidence": 0.9,
+      "issue": "English 'Following' is ambiguous (noun, verb, button label). Arabic 'تتابع' is a verb ('you follow'), which is less common for a standalone UI label where a noun or infinitive is usually expected.",
+      "suggested": "متابعة",
       "phase": "llm"
     },
     "eventDrawer.followingLoading": {
@@ -109,9 +109,9 @@
     },
     "eventDrawer.attending": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'يحضرون' is masculine plural, but attendees can be mixed gender. Also, the phrase is awkward.",
-      "suggested": "{current} / {capacity} يحضرون",
+      "confidence": 0.9,
+      "issue": "Arabic 'يحضرون' ('they attend') is a verb, making the numbers the subject, which is grammatically awkward. A noun form is more appropriate for 'attending' in this context.",
+      "suggested": "{current} / {capacity} حاضرون",
       "phase": "llm"
     },
     "eventDrawer.spotsLeft": {
@@ -300,5 +300,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:26.962Z"
+  "generatedAt": "2026-10-02T09:58:02.988Z"
 }
