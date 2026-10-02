@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-04843",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "http",
+      "target": "frontend",
+      "method": "GET",
+      "path": "/commerce",
+      "expect_status": 200,
+      "expect_body_contains": "/command-hub/orb-widget.js?v=20261002-vtid-04843-widget-rebust",
+      "reason": "the staging app loads the orb widget at the fresh cache bust, so the commerce setup widget (startCommerceSetup) reaches the browser instead of the CDN's stale copy"
+    }
+  ]
+}
