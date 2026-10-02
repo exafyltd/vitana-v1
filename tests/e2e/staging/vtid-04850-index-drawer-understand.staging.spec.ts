@@ -7,8 +7,13 @@
 import { test, expect } from './staging-guard';
 
 test.use({
-  allowAbortedWrites:
+  allowAbortedWrites: [
     / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    // VTID-04855: read-only lookups the signed-in app sends as POST (Supabase RPCs,
+    // the membership function, the ORB prewarm). The guard still aborts them —
+    // nothing reaches production — this only stops counting them as writes.
+    /(supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
+  ],
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';

@@ -10,8 +10,13 @@
 import { test, expect } from './staging-guard';
 
 test.use({
-  allowAbortedWrites:
+  allowAbortedWrites: [
     / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    // VTID-04855: read-only lookups the signed-in app sends as POST (Supabase RPCs,
+    // the membership function, the ORB prewarm). The guard still aborts them —
+    // nothing reaches production — this only stops counting them as writes.
+    /(supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
+  ],
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
@@ -33,6 +38,10 @@ test('AI setup leads; website → review card; a missing price must be filled be
 
   // A first-time supplier (no business), with AI setup switched on.
   await page.route('**/api/v1/partner-orgs/mine', (r) => r.fulfill({ json: { ok: true, organizations: [] } }));
+  // VTID-04855: staging serves the Commerce MCP endpoint (VTID-04847), so the
+  // portal would lead with "Connect your AI agent". This suite covers the AI
+  // setup path the portal shows when MCP is off — simulate that.
+  await page.route('**/.well-known/oauth-protected-resource/mcp', (r) => r.fulfill({ status: 404, json: { ok: false, error: 'COMMERCE_MCP_DISABLED' } }));
   await page.route('**/api/v1/commerce/ai-setup/status', (r) => r.fulfill({ json: { ok: true, enabled: true } }));
   await page.route('**/api/v1/commerce/ai-setup/draft', (r) => r.fulfill({ json: { ok: true, draft: DRAFT } }));
 
