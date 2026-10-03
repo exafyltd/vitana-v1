@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04832",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Commerce OAuth returns to the staging host; an expired sign-in lands on the join screen with a retry message",
+      "spec": "tests/e2e/staging/vtid-04832-commerce-oauth-return.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "OAuth return host, error parsing, Commerce-only redirect and marker lifetime",
+      "ref": "npx vitest run src/lib/oauth-return.test.ts src/pages/CommerceJoin.oauth-first.test.ts",
+      "cwd": ".",
+      "reason": "a real provider round-trip signs in and writes an auth session, so the full return path (expired, cancelled, failed, success) is proven here; staging only checks the redirect target and the error landing"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04839",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "AI setup leads; website → review card; a missing price must be filled before creating",
+      "spec": "tests/e2e/staging/vtid-04839-commerce-ai-setup.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "review rules, apply body, status handling, portal and sheet wiring",
+      "ref": "npx vitest run src/lib/commerce-ai-setup.test.ts src/pages/CommercePortal.light-redesign.test.ts src/components/commerce/SetupHub.test.ts src/components/commerce/supplier-journey-language.test.ts",
+      "cwd": ".",
+      "reason": "\"Create my business\" writes a business and products into the shared production database, so the apply body and the one-tap rule are proven here and by the gateway suites (VTID-04838); the owner runs the one real setup on staging"
+    }
+  ]
+}

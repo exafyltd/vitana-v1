@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, ChevronRight, Loader2 } from "lucide-react";
 import { useRealMatches } from "@/hooks/useRealMatches";
+import { useMarkMatchesViewed } from "@/hooks/useMarkMatchesViewed";
 import { t } from "@/lib/i18n-toast";
 import { localizeMatchReason } from "@/lib/matchReason";
 
@@ -15,6 +16,8 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
   const { data: matches, isLoading } = useRealMatches(limit);
 
   const list = (matches ?? []).slice(0, limit);
+  // VTID-04827: these cards are on screen — record that the member saw them.
+  useMarkMatchesViewed(list.map((m) => m.user_id));
 
   const initials = (name: string) =>
     name

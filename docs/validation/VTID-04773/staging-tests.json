@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04773",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the Vitana Index page shows the score and the next steps to improve it",
+      "spec": "tests/e2e/staging/vtid-04773-vitana-index-next-steps.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "next-steps order, goal progress, destinations and DE/EN copy",
+      "ref": "npx vitest run src/lib/vitana-index-next-steps.test.ts",
+      "cwd": ".",
+      "reason": "blood test and tracker steps finish to the end once done; the blood upload and connector flows write, so they are opened and proven in unit tests, never submitted on staging."
+    }
+  ]
+}

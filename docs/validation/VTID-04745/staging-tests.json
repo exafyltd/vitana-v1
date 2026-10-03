@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04745",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/commerce",
+      "expect_status": 200,
+      "reason": "the Commerce Portal that hosts the CSV import still loads on staging" },
+    { "kind": "existing", "ref": "npx vitest run src/lib/catalogue-import.test.ts src/pages/CommercePortal.light-redesign.test.ts", "cwd": ".",
+      "reason": "an import writes products into the shared production Supabase project, so it cannot run on staging; these prove every gateway error code is translated (DE+EN, du-form), the gateway answers map onto the screen, the org merchant is created once when missing, and the portal layout is intact" }
+  ]
+}

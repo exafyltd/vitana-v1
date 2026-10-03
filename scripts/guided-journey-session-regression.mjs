@@ -43,7 +43,7 @@ assert(
 );
 
 assert(
-  journeyPractice.includes('JSON.stringify({ session, topicId })'),
+  journeyPractice.includes('JSON.stringify({ session, topicId, localDate: localDateKey() })'),
   'session-listened persistence always sends the session number, even when a topic id is present',
 );
 

@@ -112,9 +112,29 @@ serve(async (req) => {
       .eq('is_visible', true)
       .neq('user_id', userId);
 
+    // VTID-04828 (CLAUDE.md rule 45): registered test, service and automation
+    // accounts are never a real member's match, even with a visible profile.
+    // Same two allowlists as the gateway's fetchExcludedTestServiceAccountIds;
+    // fails open like it (a read surface), but logs the failure.
+    const excluded = new Set<string>();
+    try {
+      const [bots, testActors] = await Promise.all([
+        supabase.from('service_bot_accounts').select('user_id'),
+        supabase.from('notification_test_actors').select('user_id'),
+      ]);
+      for (const r of [...(bots.data ?? []), ...(testActors.data ?? [])] as Array<{ user_id: string | null }>) {
+        if (r?.user_id) excluded.add(String(r.user_id));
+      }
+      if (bots.error || testActors.error) {
+        console.warn('[generate-daily-matches] test/service account lookup failed:', (bots.error ?? testActors.error)?.message);
+      }
+    } catch (err) {
+      console.warn('[generate-daily-matches] test/service account lookup failed:', (err as Error)?.message);
+    }
+
     const visibleIds = (visibleRows ?? [])
       .map((r: { user_id: string }) => r.user_id)
-      .filter(Boolean);
+      .filter((id: string) => Boolean(id) && !excluded.has(id));
 
     if (visibleIds.length === 0) {
       return new Response(

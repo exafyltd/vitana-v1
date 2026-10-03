@@ -8,14 +8,11 @@
  *   - failed utterances (confidence='low')
  *   - near-misses (top score - runner-up score <= 4)
  *
- * Near-miss rows are linkable: clicking one takes the admin back to
- * /admin/navigator with the runner-up screen preselected and the
- * utterance pre-loaded in the simulator so they can fix the routing
- * issue in one click.
+ * VTID-04853: near-miss rows used to link to the catalog editor; that page is
+ * retired (screens live in the screen registry now), so they are plain rows.
  */
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -124,10 +121,9 @@ export default function NavigatorTelemetry() {
                         const picked = nm.picked as any;
                         const runnerUp = nm.runner_up as any;
                         return (
-                          <Link
+                          <div
                             key={i}
-                            to="/admin/navigator"
-                            className="block rounded border px-3 py-2 text-sm hover:bg-muted"
+                            className="block rounded border px-3 py-2 text-sm"
                           >
                             <div className="mb-1 italic text-muted-foreground">"{nm.utterance}"</div>
                             <div className="flex items-center justify-between text-xs">
@@ -141,7 +137,7 @@ export default function NavigatorTelemetry() {
                               </span>
                               <Badge variant="outline">δ {nm.delta}</Badge>
                             </div>
-                          </Link>
+                          </div>
                         );
                       })}
                     </div>

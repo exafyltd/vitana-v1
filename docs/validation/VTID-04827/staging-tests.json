@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04827",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the Matches page marks the shown matches as viewed (write attempted, aborted by the guard)",
+      "spec": "tests/e2e/staging/vtid-04827-matches-viewed.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "useMarkMatchesViewed unit suite",
+      "ref": "npx vitest run src/hooks/useMarkMatchesViewed.test.ts",
+      "cwd": ".",
+      "reason": "The write itself (viewed_at on the member's own live, unseen rows; nothing without matches or a signed-in member; a failed update is logged, never thrown) and the wiring on the Matches page and the My Journey preview."
+    }
+  ]
+}

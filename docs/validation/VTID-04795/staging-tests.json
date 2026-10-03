@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04795",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "setup hub: four options with AI in development; Product/Service/Experience; sales set up once with progressive delivery",
+      "spec": "tests/e2e/staging/vtid-04795-commerce-product-setup.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "sales payload, product save path, affiliate picker",
+      "ref": "npx vitest run src/lib/commerce-sales.test.ts src/components/commerce/AffiliateNetwork.test.ts src/components/commerce/DeliveryDays.test.ts src/pages/CommercePortal.light-redesign.test.ts",
+      "cwd": ".",
+      "reason": "saving is a write, proven here: an untouched sales sheet sends nothing (an Awin setup can never be reset), products go to the business's catalogue with its shop record created on first use, and a product save never sends affiliate fields"
+    }
+  ]
+}

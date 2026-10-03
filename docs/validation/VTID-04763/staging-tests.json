@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-04763",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "http",
+      "name": "push deep link is a real SPA path",
+      "path": "/autopilot/audiobook",
+      "expect_status": 200,
+      "expect_content_type": "text/html"
+    },
+    {
+      "kind": "playwright",
+      "name": "Audiobook naming, episode audio, desktop episodes + reminder, player, push deep link",
+      "spec": "tests/e2e/staging/vtid-04761-audiobook.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "daily goal, reminder control, Home play, analytics events",
+      "ref": "npx vitest run src/components/audiobook/audiobook-daily.test.tsx",
+      "cwd": ".",
+      "reason": "Pins one-episode-a-day with the local day on every listen, the reminder control (time zone, off), Home's one-tap play, the audiobook_* analytics events and the plain-path deep link."
+    }
+  ]
+}

@@ -160,7 +160,7 @@ export default function DevSettings() {
             <SplitBarContent value="tenants" className="mt-6">
               <DevEmptyState 
                 title="Tenant Configuration" 
-                description="View and manage tenant configurations (System, Maxina, Earthlinks, AlKalma)."
+                description="View and manage tenant configurations (System, Maxina, AlKalma)."
                 icon={Users}
               />
             </SplitBarContent>

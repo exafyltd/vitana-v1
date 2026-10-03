@@ -35,90 +35,50 @@
       "postsUsed": "{used} publications d'événement sur {max} utilisées",
       "postCta": "PUBLIE MAINTENANT",
       "capReached": "Tu as utilisé toutes tes publications pour ce jeu",
-      "viewLeaderboard": "VIEW LEADERBOARD",
-      "rulesLink": "How to play",
-      "countdownLeft": "LEFT",
-      "gameOver": "🛑 GAME OVER",
-      "_pending_review": {
-        "viewLeaderboard": true,
-        "rulesLink": true,
-        "countdownLeft": true,
-        "gameOver": true
-      }
+      "viewLeaderboard": "Voir le classement",
+      "rulesLink": "Comment jouer",
+      "countdownLeft": "GAUCHE",
+      "gameOver": "🛑 FIN DE PARTIE"
     },
     "post": {
-      "categoryEvent": "📸 Event Moment",
-      "categoryLongevity": "🧬 Longevity Moment",
+      "categoryEvent": "📸 Moment d'événement",
+      "categoryLongevity": "🧬 Moment de longévité",
       "categoryPoints": "+{points}",
-      "mustJoinFirst": "Join the game to post your moment",
-      "joinAndPost": "JOIN & POST",
-      "successTitle": "🔥 NICE ONE!",
+      "mustJoinFirst": "Rejoins le jeu pour publier ton moment",
+      "joinAndPost": "REJOINS & PUBLIE",
+      "successTitle": "🔥 BIEN JOUÉ !",
       "successPoints": "+{points} POINTS",
-      "successScore": "Your score: {score}",
-      "successRank": "Current rank: #{rank}",
-      "getLikes": "❤️ NOW GET SOME LIKES",
-      "share": "SHARE MY MOMENT",
-      "_pending_review": {
-        "categoryEvent": true,
-        "categoryLongevity": true,
-        "categoryPoints": true,
-        "mustJoinFirst": true,
-        "joinAndPost": true,
-        "successTitle": true,
-        "successPoints": true,
-        "successScore": true,
-        "successRank": true,
-        "getLikes": true,
-        "share": true
-      }
+      "successScore": "Ton score : {score}",
+      "successRank": "Ton rang actuel : #{rank}",
+      "getLikes": "❤️ MAINTENANT, GAGNE DES LIKES",
+      "share": "PARTAGE MON MOMENT"
     },
     "leaderboard": {
-      "title": "🏆 WHO'S ON FIRE?",
-      "subtitle": "MAXINA LONGEVITY GAME",
+      "title": "🏆 QUI EST EN FEU ?",
+      "subtitle": "JEU DE LONGÉVITÉ MAXINA",
       "top3": "TOP 3",
-      "you": "✨ YOU",
-      "pointsToNext": "🔥 {points} POINTS TO #{rank}",
-      "empty": "No one has scored yet — be the first!",
-      "movingUpTitle": "🚀 YOU'RE MOVING UP!",
+      "you": "✨ TOI",
+      "pointsToNext": "🔥 {points} POINTS POUR LE #{rank}",
+      "empty": "Personne n'a encore marqué — sois le premier !",
+      "movingUpTitle": "🚀 TU MONTES !",
       "movingUpChange": "#{from} → #{to}",
-      "overtakenTitle": "👀 OH NO!",
-      "overtakenChange": "You've moved to #{rank}",
-      "_pending_review": {
-        "title": true,
-        "subtitle": true,
-        "top3": true,
-        "you": true,
-        "pointsToNext": true,
-        "empty": true,
-        "movingUpTitle": true,
-        "movingUpChange": true,
-        "overtakenTitle": true,
-        "overtakenChange": true
-      }
+      "overtakenTitle": "👀 OH NON !",
+      "overtakenChange": "Tu es passé au #{rank}"
     },
     "countdown": {
-      "tenMinutes": "🚨 FINAL 10 MINUTES!",
-      "fiveMinutes": "🔥 FIVE MINUTES!",
-      "oneMinute": "🚨 FINAL MINUTE!",
-      "over": "🛑 GAME OVER",
-      "_pending_review": {
-        "tenMinutes": true,
-        "fiveMinutes": true,
-        "oneMinute": true,
-        "over": true
-      }
+      "tenMinutes": "🚨 DERNIÈRES 10 MINUTES !",
+      "fiveMinutes": "🔥 CINQ MINUTES !",
+      "oneMinute": "🚨 DERNIÈRE MINUTE !",
+      "over": "🛑 FIN DE PARTIE"
     },
     "rules": {
-      "title": "🎯 HOW TO PLAY",
+      "title": "🎯 COMMENT JOUER",
       "join": "🎉 Rejoins — +{points}",
       "event": "📸 Moment d'événement — +{points}",
       "longevity": "🧬 Moment de longévité — +{points}",
       "likes": "❤️ Obtiens des likes — +{points} chacun",
       "win": "🏆 Termine #1 — GAGNE LE PRIX",
-      "close": "Compris",
-      "_pending_review": {
-        "title": true
-      }
+      "close": "Compris"
     },
     "results": {
       "winnerTitle": "🏆 NOUS AVONS UN GAGNANT !",

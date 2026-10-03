@@ -19,10 +19,19 @@ describe('RegisterOrgDialog on mobile (VTID-03989)', () => {
     expect(src).not.toContain("from '@/components/ui/dialog'");
   });
 
-  it('proposes org_key from the business name until the owner edits the key by hand', () => {
-    expect(src).toContain('slugifyOrgKey(display_name)');
-    expect(src).toContain('keyTouched ? f.org_key : slugifyOrgKey(display_name)');
-    expect(src).toContain('setKeyTouched(true)');
+  it('never asks for a short name: org_key is derived from the business name, clashes retried (VTID-04793)', () => {
+    expect(src).not.toContain('orgOnboarding.orgKey');
+    expect(src).toContain('registerBusiness(');
+    const helper = read('src/lib/commerce-register.ts');
+    expect(helper).toContain('slugifyOrgKey(displayName)');
+    expect(helper).toContain('/already taken/i.test(err.message)');
+  });
+
+  it('is a full-screen sheet on phones, two steps then a success screen (VTID-04793)', () => {
+    expect(src).toContain('<ResponsiveDialogContent fullscreenOnMobile');
+    expect(src).toContain('const TOTAL_STEPS = 2;');
+    expect(src).toContain("t('screens.commerceportal.orgOnboarding.successTitle')");
+    expect(src).not.toContain('wizardStep3Title');
   });
 });
 
@@ -69,12 +78,25 @@ describe('CommerceShell back affordance (VTID-03989)', () => {
 
 describe('CommercePortal hoists "Your organizations" for members (VTID-03989)', () => {
   const src = read('src/pages/CommercePortal.tsx');
+  // Skip the file's own doc comment, which quotes these same markers in
+  // prose — an unscoped indexOf would match the comment, not the JSX.
+  const jsxStart = src.indexOf('return (\n    <CommerceShell>');
 
   it('renders the section above the agent card only when the user belongs to an org', () => {
-    const hoisted = src.indexOf('{hasOrgs && orgsSection}');
-    const agent = src.indexOf('<AgentConnectCard />');
-    const original = src.indexOf('{!hasOrgs && orgsSection}');
+    // VTID follow-up (guest/personalized hero): both the hoist and the
+    // fallback are now gated on `user` too — a guest has no org to hoist.
+    // VTID-04079 (hero widen): the card is no longer inlined as a literal
+    // `<AgentConnectCard />` in the JSX body — it's rendered via the shared
+    // `agentCard(className)` helper, called once for a returning member in
+    // its original standalone position (this marker) and once inside the
+    // two-column hero for a first-time visitor (a different call site,
+    // checked by CommercePortal.light-redesign.test.ts).
+    const hoisted = src.indexOf('{user && hasOrgs && orgsSection}', jsxStart);
+    const agent = src.indexOf("agentCard('mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10')", jsxStart);
+    const original = src.indexOf('{user && !hasOrgs && orgsSection}', jsxStart);
+    expect(jsxStart).toBeGreaterThan(-1);
     expect(hoisted).toBeGreaterThan(-1);
+    expect(agent).toBeGreaterThan(-1);
     expect(hoisted).toBeLessThan(agent);
     expect(original).toBeGreaterThan(agent);
   });

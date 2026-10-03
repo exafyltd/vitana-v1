@@ -11,6 +11,8 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
 import { GuidedModeProvider } from "@/context/GuidedModeProvider"; // VTID-03279 Guided Journey
+import { AudiobookPlayerProvider } from "@/context/AudiobookPlayerProvider"; // VTID-04761 Audiobook
+import { AudiobookMiniPlayer } from "@/components/audiobook/AudiobookMiniPlayer"; // VTID-04761
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
@@ -43,6 +45,7 @@ import { useRouteTracker } from "@/hooks/useRouteTracker";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
+import RetiredTenantRedirect from "./components/RetiredTenantRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
 import SupportTicketFiledListener from "./components/support/SupportTicketFiledListener";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
@@ -94,6 +97,7 @@ const CommerceConnectionRedirect = lazy(() => import("./pages/CommerceConnection
 // VTID-03936: an org invite link's landing page.
 const CommerceAcceptInvite = lazy(() => import("./pages/CommerceAcceptInvite"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+const CommerceConnectAuthorize = lazy(() => import("./pages/CommerceConnectAuthorize"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
@@ -106,11 +110,9 @@ const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
 // VTID-04508: personal invite links
 const InviteLanding = lazy(() => import("./pages/InviteLanding"));
 const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
-const EarthlinksPortal = lazy(() => import("./pages/portals/EarthlinksPortal"));
 // CommunityPortal removed — orphaned, login handled by tenant portals
 const MaxinaConfirmed = lazy(() => import("./pages/portals/MaxinaConfirmed"));
 const AlkalmaConfirmed = lazy(() => import("./pages/portals/AlkalmaConfirmed"));
-const EarthlinksConfirmed = lazy(() => import("./pages/portals/EarthlinksConfirmed"));
 // CommunityConfirmed removed — orphaned parent deleted
 
 // Dev Hub
@@ -406,10 +408,7 @@ const AdminAutopilotRuns = lazy(() => import("./pages/admin/autopilot/Runs"));
 const AdminAutopilotGuardrails = lazy(() => import("./pages/admin/autopilot/Guardrails"));
 const AdminAutopilotGrowth = lazy(() => import("./pages/admin/autopilot/Growth"));
 // VTID-NAV-02: Vitana Navigator admin
-const AdminNavigatorCatalog = lazy(() => import("./pages/admin/navigator/Catalog"));
-const AdminNavigatorCoverage = lazy(() => import("./pages/admin/navigator/Coverage"));
 const AdminNavigatorTelemetry = lazy(() => import("./pages/admin/navigator/Telemetry"));
-const AdminNavigatorHistory = lazy(() => import("./pages/admin/navigator/History"));
 const AdminDevicePreview = lazy(() => import("./pages/admin/DevicePreview"));
 const CommunitySupervision = lazy(() => import("./pages/admin/CommunitySupervision"));
 const EventsModeration = lazy(() => import("./pages/admin/community/Events"));
@@ -794,6 +793,8 @@ const App = () => {
                       from billingApi.ts on HTTP 402 and renders a single global PaywallModal.
                       Lives inside <BrowserRouter> so the modal's useNavigate works. */}
                   <GuidedModeProvider>{/* VTID-03279: Guided vs Full app mode */}
+                  <AudiobookPlayerProvider>{/* VTID-04761: Audiobook listening mode, app-wide */}
+                  <AudiobookMiniPlayer />
                   <PaywallProvider>
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
@@ -817,7 +818,6 @@ const App = () => {
           <Route path="/auth" element={<Navigate to="/maxina" replace />} />
           <Route path="/maxina/confirmed" element={<MaxinaConfirmed />} />
           <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
-          <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
           {/* /community/confirmed removed — orphaned */}
 
           {/* Onboarding — post-registration Vitana speech + name/handle form */}
@@ -863,7 +863,10 @@ const App = () => {
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/i/:code" element={<InviteLanding />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
-          <Route path="/earthlinks" element={<EarthlinksPortal />} />
+          {/* VTID-04836: Earthlinks was retired into Maxina (platform VTID-01985).
+              Old links — the portal, /earthlinks/confirmed, anything below —
+              land on the Maxina equivalent with path, query and hash kept. */}
+          <Route path="/earthlinks/*" element={<RetiredTenantRedirect />} />
           {/* /community removed — orphaned, login handled by tenant portals */}
           
           {/* Dev Hub Routes */}
@@ -1517,6 +1520,12 @@ const App = () => {
               <AutopilotDashboard />
             </AuthGuard>
           } />
+          {/* VTID-04763: Audiobook push deep link (plain path) — starts the player, settles on /autopilot */}
+          <Route path="/autopilot/audiobook" element={
+            <AuthGuard>
+              <AutopilotDashboard />
+            </AuthGuard>
+          } />
           {/* Invite Friends */}
           <Route path="/invite" element={
             <AuthGuard>
@@ -1798,7 +1807,7 @@ const App = () => {
           {/* VTID-03894: the shareable supplier link. NOT behind AuthGuard —
               it is what an unregistered supplier is handed. */}
           <Route path="/commerce/join" element={<CommerceJoin />} />
-          <Route path="/commerce" element={<AuthGuard><CommercePortal /></AuthGuard>} />
+          <Route path="/commerce" element={<AuthGuard allowGuest><CommercePortal /></AuthGuard>} />
           {/* VTID-03936: an org_admin's invite link — self-service org
               onboarding (register a business, invite staff/professionals). */}
           <Route path="/commerce/invites/:token/accept" element={<AuthGuard><CommerceAcceptInvite /></AuthGuard>} />
@@ -1818,6 +1827,10 @@ const App = () => {
           <Route path="/commerce/connections" element={<Navigate to="/commerce" replace />} />
           <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />
           <Route path="/commerce/agent-connect" element={<Navigate to="/commerce" replace />} />
+          {/* VTID-04848: the supplier approves their AI assistant (Supabase Auth
+              OAuth server's authorization path). Under /commerce so a supplier
+              who is not signed in goes through /commerce/join and back. */}
+          <Route path="/commerce/connect/authorize" element={<AuthGuard><CommerceConnectAuthorize /></AuthGuard>} />
           {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
               signed-in user consents for themselves. */}
           <Route path="/oauth/consent" element={
@@ -2137,18 +2150,14 @@ const App = () => {
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditSecurity /></ProtectedRoute></AuthGuard>
           } />
 
-          {/* VTID-NAV-02: Vitana Navigator admin screens */}
+          {/* VTID-NAV-02: Vitana Navigator admin. VTID-04853: only Telemetry
+              remains; the catalog editor, coverage and history pages edited the
+              retired nav_catalog table. /admin/navigator renders Telemetry too. */}
           <Route path="/admin/navigator" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorCatalog /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/navigator/coverage" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorCoverage /></ProtectedRoute></AuthGuard>
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorTelemetry /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/admin/navigator/telemetry" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorTelemetry /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/navigator/history" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorHistory /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Device Preview: mobile UI "simulator" for staging (UI-only, not the Appilix shell) */}
@@ -2300,6 +2309,7 @@ const App = () => {
                   </Suspense>
                   </GlobalErrorBoundary>
                   </PaywallProvider>{/* VTID-03107 */}
+                  </AudiobookPlayerProvider>{/* VTID-04761 */}
                   </GuidedModeProvider>{/* VTID-03279 */}
                   </GreetingProviderWrapper>
                   </LifeCompassPopupProvider>

@@ -38,6 +38,10 @@ export async function completePractice(topicId: string): Promise<boolean> {
  * lesson and older idempotency rules. Fire-and-forget: never block the UI on
  * it. Returns whether a NEW award was granted (false when already credited).
  */
+function localDateKey(d: Date = new Date()): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 export async function recordSessionListened(
   session: number,
   topicId?: string,
@@ -45,7 +49,8 @@ export async function recordSessionListened(
   try {
     const resp = await communityFetch('/api/v1/journey/session-listened', {
       method: 'POST',
-      body: JSON.stringify({ session, topicId }),
+      // VTID-04763: the member's own calendar day, for the synced daily goal.
+      body: JSON.stringify({ session, topicId, localDate: localDateKey() }),
     });
     const json = await resp.json();
     return !!(resp.ok && json?.ok && json?.awarded);

@@ -3,7 +3,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Zap, Sparkles, PartyPopper } from "lucide-react";
+import { Zap, Sparkles, PartyPopper, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
 import { pillarKeys, pillarLabel, type VitanaPillarKey } from "@/hooks/useVitanaIndex";
 import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
@@ -183,6 +184,7 @@ function HorizonChart({ points }: { points: ProjectedPoint[] }) {
  */
 export function VitanaIndexSheet() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const { index, isLoading } = useVitanaIndexCache();
   const { pendingActions } = useAutopilot();
   const { current: streakDays } = useVitanaStreaks();
@@ -299,6 +301,12 @@ export function VitanaIndexSheet() {
     window.dispatchEvent(new CustomEvent(LIFE_COMPASS_OPEN_EVENT));
   };
 
+  // VTID-04850: same destination as the profile card's "Understand index".
+  const handleUnderstandIndex = () => {
+    setOpen(false);
+    navigate("/health/vitana-index");
+  };
+
   const handleOpenAutopilot = () => {
     window.dispatchEvent(new CustomEvent("autopilot:open"));
   };
@@ -403,6 +411,16 @@ export function VitanaIndexSheet() {
                 ))}
               </div>
             )}
+
+            <button
+              type="button"
+              onClick={handleUnderstandIndex}
+              className="flex w-full items-center justify-center gap-1 rounded-full bg-teal-50 px-4 py-2.5 text-sm font-semibold text-teal-800 ring-1 ring-teal-100 hover:bg-teal-100 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+              data-testid="vitana-index-sheet-understand"
+            >
+              {t("profile.identity.understandIndex")}
+              <ChevronRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
+            </button>
           </section>
 
           <Separator />

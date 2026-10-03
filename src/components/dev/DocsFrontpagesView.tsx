@@ -7,7 +7,6 @@ export function DocsFrontpagesView() {
   const frontpages = [
     { portal: "Maxina", version: "2.1.0", status: "Published", date: "2024-01-15" },
     { portal: "Alkalma", version: "1.8.3", status: "Published", date: "2024-01-10" },
-    { portal: "Earthlinks", version: "1.5.2", status: "Draft", date: "2024-01-20" },
     { portal: "Community", version: "3.0.1", status: "Published", date: "2024-01-18" },
     { portal: "Dev Hub", version: "1.0.0", status: "Published", date: "2024-01-12" },
     { portal: "Admin", version: "2.5.0", status: "Published", date: "2024-01-08" }

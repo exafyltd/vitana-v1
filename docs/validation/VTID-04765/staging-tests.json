@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04765",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "the account is deleted only after erase_user_data reported no errors",
+      "ref": "npx vitest run src/lib/erase-user-data.test.ts",
+      "cwd": ".",
+      "reason": "Account deletion deletes rows and the auth user; it is proven by unit tests and by the SQL test on a throwaway Postgres in vitana-platform (scripts/ci/sql-tests), never on the shared database staging writes to. The frontend bundle is unchanged; the edge function ships by manual dispatch."
+    }
+  ]
+}

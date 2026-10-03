@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04762",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Audiobook naming, episode audio, desktop episodes + reminder, player, push deep link",
+      "spec": "tests/e2e/staging/vtid-04761-audiobook.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "seasons with the Prolog as Season 0",
+      "ref": "npx vitest run src/lib/audiobook/queue.test.ts src/components/journey",
+      "cwd": ".",
+      "reason": "Pins AUDIOBOOK_SEASONS (prolog = Season 0) and the catalog that renders it. The Prolog content itself is a database migration applied at the production step (staging shares the production database)."
+    }
+  ]
+}

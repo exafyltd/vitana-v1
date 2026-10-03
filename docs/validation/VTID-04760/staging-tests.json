@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-04760",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "http",
+      "name": "voice registry knows the Audiobook",
+      "path": "/nav-registry.json",
+      "expect_status": 200,
+      "expect_body_contains": "hoerbuch"
+    },
+    {
+      "kind": "playwright",
+      "name": "Audiobook naming, episode audio, desktop episodes + reminder, player, push deep link",
+      "spec": "tests/e2e/staging/vtid-04761-audiobook.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "first impression: bubbles, naming, Play Episode 1, desktop episodes",
+      "ref": "npx vitest run src/components/onboarding/audiobook-first-impression.test.ts",
+      "cwd": ".",
+      "reason": "Pins the i18n welcome bubbles without the 90-day promise, the Hörbuch/Audiobook naming, the Play Episode 1 step and the desktop episodes section."
+    }
+  ]
+}

@@ -34,5 +34,4 @@ export const CONFIRMATION_PATHS = {
   // find their way back to a portal they have never seen.
   commerce: '/commerce?confirmed=true',
   alkalma: '/alkalma',
-  earthlinks: '/earthlinks'
 } as const;

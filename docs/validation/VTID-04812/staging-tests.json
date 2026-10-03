@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04812",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the calendar has only the + button and uses the app font",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "No text/microphone bar on the calendar; entries only by + and by Vitana voice. No calendar-specific font, no pixel text sizes outside the Tailwind scale, titles in the app's standard heading style."
+    }
+  ]
+}

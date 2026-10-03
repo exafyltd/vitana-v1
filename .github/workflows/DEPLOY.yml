@@ -1,13 +1,22 @@
-name: Deploy Community App to Production (AWS + Cloud Run)
+name: Deploy Community App to Production (AWS)
 
 # Deploys vitana-v1 (React/Vite SPA) to PRODUCTION.
 #
 # WHERE PRODUCTION ACTUALLY IS (VTID-03483): vitanaland.com and www are
-# served by the AWS ECS service 'vitana-community-app-awsdr' (see the
-# aws_prod job), NOT by Cloud Run. Cloud Run's 'community-app' is kept in
-# sync as a rollback target only. If you change this workflow, keep the
-# aws_prod job — without it this workflow deploys, goes green, and changes
-# nothing that any user can see.
+# served by the AWS ECS service 'vitana-community-app-awsdr' (the aws_prod
+# job). It is the ONLY job that deploys anything. If you change this
+# workflow, keep the aws_prod job — without it this workflow does nothing
+# any user can see.
+#
+# VTID-04833: the GCP Cloud Run `deploy` job is gone. It deployed to project
+# lovable-vitana-vers1, whose billing was disabled 2026-08-16 (VTID-03649),
+# so it failed on every run and turned every successful AWS production deploy
+# red — 2026-09-29..10-01 every manual dispatch read "failure" while
+# aws_prod / build-push-deploy had shipped. It was no longer a rollback
+# target either (nothing on that project can serve traffic). Its
+# `community-app-deployed` dispatch never fired (the deploy step failed
+# first), and no automated suite may target production anyway (platform
+# CLAUDE.md rule 48), so removing it changes nothing that ran.
 #
 # STAGING-FIRST CUTOVER (effective Mon 8 Jun 2026, 10:00 Europe/Berlin):
 # BEFORE the cutover, a push to `main` deploys to the LIVE community-app as
@@ -32,7 +41,8 @@ on:
 
 permissions:
   contents: read
-  id-token: write
+  # VTID-04833: id-token was only for the removed GCP Workload Identity login;
+  # aws_prod authenticates with access keys and asks for contents:read only.
 
 concurrency:
   # Push deploys share one cancellable group so only the newest push builds.
@@ -58,8 +68,8 @@ jobs:
         # DISPATCH_REASON is passed via env (NOT interpolated inline into the
         # script). The reason is free text from the PUBLISH button / a human; a
         # shell-special character (quote, backtick, $(), …) spliced straight into
-        # `run:` would break this gate step and, because `deploy` needs it, silently
-        # skip the whole prod promotion. Reading it as an env var is injection-safe.
+        # `run:` would break this gate step and, because `aws_prod` needs it,
+        # silently skip the whole prod promotion. Reading it as an env var is injection-safe.
         env:
           DISPATCH_REASON: ${{ github.event.inputs.reason }}
         run: |
@@ -86,9 +96,6 @@ jobs:
   # undocumented dispatch of AWS-PROD-DEPLOY-FRONTEND.yml. That gap burned a
   # whole afternoon of "deployed" fixes that were not live.
   #
-  # Deliberately depends on cutover_gate ONLY, not on the Cloud Run `deploy`
-  # job: production must not be held hostage by the legacy rollback stack.
-  # Both are handed the same commit, so the two stacks stay identical.
   aws_prod:
     needs: cutover_gate
     if: needs.cutover_gate.outputs.frozen != 'true'
@@ -99,75 +106,3 @@ jobs:
         Via DEPLOY.yml (${{ github.event_name }}):
         ${{ github.event.inputs.reason || 'automatic deploy' }}
       commit_sha: ${{ github.event.inputs.commit_sha || '' }}
-
-  # GCP Cloud Run. No longer user-facing — kept current so it stays a viable
-  # rollback target if AWS has to be abandoned in a hurry.
-  deploy:
-    needs: cutover_gate
-    if: needs.cutover_gate.outputs.frozen != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      # Check out the exact tested staging commit when provided (the PUBLISH flow
-      # passes it); otherwise main HEAD. Rebuilds with the committed prod .env.
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.commit_sha != '' && github.event.inputs.commit_sha || github.sha }}
-
-      - name: Resolve deploy SHA
-        id: deploy_sha
-        shell: bash
-        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_WIF_SA_EMAIL }}
-          project_id: lovable-vitana-vers1
-
-      - uses: google-github-actions/setup-gcloud@v2
-
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy community-app \
-            --source=. \
-            --region=us-central1 \
-            --project=lovable-vitana-vers1 \
-            --allow-unauthenticated \
-            --update-env-vars=GIT_COMMIT_SHA=${{ steps.deploy_sha.outputs.sha }},COMMIT_SHA=${{ steps.deploy_sha.outputs.sha }} \
-            --quiet
-
-          # Get deployed URL
-          URL=$(gcloud run services describe community-app \
-            --region=us-central1 \
-            --project=lovable-vitana-vers1 \
-            --format='value(status.url)')
-          echo "DEPLOY_URL=$URL" >> $GITHUB_ENV
-          echo "Deployed to: $URL"
-
-      - name: Health Check
-        run: |
-          echo "Running health check on $DEPLOY_URL"
-          for i in 1 2 3 4 5 6; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$DEPLOY_URL/" 2>/dev/null || echo "000")
-            if [ "$STATUS" = "200" ]; then
-              echo "Health check passed (attempt $i)"
-              exit 0
-            fi
-            echo "Health check attempt $i: HTTP $STATUS - retrying in 10s..."
-            sleep 10
-          done
-          echo "::error::Health check failed after 6 attempts"
-          exit 1
-
-      - name: Trigger E2E smoke tests
-        if: success()
-        continue-on-error: true
-        run: |
-          echo "Dispatching E2E smoke tests against $DEPLOY_URL"
-          curl -s -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.CROSS_REPO_PAT }}" \
-            https://api.github.com/repos/exafyltd/vitana-platform/dispatches \
-            -d '{"event_type":"community-app-deployed","client_payload":{"community_url":"'"$DEPLOY_URL"'","projects":"desktop-community,mobile-community"}}'
-          echo "E2E smoke test dispatch sent"

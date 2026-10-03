@@ -12,6 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
 interface PublicEventData {
   id: string;
   title: string;
@@ -38,9 +39,10 @@ const getTenantLoginRoute = (tenantSlug: string | null): string => {
   const tenantRoutes: Record<string, string> = {
     maxina: '/maxina',
     alkalma: '/alkalma',
-    earthlinks: '/earthlinks',
   };
-  return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/maxina';
+  // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
+    const slug = canonicalTenantSlug(tenantSlug);
+    return slug && tenantRoutes[slug] ? tenantRoutes[slug] : '/maxina';
 };
 
 // Check if a string is a valid UUID
@@ -166,7 +168,7 @@ export default function PublicEventLanding() {
   // Get tenant from event metadata for proper login routing
   const tenantSlug = event?.metadata?.tenant_slug || 
                      event?.metadata?.tenantSlug || 
-                     localStorage.getItem('tenant_slug') || 
+                     readStoredTenantSlug('tenant_slug') || 
                      null;
 
   // Use unified localized CTA logic

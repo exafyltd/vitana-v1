@@ -53,22 +53,22 @@ export function ListingStrength({
   const { pct, nextUp } = computeStrength(fields, attributes);
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
+    <div className="rounded-2xl border border-border bg-card p-4">
       <div className="flex items-center justify-between gap-2">
-        <span className="text-sm font-medium text-slate-200">
+        <span className="text-sm font-medium text-foreground">
           {t('screens.commerceportal.productForm.strengthTitle')}
         </span>
-        <span className="text-sm font-semibold text-amber-300">{pct}%</span>
+        <span className="text-sm font-semibold text-amber-700">{pct}%</span>
       </div>
       <Progress value={pct} className="mt-2 h-1.5" />
       {nextUp.length > 0 ? (
-        <p className="mt-2.5 text-xs leading-relaxed text-slate-400">
+        <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground">
           {t('screens.commerceportal.productForm.strengthHint', {
             fields: nextUp.map((f) => f.display_label).join(', '),
           })}
         </p>
       ) : (
-        <p className="mt-2.5 text-xs text-slate-500">
+        <p className="mt-2.5 text-xs text-muted-foreground">
           {t('screens.commerceportal.productForm.strengthComplete')}
         </p>
       )}

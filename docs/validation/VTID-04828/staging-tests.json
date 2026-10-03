@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04828",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "generate-daily-matches excludes test/service accounts (source pin)",
+      "ref": "npx vitest run src/lib/generate-daily-matches-exclusions.test.ts",
+      "cwd": ".",
+      "reason": "Edge-function-only change: the frontend build is unchanged, and the function reaches the live Supabase project only by a manual supabase-functions-deploy dispatch (the push path is frozen since the staging-first cutover). Calling the function generates matches (a write), which a read-only staging probe must not cause. The suite pins that both allowlists are read and removed from the candidate pool before scoring."
+    }
+  ]
+}

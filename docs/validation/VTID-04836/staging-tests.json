@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04836",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Old /earthlinks links land on the Maxina portal with the query kept (signed out, GET only)",
+      "spec": "tests/e2e/staging/vtid-04836-earthlinks-redirect.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "earthlinks retired: TenantType, /earthlinks/* → /maxina/* redirect, stored slug migration, ticket theme, registry exclusion",
+      "ref": "npx vitest run src/lib/retired-tenants.test.tsx src/lib/tenant-display.test.ts src/config/domain-tenant-mapping.test.ts src/navigation/registry",
+      "cwd": ".",
+      "reason": "Deep paths (/earthlinks/confirmed?…#…) and a persisted 'earthlinks' localStorage slug are proven in CI; seeding localStorage or following a confirmation link on staging is not needed to prove the redirect, which the Playwright spec checks on the deployed build."
+    }
+  ]
+}

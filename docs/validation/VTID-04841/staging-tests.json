@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04841",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Talk to Vitana starts the commerce setup; her draft opens the review card",
+      "spec": "tests/e2e/staging/vtid-04841-commerce-voice-setup.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "voice helpers, event parsing, portal and sheet wiring, one write only",
+      "ref": "npx vitest run src/lib/commerce-ai-setup.test.ts src/pages/CommercePortal.light-redesign.test.ts src/components/commerce/SetupHub.test.ts src/components/commerce/supplier-journey-language.test.ts",
+      "cwd": ".",
+      "reason": "a real voice setup needs a microphone and calls the model, and its review card leads to a write in the shared production database; the voice hand-off is proven here with the widget's events, and the owner runs the one real voice setup on staging"
+    }
+  ]
+}

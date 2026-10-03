@@ -56,8 +56,8 @@
       "reason": "Sign-up confirmation landing."
     },
     {
-      "path": "/earthlinks/confirmed",
-      "reason": "Sign-up confirmation landing."
+      "path": "/earthlinks/*",
+      "reason": "Retired tenant (VTID-04836): Earthlinks was merged into Maxina (platform VTID-01985). Every /earthlinks URL is a redirect to the Maxina equivalent (RetiredTenantRedirect), never a destination."
     },
     {
       "path": "/maxina/app",
@@ -78,6 +78,10 @@
     {
       "path": "/oauth/consent",
       "reason": "OAuth consent step."
+    },
+    {
+      "path": "/commerce/connect/authorize",
+      "reason": "OAuth consent step for a supplier's AI assistant (VTID-04848); reached only from the assistant's sign-in."
     },
     {
       "path": "/onboarding/welcome",
@@ -198,6 +202,10 @@
     {
       "path": "/profile/:id",
       "reason": "Legacy profile path redirecting to PROFILE.PUBLIC."
+    },
+    {
+      "path": "/autopilot/audiobook",
+      "reason": "VTID-04763: push deep link that starts the Audiobook player and settles on /autopilot (AUTOPILOT.MY_JOURNEY); voice reaches the Audiobook through My Journey's audiobook phrasings."
     }
   ]
 }

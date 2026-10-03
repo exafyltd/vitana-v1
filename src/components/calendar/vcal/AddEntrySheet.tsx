@@ -9,7 +9,6 @@ import { MobileEventForm } from "@/components/calendar/MobileEventForm";
 import type { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { createCalendarEntry } from "@/lib/calendar-window-client";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
-import { HEADING_FONT } from "./labels";
 import { SURFACE } from "./theme";
 
 export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string | null; onClose: () => void }) {
@@ -58,7 +57,7 @@ export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string 
         data-testid="vcal-add-sheet"
       >
         <div className="flex items-start justify-between gap-3">
-          <h2 id="vcal-add-title" className="m-0 text-[22px] font-medium" style={{ fontFamily: HEADING_FONT }}>
+          <h2 id="vcal-add-title" className="m-0 text-lg font-bold leading-tight tracking-tight">
             {t("vcal.add.title")}
           </h2>
           <button

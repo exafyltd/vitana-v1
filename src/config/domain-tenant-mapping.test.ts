@@ -15,9 +15,14 @@ describe('DOMAIN_TENANT_MAP', () => {
   });
 
   it('maps every domain to a known tenant slug', () => {
-    const knownSlugs = new Set(['maxina', 'earthlinks', 'alkalma']);
+    // VTID-04836: earthlinks is retired (merged into maxina).
+    const knownSlugs = new Set(['maxina', 'alkalma']);
     for (const slug of Object.values(DOMAIN_TENANT_MAP)) {
       expect(knownSlugs.has(slug)).toBe(true);
     }
+  });
+
+  it('never maps a domain to a retired tenant (VTID-04836: earthlinks)', () => {
+    expect(Object.values(DOMAIN_TENANT_MAP)).not.toContain('earthlinks');
   });
 });

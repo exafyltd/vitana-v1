@@ -3,7 +3,10 @@
  * guidance.ts; this card only words them and offers the one next move.
  *
  * VTID-04681: a quiet card the member can put away for the day.
+ * VTID-04852: the Index page's "next up" box.
  */
+import { Sparkles, X } from "lucide-react";
+import { INDEX_NEXT_UP, INDEX_NEXT_UP_CHIP, INDEX_PRIMARY_BTN } from "@/lib/index-look";
 import { t } from "@/lib/i18n-toast";
 import { fmtTime } from "@/lib/locale-format";
 import type { Guidance } from "./guidance";
@@ -39,13 +42,12 @@ function wording(g: Guidance): { text: string; sub?: string } {
 }
 
 function Action({ label, onClick, primary }: { label: string; onClick: () => void; primary?: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`h-9 rounded-full px-4 text-sm ${primary ? "font-medium" : ""}`}
-      style={primary ? { background: SURFACE.primary, color: "#FFFFFF" } : { background: "transparent", color: SURFACE.primary }}
-    >
+  return primary ? (
+    <button type="button" onClick={onClick} className={`${INDEX_PRIMARY_BTN} !h-10 !px-4`}>
+      {label}
+    </button>
+  ) : (
+    <button type="button" onClick={onClick} className="h-10 rounded-full px-3 text-[15px] font-semibold text-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500">
       {label}
     </button>
   );
@@ -54,14 +56,15 @@ function Action({ label, onClick, primary }: { label: string; onClick: () => voi
 export function GuideCard({ guidance, actions }: { guidance: Guidance; actions: GuideActions }) {
   const { text, sub } = wording(guidance);
   return (
-    <div className="flex flex-col gap-2.5 rounded-2xl px-4 py-3" style={{ background: "#F3F2FF", color: SURFACE.ink }} data-testid="vcal-guide" data-kind={guidance.kind}>
+    <div className={`${INDEX_NEXT_UP} flex flex-col gap-3`} style={{ color: SURFACE.ink }} data-testid="vcal-guide" data-kind={guidance.kind}>
       <div className="flex items-start gap-2">
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-[13px]" style={{ color: SURFACE.primary }}>
-            ✨ {t("vcal.guide.eyebrow")}
+          <span className={`${INDEX_NEXT_UP_CHIP} self-start`}>
+            <Sparkles className="h-3 w-3" aria-hidden />
+            {t("vcal.guide.eyebrow")}
           </span>
-          <span className="text-[15px] leading-snug">{text}</span>
-          {sub && <span className="text-sm" style={{ color: SURFACE.muted }}>{sub}</span>}
+          <span className="mt-1.5 text-[15px] font-semibold leading-snug text-slate-900">{text}</span>
+          {sub && <span className="text-sm leading-snug text-slate-600">{sub}</span>}
         </div>
         {actions.onDismiss && (
           <button
@@ -72,11 +75,11 @@ export function GuideCard({ guidance, actions }: { guidance: Guidance; actions: 
             style={{ color: SURFACE.faint }}
             data-testid="vcal-guide-dismiss"
           >
-            ✕
+            <X className="h-4 w-4" aria-hidden />
           </button>
         )}
       </div>
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap items-center gap-1">
         {guidance.kind === "nextStep" && <Action primary label={t("vcal.guide.start")} onClick={() => actions.onStartStep(guidance.stepId)} />}
         {(guidance.kind === "freeDay" || guidance.kind === "freeWindow") && (
           <>

@@ -164,12 +164,10 @@ export const adminMarketplaceOperationsNavigation = [
   { id: "moderation", name: "Moderation", path: "/admin/marketplace/moderation" },
 ];
 
-// VTID-NAV-02: Vitana Navigator admin (catalog + coverage + telemetry + history)
+// VTID-NAV-02: Vitana Navigator admin. VTID-04853: Telemetry only (the
+// catalog, coverage and history tabs edited the retired nav_catalog table).
 export const adminNavigatorNavigation = [
-  { id: "catalog", name: "Catalog", path: "/admin/navigator" },
-  { id: "coverage", name: "Coverage", path: "/admin/navigator/coverage" },
   { id: "telemetry", name: "Telemetry", path: "/admin/navigator/telemetry" },
-  { id: "history", name: "History", path: "/admin/navigator/history" },
 ];
 
 export const settingsNavigation = [

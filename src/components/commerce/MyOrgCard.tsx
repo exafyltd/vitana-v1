@@ -10,6 +10,8 @@ export interface MyOrgRow {
   org_type: string;
   status: string;
   role: string;
+  /** VTID-04793: `/partner-orgs/mine` already returns it; the setup hub reads it. */
+  lifecycle_state?: string | null;
 }
 
 const statusLabel = (status: string) => t(`screens.commerceportal.orgOnboarding.status${toPascal(status)}`);

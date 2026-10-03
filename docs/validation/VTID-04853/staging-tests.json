@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04853",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/admin/navigator/telemetry",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the Navigator Telemetry address still serves the app (the page itself needs an admin sign-in, which a read-only staging suite does not do)" },
+    { "kind": "existing", "ref": "npx vitest run src/config/vtid-04853-navigator-admin.test.ts", "cwd": ".",
+      "reason": "Navigator admin menus and routes list Telemetry only; the catalog editor, coverage, history and simulator pages and their API hooks are gone" }
+  ]
+}

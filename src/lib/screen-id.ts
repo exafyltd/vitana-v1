@@ -16,13 +16,13 @@ export const SCREEN_AUTH_001 = "AUTH-001"; // Landing Page
 export const SCREEN_AUTH_002 = "AUTH-002"; // Generic Auth
 export const SCREEN_AUTH_003 = "AUTH-003"; // Maxina Portal Login
 export const SCREEN_AUTH_004 = "AUTH-004"; // Alkalma Portal Login
-export const SCREEN_AUTH_005 = "AUTH-005"; // Earthlinks Portal Login
+export const SCREEN_AUTH_005 = "AUTH-005"; // Retired (VTID-04836): Earthlinks Portal Login — /earthlinks now redirects to /maxina; ID kept so it is never reused
 export const SCREEN_AUTH_006 = "AUTH-006"; // Community Portal Login
 export const SCREEN_AUTH_007 = "AUTH-007"; // Exafy Admin Portal Login
 export const SCREEN_AUTH_008 = "AUTH-008"; // Intro Experience
 export const SCREEN_AUTH_009 = "AUTH-009"; // Email Confirmation (Maxina)
 export const SCREEN_AUTH_010 = "AUTH-010"; // Email Confirmation (Alkalma)
-export const SCREEN_AUTH_011 = "AUTH-011"; // Email Confirmation (Earthlinks)
+export const SCREEN_AUTH_011 = "AUTH-011"; // Retired (VTID-04836): Email Confirmation (Earthlinks) — redirects to /maxina/confirmed; ID kept so it is never reused
 export const SCREEN_AUTH_012 = "AUTH-012"; // Email Confirmation (Community)
 export const SCREEN_AUTH_013 = "AUTH-013"; // Email Confirmation (Exafy)
 export const SCREEN_AUTH_014 = "AUTH-014"; // Not Found (404)
@@ -626,7 +626,6 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
   { screenId: SCREEN_AUTH_002, route: "/auth", category: "public", pattern: "auth" },
   { screenId: SCREEN_AUTH_003, route: "/maxina", category: "public", pattern: "auth" },
   { screenId: SCREEN_AUTH_004, route: "/alkalma", category: "public", pattern: "auth" },
-  { screenId: SCREEN_AUTH_005, route: "/earthlinks", category: "public", pattern: "auth" },
   { screenId: SCREEN_AUTH_006, route: "/community", category: "public", pattern: "auth" },
   { screenId: SCREEN_AUTH_007, route: "/exafy-admin", category: "public", pattern: "auth" },
   { screenId: SCREEN_AUTH_008, route: "/_intro/:tenantSlug", category: "public", pattern: "intro" },

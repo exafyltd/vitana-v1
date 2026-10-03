@@ -228,6 +228,11 @@ in front of real people. Register any new test account in
 notice; skip for fixes/refactors/admin-only work. Once the build is live in
 production, the gateway turns the entry into a "Brand New Feature" News Feed
 card + push, once, automatically. Do not publish these cards by hand any more.
+**If you forget, it is drafted for you (VTID-04739):** after merge,
+`WHATS-NEW-DRAFT.yml` has a Bedrock Claude model judge the PR and open a
+`What's New: …` PR with a drafted EN/DE entry for a human to approve — needs a
+VTID in your PR title. Adding the entry yourself is still preferred (you know
+the wording best) and a PR that adds one is never drafted for.
 
 ## Voice navigation — the screen registry (VTID-04502)
 

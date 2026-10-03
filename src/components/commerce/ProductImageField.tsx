@@ -78,13 +78,13 @@ export function ProductImageField({
             <img
               src={url}
               alt=""
-              className="h-20 w-20 rounded-xl border border-slate-700 object-cover"
+              className="h-20 w-20 rounded-xl border border-border object-cover"
             />
             <button
               type="button"
               onClick={() => onChange(images.filter((u) => u !== url))}
               aria-label={t('screens.commerceportal.productForm.imageRemove')}
-              className="absolute -end-1.5 -top-1.5 rounded-full border border-slate-700 bg-slate-900 p-0.5 text-slate-400 hover:text-slate-100"
+              className="absolute -end-1.5 -top-1.5 rounded-full border border-border bg-background p-0.5 text-muted-foreground hover:text-foreground"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -96,7 +96,7 @@ export function ProductImageField({
           variant="outline"
           disabled={busy}
           onClick={() => inputRef.current?.click()}
-          className="h-20 w-20 flex-col gap-1 border-dashed border-slate-700 bg-transparent text-slate-400 hover:bg-slate-900"
+          className="h-20 w-20 flex-col gap-1 border-dashed text-muted-foreground"
         >
           {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImagePlus className="h-5 w-5" />}
           <span className="text-[10px]">{t('screens.commerceportal.productForm.imageAdd')}</span>

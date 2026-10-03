@@ -14,7 +14,6 @@
     "doneToast": "Done – nice work! 🎉",
     "doneError": "That couldn't be saved right now.",
     "recurring": "Repeats",
-    "voiceAdd": "“Blood test Friday 8am, fasting” – tell Vitana",
     "nextUp": "Next up · {when}",
     "progress": "{done} of {total} done today",
     "progressAllDone": "All done – enjoy the rest of your day ✨",
@@ -220,12 +219,7 @@
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook",
-        "_pending_review": {
-          "google": true,
-          "apple": true,
-          "outlook": true
-        }
+        "outlook": "Outlook"
       },
       "connectTitle": "Connect your calendar",
       "connectBody": "Your Vitanaland entries in Google, Apple or Outlook – one tap.",
@@ -267,13 +261,7 @@
         "health": "Health",
         "workout": "Workout",
         "community": "Community",
-        "nutrition": "Nutrition",
-        "_pending_review": {
-          "community": true
-        }
-      },
-      "_pending_review": {
-        "optional": true
+        "nutrition": "Nutrition"
       }
     },
     "milestone": "Milestone: {title}",

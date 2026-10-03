@@ -14,7 +14,6 @@
     "doneToast": "¡Hecho, genial! 🎉",
     "doneError": "No se pudo guardar ahora mismo.",
     "recurring": "Se repite",
-    "voiceAdd": "«Análisis de sangre el viernes a las 8, en ayunas» – díselo a Vitana",
     "nextUp": "A continuación · {when}",
     "progress": "{done} de {total} hechos hoy",
     "progressAllDone": "Todo listo – disfruta el resto del día ✨",

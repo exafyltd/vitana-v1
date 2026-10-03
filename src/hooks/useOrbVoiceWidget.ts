@@ -432,6 +432,11 @@ export function useOrbVoiceWidget() {
         journey_trail: journeyTrailRef.current,
         // VTID-02789: viewport flag → gateway picks mobile_route over route
         is_mobile: isMobileRef.current,
+        // VTID-04781: the re-init must declare surface + view_role too, exactly
+        // like the main init above. Without it a session started right after
+        // login/logout (before any route or role change re-sent them) reached
+        // the gateway undeclared and was resolved from the route alone.
+        ...orbViewProfile(currentRouteRef.current, currentRoleRef.current),
       },
     };
 

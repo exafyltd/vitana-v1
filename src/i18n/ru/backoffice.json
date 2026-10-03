@@ -41,26 +41,18 @@
         "periods": "Финансовые периоды & Закрытие",
         "tax": "Налог",
         "assets": "Основные средства & Аренда",
-        "intercompany": "Intercompany & Consolidation",
-        "budgets": "Budgets & Forecasts",
-        "_pending_review": {
-          "intercompany": true,
-          "budgets": true
-        }
+        "intercompany": "Меж-корпоративные и Консолидация",
+        "budgets": "Бюджеты и Прогнозы"
       }
     },
     "finance": {
       "tabs": {
-        "payments": "Payments",
-        "bank-reconciliation": "Bank Reconciliation",
-        "cash": "Cash Position & Forecast",
-        "subscriptions": "Recurring Billing",
+        "payments": "Платежи",
+        "bank-reconciliation": "Банковская сверка",
+        "cash": "Денежная позиция и Прогноз",
+        "subscriptions": "Регулярные счета",
         "sync": "Stripe / Shopify Sync",
         "_pending_review": {
-          "payments": true,
-          "bank-reconciliation": true,
-          "cash": true,
-          "subscriptions": true,
           "sync": true
         }
       }

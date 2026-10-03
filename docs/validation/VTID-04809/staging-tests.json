@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04809",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Buy Credits lists packages without client-granted bonus credits",
+      "spec": "tests/e2e/staging/vtid-04809-buy-credits-no-bonus.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "no client code credits a wallet",
+      "ref": "npx vitest run src/components/wallet/popups/no-client-wallet-credit.test.ts",
+      "cwd": ".",
+      "reason": "Adding credits is a write the database now refuses for members (exafyltd/vitana-platform VTID-04809); the source guard proves no client path still tries."
+    }
+  ]
+}

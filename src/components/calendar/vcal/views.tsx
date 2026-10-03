@@ -11,6 +11,7 @@ import { addDays } from "date-fns";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate, formatDate } from "@/lib/locale-format";
 import type { CalendarWindowItem } from "@/lib/calendar-window-client";
+import { INDEX_CARD } from "@/lib/index-look";
 import { KIND_STYLE, SURFACE, entryKind } from "./theme";
 import { EntryCard, isMilestone } from "./parts";
 import { itemsOn } from "./labels";
@@ -24,8 +25,8 @@ export const MONTH_DOTS = 3;
 
 export function EmptyDay() {
   return (
-    <div className="flex flex-col items-center gap-1 px-6 py-8 text-center" data-testid="vcal-empty">
-      <span className="text-[17px] font-medium">{t("vcal.empty.title")}</span>
+    <div className={`${INDEX_CARD} flex flex-col items-center gap-1 py-8 text-center`} data-testid="vcal-empty">
+      <span className="text-lg font-bold text-slate-900">{t("vcal.empty.title")}</span>
       <span className="text-sm" style={{ color: SURFACE.muted }}>
         {t("vcal.empty.hint")}
       </span>
@@ -35,7 +36,7 @@ export function EmptyDay() {
 
 function MoreButton({ count, onClick }: { count: number; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="self-start px-1 py-1 text-sm" style={{ color: SURFACE.primary }} data-testid="vcal-more">
+    <button type="button" onClick={onClick} className="self-start px-1 py-1 text-sm font-semibold" style={{ color: SURFACE.link }} data-testid="vcal-more">
       {t("vcal.more", { count })}
     </button>
   );
@@ -59,7 +60,7 @@ export function DayView({ items, onOpen }: { items: CalendarWindowItem[]; onOpen
         <ol className="flex flex-col gap-2">
           {shown.map((item) => (
             <li key={item.id} className="flex items-stretch gap-3">
-              <span className="w-12 shrink-0 whitespace-nowrap pt-3.5 text-[13px] tabular-nums" style={{ color: SURFACE.muted }}>
+              <span className="w-12 shrink-0 whitespace-nowrap pt-3.5 text-xs tabular-nums" style={{ color: SURFACE.muted }}>
                 {hhmm(item.start_time)}
               </span>
               <div className="min-w-0 flex-1">
@@ -98,15 +99,14 @@ export function WeekView({
         return (
           <section
             key={day.toISOString()}
-            className="flex min-w-0 flex-col gap-1.5 rounded-2xl bg-white p-3"
-            style={{ border: `1px solid ${isToday ? SURFACE.ink : SURFACE.line}` }}
+            className={`flex min-w-0 flex-col gap-1.5 rounded-3xl border bg-white p-3 shadow-[0_6px_24px_rgba(15,23,42,0.06)] ${isToday ? "border-teal-500 ring-1 ring-teal-500" : "border-slate-100"}`}
             aria-label={fmtDate(day, { weekday: "long", day: "numeric", month: "long" })}
           >
             <button type="button" onClick={() => onPickDay(day)} className="flex items-baseline gap-2 text-start">
-              <span className="text-[13px]" style={{ color: SURFACE.muted }}>
+              <span className="text-xs" style={{ color: SURFACE.muted }}>
                 {formatDate(day, "EEE")}
               </span>
-              <span className={`text-lg ${isToday ? "font-medium" : ""}`}>{formatDate(day, "d")}</span>
+              <span className={`text-lg ${isToday ? "font-bold text-teal-700" : ""}`}>{formatDate(day, "d")}</span>
             </button>
             {dayItems.length ? (
               <div className="flex flex-col gap-1.5">
@@ -116,7 +116,7 @@ export function WeekView({
                 {hidden > 0 && <MoreButton count={hidden} onClick={() => onPickDay(day)} />}
               </div>
             ) : (
-              <span className="text-[13px]" style={{ color: SURFACE.faint }}>
+              <span className="text-xs" style={{ color: SURFACE.faint }}>
                 {t("vcal.week.free")}
               </span>
             )}
@@ -144,8 +144,8 @@ export function MonthView({
   const days = Array.from({ length: 42 }, (_, i) => addDays(from, i));
   const month = anchor.getMonth();
   return (
-    <div className="flex flex-col gap-1.5" data-testid="vcal-month">
-      <div className="grid grid-cols-7 gap-1 text-center text-[12px]" style={{ color: SURFACE.faint }}>
+    <div className={`${INDEX_CARD} flex flex-col gap-1.5 !p-3`} data-testid="vcal-month">
+      <div className="grid grid-cols-7 gap-1 text-center text-xs" style={{ color: SURFACE.faint }}>
         {Array.from({ length: 7 }, (_, i) => (
           <span key={i}>{formatDate(addDays(WEEKDAY_REF, i), "EEEEEE")}</span>
         ))}
@@ -161,13 +161,13 @@ export function MonthView({
               type="button"
               onClick={() => onPickDay(day)}
               aria-label={fmtDate(day, { weekday: "long", day: "numeric", month: "long" })}
-              className="flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl p-1 focus:outline-none focus-visible:ring-2"
-              style={{ background: inMonth ? "#FFFFFF" : "transparent", color: inMonth ? SURFACE.ink : SURFACE.faint }}
+              className="flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+              style={{ color: inMonth ? SURFACE.ink : SURFACE.faint }}
               data-testid="vcal-month-day"
             >
               <span
-                className={`flex h-7 w-7 items-center justify-center rounded-full text-sm ${isToday ? "font-medium" : ""}`}
-                style={isToday ? { background: SURFACE.ink, color: "#FFFFFF" } : undefined}
+                className={`flex h-7 w-7 items-center justify-center rounded-full text-sm ${isToday ? "font-bold" : ""}`}
+                style={isToday ? { background: SURFACE.link, color: "#FFFFFF" } : undefined}
               >
                 {formatDate(day, "d")}
               </span>

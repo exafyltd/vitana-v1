@@ -30,22 +30,7 @@
       "system": true,
       "automationsTitle": true,
       "confirmOnTitle": true,
-      "confirmOffTitle": true,
-      "confirmOnBody": true,
-      "confirmOnBodyNoCount": true,
-      "confirmOffBody": true,
-      "reasonLabel": true,
-      "reasonPlaceholder": true,
-      "confirmOn": true,
-      "confirmOff": true,
-      "cancel": true,
-      "save": true,
-      "on": true,
-      "off": true,
-      "toastOn": true,
-      "toastOff": true,
-      "toastFailed": true,
-      "statsNone": true
+      "confirmOffTitle": true
     },
     "pages": {
       "notifications": {
@@ -165,20 +150,20 @@
     "automationsTitle": "Sent by automations – each has its own switch",
     "confirmOnTitle": "Switch on “{name}”?",
     "confirmOffTitle": "Switch off “{name}”?",
-    "confirmOnBody": "From now on this goes to {audience} – about {count} people – whenever it is triggered. Members can switch it off through its category.",
-    "confirmOnBodyNoCount": "From now on this goes to {audience} whenever it is triggered.",
-    "confirmOffBody": "Nobody receives this notification until you switch it on again. Ones already sent stay visible.",
-    "reasonLabel": "Reason (optional)",
-    "reasonPlaceholder": "Why are you changing this? It is kept in the history.",
-    "confirmOn": "Switch on",
-    "confirmOff": "Switch off",
-    "cancel": "Cancel",
-    "save": "Save",
-    "on": "on",
-    "off": "off",
-    "toastOn": "Switched on",
-    "toastOff": "Switched off",
-    "toastFailed": "That did not work. Please try again.",
+    "confirmOnBody": "Od teraz to trafia do {audience} – około {count} osób – za każdym razem, gdy zostanie uruchomione. Członkowie mogą to wyłączyć poprzez jego kategorię.",
+    "confirmOnBodyNoCount": "Od teraz to trafia do {audience} za każdym razem, gdy zostanie uruchomione.",
+    "confirmOffBody": "Nikt nie otrzyma tego powiadomienia, dopóki go ponownie nie włączysz. Już wysłane pozostają widoczne.",
+    "reasonLabel": "Powód (opcjonalnie)",
+    "reasonPlaceholder": "Dlaczego to zmieniasz? Jest to zachowane w historii.",
+    "confirmOn": "Włącz",
+    "confirmOff": "Wyłącz",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "on": "włączone",
+    "off": "wyłączone",
+    "toastOn": "Włączono",
+    "toastOff": "Wyłączono",
+    "toastFailed": "To się nie udało. Spróbuj ponownie.",
     "categoryGroups": {
       "_pending_review": {
         "chat": true,
@@ -309,6 +294,6 @@
       "developer": "developers",
       "staff": "staff"
     },
-    "statsNone": "7 days: nothing sent"
+    "statsNone": "7 dni: nic nie wysłano"
   }
 }

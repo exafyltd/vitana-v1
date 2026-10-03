@@ -8,6 +8,7 @@
  * Opened from the `?connection=<id>` search param, so a connection stays
  * deep-linkable and Back closes the drawer instead of leaving the portal.
  */
+import { platformName } from '@/lib/commerce-platforms';
 import { useCallback, useEffect, useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -167,7 +168,7 @@ export function ConnectionWorkbench({
             <SheetHeader className="text-start">
               <SheetTitle className="truncate pe-8 text-foreground">{detail.name}</SheetTitle>
               <p className="truncate text-xs text-muted-foreground">
-                {detail.connector_id} · {detail.provider_id}
+                {platformName(detail.connector_id) ?? t('screens.commerceportal.connect.customApi')}
               </p>
             </SheetHeader>
 

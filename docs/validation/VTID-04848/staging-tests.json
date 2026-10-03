@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04848",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed out, the AI-assistant approval link goes to Commerce join and keeps the authorization id",
+      "spec": "tests/e2e/staging/vtid-04848-commerce-connect-authorize.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "MCP address, readiness probe, consent parsing, hero and panel wiring",
+      "ref": "npx vitest run src/lib/commerce-mcp.test.ts src/pages/CommercePortal.light-redesign.test.ts src/components/commerce/mobile-adaptation.test.ts",
+      "cwd": ".",
+      "reason": "the Connect-your-AI-agent hero appears only for a signed-in supplier once the gateway serves /mcp, and the staging test account cannot sign in today; approving an assistant writes an OAuth grant in the shared production Supabase project, so the consent decision is proven here and the owner connects a real assistant once the Supabase OAuth server is switched on"
+    }
+  ]
+}

@@ -30,6 +30,7 @@ import {
   Circle,
   X,
   ArrowRight,
+  Play,
   type LucideProps,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -47,6 +48,8 @@ import { cn } from '@/lib/utils';
 import { t, notify } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
+import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
+import { AUDIOBOOK_SEASONS, seasonNumber } from '@/lib/audiobook/queue';
 import {
   completePractice,
   practiceTargetAction,
@@ -58,7 +61,8 @@ import {
   useGuidedJourneyProgress,
 } from '@/hooks/useGuidedJourneyProgress';
 
-const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
+// VTID-04762: chapters are the Audiobook's seasons; the Prolog is Season 0.
+const CHAPTER_ORDER = AUDIOBOOK_SEASONS;
 
 /** VITANA INDEX points awarded for listening to a guided session. */
 const SESSION_INDEX_REWARD = 2;
@@ -110,6 +114,12 @@ function chapterLabel(chapterId: string): string {
   return label === key ? chapterId : label;
 }
 
+/** "Staffel 1 · Grundlagen" — the episode header's season caption (VTID-04762). */
+function seasonLabel(chapterId: string): string {
+  const n = seasonNumber(chapterId);
+  return n < 0 ? chapterLabel(chapterId) : t('screens.guidedCatalog.seasonLabel', { n, name: chapterLabel(chapterId) });
+}
+
 interface GuidedJourneyCatalogProps {
   /** P6 seam: called instead of opening the drawer directly (ORB activation). */
   onActivateTopic?: (topic: PublicTopic) => void;
@@ -134,6 +144,7 @@ export function GuidedJourneyCatalog({
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
+  const audiobook = useAudiobookPlayer(); // VTID-04761
 
   const closeDrawer = () => {
     setOpenTopic(null);
@@ -276,6 +287,14 @@ export function GuidedJourneyCatalog({
   const handleSessionClick = (s: { session: number; topics: PublicTopic[] }) => {
     const firstTopic = s.topics[0];
     if (!firstTopic) return;
+    // VTID-04761: an episode header plays the episode in the Audiobook player
+    // (listening, no live session); the player records progress as each topic
+    // finishes. Tapping a single topic below still opens the interactive
+    // lesson with Vitana.
+    if (audiobook && !onActivateTopic) {
+      void audiobook.start({ episode: s.session });
+      return;
+    }
     activateOrb(firstTopic.topicId);
     if (onActivateTopic) {
       onActivateTopic(firstTopic);
@@ -359,8 +378,18 @@ export function GuidedJourneyCatalog({
                   )}
                 </span>
                 <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {chapterLabel(s.chapterId)}
+                  {seasonLabel(s.chapterId)}
                 </span>
+                {audiobook && (
+                  <span
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-600 text-white shadow-sm"
+                    aria-label={t('screens.audiobook.playEpisode', { n: s.session })}
+                    role="img"
+                    data-testid="audiobook-play-episode"
+                  >
+                    <Play className="h-4 w-4 ms-0.5 rtl:-scale-x-100" aria-hidden="true" />
+                  </span>
+                )}
               </button>
 
               {/* Steps — connected by a soft vertical rail on the left */}

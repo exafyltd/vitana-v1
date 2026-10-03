@@ -1,4 +1,5 @@
 /** One connected business in the portal list (VTID-03882). */
+import { platformName } from '@/lib/commerce-platforms';
 import { ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ConnectionProgress } from './ConnectionProgress';
@@ -18,10 +19,10 @@ export interface ConnectionRow {
 const stateLabel = (state: string) => t(`screens.partnerportal.states.${state}`);
 
 const badgeTone = (state: string) => {
-  if (state === 'active') return 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300';
-  if (state === 'revoked' || state === 'failed') return 'border-red-400/40 bg-red-400/10 text-red-300';
-  if (state === 'certified') return 'border-amber-400/40 bg-amber-400/10 text-amber-300';
-  return 'border-slate-600/60 bg-slate-800/60 text-slate-300';
+  if (state === 'active') return 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300';
+  if (state === 'revoked' || state === 'failed') return 'border-red-300 bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300';
+  if (state === 'certified') return 'border-amber-300 bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-700';
+  return 'border-border bg-muted text-muted-foreground';
 };
 
 export function ConnectionCard({ row, onOpen }: { row: ConnectionRow; onOpen: (id: string) => void }) {
@@ -30,24 +31,24 @@ export function ConnectionCard({ row, onOpen }: { row: ConnectionRow; onOpen: (i
       type="button"
       onClick={() => onOpen(row.id)}
       aria-label={`${row.name} — ${t('screens.commerceportal.openWorkbench')}`}
-      className="group w-full rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-start transition-colors hover:border-amber-500/40 hover:bg-slate-900"
+      className="group w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-600/50 hover:bg-amber-50/60 dark:hover:bg-amber-950/20"
     >
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-slate-100">{row.name}</p>
-          <p className="truncate text-xs text-slate-500">
-            {row.connector_id} · {row.provider_id}
+          <p className="truncate font-medium text-foreground">{row.name}</p>
+          <p className="truncate text-xs text-muted-foreground">
+            {platformName(row.connector_id) ?? t('screens.commerceportal.connect.customApi')}
           </p>
         </div>
         <Badge variant="outline" className={`shrink-0 ${badgeTone(row.state)}`}>
           {stateLabel(row.state)}
         </Badge>
-        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-amber-400 rtl:rotate-180" />
+        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-amber-700 rtl:rotate-180" />
       </div>
 
       <ConnectionProgress state={row.state} className="mt-4" />
 
-      <p className="mt-3 text-[11px] text-slate-600">{fmtDateTime(new Date(row.updated_at))}</p>
+      <p className="mt-3 text-[11px] text-muted-foreground">{fmtDateTime(new Date(row.updated_at))}</p>
     </button>
   );
 }

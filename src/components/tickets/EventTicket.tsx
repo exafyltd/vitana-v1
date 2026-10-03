@@ -7,8 +7,9 @@ import { TicketShareSheet } from "./TicketShareSheet";
 import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
-// Tenant Types
-export type TicketTenant = "vitana" | "maxina" | "alkalma" | "earthlinks";
+import { resolveTicketTenant, type TicketTenant } from './ticket-tenant';
+// Tenant Types — VTID-04836: the type and resolver live in ./ticket-tenant.
+export type { TicketTenant } from './ticket-tenant';
 
 interface TicketTenantConfig {
   brandName: string;
@@ -65,19 +66,6 @@ const TICKET_TENANT_CONFIG: Record<TicketTenant, TicketTenantConfig> = {
     footerText: "Powered by VITANA",
     backgroundGradient: "from-cyan-700 via-teal-800 to-blue-900",
   },
-  earthlinks: {
-    brandName: "EARTHLINKS",
-    passLabel: "EVENT PASS",
-    accentColor: "#58A676", // Earthy green
-    tenantCode: "ELX",
-    hologramText: {
-      primary: "EARTHLINKS",
-      secondary: "MEMBER PASS",
-    },
-    microText: "OFFICIAL • VERIFIED • SECURE",
-    footerText: "Powered by VITANA",
-    backgroundGradient: "from-emerald-700 via-green-800 to-teal-900",
-  },
 };
 
 interface EventTicketProps {
@@ -91,7 +79,8 @@ interface EventTicketProps {
   quantity: number;
   qrCodeData: string;
   sequence?: number;
-  tenant?: TicketTenant;
+  /** A TicketTenant, or a raw tenant slug from a record (retired slugs are mapped). */
+  tenant?: TicketTenant | string | null;
 }
 
 export function EventTicket({
@@ -111,7 +100,7 @@ export function EventTicket({
   const [shareSheetOpen, setShareSheetOpen] = useState(false);
   
   // Get tenant-specific configuration
-  const config = TICKET_TENANT_CONFIG[tenant] || TICKET_TENANT_CONFIG.vitana;
+  const config = TICKET_TENANT_CONFIG[resolveTicketTenant(tenant)];
 
   const handleDownload = async () => {
     if (!ticketRef.current) return;
