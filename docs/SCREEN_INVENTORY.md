@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 348
-- **Distinct i18n keys consumed:** 4734
+- **Distinct i18n keys consumed:** 4732
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -590,7 +590,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `common` — used: 2, total in shard: 37
 - `screens` — used: 14, total in shard: 11474
 - `toasts` — used: 3, total in shard: 1265
-- `wallet` — used: 17, total in shard: 22
+- `wallet` — used: 17, total in shard: 55
 
 ### src/pages/role-section-app-layout.test.ts
 
@@ -2883,11 +2883,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/wallet/Rewards.tsx
 
-**Status:** ✅ clean — keys consumed: 15, namespaces: 1
+**Status:** ✅ clean — keys consumed: 13, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 15, total in shard: 11474
+- `screens` — used: 13, total in shard: 11474
 
 ### src/pages/wallet/Subscriptions.tsx
 

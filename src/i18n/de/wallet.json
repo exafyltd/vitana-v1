@@ -25,6 +25,47 @@
     },
     "noActivity": "Noch keine Aktivitäten",
     "noActivityDesc": "Deine Transaktionen werden hier erscheinen.",
-    "displayCurrency": "Anzeigewährung"
+    "displayCurrency": "Anzeigewährung",
+    "rewardRules": {
+      "title": "So verdienst du VTNA",
+      "summary": "Du verdienst VTNA für echte Dinge, die du selbst tust – einmal pro Meilenstein – und dafür, dass du dranbleibst.",
+      "earnedBalance": "Von dir verdient",
+      "value": "1 VTNA = 0,01 €",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Verdient",
+      "cap": "{used} von {count} in {days} Tagen",
+      "groups": {
+        "first_steps": "Erste Schritte – je einmal",
+        "habits": "Gewohnheiten – Serien-Meilensteine",
+        "community": "Gemeinschaft – wenn andere reagieren"
+      },
+      "rules": {
+        "onboarding_complete": "Einführung abschließen",
+        "profile_complete": "Profil vervollständigen",
+        "first_diary": "Ersten Tagebucheintrag schreiben",
+        "first_group": "Einer ersten Gruppe beitreten",
+        "first_event_rsvp": "Erstem Event zusagen",
+        "first_connection": "Erste Verbindung knüpfen",
+        "five_connections": "Fünf Verbindungen erreichen",
+        "first_match_accepted": "Ersten Match annehmen",
+        "first_health_check": "Ersten Gesundheits-Check machen",
+        "diary_streak_3": "3 Tage Tagebuch in Folge",
+        "diary_streak_7": "7 Tage Tagebuch in Folge",
+        "diary_streak_30": "30 Tage Tagebuch in Folge",
+        "invite_friend_joined": "Jemand, den du eingeladen hast, tritt bei"
+      },
+      "neverTitle": "Dafür gibt es keine VTNA",
+      "never": {
+        "done_by_vitana": "Alles, was Vitana für dich erledigt oder entwirft",
+        "purchases": "Gekaufte Credits und Bonuspakete",
+        "self_reported": "Angaben, die das System nicht prüfen kann"
+      },
+      "recentTitle": "Deine letzten Belohnungen",
+      "recentEmpty": "Noch keine Belohnungen – dein erster Schritt wartet oben.",
+      "recentOther": "Belohnung",
+      "loading": "Wird geladen …",
+      "error": "Deine Belohnungen konnten gerade nicht geladen werden."
+    }
   }
 }

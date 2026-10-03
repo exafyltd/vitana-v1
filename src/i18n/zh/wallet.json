@@ -28,7 +28,48 @@
     "noActivity": "暂无动态",
     "noActivityDesc": "你的交易会显示在这里。",
     "displayCurrency": "显示货币",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "你如何赚取 VTNA",
+      "summary": "你亲自完成真实的事情会获得 VTNA——每个里程碑一次——坚持下去也会获得。",
+      "earnedBalance": "你已赚取",
+      "value": "1 VTNA = 0.01 €",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "已获得",
+      "cap": "{days} 天内 {used}/{count}",
+      "groups": {
+        "first_steps": "第一步——每项一次",
+        "habits": "习惯——连续里程碑",
+        "community": "社区——当他人回应时"
+      },
+      "rules": {
+        "onboarding_complete": "完成入门引导",
+        "profile_complete": "完善你的个人资料",
+        "first_diary": "写下第一篇日记",
+        "first_group": "加入你的第一个小组",
+        "first_event_rsvp": "报名你的第一个活动",
+        "first_connection": "建立你的第一个联系",
+        "five_connections": "达到五个联系",
+        "first_match_accepted": "接受你的第一个匹配",
+        "first_health_check": "完成第一次健康检查",
+        "diary_streak_3": "连续 3 天写日记",
+        "diary_streak_7": "连续 7 天写日记",
+        "diary_streak_30": "连续 30 天写日记",
+        "invite_friend_joined": "你邀请的人加入了"
+      },
+      "neverTitle": "不会获得 VTNA 的情况",
+      "never": {
+        "done_by_vitana": "Vitana 替你完成或起草的任何内容",
+        "purchases": "购买的积分和奖励包",
+        "self_reported": "系统无法核实的操作"
+      },
+      "recentTitle": "你最近的奖励",
+      "recentEmpty": "还没有奖励——你的第一步就在上方。",
+      "recentOther": "奖励",
+      "loading": "加载中…",
+      "error": "暂时无法加载你的奖励。"
+    }
   },
   "_pending_review": {}
 }

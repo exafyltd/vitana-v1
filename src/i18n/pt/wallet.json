@@ -28,7 +28,48 @@
     "noActivity": "Nenhuma atividade ainda",
     "noActivityDesc": "Suas transações aparecerão aqui.",
     "displayCurrency": "Moeda de exibição",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "Como você ganha VTNA",
+      "summary": "Você ganha VTNA por coisas reais que faz você mesmo, uma vez por marco, e por manter a constância.",
+      "earnedBalance": "Ganho por você",
+      "value": "1 VTNA = 0,01 €",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Ganho",
+      "cap": "{used} de {count} em {days} dias",
+      "groups": {
+        "first_steps": "Primeiros passos – uma vez cada",
+        "habits": "Hábitos – marcos de sequência",
+        "community": "Comunidade – quando outros respondem"
+      },
+      "rules": {
+        "onboarding_complete": "Conclua sua introdução",
+        "profile_complete": "Complete seu perfil",
+        "first_diary": "Escreva sua primeira entrada no diário",
+        "first_group": "Entre no seu primeiro grupo",
+        "first_event_rsvp": "Confirme presença no seu primeiro evento",
+        "first_connection": "Faça sua primeira conexão",
+        "five_connections": "Chegue a cinco conexões",
+        "first_match_accepted": "Aceite seu primeiro match",
+        "first_health_check": "Faça seu primeiro check-up de saúde",
+        "diary_streak_3": "Sequência de diário de 3 dias",
+        "diary_streak_7": "Sequência de diário de 7 dias",
+        "diary_streak_30": "Sequência de diário de 30 dias",
+        "invite_friend_joined": "Alguém que você convidou entra"
+      },
+      "neverTitle": "O que nunca dá VTNA",
+      "never": {
+        "done_by_vitana": "Tudo o que a Vitana faz ou redige por você",
+        "purchases": "Créditos e pacotes bônus comprados",
+        "self_reported": "Ações que o sistema não consegue verificar"
+      },
+      "recentTitle": "Suas recompensas recentes",
+      "recentEmpty": "Ainda sem recompensas – seu primeiro passo está esperando acima.",
+      "recentOther": "Recompensa",
+      "loading": "Carregando…",
+      "error": "Não foi possível carregar suas recompensas agora."
+    }
   },
   "_pending_review": {}
 }

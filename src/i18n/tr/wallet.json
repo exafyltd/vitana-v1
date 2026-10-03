@@ -28,7 +28,48 @@
     "noActivity": "Henüz aktivite yok",
     "noActivityDesc": "İşlemlerin burada görünecek.",
     "displayCurrency": "Görüntüleme para birimi",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "VTNA nasıl kazanırsın",
+      "summary": "Kendin yaptığın gerçek şeyler için, her dönüm noktasında bir kez, ve istikrarlı kaldığın için VTNA kazanırsın.",
+      "earnedBalance": "Kazandığın",
+      "value": "1 VTNA = 0,01 €",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Kazanıldı",
+      "cap": "{days} günde {count} içinden {used}",
+      "groups": {
+        "first_steps": "İlk adımlar – her biri bir kez",
+        "habits": "Alışkanlıklar – seri dönüm noktaları",
+        "community": "Topluluk – başkaları yanıt verdiğinde"
+      },
+      "rules": {
+        "onboarding_complete": "Tanıtımı tamamla",
+        "profile_complete": "Profilini tamamla",
+        "first_diary": "İlk günlük kaydını yaz",
+        "first_group": "İlk grubuna katıl",
+        "first_event_rsvp": "İlk etkinliğine katılım bildir",
+        "first_connection": "İlk bağlantını kur",
+        "five_connections": "Beş bağlantıya ulaş",
+        "first_match_accepted": "İlk eşleşmeni kabul et",
+        "first_health_check": "İlk sağlık kontrolünü yap",
+        "diary_streak_3": "3 gün üst üste günlük",
+        "diary_streak_7": "7 gün üst üste günlük",
+        "diary_streak_30": "30 gün üst üste günlük",
+        "invite_friend_joined": "Davet ettiğin biri katılıyor"
+      },
+      "neverTitle": "Asla VTNA kazandırmayanlar",
+      "never": {
+        "done_by_vitana": "Vitana'nın senin için yaptığı veya hazırladığı her şey",
+        "purchases": "Satın alınan krediler ve bonus paketler",
+        "self_reported": "Sistemin doğrulayamadığı işlemler"
+      },
+      "recentTitle": "Son ödüllerin",
+      "recentEmpty": "Henüz ödül yok – ilk adımın yukarıda seni bekliyor.",
+      "recentOther": "Ödül",
+      "loading": "Yükleniyor…",
+      "error": "Ödüllerin şu anda yüklenemedi."
+    }
   },
   "_pending_review": {}
 }

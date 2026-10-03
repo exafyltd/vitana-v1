@@ -28,7 +28,48 @@
     "noActivity": "Brak aktywności",
     "noActivityDesc": "Twoje transakcje pojawią się tutaj.",
     "displayCurrency": "Wyświetl walutę",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "Jak zdobywasz VTNA",
+      "summary": "Zdobywasz VTNA za prawdziwe rzeczy, które robisz sam, raz za każdy kamień milowy, i za systematyczność.",
+      "earnedBalance": "Zdobyte przez ciebie",
+      "value": "1 VTNA = 0,01 €",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Zdobyte",
+      "cap": "{used} z {count} w {days} dni",
+      "groups": {
+        "first_steps": "Pierwsze kroki – każdy raz",
+        "habits": "Nawyki – serie",
+        "community": "Społeczność – gdy inni reagują"
+      },
+      "rules": {
+        "onboarding_complete": "Ukończ wprowadzenie",
+        "profile_complete": "Uzupełnij profil",
+        "first_diary": "Napisz pierwszy wpis w dzienniku",
+        "first_group": "Dołącz do pierwszej grupy",
+        "first_event_rsvp": "Zapisz się na pierwsze wydarzenie",
+        "first_connection": "Nawiąż pierwszy kontakt",
+        "five_connections": "Zdobądź pięć kontaktów",
+        "first_match_accepted": "Zaakceptuj pierwsze dopasowanie",
+        "first_health_check": "Zrób pierwszy przegląd zdrowia",
+        "diary_streak_3": "3 dni dziennika z rzędu",
+        "diary_streak_7": "7 dni dziennika z rzędu",
+        "diary_streak_30": "30 dni dziennika z rzędu",
+        "invite_friend_joined": "Dołącza ktoś, kogo zaprosiłeś"
+      },
+      "neverTitle": "Za co nigdy nie ma VTNA",
+      "never": {
+        "done_by_vitana": "Wszystko, co Vitana robi lub przygotowuje za ciebie",
+        "purchases": "Kupione kredyty i pakiety bonusowe",
+        "self_reported": "Działania, których system nie może sprawdzić"
+      },
+      "recentTitle": "Twoje ostatnie nagrody",
+      "recentEmpty": "Brak nagród – twój pierwszy krok czeka powyżej.",
+      "recentOther": "Nagroda",
+      "loading": "Ładowanie…",
+      "error": "Nie udało się teraz wczytać twoich nagród."
+    }
   },
   "_pending_review": {}
 }

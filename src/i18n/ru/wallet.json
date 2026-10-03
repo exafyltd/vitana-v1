@@ -28,7 +28,48 @@
     "noActivity": "Пока нет активности",
     "noActivityDesc": "Твои транзакции появятся здесь.",
     "displayCurrency": "Валюта отображения",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "Как ты зарабатываешь VTNA",
+      "summary": "Ты получаешь VTNA за реальные дела, которые делаешь сам, один раз за каждый этап, и за постоянство.",
+      "earnedBalance": "Заработано тобой",
+      "value": "1 VTNA = 0,01 €",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Получено",
+      "cap": "{used} из {count} за {days} дн.",
+      "groups": {
+        "first_steps": "Первые шаги — по одному разу",
+        "habits": "Привычки — серии",
+        "community": "Сообщество — когда отвечают другие"
+      },
+      "rules": {
+        "onboarding_complete": "Пройди знакомство",
+        "profile_complete": "Заполни профиль",
+        "first_diary": "Сделай первую запись в дневнике",
+        "first_group": "Вступи в первую группу",
+        "first_event_rsvp": "Запишись на первое событие",
+        "first_connection": "Заведи первый контакт",
+        "five_connections": "Набери пять контактов",
+        "first_match_accepted": "Прими первый мэтч",
+        "first_health_check": "Пройди первую проверку здоровья",
+        "diary_streak_3": "3 дня дневника подряд",
+        "diary_streak_7": "7 дней дневника подряд",
+        "diary_streak_30": "30 дней дневника подряд",
+        "invite_friend_joined": "Присоединяется тот, кого ты пригласил"
+      },
+      "neverTitle": "За что VTNA не начисляются",
+      "never": {
+        "done_by_vitana": "Всё, что Vitana делает или пишет за тебя",
+        "purchases": "Купленные кредиты и бонусные пакеты",
+        "self_reported": "Действия, которые система не может проверить"
+      },
+      "recentTitle": "Твои последние награды",
+      "recentEmpty": "Наград пока нет — твой первый шаг ждёт выше.",
+      "recentOther": "Награда",
+      "loading": "Загрузка…",
+      "error": "Сейчас не удалось загрузить твои награды."
+    }
   },
   "_pending_review": {}
 }
