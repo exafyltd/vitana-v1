@@ -15,6 +15,12 @@
  * lines — that landed the Orb on the italic sub-tagline. Measured on staging
  * at 50.4% of the viewport.
  *
+ * The stock-video background (and its `!videoSrc` loading gate) was later
+ * replaced by an in-tree reveal animation with no fetched asset to wait
+ * on, so the JSX containing the spacer is now unconditionally part of the
+ * component's first render — the early-return half of that bug class is
+ * gone, not just worked around by the dependency array.
+ *
  * These are source-level assertions, matching the pattern the ORB widget
  * suites use: the moving parts live in a global stylesheet and an external
  * script, and cannot be exercised through a component render. The companion
@@ -96,20 +102,24 @@ describe('intro Orb placement', () => {
   });
 
   it('re-measures when the component actually mounts its tree', () => {
-    // IntroExperience returns a bare loader until `videoSrc` resolves, so on
-    // the first pass the slot is not in the DOM and the ref is null. Without
-    // `videoSrc` in the deps the effect never runs again and the property is
-    // never published — measured, not assumed: this is the bug that shipped
-    // during development and was caught by the browser check.
-    const deps = TSX.match(/\}, \[videoSrc[^\]]*\]\);/);
+    // The historical bug needed TWO things at once: an effect that could
+    // never re-run (`[]` deps) AND an early return gating the spacer out of
+    // the first real render. The reveal animation removed the early return
+    // entirely — there is no fetched asset to wait on, so the spacer is
+    // always part of the first render — which makes that failure mode
+    // structurally impossible now, not just avoided by a dependency array.
+    // Guard against either half coming back.
+    expect(TSX).not.toMatch(/if \(!videoSrc\)/);
+    expect(TSX).not.toMatch(/return\s*\(\s*<div[^>]*>\s*<Loader/);
+
+    const deps = TSX.match(/\}, \[taglineMain[^\]]*\]\);/);
     expect(deps, 'orb-placement effect dependency array not found').not.toBeNull();
-    expect(deps![0]).toContain('videoSrc');
   });
 
   it('re-measures on language change', () => {
     // A language switch re-wraps the headline and moves the slot. These are
     // the strings whose change signals that.
-    const deps = TSX.match(/\}, \[videoSrc[^\]]*\]\);/)![0];
+    const deps = TSX.match(/\}, \[taglineMain[^\]]*\]\);/)![0];
     expect(deps).toContain('taglineMain');
     expect(deps).toContain('taglineSub');
     expect(deps).toContain('tapOrbHint');

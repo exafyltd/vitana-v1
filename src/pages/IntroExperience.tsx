@@ -1,11 +1,12 @@
 import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2, LogIn, UserPlus } from 'lucide-react';
-import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
+import { LogIn, UserPlus } from 'lucide-react';
+import { markIntroAsSeen } from '@/utils/introVideo';
 
 import { useSoundscape } from '@/context/SoundscapeContext';
 
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
+import MaxinaIntroReveal from '@/components/intro/MaxinaIntroReveal';
 import { useTranslation } from '@/hooks/useTranslation';
 // `t` from i18n-toast would shadow the local `const { t } = useTranslation()` below;
 // using `lookup` (the same singleton, different name) avoids the conflict.
@@ -26,10 +27,8 @@ export default function IntroExperience() {
     };
   }, []);
   const { startFresh } = useSoundscape();
-  const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   // The Orb is an external widget (window.VitanaOrb) loaded via a deferred
   // <script> from the gateway repo — it takes a beat to fetch/execute before
@@ -104,19 +103,19 @@ export default function IntroExperience() {
   // for any content length, viewport size, or breakpoint — no more guessing.
   //
   // BOOTSTRAP-INTRO-ORB-SYMMETRY: this effect was correct in design and
-  // COULD NEVER RUN. Its dependency array was `[]`, and this component
-  // returns a bare loader until `videoSrc` resolves — so on the one pass it
-  // ever made, the spacer was not in the tree, `orbSpacerRef.current` was
-  // null, it bailed at the guard below, and nothing re-ran it. Neither
-  // custom property was ever set, so the CSS fell through to its
-  // `top: 50%` fallback: the exact static guess this effect exists to
-  // replace. Measured on staging, where the Orb sat at 50.4% of the
-  // viewport and landed on the Serbian sub-tagline.
-  //
-  // `videoSrc` in the deps is what makes it fire. The rest of the deps
-  // cover reflows the ResizeObserver cannot see: the observer fires on the
-  // spacer's own SIZE changing, but a longer translation moves the spacer
-  // without resizing it.
+  // used to be COULD-NEVER-RUN. Its dependency array was `[]`, and this
+  // component used to return a bare loader until a background video's
+  // `videoSrc` resolved — so on the one pass it ever made, the spacer was
+  // not in the tree, `orbSpacerRef.current` was null, it bailed at the
+  // guard below, and nothing re-ran it. Neither custom property was ever
+  // set, so the CSS fell through to its `top: 50%` fallback: the exact
+  // static guess this effect exists to replace. Measured on staging, where
+  // the Orb sat at 50.4% of the viewport and landed on the Serbian
+  // sub-tagline. The reveal animation below has no such loading gate — the
+  // spacer is in the tree on first render — but the deps stay driven by
+  // the surrounding copy: the ResizeObserver only fires on the spacer's own
+  // SIZE changing, and a longer translation moves the spacer without
+  // resizing it.
   const orbSpacerRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const spacer = orbSpacerRef.current;
@@ -160,22 +159,7 @@ export default function IntroExperience() {
       document.body.style.removeProperty('--maxina-orb-target-left');
       document.body.style.removeProperty('--maxina-orb-target-top');
     };
-  }, [videoSrc, taglineMain, taglineSub, tapOrbHint]);
-
-  // Load video source
-  useEffect(() => {
-    if (tenantSlug) {
-      getIntroVideoSrc(tenantSlug).then(setVideoSrc);
-    }
-  }, [tenantSlug]);
-
-  // Show content after video starts
-  useEffect(() => {
-    if (videoRef.current) {
-      const timer = setTimeout(() => setShowContent(true), 800);
-      return () => clearTimeout(timer);
-    }
-  }, [videoSrc]);
+  }, [taglineMain, taglineSub, tapOrbHint]);
 
   // Attempt optimistic autoplay on mount (works on desktop/Android, silently blocked on iOS)
   useEffect(() => {
@@ -242,34 +226,17 @@ export default function IntroExperience() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleSkip]);
 
-  if (!videoSrc) {
-    return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-white animate-spin" />
-      </div>
-    );
-  }
-
   return (
     <div 
       className={`fixed inset-0 bg-black overflow-hidden transition-opacity duration-[800ms] ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      {/* Video Background */}
-      <video
-        ref={videoRef}
-        src={videoSrc}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster="/videos/intro/maxina/poster.jpg"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-      
-      {/* Premium multi-layer gradient overlay for readability */}
+      {/* Ambient depth on the plain black backdrop — previously these three
+          layers existed to keep the stock background video legible; kept
+          as-is now that the backdrop is flat black, since a soft vignette
+          + top/bottom falloff still reads as premium rather than a flat
+          void, and it's what the MaxinaIntroReveal bloom blooms into. */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/60" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
       {/* Subtle vignette effect */}
@@ -299,8 +266,20 @@ export default function IntroExperience() {
 
         data-maxina-app="true"
       >
-        {/* Top block: eyebrow, brand wordmark, tagline */}
+        {/* Top block: ballerina reveal, eyebrow, brand wordmark, tagline */}
         <div className="flex flex-col items-center">
+          {/* Replaces the old stock-video background: a paint-bloom reveal
+              (soft champagne/gold blooms, matching the wordmark gradient and
+              flare accent below) that a fast decelerating spin resolves out
+              of, landing on the static MAXINA ballerina mark. `onFormed`
+              fires early in that sequence (see MaxinaIntroReveal) so the
+              rest of the copy doesn't wait on the full ~2s reveal to start
+              its own fade-in. */}
+          <MaxinaIntroReveal
+            className="w-40 h-52 mb-2"
+            onFormed={() => setShowContent(true)}
+          />
+
           {/* Eyebrow - Small, uppercase, tracking-wide */}
           <p
             className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
