@@ -50,7 +50,7 @@ const mockInsights: MarketInsight[] = [
   {
     id: "3",
     title: "Market Sentiment Analysis",
-    description: "VTN showing strong accumulation patterns",
+    description: "VTNA showing strong accumulation patterns",
     impact: "positive",
     confidence: 78,
     timeframe: "This week",
@@ -63,7 +63,7 @@ const stakingData: StakingOptimization = {
   optimizedAPY: 6.8,
   stakingAmount: 800,
   unstakeDate: "2024-03-15",
-  recommendation: "Consider increasing stake by 200 VTN for optimal rewards"
+  recommendation: "Consider increasing stake by 200 VTNA for optimal rewards"
 };
 
 const getImpactConfig = (impact: MarketInsight["impact"]) => {

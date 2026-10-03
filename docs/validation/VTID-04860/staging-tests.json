@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04860",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "the token is VTNA in every catalog, toast and the AI user context",
+      "ref": "npx vitest run src/lib/vtna-token-name.test.ts",
+      "cwd": ".",
+      "reason": "Text-only rename across the 11 translation catalogs, three reward toasts and wallet cards, plus the fetch-user-context lookup that still asked for the retired currency_type 'VTN' and so always reported a 0 VTNA balance. Ticket serial numbers (VTN-<date>-<n>) are not the token and stay."
+    }
+  ]
+}

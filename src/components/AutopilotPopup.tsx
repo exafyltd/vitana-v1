@@ -339,7 +339,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     try {
       const json = await completeRecommendation(actionId);
       if (json?.ok && json.via === "complete" && json.reward) {
-        toast.success(`+${json.reward} VTN earned!`);
+        toast.success(`+${json.reward} VTNA earned!`);
       }
       fetchRecommendations();
     } finally {
