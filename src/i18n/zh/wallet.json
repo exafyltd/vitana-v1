@@ -56,7 +56,8 @@
         "diary_streak_3": "连续 3 天写日记",
         "diary_streak_7": "连续 7 天写日记",
         "diary_streak_30": "连续 30 天写日记",
-        "invite_friend_joined": "你邀请的人加入了"
+        "invite_friend_joined": "你邀请的人加入了",
+        "invited_friends_10": "你邀请的 10 位朋友已加入——一次性奖励"
       },
       "neverTitle": "不会获得 VTNA 的情况",
       "never": {

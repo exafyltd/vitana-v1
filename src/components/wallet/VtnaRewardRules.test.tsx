@@ -76,7 +76,7 @@ describe('VtnaRewardRules (VTID-04864)', () => {
     const ids = [
       'onboarding_complete', 'profile_complete', 'first_diary', 'first_group', 'first_event_rsvp',
       'first_connection', 'five_connections', 'first_match_accepted', 'first_health_check',
-      'diary_streak_3', 'diary_streak_7', 'diary_streak_30', 'invite_friend_joined',
+      'diary_streak_3', 'diary_streak_7', 'diary_streak_30', 'invite_friend_joined', 'invited_friends_10',
     ];
     for (const lc of ['de', 'en', 'es', 'fr', 'pt', 'pl', 'ru', 'sr', 'ar', 'zh', 'tr']) {
       const rr = JSON.parse(readFileSync(join(__dirname, `../../i18n/${lc}/wallet.json`), 'utf8')).wallet.rewardRules;

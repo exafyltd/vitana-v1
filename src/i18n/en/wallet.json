@@ -56,7 +56,8 @@
         "diary_streak_3": "3-day diary streak",
         "diary_streak_7": "7-day diary streak",
         "diary_streak_30": "30-day diary streak",
-        "invite_friend_joined": "Someone you invited joins"
+        "invite_friend_joined": "Someone you invited joins",
+        "invited_friends_10": "10 friends you invited have joined — one-time bonus"
       },
       "neverTitle": "What never earns VTNA",
       "never": {
