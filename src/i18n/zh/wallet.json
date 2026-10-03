@@ -33,7 +33,7 @@
       "title": "你如何赚取 VTNA",
       "summary": "你亲自完成真实的事情会获得 VTNA——每个里程碑一次——坚持下去也会获得。",
       "earnedBalance": "你已赚取",
-      "value": "1 VTNA = 0.01 €",
+      "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
       "amountPlain": "{amount} VTNA",
       "earned": "已获得",

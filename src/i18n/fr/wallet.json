@@ -33,7 +33,7 @@
       "title": "Comment tu gagnes des VTNA",
       "summary": "Tu gagnes des VTNA pour de vraies actions que tu fais toi-même, une fois par étape, et pour ta régularité.",
       "earnedBalance": "Gagné par toi",
-      "value": "1 VTNA = 0,01 €",
+      "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
       "amountPlain": "{amount} VTNA",
       "earned": "Gagné",

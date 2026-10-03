@@ -33,7 +33,7 @@
       "title": "VTNA nasıl kazanırsın",
       "summary": "Kendin yaptığın gerçek şeyler için, her dönüm noktasında bir kez, ve istikrarlı kaldığın için VTNA kazanırsın.",
       "earnedBalance": "Kazandığın",
-      "value": "1 VTNA = 0,01 €",
+      "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
       "amountPlain": "{amount} VTNA",
       "earned": "Kazanıldı",

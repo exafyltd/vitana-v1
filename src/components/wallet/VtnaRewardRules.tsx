@@ -74,7 +74,11 @@ export function VtnaRewardRules() {
             <span className="text-2xl font-bold" data-testid="reward-rules-earned-balance">
               {t('wallet.rewardRules.amountPlain', { amount: fmtNumber(data.earned_balance) })}
             </span>
-            <span className="text-xs text-muted-foreground">{t('wallet.rewardRules.value')}</span>
+            <span className="text-xs text-muted-foreground">
+              {t('wallet.rewardRules.value', {
+                rate: fmtNumber(data.eur_per_vtna, { style: 'currency', currency: 'EUR', maximumFractionDigits: 4 }),
+              })}
+            </span>
           </div>
         </CardContent>
       </Card>

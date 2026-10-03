@@ -33,7 +33,7 @@
       "title": "Как ты зарабатываешь VTNA",
       "summary": "Ты получаешь VTNA за реальные дела, которые делаешь сам, один раз за каждый этап, и за постоянство.",
       "earnedBalance": "Заработано тобой",
-      "value": "1 VTNA = 0,01 €",
+      "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
       "amountPlain": "{amount} VTNA",
       "earned": "Получено",

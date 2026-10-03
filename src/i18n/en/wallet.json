@@ -33,7 +33,7 @@
       "title": "How you earn VTNA",
       "summary": "You earn VTNA for real things you do yourself, once per milestone, and for staying consistent.",
       "earnedBalance": "Earned by you",
-      "value": "1 VTNA = €0.01",
+      "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
       "amountPlain": "{amount} VTNA",
       "earned": "Earned",

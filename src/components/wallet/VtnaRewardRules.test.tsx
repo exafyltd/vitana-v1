@@ -9,9 +9,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RewardOverview } from '@/hooks/useRewardRules';
 
 const mockUseRewardRules = vi.fn();
-vi.mock('@/hooks/useRewardRules', () => ({ useRewardRules: () => mockUseRewardRules() }));
+vi.mock('@/hooks/useRewardRules', async (orig) => ({
+  ...(await orig<typeof import('@/hooks/useRewardRules')>()),
+  useRewardRules: () => mockUseRewardRules(),
+}));
 
 import { VtnaRewardRules } from './VtnaRewardRules';
+import { rewardRulesQueryKey } from '@/hooks/useRewardRules';
 
 const overview: RewardOverview = {
   ok: true,
@@ -53,6 +57,17 @@ describe('VtnaRewardRules (VTID-04864)', () => {
     expect(done.textContent).not.toMatch(/\+50 VTNA/); // earned rules show a badge, not an amount to chase
     expect(screen.getByTestId('reward-rule-invite_friend_joined').textContent).toMatch(/2\D+10\D+30/);
     expect(screen.getByTestId('reward-rules-earned-balance').textContent).toMatch(/70 VTNA/);
+  });
+
+  it('shows the conversion rate the gateway returns, not a hardcoded one', () => {
+    mockUseRewardRules.mockReturnValue({ data: { ...overview, eur_per_vtna: 0.02 }, isLoading: false, error: null });
+    render(<VtnaRewardRules />);
+    expect(screen.getByText(/1 VTNA = .*0[.,]02/)).toBeInTheDocument();
+  });
+
+  it('caches per signed-in member, so another account never sees this one', () => {
+    expect(rewardRulesQueryKey('user-a')).not.toEqual(rewardRulesQueryKey('user-b'));
+    expect(rewardRulesQueryKey('user-a')).toContain('user-a');
   });
 
   it('lists what never earns and the recent rewards', () => {

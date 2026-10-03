@@ -33,7 +33,7 @@
       "title": "Kako zarađuješ VTNA",
       "summary": "VTNA zarađuješ za stvarne stvari koje sam radiš, jednom po prekretnici, i za upornost.",
       "earnedBalance": "Zaradio si",
-      "value": "1 VTNA = 0,01 €",
+      "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
       "amountPlain": "{amount} VTNA",
       "earned": "Zarađeno",

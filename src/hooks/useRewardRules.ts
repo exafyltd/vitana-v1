@@ -5,6 +5,7 @@
  */
 import { useQuery } from '@tanstack/react-query';
 import { communityFetch } from '@/lib/community-gateway';
+import { useAuth } from '@/context/AuthProvider';
 
 export type RewardRuleGroup = 'first_steps' | 'habits' | 'community';
 
@@ -27,7 +28,12 @@ export interface RewardOverview {
   recent: Array<{ rule_id: string | null; amount: number; created_at: string }>;
 }
 
-export const REWARD_RULES_QUERY_KEY = ['wallet', 'reward-rules'] as const;
+/** Per-member: the response holds this member's balance and rewards, so the
+ *  cache must never be reused by another account signing in on the same
+ *  browser. */
+export function rewardRulesQueryKey(userId: string | null) {
+  return ['wallet', 'reward-rules', userId ?? 'anonymous'] as const;
+}
 
 export async function fetchRewardRules(): Promise<RewardOverview> {
   const resp = await communityFetch('/api/v1/wallet/reward-rules');
@@ -37,9 +43,12 @@ export async function fetchRewardRules(): Promise<RewardOverview> {
 }
 
 export function useRewardRules() {
+  const { user, loading } = useAuth();
+  const userId = user?.id ?? null;
   return useQuery({
-    queryKey: REWARD_RULES_QUERY_KEY,
+    queryKey: rewardRulesQueryKey(userId),
     queryFn: fetchRewardRules,
+    enabled: !loading && !!userId,
     staleTime: 60_000,
   });
 }
