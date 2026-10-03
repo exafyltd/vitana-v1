@@ -28,7 +28,49 @@
     "noActivity": "Aucune activité pour l'instant",
     "noActivityDesc": "Tes transactions apparaîtront ici.",
     "displayCurrency": "Devise d'affichage",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "Comment tu gagnes des VTNA",
+      "summary": "Tu gagnes des VTNA pour de vraies actions que tu fais toi-même, une fois par étape, et pour ta régularité.",
+      "earnedBalance": "Gagné par toi",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Gagné",
+      "cap": "{used} sur {count} en {days} jours",
+      "groups": {
+        "first_steps": "Premiers pas – une fois chacun",
+        "habits": "Habitudes – étapes de série",
+        "community": "Communauté – quand les autres réagissent"
+      },
+      "rules": {
+        "onboarding_complete": "Termine ton accueil",
+        "profile_complete": "Complète ton profil",
+        "first_diary": "Écris ta première entrée de journal",
+        "first_group": "Rejoins ton premier groupe",
+        "first_event_rsvp": "Inscris-toi à ton premier événement",
+        "first_connection": "Crée ta première connexion",
+        "five_connections": "Atteins cinq connexions",
+        "first_match_accepted": "Accepte ton premier match",
+        "first_health_check": "Fais ton premier bilan de santé",
+        "diary_streak_3": "Série de journal de 3 jours",
+        "diary_streak_7": "Série de journal de 7 jours",
+        "diary_streak_30": "Série de journal de 30 jours",
+        "invite_friend_joined": "Une personne que tu as invitée rejoint",
+        "invited_friends_10": "10 amis que tu as invités ont rejoint – bonus unique"
+      },
+      "neverTitle": "Ce qui ne rapporte jamais de VTNA",
+      "never": {
+        "done_by_vitana": "Tout ce que Vitana fait ou rédige pour toi",
+        "purchases": "Crédits et packs bonus achetés",
+        "self_reported": "Actions que le système ne peut pas vérifier"
+      },
+      "recentTitle": "Tes récompenses récentes",
+      "recentEmpty": "Pas encore de récompense – ta première étape t'attend plus haut.",
+      "recentOther": "Récompense",
+      "loading": "Chargement…",
+      "error": "Tes récompenses n'ont pas pu être chargées pour le moment."
+    }
   },
   "_pending_review": {}
 }

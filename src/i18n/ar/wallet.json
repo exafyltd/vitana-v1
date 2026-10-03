@@ -28,7 +28,49 @@
     "noActivity": "لا يوجد نشاط بعد",
     "noActivityDesc": "ستظهر معاملاتك هنا.",
     "displayCurrency": "عملة العرض",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "كيف تكسب VTNA",
+      "summary": "تكسب VTNA مقابل أشياء حقيقية تقوم بها بنفسك، مرة واحدة لكل إنجاز، ومقابل الاستمرارية.",
+      "earnedBalance": "ما كسبته",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "تم الكسب",
+      "cap": "{used} من {count} خلال {days} يومًا",
+      "groups": {
+        "first_steps": "الخطوات الأولى – مرة واحدة لكل منها",
+        "habits": "العادات – إنجازات التتابع",
+        "community": "المجتمع – عندما يتفاعل الآخرون"
+      },
+      "rules": {
+        "onboarding_complete": "أكمل التعريف",
+        "profile_complete": "أكمل ملفك الشخصي",
+        "first_diary": "اكتب أول تدوينة في يومياتك",
+        "first_group": "انضم إلى أول مجموعة",
+        "first_event_rsvp": "سجّل حضورك في أول فعالية",
+        "first_connection": "كوّن أول تواصل",
+        "five_connections": "صِل إلى خمسة تواصلات",
+        "first_match_accepted": "اقبل أول تطابق",
+        "first_health_check": "أجرِ أول فحص صحي",
+        "diary_streak_3": "يوميات 3 أيام متتالية",
+        "diary_streak_7": "يوميات 7 أيام متتالية",
+        "diary_streak_30": "يوميات 30 يومًا متتاليًا",
+        "invite_friend_joined": "ينضم شخص دعوته",
+        "invited_friends_10": "انضم 10 أصدقاء دعوتهم – مكافأة لمرة واحدة"
+      },
+      "neverTitle": "ما لا يمنح VTNA أبدًا",
+      "never": {
+        "done_by_vitana": "كل ما تقوم به Vitana أو تصوغه نيابةً عنك",
+        "purchases": "الأرصدة وحزم المكافآت المشتراة",
+        "self_reported": "الأفعال التي لا يمكن للنظام التحقق منها"
+      },
+      "recentTitle": "مكافآتك الأخيرة",
+      "recentEmpty": "لا توجد مكافآت بعد – خطوتك الأولى بانتظارك في الأعلى.",
+      "recentOther": "مكافأة",
+      "loading": "جارٍ التحميل…",
+      "error": "تعذّر تحميل مكافآتك الآن."
+    }
   },
   "_pending_review": {}
 }

@@ -37,7 +37,7 @@ const mockActions: PredictiveAction[] = [
   {
     id: "2",
     title: "Optimal Cash-Out Window",
-    description: "Market conditions favor VTN conversion in 2-3 days",
+    description: "Market conditions favor VTNA conversion in 2-3 days",
     priority: "medium",
     category: "cashout",
     confidence: 87,

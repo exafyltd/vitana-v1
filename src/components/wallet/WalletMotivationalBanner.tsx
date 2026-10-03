@@ -46,7 +46,7 @@ const messages = {
       "Add credits today and receive **25% bonus rewards**, {name}!"
     ],
     tokens: [
-      "Stake your VTN today and earn **extra rewards on growth**, {name}!",
+      "Stake your VTNA today and earn **extra rewards on growth**, {name}!",
       "Convert rewards now and get **15% bonus tokens**, {name}!"
     ],
     membership: [

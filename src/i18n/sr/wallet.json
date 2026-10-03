@@ -28,7 +28,49 @@
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
     "displayCurrency": "Valuta prikaza",
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardRules": {
+      "title": "Kako zarađuješ VTNA",
+      "summary": "VTNA zarađuješ za stvarne stvari koje sam radiš, jednom po prekretnici, i za upornost.",
+      "earnedBalance": "Zaradio si",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Zarađeno",
+      "cap": "{used} od {count} za {days} dana",
+      "groups": {
+        "first_steps": "Prvi koraci – po jednom",
+        "habits": "Navike – nizovi",
+        "community": "Zajednica – kada drugi odgovore"
+      },
+      "rules": {
+        "onboarding_complete": "Završi uvod",
+        "profile_complete": "Popuni profil",
+        "first_diary": "Napiši prvi unos u dnevnik",
+        "first_group": "Pridruži se prvoj grupi",
+        "first_event_rsvp": "Prijavi se na prvi događaj",
+        "first_connection": "Ostvari prvu vezu",
+        "five_connections": "Dostigni pet veza",
+        "first_match_accepted": "Prihvati prvi meč",
+        "first_health_check": "Uradi prvu proveru zdravlja",
+        "diary_streak_3": "3 dana dnevnika zaredom",
+        "diary_streak_7": "7 dana dnevnika zaredom",
+        "diary_streak_30": "30 dana dnevnika zaredom",
+        "invite_friend_joined": "Pridruži se neko koga si pozvao",
+        "invited_friends_10": "Pridružilo se 10 prijatelja koje si pozvao – jednokratni bonus"
+      },
+      "neverTitle": "Za šta nikad nema VTNA",
+      "never": {
+        "done_by_vitana": "Sve što Vitana uradi ili napiše umesto tebe",
+        "purchases": "Kupljeni krediti i bonus paketi",
+        "self_reported": "Radnje koje sistem ne može da proveri"
+      },
+      "recentTitle": "Tvoje nedavne nagrade",
+      "recentEmpty": "Još nema nagrada – tvoj prvi korak te čeka gore.",
+      "recentOther": "Nagrada",
+      "loading": "Učitavanje…",
+      "error": "Tvoje nagrade trenutno nije moguće učitati."
+    }
   },
   "_pending_review": {}
 }

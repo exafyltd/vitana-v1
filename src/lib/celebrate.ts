@@ -253,7 +253,7 @@ function formatLiftTitle(
     const top = moved.slice(0, 2);
     leading = top.map(([k, v]) => `${PILLAR_LABEL[k]} +${v}`).join(", ");
   }
-  const vtn = vtnReward && vtnReward > 0 ? ` · +${vtnReward} VTN` : "";
+  const vtn = vtnReward && vtnReward > 0 ? ` · +${vtnReward} VTNA` : "";
   const total = typeof newTotal === "number" ? `. Index now ${newTotal}` : "";
   return `${leading}${vtn}${total} ✨`;
 }

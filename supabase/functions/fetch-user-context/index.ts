@@ -499,7 +499,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     economic: {
       balances: {
         USD: wallets.find((w: any) => w.currency_type === 'USD')?.balance || 0,
-        VTN: wallets.find((w: any) => w.currency_type === 'VTN')?.balance || 0,
+        VTNA: wallets.find((w: any) => w.currency_type === 'VTNA')?.balance || 0,
         CREDITS: wallets.find((w: any) => w.currency_type === 'CREDITS')?.balance || 0
       },
       recentTransactions: walletTransactions.map((tx: any) => ({
