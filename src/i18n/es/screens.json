@@ -41,7 +41,6 @@
       "statusDone": "Listo",
       "sessionProgress": "{done}/{total}",
       "sessionComplete": "Episodio completado",
-      "_pending_review": {},
       "chapter_prolog": "Prólogo",
       "seasonLabel": "Temporada {n} · {name}"
     },
@@ -5431,7 +5430,6 @@
       "cancelReply": "Cancelar respuesta",
       "likeComment": "Me gusta el comentario",
       "feedItemError": "Esta publicación no se pudo mostrar.",
-      "_pending_review": {},
       "playTodaysEpisode": "Reproducir episodio {session}"
     },
     "icons": {
@@ -6232,7 +6230,6 @@
       "eGAlex": "ej. alex",
       "welcomeMaxina": "Bienvenido a Maxina",
       "yourLongevityJourneyBeginsNow": "Tu viaje de longevidad comienza ahora",
-      "_pending_review": {},
       "speechWelcome": "¡Bienvenido a Maxina, tu comunidad de longevidad! Soy Vitana, tu compañera personal.",
       "speechNoRush": "Aquí no tienes que descubrir nada por tu cuenta, y no hay prisa.",
       "speechAudiobook": "La forma más fácil de empezar es tu audiolibro: episodios cortos en los que te explico, paso a paso, cómo Maxina te ayuda a vivir de forma más sana y más tiempo. Solo tienes que escuchar.",
@@ -9378,8 +9375,7 @@
         "masterNewSkills": "Domina nuevas habilidades",
         "spiritualLife": "Vida espiritual",
         "earnFromRecommendations": "Gana con recomendaciones"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Aún sin Servicios",
@@ -10318,8 +10314,7 @@
     },
     "guidedMode": {
       "guidedLabel": "Audiolibro",
-      "fullLabel": "Aplicación Completa",
-      "_pending_review": {}
+      "fullLabel": "Aplicación Completa"
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10357,8 +10352,7 @@
       "viewIndex": "Ver Índice",
       "viewJourney": "Ver Mi Viaje",
       "viewMatch": "Ver Pareja",
-      "dismissCard": "Descartar tarjeta",
-      "_pending_review": {}
+      "dismissCard": "Descartar tarjeta"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirigiendo a la App Store",
@@ -12089,7 +12083,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Audiolibro",
       "albumTitle": "Audiolibro Maxina · Episodio {n}",
       "episodeN": "Episodio {n}",

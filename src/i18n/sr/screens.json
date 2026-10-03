@@ -41,7 +41,6 @@
       "statusDone": "Gotovo",
       "sessionProgress": "{done}/{total}",
       "sessionComplete": "Epizoda završena",
-      "_pending_review": {},
       "chapter_prolog": "Prolog",
       "seasonLabel": "Sezona {n} · {name}"
     },
@@ -6284,7 +6283,6 @@
       "eGAlex": "npr. alex",
       "welcomeMaxina": "Dobrodošao u Maxinu",
       "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada",
-      "_pending_review": {},
       "speechWelcome": "Dobro došao u Maxinu, tvoju zajednicu dugovečnosti! Ja sam Vitana, tvoja lična pratilja.",
       "speechNoRush": "Ovde ne moraš ništa sam da otkrivaš – i nema žurbe.",
       "speechAudiobook": "Najlakše je da počneš sa svojom audio-knjigom: kratke epizode u kojima ti korak po korak objašnjavam kako ti Maxina pomaže da živiš zdravije i duže. Treba samo da slušaš.",
@@ -9440,8 +9438,7 @@
         "masterNewSkills": "Savladaj nove veštine",
         "spiritualLife": "Duhovni život",
         "earnFromRecommendations": "Zaradi od preporuka"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Još Uvek Nema Usluga",
@@ -10407,8 +10404,7 @@
     },
     "guidedMode": {
       "guidedLabel": "Audio-knjiga",
-      "fullLabel": "Puna aplikacija",
-      "_pending_review": {}
+      "fullLabel": "Puna aplikacija"
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10446,8 +10442,7 @@
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu",
-      "_pending_review": {}
+      "dismissCard": "Odbaci karticu"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -12298,7 +12293,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Audio-knjiga",
       "albumTitle": "Maxina audio-knjiga · Epizoda {n}",
       "episodeN": "Epizoda {n}",

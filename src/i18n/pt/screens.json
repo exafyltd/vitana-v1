@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Audiolivro",
-      "fullLabel": "App Completo",
-      "_pending_review": {}
+      "fullLabel": "App Completo"
     },
     "guidedCatalog": {
       "allChapters": "Tudo",
@@ -46,7 +45,6 @@
       "skip": "Ignorar por agora",
       "doneToast": "Prática concluída!",
       "doneError": "Não foi possível guardar.",
-      "_pending_review": {},
       "chapter_prolog": "Prólogo",
       "seasonLabel": "Temporada {n} · {name}"
     },
@@ -5436,7 +5434,6 @@
       "cancelReply": "Cancelar resposta",
       "likeComment": "Curtir comentário",
       "feedItemError": "Esta publicação não pôde ser exibida.",
-      "_pending_review": {},
       "playTodaysEpisode": "Ouvir episódio {session}"
     },
     "icons": {
@@ -6237,7 +6234,6 @@
       "eGAlex": "ex: alex",
       "welcomeMaxina": "Bem-vindo à Maxina",
       "yourLongevityJourneyBeginsNow": "Sua jornada de longevidade começa agora",
-      "_pending_review": {},
       "speechWelcome": "Bem-vindo à Maxina, sua comunidade de longevidade! Eu sou a Vitana, sua companheira pessoal.",
       "speechNoRush": "Aqui você não precisa descobrir nada sozinho – e não há pressa.",
       "speechAudiobook": "O jeito mais fácil de começar é o seu audiolivro: episódios curtos em que eu explico, passo a passo, como a Maxina te ajuda a viver de forma mais saudável e por mais tempo. Você só precisa ouvir.",
@@ -8547,8 +8543,7 @@
       "viewIndex": "Ver Índice",
       "viewJourney": "Ver a Minha Jornada",
       "viewMatch": "Ver Par",
-      "dismissCard": "Ignorar cartão",
-      "_pending_review": {}
+      "dismissCard": "Ignorar cartão"
     },
     "voucher": {
       "friendExampleCom": "amigo@exemplo.com",
@@ -9422,8 +9417,7 @@
         "masterNewSkills": "Domina Novas Habilidades",
         "spiritualLife": "Vida Espiritual",
         "earnFromRecommendations": "Ganha com recomendações"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Ainda sem serviços",
@@ -13150,7 +13144,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Audiolivro",
       "albumTitle": "Audiolivro Maxina · Episódio {n}",
       "episodeN": "Episódio {n}",

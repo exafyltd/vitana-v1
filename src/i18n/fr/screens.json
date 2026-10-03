@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Livre audio",
-      "fullLabel": "Appli complète",
-      "_pending_review": {}
+      "fullLabel": "Appli complète"
     },
     "guidedCatalog": {
       "allChapters": "Tout",
@@ -46,7 +45,6 @@
       "skip": "Passer pour l'instant",
       "doneToast": "Entraînement terminé !",
       "doneError": "Impossible d'enregistrer.",
-      "_pending_review": {},
       "chapter_prolog": "Prologue",
       "seasonLabel": "Saison {n} · {name}"
     },
@@ -6285,7 +6283,6 @@
       "eGAlex": "ex. alex",
       "welcomeMaxina": "Bienvenue chez Maxina",
       "yourLongevityJourneyBeginsNow": "Ton voyage vers la longévité commence maintenant",
-      "_pending_review": {},
       "speechWelcome": "Bienvenue chez Maxina, ta communauté de longévité ! Je suis Vitana, ta compagne personnelle.",
       "speechNoRush": "Ici, tu n'as rien à découvrir seul·e – et rien ne presse.",
       "speechAudiobook": "Le plus simple pour commencer, c'est ton livre audio : de courts épisodes où je t'explique, pas à pas, comment Maxina t'aide à vivre en meilleure santé et plus longtemps. Tu n'as qu'à écouter.",
@@ -8605,8 +8602,7 @@
       "viewIndex": "Voir l'Index",
       "viewJourney": "Voir mon parcours",
       "viewMatch": "Voir la correspondance",
-      "dismissCard": "Ignorer la carte",
-      "_pending_review": {}
+      "dismissCard": "Ignorer la carte"
     },
     "voucher": {
       "friendExampleCom": "ami@exemple.com",
@@ -9480,8 +9476,7 @@
         "masterNewSkills": "Maîtrise de nouvelles compétences",
         "spiritualLife": "Vie spirituelle",
         "earnFromRecommendations": "Gagne grâce aux recommandations"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Aucun service pour l'instant",
@@ -13215,7 +13210,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Livre audio",
       "albumTitle": "Livre audio Maxina · Épisode {n}",
       "episodeN": "Épisode {n}",

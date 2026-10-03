@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "有声书",
-      "fullLabel": "完整应用",
-      "_pending_review": {}
+      "fullLabel": "完整应用"
     },
     "guidedCatalog": {
       "allChapters": "全部",
@@ -46,7 +45,6 @@
       "skip": "暂时跳过",
       "doneToast": "练习完成！",
       "doneError": "无法保存。",
-      "_pending_review": {},
       "chapter_prolog": "序章",
       "seasonLabel": "第 {n} 季 · {name}"
     },
@@ -6285,7 +6283,6 @@
       "eGAlex": "例如 alex",
       "welcomeMaxina": "欢迎来到 Maxina",
       "yourLongevityJourneyBeginsNow": "你的长寿之旅现在开始",
-      "_pending_review": {},
       "speechWelcome": "欢迎来到 Maxina，你的长寿社区！我是 Vitana，你的私人伙伴。",
       "speechNoRush": "在这里，你不必独自摸索——也不用着急。",
       "speechAudiobook": "最简单的开始方式是你的有声书：在一集集简短的内容里，我会一步一步告诉你 Maxina 如何帮助你活得更健康、更长久。你只需要听。",
@@ -8605,8 +8602,7 @@
       "viewIndex": "查看指数",
       "viewJourney": "查看我的旅程",
       "viewMatch": "查看匹配",
-      "dismissCard": "关闭卡片",
-      "_pending_review": {}
+      "dismissCard": "关闭卡片"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -9480,8 +9476,7 @@
         "masterNewSkills": "掌握新技能",
         "spiritualLife": "精神生活",
         "earnFromRecommendations": "通过推荐赚取收益"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "暂无服务",
@@ -10695,13 +10690,6 @@
           "salesModelReferral": true,
           "salesModelReferralHint": true,
           "salesModelDirect": true,
-          "salesModelSoon": true,
-          "salesModelDirectHint": true,
-          "deliveryHeading": true,
-          "deliveryHint": true,
-          "deliveryEu": true,
-          "deliveryUs": true,
-          "deliveryMena": true,
           "deliveryDaysUnit": true
         },
         "pickTitle": "What do you sell?",
@@ -10748,13 +10736,13 @@
         "salesModelReferral": "Send buyers to your shop",
         "salesModelReferralHint": "We show your product in Discover and send buyers to your product page. You sell and ship exactly as you do today.",
         "salesModelDirect": "Sell directly through Vitanaland",
-        "salesModelSoon": "Soon",
-        "salesModelDirectHint": "Buyers pay inside the app. Not available yet: we do not pay out to suppliers yet.",
-        "deliveryHeading": "How long does delivery usually take?",
-        "deliveryHint": "In days, only for the regions you ship to. Optional — you can add this later.",
-        "deliveryEu": "Europe",
-        "deliveryUs": "United States",
-        "deliveryMena": "Middle East & North Africa",
+        "salesModelSoon": "即将推出",
+        "salesModelDirectHint": "买家在应用内支付。暂不可用：我们尚未向供应商付款。",
+        "deliveryHeading": "配送一般需要多久？",
+        "deliveryHint": "以天为单位，仅限你发货的地区。可选 — 你可以稍后添加。",
+        "deliveryEu": "欧洲",
+        "deliveryUs": "美国",
+        "deliveryMena": "中东和北非",
         "deliveryDaysUnit": "days"
       },
       "join": {
@@ -13226,7 +13214,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "有声书",
       "albumTitle": "Maxina 有声书 · 第 {n} 集",
       "episodeN": "第 {n} 集",

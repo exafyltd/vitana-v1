@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "كتاب صوتي",
-      "fullLabel": "التطبيق الكامل",
-      "_pending_review": {}
+      "fullLabel": "التطبيق الكامل"
     },
     "guidedCatalog": {
       "allChapters": "الكل",
@@ -46,7 +45,6 @@
       "skip": "تخطي الآن",
       "doneToast": "اكتمل التمرين!",
       "doneError": "تعذر الحفظ.",
-      "_pending_review": {},
       "chapter_prolog": "المقدمة",
       "seasonLabel": "الموسم {n} · {name}"
     },
@@ -6285,7 +6283,6 @@
       "eGAlex": "مثال: alex",
       "welcomeMaxina": "مرحباً بك في Maxina",
       "yourLongevityJourneyBeginsNow": "رحلتك نحو طول العمر تبدأ الآن",
-      "_pending_review": {},
       "speechWelcome": "مرحبًا بك في Maxina، مجتمعك لطول العمر! أنا Vitana، رفيقتك الشخصية.",
       "speechNoRush": "لا داعي لأن تكتشف أي شيء بمفردك هنا – ولا عجلة.",
       "speechAudiobook": "أسهل طريقة للبدء هي كتابك الصوتي: حلقات قصيرة أشرح لك فيها، خطوة بخطوة، كيف تساعدك Maxina على العيش بصحة أفضل ولمدة أطول. كل ما عليك هو الاستماع.",
@@ -8605,8 +8602,7 @@
       "viewIndex": "عرض المؤشر",
       "viewJourney": "عرض رحلتي",
       "viewMatch": "عرض التطابق",
-      "dismissCard": "تجاهل البطاقة",
-      "_pending_review": {}
+      "dismissCard": "تجاهل البطاقة"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -9480,8 +9476,7 @@
         "masterNewSkills": "أتقن مهارات جديدة",
         "spiritualLife": "الحياة الروحية",
         "earnFromRecommendations": "اربح من التوصيات"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "لا توجد خدمات بعد",
@@ -12260,7 +12255,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "كتاب صوتي",
       "albumTitle": "كتاب Maxina الصوتي · الحلقة {n}",
       "episodeN": "الحلقة {n}",
