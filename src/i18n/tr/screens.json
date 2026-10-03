@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Sesli kitap",
-      "fullLabel": "Tüm Uygulama",
-      "_pending_review": {}
+      "fullLabel": "Tüm Uygulama"
     },
     "guidedCatalog": {
       "allChapters": "Tümü",
@@ -46,7 +45,6 @@
       "skip": "Şimdilik atla",
       "doneToast": "Pratik tamamlandı!",
       "doneError": "Kaydedilemedi.",
-      "_pending_review": {},
       "chapter_prolog": "Önsöz",
       "seasonLabel": "Sezon {n} · {name}"
     },
@@ -6285,7 +6283,6 @@
       "eGAlex": "örn. alex",
       "welcomeMaxina": "Maxina'ya hoş geldin",
       "yourLongevityJourneyBeginsNow": "Uzun yaşam yolculuğun şimdi başlıyor",
-      "_pending_review": {},
       "speechWelcome": "Uzun yaşam topluluğun Maxina'ya hoş geldin! Ben Vitana, kişisel yol arkadaşın.",
       "speechNoRush": "Burada hiçbir şeyi tek başına çözmek zorunda değilsin – ve acele yok.",
       "speechAudiobook": "Başlamanın en kolay yolu sesli kitabın: Maxina'nın daha sağlıklı ve daha uzun yaşamana nasıl yardım ettiğini adım adım anlattığım kısa bölümler. Sadece dinlemen yeterli.",
@@ -8605,8 +8602,7 @@
       "viewIndex": "Endeksi Gör",
       "viewJourney": "Yolculuğumu Gör",
       "viewMatch": "Eşleşmeyi Gör",
-      "dismissCard": "Kartı kapat",
-      "_pending_review": {}
+      "dismissCard": "Kartı kapat"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -9480,8 +9476,7 @@
         "masterNewSkills": "Yeni Beceriler Öğren",
         "spiritualLife": "Ruhsal Yaşam",
         "earnFromRecommendations": "Tavsiyelerden kazan"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Henüz Hizmet Yok",
@@ -12587,13 +12582,13 @@
           "against_invoice_id": "Against invoice",
           "qty": "Returned qty",
           "item_name": "Item",
-          "items": "Lines",
-          "party_type": "Party type",
-          "party_id": "Customer",
-          "reference_number": "Bank reference",
-          "paid_from_account": "From account",
-          "paid_to_account": "To account",
-          "payment_type": "Payment type",
+          "items": "Satırlar",
+          "party_type": "Taraf türü",
+          "party_id": "Müşteri",
+          "reference_number": "Banka referansı",
+          "paid_from_account": "Hesaptan",
+          "paid_to_account": "Hesaba",
+          "payment_type": "Ödeme türü",
           "reference_date": "Reference date",
           "paid_amount": "Amount",
           "lines": "Lines",
@@ -12617,7 +12612,7 @@
           "journal_entry_id": "Journal entry id",
           "opportunity_type": "Opportunity type",
           "lost_reason": "Reason",
-          "sales_invoice_id": "Invoice id",
+          "sales_invoice_id": "Fatura Kimliği",
           "_pending_review": {
             "lead_name": true,
             "company_name": true,
@@ -12646,13 +12641,6 @@
             "against_invoice_id": true,
             "qty": true,
             "item_name": true,
-            "items": true,
-            "party_type": true,
-            "party_id": true,
-            "reference_number": true,
-            "paid_from_account": true,
-            "paid_to_account": true,
-            "payment_type": true,
             "reference_date": true,
             "paid_amount": true,
             "lines": true,
@@ -12675,17 +12663,16 @@
             "expected_revenue": true,
             "journal_entry_id": true,
             "opportunity_type": true,
-            "lost_reason": true,
-            "sales_invoice_id": true
+            "lost_reason": true
           }
         },
         "choices": {
-          "website": "Website",
-          "referral": "Referral",
-          "campaign": "Campaign",
-          "cold_call": "Cold call",
-          "social_media": "Social media",
-          "trade_show": "Trade show",
+          "website": "Web sitesi",
+          "referral": "Yönlendirme",
+          "campaign": "Kampanya",
+          "cold_call": "Soğuk arama",
+          "social_media": "Sosyal medya",
+          "trade_show": "Ticaret fuarı",
           "other": "Other",
           "lead": "Lead",
           "mql": "Marketing qualified",
@@ -12725,12 +12712,6 @@
           "support": "Support",
           "maintenance": "Maintenance",
           "_pending_review": {
-            "website": true,
-            "referral": true,
-            "campaign": true,
-            "cold_call": true,
-            "social_media": true,
-            "trade_show": true,
             "other": true,
             "lead": true,
             "mql": true,
@@ -12894,33 +12875,21 @@
           },
           "opportunityUpdate": {
             "button": "Edit opportunity",
-            "title": "Edit opportunity",
-            "description": "Won and lost opportunities are frozen in ERPClaw — reaching either is a separate command with approval.",
+            "title": "Fırsatı Düzenle",
+            "description": "Kazanılan ve kaybedilen fırsatlar ERPClaw'da dondurulur — bunlardan birine ulaşmak, onayla ayrı bir komuttur.",
             "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
+              "button": true
             }
           },
           "taskUpdate": {
-            "button": "Edit",
-            "title": "Edit task",
-            "description": "Subject, priority, due date and description of the open task.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "button": "Düzenle",
+            "title": "Görevi Düzenle",
+            "description": "Açık görevin konusu, önceliği, bitiş tarihi ve açıklaması."
           },
           "taskCancel": {
-            "button": "Cancel",
-            "title": "Cancel task",
-            "description": "The task is cancelled and stays visible. A reason is required.",
-            "_pending_review": {
-              "button": true,
-              "title": true,
-              "description": true
-            }
+            "button": "İptal Et",
+            "title": "Görevi İptal Et",
+            "description": "Görev iptal edildi ve görünür kalır. Bir neden gereklidir."
           },
           "invoiceCancel": {
             "button": "Cancel",
@@ -13241,7 +13210,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Sesli kitap",
       "albumTitle": "Maxina sesli kitabı · Bölüm {n}",
       "episodeN": "Bölüm {n}",

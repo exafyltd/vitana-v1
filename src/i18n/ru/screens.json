@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Аудиокнига",
-      "fullLabel": "Полное приложение",
-      "_pending_review": {}
+      "fullLabel": "Полное приложение"
     },
     "guidedCatalog": {
       "allChapters": "Все",
@@ -46,7 +45,6 @@
       "skip": "Пропустить пока",
       "doneToast": "Практика завершена!",
       "doneError": "Не удалось сохранить.",
-      "_pending_review": {},
       "chapter_prolog": "Пролог",
       "seasonLabel": "Сезон {n} · {name}"
     },
@@ -6288,7 +6286,6 @@
       "eGAlex": "напр. alex",
       "welcomeMaxina": "Добро пожаловать в Maxina",
       "yourLongevityJourneyBeginsNow": "Твой путь к долголетию начинается сейчас",
-      "_pending_review": {},
       "speechWelcome": "Добро пожаловать в Maxina, твое сообщество долголетия! Я Витана, твоя личная спутница.",
       "speechNoRush": "Здесь тебе не нужно ни в чем разбираться самому – и спешить некуда.",
       "speechAudiobook": "Проще всего начать с твоей аудиокниги: короткие эпизоды, в которых я шаг за шагом объясняю, как Maxina помогает тебе жить здоровее и дольше. Тебе нужно только слушать.",
@@ -8608,8 +8605,7 @@
       "viewIndex": "Посмотри индекс",
       "viewJourney": "Посмотри мой путь",
       "viewMatch": "Посмотри пару",
-      "dismissCard": "Скрыть карточку",
-      "_pending_review": {}
+      "dismissCard": "Скрыть карточку"
     },
     "voucher": {
       "friendExampleCom": "друг@example.com",
@@ -9483,8 +9479,7 @@
         "masterNewSkills": "Освой новые навыки",
         "spiritualLife": "Духовная жизнь",
         "earnFromRecommendations": "Зарабатывай на рекомендациях"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Пока нет услуг",
@@ -13229,7 +13224,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Аудиокнига",
       "albumTitle": "Аудиокнига Maxina · Эпизод {n}",
       "episodeN": "Эпизод {n}",

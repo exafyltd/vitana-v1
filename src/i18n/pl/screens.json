@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Audiobook",
-      "fullLabel": "Pełna aplikacja",
-      "_pending_review": {}
+      "fullLabel": "Pełna aplikacja"
     },
     "guidedCatalog": {
       "allChapters": "Wszystko",
@@ -46,7 +45,6 @@
       "skip": "Pomiń na razie",
       "doneToast": "Ćwiczenie ukończone!",
       "doneError": "Nie udało się zapisać.",
-      "_pending_review": {},
       "chapter_prolog": "Prolog",
       "seasonLabel": "Sezon {n} · {name}"
     },
@@ -6286,7 +6284,6 @@
       "eGAlex": "np. alex",
       "welcomeMaxina": "Witaj w Maxina",
       "yourLongevityJourneyBeginsNow": "Twoja podróż ku długowieczności zaczyna się teraz",
-      "_pending_review": {},
       "speechWelcome": "Witaj w Maxinie, twojej społeczności długowieczności! Jestem Vitana, twoja osobista towarzyszka.",
       "speechNoRush": "Nie musisz tu niczego odkrywać sam – i nie ma pośpiechu.",
       "speechAudiobook": "Najłatwiej zacząć od twojego audiobooka: krótkich odcinków, w których krok po kroku wyjaśniam, jak Maxina pomaga ci żyć zdrowiej i dłużej. Wystarczy, że posłuchasz.",
@@ -8606,8 +8603,7 @@
       "viewIndex": "Zobacz Indeks",
       "viewJourney": "Zobacz Moją Podróż",
       "viewMatch": "Zobacz Dopasowanie",
-      "dismissCard": "Odrzuć kartę",
-      "_pending_review": {}
+      "dismissCard": "Odrzuć kartę"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -9481,8 +9477,7 @@
         "masterNewSkills": "Opanuj Nowe Umiejętności",
         "spiritualLife": "Życie Duchowe",
         "earnFromRecommendations": "Zarabiaj na rekomendacjach"
-      },
-      "_pending_review": {}
+      }
     },
     "businesshub": {
       "noServicesYet": "Brak Usług",
@@ -13237,7 +13232,6 @@
       }
     },
     "audiobook": {
-      "_pending_review": {},
       "title": "Audiobook",
       "albumTitle": "Audiobook Maxina · Odcinek {n}",
       "episodeN": "Odcinek {n}",

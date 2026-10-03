@@ -5,25 +5,20 @@
       "subheading": "无论免费还是付费，每个方案都有四项承诺。",
       "owned": {
         "title": "你分享的，你做主。",
-        "body": "记忆、个人资料、推荐——随时可见、可导出、可删除。",
-        "_pending_review": {}
+        "body": "记忆、个人资料、推荐——随时可见、可导出、可删除。"
       },
       "noSell": {
         "title": "我们绝不出售你的数据。",
-        "body": "不卖给广告网络，不卖给数据中介，不卖给合作伙伴。代码强制执行。",
-        "_pending_review": {}
+        "body": "不卖给广告网络，不卖给数据中介，不卖给合作伙伴。代码强制执行。"
       },
       "earn": {
         "title": "你的推荐可以为你带来收益。",
-        "body": "当你的推荐通过“Sell and Earn”促成交易，或你主持付费直播间时，收入归你所有——透明公开。",
-        "_pending_review": {}
+        "body": "当你的推荐通过“Sell and Earn”促成交易，或你主持付费直播间时，收入归你所有——透明公开。"
       },
       "control": {
         "title": "你决定“Sell and Earn”为你做什么。",
-        "body": "在你的“Connect”设置中有三个开关，让你完全掌控。",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "body": "在你的“Connect”设置中有三个开关，让你完全掌控。"
+      }
     },
     "plans": {
       "needMoreTitle": "需要更多直播时长或主持功能吗？",
@@ -41,27 +36,22 @@
       "free": {
         "name": "免费",
         "tagline": "试试看——无风险，无期限",
-        "price": "免费",
-        "_pending_review": {}
+        "price": "免费"
       },
       "premium": {
         "name": "高级版",
-        "tagline": "日常使用——更多直播时长、更多主持功能、更多存储空间",
-        "_pending_review": {}
+        "tagline": "日常使用——更多直播时长、更多主持功能、更多存储空间"
       },
       "premium_5x": {
         "name": "主持",
         "tagline": "高级用户 · 家庭 · 常用主持人",
-        "ribbon": "5倍高级版",
-        "_pending_review": {}
+        "ribbon": "5倍高级版"
       },
       "premium_20x": {
         "name": "社区",
         "tagline": "教练 · 从业者 · 社区负责人",
-        "ribbon": "20倍尊享版",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "ribbon": "20倍尊享版"
+      }
     },
     "features": {
       "voiceLive": "与 ORB 实时对话",
@@ -92,8 +82,7 @@
       "fairUse": "公平使用",
       "used": "{used} / {limit} {unit}",
       "resetIn": "剩余{duration}重置",
-      "comparisonTitle": "每个套餐包含什么",
-      "_pending_review": {}
+      "comparisonTitle": "每个套餐包含什么"
     },
     "creditPacks": {
       "title": "添加额外时长",
@@ -107,8 +96,7 @@
       "yourBalance": "你的余额：{amount}积分",
       "starterShort": "入门",
       "boostShort": "升级",
-      "powerShort": "强力",
-      "_pending_review": {}
+      "powerShort": "强力"
     },
     "redeemCard": {
       "title": "有代码吗？",
@@ -125,10 +113,8 @@
         "alreadyRedeemed": "你已兑换过此代码",
         "stripeActive": "你已有高级版 — 请将此代码留待以后使用",
         "budgetExhausted": "活动已暂停 — 请稍后再试",
-        "generic": "无法兑换代码",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "generic": "无法兑换代码"
+      }
     },
     "earnings": {
       "title": "你的收入（今年）",
@@ -136,21 +122,40 @@
       "youEarned": "Vitana 帮你赚取 (销售与赚取)",
       "net": "净额",
       "withdraw": "提现",
-      "empty": "暂无收入",
-      "_pending_review": {}
+      "empty": "暂无收入"
     },
     "founding": {
       "bannerTitle": "🏆 成为前 {max} 名",
       "bannerBody": "使用代码 {code} 免费获得 3 个月高级版。",
       "spotsRemaining": "还剩 {remaining} 个名额 (共 {max} 个)",
-      "_pending_review": {}
+      "celebration": {
+        "_pending_review": {
+          "badge": true,
+          "title": true,
+          "bodyFree": true,
+          "bodyPaid": true,
+          "valueLabel": true,
+          "value": true,
+          "until": true,
+          "ctaPremium": true,
+          "ctaContinue": true
+        },
+        "badge": "Founding Member #{seat} of {max}",
+        "title": "Congratulations!",
+        "bodyFree": "You are one of Vitana’s first {max} members – and that earns you a full year of Premium as a gift.",
+        "bodyPaid": "You are one of Vitana’s first {max} members. Thank you for being here from the start!",
+        "valueLabel": "Your gift",
+        "value": "{value} – one year of Premium free",
+        "until": "Premium active until {date}",
+        "ctaPremium": "Discover Premium",
+        "ctaContinue": "Let’s go"
+      }
     },
     "launchGrant": {
       "title": "🎁 欢迎 — Premium 由我们买单",
       "body": "感谢你从一开始就支持我们，你已获得 12 个月 Vitana 高级版。有效期至 {endsAt}。",
       "noAction": "无需操作。尽情享用吧。",
-      "dismissAria": "关闭横幅",
-      "_pending_review": {}
+      "dismissAria": "关闭横幅"
     },
     "mobileBilling": {
       "rootIntro": "管理你的套餐、支付方式和创作者提现。",
@@ -166,8 +171,7 @@
       "paymentNoneBody": "当你开始高级版套餐时添加银行卡。",
       "invoicesTitle": "发票与收据",
       "invoicesBody": "所有发票和收据都可在 Stripe 账单门户中查看。",
-      "summaryRenewsOn": "你的套餐将于 {date} 续订",
-      "_pending_review": {}
+      "summaryRenewsOn": "你的套餐将于 {date} 续订"
     },
     "state": {
       "freeStatus": "你正在使用 Vitana 免费版",
@@ -183,18 +187,15 @@
       "upgrade": "升级",
       "trialEndsAt": "试用期于 {date} 结束",
       "trialingBadge": "试用中",
-      "activeBadge": "有效",
-      "_pending_review": {}
+      "activeBadge": "有效"
     },
     "subscriptionsPage": {
       "title": "订阅",
       "subtitle": "管理你的 Vitana Premium 和积分",
       "tabs": {
         "yourPlan": "你的套餐",
-        "billing": "账单",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "billing": "账单"
+      }
     },
     "faq": {
       "title": "为什么选择 Premium？",
@@ -205,18 +206,15 @@
       "q3": "我可以随时取消吗？",
       "a3": "是的，没有合同。你将保留 Premium 直到当前周期结束。",
       "q4": "你会出售我的数据吗？",
-      "a4": "绝不。我们绝不会将你的数据出售给广告网络、数据经纪人或合作伙伴。",
-      "_pending_review": {}
+      "a4": "绝不。我们绝不会将你的数据出售给广告网络、数据经纪人或合作伙伴。"
     },
     "checkoutErrors": {
       "stripeNotConfigured": "支付尚未完全设置好。请稍后重试。",
       "alreadySubscribed": "你已有活跃订阅。请在账单门户管理。",
       "noStripeCustomer": "请先订阅，然后使用门户。",
       "checkoutFailed": "结账失败",
-      "portalFailed": "无法打开账单门户",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
+      "portalFailed": "无法打开账单门户"
+    }
   },
   "paywall": {
     "title": "解锁 Premium",
@@ -226,58 +224,47 @@
       "title": "实时语音时长已用完",
       "body": "你的实时语音时长已用完。ORB 将以标准模式继续。随时添加实时语音时长或升级。",
       "stayInStandard": "以标准模式继续",
-      "addMinutes": "添加实时语音时长",
-      "_pending_review": {}
+      "addMinutes": "添加实时语音时长"
     },
     "live_room_minutes": {
       "title": "主持时间不足",
       "body": "该房间还剩 5 分钟主持时间。添加主持时间或升级以继续使用。",
       "wrapUp": "结束",
-      "addTime": "添加主持时间",
-      "_pending_review": {}
+      "addTime": "添加主持时间"
     },
     "match_posts": {
       "title": "所有免费发帖已用完",
-      "body": "你本月的免费发帖已用完。高级版为你提供更多。",
-      "_pending_review": {}
+      "body": "你本月的免费发帖已用完。高级版为你提供更多。"
     },
     "match_reveals": {
       "title": "揭示匹配",
-      "body": "你的免费查看次数已用完。使用 {credits} 积分或升级到高级版。",
-      "_pending_review": {}
+      "body": "你的免费查看次数已用完。使用 {credits} 积分或升级到高级版。"
     },
     "lab_analyses": {
       "title": "实验室分析已用完",
-      "body": "你本月的实验室分析已用完。",
-      "_pending_review": {}
+      "body": "你本月的实验室分析已用完。"
     },
     "photo_uploads": {
       "title": "照片上传已用完",
-      "body": "你本月的照片上传已用完。",
-      "_pending_review": {}
+      "body": "你本月的照片上传已用完。"
     },
     "memory_garden": {
       "title": "记忆花园已满",
-      "body": "高级版为你提供更多空间。",
-      "_pending_review": {}
+      "body": "高级版为你提供更多空间。"
     },
     "autopilot": {
       "title": "更多 Autopilot 推荐",
-      "body": "高级版可提高你的活跃推荐数量。",
-      "_pending_review": {}
+      "body": "高级版可提高你的活跃推荐数量。"
     },
     "default": {
       "title": "解锁高级版",
-      "body": "你本期的免费配额已用完。",
-      "_pending_review": {}
+      "body": "你本期的免费配额已用完。"
     },
     "ctaUpgrade": "解锁高级版",
     "ctaCredits": "使用 {credits} 积分",
     "ctaLater": "稍后",
     "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "{date} 重置",
-    "creditsInsufficient": "积分不足，请先充值。",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "creditsInsufficient": "积分不足，请先充值。"
+  }
 }
