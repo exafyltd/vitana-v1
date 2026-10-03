@@ -47,6 +47,7 @@ import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder"
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import RetiredTenantRedirect from "./components/RetiredTenantRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
+import FoundingCelebration from "./components/subscription/FoundingCelebration";
 import SupportTicketFiledListener from "./components/support/SupportTicketFiledListener";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 import { DelayedLoader } from "./components/ui/DelayedLoader";
@@ -774,6 +775,8 @@ const App = () => {
                         Lives inside <BrowserRouter> for useNavigate(). */}
                     <IdentityRedirectListener />
                     <MilestoneCelebration />
+                    {/* VTID-04859: the Founding 1000 free-year celebration, once. */}
+                    <FoundingCelebration />
                     {/* VTID-04385: ticket number on screen after a spoken report. */}
                     <SupportTicketFiledListener />
                     {/* VTID-02601: reminder fire delivery — chime + voice + banner. */}

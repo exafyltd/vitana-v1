@@ -127,7 +127,18 @@
     "founding": {
       "bannerTitle": "🏆 Sei eine der ersten {max}",
       "bannerBody": "3 Monate Premium kostenlos mit Code {code}.",
-      "spotsRemaining": "{remaining} von {max} Plätzen verfügbar"
+      "spotsRemaining": "{remaining} von {max} Plätzen verfügbar",
+      "celebration": {
+        "badge": "Founding Member #{seat} von {max}",
+        "title": "Herzlichen Glückwunsch!",
+        "bodyFree": "Du gehörst zu den ersten {max} Mitgliedern von Vitana – und bekommst dafür ein ganzes Jahr Premium geschenkt.",
+        "bodyPaid": "Du gehörst zu den ersten {max} Mitgliedern von Vitana. Danke, dass du von Anfang an dabei bist!",
+        "valueLabel": "Dein Geschenk",
+        "value": "{value} – ein Jahr Premium gratis",
+        "until": "Premium aktiv bis {date}",
+        "ctaPremium": "Premium entdecken",
+        "ctaContinue": "Los geht’s"
+      }
     },
     "launchGrant": {
       "title": "🎁 Willkommen — Premium auf uns",

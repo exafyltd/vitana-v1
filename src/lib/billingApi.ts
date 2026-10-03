@@ -271,3 +271,29 @@ export async function redeemCode(code: string): Promise<RedeemResult> {
     body: JSON.stringify({ code }),
   });
 }
+
+// ---------------------------------------------------------------------------
+// Founding 1000 (VTID-04859)
+// ---------------------------------------------------------------------------
+
+export interface FoundingMe {
+  ok: true;
+  founding: boolean;
+  max_seats: number;
+  seat_number?: number;
+  grant_source?: 'founding_1000' | 'launch_auto_grant_2026' | 'stripe_active';
+  granted_until?: string | null;
+  value_cents?: number;
+  currency?: string;
+  celebrated?: boolean;
+}
+
+/** The signed-in member's Founding seat. Read-only. */
+export async function fetchFoundingMe(): Promise<FoundingMe> {
+  return billingFetch<FoundingMe>('/api/v1/billing/founding/me', { method: 'GET' });
+}
+
+/** Records that the member closed the celebration, so it shows once. */
+export async function markFoundingCelebrated(): Promise<{ ok: true; celebrated_at: string }> {
+  return billingFetch('/api/v1/billing/founding/celebrated', { method: 'POST' });
+}

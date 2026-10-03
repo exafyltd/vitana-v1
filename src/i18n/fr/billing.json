@@ -5,25 +5,20 @@
       "subheading": "Quatre promesses, sur chaque plan — gratuit ou payant.",
       "owned": {
         "title": "Tu possèdes ce que tu partages.",
-        "body": "Mémoire, profil, recommandations — tout est visible, exportable, supprimable à tout moment.",
-        "_pending_review": {}
+        "body": "Mémoire, profil, recommandations — tout est visible, exportable, supprimable à tout moment."
       },
       "noSell": {
         "title": "Nous ne vendons jamais tes données.",
-        "body": "Ni aux réseaux publicitaires, ni aux courtiers en données, ni aux partenaires. Appliqué dans le code.",
-        "_pending_review": {}
+        "body": "Ni aux réseaux publicitaires, ni aux courtiers en données, ni aux partenaires. Appliqué dans le code."
       },
       "earn": {
         "title": "Tes recommandations peuvent te rapporter.",
-        "body": "Quand ta recommandation conclut une vente via Vendre et Gagner, ou quand tu héberges une Salle Live payante, le revenu est à toi — divulgué de manière transparente.",
-        "_pending_review": {}
+        "body": "Quand ta recommandation conclut une vente via Vendre et Gagner, ou quand tu héberges une Salle Live payante, le revenu est à toi — divulgué de manière transparente."
       },
       "control": {
         "title": "Tu décides ce que Vendre et Gagner fait pour toi.",
-        "body": "Trois interrupteurs dans tes paramètres Connect te donnent un contrôle total.",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "body": "Trois interrupteurs dans tes paramètres Connect te donnent un contrôle total."
+      }
     },
     "plans": {
       "needMoreTitle": "Besoin de plus de temps live ou d'hébergement ?",
@@ -41,27 +36,22 @@
       "free": {
         "name": "Gratuit",
         "tagline": "Essaie-le — sans risque, sans expiration",
-        "price": "Gratuit",
-        "_pending_review": {}
+        "price": "Gratuit"
       },
       "premium": {
         "name": "Premium",
-        "tagline": "Utilisation quotidienne — plus de temps live, plus d'hébergement, plus de stockage",
-        "_pending_review": {}
+        "tagline": "Utilisation quotidienne — plus de temps live, plus d'hébergement, plus de stockage"
       },
       "premium_5x": {
         "name": "Hôte",
         "tagline": "Utilisateurs avancés · familles · hôtes réguliers",
-        "ribbon": "5× Premium",
-        "_pending_review": {}
+        "ribbon": "5× Premium"
       },
       "premium_20x": {
         "name": "Communauté",
         "tagline": "Coachs · praticiens · responsables de communauté",
-        "ribbon": "20× Premium",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "ribbon": "20× Premium"
+      }
     },
     "features": {
       "voiceLive": "Conversations en direct avec ORB",
@@ -92,8 +82,7 @@
       "fairUse": "Utilisation équitable",
       "used": "{used} / {limit} {unit}",
       "resetIn": "Réinitialisation dans {duration}",
-      "comparisonTitle": "Ce qui est inclus dans chaque plan",
-      "_pending_review": {}
+      "comparisonTitle": "Ce qui est inclus dans chaque plan"
     },
     "creditPacks": {
       "title": "Ajoute des minutes supplémentaires",
@@ -107,8 +96,7 @@
       "yourBalance": "Ton solde : {amount} crédits",
       "starterShort": "Débutant",
       "boostShort": "Boost",
-      "powerShort": "Puissance",
-      "_pending_review": {}
+      "powerShort": "Puissance"
     },
     "redeemCard": {
       "title": "Tu as un code ?",
@@ -125,10 +113,8 @@
         "alreadyRedeemed": "Tu as déjà utilisé ce code",
         "stripeActive": "Tu as déjà le Premium — garde ce code pour plus tard",
         "budgetExhausted": "Campagne en pause — réessaye plus tard",
-        "generic": "Impossible d'utiliser le code",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "generic": "Impossible d'utiliser le code"
+      }
     },
     "earnings": {
       "title": "Tes gains (cette année)",
@@ -136,21 +122,40 @@
       "youEarned": "Vitana t'a aidé(e) à gagner (Vendre et Gagner)",
       "net": "Net",
       "withdraw": "Retirer",
-      "empty": "Pas encore de gains",
-      "_pending_review": {}
+      "empty": "Pas encore de gains"
     },
     "founding": {
       "bannerTitle": "🏆 Sois parmi les {max} premiers",
       "bannerBody": "3 mois de Premium gratuits avec le code {code}.",
       "spotsRemaining": "{remaining} places restantes sur {max}",
-      "_pending_review": {}
+      "celebration": {
+        "_pending_review": {
+          "badge": true,
+          "title": true,
+          "bodyFree": true,
+          "bodyPaid": true,
+          "valueLabel": true,
+          "value": true,
+          "until": true,
+          "ctaPremium": true,
+          "ctaContinue": true
+        },
+        "badge": "Founding Member #{seat} of {max}",
+        "title": "Congratulations!",
+        "bodyFree": "You are one of Vitana’s first {max} members – and that earns you a full year of Premium as a gift.",
+        "bodyPaid": "You are one of Vitana’s first {max} members. Thank you for being here from the start!",
+        "valueLabel": "Your gift",
+        "value": "{value} – one year of Premium free",
+        "until": "Premium active until {date}",
+        "ctaPremium": "Discover Premium",
+        "ctaContinue": "Let’s go"
+      }
     },
     "launchGrant": {
       "title": "🎁 Bienvenue — Premium offert",
       "body": "Tu as reçu 12 mois de Vitana Premium en remerciement de ta présence depuis le début. Actif jusqu'au {endsAt}.",
       "noAction": "Aucune action nécessaire. Profite.",
-      "dismissAria": "Masquer la bannière",
-      "_pending_review": {}
+      "dismissAria": "Masquer la bannière"
     },
     "mobileBilling": {
       "rootIntro": "Gère ton abonnement, ton mode de paiement et tes paiements créateur.",
@@ -166,8 +171,7 @@
       "paymentNoneBody": "Ajoute une carte lorsque tu commences un abonnement Premium.",
       "invoicesTitle": "Factures et reçus",
       "invoicesBody": "Toutes les factures et reçus sont disponibles dans le portail de facturation Stripe.",
-      "summaryRenewsOn": "Ton abonnement se renouvelle le {date}",
-      "_pending_review": {}
+      "summaryRenewsOn": "Ton abonnement se renouvelle le {date}"
     },
     "state": {
       "freeStatus": "Tu es sur Vitana Gratuit",
@@ -183,18 +187,15 @@
       "upgrade": "Mettre à niveau",
       "trialEndsAt": "L'essai se termine le {date}",
       "trialingBadge": "En essai",
-      "activeBadge": "Actif",
-      "_pending_review": {}
+      "activeBadge": "Actif"
     },
     "subscriptionsPage": {
       "title": "Abonnements",
       "subtitle": "Gère ton Vitana Premium et tes crédits",
       "tabs": {
         "yourPlan": "Ton forfait",
-        "billing": "Facturation",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "billing": "Facturation"
+      }
     },
     "faq": {
       "title": "Pourquoi Premium ?",
@@ -205,18 +206,15 @@
       "q3": "Puis-je annuler à tout moment ?",
       "a3": "Oui, sans engagement. Tu gardes Premium jusqu'à la fin de la période actuelle.",
       "q4": "Vends-tu mes données ?",
-      "a4": "Jamais. Nous ne vendons jamais tes données à des réseaux publicitaires, des courtiers en données ou des partenaires.",
-      "_pending_review": {}
+      "a4": "Jamais. Nous ne vendons jamais tes données à des réseaux publicitaires, des courtiers en données ou des partenaires."
     },
     "checkoutErrors": {
       "stripeNotConfigured": "Les paiements ne sont pas encore entièrement configurés. Essaie à nouveau plus tard.",
       "alreadySubscribed": "Tu as déjà un abonnement actif. Gère-le dans le portail de facturation.",
       "noStripeCustomer": "Abonne-toi d'abord avant d'utiliser le portail.",
       "checkoutFailed": "Échec du paiement",
-      "portalFailed": "Impossible d'ouvrir le portail de facturation",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
+      "portalFailed": "Impossible d'ouvrir le portail de facturation"
+    }
   },
   "paywall": {
     "title": "Déverrouiller Premium",
@@ -226,58 +224,47 @@
       "title": "Temps de voix en direct épuisé",
       "body": "Ton temps de voix en direct inclus est épuisé. ORB continuera en mode Standard. Ajoute des minutes en direct ou passe à la version supérieure à tout moment.",
       "stayInStandard": "Continue en mode Standard",
-      "addMinutes": "Ajoute des minutes en direct",
-      "_pending_review": {}
+      "addMinutes": "Ajoute des minutes en direct"
     },
     "live_room_minutes": {
       "title": "Temps d'hébergement bientôt épuisé",
       "body": "Il reste 5 minutes de temps d'hébergement inclus pour cette salle. Ajoute du temps d'hébergement ou passe à la version supérieure pour la maintenir active.",
       "wrapUp": "Termine",
-      "addTime": "Ajoute du temps d'hébergement",
-      "_pending_review": {}
+      "addTime": "Ajoute du temps d'hébergement"
     },
     "match_posts": {
       "title": "Tous les posts gratuits utilisés",
-      "body": "Tu as utilisé tes posts gratuits ce mois-ci. Premium t'en donne plus.",
-      "_pending_review": {}
+      "body": "Tu as utilisé tes posts gratuits ce mois-ci. Premium t'en donne plus."
     },
     "match_reveals": {
       "title": "Révèle le match",
-      "body": "Tu as utilisé tes révélations gratuites. Utilise {credits} crédits ou passe à Premium.",
-      "_pending_review": {}
+      "body": "Tu as utilisé tes révélations gratuites. Utilise {credits} crédits ou passe à Premium."
     },
     "lab_analyses": {
       "title": "Analyses de laboratoire utilisées",
-      "body": "Tu as utilisé tes analyses de laboratoire ce mois-ci.",
-      "_pending_review": {}
+      "body": "Tu as utilisé tes analyses de laboratoire ce mois-ci."
     },
     "photo_uploads": {
       "title": "Téléchargements de photos utilisés",
-      "body": "Tu as utilisé tes téléchargements de photos ce mois-ci.",
-      "_pending_review": {}
+      "body": "Tu as utilisé tes téléchargements de photos ce mois-ci."
     },
     "memory_garden": {
       "title": "Jardin des souvenirs plein",
-      "body": "Premium te donne plus d'espace.",
-      "_pending_review": {}
+      "body": "Premium te donne plus d'espace."
     },
     "autopilot": {
       "title": "Plus de recommandations Autopilot",
-      "body": "Premium augmente ton nombre de recommandations actives.",
-      "_pending_review": {}
+      "body": "Premium augmente ton nombre de recommandations actives."
     },
     "default": {
       "title": "Débloque Premium",
-      "body": "Tu as utilisé ton quota gratuit pour cette période.",
-      "_pending_review": {}
+      "body": "Tu as utilisé ton quota gratuit pour cette période."
     },
     "ctaUpgrade": "Débloque Premium",
     "ctaCredits": "Utilise {credits} crédits",
     "ctaLater": "Peut-être plus tard",
     "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Réinitialisation le {date}",
-    "creditsInsufficient": "Pas assez de crédits. Recharge d'abord.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "creditsInsufficient": "Pas assez de crédits. Recharge d'abord."
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04859",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "a registered test account has no Founding seat and sees no celebration",
+      "spec": "tests/e2e/staging/vtid-04859-founding-celebration.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "celebration logic and its single write",
+      "ref": "npx vitest run src/components/subscription/FoundingCelebration.test.ts",
+      "cwd": ".",
+      "reason": "Showing the celebration needs a seated member and closing it is a write; staging is read-only and the test account is excluded from seats, so the modal itself is proven by this suite and by the local render screenshots in the PR."
+    }
+  ]
+}
