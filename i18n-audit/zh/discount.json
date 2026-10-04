@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "discount.applyCode": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'apply' as '应用' is awkward; in Chinese UI, '使用' is more natural.",
-      "suggested": "使用折扣码",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discount.applied": {
@@ -45,8 +43,8 @@
     "discount.tapToApply": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Same as entry 3, '应用' is awkward; '使用' is more natural.",
-      "suggested": "使用",
+      "issue": "While '使用' means 'use', '应用' is more idiomatic for an 'Apply' button in UI that enacts a change or setting.",
+      "suggested": "应用",
       "phase": "llm"
     },
     "discount.discountAppliedAmount": {
@@ -138,7 +136,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "discount.checkFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-24T08:38:56.404Z"
+  "generatedAt": "2026-10-04T10:00:26.213Z"
 }
