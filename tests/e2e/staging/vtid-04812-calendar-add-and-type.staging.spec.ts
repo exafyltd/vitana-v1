@@ -49,10 +49,19 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
     localStorage.setItem('vitana.viewRole', 'community');
   }, session);
 
+  // VTID-04871: the role gate (ProtectedRoute) shows a spinner while the role
+  // preference loads, and that lookup is a POST RPC the staging guard aborts.
+  // React Query then retries it and the calendar flips back to the spinner on
+  // every retry, so the + button was "not found" moments after the page drew.
+  // Answer that one read-only lookup here with the test user's real role
+  // (community): nothing reaches Supabase, and the guard still aborts every
+  // other write.
+  await page.route(/\/rest\/v1\/rpc\/get_role_preference(\?|$)/, (route) => route.fulfill({ json: [{ role: 'community' }] }));
+
   await page.goto('/calendar', { waitUntil: 'domcontentloaded' });
   const pageEl = page.getByTestId('vcal-page');
   await expect(pageEl).toBeVisible({ timeout: 45_000 });
-  await expect(page.getByTestId('vcal-add')).toBeVisible();
+  await expect(page.getByTestId('vcal-add')).toBeVisible({ timeout: 15_000 });
   await expect(page.getByTestId('vcal-voice-add')).toHaveCount(0);
 
   const bodyFont = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
