@@ -116,8 +116,9 @@ Owner decision 2026-10-03. The full rule lives in **`exafyltd/vitana-platform`
    to the same partner; at least two passes; anything still disputed goes to
    the owner.
 3. The PR carries the record as `docs/validation/<VTID>/plan-sparring.md`.
-4. A PreToolUse hook reminds you when an allocation call carries no sparring
-   id; the real gate is the `vtid_ledger` trigger in the platform database.
+4. A PreToolUse hook denies an allocation call that references no sparring
+   record (`p_sparring_id`, or a `-- sparring_record: <path>` comment); the real
+   gate is the `vtid_ledger` trigger in the platform database.
 
 ### Scoping a production deploy to what was actually approved
 
