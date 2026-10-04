@@ -102,6 +102,23 @@ After PUBLISH, production gets the deploy check in "Verifying a frontend
 deploy actually shipped" (`.claude/rules/infrastructure.md`) and nothing
 more — no test suite runs against production.
 
+### Plan Sparring Gate — STANDING RULE (VTID-04868)
+
+Owner decision 2026-10-03. The full rule lives in **`exafyltd/vitana-platform`
+→ `CLAUDE.md` Part 1 rules 51–55**; procedure: skill `plan-sparring`
+(`.claude/skills/plan-sparring/`). For this repo:
+
+1. **Plan → sparring → owner approval → VTID → code.** Every new plan is
+   sparred by the independent `plan-sparring-partner` agent (read-only,
+   Claude Opus 4.6) before its VTID is allocated. No VTID for the sparring
+   itself.
+2. Every finding gets an answer (accepted / rejected / deferred) and goes back
+   to the same partner; at least two passes; anything still disputed goes to
+   the owner.
+3. The PR carries the record as `docs/validation/<VTID>/plan-sparring.md`.
+4. A PreToolUse hook reminds you when an allocation call carries no sparring
+   id; the real gate is the `vtid_ledger` trigger in the platform database.
+
 ### Scoping a production deploy to what was actually approved
 
 **If a production deploy is approved WITHIN a Claude Code session** (the
