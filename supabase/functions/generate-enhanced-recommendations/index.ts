@@ -1,6 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
+// VTID-04889: Claude via the gateway's Bedrock bridge only — no Gemini path (CLAUDE.md ALWAYS 10a–10c).
+import { generateContent, extractFunctionCall, extractTextFromResponse } from '../_shared/bedrock-bridge-client.ts';
+import { rawMatchesFromResponse, normalizeRecommendationMatches } from '../_shared/recommendation-matches.ts';
+
+// Pinned on purpose: a model verified to invoke on this account (gateway .claude/rules/backend.md §2b), so this
+// function never depends on the gateway's BEDROCK_MODEL_ID default.
+const RECOMMENDATION_MODEL = 'eu.anthropic.claude-sonnet-4-6';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -60,23 +67,6 @@ serve(async (req) => {
       );
     }
 
-    // Aurora migration B7 (VTID-03764 chain): AI_BRIDGE_PROVIDER lets this
-    // function move off the direct Gemini Developer API call onto the
-    // gateway's Bedrock bridge (see supabase/functions/_shared/
-    // bedrock-bridge-client.ts) without a code change at the actual call
-    // site below — both clients export the identical generateContent/
-    // extractFunctionCall signatures. Defaults to 'gemini' so behavior is
-    // byte-for-byte unchanged until someone deliberately sets the edge
-    // function secret to 'bedrock' — this ships the seam, it does not flip it.
-    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
-    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
-    if (aiBridgeProvider === 'gemini' && !GEMINI_API_KEY) {
-      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
-    }
-
-    const { generateContent, extractFunctionCall } = await import(
-      aiBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
-    );
     // Inject user-language directive so any free-text reasons are in
     // the user's preferred language (German by default).
     // (Fixed while touching this line: previously read the undefined
@@ -84,15 +74,15 @@ serve(async (req) => {
     // a ReferenceError here before ever reaching the AI provider.)
     const userLocale = await getUserLocale(supabaseClient, user.id);
     const aiResponse = await generateContent(
-      GEMINI_API_KEY ?? '',
+      '', // ignored by the bridge client (signature parity with the old Gemini client)
       [
         {
           role: 'system',
           content: buildLocalizedSystemPrompt(
             `You are VITANA's recommendation AI. Score community content (events, groups) based on user's interests, goals, and context.
 
-Return a JSON array of matches with scores and reasons. Format:
-[{"id": "uuid", "type": "event", "score": 0.85, "reasons": ["matches interest: yoga", "near your location"]}, ...]
+Call the score_recommendations tool with the matches, their scores and reasons. Use only ids from the candidate list. Each match:
+{"id": "uuid", "type": "event", "score": 0.85, "reasons": ["matches interest: yoga", "near your location"]}
 
 Score range: 0.0 to 1.0. Only include items with score >= 0.3.`,
             userLocale,
@@ -119,10 +109,10 @@ ${JSON.stringify(candidates.map(c => ({
   time: c.start_time
 })))}
 
-Return only the JSON array.`
+Call the score_recommendations tool with the matches.`
         }
       ],
-      { temperature: 0.4 },
+      { model: RECOMMENDATION_MODEL, temperature: 0.4 },
       [{
         name: 'score_recommendations',
         description: 'Score community content recommendations',
@@ -148,22 +138,26 @@ Return only the JSON array.`
       }]
     );
 
-    const functionCall = extractFunctionCall(aiResponse);
-    if (!functionCall) {
+    const raw = rawMatchesFromResponse(extractFunctionCall(aiResponse), extractTextFromResponse(aiResponse));
+    if (!raw) {
       throw new Error('No tool call in AI response');
     }
 
-    const matches = functionCall.args.matches || [];
+    // Only candidates this request read from the database, score clamped, threshold applied, reasons capped.
+    const matches = normalizeRecommendationMatches(
+      raw,
+      candidates.map((c) => ({ id: String(c.id), type: c.type })),
+    );
 
     console.log('[enhanced-recommendations] AI scored', matches.length, 'matches');
 
     // Store recommendations in database
-    const eventMatches = matches.filter((m: any) => m.type === 'event');
-    const groupMatches = matches.filter((m: any) => m.type === 'group');
+    const eventMatches = matches.filter((m) => m.type === 'event');
+    const groupMatches = matches.filter((m) => m.type === 'group');
 
     if (eventMatches.length > 0) {
       await supabaseClient.from('event_recommendations').upsert(
-        eventMatches.map((m: any) => ({
+        eventMatches.map((m) => ({
           user_id: user.id,
           event_id: m.id,
           match_score: m.score,
@@ -176,7 +170,7 @@ Return only the JSON array.`
 
     if (groupMatches.length > 0) {
       await supabaseClient.from('group_recommendations').upsert(
-        groupMatches.map((m: any) => ({
+        groupMatches.map((m) => ({
           user_id: user.id,
           group_id: m.id,
           match_score: m.score,
