@@ -35,7 +35,7 @@ import { Badge } from "@/components/ui/badge";
 import { communityNavigation } from "@/config/navigation";
 import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
-import { useScheduledStreams, useLiveStreams, useEndedStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
+import { useScheduledStreams, useLiveStreams, useEndedStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream, isScheduledStreamDue } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
 import { PastRoomCard } from "@/components/liverooms/PastRoomCard";
 import {
@@ -131,6 +131,7 @@ export default function LiveRooms() {
       },
       isLive: stream.status === 'live',
       scheduledTime: stream.scheduled_for || undefined,
+      startingSoon: isScheduledStreamDue(stream),
       startedAt: stream.started_at || undefined,
       durationMinutes: stream.duration_minutes ?? undefined,
       participants: stream.viewer_count,
@@ -141,7 +142,7 @@ export default function LiveRooms() {
       isPremium: stream.access_level === 'group',
       imageUrl: stream.cover_image_url || undefined,
       category: stream.tags[0] || "general",
-      location: "Virtual",
+      location: t('screens.liverooms.virtual'),
       status: statusMap[stream.status] || undefined,
     };
   };
@@ -261,6 +262,11 @@ export default function LiveRooms() {
     }
   };
 
+  // Live rooms can be entered by anyone; a due scheduled room only by its
+  // host, whose `enter` starts it (VTID-04906).
+  const canEnter = (room: LiveRoom) =>
+    room.isLive || (!!room.startingSoon && room.host.id === user?.id);
+
   const handleJoinRoom = (roomId: string) => {
     if (!user) {
       notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
@@ -280,7 +286,7 @@ export default function LiveRooms() {
       state: {
         roomId,
         userId: user.id,
-        userName: profilesMap[user.id]?.display_name || user.email?.split('@')[0] || 'Guest',
+        userName: profilesMap[user.id]?.display_name || user.email?.split('@')[0] || t('screens.liveRoom.guest'),
         userAvatar: profilesMap[user.id]?.avatar_url,
         room: room,
       }
@@ -426,7 +432,7 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[0].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      if (rowRooms[0].isLive) handleJoinRoom(rowRooms[0].id);
+                      if (canEnter(rowRooms[0])) handleJoinRoom(rowRooms[0].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
@@ -441,7 +447,7 @@ export default function LiveRooms() {
                         type="live_room"
                         data={{
                           title: rowRooms[0].title,
-                          description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
+                          description: rowRooms[0].description || t('screens.liveRoom.shareDescription', { name: rowRooms[0].host.name }),
                           link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
                         }}
                         variant="icon"
@@ -459,7 +465,7 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[1].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      if (rowRooms[1].isLive) handleJoinRoom(rowRooms[1].id);
+                      if (canEnter(rowRooms[1])) handleJoinRoom(rowRooms[1].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
@@ -474,7 +480,7 @@ export default function LiveRooms() {
                         type="live_room"
                         data={{
                           title: rowRooms[1].title,
-                          description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
+                          description: rowRooms[1].description || t('screens.liveRoom.shareDescription', { name: rowRooms[1].host.name }),
                           link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
                         }}
                         variant="icon"
@@ -492,7 +498,7 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[2].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      if (rowRooms[2].isLive) handleJoinRoom(rowRooms[2].id);
+                      if (canEnter(rowRooms[2])) handleJoinRoom(rowRooms[2].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
@@ -507,7 +513,7 @@ export default function LiveRooms() {
                         type="live_room"
                         data={{
                           title: rowRooms[2].title,
-                          description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
+                          description: rowRooms[2].description || t('screens.liveRoom.shareDescription', { name: rowRooms[2].host.name }),
                           link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
                         }}
                         variant="icon"
@@ -529,7 +535,7 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[0].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      if (rowRooms[0].isLive) handleJoinRoom(rowRooms[0].id);
+                      if (canEnter(rowRooms[0])) handleJoinRoom(rowRooms[0].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
@@ -544,7 +550,7 @@ export default function LiveRooms() {
                         type="live_room"
                         data={{
                           title: rowRooms[0].title,
-                          description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
+                          description: rowRooms[0].description || t('screens.liveRoom.shareDescription', { name: rowRooms[0].host.name }),
                           link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
                         }}
                         variant="icon"
@@ -562,7 +568,7 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[1].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      if (rowRooms[1].isLive) handleJoinRoom(rowRooms[1].id);
+                      if (canEnter(rowRooms[1])) handleJoinRoom(rowRooms[1].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
@@ -577,7 +583,7 @@ export default function LiveRooms() {
                         type="live_room"
                         data={{
                           title: rowRooms[1].title,
-                          description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
+                          description: rowRooms[1].description || t('screens.liveRoom.shareDescription', { name: rowRooms[1].host.name }),
                           link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
                         }}
                         variant="icon"
@@ -596,7 +602,7 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[2].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      if (rowRooms[2].isLive) handleJoinRoom(rowRooms[2].id);
+                      if (canEnter(rowRooms[2])) handleJoinRoom(rowRooms[2].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
@@ -611,7 +617,7 @@ export default function LiveRooms() {
                         type="live_room"
                         data={{
                           title: rowRooms[2].title,
-                          description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
+                          description: rowRooms[2].description || t('screens.liveRoom.shareDescription', { name: rowRooms[2].host.name }),
                           link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
                         }}
                         variant="icon"
@@ -634,7 +640,7 @@ export default function LiveRooms() {
     <AppLayout>
       <SEO
         title={t('screens.community.liveRoomsCommunity')}
-        description="Join live conversations and discussions"
+        description={t('screens.liveRoom.listSeoDescription')}
         canonical={window.location.href}
       />
       {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
@@ -950,7 +956,7 @@ export default function LiveRooms() {
         onOpenChange={(open) => {
           setIsGoLiveOpen(open);
         }}
-        defaultTitle="Live Community Discussion"
+        defaultTitle={t('screens.liveRoom.defaultSessionTitle')}
         permanentRoomId={myRoom?.id}
         onCreated={(roomId) => {
           setActiveTab('scheduled');

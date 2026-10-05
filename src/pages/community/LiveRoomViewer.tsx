@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
@@ -7,42 +7,60 @@ import SubNavigation from '@/components/SubNavigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ArrowLeft, 
-  Users, 
-  Settings,
-  Share2,
-} from 'lucide-react';
+import {
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from '@/components/ui/responsive-confirm-dialog';
+import { ArrowLeft, Users } from 'lucide-react';
 import { communityNavigation } from '@/config/navigation';
 import { DailyVideoRoom } from '@/components/liverooms/DailyVideoRoom';
 
 import { useStreamRecording } from '@/hooks/useStreamRecording';
 import { StreamRecordingPlayer } from '@/components/StreamRecordingPlayer';
-import { liveRoomService } from '@/services/liveRoomService';
+import {
+  liveRoomService,
+  LiveRoomEnterError,
+  type EnterRoomErrorCode,
+  type EnterRoomResponse,
+} from '@/services/liveRoomService';
 import { useAuth } from '@/context/AuthProvider';
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
 import { useHostPresence } from '@/hooks/useHostPresence';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
+/**
+ * Live Room viewer (VTID-04906).
+ *
+ * Entry goes through the gateway's `enter` call only: it checks access,
+ * records attendance and returns the private Daily room URL plus a meeting
+ * token (owner token for the host). The page owns the exit — an app-level
+ * header with a ≥44px exit button sits above the Daily iframe in every state
+ * (entering, error, in room), and leaving records the exit (`exit`) on leave,
+ * unmount and `pagehide`. Leaving never ends the room; only the host's
+ * explicit "End for everyone" (with confirmation) does.
+ */
 export default function LiveRoomViewer() {
   const { roomId } = useParams<{ roomId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { toast } = useToast();
   const isMobile = useIsMobile();
 
   // Get state passed from navigation
-  const { userId, userName, userAvatar, room, isHost, daily_room_url: navDailyRoomUrl } = location.state || {};
+  const { userId, userName, room, isHost } = location.state || {};
 
   // Use auth context as fallback if navigation state is missing
   const effectiveUserId = userId || user?.id;
-  const effectiveUserName = userName || user?.email?.split('@')[0] || 'Guest';
-  const effectiveUserAvatar = userAvatar;
+  const effectiveUserName = userName || user?.email?.split('@')[0] || t('screens.liveRoom.guest');
 
   // DB-based isHost detection (survives page refresh)
   const { data: dbRoom, isLoading: isLoadingHost } = useQuery({
@@ -68,44 +86,30 @@ export default function LiveRoomViewer() {
   const effectiveIsHost = isHost || (!!user?.id && dbRoom?.host_user_id === user.id);
   const isHostResolving = !user || isLoadingHost;
 
-  // Entry gate: host clicks "Start Stream", viewer clicks "Join Stream"
-  const [isInRoom, setIsInRoom] = useState(false);
+  // Entry: the gateway's answer to `enter` (url + token), or why it refused.
+  const [entry, setEntry] = useState<EnterRoomResponse | null>(null);
+  const [entering, setEntering] = useState(false);
+  const [enterError, setEnterError] = useState<EnterRoomErrorCode | null>(null);
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
+  const exitSentRef = useRef(false);
+
+  // "Room mode" = the member asked to enter: full-height layout with the
+  // app-level header (exit button) on top of whatever state the room is in.
+  const roomMode = !!entry || entering || !!enterError;
+  // After `enter`, the gateway's verdict on who is host wins.
+  const isRoomHost = entry ? entry.is_host : effectiveIsHost;
 
   // Room state polling (every 5s while live)
   const { data: roomState } = useRoomState(roomId, true);
   const roomStatus = roomState?.room?.status || room?.status;
   const sessionData = roomState?.session;
-  const viewerCounts = roomState?.counts;
+  const inRoomCount = roomState?.counts?.in_room ?? entry?.counts?.in_room;
 
   // Host presence signals
   useHostPresence(roomId, effectiveIsHost);
 
-  // End room mutation (gateway)
+  // End room mutation (gateway). Its own onError surfaces the failure.
   const { mutate: endRoomMutation, isPending: isEnding } = useEndRoom();
-
-  // Fallback: end room directly via Supabase if gateway fails
-  const endRoomFallback = async (id: string) => {
-    try {
-      await supabase
-        .from('live_rooms')
-        .update({ status: 'idle', current_session_id: null, ends_at: new Date().toISOString() })
-        .eq('id', id);
-      await supabase
-        .from('live_room_sessions')
-        .update({ status: 'ended', ends_at: new Date().toISOString() })
-        .eq('room_id', id)
-        .in('status', ['lobby', 'live', 'scheduled']);
-      await supabase
-        .from('community_live_streams')
-        .update({ status: 'ended', ended_at: new Date().toISOString() })
-        .eq('id', id);
-      notify('toasts.community.roomEnded', 'toasts.community.yourSessionHasEnded');
-      navigate('/comm/live-rooms');
-    } catch (err) {
-      console.error('[EndRoom] Fallback also failed:', err);
-      notifyError('toasts.community.failedEndRoom');
-    }
-  };
 
   // Fetch recording if stream has ended
   const { data: recordingData } = useQuery({
@@ -123,73 +127,49 @@ export default function LiveRoomViewer() {
     enabled: roomStatus === 'ended' || roomStatus === 'idle'
   });
 
-
-  // Daily.co room URL: navigation state first (from GoLivePopup), DB metadata as fallback
-  const dailyRoomUrlFromDb = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
-  // On-demand provisioned URL — when none of the known sources have a Daily room
-  // yet, we mint/fetch one from the gateway (idempotent) so a viewer can still
-  // join instead of hitting a bare "Videofehler".
-  const [provisionedDailyUrl, setProvisionedDailyUrl] = useState<string | null>(null);
-  const [isProvisioningDaily, setIsProvisioningDaily] = useState(false);
-  const [provisionFailed, setProvisionFailed] = useState(false);
-  // Bumped by the Retry button to re-fire provisioning when nothing else changed.
-  const [retryNonce, setRetryNonce] = useState(0);
-  // In-flight guard kept in a ref (NOT effect deps) so starting a request never
-  // re-runs the effect and cancels its own in-flight POST.
-  const provisioningRef = useRef(false);
-  const dailyRoomUrl = navDailyRoomUrl
-    || ((roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | null)
-    || dailyRoomUrlFromDb
-    || provisionedDailyUrl
-    || null;
-
-  // If we're in the room and still have no Daily URL, provision one on demand.
-  // `createDailyRoom` is idempotent on the gateway (returns the existing room
-  // when one already exists), so this is safe for both host and viewers.
-  useEffect(() => {
-    if (!isInRoom || !roomId) return;
-    if (dailyRoomUrl || provisioningRef.current) return;
-    provisioningRef.current = true;
-    setIsProvisioningDaily(true);
-    setProvisionFailed(false);
-    liveRoomService
-      .createDailyRoom(roomId)
-      .then((res) => {
-        if (res?.daily_room_url) {
-          setProvisionedDailyUrl(res.daily_room_url);
-        } else {
-          setProvisionFailed(true);
-        }
-      })
-      .catch((err) => {
-        console.error('[LiveRoomViewer] Daily provision failed:', err);
-        setProvisionFailed(true);
-      })
-      .finally(() => {
-        provisioningRef.current = false;
-        setIsProvisioningDaily(false);
-      });
-    // retryNonce is a dependency so the Retry button can re-trigger this.
-  }, [isInRoom, roomId, dailyRoomUrl, retryNonce]);
-
-  useEffect(() => {
-    console.log('[LiveRoomViewer] dailyRoomUrl debug:', {
-      navDailyRoomUrl,
-      roomStateMetadata: roomState?.room?.metadata,
-      dailyRoomUrlFromDb,
-      resolved: dailyRoomUrl,
-      roomStateExists: !!roomState,
-      roomId,
-    });
-  }, [navDailyRoomUrl, roomState, dailyRoomUrlFromDb, dailyRoomUrl, roomId]);
-
   // Recording hook
   const { isRecording, stopRecording } = useStreamRecording({
     streamId: roomId || '',
     localStream: null,
-    isHost: effectiveIsHost,
+    isHost: isRoomHost,
     enabled: sessionData?.enable_recording ?? false,
   });
+
+  const handleEnter = useCallback(async () => {
+    if (!roomId) return;
+    setEntering(true);
+    setEnterError(null);
+    try {
+      const res = await liveRoomService.enterRoom(roomId);
+      exitSentRef.current = false;
+      setEntry(res);
+    } catch (err) {
+      console.error('[LiveRoomViewer] enter failed:', err);
+      setEnterError(err instanceof LiveRoomEnterError ? err.code : 'UNKNOWN');
+    } finally {
+      setEntering(false);
+    }
+  }, [roomId]);
+
+  // Record the exit once per entry (leave button, Daily's own leave, unmount,
+  // pagehide, room ended).
+  const sendExit = useCallback((keepalive = false) => {
+    if (!roomId || exitSentRef.current) return;
+    exitSentRef.current = true;
+    liveRoomService.exitRoom(roomId, { keepalive }).catch((err) =>
+      console.warn('[LiveRoomViewer] exit failed:', err),
+    );
+  }, [roomId]);
+
+  useEffect(() => {
+    if (!entry) return;
+    const onPageHide = () => sendExit(true);
+    window.addEventListener('pagehide', onPageHide);
+    return () => {
+      window.removeEventListener('pagehide', onPageHide);
+      sendExit(true);
+    };
+  }, [entry, sendExit]);
 
   // Redirect if no proper state
   useEffect(() => {
@@ -197,28 +177,39 @@ export default function LiveRoomViewer() {
       notifyError('toasts.community.invalidAccess', 'toasts.community.pleaseSignJoinLiveRooms');
       navigate('/comm/live-rooms');
     }
-  }, [effectiveUserId, navigate, toast]);
+  }, [effectiveUserId, navigate]);
 
-  const handleLeaveRoom = async () => {
-    if (effectiveIsHost && roomId) {
-      if (isRecording) {
-        await stopRecording();
-      }
-      endRoomMutation(roomId, {
-        onError: () => {
-          console.warn('[LiveRoomViewer] Gateway end failed, using Supabase fallback');
-          endRoomFallback(roomId);
-        },
-      });
-      notify('toasts.community.streamEnded', 'toasts.community.yourLiveStreamHasEnded');
-    }
+  const isLive = roomStatus === 'live' || roomStatus === 'lobby';
+  const hasEnded = roomStatus === 'ended' || roomStatus === 'idle';
+
+  // The room ended while this member was inside it → record the exit.
+  useEffect(() => {
+    if (hasEnded && entry) sendExit();
+  }, [hasEnded, entry, sendExit]);
+
+  /** Leave the room. Never ends it — not even for the host. */
+  const handleLeave = () => {
+    if (entry) sendExit();
     navigate('/comm/live-rooms');
   };
 
-  const streamTitle = sessionData?.session_title || room?.title || 'Live Room';
+  /** Host only, after confirmation: end the session for everyone. */
+  const handleEndForEveryone = async () => {
+    setEndConfirmOpen(false);
+    if (!roomId) return;
+    if (isRecording) {
+      await stopRecording();
+    }
+    endRoomMutation(roomId, {
+      onSuccess: () => {
+        sendExit();
+        navigate('/comm/live-rooms');
+      },
+    });
+  };
+
+  const streamTitle = sessionData?.session_title || room?.title || t('screens.liveRoom.defaultTitle');
   const streamDescription = sessionData?.session_description || room?.description;
-  const isLive = roomStatus === 'live' || roomStatus === 'lobby';
-  const hasEnded = roomStatus === 'ended' || roomStatus === 'idle';
 
   if (!roomId) {
     return (
@@ -253,8 +244,8 @@ export default function LiveRoomViewer() {
                   <StreamRecordingPlayer recording={recordingData} />
                 </div>
               )}
-              <Button onClick={() => navigate('/comm/live-rooms')}>
-                <ArrowLeft className="h-4 w-4 mr-2" />
+              <Button onClick={() => navigate('/comm/live-rooms')} className="min-h-11">
+                <ArrowLeft className="h-4 w-4 me-2 rtl:rotate-180" />
                 {t('screens.community.backRooms')}
               </Button>
             </Card>
@@ -264,143 +255,187 @@ export default function LiveRoomViewer() {
     );
   }
 
+  const errorCopy = (code: EnterRoomErrorCode) => {
+    switch (code) {
+      case 'NOT_LIVE':
+        return { title: t('screens.liveRoom.notLiveTitle'), desc: t('screens.liveRoom.notLiveDesc') };
+      case 'PAYMENT_REQUIRED':
+        return { title: t('screens.liveRoom.paymentRequiredTitle'), desc: t('screens.liveRoom.paymentRequiredDesc') };
+      case 'UNAUTHENTICATED':
+        return { title: t('screens.liveRoom.signInTitle'), desc: t('screens.liveRoom.signInDesc') };
+      case 'NOT_FOUND':
+        return { title: t('screens.community.roomNotFound'), desc: t('screens.liveRoom.notFoundDesc') };
+      default:
+        return { title: t('screens.community.videoRoomUnavailable'), desc: t('screens.community.videoRoomUnavailableHint') };
+    }
+  };
+
   return (
     <>
-      <SEO 
-        title={`${streamTitle} - Live Room`}
-        description={streamDescription || `Join ${effectiveUserName}'s live stream`}
+      <SEO
+        title={t('screens.liveRoom.seoTitle', { title: streamTitle })}
+        description={streamDescription || t('screens.liveRoom.seoDescription', { name: effectiveUserName })}
       />
       <AppLayout>
-        {!isMobile && !isInRoom && <SubNavigation items={communityNavigation} />}
-        
-        <div className={cn(
-          "flex flex-col",
-          isInRoom
-            ? (isMobile ? "h-[100dvh]" : "h-[calc(100vh-3rem)]")
-            : "h-[calc(100vh-8rem)]"
-        )}>
-          {/* Header - hide when in room (Daily.co provides its own controls) */}
-          {!isInRoom && <div className="flex items-center justify-between p-4 border-b">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate('/comm/live-rooms')}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <div>
-                <h1 className="text-xl font-semibold">{streamTitle}</h1>
-                <div className="flex items-center gap-2 mt-1">
-                  {isLive && (
-                    <Badge variant="destructive" className="animate-pulse">{t('screens.community.live')}
-                    </Badge>
-                  )}
-                </div>
+        {!isMobile && !roomMode && <SubNavigation items={communityNavigation} />}
+
+        <div
+          data-testid="live-room-viewer"
+          className={cn(
+            "flex flex-col",
+            roomMode
+              ? cn(
+                  isMobile ? "h-[100dvh]" : "h-[calc(100vh-3rem)]",
+                  "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
+                )
+              : "h-[calc(100vh-8rem)]"
+          )}
+        >
+          {/* App-level header — always present, so there is always a way out
+              (also while connecting, on errors, or over a black iframe). */}
+          <header
+            data-testid="live-room-header"
+            className="flex items-center gap-2 px-2 py-1 min-h-[56px] border-b shrink-0 bg-background"
+          >
+            <Button
+              variant="ghost"
+              onClick={handleLeave}
+              className="h-11 min-w-11 px-3 gap-2 shrink-0"
+              data-testid="live-room-exit"
+              aria-label={roomMode ? t('screens.liveRoom.leaveRoom') : t('screens.liveRoom.backToRooms')}
+            >
+              <ArrowLeft className="h-5 w-5 rtl:rotate-180" />
+              <span className="text-sm font-medium">
+                {roomMode ? t('screens.liveRoom.leave') : t('screens.liveRoom.back')}
+              </span>
+            </Button>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-base font-semibold truncate text-start">{streamTitle}</h1>
+              <div className="flex items-center gap-2">
+                {isLive && (
+                  <Badge variant="destructive" className="animate-pulse">{t('screens.community.live')}</Badge>
+                )}
+                {typeof inRoomCount === 'number' && (
+                  <span
+                    data-testid="live-room-viewer-count"
+                    className="flex items-center gap-1 text-xs text-muted-foreground"
+                  >
+                    <Users className="h-3.5 w-3.5" />
+                    {t('screens.liveRoom.inRoomCount', { count: inRoomCount })}
+                  </span>
+                )}
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon">
-                <Share2 className="h-5 w-5" />
+            {isRoomHost && entry && (
+              <Button
+                variant="destructive"
+                size="sm"
+                className="h-11 shrink-0"
+                onClick={() => setEndConfirmOpen(true)}
+                disabled={isEnding}
+                data-testid="live-room-end"
+              >
+                {t('screens.liveRoom.endForEveryone')}
               </Button>
-              <Button variant="outline" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>}
+            )}
+          </header>
 
-          {/* Main Content - Full Width */}
-          <div className="flex-1 flex flex-col overflow-hidden">
-            {!isInRoom ? (
+          {/* Main Content */}
+          <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+            {!roomMode ? (
               /* Entry Screen */
-              <div className="flex-1 flex items-center justify-center bg-muted/50">
-              {isHostResolving ? (
-                <Card className="p-8 text-center max-w-md">
-                  <div className="animate-pulse text-muted-foreground">{t('screens.community.loading')}</div>
-                </Card>
-              ) : (
-                <Card className="p-8 text-center max-w-md">
-                  <h2 className="text-2xl font-bold mb-4">
-                    {effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}
-                  </h2>
-                  <p className="text-muted-foreground mb-6">
-                    {effectiveIsHost
-                      ? 'Click below to start your live stream'
-                      : 'Click below to join the live stream'}
-                  </p>
-                  <Button size="lg" onClick={() => setIsInRoom(true)} className="w-full">
-                    {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
-                  </Button>
-                </Card>
-              )}
+              <div className="flex-1 flex items-center justify-center bg-muted/50 p-4">
+                {isHostResolving ? (
+                  <Card className="p-8 text-center max-w-md">
+                    <div className="animate-pulse text-muted-foreground">{t('screens.community.loading')}</div>
+                  </Card>
+                ) : (
+                  <Card className="p-8 text-center max-w-md w-full">
+                    <h2 className="text-2xl font-bold mb-4">
+                      {effectiveIsHost ? t('screens.liveRoom.readyToStart') : t('screens.liveRoom.readyToJoin')}
+                    </h2>
+                    <p className="text-muted-foreground mb-6">
+                      {effectiveIsHost ? t('screens.liveRoom.startHint') : t('screens.liveRoom.joinHint')}
+                    </p>
+                    <Button size="lg" onClick={handleEnter} className="w-full min-h-11" data-testid="live-room-enter">
+                      {effectiveIsHost ? t('screens.liveRoom.startStream') : t('screens.liveRoom.joinStream')}
+                    </Button>
+                  </Card>
+                )}
+              </div>
+            ) : entry ? (
+              <div className="flex-1 min-h-0 flex flex-col bg-black relative">
+                <DailyVideoRoom
+                  roomUrl={entry.daily_room_url}
+                  token={entry.token}
+                  onJoined={() => {
+                    if (isRoomHost && roomId) {
+                      liveRoomService.hostPresent(roomId).catch(console.warn);
+                    }
+                  }}
+                  onLeft={() => {
+                    // Daily's own Leave button: leave the room, never end it.
+                    if (isRoomHost && roomId) {
+                      liveRoomService.hostAbsent(roomId).catch(console.warn);
+                    }
+                    handleLeave();
+                  }}
+                  onError={(err) => {
+                    console.error('[Daily] Error:', err);
+                    notifyError('toasts.community.videoError');
+                  }}
+                />
+                {isRecording && (
+                  <div className="absolute top-4 end-4 flex items-center gap-2 bg-destructive text-destructive-foreground px-3 py-1 rounded-full animate-pulse z-10">
+                    <div className="w-3 h-3 bg-destructive-foreground rounded-full" />
+                    {t('screens.community.recording')}
+                  </div>
+                )}
+              </div>
+            ) : enterError ? (
+              <div className="flex-1 flex items-center justify-center p-6" data-testid="live-room-error">
+                <div className="text-center max-w-sm">
+                  <h3 className="text-lg font-semibold mb-1">{errorCopy(enterError).title}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{errorCopy(enterError).desc}</p>
+                  {enterError !== 'UNAUTHENTICATED' && enterError !== 'NOT_FOUND' && (
+                    <Button onClick={handleEnter} className="min-h-11">
+                      {t('screens.community.retry')}
+                    </Button>
+                  )}
+                </div>
               </div>
             ) : (
-              <>
-                <div className="flex-1 flex flex-col bg-muted/50 relative">
-                  {dailyRoomUrl ? (
-                    <DailyVideoRoom
-                      roomUrl={dailyRoomUrl}
-                      onJoined={() => {
-                        console.log('[Daily] Joined meeting');
-                        if (effectiveIsHost && roomId) {
-                          liveRoomService.hostPresent(roomId).catch(console.warn);
-                        }
-                      }}
-                      onLeft={() => {
-                        if (effectiveIsHost && roomId) {
-                          liveRoomService.hostAbsent(roomId).catch(console.warn);
-                        }
-                        handleLeaveRoom();
-                      }}
-                      onError={(err) => {
-                        console.error('[Daily] Error:', err);
-                        notifyError('toasts.community.videoError');
-                      }}
-                    />
-                  ) : provisionFailed ? (
-                    <div className="flex-1 flex items-center justify-center p-6">
-                      <div className="text-center max-w-sm">
-                        <h3 className="text-lg font-semibold mb-1">
-                          {t('screens.community.videoRoomUnavailable')}
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          {t('screens.community.videoRoomUnavailableHint')}
-                        </p>
-                        <Button
-                          onClick={() => {
-                            setProvisionFailed(false);
-                            setProvisionedDailyUrl(null);
-                            // Bump the nonce so the provisioning effect re-runs
-                            // even though isInRoom/roomId/dailyRoomUrl are unchanged.
-                            setRetryNonce((n) => n + 1);
-                          }}
-                        >
-                          {t('screens.community.retry')}
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex-1 flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-                        <p>{t('screens.community.settingUpVideoRoom')}</p>
-                      </div>
-                    </div>
-                  )}
-                  {isRecording && (
-                    <div className="absolute top-4 right-4 flex items-center gap-2 bg-destructive text-destructive-foreground px-3 py-1 rounded-full animate-pulse z-10">
-                      <div className="w-3 h-3 bg-destructive-foreground rounded-full" />
-                      {t('screens.community.recording')}
-                    </div>
-                  )}
+              <div className="flex-1 flex items-center justify-center" data-testid="live-room-entering">
+                <div className="text-center text-muted-foreground">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+                  <p>{t('screens.community.settingUpVideoRoom')}</p>
                 </div>
-
-              </>
+              </div>
             )}
           </div>
         </div>
       </AppLayout>
+
+      <ResponsiveConfirmDialog open={endConfirmOpen} onOpenChange={setEndConfirmOpen}>
+        <ResponsiveConfirmDialogContent>
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>{t('screens.liveRoom.endConfirmTitle')}</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
+              {t('screens.liveRoom.endConfirmDesc')}
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel>{t('screens.community.cancel')}</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
+              onClick={handleEndForEveryone}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              data-testid="live-room-end-confirm"
+            >
+              {t('screens.liveRoom.endForEveryone')}
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
     </>
   );
 }

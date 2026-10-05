@@ -128,7 +128,9 @@
         "genericTitle": "错误",
         "genericDesc": "创建直播失败。请再试一次。",
         "genericDescWithReason": "创建直播失败：{reason}。请再试一次。",
-        "_pending_review": {}
+        "_pending_review": {},
+        "cancelFailedDesc": "无法结束正在进行的会话：{reason}",
+        "roomStuckDesc": "你的房间仍被占用。请几秒后再试。"
       },
       "success": {
         "streamUpdatedTitle": "直播已更新！✨",
@@ -141,7 +143,8 @@
         "aiImageHintDesc": "图片将在直播开始时生成。",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "streamTitleHint": "例如：让你更有活力的晨间习惯"
     },
     "editSession": {
       "title": "编辑会话",

@@ -128,7 +128,9 @@
         "genericTitle": "Ошибка",
         "genericDesc": "Не удалось создать трансляцию. Пожалуйста, попробуй еще раз.",
         "genericDescWithReason": "Не удалось создать трансляцию: {reason}. Пожалуйста, попробуй еще раз.",
-        "_pending_review": {}
+        "_pending_review": {},
+        "cancelFailedDesc": "Не удалось завершить текущую сессию: {reason}",
+        "roomStuckDesc": "Твоя комната ещё занята. Попробуй через несколько секунд."
       },
       "success": {
         "streamUpdatedTitle": "Трансляция обновлена! ✨",
@@ -141,7 +143,8 @@
         "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции.",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "streamTitleHint": "например, Утренняя рутина для энергии"
     },
     "editSession": {
       "title": "Редактировать сессию",

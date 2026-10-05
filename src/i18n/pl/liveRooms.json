@@ -128,7 +128,9 @@
         "genericTitle": "Błąd",
         "genericDesc": "Nie udało się utworzyć strumienia. Spróbuj ponownie.",
         "genericDescWithReason": "Nie udało się utworzyć strumienia: {reason}. Spróbuj ponownie.",
-        "_pending_review": {}
+        "_pending_review": {},
+        "cancelFailedDesc": "Nie udało się zakończyć trwającej sesji: {reason}",
+        "roomStuckDesc": "Twój pokój jest jeszcze zajęty. Spróbuj ponownie za kilka sekund."
       },
       "success": {
         "streamUpdatedTitle": "Strumień zaktualizowany! ✨",
@@ -141,7 +143,8 @@
         "aiImageHintDesc": "Obraz zostanie wygenerowany po rozpoczęciu strumienia.",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "streamTitleHint": "np. Poranna rutyna dla większej energii"
     },
     "editSession": {
       "title": "Edytuj sesję",

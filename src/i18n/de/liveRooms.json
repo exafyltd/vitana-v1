@@ -118,7 +118,9 @@
         "imageUploadFailedDesc": "Das bestehende Bild wird beibehalten.",
         "genericTitle": "Fehler",
         "genericDesc": "Stream konnte nicht erstellt werden. Bitte erneut versuchen.",
-        "genericDescWithReason": "Stream konnte nicht erstellt werden: {reason}. Bitte erneut versuchen."
+        "genericDescWithReason": "Stream konnte nicht erstellt werden: {reason}. Bitte erneut versuchen.",
+        "cancelFailedDesc": "Die laufende Session konnte nicht beendet werden: {reason}",
+        "roomStuckDesc": "Dein Raum ist noch belegt. Versuche es in ein paar Sekunden erneut."
       },
       "success": {
         "streamUpdatedTitle": "Stream aktualisiert! ✨",
@@ -129,7 +131,8 @@
         "youAreLiveDesc": "Du trittst deinem Stream-Raum bei…",
         "aiImageHintTitle": "KI-Bildgenerierung",
         "aiImageHintDesc": "Bild wird erstellt, wenn der Stream startet."
-      }
+      },
+      "streamTitleHint": "z. B. Morgenroutine für mehr Energie"
     },
     "editSession": {
       "title": "Session bearbeiten",

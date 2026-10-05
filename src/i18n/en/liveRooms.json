@@ -128,7 +128,9 @@
         "genericTitle": "Error",
         "genericDesc": "Failed to create stream. Please try again.",
         "genericDescWithReason": "Failed to create stream: {reason}. Please try again.",
-        "_pending_review": {}
+        "_pending_review": {},
+        "cancelFailedDesc": "The running session could not be ended: {reason}",
+        "roomStuckDesc": "Your room is still busy. Try again in a few seconds."
       },
       "success": {
         "streamUpdatedTitle": "Stream Updated! ✨",
@@ -141,7 +143,8 @@
         "aiImageHintDesc": "Image will be generated when stream starts.",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "streamTitleHint": "e.g. A morning routine for more energy"
     },
     "editSession": {
       "title": "Edit Session",

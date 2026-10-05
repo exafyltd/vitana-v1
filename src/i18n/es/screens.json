@@ -12178,6 +12178,38 @@
       "redirecting": "Volviendo a tu asistente …",
       "invalid": "Esta solicitud de conexión no es válida o ha caducado. Vuelve a iniciar la conexión en tu asistente.",
       "failed": "No ha funcionado. Inténtalo de nuevo."
+    },
+    "liveRoom": {
+      "guest": "Invitado",
+      "defaultTitle": "Sala en vivo",
+      "defaultSessionTitle": "Conversación en vivo de la comunidad",
+      "listSeoDescription": "Únete a conversaciones y debates en vivo",
+      "shareDescription": "Únete a la sesión en vivo de {name}",
+      "seoTitle": "{title} – Sala en vivo",
+      "seoDescription": "Únete a la transmisión en vivo de {name}",
+      "leave": "Salir",
+      "leaveRoom": "Salir de la sala",
+      "back": "Atrás",
+      "backToRooms": "Volver a las salas en vivo",
+      "inRoomCount": "{count} en la sala",
+      "endForEveryone": "Terminar para todos",
+      "endConfirmTitle": "¿Terminar la sala para todos?",
+      "endConfirmDesc": "Todos saldrán de la sala y la sesión terminará. Si solo quieres salir un momento, toca «Salir»: la sala seguirá abierta.",
+      "readyToStart": "¿Listo para empezar?",
+      "readyToJoin": "¿Listo para unirte?",
+      "startHint": "Toca abajo para iniciar tu transmisión en vivo.",
+      "joinHint": "Toca abajo para unirte a la transmisión en vivo.",
+      "startStream": "Iniciar transmisión",
+      "joinStream": "Unirse a la transmisión",
+      "notLiveTitle": "Esta sala no está en vivo ahora",
+      "notLiveDesc": "El anfitrión aún no ha iniciado la sesión. Vuelve a intentarlo en un momento.",
+      "paymentRequiredTitle": "Se requiere acceso",
+      "paymentRequiredDesc": "Esta sala es de pago. Consigue acceso primero y luego podrás unirte.",
+      "signInTitle": "Inicio de sesión requerido",
+      "signInDesc": "Inicia sesión para unirte a salas en vivo.",
+      "notFoundDesc": "Esta sala en vivo ya no existe.",
+      "startingSoon": "Empieza pronto",
+      "startNow": "Empezar ahora"
     }
   }
 }

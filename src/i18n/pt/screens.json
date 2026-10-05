@@ -13239,6 +13239,38 @@
       "redirecting": "Voltando ao seu assistente …",
       "invalid": "Este pedido de conexão é inválido ou expirou. Inicie a conexão de novo no seu assistente.",
       "failed": "Não deu certo agora. Tente de novo."
+    },
+    "liveRoom": {
+      "guest": "Convidado",
+      "defaultTitle": "Sala ao vivo",
+      "defaultSessionTitle": "Conversa ao vivo da comunidade",
+      "listSeoDescription": "Participa em conversas e discussões ao vivo",
+      "shareDescription": "Participa na sessão ao vivo de {name}",
+      "seoTitle": "{title} – Sala ao vivo",
+      "seoDescription": "Participa na transmissão ao vivo de {name}",
+      "leave": "Sair",
+      "leaveRoom": "Sair da sala",
+      "back": "Voltar",
+      "backToRooms": "Voltar às salas ao vivo",
+      "inRoomCount": "{count} na sala",
+      "endForEveryone": "Terminar para todos",
+      "endConfirmTitle": "Terminar a sala para todos?",
+      "endConfirmDesc": "Todos saem da sala e a sessão termina. Se só queres sair por um momento, toca em «Sair» — a sala continua.",
+      "readyToStart": "Pronto para começar?",
+      "readyToJoin": "Pronto para entrar?",
+      "startHint": "Toca abaixo para iniciares a tua transmissão ao vivo.",
+      "joinHint": "Toca abaixo para entrares na transmissão ao vivo.",
+      "startStream": "Iniciar transmissão",
+      "joinStream": "Entrar na transmissão",
+      "notLiveTitle": "Esta sala não está ao vivo agora",
+      "notLiveDesc": "O anfitrião ainda não iniciou a sessão. Tenta novamente daqui a pouco.",
+      "paymentRequiredTitle": "Acesso necessário",
+      "paymentRequiredDesc": "Esta sala é paga. Obtém acesso primeiro e depois podes entrar.",
+      "signInTitle": "Início de sessão necessário",
+      "signInDesc": "Inicia sessão para entrares em salas ao vivo.",
+      "notFoundDesc": "Esta sala ao vivo já não existe.",
+      "startingSoon": "Começa em breve",
+      "startNow": "Começar agora"
     }
   }
 }

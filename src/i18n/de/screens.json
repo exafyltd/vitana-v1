@@ -11977,6 +11977,38 @@
       "redirecting": "Zurück zu deinem Assistenten …",
       "invalid": "Diese Verbindungsanfrage ist ungültig oder abgelaufen. Starte die Verbindung in deinem Assistenten neu.",
       "failed": "Das hat gerade nicht geklappt. Bitte versuch es noch einmal."
+    },
+    "liveRoom": {
+      "guest": "Gast",
+      "defaultTitle": "Live-Raum",
+      "defaultSessionTitle": "Live-Gespräch in der Community",
+      "listSeoDescription": "Komm in Live-Gespräche und Diskussionen der Community",
+      "shareDescription": "Komm in die Live-Session von {name}",
+      "seoTitle": "{title} – Live-Raum",
+      "seoDescription": "Komm in den Live-Stream von {name}",
+      "leave": "Verlassen",
+      "leaveRoom": "Raum verlassen",
+      "back": "Zurück",
+      "backToRooms": "Zurück zu den Live-Räumen",
+      "inRoomCount": "{count} im Raum",
+      "endForEveryone": "Für alle beenden",
+      "endConfirmTitle": "Raum für alle beenden?",
+      "endConfirmDesc": "Alle verlassen den Raum und die Session ist vorbei. Wenn du nur kurz rausgehen willst, tippe stattdessen auf „Verlassen“ – der Raum läuft dann weiter.",
+      "readyToStart": "Bereit zum Starten?",
+      "readyToJoin": "Bereit zum Beitreten?",
+      "startHint": "Tippe unten, um deinen Live-Stream zu starten.",
+      "joinHint": "Tippe unten, um dem Live-Stream beizutreten.",
+      "startStream": "Stream starten",
+      "joinStream": "Stream beitreten",
+      "notLiveTitle": "Dieser Raum ist gerade nicht live",
+      "notLiveDesc": "Der Host hat die Session noch nicht gestartet. Versuche es gleich noch einmal.",
+      "paymentRequiredTitle": "Zugang erforderlich",
+      "paymentRequiredDesc": "Dieser Raum ist kostenpflichtig. Hol dir zuerst Zugang, dann kannst du beitreten.",
+      "signInTitle": "Anmeldung erforderlich",
+      "signInDesc": "Melde dich an, um Live-Räumen beizutreten.",
+      "notFoundDesc": "Diesen Live-Raum gibt es nicht mehr.",
+      "startingSoon": "Startet gleich",
+      "startNow": "Jetzt starten"
     }
   }
 }
