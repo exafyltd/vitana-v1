@@ -11,8 +11,12 @@
  * or provider IDs, OpenAPI, OAuth, scopes) stay off this page too, and the
  * normal onboarding flow keeps the full rule. The MCP address itself is not
  * shown here: using it needs an account.
+ *
+ * VTID-04898: while this landing is mounted the body carries
+ * `commerce-guest-page`, so desktop widths dock the Vitana orb in a reserved
+ * corner gutter instead of on the content (src/index.css).
  */
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronDown, Copy, HeartPulse, MessageSquareText, Plug, ShieldCheck, Sparkles, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,6 +24,9 @@ import { t } from '@/lib/i18n-toast';
 import { SUPPORTED_ASSISTANTS } from '@/lib/commerce-mcp';
 
 const K = 'screens.commerceportal.guest';
+
+/** Body class: desktop widths keep the orb in a corner gutter on this page. */
+export const GUEST_PAGE_CLASS = 'commerce-guest-page';
 
 const WHY = [
   { icon: HeartPulse, title: `${K}.why1Title`, body: `${K}.why1Body` },
@@ -50,6 +57,11 @@ export const guestCtaKey = (mcpReady: boolean) =>
 export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestLandingProps) {
   const reduce = useReducedMotion();
   const [whatIsOpen, setWhatIsOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.add(GUEST_PAGE_CLASS);
+    return () => document.body.classList.remove(GUEST_PAGE_CLASS);
+  }, []);
   const fade = reduce
     ? {}
     : {
