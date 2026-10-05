@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { resolveInAppEventPath } from '@/lib/inAppLinks';
 import { useAuth } from '@/context/AuthProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -178,6 +180,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   // outgoing language while the rest of the thread switches. The returned value
   // is unused on purpose: the subscription is the point.
   useI18nLocale();
+  const navigate = useNavigate();
 
   const isMobile = useIsMobile();
   const { user } = useAuth();
@@ -582,7 +585,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         cleanUrl = cleanUrl.slice(0, -1);
       }
 
-      if (cleanUrl) {
+      // VTID-04902: links to one of our events open the Events screen in the
+      // app, not the public landing page in a browser layer over the chat.
+      const inAppPath = cleanUrl ? resolveInAppEventPath(cleanUrl) : null;
+
+      if (cleanUrl && inAppPath) {
+        nodes.push(
+          <a
+            key={`${cleanUrl}-${start}`}
+            href={cleanUrl}
+            data-in-app-link="event"
+            className={cn(
+              "underline underline-offset-2 break-all font-medium",
+              isOwnMessage ? "text-primary-foreground" : "text-primary"
+            )}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              navigate(inAppPath);
+            }}
+          >
+            {cleanUrl}
+          </a>
+        );
+      } else if (cleanUrl) {
         nodes.push(
           <a
             key={`${cleanUrl}-${start}`}
@@ -620,7 +646,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         {nodes.length > 0 ? nodes : text}
       </p>
     );
-  }, [isOwnMessage]);
+  }, [isOwnMessage, navigate]);
 
   const renderAttachment = (attachment: any, index: number) => {
     // Mime can be empty on Android pickers; fall back to filename extension

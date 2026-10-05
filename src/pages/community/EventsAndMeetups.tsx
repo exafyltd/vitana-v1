@@ -15,10 +15,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback, lazy, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
-import { isPast } from "date-fns";
+import { selectHotEvents } from "@/lib/events/hotEvents";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
-import { useCommunityEvents } from '@/hooks/useCommunityEvents';
+import { useCommunityEvents, fetchCommunityEventByIdOrSlug, type CommunityEvent } from '@/hooks/useCommunityEvents';
 import { useFollowingFeed } from '@/hooks/useFollowingFeed';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/AuthProvider";
@@ -328,7 +328,16 @@ const eventsScrollMemory = new Map<string, number>();
 const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
-  const { events: dbEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
+  const { events: loadedEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
+  // VTID-04902: an event opened by a link (e.g. tapped in a chat) that is not
+  // in the loaded list is fetched on its own and shown alongside it.
+  const [linkedEvents, setLinkedEvents] = useState<CommunityEvent[]>([]);
+  const dbEvents = useMemo(() => {
+    if (linkedEvents.length === 0) return loadedEvents;
+    const ids = new Set(loadedEvents.map(e => e.id));
+    return [...loadedEvents, ...linkedEvents.filter(e => !ids.has(e.id))];
+  }, [loadedEvents, linkedEvents]);
+  const deepLinkFetchedRef = useRef<string | null>(null);
   const {
     followingIds,
     profiles: followedProfiles,
@@ -427,22 +436,11 @@ const EventsAndMeetups = () => {
   }, [dbEvents, searchQuery]);
 
 
-  const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
-  const HOT_EVENT_IDS = new Set([
-    '6bb46db6-a3ba-42b6-8a50-2be8658e436f', // Dancing Filmevent
-  ]);
-
-  const maxinaEvents = useMemo(() => {
-    return dbEvents
-      .filter(event => event.created_by === MAXINA_CREATOR_ID || HOT_EVENT_IDS.has(event.id))
-      // Unlike the Today/Upcoming tabs (day-granularity by design), Hot is a
-      // curated highlight list — it must drop an event the moment it ends,
-      // not just at midnight. `useCommunityEvents`' query only cuts off at
-      // start-of-day, so a morning event stays in `dbEvents` (and therefore
-      // in Hot) for the rest of that same day with no time-of-day filter.
-      .filter(event => !isPast(new Date(event.end_time || event.start_time)))
-      .map(event => ({ ...event, event_type: 'event' }));
-  }, [dbEvents]);
+  // VTID-04903: Hot = curated events first, then every other member's
+  // upcoming event (new ones near the top) — no longer only one hardcoded
+  // account. Unlike the Today/Upcoming tabs (day-granularity by design), Hot
+  // drops an event the moment it ends (see selectHotEvents).
+  const maxinaEvents = useMemo(() => selectHotEvents(dbEvents), [dbEvents]);
 
   const followingSet = useMemo(() => new Set(followingIds), [followingIds]);
 
@@ -544,10 +542,19 @@ const EventsAndMeetups = () => {
   // Handle event deep linking when dbEvents loads
   useEffect(() => {
     const eventParam = searchParams.get('event');
-    if (!eventParam || dbEvents.length === 0) return;
+    if (!eventParam || loading) return;
     
-    // If event param exists, find and scroll to it
-    const event = dbEvents.find(e => e.id === eventParam);
+    // If event param exists, find and scroll to it (by id, or by the share
+    // link's slug — VTID-04902)
+    const event = dbEvents.find(e => e.id === eventParam || (e.slug && e.slug === eventParam));
+    if (!event) {
+      if (deepLinkFetchedRef.current === eventParam) return;
+      deepLinkFetchedRef.current = eventParam;
+      fetchCommunityEventByIdOrSlug(eventParam).then(found => {
+        if (found) setLinkedEvents(prev => (prev.some(e => e.id === found.id) ? prev : [...prev, found]));
+      });
+      return;
+    }
     if (event && !selectedEventId) {
       // Auto-detect tab if not already set correctly
       const eventDate = new Date(event.start_time);
@@ -559,13 +566,21 @@ const EventsAndMeetups = () => {
       const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
       setActiveTab(detectedTab);
       
-      selectEvent(eventParam);
+      selectEvent(event.id);
+      if (event.id !== eventParam) {
+        // A slug link: keep the URL on the id like every other selection.
+        setSearchParams(prev => {
+          const next = new URLSearchParams(prev);
+          next.set('event', event.id);
+          return next;
+        }, { replace: true });
+      }
       setTimeout(() => {
-        const card = document.querySelector(`[data-event-id="${eventParam}"]`);
+        const card = document.querySelector(`[data-event-id="${event.id}"]`);
         card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
     }
-  }, [dbEvents]);
+  }, [dbEvents, loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle card click
   const handleCardClick = useCallback((event: any) => {
@@ -720,7 +735,10 @@ const EventsAndMeetups = () => {
   };
 
   // Get current event and navigation state
-  const selectedEventData = currentEvents.find(e => e.id === selectedEventId);
+  // A linked event outside the current tab (e.g. a multi-day event that began
+  // before today, opened from a chat link — VTID-04902) still opens its drawer.
+  const selectedEventData = currentEvents.find(e => e.id === selectedEventId)
+    ?? linkedEvents.find(e => e.id === selectedEventId);
   const currentIndex = selectedEventId ? visibleEventIds.indexOf(selectedEventId) : -1;
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex >= 0 && currentIndex < visibleEventIds.length - 1;
@@ -1130,8 +1148,8 @@ const EventsAndMeetups = () => {
                         handleEditEvent,
                         {
                           icon: <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
-                          title: "No Recommended Events",
-                          description: "Check back soon for curated events.",
+                          title: t('screens.community.noRecommendedEvents'),
+                          description: t('screens.community.checkBackSoonForCuratedEvents'),
                         },
                         handleDeleteEvent,
                         handleShareEvent,
