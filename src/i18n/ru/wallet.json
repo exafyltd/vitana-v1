@@ -31,7 +31,7 @@
     "_pending_review": {},
     "rewardRules": {
       "title": "Как ты зарабатываешь VTNA",
-      "summary": "Ты получаешь VTNA за реальные дела, которые делаешь сам, один раз за каждый этап, и за постоянство.",
+      "summary": "Ты получаешь VTNA за реальные дела, которые делаешь сам, и за постоянство.",
       "earnedBalance": "Заработано тобой",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +40,12 @@
       "cap": "{used} из {count} за {days} дн.",
       "groups": {
         "first_steps": "Первые шаги — по одному разу",
-        "habits": "Привычки — серии",
-        "community": "Сообщество — когда отвечают другие"
+        "habits": "Привычки — постоянство",
+        "community": "Сообщество — вместе с другими",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
       },
       "rules": {
         "onboarding_complete": "Пройди знакомство",
@@ -57,19 +61,37 @@
         "diary_streak_7": "7 дней дневника подряд",
         "diary_streak_30": "30 дней дневника подряд",
         "invite_friend_joined": "Присоединяется тот, кого ты пригласил",
-        "invited_friends_10": "Присоединились 10 приглашённых тобой друзей — разовый бонус"
+        "invited_friends_10": "Присоединились 10 приглашённых тобой друзей — разовый бонус",
+        "autopilot_action_done": "Выполнить действие Autopilot",
+        "index_new_best": "Новый личный рекорд Vitana Index, минимум на 10 баллов выше",
+        "live_room_15min": "15 минут с другими в прямом эфире",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
       },
       "neverTitle": "За что VTNA не начисляются",
       "never": {
         "done_by_vitana": "Всё, что Vitana делает или пишет за тебя",
         "purchases": "Купленные кредиты и бонусные пакеты",
-        "self_reported": "Действия, которые система не может проверить"
+        "self_reported": "Действия, которые система не может проверить, — кроме выполненных действий Autopilot (не более 2 в день)",
+        "_pending_review": {
+          "self_reported": true
+        }
       },
       "recentTitle": "Твои последние награды",
       "recentEmpty": "Наград пока нет — твой первый шаг ждёт выше.",
       "recentOther": "Награда",
       "loading": "Загрузка…",
-      "error": "Сейчас не удалось загрузить твои награды."
+      "error": "Сейчас не удалось загрузить твои награды.",
+      "capToday": "{used} из {count} сегодня",
+      "capWeek": "{used} из {count} на этой неделе",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
     }
   },
   "_pending_review": {}

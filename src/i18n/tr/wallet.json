@@ -31,7 +31,7 @@
     "_pending_review": {},
     "rewardRules": {
       "title": "VTNA nasıl kazanırsın",
-      "summary": "Kendin yaptığın gerçek şeyler için, her dönüm noktasında bir kez, ve istikrarlı kaldığın için VTNA kazanırsın.",
+      "summary": "Kendin yaptığın gerçek şeyler ve istikrarlı kaldığın için VTNA kazanırsın.",
       "earnedBalance": "Kazandığın",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +40,12 @@
       "cap": "{days} günde {count} içinden {used}",
       "groups": {
         "first_steps": "İlk adımlar – her biri bir kez",
-        "habits": "Alışkanlıklar – seri dönüm noktaları",
-        "community": "Topluluk – başkaları yanıt verdiğinde"
+        "habits": "Alışkanlıklar – istikrarlı kalmak",
+        "community": "Topluluk – başkalarıyla",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
       },
       "rules": {
         "onboarding_complete": "Tanıtımı tamamla",
@@ -57,19 +61,37 @@
         "diary_streak_7": "7 gün üst üste günlük",
         "diary_streak_30": "30 gün üst üste günlük",
         "invite_friend_joined": "Davet ettiğin biri katılıyor",
-        "invited_friends_10": "Davet ettiğin 10 arkadaş katıldı – tek seferlik bonus"
+        "invited_friends_10": "Davet ettiğin 10 arkadaş katıldı – tek seferlik bonus",
+        "autopilot_action_done": "Bir Autopilot eylemini tamamla",
+        "index_new_best": "Vitana Index’te en az 10 puan daha yüksek yeni kişisel rekor",
+        "live_room_15min": "Canlı bir odada başkalarıyla 15 dakika",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
       },
       "neverTitle": "Asla VTNA kazandırmayanlar",
       "never": {
         "done_by_vitana": "Vitana'nın senin için yaptığı veya hazırladığı her şey",
         "purchases": "Satın alınan krediler ve bonus paketler",
-        "self_reported": "Sistemin doğrulayamadığı işlemler"
+        "self_reported": "Sistemin doğrulayamadığı eylemler – tamamlanan Autopilot eylemleri hariç (günde en fazla 2)",
+        "_pending_review": {
+          "self_reported": true
+        }
       },
       "recentTitle": "Son ödüllerin",
       "recentEmpty": "Henüz ödül yok – ilk adımın yukarıda seni bekliyor.",
       "recentOther": "Ödül",
       "loading": "Yükleniyor…",
-      "error": "Ödüllerin şu anda yüklenemedi."
+      "error": "Ödüllerin şu anda yüklenemedi.",
+      "capToday": "Bugün {count} içinden {used}",
+      "capWeek": "Bu hafta {count} içinden {used}",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
     }
   },
   "_pending_review": {}

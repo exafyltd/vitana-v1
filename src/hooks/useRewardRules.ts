@@ -14,6 +14,8 @@ export interface RewardOverviewRule {
   amount: number;
   once: boolean;
   cap: { count: number; days: number } | null;
+  /** VTID-04878: calendar window (UTC) of a capped rule; null = rolling `cap.days`. */
+  window?: 'day' | 'week' | null;
   earned: boolean;
   used_in_window: number | null;
 }

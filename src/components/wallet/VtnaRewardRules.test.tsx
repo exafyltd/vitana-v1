@@ -43,6 +43,36 @@ const overview: RewardOverview = {
 describe('VtnaRewardRules (VTID-04864)', () => {
   beforeEach(() => mockUseRewardRules.mockReset());
 
+  it('VTID-04878: capped rules count per day or per week, rolling caps keep their days', () => {
+    const capped: RewardOverview = {
+      ...overview,
+      groups: [
+        {
+          group: 'habits',
+          rules: [
+            { id: 'autopilot_action_done', amount: 5, once: false, cap: { count: 2, days: 1 }, window: 'day', earned: false, used_in_window: 1 },
+            { id: 'index_new_best', amount: 50, once: false, cap: { count: 1, days: 7 }, window: 'week', earned: false, used_in_window: 0 },
+          ],
+        },
+        {
+          group: 'community',
+          rules: [
+            { id: 'live_room_15min', amount: 20, once: false, cap: { count: 3, days: 7 }, window: 'week', earned: false, used_in_window: 2 },
+            { id: 'invite_friend_joined', amount: 1000, once: false, cap: { count: 10, days: 30 }, window: null, earned: false, used_in_window: 2 },
+          ],
+        },
+      ],
+    };
+    mockUseRewardRules.mockReturnValue({ data: capped, isLoading: false, error: null });
+    render(<VtnaRewardRules />);
+    expect(screen.getByTestId('reward-rule-cap-autopilot_action_done').textContent).toMatch(/^1\D+2\D+(heute|today)$/);
+    expect(screen.getByTestId('reward-rule-cap-index_new_best').textContent).toMatch(/^0\D+1\D+(diese Woche|this week)$/);
+    expect(screen.getByTestId('reward-rule-cap-live_room_15min').textContent).toMatch(/^2\D+3\D+(diese Woche|this week)$/);
+    expect(screen.getByTestId('reward-rule-cap-invite_friend_joined').textContent).toMatch(/2\D+10\D+30/);
+    expect(screen.getByTestId('reward-rule-autopilot_action_done').textContent).toMatch(/\+5 VTNA/);
+    expect(screen.getByTestId('reward-rule-autopilot_action_done').textContent).not.toContain('wallet.rewardRules');
+  });
+
   it('shows each group with its rules, earned state and amounts', () => {
     mockUseRewardRules.mockReturnValue({ data: overview, isLoading: false, error: null });
     render(<VtnaRewardRules />);
@@ -92,6 +122,8 @@ describe('VtnaRewardRules (VTID-04864)', () => {
       'onboarding_complete', 'profile_complete', 'first_diary', 'first_group', 'first_event_rsvp',
       'first_connection', 'five_connections', 'first_match_accepted', 'first_health_check',
       'diary_streak_3', 'diary_streak_7', 'diary_streak_30', 'invite_friend_joined', 'invited_friends_10',
+      // VTID-04878 (owner decision 2026-10-05)
+      'autopilot_action_done', 'index_new_best', 'live_room_15min',
     ];
     for (const lc of ['de', 'en', 'es', 'fr', 'pt', 'pl', 'ru', 'sr', 'ar', 'zh', 'tr']) {
       const rr = JSON.parse(readFileSync(join(__dirname, `../../i18n/${lc}/wallet.json`), 'utf8')).wallet.rewardRules;
@@ -99,6 +131,10 @@ describe('VtnaRewardRules (VTID-04864)', () => {
       for (const g of ['first_steps', 'habits', 'community']) expect(rr.groups[g], `${lc}: groups.${g}`).toBeTruthy();
       for (const n of ['done_by_vitana', 'purchases', 'self_reported']) expect(rr.never[n], `${lc}: never.${n}`).toBeTruthy();
       expect(rr.amount).toContain('{amount}');
+      for (const k of ['capToday', 'capWeek']) {
+        expect(rr[k], `${lc}: ${k}`).toContain('{used}');
+        expect(rr[k], `${lc}: ${k}`).toContain('{count}');
+      }
     }
   });
 

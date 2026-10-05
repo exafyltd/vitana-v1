@@ -31,7 +31,7 @@
     "_pending_review": {},
     "rewardRules": {
       "title": "How you earn VTNA",
-      "summary": "You earn VTNA for real things you do yourself, once per milestone, and for staying consistent.",
+      "summary": "You earn VTNA for real things you do yourself and for staying consistent.",
       "earnedBalance": "Earned by you",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +40,8 @@
       "cap": "{used} of {count} in {days} days",
       "groups": {
         "first_steps": "First steps — once each",
-        "habits": "Habits — streak milestones",
-        "community": "Community — when others respond"
+        "habits": "Habits — staying consistent",
+        "community": "Community — with others"
       },
       "rules": {
         "onboarding_complete": "Finish your onboarding",
@@ -57,19 +57,24 @@
         "diary_streak_7": "7-day diary streak",
         "diary_streak_30": "30-day diary streak",
         "invite_friend_joined": "Someone you invited joins",
-        "invited_friends_10": "10 friends you invited have joined — one-time bonus"
+        "invited_friends_10": "10 friends you invited have joined — one-time bonus",
+        "autopilot_action_done": "Complete an Autopilot action",
+        "index_new_best": "New Vitana Index personal best, at least 10 points higher",
+        "live_room_15min": "15 minutes with others in a live room"
       },
       "neverTitle": "What never earns VTNA",
       "never": {
         "done_by_vitana": "Anything Vitana does or drafts for you",
         "purchases": "Bought credits and bonus packs",
-        "self_reported": "Actions the system can't verify"
+        "self_reported": "Actions the system can't verify — except completed Autopilot actions (max 2 a day)"
       },
       "recentTitle": "Your recent rewards",
       "recentEmpty": "No rewards yet — your first step is waiting above.",
       "recentOther": "Reward",
       "loading": "Loading…",
-      "error": "Your rewards couldn't be loaded right now."
+      "error": "Your rewards couldn't be loaded right now.",
+      "capToday": "{used} of {count} today",
+      "capWeek": "{used} of {count} this week"
     }
   },
   "_pending_review": {}

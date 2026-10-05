@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04878",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Wallet › Rewards shows the capped Autopilot, live-room and Index rules with day/week caps (desktop + phone, read-only)",
+      "spec": "tests/e2e/staging/vtid-04878-capped-reward-rules.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "rules screen: day/week cap lines, catalog coverage in 11 languages",
+      "ref": "npx vitest run src/components/wallet/VtnaRewardRules.test.tsx",
+      "cwd": ".",
+      "reason": "Renders the capped rules with 'today' / 'this week' cap lines and keeps the rolling cap for invites; checks the three new rule labels and both cap strings exist in all 11 catalogs."
+    }
+  ]
+}

@@ -31,7 +31,7 @@
     "_pending_review": {},
     "rewardRules": {
       "title": "Como você ganha VTNA",
-      "summary": "Você ganha VTNA por coisas reais que faz você mesmo, uma vez por marco, e por manter a constância.",
+      "summary": "Você ganha VTNA por coisas reais que faz você mesmo e por manter a constância.",
       "earnedBalance": "Ganho por você",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +40,12 @@
       "cap": "{used} de {count} em {days} dias",
       "groups": {
         "first_steps": "Primeiros passos – uma vez cada",
-        "habits": "Hábitos – marcos de sequência",
-        "community": "Comunidade – quando outros respondem"
+        "habits": "Hábitos – manter a constância",
+        "community": "Comunidade – com outras pessoas",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
       },
       "rules": {
         "onboarding_complete": "Conclua sua introdução",
@@ -57,19 +61,37 @@
         "diary_streak_7": "Sequência de diário de 7 dias",
         "diary_streak_30": "Sequência de diário de 30 dias",
         "invite_friend_joined": "Alguém que você convidou entra",
-        "invited_friends_10": "10 amigos que você convidou entraram – bônus único"
+        "invited_friends_10": "10 amigos que você convidou entraram – bônus único",
+        "autopilot_action_done": "Concluir uma ação do Autopilot",
+        "index_new_best": "Novo recorde pessoal no Vitana Index, pelo menos 10 pontos acima",
+        "live_room_15min": "15 minutos com outras pessoas numa sala ao vivo",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
       },
       "neverTitle": "O que nunca dá VTNA",
       "never": {
         "done_by_vitana": "Tudo o que a Vitana faz ou redige por você",
         "purchases": "Créditos e pacotes bônus comprados",
-        "self_reported": "Ações que o sistema não consegue verificar"
+        "self_reported": "Ações que o sistema não consegue verificar – exceto ações do Autopilot concluídas (máx. 2 por dia)",
+        "_pending_review": {
+          "self_reported": true
+        }
       },
       "recentTitle": "Suas recompensas recentes",
       "recentEmpty": "Ainda sem recompensas – seu primeiro passo está esperando acima.",
       "recentOther": "Recompensa",
       "loading": "Carregando…",
-      "error": "Não foi possível carregar suas recompensas agora."
+      "error": "Não foi possível carregar suas recompensas agora.",
+      "capToday": "{used} de {count} hoje",
+      "capWeek": "{used} de {count} nesta semana",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
     }
   },
   "_pending_review": {}
