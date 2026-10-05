@@ -10,8 +10,13 @@
     },
     {
       "kind": "existing",
-      "ref": "npx vitest run src/pages/messages/GroupChat.vtid-04901.test.tsx && node scripts/group-chat-date-divider-regression.mjs",
-      "reason": "back button in the loading state, safe-area header, deep link vs in-app back, the poll no longer re-fetches the roster; date dividers unchanged"
+      "ref": "npx vitest run src/pages/messages/GroupChat.vtid-04901.test.tsx",
+      "reason": "back button in the loading state, safe-area header, deep link vs in-app back, the poll no longer re-fetches the roster"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run test:group-chat-dates",
+      "reason": "group chat date dividers unchanged (now translated)"
     }
   ]
 }
