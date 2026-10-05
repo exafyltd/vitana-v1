@@ -590,7 +590,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `common` — used: 2, total in shard: 37
 - `screens` — used: 14, total in shard: 11474
 - `toasts` — used: 3, total in shard: 1265
-- `wallet` — used: 17, total in shard: 56
+- `wallet` — used: 17, total in shard: 61
 
 ### src/pages/role-section-app-layout.test.ts
 

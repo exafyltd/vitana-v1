@@ -28,7 +28,7 @@
     "displayCurrency": "Anzeigewährung",
     "rewardRules": {
       "title": "So verdienst du VTNA",
-      "summary": "Du verdienst VTNA für echte Dinge, die du selbst tust – einmal pro Meilenstein – und dafür, dass du dranbleibst.",
+      "summary": "Du verdienst VTNA für echte Dinge, die du selbst tust, und dafür, dass du dranbleibst.",
       "earnedBalance": "Von dir verdient",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -37,8 +37,8 @@
       "cap": "{used} von {count} in {days} Tagen",
       "groups": {
         "first_steps": "Erste Schritte – je einmal",
-        "habits": "Gewohnheiten – Serien-Meilensteine",
-        "community": "Gemeinschaft – wenn andere reagieren"
+        "habits": "Gewohnheiten – dranbleiben",
+        "community": "Gemeinschaft – mit anderen"
       },
       "rules": {
         "onboarding_complete": "Einführung abschließen",
@@ -54,19 +54,24 @@
         "diary_streak_7": "7 Tage Tagebuch in Folge",
         "diary_streak_30": "30 Tage Tagebuch in Folge",
         "invite_friend_joined": "Jemand, den du eingeladen hast, tritt bei",
-        "invited_friends_10": "10 eingeladene Freunde sind beigetreten – einmaliger Bonus"
+        "invited_friends_10": "10 eingeladene Freunde sind beigetreten – einmaliger Bonus",
+        "autopilot_action_done": "Eine Autopilot-Aktion erledigen",
+        "index_new_best": "Neue Vitana-Index-Bestmarke, mindestens 10 Punkte höher",
+        "live_room_15min": "15 Minuten mit anderen in einem Live-Raum"
       },
       "neverTitle": "Dafür gibt es keine VTNA",
       "never": {
         "done_by_vitana": "Alles, was Vitana für dich erledigt oder entwirft",
         "purchases": "Gekaufte Credits und Bonuspakete",
-        "self_reported": "Angaben, die das System nicht prüfen kann"
+        "self_reported": "Angaben, die das System nicht prüfen kann – außer erledigten Autopilot-Aktionen (max. 2 pro Tag)"
       },
       "recentTitle": "Deine letzten Belohnungen",
       "recentEmpty": "Noch keine Belohnungen – dein erster Schritt wartet oben.",
       "recentOther": "Belohnung",
       "loading": "Wird geladen …",
-      "error": "Deine Belohnungen konnten gerade nicht geladen werden."
+      "error": "Deine Belohnungen konnten gerade nicht geladen werden.",
+      "capToday": "{used} von {count} heute",
+      "capWeek": "{used} von {count} diese Woche"
     }
   }
 }

@@ -31,7 +31,7 @@
     "_pending_review": {},
     "rewardRules": {
       "title": "你如何赚取 VTNA",
-      "summary": "你亲自完成真实的事情会获得 VTNA——每个里程碑一次——坚持下去也会获得。",
+      "summary": "你亲自完成真实的事情、并且坚持下去，就能获得 VTNA。",
       "earnedBalance": "你已赚取",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +40,12 @@
       "cap": "{days} 天内 {used}/{count}",
       "groups": {
         "first_steps": "第一步——每项一次",
-        "habits": "习惯——连续里程碑",
-        "community": "社区——当他人回应时"
+        "habits": "习惯——坚持下去",
+        "community": "社区——与他人一起",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
       },
       "rules": {
         "onboarding_complete": "完成入门引导",
@@ -57,19 +61,37 @@
         "diary_streak_7": "连续 7 天写日记",
         "diary_streak_30": "连续 30 天写日记",
         "invite_friend_joined": "你邀请的人加入了",
-        "invited_friends_10": "你邀请的 10 位朋友已加入——一次性奖励"
+        "invited_friends_10": "你邀请的 10 位朋友已加入——一次性奖励",
+        "autopilot_action_done": "完成一项 Autopilot 行动",
+        "index_new_best": "Vitana Index 创个人新高，至少高出 10 分",
+        "live_room_15min": "在直播间与他人共处 15 分钟",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
       },
       "neverTitle": "不会获得 VTNA 的情况",
       "never": {
         "done_by_vitana": "Vitana 替你完成或起草的任何内容",
         "purchases": "购买的积分和奖励包",
-        "self_reported": "系统无法核实的操作"
+        "self_reported": "系统无法核实的行为——已完成的 Autopilot 行动除外（每天最多 2 次）",
+        "_pending_review": {
+          "self_reported": true
+        }
       },
       "recentTitle": "你最近的奖励",
       "recentEmpty": "还没有奖励——你的第一步就在上方。",
       "recentOther": "奖励",
       "loading": "加载中…",
-      "error": "暂时无法加载你的奖励。"
+      "error": "暂时无法加载你的奖励。",
+      "capToday": "今天 {used}/{count}",
+      "capWeek": "本周 {used}/{count}",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
     }
   },
   "_pending_review": {}

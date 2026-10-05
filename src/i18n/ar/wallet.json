@@ -31,7 +31,7 @@
     "_pending_review": {},
     "rewardRules": {
       "title": "كيف تكسب VTNA",
-      "summary": "تكسب VTNA مقابل أشياء حقيقية تقوم بها بنفسك، مرة واحدة لكل إنجاز، ومقابل الاستمرارية.",
+      "summary": "تكسب VTNA مقابل أشياء حقيقية تقوم بها بنفسك ومقابل الاستمرارية.",
       "earnedBalance": "ما كسبته",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +40,12 @@
       "cap": "{used} من {count} خلال {days} يومًا",
       "groups": {
         "first_steps": "الخطوات الأولى – مرة واحدة لكل منها",
-        "habits": "العادات – إنجازات التتابع",
-        "community": "المجتمع – عندما يتفاعل الآخرون"
+        "habits": "العادات – الاستمرارية",
+        "community": "المجتمع – مع الآخرين",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
       },
       "rules": {
         "onboarding_complete": "أكمل التعريف",
@@ -57,19 +61,37 @@
         "diary_streak_7": "يوميات 7 أيام متتالية",
         "diary_streak_30": "يوميات 30 يومًا متتاليًا",
         "invite_friend_joined": "ينضم شخص دعوته",
-        "invited_friends_10": "انضم 10 أصدقاء دعوتهم – مكافأة لمرة واحدة"
+        "invited_friends_10": "انضم 10 أصدقاء دعوتهم – مكافأة لمرة واحدة",
+        "autopilot_action_done": "أكمل إجراءً من Autopilot",
+        "index_new_best": "رقم قياسي شخصي جديد في Vitana Index، أعلى بـ 10 نقاط على الأقل",
+        "live_room_15min": "15 دقيقة مع آخرين في غرفة مباشرة",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
       },
       "neverTitle": "ما لا يمنح VTNA أبدًا",
       "never": {
         "done_by_vitana": "كل ما تقوم به Vitana أو تصوغه نيابةً عنك",
         "purchases": "الأرصدة وحزم المكافآت المشتراة",
-        "self_reported": "الأفعال التي لا يمكن للنظام التحقق منها"
+        "self_reported": "إجراءات لا يستطيع النظام التحقق منها – باستثناء إجراءات Autopilot المكتملة (بحد أقصى 2 يوميًا)",
+        "_pending_review": {
+          "self_reported": true
+        }
       },
       "recentTitle": "مكافآتك الأخيرة",
       "recentEmpty": "لا توجد مكافآت بعد – خطوتك الأولى بانتظارك في الأعلى.",
       "recentOther": "مكافأة",
       "loading": "جارٍ التحميل…",
-      "error": "تعذّر تحميل مكافآتك الآن."
+      "error": "تعذّر تحميل مكافآتك الآن.",
+      "capToday": "{used} من {count} اليوم",
+      "capWeek": "{used} من {count} هذا الأسبوع",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
     }
   },
   "_pending_review": {}

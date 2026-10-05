@@ -11,6 +11,13 @@ import { t } from '@/lib/i18n-toast';
 import { fmtDate, fmtNumber } from '@/lib/locale-format';
 import { useRewardRules, type RewardOverviewRule } from '@/hooks/useRewardRules';
 
+/** VTID-04878: capped rules count per calendar day/week; others per rolling days. */
+function capKey(rule: RewardOverviewRule): string {
+  if (rule.window === 'day') return 'wallet.rewardRules.capToday';
+  if (rule.window === 'week') return 'wallet.rewardRules.capWeek';
+  return 'wallet.rewardRules.cap';
+}
+
 function RuleRow({ rule }: { rule: RewardOverviewRule }) {
   const done = rule.earned;
   return (
@@ -27,8 +34,8 @@ function RuleRow({ rule }: { rule: RewardOverviewRule }) {
         <div className="min-w-0 text-start">
           <p className="font-medium break-words">{t(`wallet.rewardRules.rules.${rule.id}`)}</p>
           {rule.cap && (
-            <p className="text-xs text-muted-foreground">
-              {t('wallet.rewardRules.cap', {
+            <p className="text-xs text-muted-foreground" data-testid={`reward-rule-cap-${rule.id}`}>
+              {t(capKey(rule), {
                 used: fmtNumber(rule.used_in_window ?? 0),
                 count: fmtNumber(rule.cap.count),
                 days: fmtNumber(rule.cap.days),
