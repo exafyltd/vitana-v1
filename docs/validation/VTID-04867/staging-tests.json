@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04867",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the calendar stays on screen with its + button while the role lookup is blocked (read-only)",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "a role-gated page stays mounted when get_role_preference fails",
+      "ref": "npx vitest run src/components/ProtectedRoute.test.tsx",
+      "cwd": ".",
+      "reason": "Real React Query with a failing role RPC: the page mounts once and stays (it flapped between the loader and the page before), the loader still shows on first load, and a role the member lacks is still denied."
+    }
+  ]
+}
