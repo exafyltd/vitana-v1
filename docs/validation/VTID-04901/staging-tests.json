@@ -1,0 +1,22 @@
+{
+  "vtid": "VTID-04901",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "on a phone viewport the Alle Beisammen group chat shows a 44px back button below the top edge, and tapping it lands on the inbox",
+      "spec": "tests/e2e/staging/vtid-04901-group-chat-exit.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/pages/messages/GroupChat.vtid-04901.test.tsx",
+      "reason": "back button in the loading state, safe-area header, deep link vs in-app back, the poll no longer re-fetches the roster"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run test:group-chat-dates",
+      "reason": "group chat date dividers unchanged (now translated)"
+    }
+  ]
+}

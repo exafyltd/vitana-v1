@@ -432,7 +432,9 @@ export default function Messages() {
   // re-navigated → "Loading group…" loop).
   const handleThreadOpen = useCallback((thread: { id: string; unread_count?: number }) => {
     if (isChatGroupThreadId(thread.id)) {
-      navigate(`/inbox/g/${chatGroupIdFromThreadId(thread.id)}`);
+      // VTID-04901: the group screen's back button returns here (history
+      // back) only when it knows it was opened from this list.
+      navigate(`/inbox/g/${chatGroupIdFromThreadId(thread.id)}`, { state: { fromInbox: true } });
       return;
     }
     setSelectedThreadId(thread.id);

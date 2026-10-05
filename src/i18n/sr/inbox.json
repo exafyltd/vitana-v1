@@ -127,7 +127,9 @@
       "officialBadge": "zvanična grupa",
       "empty": "Još nema poruka.",
       "composerPlaceholder": "Poruka…",
-      "_pending_review": {}
+      "_pending_review": {},
+      "today": "Danas",
+      "yesterday": "Juče"
     },
     "_pending_review": {}
   },

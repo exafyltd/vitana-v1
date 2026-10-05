@@ -12,7 +12,8 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -37,6 +38,10 @@ import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
 
 // Realtime drives live updates now; the poll is a reconnect-safety fallback.
+// VTID-04901: the poll and realtime refresh MESSAGES only. The group itself
+// (with every member's profile) is loaded on open and when the app returns
+// to the foreground — for "Alle Beisammen" (every member) re-fetching the
+// roster every 8s kept the screen slow and stuck on the loading state.
 // Kept tight (8s) so that if realtime drops on mobile the group still
 // converges quickly — the previous 20s gap was a large part of the perceived
 // "messages take half a minute to appear" complaint.
@@ -79,6 +84,7 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
 export default function GroupChat() {
   const { groupId, messageId: initialScrollMessageId } = useParams<{ groupId: string; messageId?: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { translate } = useTranslation();
   const userId = user?.id;
@@ -87,6 +93,7 @@ export default function GroupChat() {
   const [messages, setMessages] = useState<ChatGroupMessage[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [messagesLoaded, setMessagesLoaded] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const streamEndRef = useRef<HTMLDivElement>(null);
 
@@ -101,36 +108,57 @@ export default function GroupChat() {
       messages,
       msg => msg.created_at,
       messageDate => {
-        if (isToday(messageDate)) return "Today";
-        if (isYesterday(messageDate)) return "Yesterday";
+        if (isToday(messageDate)) return translate("inbox.group.today");
+        if (isYesterday(messageDate)) return translate("inbox.group.yesterday");
         return isThisYear(messageDate)
           ? formatDate(messageDate, "d MMMM")
           : formatDate(messageDate, "d MMMM yyyy");
       },
     );
-  }, [messages]);
+  }, [messages, translate]);
 
-  const reload = useCallback(async () => {
+  const loadMessages = useCallback(async () => {
     if (!groupId) return;
     try {
-      const [g, msgs] = await Promise.all([
-        fetchGroup(groupId),
-        fetchGroupMessages(groupId, 100),
-      ]);
-      setGroup(g);
+      const msgs = await fetchGroupMessages(groupId, 100);
       setMessages(msgs.slice().reverse());
+      setMessagesLoaded(true);
       setLoadError(null);
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : "Failed to load group");
-    } finally {
-      setIsLoading(false);
+    }
+  }, [groupId]);
+
+  const loadGroup = useCallback(async () => {
+    if (!groupId) return;
+    try {
+      const g = await fetchGroup(groupId);
+      setGroup(g);
+      setLoadError(null);
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : "Failed to load group");
     }
   }, [groupId]);
 
   useEffect(() => {
+    let cancelled = false;
     setIsLoading(true);
-    reload();
-  }, [reload]);
+    setMessagesLoaded(false);
+    Promise.all([loadGroup(), loadMessages()]).finally(() => {
+      if (!cancelled) setIsLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [loadGroup, loadMessages]);
+
+  // Refresh the roster (names/avatars, member count) when the app comes back
+  // to the foreground instead of on every poll tick.
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible") loadGroup();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [loadGroup]);
 
   useEffect(() => {
     if (!groupId) return;
@@ -147,17 +175,17 @@ export default function GroupChat() {
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=eq.${groupId}` },
-        () => { reload(); },
+        () => { loadMessages(); },
       )
       .subscribe();
     return () => { supabase.removeChannel(channel); };
-  }, [groupId, reload]);
+  }, [groupId, loadMessages]);
 
   // Fallback poll — covers dropped realtime events / reconnects.
   useEffect(() => {
-    const id = setInterval(() => { reload(); }, POLL_INTERVAL_MS);
+    const id = setInterval(() => { loadMessages(); }, POLL_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [reload]);
+  }, [loadMessages]);
 
   const hasScrolledToTargetRef = useRef(false);
 
@@ -218,7 +246,7 @@ export default function GroupChat() {
 
   // MessageBubble's edit ("correction") flow is a no-op unless onUpdateMessage
   // is supplied — see handleEditSave's `!onUpdateMessage` guard.
-  const handleUpdateMessage = useCallback(async (messageId: string, updates: any) => {
+  const handleUpdateMessage = useCallback(async (messageId: string, updates: { body?: string; content?: string }) => {
     if (!groupId) return;
     const content = String(updates?.body ?? updates?.content ?? "").trim();
     if (!content) return;
@@ -243,21 +271,55 @@ export default function GroupChat() {
     }
   }, [groupId]);
 
+  // VTID-04901: opened from the inbox list (which marks the navigation) →
+  // history back to it, so the hardware back button doesn't land on a second
+  // /inbox entry. Anything else — a push-notification deep link, a cold start,
+  // a return from sign-in/onboarding — replaces this screen with the inbox,
+  // never "back" into a login or onboarding step.
+  const openedFromInbox = (location.state as { fromInbox?: boolean } | null)?.fromInbox === true;
   const goBack = useCallback(() => {
-    navigate("/inbox", { replace: true });
-  }, [navigate]);
+    if (openedFromInbox) {
+      navigate(-1);
+    } else {
+      navigate("/inbox", { replace: true });
+    }
+  }, [openedFromInbox, navigate]);
 
-  if (isLoading) {
+  // The exit is ALWAYS on screen — loading, error and loaded states alike —
+  // and sits below the status bar / notch (`viewport-fit=cover` draws the app
+  // under it; same inset ConversationView's header uses).
+  const backButton = (
+    <button
+      type="button"
+      data-testid="group-chat-back"
+      aria-label={translate("inbox.group.back")}
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 active:bg-gray-200"
+      onClick={goBack}
+    >
+      <ArrowLeft className="h-6 w-6 rtl:rotate-180" aria-hidden="true" />
+    </button>
+  );
+  const headerClassName = "sticky top-0 z-10 flex items-center gap-2 border-b bg-white px-2 pb-2";
+  const headerStyle = { paddingTop: "calc(env(safe-area-inset-top, 0px) + 0.5rem)" };
+
+  if (isLoading || (!group && !loadError)) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-sm text-gray-500">{translate("inbox.group.loading")}</div>
+      <div className="flex h-[100dvh] flex-col bg-white">
+        <header className={headerClassName} style={headerStyle}>
+          {backButton}
+        </header>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="text-sm text-gray-500">{translate("inbox.group.loading")}</div>
+        </div>
       </div>
     );
   }
 
-  if (loadError && !group) {
+  // The group loaded but its messages did not: show the error, never a false
+  // "no messages yet".
+  if (loadError && (!group || !messagesLoaded)) {
     return (
-      <div className="flex h-screen items-center justify-center p-6">
+      <div className="flex h-[100dvh] flex-col items-center justify-center p-6">
         <div className="text-center">
           <div className="mb-2 font-medium">{translate("inbox.group.cantOpen")}</div>
           <div className="mb-4 text-sm text-red-600">{loadError}</div>
@@ -277,13 +339,9 @@ export default function GroupChat() {
     : translate("inbox.group.memberOther");
 
   return (
-    <div className="flex h-screen flex-col bg-white">
-      <header className="sticky top-0 z-10 flex items-center gap-3 border-b bg-white px-4 py-3">
-        <button
-          aria-label={translate("inbox.group.back")}
-          className="rounded p-2 hover:bg-gray-100"
-          onClick={goBack}
-        >←</button>
+    <div className="flex h-[100dvh] flex-col bg-white">
+      <header className={headerClassName} style={headerStyle}>
+        {backButton}
         {typeof (group.metadata as Record<string, unknown> | null)?.avatar_url === "string" && (
           <Avatar className="h-9 w-9">
             <AvatarImage
@@ -294,8 +352,8 @@ export default function GroupChat() {
             <AvatarFallback>{group.name?.[0] ?? "#"}</AvatarFallback>
           </Avatar>
         )}
-        <div className="flex-1">
-          <div className="font-semibold leading-tight">{group.name}</div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-semibold leading-tight">{group.name}</div>
           <div className="text-xs text-gray-500">
             {group.member_count} {memberLabel}
             {group.is_system ? ` · ${translate("inbox.group.officialBadge")}` : ""}
@@ -350,7 +408,10 @@ export default function GroupChat() {
         <div ref={streamEndRef} />
       </main>
 
-      <footer className="sticky bottom-0 border-t bg-white px-2 py-2">
+      <footer
+        className="sticky bottom-0 border-t bg-white px-2 pt-2"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.5rem)" }}
+      >
         <MessageInput
           threadId={group.id}
           activeThread={{ id: group.id, type: "group" }}
