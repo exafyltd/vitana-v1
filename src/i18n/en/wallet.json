@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Balances",
       "activity": "Activity",
-      "actions": "Actions",
-      "_pending_review": {}
+      "actions": "Actions"
     },
     "filters": {
       "commissions": "Sell & earn commissions",
@@ -22,16 +21,14 @@
       "purchases": "Purchases",
       "pending": "Pending Payouts",
       "withdrawals": "Withdrawals",
-      "stakes": "Staking",
-      "_pending_review": {}
+      "stakes": "Staking"
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",
     "displayCurrency": "Display currency",
-    "_pending_review": {},
     "rewardRules": {
       "title": "How you earn VTNA",
-      "summary": "You earn VTNA for real things you do yourself and for staying consistent.",
+      "summary": "You earn VTNA for real things you do yourself, and for sticking with it.",
       "earnedBalance": "Earned by you",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,8 +37,8 @@
       "cap": "{used} of {count} in {days} days",
       "groups": {
         "first_steps": "First steps — once each",
-        "habits": "Habits — staying consistent",
-        "community": "Community — with others"
+        "habits": "Habits – Stick with it",
+        "community": "Community – With others"
       },
       "rules": {
         "onboarding_complete": "Finish your onboarding",
@@ -66,7 +63,7 @@
       "never": {
         "done_by_vitana": "Anything Vitana does or drafts for you",
         "purchases": "Bought credits and bonus packs",
-        "self_reported": "Actions the system can't verify — except completed Autopilot actions (max 2 a day)"
+        "self_reported": "Information the system cannot verify – except completed Autopilot actions (max. 2 per day)"
       },
       "recentTitle": "Your recent rewards",
       "recentEmpty": "No rewards yet — your first step is waiting above.",
@@ -76,6 +73,5 @@
       "capToday": "{used} of {count} today",
       "capWeek": "{used} of {count} this week"
     }
-  },
-  "_pending_review": {}
+  }
 }
