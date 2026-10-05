@@ -93,6 +93,7 @@ export default function GroupChat() {
   const [messages, setMessages] = useState<ChatGroupMessage[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [messagesLoaded, setMessagesLoaded] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const streamEndRef = useRef<HTMLDivElement>(null);
 
@@ -121,6 +122,8 @@ export default function GroupChat() {
     try {
       const msgs = await fetchGroupMessages(groupId, 100);
       setMessages(msgs.slice().reverse());
+      setMessagesLoaded(true);
+      setLoadError(null);
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : "Failed to load group");
     }
@@ -140,6 +143,7 @@ export default function GroupChat() {
   useEffect(() => {
     let cancelled = false;
     setIsLoading(true);
+    setMessagesLoaded(false);
     Promise.all([loadGroup(), loadMessages()]).finally(() => {
       if (!cancelled) setIsLoading(false);
     });
@@ -267,17 +271,19 @@ export default function GroupChat() {
     }
   }, [groupId]);
 
-  // VTID-04901: go back to wherever the member came from (the inbox list) when
-  // this screen was reached by in-app navigation; a push-notification deep
-  // link or cold start has no in-app history ("default" key), so it lands on
-  // the inbox instead of leaving the app.
+  // VTID-04901: opened from the inbox list (which marks the navigation) →
+  // history back to it, so the hardware back button doesn't land on a second
+  // /inbox entry. Anything else — a push-notification deep link, a cold start,
+  // a return from sign-in/onboarding — replaces this screen with the inbox,
+  // never "back" into a login or onboarding step.
+  const openedFromInbox = (location.state as { fromInbox?: boolean } | null)?.fromInbox === true;
   const goBack = useCallback(() => {
-    if (location.key !== "default") {
+    if (openedFromInbox) {
       navigate(-1);
     } else {
       navigate("/inbox", { replace: true });
     }
-  }, [location.key, navigate]);
+  }, [openedFromInbox, navigate]);
 
   // The exit is ALWAYS on screen — loading, error and loaded states alike —
   // and sits below the status bar / notch (`viewport-fit=cover` draws the app
@@ -309,7 +315,9 @@ export default function GroupChat() {
     );
   }
 
-  if (loadError && !group) {
+  // The group loaded but its messages did not: show the error, never a false
+  // "no messages yet".
+  if (loadError && (!group || !messagesLoaded)) {
     return (
       <div className="flex h-[100dvh] flex-col items-center justify-center p-6">
         <div className="text-center">

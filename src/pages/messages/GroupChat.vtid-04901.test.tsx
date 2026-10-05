@@ -100,19 +100,43 @@ describe("GroupChat exit (VTID-04901)", () => {
     expect((await screen.findByTestId("where")).textContent).toBe("/inbox");
   });
 
-  it("goes back to where the member came from when there is in-app history", async () => {
+  it("returns from sign-in/onboarding (in-app history, not from the inbox) to the inbox, not back", async () => {
     fetchGroup.mockResolvedValue(GROUP);
     render(
-      <MemoryRouter initialEntries={["/comm/news"]}>
+      <MemoryRouter initialEntries={["/maxina"]}>
         <Routes>
-          <Route path="/comm/news" element={<Opener />} />
+          <Route path="/maxina" element={<OpenLink />} />
+          <Route path="/inbox" element={<Where />} />
           <Route path="/inbox/g/:groupId" element={<GroupChat />} />
         </Routes>
       </MemoryRouter>,
     );
     fireEvent.click(screen.getByText("open"));
     fireEvent.click(await screen.findByTestId("group-chat-back"));
-    expect((await screen.findByTestId("where")).textContent).toBe("/comm/news");
+    expect((await screen.findByTestId("where")).textContent).toBe("/inbox");
+  });
+
+  it("shows an error, not an empty chat, when the messages fail to load", async () => {
+    fetchGroup.mockResolvedValue(GROUP);
+    fetchGroupMessages.mockRejectedValue(new Error("Gateway 500"));
+    renderAt(["/inbox/g/g1"]);
+    expect(await screen.findByText("inbox.group.cantOpen")).toBeTruthy();
+    expect(screen.queryByText("inbox.group.empty")).toBeNull();
+  });
+
+  it("goes back to the inbox list it was opened from (history back)", async () => {
+    fetchGroup.mockResolvedValue(GROUP);
+    render(
+      <MemoryRouter initialEntries={["/inbox"]}>
+        <Routes>
+          <Route path="/inbox" element={<Opener />} />
+          <Route path="/inbox/g/:groupId" element={<GroupChat />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    fireEvent.click(screen.getByText("open"));
+    fireEvent.click(await screen.findByTestId("group-chat-back"));
+    expect((await screen.findByTestId("where")).textContent).toBe("/inbox");
   });
 
   it("polls messages without re-fetching the whole roster", async () => {
@@ -133,13 +157,17 @@ function Opener() {
   return (
     <div>
       <div data-testid="where">{loc.pathname}</div>
-      <OpenLink />
+      <OpenLink fromInbox />
     </div>
   );
 }
 
 import { useNavigate } from "react-router-dom";
-function OpenLink() {
+function OpenLink({ fromInbox = false }: { fromInbox?: boolean }) {
   const navigate = useNavigate();
-  return <button onClick={() => navigate("/inbox/g/g1")}>open</button>;
+  return (
+    <button onClick={() => navigate("/inbox/g/g1", fromInbox ? { state: { fromInbox: true } } : undefined)}>
+      open
+    </button>
+  );
 }
