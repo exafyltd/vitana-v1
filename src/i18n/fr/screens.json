@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "Es-tu sûr(e) de vouloir supprimer \"{title}\" ? Cette action est irréversible.\nTous les participants, billets et données associées seront définitivement supprimés.",
       "sent_countSentResponse_countResponded": "{sent_count} envoyé(s) • {response_count} répondu",
       "attendeesTotal": "Participants ({total})",
-      "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici."
+      "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici.",
+      "virtualLinkLabel": "Lien pour rejoindre (facultatif)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Colle le lien de ton appel vidéo (commence par https://). Sans lien, aucun lien « Rejoindre » n'est affiché."
     },
     "feedback": {
       "reportSent": "Signalement envoyé !",
@@ -13336,7 +13339,8 @@
       "signInDesc": "Connecte-toi pour rejoindre les salles en direct.",
       "notFoundDesc": "Cette salle en direct n'existe plus.",
       "startingSoon": "Commence bientôt",
-      "startNow": "Lancer maintenant"
+      "startNow": "Lancer maintenant",
+      "eventsSectionTitle": "Salles en direct"
     }
   }
 }

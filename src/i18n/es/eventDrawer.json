@@ -59,7 +59,8 @@
     "outlook": "Outlook",
     "appleCal": "Calendario de Apple",
     "downloadIcs": "Descargar ICS",
-    "_pending_review": {}
+    "_pending_review": {},
+    "attendingCount": "Asistentes: {current}"
   },
   "_pending_review": {}
 }

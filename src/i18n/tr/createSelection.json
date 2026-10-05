@@ -6,7 +6,9 @@
     "event": "Etkinlik",
     "eventDescription": "Planlı zamanlar ve yapılandırılmış programlarla resmi buluşmalar",
     "meetup": "Buluşma",
-    "meetupDescription": "Ağ kurma ve topluluk oluşturma için gündelik buluşmalar"
+    "meetupDescription": "Ağ kurma ve topluluk oluşturma için gündelik buluşmalar",
+    "liveRoom": "Canlı Oda",
+    "liveRoomDescription": "Hemen canlı yayına geç ya da sesli veya görüntülü bir oturum planla"
   },
   "_pending_review": {}
 }

@@ -7,7 +7,8 @@ import {
   ResponsiveDialogTitle,
 } from "@/components/ui/responsive-dialog";
 import { Card } from "@/components/ui/card";
-import { Calendar, Users } from "lucide-react";
+import { Calendar, Radio, Users } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface CreateSelectionDialogProps {
@@ -15,6 +16,11 @@ interface CreateSelectionDialogProps {
   onOpenChange: (open: boolean) => void;
   onSelectEvent: () => void;
   onSelectMeetup: () => void;
+  /**
+   * Third option "Live Room" (VTID-04907): opens the Go Live popup (instant or
+   * scheduled). Omitted → only Event / MeetUp are offered.
+   */
+  onSelectLiveRoom?: () => void;
 }
 
 export function CreateSelectionDialog({
@@ -22,6 +28,7 @@ export function CreateSelectionDialog({
   onOpenChange,
   onSelectEvent,
   onSelectMeetup,
+  onSelectLiveRoom,
 }: CreateSelectionDialogProps) {
   const { translate } = useTranslation();
 
@@ -38,7 +45,7 @@ export function CreateSelectionDialog({
         </ResponsiveDialogHeader>
         
         <ResponsiveDialogBody>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={cn("grid grid-cols-1 gap-4", onSelectLiveRoom ? "md:grid-cols-3" : "md:grid-cols-2")}>
             {/* Event Option */}
             <Card
               className="p-6 cursor-pointer transition-all hover:border-primary hover:shadow-lg border-2"
@@ -78,6 +85,37 @@ export function CreateSelectionDialog({
                 </div>
               </div>
             </Card>
+
+            {/* Live Room Option */}
+            {onSelectLiveRoom && (
+              <Card
+                className="p-6 cursor-pointer transition-all hover:border-primary hover:shadow-lg border-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={onSelectLiveRoom}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelectLiveRoom();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                data-testid="create-option-live-room"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="p-4 rounded-full bg-destructive/10">
+                    <Radio className="h-12 w-12 text-destructive" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">
+                      {translate('createSelection.liveRoom', 'Live Room')}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {translate('createSelection.liveRoomDescription', 'Go live now or schedule an audio or video session')}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
           </div>
         </ResponsiveDialogBody>
       </ResponsiveDialogContent>

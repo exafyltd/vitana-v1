@@ -4640,7 +4640,10 @@
       "youSureYouWantDeleteTitle": "Czy na pewno chcesz usunąć „{title}”? Tej czynności nie można cofnąć.\n              Wszyscy uczestnicy, bilety i powiązane dane zostaną trwale usunięte.",
       "sent_countSentResponse_countResponded": "{sent_count} wysłanych • {response_count} odpowiedzi",
       "attendeesTotal": "Uczestnicy ({total})",
-      "noInvitationsSentYetStartInviting": "Nie wysłano jeszcze zaproszeń. Zacznij zapraszać ludzi, aby zobaczyć tutaj odpowiedzi."
+      "noInvitationsSentYetStartInviting": "Nie wysłano jeszcze zaproszeń. Zacznij zapraszać ludzi, aby zobaczyć tutaj odpowiedzi.",
+      "virtualLinkLabel": "Link do dołączenia (opcjonalnie)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Wklej link do swojej rozmowy wideo (zaczyna się od https://). Bez linku nie pojawi się link „Dołącz”."
     },
     "feedback": {
       "reportSent": "Raport wysłany!",
@@ -13358,7 +13361,8 @@
       "signInDesc": "Zaloguj się, aby dołączać do pokojów na żywo.",
       "notFoundDesc": "Ten pokój na żywo już nie istnieje.",
       "startingSoon": "Zaraz się zacznie",
-      "startNow": "Zacznij teraz"
+      "startNow": "Zacznij teraz",
+      "eventsSectionTitle": "Pokoje na żywo"
     }
   }
 }

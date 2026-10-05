@@ -647,7 +647,11 @@
       "failedSendMessage": "Не удалось отправить сообщение",
       "pleaseTryAgainLater": "Пожалуйста, попробуй позже",
       "addedSmartCalendar": "Добавлено в Умный Календарь ✓",
-      "eventSavedWeLlRemindYou": "Событие сохранено. Мы напомним тебе перед началом."
+      "eventSavedWeLlRemindYou": "Событие сохранено. Мы напомним тебе перед началом.",
+      "savedTitle": "Сохранено",
+      "savedDesc": "Сохранено на потом",
+      "unsavedTitle": "Удалено из сохранённого",
+      "unsavedDesc": "Удалено из твоего списка сохранённого"
     },
     "memory": {
       "voiceRecorded": "Голос записан",

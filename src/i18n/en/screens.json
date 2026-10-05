@@ -4641,7 +4641,10 @@
       "sent_countSentResponse_countResponded": "{sent_count}sent • {response_count}responded",
       "attendeesTotal": "Attendees ({total})",
       "noInvitationsSentYetStartInviting": "No invitations sent yet. Start inviting people to see responses here.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "virtualLinkLabel": "Join link (optional)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Paste the link to your video call (starts with https://). Without a link, no \"Join\" link is shown."
     },
     "feedback": {
       "reportSent": "Report Sent!",
@@ -12238,7 +12241,8 @@
       "signInDesc": "Sign in to join live rooms.",
       "notFoundDesc": "This live room no longer exists.",
       "startingSoon": "Starting soon",
-      "startNow": "Start now"
+      "startNow": "Start now",
+      "eventsSectionTitle": "Live Rooms"
     }
   },
   "_pending_review": {}

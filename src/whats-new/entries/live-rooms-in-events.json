@@ -1,0 +1,10 @@
+{
+  "id": "live-rooms-in-events",
+  "added": "2026-10-05",
+  "title": { "en": "Live Rooms, Right in Events", "de": "Live-Räume direkt bei den Events" },
+  "description": {
+    "en": "Tap + in Events and choose Live Room to go live now or schedule a session. Live and upcoming rooms now show up in the Events catalog, with how many people are in.",
+    "de": "Tippe bei den Events auf + und wähle Live-Raum, um sofort live zu gehen oder eine Session zu planen. Live- und geplante Räume siehst du jetzt direkt im Events-Katalog – samt Anzahl der Leute im Raum."
+  },
+  "deepLink": "/comm/events-meetups"
+}

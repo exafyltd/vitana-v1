@@ -4615,7 +4615,10 @@
       "youSureYouWantDeleteTitle": "Bist du sicher, dass du \"{title}\" löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden. Alle Teilnehmer, Tickets und zugehörigen Daten werden dauerhaft entfernt.",
       "sent_countSentResponse_countResponded": "{sent_count} gesendet • {response_count} geantwortet",
       "attendeesTotal": "Teilnehmer ({total})",
-      "noInvitationsSentYetStartInviting": "Noch keine Einladungen verschickt. Lade Leute ein, um hier Antworten zu sehen."
+      "noInvitationsSentYetStartInviting": "Noch keine Einladungen verschickt. Lade Leute ein, um hier Antworten zu sehen.",
+      "virtualLinkLabel": "Link zum Beitreten (optional)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Füge den Link zu deinem Videoanruf ein (beginnt mit https://). Ohne Link wird kein „Beitreten“-Link angezeigt."
     },
     "feedback": {
       "reportSent": "Bericht gesendet!",
@@ -12008,7 +12011,8 @@
       "signInDesc": "Melde dich an, um Live-Räumen beizutreten.",
       "notFoundDesc": "Diesen Live-Raum gibt es nicht mehr.",
       "startingSoon": "Startet gleich",
-      "startNow": "Jetzt starten"
+      "startNow": "Jetzt starten",
+      "eventsSectionTitle": "Live-Räume"
     }
   }
 }

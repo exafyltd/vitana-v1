@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "你确定要删除“{title}”吗？此操作无法撤销。所有参与者、门票和相关数据都将被永久删除。",
       "sent_countSentResponse_countResponded": "已发送 {sent_count} • 已回复 {response_count}",
       "attendeesTotal": "参与者 ({total})",
-      "noInvitationsSentYetStartInviting": "还没发送邀请。开始邀请朋友，就能在这里看到回复了。"
+      "noInvitationsSentYetStartInviting": "还没发送邀请。开始邀请朋友，就能在这里看到回复了。",
+      "virtualLinkLabel": "加入链接（可选）",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "粘贴你的视频通话链接（以 https:// 开头）。没有链接时不会显示“加入”链接。"
     },
     "feedback": {
       "reportSent": "报告已发送！",
@@ -13340,7 +13343,8 @@
       "signInDesc": "登录后即可加入直播间。",
       "notFoundDesc": "这个直播间已不存在。",
       "startingSoon": "即将开始",
-      "startNow": "立即开始"
+      "startNow": "立即开始",
+      "eventsSectionTitle": "直播间"
     }
   }
 }

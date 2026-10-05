@@ -17,6 +17,7 @@ import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
+import { toVirtualLink } from '@/lib/virtualLink';
 import { resizeImageFile } from '@/lib/resizeImage';
 
 interface CreateEventPopupProps {
@@ -66,6 +67,7 @@ export function CreateEventPopup({
     location: "",
     capacity: "",
     isVirtual: false,
+    virtualLink: "",
     price: "",
     isPaid: false,
     displayCurrency: "USD" as "USD" | "EUR"
@@ -114,6 +116,7 @@ export function CreateEventPopup({
       location: "",
       capacity: "",
       isVirtual: false,
+      virtualLink: "",
       price: "",
       isPaid: false,
       displayCurrency: "USD" as "USD" | "EUR"
@@ -254,7 +257,7 @@ export function CreateEventPopup({
           description: formData.description || undefined,
           event_type: 'event',
           location: formData.isVirtual ? undefined : formData.location || undefined,
-          virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
+          virtual_link: toVirtualLink(formData.isVirtual, formData.virtualLink),
           start_time: startTime,
           end_time: endTime,
           max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
@@ -657,6 +660,22 @@ export function CreateEventPopup({
                   onCheckedChange={(checked) => setFormData({...formData, isVirtual: checked})}
                 />
               </div>
+              {formData.isVirtual && (
+                <div>
+                  <Label htmlFor="virtual-link">{t('screens.events.virtualLinkLabel')}</Label>
+                  <Input
+                    id="virtual-link"
+                    type="url"
+                    inputMode="url"
+                    dir="ltr"
+                    value={formData.virtualLink}
+                    onChange={(e) => setFormData({...formData, virtualLink: e.target.value})}
+                    placeholder={t('screens.events.virtualLinkPlaceholder')}
+                    className="mt-1"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.events.virtualLinkHint')}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -5,7 +5,10 @@
 //   - the build carries the rebuilt room (its German catalog strings);
 //   - /comm/live-rooms renders, no horizontal overflow;
 //   - a room page (an id that has no room) renders the app-level header with
-//     the exit button — nothing is clicked there, never Join / Go Live / Start.
+//     the exit button — nothing is clicked there, never Join / Go Live / Start;
+//   - /comm/events-meetups renders, its "+" dialog offers "Live Room" (the
+//     dialog is opened and closed with Escape — no option is chosen, nothing
+//     is submitted), no horizontal overflow.
 // Entering a real room records attendance (a write) and is never done here.
 import { test, expect } from './staging-guard';
 
@@ -70,5 +73,24 @@ test('VTID-04906: Live Rooms list and the room page with its exit button (phone)
   await expect(exit).toBeVisible({ timeout: 20_000 });
   const box = await exit.boundingBox();
   expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+  await expectNoHorizontalOverflow(page);
+});
+
+test('VTID-04907: Events offers a Live Room in "+" (phone)', async ({ page, request }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const bundle = await signIn(page, request);
+  expect(bundle, 'the Live Room create option is not in this build').toContain('Geh sofort live oder plane eine Audio- oder Video-Session');
+
+  await page.goto('/comm/events-meetups', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { name: /Events/ }).first()).toBeVisible({ timeout: 20_000 });
+  await expectNoHorizontalOverflow(page);
+
+  // Opening the dialog is read-only; never pick an option, never submit.
+  await page.getByRole('button', { name: 'Erstellen' }).first().click();
+  const liveRoom = page.getByTestId('create-option-live-room');
+  await expect(liveRoom).toBeVisible({ timeout: 10_000 });
+  await expect(liveRoom).toContainText('Live-Raum');
+  await page.keyboard.press('Escape');
+  await expect(liveRoom).toBeHidden();
   await expectNoHorizontalOverflow(page);
 });

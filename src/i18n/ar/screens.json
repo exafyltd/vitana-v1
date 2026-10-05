@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "هل أنت متأكد أنك تريد حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع المشاركين والتذاكر والبيانات المرتبطة نهائيًا.",
       "sent_countSentResponse_countResponded": "{sent_count}مرسل • {response_count}استجابت",
       "attendeesTotal": "الحاضرون ({total})",
-      "noInvitationsSentYetStartInviting": "لم يتم إرسال أي دعوات بعد. ابدأ بدعوة الأشخاص لرؤية الردود هنا."
+      "noInvitationsSentYetStartInviting": "لم يتم إرسال أي دعوات بعد. ابدأ بدعوة الأشخاص لرؤية الردود هنا.",
+      "virtualLinkLabel": "رابط الانضمام (اختياري)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "الصق رابط مكالمة الفيديو (يبدأ بـ https://). بدون رابط لن يظهر رابط «الانضمام»."
     },
     "feedback": {
       "reportSent": "أُرسل التقرير!",
@@ -12381,7 +12384,8 @@
       "signInDesc": "سجّل الدخول للانضمام إلى الغرف المباشرة.",
       "notFoundDesc": "لم تعد هذه الغرفة المباشرة موجودة.",
       "startingSoon": "يبدأ قريبًا",
-      "startNow": "ابدأ الآن"
+      "startNow": "ابدأ الآن",
+      "eventsSectionTitle": "الغرف المباشرة"
     }
   }
 }

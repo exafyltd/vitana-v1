@@ -4642,7 +4642,10 @@
       "youSureYouWantDeleteTitle": "Ты уверен, что хочешь удалить «{title}»?\nЭто действие нельзя отменить.\nВсе участники, билеты и связанные данные будут удалены безвозвратно.",
       "sent_countSentResponse_countResponded": "{sent_count} отправлено • {response_count} ответили",
       "attendeesTotal": "Участники ({total})",
-      "noInvitationsSentYetStartInviting": "Приглашения еще не отправлены. Начни приглашать людей, чтобы увидеть ответы здесь."
+      "noInvitationsSentYetStartInviting": "Приглашения еще не отправлены. Начни приглашать людей, чтобы увидеть ответы здесь.",
+      "virtualLinkLabel": "Ссылка для входа (необязательно)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Вставь ссылку на свой видеозвонок (начинается с https://). Без ссылки кнопка входа не показывается."
     },
     "feedback": {
       "reportSent": "Отчет отправлен!",
@@ -13350,7 +13353,8 @@
       "signInDesc": "Войди, чтобы присоединяться к эфирам.",
       "notFoundDesc": "Эта комната больше не существует.",
       "startingSoon": "Скоро начнётся",
-      "startNow": "Начать сейчас"
+      "startNow": "Начать сейчас",
+      "eventsSectionTitle": "Прямые эфиры"
     }
   }
 }

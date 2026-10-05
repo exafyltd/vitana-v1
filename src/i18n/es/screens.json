@@ -4611,7 +4611,10 @@
       "youSureYouWantDeleteTitle": "¿Estás seguro de que quieres eliminar \"{title}\"? Esta acción no se puede deshacer.\n              Todos los participantes, boletos y datos asociados se eliminarán permanentemente.",
       "sent_countSentResponse_countResponded": "{sent_count}enviados • {response_count}respondieron",
       "attendeesTotal": "Asistentes ({total})",
-      "noInvitationsSentYetStartInviting": "Aún no se han enviado invitaciones. Empieza a invitar personas para ver las respuestas aquí."
+      "noInvitationsSentYetStartInviting": "Aún no se han enviado invitaciones. Empieza a invitar personas para ver las respuestas aquí.",
+      "virtualLinkLabel": "Enlace para unirse (opcional)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Pega el enlace de tu videollamada (empieza por https://). Sin enlace no se muestra ningún enlace para unirse."
     },
     "feedback": {
       "reportSent": "¡Reporte enviado!",
@@ -12209,7 +12212,8 @@
       "signInDesc": "Inicia sesión para unirte a salas en vivo.",
       "notFoundDesc": "Esta sala en vivo ya no existe.",
       "startingSoon": "Empieza pronto",
-      "startNow": "Empezar ahora"
+      "startNow": "Empezar ahora",
+      "eventsSectionTitle": "Salas en vivo"
     }
   }
 }

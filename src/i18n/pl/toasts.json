@@ -647,7 +647,11 @@
       "failedSendMessage": "Nie udało się wysłać wiadomości",
       "pleaseTryAgainLater": "Spróbuj ponownie później",
       "addedSmartCalendar": "Dodano do Inteligentnego Kalendarza ✓",
-      "eventSavedWeLlRemindYou": "Wydarzenie zapisane. Przypomnimy Ci przed jego rozpoczęciem."
+      "eventSavedWeLlRemindYou": "Wydarzenie zapisane. Przypomnimy Ci przed jego rozpoczęciem.",
+      "savedTitle": "Zapisano",
+      "savedDesc": "Zapisano na później",
+      "unsavedTitle": "Usunięto z zapisanych",
+      "unsavedDesc": "Usunięto z twojej listy zapisanych"
     },
     "memory": {
       "voiceRecorded": "Głos nagrany",

@@ -6,7 +6,9 @@
     "eventDescription": "تجمعات رسمية بأوقات محددة وبرامج منظمة",
     "meetup": "MeetUp",
     "meetupDescription": "تجمعات عفوية للتواصل وبناء المجتمع",
-    "_pending_review": {}
+    "_pending_review": {},
+    "liveRoom": "غرفة مباشرة",
+    "liveRoomDescription": "ابدأ البث الآن أو جدوِل جلسة صوتية أو مرئية"
   },
   "_pending_review": {}
 }

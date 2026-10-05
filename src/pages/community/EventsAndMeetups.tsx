@@ -40,6 +40,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { notifyError, t } from '@/lib/i18n-toast';
 import { resolveEventCover, generateCoverUrl } from '@/lib/eventCoverImage';
+import { EventsLiveRooms } from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 
@@ -62,6 +63,9 @@ const UniversalShareDialog = lazy(() =>
   import('@/components/sharing/UniversalShareDialog').then((m) => ({ default: m.UniversalShareDialog })));
 const AutopilotPopup = lazy(() =>
   import('@/components/AutopilotPopup').then((m) => ({ default: m.AutopilotPopup })));
+// VTID-04907: "+" → Live Room opens the existing Go Live popup.
+const GoLivePopup = lazy(() =>
+  import('@/components/GoLivePopup').then((m) => ({ default: m.GoLivePopup })));
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -353,6 +357,7 @@ const EventsAndMeetups = () => {
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [createSelectionOpen, setCreateSelectionOpen] = useState(false);
+  const [goLiveOpen, setGoLiveOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   // Use the mobile hook
@@ -459,7 +464,9 @@ const EventsAndMeetups = () => {
   // Get all events from current tab
   const currentEvents = activeTab === "today" ? filteredTodayEvents : 
                         activeTab === "upcoming" ? filteredUpcomingEvents :
-                        activeTab === "hot" ? maxinaEvents : [];
+                        activeTab === "hot" ? maxinaEvents :
+                        // VTID-04907: the drawer never opened on Following.
+                        activeTab === "following" ? followedEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
   // Track if we've initialized the tab from URL (prevents resetting on data refresh)
@@ -876,6 +883,7 @@ const EventsAndMeetups = () => {
             <div className={cn(isMobile ? "flex-1 overflow-y-auto" : "")}>
 
               <SplitBarContent value="today" className={isMobile ? "mt-1" : "mt-6"}>
+                <EventsLiveRooms tab="today" searchQuery={searchQuery} />
                 {loading && filteredTodayEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -955,6 +963,7 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="upcoming" className={isMobile ? "mt-1" : "mt-6"}>
+                <EventsLiveRooms tab="upcoming" searchQuery={searchQuery} />
                 {loading && filteredUpcomingEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -1113,6 +1122,7 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="hot" className={isMobile ? "mt-1" : "mt-6"}>
+                <EventsLiveRooms tab="hot" searchQuery={searchQuery} />
                 {loading && maxinaEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -1192,8 +1202,20 @@ const EventsAndMeetups = () => {
             setCreateSelectionOpen(false);
             setCreateMeetupOpen(true);
           }}
+          onSelectLiveRoom={() => {
+            setCreateSelectionOpen(false);
+            setGoLiveOpen(true);
+          }}
         />
       </Suspense>
+
+      {/* Go Live (Live Room) — mounted only while open, so the events page
+          does not load the host's room on every visit. */}
+      {goLiveOpen && (
+        <Suspense fallback={null}>
+          <GoLivePopup open={goLiveOpen} onOpenChange={setGoLiveOpen} />
+        </Suspense>
+      )}
 
       {/* Create Event Popup */}
       <Suspense fallback={null}>

@@ -6,7 +6,9 @@
     "eventDescription": "Formalne spotkania z ustalonymi godzinami i ustrukturyzowanymi programami",
     "meetup": "Spotkanie",
     "meetupDescription": "Nieformalne spotkania do networkingu i budowania społeczności",
-    "_pending_review": {}
+    "_pending_review": {},
+    "liveRoom": "Pokój na żywo",
+    "liveRoomDescription": "Nadawaj teraz na żywo lub zaplanuj sesję audio albo wideo"
   },
   "_pending_review": {}
 }

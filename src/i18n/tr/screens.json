@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "\"{title}\" silmek istediğinden emin misin? Bu işlem geri alınamaz. Tüm katılımcılar, biletler ve ilişkili veriler kalıcı olarak silinecek.",
       "sent_countSentResponse_countResponded": "{sent_count} gönderildi • {response_count} yanıtlandı",
       "attendeesTotal": "Katılımcılar ({total})",
-      "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla."
+      "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla.",
+      "virtualLinkLabel": "Katılım bağlantısı (isteğe bağlı)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Görüntülü görüşmenin bağlantısını yapıştır (https:// ile başlar). Bağlantı olmadan \"Katıl\" bağlantısı gösterilmez."
     },
     "feedback": {
       "reportSent": "Rapor Gönderildi!",
@@ -13336,7 +13339,8 @@
       "signInDesc": "Canlı odalara katılmak için giriş yap.",
       "notFoundDesc": "Bu canlı oda artık mevcut değil.",
       "startingSoon": "Birazdan başlıyor",
-      "startNow": "Şimdi başlat"
+      "startNow": "Şimdi başlat",
+      "eventsSectionTitle": "Canlı Odalar"
     }
   }
 }
