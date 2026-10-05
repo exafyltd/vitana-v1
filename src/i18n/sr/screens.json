@@ -11259,6 +11259,27 @@
         "whatIsMcpBody": "MCP je bezbedan standard koji omogućava tvom AI asistentu da se poveže sa Vitanalandom i umesto tebe obavi odobrene korake podešavanja biznisa.",
         "closingTitle": "Tvoj biznis pripada ekonomiji dugovečnosti",
         "closingBody": "Pridruži se besplatno, poveži se jednom i dopri do ljudi koji ulažu u duži i zdraviji život."
+      },
+      "terms": {
+        "title": "Uslovi partnerstva",
+        "loadFailed": "Uslovi partnerstva nisu mogli da se učitaju. Pokušaj ponovo.",
+        "notPublished": "Uslovi partnerstva još nisu objavljeni.",
+        "updated": "Uslovi partnerstva su ažurirani – pročitaj aktuelnu verziju.",
+        "version": "Verzija {version} · objavljena {date}",
+        "bindingLabel": "Engleski – obavezujuća verzija",
+        "translationLabel": "Prevod – obavezujuća je engleska verzija",
+        "agree": "Pročitao/la sam i prihvatam uslove partnerstva (verzija {version}).",
+        "close": "Zatvori",
+        "accept": "Prihvati",
+        "accepted": "Uslovi partnerstva su prihvaćeni.",
+        "acceptFailed": "Prihvatanje nije uspelo. Pokušaj ponovo.",
+        "rowTitle": "Uslovi partnerstva",
+        "rowBody": "Pročitaj i prihvati uslove partnerstva (verzija {version}).",
+        "rowAccepted": "Verzija {version} prihvaćena.",
+        "rowReacceptTitle": "Novi uslovi partnerstva",
+        "rowReacceptBody": "Uslovi partnerstva su promenjeni (verzija {version}). Pročitaj i prihvati novu verziju.",
+        "rowCta": "Pročitaj i prihvati",
+        "view": "Pogledaj"
       }
     },
     "oauthconsent": {
