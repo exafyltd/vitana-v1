@@ -11248,6 +11248,27 @@
         "whatIsMcpBody": "MCP est un standard sécurisé qui permet à ton assistant IA de se connecter à Vitanaland et d’effectuer pour toi les actions de configuration approuvées.",
         "closingTitle": "Ton entreprise a sa place dans l’économie de la longévité",
         "closingBody": "Inscris-toi gratuitement, connecte-toi une fois et touche des personnes qui investissent dans une vie plus longue et plus saine."
+      },
+      "terms": {
+        "title": "Conditions partenaires",
+        "loadFailed": "Impossible de charger les conditions partenaires. Réessaie.",
+        "notPublished": "Aucune condition partenaire n’a encore été publiée.",
+        "updated": "Les conditions partenaires ont été mises à jour — lis la version actuelle.",
+        "version": "Version {version} · publiée le {date}",
+        "bindingLabel": "Anglais — la version qui fait foi",
+        "translationLabel": "Traduction — seule la version anglaise fait foi",
+        "agree": "J’ai lu et j’accepte les conditions partenaires (version {version}).",
+        "close": "Fermer",
+        "accept": "Accepter",
+        "accepted": "Conditions partenaires acceptées.",
+        "acceptFailed": "L’acceptation n’a pas fonctionné. Réessaie.",
+        "rowTitle": "Conditions partenaires",
+        "rowBody": "Lis et accepte les conditions partenaires (version {version}).",
+        "rowAccepted": "Version {version} acceptée.",
+        "rowReacceptTitle": "Nouvelles conditions partenaires",
+        "rowReacceptBody": "Les conditions partenaires ont changé (version {version}). Lis et accepte la nouvelle version.",
+        "rowCta": "Lire et accepter",
+        "view": "Voir"
       }
     },
     "oauthconsent": {

@@ -11248,6 +11248,27 @@
         "whatIsMcpBody": "MCP 是一种安全标准，让你的 AI 助手连接到 Vitanaland，并代你执行经批准的企业设置操作。",
         "closingTitle": "你的企业属于长寿经济",
         "closingBody": "免费加入，连接一次，触达那些投资于更长寿、更健康生活的人。"
+      },
+      "terms": {
+        "title": "合作伙伴条款",
+        "loadFailed": "无法加载合作伙伴条款，请重试。",
+        "notPublished": "尚未发布合作伙伴条款。",
+        "updated": "合作伙伴条款已更新——请阅读当前版本。",
+        "version": "版本 {version} · 发布于 {date}",
+        "bindingLabel": "英文——具有约束力的版本",
+        "translationLabel": "译文——以英文版本为准",
+        "agree": "我已阅读并接受合作伙伴条款（版本 {version}）。",
+        "close": "关闭",
+        "accept": "接受",
+        "accepted": "已接受合作伙伴条款。",
+        "acceptFailed": "接受失败，请重试。",
+        "rowTitle": "合作伙伴条款",
+        "rowBody": "阅读并接受合作伙伴条款（版本 {version}）。",
+        "rowAccepted": "已接受版本 {version}。",
+        "rowReacceptTitle": "新的合作伙伴条款",
+        "rowReacceptBody": "合作伙伴条款已更改（版本 {version}）。请阅读并接受新版本。",
+        "rowCta": "阅读并接受",
+        "view": "查看"
       }
     },
     "oauthconsent": {

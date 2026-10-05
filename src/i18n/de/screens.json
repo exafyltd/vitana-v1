@@ -10885,6 +10885,27 @@
         "whatIsMcpBody": "MCP ist ein sicherer Standard, mit dem sich dein KI-Assistent mit Vitanaland verbindet und freigegebene Einrichtungsschritte für dein Unternehmen ausführt.",
         "closingTitle": "Dein Unternehmen gehört in die Longevity-Ökonomie",
         "closingBody": "Kostenlos beitreten, einmal verbinden und Menschen erreichen, die in ein längeres, gesünderes Leben investieren."
+      },
+      "terms": {
+        "title": "Partnerbedingungen",
+        "loadFailed": "Die Partnerbedingungen konnten nicht geladen werden. Bitte versuch es noch einmal.",
+        "notPublished": "Es sind noch keine Partnerbedingungen veröffentlicht.",
+        "updated": "Die Partnerbedingungen wurden aktualisiert – bitte lies die aktuelle Version.",
+        "version": "Version {version} · veröffentlicht am {date}",
+        "bindingLabel": "Englisch – die verbindliche Fassung",
+        "translationLabel": "Übersetzung – verbindlich ist die englische Fassung",
+        "agree": "Ich habe die Partnerbedingungen (Version {version}) gelesen und akzeptiere sie.",
+        "close": "Schließen",
+        "accept": "Akzeptieren",
+        "accepted": "Partnerbedingungen akzeptiert.",
+        "acceptFailed": "Die Annahme hat nicht geklappt. Bitte versuch es noch einmal.",
+        "rowTitle": "Partnerbedingungen",
+        "rowBody": "Lies die Partnerbedingungen (Version {version}) und akzeptiere sie.",
+        "rowAccepted": "Version {version} akzeptiert.",
+        "rowReacceptTitle": "Neue Partnerbedingungen",
+        "rowReacceptBody": "Die Partnerbedingungen wurden geändert (Version {version}). Bitte lies und akzeptiere die neue Version.",
+        "rowCta": "Lesen und akzeptieren",
+        "view": "Ansehen"
       }
     },
     "oauthconsent": {

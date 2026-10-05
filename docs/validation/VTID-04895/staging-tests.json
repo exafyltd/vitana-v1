@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04895",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "partner terms sheet and setup-hub row: binding English text, labelled translation, Accept only after the box is ticked, exact version + hash + languages sent, reload on a newer version, 11 locales",
+      "ref": "npx vitest run src/lib/commerce-terms.vtid-04895.test.ts src/components/commerce/SetupHub.test.ts src/components/commerce/supplier-journey-language.test.ts",
+      "cwd": ".",
+      "reason": "the terms row and sheet appear only for a signed-in admin of a registered business once terms are published; the staging test account has no business, staging shares the production Supabase project, and nothing may be published or accepted during verification. The gateway side (routes mounted, unsigned callers refused) is verified on the gateway's staging run for VTID-04895; acceptance itself is proven by the gateway Jest suite and the SQL test."
+    },
+    {
+      "kind": "playwright",
+      "name": "signed out, /commerce still has one sign-up path from the hero",
+      "spec": "tests/e2e/staging/vtid-04271-commerce-guest.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}

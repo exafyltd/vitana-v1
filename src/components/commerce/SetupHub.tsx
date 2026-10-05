@@ -10,13 +10,15 @@
  *                          needs_action = needs attention, live = done
  *   - Sales setup        — the business's shop record exists (catalogue.merchant)
  *   - Review & publish   — lifecycle_state live
+ *   - Partner terms     — VTID-04895: GET /:orgId/terms; its own row below the
+ *                          steps (accept / re-accept in PartnerTermsSheet)
  * Both endpoints already exist and already require org_admin, so the hub is
  * only shown to a business's admins. Nothing is written from here except the
  * profile sheet, which saves through PATCH /:orgId/company (the endpoint the
  * onboarding API already has for exactly these facts).
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CheckCircle2, ChevronRight, Circle, Clock, Loader2, TriangleAlert } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Circle, Clock, Loader2, ShieldCheck, TriangleAlert } from 'lucide-react';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -34,7 +36,9 @@ import { PARTNER_ONBOARDING_API } from '@/lib/commerce-host';
 import { countryOptions } from '@/lib/commerce-countries';
 import { isValidWebsite, normalizeWebsite } from '@/lib/commerce-register';
 import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
-import { t, notifyError } from '@/lib/i18n-toast';
+import { t, notifyError, getI18nLocale } from '@/lib/i18n-toast';
+import { fetchPartnerTerms, type TermsStatus } from '@/lib/commerce-terms';
+import { PartnerTermsSheet } from '@/components/commerce/PartnerTermsSheet';
 
 export type StepState = 'done' | 'in_progress' | 'attention' | 'todo';
 
@@ -118,6 +122,18 @@ export function SetupHub({
   const [facts, setFacts] = useState<HubFacts | null>(null);
   const [failed, setFailed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  // VTID-04895: the partner terms — accepted, pending, or re-acceptance needed.
+  const [terms, setTerms] = useState<TermsStatus | null>(null);
+  const [termsOpen, setTermsOpen] = useState(false);
+
+  const loadTerms = useCallback(async () => {
+    if (!org) return;
+    try {
+      setTerms(await fetchPartnerTerms(org.id, getI18nLocale()));
+    } catch {
+      setTerms(null);
+    }
+  }, [org]);
 
   const load = useCallback(async () => {
     if (!org) return;
@@ -143,6 +159,11 @@ export function SetupHub({
     setFacts(null);
     void load();
   }, [load, refreshKey]);
+
+  useEffect(() => {
+    setTerms(null);
+    void loadTerms();
+  }, [loadTerms, refreshKey]);
 
   const steps = useMemo(() => (facts ? deriveSetupSteps(facts) : []), [facts]);
   if (!org) return null;
@@ -242,8 +263,13 @@ export function SetupHub({
               );
             })}
           </ol>
+          {terms && terms.kind !== 'not_published' && (
+            <TermsRow status={terms} onOpen={() => setTermsOpen(true)} />
+          )}
         </>
       )}
+
+      <PartnerTermsSheet open={termsOpen} onOpenChange={setTermsOpen} orgId={org.id} onAccepted={() => void loadTerms()} />
 
       <ProfileSheet
         open={profileOpen}
@@ -254,6 +280,53 @@ export function SetupHub({
         onSaved={() => void load()}
       />
     </section>
+  );
+}
+
+/**
+ * VTID-04895: the partner terms row. Accepted → done; never accepted → read and
+ * accept; accepted an earlier version that a material update replaced → a
+ * banner-style row asking to accept the new version (the business stays live).
+ */
+function TermsRow({ status, onOpen }: { status: Exclude<TermsStatus, { kind: 'not_published' }>; onOpen: () => void }) {
+  const K = 'screens.commerceportal.terms';
+  if (status.kind === 'accepted') {
+    return (
+      <div className="mt-2 flex min-h-14 items-center gap-3 rounded-2xl border border-border p-3" data-testid="setup-terms" data-state="done">
+        <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-600" />
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-foreground">{t(`${K}.rowTitle`)}</p>
+          <p className="text-sm text-muted-foreground">{t(`${K}.rowAccepted`, { version: status.terms.version })}</p>
+        </div>
+        <button type="button" onClick={onOpen} className="min-h-11 shrink-0 text-sm font-semibold text-amber-800">
+          {t(`${K}.view`)}
+        </button>
+      </div>
+    );
+  }
+  const reaccept = status.reacceptance;
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      data-testid="setup-terms"
+      data-state={reaccept ? 'reaccept' : 'todo'}
+      className={`mt-2 flex min-h-14 w-full items-center gap-3 rounded-2xl border p-3 text-start transition-colors ${
+        reaccept ? 'border-amber-400 bg-amber-50 hover:bg-amber-100' : 'border-border hover:border-amber-400 hover:bg-amber-50/50'
+      }`}
+    >
+      {reaccept ? <TriangleAlert className="h-6 w-6 shrink-0 text-amber-700" /> : <ShieldCheck className="h-6 w-6 shrink-0 text-muted-foreground/70" />}
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold text-foreground">{t(reaccept ? `${K}.rowReacceptTitle` : `${K}.rowTitle`)}</p>
+        <p className="text-sm text-muted-foreground">
+          {t(reaccept ? `${K}.rowReacceptBody` : `${K}.rowBody`, { version: status.terms.version })}
+        </p>
+      </div>
+      <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
+        {t(`${K}.rowCta`)}
+        <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+      </span>
+    </button>
   );
 }
 

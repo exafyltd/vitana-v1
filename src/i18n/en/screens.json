@@ -11025,6 +11025,27 @@
         "whatIsMcpBody": "MCP is a secure standard that lets your AI assistant connect to Vitanaland and perform approved business setup actions for you.",
         "closingTitle": "Your business belongs in the longevity economy",
         "closingBody": "Join free, connect once, and reach people who invest in living longer, healthier lives."
+      },
+      "terms": {
+        "title": "Partner terms",
+        "loadFailed": "The partner terms couldn't be loaded. Please try again.",
+        "notPublished": "No partner terms have been published yet.",
+        "updated": "The partner terms were updated — please read the current version.",
+        "version": "Version {version} · published {date}",
+        "bindingLabel": "English — the binding version",
+        "translationLabel": "Translation — the English version is binding",
+        "agree": "I have read and accept the partner terms (version {version}).",
+        "close": "Close",
+        "accept": "Accept",
+        "accepted": "Partner terms accepted.",
+        "acceptFailed": "Accepting didn't work. Please try again.",
+        "rowTitle": "Partner terms",
+        "rowBody": "Read and accept the partner terms (version {version}).",
+        "rowAccepted": "Version {version} accepted.",
+        "rowReacceptTitle": "New partner terms",
+        "rowReacceptBody": "The partner terms have changed (version {version}). Please read and accept the new version.",
+        "rowCta": "Read and accept",
+        "view": "View"
       }
     },
     "oauthconsent": {
