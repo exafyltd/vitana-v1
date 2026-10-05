@@ -11223,6 +11223,31 @@
         "advMetadata": "Métadonnées de la ressource",
         "advTools": "Outils",
         "manualFallback": "Je préfère m'inscrire manuellement"
+      },
+      "guest": {
+        "heroTitle": "Rejoins l’économie de la longévité.",
+        "heroSubtitle": "Amène ton entreprise sur Vitanaland.",
+        "heroTagline": "Connecte-toi une fois. Laisse ton IA faire la configuration.",
+        "whyTitle": "Pourquoi Vitanaland",
+        "why1Title": "Une communauté qui investit dans la longévité",
+        "why1Body": "Les membres viennent sur Vitanaland pour vivre plus longtemps et en meilleure santé, et cherchent des produits et services qui les y aident.",
+        "why2Title": "La confiance est intégrée",
+        "why2Body": "Chaque entreprise est vérifiée avant sa mise en ligne, pour que les membres sachent à qui ils achètent.",
+        "why3Title": "Trouvé pour ce que tu proposes",
+        "why3Body": "Les membres découvrent tes produits et services quand ils cherchent ce que tu proposes.",
+        "oneStepTitle": "Connecte ton entreprise en une seule étape",
+        "oneStepLead": "Vitanaland utilise MCP pour que ton assistant IA se connecte directement à Commerce.",
+        "oneStepBody": "Copie l’adresse MCP de Vitanaland dans Claude, ChatGPT ou un autre assistant IA compatible. Une fois connecté, ton IA peut t’aider à inscrire ton entreprise, ajouter tes produits ou services et te guider dans l’intégration.",
+        "oneStepWorksWith": "Fonctionne avec",
+        "oneStepControl": "Tu gardes le contrôle : la vérification, les conditions juridiques et la mise en ligne demandent toujours ta confirmation.",
+        "flow1": "Copie l’adresse MCP de Vitanaland",
+        "flow2": "Connecte-la à ton assistant IA",
+        "flow3": "Parle de ton entreprise à ton IA",
+        "flow4": "L’IA fait la configuration",
+        "whatIsMcp": "Qu’est-ce que MCP ?",
+        "whatIsMcpBody": "MCP est un standard sécurisé qui permet à ton assistant IA de se connecter à Vitanaland et d’effectuer pour toi les actions de configuration approuvées.",
+        "closingTitle": "Ton entreprise a sa place dans l’économie de la longévité",
+        "closingBody": "Inscris-toi gratuitement, connecte-toi une fois et touche des personnes qui investissent dans une vie plus longue et plus saine."
       }
     },
     "oauthconsent": {

@@ -11230,6 +11230,31 @@
         "advMetadata": "Kaynak meta verileri",
         "advTools": "Araçlar",
         "manualFallback": "Elle kaydolmayı tercih ederim"
+      },
+      "guest": {
+        "heroTitle": "Uzun yaşam ekonomisine katıl.",
+        "heroSubtitle": "İşletmeni Vitanaland’e getir.",
+        "heroTagline": "Bir kez bağlan. Kurulumu yapay zekân yapsın.",
+        "whyTitle": "Neden Vitanaland",
+        "why1Title": "Uzun yaşama yatırım yapan bir topluluk",
+        "why1Body": "Üyeler daha sağlıklı ve daha uzun yaşamak için Vitanaland’e gelir ve bunda onlara yardımcı olacak ürün ve hizmetleri arar.",
+        "why2Title": "Güven baştan var",
+        "why2Body": "Her işletme yayına girmeden önce kontrol edilir; böylece üyeler kimden aldıklarını bilir.",
+        "why3Title": "Sunduğunla bulunursun",
+        "why3Body": "Üyeler, sunduğun şeyi aradıklarında ürünlerini ve hizmetlerini keşfeder.",
+        "oneStepTitle": "İşletmeni tek adımda bağla",
+        "oneStepLead": "Vitanaland, yapay zekâ asistanının doğrudan Commerce’e bağlanabilmesi için MCP kullanır.",
+        "oneStepBody": "Vitanaland MCP adresini Claude, ChatGPT veya desteklenen başka bir yapay zekâ asistanına kopyala. Bağlandıktan sonra yapay zekân işletmeni kaydetmene, ürünlerini veya hizmetlerini eklemene yardım eder ve seni katılım sürecinde yönlendirir.",
+        "oneStepWorksWith": "Şunlarla çalışır",
+        "oneStepControl": "Kontrol sende kalır — doğrulama, yasal koşullar ve yayına alma yine senin onayını gerektirir.",
+        "flow1": "Vitanaland MCP adresini kopyala",
+        "flow2": "Yapay zekâ asistanına bağla",
+        "flow3": "Yapay zekâna işletmeni anlat",
+        "flow4": "Kurulumu yapay zekâ yapar",
+        "whatIsMcp": "MCP nedir?",
+        "whatIsMcpBody": "MCP, yapay zekâ asistanının Vitanaland’e bağlanmasını ve senin adına onaylı işletme kurulum adımlarını yapmasını sağlayan güvenli bir standarttır.",
+        "closingTitle": "İşletmenin yeri uzun yaşam ekonomisi",
+        "closingBody": "Ücretsiz katıl, bir kez bağlan ve daha uzun, daha sağlıklı bir yaşama yatırım yapan insanlara ulaş."
       }
     },
     "oauthconsent": {

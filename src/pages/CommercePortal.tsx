@@ -49,6 +49,7 @@ import { useProfile } from '@/context/ProfileProvider';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
 import { McpConnectPanel } from '@/components/commerce/McpConnectPanel';
+import { CommerceGuestLanding } from '@/components/commerce/CommerceGuestLanding';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -208,6 +209,13 @@ export default function CommercePortal() {
     void fetchMcpReady().then(setMcpReady);
   }, [user, load, loadMyOrgs]);
 
+  // VTID-04894: the pre-login landing explains the one-step connection only
+  // once the gateway serves it — a public metadata GET, no account needed.
+  useEffect(() => {
+    if (user) return;
+    void fetchMcpReady().then(setMcpReady);
+  }, [user]);
+
   // VTID-04841: Vitana drafted the business by voice → open the review card
   // with her draft. Only the supplier's tap there creates anything.
   useEffect(() => {
@@ -314,9 +322,8 @@ export default function CommercePortal() {
         ? t('screens.commerceportal.heroTitlePersonalizedNoOrg', { name: firstName })
         : t('screens.commerceportal.heroTitle');
 
-  // WHAT HAPPENS NEXT — shared between the guest view (always visible, any
-  // width) and the signed-in merchant-integration block (lg:-gated, unchanged
-  // scope). Enlarged per owner feedback: bigger numbers/titles, bolder cards,
+  // WHAT HAPPENS NEXT — the pre-login landing only (VTID-04894, owner
+  // decision 2026-10-05: it belongs there and only there). Enlarged per owner feedback: bigger numbers/titles, bolder cards,
   // so each step reads at a glance instead of needing to be read closely.
   const whatHappensNextSection = (
     <section className="mt-4 md:mt-6">
@@ -544,12 +551,19 @@ export default function CommercePortal() {
       <motion.section {...fade} className="pt-6 lg:pt-10">
         {!user ? (
           <div className="text-center">
-            <h1 className="mx-auto max-w-3xl text-2xl font-semibold leading-tight text-foreground lg:text-5xl">
-              {heroHeadline}
+            {/* VTID-04894: the story opener — guest-only keys, so the
+                signed-in hero (heroTitle/heroSubtitle) is unchanged. */}
+            <h1 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-foreground lg:text-5xl">
+              {t('screens.commerceportal.guest.heroTitle')}
             </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-base">
-              {t('screens.commerceportal.heroSubtitle')}
+            <p className="mx-auto mt-3 max-w-2xl text-lg leading-relaxed text-foreground md:mt-4 md:text-xl">
+              {t('screens.commerceportal.guest.heroSubtitle')}
             </p>
+            {mcpReady && (
+              <p className="mx-auto mt-2 max-w-2xl text-base font-semibold text-amber-800 md:text-lg">
+                {t('screens.commerceportal.guest.heroTagline')}
+              </p>
+            )}
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
               {/* Guest: one clear CTA, not the two-button row — neither
                   "connect an agent" nor "register a business" can actually
@@ -560,7 +574,7 @@ export default function CommercePortal() {
                 onClick={() => navigate(`/commerce/join?redirectTo=${encodeURIComponent('/commerce')}`)}
                 className="h-12 w-full rounded-xl bg-amber-700 px-8 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
               >
-                {t('screens.commerceportal.guestCta')}
+                {mcpReady ? t('screens.commerceportal.mcpConnect.cta') : t('screens.commerceportal.guestCta')}
               </Button>
             </div>
             <p className="mt-3 text-xs text-muted-foreground">{t('screens.commerceportal.guestCtaHint')}</p>
@@ -597,7 +611,13 @@ export default function CommercePortal() {
         // connections data, none of which exist for a session that isn't
         // signed in yet. Visible at every width (no `hidden lg:block`) —
         // it's the only thing a guest gets to see below the hero.
-        whatHappensNextSection
+        // VTID-04894: told as a story — why, the one-step connection, the
+        // steps (this page only) and a closing call to join.
+        <CommerceGuestLanding
+          mcpReady={mcpReady === true}
+          onJoin={() => navigate(`/commerce/join?redirectTo=${encodeURIComponent('/commerce')}`)}
+          steps={whatHappensNextSection}
+        />
       ) : (
         /* VTID-03999: the merchant-integration pitch, steps, VCAOP connections
            and manual fallback are desktop-portal surfaces (`ConnectionWorkbench`,
@@ -611,8 +631,6 @@ export default function CommercePortal() {
               merchant-integration surfaces for a returning member, matching
               VTID-03882's own framing: "this is what the product is". */}
           {hasOrgs && agentCard('mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10')}
-
-          {whatHappensNextSection}
 
           {/* PREFER TO DO IT YOURSELF — a real, bounded secondary card. Both
               options are equal-weight real buttons now, replacing the old

@@ -10860,6 +10860,31 @@
         "advMetadata": "Ressourcen-Metadaten",
         "advTools": "Werkzeuge",
         "manualFallback": "Lieber manuell registrieren"
+      },
+      "guest": {
+        "heroTitle": "Werde Teil der Longevity-Ökonomie.",
+        "heroSubtitle": "Bring dein Unternehmen zu Vitanaland.",
+        "heroTagline": "Einmal verbinden. Deine KI erledigt die Einrichtung.",
+        "whyTitle": "Warum Vitanaland",
+        "why1Title": "Eine Community, die in Langlebigkeit investiert",
+        "why1Body": "Mitglieder kommen zu Vitanaland, um gesünder und länger zu leben – und suchen Produkte und Leistungen, die ihnen dabei helfen.",
+        "why2Title": "Vertrauen ist eingebaut",
+        "why2Body": "Jedes Unternehmen wird geprüft, bevor es live geht. So wissen Mitglieder, bei wem sie kaufen.",
+        "why3Title": "Gefunden für das, was du anbietest",
+        "why3Body": "Mitglieder entdecken deine Produkte und Leistungen, wenn sie nach dem suchen, was du anbietest.",
+        "oneStepTitle": "Verbinde dein Unternehmen in einem Schritt",
+        "oneStepLead": "Vitanaland nutzt MCP, damit sich dein KI-Assistent direkt mit Commerce verbinden kann.",
+        "oneStepBody": "Kopiere die Vitanaland-MCP-Adresse in Claude, ChatGPT oder einen anderen unterstützten KI-Assistenten. Sobald er verbunden ist, kann deine KI dein Unternehmen registrieren, deine Produkte oder Leistungen hinzufügen und dich durch das Onboarding führen.",
+        "oneStepWorksWith": "Funktioniert mit",
+        "oneStepControl": "Du behältst die Kontrolle – Verifizierung, rechtliche Bedingungen und der Livegang brauchen weiterhin deine Bestätigung.",
+        "flow1": "Vitanaland-MCP-Adresse kopieren",
+        "flow2": "Mit deinem KI-Assistenten verbinden",
+        "flow3": "Deiner KI von deinem Unternehmen erzählen",
+        "flow4": "Die KI erledigt die Einrichtung",
+        "whatIsMcp": "Was ist MCP?",
+        "whatIsMcpBody": "MCP ist ein sicherer Standard, mit dem sich dein KI-Assistent mit Vitanaland verbindet und freigegebene Einrichtungsschritte für dein Unternehmen ausführt.",
+        "closingTitle": "Dein Unternehmen gehört in die Longevity-Ökonomie",
+        "closingBody": "Kostenlos beitreten, einmal verbinden und Menschen erreichen, die in ein längeres, gesünderes Leben investieren."
       }
     },
     "oauthconsent": {

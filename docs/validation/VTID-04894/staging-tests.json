@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-04894",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed out, /commerce tells the story: why Vitanaland, the one-step MCP connection with What is MCP, the steps and a closing call to join",
+      "spec": "tests/e2e/staging/vtid-04894-commerce-guest-landing.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "signed out, /commerce still has one sign-up path from the hero",
+      "spec": "tests/e2e/staging/vtid-04271-commerce-guest.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "steps only on the guest landing, guest-only hero copy, locales, the narrow MCP wording exception",
+      "ref": "npx vitest run src/pages/CommercePortal.guest-landing.vtid-04894.test.ts src/components/commerce/supplier-journey-language.test.ts src/pages/CommercePortal.light-redesign.test.ts src/lib/commerce-mcp.test.ts src/pages/CommerceJoin.oauth-first.test.ts",
+      "cwd": ".",
+      "reason": "that the signed-in view no longer shows the steps needs a signed-in supplier, which the read-only staging run does not have; it is pinned on the source here"
+    }
+  ]
+}

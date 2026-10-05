@@ -11000,7 +11000,32 @@
         "manualFallback": "Prefer to register manually",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "guest": {
+        "heroTitle": "Join the longevity economy.",
+        "heroSubtitle": "Bring your business to Vitanaland.",
+        "heroTagline": "Connect once. Let your AI do the setup.",
+        "whyTitle": "Why Vitanaland",
+        "why1Title": "A community that invests in longevity",
+        "why1Body": "Members come to Vitanaland to live healthier, longer lives — and look for products and services that help them get there.",
+        "why2Title": "Trust is built in",
+        "why2Body": "Every business is checked before it goes live, so members know who they are buying from.",
+        "why3Title": "Found for what you offer",
+        "why3Body": "Members discover your products and services when they look for what you offer.",
+        "oneStepTitle": "Connect your business in one step",
+        "oneStepLead": "Vitanaland uses MCP to let your AI assistant connect directly to Commerce.",
+        "oneStepBody": "Copy the Vitanaland MCP address into Claude, ChatGPT or another supported AI assistant. Once connected, your AI can help register your business, add your products or services, and guide you through onboarding.",
+        "oneStepWorksWith": "Works with",
+        "oneStepControl": "You stay in control — verification, legal terms and going live still require your confirmation.",
+        "flow1": "Copy the Vitanaland MCP address",
+        "flow2": "Connect it to your AI assistant",
+        "flow3": "Tell your AI about your business",
+        "flow4": "AI does the setup",
+        "whatIsMcp": "What is MCP?",
+        "whatIsMcpBody": "MCP is a secure standard that lets your AI assistant connect to Vitanaland and perform approved business setup actions for you.",
+        "closingTitle": "Your business belongs in the longevity economy",
+        "closingBody": "Join free, connect once, and reach people who invest in living longer, healthier lives."
+      }
     },
     "oauthconsent": {
       "title": "Allow access?",

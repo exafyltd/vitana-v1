@@ -11138,6 +11138,31 @@
         "advMetadata": "Metadados do recurso",
         "advTools": "Ferramentas",
         "manualFallback": "Prefiro cadastrar manualmente"
+      },
+      "guest": {
+        "heroTitle": "Entre para a economia da longevidade.",
+        "heroSubtitle": "Traga seu negócio para a Vitanaland.",
+        "heroTagline": "Conecte uma vez. Deixe sua IA fazer a configuração.",
+        "whyTitle": "Por que a Vitanaland",
+        "why1Title": "Uma comunidade que investe em longevidade",
+        "why1Body": "Os membros vêm à Vitanaland para viver mais e com mais saúde — e procuram produtos e serviços que os ajudem nisso.",
+        "why2Title": "Confiança desde o início",
+        "why2Body": "Cada negócio é verificado antes de entrar no ar, para que os membros saibam de quem estão comprando.",
+        "why3Title": "Encontrado pelo que você oferece",
+        "why3Body": "Os membros descobrem seus produtos e serviços quando procuram o que você oferece.",
+        "oneStepTitle": "Conecte seu negócio em um só passo",
+        "oneStepLead": "A Vitanaland usa MCP para que seu assistente de IA se conecte diretamente ao Commerce.",
+        "oneStepBody": "Copie o endereço MCP da Vitanaland no Claude, no ChatGPT ou em outro assistente de IA compatível. Depois de conectado, sua IA pode ajudar a cadastrar seu negócio, adicionar seus produtos ou serviços e guiar você pelo onboarding.",
+        "oneStepWorksWith": "Funciona com",
+        "oneStepControl": "Você mantém o controle — verificação, termos legais e a publicação continuam exigindo sua confirmação.",
+        "flow1": "Copie o endereço MCP da Vitanaland",
+        "flow2": "Conecte-o ao seu assistente de IA",
+        "flow3": "Conte à sua IA sobre seu negócio",
+        "flow4": "A IA faz a configuração",
+        "whatIsMcp": "O que é MCP?",
+        "whatIsMcpBody": "MCP é um padrão seguro que permite que seu assistente de IA se conecte à Vitanaland e execute por você as ações de configuração aprovadas para o seu negócio.",
+        "closingTitle": "Seu negócio faz parte da economia da longevidade",
+        "closingBody": "Entre de graça, conecte uma vez e alcance pessoas que investem em viver mais e com mais saúde."
       }
     },
     "oauthconsent": {
