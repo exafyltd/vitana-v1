@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04889",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/recommendation-matches.test.ts src/lib/bedrock-bridge-client.test.ts",
+      "cwd": ".",
+      "reason": "The change is in a Supabase edge function, which is not part of the frontend build staging serves and deploys only by a manual dispatch to the single (production) Supabase project. Invoking it writes recommendation rows for the caller, so no read-only staging probe can exercise it. The Vitest suites prove the Bedrock-only source contract, the pinned model, the validator on both answer paths and the retired function; the post-deploy check is read-only (deployed source + logs)."
+    }
+  ]
+}
