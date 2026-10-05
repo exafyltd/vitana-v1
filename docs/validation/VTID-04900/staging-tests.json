@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04900",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/whats-new/inactive-rewards.vtid-04900.test.ts src/whats-new/whats-new.test.ts",
+      "reason": "the VTID-04878 'More ways to earn VTNA' entry is gone, no entry pairs VTNA earning with a paused Autopilot / live-room / Vitana Index reward, and the manifest the gateway publishes from still validates"
+    }
+  ]
+}
