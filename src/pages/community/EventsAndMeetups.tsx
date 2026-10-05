@@ -735,7 +735,10 @@ const EventsAndMeetups = () => {
   };
 
   // Get current event and navigation state
-  const selectedEventData = currentEvents.find(e => e.id === selectedEventId);
+  // A linked event outside the current tab (e.g. a multi-day event that began
+  // before today, opened from a chat link — VTID-04902) still opens its drawer.
+  const selectedEventData = currentEvents.find(e => e.id === selectedEventId)
+    ?? linkedEvents.find(e => e.id === selectedEventId);
   const currentIndex = selectedEventId ? visibleEventIds.indexOf(selectedEventId) : -1;
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex >= 0 && currentIndex < visibleEventIds.length - 1;
