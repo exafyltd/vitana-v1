@@ -127,7 +127,9 @@
       "officialBadge": "官方群组",
       "empty": "暂无消息。",
       "composerPlaceholder": "消息…",
-      "_pending_review": {}
+      "_pending_review": {},
+      "today": "今天",
+      "yesterday": "昨天"
     },
     "_pending_review": {}
   },

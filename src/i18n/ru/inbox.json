@@ -127,7 +127,9 @@
       "officialBadge": "официальная группа",
       "empty": "Пока нет сообщений.",
       "composerPlaceholder": "Сообщение…",
-      "_pending_review": {}
+      "_pending_review": {},
+      "today": "Сегодня",
+      "yesterday": "Вчера"
     },
     "_pending_review": {}
   },

@@ -128,7 +128,9 @@
       "memberOther": "üyeler",
       "officialBadge": "resmi grup",
       "empty": "Henüz mesaj yok.",
-      "composerPlaceholder": "Mesaj…"
+      "composerPlaceholder": "Mesaj…",
+      "today": "Bugün",
+      "yesterday": "Dün"
     }
   },
   "_pending_review": {}

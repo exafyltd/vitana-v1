@@ -127,7 +127,9 @@
       "officialBadge": "مجموعة رسمية",
       "empty": "لا توجد رسائل بعد.",
       "composerPlaceholder": "رسالة…",
-      "_pending_review": {}
+      "_pending_review": {},
+      "today": "اليوم",
+      "yesterday": "أمس"
     },
     "_pending_review": {}
   },

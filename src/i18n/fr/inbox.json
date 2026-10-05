@@ -127,7 +127,9 @@
       "officialBadge": "groupe officiel",
       "empty": "Aucun message pour l'instant.",
       "composerPlaceholder": "Message…",
-      "_pending_review": {}
+      "_pending_review": {},
+      "today": "Aujourd'hui",
+      "yesterday": "Hier"
     },
     "_pending_review": {}
   },
