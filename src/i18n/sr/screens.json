@@ -11234,6 +11234,31 @@
         "advMetadata": "Metapodaci resursa",
         "advTools": "Alati",
         "manualFallback": "Radije ću se registrovati ručno"
+      },
+      "guest": {
+        "heroTitle": "Pridruži se ekonomiji dugovečnosti.",
+        "heroSubtitle": "Dovedi svoj biznis na Vitanaland.",
+        "heroTagline": "Poveži se jednom. Neka tvoj AI obavi podešavanje.",
+        "whyTitle": "Zašto Vitanaland",
+        "why1Title": "Zajednica koja ulaže u dugovečnost",
+        "why1Body": "Članovi dolaze na Vitanaland da bi živeli zdravije i duže – i traže proizvode i usluge koji im u tome pomažu.",
+        "why2Title": "Poverenje je ugrađeno",
+        "why2Body": "Svaki biznis se proverava pre objavljivanja, pa članovi znaju od koga kupuju.",
+        "why3Title": "Pronalaze te po onome što nudiš",
+        "why3Body": "Članovi otkrivaju tvoje proizvode i usluge kada traže ono što nudiš.",
+        "oneStepTitle": "Poveži svoj biznis u jednom koraku",
+        "oneStepLead": "Vitanaland koristi MCP da bi se tvoj AI asistent direktno povezao sa Commerce-om.",
+        "oneStepBody": "Kopiraj Vitanaland MCP adresu u Claude, ChatGPT ili drugi podržani AI asistent. Kada se poveže, tvoj AI može da registruje tvoj biznis, doda tvoje proizvode ili usluge i provede te kroz onboarding.",
+        "oneStepWorksWith": "Radi sa",
+        "oneStepControl": "Kontrola ostaje kod tebe – verifikacija, pravni uslovi i objavljivanje i dalje traže tvoju potvrdu.",
+        "flow1": "Kopiraj Vitanaland MCP adresu",
+        "flow2": "Poveži je sa svojim AI asistentom",
+        "flow3": "Ispričaj AI-ju o svom biznisu",
+        "flow4": "AI obavlja podešavanje",
+        "whatIsMcp": "Šta je MCP?",
+        "whatIsMcpBody": "MCP je bezbedan standard koji omogućava tvom AI asistentu da se poveže sa Vitanalandom i umesto tebe obavi odobrene korake podešavanja biznisa.",
+        "closingTitle": "Tvoj biznis pripada ekonomiji dugovečnosti",
+        "closingBody": "Pridruži se besplatno, poveži se jednom i dopri do ljudi koji ulažu u duži i zdraviji život."
       }
     },
     "oauthconsent": {

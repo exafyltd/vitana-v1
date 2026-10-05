@@ -41,6 +41,31 @@ describe('supplier journey language', () => {
     });
   }
 
+  // VTID-04894 — owner decision 2026-10-05: a narrow exception. The pre-login
+  // Commerce landing (screens.commerceportal.guest.*) may say "MCP", because
+  // prospective suppliers need to understand how the one-step setup works.
+  // Developer terms stay banned there too; the onboarding flow above keeps
+  // the full rule, MCP included.
+  const GUEST_PAGE_TECHNICAL =
+    /connector|provider id|provider-id|jurisdiction|rechtsordnung|openapi|oauth|\bscopes?\b|\btokens?\b|endpoint|api key|api-schlüssel|mapping|sandbox|kebab/i;
+  const guestStrings = (c: any): string[] => Object.values(c.guest ?? {}).filter((v): v is string => typeof v === 'string');
+
+  for (const [lang, c] of [['en', en], ['de', de]] as const) {
+    it(`${lang}: the pre-login landing may name MCP, never developer terms`, () => {
+      const strings = guestStrings(c);
+      expect(strings.length).toBeGreaterThan(0);
+      expect(strings.filter((s) => GUEST_PAGE_TECHNICAL.test(s))).toEqual([]);
+      expect(strings.some((s) => /\bMCP\b/.test(s))).toBe(true);
+    });
+
+    it(`${lang}: the exception is narrow — MCP stays out of the onboarding flow`, () => {
+      expect(journeyStrings(c).filter((s) => /\bmcp\b/i.test(s))).toEqual([]);
+      expect(Object.keys(c.guest ?? {}).length).toBeGreaterThan(0);
+      // The guest keys are not part of the onboarding set checked above.
+      expect(journeyStrings(c)).not.toContain(c.guest.oneStepLead);
+    });
+  }
+
   it('connection cards show the platform name, never connector · provider IDs', () => {
     for (const f of ['./ConnectionCard.tsx', './ConnectionWorkbench.tsx']) {
       const src = read(f);

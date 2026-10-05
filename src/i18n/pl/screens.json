@@ -11231,6 +11231,31 @@
         "advMetadata": "Metadane zasobu",
         "advTools": "Narzędzia",
         "manualFallback": "Wolę zarejestrować się ręcznie"
+      },
+      "guest": {
+        "heroTitle": "Dołącz do gospodarki długowieczności.",
+        "heroSubtitle": "Przenieś swoją firmę do Vitanaland.",
+        "heroTagline": "Połącz raz. Pozwól AI zrobić konfigurację.",
+        "whyTitle": "Dlaczego Vitanaland",
+        "why1Title": "Społeczność, która inwestuje w długowieczność",
+        "why1Body": "Członkowie przychodzą do Vitanaland, aby żyć zdrowiej i dłużej – i szukają produktów oraz usług, które im w tym pomogą.",
+        "why2Title": "Zaufanie w standardzie",
+        "why2Body": "Każda firma jest sprawdzana przed publikacją, więc członkowie wiedzą, od kogo kupują.",
+        "why3Title": "Znajdują cię dzięki temu, co oferujesz",
+        "why3Body": "Członkowie odkrywają twoje produkty i usługi, gdy szukają tego, co oferujesz.",
+        "oneStepTitle": "Połącz swoją firmę w jednym kroku",
+        "oneStepLead": "Vitanaland korzysta z MCP, aby twój asystent AI mógł połączyć się bezpośrednio z Commerce.",
+        "oneStepBody": "Skopiuj adres MCP Vitanaland do Claude, ChatGPT lub innego obsługiwanego asystenta AI. Po połączeniu twoja AI pomoże zarejestrować firmę, dodać produkty lub usługi i przeprowadzi cię przez onboarding.",
+        "oneStepWorksWith": "Działa z",
+        "oneStepControl": "Zachowujesz kontrolę – weryfikacja, warunki prawne i publikacja nadal wymagają twojego potwierdzenia.",
+        "flow1": "Skopiuj adres MCP Vitanaland",
+        "flow2": "Połącz go ze swoim asystentem AI",
+        "flow3": "Opowiedz AI o swojej firmie",
+        "flow4": "AI robi konfigurację",
+        "whatIsMcp": "Czym jest MCP?",
+        "whatIsMcpBody": "MCP to bezpieczny standard, dzięki któremu twój asystent AI łączy się z Vitanaland i wykonuje za ciebie zatwierdzone kroki konfiguracji firmy.",
+        "closingTitle": "Twoja firma pasuje do gospodarki długowieczności",
+        "closingBody": "Dołącz za darmo, połącz raz i docieraj do ludzi, którzy inwestują w dłuższe, zdrowsze życie."
       }
     },
     "oauthconsent": {

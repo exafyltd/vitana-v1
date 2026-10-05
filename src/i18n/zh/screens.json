@@ -11223,6 +11223,31 @@
         "advMetadata": "资源元数据",
         "advTools": "工具",
         "manualFallback": "我更想手动注册"
+      },
+      "guest": {
+        "heroTitle": "加入长寿经济。",
+        "heroSubtitle": "把你的企业带到 Vitanaland。",
+        "heroTagline": "连接一次，设置交给你的 AI。",
+        "whyTitle": "为什么选择 Vitanaland",
+        "why1Title": "一个投资长寿的社区",
+        "why1Body": "会员来到 Vitanaland，是为了活得更健康、更长久，他们也在寻找能帮助他们实现这一目标的产品和服务。",
+        "why2Title": "信任，从一开始就有",
+        "why2Body": "每家企业在上线前都会经过审核，让会员清楚自己在向谁购买。",
+        "why3Title": "因你提供的价值而被发现",
+        "why3Body": "当会员寻找你所提供的东西时，就会发现你的产品和服务。",
+        "oneStepTitle": "一步连接你的企业",
+        "oneStepLead": "Vitanaland 使用 MCP，让你的 AI 助手直接连接到 Commerce。",
+        "oneStepBody": "把 Vitanaland 的 MCP 地址复制到 Claude、ChatGPT 或其他受支持的 AI 助手中。连接后，你的 AI 可以帮你注册企业、添加产品或服务，并引导你完成入驻流程。",
+        "oneStepWorksWith": "支持",
+        "oneStepControl": "控制权始终在你手中——审核、法律条款和上线仍需你的确认。",
+        "flow1": "复制 Vitanaland 的 MCP 地址",
+        "flow2": "将其连接到你的 AI 助手",
+        "flow3": "向你的 AI 介绍你的企业",
+        "flow4": "AI 完成设置",
+        "whatIsMcp": "什么是 MCP？",
+        "whatIsMcpBody": "MCP 是一种安全标准，让你的 AI 助手连接到 Vitanaland，并代你执行经批准的企业设置操作。",
+        "closingTitle": "你的企业属于长寿经济",
+        "closingBody": "免费加入，连接一次，触达那些投资于更长寿、更健康生活的人。"
       }
     },
     "oauthconsent": {
