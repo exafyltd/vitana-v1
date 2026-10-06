@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04924",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the existing VTID-04921 group-chat spec, now tolerating the chat's attachment signed-URL POSTs: signed in on a phone viewport, opening the Alle Beisammen group chat rests the scroll area at the bottom with the last message on screen; read-only — the guard aborts every non-GET (mark-read, signed-URL requests), nothing is written",
+      "spec": "tests/e2e/staging/vtid-04921-group-chat-latest.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}
