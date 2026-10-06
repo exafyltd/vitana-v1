@@ -9897,7 +9897,17 @@
       "paymentSuccessful": "Uplata uspešna!",
       "viewAllMyTickets": "Pogledaj sve moje karte",
       "discoverMoreEvents": "Otkrij još događaja",
-      "yourTicketHasConfirmedConfirmationEmail": "Tvoja karta je potvrđena. Potvrdni email je poslat na {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Tvoja karta je potvrđena. Potvrdni email je poslat na {value0}",
+      "_pending_review": {
+        "processingTitle": true,
+        "processingBody": true,
+        "checkAgain": true,
+        "ticketConfirmed": true
+      },
+      "processingTitle": "Your payment is being processed",
+      "processingBody": "This usually takes just a few seconds. Your ticket appears under My Tickets as soon as the payment is confirmed.",
+      "checkAgain": "Check again",
+      "ticketConfirmed": "Your ticket is confirmed."
     },
     "legal": {
       "deleteAccount": "Obriši nalog",
