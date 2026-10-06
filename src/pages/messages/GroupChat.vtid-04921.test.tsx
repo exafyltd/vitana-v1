@@ -105,6 +105,8 @@ describe("GroupChat opens at the latest message (VTID-04921)", () => {
   it("does not re-scroll when a poll returns the same messages", async () => {
     renderAt("/inbox/g/g1");
     await screen.findAllByTestId("bubble");
+    // VTID-04928: let the one-frame re-pin after the first paint settle first.
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)); });
     scrollIntoView.mockClear();
     fetchGroupMessages.mockResolvedValue(MESSAGES.slice());
     await act(async () => { await Promise.resolve(); });
