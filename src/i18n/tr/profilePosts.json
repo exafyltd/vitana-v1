@@ -1,6 +1,8 @@
 {
   "profilePosts": {
-    "_pending_review": {},
+    "_pending_review": {
+      "mentionSuggestions": true
+    },
     "createPost": "Gönderi Oluştur",
     "placeholder": "Şu an aklından ne geçiyor?",
     "shareCta": "Toplulukla bir şey paylaş",
@@ -15,7 +17,7 @@
     "background": "Arka plan",
     "noBackground": "Arka plan yok",
     "searchingPeople": "Kişiler aranıyor …",
-    "noPeopleFound": "Kimse bulunamadı"
-  },
-  "_pending_review": {}
+    "noPeopleFound": "Kimse bulunamadı",
+    "mentionSuggestions": "People to tag"
+  }
 }
