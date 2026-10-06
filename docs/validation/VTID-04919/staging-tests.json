@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04919",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport with navigator.share defined in the page: tapping Share on a Live Room card on Events calls navigator.share with the room's title and link and does NOT open the custom share sheet; read-only — the native drawer is a stub, nothing is sent anywhere",
+      "spec": "tests/e2e/staging/vtid-04919-native-share.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/sharing/SocialShareButton.native-share.test.tsx",
+      "reason": "native share chosen at tap time (also when injected after mount), dismissal does nothing, custom sheet only as fallback on absent/failed native share"
+    }
+  ]
+}

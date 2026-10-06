@@ -172,20 +172,21 @@ export default function SocialShareButton({
         disabled={isSharing}
         onClick={async () => {
           if (isSharing) return;
-          if (canNativeShare) {
-            setIsSharing(true);
-            const result = await nativeShare({
-              title: data.title,
-              text: shareText,
-              url: shareLink,
-            });
-            setIsSharing(false);
-            if (result === "failed") {
-              setIsOpen(true);
-            }
-            return;
+          // VTID-04919: always try the native drawer first. Availability is checked inside
+          // nativeShare() at TAP time — not via the mount-time `canNativeShare` — because app
+          // shells (Appilix) inject navigator.share after the page loads. The custom sheet is
+          // only the fallback when native share is absent or errors; a dismissed drawer
+          // ("cancelled") does nothing. navigator.share must stay the first await here.
+          setIsSharing(true);
+          const result = await nativeShare({
+            title: data.title,
+            text: shareText,
+            url: shareLink,
+          });
+          setIsSharing(false);
+          if (result === "failed") {
+            setIsOpen(true);
           }
-          setIsOpen(true);
         }}
         className={variant === 'icon' ? `p-2 ${className || ''}` : className}
       >
