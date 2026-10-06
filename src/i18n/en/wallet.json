@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Balances",
       "activity": "Activity",
-      "actions": "Actions"
+      "actions": "Actions",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Sell & earn commissions",
@@ -21,7 +22,8 @@
       "purchases": "Purchases",
       "pending": "Pending Payouts",
       "withdrawals": "Withdrawals",
-      "stakes": "Staking"
+      "stakes": "Staking",
+      "_pending_review": {}
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",
@@ -38,7 +40,8 @@
       "groups": {
         "first_steps": "First steps — once each",
         "habits": "Habits – Stick with it",
-        "community": "Community – With others"
+        "community": "Community – With others",
+        "_pending_review": {}
       },
       "rules": {
         "onboarding_complete": "Finish your onboarding",
@@ -57,13 +60,15 @@
         "invited_friends_10": "10 friends you invited have joined — one-time bonus",
         "autopilot_action_done": "Complete an Autopilot action",
         "index_new_best": "New Vitana Index personal best, at least 10 points higher",
-        "live_room_15min": "15 minutes with others in a live room"
+        "live_room_15min": "15 minutes with others in a live room",
+        "_pending_review": {}
       },
       "neverTitle": "What never earns VTNA",
       "never": {
         "done_by_vitana": "Anything Vitana does or drafts for you",
         "purchases": "Bought credits and bonus packs",
-        "self_reported": "Information the system cannot verify – except completed Autopilot actions (max. 2 per day)"
+        "self_reported": "Information the system cannot verify – except completed Autopilot actions (max. 2 per day)",
+        "_pending_review": {}
       },
       "recentTitle": "Your recent rewards",
       "recentEmpty": "No rewards yet — your first step is waiting above.",
@@ -71,7 +76,10 @@
       "loading": "Loading…",
       "error": "Your rewards couldn't be loaded right now.",
       "capToday": "{used} of {count} today",
-      "capWeek": "{used} of {count} this week"
-    }
-  }
+      "capWeek": "{used} of {count} this week",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
