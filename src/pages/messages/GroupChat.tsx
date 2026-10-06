@@ -11,7 +11,7 @@
  * so feature parity is structural, not duplicated.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
@@ -96,6 +96,9 @@ export default function GroupChat() {
   const [messagesLoaded, setMessagesLoaded] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const streamEndRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const didInitialScrollRef = useRef(false);
+  const prevMessageCountRef = useRef(0);
 
   const memberById = useMemo(() => {
     const map = new Map<string, ChatGroupMember>();
@@ -189,10 +192,38 @@ export default function GroupChat() {
 
   const hasScrolledToTargetRef = useRef(false);
 
-  useEffect(() => {
+  // VTID-04921: WhatsApp-style — a group always opens at its newest message.
+  // The old effect only re-ran when messages.length changed, but the messages
+  // arrive while the loading screen is still up (no <main> yet) and the length
+  // does not change when the list mounts, so the chat stayed at the oldest
+  // message. Now keyed on the list actually being rendered.
+  useLayoutEffect(() => {
+    didInitialScrollRef.current = false;
+    prevMessageCountRef.current = 0;
+    hasScrolledToTargetRef.current = false;
+  }, [groupId]);
+
+  useLayoutEffect(() => {
     if (initialScrollMessageId) return; // reaction-notification deep-link wins instead
-    streamEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages.length, initialScrollMessageId]);
+    const main = mainRef.current;
+    if (isLoading || !main || group?.id !== groupId || messages.length === 0) return;
+
+    if (!didInitialScrollRef.current) {
+      // First render of the list: jump (no animation) so the first paint is
+      // already at the bottom, then once more after late layout (avatars).
+      didInitialScrollRef.current = true;
+      prevMessageCountRef.current = messages.length;
+      main.scrollTop = main.scrollHeight;
+      const raf = requestAnimationFrame(() => { main.scrollTop = main.scrollHeight; });
+      return () => cancelAnimationFrame(raf);
+    }
+
+    // Later: only follow when new messages arrive (not on roster refreshes).
+    if (messages.length > prevMessageCountRef.current) {
+      streamEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+    prevMessageCountRef.current = messages.length;
+  }, [isLoading, group, groupId, messages.length, initialScrollMessageId]);
 
   // Reaction-notification deep-link: scroll to and highlight the reacted-to
   // message once it's rendered, instead of the default scroll-to-bottom.
@@ -361,7 +392,7 @@ export default function GroupChat() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto px-4 py-4">
+      <main ref={mainRef} className="flex-1 overflow-y-auto px-4 py-4">
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-gray-500">
             {translate("inbox.group.empty")}
