@@ -1,0 +1,13 @@
+{
+  "id": "calendar-entry-actions",
+  "added": "2026-10-06",
+  "title": {
+    "en": "Your calendar now takes you there",
+    "de": "Dein Kalender bringt dich jetzt hin"
+  },
+  "description": {
+    "en": "Open any entry to edit or remove it, jump straight to its event, or join a live room right from your calendar. Ticking something off shows what it did for your Vitana Index.",
+    "de": "Öffne einen Termin, um ihn zu ändern oder zu entfernen, spring direkt zum Event oder tritt einem Live-Raum aus deinem Kalender bei. Wenn du etwas abhakst, siehst du, was es deinem Vitana Index bringt."
+  },
+  "deepLink": "/calendar"
+}

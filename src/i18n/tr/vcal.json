@@ -87,7 +87,15 @@
       "reminders": "Hatırlatmalar",
       "noReminders": "Hatırlatma yok",
       "directions": "Yol tarifi",
-      "askVitana": "Vitana'ya sor"
+      "askVitana": "Vitana'ya sor",
+      "openEvent": "Etkinliğe git",
+      "joinRoom": "Şimdi katıl",
+      "openRoom": "Canlı odaya git",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "Staging dağıtımı",
@@ -281,6 +289,56 @@
       "waitingOne": "Seni bekleyen 1 şey var",
       "waiting": "Seni bekleyen {count} şey var",
       "open": "Yönetimde aç"
+    },
+    "indexGain": "Vitana Index’inde +{points} {pillar}",
+    "edit": {
+      "action": "Düzenle",
+      "titleLabel": "Başlık",
+      "startLabel": "Başlangıç",
+      "endLabel": "Bitiş",
+      "locationLabel": "Yer",
+      "descriptionLabel": "Not",
+      "save": "Kaydet",
+      "cancel": "Vazgeç",
+      "invalid": "Bir başlık ekle; bitiş başlangıçtan sonra olmalı.",
+      "saved": "Kaydedildi ✨",
+      "error": "Şu an kaydedilemedi. Birazdan tekrar dene.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Kaldır",
+      "confirm": "Bu kayıt takviminden kaldırılsın mı?",
+      "confirmSeries": "Bu kayıt ve tüm tekrarları takviminden kaldırılsın mı?",
+      "keep": "Kalsın",
+      "yes": "Kaldır",
+      "removed": "Kaldırıldı",
+      "error": "Şu an kaldırılamadı. Birazdan tekrar dene.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Zaten takviminde",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

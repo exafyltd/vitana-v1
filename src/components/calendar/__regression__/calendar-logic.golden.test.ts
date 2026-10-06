@@ -2,15 +2,15 @@
 /**
  * VTID-04459 — app calendar regression suite: the calendar's own logic, pinned.
  *
- * Runs fixed scenarios through the real helpers behind /calendar and the
- * older calendar surfaces (German catalogue, Europe/Berlin device zone) and
+ * Runs fixed scenarios through the real helpers behind /calendar (German
+ * catalogue, Europe/Berlin device zone) and
  * compares them with __golden__/calendar-logic.json:
  *   - which range each view asks the gateway for, and how ‹ › step;
  *   - the words and times on screen (greeting, "in 12 Min.", reminder chips,
  *     the next reminder, source labels, emoji, colour kind, done state);
- *   - the gateway client: URLs, methods, headers, bodies, error mapping;
- *   - the natural-language parser, the pending-invite queue and the smart
- *     badges / focus / Autopilot grouping of the older calendar cards.
+ *   - the gateway client: URLs, methods, headers, bodies, error mapping.
+ * VTID-04915 retired the older popup, its cards, its natural-language parser
+ * and the pending-invite queue, and their scenarios with them.
  * An intended change is re-recorded (UPDATE_CALENDAR_GOLDEN=1) and committed.
  */
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
@@ -40,9 +40,6 @@ import {
   webcalUrl,
   type CalendarWindowItem,
 } from "@/lib/calendar-window-client";
-import { parseCalendarNL } from "@/lib/parseCalendarNL";
-import { dequeueBySourceMessageId, enqueuePendingSenderEvent, listPendingSenderEvents } from "@/lib/calendarPendingQueue";
-import { determineFocusItem, getCategoryBadgeStyle, getEventAction, getSmartBadge, groupAutopilotEvents, isAllDayEvent } from "../calendarSmartUtils";
 
 const G = "calendar-logic";
 const iso = (d: Date | null) => (d ? d.toISOString() : null);
@@ -319,99 +316,5 @@ describe("gateway client", () => {
       webcalUrl("http://x/y.ics"),
       moveBlockReasonOf(new Error("NOT_MOVABLE")),
     ]);
-  });
-});
-
-// -----------------------------------------------------------------------------
-// Older calendar surfaces still in use (popup, cards, invites)
-// -----------------------------------------------------------------------------
-
-describe("natural-language entry", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-10-05T10:07:00Z")); // Monday 12:07 Berlin
-  });
-  afterAll(() => vi.useRealTimers());
-
-  it("parses German and English phrases", () => {
-    const phrases = [
-      "Zahnarzt morgen 14:30 Uhr @ Praxis Müller",
-      "Laufen heute 7.30h tag:sport",
-      "Meeting Freitag 14-16h tag:arbeit erinnerung 30 min",
-      "dinner with Ana tomorrow 8pm @ Luigi's, erinnerung 2 h",
-      "yoga monday 6:45am",
-      "Call übermorgen 20h",
-      "Team sync 2-4pm tag:work",
-      "Einkaufen",
-      "Mittag 12.00–13.00h tag:essen",
-      "noon thing 12pm, 12am thing",
-      "Arzt um 9 Uhr tag:arzt remind 1 hour",
-      "",
-    ];
-    const out = phrases.map((p) => {
-      vi.setSystemTime(new Date("2026-10-05T10:07:00Z"));
-      const r = parseCalendarNL(p);
-      return { p, title: r.title, start: r.start_time, end: r.end_time, location: r.location ?? null, type: r.event_type, description: r.description ?? null };
-    });
-    expectGolden(G, "nl.parse", out);
-  });
-});
-
-describe("pending invite queue", () => {
-  afterAll(() => vi.useRealTimers());
-
-  it("queues, replaces by message id, expires, dequeues", () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-10-05T10:00:00Z"));
-    enqueuePendingSenderEvent({ title: "Brunch", start_time: "2026-10-06T09:00:00Z", source_message_id: "m1" });
-    enqueuePendingSenderEvent({ title: "Brunch (moved)", start_time: "2026-10-06T10:00:00Z", source_message_id: "m1", event_type: "community" });
-    enqueuePendingSenderEvent({ title: "Short-lived", start_time: "2026-10-06T09:00:00Z", source_message_id: "m2", ttl_hours: 1 });
-    enqueuePendingSenderEvent({ title: "No id", start_time: "2026-10-06T09:00:00Z" });
-    const afterEnqueue = listPendingSenderEvents();
-    vi.setSystemTime(new Date("2026-10-05T11:30:00Z"));
-    const afterExpiry = listPendingSenderEvents();
-    dequeueBySourceMessageId("m1");
-    dequeueBySourceMessageId(null);
-    const afterDequeue = listPendingSenderEvents();
-    expectGolden(G, "queue", { afterEnqueue, afterExpiry: afterExpiry.map((e) => e.title), afterDequeue: afterDequeue.map((e) => e.title) });
-    vi.useRealTimers();
-  });
-});
-
-describe("older calendar cards", () => {
-  const tr = (key: string, fallback: string) => `${key}|${fallback}`;
-  const ev = (over: Record<string, unknown>) =>
-    ({ id: "x", title: "x", start_time: "2026-10-05T07:30:00Z", end_time: "2026-10-05T08:00:00Z", event_type: "personal", status: "confirmed", metadata: {}, ...over }) as any;
-  const TYPES = ["personal", "community", "professional", "health", "workout", "nutrition", "autopilot", "journey_milestone", "wellness_nudge"];
-
-  it("badges, actions and all-day detection", () => {
-    expectGolden(G, "cards.byType", Object.fromEntries(TYPES.map((t) => [t, { style: getCategoryBadgeStyle(t as any), badge: getSmartBadge(ev({ event_type: t }), tr), action: getEventAction(ev({ event_type: t }), tr) }])));
-    expectGolden(G, "cards.allDay", [
-      isAllDayEvent(ev({ event_type: "journey_milestone" })),
-      isAllDayEvent(ev({ end_time: null })),
-      isAllDayEvent(ev({ start_time: new Date(2026, 9, 5, 0, 0).toISOString(), end_time: new Date(2026, 9, 5, 23, 59).toISOString() })),
-      isAllDayEvent(ev({ start_time: new Date(2026, 9, 5, 9, 0).toISOString(), end_time: new Date(2026, 9, 6, 9, 0).toISOString() })),
-    ]);
-  });
-
-  it("today's focus and Autopilot grouping", () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-10-05T06:00:00Z"));
-    const day = [
-      ev({ id: "later", title: "Later", start_time: "2026-10-05T15:00:00Z", event_type: "personal" }),
-      ev({ id: "soon", title: "Soon", start_time: "2026-10-05T07:00:00Z", event_type: "community" }),
-      ev({ id: "ms", title: "Milestone", event_type: "journey_milestone" }),
-      ev({ id: "ap1", title: "Step 1", event_type: "autopilot", metadata: { wave_name: "morning_routine" } }),
-      ev({ id: "ap2", title: "Step 2", event_type: "autopilot", completion_status: "completed", metadata: { wave_template: "sleep_week1" } }),
-      ev({ id: "ap3", title: "Step 3", event_type: "autopilot", status: "cancelled" }),
-    ];
-    const focus = (list: any[]) => {
-      const f = determineFocusItem(list, tr);
-      return { type: f.type, label: f.label, sublabel: f.sublabel ?? null, id: f.event?.id ?? null };
-    };
-    expectGolden(G, "cards.focus", [focus(day), focus(day.filter((e) => e.event_type !== "autopilot")), focus(day.slice(0, 2)), focus([]), focus([ev({ status: "cancelled" })])]);
-    const g = groupAutopilotEvents(day);
-    expectGolden(G, "cards.groups", { groups: g.groups.map((x) => ({ ...x, events: x.events.map((e) => e.id) })), regular: g.regularEvents.map((e) => e.id) });
-    vi.useRealTimers();
   });
 });

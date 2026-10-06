@@ -218,7 +218,7 @@ export function MeetupDetailsDrawer({
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   // Share dialog state now managed by parent via onShareEvent callback
   
-  const { addEvent, removeEvent } = useCalendarEvents();
+  const { addEvent } = useCalendarEvents();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { translate, isGerman } = useTranslation();
@@ -499,27 +499,9 @@ export function MeetupDetailsDrawer({
 
       if (participateError) throw participateError;
 
-      // Add to VITANA Smart Calendar
-      const calendarEvent = {
-        user_id: '',
-        title: event.title,
-        description: event.description || '',
-        start_time: event.start_time,
-        end_time: event.end_time,
-        location: event.location || event.virtual_link || '',
-        event_type: 'community' as const,
-        status: 'confirmed' as const,
-        priority: 'medium' as const,
-        is_recurring: false,
-        source_type: 'manual' as const,
-        metadata: {
-          meetup_id: event.id,
-          meetup_slug: event.slug,
-        }
-      };
-      
-      const addedEvent = await addEvent(calendarEvent, { showToast: false });
-      
+      // VTID-04915: the calendar entry is written by the database
+      // (trg_event_participation_calendar, VTID-04321); no client copy.
+
       setIsJoined(true);
       setLiveParticipantCount(prev => (prev ?? 0) + 1);
       setIsJoining(false);
@@ -529,18 +511,17 @@ export function MeetupDetailsDrawer({
         title: lookup('toasts.meetups.addedSmartCalendar'),
         description: lookup('toasts.meetups.eventSavedWeLlRemindYou'),
         duration: 5000,
-        action: addedEvent ? (
+        action: (
           <Button
             variant="ghost"
             size="sm"
             onClick={async () => {
-              // Undo: remove from both tables
+              // Undo: leaving cancels the calendar entry in the database too.
               await supabase
                 .from('global_event_participants')
                 .delete()
                 .eq('event_id', event.id)
                 .eq('user_id', user.id);
-              await removeEvent(addedEvent.id);
               setIsJoined(false);
               setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
               invalidateEventsCache();
@@ -548,7 +529,7 @@ export function MeetupDetailsDrawer({
             }}
           >{t('screens.meetups.undo')}
           </Button>
-        ) : undefined,
+        ),
       });
     } catch (error) {
       console.error('Failed to add event to calendar:', error);
@@ -1460,30 +1441,8 @@ export function MeetupDetailsDrawer({
                     
                     if (deleteError) throw deleteError;
                     
-                    // Remove matching calendar event
-                    try {
-                      const { data: calendarEvents, error: calendarEventsError } = await supabase
-                        .from('calendar_events')
-                        .select('id, metadata')
-                        .eq('user_id', user.id);
+                    // VTID-04915: the database cancels the calendar entry on leave.
 
-                      if (calendarEventsError) {
-                        console.error('Error fetching calendar events to remove on leave:', calendarEventsError);
-                      }
-
-                      if (calendarEvents) {
-                        const matchingEvent = calendarEvents.find((ce: any) => {
-                          const meta = ce.metadata;
-                          return meta && typeof meta === 'object' && (meta as any).meetup_id === event.id;
-                        });
-                        if (matchingEvent) {
-                          await removeEvent(matchingEvent.id);
-                        }
-                      }
-                    } catch (calError) {
-                      console.error('Error removing calendar event:', calError);
-                    }
-                    
                     setIsJoined(false);
                     setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
                     invalidateEventsCache();
@@ -1613,9 +1572,10 @@ export function MeetupDetailsDrawer({
               onClick={(e) => e.stopPropagation()}
             >
               {/* Primary action - VITANA Smart Calendar */}
-              <DropdownMenuItem onSelect={handleAddToVitanaCalendar}>
+              {/* VTID-04915: joining already puts it in the calendar (database trigger). */}
+              <DropdownMenuItem onSelect={handleAddToVitanaCalendar} disabled={isJoined}>
                 <CalendarPlus className="h-4 w-4 mr-2" />
-                {translate('calendar.addToVitana', 'Add to VITANA Calendar')}
+                {isJoined ? t('vcal.alreadyInCalendar') : translate('calendar.addToVitana', 'Add to VITANA Calendar')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {/* External calendars */}

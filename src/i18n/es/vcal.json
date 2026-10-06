@@ -88,7 +88,15 @@
       "reminders": "Recordatorios",
       "noReminders": "Sin recordatorio",
       "directions": "Cómo llegar",
-      "askVitana": "Preguntar a Vitana"
+      "askVitana": "Preguntar a Vitana",
+      "openEvent": "Ir al evento",
+      "joinRoom": "Unirte ahora",
+      "openRoom": "Ir a la sala en vivo",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "Despliegue en staging",
@@ -285,6 +293,56 @@
       "waitingOne": "1 cosa te está esperando",
       "waiting": "{count} cosas te están esperando",
       "open": "Abrir en administración"
+    },
+    "indexGain": "+{points} {pillar} en tu Vitana Index",
+    "edit": {
+      "action": "Editar",
+      "titleLabel": "Título",
+      "startLabel": "Empieza",
+      "endLabel": "Termina",
+      "locationLabel": "Lugar",
+      "descriptionLabel": "Nota",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "invalid": "Escribe un título; el final tiene que ser después del inicio.",
+      "saved": "Guardado ✨",
+      "error": "No se pudo guardar ahora. Inténtalo de nuevo en un momento.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Quitar",
+      "confirm": "¿Quitar esta entrada de tu calendario?",
+      "confirmSeries": "¿Quitar esta entrada y todas sus repeticiones de tu calendario?",
+      "keep": "Mantener",
+      "yes": "Quitar",
+      "removed": "Quitado",
+      "error": "No se pudo quitar ahora. Inténtalo de nuevo en un momento.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Ya está en tu calendario",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

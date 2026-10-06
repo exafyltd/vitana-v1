@@ -78,7 +78,10 @@
       "reminders": "Erinnerungen",
       "noReminders": "Keine Erinnerung",
       "directions": "Route",
-      "askVitana": "Vitana fragen"
+      "askVitana": "Vitana fragen",
+      "openEvent": "Zum Event",
+      "joinRoom": "Jetzt beitreten",
+      "openRoom": "Zum Live-Raum"
     },
     "work": {
       "deploy_staging": "Staging-Deploy",
@@ -267,6 +270,30 @@
       "waitingOne": "1 Sache wartet auf dich",
       "waiting": "{count} Sachen warten auf dich",
       "open": "Im Admin-Bereich öffnen"
-    }
+    },
+    "indexGain": "+{points} {pillar} in deinem Vitana Index",
+    "edit": {
+      "action": "Bearbeiten",
+      "titleLabel": "Titel",
+      "startLabel": "Beginn",
+      "endLabel": "Ende",
+      "locationLabel": "Ort",
+      "descriptionLabel": "Notiz",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "invalid": "Gib einen Titel ein, und das Ende muss nach dem Beginn liegen.",
+      "saved": "Gespeichert ✨",
+      "error": "Das konnte gerade nicht gespeichert werden. Versuch es gleich nochmal."
+    },
+    "remove": {
+      "action": "Entfernen",
+      "confirm": "Diesen Termin aus deinem Kalender entfernen?",
+      "confirmSeries": "Diesen Termin mit allen Wiederholungen aus deinem Kalender entfernen?",
+      "keep": "Behalten",
+      "yes": "Entfernen",
+      "removed": "Entfernt",
+      "error": "Das konnte gerade nicht entfernt werden. Versuch es gleich nochmal."
+    },
+    "alreadyInCalendar": "Schon in deinem Kalender"
   }
 }

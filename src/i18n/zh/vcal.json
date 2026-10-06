@@ -87,7 +87,15 @@
       "reminders": "提醒",
       "noReminders": "无提醒",
       "directions": "路线",
-      "askVitana": "问问 Vitana"
+      "askVitana": "问问 Vitana",
+      "openEvent": "查看活动",
+      "joinRoom": "立即加入",
+      "openRoom": "进入直播间",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "预发布部署",
@@ -281,6 +289,56 @@
       "waitingOne": "有 1 件事在等你",
       "waiting": "有 {count} 件事在等你",
       "open": "在管理后台打开"
+    },
+    "indexGain": "你的 Vitana Index {pillar} +{points}",
+    "edit": {
+      "action": "编辑",
+      "titleLabel": "标题",
+      "startLabel": "开始",
+      "endLabel": "结束",
+      "locationLabel": "地点",
+      "descriptionLabel": "备注",
+      "save": "保存",
+      "cancel": "取消",
+      "invalid": "请填写标题，结束时间需晚于开始时间。",
+      "saved": "已保存 ✨",
+      "error": "暂时无法保存，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "删除",
+      "confirm": "从日历中删除此日程？",
+      "confirmSeries": "从日历中删除此日程及其所有重复？",
+      "keep": "保留",
+      "yes": "删除",
+      "removed": "已删除",
+      "error": "暂时无法删除，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "已在你的日历中",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }
