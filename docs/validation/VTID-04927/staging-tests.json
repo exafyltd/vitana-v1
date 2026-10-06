@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04927",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "news feed: tapping a post body opens /post/..., Back returns to the same feed scroll position (±150px), the author name opens /u/... (390x844, existing posts, read-only — nothing liked, commented or posted)",
+      "spec": "tests/e2e/staging/vtid-04927-feed-post-open.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/home/CommunityPostCard.test.tsx src/lib/feed-scroll-restore.test.ts",
+      "reason": "tap targets (body → post with fromFeed state, author name → profile, heart/comments never navigate, detail mode never self-navigates) and the scroll restore (re-applies while the page grows, stops on user input, time cap, cancel)"
+    }
+  ]
+}

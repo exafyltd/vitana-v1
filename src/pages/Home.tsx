@@ -51,6 +51,7 @@ import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { NewMemberCard } from "@/components/home/NewMemberCard";
 import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
 import { track } from "@/lib/product-analytics/client";
+import { restoreWindowScroll } from "@/lib/feed-scroll-restore";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
@@ -254,29 +255,36 @@ export default function Home() {
   // Messenger — which reads as "it reloaded" even when nothing was refetched.
   // Module-scope so it survives the unmount; per-session only, deliberately not
   // persisted.
+  //
+  // VTID-04927: the restore keeps re-applying while late media grows the page
+  // (restoreWindowScroll), and the recorder ignores the scroll events it causes,
+  // so a clamped intermediate offset is never stored.
+  const restoringScrollRef = useRef(false);
   useEffect(() => {
     const saved = feedScrollMemory.get(activeTab);
     if (saved == null) return;
-    // Two frames: the first lets the restored feed commit, the second lets the
-    // browser lay it out, so the target offset actually exists to scroll to.
-    let raf2 = 0;
-    const raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    restoringScrollRef.current = true;
+    const cancel = restoreWindowScroll(saved, {
+      onSettled: () => {
+        restoringScrollRef.current = false;
+      },
     });
-    return () => {
-      cancelAnimationFrame(raf1);
-      cancelAnimationFrame(raf2);
-    };
+    return cancel;
     // Restore once per tab activation, not on every feed update.
   }, [activeTab]);
 
+  // Only live scroll events are recorded. There is deliberately no final
+  // "remember on cleanup": React runs this cleanup after the next screen (or
+  // tab) has already replaced the feed in the DOM, so window.scrollY there is
+  // the browser's clamp to the new, shorter page — it used to overwrite the
+  // reader's real position with ~0 (VTID-04927).
   useEffect(() => {
-    const remember = () => feedScrollMemory.set(activeTab, window.scrollY);
-    window.addEventListener("scroll", remember, { passive: true });
-    return () => {
-      remember();
-      window.removeEventListener("scroll", remember);
+    const remember = () => {
+      if (restoringScrollRef.current) return;
+      feedScrollMemory.set(activeTab, window.scrollY);
     };
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => window.removeEventListener("scroll", remember);
   }, [activeTab]);
 
   const handleArticleClick = (article: NewsArticle) => {

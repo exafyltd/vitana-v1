@@ -18,7 +18,8 @@ const toggleCommentLikeMock = vi.fn();
 const deleteCommentMock = vi.fn();
 let mockComments: any[] = [];
 
-vi.mock('react-router-dom', () => ({ useNavigate: () => vi.fn() }));
+const navigateMock = vi.fn();
+vi.mock('react-router-dom', () => ({ useNavigate: () => navigateMock }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'viewer' } }) }));
 vi.mock('@/lib/i18n-toast', () => ({
   t: (key: string) => key,
@@ -322,5 +323,76 @@ describe('CommunityPostCard autoOpenComments (VTID-03744)', () => {
 
     expect(screen.getByPlaceholderText('screens.home.writeComment')).toBeInTheDocument();
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+  });
+});
+
+describe('CommunityPostCard tap targets (VTID-04927)', () => {
+  beforeEach(() => {
+    mockComments = [];
+    navigateMock.mockClear();
+  });
+
+  it('opens the post itself, not the author profile, when the card body is tapped', () => {
+    render(<CommunityPostCard item={item()} />);
+
+    fireEvent.click(screen.getByText('Hallo'));
+
+    expect(navigateMock).toHaveBeenCalledTimes(1);
+    expect(navigateMock).toHaveBeenCalledWith('/post/post/p1', { state: { fromFeed: true } });
+  });
+
+  it('opens a video post on its media source', () => {
+    render(<CommunityPostCard item={item({ id: 'media-m1', source: 'media', post_id: 'm1' })} />);
+
+    fireEvent.click(screen.getByRole('article'));
+
+    expect(navigateMock).toHaveBeenCalledWith('/post/media/m1', { state: { fromFeed: true } });
+  });
+
+  it("opens the author's profile only from the author name", () => {
+    const onOpen = vi.fn();
+    render(<CommunityPostCard item={item()} onOpen={onOpen} />);
+
+    fireEvent.click(screen.getByText('Autor'));
+
+    expect(navigateMock).toHaveBeenCalledTimes(1);
+    expect(navigateMock).toHaveBeenCalledWith('/u/author');
+    expect(onOpen).toHaveBeenCalledTimes(1);
+  });
+
+  it('gives keyboard users an "open post" button on the timestamp', () => {
+    render(<CommunityPostCard item={item()} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'screens.postDetail.title' }));
+
+    expect(navigateMock).toHaveBeenCalledTimes(1);
+    expect(navigateMock).toHaveBeenCalledWith('/post/post/p1', { state: { fromFeed: true } });
+  });
+
+  it('does not navigate from the heart, the comment count or the comment box', () => {
+    render(<CommunityPostCard item={item()} />);
+
+    fireEvent.click(likeButton());
+    fireEvent.click(commentButton());
+    fireEvent.click(screen.getByPlaceholderText('screens.home.writeComment'));
+
+    expect(navigateMock).not.toHaveBeenCalled();
+  });
+
+  it('is no longer a role="button" wrapping other buttons', () => {
+    render(<CommunityPostCard item={item()} />);
+
+    expect(screen.getByRole('article')).not.toHaveAttribute('tabindex');
+    expect(screen.queryByRole('button', { name: /Hallo/ })).not.toBeInTheDocument();
+  });
+
+  it('on the post page itself: no self-navigation, comments open, no open-post button', () => {
+    render(<CommunityPostCard item={item()} isDetail />);
+
+    fireEvent.click(screen.getByText('Hallo'));
+
+    expect(navigateMock).not.toHaveBeenCalled();
+    expect(screen.getByPlaceholderText('screens.home.writeComment')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'screens.postDetail.title' })).not.toBeInTheDocument();
   });
 });
