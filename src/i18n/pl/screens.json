@@ -4643,7 +4643,10 @@
       "noInvitationsSentYetStartInviting": "Nie wysłano jeszcze zaproszeń. Zacznij zapraszać ludzi, aby zobaczyć tutaj odpowiedzi.",
       "virtualLinkLabel": "Link do dołączenia (opcjonalnie)",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "Wklej link do swojej rozmowy wideo (zaczyna się od https://). Bez linku nie pojawi się link „Dołącz”."
+      "virtualLinkHint": "Wklej link do swojej rozmowy wideo (zaczyna się od https://). Bez linku nie pojawi się link „Dołącz”.",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "Raport wysłany!",
@@ -5654,7 +5657,15 @@
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
-      "durationHourMin": "{value0} h {value1} min"
+      "durationHourMin": "{value0} h {value1} min",
+      "_pending_review": {
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true
+      },
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!"
     },
     "meetups": {
       "detailsProgram": "Szczegóły i Program",

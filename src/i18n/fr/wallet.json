@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Soldes",
       "activity": "Activité",
-      "actions": "Actions",
-      "_pending_review": {}
+      "actions": "Actions"
     },
     "filters": {
       "commissions": "Vends et gagne des commissions",
@@ -22,13 +21,11 @@
       "purchases": "Achats",
       "pending": "Paiements en attente",
       "withdrawals": "Retraits",
-      "stakes": "Mise en jeu",
-      "_pending_review": {}
+      "stakes": "Mise en jeu"
     },
     "noActivity": "Aucune activité pour l'instant",
     "noActivityDesc": "Tes transactions apparaîtront ici.",
     "displayCurrency": "Devise d'affichage",
-    "_pending_review": {},
     "rewardRules": {
       "title": "Comment tu gagnes des VTNA",
       "summary": "Tu gagnes des VTNA pour de vraies actions que tu fais toi-même et pour ta régularité.",
@@ -93,6 +90,5 @@
         "capWeek": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }
