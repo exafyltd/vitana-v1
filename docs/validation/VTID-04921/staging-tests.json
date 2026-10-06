@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04921",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: opening the Alle Beisammen group chat rests the scroll area at the bottom with the last message on screen, not at the oldest message; read-only — the group's own mark-read POST is aborted by the guard, nothing is written",
+      "spec": "tests/e2e/staging/vtid-04921-group-chat-latest.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/pages/messages/GroupChat.vtid-04921.test.tsx src/pages/messages/GroupChat.vtid-04901.test.tsx",
+      "reason": "jump to bottom on first render, reaction deep-link keeps its own scroll, polls with unchanged messages do not re-scroll; existing exit/poll behaviour unchanged"
+    }
+  ]
+}
