@@ -1,0 +1,310 @@
+{
+  "verdicts": {
+    "vitanaIndexPage.hero.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.lineNoIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.lineUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.lineDown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.lineSteady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.trendUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.trendDown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.last7Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.logToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.refreshAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.hero.updated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.nextUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.allDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.bloodTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.bloodBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.bloodCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.bloodNoTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.devicesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.devicesBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.devicesCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.focusTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.focusBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.focusBodyEven": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.focusCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.journeyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.journeyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.steps.journeyCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.noIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.toThriving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.toElite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.elite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.thrivingExplain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.eliteExplain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.goal.compass": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.pillars.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.pillars.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.pillars.biggestLever": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.pillars.strongest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.pillars.logCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.balance.even": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.balance.slight": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.balance.uneven": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.balance.veryUneven": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.baselineTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.baselineBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.actionsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.actionsBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.dataTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.dataBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.streakTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.streakBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.balanceTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.balanceBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndexPage.how.journeyCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-10-06T10:51:31.674Z"
+}
