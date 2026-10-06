@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04915",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: an own calendar entry offers Edit and Remove (form and question open and close, nothing is saved); a community event entry offers the way back to its event and no edit; a live room starting in 10 minutes offers Join; /calendar/entry/<id> opens the entry; /reminders shows the list inside the app shell with no horizontal scroll. The calendar window is answered in the browser with demo entries; read-only",
+      "spec": "tests/e2e/staging/vtid-04915-calendar-entry-actions.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/calendar/vcal/entry-actions.test.ts src/components/calendar/calendar-entry.test.ts src/hooks/useEventParticipation.calendar-by-database.test.ts src/components/calendar/__regression__",
+      "reason": "saving an edit, removing an entry and joining or leaving an event write, so they are proven without staging: which entries can be edited or removed, the source action and the Join window, the Index gain line, calendar:open and /reminders routing without the popup, and that joining/leaving no longer writes calendar rows from the app (the database does it, VTID-04321)"
+    }
+  ]
+}

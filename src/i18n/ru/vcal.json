@@ -87,7 +87,15 @@
       "reminders": "Напоминания",
       "noReminders": "Без напоминания",
       "directions": "Маршрут",
-      "askVitana": "Спросить Витану"
+      "askVitana": "Спросить Витану",
+      "openEvent": "К событию",
+      "joinRoom": "Присоединиться",
+      "openRoom": "В эфирную комнату",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "Деплой на staging",
@@ -281,6 +289,56 @@
       "waitingOne": "1 дело ждёт тебя",
       "waiting": "Ждут тебя: {count}",
       "open": "Открыть в админке"
+    },
+    "indexGain": "+{points} {pillar} в твоём Vitana Index",
+    "edit": {
+      "action": "Изменить",
+      "titleLabel": "Название",
+      "startLabel": "Начало",
+      "endLabel": "Конец",
+      "locationLabel": "Место",
+      "descriptionLabel": "Заметка",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "invalid": "Добавь название; конец должен быть позже начала.",
+      "saved": "Сохранено ✨",
+      "error": "Сейчас не удалось сохранить. Попробуй ещё раз чуть позже.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Удалить",
+      "confirm": "Удалить эту запись из календаря?",
+      "confirmSeries": "Удалить эту запись и все повторы из календаря?",
+      "keep": "Оставить",
+      "yes": "Удалить",
+      "removed": "Удалено",
+      "error": "Сейчас не удалось удалить. Попробуй ещё раз чуть позже.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Уже в твоём календаре",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

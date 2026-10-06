@@ -490,7 +490,7 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
   event_reminder: {
     icon: '📅', label: 'Event Reminder', category: 'reminder',
-    channel: 'push_and_inapp', priority: 'p1', route: '/calendar/{id}',
+    channel: 'push_and_inapp', priority: 'p1', route: '/calendar/entry/{id}', // VTID-04915: was a route that did not exist
   },
   medication_reminder: {
     icon: '💊', label: 'Medication Reminder', category: 'reminder',
