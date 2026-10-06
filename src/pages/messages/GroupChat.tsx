@@ -33,6 +33,7 @@ import {
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
 import { notify, notifyError } from "@/lib/i18n-toast";
+import type { MentionCandidate } from "@/hooks/useMentionCandidates";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
@@ -105,6 +106,14 @@ export default function GroupChat() {
     (group?.members || []).forEach(m => map.set(m.user_id, m));
     return map;
   }, [group]);
+
+  // VTID-04926: who can be @mentioned here — the roster minus yourself, the
+  // Vitana bot and accounts the gateway marks as not mentionable.
+  const mentionCandidates = useMemo<MentionCandidate[]>(() => {
+    return (group?.members || [])
+      .filter(m => m.user_id !== userId && !m.is_bot && m.mentionable !== false && !!m.display_name?.trim())
+      .map(m => ({ user_id: m.user_id, display_name: m.display_name!.trim(), avatar_url: m.avatar_url }));
+  }, [group, userId]);
 
   const messageItems = useMemo(() => {
     return getDateSeparatedMessageItems(
@@ -450,6 +459,7 @@ export default function GroupChat() {
           onSendMessage={handleSend}
           isSending={isSending}
           placeholder={translate("inbox.group.composerPlaceholder")}
+          mentionCandidates={mentionCandidates}
         />
       </footer>
     </div>
