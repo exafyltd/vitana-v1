@@ -9889,7 +9889,17 @@
       "paymentSuccessful": "Pagamento Bem-sucedido!",
       "viewAllMyTickets": "Vê Todos os Meus Bilhetes",
       "discoverMoreEvents": "Descobre Mais Eventos",
-      "yourTicketHasConfirmedConfirmationEmail": "Seu ingresso foi confirmado. Um e-mail de confirmação foi enviado para {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Seu ingresso foi confirmado. Um e-mail de confirmação foi enviado para {value0}",
+      "_pending_review": {
+        "processingTitle": true,
+        "processingBody": true,
+        "checkAgain": true,
+        "ticketConfirmed": true
+      },
+      "processingTitle": "Your payment is being processed",
+      "processingBody": "This usually takes just a few seconds. Your ticket appears under My Tickets as soon as the payment is confirmed.",
+      "checkAgain": "Check again",
+      "ticketConfirmed": "Your ticket is confirmed."
     },
     "legal": {
       "deleteAccount": "Apagar Conta",

@@ -56,7 +56,10 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
         const { [ticketId]: _, ...rest } = prev;
         return rest;
       }
-      return { ...prev, [ticketId]: newQty };
+      // One ticket type per checkout: the purchase API takes a single type, so
+      // picking another type replaces the selection instead of silently
+      // dropping it while the total still counted it.
+      return { [ticketId]: newQty };
     });
   };
 
