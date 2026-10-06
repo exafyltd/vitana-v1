@@ -13,6 +13,7 @@
  * opens the existing LiveRoomDrawer (Notify me, calendar, host: start). The
  * event drawer, RSVP button and edit/delete menu are never used for a room.
  */
+import { getLiveRoomShareUrl } from '@/lib/shareUrl';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { t } from '@/lib/i18n-toast';
@@ -296,7 +297,7 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className }: EventLiveR
           data={{
             title: room.title,
             description: room.description || t('screens.liveRoom.shareDescription', { name: room.host.name }),
-            link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(room.id)}`,
+            link: getLiveRoomShareUrl(room.id),
           }}
           variant="icon"
           size="sm"

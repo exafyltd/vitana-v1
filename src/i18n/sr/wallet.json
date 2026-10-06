@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Balansi",
       "activity": "Aktivnost",
-      "actions": "Akcije",
-      "_pending_review": {}
+      "actions": "Akcije"
     },
     "filters": {
       "commissions": "Prodaj i zaradi provizije",
@@ -22,16 +21,14 @@
       "purchases": "Kupovine",
       "pending": "Isplate na čekanju",
       "withdrawals": "Isplate",
-      "stakes": "Ulaganje",
-      "_pending_review": {}
+      "stakes": "Ulaganje"
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
     "displayCurrency": "Valuta prikaza",
-    "_pending_review": {},
     "rewardRules": {
       "title": "Kako zarađuješ VTNA",
-      "summary": "VTNA zarađuješ za stvarne stvari koje sam radiš i za upornost.",
+      "summary": "Zaradiš VTNA za stvarne stvari koje radiš sam, i za istrajnost.",
       "earnedBalance": "Zaradio si",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -40,12 +37,8 @@
       "cap": "{used} od {count} za {days} dana",
       "groups": {
         "first_steps": "Prvi koraci – po jednom",
-        "habits": "Navike – upornost",
-        "community": "Zajednica – sa drugima",
-        "_pending_review": {
-          "habits": true,
-          "community": true
-        }
+        "habits": "Navike – Istraj u tome",
+        "community": "Zajednica – Sa drugima"
       },
       "rules": {
         "onboarding_complete": "Završi uvod",
@@ -86,13 +79,7 @@
       "loading": "Učitavanje…",
       "error": "Tvoje nagrade trenutno nije moguće učitati.",
       "capToday": "{used} od {count} danas",
-      "capWeek": "{used} od {count} ove nedelje",
-      "_pending_review": {
-        "summary": true,
-        "capToday": true,
-        "capWeek": true
-      }
+      "capWeek": "{used} od {count} ove nedelje"
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -50,6 +50,20 @@ export default function ShareEntry({ fallback }: { fallback: ReactNode }) {
       return;
     }
 
+    // VTID-04922: ?share=room&id=<roomId> → the Live Room (synchronous, like the other branches).
+    if (shareType === "room") {
+      const id = params.get("id");
+      if (!id) return;
+
+      const nextParams = new URLSearchParams(params);
+      nextParams.delete("share");
+      nextParams.delete("id");
+      nextParams.set("live", id);
+
+      navigate(`/comm/live-rooms?${nextParams.toString()}`, { replace: true });
+      return;
+    }
+
     if (shareType === "match") {
       const id = params.get("id");
       if (!id) return;

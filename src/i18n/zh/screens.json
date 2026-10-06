@@ -4642,7 +4642,10 @@
       "noInvitationsSentYetStartInviting": "还没发送邀请。开始邀请朋友，就能在这里看到回复了。",
       "virtualLinkLabel": "加入链接（可选）",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "粘贴你的视频通话链接（以 https:// 开头）。没有链接时不会显示“加入”链接。"
+      "virtualLinkHint": "粘贴你的视频通话链接（以 https:// 开头）。没有链接时不会显示“加入”链接。",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "报告已发送！",
@@ -5653,7 +5656,19 @@
       },
       "durationMin": "{value0} 分钟",
       "durationHour": "{value0} 小时",
-      "durationHourMin": "{value0} 小时 {value1} 分钟"
+      "durationHourMin": "{value0} 小时 {value1} 分钟",
+      "_pending_review": {
+        "liveRoomTag": true,
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true,
+        "dateTimeChip": true
+      },
+      "liveRoomTag": "Live Room",
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!",
+      "dateTimeChip": "{date} · {time}"
     },
     "meetups": {
       "detailsProgram": "详情与日程",

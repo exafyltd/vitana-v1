@@ -7,7 +7,7 @@
  * badge and one large call-to-action (Notify me / Join / Start).
  */
 import { useState } from 'react';
-import { Radio, Clock, CalendarDays, Timer, Users, Bell, Pencil, Trash2, MapPin } from 'lucide-react';
+import { Radio, CalendarDays, Timer, Users, Bell, Pencil, Trash2, MapPin } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,7 +21,7 @@ import { InterestedPeopleSheet } from '@/components/liverooms/InterestedPeopleSh
 import type { LiveRoomCardProps } from '@/components/liverooms/LiveRoomCard';
 
 const pill =
-  'inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md';
+  'inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-white/15 px-2 py-1.5 text-[11px] font-medium text-white backdrop-blur-md';
 
 export function LiveRoomEventCard({
   room,
@@ -134,7 +134,7 @@ export function LiveRoomEventCard({
       </div>
 
       {/* Bottom: host, title, blurb, info pills, price + CTA */}
-      <div className="relative z-10 mt-auto flex flex-col gap-3 p-5 pt-20">
+      <div className="relative z-10 mt-auto flex flex-col gap-3 p-5 pb-16 pt-20 md:pb-5" data-testid="live-room-card-content">
         <div className="flex items-center gap-3">
           <ClickableAvatar
             userId={room.host.id}
@@ -159,22 +159,23 @@ export function LiveRoomEventCard({
         <h3 className="line-clamp-2 text-xl font-bold leading-snug text-white drop-shadow">{room.title}</h3>
         {room.description && <p className="line-clamp-2 text-sm text-white/85">{room.description}</p>}
 
-        <div className="flex flex-wrap gap-2">
+        {/* One row, never wrapping. If a long locale cannot fit, only the date·time pill gives way
+            (its text is cut with an ellipsis) so duration and "going" always stay fully visible. */}
+        <div className="flex flex-nowrap gap-1.5 overflow-hidden" data-testid="live-room-info-pills">
           {startIso && (
-            <>
-              <span className={pill}>
-                <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-                {formatDate(new Date(startIso), 'EEE, d. MMM')}
+            <span className={cn(pill, 'min-w-0 shrink')} data-testid="live-room-date-time">
+              <CalendarDays className="h-3 w-3 shrink-0" aria-hidden="true" />
+              <span className="truncate">
+                {t('screens.liverooms.dateTimeChip', {
+                  date: formatDate(new Date(startIso), 'EEE, d. MMM'),
+                  time: formatDate(new Date(startIso), 'HH:mm'),
+                })}
               </span>
-              <span className={pill}>
-                <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                {t('screens.liverooms.timeChip', { time: formatDate(new Date(startIso), 'HH:mm') })}
-              </span>
-            </>
+            </span>
           )}
           {durationLabel && (
             <span className={pill}>
-              <Timer className="h-3.5 w-3.5" aria-hidden="true" />
+              <Timer className="h-3 w-3" aria-hidden="true" />
               {durationLabel}
             </span>
           )}
@@ -189,7 +190,7 @@ export function LiveRoomEventCard({
                 setInterestedOpen(true);
               }}
             >
-              <Users className="h-3.5 w-3.5" aria-hidden="true" />
+              <Users className="h-3 w-3" aria-hidden="true" />
               {t('screens.liverooms.willJoinCount', { count: going })}
             </button>
           )}

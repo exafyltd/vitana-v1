@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04920",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: a scheduled Live Room card on Events shows date and time in one pill and the info pills on a single row (all at the same vertical position, no wrap), the Notify me button sits fully above the bottom nav's Orb zone, and the page has no horizontal overflow; read-only, nothing is clicked",
+      "spec": "tests/e2e/staging/vtid-04920-live-room-card-layout.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/liverooms/LiveRoomEventCard.vtid-04920.test.tsx src/components/events/EventLiveRoomCard.vtid-04913.test.tsx",
+      "reason": "one date·time pill, a single non-wrapping info row, mobile bottom padding; existing card behaviour unchanged"
+    }
+  ]
+}

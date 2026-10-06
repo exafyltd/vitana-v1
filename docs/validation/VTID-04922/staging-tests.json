@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04922",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "read-only: the og-event function, asked as WhatsApp for the id of a real scheduled Live Room, returns that room's own title and a Supabase image (not the generic MAXINA preview); signed in on a phone viewport the Share button on that room's Events card is wired to the /events/<id> link (native share stubbed, nothing sent); a normal slug lookup still returns its event preview/fallback unchanged",
+      "spec": "tests/e2e/staging/vtid-04922-room-link-preview.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/room-og.vtid-04922.test.ts src/pages/ShareEntry.room.vtid-04922.test.tsx src/pages/PublicEventLanding.room.vtid-04922.test.tsx",
+      "reason": "the OG builder and its rules, the share=room entry, the not-found → room redirect (and no stream query for slugs), and that no old-style share link remains in the nine call sites"
+    }
+  ]
+}

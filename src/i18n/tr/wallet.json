@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Bakiyeler",
       "activity": "Aktivite",
-      "actions": "İşlemler",
-      "_pending_review": {}
+      "actions": "İşlemler"
     },
     "filters": {
       "commissions": "Sat ve kazan komisyonları",
@@ -22,13 +21,11 @@
       "purchases": "Satın Alımlar",
       "pending": "Bekleyen Ödemeler",
       "withdrawals": "Para Çekimleri",
-      "stakes": "Staking",
-      "_pending_review": {}
+      "stakes": "Staking"
     },
     "noActivity": "Henüz aktivite yok",
     "noActivityDesc": "İşlemlerin burada görünecek.",
     "displayCurrency": "Görüntüleme para birimi",
-    "_pending_review": {},
     "rewardRules": {
       "title": "VTNA nasıl kazanırsın",
       "summary": "Kendin yaptığın gerçek şeyler ve istikrarlı kaldığın için VTNA kazanırsın.",
@@ -93,6 +90,5 @@
         "capWeek": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

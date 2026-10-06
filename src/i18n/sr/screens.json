@@ -4642,7 +4642,10 @@
       "noInvitationsSentYetStartInviting": "Još uvek nema poslatih pozivnica. Počni da pozivaš ljude da bi ovde video odgovore.",
       "virtualLinkLabel": "Link za pridruživanje (opciono)",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "Nalepi link za svoj video poziv (počinje sa https://). Bez linka se ne prikazuje link za pridruživanje."
+      "virtualLinkHint": "Nalepi link za svoj video poziv (počinje sa https://). Bez linka se ne prikazuje link za pridruživanje.",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "Izveštaj poslat!",
@@ -5653,7 +5656,19 @@
       "joinAria": "Pridruži se sobi uživo",
       "whenToday": "Danas u {time}",
       "whenTomorrow": "Sutra u {time}",
-      "whenDated": "{date} u {time}"
+      "whenDated": "{date} u {time}",
+      "_pending_review": {
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true,
+        "liveRoomTag": true,
+        "dateTimeChip": true
+      },
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!",
+      "liveRoomTag": "Live Room",
+      "dateTimeChip": "{date} · {time}"
     },
     "meetups": {
       "detailsProgram": "Detalji i program",

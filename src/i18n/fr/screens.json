@@ -4642,7 +4642,10 @@
       "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici.",
       "virtualLinkLabel": "Lien pour rejoindre (facultatif)",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "Colle le lien de ton appel vidéo (commence par https://). Sans lien, aucun lien « Rejoindre » n'est affiché."
+      "virtualLinkHint": "Colle le lien de ton appel vidéo (commence par https://). Sans lien, aucun lien « Rejoindre » n'est affiché.",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "Signalement envoyé !",
@@ -5653,7 +5656,19 @@
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
-      "durationHourMin": "{value0} h {value1} min"
+      "durationHourMin": "{value0} h {value1} min",
+      "_pending_review": {
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true,
+        "liveRoomTag": true,
+        "dateTimeChip": true
+      },
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!",
+      "liveRoomTag": "Live Room",
+      "dateTimeChip": "{date} · {time}"
     },
     "meetups": {
       "detailsProgram": "Détails & Programme",

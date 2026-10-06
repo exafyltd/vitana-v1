@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+import { buildRoomOgHtml, isPublicRoomStatus, isUuid, roomUrls, type RoomOgInput } from './room-og.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -181,6 +182,51 @@ Deno.serve(async (req) => {
         .eq('id', eventId)
         .single();
       if (!error && data) event = data;
+    }
+
+    // VTID-04922: a Live Room is shared as /events/<roomId>. Only when no event matched AND the id
+    // is a UUID (never for slug-only or junk lookups) is community_live_streams consulted.
+    let room: RoomOgInput | null = null;
+    if (!event && eventId && isUuid(eventId)) {
+      const { data: stream } = await supabase
+        .from('community_live_streams')
+        .select('id, title, description, cover_image_url, created_by, status, enable_replay')
+        .eq('id', eventId)
+        .maybeSingle();
+      if (stream && isPublicRoomStatus(stream.status, stream.enable_replay)) {
+        let avatar: string | null = null;
+        if (!stream.cover_image_url && stream.created_by) {
+          const { data: host } = await supabase
+            .from('profiles')
+            .select('avatar_url')
+            .eq('user_id', stream.created_by)
+            .maybeSingle();
+          avatar = host?.avatar_url ?? null;
+        }
+        room = {
+          id: stream.id,
+          title: stream.title,
+          description: stream.description,
+          cover_image_url: stream.cover_image_url,
+          host_avatar_url: avatar,
+        };
+      }
+    }
+
+    if (room) {
+      if (isCrawler(userAgent)) {
+        const h = new Headers();
+        h.set('Content-Type', 'text/html; charset=utf-8');
+        h.set('X-Content-Type-Options', 'nosniff');
+        h.set('Cache-Control', 'public, max-age=120, s-maxage=120');
+        h.set('Access-Control-Allow-Origin', '*');
+        h.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+        return new Response(buildRoomOgHtml(room), { headers: h });
+      }
+      return new Response(null, {
+        status: 302,
+        headers: { ...corsHeaders, 'Location': roomUrls(room.id).destinationUrl },
+      });
     }
 
     if (!event) {
