@@ -11,6 +11,7 @@ import { MentionTextarea } from '@/components/feed/MentionTextarea';
 import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
 import { getPostBackground } from '@/lib/post-backgrounds';
 import type { PostMention } from '@/lib/news-feed-ranker';
+import { pruneMentions } from '@/lib/mentions';
 
 /** Maxina Longevity Game (event-specific, optional) — when present, the
  * sheet shows the Event/Longevity category switch and tags the resulting
@@ -216,7 +217,8 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext }: 
         videoUrl,
         // Backgrounds only apply to text-only posts.
         backgroundStyle: mediaFile ? null : backgroundStyle,
-        mentions,
+        // VTID-04926: a name deleted from the text is no longer tagged.
+        mentions: pruneMentions(content.trim(), mentions),
         eventGameId: eventGameContext?.eventGameId,
         isLongevityBonus: eventGameContext ? isLongevityBonus : undefined,
       });

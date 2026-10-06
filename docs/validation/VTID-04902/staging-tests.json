@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04902",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "on a phone viewport /comm/events-meetups?event=<slug> (what a chat event link now opens) resolves the slug to the id and shows that event",
+      "spec": "tests/e2e/staging/vtid-04902-04903-event-links-hot.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/inAppLinks.vtid-04902.test.ts src/components/messages/MessageBubble.event-link.vtid-04902.test.tsx src/hooks/useCommunityEvents.recent.vtid-04903.test.ts",
+      "reason": "event links (vitanaland.com/events, /e, /pub/events, e./www.) map to the in-app Events screen, the chat bubble navigates in-app instead of opening a browser layer, other links stay external; one event can be fetched by id or slug with full enrichment"
+    }
+  ]
+}

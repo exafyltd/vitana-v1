@@ -9,7 +9,6 @@ const TENANT_OPTIONS: { value: TicketTenant; label: string; color: string }[] = 
   { value: "vitana", label: "VITANA", color: "#E8CFAF" },
   { value: "maxina", label: "Maxina", color: "#FF6FAF" },
   { value: "alkalma", label: "AlKalma", color: "#3AB5D0" },
-  { value: "earthlinks", label: "Earthlinks", color: "#58A676" },
 ];
 
 export default function TicketDemo() {

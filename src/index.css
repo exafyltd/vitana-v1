@@ -703,6 +703,34 @@ body.maxina-intro-page [class^="vtorb-fab"] {
   transform: translate(-50%, -50%) !important;
 }
 
+/* ORB — pre-login Commerce page, desktop widths (VTID-04898). The page has
+   no sidebar, so the sidebar-footer spot above (left: 8rem) put the orb on the
+   landing's content: at 1400x900 it covered the start of the "one-step" MCP
+   heading at first paint, and content scrolled under it. Here the orb docks in
+   the bottom-left corner (centre 3rem, so a 64px orb spans 16-80px) and the
+   Commerce shell's <main> reserves a 6rem gutter on both sides, so no scroll
+   position puts the orb over landing text. Symmetric, so the column stays
+   centred in LTR and RTL. CommerceGuestLanding sets the body class while it is
+   mounted; below 1024px this page hides the orb anyway (no bottom nav). */
+@media (min-width: 1024px) {
+  body.commerce-guest-page .vtorb-fab,
+  body.commerce-guest-page .vitana-orb,
+  body.commerce-guest-page [data-vitana-orb="true"],
+  body.commerce-guest-page #vitana-orb,
+  body.commerce-guest-page .OrbFloatingButton,
+  body.commerce-guest-page #vitana-orb-fab,
+  body.commerce-guest-page [id^="vitana-orb"],
+  body.commerce-guest-page [class^="vtorb-fab"] {
+    left: 3rem !important;
+    bottom: 1.25rem !important;
+  }
+
+  body.commerce-guest-page main[data-commerce-main] {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
 /* MOBILE / TABLET — ORB fixed positioning above bottom nav */
 @media (max-width: 1023px) {
   .vtorb-fab,

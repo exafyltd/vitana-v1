@@ -9,6 +9,8 @@
 // which only look at src/i18n/**. That gate cannot see DB-backed content, so
 // es, sr and fr all reached `ga` while `nav_catalog_i18n` held ZERO rows for
 // them: a fully translated UI whose Navigator still answers in German.
+// (VTID-04880: the Navigator now reads the screen registry, so that surface is
+// checked from its files; the old table was archived.)
 //
 // A locale is ready when SIX surfaces agree, not when one does:
 //
@@ -17,9 +19,13 @@
 //   3. Placeholders    — no broken {token} interpolation
 //   4. Freshness       — no drift vs the source it was translated from
 //   5. Register        — informal voice, per-language rule
-//   6. DB content      — nav_catalog_i18n + journey_checklist_translations
+//   6. Content outside src/i18n:
+//      6a. Navigation — src/navigation/registry: a title for every screen in
+//          every target locale (files, always checked)
+//      6b. My Journey — journey_checklist_translations: every field of every
+//          topic, compared with the English reference (database)
 //
-// Surfaces 1-5 are files and always checked. Surface 6 needs database access;
+// Surfaces 1-5 and 6a are files and always checked. 6b needs database access;
 // when that is unavailable the locale is reported UNKNOWN, never PASS — a gate
 // that silently drops the one surface it was built to add would be worse than
 // no gate at all, because it would grant the same false confidence that let
@@ -119,8 +125,30 @@ const register = new Map();
 for (const m of regOut.matchAll(/^\[register\] (\w{2}) \([^)]+\) — (\d+) violation/gm)) register.set(m[1], Number(m[2]));
 
 // ---------------------------------------------------------------------------
-// Surface 6: DB content. Requires service-role; UNKNOWN without it.
+// Surface 6a: navigation — the screen registry's titles (files).
 // ---------------------------------------------------------------------------
+const REGISTRY = join(ROOT, 'src/navigation/registry');
+const registryScreens = JSON.parse(readFileSync(join(REGISTRY, 'screens.json'), 'utf8')).screens ?? [];
+function navTitleGaps(code) {
+  const titleOf = (s) => {
+    if (code === 'en' || code === 'de') return s.i18n?.[code]?.title;
+    const file = join(REGISTRY, 'locales', `${code}.json`);
+    if (!existsSync(file)) return undefined;
+    navLocaleCache[code] ??= JSON.parse(readFileSync(file, 'utf8'));
+    return navLocaleCache[code][s.id]?.title;
+  };
+  return registryScreens.filter((s) => !String(titleOf(s) ?? '').trim()).length;
+}
+const navLocaleCache = {};
+
+// ---------------------------------------------------------------------------
+// Surface 6b: My Journey curriculum (DB). Requires service-role; UNKNOWN without it.
+// ---------------------------------------------------------------------------
+const CHECKLIST_FIELDS = [
+  'display_label', 'short_description', 'explanation_what_it_is',
+  'explanation_user_benefit', 'explanation_when_to_use', 'explanation_try_this',
+];
+const completeFilter = `and=(${CHECKLIST_FIELDS.map((f) => `${f}.not.is.null,${f}.neq.`).join(',')})`;
 const SUPABASE_URL = envValue('VITE_SUPABASE_URL');
 const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE ?? '';
 const dbCoverage = new Map();
@@ -138,11 +166,14 @@ if (SUPABASE_URL && SERVICE_ROLE) {
     return Number(range.split('/')[1] ?? 0);
   };
   try {
-    const navTotal = await q('nav_catalog?select=id&is_active=eq.true&limit=1');
+    // Same rule as ci_vital_systems_health(): a row counts only when every
+    // translatable field is filled, against the English reference count. 'de'
+    // is the source language and 'en' the reference (VTID-03679).
+    const expected = await q('journey_checklist_translations?select=topic_id&locale=eq.en&limit=1');
     for (const [code] of pickerLocales()) {
-      const nav = await q(`nav_catalog_i18n?select=catalog_id&lang=eq.${code}&limit=1`);
-      const chk = await q(`journey_checklist_translations?select=topic_id&locale=eq.${code}&limit=1`);
-      dbCoverage.set(code, { nav, navTotal, chk });
+      if (code === 'en' || code === 'de') continue;
+      const complete = await q(`journey_checklist_translations?select=topic_id&locale=eq.${code}&${completeFilter}&limit=1`);
+      dbCoverage.set(code, { complete, expected });
     }
     dbChecked = true;
   } catch (err) {
@@ -178,12 +209,16 @@ for (const [code, status] of targets) {
 
   bad += (register.get(code) ?? 0) === 0 ? (checks.push('register'), 0) : fail(`register ${register.get(code)}`);
 
-  if (!dbChecked) { checks.push('UNKNOWN db-content'); unknowns++; }
+  const navGaps = navTitleGaps(code);
+  bad += navGaps === 0 ? (checks.push('navigation'), 0) : fail(`navigation ${navGaps}/${registryScreens.length} screen title(s) missing`);
+
+  if (code === 'en') checks.push('my-journey (reference locale)');
+  else if (!dbChecked) { checks.push('UNKNOWN my-journey'); unknowns++; }
   else {
-    const d = dbCoverage.get(code) ?? { nav: 0, navTotal: 0, chk: 0 };
-    bad += d.nav >= d.navTotal && d.chk > 0
-      ? (checks.push('db-content'), 0)
-      : fail(`db-content nav ${d.nav}/${d.navTotal} checklist ${d.chk}`);
+    const d = dbCoverage.get(code) ?? { complete: 0, expected: 0 };
+    bad += d.expected > 0 && d.complete >= d.expected
+      ? (checks.push('my-journey'), 0)
+      : fail(`my-journey ${d.complete}/${d.expected} complete topics`);
   }
 
   failures += bad;
@@ -199,10 +234,9 @@ for (const r of rows) {
 
 if (!dbChecked) {
   console.log(
-    `\n[gate] DB-content surface NOT CHECKED — ${dbWhy}.\n` +
-      `       Locales above are reported UNKNOWN, not PASS. This surface is the whole reason\n` +
-      `       the gate exists: es/sr/fr passed all five file-based checks while serving German\n` +
-      `       Navigator titles. Supply SUPABASE_SERVICE_ROLE to close it.`,
+    `\n[gate] My Journey (DB) surface NOT CHECKED — ${dbWhy}.\n` +
+      `       Locales above are reported UNKNOWN, not PASS: a locale can pass every file-based\n` +
+      `       check while its curriculum still reads German. Supply SUPABASE_SERVICE_ROLE to close it.`,
   );
 }
 

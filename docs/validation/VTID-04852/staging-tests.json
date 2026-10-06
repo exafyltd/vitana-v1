@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04852",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the calendar header is the Index-style hero: bold 24px weekday, gradient card, only the + button",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "The calendar uses the shared Vitana Index look (src/lib/index-look.ts, pinned to the Index page by index-look.test.ts): hero, cards, tiles, buttons, teal accents; no own font, no pixel sizes beyond the Index page's."
+    }
+  ]
+}

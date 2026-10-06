@@ -5,6 +5,7 @@ import { CalendarIcon } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import { t } from '@/lib/i18n-toast';
 import { resolveEventCover } from '@/lib/eventCoverImage';
+import { isLiveRoomEvent, liveRoomCardOverrides, EventLiveRoomCard } from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 const formatEventTime = (dateString: string) => {
@@ -101,7 +102,14 @@ export function MobileEventCarousel({
 
 
   // Transform event to NewsCard props
-  const transformEventToCard = (event: any, index: number) => {
+  const transformEventToCard = (...args: Parameters<typeof transformEventToCardBase>) => {
+    const [event] = args;
+    const card = transformEventToCardBase(...args);
+    // VTID-04907: a Live Room is the same full card, with a red LIVE badge.
+    return isLiveRoomEvent(event) ? { ...card, ...liveRoomCardOverrides(event) } : card;
+  };
+
+  const transformEventToCardBase = (event: any, index: number) => {
     const authorName = event.creator_display_name || event.author?.name || 'Community Host';
     const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
 
@@ -198,10 +206,18 @@ export function MobileEventCarousel({
             role="article"
             aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
           >
-            <NewsCard
-              {...transformEventToCard(event, index)}
-              className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
-            />
+            {isLiveRoomEvent(event) ? (
+              <EventLiveRoomCard
+                event={event}
+                onOpenDrawer={onCardClick}
+                className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
+              />
+            ) : (
+              <NewsCard
+                {...transformEventToCard(event, index)}
+                className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
+              />
+            )}
           </div>
         ))}
       </div>

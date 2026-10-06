@@ -56,6 +56,7 @@ const HOSTS = [
 export function AgentConnectCard() {
   const [copied, setCopied] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const reduce = useReducedMotion();
 
   const copyUrl = () => {
@@ -80,9 +81,11 @@ export function AgentConnectCard() {
 
       <div className="relative rounded-3xl border border-amber-200 bg-card p-5 shadow-xl shadow-amber-900/5 md:p-7">
         <div className="flex flex-wrap items-center gap-2">
+          {/* VTID-04795: "In development", never "Recommended", until an AI
+              assistant can really register a business end to end. */}
           <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
             <Sparkles className="h-3.5 w-3.5" />
-            {t('screens.commerceportal.agentConnect.recommendedBadge')}
+            {t('screens.commerceportal.setupChooser.inDevelopment')}
           </span>
           <button
             type="button"
@@ -108,49 +111,65 @@ export function AgentConnectCard() {
           {t('screens.commerceportal.agentPromise')}
         </p>
 
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <code
-            dir="ltr"
-            className="min-w-0 flex-1 truncate rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-start font-mono text-sm text-amber-900 md:text-base"
-          >
-            {MCP_SERVER_URL}
-          </code>
-          <Button
-            type="button"
-            onClick={copyUrl}
-            className="h-12 shrink-0 rounded-xl bg-amber-700 px-5 font-semibold text-white shadow-sm hover:bg-amber-800"
-          >
-            {copied ? <Check className="me-2 h-4 w-4" /> : <Copy className="me-2 h-4 w-4" />}
-            {copied
-              ? t('screens.commerceportal.agentConnect.copied')
-              : t('screens.commerceportal.agentConnect.copyUrl')}
-          </Button>
-        </div>
-        <p className="mt-2 text-xs text-muted-foreground">{t('screens.commerceportal.agentUrlHint')}</p>
+        {/* VTID-04796: the MCP address and per-assistant steps are developer
+            detail — collapsed under Advanced, never part of the main journey. */}
+        <button
+          type="button"
+          onClick={() => setAdvancedOpen((v) => !v)}
+          aria-expanded={advancedOpen}
+          data-testid="agent-advanced"
+          className="mt-4 flex min-h-11 w-full items-center justify-between text-start text-sm font-semibold text-foreground"
+        >
+          {t('screens.commerceportal.agentConnect.manualMcp')}
+          <ChevronDown className={`h-4 w-4 transition-transform ${advancedOpen ? 'rotate-180' : ''}`} />
+        </button>
+        {advancedOpen && (
+          <div>
+          <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <code
+              dir="ltr"
+              className="min-w-0 flex-1 truncate rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-start font-mono text-sm text-amber-900 md:text-base"
+            >
+              {MCP_SERVER_URL}
+            </code>
+            <Button
+              type="button"
+              onClick={copyUrl}
+              className="h-12 shrink-0 rounded-xl bg-amber-700 px-5 font-semibold text-white shadow-sm hover:bg-amber-800"
+            >
+              {copied ? <Check className="me-2 h-4 w-4" /> : <Copy className="me-2 h-4 w-4" />}
+              {copied
+                ? t('screens.commerceportal.agentConnect.copied')
+                : t('screens.commerceportal.agentConnect.copyUrl')}
+            </Button>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">{t('screens.commerceportal.agentUrlHint')}</p>
 
-        <Tabs defaultValue="claude" className="mt-6">
-          <TabsList className="w-full justify-start gap-1 bg-muted p-1">
+          <Tabs defaultValue="claude" className="mt-6">
+            <TabsList className="w-full justify-start gap-1 bg-muted p-1">
+              {HOSTS.map((h) => (
+                <TabsTrigger
+                  key={h.id}
+                  value={h.id}
+                  className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900"
+                >
+                  {t(h.tab)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
             {HOSTS.map((h) => (
-              <TabsTrigger
-                key={h.id}
-                value={h.id}
-                className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900"
-              >
-                {t(h.tab)}
-              </TabsTrigger>
+              <TabsContent key={h.id} value={h.id} className="mt-4">
+                <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-amber-700/70">
+                  {h.steps.map((key) => (
+                    <li key={key}>{t(key)}</li>
+                  ))}
+                </ol>
+                {'note' in h && h.note && <p className="mt-3 text-xs text-muted-foreground">{t(h.note)}</p>}
+              </TabsContent>
             ))}
-          </TabsList>
-          {HOSTS.map((h) => (
-            <TabsContent key={h.id} value={h.id} className="mt-4">
-              <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-amber-700/70">
-                {h.steps.map((key) => (
-                  <li key={key}>{t(key)}</li>
-                ))}
-              </ol>
-              {'note' in h && h.note && <p className="mt-3 text-xs text-muted-foreground">{t(h.note)}</p>}
-            </TabsContent>
-          ))}
-        </Tabs>
+          </Tabs>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,10 @@
+{
+  "id": "live-room-interested-list",
+  "added": "2026-10-06",
+  "title": { "en": "See Who's Joining a Live Room", "de": "Sieh, wer bei einem Live-Raum dabei ist" },
+  "description": {
+    "en": "Tap the \"going\" count on a scheduled Live Room to see who plans to join. In Events, Live Rooms now also come with Notify me and Share right on the card.",
+    "de": "Tippe bei einem geplanten Live-Raum auf die Zahl der Interessierten und sieh, wer dabei sein möchte. In den Events haben Live-Räume jetzt auch „Erinnere mich“ und Teilen direkt auf der Karte."
+  },
+  "deepLink": "/comm/events-meetups"
+}

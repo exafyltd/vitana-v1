@@ -38,7 +38,14 @@
       "reasonPlaceholder": true,
       "confirmOn": true,
       "confirmOff": true,
-      "cancel": true
+      "cancel": true,
+      "save": true,
+      "on": true,
+      "off": true,
+      "toastOn": true,
+      "toastOff": true,
+      "toastFailed": true,
+      "statsNone": true
     },
     "pages": {
       "notifications": {
@@ -166,12 +173,12 @@
     "confirmOn": "Switch on",
     "confirmOff": "Switch off",
     "cancel": "Cancel",
-    "save": "Сохранить",
-    "on": "Вкл.",
-    "off": "Выкл.",
-    "toastOn": "Включено",
-    "toastOff": "Выключено",
-    "toastFailed": "Это не сработало. Пожалуйста, попробуй еще раз.",
+    "save": "Save",
+    "on": "on",
+    "off": "off",
+    "toastOn": "Switched on",
+    "toastOff": "Switched off",
+    "toastFailed": "That did not work. Please try again.",
     "categoryGroups": {
       "_pending_review": {
         "chat": true,
@@ -302,6 +309,6 @@
       "developer": "developers",
       "staff": "staff"
     },
-    "statsNone": "7 дней: ничего не отправлено"
+    "statsNone": "7 days: nothing sent"
   }
 }

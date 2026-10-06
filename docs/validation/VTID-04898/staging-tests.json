@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-04898",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed out, at 1024, 1280, 1400 and 1920 px the Vitana orb lies entirely left of the hero and the landing, never touches the one-step heading, no horizontal scroll",
+      "spec": "tests/e2e/staging/vtid-04898-commerce-guest-orb.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "the landing itself is unchanged: story, one-step MCP section, steps, closing call to join",
+      "spec": "tests/e2e/staging/vtid-04894-commerce-guest-landing.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/commerce/commerce-guest-orb.vtid-04898.test.ts src/pages/CommercePortal.guest-landing.vtid-04894.test.ts",
+      "reason": "the body class, the shell's main marker and the desktop-only CSS that docks the orb in a reserved gutter; the landing's own pins still hold"
+    }
+  ]
+}

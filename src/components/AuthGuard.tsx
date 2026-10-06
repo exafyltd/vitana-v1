@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
+import { readStoredTenantSlug } from "@/lib/retired-tenants";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
@@ -66,11 +67,12 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
     // fall back to the hostname → tenant map so a fresh browser context (e.g.
     // a shared link opened from WhatsApp) doesn't bounce through `/` →
     // `/_intro/<tenant>` and lose the `?redirectTo=` deep-link target.
-    const slug = localStorage.getItem('tenant_slug')
+    // readStoredTenantSlug maps a retired slug (VTID-04836: 'earthlinks')
+    // to its successor, so an old browser lands on the Maxina portal.
+    const slug = readStoredTenantSlug('tenant_slug')
       || DOMAIN_TENANT_MAP[window.location.hostname];
     if (slug === 'maxina') return '/maxina';
     if (slug === 'alkalma') return '/alkalma';
-    if (slug === 'earthlinks') return '/earthlinks';
     return '/';
   }, []);
 
@@ -202,8 +204,8 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
           navigate(`${loginRoute}?redirectTo=${encodeURIComponent(intended)}`);
         } else {
           // Plain launch → route through the brand intro before the sign-up portal.
-          const slug = loginRoute.slice(1); // 'maxina' | 'alkalma' | 'earthlinks' | 'exafy-admin' | ''
-          if (slug === 'maxina' || slug === 'alkalma' || slug === 'earthlinks') {
+          const slug = loginRoute.slice(1); // 'maxina' | 'alkalma' | 'exafy-admin' | ''
+          if (slug === 'maxina' || slug === 'alkalma') {
             navigate(`/_intro/${slug}`);
           } else {
             navigate(loginRoute); // exafy-admin / unknown tenant: no intro
@@ -261,11 +263,11 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
 
               // Re-initiate Apple sign-in
               try {
-                localStorage.setItem('tenant_slug', localStorage.getItem('tenant_slug') || 'maxina');
+                localStorage.setItem('tenant_slug', readStoredTenantSlug('tenant_slug') || 'maxina');
                 await supabase.auth.signInWithOAuth({
                   provider: 'apple',
                   options: {
-                    redirectTo: window.location.origin + '/' + (localStorage.getItem('tenant_slug') || 'maxina'),
+                    redirectTo: window.location.origin + '/' + (readStoredTenantSlug('tenant_slug') || 'maxina'),
                   }
                 });
               } catch (err) {

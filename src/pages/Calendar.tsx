@@ -6,18 +6,27 @@
  * (time only). Tapping an entry opens it full-screen. Adding things goes
  * through Vitana (voice), which writes through the gateway's producer
  * contract — the screen itself never writes except "mark done".
+ *
+ * VTID-04915: /calendar/entry/:id opens one entry (reminder notifications
+ * link here); members can edit or remove their own entries, and an entry
+ * leads back to its community event or live room.
  */
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
 import { useRole } from "@/hooks/useRole";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
-import { fmtDate, formatDate } from "@/lib/locale-format";
+import { fmtDate, fmtNumber, formatDate } from "@/lib/locale-format";
 import { activateOrb } from "@/lib/orbActivate";
 import {
+  cancelCalendarEntry,
   completeCalendarEntry,
   fetchCalendarWindow,
+  topPillarGain,
+  updateCalendarEntry,
+  type CalendarEntryPatch,
   moveBlockReasonOf,
   moveCalendarEntry,
   type CalendarWindowItem,
@@ -32,7 +41,6 @@ const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
 };
 import { SURFACE, isDone } from "@/components/calendar/vcal/theme";
 import { ViewSwitch, isMilestone } from "@/components/calendar/vcal/parts";
-import { HEADING_FONT } from "@/components/calendar/vcal/labels";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
 import { SubscribeSheet, type SubscribeProvider } from "@/components/calendar/vcal/SubscribeSheet";
@@ -49,10 +57,20 @@ import {
   useCalendarApps,
 } from "@/components/calendar/vcal/sections";
 import { hhmm, sameDay, stepAnchor, viewRange, type CalendarView } from "@/components/calendar/vcal/time";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  INDEX_CARD,
+  INDEX_EYEBROW,
+  INDEX_GLOW_STYLE,
+  INDEX_HERO_CLASS,
+  INDEX_HERO_STYLE,
+  INDEX_NUMBER_STYLE,
+  INDEX_PRIMARY_BTN,
+  INDEX_SOFT_BTN,
+} from "@/lib/index-look";
 
 const VIEW_KEY = "vitana.calendar.view";
-const FONTS_ID = "vcal-fonts";
-const FONTS_HREF = "https://fonts.googleapis.com/css2?family=Nunito:wght@400;500&display=swap";
 const GUIDE_DISMISSED_KEY = "vitana.calendar.guide.dismissed";
 
 function localDayKey(d: Date): string {
@@ -76,18 +94,6 @@ function readSavedView(): CalendarView {
   }
 }
 
-/** Load the calendar's two typefaces once, only when the calendar is opened. */
-function useCalendarFonts() {
-  useEffect(() => {
-    if (document.getElementById(FONTS_ID)) return;
-    const link = document.createElement("link");
-    link.id = FONTS_ID;
-    link.rel = "stylesheet";
-    link.href = FONTS_HREF;
-    document.head.appendChild(link);
-  }, []);
-}
-
 function useNow(intervalMs = 60_000): Date {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
@@ -98,7 +104,6 @@ function useNow(intervalMs = 60_000): Date {
 }
 
 export default function CalendarPage() {
-  useCalendarFonts();
   const now = useNow();
   const { currentRole } = useRole();
   const queryClient = useQueryClient();
@@ -108,6 +113,9 @@ export default function CalendarPage() {
   const [subscribeOpen, setSubscribeOpen] = useState<false | { provider?: SubscribeProvider }>(false);
   const [guideDismissed, setGuideDismissed] = useState<string | null>(readGuideDismissed);
   const [addOpen, setAddOpen] = useState(false);
+  // VTID-04915: /calendar/entry/:id — jump to that entry's day, then open it.
+  const { entryId } = useParams<{ entryId?: string }>();
+  const [pendingEntryId, setPendingEntryId] = useState<string | null>(entryId ?? null);
 
   const changeView = (v: CalendarView) => {
     setView(v);
@@ -124,7 +132,36 @@ export default function CalendarPage() {
     queryFn: () => fetchCalendarWindow(range.from, range.to, currentRole ?? null),
     staleTime: 30_000,
   });
-  const items = query.data?.items ?? [];
+  const items = useMemo(() => query.data?.items ?? [], [query.data]);
+
+  useEffect(() => {
+    if (!entryId) return;
+    setPendingEntryId(entryId);
+    let cancelled = false;
+    // Read-only: the member's own row (RLS), only to learn which day to show.
+    supabase
+      .from("calendar_events")
+      .select("start_time")
+      .eq("id", entryId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (cancelled || !data?.start_time) return;
+        setAnchor(new Date(data.start_time));
+        setView("day");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [entryId]);
+
+  useEffect(() => {
+    if (!pendingEntryId || !query.isSuccess) return;
+    const hit = items.find((i) => i.event_id === pendingEntryId && i.event);
+    if (hit) {
+      setOpenItem(hit);
+      setPendingEntryId(null);
+    }
+  }, [pendingEntryId, query.isSuccess, items]);
 
   // Today's own numbers, independent of the view (day view shows them).
   const todayQuery = useQuery({
@@ -139,7 +176,6 @@ export default function CalendarPage() {
   // to-dos, so they stay out of the progress ring and "Next up".
   const today = (todayQuery.data?.items ?? []).filter((i) => i.event && !i.work && !isMilestone(i));
   const todayDone = today.filter((i) => isDone(i.event!)).length;
-  const nextUp = today.find((i) => !isDone(i.event!) && Date.parse(i.start_time) > now.getTime()) ?? null;
 
   // VTID-04536: open journey steps — Autopilot steps from the last 30 days
   // up to tonight that are neither done nor cancelled, oldest first.
@@ -189,8 +225,17 @@ export default function CalendarPage() {
 
   const complete = useMutation({
     mutationFn: (item: CalendarWindowItem) => completeCalendarEntry(item.event_id, currentRole ?? null),
-    onSuccess: () => {
-      notify("vcal.doneToast");
+    onSuccess: (result) => {
+      // VTID-04915: say what it did for the Vitana Index, when it moved.
+      const gain = topPillarGain(result?.vitana_index ?? null);
+      if (gain) {
+        notify("vcal.doneToast", "vcal.indexGain", {
+          points: fmtNumber(gain.points, { maximumFractionDigits: 1 }),
+          pillar: t(`vcal.kinds.${gain.pillar}`),
+        });
+      } else {
+        notify("vcal.doneToast");
+      }
       setOpenItem(null);
       queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
     },
@@ -210,6 +255,27 @@ export default function CalendarPage() {
       const reason = moveBlockReasonOf(err);
       notifyError(reason ? MOVE_BLOCKED_KEY[reason] : "vcal.move.error");
     },
+  });
+
+  // VTID-04915: edit or remove one of the member's own entries.
+  const edit = useMutation({
+    mutationFn: ({ item, patch }: { item: CalendarWindowItem; patch: CalendarEntryPatch }) =>
+      updateCalendarEntry(item.event_id, patch, currentRole ?? null),
+    onSuccess: () => {
+      notify("vcal.edit.saved");
+      setOpenItem(null);
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: () => notifyError("vcal.edit.error"),
+  });
+  const remove = useMutation({
+    mutationFn: (item: CalendarWindowItem) => cancelCalendarEntry(item.event_id, currentRole ?? null),
+    onSuccess: () => {
+      notify("vcal.remove.removed");
+      setOpenItem(null);
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: () => notifyError("vcal.remove.error"),
   });
 
   const isTodayAnchor = sameDay(anchor, now);
@@ -244,7 +310,6 @@ export default function CalendarPage() {
         ]
           .filter(Boolean)
           .join(" · ");
-  void nextUp;
 
   const weekFrom = viewRange("week", anchor).from;
   const weekTo = new Date(weekFrom.getTime() + 6 * 86_400_000);
@@ -258,60 +323,70 @@ export default function CalendarPage() {
     changeView("day");
   };
 
-  const navBtn = "flex h-10 w-10 items-center justify-center rounded-full text-xl";
+  // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, big number.
+  const heroEyebrow =
+    view === "day"
+      ? isTodayAnchor
+        ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}`
+        : formatDate(anchor, "LLLL yyyy")
+      : t("vcal.title");
 
   return (
     <AppLayout>
-      <div
-        className="min-h-full pb-40"
-        style={{ background: SURFACE.page, color: SURFACE.ink, fontFamily: "Nunito, system-ui, sans-serif", fontWeight: 400 }}
-        data-testid="vcal-page"
-      >
-        <div className={`mx-auto flex w-full flex-col gap-4 px-4 pt-5 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
-          {/* VTID-04681: the date comes first, large. */}
-          <header className="flex items-start justify-between gap-3" data-testid="vcal-header">
+      <div className="min-h-screen bg-slate-50/60 px-4 pb-40 pt-4 sm:px-6 sm:pt-6" style={{ color: SURFACE.ink }} data-testid="vcal-page">
+        <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
+          <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
+            <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
             {view === "day" ? (
-              <div className="flex min-w-0 items-end gap-3" data-testid="vcal-date">
-                <span className="text-[64px] font-medium leading-[0.85] tabular-nums" style={{ fontFamily: HEADING_FONT }}>
-                  {formatDate(anchor, "d")}
-                </span>
-                <span className="flex min-w-0 flex-col pb-0.5">
-                  <span className="truncate text-[22px] font-medium leading-tight">{formatDate(anchor, "EEEE")}</span>
-                  <span className="truncate text-[15px]" style={{ color: SURFACE.muted }}>
-                    {isTodayAnchor ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}` : formatDate(anchor, "LLLL yyyy")}
+              <div className="mt-2 flex flex-col items-center" data-testid="vcal-date">
+                <div className="relative flex flex-col items-center">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-2xl"
+                    style={INDEX_GLOW_STYLE}
+                  />
+                  <span className="text-[84px] font-extrabold leading-none tabular-nums" style={INDEX_NUMBER_STYLE}>
+                    {formatDate(anchor, "d")}
                   </span>
-                </span>
+                </div>
+                <h1 className="mt-2 text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-weekday">
+                  {formatDate(anchor, "EEEE")}
+                </h1>
               </div>
             ) : (
-              <h1 className="m-0 min-w-0 break-words text-[28px] font-medium leading-tight" style={{ fontFamily: HEADING_FONT }}>
-                {rangeTitle}
-              </h1>
+              <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900">{rangeTitle}</h1>
             )}
-            <div className="flex shrink-0 items-center gap-0.5 pt-1">
-              <button type="button" onClick={() => setAnchor((a) => stepAnchor(view, a, -1))} aria-label={t("vcal.prev")} className={navBtn}>
-                <span className="rtl:rotate-180">‹</span>
+
+            {view === "day" && query.isSuccess && (
+              <p className="mx-auto mt-3 max-w-md text-center text-[15px] leading-snug text-slate-700" data-testid="vcal-summary">
+                {daySummary}
+              </p>
+            )}
+
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setAnchor((a) => stepAnchor(view, a, -1))}
+                aria-label={t("vcal.prev")}
+                className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
+              >
+                <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
               </button>
               {!isTodayAnchor && (
-                <button
-                  type="button"
-                  onClick={() => setAnchor(new Date())}
-                  className="h-9 rounded-full px-3 text-sm"
-                  style={{ border: `1px solid ${SURFACE.line}`, background: "#FFFFFF" }}
-                >
+                <button type="button" onClick={() => setAnchor(new Date())} className={INDEX_SOFT_BTN}>
                   {t("vcal.today")}
                 </button>
               )}
-              <button type="button" onClick={() => setAnchor((a) => stepAnchor(view, a, 1))} aria-label={t("vcal.next")} className={navBtn}>
-                <span className="rtl:rotate-180">›</span>
+              <button
+                type="button"
+                onClick={() => setAnchor((a) => stepAnchor(view, a, 1))}
+                aria-label={t("vcal.next")}
+                className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
+              >
+                <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
               </button>
             </div>
           </header>
-
-          {view === "day" && query.isSuccess && (
-            <p className="-mt-2 m-0 text-[15px]" style={{ color: SURFACE.muted }} data-testid="vcal-summary">
-              {daySummary}
-            </p>
-          )}
 
           <ViewSwitch view={view} onChange={changeView} />
 
@@ -335,17 +410,16 @@ export default function CalendarPage() {
           {query.isLoading ? (
             <div className="flex flex-col gap-2" aria-busy="true" aria-label={t("vcal.loading")}>
               {[0, 1, 2].map((i) => (
-                <div key={i} className="h-14 animate-pulse rounded-2xl bg-white" />
+                <div key={i} className="h-16 animate-pulse rounded-2xl border border-slate-100 bg-white" />
               ))}
             </div>
           ) : query.isError ? (
-            <div className="flex flex-col items-center gap-3 rounded-2xl bg-white px-6 py-8 text-center" role="alert" style={{ border: `1px solid ${SURFACE.line}` }}>
-              <span className="font-medium">{t("vcal.error")}</span>
+            <div className={`${INDEX_CARD} flex flex-col items-center gap-3 py-8 text-center`} role="alert">
+              <span className="font-semibold">{t("vcal.error")}</span>
               <button
                 type="button"
                 onClick={() => query.refetch()}
-                className="h-10 rounded-full px-5 font-medium text-white"
-                style={{ background: SURFACE.primary }}
+                className={INDEX_PRIMARY_BTN}
               >
                 {t("vcal.retry")}
               </button>
@@ -369,31 +443,20 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        <div className="fixed inset-x-0 bottom-20 z-40 flex justify-center gap-2 px-4 md:bottom-6">
-          <button
-            type="button"
-            onClick={() => activateOrb()}
-            className="flex h-[52px] min-w-0 max-w-md flex-1 items-center gap-3 rounded-full bg-white ps-5 pe-1.5 text-start shadow-lg"
-            data-testid="vcal-voice-add"
-          >
-            <span className="flex-1 truncate text-[15px]" style={{ color: SURFACE.muted }}>
-              {t("vcal.voiceAdd")}
-            </span>
-            <span aria-hidden className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-white" style={{ background: "#C22F66" }}>
-              🎙️
-            </span>
-          </button>
+        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 px-4 sm:px-6 md:bottom-6">
+          <div className={`mx-auto flex ${view === "week" ? "max-w-6xl" : "max-w-2xl"} justify-end`}>
           {/* VTID-04536: add an entry by hand, saved through the gateway. */}
           <button
             type="button"
             onClick={() => setAddOpen(true)}
             aria-label={t("vcal.add.title")}
-            className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg"
+            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             style={{ background: SURFACE.ink }}
             data-testid="vcal-add"
           >
             <span aria-hidden className="leading-none">+</span>
           </button>
+          </div>
         </div>
       </div>
 
@@ -401,11 +464,19 @@ export default function CalendarPage() {
         <EntryScreen
           item={openItem}
           now={now}
-          onClose={() => setOpenItem(null)}
+          onClose={() => {
+            setOpenItem(null);
+            if (entryId) navigate("/calendar", { replace: true });
+          }}
           onComplete={(i) => complete.mutate(i)}
           completing={complete.isPending}
           onMove={(i, start) => move.mutate({ item: i, start })}
           moving={move.isPending}
+          onEdit={(i, patch) => edit.mutate({ item: i, patch })}
+          saving={edit.isPending}
+          onRemove={(i) => remove.mutate(i)}
+          removing={remove.isPending}
+          onOpenSource={(path) => navigate(path)}
         />
       )}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}

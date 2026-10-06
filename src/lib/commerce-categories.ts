@@ -21,12 +21,14 @@ export interface CommerceCategory {
   vertical: CommerceVertical;
 }
 
+// VTID-04793: listed in the order a supplier scans for themselves; the keys
+// (stored in `org_type`) are unchanged, only the order and wording moved.
 export const COMMERCE_CATEGORIES: CommerceCategory[] = [
   { key: 'health_medical', labelKey: 'screens.commerceportal.orgOnboarding.categoryHealth', vertical: 'health' },
   { key: 'fitness_wellness', labelKey: 'screens.commerceportal.orgOnboarding.categoryFitness', vertical: 'general' },
+  { key: 'supplements_nutrition', labelKey: 'screens.commerceportal.orgOnboarding.categorySupplements', vertical: 'general' },
   { key: 'lifestyle', labelKey: 'screens.commerceportal.orgOnboarding.categoryLifestyle', vertical: 'general' },
   { key: 'textiles_apparel', labelKey: 'screens.commerceportal.orgOnboarding.categoryTextiles', vertical: 'general' },
-  { key: 'supplements_nutrition', labelKey: 'screens.commerceportal.orgOnboarding.categorySupplements', vertical: 'general' },
   { key: 'travel_tourism', labelKey: 'screens.commerceportal.orgOnboarding.categoryTravel', vertical: 'general' },
   { key: 'general_commerce', labelKey: 'screens.commerceportal.orgOnboarding.categoryGeneral', vertical: 'general' },
 ];

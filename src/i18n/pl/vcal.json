@@ -14,7 +14,6 @@
     "doneToast": "Zrobione – świetnie! 🎉",
     "doneError": "Nie udało się teraz zapisać.",
     "recurring": "Powtarza się",
-    "voiceAdd": "„Badanie krwi w piątek o 8, na czczo” – powiedz Vitanie",
     "nextUp": "Następne · {when}",
     "progress": "{done} z {total} zrobione dziś",
     "progressAllDone": "Wszystko gotowe – ciesz się resztą dnia ✨",
@@ -88,7 +87,15 @@
       "reminders": "Przypomnienia",
       "noReminders": "Bez przypomnienia",
       "directions": "Trasa",
-      "askVitana": "Zapytaj Vitanę"
+      "askVitana": "Zapytaj Vitanę",
+      "openEvent": "Przejdź do wydarzenia",
+      "joinRoom": "Dołącz teraz",
+      "openRoom": "Przejdź do pokoju na żywo",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "Wdrożenie staging",
@@ -282,6 +289,56 @@
       "waitingOne": "1 rzecz na ciebie czeka",
       "waiting": "Czeka na ciebie: {count}",
       "open": "Otwórz w panelu admina"
+    },
+    "indexGain": "+{points} {pillar} w twoim Vitana Index",
+    "edit": {
+      "action": "Edytuj",
+      "titleLabel": "Tytuł",
+      "startLabel": "Początek",
+      "endLabel": "Koniec",
+      "locationLabel": "Miejsce",
+      "descriptionLabel": "Notatka",
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "invalid": "Dodaj tytuł; koniec musi być po początku.",
+      "saved": "Zapisano ✨",
+      "error": "Nie udało się teraz zapisać. Spróbuj za chwilę.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Usuń",
+      "confirm": "Usunąć ten wpis z kalendarza?",
+      "confirmSeries": "Usunąć ten wpis i wszystkie powtórzenia z kalendarza?",
+      "keep": "Zostaw",
+      "yes": "Usuń",
+      "removed": "Usunięto",
+      "error": "Nie udało się teraz usunąć. Spróbuj za chwilę.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Już w twoim kalendarzu",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

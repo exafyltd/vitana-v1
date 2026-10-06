@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-04791",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "join shows Google, Apple and email first; the password form opens on demand; fits 375px",
+      "spec": "tests/e2e/staging/vtid-04791-commerce-join.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "a signed-out visitor sees the Commerce Portal and one sign-up path",
+      "spec": "tests/e2e/staging/vtid-04271-commerce-guest.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "join and landing copy and structure",
+      "ref": "npx vitest run src/pages/CommerceJoin.oauth-first.test.ts src/pages/CommerceJoin.routing.test.ts src/pages/CommercePortal.light-redesign.test.ts",
+      "cwd": ".",
+      "reason": "pins Google/Apple first with no unconfigured provider, email+password kept behind Continue with email, the German sign-in wording, and the jargon-free landing steps"
+    }
+  ]
+}

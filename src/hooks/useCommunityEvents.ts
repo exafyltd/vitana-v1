@@ -5,8 +5,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { notify, notifyError } from '@/lib/i18n-toast';
 
-interface CommunityEvent {
+export interface CommunityEvent {
   id: string;
+  /** Share-link slug (trigger-generated); event links may carry it instead of the id. */
+  slug?: string | null;
   title: string;
   description: string | null;
   event_type: string;
@@ -35,7 +37,7 @@ interface CreateEventData {
   description?: string;
   event_type?: string;
   location?: string;
-  virtual_link?: string;
+  virtual_link?: string | null;
   start_time: string;
   end_time?: string;
   max_participants?: number;
@@ -82,40 +84,34 @@ export async function fetchParticipantCounts(eventIds: string[]): Promise<Map<st
  * Shared query function for fetching community events
  * Used by both the hook and prefetch registry for cache consistency
  */
-export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
-  // getSession() reads the local session — getUser() made a full auth-server
-  // round-trip that serially delayed every events load by one RTT.
-  const { data: { session } } = await supabase.auth.getSession();
-  const user = session?.user ?? null;
+/** VTID-04903: how far back "recently created" reaches for the second read. */
+const RECENT_CREATED_DAYS = 14;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+/**
+ * Adds co-creator status, creator profile and real participant counts to raw
+ * `global_community_events` rows. Shared by the list query and the
+ * single-event deep-link fetch so both produce the same shape.
+ */
+type CommunityEventRow = Omit<
+  CommunityEvent,
+  'participant_count' | 'is_co_creator' | 'creator_display_name' | 'creator_avatar_url'
+>;
 
-  const { data, error } = await supabase
-    .from("global_community_events")
-    .select("*")
-    .gte("start_time", today.toISOString())
-    .order("start_time", { ascending: true })
-    // Bound the payload: the screen shows the nearest events per tab and
-    // filters client-side; without a limit this pulled EVERY future event.
-    .limit(100);
-
-  if (error) {
-    console.error("Database error:", error);
-    throw error;
-  }
-
-  const eventIds = data?.map(e => e.id) || [];
+export async function enrichCommunityEvents(
+  rows: CommunityEventRow[],
+  userId: string | null,
+): Promise<CommunityEvent[]> {
+  const eventIds = rows.map(e => e.id);
 
   // Fetch co-creator status, creator profiles, and real participant counts in parallel
   const [coCreatorResult, profilesResult, participantCounts] = await Promise.all([
-    user
-      ? supabase.from('event_co_creators').select('event_id').eq('user_id', user.id)
+    userId
+      ? supabase.from('event_co_creators').select('event_id').eq('user_id', userId)
       : Promise.resolve({ data: [] as { event_id: string }[], error: null }),
     supabase
       .from('global_community_profiles')
       .select('user_id, display_name, avatar_url')
-      .in('user_id', [...new Set(data?.map(event => event.created_by) || [])]),
+      .in('user_id', [...new Set(rows.map(event => event.created_by))]),
     fetchParticipantCounts(eventIds),
   ]);
 
@@ -136,7 +132,7 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
   );
 
   // Add is_co_creator flag, creator info, and real participant counts to events
-  const eventsWithMetadata = (data || []).map(event => {
+  return rows.map(event => {
     const creatorProfile = profilesMap.get(event.created_by);
     return {
       ...event,
@@ -146,8 +142,85 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
       creator_avatar_url: creatorProfile?.avatar_url || undefined
     };
   });
-  
-  return eventsWithMetadata;
+}
+
+/**
+ * Shared query function for fetching community events
+ * Used by both the hook and prefetch registry for cache consistency
+ */
+export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
+  // getSession() reads the local session — getUser() made a full auth-server
+  // round-trip that serially delayed every events load by one RTT.
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const recentSince = new Date(Date.now() - RECENT_CREATED_DAYS * 24 * 60 * 60 * 1000);
+
+  const [nearest, recent] = await Promise.all([
+    supabase
+      .from("global_community_events")
+      .select("*")
+      .gte("start_time", today.toISOString())
+      .order("start_time", { ascending: true })
+      // Bound the payload: the screen shows the nearest events per tab and
+      // filters client-side; without a limit this pulled EVERY future event.
+      .limit(100),
+    // VTID-04903: a member's freshly posted event can start later than the
+    // 100 nearest ones and was then never loaded at all. Recently created
+    // upcoming events are always read too (same table, same RLS).
+    supabase
+      .from("global_community_events")
+      .select("*")
+      .gte("start_time", today.toISOString())
+      .gte("created_at", recentSince.toISOString())
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+
+  if (nearest.error) {
+    console.error("Database error:", nearest.error);
+    throw nearest.error;
+  }
+  if (recent.error) {
+    console.warn('[CommunityEvents] Recent events read failed:', recent.error);
+  }
+
+  const byId = new Map<string, CommunityEventRow>();
+  for (const row of [...(nearest.data || []), ...(recent.data || [])] as CommunityEventRow[]) {
+    if (!byId.has(row.id)) byId.set(row.id, row);
+  }
+  const rows = [...byId.values()].sort(
+    (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
+  );
+
+  return enrichCommunityEvents(rows, user?.id ?? null);
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * VTID-04902: one event by id or slug, enriched like the list — for a deep
+ * link (e.g. an event link tapped in a chat) to an event outside the loaded
+ * list. Returns null when it does not exist or is not visible.
+ */
+export async function fetchCommunityEventByIdOrSlug(ref: string): Promise<CommunityEvent | null> {
+  const value = ref.trim();
+  if (!value) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  const query = supabase.from("global_community_events").select("*");
+  const { data, error } = await (UUID_RE.test(value)
+    ? query.eq("id", value)
+    : query.eq("slug", value)
+  ).maybeSingle();
+  if (error) {
+    console.warn('[CommunityEvents] Deep-link event read failed:', error);
+    return null;
+  }
+  if (!data) return null;
+  const [event] = await enrichCommunityEvents([data as CommunityEventRow], session?.user?.id ?? null);
+  return event ?? null;
 }
 
 export function useCommunityEvents() {
@@ -355,6 +428,9 @@ export function useCommunityEvents() {
                     creator_display_name: event.creator_display_name,
                     creator_avatar_url: event.creator_avatar_url,
                     is_co_creator: event.is_co_creator,
+                    // The column is stale (members cannot write it); keep the
+                    // count computed from participant rows (VTID-04907).
+                    participant_count: event.participant_count,
                   }
                 : event
             ) || [];

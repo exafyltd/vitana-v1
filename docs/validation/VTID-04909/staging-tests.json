@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04909",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, demo business and the v1 DRAFT terms served in the browser (page.route): German default with the binding notice and an unticked box / disabled Accept on mobile, tablet and desktop without overflow; the switcher lists all 11 languages; English, Arabic (rtl, tick kept), Serbian, Spanish; ticking enables Accept — never clicked, nothing accepted",
+      "spec": "tests/e2e/staging/vtid-04909-partner-terms-language.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/commerce/PartnerTermsSheet.vtid-04909.test.tsx src/lib/commerce-terms.vtid-04895.test.ts",
+      "reason": "accepting writes, so it is proven here with mocks: the accept body carries the version, the German hash and the language on screen; switching language never accepts and keeps the tick; a new version found while switching unticks; German fallback; Arabic rtl; plain-text rendering"
+    }
+  ]
+}

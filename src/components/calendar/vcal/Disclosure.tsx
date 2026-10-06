@@ -5,9 +5,12 @@
  * 3 upcoming"), so opening it is a choice, not a guess. Whether a section is
  * open is remembered per member on this device.
  *
- * VTID-04681: a quiet row — hairline border, no icon tile, one medium title.
+ * VTID-04681: a quiet row. VTID-04852: an Index-style card (white, rounded-3xl,
+ * soft shadow) with the title in bold and a chevron.
  */
 import { useId, useState, type ReactNode } from "react";
+import { ChevronDown } from "lucide-react";
+import { INDEX_CARD } from "@/lib/index-look";
 import { SURFACE } from "./theme";
 
 const STORE_PREFIX = "vitana.calendar.open.";
@@ -51,27 +54,24 @@ export function Disclosure({ id, title, summary, tone = "normal", defaultOpen = 
     });
   };
   return (
-    <section className="rounded-2xl bg-white" style={{ border: `1px solid ${SURFACE.line}` }} data-testid={`vcal-section-${id}`}>
+    <section className={`${INDEX_CARD} !p-0`} data-testid={`vcal-section-${id}`}>
       <button
         type="button"
         onClick={toggle}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        style={{ outlineColor: SURFACE.primary }}
+        className="flex w-full items-center gap-3 rounded-3xl px-5 py-4 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
       >
         <span className="flex min-w-0 flex-1 items-baseline gap-2">
-          <span className="shrink-0 text-[15px] font-medium">{title}</span>
+          <span className="shrink-0 text-base font-bold text-slate-900">{title}</span>
           <span className="truncate text-sm" style={{ color: tone === "attention" ? "#A3322C" : SURFACE.muted }}>
             {summary}
           </span>
         </span>
-        <span aria-hidden className="shrink-0 text-base transition-transform" style={{ color: SURFACE.faint, transform: open ? "rotate(180deg)" : "none" }}>
-          ⌄
-        </span>
+        <ChevronDown aria-hidden className={`h-5 w-5 shrink-0 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div id={panelId} className="flex flex-col gap-3 px-4 pb-4">
+        <div id={panelId} className="flex flex-col gap-3 px-5 pb-5">
           {children}
         </div>
       )}

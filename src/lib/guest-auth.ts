@@ -8,6 +8,7 @@
  * they land back on the browse surface after authenticating.
  */
 import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
+import { readStoredTenantSlug } from "@/lib/retired-tenants";
 
 /**
  * Resolve the tenant sign-in/portal route for the current visitor.
@@ -15,15 +16,11 @@ import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
  * components that render before/without an authenticated session.
  */
 export function resolveLoginRoute(): string {
-  let slug: string | null = null;
-  try {
-    slug = localStorage.getItem("tenant_slug");
-  } catch {
-    // localStorage unavailable (private mode / SSR) — fall back to hostname.
-  }
-  slug = slug || DOMAIN_TENANT_MAP[window.location.hostname] || "maxina";
+  // readStoredTenantSlug never throws (storage unavailable → null, fall back
+  // to hostname) and maps a retired slug (VTID-04836: earthlinks) to maxina.
+  const slug = readStoredTenantSlug("tenant_slug")
+    || DOMAIN_TENANT_MAP[window.location.hostname] || "maxina";
   if (slug === "alkalma") return "/alkalma";
-  if (slug === "earthlinks") return "/earthlinks";
   return "/maxina";
 }
 

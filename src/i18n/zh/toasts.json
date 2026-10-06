@@ -647,7 +647,11 @@
       "failedSendMessage": "发送消息失败",
       "pleaseTryAgainLater": "请稍后再试",
       "addedSmartCalendar": "已添加到智能日历 ✓",
-      "eventSavedWeLlRemindYou": "活动已保存。我们会在开始前提醒你。"
+      "eventSavedWeLlRemindYou": "活动已保存。我们会在开始前提醒你。",
+      "savedTitle": "已保存",
+      "savedDesc": "已保存，稍后查看",
+      "unsavedTitle": "已从收藏中移除",
+      "unsavedDesc": "已从你的收藏列表中移除"
     },
     "memory": {
       "voiceRecorded": "语音已录制",

@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Salda",
       "activity": "Aktywność",
-      "actions": "Akcje",
-      "_pending_review": {}
+      "actions": "Akcje"
     },
     "filters": {
       "commissions": "Sprzedawaj i zarabiaj prowizje",
@@ -22,13 +21,74 @@
       "purchases": "Zakupy",
       "pending": "Oczekujące wypłaty",
       "withdrawals": "Wypłaty",
-      "stakes": "Stakowanie",
-      "_pending_review": {}
+      "stakes": "Stakowanie"
     },
     "noActivity": "Brak aktywności",
     "noActivityDesc": "Twoje transakcje pojawią się tutaj.",
     "displayCurrency": "Wyświetl walutę",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "rewardRules": {
+      "title": "Jak zdobywasz VTNA",
+      "summary": "Zdobywasz VTNA za prawdziwe rzeczy, które robisz sam, i za systematyczność.",
+      "earnedBalance": "Zdobyte przez ciebie",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Zdobyte",
+      "cap": "{used} z {count} w {days} dni",
+      "groups": {
+        "first_steps": "Pierwsze kroki – każdy raz",
+        "habits": "Nawyki – systematyczność",
+        "community": "Społeczność – z innymi",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
+      },
+      "rules": {
+        "onboarding_complete": "Ukończ wprowadzenie",
+        "profile_complete": "Uzupełnij profil",
+        "first_diary": "Napisz pierwszy wpis w dzienniku",
+        "first_group": "Dołącz do pierwszej grupy",
+        "first_event_rsvp": "Zapisz się na pierwsze wydarzenie",
+        "first_connection": "Nawiąż pierwszy kontakt",
+        "five_connections": "Zdobądź pięć kontaktów",
+        "first_match_accepted": "Zaakceptuj pierwsze dopasowanie",
+        "first_health_check": "Zrób pierwszy przegląd zdrowia",
+        "diary_streak_3": "3 dni dziennika z rzędu",
+        "diary_streak_7": "7 dni dziennika z rzędu",
+        "diary_streak_30": "30 dni dziennika z rzędu",
+        "invite_friend_joined": "Dołącza ktoś, kogo zaprosiłeś",
+        "invited_friends_10": "Dołączyło 10 zaproszonych przez ciebie znajomych – jednorazowy bonus",
+        "autopilot_action_done": "Wykonaj działanie Autopilota",
+        "index_new_best": "Nowy rekord osobisty w Vitana Index, co najmniej 10 punktów wyżej",
+        "live_room_15min": "15 minut z innymi w pokoju na żywo",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
+      },
+      "neverTitle": "Za co nigdy nie ma VTNA",
+      "never": {
+        "done_by_vitana": "Wszystko, co Vitana robi lub przygotowuje za ciebie",
+        "purchases": "Kupione kredyty i pakiety bonusowe",
+        "self_reported": "Działania, których system nie może sprawdzić – poza wykonanymi działaniami Autopilota (maks. 2 dziennie)",
+        "_pending_review": {
+          "self_reported": true
+        }
+      },
+      "recentTitle": "Twoje ostatnie nagrody",
+      "recentEmpty": "Brak nagród – twój pierwszy krok czeka powyżej.",
+      "recentOther": "Nagroda",
+      "loading": "Ładowanie…",
+      "error": "Nie udało się teraz wczytać twoich nagród.",
+      "capToday": "{used} z {count} dzisiaj",
+      "capWeek": "{used} z {count} w tym tygodniu",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
+    }
+  }
 }

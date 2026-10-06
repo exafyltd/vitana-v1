@@ -643,7 +643,11 @@
       "failedSendMessage": "Nachricht konnte nicht gesendet werden",
       "pleaseTryAgainLater": "Bitte versuch es später noch einmal",
       "addedSmartCalendar": "Zum Smart Calendar hinzugefügt ✓",
-      "eventSavedWeLlRemindYou": "Ereignis gespeichert. Wir erinnern dich, bevor es beginnt."
+      "eventSavedWeLlRemindYou": "Ereignis gespeichert. Wir erinnern dich, bevor es beginnt.",
+      "savedTitle": "Gespeichert",
+      "savedDesc": "Für später gespeichert",
+      "unsavedTitle": "Nicht mehr gespeichert",
+      "unsavedDesc": "Aus deiner Merkliste entfernt"
     },
     "memory": {
       "voiceRecorded": "Sprache aufgenommen",

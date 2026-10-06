@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04871",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the calendar renders past the role gate and shows only the + button (role lookup answered by the spec)",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}

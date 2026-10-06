@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04864",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Wallet › Rewards shows the VTNA rules the gateway really pays (desktop + phone, read-only)",
+      "spec": "tests/e2e/staging/vtid-04864-wallet-reward-rules.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "rules screen, catalog coverage in 11 languages, iPhone gate",
+      "ref": "npx vitest run src/components/wallet/VtnaRewardRules.test.tsx",
+      "cwd": ".",
+      "reason": "Renders groups, earned state, caps, never-earns and history from a mocked overview; checks every rule label exists in all 11 catalogs and that the page keeps the wallet's iPhone redirect."
+    }
+  ]
+}

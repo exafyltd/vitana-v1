@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { splitMentionSegments, type Mention } from '@/lib/mentions';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { resolveInAppEventPath } from '@/lib/inAppLinks';
 import { useAuth } from '@/context/AuthProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -178,6 +181,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   // outgoing language while the rest of the thread switches. The returned value
   // is unused on purpose: the subscription is the point.
   useI18nLocale();
+  const navigate = useNavigate();
+  // VTID-04926: members tagged in this message (group chat stores them in the
+  // message metadata, surfaced here as content_data.mentions).
+  const messageMentions: Mention[] = useMemo(() => {
+    const raw = (message?.content_data as { mentions?: unknown } | null | undefined)?.mentions;
+    return Array.isArray(raw) ? (raw as Mention[]) : [];
+  }, [message?.content_data]);
 
   const isMobile = useIsMobile();
   const { user } = useAuth();
@@ -563,12 +573,42 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     let match: RegExpExecArray | null;
     let lastIndex = 0;
 
+    // VTID-04926: @mentions stored with the message (group chat) become links
+    // to the member's profile; everything else stays plain text.
+    const pushPlain = (chunk: string, offset: number) => {
+      if (!chunk) return;
+      if (messageMentions.length === 0) {
+        nodes.push(chunk);
+        return;
+      }
+      for (const seg of splitMentionSegments(chunk, messageMentions)) {
+        if (seg.type === 'text') {
+          nodes.push(seg.text);
+        } else {
+          nodes.push(
+            <Link
+              key={`mention-${seg.mention.user_id}-${offset}-${nodes.length}`}
+              to={`/u/${seg.mention.user_id}`}
+              data-testid="message-mention"
+              className={cn(
+                "font-semibold",
+                isOwnMessage ? "text-primary-foreground underline underline-offset-2" : "text-domain-messages-accent hover:underline"
+              )}
+              onClick={(event) => event.stopPropagation()}
+            >
+              {seg.text}
+            </Link>
+          );
+        }
+      }
+    };
+
     while ((match = urlRegex.exec(text)) !== null) {
       const rawUrl = match[0];
       const start = match.index;
 
       if (start > lastIndex) {
-        nodes.push(text.slice(lastIndex, start));
+        pushPlain(text.slice(lastIndex, start), lastIndex);
       }
 
       let cleanUrl = rawUrl;
@@ -582,7 +622,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         cleanUrl = cleanUrl.slice(0, -1);
       }
 
-      if (cleanUrl) {
+      // VTID-04902: links to one of our events open the Events screen in the
+      // app, not the public landing page in a browser layer over the chat.
+      const inAppPath = cleanUrl ? resolveInAppEventPath(cleanUrl) : null;
+
+      if (cleanUrl && inAppPath) {
+        nodes.push(
+          <a
+            key={`${cleanUrl}-${start}`}
+            href={cleanUrl}
+            data-in-app-link="event"
+            className={cn(
+              "underline underline-offset-2 break-all font-medium",
+              isOwnMessage ? "text-primary-foreground" : "text-primary"
+            )}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              navigate(inAppPath);
+            }}
+          >
+            {cleanUrl}
+          </a>
+        );
+      } else if (cleanUrl) {
         nodes.push(
           <a
             key={`${cleanUrl}-${start}`}
@@ -608,7 +671,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
 
     if (lastIndex < text.length) {
-      nodes.push(text.slice(lastIndex));
+      pushPlain(text.slice(lastIndex), lastIndex);
     }
 
     if (trailingInline) {
@@ -620,7 +683,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         {nodes.length > 0 ? nodes : text}
       </p>
     );
-  }, [isOwnMessage]);
+  }, [isOwnMessage, navigate, messageMentions]);
 
   const renderAttachment = (attachment: any, index: number) => {
     // Mime can be empty on Android pickers; fall back to filename extension

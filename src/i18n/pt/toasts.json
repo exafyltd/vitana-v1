@@ -647,7 +647,11 @@
       "failedSendMessage": "Falha ao enviar mensagem",
       "pleaseTryAgainLater": "Por favor, tenta novamente mais tarde",
       "addedSmartCalendar": "Adicionado ao Calendário Inteligente ✓",
-      "eventSavedWeLlRemindYou": "Evento salvo. Vamos lembrar você antes de começar."
+      "eventSavedWeLlRemindYou": "Evento salvo. Vamos lembrar você antes de começar.",
+      "savedTitle": "Guardado",
+      "savedDesc": "Guardado para mais tarde",
+      "unsavedTitle": "Removido dos guardados",
+      "unsavedDesc": "Removido da sua lista de salvos"
     },
     "memory": {
       "voiceRecorded": "Voz Gravada",

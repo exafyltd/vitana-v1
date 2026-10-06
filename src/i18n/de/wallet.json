@@ -25,6 +25,53 @@
     },
     "noActivity": "Noch keine Aktivitäten",
     "noActivityDesc": "Deine Transaktionen werden hier erscheinen.",
-    "displayCurrency": "Anzeigewährung"
+    "displayCurrency": "Anzeigewährung",
+    "rewardRules": {
+      "title": "So verdienst du VTNA",
+      "summary": "Du verdienst VTNA für echte Dinge, die du selbst tust, und dafür, dass du dranbleibst.",
+      "earnedBalance": "Von dir verdient",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Verdient",
+      "cap": "{used} von {count} in {days} Tagen",
+      "groups": {
+        "first_steps": "Erste Schritte – je einmal",
+        "habits": "Gewohnheiten – dranbleiben",
+        "community": "Gemeinschaft – mit anderen"
+      },
+      "rules": {
+        "onboarding_complete": "Einführung abschließen",
+        "profile_complete": "Profil vervollständigen",
+        "first_diary": "Ersten Tagebucheintrag schreiben",
+        "first_group": "Einer ersten Gruppe beitreten",
+        "first_event_rsvp": "Erstem Event zusagen",
+        "first_connection": "Erste Verbindung knüpfen",
+        "five_connections": "Fünf Verbindungen erreichen",
+        "first_match_accepted": "Ersten Match annehmen",
+        "first_health_check": "Ersten Gesundheits-Check machen",
+        "diary_streak_3": "3 Tage Tagebuch in Folge",
+        "diary_streak_7": "7 Tage Tagebuch in Folge",
+        "diary_streak_30": "30 Tage Tagebuch in Folge",
+        "invite_friend_joined": "Jemand, den du eingeladen hast, tritt bei",
+        "invited_friends_10": "10 eingeladene Freunde sind beigetreten – einmaliger Bonus",
+        "autopilot_action_done": "Eine Autopilot-Aktion erledigen",
+        "index_new_best": "Neue Vitana-Index-Bestmarke, mindestens 10 Punkte höher",
+        "live_room_15min": "15 Minuten mit anderen in einem Live-Raum"
+      },
+      "neverTitle": "Dafür gibt es keine VTNA",
+      "never": {
+        "done_by_vitana": "Alles, was Vitana für dich erledigt oder entwirft",
+        "purchases": "Gekaufte Credits und Bonuspakete",
+        "self_reported": "Angaben, die das System nicht prüfen kann – außer erledigten Autopilot-Aktionen (max. 2 pro Tag)"
+      },
+      "recentTitle": "Deine letzten Belohnungen",
+      "recentEmpty": "Noch keine Belohnungen – dein erster Schritt wartet oben.",
+      "recentOther": "Belohnung",
+      "loading": "Wird geladen …",
+      "error": "Deine Belohnungen konnten gerade nicht geladen werden.",
+      "capToday": "{used} von {count} heute",
+      "capWeek": "{used} von {count} diese Woche"
+    }
   }
 }

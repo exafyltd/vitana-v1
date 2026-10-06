@@ -46,6 +46,7 @@ async function fetchPost(source: "post" | "media", id: string): Promise<PostFeed
       content: row.title || row.description || "", image_url: row.thumbnail_url ?? null,
       video_url: row.file_url ?? null, likes_count: Number(row.likes_count) || 0,
       comments_count: Number(row.comments_count) || 0, followed: false, tags: [],
+      background_style: null, mentions: [],
       published_at: row.created_at,
     };
   }
@@ -64,6 +65,10 @@ async function fetchPost(source: "post" | "media", id: string): Promise<PostFeed
     author_name: author.name, author_avatar: author.avatar,
     content: row.content ?? "", image_url: row.image_url ?? null, video_url: row.video_url ?? null,
     likes_count: Number(row.likes_count) || 0, comments_count: Number(row.comments_count) || 0,
+    // VTID-04926: this page is where the "you were tagged" push lands — without
+    // the stored mentions the tagged member saw their own tag as plain text.
+    background_style: row.background_style ?? null,
+    mentions: Array.isArray(row.mentions) ? row.mentions : [],
     followed: false, tags: [], published_at: row.created_at,
   };
 }

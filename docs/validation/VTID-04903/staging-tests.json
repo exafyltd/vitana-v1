@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04903",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "with upcoming events in the catalog, the default Hot tab on a phone viewport lists event cards and never shows 'Keine empfohlenen Events'",
+      "spec": "tests/e2e/staging/vtid-04902-04903-event-links-hot.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/events/hotEvents.vtid-04903.test.ts src/hooks/useCommunityEvents.recent.vtid-04903.test.ts src/hooks/useCommunityEvents.participantCounts.test.ts",
+      "reason": "Hot includes member events (curated first, new ones next, then by participants), drops ended events; the list also reads recently created upcoming events so a new event beyond the nearest 100 is loaded"
+    }
+  ]
+}

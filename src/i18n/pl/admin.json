@@ -23,10 +23,16 @@
     },
     "notifications": {
       "tabs": {
-        "notifications": "Powiadomienia",
-        "categories": "Kategorie",
-        "activity": "Aktywność",
-        "compose": "Wyślij"
+        "_pending_review": {
+          "notifications": true,
+          "categories": true,
+          "activity": true,
+          "compose": true
+        },
+        "notifications": "Notifications",
+        "categories": "Categories",
+        "activity": "Activity",
+        "compose": "Send"
       }
     }
   }

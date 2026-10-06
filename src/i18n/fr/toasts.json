@@ -647,7 +647,11 @@
       "failedSendMessage": "Échec de l'envoi du message",
       "pleaseTryAgainLater": "Réessaie plus tard",
       "addedSmartCalendar": "Ajouté au calendrier intelligent ✓",
-      "eventSavedWeLlRemindYou": "Événement enregistré. Nous te le rappellerons avant qu'il ne commence."
+      "eventSavedWeLlRemindYou": "Événement enregistré. Nous te le rappellerons avant qu'il ne commence.",
+      "savedTitle": "Enregistré",
+      "savedDesc": "Enregistré pour plus tard",
+      "unsavedTitle": "Retiré des enregistrements",
+      "unsavedDesc": "Retiré de ta liste enregistrée"
     },
     "memory": {
       "voiceRecorded": "Voix enregistrée",

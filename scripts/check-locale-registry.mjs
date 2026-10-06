@@ -5,15 +5,16 @@
 //
 // A language reaches users across six surfaces. Five of them are files in this
 // repo and are checked by `i18n-audit.mjs`. The sixth is DATABASE CONTENT —
-// `nav_catalog_i18n` (Navigator screen titles, read by ORB voice intent
-// matching) and `journey_checklist_translations` (My Journey curriculum) — and
-// no check in this repo can see it, because it is not a file.
+// `journey_checklist_translations` (My Journey curriculum) — and no check in
+// this repo can see it, because it is not a file. (Until VTID-04880 it also
+// meant `nav_catalog_i18n`, the Navigator's screen titles; the voice navigator
+// now reads src/navigation/registry/, whose titles are files.)
 //
 // VTID-03515 made `supported_locales` in the platform DB the single registry
 // that gates DB-content seeding: a locale absent from it CANNOT receive rows
 // (the foreign key rejects them). So a locale marked `ga` here but missing
 // there is not "untranslated" — it is *unseedable*, and renders German
-// Navigator titles inside an otherwise fully translated UI.
+// curriculum text inside an otherwise fully translated UI.
 //
 // That is not hypothetical. At the time this was written, es/sr/fr were all
 // `ga` in the picker with ZERO nav_catalog_i18n rows in production.
@@ -93,8 +94,8 @@ try {
     if (!regStatus) {
       problems.push(
         `'${code}' is '${status}' in the language picker but ABSENT from supported_locales.\n` +
-          `   DB content cannot be seeded for it — the foreign key rejects the rows — so the\n` +
-          `   Navigator and My Journey will render German for these users.\n` +
+          `   DB content cannot be seeded for it — the foreign key rejects the rows — so\n` +
+          `   My Journey will render German for these users.\n` +
           `   Fix: INSERT INTO supported_locales (code, english_name, informal_hint, status) ...`,
       );
     } else if (regStatus !== status) {

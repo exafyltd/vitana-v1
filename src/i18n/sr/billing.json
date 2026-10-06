@@ -5,25 +5,20 @@
       "subheading": "Četiri obećanja, uz svaki plan — besplatan ili plaćen.",
       "owned": {
         "title": "Ti poseduješ ono što deliš.",
-        "body": "Memorija, profil, preporuke — sve vidljivo, izvozivo, obrisivo u bilo kom trenutku.",
-        "_pending_review": {}
+        "body": "Memorija, profil, preporuke — sve vidljivo, izvozivo, obrisivo u bilo kom trenutku."
       },
       "noSell": {
         "title": "Nikada ne prodajemo tvoje podatke.",
-        "body": "Ni mrežama za oglase, ni brokerima podataka, ni partnerima. Primenjeno u kodu.",
-        "_pending_review": {}
+        "body": "Ni mrežama za oglase, ni brokerima podataka, ni partnerima. Primenjeno u kodu."
       },
       "earn": {
         "title": "Tvoje preporuke mogu zaraditi za tebe.",
-        "body": "Kada tvoja preporuka zaključi prodaju putem Sell and Earn, ili kada si domaćin plaćene Live Room sobe, prihod je tvoj — transparentno objavljen.",
-        "_pending_review": {}
+        "body": "Kada tvoja preporuka zaključi prodaju putem Sell and Earn, ili kada si domaćin plaćene Live Room sobe, prihod je tvoj — transparentno objavljen."
       },
       "control": {
         "title": "Ti odlučuješ šta Sell and Earn radi za tebe.",
-        "body": "Tri prekidača u tvojim Connect podešavanjima daju ti potpunu kontrolu.",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "body": "Tri prekidača u tvojim Connect podešavanjima daju ti potpunu kontrolu."
+      }
     },
     "plans": {
       "needMoreTitle": "Treba ti više vremena uživo ili hostinga?",
@@ -41,27 +36,22 @@
       "free": {
         "name": "Besplatno",
         "tagline": "Isprobaj — bez rizika, bez isteka",
-        "price": "Besplatno",
-        "_pending_review": {}
+        "price": "Besplatno"
       },
       "premium": {
         "name": "Premium",
-        "tagline": "Svakodnevna upotreba — više vremena uživo, više hostinga, više skladištenja",
-        "_pending_review": {}
+        "tagline": "Svakodnevna upotreba — više vremena uživo, više hostinga, više skladištenja"
       },
       "premium_5x": {
         "name": "Domaćin",
         "tagline": "Napredni korisnici · porodice · redovni domaćini",
-        "ribbon": "5× Premium",
-        "_pending_review": {}
+        "ribbon": "5× Premium"
       },
       "premium_20x": {
         "name": "Zajednica",
         "tagline": "Treneri · praktičari · vođe zajednice",
-        "ribbon": "20× Premium",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "ribbon": "20× Premium"
+      }
     },
     "features": {
       "voiceLive": "Razgovori uživo sa ORB-om",
@@ -92,8 +82,7 @@
       "fairUse": "Fer upotreba",
       "used": "{used} / {limit} {unit}",
       "resetIn": "Resetuje se za {duration}",
-      "comparisonTitle": "Šta je uključeno u svaki plan",
-      "_pending_review": {}
+      "comparisonTitle": "Šta je uključeno u svaki plan"
     },
     "creditPacks": {
       "title": "Dodaj dodatne minute",
@@ -107,8 +96,7 @@
       "yourBalance": "Tvoje stanje: {amount} kredita",
       "starterShort": "Početni",
       "boostShort": "Pojačanje",
-      "powerShort": "Snaga",
-      "_pending_review": {}
+      "powerShort": "Snaga"
     },
     "redeemCard": {
       "title": "Imaš kod?",
@@ -125,10 +113,8 @@
         "alreadyRedeemed": "Već si iskoristio ovaj kod",
         "stripeActive": "Već imaš Premium — sačuvaj ovaj kod za kasnije",
         "budgetExhausted": "Kampanja pauzirana — molimo te, pokušaj ponovo kasnije",
-        "generic": "Nije bilo moguće iskoristiti kod",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "generic": "Nije bilo moguće iskoristiti kod"
+      }
     },
     "earnings": {
       "title": "Tvoja zarada (ove godine)",
@@ -136,21 +122,40 @@
       "youEarned": "Vitana ti je pomogla da zaradiš (Prodaj i zaradi)",
       "net": "Neto",
       "withdraw": "Podigni",
-      "empty": "Još nemaš zarade",
-      "_pending_review": {}
+      "empty": "Još nemaš zarade"
     },
     "founding": {
       "bannerTitle": "🏆 Budi među prvih {max}",
       "bannerBody": "3 meseca Premium besplatno uz kod {code}.",
       "spotsRemaining": "{remaining} od {max} mesta preostalo",
-      "_pending_review": {}
+      "celebration": {
+        "_pending_review": {
+          "badge": true,
+          "title": true,
+          "bodyFree": true,
+          "bodyPaid": true,
+          "valueLabel": true,
+          "value": true,
+          "until": true,
+          "ctaPremium": true,
+          "ctaContinue": true
+        },
+        "badge": "Founding Member #{seat} of {max}",
+        "title": "Congratulations!",
+        "bodyFree": "You are one of Vitana’s first {max} members – and that earns you a full year of Premium as a gift.",
+        "bodyPaid": "You are one of Vitana’s first {max} members. Thank you for being here from the start!",
+        "valueLabel": "Your gift",
+        "value": "{value} – one year of Premium free",
+        "until": "Premium active until {date}",
+        "ctaPremium": "Discover Premium",
+        "ctaContinue": "Let’s go"
+      }
     },
     "launchGrant": {
       "title": "🎁 Dobrodošli — Premium je na naš račun",
       "body": "Dobio/la si 12 meseci Vitana Premium-a kao zahvalnost što si sa nama od početka. Aktivno do {endsAt}.",
       "noAction": "Nije potrebna akcija. Uživaj.",
-      "dismissAria": "Odbaci baner",
-      "_pending_review": {}
+      "dismissAria": "Odbaci baner"
     },
     "mobileBilling": {
       "rootIntro": "Upravljaj svojim planom, načinom plaćanja i isplatama kreatorima.",
@@ -166,8 +171,7 @@
       "paymentNoneBody": "Dodaj karticu kada pokreneš Premium plan.",
       "invoicesTitle": "Fakture i računi",
       "invoicesBody": "Sve fakture i računi su dostupni u Stripe portalu za naplatu.",
-      "summaryRenewsOn": "Tvoj plan se obnavlja {date}",
-      "_pending_review": {}
+      "summaryRenewsOn": "Tvoj plan se obnavlja {date}"
     },
     "state": {
       "freeStatus": "Koristiš Vitana Free",
@@ -183,18 +187,15 @@
       "upgrade": "Nadogradi",
       "trialEndsAt": "Probni period se završava {date}",
       "trialingBadge": "U probnom periodu",
-      "activeBadge": "Aktivno",
-      "_pending_review": {}
+      "activeBadge": "Aktivno"
     },
     "subscriptionsPage": {
       "title": "Pretplate",
       "subtitle": "Upravljaj svojim Vitana Premium i kreditima",
       "tabs": {
         "yourPlan": "Tvoj plan",
-        "billing": "Naplata",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "billing": "Naplata"
+      }
     },
     "faq": {
       "title": "Zašto Premium?",
@@ -205,18 +206,15 @@
       "q3": "Mogu li da otkažem bilo kada?",
       "a3": "Da, bez ugovora. Zadržavaš Premium do kraja tekućeg perioda.",
       "q4": "Da li prodaješ moje podatke?",
-      "a4": "Nikada. Nikada ne prodajemo tvoje podatke reklamnim mrežama, posrednicima podataka ili partnerima.",
-      "_pending_review": {}
+      "a4": "Nikada. Nikada ne prodajemo tvoje podatke reklamnim mrežama, posrednicima podataka ili partnerima."
     },
     "checkoutErrors": {
       "stripeNotConfigured": "Plaćanja još nisu u potpunosti podešena. Molimo pokušaj ponovo kasnije.",
       "alreadySubscribed": "Već imaš aktivnu pretplatu. Upravljaj njome u portalu za naplatu.",
       "noStripeCustomer": "Prvo se pretplati pre korišćenja portala.",
       "checkoutFailed": "Naplata nije uspela",
-      "portalFailed": "Nije bilo moguće otvoriti portal za naplatu.",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
+      "portalFailed": "Nije bilo moguće otvoriti portal za naplatu."
+    }
   },
   "paywall": {
     "title": "Otključaj Premium",
@@ -226,58 +224,47 @@
       "title": "Vreme za glas uživo isteklo",
       "body": "Tvoje uključeno vreme za glas uživo je iskorišćeno. ORB će nastaviti u Standardnom režimu. Dodaj minute uživo ili nadogradi bilo kada.",
       "stayInStandard": "Nastavi u Standardnom režimu",
-      "addMinutes": "Dodaj minute uživo",
-      "_pending_review": {}
+      "addMinutes": "Dodaj minute uživo"
     },
     "live_room_minutes": {
       "title": "Vreme za hostovanje pri kraju",
       "body": "Ova soba ima još 5 minuta uključenog vremena za hostovanje. Dodaj vreme za hostovanje ili nadogradi da bi nastavila da radi.",
       "wrapUp": "Završi",
-      "addTime": "Dodaj vreme za hostovanje",
-      "_pending_review": {}
+      "addTime": "Dodaj vreme za hostovanje"
     },
     "match_posts": {
       "title": "Sve besplatne objave iskorišćene",
-      "body": "Iskoristio si svoje besplatne objave ovog meseca. Premium ti daje više.",
-      "_pending_review": {}
+      "body": "Iskoristio si svoje besplatne objave ovog meseca. Premium ti daje više."
     },
     "match_reveals": {
       "title": "Otkrij podudaranje",
-      "body": "Iskoristio si svoja besplatna otkrivanja. Iskoristi {credits} kredita ili nadogradi na Premium.",
-      "_pending_review": {}
+      "body": "Iskoristio si svoja besplatna otkrivanja. Iskoristi {credits} kredita ili nadogradi na Premium."
     },
     "lab_analyses": {
       "title": "Laboratorijske analize iskorišćene",
-      "body": "Iskoristio si svoje laboratorijske analize ovog meseca.",
-      "_pending_review": {}
+      "body": "Iskoristio si svoje laboratorijske analize ovog meseca."
     },
     "photo_uploads": {
       "title": "Otpremanja fotografija iskorišćena",
-      "body": "Iskoristio si svoja otpremanja fotografija ovog meseca.",
-      "_pending_review": {}
+      "body": "Iskoristio si svoja otpremanja fotografija ovog meseca."
     },
     "memory_garden": {
       "title": "Bašta sećanja je puna",
-      "body": "Premium ti daje više prostora.",
-      "_pending_review": {}
+      "body": "Premium ti daje više prostora."
     },
     "autopilot": {
       "title": "Više Autopilot preporuka",
-      "body": "Premium povećava broj tvojih aktivnih preporuka.",
-      "_pending_review": {}
+      "body": "Premium povećava broj tvojih aktivnih preporuka."
     },
     "default": {
       "title": "Otključaj Premium",
-      "body": "Iskoristio si svoju besplatnu kvotu za ovaj period.",
-      "_pending_review": {}
+      "body": "Iskoristio si svoju besplatnu kvotu za ovaj period."
     },
     "ctaUpgrade": "Otključaj Premium",
     "ctaCredits": "Iskoristi {credits} kredita",
     "ctaLater": "Možda kasnije",
     "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Resetuje se {date}",
-    "creditsInsufficient": "Nemaš dovoljno kredita. Dopuni prvo.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "creditsInsufficient": "Nemaš dovoljno kredita. Dopuni prvo."
+  }
 }

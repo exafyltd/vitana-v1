@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04833",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "DEPLOY.yml deploys production on AWS only; aws_prod and the PUBLISH inputs are intact",
+      "ref": "npx vitest run src/lib/deploy-workflow.vtid-04833.test.ts",
+      "cwd": ".",
+      "reason": "The change is to the production deploy workflow only (the dead GCP Cloud Run job and its OIDC permission removed). Nothing in the staging build changes, so the proof is the workflow's own structure: exactly cutover_gate + aws_prod, aws_prod still calls AWS-PROD-DEPLOY-FRONTEND.yml with the pinned commit, the reason/commit_sha inputs PUBLISH sends are kept, and no GCP step remains. The test fails on the previous workflow (2 of 4)."
+    }
+  ]
+}

@@ -128,7 +128,9 @@
         "genericTitle": "Erreur",
         "genericDesc": "Échec de la création du flux. Réessaie.",
         "genericDescWithReason": "Échec de la création du flux : {reason}. Réessaie.",
-        "_pending_review": {}
+        "_pending_review": {},
+        "cancelFailedDesc": "Impossible de terminer la session en cours : {reason}",
+        "roomStuckDesc": "Ta salle est encore occupée. Réessaie dans quelques secondes."
       },
       "success": {
         "streamUpdatedTitle": "Flux mis à jour ! ✨",
@@ -141,7 +143,8 @@
         "aiImageHintDesc": "L'image sera générée au démarrage du flux.",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "streamTitleHint": "p. ex. Une routine matinale pour plus d'énergie"
     },
     "editSession": {
       "title": "Modifier la session",

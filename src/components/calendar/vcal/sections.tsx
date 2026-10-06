@@ -27,10 +27,13 @@ import { createCalendarEntry, fetchCalendarWindow, type CalendarWindowItem } fro
 import { fetchConnectedApps, type ConnectedAppId, type ConnectedAppState } from "@/lib/connected-apps-client";
 import { CONNECTED_APPS_QUERY_KEY } from "@/components/settings/connected-apps/MailCalendarContactsPanel";
 import { Disclosure } from "./Disclosure";
+import { CalendarPlus } from "lucide-react";
+import { INDEX_CARD, INDEX_TILE } from "@/lib/index-look";
 import { itemEmoji } from "./labels";
 import { SURFACE } from "./theme";
 import { sameDay, viewRange } from "./time";
 import type { SubscribeProvider } from "./SubscribeSheet";
+import { CalendarProviderLogo } from "./ProviderLogos";
 
 // ---------------------------------------------------------------- journey
 
@@ -96,14 +99,14 @@ function HabitRow({
   return (
     <li className="flex flex-col gap-2 border-t py-2.5 first:border-t-0" style={{ borderColor: SURFACE.line }} data-testid="vcal-habit">
       <div className="flex items-center gap-3">
-        <span className="min-w-0 flex-1 truncate text-[15px]">{habit.title}</span>
+        <span className="min-w-0 flex-1 truncate text-sm">{habit.title}</span>
         {added ? (
           <span className="shrink-0 text-sm" style={{ color: SURFACE.muted }} data-testid="vcal-habit-added">
             ✓ {t("vcal.journey.inCalendar")}
           </span>
         ) : (
           !picking && (
-            <button type="button" onClick={() => setPicking(true)} className="shrink-0 text-sm" style={{ color: SURFACE.primary }} data-testid="vcal-habit-add">
+            <button type="button" onClick={() => setPicking(true)} className="shrink-0 text-sm" style={{ color: SURFACE.link }} data-testid="vcal-habit-add">
               {t("vcal.journey.addHabit")}
             </button>
           )
@@ -127,7 +130,7 @@ function HabitRow({
             type="button"
             disabled={add.isPending}
             onClick={() => add.mutate()}
-            className="h-9 rounded-full px-4 text-sm font-medium text-white disabled:opacity-60"
+            className="h-9 rounded-full px-4 text-sm font-semibold text-white disabled:opacity-60"
             style={{ background: SURFACE.primary }}
             data-testid="vcal-habit-confirm"
           >
@@ -177,14 +180,14 @@ export function JourneySection({
             <span>{wave}</span>
             <span>{t("vcal.journey.dayOf", { day: progress.dayNumber, total: 90 })}</span>
           </div>
-          <div className="h-1.5 overflow-hidden rounded-full" style={{ background: SURFACE.track }}>
-            <div className="h-full rounded-full" style={{ width: `${progress.waveProgress}%`, background: "#C99A2E" }} />
+          <div className="h-3 overflow-hidden rounded-full bg-slate-100">
+            <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-600 rtl:bg-gradient-to-l" style={{ width: `${progress.waveProgress}%` }} />
           </div>
         </div>
       )}
       {habits.length > 0 && plan && (
         <div className="flex flex-col gap-1">
-          <span className="text-[13px]" style={{ color: SURFACE.muted }}>
+          <span className="text-xs" style={{ color: SURFACE.muted }}>
             {t("vcal.journey.habitsTitle")}
           </span>
           <ul className="m-0 flex list-none flex-col p-0">
@@ -203,12 +206,12 @@ export function JourneySection({
                 <button type="button" onClick={() => onOpenStep(s)} className="flex w-full items-center gap-3 py-2.5 text-start" data-testid="vcal-journey-step">
                   <span aria-hidden>{itemEmoji(s)}</span>
                   <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="truncate text-[15px]">{s.event?.title}</span>
+                    <span className="truncate text-sm">{s.event?.title}</span>
                     <span className="text-xs" style={{ color: SURFACE.muted }}>
                       {sameDay(start, now) ? t("vcal.journey.today", { time: fmtTime(start, { hour: "2-digit", minute: "2-digit" }) }) : fmtDate(start, { weekday: "short", day: "numeric", month: "short" })}
                     </span>
                   </span>
-                  <span className="shrink-0 text-sm" style={{ color: SURFACE.primary }}>
+                  <span className="shrink-0 text-sm" style={{ color: SURFACE.link }}>
                     {t("vcal.guide.start")}
                   </span>
                 </button>
@@ -225,7 +228,7 @@ export function JourneySection({
         ) : (
           <span />
         )}
-        <button type="button" onClick={() => navigate("/autopilot")} className="text-sm" style={{ color: SURFACE.primary }}>
+        <button type="button" onClick={() => navigate("/autopilot")} className="text-sm" style={{ color: SURFACE.link }}>
           {t("vcal.journey.openJourney")} →
         </button>
       </div>
@@ -287,7 +290,7 @@ export function WorkSection({ role, now }: { role: string | null; now: Date }) {
           </li>
         ))}
       </ul>
-      <button type="button" onClick={() => navigate("/admin")} className="self-end text-sm" style={{ color: SURFACE.primary }}>
+      <button type="button" onClick={() => navigate("/admin")} className="self-end text-sm" style={{ color: SURFACE.link }}>
         {t("vcal.workSection.open")} →
       </button>
     </Disclosure>
@@ -303,11 +306,6 @@ const CAL_APP: Record<Provider, ConnectedAppId> = {
   outlook: "outlook-calendar",
 };
 const PROVIDERS: Provider[] = ["google", "apple", "outlook"];
-const PROVIDER_MARK: Record<Provider, { letter: string; bg: string; fg: string }> = {
-  google: { letter: "G", bg: "#E8F0FE", fg: "#1A56C8" },
-  apple: { letter: "A", bg: "#EFEFF2", fg: "#1D1D1F" },
-  outlook: { letter: "O", bg: "#E3F1FB", fg: "#0A5FA8" },
-};
 
 /** Opens Connected Apps with this calendar app, where its own connect flow starts. */
 export function connectLink(id: ConnectedAppId): string {
@@ -325,18 +323,7 @@ export function useCalendarApps(): { apps: ConnectedAppState[]; loading: boolean
   };
 }
 
-function ProviderMark({ p, size = 32 }: { p: Provider; size?: number }) {
-  const m = PROVIDER_MARK[p];
-  return (
-    <span
-      aria-hidden
-      className="flex shrink-0 items-center justify-center rounded-full font-medium"
-      style={{ background: m.bg, color: m.fg, width: size, height: size, fontSize: size * 0.45 }}
-    >
-      {m.letter}
-    </span>
-  );
-}
+const ProviderMark = CalendarProviderLogo;
 
 /**
  * VTID-04682: what tapping a calendar app does. Two-way sync through
@@ -360,24 +347,26 @@ export function ConnectCalendarCard({ onSubscribe }: { onSubscribe: (p: Provider
   if (loading || connected) return null;
   const name = (p: Provider) => t(`vcal.calendars.providers.${p}`);
   return (
-    <section className="flex flex-col gap-3 rounded-2xl bg-white px-4 py-4" style={{ border: `1px solid ${SURFACE.line}` }} data-testid="vcal-connect">
-      <div className="flex flex-col gap-0.5">
-        <span className="text-[17px] font-medium">{t("vcal.calendars.connectTitle")}</span>
-        <span className="text-sm" style={{ color: SURFACE.muted }}>
-          {t("vcal.calendars.connectBody")}
-        </span>
+    <section className={INDEX_CARD} data-testid="vcal-connect">
+      <div className="flex items-start gap-3">
+        <div className={INDEX_TILE}>
+          <CalendarPlus className="h-5 w-5" aria-hidden />
+        </div>
+        <div className="min-w-0">
+          <h2 className="text-lg font-bold leading-tight text-slate-900">{t("vcal.calendars.connectTitle")}</h2>
+          <p className="mt-0.5 text-sm leading-snug text-slate-600">{t("vcal.calendars.connectBody")}</p>
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="mt-4 grid grid-cols-3 gap-2">
         {PROVIDERS.map((p) => (
           <button
             key={p}
             type="button"
             onClick={() => connect(p)}
-            className="flex flex-col items-center gap-2 rounded-2xl px-2 py-3 text-sm"
-            style={{ border: `1px solid ${SURFACE.line}` }}
+            className="flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-3 text-[15px] font-semibold text-slate-800 ring-1 ring-slate-200 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
             data-testid={`vcal-connect-${p}`}
           >
-            <ProviderMark p={p} size={36} />
+            <ProviderMark p={p} size={44} />
             {name(p)}
           </button>
         ))}
@@ -414,13 +403,13 @@ export function CalendarsSection({ onShowInApp }: { onShowInApp: (p?: Provider) 
             <li key={p} className="flex items-center gap-3 border-t py-2.5 first:border-t-0" style={{ borderColor: SURFACE.line }} data-testid={`vcal-calendar-${p}`}>
               <ProviderMark p={p} size={28} />
               <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-[15px]">{name(p)}</span>
+                <span className="text-sm">{name(p)}</span>
                 <span className="truncate text-xs" style={{ color: status === "needs_reconnect" ? "#A3322C" : SURFACE.muted }}>
                   {status === "on" ? app?.account || t("vcal.calendars.connected") : status === "needs_reconnect" ? t("vcal.calendars.reconnectHint") : t("vcal.calendars.notConnected")}
                 </span>
               </span>
               {status !== "on" && (
-                <button type="button" onClick={() => connect(p)} className="h-8 shrink-0 rounded-full px-3 text-sm" style={{ color: SURFACE.primary, border: `1px solid ${SURFACE.line}` }}>
+                <button type="button" onClick={() => connect(p)} className="h-8 shrink-0 rounded-full px-3 text-sm" style={{ color: SURFACE.link, border: `1px solid ${SURFACE.line}` }}>
                   {status === "needs_reconnect" ? t("vcal.calendars.reconnect") : t("vcal.calendars.connect")}
                 </button>
               )}
@@ -428,10 +417,10 @@ export function CalendarsSection({ onShowInApp }: { onShowInApp: (p?: Provider) 
           );
         })}
       </ul>
-      <button type="button" onClick={() => onShowInApp()} className="self-start text-sm" style={{ color: SURFACE.primary }} data-testid="vcal-subscribe-open">
+      <button type="button" onClick={() => onShowInApp()} className="self-start text-sm" style={{ color: SURFACE.link }} data-testid="vcal-subscribe-open">
         {t("vcal.subscribe.title")}
       </button>
-      <button type="button" onClick={() => navigate("/connectors?tab=productivity")} className="self-end text-sm" style={{ color: SURFACE.primary }}>
+      <button type="button" onClick={() => navigate("/connectors?tab=productivity")} className="self-end text-sm" style={{ color: SURFACE.link }}>
         {t("vcal.calendars.manage")} →
       </button>
     </Disclosure>

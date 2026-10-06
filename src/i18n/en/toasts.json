@@ -669,7 +669,11 @@
       "pleaseTryAgainLater": "Please try again later",
       "addedSmartCalendar": "Added to Smart Calendar ✓",
       "eventSavedWeLlRemindYou": "Event saved. We'll remind you before it starts.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "savedTitle": "Saved",
+      "savedDesc": "Saved for later",
+      "unsavedTitle": "Removed from saved",
+      "unsavedDesc": "Removed from your saved list"
     },
     "memory": {
       "voiceRecorded": "Voice Recorded",

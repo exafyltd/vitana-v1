@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Балансы",
       "activity": "Активность",
-      "actions": "Действия",
-      "_pending_review": {}
+      "actions": "Действия"
     },
     "filters": {
       "commissions": "Продавай и зарабатывай комиссии",
@@ -22,13 +21,74 @@
       "purchases": "Покупки",
       "pending": "Ожидаемые выплаты",
       "withdrawals": "Выводы",
-      "stakes": "Стейкинг",
-      "_pending_review": {}
+      "stakes": "Стейкинг"
     },
     "noActivity": "Пока нет активности",
     "noActivityDesc": "Твои транзакции появятся здесь.",
     "displayCurrency": "Валюта отображения",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "rewardRules": {
+      "title": "Как ты зарабатываешь VTNA",
+      "summary": "Ты получаешь VTNA за реальные дела, которые делаешь сам, и за постоянство.",
+      "earnedBalance": "Заработано тобой",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Получено",
+      "cap": "{used} из {count} за {days} дн.",
+      "groups": {
+        "first_steps": "Первые шаги — по одному разу",
+        "habits": "Привычки — постоянство",
+        "community": "Сообщество — вместе с другими",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
+      },
+      "rules": {
+        "onboarding_complete": "Пройди знакомство",
+        "profile_complete": "Заполни профиль",
+        "first_diary": "Сделай первую запись в дневнике",
+        "first_group": "Вступи в первую группу",
+        "first_event_rsvp": "Запишись на первое событие",
+        "first_connection": "Заведи первый контакт",
+        "five_connections": "Набери пять контактов",
+        "first_match_accepted": "Прими первый мэтч",
+        "first_health_check": "Пройди первую проверку здоровья",
+        "diary_streak_3": "3 дня дневника подряд",
+        "diary_streak_7": "7 дней дневника подряд",
+        "diary_streak_30": "30 дней дневника подряд",
+        "invite_friend_joined": "Присоединяется тот, кого ты пригласил",
+        "invited_friends_10": "Присоединились 10 приглашённых тобой друзей — разовый бонус",
+        "autopilot_action_done": "Выполнить действие Autopilot",
+        "index_new_best": "Новый личный рекорд Vitana Index, минимум на 10 баллов выше",
+        "live_room_15min": "15 минут с другими в прямом эфире",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
+      },
+      "neverTitle": "За что VTNA не начисляются",
+      "never": {
+        "done_by_vitana": "Всё, что Vitana делает или пишет за тебя",
+        "purchases": "Купленные кредиты и бонусные пакеты",
+        "self_reported": "Действия, которые система не может проверить, — кроме выполненных действий Autopilot (не более 2 в день)",
+        "_pending_review": {
+          "self_reported": true
+        }
+      },
+      "recentTitle": "Твои последние награды",
+      "recentEmpty": "Наград пока нет — твой первый шаг ждёт выше.",
+      "recentOther": "Награда",
+      "loading": "Загрузка…",
+      "error": "Сейчас не удалось загрузить твои награды.",
+      "capToday": "{used} из {count} сегодня",
+      "capWeek": "{used} из {count} на этой неделе",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
+    }
+  }
 }

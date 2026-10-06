@@ -28,6 +28,57 @@
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",
     "displayCurrency": "Display currency",
+    "rewardRules": {
+      "title": "How you earn VTNA",
+      "summary": "You earn VTNA for real things you do yourself, and for sticking with it.",
+      "earnedBalance": "Earned by you",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Earned",
+      "cap": "{used} of {count} in {days} days",
+      "groups": {
+        "first_steps": "First steps — once each",
+        "habits": "Habits – Stick with it",
+        "community": "Community – With others",
+        "_pending_review": {}
+      },
+      "rules": {
+        "onboarding_complete": "Finish your onboarding",
+        "profile_complete": "Complete your profile",
+        "first_diary": "Write your first diary entry",
+        "first_group": "Join your first group",
+        "first_event_rsvp": "RSVP to your first event",
+        "first_connection": "Make your first connection",
+        "five_connections": "Reach five connections",
+        "first_match_accepted": "Accept your first match",
+        "first_health_check": "Do your first health check",
+        "diary_streak_3": "3-day diary streak",
+        "diary_streak_7": "7-day diary streak",
+        "diary_streak_30": "30-day diary streak",
+        "invite_friend_joined": "Someone you invited joins",
+        "invited_friends_10": "10 friends you invited have joined — one-time bonus",
+        "autopilot_action_done": "Complete an Autopilot action",
+        "index_new_best": "New Vitana Index personal best, at least 10 points higher",
+        "live_room_15min": "15 minutes with others in a live room",
+        "_pending_review": {}
+      },
+      "neverTitle": "What never earns VTNA",
+      "never": {
+        "done_by_vitana": "Anything Vitana does or drafts for you",
+        "purchases": "Bought credits and bonus packs",
+        "self_reported": "Information the system cannot verify – except completed Autopilot actions (max. 2 per day)",
+        "_pending_review": {}
+      },
+      "recentTitle": "Your recent rewards",
+      "recentEmpty": "No rewards yet — your first step is waiting above.",
+      "recentOther": "Reward",
+      "loading": "Loading…",
+      "error": "Your rewards couldn't be loaded right now.",
+      "capToday": "{used} of {count} today",
+      "capWeek": "{used} of {count} this week",
+      "_pending_review": {}
+    },
     "_pending_review": {}
   },
   "_pending_review": {}

@@ -160,7 +160,7 @@ serve(async (req) => {
           guest: event.guest,
           vtn_reward: event.reward,
           is_paid: isPaid,
-          price: isPaid ? event.reward * 10 : 0, // Convert VTN reward to approximate EUR price
+          price: isPaid ? event.reward * 10 : 0, // Convert VTNA reward to approximate EUR price
           venue_type: event.type === 'online' ? null : event.venue?.toLowerCase().includes('boat') ? 'boat' : 
                       event.venue?.toLowerCase().includes('beach') ? 'beach' :
                       event.venue?.toLowerCase().includes('winery') || event.venue?.toLowerCase().includes('vineyard') ? 'winery' :

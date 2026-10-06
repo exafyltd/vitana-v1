@@ -12,6 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
 interface PublicEventData {
   id: string;
   title: string;
@@ -38,9 +39,10 @@ const getTenantLoginRoute = (tenantSlug: string | null): string => {
   const tenantRoutes: Record<string, string> = {
     maxina: '/maxina',
     alkalma: '/alkalma',
-    earthlinks: '/earthlinks',
   };
-  return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/maxina';
+  // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
+    const slug = canonicalTenantSlug(tenantSlug);
+    return slug && tenantRoutes[slug] ? tenantRoutes[slug] : '/maxina';
 };
 
 // Check if a string is a valid UUID
@@ -101,6 +103,24 @@ export default function PublicEventLanding() {
         }
 
         if (!data || data.length === 0) {
+          // VTID-04922: a shared Live Room arrives here as /events/<roomId> (the worker's human
+          // redirect → ?share=event&id= → /pub/events/<id>). Only when no event exists, and only for
+          // a UUID, check community_live_streams (public read: pending/live, or ended with replay) and
+          // send the person into the room. This sits INSIDE the fetch so the loading state covers it —
+          // no flash of "Event not found", and events that exist pay no extra query. (One redirect hop
+          // fewer if the share link ever moves to /rooms/<id>, which the worker already maps to ?share=room.)
+          if (isUUID(identifier)) {
+            const { data: stream } = await supabase
+              .from("community_live_streams")
+              .select("id")
+              .eq("id", identifier)
+              .maybeSingle();
+            if (stream?.id) {
+              const qs = searchParams.toString();
+              navigate(`/comm/live-rooms?live=${encodeURIComponent(stream.id)}${qs ? `&${qs}` : ""}`, { replace: true });
+              return;
+            }
+          }
           setError("Event not found");
           setLoading(false);
           return;
@@ -166,7 +186,7 @@ export default function PublicEventLanding() {
   // Get tenant from event metadata for proper login routing
   const tenantSlug = event?.metadata?.tenant_slug || 
                      event?.metadata?.tenantSlug || 
-                     localStorage.getItem('tenant_slug') || 
+                     readStoredTenantSlug('tenant_slug') || 
                      null;
 
   // Use unified localized CTA logic

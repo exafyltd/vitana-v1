@@ -6,7 +6,9 @@
     "eventDescription": "Formal gatherings with scheduled times and structured programs",
     "meetup": "MeetUp",
     "meetupDescription": "Casual gatherings for networking and community building",
-    "_pending_review": {}
+    "_pending_review": {},
+    "liveRoom": "Live Room",
+    "liveRoomDescription": "Go live now or schedule an audio or video session"
   },
   "_pending_review": {}
 }

@@ -12,6 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
 interface PublicCampaignData {
   id: string;
   name: string;
@@ -162,9 +163,10 @@ export default function PublicCampaignLanding() {
     const tenantRoutes: Record<string, string> = {
       maxina: '/maxina',
       alkalma: '/alkalma',
-      earthlinks: '/earthlinks',
     };
-    return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/maxina';
+    // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
+    const slug = canonicalTenantSlug(tenantSlug);
+    return slug && tenantRoutes[slug] ? tenantRoutes[slug] : '/maxina';
   };
 
   // Try to detect linked event from campaign metadata
@@ -178,7 +180,7 @@ export default function PublicCampaignLanding() {
   const hasExternalTicket = !!ticketUrl;
   
   // Get tenant from campaign metadata for proper login routing
-  const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || localStorage.getItem('tenant_slug') || null;
+  const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || readStoredTenantSlug('tenant_slug') || null;
 
   // Use unified localized CTA logic
   const ctaConfig = getLocalizedPublicLandingCta({

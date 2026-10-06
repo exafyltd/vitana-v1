@@ -14,7 +14,8 @@
       "notLivePreBody": "لم تبدأ هذه اللعبة بعد — عد قريبًا.",
       "notLiveEndedTitle": "انتهت اللعبة",
       "notLiveEndedBody": "انتهت هذه اللعبة — اطلع على النتائج النهائية.",
-      "disabled": "هذه اللعبة غير متاحة في الوقت الحالي."
+      "disabled": "هذه اللعبة غير متاحة في الوقت الحالي.",
+      "_pending_review": {}
     },
     "join": {
       "celebrateTitle": "🎉 لقد انضممت!",
@@ -23,7 +24,8 @@
       "celebrateRank": "ترتيبك الحالي: #{rank}",
       "nextTitle": "📸 اتخذ خطوتك",
       "nextBody": "انشر صورة أو فيديو من الليلة.",
-      "nextCta": "انشر الآن"
+      "nextCta": "انشر الآن",
+      "_pending_review": {}
     },
     "home": {
       "score": "نقاطك",
@@ -38,7 +40,8 @@
       "viewLeaderboard": "عرض لوحة المتصدرين",
       "rulesLink": "كيفية اللعب",
       "countdownLeft": "يسار",
-      "gameOver": "🛑 انتهت اللعبة"
+      "gameOver": "🛑 انتهت اللعبة",
+      "_pending_review": {}
     },
     "post": {
       "categoryEvent": "📸 لحظة الحدث",
@@ -51,7 +54,8 @@
       "successScore": "نتيجتك: {score}",
       "successRank": "الترتيب الحالي: #{rank}",
       "getLikes": "❤️ الآن، احصل على إعجابات",
-      "share": "مشاركة لحظتي"
+      "share": "مشاركة لحظتي",
+      "_pending_review": {}
     },
     "leaderboard": {
       "title": "🏆 من هو المتألق؟",
@@ -63,13 +67,15 @@
       "movingUpTitle": "🚀 صعود في الترتيب!",
       "movingUpChange": "#{from} → #{to}",
       "overtakenTitle": "👀 أوه لا!",
-      "overtakenChange": "انتقال إلى المرتبة #{rank}"
+      "overtakenChange": "انتقال إلى المرتبة #{rank}",
+      "_pending_review": {}
     },
     "countdown": {
       "tenMinutes": "🚨 آخر 10 دقائق!",
       "fiveMinutes": "🔥 خمس دقائق!",
       "oneMinute": "🚨 آخر دقيقة!",
-      "over": "🛑 انتهت اللعبة"
+      "over": "🛑 انتهت اللعبة",
+      "_pending_review": {}
     },
     "rules": {
       "title": "🎯 طريقة اللعب",
@@ -78,7 +84,8 @@
       "longevity": "🧬 لحظة طول العمر — +{points}",
       "likes": "❤️ الحصول على إعجابات — +{points} لكل منها",
       "win": "🏆 احتلال المركز الأول — الفوز بالجائزة",
-      "close": "فهمت"
+      "close": "فهمت",
+      "_pending_review": {}
     },
     "results": {
       "winnerTitle": "🏆 لدينا فائز!",
@@ -93,11 +100,13 @@
       "longevityCount": "🧬 لحظات طول العمر: {count}",
       "gap": "لم يفصلك سوى {points} نقطة عن أفضل {n}!",
       "share": "مشاركة نتيجتي",
-      "notEnded": "ستُعرض النتائج بمجرد انتهاء اللعبة."
+      "notEnded": "ستُعرض النتائج بمجرد انتهاء اللعبة.",
+      "_pending_review": {}
     },
     "feedBadge": {
       "rankPoints": "🏆 #{rank} · {points} نقطة",
-      "pointsToNext": "🔥 المرتبة #{rank} · {points} نقطة تفصلك عن #{nextRank}"
+      "pointsToNext": "🔥 المرتبة #{rank} · {points} نقطة تفصلك عن #{nextRank}",
+      "_pending_review": {}
     },
     "admin": {
       "title": "لعبة الفعالية",
@@ -126,7 +135,10 @@
       "adjustPoints": "تعديل النقاط",
       "adjustReason": "السبب",
       "adjustApply": "تطبيق",
-      "notModerator": "ليس لديك إذن لإدارة هذه اللعبة."
-    }
-  }
+      "notModerator": "لا تملك صلاحية لإدارة هذه اللعبة.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

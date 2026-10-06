@@ -248,11 +248,12 @@ describe("the /calendar page", () => {
     const { container } = page();
     await screen.findByTestId("vcal-day");
     await screen.findByTestId("vcal-summary");
-    // VTID-04681: today's date leads the screen.
+    // VTID-04681: today's date leads the screen. VTID-04852: in the Index-style hero —
+    // month and year in the eyebrow, then the big day number and the weekday.
     const date = screen.getByTestId("vcal-date");
     expect(date.textContent).toContain("5");
     expect(date.textContent).toContain("Montag");
-    expect(date.textContent).toContain("Oktober 2026");
+    expect(screen.getByTestId("vcal-header").textContent).toContain("Oktober 2026");
     expectGolden(G, "page.day", outline(container));
     // Day view asks for today and the whole local day.
     const ranges = h.fetchCalendarWindow.mock.calls.map((c) => [c[0].toISOString(), c[1].toISOString(), c[2]]);
@@ -325,13 +326,13 @@ describe("the /calendar page", () => {
     expectGolden(G, "page.moveErrors", reasons);
   });
 
-  it("errors show a retry; the voice button opens Vitana", async () => {
+  it("errors show a retry; there is no text or microphone bar — entries come from + and from Vitana by voice", async () => {
     h.fetchCalendarWindow.mockRejectedValue(new Error("down"));
     const { container } = page();
     await screen.findByRole("alert");
     expectGolden(G, "page.error", outline(screen.getByRole("alert")));
-    fireEvent.click(screen.getByTestId("vcal-voice-add"));
-    expect(h.activateOrb).toHaveBeenCalled();
+    expect(screen.queryByTestId("vcal-voice-add")).toBeNull();
+    expect(screen.getByTestId("vcal-add")).toBeTruthy();
     expect(container.querySelector("[data-testid=vcal-entry]")).toBeNull();
   });
 

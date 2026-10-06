@@ -24,6 +24,8 @@ interface NewsCardProps {
   imagePriority?: boolean;
   category?: "event" | "community" | "wellness" | "achievement" | "people" | "media" | "group";
   pillar?: string;
+  /** VTID-04907: red LIVE badge for Live Room cards; 'live-now' adds a pulsing dot. */
+  pillarVariant?: 'live' | 'live-now';
   icon?: React.ComponentType<any>;
   mediaType?: "video" | "podcast" | "music";
   author?: {
@@ -61,6 +63,7 @@ interface NewsCardProps {
   onBuyTicket?: () => void;
   onViewTicket?: () => void;
   "data-event-id"?: string;
+  "data-live-room"?: string;
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -73,6 +76,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     imagePriority = false,
     category,
     pillar,
+    pillarVariant,
     icon: IconComponent,
     mediaType,
     author,
@@ -104,7 +108,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     userHasTicket,
     onBuyTicket,
     onViewTicket,
-    "data-event-id": dataEventId
+    "data-event-id": dataEventId,
+    "data-live-room": dataLiveRoom
   }, ref) => {
     const { selectedMeetupId } = useMeetupSelection();
     const { translate } = useTranslation();
@@ -328,6 +333,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         )}
         onClick={onClick}
         data-event-id={dataEventId}
+        data-live-room={dataLiveRoom}
         tabIndex={0}
         role="button"
         aria-label={`View ${title} details`}
@@ -401,7 +407,16 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               {/* Left side - Category + Price + Timestamp (wraps naturally) */}
               <div className="flex flex-wrap gap-2 items-center flex-1 min-w-0">
                 {/* Pillar badge with gradient accents */}
-                {pillar && (
+                {pillar && pillarVariant && (
+                  <div
+                    data-testid="live-room-badge"
+                    className="flex items-center gap-1.5 text-xs text-white font-bold rounded-md px-2 py-1 bg-red-600 border border-red-400/60 uppercase tracking-wide whitespace-nowrap shadow-sm"
+                  >
+                    <span className={cn("h-1.5 w-1.5 rounded-full bg-white", pillarVariant === 'live-now' && "animate-pulse")} />
+                    {pillar}
+                  </div>
+                )}
+                {pillar && !pillarVariant && (
                   <div className={cn(
                     "text-xs text-white font-medium rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap",
                     pillar.toLowerCase().includes('movement') || pillar.toLowerCase().includes('exercise')

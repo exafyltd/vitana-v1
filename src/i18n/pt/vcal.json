@@ -14,7 +14,6 @@
     "doneToast": "Feito – mandou bem! 🎉",
     "doneError": "Não foi possível salvar agora.",
     "recurring": "Repete",
-    "voiceAdd": "“Exame de sangue sexta às 8h, em jejum” – fale com a Vitana",
     "nextUp": "A seguir · {when}",
     "progress": "{done} de {total} feitos hoje",
     "progressAllDone": "Tudo feito – aproveite o resto do dia ✨",
@@ -88,7 +87,15 @@
       "reminders": "Lembretes",
       "noReminders": "Sem lembrete",
       "directions": "Rota",
-      "askVitana": "Perguntar à Vitana"
+      "askVitana": "Perguntar à Vitana",
+      "openEvent": "Ir para o evento",
+      "joinRoom": "Entrar agora",
+      "openRoom": "Ir para a sala ao vivo",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "Deploy de staging",
@@ -282,6 +289,56 @@
       "waitingOne": "1 coisa está esperando por você",
       "waiting": "{count} coisas estão esperando por você",
       "open": "Abrir no admin"
+    },
+    "indexGain": "+{points} {pillar} no seu Vitana Index",
+    "edit": {
+      "action": "Editar",
+      "titleLabel": "Título",
+      "startLabel": "Início",
+      "endLabel": "Fim",
+      "locationLabel": "Local",
+      "descriptionLabel": "Nota",
+      "save": "Salvar",
+      "cancel": "Cancelar",
+      "invalid": "Adicione um título; o fim precisa ser depois do início.",
+      "saved": "Salvo ✨",
+      "error": "Não foi possível salvar agora. Tente de novo em instantes.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Remover",
+      "confirm": "Remover esta entrada do seu calendário?",
+      "confirmSeries": "Remover esta entrada e todas as repetições do seu calendário?",
+      "keep": "Manter",
+      "yes": "Remover",
+      "removed": "Removido",
+      "error": "Não foi possível remover agora. Tente de novo em instantes.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Já está no seu calendário",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

@@ -8,6 +8,7 @@ import { useEventGame, useEventGameJoin, useEventGamePhase, useEventGameFeatureF
 import { EventGameLandingView } from '@/components/event-game/EventGameLandingView';
 import { EventGameCelebration } from '@/components/event-game/EventGameCelebration';
 import { EventGameLeaderboardView } from '@/components/event-game/EventGameLeaderboardView';
+import { readStoredTenantSlug } from '@/lib/retired-tenants';
 
 /** The QR-code destination: /e/game/:slug — public, no login wall (mounted
  * with AuthGuard allowGuest in App.tsx), event-specific (never a generic
@@ -27,8 +28,8 @@ export default function EventGamePublicLanding() {
 
   const handleJoin = async () => {
     if (!user) {
-      const slugForTenant = localStorage.getItem('tenant_slug') || 'maxina';
-      const loginRoute = ['maxina', 'alkalma', 'earthlinks'].includes(slugForTenant) ? `/${slugForTenant}` : '/maxina';
+      const slugForTenant = readStoredTenantSlug('tenant_slug') || 'maxina';
+      const loginRoute = ['maxina', 'alkalma'].includes(slugForTenant) ? `/${slugForTenant}` : '/maxina';
       navigate(`${loginRoute}?redirectTo=${encodeURIComponent(window.location.pathname)}`);
       return;
     }

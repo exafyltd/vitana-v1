@@ -442,9 +442,6 @@ const AlkalmaPortal = () => {
             <Link to="/maxina" className="text-muted-foreground hover:text-primary">
               {t('screens.portals.maxinaPortal')}
             </Link>
-            <Link to="/earthlinks" className="text-muted-foreground hover:text-primary">
-              {t('screens.portals.earthlinksPortal')}
-            </Link>
             <Link to="/" className="text-muted-foreground hover:text-primary">
               {t('screens.portals.publicPortal')}
             </Link>

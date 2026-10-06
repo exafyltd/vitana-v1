@@ -40,27 +40,29 @@ export const KIND_STYLE: Record<EntryKind, KindStyle> = {
   personal: { bg: "#FFF1D6", ink: "#6B4300", accent: "#8F5B00", emoji: "📌" },
 };
 
-/** Surface colours shared by every view. */
-export const SURFACE = {
-  page: "#FFF9F2",
-  card: "#FFFFFF",
-  track: "#F1E9DF",
-  ink: "#2A2233",
-  muted: "#6B6076",
-  faint: "#9A8FA5",
-  busyBg: "#EEEAE5",
-  busyInk: "#6F6878",
-  primary: "#5B54D6",
-  /** Hairline between rows and around sections (VTID-04681). */
-  line: "#EDE4D8",
-} as const;
-
 /**
- * VTID-04681 — the calendar uses two weights only: normal for everything,
- * medium for the date, entry titles and the one main button. Bold and
- * extra-bold are not used (a test fails the build if they come back).
+ * Surface colours shared by every view.
+ *
+ * VTID-04852: the calendar follows the Vitana Index page, so these are the
+ * Index page's slate and teal (page slate-50, ink slate-900, text slate-600,
+ * hairlines slate-200, links teal-700, primary buttons slate-900).
  */
-export const WEIGHT = { normal: 400, medium: 500 } as const;
+export const SURFACE = {
+  page: "#F8FAFC",
+  card: "#FFFFFF",
+  track: "#F1F5F9",
+  ink: "#0F172A",
+  muted: "#475569",
+  faint: "#94A3B8",
+  busyBg: "#F1F5F9",
+  busyInk: "#64748B",
+  /** Primary buttons: the dark pill, as on the Index page. */
+  primary: "#0F172A",
+  /** Links and small accents: teal, as on the Index page. */
+  link: "#0F766E",
+  /** Hairline around buttons and fields. */
+  line: "#E2E8F0",
+} as const;
 
 const PILLARS = new Set(["nutrition", "hydration", "exercise", "sleep", "mental"]);
 const WORK_TYPES = new Set(["professional", "admin_task", "dev_task", "deployment", "sprint_milestone"]);

@@ -161,11 +161,56 @@ export async function createCalendarEntry(input: NewCalendarEntry, role: string 
   return { id: String((body.data as { id?: string } | undefined)?.id ?? "") };
 }
 
-export async function completeCalendarEntry(eventId: string, role: string | null): Promise<void> {
-  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/complete`, role, {
+export type PillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
+
+/** VTID-04915: what completing an entry did to the Vitana Index (null when not recomputed). */
+export interface IndexDelta {
+  delta_total?: number;
+  per_pillar_delta?: Partial<Record<PillarKey, number>>;
+}
+
+export async function completeCalendarEntry(eventId: string, role: string | null): Promise<{ vitana_index: IndexDelta | null }> {
+  const body = await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/complete`, role, {
     method: "POST",
     body: JSON.stringify({ completion_status: "completed" }),
   });
+  const vi = (body as { vitana_index?: IndexDelta | null }).vitana_index;
+  return { vitana_index: vi && typeof vi === "object" ? vi : null };
+}
+
+/**
+ * VTID-04915: the pillar that moved most after completing an entry, for a
+ * "+0.4 Mental" line. Null when nothing went up.
+ */
+export function topPillarGain(delta: IndexDelta | null): { pillar: PillarKey; points: number } | null {
+  const per = delta?.per_pillar_delta;
+  if (!per) return null;
+  let best: { pillar: PillarKey; points: number } | null = null;
+  for (const [pillar, points] of Object.entries(per) as Array<[PillarKey, number]>) {
+    if (typeof points === "number" && points > 0 && (!best || points > best.points)) best = { pillar, points };
+  }
+  return best;
+}
+
+/** VTID-04915: the fields a member may change on their own entry. */
+export interface CalendarEntryPatch {
+  title?: string;
+  start_time?: string;
+  end_time?: string | null;
+  location?: string | null;
+  description?: string | null;
+}
+
+export async function updateCalendarEntry(eventId: string, patch: CalendarEntryPatch, role: string | null): Promise<void> {
+  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}`, role, {
+    method: "PATCH",
+    body: JSON.stringify(patch),
+  });
+}
+
+/** VTID-04915: removes an entry (the gateway marks it cancelled). */
+export async function cancelCalendarEntry(eventId: string, role: string | null): Promise<void> {
+  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}`, role, { method: "DELETE" });
 }
 
 // =============================================================================

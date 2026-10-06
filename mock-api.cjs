@@ -157,7 +157,7 @@ const RECOMMENDATIONS = [
 
   // Wave 4: Health Intelligence
   { id: 'rec-018', title: 'Share your expertise', summary: 'Help others by sharing what you know in a group', status: 'new', source_ref: 'share_expertise', impact_score: 65, wave_id: 'wave-4', wave_order: 4 },
-  { id: 'rec-019', title: 'Start a wellness streak', summary: 'Log in daily to build your streak and earn VTN', status: 'new', source_ref: 'start_streak', impact_score: 60, wave_id: 'wave-4', wave_order: 4 },
+  { id: 'rec-019', title: 'Start a wellness streak', summary: 'Log in daily to build your streak and earn VTNA', status: 'new', source_ref: 'start_streak', impact_score: 60, wave_id: 'wave-4', wave_order: 4 },
 
   // Wave 5: Insight Moments
   { id: 'rec-020', title: 'Explore health content', summary: 'Discover articles and videos about longevity', status: 'new', source_ref: 'explore_content', impact_score: 58, wave_id: 'wave-5', wave_order: 5 },

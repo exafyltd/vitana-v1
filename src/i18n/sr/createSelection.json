@@ -6,7 +6,9 @@
     "eventDescription": "Formalna okupljanja sa zakazanim vremenom i strukturiranim programom",
     "meetup": "Druženje",
     "meetupDescription": "Neformalna okupljanja za umrežavanje i izgradnju zajednice",
-    "_pending_review": {}
+    "_pending_review": {},
+    "liveRoom": "Soba uživo",
+    "liveRoomDescription": "Idi uživo odmah ili zakaži audio ili video sesiju"
   },
   "_pending_review": {}
 }

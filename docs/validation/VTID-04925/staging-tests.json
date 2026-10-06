@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04925",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "partner terms sheet: the tick and Accept are on screen without scrolling at 390x600, 412x480 and 1280x600; the terms still scroll; Accept never clicked (demo business + terms served in the browser, read-only)",
+      "spec": "tests/e2e/staging/vtid-04925-partner-terms-reachable.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/commerce/PartnerTermsSheet.vtid-04909.test.tsx",
+      "reason": "acceptance behaviour is unchanged (unticked by default, Accept disabled until ticked, switching keeps the tick and never accepts, German hash sent) and the tick and Accept now sit in the footer, outside the scrolling body"
+    }
+  ]
+}

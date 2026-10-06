@@ -2,15 +2,21 @@
  * VTID-04351 — an entry opened full-screen: big emoji, when/where, the
  * countdown, what it is about, the reminders it will really get, and the
  * actions (mark done, directions, ask Vitana).
+ *
+ * VTID-04915: plus edit and remove for the member's own entries, and the
+ * way back to where an entry came from — the community event, or the live
+ * room (with "Join" from 15 minutes before it starts). The rules live in
+ * entry-actions.ts.
  */
 import { useEffect, useRef, useState } from "react";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import { activateOrb } from "@/lib/orbActivate";
-import type { CalendarWindowItem } from "@/lib/calendar-window-client";
+import type { CalendarEntryPatch, CalendarWindowItem } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
-import { HEADING_FONT, itemEmoji, sourceLabel } from "./labels";
+import { itemEmoji, sourceLabel } from "./labels";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
+import { canEditEntry, canRemoveEntry, sourceActionOf } from "./entry-actions";
 
 interface Props {
   item: CalendarWindowItem;
@@ -21,10 +27,18 @@ interface Props {
   /** VTID-04374: move a one-off entry of the member's own to a new start. */
   onMove?: (item: CalendarWindowItem, start: Date) => void;
   moving?: boolean;
+  /** VTID-04915: change the member's own entry. */
+  onEdit?: (item: CalendarWindowItem, patch: CalendarEntryPatch) => void;
+  saving?: boolean;
+  /** VTID-04915: remove the member's own entry. */
+  onRemove?: (item: CalendarWindowItem) => void;
+  removing?: boolean;
+  /** VTID-04915: go to the event or live room the entry belongs to. */
+  onOpenSource?: (path: string) => void;
 }
 
 
-export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving }: Props) {
+export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const e = item.event!;
   const style = KIND_STYLE[entryKind(e)];
@@ -42,6 +56,35 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
   const [when, setWhen] = useState(() => toLocalInput(new Date(item.start_time)));
   const picked = when ? new Date(when) : null;
   const pickedValid = !!picked && !Number.isNaN(picked.getTime()) && picked.getTime() !== Date.parse(item.start_time);
+  const canEdit = canEditEntry(item) && !!onEdit;
+  const canRemove = canRemoveEntry(item) && !!onRemove;
+  const sourceAction = onOpenSource ? sourceActionOf(item, now) : null;
+  const [editing, setEditing] = useState(false);
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const [draft, setDraft] = useState(() => ({
+    title: e.title,
+    start: toLocalInput(new Date(item.start_time)),
+    end: item.end_time ? toLocalInput(new Date(item.end_time)) : "",
+    location: e.location ?? "",
+    description: e.description ?? "",
+  }));
+  const draftStart = draft.start ? new Date(draft.start) : null;
+  const draftEnd = draft.end ? new Date(draft.end) : null;
+  const draftValid =
+    draft.title.trim().length > 0 &&
+    !!draftStart &&
+    !Number.isNaN(draftStart.getTime()) &&
+    (!draftEnd || (!Number.isNaN(draftEnd.getTime()) && draftEnd.getTime() > draftStart.getTime()));
+  const saveEdit = () => {
+    if (!draftValid || !draftStart) return;
+    onEdit!(item, {
+      title: draft.title.trim(),
+      start_time: draftStart.toISOString(),
+      end_time: draftEnd ? draftEnd.toISOString() : null,
+      location: draft.location.trim() || null,
+      description: draft.description.trim() || null,
+    });
+  };
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -68,7 +111,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
       aria-modal="true"
       aria-label={e.title}
       className="fixed inset-0 z-[60] flex flex-col overflow-y-auto"
-      style={{ background: SURFACE.page, color: SURFACE.ink, fontFamily: "Nunito, system-ui, sans-serif" }}
+      style={{ background: SURFACE.page, color: SURFACE.ink }}
       data-testid="vcal-entry-screen"
     >
       <header className="flex flex-col gap-3.5 rounded-b-[36px] px-[22px] pb-7 pt-5 text-white" style={{ background: style.accent }}>
@@ -83,16 +126,16 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             ✕
           </button>
           {source && (
-            <span className="truncate rounded-full bg-white/20 px-3 py-1.5 text-[13px]">{source}</span>
+            <span className="truncate rounded-full bg-white/20 px-3 py-1.5 text-xs">{source}</span>
           )}
         </div>
-        <div aria-hidden className="text-[76px] leading-none">
+        <div aria-hidden className="text-7xl leading-none">
           {itemEmoji(item)}
         </div>
-        <h1 className="m-0 text-[34px] font-medium leading-tight" style={{ fontFamily: HEADING_FONT }}>
+        <h1 className="m-0 text-xl font-bold leading-tight tracking-tight">
           {e.title}
         </h1>
-        <div className="flex flex-col gap-1 text-[17px]">
+        <div className="flex flex-col gap-1 text-base">
           <span>📅 {fmtDate(item.start_time, { weekday: "long", day: "numeric", month: "long" })}</span>
           <span>
             🕗 {timeRange(item.start_time, item.end_time)}
@@ -101,11 +144,11 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           {e.rrule && <span>🔁 {t("vcal.recurring")}</span>}
         </div>
         {done ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-[15px]" style={{ color: style.ink }}>
+          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ✅ {t("vcal.done")}
           </span>
         ) : future ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-[15px]" style={{ color: style.ink }}>
+          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ⏳ {relativeIn(item.start_time, now)}
           </span>
         ) : null}
@@ -113,14 +156,14 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
 
       <div className="flex flex-1 flex-col gap-5 px-[22px] py-5">
         {item.work && (
-          <p className="m-0 rounded-2xl px-4 py-3 text-[15px]" style={{ background: style.bg, color: style.ink }} data-testid="vcal-work-note">
+          <p className="m-0 rounded-2xl px-4 py-3 text-sm" style={{ background: style.bg, color: style.ink }} data-testid="vcal-work-note">
             {t("vcal.work.readOnly")}
           </p>
         )}
 
         {e.description && (
           <section className="flex flex-col gap-1.5">
-            <h2 className="text-[13px]" style={{ color: SURFACE.muted }}>
+            <h2 className="text-xs" style={{ color: SURFACE.muted }}>
               {t("vcal.entry.about")}
             </h2>
             <p className="m-0 whitespace-pre-line text-base leading-relaxed">{e.description}</p>
@@ -128,7 +171,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         )}
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-[13px]" style={{ color: SURFACE.muted }}>
+          <h2 className="text-xs" style={{ color: SURFACE.muted }}>
             {t("vcal.entry.reminders")}
           </h2>
           <div className="flex flex-wrap gap-2" data-testid="vcal-reminders">
@@ -154,7 +197,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             type="button"
             disabled={completing}
             onClick={() => onComplete!(item)}
-            className="h-14 rounded-[18px] text-lg font-medium text-white disabled:opacity-60"
+            className="h-14 rounded-[18px] text-lg font-semibold text-white disabled:opacity-60"
             style={{ background: style.accent }}
             data-testid="vcal-complete"
           >
@@ -163,7 +206,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         )}
         {canMove && picking && (
           <div className="flex flex-col gap-2.5 rounded-[18px] p-4" style={{ background: style.bg }} data-testid="vcal-move-picker">
-            <label htmlFor="vcal-move-when" className="text-[13px]" style={{ color: style.ink }}>
+            <label htmlFor="vcal-move-when" className="text-xs" style={{ color: style.ink }}>
               {t("vcal.move.title")}
             </label>
             <input
@@ -180,7 +223,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               <button
                 type="button"
                 onClick={() => setPicking(false)}
-                className="h-12 rounded-2xl text-[15px]"
+                className="h-12 rounded-2xl text-sm"
                 style={{ background: SURFACE.track }}
               >
                 {t("vcal.move.cancel")}
@@ -189,7 +232,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 type="button"
                 disabled={!pickedValid || moving}
                 onClick={() => picked && onMove!(item, picked)}
-                className="h-12 rounded-2xl text-[15px] font-medium text-white disabled:opacity-60"
+                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
                 style={{ background: style.accent }}
                 data-testid="vcal-move-confirm"
               >
@@ -202,23 +245,162 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <button
             type="button"
             onClick={() => setPicking(true)}
-            className="h-[52px] rounded-2xl text-[15px]"
+            className="h-[52px] rounded-2xl text-sm"
             style={{ background: SURFACE.track }}
             data-testid="vcal-move"
           >
             🗓️ {t("vcal.move.action")}
           </button>
         )}
+        {sourceAction && (
+          <button
+            type="button"
+            onClick={() => onOpenSource!(sourceAction.path)}
+            // Only a room you can join right now is the main action; going to
+            // the event or the room page sits with the other secondary actions.
+            className={
+              sourceAction.kind === "live_room" && sourceAction.joinable
+                ? "h-14 rounded-[18px] text-lg font-semibold text-white"
+                : "h-[52px] rounded-2xl text-sm"
+            }
+            style={{ background: sourceAction.kind === "live_room" && sourceAction.joinable ? style.accent : SURFACE.track }}
+            data-testid="vcal-open-source"
+          >
+            {sourceAction.kind === "event"
+              ? `🎟️ ${t("vcal.entry.openEvent")}`
+              : sourceAction.joinable
+                ? `🎥 ${t("vcal.entry.joinRoom")}`
+                : `🎥 ${t("vcal.entry.openRoom")}`}
+          </button>
+        )}
+        {canEdit && editing && (
+          <div className="flex flex-col gap-2.5 rounded-[18px] p-4" style={{ background: style.bg }} data-testid="vcal-edit-form">
+            <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
+              {t("vcal.edit.titleLabel")}
+              <input
+                value={draft.title}
+                onChange={(ev) => setDraft((d) => ({ ...d, title: ev.target.value }))}
+                className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                data-testid="vcal-edit-title"
+              />
+            </label>
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
+                {t("vcal.edit.startLabel")}
+                <input
+                  type="datetime-local"
+                  value={draft.start}
+                  onChange={(ev) => setDraft((d) => ({ ...d, start: ev.target.value }))}
+                  className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                />
+              </label>
+              <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
+                {t("vcal.edit.endLabel")}
+                <input
+                  type="datetime-local"
+                  value={draft.end}
+                  onChange={(ev) => setDraft((d) => ({ ...d, end: ev.target.value }))}
+                  className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                />
+              </label>
+            </div>
+            <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
+              {t("vcal.edit.locationLabel")}
+              <input
+                value={draft.location}
+                onChange={(ev) => setDraft((d) => ({ ...d, location: ev.target.value }))}
+                className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+              />
+            </label>
+            <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
+              {t("vcal.edit.descriptionLabel")}
+              <textarea
+                value={draft.description}
+                onChange={(ev) => setDraft((d) => ({ ...d, description: ev.target.value }))}
+                rows={3}
+                className="w-full rounded-2xl bg-white px-3 py-2 text-base text-slate-900"
+              />
+            </label>
+            {!draftValid && (
+              <span className="text-sm" style={{ color: style.ink }} role="alert">
+                {t("vcal.edit.invalid")}
+              </span>
+            )}
+            <div className="grid grid-cols-2 gap-2.5">
+              <button type="button" onClick={() => setEditing(false)} className="h-12 rounded-2xl text-sm" style={{ background: SURFACE.track }}>
+                {t("vcal.edit.cancel")}
+              </button>
+              <button
+                type="button"
+                disabled={!draftValid || saving}
+                onClick={saveEdit}
+                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
+                style={{ background: style.accent }}
+                data-testid="vcal-edit-save"
+              >
+                {t("vcal.edit.save")}
+              </button>
+            </div>
+          </div>
+        )}
+        {(canEdit || canRemove) && !editing && !confirmRemove && (
+          <div className="grid grid-cols-2 gap-2.5">
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => setEditing(true)}
+                className={`h-[52px] rounded-2xl text-sm ${canRemove ? "" : "col-span-2"}`}
+                style={{ background: SURFACE.track }}
+                data-testid="vcal-edit"
+              >
+                ✏️ {t("vcal.edit.action")}
+              </button>
+            )}
+            {canRemove && (
+              <button
+                type="button"
+                onClick={() => setConfirmRemove(true)}
+                className={`h-[52px] rounded-2xl text-sm ${canEdit ? "" : "col-span-2"}`}
+                style={{ background: SURFACE.track }}
+                data-testid="vcal-remove"
+              >
+                🗑️ {t("vcal.remove.action")}
+              </button>
+            )}
+          </div>
+        )}
+        {canRemove && confirmRemove && (
+          <div className="flex flex-col gap-2.5 rounded-[18px] p-4" style={{ background: style.bg }} data-testid="vcal-remove-confirm">
+            <span className="text-sm" style={{ color: style.ink }}>
+              {e.rrule ? t("vcal.remove.confirmSeries") : t("vcal.remove.confirm")}
+            </span>
+            <div className="grid grid-cols-2 gap-2.5">
+              <button type="button" onClick={() => setConfirmRemove(false)} className="h-12 rounded-2xl text-sm" style={{ background: SURFACE.track }}>
+                {t("vcal.remove.keep")}
+              </button>
+              <button
+                type="button"
+                disabled={removing}
+                onClick={() => onRemove!(item)}
+                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
+                style={{ background: style.accent }}
+                data-testid="vcal-remove-yes"
+              >
+                {t("vcal.remove.yes")}
+              </button>
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-2 gap-2.5">
           {e.location && (
-            <button type="button" onClick={openDirections} className="h-[52px] rounded-2xl text-[15px]" style={{ background: SURFACE.track }}>
+            <button type="button" onClick={openDirections} className="h-[52px] rounded-2xl text-sm" style={{ background: SURFACE.track }}>
               🗺️ {t("vcal.entry.directions")}
             </button>
           )}
           <button
             type="button"
             onClick={() => activateOrb()}
-            className={`h-[52px] rounded-2xl text-[15px] ${e.location ? "" : "col-span-2"}`}
+            className={`h-[52px] rounded-2xl text-sm ${e.location ? "" : "col-span-2"}`}
             style={{ background: SURFACE.track }}
           >
             🎙️ {t("vcal.entry.askVitana")}

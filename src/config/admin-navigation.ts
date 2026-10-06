@@ -129,21 +129,16 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     key: "navigator",
     label: "Navigator",
     icon: Compass,
-    // VTID-NAV-02 (Session B, merged to main 2026-04-12): Navigator section is
-    // fully implemented and live. These tab names + paths match Session B's
-    // adminNavigatorNavigation in src/config/navigation.ts. Each tab is a real
-    // page under src/pages/admin/navigator/ that wraps itself in AppLayout
-    // and renders SubNavigation with these same tabs, so the sidebar links
-    // and in-page horizontal nav resolve consistently. Simulator is embedded
-    // as a right pane inside Catalog, not a standalone tab.
+    // VTID-NAV-02 (Session B, 2026-04-12) built Catalog, Coverage, Telemetry
+    // and History tabs over the nav_catalog table. VTID-04853: Vitana's screens
+    // now come from the screen registry (src/navigation/registry/), so only
+    // Telemetry remains; it reads the orb.navigator.* OASIS events, which the
+    // registry navigator still emits.
     basePath: "/admin/navigator",
-    defaultTab: "catalog",
+    defaultTab: "telemetry",
     wave: 1,
     tabs: [
-      { key: "catalog", label: "Catalog", path: "/admin/navigator" },
-      { key: "coverage", label: "Coverage", path: "/admin/navigator/coverage" },
       { key: "telemetry", label: "Telemetry", path: "/admin/navigator/telemetry" },
-      { key: "history", label: "History", path: "/admin/navigator/history" },
     ],
   },
   {

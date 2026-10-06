@@ -182,9 +182,12 @@ describe("calendar subscription link (VTID-04358)", () => {
     for (const loc of ["de", "en", "es", "fr", "pt", "pl", "ru", "sr", "tr", "zh", "ar"]) {
       const j = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../../i18n/${loc}/vcal.json`), "utf8"));
       // 16 strings + the per-app wording (VTID-04682): title, intro, create, open.
-      expect(Object.keys(j.vcal.subscribe)).toHaveLength(20);
+      // `_pending_review` is the i18n pipeline's bookkeeping marker (I18N-PROPAGATE adds
+      // empty ones when it syncs a locale), not a string — never count it.
+      const strings = (o: Record<string, unknown>) => Object.keys(o).filter((key) => key !== "_pending_review");
+      expect(strings(j.vcal.subscribe)).toHaveLength(20);
       for (const k of ["titleFor", "introFor", "createFor", "openIn"]) {
-        expect(Object.keys(j.vcal.subscribe[k]).sort()).toEqual(["apple", "google", "outlook"]);
+        expect(strings(j.vcal.subscribe[k]).sort()).toEqual(["apple", "google", "outlook"]);
       }
     }
   });

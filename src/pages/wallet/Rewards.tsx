@@ -13,36 +13,17 @@ import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivational
 import { WalletRewardCard } from "@/components/wallet/WalletRewardCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { EarningStreaksAnalyticsCard } from "@/components/wallet/intelligence/EarningStreaksAnalyticsCard";
 import { CommissionForecastingCard } from "@/components/wallet/intelligence/CommissionForecastingCard";
 import { SocialEarningIntelligenceCard } from "@/components/wallet/intelligence/SocialEarningIntelligenceCard";
 import { EarningIntelligenceSplitScreen } from "@/components/wallet/intelligence/EarningIntelligenceSplitScreen";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { isIAPRestricted } from "@/lib/appilix";
+import { VtnaRewardRules } from "@/components/wallet/VtnaRewardRules";
 import { t } from '@/lib/i18n-toast';
 
 const rewardsData = {
-  earned: [
-    {
-      id: "1",
-      type: "earned" as const,
-      title: "Health Challenge Completion",
-      description: "Completed 30-day wellness challenge with perfect attendance",
-      amount: "250 credits",
-      status: "available" as const,
-      category: "Wellness",
-      dueDate: "Available now"
-    },
-    {
-      id: "2", 
-      type: "earned" as const,
-      title: "Monthly Streak Bonus",
-      description: "Maintained daily health tracking for entire month",
-      amount: "150 credits",
-      status: "available" as const,
-      category: "Consistency"
-    }
-  ],
   pending: [
     {
       id: "3",
@@ -91,6 +72,15 @@ const rewardsData = {
 function Rewards() {
   const [activeTab, setActiveTab] = useUrlTab("tab", "earned");
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Same as Wallet.tsx: the wallet stays hidden in the iPhone app until its
+  // launch there; Android and web show it.
+  useEffect(() => {
+    if (isIAPRestricted()) {
+      navigate('/home', { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <AppLayout>
@@ -124,26 +114,9 @@ function Rewards() {
             <SplitBarTrigger value="intelligence">{t('screens.wallet.earningIntelligence')}</SplitBarTrigger>
           </SplitBarList>
 
-          <WalletMotivationalBanner variant="rewards" />
-
           <SplitBarContent value="earned">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <EarningStreaksAnalyticsCard />
-                <WalletMotivationalBanner variant="rewards" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {rewardsData.earned.map((reward) => (
-                  <WalletRewardCard
-                    key={reward.id}
-                    {...reward}
-                    onClaim={() => console.log('Claim reward:', reward.id)}
-                    onClick={() => console.log('Reward clicked:', reward.id)}
-                  />
-                ))}
-              </div>
-            </div>
+            {/* VTID-04864: the real VTNA rules and this member's progress. */}
+            <VtnaRewardRules />
           </SplitBarContent>
 
           <SplitBarContent value="pending">
@@ -198,25 +171,6 @@ function Rewards() {
               <DialogTitle>{t('screens.wallet.quickActions')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {activeTab === "earned" && (
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">{t('screens.wallet.selectRewardsClaimConvertYourWallet')}</p>
-                  <div className="space-y-2">
-                    {rewardsData.earned.filter(r => r.status === "available").map((reward) => (
-                      <div key={reward.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{reward.title}</h4>
-                          <p className="text-sm text-muted-foreground">{reward.amount}</p>
-                        </div>
-                        <Button size="sm" onClick={() => console.log('Claim:', reward.id)}>
-                          {t('screens.wallet.claim')}
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
               {activeTab === "pending" && (
                 <div className="space-y-4">
                   <p className="text-muted-foreground">{t('screens.wallet.requestPayoutForYourPendingCommissions')}</p>

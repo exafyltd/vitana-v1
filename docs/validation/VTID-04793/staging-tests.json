@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04793",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "first-time supplier: registration opens by itself, two steps, no short-name field, resumes after reload; fits 375px",
+      "spec": "tests/e2e/staging/vtid-04793-commerce-register.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "registration call, setup checklist and categories",
+      "ref": "npx vitest run src/lib/commerce-register.test.ts src/components/commerce/SetupHub.test.ts src/lib/commerce-categories.test.ts src/components/commerce/mobile-adaptation.test.ts src/components/mobile/business-modes.test.ts",
+      "cwd": ".",
+      "reason": "creating a business is a write, proven here instead: one register call with country + website, short-name clashes retried, checklist states derived only from server facts"
+    }
+  ]
+}

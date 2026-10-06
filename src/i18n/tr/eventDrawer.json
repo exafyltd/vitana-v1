@@ -59,7 +59,8 @@
     "outlook": "Outlook",
     "appleCal": "Apple Takvim",
     "downloadIcs": "ICS İndir",
-    "_pending_review": {}
+    "_pending_review": {},
+    "attendingCount": "Katılımcı: {current}"
   },
   "_pending_review": {}
 }

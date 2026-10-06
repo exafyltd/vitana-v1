@@ -127,7 +127,9 @@
       "officialBadge": "oficjalna grupa",
       "empty": "Brak wiadomości.",
       "composerPlaceholder": "Wiadomość…",
-      "_pending_review": {}
+      "_pending_review": {},
+      "today": "Dzisiaj",
+      "yesterday": "Wczoraj"
     },
     "_pending_review": {}
   },

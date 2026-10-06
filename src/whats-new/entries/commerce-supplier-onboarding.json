@@ -1,0 +1,13 @@
+{
+  "id": "commerce-supplier-onboarding",
+  "added": "2026-10-01",
+  "title": {
+    "en": "Bring your business to Vitanaland in a minute",
+    "de": "Bring dein Business in einer Minute nach Vitanaland"
+  },
+  "description": {
+    "en": "Sign up with Google, Apple or email, tell us what your business offers, and follow a simple checklist to get ready to sell on Vitanaland.",
+    "de": "Registriere dich mit Google, Apple oder E-Mail, erzähl uns, was dein Business anbietet, und folge einer einfachen Checkliste bis zum Verkaufsstart auf Vitanaland."
+  },
+  "deepLink": "/commerce"
+}

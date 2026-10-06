@@ -89,7 +89,7 @@ export function CommerceShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-20">{children}</main>
+      <main data-commerce-main className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-20">{children}</main>
     </div>
   );
 }

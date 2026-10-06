@@ -41,14 +41,15 @@ import {
   PackagePlus,
   ShieldCheck,
   Sparkles,
-  Store,
-  Workflow,
+  UserPlus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { AgentConnectCard } from '@/components/commerce/AgentConnectCard';
+import { McpConnectPanel } from '@/components/commerce/McpConnectPanel';
+import { CommerceGuestLanding } from '@/components/commerce/CommerceGuestLanding';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -63,14 +64,23 @@ import { RegisterOrgDialog } from '@/components/commerce/RegisterOrgDialog';
 import { CatalogueImportSheet } from '@/components/commerce/CatalogueImportSheet';
 import { MyOrgCard, type MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { PartnerOrgRoster } from '@/components/commerce/PartnerOrgRoster';
+import { SetupHub } from '@/components/commerce/SetupHub';
+import { SetupChooser, type SetupOption } from '@/components/commerce/SetupChooser';
+import { SalesSetupSheet } from '@/components/commerce/SalesSetupSheet';
 import { adminFetch } from '@/lib/admin-api';
+import { VOICE_SETUP_EVENTS, draftFromVoiceEvent, fetchAiSetupEnabled, type SetupDraft } from '@/lib/commerce-ai-setup';
+import { AiSetupSheet } from '@/components/commerce/AiSetupSheet';
+import { fetchMcpReady } from '@/lib/commerce-mcp';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
-import { businessHomeFor, setActiveOrgId } from '@/lib/business-mode';
+import { pickActiveOrg, readActiveOrgId, setActiveOrgId } from '@/lib/business-mode';
 
+// VTID-04791: the supplier's journey in their words — account, products,
+// verification — not the API-connection pipeline (mapping, sandbox, release),
+// which lives inside a connection's own drawer.
 const STEPS = [
-  { icon: Store, title: 'screens.commerceportal.step1Title', body: 'screens.commerceportal.step1Body' },
-  { icon: Workflow, title: 'screens.commerceportal.step2Title', body: 'screens.commerceportal.step2Body' },
+  { icon: UserPlus, title: 'screens.commerceportal.step1Title', body: 'screens.commerceportal.step1Body' },
+  { icon: PackagePlus, title: 'screens.commerceportal.step2Title', body: 'screens.commerceportal.step2Body' },
   { icon: ShieldCheck, title: 'screens.commerceportal.step3Title', body: 'screens.commerceportal.step3Body' },
 ] as const;
 
@@ -78,6 +88,8 @@ const STEPS = [
 const CONNECTION_PARAM = 'connection';
 /** Same pattern, for the partner-org roster drawer (VTID-03936). */
 const ORG_PARAM = 'org';
+/** VTID-04793: the first-time registration sheet opens by itself once per visit. */
+const AUTO_REGISTER_KEY = 'vitana.commerce.autoRegisterShown';
 
 export default function CommercePortal() {
   // VTID follow-up: `/commerce` now allows guests (App.tsx's AuthGuard
@@ -90,12 +102,40 @@ export default function CommercePortal() {
   const firstName = user ? profile?.displayName?.trim().split(/\s+/)[0] || '' : '';
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
+  // VTID-04795: the four ways to add products, and the business's sales setup.
+  const [chooserOpen, setChooserOpen] = useState(false);
+  const [salesOpen, setSalesOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
   const [registerOrgOpen, setRegisterOrgOpen] = useState(false);
+  // VTID-04839: "Set up with AI" leads only once the gateway has it switched
+  // on (COMMERCE_AI_SETUP_ENABLED); until then the manual-first layout stays.
+  // null = not known yet: the first-visit sheet waits for it, so the AI path
+  // is never skipped just because the business list answered first.
+  const [aiReady, setAiReady] = useState<boolean | null>(null);
+  const [aiSetupOpen, setAiSetupOpen] = useState(false);
+  // VTID-04848: the preferred onboarding — copy the MCP address into your own
+  // AI assistant. Leads only once the gateway serves /mcp with a sign-in
+  // server (COMMERCE_MCP_ENABLED); null = not known yet.
+  const [mcpReady, setMcpReady] = useState<boolean | null>(null);
+  const [mcpOpen, setMcpOpen] = useState(false);
+  // VTID-04841: a draft Vitana made by voice opens the same review card.
+  const [voiceDraft, setVoiceDraft] = useState<SetupDraft | null>(null);
   // VTID-04745: CSV catalogue import, per organization the user administers.
   const [catalogueImportOpen, setCatalogueImportOpen] = useState(false);
   const [myOrgs, setMyOrgs] = useState<MyOrgRow[] | null>(null);
+  // VTID-04793: a failed load must never read as "no business yet".
+  const [myOrgsFailed, setMyOrgsFailed] = useState(false);
   const adminOrgs = (myOrgs ?? []).filter((o) => o.role === 'org_admin');
+  // VTID-04793: which business the setup hub shows (same stored choice the
+  // business mode uses), and a bump to reload it after a product is added.
+  const [hubOrgId, setHubOrgId] = useState<string | null>(() => readActiveOrgId());
+  const [hubRefresh, setHubRefresh] = useState(0);
+  const hubOrg = pickActiveOrg(adminOrgs, hubOrgId);
+  // One business choice for the hub and every setup sheet (VTID-04796).
+  const selectHubOrg = (id: string) => {
+    setActiveOrgId(id);
+    setHubOrgId(id);
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const reduce = useReducedMotion();
@@ -120,8 +160,10 @@ export default function CommercePortal() {
     try {
       const res = await adminFetch(`${PARTNER_ORGS_API}/mine`);
       setMyOrgs(res.organizations ?? []);
+      setMyOrgsFailed(false);
     } catch {
       setMyOrgs([]);
+      setMyOrgsFailed(true);
       notifyError('screens.commerceportal.orgOnboarding.orgsLoadFailed');
     }
   }, []);
@@ -130,17 +172,32 @@ export default function CommercePortal() {
   loadMyOrgsRef.current = loadMyOrgs;
 
   // VTID-03999: a freshly registered business becomes the active business
-  // mode and its admin lands on the team page, where invitations are sent.
-  const onOrgRegistered = useCallback(
-    async (org: MyOrgRow | null) => {
-      await loadMyOrgsRef.current();
-      if (org) {
-        setActiveOrgId(org.id);
-        navigate(businessHomeFor('org_admin'));
-      }
-    },
-    [navigate],
-  );
+  // mode. VTID-04793: its admin stays here — the dialog shows "You're
+  // registered" and "Continue setup" lands on the setup hub below, instead of
+  // dropping a brand-new supplier on the team page.
+  const onOrgRegistered = useCallback(async (org: MyOrgRow | null) => {
+    await loadMyOrgsRef.current();
+    if (org) {
+      setActiveOrgId(org.id);
+      setHubOrgId(org.id);
+    }
+  }, []);
+
+  // VTID-04793: a signed-in user with no business yet goes straight into
+  // registering one — decided from the server's own list, not a browser flag.
+  // Closing the sheet is respected for the rest of the visit.
+  useEffect(() => {
+    if (!user || myOrgs === null || myOrgsFailed || myOrgs.length > 0 || aiReady === null || mcpReady === null) return;
+    try {
+      if (sessionStorage.getItem(AUTO_REGISTER_KEY)) return;
+      sessionStorage.setItem(AUTO_REGISTER_KEY, '1');
+    } catch {
+      /* storage unavailable: still open it once for this render */
+    }
+    if (mcpReady) setMcpOpen(true);
+    else if (aiReady) setAiSetupOpen(true);
+    else setRegisterOrgOpen(true);
+  }, [user, myOrgs, myOrgsFailed, aiReady, mcpReady]);
 
   useEffect(() => {
     // Guests have nothing to load — both endpoints require an account, and
@@ -148,7 +205,30 @@ export default function CommercePortal() {
     if (!user) return;
     void load();
     void loadMyOrgs();
+    void fetchAiSetupEnabled(adminFetch).then(setAiReady);
+    void fetchMcpReady().then(setMcpReady);
   }, [user, load, loadMyOrgs]);
+
+  // VTID-04894: the pre-login landing explains the one-step connection only
+  // once the gateway serves it — a public metadata GET, no account needed.
+  useEffect(() => {
+    if (user) return;
+    void fetchMcpReady().then(setMcpReady);
+  }, [user]);
+
+  // VTID-04841: Vitana drafted the business by voice → open the review card
+  // with her draft. Only the supplier's tap there creates anything.
+  useEffect(() => {
+    if (!user || !aiReady) return;
+    const onDraft = (e: Event) => {
+      const draft = draftFromVoiceEvent((e as CustomEvent).detail);
+      if (!draft) return;
+      setVoiceDraft(draft);
+      setAiSetupOpen(true);
+    };
+    window.addEventListener(VOICE_SETUP_EVENTS.draft, onDraft);
+    return () => window.removeEventListener(VOICE_SETUP_EVENTS.draft, onDraft);
+  }, [user, aiReady]);
 
   const openOrgRoster = (id: string) => {
     setSearchParams((prev) => {
@@ -208,6 +288,17 @@ export default function CommercePortal() {
     el.querySelector<HTMLElement>('button')?.focus({ preventScroll: true });
   };
 
+  // VTID-04795: each setup option opens what already exists.
+  const chooseSetup = (option: SetupOption) => {
+    if (option === 'ai') {
+      if (mcpReady) setMcpOpen(true);
+      else if (aiReady) setAiSetupOpen(true);
+      else connectViaAgent();
+    }
+    else if (option === 'manual') setAddProductOpen(true);
+    else setManualOpen(true);
+  };
+
   const fade = reduce
     ? {}
     : { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, ease: 'easeOut' as const } };
@@ -231,9 +322,8 @@ export default function CommercePortal() {
         ? t('screens.commerceportal.heroTitlePersonalizedNoOrg', { name: firstName })
         : t('screens.commerceportal.heroTitle');
 
-  // WHAT HAPPENS NEXT — shared between the guest view (always visible, any
-  // width) and the signed-in merchant-integration block (lg:-gated, unchanged
-  // scope). Enlarged per owner feedback: bigger numbers/titles, bolder cards,
+  // WHAT HAPPENS NEXT — the pre-login landing only (VTID-04894, owner
+  // decision 2026-10-05: it belongs there and only there). Enlarged per owner feedback: bigger numbers/titles, bolder cards,
   // so each step reads at a glance instead of needing to be read closely.
   const whatHappensNextSection = (
     <section className="mt-4 md:mt-6">
@@ -365,23 +455,66 @@ export default function CommercePortal() {
           twoColumn ? 'lg:justify-start' : ''
         }`}
       >
-        <Button
-          size="lg"
-          onClick={connectViaAgent}
-          className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
-        >
-          <Sparkles className="me-2 h-4 w-4" />
-          {t('screens.commerceportal.agentConnect.title')}
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={() => setRegisterOrgOpen(true)}
-          className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
-        >
-          <Building2 className="me-2 h-4 w-4" />
-          {t('screens.commerceportal.orgOnboarding.registerCta')}
-        </Button>
+        {mcpReady ? (
+          <>
+            {/* VTID-04848 (owner decision 2026-10-02): connecting your own AI
+                agent is THE way to onboard; registering by hand is the
+                clearly secondary fallback. No website reading, no forms first. */}
+            <Button
+              size="lg"
+              onClick={() => setMcpOpen(true)}
+              data-testid="hero-ai"
+              className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+            >
+              <Sparkles className="me-2 h-4 w-4" />
+              {t('screens.commerceportal.mcpConnect.cta')}
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setRegisterOrgOpen(true)}
+              data-testid="hero-manual"
+              className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+            >
+              <Building2 className="me-2 h-4 w-4" />
+              {t('screens.commerceportal.mcpConnect.manualCta')}
+            </Button>
+          </>
+        ) : (
+          <>
+            {/* VTID-04839: once "Set up with AI" is switched on it leads (owner
+                decision 2026-10-02: AI first, manual only if someone prefers it).
+                Until then registering leads for a supplier without a business and
+                the AI button stays the quiet one (VTID-04795). Always two buttons. */}
+            <Button
+              size="lg"
+              variant={aiReady ? 'default' : 'outline'}
+              onClick={aiReady ? () => setAiSetupOpen(true) : connectViaAgent}
+              data-testid="hero-ai"
+              className={
+                aiReady
+                  ? 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+                  : 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:order-last sm:w-auto'
+              }
+            >
+              <Sparkles className="me-2 h-4 w-4" />
+              {aiReady ? t('screens.commerceportal.aiSetup.cta') : t('screens.commerceportal.agentConnect.title')}
+            </Button>
+            <Button
+              size="lg"
+              variant={hasOrgs || aiReady ? 'outline' : 'default'}
+              onClick={() => setRegisterOrgOpen(true)}
+              className={`${
+                hasOrgs || aiReady
+                  ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
+                  : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+              } ${aiReady ? '' : 'order-first'}`}
+            >
+              <Building2 className="me-2 h-4 w-4" />
+              {aiReady ? t('screens.commerceportal.aiSetup.manualCta') : t('screens.commerceportal.orgOnboarding.registerCta')}
+            </Button>
+          </>
+        )}
       </div>
     </>
   );
@@ -397,7 +530,7 @@ export default function CommercePortal() {
         agentHighlight ? 'ring-4 ring-amber-400/70 ring-offset-2 ring-offset-background' : ''
       }`}
     >
-      <AgentConnectCard />
+      {mcpReady ? <McpConnectPanel onRegisterManually={() => setRegisterOrgOpen(true)} /> : <AgentConnectCard />}
     </motion.section>
   );
 
@@ -418,12 +551,19 @@ export default function CommercePortal() {
       <motion.section {...fade} className="pt-6 lg:pt-10">
         {!user ? (
           <div className="text-center">
-            <h1 className="mx-auto max-w-3xl text-2xl font-semibold leading-tight text-foreground lg:text-5xl">
-              {heroHeadline}
+            {/* VTID-04894: the story opener — guest-only keys, so the
+                signed-in hero (heroTitle/heroSubtitle) is unchanged. */}
+            <h1 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-foreground lg:text-5xl">
+              {t('screens.commerceportal.guest.heroTitle')}
             </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-base">
-              {t('screens.commerceportal.heroSubtitle')}
+            <p className="mx-auto mt-3 max-w-2xl text-lg leading-relaxed text-foreground md:mt-4 md:text-xl">
+              {t('screens.commerceportal.guest.heroSubtitle')}
             </p>
+            {mcpReady && (
+              <p className="mx-auto mt-2 max-w-2xl text-base font-semibold text-amber-800 md:text-lg">
+                {t('screens.commerceportal.guest.heroTagline')}
+              </p>
+            )}
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
               {/* Guest: one clear CTA, not the two-button row — neither
                   "connect an agent" nor "register a business" can actually
@@ -434,11 +574,12 @@ export default function CommercePortal() {
                 onClick={() => navigate(`/commerce/join?redirectTo=${encodeURIComponent('/commerce')}`)}
                 className="h-12 w-full rounded-xl bg-amber-700 px-8 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
               >
-                {t('screens.commerceportal.guestCta')}
+                {mcpReady ? t('screens.commerceportal.mcpConnect.cta') : t('screens.commerceportal.guestCta')}
               </Button>
             </div>
+            <p className="mt-3 text-xs text-muted-foreground">{t('screens.commerceportal.guestCtaHint')}</p>
           </div>
-        ) : hasOrgs ? (
+        ) : hasOrgs || aiReady || mcpReady ? (
           heroCopy(false)
         ) : (
           <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
@@ -447,6 +588,19 @@ export default function CommercePortal() {
           </div>
         )}
       </motion.section>
+
+      {/* VTID-04793: GET READY TO SELL — the registered business's own
+          checklist, for its admins, above everything else. */}
+      {user && hubOrg && (
+        <SetupHub
+          orgs={adminOrgs}
+          activeOrgId={hubOrg.id}
+          onSelectOrg={selectHubOrg}
+          onAddProducts={() => setChooserOpen(true)}
+          onSalesSetup={() => setSalesOpen(true)}
+          refreshKey={hubRefresh}
+        />
+      )}
 
       {user && hasOrgs && orgsSection}
 
@@ -457,7 +611,13 @@ export default function CommercePortal() {
         // connections data, none of which exist for a session that isn't
         // signed in yet. Visible at every width (no `hidden lg:block`) —
         // it's the only thing a guest gets to see below the hero.
-        whatHappensNextSection
+        // VTID-04894: told as a story — why, the one-step connection, the
+        // steps (this page only) and a closing call to join.
+        <CommerceGuestLanding
+          mcpReady={mcpReady === true}
+          onJoin={() => navigate(`/commerce/join?redirectTo=${encodeURIComponent('/commerce')}`)}
+          steps={whatHappensNextSection}
+        />
       ) : (
         /* VTID-03999: the merchant-integration pitch, steps, VCAOP connections
            and manual fallback are desktop-portal surfaces (`ConnectionWorkbench`,
@@ -472,30 +632,32 @@ export default function CommercePortal() {
               VTID-03882's own framing: "this is what the product is". */}
           {hasOrgs && agentCard('mx-auto mt-8 max-w-3xl scroll-mt-24 md:mt-10')}
 
-          {whatHappensNextSection}
-
           {/* PREFER TO DO IT YOURSELF — a real, bounded secondary card. Both
               options are equal-weight real buttons now, replacing the old
-              solid-button-next-to-ghost-link row. */}
-          <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
-            <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <Button
-                onClick={() => setAddProductOpen(true)}
-                className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
-              >
-                <PackagePlus className="me-2 h-4 w-4" />
-                {t('screens.commerceportal.addProduct')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setManualOpen(true)}
-                className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
-              >
-                {t('screens.commerceportal.manualCta')}
-              </Button>
-            </div>
-          </section>
+              solid-button-next-to-ghost-link row. VTID-04839: hidden while
+              "Set up with AI" leads — the hero already offers "Prefer to set it
+              up yourself", and this card speaks of the old assistant. */}
+          {!aiReady && (
+            <section className="mt-12 rounded-2xl border border-border bg-card p-6 md:mt-16">
+              <h2 className="text-sm font-medium text-foreground">{t('screens.commerceportal.manualIntro')}</h2>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  onClick={() => setAddProductOpen(true)}
+                  className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                >
+                  <PackagePlus className="me-2 h-4 w-4" />
+                  {t('screens.commerceportal.addProduct')}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setManualOpen(true)}
+                  className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
+                >
+                  {t('screens.commerceportal.manualCta')}
+                </Button>
+              </div>
+            </section>
+          )}
 
           {/* YOUR CONNECTIONS */}
           <section className="mt-12 md:mt-16">
@@ -541,12 +703,77 @@ export default function CommercePortal() {
 
       <p className="mt-8 text-center text-xs text-muted-foreground">{t('screens.commerceportal.footNote')}</p>
 
-      <ManualConnectDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={load} />
+      <ManualConnectDialog
+        open={manualOpen}
+        onOpenChange={setManualOpen}
+        onCreated={load}
+        org={hubOrg}
+        orgs={adminOrgs}
+        onSelectOrg={selectHubOrg}
+      />
 
-      <AddProductSheet open={addProductOpen} onOpenChange={setAddProductOpen} onSaved={load} />
+      <AddProductSheet
+        open={addProductOpen}
+        onOpenChange={setAddProductOpen}
+        onSaved={async () => {
+          await load();
+          setHubRefresh((n) => n + 1);
+        }}
+        orgs={adminOrgs}
+        activeOrgId={hubOrg?.id ?? null}
+        onSelectOrg={selectHubOrg}
+        onImportFile={() => setCatalogueImportOpen(true)}
+        onRegister={() => setRegisterOrgOpen(true)}
+      />
+      <SetupChooser
+        open={chooserOpen}
+        onOpenChange={setChooserOpen}
+        onChoose={chooseSetup}
+        aiReady={aiReady === true}
+        org={hubOrg}
+        orgs={adminOrgs}
+        onSelectOrg={selectHubOrg}
+      />
+      <SalesSetupSheet
+        open={salesOpen}
+        onOpenChange={setSalesOpen}
+        org={hubOrg}
+        onSaved={() => setHubRefresh((n) => n + 1)}
+      />
 
       <RegisterOrgDialog open={registerOrgOpen} onOpenChange={setRegisterOrgOpen} onCreated={onOrgRegistered} />
+      {/* VTID-04839: "Set up with AI" — website → draft → review → one tap. */}
+      <AiSetupSheet
+        open={aiSetupOpen}
+        onOpenChange={(next) => {
+          setAiSetupOpen(next);
+          if (!next) setVoiceDraft(null);
+        }}
+        initialDraft={voiceDraft}
+        org={hubOrg}
+        orgs={adminOrgs}
+        onSelectOrg={selectHubOrg}
+        onPreferManual={() => (hubOrg ? setAddProductOpen(true) : setRegisterOrgOpen(true))}
+        onDone={async (outcome) => {
+          await onOrgRegistered({ id: outcome.organization.id } as MyOrgRow);
+          setHubRefresh((n) => n + 1);
+        }}
+      />
       <CatalogueImportSheet open={catalogueImportOpen} onOpenChange={setCatalogueImportOpen} adminOrgs={adminOrgs} />
+      {/* VTID-04848: "Connect your AI agent" — the MCP address, one Copy. */}
+      <ResponsiveDialog open={mcpOpen} onOpenChange={setMcpOpen}>
+        <ResponsiveDialogContent className="max-w-xl">
+          <ResponsiveDialogTitle className="sr-only">{t('screens.commerceportal.mcpConnect.cta')}</ResponsiveDialogTitle>
+          <ResponsiveDialogBody>
+            <McpConnectPanel
+              onRegisterManually={() => {
+                setMcpOpen(false);
+                setRegisterOrgOpen(true);
+              }}
+            />
+          </ResponsiveDialogBody>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
       {/* "Connect via AI Agent" below lg:, where the card itself is hidden. */}
       <ResponsiveDialog open={agentDialogOpen} onOpenChange={setAgentDialogOpen}>
         <ResponsiveDialogContent className="max-w-xl">

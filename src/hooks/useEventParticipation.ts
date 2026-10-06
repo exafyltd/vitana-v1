@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
-import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useAuth } from "@/context/AuthProvider";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { notify, notifyError } from '@/lib/i18n-toast';
@@ -24,13 +23,20 @@ export interface EventDetails {
 const isValidUUID = (id: string) =>
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
-export function useEventParticipation(eventId: string, initialCount: number = 0, eventDetails?: EventDetails) {
+// `_eventDetails` is kept so existing callers compile; the calendar entry no
+// longer needs it (VTID-04915).
+export function useEventParticipation(eventId: string, initialCount: number = 0, _eventDetails?: EventDetails) {
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
   const { user, session } = useAuth();
   const { toast } = useToast();
-  const { addEvent, removeEvent } = useCalendarEvents();
   const queryClient = useQueryClient();
+
+  // Re-seed when the list hands us a newer count (refetch/realtime), instead
+  // of keeping the value from the first render forever (VTID-04907).
+  useEffect(() => {
+    setParticipantCount(initialCount);
+  }, [initialCount]);
 
   const participationQueryKey = ['event-participation', eventId, user?.id];
 
@@ -123,35 +129,12 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
 
         if (error) throw error;
 
-        // Sync participant_count on the event row
-        await supabase
-          .from('global_community_events')
-          .update({ participant_count: Math.max(0, participantCount - 1) })
-          .eq('id', eventId);
+        // No write to global_community_events.participant_count: members
+        // cannot update other people's events (a silent no-op under RLS);
+        // counts always come from participant rows (VTID-04907).
 
-        // Also remove matching calendar event
-        try {
-          const { data: calendarEvents, error: calendarEventsError } = await supabase
-            .from('calendar_events')
-            .select('id, metadata')
-            .eq('user_id', user.id);
-
-          if (calendarEventsError) {
-            console.error('Error fetching calendar events to remove on leave:', calendarEventsError);
-          }
-
-          if (calendarEvents) {
-            const matchingEvent = calendarEvents.find((ce: any) => {
-              const meta = ce.metadata;
-              return meta && typeof meta === 'object' && (meta as any).meetup_id === eventId;
-            });
-            if (matchingEvent) {
-              await removeEvent(matchingEvent.id);
-            }
-          }
-        } catch (calError) {
-          console.error('Error removing calendar event:', calError);
-        }
+        // VTID-04915: the calendar entry is cancelled by the database
+        // (trg_event_participation_calendar, VTID-04321) on every leave path.
 
         queryClient.setQueryData(participationQueryKey, { isParticipating: false });
         setParticipantCount(prev => Math.max(0, prev - 1));
@@ -172,36 +155,9 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
 
         if (error) throw error;
 
-        // Sync participant_count on the event row
-        await supabase
-          .from('global_community_events')
-          .update({ participant_count: participantCount + 1 })
-          .eq('id', eventId);
-
-        // Also add to VITANA Smart Calendar if event details provided
-        if (eventDetails) {
-          try {
-            await addEvent({
-              user_id: '',
-              title: eventDetails.title,
-              description: eventDetails.description || '',
-              start_time: eventDetails.start_time,
-              end_time: eventDetails.end_time,
-              location: eventDetails.location || '',
-              event_type: 'community' as const,
-              status: 'confirmed' as const,
-              priority: 'medium' as const,
-              is_recurring: false,
-              source_type: 'manual' as const,
-              metadata: {
-                meetup_id: eventId,
-                meetup_slug: eventDetails.slug,
-              }
-            }, { showToast: false });
-          } catch (calError) {
-            console.error('Error adding calendar event:', calError);
-          }
-        }
+        // VTID-04915: the calendar entry is written by the database
+        // (trg_event_participation_calendar, VTID-04321), the same for web,
+        // voice and tickets — no second, client-side copy any more.
 
         queryClient.setQueryData(participationQueryKey, { isParticipating: true });
         setParticipantCount(prev => prev + 1);

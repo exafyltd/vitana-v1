@@ -47,7 +47,7 @@ export function useAutopilotComplete() {
 
         if (vector && magnitude > 0) {
           // Suppress the watcher's auto-toast for the next ~2s — this single
-          // celebrate() call produces the unified Index + VTN toast.
+          // celebrate() call produces the unified Index + VTNA toast.
           (window as unknown as { __vitanaSuppressLiftUntil?: number }).__vitanaSuppressLiftUntil =
             Date.now() + SUPPRESS_LIFT_WINDOW_MS;
 
@@ -64,7 +64,7 @@ export function useAutopilotComplete() {
             source: "autopilot",
           });
         } else if (reward > 0) {
-          toast.success(`+${reward} VTN earned!`, {
+          toast.success(`+${reward} VTNA earned!`, {
             description: `Task completed: ${rec.title}`,
           });
         }

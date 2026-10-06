@@ -15,10 +15,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback, lazy, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
-import { isPast } from "date-fns";
+import { selectHotEvents } from "@/lib/events/hotEvents";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
-import { useCommunityEvents } from '@/hooks/useCommunityEvents';
+import { useCommunityEvents, fetchCommunityEventByIdOrSlug, type CommunityEvent } from '@/hooks/useCommunityEvents';
 import { useFollowingFeed } from '@/hooks/useFollowingFeed';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/AuthProvider";
@@ -40,6 +40,15 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { notifyError, t } from '@/lib/i18n-toast';
 import { resolveEventCover, generateCoverUrl } from '@/lib/eventCoverImage';
+import {
+  useLiveRoomEvents,
+  useOpenLiveRoom,
+  isLiveRoomEvent,
+  isOngoingLiveRoom,
+  liveRoomCardOverrides,
+  LiveRoomEventDrawer,
+  EventLiveRoomCard,
+} from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 
@@ -62,6 +71,9 @@ const UniversalShareDialog = lazy(() =>
   import('@/components/sharing/UniversalShareDialog').then((m) => ({ default: m.UniversalShareDialog })));
 const AutopilotPopup = lazy(() =>
   import('@/components/AutopilotPopup').then((m) => ({ default: m.AutopilotPopup })));
+// VTID-04907: "+" → Live Room opens the existing Go Live popup.
+const GoLivePopup = lazy(() =>
+  import('@/components/GoLivePopup').then((m) => ({ default: m.GoLivePopup })));
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -71,7 +83,14 @@ const formatEventTime = (dateString: string) => {
   return `${day} · ${time}`;
 };
 
-const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void, imagePriority = false) => {
+const transformEventToNewsCard = (...args: Parameters<typeof transformEventToNewsCardBase>) => {
+  const [event] = args;
+  const card = transformEventToNewsCardBase(...args);
+  // VTID-04907: a Live Room is the same full card, with a red LIVE badge.
+  return isLiveRoomEvent(event) ? { ...card, ...liveRoomCardOverrides(event) } : card;
+};
+
+const transformEventToNewsCardBase = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void, imagePriority = false) => {
   // Construct author object with proper fallback chain
   const authorName = event.creator_display_name || event.author?.name || 'Community Host';
   const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
@@ -231,7 +250,13 @@ const renderEventGrid = (
         {isEvenRow ? (
           <>
             <div className="col-span-6">
-              <NewsCard
+              {isLiveRoomEvent(rowEvents[0]) ? (
+<EventLiveRoomCard key={`${i}-0`} event={rowEvents[0]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                  "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
+                  onClick && "hover:ring-2 hover:ring-primary"
+                )} />
+) : (
+<NewsCard
                 key={`${i}-0`}
                 {...mkProps(rowEvents[0], 0)}
                 className={cn(
@@ -239,10 +264,17 @@ const renderEventGrid = (
                   onClick && "hover:ring-2 hover:ring-primary"
                 )}
               />
+)}
             </div>
             {rowEvents[1] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[1]) ? (
+<EventLiveRoomCard key={`${i}-1`} event={rowEvents[1]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-1`}
                   {...mkProps(rowEvents[1], 1)}
                   className={cn(
@@ -250,11 +282,18 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
             {rowEvents[2] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[2]) ? (
+<EventLiveRoomCard key={`${i}-2`} event={rowEvents[2]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-2`}
                   {...mkProps(rowEvents[2], 2)}
                   className={cn(
@@ -262,6 +301,7 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
           </>
@@ -269,7 +309,13 @@ const renderEventGrid = (
           <>
             {rowEvents[0] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[0]) ? (
+<EventLiveRoomCard key={`${i}-0`} event={rowEvents[0]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-0`}
                   {...mkProps(rowEvents[0], 0)}
                   className={cn(
@@ -277,11 +323,18 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
             {rowEvents[1] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[1]) ? (
+<EventLiveRoomCard key={`${i}-1`} event={rowEvents[1]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-1`}
                   {...mkProps(rowEvents[1], 1)}
                   className={cn(
@@ -289,11 +342,18 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
             {rowEvents[2] && (
               <div className="col-span-6">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[2]) ? (
+<EventLiveRoomCard key={`${i}-2`} event={rowEvents[2]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-2`}
                   {...mkProps(rowEvents[2], 2)}
                   className={cn(
@@ -301,6 +361,7 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
           </>
@@ -328,7 +389,29 @@ const eventsScrollMemory = new Map<string, number>();
 const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
-  const { events: dbEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
+  const { events: loadedEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
+  // VTID-04902: an event opened by a link (e.g. tapped in a chat) that is not
+  // in the loaded list is fetched on its own and shown alongside it.
+  const [linkedEvents, setLinkedEvents] = useState<CommunityEvent[]>([]);
+  // VTID-04907: Live Rooms (live + scheduled) are listed as normal event cards
+  // in the same list — one catalog, sorted by start time.
+  const liveRoomEvents = useLiveRoomEvents();
+  const openLiveRoom = useOpenLiveRoom();
+  const [roomDrawerEvent, setRoomDrawerEvent] = useState<CommunityEvent | null>(null);
+  const dbEvents = useMemo(() => {
+    if (linkedEvents.length === 0 && liveRoomEvents.length === 0) return loadedEvents;
+    const ids = new Set(loadedEvents.map(e => e.id));
+    const extra = [...linkedEvents, ...liveRoomEvents].filter(e => {
+      if (ids.has(e.id)) return false;
+      ids.add(e.id);
+      return true;
+    });
+    return [...loadedEvents, ...extra].sort(
+      (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
+    );
+  }, [loadedEvents, linkedEvents, liveRoomEvents]);
+  const deepLinkFetchedRef = useRef<string | null>(null);
+  const roomDeepLinkRef = useRef<string | null>(null);
   const {
     followingIds,
     profiles: followedProfiles,
@@ -344,6 +427,7 @@ const EventsAndMeetups = () => {
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [createSelectionOpen, setCreateSelectionOpen] = useState(false);
+  const [goLiveOpen, setGoLiveOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   // Use the mobile hook
@@ -371,19 +455,20 @@ const EventsAndMeetups = () => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     
     return dbEvents.filter(event => {
+      if (isOngoingLiveRoom(event)) return true;
       const eventDate = new Date(event.start_time);
       return eventDate >= today && eventDate < tomorrow;
     });
   }, [dbEvents]);
 
+  // VTID-04907: Upcoming = everything still ahead, including later today
+  // (it used to start at tomorrow, so tonight's events were only on Today),
+  // plus rooms that are live or waiting for their host right now.
   const upcomingEvents = useMemo(() => {
-    const tomorrow = new Date();
-    tomorrow.setHours(0, 0, 0, 0);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
+    const now = new Date();
     return dbEvents.filter(event => {
-      const eventDate = new Date(event.start_time);
-      return eventDate >= tomorrow;
+      if (isOngoingLiveRoom(event)) return true;
+      return new Date(event.start_time) >= now;
     });
   }, [dbEvents]);
 
@@ -427,22 +512,11 @@ const EventsAndMeetups = () => {
   }, [dbEvents, searchQuery]);
 
 
-  const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
-  const HOT_EVENT_IDS = new Set([
-    '6bb46db6-a3ba-42b6-8a50-2be8658e436f', // Dancing Filmevent
-  ]);
-
-  const maxinaEvents = useMemo(() => {
-    return dbEvents
-      .filter(event => event.created_by === MAXINA_CREATOR_ID || HOT_EVENT_IDS.has(event.id))
-      // Unlike the Today/Upcoming tabs (day-granularity by design), Hot is a
-      // curated highlight list — it must drop an event the moment it ends,
-      // not just at midnight. `useCommunityEvents`' query only cuts off at
-      // start-of-day, so a morning event stays in `dbEvents` (and therefore
-      // in Hot) for the rest of that same day with no time-of-day filter.
-      .filter(event => !isPast(new Date(event.end_time || event.start_time)))
-      .map(event => ({ ...event, event_type: 'event' }));
-  }, [dbEvents]);
+  // VTID-04903: Hot = curated events first, then every other member's
+  // upcoming event (new ones near the top) — no longer only one hardcoded
+  // account. Unlike the Today/Upcoming tabs (day-granularity by design), Hot
+  // drops an event the moment it ends (see selectHotEvents).
+  const maxinaEvents = useMemo(() => selectHotEvents(dbEvents), [dbEvents]);
 
   const followingSet = useMemo(() => new Set(followingIds), [followingIds]);
 
@@ -461,8 +535,11 @@ const EventsAndMeetups = () => {
   // Get all events from current tab
   const currentEvents = activeTab === "today" ? filteredTodayEvents : 
                         activeTab === "upcoming" ? filteredUpcomingEvents :
-                        activeTab === "hot" ? maxinaEvents : [];
-  const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
+                        activeTab === "hot" ? maxinaEvents :
+                        // VTID-04907: the drawer never opened on Following.
+                        activeTab === "following" ? followedEvents : [];
+  // Prev/next in the event drawer skips rooms (they open their own drawer).
+  const visibleEventIds = useMemo(() => currentEvents.filter(e => !isLiveRoomEvent(e)).map(e => e.id), [currentEvents, activeTab]);
 
   // Track if we've initialized the tab from URL (prevents resetting on data refresh)
   const hasInitializedTab = useRef(false);
@@ -544,10 +621,26 @@ const EventsAndMeetups = () => {
   // Handle event deep linking when dbEvents loads
   useEffect(() => {
     const eventParam = searchParams.get('event');
-    if (!eventParam || dbEvents.length === 0) return;
+    if (!eventParam || loading) return;
     
-    // If event param exists, find and scroll to it
-    const event = dbEvents.find(e => e.id === eventParam);
+    // If event param exists, find and scroll to it (by id, or by the share
+    // link's slug — VTID-04902)
+    const event = dbEvents.find(e => e.id === eventParam || (e.slug && e.slug === eventParam));
+    if (!event) {
+      if (deepLinkFetchedRef.current === eventParam) return;
+      deepLinkFetchedRef.current = eventParam;
+      fetchCommunityEventByIdOrSlug(eventParam).then(found => {
+        if (found) setLinkedEvents(prev => (prev.some(e => e.id === found.id) ? prev : [...prev, found]));
+      });
+      return;
+    }
+    if (isLiveRoomEvent(event)) {
+      // A room link: open the room's own drawer, never the event drawer.
+      if (roomDeepLinkRef.current === eventParam) return;
+      roomDeepLinkRef.current = eventParam;
+      setRoomDrawerEvent(event);
+      return;
+    }
     if (event && !selectedEventId) {
       // Auto-detect tab if not already set correctly
       const eventDate = new Date(event.start_time);
@@ -559,20 +652,34 @@ const EventsAndMeetups = () => {
       const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
       setActiveTab(detectedTab);
       
-      selectEvent(eventParam);
+      selectEvent(event.id);
+      if (event.id !== eventParam) {
+        // A slug link: keep the URL on the id like every other selection.
+        setSearchParams(prev => {
+          const next = new URLSearchParams(prev);
+          next.set('event', event.id);
+          return next;
+        }, { replace: true });
+      }
       setTimeout(() => {
-        const card = document.querySelector(`[data-event-id="${eventParam}"]`);
+        const card = document.querySelector(`[data-event-id="${event.id}"]`);
         card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
     }
-  }, [dbEvents]);
+  }, [dbEvents, loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle card click
   const handleCardClick = useCallback((event: any) => {
+    if (isLiveRoomEvent(event)) {
+      // Live now → into the room; scheduled → its drawer (Notify me, calendar).
+      if (event.metadata?.is_live) openLiveRoom(event);
+      else setRoomDrawerEvent(event);
+      return;
+    }
     setFocusedCardId(event.id);
     selectEvent(event.id);
     setSearchParams({ event: event.id, tab: activeTab });
-  }, [activeTab, selectEvent, setSearchParams]);
+  }, [activeTab, selectEvent, setSearchParams, openLiveRoom]);
 
   const handleSearchItemClick = useCallback((id: string) => {
     const event = dbEvents.find(e => e.id === id);
@@ -720,7 +827,10 @@ const EventsAndMeetups = () => {
   };
 
   // Get current event and navigation state
-  const selectedEventData = currentEvents.find(e => e.id === selectedEventId);
+  // A linked event outside the current tab (e.g. a multi-day event that began
+  // before today, opened from a chat link — VTID-04902) still opens its drawer.
+  const selectedEventData = currentEvents.find(e => e.id === selectedEventId && !isLiveRoomEvent(e))
+    ?? linkedEvents.find(e => e.id === selectedEventId);
   const currentIndex = selectedEventId ? visibleEventIds.indexOf(selectedEventId) : -1;
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex >= 0 && currentIndex < visibleEventIds.length - 1;
@@ -1130,8 +1240,8 @@ const EventsAndMeetups = () => {
                         handleEditEvent,
                         {
                           icon: <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
-                          title: "No Recommended Events",
-                          description: "Check back soon for curated events.",
+                          title: t('screens.community.noRecommendedEvents'),
+                          description: t('screens.community.checkBackSoonForCuratedEvents'),
                         },
                         handleDeleteEvent,
                         handleShareEvent,
@@ -1174,8 +1284,20 @@ const EventsAndMeetups = () => {
             setCreateSelectionOpen(false);
             setCreateMeetupOpen(true);
           }}
+          onSelectLiveRoom={() => {
+            setCreateSelectionOpen(false);
+            setGoLiveOpen(true);
+          }}
         />
       </Suspense>
+
+      {/* Go Live (Live Room) — mounted only while open, so the events page
+          does not load the host's room on every visit. */}
+      {goLiveOpen && (
+        <Suspense fallback={null}>
+          <GoLivePopup open={goLiveOpen} onOpenChange={setGoLiveOpen} />
+        </Suspense>
+      )}
 
       {/* Create Event Popup */}
       <Suspense fallback={null}>
@@ -1212,6 +1334,7 @@ const EventsAndMeetups = () => {
       )}
 
       {/* Event/MeetUp Details Drawer */}
+      <LiveRoomEventDrawer event={roomDrawerEvent} onClose={() => setRoomDrawerEvent(null)} />
       {selectedEventData && (
         <MeetupDetailsDrawer
           event={selectedEventData}

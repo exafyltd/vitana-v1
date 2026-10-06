@@ -58,6 +58,7 @@
     "googleCal": "Google Kalender",
     "outlook": "Outlook",
     "appleCal": "Apple Kalender",
-    "downloadIcs": "ICS herunterladen"
+    "downloadIcs": "ICS herunterladen",
+    "attendingCount": "Teilnehmende: {current}"
   }
 }

@@ -98,13 +98,32 @@ export function isLiveStreamStale(
   return now - startedMs > windowMs;
 }
 
+/**
+ * How long a scheduled room stays listed after its start time while it is
+ * still `pending` (the host has not started it yet). Before VTID-04906 the
+ * Scheduled query cut off at `now`, so a room dropped out of BOTH Live and
+ * Scheduled the minute it was due and nobody — not even the host — could
+ * reach it from the list.
+ */
+export const SCHEDULED_GRACE_MS = 2 * 60 * 60 * 1000; // 2h
+
+/** A pending room whose start time has passed: "starting soon"; the host can start it. */
+export function isScheduledStreamDue(
+  stream: Pick<LiveStream, 'status' | 'scheduled_for'>,
+  now: number = Date.now(),
+): boolean {
+  if (stream.status !== 'pending' || !stream.scheduled_for) return false;
+  const at = new Date(stream.scheduled_for).getTime();
+  return !Number.isNaN(at) && at <= now;
+}
+
 export async function fetchScheduledStreams(): Promise<LiveStream[]> {
   const { data, error } = await supabase
     .from('community_live_streams')
     .select('*')
     .eq('status', 'pending')
     .not('scheduled_for', 'is', null)
-    .gte('scheduled_for', new Date().toISOString())
+    .gte('scheduled_for', new Date(Date.now() - SCHEDULED_GRACE_MS).toISOString())
     .order('scheduled_for', { ascending: true });
 
   if (error) throw error;

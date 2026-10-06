@@ -5,12 +5,15 @@ import { useTenant } from "@/hooks/useTenant";
 import { useRole } from "@/hooks/useRole";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { markRouteTransition } from "@/lib/routeTransition";
+import { RETIRED_TENANT_PATH_PREFIXES, readStoredTenantSlug } from "@/lib/retired-tenants";
 
 // ── Role-route enforcement ──────────────────────────────────────────
 // Call from AppLayout so it runs on every authenticated page.
 // Ensures the user's role always matches the route they are on.
 const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
-const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
+// VTID-04836: retired tenant prefixes (/earthlinks) stay pass-through so the
+// App.tsx redirect to /maxina runs instead of a role bounce.
+const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', ...RETIRED_TENANT_PATH_PREFIXES, '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
 // VTID-03988: consumer surfaces that happen to live under a role prefix.
 // /patient/results shows the caller's own RLS-scoped data and is unlocked by
 // patient_profiles (see usePatientAccess.ts), not by the active role — so a
@@ -124,13 +127,13 @@ export function useSmartRouting() {
     if (authLoading) return;
 
     // Don't redirect if already on a portal page or auth page
-    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev'];
+    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', ...RETIRED_TENANT_PATH_PREFIXES, '/community', '/auth', '/_intro', '/dev'];
     if (portalPaths.some(path => location.pathname.startsWith(path))) return;
 
     // If user is not authenticated, handle based on current path
     if (!user) {
       // Allow access to public pages and portal pages
-      const publicPaths = ['/', '/maxina', '/alkalma', '/earthlinks', '/exafy-admin', '/_intro'];
+      const publicPaths = ['/', '/maxina', '/alkalma', ...RETIRED_TENANT_PATH_PREFIXES, '/exafy-admin', '/_intro'];
       if (publicPaths.some(path => location.pathname === path || location.pathname.startsWith(path))) return;
       
       // Redirect unauthenticated users trying to access protected pages to landing page
@@ -170,9 +173,6 @@ export function useSmartRouting() {
                 switch (tenant.slug) {
                   case 'alkalma':
                     navigate("/alkalma");
-                    break;
-                  case 'earthlinks':
-                    navigate("/earthlinks");
                     break;
                   case 'maxina':
                     navigate("/onboarding/welcome");
@@ -215,9 +215,6 @@ export function useSmartRouting() {
               switch (tenant.slug) {
                 case 'alkalma':
                   navigate("/alkalma");
-                  break;
-                case 'earthlinks':
-                  navigate("/earthlinks");
                   break;
                 case 'maxina':
                   navigate("/onboarding/welcome");
@@ -271,8 +268,6 @@ export function useRoleBasedRedirect() {
           switch (tenant.slug) {
             case 'alkalma':
               return "/alkalma";
-            case 'earthlinks':
-              return "/earthlinks";
             case 'maxina':
               return "/onboarding/welcome";
             default:
@@ -296,15 +291,13 @@ export function useTenantLogoutRedirect() {
     }
     
     // Try to get tenant slug from current context or localStorage
-    const tenantSlug = tenant?.slug || localStorage.getItem('logout_tenant_slug');
+    const tenantSlug = tenant?.slug || readStoredTenantSlug('logout_tenant_slug');
     
     switch (tenantSlug) {
       case "maxina":
         return "/maxina";
       case "alkalma": 
         return "/alkalma";
-      case "earthlinks":
-        return "/earthlinks";
       default:
         return "/";
     }
@@ -320,7 +313,6 @@ export function useTenantFromUrl() {
   const getTenantFromPath = (): string | null => {
     if (location.pathname.startsWith('/maxina')) return 'maxina';
     if (location.pathname.startsWith('/alkalma')) return 'alkalma';
-    if (location.pathname.startsWith('/earthlinks')) return 'earthlinks';
     return null;
   };
 

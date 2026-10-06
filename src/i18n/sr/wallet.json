@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Balansi",
       "activity": "Aktivnost",
-      "actions": "Akcije",
-      "_pending_review": {}
+      "actions": "Akcije"
     },
     "filters": {
       "commissions": "Prodaj i zaradi provizije",
@@ -22,13 +21,74 @@
       "purchases": "Kupovine",
       "pending": "Isplate na čekanju",
       "withdrawals": "Isplate",
-      "stakes": "Ulaganje",
-      "_pending_review": {}
+      "stakes": "Ulaganje"
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
     "displayCurrency": "Valuta prikaza",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "rewardRules": {
+      "title": "Kako zarađuješ VTNA",
+      "summary": "VTNA zarađuješ za stvarne stvari koje sam radiš i za upornost.",
+      "earnedBalance": "Zaradio si",
+      "value": "1 VTNA = {rate}",
+      "amount": "+{amount} VTNA",
+      "amountPlain": "{amount} VTNA",
+      "earned": "Zarađeno",
+      "cap": "{used} od {count} za {days} dana",
+      "groups": {
+        "first_steps": "Prvi koraci – po jednom",
+        "habits": "Navike – upornost",
+        "community": "Zajednica – sa drugima",
+        "_pending_review": {
+          "habits": true,
+          "community": true
+        }
+      },
+      "rules": {
+        "onboarding_complete": "Završi uvod",
+        "profile_complete": "Popuni profil",
+        "first_diary": "Napiši prvi unos u dnevnik",
+        "first_group": "Pridruži se prvoj grupi",
+        "first_event_rsvp": "Prijavi se na prvi događaj",
+        "first_connection": "Ostvari prvu vezu",
+        "five_connections": "Dostigni pet veza",
+        "first_match_accepted": "Prihvati prvi meč",
+        "first_health_check": "Uradi prvu proveru zdravlja",
+        "diary_streak_3": "3 dana dnevnika zaredom",
+        "diary_streak_7": "7 dana dnevnika zaredom",
+        "diary_streak_30": "30 dana dnevnika zaredom",
+        "invite_friend_joined": "Pridruži se neko koga si pozvao",
+        "invited_friends_10": "Pridružilo se 10 prijatelja koje si pozvao – jednokratni bonus",
+        "autopilot_action_done": "Završi Autopilot akciju",
+        "index_new_best": "Novi lični rekord na Vitana Indeksu, najmanje 10 poena više",
+        "live_room_15min": "15 minuta sa drugima u sobi uživo",
+        "_pending_review": {
+          "autopilot_action_done": true,
+          "index_new_best": true,
+          "live_room_15min": true
+        }
+      },
+      "neverTitle": "Za šta nikad nema VTNA",
+      "never": {
+        "done_by_vitana": "Sve što Vitana uradi ili napiše umesto tebe",
+        "purchases": "Kupljeni krediti i bonus paketi",
+        "self_reported": "Radnje koje sistem ne može da proveri – osim završenih Autopilot akcija (najviše 2 dnevno)",
+        "_pending_review": {
+          "self_reported": true
+        }
+      },
+      "recentTitle": "Tvoje nedavne nagrade",
+      "recentEmpty": "Još nema nagrada – tvoj prvi korak te čeka gore.",
+      "recentOther": "Nagrada",
+      "loading": "Učitavanje…",
+      "error": "Tvoje nagrade trenutno nije moguće učitati.",
+      "capToday": "{used} od {count} danas",
+      "capWeek": "{used} od {count} ove nedelje",
+      "_pending_review": {
+        "summary": true,
+        "capToday": true,
+        "capWeek": true
+      }
+    }
+  }
 }

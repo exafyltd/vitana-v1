@@ -14,7 +14,6 @@
     "doneToast": "C'est fait, bravo ! 🎉",
     "doneError": "Impossible d'enregistrer pour le moment.",
     "recurring": "Se répète",
-    "voiceAdd": "« Prise de sang vendredi 8 h, à jeun » – dis-le à Vitana",
     "nextUp": "Ensuite · {when}",
     "progress": "{done} sur {total} faits aujourd'hui",
     "progressAllDone": "Tout est fait – profite du reste de ta journée ✨",
@@ -90,7 +89,15 @@
       "reminders": "Rappels",
       "noReminders": "Aucun rappel",
       "directions": "Itinéraire",
-      "askVitana": "Demander à Vitana"
+      "askVitana": "Demander à Vitana",
+      "openEvent": "Voir l'événement",
+      "joinRoom": "Rejoindre",
+      "openRoom": "Voir la salle live",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "Déploiement staging",
@@ -290,6 +297,56 @@
       "waitingOne": "1 chose t’attend",
       "waiting": "{count} choses t’attendent",
       "open": "Ouvrir dans l’admin"
+    },
+    "indexGain": "+{points} {pillar} sur ton Vitana Index",
+    "edit": {
+      "action": "Modifier",
+      "titleLabel": "Titre",
+      "startLabel": "Début",
+      "endLabel": "Fin",
+      "locationLabel": "Lieu",
+      "descriptionLabel": "Note",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "invalid": "Ajoute un titre ; la fin doit être après le début.",
+      "saved": "Enregistré ✨",
+      "error": "Impossible d'enregistrer pour l'instant. Réessaie dans un moment.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Retirer",
+      "confirm": "Retirer cette entrée de ton calendrier ?",
+      "confirmSeries": "Retirer cette entrée et toutes ses répétitions de ton calendrier ?",
+      "keep": "Garder",
+      "yes": "Retirer",
+      "removed": "Retiré",
+      "error": "Impossible de retirer pour l'instant. Réessaie dans un moment.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Déjà dans ton calendrier",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

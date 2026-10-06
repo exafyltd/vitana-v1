@@ -31,7 +31,6 @@ import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useRoleRouteEnforcement, useInitialLandingRedirect } from "@/hooks/useSmartRouting";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
 import { useUniversalCart } from "@/hooks/useUniversalCart";
 // Phase 0: CartSidebar is retired from the buy path — the cart icon now
 // navigates to /universal-cart (the one canonical cart). CartSidebar.tsx is
@@ -54,6 +53,7 @@ import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
 import PublicAppShell from "@/components/PublicAppShell";
 import { useWindowOverlay } from '@/navigation/overlay-bus';
+import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -149,9 +149,6 @@ function AppSidebar({
         case "alkalma":
           navigate("/alkalma");
           break;
-        case "earthlinks":
-          navigate("/earthlinks");
-          break;
         default:
           navigate("/");
           break;
@@ -166,14 +163,13 @@ function AppSidebar({
       return 'Maxina';
     } else if (currentPath.startsWith('/alkalma')) {
       return 'AlKalma';
-    } else if (currentPath.startsWith('/earthlinks')) {
-      return 'Earthlinks';
     }
     
     // For non-portal routes, check localStorage first (most reliable after tenant switch)
-    const storedTenant = localStorage.getItem('tenant_slug');
+    // readStoredTenantSlug maps a retired slug (VTID-04836: 'earthlinks' →
+    // 'maxina') so an old persisted value never shows a dead brand.
+    const storedTenant = readStoredTenantSlug('tenant_slug');
     if (storedTenant) {
-      if (storedTenant === 'earthlinks') return 'Earthlinks';
       if (storedTenant === 'maxina') return 'Maxina';
       if (storedTenant === 'alkalma') return 'AlKalma';
     }
@@ -181,7 +177,6 @@ function AppSidebar({
     // Then check tenant context from database
     if (tenant?.name) {
       // Map database names to display names
-      if (tenant.name === 'Earthlinks') return 'Earthlinks';
       if (tenant.name === 'Maxina') return 'Maxina';
       if (tenant.name === 'Alkalma') return 'AlKalma';
       return tenant.name;
@@ -189,8 +184,7 @@ function AppSidebar({
     
     // Check user session metadata as last resort
     if (user?.user_metadata?.tenant_slug) {
-      const tenantSlug = user.user_metadata.tenant_slug;
-      if (tenantSlug === 'earthlinks') return 'Earthlinks';
+      const tenantSlug = canonicalTenantSlug(user.user_metadata.tenant_slug);
       if (tenantSlug === 'maxina') return 'Maxina';
       if (tenantSlug === 'alkalma') return 'AlKalma';
     }
@@ -543,7 +537,6 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
 
           <SidebarInset className="flex flex-col w-full overflow-x-hidden">
             <div className="flex flex-col h-full min-h-0 bg-background rounded-tl-2xl">
-              <PendingCalendarEventProcessor />
               <main className="flex-1 min-h-0 overflow-hidden">
                 <MobileAppShell>{children}</MobileAppShell>
               </main>

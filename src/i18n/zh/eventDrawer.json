@@ -59,7 +59,8 @@
     "outlook": "Outlook",
     "appleCal": "Apple 日历",
     "downloadIcs": "下载 ICS",
-    "_pending_review": {}
+    "_pending_review": {},
+    "attendingCount": "参加人数：{current}"
   },
   "_pending_review": {}
 }

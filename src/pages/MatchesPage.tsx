@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, MapPin } from "lucide-react";
 import { useRealMatches } from "@/hooks/useRealMatches";
+import { useMarkMatchesViewed } from "@/hooks/useMarkMatchesViewed";
 import { localizeMatchReason } from "@/lib/matchReason";
 import { t } from "@/lib/i18n-toast";
 
@@ -32,6 +33,8 @@ export default function MatchesPage() {
   const navigate = useNavigate();
   const { data: matches, isLoading } = useRealMatches(50);
   const list = matches ?? [];
+  // VTID-04827: these cards are on screen — record that the member saw them.
+  useMarkMatchesViewed(list.map((m) => m.user_id));
 
   return (
     <>
@@ -65,14 +68,14 @@ export default function MatchesPage() {
                   ))}
                 </div>
               ) : list.length === 0 ? (
-                <div className="text-center py-16 px-4">
+                <div className="text-center py-16 px-4" data-testid="matches-empty">
                   <Heart className="h-10 w-10 text-pink-400 mb-3 mx-auto" />
                   <p className="text-sm text-muted-foreground max-w-md mx-auto">
                     {t("screens.autopilotdashboard.matchesEmpty")}
                   </p>
                 </div>
               ) : (
-                <ul className="space-y-3">
+                <ul className="space-y-3" data-testid="matches-list">
                   {list.map((m) => (
                     <li key={m.user_id}>
                       <button

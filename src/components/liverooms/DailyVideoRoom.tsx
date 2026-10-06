@@ -8,12 +8,18 @@ import DailyIframe from '@daily-co/daily-js';
 
 interface DailyVideoRoomProps {
   roomUrl: string;
+  /**
+   * Daily meeting token from the gateway's `enter` call (VTID-04906). Rooms
+   * are private, so the join must carry it: owner token for the host,
+   * participant token for everyone else.
+   */
+  token?: string;
   onJoined?: () => void;
   onLeft?: () => void;
   onError?: (error: string) => void;
 }
 
-export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVideoRoomProps) {
+export function DailyVideoRoom({ roomUrl, token, onJoined, onLeft, onError }: DailyVideoRoomProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -72,7 +78,7 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
       }
     });
 
-    call.join({ url: roomUrl }).catch((err) => {
+    call.join(token ? { url: roomUrl, token } : { url: roomUrl }).catch((err) => {
       if (!destroyed) {
         console.error('[Daily] Failed to join:', err);
         onError?.('Failed to join video room');
@@ -87,9 +93,11 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
         console.warn('[Daily] Cleanup error:', e);
       }
     };
-  }, [roomUrl, ready]);
+  }, [roomUrl, token, ready]);
 
   return (
-    <div ref={containerRef} className="w-full h-full min-h-[600px] bg-black rounded-lg" />
+    // No fixed min-height: the viewer sizes this to the space under its own
+    // header so Daily's control tray always stays on screen (VTID-04906).
+    <div ref={containerRef} data-testid="daily-video-room" className="w-full h-full min-h-0 bg-black rounded-lg" />
   );
 }

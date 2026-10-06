@@ -36,7 +36,6 @@ interface ProfileDrawerProps {
 
 const TENANT_LABELS: Record<TenantType, string> = {
   maxina: "Maxina",
-  earthlinks: "Earthlinks", 
   alkalma: "AlKalma",
 };
 

@@ -117,7 +117,9 @@
       "memberOther": "Mitglieder",
       "officialBadge": "offizielle Gruppe",
       "empty": "Noch keine Nachrichten.",
-      "composerPlaceholder": "Nachricht…"
+      "composerPlaceholder": "Nachricht…",
+      "today": "Heute",
+      "yesterday": "Gestern"
     }
   }
 }

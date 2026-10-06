@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04911",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the existing VTID-04909 partner terms spec, now fed the final v1 text (legal@vitanaland.com in §21.1, no counsel markers): German default with binding notice, unticked box and disabled Accept, switcher with 11 languages, Arabic rtl — never accepted",
+      "spec": "tests/e2e/staging/vtid-04909-partner-terms-language.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}
