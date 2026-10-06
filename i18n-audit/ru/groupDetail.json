@@ -22,9 +22,9 @@
     },
     "groupDetail.leaving": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Покидаем' (we are leaving) is plural. For a single user's action in a du-form app, an impersonal noun or 'Покидаю' (I am leaving) would be more appropriate for a status message.",
-      "suggested": "Выход...",
+      "confidence": 0.9,
+      "issue": "Register inconsistent with du-form (informal singular). Uses 'we' form instead of 'you' (informal singular).",
+      "suggested": "Выходишь...",
       "phase": "llm"
     },
     "groupDetail.joinGroup": {
@@ -34,9 +34,9 @@
     },
     "groupDetail.joining": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Присоединяемся' (we are joining) is plural. For a single user's action in a du-form app, an impersonal noun or 'Присоединяюсь' (I am joining) would be more appropriate for a status message.",
-      "suggested": "Вход...",
+      "confidence": 0.9,
+      "issue": "Register inconsistent with du-form (informal singular). Uses 'we' form instead of 'you' (informal singular).",
+      "suggested": "Присоединяешься...",
       "phase": "llm"
     },
     "groupDetail.back": {
@@ -65,5 +65,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:34:49.120Z"
+  "generatedAt": "2026-10-06T10:38:03.090Z"
 }

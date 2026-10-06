@@ -47,9 +47,9 @@
     },
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
-      "suggested": "Озарения архетипа",
+      "confidence": 0.8,
+      "issue": "The Russian word 'Идеи' (ideas) does not fully capture the nuance of 'Insights', which implies deeper understanding or revelations.",
+      "suggested": "Понимание архетипов",
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeBadge": {
@@ -173,10 +173,8 @@
       "phase": "llm"
     },
     "autopilot.popup.moreActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -220,10 +218,9 @@
       "phase": "llm"
     },
     "autopilot.widget.active": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Without context, it's unclear if 'Активно' (short neuter adjective/adverb) is the most appropriate choice over 'Активный' (masculine adjective) for a standalone UI label. 'Активно' is common for status, but 'Активный' might be better for a general feature label.",
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -460,7 +457,69 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "autopilot.draft.titlePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.hint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.failed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The word 'сам' (yourself, masculine) assumes a male user. For a gender-neutral or inclusive informal address, it should be adjusted.",
+      "suggested": "напиши свой",
+      "phase": "llm"
+    },
+    "autopilot.draft.regenerate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-10-06T10:36:27.964Z"
 }
