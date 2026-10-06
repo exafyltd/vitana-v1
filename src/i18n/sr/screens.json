@@ -5658,15 +5658,17 @@
       "whenTomorrow": "Sutra u {time}",
       "whenDated": "{date} u {time}",
       "_pending_review": {
-        "liveRoomTag": true,
         "interestedTitle": true,
         "interestedAria": true,
-        "interestedEmpty": true
+        "interestedEmpty": true,
+        "liveRoomTag": true,
+        "dateTimeChip": true
       },
-      "liveRoomTag": "Live Room",
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
-      "interestedEmpty": "Nobody has signed up yet – be the first!"
+      "interestedEmpty": "Nobody has signed up yet – be the first!",
+      "liveRoomTag": "Live Room",
+      "dateTimeChip": "{date} · {time}"
     },
     "meetups": {
       "detailsProgram": "Detalji i program",
