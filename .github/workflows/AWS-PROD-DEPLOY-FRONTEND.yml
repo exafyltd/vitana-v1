@@ -181,14 +181,33 @@ jobs:
         id: build
         env:
           REGISTRY: ${{ steps.ecr.outputs.registry }}
+          REQUESTED_SHA: ${{ inputs.commit_sha }}
         run: |
           set -e
-          SHORT_SHA="${GITHUB_SHA::12}"
+          # VTID-04908: tag the image with the commit that was checked out and
+          # built (the same expression VITE_APP_VERSION uses), never GITHUB_SHA —
+          # on a pinned dispatch GITHUB_SHA is the dispatch ref's HEAD, not the
+          # code inside the image.
+          BUILT_COMMIT="$(git rev-parse HEAD)"
+          if [ -n "$REQUESTED_SHA" ]; then
+            WANT="$(printf '%s' "$REQUESTED_SHA" | tr '[:upper:]' '[:lower:]')"
+            if ! printf '%s' "$WANT" | grep -Eq '^[0-9a-f]{7,40}$'; then
+              echo "::error::commit_sha '$REQUESTED_SHA' is not a commit id (need at least 7 hex characters)."
+              exit 1
+            fi
+            case "$BUILT_COMMIT" in
+              "$WANT"*) ;;
+              *) echo "::error::Checked-out commit $BUILT_COMMIT does not match the requested commit_sha $WANT — refusing to push."; exit 1 ;;
+            esac
+          fi
+          echo "Built commit: $BUILT_COMMIT (dispatch ref: $GITHUB_SHA)"
+          SHORT_SHA="$(git rev-parse --short=12 HEAD)"
           IMAGE="$REGISTRY/${{ env.ECR_REPOSITORY }}:awsdr-$SHORT_SHA"
           docker build -t "$IMAGE" -t "$REGISTRY/${{ env.ECR_REPOSITORY }}:awsdr-latest" .
           docker push "$IMAGE"
           docker push "$REGISTRY/${{ env.ECR_REPOSITORY }}:awsdr-latest"
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "built_commit=$BUILT_COMMIT" >> "$GITHUB_OUTPUT"
           echo "Pushed $IMAGE"
 
       - name: Register task-definition revision + roll the service
@@ -250,6 +269,8 @@ jobs:
           {
             echo "## AWS Production (DR) frontend deploy"
             echo "- Image: \`${{ steps.build.outputs.image }}\`"
+            echo "- Built commit: \`${{ steps.build.outputs.built_commit }}\`"
+            echo "- Dispatch ref: \`$GITHUB_SHA\`"
             echo "- Gateway baked in: \`${{ env.GATEWAY_URL }}\`"
             echo "- Verified live at: $FRONTEND"
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
