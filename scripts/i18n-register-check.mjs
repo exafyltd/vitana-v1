@@ -352,6 +352,20 @@ const EN_SECOND_PERSON = /\b(you|your|yours|you're|you'll)\b/i;
 /** German informal-singular markers appearing in the SAME German string. */
 const DE_SELF_INFORMAL = /\b(du|dich|dir|dein[ermns]?|deiner)\b/i;
 
+/**
+ * VTID-04909 — keys that address the reader formally ON PURPOSE, in every
+ * language. Owner decision 2026-10-06: a contractual statement of legal
+ * authority and consent (the partner-terms acceptance) and the binding-
+ * language notice use the formal form ("Sie", usted, vous, Vi, вы, Państwo,
+ * 您, siz). This is an intentional exception, not a localisation error; the
+ * rest of the app keeps the informal voice. Add a key here only with an owner
+ * decision recorded next to it.
+ */
+const FORMAL_BY_DESIGN = new Set([
+  'screens.screens.commerceportal.terms.agreeExplanation',
+  'screens.screens.commerceportal.terms.bindingNotice',
+]);
+
 function checkLocale(locale) {
   const rule = RULES[locale];
   if (!rule) {
@@ -373,6 +387,7 @@ function checkLocale(locale) {
   const soft = [];
 
   for (const [key, value] of Object.entries(target)) {
+    if (FORMAL_BY_DESIGN.has(key)) continue;
     let probe = String(value);
     // Strip {placeholder} tokens BEFORE any pattern runs, locale-independent.
     // Found live in tr: the interpolation variable `{size}` collides
