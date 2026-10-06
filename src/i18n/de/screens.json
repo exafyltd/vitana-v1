@@ -5594,7 +5594,7 @@
       "interestedAria": "Zeige, wer dabei sein möchte",
       "interestedEmpty": "Noch niemand hat sich angemeldet – sei die erste Person!",
       "timeChip": "{time} Uhr",
-      "dateTimeChip": "{date} · {time} Uhr",
+      "dateTimeChip": "{date} · {time}",
       "you": "Du",
       "anonymousHost": "Anonymer Gastgeber",
       "notifyAriaOn": "Erinnerung ausschalten",

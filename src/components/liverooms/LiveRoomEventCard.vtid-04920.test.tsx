@@ -47,6 +47,7 @@ describe('LiveRoomEventCard layout', () => {
     const row = screen.getByTestId('live-room-info-pills');
     expect(row.className).toContain('flex-nowrap');
     expect(row.className).not.toContain('flex-wrap ');
+    expect(row.className).toContain('overflow-hidden');
     expect(row.children).toHaveLength(3);
     expect(screen.getByTestId('live-room-interested')).toBeTruthy();
   });
