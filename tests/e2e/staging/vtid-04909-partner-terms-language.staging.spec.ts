@@ -15,7 +15,9 @@ import { test, expect } from './staging-guard';
 
 test.use({
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    // The signed-in app's own read-only POSTs (same list as the VTID-04864 spec)
+    // and every ORB call: they are aborted here like every other write.
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
@@ -58,6 +60,9 @@ async function signInAndOpenTerms(page: Page, request: APIRequestContext) {
   const password = process.env.TEST_USER_PASSWORD ?? '';
   test.skip(!email || !password, 'TEST_USER_EMAIL / TEST_USER_PASSWORD not provided');
 
+  // The Vitana ORB is not part of this screen; after sign-in it can open over
+  // the page by itself (front door), so its script is not loaded in this test.
+  await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
   await page.route('**/api/v1/partner-orgs/mine', (r) => r.fulfill({ json: { ok: true, organizations: [DEMO] } }));
   await page.route('**/api/v1/partner-onboarding/demo-org/catalogue', (r) =>
     r.request().method() === 'GET' ? r.fulfill({ json: { ok: true, merchant: null, products: [] } }) : r.abort());
