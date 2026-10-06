@@ -5661,12 +5661,14 @@
         "liveRoomTag": true,
         "interestedTitle": true,
         "interestedAria": true,
-        "interestedEmpty": true
+        "interestedEmpty": true,
+        "liveRoomTag": true
       },
       "liveRoomTag": "Live Room",
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
-      "interestedEmpty": "Nobody has signed up yet – be the first!"
+      "interestedEmpty": "Nobody has signed up yet – be the first!",
+      "liveRoomTag": "Live Room"
     },
     "meetups": {
       "detailsProgram": "التفاصيل والبرنامج",
