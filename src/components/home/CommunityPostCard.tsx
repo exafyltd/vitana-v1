@@ -28,6 +28,8 @@ import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu
 import { PostLikersDialog } from "@/components/home/PostLikersDialog";
 import { FeedMedia } from "@/components/media/FeedMedia";
 import { renderMentions } from "@/components/feed/MentionText";
+import { MentionInput } from "@/components/mentions/MentionInput";
+import type { Mention } from "@/lib/mentions";
 import { getPostBackground } from "@/lib/post-backgrounds";
 import { reasonKeyFor, type FeedItem, type PostFeedItem } from "@/lib/news-feed-ranker";
 
@@ -77,6 +79,7 @@ export function CommunityPostCard({
   const [showComments, setShowComments] = useState(false);
   const [showLikers, setShowLikers] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [commentMentions, setCommentMentions] = useState<Mention[]>([]);
   const [replyTo, setReplyTo] = useState<{ parentId: string; name: string } | null>(null);
   // Optimistic local counts — avoids re-ranking the whole feed on every action.
   // The trigger-maintained canonical counts reconcile via the feed's refetch.
@@ -145,8 +148,9 @@ export function CommunityPostCard({
     const text = commentText.trim();
     if (!text) return;
     try {
-      await addComment({ content: text, parentId: replyTo?.parentId ?? null });
+      await addComment({ content: text, parentId: replyTo?.parentId ?? null, mentions: commentMentions });
       setCommentText("");
+      setCommentMentions([]);
       setReplyTo(null);
       setCommentCount((c) => c + 1);
     } catch {
@@ -202,7 +206,7 @@ export function CommunityPostCard({
         <div className="flex-1 min-w-0">
           <div className="rounded-xl bg-muted/50 px-3 py-2">
             <span className="text-xs font-semibold text-foreground">{name}</span>
-            <p className="text-sm text-foreground/90 break-words">{comment.content}</p>
+            <p className="text-sm text-foreground/90 break-words">{renderMentions(comment.content, comment.mentions)}</p>
           </div>
           <div className="flex items-center gap-3 px-1 mt-0.5">
             <span className="text-[10px] text-muted-foreground">{timeAgo(comment.created_at)}</span>
@@ -404,18 +408,14 @@ export function CommunityPostCard({
 
             {user ? (
               <div className="flex items-center gap-2">
-                <input
-                  type="text"
+                <MentionInput
                   value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleAddComment();
-                    }
-                  }}
+                  onChange={setCommentText}
+                  mentions={commentMentions}
+                  onMentionsChange={setCommentMentions}
+                  onSubmit={handleAddComment}
                   placeholder={t("screens.home.writeComment")}
-                  className="flex-1 text-sm bg-muted/50 rounded-full px-4 py-2 border-0 outline-none focus:ring-1 focus:ring-primary/30"
+                  className="w-full text-sm bg-muted/50 rounded-full px-4 py-2 border-0 outline-none focus:ring-1 focus:ring-primary/30"
                   disabled={isAddingComment}
                 />
                 <button

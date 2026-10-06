@@ -34,6 +34,15 @@ vi.mock('@/components/home/PostLikersDialog', () => ({
 }));
 vi.mock('@/components/media/FeedMedia', () => ({ FeedMedia: () => null }));
 vi.mock('@/components/feed/MentionText', () => ({ renderMentions: (c: string) => c }));
+// VTID-04926: the comment box is mention-aware; its community search is a
+// react-query hook, stubbed here with a fixed candidate.
+vi.mock('@/hooks/useMentionCandidates', () => ({
+  useMentionCandidates: (q: string) => ({
+    data: q ? [{ user_id: 'u-anna', display_name: 'Anna Schmidt', avatar_url: null }] : [],
+    isLoading: false,
+    fetchStatus: 'idle',
+  }),
+}));
 
 vi.mock('@/hooks/useFeedPostInteractions', () => ({
   useFeedPostInteractions: () => ({
@@ -218,7 +227,7 @@ describe('CommunityPostCard comment reactions + replies (VTID-03690)', () => {
     fireEvent.change(input, { target: { value: 'my reply text' } });
     fireEvent.click(screen.getByLabelText('screens.home.postComment'));
 
-    expect(addCommentMock).toHaveBeenCalledWith({ content: 'my reply text', parentId: 'c1' });
+    expect(addCommentMock).toHaveBeenCalledWith({ content: 'my reply text', parentId: 'c1', mentions: [] });
   });
 
   it('replying to a reply still threads under the top-level comment', () => {
@@ -231,7 +240,28 @@ describe('CommunityPostCard comment reactions + replies (VTID-03690)', () => {
     fireEvent.change(input, { target: { value: 'nested reply' } });
     fireEvent.click(screen.getByLabelText('screens.home.postComment'));
 
-    expect(addCommentMock).toHaveBeenCalledWith({ content: 'nested reply', parentId: 'c1' });
+    expect(addCommentMock).toHaveBeenCalledWith({ content: 'nested reply', parentId: 'c1', mentions: [] });
+  });
+
+  // VTID-04926: tagging someone in a comment.
+  it('tags a member picked from the @ suggestions and sends them with the comment', () => {
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(0);
+      return 0;
+    });
+    openComments();
+    const input = screen.getByPlaceholderText('screens.home.writeComment') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: 'Danke @ann', selectionStart: 10, selectionEnd: 10 } });
+    fireEvent.click(screen.getByTestId('mention-suggestion'));
+    expect(input.value).toBe('Danke @Anna Schmidt ');
+
+    fireEvent.change(input, { target: { value: 'Danke @Anna Schmidt!' } });
+    fireEvent.click(screen.getByLabelText('screens.home.postComment'));
+    expect(addCommentMock).toHaveBeenCalledWith({
+      content: 'Danke @Anna Schmidt!',
+      parentId: null,
+      mentions: [{ user_id: 'u-anna', display_name: 'Anna Schmidt' }],
+    });
   });
 
   it('lets the comment author delete their own comment but not others', () => {

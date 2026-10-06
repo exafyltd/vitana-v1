@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { applyFeedEngagementDelta } from '@/hooks/useAllNewsFeed';
+import { pruneMentions, type Mention } from '@/lib/mentions';
 
 /**
  * Unified inline like + comment for the News / Community feed.
@@ -29,6 +30,8 @@ export interface FeedComment {
   created_at: string;
   parent_id: string | null;
   likes_count: number;
+  /** VTID-04926: members tagged in the comment ({ user_id, display_name }). */
+  mentions: Mention[];
   // derived
   liked_by_me: boolean;
   // joined
@@ -177,6 +180,7 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
           created_at: c.created_at,
           parent_id: c.parent_id ?? null,
           likes_count: c.likes_count ?? 0,
+          mentions: Array.isArray(c.mentions) ? c.mentions : [],
           liked_by_me: likedSet.has(c.id),
           display_name: p?.display_name || p?.full_name || undefined,
           avatar_url: p?.avatar_url || null,
@@ -186,16 +190,22 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
   });
 
   const addComment = useMutation({
-    mutationFn: async ({ content, parentId }: { content: string; parentId?: string | null }) => {
+    mutationFn: async ({ content, parentId, mentions }: { content: string; parentId?: string | null; mentions?: Mention[] }) => {
       if (!user) throw new Error('Not authenticated');
+      // VTID-04926: only send `mentions` when someone is tagged, so an
+      // untagged comment never depends on the column existing.
+      const tagged = pruneMentions(content, mentions);
+      const row: Record<string, unknown> = { [cfg.fk]: id, user_id: user.id, content, parent_id: parentId ?? null };
+      if (tagged.length > 0) row.mentions = tagged;
       const { error } = await supabase
         .from(cfg.comments as any)
-        .insert({ [cfg.fk]: id, user_id: user.id, content, parent_id: parentId ?? null } as any);
+        .insert(row as any);
       if (error) throw error;
       // The post author (and, for a reply, the parent comment's author) is
       // notified by a DB trigger on the comment table
       // (20260623000000_post_interaction_notifications.sql /
       // 20260820120000_vtid_03690_comment_reactions_replies.sql) — no client call.
+      // Tagged members get `comment_mention` from the same kind of trigger.
       applyFeedEngagementDelta(queryClient, { source, postId: id, comments: 1 });
     },
     onSettled: () => {

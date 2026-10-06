@@ -16,6 +16,7 @@ import { MentionTextarea } from "@/components/feed/MentionTextarea";
 import { PostBackgroundPicker } from "@/components/feed/PostBackgroundPicker";
 import { getPostBackground } from "@/lib/post-backgrounds";
 import type { PostMention } from "@/lib/news-feed-ranker";
+import { pruneMentions } from "@/lib/mentions";
 
 interface CreateContentPopupProps {
   isOpen: boolean;
@@ -211,9 +212,11 @@ export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateCo
         imageUrl: media.imageUrl,
         videoUrl: media.videoUrl,
         isPublic: formData.visibility === "public",
-        // Background + mentions only come from the text "post" tab.
+        // Backgrounds only apply to text-only posts; mentions come from the
+        // "post" tab's composer and are kept with a photo/video too
+        // (VTID-04926). Names deleted from the text are dropped here.
         backgroundStyle: isTextPost ? backgroundStyle : null,
-        mentions: isTextPost ? mentions : [],
+        mentions: contentType === "post" ? pruneMentions(content, mentions) : [],
       });
 
       notify("toasts.common.contentCreated");

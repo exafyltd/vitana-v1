@@ -153,6 +153,12 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
     icon: '🏷️', label: 'Tagged You', category: 'community',
     channel: 'push_and_inapp', priority: 'p1',
   },
+  // VTID-04926: notify_on_*_comment_mention() triggers on profile_post_comments
+  // / media_upload_comments. Always ships data.url (/post/<source>/<id>).
+  comment_mention: {
+    icon: '🏷️', label: 'Mentioned You', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1',
+  },
   community_post_published: {
     icon: '📝', label: 'New Post', category: 'community',
     channel: 'push_and_inapp', priority: 'p2', route: '/home',
@@ -228,6 +234,13 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   new_chat_message: {
     icon: '💬', label: 'New Message', category: 'chat',
     channel: 'push_and_inapp', priority: 'p1', route: '/messages',
+  },
+  // VTID-04926: sent by the gateway (routes/chat-groups.ts) instead of
+  // new_chat_message to a member @mentioned in a group message. Always ships
+  // data.url (/inbox/g/<group>/msg/<message>), so no route template.
+  chat_mention: {
+    icon: '🏷️', label: 'Mentioned You', category: 'chat',
+    channel: 'push_and_inapp', priority: 'p1',
   },
   orb_proactive_message: {
     icon: '🤖', label: 'Message from ORB', category: 'chat',

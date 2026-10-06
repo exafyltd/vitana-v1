@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04926",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "group chat @mentions: GET /chat/groups/:id carries `mentionable` (false for the bot); search_mention_candidates answers over GET and never offers the caller; typing '@' + 3 letters in Alle Beisammen suggests a real member and picking inserts '@Name '; composer cleared, nothing sent (read-only)",
+      "spec": "tests/e2e/staging/vtid-04926-mentions.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/mentions.test.ts src/components/messages/MessageInput.mentions.vtid-04926.test.tsx src/components/messages/MessageBubble.mentions.vtid-04926.test.tsx src/pages/messages/GroupChat.mentions.vtid-04926.test.tsx src/pages/PostDetail.mentions.vtid-04926.test.tsx src/components/home/CommunityPostCard.test.tsx",
+      "reason": "everything that needs a write (sending a tagged message, posting a tagged comment) is proven here: the tag travels as contentData.mentions / comment mentions, Enter picks instead of sending, deleted names are untagged, bubbles link tagged members, the post page keeps its tags"
+    }
+  ]
+}
