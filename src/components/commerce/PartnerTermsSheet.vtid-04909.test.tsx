@@ -92,6 +92,17 @@ describe('VTID-04909 partner terms sheet', () => {
     expect(screen.getByTestId('partner-terms-agree-explanation').textContent).toContain('bestätigen Sie, dass Sie berechtigt sind');
   });
 
+  it('VTID-04925: the tick and Accept sit together in the footer, outside the scrolling terms', async () => {
+    open();
+    await screen.findByTestId('partner-terms-text');
+    const footer = screen.getByTestId('partner-terms-footer');
+    expect(footer.contains(screen.getByTestId('partner-terms-agree'))).toBe(true);
+    expect(footer.contains(screen.getByTestId('partner-terms-accept'))).toBe(true);
+    const body = screen.getByTestId('partner-terms-text').closest('[data-terms-body]');
+    expect(body).not.toBeNull();
+    expect(body!.contains(screen.getByTestId('partner-terms-agree'))).toBe(false);
+  });
+
   it('Arabic reads right to left; the binding notice stays; one tap back to German', async () => {
     appLocale = 'ar-XA';
     open();
