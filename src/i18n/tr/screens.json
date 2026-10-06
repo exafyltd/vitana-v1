@@ -4642,7 +4642,10 @@
       "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla.",
       "virtualLinkLabel": "Katılım bağlantısı (isteğe bağlı)",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "Görüntülü görüşmenin bağlantısını yapıştır (https:// ile başlar). Bağlantı olmadan \"Katıl\" bağlantısı gösterilmez."
+      "virtualLinkHint": "Görüntülü görüşmenin bağlantısını yapıştır (https:// ile başlar). Bağlantı olmadan \"Katıl\" bağlantısı gösterilmez.",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "Rapor Gönderildi!",
@@ -5653,7 +5656,17 @@
       },
       "durationMin": "{value0} dk",
       "durationHour": "{value0} sa",
-      "durationHourMin": "{value0} sa {value1} dk"
+      "durationHourMin": "{value0} sa {value1} dk",
+      "_pending_review": {
+        "liveRoomTag": true,
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true
+      },
+      "liveRoomTag": "Live Room",
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!"
     },
     "meetups": {
       "detailsProgram": "Detaylar ve Program",

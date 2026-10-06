@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "الأرصدة",
       "activity": "النشاط",
-      "actions": "الإجراءات",
-      "_pending_review": {}
+      "actions": "الإجراءات"
     },
     "filters": {
       "commissions": "بِع واكسب عمولات",
@@ -22,13 +21,11 @@
       "purchases": "المشتريات",
       "pending": "دفعات معلقة",
       "withdrawals": "السحوبات",
-      "stakes": "الرهن",
-      "_pending_review": {}
+      "stakes": "الرهن"
     },
     "noActivity": "لا يوجد نشاط بعد",
     "noActivityDesc": "ستظهر معاملاتك هنا.",
     "displayCurrency": "عملة العرض",
-    "_pending_review": {},
     "rewardRules": {
       "title": "كيف تكسب VTNA",
       "summary": "تكسب VTNA مقابل أشياء حقيقية تقوم بها بنفسك ومقابل الاستمرارية.",
@@ -93,6 +90,5 @@
         "capWeek": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

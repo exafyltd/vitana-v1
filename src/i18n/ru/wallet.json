@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Балансы",
       "activity": "Активность",
-      "actions": "Действия",
-      "_pending_review": {}
+      "actions": "Действия"
     },
     "filters": {
       "commissions": "Продавай и зарабатывай комиссии",
@@ -22,13 +21,11 @@
       "purchases": "Покупки",
       "pending": "Ожидаемые выплаты",
       "withdrawals": "Выводы",
-      "stakes": "Стейкинг",
-      "_pending_review": {}
+      "stakes": "Стейкинг"
     },
     "noActivity": "Пока нет активности",
     "noActivityDesc": "Твои транзакции появятся здесь.",
     "displayCurrency": "Валюта отображения",
-    "_pending_review": {},
     "rewardRules": {
       "title": "Как ты зарабатываешь VTNA",
       "summary": "Ты получаешь VTNA за реальные дела, которые делаешь сам, и за постоянство.",
@@ -93,6 +90,5 @@
         "capWeek": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

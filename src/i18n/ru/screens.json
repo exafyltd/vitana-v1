@@ -4645,7 +4645,10 @@
       "noInvitationsSentYetStartInviting": "Приглашения еще не отправлены. Начни приглашать людей, чтобы увидеть ответы здесь.",
       "virtualLinkLabel": "Ссылка для входа (необязательно)",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "Вставь ссылку на свой видеозвонок (начинается с https://). Без ссылки кнопка входа не показывается."
+      "virtualLinkHint": "Вставь ссылку на свой видеозвонок (начинается с https://). Без ссылки кнопка входа не показывается.",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "Отчет отправлен!",
@@ -5656,7 +5659,15 @@
       },
       "durationMin": "{value0} мин",
       "durationHour": "{value0} ч",
-      "durationHourMin": "{value0} ч {value1} мин"
+      "durationHourMin": "{value0} ч {value1} мин",
+      "_pending_review": {
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true
+      },
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!"
     },
     "meetups": {
       "detailsProgram": "Подробности и Программа",

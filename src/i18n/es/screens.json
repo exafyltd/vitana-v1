@@ -4614,7 +4614,10 @@
       "noInvitationsSentYetStartInviting": "Aún no se han enviado invitaciones. Empieza a invitar personas para ver las respuestas aquí.",
       "virtualLinkLabel": "Enlace para unirse (opcional)",
       "virtualLinkPlaceholder": "https://…",
-      "virtualLinkHint": "Pega el enlace de tu videollamada (empieza por https://). Sin enlace no se muestra ningún enlace para unirse."
+      "virtualLinkHint": "Pega el enlace de tu videollamada (empieza por https://). Sin enlace no se muestra ningún enlace para unirse.",
+      "_pending_review": {
+        "virtualLinkPlaceholder": true
+      }
     },
     "feedback": {
       "reportSent": "¡Reporte enviado!",
@@ -5619,7 +5622,15 @@
       "joinAria": "Únete a la sala en vivo",
       "whenToday": "Hoy {time}",
       "whenTomorrow": "Mañana {time}",
-      "whenDated": "{date} {time}"
+      "whenDated": "{date} {time}",
+      "_pending_review": {
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true
+      },
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!"
     },
     "meetups": {
       "detailsProgram": "Detalles y programa",

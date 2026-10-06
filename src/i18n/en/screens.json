@@ -5597,6 +5597,7 @@
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!",
       "timeChip": "{time}",
+      "dateTimeChip": "{date} · {time}",
       "you": "You",
       "anonymousHost": "Anonymous Host",
       "notifyAriaOn": "Turn off notifications",
