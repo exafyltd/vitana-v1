@@ -40,7 +40,14 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { notifyError, t } from '@/lib/i18n-toast';
 import { resolveEventCover, generateCoverUrl } from '@/lib/eventCoverImage';
-import { EventsLiveRooms } from '@/components/events/EventsLiveRooms';
+import {
+  useLiveRoomEvents,
+  useOpenLiveRoom,
+  isLiveRoomEvent,
+  isOngoingLiveRoom,
+  liveRoomCardOverrides,
+  LiveRoomEventDrawer,
+} from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 
@@ -75,7 +82,14 @@ const formatEventTime = (dateString: string) => {
   return `${day} · ${time}`;
 };
 
-const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void, imagePriority = false) => {
+const transformEventToNewsCard = (...args: Parameters<typeof transformEventToNewsCardBase>) => {
+  const [event] = args;
+  const card = transformEventToNewsCardBase(...args);
+  // VTID-04907: a Live Room is the same full card, with a red LIVE badge.
+  return isLiveRoomEvent(event) ? { ...card, ...liveRoomCardOverrides(event) } : card;
+};
+
+const transformEventToNewsCardBase = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void, imagePriority = false) => {
   // Construct author object with proper fallback chain
   const authorName = event.creator_display_name || event.author?.name || 'Community Host';
   const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
@@ -336,12 +350,25 @@ const EventsAndMeetups = () => {
   // VTID-04902: an event opened by a link (e.g. tapped in a chat) that is not
   // in the loaded list is fetched on its own and shown alongside it.
   const [linkedEvents, setLinkedEvents] = useState<CommunityEvent[]>([]);
+  // VTID-04907: Live Rooms (live + scheduled) are listed as normal event cards
+  // in the same list — one catalog, sorted by start time.
+  const liveRoomEvents = useLiveRoomEvents();
+  const openLiveRoom = useOpenLiveRoom();
+  const [roomDrawerEvent, setRoomDrawerEvent] = useState<CommunityEvent | null>(null);
   const dbEvents = useMemo(() => {
-    if (linkedEvents.length === 0) return loadedEvents;
+    if (linkedEvents.length === 0 && liveRoomEvents.length === 0) return loadedEvents;
     const ids = new Set(loadedEvents.map(e => e.id));
-    return [...loadedEvents, ...linkedEvents.filter(e => !ids.has(e.id))];
-  }, [loadedEvents, linkedEvents]);
+    const extra = [...linkedEvents, ...liveRoomEvents].filter(e => {
+      if (ids.has(e.id)) return false;
+      ids.add(e.id);
+      return true;
+    });
+    return [...loadedEvents, ...extra].sort(
+      (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
+    );
+  }, [loadedEvents, linkedEvents, liveRoomEvents]);
   const deepLinkFetchedRef = useRef<string | null>(null);
+  const roomDeepLinkRef = useRef<string | null>(null);
   const {
     followingIds,
     profiles: followedProfiles,
@@ -385,19 +412,20 @@ const EventsAndMeetups = () => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     
     return dbEvents.filter(event => {
+      if (isOngoingLiveRoom(event)) return true;
       const eventDate = new Date(event.start_time);
       return eventDate >= today && eventDate < tomorrow;
     });
   }, [dbEvents]);
 
+  // VTID-04907: Upcoming = everything still ahead, including later today
+  // (it used to start at tomorrow, so tonight's events were only on Today),
+  // plus rooms that are live or waiting for their host right now.
   const upcomingEvents = useMemo(() => {
-    const tomorrow = new Date();
-    tomorrow.setHours(0, 0, 0, 0);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
+    const now = new Date();
     return dbEvents.filter(event => {
-      const eventDate = new Date(event.start_time);
-      return eventDate >= tomorrow;
+      if (isOngoingLiveRoom(event)) return true;
+      return new Date(event.start_time) >= now;
     });
   }, [dbEvents]);
 
@@ -467,7 +495,8 @@ const EventsAndMeetups = () => {
                         activeTab === "hot" ? maxinaEvents :
                         // VTID-04907: the drawer never opened on Following.
                         activeTab === "following" ? followedEvents : [];
-  const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
+  // Prev/next in the event drawer skips rooms (they open their own drawer).
+  const visibleEventIds = useMemo(() => currentEvents.filter(e => !isLiveRoomEvent(e)).map(e => e.id), [currentEvents, activeTab]);
 
   // Track if we've initialized the tab from URL (prevents resetting on data refresh)
   const hasInitializedTab = useRef(false);
@@ -562,6 +591,13 @@ const EventsAndMeetups = () => {
       });
       return;
     }
+    if (isLiveRoomEvent(event)) {
+      // A room link: open the room's own drawer, never the event drawer.
+      if (roomDeepLinkRef.current === eventParam) return;
+      roomDeepLinkRef.current = eventParam;
+      setRoomDrawerEvent(event);
+      return;
+    }
     if (event && !selectedEventId) {
       // Auto-detect tab if not already set correctly
       const eventDate = new Date(event.start_time);
@@ -591,10 +627,16 @@ const EventsAndMeetups = () => {
 
   // Handle card click
   const handleCardClick = useCallback((event: any) => {
+    if (isLiveRoomEvent(event)) {
+      // Live now → into the room; scheduled → its drawer (Notify me, calendar).
+      if (event.metadata?.is_live) openLiveRoom(event);
+      else setRoomDrawerEvent(event);
+      return;
+    }
     setFocusedCardId(event.id);
     selectEvent(event.id);
     setSearchParams({ event: event.id, tab: activeTab });
-  }, [activeTab, selectEvent, setSearchParams]);
+  }, [activeTab, selectEvent, setSearchParams, openLiveRoom]);
 
   const handleSearchItemClick = useCallback((id: string) => {
     const event = dbEvents.find(e => e.id === id);
@@ -744,7 +786,7 @@ const EventsAndMeetups = () => {
   // Get current event and navigation state
   // A linked event outside the current tab (e.g. a multi-day event that began
   // before today, opened from a chat link — VTID-04902) still opens its drawer.
-  const selectedEventData = currentEvents.find(e => e.id === selectedEventId)
+  const selectedEventData = currentEvents.find(e => e.id === selectedEventId && !isLiveRoomEvent(e))
     ?? linkedEvents.find(e => e.id === selectedEventId);
   const currentIndex = selectedEventId ? visibleEventIds.indexOf(selectedEventId) : -1;
   const hasPrev = currentIndex > 0;
@@ -883,7 +925,6 @@ const EventsAndMeetups = () => {
             <div className={cn(isMobile ? "flex-1 overflow-y-auto" : "")}>
 
               <SplitBarContent value="today" className={isMobile ? "mt-1" : "mt-6"}>
-                <EventsLiveRooms tab="today" searchQuery={searchQuery} />
                 {loading && filteredTodayEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -963,7 +1004,6 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="upcoming" className={isMobile ? "mt-1" : "mt-6"}>
-                <EventsLiveRooms tab="upcoming" searchQuery={searchQuery} />
                 {loading && filteredUpcomingEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -1122,7 +1162,6 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="hot" className={isMobile ? "mt-1" : "mt-6"}>
-                <EventsLiveRooms tab="hot" searchQuery={searchQuery} />
                 {loading && maxinaEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -1252,6 +1291,7 @@ const EventsAndMeetups = () => {
       )}
 
       {/* Event/MeetUp Details Drawer */}
+      <LiveRoomEventDrawer event={roomDrawerEvent} onClose={() => setRoomDrawerEvent(null)} />
       {selectedEventData && (
         <MeetupDetailsDrawer
           event={selectedEventData}
