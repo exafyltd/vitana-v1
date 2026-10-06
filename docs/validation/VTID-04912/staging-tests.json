@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04912",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: on a scheduled Live Room that already has interested people, the \"X going\" count on Events is a button; tapping it opens the list (people or the empty state) and closes again; read-only — the list is one RPC read, nothing is written",
+      "spec": "tests/e2e/staging/vtid-04912-live-room-interested-list.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/liverooms/InterestedPeopleSheet.vtid-04912.test.tsx",
+      "reason": "the list component and chip: lazy loading, tap opens the list not the card, empty state, accessible button"
+    }
+  ]
+}

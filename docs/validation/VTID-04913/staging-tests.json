@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04913",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: a live or scheduled Live Room on Events (Hot, Upcoming) is the Live Room card — Join and red LIVE badge when live, Notify me and no LIVE badge when scheduled, Share always present; read-only, nothing is clicked",
+      "spec": "tests/e2e/staging/vtid-04906-04907-live-rooms.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/events/EventsLiveRooms.vtid-04907.test.tsx src/components/events/EventLiveRoomCard.vtid-04913.test.tsx src/pages/community/EventsAndMeetups.live-rooms.vtid-04907.test.ts",
+      "reason": "Notify me / Share / Join write or navigate, so they are proven with mocks: Notify me toggles the subscription, the interested count is read from the subscriber counts, Join opens the room"
+    }
+  ]
+}

@@ -28,6 +28,16 @@ import {
 import type { CommunityEvent } from '@/hooks/useCommunityEvents';
 import { LiveRoomDrawer } from '@/components/liverooms/LiveRoomDrawer';
 import type { LiveRoom } from '@/components/liverooms/LiveRoomCard';
+import { LiveRoomEventCard } from '@/components/liverooms/LiveRoomEventCard';
+import SocialShareButton from '@/components/sharing/SocialShareButton';
+import {
+  useStreamSubscriberCounts,
+  useMyStreamSubscriptions,
+  useSubscribeToStream,
+  useUnsubscribeFromStream,
+} from '@/hooks/useStreamSubscription';
+import { useCreateReminder } from '@/hooks/useReminders';
+import { lookup, notify, notifyError } from '@/lib/i18n-toast';
 
 export const LIVE_ROOM_EVENT_TYPE = 'live_room';
 
@@ -207,4 +217,94 @@ export function liveRoomCardOverrides(e: CommunityEvent) {
     actionButton: undefined,
     'data-live-room': meta.is_live ? 'live' : 'scheduled',
   };
+}
+
+interface EventLiveRoomCardProps {
+  event: CommunityEvent;
+  /** Scheduled card tap → the room's drawer (the parent owns it). */
+  onOpenDrawer: (e: CommunityEvent) => void;
+  className?: string;
+}
+
+/**
+ * A Live Room in the Events list: the very same card the Live Rooms page shows
+ * (Notify me / Join, Share, "X will join", duration, kebab for the host), wired
+ * to the same subscription hooks — never the generic event card.
+ */
+export function EventLiveRoomCard({ event, onOpenDrawer, className }: EventLiveRoomCardProps) {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const openRoom = useOpenLiveRoom();
+  const baseRoom = liveRoomEventToRoom(event);
+  const isScheduled = !baseRoom.isLive;
+  const ids = useMemo(() => (isScheduled ? [baseRoom.id] : []), [isScheduled, baseRoom.id]);
+  const { data: counts = {} } = useStreamSubscriberCounts(ids);
+  const { data: mySubs } = useMyStreamSubscriptions();
+  const { mutateAsync: subscribe } = useSubscribeToStream();
+  const { mutateAsync: unsubscribe } = useUnsubscribeFromStream();
+  const { mutateAsync: createReminder } = useCreateReminder();
+  const room: LiveRoom = { ...baseRoom, interestedCount: counts[baseRoom.id] ?? 0 };
+  const isCreator = room.host.id === user?.id;
+  const manage = () => navigate(`/comm/live-rooms?live=${encodeURIComponent(room.id)}`);
+
+  const toggleNotify = async () => {
+    if (!user) {
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
+      return;
+    }
+    try {
+      if (mySubs?.has(room.id)) {
+        await unsubscribe(room.id);
+        notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
+      } else {
+        await subscribe(room.id);
+        if (room.scheduledTime) {
+          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
+          if (remindMs > Date.now()) {
+            createReminder({
+              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
+              scheduled_for_iso: new Date(remindMs).toISOString(),
+              description: room.title,
+            }).catch((e) => console.warn('[notify] reminder create failed:', e));
+          }
+        }
+        notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
+      }
+    } catch (e) {
+      console.error('[notify] toggle failed:', e);
+      notifyError('toasts.liverooms.notifyError');
+    }
+  };
+
+  return (
+    // data-event-id keeps the Events deep-link scroll working; data-live-room marks the card.
+    <div className="h-full" data-event-id={event.id} data-live-room={room.isLive ? 'live' : 'scheduled'}>
+    <LiveRoomEventCard
+      room={room}
+      className={className}
+      onClick={() => (room.isLive ? openRoom(event) : onOpenDrawer(event))}
+      onJoinClick={() => (room.isLive ? openRoom(event) : onOpenDrawer(event))}
+      onNotifyClick={() => toggleNotify()}
+      isNotifying={!!mySubs?.has(room.id)}
+      isCreator={isCreator}
+      onEdit={manage}
+      onDelete={manage}
+      shareButton={
+        <span className="contents" data-testid="live-room-card-share">
+        <SocialShareButton
+          type="live_room"
+          data={{
+            title: room.title,
+            description: room.description || t('screens.liveRoom.shareDescription', { name: room.host.name }),
+            link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(room.id)}`,
+          }}
+          variant="icon"
+          size="sm"
+          className="text-white hover:bg-white/20 hover:text-white"
+        />
+        </span>
+      }
+    />
+    </div>
+  );
 }

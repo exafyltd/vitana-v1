@@ -9,6 +9,7 @@ import { differenceInMinutes } from 'date-fns';
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import { t } from '@/lib/i18n-toast';
+import { InterestedPeopleSheet } from "@/components/liverooms/InterestedPeopleSheet";
 import { formatDuration } from '@/components/liverooms/liveRoomFormat';
 
 import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
@@ -45,7 +46,7 @@ export interface LiveRoom {
   status?: 'scheduled' | 'live' | 'ended' | 'cancelled';
 }
 
-interface LiveRoomCardProps {
+export interface LiveRoomCardProps {
   room: LiveRoom;
   onClick?: () => void;
   onNotifyClick?: (e: React.MouseEvent) => void;
@@ -86,6 +87,7 @@ export function LiveRoomCard({
 }: LiveRoomCardProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [interestedOpen, setInterestedOpen] = useState(false);
 
   const isScheduled = !room.isLive && room.scheduledTime;
   const minutesUntil = room.scheduledTime
@@ -173,7 +175,7 @@ export function LiveRoomCard({
           <div className="absolute top-3 left-3 right-12 flex flex-wrap items-center gap-1.5 z-10">
             {room.isLive ? (
               <>
-                <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
+                <Badge data-testid="live-room-badge" className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
                   <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
                   {t('screens.liverooms.live')}
                 </Badge>
@@ -248,10 +250,19 @@ export function LiveRoomCard({
                 {t('screens.liveRoom.startingSoon')}
               </div>
             ) : isScheduled && (room.interestedCount ?? 0) > 0 ? (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
+              <button
+                type="button"
+                data-testid="live-room-interested"
+                className="flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label={t('screens.liverooms.interestedAria')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setInterestedOpen(true);
+                }}
+              >
                 <Users className="w-3 h-3" />
                 <span>{t('screens.liverooms.willJoinCount', { count: room.interestedCount ?? 0 })}</span>
-              </div>
+              </button>
             ) : showCountdown ? (
               <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</div>
             ) : null}
@@ -361,6 +372,7 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
+                      data-testid="live-room-card-share"
                       aria-label={t('screens.liverooms.shareRoom')}
                       title={t('screens.liverooms.share')}
                     >
@@ -374,6 +386,7 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onJoinClick?.(e);
                     }}
+                    data-testid="live-room-card-join"
                     aria-label={isCreator ? t('screens.liverooms.manageAria') : t('screens.liverooms.joinAria')}
                   >
                     {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
@@ -402,6 +415,7 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
+                      data-testid="live-room-card-share"
                       aria-label={t('screens.liverooms.shareRoom')}
                       title={t('screens.liverooms.share')}
                     >
@@ -419,6 +433,7 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onNotifyClick?.(e);
                     }}
+                    data-testid="live-room-card-notify"
                     aria-label={isNotifying ? t('screens.liverooms.notifyAriaOn') : t('screens.liverooms.notifyAriaOff')}
                   >
                     <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
@@ -430,6 +445,17 @@ export function LiveRoomCard({
           </div>
         </div>
       </div>
+      {interestedOpen && (
+        // Portal events bubble through React: keep taps in the sheet from opening the card.
+        <div onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+          <InterestedPeopleSheet
+            streamId={room.id}
+            title={room.title}
+            open={interestedOpen}
+            onOpenChange={setInterestedOpen}
+          />
+        </div>
+      )}
     </Card>
   );
 }

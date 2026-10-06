@@ -47,6 +47,7 @@ import {
   isOngoingLiveRoom,
   liveRoomCardOverrides,
   LiveRoomEventDrawer,
+  EventLiveRoomCard,
 } from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
@@ -249,7 +250,13 @@ const renderEventGrid = (
         {isEvenRow ? (
           <>
             <div className="col-span-6">
-              <NewsCard
+              {isLiveRoomEvent(rowEvents[0]) ? (
+<EventLiveRoomCard key={`${i}-0`} event={rowEvents[0]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                  "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
+                  onClick && "hover:ring-2 hover:ring-primary"
+                )} />
+) : (
+<NewsCard
                 key={`${i}-0`}
                 {...mkProps(rowEvents[0], 0)}
                 className={cn(
@@ -257,10 +264,17 @@ const renderEventGrid = (
                   onClick && "hover:ring-2 hover:ring-primary"
                 )}
               />
+)}
             </div>
             {rowEvents[1] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[1]) ? (
+<EventLiveRoomCard key={`${i}-1`} event={rowEvents[1]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-1`}
                   {...mkProps(rowEvents[1], 1)}
                   className={cn(
@@ -268,11 +282,18 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
             {rowEvents[2] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[2]) ? (
+<EventLiveRoomCard key={`${i}-2`} event={rowEvents[2]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-2`}
                   {...mkProps(rowEvents[2], 2)}
                   className={cn(
@@ -280,6 +301,7 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
           </>
@@ -287,7 +309,13 @@ const renderEventGrid = (
           <>
             {rowEvents[0] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[0]) ? (
+<EventLiveRoomCard key={`${i}-0`} event={rowEvents[0]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-0`}
                   {...mkProps(rowEvents[0], 0)}
                   className={cn(
@@ -295,11 +323,18 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
             {rowEvents[1] && (
               <div className="col-span-3">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[1]) ? (
+<EventLiveRoomCard key={`${i}-1`} event={rowEvents[1]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-1`}
                   {...mkProps(rowEvents[1], 1)}
                   className={cn(
@@ -307,11 +342,18 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
             {rowEvents[2] && (
               <div className="col-span-6">
-                <NewsCard
+                {isLiveRoomEvent(rowEvents[2]) ? (
+<EventLiveRoomCard key={`${i}-2`} event={rowEvents[2]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )} />
+) : (
+<NewsCard
                   key={`${i}-2`}
                   {...mkProps(rowEvents[2], 2)}
                   className={cn(
@@ -319,6 +361,7 @@ const renderEventGrid = (
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
+)}
               </div>
             )}
           </>

@@ -22,24 +22,28 @@
       "morning": "Good morning ☀️",
       "afternoon": "Good afternoon 🌤️",
       "evening": "Good evening 🌙",
-      "night": "Good night 🌙"
+      "night": "Good night 🌙",
+      "_pending_review": {}
     },
     "views": {
       "day": "Day",
       "week": "Week",
-      "month": "Month"
+      "month": "Month",
+      "_pending_review": {}
     },
     "rel": {
       "now": "now",
       "minutes": "in {count} min",
       "hours": "in {count} h",
-      "days": "in {count} days"
+      "days": "in {count} days",
+      "_pending_review": {}
     },
     "reminder": {
       "eveningBefore": "Evening before at {time}",
       "atStart": "At start",
       "hoursBefore": "{count} h before",
-      "minutesBefore": "{count} min before"
+      "minutesBefore": "{count} min before",
+      "_pending_review": {}
     },
     "kinds": {
       "nutrition": "Nutrition",
@@ -51,7 +55,8 @@
       "lab": "Lab",
       "work": "Work",
       "vitana": "Vitana",
-      "personal": "Personal"
+      "personal": "Personal",
+      "_pending_review": {}
     },
     "source": {
       "lab": "From your lab order",
@@ -59,18 +64,22 @@
       "plan": "From your plan",
       "assistant": "Added with Vitana",
       "community": "Community",
-      "journey": "Your journey"
+      "journey": "Your journey",
+      "_pending_review": {}
     },
     "empty": {
       "title": "Nothing planned – a calm day",
-      "hint": "Tell Vitana what you have in mind and she'll add it."
+      "hint": "Tell Vitana what you have in mind and she'll add it.",
+      "_pending_review": {}
     },
     "week": {
       "title": "Week of {date}",
-      "free": "free"
+      "free": "free",
+      "_pending_review": {}
     },
     "month": {
-      "more": "+{count}"
+      "more": "+{count}",
+      "_pending_review": {}
     },
     "entry": {
       "close": "Close",
@@ -78,7 +87,8 @@
       "reminders": "Reminders",
       "noReminders": "No reminder",
       "directions": "Directions",
-      "askVitana": "Ask Vitana"
+      "askVitana": "Ask Vitana",
+      "_pending_review": {}
     },
     "work": {
       "deploy_staging": "Staging deploy",
@@ -86,7 +96,8 @@
       "autopilot_review": "Waiting for your review",
       "ticket_due": "Ticket deadline",
       "erp_approval": "Approval waiting",
-      "readOnly": "You finish this where it lives – the calendar only shows when it is due."
+      "readOnly": "You finish this where it lives – the calendar only shows when it is due.",
+      "_pending_review": {}
     },
     "subscribe": {
       "title": "Show in my calendar app",
@@ -108,23 +119,28 @@
       "titleFor": {
         "google": "Connect Google Calendar",
         "apple": "Connect Apple Calendar",
-        "outlook": "Connect Outlook"
+        "outlook": "Connect Outlook",
+        "_pending_review": {}
       },
       "introFor": {
         "google": "Your Vitanaland entries appear in your Google Calendar and stay up to date there.",
         "apple": "Your Vitanaland entries appear in Apple Calendar on your iPhone, iPad and Mac and stay up to date there.",
-        "outlook": "Your Vitanaland entries appear in your Outlook calendar and stay up to date there."
+        "outlook": "Your Vitanaland entries appear in your Outlook calendar and stay up to date there.",
+        "_pending_review": {}
       },
       "createFor": {
         "google": "Create link for Google",
         "apple": "Create link for Apple",
-        "outlook": "Create link for Outlook"
+        "outlook": "Create link for Outlook",
+        "_pending_review": {}
       },
       "openIn": {
         "google": "Add to Google Calendar",
         "apple": "Add to Apple Calendar",
-        "outlook": "Add to Outlook"
-      }
+        "outlook": "Add to Outlook",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "move": {
       "action": "Move",
@@ -138,8 +154,10 @@
         "owned_by_source": "This comes from a booking or a plan – move it there, or it will jump back.",
         "recurring": "Move a series from the series itself.",
         "completed": "Done entries stay where they were.",
-        "cancelled": "Cancelled entries can't be moved."
-      }
+        "cancelled": "Cancelled entries can't be moved.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "google": {
       "title": "Sync with Google Calendar",
@@ -153,12 +171,14 @@
       "problem": "The last sync didn't work – we'll retry automatically.",
       "error": "That didn't work just now. Try again in a moment.",
       "busy": "Busy (Google)",
-      "busyHint": "An event from your Google calendar – only the time is visible"
+      "busyHint": "An event from your Google calendar – only the time is visible",
+      "_pending_review": {}
     },
     "quietHours": {
       "title": "Quiet hours",
       "body": "No reminders arrive during your quiet hours – they come just before.",
-      "link": "Set quiet hours"
+      "link": "Set quiet hours",
+      "_pending_review": {}
     },
     "guide": {
       "eyebrow": "Vitana suggests",
@@ -175,7 +195,8 @@
       "planWithVitana": "Plan with Vitana",
       "seeWeek": "See the week",
       "connectAction": "Connect calendar",
-      "dismiss": "Hide for today"
+      "dismiss": "Hide for today",
+      "_pending_review": {}
     },
     "journey": {
       "title": "Your journey",
@@ -194,21 +215,24 @@
       "dailyAt": "Daily at",
       "addConfirm": "Add",
       "inCalendar": "In calendar",
-      "habitAdded": "Habit added to your calendar"
+      "habitAdded": "Habit added to your calendar",
+      "_pending_review": {}
     },
     "remindersSection": {
       "title": "Reminders",
       "none": "None scheduled",
       "upcoming": "{count} upcoming",
       "upcomingOne": "1 upcoming",
-      "next": "next {when}"
+      "next": "next {when}",
+      "_pending_review": {}
     },
     "calendars": {
       "title": "Calendars",
       "providers": {
         "google": "Google",
         "apple": "Apple",
-        "outlook": "Outlook"
+        "outlook": "Outlook",
+        "_pending_review": {}
       },
       "connectTitle": "Connect your calendar",
       "connectBody": "Your Vitanaland entries in Google, Apple or Outlook – one tap.",
@@ -222,12 +246,14 @@
       "connect": "Connect",
       "reconnect": "Reconnect",
       "manage": "Manage in Connected Apps",
-      "showInAppHint": "See Vitanaland entries in your calendar app"
+      "showInAppHint": "See Vitanaland entries in your calendar app",
+      "_pending_review": {}
     },
     "add": {
       "title": "New entry",
       "created": "Added ✨",
-      "error": "That couldn't be saved just now. Try again in a moment."
+      "error": "That couldn't be saved just now. Try again in a moment.",
+      "_pending_review": {}
     },
     "form": {
       "title": "Title",
@@ -250,8 +276,10 @@
         "health": "Health",
         "workout": "Workout",
         "community": "Community",
-        "nutrition": "Nutrition"
-      }
+        "nutrition": "Nutrition",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "milestone": "Milestone: {title}",
     "more": "+{count} more",
@@ -260,13 +288,17 @@
       "entriesOne": "1 entry",
       "entries": "{count} entries",
       "next": "next at {time}",
-      "done": "{count} done"
+      "done": "{count} done",
+      "_pending_review": {}
     },
     "workSection": {
       "title": "Work",
       "waitingOne": "1 thing is waiting for you",
       "waiting": "{count} things are waiting for you",
-      "open": "Open in admin"
-    }
-  }
+      "open": "Open in admin",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
