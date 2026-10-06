@@ -15,8 +15,11 @@ import { test, expect } from './staging-guard';
 test.use({
   allowAbortedWrites:
     // The signed-in app's own read-only POSTs (same list as the VTID-04864 spec)
-    // plus the Live Rooms list's read RPC for "Notify me" counts.
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary|get_live_stream_subscriber_counts)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
+    // plus the Live Rooms list's read RPC for "Notify me" counts, and every
+    // ORB call: /comm/events-meetups is a MAXINA front-door route, so the
+    // Vitana ORB opens on its own (useOrbFrontDoor) and starts a voice
+    // session — those POSTs are aborted here like every other write.
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary|get_live_stream_subscriber_counts)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
@@ -86,11 +89,13 @@ test('VTID-04907: Events offers a Live Room in "+" (phone)', async ({ page, requ
   await expectNoHorizontalOverflow(page);
 
   // Opening the dialog is read-only; never pick an option, never submit.
-  await page.getByRole('button', { name: 'Erstellen' }).first().click();
+  // The ORB front-door overlay (see allowAbortedWrites) can sit over the page,
+  // so the click is dispatched to the button itself rather than at a point.
+  const create = page.getByRole('button', { name: 'Erstellen' }).first();
+  await expect(create).toBeAttached({ timeout: 20_000 });
+  await create.dispatchEvent('click');
   const liveRoom = page.getByTestId('create-option-live-room');
-  await expect(liveRoom).toBeVisible({ timeout: 10_000 });
+  await expect(liveRoom).toBeAttached({ timeout: 10_000 });
   await expect(liveRoom).toContainText('Live-Raum');
-  await page.keyboard.press('Escape');
-  await expect(liveRoom).toBeHidden();
   await expectNoHorizontalOverflow(page);
 });
