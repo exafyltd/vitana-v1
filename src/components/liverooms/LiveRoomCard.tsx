@@ -9,6 +9,7 @@ import { differenceInMinutes } from 'date-fns';
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import { t } from '@/lib/i18n-toast';
+import { InterestedPeopleSheet } from "@/components/liverooms/InterestedPeopleSheet";
 import { formatDuration } from '@/components/liverooms/liveRoomFormat';
 
 import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
@@ -86,6 +87,7 @@ export function LiveRoomCard({
 }: LiveRoomCardProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [interestedOpen, setInterestedOpen] = useState(false);
 
   const isScheduled = !room.isLive && room.scheduledTime;
   const minutesUntil = room.scheduledTime
@@ -248,10 +250,19 @@ export function LiveRoomCard({
                 {t('screens.liveRoom.startingSoon')}
               </div>
             ) : isScheduled && (room.interestedCount ?? 0) > 0 ? (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
+              <button
+                type="button"
+                data-testid="live-room-interested"
+                className="flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label={t('screens.liverooms.interestedAria')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setInterestedOpen(true);
+                }}
+              >
                 <Users className="w-3 h-3" />
                 <span>{t('screens.liverooms.willJoinCount', { count: room.interestedCount ?? 0 })}</span>
-              </div>
+              </button>
             ) : showCountdown ? (
               <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</div>
             ) : null}
@@ -434,6 +445,17 @@ export function LiveRoomCard({
           </div>
         </div>
       </div>
+      {interestedOpen && (
+        // Portal events bubble through React: keep taps in the sheet from opening the card.
+        <div onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+          <InterestedPeopleSheet
+            streamId={room.id}
+            title={room.title}
+            open={interestedOpen}
+            onOpenChange={setInterestedOpen}
+          />
+        </div>
+      )}
     </Card>
   );
 }
