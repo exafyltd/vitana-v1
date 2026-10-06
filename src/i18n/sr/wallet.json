@@ -28,7 +28,7 @@
     "displayCurrency": "Valuta prikaza",
     "rewardRules": {
       "title": "Kako zarađuješ VTNA",
-      "summary": "VTNA zarađuješ za stvarne stvari koje sam radiš i za upornost.",
+      "summary": "Zaradiš VTNA za stvarne stvari koje radiš sam, i za istrajnost.",
       "earnedBalance": "Zaradio si",
       "value": "1 VTNA = {rate}",
       "amount": "+{amount} VTNA",
@@ -37,12 +37,8 @@
       "cap": "{used} od {count} za {days} dana",
       "groups": {
         "first_steps": "Prvi koraci – po jednom",
-        "habits": "Navike – upornost",
-        "community": "Zajednica – sa drugima",
-        "_pending_review": {
-          "habits": true,
-          "community": true
-        }
+        "habits": "Navike – Istraj u tome",
+        "community": "Zajednica – Sa drugima"
       },
       "rules": {
         "onboarding_complete": "Završi uvod",
@@ -83,12 +79,7 @@
       "loading": "Učitavanje…",
       "error": "Tvoje nagrade trenutno nije moguće učitati.",
       "capToday": "{used} od {count} danas",
-      "capWeek": "{used} od {count} ove nedelje",
-      "_pending_review": {
-        "summary": true,
-        "capToday": true,
-        "capWeek": true
-      }
+      "capWeek": "{used} od {count} ove nedelje"
     }
   }
 }
