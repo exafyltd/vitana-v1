@@ -4640,7 +4640,10 @@
       "youSureYouWantDeleteTitle": "Czy na pewno chcesz usunąć „{title}”? Tej czynności nie można cofnąć.\n              Wszyscy uczestnicy, bilety i powiązane dane zostaną trwale usunięte.",
       "sent_countSentResponse_countResponded": "{sent_count} wysłanych • {response_count} odpowiedzi",
       "attendeesTotal": "Uczestnicy ({total})",
-      "noInvitationsSentYetStartInviting": "Nie wysłano jeszcze zaproszeń. Zacznij zapraszać ludzi, aby zobaczyć tutaj odpowiedzi."
+      "noInvitationsSentYetStartInviting": "Nie wysłano jeszcze zaproszeń. Zacznij zapraszać ludzi, aby zobaczyć tutaj odpowiedzi.",
+      "virtualLinkLabel": "Link do dołączenia (opcjonalnie)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Wklej link do swojej rozmowy wideo (zaczyna się od https://). Bez linku nie pojawi się link „Dołącz”."
     },
     "feedback": {
       "reportSent": "Raport wysłany!",
@@ -13327,6 +13330,39 @@
       "redirecting": "Powrót do asystenta …",
       "invalid": "To żądanie połączenia jest nieprawidłowe lub wygasło. Rozpocznij połączenie ponownie w asystencie.",
       "failed": "Nie udało się. Spróbuj ponownie."
+    },
+    "liveRoom": {
+      "guest": "Gość",
+      "defaultTitle": "Pokój na żywo",
+      "defaultSessionTitle": "Rozmowa na żywo w społeczności",
+      "listSeoDescription": "Dołącz do rozmów i dyskusji na żywo",
+      "shareDescription": "Dołącz do sesji na żywo: {name}",
+      "seoTitle": "{title} – Pokój na żywo",
+      "seoDescription": "Dołącz do transmisji na żywo: {name}",
+      "leave": "Wyjdź",
+      "leaveRoom": "Opuść pokój",
+      "back": "Wstecz",
+      "backToRooms": "Wróć do pokojów na żywo",
+      "inRoomCount": "{count} w pokoju",
+      "endForEveryone": "Zakończ dla wszystkich",
+      "endConfirmTitle": "Zakończyć pokój dla wszystkich?",
+      "endConfirmDesc": "Wszyscy opuszczą pokój, a sesja się zakończy. Jeśli chcesz tylko wyjść na chwilę, dotknij „Wyjdź” – pokój będzie działał dalej.",
+      "readyToStart": "Gotowy, by zacząć?",
+      "readyToJoin": "Gotowy, by dołączyć?",
+      "startHint": "Dotknij poniżej, aby rozpocząć transmisję na żywo.",
+      "joinHint": "Dotknij poniżej, aby dołączyć do transmisji.",
+      "startStream": "Rozpocznij transmisję",
+      "joinStream": "Dołącz do transmisji",
+      "notLiveTitle": "Ten pokój nie nadaje teraz na żywo",
+      "notLiveDesc": "Gospodarz jeszcze nie rozpoczął sesji. Spróbuj ponownie za chwilę.",
+      "paymentRequiredTitle": "Wymagany dostęp",
+      "paymentRequiredDesc": "Ten pokój jest płatny. Najpierw uzyskaj dostęp, potem dołączysz.",
+      "signInTitle": "Wymagane logowanie",
+      "signInDesc": "Zaloguj się, aby dołączać do pokojów na żywo.",
+      "notFoundDesc": "Ten pokój na żywo już nie istnieje.",
+      "startingSoon": "Zaraz się zacznie",
+      "startNow": "Zacznij teraz",
+      "eventsSectionTitle": "Pokoje na żywo"
     }
   }
 }

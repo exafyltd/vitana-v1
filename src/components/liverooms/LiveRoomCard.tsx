@@ -23,6 +23,11 @@ export interface LiveRoom {
   };
   isLive: boolean;
   scheduledTime?: string;
+  /**
+   * Scheduled room whose start time has passed but the host has not started
+   * it yet ("starting soon"). The host can start it from the card (VTID-04906).
+   */
+  startingSoon?: boolean;
   /** Actual start of a live session (used for the "started at" time on live cards). */
   startedAt?: string;
   /** Planned session length in minutes — shown as a duration chip on the card. */
@@ -230,10 +235,17 @@ export function LiveRoomCard({
 
           {/* Top-right: Viewer count or countdown + Kebab menu */}
           <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
-            {room.isLive && room.participants > 0 ? (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
+            {room.isLive ? (
+              <div
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg"
+                data-testid="live-room-card-viewers"
+              >
                 <Users className="w-3 h-3" />
                 <span>{room.participants}</span>
+              </div>
+            ) : isScheduled && room.startingSoon ? (
+              <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
+                {t('screens.liveRoom.startingSoon')}
               </div>
             ) : isScheduled && (room.interestedCount ?? 0) > 0 ? (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
@@ -367,6 +379,18 @@ export function LiveRoomCard({
                     {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
                   </Button>
                 </>
+              ) : isScheduled && room.startingSoon && isCreator ? (
+                <Button
+                  size="sm"
+                  className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onJoinClick?.(e);
+                  }}
+                  data-testid="live-room-card-start"
+                >
+                  {t('screens.liveRoom.startNow')}
+                </Button>
               ) : isScheduled ? (
                 <>
                   {shareButton || (

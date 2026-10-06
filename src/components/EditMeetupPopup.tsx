@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketTypeForm";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { isHttpUrl, toVirtualLink } from '@/lib/virtualLink';
 import { resizeImageFile } from '@/lib/resizeImage';
 
 interface CommunityEvent {
@@ -59,6 +60,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
     duration: "",
     location: "",
     isVirtual: false,
+    virtualLink: "",
     capacity: "",
     requirements: "",
     isRecurring: false,
@@ -121,6 +123,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         duration,
         location: event.location || "",
         isVirtual: !!event.virtual_link,
+        // The legacy literal stored before VTID-04907 is not a link — start empty.
+        virtualLink: isHttpUrl(event.virtual_link) ? event.virtual_link : "",
         capacity: event.max_participants?.toString() || "",
         requirements: "",
         isRecurring: false,
@@ -353,7 +357,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         description: formData.description || undefined,
         event_type: event.event_type,
         location: formData.isVirtual ? undefined : formData.location || undefined,
-        virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
+        // null clears a stale link / the legacy literal (VTID-04907).
+        virtual_link: toVirtualLink(formData.isVirtual, formData.virtualLink) ?? null,
         start_time: startTime,
         end_time: endTime,
         max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
@@ -691,6 +696,23 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   onCheckedChange={(checked) => setFormData({...formData, isVirtual: checked})}
                 />
               </div>
+
+              {formData.isVirtual && (
+                <div>
+                  <Label htmlFor="virtual-link">{t('screens.events.virtualLinkLabel')}</Label>
+                  <Input
+                    id="virtual-link"
+                    type="url"
+                    inputMode="url"
+                    dir="ltr"
+                    value={formData.virtualLink}
+                    onChange={(e) => setFormData({...formData, virtualLink: e.target.value})}
+                    placeholder={t('screens.events.virtualLinkPlaceholder')}
+                    className="mt-1"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.events.virtualLinkHint')}</p>
+                </div>
+              )}
 
               {!formData.isVirtual && (
                 <div>

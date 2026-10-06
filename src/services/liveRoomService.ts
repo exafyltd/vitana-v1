@@ -174,6 +174,39 @@ export interface DailyRoomResponse {
   already_existed: boolean;
 }
 
+/** POST /live/rooms/:id/enter — the only way into a (private) Daily room. */
+export interface EnterRoomResponse {
+  ok: boolean;
+  daily_room_url: string;
+  /** Daily meeting token: owner token for the host, participant token otherwise. */
+  token: string;
+  is_host: boolean;
+  counts?: { in_room: number };
+}
+
+export type EnterRoomErrorCode = 'NOT_LIVE' | 'PAYMENT_REQUIRED' | 'UNAUTHENTICATED' | 'NOT_FOUND' | 'FORBIDDEN' | 'UNKNOWN';
+
+/** Typed failure of `enterRoom`, so the viewer can show the right state. */
+export class LiveRoomEnterError extends Error {
+  readonly code: EnterRoomErrorCode;
+  readonly status: number;
+  constructor(code: EnterRoomErrorCode, status: number, message: string) {
+    super(message);
+    this.name = 'LiveRoomEnterError';
+    this.code = code;
+    this.status = status;
+  }
+}
+
+export function enterErrorCode(status: number, error?: string): EnterRoomErrorCode {
+  if (error === 'NOT_LIVE' || status === 409) return 'NOT_LIVE';
+  if (error === 'PAYMENT_REQUIRED' || status === 402) return 'PAYMENT_REQUIRED';
+  if (status === 401) return 'UNAUTHENTICATED';
+  if (status === 403) return 'FORBIDDEN';
+  if (status === 404) return 'NOT_FOUND';
+  return 'UNKNOWN';
+}
+
 export interface PurchaseResponse {
   ok: boolean;
   client_secret: string;
@@ -415,11 +448,61 @@ export const liveRoomService = {
   },
 
   // --------------------------------------------------------------------------
+  // Enter / exit (LR-B, VTID-04906)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Enter a room: the gateway checks access (live session, paid grant),
+   * records attendance and returns the Daily URL plus a meeting token.
+   * Rooms are private Daily rooms — a bare URL no longer gets anyone in.
+   */
+  async enterRoom(roomId: string): Promise<EnterRoomResponse> {
+    const token = await getToken().catch(() => {
+      throw new LiveRoomEnterError('UNAUTHENTICATED', 401, 'Not authenticated');
+    });
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE}/live/rooms/${roomId}/enter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      });
+    } catch (err) {
+      throw new LiveRoomEnterError('UNKNOWN', 0, err instanceof Error ? err.message : String(err));
+    }
+    const body = await response.json().catch(() => ({} as Record<string, unknown>));
+    if (!response.ok) {
+      const errorCode = typeof body?.error === 'string' ? body.error : undefined;
+      console.error(`[liveRoomService] enter failed: ${response.status} ${errorCode ?? ''}`, { roomId, body });
+      throw new LiveRoomEnterError(
+        enterErrorCode(response.status, errorCode),
+        response.status,
+        (typeof body?.message === 'string' && body.message) || errorCode || `Request failed: ${response.status}`,
+      );
+    }
+    if (!body?.daily_room_url || !body?.token) {
+      throw new LiveRoomEnterError('UNKNOWN', response.status, 'Enter response without room url or token');
+    }
+    return body as EnterRoomResponse;
+  },
+
+  /**
+   * Leave a room (records the leave for the current session on the gateway).
+   * `keepalive` lets the request finish while the page is being hidden/closed.
+   */
+  async exitRoom(roomId: string, options: { keepalive?: boolean } = {}): Promise<void> {
+    await apiFetch(`/live/rooms/${roomId}/exit`, {
+      method: 'POST',
+      keepalive: options.keepalive,
+    });
+  },
+
+  // --------------------------------------------------------------------------
   // Daily.co & Payment
   // --------------------------------------------------------------------------
 
   /**
-   * Create Daily.co video room
+   * Create/refresh the Daily.co room — HOST ONLY (the gateway answers 403 to
+   * everyone else). Viewers get in through `enterRoom`.
    */
   async createDailyRoom(roomId: string): Promise<DailyRoomResponse> {
     const res = await apiFetch(`/live/rooms/${roomId}/daily`, { method: 'POST' });

@@ -647,7 +647,11 @@
       "failedSendMessage": "Neuspešno slanje poruke",
       "pleaseTryAgainLater": "Pokušaj ponovo kasnije",
       "addedSmartCalendar": "Dodato u Smart Calendar ✓",
-      "eventSavedWeLlRemindYou": "Događaj sačuvan. Podsetićemo te pre nego što počne."
+      "eventSavedWeLlRemindYou": "Događaj sačuvan. Podsetićemo te pre nego što počne.",
+      "savedTitle": "Sačuvano",
+      "savedDesc": "Sačuvano za kasnije",
+      "unsavedTitle": "Uklonjeno iz sačuvanog",
+      "unsavedDesc": "Uklonjeno sa tvoje liste sačuvanog"
     },
     "memory": {
       "voiceRecorded": "Glasovni snimak sačuvan",

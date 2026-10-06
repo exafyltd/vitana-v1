@@ -6,7 +6,9 @@
     "eventDescription": "Rassemblements formels avec des horaires et des programmes structurés",
     "meetup": "Rendez-vous",
     "meetupDescription": "Rassemblements informels pour le réseautage et la création de communauté",
-    "_pending_review": {}
+    "_pending_review": {},
+    "liveRoom": "Salle en direct",
+    "liveRoomDescription": "Passe en direct maintenant ou planifie une session audio ou vidéo"
   },
   "_pending_review": {}
 }

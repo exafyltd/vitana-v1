@@ -94,6 +94,7 @@ import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 import { EventKebabMenu } from "@/components/events/EventKebabMenu";
 import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
+import { isHttpUrl } from '@/lib/virtualLink';
 
 import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 import { buildIcs, downloadIcs, icsFilename } from '@/lib/ics';
@@ -257,17 +258,9 @@ export function MeetupDetailsDrawer({
     queryClient.invalidateQueries({ queryKey: ['global-community-events'] });
   }, [queryClient]);
 
-  // Sync participant count back to global_community_events table
-  const syncEventParticipantCount = useCallback(async (eventId: string, count: number) => {
-    try {
-      await supabase
-        .from('global_community_events')
-        .update({ participant_count: count })
-        .eq('id', eventId);
-    } catch (err) {
-      console.error('[MeetupDrawer] Failed to sync participant count:', err);
-    }
-  }, []);
+  // No client-side writes to global_community_events.participant_count
+  // (VTID-04907): members cannot update other people's events (a silent
+  // no-op under RLS) — counts always come from global_event_participants.
   
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
@@ -491,14 +484,18 @@ export function MeetupDetailsDrawer({
         return;
       }
 
-      // Insert into global_event_participants
+      // Upsert into global_event_participants: re-joining after a leave (or
+      // a double tap) must not fail on the unique (event_id, user_id) row.
       const { error: participateError } = await supabase
         .from('global_event_participants')
-        .insert({
-          event_id: event.id,
-          user_id: user.id,
-          status: 'attending'
-        });
+        .upsert(
+          {
+            event_id: event.id,
+            user_id: user.id,
+            status: 'attending'
+          },
+          { onConflict: 'event_id,user_id' }
+        );
 
       if (participateError) throw participateError;
 
@@ -526,9 +523,6 @@ export function MeetupDetailsDrawer({
       setIsJoined(true);
       setLiveParticipantCount(prev => (prev ?? 0) + 1);
       setIsJoining(false);
-      // Sync count to DB and invalidate cache
-      const newCount = (liveParticipantCount ?? (event.participant_count || 0)) + 1;
-      syncEventParticipantCount(event.id, newCount);
       invalidateEventsCache();
       
       toast({
@@ -565,10 +559,11 @@ export function MeetupDetailsDrawer({
 
   const handleSave = () => {
     setIsSaved(!isSaved);
-    toast({
-      title: isSaved ? "Removed from saved" : "Saved",
-      description: isSaved ? "Meetup removed from your saved list" : "Meetup saved for later",
-    });
+    if (isSaved) {
+      notify('toasts.meetups.unsavedTitle', 'toasts.meetups.unsavedDesc');
+    } else {
+      notify('toasts.meetups.savedTitle', 'toasts.meetups.savedDesc');
+    }
   };
 
   // Share URL for the dialog
@@ -651,11 +646,16 @@ export function MeetupDetailsDrawer({
     }
   };
 
-  const capacity = event.max_participants || 30;
+  // Capacity only when the host set one — "x / 30" for an unlimited event
+  // was invented (VTID-04907).
+  const capacity: number | null = event.max_participants && event.max_participants > 0 ? event.max_participants : null;
   const current = liveParticipantCount ?? (event.participant_count || 0);
-  const capacityPercent = (current / capacity) * 100;
-  const spotsLeft = capacity - current;
-  const isLowCapacity = spotsLeft > 0 && spotsLeft <= capacity * 0.2;
+  const capacityPercent = capacity ? Math.min(100, (current / capacity) * 100) : 0;
+  const spotsLeft = capacity ? capacity - current : 0;
+  const isLowCapacity = !!capacity && spotsLeft > 0 && spotsLeft <= capacity * 0.2;
+  // Only a real http(s) URL is a join link; the legacy 'Virtual Event'
+  // literal is not (VTID-04907).
+  const joinLink = isHttpUrl(event.virtual_link) ? event.virtual_link.trim() : null;
 
   const startDate = new Date(event.start_time);
   const endDate = event.end_time ? new Date(event.end_time) : null;
@@ -666,17 +666,6 @@ export function MeetupDetailsDrawer({
   const hoursUntilEvent = differenceInHours(startDate, new Date());
   const showCountdown = hoursUntilEvent > 0 && hoursUntilEvent < 24;
 
-  // Mock data for social proof
-  const followersGoing = [
-    { name: "Alex", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
-    { name: "Sarah", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" },
-    { name: "Mike", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop" },
-  ];
-
-  const attendees = Array.from({ length: Math.min(current, 10) }, (_, i) => ({
-    name: `User ${i + 1}`,
-    avatar: `https://images.unsplash.com/photo-${1500000000000 + i * 1000000}?w=40&h=40&fit=crop`,
-  }));
 
   // Swipe handlers
   const minSwipeDistance = 50;
@@ -1045,44 +1034,6 @@ export function MeetupDetailsDrawer({
               )}
             </div>
 
-            {/* Social Proof - Compact People Going Banner */}
-            {followersGoing.length > 0 && (
-              <button 
-                className="flex items-center gap-3 p-3 bg-muted/10 hover:bg-muted/20 rounded-2xl border-0 transition-colors w-full text-left cursor-pointer"
-                onClick={() => {
-                  const attendeesSection = document.querySelector('[data-section="attendees"]');
-                  attendeesSection?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                <div className="flex -space-x-2">
-                  {followersGoing.slice(0, 4).map((follower, i) => (
-                    <div key={i} className="group relative">
-                      <Avatar className="h-6 w-6 border-2 border-background">
-                        <AvatarImage src={follower.avatar} />
-                        <AvatarFallback className="text-xs">{follower.name[0]}</AvatarFallback>
-                      </Avatar>
-                      {/* Follow back pill - shown on hover for first unfollowed user */}
-                      {i === 0 && (
-                        <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-                          <div className="px-2 py-1 text-[11px] font-medium bg-primary text-primary-foreground rounded-full whitespace-nowrap shadow-lg">
-                             {translate('eventDrawer.followBack', 'Follow back')}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  {followersGoing.length > 4 && (
-                    <div className="flex items-center justify-center h-6 w-6 rounded-full bg-accent border-2 border-background text-[10px] font-semibold">
-                      +{followersGoing.length - 4}
-                    </div>
-                  )}
-                </div>
-                <p className="text-sm font-medium flex-1">
-                   {translate('eventDrawer.followersGoing', 'People you follow are going')}
-                 </p>
-              </button>
-            )}
-
             {/* When & Where */}
             <div className="space-y-4 p-5 bg-muted/30 rounded-2xl">
               <div className="flex items-center justify-between gap-3">
@@ -1144,11 +1095,13 @@ export function MeetupDetailsDrawer({
                     <Globe className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
                        <p className="font-medium text-[15px]">{translate('eventDrawer.virtualEvent', 'Virtual Event')}</p>
-                       <Button variant="link" className="h-auto p-0 text-primary text-[13px]" asChild>
-                         <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
-                           {translate('eventDrawer.joinLinkOpens', 'Join link · Opens 5 min before')}
-                         </a>
-                      </Button>
+                       {joinLink && (
+                         <Button variant="link" className="h-auto p-0 text-primary text-[13px]" asChild>
+                           <a href={joinLink} target="_blank" rel="noopener noreferrer" data-testid="event-join-link">
+                             {translate('eventDrawer.joinLinkOpens', 'Join link · Opens 5 min before')}
+                           </a>
+                        </Button>
+                       )}
                     </div>
                   </div>
                 ) : event.location && (
@@ -1188,8 +1141,10 @@ export function MeetupDetailsDrawer({
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                   <span className="font-medium">
-                     {translate('eventDrawer.attending', '{current} / {capacity} attending').replace('{current}', String(current)).replace('{capacity}', String(capacity))}
+                   <span className="font-medium" data-testid="event-attending-count">
+                     {capacity
+                       ? translate('eventDrawer.attending', '{current} / {capacity} attending').replace('{current}', String(current)).replace('{capacity}', String(capacity))
+                       : translate('eventDrawer.attendingCount', '{current} attending').replace('{current}', String(current))}
                    </span>
                 </div>
                 {isLowCapacity && (
@@ -1199,7 +1154,7 @@ export function MeetupDetailsDrawer({
                   </div>
                 )}
               </div>
-              <Progress value={capacityPercent} className="h-2" />
+              {capacity && <Progress value={capacityPercent} className="h-2" />}
             </div>
 
             {/* Autopilot Suggestions */}
@@ -1307,29 +1262,6 @@ export function MeetupDetailsDrawer({
                 </Button>
               </div>
             </div>
-
-            {/* Attendees */}
-            {attendees.length > 0 && (
-              <div className="space-y-4 pt-5 border-t border-border/50" data-section="attendees">
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">{translate('eventDrawer.attendees', 'Attendees ({count})').replace('{count}', String(current))}</h3>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {attendees.map((attendee, i) => (
-                    <Avatar key={i} className="h-11 w-11 border-2 border-background ring-1 ring-muted hover:ring-primary transition-all cursor-pointer">
-                      <AvatarImage src={attendee.avatar} />
-                      <AvatarFallback>{attendee.name[0]}</AvatarFallback>
-                    </Avatar>
-                  ))}
-                  {current > 10 && (
-                    <div className="flex items-center justify-center h-11 w-11 rounded-full bg-muted border-2 border-background text-xs font-semibold">
-                      +{current - 10}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
 
             {/* Ticket Sales Section */}
             {isTicketed && (
@@ -1554,9 +1486,6 @@ export function MeetupDetailsDrawer({
                     
                     setIsJoined(false);
                     setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
-                    // Sync count to DB and invalidate cache
-                    const newCancelCount = Math.max(0, (liveParticipantCount ?? (event.participant_count || 0)) - 1);
-                    syncEventParticipantCount(event.id, newCancelCount);
                     invalidateEventsCache();
                      toast({
                        title: ctaConfig.action === 'leave' ? translate('eventDrawer.leftMeetup', 'Left MeetUp') : translate('eventDrawer.reservationCancelled', 'Reservation Cancelled'),

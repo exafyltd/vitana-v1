@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "هل أنت متأكد أنك تريد حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع المشاركين والتذاكر والبيانات المرتبطة نهائيًا.",
       "sent_countSentResponse_countResponded": "{sent_count}مرسل • {response_count}استجابت",
       "attendeesTotal": "الحاضرون ({total})",
-      "noInvitationsSentYetStartInviting": "لم يتم إرسال أي دعوات بعد. ابدأ بدعوة الأشخاص لرؤية الردود هنا."
+      "noInvitationsSentYetStartInviting": "لم يتم إرسال أي دعوات بعد. ابدأ بدعوة الأشخاص لرؤية الردود هنا.",
+      "virtualLinkLabel": "رابط الانضمام (اختياري)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "الصق رابط مكالمة الفيديو (يبدأ بـ https://). بدون رابط لن يظهر رابط «الانضمام»."
     },
     "feedback": {
       "reportSent": "أُرسل التقرير!",
@@ -12350,6 +12353,39 @@
       "redirecting": "العودة إلى مساعدك …",
       "invalid": "طلب الربط هذا غير صالح أو منتهي الصلاحية. ابدأ الربط من جديد في مساعدك.",
       "failed": "لم ينجح ذلك. حاول مرة أخرى."
+    },
+    "liveRoom": {
+      "guest": "ضيف",
+      "defaultTitle": "غرفة مباشرة",
+      "defaultSessionTitle": "محادثة مباشرة في المجتمع",
+      "listSeoDescription": "انضم إلى المحادثات والنقاشات المباشرة",
+      "shareDescription": "انضم إلى الجلسة المباشرة لـ {name}",
+      "seoTitle": "{title} – غرفة مباشرة",
+      "seoDescription": "انضم إلى البث المباشر لـ {name}",
+      "leave": "مغادرة",
+      "leaveRoom": "مغادرة الغرفة",
+      "back": "رجوع",
+      "backToRooms": "العودة إلى الغرف المباشرة",
+      "inRoomCount": "{count} في الغرفة",
+      "endForEveryone": "إنهاء للجميع",
+      "endConfirmTitle": "إنهاء الغرفة للجميع؟",
+      "endConfirmDesc": "سيغادر الجميع الغرفة وتنتهي الجلسة. إذا كنت تريد الخروج لفترة قصيرة فقط، فاضغط على «مغادرة» بدلاً من ذلك — ستستمر الغرفة.",
+      "readyToStart": "هل أنت مستعد للبدء؟",
+      "readyToJoin": "هل أنت مستعد للانضمام؟",
+      "startHint": "اضغط أدناه لبدء البث المباشر.",
+      "joinHint": "اضغط أدناه للانضمام إلى البث المباشر.",
+      "startStream": "بدء البث",
+      "joinStream": "الانضمام إلى البث",
+      "notLiveTitle": "هذه الغرفة ليست مباشرة الآن",
+      "notLiveDesc": "لم يبدأ المضيف الجلسة بعد. حاول مرة أخرى بعد قليل.",
+      "paymentRequiredTitle": "الوصول مطلوب",
+      "paymentRequiredDesc": "هذه غرفة مدفوعة. احصل على الوصول أولاً، ثم يمكنك الانضمام.",
+      "signInTitle": "تسجيل الدخول مطلوب",
+      "signInDesc": "سجّل الدخول للانضمام إلى الغرف المباشرة.",
+      "notFoundDesc": "لم تعد هذه الغرفة المباشرة موجودة.",
+      "startingSoon": "يبدأ قريبًا",
+      "startNow": "ابدأ الآن",
+      "eventsSectionTitle": "الغرف المباشرة"
     }
   }
 }

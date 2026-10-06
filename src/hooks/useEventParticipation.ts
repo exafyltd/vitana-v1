@@ -32,6 +32,12 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   const { addEvent, removeEvent } = useCalendarEvents();
   const queryClient = useQueryClient();
 
+  // Re-seed when the list hands us a newer count (refetch/realtime), instead
+  // of keeping the value from the first render forever (VTID-04907).
+  useEffect(() => {
+    setParticipantCount(initialCount);
+  }, [initialCount]);
+
   const participationQueryKey = ['event-participation', eventId, user?.id];
 
   // Cached participation check — survives unmount/remount
@@ -123,11 +129,9 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
 
         if (error) throw error;
 
-        // Sync participant_count on the event row
-        await supabase
-          .from('global_community_events')
-          .update({ participant_count: Math.max(0, participantCount - 1) })
-          .eq('id', eventId);
+        // No write to global_community_events.participant_count: members
+        // cannot update other people's events (a silent no-op under RLS);
+        // counts always come from participant rows (VTID-04907).
 
         // Also remove matching calendar event
         try {
@@ -171,12 +175,6 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           );
 
         if (error) throw error;
-
-        // Sync participant_count on the event row
-        await supabase
-          .from('global_community_events')
-          .update({ participant_count: participantCount + 1 })
-          .eq('id', eventId);
 
         // Also add to VITANA Smart Calendar if event details provided
         if (eventDetails) {

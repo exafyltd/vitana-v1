@@ -647,7 +647,11 @@
       "failedSendMessage": "فشل إرسال الرسالة",
       "pleaseTryAgainLater": "الرجاء المحاولة لاحقًا",
       "addedSmartCalendar": "أُضيف إلى التقويم الذكي ✓",
-      "eventSavedWeLlRemindYou": "تم حفظ الحدث. سنذكرك قبل أن يبدأ."
+      "eventSavedWeLlRemindYou": "تم حفظ الحدث. سنذكرك قبل أن يبدأ.",
+      "savedTitle": "تم الحفظ",
+      "savedDesc": "تم الحفظ لوقت لاحق",
+      "unsavedTitle": "تمت الإزالة من المحفوظات",
+      "unsavedDesc": "تمت الإزالة من قائمة محفوظاتك"
     },
     "memory": {
       "voiceRecorded": "تم تسجيل الصوت",

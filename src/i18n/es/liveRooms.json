@@ -128,7 +128,9 @@
         "genericTitle": "Error",
         "genericDesc": "Error al crear la transmisión. Intenta de nuevo.",
         "genericDescWithReason": "Error al crear la transmisión: {reason}. Inténtalo de nuevo.",
-        "_pending_review": {}
+        "_pending_review": {},
+        "cancelFailedDesc": "No se pudo terminar la sesión en curso: {reason}",
+        "roomStuckDesc": "Tu sala sigue ocupada. Vuelve a intentarlo en unos segundos."
       },
       "success": {
         "streamUpdatedTitle": "¡Transmisión actualizada! ✨",
@@ -141,7 +143,8 @@
         "aiImageHintDesc": "La imagen se generará cuando comience la transmisión.",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "streamTitleHint": "p. ej. Rutina matutina para tener más energía"
     },
     "editSession": {
       "title": "Editar sesión",

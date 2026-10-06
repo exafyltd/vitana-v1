@@ -647,7 +647,11 @@
       "failedSendMessage": "Mesaj gönderilemedi",
       "pleaseTryAgainLater": "Lütfen daha sonra tekrar dene",
       "addedSmartCalendar": "Akıllı Takvim'e eklendi ✓",
-      "eventSavedWeLlRemindYou": "Etkinlik kaydedildi. Başlamadan önce sana hatırlatacağız."
+      "eventSavedWeLlRemindYou": "Etkinlik kaydedildi. Başlamadan önce sana hatırlatacağız.",
+      "savedTitle": "Kaydedildi",
+      "savedDesc": "Sonrası için kaydedildi",
+      "unsavedTitle": "Kaydedilenlerden kaldırıldı",
+      "unsavedDesc": "Kaydedilenler listenden kaldırıldı"
     },
     "memory": {
       "voiceRecorded": "Ses Kaydedildi",

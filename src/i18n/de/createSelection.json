@@ -5,6 +5,8 @@
     "event": "Event",
     "eventDescription": "Formelle Veranstaltungen mit festen Zeiten und strukturierten Programmen",
     "meetup": "MeetUp",
-    "meetupDescription": "Lockere Treffen zum Netzwerken und für die Community"
+    "meetupDescription": "Lockere Treffen zum Netzwerken und für die Community",
+    "liveRoom": "Live-Raum",
+    "liveRoomDescription": "Geh sofort live oder plane eine Audio- oder Video-Session"
   }
 }

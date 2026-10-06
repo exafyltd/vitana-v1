@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "\"{title}\" silmek istediğinden emin misin? Bu işlem geri alınamaz. Tüm katılımcılar, biletler ve ilişkili veriler kalıcı olarak silinecek.",
       "sent_countSentResponse_countResponded": "{sent_count} gönderildi • {response_count} yanıtlandı",
       "attendeesTotal": "Katılımcılar ({total})",
-      "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla."
+      "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla.",
+      "virtualLinkLabel": "Katılım bağlantısı (isteğe bağlı)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Görüntülü görüşmenin bağlantısını yapıştır (https:// ile başlar). Bağlantı olmadan \"Katıl\" bağlantısı gösterilmez."
     },
     "feedback": {
       "reportSent": "Rapor Gönderildi!",
@@ -13305,6 +13308,39 @@
       "redirecting": "Asistanına dönülüyor …",
       "invalid": "Bu bağlantı isteği geçersiz veya süresi dolmuş. Bağlantıyı asistanında yeniden başlat.",
       "failed": "Olmadı. Lütfen tekrar dene."
+    },
+    "liveRoom": {
+      "guest": "Misafir",
+      "defaultTitle": "Canlı Oda",
+      "defaultSessionTitle": "Toplulukta canlı sohbet",
+      "listSeoDescription": "Canlı sohbetlere ve tartışmalara katıl",
+      "shareDescription": "{name} adlı kişinin canlı oturumuna katıl",
+      "seoTitle": "{title} – Canlı Oda",
+      "seoDescription": "{name} adlı kişinin canlı yayınına katıl",
+      "leave": "Ayrıl",
+      "leaveRoom": "Odadan ayrıl",
+      "back": "Geri",
+      "backToRooms": "Canlı Odalara dön",
+      "inRoomCount": "Odada {count} kişi",
+      "endForEveryone": "Herkes için bitir",
+      "endConfirmTitle": "Oda herkes için bitirilsin mi?",
+      "endConfirmDesc": "Herkes odadan çıkar ve oturum sona erer. Sadece kısa süreliğine çıkmak istiyorsan \"Ayrıl\"a dokun — oda devam eder.",
+      "readyToStart": "Başlamaya hazır mısın?",
+      "readyToJoin": "Katılmaya hazır mısın?",
+      "startHint": "Canlı yayınını başlatmak için aşağıya dokun.",
+      "joinHint": "Canlı yayına katılmak için aşağıya dokun.",
+      "startStream": "Yayını başlat",
+      "joinStream": "Yayına katıl",
+      "notLiveTitle": "Bu oda şu anda canlı değil",
+      "notLiveDesc": "Sunucu oturumu henüz başlatmadı. Birazdan tekrar dene.",
+      "paymentRequiredTitle": "Erişim gerekli",
+      "paymentRequiredDesc": "Bu ücretli bir oda. Önce erişim al, sonra katılabilirsin.",
+      "signInTitle": "Giriş gerekli",
+      "signInDesc": "Canlı odalara katılmak için giriş yap.",
+      "notFoundDesc": "Bu canlı oda artık mevcut değil.",
+      "startingSoon": "Birazdan başlıyor",
+      "startNow": "Şimdi başlat",
+      "eventsSectionTitle": "Canlı Odalar"
     }
   }
 }

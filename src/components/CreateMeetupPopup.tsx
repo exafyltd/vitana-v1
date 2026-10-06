@@ -13,6 +13,7 @@ import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { toVirtualLink } from '@/lib/virtualLink';
 import { resizeImageFile } from '@/lib/resizeImage';
 
 interface CreateMeetupPopupProps {
@@ -37,6 +38,7 @@ export function CreateMeetupPopup({ isOpen, onClose, onEventCreated }: CreateMee
     customDuration: "",
     location: "",
     isVirtual: false,
+    virtualLink: "",
     capacity: "",
     requirements: "",
     isRecurring: false,
@@ -214,7 +216,7 @@ const generateImageUrl = (title: string, description: string) => {
         description: formData.description || undefined,
         event_type: 'meetup',
         location: formData.isVirtual ? undefined : formData.location || undefined,
-        virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
+        virtual_link: toVirtualLink(formData.isVirtual, formData.virtualLink),
         start_time: startTime,
         end_time: endTime,
         max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
@@ -245,6 +247,7 @@ const generateImageUrl = (title: string, description: string) => {
             customDuration: "",
             location: "",
             isVirtual: false,
+            virtualLink: "",
             capacity: "",
             requirements: "",
             isRecurring: false,
@@ -520,6 +523,23 @@ const generateImageUrl = (title: string, description: string) => {
                   onCheckedChange={(checked) => setFormData({...formData, isVirtual: checked})}
                 />
               </div>
+
+              {formData.isVirtual && (
+                <div>
+                  <Label htmlFor="virtual-link">{t('screens.events.virtualLinkLabel')}</Label>
+                  <Input
+                    id="virtual-link"
+                    type="url"
+                    inputMode="url"
+                    dir="ltr"
+                    value={formData.virtualLink}
+                    onChange={(e) => setFormData({...formData, virtualLink: e.target.value})}
+                    placeholder={t('screens.events.virtualLinkPlaceholder')}
+                    className="mt-1"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.events.virtualLinkHint')}</p>
+                </div>
+              )}
 
               {!formData.isVirtual && (
                 <div>

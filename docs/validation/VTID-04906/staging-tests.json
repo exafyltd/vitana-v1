@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04906",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: the build carries the rebuilt room, Live Rooms renders without horizontal overflow, a room page renders the app-level header with a >=44px exit button (nothing clicked, nothing entered)",
+      "spec": "tests/e2e/staging/vtid-04906-04907-live-rooms.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/pages/community/LiveRoomViewer.vtid-04906.test.tsx src/services/liveRoomService.enter-exit.vtid-04906.test.ts src/components/liverooms/DailyVideoRoom.token.vtid-04906.test.tsx src/hooks/useLiveStreams.scheduled-due.vtid-04906.test.ts src/components/GoLivePopup.no-browser-writes.vtid-04906.test.ts src/components/liverooms/LiveRoomCard.starting-soon.vtid-04906.test.tsx",
+      "reason": "entering writes attendance, so it is proven here with mocks: the viewer calls enter and passes the token to Daily, 409/402 states, exit on leave/unmount/pagehide, leave never ends the room, host end needs confirmation, due scheduled rooms stay listed, no browser-side lifecycle writes"
+    }
+  ]
+}

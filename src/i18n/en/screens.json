@@ -4641,7 +4641,10 @@
       "sent_countSentResponse_countResponded": "{sent_count}sent • {response_count}responded",
       "attendeesTotal": "Attendees ({total})",
       "noInvitationsSentYetStartInviting": "No invitations sent yet. Start inviting people to see responses here.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "virtualLinkLabel": "Join link (optional)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Paste the link to your video call (starts with https://). Without a link, no \"Join\" link is shown."
     },
     "feedback": {
       "reportSent": "Report Sent!",
@@ -12207,7 +12210,40 @@
       "failed": "That didn't work just now. Please try again.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "liveRoom": {
+      "guest": "Guest",
+      "defaultTitle": "Live Room",
+      "defaultSessionTitle": "Live community conversation",
+      "listSeoDescription": "Join live conversations and discussions",
+      "shareDescription": "Join {name}'s live session",
+      "seoTitle": "{title} – Live Room",
+      "seoDescription": "Join {name}'s live stream",
+      "leave": "Leave",
+      "leaveRoom": "Leave room",
+      "back": "Back",
+      "backToRooms": "Back to Live Rooms",
+      "inRoomCount": "{count} in the room",
+      "endForEveryone": "End for everyone",
+      "endConfirmTitle": "End the room for everyone?",
+      "endConfirmDesc": "Everyone leaves the room and the session is over. If you only want to step out, tap \"Leave\" instead — the room keeps running.",
+      "readyToStart": "Ready to start?",
+      "readyToJoin": "Ready to join?",
+      "startHint": "Tap below to start your live stream.",
+      "joinHint": "Tap below to join the live stream.",
+      "startStream": "Start stream",
+      "joinStream": "Join stream",
+      "notLiveTitle": "This room is not live right now",
+      "notLiveDesc": "The host has not started the session yet. Try again in a moment.",
+      "paymentRequiredTitle": "Access required",
+      "paymentRequiredDesc": "This is a paid room. Get access first, then you can join.",
+      "signInTitle": "Sign-in required",
+      "signInDesc": "Sign in to join live rooms.",
+      "notFoundDesc": "This live room no longer exists.",
+      "startingSoon": "Starting soon",
+      "startNow": "Start now",
+      "eventsSectionTitle": "Live Rooms"
+    }
   },
   "_pending_review": {}
 }

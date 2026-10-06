@@ -36,8 +36,10 @@ const TAG_IDS = [
 
 type TagId = typeof TAG_IDS[number];
 
-// Access level IDs (stable internal values)
-const ACCESS_LEVEL_IDS = ["public", "followers", "group"] as const;
+// Access level IDs (stable internal values). "followers" was offered here but
+// the gateway validation and the DB check only accept public/group, so picking
+// it always failed with a 400 (VTID-04907) — removed.
+export const ACCESS_LEVEL_IDS = ["public", "group"] as const;
 type AccessLevelId = typeof ACCESS_LEVEL_IDS[number];
 
 export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, permanentRoomId }: GoLivePopupProps) {
@@ -49,7 +51,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   // Helper for popup translations
   const t = (key: string, fallback?: string) => translate(`liveRooms.goLivePopup.${key}`, fallback);
   
-  const [title, setTitle] = useState(defaultTitle || "Live with [Name]");
+  const [title, setTitle] = useState(defaultTitle);
   const [description, setDescription] = useState("");
   const [streamType, setStreamType] = useState<"audio" | "video" | "">("");
   const [selectedTags, setSelectedTags] = useState<TagId[]>([]);
@@ -94,49 +96,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         if (appUser?.live_room_id) {
           // User already has a room
           setFallbackRoomId(appUser.live_room_id);
-        } else if (appUser?.tenant_id) {
-          // User doesn't have a room - auto-provision one
-          console.log('[GoLivePopup] Auto-provisioning permanent room for user:', authUser.id);
-
-          try {
-            // Insert new permanent room
-            const { data: newRoom, error: insertError } = await supabase
-              .from('live_rooms')
-              .insert({
-                tenant_id: appUser.tenant_id,
-                host_user_id: authUser.id,
-                title: 'My Live Room',
-                status: 'idle',
-                access_level: 'public',
-                topic_keys: [],
-                starts_at: new Date().toISOString(),
-                host_present: false,
-                metadata: {},
-              })
-              .select('id')
-              .single();
-
-            if (insertError) {
-              console.error('[GoLivePopup] Failed to create permanent room:', insertError);
-              return;
-            }
-
-            // Update app_users to reference the new room
-            const { error: updateError } = await supabase
-              .from('app_users')
-              .update({ live_room_id: newRoom.id })
-              .eq('user_id', authUser.id);
-
-            if (updateError) {
-              console.error('[GoLivePopup] Failed to update app_users:', updateError);
-            }
-
-            console.log('[GoLivePopup] Permanent room created:', newRoom.id);
-            setFallbackRoomId(newRoom.id);
-          } catch (error) {
-            console.error('[GoLivePopup] Auto-provisioning failed:', error);
-          }
         }
+        // No room yet: handleGoLive creates it through the gateway
+        // (`createRoom`). The browser never writes live_rooms/app_users
+        // itself (VTID-04906).
       });
     }
   }, [permanentRoomId, myRoomData, myRoomError, open]);
@@ -244,7 +207,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         } catch (createError: unknown) {
           const createMsg = createError instanceof Error ? createError.message : String(createError);
           console.error('[GoLivePopup] Failed to create permanent room via Gateway:', createError);
-          notify.error('toasts.common.error', `Failed to create permanent room: ${createMsg}`);
+          notify.error(
+            'liveRooms.goLivePopup.errors.genericTitle',
+            'liveRooms.goLivePopup.errors.genericDescWithReason',
+            { reason: createMsg },
+          );
           setIsLoading(false);
           return;
         }
@@ -316,70 +283,49 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
       } catch (firstError: unknown) {
         const firstMsg = firstError instanceof Error ? firstError.message : String(firstError);
-        // If room is stuck in non-idle state, cancel existing session and retry
+        // If room is stuck in non-idle state, cancel existing session and retry.
+        // Recovery goes through the gateway `/cancel` ONLY (VTID-04906): the
+        // former browser-side force-reset of live_rooms/live_room_sessions
+        // was a silent no-op (no UPDATE policy for members) that hid the
+        // real failure. If the cancel fails, its reason is shown.
         if (firstMsg.includes('409') || firstMsg.includes('ROOM_NOT_IDLE') || firstMsg.includes('conflict')) {
           console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
-            // Step 1: Try gateway cancel
             await import('@/services/liveRoomService').then(m =>
               m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
             );
             console.log('[GoLivePopup] Gateway cancel succeeded');
-          } catch (cancelErr) {
-            console.warn('[GoLivePopup] Gateway cancel failed, force-resetting via DB:', cancelErr);
+          } catch (cancelErr: unknown) {
+            const cancelMsg = cancelErr instanceof Error ? cancelErr.message : String(cancelErr);
+            console.error('[GoLivePopup] Gateway cancel failed:', cancelErr);
+            notify.error(
+              'liveRooms.goLivePopup.errors.genericTitle',
+              'liveRooms.goLivePopup.errors.cancelFailedDesc',
+              { reason: cancelMsg },
+            );
+            setIsLoading(false);
+            return;
           }
 
-          // Step 2: Force-reset room state via DB (always do this as safety net)
-          try {
-            await supabase
-              .from('live_rooms')
-              .update({ status: 'idle', current_session_id: null })
-              .eq('id', effectiveRoomId);
-
-            // Also end any stuck sessions for this room
-            await supabase
-              .from('live_room_sessions')
-              .update({ status: 'ended', ends_at: new Date().toISOString() })
-              .eq('room_id', effectiveRoomId)
-              .in('status', ['lobby', 'live', 'scheduled']);
-
-            console.log('[GoLivePopup] DB force-reset complete');
-          } catch (dbErr) {
-            console.error('[GoLivePopup] DB force-reset failed:', dbErr);
-          }
-
-          // Step 3: Wait for propagation then retry
+          // Wait for propagation then retry
           await new Promise(r => setTimeout(r, 1500));
           try {
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
           } catch (retryError: unknown) {
-            console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
-            notify.error('toasts.common.error', `Room stuck. Please try again in a few seconds.`);
-            throw firstError;
+            console.error('[GoLivePopup] Retry after cancel failed:', retryError);
+            notify.error('liveRooms.goLivePopup.errors.genericTitle', 'liveRooms.goLivePopup.errors.roomStuckDesc');
+            setIsLoading(false);
+            return;
           }
         } else {
           throw firstError;
         }
       }
 
-      const { session_id, status, daily_room_url } = sessionResult;
+      const { session_id, status } = sessionResult;
       console.log('[GoLivePopup] Session created:', session_id, 'status:', status);
-
-      // Step 2: Create Daily.co video room (CRITICAL - was missing!)
-      let dailyUrl: string | null = daily_room_url || null;
-      if (!isScheduled) {
-        console.log('[GoLivePopup] Creating Daily.co room for video...');
-        try {
-          const dailyRoom = await import('@/services/liveRoomService').then(m =>
-            m.liveRoomService.createDailyRoom(effectiveRoomId)
-          );
-          dailyUrl = dailyRoom.daily_room_url || dailyUrl;
-          console.log('[GoLivePopup] Daily.co room created:', dailyUrl);
-        } catch (dailyError) {
-          console.error('[GoLivePopup] Daily.co room creation failed (non-blocking):', dailyError);
-          // Continue anyway - user can still join without video initially
-        }
-      }
+      // No Daily call here any more: the viewer's `enter` call ensures the
+      // (private) Daily room and hands the host an owner token (VTID-04906).
       
       // Notify parent if scheduled
       if (isScheduled && onCreated) {
@@ -403,7 +349,6 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               userId: user.id,
               userName: user.email?.split('@')[0] || 'Host',
               isHost: true,
-              daily_room_url: dailyUrl,
               room: {
                 id: effectiveRoomId,
                 title,
@@ -435,7 +380,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   };
 
   const resetForm = () => {
-    setTitle("Live with [Name]");
+    setTitle(defaultTitle);
     setDescription("");
     setStreamType("");
     setSelectedTags([]);
@@ -478,7 +423,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                   id="stream-title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value.slice(0, 100))}
-                  placeholder={applyReplacements(t('streamTitlePlaceholder', 'Live with {name}'), { name: '[Name]' })}
+                  placeholder={t('streamTitleHint')}
                   maxLength={100}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">

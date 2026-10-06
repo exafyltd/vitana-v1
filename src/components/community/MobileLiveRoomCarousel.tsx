@@ -154,7 +154,9 @@ export function MobileLiveRoomCarousel({
       whenLabel = durationLabel ? `${base} · ${durationLabel}` : base;
     }
 
-    const actionButton = room.isLive ? (
+    // A due scheduled room can be started by its host (VTID-04906).
+    const canStart = !room.isLive && !!room.startingSoon && isCreator;
+    const actionButton = room.isLive || canStart ? (
       <Button
         size="sm"
         className="rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg font-bold"
@@ -163,7 +165,9 @@ export function MobileLiveRoomCarousel({
           onJoinRoom(room.id);
         }}
       >
-        {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
+        {canStart
+          ? t('screens.liveRoom.startNow')
+          : isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
       </Button>
     ) : room.scheduledTime ? (
       <Button

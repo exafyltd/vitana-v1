@@ -524,8 +524,9 @@ export function LiveRoomDrawer({
         {room.isLive ? (
           isCreator ? (
             <div className="flex items-center gap-2">
-              <Button size="lg" variant="destructive" className="flex-1 min-w-0" onClick={handleJoin}>
-                {t('screens.liverooms.endRoom')}
+              {/* Opens the room; ending happens inside it, with confirmation (VTID-04906). */}
+              <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
+                {t('screens.liverooms.manage')}
               </Button>
               <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />

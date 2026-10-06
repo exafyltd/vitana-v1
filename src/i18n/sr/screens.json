@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "Da li ste sigurni da želite da obrišete \"{title}\"? Ova radnja se ne može poništiti.\n              Svi učesnici, karte i povezani podaci će biti trajno uklonjeni.",
       "sent_countSentResponse_countResponded": "{sent_count}poslato • {response_count}odgovorilo",
       "attendeesTotal": "Prisutni ({total})",
-      "noInvitationsSentYetStartInviting": "Još uvek nema poslatih pozivnica. Počni da pozivaš ljude da bi ovde video odgovore."
+      "noInvitationsSentYetStartInviting": "Još uvek nema poslatih pozivnica. Počni da pozivaš ljude da bi ovde video odgovore.",
+      "virtualLinkLabel": "Link za pridruživanje (opciono)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Nalepi link za svoj video poziv (počinje sa https://). Bez linka se ne prikazuje link za pridruživanje."
     },
     "feedback": {
       "reportSent": "Izveštaj poslat!",
@@ -12388,6 +12391,39 @@
       "redirecting": "Nazad ka tvom asistentu …",
       "invalid": "Ovaj zahtev za povezivanje nije važeći ili je istekao. Pokreni povezivanje ponovo u asistentu.",
       "failed": "Nije uspelo. Pokušaj ponovo."
+    },
+    "liveRoom": {
+      "guest": "Gost",
+      "defaultTitle": "Soba uživo",
+      "defaultSessionTitle": "Razgovor uživo u zajednici",
+      "listSeoDescription": "Pridruži se razgovorima i diskusijama uživo",
+      "shareDescription": "Pridruži se sesiji uživo koju vodi {name}",
+      "seoTitle": "{title} – Soba uživo",
+      "seoDescription": "Pridruži se strimu uživo koji vodi {name}",
+      "leave": "Izađi",
+      "leaveRoom": "Izađi iz sobe",
+      "back": "Nazad",
+      "backToRooms": "Nazad na sobe uživo",
+      "inRoomCount": "{count} u sobi",
+      "endForEveryone": "Završi za sve",
+      "endConfirmTitle": "Završiti sobu za sve?",
+      "endConfirmDesc": "Svi izlaze iz sobe i sesija je završena. Ako želiš samo da izađeš na kratko, dodirni „Izađi“ – soba nastavlja da radi.",
+      "readyToStart": "Spreman za početak?",
+      "readyToJoin": "Spreman da se pridružiš?",
+      "startHint": "Dodirni ispod da pokreneš svoj strim uživo.",
+      "joinHint": "Dodirni ispod da se pridružiš strimu uživo.",
+      "startStream": "Pokreni strim",
+      "joinStream": "Pridruži se strimu",
+      "notLiveTitle": "Ova soba trenutno nije uživo",
+      "notLiveDesc": "Domaćin još nije pokrenuo sesiju. Pokušaj ponovo za trenutak.",
+      "paymentRequiredTitle": "Potreban je pristup",
+      "paymentRequiredDesc": "Ova soba se plaća. Prvo obezbedi pristup, pa se onda pridruži.",
+      "signInTitle": "Potrebna je prijava",
+      "signInDesc": "Prijavi se da bi se pridružio sobama uživo.",
+      "notFoundDesc": "Ova soba uživo više ne postoji.",
+      "startingSoon": "Uskoro počinje",
+      "startNow": "Pokreni sada",
+      "eventsSectionTitle": "Sobe uživo"
     }
   }
 }

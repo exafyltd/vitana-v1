@@ -37,7 +37,7 @@ interface CreateEventData {
   description?: string;
   event_type?: string;
   location?: string;
-  virtual_link?: string;
+  virtual_link?: string | null;
   start_time: string;
   end_time?: string;
   max_participants?: number;
@@ -428,6 +428,9 @@ export function useCommunityEvents() {
                     creator_display_name: event.creator_display_name,
                     creator_avatar_url: event.creator_avatar_url,
                     is_co_creator: event.is_co_creator,
+                    // The column is stale (members cannot write it); keep the
+                    // count computed from participant rows (VTID-04907).
+                    participant_count: event.participant_count,
                   }
                 : event
             ) || [];

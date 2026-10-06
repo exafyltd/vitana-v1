@@ -59,7 +59,8 @@
     "outlook": "Outlook",
     "appleCal": "Apple Kalendar",
     "downloadIcs": "Preuzmi ICS",
-    "_pending_review": {}
+    "_pending_review": {},
+    "attendingCount": "Učesnika: {current}"
   },
   "_pending_review": {}
 }

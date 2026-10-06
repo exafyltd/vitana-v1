@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "你确定要删除“{title}”吗？此操作无法撤销。所有参与者、门票和相关数据都将被永久删除。",
       "sent_countSentResponse_countResponded": "已发送 {sent_count} • 已回复 {response_count}",
       "attendeesTotal": "参与者 ({total})",
-      "noInvitationsSentYetStartInviting": "还没发送邀请。开始邀请朋友，就能在这里看到回复了。"
+      "noInvitationsSentYetStartInviting": "还没发送邀请。开始邀请朋友，就能在这里看到回复了。",
+      "virtualLinkLabel": "加入链接（可选）",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "粘贴你的视频通话链接（以 https:// 开头）。没有链接时不会显示“加入”链接。"
     },
     "feedback": {
       "reportSent": "报告已发送！",
@@ -13309,6 +13312,39 @@
       "redirecting": "正在返回你的助手…",
       "invalid": "此连接请求无效或已过期。请在你的助手中重新开始连接。",
       "failed": "刚才没有成功，请再试一次。"
+    },
+    "liveRoom": {
+      "guest": "访客",
+      "defaultTitle": "直播间",
+      "defaultSessionTitle": "社区直播交流",
+      "listSeoDescription": "加入直播对话和讨论",
+      "shareDescription": "加入 {name} 的直播",
+      "seoTitle": "{title} – 直播间",
+      "seoDescription": "加入 {name} 的直播",
+      "leave": "离开",
+      "leaveRoom": "离开房间",
+      "back": "返回",
+      "backToRooms": "返回直播间列表",
+      "inRoomCount": "房间内 {count} 人",
+      "endForEveryone": "为所有人结束",
+      "endConfirmTitle": "要为所有人结束房间吗？",
+      "endConfirmDesc": "所有人都会离开房间，会话结束。如果你只是想暂时离开，请点“离开”——房间会继续进行。",
+      "readyToStart": "准备好开始了吗？",
+      "readyToJoin": "准备好加入了吗？",
+      "startHint": "点击下方开始你的直播。",
+      "joinHint": "点击下方加入直播。",
+      "startStream": "开始直播",
+      "joinStream": "加入直播",
+      "notLiveTitle": "这个房间目前没有直播",
+      "notLiveDesc": "主持人还没有开始会话。请稍后再试。",
+      "paymentRequiredTitle": "需要访问权限",
+      "paymentRequiredDesc": "这是付费房间。请先获取访问权限，然后即可加入。",
+      "signInTitle": "需要登录",
+      "signInDesc": "登录后即可加入直播间。",
+      "notFoundDesc": "这个直播间已不存在。",
+      "startingSoon": "即将开始",
+      "startNow": "立即开始",
+      "eventsSectionTitle": "直播间"
     }
   }
 }

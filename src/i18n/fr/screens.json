@@ -4639,7 +4639,10 @@
       "youSureYouWantDeleteTitle": "Es-tu sûr(e) de vouloir supprimer \"{title}\" ? Cette action est irréversible.\nTous les participants, billets et données associées seront définitivement supprimés.",
       "sent_countSentResponse_countResponded": "{sent_count} envoyé(s) • {response_count} répondu",
       "attendeesTotal": "Participants ({total})",
-      "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici."
+      "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici.",
+      "virtualLinkLabel": "Lien pour rejoindre (facultatif)",
+      "virtualLinkPlaceholder": "https://…",
+      "virtualLinkHint": "Colle le lien de ton appel vidéo (commence par https://). Sans lien, aucun lien « Rejoindre » n'est affiché."
     },
     "feedback": {
       "reportSent": "Signalement envoyé !",
@@ -13305,6 +13308,39 @@
       "redirecting": "Retour à ton assistant …",
       "invalid": "Cette demande de connexion est invalide ou a expiré. Relance la connexion depuis ton assistant.",
       "failed": "Ça n'a pas marché. Réessaie."
+    },
+    "liveRoom": {
+      "guest": "Invité",
+      "defaultTitle": "Salle en direct",
+      "defaultSessionTitle": "Discussion en direct de la communauté",
+      "listSeoDescription": "Rejoins des conversations et discussions en direct",
+      "shareDescription": "Rejoins la session en direct de {name}",
+      "seoTitle": "{title} – Salle en direct",
+      "seoDescription": "Rejoins le direct de {name}",
+      "leave": "Quitter",
+      "leaveRoom": "Quitter la salle",
+      "back": "Retour",
+      "backToRooms": "Retour aux salles en direct",
+      "inRoomCount": "{count} dans la salle",
+      "endForEveryone": "Terminer pour tous",
+      "endConfirmTitle": "Terminer la salle pour tous ?",
+      "endConfirmDesc": "Tout le monde quitte la salle et la session est terminée. Si tu veux juste sortir un moment, touche « Quitter » : la salle continue.",
+      "readyToStart": "Prêt à commencer ?",
+      "readyToJoin": "Prêt à rejoindre ?",
+      "startHint": "Touche ci-dessous pour lancer ton direct.",
+      "joinHint": "Touche ci-dessous pour rejoindre le direct.",
+      "startStream": "Lancer le direct",
+      "joinStream": "Rejoindre le direct",
+      "notLiveTitle": "Cette salle n'est pas en direct pour le moment",
+      "notLiveDesc": "L'hôte n'a pas encore lancé la session. Réessaie dans un instant.",
+      "paymentRequiredTitle": "Accès requis",
+      "paymentRequiredDesc": "Cette salle est payante. Obtiens d'abord l'accès, puis tu pourras la rejoindre.",
+      "signInTitle": "Connexion requise",
+      "signInDesc": "Connecte-toi pour rejoindre les salles en direct.",
+      "notFoundDesc": "Cette salle en direct n'existe plus.",
+      "startingSoon": "Commence bientôt",
+      "startNow": "Lancer maintenant",
+      "eventsSectionTitle": "Salles en direct"
     }
   }
 }
