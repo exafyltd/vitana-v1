@@ -206,6 +206,10 @@
     {
       "path": "/autopilot/audiobook",
       "reason": "VTID-04763: push deep link that starts the Audiobook player and settles on /autopilot (AUTOPILOT.MY_JOURNEY); voice reaches the Audiobook through My Journey's audiobook phrasings."
+    },
+    {
+      "path": "/calendar/entry/:entryId",
+      "reason": "VTID-04915: deep link to one calendar entry (reminder notifications); members reach it from a notification, not by voice. The calendar itself is CALENDAR.OVERVIEW."
     }
   ]
 }

@@ -87,7 +87,15 @@
       "reminders": "التذكيرات",
       "noReminders": "بدون تذكير",
       "directions": "الاتجاهات",
-      "askVitana": "اسأل فيتانا"
+      "askVitana": "اسأل فيتانا",
+      "openEvent": "اذهب إلى الفعالية",
+      "joinRoom": "انضم الآن",
+      "openRoom": "اذهب إلى الغرفة المباشرة",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true
+      }
     },
     "work": {
       "deploy_staging": "نشر على بيئة الاختبار",
@@ -281,6 +289,56 @@
       "waitingOne": "أمر واحد بانتظارك",
       "waiting": "بانتظارك: {count}",
       "open": "افتح في الإدارة"
+    },
+    "indexGain": "+{points} {pillar} في مؤشر Vitana الخاص بك",
+    "edit": {
+      "action": "تعديل",
+      "titleLabel": "العنوان",
+      "startLabel": "البداية",
+      "endLabel": "النهاية",
+      "locationLabel": "المكان",
+      "descriptionLabel": "ملاحظة",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "invalid": "أضف عنوانًا، ويجب أن تكون النهاية بعد البداية.",
+      "saved": "تم الحفظ ✨",
+      "error": "تعذّر الحفظ الآن. حاول مرة أخرى بعد قليل.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "إزالة",
+      "confirm": "إزالة هذا الموعد من تقويمك؟",
+      "confirmSeries": "إزالة هذا الموعد وكل تكراراته من تقويمك؟",
+      "keep": "إبقاء",
+      "yes": "إزالة",
+      "removed": "تمت الإزالة",
+      "error": "تعذّرت الإزالة الآن. حاول مرة أخرى بعد قليل.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "موجود بالفعل في تقويمك",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
     }
   }
 }

@@ -88,6 +88,9 @@
       "noReminders": "No reminder",
       "directions": "Directions",
       "askVitana": "Ask Vitana",
+      "openEvent": "Go to event",
+      "joinRoom": "Join now",
+      "openRoom": "Go to live room",
       "_pending_review": {}
     },
     "work": {
@@ -298,7 +301,33 @@
       "open": "Open in admin",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "indexGain": "+{points} {pillar} on your Vitana Index",
+    "edit": {
+      "action": "Edit",
+      "titleLabel": "Title",
+      "startLabel": "Starts",
+      "endLabel": "Ends",
+      "locationLabel": "Place",
+      "descriptionLabel": "Note",
+      "save": "Save",
+      "cancel": "Cancel",
+      "invalid": "Add a title, and the end has to be after the start.",
+      "saved": "Saved ✨",
+      "error": "That could not be saved just now. Try again in a moment.",
+      "_pending_review": {}
+    },
+    "remove": {
+      "action": "Remove",
+      "confirm": "Remove this entry from your calendar?",
+      "confirmSeries": "Remove this entry and all its repeats from your calendar?",
+      "keep": "Keep",
+      "yes": "Remove",
+      "removed": "Removed",
+      "error": "That could not be removed just now. Try again in a moment.",
+      "_pending_review": {}
+    },
+    "_pending_review": {},
+    "alreadyInCalendar": "Already in your calendar"
   },
   "_pending_review": {}
 }
