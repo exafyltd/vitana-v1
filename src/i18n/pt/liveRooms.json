@@ -130,7 +130,7 @@
         "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente.",
         "_pending_review": {},
         "cancelFailedDesc": "Não foi possível terminar a sessão em curso: {reason}",
-        "roomStuckDesc": "A tua sala ainda está ocupada. Tenta novamente daqui a alguns segundos."
+        "roomStuckDesc": "A sua sala ainda está ocupada. Tente novamente em alguns segundos."
       },
       "success": {
         "streamUpdatedTitle": "Stream Atualizado! ✨",
