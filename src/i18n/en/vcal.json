@@ -313,7 +313,8 @@
       "cancel": "Cancel",
       "invalid": "Add a title, and the end has to be after the start.",
       "saved": "Saved ✨",
-      "error": "That could not be saved just now. Try again in a moment."
+      "error": "That could not be saved just now. Try again in a moment.",
+      "_pending_review": {}
     },
     "remove": {
       "action": "Remove",
@@ -322,7 +323,8 @@
       "keep": "Keep",
       "yes": "Remove",
       "removed": "Removed",
-      "error": "That could not be removed just now. Try again in a moment."
+      "error": "That could not be removed just now. Try again in a moment.",
+      "_pending_review": {}
     },
     "_pending_review": {},
     "alreadyInCalendar": "Already in your calendar"
