@@ -2,14 +2,17 @@
 //
 // './staging-guard' (copied in by the runner) aborts every write; the sign-in
 // token call is the only one allowed. The group screen's own "mark read" POST
-// is aborted by the guard (listed below) — nothing is sent. On a phone
+// is aborted by the guard (listed below) — nothing is sent. So are the signed-URL
+// POSTs the chat makes for its image attachments (`/storage/v1/object/sign/chat-attachments/…`,
+// ~40 of them): creating a signed link reads and writes nothing, and the guard aborts
+// the request, so it is listed here as expected rather than failing the run. On a phone
 // viewport, opening "Alle Beisammen" must leave the scroll area at the bottom
 // with the last message on screen, not at the oldest message.
 import { test, expect } from './staging-guard';
 
 test.use({
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|chat\/groups\/[0-9a-f-]+\/read)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|chat\/groups\/[0-9a-f-]+\/read)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/storage\/v1\/object\/sign\/chat-attachments\/|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
