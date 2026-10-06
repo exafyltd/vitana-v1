@@ -6,6 +6,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { LiveRoomCard, type LiveRoom } from './LiveRoomCard';
+import { LiveRoomEventCard } from './LiveRoomEventCard';
 
 let people: Array<{ user_id: string; display_name: string | null; avatar_url: string | null; subscribed_at: string }> = [];
 let loading = false;
@@ -78,5 +79,18 @@ describe('interested people list', () => {
     const chip = screen.getByTestId('live-room-interested');
     expect(chip.tagName).toBe('BUTTON');
     expect(chip.getAttribute('aria-label')).toBeTruthy();
+  });
+
+  it('the Events layout has the same count button and opens the same list', () => {
+    people = [{ user_id: 'u1', display_name: 'Ana', avatar_url: null, subscribed_at: '2026-10-06T10:00:00Z' }];
+    const onClick = vi.fn();
+    render(
+      <MemoryRouter>
+        <LiveRoomEventCard room={room} onClick={onClick} />
+      </MemoryRouter>,
+    );
+    fireEvent.click(screen.getByTestId('live-room-interested'));
+    expect(screen.getAllByTestId('interested-person')).toHaveLength(1);
+    expect(onClick).not.toHaveBeenCalled();
   });
 });

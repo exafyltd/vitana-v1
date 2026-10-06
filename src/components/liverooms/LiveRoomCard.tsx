@@ -46,7 +46,7 @@ export interface LiveRoom {
   status?: 'scheduled' | 'live' | 'ended' | 'cancelled';
 }
 
-interface LiveRoomCardProps {
+export interface LiveRoomCardProps {
   room: LiveRoom;
   onClick?: () => void;
   onNotifyClick?: (e: React.MouseEvent) => void;

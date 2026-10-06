@@ -27,7 +27,8 @@ import {
 } from '@/hooks/useLiveStreams';
 import type { CommunityEvent } from '@/hooks/useCommunityEvents';
 import { LiveRoomDrawer } from '@/components/liverooms/LiveRoomDrawer';
-import { LiveRoomCard, type LiveRoom } from '@/components/liverooms/LiveRoomCard';
+import type { LiveRoom } from '@/components/liverooms/LiveRoomCard';
+import { LiveRoomEventCard } from '@/components/liverooms/LiveRoomEventCard';
 import SocialShareButton from '@/components/sharing/SocialShareButton';
 import {
   useStreamSubscriberCounts,
@@ -223,7 +224,6 @@ interface EventLiveRoomCardProps {
   /** Scheduled card tap → the room's drawer (the parent owns it). */
   onOpenDrawer: (e: CommunityEvent) => void;
   className?: string;
-  isFeatured?: boolean;
 }
 
 /**
@@ -231,7 +231,7 @@ interface EventLiveRoomCardProps {
  * (Notify me / Join, Share, "X will join", duration, kebab for the host), wired
  * to the same subscription hooks — never the generic event card.
  */
-export function EventLiveRoomCard({ event, onOpenDrawer, className, isFeatured }: EventLiveRoomCardProps) {
+export function EventLiveRoomCard({ event, onOpenDrawer, className }: EventLiveRoomCardProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const openRoom = useOpenLiveRoom();
@@ -279,9 +279,8 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className, isFeatured }
   return (
     // data-event-id keeps the Events deep-link scroll working; data-live-room marks the card.
     <div className="h-full" data-event-id={event.id} data-live-room={room.isLive ? 'live' : 'scheduled'}>
-    <LiveRoomCard
+    <LiveRoomEventCard
       room={room}
-      isFeatured={isFeatured}
       className={className}
       onClick={() => (room.isLive ? openRoom(event) : onOpenDrawer(event))}
       onJoinClick={() => (room.isLive ? openRoom(event) : onOpenDrawer(event))}
