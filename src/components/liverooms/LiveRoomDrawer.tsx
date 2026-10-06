@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getLiveRoomShareUrl } from '@/lib/shareUrl';
 import {
   Drawer,
   DrawerContent,
@@ -183,7 +184,7 @@ export function LiveRoomDrawer({
   };
 
   const handleShare = (platform?: string) => {
-    const url = `${window.location.origin}/comm/live-rooms?live=${room.id}`;
+    const url = getLiveRoomShareUrl(room.id);
     const text = `Check out this live room: ${room.title}`;
 
     if (platform === "copy") {

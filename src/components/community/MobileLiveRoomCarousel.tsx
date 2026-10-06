@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { getLiveRoomShareUrl } from '@/lib/shareUrl';
 import { cn } from '@/lib/utils';
 import { Radio } from 'lucide-react';
 import { type LiveRoom } from '@/components/liverooms/LiveRoomCard';
@@ -208,7 +209,7 @@ export function MobileLiveRoomCarousel({
             data={{
               title: room.title,
               description: room.description || `Join ${room.host.name}'s live session`,
-              link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(room.id)}`
+              link: getLiveRoomShareUrl(room.id)
             }}
             variant="icon"
             size="sm"
