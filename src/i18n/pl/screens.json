@@ -5659,10 +5659,12 @@
       "durationHour": "{value0} h",
       "durationHourMin": "{value0} h {value1} min",
       "_pending_review": {
+        "liveRoomTag": true,
         "interestedTitle": true,
         "interestedAria": true,
         "interestedEmpty": true
       },
+      "liveRoomTag": "Live Room",
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!"
