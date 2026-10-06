@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04908",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/deploy-workflow.vtid-04908.test.ts",
+      "reason": "the change is in the production deploy workflow only (no app code); the image tag source, commit_sha guard ordering and run summary are proven against the workflow file"
+    }
+  ]
+}
