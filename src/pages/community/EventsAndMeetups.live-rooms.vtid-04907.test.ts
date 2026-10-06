@@ -11,6 +11,7 @@ const src = (p: string) => readFileSync(join(__dirname, '..', '..', p), 'utf8');
 const PAGE = src('pages/community/EventsAndMeetups.tsx');
 const DRAWER = src('components/meetups/MeetupDetailsDrawer.tsx');
 const EVENTS_HOOK = src('hooks/useCommunityEvents.ts');
+const CAROUSEL = src('components/community/MobileEventCarousel.tsx');
 
 describe('Events page (VTID-04907)', () => {
   it('the drawer opens on the Following tab (currentEvents includes it)', () => {
@@ -22,10 +23,23 @@ describe('Events page (VTID-04907)', () => {
     expect(PAGE).toContain('<GoLivePopup open={goLiveOpen} onOpenChange={setGoLiveOpen} />');
   });
 
-  it('live rooms are listed in Hot, Today and Upcoming', () => {
-    for (const tab of ['hot', 'today', 'upcoming']) {
-      expect(PAGE).toContain(`<EventsLiveRooms tab="${tab}" searchQuery={searchQuery} />`);
-    }
+  it('live rooms are normal event cards in the same list — no separate strip', () => {
+    expect(PAGE).not.toContain('<EventsLiveRooms');
+    expect(PAGE).toContain('const liveRoomEvents = useLiveRoomEvents();');
+    expect(PAGE).toMatch(/\[\.\.\.linkedEvents, \.\.\.liveRoomEvents\]/);
+    expect(PAGE).toContain('isLiveRoomEvent(event) ? { ...card, ...liveRoomCardOverrides(event) } : card');
+    expect(CAROUSEL).toContain('isLiveRoomEvent(event) ? { ...card, ...liveRoomCardOverrides(event) } : card');
+  });
+
+  it('Upcoming starts now (later today included), and live/due rooms are on Today and Upcoming', () => {
+    expect(PAGE).toContain('return new Date(event.start_time) >= now;');
+    expect(PAGE.match(/if \(isOngoingLiveRoom\(event\)\) return true;/g)).toHaveLength(2);
+  });
+
+  it('a room card opens the room or its drawer, never the event drawer', () => {
+    expect(PAGE).toMatch(/if \(isLiveRoomEvent\(event\)\) \{\s*\/\/[^\n]*\n\s*if \(event\.metadata\?\.is_live\) openLiveRoom\(event\);\s*else setRoomDrawerEvent\(event\);\s*return;/);
+    expect(PAGE).toContain('<LiveRoomEventDrawer event={roomDrawerEvent}');
+    expect(PAGE).toContain('currentEvents.find(e => e.id === selectedEventId && !isLiveRoomEvent(e))');
   });
 });
 

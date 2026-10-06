@@ -22,6 +22,8 @@ export interface HotEventInput {
   start_time: string;
   end_time?: string | null;
   participant_count?: number | null;
+  /** Live Room items (VTID-04907) carry `is_live` / `is_due` here. */
+  metadata?: { is_live?: boolean; is_due?: boolean } | null;
 }
 
 const t = (iso?: string | null) => (iso ? new Date(iso).getTime() : 0);
@@ -32,6 +34,7 @@ export function isCuratedEvent(e: HotEventInput): boolean {
 
 /**
  * Upcoming (not yet ended) events, ordered:
+ *   0. Live Rooms that are live right now, most viewers first (VTID-04907);
  *   1. curated events, soonest first;
  *   2. member events created in the last 72h, newest first;
  *   3. every other event, most participants first, then soonest.
@@ -39,19 +42,22 @@ export function isCuratedEvent(e: HotEventInput): boolean {
  */
 export function selectHotEvents<T extends HotEventInput>(events: T[], now: Date = new Date()): T[] {
   const nowMs = now.getTime();
-  const live = events.filter((e) => {
-    return t(e.end_time || e.start_time) > nowMs;
-  });
+  // A live (or due, waiting for its host) room stays listed past its planned end.
+  const ongoing = (e: T) => e.metadata?.is_live === true || e.metadata?.is_due === true;
+  const live = events.filter((e) => ongoing(e) || t(e.end_time || e.start_time) > nowMs);
 
+  const liveNow: T[] = [];
   const curated: T[] = [];
   const fresh: T[] = [];
   const rest: T[] = [];
   for (const e of live) {
-    if (isCuratedEvent(e)) curated.push(e);
+    if (e.metadata?.is_live === true) liveNow.push(e);
+    else if (isCuratedEvent(e)) curated.push(e);
     else if (e.created_at && nowMs - t(e.created_at) <= FRESH_MS) fresh.push(e);
     else rest.push(e);
   }
 
+  liveNow.sort((a, b) => (b.participant_count ?? 0) - (a.participant_count ?? 0));
   curated.sort((a, b) => t(a.start_time) - t(b.start_time));
   fresh.sort((a, b) => t(b.created_at) - t(a.created_at));
   rest.sort(
@@ -59,5 +65,5 @@ export function selectHotEvents<T extends HotEventInput>(events: T[], now: Date 
       (b.participant_count ?? 0) - (a.participant_count ?? 0) ||
       t(a.start_time) - t(b.start_time),
   );
-  return [...curated, ...fresh, ...rest];
+  return [...liveNow, ...curated, ...fresh, ...rest];
 }

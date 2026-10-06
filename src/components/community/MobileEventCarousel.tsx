@@ -5,6 +5,7 @@ import { CalendarIcon } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import { t } from '@/lib/i18n-toast';
 import { resolveEventCover } from '@/lib/eventCoverImage';
+import { isLiveRoomEvent, liveRoomCardOverrides } from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 const formatEventTime = (dateString: string) => {
@@ -101,7 +102,14 @@ export function MobileEventCarousel({
 
 
   // Transform event to NewsCard props
-  const transformEventToCard = (event: any, index: number) => {
+  const transformEventToCard = (...args: Parameters<typeof transformEventToCardBase>) => {
+    const [event] = args;
+    const card = transformEventToCardBase(...args);
+    // VTID-04907: a Live Room is the same full card, with a red LIVE badge.
+    return isLiveRoomEvent(event) ? { ...card, ...liveRoomCardOverrides(event) } : card;
+  };
+
+  const transformEventToCardBase = (event: any, index: number) => {
     const authorName = event.creator_display_name || event.author?.name || 'Community Host';
     const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
 

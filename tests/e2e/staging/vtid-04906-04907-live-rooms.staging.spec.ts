@@ -8,7 +8,9 @@
 //     the exit button — nothing is clicked there, never Join / Go Live / Start;
 //   - /comm/events-meetups renders, its "+" dialog offers "Live Room" (the
 //     dialog is opened and closed with Escape — no option is chosen, nothing
-//     is submitted), no horizontal overflow.
+//     is submitted), no horizontal overflow;
+//   - a live or scheduled room shows as a normal, full event card with a red
+//     LIVE badge on the Hot and Upcoming tabs (no separate strip).
 // Entering a real room records attendance (a write) and is never done here.
 import { test, expect } from './staging-guard';
 
@@ -53,8 +55,11 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
     localStorage.setItem('vitana.authToken', s.access_token);
     localStorage.setItem('vitana.viewRole', 'community');
   }, session);
+  signedIn = { key: key!, token: session.access_token as string };
   return bundle;
 }
+
+let signedIn: { key: string; token: string } = { key: '', token: '' };
 
 async function expectNoHorizontalOverflow(page: import('@playwright/test').Page) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -98,4 +103,27 @@ test('VTID-04907: Events offers a Live Room in "+" (phone)', async ({ page, requ
   await expect(liveRoom).toBeAttached({ timeout: 10_000 });
   await expect(liveRoom).toContainText('Live-Raum');
   await expectNoHorizontalOverflow(page);
+});
+
+test('VTID-04907: a Live Room is a full event card with a red LIVE badge (phone)', async ({ page, request }, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await signIn(page, request);
+  const since = new Date(Date.now() - 2 * 3600_000).toISOString();
+  const res = await request.get(
+    `${SUPABASE}/rest/v1/community_live_streams?select=id,title,status,scheduled_for&or=(status.eq.live,and(status.eq.pending,scheduled_for.gte.${encodeURIComponent(since)}))&order=scheduled_for.asc&limit=20`,
+    { headers: { apikey: signedIn.key, Authorization: `Bearer ${signedIn.token}` } },
+  );
+  expect(res.status()).toBe(200);
+  const rooms = (await res.json()) as Array<{ id: string; title: string }>;
+  test.skip(rooms.length === 0, 'no live or scheduled room to show');
+
+  for (const tab of ['hot', 'upcoming']) {
+    await page.goto(`/comm/events-meetups?tab=${tab}`, { waitUntil: 'domcontentloaded' });
+    const card = page.locator(`[data-event-id="${rooms[0].id}"][data-live-room]`).first();
+    await expect(card, `room card on ${tab}`).toBeAttached({ timeout: 20_000 });
+    await expect(card.getByTestId('live-room-badge')).toHaveText('LIVE');
+    await expect(page.getByTestId('events-live-rooms')).toHaveCount(0);
+    await expectNoHorizontalOverflow(page);
+    await testInfo.attach(`events-${tab}-phone`, { body: await page.screenshot(), contentType: 'image/png' });
+  }
 });

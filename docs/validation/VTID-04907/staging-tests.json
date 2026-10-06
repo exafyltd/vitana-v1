@@ -4,13 +4,13 @@
   "tests": [
     {
       "kind": "playwright",
-      "name": "signed in on a phone viewport: Events renders without horizontal overflow and its \"+\" dialog offers Live Room (opened and closed, nothing chosen or submitted); Live Rooms and the room page with its exit button still render",
+      "name": "signed in on a phone viewport: Events renders without horizontal overflow and its \"+\" dialog offers Live Room (opened and closed, nothing chosen or submitted); a live or scheduled room shows as a full event card with a red LIVE badge on Hot and Upcoming (no separate strip); Live Rooms and the room page with its exit button still render",
       "spec": "tests/e2e/staging/vtid-04906-04907-live-rooms.staging.spec.ts",
       "cwd": "."
     },
     {
       "kind": "existing",
-      "ref": "npx vitest run src/components/CreateSelectionDialog.live-room.vtid-04907.test.tsx src/components/events/EventsLiveRooms.vtid-04907.test.tsx src/lib/virtualLink.vtid-04907.test.ts src/hooks/useEventParticipation.reseed.vtid-04907.test.tsx src/pages/community/EventsAndMeetups.live-rooms.vtid-04907.test.ts",
+      "ref": "npx vitest run src/components/CreateSelectionDialog.live-room.vtid-04907.test.tsx src/components/events/EventsLiveRooms.vtid-04907.test.tsx src/lib/virtualLink.vtid-04907.test.ts src/hooks/useEventParticipation.reseed.vtid-04907.test.tsx src/pages/community/EventsAndMeetups.live-rooms.vtid-04907.test.ts src/lib/events/hotEvents.vtid-04903.test.ts",
       "reason": "joining an event or creating a room writes, so it is proven here with mocks: Live Room option, live-room cards per tab and where they lead, http(s)-only join links, counters from participant rows (upsert, realtime keeps the computed count, re-seed), no invented attendees/capacity, Following-tab drawer"
     },
     {

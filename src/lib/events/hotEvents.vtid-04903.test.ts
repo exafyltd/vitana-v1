@@ -58,3 +58,23 @@ describe('selectHotEvents', () => {
     expect(selectHotEvents([meetup], NOW)[0].event_type).toBe('meetup');
   });
 });
+
+describe('selectHotEvents — Live Rooms (VTID-04907)', () => {
+  it('puts rooms that are live now first, most viewers first, even past their planned end', () => {
+    const out = selectHotEvents(
+      [
+        ev('curated', { created_by: CURATED_CREATOR_ID, start_time: h(2) }),
+        { ...ev('room-small', { start_time: h(-3), end_time: h(-2), participant_count: 2 }), metadata: { is_live: true } },
+        { ...ev('room-big', { start_time: h(-1), end_time: h(1), participant_count: 9 }), metadata: { is_live: true } },
+        { ...ev('room-later', { start_time: h(5), end_time: h(6) }), metadata: { is_live: false } },
+      ],
+      NOW,
+    );
+    expect(out.map((e) => e.id)).toEqual(['room-big', 'room-small', 'curated', 'room-later']);
+  });
+
+  it('keeps a due room (start passed, host not started yet)', () => {
+    const due = { ...ev('due', { start_time: h(-3), end_time: h(-2) }), metadata: { is_due: true } };
+    expect(selectHotEvents([due], NOW).map((e) => e.id)).toEqual(['due']);
+  });
+});
