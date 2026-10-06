@@ -81,6 +81,11 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
   };
 }
 
+// VTID-04928: engines without scrollIntoView (jsdom) must never crash the page.
+function intoView(el: Element | null, opts: ScrollIntoViewOptions) {
+  if (el && typeof el.scrollIntoView === "function") el.scrollIntoView(opts);
+}
+
 export default function GroupChat() {
   const { groupId, messageId: initialScrollMessageId } = useParams<{ groupId: string; messageId?: string }>();
   const navigate = useNavigate();
@@ -219,7 +224,7 @@ export default function GroupChat() {
         main.scrollTop = main.scrollHeight;
       }
     }
-    pageEndRef.current?.scrollIntoView({ block: "end", behavior: smooth ? "smooth" : "auto" });
+    intoView(pageEndRef.current, { block: "end", behavior: smooth ? "smooth" : "auto" });
   }, []);
 
   const applyPin = useCallback(() => {
@@ -228,7 +233,7 @@ export default function GroupChat() {
     if (target) {
       const el = document.getElementById(`msg-${target}`);
       if (el) {
-        el.scrollIntoView({ block: "center", behavior: "auto" });
+        intoView(el, { block: "center", behavior: "auto" });
         if (!highlightedRef.current) {
           highlightedRef.current = true;
           el.classList.add("message-highlight");
