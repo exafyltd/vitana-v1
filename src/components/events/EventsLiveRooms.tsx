@@ -277,6 +277,8 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className, isFeatured }
   };
 
   return (
+    // data-event-id keeps the Events deep-link scroll working; data-live-room marks the card.
+    <div className="h-full" data-event-id={event.id} data-live-room={room.isLive ? 'live' : 'scheduled'}>
     <LiveRoomCard
       room={room}
       isFeatured={isFeatured}
@@ -289,6 +291,7 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className, isFeatured }
       onEdit={manage}
       onDelete={manage}
       shareButton={
+        <span className="contents" data-testid="live-room-card-share">
         <SocialShareButton
           type="live_room"
           data={{
@@ -300,7 +303,9 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className, isFeatured }
           size="sm"
           className="text-white hover:bg-white/20 hover:text-white"
         />
+        </span>
       }
     />
+    </div>
   );
 }

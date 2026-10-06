@@ -105,7 +105,7 @@ test('VTID-04907: Events offers a Live Room in "+" (phone)', async ({ page, requ
   await expectNoHorizontalOverflow(page);
 });
 
-test('VTID-04907: a Live Room is a full event card with a red LIVE badge (phone)', async ({ page, request }, testInfo) => {
+test('VTID-04907: a Live Room is the Live Room card with its CTA and Share (phone)', async ({ page, request }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await signIn(page, request);
   const since = new Date(Date.now() - 2 * 3600_000).toISOString();
@@ -121,7 +121,17 @@ test('VTID-04907: a Live Room is a full event card with a red LIVE badge (phone)
     await page.goto(`/comm/events-meetups?tab=${tab}`, { waitUntil: 'domcontentloaded' });
     const card = page.locator(`[data-event-id="${rooms[0].id}"][data-live-room]`).first();
     await expect(card, `room card on ${tab}`).toBeAttached({ timeout: 20_000 });
-    await expect(card.getByTestId('live-room-badge')).toHaveText('LIVE');
+    // VTID-04913: the Live Room card (same as the Live Rooms page). Only a room that is
+    // live shows the red LIVE badge + Join; a scheduled one shows Notify me. Share is always there.
+    const isLive = (await card.getAttribute('data-live-room')) === 'live';
+    if (isLive) {
+      await expect(card.getByTestId('live-room-badge')).toHaveText('LIVE');
+      await expect(card.getByTestId('live-room-card-join')).toBeVisible();
+    } else {
+      await expect(card.getByTestId('live-room-badge')).toHaveCount(0);
+      await expect(card.getByTestId('live-room-card-notify')).toBeVisible();
+    }
+    await expect(card.getByTestId('live-room-card-share')).toBeAttached();
     await expect(page.getByTestId('events-live-rooms')).toHaveCount(0);
     await expectNoHorizontalOverflow(page);
     await testInfo.attach(`events-${tab}-phone`, { body: await page.screenshot(), contentType: 'image/png' });

@@ -173,7 +173,7 @@ export function LiveRoomCard({
           <div className="absolute top-3 left-3 right-12 flex flex-wrap items-center gap-1.5 z-10">
             {room.isLive ? (
               <>
-                <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
+                <Badge data-testid="live-room-badge" className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
                   <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
                   {t('screens.liverooms.live')}
                 </Badge>
@@ -361,6 +361,7 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
+                      data-testid="live-room-card-share"
                       aria-label={t('screens.liverooms.shareRoom')}
                       title={t('screens.liverooms.share')}
                     >
@@ -374,6 +375,7 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onJoinClick?.(e);
                     }}
+                    data-testid="live-room-card-join"
                     aria-label={isCreator ? t('screens.liverooms.manageAria') : t('screens.liverooms.joinAria')}
                   >
                     {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
@@ -402,6 +404,7 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
+                      data-testid="live-room-card-share"
                       aria-label={t('screens.liverooms.shareRoom')}
                       title={t('screens.liverooms.share')}
                     >
@@ -419,6 +422,7 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onNotifyClick?.(e);
                     }}
+                    data-testid="live-room-card-notify"
                     aria-label={isNotifying ? t('screens.liverooms.notifyAriaOn') : t('screens.liverooms.notifyAriaOff')}
                   >
                     <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
