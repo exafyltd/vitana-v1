@@ -37,6 +37,7 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: { auth: { getSessio
 vi.mock("@/components/AppLayout", () => ({ default: ({ children }: { children: ReactNode }) => <div data-testid="app-layout">{children}</div> }));
 vi.mock("@/hooks/useRole", () => ({ useRole: () => ({ currentRole: h.role }) }));
 vi.mock("@/lib/orbActivate", () => ({ activateOrb: h.activateOrb }));
+vi.mock("@/components/calendar/vcal/AddEntrySheet", () => ({ AddEntrySheet: ({ day }: { day: Date }) => <div data-testid="add-sheet" data-day={day.toISOString()} /> }));
 vi.mock("@/components/calendar/vcal/SubscribeSheet", () => ({ SubscribeSheet: () => <div data-testid="subscribe-sheet" /> }));
 // VTID-04536: the folding sections have their own suite (vcal/sections.test.tsx);
 // here they are stand-ins so this golden pins the screen around them.
@@ -166,49 +167,94 @@ describe("building blocks", () => {
 describe("views", () => {
   it("day, empty day", () => {
     const open = vi.fn();
-    const { container, rerender } = render(<DayView items={DAY} onOpen={open} dayLabel="Montag, 5. Oktober" onAdd={() => {}} />);
+    const { container, rerender } = render(<DayView items={DAY} onOpen={open} />);
     expectGolden(G, "view.day", outline(container));
     fireEvent.click(screen.getAllByTestId("vcal-entry")[1]);
     expect(open.mock.calls[0][0].id).toBe("lab");
-    rerender(<DayView items={[]} onOpen={open} dayLabel="Montag, 5. Oktober" onAdd={() => {}} />);
+    rerender(<DayView items={[]} onOpen={open} />);
     expectGolden(G, "view.day.empty", outline(container));
   });
 
-  it("week (Monday first, today marked, free days)", () => {
-    const pick = vi.fn();
-    const { container } = render(<WeekView anchor={NOW} items={[...DAY, ...WEEK_EXTRA]} now={NOW} onOpen={() => {}} onPickDay={pick} />);
+  it("week (Monday first, today marked, free days); a tapped day opens in place (VTID-04956)", () => {
+    const onAdd = vi.fn();
+    const { container } = render(<WeekView anchor={NOW} items={[...DAY, ...WEEK_EXTRA]} now={NOW} onOpen={() => {}} onAdd={onAdd} />);
     expectGolden(G, "view.week", outline(container));
-    fireEvent.click(within(container.querySelectorAll("section")[3] as HTMLElement).getAllByRole("button")[0]);
-    expect(pick.mock.calls[0][0].toISOString()).toBe(new Date(2026, 9, 8).toISOString());
+    expect(screen.queryByTestId("vcal-day-panel")).toBeNull();
+    const dayButtons = screen.getAllByTestId("vcal-week-day");
+    fireEvent.click(dayButtons[3]); // Thu 8 Oct
+    expect(screen.getByTestId("vcal-week")).toBeTruthy(); // still the week, nothing navigated
+    expect(screen.getAllByTestId("vcal-day-panel")).toHaveLength(1);
+    expect(dayButtons[3].getAttribute("aria-expanded")).toBe("true");
+    expectGolden(G, "view.week.open", outline(container));
+    fireEvent.click(dayButtons[4]); // another day: only one panel at a time
+    expect(screen.getAllByTestId("vcal-day-panel")).toHaveLength(1);
+    expect(dayButtons[3].getAttribute("aria-expanded")).toBe("false");
+    fireEvent.click(screen.getByTestId("vcal-add-day"));
+    expect(onAdd.mock.calls[0][0].toISOString()).toBe(new Date(2026, 9, 9).toISOString());
+    fireEvent.click(dayButtons[4]); // the same day again closes it
+    expect(screen.queryByTestId("vcal-day-panel")).toBeNull();
+    fireEvent.click(dayButtons[4]);
+    fireEvent.click(screen.getByTestId("vcal-day-panel-close"));
+    expect(screen.queryByTestId("vcal-day-panel")).toBeNull();
   });
 
-  it("month (6-week grid, at most 3 dots, neighbour months)", () => {
-    const pick = vi.fn();
-    const { container } = render(<MonthView anchor={NOW} items={[...DAY, ...WEEK_EXTRA, ...MONTH_EXTRA]} now={NOW} onPickDay={pick} />);
+  it("the day panel lists every entry of the day one by one and has a button, never a text field (VTID-04956)", () => {
+    const many = Array.from({ length: 8 }, (_, i) => it_(`m${i}`, new Date(2026, 9, 6, i + 1).toISOString(), null, ev(`Punkt ${i}`)));
+    render(<WeekView anchor={NOW} items={many} now={NOW} onOpen={() => {}} onAdd={() => {}} />);
+    fireEvent.click(screen.getAllByTestId("vcal-week-day")[1]); // Tue 6 Oct
+    const panel = screen.getByTestId("vcal-day-panel");
+    expect(within(panel).getAllByTestId("vcal-entry")).toHaveLength(8);
+    expect(within(panel).queryByTestId("vcal-more")).toBeNull();
+    const add = within(panel).getByTestId("vcal-add-day");
+    expect(add.tagName).toBe("BUTTON");
+    expect(add.textContent).toContain("Di");
+    expect(panel.querySelector("input, textarea")).toBeNull();
+  });
+
+  it("the '+N more' of a week day opens the panel instead of leaving the week (VTID-04956)", () => {
+    const many = Array.from({ length: 5 }, (_, i) => it_(`w${i}`, new Date(2026, 9, 6, i + 1).toISOString(), null, ev(`Wochen ${i}`)));
+    render(<WeekView anchor={NOW} items={many} now={NOW} onOpen={() => {}} onAdd={() => {}} />);
+    fireEvent.click(screen.getByTestId("vcal-more"));
+    expect(screen.getByTestId("vcal-week")).toBeTruthy();
+    expect(within(screen.getByTestId("vcal-day-panel")).getAllByTestId("vcal-entry")).toHaveLength(5);
+  });
+
+  it("month (6-week grid, at most 3 dots, neighbour months); a tapped day opens in place (VTID-04956)", () => {
+    const onAdd = vi.fn();
+    const { container } = render(<MonthView anchor={NOW} items={[...DAY, ...WEEK_EXTRA, ...MONTH_EXTRA]} now={NOW} onOpen={() => {}} onAdd={onAdd} />);
     expect(screen.getAllByTestId("vcal-month-day")).toHaveLength(42);
     expectGolden(G, "view.month", outline(container));
     // VTID-04681: the busiest day (5 entries) still shows only three dots.
     const busy = screen.getAllByTestId("vcal-month-day").find((d) => d.getAttribute("aria-label")?.includes("14"))!;
     expect(busy.querySelectorAll("span > span")).toHaveLength(3);
+    // Tapping a day opens its panel under the grid; the grid stays.
+    const cells = screen.getAllByTestId("vcal-month-day");
+    fireEvent.click(cells[8]); // Tue 6 Oct (grid starts Mon 28 Sep)
+    expect(screen.getByTestId("vcal-month")).toBeTruthy();
+    expect(cells[8].getAttribute("aria-expanded")).toBe("true");
+    expectGolden(G, "view.month.open", outline(container));
+    // A neighbouring-month cell opens that date (the 6-week October grid runs Mon 28 Sep to Sun 8 Nov).
+    fireEvent.click(cells[35]); // Mon 2 Nov
+    expect(screen.getAllByTestId("vcal-day-panel")).toHaveLength(1);
+    fireEvent.click(screen.getByTestId("vcal-add-day"));
+    expect(onAdd.mock.calls[0][0].toISOString()).toBe(new Date(2026, 10, 2).toISOString());
+    fireEvent.click(cells[35]);
+    expect(screen.queryByTestId("vcal-day-panel")).toBeNull();
   });
 
-  it("the Day view lists every entry one by one, with an add button for that day (VTID-04952)", () => {
-    const onAdd = vi.fn();
+  it("the Day view still shows the first five entries, then +N more (VTID-04681, restored by VTID-04956)", () => {
     const many = Array.from({ length: 8 }, (_, i) => it_(`m${i}`, `2026-10-05T0${i + 1}:00:00.000Z`, null, ev(`Punkt ${i}`)));
-    render(<DayView items={many} onOpen={() => {}} dayLabel="Montag, 5. Oktober" summary="8 Einträge" onAdd={onAdd} />);
+    render(<DayView items={many} onOpen={() => {}} summary="8 Einträge" />);
+    expect(screen.getAllByTestId("vcal-entry")).toHaveLength(5);
+    expect(screen.getByTestId("vcal-summary").textContent).toBe("8 Einträge");
+    expect(screen.queryByTestId("vcal-add-day")).toBeNull(); // no add row on the Day view
+    fireEvent.click(screen.getByTestId("vcal-more"));
     expect(screen.getAllByTestId("vcal-entry")).toHaveLength(8);
-    expect(screen.queryByTestId("vcal-more")).toBeNull();
-    const add = screen.getByTestId("vcal-add-day");
-    expect(add.textContent).toContain("Montag, 5. Oktober");
-    expect(add.tagName).toBe("BUTTON");
-    expect(screen.getByTestId("vcal-day").querySelector("input, textarea")).toBeNull();
-    fireEvent.click(add);
-    expect(onAdd).toHaveBeenCalledTimes(1);
   });
 
   it("a milestone is a quiet marker, never counted as an entry (VTID-04681)", () => {
     const ms = it_("ms", "2026-10-05T07:00:00.000Z", null, ev("10 km laufen", { event_type: "journey_milestone", source_type: "goal_plan" }));
-    render(<DayView items={[ms]} onOpen={() => {}} dayLabel="Montag, 5. Oktober" onAdd={() => {}} />);
+    render(<DayView items={[ms]} onOpen={() => {}} />);
     expect(screen.getByTestId("vcal-milestone")).toBeTruthy();
     expect(screen.queryAllByTestId("vcal-entry")).toHaveLength(0);
     expect(screen.getByTestId("vcal-empty")).toBeTruthy();
@@ -250,7 +296,7 @@ describe("entry screen", () => {
 });
 
 describe("the /calendar page", () => {
-  it("opens on today's day view: the hero names the day, the list starts with add-for-this-day and the summary", async () => {
+  it("opens on today's day view: the hero names the day, the list starts with the summary", async () => {
     const { container } = page();
     await screen.findByTestId("vcal-day");
     await screen.findByTestId("vcal-summary");
@@ -262,7 +308,7 @@ describe("the /calendar page", () => {
     expect(date.textContent).toContain("Oktober");
     expect(screen.getByTestId("vcal-day-number").textContent).toBe("5");
     expect(screen.getByTestId("vcal-header").textContent).toContain("Tag");
-    expect(screen.getByTestId("vcal-add-day")).toBeTruthy();
+    expect(screen.queryByTestId("vcal-add-day")).toBeNull(); // the Day view has no add row (VTID-04956)
     expectGolden(G, "page.day", outline(container));
     // Day view asks for today and the whole local day.
     const ranges = h.fetchCalendarWindow.mock.calls.map((c) => [c[0].toISOString(), c[1].toISOString(), c[2]]);
@@ -295,10 +341,33 @@ describe("the /calendar page", () => {
     unmount();
     page();
     await screen.findByTestId("vcal-month"); // remembered
+    // VTID-04956: picking a day opens it IN PLACE — the member stays on the Month.
     fireEvent.click(screen.getAllByTestId("vcal-month-day")[8]); // Tue 6 Oct (grid starts Mon 28 Sep)
-    await screen.findByText("Yoga");
-    expect(screen.getByTestId("vcal-day")).toBeTruthy();
-    expect(screen.getAllByRole("tab")[0].getAttribute("aria-selected")).toBe("true");
+    const panel = await screen.findByTestId("vcal-day-panel");
+    await within(panel).findByText("Yoga");
+    expect(screen.getByTestId("vcal-month")).toBeTruthy();
+    expect(screen.queryByTestId("vcal-day")).toBeNull();
+    expect(screen.getAllByRole("tab")[2].getAttribute("aria-selected")).toBe("true");
+    expect(shape(heroOf())).toEqual(monthHero); // the header does not change when a day opens
+    // The Day view is reached through the Day tab.
+    fireEvent.click(screen.getAllByRole("tab")[0]);
+    await screen.findByTestId("vcal-day");
+  });
+
+  it("adding from a day panel opens the sheet for that date and never moves the shown month (VTID-04956)", async () => {
+    page();
+    await screen.findByTestId("vcal-day");
+    fireEvent.click(screen.getAllByRole("tab")[2]);
+    await screen.findByTestId("vcal-month");
+    const title = () => screen.getByTestId("vcal-date").textContent;
+    const before = title();
+    const cells = screen.getAllByTestId("vcal-month-day");
+    fireEvent.click(cells[35]); // Mon 2 Nov, a neighbouring-month cell of the October grid
+    fireEvent.click(await screen.findByTestId("vcal-add-day"));
+    const sheet = await screen.findByTestId("add-sheet");
+    expect(sheet.getAttribute("data-day")).toBe(new Date(2026, 10, 2).toISOString());
+    expect(title()).toBe(before); // still October
+    expect(screen.getByTestId("vcal-month")).toBeTruthy();
   });
 
   it("‹ › and 'Heute' step through days", async () => {

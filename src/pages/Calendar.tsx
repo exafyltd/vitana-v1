@@ -123,7 +123,8 @@ export default function CalendarPage() {
   const [openItem, setOpenItem] = useState<CalendarWindowItem | null>(null);
   const [subscribeOpen, setSubscribeOpen] = useState<false | { provider?: SubscribeProvider }>(false);
   const [guideDismissed, setGuideDismissed] = useState<string | null>(readGuideDismissed);
-  const [addOpen, setAddOpen] = useState(false);
+  // VTID-04956: the day the add sheet is open for (null = closed). Adding never moves the shown week or month.
+  const [addFor, setAddFor] = useState<Date | null>(null);
   // VTID-04915: /calendar/entry/:id — jump to that entry's day, then open it.
   const { entryId } = useParams<{ entryId?: string }>();
   const [pendingEntryId, setPendingEntryId] = useState<string | null>(entryId ?? null);
@@ -348,11 +349,6 @@ export default function CalendarPage() {
       ? `${fmtDate(weekFrom, { day: "numeric", month: "short" })} – ${fmtDate(weekTo, { day: "numeric", month: "short" })}`
       : formatDate(anchor, "LLLL yyyy");
 
-  const pickDay = (d: Date) => {
-    setAnchor(d);
-    changeView("day");
-  };
-
   // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, bold title.
   // VTID-04952: one hero for Day, Week and Month; the eyebrow names the view.
   const heroEyebrow = t(`vcal.views.${view}`);
@@ -443,11 +439,11 @@ export default function CalendarPage() {
               </button>
             </div>
           ) : view === "day" ? (
-            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} dayLabel={dayTitle} onAdd={() => setAddOpen(true)} />
+            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} />
           ) : view === "week" ? (
-            <WeekView anchor={anchor} items={items} now={now} onOpen={setOpenItem} onPickDay={pickDay} />
+            <WeekView key={viewRange("week", anchor).from.toISOString()} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
           ) : (
-            <MonthView anchor={anchor} items={items} now={now} onPickDay={pickDay} />
+            <MonthView key={`${anchor.getFullYear()}-${anchor.getMonth()}`} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
           )}
 
           {/* VTID-04536: folding sections — each closed header says what is inside. */}
@@ -466,7 +462,7 @@ export default function CalendarPage() {
           {/* VTID-04536: add an entry by hand, saved through the gateway. */}
           <button
             type="button"
-            onClick={() => setAddOpen(true)}
+            onClick={() => setAddFor(anchor)}
             aria-label={t("vcal.add.title")}
             className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             style={{ background: SURFACE.ink }}
@@ -500,7 +496,7 @@ export default function CalendarPage() {
         />
       )}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}
-      {addOpen && <AddEntrySheet day={anchor} role={currentRole ?? null} onClose={() => setAddOpen(false)} />}
+      {addFor && <AddEntrySheet day={addFor} role={currentRole ?? null} onClose={() => setAddFor(null)} />}
     </AppLayout>
   );
 }
