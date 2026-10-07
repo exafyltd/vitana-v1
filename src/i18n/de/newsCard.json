@@ -37,7 +37,7 @@
     },
     "member": {
       "welcomeTitle": "🤩 Willkommen, {name}!",
-      "joinedSummary": "{name} ist gerade der MAXINA-Longevity-Community beigetreten 🎉 Sag Hallo!",
+      "joinedSummary": "{name} ist gerade der MAXINA-Longevity-Community beigetreten 🎉",
       "newMember": "Neues Mitglied",
       "sayHello": "Hallo sagen",
       "viewProfile": "Profil ansehen",

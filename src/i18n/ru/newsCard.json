@@ -40,8 +40,8 @@
     },
     "_pending_review": {},
     "member": {
-      "welcomeTitle": "Добро пожаловать, {name}!",
-      "joinedSummary": "{name} только что присоединился(ась) к сообществу долголетия MAXINA.",
+      "welcomeTitle": "🤩 Добро пожаловать, {name}!",
+      "joinedSummary": "{name} только что присоединился(ась) к сообществу долголетия MAXINA. 🎉",
       "newMember": "Новый участник",
       "sayHello": "Поздороваться",
       "viewProfile": "Открыть профиль",
