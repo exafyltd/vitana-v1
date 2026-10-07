@@ -54,6 +54,13 @@ test('the Alle Beisammen group chat opens at the latest message', async ({ page,
     localStorage.setItem('vitana.viewRole', 'community');
   }, session);
 
+  // VTID-04928: the reactions lookup (rpc/get_message_reactions_text) is a
+  // SELECT-only read PostgREST sends as POST. Answered here inside the browser
+  // with an empty list, so it never leaves the page — the guard is unchanged
+  // (same as vtid-04928-group-chat-lands.staging.spec.ts).
+  await page.route(/\/rest\/v1\/rpc\/get_message_reactions_text/, (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }),
+  );
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`/inbox/g/${alle!.id}`, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('[id^="msg-"]').first()).toBeVisible({ timeout: 20_000 });
