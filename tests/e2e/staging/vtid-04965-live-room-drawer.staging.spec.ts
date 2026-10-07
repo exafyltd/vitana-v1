@@ -12,10 +12,12 @@ import { test, expect } from './staging-guard';
 test.use({
   // VTID-04855: one RegExp, not an array — Playwright reads an array option as
   // its [value, options] tuple and would keep only the first pattern. The last
-  // alternatives are read-only lookups the signed-in app sends as POST (Supabase
-  // RPCs, list_my_memberships, the ORB prewarm): still aborted, never writes.
+  // alternatives are lookups and per-session setup the signed-in app sends as POST
+  // (Supabase RPCs get_*/list_* incl. the room's interested-people counts, the
+  // wallet/index/preferences bootstrap, list_my_memberships, the ORB prewarm):
+  // all aborted by the guard, never reach the database.
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(rpc\/(get|list)_[a-z_]+|rpc\/(health_compute_vitana_index|initialize_user_wallet)|user_preferences))/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
