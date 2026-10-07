@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-04952",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "calendar: one hero for Day/Week/Month (same height, same content start), gradient day number, add-for-this-day button, no text field",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "calendar opens on today's date, calm type, no work items, connect on screen",
+      "spec": "tests/e2e/staging/vtid-04681-calendar-clean.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Goldens and unit tests pin the shared hero, the Day view's add row and full list (no +N more), the Week/Month eyebrows, the colour contrast guard and the Index page's unchanged look."
+    }
+  ]
+}

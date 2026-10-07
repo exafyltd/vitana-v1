@@ -52,7 +52,7 @@ const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
   recurring: "vcal.move.blocked.recurring",
   owned_by_source: "vcal.move.blocked.owned_by_source",
 };
-import { SURFACE, isDone } from "@/components/calendar/vcal/theme";
+import { CALENDAR_NUMBER_STYLE, SURFACE, isDone } from "@/components/calendar/vcal/theme";
 import { ViewSwitch, isMilestone } from "@/components/calendar/vcal/parts";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
@@ -75,10 +75,8 @@ import { cn } from "@/lib/utils";
 import {
   INDEX_CARD,
   INDEX_EYEBROW,
-  INDEX_GLOW_STYLE,
   INDEX_HERO_CLASS,
   INDEX_HERO_STYLE,
-  INDEX_NUMBER_STYLE,
   INDEX_PRIMARY_BTN,
   INDEX_SOFT_BTN,
 } from "@/lib/index-look";
@@ -355,13 +353,13 @@ export default function CalendarPage() {
     changeView("day");
   };
 
-  // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, big number.
-  const heroEyebrow =
-    view === "day"
-      ? isTodayAnchor
-        ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}`
-        : formatDate(anchor, "LLLL yyyy")
-      : t("vcal.title");
+  // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, bold title.
+  // VTID-04952: one hero for Day, Week and Month; the eyebrow names the view.
+  const heroEyebrow = t(`vcal.views.${view}`);
+
+  // VTID-04952: the day number is the one lively element of the Day title.
+  const dayTitle = fmtDate(anchor, { weekday: "long", day: "numeric", month: "long" });
+  const dayTitleParts = dayTitle.split(/(\d+|[\u0660-\u0669]+)/);
 
   return (
     <AppLayout>
@@ -369,31 +367,19 @@ export default function CalendarPage() {
         <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
           <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
             <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
-            {view === "day" ? (
-              <div className="mt-2 flex flex-col items-center" data-testid="vcal-date">
-                <div className="relative flex flex-col items-center">
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-2xl"
-                    style={INDEX_GLOW_STYLE}
-                  />
-                  <span className="text-[84px] font-extrabold leading-none tabular-nums" style={INDEX_NUMBER_STYLE}>
-                    {formatDate(anchor, "d")}
-                  </span>
-                </div>
-                <h1 className="mt-2 text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-weekday">
-                  {formatDate(anchor, "EEEE")}
-                </h1>
-              </div>
-            ) : (
-              <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900">{rangeTitle}</h1>
-            )}
-
-            {view === "day" && query.isSuccess && (
-              <p className="mx-auto mt-3 max-w-md text-center text-[15px] leading-snug text-slate-700" data-testid="vcal-summary">
-                {daySummary}
-              </p>
-            )}
+            <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-date">
+              {view === "day"
+                ? dayTitleParts.map((part, i) =>
+                    i % 2 === 1 ? (
+                      <span key={i} style={CALENDAR_NUMBER_STYLE} data-testid="vcal-day-number">
+                        {part}
+                      </span>
+                    ) : (
+                      part
+                    ),
+                  )
+                : rangeTitle}
+            </h1>
 
             <div className="mt-5 flex items-center justify-center gap-2">
               <button
@@ -457,7 +443,7 @@ export default function CalendarPage() {
               </button>
             </div>
           ) : view === "day" ? (
-            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} />
+            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} dayLabel={dayTitle} onAdd={() => setAddOpen(true)} />
           ) : view === "week" ? (
             <WeekView anchor={anchor} items={items} now={now} onOpen={setOpenItem} onPickDay={pickDay} />
           ) : (

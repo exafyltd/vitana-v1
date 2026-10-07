@@ -515,7 +515,8 @@
       "busyInk": "#64748B",
       "primary": "#0F172A",
       "link": "#0F766E",
-      "line": "#E2E8F0"
+      "line": "#E2E8F0",
+      "today": "#6D28D9"
     }
   },
   "views.range": {

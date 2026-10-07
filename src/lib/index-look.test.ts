@@ -11,7 +11,6 @@ import {
   INDEX_HERO_STYLE,
   INDEX_NEXT_UP,
   INDEX_NEXT_UP_CHIP,
-  INDEX_NUMBER_STYLE,
   INDEX_PRIMARY_BTN,
   INDEX_SOFT_BTN,
   INDEX_TILE,
@@ -26,13 +25,12 @@ describe("index-look matches the Vitana Index page", () => {
     expect(page).toContain(JSON.stringify(INDEX_SOFT_BTN));
   });
 
-  it("hero card, eyebrow and number", () => {
+  it("hero card and eyebrow", () => {
     expect(page).toContain(INDEX_HERO_CLASS);
     expect(page).toContain(INDEX_EYEBROW);
     expect(page).toContain(INDEX_HERO_STYLE.backgroundColor as string);
     expect(page).toContain(INDEX_HERO_STYLE.backgroundImage as string);
     expect(page).toContain(INDEX_HERO_STYLE.boxShadow as string);
-    expect(page).toContain(INDEX_NUMBER_STYLE.background as string);
   });
 
   it("icon tile and the next-up box", () => {

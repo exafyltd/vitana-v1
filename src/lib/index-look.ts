@@ -24,15 +24,6 @@ export const INDEX_HERO_STYLE: CSSProperties = {
   isolation: "isolate",
 };
 export const INDEX_EYEBROW = "text-center text-xs font-semibold uppercase tracking-[0.28em] text-teal-800";
-export const INDEX_GLOW_STYLE: CSSProperties = {
-  background: "radial-gradient(circle, hsl(165, 80%, 70%), hsl(200, 80%, 80%) 55%, transparent 72%)",
-};
-export const INDEX_NUMBER_STYLE: CSSProperties = {
-  background: "linear-gradient(170deg, hsl(152, 70%, 42%) 0%, hsl(168, 72%, 30%) 55%, hsl(180, 75%, 22%) 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-};
-
 /** Rounded icon tile and the "next up" box used inside cards. */
 export const INDEX_TILE = "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-700";
 export const INDEX_NEXT_UP = "rounded-2xl bg-gradient-to-br from-teal-50 to-sky-50 p-4 ring-1 ring-teal-100";

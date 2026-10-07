@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 361
+- **Pages scanned:** 362
 - **Distinct i18n keys consumed:** 4778
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -71,7 +71,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `vcal` — used: 9, total in shard: 256
+- `vcal` — used: 9, total in shard: 257
 
 ### src/pages/Changelog.tsx
 
@@ -111,6 +111,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/CommerceConnectDocs.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/CommerceConnectPrivacy.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

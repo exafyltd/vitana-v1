@@ -24,6 +24,9 @@
       "evening": "İyi akşamlar 🌙",
       "night": "İyi geceler 🌙"
     },
+    "day": {
+      "addFor": "{date} için yeni kayıt"
+    },
     "views": {
       "day": "Gün",
       "week": "Hafta",

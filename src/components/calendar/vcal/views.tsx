@@ -2,16 +2,18 @@
  * VTID-04351 — Day, Week and Month views of the calendar screen.
  * Each view is handed the items for exactly its own range (see viewRange).
  *
- * VTID-04681: a view never floods. A day shows its first DAY_LIMIT entries
- * and "+N more"; a week column its first WEEK_LIMIT; a month cell up to three
- * dots. Milestones are quiet markers, not tasks, and never count.
+ * VTID-04681: a view never floods. A week column shows its first WEEK_LIMIT
+ * entries and "+N more"; a month cell up to three dots. Milestones are quiet
+ * markers, not tasks, and never count.
+ * VTID-04952: the one exception is the Day view — it is the day's overview, so
+ * it lists every entry one by one, with a button to add one for that day.
  */
-import { useState } from "react";
+import { Plus } from "lucide-react";
 import { addDays } from "date-fns";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate, formatDate } from "@/lib/locale-format";
 import type { CalendarWindowItem } from "@/lib/calendar-window-client";
-import { INDEX_CARD } from "@/lib/index-look";
+import { INDEX_CARD, INDEX_SOFT_BTN } from "@/lib/index-look";
 import { KIND_STYLE, SURFACE, entryKind } from "./theme";
 import { EntryCard, isMilestone } from "./parts";
 import { itemsOn } from "./labels";
@@ -19,7 +21,6 @@ import { hhmm, sameDay, viewRange } from "./time";
 
 type Open = (item: CalendarWindowItem) => void;
 
-export const DAY_LIMIT = 5;
 export const WEEK_LIMIT = 3;
 export const MONTH_DOTS = 3;
 
@@ -42,15 +43,32 @@ function MoreButton({ count, onClick }: { count: number; onClick: () => void }) 
   );
 }
 
-export function DayView({ items, onOpen }: { items: CalendarWindowItem[]; onOpen: Open }) {
-  const [all, setAll] = useState(false);
-  if (!items.length) return <EmptyDay />;
+export function DayView({
+  items,
+  onOpen,
+  summary,
+  dayLabel,
+  onAdd,
+}: {
+  items: CalendarWindowItem[];
+  onOpen: Open;
+  summary?: string;
+  dayLabel: string;
+  onAdd: () => void;
+}) {
   const markers = items.filter(isMilestone);
   const entries = items.filter((i) => !isMilestone(i));
-  const shown = all ? entries : entries.slice(0, DAY_LIMIT);
-  const hidden = entries.length - shown.length;
   return (
     <div className="flex flex-col gap-2" data-testid="vcal-day">
+      <button type="button" onClick={onAdd} className={`${INDEX_SOFT_BTN} w-full justify-start`} data-testid="vcal-add-day">
+        <Plus className="h-5 w-5 shrink-0" aria-hidden />
+        <span className="truncate">{t("vcal.day.addFor", { date: dayLabel })}</span>
+      </button>
+      {summary && (
+        <p className="px-1 text-[15px] leading-snug text-slate-700" data-testid="vcal-summary">
+          {summary}
+        </p>
+      )}
       {markers.map((m) => (
         <EntryCard key={m.id} item={m} onOpen={onOpen} />
       ))}
@@ -58,7 +76,7 @@ export function DayView({ items, onOpen }: { items: CalendarWindowItem[]; onOpen
         <EmptyDay />
       ) : (
         <ol className="flex flex-col gap-2">
-          {shown.map((item) => (
+          {entries.map((item) => (
             <li key={item.id} className="flex items-stretch gap-3">
               <span className="w-12 shrink-0 whitespace-nowrap pt-3.5 text-xs tabular-nums" style={{ color: SURFACE.muted }}>
                 {hhmm(item.start_time)}
@@ -70,7 +88,6 @@ export function DayView({ items, onOpen }: { items: CalendarWindowItem[]; onOpen
           ))}
         </ol>
       )}
-      {hidden > 0 && <MoreButton count={hidden} onClick={() => setAll(true)} />}
     </div>
   );
 }
@@ -99,14 +116,17 @@ export function WeekView({
         return (
           <section
             key={day.toISOString()}
-            className={`flex min-w-0 flex-col gap-1.5 rounded-3xl border bg-white p-3 shadow-[0_6px_24px_rgba(15,23,42,0.06)] ${isToday ? "border-teal-500 ring-1 ring-teal-500" : "border-slate-100"}`}
+            className={`flex min-w-0 flex-col gap-1.5 rounded-3xl border bg-white p-3 shadow-[0_6px_24px_rgba(15,23,42,0.06)] ${isToday ? "" : "border-slate-100"}`}
             aria-label={fmtDate(day, { weekday: "long", day: "numeric", month: "long" })}
+            style={isToday ? { borderColor: SURFACE.today, boxShadow: `0 0 0 1px ${SURFACE.today}` } : undefined}
           >
             <button type="button" onClick={() => onPickDay(day)} className="flex items-baseline gap-2 text-start">
               <span className="text-xs" style={{ color: SURFACE.muted }}>
                 {formatDate(day, "EEE")}
               </span>
-              <span className={`text-lg ${isToday ? "font-bold text-teal-700" : ""}`}>{formatDate(day, "d")}</span>
+              <span className={`text-lg ${isToday ? "font-bold" : ""}`} style={isToday ? { color: SURFACE.today } : undefined}>
+                {formatDate(day, "d")}
+              </span>
             </button>
             {dayItems.length ? (
               <div className="flex flex-col gap-1.5">
@@ -167,7 +187,7 @@ export function MonthView({
             >
               <span
                 className={`flex h-7 w-7 items-center justify-center rounded-full text-sm ${isToday ? "font-bold" : ""}`}
-                style={isToday ? { background: SURFACE.link, color: "#FFFFFF" } : undefined}
+                style={isToday ? { background: SURFACE.today, color: "#FFFFFF" } : undefined}
               >
                 {formatDate(day, "d")}
               </span>
