@@ -131,3 +131,26 @@ export function getConversationDisplayAvatar(
   const otherParticipant = getOtherParticipant(thread, currentUserId);
   return getParticipantAvatarUrl(otherParticipant);
 }
+/** VTID-04959: longest group name shown in the composer placeholder. */
+export const PLACEHOLDER_GROUP_NAME_MAX = 30;
+
+/**
+ * The message box placeholder: "Nachricht an <group>…" in a group (name cut
+ * at 30 characters — auto-names list many members), "Nachricht an <first
+ * name>…" in a direct chat. Text comes from the i18n catalog.
+ */
+export function composerPlaceholder(
+  thread: ConversationThread | null | undefined,
+  currentUserId: string | undefined,
+  t: (key: string, params?: Record<string, string | number>) => string,
+): string {
+  if (thread?.type === 'group') {
+    const raw = (thread.name || '').trim();
+    // The catalog string already ends with "…", so a cut name gets no second one.
+    const name = raw.length > PLACEHOLDER_GROUP_NAME_MAX ? raw.slice(0, PLACEHOLDER_GROUP_NAME_MAX).trimEnd() : raw;
+    return t('screens.messages.messageGroupPlaceholder', { name });
+  }
+  return t('screens.messages.messagePersonPlaceholder', {
+    name: getParticipantFirstName(getOtherParticipant(thread, currentUserId)),
+  });
+}

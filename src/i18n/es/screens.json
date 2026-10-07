@@ -6190,7 +6190,10 @@
       "groupNameLabel": "Nombre del grupo",
       "renameGroup": "Cambiar nombre del grupo",
       "groupNameSave": "Guardar",
-      "groupNameCancel": "Cancelar"
+      "groupNameCancel": "Cancelar",
+      "editGroup": "Editar grupo",
+      "messageGroupPlaceholder": "Mensaje a {name}…",
+      "messagePersonPlaceholder": "Mensaje a {name}…"
     },
     "mobile": {
       "searching": "Buscando…",

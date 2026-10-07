@@ -6227,7 +6227,10 @@
       "groupNameLabel": "群组名称",
       "renameGroup": "重命名群组",
       "groupNameSave": "保存",
-      "groupNameCancel": "取消"
+      "groupNameCancel": "取消",
+      "editGroup": "编辑群组",
+      "messageGroupPlaceholder": "发消息给 {name}…",
+      "messagePersonPlaceholder": "发消息给 {name}…"
     },
     "mobile": {
       "searching": "正在搜索…",

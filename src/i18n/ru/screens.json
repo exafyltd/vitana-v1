@@ -6230,7 +6230,10 @@
       "groupNameLabel": "Название группы",
       "renameGroup": "Переименовать группу",
       "groupNameSave": "Сохранить",
-      "groupNameCancel": "Отмена"
+      "groupNameCancel": "Отмена",
+      "editGroup": "Изменить группу",
+      "messageGroupPlaceholder": "Сообщение для {name}…",
+      "messagePersonPlaceholder": "Сообщение для {name}…"
     },
     "mobile": {
       "searching": "Поиск…",
