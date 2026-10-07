@@ -1,4 +1,4 @@
-// VTID-04927 — News feed: tapping a post opens the post, only the author name
+// VTID-04937 — News feed: tapping a post opens the post, only the author name
 // opens the profile, and Back returns to the same spot in the feed.
 //
 // Read-only: './staging-guard' (copied in by the runner) aborts every write;

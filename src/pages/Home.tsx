@@ -256,7 +256,7 @@ export default function Home() {
   // Module-scope so it survives the unmount; per-session only, deliberately not
   // persisted.
   //
-  // VTID-04927: the restore keeps re-applying while late media grows the page
+  // VTID-04937: the restore keeps re-applying while late media grows the page
   // (restoreWindowScroll), and the recorder ignores the scroll events it causes,
   // so a clamped intermediate offset is never stored.
   const restoringScrollRef = useRef(false);
@@ -277,7 +277,7 @@ export default function Home() {
   // "remember on cleanup": React runs this cleanup after the next screen (or
   // tab) has already replaced the feed in the DOM, so window.scrollY there is
   // the browser's clamp to the new, shorter page — it used to overwrite the
-  // reader's real position with ~0 (VTID-04927).
+  // reader's real position with ~0 (VTID-04937).
   useEffect(() => {
     const remember = () => {
       if (restoringScrollRef.current) return;

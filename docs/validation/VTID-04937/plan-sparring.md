@@ -1,9 +1,12 @@
-# VTID-04927 — Plan sparring record
+# VTID-04937 — Plan sparring record
 
 - Plan Sparring Gate: VTID-04868. Partner: `plan-sparring-partner` (independent, read-only).
 - Change class: standard. Rounds: 2.
 - Final plan hash: `9d645d6f0504dc7530bafdfecb1b27a6ae6aa2f798f0fc4e530386c7d97fc7e5`
 - Verdict: **converged**. Owner approval: in session 2026-10-06 ("yes, go ahead").
+- VTID: first allocated as VTID-04927; that ledger row was reaped by the allocated-orphan
+  reaper (status `deleted`, terminal) after its title update timed out, so the work was
+  re-allocated as VTID-04937 (owner decision 2026-10-07, "Option 2").
 
 ## Final plan
 

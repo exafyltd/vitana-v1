@@ -72,7 +72,7 @@ export default function PostDetail() {
   const { source, id } = useParams<{ source: string; id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  // Set by the News feed card when it opens this page (VTID-04927). Going back
+  // Set by the News feed card when it opens this page (VTID-04937). Going back
   // in history then returns the reader to the exact spot they left in the
   // feed — possibly posts from weeks ago — instead of pushing a fresh feed
   // that starts at the newest post.

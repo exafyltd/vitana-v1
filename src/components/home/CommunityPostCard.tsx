@@ -4,7 +4,7 @@
  * Split out of NewsFeedItemCard so the like/comment hook can be called
  * unconditionally (it is only mounted for kind === "post"). Tapping the card
  * body opens the post itself (/post/:source/:id) and only the author's
- * avatar + name open their profile (VTID-04927 — the whole card used to go to
+ * avatar + name open their profile (VTID-04937 — the whole card used to go to
  * the profile, so a tap beside the heart while scrolling old posts landed on
  * someone's profile instead of the post). The heart and the comment affordance are
  * inline — tapping the heart toggles a like, tapping the comment count expands

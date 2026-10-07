@@ -326,7 +326,7 @@ describe('CommunityPostCard autoOpenComments (VTID-03744)', () => {
   });
 });
 
-describe('CommunityPostCard tap targets (VTID-04927)', () => {
+describe('CommunityPostCard tap targets (VTID-04937)', () => {
   beforeEach(() => {
     mockComments = [];
     navigateMock.mockClear();

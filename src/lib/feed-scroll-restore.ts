@@ -1,5 +1,5 @@
 /**
- * VTID-04927 — put the reader back where they were in the News feed.
+ * VTID-04937 — put the reader back where they were in the News feed.
  *
  * A single scrollTo right after the feed remounts is not enough deep in the
  * feed: posts' media size themselves only once they load (FeedMedia sets its

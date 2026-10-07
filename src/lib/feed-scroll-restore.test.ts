@@ -1,5 +1,5 @@
 /**
- * VTID-04927 — returning from a post must land the reader where they left the
+ * VTID-04937 — returning from a post must land the reader where they left the
  * feed, even when the page is still growing as media loads.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
