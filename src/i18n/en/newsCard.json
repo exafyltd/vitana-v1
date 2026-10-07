@@ -18,16 +18,14 @@
       "showLessToast": "We'll show fewer like this",
       "mutedToast": "Source muted",
       "undo": "Undo",
-      "unmute": "Unmute",
-      "_pending_review": {}
+      "unmute": "Unmute"
     },
     "detail": {
       "back": "Back",
       "continueReading": "Continue reading on",
       "openInBrowser": "Open in browser",
       "couldNotLoad": "This article can't be displayed inline",
-      "readOn": "Read more",
-      "_pending_review": {}
+      "readOn": "Read more"
     },
     "pillars": {
       "all": "All",
@@ -35,10 +33,8 @@
       "hydration": "Hydration",
       "sleep": "Sleep",
       "exercise": "Exercise",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "🤩 Welcome {name}!",
       "joinedSummary": "{name} just joined the MAXINA longevity community 🎉",
@@ -46,8 +42,10 @@
       "sayHello": "Say hello",
       "viewProfile": "View profile",
       "eyebrow": "New in the community",
-      "_pending_review": {}
+      "_pending_review": {
+        "welcomeTitle": true,
+        "joinedSummary": true
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }
