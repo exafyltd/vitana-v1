@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04957",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on iPhone (390x844) and Samsung (412x915) viewports: News feed 'New in the community' card surface equals the --sys-vitana-card colour, the welcome title has no space before '!' and never leaves a lone word or '!' on its own second line, no horizontal overflow; the 'Did you know?' card is lavender (blue channel above red) not amber; read-only — nothing is clicked or written, each check skips when the feed has no such card for the account",
+      "spec": "tests/e2e/staging/vtid-04957-feed-cards.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/home/NewMemberCard.test.tsx",
+      "reason": "navigation behaviour unchanged (Say hello, View profile, card tap) and the welcome title tidy rule: no space before '!', last two words joined by a non-breaking space"
+    }
+  ]
+}

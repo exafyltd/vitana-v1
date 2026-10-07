@@ -82,12 +82,13 @@ export function NewsFeedItemCard({
   }
 
   if (item.kind === "new_member") {
-    const name = item.display_name || t("newsCard.member.newMember");
+    const name = item.display_name?.trim().replace(/\s+/g, " ") || t("newsCard.member.newMember");
     return (
       <NewMemberCard
         userId={item.user_id}
         title={t("newsCard.member.welcomeTitle", { name })}
         summary={item.bio || t("newsCard.member.joinedSummary", { name })}
+        celebrateSummary={!item.bio}
         avatarUrl={item.avatar_url}
         displayInitial={name.charAt(0).toUpperCase()}
         timestamp={timeAgo(item.published_at)}

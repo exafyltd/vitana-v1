@@ -49,4 +49,15 @@ describe("NewMemberCard (VTID-04574)", () => {
     fireEvent.click(screen.getByTestId("new-member-card"));
     expect(screen.getByTestId("where").textContent).toBe("/u/user-123");
   });
+
+  it("tidies the welcome title: no space before '!', last two words kept together", () => {
+    render(
+      <MemoryRouter>
+        <NewMemberCard userId="u" title="Welcome Helena Victoria Sander !" displayInitial="H" />
+      </MemoryRouter>,
+    );
+    const text = screen.getByTestId("new-member-card").querySelector("p")!.textContent!;
+    expect(text).not.toMatch(/\s!/);
+    expect(text).toContain("Victoria Sander!".replace(" ", "\u00a0"));
+  });
 });
