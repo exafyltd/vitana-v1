@@ -248,9 +248,9 @@
     },
     "calendar.autopilot.suggestions": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound word too long; should be hyphenated.",
-      "suggested": "自动驾驶-建议",
+      "confidence": 1,
+      "issue": "Unnecessary hyphen, not idiomatic Chinese for this compound noun.",
+      "suggested": "自动驾驶建议",
       "phase": "llm"
     },
     "calendar.autopilot.badge": {
@@ -299,10 +299,8 @@
       "phase": "llm"
     },
     "calendar.autopilot.calendarUpdated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound word too long; should be hyphenated.",
-      "suggested": "自动驾驶已更新你的日历",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.autopilot.suggestionUndone": {
@@ -581,5 +579,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:38:04.192Z"
+  "generatedAt": "2026-10-07T10:28:37.461Z"
 }
