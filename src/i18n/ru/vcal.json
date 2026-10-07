@@ -94,10 +94,16 @@
       "openEvent": "К событию",
       "joinRoom": "Присоединиться",
       "openRoom": "В эфирную комнату",
+      "endedChip": "Завершено",
+      "endedNotice": "Это событие закончилось и больше не активно.",
+      "endedToast": "Событие уже прошло и не активно",
       "_pending_review": {
         "openEvent": true,
         "joinRoom": true,
-        "openRoom": true
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
       }
     },
     "work": {

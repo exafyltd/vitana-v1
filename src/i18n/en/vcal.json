@@ -84,7 +84,15 @@
       "askVitana": "Ask Vitana",
       "openEvent": "Go to event",
       "joinRoom": "Join now",
-      "openRoom": "Go to live room"
+      "openRoom": "Go to live room",
+      "endedChip": "Ended",
+      "endedNotice": "This event is over and no longer active.",
+      "endedToast": "Event is in the past and not active",
+      "_pending_review": {
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
+      }
     },
     "work": {
       "deploy_staging": "Staging deploy",

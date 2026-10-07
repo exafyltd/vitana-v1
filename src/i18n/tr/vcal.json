@@ -94,10 +94,16 @@
       "openEvent": "Etkinliğe git",
       "joinRoom": "Şimdi katıl",
       "openRoom": "Canlı odaya git",
+      "endedChip": "Bitti",
+      "endedNotice": "Bu etkinlik sona erdi ve artık aktif değil.",
+      "endedToast": "Etkinlik geçmişte kaldı ve aktif değil",
       "_pending_review": {
         "openEvent": true,
         "joinRoom": true,
-        "openRoom": true
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
       }
     },
     "work": {

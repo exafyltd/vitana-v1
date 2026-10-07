@@ -94,10 +94,16 @@
       "openEvent": "查看活动",
       "joinRoom": "立即加入",
       "openRoom": "进入直播间",
+      "endedChip": "已结束",
+      "endedNotice": "此活动已结束，不再有效。",
+      "endedToast": "活动已成为过去，不再有效",
       "_pending_review": {
         "openEvent": true,
         "joinRoom": true,
-        "openRoom": true
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
       }
     },
     "work": {

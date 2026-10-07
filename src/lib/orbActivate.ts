@@ -22,6 +22,8 @@ interface VitanaOrbApi {
   focusGuidedTopic?: (topicId: string) => void;
   /** VTID-04395: open the ORB as a support intake (orb-widget.js). */
   startSupportReport?: () => void;
+  /** VTID-04951: open the ORB as a FAQ guide for the screen the member is on (orb-widget.js). */
+  startGuide?: (ctx: OrbGuideContext) => void;
   show?: () => void;
 }
 
@@ -30,6 +32,35 @@ interface VitanaOrbApi {
  * happened and files the ticket, instead of opening with a daily briefing.
  * Falls back to a plain open when the loaded widget predates the method.
  */
+/**
+ * VTID-04951 — what the guide needs to know about the screen. Flat on
+ * purpose: it rides the session start as four short validated fields
+ * (`guide_feature`, `guide_state`, `guide_kind`, `guide_title`).
+ */
+export interface OrbGuideContext {
+  /** snake_case feature id, e.g. `calendar_entry`. */
+  feature: string;
+  state: 'upcoming' | 'live' | 'ended' | 'empty' | 'error';
+  kind?: string;
+  /** What the member is looking at (an event title). Shown to the model as data. */
+  title?: string;
+}
+
+/**
+ * VTID-04951 — "Ask Vitana" from a screen: Vitana opens as the guide for that
+ * screen instead of the daily greeting. Falls back to a plain open when the
+ * loaded widget predates `startGuide`.
+ */
+export function activateOrbGuide(ctx: OrbGuideContext): boolean {
+  if (typeof window === 'undefined') return false;
+  const orb = (window as unknown as { VitanaOrb?: VitanaOrbApi }).VitanaOrb;
+  if (orb && typeof orb.startGuide === 'function') {
+    orb.startGuide(ctx);
+    return true;
+  }
+  return activateOrb();
+}
+
 export function activateOrbForSupportReport(): boolean {
   if (typeof window === 'undefined') return false;
   const orb = (window as unknown as { VitanaOrb?: VitanaOrbApi }).VitanaOrb;

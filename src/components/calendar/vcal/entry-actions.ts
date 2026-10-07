@@ -54,6 +54,40 @@ export function communityEventIdOf(item: CalendarWindowItem): string | null {
   return typeof meetup === "string" && meetup ? meetup : null;
 }
 
+export type EntryTimeState = "upcoming" | "live" | "ended";
+
+/**
+ * VTID-04951 — where an entry is on the clock. The end is `end_time`, else
+ * one hour after the start (the same fallback `sourceActionOf` uses). An
+ * unparsable start is never "ended": we would rather offer an action than
+ * wrongly tell the member their event is over.
+ */
+export function entryTimeState(item: CalendarWindowItem, now: Date): EntryTimeState {
+  const start = Date.parse(item.start_time);
+  if (Number.isNaN(start)) return "upcoming";
+  const parsedEnd = item.end_time ? Date.parse(item.end_time) : NaN;
+  const end = Number.isNaN(parsedEnd) ? start + 60 * 60_000 : parsedEnd;
+  const t = now.getTime();
+  if (t > end) return "ended";
+  return t >= start ? "live" : "upcoming";
+}
+
+/**
+ * VTID-04951 — an event or live room whose time has passed. Own personal
+ * entries and tasks are never "ended" in this sense: marking a past task
+ * done is legitimate, while a finished event has nothing left to join,
+ * complete or move.
+ */
+export function isEndedSourceEntry(item: CalendarWindowItem, now: Date): boolean {
+  const e = item.event;
+  if (!e || item.busy || item.work) return false;
+  const hasSource =
+    communityEventIdOf(item) !== null ||
+    e.source_ref_type === "live_room_session" ||
+    e.source_type === "live_room";
+  return hasSource && entryTimeState(item, now) === "ended";
+}
+
 export function sourceActionOf(item: CalendarWindowItem, now: Date): SourceAction | null {
   const e = item.event;
   if (!e || item.busy || item.work) return null;

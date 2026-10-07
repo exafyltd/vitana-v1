@@ -94,10 +94,16 @@
       "openEvent": "اذهب إلى الفعالية",
       "joinRoom": "انضم الآن",
       "openRoom": "اذهب إلى الغرفة المباشرة",
+      "endedChip": "انتهى",
+      "endedNotice": "انتهى هذا الحدث ولم يعد نشطًا.",
+      "endedToast": "الحدث في الماضي وليس نشطًا",
       "_pending_review": {
         "openEvent": true,
         "joinRoom": true,
-        "openRoom": true
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
       }
     },
     "work": {
