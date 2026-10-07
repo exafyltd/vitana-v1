@@ -252,19 +252,15 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    // Shift+Enter = new line, Enter = send — unless this same Enter just
-    // picked an @mention suggestion (VTID-04926). Not every keyboard drops the
-    // keypress after a prevented keydown, so the keydown leaves a flag.
+    // Enter always makes a new line; only the send button sends (owner
+    // decision 2026-10-07). The one exception is an Enter that just picked an
+    // @mention suggestion (VTID-04926): not every keyboard drops the keypress
+    // after a prevented keydown, so the keydown leaves a flag and this
+    // keypress must not add a line either.
     if (e.key === 'Enter' && mentionEnterConsumedRef.current) {
       mentionEnterConsumedRef.current = false;
       e.preventDefault();
-      return;
     }
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-    // Allow Shift+Enter to create new lines naturally
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -654,6 +650,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               disabled={disabled}
               className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
+              enterKeyHint="enter"
               aria-label={t('screens.messages.messageComposer')}
               aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
             />

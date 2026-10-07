@@ -108,15 +108,17 @@ describe("group chat @mentions (VTID-04926)", () => {
     expect(onSendMessage).toHaveBeenCalledWith("doch nicht", "text", null, undefined, undefined);
   });
 
-  it("Enter still sends when '@word' matches nobody", async () => {
+  it("Enter adds a line, not a send, when '@word' matches nobody", async () => {
     const { type, box, onSendMessage } = setup();
     type("Ich bin @home");
     expect(screen.getByTestId("mention-suggestions").textContent).toContain("profilePosts.noPeopleFound");
+    let allowed = true;
     await act(async () => {
       fireEvent.keyDown(box, { key: "Enter" });
-      fireEvent.keyPress(box, { key: "Enter", charCode: 13 });
+      allowed = fireEvent.keyPress(box, { key: "Enter", charCode: 13 });
     });
-    expect(onSendMessage).toHaveBeenCalledWith("Ich bin @home", "text", null, undefined, undefined);
+    expect(allowed).toBe(true);
+    expect(onSendMessage).not.toHaveBeenCalled();
   });
 
   it("Escape closes the list", () => {

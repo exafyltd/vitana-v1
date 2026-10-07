@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-04966",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport, one made-up legacy group appended to the inbox's own GET reads inside the browser: open it, type 'Zeile eins', press Enter, type 'Zeile zwei' → the message box holds both lines, grew taller, carries enterkeyhint=enter, and no POST to global_messages/messages was attempted (send is never pressed); read-only — nothing is written",
+      "spec": "tests/e2e/staging/vtid-04966-enter-newline.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-04926 @mentions still work in the deployed composer (Enter on the suggestion list picks a member) after the Enter change",
+      "spec": "tests/e2e/staging/vtid-04926-mentions.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/messages/MessageInput.enter-newline.vtid-04966.test.tsx src/components/messages/MessageInput.mentions.vtid-04926.test.tsx",
+      "reason": "Enter and Shift+Enter neither send nor block the newline; the send button sends multi-line text; Enter on an open mention list picks the name with no newline; enterkeyhint=enter"
+    }
+  ]
+}
