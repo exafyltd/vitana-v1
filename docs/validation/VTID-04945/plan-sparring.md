@@ -6,6 +6,7 @@ Sparred and owner-approved plan: `exafyltd/vitana-platform` `docs/validation/VTI
 - **Privacy:** the plan said "a privacy-policy section for AI-assistant connectors". The existing `/privacy` is Exafy LTD's dated legal text; amending it is a legal change. Instead a separate public notice `/commerce/connect/privacy` covers only what the connector adds and links to `/privacy`. Its wording needs the owner's approval before it is published; retention periods and processor names are deliberately not stated because they are not documented in the repo.
 - **What's New entry:** not added. vitana-v1 CLAUDE.md says what's-new cards go to every tenant member with a push; a supplier-facing connector page is not something members notice. The owner can add an entry (`src/whats-new/entries/`) if wanted.
 - **Screen registry:** `/commerce` is already an excluded prefix in `src/navigation/registry/exclusions.json`, so the two new routes need no registry entry.
+- **Privacy notice languages (owner decision 2026-10-07, "Agreed on all 3"):** German and English only. The notice uses the repo's legal-page pattern (`useScopedT` with `?lang=de|en` and the `LegalLocaleToggle`; German app language → de, every other language → en), so the machine-translated versions in the other locale shards (marked `_pending_review`) are never shown. Pinned by `src/pages/CommerceConnectPrivacy.test.tsx`.
 - **Locales:** German (source of truth) and English shards were written; the other locales are filled by the repo's translation propagation, not by hand.
 
 ## Verdict

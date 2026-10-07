@@ -3,12 +3,20 @@
  * Claude Connectors Directory requires a public privacy policy URL). It covers
  * only what the connector adds; the Vitanaland privacy policy covers the rest.
  * No sign-in. The wording needs the owner's approval before it is published.
+ *
+ * German and English only, like the other legal pages (owner decision
+ * 2026-10-07): the other languages' machine translations of this text are
+ * never shown. `?lang=de|en` or the toggle picks the language; otherwise
+ * German for a German app language and English for every other one.
  */
 import { ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
+import { LegalLocaleToggle } from '@/components/LegalLocaleToggle';
 import { Button } from '@/components/ui/button';
-import { t } from '@/lib/i18n-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { privacyLang } from '@/lib/commerce-connect-lang';
+import { useScopedT } from '@/lib/use-scoped-t';
 
 const K = 'commerceConnect';
 const SUPPORT_EMAIL = 'support@exafy.io';
@@ -22,6 +30,9 @@ const SECTIONS = [
 
 export default function CommerceConnectPrivacy() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { selectedLanguage } = useLanguage();
+  const t = useScopedT(privacyLang(searchParams.get('lang'), selectedLanguage));
   return (
     <div className="min-h-screen bg-background" data-testid="commerce-connect-privacy">
       <SEO title={t(`${K}.privacyTitle`)} description={t(`${K}.privacyIntro`)} canonical="https://vitanaland.com/commerce/connect/privacy" />
@@ -31,6 +42,9 @@ export default function CommerceConnectPrivacy() {
             <ArrowLeft className="h-5 w-5 rtl:rotate-180" />
           </Button>
           <span className="font-semibold">{t(`${K}.privacyLink`)}</span>
+          <div className="ms-auto">
+            <LegalLocaleToggle />
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-4 py-8 md:py-12">

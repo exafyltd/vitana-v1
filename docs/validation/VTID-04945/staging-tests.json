@@ -10,8 +10,8 @@
     },
     {
       "kind": "existing",
-      "ref": "npx vitest run src/pages/CommerceConnectDocs.test.tsx src/lib/commerce-mcp.test.ts",
-      "reason": "catalog parity (de/en), du-form, the tool list equals what the gateway serves; the existing MCP helpers stay green"
+      "ref": "npx vitest run src/pages/CommerceConnectDocs.test.tsx src/pages/CommerceConnectPrivacy.test.tsx src/lib/commerce-mcp.test.ts",
+      "reason": "catalog parity (de/en), du-form, the tool list equals what the gateway serves, the privacy notice is German or English only; the existing MCP helpers stay green"
     }
   ]
 }

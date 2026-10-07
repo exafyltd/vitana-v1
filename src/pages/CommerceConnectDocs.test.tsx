@@ -8,8 +8,10 @@ import { COMMERCE_MCP_TOOL_NAMES } from '@/lib/commerce-mcp';
 import deCatalog from '@/i18n/de/commerceConnect.json';
 import enCatalog from '@/i18n/en/commerceConnect.json';
 
-const de = deCatalog.commerceConnect as Record<string, string>;
-const en = enCatalog.commerceConnect as Record<string, string>;
+// The translation automation adds `_pending_review` markers; they are not strings.
+const strings = (c: Record<string, unknown>) => Object.fromEntries(Object.entries(c).filter(([k]) => !k.startsWith('_'))) as Record<string, string>;
+const de = strings(deCatalog.commerceConnect);
+const en = strings(enCatalog.commerceConnect);
 
 describe('commerceConnect catalog', () => {
   it('has the same keys in German and English, none empty', () => {
