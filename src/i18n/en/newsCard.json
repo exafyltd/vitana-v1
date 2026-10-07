@@ -42,10 +42,7 @@
       "sayHello": "Say hello",
       "viewProfile": "View profile",
       "eyebrow": "New in the community",
-      "_pending_review": {
-        "welcomeTitle": true,
-        "joinedSummary": true
-      }
+      "_pending_review": {}
     }
   }
 }
