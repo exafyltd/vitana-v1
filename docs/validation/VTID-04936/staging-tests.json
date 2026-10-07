@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04936",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: Messages → Neu → search (answered in the browser with two made-up people) → add both → Gruppe erstellen; the thread insert carries a client id and does NOT ask for the row back (no Prefer: return=representation, no ?select=) — the select-after-insert RLS rejected with 403 in production; the creator alone is inserted as admin first, the members in a later request; the success toast shows and the failure toast does not; read-only — every write and the directory lookup are fulfilled inside the browser, nothing is written",
+      "spec": "tests/e2e/staging/vtid-04936-group-create.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/messaging/createGlobalGroupThread.test.ts",
+      "reason": "client-generated id with no select-back, creator-admin before members in separate inserts, creator/duplicates not re-added as members, insert errors thrown with no further writes, system-message failure does not fail the group"
+    }
+  ]
+}
