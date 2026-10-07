@@ -89,9 +89,8 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
   expect(await number.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain('linear-gradient');
   expect((await number.innerText()).trim()).toBe(String(new Date().getDate()));
 
-  // The Day view starts with "new entry for this day" (a button, never a text field).
-  const addDay = page.getByTestId('vcal-add-day');
-  await expect(addDay).toBeVisible();
+  // VTID-04956: the Day view has no add row and no text field (entries come from + and from Vitana by voice).
+  expect(await page.getByTestId('vcal-add-day').count()).toBe(0);
   expect(await page.getByTestId('vcal-day').locator('input, textarea').count()).toBe(0);
 
   // Day, Week and Month share one hero: same size, and the content starts at the same place.
@@ -111,4 +110,26 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
   expect(month.height).toBe(day.height);
   expect(week.tabsTop).toBe(day.tabsTop);
   expect(month.tabsTop).toBe(day.tabsTop);
+
+  // VTID-04956: tapping a day opens it IN PLACE — still on the Month, hero unchanged, a panel with
+  // "new entry for this day" (a button, never a text field). The add button itself is never tapped.
+  await page.getByTestId('vcal-month-day').nth(10).click();
+  const monthPanel = page.getByTestId('vcal-day-panel');
+  await expect(monthPanel).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByTestId('vcal-month')).toBeVisible();
+  await expect(page.getByRole('tab').nth(2)).toHaveAttribute('aria-selected', 'true');
+  expect((await monthPanel.getByTestId('vcal-add-day').evaluate((el) => el.tagName))).toBe('BUTTON');
+  expect(await monthPanel.locator('input, textarea').count()).toBe(0);
+  expect((await box()).height).toBe(day.height);
+  await monthPanel.getByTestId('vcal-day-panel-close').click();
+  await expect(monthPanel).toHaveCount(0);
+
+  await page.getByRole('tab').nth(1).click();
+  await expect(page.getByTestId('vcal-week')).toBeVisible({ timeout: 20_000 });
+  await page.getByTestId('vcal-week-day').nth(2).click();
+  await expect(page.getByTestId('vcal-day-panel')).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByTestId('vcal-week')).toBeVisible();
+  await expect(page.getByRole('tab').nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByTestId('vcal-add-day')).toBeVisible();
+  expect((await box()).height).toBe(day.height);
 });
