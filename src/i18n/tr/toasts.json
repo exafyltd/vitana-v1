@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "ICS dosyası indirilecek",
       "openingCalendar": "Takvim açılıyor",
       "notifyOnTitle": "Hatırlatıcı ayarlandı",
-      "notifyOnDesc": "Başlamadan önce sana hatırlatacağız",
+      "notifyOnDesc": "Başlamadan önce sana hatırlatacağız — ve Maxina takviminde",
       "notifyOffTitle": "Hatırlatıcı kaldırıldı",
       "notifyOffDesc": "Artık sana hatırlatılmayacak",
       "notifyError": "Hatırlatıcı güncellenemedi",

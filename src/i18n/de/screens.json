@@ -5625,7 +5625,8 @@
       },
       "durationMin": "{value0} Min",
       "durationHour": "{value0} Std",
-      "durationHourMin": "{value0} Std {value1} Min"
+      "durationHourMin": "{value0} Std {value1} Min",
+      "openHostProfile": "Profil von {name} öffnen"
     },
     "meetups": {
       "detailsProgram": "Details & Programm",

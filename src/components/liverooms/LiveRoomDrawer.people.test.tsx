@@ -26,6 +26,7 @@ vi.mock('@/hooks/useReminders', () => ({ useCreateReminder: () => ({ mutateAsync
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'me' } }) }));
 vi.mock('@/components/social/FollowButton', () => ({ FollowButton: () => null }));
 vi.mock('@/components/ui/clickable-avatar', () => ({ ClickableAvatar: () => null }));
+vi.mock('@/components/sharing/SocialShareButton', () => ({ default: () => null }));
 
 const room: LiveRoom = {
   id: 'r1',

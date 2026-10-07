@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04965",
+  "kind": "feature",
+  "paths": [
+    "src/components/liverooms/LiveRoomDrawer.tsx",
+    "src/components/liverooms/LiveRoomDrawer.*test.tsx",
+    "src/pages/community/EventsAndMeetups.tsx",
+    "src/pages/community/EventsAndMeetups.*test.ts",
+    "src/i18n/*/screens.json",
+    "src/i18n/*/toasts.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-04965-live-room-drawer.staging.spec.ts",
+    "docs/validation/VTID-04965/**"
+  ],
+  "weakens_tests": [
+    "src/pages/community/EventsAndMeetups.live-rooms.vtid-04907.test.ts: the card-tap pin now allows the ?event= address write after setRoomDrawerEvent (contract changed on purpose)"
+  ],
+  "red_green_exempt": []
+}

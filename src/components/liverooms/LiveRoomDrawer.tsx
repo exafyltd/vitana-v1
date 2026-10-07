@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { getLiveRoomShareUrl } from '@/lib/shareUrl';
+import SocialShareButton from '@/components/sharing/SocialShareButton';
 import {
   Drawer,
   DrawerContent,
@@ -34,7 +36,6 @@ import {
   ChevronRight,
   Clock,
   Users,
-  Share2,
   Bookmark,
   Bell,
   Calendar,
@@ -104,6 +105,7 @@ export function LiveRoomDrawer({
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [peopleOpen, setPeopleOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Real "Notify me" wiring — persists to live_stream_subscribers, same as the
   // card on the Live Rooms page (this used to be a throwaway local toggle that
@@ -190,18 +192,6 @@ export function LiveRoomDrawer({
     setIsSaved(!isSaved);
   };
 
-  const handleShare = (platform?: string) => {
-    const url = getLiveRoomShareUrl(room.id);
-    const text = `Check out this live room: ${room.title}`;
-
-    if (platform === "copy") {
-      navigator.clipboard.writeText(url);
-      notify('toasts.liverooms.linkCopied', 'toasts.liverooms.roomLinkCopiedClipboard');
-    } else {
-      notify('toasts.liverooms.share');
-    }
-  };
-
   const handleAddToCalendar = (type: string) => {
     if (!room.scheduledTime) return;
 
@@ -232,6 +222,28 @@ export function LiveRoomDrawer({
     }
 
     notify('toasts.liverooms.openingCalendar');
+  };
+
+  // The same share control the room cards use (native share first, platform
+  // picker as the fallback) — this button used to only show a toast.
+  const shareControl = (
+    <span className="contents" data-testid="live-room-drawer-share">
+      <SocialShareButton
+        type="live_room"
+        data={{
+          title: room.title,
+          description: room.description || t('screens.liveRoom.shareDescription', { name: room.host.name }),
+          link: getLiveRoomShareUrl(room.id),
+        }}
+        variant="icon"
+        size="lg"
+        className="h-11 w-11 shrink-0 border border-input bg-background px-0"
+      />
+    </span>
+  );
+
+  const goToHost = () => {
+    if (room.host.id) navigate(`/u/${room.host.id}`);
   };
 
   const handleJoin = () => {
@@ -358,9 +370,13 @@ export function LiveRoomDrawer({
             {/* Host Bar */}
             {!isCreator ? (
               <div className="flex items-center gap-2 mt-3 min-w-0">
-                <div
+                <button
+                  type="button"
+                  onClick={goToHost}
+                  aria-label={t('screens.liverooms.openHostProfile', { name: room.host.name })}
+                  data-testid="live-room-host-link"
                   className={cn(
-                    "flex items-center gap-2 h-11 px-2 rounded-full min-w-0",
+                    "flex items-center gap-2 h-11 px-2 rounded-full min-w-0 text-start",
                     "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
                 >
@@ -375,7 +391,7 @@ export function LiveRoomDrawer({
                       {t('screens.liverooms.host')}
                     </span>
                   </div>
-                </div>
+                </button>
 
                 {/* Shows only when you don't already follow the host. */}
                 <FollowButton
@@ -385,14 +401,20 @@ export function LiveRoomDrawer({
               </div>
             ) : (
               <div className="flex items-center gap-2 mt-3 min-w-0">
-                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0">
+                <button
+                  type="button"
+                  onClick={goToHost}
+                  aria-label={t('screens.liverooms.openHostProfile', { name: room.host.name })}
+                  data-testid="live-room-host-link"
+                  className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0 text-start"
+                >
                   <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
                   <span className="text-sm font-semibold truncate">{room.host.name}</span>
                   <Badge variant="secondary" className="text-xs flex-shrink-0">{t('screens.liverooms.yourRoom')}</Badge>
-                </div>
+                </button>
               </div>
             )}
           </div>
@@ -567,18 +589,14 @@ export function LiveRoomDrawer({
               <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.manage')}
               </Button>
-              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
-                <Share2 className="w-4 h-4" />
-              </Button>
+              {shareControl}
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.joinRoom')}
               </Button>
-              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
-                <Share2 className="w-4 h-4" />
-              </Button>
+              {shareControl}
               <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={handleSave}>
                 <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
               </Button>
@@ -630,9 +648,7 @@ export function LiveRoomDrawer({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
-                  <Share2 className="w-4 h-4" />
-                </Button>
+                {shareControl}
               </div>
             </div>
           )

@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "ICS datoteka će biti preuzeta",
       "openingCalendar": "Otvaram kalendar",
       "notifyOnTitle": "Podsetnik postavljen",
-      "notifyOnDesc": "Podsetićemo te pre nego što počne",
+      "notifyOnDesc": "Podsetićemo te pre nego što počne — i već je u tvom Maxina kalendaru",
       "notifyOffTitle": "Podsetnik uklonjen",
       "notifyOffDesc": "Više te nećemo podsećati",
       "notifyError": "Nije moguće ažurirati podsetnik",

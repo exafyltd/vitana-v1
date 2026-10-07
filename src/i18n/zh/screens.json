@@ -5668,7 +5668,8 @@
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!",
-      "dateTimeChip": "{date} · {time}"
+      "dateTimeChip": "{date} · {time}",
+      "openHostProfile": "打开 {name} 的个人资料"
     },
     "meetups": {
       "detailsProgram": "详情与日程",
