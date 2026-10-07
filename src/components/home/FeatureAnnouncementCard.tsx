@@ -99,6 +99,7 @@ export function FeatureAnnouncementCard({
     <div
       role="button"
       tabIndex={0}
+      data-testid={`feature-announcement-${variant}`}
       onClick={open}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
