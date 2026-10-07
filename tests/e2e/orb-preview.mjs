@@ -22,7 +22,11 @@ const REF = (SUPA.match(/https:\/\/([a-z0-9]+)\.supabase/) || [])[1] || 'inmkhvw
 const ANON = process.env.SUPA_ANON ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWtodndkY3V5aG54a2dmdnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NjY2MzcsImV4cCI6MjA3MTQ0MjYzN30._-QX8ZFgDsKgLM7eDlyc64vi73F-Hwc4ttnDPHjZgVw';
 const EMAIL = process.env.E2E_EMAIL || 'e2e-test@vitana.dev';
-const PASSWORD = process.env.E2E_PASSWORD || 'VitanaE2eTest2026!';
+const PASSWORD = process.env.E2E_PASSWORD;
+if (!PASSWORD) {
+  console.error('E2E_PASSWORD is not set (VTID-04946: credentials come from secrets, never the repo)');
+  process.exit(1);
+}
 const BASE = (process.env.PREVIEW_URL || 'https://preview.vitanaland.com').replace(/\/+$/, '');
 const SCREEN_DIR = 'tests/e2e/screenshots';
 
