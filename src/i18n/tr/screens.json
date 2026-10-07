@@ -6217,7 +6217,17 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} grubu oluşturdu",
+      "groupNoticeMemberAdded": "{name}, {member} kişisini ekledi",
+      "groupNoticeMemberRemoved": "{name}, {member} kişisini çıkardı",
+      "groupNoticeMemberLeft": "{name} gruptan ayrıldı",
+      "groupNoticeRenamed": "{name} grubun adını “{group}” olarak değiştirdi",
+      "groupNoticeSomeone": "Biri",
+      "groupNameLabel": "Grup adı",
+      "renameGroup": "Grubu yeniden adlandır",
+      "groupNameSave": "Kaydet",
+      "groupNameCancel": "İptal"
     },
     "mobile": {
       "searching": "Aranıyor...",

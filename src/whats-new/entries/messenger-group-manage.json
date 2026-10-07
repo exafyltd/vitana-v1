@@ -1,0 +1,13 @@
+{
+  "id": "messenger-group-manage",
+  "added": "2026-10-07",
+  "title": {
+    "en": "Name your groups and manage members",
+    "de": "Benenne deine Gruppen und verwalte Mitglieder"
+  },
+  "description": {
+    "en": "In Messages, give a new group its own name. Tap the group name at the top of the chat to rename it, add people or remove them.",
+    "de": "Gib einer neuen Gruppe in deinen Nachrichten einen eigenen Namen. Tippe oben im Chat auf den Gruppennamen, um sie umzubenennen, Leute hinzuzufügen oder zu entfernen."
+  },
+  "deepLink": "/inbox"
+}

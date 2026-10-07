@@ -881,6 +881,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return '';
   };
 
+  // VTID-04955: name + creator for the members/rename panel.
+  const groupThreadInfo = threads.find((thread) => thread.id === threadId) as
+    | { name?: string; created_by?: string }
+    | undefined;
+
   const isGroupChat = () => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
     return currentThread?.type === 'group';
@@ -1231,6 +1236,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         threadId={threadId || ''}
         context={messageContext}
         currentUserRole={currentUserRole}
+        groupName={groupThreadInfo?.name}
+        createdBy={groupThreadInfo?.created_by}
       />
 
       <CreateGroupPopup

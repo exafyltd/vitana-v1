@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { createGlobalGroupThread, TENANT_GROUP_CREATE_UNSUPPORTED } from "@/lib/messaging/createGlobalGroupThread";
+import { createGlobalGroupThread, fetchMyNoticeName, TENANT_GROUP_CREATE_UNSUPPORTED, type ProfileReadClient } from "@/lib/messaging/createGlobalGroupThread";
 
 interface User {
   user_id: string;
@@ -178,7 +178,7 @@ export default function CreateGroupPopup({
 
       const threadId = await createGlobalGroupThread(supabase, {
         userId: user!.id,
-        userEmail: user?.email,
+        userName: await fetchMyNoticeName(supabase as unknown as ProfileReadClient, user!.id),
         name: groupName,
         memberIds,
       });
@@ -218,7 +218,7 @@ export default function CreateGroupPopup({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md z-[60]" overlayClassName="z-[60]">
+      <DialogContent className="sm:max-w-md max-h-[90dvh] overflow-y-auto z-[60]" overlayClassName="z-[60]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
@@ -254,6 +254,7 @@ export default function CreateGroupPopup({
               <Label htmlFor="groupName">{translate('inbox.createGroup.groupName')}</Label>
               <Input
                 id="groupName"
+                maxLength={80}
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
                 placeholder={translate('inbox.newConversation.groupNamePlaceholder')}
@@ -328,9 +329,6 @@ export default function CreateGroupPopup({
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">
                           {user.display_name || user.full_name}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {user.email}
                         </p>
                       </div>
                     </div>

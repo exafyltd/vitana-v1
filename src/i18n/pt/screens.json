@@ -6184,7 +6184,17 @@
       "anonymous": "Anónimo",
       "vitanaOpenScreen": "Abre ecrã",
       "viewFullscreen": "Ver ecrã inteiro",
-      "conversationRowError": "Este item não pôde ser exibido."
+      "conversationRowError": "Este item não pôde ser exibido.",
+      "groupNoticeCreated": "{name} criou o grupo",
+      "groupNoticeMemberAdded": "{name} adicionou {member}",
+      "groupNoticeMemberRemoved": "{name} removeu {member}",
+      "groupNoticeMemberLeft": "{name} saiu do grupo",
+      "groupNoticeRenamed": "{name} renomeou o grupo para “{group}”",
+      "groupNoticeSomeone": "Alguém",
+      "groupNameLabel": "Nome do grupo",
+      "renameGroup": "Renomear grupo",
+      "groupNameSave": "Salvar",
+      "groupNameCancel": "Cancelar"
     },
     "mobile": {
       "searching": "A pesquisar…",

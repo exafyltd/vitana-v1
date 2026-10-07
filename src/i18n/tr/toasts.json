@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Dosya eklemeden önce bir sohbet seç veya aç.",
       "uploadFailed": "Yükleme başarısız",
       "failedSendVoiceMessage": "Sesli mesaj gönderilemedi",
-      "thereErrorSendingYourVoiceMessage": "Sesli mesajın gönderilirken bir hata oluştu"
+      "thereErrorSendingYourVoiceMessage": "Sesli mesajın gönderilirken bir hata oluştu",
+      "groupRenamed": "Grup yeniden adlandırıldı",
+      "failedRenameGroup": "Grup yeniden adlandırılamadı",
+      "groupNameInvalid": "Grup adı 1 ile 80 karakter arasında olmalıdır."
     },
     "notifications": {
       "bookingConfirmed": "Rezervasyon Onaylandı! 🎉",

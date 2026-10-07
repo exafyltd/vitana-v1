@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Selecciona o abre una conversación antes de adjuntar archivos.",
       "uploadFailed": "Subida fallida",
       "failedSendVoiceMessage": "No se pudo enviar el mensaje de voz",
-      "thereErrorSendingYourVoiceMessage": "Hubo un error al enviar tu mensaje de voz"
+      "thereErrorSendingYourVoiceMessage": "Hubo un error al enviar tu mensaje de voz",
+      "groupRenamed": "Grupo renombrado",
+      "failedRenameGroup": "No se pudo cambiar el nombre del grupo",
+      "groupNameInvalid": "El nombre del grupo debe tener entre 1 y 80 caracteres."
     },
     "notifications": {
       "bookingConfirmed": "¡Reserva Confirmada! 🎉",

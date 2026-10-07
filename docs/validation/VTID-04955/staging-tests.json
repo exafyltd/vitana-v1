@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04955",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: Messages → Neu → add two made-up people (directory lookup answered in the browser) → the search results show no email; the dialog stays inside the screen; the prefilled group-name field is focused and on screen; a typed name is what the thread insert carries; the 'created the group' notice stores no email; read-only — every write is fulfilled inside the browser",
+      "spec": "tests/e2e/staging/vtid-04955-group-name.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/messaging src/components/messages/GroupMembersModal.vtid-04955.test.tsx",
+      "reason": "notices render from i18n with names and never show an email (incl. the existing email-bodied notice); rename/remove report RLS-blocked 0-row updates as failures; the members panel shows the title, offers rename only to the creator, asks global_community_profiles only for existing columns, shows no emails, and lays out with logical properties in RTL"
+    }
+  ]
+}
