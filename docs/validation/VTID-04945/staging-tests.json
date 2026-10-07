@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04945",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed out: /commerce/connect is public, shows the connection address ending in /mcp, nine tools and a link to the privacy notice, with no horizontal overflow at 1400 and 390 px; /commerce/connect/privacy is public and has one contact link; read-only, nothing is clicked or written",
+      "spec": "tests/e2e/staging/vtid-04945-commerce-connect-docs.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/pages/CommerceConnectDocs.test.tsx src/pages/CommerceConnectPrivacy.test.tsx src/lib/commerce-mcp.test.ts",
+      "reason": "catalog parity (de/en), du-form, the tool list equals what the gateway serves, the privacy notice is German or English only; the existing MCP helpers stay green"
+    }
+  ]
+}

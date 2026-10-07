@@ -47,6 +47,7 @@ import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { t, useI18nLocale } from '@/lib/i18n-toast';
+import { describeGroupNotice } from '@/lib/messaging/groupSystemNotice';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
@@ -887,7 +888,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         return (
           <div className="text-center py-2">
             <Badge variant="outline" className="text-xs">
-              {message.body}
+              {/* VTID-04955: group notices render from i18n with names, never the stored body (old bodies carry emails). */}
+              {describeGroupNotice(message as Parameters<typeof describeGroupNotice>[0], t) ?? message.body}
             </Badge>
           </div>
         );

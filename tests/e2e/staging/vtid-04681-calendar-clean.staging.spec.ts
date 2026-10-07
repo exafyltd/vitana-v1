@@ -4,15 +4,18 @@
 // Signs in as the documented test user (the sign-in token call is the only
 // write the guard allows), opens /calendar and checks:
 //   - today's date leads the screen;
-//   - no text on the page is heavier than medium (500);
+//   - no text on the page is heavier than bold (700) — VTID-04852 moved the titles to the Index page's bold;
 //   - the calendar never asks for staff work items and shows none;
 //   - connecting Google / Apple / Outlook is on the screen (the connect card
 //     while nothing is connected, else the Calendars section).
 import { test, expect } from './staging-guard';
 
 test.use({
+  // VTID-04855 / VTID-04952: one RegExp, not an array. The last alternatives are
+  // read-only lookups the signed-in app sends as POST (Supabase RPCs,
+  // list_my_memberships, the ORB prewarm): still aborted, never writes.
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
@@ -57,21 +60,25 @@ test('the calendar opens on a large date, calm type, no work items, connect on s
     for (const d of body?.data ?? []) if (String(d.id).startsWith('work:')) workIds.push(d.id);
   });
 
+  // VTID-04871 / VTID-04952: the role gate's one read-only POST lookup is answered here with the
+  // test user's real role (community); nothing reaches Supabase and the guard still aborts every write.
+  await page.route(/\/rest\/v1\/rpc\/get_role_preference(\?|$)/, (route) => route.fulfill({ json: [{ role: 'community' }] }));
+
   await page.goto('/calendar', { waitUntil: 'domcontentloaded' });
   const date = page.getByTestId('vcal-date');
   await expect(date).toBeVisible({ timeout: 45_000 });
   await expect(page.getByTestId('vcal-summary')).toBeVisible({ timeout: 45_000 });
-  expect((await date.innerText()).trim()).toMatch(new RegExp(`^${new Date().getDate()}\\b`));
+  expect((await date.innerText()).trim()).toMatch(new RegExp(`\\b${new Date().getDate()}\\b`)); // VTID-04952: the title carries weekday, day and month
 
   const heavy = await page.evaluate(() => {
     const root = document.querySelector('[data-testid="vcal-page"]')!;
     const out: string[] = [];
     root.querySelectorAll('*').forEach((el) => {
-      if (el.children.length === 0 && el.textContent?.trim() && Number(getComputedStyle(el).fontWeight) > 500) out.push(el.textContent.trim().slice(0, 40));
+      if (el.children.length === 0 && el.textContent?.trim() && Number(getComputedStyle(el).fontWeight) > 700) out.push(el.textContent.trim().slice(0, 40));
     });
     return out;
   });
-  expect(heavy, `text heavier than medium: ${heavy.join(' | ')}`).toEqual([]);
+  expect(heavy, `text heavier than bold: ${heavy.join(' | ')}`).toEqual([]);
 
   await expect.poll(() => windowCalls.length, { timeout: 20_000 }).toBeGreaterThan(0);
   expect(windowCalls.filter((u) => u.includes('include_work=true'))).toEqual([]);

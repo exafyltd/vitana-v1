@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04956",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "calendar: Week and Month day taps open a panel in place (header unchanged, add button, no text field); Day view has no add row",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Goldens and unit tests pin the in-place day panel in Week and Month, the add path that never moves the shown month, the Day view's 5 entries plus +N more, and the shared hero."
+    }
+  ]
+}

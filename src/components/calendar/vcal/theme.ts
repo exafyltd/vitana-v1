@@ -6,6 +6,7 @@
  * colour, a strong accent for the full-screen header, and a default emoji
  * (the gateway sends the real one as display_emoji; this is only the fallback).
  */
+import type { CSSProperties } from "react";
 import type { CalendarEntry } from "@/lib/calendar-window-client";
 
 export type EntryKind =
@@ -62,7 +63,23 @@ export const SURFACE = {
   link: "#0F766E",
   /** Hairline around buttons and fields. */
   line: "#E2E8F0",
+  /** VTID-04952: "today" in Week and Month — the violet end of the day-number blend. */
+  today: "#6D28D9",
 } as const;
+
+/**
+ * VTID-04952: the calendar's own day number — a lively sunset blend (orange,
+ * pink, violet), deliberately NOT the Vitana Index's teal-green number so the
+ * Index stays recognisable. Every stop keeps >= 3:1 against the hero card
+ * (typography.test.ts checks it).
+ */
+export const CALENDAR_NUMBER_STOPS = ["#C2410C", "#DB2777", "#6D28D9"] as const;
+export const CALENDAR_NUMBER_STYLE: CSSProperties = {
+  background: `linear-gradient(165deg, ${CALENDAR_NUMBER_STOPS[0]} 5%, ${CALENDAR_NUMBER_STOPS[1]} 50%, ${CALENDAR_NUMBER_STOPS[2]} 95%)`,
+  WebkitBackgroundClip: "text",
+  backgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+};
 
 const PILLARS = new Set(["nutrition", "hydration", "exercise", "sleep", "mental"]);
 const WORK_TYPES = new Set(["professional", "admin_task", "dev_task", "deployment", "sprint_milestone"]);

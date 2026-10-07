@@ -1,0 +1,13 @@
+{
+  "id": "calendar-day-overview",
+  "added": "2026-10-07",
+  "title": {
+    "en": "Your calendar, tidier and easier",
+    "de": "Dein Kalender – aufgeräumter und einfacher"
+  },
+  "description": {
+    "en": "Day, Week and Month now share one header. Tap a day in the Week or Month and it opens right there: everything planned, one by one, and a button to add a new entry for that day.",
+    "de": "Tag, Woche und Monat haben jetzt denselben Kopf. Tippe in Woche oder Monat auf einen Tag, und er öffnet sich direkt dort: alles, was ansteht, nacheinander – und ein Button für einen neuen Eintrag an diesem Tag."
+  },
+  "deepLink": "/calendar"
+}

@@ -6220,7 +6220,17 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} создал(а) группу",
+      "groupNoticeMemberAdded": "{name} добавил(а) {member}",
+      "groupNoticeMemberRemoved": "{name} удалил(а) {member}",
+      "groupNoticeMemberLeft": "{name} покинул(а) группу",
+      "groupNoticeRenamed": "{name} переименовал(а) группу в «{group}»",
+      "groupNoticeSomeone": "Кто-то",
+      "groupNameLabel": "Название группы",
+      "renameGroup": "Переименовать группу",
+      "groupNameSave": "Сохранить",
+      "groupNameCancel": "Отмена"
     },
     "mobile": {
       "searching": "Поиск…",

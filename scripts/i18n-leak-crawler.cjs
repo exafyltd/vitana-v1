@@ -21,7 +21,7 @@ const SUPABASE_URL = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWtodndkY3V5aG54a2dmdnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NjY2MzcsImV4cCI6MjA3MTQ0MjYzN30._-QX8ZFgDsKgLM7eDlyc64vi73F-Hwc4ttnDPHjZgVw';
 const APP = process.env.APP_URL || 'https://vitanaland.com';
 const EMAIL = 'e2e-test@vitana.dev';
-const PASSWORD = 'VitanaE2eTest2026!';
+const PASSWORD = process.env.TEST_USER_PASSWORD;
 
 // English-only function words. If a string contains 1+ of these AND no
 // German diacritics, it's almost certainly English. Conservative —
