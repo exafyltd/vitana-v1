@@ -16,9 +16,11 @@ test.use({
     // ORB call: /comm/events-meetups is a MAXINA front-door route, so the
     // Vitana ORB opens on its own (useOrbFrontDoor) and starts a voice
     // session — those POSTs are aborted here like every other write.
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary|get_live_stream_subscriber_counts|get_live_stream_subscribers)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/)/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary|get_live_stream_subscriber_counts|get_live_stream_subscribers|get_user_follow_counts|get_follow_status)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/)/,
 });
 
+// The room drawer's FollowButton reads the host's follow counts/status via two STABLE
+// (read-only) RPCs, which go out as POSTs: get_user_follow_counts, get_follow_status.
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 
 async function signIn(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext) {
