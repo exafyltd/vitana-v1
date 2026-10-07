@@ -339,6 +339,64 @@
     "_pending_review": {
       "indexGain": true,
       "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "分享到动态",
+      "defaultText": "我要去：{title} – {date}。一起来吗？",
+      "textLabel": "你想说点什么？",
+      "cardHint": "活动会以卡片形式显示在你的文字下方，包括时间、地点以及是否照常举行。",
+      "public": "社区所有人可见",
+      "profileOnly": "仅在你的个人主页",
+      "post": "分享",
+      "cancel": "取消",
+      "done": "已分享——社区知道你会去了",
+      "viewPost": "已分享到动态——查看帖子",
+      "alreadyShared": "你已经分享过这个活动",
+      "notShareable": "这个活动已无法分享：已结束、已取消或不公开。",
+      "limit": "你今天已经分享很多了，明天再试吧。",
+      "duplicate": "你刚刚发过这段文字。换点别的内容，或稍等一会儿。",
+      "suspended": "你的账号目前无法发帖。",
+      "error": "暂时无法分享，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "即将开始",
+      "live": "正在进行",
+      "past": "已结束",
+      "cancelled": "已取消",
+      "openEvent": "查看并参加",
+      "openRoom": "查看房间",
+      "joinRoom": "立即加入",
+      "unavailable": "这个活动已不可用。",
+      "untitled": "活动",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

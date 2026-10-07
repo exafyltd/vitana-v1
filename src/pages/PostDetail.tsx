@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
 import { t } from "@/lib/i18n-toast";
 import type { PostFeedItem } from "@/lib/news-feed-ranker";
+import { attachedRefOf } from "@/lib/post-attachment";
 
 async function fetchAuthor(userId: string): Promise<{ name: string; avatar: string | null }> {
   const { data } = await supabase
@@ -69,6 +70,8 @@ async function fetchPost(source: "post" | "media", id: string): Promise<PostFeed
     // the stored mentions the tagged member saw their own tag as plain text.
     background_style: row.background_style ?? null,
     mentions: Array.isArray(row.mentions) ? row.mentions : [],
+    // VTID-04916: the event this post shares (the "Join in?" push lands here).
+    attached_ref: attachedRefOf(row),
     followed: false, tags: [], published_at: row.created_at,
   };
 }

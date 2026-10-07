@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 357
-- **Distinct i18n keys consumed:** 4777
+- **Pages scanned:** 358
+- **Distinct i18n keys consumed:** 4778
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -67,11 +67,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Calendar.tsx
 
-**Status:** ✅ clean — keys consumed: 8, namespaces: 1
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
 **i18n namespaces:**
 
-- `vcal` — used: 8, total in shard: 231
+- `vcal` — used: 9, total in shard: 256
 
 ### src/pages/Changelog.tsx
 
@@ -2654,6 +2654,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/messages/GroupChat.vtid-04921.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/messages/GroupChat.vtid-04928.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

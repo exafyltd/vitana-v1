@@ -29,9 +29,22 @@ import {
   type CalendarEntryPatch,
   moveBlockReasonOf,
   moveCalendarEntry,
+  shareCalendarEntryToFeed,
+  shareFailureOf,
   type CalendarWindowItem,
+  type ShareFailure,
+  type ShareToFeedInput,
   type MoveBlockReason,
 } from "@/lib/calendar-window-client";
+
+const SHARE_FAILED_KEY: Record<ShareFailure, string> = {
+  already_shared: "vcal.share.alreadyShared",
+  not_shareable: "vcal.share.notShareable",
+  limit: "vcal.share.limit",
+  duplicate: "vcal.share.duplicate",
+  suspended: "vcal.share.suspended",
+  error: "vcal.share.error",
+};
 
 const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
   cancelled: "vcal.move.blocked.cancelled",
@@ -278,6 +291,25 @@ export default function CalendarPage() {
     onError: () => notifyError("vcal.remove.error"),
   });
 
+  // VTID-04916: post the event to the news feed; the entry then links to it.
+  const share = useMutation({
+    mutationFn: ({ item, input }: { item: CalendarWindowItem; input: ShareToFeedInput }) =>
+      shareCalendarEntryToFeed(item.event_id, input, currentRole ?? null),
+    onSuccess: (postId, { item }) => {
+      notify("vcal.share.done");
+      setOpenItem((cur) => (cur && cur.id === item.id ? { ...cur, shared_post_id: postId } : cur));
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: (err, { item }) => {
+      const failure = shareFailureOf(err);
+      notifyError(SHARE_FAILED_KEY[failure.kind]);
+      if (failure.kind === "already_shared" && failure.postId) {
+        const postId = failure.postId;
+        setOpenItem((cur) => (cur && cur.id === item.id ? { ...cur, shared_post_id: postId } : cur));
+      }
+    },
+  });
+
   const isTodayAnchor = sameDay(anchor, now);
   const dismissGuide = () => {
     const key = localDayKey(now);
@@ -477,6 +509,8 @@ export default function CalendarPage() {
           onRemove={(i) => remove.mutate(i)}
           removing={remove.isPending}
           onOpenSource={(path) => navigate(path)}
+          onShare={(i, input) => share.mutate({ item: i, input })}
+          sharing={share.isPending}
         />
       )}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}

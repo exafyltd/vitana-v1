@@ -327,7 +327,36 @@
       "_pending_review": {}
     },
     "_pending_review": {},
-    "alreadyInCalendar": "Already in your calendar"
+    "alreadyInCalendar": "Already in your calendar",
+    "share": {
+      "action": "Share to the feed",
+      "defaultText": "I'm going: {title} – {date}. Want to join me?",
+      "textLabel": "What would you like to say?",
+      "cardHint": "The event shows as a card under your text – with time, place and whether it is still on.",
+      "public": "Visible to everyone in the community",
+      "profileOnly": "Only on your profile",
+      "post": "Share",
+      "cancel": "Cancel",
+      "done": "Shared – the community can see you are going",
+      "viewPost": "Shared to the feed – view post",
+      "alreadyShared": "You have already shared this event",
+      "notShareable": "This event can no longer be shared – it is over, cancelled or not public.",
+      "limit": "You have shared a lot today. Try again tomorrow.",
+      "duplicate": "You just posted this text. Write something else or wait a moment.",
+      "suspended": "Your account cannot post right now.",
+      "error": "Sharing did not work just now. Try again in a moment."
+    },
+    "feedCard": {
+      "upcoming": "Coming up",
+      "live": "Happening now",
+      "past": "Over",
+      "cancelled": "Cancelled",
+      "openEvent": "View & join",
+      "openRoom": "View room",
+      "joinRoom": "Join now",
+      "unavailable": "This event is no longer available.",
+      "untitled": "Event"
+    }
   },
   "_pending_review": {}
 }

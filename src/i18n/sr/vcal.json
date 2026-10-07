@@ -342,6 +342,64 @@
     "_pending_review": {
       "indexGain": true,
       "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "Podeli u fidu",
+      "defaultText": "Idem: {title} – {date}. Ideš sa mnom?",
+      "textLabel": "Šta želiš da kažeš?",
+      "cardHint": "Događaj se prikazuje kao kartica ispod tvog teksta – sa vremenom, mestom i da li se još održava.",
+      "public": "Vidljivo svima u zajednici",
+      "profileOnly": "Samo na tvom profilu",
+      "post": "Podeli",
+      "cancel": "Otkaži",
+      "done": "Podeljeno – zajednica vidi da ideš",
+      "viewPost": "Podeljeno u fidu – pogledaj objavu",
+      "alreadyShared": "Već si podelio ovaj događaj",
+      "notShareable": "Ovaj događaj više ne može da se podeli – završen je, otkazan ili nije javan.",
+      "limit": "Danas si već mnogo delio. Pokušaj ponovo sutra.",
+      "duplicate": "Upravo si objavio ovaj tekst. Napiši nešto drugo ili sačekaj trenutak.",
+      "suspended": "Tvoj nalog trenutno ne može da objavljuje.",
+      "error": "Deljenje trenutno nije uspelo. Pokušaj ponovo za trenutak.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "Uskoro",
+      "live": "Upravo traje",
+      "past": "Završeno",
+      "cancelled": "Otkazano",
+      "openEvent": "Pogledaj i pridruži se",
+      "openRoom": "Pogledaj sobu",
+      "joinRoom": "Pridruži se sada",
+      "unavailable": "Ovaj događaj više nije dostupan.",
+      "untitled": "Događaj",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

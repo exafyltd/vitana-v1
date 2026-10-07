@@ -347,6 +347,64 @@
     "_pending_review": {
       "indexGain": true,
       "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "Partager dans le fil",
+      "defaultText": "J'y vais : {title} – {date}. Tu viens ?",
+      "textLabel": "Que veux-tu dire ?",
+      "cardHint": "L'événement apparaît sous ton texte sous forme de carte, avec l'heure, le lieu et s'il a toujours lieu.",
+      "public": "Visible par toute la communauté",
+      "profileOnly": "Seulement sur ton profil",
+      "post": "Partager",
+      "cancel": "Annuler",
+      "done": "Partagé – la communauté voit que tu y vas",
+      "viewPost": "Partagé dans le fil – voir la publication",
+      "alreadyShared": "Tu as déjà partagé cet événement",
+      "notShareable": "Cet événement ne peut plus être partagé : il est terminé, annulé ou non public.",
+      "limit": "Tu as déjà beaucoup partagé aujourd'hui. Réessaie demain.",
+      "duplicate": "Tu viens de publier ce texte. Écris autre chose ou attends un instant.",
+      "suspended": "Ton compte ne peut pas publier pour le moment.",
+      "error": "Le partage n'a pas fonctionné. Réessaie dans un instant.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "Bientôt",
+      "live": "En cours",
+      "past": "Terminé",
+      "cancelled": "Annulé",
+      "openEvent": "Voir et participer",
+      "openRoom": "Voir la salle",
+      "joinRoom": "Rejoindre",
+      "unavailable": "Cet événement n'est plus disponible.",
+      "untitled": "Événement",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }
