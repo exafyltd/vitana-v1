@@ -14,17 +14,12 @@ name: Apply VTID-04955 group participants policy migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20261007160000_vtid_04955_group_creator_manage_participants.sql'
-      - '.github/workflows/apply-vtid-04955-group-participants-migration.yml'
-
 concurrency:
   group: apply-vtid-04955-group-participants-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest
