@@ -1,0 +1,233 @@
+# PR-GATE — mechanical damage protection before merge (VTID-04948, plan B1–B7).
+#
+# One check that a PR must pass before it can merge:
+#   scope guard · sparring record · test-weakening guard · red→green proof for
+#   fixes · tsc + eslint ratchets (errors may only go down) · build · every
+#   scripts/*-regression.mjs · migration lint · e2e (smoke + the change's own
+#   staging spec) against this PR's build, read-only behind staging-guard.
+#
+# Rollout: report-only first. scripts/ci/pr-gate/config.json → "enforce"
+# (and "enforce_preview_e2e") turn failures into a red check; setting them
+# back to false is the owner's kill switch.
+
+name: PR-GATE
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: pr-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pr-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      BASE: ${{ github.event.pull_request.base.sha }}
+      HEAD: ${{ github.event.pull_request.head.sha }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Gate self-test
+        run: node --test scripts/ci/pr-gate/__tests__/*.test.mjs
+
+      # B9: the live title, never the event payload — a re-run after a retitle
+      # must see the new title.
+      - name: Live PR title
+        run: |
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" --jq .title > "$RUNNER_TEMP/title.txt"
+          echo "PR_TITLE=$(cat "$RUNNER_TEMP/title.txt")" >> "$GITHUB_ENV"
+          echo "## PR-GATE — $(cat "$RUNNER_TEMP/title.txt")" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Scope guard
+        id: scope
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs scope --base "$BASE" --head "$HEAD"
+
+      - name: Sparring record
+        id: sparring
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs sparring --base "$BASE" --head "$HEAD"
+
+      - name: Test-weakening guard
+        id: weakening
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs weakening --base "$BASE" --head "$HEAD"
+
+      - name: Red→green proof (fixes)
+        id: redgreen
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs red-green --base "$BASE" --head "$HEAD"
+
+      - name: Migration lint
+        id: migrations
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs migrations --base "$BASE" --head "$HEAD"
+
+      - name: Typecheck ratchet
+        id: tsc
+        continue-on-error: true
+        run: |
+          npx tsc --noEmit -p tsconfig.app.json > "$RUNNER_TEMP/tsc.txt" 2>&1 || true
+          node scripts/ci/pr-gate/gate.mjs ratchet-tsc "$RUNNER_TEMP/tsc.txt"
+
+      - name: ESLint ratchet
+        id: eslint
+        continue-on-error: true
+        run: |
+          npx eslint . -f json -o "$RUNNER_TEMP/eslint.json" || true
+          node scripts/ci/pr-gate/gate.mjs ratchet-eslint "$RUNNER_TEMP/eslint.json"
+
+      - name: Regression scripts
+        id: regressions
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/run-regressions.mjs
+
+      - name: Build
+        id: build
+        continue-on-error: true
+        run: |
+          npm run build && echo "✅ **build** — passed" >> "$GITHUB_STEP_SUMMARY" || { echo "❌ **build** — failed" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
+
+      - name: Verdict
+        env:
+          OUTCOMES: >-
+            scope=${{ steps.scope.outcome }}
+            sparring=${{ steps.sparring.outcome }}
+            weakening=${{ steps.weakening.outcome }}
+            red-green=${{ steps.redgreen.outcome }}
+            migrations=${{ steps.migrations.outcome }}
+            tsc=${{ steps.tsc.outcome }}
+            eslint=${{ steps.eslint.outcome }}
+            regressions=${{ steps.regressions.outcome }}
+            build=${{ steps.build.outcome }}
+        run: |
+          FAILED=$(for o in $OUTCOMES; do case "$o" in *=success) ;; *) echo -n "${o%%=*} ";; esac; done)
+          ENFORCE=$(node -p "require('./scripts/ci/pr-gate/config.json').enforce === true")
+          if [ -z "$FAILED" ]; then echo "### ✅ PR-GATE passed" >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          if [ "$ENFORCE" = "true" ]; then
+            echo "### ❌ PR-GATE failed: $FAILED" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::PR-GATE failed: $FAILED"
+            exit 1
+          fi
+          echo "### ⚠️ PR-GATE (report-only) would fail: $FAILED" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::PR-GATE report-only — would fail: $FAILED"
+
+  # B7: the change's own staging spec + smoke, before merge, against this PR's
+  # build served locally with the staging gateway (same backend and data as
+  # STAGING-VERIFY; specs navigate to root paths, which the /pr-<n>/ preview
+  # prefix would break). Read-only: the canonical staging-guard aborts writes.
+  preview-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      GH_TOKEN: ${{ github.token }}
+      STAGING_GATEWAY: https://preview-aws-gateway.vitanaland.com
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Does this PR touch the app?
+        id: touch
+        run: |
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" | grep -qE '^(src/|public/|index\.html$|vite\.config\.ts$|package(-lock)?\.json$|tests/e2e/staging/)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "➖ **preview-e2e** — skipped: no app files changed" >> "$GITHUB_STEP_SUMMARY"
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Staging gateway healthy?
+        id: health
+        if: steps.touch.outputs.run == 'true'
+        run: |
+          for i in 1 2 3; do
+            if [ "$(curl -s -o /dev/null -w '%{http_code}' "$STAGING_GATEWAY/alive")" = "200" ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+            sleep 30
+          done
+          echo "ok=false" >> "$GITHUB_OUTPUT"
+          echo "➖ **preview-e2e** — neutral: staging gateway unhealthy, e2e deferred to STAGING-VERIFY" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/setup-node@v4
+        if: steps.health.outputs.ok == 'true'
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build against the staging gateway
+        if: steps.health.outputs.ok == 'true'
+        run: |
+          npm ci
+          # Mirrors AWS-STAGE-DEPLOY-FRONTEND.yml's .env.production exactly.
+          printf 'VITE_GATEWAY_BASE=%s\nVITE_GATEWAY_URL=%s/api/v1\nVITE_APP_VERSION=%s\nVITE_HEALTH_REAL_DATA=true\n' \
+            "$STAGING_GATEWAY" "$STAGING_GATEWAY" "$(git rev-parse --short=12 HEAD)" > .env.production
+          npm run build
+
+      - name: Fetch the canonical staging guard
+        if: steps.health.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: |
+          gh api -H 'Accept: application/vnd.github.raw' \
+            "repos/exafyltd/vitana-platform/contents/scripts/ci/staging-verify/staging-guard.ts?ref=main" \
+            > tests/e2e/staging/staging-guard.ts
+
+      - name: Run smoke + this change's specs
+        id: e2e
+        if: steps.health.outputs.ok == 'true'
+        continue-on-error: true
+        env:
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        run: |
+          npm install --no-save @playwright/test@1.51.0
+          npx playwright install --with-deps chromium
+          (npx vite preview --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/preview.log" 2>&1 &)
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
+          TITLE=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" --jq .title)
+          SPECS="tests/e2e/staging/smoke.staging.spec.ts"
+          for v in $(echo "$TITLE" | grep -Eo 'VTID-[0-9]{4,5}' | sort -u); do
+            m="docs/validation/$v/staging-tests.json"
+            [ -f "$m" ] && SPECS="$SPECS $(node -e "const m=require('./$m');console.log(m.tests.filter(t=>t.kind==='playwright').map(t=>t.spec).join(' '))")"
+          done
+          cat > .pr-gate.playwright.config.mjs <<'EOF'
+          import { defineConfig, devices } from '@playwright/test';
+          export default defineConfig({ testDir: process.cwd(), timeout: 90_000, retries: 0, workers: 1, reporter: [['list']],
+            use: { baseURL: 'http://127.0.0.1:4173', ...devices['Desktop Chrome'], screenshot: 'only-on-failure' } });
+          EOF
+          echo "specs: $SPECS"
+          npx playwright test $SPECS --config=.pr-gate.playwright.config.mjs 2>&1 | tee "$RUNNER_TEMP/e2e.log"
+          exit ${PIPESTATUS[0]}
+
+      - name: Verdict
+        if: steps.health.outputs.ok == 'true'
+        run: |
+          SKIPPED=$(grep -cE '^\s+-\s' "$RUNNER_TEMP/e2e.log" || true)
+          if [ "${{ steps.e2e.outcome }}" = "success" ]; then
+            echo "✅ **preview-e2e** — passed ($(grep -Eo '[0-9]+ passed' "$RUNNER_TEMP/e2e.log" | tail -1); skipped lines: $SKIPPED, listed at Gate 2)" >> "$GITHUB_STEP_SUMMARY"; exit 0
+          fi
+          ENFORCE=$(node -p "require('./scripts/ci/pr-gate/config.json').enforce_preview_e2e === true")
+          echo "❌ **preview-e2e** — failed (see job log)" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$ENFORCE" = "true" ]; then exit 1; fi
+          echo "::warning::preview-e2e report-only — would fail"

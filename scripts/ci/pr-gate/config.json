@@ -1,0 +1,5 @@
+{
+  "enforce": false,
+  "note": "VTID-04948: PR-GATE starts report-only (plan rollout: 3 days on real PRs). Set enforce=true by PR to make failures block merge. This file is the owner's kill switch: set it back to false to stop blocking.",
+  "report_only_since": "2026-10-07"
+}
