@@ -81,7 +81,7 @@ export function NewMemberCard({
 
         <div className="flex gap-2 mt-4">
           <Button
-            className="flex-1 gap-2 rounded-full bg-violet-600 text-white hover:bg-violet-700"
+            className="flex-1 gap-2 rounded-full bg-violet-300 text-violet-950 hover:bg-violet-400 font-semibold shadow-sm"
             onClick={(e) => {
               e.stopPropagation();
               onOpen?.();
