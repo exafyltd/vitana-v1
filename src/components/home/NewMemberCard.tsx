@@ -83,7 +83,9 @@ export function NewMemberCard({
             <AvatarFallback className="bg-sys-feature-new-tint text-lg font-semibold text-sys-feature-new-accent">{displayInitial}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="text-base font-bold leading-tight text-foreground line-clamp-2 [text-wrap:balance]">{tidyTitle(title)}</p>
+            <p className="text-base font-bold leading-tight text-foreground line-clamp-2 [text-wrap:balance]">
+              <span aria-hidden="true">🤩</span> {tidyTitle(title)}
+            </p>
             {summary && (
               <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{summary}</p>
             )}

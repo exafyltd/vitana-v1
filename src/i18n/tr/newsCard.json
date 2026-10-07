@@ -40,8 +40,8 @@
     },
     "_pending_review": {},
     "member": {
-      "welcomeTitle": "🤩 Hoş geldin, {name}!",
-      "joinedSummary": "{name} az önce MAXINA uzun yaşam topluluğuna katıldı. 🎉",
+      "welcomeTitle": "Hoş geldin, {name}!",
+      "joinedSummary": "{name} az önce MAXINA uzun yaşam topluluğuna katıldı.",
       "newMember": "Yeni üye",
       "sayHello": "Merhaba de",
       "viewProfile": "Profili görüntüle",

@@ -24,6 +24,9 @@
       "evening": "Dobro veče 🌙",
       "night": "Laku noć 🌙"
     },
+    "day": {
+      "addFor": "Novi unos za {date}"
+    },
     "views": {
       "day": "Dan",
       "week": "Nedelja",

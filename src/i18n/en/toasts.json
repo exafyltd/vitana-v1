@@ -761,7 +761,10 @@
       "uploadFailed": "Upload failed",
       "failedSendVoiceMessage": "Failed to send voice message",
       "thereErrorSendingYourVoiceMessage": "There was an error sending your voice message",
-      "_pending_review": {}
+      "_pending_review": {},
+      "groupRenamed": "Group renamed",
+      "failedRenameGroup": "Could not rename the group",
+      "groupNameInvalid": "The group name must be 1 to 80 characters long."
     },
     "notifications": {
       "bookingConfirmed": "Booking Confirmed! 🎉",

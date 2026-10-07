@@ -733,7 +733,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Wähle oder öffne eine Unterhaltung, bevor du Dateien anhängst.",
       "uploadFailed": "Upload fehlgeschlagen",
       "failedSendVoiceMessage": "Sprachnachricht konnte nicht gesendet werden",
-      "thereErrorSendingYourVoiceMessage": "Beim Senden deiner Sprachnachricht ist ein Fehler aufgetreten"
+      "thereErrorSendingYourVoiceMessage": "Beim Senden deiner Sprachnachricht ist ein Fehler aufgetreten",
+      "groupRenamed": "Gruppe umbenannt",
+      "failedRenameGroup": "Gruppe konnte nicht umbenannt werden",
+      "groupNameInvalid": "Der Gruppenname muss 1 bis 80 Zeichen lang sein."
     },
     "notifications": {
       "bookingConfirmed": "Buchung bestätigt! 🎉",

@@ -19,6 +19,7 @@
  * can't be created from the client at all. See TENANT_GROUP_CREATE_UNSUPPORTED.
  */
 import { v4 as uuidv4 } from "uuid";
+import { noticeName } from "./groupSystemNotice";
 
 /** Logged when a dialog refuses tenant-context group creation before any write. */
 export const TENANT_GROUP_CREATE_UNSUPPORTED = "tenant_group_create_unsupported";
@@ -32,14 +33,15 @@ export interface InsertOnlyClient {
 
 export interface CreateGlobalGroupThreadInput {
   userId: string;
-  userEmail?: string | null;
+  /** Display name for the "created the group" notice — never an email (VTID-04955). */
+  userName?: string | null;
   name: string;
   memberIds: string[];
 }
 
 export async function createGlobalGroupThread(
   client: InsertOnlyClient,
-  { userId, userEmail, name, memberIds }: CreateGlobalGroupThreadInput,
+  { userId, userName, name, memberIds }: CreateGlobalGroupThreadInput,
 ): Promise<string> {
   const threadId = uuidv4();
 
@@ -61,14 +63,16 @@ export async function createGlobalGroupThread(
     if (membersError) throw membersError;
   }
 
-  // Best effort, as before: the group exists even if this fails.
+  // Best effort, as before: the group exists even if this fails. The body is
+  // only a fallback; the chat renders this notice from i18n (groupSystemNotice).
+  const actorName = noticeName({ display_name: userName });
   try {
     const { error: messageError } = await client.from("global_messages").insert({
       thread_id: threadId,
       sender_id: userId,
-      body: `${userEmail ?? ""} created the group`,
+      body: `${actorName || "Someone"} created the group`,
       message_type: "system",
-      content_data: { system_type: "group_created", group_name: name, created_by: userId },
+      content_data: { system_type: "group_created", group_name: name, created_by: userId, actor_name: actorName },
     });
     if (messageError) console.warn("Group created, system message failed:", messageError);
   } catch (e) {
@@ -76,4 +80,31 @@ export async function createGlobalGroupThread(
   }
 
   return threadId;
+}
+
+/** The signed-in member's display name for notices (global profile; never an email). */
+export interface ProfileReadClient {
+  from(table: string): {
+    select(columns: string): {
+      eq(column: string, value: string): {
+        maybeSingle(): PromiseLike<{ data: { display_name?: string | null } | null }>;
+      };
+    };
+  };
+}
+
+export async function fetchMyNoticeName(
+  client: ProfileReadClient,
+  userId: string,
+): Promise<string> {
+  try {
+    const { data } = await client
+      .from("global_community_profiles")
+      .select("display_name")
+      .eq("user_id", userId)
+      .maybeSingle();
+    return noticeName(data);
+  } catch {
+    return "";
+  }
 }

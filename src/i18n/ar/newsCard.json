@@ -18,14 +18,16 @@
       "showLessToast": "سنعرض محتوى أقل من هذا",
       "mutedToast": "المصدر مكتوم",
       "undo": "تراجع",
-      "unmute": "إلغاء الكتم"
+      "unmute": "إلغاء الكتم",
+      "_pending_review": {}
     },
     "detail": {
       "back": "رجوع",
       "continueReading": "متابعة القراءة على",
       "openInBrowser": "افتح في المتصفح",
       "couldNotLoad": "لا يمكن عرض المقال هنا",
-      "readOn": "اقرأ المزيد"
+      "readOn": "اقرأ المزيد",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "الكل",
@@ -33,8 +35,10 @@
       "hydration": "ترطيب",
       "sleep": "نوم",
       "exercise": "تمرين",
-      "mental": "نفسي"
+      "mental": "نفسي",
+      "_pending_review": {}
     },
+    "_pending_review": {},
     "member": {
       "welcomeTitle": "أهلاً بك يا {name}!",
       "joinedSummary": "انضم {name} للتو إلى مجتمع MAXINA لطول العمر.",
@@ -42,10 +46,8 @@
       "sayHello": "قل مرحباً",
       "viewProfile": "عرض الملف الشخصي",
       "eyebrow": "جديد في المجتمع",
-      "_pending_review": {
-        "welcomeTitle": true,
-        "joinedSummary": true
-      }
+      "_pending_review": {}
     }
-  }
+  },
+  "_pending_review": {}
 }

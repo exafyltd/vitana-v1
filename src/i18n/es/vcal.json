@@ -24,6 +24,9 @@
       "evening": "Buenas noches 🌙",
       "night": "Buenas noches 🌙"
     },
+    "day": {
+      "addFor": "Nueva entrada para {date}"
+    },
     "views": {
       "day": "Día",
       "week": "Semana",

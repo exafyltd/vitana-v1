@@ -39,7 +39,7 @@ const B = "33333333-3333-4333-8333-333333333333";
 describe("createGlobalGroupThread", () => {
   it("inserts the thread with a client id and never selects it back", async () => {
     const { client, calls, select } = fakeClient();
-    const id = await createGlobalGroupThread(client, { userId: ME, userEmail: "me@x", name: "Lauftreff", memberIds: [A, B] });
+    const id = await createGlobalGroupThread(client, { userId: ME, userName: "Dragan", name: "Lauftreff", memberIds: [A, B] });
 
     expect(calls[0].table).toBe("global_message_threads");
     expect(calls[0].values).toEqual({ id, created_by: ME, type: "group", name: "Lauftreff" });
@@ -88,5 +88,15 @@ describe("createGlobalGroupThread", () => {
     const b = fakeClient({}, "global_messages");
     await expect(createGlobalGroupThread(b.client, { userId: ME, name: "g", memberIds: [A] })).resolves.toMatch(/^[0-9a-f-]{36}$/);
     warn.mockRestore();
+  });
+
+  it("VTID-04955: the created notice carries a display name, never an email", async () => {
+    const { client, calls } = fakeClient();
+    await createGlobalGroupThread(client, { userId: ME, userName: "Dragan", name: "g", memberIds: [A] });
+    expect(calls[3].values).toMatchObject({ body: "Dragan created the group", content_data: { actor_name: "Dragan" } });
+
+    const leak = fakeClient();
+    await createGlobalGroupThread(leak.client, { userId: ME, userName: "me@hotmail.com", name: "g", memberIds: [A] });
+    expect(JSON.stringify(leak.calls[3].values)).not.toContain("@");
   });
 });

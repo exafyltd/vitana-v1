@@ -6217,7 +6217,17 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} 创建了群组",
+      "groupNoticeMemberAdded": "{name} 添加了 {member}",
+      "groupNoticeMemberRemoved": "{name} 移除了 {member}",
+      "groupNoticeMemberLeft": "{name} 退出了群组",
+      "groupNoticeRenamed": "{name} 将群组重命名为“{group}”",
+      "groupNoticeSomeone": "某人",
+      "groupNameLabel": "群组名称",
+      "renameGroup": "重命名群组",
+      "groupNameSave": "保存",
+      "groupNameCancel": "取消"
     },
     "mobile": {
       "searching": "正在搜索…",
