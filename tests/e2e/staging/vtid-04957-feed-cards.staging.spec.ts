@@ -9,7 +9,7 @@ import { test, expect } from './staging-guard';
 
 test.use({
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/)/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/(list_my_memberships|generate-daily-matches))|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
@@ -57,15 +57,16 @@ for (const size of [
     test.skip(!present, 'no new-member card in the feed for this account');
 
     // Surface equals the Vitana-recommends card colour (--sys-vitana-card), not grey.
-    const colours = await card.evaluate((el) => {
+    const expectedBg = await page.evaluate(() => {
       const probe = document.createElement('div');
       probe.style.background = 'hsl(var(--sys-vitana-card))';
       document.body.appendChild(probe);
-      const expected = getComputedStyle(probe).backgroundColor;
+      const c = getComputedStyle(probe).backgroundColor;
       probe.remove();
-      return { actual: getComputedStyle(el).backgroundColor, expected };
+      return c;
     });
-    expect(colours.actual).toBe(colours.expected);
+    expect(expectedBg, 'probe colour did not resolve').toMatch(/^rgb/);
+    await expect(card).toHaveCSS('background-color', expectedBg);
 
     // Title: no space before "!" and the last word never sits alone on a line.
     const title = card.locator('p').first();
