@@ -15,17 +15,12 @@ name: Apply notify name-fallback full_name migration (VTID-03806)
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260908120000_vtid_03806_notify_name_fallback_full_name.sql'
-      - '.github/workflows/apply-notify-name-fallback-full-name-migration.yml'
-
 concurrency:
   group: apply-notify-name-fallback-full-name-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

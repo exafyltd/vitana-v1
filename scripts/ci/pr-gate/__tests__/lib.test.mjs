@@ -102,3 +102,18 @@ test('a skipped test counts once as a skip, not also as a dropped case', () => {
   const r = L.evaluateWeakening({ files: [{ file: 's.test.ts', base, head: base.replace("it('b'", "it.skip('b'") }] });
   assert.equal(r.findings.length, 1);
 });
+
+test('dry run: own BEGIN/COMMIT replaced by an always-rollback wrapper', () => {
+  const s = L.dryRunScript('BEGIN;\nCREATE TABLE IF NOT EXISTS t(x int);\nCOMMIT;\n');
+  assert.ok(s.trimEnd().endsWith('ROLLBACK;'));
+  assert.equal((s.match(/COMMIT/g) || []).length, 0);
+  assert.equal((s.match(/BEGIN;/g) || []).length, 1);
+});
+
+test('dry run classification: missing objects are unverifiable, real errors fail', () => {
+  assert.equal(L.classifyDryRun('ERROR:  42P01: relation "public.user_notifications" does not exist').verdict, 'unverifiable');
+  assert.equal(L.classifyDryRun('ERROR:  42883: function public.x() does not exist').verdict, 'unverifiable');
+  assert.equal(L.classifyDryRun('ERROR:  42601: syntax error at or near "TABL"').verdict, 'failed');
+  assert.equal(L.classifyDryRun('ERROR:  42804: column "a" is of type integer but expression is of type text').verdict, 'failed');
+  assert.equal(L.classifyDryRun('psql: connection refused').verdict, 'failed');
+});

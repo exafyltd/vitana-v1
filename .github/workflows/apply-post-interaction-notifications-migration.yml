@@ -16,17 +16,12 @@ name: Apply post interaction notifications migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260623000000_post_interaction_notifications.sql'
-      - '.github/workflows/apply-post-interaction-notifications-migration.yml'
-
 concurrency:
   group: apply-post-interaction-notifications-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

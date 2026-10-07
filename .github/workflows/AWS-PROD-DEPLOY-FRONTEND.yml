@@ -177,6 +177,27 @@ jobs:
             exit 1
           fi
 
+      # VTID-04949 (plan D1): record what production runs BEFORE this deploy
+      # touches the service, so a failed post-deploy check can put it back.
+      # Read-only. Same pattern as the gateway (VTID-04647).
+      - name: Capture rollback target (task definition + bundle live before this deploy)
+        id: prev
+        run: |
+          set -e
+          PREV_ARN=$(aws ecs describe-services --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}" \
+            --query 'services[0].taskDefinition' --output text)
+          if [ -z "$PREV_ARN" ] || [ "$PREV_ARN" = "None" ]; then
+            echo "::error::Could not read the live task definition; refusing to deploy without a rollback target."
+            exit 1
+          fi
+          PREV_IMAGE=$(aws ecs describe-task-definition --task-definition "$PREV_ARN" \
+            --query 'taskDefinition.containerDefinitions[0].image' --output text)
+          PREV_BUNDLE=$(curl -s "${{ env.FRONTEND_URL }}/" | grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' | head -1 || true)
+          echo "arn=$PREV_ARN" >> "$GITHUB_OUTPUT"
+          echo "image=$PREV_IMAGE" >> "$GITHUB_OUTPUT"
+          echo "bundle=$PREV_BUNDLE" >> "$GITHUB_OUTPUT"
+          echo "Rollback target: $PREV_ARN ($PREV_IMAGE, serving $PREV_BUNDLE)"
+
       - name: Build and push image
         id: build
         env:
@@ -211,6 +232,7 @@ jobs:
           echo "Pushed $IMAGE"
 
       - name: Register task-definition revision + roll the service
+        id: roll
         run: |
           set -e
           IMAGE="${{ steps.build.outputs.image }}"
@@ -244,6 +266,11 @@ jobs:
           echo "Service stable on $NEW_ARN"
 
       - name: Post-deploy verify — live bundle must bake the PROD gateway, never staging
+        id: verify
+        env:
+          PREV_IMAGE: ${{ steps.prev.outputs.image }}
+          PREV_BUNDLE: ${{ steps.prev.outputs.bundle }}
+          NEW_IMAGE: ${{ steps.build.outputs.image }}
         run: |
           set -e
           FRONTEND="${{ env.FRONTEND_URL }}"
@@ -266,6 +293,24 @@ jobs:
             exit 1
           fi
           echo "✓ Live bundle bakes $GATEWAY_HOST (prod), no staging URL present"
+          # VTID-04949: a green rollout is not proof the new build is what
+          # members get. Sample the served bundle 10 times (a rolling deploy
+          # serves old and new side by side for a while); every sample must
+          # agree, and must differ from the bundle live before the deploy
+          # unless this deploy re-shipped the same image.
+          SEEN=""
+          for i in $(seq 1 10); do
+            B=$(curl -s "$FRONTEND/?s=$i" | grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' | head -1 || true)
+            SEEN="$SEEN $B"; sleep 6
+          done
+          UNIQ=$(echo $SEEN | tr ' ' '\n' | sort -u | grep -c . || true)
+          LAST=$(echo $SEEN | tr ' ' '\n' | tail -1)
+          [ "$UNIQ" = "1" ] || { echo "::error::Samples disagree after the rollout settled:$SEEN"; exit 1; }
+          if [ "$NEW_IMAGE" != "$PREV_IMAGE" ] && [ -n "$PREV_BUNDLE" ] && [ "$LAST" = "$PREV_BUNDLE" ]; then
+            echo "::error::Production still serves the pre-deploy bundle ($PREV_BUNDLE) — the new build is not live."
+            exit 1
+          fi
+          echo "✓ 10/10 samples serve $LAST (before: ${PREV_BUNDLE:-unknown})"
           {
             echo "## AWS Production (DR) frontend deploy"
             echo "- Image: \`${{ steps.build.outputs.image }}\`"
@@ -276,3 +321,30 @@ jobs:
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
             echo "- VTID: VTID-03409"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04949 (plan D1): automatic rollback, same contract as the gateway
+      # (VTID-04647). Runs when the service was rolled and a later step failed.
+      # Re-points the service at the task definition captured before the deploy
+      # and waits until production serves the previous bundle again. Kill
+      # switch: repository variable PROD_AUTO_ROLLBACK_DISABLED=true. The job
+      # still fails: a rolled-back deploy is not a successful deploy.
+      - name: Roll back to the previous task definition
+        id: rollback
+        if: ${{ failure() && steps.prev.outputs.arn != '' && steps.roll.outcome != 'skipped' && vars.PROD_AUTO_ROLLBACK_DISABLED != 'true' }}
+        env:
+          PREV_ARN: ${{ steps.prev.outputs.arn }}
+          PREV_BUNDLE: ${{ steps.prev.outputs.bundle }}
+        run: |
+          set -e
+          echo "::warning::Post-deploy checks failed — rolling back to $PREV_ARN"
+          aws ecs update-service --cluster "${{ env.ECS_CLUSTER }}" --service "${{ env.ECS_SERVICE }}" \
+            --task-definition "$PREV_ARN" >/dev/null
+          aws ecs wait services-stable --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}"
+          LIVE=""
+          for i in 1 2 3 4 5 6; do
+            LIVE=$(curl -s "${{ env.FRONTEND_URL }}/?r=$i" | grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' | head -1 || true)
+            if [ -z "$PREV_BUNDLE" ] || [ "$LIVE" = "$PREV_BUNDLE" ]; then break; fi
+            sleep 15
+          done
+          echo "Rolled back: service on $PREV_ARN, serving '$LIVE' (expected '${PREV_BUNDLE:-unknown}')"
+          echo "## ⚠️ Rolled back to $PREV_ARN — serving \`$LIVE\`" >> "$GITHUB_STEP_SUMMARY"
