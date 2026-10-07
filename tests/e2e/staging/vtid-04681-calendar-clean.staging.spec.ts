@@ -11,8 +11,11 @@
 import { test, expect } from './staging-guard';
 
 test.use({
+  // VTID-04855 / VTID-04952: one RegExp, not an array. The last alternatives are
+  // read-only lookups the signed-in app sends as POST (Supabase RPCs,
+  // list_my_memberships, the ORB prewarm): still aborted, never writes.
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/(get_role_preference|get_my_permitted_roles|list_roles_for_active_tenant|get_profile_health_summary)|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
@@ -56,6 +59,10 @@ test('the calendar opens on a large date, calm type, no work items, connect on s
     const body = await r.json().catch(() => null);
     for (const d of body?.data ?? []) if (String(d.id).startsWith('work:')) workIds.push(d.id);
   });
+
+  // VTID-04871 / VTID-04952: the role gate's one read-only POST lookup is answered here with the
+  // test user's real role (community); nothing reaches Supabase and the guard still aborts every write.
+  await page.route(/\/rest\/v1\/rpc\/get_role_preference(\?|$)/, (route) => route.fulfill({ json: [{ role: 'community' }] }));
 
   await page.goto('/calendar', { waitUntil: 'domcontentloaded' });
   const date = page.getByTestId('vcal-date');
