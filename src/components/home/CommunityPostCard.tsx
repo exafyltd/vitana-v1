@@ -31,6 +31,7 @@ import { renderMentions } from "@/components/feed/MentionText";
 import { MentionInput } from "@/components/mentions/MentionInput";
 import type { Mention } from "@/lib/mentions";
 import { getPostBackground } from "@/lib/post-backgrounds";
+import { EventAttachmentCard } from "@/components/feed/EventAttachmentCard";
 import { reasonKeyFor, type FeedItem, type PostFeedItem } from "@/lib/news-feed-ranker";
 
 function timeAgo(iso: string): string {
@@ -305,6 +306,7 @@ export function CommunityPostCard({
               {renderMentions(item.content, item.mentions)}
             </p>
           ))}
+        {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} />}
 
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">

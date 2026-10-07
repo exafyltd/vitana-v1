@@ -7,16 +7,21 @@
  * way back to where an entry came from — the community event, or the live
  * room (with "Join" from 15 minutes before it starts). The rules live in
  * entry-actions.ts.
+ *
+ * VTID-04916: and "share to the feed" for a community event or live room the
+ * member is going to (the gateway decides `shareable`); once shared, a link
+ * to the post instead.
  */
 import { useEffect, useRef, useState } from "react";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import { activateOrb } from "@/lib/orbActivate";
-import type { CalendarEntryPatch, CalendarWindowItem } from "@/lib/calendar-window-client";
+import type { CalendarEntryPatch, CalendarWindowItem, ShareToFeedInput } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
 import { itemEmoji, sourceLabel } from "./labels";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
 import { canEditEntry, canRemoveEntry, sourceActionOf } from "./entry-actions";
+import { ShareToFeedPanel } from "./ShareToFeedPanel";
 
 interface Props {
   item: CalendarWindowItem;
@@ -35,10 +40,13 @@ interface Props {
   removing?: boolean;
   /** VTID-04915: go to the event or live room the entry belongs to. */
   onOpenSource?: (path: string) => void;
+  /** VTID-04916: post the event to the news feed. */
+  onShare?: (item: CalendarWindowItem, input: ShareToFeedInput) => void;
+  sharing?: boolean;
 }
 
 
-export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource }: Props) {
+export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource, onShare, sharing }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const e = item.event!;
   const style = KIND_STYLE[entryKind(e)];
@@ -61,6 +69,9 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
   const sourceAction = onOpenSource ? sourceActionOf(item, now) : null;
   const [editing, setEditing] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
+  const [sharingOpen, setSharingOpen] = useState(false);
+  const sharedPostId = item.shared_post_id ?? null;
+  const canShare = item.shareable === true && !sharedPostId && !item.busy && !item.work && !!onShare;
   const [draft, setDraft] = useState(() => ({
     title: e.title,
     start: toLocalInput(new Date(item.start_time)),
@@ -271,6 +282,39 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               : sourceAction.joinable
                 ? `🎥 ${t("vcal.entry.joinRoom")}`
                 : `🎥 ${t("vcal.entry.openRoom")}`}
+          </button>
+        )}
+        {canShare && sharingOpen && (
+          <ShareToFeedPanel
+            item={item}
+            accent={style.accent}
+            bg={style.bg}
+            ink={style.ink}
+            sharing={sharing}
+            onCancel={() => setSharingOpen(false)}
+            onShare={(input) => onShare!(item, input)}
+          />
+        )}
+        {canShare && !sharingOpen && (
+          <button
+            type="button"
+            onClick={() => setSharingOpen(true)}
+            className="h-[52px] rounded-2xl text-sm"
+            style={{ background: SURFACE.track }}
+            data-testid="vcal-share"
+          >
+            📣 {t("vcal.share.action")}
+          </button>
+        )}
+        {sharedPostId && onOpenSource && (
+          <button
+            type="button"
+            onClick={() => onOpenSource(`/post/post/${encodeURIComponent(sharedPostId)}`)}
+            className="h-[52px] rounded-2xl text-sm"
+            style={{ background: SURFACE.track }}
+            data-testid="vcal-shared-post"
+          >
+            📣 {t("vcal.share.viewPost")}
           </button>
         )}
         {canEdit && editing && (

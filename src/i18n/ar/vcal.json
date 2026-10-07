@@ -339,6 +339,64 @@
     "_pending_review": {
       "indexGain": true,
       "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "شارك في الموجز",
+      "defaultText": "سأحضر: {title} – {date}. هل تأتي معي؟",
+      "textLabel": "ماذا تريد أن تقول؟",
+      "cardHint": "يظهر الحدث كبطاقة تحت نصك، مع الوقت والمكان وما إذا كان لا يزال قائمًا.",
+      "public": "مرئي للجميع في المجتمع",
+      "profileOnly": "على ملفك الشخصي فقط",
+      "post": "مشاركة",
+      "cancel": "إلغاء",
+      "done": "تمت المشاركة – يرى المجتمع أنك ستحضر",
+      "viewPost": "تمت المشاركة في الموجز – عرض المنشور",
+      "alreadyShared": "لقد شاركت هذا الحدث من قبل",
+      "notShareable": "لم يعد بالإمكان مشاركة هذا الحدث: انتهى أو أُلغي أو ليس عامًا.",
+      "limit": "لقد شاركت كثيرًا اليوم. حاول مرة أخرى غدًا.",
+      "duplicate": "لقد نشرت هذا النص للتو. اكتب شيئًا آخر أو انتظر قليلًا.",
+      "suspended": "لا يمكن لحسابك النشر الآن.",
+      "error": "تعذّرت المشاركة الآن. حاول مرة أخرى بعد قليل.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "قريبًا",
+      "live": "يجري الآن",
+      "past": "انتهى",
+      "cancelled": "أُلغي",
+      "openEvent": "عرض وانضمام",
+      "openRoom": "عرض الغرفة",
+      "joinRoom": "انضم الآن",
+      "unavailable": "هذا الحدث لم يعد متاحًا.",
+      "untitled": "حدث",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

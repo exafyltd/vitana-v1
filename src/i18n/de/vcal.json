@@ -294,6 +294,35 @@
       "removed": "Entfernt",
       "error": "Das konnte gerade nicht entfernt werden. Versuch es gleich nochmal."
     },
-    "alreadyInCalendar": "Schon in deinem Kalender"
+    "alreadyInCalendar": "Schon in deinem Kalender",
+    "share": {
+      "action": "Im Feed teilen",
+      "defaultText": "Ich bin dabei: {title} – {date}. Kommst du mit?",
+      "textLabel": "Was möchtest du dazu sagen?",
+      "cardHint": "Das Event erscheint als Karte unter deinem Text – mit Zeit, Ort und ob es noch stattfindet.",
+      "public": "Für alle in der Community sichtbar",
+      "profileOnly": "Nur auf deinem Profil",
+      "post": "Teilen",
+      "cancel": "Abbrechen",
+      "done": "Geteilt – die Community sieht jetzt, dass du dabei bist",
+      "viewPost": "Im Feed geteilt – Beitrag ansehen",
+      "alreadyShared": "Du hast dieses Event schon geteilt",
+      "notShareable": "Dieses Event kann nicht mehr geteilt werden – es ist vorbei, abgesagt oder nicht öffentlich.",
+      "limit": "Du hast heute schon viel geteilt. Versuch es morgen wieder.",
+      "duplicate": "Diesen Text hast du gerade erst gepostet. Schreib etwas anderes oder warte kurz.",
+      "suspended": "Dein Konto kann gerade nichts posten.",
+      "error": "Teilen hat gerade nicht geklappt. Versuch es gleich nochmal."
+    },
+    "feedCard": {
+      "upcoming": "Demnächst",
+      "live": "Läuft gerade",
+      "past": "Vorbei",
+      "cancelled": "Abgesagt",
+      "openEvent": "Ansehen & mitmachen",
+      "openRoom": "Raum ansehen",
+      "joinRoom": "Jetzt beitreten",
+      "unavailable": "Dieses Event ist nicht mehr verfügbar.",
+      "untitled": "Event"
+    }
   }
 }
