@@ -76,12 +76,16 @@ test('VTID-04951: an ended live room says so and blocks its actions (phone)', as
   await expect(page.getByTestId('vcal-ended-notice')).toBeVisible();
 
   const url = page.url();
-  await page.getByTestId('vcal-open-source').click();
+  // The ended-event actions are aria-disabled on purpose (dimmed, still tappable:
+  // a tap answers "not active"). Playwright treats aria-disabled="true" as
+  // not-enabled and would wait for it forever, so click with force: that is the
+  // real tap a member makes, and the point of this check.
+  await page.getByTestId('vcal-open-source').click({ force: true });
   // Still on the entry: the tap showed the notice instead of opening the room.
   await expect(page.getByTestId('vcal-entry-screen')).toBeVisible();
   expect(page.url()).toBe(url);
   await expect(page.getByTestId('vcal-complete')).toBeVisible();
-  await page.getByTestId('vcal-complete').click();
+  await page.getByTestId('vcal-complete').click({ force: true });
   await expect(page.getByTestId('vcal-entry-screen')).toBeVisible();
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
