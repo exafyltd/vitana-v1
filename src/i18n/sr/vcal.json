@@ -91,10 +91,16 @@
       "openEvent": "Idi na događaj",
       "joinRoom": "Pridruži se",
       "openRoom": "Idi u sobu uživo",
+      "endedChip": "Završeno",
+      "endedNotice": "Ovaj događaj je završen i više nije aktivan.",
+      "endedToast": "Događaj je u prošlosti i nije aktivan",
       "_pending_review": {
         "openEvent": true,
         "joinRoom": true,
-        "openRoom": true
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
       }
     },
     "work": {

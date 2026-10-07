@@ -8,19 +8,24 @@
  * room (with "Join" from 15 minutes before it starts). The rules live in
  * entry-actions.ts.
  *
+ * VTID-04951: an event or live room that is over says so — a chip, a banner,
+ * and every action on it answers "in the past, not active" instead of
+ * walking the member into a dead room. "Ask Vitana" opens the guide for this
+ * entry (its state travels along) instead of the daily greeting.
+ *
  * VTID-04916: and "share to the feed" for a community event or live room the
  * member is going to (the gateway decides `shareable`); once shared, a link
  * to the post instead.
  */
 import { useEffect, useRef, useState } from "react";
-import { t } from "@/lib/i18n-toast";
+import { notify, t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
-import { activateOrb } from "@/lib/orbActivate";
+import { activateOrbGuide } from "@/lib/orbActivate";
 import type { CalendarEntryPatch, CalendarWindowItem, ShareToFeedInput } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
 import { itemEmoji, sourceLabel } from "./labels";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
-import { canEditEntry, canRemoveEntry, sourceActionOf } from "./entry-actions";
+import { canEditEntry, canRemoveEntry, entryTimeState, isEndedSourceEntry, sourceActionOf } from "./entry-actions";
 import { ShareToFeedPanel } from "./ShareToFeedPanel";
 
 interface Props {
@@ -53,6 +58,9 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
   const done = isDone(e);
   const future = Date.parse(item.start_time) > now.getTime();
   const source = sourceLabel(item);
+  const ended = isEndedSourceEntry(item, now);
+  // Every action on a finished event or room answers the same thing and does nothing else.
+  const blockEnded = () => notify("vcal.entry.endedToast");
   // A recurring entry is one row with many occurrences; completing it would
   // complete the whole series, so only one-off entries get the button.
   // VTID-04357: work-lens items are finished where they live, not here.
@@ -158,6 +166,10 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ✅ {t("vcal.done")}
           </span>
+        ) : ended ? (
+          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }} data-testid="vcal-ended-chip">
+            ⌛ {t("vcal.entry.endedChip")}
+          </span>
         ) : future ? (
           <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ⏳ {relativeIn(item.start_time, now)}
@@ -203,12 +215,18 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
 
       {/* pb clears the app-wide Vitana orb button that floats bottom-centre on phones */}
       <footer className="flex flex-col gap-2.5 px-[22px] pb-28 md:pb-7">
+        {ended && (
+          <p className="m-0 rounded-2xl px-4 py-3 text-sm" style={{ background: style.bg, color: style.ink }} role="status" data-testid="vcal-ended-notice">
+            {t("vcal.entry.endedNotice")}
+          </p>
+        )}
         {canComplete && (
           <button
             type="button"
             disabled={completing}
-            onClick={() => onComplete!(item)}
-            className="h-14 rounded-[18px] text-lg font-semibold text-white disabled:opacity-60"
+            aria-disabled={ended || undefined}
+            onClick={() => (ended ? blockEnded() : onComplete!(item))}
+            className={`h-14 rounded-[18px] text-lg font-semibold text-white disabled:opacity-60 ${ended ? "opacity-50" : ""}`}
             style={{ background: style.accent }}
             data-testid="vcal-complete"
           >
@@ -255,8 +273,9 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         {canMove && !picking && (
           <button
             type="button"
-            onClick={() => setPicking(true)}
-            className="h-[52px] rounded-2xl text-sm"
+            aria-disabled={ended || undefined}
+            onClick={() => (ended ? blockEnded() : setPicking(true))}
+            className={`h-[52px] rounded-2xl text-sm ${ended ? "opacity-50" : ""}`}
             style={{ background: SURFACE.track }}
             data-testid="vcal-move"
           >
@@ -266,13 +285,14 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         {sourceAction && (
           <button
             type="button"
-            onClick={() => onOpenSource!(sourceAction.path)}
+            aria-disabled={ended || undefined}
+            onClick={() => (ended ? blockEnded() : onOpenSource!(sourceAction.path))}
             // Only a room you can join right now is the main action; going to
             // the event or the room page sits with the other secondary actions.
             className={
               sourceAction.kind === "live_room" && sourceAction.joinable
                 ? "h-14 rounded-[18px] text-lg font-semibold text-white"
-                : "h-[52px] rounded-2xl text-sm"
+                : `h-[52px] rounded-2xl text-sm ${ended ? "opacity-50" : ""}`
             }
             style={{ background: sourceAction.kind === "live_room" && sourceAction.joinable ? style.accent : SURFACE.track }}
             data-testid="vcal-open-source"
@@ -443,7 +463,14 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           )}
           <button
             type="button"
-            onClick={() => activateOrb()}
+            onClick={() =>
+              activateOrbGuide({
+                feature: "calendar_entry",
+                state: entryTimeState(item, now),
+                kind: sourceActionOf(item, now)?.kind ?? (e.source_type || "other"),
+                title: e.title,
+              })
+            }
             className={`h-[52px] rounded-2xl text-sm ${e.location ? "" : "col-span-2"}`}
             style={{ background: SURFACE.track }}
           >

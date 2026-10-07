@@ -4,7 +4,7 @@
 import { describe, expect, it } from "vitest";
 import type { CalendarEntry, CalendarWindowItem } from "@/lib/calendar-window-client";
 import { topPillarGain } from "@/lib/calendar-window-client";
-import { canEditEntry, canRemoveEntry, communityEventIdOf, sourceActionOf } from "./entry-actions";
+import { canEditEntry, canRemoveEntry, communityEventIdOf, entryTimeState, isEndedSourceEntry, sourceActionOf } from "./entry-actions";
 
 const START = "2026-10-10T10:00:00Z";
 const END = "2026-10-10T11:00:00Z";
@@ -83,5 +83,40 @@ describe("Vitana Index gain (VTID-04915)", () => {
     expect(topPillarGain({ per_pillar_delta: { mental: 0, sleep: -1 } })).toBeNull();
     expect(topPillarGain(null)).toBeNull();
     expect(topPillarGain({})).toBeNull();
+  });
+});
+
+describe("ended events (VTID-04951)", () => {
+  const room = (over: Partial<CalendarEntry> = {}, itemOver: Partial<CalendarWindowItem> = {}) =>
+    item(
+      { source_type: "live_room", source_ref_type: "live_room_session", source_ref_id: "s1", metadata: { live_room_id: "r1" }, ...over },
+      itemOver,
+    );
+
+  it("tells upcoming, live and ended apart, with the end itself still live", () => {
+    expect(entryTimeState(room(), new Date("2026-10-10T09:59:00Z"))).toBe("upcoming");
+    expect(entryTimeState(room(), new Date("2026-10-10T10:30:00Z"))).toBe("live");
+    expect(entryTimeState(room(), new Date("2026-10-10T11:00:00Z"))).toBe("live");
+    expect(entryTimeState(room(), new Date("2026-10-10T11:00:01Z"))).toBe("ended");
+  });
+
+  it("without an end time it runs one hour, like the join window", () => {
+    const noEnd = room({ end_time: null }, { end_time: null });
+    expect(entryTimeState(noEnd, new Date("2026-10-10T10:59:00Z"))).toBe("live");
+    expect(entryTimeState(noEnd, new Date("2026-10-10T11:01:00Z"))).toBe("ended");
+  });
+
+  it("an unparsable start is never ended", () => {
+    expect(entryTimeState(room({}, { start_time: "nope", end_time: null }), new Date("2030-01-01T00:00:00Z"))).toBe("upcoming");
+  });
+
+  it("only events and live rooms count as ended entries — not a personal task", () => {
+    const later = new Date("2026-10-11T08:00:00Z");
+    expect(isEndedSourceEntry(room(), later)).toBe(true);
+    const ev = item({ source_type: "community_rsvp", source_ref_type: "community_event", source_ref_id: "ev-1" });
+    expect(isEndedSourceEntry(ev, later)).toBe(true);
+    expect(isEndedSourceEntry(item(), later)).toBe(false);
+    expect(isEndedSourceEntry(room(), new Date("2026-10-10T10:30:00Z"))).toBe(false);
+    expect(isEndedSourceEntry(room({}, { busy: true }), later)).toBe(false);
   });
 });

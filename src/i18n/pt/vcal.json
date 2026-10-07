@@ -91,10 +91,16 @@
       "openEvent": "Ir para o evento",
       "joinRoom": "Entrar agora",
       "openRoom": "Ir para a sala ao vivo",
+      "endedChip": "Terminado",
+      "endedNotice": "Este evento terminou e já não está ativo.",
+      "endedToast": "O evento já passou e não está ativo",
       "_pending_review": {
         "openEvent": true,
         "joinRoom": true,
-        "openRoom": true
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
       }
     },
     "work": {

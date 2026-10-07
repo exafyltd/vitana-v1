@@ -81,7 +81,10 @@
       "askVitana": "Vitana fragen",
       "openEvent": "Zum Event",
       "joinRoom": "Jetzt beitreten",
-      "openRoom": "Zum Live-Raum"
+      "openRoom": "Zum Live-Raum",
+      "endedChip": "Vorbei",
+      "endedNotice": "Dieses Event ist vorbei und nicht mehr aktiv.",
+      "endedToast": "Event liegt in der Vergangenheit und ist nicht aktiv"
     },
     "work": {
       "deploy_staging": "Staging-Deploy",

@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04951",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: a live room that ended earlier today (answered inside the browser, nothing written) shows the Ended chip and notice, and tapping Open room and Mark done leaves the member on the entry; read-only",
+      "spec": "tests/e2e/staging/vtid-04951-calendar-ended-entry.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/calendar/vcal src/lib/orbActivate.test.ts",
+      "reason": "entry time state boundaries, ended banner and blocked actions, own tasks unchanged, Ask Vitana hands the guide the entry's state"
+    }
+  ]
+}

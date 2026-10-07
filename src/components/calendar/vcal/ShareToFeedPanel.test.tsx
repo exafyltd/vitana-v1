@@ -20,7 +20,7 @@ vi.mock("@/lib/locale-format", async () => ({
   ...(await vi.importActual<typeof import("@/lib/locale-format")>("@/lib/locale-format")),
   fmtDate: () => "Samstag, 10. Oktober",
 }));
-vi.mock("@/lib/orbActivate", () => ({ activateOrb: vi.fn() }));
+vi.mock("@/lib/orbActivate", () => ({ activateOrb: vi.fn(), activateOrbGuide: vi.fn() }));
 vi.mock("@/lib/cached-access-token", () => ({ getAccessToken: async () => "tok" }));
 
 import { EntryScreen } from "./EntryScreen";
