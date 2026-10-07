@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-04949",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/prod-frontend-rollback.vtid-04949.test.ts",
+      "reason": "Production safety contracts: the prod frontend deploy captures a rollback target, proves the new bundle is live with 10 agreeing samples, and rolls back on failure; all 16 apply-*-migration workflows are dispatch-only, never push (20 cases, mutation-checked). No app code changes; the smoke suite confirms the bundle."
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run test:gate",
+      "reason": "PR-GATE logic including the migration lint, the Postgres dry-run classification and the always-rollback wrapper (15 node:test cases)."
+    }
+  ]
+}
