@@ -107,16 +107,20 @@ serve(async (req) => {
     const in1Hour = new Date(now.getTime() + 60 * 60 * 1000);
     const in2Hours = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
+    // VTID-04961: provider_appointments.user_id references auth.users, not
+    // profiles, so a PostgREST embed of profiles cannot resolve (PGRST200 on
+    // every run). Load the appointments, then the recipients' profiles in one
+    // query keyed by profiles.user_id.
     const { data: appointments24h, error: error24h } = await supabase
       .from("provider_appointments")
-      .select("*, profiles!provider_appointments_user_id_fkey(email, display_name, full_name)")
+      .select("*")
       .gte("start_time", in24Hours.toISOString())
       .lt("start_time", in25Hours.toISOString())
       .in("status", ["pending", "confirmed"]);
 
     const { data: appointments1h, error: error1h } = await supabase
       .from("provider_appointments")
-      .select("*, profiles!provider_appointments_user_id_fkey(email, display_name, full_name)")
+      .select("*")
       .gte("start_time", in1Hour.toISOString())
       .lt("start_time", in2Hours.toISOString())
       .in("status", ["pending", "confirmed"]);
@@ -127,6 +131,22 @@ serve(async (req) => {
     }
 
     const allAppointments = [...(appointments24h || []), ...(appointments1h || [])];
+
+    const userIds = [...new Set(allAppointments.map((a) => a.user_id))];
+    if (userIds.length > 0) {
+      const { data: profiles, error: profilesError } = await supabase
+        .from("profiles")
+        .select("user_id, email, display_name, full_name")
+        .in("user_id", userIds);
+      if (profilesError) {
+        console.error("Error querying profiles:", profilesError);
+        throw profilesError;
+      }
+      const profileByUser = new Map((profiles || []).map((p) => [p.user_id, p]));
+      for (const appointment of allAppointments) {
+        appointment.profiles = profileByUser.get(appointment.user_id) ?? null;
+      }
+    }
     console.log(`Found ${allAppointments.length} appointments needing reminders`);
 
     let successCount = 0;
