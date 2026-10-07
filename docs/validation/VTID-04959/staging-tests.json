@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04959",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport, one made-up legacy group appended to the inbox's own GET reads inside the browser: open it → the 'edit group' button is visible; the header avatars show initials, not '?'; the message box names the group (not one member) with a single ellipsis; tapping the button opens the members panel ON TOP of the full-screen chat (elementFromPoint) with the members listed and no horizontal overflow; read-only — nothing is written",
+      "spec": "tests/e2e/staging/vtid-04959-group-header.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/messages/GroupAvatarStack.vtid-04959.test.tsx src/utils/conversationHelpers.vtid-04959.test.ts src/components/messages/GroupMembersModal.vtid-04955.test.tsx",
+      "reason": "avatar initials from both participant shapes and RTL-safe spacing; composer placeholder names the group (cut at 30 chars) or the other person's first name; members panel behaviour from VTID-04955 unchanged"
+    }
+  ]
+}

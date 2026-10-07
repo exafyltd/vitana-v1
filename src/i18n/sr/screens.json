@@ -6227,7 +6227,10 @@
       "groupNameLabel": "Naziv grupe",
       "renameGroup": "Preimenuj grupu",
       "groupNameSave": "Sačuvaj",
-      "groupNameCancel": "Otkaži"
+      "groupNameCancel": "Otkaži",
+      "editGroup": "Uredi grupu",
+      "messageGroupPlaceholder": "Poruka za {name}…",
+      "messagePersonPlaceholder": "Poruka za {name}…"
     },
     "mobile": {
       "searching": "Pretražujem…",

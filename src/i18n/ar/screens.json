@@ -6227,7 +6227,10 @@
       "groupNameLabel": "اسم المجموعة",
       "renameGroup": "إعادة تسمية المجموعة",
       "groupNameSave": "حفظ",
-      "groupNameCancel": "إلغاء"
+      "groupNameCancel": "إلغاء",
+      "editGroup": "تعديل المجموعة",
+      "messageGroupPlaceholder": "رسالة إلى {name}…",
+      "messagePersonPlaceholder": "رسالة إلى {name}…"
     },
     "mobile": {
       "searching": "جاري البحث…",

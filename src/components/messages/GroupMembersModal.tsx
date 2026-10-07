@@ -422,9 +422,14 @@ export default function GroupMembersModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md max-h-[90dvh] overflow-y-auto">
+      <DialogContent
+        // VTID-04959: the phone chat view is a fixed z-[55] layer; at the default
+        // z-50 this panel opened BEHIND it and looked like nothing happened.
+        className="sm:max-w-md max-h-[90dvh] overflow-y-auto z-[60]"
+        overlayClassName="z-[60]"
+      >
         {(title || canRename) && (
-          <div className="flex items-center gap-2 pe-8">
+          <div className="flex min-w-0 items-center gap-2 pe-8">
             {isEditingName ? (
               <>
                 <Input
@@ -466,8 +471,8 @@ export default function GroupMembersModal({
           </div>
         )}
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            <span>{t('screens.messages.groupMembersLength', { length: participants.length })}</span>
+          <DialogTitle className="flex min-w-0 items-center justify-between gap-2">
+            <span className="min-w-0 truncate">{t('screens.messages.groupMembersLength', { length: participants.length })}</span>
             {currentUserRole !== 'admin' && (
               <Button
                 variant="outline"

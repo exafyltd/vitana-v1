@@ -6227,7 +6227,10 @@
       "groupNameLabel": "Grup adı",
       "renameGroup": "Grubu yeniden adlandır",
       "groupNameSave": "Kaydet",
-      "groupNameCancel": "İptal"
+      "groupNameCancel": "İptal",
+      "editGroup": "Grubu düzenle",
+      "messageGroupPlaceholder": "{name} grubuna mesaj…",
+      "messagePersonPlaceholder": "{name} kişisine mesaj…"
     },
     "mobile": {
       "searching": "Aranıyor...",

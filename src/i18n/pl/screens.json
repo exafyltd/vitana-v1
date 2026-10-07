@@ -6228,7 +6228,10 @@
       "groupNameLabel": "Nazwa grupy",
       "renameGroup": "Zmień nazwę grupy",
       "groupNameSave": "Zapisz",
-      "groupNameCancel": "Anuluj"
+      "groupNameCancel": "Anuluj",
+      "editGroup": "Edytuj grupę",
+      "messageGroupPlaceholder": "Wiadomość do {name}…",
+      "messagePersonPlaceholder": "Wiadomość do {name}…"
     },
     "mobile": {
       "searching": "Szukam…",

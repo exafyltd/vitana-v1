@@ -24,6 +24,7 @@ import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandle
 import {
   ArrowLeft,
   Loader2,
+  Settings2,
   UserPlus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -37,7 +38,7 @@ import CreateGroupPopup from '@/components/messages/CreateGroupPopup';
 
 import { isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
-import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
+import { composerPlaceholder, getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
@@ -952,16 +953,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               )}
               
               {isGroupChat() ? (
-                <div 
-                  className="cursor-pointer shrink-0"
+                // VTID-04959: a real button (keyboard + screen reader), not a clickable div.
+                <button
+                  type="button"
+                  className="shrink-0 rounded-full"
                   onClick={() => setShowMembersModal(true)}
+                  aria-label={t('screens.messages.editGroup')}
                 >
-                  <GroupAvatarStack 
-                    participants={threadParticipants} 
+                  <GroupAvatarStack
+                    participants={threadParticipants}
                     maxVisible={3}
                     size="md"
                   />
-                </div>
+                </button>
               ) : (
                 <ClickableAvatar
                   userId={effectiveRecipientId || undefined}
@@ -972,16 +976,39 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 />
               )}
               
-              <div 
-                className={cn("min-w-0 flex-1", isGroupChat() ? "cursor-pointer" : "")}
-                onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
-              >
-                <h2 className="text-sm font-semibold truncate">{getConversationTitle()}</h2>
-                <p className="text-xs text-muted-foreground truncate">{getConversationSubtitle()}</p>
-              </div>
+              {isGroupChat() ? (
+                <button
+                  type="button"
+                  className="min-w-0 flex-1 text-start"
+                  onClick={() => setShowMembersModal(true)}
+                  aria-label={t('screens.messages.editGroup')}
+                >
+                  <h2 className="text-sm font-semibold truncate">{getConversationTitle()}</h2>
+                  <p className="text-xs text-muted-foreground truncate">{getConversationSubtitle()}</p>
+                </button>
+              ) : (
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-sm font-semibold truncate">{getConversationTitle()}</h2>
+                  <p className="text-xs text-muted-foreground truncate">{getConversationSubtitle()}</p>
+                </div>
+              )}
             </div>
           
             <div className="flex items-center gap-1 shrink-0">
+              {isGroupChat() && (
+                // VTID-04959: the members/rename panel was only reachable by tapping the title.
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1.5"
+                  onClick={() => setShowMembersModal(true)}
+                  aria-label={t('screens.messages.editGroup')}
+                  data-testid="edit-group-button"
+                >
+                  <Settings2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">{t('screens.messages.editGroup')}</span>
+                </Button>
+              )}
               {!isGroupChat() && effectiveRecipientId && (
                 <Button
                   size="sm"
@@ -1214,7 +1241,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   onTypingStop={stopTyping}
                   disabled={isSending}
                   isSending={isSending}
-                  placeholder={`Message ${getParticipantFirstName(getOtherParticipant(threads.find(t => t.id === threadId), user?.id))}...`}
+                  placeholder={composerPlaceholder(threads.find(th => th.id === threadId), user?.id, t)}
                   threadId={threadId}
                   recipientId={recipientId}
                   effectiveRecipientId={effectiveRecipientId}
