@@ -82,7 +82,7 @@ export function NewsFeedItemCard({
   }
 
   if (item.kind === "new_member") {
-    const name = item.display_name || t("newsCard.member.newMember");
+    const name = item.display_name?.trim().replace(/\s+/g, " ") || t("newsCard.member.newMember");
     return (
       <NewMemberCard
         userId={item.user_id}

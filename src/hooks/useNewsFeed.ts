@@ -216,7 +216,7 @@ export async function fetchCommunityNews(
           // The card invites the viewer to greet the new member, so it must
           // carry who that member is. Without user_id the detail page had no
           // profile link and no way to message them (VTID-04574).
-          const name = member.display_name || t("newsCard.member.newMember");
+          const name = member.display_name?.trim().replace(/\s+/g, " ") || t("newsCard.member.newMember");
           articles.push({
             id: `member-${member.id}`,
             source: "community",
