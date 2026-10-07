@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04964",
+  "kind": "fix",
+  "paths": [
+    "supabase/functions/appilix-push/**",
+    "src/lib/appointment-and-appilix-functions.vtid-04961.test.ts",
+    "docs/validation/VTID-04964/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
