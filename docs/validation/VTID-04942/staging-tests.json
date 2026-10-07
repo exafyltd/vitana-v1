@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04942",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: opening a scheduled Live Room's drawer from Events, the \"who's going\" row shows real people's initials (never the old U1-U5 placeholders) and tapping it opens the people list, Escape closes it; read-only — the two RPC reads are answered inside the browser with two demo people, nothing is written",
+      "spec": "tests/e2e/staging/vtid-04942-live-room-drawer-people.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/liverooms/LiveRoomDrawer.people.test.tsx",
+      "reason": "drawer row: real initials instead of placeholders, tap opens the list, live rooms stay a plain count, RTL chevron"
+    }
+  ]
+}

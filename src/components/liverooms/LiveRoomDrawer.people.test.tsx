@@ -53,6 +53,7 @@ describe('LiveRoomDrawer people row', () => {
     expect(screen.getByText('A')).toBeTruthy();
     expect(screen.queryByTestId('interested-people-list')).toBeNull();
 
+    expect(screen.getByTestId('drawer-interested-trigger').querySelector('svg')?.getAttribute('class')).toContain('rtl:rotate-180');
     fireEvent.click(screen.getByTestId('drawer-interested-trigger'));
     expect(screen.getByTestId('interested-people-list')).toBeTruthy();
     expect(screen.getAllByTestId('interested-person')).toHaveLength(2);
