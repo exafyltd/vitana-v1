@@ -31,7 +31,7 @@ export interface NewMemberCardProps {
 function tidyTitle(title: string): string {
   return title
     .replace(/\s+([!?.,:;])/g, "$1")
-    .replace(/\s+(\S+)$/, " $1");
+    .replace(/\s+(\S+)$/, "\u00a0$1");
 }
 
 export function NewMemberCard({
