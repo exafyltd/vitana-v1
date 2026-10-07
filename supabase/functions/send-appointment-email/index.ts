@@ -172,7 +172,7 @@ serve(async (req) => {
 
     const { data: appointment, error: appointmentError } = await supabase
       .from("provider_appointments")
-      .select("*, profiles!provider_appointments_user_id_fkey(email, display_name, full_name)")
+      .select("*")
       .eq("id", appointmentId)
       .eq("user_id", user.id)
       .single();
@@ -180,6 +180,16 @@ serve(async (req) => {
     if (appointmentError || !appointment) {
       throw new Error("Appointment not found or access denied");
     }
+
+    // VTID-04961: provider_appointments.user_id references auth.users, not
+    // profiles, so the profiles embed could not resolve (PGRST200). Look the
+    // recipient up by profiles.user_id instead.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("email, display_name, full_name")
+      .eq("user_id", appointment.user_id)
+      .maybeSingle();
+    appointment.profiles = profile ?? null;
 
     const { data: settings } = await supabase
       .from("notification_settings")
