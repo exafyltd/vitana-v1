@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   change-suite:
@@ -51,19 +52,27 @@ jobs:
       - name: Change suite present and valid (canonical)
         if: steps.fetch.outputs.canonical == 'true'
         env:
-          TITLE: ${{ github.event.pull_request.title }}
+          # VTID-04948 (B9): the live title is read in the step, never this
+          # event's payload, so a re-run after a retitle sees the new title.
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
+          TITLE=$(gh api "$PR_URL" --jq .title)
           node "$RUNNER_TEMP/sv/run.mjs" check-pr --service community-app \
             --repo-root . --base "$BASE" --head "$HEAD" --title "$TITLE"
       - name: Change suite present (basic)
         if: steps.fetch.outputs.canonical != 'true'
         env:
-          TITLE: ${{ github.event.pull_request.title }}
+          # VTID-04948 (B9): the live title is read in the step, never this
+          # event's payload, so a re-run after a retitle sees the new title.
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
+          TITLE=$(gh api "$PR_URL" --jq .title)
           # Mirrors SERVICES['community-app'].deployPaths in the canonical lib.cjs.
           if ! git diff --name-only "$BASE...$HEAD" | grep -Eq '^(src/|public/|index\.html$|Dockerfile$|nginx\.conf$|package\.json$|package-lock\.json$|bun\.lock$|vite\.config\.ts$|\.github/workflows/AWS-STAGE-DEPLOY-FRONTEND\.yml$)'; then
             echo "PR touches no community-app deploy path — nothing deploys, no staging suite needed."; exit 0
