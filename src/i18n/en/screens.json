@@ -5662,7 +5662,8 @@
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
       "durationHourMin": "{value0} h {value1} min",
-      "_pending_review": {}
+      "_pending_review": {},
+      "openHostProfile": "Open {name}'s profile"
     },
     "meetups": {
       "detailsProgram": "Details & Program",

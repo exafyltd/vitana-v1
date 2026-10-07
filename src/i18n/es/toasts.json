@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "El archivo ICS se descargará",
       "openingCalendar": "Abriendo calendario",
       "notifyOnTitle": "Recordatorio establecido",
-      "notifyOnDesc": "Te recordaremos antes de que empiece",
+      "notifyOnDesc": "Te recordaremos antes de que empiece, y ya está en tu calendario de Maxina",
       "notifyOffTitle": "Recordatorio eliminado",
       "notifyOffDesc": "Ya no recibirás recordatorios",
       "notifyError": "No se pudo actualizar el recordatorio",

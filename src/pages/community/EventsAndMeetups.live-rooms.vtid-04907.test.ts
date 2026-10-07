@@ -37,8 +37,8 @@ describe('Events page (VTID-04907)', () => {
   });
 
   it('a room card opens the room or its drawer, never the event drawer', () => {
-    expect(PAGE).toMatch(/if \(isLiveRoomEvent\(event\)\) \{\s*\/\/[^\n]*\n\s*if \(event\.metadata\?\.is_live\) openLiveRoom\(event\);\s*else setRoomDrawerEvent\(event\);\s*return;/);
-    expect(PAGE).toContain('<LiveRoomEventDrawer event={roomDrawerEvent}');
+    expect(PAGE).toMatch(/if \(isLiveRoomEvent\(event\)\) \{\s*\/\/[^\n]*\n\s*if \(event\.metadata\?\.is_live\) openLiveRoom\(event\);\s*else \{[^}]*setRoomDrawerEvent\(event\);\s*setSearchParams\([\s\S]*?\);\s*\}\s*return;/);
+    expect(PAGE).toContain('<LiveRoomEventDrawer event={roomDrawerEvent} onClose={closeRoomDrawer} />');
     expect(PAGE).toContain('currentEvents.find(e => e.id === selectedEventId && !isLiveRoomEvent(e))');
   });
 });

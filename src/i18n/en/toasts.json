@@ -640,7 +640,7 @@
       "icsFileWillDownloaded": "ICS file will be downloaded",
       "openingCalendar": "Opening calendar",
       "notifyOnTitle": "Reminder set",
-      "notifyOnDesc": "We'll remind you before it starts",
+      "notifyOnDesc": "We'll remind you before it starts — and it's in your Maxina calendar",
       "notifyOffTitle": "Reminder removed",
       "notifyOffDesc": "You won't be reminded anymore",
       "notifyError": "Could not update reminder",

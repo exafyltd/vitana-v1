@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "سيتم تنزيل ملف ICS",
       "openingCalendar": "جاري فتح التقويم",
       "notifyOnTitle": "تم تعيين تذكير",
-      "notifyOnDesc": "سنذكرك قبل أن تبدأ",
+      "notifyOnDesc": "سنذكرك قبل أن تبدأ، وهي الآن في تقويم Maxina الخاص بك",
       "notifyOffTitle": "تمت إزالة التذكير",
       "notifyOffDesc": "لن يتم تذكيرك بعد الآن",
       "notifyError": "تعذر تحديث التذكير",
