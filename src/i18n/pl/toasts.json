@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Wybierz lub otwórz rozmowę przed załączeniem plików.",
       "uploadFailed": "Przesyłanie nie powiodło się",
       "failedSendVoiceMessage": "Nie udało się wysłać wiadomości głosowej",
-      "thereErrorSendingYourVoiceMessage": "Wystąpił błąd podczas wysyłania twojej wiadomości głosowej"
+      "thereErrorSendingYourVoiceMessage": "Wystąpił błąd podczas wysyłania twojej wiadomości głosowej",
+      "groupRenamed": "Zmieniono nazwę grupy",
+      "failedRenameGroup": "Nie udało się zmienić nazwy grupy",
+      "groupNameInvalid": "Nazwa grupy musi mieć od 1 do 80 znaków."
     },
     "notifications": {
       "bookingConfirmed": "Rezerwacja potwierdzona! 🎉",

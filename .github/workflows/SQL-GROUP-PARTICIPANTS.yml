@@ -1,0 +1,39 @@
+name: SQL-GROUP-PARTICIPANTS
+# VTID-04955: tests the "Thread creators can update participants" policy on a
+# throwaway Postgres in the runner — the creator can remove a member, a plain
+# member cannot remove anyone else but can still leave, and creating one group
+# gives nothing in another. No secrets, no shared database.
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/20261007160000_vtid_04955_group_creator_manage_participants.sql'
+      - 'scripts/sql-tests/vtid-04955-group-participants.test.sql'
+      - 'scripts/sql-tests/run-group-participants-test.sh'
+      - '.github/workflows/SQL-GROUP-PARTICIPANTS.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the migration test
+        run: bash scripts/sql-tests/run-group-participants-test.sh

@@ -6217,7 +6217,17 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} je napravio/la grupu",
+      "groupNoticeMemberAdded": "{name} je dodao/la {member}",
+      "groupNoticeMemberRemoved": "{name} je uklonio/la {member}",
+      "groupNoticeMemberLeft": "{name} je napustio/la grupu",
+      "groupNoticeRenamed": "{name} je preimenovao/la grupu u „{group}“",
+      "groupNoticeSomeone": "Neko",
+      "groupNameLabel": "Naziv grupe",
+      "renameGroup": "Preimenuj grupu",
+      "groupNameSave": "Sačuvaj",
+      "groupNameCancel": "Otkaži"
     },
     "mobile": {
       "searching": "Pretražujem…",

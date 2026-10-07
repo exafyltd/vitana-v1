@@ -6180,7 +6180,17 @@
       "conversationStart": "Inicio de la conversación",
       "anonymous": "Anónimo",
       "vitanaOpenScreen": "Abrir pantalla",
-      "conversationRowError": "Este elemento no se pudo mostrar."
+      "conversationRowError": "Este elemento no se pudo mostrar.",
+      "groupNoticeCreated": "{name} creó el grupo",
+      "groupNoticeMemberAdded": "{name} añadió a {member}",
+      "groupNoticeMemberRemoved": "{name} eliminó a {member}",
+      "groupNoticeMemberLeft": "{name} salió del grupo",
+      "groupNoticeRenamed": "{name} cambió el nombre del grupo a «{group}»",
+      "groupNoticeSomeone": "Alguien",
+      "groupNameLabel": "Nombre del grupo",
+      "renameGroup": "Cambiar nombre del grupo",
+      "groupNameSave": "Guardar",
+      "groupNameCancel": "Cancelar"
     },
     "mobile": {
       "searching": "Buscando…",

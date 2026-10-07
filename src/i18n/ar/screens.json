@@ -6217,7 +6217,17 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "أنشأ {name} المجموعة",
+      "groupNoticeMemberAdded": "أضاف {name} {member}",
+      "groupNoticeMemberRemoved": "أزال {name} {member}",
+      "groupNoticeMemberLeft": "غادر {name} المجموعة",
+      "groupNoticeRenamed": "غيّر {name} اسم المجموعة إلى «{group}»",
+      "groupNoticeSomeone": "شخص ما",
+      "groupNameLabel": "اسم المجموعة",
+      "renameGroup": "إعادة تسمية المجموعة",
+      "groupNameSave": "حفظ",
+      "groupNameCancel": "إلغاء"
     },
     "mobile": {
       "searching": "جاري البحث…",

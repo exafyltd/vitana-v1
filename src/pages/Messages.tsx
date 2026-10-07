@@ -501,6 +501,10 @@ export default function Messages() {
   const handleGroupCreated = (threadId: string) => {
     setSelectedThreadId(threadId);
     setSelectedRecipientId(null);
+    // VTID-04955: the new group is not in the cached thread list yet; without
+    // a refetch the chat header shows "Conversation" and its members/rename
+    // panel stays unreachable until the next poll.
+    void hybridMessages.fetchThreads?.();
   };
 
   // "Message" on a contact: open the existing direct chat with that member,

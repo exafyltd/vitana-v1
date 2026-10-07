@@ -6165,7 +6165,17 @@
       "value0Members": "{value0}members",
       "chooseConversationFromLeftStartMessaging": "Select a conversation on the left to send messages.",
       "vitanaOpenScreen": "Open screen",
-      "_pending_review": {}
+      "_pending_review": {},
+      "groupNoticeCreated": "{name} created the group",
+      "groupNoticeMemberAdded": "{name} added {member}",
+      "groupNoticeMemberRemoved": "{name} removed {member}",
+      "groupNoticeMemberLeft": "{name} left the group",
+      "groupNoticeRenamed": "{name} renamed the group to “{group}”",
+      "groupNoticeSomeone": "Someone",
+      "groupNameLabel": "Group name",
+      "renameGroup": "Rename group",
+      "groupNameSave": "Save",
+      "groupNameCancel": "Cancel"
     },
     "mobile": {
       "searching": "Searching…",
