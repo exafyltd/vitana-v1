@@ -127,7 +127,7 @@ export function PartnerTermsSheet({
         setUpdated(true);
       }
       setTerms(next);
-      textRef.current?.scrollTo?.({ top: 0 });
+      textRef.current?.closest('[data-terms-body]')?.scrollTo?.({ top: 0 });
     } catch {
       // Keep the text on screen; say the other language could not be loaded.
       setSwitchFailed(true);
@@ -161,14 +161,20 @@ export function PartnerTermsSheet({
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent fullscreenOnMobile className="md:max-w-3xl" data-testid="partner-terms-sheet">
+      {/* VTID-04925: capped to the window on wide screens so the footer (tick + Accept) is never cut off. */}
+      <ResponsiveDialogContent
+        fullscreenOnMobile
+        className="md:max-w-3xl lg:flex lg:max-h-[calc(100dvh-2rem)] lg:flex-col lg:overflow-hidden lg:[&>div]:min-h-0 lg:[&>div]:flex-1"
+        data-testid="partner-terms-sheet"
+      >
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="flex items-center gap-2 text-2xl font-bold">
             <ShieldCheck className="h-6 w-6 shrink-0 text-amber-700" />
             {t(`${K}.title`)}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
-        <ResponsiveDialogBody className="space-y-4 md:mt-2">
+        {/* The one scroll area: version, language, binding notice and the terms text scroll together. */}
+        <ResponsiveDialogBody className="min-h-0 space-y-4 md:mt-2 lg:flex-1 lg:overflow-y-auto" data-terms-body>
           {loading ? (
             <div className="flex justify-center py-10">
               <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -250,7 +256,7 @@ export function PartnerTermsSheet({
                 data-testid="partner-terms-text"
               >
                 <h3 className="text-lg font-bold text-foreground">{terms.text.title}</h3>
-                <div ref={textRef} className="mt-2 max-h-[50vh] overflow-y-auto pe-1 md:max-h-96">
+                <div ref={textRef} className="mt-2">
                   {switching ? (
                     <div className="flex justify-center py-10">
                       <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -261,38 +267,43 @@ export function PartnerTermsSheet({
                 </div>
               </section>
 
-              <div className="rounded-xl bg-amber-50/60 p-3">
-                <label className="flex min-h-11 cursor-pointer items-start gap-3 text-sm font-medium text-foreground">
-                  <Checkbox
-                    checked={agreed}
-                    onCheckedChange={(v) => setAgreed(v === true)}
-                    data-testid="partner-terms-agree"
-                    className="mt-0.5"
-                  />
-                  <span>{t(`${K}.agree`)}</span>
-                </label>
-                <p className="mt-1 ps-7 text-xs text-muted-foreground" data-testid="partner-terms-agree-explanation">
-                  {t(`${K}.agreeExplanation`)}
-                </p>
-              </div>
             </>
           )}
         </ResponsiveDialogBody>
-        <ResponsiveDialogFooter className="flex-col gap-2 sm:flex-row sm:justify-end">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="h-12 rounded-xl">
-            {t(`${K}.close`)}
-          </Button>
-          {terms && (
-            <Button
-              onClick={() => void accept()}
-              disabled={!agreed || saving || switching}
-              data-testid="partner-terms-accept"
-              className="h-12 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
-            >
-              {saving ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : null}
-              {t(`${K}.accept`)}
-            </Button>
+        {/* VTID-04925: the tick and Accept live together in the footer, always on screen. */}
+        <ResponsiveDialogFooter className="flex-col gap-3 sm:flex-col sm:justify-start sm:space-x-0" data-testid="partner-terms-footer">
+          {terms && !loading && !failed && (
+            <div className="rounded-xl bg-amber-50/60 p-3">
+              <label className="flex min-h-11 cursor-pointer items-start gap-3 text-sm font-medium text-foreground">
+                <Checkbox
+                  checked={agreed}
+                  onCheckedChange={(v) => setAgreed(v === true)}
+                  data-testid="partner-terms-agree"
+                  className="mt-0.5"
+                />
+                <span>{t(`${K}.agree`)}</span>
+              </label>
+              <p className="mt-1 ps-7 text-xs text-muted-foreground" data-testid="partner-terms-agree-explanation">
+                {t(`${K}.agreeExplanation`)}
+              </p>
+            </div>
           )}
+          <div className="flex gap-2 sm:justify-end">
+            <Button variant="outline" onClick={() => onOpenChange(false)} className="h-12 flex-1 rounded-xl sm:flex-none">
+              {t(`${K}.close`)}
+            </Button>
+            {terms && (
+              <Button
+                onClick={() => void accept()}
+                disabled={!agreed || saving || switching}
+                data-testid="partner-terms-accept"
+                className="h-12 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800 sm:flex-none"
+              >
+                {saving ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : null}
+                {t(`${K}.accept`)}
+              </Button>
+            )}
+          </div>
         </ResponsiveDialogFooter>
       </ResponsiveDialogContent>
     </ResponsiveDialog>

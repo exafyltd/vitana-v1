@@ -17,6 +17,7 @@ import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-quer
 import type { RealtimePostgresUpdatePayload } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { persistQueryCacheNow } from "@/lib/query-persist";
+import { attachedRefOf } from "@/lib/post-attachment";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n-toast";
@@ -68,6 +69,9 @@ interface RawPostRow {
   likes_count: number | null;
   comments_count: number | null;
   created_at: string;
+  /** VTID-04916: absent until the migration has run. */
+  attached_ref_type?: string | null;
+  attached_ref_id?: string | null;
 }
 
 interface RawMediaRow {
@@ -309,6 +313,7 @@ export async function fetchNewsFeedCandidates(
       comments_count: Number(p.comments_count) || 0,
       followed: followingIds.has(p.user_id),
       tags: [],
+      attached_ref: attachedRefOf(p),
       published_at: p.created_at,
     });
   }

@@ -103,6 +103,24 @@ export default function PublicEventLanding() {
         }
 
         if (!data || data.length === 0) {
+          // VTID-04922: a shared Live Room arrives here as /events/<roomId> (the worker's human
+          // redirect → ?share=event&id= → /pub/events/<id>). Only when no event exists, and only for
+          // a UUID, check community_live_streams (public read: pending/live, or ended with replay) and
+          // send the person into the room. This sits INSIDE the fetch so the loading state covers it —
+          // no flash of "Event not found", and events that exist pay no extra query. (One redirect hop
+          // fewer if the share link ever moves to /rooms/<id>, which the worker already maps to ?share=room.)
+          if (isUUID(identifier)) {
+            const { data: stream } = await supabase
+              .from("community_live_streams")
+              .select("id")
+              .eq("id", identifier)
+              .maybeSingle();
+            if (stream?.id) {
+              const qs = searchParams.toString();
+              navigate(`/comm/live-rooms?live=${encodeURIComponent(stream.id)}${qs ? `&${qs}` : ""}`, { replace: true });
+              return;
+            }
+          }
           setError("Event not found");
           setLoading(false);
           return;

@@ -127,3 +127,18 @@ export function getCleanEventUrl(slug?: string | null, id?: string): string {
   }
   return canonicalBase;
 }
+
+/**
+ * Share link for a Live Room (VTID-04922).
+ *
+ * Deliberately the `/events/<id>` path, not `/comm/live-rooms?live=`: that path is
+ * bound to the `vitanaland-og-proxy` worker (see getShareUrl above), so WhatsApp et
+ * al. get the room's own title and image from the `og-event` function instead of the
+ * generic site preview. People who tap the link land in the room (PublicEventLanding
+ * recognises a room id and sends them to /comm/live-rooms?live=<id>). If
+ * `vitanaland.com/rooms/*` is ever bound in Cloudflare, this can move to `/rooms/<id>`
+ * (one redirect hop fewer — the worker already routes `rooms` to `?share=room`).
+ */
+export function getLiveRoomShareUrl(roomId: string): string {
+  return `https://vitanaland.com/events/${encodeURIComponent(roomId)}`;
+}

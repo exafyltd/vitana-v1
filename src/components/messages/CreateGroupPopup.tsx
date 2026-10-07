@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { v4 as uuidv4 } from 'uuid';
+import { createGlobalGroupThread, TENANT_GROUP_CREATE_UNSUPPORTED } from "@/lib/messaging/createGlobalGroupThread";
 
 interface User {
   user_id: string;
@@ -149,6 +149,18 @@ export default function CreateGroupPopup({
       return;
     }
 
+    // VTID-04936: tenant groups can't be created from the client (no
+    // creator-adds-members policy on thread_participants) — fail before any write.
+    if (context !== 'global' || !user) {
+      console.warn('Group not created:', TENANT_GROUP_CREATE_UNSUPPORTED);
+      toast({
+        title: translate('inbox.createGroup.failed'),
+        description: translate('inbox.createGroup.failedDesc'),
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsCreating(true);
     try {
       const memberIds = selectedMembers.map(m => m.user_id);
@@ -164,87 +176,12 @@ export default function CreateGroupPopup({
         return;
       }
 
-      // Pre-generate thread ID to avoid SELECT after INSERT (RLS issue)
-      const threadId = uuidv4();
-
-      // Create the group thread
-      const threadData = context === 'global' 
-        ? { id: threadId, created_by: user?.id, type: 'group', name: groupName }
-        : { 
-            id: threadId,
-            tenant_id: user?.user_metadata?.active_tenant_id,
-            created_by: user?.id, 
-            type: 'group', 
-            name: groupName 
-          };
-
-      const { error: threadError } = await supabase
-        .from(context === 'global' ? 'global_message_threads' : 'message_threads')
-        .insert(threadData);
-
-      if (threadError) {
-        console.error('Thread creation error:', threadError);
-        throw threadError;
-      }
-
-      const participantsTable = context === 'global' ? 'global_thread_participants' : 'thread_participants';
-      
-      // Add current user as admin FIRST
-      const { error: adminError } = await supabase
-        .from(participantsTable)
-        .insert({ thread_id: threadId, user_id: user?.id, role: 'admin' });
-
-      if (adminError) {
-        console.error('Admin participant error:', adminError);
-        throw adminError;
-      }
-
-      // Then add other members
-      const memberParticipants = memberIds.map(userId => ({
-        thread_id: threadId,
-        user_id: userId,
-        role: 'member'
-      }));
-
-      const { error: participantsError } = await supabase
-        .from(participantsTable)
-        .insert(memberParticipants);
-
-      if (participantsError) {
-        console.error('Members insert error:', participantsError);
-        throw participantsError;
-      }
-
-      // Send system message for group creation
-      const messageData = context === 'global'
-        ? {
-            thread_id: threadId,
-            sender_id: user?.id,
-            body: `${user?.email} created the group`,
-            message_type: 'system',
-            content_data: { 
-              system_type: 'group_created',
-              group_name: groupName,
-              created_by: user?.id
-            }
-          }
-        : {
-            thread_id: threadId,
-            tenant_id: user?.user_metadata?.active_tenant_id,
-            sender_id: user?.id,
-            recipient_id: null,
-            body: `${user?.email} created the group`,
-            message_type: 'system',
-            content_data: { 
-              system_type: 'group_created',
-              group_name: groupName,
-              created_by: user?.id
-            }
-          };
-
-      await supabase
-        .from(context === 'global' ? 'global_messages' : 'messages')
-        .insert(messageData);
+      const threadId = await createGlobalGroupThread(supabase, {
+        userId: user!.id,
+        userEmail: user?.email,
+        name: groupName,
+        memberIds,
+      });
 
       toast({
         title: translate('inbox.createGroup.created'),

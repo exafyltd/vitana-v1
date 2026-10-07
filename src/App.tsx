@@ -1183,6 +1183,14 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
+          {/* VTID-04915: one entry, from a reminder notification */}
+          <Route path="/calendar/entry/:entryId" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <CalendarPage />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
           <Route path="/calendar/appointments" element={<Navigate to="/calendar" replace />} />
 
           {/* VTID-02601 Reminders */}

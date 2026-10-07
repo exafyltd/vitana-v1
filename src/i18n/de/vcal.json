@@ -78,7 +78,10 @@
       "reminders": "Erinnerungen",
       "noReminders": "Keine Erinnerung",
       "directions": "Route",
-      "askVitana": "Vitana fragen"
+      "askVitana": "Vitana fragen",
+      "openEvent": "Zum Event",
+      "joinRoom": "Jetzt beitreten",
+      "openRoom": "Zum Live-Raum"
     },
     "work": {
       "deploy_staging": "Staging-Deploy",
@@ -267,6 +270,59 @@
       "waitingOne": "1 Sache wartet auf dich",
       "waiting": "{count} Sachen warten auf dich",
       "open": "Im Admin-Bereich öffnen"
+    },
+    "indexGain": "+{points} {pillar} in deinem Vitana Index",
+    "edit": {
+      "action": "Bearbeiten",
+      "titleLabel": "Titel",
+      "startLabel": "Beginn",
+      "endLabel": "Ende",
+      "locationLabel": "Ort",
+      "descriptionLabel": "Notiz",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "invalid": "Gib einen Titel ein, und das Ende muss nach dem Beginn liegen.",
+      "saved": "Gespeichert ✨",
+      "error": "Das konnte gerade nicht gespeichert werden. Versuch es gleich nochmal."
+    },
+    "remove": {
+      "action": "Entfernen",
+      "confirm": "Diesen Termin aus deinem Kalender entfernen?",
+      "confirmSeries": "Diesen Termin mit allen Wiederholungen aus deinem Kalender entfernen?",
+      "keep": "Behalten",
+      "yes": "Entfernen",
+      "removed": "Entfernt",
+      "error": "Das konnte gerade nicht entfernt werden. Versuch es gleich nochmal."
+    },
+    "alreadyInCalendar": "Schon in deinem Kalender",
+    "share": {
+      "action": "Im Feed teilen",
+      "defaultText": "Ich bin dabei: {title} – {date}. Kommst du mit?",
+      "textLabel": "Was möchtest du dazu sagen?",
+      "cardHint": "Das Event erscheint als Karte unter deinem Text – mit Zeit, Ort und ob es noch stattfindet.",
+      "public": "Für alle in der Community sichtbar",
+      "profileOnly": "Nur auf deinem Profil",
+      "post": "Teilen",
+      "cancel": "Abbrechen",
+      "done": "Geteilt – die Community sieht jetzt, dass du dabei bist",
+      "viewPost": "Im Feed geteilt – Beitrag ansehen",
+      "alreadyShared": "Du hast dieses Event schon geteilt",
+      "notShareable": "Dieses Event kann nicht mehr geteilt werden – es ist vorbei, abgesagt oder nicht öffentlich.",
+      "limit": "Du hast heute schon viel geteilt. Versuch es morgen wieder.",
+      "duplicate": "Diesen Text hast du gerade erst gepostet. Schreib etwas anderes oder warte kurz.",
+      "suspended": "Dein Konto kann gerade nichts posten.",
+      "error": "Teilen hat gerade nicht geklappt. Versuch es gleich nochmal."
+    },
+    "feedCard": {
+      "upcoming": "Demnächst",
+      "live": "Läuft gerade",
+      "past": "Vorbei",
+      "cancelled": "Abgesagt",
+      "openEvent": "Ansehen & mitmachen",
+      "openRoom": "Raum ansehen",
+      "joinRoom": "Jetzt beitreten",
+      "unavailable": "Dieses Event ist nicht mehr verfügbar.",
+      "untitled": "Event"
     }
   }
 }

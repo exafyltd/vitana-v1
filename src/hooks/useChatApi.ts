@@ -179,6 +179,11 @@ export interface ChatGroupMember {
   display_name: string | null;
   avatar_url: string | null;
   is_bot: boolean;
+  /**
+   * VTID-04926: false for accounts that must never be offered as an @mention
+   * (the Vitana bot, service and test accounts). Absent on older gateways.
+   */
+  mentionable?: boolean;
 }
 
 export interface ChatGroupMessage {

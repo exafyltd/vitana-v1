@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 355
-- **Distinct i18n keys consumed:** 4772
+- **Pages scanned:** 361
+- **Distinct i18n keys consumed:** 4778
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -67,11 +67,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Calendar.tsx
 
-**Status:** ✅ clean — keys consumed: 3, namespaces: 1
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
 **i18n namespaces:**
 
-- `vcal` — used: 3, total in shard: 208
+- `vcal` — used: 9, total in shard: 256
 
 ### src/pages/Changelog.tsx
 
@@ -469,6 +469,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 16, total in shard: 11559, **MISSING:** screens.partnerportal.states.${state}
 
+### src/pages/PostDetail.mentions.vtid-04926.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ### src/pages/PostDetail.tsx
 
 **Status:** ✅ clean — keys consumed: 4, namespaces: 1
@@ -510,6 +514,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `eventCta` — used: 2, total in shard: 20
 - `screens` — used: 14, total in shard: 11559
+
+### src/pages/PublicEventLanding.room.vtid-04922.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/PublicEventLanding.ticket-check-error-logging.test.ts
 
@@ -555,6 +563,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 15, total in shard: 11559
+
+### src/pages/ShareEntry.room.vtid-04922.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/ShareEntry.tsx
 
@@ -2636,6 +2648,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `archives` — used: 1, total in shard: 1
 - `screens` — used: 31, total in shard: 11559
 
+### src/pages/messages/GroupChat.mentions.vtid-04926.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ### src/pages/messages/GroupChat.tsx
 
 **Status:** ✅ clean — keys consumed: 16, namespaces: 2
@@ -2646,6 +2662,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `toasts` — used: 5, total in shard: 1269
 
 ### src/pages/messages/GroupChat.vtid-04901.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/messages/GroupChat.vtid-04921.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/messages/GroupChat.vtid-04928.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

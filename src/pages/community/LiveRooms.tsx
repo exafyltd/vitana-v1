@@ -1,4 +1,5 @@
 import SEO from "@/components/SEO";
+import { getLiveRoomShareUrl } from '@/lib/shareUrl';
 import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -448,7 +449,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[0].title,
                           description: rowRooms[0].description || t('screens.liveRoom.shareDescription', { name: rowRooms[0].host.name }),
-                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
+                          link: getLiveRoomShareUrl(rowRooms[0].id)
                         }}
                         variant="icon"
                         size="sm"
@@ -481,7 +482,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[1].title,
                           description: rowRooms[1].description || t('screens.liveRoom.shareDescription', { name: rowRooms[1].host.name }),
-                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
+                          link: getLiveRoomShareUrl(rowRooms[1].id)
                         }}
                         variant="icon"
                         size="sm"
@@ -514,7 +515,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[2].title,
                           description: rowRooms[2].description || t('screens.liveRoom.shareDescription', { name: rowRooms[2].host.name }),
-                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
+                          link: getLiveRoomShareUrl(rowRooms[2].id)
                         }}
                         variant="icon"
                         size="sm"
@@ -551,7 +552,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[0].title,
                           description: rowRooms[0].description || t('screens.liveRoom.shareDescription', { name: rowRooms[0].host.name }),
-                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
+                          link: getLiveRoomShareUrl(rowRooms[0].id)
                         }}
                         variant="icon"
                         size="sm"
@@ -584,7 +585,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[1].title,
                           description: rowRooms[1].description || t('screens.liveRoom.shareDescription', { name: rowRooms[1].host.name }),
-                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
+                          link: getLiveRoomShareUrl(rowRooms[1].id)
                         }}
                         variant="icon"
                         size="sm"
@@ -618,7 +619,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[2].title,
                           description: rowRooms[2].description || t('screens.liveRoom.shareDescription', { name: rowRooms[2].host.name }),
-                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
+                          link: getLiveRoomShareUrl(rowRooms[2].id)
                         }}
                         variant="icon"
                         size="sm"

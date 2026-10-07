@@ -1,0 +1,40 @@
+name: SQL-EVENT-SHARE-POSTS
+# VTID-04916: tests the profile_posts event-attachment migration on a
+# throwaway Postgres in the runner — the client-attach guard, one share per
+# member per event, and the share notification deduplicated per recipient
+# per event per 24 h (plain posts notify exactly as before). No secrets, no
+# shared database.
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/20261007100000_vtid_04916_profile_posts_event_attachment.sql'
+      - 'scripts/sql-tests/vtid-04916-event-share-posts.test.sql'
+      - 'scripts/sql-tests/run-event-share-posts-test.sh'
+      - '.github/workflows/SQL-EVENT-SHARE-POSTS.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the migration test
+        run: bash scripts/sql-tests/run-event-share-posts-test.sh

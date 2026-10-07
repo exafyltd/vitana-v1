@@ -31,7 +31,6 @@ import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { useRoleRouteEnforcement, useInitialLandingRedirect } from "@/hooks/useSmartRouting";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
 import { useUniversalCart } from "@/hooks/useUniversalCart";
 // Phase 0: CartSidebar is retired from the buy path — the cart icon now
 // navigates to /universal-cart (the one canonical cart). CartSidebar.tsx is
@@ -538,7 +537,6 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
 
           <SidebarInset className="flex flex-col w-full overflow-x-hidden">
             <div className="flex flex-col h-full min-h-0 bg-background rounded-tl-2xl">
-              <PendingCalendarEventProcessor />
               <main className="flex-1 min-h-0 overflow-hidden">
                 <MobileAppShell>{children}</MobileAppShell>
               </main>

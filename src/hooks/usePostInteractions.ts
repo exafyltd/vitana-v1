@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { pruneMentions, type Mention } from '@/lib/mentions';
 import { useAuth } from '@/context/AuthProvider';
 
 export interface PostComment {
@@ -9,6 +10,8 @@ export interface PostComment {
   user_id: string;
   content: string;
   created_at: string;
+  /** VTID-04926: members tagged in the comment. */
+  mentions?: Mention[];
   // joined
   display_name?: string;
   avatar_url?: string;
@@ -109,11 +112,17 @@ export function usePostInteractions(postId: string) {
   });
 
   const addComment = useMutation({
-    mutationFn: async (content: string) => {
+    mutationFn: async (input: string | { content: string; mentions?: Mention[] }) => {
       if (!user) throw new Error('Not authenticated');
+      const content = typeof input === 'string' ? input : input.content;
+      // VTID-04926: `mentions` only travels when someone is tagged; tagged
+      // members are notified by a DB trigger (comment_mention).
+      const tagged = typeof input === 'string' ? [] : pruneMentions(content, input.mentions);
+      const row: Record<string, unknown> = { post_id: postId, user_id: user.id, content };
+      if (tagged.length > 0) row.mentions = tagged;
       const { error } = await supabase
         .from('profile_post_comments' as any)
-        .insert({ post_id: postId, user_id: user.id, content } as any);
+        .insert(row as any);
       if (error) throw error;
       // The post author is notified by a DB trigger on profile_post_comments
       // (20260623000000_post_interaction_notifications.sql) — no client call.
