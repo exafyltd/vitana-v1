@@ -404,9 +404,10 @@
     "  #vcal-more <button> +1 weitere"
   ],
   "view.day.empty": [
-    "#vcal-empty",
-    "   Nichts geplant – ein ruhiger Tag",
-    "   Sag Vitana, was du vorhast, und sie trägt es ein."
+    "#vcal-day",
+    "  #vcal-empty",
+    "     Nichts geplant – ein ruhiger Tag",
+    "     Sag Vitana, was du vorhast, und sie trägt es ein."
   ],
   "view.month": [
     "#vcal-month",
