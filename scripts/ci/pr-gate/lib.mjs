@@ -231,3 +231,26 @@ export function summary(md) {
   if (p) execFileSync('bash', ['-c', 'cat >> "$P"'], { input: `${md}\n`, env: { ...process.env, P: p } });
   else process.stdout.write(`${md}\n`);
 }
+
+// ── Migration dry run (plan D2 as re-sparred in round 4) ─────────────────
+// The repo's migration history cannot be replayed (duplicate creates, objects
+// owned by vitana-platform), so a changed migration is applied alone onto the
+// Supabase stub inside a transaction that is always rolled back. A missing
+// object only proves the stub lacks it: that is "unverifiable", not a failure.
+export const UNVERIFIABLE_SQLSTATES = new Set(['42P01', '42883', '42704', '3F000', '42703', '42P07']);
+
+/** The file's statements with its own outer BEGIN;/COMMIT; removed, wrapped to always roll back. */
+export function dryRunScript(sql) {
+  const body = String(sql).replace(/^\s*BEGIN\s*;/i, '').replace(/COMMIT\s*;\s*$/i, '');
+  return `\\set ON_ERROR_STOP on\n\\set VERBOSITY verbose\nBEGIN;\n${body}\nROLLBACK;\n`;
+}
+
+/** Classify psql output from a failed dry run. */
+export function classifyDryRun(output) {
+  const m = String(output).match(/ERROR:\s+([0-9A-Z]{5}):\s*([^\n]*)/);
+  if (!m) return { verdict: 'failed', sqlstate: null, message: String(output).trim().split('\n').slice(-3).join(' ') };
+  const [, sqlstate, message] = m;
+  // 42P07 (duplicate) only counts as unverifiable when the stub itself provides the object.
+  if (sqlstate === '42P07') return { verdict: 'failed', sqlstate, message };
+  return { verdict: UNVERIFIABLE_SQLSTATES.has(sqlstate) ? 'unverifiable' : 'failed', sqlstate, message };
+}

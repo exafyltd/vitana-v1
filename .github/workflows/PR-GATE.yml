@@ -28,6 +28,16 @@ jobs:
   pr-gate:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # VTID-04949 (D2): throwaway Postgres for the migration dry run. Never a
+    # real database: the stub is loaded fresh, every dry run is rolled back.
+    services:
+      pg:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: dryrun
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       BASE: ${{ github.event.pull_request.base.sha }}
       HEAD: ${{ github.event.pull_request.head.sha }}
@@ -77,10 +87,21 @@ jobs:
         continue-on-error: true
         run: node scripts/ci/pr-gate/gate.mjs red-green --base "$BASE" --head "$HEAD"
 
-      - name: Migration lint
+      - name: Migrations (lint + Postgres parse + rollback dry run)
         id: migrations
         continue-on-error: true
-        run: node scripts/ci/pr-gate/gate.mjs migrations --base "$BASE" --head "$HEAD"
+        env:
+          PGHOST: localhost
+          PGPORT: '5432'
+          PGUSER: postgres
+          PGPASSWORD: dryrun
+          PGDATABASE: postgres
+        run: |
+          if git diff --name-only "$BASE...$HEAD" | grep -q '^supabase/migrations/.*\.sql$'; then
+            npm install --no-save libpg-query@17 >/dev/null
+            psql -X -q -v ON_ERROR_STOP=1 -f scripts/ci/pr-gate/migrations/supabase-stub.sql
+          fi
+          node scripts/ci/pr-gate/gate.mjs migrations --base "$BASE" --head "$HEAD"
 
       - name: Typecheck ratchet
         id: tsc

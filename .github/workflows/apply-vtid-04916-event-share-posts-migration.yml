@@ -17,17 +17,12 @@ name: Apply VTID-04916 event share posts migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20261007100000_vtid_04916_profile_posts_event_attachment.sql'
-      - '.github/workflows/apply-vtid-04916-event-share-posts-migration.yml'
-
 concurrency:
   group: apply-vtid-04916-event-share-posts-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

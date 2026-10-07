@@ -13,17 +13,12 @@ name: Apply cumulative like notifications migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260819120000_vtid_03684_cumulative_like_notifications.sql'
-      - '.github/workflows/apply-cumulative-like-notifications-migration.yml'
-
 concurrency:
   group: apply-cumulative-like-notifications-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

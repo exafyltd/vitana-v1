@@ -12,17 +12,12 @@ name: Apply feed video interactions migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260622000000_feed_video_interactions.sql'
-      - '.github/workflows/apply-feed-video-interactions-migration.yml'
-
 concurrency:
   group: apply-feed-video-interactions-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

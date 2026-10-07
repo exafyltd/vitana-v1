@@ -10,17 +10,12 @@ name: Apply post notification deep-link migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260625000000_post_notification_deeplink.sql'
-      - '.github/workflows/apply-post-notification-deeplink-migration.yml'
-
 concurrency:
   group: apply-post-notification-deeplink-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

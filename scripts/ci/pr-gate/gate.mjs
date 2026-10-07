@@ -104,7 +104,11 @@ const checks = {
     const fixVtids = vtids.filter((v) => scopes[v]?.kind === 'fix');
     if (fixVtids.length === 0) done(true, '➖ **red→green** — skipped: no VTID of kind "fix"');
     const exempt = new Set(fixVtids.flatMap((v) => (scopes[v].red_green_exempt || []).map((e) => e.file)));
-    const tests = L.changedFiles(base, head).filter((f) => /^src\/.*\.test\.(ts|tsx)$/.test(f) && existsSync(f) && !exempt.has(f));
+    // Which tests count and how they run come from config.json "red_green"
+    // (vitana-v1: Vitest at the root; vitana-platform: Jest in services/gateway).
+    const rg = { test_pattern: '^src/.*\\.test\\.(ts|tsx)$', cwd: '.', cmd: ['npx', 'vitest', 'run'], ...(L.loadConfig().red_green || {}) };
+    const pattern = new RegExp(rg.test_pattern);
+    const tests = L.changedFiles(base, head).filter((f) => pattern.test(f) && existsSync(f) && !exempt.has(f));
     if (tests.length === 0) {
       done(exempt.size > 0, exempt.size > 0
         ? `✅ **red→green** — every changed test is declared in red_green_exempt (shown at Gate 2)`
@@ -113,15 +117,16 @@ const checks = {
     const wt = mkdtempSync(join(tmpdir(), 'pr-gate-base-'));
     try {
       L.git(['worktree', 'add', '--detach', wt, base], { stdio: 'ignore' });
-      symlinkSync(resolve('node_modules'), join(wt, 'node_modules'));
+      symlinkSync(resolve(rg.cwd, 'node_modules'), join(wt, rg.cwd, 'node_modules'));
       for (const t of tests) {
         mkdirSync(dirname(join(wt, t)), { recursive: true });
         copyFileSync(t, join(wt, t));
       }
-      const r = spawnSync('npx', ['vitest', 'run', ...tests], { cwd: wt, encoding: 'utf8', env: { ...process.env, CI: '1' } });
+      const rel = tests.map((t) => (rg.cwd === '.' ? t : t.slice(rg.cwd.replace(/\/$/, '').length + 1)));
+      const r = spawnSync(rg.cmd[0], [...rg.cmd.slice(1), ...rel], { cwd: join(wt, rg.cwd), encoding: 'utf8', env: { ...process.env, CI: '1' } });
       const out = `${r.stdout}${r.stderr}`;
       if (r.status === 0) done(false, `❌ **red→green** — the new/changed tests also PASS on the base commit, so they do not prove the fix:\n${tests.map((t) => `- \`${t}\``).join('\n')}`);
-      const failed = (out.match(/Tests\s+(\d+) failed/) || [])[1] || '≥1';
+      const failed = (out.match(/Tests:?\s+(\d+) failed/) || [])[1] || '≥1';
       done(true, `✅ **red→green** — ${failed} test(s) fail on the base commit and the full suite passes on head (${tests.length} file(s))`);
     } finally {
       spawnSync('git', ['worktree', 'remove', '--force', wt]);
@@ -129,14 +134,39 @@ const checks = {
     }
   },
 
-  migrations() {
+  async migrations() {
     const { scopes } = loadScopes();
     const nonTx = new Set(Object.values(scopes).flatMap((s) => s.non_transactional || []));
     const files = L.changedFiles(base, head).filter((f) => /^supabase\/migrations\/.+\.sql$/.test(f) && existsSync(f));
     if (files.length === 0) done(true, '➖ **migrations** — no migration changed');
     const problems = files.flatMap((f) => L.lintMigration(readFileSync(f, 'utf8'), { nonTransactional: nonTx.has(f) }).map((p) => `\`${f}\`: ${p}`));
+    // Exact Postgres grammar (libpg_query), offline.
+    let parser = null;
+    try {
+      parser = await import('libpg-query');
+      if (parser.loadModule) await parser.loadModule();
+    } catch {
+      problems.push('Postgres parser (libpg-query) unavailable — install it in the job');
+    }
+    if (parser) {
+      for (const f of files) {
+        try { parser.parseSync(readFileSync(f, 'utf8')); } catch (e) { problems.push(`\`${f}\`: does not parse as Postgres SQL — ${e.message}`); }
+      }
+    }
+    // Best-effort semantic dry run on the stub DB (PG* env from the job's service container).
+    const levels = [];
+    if (process.env.PGHOST && problems.length === 0) {
+      for (const f of files) {
+        if (nonTx.has(f)) { levels.push(`\`${f}\`: parsed; dry run skipped (non_transactional, flagged for Gate 2)`); continue; }
+        const r = spawnSync('psql', ['-X', '-q'], { input: L.dryRunScript(readFileSync(f, 'utf8')), encoding: 'utf8' });
+        if (r.status === 0) { levels.push(`\`${f}\`: parsed, dry run OK (rolled back)`); continue; }
+        const c = L.classifyDryRun(`${r.stdout}${r.stderr}`);
+        if (c.verdict === 'unverifiable') levels.push(`\`${f}\`: parsed, dry run **unverifiable** — ${c.sqlstate} ${c.message} (object outside this repo's history; Gate 2 lists it)`);
+        else problems.push(`\`${f}\`: dry run failed — ${c.sqlstate || ''} ${c.message}`);
+      }
+    }
     if (problems.length) done(false, `❌ **migrations** — ${problems.length} problem(s):\n${problems.map((p) => `- ${p}`).join('\n')}`);
-    done(true, `✅ **migrations** — ${files.length} file(s) transactional and idempotent${nonTx.size ? ` (non-transactional, flagged for Gate 2: ${[...nonTx].join(', ')})` : ''}`);
+    done(true, `✅ **migrations** — ${files.length} file(s) transactional, idempotent and parsed${levels.length ? `:\n${levels.map((l) => `- ${l}`).join('\n')}` : ''}`);
   },
 };
 
@@ -167,4 +197,4 @@ if (!['baseline-tsc', 'baseline-eslint', 'ratchet-tsc', 'ratchet-eslint'].includ
   console.error('--base <sha> is required');
   process.exit(2);
 }
-checks[check]();
+await checks[check]();
