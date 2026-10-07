@@ -13,6 +13,7 @@ import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { debounce } from "@/utils/performanceOptimization";
+import { createGlobalGroupThread, TENANT_GROUP_CREATE_UNSUPPORTED } from "@/lib/messaging/createGlobalGroupThread";
 
 interface User {
   user_id: string;
@@ -334,83 +335,33 @@ export default function NewConversationPopup({
 
   const createGroup = async () => {
     if (!user || !groupName.trim() || selectedRecipients.length === 0) return;
-    
+
+    // VTID-04936: tenant groups can't be created from the client (no
+    // creator-adds-members policy on thread_participants) — fail before any write.
+    if (effectiveContext !== 'global') {
+      console.warn('Group not created:', TENANT_GROUP_CREATE_UNSUPPORTED);
+      toast({
+        title: translate('inbox.toast.error'),
+        description: translate('inbox.toast.groupFailed'),
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsCreating(true);
     try {
-      const memberIds = selectedRecipients.map(r => r.user_id);
-      
-      // Create the group thread
-      const threadData = effectiveContext === 'global' 
-        ? { created_by: user.id, type: 'group', name: groupName }
-        : { 
-            tenant_id: activeTenantId,
-            created_by: user.id, 
-            type: 'group', 
-            name: groupName 
-          };
-
-      const { data: thread, error: threadError } = await supabase
-        .from(effectiveContext === 'global' ? 'global_message_threads' : 'message_threads')
-        .insert(threadData)
-        .select()
-        .single();
-
-      if (threadError) throw threadError;
-
-      const participantsTable = effectiveContext === 'global' ? 'global_thread_participants' : 'thread_participants';
-      
-      // Add participants
-      const participants = [
-        { thread_id: thread.id, user_id: user.id, role: 'admin' },
-        ...memberIds.map(userId => ({
-          thread_id: thread.id,
-          user_id: userId,
-          role: 'member'
-        }))
-      ];
-
-      const { error: participantsError } = await supabase
-        .from(participantsTable)
-        .insert(participants);
-
-      if (participantsError) throw participantsError;
-
-      // Send system message
-      const messageData = effectiveContext === 'global'
-        ? {
-            thread_id: thread.id,
-            sender_id: user.id,
-            body: `${user.email} created the group`,
-            message_type: 'system',
-            content_data: { 
-              system_type: 'group_created',
-              group_name: groupName,
-              created_by: user.id
-            }
-          }
-        : {
-            thread_id: thread.id,
-            tenant_id: activeTenantId,
-            sender_id: user.id,
-            recipient_id: null,
-            body: `${user.email} created the group`,
-            message_type: 'system',
-            content_data: { 
-              system_type: 'group_created',
-              group_name: groupName,
-              created_by: user.id
-            }
-          };
-
-      await supabase
-        .from(effectiveContext === 'global' ? 'global_messages' : 'messages')
-        .insert(messageData);
+      const threadId = await createGlobalGroupThread(supabase, {
+        userId: user.id,
+        userEmail: user.email,
+        name: groupName,
+        memberIds: selectedRecipients.map(r => r.user_id),
+      });
 
       toast({
         title: translate('inbox.toast.success'),
         description: translate('inbox.toast.groupCreated').replace('{name}', groupName)
       });
-      onGroupCreated?.(thread.id);
+      onGroupCreated?.(threadId);
       resetForm();
     } catch (error) {
       console.error('Error creating group:', error);
