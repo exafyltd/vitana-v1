@@ -48,7 +48,7 @@ function MoreButton({ count, onClick }: { count: number; onClick: () => void }) 
 
 export function DayView({ items, onOpen, summary }: { items: CalendarWindowItem[]; onOpen: Open; summary?: string }) {
   const [all, setAll] = useState(false);
-  if (!items.length) return <EmptyDay />;
+  // VTID-04956: no early return for an empty day — the summary line ("Nichts geplant") is shown on every day, as it was in the header before.
   const markers = items.filter(isMilestone);
   const entries = items.filter((i) => !isMilestone(i));
   const shown = all ? entries : entries.slice(0, DAY_LIMIT);

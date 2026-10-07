@@ -252,6 +252,12 @@ describe("views", () => {
     expect(screen.getAllByTestId("vcal-entry")).toHaveLength(8);
   });
 
+  it("an empty day still shows the summary line above the calm-day card (VTID-04956)", () => {
+    render(<DayView items={[]} onOpen={() => {}} summary="Nichts geplant" />);
+    expect(screen.getByTestId("vcal-summary").textContent).toBe("Nichts geplant");
+    expect(screen.getByTestId("vcal-empty")).toBeTruthy();
+  });
+
   it("a milestone is a quiet marker, never counted as an entry (VTID-04681)", () => {
     const ms = it_("ms", "2026-10-05T07:00:00.000Z", null, ev("10 km laufen", { event_type: "journey_milestone", source_type: "goal_plan" }));
     render(<DayView items={[ms]} onOpen={() => {}} />);
