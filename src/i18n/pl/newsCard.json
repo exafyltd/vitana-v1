@@ -18,16 +18,14 @@
       "showLessToast": "Będziemy pokazywać mniej takich",
       "mutedToast": "Źródło wyciszone",
       "undo": "Cofnij",
-      "unmute": "Wyłącz wyciszenie",
-      "_pending_review": {}
+      "unmute": "Wyłącz wyciszenie"
     },
     "detail": {
       "back": "Wróć",
       "continueReading": "Czytaj dalej na",
       "openInBrowser": "Otwórz w przeglądarce",
       "couldNotLoad": "Tego artykułu nie można wyświetlić bezpośrednio",
-      "readOn": "Czytaj więcej",
-      "_pending_review": {}
+      "readOn": "Czytaj więcej"
     },
     "pillars": {
       "all": "Wszystkie",
@@ -35,19 +33,19 @@
       "hydration": "Nawodnienie",
       "sleep": "Sen",
       "exercise": "Ćwiczenia",
-      "mental": "Psychika",
-      "_pending_review": {}
+      "mental": "Psychika"
     },
-    "_pending_review": {},
     "member": {
-      "welcomeTitle": "🤩 Witaj, {name}!",
-      "joinedSummary": "{name} właśnie dołączył(a) do społeczności długowieczności MAXINA. 🎉",
+      "welcomeTitle": "Witaj, {name}!",
+      "joinedSummary": "{name} właśnie dołączył(a) do społeczności długowieczności MAXINA.",
       "newMember": "Nowy członek",
       "sayHello": "Przywitaj się",
       "viewProfile": "Zobacz profil",
       "eyebrow": "Nowość w społeczności",
-      "_pending_review": {}
+      "_pending_review": {
+        "welcomeTitle": true,
+        "joinedSummary": true
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

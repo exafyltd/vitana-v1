@@ -18,16 +18,14 @@
       "showLessToast": "Nous t'en montrerons moins comme ça",
       "mutedToast": "Source en sourdine",
       "undo": "Annuler",
-      "unmute": "Désactiver la sourdine",
-      "_pending_review": {}
+      "unmute": "Désactiver la sourdine"
     },
     "detail": {
       "back": "Retour",
       "continueReading": "Continuer la lecture sur",
       "openInBrowser": "Ouvrir dans le navigateur",
       "couldNotLoad": "Cet article ne peut pas être affiché directement",
-      "readOn": "En savoir plus",
-      "_pending_review": {}
+      "readOn": "En savoir plus"
     },
     "pillars": {
       "all": "Tout",
@@ -35,19 +33,19 @@
       "hydration": "Hydratation",
       "sleep": "Sommeil",
       "exercise": "Exercice",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental"
     },
-    "_pending_review": {},
     "member": {
-      "welcomeTitle": "🤩 Bienvenue, {name} !",
-      "joinedSummary": "{name} vient de rejoindre la communauté longévité MAXINA. 🎉",
+      "welcomeTitle": "Bienvenue, {name} !",
+      "joinedSummary": "{name} vient de rejoindre la communauté longévité MAXINA.",
       "newMember": "Nouveau membre",
       "sayHello": "Dire bonjour",
       "viewProfile": "Voir le profil",
       "eyebrow": "Nouveau dans la communauté",
-      "_pending_review": {}
+      "_pending_review": {
+        "welcomeTitle": true,
+        "joinedSummary": true
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }
