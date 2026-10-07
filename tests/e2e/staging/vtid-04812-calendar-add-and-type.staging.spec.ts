@@ -69,8 +69,8 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
   expect(calFont, 'the calendar sets its own typeface').toBe(bodyFont);
   expect(calFont).not.toMatch(/nunito/i);
 
-  // The weekday is the Index page's title: 24px (text-2xl), bold.
-  const title = page.getByTestId('vcal-weekday');
+  // The title is the Index page's: 24px (text-2xl), bold.
+  const title = page.getByTestId('vcal-date');
   await expect(title).toBeVisible({ timeout: 20_000 });
   const style = await title.evaluate((el) => {
     const c = getComputedStyle(el);
@@ -79,7 +79,36 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
   expect(style.size).toBe('24px');
   expect(style.weight).toBeGreaterThanOrEqual(700);
 
-  // The header is the pale blue hero card, as on the Index page.
-  const hero = await page.getByTestId('vcal-header').evaluate((el) => getComputedStyle(el).backgroundImage);
+  // VTID-04952: the header is the pale blue hero card; the eyebrow names the view;
+  // the day number is a lively blend (never the Vitana Index's teal-green).
+  const header = page.getByTestId('vcal-header');
+  const hero = await header.evaluate((el) => getComputedStyle(el).backgroundImage);
   expect(hero).toContain('linear-gradient');
+  const number = page.getByTestId('vcal-day-number');
+  await expect(number).toBeVisible();
+  expect(await number.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain('linear-gradient');
+  expect((await number.innerText()).trim()).toBe(String(new Date().getDate()));
+
+  // The Day view starts with "new entry for this day" (a button, never a text field).
+  const addDay = page.getByTestId('vcal-add-day');
+  await expect(addDay).toBeVisible();
+  expect(await page.getByTestId('vcal-day').locator('input, textarea').count()).toBe(0);
+
+  // Day, Week and Month share one hero: same size, and the content starts at the same place.
+  const box = async () => {
+    const h = (await header.boundingBox())!;
+    const tabs = (await page.getByRole('tablist').boundingBox())!;
+    return { height: Math.round(h.height), width: Math.round(h.width), tabsTop: Math.round(tabs.y) };
+  };
+  const day = await box();
+  await page.getByRole('tab').nth(1).click();
+  await expect(page.getByTestId('vcal-week')).toBeVisible({ timeout: 20_000 });
+  const week = await box();
+  await page.getByRole('tab').nth(2).click();
+  await expect(page.getByTestId('vcal-month')).toBeVisible({ timeout: 20_000 });
+  const month = await box();
+  expect(week.height).toBe(day.height);
+  expect(month.height).toBe(day.height);
+  expect(week.tabsTop).toBe(day.tabsTop);
+  expect(month.tabsTop).toBe(day.tabsTop);
 });

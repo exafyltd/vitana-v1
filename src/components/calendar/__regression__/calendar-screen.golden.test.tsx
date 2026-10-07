@@ -166,11 +166,11 @@ describe("building blocks", () => {
 describe("views", () => {
   it("day, empty day", () => {
     const open = vi.fn();
-    const { container, rerender } = render(<DayView items={DAY} onOpen={open} />);
+    const { container, rerender } = render(<DayView items={DAY} onOpen={open} dayLabel="Montag, 5. Oktober" onAdd={() => {}} />);
     expectGolden(G, "view.day", outline(container));
     fireEvent.click(screen.getAllByTestId("vcal-entry")[1]);
     expect(open.mock.calls[0][0].id).toBe("lab");
-    rerender(<DayView items={[]} onOpen={open} />);
+    rerender(<DayView items={[]} onOpen={open} dayLabel="Montag, 5. Oktober" onAdd={() => {}} />);
     expectGolden(G, "view.day.empty", outline(container));
   });
 
@@ -192,17 +192,23 @@ describe("views", () => {
     expect(busy.querySelectorAll("span > span")).toHaveLength(3);
   });
 
-  it("a day never floods: five entries, then +N more (VTID-04681)", () => {
+  it("the Day view lists every entry one by one, with an add button for that day (VTID-04952)", () => {
+    const onAdd = vi.fn();
     const many = Array.from({ length: 8 }, (_, i) => it_(`m${i}`, `2026-10-05T0${i + 1}:00:00.000Z`, null, ev(`Punkt ${i}`)));
-    render(<DayView items={many} onOpen={() => {}} />);
-    expect(screen.getAllByTestId("vcal-entry")).toHaveLength(5);
-    fireEvent.click(screen.getByTestId("vcal-more"));
+    render(<DayView items={many} onOpen={() => {}} dayLabel="Montag, 5. Oktober" summary="8 Einträge" onAdd={onAdd} />);
     expect(screen.getAllByTestId("vcal-entry")).toHaveLength(8);
+    expect(screen.queryByTestId("vcal-more")).toBeNull();
+    const add = screen.getByTestId("vcal-add-day");
+    expect(add.textContent).toContain("Montag, 5. Oktober");
+    expect(add.tagName).toBe("BUTTON");
+    expect(screen.getByTestId("vcal-day").querySelector("input, textarea")).toBeNull();
+    fireEvent.click(add);
+    expect(onAdd).toHaveBeenCalledTimes(1);
   });
 
   it("a milestone is a quiet marker, never counted as an entry (VTID-04681)", () => {
     const ms = it_("ms", "2026-10-05T07:00:00.000Z", null, ev("10 km laufen", { event_type: "journey_milestone", source_type: "goal_plan" }));
-    render(<DayView items={[ms]} onOpen={() => {}} />);
+    render(<DayView items={[ms]} onOpen={() => {}} dayLabel="Montag, 5. Oktober" onAdd={() => {}} />);
     expect(screen.getByTestId("vcal-milestone")).toBeTruthy();
     expect(screen.queryAllByTestId("vcal-entry")).toHaveLength(0);
     expect(screen.getByTestId("vcal-empty")).toBeTruthy();
@@ -244,16 +250,19 @@ describe("entry screen", () => {
 });
 
 describe("the /calendar page", () => {
-  it("opens on today's day view: the date first, large, then a one-line summary", async () => {
+  it("opens on today's day view: the hero names the day, the list starts with add-for-this-day and the summary", async () => {
     const { container } = page();
     await screen.findByTestId("vcal-day");
     await screen.findByTestId("vcal-summary");
-    // VTID-04681: today's date leads the screen. VTID-04852: in the Index-style hero —
-    // month and year in the eyebrow, then the big day number and the weekday.
+    // VTID-04681: today's date leads the screen. VTID-04852: in the Index-style hero.
+    // VTID-04952: the eyebrow names the view, one title line carries weekday and date,
+    // and the day number is the one coloured element.
     const date = screen.getByTestId("vcal-date");
-    expect(date.textContent).toContain("5");
     expect(date.textContent).toContain("Montag");
-    expect(screen.getByTestId("vcal-header").textContent).toContain("Oktober 2026");
+    expect(date.textContent).toContain("Oktober");
+    expect(screen.getByTestId("vcal-day-number").textContent).toBe("5");
+    expect(screen.getByTestId("vcal-header").textContent).toContain("Tag");
+    expect(screen.getByTestId("vcal-add-day")).toBeTruthy();
     expectGolden(G, "page.day", outline(container));
     // Day view asks for today and the whole local day.
     const ranges = h.fetchCalendarWindow.mock.calls.map((c) => [c[0].toISOString(), c[1].toISOString(), c[2]]);
@@ -263,12 +272,26 @@ describe("the /calendar page", () => {
   it("switching to week and month is remembered; picking a day returns to the day view", async () => {
     const { container, unmount } = page();
     await screen.findByTestId("vcal-day");
+    const shape = (el: HTMLElement) => [el.className, [...el.children].map((c) => c.tagName + "." + c.className)];
+    const dayHero = shape(screen.getByTestId("vcal-header"));
     fireEvent.click(screen.getAllByRole("tab")[1]);
     await screen.findByTestId("vcal-week");
+    expect(shape(screen.getByTestId("vcal-header"))).toEqual(dayHero);
     expectGolden(G, "page.week", outline(container));
     fireEvent.click(screen.getAllByRole("tab")[2]);
     await screen.findByTestId("vcal-month");
     expectGolden(G, "page.month.header", outline(container.querySelector("h1")!.parentElement!));
+    // VTID-04952: Day, Week and Month share one identical hero (same classes, same structure).
+    const heroOf = () => screen.getByTestId("vcal-header");
+    const monthHero = shape(heroOf());
+    expect(monthHero).toEqual(dayHero);
+    fireEvent.click(screen.getAllByRole("tab")[1]);
+    await screen.findByTestId("vcal-week");
+    expect(shape(heroOf())).toEqual(monthHero);
+    expect(heroOf().textContent).toContain("Woche");
+    fireEvent.click(screen.getAllByRole("tab")[2]);
+    await screen.findByTestId("vcal-month");
+    expect(heroOf().textContent).toContain("Monat");
     unmount();
     page();
     await screen.findByTestId("vcal-month"); // remembered

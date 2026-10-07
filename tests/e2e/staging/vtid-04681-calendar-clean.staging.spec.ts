@@ -4,7 +4,7 @@
 // Signs in as the documented test user (the sign-in token call is the only
 // write the guard allows), opens /calendar and checks:
 //   - today's date leads the screen;
-//   - no text on the page is heavier than medium (500);
+//   - no text on the page is heavier than bold (700) — VTID-04852 moved the titles to the Index page's bold;
 //   - the calendar never asks for staff work items and shows none;
 //   - connecting Google / Apple / Outlook is on the screen (the connect card
 //     while nothing is connected, else the Calendars section).
@@ -61,17 +61,17 @@ test('the calendar opens on a large date, calm type, no work items, connect on s
   const date = page.getByTestId('vcal-date');
   await expect(date).toBeVisible({ timeout: 45_000 });
   await expect(page.getByTestId('vcal-summary')).toBeVisible({ timeout: 45_000 });
-  expect((await date.innerText()).trim()).toMatch(new RegExp(`^${new Date().getDate()}\\b`));
+  expect((await date.innerText()).trim()).toMatch(new RegExp(`\\b${new Date().getDate()}\\b`)); // VTID-04952: the title carries weekday, day and month
 
   const heavy = await page.evaluate(() => {
     const root = document.querySelector('[data-testid="vcal-page"]')!;
     const out: string[] = [];
     root.querySelectorAll('*').forEach((el) => {
-      if (el.children.length === 0 && el.textContent?.trim() && Number(getComputedStyle(el).fontWeight) > 500) out.push(el.textContent.trim().slice(0, 40));
+      if (el.children.length === 0 && el.textContent?.trim() && Number(getComputedStyle(el).fontWeight) > 700) out.push(el.textContent.trim().slice(0, 40));
     });
     return out;
   });
-  expect(heavy, `text heavier than medium: ${heavy.join(' | ')}`).toEqual([]);
+  expect(heavy, `text heavier than bold: ${heavy.join(' | ')}`).toEqual([]);
 
   await expect.poll(() => windowCalls.length, { timeout: 20_000 }).toBeGreaterThan(0);
   expect(windowCalls.filter((u) => u.includes('include_work=true'))).toEqual([]);
