@@ -34,6 +34,65 @@ service or live user-facing endpoint:
 > inserting rows into the live `chat_messages` table and posting junk messages
 > into a real community group that real members could see. Never again.
 
+## ⚙️ AUTONOMY CONTRACT — TWO OWNER GATES (STANDING RULE — VTID-04947)
+
+Owner decision 2026-10-07: *"Run the processes end to end — only ask after the
+plan comes back from sparring, and after it is verified on staging, to confirm
+publish to production."* Applies to both repos and every Claude Code session.
+The absolute rule against testing on production and every production-safety
+rule still stand; this contract removes the questions in between, not the
+safety.
+
+**The owner is asked exactly two questions per change:**
+
+1. **Gate 1 — the sparred plan.** One message: final plan, every sparring
+   round's findings with the planner's answers, the verdict, the files in
+   scope, and the test plan. Nothing else is asked with it.
+2. **Gate 2 — "Staging verified — ready for deployment to production?"**
+   Built only from machine evidence: STAGING-VERIFY run link, test counts,
+   the verified commit, every commit between production and it, migrations
+   in the release, and a "Decisions taken" list. A change that deploys
+   nothing has no Gate 2; it is done when merged with green checks.
+
+**The owner's "yes" at Gate 1 is the standing instruction for everything up
+to Gate 2 for that plan's VTIDs.** It is recorded as the approval line in
+`docs/validation/<VTID>/plan-sparring.md` (with the plan hash) and in the
+ledger row's metadata. That record is an audit trail; the protection is the
+mechanical checks (CI gates, STAGING-VERIFY). After "yes", without asking:
+allocate the VTID(s) (citing the sparring record), set the ledger row
+in_progress/approved, implement, run the local checks, push, open the PR,
+mark it ready once checks are green, merge (or enable auto-merge), watch the
+staging deploy and STAGING-VERIFY, and fix forward on any failure.
+
+**Never ask the owner about:** VTIDs, branch names, PR titles, merge timing,
+re-running a check, fixing your own CI, test design, or which of two
+reasonable implementations to use inside the approved plan.
+
+**When unsure:**
+- *Unsure of a fact* (does X exist, what does Y do, did Z pass) → verify it
+  read-only in the code, the CI logs or the data first. Never guess and never
+  ask the owner something the code can answer.
+- *Unsure of intent inside the approved plan* → choose the most conservative
+  option (smaller change, existing pattern, nothing deleted) and list it under
+  "Decisions taken" in Gate 2.
+
+**Stop and ask mid-flight only for:** (a) work outside the approved plan that
+one more sparring round with the same partner does not converge on, (b) a
+production write not covered by the two gates, (c) a security or data-loss
+risk, (d) the same failure surviving 3 fix-forward attempts. Each such stop is
+one message with the evidence and a recommended answer.
+
+**After merge the session keeps going.** In a cloud session it arms a
+`send_later` self check-in about 8 minutes after merge and re-arms it every 5
+minutes, up to 2 hours, until STAGING-VERIFY has a result for the merge
+commit. Then it sends Gate 2 or fixes forward. It never sleep-polls. If the
+session ends first, any later session or the Operator Chat sends Gate 2 from
+the STAGING-VERIFY evidence.
+
+**"Yes" at Gate 2** → dispatch the production workflow pinned to the verified
+commit (see the scoping rules for in-session approval), then report the
+post-deploy check result in one line.
+
 ## Overview
 
 VITANA community app (branded "MAXINA - Longevity Community"). React/Vite SPA with 551+ screens spanning community, health, AI, messaging, wallet, and admin features.

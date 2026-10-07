@@ -23,7 +23,7 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const ANON = process.env.ANON;
 const EMAIL = process.env.E2E_EMAIL || 'e2e-test@vitana.dev';
-const PASS = process.env.E2E_PASS || 'VitanaE2eTest2026!';
+const PASS = process.env.E2E_PASS;
 const ITER = Number(process.env.ITER || 10);
 const PER_MSG_TIMEOUT_MS = 10_000;
 
