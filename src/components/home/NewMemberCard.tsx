@@ -23,6 +23,17 @@ export interface NewMemberCardProps {
   onOpen?: () => void;
 }
 
+/**
+ * Typographic guard for the welcome title: no space before closing punctuation
+ * and the last two words glued together, so a long first + last name can wrap
+ * but never leaves a lone word or a stray "!" on the second line.
+ */
+function tidyTitle(title: string): string {
+  return title
+    .replace(/\s+([!?.,:;])/g, "$1")
+    .replace(/\s+(\S+)$/, " $1");
+}
+
 export function NewMemberCard({
   userId,
   title,
@@ -72,7 +83,7 @@ export function NewMemberCard({
             <AvatarFallback className="bg-sys-feature-new-tint text-lg font-semibold text-sys-feature-new-accent">{displayInitial}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="text-base font-bold leading-tight text-foreground line-clamp-2 [text-wrap:balance]">{title}</p>
+            <p className="text-base font-bold leading-tight text-foreground line-clamp-2 [text-wrap:balance]">{tidyTitle(title)}</p>
             {summary && (
               <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{summary}</p>
             )}
