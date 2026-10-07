@@ -16,6 +16,8 @@ export interface NewMemberCardProps {
   userId: string;
   title: string;
   summary?: string | null;
+  /** Append a party emoji — only for our own "just joined" line, never a member's bio. */
+  celebrateSummary?: boolean;
   avatarUrl?: string | null;
   displayInitial: string;
   timestamp?: string;
@@ -38,6 +40,7 @@ export function NewMemberCard({
   userId,
   title,
   summary,
+  celebrateSummary,
   avatarUrl,
   displayInitial,
   timestamp,
@@ -87,7 +90,7 @@ export function NewMemberCard({
               <span aria-hidden="true">🤩</span> {tidyTitle(title)}
             </p>
             {summary && (
-              <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{summary}</p>
+              <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{summary}{celebrateSummary && <span aria-hidden="true"> 🎉</span>}</p>
             )}
           </div>
         </div>

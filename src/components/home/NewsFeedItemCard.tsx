@@ -88,6 +88,7 @@ export function NewsFeedItemCard({
         userId={item.user_id}
         title={t("newsCard.member.welcomeTitle", { name })}
         summary={item.bio || t("newsCard.member.joinedSummary", { name })}
+        celebrateSummary={!item.bio}
         avatarUrl={item.avatar_url}
         displayInitial={name.charAt(0).toUpperCase()}
         timestamp={timeAgo(item.published_at)}
