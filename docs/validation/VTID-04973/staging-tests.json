@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04973",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport (390x844): the News feed grid starts with an info card and no two info cards sit side by side in the first items (strict alternation is a Vitest property because a dismissed Vitana card is invisible to the ordering); the 'Did you know?' feed card shows the Vitana orb header and no 'You can:' / 'Du kannst:' lead-in line; read-only — nothing is clicked or written; skipped when the account's feed has no user post or no such card",
+      "spec": "tests/e2e/staging/vtid-04973-feed-order.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/feed-compose.test.ts src/components/home/FeatureAnnouncementCard.test.tsx src/components/home/NewMemberCard.test.tsx",
+      "reason": "composeFeed order (info card first, strict alternation, posts keep priority, extra feature/new-member cards stay in the stream, purity), the did-you-know Vitana header with no 'You can:' line while brand-new-feature keeps its intro, and unchanged NewMemberCard behaviour"
+    }
+  ]
+}
