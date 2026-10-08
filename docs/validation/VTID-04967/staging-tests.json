@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04967",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "calendar: on a phone the opened day panel is on screen (above the bottom bar, add button visible) in Month and Week",
+      "spec": "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Goldens and unit tests pin the in-place day panel; views.scroll.vtid-04967.test.tsx pins that opening a day scrolls the panel into view (once per open, again for another day, never on close, reduced-motion respected)."
+    }
+  ]
+}
