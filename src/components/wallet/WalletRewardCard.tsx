@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
+import { useInviteFriendShare } from '@/hooks/useInviteFriendShare';
 
 interface WalletRewardCardProps {
   id: string;
@@ -56,6 +57,7 @@ export function WalletRewardCard({
   onClick,
   onClaim
 }: WalletRewardCardProps) {
+  const { shareInvite } = useInviteFriendShare();
   
   const getTypeConfig = () => {
     switch (type) {
@@ -243,7 +245,14 @@ export function WalletRewardCard({
               {statusConfig.actionLabel}
             </Button>
             {type === "referral" && (
-              <Button size="sm" variant="outline">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  void shareInvite();
+                }}
+              >
                 <Share className="h-4 w-4 mr-1" />
                 {t('screens.wallet.share')}
               </Button>

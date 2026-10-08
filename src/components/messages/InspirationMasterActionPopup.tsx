@@ -8,7 +8,7 @@ import {
   ResponsiveDialogTrigger,
 } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
-import { Lightbulb, Plus, Edit3, Copy, Bookmark, Share2, Users, Sparkles } from "lucide-react";
+import { Lightbulb, Plus, Edit3, Copy, Bookmark, Users, Sparkles } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
 interface InspirationMasterActionPopupProps {
@@ -70,15 +70,6 @@ export function InspirationMasterActionPopup({ open, onOpenChange, trigger }: In
             >
               <Bookmark className="w-5 h-5" />
               <span className="text-sm">{t('screens.messages.saveCollection')}</span>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              className="h-16 flex-col gap-2"
-              onClick={() => handleAction("share-templates")}
-            >
-              <Share2 className="w-5 h-5" />
-              <span className="text-sm">{t('screens.messages.shareTemplates')}</span>
             </Button>
             
             <Button 

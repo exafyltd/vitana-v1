@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   X,
   Download,
-  Share2,
   MoreHorizontal,
   ChevronLeft,
   ChevronRight,
@@ -224,13 +223,6 @@ export function PhotoLightbox({
               className="text-white/85 hover:text-white hover:bg-white/10"
             >
               <Download className="h-4 w-4" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              className="text-white/85 hover:text-white hover:bg-white/10"
-            >
-              <Share2 className="h-4 w-4" />
             </Button>
             <Button 
               variant="ghost" 
