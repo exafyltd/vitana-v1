@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04983",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Wallet › Rewards › Shop renders the shop from the staging gateway (desktop + phone, read-only)",
+      "spec": "tests/e2e/staging/vtid-04983-reward-shop.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "shop component: items, balance and shortfall, age and address steps, redeem without a price, Shop tab replaces the sample-data tabs, DE/EN catalog parity",
+      "ref": "npx vitest run src/components/wallet/RewardShop.test.tsx",
+      "cwd": ".",
+      "reason": "Redeeming writes (orders, VTNA debits, Stripe), and staging shares the production database, so the redeem path is proven by Vitest and the gateway's SQL/Jest tests, never on staging."
+    }
+  ]
+}

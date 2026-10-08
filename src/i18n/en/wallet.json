@@ -79,7 +79,70 @@
       "capWeek": "{used} of {count} this week",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "rewardShop": {
+      "tab": "Shop",
+      "title": "Rewards shop",
+      "summary": "Spend the VTNA you've earned on rewards. Only earned VTNA counts, not purchased credits.",
+      "balance": "You've earned {amount} VTNA.",
+      "shortfall": "You need {amount} more VTNA.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "View",
+      "soldOut": "Sold out",
+      "redeem": "Redeem",
+      "payShipping": "Continue to shipping payment",
+      "cancel": "Cancel",
+      "loading": "Loading rewards…",
+      "error": "The shop couldn't be loaded.",
+      "empty": "The first rewards are coming soon.",
+      "ageBadge": "{age}+",
+      "birthDate": "Your date of birth",
+      "ageConfirm": "I confirm that I am at least {age} years old.",
+      "shippingTitle": "Shipping",
+      "noShipping": "We can't ship this reward in your currency yet.",
+      "country": "Country",
+      "address": {
+        "name": "Name",
+        "line1": "Street and number",
+        "line2": "Address line 2 (optional)",
+        "postal_code": "Postcode",
+        "city": "City"
+      },
+      "shippingFee": "Shipping: {money}",
+      "shippingNote": "You only pay for shipping. Your VTNA are taken only once the payment has gone through.",
+      "redeemed": "{item} redeemed",
+      "returnPaid": "Thank you! Your shipping is paid and your order is on its way.",
+      "returnCancelled": "The shipping payment was cancelled. No VTNA were taken.",
+      "ordersTitle": "Your orders",
+      "unknownItem": "Reward",
+      "fulfilment": {
+        "ship": "Shipped to you",
+        "event": "Event ticket",
+        "digital": "Digital"
+      },
+      "status": {
+        "awaiting_shipping_payment": "Shipping unpaid",
+        "paid": "Confirmed",
+        "fulfilling": "Being prepared",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "You haven't earned enough VTNA for this yet.",
+        "OUT_OF_STOCK": "This reward is out of stock right now.",
+        "UNDER_MIN_AGE": "This reward is only available from the stated age.",
+        "AGE_CONFIRMATION_REQUIRED": "Please enter your date of birth and confirm your age.",
+        "ADDRESS_REQUIRED": "Please enter your full address.",
+        "SHIPPING_NOT_AVAILABLE": "We can't ship this reward to that country.",
+        "ITEM_NOT_AVAILABLE": "This reward is no longer available.",
+        "NOT_ELIGIBLE": "This account can't redeem rewards.",
+        "CHECKOUT_FAILED": "The shipping payment couldn't be started. Please try again.",
+        "generic": "That didn't work. Please try again."
+      }
+    }
   },
   "_pending_review": {}
 }

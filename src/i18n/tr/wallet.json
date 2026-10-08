@@ -89,6 +89,132 @@
         "capToday": true,
         "capWeek": true
       }
+    },
+    "rewardShop": {
+      "tab": "Mağaza",
+      "title": "Ödül mağazası",
+      "summary": "Kazandığın VTNA'ları ödüllerle değiştir. Yalnızca kazanılan VTNA sayılır, satın alınan krediler sayılmaz.",
+      "balance": "{amount} VTNA kazandın.",
+      "shortfall": "{amount} VTNA daha gerekiyor.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "Gör",
+      "soldOut": "Tükendi",
+      "redeem": "Kullan",
+      "payShipping": "Kargo ödemesine geç",
+      "cancel": "İptal",
+      "loading": "Ödüller yükleniyor…",
+      "error": "Mağaza yüklenemedi.",
+      "empty": "İlk ödüller yakında burada.",
+      "ageBadge": "{age}+",
+      "birthDate": "Doğum tarihin",
+      "ageConfirm": "En az {age} yaşında olduğumu onaylıyorum.",
+      "shippingTitle": "Kargo",
+      "noShipping": "Bu ödülü henüz senin para biriminde gönderemiyoruz.",
+      "country": "Ülke",
+      "address": {
+        "name": "Ad",
+        "line1": "Sokak ve numara",
+        "line2": "Adres satırı 2 (isteğe bağlı)",
+        "postal_code": "Posta kodu",
+        "city": "Şehir",
+        "_pending_review": {
+          "name": true,
+          "line1": true,
+          "line2": true,
+          "postal_code": true,
+          "city": true
+        }
+      },
+      "shippingFee": "Kargo: {money}",
+      "shippingNote": "Yalnızca kargoyu ödersin. VTNA'ların ödeme tamamlandıktan sonra düşülür.",
+      "redeemed": "{item} kullanıldı",
+      "returnPaid": "Teşekkürler! Kargon ödendi, siparişin yolda.",
+      "returnCancelled": "Kargo ödemesi iptal edildi. Hiç VTNA düşülmedi.",
+      "ordersTitle": "Siparişlerin",
+      "unknownItem": "Ödül",
+      "fulfilment": {
+        "ship": "Sana gönderilir",
+        "event": "Etkinlik bileti",
+        "digital": "Dijital",
+        "_pending_review": {
+          "ship": true,
+          "event": true,
+          "digital": true
+        }
+      },
+      "status": {
+        "awaiting_shipping_payment": "Kargo ödenmedi",
+        "paid": "Onaylandı",
+        "fulfilling": "Hazırlanıyor",
+        "shipped": "Gönderildi",
+        "delivered": "Teslim edildi",
+        "cancelled": "İptal edildi",
+        "refunded": "İade edildi",
+        "_pending_review": {
+          "awaiting_shipping_payment": true,
+          "paid": true,
+          "fulfilling": true,
+          "shipped": true,
+          "delivered": true,
+          "cancelled": true,
+          "refunded": true
+        }
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "Bunun için henüz yeterli VTNA kazanmadın.",
+        "OUT_OF_STOCK": "Bu ödül şu an tükendi.",
+        "UNDER_MIN_AGE": "Bu ödül yalnızca belirtilen yaştan itibaren alınabilir.",
+        "AGE_CONFIRMATION_REQUIRED": "Doğum tarihini gir ve yaşını onayla.",
+        "ADDRESS_REQUIRED": "Adresinin tamamını gir.",
+        "SHIPPING_NOT_AVAILABLE": "Bu ödülü o ülkeye gönderemiyoruz.",
+        "ITEM_NOT_AVAILABLE": "Bu ödül artık mevcut değil.",
+        "NOT_ELIGIBLE": "Bu hesap ödül kullanamaz.",
+        "CHECKOUT_FAILED": "Kargo ödemesi başlatılamadı. Tekrar dene.",
+        "generic": "Olmadı. Tekrar dene.",
+        "_pending_review": {
+          "INSUFFICIENT_BALANCE": true,
+          "OUT_OF_STOCK": true,
+          "UNDER_MIN_AGE": true,
+          "AGE_CONFIRMATION_REQUIRED": true,
+          "ADDRESS_REQUIRED": true,
+          "SHIPPING_NOT_AVAILABLE": true,
+          "ITEM_NOT_AVAILABLE": true,
+          "NOT_ELIGIBLE": true,
+          "CHECKOUT_FAILED": true,
+          "generic": true
+        }
+      },
+      "_pending_review": {
+        "tab": true,
+        "title": true,
+        "summary": true,
+        "balance": true,
+        "shortfall": true,
+        "price": true,
+        "approx": true,
+        "view": true,
+        "soldOut": true,
+        "redeem": true,
+        "payShipping": true,
+        "cancel": true,
+        "loading": true,
+        "error": true,
+        "empty": true,
+        "ageBadge": true,
+        "birthDate": true,
+        "ageConfirm": true,
+        "shippingTitle": true,
+        "noShipping": true,
+        "country": true,
+        "shippingFee": true,
+        "shippingNote": true,
+        "redeemed": true,
+        "returnPaid": true,
+        "returnCancelled": true,
+        "ordersTitle": true,
+        "unknownItem": true
+      }
     }
   }
 }

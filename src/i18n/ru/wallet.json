@@ -89,6 +89,132 @@
         "capToday": true,
         "capWeek": true
       }
+    },
+    "rewardShop": {
+      "tab": "Магазин",
+      "title": "Магазин наград",
+      "summary": "Обменивай заработанные VTNA на награды. Считаются только заработанные VTNA, а не купленные кредиты.",
+      "balance": "Ты заработал(а) {amount} VTNA.",
+      "shortfall": "Тебе не хватает {amount} VTNA.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "Посмотреть",
+      "soldOut": "Распродано",
+      "redeem": "Обменять",
+      "payShipping": "Перейти к оплате доставки",
+      "cancel": "Отмена",
+      "loading": "Загружаем награды…",
+      "error": "Не удалось загрузить магазин.",
+      "empty": "Скоро здесь появятся первые награды.",
+      "ageBadge": "{age}+",
+      "birthDate": "Твоя дата рождения",
+      "ageConfirm": "Подтверждаю, что мне не меньше {age} лет.",
+      "shippingTitle": "Доставка",
+      "noShipping": "Пока мы не можем отправить эту награду в твоей валюте.",
+      "country": "Страна",
+      "address": {
+        "name": "Имя",
+        "line1": "Улица и дом",
+        "line2": "Доп. строка адреса (необязательно)",
+        "postal_code": "Индекс",
+        "city": "Город",
+        "_pending_review": {
+          "name": true,
+          "line1": true,
+          "line2": true,
+          "postal_code": true,
+          "city": true
+        }
+      },
+      "shippingFee": "Доставка: {money}",
+      "shippingNote": "Ты платишь только за доставку. VTNA списываются только после оплаты.",
+      "redeemed": "{item}: обменяно",
+      "returnPaid": "Спасибо! Доставка оплачена, заказ уже в пути.",
+      "returnCancelled": "Оплата доставки отменена. VTNA не списаны.",
+      "ordersTitle": "Твои заказы",
+      "unknownItem": "Награда",
+      "fulfilment": {
+        "ship": "Доставка тебе",
+        "event": "Билет на мероприятие",
+        "digital": "Цифровое",
+        "_pending_review": {
+          "ship": true,
+          "event": true,
+          "digital": true
+        }
+      },
+      "status": {
+        "awaiting_shipping_payment": "Доставка не оплачена",
+        "paid": "Подтверждено",
+        "fulfilling": "Готовится",
+        "shipped": "Отправлено",
+        "delivered": "Доставлено",
+        "cancelled": "Отменено",
+        "refunded": "Возвращено",
+        "_pending_review": {
+          "awaiting_shipping_payment": true,
+          "paid": true,
+          "fulfilling": true,
+          "shipped": true,
+          "delivered": true,
+          "cancelled": true,
+          "refunded": true
+        }
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "Ты ещё не заработал(а) достаточно VTNA для этого.",
+        "OUT_OF_STOCK": "Эта награда сейчас закончилась.",
+        "UNDER_MIN_AGE": "Эта награда доступна только с указанного возраста.",
+        "AGE_CONFIRMATION_REQUIRED": "Укажи дату рождения и подтверди свой возраст.",
+        "ADDRESS_REQUIRED": "Укажи полный адрес.",
+        "SHIPPING_NOT_AVAILABLE": "Мы не можем отправить эту награду в эту страну.",
+        "ITEM_NOT_AVAILABLE": "Эта награда больше недоступна.",
+        "NOT_ELIGIBLE": "С этого аккаунта нельзя обменивать награды.",
+        "CHECKOUT_FAILED": "Не удалось начать оплату доставки. Попробуй ещё раз.",
+        "generic": "Не получилось. Попробуй ещё раз.",
+        "_pending_review": {
+          "INSUFFICIENT_BALANCE": true,
+          "OUT_OF_STOCK": true,
+          "UNDER_MIN_AGE": true,
+          "AGE_CONFIRMATION_REQUIRED": true,
+          "ADDRESS_REQUIRED": true,
+          "SHIPPING_NOT_AVAILABLE": true,
+          "ITEM_NOT_AVAILABLE": true,
+          "NOT_ELIGIBLE": true,
+          "CHECKOUT_FAILED": true,
+          "generic": true
+        }
+      },
+      "_pending_review": {
+        "tab": true,
+        "title": true,
+        "summary": true,
+        "balance": true,
+        "shortfall": true,
+        "price": true,
+        "approx": true,
+        "view": true,
+        "soldOut": true,
+        "redeem": true,
+        "payShipping": true,
+        "cancel": true,
+        "loading": true,
+        "error": true,
+        "empty": true,
+        "ageBadge": true,
+        "birthDate": true,
+        "ageConfirm": true,
+        "shippingTitle": true,
+        "noShipping": true,
+        "country": true,
+        "shippingFee": true,
+        "shippingNote": true,
+        "redeemed": true,
+        "returnPaid": true,
+        "returnCancelled": true,
+        "ordersTitle": true,
+        "unknownItem": true
+      }
     }
   }
 }

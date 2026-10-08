@@ -6,73 +6,24 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
-import { WalletRewardCard } from "@/components/wallet/WalletRewardCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { CommissionForecastingCard } from "@/components/wallet/intelligence/CommissionForecastingCard";
-import { SocialEarningIntelligenceCard } from "@/components/wallet/intelligence/SocialEarningIntelligenceCard";
 import { EarningIntelligenceSplitScreen } from "@/components/wallet/intelligence/EarningIntelligenceSplitScreen";
-import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { isIAPRestricted } from "@/lib/appilix";
 import { VtnaRewardRules } from "@/components/wallet/VtnaRewardRules";
+import { RewardShop } from "@/components/wallet/RewardShop";
 import { t } from '@/lib/i18n-toast';
-
-const rewardsData = {
-  pending: [
-    {
-      id: "3",
-      type: "pending" as const,
-      title: "Referral Commission",
-      description: "Friend signed up for Premium plan - commission processing",
-      amount: "$25.00",
-      status: "pending" as const,
-      source: { name: "Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
-      dueDate: "Processing (3-5 days)"
-    },
-    {
-      id: "4",
-      type: "pending" as const, 
-      title: "Business Hub Revenue",
-      description: "January coaching session commissions",
-      amount: "$180.00",
-      status: "pending" as const,
-      dueDate: "Available Feb 1st"
-    }
-  ],
-  referral: [
-    {
-      id: "5",
-      type: "referral" as const,
-      title: "Share Your Link",
-      description: "Invite friends and earn $50 for each Premium subscription",
-      amount: "$50 per referral",
-      status: "available" as const,
-      category: "Referral Program"
-    },
-    {
-      id: "6",
-      type: "achievement" as const,
-      title: "Community Builder Achievement", 
-      description: "Refer 10 friends to unlock $500 bonus",
-      amount: "$500 bonus",
-      progress: 7,
-      maxProgress: 10,
-      status: "pending" as const,
-      category: "Achievement"
-    }
-  ]
-};
 
 function Rewards() {
   const [activeTab, setActiveTab] = useUrlTab("tab", "earned");
-  const [actionDialogOpen, setActionDialogOpen] = useState(false);
   const navigate = useNavigate();
+  // VTID-04983: back from Stripe Checkout for a shipped reward.
+  const [searchParams] = useSearchParams();
+  const shipping = searchParams.get("shipping");
+  const shippingReturn = shipping === "paid" || shipping === "cancelled" ? shipping : null;
 
   // Same as Wallet.tsx: the wallet stays hidden in the iPhone app until its
   // launch there; Android and web show it.
@@ -100,17 +51,13 @@ function Rewards() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder={t('screens.wallet.searchRewardsCommissionsAchievements')} />
           <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setActionDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            {t('screens.wallet.quickActions')}
-          </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
             <SplitBarTrigger value="earned">{t('screens.wallet.earnedRewards')}</SplitBarTrigger>
-            <SplitBarTrigger value="pending">{t('screens.wallet.pendingCommissions')}</SplitBarTrigger>
-            <SplitBarTrigger value="referral">{t('screens.wallet.withdrawalReferral')}</SplitBarTrigger>
+            {/* VTID-04983: spend earned VTNA. The former "pending" and "referral" tabs showed hardcoded sample data and are gone. */}
+            <SplitBarTrigger value="shop">{t('wallet.rewardShop.tab')}</SplitBarTrigger>
             <SplitBarTrigger value="intelligence">{t('screens.wallet.earningIntelligence')}</SplitBarTrigger>
           </SplitBarList>
 
@@ -119,44 +66,8 @@ function Rewards() {
             <VtnaRewardRules />
           </SplitBarContent>
 
-          <SplitBarContent value="pending">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <CommissionForecastingCard />
-                <WalletMotivationalBanner variant="rewards" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {rewardsData.pending.map((commission) => (
-                  <WalletRewardCard
-                    key={commission.id}
-                    {...commission}
-                    onClaim={() => console.log('Request payout:', commission.id)}
-                    onClick={() => console.log('Commission clicked:', commission.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </SplitBarContent>
-
-          <SplitBarContent value="referral">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <SocialEarningIntelligenceCard />
-                <WalletMotivationalBanner variant="rewards" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {rewardsData.referral.map((referral) => (
-                  <WalletRewardCard
-                    key={referral.id}
-                    {...referral}
-                    onClaim={() => console.log('Share referral:', referral.id)}
-                    onClick={() => console.log('Referral clicked:', referral.id)}
-                  />
-                ))}
-              </div>
-            </div>
+          <SplitBarContent value="shop">
+            <RewardShop shippingReturn={shippingReturn} />
           </SplitBarContent>
 
           <SplitBarContent value="intelligence">
@@ -164,57 +75,6 @@ function Rewards() {
           </SplitBarContent>
         </SplitBar>
 
-        {/* Action Dialog */}
-        <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t('screens.wallet.quickActions')}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              {activeTab === "pending" && (
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">{t('screens.wallet.requestPayoutForYourPendingCommissions')}</p>
-                  <div className="space-y-2">
-                    {rewardsData.pending.map((commission) => (
-                      <div key={commission.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{commission.title}</h4>
-                          <p className="text-sm text-muted-foreground">{commission.amount}</p>
-                          <p className="text-xs text-muted-foreground">{commission.dueDate}</p>
-                        </div>
-                        <Button size="sm" disabled={commission.status === "pending"}>
-                          {commission.status === "pending" ? "Processing" : "Request"}
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "referral" && (
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">{t('screens.wallet.shareYourReferralLinkEarnCommissions')}</p>
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h4 className="font-medium mb-2">{t('screens.wallet.yourReferralLink')}</h4>
-                    <div className="flex gap-2">
-                      <input 
-                        value="https://vitana.app/join/your-referral-code" 
-                        readOnly 
-                        className="flex-1 px-3 py-2 text-sm border rounded"
-                      />
-                      <Button size="sm" onClick={() => console.log('Copy link')}>
-                        {t('screens.wallet.copy')}
-                      </Button>
-                    </div>
-                  </div>
-                  <Button className="w-full" onClick={() => console.log('Share via social')}>
-                    {t('screens.wallet.shareViaSocialMedia')}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
         </div>
       </div>
     </AppLayout>

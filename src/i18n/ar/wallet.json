@@ -89,6 +89,132 @@
         "capToday": true,
         "capWeek": true
       }
+    },
+    "rewardShop": {
+      "tab": "المتجر",
+      "title": "متجر المكافآت",
+      "summary": "استبدل عملات VTNA التي ربحتها بمكافآت. تُحتسب VTNA المكتسبة فقط، وليس الأرصدة المشتراة.",
+      "balance": "لقد ربحت {amount} VTNA.",
+      "shortfall": "ينقصك {amount} VTNA.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "عرض",
+      "soldOut": "نفدت الكمية",
+      "redeem": "استبدال",
+      "payShipping": "متابعة إلى دفع الشحن",
+      "cancel": "إلغاء",
+      "loading": "جارٍ تحميل المكافآت…",
+      "error": "تعذّر تحميل المتجر.",
+      "empty": "ستتوفر أولى المكافآت قريبًا.",
+      "ageBadge": "{age}+",
+      "birthDate": "تاريخ ميلادك",
+      "ageConfirm": "أؤكد أن عمري {age} سنة على الأقل.",
+      "shippingTitle": "الشحن",
+      "noShipping": "لا يمكننا شحن هذه المكافأة بعملتك بعد.",
+      "country": "الدولة",
+      "address": {
+        "name": "الاسم",
+        "line1": "الشارع ورقم المبنى",
+        "line2": "سطر العنوان الثاني (اختياري)",
+        "postal_code": "الرمز البريدي",
+        "city": "المدينة",
+        "_pending_review": {
+          "name": true,
+          "line1": true,
+          "line2": true,
+          "postal_code": true,
+          "city": true
+        }
+      },
+      "shippingFee": "الشحن: {money}",
+      "shippingNote": "تدفع تكلفة الشحن فقط. لا تُخصم VTNA إلا بعد إتمام الدفع.",
+      "redeemed": "تم استبدال {item}",
+      "returnPaid": "شكرًا! تم دفع الشحن وطلبك في الطريق إليك.",
+      "returnCancelled": "أُلغي دفع الشحن. لم تُخصم أي VTNA.",
+      "ordersTitle": "طلباتك",
+      "unknownItem": "مكافأة",
+      "fulfilment": {
+        "ship": "يُشحن إليك",
+        "event": "تذكرة فعالية",
+        "digital": "رقمي",
+        "_pending_review": {
+          "ship": true,
+          "event": true,
+          "digital": true
+        }
+      },
+      "status": {
+        "awaiting_shipping_payment": "الشحن غير مدفوع",
+        "paid": "مؤكد",
+        "fulfilling": "قيد التحضير",
+        "shipped": "تم الشحن",
+        "delivered": "تم التسليم",
+        "cancelled": "ملغى",
+        "refunded": "مسترد",
+        "_pending_review": {
+          "awaiting_shipping_payment": true,
+          "paid": true,
+          "fulfilling": true,
+          "shipped": true,
+          "delivered": true,
+          "cancelled": true,
+          "refunded": true
+        }
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "لم تربح ما يكفي من VTNA لهذا بعد.",
+        "OUT_OF_STOCK": "هذه المكافأة نفدت حاليًا.",
+        "UNDER_MIN_AGE": "هذه المكافأة متاحة فقط من العمر المحدد.",
+        "AGE_CONFIRMATION_REQUIRED": "أدخل تاريخ ميلادك وأكد عمرك.",
+        "ADDRESS_REQUIRED": "أدخل عنوانك كاملًا.",
+        "SHIPPING_NOT_AVAILABLE": "لا يمكننا شحن هذه المكافأة إلى هذه الدولة.",
+        "ITEM_NOT_AVAILABLE": "هذه المكافأة لم تعد متوفرة.",
+        "NOT_ELIGIBLE": "لا يمكن لهذا الحساب استبدال المكافآت.",
+        "CHECKOUT_FAILED": "تعذّر بدء دفع الشحن. حاول مرة أخرى.",
+        "generic": "لم ينجح ذلك. حاول مرة أخرى.",
+        "_pending_review": {
+          "INSUFFICIENT_BALANCE": true,
+          "OUT_OF_STOCK": true,
+          "UNDER_MIN_AGE": true,
+          "AGE_CONFIRMATION_REQUIRED": true,
+          "ADDRESS_REQUIRED": true,
+          "SHIPPING_NOT_AVAILABLE": true,
+          "ITEM_NOT_AVAILABLE": true,
+          "NOT_ELIGIBLE": true,
+          "CHECKOUT_FAILED": true,
+          "generic": true
+        }
+      },
+      "_pending_review": {
+        "tab": true,
+        "title": true,
+        "summary": true,
+        "balance": true,
+        "shortfall": true,
+        "price": true,
+        "approx": true,
+        "view": true,
+        "soldOut": true,
+        "redeem": true,
+        "payShipping": true,
+        "cancel": true,
+        "loading": true,
+        "error": true,
+        "empty": true,
+        "ageBadge": true,
+        "birthDate": true,
+        "ageConfirm": true,
+        "shippingTitle": true,
+        "noShipping": true,
+        "country": true,
+        "shippingFee": true,
+        "shippingNote": true,
+        "redeemed": true,
+        "returnPaid": true,
+        "returnCancelled": true,
+        "ordersTitle": true,
+        "unknownItem": true
+      }
     }
   }
 }

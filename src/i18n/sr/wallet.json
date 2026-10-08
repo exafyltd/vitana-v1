@@ -89,6 +89,132 @@
         "capToday": true,
         "capWeek": true
       }
+    },
+    "rewardShop": {
+      "tab": "Prodavnica",
+      "title": "Prodavnica nagrada",
+      "summary": "Iskoristi zarađene VTNA za nagrade. Računaju se samo zarađeni VTNA, ne kupljeni krediti.",
+      "balance": "Zaradio/la si {amount} VTNA.",
+      "shortfall": "Nedostaje ti još {amount} VTNA.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "Pogledaj",
+      "soldOut": "Rasprodato",
+      "redeem": "Iskoristi",
+      "payShipping": "Nastavi na plaćanje dostave",
+      "cancel": "Otkaži",
+      "loading": "Učitavanje nagrada…",
+      "error": "Prodavnica nije mogla da se učita.",
+      "empty": "Prve nagrade stižu uskoro.",
+      "ageBadge": "{age}+",
+      "birthDate": "Tvoj datum rođenja",
+      "ageConfirm": "Potvrđujem da imam najmanje {age} godina.",
+      "shippingTitle": "Dostava",
+      "noShipping": "Ovu nagradu još ne možemo da pošaljemo u tvojoj valuti.",
+      "country": "Zemlja",
+      "address": {
+        "name": "Ime",
+        "line1": "Ulica i broj",
+        "line2": "Dodatak adresi (opciono)",
+        "postal_code": "Poštanski broj",
+        "city": "Grad",
+        "_pending_review": {
+          "name": true,
+          "line1": true,
+          "line2": true,
+          "postal_code": true,
+          "city": true
+        }
+      },
+      "shippingFee": "Dostava: {money}",
+      "shippingNote": "Plaćaš samo dostavu. VTNA se skidaju tek kada je plaćanje prošlo.",
+      "redeemed": "{item} iskorišćeno",
+      "returnPaid": "Hvala! Dostava je plaćena i tvoja porudžbina je na putu.",
+      "returnCancelled": "Plaćanje dostave je otkazano. Nijedan VTNA nije skinut.",
+      "ordersTitle": "Tvoje porudžbine",
+      "unknownItem": "Nagrada",
+      "fulfilment": {
+        "ship": "Šalje se",
+        "event": "Ulaznica za događaj",
+        "digital": "Digitalno",
+        "_pending_review": {
+          "ship": true,
+          "event": true,
+          "digital": true
+        }
+      },
+      "status": {
+        "awaiting_shipping_payment": "Dostava nije plaćena",
+        "paid": "Potvrđeno",
+        "fulfilling": "U pripremi",
+        "shipped": "Poslato",
+        "delivered": "Isporučeno",
+        "cancelled": "Otkazano",
+        "refunded": "Refundirano",
+        "_pending_review": {
+          "awaiting_shipping_payment": true,
+          "paid": true,
+          "fulfilling": true,
+          "shipped": true,
+          "delivered": true,
+          "cancelled": true,
+          "refunded": true
+        }
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "Još nisi zaradio/la dovoljno VTNA za ovo.",
+        "OUT_OF_STOCK": "Ova nagrada je trenutno rasprodata.",
+        "UNDER_MIN_AGE": "Ova nagrada je dostupna tek od navedenog uzrasta.",
+        "AGE_CONFIRMATION_REQUIRED": "Unesi datum rođenja i potvrdi svoj uzrast.",
+        "ADDRESS_REQUIRED": "Unesi celu adresu.",
+        "SHIPPING_NOT_AVAILABLE": "Ovu nagradu ne možemo da pošaljemo u tu zemlju.",
+        "ITEM_NOT_AVAILABLE": "Ova nagrada više nije dostupna.",
+        "NOT_ELIGIBLE": "Ovaj nalog ne može da koristi nagrade.",
+        "CHECKOUT_FAILED": "Plaćanje dostave nije moglo da počne. Pokušaj ponovo.",
+        "generic": "Nije uspelo. Pokušaj ponovo.",
+        "_pending_review": {
+          "INSUFFICIENT_BALANCE": true,
+          "OUT_OF_STOCK": true,
+          "UNDER_MIN_AGE": true,
+          "AGE_CONFIRMATION_REQUIRED": true,
+          "ADDRESS_REQUIRED": true,
+          "SHIPPING_NOT_AVAILABLE": true,
+          "ITEM_NOT_AVAILABLE": true,
+          "NOT_ELIGIBLE": true,
+          "CHECKOUT_FAILED": true,
+          "generic": true
+        }
+      },
+      "_pending_review": {
+        "tab": true,
+        "title": true,
+        "summary": true,
+        "balance": true,
+        "shortfall": true,
+        "price": true,
+        "approx": true,
+        "view": true,
+        "soldOut": true,
+        "redeem": true,
+        "payShipping": true,
+        "cancel": true,
+        "loading": true,
+        "error": true,
+        "empty": true,
+        "ageBadge": true,
+        "birthDate": true,
+        "ageConfirm": true,
+        "shippingTitle": true,
+        "noShipping": true,
+        "country": true,
+        "shippingFee": true,
+        "shippingNote": true,
+        "redeemed": true,
+        "returnPaid": true,
+        "returnCancelled": true,
+        "ordersTitle": true,
+        "unknownItem": true
+      }
     }
   }
 }
