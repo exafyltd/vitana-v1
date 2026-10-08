@@ -7,7 +7,6 @@ import {
   Headphones,
   Search,
   Bookmark,
-  Share2,
   Download,
   GraduationCap,
   FileText,
@@ -66,15 +65,6 @@ export function EducationMasterActionPopup({ open, onOpenChange }: EducationMast
       title: "My Bookmarks",
       description: "Access your saved articles and resources",
       icon: Bookmark,
-      action: () => {
-        onOpenChange(false);
-        navigate('/health/education');
-      }
-    },
-    {
-      title: "Share Resources",
-      description: "Share health content with friends and family",
-      icon: Share2,
       action: () => {
         onOpenChange(false);
         navigate('/health/education');

@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-04993",
+  "kind": "fix",
+  "paths": [
+    "src/components/BiomarkersMasterActionPopup.tsx",
+    "src/components/EducationMasterActionPopup.tsx",
+    "src/components/diary/PhotoLightbox.tsx",
+    "src/components/messages/InspirationMasterActionPopup.tsx",
+    "src/components/profile/shared/tabs/ProfileHealthTab.tsx",
+    "src/components/profile/shared/tabs/ProfilePostsTab.tsx",
+    "src/components/wallet/WalletRewardCard.tsx",
+    "src/pages/discover/ProviderProfile.tsx",
+    "src/hooks/useShareOrCopy.test.ts",
+    "src/hooks/useShareOrCopy.ts",
+    "src/lib/__guards__/share-button.allowlist.json",
+    "src/lib/__guards__/share-button.guard.test.ts",
+    "docs/validation/VTID-04993/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

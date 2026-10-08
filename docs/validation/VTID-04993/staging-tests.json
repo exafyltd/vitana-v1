@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04993",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "unit suite (vitest)",
+      "ref": "npm run test:unit",
+      "cwd": ".",
+      "reason": "Share buttons that did nothing now share. Staging is read-only and shares the production database, and a share opens the device share sheet, so the behaviour is pinned by vitest: useShareOrCopy.test.ts (native sheet, copy fallback, cancel, both failing) and the recurrence guard src/lib/__guards__/share-button.guard.test.ts (a Share button without a handler fails the build)."
+    }
+  ]
+}

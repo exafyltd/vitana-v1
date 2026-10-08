@@ -1,0 +1,3 @@
+{
+  "src/components/diary/PhotoPeekPanel.tsx": "the Share icon button is the trigger of a dropdown (Copy link / Share via); the menu items carry the handlers"
+}
