@@ -22,16 +22,14 @@
       "healthOrders": true,
       "commerce": true,
       "businessOverview": true,
-      "businessTeam": true,
-      "businessOrders": true,
       "businessInbox": true
     },
     "patientResults": "My Results",
     "healthOrders": "Health Test Orders",
     "commerce": "My business",
     "businessOverview": "Overview",
-    "businessTeam": "Team",
-    "businessOrders": "Orders",
+    "businessTeam": "团队",
+    "businessOrders": "订单",
     "businessInbox": "Inbox"
   }
 }

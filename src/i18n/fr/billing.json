@@ -129,26 +129,15 @@
       "bannerBody": "3 mois de Premium gratuits avec le code {code}.",
       "spotsRemaining": "{remaining} places restantes sur {max}",
       "celebration": {
-        "_pending_review": {
-          "badge": true,
-          "title": true,
-          "bodyFree": true,
-          "bodyPaid": true,
-          "valueLabel": true,
-          "value": true,
-          "until": true,
-          "ctaPremium": true,
-          "ctaContinue": true
-        },
-        "badge": "Founding Member #{seat} of {max}",
-        "title": "Congratulations!",
-        "bodyFree": "You are one of Vitana’s first {max} members – and that earns you a full year of Premium as a gift.",
-        "bodyPaid": "You are one of Vitana’s first {max} members. Thank you for being here from the start!",
-        "valueLabel": "Your gift",
-        "value": "{value} – one year of Premium free",
-        "until": "Premium active until {date}",
-        "ctaPremium": "Discover Premium",
-        "ctaContinue": "Let’s go"
+        "badge": "Membre fondateur #{seat} sur {max}",
+        "title": "Félicitations !",
+        "bodyFree": "Tu es l'un des {max} premiers membres de Vitana – et cela te vaut une année complète de Premium en cadeau.",
+        "bodyPaid": "Tu es l'un des {max} premiers membres de Vitana. Merci d'être là depuis le début !",
+        "valueLabel": "Ton cadeau",
+        "value": "{value} – un an de Premium gratuit",
+        "until": "Premium actif jusqu'au {date}",
+        "ctaPremium": "Découvre Premium",
+        "ctaContinue": "C'est parti !"
       }
     },
     "launchGrant": {
