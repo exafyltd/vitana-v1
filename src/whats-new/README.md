@@ -58,6 +58,18 @@ rewording, improvements to an existing feature, partial work (behind a flag,
 "step 1 of N"), refactors, admin/dev-only work, and anything invisible.
 If in doubt, skip: a missed card is cheap, a wrong one goes to every member.
 
+## Holding an entry
+
+To hold an entry back, move its file from `entries/` to `held/`
+(`git mv src/whats-new/entries/<id>.json src/whats-new/held/<id>.json`). The
+build only reads `entries/`, so a held entry is not in `/whats-new.json` and no
+card is posted once the production build without it is live. To release it,
+move it back. The `held/` folder is created on demand and disappears from git
+when it is empty. The id must still equal the file name, and an entry whose
+`added` is more than 14 days old when it is released is never published, so
+update `added` when you release one. A card that was already published stays
+published: holding cannot recall a card or a push.
+
 ## Guard rails (gateway side)
 
 - Entries older than 14 days (by `added`) are never published — a late deploy

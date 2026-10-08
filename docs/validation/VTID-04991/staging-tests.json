@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04991",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/whats-new/whats-new.test.ts src/whats-new/draft-entry.test.ts",
+      "reason": "Four What's New entry files move from entries/ to held/ (not read by the builder) and the README gains a note; no served app code changes. These suites build the manifest from the committed entries and keep the entry validator, the du-form/length rules and the drafter green; the standard community-app smoke run still confirms the deployed shell is unaffected."
+    }
+  ]
+}
