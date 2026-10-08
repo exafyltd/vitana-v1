@@ -165,6 +165,33 @@ export async function createCalendarEntry(input: NewCalendarEntry, role: string 
   return { id: String((body.data as { id?: string } | undefined)?.id ?? "") };
 }
 
+/**
+ * VTID-04995: what a time slot collides with. Own entries carry a title; busy
+ * blocks from another role or an outside calendar never do.
+ */
+export interface CalendarConflict {
+  kind: "own" | "busy" | "external";
+  title: string | null;
+  start_time: string;
+  end_time: string | null;
+}
+
+export async function fetchCalendarConflicts(
+  start: Date,
+  end: Date | null,
+  role: string | null,
+  excludeEventId?: string,
+): Promise<CalendarConflict[]> {
+  const qs = new URLSearchParams({
+    start_time: start.toISOString(),
+    end_time: (end ?? new Date(start.getTime() + 60 * 60 * 1000)).toISOString(),
+  });
+  if (excludeEventId) qs.set("exclude_event_id", excludeEventId);
+  const body = await authedFetch(`/api/v1/calendar/conflicts?${qs}`, role);
+  const list = (body as { conflicts?: unknown }).conflicts;
+  return Array.isArray(list) ? (list as CalendarConflict[]) : [];
+}
+
 export type PillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
 
 /** VTID-04915: what completing an entry did to the Vitana Index (null when not recomputed). */

@@ -70,7 +70,7 @@ export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string 
             ✕
           </button>
         </div>
-        <MobileEventForm initialDate={day} onCancel={onClose} onSubmit={(e) => !create.isPending && create.mutate(e)} />
+        <MobileEventForm initialDate={day} role={role} onCancel={onClose} onSubmit={(e) => !create.isPending && create.mutate(e)} />
       </div>
     </div>
   );

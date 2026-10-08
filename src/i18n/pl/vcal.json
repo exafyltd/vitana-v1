@@ -77,6 +77,12 @@
       "ends": "Premium się kończy",
       "trialEnds": "Okres próbny się kończy"
     },
+    "overlap": {
+      "title": "To nachodzi na siebie",
+      "own": "{{title}} · {{time}}",
+      "busy": "Zajęte · {{time}}",
+      "external": "Zajęte (inny kalendarz) · {{time}}"
+    },
     "empty": {
       "title": "Nic zaplanowanego – spokojny dzień",
       "hint": "Powiedz Vitanie, co planujesz, a ona to doda."

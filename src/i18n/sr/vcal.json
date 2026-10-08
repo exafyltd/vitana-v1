@@ -77,6 +77,12 @@
       "ends": "Premium se završava",
       "trialEnds": "Probni period se završava"
     },
+    "overlap": {
+      "title": "Ovo se preklapa",
+      "own": "{{title}} · {{time}}",
+      "busy": "Zauzeto · {{time}}",
+      "external": "Zauzeto (drugi kalendar) · {{time}}"
+    },
     "empty": {
       "title": "Ništa nije planirano – miran dan",
       "hint": "Reci Vitani šta planiraš i ona će to dodati."

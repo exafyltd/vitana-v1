@@ -77,6 +77,12 @@
       "ends": "Premium sona eriyor",
       "trialEnds": "Deneme süresi bitiyor"
     },
+    "overlap": {
+      "title": "Bu çakışıyor",
+      "own": "{{title}} · {{time}}",
+      "busy": "Meşgul · {{time}}",
+      "external": "Meşgul (başka takvim) · {{time}}"
+    },
     "empty": {
       "title": "Planlanmış bir şey yok – sakin bir gün",
       "hint": "Ne planladığını Vitana'ya söyle, o eklesin."

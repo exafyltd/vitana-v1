@@ -79,6 +79,12 @@
       "ends": "Premium se termine",
       "trialEnds": "L'essai se termine"
     },
+    "overlap": {
+      "title": "Ça chevauche",
+      "own": "{{title}} · {{time}}",
+      "busy": "Occupé · {{time}}",
+      "external": "Occupé (autre agenda) · {{time}}"
+    },
     "empty": {
       "title": "Rien de prévu – une journée calme",
       "hint": "Dis à Vitana ce que tu prévois, elle l'ajoutera."
