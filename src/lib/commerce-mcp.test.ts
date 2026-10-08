@@ -14,6 +14,8 @@ import {
   fetchMcpReady,
   parseConsentDecision,
   parseConsentDetails,
+  redirectHostOf,
+  chatgptPluginUrl,
 } from './commerce-mcp';
 
 const read = (p: string) => readFileSync(resolve(process.cwd(), p), 'utf8');
@@ -124,5 +126,35 @@ describe('wiring (VTID-04848)', () => {
   it('the consent route sits under /commerce, behind sign-in', () => {
     expect(CONNECT_AUTHORIZE_PATH).toBe('/commerce/connect/authorize');
     expect(app).toContain('<Route path="/commerce/connect/authorize" element={<AuthGuard><CommerceConnectAuthorize /></AuthGuard>} />');
+  });
+});
+
+describe('redirectHostOf (VTID-04970)', () => {
+  it('shows the host the code is delivered to, with a port when there is one', () => {
+    expect(redirectHostOf('https://chatgpt.com/connector/oauth/abc')).toBe('chatgpt.com');
+    expect(redirectHostOf('https://claude.ai/api/mcp/auth_callback')).toBe('claude.ai');
+    expect(redirectHostOf('http://localhost:3118/callback')).toBe('localhost:3118');
+  });
+  it('shows nothing for a missing, malformed or non-web redirect', () => {
+    expect(redirectHostOf(null)).toBeNull();
+    expect(redirectHostOf('')).toBeNull();
+    expect(redirectHostOf('not a url')).toBeNull();
+    expect(redirectHostOf('cursor://anysphere.cursor-retrieval/oauth')).toBeNull();
+  });
+});
+
+describe('chatgptPluginUrl (VTID-04970)', () => {
+  it('is hidden until a listing link is configured', () => {
+    expect(chatgptPluginUrl(undefined)).toBeNull();
+    expect(chatgptPluginUrl('')).toBeNull();
+  });
+  it('accepts only an https link on an OpenAI host', () => {
+    expect(chatgptPluginUrl('https://chatgpt.com/plugins/vitanaland')).toBe('https://chatgpt.com/plugins/vitanaland');
+    expect(chatgptPluginUrl('https://developers.openai.com/x')).toBe('https://developers.openai.com/x');
+    expect(chatgptPluginUrl('http://chatgpt.com/x')).toBeNull();
+    expect(chatgptPluginUrl('https://chatgpt.com.evil.example/x')).toBeNull();
+    expect(chatgptPluginUrl('https://evilchatgpt.com/x')).toBeNull();
+    expect(chatgptPluginUrl('javascript:alert(1)')).toBeNull();
+    expect(chatgptPluginUrl('nonsense')).toBeNull();
   });
 });

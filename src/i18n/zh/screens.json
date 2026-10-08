@@ -11226,6 +11226,7 @@
       },
       "mcpConnect": {
         "cta": "连接你的 AI 助手",
+        "chatgptCta": "通过 ChatGPT 连接",
         "manualCta": "手动注册",
         "badge": "推荐",
         "title": "只需一步：把 Vitanaland 的 MCP 地址复制到你的 AI 助手中。",
@@ -13339,6 +13340,7 @@
       "canDo2": "添加和修改产品与服务",
       "canDo3": "查看你的设置进度",
       "youConfirm": "提交审核始终由你亲自确认。合作伙伴条款只能在 Vitanaland 上由你接受。",
+      "redirectsTo": "你做出决定后，我们会把你送回：{{host}}。请确认这是你要连接的应用。",
       "approve": "连接",
       "deny": "取消",
       "loading": "请稍候…",
