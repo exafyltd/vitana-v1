@@ -13270,7 +13270,7 @@
       "canDo2": "adicionar e alterar produtos e serviços",
       "canDo3": "ver em que ponto está sua configuração",
       "youConfirm": "O envio para verificação você sempre confirma. Os termos de parceiro você aceita só aqui na Vitanaland.",
-      "redirectsTo": "Depois da tua decisão, enviamos-te de volta para: {{host}}. Confirma que é a app que queres ligar.",
+      "redirectsTo": "Depois da sua decisão, vamos levar você de volta para: {{host}}. Confira se é o app que você quer conectar.",
       "approve": "Conectar",
       "deny": "Cancelar",
       "loading": "Um momento …",
