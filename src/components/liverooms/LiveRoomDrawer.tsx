@@ -55,7 +55,7 @@ import {
 import { cn } from "@/lib/utils";
 import { differenceInMinutes } from 'date-fns';
 import type { LiveRoom } from "./LiveRoomCard";
-import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { useAuth } from "@/context/AuthProvider";
 import {
   useMyStreamSubscriptions,
@@ -63,7 +63,6 @@ import {
   useSubscribeToStream,
   useUnsubscribeFromStream,
 } from "@/hooks/useStreamSubscription";
-import { useCreateReminder } from "@/hooks/useReminders";
 import { FollowButton } from "@/components/social/FollowButton";
 import { InterestedPeopleSheet } from "@/components/liverooms/InterestedPeopleSheet";
 import { useStreamSubscribers } from "@/hooks/useStreamSubscribers";
@@ -117,7 +116,6 @@ export function LiveRoomDrawer({
   const { data: subCounts } = useStreamSubscriberCounts(room?.id ? [room.id] : []);
   const subscribeStream = useSubscribeToStream();
   const unsubscribeStream = useUnsubscribeFromStream();
-  const { mutateAsync: createReminder } = useCreateReminder();
   const isNotifying = !!(room && mySubs?.has(room.id));
   const subscriberCount = room ? (subCounts?.[room.id] ?? 0) : 0;
   // Real faces for the "Who's going" row of a scheduled room (the same RPC the
@@ -163,19 +161,7 @@ export function LiveRoomDrawer({
         notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
       } else {
         await subscribeStream.mutateAsync(room.id);
-        // Best-effort personal reminder ~10 min before start, mirroring the card
-        // flow in LiveRooms.tsx so drawer subscribers actually get nudged (not
-        // just counted). Failure here must not fail the subscribe.
-        if (room.scheduledTime) {
-          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
-          if (remindMs > Date.now()) {
-            createReminder({
-              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
-              scheduled_for_iso: new Date(remindMs).toISOString(),
-              description: room.title,
-            }).catch((e) => console.warn('[notify] reminder create failed:', e));
-          }
-        }
+        // The calendar entry (DB trigger) already reminds 10 min before; no second personal reminder (VTID-04977).
         notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
       }
     } catch (e) {

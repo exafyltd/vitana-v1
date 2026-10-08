@@ -37,8 +37,7 @@ import {
   useSubscribeToStream,
   useUnsubscribeFromStream,
 } from '@/hooks/useStreamSubscription';
-import { useCreateReminder } from '@/hooks/useReminders';
-import { lookup, notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export const LIVE_ROOM_EVENT_TYPE = 'live_room';
 
@@ -243,7 +242,6 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className }: EventLiveR
   const { data: mySubs } = useMyStreamSubscriptions();
   const { mutateAsync: subscribe } = useSubscribeToStream();
   const { mutateAsync: unsubscribe } = useUnsubscribeFromStream();
-  const { mutateAsync: createReminder } = useCreateReminder();
   const room: LiveRoom = { ...baseRoom, interestedCount: counts[baseRoom.id] ?? 0 };
   const isCreator = room.host.id === user?.id;
   const manage = () => navigate(`/comm/live-rooms?live=${encodeURIComponent(room.id)}`);
@@ -259,16 +257,7 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className }: EventLiveR
         notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
       } else {
         await subscribe(room.id);
-        if (room.scheduledTime) {
-          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
-          if (remindMs > Date.now()) {
-            createReminder({
-              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
-              scheduled_for_iso: new Date(remindMs).toISOString(),
-              description: room.title,
-            }).catch((e) => console.warn('[notify] reminder create failed:', e));
-          }
-        }
+        // The calendar entry (DB trigger) already reminds 10 min before; no second personal reminder (VTID-04977).
         notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
       }
     } catch (e) {

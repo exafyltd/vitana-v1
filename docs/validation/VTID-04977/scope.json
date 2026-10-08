@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04977",
+  "kind": "fix",
+  "paths": [
+    "src/components/liverooms/LiveRoomDrawer.tsx",
+    "src/components/events/EventsLiveRooms.tsx",
+    "src/pages/community/LiveRooms.tsx",
+    "src/components/liverooms/erinnern-no-duplicate-reminder.vtid-04977.test.ts",
+    "docs/validation/VTID-04977/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
