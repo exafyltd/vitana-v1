@@ -1,0 +1,20 @@
+{
+  "vtid": "VTID-04972",
+  "kind": "feature",
+  "paths": [
+    "src/index.css",
+    "tailwind.config.ts",
+    "src/components/home/NewMemberCard.tsx",
+    "tests/e2e/staging/vtid-04957-feed-cards.staging.spec.ts",
+    "tests/e2e/staging/vtid-04972-card-colours.staging.spec.ts",
+    "docs/validation/VTID-04972/**"
+  ],
+  "sparring_record": "docs/validation/VTID-04972/plan-sparring.md",
+  "weakens_tests": [
+    {
+      "file": "tests/e2e/staging/vtid-04957-feed-cards.staging.spec.ts",
+      "reason": "The member-card surface assertion was pinned to the pale --sys-vitana-card colour, which this change deliberately replaces; the equality check is swapped for a stricter lavender-hue + not-the-pale-tint check (sparring finding F1)."
+    }
+  ],
+  "red_green_exempt": []
+}

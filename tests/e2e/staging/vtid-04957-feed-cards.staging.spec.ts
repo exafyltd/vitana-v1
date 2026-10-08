@@ -108,8 +108,13 @@ for (const size of [
       test.skip(true, 'no new-member card in the feed for this account');
     }
     expect(m!.expected, 'probe colour did not resolve').toMatch(/^rgb/);
-    // Surface equals the Vitana-recommends card colour (--sys-vitana-card), not grey.
-    expect(m!.actual).toBe(m!.expected);
+    // Surface is lavender (blue above red, clearly tinted) and no longer the pale
+    // Vitana-recommends tint (VTID-04972 made it bolder).
+    const [mr, , mb] = m!.actual.match(/\d+/g)!.map(Number);
+    const mc = m!.actual.match(/\d+/g)!.map(Number);
+    expect(mb, `surface ${m!.actual} is not lavender`).toBeGreaterThan(mr);
+    expect(Math.max(...mc.slice(0, 3)) - Math.min(...mc.slice(0, 3)), `surface ${m!.actual} is washed out`).toBeGreaterThanOrEqual(18);
+    expect(m!.actual, 'card fell back to the pale Vitana tint').not.toBe(m!.expected);
     // Title: no space before closing punctuation, never a lone word / "!" on line two.
     expect(m!.text).not.toMatch(/\s[!?.,:;]/);
     expect(m!.lineCount).toBeLessThanOrEqual(2);
