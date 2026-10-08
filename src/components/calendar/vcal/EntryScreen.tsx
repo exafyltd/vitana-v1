@@ -23,7 +23,7 @@ import { fmtDate } from "@/lib/locale-format";
 import { activateOrbGuide } from "@/lib/orbActivate";
 import type { CalendarEntryPatch, CalendarWindowItem, ShareToFeedInput } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
-import { itemEmoji, sourceLabel } from "./labels";
+import { entryTitle, itemEmoji, sourceLabel } from "./labels";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
 import { canEditEntry, canRemoveEntry, entryTimeState, isEndedSourceEntry, sourceActionOf } from "./entry-actions";
 import { ShareToFeedPanel } from "./ShareToFeedPanel";
@@ -128,7 +128,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={e.title}
+      aria-label={entryTitle(e)}
       className="fixed inset-0 z-[60] flex flex-col overflow-y-auto"
       style={{ background: SURFACE.page, color: SURFACE.ink }}
       data-testid="vcal-entry-screen"
@@ -152,7 +152,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           {itemEmoji(item)}
         </div>
         <h1 className="m-0 text-xl font-bold leading-tight tracking-tight">
-          {e.title}
+          {entryTitle(e)}
         </h1>
         <div className="flex flex-col gap-1 text-base">
           <span>📅 {fmtDate(item.start_time, { weekday: "long", day: "numeric", month: "long" })}</span>
@@ -468,7 +468,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 feature: "calendar_entry",
                 state: entryTimeState(item, now),
                 kind: sourceActionOf(item, now)?.kind ?? (e.source_type || "other"),
-                title: e.title,
+                title: entryTitle(e),
               })
             }
             className={`h-[52px] rounded-2xl text-sm ${e.location ? "" : "col-span-2"}`}

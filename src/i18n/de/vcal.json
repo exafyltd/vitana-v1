@@ -63,7 +63,13 @@
       "assistant": "Mit Vitana eingetragen",
       "community": "Community",
       "journey": "Deine Journey",
-      "reminder": "Deine Erinnerung"
+      "reminder": "Deine Erinnerung",
+      "subscription": "Dein Abo"
+    },
+    "subscription": {
+      "renews": "Premium verlängert sich",
+      "ends": "Premium endet",
+      "trialEnds": "Testzeit endet"
     },
     "empty": {
       "title": "Nichts geplant – ein ruhiger Tag",

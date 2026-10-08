@@ -27,9 +27,30 @@ export function sourceLabel(item: CalendarWindowItem): string | null {
       return t("vcal.source.journey");
     case "reminder":
       return t("vcal.source.reminder");
+    case "subscription":
+      return t("vcal.source.subscription");
     default:
       return null;
   }
+}
+
+/**
+ * VTID-04994: entries the system writes from a member's subscription carry an
+ * English fallback title in the database; the app shows the localised one,
+ * chosen by metadata.kind. Everything else shows its own title.
+ */
+export function entryTitle(e: { title?: string | null; source_type?: string | null; metadata?: Record<string, unknown> | null }): string {
+  if (e.source_type === "subscription") {
+    switch (e.metadata?.kind) {
+      case "renews":
+        return t("vcal.subscription.renews");
+      case "ends":
+        return t("vcal.subscription.ends");
+      case "trial_ends":
+        return t("vcal.subscription.trialEnds");
+    }
+  }
+  return e.title ?? "";
 }
 
 export function itemEmoji(item: CalendarWindowItem): string {

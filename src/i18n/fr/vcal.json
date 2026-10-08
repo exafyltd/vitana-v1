@@ -69,9 +69,15 @@
       "community": "Communauté",
       "journey": "Ton parcours",
       "reminder": "Ton rappel",
+      "subscription": "Ton abonnement",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium se renouvelle",
+      "ends": "Premium se termine",
+      "trialEnds": "L'essai se termine"
     },
     "empty": {
       "title": "Rien de prévu – une journée calme",

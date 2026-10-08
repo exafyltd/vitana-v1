@@ -63,7 +63,13 @@
       "assistant": "Added with Vitana",
       "community": "Community",
       "journey": "Your journey",
-      "reminder": "Your reminder"
+      "reminder": "Your reminder",
+      "subscription": "Your subscription"
+    },
+    "subscription": {
+      "renews": "Premium renews",
+      "ends": "Premium ends",
+      "trialEnds": "Trial ends"
     },
     "empty": {
       "title": "Nothing planned – a calm day",

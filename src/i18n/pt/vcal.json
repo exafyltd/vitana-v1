@@ -67,9 +67,15 @@
       "community": "Comunidade",
       "journey": "Sua jornada",
       "reminder": "Seu lembrete",
+      "subscription": "Sua assinatura",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium renova",
+      "ends": "Premium termina",
+      "trialEnds": "O teste termina"
     },
     "empty": {
       "title": "Nada planejado – um dia tranquilo",

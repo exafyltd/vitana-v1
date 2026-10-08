@@ -67,9 +67,15 @@
       "community": "المجتمع",
       "journey": "رحلتك",
       "reminder": "تذكيرك",
+      "subscription": "اشتراكك",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "يتجدد Premium",
+      "ends": "ينتهي Premium",
+      "trialEnds": "تنتهي الفترة التجريبية"
     },
     "empty": {
       "title": "لا شيء مخطط – يوم هادئ",
