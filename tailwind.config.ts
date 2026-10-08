@@ -160,6 +160,12 @@ export default {
 							card: 'hsl(var(--sys-feature-tip-card))',
 							'card-border': 'hsl(var(--sys-feature-tip-card-border))'
 						}
+					},
+					member: {
+						accent: 'hsl(var(--sys-member-accent))',
+						tint: 'hsl(var(--sys-member-tint))',
+						card: 'hsl(var(--sys-member-card))',
+						'card-border': 'hsl(var(--sys-member-card-border))'
 					}
 				},
 				util: {

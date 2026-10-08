@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-04972",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport (390x844): the News feed's 'New in the community' and 'Did you know?' card surfaces are bold lavender (blue above red, channel spread of at least 18), and neither equals the pale --sys-vitana-card tint; read-only — nothing is clicked or written; each card is skipped when it is not in this account's feed",
+      "spec": "tests/e2e/staging/vtid-04972-card-colours.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "the VTID-04957 spec stays valid after the palette change: member-card surface is lavender (no longer pinned to the pale Vitana tint), title has no space before '!' and never leaves a lone word on the second line on iPhone and Samsung widths, no horizontal overflow; the Did-you-know card is lavender not amber; read-only",
+      "spec": "tests/e2e/staging/vtid-04957-feed-cards.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/home/NewMemberCard.test.tsx",
+      "reason": "behaviour of the card (Say hello, View profile, card tap, title tidy rule) is unchanged by the colour swap"
+    }
+  ]
+}
