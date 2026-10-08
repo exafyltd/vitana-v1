@@ -8,7 +8,9 @@
     "src/i18n/*/vcal.json",
     "i18n-source-stamps/*.json",
     "src/whats-new/entries/reminders-in-calendar.json",
-    "docs/validation/VTID-04978/**"
+    "docs/validation/VTID-04978/**",
+    "src/whats-new/README.md",
+    "CLAUDE.md"
   ],
   "weakens_tests": [],
   "red_green_exempt": []

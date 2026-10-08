@@ -1,6 +1,6 @@
 # What's New — automatic "Brand New Feature" cards (VTID-04733)
 
-Every user-facing addition or redesign ships with **one file** in `entries/`.
+Every **finished, new feature** (or redesign) a member will notice ships with **one file** in `entries/`. Fixes, partial work and anything still being finished get **no** card (owner rule 2026-10-08).
 Nothing else is needed: once the build carrying it is live in production, the
 gateway's daily `whats-new` job turns it into a "Brand New Feature" News Feed
 card plus a push to every tenant member, in their own language.
