@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04994",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Display half of VTID-04994 (source label and localised titles for subscription entries). Staging is read-only and shares the production database, so no subscription is created there; labels.subscription.vtid-04994.test.ts and entry-actions.test.ts pin the label, the per-kind titles and the read-only handling."
+    }
+  ]
+}

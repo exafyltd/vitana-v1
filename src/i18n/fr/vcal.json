@@ -69,9 +69,21 @@
       "community": "Communauté",
       "journey": "Ton parcours",
       "reminder": "Ton rappel",
+      "subscription": "Ton abonnement",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium se renouvelle",
+      "ends": "Premium se termine",
+      "trialEnds": "L'essai se termine"
+    },
+    "overlap": {
+      "title": "Ça chevauche",
+      "own": "{{title}} · {{time}}",
+      "busy": "Occupé · {{time}}",
+      "external": "Occupé (autre agenda) · {{time}}"
     },
     "empty": {
       "title": "Rien de prévu – une journée calme",

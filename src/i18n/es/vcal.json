@@ -68,9 +68,21 @@
       "community": "Comunidad",
       "journey": "Tu camino",
       "reminder": "Tu recordatorio",
+      "subscription": "Tu suscripción",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium se renueva",
+      "ends": "Premium termina",
+      "trialEnds": "La prueba termina"
+    },
+    "overlap": {
+      "title": "Esto se solapa",
+      "own": "{{title}} · {{time}}",
+      "busy": "Ocupado · {{time}}",
+      "external": "Ocupado (otro calendario) · {{time}}"
     },
     "empty": {
       "title": "Nada planeado – un día tranquilo",

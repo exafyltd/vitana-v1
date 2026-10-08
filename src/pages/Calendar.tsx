@@ -493,6 +493,7 @@ export default function CalendarPage() {
           onOpenSource={(path) => navigate(path)}
           onShare={(i, input) => share.mutate({ item: i, input })}
           sharing={share.isPending}
+          role={currentRole ?? null}
         />
       )}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}

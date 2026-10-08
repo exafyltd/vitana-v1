@@ -159,4 +159,11 @@ describe('index.html and nginx.conf keep the rollout guarantees (VTID-04989)', (
     const block = nginx.slice(nginx.indexOf('location = /boot-recover.js'));
     expect(block).toMatch(/add_header Cache-Control "no-cache" always;\s*try_files \$uri =404;/);
   });
+
+  it('the prod apex check gets a URL on every trigger (manual dispatch included)', () => {
+    const wf = readFileSync(path.join(ROOT, '.github/workflows/AWS-PROD-DEPLOY-FRONTEND.yml'), 'utf8');
+    const dispatch = wf.slice(wf.indexOf('  workflow_dispatch:'), wf.indexOf('\npermissions:'));
+    expect(dispatch).toMatch(/\n {6}apex_url:\n/);
+    expect(wf).toContain(`verify-rollout-guarantees.sh "\${{ inputs.apex_url || 'https://vitanaland.com' }}"`);
+  });
 });

@@ -20,8 +20,10 @@ import { useWallet } from "@/hooks/useWallet";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { useShareOrCopy } from '@/hooks/useShareOrCopy';
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
+  const { shareOrCopy } = useShareOrCopy({ contentId: id ?? 'provider', contentType: 'provider' });
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -233,7 +235,12 @@ export default function ProviderProfile() {
                     <MessageCircle className="h-4 w-4 mr-2" />
                     {t('screens.discover.message')}
                   </Button>
-                  <Button size="lg" variant="outline">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    aria-label={t('screens.profile.share')}
+                    onClick={() => shareOrCopy({ title: provider.name, url: `${window.location.origin}/discover/provider/${encodeURIComponent(String(provider.id))}` })}
+                  >
                     <Share2 className="h-4 w-4" />
                   </Button>
                 </div>

@@ -13,6 +13,8 @@ import {
 import { cn } from "@/lib/utils";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { t } from "@/lib/i18n-toast";
+import { OverlapWarning } from "@/components/calendar/vcal/OverlapWarning";
+import { useOverlap } from "@/components/calendar/vcal/useOverlap";
 
 import { fmtDate, formatDate } from '@/lib/locale-format';
 interface MobileEventFormProps {
@@ -20,6 +22,8 @@ interface MobileEventFormProps {
   onCancel: () => void;
   /** Pre-fill with a specific date (e.g. from month-view tap) */
   initialDate?: Date;
+  /** VTID-04995: active role for the overlap check. */
+  role?: string | null;
 }
 
 const EVENT_TYPES: { value: CalendarEvent['event_type'] }[] = [
@@ -60,7 +64,7 @@ function addOneHour(time: string): string {
   return `${String(newH).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 
-export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEventFormProps) {
+export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }: MobileEventFormProps) {
   const now = new Date();
   const defaultStart = roundToNext15(now);
 
@@ -71,6 +75,14 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
   const [location, setLocation] = useState('');
   const [eventType, setEventType] = useState<CalendarEvent['event_type']>('personal');
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const slot = (time: string) => {
+    const [h, m] = time.split(':').map(Number);
+    const d = new Date(date);
+    d.setHours(h, m, 0, 0);
+    return d;
+  };
+  const overlap = useOverlap(slot(startTime), slot(endTime), role);
 
   const handleSubmit = () => {
     if (!title.trim()) return;
@@ -202,6 +214,8 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
           </select>
         </div>
       </div>
+
+      <OverlapWarning conflicts={overlap} />
 
       {/* Location (optional) */}
       <div>

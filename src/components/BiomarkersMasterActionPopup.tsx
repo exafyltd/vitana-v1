@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Calendar, Download, Share2, TrendingUp, Stethoscope } from "lucide-react";
+import { FileText, Calendar, Download, TrendingUp, Stethoscope } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
 
@@ -34,17 +34,6 @@ export function BiomarkersMasterActionPopup({ open, onOpenChange }: BiomarkersMa
         onOpenChange(false);
       },
       color: "from-green-500/20 to-emerald-500/20"
-    },
-    {
-      title: "Share with Doctor",
-      description: "Send results to your healthcare provider",
-      icon: Share2,
-      action: () => {
-        // Implement sharing functionality
-        console.log("Sharing with doctor...");
-        onOpenChange(false);
-      },
-      color: "from-purple-500/20 to-indigo-500/20"
     },
     {
       title: "Track Trends",

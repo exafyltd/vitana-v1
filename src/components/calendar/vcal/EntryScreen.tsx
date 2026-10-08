@@ -23,7 +23,9 @@ import { fmtDate } from "@/lib/locale-format";
 import { activateOrbGuide } from "@/lib/orbActivate";
 import type { CalendarEntryPatch, CalendarWindowItem, ShareToFeedInput } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
-import { itemEmoji, sourceLabel } from "./labels";
+import { entryTitle, itemEmoji, sourceLabel } from "./labels";
+import { OverlapWarning } from "./OverlapWarning";
+import { useOverlap } from "./useOverlap";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
 import { canEditEntry, canRemoveEntry, entryTimeState, isEndedSourceEntry, sourceActionOf } from "./entry-actions";
 import { ShareToFeedPanel } from "./ShareToFeedPanel";
@@ -48,10 +50,12 @@ interface Props {
   /** VTID-04916: post the event to the news feed. */
   onShare?: (item: CalendarWindowItem, input: ShareToFeedInput) => void;
   sharing?: boolean;
+  /** VTID-04995: active role, so overlap warnings use the same lens as the screen. */
+  role?: string | null;
 }
 
 
-export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource, onShare, sharing }: Props) {
+export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource, onShare, sharing, role = null }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const e = item.event!;
   const style = KIND_STYLE[entryKind(e)];
@@ -94,6 +98,14 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
     !!draftStart &&
     !Number.isNaN(draftStart.getTime()) &&
     (!draftEnd || (!Number.isNaN(draftEnd.getTime()) && draftEnd.getTime() > draftStart.getTime()));
+  const spanMs = item.end_time ? Date.parse(item.end_time) - Date.parse(item.start_time) : 0;
+  const moveOverlap = useOverlap(
+    picking && pickedValid ? picked : null,
+    picking && pickedValid && picked ? new Date(picked.getTime() + (spanMs > 0 ? spanMs : 0)) : null,
+    role,
+    item.event_id,
+  );
+  const editOverlap = useOverlap(editing && draftValid ? draftStart : null, editing && draftValid ? draftEnd : null, role, item.event_id);
   const saveEdit = () => {
     if (!draftValid || !draftStart) return;
     onEdit!(item, {
@@ -128,7 +140,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={e.title}
+      aria-label={entryTitle(e)}
       className="fixed inset-0 z-[60] flex flex-col overflow-y-auto"
       style={{ background: SURFACE.page, color: SURFACE.ink }}
       data-testid="vcal-entry-screen"
@@ -152,7 +164,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           {itemEmoji(item)}
         </div>
         <h1 className="m-0 text-xl font-bold leading-tight tracking-tight">
-          {e.title}
+          {entryTitle(e)}
         </h1>
         <div className="flex flex-col gap-1 text-base">
           <span>📅 {fmtDate(item.start_time, { weekday: "long", day: "numeric", month: "long" })}</span>
@@ -248,6 +260,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             <span className="text-sm" style={{ color: style.ink }}>
               {t("vcal.move.keepsLength")}
             </span>
+            <OverlapWarning conflicts={moveOverlap} />
             <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
@@ -385,6 +398,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 className="w-full rounded-2xl bg-white px-3 py-2 text-base text-slate-900"
               />
             </label>
+            <OverlapWarning conflicts={editOverlap} />
             {!draftValid && (
               <span className="text-sm" style={{ color: style.ink }} role="alert">
                 {t("vcal.edit.invalid")}
@@ -468,7 +482,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 feature: "calendar_entry",
                 state: entryTimeState(item, now),
                 kind: sourceActionOf(item, now)?.kind ?? (e.source_type || "other"),
-                title: e.title,
+                title: entryTitle(e),
               })
             }
             className={`h-[52px] rounded-2xl text-sm ${e.location ? "" : "col-span-2"}`}

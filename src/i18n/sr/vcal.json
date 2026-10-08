@@ -67,9 +67,21 @@
       "community": "Zajednica",
       "journey": "Tvoje putovanje",
       "reminder": "Tvoj podsetnik",
+      "subscription": "Tvoja pretplata",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium se obnavlja",
+      "ends": "Premium se završava",
+      "trialEnds": "Probni period se završava"
+    },
+    "overlap": {
+      "title": "Ovo se preklapa",
+      "own": "{{title}} · {{time}}",
+      "busy": "Zauzeto · {{time}}",
+      "external": "Zauzeto (drugi kalendar) · {{time}}"
     },
     "empty": {
       "title": "Ništa nije planirano – miran dan",

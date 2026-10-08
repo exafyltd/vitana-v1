@@ -67,9 +67,21 @@
       "community": "Topluluk",
       "journey": "Yolculuğun",
       "reminder": "Hatırlatıcın",
+      "subscription": "Aboneliğin",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium yenileniyor",
+      "ends": "Premium sona eriyor",
+      "trialEnds": "Deneme süresi bitiyor"
+    },
+    "overlap": {
+      "title": "Bu çakışıyor",
+      "own": "{{title}} · {{time}}",
+      "busy": "Meşgul · {{time}}",
+      "external": "Meşgul (başka takvim) · {{time}}"
     },
     "empty": {
       "title": "Planlanmış bir şey yok – sakin bir gün",

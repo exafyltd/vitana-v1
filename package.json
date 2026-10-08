@@ -25,7 +25,7 @@
     "test": "vitest run",
     "test:unit": "vitest run",
     "test:gate": "node --test scripts/ci/pr-gate/__tests__/*.test.mjs",
-    "test:calendar": "vitest run src/components/calendar/__regression__ src/components/calendar/calendar-entry.test.ts src/lib/cached-access-token.test.ts src/components/calendar/vcal/guidance.test.ts src/components/calendar/vcal/sections.test.tsx src/components/calendar/vcal/ProviderLogos.test.tsx src/components/calendar/vcal/typography.test.ts src/lib/index-look.test.ts src/components/calendar/vcal/vcal.test.ts src/components/calendar/vcal/entry-actions.test.ts src/components/calendar/vcal/ShareToFeedPanel.test.tsx src/hooks/useCalendarEvents.error-logging-abort.test.ts src/hooks/useCalendarEvents.idempotency-error-logging.test.ts",
+    "test:calendar": "vitest run src/components/calendar/vcal/OverlapWarning.vtid-04995.test.tsx src/components/calendar/vcal/useOverlap.vtid-04995.test.tsx src/components/calendar/__regression__ src/components/calendar/calendar-entry.test.ts src/lib/cached-access-token.test.ts src/components/calendar/vcal/guidance.test.ts src/components/calendar/vcal/sections.test.tsx src/components/calendar/vcal/ProviderLogos.test.tsx src/components/calendar/vcal/typography.test.ts src/lib/index-look.test.ts src/components/calendar/vcal/vcal.test.ts src/components/calendar/vcal/entry-actions.test.ts src/components/calendar/vcal/ShareToFeedPanel.test.tsx src/hooks/useCalendarEvents.error-logging-abort.test.ts src/hooks/useCalendarEvents.idempotency-error-logging.test.ts",
     "test:unit:watch": "vitest",
     "test:unit:coverage": "vitest run --coverage",
     "test:analytics-client": "node scripts/analytics-client-regression.mjs",

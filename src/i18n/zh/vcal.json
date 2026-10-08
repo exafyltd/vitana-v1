@@ -67,9 +67,21 @@
       "community": "社区",
       "journey": "你的旅程",
       "reminder": "你的提醒",
+      "subscription": "你的订阅",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium 将续订",
+      "ends": "Premium 将到期",
+      "trialEnds": "试用期结束"
+    },
+    "overlap": {
+      "title": "时间有重叠",
+      "own": "{{title}} · {{time}}",
+      "busy": "忙碌 · {{time}}",
+      "external": "忙碌（其他日历）· {{time}}"
     },
     "empty": {
       "title": "没有安排——平静的一天",

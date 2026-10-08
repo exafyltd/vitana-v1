@@ -67,9 +67,21 @@
       "community": "Сообщество",
       "journey": "Твой путь",
       "reminder": "Твоё напоминание",
+      "subscription": "Твоя подписка",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium продлевается",
+      "ends": "Premium заканчивается",
+      "trialEnds": "Пробный период заканчивается"
+    },
+    "overlap": {
+      "title": "Это пересекается",
+      "own": "{{title}} · {{time}}",
+      "busy": "Занято · {{time}}",
+      "external": "Занято (другой календарь) · {{time}}"
     },
     "empty": {
       "title": "Ничего не запланировано – спокойный день",

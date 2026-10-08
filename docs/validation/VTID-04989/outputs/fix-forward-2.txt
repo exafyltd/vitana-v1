@@ -1,0 +1,14 @@
+VTID-04989 fix-forward 2 — prod apex check got an empty URL
+
+Prod deploy run 37854124126 (commit_sha=9a184ae1709f652bc61c28b62e1bcfc765fa2144, owner-approved Gate 2):
+  Build/push/roll: success (image awsdr-9a184ae1709f)
+  Bundle check: /assets/index-DqVml3Td.js HTTP 200; 10/10 samples serve it (before: index-CCxvqv9k.js)
+  Rollback: skipped (deploy healthy)
+  Apex check: FAILED before any request —
+    scripts/ci/verify-rollout-guarantees.sh: line 14: 1: base url
+Root cause: #1292 added `apex_url` to the workflow_call inputs only. A manual
+workflow_dispatch has no such input, so `${{ inputs.apex_url }}` was "".
+Fix: add apex_url to workflow_dispatch inputs; the step falls back to
+https://vitanaland.com when the input is empty.
+Test: src/lib/boot-recover.test.ts "the prod apex check gets a URL on every trigger"
+  on main's workflow: 1 failed | 11 passed; with the fix: 12 passed.

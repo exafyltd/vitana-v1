@@ -14,6 +14,7 @@ import { useProfilePosts, ProfilePost } from "@/hooks/useProfilePosts";
 import { usePostInteractions, PostComment } from "@/hooks/usePostInteractions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/context/AuthProvider";
+import { useShareOrCopy } from "@/hooks/useShareOrCopy";
 import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
 import { FeedMedia } from "@/components/media/FeedMedia";
 import { renderMentions } from "@/components/feed/MentionText";
@@ -170,6 +171,7 @@ function PostCardWithInteractions({
   const { user } = useAuth();
   const navigate = useNavigate();
   const { isLiked, toggleLike, comments, addComment, isAddingComment, deleteComment } = usePostInteractions(post.id);
+  const { shareOrCopy } = useShareOrCopy({ contentId: post.id, contentType: 'profile_post' });
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [commentMentions, setCommentMentions] = useState<Mention[]>([]);
@@ -190,13 +192,11 @@ function PostCardWithInteractions({
   };
 
   const handleShare = async () => {
-    const url = window.location.href;
-    try {
-      await navigator.clipboard.writeText(url);
-      toast({ title: translate('common.copied', 'Link copied!') });
-    } catch {
-      // fallback
-    }
+    // VTID-04993: share THIS post (its own page), not the profile you are on.
+    await shareOrCopy({
+      title: (post.content || '').trim().slice(0, 80) || profile.name || 'Vitana',
+      url: `${window.location.origin}/post/post/${encodeURIComponent(post.id)}`,
+    });
   };
 
   return (

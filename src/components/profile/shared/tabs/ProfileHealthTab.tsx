@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings, Share2, Trophy, TrendingUp, Users } from "lucide-react";
+import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings, Trophy, TrendingUp, Users } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { t } from '@/lib/i18n-toast';
@@ -179,10 +179,6 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
                   <div className="font-medium text-sm text-foreground">{t('screens.profile.latestAchievement')}</div>
                   <div className="text-xs text-muted-foreground mt-0.5">{t('screens.profile.text30dayWellnessStreakCompleted')}</div>
                 </div>
-                <Button size="sm" variant="ghost" className="gap-2 rounded-full hover:bg-white/50 dark:hover:bg-slate-800/50">
-                  <Share2 className="h-3 w-3" />
-                  {t('screens.profile.share')}
-                </Button>
               </div>
             </div>
           </CardContent>
