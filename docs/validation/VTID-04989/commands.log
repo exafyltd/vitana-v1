@@ -1,0 +1,8 @@
+# local, 2026-10-08 (session sandbox)
+apt-get install nginx-light                      # nginx 1.24 for a real config test
+nginx -t -p <tmp> -c <tmp>/nginx.conf            # wrapper including vitana-v1 nginx.conf → syntax ok
+curl -D - http://127.0.0.1:18080/...             # outputs/nginx-local.txt
+npx vite build --outDir <tmp>/dist               # built in 59 s; outputs/build-order.txt
+node rollout-sim.mjs                             # Chromium against local nginx + real build; outputs/rollout-sim.txt
+scripts/ci/verify-rollout-guarantees.sh ...      # fix / main nginx.conf / current staging; outputs/verify-script.txt
+npx vitest run src/lib/boot-recover.test.ts      # 11/11; 3 fail with main's nginx.conf + index.html (mutation check)

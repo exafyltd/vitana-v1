@@ -1,0 +1,4 @@
+A fix (local nginx):           exit 0 — script first, served as JS, missing asset 404 no-store (x2)
+B origin/main nginx.conf:      exit 1 — "missing asset request 1/2 is cacheable (no cache-control)"
+C current staging (pre-merge): exit 1 — no /boot-recover.js; served as text/html; missing asset max-age=14400, second request cf-cache-status: HIT
+D real build + fixed nginx:    exit 0
