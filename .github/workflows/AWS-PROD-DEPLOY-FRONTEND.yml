@@ -292,7 +292,19 @@ jobs:
           # the first script on the page.
           BUNDLE=$(grep -oE 'src="/assets/index-[^"]+\.js"' /tmp/index.html | head -1 | sed 's/src="//;s/"//')
           [ -n "$BUNDLE" ] || { echo "::error::no JS bundle reference found in index.html"; exit 1; }
-          curl -s "$FRONTEND$BUNDLE" -o /tmp/bundle.js
+          # VTID-04989: record what the CDN returned. A 404 cached at the
+          # runner's Cloudflare location (left by an old task during the
+          # rollout into the no-store fix) is not the deployed build; confirm
+          # against the origin with a cache-busting query and say which.
+          FETCH=$(curl -s -o /tmp/bundle.js -D /tmp/bundle.h -w "%{http_code}" "$FRONTEND$BUNDLE" || echo 000)
+          CFS=$(grep -i '^cf-cache-status:' /tmp/bundle.h | tr -d '\r' | awk '{print $2}' || true)
+          echo "Bundle $BUNDLE: HTTP $FETCH, cf-cache-status=${CFS:-none}"
+          if [ "$FETCH" != "200" ]; then
+            echo "::warning::$FRONTEND$BUNDLE answered $FETCH through the CDN (cf-cache-status=${CFS:-none}) — checking the origin directly."
+            FETCH=$(curl -s -o /tmp/bundle.js -w "%{http_code}" "$FRONTEND$BUNDLE?deploy-verify=$GITHUB_RUN_ID" || echo 000)
+            echo "Bundle $BUNDLE?deploy-verify=$GITHUB_RUN_ID: HTTP $FETCH"
+            [ "$FETCH" = "200" ] || { echo "::error::$BUNDLE is not served by the deployed build (HTTP $FETCH)"; exit 1; }
+          fi
           if ! grep -q "$GATEWAY_HOST" /tmp/bundle.js; then
             echo "::error::Live bundle does NOT contain $GATEWAY_HOST — the frontend is still pointing elsewhere. Check ALB host rule / CDN cache / task rollout."
             exit 1
