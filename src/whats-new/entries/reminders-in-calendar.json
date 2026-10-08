@@ -1,0 +1,13 @@
+{
+  "id": "reminders-in-calendar",
+  "added": "2026-10-08",
+  "title": {
+    "en": "Your reminders now show in your calendar",
+    "de": "Deine Erinnerungen stehen jetzt in deinem Kalender"
+  },
+  "description": {
+    "en": "Ask Vitana to remind you of something, or set a reminder yourself, and it appears in your Maxina calendar at the right time. Snooze it and it moves with you.",
+    "de": "Bitte Vitana, dich an etwas zu erinnern, oder lege selbst eine Erinnerung an – sie erscheint zur richtigen Zeit in deinem Maxina-Kalender. Schiebst du sie auf, wandert sie mit."
+  },
+  "deepLink": "/calendar"
+}
