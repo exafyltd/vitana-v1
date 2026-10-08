@@ -132,4 +132,37 @@ test('the calendar has only the + button and uses the app font', async ({ page, 
   await expect(page.getByRole('tab').nth(1)).toHaveAttribute('aria-selected', 'true');
   await expect(page.getByTestId('vcal-add-day')).toBeVisible();
   expect((await box()).height).toBe(day.height);
+
+  // VTID-04967: on a phone the opened panel must be ON SCREEN, not just in the page — it opens below the
+  // grid/list, and used to sit behind the bottom bar so a tap looked like nothing happened. Reads only.
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [tab, list, dayTestId, nth] of [
+    [2, 'vcal-month', 'vcal-month-day', 15],
+    [1, 'vcal-week', 'vcal-week-day', 5],
+  ] as const) {
+    await page.getByRole('tab').nth(tab).click();
+    await expect(page.getByTestId(list)).toBeVisible({ timeout: 20_000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.getByTestId(dayTestId).nth(nth).click();
+    await expect(page.getByTestId('vcal-day-panel')).toBeVisible({ timeout: 10_000 });
+    await page.waitForTimeout(1_500); // the scroll into view is smooth
+    const seen = await page.evaluate(() => {
+      const vh = window.innerHeight;
+      // the fixed bottom bar: a fixed, near-full-width element that touches the bottom of the screen
+      const bars = [...document.querySelectorAll('*')]
+        .filter((e) => getComputedStyle(e).position === 'fixed')
+        .map((e) => e.getBoundingClientRect())
+        .filter((r) => r.width > window.innerWidth * 0.8 && Math.abs(r.bottom - vh) < 2 && r.height > 30 && r.height < 140);
+      const barTop = bars.length ? Math.min(...bars.map((r) => r.top)) : vh;
+      const rect = (id: string) => document.querySelector(`[data-testid="${id}"]`)?.getBoundingClientRect();
+      const panel = rect('vcal-day-panel');
+      const add = rect('vcal-add-day');
+      return { barTop, panelTop: panel?.top ?? -1, panelBottom: panel?.bottom ?? -1, addTop: add?.top ?? -1, addBottom: add?.bottom ?? -1 };
+    });
+    expect(seen.panelTop, `${list}: panel top is on screen`).toBeGreaterThanOrEqual(0);
+    expect(seen.panelBottom, `${list}: panel ends above the bottom bar`).toBeLessThanOrEqual(seen.barTop + 1);
+    expect(seen.addTop, `${list}: add button top is on screen`).toBeGreaterThanOrEqual(0);
+    expect(seen.addBottom, `${list}: add button is above the bottom bar`).toBeLessThanOrEqual(seen.barTop);
+    await page.getByTestId('vcal-day-panel-close').click();
+  }
 });

@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04967",
+  "kind": "fix",
+  "paths": [
+    "src/components/calendar/vcal/views.tsx",
+    "src/components/calendar/vcal/views.scroll.vtid-04967.test.tsx",
+    "tests/e2e/staging/vtid-04812-calendar-add-and-type.staging.spec.ts",
+    "docs/validation/VTID-04967/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

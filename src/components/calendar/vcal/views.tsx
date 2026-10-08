@@ -8,8 +8,10 @@
  * VTID-04956: in the Week and the Month a tapped day opens a panel IN PLACE
  * (the member stays on that screen): every entry of that day one by one and a
  * button to add one for that day. The Day view is back to its earlier content.
+ * VTID-04967: the opened panel scrolls into view — on a phone it opens below the
+ * grid/list, behind the bottom bar, and a member saw "nothing opened".
  */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Plus, X } from "lucide-react";
 import { addDays } from "date-fns";
 import { t } from "@/lib/i18n-toast";
@@ -107,8 +109,23 @@ export function DayPanel({
   const entries = dayItems.filter((i) => !isMilestone(i));
   const label = fmtDate(day, { weekday: "long", day: "numeric", month: "long" });
   const shortLabel = fmtDate(day, { weekday: "short", day: "numeric", month: "short" }); // fits the add button on a phone
+  const ref = useRef<HTMLDivElement>(null);
+  const dayKey = day.getTime();
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof el.scrollIntoView !== "function") return;
+    const reduce = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // "nearest": no scroll when the panel is already fully visible (desktop); the scroll margins keep it clear of the bottom bar and the + button.
+    el.scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
+  }, [dayKey]);
   return (
-    <div className={`${INDEX_CARD} flex min-w-0 flex-col gap-3`} data-testid="vcal-day-panel" role="region" aria-label={label}>
+    <div
+      ref={ref}
+      className={`${INDEX_CARD} flex min-w-0 scroll-mb-36 scroll-mt-4 flex-col gap-3`}
+      data-testid="vcal-day-panel"
+      role="region"
+      aria-label={label}
+    >
       <div className="flex items-center justify-between gap-2">
         <h2 className="min-w-0 truncate text-lg font-bold text-slate-900">{label}</h2>
         <button
