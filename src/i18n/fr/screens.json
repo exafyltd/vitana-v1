@@ -857,7 +857,17 @@
       "mental": "Mental",
       "next3": "Prochains 3 jours",
       "month": "30 jours",
-      "future": "Futur"
+      "future": "Futur",
+      "_pending_review": {
+        "appUpdatedTitle": true,
+        "appUpdatedBody": true,
+        "somethingWentWrongTitle": true,
+        "somethingWentWrongBody": true
+      },
+      "appUpdatedTitle": "App updated — please reload",
+      "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
+      "somethingWentWrongTitle": "Something went wrong",
+      "somethingWentWrongBody": "An unexpected error occurred. Try reloading the page."
     },
     "admin": {
       "usingDefaults": "Par défaut",

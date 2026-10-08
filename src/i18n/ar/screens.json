@@ -857,7 +857,17 @@
       "mental": "الصحة العقلية",
       "next3": "الأيام الثلاثة القادمة",
       "month": "30 يومًا",
-      "future": "المستقبل"
+      "future": "المستقبل",
+      "_pending_review": {
+        "appUpdatedTitle": true,
+        "appUpdatedBody": true,
+        "somethingWentWrongTitle": true,
+        "somethingWentWrongBody": true
+      },
+      "appUpdatedTitle": "App updated — please reload",
+      "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
+      "somethingWentWrongTitle": "Something went wrong",
+      "somethingWentWrongBody": "An unexpected error occurred. Try reloading the page."
     },
     "admin": {
       "usingDefaults": "باستخدام الإعدادات الافتراضية",

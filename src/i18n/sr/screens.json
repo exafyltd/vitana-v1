@@ -853,7 +853,17 @@
       "mental": "Mentalno",
       "next3": "Sledeća 3 dana",
       "month": "30 dana",
-      "future": "Budućnost"
+      "future": "Budućnost",
+      "_pending_review": {
+        "appUpdatedTitle": true,
+        "appUpdatedBody": true,
+        "somethingWentWrongTitle": true,
+        "somethingWentWrongBody": true
+      },
+      "appUpdatedTitle": "App updated — please reload",
+      "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
+      "somethingWentWrongTitle": "Something went wrong",
+      "somethingWentWrongBody": "An unexpected error occurred. Try reloading the page."
     },
     "admin": {
       "usingDefaults": "Koriste se podrazumevane vrednosti",

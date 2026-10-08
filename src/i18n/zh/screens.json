@@ -857,7 +857,17 @@
       "mental": "心理",
       "next3": "未来3天",
       "month": "30天",
-      "future": "未来"
+      "future": "未来",
+      "_pending_review": {
+        "appUpdatedTitle": true,
+        "appUpdatedBody": true,
+        "somethingWentWrongTitle": true,
+        "somethingWentWrongBody": true
+      },
+      "appUpdatedTitle": "App updated — please reload",
+      "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
+      "somethingWentWrongTitle": "Something went wrong",
+      "somethingWentWrongBody": "An unexpected error occurred. Try reloading the page."
     },
     "admin": {
       "usingDefaults": "使用默认设置",

@@ -99,13 +99,8 @@
       "joinRoom": "Join now",
       "openRoom": "Go to live room",
       "endedChip": "Ended",
-      "endedNotice": "This event is over and no longer active.",
-      "endedToast": "Event is in the past and not active",
-      "_pending_review": {
-        "endedChip": true,
-        "endedNotice": true,
-        "endedToast": true
-      }
+      "endedNotice": "This event has ended and is no longer active.",
+      "endedToast": "This event is in the past and not active."
     },
     "work": {
       "deploy_staging": "Staging deploy",
@@ -346,10 +341,7 @@
       "openRoom": "View room",
       "joinRoom": "Join now",
       "unavailable": "This event is no longer available.",
-      "untitled": "Event",
-      "_pending_review": {
-        "untitled": true
-      }
+      "untitled": "Event"
     }
   }
 }
