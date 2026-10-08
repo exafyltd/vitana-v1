@@ -62,7 +62,8 @@
       "plan": "Aus deinem Plan",
       "assistant": "Mit Vitana eingetragen",
       "community": "Community",
-      "journey": "Deine Journey"
+      "journey": "Deine Journey",
+      "reminder": "Deine Erinnerung"
     },
     "empty": {
       "title": "Nichts geplant – ein ruhiger Tag",

@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-04978",
+  "kind": "feature",
+  "paths": [
+    "src/components/calendar/vcal/labels.ts",
+    "src/components/calendar/vcal/labels.reminder.vtid-04978.test.ts",
+    "src/components/calendar/vcal/entry-actions.test.ts",
+    "src/i18n/*/vcal.json",
+    "i18n-source-stamps/*.json",
+    "src/whats-new/entries/reminders-in-calendar.json",
+    "docs/validation/VTID-04978/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

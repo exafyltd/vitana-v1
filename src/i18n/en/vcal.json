@@ -62,7 +62,8 @@
       "plan": "From your plan",
       "assistant": "Added with Vitana",
       "community": "Community",
-      "journey": "Your journey"
+      "journey": "Your journey",
+      "reminder": "Your reminder"
     },
     "empty": {
       "title": "Nothing planned – a calm day",

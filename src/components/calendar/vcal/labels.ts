@@ -25,6 +25,8 @@ export function sourceLabel(item: CalendarWindowItem): string | null {
       return t("vcal.source.community");
     case "guided_journey":
       return t("vcal.source.journey");
+    case "reminder":
+      return t("vcal.source.reminder");
     default:
       return null;
   }

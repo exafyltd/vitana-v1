@@ -33,7 +33,7 @@ describe("edit and remove (VTID-04915)", () => {
   });
 
   it("entries a source owns are changed at the source", () => {
-    for (const source_type of ["community_rsvp", "live_room", "autopilot", "goal_plan", "health_plan", "lab_order", "appointment", "journey"]) {
+    for (const source_type of ["community_rsvp", "live_room", "autopilot", "goal_plan", "health_plan", "lab_order", "appointment", "journey", "reminder"]) {
       expect(canEditEntry(item({ source_type }))).toBe(false);
       expect(canRemoveEntry(item({ source_type }))).toBe(false);
     }

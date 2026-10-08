@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04978",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Display half of VTID-04978 (a source label for mirrored reminders). Staging is read-only and shares the production database, so no reminder is created there; labels.reminder.vtid-04978.test.ts and entry-actions.test.ts pin the label and the read-only handling, and the calendar staging smoke still loads the calendar."
+    }
+  ]
+}
