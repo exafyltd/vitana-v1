@@ -95,6 +95,12 @@ describe('prompt and wiring', () => {
     expect(MODEL_ID).toMatch(/^eu\.anthropic\.claude-/);
     expect(extractVtid('X (VTID-04600)')).toBe('VTID-04600');
   });
+  it('only announces brand-new, finished features (VTID-04985)', () => {
+    expect(SYSTEM_PROMPT).toMatch(/true ONLY for a brand-new/);
+    expect(SYSTEM_PROMPT).toMatch(/complete and usable end to end/);
+    expect(SYSTEM_PROMPT).toMatch(/false for[^.]*redesign/i);
+    expect(SYSTEM_PROMPT).not.toMatch(/true ONLY for a new feature, a redesigned screen/);
+  });
   it('never uses the direct Anthropic API (platform rule 10a) and stays inert without the role', () => {
     const src = fs.readFileSync(path.join(ROOT, 'scripts/whats-new/draft-entry.mjs'), 'utf8');
     expect(src).not.toMatch(/api\.anthropic\.com|ANTHROPIC_API_KEY/);

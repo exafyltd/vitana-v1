@@ -1,6 +1,6 @@
 # What's New — automatic "Brand New Feature" cards (VTID-04733)
 
-Every **finished, new feature** (or redesign) a member will notice ships with **one file** in `entries/`. Fixes, partial work and anything still being finished get **no** card (owner rule 2026-10-08).
+Every **brand-new, finished feature** a member can use ships with **one file** in `entries/`. Fixes, restyles and redesigns of existing screens, improvements, partial work and anything still being finished get **no** card (owner rule 2026-10-08).
 Nothing else is needed: once the build carrying it is live in production, the
 gateway's daily `whats-new` job turns it into a "Brand New Feature" News Feed
 card plus a push to every tenant member, in their own language.
@@ -52,9 +52,11 @@ build is published to production.
 
 ## When to add one
 
-New feature, a redesigned screen, a changed flow a member will notice.
-**Skip** for fixes, refactors, admin/dev-only work, and anything invisible.
-If in doubt whether a member would care, they probably wouldn't.
+A brand-new feature that is finished and that a member can use end to end.
+**Skip** for fixes, restyles or redesigns of existing screens, reordering or
+rewording, improvements to an existing feature, partial work (behind a flag,
+"step 1 of N"), refactors, admin/dev-only work, and anything invisible.
+If in doubt, skip: a missed card is cheap, a wrong one goes to every member.
 
 ## Guard rails (gateway side)
 
