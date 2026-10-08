@@ -11237,6 +11237,7 @@
       },
       "mcpConnect": {
         "cta": "Poveži svog AI agenta",
+        "chatgptCta": "Poveži preko ChatGPT-a",
         "manualCta": "Registruj se ručno",
         "badge": "Preporučeno",
         "title": "Jedan korak: kopiraj Vitanaland MCP adresu u svog AI asistenta.",
@@ -12418,6 +12419,7 @@
       "canDo2": "dodaje i menja proizvode i usluge",
       "canDo3": "vidi dokle je stiglo podešavanje",
       "youConfirm": "Slanje na proveru uvek potvrđuješ sam. Partnerske uslove prihvataš samo ovde na Vitanalandu.",
+      "redirectsTo": "Posle tvoje odluke vraćamo te na: {{host}}. Proveri da je to aplikacija koju želiš da povežeš.",
       "approve": "Poveži",
       "deny": "Otkaži",
       "loading": "Trenutak …",

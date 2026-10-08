@@ -10991,6 +10991,7 @@
       },
       "mcpConnect": {
         "cta": "Connect your AI agent",
+        "chatgptCta": "Connect with ChatGPT",
         "manualCta": "Register manually",
         "badge": "Recommended",
         "title": "One step: copy the Vitanaland MCP address into your AI assistant.",
@@ -12227,6 +12228,7 @@
       "canDo2": "add and change products and services",
       "canDo3": "see how far your setup is",
       "youConfirm": "You always confirm submitting for verification yourself. You accept the partner terms only here on Vitanaland.",
+      "redirectsTo": "After your decision we send you back to: {{host}}. Check that this is the app you want to connect.",
       "approve": "Connect",
       "deny": "Cancel",
       "loading": "One moment …",

@@ -21,7 +21,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronDown, Copy, HeartPulse, MessageSquareText, Plug, ShieldCheck, Sparkles, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { t } from '@/lib/i18n-toast';
-import { SUPPORTED_ASSISTANTS } from '@/lib/commerce-mcp';
+import { SUPPORTED_ASSISTANTS, chatgptPluginUrl } from '@/lib/commerce-mcp';
 
 const K = 'screens.commerceportal.guest';
 
@@ -56,6 +56,7 @@ export const guestCtaKey = (mcpReady: boolean) =>
 
 export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestLandingProps) {
   const reduce = useReducedMotion();
+  const chatgptUrl = chatgptPluginUrl();
   const [whatIsOpen, setWhatIsOpen] = useState(false);
 
   useEffect(() => {
@@ -154,6 +155,18 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
           >
             {t('screens.commerceportal.mcpConnect.cta')}
           </Button>
+          {chatgptUrl && (
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="mt-3 h-12 w-full rounded-xl border-amber-300 px-8 text-base font-semibold text-amber-900 hover:bg-amber-50 sm:ms-3 sm:mt-6 sm:w-auto"
+            >
+              <a href={chatgptUrl} target="_blank" rel="noopener noreferrer" data-testid="guest-connect-chatgpt">
+                {t('screens.commerceportal.mcpConnect.chatgptCta')}
+              </a>
+            </Button>
+          )}
         </motion.section>
       )}
 

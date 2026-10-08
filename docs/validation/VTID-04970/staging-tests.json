@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04970",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "commerce: a signed-out visitor still sees the portal and one sign-up path (the ChatGPT button stays hidden until a listing link is configured)",
+      "spec": "tests/e2e/staging/vtid-04271-commerce-guest.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "consent redirect host, ChatGPT link guard, locale parity",
+      "ref": "npx vitest run src/lib/commerce-mcp.test.ts src/components/commerce/connect-authorize.vtid-04970.test.ts src/pages/CommercePortal.guest-landing.vtid-04894.test.ts",
+      "cwd": ".",
+      "reason": "The consent screen needs a live OAuth request, which is a sign-in and a write; it is pinned by unit and source tests instead."
+    }
+  ]
+}

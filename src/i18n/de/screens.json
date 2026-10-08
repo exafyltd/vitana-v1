@@ -10853,6 +10853,7 @@
       },
       "mcpConnect": {
         "cta": "KI-Agent verbinden",
+        "chatgptCta": "Mit ChatGPT verbinden",
         "manualCta": "Manuell registrieren",
         "badge": "Empfohlen",
         "title": "Ein Schritt: Kopiere die Vitanaland-MCP-Adresse in deinen KI-Assistenten.",
@@ -11997,6 +11998,7 @@
       "canDo2": "Produkte und Dienstleistungen hinzufügen und ändern",
       "canDo3": "deinen Stand der Einrichtung sehen",
       "youConfirm": "Das Einreichen zur Prüfung bestätigst du immer selbst. Die Partnerbedingungen akzeptierst du nur hier in Vitanaland.",
+      "redirectsTo": "Nach deiner Entscheidung leiten wir dich zurück zu: {{host}}. Prüfe, dass das die App ist, die du verbinden willst.",
       "approve": "Verbinden",
       "deny": "Abbrechen",
       "loading": "Einen Moment …",

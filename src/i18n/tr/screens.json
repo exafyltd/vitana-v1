@@ -11233,6 +11233,7 @@
       },
       "mcpConnect": {
         "cta": "Yapay zekâ ajanını bağla",
+        "chatgptCta": "ChatGPT ile bağlan",
         "manualCta": "Elle kaydol",
         "badge": "Önerilen",
         "title": "Tek adım: Vitanaland MCP adresini yapay zekâ asistanına kopyala.",
@@ -13335,6 +13336,7 @@
       "canDo2": "ürün ve hizmet eklemek ve değiştirmek",
       "canDo3": "kurulumunun ne durumda olduğunu görmek",
       "youConfirm": "Doğrulamaya göndermeyi her zaman sen onaylarsın. İş ortaklığı koşullarını yalnızca burada, Vitanaland'de kabul edersin.",
+      "redirectsTo": "Kararından sonra seni şuraya geri yönlendireceğiz: {{host}}. Bağlamak istediğin uygulama olduğundan emin ol.",
       "approve": "Bağla",
       "deny": "İptal",
       "loading": "Bir saniye …",

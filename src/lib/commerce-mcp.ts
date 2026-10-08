@@ -18,6 +18,26 @@ import { supabase } from '@/integrations/supabase/client';
 export const COMMERCE_MCP_URL = `${GATEWAY_BASE}/mcp`;
 export const COMMERCE_MCP_METADATA_URL = `${GATEWAY_BASE}/.well-known/oauth-protected-resource/mcp`;
 
+/**
+ * VTID-04970: the Vitanaland listing in the ChatGPT plugin directory. One place,
+ * set at build time (`VITE_CHATGPT_PLUGIN_URL`) once OpenAI has approved the
+ * plugin and given us the link; until then the "Connect with ChatGPT" button
+ * does not exist and the manual connect flow stays the way in. Only an https
+ * link on an OpenAI host is accepted, so a bad build value can never send a
+ * supplier somewhere else.
+ */
+export function chatgptPluginUrl(raw: string | undefined = import.meta.env.VITE_CHATGPT_PLUGIN_URL as string | undefined): string | null {
+  if (!raw) return null;
+  try {
+    const u = new URL(raw.trim());
+    const host = u.hostname.toLowerCase();
+    const ok = host === 'chatgpt.com' || host.endsWith('.chatgpt.com') || host === 'openai.com' || host.endsWith('.openai.com');
+    return u.protocol === 'https:' && ok ? u.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 export const SUPPORTED_ASSISTANTS = ['Claude', 'ChatGPT', 'Gemini'] as const;
 
 /** The tools the gateway serves (COMMERCE_MCP_TOOLS, gateway VTID-04847) — shown under Advanced. */
@@ -90,6 +110,21 @@ export function parseConsentDetails(authorizationId: string, data: unknown): Con
       scopes,
     },
   };
+}
+
+/**
+ * VTID-04970: the host the assistant's authorization code is delivered to, shown
+ * on the consent screen so a supplier can tell the real app from a look-alike
+ * that registered under the same name. Null for anything that is not http(s).
+ */
+export function redirectHostOf(redirectUri: string | null | undefined): string | null {
+  if (!redirectUri) return null;
+  try {
+    const u = new URL(redirectUri);
+    return u.protocol === 'https:' || u.protocol === 'http:' ? u.host : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Where to send the user after approve / deny. */

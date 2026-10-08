@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/button';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { useAuth } from '@/context/AuthProvider';
 import { t } from '@/lib/i18n-toast';
-import { decideConsent, lookupConsent, type ConsentDetails } from '@/lib/commerce-mcp';
+import { decideConsent, lookupConsent, redirectHostOf, type ConsentDetails } from '@/lib/commerce-mcp';
 
 const K = 'screens.commerceconnect';
 const CAN_DO = [`${K}.canDo1`, `${K}.canDo2`, `${K}.canDo3`] as const;
@@ -75,6 +75,7 @@ export default function CommerceConnectAuthorize() {
   };
 
   const client = view.kind === 'consent' && view.details.clientName ? view.details.clientName : t(`${K}.unknownClient`);
+  const redirectHost = view.kind === 'consent' ? redirectHostOf(view.details.redirectUri) : null;
 
   return (
     <CommerceShell>
@@ -110,6 +111,11 @@ export default function CommerceConnectAuthorize() {
                 ))}
               </ul>
               <p className="mt-4 rounded-xl bg-muted/50 p-3 text-xs leading-relaxed text-muted-foreground">{t(`${K}.youConfirm`)}</p>
+              {redirectHost && (
+                <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50/60 p-3 text-xs leading-relaxed text-foreground" data-testid="connect-redirect-host">
+                  {t(`${K}.redirectsTo`, { host: redirectHost })}
+                </p>
+              )}
 
               {failed && <p className="mt-4 text-sm text-destructive">{t(`${K}.failed`)}</p>}
 
