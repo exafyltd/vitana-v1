@@ -50,6 +50,7 @@ import { useAllNewsFeed } from "@/hooks/useAllNewsFeed";
 import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { NewMemberCard } from "@/components/home/NewMemberCard";
 import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
+import { composeFeed } from "@/lib/feed-compose";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
@@ -334,13 +335,13 @@ export default function Home() {
       ? streamItems.find((item) => item.kind === "post")?.id
       : undefined;
 
-    const cardSlots: { key: string; node: JSX.Element }[] = [
+    const vitanaCards: { key: string; node: JSX.Element }[] = [
       { key: "card-vitana-index", node: <VitanaIndexCard /> },
       { key: "card-guided-journey", node: <LongevityJourneyCard /> },
       { key: "card-invite-friend", node: <InviteFriendCard /> },
     ];
     if (matchItem) {
-      cardSlots.push({
+      vitanaCards.push({
         key: `card-find-a-match-${matchItem.id}`,
         node: (
           <FeedItemErrorBoundary fallback={feedItemErrorFallback}>
@@ -354,22 +355,32 @@ export default function Home() {
       });
     }
 
-    const nodes: JSX.Element[] = [];
-    streamItems.forEach((item, index) => {
-      nodes.push(
-        <FeedItemErrorBoundary key={item.id} fallback={feedItemErrorFallback}>
-          <NewsFeedItemCard
-            item={item}
-            onArticleClick={handleFeedArticleClick}
-            onOpen={handleFeedItemOpen}
-            autoOpenComments={item.id === firstCommentableId}
-          />
-        </FeedItemErrorBoundary>,
+    // VTID-04973: info card, user post, info card, user post … Posts keep
+    // priority — a Vitana card that renders nothing (dismissed/ineligible) just
+    // collapses (`empty:hidden`), it never holds a post back.
+    return composeFeed(streamItems, vitanaCards).map((entry) => {
+      if (entry.type === "vitana") {
+        return (
+          <div key={entry.card.key} data-feed-kind="info" className="empty:hidden">
+            {entry.card.node}
+          </div>
+        );
+      }
+      const { item } = entry;
+      const kind = item.kind === "post" ? "post" : entry.role === "info" ? "info" : "other";
+      return (
+        <div key={item.id} data-feed-kind={kind} className="contents">
+          <FeedItemErrorBoundary fallback={feedItemErrorFallback}>
+            <NewsFeedItemCard
+              item={item}
+              onArticleClick={handleFeedArticleClick}
+              onOpen={handleFeedItemOpen}
+              autoOpenComments={item.id === firstCommentableId}
+            />
+          </FeedItemErrorBoundary>
+        </div>
       );
-      const slot = cardSlots[index];
-      if (slot) nodes.push(<div key={slot.key}>{slot.node}</div>);
     });
-    return nodes;
   };
 
   const renderV2Feed = () => (
@@ -390,7 +401,7 @@ export default function Home() {
         </div>
       )}
       {feedItems.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mt-2 md:mt-5">
+        <div data-testid="feed-grid" className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mt-2 md:mt-5">
           {renderInterleavedFeedItems()}
         </div>
       )}

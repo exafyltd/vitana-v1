@@ -7,12 +7,12 @@
  * Vitana-authored card names both who's recommending and what it opens.
  */
 
-import { Activity, UserPlus, Users, Zap, type LucideIcon } from 'lucide-react';
+import { Activity, Lightbulb, UserPlus, Users, Zap, type LucideIcon } from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import { VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { cn } from '@/lib/utils';
 
-export type VitanaFeature = 'vitana-index' | 'guided-journey' | 'find-a-match' | 'invite-friend';
+export type VitanaFeature = 'vitana-index' | 'guided-journey' | 'find-a-match' | 'invite-friend' | 'did-you-know';
 
 const FEATURE_CONFIG: Record<VitanaFeature, { icon: LucideIcon; labelKey: string }> = {
   'vitana-index': {
@@ -30,6 +30,12 @@ const FEATURE_CONFIG: Record<VitanaFeature, { icon: LucideIcon; labelKey: string
   'invite-friend': {
     icon: UserPlus,
     labelKey: 'screens.vitanaIdentity.inviteFriend',
+  },
+  // VTID-04973: the feed's "Did you know?" tip is Vitana advising — the pill reuses
+  // the card's own existing "Did you know?" string, no new copy.
+  'did-you-know': {
+    icon: Lightbulb,
+    labelKey: 'featureAnnouncementCard.didYouKnow.eyebrow',
   },
 };
 

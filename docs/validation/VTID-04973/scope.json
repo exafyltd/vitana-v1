@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04973",
+  "kind": "feature",
+  "paths": [
+    "src/pages/Home.tsx",
+    "src/lib/feed-compose.ts",
+    "src/lib/feed-compose.test.ts",
+    "src/components/home/FeatureAnnouncementCard.tsx",
+    "src/components/home/FeatureAnnouncementCard.test.tsx",
+    "src/components/vitana/VitanaRecommendationHeader.tsx",
+    "tests/e2e/staging/vtid-04973-feed-order.staging.spec.ts",
+    "docs/validation/VTID-04973/**"
+  ],
+  "sparring_record": "docs/validation/VTID-04973/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

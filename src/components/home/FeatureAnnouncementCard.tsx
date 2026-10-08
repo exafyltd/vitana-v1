@@ -5,8 +5,9 @@
  * are immediately distinguishable:
  *   - "brand-new-feature": celebratory launch announcement — gradient icon
  *     badge with a soft glow, a "NEW" pill, and a closing "Happy testing" line.
- *   - "did-you-know-feature": calmer daily tip — lightbulb icon on a flat
- *     tint, no badge, no closing line, more informational framing.
+ *   - "did-you-know-feature": calmer daily tip, shown as a Vitana card — the
+ *     Vitana identity header (orb + "Vitana" + a "Did you know?" pill), then
+ *     the tip text straight away (no "You can:" lead-in), no closing line.
  *
  * `featureTitle` and `description` are feature-specific copy the caller
  * supplies already resolved to the viewer's locale (mirrors how
@@ -19,6 +20,7 @@ import { ArrowRight, Lightbulb, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
+import { VitanaRecommendationHeader } from '@/components/vitana/VitanaRecommendationHeader';
 
 export type FeatureAnnouncementVariant = 'brand-new-feature' | 'did-you-know-feature';
 
@@ -38,7 +40,7 @@ export interface FeatureAnnouncementCardProps {
 
 const VARIANT_COPY: Record<
   FeatureAnnouncementVariant,
-  { eyebrowKey: string; introKey: string; ctaKey: string; closingKey?: string; badgeKey?: string }
+  { eyebrowKey: string; introKey?: string; ctaKey: string; closingKey?: string; badgeKey?: string }
 > = {
   'brand-new-feature': {
     eyebrowKey: 'featureAnnouncementCard.brandNew.eyebrow',
@@ -49,7 +51,6 @@ const VARIANT_COPY: Record<
   },
   'did-you-know-feature': {
     eyebrowKey: 'featureAnnouncementCard.didYouKnow.eyebrow',
-    introKey: 'featureAnnouncementCard.didYouKnow.intro',
     ctaKey: 'featureAnnouncementCard.didYouKnow.cta',
   },
 };
@@ -89,6 +90,7 @@ export function FeatureAnnouncementCard({
   const copy = VARIANT_COPY[variant];
   const style = VARIANT_STYLE[variant];
   const { DefaultIcon } = style;
+  const isTip = variant === 'did-you-know-feature';
 
   const open = () => {
     onOpen?.();
@@ -115,30 +117,36 @@ export function FeatureAnnouncementCard({
         style.shell,
       )}
     >
-      <div className="flex items-center gap-2.5">
-        <div
-          className={cn(
-            'flex h-9 w-9 shrink-0 items-center justify-center rounded-full',
-            style.iconWrap,
-          )}
-          aria-hidden="true"
-        >
-          {icon ?? <DefaultIcon className={cn('h-4 w-4', style.iconColor)} />}
+      {isTip ? (
+        // VTID-04973: Vitana is the one advising — same identity header as the
+        // other Vitana cards (orb + "Vitana" + a pill naming the card).
+        <VitanaRecommendationHeader feature="did-you-know" />
+      ) : (
+        <div className="flex items-center gap-2.5">
+          <div
+            className={cn(
+              'flex h-9 w-9 shrink-0 items-center justify-center rounded-full',
+              style.iconWrap,
+            )}
+            aria-hidden="true"
+          >
+            {icon ?? <DefaultIcon className={cn('h-4 w-4', style.iconColor)} />}
+          </div>
+          <div className="flex min-w-0 flex-1 items-center gap-1.5 flex-wrap">
+            <span className={cn('text-sm font-bold leading-tight', style.eyebrowColor)}>{t(copy.eyebrowKey)}</span>
+            {copy.badgeKey && (
+              <span className="inline-flex items-center rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                {t(copy.badgeKey)}
+              </span>
+            )}
+          </div>
         </div>
-        <div className="flex min-w-0 flex-1 items-center gap-1.5 flex-wrap">
-          <span className={cn('text-sm font-bold leading-tight', style.eyebrowColor)}>{t(copy.eyebrowKey)}</span>
-          {copy.badgeKey && (
-            <span className="inline-flex items-center rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
-              {t(copy.badgeKey)}
-            </span>
-          )}
-        </div>
-      </div>
+      )}
 
-      <p className="mt-3 truncate text-base font-semibold leading-snug text-foreground">{featureTitle}</p>
+      <p className={cn('truncate text-base font-semibold leading-snug text-foreground', isTip ? 'mt-2' : 'mt-3')}>{featureTitle}</p>
 
-      <p className="mt-1 text-sm font-medium text-muted-foreground">{t(copy.introKey)}</p>
-      <p className="mt-0.5 text-sm leading-relaxed text-foreground line-clamp-3 whitespace-pre-wrap break-words">
+      {copy.introKey && <p className="mt-1 text-sm font-medium text-muted-foreground">{t(copy.introKey)}</p>}
+      <p className={cn('text-sm leading-relaxed text-foreground line-clamp-3 whitespace-pre-wrap break-words', copy.introKey ? 'mt-0.5' : 'mt-1')}>
         {description}
       </p>
 
