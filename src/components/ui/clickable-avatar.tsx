@@ -2,6 +2,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { getAutoAvatarUrl } from "@/lib/autoAvatar";
+import { profilePath } from "@/lib/profile-path";
 
 interface ClickableAvatarProps {
   userId?: string;
@@ -49,9 +50,9 @@ export function ClickableAvatar({
     
     if (disabled) return;
     
-    const identifier = handle || userId;
-    if (identifier) {
-      navigate(`/u/${identifier}`);
+    const path = profilePath(userId, handle);
+    if (path) {
+      navigate(path);
     }
   };
   

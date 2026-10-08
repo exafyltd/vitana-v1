@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
+import { MemberLink } from "@/components/ui/member-link";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { 
   ArrowUpRight, 
@@ -235,21 +237,23 @@ export function WalletTransactionCard({
                     {/* Transaction flow */}
                     {transactionFlow.fromUser && transactionFlow.toUser && (
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Avatar className="h-4 w-4">
-                          <AvatarImage src={transactionFlow.fromUser.avatar} />
-                          <AvatarFallback className="text-[8px]">
-                            {transactionFlow.fromUser.name.substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="truncate max-w-[60px]">{transactionFlow.fromUser.name}</span>
+                        <ClickableAvatar
+                          userId={transactionFlow.fromUser.id}
+                          src={transactionFlow.fromUser.avatar}
+                          fallback={transactionFlow.fromUser.name.substring(0, 2).toUpperCase()}
+                          alt={transactionFlow.fromUser.name}
+                          className="h-4 w-4"
+                        />
+                        <span className="truncate max-w-[60px]"><MemberLink userId={transactionFlow.fromUser.id}>{transactionFlow.fromUser.name}</MemberLink></span>
                         <ArrowRightLeft className="h-3 w-3" />
-                        <span className="truncate max-w-[60px]">{transactionFlow.toUser.name}</span>
-                        <Avatar className="h-4 w-4">
-                          <AvatarImage src={transactionFlow.toUser.avatar} />
-                          <AvatarFallback className="text-[8px]">
-                            {transactionFlow.toUser.name.substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
+                        <span className="truncate max-w-[60px]"><MemberLink userId={transactionFlow.toUser.id}>{transactionFlow.toUser.name}</MemberLink></span>
+                        <ClickableAvatar
+                          userId={transactionFlow.toUser.id}
+                          src={transactionFlow.toUser.avatar}
+                          fallback={transactionFlow.toUser.name.substring(0, 2).toUpperCase()}
+                          alt={transactionFlow.toUser.name}
+                          className="h-4 w-4"
+                        />
                       </div>
                     )}
                     

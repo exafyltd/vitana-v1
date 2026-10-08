@@ -9,7 +9,8 @@
  */
 
 import { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ClickableAvatar } from '@/components/ui/clickable-avatar';
+import { MemberLink } from '@/components/ui/member-link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -121,11 +122,16 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
         </div>
 
         <div className="flex items-center gap-2">
-          <Avatar className="h-6 w-6">
-            <AvatarImage src={hostAvatar} alt={hostName} />
-            <AvatarFallback>{hostName.slice(0, 1).toUpperCase()}</AvatarFallback>
-          </Avatar>
-          <span className="text-sm text-muted-foreground truncate">{hostName}</span>
+          <ClickableAvatar
+            userId={stream.created_by}
+            src={hostAvatar}
+            fallback={hostName.slice(0, 1).toUpperCase()}
+            alt={hostName}
+            className="h-6 w-6"
+          />
+          <span className="text-sm text-muted-foreground truncate">
+            <MemberLink userId={stream.created_by}>{hostName}</MemberLink>
+          </span>
         </div>
 
         {/* Recap */}

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
+import { MemberLink } from "@/components/ui/member-link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MessageSquare, Trash2, Send } from "lucide-react";
 import { useGroupPosts } from "@/hooks/useGroupPosts";
@@ -117,14 +118,15 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
               {/* Author header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={post.author_avatar} />
-                    <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                      {(post.author_name || "?")[0]?.toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <ClickableAvatar
+                    userId={post.sender_id}
+                    src={post.author_avatar}
+                    fallback={(post.author_name || "?")[0]?.toUpperCase()}
+                    alt={post.author_name}
+                    className="h-8 w-8"
+                  />
                   <div>
-                    <p className="text-sm font-medium text-foreground">{post.author_name}</p>
+                    <p className="text-sm font-medium text-foreground"><MemberLink userId={post.sender_id}>{post.author_name}</MemberLink></p>
                     <p className="text-[11px] text-muted-foreground">{formatDate(post.created_at)}</p>
                   </div>
                 </div>

@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
+import { MemberLink } from "@/components/ui/member-link";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, UserPlus, UserMinus, Crown, Shield, User, MoreHorizontal, Pencil, Check, X } from "lucide-react";
@@ -549,17 +551,18 @@ export default function GroupMembersModal({
                       key={participant.id}
                       className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50"
                     >
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src={getDisplayAvatarUrl(profile)} />
-                        <AvatarFallback>
-                          {displayName[0]?.toUpperCase() || '?'}
-                        </AvatarFallback>
-                      </Avatar>
+                      <ClickableAvatar
+                        userId={participant.user_id}
+                        src={getDisplayAvatarUrl(profile)}
+                        fallback={displayName[0]?.toUpperCase() || '?'}
+                        alt={displayName}
+                        className="w-10 h-10"
+                      />
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           <p className="font-medium truncate">
-                            {displayName}
+                            <MemberLink userId={participant.user_id}>{displayName}</MemberLink>
                             {isCurrentUser && (
                               <span className="text-muted-foreground text-sm ml-1">{t('screens.messages.you')}</span>
                             )}

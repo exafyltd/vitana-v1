@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04992",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "unit suite (vitest)",
+      "ref": "npm run test:unit",
+      "cwd": ".",
+      "reason": "Member names and avatars open the profile on about 15 screens. Staging is read-only and shares the production database, so the behaviour is pinned by vitest: member-link.test.tsx (target, stopPropagation, keyboard, no-id case), profile-path.test.ts, and the recurrence guard src/lib/__guards__/member-link.guard.test.ts (fails on any new unlinked member avatar not on the reviewed allowlist)."
+    }
+  ]
+}
