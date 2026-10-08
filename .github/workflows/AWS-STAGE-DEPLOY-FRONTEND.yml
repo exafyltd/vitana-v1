@@ -250,7 +250,9 @@ jobs:
             echo "Attempt $i: HTTP $CODE — retry in 10s"; sleep 10
           done
           [ "$CODE" = "200" ] || { echo "::error::$FRONTEND/ did not answer 200"; exit 1; }
-          BUNDLE=$(grep -oE 'src="[^"]+\.js"' /tmp/index.html | head -1 | sed 's/src="//;s/"//')
+          # VTID-04989: the entry bundle specifically — /boot-recover.js is now
+          # the first script on the page.
+          BUNDLE=$(grep -oE 'src="/assets/index-[^"]+\.js"' /tmp/index.html | head -1 | sed 's/src="//;s/"//')
           [ -n "$BUNDLE" ] || { echo "::error::no JS bundle reference found in index.html"; exit 1; }
           curl -s "$FRONTEND$BUNDLE" -o /tmp/bundle.js
           if grep -q "$GATEWAY_HOST" /tmp/bundle.js; then
@@ -269,6 +271,14 @@ jobs:
             echo "- Verified live at: $FRONTEND"
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04989 — no blank pages during a rollout. Read-only GETs; any miss
+      # fails the deploy loudly (staging has no automatic rollback).
+      - name: Post-deploy verify — rollout guarantees (VTID-04989)
+        run: |
+          set -e
+          FRONTEND="${{ env.FRONTEND_URL }}"
+          scripts/ci/verify-rollout-guarantees.sh "$FRONTEND" "staging-${GITHUB_RUN_ID}"
 
       # VTID-04613 — hand the deployed commit to STAGING-VERIFY (vitana-
       # platform), which runs the read-only smoke + change suites against

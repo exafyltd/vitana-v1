@@ -63,6 +63,13 @@ on:
         required: false
         default: 'https://dr-app.vitanaland.com'
         type: string
+      apex_url:
+        # VTID-04989: the members' host. It is fronted by the dashboard-only
+        # Cloudflare Worker `vitanaland-proxy`, so its cache behaviour is
+        # proven by the post-deploy probe below, not read from a repo.
+        required: false
+        default: 'https://vitanaland.com'
+        type: string
       aws_region:
         required: false
         default: 'eu-central-1'
@@ -281,7 +288,9 @@ jobs:
             echo "Attempt $i: HTTP $CODE — retry in 10s"; sleep 10
           done
           [ "$CODE" = "200" ] || { echo "::error::$FRONTEND/ did not answer 200"; exit 1; }
-          BUNDLE=$(grep -oE 'src="[^"]+\.js"' /tmp/index.html | head -1 | sed 's/src="//;s/"//')
+          # VTID-04989: the entry bundle specifically — /boot-recover.js is now
+          # the first script on the page.
+          BUNDLE=$(grep -oE 'src="/assets/index-[^"]+\.js"' /tmp/index.html | head -1 | sed 's/src="//;s/"//')
           [ -n "$BUNDLE" ] || { echo "::error::no JS bundle reference found in index.html"; exit 1; }
           curl -s "$FRONTEND$BUNDLE" -o /tmp/bundle.js
           if ! grep -q "$GATEWAY_HOST" /tmp/bundle.js; then
@@ -348,3 +357,15 @@ jobs:
           done
           echo "Rolled back: service on $PREV_ARN, serving '$LIVE' (expected '${PREV_BUNDLE:-unknown}')"
           echo "## ⚠️ Rolled back to $PREV_ARN — serving \`$LIVE\`" >> "$GITHUB_STEP_SUMMARY"
+
+      # VTID-04989 — a missing asset must never be cached on the members' host
+      # (apex, through the vitanaland-proxy Worker). Placed AFTER the rollback
+      # step and only on success: a CDN/Worker cache setting is not a broken
+      # build, so this check turns the run red without reverting a good
+      # deploy. Read-only GETs of public files, run by the workflow (rule 48),
+      # never from a session.
+      - name: Post-deploy verify — apex never caches a missing asset (VTID-04989)
+        if: success()
+        run: |
+          set -e
+          scripts/ci/verify-rollout-guarantees.sh "${{ inputs.apex_url }}" "prod-${GITHUB_RUN_ID}"

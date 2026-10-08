@@ -1,0 +1,4 @@
+# npx vite build → dist/index.html, first scripts in order
+<script src="/boot-recover.js">
+<script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20261002-vtid-04843-widget-rebust" defer>
+<script type="module" crossorigin src="/assets/index-DTjwDxNG.js">

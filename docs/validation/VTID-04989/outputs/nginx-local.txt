@@ -1,0 +1,7 @@
+# fixed nginx.conf (local nginx 1.24, served from a test root)
+/assets/index-AAA.js      200  Cache-Control: max-age=31536000 + public, immutable  ETag
+/assets/index-MISSING.js  404  Cache-Control: no-store
+/boot-recover.js          200  application/javascript  Cache-Control: no-cache  ETag
+/some/route, /index.html  200  text/html  no-cache, no-store, must-revalidate (unchanged)
+# control: origin/main nginx.conf
+/assets/index-MISSING.js  404  (no Cache-Control — Cloudflare then applies max-age=14400 and caches it)

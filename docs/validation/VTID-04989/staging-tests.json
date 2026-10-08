@@ -1,0 +1,37 @@
+{
+  "vtid": "VTID-04989",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "http",
+      "name": "the page loads the boot recovery script",
+      "target": "frontend",
+      "path": "/",
+      "expect_status": 200,
+      "expect_body_contains": ["<script src=\"/boot-recover.js\"></script>"]
+    },
+    {
+      "kind": "http",
+      "name": "the boot recovery script is served as JavaScript, never the SPA fallback",
+      "target": "frontend",
+      "path": "/boot-recover.js",
+      "expect_status": 200,
+      "expect_content_type": "javascript",
+      "expect_body_contains": ["VTID-04989", "window.location.reload()"]
+    },
+    {
+      "kind": "http",
+      "name": "a missing /assets/ file is a 404, not the app page",
+      "target": "frontend",
+      "path": "/assets/staging-verify-missing-vtid-04989.js",
+      "expect_status": 404
+    },
+    {
+      "kind": "existing",
+      "name": "boot-recover.js rules, nginx no-store rule, script order",
+      "ref": "npx vitest run src/lib/boot-recover.test.ts",
+      "cwd": ".",
+      "reason": "Pins the reload rules (2/10/45 s, cap, same-origin /assets/ only, not after mount, no storage = no reload) and the nginx/index.html guarantees. The no-store header and the CDN cache result are checked by scripts/ci/verify-rollout-guarantees.sh in the staging deploy workflow, because the http runner cannot read headers."
+    }
+  ]
+}

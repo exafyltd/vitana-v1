@@ -1,0 +1,8 @@
+# Chromium, local nginx (fixed config) serving the real build. The entry bundle is hidden
+# (the "other build's task"), then restored after 1 s (rollout finished).
+WITH boot-recover.js, entry back after 1 s:
+{"mounted":true,"after_ms":2811,"events":["200 /assets/index-QXz5ld-L.css","404 /assets/index-DTjwDxNG.js","load","200 /assets/index-QXz5ld-L.css","200 /assets/index-DTjwDxNG.js","load"]}
+WITH boot-recover.js, entry never comes back (cap must stop it):
+{"mounted":false,"after_ms":20052,"events":["… 404 …","load","… 404 …","load","… 404 …","load"]}   # reloads at 2 s and 10 s, then waits (45 s step), no loop
+CONTROL without boot-recover.js, entry back after 1 s:
+{"mounted":false,"after_ms":20109,"events":["404 /assets/index-DTjwDxNG.js","200 /assets/index-QXz5ld-L.css","load"]}   # blank for the whole 20 s
