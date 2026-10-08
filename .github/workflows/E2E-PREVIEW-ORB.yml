@@ -27,6 +27,9 @@ jobs:
       - name: Run ORB preview conversation-flow test
         env:
           PREVIEW_URL: https://preview.vitanaland.com
+          # VTID-04946: credentials come from secrets only, never from the repo.
+          E2E_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          E2E_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
         run: node tests/e2e/orb-preview.mjs
       - name: Upload screenshots
         if: always()

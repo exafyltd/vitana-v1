@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04928",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: opening Alle Beisammen rests on the newest message; the same with the page root forced to height:auto so the DOCUMENT scrolls (the Android app webview condition); and a push deep link /inbox/g/<id>/msg/<older message> lands on that message — each on screen and not under the composer; read-only — the reactions lookup is answered inside the browser, the app's own read-only POSTs are aborted by the guard, nothing is written",
+      "spec": "tests/e2e/staging/vtid-04928-group-chat-lands.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/pages/messages/GroupChat.vtid-04928.test.tsx src/pages/messages/GroupChat.vtid-04921.test.tsx src/pages/messages/GroupChat.vtid-04901.test.tsx",
+      "reason": "page-end marker scrolled into view on open (document-scroll case), deep link lands on its message and falls back to the newest when not loaded, pinned while the list grows and released on touch; earlier exit/poll behaviour unchanged"
+    }
+  ]
+}

@@ -5668,7 +5668,8 @@
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!",
-      "dateTimeChip": "{date} · {time}"
+      "dateTimeChip": "{date} · {time}",
+      "openHostProfile": "打开 {name} 的个人资料"
     },
     "meetups": {
       "detailsProgram": "详情与日程",
@@ -6217,7 +6218,20 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} 创建了群组",
+      "groupNoticeMemberAdded": "{name} 添加了 {member}",
+      "groupNoticeMemberRemoved": "{name} 移除了 {member}",
+      "groupNoticeMemberLeft": "{name} 退出了群组",
+      "groupNoticeRenamed": "{name} 将群组重命名为“{group}”",
+      "groupNoticeSomeone": "某人",
+      "groupNameLabel": "群组名称",
+      "renameGroup": "重命名群组",
+      "groupNameSave": "保存",
+      "groupNameCancel": "取消",
+      "editGroup": "编辑群组",
+      "messageGroupPlaceholder": "发消息给 {name}…",
+      "messagePersonPlaceholder": "发消息给 {name}…"
     },
     "mobile": {
       "searching": "正在搜索…",

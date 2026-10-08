@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { debounce } from "@/utils/performanceOptimization";
+import { createGlobalGroupThread, fetchMyNoticeName, TENANT_GROUP_CREATE_UNSUPPORTED, type ProfileReadClient } from "@/lib/messaging/createGlobalGroupThread";
 
 interface User {
   user_id: string;
@@ -53,6 +54,7 @@ export default function NewConversationPopup({
   const [isCreating, setIsCreating] = useState(false);
   const [isGroupMode, setIsGroupMode] = useState(false);
   const [groupName, setGroupName] = useState("");
+  const groupNameRef = useRef<HTMLInputElement>(null);
 
   // Determine context: use prop if provided, otherwise fall back to role-based logic
   const effectiveContext = context || (dbRole === 'community' ? 'global' : 'tenant');
@@ -98,6 +100,18 @@ export default function NewConversationPopup({
       setGroupName('');
     }
   }, [selectedRecipients, isGroupMode, groupName]);
+
+  // VTID-04955: when group mode turns on, put the cursor in the prefilled name
+  // so it is visibly editable (it used to sit off-screen on phones).
+  useEffect(() => {
+    if (!isGroupMode) return;
+    const id = window.setTimeout(() => {
+      groupNameRef.current?.focus();
+      groupNameRef.current?.select();
+      groupNameRef.current?.scrollIntoView({ block: "nearest" });
+    }, 50);
+    return () => window.clearTimeout(id);
+  }, [isGroupMode]);
 
   const searchUsers = async () => {
     if (!searchQuery.trim() || !user) return;
@@ -334,83 +348,33 @@ export default function NewConversationPopup({
 
   const createGroup = async () => {
     if (!user || !groupName.trim() || selectedRecipients.length === 0) return;
-    
+
+    // VTID-04936: tenant groups can't be created from the client (no
+    // creator-adds-members policy on thread_participants) — fail before any write.
+    if (effectiveContext !== 'global') {
+      console.warn('Group not created:', TENANT_GROUP_CREATE_UNSUPPORTED);
+      toast({
+        title: translate('inbox.toast.error'),
+        description: translate('inbox.toast.groupFailed'),
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsCreating(true);
     try {
-      const memberIds = selectedRecipients.map(r => r.user_id);
-      
-      // Create the group thread
-      const threadData = effectiveContext === 'global' 
-        ? { created_by: user.id, type: 'group', name: groupName }
-        : { 
-            tenant_id: activeTenantId,
-            created_by: user.id, 
-            type: 'group', 
-            name: groupName 
-          };
-
-      const { data: thread, error: threadError } = await supabase
-        .from(effectiveContext === 'global' ? 'global_message_threads' : 'message_threads')
-        .insert(threadData)
-        .select()
-        .single();
-
-      if (threadError) throw threadError;
-
-      const participantsTable = effectiveContext === 'global' ? 'global_thread_participants' : 'thread_participants';
-      
-      // Add participants
-      const participants = [
-        { thread_id: thread.id, user_id: user.id, role: 'admin' },
-        ...memberIds.map(userId => ({
-          thread_id: thread.id,
-          user_id: userId,
-          role: 'member'
-        }))
-      ];
-
-      const { error: participantsError } = await supabase
-        .from(participantsTable)
-        .insert(participants);
-
-      if (participantsError) throw participantsError;
-
-      // Send system message
-      const messageData = effectiveContext === 'global'
-        ? {
-            thread_id: thread.id,
-            sender_id: user.id,
-            body: `${user.email} created the group`,
-            message_type: 'system',
-            content_data: { 
-              system_type: 'group_created',
-              group_name: groupName,
-              created_by: user.id
-            }
-          }
-        : {
-            thread_id: thread.id,
-            tenant_id: activeTenantId,
-            sender_id: user.id,
-            recipient_id: null,
-            body: `${user.email} created the group`,
-            message_type: 'system',
-            content_data: { 
-              system_type: 'group_created',
-              group_name: groupName,
-              created_by: user.id
-            }
-          };
-
-      await supabase
-        .from(effectiveContext === 'global' ? 'global_messages' : 'messages')
-        .insert(messageData);
+      const threadId = await createGlobalGroupThread(supabase, {
+        userId: user.id,
+        userName: await fetchMyNoticeName(supabase as unknown as ProfileReadClient, user.id),
+        name: groupName,
+        memberIds: selectedRecipients.map(r => r.user_id),
+      });
 
       toast({
         title: translate('inbox.toast.success'),
         description: translate('inbox.toast.groupCreated').replace('{name}', groupName)
       });
-      onGroupCreated?.(thread.id);
+      onGroupCreated?.(threadId);
       resetForm();
     } catch (error) {
       console.error('Error creating group:', error);
@@ -435,7 +399,7 @@ export default function NewConversationPopup({
 
   return (
     <Dialog open={open} onOpenChange={resetForm}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {isGroupMode ? <Users className="w-5 h-5" /> : <User className="w-5 h-5" />}
@@ -450,6 +414,8 @@ export default function NewConversationPopup({
               <Label htmlFor="groupName">{translate('inbox.newConversation.groupName')}</Label>
               <Input
                 id="groupName"
+                ref={groupNameRef}
+                maxLength={80}
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
                 placeholder={translate('inbox.newConversation.groupNamePlaceholder')}
@@ -537,9 +503,6 @@ export default function NewConversationPopup({
                       <div>
                         <p className="font-medium">
                           {profile.display_name || profile.full_name || 'Unknown User'}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate max-w-40">
-                          {profile.email}
                         </p>
                         {profile.bio && (
                           <p className="text-sm text-muted-foreground truncate max-w-40">

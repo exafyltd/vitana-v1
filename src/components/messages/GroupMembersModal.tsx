@@ -6,12 +6,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, UserPlus, UserMinus, Crown, Shield, User, MoreHorizontal } from "lucide-react";
+import { Search, UserPlus, UserMinus, Crown, Shield, User, MoreHorizontal, Pencil, Check, X } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { useQueryClient } from "@tanstack/react-query";
+import { noticeName } from "@/lib/messaging/groupSystemNotice";
+import { renameGlobalGroup, deactivateParticipant, type UpdateClient } from "@/lib/messaging/groupManagement";
+
+// The generated client's types are too deep to check structurally here.
+const updateClient = supabase as unknown as UpdateClient;
 
 interface Participant {
   id: string;
@@ -21,7 +27,6 @@ interface Participant {
     display_name?: string;
     full_name?: string;
     avatar_url?: string;
-    email?: string;
   };
 }
 
@@ -39,6 +44,9 @@ interface GroupMembersModalProps {
   threadId: string;
   context: 'global' | 'tenant';
   currentUserRole?: string;
+  /** VTID-04955: shown as the title; the creator can rename it. */
+  groupName?: string;
+  createdBy?: string;
 }
 
 export default function GroupMembersModal({
@@ -46,7 +54,9 @@ export default function GroupMembersModal({
   onOpenChange,
   threadId,
   context,
-  currentUserRole = 'member'
+  currentUserRole = 'member',
+  groupName,
+  createdBy,
 }: GroupMembersModalProps) {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -55,6 +65,19 @@ export default function GroupMembersModal({
   const [searchResults, setSearchResults] = useState<SearchUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const queryClient = useQueryClient();
+  const [title, setTitle] = useState(groupName ?? "");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [draftName, setDraftName] = useState("");
+  const [isSavingName, setIsSavingName] = useState(false);
+  const canRename = context === 'global' && !!user?.id && createdBy === user.id;
+
+  useEffect(() => {
+    setTitle(groupName ?? "");
+  }, [groupName]);
+
+  // Notices carry a display name, never an email (VTID-04955).
+  const myName = noticeName(participants.find(p => p.user_id === user?.id)?.profile);
 
   const canManageMembers = currentUserRole === 'admin' || currentUserRole === 'moderator';
 
@@ -102,9 +125,12 @@ export default function GroupMembersModal({
         (participantsData || []).map(async (participant) => {
           try {
             const profileTable = context === 'global' ? 'global_community_profiles' : 'profiles';
+            // VTID-04955: global_community_profiles has no full_name/email
+            // columns — asking for them failed the query and every member
+            // showed as "Unknown". Emails are never shown here.
             const { data: profileData, error: profileError } = await supabase
               .from(profileTable)
-              .select('display_name, full_name, avatar_url, email')
+              .select(context === 'global' ? 'display_name, avatar_url' : 'display_name, full_name, avatar_url')
               .eq('user_id', participant.user_id)
               .single();
 
@@ -185,13 +211,14 @@ export default function GroupMembersModal({
         ? {
             thread_id: threadId,
             sender_id: user?.id,
-            body: `${user?.email} added ${newUser.display_name || newUser.full_name}`,
+            body: `${myName || 'Someone'} added ${noticeName(newUser) || 'someone'}`,
             message_type: 'system',
             content_data: { 
               system_type: 'member_added',
               added_by: user?.id,
               added_user: newUser.user_id,
-              added_user_name: newUser.display_name || newUser.full_name
+              added_user_name: noticeName(newUser),
+              actor_name: myName
             }
           }
         : {
@@ -199,13 +226,14 @@ export default function GroupMembersModal({
             tenant_id: user?.user_metadata?.active_tenant_id,
             sender_id: user?.id,
             recipient_id: null,
-            body: `${user?.email} added ${newUser.display_name || newUser.full_name}`,
+            body: `${myName || 'Someone'} added ${noticeName(newUser) || 'someone'}`,
             message_type: 'system',
             content_data: { 
               system_type: 'member_added',
               added_by: user?.id,
               added_user: newUser.user_id,
-              added_user_name: newUser.display_name || newUser.full_name
+              added_user_name: noticeName(newUser),
+              actor_name: myName
             }
           };
 
@@ -231,25 +259,23 @@ export default function GroupMembersModal({
     try {
       const participantsTable = context === 'global' ? 'global_thread_participants' : 'thread_participants';
       
-      const { error } = await supabase
-        .from(participantsTable)
-        .update({ is_active: false })
-        .eq('id', participantId);
-
-      if (error) throw error;
+      // VTID-04955: RLS used to block this silently (0 rows, no error) and
+      // the UI still said "removed". deactivateParticipant reports 0 rows.
+      await deactivateParticipant(updateClient, participantsTable, participantId);
 
       // Send system message
       const messageData = context === 'global'
         ? {
             thread_id: threadId,
             sender_id: user?.id,
-            body: `${user?.email} removed ${userName}`,
+            body: `${myName || 'Someone'} removed ${userName}`,
             message_type: 'system',
             content_data: { 
               system_type: 'member_removed',
               removed_by: user?.id,
               removed_user: userId,
-              removed_user_name: userName
+              removed_user_name: userName,
+              actor_name: myName
             }
           }
         : {
@@ -257,13 +283,14 @@ export default function GroupMembersModal({
             tenant_id: user?.user_metadata?.active_tenant_id,
             sender_id: user?.id,
             recipient_id: null,
-            body: `${user?.email} removed ${userName}`,
+            body: `${myName || 'Someone'} removed ${userName}`,
             message_type: 'system',
             content_data: { 
               system_type: 'member_removed',
               removed_by: user?.id,
               removed_user: userId,
-              removed_user_name: userName
+              removed_user_name: userName,
+              actor_name: myName
             }
           };
 
@@ -288,15 +315,10 @@ export default function GroupMembersModal({
       
       if (!currentParticipant) return;
 
-      const { error } = await supabase
-        .from(participantsTable)
-        .update({ is_active: false })
-        .eq('id', currentParticipant.id);
+      await deactivateParticipant(updateClient, participantsTable, currentParticipant.id);
 
-      if (error) throw error;
-
-      // Send system message
-      const userName = currentParticipant.profile?.display_name || currentParticipant.profile?.full_name || user?.email;
+      // Send system message — a display name, never an email (VTID-04955).
+      const userName = noticeName(currentParticipant.profile) || 'Someone';
       const messageData = context === 'global'
         ? {
             thread_id: threadId,
@@ -337,6 +359,42 @@ export default function GroupMembersModal({
     }
   };
 
+  const saveName = async () => {
+    const next = draftName.trim();
+    if (next.length < 1 || next.length > 80) {
+      notifyError('toasts.messages.failedRenameGroup', 'toasts.messages.groupNameInvalid');
+      return;
+    }
+    if (next === title) {
+      setIsEditingName(false);
+      return;
+    }
+    setIsSavingName(true);
+    try {
+      await renameGlobalGroup(updateClient, threadId, next);
+      try {
+        await supabase.from('global_messages').insert({
+          thread_id: threadId,
+          sender_id: user?.id,
+          body: `${myName || 'Someone'} renamed the group to ${next}`,
+          message_type: 'system',
+          content_data: { system_type: 'group_renamed', group_name: next, renamed_by: user?.id, actor_name: myName },
+        });
+      } catch (e) {
+        console.warn('Group renamed, system message failed:', e);
+      }
+      setTitle(next);
+      setIsEditingName(false);
+      notify('toasts.messages.groupRenamed');
+      queryClient.invalidateQueries({ queryKey: ['global-threads'] });
+    } catch (error) {
+      console.error('Error renaming group:', error);
+      notifyError('toasts.messages.failedRenameGroup', 'toasts.messages.pleaseTryAgain');
+    } finally {
+      setIsSavingName(false);
+    }
+  };
+
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin':
@@ -364,10 +422,57 @@ export default function GroupMembersModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent
+        // VTID-04959: the phone chat view is a fixed z-[55] layer; at the default
+        // z-50 this panel opened BEHIND it and looked like nothing happened.
+        className="sm:max-w-md max-h-[90dvh] overflow-y-auto z-[60]"
+        overlayClassName="z-[60]"
+      >
+        {(title || canRename) && (
+          <div className="flex min-w-0 items-center gap-2 pe-8">
+            {isEditingName ? (
+              <>
+                <Input
+                  autoFocus
+                  value={draftName}
+                  maxLength={80}
+                  onChange={(e) => setDraftName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') saveName();
+                    if (e.key === 'Escape') setIsEditingName(false);
+                  }}
+                  aria-label={t('screens.messages.groupNameLabel')}
+                  className="flex-1 text-start"
+                  disabled={isSavingName}
+                />
+                <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={saveName} disabled={isSavingName} aria-label={t('screens.messages.groupNameSave')}>
+                  <Check className="w-4 h-4" />
+                </Button>
+                <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => setIsEditingName(false)} disabled={isSavingName} aria-label={t('screens.messages.groupNameCancel')}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <h3 className="flex-1 min-w-0 truncate text-start text-lg font-semibold" data-testid="group-title">{title}</h3>
+                {canRename && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 p-0 shrink-0"
+                    onClick={() => { setDraftName(title); setIsEditingName(true); }}
+                    aria-label={t('screens.messages.renameGroup')}
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+        )}
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            <span>{t('screens.messages.groupMembersLength', { length: participants.length })}</span>
+          <DialogTitle className="flex min-w-0 items-center justify-between gap-2">
+            <span className="min-w-0 truncate">{t('screens.messages.groupMembersLength', { length: participants.length })}</span>
             {currentUserRole !== 'admin' && (
               <Button
                 variant="outline"
@@ -436,7 +541,7 @@ export default function GroupMembersModal({
               ) : (
                 participants.map((participant) => {
                   const profile = participant.profile;
-                  const displayName = profile?.display_name || profile?.full_name || profile?.email || 'Unknown';
+                  const displayName = noticeName(profile) || 'Unknown';
                   const isCurrentUser = participant.user_id === user?.id;
 
                   return (
@@ -463,11 +568,6 @@ export default function GroupMembersModal({
                         </div>
                         <div className="flex items-center gap-2 mt-1">
                           {getRoleBadge(participant.role)}
-                          {profile?.email && (
-                            <span className="text-xs text-muted-foreground truncate">
-                              {profile.email}
-                            </span>
-                          )}
                         </div>
                       </div>
 

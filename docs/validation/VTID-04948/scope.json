@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04948",
+  "kind": "infra",
+  "paths": [
+    ".github/workflows/PR-GATE.yml",
+    ".github/workflows/STAGING-TESTS-REQUIRED.yml",
+    "scripts/ci/pr-gate/**",
+    "scripts/*-regression.mjs",
+    "docs/validation/VTID-04948/**"
+  ],
+  "sparring_record": "docs/validation/VTID-04947/plan-sparring.md",
+  "weakens_tests": [
+    { "file": "scripts/orb-voice-client-stop-regression.mjs", "reason": "tests src/lib/OrbVoiceClient.ts, deleted in #873 (2026-07-13); the script could never run" },
+    { "file": "scripts/universal-cart-client-regression.mjs", "reason": "tests AddToUniversalCartButton.tsx, deleted in #873 (2026-07-13); the script could never run" }
+  ],
+  "red_green_exempt": []
+}

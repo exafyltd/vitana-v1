@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-04961",
+  "kind": "fix",
+  "paths": [
+    "supabase/functions/send-appointment-reminder/**",
+    "supabase/functions/send-appointment-email/**",
+    "src/lib/appointment-and-appilix-functions.vtid-04961.test.ts",
+    "docs/validation/VTID-04961/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -1,0 +1,13 @@
+{
+  "id": "calendar-share-to-feed",
+  "added": "2026-10-07",
+  "title": {
+    "en": "Tell the community where you're going",
+    "de": "Zeig der Community, wo du dabei bist"
+  },
+  "description": {
+    "en": "Open an event or live room in your calendar and tap \"Share to the feed\". Your post shows the event as a live card – others can open it and join you in one tap.",
+    "de": "Öffne ein Event oder einen Live-Raum in deinem Kalender und tippe auf „Im Feed teilen“. Dein Beitrag zeigt das Event als Karte – andere können es öffnen und mit einem Tipp mitmachen."
+  },
+  "deepLink": "/calendar"
+}

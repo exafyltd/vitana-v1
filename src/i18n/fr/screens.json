@@ -5668,7 +5668,8 @@
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!",
-      "dateTimeChip": "{date} · {time}"
+      "dateTimeChip": "{date} · {time}",
+      "openHostProfile": "Ouvrir le profil de {name}"
     },
     "meetups": {
       "detailsProgram": "Détails & Programme",
@@ -6217,7 +6218,20 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} a créé le groupe",
+      "groupNoticeMemberAdded": "{name} a ajouté {member}",
+      "groupNoticeMemberRemoved": "{name} a retiré {member}",
+      "groupNoticeMemberLeft": "{name} a quitté le groupe",
+      "groupNoticeRenamed": "{name} a renommé le groupe en « {group} »",
+      "groupNoticeSomeone": "Quelqu'un",
+      "groupNameLabel": "Nom du groupe",
+      "renameGroup": "Renommer le groupe",
+      "groupNameSave": "Enregistrer",
+      "groupNameCancel": "Annuler",
+      "editGroup": "Modifier le groupe",
+      "messageGroupPlaceholder": "Message à {name}…",
+      "messagePersonPlaceholder": "Message à {name}…"
     },
     "mobile": {
       "searching": "Recherche…",

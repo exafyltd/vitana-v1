@@ -24,6 +24,9 @@
       "evening": "Bonsoir 🌙",
       "night": "Bonne nuit 🌙"
     },
+    "day": {
+      "addFor": "Nouvelle entrée pour {date}"
+    },
     "views": {
       "day": "Jour",
       "week": "Semaine",
@@ -89,7 +92,21 @@
       "reminders": "Rappels",
       "noReminders": "Aucun rappel",
       "directions": "Itinéraire",
-      "askVitana": "Demander à Vitana"
+      "askVitana": "Demander à Vitana",
+      "openEvent": "Voir l'événement",
+      "joinRoom": "Rejoindre",
+      "openRoom": "Voir la salle live",
+      "endedChip": "Terminé",
+      "endedNotice": "Cet événement est terminé et n'est plus actif.",
+      "endedToast": "L'événement est passé et n'est plus actif",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
+      }
     },
     "work": {
       "deploy_staging": "Déploiement staging",
@@ -289,6 +306,114 @@
       "waitingOne": "1 chose t’attend",
       "waiting": "{count} choses t’attendent",
       "open": "Ouvrir dans l’admin"
+    },
+    "indexGain": "+{points} {pillar} sur ton Vitana Index",
+    "edit": {
+      "action": "Modifier",
+      "titleLabel": "Titre",
+      "startLabel": "Début",
+      "endLabel": "Fin",
+      "locationLabel": "Lieu",
+      "descriptionLabel": "Note",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "invalid": "Ajoute un titre ; la fin doit être après le début.",
+      "saved": "Enregistré ✨",
+      "error": "Impossible d'enregistrer pour l'instant. Réessaie dans un moment.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Retirer",
+      "confirm": "Retirer cette entrée de ton calendrier ?",
+      "confirmSeries": "Retirer cette entrée et toutes ses répétitions de ton calendrier ?",
+      "keep": "Garder",
+      "yes": "Retirer",
+      "removed": "Retiré",
+      "error": "Impossible de retirer pour l'instant. Réessaie dans un moment.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Déjà dans ton calendrier",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "Partager dans le fil",
+      "defaultText": "J'y vais : {title} – {date}. Tu viens ?",
+      "textLabel": "Que veux-tu dire ?",
+      "cardHint": "L'événement apparaît sous ton texte sous forme de carte, avec l'heure, le lieu et s'il a toujours lieu.",
+      "public": "Visible par toute la communauté",
+      "profileOnly": "Seulement sur ton profil",
+      "post": "Partager",
+      "cancel": "Annuler",
+      "done": "Partagé – la communauté voit que tu y vas",
+      "viewPost": "Partagé dans le fil – voir la publication",
+      "alreadyShared": "Tu as déjà partagé cet événement",
+      "notShareable": "Cet événement ne peut plus être partagé : il est terminé, annulé ou non public.",
+      "limit": "Tu as déjà beaucoup partagé aujourd'hui. Réessaie demain.",
+      "duplicate": "Tu viens de publier ce texte. Écris autre chose ou attends un instant.",
+      "suspended": "Ton compte ne peut pas publier pour le moment.",
+      "error": "Le partage n'a pas fonctionné. Réessaie dans un instant.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "Bientôt",
+      "live": "En cours",
+      "past": "Terminé",
+      "cancelled": "Annulé",
+      "openEvent": "Voir et participer",
+      "openRoom": "Voir la salle",
+      "joinRoom": "Rejoindre",
+      "unavailable": "Cet événement n'est plus disponible.",
+      "untitled": "Événement",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

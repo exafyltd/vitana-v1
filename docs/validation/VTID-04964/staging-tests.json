@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04964",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "edge-function source guards",
+      "ref": "npx vitest run src/lib/appointment-and-appilix-functions.vtid-04961.test.ts",
+      "cwd": ".",
+      "reason": "Supabase edge functions deploy only to the single live Supabase project (manual supabase-functions-deploy.yml dispatch after owner approval); there is no staging twin, so the staging run is structurally inapplicable. The Vitest guards prove the fix in CI; after the approved deploy the check is read-only (function logs, deployed source via get_edge_function), never a request against production."
+    }
+  ]
+}

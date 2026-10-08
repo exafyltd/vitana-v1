@@ -1,0 +1,40 @@
+name: SQL-THREAD-JOIN-HARDENING
+# VTID-04960: tests the participant join hardening on a throwaway Postgres in
+# the runner — nobody can add themselves to a conversation they were not
+# invited to, members cannot move their row or promote themselves, and group
+# creation, adding members, marking read, leaving, removing and definer-created
+# DMs keep working. No secrets, no shared database.
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/20261007180000_vtid_04960_thread_participants_join_hardening.sql'
+      - 'scripts/sql-tests/vtid-04960-thread-join-hardening.test.sql'
+      - 'scripts/sql-tests/run-thread-join-hardening-test.sh'
+      - '.github/workflows/SQL-THREAD-JOIN-HARDENING.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the migration test
+        run: bash scripts/sql-tests/run-thread-join-hardening-test.sh

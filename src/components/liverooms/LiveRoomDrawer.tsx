@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { getLiveRoomShareUrl } from '@/lib/shareUrl';
+import SocialShareButton from '@/components/sharing/SocialShareButton';
 import {
   Drawer,
   DrawerContent,
@@ -34,7 +36,6 @@ import {
   ChevronRight,
   Clock,
   Users,
-  Share2,
   Bookmark,
   Bell,
   Calendar,
@@ -64,6 +65,8 @@ import {
 } from "@/hooks/useStreamSubscription";
 import { useCreateReminder } from "@/hooks/useReminders";
 import { FollowButton } from "@/components/social/FollowButton";
+import { InterestedPeopleSheet } from "@/components/liverooms/InterestedPeopleSheet";
+import { useStreamSubscribers } from "@/hooks/useStreamSubscribers";
 
 import { formatDistanceToNow, fmtDate, fmtTime } from '@/lib/locale-format';
 import { buildIcs, downloadIcs, icsFilename } from '@/lib/ics';
@@ -101,6 +104,8 @@ export function LiveRoomDrawer({
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [peopleOpen, setPeopleOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Real "Notify me" wiring — persists to live_stream_subscribers, same as the
   // card on the Live Rooms page (this used to be a throwaway local toggle that
@@ -115,6 +120,10 @@ export function LiveRoomDrawer({
   const { mutateAsync: createReminder } = useCreateReminder();
   const isNotifying = !!(room && mySubs?.has(room.id));
   const subscriberCount = room ? (subCounts?.[room.id] ?? 0) : 0;
+  // Real faces for the "Who's going" row of a scheduled room (the same RPC the
+  // card's people list uses). Loaded only while the drawer is open.
+  const roomIsScheduled = !!room && !room.isLive && !!room.scheduledTime;
+  const { data: subscribers = [] } = useStreamSubscribers(room?.id ?? '', open && roomIsScheduled);
 
   // Keyboard navigation
   useEffect(() => {
@@ -183,18 +192,6 @@ export function LiveRoomDrawer({
     setIsSaved(!isSaved);
   };
 
-  const handleShare = (platform?: string) => {
-    const url = getLiveRoomShareUrl(room.id);
-    const text = `Check out this live room: ${room.title}`;
-
-    if (platform === "copy") {
-      navigator.clipboard.writeText(url);
-      notify('toasts.liverooms.linkCopied', 'toasts.liverooms.roomLinkCopiedClipboard');
-    } else {
-      notify('toasts.liverooms.share');
-    }
-  };
-
   const handleAddToCalendar = (type: string) => {
     if (!room.scheduledTime) return;
 
@@ -225,6 +222,28 @@ export function LiveRoomDrawer({
     }
 
     notify('toasts.liverooms.openingCalendar');
+  };
+
+  // The same share control the room cards use (native share first, platform
+  // picker as the fallback) — this button used to only show a toast.
+  const shareControl = (
+    <span className="contents" data-testid="live-room-drawer-share">
+      <SocialShareButton
+        type="live_room"
+        data={{
+          title: room.title,
+          description: room.description || t('screens.liveRoom.shareDescription', { name: room.host.name }),
+          link: getLiveRoomShareUrl(room.id),
+        }}
+        variant="icon"
+        size="lg"
+        className="h-11 w-11 shrink-0 border border-input bg-background px-0"
+      />
+    </span>
+  );
+
+  const goToHost = () => {
+    if (room.host.id) navigate(`/u/${room.host.id}`);
   };
 
   const handleJoin = () => {
@@ -351,9 +370,13 @@ export function LiveRoomDrawer({
             {/* Host Bar */}
             {!isCreator ? (
               <div className="flex items-center gap-2 mt-3 min-w-0">
-                <div
+                <button
+                  type="button"
+                  onClick={goToHost}
+                  aria-label={t('screens.liverooms.openHostProfile', { name: room.host.name })}
+                  data-testid="live-room-host-link"
                   className={cn(
-                    "flex items-center gap-2 h-11 px-2 rounded-full min-w-0",
+                    "flex items-center gap-2 h-11 px-2 rounded-full min-w-0 text-start",
                     "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
                 >
@@ -368,7 +391,7 @@ export function LiveRoomDrawer({
                       {t('screens.liverooms.host')}
                     </span>
                   </div>
-                </div>
+                </button>
 
                 {/* Shows only when you don't already follow the host. */}
                 <FollowButton
@@ -378,14 +401,20 @@ export function LiveRoomDrawer({
               </div>
             ) : (
               <div className="flex items-center gap-2 mt-3 min-w-0">
-                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0">
+                <button
+                  type="button"
+                  onClick={goToHost}
+                  aria-label={t('screens.liverooms.openHostProfile', { name: room.host.name })}
+                  data-testid="live-room-host-link"
+                  className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0 text-start"
+                >
                   <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
                   <span className="text-sm font-semibold truncate">{room.host.name}</span>
                   <Badge variant="secondary" className="text-xs flex-shrink-0">{t('screens.liverooms.yourRoom')}</Badge>
-                </div>
+                </button>
               </div>
             )}
           </div>
@@ -423,21 +452,52 @@ export function LiveRoomDrawer({
                   </p>
                 );
               }
+              const countLabel = t('screens.liverooms.willJoinCount', { count: audienceCount });
+              if (!isScheduled) {
+                // Live room: the number is viewers in the room, not a list of people.
+                return <span className="text-sm text-muted-foreground">{countLabel}</span>;
+              }
               return (
-                <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="flex items-center gap-2 rounded-full -ms-1 ps-1 pe-2 py-1 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  onClick={() => setPeopleOpen(true)}
+                  data-testid="drawer-interested-trigger"
+                >
                   <div className="flex -space-x-2">
-                    {Array.from({ length: Math.min(audienceCount, 5) }).map((_, i) => (
-                      <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
-                        <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
-                      </Avatar>
-                    ))}
+                    {subscribers.slice(0, 5).map((p) => {
+                      const name = p.display_name || t('screens.liverooms.anonymousHost');
+                      return (
+                        <Avatar key={p.user_id} className="h-6 w-6 ring-2 ring-background">
+                          <AvatarImage src={p.avatar_url ?? undefined} alt={name} />
+                          <AvatarFallback className="text-xs">{name[0] ?? '?'}</AvatarFallback>
+                        </Avatar>
+                      );
+                    })}
                   </div>
-                  <span className="text-sm text-muted-foreground">
-                    {t('screens.liverooms.willJoinCount', { count: audienceCount })}
-                  </span>
-                </div>
+                  <span className="text-sm text-muted-foreground">{countLabel}</span>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground rtl:rotate-180" aria-hidden="true" />
+                </button>
               );
             })()}
+            {peopleOpen && (
+              // Portal events bubble through React: keep taps/swipes in the list
+              // from reaching the drawer's swipe-to-next-room handlers.
+              <div
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
+              >
+                <InterestedPeopleSheet
+                  streamId={room.id}
+                  title={room.title}
+                  open={peopleOpen}
+                  onOpenChange={setPeopleOpen}
+                />
+              </div>
+            )}
           </div>
 
           {/* When */}
@@ -529,18 +589,14 @@ export function LiveRoomDrawer({
               <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.manage')}
               </Button>
-              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
-                <Share2 className="w-4 h-4" />
-              </Button>
+              {shareControl}
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.joinRoom')}
               </Button>
-              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
-                <Share2 className="w-4 h-4" />
-              </Button>
+              {shareControl}
               <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={handleSave}>
                 <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
               </Button>
@@ -592,9 +648,7 @@ export function LiveRoomDrawer({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
-                  <Share2 className="w-4 h-4" />
-                </Button>
+                {shareControl}
               </div>
             </div>
           )

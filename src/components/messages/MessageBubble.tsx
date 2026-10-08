@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { splitMentionSegments, type Mention } from '@/lib/mentions';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { resolveInAppEventPath } from '@/lib/inAppLinks';
 import { useAuth } from '@/context/AuthProvider';
@@ -46,6 +47,7 @@ import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { t, useI18nLocale } from '@/lib/i18n-toast';
+import { describeGroupNotice } from '@/lib/messaging/groupSystemNotice';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
@@ -181,6 +183,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   // is unused on purpose: the subscription is the point.
   useI18nLocale();
   const navigate = useNavigate();
+  // VTID-04926: members tagged in this message (group chat stores them in the
+  // message metadata, surfaced here as content_data.mentions).
+  const messageMentions: Mention[] = useMemo(() => {
+    const raw = (message?.content_data as { mentions?: unknown } | null | undefined)?.mentions;
+    return Array.isArray(raw) ? (raw as Mention[]) : [];
+  }, [message?.content_data]);
 
   const isMobile = useIsMobile();
   const { user } = useAuth();
@@ -566,12 +574,42 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     let match: RegExpExecArray | null;
     let lastIndex = 0;
 
+    // VTID-04926: @mentions stored with the message (group chat) become links
+    // to the member's profile; everything else stays plain text.
+    const pushPlain = (chunk: string, offset: number) => {
+      if (!chunk) return;
+      if (messageMentions.length === 0) {
+        nodes.push(chunk);
+        return;
+      }
+      for (const seg of splitMentionSegments(chunk, messageMentions)) {
+        if (seg.type === 'text') {
+          nodes.push(seg.text);
+        } else {
+          nodes.push(
+            <Link
+              key={`mention-${seg.mention.user_id}-${offset}-${nodes.length}`}
+              to={`/u/${seg.mention.user_id}`}
+              data-testid="message-mention"
+              className={cn(
+                "font-semibold",
+                isOwnMessage ? "text-primary-foreground underline underline-offset-2" : "text-domain-messages-accent hover:underline"
+              )}
+              onClick={(event) => event.stopPropagation()}
+            >
+              {seg.text}
+            </Link>
+          );
+        }
+      }
+    };
+
     while ((match = urlRegex.exec(text)) !== null) {
       const rawUrl = match[0];
       const start = match.index;
 
       if (start > lastIndex) {
-        nodes.push(text.slice(lastIndex, start));
+        pushPlain(text.slice(lastIndex, start), lastIndex);
       }
 
       let cleanUrl = rawUrl;
@@ -634,7 +672,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
 
     if (lastIndex < text.length) {
-      nodes.push(text.slice(lastIndex));
+      pushPlain(text.slice(lastIndex), lastIndex);
     }
 
     if (trailingInline) {
@@ -646,7 +684,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         {nodes.length > 0 ? nodes : text}
       </p>
     );
-  }, [isOwnMessage, navigate]);
+  }, [isOwnMessage, navigate, messageMentions]);
 
   const renderAttachment = (attachment: any, index: number) => {
     // Mime can be empty on Android pickers; fall back to filename extension
@@ -850,7 +888,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         return (
           <div className="text-center py-2">
             <Badge variant="outline" className="text-xs">
-              {message.body}
+              {/* VTID-04955: group notices render from i18n with names, never the stored body (old bodies carry emails). */}
+              {describeGroupNotice(message as Parameters<typeof describeGroupNotice>[0], t) ?? message.body}
             </Badge>
           </div>
         );

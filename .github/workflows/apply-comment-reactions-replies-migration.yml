@@ -14,17 +14,12 @@ name: Apply comment reactions + replies migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260820120000_vtid_03690_comment_reactions_replies.sql'
-      - '.github/workflows/apply-comment-reactions-replies-migration.yml'
-
 concurrency:
   group: apply-comment-reactions-replies-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

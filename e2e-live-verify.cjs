@@ -30,7 +30,7 @@ async function main() {
   const signInRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
-    body: JSON.stringify({ email: 'e2e-test@vitana.dev', password: 'VitanaE2eTest2026!' }),
+    body: JSON.stringify({ email: 'e2e-test@vitana.dev', password: process.env.TEST_USER_PASSWORD }),
   });
 
   if (!signInRes.ok) {

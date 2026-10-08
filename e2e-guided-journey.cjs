@@ -33,7 +33,7 @@ const BASE_URL = process.env.BASE_URL || 'https://preview.vitanaland.com';
 const SB_URL = process.env.SB_URL;
 const SB_KEY = process.env.SB_KEY;
 const EMAIL = process.env.E2E_EMAIL || 'e2e-test@vitana.dev';
-const PASSWORD = process.env.E2E_PASSWORD || 'VitanaE2eTest2026!';
+const PASSWORD = process.env.E2E_PASSWORD;
 const SB_PROJECT_REF = (SB_URL || '').match(/https:\/\/([a-z0-9]+)\.supabase/)?.[1];
 
 const OUT = path.resolve(__dirname, 'screenshots/guided-journey');

@@ -5668,7 +5668,8 @@
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!",
-      "dateTimeChip": "{date} · {time}"
+      "dateTimeChip": "{date} · {time}",
+      "openHostProfile": "{name} profilini aç"
     },
     "meetups": {
       "detailsProgram": "Detaylar ve Program",
@@ -6217,7 +6218,20 @@
       "_pending_review": {
         "conversationRowError": true
       },
-      "conversationRowError": "This item couldn't be shown."
+      "conversationRowError": "This item couldn't be shown.",
+      "groupNoticeCreated": "{name} grubu oluşturdu",
+      "groupNoticeMemberAdded": "{name}, {member} kişisini ekledi",
+      "groupNoticeMemberRemoved": "{name}, {member} kişisini çıkardı",
+      "groupNoticeMemberLeft": "{name} gruptan ayrıldı",
+      "groupNoticeRenamed": "{name} grubun adını “{group}” olarak değiştirdi",
+      "groupNoticeSomeone": "Biri",
+      "groupNameLabel": "Grup adı",
+      "renameGroup": "Grubu yeniden adlandır",
+      "groupNameSave": "Kaydet",
+      "groupNameCancel": "İptal",
+      "editGroup": "Grubu düzenle",
+      "messageGroupPlaceholder": "{name} grubuna mesaj…",
+      "messagePersonPlaceholder": "{name} kişisine mesaj…"
     },
     "mobile": {
       "searching": "Aranıyor...",

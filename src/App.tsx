@@ -77,6 +77,9 @@ import { Activity, BarChart3, Bell, BookOpen, Calendar, ClipboardCheck, Clock, F
 
 // Auth & Legal
 const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
+// VTID-04945: public docs + privacy notice for the Commerce connector (Claude Connectors Directory listing).
+const CommerceConnectDocs = lazy(() => import("./pages/CommerceConnectDocs"));
+const CommerceConnectPrivacy = lazy(() => import("./pages/CommerceConnectPrivacy"));
 const TermsOfUse = lazy(() => import("./pages/legal/TermsOfUse"));
 const DeleteAccount = lazy(() => import("./pages/legal/DeleteAccount"));
 const MaxinaSupport = lazy(() => import("./pages/legal/MaxinaSupport"));
@@ -1180,6 +1183,14 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
+          {/* VTID-04915: one entry, from a reminder notification */}
+          <Route path="/calendar/entry/:entryId" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <CalendarPage />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
           <Route path="/calendar/appointments" element={<Navigate to="/calendar" replace />} />
 
           {/* VTID-02601 Reminders */}
@@ -1833,6 +1844,9 @@ const App = () => {
           {/* VTID-04848: the supplier approves their AI assistant (Supabase Auth
               OAuth server's authorization path). Under /commerce so a supplier
               who is not signed in goes through /commerce/join and back. */}
+          {/* VTID-04945: public, no sign-in (a reviewer or supplier reads before connecting). */}
+          <Route path="/commerce/connect" element={<CommerceConnectDocs />} />
+          <Route path="/commerce/connect/privacy" element={<CommerceConnectPrivacy />} />
           <Route path="/commerce/connect/authorize" element={<AuthGuard><CommerceConnectAuthorize /></AuthGuard>} />
           {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
               signed-in user consents for themselves. */}

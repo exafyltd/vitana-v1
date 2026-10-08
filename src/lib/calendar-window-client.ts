@@ -67,6 +67,10 @@ export interface CalendarWindowItem {
   movable?: boolean;
   /** VTID-04372: a busy block pulled from the member's Google calendar. */
   source?: "google";
+  /** VTID-04916: a community event or live room the member can post to the feed. */
+  shareable?: boolean;
+  /** VTID-04916: the member's feed post about this event, once shared. */
+  shared_post_id?: string | null;
 }
 
 export type WorkKind = "deploy_staging" | "deploy_prod" | "autopilot_review" | "ticket_due" | "erp_approval";
@@ -161,11 +165,56 @@ export async function createCalendarEntry(input: NewCalendarEntry, role: string 
   return { id: String((body.data as { id?: string } | undefined)?.id ?? "") };
 }
 
-export async function completeCalendarEntry(eventId: string, role: string | null): Promise<void> {
-  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/complete`, role, {
+export type PillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
+
+/** VTID-04915: what completing an entry did to the Vitana Index (null when not recomputed). */
+export interface IndexDelta {
+  delta_total?: number;
+  per_pillar_delta?: Partial<Record<PillarKey, number>>;
+}
+
+export async function completeCalendarEntry(eventId: string, role: string | null): Promise<{ vitana_index: IndexDelta | null }> {
+  const body = await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/complete`, role, {
     method: "POST",
     body: JSON.stringify({ completion_status: "completed" }),
   });
+  const vi = (body as { vitana_index?: IndexDelta | null }).vitana_index;
+  return { vitana_index: vi && typeof vi === "object" ? vi : null };
+}
+
+/**
+ * VTID-04915: the pillar that moved most after completing an entry, for a
+ * "+0.4 Mental" line. Null when nothing went up.
+ */
+export function topPillarGain(delta: IndexDelta | null): { pillar: PillarKey; points: number } | null {
+  const per = delta?.per_pillar_delta;
+  if (!per) return null;
+  let best: { pillar: PillarKey; points: number } | null = null;
+  for (const [pillar, points] of Object.entries(per) as Array<[PillarKey, number]>) {
+    if (typeof points === "number" && points > 0 && (!best || points > best.points)) best = { pillar, points };
+  }
+  return best;
+}
+
+/** VTID-04915: the fields a member may change on their own entry. */
+export interface CalendarEntryPatch {
+  title?: string;
+  start_time?: string;
+  end_time?: string | null;
+  location?: string | null;
+  description?: string | null;
+}
+
+export async function updateCalendarEntry(eventId: string, patch: CalendarEntryPatch, role: string | null): Promise<void> {
+  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}`, role, {
+    method: "PATCH",
+    body: JSON.stringify(patch),
+  });
+}
+
+/** VTID-04915: removes an entry (the gateway marks it cancelled). */
+export async function cancelCalendarEntry(eventId: string, role: string | null): Promise<void> {
+  await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}`, role, { method: "DELETE" });
 }
 
 // =============================================================================
@@ -229,6 +278,51 @@ export function moveBlockReasonOf(err: unknown): MoveBlockReason | null {
   if (!(err instanceof CalendarApiError) || err.message !== "NOT_MOVABLE") return null;
   const r = err.body.reason;
   return r === "cancelled" || r === "completed" || r === "recurring" || r === "owned_by_source" ? r : null;
+}
+
+// =============================================================================
+// VTID-04916 — share an entry to the news feed
+//   POST /api/v1/calendar/events/:id/share-to-feed { text?, is_public? }
+// Only community events and live room sessions; the gateway checks the event
+// is still on, and answers 409 ALREADY_SHARED (with post_id) for a second try.
+// =============================================================================
+
+export interface ShareToFeedInput {
+  text: string;
+  is_public: boolean;
+}
+
+export async function shareCalendarEntryToFeed(eventId: string, input: ShareToFeedInput, role: string | null): Promise<string> {
+  const body = await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/share-to-feed`, role, {
+    method: "POST",
+    body: JSON.stringify({ text: input.text, is_public: input.is_public }),
+  });
+  const postId = (body.data as { post_id?: string } | undefined)?.post_id;
+  if (!postId) throw new CalendarApiError("NO_POST_ID", 500);
+  return postId;
+}
+
+export type ShareFailure = "already_shared" | "not_shareable" | "limit" | "duplicate" | "suspended" | "error";
+
+/** Why a share was refused, and the existing post when it was shared before. */
+export function shareFailureOf(err: unknown): { kind: ShareFailure; postId: string | null } {
+  if (!(err instanceof CalendarApiError)) return { kind: "error", postId: null };
+  const postId = typeof err.body.post_id === "string" ? err.body.post_id : null;
+  switch (err.message) {
+    case "ALREADY_SHARED":
+      return { kind: "already_shared", postId };
+    case "NOT_SHAREABLE":
+      return { kind: "not_shareable", postId: null };
+    case "SHARE_LIMIT":
+    case "RATE_LIMITED":
+      return { kind: "limit", postId: null };
+    case "DUPLICATE_POST":
+      return { kind: "duplicate", postId: null };
+    case "USER_SUSPENDED":
+      return { kind: "suspended", postId: null };
+    default:
+      return { kind: "error", postId: null };
+  }
 }
 
 // =============================================================================

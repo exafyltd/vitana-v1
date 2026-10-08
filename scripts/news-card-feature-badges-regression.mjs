@@ -59,7 +59,7 @@ async function loadHeader() {
                 'screens.vitanaIdentity.vitana': 'Vitana',
                 'screens.vitanaIdentity.orbAlt': 'Vitana',
                 'screens.vitanaIdentity.vitanaIndex': 'Vitana Index',
-                'screens.vitanaIdentity.guidedJourney': 'Meine Reise',
+                'screens.vitanaIdentity.guidedJourney': 'Mein Hörbuch',
                 'screens.vitanaIdentity.findAMatch': 'Match finden',
               };
               export const t = (key) => labels[key] ?? key;
@@ -113,7 +113,7 @@ const { VitanaRecommendationHeader } = await loadHeader();
 
 const cases = [
   ["vitana-index", "Vitana Index", "lucide-activity"],
-  ["guided-journey", "Meine Reise", "lucide-zap"],
+  ["guided-journey", "Mein Hörbuch", "lucide-zap"],
   ["find-a-match", "Match finden", "lucide-users"],
 ];
 
@@ -142,7 +142,8 @@ const enIdentity = JSON.parse(
 
 const expectedGerman = {
   vitanaIndex: "Vitana Index",
-  guidedJourney: "Meine Reise",
+  // VTID-04760..04763 (#1192) renamed the journey badge to the Audiobook.
+  guidedJourney: "Mein Hörbuch",
   findAMatch: "Match finden",
   viewIndex: "Index ansehen",
   viewJourney: "Meine Reise ansehen",
@@ -150,7 +151,7 @@ const expectedGerman = {
 };
 const expectedEnglish = {
   vitanaIndex: "Vitana Index",
-  guidedJourney: "Guided Journey",
+  guidedJourney: "My Audiobook",
   findAMatch: "Find a Match",
   viewIndex: "View Index",
   viewJourney: "View My Journey",

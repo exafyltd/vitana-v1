@@ -28,6 +28,8 @@ export const COMMERCE_MCP_TOOL_NAMES = [
   'add_product',
   'list_products',
   'update_product',
+  'check_verification',
+  'connect_store',
   'submit_for_verification',
 ] as const;
 

@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "سيتم تنزيل ملف ICS",
       "openingCalendar": "جاري فتح التقويم",
       "notifyOnTitle": "تم تعيين تذكير",
-      "notifyOnDesc": "سنذكرك قبل أن تبدأ",
+      "notifyOnDesc": "سنذكرك قبل أن تبدأ، وهي الآن في تقويم Maxina الخاص بك",
       "notifyOffTitle": "تمت إزالة التذكير",
       "notifyOffDesc": "لن يتم تذكيرك بعد الآن",
       "notifyError": "تعذر تحديث التذكير",
@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "حدد أو افتح محادثة قبل إرفاق الملفات.",
       "uploadFailed": "فشل الرفع.",
       "failedSendVoiceMessage": "فشل إرسال الرسالة الصوتية.",
-      "thereErrorSendingYourVoiceMessage": "حدث خطأ أثناء إرسال رسالتك الصوتية."
+      "thereErrorSendingYourVoiceMessage": "حدث خطأ أثناء إرسال رسالتك الصوتية.",
+      "groupRenamed": "تمت إعادة تسمية المجموعة",
+      "failedRenameGroup": "تعذرت إعادة تسمية المجموعة",
+      "groupNameInvalid": "يجب أن يتراوح اسم المجموعة بين 1 و80 حرفًا."
     },
     "notifications": {
       "bookingConfirmed": "تم تأكيد الحجز! 🎉",

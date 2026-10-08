@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "Файл ICS будет загружен",
       "openingCalendar": "Открытие календаря",
       "notifyOnTitle": "Напоминание установлено",
-      "notifyOnDesc": "Мы напомним тебе перед началом",
+      "notifyOnDesc": "Мы напомним тебе перед началом — и это уже в твоём календаре Maxina",
       "notifyOffTitle": "Напоминание удалено",
       "notifyOffDesc": "Тебе больше не будут напоминать",
       "notifyError": "Не удалось обновить напоминание",
@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Выбери или открой чат, прежде чем прикреплять файлы.",
       "uploadFailed": "Загрузка не удалась",
       "failedSendVoiceMessage": "Не удалось отправить голосовое сообщение",
-      "thereErrorSendingYourVoiceMessage": "Произошла ошибка при отправке твоего голосового сообщения"
+      "thereErrorSendingYourVoiceMessage": "Произошла ошибка при отправке твоего голосового сообщения",
+      "groupRenamed": "Группа переименована",
+      "failedRenameGroup": "Не удалось переименовать группу",
+      "groupNameInvalid": "Название группы должно содержать от 1 до 80 символов."
     },
     "notifications": {
       "bookingConfirmed": "Бронирование подтверждено! 🎉",

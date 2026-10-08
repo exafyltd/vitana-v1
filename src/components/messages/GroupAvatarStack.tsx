@@ -1,17 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+// VTID-04959: legacy group threads carry display_name/avatar_url at the top
+// level, not in `profile` — the shared helpers read both, so no more "?".
+import {
+  getParticipantAvatarUrl,
+  getParticipantDisplayName,
+  type ThreadParticipant,
+} from "@/utils/conversationHelpers";
 
-interface Participant {
-  user_id: string;
-  profile?: {
-    display_name?: string;
-    full_name?: string;
-    avatar_url?: string;
-  };
-}
+const initial = (p: ThreadParticipant) => {
+  const name = getParticipantDisplayName(p);
+  return name === 'Unknown' ? '?' : name[0]?.toUpperCase() || '?';
+};
 
 interface GroupAvatarStackProps {
-  participants: Participant[];
+  participants: ThreadParticipant[];
   maxVisible?: number;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -42,35 +45,26 @@ export default function GroupAvatarStack({
 
   if (participants.length === 1) {
     const participant = participants[0];
-    const profile = participant.profile;
-    const displayName = profile?.display_name || profile?.full_name || '?';
-    
+
     return (
       <Avatar className={cn(sizeClasses[size], className)}>
-        <AvatarImage src={profile?.avatar_url || undefined} />
-        <AvatarFallback>{displayName[0]?.toUpperCase()}</AvatarFallback>
+        <AvatarImage src={getParticipantAvatarUrl(participant) || undefined} />
+        <AvatarFallback>{initial(participant)}</AvatarFallback>
       </Avatar>
     );
   }
 
   return (
-    <div className={cn("flex -space-x-1", className)}>
+    <div className={cn("flex -space-x-1 rtl:space-x-reverse", className)} data-testid="group-avatar-stack">
       {visibleParticipants.map((participant, index) => {
-        const profile = participant.profile;
-        const displayName = profile?.display_name || profile?.full_name || '?';
-        
         return (
-          <Avatar 
-            key={participant.user_id} 
-            className={cn(
-              sizeClasses[size],
-              "border-2 border-background",
-              index > 0 && "ml-0"
-            )}
+          <Avatar
+            key={participant.user_id}
+            className={cn(sizeClasses[size], "border-2 border-background")}
             style={{ zIndex: maxVisible - index }}
           >
-            <AvatarImage src={profile?.avatar_url || undefined} />
-            <AvatarFallback>{displayName[0]?.toUpperCase()}</AvatarFallback>
+            <AvatarImage src={getParticipantAvatarUrl(participant) || undefined} />
+            <AvatarFallback>{initial(participant)}</AvatarFallback>
           </Avatar>
         );
       })}

@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04960",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/messaging src/components/messages/GroupMembersModal.vtid-04955.test.tsx",
+      "reason": "database-only change (RLS policies + guard trigger on global_thread_participants / thread_participants), no app code changed: the app's own group create / add / rename / remove / leave paths are re-run against the deployed commit to show they are unchanged. The policies themselves are proven before merge on a throwaway Postgres by SQL-THREAD-JOIN-HARDENING (8 checks incl. the negative control) and after apply by the apply workflow's verify step; staging shares the production database and is read-only, so it cannot exercise writes."
+    }
+  ]
+}

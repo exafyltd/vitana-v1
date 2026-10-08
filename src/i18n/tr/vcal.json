@@ -24,6 +24,9 @@
       "evening": "İyi akşamlar 🌙",
       "night": "İyi geceler 🌙"
     },
+    "day": {
+      "addFor": "{date} için yeni kayıt"
+    },
     "views": {
       "day": "Gün",
       "week": "Hafta",
@@ -87,7 +90,21 @@
       "reminders": "Hatırlatmalar",
       "noReminders": "Hatırlatma yok",
       "directions": "Yol tarifi",
-      "askVitana": "Vitana'ya sor"
+      "askVitana": "Vitana'ya sor",
+      "openEvent": "Etkinliğe git",
+      "joinRoom": "Şimdi katıl",
+      "openRoom": "Canlı odaya git",
+      "endedChip": "Bitti",
+      "endedNotice": "Bu etkinlik sona erdi ve artık aktif değil.",
+      "endedToast": "Etkinlik geçmişte kaldı ve aktif değil",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
+      }
     },
     "work": {
       "deploy_staging": "Staging dağıtımı",
@@ -281,6 +298,114 @@
       "waitingOne": "Seni bekleyen 1 şey var",
       "waiting": "Seni bekleyen {count} şey var",
       "open": "Yönetimde aç"
+    },
+    "indexGain": "Vitana Index’inde +{points} {pillar}",
+    "edit": {
+      "action": "Düzenle",
+      "titleLabel": "Başlık",
+      "startLabel": "Başlangıç",
+      "endLabel": "Bitiş",
+      "locationLabel": "Yer",
+      "descriptionLabel": "Not",
+      "save": "Kaydet",
+      "cancel": "Vazgeç",
+      "invalid": "Bir başlık ekle; bitiş başlangıçtan sonra olmalı.",
+      "saved": "Kaydedildi ✨",
+      "error": "Şu an kaydedilemedi. Birazdan tekrar dene.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Kaldır",
+      "confirm": "Bu kayıt takviminden kaldırılsın mı?",
+      "confirmSeries": "Bu kayıt ve tüm tekrarları takviminden kaldırılsın mı?",
+      "keep": "Kalsın",
+      "yes": "Kaldır",
+      "removed": "Kaldırıldı",
+      "error": "Şu an kaldırılamadı. Birazdan tekrar dene.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Zaten takviminde",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "Akışta paylaş",
+      "defaultText": "Ben katılıyorum: {title} – {date}. Sen de gelir misin?",
+      "textLabel": "Ne söylemek istersin?",
+      "cardHint": "Etkinlik, metninin altında saat, yer ve hâlâ yapılıp yapılmadığıyla birlikte bir kart olarak görünür.",
+      "public": "Topluluktaki herkes görebilir",
+      "profileOnly": "Sadece profilinde",
+      "post": "Paylaş",
+      "cancel": "İptal",
+      "done": "Paylaşıldı – topluluk katılacağını görüyor",
+      "viewPost": "Akışta paylaşıldı – gönderiyi gör",
+      "alreadyShared": "Bu etkinliği zaten paylaştın",
+      "notShareable": "Bu etkinlik artık paylaşılamaz – bitti, iptal edildi ya da herkese açık değil.",
+      "limit": "Bugün zaten çok paylaştın. Yarın tekrar dene.",
+      "duplicate": "Bu metni az önce paylaştın. Başka bir şey yaz ya da biraz bekle.",
+      "suspended": "Hesabın şu anda paylaşım yapamıyor.",
+      "error": "Paylaşım şu anda olmadı. Birazdan tekrar dene.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "Yakında",
+      "live": "Şu anda",
+      "past": "Bitti",
+      "cancelled": "İptal edildi",
+      "openEvent": "Gör ve katıl",
+      "openRoom": "Odayı gör",
+      "joinRoom": "Şimdi katıl",
+      "unavailable": "Bu etkinlik artık mevcut değil.",
+      "untitled": "Etkinlik",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

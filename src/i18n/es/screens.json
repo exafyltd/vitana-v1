@@ -5634,7 +5634,8 @@
       "interestedTitle": "Who's going",
       "interestedAria": "Show who wants to join",
       "interestedEmpty": "Nobody has signed up yet – be the first!",
-      "dateTimeChip": "{date} · {time}"
+      "dateTimeChip": "{date} · {time}",
+      "openHostProfile": "Abrir el perfil de {name}"
     },
     "meetups": {
       "detailsProgram": "Detalles y programa",
@@ -6180,7 +6181,20 @@
       "conversationStart": "Inicio de la conversación",
       "anonymous": "Anónimo",
       "vitanaOpenScreen": "Abrir pantalla",
-      "conversationRowError": "Este elemento no se pudo mostrar."
+      "conversationRowError": "Este elemento no se pudo mostrar.",
+      "groupNoticeCreated": "{name} creó el grupo",
+      "groupNoticeMemberAdded": "{name} añadió a {member}",
+      "groupNoticeMemberRemoved": "{name} eliminó a {member}",
+      "groupNoticeMemberLeft": "{name} salió del grupo",
+      "groupNoticeRenamed": "{name} cambió el nombre del grupo a «{group}»",
+      "groupNoticeSomeone": "Alguien",
+      "groupNameLabel": "Nombre del grupo",
+      "renameGroup": "Cambiar nombre del grupo",
+      "groupNameSave": "Guardar",
+      "groupNameCancel": "Cancelar",
+      "editGroup": "Editar grupo",
+      "messageGroupPlaceholder": "Mensaje a {name}…",
+      "messagePersonPlaceholder": "Mensaje a {name}…"
     },
     "mobile": {
       "searching": "Buscando…",

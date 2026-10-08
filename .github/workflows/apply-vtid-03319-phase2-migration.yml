@@ -11,17 +11,12 @@ name: Apply VTID-03319 phase2 feed-safety migration
 #   - Manual: Actions tab -> "Run workflow".
 
 on:
+  # VTID-04949 (plan D2): no push trigger. Merging must never apply SQL to the
+  # production database; migrations ship at Gate 2, dispatched in order.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260622130000_vtid_03319_phase2_feed_safety.sql'
-      - '.github/workflows/apply-vtid-03319-phase2-migration.yml'
-
 concurrency:
   group: apply-vtid-03319-phase2-migration
   cancel-in-progress: false
-
 jobs:
   apply:
     runs-on: ubuntu-latest

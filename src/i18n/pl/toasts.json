@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "Plik ICS zostanie pobrany",
       "openingCalendar": "Otwieranie kalendarza",
       "notifyOnTitle": "Przypomnienie ustawione",
-      "notifyOnDesc": "Przypomnimy Ci, zanim się zacznie",
+      "notifyOnDesc": "Przypomnimy Ci, zanim się zacznie — i jest już w Twoim kalendarzu Maxina",
       "notifyOffTitle": "Przypomnienie usunięte",
       "notifyOffDesc": "Nie będziemy Ci już przypominać",
       "notifyError": "Nie udało się zaktualizować przypomnienia",
@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Wybierz lub otwórz rozmowę przed załączeniem plików.",
       "uploadFailed": "Przesyłanie nie powiodło się",
       "failedSendVoiceMessage": "Nie udało się wysłać wiadomości głosowej",
-      "thereErrorSendingYourVoiceMessage": "Wystąpił błąd podczas wysyłania twojej wiadomości głosowej"
+      "thereErrorSendingYourVoiceMessage": "Wystąpił błąd podczas wysyłania twojej wiadomości głosowej",
+      "groupRenamed": "Zmieniono nazwę grupy",
+      "failedRenameGroup": "Nie udało się zmienić nazwy grupy",
+      "groupNameInvalid": "Nazwa grupy musi mieć od 1 do 80 znaków."
     },
     "notifications": {
       "bookingConfirmed": "Rezerwacja potwierdzona! 🎉",

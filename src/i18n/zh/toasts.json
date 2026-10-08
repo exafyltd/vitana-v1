@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "ICS文件将下载",
       "openingCalendar": "正在打开日历",
       "notifyOnTitle": "提醒已设置",
-      "notifyOnDesc": "开始前我们会提醒你",
+      "notifyOnDesc": "开始前我们会提醒你，并且已添加到你的 Maxina 日历",
       "notifyOffTitle": "提醒已移除",
       "notifyOffDesc": "你将不再收到提醒",
       "notifyError": "无法更新提醒",
@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "请在附加文件前选择或打开一个对话。",
       "uploadFailed": "上传失败",
       "failedSendVoiceMessage": "发送语音消息失败",
-      "thereErrorSendingYourVoiceMessage": "发送语音消息时出错"
+      "thereErrorSendingYourVoiceMessage": "发送语音消息时出错",
+      "groupRenamed": "群组已重命名",
+      "failedRenameGroup": "无法重命名群组",
+      "groupNameInvalid": "群组名称须为 1 到 80 个字符。"
     },
     "notifications": {
       "bookingConfirmed": "预订已确认！🎉",

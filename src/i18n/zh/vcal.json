@@ -24,6 +24,9 @@
       "evening": "晚上好 🌙",
       "night": "晚安 🌙"
     },
+    "day": {
+      "addFor": "为 {date} 添加新条目"
+    },
     "views": {
       "day": "日",
       "week": "周",
@@ -87,7 +90,21 @@
       "reminders": "提醒",
       "noReminders": "无提醒",
       "directions": "路线",
-      "askVitana": "问问 Vitana"
+      "askVitana": "问问 Vitana",
+      "openEvent": "查看活动",
+      "joinRoom": "立即加入",
+      "openRoom": "进入直播间",
+      "endedChip": "已结束",
+      "endedNotice": "此活动已结束，不再有效。",
+      "endedToast": "活动已成为过去，不再有效",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
+      }
     },
     "work": {
       "deploy_staging": "预发布部署",
@@ -281,6 +298,114 @@
       "waitingOne": "有 1 件事在等你",
       "waiting": "有 {count} 件事在等你",
       "open": "在管理后台打开"
+    },
+    "indexGain": "你的 Vitana Index {pillar} +{points}",
+    "edit": {
+      "action": "编辑",
+      "titleLabel": "标题",
+      "startLabel": "开始",
+      "endLabel": "结束",
+      "locationLabel": "地点",
+      "descriptionLabel": "备注",
+      "save": "保存",
+      "cancel": "取消",
+      "invalid": "请填写标题，结束时间需晚于开始时间。",
+      "saved": "已保存 ✨",
+      "error": "暂时无法保存，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "删除",
+      "confirm": "从日历中删除此日程？",
+      "confirmSeries": "从日历中删除此日程及其所有重复？",
+      "keep": "保留",
+      "yes": "删除",
+      "removed": "已删除",
+      "error": "暂时无法删除，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "已在你的日历中",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "分享到动态",
+      "defaultText": "我要去：{title} – {date}。一起来吗？",
+      "textLabel": "你想说点什么？",
+      "cardHint": "活动会以卡片形式显示在你的文字下方，包括时间、地点以及是否照常举行。",
+      "public": "社区所有人可见",
+      "profileOnly": "仅在你的个人主页",
+      "post": "分享",
+      "cancel": "取消",
+      "done": "已分享——社区知道你会去了",
+      "viewPost": "已分享到动态——查看帖子",
+      "alreadyShared": "你已经分享过这个活动",
+      "notShareable": "这个活动已无法分享：已结束、已取消或不公开。",
+      "limit": "你今天已经分享很多了，明天再试吧。",
+      "duplicate": "你刚刚发过这段文字。换点别的内容，或稍等一会儿。",
+      "suspended": "你的账号目前无法发帖。",
+      "error": "暂时无法分享，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "即将开始",
+      "live": "正在进行",
+      "past": "已结束",
+      "cancelled": "已取消",
+      "openEvent": "查看并参加",
+      "openRoom": "查看房间",
+      "joinRoom": "立即加入",
+      "unavailable": "这个活动已不可用。",
+      "untitled": "活动",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

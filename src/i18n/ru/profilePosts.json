@@ -15,7 +15,9 @@
     "noBackground": "Без фона",
     "searchingPeople": "Ищем людей…",
     "noPeopleFound": "Никого не найдено",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mentionSuggestions": true
+    },
+    "mentionSuggestions": "People to tag"
+  }
 }

@@ -33,6 +33,7 @@ import {
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
 import { notify, notifyError } from "@/lib/i18n-toast";
+import type { MentionCandidate } from "@/hooks/useMentionCandidates";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
@@ -81,6 +82,11 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
   };
 }
 
+// VTID-04928: engines without scrollIntoView (jsdom) must never crash the page.
+function intoView(el: Element | null, opts: ScrollIntoViewOptions) {
+  if (el && typeof el.scrollIntoView === "function") el.scrollIntoView(opts);
+}
+
 export default function GroupChat() {
   const { groupId, messageId: initialScrollMessageId } = useParams<{ groupId: string; messageId?: string }>();
   const navigate = useNavigate();
@@ -97,14 +103,20 @@ export default function GroupChat() {
   const [isSending, setIsSending] = useState(false);
   const streamEndRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
-  const didInitialScrollRef = useRef(false);
-  const prevMessageCountRef = useRef(0);
 
   const memberById = useMemo(() => {
     const map = new Map<string, ChatGroupMember>();
     (group?.members || []).forEach(m => map.set(m.user_id, m));
     return map;
   }, [group]);
+
+  // VTID-04926: who can be @mentioned here — the roster minus yourself, the
+  // Vitana bot and accounts the gateway marks as not mentionable.
+  const mentionCandidates = useMemo<MentionCandidate[]>(() => {
+    return (group?.members || [])
+      .filter(m => m.user_id !== userId && !m.is_bot && m.mentionable !== false && !!m.display_name?.trim())
+      .map(m => ({ user_id: m.user_id, display_name: m.display_name!.trim(), avatar_url: m.avatar_url }));
+  }, [group, userId]);
 
   const messageItems = useMemo(() => {
     return getDateSeparatedMessageItems(
@@ -190,53 +202,100 @@ export default function GroupChat() {
     return () => clearInterval(id);
   }, [loadMessages]);
 
-  const hasScrolledToTargetRef = useRef(false);
+  // VTID-04928: where the view rests. "bottom" = the newest message (a normal
+  // open, WhatsApp style); a message id = the message a push notification or a
+  // reaction deep link points at (/inbox/g/:groupId/msg/:messageId).
+  //
+  // VTID-04921 set `main.scrollTop` only. In the Android app (Appilix webview)
+  // the DOCUMENT can be what scrolls instead of <main>, and then that jump does
+  // nothing — every open and every push tap landed on the oldest message. So
+  // scrolling here never assumes which element scrolls: it moves <main> AND
+  // brings the page's end marker (after the sticky composer) into view, which
+  // scrolls whatever ancestor actually scrolls.
+  //
+  // The view stays pinned to its target while late content lays out (images,
+  // avatars, signed URLs grow the list after the first paint) until the member
+  // touches or wheels the screen; then they scroll freely.
+  const pinnedRef = useRef(true);
+  const pinTargetRef = useRef<string | null>(null);
+  const highlightedRef = useRef(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const pageEndRef = useRef<HTMLDivElement>(null);
+  const prevMessageCountRef = useRef(0);
+  const ready = !isLoading && group?.id === groupId && messagesLoaded;
 
-  // VTID-04921: WhatsApp-style — a group always opens at its newest message.
-  // The old effect only re-ran when messages.length changed, but the messages
-  // arrive while the loading screen is still up (no <main> yet) and the length
-  // does not change when the list mounts, so the chat stayed at the oldest
-  // message. Now keyed on the list actually being rendered.
-  useLayoutEffect(() => {
-    didInitialScrollRef.current = false;
-    prevMessageCountRef.current = 0;
-    hasScrolledToTargetRef.current = false;
-  }, [groupId]);
-
-  useLayoutEffect(() => {
-    if (initialScrollMessageId) return; // reaction-notification deep-link wins instead
+  const scrollToBottom = useCallback((smooth: boolean) => {
     const main = mainRef.current;
-    if (isLoading || !main || group?.id !== groupId || messages.length === 0) return;
-
-    if (!didInitialScrollRef.current) {
-      // First render of the list: jump (no animation) so the first paint is
-      // already at the bottom, then once more after late layout (avatars).
-      didInitialScrollRef.current = true;
-      prevMessageCountRef.current = messages.length;
-      main.scrollTop = main.scrollHeight;
-      const raf = requestAnimationFrame(() => { main.scrollTop = main.scrollHeight; });
-      return () => cancelAnimationFrame(raf);
+    if (main) {
+      if (smooth && typeof main.scrollTo === "function") {
+        main.scrollTo({ top: main.scrollHeight, behavior: "smooth" });
+      } else {
+        main.scrollTop = main.scrollHeight;
+      }
     }
+    intoView(pageEndRef.current, { block: "end", behavior: smooth ? "smooth" : "auto" });
+  }, []);
 
-    // Later: only follow when new messages arrive (not on roster refreshes).
-    if (messages.length > prevMessageCountRef.current) {
-      streamEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  const applyPin = useCallback(() => {
+    if (!pinnedRef.current) return;
+    const target = pinTargetRef.current;
+    if (target) {
+      const el = document.getElementById(`msg-${target}`);
+      if (el) {
+        intoView(el, { block: "center", behavior: "auto" });
+        if (!highlightedRef.current) {
+          highlightedRef.current = true;
+          el.classList.add("message-highlight");
+          setTimeout(() => el.classList.remove("message-highlight"), 1500);
+        }
+        return;
+      }
+      // The target is not in the loaded page (older than the latest 100):
+      // open at the newest message, never at the top.
+      pinTargetRef.current = null;
+    }
+    scrollToBottom(false);
+  }, [scrollToBottom]);
+
+  // Every new group or new target starts pinned again.
+  useLayoutEffect(() => {
+    pinnedRef.current = true;
+    pinTargetRef.current = initialScrollMessageId ?? null;
+    highlightedRef.current = false;
+    prevMessageCountRef.current = 0;
+  }, [groupId, initialScrollMessageId]);
+
+  // Pin once the list is on screen; re-apply while it grows; release on the
+  // member's first touch/wheel. Cleaned up on unmount and on group/target change.
+  useLayoutEffect(() => {
+    if (!ready) return;
+    applyPin();
+    const raf = requestAnimationFrame(applyPin);
+    const content = contentRef.current;
+    const observer = typeof ResizeObserver !== "undefined" && content
+      ? new ResizeObserver(() => applyPin())
+      : null;
+    if (observer && content) observer.observe(content);
+    const release = () => { pinnedRef.current = false; };
+    window.addEventListener("touchstart", release, { passive: true });
+    window.addEventListener("wheel", release, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      observer?.disconnect();
+      window.removeEventListener("touchstart", release);
+      window.removeEventListener("wheel", release);
+    };
+  }, [ready, groupId, initialScrollMessageId, applyPin]);
+
+  // New messages after the member has scrolled: follow them down, as before.
+  useLayoutEffect(() => {
+    if (!ready) return;
+    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current) {
+      if (pinnedRef.current) applyPin();
+      else scrollToBottom(true);
     }
     prevMessageCountRef.current = messages.length;
-  }, [isLoading, group, groupId, messages.length, initialScrollMessageId]);
-
-  // Reaction-notification deep-link: scroll to and highlight the reacted-to
-  // message once it's rendered, instead of the default scroll-to-bottom.
-  useEffect(() => {
-    if (!initialScrollMessageId || hasScrolledToTargetRef.current || messages.length === 0) return;
-    const el = document.getElementById(`msg-${initialScrollMessageId}`);
-    if (!el) return; // not rendered yet — retry on next messages update
-    hasScrolledToTargetRef.current = true;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("message-highlight");
-    const timer = setTimeout(() => el.classList.remove("message-highlight"), 1500);
-    return () => clearTimeout(timer);
-  }, [initialScrollMessageId, messages]);
+  }, [ready, messages.length, applyPin, scrollToBottom]);
 
   // MessageInput.onSendMessage matches the DM signature so all of its
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
@@ -392,7 +451,8 @@ export default function GroupChat() {
         </div>
       </header>
 
-      <main ref={mainRef} className="flex-1 overflow-y-auto px-4 py-4">
+      <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+        <div ref={contentRef}>
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-gray-500">
             {translate("inbox.group.empty")}
@@ -437,6 +497,7 @@ export default function GroupChat() {
           </div>
         )}
         <div ref={streamEndRef} />
+        </div>
       </main>
 
       <footer
@@ -450,8 +511,13 @@ export default function GroupChat() {
           onSendMessage={handleSend}
           isSending={isSending}
           placeholder={translate("inbox.group.composerPlaceholder")}
+          mentionCandidates={mentionCandidates}
         />
       </footer>
+      {/* VTID-04928: end of the page, below the sticky composer — scrolled into
+          view so the newest message sits just above the composer whichever
+          element scrolls. */}
+      <div ref={pageEndRef} aria-hidden="true" />
     </div>
   );
 }

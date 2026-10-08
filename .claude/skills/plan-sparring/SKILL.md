@@ -41,10 +41,13 @@ least two passes: findings, then the partner's response to your answers.
 
 Owner decisions are not re-argued with the partner; only how the plan implements them.
 
-## 4. Owner approval
-Show the owner the final plan, every round's findings and your responses, and the verdict. A
-light-class plan still needs the owner's yes. A "yes" in chat is recorded as context; in the
-gateway tier the binding approval is the exafy_admin click (`POST /api/v1/plans/spar/:id/approve`).
+## 4. Gate 1 — owner approval (one message)
+Send the owner ONE message (Autonomy Contract, VTID-04947): the final plan, every round's findings
+with your responses, the verdict, the files in scope and the test plan, ending with the single
+question "Do you approve this plan?". Ask nothing else in it. A light-class plan still needs the
+yes. A "yes" in chat is the standing instruction for everything up to Gate 2. Record it as the
+approval line in `plan-sparring.md`. In the gateway tier the binding approval is the exafy_admin
+click (`POST /api/v1/plans/spar/:id/approve`).
 
 ## 5. Then allocate
 A PreToolUse hook denies any allocation call (allocate_global_vtid, /vtid/allocate, a direct
@@ -53,6 +56,15 @@ Allocate the VTID (`allocate_global_vtid(..., p_sparring_id)` once the gateway t
 until then record the sparring session in the ledger row's metadata). In the PR, commit the
 record as `docs/validation/<VTID>/plan-sparring.md`: the final plan, the plan hash, every round,
 and the verdict.
+
+## 6. After the yes — run to Gate 2 without asking
+Allocate immediately, never asking about the VTID. Implement, test, PR, merge, then run the
+post-merge loop. In a cloud session, arm a `send_later` self check-in about 8 minutes after merge
+and re-arm it every 5 minutes, up to 2 hours. Each check-in reads the STAGING-VERIFY result for the
+merge commit. Before Gate 2, check that the newest full staging run (`staging.verify.*` with `metadata.full=true`) for the service is under 24 h old; if not, dispatch `STAGING-VERIFY.yml` with `full=true` and wait for it (VTID-04949). On pass, send Gate 2 ("Staging verified — ready for deployment to production?") with
+the evidence. On fail, fix forward, at most 3 attempts per failure before escalating with evidence.
+If the work outgrows the approved scope, add the change to the plan and send it back to the same
+partner for one round. CONVERGED → continue. Not converged → that is the one mid-flight question.
 
 ## Emergency (break-glass)
 P1 incident with the gateway or Bedrock down: the owner allocates through the exemption role

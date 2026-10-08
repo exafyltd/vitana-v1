@@ -24,6 +24,9 @@
       "evening": "Dobro veče 🌙",
       "night": "Laku noć 🌙"
     },
+    "day": {
+      "addFor": "Novi unos za {date}"
+    },
     "views": {
       "day": "Dan",
       "week": "Nedelja",
@@ -87,7 +90,21 @@
       "reminders": "Podsetnici",
       "noReminders": "Bez podsetnika",
       "directions": "Putanja",
-      "askVitana": "Pitaj Vitanu"
+      "askVitana": "Pitaj Vitanu",
+      "openEvent": "Idi na događaj",
+      "joinRoom": "Pridruži se",
+      "openRoom": "Idi u sobu uživo",
+      "endedChip": "Završeno",
+      "endedNotice": "Ovaj događaj je završen i više nije aktivan.",
+      "endedToast": "Događaj je u prošlosti i nije aktivan",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
+      }
     },
     "work": {
       "deploy_staging": "Staging deploy",
@@ -284,6 +301,114 @@
       "waitingOne": "1 stvar te čeka",
       "waiting": "Čeka te: {count}",
       "open": "Otvori u administraciji"
+    },
+    "indexGain": "+{points} {pillar} u tvom Vitana Indexu",
+    "edit": {
+      "action": "Izmeni",
+      "titleLabel": "Naslov",
+      "startLabel": "Početak",
+      "endLabel": "Kraj",
+      "locationLabel": "Mesto",
+      "descriptionLabel": "Beleška",
+      "save": "Sačuvaj",
+      "cancel": "Otkaži",
+      "invalid": "Dodaj naslov; kraj mora biti posle početka.",
+      "saved": "Sačuvano ✨",
+      "error": "Trenutno nije moglo da se sačuva. Pokušaj ponovo za trenutak.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Ukloni",
+      "confirm": "Ukloniti ovaj unos iz kalendara?",
+      "confirmSeries": "Ukloniti ovaj unos i sva ponavljanja iz kalendara?",
+      "keep": "Zadrži",
+      "yes": "Ukloni",
+      "removed": "Uklonjeno",
+      "error": "Trenutno nije moglo da se ukloni. Pokušaj ponovo za trenutak.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Već je u tvom kalendaru",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "Podeli u fidu",
+      "defaultText": "Idem: {title} – {date}. Ideš sa mnom?",
+      "textLabel": "Šta želiš da kažeš?",
+      "cardHint": "Događaj se prikazuje kao kartica ispod tvog teksta – sa vremenom, mestom i da li se još održava.",
+      "public": "Vidljivo svima u zajednici",
+      "profileOnly": "Samo na tvom profilu",
+      "post": "Podeli",
+      "cancel": "Otkaži",
+      "done": "Podeljeno – zajednica vidi da ideš",
+      "viewPost": "Podeljeno u fidu – pogledaj objavu",
+      "alreadyShared": "Već si podelio ovaj događaj",
+      "notShareable": "Ovaj događaj više ne može da se podeli – završen je, otkazan ili nije javan.",
+      "limit": "Danas si već mnogo delio. Pokušaj ponovo sutra.",
+      "duplicate": "Upravo si objavio ovaj tekst. Napiši nešto drugo ili sačekaj trenutak.",
+      "suspended": "Tvoj nalog trenutno ne može da objavljuje.",
+      "error": "Deljenje trenutno nije uspelo. Pokušaj ponovo za trenutak.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "Uskoro",
+      "live": "Upravo traje",
+      "past": "Završeno",
+      "cancelled": "Otkazano",
+      "openEvent": "Pogledaj i pridruži se",
+      "openRoom": "Pogledaj sobu",
+      "joinRoom": "Pridruži se sada",
+      "unavailable": "Ovaj događaj više nije dostupan.",
+      "untitled": "Događaj",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }

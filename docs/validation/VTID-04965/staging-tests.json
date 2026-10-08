@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-04965",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "live room drawer: a room opens from ?event=<id>; host name is a button with a profile label; one shared share control",
+      "spec": "tests/e2e/staging/vtid-04965-live-room-drawer.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "live room drawer + events page room address (app)",
+      "ref": "npx vitest run src/components/liverooms src/pages/community/EventsAndMeetups.vtid-04965.test.ts src/pages/community/EventsAndMeetups.live-rooms.vtid-04907.test.ts",
+      "cwd": ".",
+      "reason": "Tapping the host (navigates to /u/<id>), the share control, and the room staying in the address need a click-through that writes nothing but also reaches the profile page, whose lookups the read-only guard would abort; Vitest covers them. Staging shares the production database, so no run taps Erinnern."
+    }
+  ]
+}

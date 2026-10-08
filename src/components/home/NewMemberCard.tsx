@@ -16,6 +16,8 @@ export interface NewMemberCardProps {
   userId: string;
   title: string;
   summary?: string | null;
+  /** Append a party emoji — only for our own "just joined" line, never a member's bio. */
+  celebrateSummary?: boolean;
   avatarUrl?: string | null;
   displayInitial: string;
   timestamp?: string;
@@ -23,10 +25,22 @@ export interface NewMemberCardProps {
   onOpen?: () => void;
 }
 
+/**
+ * Typographic guard for the welcome title: no space before closing punctuation
+ * and the last two words glued together, so a long first + last name can wrap
+ * but never leaves a lone word or a stray "!" on the second line.
+ */
+function tidyTitle(title: string): string {
+  return title
+    .replace(/\s+([!?.,:;])/g, "$1")
+    .replace(/\s+(\S+)$/, "\u00a0$1");
+}
+
 export function NewMemberCard({
   userId,
   title,
   summary,
+  celebrateSummary,
   avatarUrl,
   displayInitial,
   timestamp,
@@ -49,11 +63,11 @@ export function NewMemberCard({
           openProfile();
         }
       }}
-      className="overflow-hidden rounded-2xl border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background cursor-pointer"
+      className="overflow-hidden rounded-2xl border-sys-vitana-card-border bg-sys-vitana-card shadow-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md animate-fade-in"
       data-testid="new-member-card"
     >
       <CardContent className="p-4">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary min-w-0">
+        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-sys-feature-new-accent min-w-0">
           <Sparkles className="h-3.5 w-3.5 shrink-0" />
           <span className="truncate">{t("newsCard.member.eyebrow")}</span>
           {timestamp && (
@@ -67,21 +81,23 @@ export function NewMemberCard({
         </div>
 
         <div className="flex items-center gap-3 mt-3">
-          <Avatar className="h-14 w-14 shrink-0 ring-2 ring-primary/30">
+          <Avatar className="h-14 w-14 shrink-0 ring-2 ring-sys-feature-new-card-border">
             {avatarUrl && <AvatarImage src={avatarUrl} alt="" />}
-            <AvatarFallback className="text-lg font-semibold">{displayInitial}</AvatarFallback>
+            <AvatarFallback className="bg-sys-feature-new-tint text-lg font-semibold text-sys-feature-new-accent">{displayInitial}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="text-base font-bold leading-tight text-foreground line-clamp-2">{title}</p>
+            <p className="text-base font-bold leading-tight text-foreground line-clamp-2 [text-wrap:balance]">
+              <span aria-hidden="true">🤩</span> {tidyTitle(title)}
+            </p>
             {summary && (
-              <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{summary}</p>
+              <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{summary}{celebrateSummary && <span aria-hidden="true"> 🎉</span>}</p>
             )}
           </div>
         </div>
 
         <div className="flex gap-2 mt-4">
           <Button
-            className="flex-1 gap-2"
+            className="flex-1 gap-2 rounded-full bg-violet-300 text-violet-950 hover:bg-violet-400 font-semibold shadow-sm"
             onClick={(e) => {
               e.stopPropagation();
               onOpen?.();
@@ -93,7 +109,7 @@ export function NewMemberCard({
           </Button>
           <Button
             variant="outline"
-            className="flex-1 gap-2"
+            className="flex-1 gap-2 rounded-full border-sys-feature-new-card-border bg-transparent text-sys-feature-new-accent hover:bg-sys-feature-new-tint"
             onClick={(e) => {
               e.stopPropagation();
               openProfile();

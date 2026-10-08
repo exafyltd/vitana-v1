@@ -668,12 +668,50 @@ const EventsAndMeetups = () => {
     }
   }, [dbEvents, loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Closing a room's drawer removes ?event= again; going back in history from
+  // an open room (address loses ?event=) closes it too.
+  const closeRoomDrawer = useCallback(() => {
+    roomDeepLinkRef.current = null;
+    setRoomDrawerEvent(null);
+    setSearchParams(prev => {
+      if (!prev.get('event')) return prev;
+      const next = new URLSearchParams(prev);
+      next.delete('event');
+      return next;
+    });
+  }, [setSearchParams]);
+
+  const roomUrlSyncedRef = useRef(false);
+  useEffect(() => {
+    if (!roomDrawerEvent) {
+      roomUrlSyncedRef.current = false;
+    } else if (searchParams.get('event')) {
+      roomUrlSyncedRef.current = true;
+    } else if (roomUrlSyncedRef.current) {
+      // The address had the room and lost it: history went back.
+      roomUrlSyncedRef.current = false;
+      roomDeepLinkRef.current = null;
+      setRoomDrawerEvent(null);
+    }
+  }, [searchParams, roomDrawerEvent]);
+
   // Handle card click
   const handleCardClick = useCallback((event: any) => {
     if (isLiveRoomEvent(event)) {
       // Live now → into the room; scheduled → its drawer (Notify me, calendar).
       if (event.metadata?.is_live) openLiveRoom(event);
-      else setRoomDrawerEvent(event);
+      else {
+        // The open room lives in the address (?event=<id>) so a member who
+        // goes to the host's profile and comes back lands on the same room
+        // (the deep-link effect above reopens it).
+        roomDeepLinkRef.current = event.id;
+        setRoomDrawerEvent(event);
+        setSearchParams(prev => {
+          const next = new URLSearchParams(prev);
+          next.set('event', event.id);
+          return next;
+        });
+      }
       return;
     }
     setFocusedCardId(event.id);
@@ -1334,7 +1372,7 @@ const EventsAndMeetups = () => {
       )}
 
       {/* Event/MeetUp Details Drawer */}
-      <LiveRoomEventDrawer event={roomDrawerEvent} onClose={() => setRoomDrawerEvent(null)} />
+      <LiveRoomEventDrawer event={roomDrawerEvent} onClose={closeRoomDrawer} />
       {selectedEventData && (
         <MeetupDetailsDrawer
           event={selectedEventData}

@@ -6,23 +6,45 @@
  * (time only). Tapping an entry opens it full-screen. Adding things goes
  * through Vitana (voice), which writes through the gateway's producer
  * contract — the screen itself never writes except "mark done".
+ *
+ * VTID-04915: /calendar/entry/:id opens one entry (reminder notifications
+ * link here); members can edit or remove their own entries, and an entry
+ * leads back to its community event or live room.
  */
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
 import { useRole } from "@/hooks/useRole";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
-import { fmtDate, formatDate } from "@/lib/locale-format";
+import { fmtDate, fmtNumber, formatDate } from "@/lib/locale-format";
 import { activateOrb } from "@/lib/orbActivate";
 import {
+  cancelCalendarEntry,
   completeCalendarEntry,
   fetchCalendarWindow,
+  topPillarGain,
+  updateCalendarEntry,
+  type CalendarEntryPatch,
   moveBlockReasonOf,
   moveCalendarEntry,
+  shareCalendarEntryToFeed,
+  shareFailureOf,
   type CalendarWindowItem,
+  type ShareFailure,
+  type ShareToFeedInput,
   type MoveBlockReason,
 } from "@/lib/calendar-window-client";
+
+const SHARE_FAILED_KEY: Record<ShareFailure, string> = {
+  already_shared: "vcal.share.alreadyShared",
+  not_shareable: "vcal.share.notShareable",
+  limit: "vcal.share.limit",
+  duplicate: "vcal.share.duplicate",
+  suspended: "vcal.share.suspended",
+  error: "vcal.share.error",
+};
 
 const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
   cancelled: "vcal.move.blocked.cancelled",
@@ -30,7 +52,7 @@ const MOVE_BLOCKED_KEY: Record<MoveBlockReason, string> = {
   recurring: "vcal.move.blocked.recurring",
   owned_by_source: "vcal.move.blocked.owned_by_source",
 };
-import { SURFACE, isDone } from "@/components/calendar/vcal/theme";
+import { CALENDAR_NUMBER_STYLE, SURFACE, isDone } from "@/components/calendar/vcal/theme";
 import { ViewSwitch, isMilestone } from "@/components/calendar/vcal/parts";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
@@ -53,10 +75,8 @@ import { cn } from "@/lib/utils";
 import {
   INDEX_CARD,
   INDEX_EYEBROW,
-  INDEX_GLOW_STYLE,
   INDEX_HERO_CLASS,
   INDEX_HERO_STYLE,
-  INDEX_NUMBER_STYLE,
   INDEX_PRIMARY_BTN,
   INDEX_SOFT_BTN,
 } from "@/lib/index-look";
@@ -103,7 +123,11 @@ export default function CalendarPage() {
   const [openItem, setOpenItem] = useState<CalendarWindowItem | null>(null);
   const [subscribeOpen, setSubscribeOpen] = useState<false | { provider?: SubscribeProvider }>(false);
   const [guideDismissed, setGuideDismissed] = useState<string | null>(readGuideDismissed);
-  const [addOpen, setAddOpen] = useState(false);
+  // VTID-04956: the day the add sheet is open for (null = closed). Adding never moves the shown week or month.
+  const [addFor, setAddFor] = useState<Date | null>(null);
+  // VTID-04915: /calendar/entry/:id — jump to that entry's day, then open it.
+  const { entryId } = useParams<{ entryId?: string }>();
+  const [pendingEntryId, setPendingEntryId] = useState<string | null>(entryId ?? null);
 
   const changeView = (v: CalendarView) => {
     setView(v);
@@ -120,7 +144,36 @@ export default function CalendarPage() {
     queryFn: () => fetchCalendarWindow(range.from, range.to, currentRole ?? null),
     staleTime: 30_000,
   });
-  const items = query.data?.items ?? [];
+  const items = useMemo(() => query.data?.items ?? [], [query.data]);
+
+  useEffect(() => {
+    if (!entryId) return;
+    setPendingEntryId(entryId);
+    let cancelled = false;
+    // Read-only: the member's own row (RLS), only to learn which day to show.
+    supabase
+      .from("calendar_events")
+      .select("start_time")
+      .eq("id", entryId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (cancelled || !data?.start_time) return;
+        setAnchor(new Date(data.start_time));
+        setView("day");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [entryId]);
+
+  useEffect(() => {
+    if (!pendingEntryId || !query.isSuccess) return;
+    const hit = items.find((i) => i.event_id === pendingEntryId && i.event);
+    if (hit) {
+      setOpenItem(hit);
+      setPendingEntryId(null);
+    }
+  }, [pendingEntryId, query.isSuccess, items]);
 
   // Today's own numbers, independent of the view (day view shows them).
   const todayQuery = useQuery({
@@ -135,7 +188,6 @@ export default function CalendarPage() {
   // to-dos, so they stay out of the progress ring and "Next up".
   const today = (todayQuery.data?.items ?? []).filter((i) => i.event && !i.work && !isMilestone(i));
   const todayDone = today.filter((i) => isDone(i.event!)).length;
-  const nextUp = today.find((i) => !isDone(i.event!) && Date.parse(i.start_time) > now.getTime()) ?? null;
 
   // VTID-04536: open journey steps — Autopilot steps from the last 30 days
   // up to tonight that are neither done nor cancelled, oldest first.
@@ -185,8 +237,17 @@ export default function CalendarPage() {
 
   const complete = useMutation({
     mutationFn: (item: CalendarWindowItem) => completeCalendarEntry(item.event_id, currentRole ?? null),
-    onSuccess: () => {
-      notify("vcal.doneToast");
+    onSuccess: (result) => {
+      // VTID-04915: say what it did for the Vitana Index, when it moved.
+      const gain = topPillarGain(result?.vitana_index ?? null);
+      if (gain) {
+        notify("vcal.doneToast", "vcal.indexGain", {
+          points: fmtNumber(gain.points, { maximumFractionDigits: 1 }),
+          pillar: t(`vcal.kinds.${gain.pillar}`),
+        });
+      } else {
+        notify("vcal.doneToast");
+      }
       setOpenItem(null);
       queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
     },
@@ -205,6 +266,46 @@ export default function CalendarPage() {
     onError: (err) => {
       const reason = moveBlockReasonOf(err);
       notifyError(reason ? MOVE_BLOCKED_KEY[reason] : "vcal.move.error");
+    },
+  });
+
+  // VTID-04915: edit or remove one of the member's own entries.
+  const edit = useMutation({
+    mutationFn: ({ item, patch }: { item: CalendarWindowItem; patch: CalendarEntryPatch }) =>
+      updateCalendarEntry(item.event_id, patch, currentRole ?? null),
+    onSuccess: () => {
+      notify("vcal.edit.saved");
+      setOpenItem(null);
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: () => notifyError("vcal.edit.error"),
+  });
+  const remove = useMutation({
+    mutationFn: (item: CalendarWindowItem) => cancelCalendarEntry(item.event_id, currentRole ?? null),
+    onSuccess: () => {
+      notify("vcal.remove.removed");
+      setOpenItem(null);
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: () => notifyError("vcal.remove.error"),
+  });
+
+  // VTID-04916: post the event to the news feed; the entry then links to it.
+  const share = useMutation({
+    mutationFn: ({ item, input }: { item: CalendarWindowItem; input: ShareToFeedInput }) =>
+      shareCalendarEntryToFeed(item.event_id, input, currentRole ?? null),
+    onSuccess: (postId, { item }) => {
+      notify("vcal.share.done");
+      setOpenItem((cur) => (cur && cur.id === item.id ? { ...cur, shared_post_id: postId } : cur));
+      queryClient.invalidateQueries({ queryKey: ["calendar-window"] });
+    },
+    onError: (err, { item }) => {
+      const failure = shareFailureOf(err);
+      notifyError(SHARE_FAILED_KEY[failure.kind]);
+      if (failure.kind === "already_shared" && failure.postId) {
+        const postId = failure.postId;
+        setOpenItem((cur) => (cur && cur.id === item.id ? { ...cur, shared_post_id: postId } : cur));
+      }
     },
   });
 
@@ -240,7 +341,6 @@ export default function CalendarPage() {
         ]
           .filter(Boolean)
           .join(" · ");
-  void nextUp;
 
   const weekFrom = viewRange("week", anchor).from;
   const weekTo = new Date(weekFrom.getTime() + 6 * 86_400_000);
@@ -249,18 +349,13 @@ export default function CalendarPage() {
       ? `${fmtDate(weekFrom, { day: "numeric", month: "short" })} – ${fmtDate(weekTo, { day: "numeric", month: "short" })}`
       : formatDate(anchor, "LLLL yyyy");
 
-  const pickDay = (d: Date) => {
-    setAnchor(d);
-    changeView("day");
-  };
+  // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, bold title.
+  // VTID-04952: one hero for Day, Week and Month; the eyebrow names the view.
+  const heroEyebrow = t(`vcal.views.${view}`);
 
-  // VTID-04852: the hero follows the Vitana Index page — pale blue card, eyebrow, big number.
-  const heroEyebrow =
-    view === "day"
-      ? isTodayAnchor
-        ? `${t("vcal.today")} · ${formatDate(anchor, "LLLL yyyy")}`
-        : formatDate(anchor, "LLLL yyyy")
-      : t("vcal.title");
+  // VTID-04952: the day number is the one lively element of the Day title.
+  const dayTitle = fmtDate(anchor, { weekday: "long", day: "numeric", month: "long" });
+  const dayTitleParts = dayTitle.split(/(\d+|[\u0660-\u0669]+)/);
 
   return (
     <AppLayout>
@@ -268,31 +363,19 @@ export default function CalendarPage() {
         <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
           <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
             <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
-            {view === "day" ? (
-              <div className="mt-2 flex flex-col items-center" data-testid="vcal-date">
-                <div className="relative flex flex-col items-center">
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-2xl"
-                    style={INDEX_GLOW_STYLE}
-                  />
-                  <span className="text-[84px] font-extrabold leading-none tabular-nums" style={INDEX_NUMBER_STYLE}>
-                    {formatDate(anchor, "d")}
-                  </span>
-                </div>
-                <h1 className="mt-2 text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-weekday">
-                  {formatDate(anchor, "EEEE")}
-                </h1>
-              </div>
-            ) : (
-              <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900">{rangeTitle}</h1>
-            )}
-
-            {view === "day" && query.isSuccess && (
-              <p className="mx-auto mt-3 max-w-md text-center text-[15px] leading-snug text-slate-700" data-testid="vcal-summary">
-                {daySummary}
-              </p>
-            )}
+            <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-date">
+              {view === "day"
+                ? dayTitleParts.map((part, i) =>
+                    i % 2 === 1 ? (
+                      <span key={i} style={CALENDAR_NUMBER_STYLE} data-testid="vcal-day-number">
+                        {part}
+                      </span>
+                    ) : (
+                      part
+                    ),
+                  )
+                : rangeTitle}
+            </h1>
 
             <div className="mt-5 flex items-center justify-center gap-2">
               <button
@@ -356,11 +439,11 @@ export default function CalendarPage() {
               </button>
             </div>
           ) : view === "day" ? (
-            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} />
+            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} />
           ) : view === "week" ? (
-            <WeekView anchor={anchor} items={items} now={now} onOpen={setOpenItem} onPickDay={pickDay} />
+            <WeekView key={viewRange("week", anchor).from.toISOString()} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
           ) : (
-            <MonthView anchor={anchor} items={items} now={now} onPickDay={pickDay} />
+            <MonthView key={`${anchor.getFullYear()}-${anchor.getMonth()}`} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
           )}
 
           {/* VTID-04536: folding sections — each closed header says what is inside. */}
@@ -379,7 +462,7 @@ export default function CalendarPage() {
           {/* VTID-04536: add an entry by hand, saved through the gateway. */}
           <button
             type="button"
-            onClick={() => setAddOpen(true)}
+            onClick={() => setAddFor(anchor)}
             aria-label={t("vcal.add.title")}
             className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             style={{ background: SURFACE.ink }}
@@ -395,15 +478,25 @@ export default function CalendarPage() {
         <EntryScreen
           item={openItem}
           now={now}
-          onClose={() => setOpenItem(null)}
+          onClose={() => {
+            setOpenItem(null);
+            if (entryId) navigate("/calendar", { replace: true });
+          }}
           onComplete={(i) => complete.mutate(i)}
           completing={complete.isPending}
           onMove={(i, start) => move.mutate({ item: i, start })}
           moving={move.isPending}
+          onEdit={(i, patch) => edit.mutate({ item: i, patch })}
+          saving={edit.isPending}
+          onRemove={(i) => remove.mutate(i)}
+          removing={remove.isPending}
+          onOpenSource={(path) => navigate(path)}
+          onShare={(i, input) => share.mutate({ item: i, input })}
+          sharing={share.isPending}
         />
       )}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}
-      {addOpen && <AddEntrySheet day={anchor} role={currentRole ?? null} onClose={() => setAddOpen(false)} />}
+      {addFor && <AddEntrySheet day={addFor} role={currentRole ?? null} onClose={() => setAddFor(null)} />}
     </AppLayout>
   );
 }

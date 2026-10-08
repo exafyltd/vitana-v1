@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NotificationBadge } from "@/components/ui/notification-badge";
-import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useSidebarSafe } from "@/components/ui/sidebar";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useWindowOverlay } from '@/navigation/overlay-bus';
 import { useNavigate } from "react-router-dom";
-import { CALENDAR_ROUTE, opensRemindersPopup, type CalendarOpenTab } from "@/components/calendar/calendar-entry";
+import { CALENDAR_ROUTE, calendarTargetFor, type CalendarOpenTab } from "@/components/calendar/calendar-entry";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -27,25 +26,16 @@ export function UniversalCalendarButton({
   showConflictIndicator = true,
   showText = true
 }: UniversalCalendarButtonProps) {
-  const [calendarOpen, setCalendarOpen] = useState(false);
-  const [requestedMobileTab, setRequestedMobileTab] = useState<'agenda' | 'month' | 'reminders' | undefined>(undefined);
-
   const navigate = useNavigate();
 
   // Global calendar:open events (ORB voice navigation, deep links) go to the
-  // calendar screen; only the reminder push deep link, which asks for the
-  // 'reminders' tab, still opens the popup (VTID-04528).
+  // calendar screen, or to /reminders for the reminders list (VTID-04528,
+  // VTID-04915 — the popup is retired).
   useWindowOverlay<{ tab?: CalendarOpenTab }>('calendar:open', (detail) => {
-    if (opensRemindersPopup(detail?.tab)) {
-      setRequestedMobileTab(detail?.tab);
-      setCalendarOpen(true);
-      return;
-    }
-    navigate(CALENDAR_ROUTE);
+    navigate(calendarTargetFor(detail?.tab));
   });
 
-  const calendarHook = useCalendarEvents();
-  const { events, getUpcomingEvents } = calendarHook;
+  const { events, getUpcomingEvents } = useCalendarEvents();
   const { open } = useSidebarSafe();
   const { translate } = useTranslation();
   
@@ -88,13 +78,6 @@ export function UniversalCalendarButton({
           <div className="absolute -top-1.5 -left-1.5 h-3 w-3 bg-amber-500 rounded-full border-2 border-background animate-pulse z-10" />
         )}
       </div>
-
-      <EnhancedCalendarPopup
-        open={calendarOpen}
-        onOpenChange={setCalendarOpen}
-        calendarHook={calendarHook}
-        initialMobileTab={requestedMobileTab}
-      />
     </>
   );
 }

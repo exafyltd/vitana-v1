@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04948",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npm run test:gate",
+      "reason": "PR-GATE decision logic: scope guard, ratchets, test-weakening, sparring record, migration lint (13 node:test cases). This change ships CI tooling and removes two dead regression scripts plus their npm entries; the app bundle is unchanged, which the smoke suite confirms."
+    }
+  ]
+}

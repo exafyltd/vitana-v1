@@ -616,7 +616,7 @@
       "icsFileWillDownloaded": "ICS-Datei wird heruntergeladen",
       "openingCalendar": "Kalender wird geöffnet",
       "notifyOnTitle": "Erinnerung aktiviert",
-      "notifyOnDesc": "Wir erinnern dich, bevor es losgeht",
+      "notifyOnDesc": "Wir erinnern dich, bevor es losgeht – und der Termin steht in deinem Maxina Kalender",
       "notifyOffTitle": "Erinnerung deaktiviert",
       "notifyOffDesc": "Du wirst nicht mehr erinnert",
       "notifyError": "Erinnerung fehlgeschlagen",
@@ -733,7 +733,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Wähle oder öffne eine Unterhaltung, bevor du Dateien anhängst.",
       "uploadFailed": "Upload fehlgeschlagen",
       "failedSendVoiceMessage": "Sprachnachricht konnte nicht gesendet werden",
-      "thereErrorSendingYourVoiceMessage": "Beim Senden deiner Sprachnachricht ist ein Fehler aufgetreten"
+      "thereErrorSendingYourVoiceMessage": "Beim Senden deiner Sprachnachricht ist ein Fehler aufgetreten",
+      "groupRenamed": "Gruppe umbenannt",
+      "failedRenameGroup": "Gruppe konnte nicht umbenannt werden",
+      "groupNameInvalid": "Der Gruppenname muss 1 bis 80 Zeichen lang sein."
     },
     "notifications": {
       "bookingConfirmed": "Buchung bestätigt! 🎉",

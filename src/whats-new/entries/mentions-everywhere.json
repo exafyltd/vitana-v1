@@ -1,0 +1,13 @@
+{
+  "id": "mentions-everywhere",
+  "added": "2026-10-06",
+  "title": {
+    "en": "Tag People With @",
+    "de": "Markiere Leute mit @"
+  },
+  "description": {
+    "en": "Type @ and a name in a group chat, a post or a comment, then pick the person from the list. They get a notification that takes them straight to your message.",
+    "de": "Tippe @ und einen Namen in einem Gruppenchat, einem Beitrag oder einem Kommentar und wähle die Person aus der Liste. Die Person wird benachrichtigt und landet direkt bei deiner Nachricht."
+  },
+  "deepLink": "/inbox"
+}

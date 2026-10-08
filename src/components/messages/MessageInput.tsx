@@ -32,6 +32,10 @@ import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ReplyPreview } from '@/components/messages/ReplyPreview';
 import { notifyError, t } from '@/lib/i18n-toast';
+import { MentionSuggestions } from '@/components/mentions/MentionSuggestions';
+import { useMentionComposer } from '@/hooks/useMentionComposer';
+import type { MentionCandidate } from '@/hooks/useMentionCandidates';
+import { pruneMentions, type Mention } from '@/lib/mentions';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[], parentMessageId?: string) => Promise<void>;
@@ -49,6 +53,12 @@ interface MessageInputProps {
   onCancelReply?: () => void;
   isSending?: boolean;
   conversationType?: 'direct' | 'group' | null;
+  /**
+   * VTID-04926: members that can be @mentioned (a group's roster). When set,
+   * typing `@` opens a suggestion list and the picked members travel with the
+   * message as `contentData.mentions`. Omitted (DMs) → no mention support.
+   */
+  mentionCandidates?: MentionCandidate[];
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -66,9 +76,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
   replyingTo,
   onCancelReply,
   isSending = false,
-  conversationType
+  conversationType,
+  mentionCandidates
 }) => {
   const [message, setMessage] = useState('');
+  const [mentions, setMentions] = useState<Mention[]>([]);
   const [isComposing, setIsComposing] = useState(false);
   const [attachments, setAttachments] = useState<AttachmentData[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -85,9 +97,19 @@ const MessageInput: React.FC<MessageInputProps> = ({
   // This ref is set synchronously at the top of handleSend, closing that
   // window; isSending still drives the disabled UI state as before.
   const sendingLockRef = useRef(false);
+  const mentionEnterConsumedRef = useRef(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const { activeTenantId } = useTenant();
+  const mentionComposer = useMentionComposer({
+    value: message,
+    onChange: setMessage,
+    inputRef: textareaRef,
+    mentions,
+    onMentionsChange: setMentions,
+    localCandidates: mentionCandidates ?? [],
+    disabled: mentionCandidates === undefined,
+  });
 
   // Auto-resize textarea with proper row limits (1-6 rows) and update CSS var
   useEffect(() => {
@@ -165,10 +187,14 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     const raw = message;
     const text = raw.trim();
+    const rawMentions = mentions;
+    const pickedMentions = pruneMentions(text, mentions);
 
     // Clear composer optimistically
     sendingLockRef.current = true;
     setMessage("");
+    setMentions([]);
+    mentionComposer.close();
     setAttachments([]);
     setUploadProgress({});
     handleTypingStop();
@@ -193,6 +219,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
         messageContent = text;
       }
 
+      if (pickedMentions.length > 0) {
+        contentData = { ...(contentData || {}), mentions: pickedMentions };
+      }
+
       await onSendMessage(messageContent, messageType, contentData, undefined, replyingTo?.id);
       
       if (textareaRef.current) {
@@ -203,6 +233,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       
       // Restore composer text on error
       setMessage(raw);
+      setMentions(rawMentions);
       setAttachments(attachments);
       
       const errorMessage = error instanceof Error ? error.message : "unknown";
@@ -221,16 +252,20 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    // Shift+Enter = new line, Enter = send
-    if (e.key === 'Enter' && !e.shiftKey) {
+    // Enter always makes a new line; only the send button sends (owner
+    // decision 2026-10-07). The one exception is an Enter that just picked an
+    // @mention suggestion (VTID-04926): not every keyboard drops the keypress
+    // after a prevented keydown, so the keydown leaves a flag and this
+    // keypress must not add a line either.
+    if (e.key === 'Enter' && mentionEnterConsumedRef.current) {
+      mentionEnterConsumedRef.current = false;
       e.preventDefault();
-      handleSend();
     }
-    // Allow Shift+Enter to create new lines naturally
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
+    mentionComposer.sync();
     
     // Clear existing debounce timeout
     if (debounceTimeoutRef.current) {
@@ -525,7 +560,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
         </div>
       )}
 
-      <div className="flex items-end gap-1.5">
+      <div className="relative flex items-end gap-1.5">
+        {/* @mention suggestions sit above the composer (it is pinned to the
+            bottom of the screen, so there is no room below). */}
+        <MentionSuggestions {...mentionComposer.suggestionProps} className="bottom-full mb-2 sm:end-auto sm:w-80" />
         {showVoiceRecorder ? (
           /* Voice recorder replaces the input bar */
           <div className="flex items-center flex-1 bg-muted/50 rounded-full px-2 py-1 border border-border/50">
@@ -595,12 +633,24 @@ const MessageInput: React.FC<MessageInputProps> = ({
               ref={textareaRef}
               value={message}
               onChange={handleInputChange}
+              // While the @mention list is open, Enter/Tab/arrows/Esc pick or
+              // close a suggestion; preventDefault there also stops the
+              // keypress below from sending the message.
+              onKeyDown={(e) => {
+                mentionEnterConsumedRef.current = mentionComposer.onKeyDown(e) && e.key === 'Enter';
+              }}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') mentionEnterConsumedRef.current = false;
+                mentionComposer.sync();
+              }}
+              onClick={mentionComposer.sync}
               onKeyPress={handleKeyPress}
-              onBlur={handleBlur}
+              onBlur={() => { mentionComposer.closeSoon(); handleBlur(); }}
               placeholder={placeholder}
               disabled={disabled}
               className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
+              enterKeyHint="enter"
               aria-label={t('screens.messages.messageComposer')}
               aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
             />

@@ -5625,7 +5625,8 @@
       },
       "durationMin": "{value0} Min",
       "durationHour": "{value0} Std",
-      "durationHourMin": "{value0} Std {value1} Min"
+      "durationHourMin": "{value0} Std {value1} Min",
+      "openHostProfile": "Profil von {name} öffnen"
     },
     "meetups": {
       "detailsProgram": "Details & Programm",
@@ -6110,7 +6111,20 @@
       "value0Participants": "{value0}Teilnehmer",
       "value0Members": "{value0}Mitglieder",
       "chooseConversationFromLeftStartMessaging": "Wähle links eine Unterhaltung aus, um Nachrichten zu senden.",
-      "vitanaOpenScreen": "Bildschirm öffnen"
+      "vitanaOpenScreen": "Bildschirm öffnen",
+      "groupNoticeCreated": "{name} hat die Gruppe erstellt",
+      "groupNoticeMemberAdded": "{name} hat {member} hinzugefügt",
+      "groupNoticeMemberRemoved": "{name} hat {member} entfernt",
+      "groupNoticeMemberLeft": "{name} hat die Gruppe verlassen",
+      "groupNoticeRenamed": "{name} hat die Gruppe in „{group}“ umbenannt",
+      "groupNoticeSomeone": "Jemand",
+      "groupNameLabel": "Gruppenname",
+      "renameGroup": "Gruppe umbenennen",
+      "groupNameSave": "Speichern",
+      "groupNameCancel": "Abbrechen",
+      "editGroup": "Gruppe bearbeiten",
+      "messageGroupPlaceholder": "Nachricht an {name}…",
+      "messagePersonPlaceholder": "Nachricht an {name}…"
     },
     "mobile": {
       "searching": "Suche läuft…",

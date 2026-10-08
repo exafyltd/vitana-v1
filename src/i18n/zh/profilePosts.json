@@ -15,7 +15,9 @@
     "noBackground": "无背景",
     "searchingPeople": "正在搜索用户…",
     "noPeopleFound": "未找到用户",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mentionSuggestions": true
+    },
+    "mentionSuggestions": "People to tag"
+  }
 }

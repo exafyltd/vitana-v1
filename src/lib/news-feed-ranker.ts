@@ -21,6 +21,7 @@
  */
 
 import type { MatchReason } from "@/lib/matchReason";
+import type { PostAttachedRef } from "@/lib/post-attachment";
 
 export type FeedItemKind = "match" | "performer" | "post" | "article" | "feature_announcement" | "new_member";
 
@@ -77,6 +78,8 @@ export interface PostFeedItem extends FeedItemBase {
   /** Author is followed by the current viewer. */
   followed: boolean;
   tags: string[];
+  /** VTID-04916: the event this post shares, rendered as a live card. */
+  attached_ref?: PostAttachedRef | null;
 }
 
 export interface ArticleFeedItem extends FeedItemBase {

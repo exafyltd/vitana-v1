@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04916",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: a shareable community-event entry offers 'Share to the feed'; the panel opens prefilled with the event's name, public by default, and closes without posting; an already-shared entry links to its post instead; a private entry offers no share; the shared post renders the event as a live card whose button opens the event. Calendar window, post and event are answered in the browser with demo data; read-only",
+      "spec": "tests/e2e/staging/vtid-04916-calendar-share-to-feed.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/calendar/vcal/ShareToFeedPanel.test.tsx src/lib/post-attachment.test.ts src/components/feed/EventAttachmentCard.test.tsx src/components/calendar/__regression__",
+      "reason": "posting a share writes a feed post and fans out notifications, so it is proven without staging: the panel hands exactly the text and visibility to the share call, the client posts to the share route and names every refusal (already shared, not shareable, limit, duplicate text, suspended), the card's states (upcoming, live, past, cancelled, gone). The database half (client cannot attach an event, one share per member per event, notification deduplicated per recipient per event per 24 h, plain posts unchanged) runs in SQL-EVENT-SHARE-POSTS.yml on a throwaway Postgres"
+    }
+  ]
+}

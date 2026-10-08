@@ -620,7 +620,7 @@
       "icsFileWillDownloaded": "ICS datoteka će biti preuzeta",
       "openingCalendar": "Otvaram kalendar",
       "notifyOnTitle": "Podsetnik postavljen",
-      "notifyOnDesc": "Podsetićemo te pre nego što počne",
+      "notifyOnDesc": "Podsetićemo te pre nego što počne — i već je u tvom Maxina kalendaru",
       "notifyOffTitle": "Podsetnik uklonjen",
       "notifyOffDesc": "Više te nećemo podsećati",
       "notifyError": "Nije moguće ažurirati podsetnik",
@@ -737,7 +737,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Izaberi ili otvori razgovor pre nego što priložiš fajlove.",
       "uploadFailed": "Otpremanje neuspešno",
       "failedSendVoiceMessage": "Neuspešno slanje glasovne poruke",
-      "thereErrorSendingYourVoiceMessage": "Došlo je do greške prilikom slanja tvoje glasovne poruke"
+      "thereErrorSendingYourVoiceMessage": "Došlo je do greške prilikom slanja tvoje glasovne poruke",
+      "groupRenamed": "Grupa je preimenovana",
+      "failedRenameGroup": "Grupa nije mogla da se preimenuje",
+      "groupNameInvalid": "Naziv grupe mora imati od 1 do 80 znakova."
     },
     "notifications": {
       "bookingConfirmed": "Rezervacija potvrđena! 🎉",

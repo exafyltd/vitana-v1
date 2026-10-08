@@ -24,6 +24,9 @@
       "evening": "Добрый вечер 🌙",
       "night": "Доброй ночи 🌙"
     },
+    "day": {
+      "addFor": "Новая запись на {date}"
+    },
     "views": {
       "day": "День",
       "week": "Неделя",
@@ -87,7 +90,21 @@
       "reminders": "Напоминания",
       "noReminders": "Без напоминания",
       "directions": "Маршрут",
-      "askVitana": "Спросить Витану"
+      "askVitana": "Спросить Витану",
+      "openEvent": "К событию",
+      "joinRoom": "Присоединиться",
+      "openRoom": "В эфирную комнату",
+      "endedChip": "Завершено",
+      "endedNotice": "Это событие закончилось и больше не активно.",
+      "endedToast": "Событие уже прошло и не активно",
+      "_pending_review": {
+        "openEvent": true,
+        "joinRoom": true,
+        "openRoom": true,
+        "endedChip": true,
+        "endedNotice": true,
+        "endedToast": true
+      }
     },
     "work": {
       "deploy_staging": "Деплой на staging",
@@ -281,6 +298,114 @@
       "waitingOne": "1 дело ждёт тебя",
       "waiting": "Ждут тебя: {count}",
       "open": "Открыть в админке"
+    },
+    "indexGain": "+{points} {pillar} в твоём Vitana Index",
+    "edit": {
+      "action": "Изменить",
+      "titleLabel": "Название",
+      "startLabel": "Начало",
+      "endLabel": "Конец",
+      "locationLabel": "Место",
+      "descriptionLabel": "Заметка",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "invalid": "Добавь название; конец должен быть позже начала.",
+      "saved": "Сохранено ✨",
+      "error": "Сейчас не удалось сохранить. Попробуй ещё раз чуть позже.",
+      "_pending_review": {
+        "action": true,
+        "titleLabel": true,
+        "startLabel": true,
+        "endLabel": true,
+        "locationLabel": true,
+        "descriptionLabel": true,
+        "save": true,
+        "cancel": true,
+        "invalid": true,
+        "saved": true,
+        "error": true
+      }
+    },
+    "remove": {
+      "action": "Удалить",
+      "confirm": "Удалить эту запись из календаря?",
+      "confirmSeries": "Удалить эту запись и все повторы из календаря?",
+      "keep": "Оставить",
+      "yes": "Удалить",
+      "removed": "Удалено",
+      "error": "Сейчас не удалось удалить. Попробуй ещё раз чуть позже.",
+      "_pending_review": {
+        "action": true,
+        "confirm": true,
+        "confirmSeries": true,
+        "keep": true,
+        "yes": true,
+        "removed": true,
+        "error": true
+      }
+    },
+    "alreadyInCalendar": "Уже в твоём календаре",
+    "_pending_review": {
+      "indexGain": true,
+      "alreadyInCalendar": true
+    },
+    "share": {
+      "action": "Поделиться в ленте",
+      "defaultText": "Я иду: {title} – {date}. Пойдёшь со мной?",
+      "textLabel": "Что хочешь написать?",
+      "cardHint": "Событие появится карточкой под твоим текстом – со временем, местом и статусом.",
+      "public": "Видно всем в сообществе",
+      "profileOnly": "Только в твоём профиле",
+      "post": "Поделиться",
+      "cancel": "Отмена",
+      "done": "Готово – сообщество видит, что ты идёшь",
+      "viewPost": "Опубликовано в ленте – посмотреть",
+      "alreadyShared": "Ты уже делился этим событием",
+      "notShareable": "Этим событием больше нельзя поделиться: оно закончилось, отменено или не публичное.",
+      "limit": "Сегодня ты уже много публиковал. Попробуй завтра.",
+      "duplicate": "Ты только что опубликовал этот текст. Напиши что-то другое или подожди немного.",
+      "suspended": "Твой аккаунт сейчас не может публиковать.",
+      "error": "Не удалось поделиться. Попробуй чуть позже.",
+      "_pending_review": {
+        "action": true,
+        "defaultText": true,
+        "textLabel": true,
+        "cardHint": true,
+        "public": true,
+        "profileOnly": true,
+        "post": true,
+        "cancel": true,
+        "done": true,
+        "viewPost": true,
+        "alreadyShared": true,
+        "notShareable": true,
+        "limit": true,
+        "duplicate": true,
+        "suspended": true,
+        "error": true
+      }
+    },
+    "feedCard": {
+      "upcoming": "Скоро",
+      "live": "Идёт сейчас",
+      "past": "Завершено",
+      "cancelled": "Отменено",
+      "openEvent": "Смотреть и участвовать",
+      "openRoom": "Открыть комнату",
+      "joinRoom": "Присоединиться",
+      "unavailable": "Это событие больше недоступно.",
+      "untitled": "Событие",
+      "_pending_review": {
+        "upcoming": true,
+        "live": true,
+        "past": true,
+        "cancelled": true,
+        "openEvent": true,
+        "openRoom": true,
+        "joinRoom": true,
+        "unavailable": true,
+        "untitled": true
+      }
     }
   }
 }
