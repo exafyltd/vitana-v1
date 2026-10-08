@@ -42,13 +42,16 @@ export function composeFeed<V>(ranked: FeedItem[], vitanaCards: V[]): ComposedEn
   for (let n = 4; n < vitanaCards.length; n++) push(vitana(n));
 
   const stream = ranked.filter((i) => i !== feature && i !== member);
+  // A further feature/new-member card left in the stream is itself an info
+  // card: it must never be the item that follows another info card.
+  const isInfoKind = (i: FeedItem) => i.kind === "feature_announcement" || i.kind === "new_member";
 
   const out: ComposedEntry<V>[] = [];
-  let si = 0;
   for (const entry of queue) {
     out.push(entry);
-    if (si < stream.length) out.push({ type: "item", item: stream[si++], role: "stream" });
+    const at = stream.findIndex((i) => !isInfoKind(i));
+    if (at >= 0) out.push({ type: "item", item: stream.splice(at, 1)[0], role: "stream" });
   }
-  for (; si < stream.length; si++) out.push({ type: "item", item: stream[si], role: "stream" });
+  for (const item of stream) out.push({ type: "item", item, role: "stream" });
   return out;
 }

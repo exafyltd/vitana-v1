@@ -80,7 +80,10 @@ test('VTID-04973: the feed starts with an info card and info cards never sit sid
   // Weak invariant (strict alternation is a Vitest property of composeFeed: a
   // dismissed Vitana card is invisible to it, and posts keep priority).
   expect(m!.kinds[0], `first feed item is "${m!.kinds[0]}", expected an info card (${m!.kinds.join(',')})`).toBe('info');
-  for (let i = 1; i < m!.kinds.length; i++) {
+  // Adjacency only counts while a non-info item still follows: once the
+  // account's posts/articles run out, only info cards are left to show.
+  const lastNonInfo = m!.kinds.lastIndexOf('post') > m!.kinds.lastIndexOf('other') ? m!.kinds.lastIndexOf('post') : m!.kinds.lastIndexOf('other');
+  for (let i = 1; i <= lastNonInfo; i++) {
     expect(m!.kinds[i] === 'info' && m!.kinds[i - 1] === 'info', `two info cards side by side at ${i - 1},${i} (${m!.kinds.join(',')})`).toBe(false);
   }
 });

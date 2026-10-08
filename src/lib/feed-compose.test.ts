@@ -24,8 +24,23 @@ describe("composeFeed (VTID-04973)", () => {
 
   it("never lets non-post cards bunch at the top, even when they are the newest items", () => {
     const out = composeFeed([feat(1), mem(1), mem(2), post(1), post(2), post(3), post(4)], cards);
-    const kinds = out.map((e) => (e.type === "vitana" || (e.type === "item" && e.role === "info") ? "info" : "other"));
-    for (let i = 1; i < 12 && i < kinds.length; i++) expect(kinds[i] === "info" && kinds[i - 1] === "info").toBe(false);
+    const kinds = out.map((e) => (e.type === "vitana" || (e.type === "item" && (e.item.kind === "feature_announcement" || e.item.kind === "new_member")) ? "info" : "other"));
+    // while posts remain (up to the last non-info entry) no two info cards touch
+    const last = kinds.lastIndexOf("other");
+    for (let i = 1; i <= last; i++) expect(kinds[i] === "info" && kinds[i - 1] === "info").toBe(false);
+  });
+
+  it("never puts a further feature/new-member card straight after an info card (staging regression)", () => {
+    const ranked = [feat(1), post(1), article(1), feat(2), mem(1), mem(2), post(2), post(3), post(4), post(5)];
+    const out = composeFeed(ranked, cards);
+    const isInfo = (e: (typeof out)[number]) =>
+      e.type === "vitana" || (e.type === "item" && (e.item.kind === "feature_announcement" || e.item.kind === "new_member"));
+    // while non-info entries remain, no two info cards touch (once only info
+    // cards are left there is nothing to put between them)
+    const last = out.map(isInfo).lastIndexOf(false);
+    for (let i = 1; i <= last; i++) expect(isInfo(out[i]) && isInfo(out[i - 1]), `${i - 1},${i}: ${out.map(label).join(",")}`).toBe(false);
+    // nothing is dropped
+    expect(out.map(label).sort()).toEqual([...ranked.map((r) => r.id), ...cards].sort());
   });
 
   it("keeps posts first in priority: extra new-member and feature cards stay in the stream", () => {
