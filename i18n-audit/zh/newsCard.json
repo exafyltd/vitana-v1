@@ -98,8 +98,8 @@
     "newsCard.detail.continueReading": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Ellipsis '...' is informal and may be ambiguous; suggest full phrase.",
-      "suggested": "在以下位置继续阅读",
+      "issue": "Awkward and overly literal translation of 'on'; too formal for a friendly app. Implies 'at the following locations' rather than 'continue reading more'.",
+      "suggested": "继续阅读",
       "phase": "llm"
     },
     "newsCard.detail.openInBrowser": {
@@ -146,7 +146,38 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "newsCard.member.welcomeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.member.joinedSummary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.member.newMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.member.sayHello": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.member.viewProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.member.eyebrow": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Assuming 'New in the community' refers to new members, which is highly probable given surrounding entries. If it referred to new content, a different translation would be needed.",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:27.810Z"
+  "generatedAt": "2026-10-08T10:50:15.343Z"
 }
