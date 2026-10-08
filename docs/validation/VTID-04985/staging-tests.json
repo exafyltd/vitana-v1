@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-04985",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/whats-new/draft-entry.test.ts",
+      "reason": "No served code changes: CLAUDE.md, the What's New README, the CI-only drafting-bot prompt (scripts/whats-new/draft-entry.mjs) and its test. This suite pins the narrowed prompt (brand-new + finished features only, redesigns/fixes/partial work are false, default false unless stated) and keeps the drafter's parsing, validation and no-direct-Anthropic-API guards green; the standard community-app smoke run still confirms the deployed shell is unaffected."
+    }
+  ]
+}

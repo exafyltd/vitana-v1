@@ -299,10 +299,13 @@ in front of real people. Register any new test account in
 
 ## What's New cards — automatic (VTID-04733)
 
-**Any user-facing addition or redesign adds one file to `src/whats-new/entries/`**
-(`<id>.json`: EN + DE du-form copy, path deep link — see
-`src/whats-new/README.md`). Same PR, no exceptions for features a member will
-notice; skip for fixes/refactors/admin-only work and for anything not finished yet (owner rule 2026-10-08: cards are for finished, new features only). Once the build is live in
+**A brand-new, finished feature a member can use end to end adds one file to
+`src/whats-new/entries/`** (`<id>.json`: EN + DE du-form copy, path deep link —
+see `src/whats-new/README.md`). Same PR. **No entry** for fixes, restyles or
+redesigns of existing screens, reordering or rewording, improvements to an
+existing feature, refactors, admin-only work, or anything partial (behind a
+flag, "step 1 of N", still being finished). When in doubt, no entry (owner
+rule 2026-10-08: cards are for new, finished features only). Once the build is live in
 production, the gateway turns the entry into a "Brand New Feature" News Feed
 card + push, once, automatically. Do not publish these cards by hand any more.
 **If you forget, it is drafted for you (VTID-04739):** after merge,
