@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05000",
+  "kind": "feature",
+  "paths": [
+    "src/components/GlobalErrorBoundary.tsx",
+    "src/components/GlobalErrorBoundary.vtid-05000.test.tsx",
+    "src/main.tsx",
+    "src/lib/stale-bundle-recovery.ts",
+    "src/lib/stale-bundle-recovery.vtid-05000.test.ts",
+    "src/i18n/de/screens.json",
+    "src/i18n/en/screens.json",
+    "tests/e2e/staging/vtid-05000-stale-bundle-recovery.staging.spec.ts",
+    "docs/validation/VTID-05000/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05000/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

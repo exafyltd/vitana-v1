@@ -6,6 +6,11 @@ import './index.css'
 // reached the page after tapping a chat notification.
 import { bootstrapNotifDiag } from './lib/notifDiag'
 bootstrapNotifDiag()
+// VTID-05000: a failed lazy-chunk preload (stale shell after a deploy) recovers
+// once through a cache-busted reload; the `_vr` marker is cleaned off the URL.
+import { installPreloadErrorRecovery, stripRecoveryParam } from './lib/stale-bundle-recovery'
+installPreloadErrorRecovery()
+stripRecoveryParam()
 // VTID-03177 (PROFILE): RUM beacon — captures LCP/TTFB/FCP/CLS per screen
 // and POSTs to gateway /api/v1/rum/beacon. Gateway translates each into a
 // `screen.latency.measured` OASIS event. Receiver returns 204 when

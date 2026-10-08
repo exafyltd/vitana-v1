@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05000",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "a failed lazy chunk recovers once through a _vr cache-busted reload and the app renders",
+      "spec": "tests/e2e/staging/vtid-05000-stale-bundle-recovery.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "recovery helpers + error boundary unit tests",
+      "ref": "npx vitest run src/lib/stale-bundle-recovery.vtid-05000.test.ts src/components/GlobalErrorBoundary.vtid-05000.test.tsx",
+      "cwd": ".",
+      "reason": "Pin the URL builder, the 10 s guard, the cache clean-up (never throws), the preloadError handler and that the boundary's Reload / Go Home use the helper."
+    }
+  ]
+}
