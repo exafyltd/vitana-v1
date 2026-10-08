@@ -89,6 +89,132 @@
         "capToday": true,
         "capWeek": true
       }
+    },
+    "rewardShop": {
+      "tab": "Loja",
+      "title": "Loja de recompensas",
+      "summary": "Troque os VTNA que você ganhou por recompensas. Só contam os VTNA ganhos, não os créditos comprados.",
+      "balance": "Você ganhou {amount} VTNA.",
+      "shortfall": "Faltam {amount} VTNA.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "Ver",
+      "soldOut": "Esgotado",
+      "redeem": "Resgatar",
+      "payShipping": "Continuar para o pagamento do frete",
+      "cancel": "Cancelar",
+      "loading": "Carregando recompensas…",
+      "error": "Não foi possível carregar a loja.",
+      "empty": "As primeiras recompensas chegam em breve.",
+      "ageBadge": "{age}+",
+      "birthDate": "Sua data de nascimento",
+      "ageConfirm": "Confirmo que tenho pelo menos {age} anos.",
+      "shippingTitle": "Envio",
+      "noShipping": "Ainda não conseguimos enviar esta recompensa na sua moeda.",
+      "country": "País",
+      "address": {
+        "name": "Nome",
+        "line1": "Rua e número",
+        "line2": "Complemento (opcional)",
+        "postal_code": "CEP",
+        "city": "Cidade",
+        "_pending_review": {
+          "name": true,
+          "line1": true,
+          "line2": true,
+          "postal_code": true,
+          "city": true
+        }
+      },
+      "shippingFee": "Frete: {money}",
+      "shippingNote": "Você paga só o frete. Seus VTNA só são debitados depois que o pagamento for concluído.",
+      "redeemed": "{item} resgatado",
+      "returnPaid": "Obrigado! Seu frete está pago e seu pedido está a caminho.",
+      "returnCancelled": "O pagamento do frete foi cancelado. Nenhum VTNA foi debitado.",
+      "ordersTitle": "Seus pedidos",
+      "unknownItem": "Recompensa",
+      "fulfilment": {
+        "ship": "Enviado para você",
+        "event": "Ingresso para evento",
+        "digital": "Digital",
+        "_pending_review": {
+          "ship": true,
+          "event": true,
+          "digital": true
+        }
+      },
+      "status": {
+        "awaiting_shipping_payment": "Frete pendente",
+        "paid": "Confirmado",
+        "fulfilling": "Em preparação",
+        "shipped": "Enviado",
+        "delivered": "Entregue",
+        "cancelled": "Cancelado",
+        "refunded": "Reembolsado",
+        "_pending_review": {
+          "awaiting_shipping_payment": true,
+          "paid": true,
+          "fulfilling": true,
+          "shipped": true,
+          "delivered": true,
+          "cancelled": true,
+          "refunded": true
+        }
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "Você ainda não ganhou VTNA suficientes para isso.",
+        "OUT_OF_STOCK": "Esta recompensa está esgotada no momento.",
+        "UNDER_MIN_AGE": "Esta recompensa só está disponível a partir da idade indicada.",
+        "AGE_CONFIRMATION_REQUIRED": "Informe sua data de nascimento e confirme sua idade.",
+        "ADDRESS_REQUIRED": "Informe seu endereço completo.",
+        "SHIPPING_NOT_AVAILABLE": "Não conseguimos enviar esta recompensa para esse país.",
+        "ITEM_NOT_AVAILABLE": "Esta recompensa não está mais disponível.",
+        "NOT_ELIGIBLE": "Esta conta não pode resgatar recompensas.",
+        "CHECKOUT_FAILED": "Não foi possível iniciar o pagamento do frete. Tente de novo.",
+        "generic": "Não deu certo. Tente de novo.",
+        "_pending_review": {
+          "INSUFFICIENT_BALANCE": true,
+          "OUT_OF_STOCK": true,
+          "UNDER_MIN_AGE": true,
+          "AGE_CONFIRMATION_REQUIRED": true,
+          "ADDRESS_REQUIRED": true,
+          "SHIPPING_NOT_AVAILABLE": true,
+          "ITEM_NOT_AVAILABLE": true,
+          "NOT_ELIGIBLE": true,
+          "CHECKOUT_FAILED": true,
+          "generic": true
+        }
+      },
+      "_pending_review": {
+        "tab": true,
+        "title": true,
+        "summary": true,
+        "balance": true,
+        "shortfall": true,
+        "price": true,
+        "approx": true,
+        "view": true,
+        "soldOut": true,
+        "redeem": true,
+        "payShipping": true,
+        "cancel": true,
+        "loading": true,
+        "error": true,
+        "empty": true,
+        "ageBadge": true,
+        "birthDate": true,
+        "ageConfirm": true,
+        "shippingTitle": true,
+        "noShipping": true,
+        "country": true,
+        "shippingFee": true,
+        "shippingNote": true,
+        "redeemed": true,
+        "returnPaid": true,
+        "returnCancelled": true,
+        "ordersTitle": true,
+        "unknownItem": true
+      }
     }
   }
 }

@@ -72,6 +72,69 @@
       "error": "Deine Belohnungen konnten gerade nicht geladen werden.",
       "capToday": "{used} von {count} heute",
       "capWeek": "{used} von {count} diese Woche"
+    },
+    "rewardShop": {
+      "tab": "Shop",
+      "title": "Prämien-Shop",
+      "summary": "Löse deine verdienten VTNA gegen Prämien ein. Nur verdiente VTNA zählen, gekaufte Credits nicht.",
+      "balance": "Du hast {amount} VTNA verdient.",
+      "shortfall": "Dir fehlen noch {amount} VTNA.",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "Ansehen",
+      "soldOut": "Ausverkauft",
+      "redeem": "Einlösen",
+      "payShipping": "Weiter zur Versandzahlung",
+      "cancel": "Abbrechen",
+      "loading": "Prämien werden geladen …",
+      "error": "Der Shop konnte nicht geladen werden.",
+      "empty": "Hier gibt es bald die ersten Prämien.",
+      "ageBadge": "ab {age}",
+      "birthDate": "Dein Geburtsdatum",
+      "ageConfirm": "Ich bestätige, dass ich mindestens {age} Jahre alt bin.",
+      "shippingTitle": "Versand",
+      "noShipping": "In deine Währung können wir diese Prämie noch nicht versenden.",
+      "country": "Land",
+      "address": {
+        "name": "Name",
+        "line1": "Straße und Hausnummer",
+        "line2": "Adresszusatz (optional)",
+        "postal_code": "Postleitzahl",
+        "city": "Ort"
+      },
+      "shippingFee": "Versandkosten: {money}",
+      "shippingNote": "Du zahlst nur den Versand. Deine VTNA werden erst abgebucht, wenn die Zahlung eingegangen ist.",
+      "redeemed": "{item} eingelöst",
+      "returnPaid": "Danke! Dein Versand ist bezahlt, deine Bestellung ist unterwegs zu dir.",
+      "returnCancelled": "Die Versandzahlung wurde abgebrochen. Es wurden keine VTNA abgebucht.",
+      "ordersTitle": "Deine Bestellungen",
+      "unknownItem": "Prämie",
+      "fulfilment": {
+        "ship": "Wird versendet",
+        "event": "Event-Ticket",
+        "digital": "Digital"
+      },
+      "status": {
+        "awaiting_shipping_payment": "Versand offen",
+        "paid": "Bestätigt",
+        "fulfilling": "In Vorbereitung",
+        "shipped": "Versendet",
+        "delivered": "Zugestellt",
+        "cancelled": "Abgebrochen",
+        "refunded": "Erstattet"
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "Du hast dafür noch nicht genug verdiente VTNA.",
+        "OUT_OF_STOCK": "Diese Prämie ist gerade vergriffen.",
+        "UNDER_MIN_AGE": "Diese Prämie ist erst ab dem angegebenen Alter erhältlich.",
+        "AGE_CONFIRMATION_REQUIRED": "Bitte gib dein Geburtsdatum an und bestätige dein Alter.",
+        "ADDRESS_REQUIRED": "Bitte gib deine vollständige Adresse an.",
+        "SHIPPING_NOT_AVAILABLE": "In dieses Land können wir diese Prämie nicht versenden.",
+        "ITEM_NOT_AVAILABLE": "Diese Prämie ist nicht mehr verfügbar.",
+        "NOT_ELIGIBLE": "Mit diesem Konto kannst du keine Prämien einlösen.",
+        "CHECKOUT_FAILED": "Die Versandzahlung konnte nicht gestartet werden. Bitte versuch es noch einmal.",
+        "generic": "Das hat nicht geklappt. Bitte versuch es noch einmal."
+      }
     }
   }
 }

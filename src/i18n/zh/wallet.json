@@ -89,6 +89,132 @@
         "capToday": true,
         "capWeek": true
       }
+    },
+    "rewardShop": {
+      "tab": "商店",
+      "title": "奖励商店",
+      "summary": "用你赚取的 VTNA 兑换奖励。只计算赚取的 VTNA，购买的积分不计入。",
+      "balance": "你已赚取 {amount} VTNA。",
+      "shortfall": "你还差 {amount} VTNA。",
+      "price": "{amount} VTNA",
+      "approx": "≈ {money}",
+      "view": "查看",
+      "soldOut": "已售罄",
+      "redeem": "兑换",
+      "payShipping": "继续支付运费",
+      "cancel": "取消",
+      "loading": "正在加载奖励…",
+      "error": "无法加载商店。",
+      "empty": "首批奖励即将上线。",
+      "ageBadge": "{age}+",
+      "birthDate": "你的出生日期",
+      "ageConfirm": "我确认我已年满 {age} 岁。",
+      "shippingTitle": "配送",
+      "noShipping": "我们暂时无法以你的货币配送此奖励。",
+      "country": "国家/地区",
+      "address": {
+        "name": "姓名",
+        "line1": "街道和门牌号",
+        "line2": "地址第二行（可选）",
+        "postal_code": "邮政编码",
+        "city": "城市",
+        "_pending_review": {
+          "name": true,
+          "line1": true,
+          "line2": true,
+          "postal_code": true,
+          "city": true
+        }
+      },
+      "shippingFee": "运费：{money}",
+      "shippingNote": "你只需支付运费。付款完成后才会扣除 VTNA。",
+      "redeemed": "已兑换：{item}",
+      "returnPaid": "谢谢！运费已支付，你的订单正在路上。",
+      "returnCancelled": "运费支付已取消，未扣除 VTNA。",
+      "ordersTitle": "你的订单",
+      "unknownItem": "奖励",
+      "fulfilment": {
+        "ship": "配送到家",
+        "event": "活动门票",
+        "digital": "数字商品",
+        "_pending_review": {
+          "ship": true,
+          "event": true,
+          "digital": true
+        }
+      },
+      "status": {
+        "awaiting_shipping_payment": "运费未支付",
+        "paid": "已确认",
+        "fulfilling": "准备中",
+        "shipped": "已发货",
+        "delivered": "已送达",
+        "cancelled": "已取消",
+        "refunded": "已退款",
+        "_pending_review": {
+          "awaiting_shipping_payment": true,
+          "paid": true,
+          "fulfilling": true,
+          "shipped": true,
+          "delivered": true,
+          "cancelled": true,
+          "refunded": true
+        }
+      },
+      "errors": {
+        "INSUFFICIENT_BALANCE": "你赚取的 VTNA 还不够。",
+        "OUT_OF_STOCK": "此奖励目前已售罄。",
+        "UNDER_MIN_AGE": "此奖励仅向达到指定年龄的人提供。",
+        "AGE_CONFIRMATION_REQUIRED": "请填写出生日期并确认你的年龄。",
+        "ADDRESS_REQUIRED": "请填写完整地址。",
+        "SHIPPING_NOT_AVAILABLE": "我们无法将此奖励配送到该国家/地区。",
+        "ITEM_NOT_AVAILABLE": "此奖励已不再提供。",
+        "NOT_ELIGIBLE": "此账户无法兑换奖励。",
+        "CHECKOUT_FAILED": "无法开始支付运费，请重试。",
+        "generic": "没有成功，请重试。",
+        "_pending_review": {
+          "INSUFFICIENT_BALANCE": true,
+          "OUT_OF_STOCK": true,
+          "UNDER_MIN_AGE": true,
+          "AGE_CONFIRMATION_REQUIRED": true,
+          "ADDRESS_REQUIRED": true,
+          "SHIPPING_NOT_AVAILABLE": true,
+          "ITEM_NOT_AVAILABLE": true,
+          "NOT_ELIGIBLE": true,
+          "CHECKOUT_FAILED": true,
+          "generic": true
+        }
+      },
+      "_pending_review": {
+        "tab": true,
+        "title": true,
+        "summary": true,
+        "balance": true,
+        "shortfall": true,
+        "price": true,
+        "approx": true,
+        "view": true,
+        "soldOut": true,
+        "redeem": true,
+        "payShipping": true,
+        "cancel": true,
+        "loading": true,
+        "error": true,
+        "empty": true,
+        "ageBadge": true,
+        "birthDate": true,
+        "ageConfirm": true,
+        "shippingTitle": true,
+        "noShipping": true,
+        "country": true,
+        "shippingFee": true,
+        "shippingNote": true,
+        "redeemed": true,
+        "returnPaid": true,
+        "returnCancelled": true,
+        "ordersTitle": true,
+        "unknownItem": true
+      }
     }
   }
 }

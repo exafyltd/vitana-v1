@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 363
-- **Distinct i18n keys consumed:** 4778
+- **Distinct i18n keys consumed:** 4769
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -71,7 +71,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `vcal` — used: 9, total in shard: 260
+- `vcal` — used: 9, total in shard: 261
 
 ### src/pages/Changelog.tsx
 
@@ -626,7 +626,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `common` — used: 2, total in shard: 37
 - `screens` — used: 14, total in shard: 11575
 - `toasts` — used: 3, total in shard: 1272
-- `wallet` — used: 17, total in shard: 61
+- `wallet` — used: 17, total in shard: 114
 
 ### src/pages/role-section-app-layout.test.ts
 
@@ -1913,14 +1913,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/community/LiveRooms.tsx
 
-**Status:** ✅ clean — keys consumed: 47, namespaces: 4
+**Status:** ✅ clean — keys consumed: 46, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `liveRooms` — used: 9, total in shard: 122
 - `screens` — used: 22, total in shard: 11575
-- `toasts` — used: 15, total in shard: 1272
+- `toasts` — used: 14, total in shard: 1272
 
 ### src/pages/community/MediaHub.tsx
 
@@ -2945,11 +2945,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/wallet/Rewards.tsx
 
-**Status:** ✅ clean — keys consumed: 13, namespaces: 1
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 13, total in shard: 11575
+- `screens` — used: 5, total in shard: 11575
 
 ### src/pages/wallet/Subscriptions.tsx
 
