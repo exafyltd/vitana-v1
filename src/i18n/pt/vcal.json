@@ -77,6 +77,12 @@
       "ends": "Premium termina",
       "trialEnds": "O teste termina"
     },
+    "overlap": {
+      "title": "Isto sobrepõe-se",
+      "own": "{{title}} · {{time}}",
+      "busy": "Ocupado · {{time}}",
+      "external": "Ocupado (outro calendário) · {{time}}"
+    },
     "empty": {
       "title": "Nada planejado – um dia tranquilo",
       "hint": "Diga à Vitana o que você tem em mente e ela adiciona."

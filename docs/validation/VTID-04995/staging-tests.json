@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04995",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "UI half of VTID-04995 (overlap warning under the add, move and edit pickers). Staging is read-only and shares the production database, so no entry is created there; OverlapWarning and useOverlap tests pin the wording rules (own title vs title-less busy), the 3-line cap, the settle delay, and silence on failure."
+    }
+  ]
+}

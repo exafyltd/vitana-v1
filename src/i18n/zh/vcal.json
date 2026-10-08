@@ -77,6 +77,12 @@
       "ends": "Premium 将到期",
       "trialEnds": "试用期结束"
     },
+    "overlap": {
+      "title": "时间有重叠",
+      "own": "{{title}} · {{time}}",
+      "busy": "忙碌 · {{time}}",
+      "external": "忙碌（其他日历）· {{time}}"
+    },
     "empty": {
       "title": "没有安排——平静的一天",
       "hint": "告诉 Vitana 你的打算，她会帮你添加。"

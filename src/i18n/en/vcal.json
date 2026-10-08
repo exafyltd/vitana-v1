@@ -71,6 +71,12 @@
       "ends": "Premium ends",
       "trialEnds": "Trial ends"
     },
+    "overlap": {
+      "title": "This overlaps",
+      "own": "{{title}} · {{time}}",
+      "busy": "Busy · {{time}}",
+      "external": "Busy (another calendar) · {{time}}"
+    },
     "empty": {
       "title": "Nothing planned – a calm day",
       "hint": "Tell Vitana what you have in mind and she'll add it."

@@ -78,6 +78,12 @@
       "ends": "Premium termina",
       "trialEnds": "La prueba termina"
     },
+    "overlap": {
+      "title": "Esto se solapa",
+      "own": "{{title}} · {{time}}",
+      "busy": "Ocupado · {{time}}",
+      "external": "Ocupado (otro calendario) · {{time}}"
+    },
     "empty": {
       "title": "Nada planeado – un día tranquilo",
       "hint": "Dile a Vitana lo que tienes en mente y ella lo añadirá."

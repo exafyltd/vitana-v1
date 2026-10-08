@@ -71,6 +71,12 @@
       "ends": "Premium endet",
       "trialEnds": "Testzeit endet"
     },
+    "overlap": {
+      "title": "Das überschneidet sich",
+      "own": "{{title}} · {{time}}",
+      "busy": "Beschäftigt · {{time}}",
+      "external": "Belegt (anderer Kalender) · {{time}}"
+    },
     "empty": {
       "title": "Nichts geplant – ein ruhiger Tag",
       "hint": "Sag Vitana, was du vorhast, und sie trägt es ein."
