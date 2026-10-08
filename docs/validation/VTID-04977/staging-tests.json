@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04977",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "community-app smoke suite",
+      "ref": "npm run test:e2e:staging",
+      "cwd": ".",
+      "reason": "Removal of a best-effort write on Erinnern. Staging is read-only (no writes allowed), so the no-reminder behaviour is pinned by vitest: erinnern-no-duplicate-reminder.vtid-04977.test.ts."
+    }
+  ]
+}

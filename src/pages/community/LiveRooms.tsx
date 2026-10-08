@@ -45,7 +45,6 @@ import {
   useSubscribeToStream,
   useUnsubscribeFromStream,
 } from "@/hooks/useStreamSubscription";
-import { useCreateReminder } from "@/hooks/useReminders";
 
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
@@ -91,7 +90,6 @@ export default function LiveRooms() {
   const notifyingRooms = myStreamSubs ?? new Set<string>();
   const { mutateAsync: subscribeStream } = useSubscribeToStream();
   const { mutateAsync: unsubscribeStream } = useUnsubscribeFromStream();
-  const { mutateAsync: createReminder } = useCreateReminder();
   
   // Fetch profiles for all creators
   const creatorIds = useMemo(() => {
@@ -306,18 +304,7 @@ export default function LiveRooms() {
         notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
       } else {
         await subscribeStream(roomId);
-        // Best-effort personal reminder ~10 min before start (voice/calendar nudge).
-        const room = scheduledRooms.find((r) => r.id === roomId);
-        if (room?.scheduledTime) {
-          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
-          if (remindMs > Date.now()) {
-            createReminder({
-              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
-              scheduled_for_iso: new Date(remindMs).toISOString(),
-              description: room.title,
-            }).catch((e) => console.warn('[notify] reminder create failed:', e));
-          }
-        }
+        // The calendar entry (DB trigger) already reminds 10 min before; no second personal reminder (VTID-04977).
         notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
       }
     } catch (e) {
