@@ -51,6 +51,7 @@ import {
 } from '@/components/events/EventsLiveRooms';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
+import { profilePath } from '@/lib/profile-path';
 
 // Interaction-only surfaces (create/edit/share/promote dialogs) are code-split
 // out of the route chunk: they only matter after a user action, yet statically
@@ -1179,7 +1180,7 @@ const EventsAndMeetups = () => {
                           <button
                             key={p.user_id}
                             type="button"
-                            onClick={() => navigate(`/profile/${p.user_id}`)}
+                            onClick={() => navigate(profilePath(p.user_id) ?? '/')}
                             className="flex flex-col items-center gap-1 flex-shrink-0 w-16 focus:outline-none"
                             aria-label={p.display_name || 'Member'}
                           >

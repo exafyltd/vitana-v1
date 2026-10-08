@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { UserMinus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { profilePath } from '@/lib/profile-path';
 
 interface FollowUser {
   user_id: string;
@@ -223,7 +224,7 @@ export function FollowListDialog({
                       className="h-10 w-10 cursor-pointer"
                       onClick={() => {
                         onOpenChange(false);
-                        navigate(`/profile/${u.handle || u.user_id}`);
+                        navigate(profilePath(u.user_id, u.handle) ?? '/');
                       }}
                     >
                       <AvatarImage src={getDisplayAvatarUrl(u)} />
@@ -236,7 +237,7 @@ export function FollowListDialog({
                       className="flex-1 min-w-0 cursor-pointer"
                       onClick={() => {
                         onOpenChange(false);
-                        navigate(`/profile/${u.handle || u.user_id}`);
+                        navigate(profilePath(u.user_id, u.handle) ?? '/');
                       }}
                     >
                       <p className="text-sm font-medium text-foreground truncate">

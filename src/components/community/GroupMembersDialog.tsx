@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Crown } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { profilePath } from '@/lib/profile-path';
 
 interface GroupMember {
   user_id: string;
@@ -115,7 +116,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                     className="flex items-center gap-3 py-2.5 px-1 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
                     onClick={() => {
                       onOpenChange(false);
-                      navigate(`/profile/${m.handle || m.user_id}`);
+                      navigate(profilePath(m.user_id, m.handle) ?? '/');
                     }}
                   >
                     <Avatar className="h-10 w-10">

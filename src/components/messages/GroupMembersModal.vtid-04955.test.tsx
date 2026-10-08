@@ -4,6 +4,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
 
 const selects: string[] = [];
@@ -51,9 +52,11 @@ function renderModal(props: Partial<React.ComponentProps<typeof GroupMembersModa
   document.documentElement.dir = dir;
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
+    <MemoryRouter>
     <QueryClientProvider client={qc}>
       <GroupMembersModal open onOpenChange={() => {}} threadId="t1" context="global" currentUserRole="admin" groupName="Husam Katiela, Stefan Ehlke" createdBy="me" {...props} />
-    </QueryClientProvider>,
+    </QueryClientProvider>
+    </MemoryRouter>,
   );
 }
 

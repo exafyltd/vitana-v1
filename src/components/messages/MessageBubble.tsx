@@ -4,7 +4,8 @@ import { splitMentionSegments, type Mention } from '@/lib/mentions';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { resolveInAppEventPath } from '@/lib/inAppLinks';
 import { useAuth } from '@/context/AuthProvider';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ClickableAvatar } from '@/components/ui/clickable-avatar';
+import { MemberLink } from '@/components/ui/member-link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -1011,25 +1012,23 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
         )}>
-          {showAvatar && (
-            <Avatar className="w-8 h-8 flex-shrink-0 mt-0.5">
-              <AvatarImage
-                src={(() => {
-                  const senderId = message.sender_id || (message.sender as any)?.user_id;
-                  if (isVitanaBot(senderId)) return VITANA_BOT_AVATAR_URL;
-                  return message.sender?.avatar_url;
-                })()}
-                alt={message.sender?.display_name || message.sender?.full_name || 'User'}
+          {showAvatar && (() => {
+            // VTID-04992: the sender's avatar opens their profile (the
+            // Vitana assistant has none, so it stays a plain picture).
+            const senderId = message.sender_id || (message.sender as any)?.user_id;
+            const isBot = isVitanaBot(senderId);
+            const senderName = message.sender?.display_name || message.sender?.full_name || 'User';
+            return (
+              <ClickableAvatar
+                userId={isBot ? undefined : senderId}
+                disabled={isBot}
+                src={isBot ? VITANA_BOT_AVATAR_URL : message.sender?.avatar_url ?? undefined}
+                fallback={isBot ? VITANA_BOT_DISPLAY_NAME[0] : (senderName[0] || 'U').toUpperCase()}
+                alt={senderName}
+                className="w-8 h-8 flex-shrink-0 mt-0.5"
               />
-              <AvatarFallback>
-                {(() => {
-                  const senderId = message.sender_id || (message.sender as any)?.user_id;
-                  if (isVitanaBot(senderId)) return VITANA_BOT_DISPLAY_NAME[0];
-                  return (message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase();
-                })()}
-              </AvatarFallback>
-            </Avatar>
-          )}
+            );
+          })()}
         </div>
         
         {/* Message content column */}
@@ -1037,15 +1036,18 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "flex-1 flex flex-col min-w-0 overflow-hidden",
           isOwnMessage ? "items-end order-1" : "items-start"
         )}>
-          {!isOwnMessage && showAvatar && (
-            <span className="text-xs text-muted-foreground mb-0.5 ml-3">
-              {(() => {
-                const senderId = message.sender_id || (message.sender as any)?.user_id;
-                if (isVitanaBot(senderId)) return VITANA_BOT_DISPLAY_NAME;
-                return message.sender?.display_name || message.sender?.full_name || 'Unknown User';
-              })()}
-            </span>
-          )}
+          {!isOwnMessage && showAvatar && (() => {
+            const senderId = message.sender_id || (message.sender as any)?.user_id;
+            const isBot = isVitanaBot(senderId);
+            const name = isBot
+              ? VITANA_BOT_DISPLAY_NAME
+              : message.sender?.display_name || message.sender?.full_name || 'Unknown User';
+            return (
+              <span className="text-xs text-muted-foreground mb-0.5 ml-3">
+                {isBot ? name : <MemberLink userId={senderId}>{name}</MemberLink>}
+              </span>
+            );
+          })()}
           
           <div className="relative">
             <MessageContextMenu

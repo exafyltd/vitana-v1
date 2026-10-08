@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Play, Trash2, User, Edit } from 'lucide-react';
+import { Play, Trash2, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ClickableAvatar } from '@/components/ui/clickable-avatar';
+import { MemberLink } from '@/components/ui/member-link';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { useShortHoverPreview } from '@/hooks/useShortHoverPreview';
 import { ImageWithFallback } from '@/components/diary/ImageWithFallback';
@@ -259,17 +260,18 @@ export function ShortPreviewCard({
           
           {/* Uploader info */}
           <div className="flex items-center gap-2">
-            <Avatar className="h-6 w-6">
-              <AvatarImage src={video.creatorAvatar || undefined} alt={video.creator} />
-              <AvatarFallback className="text-xs bg-muted">
-                {video.creatorDisplayName?.[0] || video.creator[0] || <User className="w-3 h-3" />}
-              </AvatarFallback>
-            </Avatar>
+            <ClickableAvatar
+              userId={video.user_id}
+              src={video.creatorAvatar || undefined}
+              fallback={video.creatorDisplayName?.[0] || video.creator[0] || '?'}
+              alt={video.creator}
+              className="h-6 w-6"
+            />
             <p 
               className="text-muted-foreground flex-1 truncate"
               style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
             >
-              {video.creator}
+              <MemberLink userId={video.user_id}>{video.creator}</MemberLink>
             </p>
           </div>
 

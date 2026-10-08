@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { Heart, MessageCircle, Share2, ArrowLeft, Volume2, VolumeX, Play, Pause, Loader2, RotateCcw, Trash2, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ClickableAvatar } from '@/components/ui/clickable-avatar';
+import { MemberLink } from '@/components/ui/member-link';
 import { Badge } from '@/components/ui/badge';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { ShortCommentsSheet } from './ShortCommentsSheet';
@@ -469,14 +470,15 @@ export function MobileShortSlide({
       <div className="absolute bottom-0 left-0 right-0 p-4 pb-8 z-10 safe-area-inset-bottom">
         {/* Creator */}
         <div className="flex items-center gap-3 mb-3">
-          <Avatar className="h-10 w-10 border-2 border-white">
-            <AvatarImage src={video.creatorAvatar || undefined} />
-            <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-              {video.creator.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <ClickableAvatar
+            userId={video.user_id}
+            src={video.creatorAvatar || undefined}
+            fallback={video.creator.slice(0, 2).toUpperCase()}
+            alt={video.creator}
+            className="h-10 w-10 border-2 border-white"
+          />
           <span className="text-white font-semibold text-base drop-shadow-lg">
-            @{video.creator}
+            <MemberLink userId={video.user_id}>@{video.creator}</MemberLink>
           </span>
         </div>
 

@@ -5,7 +5,8 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
+import { MemberLink } from "@/components/ui/member-link";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search as SearchIcon, Users, MessageSquare, Video, Heart, Clock, Play, BookOpen } from "lucide-react";
@@ -192,12 +193,15 @@ export default function Search() {
           <Card key={result.id} className="hover:shadow-md transition-shadow cursor-pointer">
             <CardContent className="p-4">
               <div className="flex items-start gap-4">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={result.avatar} alt={result.title} />
-                  <AvatarFallback>{getInitials({ user_id: result.id, display_name: result.title, full_name: null, email: null, handle: null, avatar_url: result.avatar })}</AvatarFallback>
-                </Avatar>
+                <ClickableAvatar
+                  userId={result.id}
+                  src={result.avatar}
+                  fallback={getInitials({ user_id: result.id, display_name: result.title, full_name: null, email: null, handle: null, avatar_url: result.avatar })}
+                  alt={result.title}
+                  className="h-12 w-12"
+                />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-foreground">{result.title}</h3>
+                  <h3 className="font-semibold text-foreground"><MemberLink userId={result.id}>{result.title}</MemberLink></h3>
                   <p className="text-sm text-muted-foreground mb-2">{result.subtitle}</p>
                   <p className="text-sm text-foreground/80">{result.description}</p>
                   <div className="flex gap-2 mt-3">

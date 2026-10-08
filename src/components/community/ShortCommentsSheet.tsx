@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Heart, Loader2, Send, X } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ClickableAvatar } from '@/components/ui/clickable-avatar';
+import { MemberLink } from '@/components/ui/member-link';
 import { useShortComments, ShortComment } from '@/hooks/useShortComments';
 import { useAuth } from '@/context/AuthProvider';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -92,13 +93,16 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
     const parentId = comment.parent_id ?? comment.id;
     return (
       <div key={comment.id} className={cn('flex items-start gap-2', isReply && 'ml-10')}>
-        <Avatar className={cn(isReply ? 'h-7 w-7' : 'h-8 w-8')}>
-          <AvatarImage src={comment.avatar_url || undefined} />
-          <AvatarFallback className="text-[10px]">{name[0]}</AvatarFallback>
-        </Avatar>
+        <ClickableAvatar
+          userId={comment.user_id}
+          src={comment.avatar_url || undefined}
+          fallback={name[0]}
+          alt={name}
+          className={cn(isReply ? 'h-7 w-7' : 'h-8 w-8')}
+        />
         <div className="flex-1 min-w-0">
           <div className="bg-muted/60 rounded-xl px-3 py-2">
-            <span className="text-xs font-semibold text-foreground">{name}</span>
+            <span className="text-xs font-semibold text-foreground"><MemberLink userId={comment.user_id}>{name}</MemberLink></span>
             <p className="text-sm text-foreground/90 break-words">{comment.content}</p>
           </div>
           <div className="flex items-center gap-3 px-1 mt-0.5">

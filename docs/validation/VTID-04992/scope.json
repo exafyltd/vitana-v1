@@ -1,0 +1,30 @@
+{
+  "vtid": "VTID-04992",
+  "kind": "feature",
+  "paths": [
+    "src/components/community/GroupFeed.tsx",
+    "src/components/community/GroupMembersDialog.tsx",
+    "src/components/community/MobileShortSlide.tsx",
+    "src/components/community/ShortCommentsSheet.tsx",
+    "src/components/community/ShortPreviewCard.tsx",
+    "src/components/liverooms/PastRoomCard.tsx",
+    "src/components/messages/GroupMembersModal.tsx",
+    "src/components/messages/GroupMembersModal.vtid-04955.test.tsx",
+    "src/components/messages/MessageBubble.tsx",
+    "src/components/profile/FollowListDialog.tsx",
+    "src/components/ui/clickable-avatar.tsx",
+    "src/components/wallet/WalletTransactionCard.tsx",
+    "src/pages/Search.tsx",
+    "src/pages/community/EventsAndMeetups.tsx",
+    "src/components/ui/member-link.test.tsx",
+    "src/components/ui/member-link.tsx",
+    "src/lib/__guards__/member-link.allowlist.json",
+    "src/lib/__guards__/member-link.guard.test.ts",
+    "src/lib/profile-path.test.ts",
+    "src/lib/profile-path.ts",
+    "docs/validation/VTID-04992/**",
+    "docs/validation/PLAN-everything-connected/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
