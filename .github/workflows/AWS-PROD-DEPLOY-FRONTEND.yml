@@ -103,6 +103,10 @@ on:
         description: 'Public frontend URL used for post-deploy verification'
         required: false
         default: 'https://dr-app.vitanaland.com'
+      apex_url:
+        description: 'Members host probed for the rollout guarantees (VTID-04989)'
+        required: false
+        default: 'https://vitanaland.com'
       aws_region:
         description: 'AWS region'
         required: false
@@ -380,4 +384,7 @@ jobs:
         if: success()
         run: |
           set -e
-          scripts/ci/verify-rollout-guarantees.sh "${{ inputs.apex_url }}" "prod-${GITHUB_RUN_ID}"
+          # The `|| default` keeps the check alive for any caller that does
+          # not pass apex_url (a dispatch from before this input existed
+          # passed "" and the script stopped at its own argument check).
+          scripts/ci/verify-rollout-guarantees.sh "${{ inputs.apex_url || 'https://vitanaland.com' }}" "prod-${GITHUB_RUN_ID}"
