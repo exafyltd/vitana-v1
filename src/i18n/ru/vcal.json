@@ -67,9 +67,15 @@
       "community": "Сообщество",
       "journey": "Твой путь",
       "reminder": "Твоё напоминание",
+      "subscription": "Твоя подписка",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium продлевается",
+      "ends": "Premium заканчивается",
+      "trialEnds": "Пробный период заканчивается"
     },
     "empty": {
       "title": "Ничего не запланировано – спокойный день",

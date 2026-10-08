@@ -10,7 +10,7 @@ import { Check } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import type { CalendarWindowItem } from "@/lib/calendar-window-client";
 import { KIND_STYLE, SURFACE, entryKind, isDone } from "./theme";
-import { itemEmoji, sourceLabel } from "./labels";
+import { entryTitle, itemEmoji, sourceLabel } from "./labels";
 import { hhmm, timeRange, type CalendarView } from "./time";
 
 interface EntryCardProps {
@@ -55,7 +55,7 @@ export function EntryCard({ item, onOpen, compact }: EntryCardProps) {
       <span className="flex min-w-0 flex-1 flex-col">
         {compact && <span className="text-xs" style={{ color: SURFACE.muted }}>{hhmm(item.start_time)}</span>}
         <span className={`truncate font-semibold ${compact ? "text-xs" : "text-[15px]"}`} style={{ textDecoration: done ? "line-through" : undefined }}>
-          {e.title}
+          {entryTitle(e)}
         </span>
         {!compact && (
           <span className="truncate text-sm" style={{ color: SURFACE.muted }}>

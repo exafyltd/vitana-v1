@@ -67,9 +67,15 @@
       "community": "Społeczność",
       "journey": "Twoja ścieżka",
       "reminder": "Twoje przypomnienie",
+      "subscription": "Twoja subskrypcja",
       "_pending_review": {
         "autopilot": true
       }
+    },
+    "subscription": {
+      "renews": "Premium się odnawia",
+      "ends": "Premium się kończy",
+      "trialEnds": "Okres próbny się kończy"
     },
     "empty": {
       "title": "Nic zaplanowanego – spokojny dzień",
