@@ -107,7 +107,8 @@
         "line1": "Street and number",
         "line2": "Address line 2 (optional)",
         "postal_code": "Postcode",
-        "city": "City"
+        "city": "City",
+        "_pending_review": {}
       },
       "shippingFee": "Shipping: {money}",
       "shippingNote": "You only pay for shipping. Your VTNA are taken only once the payment has gone through.",
@@ -119,7 +120,8 @@
       "fulfilment": {
         "ship": "Shipped to you",
         "event": "Event ticket",
-        "digital": "Digital"
+        "digital": "Digital",
+        "_pending_review": {}
       },
       "status": {
         "awaiting_shipping_payment": "Shipping unpaid",
@@ -128,7 +130,8 @@
         "shipped": "Shipped",
         "delivered": "Delivered",
         "cancelled": "Cancelled",
-        "refunded": "Refunded"
+        "refunded": "Refunded",
+        "_pending_review": {}
       },
       "errors": {
         "INSUFFICIENT_BALANCE": "You haven't earned enough VTNA for this yet.",
@@ -140,8 +143,10 @@
         "ITEM_NOT_AVAILABLE": "This reward is no longer available.",
         "NOT_ELIGIBLE": "This account can't redeem rewards.",
         "CHECKOUT_FAILED": "The shipping payment couldn't be started. Please try again.",
-        "generic": "That didn't work. Please try again."
-      }
+        "generic": "That didn't work. Please try again.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
