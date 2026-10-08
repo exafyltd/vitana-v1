@@ -28,7 +28,12 @@
       "x": "Мы анализируем твою биографию, чтобы понять твои предметные области и стиль общения.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "Выбери канал",
+    "pickerDescription": "Выбери соцсеть, которую хочешь подключить или изменить.",
+    "connected": "Подключено",
+    "connectPlatformAria": "Подключить {platform}",
+    "addChannelAria": "Добавить соцсеть"
   },
   "_pending_review": {}
 }

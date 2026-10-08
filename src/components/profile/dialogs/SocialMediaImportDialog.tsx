@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,6 +21,8 @@ interface SocialMediaImportDialogProps {
   icon: React.ReactNode;
   profileId: string;
   onSuccess?: () => void;
+  /** Pre-fills the profile URL when the dialog opens (VTID-04979: editing a connected channel). */
+  initialUrl?: string;
 }
 
 const platformPlaceholders: Record<Platform, { url: string; bio: string }> = {
@@ -66,9 +68,14 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
   platformName,
   icon,
   profileId,
-  onSuccess
+  onSuccess,
+  initialUrl
 }) => {
   const [profileUrl, setProfileUrl] = useState('');
+
+  useEffect(() => {
+    if (open && initialUrl) setProfileUrl(initialUrl);
+  }, [open, initialUrl]);
   const [bioText, setBioText] = useState('');
   const [importing, setImporting] = useState(false);
   const { toast } = useToast();
@@ -143,11 +150,11 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
       // Trigger parent refresh instead of page reload
       onSuccess?.();
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[SocialMediaImport] ${platformName} import error:`, error);
       toast({
         title: translate('socialImport.importFailed', 'Import Failed'),
-        description: error.message || translate('socialImport.urlRequiredDesc', 'Please enter your {platform} profile URL').replace('{platform}', platformName),
+        description: (error instanceof Error && error.message) || translate('socialImport.urlRequiredDesc', 'Please enter your {platform} profile URL').replace('{platform}', platformName),
         variant: 'destructive'
       });
     } finally {

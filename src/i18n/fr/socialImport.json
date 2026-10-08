@@ -28,7 +28,12 @@
       "x": "Nous analysons ta bio pour comprendre tes domaines thématiques et ton style de communication.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "Choisis une chaîne",
+    "pickerDescription": "Choisis le réseau social que tu veux connecter ou modifier.",
+    "connected": "Connecté",
+    "connectPlatformAria": "Connecter {platform}",
+    "addChannelAria": "Ajouter un réseau social"
   },
   "_pending_review": {}
 }

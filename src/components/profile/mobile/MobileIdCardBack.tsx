@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useProfile } from "@/context/ProfileProvider";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
+import { SocialChannelPickerDrawer } from "./SocialChannelPickerDrawer";
 
 interface MobileIdCardBackProps {
   profile: UserProfile;
@@ -29,6 +30,8 @@ interface PlatformConfig {
   id: SocialPlatform;
   name: string;
   color: string;
+  /** App-icon tile behind the logo (VTID-04979) — TikTok's glyph is white, so it sits on black. */
+  tileBg: string;
   getUrl: (profile: UserProfile) => string | undefined;
   icon: React.ReactNode;
 }
@@ -36,6 +39,7 @@ interface PlatformConfig {
 const platforms: PlatformConfig[] = [
   {
     id: 'linkedin',
+    tileBg: '#FFFFFF',
     name: 'LinkedIn',
     color: '#0A66C2',
     getUrl: (p) => p.linkedin_url,
@@ -43,6 +47,7 @@ const platforms: PlatformConfig[] = [
   },
   {
     id: 'instagram',
+    tileBg: '#FFFFFF',
     name: 'Instagram',
     color: '#E4405F',
     getUrl: (p) => p.instagram_url,
@@ -50,6 +55,7 @@ const platforms: PlatformConfig[] = [
   },
   {
     id: 'x',
+    tileBg: '#FFFFFF',
     name: 'X',
     color: '#000000',
     getUrl: (p) => p.x_url,
@@ -57,6 +63,7 @@ const platforms: PlatformConfig[] = [
   },
   {
     id: 'tiktok',
+    tileBg: '#000000',
     name: 'TikTok',
     color: '#00f2ea',
     getUrl: (p) => p.tiktok_url,
@@ -64,6 +71,7 @@ const platforms: PlatformConfig[] = [
   },
   {
     id: 'youtube',
+    tileBg: '#FFFFFF',
     name: 'YouTube',
     color: '#FF0000',
     getUrl: (p) => p.youtube_url,
@@ -71,6 +79,7 @@ const platforms: PlatformConfig[] = [
   },
   {
     id: 'facebook',
+    tileBg: '#FFFFFF',
     name: 'Facebook',
     color: '#1877F2',
     getUrl: (p) => p.facebook_url,
@@ -108,6 +117,47 @@ export function MobileIdCardBack({
     setSelectedPlatform(platform);
     setDialogOpen(true);
   };
+
+  // "+" → channel picker → the same edit dialog as a logo tap (VTID-04979).
+  // The dialog only opens once the picker has finished closing, so vaul's
+  // scroll lock / focus trap is released before Radix takes its own.
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const pendingPlatform = useRef<PlatformConfig | null>(null);
+  const [pendingTick, setPendingTick] = useState(0);
+
+  const openPending = useCallback(() => {
+    const platform = pendingPlatform.current;
+    if (!platform) return;
+    pendingPlatform.current = null;
+    handleConnect(platform);
+  }, []);
+
+  const handlePick = (id: string) => {
+    const platform = platforms.find((p) => p.id === id);
+    if (!platform) return;
+    pendingPlatform.current = platform;
+    setPickerOpen(false);
+    setPendingTick((n) => n + 1);
+  };
+
+  // Fallback if onAnimationEnd never fires: open after vaul's 500 ms close transition.
+  useEffect(() => {
+    if (pickerOpen || !pendingPlatform.current) return;
+    const timer = setTimeout(openPending, 550);
+    return () => clearTimeout(timer);
+  }, [pickerOpen, pendingTick, openPending]);
+
+  const addButton = (
+    <button
+      type="button"
+      data-testid="social-add-channel"
+      onClick={() => setPickerOpen(true)}
+      aria-label={translate('socialImport.addChannelAria', 'Add a social channel')}
+      className="w-12 h-12 rounded-full bg-white/70 flex items-center justify-center mx-auto shadow-sm transition-colors hover:bg-white active:scale-95"
+    >
+      <Plus className="h-5 w-5 text-slate-600" />
+    </button>
+  );
 
   return (
     <div className={cn("px-4 pb-2", className)}>
@@ -184,6 +234,7 @@ export function MobileIdCardBack({
                       </button>
                     );
                   })}
+                  <div className="flex items-center justify-center p-3">{addButton}</div>
                 </div>
               )}
 
@@ -191,17 +242,19 @@ export function MobileIdCardBack({
               {unconnectedPlatforms.length > 0 && editMode && (
                 <>
                   <div className="h-px bg-black/5 my-4" />
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-[11px] text-slate-600 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
+                  <p className="text-[11px] text-slate-600 text-center mb-2">{translate('socialImport.connect', 'Connect:')}</p>
+                  <div className="flex flex-wrap items-center justify-center gap-2">
                     {unconnectedPlatforms.map((platform) => (
                       <button
                         key={platform.id}
+                        type="button"
+                        data-testid={`social-connect-${platform.id}`}
                         onClick={() => handleConnect(platform)}
-                        className="flex items-center justify-center w-8 h-8 rounded-full border border-black/10 bg-white/60 transition-colors hover:bg-white/80"
+                        aria-label={translate('socialImport.connectPlatformAria', 'Connect {platform}').replace('{platform}', platform.name)}
+                        className="flex items-center justify-center w-9 h-9 rounded-xl border border-black/5 shadow-sm transition-transform active:scale-95 [&_svg]:h-6 [&_svg]:w-6"
+                        style={{ backgroundColor: platform.tileBg }}
                       >
-                        <div className="opacity-40 grayscale">
-                          {platform.icon}
-                        </div>
+                        {platform.icon}
                       </button>
                     ))}
                   </div>
@@ -211,9 +264,7 @@ export function MobileIdCardBack({
               {/* Empty state when no platforms connected */}
               {connectedPlatforms.length === 0 && (
                 <div className="text-center py-6">
-                  <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
-                    <Plus className="h-5 w-5 text-slate-600" />
-                  </div>
+                  <div className="mb-3">{addButton}</div>
                   <p className="text-sm text-slate-600 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
                 </div>
               )}
@@ -290,6 +341,22 @@ export function MobileIdCardBack({
         </div>
       </div>
 
+      {isOwner && (
+        <SocialChannelPickerDrawer
+          open={pickerOpen}
+          onOpenChange={setPickerOpen}
+          onClosed={openPending}
+          onPick={handlePick}
+          channels={platforms.map((p) => ({
+            id: p.id,
+            name: p.name,
+            icon: p.icon,
+            tileBg: p.tileBg,
+            connected: !!p.getUrl(profile),
+          }))}
+        />
+      )}
+
       {/* Social Media Import Dialog */}
       {selectedPlatform && (
         <SocialMediaImportDialog
@@ -298,6 +365,7 @@ export function MobileIdCardBack({
           platform={selectedPlatform.id}
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
+          initialUrl={selectedPlatform.getUrl(profile)}
           profileId={user?.id || (profile.user_id && profile.user_id !== 'current-user' ? profile.user_id : '')}
           onSuccess={handleImportSuccess}
         />

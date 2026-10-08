@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-04979",
+  "kind": "feature",
+  "paths": [
+    "src/components/profile/mobile/MobileIdCardBack.tsx",
+    "src/components/profile/mobile/MobileIdCardBack.test.tsx",
+    "src/components/profile/mobile/SocialChannelPickerDrawer.tsx",
+    "src/components/profile/mobile/SocialChannelPickerDrawer.test.tsx",
+    "src/components/profile/dialogs/SocialMediaImportDialog.tsx",
+    "src/i18n/*/socialImport.json",
+    "tests/e2e/staging/vtid-04979-social-channels.staging.spec.ts",
+    "docs/validation/VTID-04979/**",
+    "docs/SCREEN_INVENTORY.md"
+  ],
+  "sparring_record": "docs/validation/VTID-04979/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

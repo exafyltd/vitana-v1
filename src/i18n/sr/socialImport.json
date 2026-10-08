@@ -28,7 +28,12 @@
       "x": "Analiziramo tvoju biografiju da bismo razumeli tvoje oblasti i stil komunikacije.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "Izaberi kanal",
+    "pickerDescription": "Izaberi društveni kanal koji želiš da povežeš ili urediš.",
+    "connected": "Povezano",
+    "connectPlatformAria": "Poveži {platform}",
+    "addChannelAria": "Dodaj društveni kanal"
   },
   "_pending_review": {}
 }

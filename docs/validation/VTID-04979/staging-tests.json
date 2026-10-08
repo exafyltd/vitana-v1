@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04979",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport (390x844), own profile Social tab (/me/profile?card=back): the connect-row social logos are not greyed out (no grayscale filter, no dimming) and TikTok sits on a black tile; tapping '+' opens the channel picker listing LinkedIn, Instagram, X, TikTok, YouTube and Facebook; Escape closes it; read-only — no channel is picked, no dialog is opened, nothing is imported or saved",
+      "spec": "tests/e2e/staging/vtid-04979-social-channels.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/profile/mobile/MobileIdCardBack.test.tsx src/components/profile/mobile/SocialChannelPickerDrawer.test.tsx",
+      "reason": "full-colour logos and black TikTok tile; '+' opens the picker with all six channels; a pick opens the same edit dialog as a logo tap only after the picker closed; dismissing opens nothing; connected channel marked and its URL pre-fills the dialog; visitors get no '+' or picker"
+    }
+  ]
+}
