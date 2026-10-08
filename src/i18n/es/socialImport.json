@@ -28,7 +28,12 @@
       "x": "Analizamos tu biografía para entender tus áreas temáticas y estilo de comunicación.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "Elige un canal",
+    "pickerDescription": "Elige el canal social que quieres conectar o editar.",
+    "connected": "Conectado",
+    "connectPlatformAria": "Conectar {platform}",
+    "addChannelAria": "Añadir un canal social"
   },
   "_pending_review": {}
 }

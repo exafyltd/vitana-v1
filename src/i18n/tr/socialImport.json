@@ -29,6 +29,11 @@
       "youtube": "Açıklamandan içerik kategorilerini ve uzmanlık alanlarını belirliyoruz.",
       "facebook": "Biyografinden ilgi alanlarını ve topluluk katılımını çıkarıyoruz.",
       "x": "Konu alanlarını ve iletişim tarzını anlamak için biyografini analiz ediyoruz."
-    }
+    },
+    "pickerTitle": "Bir kanal seç",
+    "pickerDescription": "Bağlamak veya düzenlemek istediğin sosyal kanalı seç.",
+    "connected": "Bağlandı",
+    "connectPlatformAria": "{platform} bağla",
+    "addChannelAria": "Sosyal kanal ekle"
   }
 }

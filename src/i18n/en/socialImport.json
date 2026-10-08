@@ -28,7 +28,12 @@
       "x": "We analyze your bio to understand your subject areas and communication style.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "Choose a channel",
+    "pickerDescription": "Pick the social channel you want to connect or edit.",
+    "connected": "Connected",
+    "connectPlatformAria": "Connect {platform}",
+    "addChannelAria": "Add a social channel"
   },
   "_pending_review": {}
 }

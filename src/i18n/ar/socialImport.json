@@ -28,7 +28,12 @@
       "x": "نحلل سيرتك الذاتية لفهم مجالات تخصصك وأسلوب تواصلك.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "اختر قناة",
+    "pickerDescription": "اختر قناة التواصل الاجتماعي التي تريد ربطها أو تعديلها.",
+    "connected": "متصل",
+    "connectPlatformAria": "ربط {platform}",
+    "addChannelAria": "أضف قناة تواصل اجتماعي"
   },
   "_pending_review": {}
 }

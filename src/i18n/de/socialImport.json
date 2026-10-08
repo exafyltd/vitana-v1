@@ -26,6 +26,11 @@
       "youtube": "Wir identifizieren deine Content-Kategorien und Fachbereiche aus deiner Beschreibung.",
       "facebook": "Wir extrahieren deine Interessen und Community-Beteiligung aus deiner Bio.",
       "x": "Wir analysieren deine Bio, um deine Themengebiete und deinen Kommunikationsstil zu verstehen."
-    }
+    },
+    "pickerTitle": "Kanal wählen",
+    "pickerDescription": "Wähle den Social-Kanal, den du verbinden oder bearbeiten möchtest.",
+    "connected": "Verbunden",
+    "connectPlatformAria": "{platform} verbinden",
+    "addChannelAria": "Social-Kanal hinzufügen"
   }
 }

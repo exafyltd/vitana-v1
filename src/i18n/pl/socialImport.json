@@ -28,7 +28,12 @@
       "x": "Analizujemy Twoje bio, aby zrozumieć Twoje obszary tematyczne i styl komunikacji.",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "Wybierz kanał",
+    "pickerDescription": "Wybierz kanał społecznościowy, który chcesz połączyć lub edytować.",
+    "connected": "Połączono",
+    "connectPlatformAria": "Połącz {platform}",
+    "addChannelAria": "Dodaj kanał społecznościowy"
   },
   "_pending_review": {}
 }

@@ -28,7 +28,12 @@
       "x": "我们分析你的个人简介，以了解你的主题领域和沟通风格。",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "pickerTitle": "选择渠道",
+    "pickerDescription": "选择你想连接或编辑的社交渠道。",
+    "connected": "已连接",
+    "connectPlatformAria": "连接 {platform}",
+    "addChannelAria": "添加社交渠道"
   },
   "_pending_review": {}
 }
