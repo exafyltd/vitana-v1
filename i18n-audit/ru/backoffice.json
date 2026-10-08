@@ -1,346 +1,375 @@
 {
   "verdicts": {
-    "wallet.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.description": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.usdBalance": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.creditsBalance": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.creditsLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.available": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.staked": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.searchWallet": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.tabs.balances": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.tabs.activity": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.tabs.actions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.commissions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.transfers": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.exchanges": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.rewards": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.purchases": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.pending": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.withdrawals": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.filters.stakes": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.noActivity": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.noActivityDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.displayCurrency": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "wallet.rewardRules.value": {
+    "backoffice.finance.tabs.sync": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "wallet.rewardRules.amount": {
+    "backoffice.hr.tabs.employees": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "wallet.rewardRules.amountPlain": {
+    "backoffice.hr.tabs.leave": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "wallet.rewardRules.title": {
+    "backoffice.hr.tabs.attendance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.expenses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.hr.tabs.payroll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.suppliers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.purchase-orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.receipts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.supplier-invoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.items": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.warehouses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.operations.tabs.stock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.contracts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.obligations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.compliance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.legal.tabs.e-signature": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "backoffice.back.tabs.admin": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.summary": {
+    "backoffice.overview.tabs.dashboard": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.earnedBalance": {
+    "backoffice.overview.tabs.inbox": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.earned": {
+    "backoffice.overview.tabs.activity": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.cap": {
+    "backoffice.overview.tabs.health": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.groups.first_steps": {
+    "backoffice.sales.tabs.leads": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.groups.habits": {
+    "backoffice.sales.tabs.contacts": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.groups.community": {
+    "backoffice.sales.tabs.opportunities": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.onboarding_complete": {
+    "backoffice.sales.tabs.followups": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.profile_complete": {
+    "backoffice.sales.tabs.quotations": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.first_diary": {
+    "backoffice.sales.tabs.orders": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.first_group": {
+    "backoffice.sales.tabs.invoices": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.first_event_rsvp": {
+    "backoffice.sales.tabs.credit-notes": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.first_connection": {
+    "backoffice.sales.tabs.deliveries": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.five_connections": {
+    "backoffice.marketing.tabs.campaigns": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.first_match_accepted": {
+    "backoffice.marketing.tabs.outreach": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.first_health_check": {
+    "backoffice.marketing.tabs.attribution": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.diary_streak_3": {
+    "backoffice.marketing.tabs.performance": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.diary_streak_7": {
+    "backoffice.accounting.tabs.journals": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.diary_streak_30": {
+    "backoffice.accounting.tabs.chart-of-accounts": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.invite_friend_joined": {
+    "backoffice.accounting.tabs.periods": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.invited_friends_10": {
+    "backoffice.accounting.tabs.tax": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.autopilot_action_done": {
+    "backoffice.accounting.tabs.assets": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.index_new_best": {
+    "backoffice.accounting.tabs.intercompany": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.rules.live_room_15min": {
+    "backoffice.accounting.tabs.budgets": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.neverTitle": {
+    "backoffice.finance.tabs.payments": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.never.done_by_vitana": {
+    "backoffice.finance.tabs.bank-reconciliation": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.never.purchases": {
+    "backoffice.finance.tabs.cash": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.never.self_reported": {
+    "backoffice.finance.tabs.subscriptions": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.recentTitle": {
+    "backoffice.reports.tabs.pnl": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "wallet.rewardRules.recentEmpty": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
+    "backoffice.reports.tabs.balance-sheet": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal accounting term not suitable for a friendly wellness app.",
+      "suggested": "Твои финансы: обзор",
+      "phase": "llm"
     },
-    "wallet.rewardRules.recentOther": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
+    "backoffice.reports.tabs.trial-balance": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal accounting term not suitable for a friendly wellness app.",
+      "suggested": "Твои финансовые данные",
+      "phase": "llm"
     },
-    "wallet.rewardRules.loading": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
+    "backoffice.reports.tabs.cash-flow": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal accounting term not suitable for a friendly wellness app.",
+      "suggested": "Твои доходы и расходы",
+      "phase": "llm"
     },
-    "wallet.rewardRules.error": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
+    "backoffice.reports.tabs.aging": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal accounting term not suitable for a friendly wellness app.",
+      "suggested": "Твои платежи и поступления: сроки",
+      "phase": "llm"
     },
-    "wallet.rewardRules.capToday": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
+    "backoffice.reports.tabs.dimensions": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal technical concept not suitable for a friendly wellness app.",
+      "suggested": "По категориям",
+      "phase": "llm"
     },
-    "wallet.rewardRules.capWeek": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
+    "backoffice.reports.tabs.board-pack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal business term not suitable for a friendly wellness app.",
+      "suggested": "Важные документы",
+      "phase": "llm"
+    },
+    "backoffice.approvals.tabs.queue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "backoffice.approvals.tabs.my-requests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "backoffice.approvals.tabs.policies": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "backoffice.audit.tabs.receipts": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Meaning is slightly off and phrasing is awkward for a technical context; not suitable for a friendly app.",
+      "suggested": "Подтверждения команд",
+      "phase": "llm"
+    },
+    "backoffice.audit.tabs.erp-log": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal technical/business term not suitable for a friendly wellness app.",
+      "suggested": "История действий",
+      "phase": "llm"
+    },
+    "backoffice.audit.tabs.trail": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal technical/business term not suitable for a friendly wellness app.",
+      "suggested": "История изменений",
+      "phase": "llm"
+    },
+    "backoffice.settings.tabs.company": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch: formal business term not suitable for a friendly wellness app.",
+      "suggested": "Твои данные и настройки",
+      "phase": "llm"
+    },
+    "backoffice.settings.tabs.access": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "backoffice.settings.tabs.numbering": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "backoffice.settings.tabs.integrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "backoffice.settings.tabs.modules": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-10-08T10:57:24.870Z"
+  "generatedAt": "2026-10-08T10:49:41.420Z"
 }

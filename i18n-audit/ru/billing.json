@@ -38,8 +38,8 @@
     "billing.promises.anchorHeading": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The phrase 'Приватно по дизайну' is not idiomatic. 'Private by design' refers to a concept, better translated as 'privacy by default' or 'privacy by design'.",
-      "suggested": "Приватность по умолчанию",
+      "issue": "Awkward phrasing, not idiomatic. 'Приватно' is an adverb, but 'Private by design' refers to a concept, usually translated as 'Privacy by design'.",
+      "suggested": "Приватность по дизайну.",
       "phase": "llm"
     },
     "billing.promises.subheading": {
@@ -75,7 +75,7 @@
     "billing.promises.earn.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The phrase 'раскрытый прозрачно' (disclosed transparently) is grammatically correct but sounds a bit clunky. A verbal construction would be more natural.",
+      "issue": "Awkward phrasing for 'transparently disclosed'. The passive participle 'раскрытый' with an adverb 'прозрачно' sounds less natural than an active verb form.",
       "suggested": "Когда твоя рекомендация приводит к продаже через Sell and Earn, или когда ты проводишь платную Live Room, доход твой — раскрывается прозрачно.",
       "phase": "llm"
     },
@@ -470,10 +470,9 @@
       "phase": "llm"
     },
     "billing.earnings.net": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch. 'Net' likely refers to 'Net earnings' ('Чистый заработок'), so the adjective should be masculine.",
-      "suggested": "Чистый",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Ambiguous gender without context. 'Чистая' is feminine. 'Net' could refer to a masculine (чистый), feminine (чистая), or neuter (чистое) noun.",
       "phase": "llm"
     },
     "billing.earnings.withdraw": {
@@ -508,9 +507,9 @@
     },
     "billing.launchGrant.body": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch (assumes male user). 'Ты получил' is gendered, 'You've received' is neutral. Better to use a gender-neutral phrasing for UI.",
-      "suggested": "Тебе предоставлено 12 месяцев Vitana Premium в благодарность за то, что ты с нами с самого начала. Действует до {endsAt}.",
+      "confidence": 1,
+      "issue": "Gender mismatch/assumption. The verb 'получил' is masculine, assuming a male user. A gender-neutral phrasing is preferred for a friendly app.",
+      "suggested": "Тебе начислено 12 месяцев Vitana Premium в благодарность за то, что ты с нами с самого начала. Действует до {endsAt}.",
       "phase": "llm"
     },
     "billing.launchGrant.noAction": {
@@ -639,10 +638,8 @@
       "phase": "llm"
     },
     "billing.state.upgrade": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "'Обновить' means 'update' or 'refresh', not 'upgrade' in the sense of moving to a higher tier plan. This can be ambiguous.",
-      "suggested": "Повысить",
       "phase": "llm"
     },
     "billing.state.trialEndsAt": {
@@ -656,10 +653,9 @@
       "phase": "llm"
     },
     "billing.state.activeBadge": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For a status label like 'Active' referring to a subscription (feminine noun 'подписка'), 'Активна' (feminine short adjective) is more appropriate.",
-      "suggested": "Активна",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Ambiguous gender/part of speech without context. 'Активно' is an adverb. 'Active' as a status is usually an adjective (активный/активная/активное).",
       "phase": "llm"
     },
     "billing.subscriptionsPage.title": {
@@ -693,10 +689,8 @@
       "phase": "llm"
     },
     "billing.faq.a1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'живого общения' (live communication) is too broad for 'live voice time'. 'Голосового общения' (voice communication) is more precise.",
-      "suggested": "Больше времени голосового общения с ORB, больше хостинга в Live Rooms, больше места для хранения и более быстрые личные дайджесты.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "billing.faq.q2": {
@@ -817,8 +811,8 @@
     "paywall.match_posts.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои бесплатные посты в этом месяце. Премиум дает тебе больше.",
+      "issue": "Gender mismatch/assumption. The verb 'использовал' is masculine, assuming a male user. A gender-neutral phrasing is preferred.",
+      "suggested": "Твои бесплатные посты на этот месяц использованы. Премиум дает тебе больше.",
       "phase": "llm"
     },
     "paywall.match_reveals.title": {
@@ -829,8 +823,8 @@
     "paywall.match_reveals.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои бесплатные открытия. Используй {credits} кредитов или обновись до Премиум.",
+      "issue": "Gender mismatch/assumption. The verb 'использовал' is masculine, assuming a male user. A gender-neutral phrasing is preferred.",
+      "suggested": "Твои бесплатные открытия использованы. Используй {credits} кредитов или обновись до Премиум.",
       "phase": "llm"
     },
     "paywall.lab_analyses.title": {
@@ -841,8 +835,8 @@
     "paywall.lab_analyses.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои лабораторные анализы в этом месяце.",
+      "issue": "Gender mismatch/assumption. The verb 'использовал' is masculine, assuming a male user. A gender-neutral phrasing is preferred.",
+      "suggested": "Твои лабораторные анализы на этот месяц использованы.",
       "phase": "llm"
     },
     "paywall.photo_uploads.title": {
@@ -853,8 +847,8 @@
     "paywall.photo_uploads.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои загрузки фото в этом месяце.",
+      "issue": "Gender mismatch/assumption. The verb 'использовал' is masculine, assuming a male user. A gender-neutral phrasing is preferred.",
+      "suggested": "Твои загрузки фото на этот месяц использованы.",
       "phase": "llm"
     },
     "paywall.memory_garden.title": {
@@ -885,8 +879,8 @@
     "paywall.default.body": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свою бесплатную квоту за этот период.",
+      "issue": "Gender mismatch/assumption. The verb 'использовал' is masculine, assuming a male user. A gender-neutral phrasing is preferred.",
+      "suggested": "Твоя бесплатная квота на этот период использована.",
       "phase": "llm"
     },
     "paywall.ctaUpgrade": {
@@ -913,7 +907,52 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "billing.founding.celebration.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.bodyFree": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.bodyPaid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.valueLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.value": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.until": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.ctaPremium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.ctaContinue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-07T00:26:53.584Z"
+  "generatedAt": "2026-10-08T10:50:04.809Z"
 }

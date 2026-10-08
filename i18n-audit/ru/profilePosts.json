@@ -74,7 +74,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "profilePosts.mentionSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-07T00:44:21.735Z"
+  "generatedAt": "2026-10-08T10:53:21.573Z"
 }
