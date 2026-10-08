@@ -1,0 +1,670 @@
+{
+  "verdicts": {
+    "notificationControls.pages.notifications.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.notifications.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.categories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.categories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.activity.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.activity.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.pages.compose.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audience.staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.orb": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.scheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.matches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.meetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.live_rooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.journey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.recommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.account": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.groups.other": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.readiness.ready": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.readiness.notLocalized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.readiness.unverified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOnBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOnBodyNoCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOffBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.reasonLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.reasonPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.confirmOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.on": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.off": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.toastOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.toastOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.toastFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categoryGroups.chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categoryGroups.calendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categoryGroups.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.loadError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.locked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.optIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.shownToMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.hiddenFromMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.sendTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.edit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.removeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.removeBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.previewTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.previewHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.addTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.editTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.defaultOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.defaultOnHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.memberCanDisable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.memberCanDisableHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.categories.types": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.lastDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.byType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.byDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.type": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.day": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.total": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.sent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.pushed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.blockedAdmin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.blockedMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.activity.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.pushHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.alwaysOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.quietHoursHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleTitle.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleTitle.developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleTitle.staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.member.roleHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.audienceNoun.staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.statsNone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "notificationControls.loading": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.loadError": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.summaryOn": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.summaryNew": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.summaryRule": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.summaryRuleText": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.statsErrorBanner": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.statsUnavailable": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.statsLine": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.lastSent": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.searchPlaceholder": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.filterAll": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.filterOn": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.filterOff": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.filterNew": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.noMatch": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.audienceCount": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.newType": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.inCategory": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.noCategory": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.cannotEnableEnglish": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.history": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.historyEmpty": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.historyError": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.switchedOn": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.switchedOff": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.system": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.automationsTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.confirmOnTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "notificationControls.confirmOffTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    }
+  },
+  "generatedAt": "2026-10-08T10:57:47.960Z"
+}
