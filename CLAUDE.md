@@ -302,7 +302,7 @@ in front of real people. Register any new test account in
 **Any user-facing addition or redesign adds one file to `src/whats-new/entries/`**
 (`<id>.json`: EN + DE du-form copy, path deep link — see
 `src/whats-new/README.md`). Same PR, no exceptions for features a member will
-notice; skip for fixes/refactors/admin-only work. Once the build is live in
+notice; skip for fixes/refactors/admin-only work and for anything not finished yet (owner rule 2026-10-08: cards are for finished, new features only). Once the build is live in
 production, the gateway turns the entry into a "Brand New Feature" News Feed
 card + push, once, automatically. Do not publish these cards by hand any more.
 **If you forget, it is drafted for you (VTID-04739):** after merge,
