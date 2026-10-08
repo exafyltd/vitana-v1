@@ -1,0 +1,18 @@
+# Fix forward 1 — staging deploy of #1292 (run 37842923818) failed its EXISTING bundle check
+Step 9 "Post-deploy verify — live bundle must bake the staging gateway", 21:00:18Z, after the
+rollout overlap (poll: old DZ7s-f2q and new BZyayytF interleaved 20:58:24–20:59:10, 0 x 404 from
+the session's vantage). The page referenced /assets/index-BZyayytF.js, which contains the staging
+gateway 14 times; the step logged no HTTP status for the bundle download, so the runner got a
+non-file response. Most likely a 404 cached at the runner's Cloudflare location, left by an OLD
+task (old nginx config, no Cache-Control) during the rollout INTO the no-store fix — the one
+transition the fix cannot cover. Hypothesis, not proven: the runner's location cannot be probed
+from the session.
+After the rollout, from the session: scripts/ci/verify-rollout-guarantees.sh against staging →
+exit 0 (script first, JS, missing asset 404 no-store, cf-cache-status BYPASS); BZyayytF → 200.
+Fix: the bundle check (staging and prod) logs HTTP status + cf-cache-status, and when the CDN
+answer is not 200 it confirms against the origin with ?deploy-verify=<run> (warning, not error).
+A bundle missing at the origin still fails. Same change on prod so the transition cannot trigger
+the automatic rollback of a good build.
+Local test (nginx returning 404 only for the plain URL = stale CDN 404):
+  stale CDN 404, origin fine → warning, origin 200, gateway found, exit 0
+  bundle missing at origin   → error "not served by the deployed build (HTTP 404)", exit 1
