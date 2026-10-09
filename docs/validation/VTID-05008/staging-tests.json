@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05008",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "edge functions that call auth.getClaims import a supabase-js that has it",
+      "ref": "npx vitest run src/lib/edge-functions-getclaims.vtid-05008.test.ts",
+      "cwd": ".",
+      "reason": "The change is two supabase-js import bumps in Supabase edge functions plus this guard; the community-app bundle is unchanged. Edge functions have no staging project (one shared Supabase), so the redeploy of get-proactive-context is verified read-only after the approved manual dispatch (list_edge_functions versions, no 5xx/TypeError in its logs). The guard fails on the old imports and passes on the bump."
+    }
+  ]
+}
