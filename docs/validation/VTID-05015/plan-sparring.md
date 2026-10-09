@@ -45,3 +45,16 @@ Hotfix (new VTID; VTID-05013 is terminal):
 Files: src/lib/eventCoverImage.ts, its test (new or existing), src/components/media/FeedMedia.test.tsx,
 tests/e2e/staging/vtid-05013-feed-image-resize.staging.spec.ts (assertion added),
 docs/validation/<new VTID>/*.
+
+## Amendment A2 — base images off Docker Hub (owner: "Option two", 2026-10-09) → converged
+Production was rolled back by the owner in the AWS console to task definition :113 (0aae822) after three
+CI rollback builds failed on Docker Hub (429, then auth.docker.io 504). Verified live: 20/20
+`index-DzVN70e1.js`, feed chunk without the VTID-05013 frame.
+- Dockerfile → `public.ecr.aws/docker/library/{node:20-alpine,nginx:1.25-alpine}`; PR-GATE pg service →
+  `public.ecr.aws/docker/library/postgres:16`. Same official images and tags (manifests verified, HTTP 200).
+- F11 minor — SQL-*.yml still pull postgres:16 from Docker Hub. DEFERRED: not on this PR's or the deploy path; follow-up.
+- F12 minor — Dockerfile change unbuilt locally (no Docker daemon); first build is the staging deploy. ACCEPTED: staging-first is the gate.
+- F13 minor — Dockerfile is in AWS-STAGE-DEPLOY-FRONTEND's path trigger, so the merge builds on staging. ACCEPTED (confirmation).
+
+## Decisions taken
+- PR-GATE's Postgres moved to the same mirror (its Docker Hub pull failed this PR's check); SQL-*.yml left as-is (conservative).
