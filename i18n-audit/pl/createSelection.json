@@ -1,0 +1,45 @@
+{
+  "verdicts": {
+    "createSelection.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.event": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.eventDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.meetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.meetupDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.liveRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.liveRoomDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-10-09T10:52:15.780Z"
+}
