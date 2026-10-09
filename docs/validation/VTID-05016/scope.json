@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05016",
+  "kind": "infra",
+  "paths": [
+    ".github/workflows/SQL-EVENT-SHARE-POSTS.yml",
+    ".github/workflows/SQL-GROUP-PARTICIPANTS.yml",
+    ".github/workflows/SQL-THREAD-JOIN-HARDENING.yml",
+    "docs/validation/VTID-05016/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05016/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

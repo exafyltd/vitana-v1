@@ -23,7 +23,8 @@ jobs:
     timeout-minutes: 10
     services:
       postgres:
-        image: postgres:16
+        # AWS mirror of the official image; Docker Hub rate limits/outage failed CI on 2026-10-09 (VTID-05016).
+        image: public.ecr.aws/docker/library/postgres:16
         env:
           POSTGRES_PASSWORD: postgres
         ports: ['5432:5432']
