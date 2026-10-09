@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05013",
+  "kind": "fix",
+  "paths": [
+    "src/components/media/FeedMedia.tsx",
+    "src/components/media/FeedMedia.test.tsx",
+    "tests/e2e/staging/vtid-05013-feed-image-resize.staging.spec.ts",
+    "docs/validation/VTID-05013/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05013/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
