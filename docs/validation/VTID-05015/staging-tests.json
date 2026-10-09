@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05015",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "feed photo from the resize CDN has the same aspect ratio as the original (no crop) and keeps its height after a tab round-trip",
+      "spec": "tests/e2e/staging/vtid-05013-feed-image-resize.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "transformedCoverUrl requests resize=contain; FeedMedia resize/fallback/ratio unit tests",
+      "ref": "npx vitest run src/lib/eventCoverImage.test.ts src/components/media/FeedMedia.test.tsx",
+      "cwd": ".",
+      "reason": "Red-green: eventCoverImage.test.ts fails on the pre-fix helper (no resize=contain) and passes with it."
+    }
+  ]
+}
