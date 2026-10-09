@@ -34,6 +34,7 @@ import { createPortal } from "react-dom";
 import { Maximize2, Volume2, VolumeX, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
+import { transformedCoverUrl } from "@/lib/eventCoverImage";
 
 // Instagram's published display bounds.
 const PORTRAIT_MIN_RATIO = 4 / 5; // 0.8 — tallest allowed (width / height)
@@ -43,6 +44,41 @@ const DEFAULT_RATIO = PORTRAIT_MIN_RATIO; // before dimensions are known
 function clampRatio(width: number, height: number): number {
   if (!width || !height) return DEFAULT_RATIO;
   return Math.min(LANDSCAPE_MAX_RATIO, Math.max(PORTRAIT_MIN_RATIO, width / height));
+}
+
+// --- Remembered aspect ratios ---------------------------------------------
+// The News route unmounts on every tab switch, so each return remounts this
+// frame. Starting every remount at DEFAULT_RATIO and correcting it in onLoad
+// made returning cards render at the wrong height and then jump. Remember the
+// clamped ratio per media URL for the session so a remount paints at its final
+// size straight away. The ratio is what's stored (not pixel sizes), and the
+// width-only CDN resize below keeps proportions, so the resized copy and the
+// original yield the same value. Same oldest-first eviction as capturedFrames,
+// larger cap because the values are just numbers.
+const RATIO_CACHE_LIMIT = 200;
+const ratioCache = new Map<string, number>();
+
+function rememberRatio(url: string | null | undefined, ratio: number) {
+  if (!url) return;
+  ratioCache.delete(url);
+  ratioCache.set(url, ratio);
+  if (ratioCache.size > RATIO_CACHE_LIMIT) {
+    const oldest = ratioCache.keys().next().value;
+    if (oldest) ratioCache.delete(oldest);
+  }
+}
+
+// --- CDN-resized photos -----------------------------------------------------
+// Post photos are uploaded as the phone's original (often several MB, 12+
+// megapixels). Rendering that original meant every return to the feed
+// re-decoded it on the device, painting grey half-frames. Route Supabase
+// storage photos through the storage image CDN (same endpoint and width the
+// Events screen uses, see eventCoverImage.ts); anything else is untouched.
+// Callers pass the RAW storage URL from post data (CommunityPostCard,
+// ProfilePostsTab) — unsanitized — so the onError fallback target is exactly
+// the URL the caller gave us.
+function resizedPhotoUrl(url: string | null | undefined): string | undefined {
+  return url ? transformedCoverUrl(url) : undefined;
 }
 
 // --- Scroll-following feed audio ------------------------------------------
@@ -223,7 +259,18 @@ export function FeedMedia({
   alt?: string;
   showControls?: boolean;
 }) {
-  const [ratio, setRatio] = useState(DEFAULT_RATIO);
+  const ratioKey = videoUrl || imageUrl;
+  const [ratio, setRatio] = useState(() => (ratioKey && ratioCache.get(ratioKey)) || DEFAULT_RATIO);
+  const updateRatio = (width: number, height: number) => {
+    const next = clampRatio(width, height);
+    rememberRatio(ratioKey, next);
+    setRatio(next);
+  };
+  // Falls back to the original once if the CDN rejects a file (animated GIF,
+  // oversize original, etc.). Never loops: the original has no fallback.
+  const [resizeFailed, setResizeFailed] = useState(false);
+  const resizedImageUrl = resizedPhotoUrl(imageUrl);
+  const displayImageUrl = (!resizeFailed && resizedImageUrl) || imageUrl || undefined;
   // `soundEnabled` drives the speaker icon (feed-wide on/off); `isActive` means
   // this clip is the one currently carrying that sound.
   const [soundEnabled, setSoundEnabled] = useState(false);
@@ -378,6 +425,7 @@ export function FeedMedia({
   return (
     <div
       ref={containerRef}
+      data-testid="feed-media"
       className={cn(
         "group/media relative w-full overflow-hidden",
         videoUrl ? "bg-black" : "bg-muted",
@@ -398,25 +446,28 @@ export function FeedMedia({
           // ensureFrameCaptured above) over the post's own thumbnail — a clip
           // already watched once shows its last frame instantly on remount
           // instead of going black again while its bytes re-load.
-          poster={(videoUrl && capturedFrames.get(videoUrl)) || imageUrl || undefined}
+          // The thumbnail leg goes through the CDN resize; a captured frame is
+          // already a small data: URL.
+          poster={(videoUrl && capturedFrames.get(videoUrl)) || resizedImageUrl || imageUrl || undefined}
           muted={!isActive}
           loop
           playsInline
           autoPlay={!farFromViewport}
           preload={farFromViewport ? "none" : "metadata"}
-          onLoadedMetadata={(e) =>
-            setRatio(clampRatio(e.currentTarget.videoWidth, e.currentTarget.videoHeight))
-          }
+          onLoadedMetadata={(e) => updateRatio(e.currentTarget.videoWidth, e.currentTarget.videoHeight)}
           className="absolute inset-0 h-full w-full object-cover"
         />
       ) : (
         <img
-          src={imageUrl as string}
+          src={displayImageUrl}
           alt={alt}
           loading="lazy"
-          onLoad={(e) =>
-            setRatio(clampRatio(e.currentTarget.naturalWidth, e.currentTarget.naturalHeight))
-          }
+          decoding="async"
+          data-testid="feed-media-image"
+          onLoad={(e) => updateRatio(e.currentTarget.naturalWidth, e.currentTarget.naturalHeight)}
+          onError={() => {
+            if (!resizeFailed && resizedImageUrl) setResizeFailed(true);
+          }}
           className="absolute inset-0 h-full w-full object-cover"
         />
       )}

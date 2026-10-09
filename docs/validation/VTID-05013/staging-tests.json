@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05013",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "feed photos load from the resize CDN and keep their height after a News -> Events -> News round-trip",
+      "spec": "tests/e2e/staging/vtid-05013-feed-image-resize.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "FeedMedia resize, fallback, fullscreen original, poster and remembered-ratio unit tests",
+      "ref": "npx vitest run src/components/media/FeedMedia.test.tsx src/components/home/CommunityPostCard.test.tsx",
+      "cwd": ".",
+      "reason": "Pin the CDN URL, the one-shot fallback to the original, fullscreen keeping the original, the poster leg and that a remount starts at the remembered ratio."
+    }
+  ]
+}
