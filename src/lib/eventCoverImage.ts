@@ -84,11 +84,16 @@ export const generateCoverUrl = (title: string, description?: string): string =>
  * Rewrite a Supabase public-object URL to the image-transform CDN endpoint.
  * Returns undefined for anything that isn't a plain Supabase storage object
  * (external images, data/blob URLs, already-transformed URLs).
+ *
+ * `resize=contain` is required: with only `width`, the endpoint's default
+ * `resize=cover` keeps the ORIGINAL height and centre-crops (a 4032x2268 photo
+ * came back 1200x2268 — the middle 30%), so every feed photo rendered zoomed in
+ * (VTID-05013 regression). `contain` downscales with the aspect ratio intact.
  */
 export const transformedCoverUrl = (url: string, width = CARD_COVER_WIDTH): string | undefined => {
   if (!url.toLowerCase().includes('.supabase.co' + OBJECT_PATH)) return undefined;
   const rewritten = url.replace(OBJECT_PATH, RENDER_PATH);
-  return rewritten + (rewritten.includes('?') ? '&' : '?') + `width=${width}&quality=75`;
+  return rewritten + (rewritten.includes('?') ? '&' : '?') + `width=${width}&quality=75&resize=contain`;
 };
 
 /** Resolve the cover image for an event row (or anything shaped like one). */

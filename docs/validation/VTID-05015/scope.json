@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05015",
+  "kind": "fix",
+  "paths": [
+    "src/lib/eventCoverImage.ts",
+    "src/lib/eventCoverImage.test.ts",
+    "src/components/media/FeedMedia.test.tsx",
+    "tests/e2e/staging/vtid-05013-feed-image-resize.staging.spec.ts",
+    "Dockerfile",
+    ".github/workflows/PR-GATE.yml",
+    "docs/validation/VTID-05015/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05015/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

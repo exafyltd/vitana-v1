@@ -1,5 +1,10 @@
+# Base images come from AWS's mirror of the Docker official images
+# (public.ecr.aws/docker/library), not Docker Hub: Docker Hub's anonymous pull
+# rate limit / auth outage blocked every build on 2026-10-09, including a
+# production rollback (VTID-05015). Same images, same tags.
+
 # Stage 1: Build the Vite SPA
-FROM node:20-alpine AS builder
+FROM public.ecr.aws/docker/library/node:20-alpine AS builder
 WORKDIR /app
 
 # Increase Node.js heap for large builds (551+ screens, 1.5MB main chunk)
@@ -12,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve with nginx
-FROM nginx:1.25-alpine
+FROM public.ecr.aws/docker/library/nginx:1.25-alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
