@@ -6,6 +6,11 @@
 // Signs in as the documented test user, opens /home on a phone viewport, reads
 // the first photo, taps the Events tab and then the News tab. Nothing is
 // posted, liked or changed.
+//
+// The ORB voice overlay auto-opens on /home for a MAXINA member
+// (useOrbFrontDoor) and covers the tab bar; its live session also POSTs to
+// the gateway. This spec is about the feed, not the ORB, so the widget script
+// GET is aborted client-side (boot-recover ignores a failed orb-widget.js).
 import { test, expect } from './staging-guard';
 
 test.use({
@@ -22,6 +27,8 @@ test('feed photos come from the resize CDN and keep their height after a tab rou
   const email = process.env.TEST_USER_EMAIL ?? '';
   const password = process.env.TEST_USER_PASSWORD ?? '';
   test.skip(!email || !password, 'TEST_USER_EMAIL / TEST_USER_PASSWORD not provided');
+
+  await page.route(/\/command-hub\/orb-widget\.js(\?.*)?$/, (route) => route.abort('blockedbyclient'));
 
   await page.goto('/maxina', { waitUntil: 'domcontentloaded' });
   const anon = await page.evaluate(() => {
@@ -70,9 +77,9 @@ test('feed photos come from the resize CDN and keep their height after a tab rou
   expect(heightBefore).toBeGreaterThan(0);
 
   // In-app tab round-trip (no reload): News -> Events -> News.
-  await page.locator('a[href="/comm/events-meetups"]').first().click();
+  await page.locator('a[href="/comm/events-meetups"]:visible').first().click();
   await expect(page).toHaveURL(/\/comm\/events-meetups/);
-  await page.locator('a[href="/home"]').first().click();
+  await page.locator('a[href="/home"]:visible').first().click();
   await expect(page).toHaveURL(/\/home/);
 
   // The remounted frame paints at its remembered height straight away.
