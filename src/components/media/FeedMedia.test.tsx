@@ -16,7 +16,7 @@ vi.mock('@/lib/i18n-toast', () => ({ t: (key: string) => key }));
 import { FeedMedia } from './FeedMedia';
 
 const STORAGE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/media-uploads/u1/photo.jpg';
-const RESIZED = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/render/image/public/media-uploads/u1/photo.jpg?width=1200&quality=75';
+const RESIZED = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/render/image/public/media-uploads/u1/photo.jpg?width=1200&quality=75&resize=contain';
 
 function setNaturalSize(img: HTMLImageElement, width: number, height: number) {
   Object.defineProperty(img, 'naturalWidth', { value: width, configurable: true });

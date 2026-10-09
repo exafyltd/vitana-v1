@@ -72,6 +72,22 @@ test('feed photos come from the resize CDN and keep their height after a tab rou
   // Loaded from the CDN, not via the onError fallback to the original.
   expect(await photo.evaluate((img: HTMLImageElement) => img.currentSrc)).toContain('/storage/v1/render/image/public/');
 
+  // The resize must never crop: the CDN copy has the same aspect ratio as the
+  // original upload (its default resize=cover kept the original height and
+  // centre-cropped, so every photo rendered zoomed in). The original is loaded
+  // with a plain GET into a detached Image; both report EXIF-oriented sizes.
+  const ratios = await photo.evaluate(async (img: HTMLImageElement) => {
+    const original = img.currentSrc.replace('/storage/v1/render/image/public/', '/storage/v1/object/public/').split('?')[0];
+    const probe = new Image();
+    await new Promise<void>((resolve, reject) => {
+      probe.onload = () => resolve();
+      probe.onerror = () => reject(new Error(`original did not load: ${original}`));
+      probe.src = original;
+    });
+    return { resized: img.naturalWidth / img.naturalHeight, original: probe.naturalWidth / probe.naturalHeight };
+  });
+  expect(Math.abs(ratios.resized - ratios.original) / ratios.original, `resized photo is cropped: ${JSON.stringify(ratios)}`).toBeLessThan(0.01);
+
   const frame = page.locator('[data-testid="feed-media"]').filter({ has: page.locator(`img[src="${src}"]`) }).first();
   const heightBefore = (await frame.boundingBox())?.height ?? 0;
   expect(heightBefore).toBeGreaterThan(0);
