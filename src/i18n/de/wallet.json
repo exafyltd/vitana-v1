@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Guthaben",
       "activity": "Aktivität",
-      "actions": "Aktionen"
+      "actions": "Aktionen",
+      "rewards": "Belohnungen"
     },
     "filters": {
       "commissions": "Verkaufen & Provisionen verdienen",
@@ -135,6 +136,7 @@
         "CHECKOUT_FAILED": "Die Versandzahlung konnte nicht gestartet werden. Bitte versuch es noch einmal.",
         "generic": "Das hat nicht geklappt. Bitte versuch es noch einmal."
       }
-    }
+    },
+    "backToWallet": "Zurück zur Wallet"
   }
 }

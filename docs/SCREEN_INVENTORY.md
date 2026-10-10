@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 363
-- **Distinct i18n keys consumed:** 4769
+- **Pages scanned:** 364
+- **Distinct i18n keys consumed:** 4771
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -71,7 +71,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `vcal` — used: 9, total in shard: 261
+- `vcal` — used: 9, total in shard: 269
 
 ### src/pages/Changelog.tsx
 
@@ -619,14 +619,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Wallet.tsx
 
-**Status:** ✅ clean — keys consumed: 36, namespaces: 4
+**Status:** ✅ clean — keys consumed: 37, namespaces: 4
 
 **i18n namespaces:**
 
 - `common` — used: 2, total in shard: 37
 - `screens` — used: 14, total in shard: 11579
 - `toasts` — used: 3, total in shard: 1272
-- `wallet` — used: 17, total in shard: 114
+- `wallet` — used: 18, total in shard: 116
 
 ### src/pages/role-section-app-layout.test.ts
 
@@ -2483,11 +2483,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/discover/ProviderProfile.tsx
 
-**Status:** ✅ clean — keys consumed: 28, namespaces: 2
+**Status:** ✅ clean — keys consumed: 29, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 24, total in shard: 11579
+- `screens` — used: 25, total in shard: 11579
 - `toasts` — used: 4, total in shard: 1272
 
 ### src/pages/discover/Supplements.tsx
@@ -2952,6 +2952,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 5, total in shard: 11579
 
 ### src/pages/wallet/Subscriptions.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/wallet/mobile-wallet-rewards.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

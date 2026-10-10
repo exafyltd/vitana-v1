@@ -1877,26 +1877,12 @@
       "ödüllerimi artırmak için hangi adımları atmalıyım bunu görmek istiyorum"
     ]
   },
-  "WALLET.REWARDS_PENDING": {
-    "title": "Bekleyen Ödüller",
+  "WALLET.REWARDS_SHOP": {
+    "title": "Ödül mağazası",
     "phrasings": [
-      "bekleyen ödüllerimi göster",
-      "henüz yatırılmamış ödüllerim nerede",
-      "onay bekleyen ödüllerimi görmek istiyorum",
-      "bekleyen ödüller sekmesini aç",
-      "hesabıma henüz geçmemiş ödüllerimi nerede görebilirim",
-      "işleme alınmamış ödüllerimi kontrol etmek istiyorum"
-    ]
-  },
-  "WALLET.REWARDS_REFERRAL": {
-    "title": "Davet Ödülleri",
-    "phrasings": [
-      "referans ödüllerimi göster",
-      "arkadaş davet ettiğim için ne kazandım",
-      "referral sekmesini aç",
-      "davet ödülleri sekmesini aç",
-      "birisini davet ederek kazandığım ödülleri nerede görebilirim",
-      "kişi davet etmekten kazandıklarımı görmek istiyorum"
+      "ödül mağazasını aç",
+      "VTNA ile ne alabilirim",
+      "VTNA'larımı kullan"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {

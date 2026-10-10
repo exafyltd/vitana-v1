@@ -1385,20 +1385,12 @@
       "有没有提高奖励收益的建议"
     ]
   },
-  "WALLET.REWARDS_PENDING": {
-    "title": "待发放奖励",
+  "WALLET.REWARDS_SHOP": {
+    "title": "奖励商店",
     "phrasings": [
-      "查看待到账的奖励",
-      "我有哪些奖励还没发放",
-      "打开待处理奖励页面"
-    ]
-  },
-  "WALLET.REWARDS_REFERRAL": {
-    "title": "推荐奖励",
-    "phrasings": [
-      "我邀请朋友得了多少奖励",
-      "查看推荐好友的奖励",
-      "打开推荐奖励页签"
+      "打开奖励商店",
+      "我可以用 VTNA 买什么",
+      "兑换我的 VTNA"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {

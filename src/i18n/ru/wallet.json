@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "Балансы",
       "activity": "Активность",
-      "actions": "Действия"
+      "actions": "Действия",
+      "rewards": "Награды",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "Продавай и зарабатывай комиссии",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "Назад в кошелёк",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }

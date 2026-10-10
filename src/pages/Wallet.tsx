@@ -129,13 +129,25 @@ export default function Wallet() {
     { value: 'balances', label: translate('wallet.tabs.balances', 'Balances'), icon: '💰' },
     { value: 'activity', label: translate('wallet.tabs.activity', 'Activity'), icon: '📊' },
     { value: 'actions', label: translate('wallet.tabs.actions', 'Actions'), icon: '⚡' },
+    // VTID-05024: the only way into Rewards (earned VTNA, Shop) on a phone.
+    { value: 'rewards', label: translate('wallet.tabs.rewards', 'Rewards'), icon: '🎁' },
   ];
+  // VTID-05024: "rewards" opens the Rewards screen instead of switching the pill.
+  const handleMobileWalletModeChange = (mode: string) => {
+    if (mode === 'rewards') {
+      navigate('/wallet/rewards');
+      return;
+    }
+    setMobileWalletMode(mode);
+  };
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   // VTID-NAV-WALLET-TABS: honor ?tab= deep-links (e.g. Vitana navigates to
   // /wallet?tab=activity). Only acts on an explicit valid value.
   useEffect(() => {
     const t = searchParams.get("tab");
     if (t === "balances" || t === "activity" || t === "actions") setMobileWalletMode(t);
+    // VTID-05024: /wallet?tab=rewards (Vitana, links) lands on the Rewards screen.
+    if (t === "rewards") navigate('/wallet/rewards', { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
   const { balances, transactions, loading, error, getBalance, isLoaded, refreshData } = useWallet();
@@ -404,7 +416,7 @@ export default function Wallet() {
                 <MobileModePill
                   modes={mobileWalletModes}
                   activeMode={mobileWalletMode}
-                  onModeChange={setMobileWalletMode}
+                  onModeChange={handleMobileWalletModeChange}
                 />
                 <UniversalCalendarButton />
                 

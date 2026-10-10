@@ -1385,20 +1385,12 @@
       "gdzie znajdę wskazówki jak zwiększyć zarobki"
     ]
   },
-  "WALLET.REWARDS_PENDING": {
-    "title": "Oczekujące nagrody",
+  "WALLET.REWARDS_SHOP": {
+    "title": "Sklep z nagrodami",
     "phrasings": [
-      "pokaż oczekujące nagrody",
-      "jakie nagrody jeszcze nie zostały wypłacone",
-      "gdzie są moje nagrody w trakcie realizacji"
-    ]
-  },
-  "WALLET.REWARDS_REFERRAL": {
-    "title": "Nagrody za polecenia",
-    "phrasings": [
-      "pokaż nagrody za polecenia",
-      "co dostałem za zaproszenie znajomych",
-      "gdzie sprawdzę nagrody z referencji"
+      "otwórz sklep z nagrodami",
+      "co mogę kupić za VTNA",
+      "wymień moje VTNA"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {

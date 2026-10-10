@@ -12,7 +12,8 @@
       "balances": "Balances",
       "activity": "Activity",
       "actions": "Actions",
-      "_pending_review": {}
+      "_pending_review": {},
+      "rewards": "Rewards"
     },
     "filters": {
       "commissions": "Sell & earn commissions",
@@ -147,7 +148,8 @@
         "_pending_review": {}
       },
       "_pending_review": {}
-    }
+    },
+    "backToWallet": "Back to Wallet"
   },
   "_pending_review": {}
 }
