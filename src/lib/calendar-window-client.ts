@@ -368,6 +368,67 @@ export function shareFailureOf(err: unknown): { kind: ShareFailure; postId: stri
 }
 
 // =============================================================================
+// VTID-04917 — invites sent through the messenger
+//   The invite itself is a chat message (message_type 'calendar_invite',
+//   content_data { entry_id }) — the gateway builds the card from the
+//   sender's own entry. These calls read and answer a card.
+// =============================================================================
+
+export type InviteResponse = "accepted" | "maybe" | "declined";
+export type InviteAction = "joined" | "open_event" | "open_room" | "added" | "removed" | "recorded";
+
+/** The card the gateway stores on a v2 invite message. */
+export interface CalendarInviteCard {
+  kind: "calendar_invite";
+  v: 2;
+  ref_type: "community_event" | "live_room_session" | "calendar_entry";
+  ref_id: string;
+  title: string;
+  start_time: string;
+  end_time: string | null;
+  location: string | null;
+}
+
+export function isInviteCard(data: unknown): data is CalendarInviteCard {
+  const d = data as Partial<CalendarInviteCard> | null;
+  return (
+    !!d &&
+    d.kind === "calendar_invite" &&
+    d.v === 2 &&
+    (d.ref_type === "community_event" || d.ref_type === "live_room_session" || d.ref_type === "calendar_entry") &&
+    typeof d.start_time === "string"
+  );
+}
+
+export interface InviteState {
+  my_response: InviteResponse | null;
+  counts: Record<InviteResponse, number>;
+  is_sender: boolean;
+}
+
+export async function fetchInviteState(messageId: string): Promise<InviteState> {
+  const body = await authedFetch(`/api/v1/calendar/invites/${encodeURIComponent(messageId)}`, null);
+  return body.data as InviteState;
+}
+
+export async function respondToCalendarInvite(
+  messageId: string,
+  response: InviteResponse,
+): Promise<{ response: InviteResponse; action: InviteAction; path?: string }> {
+  const body = await authedFetch(`/api/v1/calendar/invites/${encodeURIComponent(messageId)}/respond`, null, {
+    method: "POST",
+    body: JSON.stringify({ response }),
+  });
+  return body.data as { response: InviteResponse; action: InviteAction; path?: string };
+}
+
+/** Why the gateway refused to make an invite card for an entry. */
+export function inviteRefusalOf(err: unknown): "not_invitable" | "error" {
+  // The chat send routes throw a plain Error carrying the gateway's code.
+  return err instanceof Error && err.message === "NOT_INVITABLE" ? "not_invitable" : "error";
+}
+
+// =============================================================================
 // VTID-04372 — Google Calendar two-way sync
 //   GET /api/v1/calendar/google, POST /google/enable, POST /google/disable
 // =============================================================================

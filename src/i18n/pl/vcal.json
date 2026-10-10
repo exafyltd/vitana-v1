@@ -70,8 +70,10 @@
       "subscription": "Twoja subskrypcja",
       "testResult": "Twój wynik badania",
       "_pending_review": {
-        "autopilot": true
-      }
+        "autopilot": true,
+        "audiobook": true
+      },
+      "audiobook": "Audiobook"
     },
     "subscription": {
       "renews": "Premium się odnawia",
@@ -426,6 +428,84 @@
         "joinRoom": true,
         "unavailable": true,
         "untitled": true
+      }
+    },
+    "invite": {
+      "action": "Zaproś",
+      "title": "Kogo chcesz zaprosić?",
+      "search": "Szukaj czatu lub grupy",
+      "loading": "Ładowanie czatów …",
+      "empty": "Nie znaleziono czatów.",
+      "chat": "Czat",
+      "group": "Grupa",
+      "send": "Wyślij zaproszenie",
+      "sendTo": "Wyślij do: {name}",
+      "sent": "Zaproszenie wysłane do: {name}",
+      "notInvitable": "Nie możesz teraz nikogo na to zaprosić – to się skończyło, zostało odwołane lub nie jest publiczne.",
+      "error": "Nie udało się wysłać zaproszenia. Spróbuj za chwilę.",
+      "_pending_review": {
+        "action": true,
+        "title": true,
+        "search": true,
+        "loading": true,
+        "empty": true,
+        "chat": true,
+        "group": true,
+        "send": true,
+        "sendTo": true,
+        "sent": true,
+        "notInvitable": true,
+        "error": true
+      }
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "Zaproszenie na wydarzenie",
+        "live_room_session": "Zaproszenie do pokoju na żywo",
+        "calendar_entry": "Zaproszenie z kalendarza",
+        "_pending_review": {
+          "community_event": true,
+          "live_room_session": true,
+          "calendar_entry": true
+        }
+      },
+      "accepted": "Będę",
+      "maybe": "Może",
+      "declined": "Nie",
+      "answer": "Twoja odpowiedź",
+      "counts": "{yes} będzie · {maybe} może",
+      "waiting": "Brak odpowiedzi",
+      "joined": "Bierzesz udział – jest już w Twoim kalendarzu",
+      "added": "Jest już w Twoim kalendarzu",
+      "removed": "Usunięto z Twojego kalendarza",
+      "recorded": "Odpowiedź zapisana",
+      "openEvent": "Tutaj kupisz bilet i dołączysz",
+      "openRoom": "Tutaj dołączysz do pokoju",
+      "notOpen": "To wydarzenie już się nie odbędzie.",
+      "error": "Nie udało się zapisać odpowiedzi. Spróbuj za chwilę.",
+      "_pending_review": {
+        "accepted": true,
+        "maybe": true,
+        "declined": true,
+        "answer": true,
+        "counts": true,
+        "waiting": true,
+        "joined": true,
+        "added": true,
+        "removed": true,
+        "recorded": true,
+        "openEvent": true,
+        "openRoom": true,
+        "notOpen": true,
+        "error": true
+      }
+    },
+    "audiobook": {
+      "title": "Audiobook – dzisiejszy odcinek",
+      "listen": "Posłuchaj teraz",
+      "_pending_review": {
+        "title": true,
+        "listen": true
       }
     }
   }

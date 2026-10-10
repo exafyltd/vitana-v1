@@ -70,8 +70,10 @@
       "subscription": "Aboneliğin",
       "testResult": "Test sonucun",
       "_pending_review": {
-        "autopilot": true
-      }
+        "autopilot": true,
+        "audiobook": true
+      },
+      "audiobook": "Sesli kitap"
     },
     "subscription": {
       "renews": "Premium yenileniyor",
@@ -426,6 +428,84 @@
         "joinRoom": true,
         "unavailable": true,
         "untitled": true
+      }
+    },
+    "invite": {
+      "action": "Davet et",
+      "title": "Kimi davet etmek istersin?",
+      "search": "Sohbet veya grup ara",
+      "loading": "Sohbetlerin yükleniyor …",
+      "empty": "Sohbet bulunamadı.",
+      "chat": "Sohbet",
+      "group": "Grup",
+      "send": "Daveti gönder",
+      "sendTo": "{name} kişisine gönder",
+      "sent": "Davet gönderildi: {name}",
+      "notInvitable": "Şu anda buna kimseyi davet edemezsin – bitti, iptal edildi ya da herkese açık değil.",
+      "error": "Davet şu anda gönderilemedi. Birazdan tekrar dene.",
+      "_pending_review": {
+        "action": true,
+        "title": true,
+        "search": true,
+        "loading": true,
+        "empty": true,
+        "chat": true,
+        "group": true,
+        "send": true,
+        "sendTo": true,
+        "sent": true,
+        "notInvitable": true,
+        "error": true
+      }
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "Etkinlik daveti",
+        "live_room_session": "Canlı oda daveti",
+        "calendar_entry": "Takvim daveti",
+        "_pending_review": {
+          "community_event": true,
+          "live_room_session": true,
+          "calendar_entry": true
+        }
+      },
+      "accepted": "Katılıyorum",
+      "maybe": "Belki",
+      "declined": "Hayır",
+      "answer": "Cevabın",
+      "counts": "{yes} katılıyor · {maybe} belki",
+      "waiting": "Henüz cevap yok",
+      "joined": "Katılıyorsun – artık takviminde",
+      "added": "Artık takviminde",
+      "removed": "Takviminden kaldırıldı",
+      "recorded": "Cevap kaydedildi",
+      "openEvent": "Biletini buradan al ve katıl",
+      "openRoom": "Odaya buradan katıl",
+      "notOpen": "Bu etkinlik artık yapılmayacak.",
+      "error": "Cevabın şu anda kaydedilemedi. Birazdan tekrar dene.",
+      "_pending_review": {
+        "accepted": true,
+        "maybe": true,
+        "declined": true,
+        "answer": true,
+        "counts": true,
+        "waiting": true,
+        "joined": true,
+        "added": true,
+        "removed": true,
+        "recorded": true,
+        "openEvent": true,
+        "openRoom": true,
+        "notOpen": true,
+        "error": true
+      }
+    },
+    "audiobook": {
+      "title": "Sesli kitap – bugünkü bölümün",
+      "listen": "Şimdi dinle",
+      "_pending_review": {
+        "title": true,
+        "listen": true
       }
     }
   }

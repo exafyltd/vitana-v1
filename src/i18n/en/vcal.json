@@ -65,7 +65,8 @@
       "journey": "Your journey",
       "reminder": "Your reminder",
       "subscription": "Your subscription",
-      "testResult": "Your test result"
+      "testResult": "Your test result",
+      "audiobook": "Audiobook"
     },
     "subscription": {
       "renews": "Premium renews",
@@ -350,6 +351,45 @@
       "joinRoom": "Join now",
       "unavailable": "This event is no longer available.",
       "untitled": "Event"
+    },
+    "invite": {
+      "action": "Invite",
+      "title": "Who would you like to invite?",
+      "search": "Search chats and groups",
+      "loading": "Loading your chats …",
+      "empty": "No chats found.",
+      "chat": "Chat",
+      "group": "Group",
+      "send": "Send invite",
+      "sendTo": "Send to {name}",
+      "sent": "Invite sent to {name}",
+      "notInvitable": "You can't invite anyone to this right now – it is over, cancelled or not public.",
+      "error": "The invite couldn't be sent just now. Try again in a moment."
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "Event invite",
+        "live_room_session": "Live room invite",
+        "calendar_entry": "Calendar invite"
+      },
+      "accepted": "I'm in",
+      "maybe": "Maybe",
+      "declined": "No",
+      "answer": "Your answer",
+      "counts": "{yes} going · {maybe} maybe",
+      "waiting": "No answers yet",
+      "joined": "You're in – it is now in your calendar",
+      "added": "Now in your calendar",
+      "removed": "Removed from your calendar",
+      "recorded": "Answer saved",
+      "openEvent": "Get your ticket and join here",
+      "openRoom": "Join the room here",
+      "notOpen": "This event is no longer happening.",
+      "error": "Your answer couldn't be saved just now. Try again in a moment."
+    },
+    "audiobook": {
+      "title": "Audiobook – today's episode",
+      "listen": "Listen now"
     }
   }
 }

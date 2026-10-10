@@ -70,8 +70,10 @@
       "subscription": "你的订阅",
       "testResult": "你的检测结果",
       "_pending_review": {
-        "autopilot": true
-      }
+        "autopilot": true,
+        "audiobook": true
+      },
+      "audiobook": "有声书"
     },
     "subscription": {
       "renews": "Premium 将续订",
@@ -426,6 +428,84 @@
         "joinRoom": true,
         "unavailable": true,
         "untitled": true
+      }
+    },
+    "invite": {
+      "action": "邀请",
+      "title": "你想邀请谁？",
+      "search": "搜索聊天或群组",
+      "loading": "正在加载你的聊天…",
+      "empty": "没有找到聊天。",
+      "chat": "聊天",
+      "group": "群组",
+      "send": "发送邀请",
+      "sendTo": "发送给 {name}",
+      "sent": "已向 {name} 发送邀请",
+      "notInvitable": "现在无法邀请任何人：已结束、已取消或不公开。",
+      "error": "暂时无法发送邀请，请稍后再试。",
+      "_pending_review": {
+        "action": true,
+        "title": true,
+        "search": true,
+        "loading": true,
+        "empty": true,
+        "chat": true,
+        "group": true,
+        "send": true,
+        "sendTo": true,
+        "sent": true,
+        "notInvitable": true,
+        "error": true
+      }
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "活动邀请",
+        "live_room_session": "直播间邀请",
+        "calendar_entry": "日历邀请",
+        "_pending_review": {
+          "community_event": true,
+          "live_room_session": true,
+          "calendar_entry": true
+        }
+      },
+      "accepted": "我参加",
+      "maybe": "也许",
+      "declined": "不参加",
+      "answer": "你的回复",
+      "counts": "{yes} 人参加 · {maybe} 人也许",
+      "waiting": "还没有回复",
+      "joined": "你已报名——已加入你的日历",
+      "added": "已加入你的日历",
+      "removed": "已从你的日历中移除",
+      "recorded": "回复已保存",
+      "openEvent": "在这里购票并参加",
+      "openRoom": "在这里加入房间",
+      "notOpen": "这个活动已不再举行。",
+      "error": "暂时无法保存你的回复，请稍后再试。",
+      "_pending_review": {
+        "accepted": true,
+        "maybe": true,
+        "declined": true,
+        "answer": true,
+        "counts": true,
+        "waiting": true,
+        "joined": true,
+        "added": true,
+        "removed": true,
+        "recorded": true,
+        "openEvent": true,
+        "openRoom": true,
+        "notOpen": true,
+        "error": true
+      }
+    },
+    "audiobook": {
+      "title": "有声书——你今天的一集",
+      "listen": "立即收听",
+      "_pending_review": {
+        "title": true,
+        "listen": true
       }
     }
   }

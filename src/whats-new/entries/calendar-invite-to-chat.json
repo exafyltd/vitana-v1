@@ -1,0 +1,13 @@
+{
+  "id": "calendar-invite-to-chat",
+  "added": "2026-10-10",
+  "title": {
+    "en": "Invite friends from your calendar",
+    "de": "Lade Freunde direkt aus deinem Kalender ein"
+  },
+  "description": {
+    "en": "Open an event, a live room or your own plan in your calendar and tap \"Invite\". Pick a chat or a group – they answer right on the card, and a free event goes straight into their calendar.",
+    "de": "Öffne ein Event, einen Live-Raum oder deinen Termin im Kalender und tippe auf „Einladen“. Wähl einen Chat oder eine Gruppe – sie antworten direkt auf der Karte, ein kostenloses Event landet sofort in ihrem Kalender."
+  },
+  "deepLink": "/calendar"
+}

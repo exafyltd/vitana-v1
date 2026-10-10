@@ -31,6 +31,8 @@ export function sourceLabel(item: CalendarWindowItem): string | null {
       return t("vcal.source.subscription");
     case "test_result":
       return t("vcal.source.testResult");
+    case "audiobook":
+      return t("vcal.source.audiobook");
     default:
       return null;
   }
@@ -52,6 +54,8 @@ export function entryTitle(e: { title?: string | null; source_type?: string | nu
         return t("vcal.subscription.trialEnds");
     }
   }
+  // VTID-04917: the daily audiobook entry.
+  if (e.source_type === "audiobook") return t("vcal.audiobook.title");
   return e.title ?? "";
 }
 

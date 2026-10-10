@@ -70,8 +70,10 @@
       "subscription": "اشتراكك",
       "testResult": "نتيجة اختبارك",
       "_pending_review": {
-        "autopilot": true
-      }
+        "autopilot": true,
+        "audiobook": true
+      },
+      "audiobook": "كتاب صوتي"
     },
     "subscription": {
       "renews": "يتجدد Premium",
@@ -426,6 +428,84 @@
         "joinRoom": true,
         "unavailable": true,
         "untitled": true
+      }
+    },
+    "invite": {
+      "action": "دعوة",
+      "title": "من تريد أن تدعو؟",
+      "search": "ابحث في المحادثات والمجموعات",
+      "loading": "جارٍ تحميل محادثاتك …",
+      "empty": "لم يتم العثور على محادثات.",
+      "chat": "محادثة",
+      "group": "مجموعة",
+      "send": "إرسال الدعوة",
+      "sendTo": "إرسال إلى {name}",
+      "sent": "تم إرسال الدعوة إلى {name}",
+      "notInvitable": "لا يمكنك دعوة أحد إلى هذا الآن: انتهى أو أُلغي أو ليس عامًا.",
+      "error": "تعذّر إرسال الدعوة الآن. حاول مرة أخرى بعد قليل.",
+      "_pending_review": {
+        "action": true,
+        "title": true,
+        "search": true,
+        "loading": true,
+        "empty": true,
+        "chat": true,
+        "group": true,
+        "send": true,
+        "sendTo": true,
+        "sent": true,
+        "notInvitable": true,
+        "error": true
+      }
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "دعوة إلى حدث",
+        "live_room_session": "دعوة إلى غرفة مباشرة",
+        "calendar_entry": "دعوة من التقويم",
+        "_pending_review": {
+          "community_event": true,
+          "live_room_session": true,
+          "calendar_entry": true
+        }
+      },
+      "accepted": "سأحضر",
+      "maybe": "ربما",
+      "declined": "لا",
+      "answer": "ردّك",
+      "counts": "{yes} سيحضرون · {maybe} ربما",
+      "waiting": "لا توجد ردود بعد",
+      "joined": "أنت مشارك – أصبح في تقويمك",
+      "added": "أصبح في تقويمك",
+      "removed": "أُزيل من تقويمك",
+      "recorded": "تم حفظ الرد",
+      "openEvent": "احصل على تذكرتك وانضم من هنا",
+      "openRoom": "انضم إلى الغرفة من هنا",
+      "notOpen": "لم يعد هذا الحدث قائمًا.",
+      "error": "تعذّر حفظ ردك الآن. حاول مرة أخرى بعد قليل.",
+      "_pending_review": {
+        "accepted": true,
+        "maybe": true,
+        "declined": true,
+        "answer": true,
+        "counts": true,
+        "waiting": true,
+        "joined": true,
+        "added": true,
+        "removed": true,
+        "recorded": true,
+        "openEvent": true,
+        "openRoom": true,
+        "notOpen": true,
+        "error": true
+      }
+    },
+    "audiobook": {
+      "title": "كتاب صوتي – حلقتك لليوم",
+      "listen": "استمع الآن",
+      "_pending_review": {
+        "title": true,
+        "listen": true
       }
     }
   }

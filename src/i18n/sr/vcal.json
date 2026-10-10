@@ -70,8 +70,10 @@
       "subscription": "Tvoja pretplata",
       "testResult": "Rezultat tvog testa",
       "_pending_review": {
-        "autopilot": true
-      }
+        "autopilot": true,
+        "audiobook": true
+      },
+      "audiobook": "Audio-knjiga"
     },
     "subscription": {
       "renews": "Premium se obnavlja",
@@ -429,6 +431,84 @@
         "joinRoom": true,
         "unavailable": true,
         "untitled": true
+      }
+    },
+    "invite": {
+      "action": "Pozovi",
+      "title": "Koga želiš da pozoveš?",
+      "search": "Pretraži četove i grupe",
+      "loading": "Učitavanje četova …",
+      "empty": "Nema pronađenih četova.",
+      "chat": "Čet",
+      "group": "Grupa",
+      "send": "Pošalji pozivnicu",
+      "sendTo": "Pošalji: {name}",
+      "sent": "Pozivnica poslata: {name}",
+      "notInvitable": "Trenutno ne možeš nikoga da pozoveš na ovo – završeno je, otkazano ili nije javno.",
+      "error": "Pozivnica trenutno nije poslata. Pokušaj ponovo za trenutak.",
+      "_pending_review": {
+        "action": true,
+        "title": true,
+        "search": true,
+        "loading": true,
+        "empty": true,
+        "chat": true,
+        "group": true,
+        "send": true,
+        "sendTo": true,
+        "sent": true,
+        "notInvitable": true,
+        "error": true
+      }
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "Pozivnica na događaj",
+        "live_room_session": "Pozivnica u sobu uživo",
+        "calendar_entry": "Pozivnica iz kalendara",
+        "_pending_review": {
+          "community_event": true,
+          "live_room_session": true,
+          "calendar_entry": true
+        }
+      },
+      "accepted": "Dolazim",
+      "maybe": "Možda",
+      "declined": "Ne",
+      "answer": "Tvoj odgovor",
+      "counts": "{yes} dolazi · {maybe} možda",
+      "waiting": "Još nema odgovora",
+      "joined": "Dolaziš – sada je u tvom kalendaru",
+      "added": "Sada je u tvom kalendaru",
+      "removed": "Uklonjeno iz tvog kalendara",
+      "recorded": "Odgovor sačuvan",
+      "openEvent": "Ovde uzmi kartu i pridruži se",
+      "openRoom": "Ovde se pridruži sobi",
+      "notOpen": "Ovaj događaj se više ne održava.",
+      "error": "Tvoj odgovor trenutno nije sačuvan. Pokušaj ponovo za trenutak.",
+      "_pending_review": {
+        "accepted": true,
+        "maybe": true,
+        "declined": true,
+        "answer": true,
+        "counts": true,
+        "waiting": true,
+        "joined": true,
+        "added": true,
+        "removed": true,
+        "recorded": true,
+        "openEvent": true,
+        "openRoom": true,
+        "notOpen": true,
+        "error": true
+      }
+    },
+    "audiobook": {
+      "title": "Audio-knjiga – tvoja epizoda za danas",
+      "listen": "Slušaj sada",
+      "_pending_review": {
+        "title": true,
+        "listen": true
       }
     }
   }

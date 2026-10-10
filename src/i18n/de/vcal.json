@@ -65,7 +65,8 @@
       "journey": "Deine Journey",
       "reminder": "Deine Erinnerung",
       "subscription": "Dein Abo",
-      "testResult": "Dein Testergebnis"
+      "testResult": "Dein Testergebnis",
+      "audiobook": "Hörbuch"
     },
     "subscription": {
       "renews": "Premium verlängert sich",
@@ -350,6 +351,45 @@
       "joinRoom": "Jetzt beitreten",
       "unavailable": "Dieses Event ist nicht mehr verfügbar.",
       "untitled": "Event"
+    },
+    "invite": {
+      "action": "Einladen",
+      "title": "Wen möchtest du einladen?",
+      "search": "Chat oder Gruppe suchen",
+      "loading": "Deine Chats werden geladen …",
+      "empty": "Keine Chats gefunden.",
+      "chat": "Chat",
+      "group": "Gruppe",
+      "send": "Einladung senden",
+      "sendTo": "An {name} senden",
+      "sent": "Einladung an {name} gesendet",
+      "notInvitable": "Dazu kannst du gerade niemanden einladen – es ist vorbei, abgesagt oder nicht öffentlich.",
+      "error": "Die Einladung konnte gerade nicht gesendet werden. Versuch es gleich nochmal."
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "Event-Einladung",
+        "live_room_session": "Live-Raum-Einladung",
+        "calendar_entry": "Kalender-Einladung"
+      },
+      "accepted": "Ich bin dabei",
+      "maybe": "Vielleicht",
+      "declined": "Nein",
+      "answer": "Deine Antwort",
+      "counts": "{yes} dabei · {maybe} vielleicht",
+      "waiting": "Noch keine Antwort",
+      "joined": "Du bist dabei – es steht jetzt in deinem Kalender",
+      "added": "Steht jetzt in deinem Kalender",
+      "removed": "Aus deinem Kalender entfernt",
+      "recorded": "Antwort gespeichert",
+      "openEvent": "Hier kannst du dein Ticket holen und mitmachen",
+      "openRoom": "Hier kannst du dem Raum beitreten",
+      "notOpen": "Dieses Event findet nicht mehr statt.",
+      "error": "Deine Antwort konnte gerade nicht gespeichert werden. Versuch es gleich nochmal."
+    },
+    "audiobook": {
+      "title": "Hörbuch – deine Folge für heute",
+      "listen": "Jetzt anhören"
     }
   }
 }
