@@ -26,6 +26,11 @@ function allowlist(): string[] {
   return m![1].trim().split(/\s+/);
 }
 
+// Same pattern as the workflow's grep (-z: whole file, so calls split across lines match).
+function callerPattern(fn: string): RegExp {
+  return new RegExp(`invoke\\(\\s*['"\`]${fn}['"\`]|functions/v1/${fn}(?![a-z0-9-])`);
+}
+
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
     const p = join(dir, name);
@@ -46,10 +51,27 @@ describe('SUPABASE-FUNCTIONS-RETIRE allowlist', () => {
   it('never names a function something still calls', () => {
     const files = [...sourceFiles(join(ROOT, 'src')), ...sourceFiles(join(ROOT, 'supabase'))];
     for (const fn of allowlist()) {
-      const re = new RegExp(`invoke\\(['"]${fn}['"]|functions/v1/${fn}(?![a-z0-9-])`);
+      const re = callerPattern(fn);
       const callers = files.filter((f) => re.test(readFileSync(f, 'utf8')));
       expect(callers).toEqual([]);
     }
+  });
+
+  it('the caller pattern catches a call split across lines and ignores lookalike names', () => {
+    // Built at runtime so this file never matches the workflow's own caller scan.
+    const fn = ['ai', 'chat'].join('-');
+    const q = "'";
+    expect(callerPattern(fn).test(`supabase.functions.invoke(\n  ${q}${fn}${q},\n  { body })`)).toBe(true);
+    expect(callerPattern(fn).test(`fetch(${q}/functions/v1/${fn}${q})`)).toBe(true);
+    expect(callerPattern(fn).test(`invoke(${q}${fn}-v2${q})`)).toBe(false);
+    expect(callerPattern(fn).test(`/functions/v1/${fn}-v2`)).toBe(false);
+    expect(WORKFLOW).toContain('grep -rlPz');
+    expect(WORKFLOW).toContain("invoke\\(\\s*['\\\"\\`]${fn}['\\\"\\`]");
+  });
+
+  it('refuses to run from any ref but main', () => {
+    expect(WORKFLOW).toContain('if [ "$GITHUB_REF" != "refs/heads/main" ]; then');
+    expect(WORKFLOW.indexOf('refs/heads/main')).toBeLessThan(WORKFLOW.indexOf('supabase functions delete'));
   });
 
   it('runs only on manual dispatch with a reason, and re-checks callers before deleting', () => {

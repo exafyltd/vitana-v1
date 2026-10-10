@@ -54,6 +54,12 @@ jobs:
         run: |
           set -euo pipefail
           echo "Reason: $REASON"
+          # Only from main: the caller check scans this checkout, and the delete
+          # always hits the live project, so a stale branch could miss a caller.
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::dispatch this workflow from main (got $GITHUB_REF)"
+            exit 1
+          fi
           [ -n "${FUNCTIONS// /}" ] || { echo "::error::no functions given"; exit 1; }
           for fn in $FUNCTIONS; do
             case " $ALLOWLIST " in
@@ -64,7 +70,8 @@ jobs:
               echo "::error::'$fn' still exists under supabase/functions/ — refusing to delete a function the repo ships"
               exit 1
             fi
-            if grep -rnE "invoke\(['\"]${fn}['\"]|functions/v1/${fn}([^a-z0-9-]|$)" src supabase; then
+            # -z reads each file whole, so a call split across lines still matches.
+            if grep -rlPz "invoke\(\s*['\"\`]${fn}['\"\`]|functions/v1/${fn}(?![a-z0-9-])" src supabase; then
               echo "::error::'$fn' still has a caller (above) — refusing to delete it"
               exit 1
             fi
