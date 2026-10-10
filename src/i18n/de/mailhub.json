@@ -136,7 +136,7 @@
         },
         "api_unavailable": {
           "title": "Auf diesem Gerät nicht möglich",
-          "body": "Dein Browser kann das Adressbuch nicht öffnen. Öffne Vitanaland in Chrome auf deinem Android-Handy oder verbinde Google oder iCloud."
+          "body": "Dieses Gerät kann das Adressbuch nicht direkt öffnen. Exportiere deine Kontakte als .vcf-Datei oder verbinde Google, Outlook oder iCloud."
         },
         "permission_denied": {
           "title": "Kein Zugriff auf deine Kontakte",
@@ -153,6 +153,14 @@
         "unknown": {
           "title": "Da ist etwas schiefgelaufen",
           "body": "Versuch es gleich noch einmal."
+        },
+        "file_too_large": {
+          "title": "Die Datei ist zu groß",
+          "body": "Exportiere deine Kontakte ohne Fotos oder wähle eine kleinere Datei (bis 10 MB)."
+        },
+        "file_empty": {
+          "title": "Keine Kontakte in der Datei",
+          "body": "Wähle eine .vcf-Datei, die du aus der Kontakte-App deines Handys exportiert hast."
         }
       },
       "consent": {
@@ -164,9 +172,64 @@
         "privateBody": "Übernommene Kontakte werden in deinem Vitanaland-Konto gespeichert. Nur du siehst sie.",
         "removeTitle": "Jederzeit wieder löschen",
         "removeBody": "Unter „Verbundene Apps“ schaltest du eine Quelle aus und entfernst ihre Kontakte.",
-        "helper": "Wir gleichen E-Mail-Adressen ab, um zu zeigen, wer schon auf Vitanaland ist. Wer nicht dabei ist, erfährt davon nichts.",
+        "helper": "Wir gleichen E-Mail-Adressen und Telefonnummern ab, um zu zeigen, wer schon auf Vitanaland ist. Wer nicht dabei ist, erfährt davon nichts.",
         "notNow": "Jetzt nicht",
         "continue": "Weiter"
+      },
+      "import": {
+        "title": "Finde deine Freunde",
+        "subtitle": "Wir zeigen dir, wer aus deinen Kontakten schon auf Vitanaland ist. Alle anderen kannst du mit einem Tipp einladen.",
+        "phone": "Kontakte vom Handy übernehmen",
+        "phoneHintNative": "Du erlaubst den Zugriff einmal – fertig.",
+        "phoneHintPicker": "Tippe im nächsten Schritt auf „Alle auswählen“.",
+        "file": "Kontaktdatei (.vcf) auswählen",
+        "fileHowTitle": "So exportierst du deine Kontakte:",
+        "fileHowIphone": "iPhone: Kontakte → Listen → „Alle Kontakte“ gedrückt halten → Exportieren.",
+        "fileHowAndroid": "Android: Kontakte → Korrigieren & verwalten → In Datei exportieren.",
+        "accounts": "Oder aus einem Konto"
+      },
+      "results": {
+        "summary": "{total} Kontakte übernommen · {members} schon auf Vitanaland",
+        "onPlatform": "Schon auf Vitanaland: {count}",
+        "toInvite": "Einladen: {count}",
+        "search": "Kontakte durchsuchen",
+        "message": "Nachricht",
+        "invite": "Einladen",
+        "invited": "Eingeladen",
+        "noContactInfo": "Keine Kontaktdaten",
+        "overLimit": "Übernommen wurden die ersten {limit} Kontakte.",
+        "later": "Du findest alle Kontakte jederzeit unter Nachrichten → Kontakte.",
+        "done": "Fertig"
+      },
+      "invite": {
+        "whatsapp": "WhatsApp",
+        "sms": "SMS",
+        "email": "E-Mail",
+        "share": "Teilen …",
+        "message": "Hallo {name}! Ich bin auf Vitanaland, einer Community für ein gesundes, langes Leben. Komm dazu: {link}",
+        "messageGeneric": "Ich bin auf Vitanaland, einer Community für ein gesundes, langes Leben. Komm dazu: {link}",
+        "opened": "Deine Einladung ist vorbereitet – du musst sie nur noch absenden.",
+        "linkFailed": "Dein Einladungslink konnte gerade nicht geladen werden. Versuch es gleich noch einmal."
+      },
+      "remove": {
+        "button": "Vom Handy übernommene Kontakte entfernen",
+        "confirmTitle": "Handy-Kontakte entfernen?",
+        "confirmBody": "Alle Kontakte, die du von deinem Handy übernommen hast, werden aus Vitanaland gelöscht. Auf deinem Handy bleibt alles, wie es ist.",
+        "confirm": "Entfernen",
+        "done": "Deine Handy-Kontakte wurden entfernt."
+      },
+      "privacy": {
+        "title": "Über meine Telefonnummer auffindbar",
+        "body": "Wer deine bestätigte Nummer in seinen Kontakten hat, sieht, dass du auf Vitanaland bist."
+      },
+      "added": {
+        "onPlatformTitle": "Kontakt hinzugefügt",
+        "onPlatformBody": "{name} ist schon auf Vitanaland – schreib gleich eine Nachricht.",
+        "savedTitle": "Kontakt gespeichert",
+        "savedBody": "{name} ist jetzt in deinen Kontakten."
+      },
+      "page": {
+        "description": "Lade Freunde mit deinem persönlichen Link ein oder finde sie in deinen Kontakten."
       }
     },
     "requested": {

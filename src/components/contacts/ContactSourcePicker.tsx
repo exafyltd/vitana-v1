@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Check, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -18,6 +17,8 @@ interface SourceConfig {
 interface ContactSourcePickerProps {
   selectedSources: ContactSource[];
   onSourceToggle: (source: ContactSource) => void;
+  /** VTID-05058: account sources only (the phone has its own button). */
+  hidePhone?: boolean;
   disabledSources?: ContactSource[];
   connectedSources?: ContactSource[];
   contactCounts?: Partial<Record<ContactSource, number>>;
@@ -79,10 +80,12 @@ export function ContactSourcePicker({
   disabledSources = [],
   connectedSources = [],
   contactCounts = {},
+  hidePhone = false,
 }: ContactSourcePickerProps) {
+  const shown = hidePhone ? sources.filter((s) => s.id !== "phonebook") : sources;
   return (
-    <div className="grid grid-cols-2 gap-3">
-      {sources.map((source, index) => {
+    <div className={cn("grid", hidePhone ? "grid-cols-1 gap-2" : "grid-cols-2 gap-3")}>
+      {shown.map((source, index) => {
         const isSelected = selectedSources.includes(source.id);
         const isDisabled = disabledSources.includes(source.id) || !source.available;
         const isConnected = connectedSources.includes(source.id);
@@ -98,7 +101,10 @@ export function ContactSourcePicker({
             onClick={() => !isDisabled && onSourceToggle(source.id)}
             disabled={isDisabled}
             className={cn(
-              "contact-source-pill flex-col items-start p-4 h-auto relative",
+              // VTID-05058: account sources are compact one-line rows under the phone button.
+              hidePhone
+                ? "contact-source-pill flex flex-row items-center gap-3 p-3 h-auto relative w-full min-h-14 rounded-xl border border-border/60"
+                : "contact-source-pill flex-col items-start p-4 h-auto relative",
               "transition-all duration-200",
               isSelected && "ring-2 ring-[hsl(var(--contact-sync-accent))] bg-[hsl(var(--contact-sync-tint))]",
               isDisabled && "opacity-50 cursor-not-allowed",
@@ -124,7 +130,8 @@ export function ContactSourcePicker({
             {/* Icon */}
             <div 
               className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center mb-2",
+                "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
+                !hidePhone && "mb-2",
                 isSelected 
                   ? "bg-[hsl(var(--contact-sync-accent)/0.15)]"
                   : "bg-muted"
@@ -139,13 +146,15 @@ export function ContactSourcePicker({
             </div>
 
             {/* Text */}
-            <span className="block w-full text-sm font-medium text-foreground text-start">
-              {t(source.nameKey)}
-            </span>
-            <span className="block w-full text-xs text-muted-foreground text-start">
-              {source.id === "phonebook"
-                ? t(source.available ? "mailhub.findFriends.status.phone" : "mailhub.findFriends.status.phoneUnavailable")
-                : t(isConnected ? "mailhub.findFriends.status.on" : "mailhub.findFriends.status.off")}
+            <span className={cn("block min-w-0", hidePhone ? "flex-1 pe-16" : "w-full")}>
+              <span className="block w-full text-sm font-medium text-foreground text-start">
+                {t(source.nameKey)}
+              </span>
+              <span className="block w-full text-xs text-muted-foreground text-start">
+                {source.id === "phonebook"
+                  ? t(source.available ? "mailhub.findFriends.status.phone" : "mailhub.findFriends.status.phoneUnavailable")
+                  : t(isConnected ? "mailhub.findFriends.status.on" : "mailhub.findFriends.status.off")}
+              </span>
             </span>
 
             {/* Contact count */}

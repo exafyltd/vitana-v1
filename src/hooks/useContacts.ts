@@ -14,6 +14,8 @@ export interface Contact {
   contact_email?: string | null;
   is_on_platform: boolean;
   invite_sent_at?: string | null;
+  /** Where an imported contact came from (google, icloud, microsoft, android); null when added by hand. */
+  source?: string | null;
   created_at: string;
   updated_at: string;
   metadata?: any;
@@ -63,78 +65,42 @@ export function useContacts() {
           .select("user_id, display_name, avatar_url, handle")
           .in("user_id", platformUserIds);
 
-        if (profilesError) {
-          console.error("❌ Error fetching profiles:", profilesError);
-        } else {
-          console.log("✅ Fetched profiles:", profilesData);
-        }
+        if (profilesError) console.error("Error fetching contact profiles:", profilesError);
 
         profilesMap = (profilesData || []).reduce((acc, profile) => {
           acc[profile.user_id] = { ...profile, source: "profiles" };
           return acc;
         }, {} as Record<string, any>);
 
-        console.log("📋 Profiles map:", profilesMap);
-
-        // Fetch missing profiles from global_community_profiles
-        const missingProfileIds = platformUserIds.filter(id => !profilesMap[id]);
-        
-        if (missingProfileIds.length > 0) {
+        // VTID-05058: one query for every member without a profile row or an
+        // avatar (was one query per member in a loop).
+        const needGlobal = platformUserIds.filter(id => !profilesMap[id] || !profilesMap[id].avatar_url);
+        if (needGlobal.length > 0) {
           const { data: globalProfiles, error: globalError } = await supabase
             .from("global_community_profiles")
             .select("user_id, display_name, avatar_url")
-            .in("user_id", missingProfileIds);
+            .in("user_id", needGlobal);
 
           if (globalError) {
-            console.error("❌ Error fetching global profiles:", globalError);
+            console.error("Error fetching global profiles:", globalError);
           } else {
-            console.log("🌍 Fetched global profiles:", globalProfiles);
-            
-            // Merge global profiles into profilesMap
             (globalProfiles || []).forEach(gp => {
-              profilesMap[gp.user_id] = { ...gp, source: "global" };
+              const existing = profilesMap[gp.user_id];
+              profilesMap[gp.user_id] = existing
+                ? { ...existing, avatar_url: existing.avatar_url || gp.avatar_url }
+                : { ...gp, source: "global" };
             });
-          }
-        }
-
-        // Fill missing avatar_urls from global profiles if needed
-        for (const userId of platformUserIds) {
-          if (profilesMap[userId] && !profilesMap[userId].avatar_url) {
-            const { data: globalProfile } = await supabase
-              .from("global_community_profiles")
-              .select("avatar_url")
-              .eq("user_id", userId)
-              .single();
-            
-            if (globalProfile?.avatar_url) {
-              profilesMap[userId].avatar_url = globalProfile.avatar_url;
-              console.log("🔄 Filled avatar from global for:", userId);
-            }
           }
         }
       }
 
       // Enrich contacts with profile data
-      const enrichedContacts = contactsData?.map(contact => {
-        const enriched = {
-          ...contact,
-          contact_profile: contact.contact_user_id && profilesMap[contact.contact_user_id]
-            ? profilesMap[contact.contact_user_id]
-            : undefined,
-        };
-        
-        if (contact.is_on_platform) {
-          console.log("🔍 Enriched contact:", {
-            name: contact.contact_name,
-            contact_user_id: contact.contact_user_id,
-            has_profile: !!enriched.contact_profile,
-            avatar_url: enriched.contact_profile?.avatar_url,
-            source: enriched.contact_profile?.source || "none"
-          });
-        }
-        
-        return enriched;
-      }) || [];
+      const enrichedContacts = contactsData?.map(contact => ({
+        ...contact,
+        contact_profile: contact.contact_user_id && profilesMap[contact.contact_user_id]
+          ? profilesMap[contact.contact_user_id]
+          : undefined,
+      })) || [];
 
       setContacts(enrichedContacts as Contact[]);
     } catch (err) {
@@ -304,17 +270,18 @@ export function useContacts() {
       let isOnPlatform = !!contactData.contact_user_id;
       let contactUserId = contactData.contact_user_id || null;
 
-      // Otherwise check if phone matches a platform user
+      // VTID-05058: otherwise ask the server whether the number belongs to a
+      // member. check_phone_on_platform (VTID-05057) answers only for a
+      // verified number of a member who allows being found by it — never a
+      // number someone merely typed into a profile.
       if (!isOnPlatform && contactData.contact_phone) {
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("user_id")
-          .eq("phone", contactData.contact_phone)
-          .single();
-
-        if (profileData) {
+        const { data: matches } = await supabase.rpc("check_phone_on_platform", {
+          phone_number: contactData.contact_phone,
+        });
+        const match = Array.isArray(matches) ? matches[0] : null;
+        if (match?.user_id && match.user_id !== user.id) {
           isOnPlatform = true;
-          contactUserId = profileData.user_id;
+          contactUserId = match.user_id;
         }
       }
 
@@ -333,12 +300,11 @@ export function useContacts() {
 
       if (insertError) throw insertError;
 
-      toast({
-        title: isOnPlatform ? "Contact added!" : "Contact saved",
-        description: isOnPlatform 
-          ? `${contactData.contact_name} is on VITANA! You can message them now.`
-          : `${contactData.contact_name} added to your contacts.`,
-      });
+      notify(
+        isOnPlatform ? 'mailhub.findFriends.added.onPlatformTitle' : 'mailhub.findFriends.added.savedTitle',
+        isOnPlatform ? 'mailhub.findFriends.added.onPlatformBody' : 'mailhub.findFriends.added.savedBody',
+        { name: contactData.contact_name },
+      );
 
       await fetchContacts();
       return data;
@@ -400,30 +366,6 @@ export function useContacts() {
     }
   }, [user?.id, toast, fetchContacts]);
 
-  // Send invite to a contact
-  const inviteContact = useCallback(async (contactId: string, channel: 'sms' | 'email') => {
-    if (!user?.id) return false;
-
-    try {
-      const { error: updateError } = await supabase
-        .from("contacts")
-        .update({ invite_sent_at: new Date().toISOString() })
-        .eq("id", contactId)
-        .eq("user_id", user.id);
-
-      if (updateError) throw updateError;
-
-      notify('toasts.hooks.inviteSent');
-
-      await fetchContacts();
-      return true;
-    } catch (err) {
-      console.error("Error sending invite:", err);
-      notifyError('toasts.hooks.failedSendInvite');
-      return false;
-    }
-  }, [user?.id, toast, fetchContacts]);
-
   // Search contacts
   const searchContacts = useCallback((query: string) => {
     const lowerQuery = query.toLowerCase();
@@ -444,6 +386,17 @@ export function useContacts() {
 
     fetchContacts();
 
+    // VTID-05058: an import writes hundreds of rows at once; refetch once
+    // after the burst instead of once per row.
+    let refetchTimer: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRefetch = () => {
+      if (refetchTimer) clearTimeout(refetchTimer);
+      refetchTimer = setTimeout(() => {
+        refetchTimer = null;
+        fetchContacts();
+      }, 600);
+    };
+
     const channel = realtimeChannel('contacts-changes')
       .on(
         'postgres_changes',
@@ -454,8 +407,6 @@ export function useContacts() {
           filter: `user_id=eq.${user.id}`,
         },
         (payload) => {
-          console.log('Contact change detected:', payload);
-          
           // Show toast when contact joins platform
           if (payload.eventType === 'UPDATE' && 
               payload.new && payload.old &&
@@ -463,13 +414,14 @@ export function useContacts() {
               !(payload.old as any).is_on_platform) {
             notify('toasts.hooks.contactJoinedVitana');
           }
-          
-          fetchContacts();
+
+          scheduleRefetch();
         }
       )
       .subscribe();
 
     return () => {
+      if (refetchTimer) clearTimeout(refetchTimer);
       removeRealtimeChannel(channel);
     };
   }, [user?.id, fetchContacts, toast]);
@@ -483,7 +435,6 @@ export function useContacts() {
     addContact,
     updateContact,
     deleteContact,
-    inviteContact,
     searchContacts,
     importFromConversations,
     refetch: fetchContacts,

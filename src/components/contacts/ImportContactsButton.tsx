@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Users, Loader2, Sparkles } from "lucide-react";
+import { Users, Sparkles } from "lucide-react";
 import { ContactSyncModal } from "./ContactSyncModal";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
@@ -10,8 +10,7 @@ interface ImportContactsButtonProps {
   size?: "sm" | "default" | "lg";
   triggerContext?: "settings" | "invite" | "discovery";
   onImportComplete?: (result: { totalImported: number; matchesFound: number }) => void;
-  /** @deprecated Use ContactSyncModal directly for full flow */
-  onImport?: (contacts: Array<{ contact_name: string; contact_phone?: string; contact_email?: string }>) => Promise<void>;
+  className?: string;
 }
 
 export default function ImportContactsButton({
@@ -19,10 +18,9 @@ export default function ImportContactsButton({
   size = "default",
   triggerContext = "settings",
   onImportComplete,
-  onImport,
+  className,
 }: ImportContactsButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => {
     setIsModalOpen(true);
@@ -50,24 +48,17 @@ export default function ImportContactsButton({
         data-testid="find-friends-button"
         variant={variant === "primary" ? "default" : variant}
         onClick={handleClick}
-        disabled={isLoading}
         className={cn(
           "flex items-center gap-2 transition-all duration-200",
           buttonVariants[variant],
-          sizeClasses[size]
+          sizeClasses[size],
+          className
         )}
       >
-        {isLoading ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />{t('screens.contacts.finding')}
-          </>
-        ) : (
-          <>
-            <Users className="w-4 h-4" />{t('screens.contacts.findFriends')}
-            {variant === "primary" && (
-              <Sparkles className="w-3 h-3 ml-1 opacity-70" />
-            )}
-          </>
+        <Users className="w-4 h-4 shrink-0" aria-hidden />
+        <span className="truncate">{t('screens.contacts.findFriends')}</span>
+        {variant === "primary" && (
+          <Sparkles className="w-3 h-3 ms-1 opacity-70 shrink-0" aria-hidden />
         )}
       </Button>
 

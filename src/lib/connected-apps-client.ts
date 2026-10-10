@@ -10,7 +10,8 @@
  *   POST /api/v1/connected-apps/:id/connect      → { status: 'on' } | { status: 'consent_required', auth_url }
  *   POST /api/v1/connected-apps/:id/disconnect
  *   POST /api/v1/connected-apps/:id/sync
- *   POST /api/v1/connected-apps/android-contacts/import
+ *   POST /api/v1/connected-apps/android-contacts/import  (VTID-05058: picker, .vcf or native)
+ *   DELETE /api/v1/connected-apps/android-contacts       (VTID-05058)
  */
 
 import { GATEWAY_BASE } from "@/lib/gateway-base";
@@ -107,10 +108,48 @@ export interface PickedContact {
 }
 
 /** Contacts from the browser Contact Picker (Android Chrome). */
+/** VTID-05058: one contact as the phone hands it over (picker, .vcf file or native app). */
+export interface DeviceContact {
+  name: string;
+  emails: string[];
+  phones: string[];
+}
+
+export type DeviceImportMethod = "picker" | "vcf" | "native";
+
+/** The most the gateway imports in one go (MAX_CONTACTS_PER_IMPORT). */
+export const MAX_DEVICE_CONTACTS = 5000;
+
+/**
+ * The country part of the browser locale ("de-AT" → "AT"), so the gateway
+ * reads national numbers ("0664 …") in the right country. Nothing when the
+ * locale names no country — the gateway then uses its default.
+ */
+export function phoneRegionHint(): string | undefined {
+  const lang = typeof navigator !== "undefined" ? navigator.language || "" : "";
+  const part = lang.split(/[-_]/)[1];
+  return part && /^[A-Za-z]{2}$/.test(part) ? part.toUpperCase() : undefined;
+}
+
+export async function importDeviceContacts(
+  contacts: DeviceContact[],
+  method: DeviceImportMethod,
+): Promise<Record<string, unknown>> {
+  const json = await call("/android-contacts/import", {
+    method: "POST",
+    body: JSON.stringify({ contacts: contacts.slice(0, MAX_DEVICE_CONTACTS), method, region: phoneRegionHint() }),
+  });
+  return json.result ?? {};
+}
+
 export async function importAndroidContacts(picked: PickedContact[]): Promise<Record<string, unknown>> {
   const contacts = picked.map((c) => ({ name: c.name?.[0] ?? "", emails: c.email ?? [], phones: c.tel ?? [] }));
-  const json = await call("/android-contacts/import", { method: "POST", body: JSON.stringify({ contacts }) });
-  return json.result ?? {};
+  return importDeviceContacts(contacts, "picker");
+}
+
+/** VTID-05058: remove every contact imported from this member's phone. */
+export async function removeDeviceContacts(): Promise<void> {
+  await call("/android-contacts", { method: "DELETE" });
 }
 
 /** Whether this browser can open the phone's address book. */
@@ -121,6 +160,36 @@ export function contactPickerSupported(): boolean {
 export async function pickDeviceContacts(): Promise<PickedContact[]> {
   // @ts-expect-error — Contact Picker API is not in the TS DOM lib yet.
   return (await navigator.contacts.select(["name", "email", "tel"], { multiple: true })) ?? [];
+}
+
+/**
+ * VTID-05058: a native app shell (the planned Maxina native app) can expose
+ * the whole address book behind one OS permission prompt as
+ * `window.vitanaNative.contacts.getAll()`. Absent in browsers and in the
+ * current WebView shell, so this is false there.
+ */
+interface NativeContactsBridge {
+  getAll: () => Promise<Array<{ name?: string; emails?: string[]; phones?: string[] }>>;
+}
+function nativeBridge(): NativeContactsBridge | null {
+  if (typeof window === "undefined") return null;
+  const b = (window as unknown as { vitanaNative?: { contacts?: NativeContactsBridge } }).vitanaNative?.contacts;
+  return b && typeof b.getAll === "function" ? b : null;
+}
+
+export function nativeContactsSupported(): boolean {
+  return nativeBridge() !== null;
+}
+
+export async function readNativeContacts(): Promise<DeviceContact[]> {
+  const b = nativeBridge();
+  if (!b) throw new Error("native_contacts_unavailable");
+  const all = (await b.getAll()) ?? [];
+  return all.map((c) => ({
+    name: String(c.name ?? ""),
+    emails: Array.isArray(c.emails) ? c.emails.map(String) : [],
+    phones: Array.isArray(c.phones) ? c.phones.map(String) : [],
+  }));
 }
 
 /** Display order on the screen. */

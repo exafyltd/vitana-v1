@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05058",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: /invite shows the personal invite link (answered in-browser) and Find friends opens the one-tap flow; without a Contact Picker or native shell it offers the .vcf file path with iPhone/Android export steps and the account sources; no overflow; read-only — nothing is imported",
+      "spec": "tests/e2e/staging/vtid-05058-find-friends.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/contacts/ContactSyncModal.test.tsx src/hooks/useContactSync.preflight.test.ts src/lib/vcard.test.ts src/lib/contact-invite-links.test.ts",
+      "reason": "Importing and inviting write to the shared production database, so they are proven here: .vcf parsing (iPhone 3.0, 2.1 quoted-printable, 4.0 URIs), native / picker / file routing, the hub import with method vcf/native, Message → /inbox/u/<id>, invite URLs for WhatsApp/SMS/e-mail/share with the personal link, invited only after the channel opened, and every new string in eleven locales."
+    }
+  ]
+}

@@ -364,7 +364,10 @@
       "sendTo": "Send to {name}",
       "sent": "Invite sent to {name}",
       "notInvitable": "You can't invite anyone to this right now – it is over, cancelled or not public.",
-      "error": "The invite couldn't be sent just now. Try again in a moment."
+      "error": "The invite couldn't be sent just now. Try again in a moment.",
+      "_pending_review": {
+        "chat": true
+      }
     },
     "inviteCard": {
       "kind": {

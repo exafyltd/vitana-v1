@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05058",
+  "kind": "feature",
+  "paths": [
+    "src/lib/vcard.ts",
+    "src/lib/vcard.test.ts",
+    "src/lib/contact-invite-links.ts",
+    "src/lib/contact-invite-links.test.ts",
+    "src/lib/connected-apps-client.ts",
+    "src/hooks/useContactSync.ts",
+    "src/hooks/useContactSync.preflight.test.ts",
+    "src/hooks/useContacts.ts",
+    "src/components/contacts/**",
+    "src/components/settings/PhoneDiscoverabilityToggle.tsx",
+    "src/pages/settings/Privacy.tsx",
+    "src/pages/InviteFriends.tsx",
+    "src/i18n/*/mailhub.json",
+    "src/i18n/en/*.json",
+    "i18n-source-stamps/*.json",
+    "tests/e2e/staging/vtid-05058-find-friends.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05058/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

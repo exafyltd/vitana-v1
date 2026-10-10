@@ -6,12 +6,39 @@ import {
   contactPickerSupported,
   fetchConnectedApps,
   importAndroidContacts,
+  importDeviceContacts,
+  MAX_DEVICE_CONTACTS,
+  nativeContactsSupported,
   pickDeviceContacts,
+  readNativeContacts,
   syncConnectedApp,
   type ConnectedAppId,
 } from "@/lib/connected-apps-client";
+import { MAX_VCF_BYTES, parseVCards } from "@/lib/vcard";
 
 export type ContactSource = "google" | "outlook" | "icloud" | "phonebook" | "whatsapp";
+
+/**
+ * VTID-05058: how this device can hand over its address book, best first.
+ *  - native: the native app shell reads every contact behind one OS prompt;
+ *  - picker: the browser Contact Picker (Chrome on Android) — "select all";
+ *  - file:   everywhere else (iPhone, the store app's WebView, desktop) the
+ *            member exports a .vcf from their Contacts app and picks it here.
+ */
+export type PhoneImportMode = "native" | "picker" | "file";
+
+export function phoneImportMode(): PhoneImportMode {
+  if (nativeContactsSupported()) return "native";
+  if (contactPickerSupported()) return "picker";
+  return "file";
+}
+
+/** A .vcf that is not a contacts file, is empty, or is too large. */
+export class ContactFileError extends Error {
+  constructor(public code: "too_large" | "empty") {
+    super(`contact_file_${code}`);
+  }
+}
 
 interface ConnectedSource {
   source: ContactSource;
@@ -20,7 +47,7 @@ interface ConnectedSource {
   lastSyncedAt: Date | null;
 }
 
-interface SyncResult {
+export interface SyncResult {
   matches: MatchedContact[];
   nonMatches: ImportedContact[];
   /** Every contact these sources imported, not just the rows in the preview. */
@@ -29,6 +56,8 @@ interface SyncResult {
   totalMatches: number;
   /** True when the preview lists fewer rows than were imported. */
   truncated: boolean;
+  /** VTID-05058: contacts left out because the file had more than the import limit. */
+  overLimit?: number;
 }
 
 /** Google / Outlook / iCloud still have to be switched on in Connected Apps. */
@@ -63,7 +92,7 @@ async function readImported(userId: string, sources: string[]): Promise<SyncResu
   // address book is not reported as 500 contacts.
   const [{ data, error, count }, { count: memberCount, error: memberError }] = await Promise.all([
     contacts()
-      .select("id, contact_name, contact_phone, contact_email, contact_user_id, is_on_platform", { count: "exact" })
+      .select("id, contact_name, contact_phone, contact_email, contact_user_id, is_on_platform, metadata", { count: "exact" })
       .eq("user_id", userId)
       .in("source", sources)
       // Members first, so matches are never pushed out of the preview by the cap.
@@ -86,6 +115,7 @@ async function readImported(userId: string, sources: string[]): Promise<SyncResu
     contact_email: string | null;
     contact_user_id: string | null;
     is_on_platform: boolean;
+    metadata?: { phones_e164?: string[] } | null;
   }>;
   const memberIds = rows.filter((r) => r.is_on_platform && r.contact_user_id).map((r) => r.contact_user_id as string);
   const profiles: Record<string, { display_name?: string; avatar_url?: string; handle?: string }> = {};
@@ -100,7 +130,14 @@ async function readImported(userId: string, sources: string[]): Promise<SyncResu
   const matches: MatchedContact[] = [];
   const nonMatches: ImportedContact[] = [];
   for (const r of rows) {
-    const local = { id: r.id, name: r.contact_name, phone: r.contact_phone ?? undefined, email: r.contact_email ?? undefined };
+    const local = {
+      id: r.id,
+      name: r.contact_name,
+      phone: r.contact_phone ?? undefined,
+      // VTID-05057: the gateway's international form, for WhatsApp / SMS invites.
+      phoneE164: r.metadata?.phones_e164?.[0] ?? undefined,
+      email: r.contact_email ?? undefined,
+    };
     if (r.is_on_platform && r.contact_user_id) {
       const p = profiles[r.contact_user_id] ?? {};
       matches.push({
@@ -162,15 +199,15 @@ export function useContactSync() {
     localStorage.setItem(`contact_sync_consent_${user.id}`, "true");
     setHasConsented(true);
 
-    // Log consent event
-    console.log("[ContactSync] Consent recorded for user:", user.id);
+
   }, [user?.id]);
 
   // Main sync function — VTID-04440: every source goes through the Connected
   // Apps hub (the gateway), which de-duplicates per source, matches members
   // server-side and keeps test / service accounts out (CLAUDE.md rule 45).
   // Google and iCloud must be switched on in Connected Apps first; the phone
-  // book uses the browser Contact Picker (Android Chrome).
+  // book uses the native app shell when present, else the browser Contact
+  // Picker (Android Chrome) — VTID-05058.
   const syncContacts = useCallback(async (
     sources: ContactSource[]
   ): Promise<SyncResult> => {
@@ -190,7 +227,7 @@ export function useContactSync() {
       for (const source of sources) {
         const appId = HUB_APP[source];
         if (source === "phonebook") {
-          if (!contactPickerSupported()) throw new Error("Contact Picker API not available");
+          if (phoneImportMode() === "file") throw new Error("Contact Picker API not available");
         } else if (appId) {
           const app = apps.find((a) => a.id === appId);
           if (!app || app.status !== "on") throw new ConnectAppFirst(appId);
@@ -200,15 +237,21 @@ export function useContactSync() {
       for (const source of sources) {
         const appId = HUB_APP[source];
         if (source === "phonebook") {
-          let picked;
-          try {
-            picked = await pickDeviceContacts();
-          } catch (error) {
-            if ((error as Error).name === "AbortError") throw new Error("Contact selection cancelled");
-            throw error;
+          if (phoneImportMode() === "native") {
+            const all = await readNativeContacts();
+            if (all.length === 0) throw new Error("Contact selection cancelled");
+            await importDeviceContacts(all, "native");
+          } else {
+            let picked;
+            try {
+              picked = await pickDeviceContacts();
+            } catch (error) {
+              if ((error as Error).name === "AbortError") throw new Error("Contact selection cancelled");
+              throw error;
+            }
+            if (picked.length === 0) throw new Error("Contact selection cancelled");
+            await importAndroidContacts(picked);
           }
-          if (picked.length === 0) throw new Error("Contact selection cancelled");
-          await importAndroidContacts(picked);
           hubSources.push("android");
         } else if (appId) {
           const r = await syncConnectedApp(appId);
@@ -224,12 +267,30 @@ export function useContactSync() {
     }
   }, [user?.id]);
 
+  /** VTID-05058: a .vcf exported from the phone's Contacts app, through the same hub import. */
+  const importContactFile = useCallback(async (file: File): Promise<SyncResult> => {
+    if (!user?.id) throw new Error("User not authenticated");
+    if (file.size > MAX_VCF_BYTES) throw new ContactFileError("too_large");
+    setIsSyncing(true);
+    try {
+      const contacts = parseVCards(await file.text());
+      if (contacts.length === 0) throw new ContactFileError("empty");
+      await importDeviceContacts(contacts.slice(0, MAX_DEVICE_CONTACTS), "vcf");
+      const result = await readImported(user.id, ["android"]);
+      const overLimit = Math.max(contacts.length - MAX_DEVICE_CONTACTS, 0);
+      return overLimit > 0 ? { ...result, overLimit } : result;
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [user?.id]);
+
   return {
     connectedSources,
     isSyncing,
     hasConsented,
     recordConsent,
     syncContacts,
+    importContactFile,
   };
 }
 

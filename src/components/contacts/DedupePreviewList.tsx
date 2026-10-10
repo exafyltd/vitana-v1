@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { Check, UserPlus, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Check, UserPlus, MessageCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { InviteContactButton } from "./InviteContactButton";
 import { t } from '@/lib/i18n-toast';
 
 export interface MatchedContact {
@@ -13,6 +11,7 @@ export interface MatchedContact {
     id: string;
     name: string;
     phone?: string;
+    phoneE164?: string;
     email?: string;
   };
   platformUser: {
@@ -28,210 +27,147 @@ export interface ImportedContact {
   id: string;
   name: string;
   phone?: string;
+  /** VTID-05057: the gateway's international form of the first number. */
+  phoneE164?: string;
   email?: string;
 }
 
 interface DedupePreviewListProps {
   matches: MatchedContact[];
   nonMatches: ImportedContact[];
-  onConnect?: (userId: string) => void;
-  onSelectForInvite: (contactIds: string[]) => void;
-  selectedForInvite: string[];
-  maxVisibleNonMatches?: number;
+  /** Opens a chat with this member. */
+  onMessage?: (userId: string) => void;
+  /** Rows shown before "show more" (per section). */
+  pageSize?: number;
 }
 
-export function DedupePreviewList({
-  matches,
-  nonMatches,
-  onConnect,
-  onSelectForInvite,
-  selectedForInvite,
-  maxVisibleNonMatches = 5,
-}: DedupePreviewListProps) {
-  const [showAllNonMatches, setShowAllNonMatches] = useState(false);
-  
-  const visibleNonMatches = showAllNonMatches 
-    ? nonMatches 
-    : nonMatches.slice(0, maxVisibleNonMatches);
+/**
+ * VTID-05058: the result of a contacts import, laid out like a messenger —
+ * "On Vitanaland" with a Message button, everyone else with an Invite
+ * button that opens the member's own WhatsApp / SMS / e-mail / share sheet.
+ */
+export function DedupePreviewList({ matches, nonMatches, onMessage, pageSize = 30 }: DedupePreviewListProps) {
+  const [query, setQuery] = useState("");
+  const [shown, setShown] = useState(pageSize);
+  const [invited, setInvited] = useState<Set<string>>(new Set());
 
-  const toggleSelectAll = () => {
-    if (selectedForInvite.length === nonMatches.length) {
-      onSelectForInvite([]);
-    } else {
-      onSelectForInvite(nonMatches.map(c => c.id));
-    }
-  };
+  const q = query.trim().toLowerCase();
+  const hit = (name: string, phone?: string, email?: string) =>
+    !q || name.toLowerCase().includes(q) || (phone ?? "").includes(q) || (email ?? "").toLowerCase().includes(q);
 
-  const toggleContact = (id: string) => {
-    if (selectedForInvite.includes(id)) {
-      onSelectForInvite(selectedForInvite.filter(i => i !== id));
-    } else {
-      onSelectForInvite([...selectedForInvite, id]);
-    }
-  };
+  const visibleMatches = useMemo(
+    () => matches.filter((m) => hit(m.platformUser.display_name || m.localContact.name, m.localContact.phone, m.localContact.email)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [matches, q],
+  );
+  const filteredOthers = useMemo(
+    () => nonMatches.filter((c) => hit(c.name, c.phone, c.email)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [nonMatches, q],
+  );
+  const visibleOthers = filteredOthers.slice(0, shown);
 
-  const getConfidenceBadge = (confidence: MatchedContact["matchConfidence"]) => {
-    const config = {
-      exact: { label: "Exact match", className: "bg-[hsl(var(--contact-success)/0.1)] text-[hsl(var(--contact-success))]" },
-      probable: { label: "Likely match", className: "bg-[hsl(var(--contact-warning)/0.1)] text-[hsl(var(--contact-warning))]" },
-      possible: { label: "Possible", className: "bg-muted text-muted-foreground" },
-    };
-    return config[confidence];
-  };
+  if (matches.length === 0 && nonMatches.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-sm text-muted-foreground">{t('screens.contacts.noContactsFound')}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Matches Section */}
-      {matches.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-[hsl(var(--contact-success)/0.1)] flex items-center justify-center">
-              <Check className="w-3.5 h-3.5 text-[hsl(var(--contact-success))]" />
-            </div>
-            <h4 className="text-sm font-medium text-foreground">{t('screens.contacts.alreadyVitanaLength', { length: matches.length })}
-            </h4>
-          </div>
-
-          <div className="space-y-2">
-            {matches.map((match, index) => (
-              <motion.div
-                key={match.platformUser.user_id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.03 }}
-                className="flex items-center justify-between p-3 rounded-xl bg-[hsl(var(--contact-success)/0.05)] border border-[hsl(var(--contact-success)/0.1)]"
-              >
-                <div className="flex items-center gap-3">
-                  <Avatar className="w-10 h-10 ring-1 ring-border/60">
-                    <AvatarImage src={match.platformUser.avatar_url} />
-                    <AvatarFallback className="bg-[hsl(var(--contact-success)/0.1)] text-[hsl(var(--contact-success))]">
-                      {match.platformUser.display_name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">
-                      {match.platformUser.display_name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {match.platformUser.handle ? `@${match.platformUser.handle}` : match.localContact.phone || match.localContact.email}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Badge 
-                    variant="secondary" 
-                    className={cn("text-[10px]", getConfidenceBadge(match.matchConfidence).className)}
-                  >
-                    {getConfidenceBadge(match.matchConfidence).label}
-                  </Badge>
-                  {onConnect && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onConnect(match.platformUser.user_id)}
-                      className="h-8"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5 mr-1" />
-                      {t('screens.contacts.connect')}
-                    </Button>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+    <div className="space-y-5">
+      {matches.length + nonMatches.length > 8 && (
+        <div className="relative">
+          <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden />
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('mailhub.findFriends.results.search')}
+            aria-label={t('mailhub.findFriends.results.search')}
+            className="ps-8 h-10 text-sm"
+          />
         </div>
       )}
 
-      {/* Non-Matches Section */}
-      {nonMatches.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
-                <UserPlus className="w-3.5 h-3.5 text-[hsl(var(--contact-sync-accent))]" />
+      {visibleMatches.length > 0 && (
+        <section className="space-y-2" data-testid="find-friends-on-platform">
+          <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <span className="w-6 h-6 rounded-full bg-[hsl(var(--contact-success)/0.1)] flex items-center justify-center">
+              <Check className="w-3.5 h-3.5 text-[hsl(var(--contact-success))]" aria-hidden />
+            </span>
+            {t('mailhub.findFriends.results.onPlatform', { count: matches.length })}
+          </h4>
+          {visibleMatches.map((match) => (
+            <div
+              key={match.platformUser.user_id}
+              className="flex items-center gap-3 p-3 rounded-xl bg-[hsl(var(--contact-success)/0.05)] border border-[hsl(var(--contact-success)/0.1)]"
+            >
+              <Avatar className="w-10 h-10 ring-1 ring-border/60 shrink-0">
+                <AvatarImage src={match.platformUser.avatar_url} loading="lazy" />
+                <AvatarFallback className="bg-[hsl(var(--contact-success)/0.1)] text-[hsl(var(--contact-success))]">
+                  {(match.platformUser.display_name || "?").charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">{match.platformUser.display_name}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {match.platformUser.handle ? `@${match.platformUser.handle}` : match.localContact.name}
+                </p>
               </div>
-              <h4 className="text-sm font-medium text-foreground">{t('screens.contacts.inviteVitanaLength', { length: nonMatches.length })}
-              </h4>
-            </div>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleSelectAll}
-              className="text-xs h-7"
-            >
-              {selectedForInvite.length === nonMatches.length ? "Deselect all" : "Select all"}
-            </Button>
-          </div>
-
-          <div className="space-y-2">
-            <AnimatePresence>
-              {visibleNonMatches.map((contact, index) => (
-                <motion.div
-                  key={contact.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ delay: index * 0.02 }}
-                  className={cn(
-                    "flex items-center justify-between p-3 rounded-xl border transition-colors",
-                    selectedForInvite.includes(contact.id)
-                      ? "bg-[hsl(var(--contact-sync-tint))] border-[hsl(var(--contact-sync-accent)/0.3)]"
-                      : "bg-card border-border/50 hover:bg-muted/50"
-                  )}
+              {onMessage && (
+                <Button
+                  size="sm"
+                  onClick={() => onMessage(match.platformUser.user_id)}
+                  data-testid={`message-member-${match.platformUser.user_id}`}
+                  className="flex items-center gap-2 h-10 min-w-10 px-2.5 sm:px-3 shrink-0"
+                  aria-label={t('mailhub.findFriends.results.message')}
                 >
-                  <div className="flex items-center gap-3">
-                    <Checkbox
-                      checked={selectedForInvite.includes(contact.id)}
-                      onCheckedChange={() => toggleContact(contact.id)}
-                    />
-                    <Avatar className="w-10 h-10 ring-1 ring-border/60">
-                      <AvatarFallback className="bg-muted text-muted-foreground">
-                        {contact.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        {contact.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {contact.phone || contact.email || "No contact info"}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {/* Show more/less toggle */}
-          {nonMatches.length > maxVisibleNonMatches && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowAllNonMatches(!showAllNonMatches)}
-              className="w-full text-xs text-muted-foreground"
-            >
-              {showAllNonMatches ? (
-                <>
-                  <ChevronUp className="w-4 h-4 mr-1" />{t('screens.contacts.showLess')}
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="w-4 h-4 mr-1" />{t('screens.contacts.showValue0More', { value0: nonMatches.length - maxVisibleNonMatches })}
-                </>
+                  <MessageCircle className="w-4 h-4" aria-hidden />
+                  <span className="sr-only sm:not-sr-only">{t('mailhub.findFriends.results.message')}</span>
+                </Button>
               )}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {filteredOthers.length > 0 && (
+        <section className="space-y-2" data-testid="find-friends-to-invite">
+          <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <span className="w-6 h-6 rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
+              <UserPlus className="w-3.5 h-3.5 text-[hsl(var(--contact-sync-accent))]" aria-hidden />
+            </span>
+            {t('mailhub.findFriends.results.toInvite', { count: nonMatches.length })}
+          </h4>
+          {visibleOthers.map((contact) => (
+            <div key={contact.id} className="flex items-center gap-3 p-3 rounded-xl border bg-card border-border/50">
+              <Avatar className="w-10 h-10 ring-1 ring-border/60 shrink-0">
+                <AvatarFallback className="bg-muted text-muted-foreground">
+                  {(contact.name || "?").charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">{contact.name}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {contact.phone || contact.email
+                    ? <bdi dir="ltr">{contact.phone || contact.email}</bdi>
+                    : t('mailhub.findFriends.results.noContactInfo')}
+                </p>
+              </div>
+              <InviteContactButton
+                target={{ id: contact.id, name: contact.name, phone: contact.phone, phoneE164: contact.phoneE164, email: contact.email }}
+                invited={invited.has(contact.id)}
+                onInvited={(id) => setInvited((prev) => new Set(prev).add(id))}
+              />
+            </div>
+          ))}
+          {filteredOthers.length > shown && (
+            <Button variant="ghost" size="sm" onClick={() => setShown((n) => n + pageSize)} className="w-full text-xs text-muted-foreground">
+              {t('screens.contacts.showValue0More', { value0: filteredOthers.length - shown })}
             </Button>
           )}
-        </div>
-      )}
-
-      {/* Empty state */}
-      {matches.length === 0 && nonMatches.length === 0 && (
-        <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">{t('screens.contacts.noContactsFound')}</p>
-        </div>
+        </section>
       )}
     </div>
   );

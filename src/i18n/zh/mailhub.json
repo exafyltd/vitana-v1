@@ -142,7 +142,7 @@
         },
         "api_unavailable": {
           "title": "此设备上无法使用",
-          "body": "你的浏览器无法打开通讯录。请在安卓手机的 Chrome 中打开 Vitanaland，或连接 Google 或 iCloud。"
+          "body": "此设备无法直接打开通讯录。请将联系人导出为 .vcf 文件，或连接 Google、Outlook 或 iCloud。"
         },
         "permission_denied": {
           "title": "无法访问你的联系人",
@@ -159,6 +159,14 @@
         "unknown": {
           "title": "出了点问题",
           "body": "请稍后再试。"
+        },
+        "file_too_large": {
+          "title": "文件太大",
+          "body": "请导出不含照片的联系人，或选择较小的文件（不超过 10 MB）。"
+        },
+        "file_empty": {
+          "title": "文件中没有联系人",
+          "body": "请选择从手机“通讯录”应用导出的 .vcf 文件。"
         }
       },
       "consent": {
@@ -170,9 +178,64 @@
         "privateBody": "你导入的联系人保存在你的 Vitanaland 账户中，只有你能看到。",
         "removeTitle": "随时可以删除",
         "removeBody": "在“已连接应用”中，你可以关闭某个来源并移除它的联系人。",
-        "helper": "我们会比对电子邮件地址，显示谁已经在 Vitanaland。不在的人不会收到任何通知。",
+        "helper": "我们会比对电子邮件地址和电话号码，以显示哪些人已在 Vitanaland。不在平台上的人不会收到任何通知。",
         "notNow": "以后再说",
         "continue": "继续"
+      },
+      "import": {
+        "title": "找到你的朋友",
+        "subtitle": "我们会告诉你通讯录里哪些人已经在 Vitanaland。其他人只需轻点一下即可邀请。",
+        "phone": "从手机导入联系人",
+        "phoneHintNative": "只需允许访问一次即可。",
+        "phoneHintPicker": "在下一步中点按“全选”。",
+        "file": "选择联系人文件 (.vcf)",
+        "fileHowTitle": "如何导出联系人：",
+        "fileHowIphone": "iPhone：通讯录 → 列表 → 长按“所有联系人” → 导出。",
+        "fileHowAndroid": "Android：通讯录 → 修正和管理 → 导出到文件。",
+        "accounts": "或从账户导入"
+      },
+      "results": {
+        "summary": "已导入 {total} 位联系人 · {members} 位已在 Vitanaland",
+        "onPlatform": "已在 Vitanaland：{count}",
+        "toInvite": "可邀请：{count}",
+        "search": "搜索联系人",
+        "message": "发消息",
+        "invite": "邀请",
+        "invited": "已邀请",
+        "noContactInfo": "无联系方式",
+        "overLimit": "已导入前 {limit} 位联系人。",
+        "later": "你随时可以在“消息 → 联系人”中找到所有联系人。",
+        "done": "完成"
+      },
+      "invite": {
+        "whatsapp": "WhatsApp",
+        "sms": "短信",
+        "email": "电子邮件",
+        "share": "分享…",
+        "message": "嗨，{name}！我在 Vitanaland，一个追求健康长寿的社区。快来加入我：{link}",
+        "messageGeneric": "我在 Vitanaland，一个追求健康长寿的社区。快来加入我：{link}",
+        "opened": "邀请已准备好，发送即可。",
+        "linkFailed": "暂时无法加载你的邀请链接，请稍后再试。"
+      },
+      "remove": {
+        "button": "移除从手机导入的联系人",
+        "confirmTitle": "移除手机联系人？",
+        "confirmBody": "你从手机导入的所有联系人都将从 Vitanaland 删除。手机上的内容不会改变。",
+        "confirm": "移除",
+        "done": "已移除你的手机联系人。"
+      },
+      "privacy": {
+        "title": "允许通过手机号找到我",
+        "body": "通讯录中有你已验证号码的人可以看到你在 Vitanaland。"
+      },
+      "added": {
+        "onPlatformTitle": "已添加联系人",
+        "onPlatformBody": "{name} 已在 Vitanaland，现在就发条消息吧。",
+        "savedTitle": "已保存联系人",
+        "savedBody": "{name} 已加入你的联系人。"
+      },
+      "page": {
+        "description": "用你的专属链接邀请朋友，或在通讯录中找到他们。"
       }
     },
     "requested": {
