@@ -2,6 +2,7 @@ import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
 import { cn } from "@/lib/utils"
+import { isDiceBear9Url, localAvatarDataUri, peekLocalAvatar } from "@/lib/localAvatar"
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -22,16 +23,49 @@ const Avatar = React.forwardRef<
 ))
 Avatar.displayName = AvatarPrimitive.Root.displayName
 
+type AvatarImageProps = React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+
+/**
+ * VTID-05066: a DiceBear 9.x auto-avatar is drawn on the device (byte-identical
+ * SVG, see lib/localAvatar.ts) instead of fetched from api.dicebear.com. Until
+ * it is ready the AvatarFallback shows; if it cannot be drawn, the original URL
+ * is used as before.
+ */
+const DiceBearAvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  AvatarImageProps & { src: string }
+>(({ src, ...props }, ref) => {
+  const [local, setLocal] = React.useState<string | null | undefined>(() => peekLocalAvatar(src))
+  React.useEffect(() => {
+    let alive = true
+    const known = peekLocalAvatar(src)
+    if (known !== undefined) {
+      setLocal(known)
+      return
+    }
+    setLocal(undefined)
+    void localAvatarDataUri(src).then((uri) => {
+      if (alive) setLocal(uri)
+    })
+    return () => {
+      alive = false
+    }
+  }, [src])
+  // undefined → still drawing (no src, the fallback shows); null → not drawable, use the URL.
+  const resolved = local === undefined ? undefined : local ?? src
+  return <AvatarPrimitive.Image ref={ref} src={resolved} {...props} />
+})
+DiceBearAvatarImage.displayName = "DiceBearAvatarImage"
+
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn("aspect-square h-full w-full object-cover", className)}
-    {...props}
-  />
-))
+  AvatarImageProps
+>(({ className, src, ...props }, ref) => {
+  const cls = cn("aspect-square h-full w-full object-cover", className)
+  // Every other src renders exactly as before: no state, hook or effect.
+  if (isDiceBear9Url(src)) return <DiceBearAvatarImage ref={ref} className={cls} src={src} {...props} />
+  return <AvatarPrimitive.Image ref={ref} className={cls} src={src} {...props} />
+})
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 const AvatarFallback = React.forwardRef<

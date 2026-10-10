@@ -19,11 +19,13 @@
 // cache: Playwright disables the browser cache (memory cache included) for a
 // page that has any request route, and the staging guard routes every
 // request. Without a cache, every photo that remounts on a return visit would
-// be re-downloaded here even when a real phone serves it from cache. So
-// Supabase storage images are routed through a small in-test cache that
+// be re-downloaded here even when a real phone serves it from cache. So every
+// GET image (any host — VTID-05066; storage photos, avatars, icons) is routed
+// through a small in-test cache (50 MB, least recently used evicted) that
 // follows the response's own Cache-Control (max-age / s-maxage, no-store,
 // no-cache, heuristic freshness from Last-Modified) — what a phone's HTTP cache
-// would decide. A return step that has to fetch a storage image the journey
+// would decide; `no-store` / `no-cache` images are fetched every time, as on a
+// phone. A return step that has to fetch a storage image the journey
 // already loaded (same path and transform params; a changed signed-URL token
 // counts as the same image) is a refetch. A cache hit is fulfilled locally and
 // never touches the network. Misses go through the guard to the network as
@@ -182,7 +184,7 @@ function recheckFrameHeights(): Array<number | null> {
   return (w.__sjFrames ?? []).map((el) => (el.isConnected ? el.getBoundingClientRect().height : null));
 }
 
-// ─── In-test HTTP cache for Supabase storage images ──────────────────────────
+// ─── In-test HTTP cache for images (refetch counting: storage photos) ───────
 
 const STORAGE_IMAGE = /^https:\/\/inmkhvwdcuyhnxkgfvsb\.supabase\.co\/storage\/v1\/(object|render\/image)\//;
 
@@ -209,8 +211,26 @@ function freshnessMs(headers: Record<string, string>): number {
   return 0;
 }
 
-function storageImageCache(page: Page) {
+const CACHE_MAX_BYTES = 50 * 1024 * 1024;
+
+function imageCache(page: Page) {
+  // Map order = recency (oldest first); evicted by total body bytes.
   const cache = new Map<string, CachedImage>();
+  let cachedBytes = 0;
+  const store = (key: string, entry: CachedImage) => {
+    const old = cache.get(key);
+    if (old) {
+      cachedBytes -= old.body.length;
+      cache.delete(key);
+    }
+    cache.set(key, entry);
+    cachedBytes += entry.body.length;
+    for (const [k, v] of cache) {
+      if (cachedBytes <= CACHE_MAX_BYTES) break;
+      cache.delete(k);
+      cachedBytes -= v.body.length;
+    }
+  };
   const everLoaded = new Set<string>();
   let step = { networkFetches: [] as string[], refetches: [] as string[], cacheHits: 0 };
 
@@ -221,18 +241,20 @@ function storageImageCache(page: Page) {
     const hit = cache.get(key);
     if (hit && Date.now() - hit.storedAt < hit.freshMs) {
       step.cacheHits++;
+      cache.delete(key); // most recently used
+      cache.set(key, hit);
       return route.fulfill({ status: hit.status, headers: hit.headers, body: hit.body });
     }
     step.networkFetches.push(req.url());
-    if (everLoaded.has(key)) step.refetches.push(req.url());
+    if (STORAGE_IMAGE.test(req.url()) && everLoaded.has(key)) step.refetches.push(req.url());
     return route.fallback(); // → staging guard → network (a GET)
   };
 
   const onResponse = async (res: Response) => {
     const req: Request = res.request();
-    if (req.resourceType() !== 'image' || !STORAGE_IMAGE.test(req.url()) || res.status() !== 200) return;
+    if (req.method() !== 'GET' || req.resourceType() !== 'image' || res.status() !== 200 || !/^https?:/.test(req.url())) return;
     const key = imageKey(req.url());
-    everLoaded.add(key);
+    if (STORAGE_IMAGE.test(req.url())) everLoaded.add(key);
     if (cache.has(key) && Date.now() - cache.get(key)!.storedAt < cache.get(key)!.freshMs) return;
     const headers = { ...(await res.allHeaders().catch(() => ({}) as Record<string, string>)) };
     // res.body() is already decoded; replaying the original encoding/length would corrupt it.
@@ -241,12 +263,12 @@ function storageImageCache(page: Page) {
     const freshMs = freshnessMs(headers);
     if (freshMs <= 0) return;
     const body = await res.body().catch(() => null);
-    if (body) cache.set(key, { status: 200, headers, body, storedAt: Date.now(), freshMs });
+    if (body) store(key, { status: 200, headers, body, storedAt: Date.now(), freshMs });
   };
 
   return {
     async install() {
-      await page.route(STORAGE_IMAGE, onRoute);
+      await page.route(/^https?:\/\//, onRoute);
       page.on('response', (res) => void onResponse(res));
     },
     beginStep() {
@@ -268,7 +290,7 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
 
   await page.route(/\/command-hub\/orb-widget\.js(\?.*)?$/, (route) => route.abort('blockedbyclient'));
   await page.addInitScript(installTapClock);
-  const images = storageImageCache(page);
+  const images = imageCache(page);
   await images.install();
 
   // Sign in (unthrottled) exactly as VTID-05013's spec does.

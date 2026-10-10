@@ -14,6 +14,7 @@ import { Card } from '@/components/ui/card';
 import { ClickableAvatar } from '@/components/ui/clickable-avatar';
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu-kebab';
 import { cn } from '@/lib/utils';
+import { transformedCoverUrl } from '@/lib/eventCoverImage';
 import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
 import { formatDuration } from '@/components/liverooms/liveRoomFormat';
@@ -36,6 +37,12 @@ export function LiveRoomEventCard({
   onDelete,
 }: LiveRoomCardProps) {
   const [imageError, setImageError] = useState(false);
+  // VTID-05066: serve the cover through the storage resize CDN (the original is
+  // a multi-MB phone photo — Events took > 10 s on a mid-range phone); fall
+  // back once to the original if the transform is rejected.
+  const [coverOriginal, setCoverOriginal] = useState(false);
+  const resizedCover = room.imageUrl ? transformedCoverUrl(room.imageUrl) : undefined;
+  const coverSrc = !coverOriginal && resizedCover ? resizedCover : room.imageUrl;
   const [interestedOpen, setInterestedOpen] = useState(false);
 
   const isScheduled = !room.isLive && !!room.scheduledTime;
@@ -73,11 +80,11 @@ export function LiveRoomEventCard({
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-background">
         {room.imageUrl && !imageError ? (
           <img
-            src={room.imageUrl}
+            src={coverSrc}
             alt=""
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover"
-            onError={() => setImageError(true)}
+            onError={() => (coverSrc !== room.imageUrl ? setCoverOriginal(true) : setImageError(true))}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-10">🎙️</div>

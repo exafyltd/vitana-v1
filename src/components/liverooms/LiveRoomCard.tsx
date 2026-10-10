@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2, CalendarDays, Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { transformedCoverUrl } from "@/lib/eventCoverImage";
 import { differenceInMinutes } from 'date-fns';
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
@@ -87,6 +88,10 @@ export function LiveRoomCard({
 }: LiveRoomCardProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  // VTID-05066: cover through the storage resize CDN, one-shot fallback to the original.
+  const [coverOriginal, setCoverOriginal] = useState(false);
+  const resizedCover = room.imageUrl ? transformedCoverUrl(room.imageUrl) : undefined;
+  const coverSrc = !coverOriginal && resizedCover ? resizedCover : room.imageUrl;
   const [interestedOpen, setInterestedOpen] = useState(false);
 
   const isScheduled = !room.isLive && room.scheduledTime;
@@ -151,7 +156,7 @@ export function LiveRoomCard({
           {/* Image - absolute positioned for true full-bleed */}
           {room.imageUrl && !imageError ? (
             <img
-              src={room.imageUrl}
+              src={coverSrc}
               alt={room.title}
               loading="lazy"
               className={cn(
@@ -159,7 +164,7 @@ export function LiveRoomCard({
                 imageLoaded ? "opacity-100" : "opacity-0"
               )}
               onLoad={() => setImageLoaded(true)}
-              onError={() => setImageError(true)}
+              onError={() => (coverSrc !== room.imageUrl ? setCoverOriginal(true) : setImageError(true))}
             />
           ) : (
             /* Fallback gradient with icon */
