@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { saveDeviceTimeZone } from "@/lib/notifications/device-timezone";
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { showAppilixFallbackNotification } from '@/lib/appilixNotificationFallback';
 import { useAuth } from '@/context/AuthProvider';
 
@@ -113,8 +114,7 @@ export function useNotifications(limit = 20) {
   useEffect(() => {
     if (!user) return;
     fetchNotifications();
-    const channel = supabase
-      .channel('user_notifications_realtime')
+    const channel = realtimeChannel('user_notifications_realtime')
       .on('postgres_changes', {
         event: 'INSERT', schema: 'public', table: 'user_notifications',
         filter: `user_id=eq.${user.id}`,
@@ -135,7 +135,7 @@ export function useNotifications(limit = 20) {
     window.addEventListener('notifications-refresh', handleNotifRefresh);
 
     return () => {
-      if (channelRef.current) supabase.removeChannel(channelRef.current);
+      if (channelRef.current) removeRealtimeChannel(channelRef.current);
       clearInterval(interval);
       window.removeEventListener('notifications-refresh', handleNotifRefresh);
     };

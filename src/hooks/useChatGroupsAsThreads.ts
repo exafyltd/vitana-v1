@@ -15,7 +15,7 @@
 
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from "@/context/AuthProvider";
 import { fetchGroups, type ChatGroup } from "./useChatApi";
 import type { GlobalMessageThread, GlobalMessage } from "./useGlobalMessages";
@@ -104,15 +104,14 @@ export function useChatGroupsAsThreads(enabled: boolean = true) {
 
   useEffect(() => {
     if (!enabled || !groupIdsKey) return;
-    const channel = supabase
-      .channel(`chat_groups_threads_${groupIdsKey.slice(0, 24)}`)
+    const channel = realtimeChannel(`chat_groups_threads_${groupIdsKey.slice(0, 24)}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=in.(${groupIdsKey})` },
         () => { queryClient.invalidateQueries({ queryKey }); },
       )
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => { removeRealtimeChannel(channel); };
     // queryKey is derived from user.id which is stable for a session
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, groupIdsKey, queryClient, user?.id]);

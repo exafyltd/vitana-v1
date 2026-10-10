@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { setRealtimeAuth } from '@/integrations/supabase/realtime';
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
 import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
@@ -157,7 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // setSession / exchangeCodeForSession / refreshSession (dual-JWT flow),
         // so we set it explicitly on every auth event to remove all doubt.
         try {
-          void supabase.realtime.setAuth(session?.access_token ?? undefined);
+          void setRealtimeAuth(session?.access_token ?? undefined);
         } catch (err) {
           console.warn('[AuthProvider] realtime.setAuth failed:', err);
         }
@@ -199,7 +200,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // messenger subscriptions deliver events before the first auth event.
       if (existingSession?.access_token) {
         try {
-          void supabase.realtime.setAuth(existingSession.access_token);
+          void setRealtimeAuth(existingSession.access_token);
         } catch (err) {
           console.warn('[AuthProvider] realtime.setAuth (cold start) failed:', err);
         }
@@ -399,7 +400,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setSession(refreshed);
             setUser(refreshed.user);
             try {
-              void supabase.realtime.setAuth(refreshed.access_token);
+              void setRealtimeAuth(refreshed.access_token);
             } catch (err) {
               console.warn('[AuthProvider] realtime.setAuth (refresh) failed:', err);
             }

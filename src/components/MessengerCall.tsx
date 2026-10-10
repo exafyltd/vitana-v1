@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useWebRTC } from '@/hooks/useWebRTC';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { notifyError } from '@/lib/i18n-toast';
 
@@ -65,7 +65,7 @@ export const MessengerCall = ({
         setConnectionStatus('connecting');
         
         // Broadcast that we're ready
-        const channel = supabase.channel(`user:${recipientId}:calls`);
+        const channel = realtimeChannel(`user:${recipientId}:calls`);
         await channel.subscribe();
         await channel.send({
           type: 'broadcast',

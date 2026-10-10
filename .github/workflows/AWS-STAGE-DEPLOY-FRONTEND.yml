@@ -134,6 +134,9 @@ jobs:
           # VTID-05023 Aurora cutover: PostgREST traffic -> Aurora proxy when set.
           # Repository variable VITE_DATA_API_URL_STAGING; unset/empty = today's behaviour.
           VITE_DATA_API_URL=${{ vars.VITE_DATA_API_URL_STAGING }}
+          # VTID-05023 part 7a: realtime channels -> self-hosted Realtime (Aurora) when set.
+          # Repository variable VITE_REALTIME_URL_STAGING; unset/empty = today's behaviour.
+          VITE_REALTIME_URL=${{ vars.VITE_REALTIME_URL_STAGING }}
           VITE_HEALTH_REAL_DATA=true
           EOF
           # VTID-04483: real health data (profile Health tab + Health page

@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import type { RealtimePostgresUpdatePayload } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { persistQueryCacheNow } from "@/lib/query-persist";
 import { attachedRefOf } from "@/lib/post-attachment";
 import { useAuth } from "@/context/AuthProvider";
@@ -503,8 +504,7 @@ function subscribeToFeedRealtime(listener: (event: FeedRealtimeEvent) => void): 
           commentsCount: Number(newRow.comments_count) || 0,
         });
       };
-    feedChannel = supabase
-      .channel("all-news-feed-live")
+    feedChannel = realtimeChannel("all-news-feed-live")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "profile_posts" }, fire)
       .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profile_posts" }, handleCountsRow("post"))
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "media_uploads" }, fire)
@@ -514,7 +514,7 @@ function subscribeToFeedRealtime(listener: (event: FeedRealtimeEvent) => void): 
   return () => {
     feedRefreshListeners.delete(listener);
     if (feedRefreshListeners.size === 0 && feedChannel) {
-      supabase.removeChannel(feedChannel);
+      removeRealtimeChannel(feedChannel);
       feedChannel = null;
     }
   };

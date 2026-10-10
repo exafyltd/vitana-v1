@@ -15,7 +15,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
-import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useTranslation } from "@/hooks/useTranslation";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
@@ -185,15 +185,14 @@ export default function GroupChat() {
   // (migration 20260618110546).
   useEffect(() => {
     if (!groupId) return;
-    const channel = supabase
-      .channel(`group_chat_${groupId}`)
+    const channel = realtimeChannel(`group_chat_${groupId}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=eq.${groupId}` },
         () => { loadMessages(); },
       )
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => { removeRealtimeChannel(channel); };
   }, [groupId, loadMessages]);
 
   // Fallback poll — covers dropped realtime events / reconnects.

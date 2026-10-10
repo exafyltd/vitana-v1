@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
@@ -227,8 +228,7 @@ export function useCart() {
   useEffect(() => {
     if (!user) return;
 
-    const channel = supabase
-      .channel('cart_changes')
+    const channel = realtimeChannel('cart_changes')
       .on(
         'postgres_changes',
         {
@@ -244,7 +244,7 @@ export function useCart() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [user]);
 

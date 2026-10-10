@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthProvider';
-import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 
 /**
  * Cross-tab unread count synchronization hook
@@ -16,8 +16,7 @@ export function useUnreadSync(
   useEffect(() => {
     if (!user) return;
 
-    const unreadSyncChannel = supabase
-      .channel('unread_sync')
+    const unreadSyncChannel = realtimeChannel('unread_sync')
       .on('broadcast', { event: 'thread_read' }, (payload) => {
         const { threadId, userId, context } = payload.payload;
         
@@ -33,8 +32,7 @@ export function useUnreadSync(
       .subscribe();
 
     // Subscribe to participant changes for real-time unread updates
-    const participantChannel = supabase
-      .channel('participant_changes')
+    const participantChannel = realtimeChannel('participant_changes')
       .on('postgres_changes', {
         event: 'UPDATE',
         schema: 'public',
@@ -56,8 +54,8 @@ export function useUnreadSync(
       .subscribe();
 
     return () => {
-      supabase.removeChannel(unreadSyncChannel);
-      supabase.removeChannel(participantChannel);
+      removeRealtimeChannel(unreadSyncChannel);
+      removeRealtimeChannel(participantChannel);
     };
   }, [user, onThreadRead, onUnreadChange]);
 
@@ -70,7 +68,7 @@ export function useUnreadSync(
     if (!user) return;
 
     try {
-      await supabase.channel('unread_sync').send({
+      await realtimeChannel('unread_sync').send({
         type: 'broadcast',
         event: 'unread_change',
         payload: { 

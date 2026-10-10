@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { useEffect, useState } from 'react';
 
@@ -94,8 +95,7 @@ export function useGroupPosts(groupId?: string) {
   useEffect(() => {
     if (!chatThreadId) return;
 
-    const channel = supabase
-      .channel(`group-feed-${chatThreadId}`)
+    const channel = realtimeChannel(`group-feed-${chatThreadId}`)
       .on(
         'postgres_changes',
         {
@@ -123,7 +123,7 @@ export function useGroupPosts(groupId?: string) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [chatThreadId, groupId, queryClient]);
 

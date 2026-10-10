@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useCalendarEvents } from "./useCalendarEvents";
 import { messageCache } from "./messageCache";
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
@@ -584,7 +585,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
             ));
 
             // Trigger real-time sync for other tabs/devices
-            await supabase.channel('unread_sync').send({
+            await realtimeChannel('unread_sync').send({
               type: 'broadcast',
               event: 'thread_read',
               payload: { 
@@ -646,7 +647,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
         )
       );
 
-      await supabase.channel('unread_sync').send({
+      await realtimeChannel('unread_sync').send({
         type: 'broadcast',
         event: 'unread_change',
         payload: { userId: user.id, context: 'tenant', tenantId: activeTenantId },
@@ -665,8 +666,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
   useEffect(() => {
     if (!user || !activeTenantId || !isTenantContext) return;
 
-    const messageChannel = supabase
-      .channel('tenant_messages_realtime')
+    const messageChannel = realtimeChannel('tenant_messages_realtime')
       .on(
         'postgres_changes',
         {
@@ -773,8 +773,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
       )
       .subscribe();
 
-    const threadChannel = supabase
-      .channel('tenant_threads_realtime')
+    const threadChannel = realtimeChannel('tenant_threads_realtime')
       .on(
         'postgres_changes',
         {
@@ -792,8 +791,8 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
       .subscribe();
 
     return () => {
-      supabase.removeChannel(messageChannel);
-      supabase.removeChannel(threadChannel);
+      removeRealtimeChannel(messageChannel);
+      removeRealtimeChannel(threadChannel);
     };
   }, [user, activeTenantId, isTenantContext, fetchThreads]);
 
@@ -805,7 +804,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
     
     try {
       // Use realtime channel for typing instead of database
-      const channel = supabase.channel(`tenant_typing_${threadId}`);
+      const channel = realtimeChannel(`tenant_typing_${threadId}`);
       await channel.send({
         type: 'broadcast',
         event: 'typing_start',
@@ -826,7 +825,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
     
     try {
       // Use realtime channel for typing instead of database
-      const channel = supabase.channel(`tenant_typing_${threadId}`);
+      const channel = realtimeChannel(`tenant_typing_${threadId}`);
       await channel.send({
         type: 'broadcast',
         event: 'typing_stop',

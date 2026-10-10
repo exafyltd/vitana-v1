@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
-import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { notify } from '@/lib/i18n-toast';
 
 interface NotificationEvent {
@@ -16,15 +16,14 @@ export const CrossSystemNotifier = () => {
 
   useEffect(() => {
     // Listen for real-time notification events
-    const channel = supabase
-      .channel('system-notifications')
+    const channel = realtimeChannel('system-notifications')
       .on('broadcast', { event: 'notification' }, (payload: { payload: NotificationEvent }) => {
         handleNotification(payload.payload);
       })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, []);
 
@@ -116,7 +115,7 @@ export const CrossSystemNotifier = () => {
 
   // Utility function to broadcast notifications
   const broadcastNotification = async (event: NotificationEvent) => {
-    const channel = supabase.channel('system-notifications');
+    const channel = realtimeChannel('system-notifications');
     await channel.send({
       type: 'broadcast',
       event: 'notification',
@@ -129,7 +128,7 @@ export const CrossSystemNotifier = () => {
 
 // Export utility function for other components to use
 export const notifySystem = async (event: NotificationEvent) => {
-  const channel = supabase.channel('system-notifications');
+  const channel = realtimeChannel('system-notifications');
   await channel.send({
     type: 'broadcast',
     event: 'notification',

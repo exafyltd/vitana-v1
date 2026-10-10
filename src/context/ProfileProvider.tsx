@@ -3,6 +3,7 @@ import { useAuth } from "./AuthProvider";
 import { UserRole } from "@/hooks/useRole";
 import { TenantType } from "@/hooks/useTenant";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import {
   AccountInfo,
   AccountVisibility,
@@ -275,8 +276,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       fetchUserProfile(user.id);
       
       // Set up real-time subscription for profile changes
-      const channel = supabase
-        .channel('profile-changes')
+      const channel = realtimeChannel('profile-changes')
         .on(
           'postgres_changes',
           {
@@ -294,7 +294,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
       return () => {
         clearRetryTimer();
-        supabase.removeChannel(channel);
+        removeRealtimeChannel(channel);
       };
     } else {
       // Use default profile for non-authenticated users

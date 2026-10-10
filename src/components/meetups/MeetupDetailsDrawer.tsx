@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback, useMemo } from "react"
 import { FollowButton } from "@/components/social/FollowButton";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Drawer,
@@ -398,8 +399,7 @@ export function MeetupDetailsDrawer({
     // Initialize from event prop
     setLiveParticipantCount(event.participant_count || 0);
 
-    const channel = supabase
-      .channel(`drawer-participants-${event.id}`)
+    const channel = realtimeChannel(`drawer-participants-${event.id}`)
       .on(
         'postgres_changes',
         {
@@ -424,7 +424,7 @@ export function MeetupDetailsDrawer({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [open, event?.id]);
 

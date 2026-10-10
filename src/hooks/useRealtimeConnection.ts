@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 
 interface RealtimeConnectionState {
   isConnected: boolean;
@@ -13,7 +13,7 @@ export function useRealtimeConnection(): RealtimeConnectionState {
   const [lastSync, setLastSync] = useState(new Date());
 
   useEffect(() => {
-    const channel = supabase.channel('connection-monitor');
+    const channel = realtimeChannel('connection-monitor');
 
     channel
       .on('system', { event: 'connected' }, () => {
@@ -34,7 +34,7 @@ export function useRealtimeConnection(): RealtimeConnectionState {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, []);
 

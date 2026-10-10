@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 
 import { useAuth } from '@/context/AuthProvider';
 
@@ -15,8 +15,7 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
     if (!user?.id) return;
 
     // Subscribe to wallet balance changes
-    const balanceChannel = supabase
-      .channel('wallet-balances')
+    const balanceChannel = realtimeChannel('wallet-balances')
       .on(
         'postgres_changes',
         {
@@ -33,8 +32,7 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
       .subscribe();
 
     // Subscribe to transaction changes
-    const transactionChannel = supabase
-      .channel('wallet-transactions')
+    const transactionChannel = realtimeChannel('wallet-transactions')
       .on(
         'postgres_changes',
         {
@@ -51,8 +49,8 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
       .subscribe();
 
     return () => {
-      supabase.removeChannel(balanceChannel);
-      supabase.removeChannel(transactionChannel);
+      removeRealtimeChannel(balanceChannel);
+      removeRealtimeChannel(transactionChannel);
     };
   }, [user?.id, onBalanceUpdate, onTransactionUpdate]);
 }

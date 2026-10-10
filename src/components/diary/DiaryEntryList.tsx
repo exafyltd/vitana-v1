@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { deleteDiaryEntry } from "@/lib/memory-api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PhotoEntryCard } from "./PhotoEntryCard";
@@ -73,8 +74,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   // Set up real-time subscription
   useEffect(() => {
     const filterStr = entryType ? `source=eq.${entryType}` : undefined;
-    const channel = supabase
-      .channel(`diary-entries-changes-${entryType ?? 'all'}`)
+    const channel = realtimeChannel(`diary-entries-changes-${entryType ?? 'all'}`)
       .on(
         'postgres_changes',
         {
@@ -90,7 +90,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [entryType, refetch]);
 

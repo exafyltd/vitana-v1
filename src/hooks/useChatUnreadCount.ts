@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { fetchUnreadCount, fetchGroups } from "@/hooks/useChatApi";
 
 // ── Self-sufficient unread badge store ──────────────────────────────
@@ -72,13 +73,12 @@ function ensureGroupSubscription(userId: string, groupIds: string[]) {
   subscribedGroupKey = key;
 
   if (groupChannel) {
-    supabase.removeChannel(groupChannel);
+    removeRealtimeChannel(groupChannel);
     groupChannel = null;
   }
   if (groupIds.length === 0) return;
 
-  groupChannel = supabase
-    .channel(`chat_unread_badge_groups_${userId}`)
+  groupChannel = realtimeChannel(`chat_unread_badge_groups_${userId}`)
     .on(
       "postgres_changes",
       {
@@ -98,11 +98,11 @@ function handleTrigger() {
 
 function teardown() {
   if (dmChannel) {
-    supabase.removeChannel(dmChannel);
+    removeRealtimeChannel(dmChannel);
     dmChannel = null;
   }
   if (groupChannel) {
-    supabase.removeChannel(groupChannel);
+    removeRealtimeChannel(groupChannel);
     groupChannel = null;
   }
   subscribedGroupKey = "";
@@ -132,8 +132,7 @@ function init(userId: string) {
   window.addEventListener("chat-threads-refetch", handleTrigger);
 
   // Direct DM realtime: new message addressed to me → reconcile.
-  dmChannel = supabase
-    .channel(`chat_unread_badge_dm_${userId}`)
+  dmChannel = realtimeChannel(`chat_unread_badge_dm_${userId}`)
     .on(
       "postgres_changes",
       { event: "INSERT", schema: "public", table: "chat_messages", filter: `receiver_id=eq.${userId}` },

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 
 export interface MessageReaction {
@@ -143,8 +144,7 @@ export function useMessageReactions(messageId: string) {
   useEffect(() => {
     fetchReactions();
 
-    const channel = supabase
-      .channel(`reactions:${messageId}`)
+    const channel = realtimeChannel(`reactions:${messageId}`)
       .on(
         'postgres_changes',
         {
@@ -160,7 +160,7 @@ export function useMessageReactions(messageId: string) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [messageId, fetchReactions]);
 

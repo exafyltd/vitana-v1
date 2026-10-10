@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect } from "react";
 import { notify, notifyError } from '@/lib/i18n-toast';
@@ -342,8 +343,7 @@ export function useActivityHistory(filterType?: string) {
 
   // Set up realtime subscription for ai_messages
   useEffect(() => {
-    const channel = supabase
-      .channel('ai_messages_realtime')
+    const channel = realtimeChannel('ai_messages_realtime')
       .on(
         'postgres_changes',
         {
@@ -360,14 +360,13 @@ export function useActivityHistory(filterType?: string) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [queryClient]);
 
   // Set up realtime subscription for user_activity_log
   useEffect(() => {
-    const channel = supabase
-      .channel('activity_log_realtime')
+    const channel = realtimeChannel('activity_log_realtime')
       .on(
         'postgres_changes',
         {
@@ -384,7 +383,7 @@ export function useActivityHistory(filterType?: string) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [queryClient]);
 

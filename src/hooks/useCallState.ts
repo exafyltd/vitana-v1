@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel } from '@/integrations/supabase/realtime';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 export type CallState = 'idle' | 'calling' | 'ringing' | 'active' | 'ended' | 'no-answer';
@@ -68,7 +69,7 @@ export const useCallState = (userId: string) => {
       console.log('⏰ Call timeout - auto-rejecting');
       
       // Send no-answer event to caller
-      const channel = supabase.channel(`user:${callData.callerId}:calls`);
+      const channel = realtimeChannel(`user:${callData.callerId}:calls`);
       await channel.subscribe();
       await channel.send({
         type: 'broadcast',
@@ -84,7 +85,7 @@ export const useCallState = (userId: string) => {
 
   useEffect(() => {
     console.log('🔌 Setting up Supabase channel for user:', userId);
-    const channel = supabase.channel(`user:${userId}:calls`, {
+    const channel = realtimeChannel(`user:${userId}:calls`, {
       config: { 
         presence: { key: userId },
         broadcast: { self: false }
@@ -201,7 +202,7 @@ export const useCallState = (userId: string) => {
 
       // Broadcast call to recipient with retry logic
       console.log('📡 Broadcasting call to recipient channel:', `user:${recipientId}:calls`);
-      const channel = supabase.channel(`user:${recipientId}:calls`, {
+      const channel = realtimeChannel(`user:${recipientId}:calls`, {
         config: { 
           presence: { key: userId },
           broadcast: { self: false }
@@ -280,7 +281,7 @@ export const useCallState = (userId: string) => {
     console.log('✅ Accepting call:', callData);
     clearCallTimeout(); // Clear timeout when accepting
     
-    const channel = supabase.channel(`user:${callData.callerId}:calls`);
+    const channel = realtimeChannel(`user:${callData.callerId}:calls`);
     await channel.subscribe();
 
     await channel.send({
@@ -297,7 +298,7 @@ export const useCallState = (userId: string) => {
     console.log('❌ Rejecting call:', callData);
     clearCallTimeout(); // Clear timeout when rejecting
     
-    const channel = supabase.channel(`user:${callData.callerId}:calls`);
+    const channel = realtimeChannel(`user:${callData.callerId}:calls`);
     await channel.subscribe();
 
     await channel.send({
@@ -314,7 +315,7 @@ export const useCallState = (userId: string) => {
 
     const recipientId = activeCall.callerId === userId ? activeCall.recipientId : activeCall.callerId;
     
-    const channel = supabase.channel(`user:${recipientId}:calls`);
+    const channel = realtimeChannel(`user:${recipientId}:calls`);
     await channel.subscribe();
 
     await channel.send({

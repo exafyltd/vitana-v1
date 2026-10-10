@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, X, Clock } from 'lucide-react';
 import { useCalendarEvents, CalendarInviteResponse } from '@/hooks/useCalendarEvents';
-import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { InviteResponseSummary } from './InviteResponseSummary';
@@ -61,8 +61,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
     fetchResponse();
 
     // Set up real-time subscription for this specific message's responses
-    const channel = supabase
-      .channel(`invite-response-${messageId}`)
+    const channel = realtimeChannel(`invite-response-${messageId}`)
       .on('postgres_changes', {
         event: '*',
         schema: 'public', 
@@ -84,7 +83,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [messageId, getInviteResponse, getAllInviteResponses, senderId, messageData, user?.id, toast]);
 

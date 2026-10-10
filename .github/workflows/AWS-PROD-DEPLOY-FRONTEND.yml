@@ -160,6 +160,9 @@ jobs:
           # VTID-05023 Aurora cutover: PostgREST traffic -> Aurora proxy when set.
           # Repository variable VITE_DATA_API_URL_PROD; unset/empty = today's behaviour.
           VITE_DATA_API_URL=${{ vars.VITE_DATA_API_URL_PROD }}
+          # VTID-05023 part 7a: realtime channels -> self-hosted Realtime (Aurora) when set.
+          # Repository variable VITE_REALTIME_URL_PROD; unset/empty = today's behaviour.
+          VITE_REALTIME_URL=${{ vars.VITE_REALTIME_URL_PROD }}
           EOF
           sed 's/=.*/=<value>/' .env.production
 
