@@ -10,3 +10,6 @@ scripts
 .claude
 *.md
 !README.md
+
+# VTID-05059: Kiro IDE steering files are editor config, never image content
+.kiro
