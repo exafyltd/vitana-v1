@@ -12,7 +12,6 @@ import {
   Activity, 
   Watch, 
   CheckCircle, 
-  AlertCircle, 
   Settings as SettingsIcon,
   MessageCircle,
   CreditCard,
@@ -34,7 +33,6 @@ import {
   Calendar,
   History,
   ListChecks,
-  RefreshCcw,
   Clock,
   Mail,
   Contact,
@@ -84,10 +82,12 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
-import { fmtDateTime } from '@/lib/locale-format';
+import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
 // VTID-04406: Mail, Calendar & Contacts come from the gateway hub now.
 import { MailCalendarContactsPanel } from '@/components/settings/connected-apps/MailCalendarContactsPanel';
 import { APP_ORDER } from '@/lib/connected-apps-client';
+// VTID-05032 (Health Hub D3): real wearable connection state from the gateway, never hard-coded.
+import { useWearableProviders, connectedProvider } from '@/hooks/useWearableProviders';
 
 /** The nine hub apps — no longer rendered as static cards (VTID-04406). */
 const HUB_APP_IDS = new Set<string>(Object.values(APP_ORDER).flat());
@@ -97,6 +97,14 @@ function ConnectedApps() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("connected");
   const { allPlatforms, loading } = useSocialPlatforms();
+  const { data: wearableProviders } = useWearableProviders();
+  // Data Sync tab filter — a top-level hook (it used to be called inside the tab's render callback).
+  const [syncFilter, setSyncFilter] = useState('all');
+  /** VTID-05032 (Health Hub D3): connected only when the gateway says so; last sync from the real timestamp. */
+  const wearable = (appId: string) => {
+    const p = connectedProvider(wearableProviders, appId);
+    return { connected: !!p, lastSync: p?.last_sync_at ? fmtDateTime(new Date(p.last_sync_at)) : null };
+  };
   // VTID-02403: AI Assistants state
   const { data: aiProviders = [] } = useAIProviders();
   const disconnectAi = useDisconnectAIProvider();
@@ -361,233 +369,91 @@ function ConnectedApps() {
     });
   };
 
-  // Health & fitness apps
-  const getHealthFitnessCards = (): StandardHorizontalCardProps[] => {
-    const apps = [
-      {
-        id: 'apple-health',
-        name: 'Apple Health',
-        icon: Heart,
-        iconColor: 'bg-red-500',
-        connected: true,
-        syncData: 'Steps, heart rate, sleep',
-        lastSync: '2 minutes ago',
-      },
-      {
-        id: 'fitbit',
-        name: 'Fitbit',
-        icon: Activity,
-        iconColor: 'bg-blue-500',
-        connected: true,
-        syncData: 'Activity, sleep, weight',
-        lastSync: '15 minutes ago',
-      },
-      {
-        id: 'strava',
-        name: 'Strava',
-        icon: Activity,
-        iconColor: 'bg-orange-500',
-        connected: false,
-        syncData: 'Exercise and running data',
-      },
-      {
-        id: 'oura',
-        name: 'Oura Ring',
-        icon: Watch,
-        iconColor: 'bg-purple-500',
-        connected: false,
-        syncData: 'Sleep, readiness, activity',
-      },
-      {
-        id: 'garmin',
-        name: 'Garmin',
-        icon: Watch,
-        iconColor: 'bg-blue-600',
-        connected: false,
-        syncData: 'GPS and fitness tracking',
-      },
-      {
-        id: 'myfitnesspal',
-        name: 'MyFitnessPal',
-        icon: Heart,
-        iconColor: 'bg-blue-400',
-        connected: true,
-        syncData: 'Nutrition, calories',
-        lastSync: '1 hour ago',
-      },
-    ];
+  /**
+   * VTID-05032 (Health Hub D3): one builder for every health card (Health &
+   * Fitness, Sleep & Recovery, Nutrition). A card is connected only when the
+   * gateway reports its connector connected; the last sync is the real
+   * `last_sync_at`. Apps without a gateway connector are never connected.
+   * Connect / settings flows are not wired yet, so no action pretends to work.
+   */
+  type HealthApp = {
+    id: string;
+    name: string;
+    icon: typeof Heart;
+    syncData: string;
+    /** Gateway connector id (GET /api/v1/wearables/providers); none = no connector yet. */
+    connectorId?: string;
+  };
 
-    return apps.map((app) => {
+  const buildHealthCards = (prefix: string, apps: HealthApp[]): StandardHorizontalCardProps[] =>
+    apps.map((app) => {
       const AppIcon = app.icon;
+      const state = app.connectorId ? wearable(app.connectorId) : { connected: false, lastSync: null };
       return {
-        id: `health-${app.id}`,
+        id: `${prefix}-${app.id}`,
         screenId: "settings-connected-apps",
         icon: <AppIcon className="w-5 h-5" />,
         title: app.name,
         description: app.syncData,
-        badges: app.connected
-          ? [{ label: 'Connected', variant: 'default' as const }]
-          : undefined,
+        badges: state.connected
+          ? [{ label: t('screens.settings.connected'), variant: 'default' as const }]
+          : [{ label: t('screens.settings.notConnected'), variant: 'secondary' as const }],
         primaryAction: {
-          label: app.connected ? 'Settings' : 'Connect',
-          onClick: () => console.log(`${app.connected ? 'Configure' : 'Connect'} ${app.name}`),
+          label: state.connected ? t('screens.settings.settings') : t('screens.settings.connect'),
+          onClick: () => undefined,
+          disabled: true,
         },
-        expandedContent: app.connected ? (
+        expandedContent: state.connected ? (
           <div className="space-y-3 pt-2">
             <div className="text-sm">
               <strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}
             </div>
-            <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: app.lastSync })}</div>
+            {state.lastSync && (
+              <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: state.lastSync })}</div>
+            )}
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-              <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
+              <Button variant="outline" size="sm" disabled>{t('screens.settings.configureSync')}</Button>
+              <Button variant="destructive" size="sm" disabled>{t('screens.settings.disconnect')}</Button>
             </div>
           </div>
-        ) : (
+        ) : app.connectorId ? (
           <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.connectNameAutomaticallySyncYourValue1', { name: app.name, value1: app.syncData.toLowerCase() })}
+          </div>
+        ) : (
+          <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon', { name: app.name })}
           </div>
         ),
       };
     });
-  };
+
+  // Health & fitness apps — Apple Health arrives with the native app (VTID-05021);
+  // Garmin and MyFitnessPal have no gateway connector yet.
+  const getHealthFitnessCards = (): StandardHorizontalCardProps[] =>
+    buildHealthCards('health', [
+      { id: 'apple-health', name: 'Apple Health', icon: Heart, syncData: 'Steps, heart rate, sleep' },
+      { id: 'fitbit', name: 'Fitbit', icon: Activity, syncData: 'Activity, sleep, weight', connectorId: 'fitbit' },
+      { id: 'strava', name: 'Strava', icon: Activity, syncData: 'Exercise and running data', connectorId: 'strava' },
+      { id: 'oura', name: 'Oura Ring', icon: Watch, syncData: 'Sleep, readiness, activity', connectorId: 'oura' },
+      { id: 'garmin', name: 'Garmin', icon: Watch, syncData: 'GPS and fitness tracking' },
+      { id: 'myfitnesspal', name: 'MyFitnessPal', icon: Heart, syncData: 'Nutrition, calories' },
+    ]);
 
   // Sleep & Recovery Devices
-  const getSleepRecoveryCards = (): StandardHorizontalCardProps[] => {
-    const apps = [
-      {
-        id: 'oura',
-        name: 'Oura Ring',
-        icon: Moon,
-        connected: true,
-        syncData: 'Sleep quality, readiness, HRV',
-        lastSync: '1 hour ago',
-      },
-      {
-        id: 'eightsleep',
-        name: 'Eight Sleep',
-        icon: Moon,
-        connected: false,
-        syncData: 'Sleep stages, temperature',
-        comingSoon: true,
-      },
-      {
-        id: 'withings-sleep',
-        name: 'Withings Sleep Analyzer',
-        icon: Moon,
-        connected: false,
-        syncData: 'Sleep tracking, breathing patterns',
-        comingSoon: true,
-      },
-    ];
+  const getSleepRecoveryCards = (): StandardHorizontalCardProps[] =>
+    buildHealthCards('sleep', [
+      { id: 'oura', name: 'Oura Ring', icon: Moon, syncData: 'Sleep quality, readiness, HRV', connectorId: 'oura' },
+      { id: 'eightsleep', name: 'Eight Sleep', icon: Moon, syncData: 'Sleep stages, temperature' },
+      { id: 'withings-sleep', name: 'Withings Sleep Analyzer', icon: Moon, syncData: 'Sleep tracking, breathing patterns' },
+    ]);
 
-    return apps.map((app) => ({
-      id: `sleep-${app.id}`,
-      screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: app.syncData,
-      badges: app.connected
-        ? [{ label: 'Connected', variant: 'default' as const }]
-        : app.comingSoon
-          ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
-          : undefined,
-      primaryAction: app.connected
-        ? { label: 'Settings', onClick: () => console.log(`Settings ${app.name}`) }
-        : !app.comingSoon
-          ? { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) }
-          : undefined,
-      expandedContent: app.connected ? (
-        <div className="space-y-3 pt-2">
-          <div className="text-sm"><strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}</div>
-          <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: app.lastSync })}</div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-            <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
-          </div>
-        </div>
-      ) : (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.comingSoon 
-            ? `${app.name} integration is coming soon.`
-            : `Connect ${app.name} to automatically sync your ${app.syncData.toLowerCase()}.`
-          }
-        </div>
-      ),
-    }));
-  };
-
-  // Nutrition & Wellness Apps
-  const getNutritionCards = (): StandardHorizontalCardProps[] => {
-    const apps = [
-      {
-        id: 'myfitnesspal',
-        name: 'MyFitnessPal',
-        icon: Apple,
-        connected: true,
-        syncData: 'Nutrition, calories, macros',
-        lastSync: '30 minutes ago',
-      },
-      {
-        id: 'cronometer',
-        name: 'Cronometer',
-        icon: Utensils,
-        connected: false,
-        syncData: 'Detailed nutrition tracking',
-        comingSoon: true,
-      },
-      {
-        id: 'lifesum',
-        name: 'Lifesum',
-        icon: Apple,
-        connected: false,
-        syncData: 'Meal planning, nutrition',
-        comingSoon: true,
-      },
-      {
-        id: 'yazio',
-        name: 'Yazio',
-        icon: Utensils,
-        connected: false,
-        syncData: 'Calorie counter, diet plans',
-        comingSoon: true,
-      },
-    ];
-
-    return apps.map((app) => ({
-      id: `nutrition-${app.id}`,
-      screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: app.syncData,
-      badges: app.connected
-        ? [{ label: 'Connected', variant: 'default' as const }]
-        : app.comingSoon
-          ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
-          : undefined,
-      primaryAction: app.connected
-        ? { label: 'Settings', onClick: () => console.log(`Settings ${app.name}`) }
-        : !app.comingSoon
-          ? { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) }
-          : undefined,
-      expandedContent: app.connected ? (
-        <div className="space-y-3 pt-2">
-          <div className="text-sm"><strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}</div>
-          <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: app.lastSync })}</div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-            <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
-          </div>
-        </div>
-      ) : (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.comingSoon 
-            ? `${app.name} integration is coming soon.`
-            : `Connect ${app.name} to track your ${app.syncData.toLowerCase()}.`
-          }
-        </div>
-      ),
-    }));
-  };
+  // Nutrition & Wellness Apps — none has a gateway connector yet.
+  const getNutritionCards = (): StandardHorizontalCardProps[] =>
+    buildHealthCards('nutrition', [
+      { id: 'myfitnesspal', name: 'MyFitnessPal', icon: Apple, syncData: 'Nutrition, calories, macros' },
+      { id: 'cronometer', name: 'Cronometer', icon: Utensils, syncData: 'Detailed nutrition tracking' },
+      { id: 'lifesum', name: 'Lifesum', icon: Apple, syncData: 'Meal planning, nutrition' },
+      { id: 'yazio', name: 'Yazio', icon: Utensils, syncData: 'Calorie counter, diet plans' },
+    ]);
 
   // Clinical & Lab Integrations
   const getClinicalLabCards = (): StandardHorizontalCardProps[] => {
@@ -1516,45 +1382,37 @@ function ConnectedApps() {
     }));
   };
 
+  /**
+   * VTID-05032 (Health Hub D3): the Data Sync tab shows only providers the
+   * gateway reports connected, at their real `last_sync_at`. No invented
+   * counts, queues or history entries.
+   */
+  const connectedWearables = (wearableProviders ?? [])
+    .filter((p) => p.status === 'connected')
+    .sort((a, b) => (b.last_sync_at ?? '').localeCompare(a.last_sync_at ?? ''));
+  const formatSync = (iso: string | null) => (iso ? fmtDateTime(new Date(iso)) : '—');
+
   const getSyncOverviewCard = (): StandardHorizontalCardProps => {
-    const [isSyncing, setIsSyncing] = useState(false);
-    
+    const latest = connectedWearables.find((p) => p.last_sync_at)?.last_sync_at ?? null;
     return {
       id: 'sync-overview',
       screenId: "settings-connected-apps",
       icon: <RefreshCw className="w-5 h-5" />,
-      title: 'System Sync Status',
-      description: 'Shows the last time your data was synchronized across all connected apps',
-      badges: [{ label: 'All Systems Operational', variant: 'default' as const }],
-      primaryAction: {
-        label: isSyncing ? 'Syncing...' : 'Sync Now',
-        onClick: () => {
-          setIsSyncing(true);
-          console.log('Manual sync triggered');
-          setTimeout(() => setIsSyncing(false), 3000);
-        },
-        disabled: isSyncing,
-        variant: 'ghost' as const,
-        icon: <RefreshCcw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />,
-      },
+      title: t('screens.settings.syncOverview'),
+      description: `${t('screens.settings.totalSyncedApps')}: ${fmtNumber(connectedWearables.length)}`,
+      badges: connectedWearables.length > 0
+        ? [{ label: t('screens.settings.connected'), variant: 'default' as const }]
+        : [{ label: t('screens.settings.notConnected'), variant: 'secondary' as const }],
       expandedContent: (
         <div className="space-y-3 pt-2">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="text-sm font-medium">{t('screens.settings.lastSync')}</div>
-              <div className="text-sm text-muted-foreground">{t('screens.settings.text15MinutesAgo')}</div>
+              <div className="text-sm text-muted-foreground">{formatSync(latest)}</div>
             </div>
             <div>
               <div className="text-sm font-medium">{t('screens.settings.totalSyncedApps')}</div>
-              <div className="text-sm text-muted-foreground">{t('screens.settings.text5Connected')}</div>
-            </div>
-            <div>
-              <div className="text-sm font-medium">{t('screens.settings.pendingSyncs')}</div>
-              <div className="text-sm text-muted-foreground">{t('screens.settings.text1Queue')}</div>
-            </div>
-            <div>
-              <div className="text-sm font-medium">{t('screens.settings.nextAutomaticSync')}</div>
-              <div className="text-sm text-muted-foreground">{t('screens.settings.text45Minutes')}</div>
+              <div className="text-sm text-muted-foreground">{fmtNumber(connectedWearables.length)}</div>
             </div>
           </div>
         </div>
@@ -1562,237 +1420,68 @@ function ConnectedApps() {
     };
   };
 
-  const getPerAppSyncCards = (): StandardHorizontalCardProps[] => {
-    const connectedApps = [
-      {
-        id: 'apple-health',
-        name: 'Apple Health',
-        icon: Heart,
-        lastSync: '12 minutes ago',
-        newData: 'Sleep, Steps, Heart Rate',
-        connected: true,
-      },
-      {
-        id: 'fitbit',
-        name: 'Fitbit',
-        icon: Activity,
-        lastSync: '8 minutes ago',
-        newData: 'Activity, Sleep, Weight',
-        connected: true,
-      },
-      {
-        id: 'strava',
-        name: 'Strava',
-        icon: Activity,
-        lastSync: '14 minutes ago',
-        newData: 'Running, Cycling',
-        connected: true,
-      },
-      {
-        id: 'oura',
-        name: 'Oura Ring',
-        icon: Moon,
-        lastSync: '10 minutes ago',
-        newData: 'Sleep, Readiness, Activity',
-        connected: true,
-      },
-      {
-        id: 'garmin',
-        name: 'Garmin',
-        icon: Watch,
-        lastSync: '21 minutes ago',
-        newData: 'GPS data, Heart Rate, Activity',
-        connected: true,
-      },
-      {
-        id: 'myfitnesspal',
-        name: 'MyFitnessPal',
-        icon: Apple,
-        lastSync: '5 minutes ago',
-        newData: 'Nutrition, Calories',
-        connected: true,
-      },
-    ];
-
-    return connectedApps.map((app) => ({
-      id: `app-sync-${app.id}`,
+  const getPerAppSyncCards = (): StandardHorizontalCardProps[] =>
+    connectedWearables.map((p) => ({
+      id: `app-sync-${p.id}`,
       screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: `Last Sync: ${app.lastSync}`,
-      badges: app.connected 
-        ? [{ label: 'Synced', variant: 'default' as const }]
-        : [{ label: 'Not Connected', variant: 'secondary' as const }],
-      primaryAction: {
-        label: 'Sync',
-        onClick: () => console.log(`Sync ${app.name}`),
-        disabled: !app.connected,
-        variant: 'ghost' as const,
-      },
+      icon: <Activity className="w-5 h-5" />,
+      title: p.display_name,
+      description: `${t('screens.settings.lastSync2')} ${formatSync(p.last_sync_at)}`,
+      badges: [{ label: t('screens.settings.connected'), variant: 'default' as const }],
       expandedContent: (
         <div className="space-y-3 pt-2">
           <div className="text-sm">
-            <strong>{t('screens.settings.dataSynced')}</strong> {app.newData}
+            <strong>{t('screens.settings.lastSync2')}</strong> {formatSync(p.last_sync_at)}
           </div>
-          <div className="text-sm">
-            <strong>{t('screens.settings.lastSync2')}</strong> {app.lastSync}
-          </div>
-          {app.connected && (
-            <div className="flex gap-2 mt-3">
-              <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-              <Button variant="outline" size="sm">{t('screens.settings.viewDetails')}</Button>
-            </div>
-          )}
         </div>
       ),
     }));
-  };
 
   const getSyncHistoryCard = (filter: string): StandardHorizontalCardProps => {
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const twoDaysAgo = new Date(today);
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-    const threeDaysAgo = new Date(today);
-    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
-    const allEntries = [
-      { 
-        timestamp: new Date(today.getTime() + 10 * 60 * 60 * 1000 + 42 * 60 * 1000), // 10:42 AM today
-        app: 'Fitbit', 
-        action: 'synced steps + heart rate', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(today.getTime() + 10 * 60 * 60 * 1000 + 39 * 60 * 1000), // 10:39 AM today
-        app: 'Apple Health', 
-        action: 'synced sleep', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(today.getTime() + 10 * 60 * 60 * 1000 + 15 * 60 * 1000), // 10:15 AM today
-        app: 'MyFitnessPal', 
-        action: 'synced nutrition', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(today.getTime() + 9 * 60 * 60 * 1000 + 50 * 60 * 1000), // 9:50 AM today
-        app: 'Oura Ring', 
-        action: 'synced readiness + HRV', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(today.getTime() + 9 * 60 * 60 * 1000 + 34 * 60 * 1000), // 9:34 AM today
-        app: 'Garmin', 
-        action: 'synced GPS + activity', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(today.getTime() + 8 * 60 * 60 * 1000 + 10 * 60 * 1000), // 8:10 AM today
-        app: 'Fitbit', 
-        action: 'synced steps + calories', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(today.getTime() + 7 * 60 * 60 * 1000 + 12 * 60 * 1000), // 7:12 AM today
-        app: 'Fitbit', 
-        action: 'sync failed', 
-        isError: true 
-      },
-      { 
-        timestamp: new Date(yesterday.getTime() + 22 * 60 * 60 * 1000 + 48 * 60 * 1000), // Yesterday 10:48 PM
-        app: 'Apple Health', 
-        action: 'synced sleep', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(yesterday.getTime() + 18 * 60 * 60 * 1000 + 22 * 60 * 1000), // Yesterday 6:22 PM
-        app: 'MyFitnessPal', 
-        action: 'synced dinner calories', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(twoDaysAgo.getTime() + 15 * 60 * 60 * 1000 + 30 * 60 * 1000), // 2 days ago 3:30 PM
-        app: 'Strava', 
-        action: 'synced running activity', 
-        isError: false 
-      },
-      { 
-        timestamp: new Date(threeDaysAgo.getTime() + 9 * 60 * 60 * 1000 + 15 * 60 * 1000), // 3 days ago 9:15 AM
-        app: 'Oura Ring', 
-        action: 'synced sleep score', 
-        isError: false 
-      },
-    ];
-
-    const formatTimestamp = (date: Date): string => {
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      const displayHours = hours % 12 || 12;
-      const displayMinutes = minutes.toString().padStart(2, '0');
-      const timeString = `${displayHours}:${displayMinutes} ${ampm}`;
-      
-      if (date >= today) {
-        return timeString;
-      } else if (date >= yesterday) {
-        return `Yesterday ${timeString}`;
-      } else {
-        const daysAgo = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-        return `${daysAgo} days ago`;
-      }
-    };
+    const allEntries = connectedWearables
+      .filter((p) => p.last_sync_at)
+      .map((p) => ({ id: p.id, app: p.display_name, timestamp: new Date(p.last_sync_at as string) }));
 
     let filteredEntries = allEntries;
-    
     if (filter === 'today') {
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const todayEnd = new Date(todayStart);
-      todayEnd.setDate(todayEnd.getDate() + 1);
-      filteredEntries = allEntries.filter(e => 
-        e.timestamp >= todayStart && e.timestamp < todayEnd
-      );
+      filteredEntries = allEntries.filter((e) => e.timestamp >= todayStart);
     } else if (filter === 'last7days') {
       const sevenDaysAgo = new Date(now);
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      filteredEntries = allEntries.filter(e => e.timestamp >= sevenDaysAgo);
+      filteredEntries = allEntries.filter((e) => e.timestamp >= sevenDaysAgo);
     } else if (filter === 'errors') {
-      filteredEntries = allEntries.filter(e => e.isError);
+      // No sync-error feed exists yet; never invent one.
+      filteredEntries = [];
     }
 
     return {
       id: 'sync-history',
       screenId: "settings-connected-apps",
       icon: <History className="w-5 h-5" />,
-      title: 'Sync Activity Log',
-      description: 'Chronological history of all sync events',
+      title: t('screens.settings.syncActivityLog'),
+      description: `${t('screens.settings.totalSyncedApps')}: ${fmtNumber(connectedWearables.length)}`,
       expandedContent: (
         <div className="space-y-3 pt-2 max-h-96 overflow-y-auto">
-          {filteredEntries.length === 0 ? (
+          {connectedWearables.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">{t('screens.settings.notConnected')}</p>
+            </div>
+          ) : filteredEntries.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-sm">{t('screens.settings.noSyncEventsForThisFilter')}</p>
             </div>
           ) : (
-            filteredEntries.map((entry, index) => (
-              <div 
-                key={index} 
-                className="flex items-start gap-3 py-1"
-              >
-                {entry.isError ? (
-                  <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                ) : (
-                  <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                )}
+            filteredEntries.map((entry) => (
+              <div key={entry.id} className="flex items-start gap-3 py-1">
+                <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <div className="flex-1 text-sm leading-relaxed">
-                  <span className="text-muted-foreground">{formatTimestamp(entry.timestamp)}</span>
+                  <span className="text-muted-foreground">{fmtDateTime(entry.timestamp)}</span>
                   <span className="text-muted-foreground"> — </span>
-                  <span className={`font-semibold ${entry.isError ? 'text-red-600 dark:text-red-400' : ''}`}>
-                    {entry.isError ? 'Error — ' : ''}{entry.app}
-                  </span>
-                  <span className={entry.isError ? 'text-red-600 dark:text-red-400' : ''}> {entry.action}</span>
+                  <span className="font-semibold">{entry.app}</span>
                 </div>
               </div>
             ))
@@ -2291,8 +1980,6 @@ function ConnectedApps() {
         {/* Tab 3: Data Sync */}
         <SplitBarContent value="sync">
           {(() => {
-            const [syncFilter, setSyncFilter] = useState('all');
-            
             return (
               <div className="space-y-6">
                 
@@ -2320,16 +2007,22 @@ function ConnectedApps() {
                     <ListChecks className="w-5 h-5" />
                     {t('screens.settings.appSyncDetails')}
                   </h2>
-                  <HorizontalCardList
-                    items={getPerAppSyncCards()}
-                    variant="standard"
-                    layout="stack"
-                    screenId="settings-connected-apps"
-                    listId="per-app-sync"
-                    gap="md"
-                    infiniteScroll={false}
-                    className="pb-2"
-                  />
+                  {connectedWearables.length === 0 ? (
+                    <p className="text-sm text-muted-foreground" data-testid="per-app-sync-empty">
+                      {t('screens.settings.notConnected')}
+                    </p>
+                  ) : (
+                    <HorizontalCardList
+                      items={getPerAppSyncCards()}
+                      variant="standard"
+                      layout="stack"
+                      screenId="settings-connected-apps"
+                      listId="per-app-sync"
+                      gap="md"
+                      infiniteScroll={false}
+                      className="pb-2"
+                    />
+                  )}
                 </div>
 
                 {/* Section 3: Sync Activity Log */}

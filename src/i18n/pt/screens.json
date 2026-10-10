@@ -7580,7 +7580,7 @@
       "connectNameAutomaticallySyncYourValue1": "Conecte {name}para sincronizar automaticamente seu {value1}.",
       "nameIntegrationComingSoonThisWill": "A integração {name}estará disponível em breve. Isso permitirá acesso seguro a {value1}.",
       "nameIntegrationComingSoonTrackYour": "A integração {name}estará disponível em breve. Acompanhe seu {value1}.",
-      "nameIntegrationComingSoon": "A integração {name}estará disponível em breve.",
+      "nameIntegrationComingSoon": "A integração {name} estará disponível em breve.",
       "nameIntegrationComingSoon2": "{name} integração está chegando em breve!",
       "all": "Tudo",
       "today": "Hoje",

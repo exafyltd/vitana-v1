@@ -180,23 +180,24 @@ export const socialIntegrations: Integration[] = [
 ];
 
 // Fitness & Wearables integrations
+// VTID-05032 (Health Hub D3): static catalog only — never connected here. The
+// real state (connected + last sync) comes from the gateway via
+// mergeWearableState() in useWearableProviders.
 export const fitnessIntegrations: Integration[] = [
   {
     id: 'apple-health',
     name: 'Apple Health',
     icon: Heart,
-    connected: true,
+    connected: false,
     syncData: 'Steps, heart rate, sleep',
-    lastSync: '2 min ago',
     category: 'fitness',
   },
   {
     id: 'fitbit',
     name: 'Fitbit',
     icon: Activity,
-    connected: true,
+    connected: false,
     syncData: 'Activity, sleep, weight',
-    lastSync: '15 min ago',
     category: 'fitness',
   },
   {
@@ -211,9 +212,8 @@ export const fitnessIntegrations: Integration[] = [
     id: 'oura',
     name: 'Oura Ring',
     icon: Moon,
-    connected: true,
+    connected: false,
     syncData: 'Sleep quality, readiness, HRV',
-    lastSync: '1 hour ago',
     category: 'fitness',
   },
   {
@@ -228,9 +228,8 @@ export const fitnessIntegrations: Integration[] = [
     id: 'myfitnesspal',
     name: 'MyFitnessPal',
     icon: Apple,
-    connected: true,
+    connected: false,
     syncData: 'Nutrition, calories, macros',
-    lastSync: '30 min ago',
     category: 'fitness',
   },
 ];
@@ -477,19 +476,22 @@ export const aiAssistantsIntegrations: Integration[] = [
 ];
 
 // Get all integrations
-export const getAllIntegrations = (): Integration[] => [
+// VTID-05032: callers pass the fitness/health lists merged with the gateway's
+// real wearable state, so nothing counts a fake connection.
+export const getAllIntegrations = (
+  live: { fitness?: Integration[]; health?: Integration[] } = {},
+): Integration[] => [
   ...aiAssistantsIntegrations,
   ...socialIntegrations,
-  ...fitnessIntegrations,
-  ...healthIntegrations,
+  ...(live.fitness ?? fitnessIntegrations),
+  ...(live.health ?? healthIntegrations),
   ...productivityIntegrations,
   ...mediaIntegrations,
   ...otherIntegrations,
 ];
 
 // Get connection counts
-export const getConnectionStats = () => {
-  const all = getAllIntegrations();
+export const getConnectionStats = (all: Integration[] = getAllIntegrations()) => {
   const connected = all.filter(i => i.connected).length;
   const syncing = all.filter(i => i.connected && i.lastSync && i.lastSync.includes('min')).length;
   return { connected, syncing, total: all.length };

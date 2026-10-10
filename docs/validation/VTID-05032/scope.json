@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05032",
+  "kind": "fix",
+  "paths": [
+    "src/hooks/useWearableProviders.ts",
+    "src/hooks/useWearableProviders.vtid-05032.test.ts",
+    "src/pages/settings/ConnectedApps.tsx",
+    "src/pages/settings/Privacy.tsx",
+    "src/pages/settings/__tests__/**",
+    "src/components/settings/integrationData.ts",
+    "src/components/settings/MobileConnectedAppsView.tsx",
+    "src/components/settings/__tests__/**",
+    "src/components/ConnectAppPopup.tsx",
+    "src/i18n/*/screens.json",
+    "tests/e2e/staging/vtid-05032-health-connections-privacy.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05032/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

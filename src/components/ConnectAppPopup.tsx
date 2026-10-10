@@ -16,6 +16,8 @@ import {
   getAllIntegrations,
   type Integration,
 } from "@/components/settings/integrationData";
+// VTID-05032 (Health Hub D3): fitness/health entries show connected only when the gateway says so.
+import { useWearableProviders, mergeWearableState } from "@/hooks/useWearableProviders";
 
 interface ConnectAppPopupProps {
   isOpen: boolean;
@@ -36,8 +38,13 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
     { id: "health", name: translate('connectedApps.sections.health') },
   ];
 
-  // Get all integrations from centralized data
-  const allIntegrations = getAllIntegrations();
+  // Get all integrations from centralized data, with the real wearable state
+  // (connectedProvider via mergeWearableState) on the fitness/health entries.
+  const { data: wearableProviders } = useWearableProviders();
+  const allIntegrations = getAllIntegrations({
+    fitness: mergeWearableState(fitnessIntegrations, wearableProviders),
+    health: mergeWearableState(healthIntegrations, wearableProviders),
+  });
 
   const filteredApps = allIntegrations.filter(app => {
     const matchesSearch = app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
