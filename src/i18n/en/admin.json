@@ -46,12 +46,14 @@
       "sections": {
         "items": "Items",
         "fees": "Shipping fees",
-        "orders": "Orders"
+        "orders": "Orders",
+        "_pending_review": {}
       },
       "fulfilment": {
         "ship": "Shipping",
         "event": "Event ticket",
-        "digital": "Digital"
+        "digital": "Digital",
+        "_pending_review": {}
       },
       "items": {
         "count": "{count} items",
@@ -67,7 +69,8 @@
         "stock": "Stock: {count}",
         "stockUnlimited": "Stock: unlimited",
         "reserved": "Reserved: {count}",
-        "noPhoto": "No photo"
+        "noPhoto": "No photo",
+        "_pending_review": {}
       },
       "form": {
         "createTitle": "New item",
@@ -104,7 +107,8 @@
         "save": "Save",
         "saving": "Saving …",
         "cancel": "Cancel",
-        "saved": "Item saved"
+        "saved": "Item saved",
+        "_pending_review": {}
       },
       "validation": {
         "titleDe": "Please enter a German title.",
@@ -115,7 +119,8 @@
         "country": "Please enter a valid two-letter country code.",
         "stock": "Stock must be a whole number of 0 or more.",
         "sortOrder": "The sort order must be a whole number.",
-        "fee": "Please enter an amount of 0 or more, with at most two decimal places."
+        "fee": "Please enter an amount of 0 or more, with at most two decimal places.",
+        "_pending_review": {}
       },
       "errors": {
         "INVALID_ITEM": "The server rejected the details. Check the identifier, title, price and type.",
@@ -130,7 +135,8 @@
         "ORDER_NOT_FOUND": "The order wasn't found.",
         "FORBIDDEN": "Exafy admins only",
         "generic": "That didn't work. Please try again.",
-        "serverMessage": "Server: {message}"
+        "serverMessage": "Server: {message}",
+        "_pending_review": {}
       },
       "fees": {
         "help": "One flat shipping fee per country and currency.",
@@ -151,7 +157,8 @@
         "deleted": "Shipping fee deleted",
         "missingTitle": "Shipping fees missing",
         "missingBody": "Active shipped items go to these countries, but they have no shipping fee. Members there can't order in this currency:",
-        "missingEntry": "{country}: {currencies}"
+        "missingEntry": "{country}: {currencies}",
+        "_pending_review": {}
       },
       "orders": {
         "filterLabel": "Status",
@@ -182,9 +189,12 @@
           "shipped": "Shipped",
           "delivered": "Delivered",
           "cancelled": "Cancelled",
-          "refunded": "Refunded"
-        }
-      }
+          "refunded": "Refunded",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

@@ -160,14 +160,16 @@
       "goalProgress": "{percent}% done",
       "goalBalance": "{balance} of {price} VTNA",
       "goalRedeem": "You can already redeem {item}!",
-      "toShop": "Go to the shop"
+      "toShop": "Go to the shop",
+      "_pending_review": {}
     },
     "rewardsPage": {
       "seoTitle": "Rewards | VITANA Wallet",
       "title": "Rewards",
       "description": "Earn VTNA with what's good for you – and redeem them in the shop.",
       "tabEarned": "Earned",
-      "tabEarnMore": "Earn more"
+      "tabEarnMore": "Earn more",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
