@@ -83,6 +83,9 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }
     d.setHours(h, m, 0, 0);
     return d;
   };
+  // An end before the start (a wrapped 00:xx end after a 23:xx start) is not a length: ask for an hour.
+  const spanMin = Math.round((slot(endTime).getTime() - slot(startTime).getTime()) / 60000);
+  const askedDuration = spanMin > 0 ? Math.max(15, spanMin) : 60;
   const overlap = useOverlap(slot(startTime), slot(endTime), role);
 
   const handleSubmit = () => {
@@ -217,7 +220,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }
       </div>
 
       <FindTime
-        durationMin={Math.max(15, Math.round((slot(endTime).getTime() - slot(startTime).getTime()) / 60000)) || 60}
+        durationMin={askedDuration}
         role={role}
         onPick={(start, end) => {
           setDate(start);

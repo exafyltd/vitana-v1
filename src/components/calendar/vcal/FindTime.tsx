@@ -4,7 +4,7 @@
  * the calendar shows (other calendars included) and inside their waking hours.
  * Picking one fills the date and times; nothing is saved until they save.
  */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { fetchFreeSlots, type FreeSlot } from "@/lib/calendar-window-client";
 import { fmtDate, fmtTime } from "@/lib/locale-format";
@@ -23,16 +23,29 @@ function sameLocalDay(a: Date, b: Date): boolean {
 export function FindTime({ durationMin, role, onPick }: Props) {
   const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [slots, setSlots] = useState<FreeSlot[]>([]);
+  const asked = useRef(0);
+
+  // A different length is a different question: drop the old answer, and let
+  // any answer still on its way for the old length go unheard.
+  useEffect(() => {
+    asked.current += 1;
+    setState("idle");
+    setSlots([]);
+  }, [durationMin, role]);
 
   const ask = () => {
+    const mine = ++asked.current;
     setState("loading");
     fetchFreeSlots(durationMin, role)
       .then((r) => {
+        if (mine !== asked.current) return;
         // The form holds one date; a slot that runs past midnight cannot be filled in.
         setSlots(r.filter((s) => sameLocalDay(new Date(s.start), new Date(s.end))));
         setState("done");
       })
-      .catch(() => setState("error"));
+      .catch(() => {
+        if (mine === asked.current) setState("error");
+      });
   };
 
   return (

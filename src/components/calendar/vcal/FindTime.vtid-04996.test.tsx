@@ -57,4 +57,21 @@ describe('FindTime (VTID-04996)', () => {
     fireEvent.click(screen.getByTestId('vcal-find-time-ask'));
     expect(await screen.findByText('vcal.findTime.error')).toBeTruthy();
   });
+
+  it('forgets its answer when the length changes, and ignores a late answer for the old length', async () => {
+    let release: (v: unknown) => void = () => {};
+    fetchMock.mockImplementationOnce(() => new Promise((r) => { release = r; }));
+    const { rerender } = render(<FindTime durationMin={60} role={null} onPick={() => {}} />);
+    fireEvent.click(screen.getByTestId('vcal-find-time-ask'));
+    rerender(<FindTime durationMin={30} role={null} onPick={() => {}} />);
+    release([slot('2026-10-13T08:00:00', '2026-10-13T09:00:00')]);
+    await waitFor(() => expect(screen.queryByText('vcal.findTime.loading')).toBeNull());
+    expect(screen.queryAllByTestId('vcal-find-time-slot')).toHaveLength(0);
+
+    fetchMock.mockResolvedValueOnce([slot('2026-10-13T08:00:00', '2026-10-13T08:30:00')]);
+    fireEvent.click(screen.getByTestId('vcal-find-time-ask'));
+    expect(await screen.findAllByTestId('vcal-find-time-slot')).toHaveLength(1);
+    rerender(<FindTime durationMin={45} role={null} onPick={() => {}} />);
+    expect(screen.queryAllByTestId('vcal-find-time-slot')).toHaveLength(0);
+  });
 });
