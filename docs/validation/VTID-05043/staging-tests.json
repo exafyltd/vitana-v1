@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05043",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "switch_to_tenant_by_slug keeps the open_signup check: migration guard",
+      "ref": "npx vitest run src/integrations/supabase/switch-tenant-open-signup.vtid-05043.test.ts",
+      "cwd": ".",
+      "reason": "This PR adds a build guard only (no runtime behaviour). The database change ships in exafyltd/vitana-platform (VTID-05043 migration C) and is verified read-only there after RUN-MIGRATION (docs/validation/VTID-05043/post-apply-checks.sql)."
+    }
+  ]
+}
