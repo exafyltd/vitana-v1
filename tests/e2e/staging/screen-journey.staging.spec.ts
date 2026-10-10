@@ -232,6 +232,7 @@ function imageCache(page: Page) {
     }
   };
   const everLoaded = new Set<string>();
+  const servedFromCache = new WeakSet<Request>();
   let step = { networkFetches: [] as string[], refetches: [] as string[], cacheHits: 0 };
 
   const onRoute = async (route: Route) => {
@@ -241,6 +242,7 @@ function imageCache(page: Page) {
     const hit = cache.get(key);
     if (hit && Date.now() - hit.storedAt < hit.freshMs) {
       step.cacheHits++;
+      servedFromCache.add(req);
       cache.delete(key); // most recently used
       cache.set(key, hit);
       return route.fulfill({ status: hit.status, headers: hit.headers, body: hit.body });
@@ -267,6 +269,9 @@ function imageCache(page: Page) {
   };
 
   return {
+    isFromCache(req: Request) {
+      return servedFromCache.has(req);
+    },
     async install() {
       await page.route(/^https?:\/\//, onRoute);
       page.on('response', (res) => void onResponse(res));
@@ -292,6 +297,25 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
   await page.addInitScript(installTapClock);
   const images = imageCache(page);
   await images.install();
+
+  // What each step downloaded over the (throttled) network — named in the
+  // failure message, so a slow step says what competed for the bandwidth.
+  let downloads: Array<{ url: string; bytes: number; type: string }> = [];
+  page.on('requestfinished', (req) => {
+    if (images.isFromCache(req) || !/^https?:/.test(req.url())) return;
+    void req
+      .sizes()
+      .then((s) => downloads.push({ url: req.url(), bytes: s.responseBodySize + s.responseHeadersSize, type: req.resourceType() }))
+      .catch(() => undefined);
+  });
+  const networkSummary = () => {
+    const total = downloads.reduce((n, d) => n + d.bytes, 0);
+    const top = [...downloads]
+      .sort((a, b) => b.bytes - a.bytes)
+      .slice(0, 5)
+      .map((d) => `${d.type} ${Math.round(d.bytes / 1024)} KB ${d.url.replace(/\?.*$/, '').slice(-90)}`);
+    return `network: ${downloads.length} requests, ${Math.round(total / 1024)} KB; largest: ${top.join(' ; ')}`;
+  };
 
   // Sign in (unthrottled) exactly as VTID-05013's spec does.
   await page.goto('/maxina', { waitUntil: 'domcontentloaded' });
@@ -343,6 +367,7 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
     const nav: 'first' | 'return' = visited.has(path) ? 'return' : 'first';
     visited.add(path);
     images.beginStep();
+    downloads = [];
     await page.evaluate(() => {
       const w = window as unknown as { __sjArmed?: boolean; __sjTapAt?: number };
       w.__sjTapAt = undefined;
@@ -362,8 +387,8 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
     const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
     const problems: string[] = [];
     const waited = ready.blocked_by.length ? ` (waiting on: ${ready.blocked_by.join(' | ')})` : '';
-    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited}`);
-    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited}`);
+    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited} [${networkSummary()}]`);
+    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited} [${networkSummary()}]`);
     if (nav === 'return' && images.step.refetches.length) problems.push(`re-downloaded ${images.step.refetches.length} photo(s): ${images.step.refetches.slice(0, 3).join(', ')}`);
     if (frameChanges) problems.push(`${frameChanges} media frame(s) changed height`);
 
