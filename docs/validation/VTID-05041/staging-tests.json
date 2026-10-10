@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05041",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "profile lookup returns no email: migration guard, generated RPC type, callers",
+      "ref": "npx vitest run src/integrations/supabase/profile-lookup-no-email.vtid-05041.test.ts src/hooks/useRealMatches.profile-error-logging.test.ts",
+      "cwd": ".",
+      "reason": "This PR changes types only (no runtime behaviour): `email` leaves the generated RPC type and the PublicProfilePage interface, which nothing read. The database change ships in exafyltd/vitana-platform (VTID-05041 migration) and is verified read-only there after RUN-MIGRATION (docs/validation/VTID-05041/post-apply-checks.sql)."
+    }
+  ]
+}

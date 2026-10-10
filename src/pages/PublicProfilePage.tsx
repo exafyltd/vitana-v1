@@ -28,7 +28,6 @@ interface DatabaseProfile {
   avatar_url: string;
   cover_url: string;
   bio: string;
-  email: string;
   location: string;
   created_at: string;
   linkedin_url: string;
