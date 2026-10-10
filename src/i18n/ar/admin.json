@@ -19,20 +19,16 @@
       "rejected": "مرفوض",
       "flagged": "مبلغ عنه",
       "podcastManagement": "إدارة البودكاست",
-      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست",
-      "_pending_review": {}
+      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست"
     },
     "notifications": {
       "tabs": {
         "notifications": "إشعارات",
         "categories": "فئات",
         "activity": "نشاط",
-        "compose": "إرسال",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "إرسال"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "إدارة متجر المكافآت",
       "description": "منتجات متجر المكافآت ورسوم الشحن والطلبات.",
@@ -339,6 +335,5 @@
         "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

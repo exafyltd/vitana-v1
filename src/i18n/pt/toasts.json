@@ -329,12 +329,8 @@
       "rollbackFailed": "Reversão falhou",
       "ticketRejected": "{ticketNumber} rejeitado",
       "ticketRemovedActiveList": "Removido da lista ativa.",
-      "invalidJson": "Invalid JSON.",
-      "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
-      "_pending_review": {
-        "invalidJson": true,
-        "confirmMatchRequiresFields": true
-      },
+      "invalidJson": "JSON inválido.",
+      "confirmMatchRequiresFields": "ID de usuário, ID de locatário e nome do teste são obrigatórios.",
       "matchMemberDeclined": "Este membro já informou que este resultado não é dele.",
       "matchUserNotInTenant": "Este ID de usuário não pertence a este ID de tenant.",
       "matchConfirmationUnavailable": "A confirmação pelos membros ainda não está disponível. Tente novamente mais tarde.",

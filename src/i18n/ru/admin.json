@@ -19,20 +19,16 @@
       "rejected": "Отклонено",
       "flagged": "Помечено",
       "podcastManagement": "Управление подкастами",
-      "podcastManagementDesc": "Просмотр и модерация загрузок подкастов",
-      "_pending_review": {}
+      "podcastManagementDesc": "Просмотр и модерация загрузок подкастов"
     },
     "notifications": {
       "tabs": {
         "notifications": "Уведомления",
         "categories": "Категории",
         "activity": "Активность",
-        "compose": "Отправить",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Отправить"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "Управление магазином наград",
       "description": "Товары, стоимость доставки и заказы магазина наград.",
@@ -339,6 +335,5 @@
         "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

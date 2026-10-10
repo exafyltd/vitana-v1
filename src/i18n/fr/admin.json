@@ -19,81 +19,51 @@
       "rejected": "Rejeté",
       "flagged": "Signalé",
       "podcastManagement": "Gestion des podcasts",
-      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts",
-      "_pending_review": {}
+      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts"
     },
     "notifications": {
       "tabs": {
         "notifications": "Notifications",
         "categories": "Catégories",
         "activity": "Activité",
-        "compose": "Envoyer",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Envoyer"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
-      "title": "Gérer la boutique de récompenses",
+      "title": "Gère la boutique de récompenses",
       "description": "Articles, frais de livraison et commandes de la boutique de récompenses.",
       "openLink": "Boutique de récompenses",
-      "loading": "Chargement …",
-      "retry": "Réessayer",
-      "refresh": "Actualiser",
-      "forbiddenTitle": "Réservé aux administrateurs Exafy",
-      "forbiddenBody": "Seuls les administrateurs Exafy peuvent gérer la boutique de récompenses. Ton compte n'a pas cette autorisation.",
+      "loading": "Chargement…",
+      "retry": "Réessaie",
+      "refresh": "Actualise",
+      "forbiddenTitle": "Administrateurs Exafy seulement",
+      "forbiddenBody": "Seuls les administrateurs Exafy peuvent gérer la boutique de récompenses. Ton compte n'a pas cette permission.",
       "sectionLabel": "Section",
       "sections": {
         "items": "Articles",
         "fees": "Frais de livraison",
-        "orders": "Commandes",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "orders": "Commandes"
       },
       "fulfilment": {
         "ship": "Livraison",
         "event": "Billet d'événement",
-        "digital": "Numérique",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "digital": "Numérique"
       },
       "items": {
         "count": "{count} articles",
         "newItem": "Nouvel article",
-        "empty": "Aucun article pour l'instant. Crée le premier.",
+        "empty": "Aucun article pour l'instant. Ajoute le premier.",
         "edit": "Modifier",
         "active": "Actif",
         "inactive": "Inactif",
-        "activeToggle": "Activer {title}",
-        "toggleFailed": "Impossible de changer : {reason}",
+        "activeToggle": "Active {title}",
+        "toggleFailed": "Impossible de l'activer : {reason}",
         "price": "{amount} VTNA",
         "approx": "≈ {money}",
         "stock": "Stock : {count}",
         "stockUnlimited": "Stock : illimité",
         "reserved": "Réservé : {count}",
-        "noPhoto": "Pas de photo",
-        "_pending_review": {
-          "count": true,
-          "newItem": true,
-          "empty": true,
-          "edit": true,
-          "active": true,
-          "inactive": true,
-          "activeToggle": true,
-          "toggleFailed": true,
-          "price": true,
-          "approx": true,
-          "stock": true,
-          "stockUnlimited": true,
-          "reserved": true,
-          "noPhoto": true
-        }
+        "noPhoto": "Aucune photo"
       },
       "form": {
         "createTitle": "Nouvel article",
@@ -132,7 +102,6 @@
         "cancel": "Annuler",
         "saved": "Article enregistré",
         "_pending_review": {
-          "createTitle": true,
           "editTitle": true,
           "titleDe": true,
           "titleEn": true,
@@ -326,19 +295,7 @@
           "readOnly": true,
           "statusUpdated": true
         }
-      },
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

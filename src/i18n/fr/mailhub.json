@@ -154,7 +154,10 @@
         },
         "api_unavailable": {
           "title": "Impossible sur cet appareil",
-          "body": "Cet appareil ne peut pas ouvrir ton carnet d'adresses directement. Exporte tes contacts en fichier .vcf ou connecte Google, Outlook ou iCloud."
+          "body": "Cet appareil ne peut pas ouvrir ton carnet d'adresses directement. Exporte tes contacts en fichier .vcf ou connecte Google, Outlook ou iCloud.",
+          "_pending_review": {
+            "body": true
+          }
         },
         "permission_denied": {
           "title": "Pas d'accès à tes contacts",
@@ -192,7 +195,10 @@
         "removeBody": "Dans Apps connectées, tu peux désactiver une source et retirer ses contacts.",
         "helper": "Nous comparons les adresses e-mail et les numéros de téléphone pour montrer qui est déjà sur Vitanaland. Les personnes absentes n'en sont jamais informées.",
         "notNow": "Pas maintenant",
-        "continue": "Continuer"
+        "continue": "Continuer",
+        "_pending_review": {
+          "helper": true
+        }
       },
       "import": {
         "title": "Retrouve tes amis",
@@ -217,7 +223,10 @@
         "noContactInfo": "Aucune coordonnée",
         "overLimit": "Les {limit} premiers contacts ont été importés.",
         "later": "Tu retrouves tous tes contacts dans Messages → Contacts.",
-        "done": "Terminé"
+        "done": "Terminé",
+        "_pending_review": {
+          "message": true
+        }
       },
       "invite": {
         "whatsapp": "WhatsApp",
@@ -227,7 +236,11 @@
         "message": "Salut {name} ! Je suis sur Vitanaland, une communauté pour une vie longue et en bonne santé. Rejoins-moi : {link}",
         "messageGeneric": "Je suis sur Vitanaland, une communauté pour une vie longue et en bonne santé. Rejoins-moi : {link}",
         "opened": "Ton invitation est prête, il ne reste qu'à l'envoyer.",
-        "linkFailed": "Ton lien d'invitation n'a pas pu être chargé. Réessaie dans un instant."
+        "linkFailed": "Ton lien d'invitation n'a pas pu être chargé. Réessaie dans un instant.",
+        "_pending_review": {
+          "whatsapp": true,
+          "sms": true
+        }
       },
       "remove": {
         "button": "Supprimer les contacts importés du téléphone",

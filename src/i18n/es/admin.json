@@ -19,81 +19,51 @@
       "rejected": "Rechazado",
       "flagged": "Marcado",
       "podcastManagement": "Gestión de Podcasts",
-      "podcastManagementDesc": "Revisa y modera las subidas de podcasts",
-      "_pending_review": {}
+      "podcastManagementDesc": "Revisa y modera las subidas de podcasts"
     },
     "notifications": {
       "tabs": {
         "notifications": "Notificaciones",
         "categories": "Categorías",
         "activity": "Actividad",
-        "compose": "Enviar",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Enviar"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
-      "title": "Gestionar la tienda de recompensas",
-      "description": "Artículos, gastos de envío y pedidos de la tienda de recompensas.",
+      "title": "Gestionar tienda de recompensas",
+      "description": "Artículos, tarifas de envío y pedidos de la tienda de recompensas.",
       "openLink": "Tienda de recompensas",
-      "loading": "Cargando …",
-      "retry": "Reintentar",
+      "loading": "Cargando…",
+      "retry": "Inténtalo de nuevo",
       "refresh": "Actualizar",
-      "forbiddenTitle": "Solo para administradores de Exafy",
+      "forbiddenTitle": "Solo administradores de Exafy",
       "forbiddenBody": "Solo los administradores de Exafy pueden gestionar la tienda de recompensas. Tu cuenta no tiene este permiso.",
       "sectionLabel": "Sección",
       "sections": {
         "items": "Artículos",
-        "fees": "Gastos de envío",
-        "orders": "Pedidos",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "fees": "Tarifas de envío",
+        "orders": "Pedidos"
       },
       "fulfilment": {
         "ship": "Envío",
         "event": "Entrada para evento",
-        "digital": "Digital",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "digital": "Digital"
       },
       "items": {
         "count": "{count} artículos",
         "newItem": "Nuevo artículo",
-        "empty": "Aún no hay artículos. Crea el primero.",
+        "empty": "Aún no hay artículos. Añade el primero.",
         "edit": "Editar",
         "active": "Activo",
         "inactive": "Inactivo",
         "activeToggle": "Activar {title}",
-        "toggleFailed": "No se pudo cambiar: {reason}",
+        "toggleFailed": "No se pudo activar: {reason}",
         "price": "{amount} VTNA",
         "approx": "≈ {money}",
         "stock": "Existencias: {count}",
         "stockUnlimited": "Existencias: ilimitadas",
-        "reserved": "Reservado: {count}",
-        "noPhoto": "Sin foto",
-        "_pending_review": {
-          "count": true,
-          "newItem": true,
-          "empty": true,
-          "edit": true,
-          "active": true,
-          "inactive": true,
-          "activeToggle": true,
-          "toggleFailed": true,
-          "price": true,
-          "approx": true,
-          "stock": true,
-          "stockUnlimited": true,
-          "reserved": true,
-          "noPhoto": true
-        }
+        "reserved": "Reservados: {count}",
+        "noPhoto": "Sin foto"
       },
       "form": {
         "createTitle": "Nuevo artículo",
@@ -132,7 +102,6 @@
         "cancel": "Cancelar",
         "saved": "Artículo guardado",
         "_pending_review": {
-          "createTitle": true,
           "editTitle": true,
           "titleDe": true,
           "titleEn": true,
@@ -326,19 +295,7 @@
           "readOnly": true,
           "statusUpdated": true
         }
-      },
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

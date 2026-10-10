@@ -151,7 +151,10 @@
         },
         "api_unavailable": {
           "title": "No es posible en este dispositivo",
-          "body": "Este dispositivo no puede abrir tu agenda directamente. Exporta tus contactos como archivo .vcf o conecta Google, Outlook o iCloud."
+          "body": "Este dispositivo no puede abrir tu agenda directamente. Exporta tus contactos como archivo .vcf o conecta Google, Outlook o iCloud.",
+          "_pending_review": {
+            "body": true
+          }
         },
         "permission_denied": {
           "title": "Sin acceso a tus contactos",
@@ -189,7 +192,10 @@
         "removeBody": "En Apps conectadas puedes desactivar una fuente y quitar sus contactos.",
         "helper": "Comparamos direcciones de correo y números de teléfono para mostrar quién ya está en Vitanaland. Quien no esté no se entera de nada.",
         "notNow": "Ahora no",
-        "continue": "Continuar"
+        "continue": "Continuar",
+        "_pending_review": {
+          "helper": true
+        }
       },
       "import": {
         "title": "Encuentra a tus amigos",
@@ -224,7 +230,11 @@
         "message": "¡Hola, {name}! Estoy en Vitanaland, una comunidad para una vida larga y sana. Únete: {link}",
         "messageGeneric": "Estoy en Vitanaland, una comunidad para una vida larga y sana. Únete: {link}",
         "opened": "Tu invitación está lista: solo tienes que enviarla.",
-        "linkFailed": "No se pudo cargar tu enlace de invitación. Inténtalo de nuevo en un momento."
+        "linkFailed": "No se pudo cargar tu enlace de invitación. Inténtalo de nuevo en un momento.",
+        "_pending_review": {
+          "whatsapp": true,
+          "sms": true
+        }
       },
       "remove": {
         "button": "Eliminar los contactos importados del móvil",

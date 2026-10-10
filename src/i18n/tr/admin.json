@@ -19,84 +19,54 @@
       "rejected": "Reddedildi",
       "flagged": "İşaretlendi",
       "podcastManagement": "Podcast Yönetimi",
-      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle",
-      "_pending_review": {}
+      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle"
     },
     "notifications": {
       "tabs": {
         "notifications": "Bildirimler",
         "categories": "Kategoriler",
         "activity": "Etkinlik",
-        "compose": "Gönder",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Gönder"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "Ödül mağazasını yönet",
-      "description": "Ödül mağazasının ürünleri, kargo ücretleri ve siparişleri.",
+      "description": "Ödül mağazasının öğeleri, kargo ücretleri ve siparişleri.",
       "openLink": "Ödül mağazası",
-      "loading": "Yükleniyor …",
+      "loading": "Yükleniyor…",
       "retry": "Tekrar dene",
       "refresh": "Yenile",
-      "forbiddenTitle": "Yalnızca Exafy yöneticileri için",
-      "forbiddenBody": "Ödül mağazasını yalnızca Exafy yöneticileri yönetebilir. Hesabının bu izni yok.",
+      "forbiddenTitle": "Sadece Exafy yöneticileri",
+      "forbiddenBody": "Sadece Exafy yöneticileri ödül mağazasını yönetebilir. Hesabının bu izni yok.",
       "sectionLabel": "Bölüm",
       "sections": {
-        "items": "Ürünler",
+        "items": "Öğeler",
         "fees": "Kargo ücretleri",
-        "orders": "Siparişler",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "orders": "Siparişler"
       },
       "fulfilment": {
         "ship": "Kargo",
         "event": "Etkinlik bileti",
-        "digital": "Dijital",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "digital": "Dijital"
       },
       "items": {
-        "count": "{count} ürün",
-        "newItem": "Yeni ürün",
-        "empty": "Henüz ürün yok. İlkini ekle.",
+        "count": "{count} adet",
+        "newItem": "Yeni öğe",
+        "empty": "Henüz öğe yok. İlkini ekle.",
         "edit": "Düzenle",
         "active": "Aktif",
         "inactive": "Pasif",
-        "activeToggle": "{title} ürününü aç",
-        "toggleFailed": "Değiştirilemedi: {reason}",
+        "activeToggle": "{title} aç",
+        "toggleFailed": "Açılamadı: {reason}",
         "price": "{amount} VTNA",
         "approx": "≈ {money}",
         "stock": "Stok: {count}",
         "stockUnlimited": "Stok: sınırsız",
-        "reserved": "Ayrılmış: {count}",
-        "noPhoto": "Fotoğraf yok",
-        "_pending_review": {
-          "count": true,
-          "newItem": true,
-          "empty": true,
-          "edit": true,
-          "active": true,
-          "inactive": true,
-          "activeToggle": true,
-          "toggleFailed": true,
-          "price": true,
-          "approx": true,
-          "stock": true,
-          "stockUnlimited": true,
-          "reserved": true,
-          "noPhoto": true
-        }
+        "reserved": "Rezerve: {count}",
+        "noPhoto": "Fotoğraf yok"
       },
       "form": {
-        "createTitle": "Yeni ürün",
+        "createTitle": "Yeni öğe",
         "editTitle": "Ürünü düzenle",
         "titleDe": "Başlık (Almanca)",
         "titleEn": "Başlık (İngilizce, isteğe bağlı)",
@@ -132,7 +102,6 @@
         "cancel": "İptal",
         "saved": "Ürün kaydedildi",
         "_pending_review": {
-          "createTitle": true,
           "editTitle": true,
           "titleDe": true,
           "titleEn": true,
@@ -326,19 +295,7 @@
           "readOnly": true,
           "statusUpdated": true
         }
-      },
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }
