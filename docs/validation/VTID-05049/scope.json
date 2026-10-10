@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05049",
+  "kind": "fix",
+  "sparring_record": "docs/validation/VTID-05049/plan-sparring.md",
+  "paths": [
+    "supabase/functions/_shared/caller-auth.ts",
+    "supabase/functions/linkedin-import/index.ts",
+    "supabase/functions/social-media-import/index.ts",
+    "supabase/functions/queue-campaign-recipients/index.ts",
+    "supabase/functions/send-welcome-discount/index.ts",
+    "supabase/functions/fetch-user-context/index.ts",
+    "src/lib/edge-functions-caller-identity.s4.test.ts",
+    "docs/validation/VTID-05049/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

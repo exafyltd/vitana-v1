@@ -1,6 +1,11 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { createDataClient } from "../_shared/data-client.ts";
+import { requireUser, forbidden } from "../_shared/caller-auth.ts";
+
+// VTID-05049: nothing in the app calls this function (social-media-import
+// replaced it). It is patched as defence in depth and flagged for removal in
+// the Track S route inventory (S-J).
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,11 +18,20 @@ serve(async (req) => {
   }
 
   try {
-    const { userId, linkedinUrl, bioText } = await req.json();
+    // VTID-05049: the profile written is always the caller's own. A body
+    // userId is accepted only when it names the signed-in member.
+    const auth = await requireUser(req, corsHeaders);
+    if (!auth.user) return auth.response;
 
-    if (!userId || !linkedinUrl) {
+    const { userId: bodyUserId, linkedinUrl, bioText } = await req.json();
+    if (bodyUserId && bodyUserId !== auth.user.id) {
+      return forbidden(corsHeaders, 'Cannot import into another user\'s profile');
+    }
+    const userId = auth.user.id;
+
+    if (!linkedinUrl) {
       return new Response(
-        JSON.stringify({ error: 'userId and linkedinUrl are required' }),
+        JSON.stringify({ error: 'linkedinUrl is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

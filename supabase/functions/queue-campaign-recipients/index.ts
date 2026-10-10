@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { createDataClient } from "../_shared/data-client.ts";
+import { isServiceRoleCaller, unauthorizedResponse } from "../_shared/caller-auth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,16 +14,64 @@ serve(async (req) => {
   }
 
   try {
+    // VTID-05049: this function queues email/SMS/WhatsApp messages that
+    // process-campaign-queue then sends. verify_jwt=true accepts the public
+    // anon key, so anyone could mass-message members. Only a service-role
+    // caller (trigger-scheduled-campaigns) may queue.
+    if (!(await isServiceRoleCaller(req))) {
+      return unauthorizedResponse(corsHeaders);
+    }
+
     const supabaseClient = createDataClient(createClient,
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { campaignId, channels, audienceData, messageContent } = await req.json();
+    const { campaignId, channels, audienceData } = await req.json();
 
-    if (!campaignId || !channels || !messageContent) {
-      throw new Error('Missing required fields: campaignId, channels, messageContent');
+    if (!campaignId || !channels) {
+      throw new Error('Missing required fields: campaignId, channels');
     }
+
+    // VTID-05049 defence in depth: the campaign must exist and be due, the
+    // message comes from the campaign row (never the request), and every
+    // recipient query is scoped to the campaign owner and the owner's tenant.
+    const { data: campaign, error: campaignError } = await supabaseClient
+      .from('campaigns')
+      .select('id, user_id, name, description, status, distribution_config')
+      .eq('id', campaignId)
+      .maybeSingle();
+
+    if (campaignError) throw campaignError;
+    if (!campaign) {
+      return new Response(
+        JSON.stringify({ error: 'Campaign not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    if (campaign.status !== 'scheduled' && campaign.status !== 'active') {
+      return new Response(
+        JSON.stringify({ error: `Campaign is ${campaign.status}, not scheduled or active` }),
+        { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Same fallback trigger-scheduled-campaigns uses.
+    const messageContent = campaign.distribution_config?.messageContent || {
+      subject: campaign.name,
+      body: campaign.description || 'Campaign message'
+    };
+
+    // campaigns has no tenant_id column: the campaign's tenant is its owner's
+    // primary tenant (user_tenants.is_primary, else the oldest membership).
+    const { data: ownerTenants } = await supabaseClient
+      .from('user_tenants')
+      .select('tenant_id, is_primary, created_at')
+      .eq('user_id', campaign.user_id)
+      .order('is_primary', { ascending: false })
+      .order('created_at', { ascending: true })
+      .limit(1);
+    const tenantId: string | null = ownerTenants?.[0]?.tenant_id ?? null;
 
     console.log(`Queuing recipients for campaign ${campaignId}...`);
 
@@ -32,12 +81,24 @@ serve(async (req) => {
     if (audienceData?.eventAttendees?.enabled && audienceData.eventAttendees.eventIds.length > 0) {
       console.log('📅 Fetching event-based audiences...');
       for (const eventId of audienceData.eventAttendees.eventIds) {
+        // VTID-05049: only the campaign owner's own events, and only members
+        // of the campaign's tenant (a non-matching embedded profile is null
+        // and skipped below).
+        const { data: ownedEvent } = await supabaseClient
+          .from('global_community_events')
+          .select('id')
+          .eq('id', eventId)
+          .eq('created_by', campaign.user_id)
+          .maybeSingle();
+        if (!ownedEvent || !tenantId) continue;
+
         // Fetch event attendees
         const { data: attendees, error: attendeesError } = await supabaseClient
           .from('global_event_participants')
-          .select('user_id, profiles:user_id(display_name, contact_email, contact_phone)')
+          .select('user_id, profiles:user_id(display_name, contact_email, contact_phone, tenant_id)')
           .eq('event_id', eventId)
-          .eq('response', 'attending');
+          .eq('response', 'attending')
+          .eq('profiles.tenant_id', tenantId);
 
         if (!attendeesError && attendees) {
           for (const attendee of attendees) {
@@ -65,9 +126,10 @@ serve(async (req) => {
         if (event) {
           const { data: followers } = await supabaseClient
             .from('social_connections')
-            .select('follower_id, profiles:follower_id(display_name, contact_email, contact_phone)')
+            .select('follower_id, profiles:follower_id(display_name, contact_email, contact_phone, tenant_id)')
             .eq('following_id', event.created_by)
-            .eq('status', 'active');
+            .eq('status', 'active')
+            .eq('profiles.tenant_id', tenantId);
 
           if (followers) {
             for (const follower of followers) {
@@ -93,6 +155,7 @@ serve(async (req) => {
       const { data: contacts } = await supabaseClient
         .from('contacts')
         .select('*')
+        .eq('user_id', campaign.user_id)
         .in('id', audienceData.vitanaContacts.contactIds);
 
       if (contacts) {
@@ -135,14 +198,16 @@ serve(async (req) => {
           .from('campaign_audience_segments')
           .select('criteria')
           .eq('id', segmentId)
-          .single();
+          .eq('user_id', campaign.user_id)
+          .maybeSingle();
 
-        if (segment?.criteria) {
+        if (segment?.criteria && tenantId) {
           // Apply segment criteria to find matching users
           // This is a simplified version - would need more complex logic
           const { data: profiles } = await supabaseClient
             .from('profiles')
             .select('user_id, display_name, full_name')
+            .eq('tenant_id', tenantId)
             .limit(100);
 
           if (profiles) {

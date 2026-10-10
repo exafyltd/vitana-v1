@@ -1,0 +1,5 @@
+# RED: same guard against origin/main function sources (caller-auth.ts absent, 5 functions reverted)
+ FAIL  src/lib/edge-functions-caller-identity.s4.test.ts [ src/lib/edge-functions-caller-identity.s4.test.ts ]
+Error: ENOENT: no such file or directory, open 'supabase/functions/_shared/caller-auth.ts'
+ Test Files  1 failed (1)
+      Tests  no tests

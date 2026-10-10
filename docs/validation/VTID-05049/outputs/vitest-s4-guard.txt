@@ -1,0 +1,36 @@
+
+ RUN  v4.1.10 <worktree>
+
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > exports requireUser and isServiceRoleCaller 2ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > requireUser verifies the bearer with auth.getUser() on the anon client 8ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > isServiceRoleCaller accepts an exact service-role key match or a verified service_role claim 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > uses a supabase-js that has getClaims (2.57.2+, VTID-05008) 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > builds its clients through createDataClient (VTID-05023) 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > linkedin-import imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > social-media-import imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > queue-campaign-recipients imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > send-welcome-discount imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > fetch-user-context imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import authenticates with requireUser before reading the body 3ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import keys the write on the verified user, and refuses a different body id with 403 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > social-media-import authenticates with requireUser before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > social-media-import keys the write on the verified user, and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import is flagged for removal 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > honours a body userId only for a service-role caller 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > otherwise uses the verified user and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > rejects any caller that is not service role before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > has no exafy_admin path (service-role only) 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > reloads the campaign and refuses one that is not scheduled or active 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > takes the message from the campaign row, never the request 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > scopes every recipient query to the campaign owner or the owner's tenant 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > calls isServiceRoleCaller before reading the body 4ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > reads recipient, code, percent and expiry from user_discount_codes, not the body 4ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > HTML-escapes every interpolated value 7ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 tree-wide: no service-role function trusts a body user id unchecked > the scan sees the known body-id readers 30ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 tree-wide: no service-role function trusts a body user id unchecked > every SERVICE_ROLE function that reads a body user id checks the caller 0ms
+
+ Test Files  1 passed (1)
+      Tests  27 passed (27)
+   Start at  11:07:25
+   Duration  3.15s (transform 226ms, setup 462ms, import 168ms, tests 79ms, environment 1.90s)
+

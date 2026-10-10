@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05049",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "edge functions check the caller's identity (S4 / S-H source guard)",
+      "ref": "npx vitest run src/lib/edge-functions-caller-identity.s4.test.ts src/lib/edge-functions-getclaims.vtid-05008.test.ts",
+      "cwd": ".",
+      "reason": "The change is five Supabase edge functions plus a shared caller-auth helper; the community-app bundle is unchanged. Edge functions have no staging project (one shared Supabase), so STAGING-VERIFY does not apply (plan §4, PR-C). The guard fails on origin/main and passes on this branch. After the approved manual dispatch of supabase-functions-deploy.yml the deploy is verified read-only: list_edge_functions shows the new versions, the function logs show no new 401 spike from SocialMediaImportDialog, and no probe is sent to production."
+    }
+  ]
+}

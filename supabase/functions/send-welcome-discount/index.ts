@@ -2,12 +2,22 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 import { createDataClient } from "../_shared/data-client.ts";
+import { isServiceRoleCaller, unauthorizedResponse } from "../_shared/caller-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
+
+// VTID-05049: every value interpolated into the email HTML is escaped.
+const escapeHtml = (value: unknown): string =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
@@ -22,6 +32,14 @@ serve(async (req) => {
   try {
     logStep("Function started");
 
+    // VTID-05049: verify_jwt=false and the body used to choose the recipient,
+    // the code and the percentage — open phishing in a Maxina-branded email.
+    // Only the pg_net trigger (service-role key) may call this.
+    if (!(await isServiceRoleCaller(req))) {
+      logStep("Rejected: caller is not service role");
+      return unauthorizedResponse(corsHeaders);
+    }
+
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) throw new Error("RESEND_API_KEY is not set");
 
@@ -31,12 +49,28 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
-    const { discount_code_id, user_id, code, discount_percent, expires_at } = await req.json();
-    logStep("Payload received", { discount_code_id, user_id, code });
+    // The trigger still sends user_id/code/discount_percent/expires_at; they
+    // are ignored. The email is built from the stored discount-code row.
+    const { discount_code_id } = await req.json();
+    logStep("Payload received", { discount_code_id });
 
-    if (!user_id || !code) {
-      throw new Error("Missing required fields: user_id, code");
+    if (!discount_code_id) {
+      throw new Error("Missing required field: discount_code_id");
     }
+
+    const { data: discountCode, error: discountError } = await supabaseClient
+      .from("user_discount_codes")
+      .select("id, user_id, code, discount_percent, expires_at")
+      .eq("id", discount_code_id)
+      .maybeSingle();
+    if (discountError) throw discountError;
+    if (!discountCode) {
+      return new Response(JSON.stringify({ error: "Discount code not found" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 404,
+      });
+    }
+    const { user_id, code, discount_percent, expires_at } = discountCode;
 
     // Fetch user email from auth.users
     const { data: userData, error: userError } = await supabaseClient.auth.admin.getUserById(user_id);
@@ -88,10 +122,10 @@ serve(async (req) => {
           <tr>
             <td style="padding: 40px;">
               <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 24px;">
-                Hi ${userName},
+                Hi ${escapeHtml(userName)},
               </p>
               <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 24px;">
-                Thank you for joining the Maxina community! As a welcome gift, here's your personal <strong>${discount_percent}% discount code</strong> for all VITANA events and meetups:
+                Thank you for joining the Maxina community! As a welcome gift, here's your personal <strong>${escapeHtml(discount_percent)}% discount code</strong> for all VITANA events and meetups:
               </p>
               
               <!-- Discount Code Box -->
@@ -102,10 +136,10 @@ serve(async (req) => {
                       Your Discount Code
                     </p>
                     <p style="color: #be185d; font-size: 32px; font-weight: 800; letter-spacing: 3px; margin: 0 0 8px; font-family: monospace;">
-                      ${code}
+                      ${escapeHtml(code)}
                     </p>
                     <p style="color: #9d174d; font-size: 14px; margin: 0;">
-                      ${discount_percent}% off · Valid until ${formattedExpiry}
+                      ${escapeHtml(discount_percent)}% off · Valid until ${escapeHtml(formattedExpiry)}
                     </p>
                   </td>
                 </tr>

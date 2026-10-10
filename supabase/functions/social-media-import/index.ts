@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { createDataClient } from "../_shared/data-client.ts";
+import { requireUser, forbidden } from "../_shared/caller-auth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,7 +9,7 @@ const corsHeaders = {
 };
 
 interface ImportRequest {
-  userId: string;
+  userId?: string;
   platform: 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
   profileUrl: string;
   bioText?: string;
@@ -27,15 +28,24 @@ serve(async (req) => {
   }
 
   try {
+    // VTID-05049: the profile written is always the caller's own. A body
+    // userId is accepted only when it names the signed-in member.
+    const auth = await requireUser(req, corsHeaders);
+    if (!auth.user) return auth.response;
+
     const body = await req.json();
     console.log('[social-media-import] Request body:', JSON.stringify(body));
     
-    const { userId, platform, profileUrl, bioText }: ImportRequest = body;
+    const { userId: bodyUserId, platform, profileUrl, bioText }: ImportRequest = body;
+    if (bodyUserId && bodyUserId !== auth.user.id) {
+      return forbidden(corsHeaders, 'Cannot import into another user\'s profile');
+    }
+    const userId = auth.user.id;
 
     console.log(`[social-media-import] Processing ${platform} import for user ${userId}`);
 
-    if (!userId || !platform || !profileUrl) {
-      const errorMsg = 'Missing required fields: userId, platform, or profileUrl';
+    if (!platform || !profileUrl) {
+      const errorMsg = 'Missing required fields: platform or profileUrl';
       console.error('[social-media-import] Validation error:', errorMsg);
       throw new Error(errorMsg);
     }
