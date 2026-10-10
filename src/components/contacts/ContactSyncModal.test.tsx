@@ -166,6 +166,11 @@ describe("VTID-05058 one-tap import", () => {
     expect(await screen.findByTestId("find-friends-file")).toBeTruthy();
     expect(screen.queryByTestId("find-friends-phone")).toBeNull();
     expect(screen.getByText("mailhub.findFriends.import.fileHowIphone")).toBeTruthy();
+    // The staging spec finds the steps by these ids (the iCloud row also says "iPhone").
+    expect(screen.getByTestId("find-friends-file-help-iphone").textContent).toBe("mailhub.findFriends.import.fileHowIphone");
+    expect(screen.getByTestId("find-friends-file-help-android").textContent).toBe("mailhub.findFriends.import.fileHowAndroid");
+    expect(screen.getByTestId("find-friends-source-google")).toBeTruthy();
+    expect(screen.queryByTestId("find-friends-source-phonebook")).toBeNull();
     expect(screen.getByText("mailhub.findFriends.import.fileHowAndroid")).toBeTruthy();
   });
 
