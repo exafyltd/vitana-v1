@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05024",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "phone viewport: Wallet mode pill → Rewards (Shop tab + back link, no overflow), back to Wallet, /wallet?tab=rewards deep link (read-only)",
+      "spec": "tests/e2e/staging/vtid-05024-mobile-wallet-rewards.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Rewards pill and ?tab=rewards navigate, Rewards mobile shell vs desktop, labels, registry only points at existing Rewards tabs",
+      "ref": "npx vitest run src/pages/wallet/mobile-wallet-rewards.test.tsx",
+      "cwd": "."
+    }
+  ]
+}

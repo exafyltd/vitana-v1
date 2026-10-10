@@ -1386,20 +1386,12 @@
       "abre la pestaña de inteligencia en mis recompensas"
     ]
   },
-  "WALLET.REWARDS_PENDING": {
-    "title": "Recompensas pendientes",
+  "WALLET.REWARDS_SHOP": {
+    "title": "Tienda de recompensas",
     "phrasings": [
-      "¿qué recompensas tengo pendientes?",
-      "muéstrame las recompensas que aún no me han abonado",
-      "abre los premios pendientes de mi wallet"
-    ]
-  },
-  "WALLET.REWARDS_REFERRAL": {
-    "title": "Recompensas por referidos",
-    "phrasings": [
-      "¿qué gané por invitar a mis amigos?",
-      "muéstrame mis recompensas por referidos",
-      "abre la pestaña de referidos en mis recompensas"
+      "abre la tienda de recompensas",
+      "¿qué puedo comprar con VTNA?",
+      "canjear mis VTNA"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {

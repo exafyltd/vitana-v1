@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "Salda",
       "activity": "Aktywność",
-      "actions": "Akcje"
+      "actions": "Akcje",
+      "rewards": "Nagrody",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "Sprzedawaj i zarabiaj prowizje",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "Wróć do portfela",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }

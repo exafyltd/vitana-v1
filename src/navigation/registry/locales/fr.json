@@ -1385,20 +1385,12 @@
       "où je vois des conseils pour maximiser mes gains"
     ]
   },
-  "WALLET.REWARDS_PENDING": {
-    "title": "Récompenses en attente",
+  "WALLET.REWARDS_SHOP": {
+    "title": "Boutique de récompenses",
     "phrasings": [
-      "montre-moi mes récompenses en attente",
-      "quelles récompenses ne sont pas encore créditées",
-      "où je vois les gains pas encore versés"
-    ]
-  },
-  "WALLET.REWARDS_REFERRAL": {
-    "title": "Récompenses de parrainage",
-    "phrasings": [
-      "qu'est-ce que j'ai gagné en invitant des amis",
-      "montre-moi mes récompenses de parrainage",
-      "où je vois mes gains de référence"
+      "ouvre la boutique de récompenses",
+      "que puis-je acheter avec mes VTNA",
+      "échanger mes VTNA"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {

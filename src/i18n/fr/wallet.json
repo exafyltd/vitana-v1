@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "Soldes",
       "activity": "Activité",
-      "actions": "Actions"
+      "actions": "Actions",
+      "rewards": "Récompenses",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "Vends et gagne des commissions",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "Retour au portefeuille",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }

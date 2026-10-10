@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "余额",
       "activity": "动态",
-      "actions": "操作"
+      "actions": "操作",
+      "rewards": "奖励",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "出售并赚取佣金",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "返回钱包",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }

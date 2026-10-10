@@ -11,7 +11,9 @@ import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { EarningIntelligenceSplitScreen } from "@/components/wallet/intelligence/EarningIntelligenceSplitScreen";
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { isIAPRestricted } from "@/lib/appilix";
 import { VtnaRewardRules } from "@/components/wallet/VtnaRewardRules";
 import { RewardShop } from "@/components/wallet/RewardShop";
@@ -20,6 +22,7 @@ import { t } from '@/lib/i18n-toast';
 function Rewards() {
   const [activeTab, setActiveTab] = useUrlTab("tab", "earned");
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   // VTID-04983: back from Stripe Checkout for a shipped reward.
   const [searchParams] = useSearchParams();
   const shipping = searchParams.get("shipping");
@@ -39,10 +42,21 @@ function Rewards() {
         title={t('screens.wallet.rewardsCommissionsVitanaWallet')} 
         description="Track your rewards, commissions, and achievements. Manage your referral program and earning opportunities."
       />
-      <SubNavigation items={walletNavigation} />
+      {/* VTID-05024: on a phone, a back link to the mobile Wallet instead of the desktop tab bar. */}
+      {isMobile ? null : <SubNavigation items={walletNavigation} />}
       
       <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto p-6 space-y-8">
+        <div className={isMobile ? "p-4 pb-32 space-y-4" : "max-w-7xl mx-auto p-6 space-y-8"}>
+        {isMobile && (
+          <Link
+            to="/wallet"
+            data-testid="rewards-back-to-wallet"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary min-h-11"
+          >
+            <ArrowLeft className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+            {t('wallet.backToWallet')}
+          </Link>
+        )}
         <StandardHeader 
           title={t('screens.wallet.rewardsCommissions')}
           description="Track your earnings, achievements, and referral rewards"
