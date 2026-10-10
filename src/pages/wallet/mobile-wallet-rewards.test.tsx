@@ -12,6 +12,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ReactNode } from 'react';
 
 const isMobile = { value: true };
+const rtl = { value: false };
+vi.mock('@/components/RTLProvider', () => ({ useRTL: () => ({ isRTL: rtl.value }) }));
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => isMobile.value }));
 vi.mock('@/lib/appilix', () => ({ isIAPRestricted: () => false }));
 vi.mock('@/components/AppLayout', () => ({ default: ({ children }: { children: ReactNode }) => <div>{children}</div> }));
@@ -25,9 +27,7 @@ vi.mock('@/components/ui/expandable-search-button', () => ({ ExpandableSearchBut
 vi.mock('@/components/UniversalCalendarButton', () => ({ UniversalCalendarButton: () => null }));
 vi.mock('@/components/wallet/VtnaRewardRules', () => ({ VtnaRewardRules: () => <div data-testid="earned" /> }));
 vi.mock('@/components/wallet/RewardShop', () => ({ RewardShop: () => <div data-testid="shop" /> }));
-vi.mock('@/components/wallet/intelligence/EarningIntelligenceSplitScreen', () => ({
-  EarningIntelligenceSplitScreen: () => null,
-}));
+vi.mock('@/components/wallet/EarnMore', () => ({ EarnMore: () => <div data-testid="earn-more" /> }));
 vi.mock('@/lib/screen-id', () => ({
   SCREEN_IDS: new Proxy({}, { get: (_t, k) => String(k) }),
   withScreenId: (c: unknown) => c,
@@ -58,6 +58,17 @@ describe('Rewards screen on a phone (VTID-05024)', () => {
     expect(screen.getByTestId('rewards-back-to-wallet').getAttribute('href')).toBe('/wallet');
     expect(screen.queryByTestId('desktop-subnav')).toBeNull();
     expect(screen.getByTestId('shop')).toBeTruthy();
+  });
+
+  it('VTID-05037: the tabs follow the app direction (Arabic lays out right-to-left)', () => {
+    rtl.value = true;
+    const a = render(<MemoryRouter initialEntries={['/wallet/rewards?tab=earn']}><Rewards /></MemoryRouter>);
+    expect(screen.getByRole('tablist').closest('[dir]')?.getAttribute('dir')).toBe('rtl');
+    a.unmount();
+    rtl.value = false;
+    render(<MemoryRouter initialEntries={['/wallet/rewards?tab=intelligence']}><Rewards /></MemoryRouter>);
+    expect(screen.getByRole('tablist').closest('[dir]')?.getAttribute('dir')).toBe('ltr');
+    expect(screen.getByTestId('earn-more')).toBeTruthy();
   });
 
   it('desktop is unchanged: tab bar, no back link', () => {
@@ -153,7 +164,7 @@ describe('labels and voice registry (VTID-05024)', () => {
     const rewards = screens.filter((s: { route: string }) => s.route.startsWith('/wallet/rewards'));
     for (const s of rewards) {
       const tab = new URL(s.route, 'https://x').searchParams.get('tab');
-      expect(tab === null || ['earned', 'shop', 'intelligence'].includes(tab)).toBe(true);
+      expect(tab === null || ['earned', 'shop', 'earn'].includes(tab)).toBe(true);
     }
     expect(rewards.map((s: { id: string }) => s.id)).toContain('WALLET.REWARDS_SHOP');
   });

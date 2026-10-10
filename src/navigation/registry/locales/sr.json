@@ -1861,15 +1861,11 @@
       "hoću da proverim sve provizije i nagrade koje su mi se nakupile"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Uvidi u nagrade",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "Zaradi više",
     "phrasings": [
-      "kako da zaradim više nagrada",
-      "pokaži mi uvide o nagradama",
-      "gde su saveti za zaradu nagrada",
-      "otvori tab sa uvidima o nagradama",
-      "gde mogu da vidim analize kako da povećam nagrade",
-      "hoću da proverim šta treba da radim da bih zaradio više nagrada"
+      "kako da zaradim više VTNA",
+      "šta još mogu danas da zaradim"
     ]
   },
   "WALLET.REWARDS_SHOP": {

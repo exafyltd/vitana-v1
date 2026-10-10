@@ -1377,12 +1377,11 @@
       "montre-moi mes gains et récompenses"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Aperçus des récompenses",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "Gagner plus",
     "phrasings": [
-      "comment je gagne plus de récompenses",
-      "montre-moi les insights sur mes récompenses",
-      "où je vois des conseils pour maximiser mes gains"
+      "comment gagner plus de VTNA",
+      "que puis-je encore gagner aujourd'hui"
     ]
   },
   "WALLET.REWARDS_SHOP": {

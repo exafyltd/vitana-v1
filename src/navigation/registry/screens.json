@@ -5506,8 +5506,8 @@
       "access": "member",
       "i18n": {
         "en": {
-          "title": "Rewards & Commissions",
-          "shows": "Commissions and rewards you have earned from sharing the platform and serving clients.",
+          "title": "Rewards",
+          "shows": "The VTNA you have earned, the ways to earn more, and the rewards shop.",
           "hint": "When the user asks about commissions, referral earnings, rewards, payouts, what they have earned, or how much they have made from sharing or selling in the community.",
           "phrasings": [
             "where can I see my rewards",
@@ -5516,8 +5516,8 @@
           ]
         },
         "de": {
-          "title": "Belohnungen & Provisionen",
-          "shows": "Provisionen und Belohnungen, die du durch das Teilen der Plattform und das Betreuen von Kunden verdient hast.",
+          "title": "Belohnungen",
+          "shows": "Die VTNA, die du verdient hast, Wege, mehr zu verdienen, und der Prämien-Shop.",
           "hint": "Wenn der Nutzer nach Provisionen, Empfehlungseinnahmen, Belohnungen, Auszahlungen, wieviel er verdient hat oder wieviel er durch Teilen oder Verkaufen in der Community gemacht hat, fragt.",
           "phrasings": [
             "wo sehe ich meine Belohnungen",
@@ -5528,25 +5528,27 @@
       }
     },
     {
-      "id": "WALLET.REWARDS_INTELLIGENCE",
-      "route": "/wallet/rewards?tab=intelligence",
+      "id": "WALLET.REWARDS_EARN_MORE",
+      "route": "/wallet/rewards?tab=earn",
       "category": "wallet",
       "access": "member",
       "i18n": {
         "en": {
-          "title": "Reward insights",
-          "shows": "The intelligence tab of your wallet rewards — insights on how to earn more.",
+          "title": "Earn more",
+          "shows": "The \"Earn more\" tab of your wallet rewards — what you can still earn VTNA for right now, with a button to each action, and how far you are from your next shop reward.",
           "phrasings": [
-            "how can I earn more rewards",
-            "reward insights"
+            "how can I earn more VTNA",
+            "what can I still earn today",
+            "show me ways to earn rewards"
           ]
         },
         "de": {
-          "title": "Belohnungs-Insights",
-          "shows": "Der Intelligence-Tab der Wallet-Belohnungen — Einblicke, wie du mehr verdienst.",
+          "title": "Mehr verdienen",
+          "shows": "Der Tab „Mehr verdienen“ in den Wallet-Belohnungen – wofür du gerade noch VTNA bekommst, mit einem Knopf zu jeder Aktion, und wie weit du von deiner nächsten Shop-Prämie entfernt bist.",
           "phrasings": [
-            "wie verdiene ich mehr Belohnungen",
-            "Belohnungs-Einblicke"
+            "wie verdiene ich mehr VTNA",
+            "was kann ich heute noch verdienen",
+            "zeig mir, wie ich Belohnungen verdiene"
           ]
         }
       }

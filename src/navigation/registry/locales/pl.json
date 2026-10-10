@@ -1377,12 +1377,11 @@
       "pokaż moje nagrody i prowizje"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Analiza nagród",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "Zarób więcej",
     "phrasings": [
-      "jak mogę zarabiać więcej nagród",
-      "pokaż analizę moich nagród",
-      "gdzie znajdę wskazówki jak zwiększyć zarobki"
+      "jak zarobić więcej VTNA",
+      "co jeszcze mogę dziś zarobić"
     ]
   },
   "WALLET.REWARDS_SHOP": {

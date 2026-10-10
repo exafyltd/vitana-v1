@@ -1378,12 +1378,11 @@
       "¿dónde veo lo que he ganado por compartir la plataforma?"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Insights de recompensas",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "Ganar más",
     "phrasings": [
-      "¿cómo puedo ganar más recompensas?",
-      "muéstrame los insights de mis recompensas",
-      "abre la pestaña de inteligencia en mis recompensas"
+      "¿cómo gano más VTNA?",
+      "¿qué puedo ganar todavía hoy?"
     ]
   },
   "WALLET.REWARDS_SHOP": {

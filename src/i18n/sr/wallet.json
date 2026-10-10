@@ -223,6 +223,44 @@
     "backToWallet": "Nazad na novčanik",
     "_pending_review": {
       "backToWallet": true
+    },
+    "earnMore": {
+      "title": "Ovo još možeš da zaradiš",
+      "intro": "Mali koraci koji se isplate – dodirni „Kreni“ i počni odmah.",
+      "go": "Kreni",
+      "allDone": "Odlično – sve si pokupio za sada. Uskoro stižu novi VTNA.",
+      "goalTitle": "Tvoj sledeći cilj",
+      "goalMissing": "Još {missing} VTNA do {item}",
+      "goalProgress": "{percent} % urađeno",
+      "goalBalance": "{balance} od {price} VTNA",
+      "goalRedeem": "Već možeš da iskoristiš {item}!",
+      "toShop": "Idi u prodavnicu",
+      "_pending_review": {
+        "title": true,
+        "intro": true,
+        "go": true,
+        "allDone": true,
+        "goalTitle": true,
+        "goalMissing": true,
+        "goalProgress": true,
+        "goalBalance": true,
+        "goalRedeem": true,
+        "toShop": true
+      }
+    },
+    "rewardsPage": {
+      "seoTitle": "Nagrade | VITANA Wallet",
+      "title": "Nagrade",
+      "description": "Zarađuj VTNA radeći ono što ti prija – i iskoristi ih u prodavnici.",
+      "tabEarned": "Zarađeno",
+      "tabEarnMore": "Zaradi više",
+      "_pending_review": {
+        "seoTitle": true,
+        "title": true,
+        "description": true,
+        "tabEarned": true,
+        "tabEarnMore": true
+      }
     }
   }
 }

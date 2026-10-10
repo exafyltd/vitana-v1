@@ -9,20 +9,25 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { EarningIntelligenceSplitScreen } from "@/components/wallet/intelligence/EarningIntelligenceSplitScreen";
 import { useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRTL } from "@/components/RTLProvider";
 import { isIAPRestricted } from "@/lib/appilix";
 import { VtnaRewardRules } from "@/components/wallet/VtnaRewardRules";
 import { RewardShop } from "@/components/wallet/RewardShop";
+import { EarnMore } from "@/components/wallet/EarnMore";
 import { t } from '@/lib/i18n-toast';
 
 function Rewards() {
-  const [activeTab, setActiveTab] = useUrlTab("tab", "earned");
+  const [urlTab, setActiveTab] = useUrlTab("tab", "earned");
+  // VTID-05037: the former "intelligence" tab is now "Mehr verdienen" (earn); old links land there.
+  const activeTab = urlTab === "intelligence" ? "earn" : urlTab;
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  // Radix Tabs (SplitBar) defaults to dir="ltr"; follow the app direction (same as settings/Support.tsx).
+  const { isRTL } = useRTL();
   // VTID-04983: back from Stripe Checkout for a shipped reward.
   const [searchParams] = useSearchParams();
   const shipping = searchParams.get("shipping");
@@ -39,8 +44,8 @@ function Rewards() {
   return (
     <AppLayout>
       <SEO 
-        title={t('screens.wallet.rewardsCommissionsVitanaWallet')} 
-        description="Track your rewards, commissions, and achievements. Manage your referral program and earning opportunities."
+        title={t('wallet.rewardsPage.seoTitle')}
+        description={t('wallet.rewardsPage.description')}
       />
       {/* VTID-05024: on a phone, a back link to the mobile Wallet instead of the desktop tab bar. */}
       {isMobile ? null : <SubNavigation items={walletNavigation} />}
@@ -58,8 +63,8 @@ function Rewards() {
           </Link>
         )}
         <StandardHeader 
-          title={t('screens.wallet.rewardsCommissions')}
-          description="Track your earnings, achievements, and referral rewards"
+          title={t('wallet.rewardsPage.title')}
+          description={t('wallet.rewardsPage.description')}
         />
 
         <UtilityActionButton>
@@ -67,12 +72,13 @@ function Rewards() {
           <UniversalCalendarButton />
         </UtilityActionButton>
 
-        <SplitBar value={activeTab} onValueChange={setActiveTab}>
+        <SplitBar value={activeTab} onValueChange={setActiveTab} dir={isRTL ? "rtl" : "ltr"}>
           <SplitBarList>
-            <SplitBarTrigger value="earned">{t('screens.wallet.earnedRewards')}</SplitBarTrigger>
-            {/* VTID-04983: spend earned VTNA. The former "pending" and "referral" tabs showed hardcoded sample data and are gone. */}
+            {/* VTID-05037: short labels so all three tabs fit on a phone. The former
+                "Verdienst-Intelligenz" tab showed invented numbers and is replaced by "Mehr verdienen". */}
+            <SplitBarTrigger value="earned">{t('wallet.rewardsPage.tabEarned')}</SplitBarTrigger>
+            <SplitBarTrigger value="earn">{t('wallet.rewardsPage.tabEarnMore')}</SplitBarTrigger>
             <SplitBarTrigger value="shop">{t('wallet.rewardShop.tab')}</SplitBarTrigger>
-            <SplitBarTrigger value="intelligence">{t('screens.wallet.earningIntelligence')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="earned">
@@ -80,12 +86,12 @@ function Rewards() {
             <VtnaRewardRules />
           </SplitBarContent>
 
-          <SplitBarContent value="shop">
-            <RewardShop shippingReturn={shippingReturn} />
+          <SplitBarContent value="earn">
+            <EarnMore />
           </SplitBarContent>
 
-          <SplitBarContent value="intelligence">
-            <EarningIntelligenceSplitScreen />
+          <SplitBarContent value="shop">
+            <RewardShop shippingReturn={shippingReturn} />
           </SplitBarContent>
         </SplitBar>
 

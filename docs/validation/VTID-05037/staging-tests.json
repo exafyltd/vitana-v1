@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05037",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Wallet › Rewards › Mehr verdienen renders the real reward rules (phone + desktop), tabs fit, old ?tab=intelligence link lands there (read-only)",
+      "spec": "tests/e2e/staging/vtid-05037-earn-more.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Earn more logic: still-earnable filter and order, deep-link routes are member screens, next-goal states, all-done state, Rewards tabs wiring, DE/EN parity",
+      "ref": "npx vitest run src/components/wallet/EarnMore.test.tsx",
+      "cwd": ".",
+      "reason": "The ordering, filtering, goal and empty-shop branches depend on data a single staging account cannot be put into (staging shares the production database and the shop is empty), so Vitest drives every branch with fixtures; the staging spec above proves the deployed tab renders real data."
+    }
+  ]
+}
