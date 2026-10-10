@@ -18,6 +18,11 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
+    // Pinned (VTID-05023): supabase-js derives the default key from the URL's
+    // first host label, so repointing VITE_SUPABASE_URL at the Aurora proxy
+    // (data.vitanaland.com) would change it to sb-data-auth-token and sign
+    // every member out. This is the key every existing session is stored under.
+    storageKey: 'sb-inmkhvwdcuyhnxkgfvsb-auth-token',
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
