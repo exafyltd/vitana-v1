@@ -29,7 +29,17 @@
       "verdict": "OK",
       "confidence": 0.9,
       "phase": "llm"
+    },
+    "createSelection.liveRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.liveRoomDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:38:45.771Z"
+  "generatedAt": "2026-10-10T10:05:38.983Z"
 }
