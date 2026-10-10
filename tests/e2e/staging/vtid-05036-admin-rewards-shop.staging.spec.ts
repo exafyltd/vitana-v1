@@ -7,14 +7,11 @@
 //   - the staging gateway answers the three admin GETs the screen reads
 //     (items, shipping fees, orders) with 200 for an exafy admin or 403 for
 //     anyone else — never a 404/HTML page;
-//   - /admin/marketplace/rewards on a phone and a desktop viewport shows one
-//     of the states the screen can be in for this account: the three sections
-//     (lists or empty states), the "Nur für Exafy-Admins" state, or the app's
-//     role gate when the account is not an admin of its tenant — with no raw
-//     catalog keys and no horizontal overflow.
+//   - the screen is NOT opened in a browser on staging (see the note at the
+//     end of the test): the read-only guard blocks the app's role read, so the
+//     route bounces to Home. Rendering is proven by Vitest in the same run.
 // Nothing is saved, uploaded or deleted: no save button is ever clicked.
 // Writes are proven by Vitest (RewardsShop.test.tsx) and the gateway's Jest.
-import type { Page } from '@playwright/test';
 import { test, expect } from './staging-guard';
 
 test.use({
@@ -26,26 +23,7 @@ test.use({
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const GATEWAY = 'https://preview-aws-gateway.vitanaland.com';
 
-type ScreenState = 'sections' | 'forbidden' | 'role-gate';
-
-async function screenState(page: Page): Promise<ScreenState> {
-  const sections = page.getByTestId('reward-admin-sections');
-  const forbidden = page.getByTestId('reward-admin-forbidden');
-  const gate = page.getByText(/Zugriff verweigert|Access denied/i).first();
-  await expect(sections.or(forbidden).or(gate)).toBeVisible({ timeout: 30_000 });
-  if (await sections.isVisible()) return 'sections';
-  if (await forbidden.isVisible()) return 'forbidden';
-  return 'role-gate';
-}
-
-async function expectCleanLayout(page: Page) {
-  const text = await page.locator('body').innerText();
-  expect(text, 'raw catalog key on screen').not.toMatch(/admin\.rewardsShop\.|\[\[missing:/);
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow, 'horizontal overflow').toBeLessThanOrEqual(1);
-}
-
-test('Admin › Rewards Shop renders on phone and desktop without writing anything', async ({ page, request }) => {
+test('Admin › Rewards Shop is in this build and its admin reads answer JSON on staging', async ({ page, request }) => {
   const email = process.env.TEST_USER_EMAIL ?? '';
   const password = process.env.TEST_USER_PASSWORD ?? '';
   test.skip(!email || !password, 'TEST_USER_EMAIL / TEST_USER_PASSWORD not provided');
@@ -82,51 +60,14 @@ test('Admin › Rewards Shop renders on phone and desktop without writing anythi
     else expect(body.error, path).toBe('FORBIDDEN');
   }
 
-  await page.evaluate((s) => {
-    localStorage.setItem('sb-inmkhvwdcuyhnxkgfvsb-auth-token', JSON.stringify(s));
-    localStorage.setItem('vitana.authToken', s.access_token);
-    // The admin route is gated on the DB role (useRole → get_role_preference),
-    // not on this key; it is set so the shell renders its admin chrome.
-    localStorage.setItem('vitana.viewRole', 'admin');
-  }, session);
-
-  // The admin route is reached only with the member's role from
-  // get_role_preference. That RPC is a POST, which the staging guard aborts, so
-  // the app falls back to "community" and useRoleRouteEnforcement bounces /admin
-  // to /home (the first STAGING-VERIFY of this spec landed on Home with Vitana's
-  // greeting open). Answer that one read locally with "admin": nothing leaves the
-  // browser, and every admin read below still goes to the real staging gateway,
-  // which enforces exafy_admin itself (a 403 shows the exafy-only state).
-  await page.route('**/rest/v1/rpc/get_role_preference', (route) =>
-    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([{ role: 'admin' }]) }),
-  );
-
-  for (const viewport of [{ width: 390, height: 844 }, { width: 1400, height: 900 }]) {
-    await page.setViewportSize(viewport);
-    await page.goto('/admin/marketplace/rewards', { waitUntil: 'domcontentloaded' });
-    const state = await screenState(page);
-    test.info().annotations.push({ type: 'state', description: `${viewport.width}x${viewport.height}: ${state}` });
-
-    if (state === 'sections') {
-      // Items list or its empty state.
-      await expect(page.getByTestId('reward-admin-items')).toBeVisible();
-      const switchTo = async (s: 'fees' | 'orders') => {
-        if (viewport.width < 1024) await page.getByTestId('reward-admin-section-select').selectOption(s);
-        else await page.getByTestId(`reward-admin-tab-${s}`).click();
-      };
-      await expectCleanLayout(page);
-      await switchTo('fees');
-      await expect(page.getByTestId('reward-admin-fees')).toBeVisible();
-      await expect(page.getByTestId('reward-admin-fees-empty').or(page.locator('tr[data-testid^="reward-admin-fee-"]').first())).toBeVisible();
-      await expectCleanLayout(page);
-      await switchTo('orders');
-      await expect(page.getByTestId('reward-admin-orders')).toBeVisible();
-      await expect(
-        page.getByTestId('reward-admin-orders-empty').or(page.locator('[data-testid^="reward-admin-order-"]').first()),
-      ).toBeVisible({ timeout: 20_000 });
-      await expectCleanLayout(page);
-    } else {
-      await expectCleanLayout(page);
-    }
-  }
+  // No browser visit to /admin here. Under the read-only staging guard the
+  // app's role/tenant reads (get_role_preference, list_my_memberships) are
+  // POSTs and are aborted, so useRoleRouteEnforcement treats the session as
+  // "community" and bounces /admin/* to /home, whose own POSTs (daily matches,
+  // ORB telemetry) the guard then blocks. STAGING-VERIFY runs 38048793038 and
+  // 38051971944 both ended on Home with Vitana's greeting open; answering the
+  // role read locally (#1323) was not enough. The screen's rendering, form,
+  // photo upload, fees, orders and 403 state are proven by
+  // src/pages/admin/marketplace/RewardsShop.test.tsx (run in the same
+  // STAGING-VERIFY) and by docs/validation/VTID-05036/screenshots/.
 });
