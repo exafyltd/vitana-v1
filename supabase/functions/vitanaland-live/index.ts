@@ -1,6 +1,7 @@
 // VITANALAND Voice Assistant - Dedicated Vertex AI Live Session
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { createDataClient } from '../_shared/data-client.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -128,7 +129,7 @@ serve(async (req) => {
 
       try {
         // Initialize Supabase client scoped to this user
-        const supabase = createClient(supabaseUrl, supabaseKey, {
+        const supabase = createDataClient(createClient, supabaseUrl, supabaseKey, {
           global: { headers: { Authorization: `Bearer ${token}` } },
         });
 

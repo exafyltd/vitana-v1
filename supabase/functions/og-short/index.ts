@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+import { createDataClient } from '../_shared/data-client.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -157,7 +158,7 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseKey);
 
     const { data: video, error: videoError } = await supabase
       .from('media_videos')

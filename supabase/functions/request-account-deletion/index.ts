@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createDataClient } from "../_shared/data-client.ts";
 import { storageBridgeProvider, listFiles, removeFiles } from '../_shared/storage-bridge-client.ts';
 import { decideAfterErase } from '../_shared/erase-user-data.ts';
 
@@ -165,7 +166,7 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
     // Validate caller identity with anon client
-    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    const anonClient = createDataClient(createClient, supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
       global: { headers: { Authorization: authHeader } },
     });
 
@@ -189,7 +190,7 @@ Deno.serve(async (req) => {
     }
 
     // Use service role client for DB operations (bypasses RLS)
-    const serviceClient = createClient(supabaseUrl, supabaseServiceKey);
+    const serviceClient = createDataClient(createClient, supabaseUrl, supabaseServiceKey);
 
     // Log the deletion request
     const { error: insertError } = await serviceClient

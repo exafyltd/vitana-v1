@@ -14,6 +14,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { createDataClient } from "../_shared/data-client.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
 import {
   type Device,
@@ -30,7 +31,7 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const TRIGGER_SECRET = Deno.env.get("EMAIL_TRIGGER_SECRET") ?? "";
 
 const resend = new Resend(RESEND_API_KEY);
-const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+const admin = createDataClient(createClient, SUPABASE_URL, SERVICE_ROLE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
 

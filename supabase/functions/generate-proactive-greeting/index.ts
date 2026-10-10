@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { createDataClient } from "../_shared/data-client.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -31,7 +32,7 @@ serve(async (req) => {
       );
     }
 
-    const anonClient = createClient(
+    const anonClient = createDataClient(createClient,
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
       { global: { headers: { Authorization: authHeader } } }
@@ -69,7 +70,7 @@ serve(async (req) => {
     
     console.log('[greeting] target_language=', targetLanguage);
     
-    const supabaseClient = createClient(
+    const supabaseClient = createDataClient(createClient,
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );

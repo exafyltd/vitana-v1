@@ -1,6 +1,7 @@
 import { fetchPersonalMemory, byConfidence } from '../_shared/personal-memory.ts';
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { createDataClient } from "../_shared/data-client.ts";
 
 // OPTIMIZATION: In-memory cache with 5-minute TTL
 const contextCache = new Map<string, { data: any, expiresAt: number }>();
@@ -664,7 +665,7 @@ serve(async (req) => {
         throw new Error('Missing authorization header');
       }
 
-      const supabaseClient = createClient(
+      const supabaseClient = createDataClient(createClient,
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_ANON_KEY') ?? '',
         { global: { headers: { Authorization: authHeader } } }
@@ -710,7 +711,7 @@ async function fetchAndReturnContext(userId: string, forceRefresh: boolean = fal
     }
   }
 
-  const supabaseClient = createClient(
+  const supabaseClient = createDataClient(createClient,
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
   );

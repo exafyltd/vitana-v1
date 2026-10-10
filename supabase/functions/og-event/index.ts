@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+import { createDataClient } from '../_shared/data-client.ts';
 import { buildRoomOgHtml, isPublicRoomStatus, isUuid, roomUrls, type RoomOgInput } from './room-og.ts';
 
 const corsHeaders = {
@@ -163,7 +164,7 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseKey);
 
     let event: EventData | null = null;
 

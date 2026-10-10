@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { createDataClient } from "../_shared/data-client.ts";
 import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
 // VTID-04889: Claude via the gateway's Bedrock bridge only — no Gemini path (CLAUDE.md ALWAYS 10a–10c).
 import { generateContent, extractFunctionCall, extractTextFromResponse } from '../_shared/bedrock-bridge-client.ts';
@@ -20,7 +21,7 @@ serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
+    const supabaseClient = createDataClient(createClient,
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
       { global: { headers: { Authorization: req.headers.get('Authorization')! } } }

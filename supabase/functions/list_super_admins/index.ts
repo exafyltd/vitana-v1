@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createDataClient } from '../_shared/data-client.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,7 +21,7 @@ Deno.serve(async (req) => {
       throw new Error('Missing Supabase configuration')
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseServiceKey, {
       auth: {
         autoRefreshToken: false,
         persistSession: false

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createDataClient } from "../_shared/data-client.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -48,7 +49,7 @@ serve(async (req) => {
     console.log(`✅ CrewAI response received successfully`);
 
     // Store result in Supabase
-    const supabase = createClient(
+    const supabase = createDataClient(createClient,
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!
     );

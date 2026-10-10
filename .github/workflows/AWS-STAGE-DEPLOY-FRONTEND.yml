@@ -131,6 +131,9 @@ jobs:
           VITE_GATEWAY_BASE=${{ env.GATEWAY_URL }}
           VITE_GATEWAY_URL=${{ env.GATEWAY_URL }}/api/v1
           VITE_APP_VERSION=$(git rev-parse --short=12 HEAD)
+          # VTID-05023 Aurora cutover: PostgREST traffic -> Aurora proxy when set.
+          # Repository variable VITE_DATA_API_URL_STAGING; unset/empty = today's behaviour.
+          VITE_DATA_API_URL=${{ vars.VITE_DATA_API_URL_STAGING }}
           VITE_HEALTH_REAL_DATA=true
           EOF
           # VTID-04483: real health data (profile Health tab + Health page

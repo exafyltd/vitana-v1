@@ -5,6 +5,7 @@
 // exactly rather than failing to build.
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
+import { createDataFetch } from './data-routing';
 
 const SUPABASE_URL =
   (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
@@ -12,6 +13,10 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
   (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWtodndkY3V5aG54a2dmdnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NjY2MzcsImV4cCI6MjA3MTQ0MjYzN30._-QX8ZFgDsKgLM7eDlyc64vi73F-Hwc4ttnDPHjZgVw";
+
+// VTID-05023: PostgREST traffic goes to the Aurora proxy when this is set;
+// auth, storage, functions and realtime stay on SUPABASE_URL. Unset = no change.
+const DATA_API_URL = import.meta.env.VITE_DATA_API_URL as string | undefined;
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +27,9 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
+  },
+  global: {
+    fetch: createDataFetch(SUPABASE_URL, DATA_API_URL),
   },
   realtime: {
     params: {

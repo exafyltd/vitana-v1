@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { createDataClient } from "../_shared/data-client.ts";
 import { generateContent, extractFunctionCall, type GeminiToolDeclaration } from "../_shared/gemini-client.ts";
 
 
@@ -21,7 +22,7 @@ serve(async (req) => {
       console.log('Auth header preview:', authHeader.substring(0, 20) + '...');
     }
 
-    const supabaseClient = createClient(
+    const supabaseClient = createDataClient(createClient,
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
       { global: { headers: { Authorization: authHeader! } } }

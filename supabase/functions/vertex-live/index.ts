@@ -1,6 +1,7 @@
 // Version 1.1 - Fixed Blob audio handling for Vertex AI responses
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { createDataClient } from '../_shared/data-client.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -74,7 +75,7 @@ serve(async (req) => {
 
       try {
         // Initialize Supabase client scoped to this user
-        const supabase = createClient(supabaseUrl, supabaseKey, {
+        const supabase = createDataClient(createClient, supabaseUrl, supabaseKey, {
           global: { headers: { Authorization: `Bearer ${token}` } },
         });
 
@@ -338,7 +339,7 @@ serve(async (req) => {
             const textParts = parts.filter((p: any) => p.text);
             if (textParts.length > 0) {
               // Best-effort logging (no await required, but we keep await to preserve order)
-              const supabase = createClient(supabaseUrl, supabaseKey, { global: { headers: { Authorization: `Bearer ${token}` } } });
+              const supabase = createDataClient(createClient, supabaseUrl, supabaseKey, { global: { headers: { Authorization: `Bearer ${token}` } } });
               await supabase.from('ai_messages').insert({
                 conversation_id: conversationId,
                 role: 'user',
