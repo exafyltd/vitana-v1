@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05056",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "GET /api/v1/partner-health/member/link-requests answers 200 JSON { ok: true, requests: [...] } with only id/partner_display_name/test_name/proposed_at per entry; /patient/results renders on desktop and phone, fetches the link requests itself and shows the card only when a request is pending; no confirm/decline request is ever sent (read-only)",
+      "spec": "tests/e2e/staging/vtid-05056-partner-link-requests.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "member card lists requests, hidden on empty list and on error, Results still renders when link-requests fails, confirm (after the dialog) and decline POST the right endpoint and refresh requests + results, RTL-safe classes; staff upload-result bodies carry no partner_key, confirm-match 202 pending_member toasts 'sent to the member', 409 MEMBER_DECLINED / 400 USER_NOT_IN_TENANT / 503 MEMBER_CONFIRMATION_UNAVAILABLE / 409 PENDING_MEMBER get their own error toasts, pending rows are badged and cannot be re-proposed (admin + Commerce pages)",
+      "ref": "npx vitest run src/components/patient/PartnerLinkRequestsCard.vtid-05056.test.tsx src/pages/__tests__/partner-health-staff.vtid-05056.test.tsx",
+      "cwd": ".",
+      "reason": "Staging is read-only against the production Supabase project and the VTID-05055 migration is applied only after Gate 2, so staging can only observe the empty list and the read path. Confirming, declining and staff proposals are writes; these Vitests render the real card, Results page and both staff pages with a mocked gateway and prove every write path and error code."
+    }
+  ]
+}

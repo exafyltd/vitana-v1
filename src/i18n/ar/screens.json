@@ -2655,7 +2655,10 @@
         "externalOrderRefOptional": true,
         "noOrdersYet": true,
         "inboxEmpty": true
-      }
+      },
+      "matchProposed": "أُرسلت إلى العضو للتأكيد",
+      "awaitingMember": "بانتظار العضو",
+      "memberDeclined": "رفضها العضو"
     },
     "ai-feed": {
       "noEventsFound": "لا توجد أحداث",
@@ -10306,7 +10309,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "هل هذا الفحص لك؟",
+          "body": "لدى أحد الشركاء نتيجة مختبر قد تكون لك. لا تُضاف إلى بياناتك الصحية إلا بعد تأكيدك.",
+          "proposedOn": "طُلب في {date}",
+          "unknownPartner": "شريك",
+          "confirm": "تأكيد",
+          "decline": "ليس لي",
+          "confirmDialogTitle": "إضافة هذه النتيجة إلى بياناتك؟",
+          "confirmDialogBody": "تأكيدك يعني أن «{test}» من {partner} هو فحصك. ستُضاف النتيجة بعد ذلك إلى بياناتك الصحية وتظهر ضمن نتائجك.",
+          "confirmDialogAction": "نعم، هذا فحصي",
+          "cancel": "إلغاء",
+          "confirmed": "شكرًا! تجري إضافة النتيجة إلى بياناتك الصحية.",
+          "declined": "تم. لن تُضاف النتيجة إلى بياناتك.",
+          "failed": "تعذّر ذلك. يُرجى المحاولة مرة أخرى."
+        }
       },
       "comingSoon": {
         "_pending_review": {

@@ -334,7 +334,11 @@
       "_pending_review": {
         "invalidJson": true,
         "confirmMatchRequiresFields": true
-      }
+      },
+      "matchMemberDeclined": "سبق أن أفاد هذا العضو بأن هذه النتيجة ليست له.",
+      "matchUserNotInTenant": "معرّف المستخدم هذا لا ينتمي إلى معرّف المستأجر هذا.",
+      "matchConfirmationUnavailable": "تأكيد الأعضاء غير متاح بعد. يُرجى المحاولة لاحقًا.",
+      "matchAlreadyPending": "يوجد طلب لهذه النتيجة بانتظار تأكيد العضو بالفعل."
     },
     "audio": {
       "cameraStopped": "تم إيقاف الكاميرا",

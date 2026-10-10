@@ -2656,7 +2656,10 @@
         "externalOrderRefOptional": true,
         "noOrdersYet": true,
         "inboxEmpty": true
-      }
+      },
+      "matchProposed": "Wysłano do członka do potwierdzenia",
+      "awaitingMember": "Czeka na członka",
+      "memberDeclined": "Odrzucone przez członka"
     },
     "ai-feed": {
       "noEventsFound": "Nie znaleziono wydarzeń",
@@ -10307,7 +10310,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "Czy to twoje badanie?",
+          "body": "Partner ma wynik badania laboratoryjnego, który może należeć do ciebie. Zostanie dodany do twoich danych zdrowotnych tylko wtedy, gdy go potwierdzisz.",
+          "proposedOn": "Prośba z {date}",
+          "unknownPartner": "Partner",
+          "confirm": "Potwierdź",
+          "decline": "To nie ja",
+          "confirmDialogTitle": "Dodać ten wynik do twoich danych?",
+          "confirmDialogBody": "Potwierdzasz, że „{test}” od {partner} to twoje badanie. Wynik zostanie wtedy dodany do twoich danych zdrowotnych i pojawi się w twoich wynikach.",
+          "confirmDialogAction": "Tak, to moje badanie",
+          "cancel": "Anuluj",
+          "confirmed": "Dzięki! Wynik jest dodawany do twoich danych zdrowotnych.",
+          "declined": "Rozumiem. Wynik nie zostanie dodany do twoich danych.",
+          "failed": "Nie udało się. Spróbuj ponownie."
+        }
       },
       "comingSoon": {
         "_pending_review": {

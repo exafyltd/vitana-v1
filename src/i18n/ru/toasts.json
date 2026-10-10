@@ -334,7 +334,11 @@
       "_pending_review": {
         "invalidJson": true,
         "confirmMatchRequiresFields": true
-      }
+      },
+      "matchMemberDeclined": "Этот участник уже сообщил, что этот результат не его.",
+      "matchUserNotInTenant": "Этот ID пользователя не относится к этому ID арендатора.",
+      "matchConfirmationUnavailable": "Подтверждение участниками пока недоступно. Попробуй позже.",
+      "matchAlreadyPending": "Запрос по этому результату уже ожидает подтверждения участника."
     },
     "audio": {
       "cameraStopped": "Камера остановлена",

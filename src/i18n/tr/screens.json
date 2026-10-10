@@ -2655,7 +2655,10 @@
         "externalOrderRefOptional": true,
         "noOrdersYet": true,
         "inboxEmpty": true
-      }
+      },
+      "matchProposed": "Onay için üyeye gönderildi",
+      "awaitingMember": "Üye bekleniyor",
+      "memberDeclined": "Üye tarafından reddedildi"
     },
     "ai-feed": {
       "noEventsFound": "Etkinlik bulunamadı",
@@ -10306,7 +10309,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "Bu senin testin mi?",
+          "body": "Bir iş ortağında sana ait olabilecek bir laboratuvar sonucu var. Sonuç yalnızca onaylarsan sağlık verilerine eklenir.",
+          "proposedOn": "{date} tarihinde istendi",
+          "unknownPartner": "İş ortağı",
+          "confirm": "Onayla",
+          "decline": "Ben değilim",
+          "confirmDialogTitle": "Bu sonuç verilerine eklensin mi?",
+          "confirmDialogBody": "{partner} tarafından gelen \"{test}\" testinin senin testin olduğunu onaylıyorsun. Sonuç sağlık verilerine eklenir ve sonuçlarında görünür.",
+          "confirmDialogAction": "Evet, bu benim testim",
+          "cancel": "İptal",
+          "confirmed": "Teşekkürler! Sonuç sağlık verilerine ekleniyor.",
+          "declined": "Anlaşıldı. Sonuç verilerine eklenmeyecek.",
+          "failed": "Olmadı. Tekrar dene."
+        }
       },
       "comingSoon": {
         "_pending_review": {

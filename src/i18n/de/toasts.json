@@ -330,7 +330,11 @@
       "ticketRejected": "{ticketNumber} abgelehnt",
       "ticketRemovedActiveList": "Aus der aktiven Liste entfernt.",
       "invalidJson": "Ungültiges JSON.",
-      "confirmMatchRequiresFields": "Nutzer-ID, Mandanten-ID und Testname sind erforderlich."
+      "confirmMatchRequiresFields": "Nutzer-ID, Mandanten-ID und Testname sind erforderlich.",
+      "matchMemberDeclined": "Dieses Mitglied hat bereits angegeben, dass das Ergebnis nicht zu ihm gehört.",
+      "matchUserNotInTenant": "Diese Nutzer-ID gehört nicht zu dieser Mandanten-ID.",
+      "matchConfirmationUnavailable": "Die Bestätigung durch Mitglieder ist noch nicht verfügbar. Bitte versuche es später noch einmal.",
+      "matchAlreadyPending": "Für dieses Ergebnis wartet bereits eine Anfrage auf die Bestätigung des Mitglieds."
     },
     "audio": {
       "cameraStopped": "Kamera gestoppt",

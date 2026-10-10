@@ -334,7 +334,11 @@
       "_pending_review": {
         "invalidJson": true,
         "confirmMatchRequiresFields": true
-      }
+      },
+      "matchMemberDeclined": "Ovaj član je već naveo da ovaj rezultat nije njegov.",
+      "matchUserNotInTenant": "Ovaj ID korisnika ne pripada ovom ID-u zakupca.",
+      "matchConfirmationUnavailable": "Potvrda od strane članova još nije dostupna. Pokušaj ponovo kasnije.",
+      "matchAlreadyPending": "Zahtev za ovaj rezultat već čeka potvrdu člana."
     },
     "audio": {
       "cameraStopped": "Kamera zaustavljena",

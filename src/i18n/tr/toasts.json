@@ -334,7 +334,11 @@
       "_pending_review": {
         "invalidJson": true,
         "confirmMatchRequiresFields": true
-      }
+      },
+      "matchMemberDeclined": "Bu üye, bu sonucun kendisine ait olmadığını zaten belirtti.",
+      "matchUserNotInTenant": "Bu kullanıcı kimliği bu kiracı kimliğine ait değil.",
+      "matchConfirmationUnavailable": "Üye onayı henüz kullanılamıyor. Daha sonra tekrar dene.",
+      "matchAlreadyPending": "Bu sonuç için bir istek zaten üyenin onayını bekliyor."
     },
     "audio": {
       "cameraStopped": "Kamera durduruldu",

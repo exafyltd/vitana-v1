@@ -2631,7 +2631,10 @@
       "testName": "Nome do teste",
       "externalOrderRefOptional": "Referência de pedido externo (opcional)",
       "noOrdersYet": "Nenhum pedido ainda.",
-      "inboxEmpty": "A caixa de entrada está vazia."
+      "inboxEmpty": "A caixa de entrada está vazia.",
+      "matchProposed": "Enviado ao membro para confirmação",
+      "awaitingMember": "Aguardando o membro",
+      "memberDeclined": "Recusado pelo membro"
     },
     "ai-feed": {
       "noEventsFound": "Nenhum evento encontrado",
@@ -10229,7 +10232,22 @@
         "statusCritical": "Crítico",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "Este exame é seu?",
+          "body": "Um parceiro tem um resultado de laboratório que pode ser seu. Ele só será adicionado aos seus dados de saúde se você confirmar.",
+          "proposedOn": "Solicitado em {date}",
+          "unknownPartner": "Parceiro",
+          "confirm": "Confirmar",
+          "decline": "Não sou eu",
+          "confirmDialogTitle": "Adicionar este resultado aos seus dados?",
+          "confirmDialogBody": "Você confirma que \"{test}\" de {partner} é o seu exame. O resultado será então adicionado aos seus dados de saúde e aparecerá nos seus resultados.",
+          "confirmDialogAction": "Sim, este exame é meu",
+          "cancel": "Cancelar",
+          "confirmed": "Obrigado! O resultado está sendo adicionado aos seus dados de saúde.",
+          "declined": "Entendido. O resultado não será adicionado aos seus dados.",
+          "failed": "Não deu certo. Tente novamente."
+        }
       },
       "comingSoon": {
         "_pending_review": {

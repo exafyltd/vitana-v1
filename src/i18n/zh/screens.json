@@ -2655,7 +2655,10 @@
         "externalOrderRefOptional": true,
         "noOrdersYet": true,
         "inboxEmpty": true
-      }
+      },
+      "matchProposed": "已发送给成员确认",
+      "awaitingMember": "等待成员确认",
+      "memberDeclined": "成员已拒绝"
     },
     "ai-feed": {
       "noEventsFound": "未找到事件",
@@ -10306,7 +10309,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "这是你的检测吗？",
+          "body": "有合作伙伴持有一份可能属于你的化验结果。只有在你确认后，它才会被添加到你的健康数据中。",
+          "proposedOn": "请求于 {date}",
+          "unknownPartner": "合作伙伴",
+          "confirm": "确认",
+          "decline": "不是我",
+          "confirmDialogTitle": "将此结果添加到你的数据中？",
+          "confirmDialogBody": "你确认来自 {partner} 的“{test}”是你的检测。结果随后会被添加到你的健康数据中，并显示在你的结果里。",
+          "confirmDialogAction": "是的，这是我的检测",
+          "cancel": "取消",
+          "confirmed": "谢谢！结果正在添加到你的健康数据中。",
+          "declined": "明白了。该结果不会被添加到你的数据中。",
+          "failed": "没有成功。请再试一次。"
+        }
       },
       "comingSoon": {
         "_pending_review": {

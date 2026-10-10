@@ -36,6 +36,8 @@ import {
   usePatchPartnerOrderStatus,
   useUploadPartnerOrderResult,
   useConfirmPartnerInboxMatch,
+  confirmMatchErrorKey,
+  memberLinkBadgeKey,
   type PartnerHealthOrder,
   type PartnerHealthInboxRow,
 } from '@/hooks/usePartnerHealthOrders';
@@ -127,15 +129,16 @@ export default function CommerceHealthOrders() {
         external_order_ref: resolveOrderRef || null,
       },
       {
+        // VTID-05056: 202 pending_member — the member is asked; no order exists yet.
         onSuccess: () => {
-          notify('screens.admin.matchConfirmed');
+          notify('screens.admin.matchProposed');
           setResolveRow(null);
           setResolveUserId('');
           setResolveTenantId('');
           setResolveTestName('');
           setResolveOrderRef('');
         },
-        onError: () => notifyError('toasts.admin.bulkActionFailed'),
+        onError: (err) => notifyError(confirmMatchErrorKey(err)),
       },
     );
   };
@@ -363,9 +366,16 @@ export default function CommerceHealthOrders() {
                                 <TableRow key={row.id}>
                                   <TableCell className="text-muted-foreground">{partnerName(row)}</TableCell>
                                   <TableCell>
-                                    <Badge variant="outline">
-                                      {row.reason}
-                                    </Badge>
+                                    <div className="flex flex-wrap gap-1">
+                                      <Badge variant="outline">
+                                        {row.reason}
+                                      </Badge>
+                                      {memberLinkBadgeKey(row.member_link_status) && (
+                                        <Badge variant="secondary" data-testid="member-link-badge">
+                                          {t(memberLinkBadgeKey(row.member_link_status)!)}
+                                        </Badge>
+                                      )}
+                                    </div>
                                   </TableCell>
                                   <TableCell className="text-xs text-muted-foreground">
                                     {new Date(row.created_at).toLocaleString()}
@@ -374,6 +384,7 @@ export default function CommerceHealthOrders() {
                                     <Button
                                       size="sm"
                                       className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                                      disabled={row.member_link_status === 'pending_member'}
                                       onClick={() => setResolveRow(row)}
                                     >
                                       <CheckCircle2 className="me-1 h-4 w-4" />
@@ -394,9 +405,14 @@ export default function CommerceHealthOrders() {
                             <div key={row.id} className={panelClass}>
                               <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0 truncate text-sm text-muted-foreground">{partnerName(row)}</div>
-                                <Badge variant="outline" className="shrink-0">
-                                  {row.reason}
-                                </Badge>
+                                <div className="flex shrink-0 flex-wrap justify-end gap-1">
+                                  <Badge variant="outline">
+                                    {row.reason}
+                                  </Badge>
+                                  {memberLinkBadgeKey(row.member_link_status) && (
+                                    <Badge variant="secondary">{t(memberLinkBadgeKey(row.member_link_status)!)}</Badge>
+                                  )}
+                                </div>
                               </div>
                               <div className="mt-1 text-xs text-muted-foreground">
                                 {new Date(row.created_at).toLocaleString()}
@@ -404,6 +420,7 @@ export default function CommerceHealthOrders() {
                               <Button
                                 size="sm"
                                 className="mt-3 w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                                disabled={row.member_link_status === 'pending_member'}
                                 onClick={() => setResolveRow(row)}
                               >
                                 <CheckCircle2 className="me-1 h-4 w-4" />

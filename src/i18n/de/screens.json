@@ -2625,7 +2625,10 @@
       "testName": "Testname",
       "externalOrderRefOptional": "Externe Bestellreferenz (optional)",
       "noOrdersYet": "Noch keine Bestellungen.",
-      "inboxEmpty": "Posteingang ist leer."
+      "inboxEmpty": "Posteingang ist leer.",
+      "matchProposed": "Zur Bestätigung an das Mitglied gesendet",
+      "awaitingMember": "Wartet auf Mitglied",
+      "memberDeclined": "Vom Mitglied abgelehnt"
     },
     "ai-feed": {
       "noEventsFound": "Keine Ereignisse gefunden",
@@ -10135,7 +10138,22 @@
         "statusCritical": "Kritisch",
         "statusUnknown": "Unbekannt",
         "recentResultsTitle": "Neueste Ergebnisse",
-        "viewAll": "Alle Ergebnisse ansehen"
+        "viewAll": "Alle Ergebnisse ansehen",
+        "linkRequests": {
+          "title": "Ist das dein Test?",
+          "body": "Ein Partner hat ein Laborergebnis, das zu dir gehören könnte. Es wird nur zu deinen Gesundheitsdaten hinzugefügt, wenn du es bestätigst.",
+          "proposedOn": "Angefragt am {date}",
+          "unknownPartner": "Partner",
+          "confirm": "Bestätigen",
+          "decline": "Das bin ich nicht",
+          "confirmDialogTitle": "Ergebnis zu deinen Daten hinzufügen?",
+          "confirmDialogBody": "Du bestätigst, dass „{test}“ von {partner} dein Test ist. Das Ergebnis wird dann zu deinen Gesundheitsdaten hinzugefügt und erscheint in deinen Ergebnissen.",
+          "confirmDialogAction": "Ja, das ist mein Test",
+          "cancel": "Abbrechen",
+          "confirmed": "Danke! Das Ergebnis wird zu deinen Gesundheitsdaten hinzugefügt.",
+          "declined": "Verstanden. Das Ergebnis wird nicht zu deinen Daten hinzugefügt.",
+          "failed": "Das hat nicht geklappt. Bitte versuche es noch einmal."
+        }
       },
       "comingSoon": {
         "title": "Bald verfügbar",

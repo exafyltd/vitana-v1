@@ -2658,7 +2658,10 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty."
+      "inboxEmpty": "Inbox is empty.",
+      "matchProposed": "Отправлено участнику на подтверждение",
+      "awaitingMember": "Ожидает участника",
+      "memberDeclined": "Отклонено участником"
     },
     "ai-feed": {
       "noEventsFound": "Событий не найдено",
@@ -10309,7 +10312,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "Это твой анализ?",
+          "body": "У партнёра есть результат анализа, который может принадлежать тебе. Он будет добавлен в твои данные о здоровье, только если ты это подтвердишь.",
+          "proposedOn": "Запрос от {date}",
+          "unknownPartner": "Партнёр",
+          "confirm": "Подтвердить",
+          "decline": "Это не я",
+          "confirmDialogTitle": "Добавить этот результат в твои данные?",
+          "confirmDialogBody": "Ты подтверждаешь, что «{test}» от {partner} — твой анализ. Тогда результат будет добавлен в твои данные о здоровье и появится в твоих результатах.",
+          "confirmDialogAction": "Да, это мой анализ",
+          "cancel": "Отмена",
+          "confirmed": "Спасибо! Результат добавляется в твои данные о здоровье.",
+          "declined": "Понятно. Результат не будет добавлен в твои данные.",
+          "failed": "Не получилось. Попробуй ещё раз."
+        }
       },
       "comingSoon": {
         "_pending_review": {
