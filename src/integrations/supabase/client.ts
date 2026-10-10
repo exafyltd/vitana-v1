@@ -5,6 +5,7 @@
 // exactly rather than failing to build.
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
+import { createDataFetch } from './data-routing';
 
 const SUPABASE_URL =
   (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
@@ -13,20 +14,22 @@ const SUPABASE_PUBLISHABLE_KEY =
   (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWtodndkY3V5aG54a2dmdnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NjY2MzcsImV4cCI6MjA3MTQ0MjYzN30._-QX8ZFgDsKgLM7eDlyc64vi73F-Hwc4ttnDPHjZgVw";
 
+// VTID-05023: PostgREST traffic goes to the Aurora proxy when this is set;
+// auth, storage, functions and realtime stay on SUPABASE_URL. Unset = no change.
+const DATA_API_URL = import.meta.env.VITE_DATA_API_URL as string | undefined;
+
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    // Pinned (VTID-05023): supabase-js derives the default key from the URL's
-    // first host label, so repointing VITE_SUPABASE_URL at the Aurora proxy
-    // (data.vitanaland.com) would change it to sb-data-auth-token and sign
-    // every member out. This is the key every existing session is stored under.
-    storageKey: 'sb-inmkhvwdcuyhnxkgfvsb-auth-token',
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
+  },
+  global: {
+    fetch: createDataFetch(SUPABASE_URL, DATA_API_URL),
   },
   realtime: {
     params: {

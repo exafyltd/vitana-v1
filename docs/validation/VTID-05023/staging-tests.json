@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05023",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "PostgREST-only routing: rest/v1 rewritten to the data host, auth/storage/functions/realtime untouched, pass-through when unset, real client wiring",
+      "ref": "npx vitest run src/integrations/supabase/data-routing.test.ts",
+      "cwd": ".",
+      "reason": "On staging VITE_DATA_API_URL_STAGING is unset until the proxy's staging twin is live, so the build must behave exactly as before; the community-app smoke suite proves that on the deployed chunk. The routing itself is proven here without touching any server."
+    }
+  ]
+}

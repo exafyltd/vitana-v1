@@ -15,26 +15,6 @@
 const OBJECT_PATH = '/storage/v1/object/public/';
 const RENDER_PATH = '/storage/v1/render/image/public/';
 
-/**
- * Hosts that serve Supabase Storage: the project's own *.supabase.co host (every
- * URL stored so far) and, after the Aurora cutover, the configured
- * VITE_SUPABASE_URL host (the PostgREST-Aurora proxy, which passes /storage
- * through to Supabase -- VTID-05023). New uploads get the proxy host.
- */
-const STORAGE_HOST_MARKERS = (() => {
-  const markers = ['.supabase.co'];
-  const configured = (import.meta.env?.VITE_SUPABASE_URL as string | undefined) || '';
-  try {
-    if (configured) markers.push('//' + new URL(configured).host.toLowerCase());
-  } catch {
-    /* malformed env value: fall back to the supabase.co marker only */
-  }
-  return markers;
-})();
-
-const isStorageUrl = (lower: string, path: string): boolean =>
-  STORAGE_HOST_MARKERS.some((m) => lower.includes(m + path));
-
 /** Largest width a card renders at (mobile full-bleed @3x ≈ 1170px). */
 export const CARD_COVER_WIDTH = 1200;
 
@@ -72,7 +52,7 @@ export const sanitizeCoverUrl = (url?: string, version?: string): string | undef
 
   const isHttp = /^https?:\/\//i.test(s);
   const isAsset = s.startsWith('/assets/');
-  const isSupabaseStorage = isStorageUrl(lower, '/storage/');
+  const isSupabaseStorage = lower.includes('.supabase.co/storage/');
   const isDataImage = lower.startsWith('data:image/');
   const isBlob = lower.startsWith('blob:');
 
@@ -111,7 +91,7 @@ export const generateCoverUrl = (title: string, description?: string): string =>
  * (VTID-05013 regression). `contain` downscales with the aspect ratio intact.
  */
 export const transformedCoverUrl = (url: string, width = CARD_COVER_WIDTH): string | undefined => {
-  if (!isStorageUrl(url.toLowerCase(), OBJECT_PATH)) return undefined;
+  if (!url.toLowerCase().includes('.supabase.co' + OBJECT_PATH)) return undefined;
   const rewritten = url.replace(OBJECT_PATH, RENDER_PATH);
   return rewritten + (rewritten.includes('?') ? '&' : '?') + `width=${width}&quality=75&resize=contain`;
 };
