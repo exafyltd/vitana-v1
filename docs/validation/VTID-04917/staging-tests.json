@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-04917",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: the member's own plan offers Invite; the picker opens, a group can be picked (Send becomes active) and the sheet closes without sending; the daily audiobook entry offers 'Listen now', no 'mark done' and no invite. Calendar window and chat list are answered in the browser with demo data; read-only",
+      "spec": "tests/e2e/staging/vtid-04917-calendar-invite-audiobook.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/calendar/vcal/InviteToChatSheet.test.tsx src/components/messages/CalendarInviteCard.test.tsx src/components/calendar/__regression__",
+      "reason": "sending an invite writes a chat message to real people and answering it joins events, so both are proven without staging: who can be invited to what, the picker lists real chats and groups (never the Vitana bot or a legacy thread), sends nothing until one is picked and sends only the entry id, the card's answers for the person invited (joined, paid event / room opens its page, event no longer on), the sender's counts, a finished event invites nobody, and that only gateway-built cards use the new card"
+    }
+  ]
+}

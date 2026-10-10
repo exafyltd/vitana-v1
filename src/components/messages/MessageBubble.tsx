@@ -52,6 +52,8 @@ import { describeGroupNotice } from '@/lib/messaging/groupSystemNotice';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
+import { CalendarInviteCard } from '@/components/messages/CalendarInviteCard';
+import { isInviteCard } from '@/lib/calendar-window-client';
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
   isOwnMessage: boolean;
@@ -790,6 +792,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       case 'calendar_invite':
+        // VTID-04917: cards the gateway built from a calendar entry.
+        if (isInviteCard(message.content_data)) {
+          return (
+            <CalendarInviteCard messageId={message.id} invite={message.content_data} isOwnMessage={isOwnMessage} />
+          );
+        }
         return (
           <Card className="max-w-sm border-primary/20">
             <CardContent className="p-4">

@@ -70,8 +70,10 @@
       "subscription": "Твоя подписка",
       "testResult": "Результат твоего теста",
       "_pending_review": {
-        "autopilot": true
-      }
+        "autopilot": true,
+        "audiobook": true
+      },
+      "audiobook": "Аудиокнига"
     },
     "subscription": {
       "renews": "Premium продлевается",
@@ -426,6 +428,84 @@
         "joinRoom": true,
         "unavailable": true,
         "untitled": true
+      }
+    },
+    "invite": {
+      "action": "Пригласить",
+      "title": "Кого ты хочешь пригласить?",
+      "search": "Найти чат или группу",
+      "loading": "Загружаем твои чаты …",
+      "empty": "Чаты не найдены.",
+      "chat": "Чат",
+      "group": "Группа",
+      "send": "Отправить приглашение",
+      "sendTo": "Отправить: {name}",
+      "sent": "Приглашение отправлено: {name}",
+      "notInvitable": "Сейчас сюда никого нельзя пригласить: событие закончилось, отменено или не публичное.",
+      "error": "Не удалось отправить приглашение. Попробуй чуть позже.",
+      "_pending_review": {
+        "action": true,
+        "title": true,
+        "search": true,
+        "loading": true,
+        "empty": true,
+        "chat": true,
+        "group": true,
+        "send": true,
+        "sendTo": true,
+        "sent": true,
+        "notInvitable": true,
+        "error": true
+      }
+    },
+    "inviteCard": {
+      "kind": {
+        "community_event": "Приглашение на событие",
+        "live_room_session": "Приглашение в прямой эфир",
+        "calendar_entry": "Приглашение из календаря",
+        "_pending_review": {
+          "community_event": true,
+          "live_room_session": true,
+          "calendar_entry": true
+        }
+      },
+      "accepted": "Я приду",
+      "maybe": "Может быть",
+      "declined": "Нет",
+      "answer": "Твой ответ",
+      "counts": "{yes} придут · {maybe} может быть",
+      "waiting": "Пока нет ответов",
+      "joined": "Ты участвуешь – это уже в твоём календаре",
+      "added": "Теперь в твоём календаре",
+      "removed": "Удалено из твоего календаря",
+      "recorded": "Ответ сохранён",
+      "openEvent": "Здесь можно взять билет и присоединиться",
+      "openRoom": "Здесь можно войти в комнату",
+      "notOpen": "Это событие больше не состоится.",
+      "error": "Не удалось сохранить ответ. Попробуй чуть позже.",
+      "_pending_review": {
+        "accepted": true,
+        "maybe": true,
+        "declined": true,
+        "answer": true,
+        "counts": true,
+        "waiting": true,
+        "joined": true,
+        "added": true,
+        "removed": true,
+        "recorded": true,
+        "openEvent": true,
+        "openRoom": true,
+        "notOpen": true,
+        "error": true
+      }
+    },
+    "audiobook": {
+      "title": "Аудиокнига – твой выпуск на сегодня",
+      "listen": "Слушать сейчас",
+      "_pending_review": {
+        "title": true,
+        "listen": true
       }
     }
   }

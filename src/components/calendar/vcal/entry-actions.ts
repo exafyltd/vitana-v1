@@ -12,6 +12,12 @@
  *   - Open source: a community event opens its event; a live room session
  *     opens the room, and "Join" is offered from 15 minutes before it starts
  *     until it ends.
+ *   - Invite (VTID-04917): to a community event or live room the member is
+ *     going to (the gateway says `shareable`), or to their own one-off entry
+ *     (manual / invite). Never a series, a done, cancelled or finished
+ *     entry, or anything a plan, lab, booking or Autopilot owns. The gateway
+ *     checks again when the invite is sent.
+ *   - Audiobook (VTID-04917): the daily audiobook entry opens the player.
  */
 import type { CalendarWindowItem } from "@/lib/calendar-window-client";
 import { isDone } from "./theme";
@@ -108,4 +114,20 @@ export function sourceActionOf(item: CalendarWindowItem, now: Date): SourceActio
     };
   }
   return null;
+}
+
+/** VTID-04917: may this entry be sent to someone as an invite? */
+export function canInviteEntry(item: CalendarWindowItem, now: Date): boolean {
+  if (!ownEntry(item)) return false;
+  const e = item.event!;
+  const end = item.end_time ? Date.parse(item.end_time) : Date.parse(item.start_time) + 60 * 60_000;
+  if (!(end > now.getTime()) || isDone(e)) return false;
+  if (item.shareable === true) return true;
+  return EDITABLE_SOURCES.has(e.source_type) && !e.rrule && item.occurrence_index === null;
+}
+
+/** VTID-04917: the audiobook daily entry — opens the player, never "mark done". */
+export const AUDIOBOOK_PATH = "/autopilot/audiobook";
+export function isAudiobookEntry(item: CalendarWindowItem): boolean {
+  return item.event?.source_type === "audiobook";
 }

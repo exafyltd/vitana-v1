@@ -30,7 +30,8 @@
       "src/components/calendar/vcal/vcal.test.ts"
     ],
     "src/components/calendar/vcal/labels.ts": [
-      "src/components/calendar/__regression__/calendar-logic.golden.test.ts"
+      "src/components/calendar/__regression__/calendar-logic.golden.test.ts",
+      "src/components/calendar/vcal/InviteToChatSheet.test.tsx"
     ],
     "src/components/calendar/vcal/theme.ts": [
       "src/components/calendar/__regression__/calendar-logic.golden.test.ts",
@@ -44,7 +45,8 @@
     ],
     "src/components/calendar/vcal/EntryScreen.tsx": [
       "src/components/calendar/__regression__/calendar-screen.golden.test.tsx",
-      "src/components/calendar/vcal/ShareToFeedPanel.test.tsx"
+      "src/components/calendar/vcal/ShareToFeedPanel.test.tsx",
+      "src/components/calendar/vcal/InviteToChatSheet.test.tsx"
     ],
     "src/components/calendar/vcal/SubscribeSheet.tsx": [
       "src/components/calendar/__regression__/calendar-sheets.golden.test.tsx",
@@ -57,14 +59,16 @@
       "src/components/calendar/__regression__/calendar-logic.golden.test.ts",
       "src/components/calendar/vcal/vcal.test.ts",
       "src/lib/cached-access-token.test.ts",
-      "src/components/calendar/vcal/ShareToFeedPanel.test.tsx"
+      "src/components/calendar/vcal/ShareToFeedPanel.test.tsx",
+      "src/components/messages/CalendarInviteCard.test.tsx"
     ],
     "src/hooks/useCalendarEvents.ts": [
       "src/hooks/useCalendarEvents.error-logging-abort.test.ts",
       "src/hooks/useCalendarEvents.idempotency-error-logging.test.ts"
     ],
     "src/components/calendar/vcal/entry-actions.ts": [
-      "src/components/calendar/vcal/entry-actions.test.ts"
+      "src/components/calendar/vcal/entry-actions.test.ts",
+      "src/components/calendar/vcal/InviteToChatSheet.test.tsx"
     ],
     "src/components/calendar/vcal/ShareToFeedPanel.tsx": [
       "src/components/calendar/vcal/ShareToFeedPanel.test.tsx"
@@ -77,6 +81,9 @@
     ],
     "src/components/calendar/vcal/FindTime.tsx": [
       "src/components/calendar/vcal/FindTime.vtid-04996.test.tsx"
+    ],
+    "src/components/calendar/vcal/InviteToChatSheet.tsx": [
+      "src/components/calendar/vcal/InviteToChatSheet.test.tsx"
     ]
   },
   "uncovered": [

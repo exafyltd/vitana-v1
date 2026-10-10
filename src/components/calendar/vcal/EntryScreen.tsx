@@ -27,7 +27,7 @@ import { entryTitle, itemEmoji, sourceLabel } from "./labels";
 import { OverlapWarning } from "./OverlapWarning";
 import { useOverlap } from "./useOverlap";
 import { reminderLabel, relativeIn, timeRange, toLocalInput } from "./time";
-import { canEditEntry, canRemoveEntry, entryTimeState, isEndedSourceEntry, sourceActionOf } from "./entry-actions";
+import { AUDIOBOOK_PATH, canEditEntry, canInviteEntry, canRemoveEntry, entryTimeState, isAudiobookEntry, isEndedSourceEntry, sourceActionOf } from "./entry-actions";
 import { ShareToFeedPanel } from "./ShareToFeedPanel";
 
 interface Props {
@@ -52,10 +52,12 @@ interface Props {
   sharing?: boolean;
   /** VTID-04995: active role, so overlap warnings use the same lens as the screen. */
   role?: string | null;
+  /** VTID-04917: send the entry to someone as an invite (the page opens the picker). */
+  onInvite?: (item: CalendarWindowItem) => void;
 }
 
 
-export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource, onShare, sharing, role = null }: Props) {
+export function EntryScreen({ item, now, onClose, onComplete, completing, onMove, moving, onEdit, saving, onRemove, removing, onOpenSource, onShare, sharing, role = null, onInvite }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const e = item.event!;
   const style = KIND_STYLE[entryKind(e)];
@@ -68,7 +70,10 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
   // A recurring entry is one row with many occurrences; completing it would
   // complete the whole series, so only one-off entries get the button.
   // VTID-04357: work-lens items are finished where they live, not here.
-  const canComplete = !done && item.occurrence_index === null && !item.work && !!onComplete;
+  // VTID-04917: the audiobook entry is informational — listening is tracked
+  // by the player, never by marking the entry done.
+  const audiobook = isAudiobookEntry(item);
+  const canComplete = !done && item.occurrence_index === null && !item.work && !audiobook && !!onComplete;
   // The gateway decides (`movable`): own one-off entries only, never a
   // booking, lab order or series — their source would move them back.
   const canMove = item.movable === true && !done && !item.work && !!onMove;
@@ -84,6 +89,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
   const [sharingOpen, setSharingOpen] = useState(false);
   const sharedPostId = item.shared_post_id ?? null;
   const canShare = item.shareable === true && !sharedPostId && !item.busy && !item.work && !!onShare;
+  const canInvite = !!onInvite && canInviteEntry(item, now);
   const [draft, setDraft] = useState(() => ({
     title: e.title,
     start: toLocalInput(new Date(item.start_time)),
@@ -245,6 +251,17 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             ✅ {t("vcal.markDone")}
           </button>
         )}
+        {audiobook && onOpenSource && (
+          <button
+            type="button"
+            onClick={() => onOpenSource(AUDIOBOOK_PATH)}
+            className="h-14 rounded-[18px] text-lg font-semibold text-white"
+            style={{ background: style.accent }}
+            data-testid="vcal-listen"
+          >
+            🎧 {t("vcal.audiobook.listen")}
+          </button>
+        )}
         {canMove && picking && (
           <div className="flex flex-col gap-2.5 rounded-[18px] p-4" style={{ background: style.bg }} data-testid="vcal-move-picker">
             <label htmlFor="vcal-move-when" className="text-xs" style={{ color: style.ink }}>
@@ -337,6 +354,17 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             data-testid="vcal-share"
           >
             📣 {t("vcal.share.action")}
+          </button>
+        )}
+        {canInvite && (
+          <button
+            type="button"
+            onClick={() => onInvite!(item)}
+            className="h-[52px] rounded-2xl text-sm"
+            style={{ background: SURFACE.track }}
+            data-testid="vcal-invite"
+          >
+            ✉️ {t("vcal.invite.action")}
           </button>
         )}
         {sharedPostId && onOpenSource && (

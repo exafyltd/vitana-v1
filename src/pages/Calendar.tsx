@@ -56,6 +56,7 @@ import { CALENDAR_NUMBER_STYLE, SURFACE, isDone } from "@/components/calendar/vc
 import { ViewSwitch, isMilestone } from "@/components/calendar/vcal/parts";
 import { DayView, MonthView, WeekView } from "@/components/calendar/vcal/views";
 import { EntryScreen } from "@/components/calendar/vcal/EntryScreen";
+import { InviteToChatSheet } from "@/components/calendar/vcal/InviteToChatSheet";
 import { SubscribeSheet, type SubscribeProvider } from "@/components/calendar/vcal/SubscribeSheet";
 import { GuideCard } from "@/components/calendar/vcal/GuideCard";
 import { AddEntrySheet } from "@/components/calendar/vcal/AddEntrySheet";
@@ -121,6 +122,8 @@ export default function CalendarPage() {
   const [view, setView] = useState<CalendarView>(readSavedView);
   const [anchor, setAnchor] = useState(() => new Date());
   const [openItem, setOpenItem] = useState<CalendarWindowItem | null>(null);
+  // VTID-04917: the entry being sent to someone as an invite.
+  const [inviteItem, setInviteItem] = useState<CalendarWindowItem | null>(null);
   const [subscribeOpen, setSubscribeOpen] = useState<false | { provider?: SubscribeProvider }>(false);
   const [guideDismissed, setGuideDismissed] = useState<string | null>(readGuideDismissed);
   // VTID-04956: the day the add sheet is open for (null = closed). Adding never moves the shown week or month.
@@ -493,9 +496,11 @@ export default function CalendarPage() {
           onOpenSource={(path) => navigate(path)}
           onShare={(i, input) => share.mutate({ item: i, input })}
           sharing={share.isPending}
+          onInvite={(i) => setInviteItem(i)}
           role={currentRole ?? null}
         />
       )}
+      {inviteItem && <InviteToChatSheet item={inviteItem} onClose={() => setInviteItem(null)} />}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}
       {addFor && <AddEntrySheet day={addFor} role={currentRole ?? null} onClose={() => setAddFor(null)} />}
     </AppLayout>

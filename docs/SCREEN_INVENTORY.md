@@ -71,7 +71,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `vcal` — used: 9, total in shard: 269
+- `vcal` — used: 9, total in shard: 307
 
 ### src/pages/Changelog.tsx
 
