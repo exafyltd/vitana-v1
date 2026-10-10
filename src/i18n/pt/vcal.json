@@ -68,7 +68,7 @@
       "journey": "Sua jornada",
       "reminder": "Seu lembrete",
       "subscription": "Sua assinatura",
-      "testResult": "O resultado do teu teste",
+      "testResult": "O resultado do seu teste",
       "_pending_review": {
         "autopilot": true
       }
@@ -86,7 +86,7 @@
     },
     "findTime": {
       "action": "Encontrar um horário",
-      "loading": "A procurar tempo livre …",
+      "loading": "Procurando tempo livre …",
       "pick": "Horários possíveis",
       "none": "Nada livre se encaixa nos próximos dias.",
       "error": "Não foi possível carregar os horários livres."
