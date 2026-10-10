@@ -11,6 +11,7 @@ import {
   __resetScreenReadyForTests,
   classifyNav,
   countRefetched,
+  firstViewportImages,
   measureScreenReady,
   normalizeRoute,
   onRouteChange,
@@ -336,5 +337,31 @@ describe('onRouteChange', () => {
     } finally {
       vi.unstubAllGlobals();
     }
+  });
+});
+
+describe('firstViewportImages (clipping)', () => {
+  const rect = (left: number, top: number, width: number, height: number) =>
+    ({ left, top, width, height, right: left + width, bottom: top + height, x: left, y: top, toJSON: () => ({}) }) as DOMRect;
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('ignores the next slide of a horizontal carousel that only peeks past the clipping row', () => {
+    // innerWidth 1024 in jsdom; the row is 400 wide and clips overflow-x.
+    document.body.innerHTML = '<div id="row" style="overflow-x:auto"><img id="a" src="a.jpg"><img id="b" src="b.jpg"></div>';
+    const row = document.getElementById('row')!;
+    row.getBoundingClientRect = () => rect(0, 100, 400, 300);
+    document.getElementById('a')!.getBoundingClientRect = () => rect(10, 100, 380, 300);
+    document.getElementById('b')!.getBoundingClientRect = () => rect(400, 100, 380, 300);
+    expect(firstViewportImages().map((i) => i.id)).toEqual(['a']);
+  });
+
+  it('counts an image inside a non-clipping parent by its own box', () => {
+    document.body.innerHTML = '<div id="p"><img id="a" src="a.jpg"></div>';
+    document.getElementById('p')!.getBoundingClientRect = () => rect(0, 0, 10, 10);
+    document.getElementById('a')!.getBoundingClientRect = () => rect(0, 100, 300, 200);
+    expect(firstViewportImages().map((i) => i.id)).toEqual(['a']);
   });
 });
