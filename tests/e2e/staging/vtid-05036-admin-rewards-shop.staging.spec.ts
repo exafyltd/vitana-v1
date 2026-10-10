@@ -90,6 +90,17 @@ test('Admin › Rewards Shop renders on phone and desktop without writing anythi
     localStorage.setItem('vitana.viewRole', 'admin');
   }, session);
 
+  // The admin route is reached only with the member's role from
+  // get_role_preference. That RPC is a POST, which the staging guard aborts, so
+  // the app falls back to "community" and useRoleRouteEnforcement bounces /admin
+  // to /home (the first STAGING-VERIFY of this spec landed on Home with Vitana's
+  // greeting open). Answer that one read locally with "admin": nothing leaves the
+  // browser, and every admin read below still goes to the real staging gateway,
+  // which enforces exafy_admin itself (a 403 shows the exafy-only state).
+  await page.route('**/rest/v1/rpc/get_role_preference', (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([{ role: 'admin' }]) }),
+  );
+
   for (const viewport of [{ width: 390, height: 844 }, { width: 1400, height: 900 }]) {
     await page.setViewportSize(viewport);
     await page.goto('/admin/marketplace/rewards', { waitUntil: 'domcontentloaded' });
