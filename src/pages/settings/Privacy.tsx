@@ -274,26 +274,29 @@ function Privacy() {
                     icon={Users}
                     content={
                       <div className="space-y-4">
+                        {/* VTID-05032 (Health Hub D4): no consent record exists yet, so these
+                            data-sharing switches are off and disabled until they are wired to
+                            real consents (D10). Never default health-data sharing to on. */}
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium">{t('screens.settings.healthDataAnalytics')}</h4>
                             <p className="text-sm text-muted-foreground">{t('screens.settings.shareAnonymizedHealthDataImproveAi')}</p>
                           </div>
-                          <Switch defaultChecked />
+                          <Switch checked={false} disabled aria-label={t('screens.settings.healthDataAnalytics')} />
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium">{t('screens.settings.communityInsights')}</h4>
                             <p className="text-sm text-muted-foreground">{t('screens.settings.allowYourProgressContributeCommunityStatistics')}</p>
                           </div>
-                          <Switch defaultChecked />
+                          <Switch checked={false} disabled aria-label={t('screens.settings.communityInsights')} />
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium">{t('screens.settings.thirdpartyIntegrations')}</h4>
                             <p className="text-sm text-muted-foreground">{t('screens.settings.shareDataWithConnectedAppsServices')}</p>
                           </div>
-                          <Switch />
+                          <Switch checked={false} disabled aria-label={t('screens.settings.thirdpartyIntegrations')} />
                         </div>
                       </div>
                     }
@@ -371,7 +374,8 @@ function Privacy() {
                           <span>{t('screens.settings.viewAllDataSharingActivities')}</span>
                         </div>
                         <div className="pt-2">
-                          <Button variant="outline" size="sm">{t('screens.settings.requestDataExport')}</Button>
+                          {/* VTID-05032 (Health Hub D4): no export job exists yet — disabled until it does. */}
+                          <Button variant="outline" size="sm" disabled>{t('screens.settings.requestDataExport')}</Button>
                         </div>
                       </div>
                     }

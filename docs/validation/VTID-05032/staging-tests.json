@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05032",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "GET /api/v1/wearables/providers lists >=1 provider; Settings › Connected Apps shows a health card connected only when the gateway does, Data Sync lists only real connections, no old fake sync times; Settings › Privacy data-sharing switches off + disabled, export disabled (read-only)",
+      "spec": "tests/e2e/staging/vtid-05032-health-connections-privacy.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "health cards and Data Sync from the gateway's provider list (none / Fitbit connected), source scan for hard-coded health state, mobile merge + header count, providers hook warns and degrades to [], Privacy switches and export disabled",
+      "ref": "npx vitest run src/pages/settings/__tests__/connected-apps-health.test.tsx src/pages/settings/__tests__/privacy-data-sharing.test.tsx src/components/settings/__tests__/mobile-wearable-merge.test.ts src/hooks/useWearableProviders.vtid-05032.test.ts",
+      "cwd": ".",
+      "reason": "Showing a health app as connected depends on the member's own wearable connections, and staging is read-only against the production Supabase project, so the staging spec can only prove the not-connected path for the test user (or whatever it really has). These Vitests render the real Connected Apps and Privacy pages with a mocked provider list and prove both the empty and the Fitbit-connected cases, the mobile merge and the hook's warn-and-degrade path."
+    }
+  ]
+}

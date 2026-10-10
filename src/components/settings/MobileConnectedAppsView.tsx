@@ -31,10 +31,13 @@ import {
   mediaIntegrations,
   shoppingIntegrations,
   getConnectionStats,
+  getAllIntegrations,
   type Integration,
 } from "./integrationData";
 // VTID-02403: AI Assistants hooks + modal for mobile
 import { useAIProviders, type AIProviderId } from "@/hooks/useAIAssistants";
+// VTID-05032 (Health Hub D3): real wearable connection state from the gateway.
+import { useWearableProviders, mergeWearableState } from "@/hooks/useWearableProviders";
 import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
 // VTID-01928: Google OAuth for Gmail/Calendar/Contacts, and dedicated YouTube
 // OAuth for YouTube / YouTube Music (narrower scope).
@@ -179,7 +182,14 @@ export function MobileConnectedAppsView() {
   const [socialImportOpen, setSocialImportOpen] = useState(false);
   const [socialImportPlatform, setSocialImportPlatform] = useState<SocialPlatform>('linkedin');
 
-  const { connected, syncing } = getConnectionStats();
+  // VTID-05032 (Health Hub D3): fitness/health entries are connected only when
+  // the gateway says so; the header counts come from the same merged lists.
+  const { data: wearableProviders } = useWearableProviders();
+  const fitnessLive = mergeWearableState(fitnessIntegrations, wearableProviders);
+  const healthLive = mergeWearableState(healthIntegrations, wearableProviders);
+  const { connected, syncing } = getConnectionStats(
+    getAllIntegrations({ fitness: fitnessLive, health: healthLive }),
+  );
 
   // Filter integrations by search query
   const filterIntegrations = (integrations: Integration[]) => {
@@ -229,8 +239,8 @@ export function MobileConnectedAppsView() {
   const filteredShopping = filterIntegrations(shoppingIntegrations);
   const filteredAi = filterIntegrations(aiIntegrationsLive);
   const filteredSocial = filterIntegrations(socialIntegrations);
-  const filteredFitness = filterIntegrations(fitnessIntegrations);
-  const filteredHealth = filterIntegrations(healthIntegrations);
+  const filteredFitness = filterIntegrations(fitnessLive);
+  const filteredHealth = filterIntegrations(healthLive);
   const filteredProductivity = filterIntegrations(applyGoogleStatus(productivityIntegrations));
   const filteredMedia = filterIntegrations(applyGoogleStatus(mediaIntegrations));
   const filteredOther = filterIntegrations(otherIntegrations);
