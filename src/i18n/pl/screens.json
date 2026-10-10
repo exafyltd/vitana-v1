@@ -6309,7 +6309,17 @@
       "deleteThisNotification": "Usuń to powiadomienie",
       "delete": "Usuń",
       "close": "Zamknij",
-      "closeNotifications": "Zamknij powiadomienia"
+      "closeNotifications": "Zamknij powiadomienia",
+      "turnOnTitle": "Powiadomienia są wyłączone",
+      "turnOnBody": "Ta aplikacja nie może teraz wysyłać Ci powiadomień. Otwórz ustawienia telefonu, znajdź aplikację Vitana i włącz tam powiadomienia. Następnie dotknij „Spróbuj ponownie”.",
+      "turnOnTryAgain": "Spróbuj ponownie",
+      "turnOnDismiss": "Ukryj",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Wybierz część nazwy swojego Vitana ID",

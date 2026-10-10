@@ -6311,7 +6311,17 @@
       "deleteThisNotification": "Удалить это уведомление",
       "delete": "Удалить",
       "close": "Закрыть",
-      "closeNotifications": "Закрыть уведомления"
+      "closeNotifications": "Закрыть уведомления",
+      "turnOnTitle": "Уведомления выключены",
+      "turnOnBody": "Это приложение сейчас не может отправлять тебе уведомления. Открой настройки телефона, найди приложение Vitana и включи там уведомления. Затем нажми «Повторить».",
+      "turnOnTryAgain": "Повторить",
+      "turnOnDismiss": "Скрыть",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Выбери часть имени для своего Vitana ID",

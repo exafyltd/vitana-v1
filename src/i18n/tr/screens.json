@@ -6308,7 +6308,17 @@
       "deleteThisNotification": "Bu bildirimi sil",
       "delete": "Sil",
       "close": "Kapat",
-      "closeNotifications": "Bildirimleri kapat"
+      "closeNotifications": "Bildirimleri kapat",
+      "turnOnTitle": "Bildirimler kapalı",
+      "turnOnBody": "Bu uygulama şu anda sana bildirim gönderemiyor. Telefonunun ayarlarını aç, Vitana uygulamasını bul ve bildirimleri orada aç. Ardından \"Tekrar dene\"ye dokun.",
+      "turnOnTryAgain": "Tekrar dene",
+      "turnOnDismiss": "Gizle",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Vitana ID'nin ad kısmını seç",

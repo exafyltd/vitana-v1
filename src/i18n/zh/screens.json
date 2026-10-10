@@ -6308,7 +6308,17 @@
       "deleteThisNotification": "删除此通知",
       "delete": "删除",
       "close": "关闭",
-      "closeNotifications": "关闭通知"
+      "closeNotifications": "关闭通知",
+      "turnOnTitle": "通知已关闭",
+      "turnOnBody": "此应用目前无法向你发送通知。请打开手机设置，找到 Vitana 应用并开启通知，然后点按“重试”。",
+      "turnOnTryAgain": "重试",
+      "turnOnDismiss": "隐藏",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "选择你的 Vitana ID 名称部分",

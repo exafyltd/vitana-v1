@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05028",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Appilix registration + turn-on-notifications card",
+      "ref": "npx vitest run src/lib/pushNotifications.appilix-label.vtid-05028.test.ts src/components/notifications/TurnOnNotificationsCard.vtid-05028.test.tsx",
+      "cwd": ".",
+      "reason": "Both behaviours only run inside the Appilix native WebView (window.appilix bridge). The staging browser suite cannot emulate that bridge, and registering a device token is a write, which staging (production Supabase) must never do. These Vitest suites prove the three Appilix registration paths never call the plain user-agent registration, browsers keep it, and the card's visibility matrix; the standard community-app smoke run confirms the deployed shell and the notifications panel still load in a browser, where the card is hidden by design."
+    }
+  ]
+}

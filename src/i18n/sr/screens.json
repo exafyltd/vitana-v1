@@ -6308,7 +6308,17 @@
       "deleteThisNotification": "Obriši ovo obaveštenje",
       "delete": "Obriši",
       "close": "Zatvori",
-      "closeNotifications": "Zatvori obaveštenja"
+      "closeNotifications": "Zatvori obaveštenja",
+      "turnOnTitle": "Obaveštenja su isključena",
+      "turnOnBody": "Ova aplikacija ti trenutno ne može slati obaveštenja. Otvori podešavanja telefona, pronađi aplikaciju Vitana i tamo uključi obaveštenja. Zatim dodirni „Pokušaj ponovo“.",
+      "turnOnTryAgain": "Pokušaj ponovo",
+      "turnOnDismiss": "Sakrij",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Izaberi ime za svoj Vitana ID",

@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05028",
+  "kind": "fix",
+  "paths": [
+    "src/lib/pushNotifications.ts",
+    "src/lib/pushNotifications.appilix-label.vtid-05028.test.ts",
+    "src/components/notifications/NotificationsPanel.tsx",
+    "src/components/notifications/TurnOnNotificationsCard.tsx",
+    "src/components/notifications/TurnOnNotificationsCard.vtid-05028.test.tsx",
+    "src/i18n/*/screens.json",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05028/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
