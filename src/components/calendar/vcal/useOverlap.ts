@@ -26,7 +26,8 @@ export function useOverlap(
     }
     let live = true;
     const id = setTimeout(() => {
-      fetchCalendarConflicts(new Date(startMs), endMs === null ? null : new Date(endMs), role, excludeEventId)
+      Promise.resolve()
+        .then(() => fetchCalendarConflicts(new Date(startMs), endMs === null ? null : new Date(endMs), role, excludeEventId))
         .then((c) => live && setFound(c))
         .catch(() => live && setFound([]));
     }, SETTLE_MS);

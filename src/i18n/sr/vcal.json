@@ -83,6 +83,13 @@
       "busy": "Zauzeto · {{time}}",
       "external": "Zauzeto (drugi kalendar) · {{time}}"
     },
+    "findTime": {
+      "action": "Pronađi termin",
+      "loading": "Tražim slobodno vreme …",
+      "pick": "Termini koji odgovaraju",
+      "none": "U narednim danima nema slobodnog termina koji odgovara.",
+      "error": "Slobodni termini trenutno nisu učitani."
+    },
     "empty": {
       "title": "Ništa nije planirano – miran dan",
       "hint": "Reci Vitani šta planiraš i ona će to dodati."

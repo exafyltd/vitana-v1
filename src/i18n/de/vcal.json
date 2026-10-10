@@ -77,6 +77,13 @@
       "busy": "Beschäftigt · {{time}}",
       "external": "Belegt (anderer Kalender) · {{time}}"
     },
+    "findTime": {
+      "action": "Zeit finden",
+      "loading": "Ich suche freie Zeiten …",
+      "pick": "Passende Zeiten",
+      "none": "Heute und in den nächsten Tagen ist nichts Passendes frei.",
+      "error": "Freie Zeiten konnten gerade nicht geladen werden."
+    },
     "empty": {
       "title": "Nichts geplant – ein ruhiger Tag",
       "hint": "Sag Vitana, was du vorhast, und sie trägt es ein."

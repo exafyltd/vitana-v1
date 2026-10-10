@@ -83,6 +83,13 @@
       "busy": "Meşgul · {{time}}",
       "external": "Meşgul (başka takvim) · {{time}}"
     },
+    "findTime": {
+      "action": "Zaman bul",
+      "loading": "Boş zaman arıyorum …",
+      "pick": "Uygun zamanlar",
+      "none": "Önümüzdeki günlerde uygun boş zaman yok.",
+      "error": "Boş zamanlar şu an yüklenemedi."
+    },
     "empty": {
       "title": "Planlanmış bir şey yok – sakin bir gün",
       "hint": "Ne planladığını Vitana'ya söyle, o eklesin."

@@ -192,6 +192,21 @@ export async function fetchCalendarConflicts(
   return Array.isArray(list) ? (list as CalendarConflict[]) : [];
 }
 
+/** VTID-04996: a free stretch that fits the asked duration. */
+export interface FreeSlot {
+  start: string;
+  end: string;
+  duration_minutes: number;
+  free_until: string;
+}
+
+/** Up to `limit` free slots over the member's busy time and waking hours (GET /events/gaps). */
+export async function fetchFreeSlots(durationMin: number, role: string | null, limit = 3): Promise<FreeSlot[]> {
+  const qs = new URLSearchParams({ duration: String(durationMin), limit: String(limit) });
+  const body = await authedFetch(`/api/v1/calendar/events/gaps?${qs}`, role);
+  return Array.isArray(body.data) ? (body.data as FreeSlot[]) : [];
+}
+
 export type PillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
 
 /** VTID-04915: what completing an entry did to the Vitana Index (null when not recomputed). */

@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04996",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "UI half of VTID-04996 (Find a time in the add form). Staging is read-only and shares the production database, so no entry is created there; FindTime tests pin that it asks only on tap with the form length, offers the slots, hands the pick to the form, drops slots past midnight, and says so on failure."
+    }
+  ]
+}

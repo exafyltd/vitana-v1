@@ -77,6 +77,13 @@
       "busy": "Busy · {{time}}",
       "external": "Busy (another calendar) · {{time}}"
     },
+    "findTime": {
+      "action": "Find a time",
+      "loading": "Looking for free time …",
+      "pick": "Times that fit",
+      "none": "Nothing that fits is free in the next days.",
+      "error": "Free times couldn't be loaded right now."
+    },
     "empty": {
       "title": "Nothing planned – a calm day",
       "hint": "Tell Vitana what you have in mind and she'll add it."

@@ -83,6 +83,13 @@
       "busy": "Ocupado · {{time}}",
       "external": "Ocupado (outro calendário) · {{time}}"
     },
+    "findTime": {
+      "action": "Encontrar um horário",
+      "loading": "A procurar tempo livre …",
+      "pick": "Horários possíveis",
+      "none": "Nada livre se encaixa nos próximos dias.",
+      "error": "Não foi possível carregar os horários livres."
+    },
     "empty": {
       "title": "Nada planejado – um dia tranquilo",
       "hint": "Diga à Vitana o que você tem em mente e ela adiciona."

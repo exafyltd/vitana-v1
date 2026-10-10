@@ -15,6 +15,7 @@ import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { t } from "@/lib/i18n-toast";
 import { OverlapWarning } from "@/components/calendar/vcal/OverlapWarning";
 import { useOverlap } from "@/components/calendar/vcal/useOverlap";
+import { FindTime } from "@/components/calendar/vcal/FindTime";
 
 import { fmtDate, formatDate } from '@/lib/locale-format';
 interface MobileEventFormProps {
@@ -215,6 +216,16 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }
         </div>
       </div>
 
+      <FindTime
+        durationMin={Math.max(15, Math.round((slot(endTime).getTime() - slot(startTime).getTime()) / 60000)) || 60}
+        role={role}
+        onPick={(start, end) => {
+          setDate(start);
+          setShowDatePicker(false);
+          setStartTime(formatDate(start, 'HH:mm'));
+          setEndTime(formatDate(end, 'HH:mm'));
+        }}
+      />
       <OverlapWarning conflicts={overlap} />
 
       {/* Location (optional) */}
