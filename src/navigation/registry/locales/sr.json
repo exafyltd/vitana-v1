@@ -1872,26 +1872,12 @@
       "hoću da proverim šta treba da radim da bih zaradio više nagrada"
     ]
   },
-  "WALLET.REWARDS_PENDING": {
-    "title": "Nagrade na čekanju",
+  "WALLET.REWARDS_SHOP": {
+    "title": "Prodavnica nagrada",
     "phrasings": [
-      "koje nagrade još nisam primio",
-      "pokaži mi nagrade na čekanju",
-      "gde su nagrade koje još nisu isplaćene",
-      "prikaži mi tab sa nagradama na čekanju",
-      "gde vidim nagrade koje još nisu proknjižene na moj račun",
-      "hoću da vidim koje nagrade čekaju da budu odobrene"
-    ]
-  },
-  "WALLET.REWARDS_REFERRAL": {
-    "title": "Nagrade za preporuke",
-    "phrasings": [
-      "šta sam dobio za pozivanje prijatelja",
-      "pokaži mi nagrade od referala",
-      "gde su moje referral nagrade",
-      "otvori tab sa nagradama za preporuke",
-      "gde mogu da vidim koliko sam zaradio od preporuka",
-      "hoću da proverim nagrade koje sam dobio što sam doveo nove članove"
+      "otvori prodavnicu nagrada",
+      "šta mogu da kupim sa VTNA",
+      "iskoristi moje VTNA"
     ]
   },
   "WALLET.SUBSCRIPTIONS": {

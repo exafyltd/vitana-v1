@@ -5552,49 +5552,29 @@
       }
     },
     {
-      "id": "WALLET.REWARDS_PENDING",
-      "route": "/wallet/rewards?tab=pending",
+      "id": "WALLET.REWARDS_SHOP",
+      "route": "/wallet/rewards?tab=shop",
       "category": "wallet",
       "access": "member",
       "i18n": {
         "en": {
-          "title": "Pending rewards",
-          "shows": "The pending tab of your wallet rewards — rewards not yet credited.",
+          "title": "Rewards shop",
+          "shows": "The shop tab of your wallet rewards — products, services and tickets you can get with your earned VTNA.",
+          "hint": "When the user wants to spend or redeem earned VTNA, asks what they can buy or get with VTNA, or wants to open the rewards shop.",
           "phrasings": [
-            "show pending rewards",
-            "rewards not yet paid"
+            "open the rewards shop",
+            "what can I buy with VTNA",
+            "redeem my VTNA"
           ]
         },
         "de": {
-          "title": "Ausstehende Belohnungen",
-          "shows": "Der Ausstehend-Tab der Wallet-Belohnungen — noch nicht gutgeschriebene Belohnungen.",
+          "title": "Prämien-Shop",
+          "shows": "Der Shop-Tab der Wallet-Belohnungen — Produkte, Leistungen und Tickets, die du mit deinen verdienten VTNA bekommst.",
+          "hint": "Wenn der Nutzer verdiente VTNA ausgeben oder einlösen möchte, fragt, was er mit VTNA kaufen oder bekommen kann, oder den Prämien-Shop öffnen will.",
           "phrasings": [
-            "zeig mir ausstehende Belohnungen",
-            "noch nicht ausgezahlte Belohnungen"
-          ]
-        }
-      }
-    },
-    {
-      "id": "WALLET.REWARDS_REFERRAL",
-      "route": "/wallet/rewards?tab=referral",
-      "category": "wallet",
-      "access": "member",
-      "i18n": {
-        "en": {
-          "title": "Referral rewards",
-          "shows": "The referral tab of your wallet rewards — rewards from referrals.",
-          "phrasings": [
-            "show my referral rewards",
-            "what did I get for inviting friends"
-          ]
-        },
-        "de": {
-          "title": "Empfehlungs-Belohnungen",
-          "shows": "Der Empfehlungs-Tab der Wallet-Belohnungen — Belohnungen aus Empfehlungen.",
-          "phrasings": [
-            "zeig mir meine Empfehlungsbelohnungen",
-            "was habe ich für Einladungen bekommen"
+            "öffne den Prämien-Shop",
+            "was kann ich mit VTNA kaufen",
+            "meine VTNA einlösen"
           ]
         }
       }

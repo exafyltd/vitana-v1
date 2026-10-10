@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "Balansi",
       "activity": "Aktivnost",
-      "actions": "Akcije"
+      "actions": "Akcije",
+      "rewards": "Nagrade",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "Prodaj i zaradi provizije",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "Nazad na novčanik",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }

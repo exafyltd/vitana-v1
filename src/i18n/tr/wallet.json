@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "Bakiyeler",
       "activity": "Aktivite",
-      "actions": "İşlemler"
+      "actions": "İşlemler",
+      "rewards": "Ödüller",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "Sat ve kazan komisyonları",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "Cüzdana dön",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }

@@ -11,7 +11,11 @@
     "tabs": {
       "balances": "الأرصدة",
       "activity": "النشاط",
-      "actions": "الإجراءات"
+      "actions": "الإجراءات",
+      "rewards": "المكافآت",
+      "_pending_review": {
+        "rewards": true
+      }
     },
     "filters": {
       "commissions": "بِع واكسب عمولات",
@@ -215,6 +219,10 @@
         "ordersTitle": true,
         "unknownItem": true
       }
+    },
+    "backToWallet": "العودة إلى المحفظة",
+    "_pending_review": {
+      "backToWallet": true
     }
   }
 }
