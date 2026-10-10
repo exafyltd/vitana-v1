@@ -160,7 +160,7 @@
         },
         "api_unavailable": {
           "title": "Not possible on this device",
-          "body": "Your browser can't open your address book. Open Vitanaland in Chrome on your Android phone, or connect Google or iCloud.",
+          "body": "This device can't open your address book directly. Export your contacts as a .vcf file or connect Google, Outlook or iCloud.",
           "_pending_review": {}
         },
         "permission_denied": {
@@ -183,7 +183,15 @@
           "body": "Try again in a moment.",
           "_pending_review": {}
         },
-        "_pending_review": {}
+        "_pending_review": {},
+        "file_too_large": {
+          "title": "The file is too large",
+          "body": "Export your contacts without photos or choose a smaller file (up to 10 MB)."
+        },
+        "file_empty": {
+          "title": "No contacts in this file",
+          "body": "Choose a .vcf file you exported from your phone's Contacts app."
+        }
       },
       "consent": {
         "title": "How we handle your contacts",
@@ -194,12 +202,67 @@
         "privateBody": "Contacts you bring in are stored in your Vitanaland account. Only you can see them.",
         "removeTitle": "Remove them any time",
         "removeBody": "In Connected Apps you can turn a source off and remove its contacts.",
-        "helper": "We compare e-mail addresses to show who's already on Vitanaland. People who aren't are never told.",
+        "helper": "We match email addresses and phone numbers to show who is already on Vitanaland. People who aren't on it are never told.",
         "notNow": "Not now",
         "continue": "Continue",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "import": {
+        "title": "Find your friends",
+        "subtitle": "We show you who in your contacts is already on Vitanaland. You can invite everyone else with one tap.",
+        "phone": "Import contacts from my phone",
+        "phoneHintNative": "Allow access once – that's it.",
+        "phoneHintPicker": "In the next step, tap “Select all”.",
+        "file": "Choose a contacts file (.vcf)",
+        "fileHowTitle": "How to export your contacts:",
+        "fileHowIphone": "iPhone: Contacts → Lists → press and hold “All Contacts” → Export.",
+        "fileHowAndroid": "Android: Contacts → Fix & manage → Export to file.",
+        "accounts": "Or from an account"
+      },
+      "results": {
+        "summary": "{total} contacts imported · {members} already on Vitanaland",
+        "onPlatform": "Already on Vitanaland: {count}",
+        "toInvite": "Invite: {count}",
+        "search": "Search contacts",
+        "message": "Message",
+        "invite": "Invite",
+        "invited": "Invited",
+        "noContactInfo": "No contact details",
+        "overLimit": "The first {limit} contacts were imported.",
+        "later": "You can find all contacts any time under Messages → Contacts.",
+        "done": "Done"
+      },
+      "invite": {
+        "whatsapp": "WhatsApp",
+        "sms": "SMS",
+        "email": "Email",
+        "share": "Share …",
+        "message": "Hi {name}! I'm on Vitanaland, a community for a healthy, long life. Join me: {link}",
+        "messageGeneric": "I'm on Vitanaland, a community for a healthy, long life. Join me: {link}",
+        "opened": "Your invite is ready – just send it.",
+        "linkFailed": "Your invite link couldn't be loaded just now. Please try again in a moment."
+      },
+      "remove": {
+        "button": "Remove contacts imported from my phone",
+        "confirmTitle": "Remove phone contacts?",
+        "confirmBody": "All contacts you imported from your phone will be deleted from Vitanaland. Nothing changes on your phone.",
+        "confirm": "Remove",
+        "done": "Your phone contacts were removed."
+      },
+      "privacy": {
+        "title": "Findable by my phone number",
+        "body": "People who have your verified number in their contacts can see that you're on Vitanaland."
+      },
+      "added": {
+        "onPlatformTitle": "Contact added",
+        "onPlatformBody": "{name} is already on Vitanaland – send them a message.",
+        "savedTitle": "Contact saved",
+        "savedBody": "{name} is now in your contacts."
+      },
+      "page": {
+        "description": "Invite friends with your personal link or find them in your contacts."
+      }
     },
     "requested": {
       "hint": "You came from your calendar. Tap once to connect {app}.",

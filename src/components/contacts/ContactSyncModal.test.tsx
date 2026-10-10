@@ -2,6 +2,9 @@
 /**
  * VTID-04440 — "Find friends" (Messages → Contacts, Invite friends) imports
  * through the Connected Apps hub instead of saying "coming soon".
+ * VTID-05058 — one tap: the phone button (native app or contact picker), or a
+ * .vcf file where the phone cannot hand its contacts over; account tiles
+ * import on tap; results show Message for members and Invite for the rest.
  *
  * Pins: Google / Outlook (VTID-04449) / iCloud that are on sync through the hub and the result is
  * read back for the preview; one that is off opens a "connect first" step
@@ -27,8 +30,12 @@ const { client, db, navigate } = vi.hoisted(() => ({
     fetchConnectedApps: vi.fn(),
     syncConnectedApp: vi.fn(),
     importAndroidContacts: vi.fn(),
+    importDeviceContacts: vi.fn(),
     pickDeviceContacts: vi.fn(),
     contactPickerSupported: vi.fn(() => true),
+    nativeContactsSupported: vi.fn(() => false),
+    readNativeContacts: vi.fn(),
+    MAX_DEVICE_CONTACTS: 5000,
   },
   db: { rows: [] as any[], writes: [] as string[], lastIn: null as any },
 }));
@@ -40,7 +47,7 @@ vi.mock("react-router-dom", async () => {
 vi.mock("@/context/AuthProvider", () => ({ useAuth: () => ({ user: { id: "u1" } }) }));
 vi.mock("@/integrations/supabase/client", () => {
   const q: any = {
-    select: () => q, eq: () => q, order: () => q,
+    select: () => q, eq: () => q, order: () => q, not: () => q,
     in: (col: string, vals: any) => { db.lastIn = { col, vals }; return q; },
     limit: async () => ({ data: db.rows, error: null }),
     then: (res: any) => res({ data: [], error: null }),
@@ -63,9 +70,13 @@ function open() {
   );
 }
 
+// VTID-05058: an account tile imports on tap; the phone has its own button.
 async function pickAndFind(nameKey: string) {
+  if (nameKey === "mailhub.apps.android-contacts.name") {
+    fireEvent.click(await screen.findByTestId("find-friends-phone"));
+    return;
+  }
   fireEvent.click(await screen.findByText(nameKey));
-  fireEvent.click(screen.getAllByText("screens.contacts.findFriends").pop()!);
 }
 
 beforeEach(() => {
@@ -74,16 +85,18 @@ beforeEach(() => {
   db.writes = [];
   db.lastIn = null;
   client.contactPickerSupported.mockReturnValue(true);
+  client.nativeContactsSupported.mockReturnValue(false);
 });
 
 describe("Find friends through Connected Apps", () => {
-  it("offers Google, Outlook, iCloud and the phone book — not WhatsApp — and marks the ones already on", async () => {
+  it("offers the phone, Google, Outlook and iCloud — not WhatsApp — and marks the ones already on", async () => {
     client.fetchConnectedApps.mockResolvedValue([hubApp("google-contacts", "on"), hubApp("iphone-contacts", "off")]);
     open();
     expect(await screen.findByText("mailhub.apps.google-contacts.name")).toBeTruthy();
     expect(screen.getByText("mailhub.apps.outlook-contacts.name")).toBeTruthy();
     expect(screen.getByText("mailhub.apps.iphone-contacts.name")).toBeTruthy();
-    expect(screen.getByText("mailhub.apps.android-contacts.name")).toBeTruthy();
+    expect(screen.getByTestId("find-friends-phone")).toBeTruthy();
+    expect(screen.getByText("mailhub.findFriends.import.phoneHintPicker")).toBeTruthy();
     expect(screen.queryByText(/WhatsApp/i)).toBeNull();
     await waitFor(() => expect(screen.getByText("mailhub.findFriends.status.on")).toBeTruthy());
     expect(screen.getAllByText("mailhub.findFriends.status.off")).toHaveLength(2); // Outlook and iCloud
@@ -142,6 +155,102 @@ describe("Find friends through Connected Apps", () => {
     await pickAndFind("mailhub.apps.android-contacts.name");
     expect(await screen.findByText("mailhub.findFriends.errors.cancelled.title")).toBeTruthy();
     expect(screen.getByText("mailhub.findFriends.errors.cancelled.body")).toBeTruthy();
+  });
+});
+
+describe("VTID-05058 one-tap import", () => {
+  it("no picker and no native app (iPhone, the store WebView, desktop): a .vcf button with export steps", async () => {
+    client.fetchConnectedApps.mockResolvedValue([]);
+    client.contactPickerSupported.mockReturnValue(false);
+    open();
+    expect(await screen.findByTestId("find-friends-file")).toBeTruthy();
+    expect(screen.queryByTestId("find-friends-phone")).toBeNull();
+    expect(screen.getByText("mailhub.findFriends.import.fileHowIphone")).toBeTruthy();
+    expect(screen.getByText("mailhub.findFriends.import.fileHowAndroid")).toBeTruthy();
+  });
+
+  it("a .vcf file goes through the hub's device import as method vcf, then lists who is on Vitanaland", async () => {
+    client.fetchConnectedApps.mockResolvedValue([]);
+    client.contactPickerSupported.mockReturnValue(false);
+    client.importDeviceContacts.mockResolvedValue({ imported: 2 });
+    db.rows = [
+      { id: "c1", contact_name: "Ana", contact_phone: "0170 1", contact_email: null, contact_user_id: "m1", is_on_platform: true, metadata: { phones_e164: ["+491701"] } },
+      { id: "c2", contact_name: "Bo", contact_phone: "0170 2", contact_email: null, contact_user_id: null, is_on_platform: false, metadata: { phones_e164: ["+491702"] } },
+    ];
+    open();
+    const input = (await screen.findByTestId("find-friends-file-input")) as HTMLInputElement;
+    const vcf = "BEGIN:VCARD\nVERSION:3.0\nFN:Ana\nTEL:0170 1\nEND:VCARD\nBEGIN:VCARD\nVERSION:3.0\nFN:Bo\nTEL:0170 2\nEND:VCARD\n";
+    const file = new File([vcf], "contacts.vcf", { type: "text/vcard" });
+    fireEvent.change(input, { target: { files: [file] } });
+    await waitFor(() => expect(client.importDeviceContacts).toHaveBeenCalled());
+    const [contacts, method] = client.importDeviceContacts.mock.calls[0];
+    expect(method).toBe("vcf");
+    expect(contacts).toEqual([{ name: "Ana", emails: [], phones: ["0170 1"] }, { name: "Bo", emails: [], phones: ["0170 2"] }]);
+    expect(await screen.findByTestId("message-member-m1")).toBeTruthy();
+    expect(screen.getByTestId("invite-contact-c2")).toBeTruthy();
+    expect(db.writes).toEqual([]);
+  });
+
+  it("Message on a member opens the chat with them", async () => {
+    client.fetchConnectedApps.mockResolvedValue([]);
+    client.pickDeviceContacts.mockResolvedValue([{ name: ["Ana"], tel: ["+49 1"] }]);
+    client.importAndroidContacts.mockResolvedValue({ imported: 1 });
+    db.rows = [{ id: "c1", contact_name: "Ana", contact_phone: "+49 1", contact_email: null, contact_user_id: "m1", is_on_platform: true }];
+    open();
+    fireEvent.click(await screen.findByTestId("find-friends-phone"));
+    fireEvent.click(await screen.findByTestId("message-member-m1"));
+    expect(navigate).toHaveBeenCalledWith("/inbox/u/m1");
+  });
+
+  it("the native app shell reads every contact without the picker", async () => {
+    client.fetchConnectedApps.mockResolvedValue([]);
+    client.nativeContactsSupported.mockReturnValue(true);
+    client.readNativeContacts.mockResolvedValue([{ name: "Ana", emails: [], phones: ["+49 1"] }]);
+    client.importDeviceContacts.mockResolvedValue({ imported: 1 });
+    open();
+    expect(await screen.findByText("mailhub.findFriends.import.phoneHintNative")).toBeTruthy();
+    fireEvent.click(screen.getByTestId("find-friends-phone"));
+    await waitFor(() => expect(client.importDeviceContacts).toHaveBeenCalledWith([{ name: "Ana", emails: [], phones: ["+49 1"] }], "native"));
+    expect(client.pickDeviceContacts).not.toHaveBeenCalled();
+  });
+
+  it("an empty or non-contacts file shows a translated error", async () => {
+    client.fetchConnectedApps.mockResolvedValue([]);
+    client.contactPickerSupported.mockReturnValue(false);
+    open();
+    const input = (await screen.findByTestId("find-friends-file-input")) as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [new File(["hello"], "x.vcf")] } });
+    expect(await screen.findByText("mailhub.findFriends.errors.file_empty.title")).toBeTruthy();
+    expect(client.importDeviceContacts).not.toHaveBeenCalled();
+  });
+});
+
+describe("VTID-05058 strings", () => {
+  it("every key the new flow uses exists in German", () => {
+    const de = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../i18n/de/mailhub.json"), "utf8")).mailhub.findFriends;
+    const src = ["ContactSyncModal.tsx", "DedupePreviewList.tsx", "InviteContactButton.tsx", "ContactsTabContent.tsx"]
+      .map((f) => fs.readFileSync(path.resolve(__dirname, f), "utf8")).join("\n");
+    const keys = Array.from(src.matchAll(/mailhub\.findFriends\.([\w.]+)/g)).map((m) => m[1]).filter((k) => !k.endsWith("."));
+    expect(keys.length).toBeGreaterThan(20);
+    for (const k of keys) {
+      const v = k.split(".").reduce((o: any, part) => o?.[part], de);
+      expect(typeof v, k).toBe("string");
+    }
+  });
+
+  it("the invite message carries the link and the name in every locale", () => {
+    for (const l of ["de", "en", "es", "fr", "pl", "pt", "ru", "sr", "tr", "zh", "ar"]) {
+      const ff = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../i18n/${l}/mailhub.json`), "utf8")).mailhub.findFriends;
+      expect(ff.invite.message).toContain("{link}");
+      expect(ff.invite.message).toContain("{name}");
+      expect(ff.invite.messageGeneric).toContain("{link}");
+    }
+  });
+
+  it("German copy is du-form", () => {
+    const raw = fs.readFileSync(path.resolve(__dirname, "../../i18n/de/mailhub.json"), "utf8");
+    const ff = JSON.stringify(JSON.parse(raw).mailhub.findFriends);
+    expect(ff).not.toMatch(/\b(Sie|Ihr|Ihre|Ihnen)\b/);
   });
 });
 

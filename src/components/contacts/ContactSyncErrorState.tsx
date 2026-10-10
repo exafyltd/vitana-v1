@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { t } from '@/lib/i18n-toast';
 
-export type ContactSyncErrorType = "oauth_failed" | "api_unavailable" | "permission_denied" | "rate_limited" | "cancelled" | "unknown";
+// VTID-05058: file_too_large / file_empty for a .vcf the member picked.
+export type ContactSyncErrorType = "oauth_failed" | "api_unavailable" | "permission_denied" | "rate_limited" | "cancelled" | "file_too_large" | "file_empty" | "unknown";
 type ErrorType = ContactSyncErrorType;
 
 interface ContactSyncErrorStateProps {
@@ -21,6 +22,8 @@ const errorConfig: Record<ErrorType, { icon: React.ReactNode; showSettings?: boo
   permission_denied: { icon: <ShieldX className="w-8 h-8 text-destructive" />, showSettings: true },
   rate_limited: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
   cancelled: { icon: <AlertCircle className="w-8 h-8 text-muted-foreground" /> },
+  file_too_large: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
+  file_empty: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
   unknown: { icon: <AlertCircle className="w-8 h-8 text-destructive" /> },
 };
 

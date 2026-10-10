@@ -2,7 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Send, Trash2, CheckCircle2 } from "lucide-react";
+import { MessageSquare, Trash2, CheckCircle2 } from "lucide-react";
+import { InviteContactButton } from "./InviteContactButton";
 import { Contact } from "@/hooks/useContacts";
 import {
   ResponsiveConfirmDialog,
@@ -21,6 +22,7 @@ import { fmtDate } from '@/lib/locale-format';
 interface ContactListItemProps {
   contact: Contact;
   onMessage?: (userId: string) => void;
+  /** Called after the member opened an invite for this contact (VTID-05058). */
   onInvite?: (contactId: string) => void;
   onDelete?: (contactId: string) => void;
   variant: "on-platform" | "invite";
@@ -65,7 +67,8 @@ export default function ContactListItem({
             )}
           </div>
           {contactInfo && (
-            <p className="text-sm text-muted-foreground truncate">{contactInfo}</p>
+            // Numbers and addresses read left to right in every language (VTID-05058, RTL).
+            <p className="text-sm text-muted-foreground truncate"><bdi dir="ltr">{contactInfo}</bdi></p>
           )}
           {contact.invite_sent_at && !contact.is_on_platform && (
             <p className="text-xs text-muted-foreground mt-1">{t('screens.contacts.invitedValue0', { value0: fmtDate(new Date(contact.invite_sent_at)) })}</p>
@@ -85,19 +88,20 @@ export default function ContactListItem({
             </Button>
           )}
 
-          {variant === "invite" && onInvite && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => onInvite(contact.id)}
-              disabled={!!contact.invite_sent_at}
-              aria-label={t('screens.contacts.invite')}
-              className="flex items-center gap-2 h-10 min-w-10 px-2.5 sm:px-3"
-            >
-              <Send className="w-4 h-4 rtl:-scale-x-100" aria-hidden />
-              {/* Was a hardcoded "Invite"/"Invited"; the sent date shows under the name. */}
-              <span className="sr-only sm:not-sr-only">{t('screens.contacts.invite')}</span>
-            </Button>
+          {variant === "invite" && (
+            // VTID-05058: opens WhatsApp / SMS / e-mail / share with the
+            // member's personal invite link (was: only stamped invite_sent_at).
+            <InviteContactButton
+              target={{
+                id: contact.id,
+                name: contact.contact_name,
+                phone: contact.contact_phone,
+                phoneE164: contact.metadata?.phones_e164?.[0] ?? null,
+                email: contact.contact_email,
+              }}
+              invited={!!contact.invite_sent_at}
+              onInvited={onInvite}
+            />
           )}
 
           {onDelete && (

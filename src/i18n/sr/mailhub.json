@@ -148,7 +148,7 @@
         },
         "api_unavailable": {
           "title": "Nije moguće na ovom uređaju",
-          "body": "Tvoj pregledač ne može da otvori imenik. Otvori Vitanaland u Chrome-u na Android telefonu ili poveži Google ili iCloud."
+          "body": "Ovaj uređaj ne može direktno da otvori imenik. Izvezi kontakte kao .vcf datoteku ili poveži Google, Outlook ili iCloud."
         },
         "permission_denied": {
           "title": "Nema pristupa kontaktima",
@@ -165,6 +165,14 @@
         "unknown": {
           "title": "Nešto nije u redu",
           "body": "Pokušaj ponovo za trenutak."
+        },
+        "file_too_large": {
+          "title": "Datoteka je prevelika",
+          "body": "Izvezi kontakte bez fotografija ili izaberi manju datoteku (do 10 MB)."
+        },
+        "file_empty": {
+          "title": "U datoteci nema kontakata",
+          "body": "Izaberi .vcf datoteku koju si izvezao iz aplikacije Kontakti na telefonu."
         }
       },
       "consent": {
@@ -176,9 +184,64 @@
         "privateBody": "Kontakti koje preneseš čuvaju se na tvom Vitanaland nalogu. Samo ih ti vidiš.",
         "removeTitle": "Obriši ih kad god želiš",
         "removeBody": "U „Povezanim aplikacijama“ možeš isključiti izvor i ukloniti njegove kontakte.",
-        "helper": "Upoređujemo imejl adrese da bismo pokazali ko je već na Vitanalandu. Oni koji nisu nikada to ne saznaju.",
+        "helper": "Upoređujemo e-adrese i brojeve telefona da bismo pokazali ko je već na Vitanaland-u. Oni kojih nema ništa o tome ne saznaju.",
         "notNow": "Ne sada",
         "continue": "Nastavi"
+      },
+      "import": {
+        "title": "Pronađi prijatelje",
+        "subtitle": "Pokazaćemo ti ko je od tvojih kontakata već na Vitanaland-u. Ostale možeš da pozoveš jednim dodirom.",
+        "phone": "Preuzmi kontakte sa telefona",
+        "phoneHintNative": "Dozvoli pristup jednom i gotovo.",
+        "phoneHintPicker": "U sledećem koraku dodirni „Izaberi sve“.",
+        "file": "Izaberi datoteku kontakata (.vcf)",
+        "fileHowTitle": "Kako da izvezeš kontakte:",
+        "fileHowIphone": "iPhone: Kontakti → Liste → zadrži „Svi kontakti“ → Izvezi.",
+        "fileHowAndroid": "Android: Kontakti → Ispravi i upravljaj → Izvezi u datoteku.",
+        "accounts": "Ili sa naloga"
+      },
+      "results": {
+        "summary": "Preuzeto kontakata: {total} · već na Vitanaland-u: {members}",
+        "onPlatform": "Već na Vitanaland-u: {count}",
+        "toInvite": "Pozovi: {count}",
+        "search": "Pretraži kontakte",
+        "message": "Poruka",
+        "invite": "Pozovi",
+        "invited": "Pozvan",
+        "noContactInfo": "Nema podataka za kontakt",
+        "overLimit": "Preuzeto je prvih {limit} kontakata.",
+        "later": "Sve kontakte uvek nalaziš u Poruke → Kontakti.",
+        "done": "Gotovo"
+      },
+      "invite": {
+        "whatsapp": "WhatsApp",
+        "sms": "SMS",
+        "email": "E-pošta",
+        "share": "Podeli …",
+        "message": "Ćao {name}! Na Vitanaland-u sam, zajednici za zdrav i dug život. Pridruži mi se: {link}",
+        "messageGeneric": "Na Vitanaland-u sam, zajednici za zdrav i dug život. Pridruži mi se: {link}",
+        "opened": "Pozivnica je spremna – samo je pošalji.",
+        "linkFailed": "Tvoj link za poziv trenutno nije mogao da se učita. Pokušaj ponovo za trenutak."
+      },
+      "remove": {
+        "button": "Ukloni kontakte preuzete sa telefona",
+        "confirmTitle": "Ukloniti kontakte sa telefona?",
+        "confirmBody": "Svi kontakti koje si preuzeo sa telefona biće obrisani sa Vitanaland-a. Na telefonu se ništa ne menja.",
+        "confirm": "Ukloni",
+        "done": "Kontakti sa telefona su uklonjeni."
+      },
+      "privacy": {
+        "title": "Mogu da me pronađu po broju telefona",
+        "body": "Ko ima tvoj potvrđeni broj u kontaktima, videće da si na Vitanaland-u."
+      },
+      "added": {
+        "onPlatformTitle": "Kontakt je dodat",
+        "onPlatformBody": "{name} je već na Vitanaland-u – pošalji poruku.",
+        "savedTitle": "Kontakt je sačuvan",
+        "savedBody": "{name} je sada u tvojim kontaktima."
+      },
+      "page": {
+        "description": "Pozovi prijatelje svojim ličnim linkom ili ih pronađi u kontaktima."
       }
     },
     "requested": {

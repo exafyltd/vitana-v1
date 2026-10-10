@@ -1,13 +1,25 @@
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus, Users } from "lucide-react";
+import { Plus, Users, Trash2 } from "lucide-react";
+import {
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+  ResponsiveConfirmDialogTrigger,
+} from "@/components/ui/responsive-confirm-dialog";
+import { removeDeviceContacts } from "@/lib/connected-apps-client";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { useContacts } from "@/hooks/useContacts";
 import AddContactDialog from "./AddContactDialog";
 import ContactListItem from "./ContactListItem";
 import ImportContactsButton from "./ImportContactsButton";
-import { t } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ContactsTabContentProps {
   onStartConversation: (userId: string) => void;
@@ -22,33 +34,36 @@ export default function ContactsTabContent({ onStartConversation, messageContext
     isLoading,
     addContact,
     deleteContact,
-    inviteContact,
     searchContacts,
-    importFromConversations,
+    refetch,
   } = useContacts();
 
   const [showAddContact, setShowAddContact] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleImportContacts = useCallback(async (importedContacts: Array<{
-    contact_name: string;
-    contact_phone?: string;
-    contact_email?: string;
-  }>) => {
-    // Bulk add contacts
-    for (const contact of importedContacts) {
-      await addContact(contact);
+  const hasPhoneContacts = contacts.some((c) => c.source === "android");
+
+  // VTID-05058: remove everything imported from the phone (gateway DELETE).
+  const handleRemovePhoneContacts = useCallback(async () => {
+    try {
+      await removeDeviceContacts();
+      notify('mailhub.findFriends.remove.done');
+      await refetch();
+    } catch (err) {
+      console.error("Error removing phone contacts:", err);
+      notifyError('mailhub.findFriends.errors.unknown.title');
     }
-  }, [addContact]);
+  }, [refetch]);
 
   const handleDeleteContact = useCallback(async (contactId: string) => {
     await deleteContact(contactId);
   }, [deleteContact]);
 
-  const handleInviteContact = useCallback(async (contactId: string) => {
-    // Default to SMS for now
-    await inviteContact(contactId, 'sms');
-  }, [inviteContact]);
+  // The invite itself opens in the member's own app (InviteContactButton);
+  // afterwards the list shows the contact as invited.
+  const handleInvited = useCallback(() => {
+    void refetch();
+  }, [refetch]);
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
@@ -81,7 +96,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
           <Plus className="w-4 h-4 me-2 shrink-0" />
           <span className="truncate">{t('screens.contacts.addContact')}</span>
         </Button>
-        <div><ImportContactsButton onImport={handleImportContacts} /></div>
+        <div><ImportContactsButton onImportComplete={() => void refetch()} /></div>
       </div>
 
       {/* Search Bar */}
@@ -95,7 +110,13 @@ export default function ContactsTabContent({ onStartConversation, messageContext
       )}
 
       {/* Contact Lists */}
-      <ScrollArea className="flex-1">
+      {/* VTID-05058: Radix's viewport is display:table, so a long name widened
+          the rows past the screen and cut off Message / Invite; and Radix
+          defaults to LTR, so rows did not flip in Arabic. */}
+      <ScrollArea
+        className="flex-1 [&_[data-radix-scroll-area-viewport]>div]:!block"
+        dir={typeof document !== "undefined" && document.documentElement.dir === "rtl" ? "rtl" : "ltr"}
+      >
         {contacts.length === 0 ? (
           // Empty State
           <div className="text-center py-12">
@@ -104,10 +125,13 @@ export default function ContactsTabContent({ onStartConversation, messageContext
             <p className="text-muted-foreground mb-4">
               {t('screens.contacts.addContactsEasilyFindMessageThem')}
             </p>
-            <Button onClick={() => setShowAddContact(true)}>
-              <Plus className="w-4 h-4 me-2" />
-              {t('screens.contacts.addYourFirstContact')}
-            </Button>
+            <div className="flex flex-col items-center gap-2">
+              <ImportContactsButton size="lg" onImportComplete={() => void refetch()} />
+              <Button variant="ghost" onClick={() => setShowAddContact(true)}>
+                <Plus className="w-4 h-4 me-2" />
+                {t('screens.contacts.addYourFirstContact')}
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-6 pb-4">
@@ -143,11 +167,39 @@ export default function ContactsTabContent({ onStartConversation, messageContext
                       key={contact.id}
                       contact={contact}
                       variant="invite"
-                      onInvite={handleInviteContact}
+                      onInvite={handleInvited}
                       onDelete={handleDeleteContact}
                     />
                   ))}
                 </div>
+              </div>
+            )}
+
+            {hasPhoneContacts && !searchQuery && (
+              <div className="pt-2 me-3 flex justify-center">
+                <ResponsiveConfirmDialog>
+                  <ResponsiveConfirmDialogTrigger asChild>
+                    <Button variant="ghost" size="sm" className="text-xs text-muted-foreground min-h-10" data-testid="remove-phone-contacts">
+                      <Trash2 className="w-3.5 h-3.5 me-1.5" aria-hidden />
+                      {t('mailhub.findFriends.remove.button')}
+                    </Button>
+                  </ResponsiveConfirmDialogTrigger>
+                  <ResponsiveConfirmDialogContent>
+                    <ResponsiveConfirmDialogHeader>
+                      <ResponsiveConfirmDialogTitle>{t('mailhub.findFriends.remove.confirmTitle')}</ResponsiveConfirmDialogTitle>
+                      <ResponsiveConfirmDialogDescription>{t('mailhub.findFriends.remove.confirmBody')}</ResponsiveConfirmDialogDescription>
+                    </ResponsiveConfirmDialogHeader>
+                    <ResponsiveConfirmDialogFooter>
+                      <ResponsiveConfirmDialogCancel>{t('screens.contacts.cancel')}</ResponsiveConfirmDialogCancel>
+                      <ResponsiveConfirmDialogAction
+                        onClick={() => void handleRemovePhoneContacts()}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {t('mailhub.findFriends.remove.confirm')}
+                      </ResponsiveConfirmDialogAction>
+                    </ResponsiveConfirmDialogFooter>
+                  </ResponsiveConfirmDialogContent>
+                </ResponsiveConfirmDialog>
               </div>
             )}
 

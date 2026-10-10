@@ -13,6 +13,10 @@ const client = vi.hoisted(() => ({
   importAndroidContacts: vi.fn(),
   pickDeviceContacts: vi.fn(),
   contactPickerSupported: vi.fn(() => true),
+  nativeContactsSupported: vi.fn(() => false),
+  readNativeContacts: vi.fn(),
+  importDeviceContacts: vi.fn(),
+  MAX_DEVICE_CONTACTS: 5000,
 }));
 vi.mock("@/lib/connected-apps-client", () => client);
 vi.mock("@/context/AuthProvider", () => ({ useAuth: () => ({ user: { id: "u1" } }) }));

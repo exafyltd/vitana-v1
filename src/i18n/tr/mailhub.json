@@ -148,7 +148,7 @@
         },
         "api_unavailable": {
           "title": "Bu cihazda mümkün değil",
-          "body": "Tarayıcın rehberini açamıyor. Vitanaland'i Android telefonunda Chrome ile aç ya da Google veya iCloud'u bağla."
+          "body": "Bu cihaz rehberini doğrudan açamıyor. Kişilerini .vcf dosyası olarak dışa aktar ya da Google, Outlook veya iCloud'u bağla."
         },
         "permission_denied": {
           "title": "Kişilerine erişim yok",
@@ -165,6 +165,14 @@
         "unknown": {
           "title": "Bir şeyler ters gitti",
           "body": "Biraz sonra tekrar dene."
+        },
+        "file_too_large": {
+          "title": "Dosya çok büyük",
+          "body": "Kişilerini fotoğrafsız dışa aktar ya da daha küçük bir dosya seç (en fazla 10 MB)."
+        },
+        "file_empty": {
+          "title": "Dosyada kişi yok",
+          "body": "Telefonundaki Kişiler uygulamasından dışa aktardığın bir .vcf dosyası seç."
         }
       },
       "consent": {
@@ -176,9 +184,64 @@
         "privateBody": "Eklediğin kişiler Vitanaland hesabında saklanır. Onları yalnızca sen görebilirsin.",
         "removeTitle": "İstediğin zaman sil",
         "removeBody": "Bağlı Uygulamalar'da bir kaynağı kapatıp kişilerini kaldırabilirsin.",
-        "helper": "Kimlerin zaten Vitanaland'de olduğunu göstermek için e-posta adreslerini karşılaştırırız. Olmayanlar bundan hiç haberdar olmaz.",
+        "helper": "Kimlerin zaten Vitanaland'de olduğunu göstermek için e-posta adreslerini ve telefon numaralarını karşılaştırıyoruz. Burada olmayanlar bundan hiç haberdar olmaz.",
         "notNow": "Şimdi değil",
         "continue": "Devam"
+      },
+      "import": {
+        "title": "Arkadaşlarını bul",
+        "subtitle": "Kişilerinden kimlerin zaten Vitanaland'de olduğunu gösteriyoruz. Diğerlerini tek dokunuşla davet edebilirsin.",
+        "phone": "Telefondaki kişileri aktar",
+        "phoneHintNative": "Erişime bir kez izin ver, hepsi bu.",
+        "phoneHintPicker": "Sonraki adımda “Tümünü seç”e dokun.",
+        "file": "Kişi dosyası seç (.vcf)",
+        "fileHowTitle": "Kişilerini şöyle dışa aktarabilirsin:",
+        "fileHowIphone": "iPhone: Kişiler → Listeler → “Tüm Kişiler”e basılı tut → Dışa Aktar.",
+        "fileHowAndroid": "Android: Kişiler → Düzelt ve yönet → Dosyaya aktar.",
+        "accounts": "Ya da bir hesaptan"
+      },
+      "results": {
+        "summary": "Aktarılan kişi: {total} · Vitanaland'de olan: {members}",
+        "onPlatform": "Zaten Vitanaland'de: {count}",
+        "toInvite": "Davet et: {count}",
+        "search": "Kişilerde ara",
+        "message": "Mesaj",
+        "invite": "Davet et",
+        "invited": "Davet edildi",
+        "noContactInfo": "İletişim bilgisi yok",
+        "overLimit": "İlk {limit} kişi aktarıldı.",
+        "later": "Tüm kişilerini her zaman Mesajlar → Kişiler bölümünde bulursun.",
+        "done": "Tamam"
+      },
+      "invite": {
+        "whatsapp": "WhatsApp",
+        "sms": "SMS",
+        "email": "E-posta",
+        "share": "Paylaş …",
+        "message": "Merhaba {name}! Sağlıklı ve uzun bir yaşam için bir topluluk olan Vitanaland'deyim. Sen de katıl: {link}",
+        "messageGeneric": "Sağlıklı ve uzun bir yaşam için bir topluluk olan Vitanaland'deyim. Sen de katıl: {link}",
+        "opened": "Davetin hazır, sadece göndermen gerekiyor.",
+        "linkFailed": "Davet bağlantın şu anda yüklenemedi. Birazdan tekrar dene."
+      },
+      "remove": {
+        "button": "Telefondan aktarılan kişileri kaldır",
+        "confirmTitle": "Telefon kişileri kaldırılsın mı?",
+        "confirmBody": "Telefonundan aktardığın tüm kişiler Vitanaland'den silinir. Telefonunda hiçbir şey değişmez.",
+        "confirm": "Kaldır",
+        "done": "Telefon kişilerin kaldırıldı."
+      },
+      "privacy": {
+        "title": "Telefon numaramla bulunabilirim",
+        "body": "Doğrulanmış numaran rehberinde olan kişiler Vitanaland'de olduğunu görür."
+      },
+      "added": {
+        "onPlatformTitle": "Kişi eklendi",
+        "onPlatformBody": "{name} zaten Vitanaland'de – hemen mesaj gönder.",
+        "savedTitle": "Kişi kaydedildi",
+        "savedBody": "{name} artık kişilerinde."
+      },
+      "page": {
+        "description": "Arkadaşlarını kişisel bağlantınla davet et ya da kişilerinde bul."
       }
     },
     "requested": {
