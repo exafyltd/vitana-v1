@@ -1,0 +1,12 @@
+# VTID-05049 — commands run (local worktree, base origin/main e828559e)
+npm ci --ignore-scripts --no-audit --no-fund
+npx vitest run src/lib/edge-functions-caller-identity.s4.test.ts --reporter=verbose        # → outputs/vitest-s4-guard.txt (27/27)
+# red check: git stash the 5 function changes + move caller-auth.ts away, re-run the guard, restore
+npx vitest run src/lib/edge-functions-caller-identity.s4.test.ts                           # → outputs/vitest-s4-guard-red-on-main.txt (FAIL)
+npx vitest run $(grep -rlE "supabase/functions" src --include=*.test.ts --include=*.test.tsx)  # → outputs/vitest-edge-source-guards.txt (14 files, 127 tests)
+node scripts/check-edge-data-client.mjs                                                     # → outputs/check-edge-data-client.txt
+npx eslint src/lib/edge-functions-caller-identity.s4.test.ts                                # → outputs/eslint.txt (exit 0)
+DENO_NO_PACKAGE_JSON=1 deno check supabase/functions/<each changed file>                    # deno 2.3.1 → outputs/deno-check.txt
+# same deno check on origin/main for linkedin-import and fetch-user-context: identical errors (pre-existing)
+git diff origin/main -- supabase/config.toml                                                # empty
+# Read-only SQL on inmkhvwdcuyhnxkgfvsb (information_schema columns, pg_proc/pg_trigger/cron.job bodies referencing the 5 functions, vault secret NAMES/count only)

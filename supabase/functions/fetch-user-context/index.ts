@@ -2,6 +2,7 @@ import { fetchPersonalMemory, byConfidence } from '../_shared/personal-memory.ts
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { createDataClient } from "../_shared/data-client.ts";
+import { isServiceRoleCaller, requireUser, forbidden } from "../_shared/caller-auth.ts";
 
 // OPTIMIZATION: In-memory cache with 5-minute TTL
 const contextCache = new Map<string, { data: any, expiresAt: number }>();
@@ -657,30 +658,22 @@ serve(async (req) => {
     const body = await req.json();
     const userId = body.userId;
     const forceRefresh = body.forceRefresh || false;
-    
-    if (!userId) {
-      // If no userId in body, try to get from auth header
-      const authHeader = req.headers.get('Authorization');
-      if (!authHeader) {
-        throw new Error('Missing authorization header');
-      }
 
-      const supabaseClient = createDataClient(createClient,
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-        { global: { headers: { Authorization: authHeader } } }
-      );
-
-      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-      if (userError || !user) {
-        throw new Error('Unauthorized');
-      }
-      
-      return await fetchAndReturnContext(user.id, forceRefresh);
+    // VTID-05049: a body userId is honoured only for a service-role caller.
+    // verify_jwt=true accepts the public anon key, so before this anyone could
+    // read any member's full context by naming their id.
+    if (userId && (await isServiceRoleCaller(req))) {
+      return await fetchAndReturnContext(userId, forceRefresh);
     }
-    
-    // If userId provided, use it directly (from service role call)
-    return await fetchAndReturnContext(userId, forceRefresh);
+
+    // Everyone else gets their own context, from the verified JWT.
+    const auth = await requireUser(req, corsHeaders);
+    if (!auth.user) return auth.response;
+    if (userId && userId !== auth.user.id) {
+      return forbidden(corsHeaders, 'Cannot access another user\'s context');
+    }
+
+    return await fetchAndReturnContext(auth.user.id, forceRefresh);
 
   } catch (error) {
     console.error('Error fetching user context:', error);

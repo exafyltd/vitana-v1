@@ -1,0 +1,24 @@
+== deno check supabase/functions/_shared/caller-auth.ts
+exit 0
+== deno check supabase/functions/linkedin-import/index.ts
+TS2322 [ERROR]: Type '{ parts: { text: string; }[]; } | undefined' is not assignable to type '{ parts: [{ text: string; }]; } | undefined'.
+error: Type checking failed.
+exit 1
+== deno check supabase/functions/social-media-import/index.ts
+exit 0
+== deno check supabase/functions/queue-campaign-recipients/index.ts
+exit 0
+== deno check supabase/functions/send-welcome-discount/index.ts
+exit 0
+== deno check supabase/functions/fetch-user-context/index.ts
+TS2353 [ERROR]: Object literal may only specify known properties, and 'exchangeRates' does not exist in type '{ balances: { USD: number; VTNA: number; CREDITS: number; }; recentTransactions: { type: string; amount: number; currency: string; timestamp: string; }[]; pendingPayments: number; }'.
+TS2353 [ERROR]: Object literal may only specify known properties, and 'aiMemoryHighlights' does not exist in type '{ recentConversations: { id: string; agentType: string; lastMessage: string; timestamp: string; }[]; rememberedInsights: { type: string; content: string; confidence: number; timestamp: string; }[]; learnedPreferences: Record<...>; patterns: { ...; }[]; actionHistory: { ...; }[]; }'.
+TS18046 [ERROR]: 'error' is of type 'unknown'.
+      JSON.stringify({ error: error.message }),
+TS2339 [ERROR]: Property 'catch' does not exist on type 'PromiseLike<void>'.
+TS7006 [ERROR]: Parameter 'err' implicitly has an 'any' type.
+Found 5 errors.
+error: Type checking failed.
+exit 1
+
+Branch errors are identical to origin/main (pre-existing, untouched code): linkedin-import TS2322 in the Gemini message shape; fetch-user-context 4 errors in context typing / catch. No new error on any changed line.
