@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05053",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Account deletion removes every member file at every depth",
+      "ref": "npx vitest run src/lib/erase-user-storage.test.ts src/lib/erase-user-data.test.ts",
+      "cwd": ".",
+      "reason": "The only way to exercise request-account-deletion is to irreversibly delete a real account in the production Supabase project that staging shares. These suites run the real walk over an in-memory Storage with Supabase list() semantics on both the direct and the storage-bridge path: nested folders at every depth, more than 1000 files in one folder without offset, a stuck remove, a list error, health-reports and feedback-attachments included, and the gate that keeps the account while files remain."
+    }
+  ]
+}
