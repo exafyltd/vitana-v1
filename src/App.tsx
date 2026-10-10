@@ -54,6 +54,7 @@ import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
 import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
 import { useNewsFeedKeepAlive } from "@/hooks/useNewsFeedKeepAlive";
+import { useScreenReadyTracking } from "@/hooks/useScreenReadyTracking";
 import { useInboxKeepAlive } from "@/hooks/useInboxKeepAlive";
 import { useEventsKeepAlive } from "@/hooks/useEventsKeepAlive";
 
@@ -470,6 +471,7 @@ const AppHooksInitializer = () => {
   useOrbVoiceWidget();
   useOrbFrontDoor();
   useRouteTracker();
+  useScreenReadyTracking();
   // Warm route chunks + React Query data for the first authenticated screens as
   // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
   usePostLoginWarmup();
