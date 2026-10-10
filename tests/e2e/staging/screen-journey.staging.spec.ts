@@ -64,7 +64,7 @@ const JOURNEY: Array<{ path: string; label: string }> = [
   { path: '/comm/events-meetups', label: 'Events' },
 ];
 
-type ReadyResult = { ready_ms: number; timed_out: boolean; img_total: number; images: string[] };
+type ReadyResult = { ready_ms: number; timed_out: boolean; img_total: number; images: string[]; blocked_by: string[] };
 
 // ─── In-page SCREEN_READY (mirrors src/lib/screen-ready.ts) ──────────────────
 
@@ -85,10 +85,49 @@ function waitScreenReady(args: { path: string; cap: number; fromNavigationStart:
   const start = args.fromNavigationStart ? 0 : (w.__sjTapAt ?? performance.now());
   const vw = window.innerWidth;
   const vh = window.innerHeight;
+  // Visible area after clipping by the viewport and by every overflow-clipping
+  // ancestor (a carousel's next slide is not on screen), as in screen-ready.ts.
+  const clipping = new Set(['hidden', 'auto', 'scroll', 'clip']);
   const inViewport = (el: Element) => {
     const r = el.getBoundingClientRect();
-    return r.width > 0 && r.height > 0 && r.bottom > 0 && r.right > 0 && r.top < vh && r.left < vw && getComputedStyle(el).visibility !== 'hidden';
+    if (r.width <= 0 || r.height <= 0 || getComputedStyle(el).visibility === 'hidden') return false;
+    let left = Math.max(r.left, 0);
+    let top = Math.max(r.top, 0);
+    let right = Math.min(r.right, vw);
+    let bottom = Math.min(r.bottom, vh);
+    for (let a = el.parentElement; a && right > left && bottom > top; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      const cx = clipping.has(s.overflowX);
+      const cy = clipping.has(s.overflowY);
+      if (!cx && !cy) continue;
+      const ar = a.getBoundingClientRect();
+      if (cx) {
+        left = Math.max(left, ar.left);
+        right = Math.min(right, ar.right);
+      }
+      if (cy) {
+        top = Math.max(top, ar.top);
+        bottom = Math.min(bottom, ar.bottom);
+      }
+    }
+    return right > left && bottom > top;
   };
+  const describe = (el: Element) => {
+    const cls = typeof el.className === 'string' ? el.className.split(/\s+/).slice(0, 4).join('.') : '';
+    const src = el instanceof HTMLImageElement ? ` src=${(el.currentSrc || el.src).slice(0, 120)}` : '';
+    return `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ''}${src}`;
+  };
+  // What kept the screen from being ready at the last check (reported on a slow or timed-out step).
+  const blockers = (): string[] => [
+    ...Array.from(document.querySelectorAll('.animate-spin, [aria-busy="true"]')).filter(inViewport).map((e) => `busy ${describe(e)}`),
+    ...Array.from(document.querySelectorAll('.animate-pulse'))
+      .filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.width >= 24 && r.height >= 8 && inViewport(el);
+      })
+      .map((e) => `skeleton ${describe(e)}`),
+    ...Array.from(document.querySelectorAll('img')).filter((i) => inViewport(i) && !i.complete).map((e) => `loading ${describe(e)}`),
+  ].slice(0, 5);
   const busy = () =>
     Array.from(document.querySelectorAll('.animate-spin, [aria-busy="true"]')).some(inViewport) ||
     Array.from(document.querySelectorAll('.animate-pulse')).some((el) => {
@@ -99,11 +138,12 @@ function waitScreenReady(args: { path: string; cap: number; fromNavigationStart:
   return new Promise((resolve) => {
     let framesSinceCommit = -1;
     let lastCheck = -Infinity;
+    let waitingOn: string[] = [];
     const tick = () => {
       const now = performance.now();
       if (now - start >= args.cap) {
         const imgs = images();
-        resolve({ ready_ms: args.cap, timed_out: true, img_total: imgs.length, images: imgs.map((i) => i.currentSrc || i.src) });
+        resolve({ ready_ms: args.cap, timed_out: true, img_total: imgs.length, images: imgs.map((i) => i.currentSrc || i.src), blocked_by: blockers() });
         return;
       }
       if (framesSinceCommit < 0 && location.pathname === args.path) framesSinceCommit = 0;
@@ -113,10 +153,11 @@ function waitScreenReady(args: { path: string; cap: number; fromNavigationStart:
         if (!busy()) {
           const imgs = images();
           if (imgs.every((i) => i.complete)) {
-            resolve({ ready_ms: Math.round(now - start), timed_out: false, img_total: imgs.length, images: imgs.map((i) => i.currentSrc || i.src) });
+            resolve({ ready_ms: Math.round(now - start), timed_out: false, img_total: imgs.length, images: imgs.map((i) => i.currentSrc || i.src), blocked_by: waitingOn });
             return;
           }
         }
+        waitingOn = blockers();
       }
       requestAnimationFrame(tick);
     };
@@ -298,8 +339,9 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
 
     const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
     const problems: string[] = [];
-    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms`);
-    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms`);
+    const waited = ready.blocked_by.length ? ` (waiting on: ${ready.blocked_by.join(' | ')})` : '';
+    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited}`);
+    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited}`);
     if (nav === 'return' && images.step.refetches.length) problems.push(`re-downloaded ${images.step.refetches.length} photo(s): ${images.step.refetches.slice(0, 3).join(', ')}`);
     if (frameChanges) problems.push(`${frameChanges} media frame(s) changed height`);
 
@@ -323,5 +365,6 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
   await test.info().attach('screen-journey.json', { body: JSON.stringify(rows, null, 2), contentType: 'application/json' });
 
   const failures = rows.flatMap((r) => r.problems.map((p) => `${r.step} (${r.nav}): ${p}`));
-  expect(failures, `screen journey budget failures:\n  ${failures.join('\n  ')}`).toEqual([]);
+  // One line, so the STAGING-VERIFY summary (which keeps the error's first lines) shows every reason.
+  expect(failures.length, `screen journey budget failures: ${failures.join(' || ')}`).toBe(0);
 });

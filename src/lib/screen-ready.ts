@@ -197,9 +197,44 @@ function currentResourceSamples(urls: string[]): ResourceSample[] {
 
 // ─── Readiness ──────────────────────────────────────────────────────────────
 
+const CLIPPING_OVERFLOW = new Set(['hidden', 'auto', 'scroll', 'clip']);
+
+/**
+ * The element is actually visible in the first viewport: its box, clipped by
+ * the viewport AND by every ancestor that clips overflow (carousels, scroll
+ * rows), has a non-empty area. A bounding-box test alone counts the next
+ * slide of a horizontal carousel as "on screen"; its `loading="lazy"` image
+ * never loads while it is scrolled out, so the screen would never be ready
+ * (VTID-05062, first staging run: Events timed out at 10 s).
+ */
 function intersectsViewport(el: Element, vw: number, vh: number): boolean {
   const r = el.getBoundingClientRect();
-  return r.width > 0 && r.height > 0 && r.bottom > 0 && r.right > 0 && r.top < vh && r.left < vw;
+  if (r.width <= 0 || r.height <= 0) return false;
+  let left = Math.max(r.left, 0);
+  let top = Math.max(r.top, 0);
+  let right = Math.min(r.right, vw);
+  let bottom = Math.min(r.bottom, vh);
+  for (let a = el.parentElement; a && right > left && bottom > top; a = a.parentElement) {
+    let style: CSSStyleDeclaration;
+    try {
+      style = getComputedStyle(a);
+    } catch {
+      continue;
+    }
+    const clipX = CLIPPING_OVERFLOW.has(style.overflowX);
+    const clipY = CLIPPING_OVERFLOW.has(style.overflowY);
+    if (!clipX && !clipY) continue;
+    const ar = a.getBoundingClientRect();
+    if (clipX) {
+      left = Math.max(left, ar.left);
+      right = Math.min(right, ar.right);
+    }
+    if (clipY) {
+      top = Math.max(top, ar.top);
+      bottom = Math.min(bottom, ar.bottom);
+    }
+  }
+  return right > left && bottom > top;
 }
 
 function isVisibleStyle(el: Element): boolean {
