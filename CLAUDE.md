@@ -384,7 +384,9 @@ Apply the auto-confidence suggestions via:
 ### Active locales & RTL
 
 Shipped locale shards live under `src/i18n/<code>/`: **de** (source of
-truth), **en**, **es**, **sr**, and **ar** (Arabic). Arabic is
+truth), **en**, **es**, **sr**, **fr**, **pl**, **pt**, **ru**, **tr**, **zh**
+and **ar** (Arabic) — all eleven are `status: 'ga'` in
+`src/contexts/LanguageContext.tsx` and in the `supported_locales` table. Arabic is
 **right-to-left** — any new layout/component must work in RTL, not just
 LTR. Don't hardcode `left`/`right`; prefer logical properties
 (`ms-*`/`me-*`, `start`/`end`, `text-start`) and rely on `dir`-aware
