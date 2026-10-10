@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { createDataClient } from "../_shared/data-client.ts";
 import { storageBridgeProvider, uploadFile, getPublicUrl } from '../_shared/storage-bridge-client.ts';
 
 const corsHeaders = {
@@ -92,7 +93,7 @@ serve(async (req) => {
       throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseKey);
 
     // Get authenticated user
     const token = authHeader.replace('Bearer ', '');

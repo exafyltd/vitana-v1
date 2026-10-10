@@ -69,6 +69,11 @@ jobs:
         with:
           fetch-depth: 2
 
+      # VTID-05023: refuse to deploy an edge function that bypasses the
+      # Aurora data client (_shared/data-client.ts).
+      - name: Guard — edge functions use createDataClient
+        run: node scripts/check-edge-data-client.mjs
+
       - uses: supabase/setup-cli@v1
         with:
           version: 1.226.4

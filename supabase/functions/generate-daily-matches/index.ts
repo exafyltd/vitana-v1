@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createDataClient } from "../_shared/data-client.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -78,7 +79,7 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Missing auth header' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const anonClient = createClient(supabaseUrl, supabaseAnonKey, {
+    const anonClient = createDataClient(createClient, supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } },
     });
     const { data: { user: authUser }, error: authError } = await anonClient.auth.getUser();
@@ -90,7 +91,7 @@ serve(async (req) => {
     const userId = authUser.id;
 
     // Service role client for data operations.
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseServiceKey);
 
     console.log(`Generating daily matches for user ${userId}`);
 

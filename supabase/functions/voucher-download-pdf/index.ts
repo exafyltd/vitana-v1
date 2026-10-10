@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createDataClient } from "../_shared/data-client.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { jsPDF } from "https://esm.sh/jspdf@2.5.2";
 import { storageBridgeProvider, uploadFile, getSignedUrl } from '../_shared/storage-bridge-client.ts';
@@ -255,12 +256,12 @@ serve(async (req) => {
     }
 
     // Create authenticated client for user verification
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } },
     });
     
     // Create admin client for self-healing updates and storage
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+    const supabaseAdmin = createDataClient(createClient, supabaseUrl, supabaseServiceKey);
 
     // Verify user
     const { data: { user }, error: userError } = await supabase.auth.getUser();

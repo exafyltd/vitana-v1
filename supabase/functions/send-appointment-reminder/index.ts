@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { createDataClient } from "../_shared/data-client.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
@@ -99,7 +100,7 @@ serve(async (req) => {
   try {
     console.log("🔔 Appointment reminder cron job started");
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createDataClient(createClient, supabaseUrl, supabaseServiceKey);
     
     const now = new Date();
     const in24Hours = new Date(now.getTime() + 24 * 60 * 60 * 1000);

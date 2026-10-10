@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+import { createDataClient } from '../_shared/data-client.ts';
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const corsHeaders = {
@@ -29,7 +30,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
 const PUBLIC_APP_URL = Deno.env.get('PUBLIC_APP_URL') || 'https://vitana-v1.lovable.app';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createDataClient(createClient, SUPABASE_URL, SUPABASE_ANON_KEY);
 
 console.log('[og-share] Using PUBLIC_APP_URL:', PUBLIC_APP_URL);
 

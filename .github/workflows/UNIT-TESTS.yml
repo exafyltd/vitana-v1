@@ -37,3 +37,23 @@ jobs:
         run: npm ci
       - name: Run unit tests
         run: npm run test:unit
+
+  # VTID-05023 (Aurora cutover, part 5): every edge function builds its
+  # supabase-js client through supabase/functions/_shared/data-client.ts, and
+  # that helper routes /rest/v1 to DATA_API_URL with no silent fallback.
+  edge-data-client:
+    name: Edge data client (guard + Deno tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: No direct createClient in edge functions
+        run: node scripts/check-edge-data-client.mjs
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Deno tests for the edge data client
+        run: deno test --no-remote supabase/functions/_shared/data-client.test.ts
