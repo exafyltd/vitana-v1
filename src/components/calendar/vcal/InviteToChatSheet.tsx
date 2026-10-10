@@ -90,14 +90,21 @@ export function InviteToChatSheet({ item, onClose }: Props) {
     onError: (err) => notifyError(inviteRefusalOf(err) === "not_invitable" ? "vcal.invite.notInvitable" : "vcal.invite.error"),
   });
 
+  // Escape closes this sheet only — never the entry screen underneath it,
+  // which listens for Escape on window too (capture phase runs first).
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
   useEffect(() => {
     closeRef.current?.focus();
     const onKey = (ev: KeyboardEvent) => {
-      if (ev.key === "Escape") onClose();
+      if (ev.key !== "Escape") return;
+      ev.stopImmediatePropagation();
+      ev.preventDefault();
+      onCloseRef.current();
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
 
   const loading = threads.isLoading || groups.isLoading;
   const title = item.event ? entryTitle(item.event) : "";
