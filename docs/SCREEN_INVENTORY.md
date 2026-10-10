@@ -2820,11 +2820,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/settings/ConnectedApps.tsx
 
-**Status:** ✅ clean — keys consumed: 74, namespaces: 2
+**Status:** ✅ clean — keys consumed: 69, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 70, total in shard: 11583
+- `screens` — used: 65, total in shard: 11583
 - `toasts` — used: 4, total in shard: 1272
 
 ### src/pages/settings/Limitations.tsx
@@ -2882,6 +2882,22 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 17, total in shard: 11583
 - `toasts` — used: 6, total in shard: 1272
+
+### src/pages/settings/__tests__/connected-apps-health.test.tsx
+
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 4, total in shard: 11583
+
+### src/pages/settings/__tests__/privacy-data-sharing.test.tsx
+
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 1, total in shard: 11583
 
 ## sharing/
 
@@ -2971,7 +2987,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 253 |
+| `screens` | 255 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
