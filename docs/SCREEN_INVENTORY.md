@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 366
+- **Pages scanned:** 368
 - **Distinct i18n keys consumed:** 4767
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
