@@ -12,7 +12,8 @@
       "kind": "existing",
       "name": "Rewards pill and ?tab=rewards navigate, Rewards mobile shell vs desktop, labels, registry only points at existing Rewards tabs",
       "ref": "npx vitest run src/pages/wallet/mobile-wallet-rewards.test.tsx",
-      "cwd": "."
+      "cwd": ".",
+      "reason": "The pill, the ?tab=rewards redirect and the Rewards phone shell are pure client navigation and layout; this Vitest renders the real Wallet and Rewards pages (desktop and phone) and checks the labels and the voice registry, which a staging browser run cannot do for every locale file. The staging spec above proves the same flow on the deployed build."
     }
   ]
 }
