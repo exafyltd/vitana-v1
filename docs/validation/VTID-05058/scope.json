@@ -15,6 +15,8 @@
     "src/pages/settings/Privacy.tsx",
     "src/pages/InviteFriends.tsx",
     "src/i18n/*/mailhub.json",
+    "src/i18n/en/*.json",
+    "i18n-source-stamps/*.json",
     "tests/e2e/staging/vtid-05058-find-friends.staging.spec.ts",
     "docs/SCREEN_INVENTORY.md",
     "docs/validation/VTID-05058/**"
