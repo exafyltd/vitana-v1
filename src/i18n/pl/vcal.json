@@ -83,6 +83,13 @@
       "busy": "Zajęte · {{time}}",
       "external": "Zajęte (inny kalendarz) · {{time}}"
     },
+    "findTime": {
+      "action": "Znajdź termin",
+      "loading": "Szukam wolnego czasu …",
+      "pick": "Pasujące terminy",
+      "none": "W najbliższych dniach nie ma nic pasującego.",
+      "error": "Nie udało się wczytać wolnych terminów."
+    },
     "empty": {
       "title": "Nic zaplanowanego – spokojny dzień",
       "hint": "Powiedz Vitanie, co planujesz, a ona to doda."

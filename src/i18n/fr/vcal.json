@@ -85,6 +85,13 @@
       "busy": "Occupé · {{time}}",
       "external": "Occupé (autre agenda) · {{time}}"
     },
+    "findTime": {
+      "action": "Trouver un créneau",
+      "loading": "Je cherche du temps libre …",
+      "pick": "Créneaux possibles",
+      "none": "Rien de libre ne convient ces prochains jours.",
+      "error": "Les créneaux libres n'ont pas pu être chargés."
+    },
     "empty": {
       "title": "Rien de prévu – une journée calme",
       "hint": "Dis à Vitana ce que tu prévois, elle l'ajoutera."

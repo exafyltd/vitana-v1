@@ -84,6 +84,13 @@
       "busy": "Ocupado · {{time}}",
       "external": "Ocupado (otro calendario) · {{time}}"
     },
+    "findTime": {
+      "action": "Encontrar un hueco",
+      "loading": "Buscando tiempo libre …",
+      "pick": "Huecos posibles",
+      "none": "No hay nada libre que encaje en los próximos días.",
+      "error": "No se pudieron cargar los huecos libres."
+    },
     "empty": {
       "title": "Nada planeado – un día tranquilo",
       "hint": "Dile a Vitana lo que tienes en mente y ella lo añadirá."

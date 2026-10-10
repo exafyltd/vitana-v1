@@ -74,6 +74,9 @@
     ],
     "src/components/calendar/vcal/useOverlap.ts": [
       "src/components/calendar/vcal/useOverlap.vtid-04995.test.tsx"
+    ],
+    "src/components/calendar/vcal/FindTime.tsx": [
+      "src/components/calendar/vcal/FindTime.vtid-04996.test.tsx"
     ]
   },
   "uncovered": [
