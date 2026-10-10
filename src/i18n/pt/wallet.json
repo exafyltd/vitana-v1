@@ -225,15 +225,15 @@
       "backToWallet": true
     },
     "earnMore": {
-      "title": "Isto ainda podes ganhar",
-      "intro": "Pequenos passos que valem a pena: toca em «Vamos» e começa já.",
+      "title": "Isto você ainda pode ganhar",
+      "intro": "Pequenos passos que valem a pena: toque em “Vamos” e comece agora.",
       "go": "Vamos",
-      "allDone": "Ótimo, já recolheste tudo por agora. Em breve há novos VTNA.",
-      "goalTitle": "O teu próximo objetivo",
+      "allDone": "Ótimo – você já pegou tudo por enquanto. Em breve haverá novos VTNA.",
+      "goalTitle": "Seu próximo objetivo",
       "goalMissing": "Faltam {missing} VTNA para {item}",
       "goalProgress": "{percent}% concluído",
       "goalBalance": "{balance} de {price} VTNA",
-      "goalRedeem": "Já podes trocar {item}!",
+      "goalRedeem": "Você já pode trocar {item}!",
       "toShop": "Ir para a loja",
       "_pending_review": {
         "title": true,
@@ -251,7 +251,7 @@
     "rewardsPage": {
       "seoTitle": "Recompensas | VITANA Wallet",
       "title": "Recompensas",
-      "description": "Ganha VTNA com o que te faz bem e troca-os na loja.",
+      "description": "Ganhe VTNA com o que faz bem para você e troque na loja.",
       "tabEarned": "Ganho",
       "tabEarnMore": "Ganhar mais",
       "_pending_review": {
