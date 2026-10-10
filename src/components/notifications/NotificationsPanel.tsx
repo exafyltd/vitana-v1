@@ -23,6 +23,7 @@ import {
   type NotificationCategory,
 } from '@/lib/notification-types';
 import { t } from '@/lib/i18n-toast';
+import { TurnOnNotificationsCard } from '@/components/notifications/TurnOnNotificationsCard';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterValue = 'all' | 'unread' | NotificationCategory;
@@ -180,6 +181,9 @@ export function NotificationsPanel({
           )}
         </div>
       </div>
+
+      {/* VTID-05028: Appilix app only — no live push device for this member */}
+      <TurnOnNotificationsCard />
 
       {/* Filter pills */}
       {notifications.length > 0 && presentCategories.length > 0 && (

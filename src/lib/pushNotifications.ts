@@ -110,8 +110,10 @@ class PushNotificationManager {
         if (nativeToken) {
           token = nativeToken;
         }
-        // Register device metadata in background (non-blocking)
-        this.registerAppilixDevice(nativeToken || undefined).catch(() => {});
+        // VTID-05028: register ONCE, awaited, with the "Appilix …" label. The
+        // plain registerTokenWithBackend() below is skipped in Appilix — it
+        // used to race this call and overwrite the label with a bare UA.
+        await this.registerAppilixDevice(nativeToken || undefined).catch(() => {});
       }
 
       // Attempt web FCM — REAL BROWSERS ONLY (never inside the Appilix WebView).
@@ -157,8 +159,10 @@ class PushNotificationManager {
       }
 
       this.fcmToken = token;
-      console.log('[Push] FCM token obtained, registering with gateway...');
-      await this.registerTokenWithBackend(token);
+      if (!inAppilix) {
+        console.log('[Push] FCM token obtained, registering with gateway...');
+        await this.registerTokenWithBackend(token);
+      }
       await this.setupForegroundHandler();
       this.startTokenRefreshMonitor();
       return token;
@@ -385,7 +389,7 @@ class PushNotificationManager {
             if (nativeToken) {
               console.log('[Push] ✅ Native Appilix FCM token captured on retry');
               this.fcmToken = nativeToken;
-              await this.registerTokenWithBackend(nativeToken);
+              await this.registerAppilixDevice(nativeToken);
               return;
             }
           }
@@ -417,7 +421,11 @@ class PushNotificationManager {
 
       console.log('[Push] Received Appilix native FCM token event, registering with gateway...');
       this.fcmToken = token;
-      await this.registerTokenWithBackend(token);
+      if (isAppilix()) {
+        await this.registerAppilixDevice(token);
+      } else {
+        await this.registerTokenWithBackend(token);
+      }
     };
 
     document.addEventListener('appilix:fcm_token', handler as EventListener);

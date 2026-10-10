@@ -6179,7 +6179,11 @@
       "deleteThisNotification": "Diese Benachrichtigung löschen",
       "delete": "Löschen",
       "close": "Schließen",
-      "closeNotifications": "Benachrichtigungen schließen"
+      "closeNotifications": "Benachrichtigungen schließen",
+      "turnOnTitle": "Benachrichtigungen sind aus",
+      "turnOnBody": "Diese App kann dir gerade keine Benachrichtigungen schicken. Öffne die Einstellungen deines Handys, such die Vitana-App und schalte dort die Benachrichtigungen ein. Tippe danach auf „Erneut versuchen“.",
+      "turnOnTryAgain": "Erneut versuchen",
+      "turnOnDismiss": "Ausblenden"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Wähle den Namensteil deiner Vitana-ID",

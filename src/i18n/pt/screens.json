@@ -6259,7 +6259,17 @@
       "deleteThisNotification": "Excluir esta notificação",
       "delete": "Excluir",
       "close": "Fechar",
-      "closeNotifications": "Fechar notificações"
+      "closeNotifications": "Fechar notificações",
+      "turnOnTitle": "As notificações estão desativadas",
+      "turnOnBody": "Este app não consegue enviar notificações para você agora. Abra as configurações do seu celular, encontre o app Vitana e ative as notificações. Depois toque em \"Tentar novamente\".",
+      "turnOnTryAgain": "Tentar novamente",
+      "turnOnDismiss": "Ocultar",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Escolha a parte do nome do seu ID Vitana",

@@ -6308,7 +6308,17 @@
       "deleteThisNotification": "حذف هذا الإشعار",
       "delete": "حذف",
       "close": "إغلاق",
-      "closeNotifications": "إغلاق الإشعارات"
+      "closeNotifications": "إغلاق الإشعارات",
+      "turnOnTitle": "الإشعارات متوقفة",
+      "turnOnBody": "لا يمكن لهذا التطبيق إرسال إشعارات إليك الآن. افتح إعدادات هاتفك، وابحث عن تطبيق Vitana وفعّل الإشعارات هناك. ثم اضغط على \"إعادة المحاولة\".",
+      "turnOnTryAgain": "إعادة المحاولة",
+      "turnOnDismiss": "إخفاء",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "اختر جزء الاسم لمعرف Vitana الخاص بك",
