@@ -1,0 +1,98 @@
+name: Retire Supabase Edge Functions
+
+# VTID-05008 — deletes edge functions that were removed from this repo but are
+# still deployed on the live Supabase project (memory plan, VTID-04448 and
+# VTID-04453). Dispatch-only, and only for the names in ALLOWLIST below: any
+# other name fails the run before anything is deleted. A function that is not
+# deployed any more is skipped, so a re-run is safe.
+#
+# Before deleting, the run re-checks that nothing in src/ or supabase/ calls
+# the function (functions.invoke('<name>') or /functions/v1/<name>). A caller
+# fails the run.
+#
+# Recovery: every retired function's source is in git history (the commits of
+# VTID-04448 / VTID-04453); redeploy from there if one is ever needed again.
+#
+# Required repository secret: SUPABASE_ACCESS_TOKEN (same as the deploy workflow).
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Why these functions are retired (recorded in the run)'
+        required: true
+      functions:
+        description: 'Space-separated function names; each must be in the ALLOWLIST'
+        required: true
+
+concurrency:
+  group: supabase-functions-deploy
+  cancel-in-progress: false
+
+jobs:
+  retire:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      PROJECT_REF: inmkhvwdcuyhnxkgfvsb
+      FUNCTIONS: ${{ inputs.functions }}
+      REASON: ${{ inputs.reason }}
+      # The memory functions removed from the repo by VTID-04448/VTID-04453.
+      # Never add a function that still exists under supabase/functions/.
+      ALLOWLIST: >-
+        ai-chat search-memories reinforce-memory generate-memory-embedding
+        extract-diary-insights refresh-memory-metadata extract-user-interests
+        analyze-visual-context
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.226.4
+
+      - name: Check the requested names
+        run: |
+          set -euo pipefail
+          echo "Reason: $REASON"
+          [ -n "${FUNCTIONS// /}" ] || { echo "::error::no functions given"; exit 1; }
+          for fn in $FUNCTIONS; do
+            case " $ALLOWLIST " in
+              *" $fn "*) ;;
+              *) echo "::error::'$fn' is not in the retire allowlist"; exit 1 ;;
+            esac
+            if [ -d "supabase/functions/$fn" ]; then
+              echo "::error::'$fn' still exists under supabase/functions/ — refusing to delete a function the repo ships"
+              exit 1
+            fi
+            if grep -rnE "invoke\(['\"]${fn}['\"]|functions/v1/${fn}([^a-z0-9-]|$)" src supabase; then
+              echo "::error::'$fn' still has a caller (above) — refusing to delete it"
+              exit 1
+            fi
+          done
+          echo "All requested names are retirable: $FUNCTIONS"
+
+      - name: Delete
+        run: |
+          set -euo pipefail
+          DEPLOYED=$(curl -fsS -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "https://api.supabase.com/v1/projects/$PROJECT_REF/functions" | jq -r '.[].slug')
+          for fn in $FUNCTIONS; do
+            if ! grep -qx "$fn" <<<"$DEPLOYED"; then
+              echo "  $fn not deployed — skipped"
+              continue
+            fi
+            echo "::group::Deleting $fn"
+            supabase functions delete "$fn" --project-ref "$PROJECT_REF"
+            echo "::endgroup::"
+          done
+
+      - name: Confirm
+        run: |
+          set -euo pipefail
+          DEPLOYED=$(curl -fsS -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "https://api.supabase.com/v1/projects/$PROJECT_REF/functions" | jq -r '.[].slug')
+          for fn in $FUNCTIONS; do
+            if grep -qx "$fn" <<<"$DEPLOYED"; then
+              echo "::error::$fn is still deployed"
+              exit 1
+            fi
+            echo "  $fn retired"
+          done
