@@ -4,7 +4,7 @@
   "tests": [
     {
       "kind": "playwright",
-      "name": "phone + desktop: /admin/marketplace/rewards renders its sections (or the exafy-only state / role gate), the three admin GETs answer 200|403 JSON, no raw keys, no overflow (read-only, no save)",
+      "name": "this build carries the admin screen and the staging gateway answers its three admin GETs (items, fees, orders) with 200|403 JSON (read-only, no browser visit to /admin — the guard blocks the app's role read)",
       "spec": "tests/e2e/staging/vtid-05036-admin-rewards-shop.staging.spec.ts",
       "cwd": "."
     },
@@ -13,7 +13,7 @@
       "name": "Admin Rewards Shop: 403 state, item PUT body, photo shrink + upload, fee add/delete, missing-fee warning, order status change, DE/EN parity",
       "ref": "npx vitest run src/pages/admin/marketplace/RewardsShop.test.tsx src/components/admin/rewards",
       "cwd": ".",
-      "reason": "Every action on this screen is a write to the production database (staging shares it), so saves, uploads, fee changes and status changes cannot run on staging. These Vitest suites drive the real page, hook and form over a mocked gateway and prove the exact request each action sends, the validation, the image size loop and the 403 state; the staging spec above proves the deployed screen renders read-only."
+      "reason": "Every action on this screen is a write to the production database (staging shares it), so saves, uploads, fee changes and status changes cannot run on staging. These Vitest suites drive the real page, hook and form over a mocked gateway and prove the exact request each action sends, the validation, the image size loop and the 403 state; they also prove the screen renders (sections, empty states, exafy-only state), which the staging browser cannot reach because the read-only guard blocks the app's role read; the staging spec above proves the deployed build carries the screen and its gateway reads answer JSON."
     }
   ]
 }
