@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 364
+- **Pages scanned:** 366
 - **Distinct i18n keys consumed:** 4767
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -1299,6 +1299,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 22, total in shard: 11583
 - `toasts` — used: 4, total in shard: 1272
 
+### src/pages/admin/marketplace/RewardsShop.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/admin/marketplace/RewardsShop.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ### src/pages/admin/media/Music.error-logging.test.ts
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
@@ -1322,7 +1330,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `admin` — used: 13, total in shard: 23
+- `admin` — used: 13, total in shard: 156
 - `payment` — used: 1, total in shard: 19
 - `screens` — used: 9, total in shard: 11583
 - `toasts` — used: 1, total in shard: 1272, **MISSING:** toasts.success.generic

@@ -7,7 +7,7 @@
  */
 
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -166,6 +166,12 @@ export default function MarketplaceProducts() {
             title={t('screens.admin.products')}
             description="Review queue for products the analyzer flagged. Catalog ingestion is handled by Claude Code scraping — you tune the rules and clear the anomaly queue."
           />
+          {/* VTID-05036: Rewards Shop admin — not in the 5-slot catalog sub-navigation. */}
+          <div className="flex justify-end">
+            <Link to="/admin/marketplace/rewards">
+              <Button variant="outline" size="sm" data-testid="admin-products-rewards-link">{t('admin.rewardsShop.openLink')}</Button>
+            </Link>
+          </div>
 
           {/* Filter bar */}
           <Card>
