@@ -71,7 +71,8 @@ jobs:
               exit 1
             fi
             # -z reads each file whole, so a call split across lines still matches.
-            if grep -rlPz "invoke\(\s*['\"\`]${fn}['\"\`]|functions/v1/${fn}(?![a-z0-9-])" src supabase; then
+            # Test files are not runtime callers (a URL fixture is not a call).
+            if grep -rlPz --exclude='*.test.*' --exclude='*.spec.*' "invoke\(\s*['\"\`]${fn}['\"\`]|functions/v1/${fn}(?![a-z0-9-])" src supabase; then
               echo "::error::'$fn' still has a caller (above) — refusing to delete it"
               exit 1
             fi

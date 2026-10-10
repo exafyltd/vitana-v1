@@ -35,6 +35,8 @@ function sourceFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
     const p = join(dir, name);
     if (statSync(p).isDirectory()) return name === 'node_modules' ? [] : sourceFiles(p);
+    // Same exclusion as the workflow: test files are not runtime callers.
+    if (/\.(test|spec)\./.test(name)) return [];
     return /\.(ts|tsx|js|jsx)$/.test(name) ? [p] : [];
   });
 }
@@ -65,7 +67,7 @@ describe('SUPABASE-FUNCTIONS-RETIRE allowlist', () => {
     expect(callerPattern(fn).test(`fetch(${q}/functions/v1/${fn}${q})`)).toBe(true);
     expect(callerPattern(fn).test(`invoke(${q}${fn}-v2${q})`)).toBe(false);
     expect(callerPattern(fn).test(`/functions/v1/${fn}-v2`)).toBe(false);
-    expect(WORKFLOW).toContain('grep -rlPz');
+    expect(WORKFLOW).toContain("grep -rlPz --exclude='*.test.*' --exclude='*.spec.*'");
     expect(WORKFLOW).toContain("invoke\\(\\s*['\\\"\\`]${fn}['\\\"\\`]");
   });
 
