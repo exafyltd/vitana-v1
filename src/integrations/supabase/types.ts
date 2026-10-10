@@ -13609,7 +13609,6 @@ export type Database = {
           cover_url: string
           created_at: string
           display_name: string
-          email: string
           facebook_bio: string
           facebook_interests: string[]
           facebook_synced_at: string
