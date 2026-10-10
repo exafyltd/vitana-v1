@@ -336,7 +336,11 @@
       "ticketRemovedActiveList": "Removed from the active list.",
       "invalidJson": "Invalid JSON.",
       "confirmMatchRequiresFields": "User ID, tenant ID, and test name are required.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "matchMemberDeclined": "This member already said this result is not theirs.",
+      "matchUserNotInTenant": "This user ID does not belong to this tenant ID.",
+      "matchConfirmationUnavailable": "Member confirmation is not available yet. Please try again later.",
+      "matchAlreadyPending": "A request for this result is already waiting for the member to confirm."
     },
     "audio": {
       "cameraStopped": "Camera stopped",

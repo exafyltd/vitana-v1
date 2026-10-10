@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Loader2, RefreshCw, Upload, CheckCircle2 } from "lucide-react";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
+import { confirmMatchErrorKey, memberLinkBadgeKey, type MemberLinkStatus } from "@/hooks/usePartnerHealthOrders";
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -61,6 +62,8 @@ interface InboxRow {
   resolved: boolean;
   created_at: string;
   partner_registry?: { display_name: string } | { display_name: string }[] | null;
+  /** VTID-05056: set once staff proposed a member; absent before the migration. */
+  member_link_status?: MemberLinkStatus | null;
 }
 
 const STATUS_OPTIONS = ['ordered', 'sample_kit_shipped', 'sample_received', 'processing', 'delivered', 'cancelled', 'failed'];
@@ -162,7 +165,8 @@ export default function PartnerHealthOrders() {
       const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox/${uploadOrder.id}/upload-result`, {
         method: "POST",
         headers,
-        body: JSON.stringify({ order_id: uploadOrder.id, partner_key: 'doctorbox', result: parsed }),
+        // VTID-05056: no partner_key — the gateway takes it from the order's own partner.
+        body: JSON.stringify({ order_id: uploadOrder.id, result: parsed }),
       });
       if (!resp.ok) {
         const body = await resp.json().catch(() => ({}));
@@ -202,15 +206,16 @@ export default function PartnerHealthOrders() {
         const body = await resp.json().catch(() => ({}));
         throw new Error(body?.error || `HTTP ${resp.status}`);
       }
-      notify('screens.admin.matchConfirmed');
+      // VTID-05056: 202 pending_member — the member is asked; no order exists yet.
+      notify('screens.admin.matchProposed');
       setResolveInboxRow(null);
       setResolveUserId("");
       setResolveTenantId("");
       setResolveTestName("");
       setResolveOrderRef("");
       await load();
-    } catch {
-      notifyError('toasts.admin.bulkActionFailed');
+    } catch (err) {
+      notifyError(confirmMatchErrorKey(err));
     } finally {
       setBusy(false);
     }
@@ -312,10 +317,18 @@ export default function PartnerHealthOrders() {
                         ) : inbox.filter((r) => !r.resolved).map((row) => (
                           <tr key={row.id} className="border-b last:border-b-0">
                             <td className="p-3">{partnerName(row)}</td>
-                            <td className="p-3"><Badge variant="secondary">{row.reason}</Badge></td>
+                            <td className="p-3">
+                              <div className="flex flex-wrap gap-1">
+                                <Badge variant="secondary">{row.reason}</Badge>
+                                {memberLinkBadgeKey(row.member_link_status) && (
+                                  <Badge variant="outline" data-testid="member-link-badge">{t(memberLinkBadgeKey(row.member_link_status)!)}</Badge>
+                                )}
+                              </div>
+                            </td>
                             <td className="p-3 text-xs text-muted-foreground">{new Date(row.created_at).toLocaleString()}</td>
                             <td className="p-3 text-right">
-                              <Button size="sm" onClick={() => setResolveInboxRow(row)}>
+                              {/* VTID-05056: a row waiting for the member cannot be re-proposed. */}
+                              <Button size="sm" disabled={row.member_link_status === 'pending_member'} onClick={() => setResolveInboxRow(row)}>
                                 <CheckCircle2 className="w-4 h-4 mr-1" /> {t('screens.admin.resolve')}
                               </Button>
                             </td>

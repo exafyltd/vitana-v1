@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05056",
+  "kind": "fix",
+  "paths": [
+    "src/hooks/usePartnerLinkRequests.ts",
+    "src/hooks/usePartnerHealthOrders.ts",
+    "src/components/patient/PartnerLinkRequestsCard.tsx",
+    "src/components/patient/PartnerLinkRequestsCard.vtid-05056.test.tsx",
+    "src/pages/patient/Results.tsx",
+    "src/pages/admin/marketplace/PartnerHealthOrders.tsx",
+    "src/pages/CommerceHealthOrders.tsx",
+    "src/pages/__tests__/partner-health-staff.vtid-05056.test.tsx",
+    "src/i18n/*/screens.json",
+    "src/i18n/*/toasts.json",
+    "tests/e2e/staging/vtid-05056-partner-link-requests.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05056/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

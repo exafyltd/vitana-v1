@@ -2629,7 +2629,10 @@
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
       "inboxEmpty": "Inbox is empty.",
-      "_pending_review": {}
+      "_pending_review": {},
+      "matchProposed": "Sent to the member for confirmation",
+      "awaitingMember": "Awaiting member",
+      "memberDeclined": "Declined by member"
     },
     "ai-feed": {
       "noEventsFound": "No events found",
@@ -10244,7 +10247,22 @@
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
         "viewAll": "View all results",
-        "_pending_review": {}
+        "_pending_review": {},
+        "linkRequests": {
+          "title": "Is this your test?",
+          "body": "A partner has a lab result that may belong to you. It is added to your health records only if you confirm it.",
+          "proposedOn": "Requested on {date}",
+          "unknownPartner": "Partner",
+          "confirm": "Confirm",
+          "decline": "Not me",
+          "confirmDialogTitle": "Add this result to your records?",
+          "confirmDialogBody": "You are confirming that \"{test}\" from {partner} is your test. The result will then be added to your health records and appear in your results.",
+          "confirmDialogAction": "Yes, this is my test",
+          "cancel": "Cancel",
+          "confirmed": "Thanks! The result is being added to your health records.",
+          "declined": "Got it. The result will not be added to your records.",
+          "failed": "That didn't work. Please try again."
+        }
       },
       "comingSoon": {
         "title": "Coming soon",

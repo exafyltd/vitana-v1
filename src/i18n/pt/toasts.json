@@ -334,7 +334,11 @@
       "_pending_review": {
         "invalidJson": true,
         "confirmMatchRequiresFields": true
-      }
+      },
+      "matchMemberDeclined": "Este membro já informou que este resultado não é dele.",
+      "matchUserNotInTenant": "Este ID de usuário não pertence a este ID de tenant.",
+      "matchConfirmationUnavailable": "A confirmação pelos membros ainda não está disponível. Tente novamente mais tarde.",
+      "matchAlreadyPending": "Uma solicitação para este resultado já está aguardando a confirmação do membro."
     },
     "audio": {
       "cameraStopped": "Câmara parada",

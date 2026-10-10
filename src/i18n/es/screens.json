@@ -2627,7 +2627,10 @@
       "testName": "Nombre de la Prueba",
       "externalOrderRefOptional": "Referencia de pedido externo (opcional)",
       "noOrdersYet": "Aún no hay pedidos.",
-      "inboxEmpty": "La bandeja de entrada está vacía."
+      "inboxEmpty": "La bandeja de entrada está vacía.",
+      "matchProposed": "Enviado al miembro para su confirmación",
+      "awaitingMember": "Esperando al miembro",
+      "memberDeclined": "Rechazado por el miembro"
     },
     "ai-feed": {
       "noEventsFound": "No se encontraron eventos",
@@ -10169,7 +10172,22 @@
         "statusCritical": "Crítico",
         "statusUnknown": "Desconocido",
         "recentResultsTitle": "Resultados recientes",
-        "viewAll": "Ver todos los resultados"
+        "viewAll": "Ver todos los resultados",
+        "linkRequests": {
+          "title": "¿Es tu prueba?",
+          "body": "Un socio tiene un resultado de laboratorio que podría ser tuyo. Solo se añadirá a tus datos de salud si lo confirmas.",
+          "proposedOn": "Solicitado el {date}",
+          "unknownPartner": "Socio",
+          "confirm": "Confirmar",
+          "decline": "No soy yo",
+          "confirmDialogTitle": "¿Añadir este resultado a tus datos?",
+          "confirmDialogBody": "Confirmas que «{test}» de {partner} es tu prueba. El resultado se añadirá a tus datos de salud y aparecerá en tus resultados.",
+          "confirmDialogAction": "Sí, es mi prueba",
+          "cancel": "Cancelar",
+          "confirmed": "¡Gracias! El resultado se está añadiendo a tus datos de salud.",
+          "declined": "Entendido. El resultado no se añadirá a tus datos.",
+          "failed": "No ha funcionado. Inténtalo de nuevo."
+        }
       },
       "comingSoon": {
         "title": "Próximamente",

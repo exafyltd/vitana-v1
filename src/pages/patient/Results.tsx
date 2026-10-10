@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertTriangle, FlaskConical, Loader2 } from 'lucide-react';
 import { usePatientHealthResults, type PatientHealthResult } from '@/hooks/usePatientHealthResults';
+import { PartnerLinkRequestsCard } from '@/components/patient/PartnerLinkRequestsCard';
 import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
 
@@ -64,6 +65,9 @@ export default function PatientResults() {
           <h1 className="text-3xl font-bold">{t('screens.patient.results.title')}</h1>
           <p className="text-muted-foreground">{t('screens.patient.results.subtitle')}</p>
         </div>
+
+        {/* VTID-05056: partner results waiting for the member's own confirmation. */}
+        <PartnerLinkRequestsCard />
 
         {isLoading ? (
           <div className="flex justify-center py-16">

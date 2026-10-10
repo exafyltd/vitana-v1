@@ -334,7 +334,11 @@
       "_pending_review": {
         "invalidJson": true,
         "confirmMatchRequiresFields": true
-      }
+      },
+      "matchMemberDeclined": "该成员已表示此结果不属于他们。",
+      "matchUserNotInTenant": "此用户 ID 不属于此租户 ID。",
+      "matchConfirmationUnavailable": "成员确认功能尚不可用。请稍后再试。",
+      "matchAlreadyPending": "此结果已有一个请求正在等待成员确认。"
     },
     "audio": {
       "cameraStopped": "摄像头已停止。",

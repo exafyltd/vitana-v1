@@ -2655,7 +2655,10 @@
       "testName": "Test name",
       "externalOrderRefOptional": "External order reference (optional)",
       "noOrdersYet": "No orders yet.",
-      "inboxEmpty": "Inbox is empty."
+      "inboxEmpty": "Inbox is empty.",
+      "matchProposed": "Poslato članu na potvrdu",
+      "awaitingMember": "Čeka se član",
+      "memberDeclined": "Član je odbio"
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",
@@ -10255,7 +10258,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "Da li je ovo tvoj test?",
+          "body": "Partner ima laboratorijski rezultat koji bi mogao biti tvoj. Biće dodat u tvoje zdravstvene podatke samo ako ga potvrdiš.",
+          "proposedOn": "Zatraženo {date}",
+          "unknownPartner": "Partner",
+          "confirm": "Potvrdi",
+          "decline": "Nisam ja",
+          "confirmDialogTitle": "Dodati ovaj rezultat u tvoje podatke?",
+          "confirmDialogBody": "Potvrđuješ da je „{test}“ od {partner} tvoj test. Rezultat će tada biti dodat u tvoje zdravstvene podatke i pojaviće se u tvojim rezultatima.",
+          "confirmDialogAction": "Da, ovo je moj test",
+          "cancel": "Otkaži",
+          "confirmed": "Hvala! Rezultat se dodaje u tvoje zdravstvene podatke.",
+          "declined": "Razumem. Rezultat neće biti dodat u tvoje podatke.",
+          "failed": "Nije uspelo. Pokušaj ponovo."
+        }
       },
       "comingSoon": {
         "_pending_review": {

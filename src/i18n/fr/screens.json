@@ -2655,7 +2655,10 @@
         "externalOrderRefOptional": true,
         "noOrdersYet": true,
         "inboxEmpty": true
-      }
+      },
+      "matchProposed": "Envoyé au membre pour confirmation",
+      "awaitingMember": "En attente du membre",
+      "memberDeclined": "Refusé par le membre"
     },
     "ai-feed": {
       "noEventsFound": "Aucun événement trouvé",
@@ -10306,7 +10309,22 @@
         "statusCritical": "Critical",
         "statusUnknown": "Unknown",
         "recentResultsTitle": "Recent results",
-        "viewAll": "View all results"
+        "viewAll": "View all results",
+        "linkRequests": {
+          "title": "Est-ce ton test ?",
+          "body": "Un partenaire a un résultat d'analyse qui pourrait t'appartenir. Il n'est ajouté à tes données de santé que si tu le confirmes.",
+          "proposedOn": "Demandé le {date}",
+          "unknownPartner": "Partenaire",
+          "confirm": "Confirmer",
+          "decline": "Ce n'est pas moi",
+          "confirmDialogTitle": "Ajouter ce résultat à tes données ?",
+          "confirmDialogBody": "Tu confirmes que « {test} » de {partner} est ton test. Le résultat sera alors ajouté à tes données de santé et apparaîtra dans tes résultats.",
+          "confirmDialogAction": "Oui, c'est mon test",
+          "cancel": "Annuler",
+          "confirmed": "Merci ! Le résultat est en cours d'ajout à tes données de santé.",
+          "declined": "Compris. Le résultat ne sera pas ajouté à tes données.",
+          "failed": "Ça n'a pas marché. Réessaie."
+        }
       },
       "comingSoon": {
         "_pending_review": {
