@@ -2,8 +2,11 @@
  * VTID-03319 — interactive community-post card for the unified "All News" feed.
  *
  * Split out of NewsFeedItemCard so the like/comment hook can be called
- * unconditionally (it is only mounted for kind === "post"). The card body still
- * navigates to the author's profile; the heart and the comment affordance are
+ * unconditionally (it is only mounted for kind === "post"). Tapping the card
+ * body opens the post itself (/post/:source/:id) and only the author's
+ * avatar + name open their profile (VTID-04937 — the whole card used to go to
+ * the profile, so a tap beside the heart while scrolling old posts landed on
+ * someone's profile instead of the post). The heart and the comment affordance are
  * inline — tapping the heart toggles a like, tapping the comment count expands
  * an inline list of comments plus an input to post a new one. The "who liked
  * this" list opens from its own full-width "{count} Likes" row below the icon
@@ -51,6 +54,7 @@ export function CommunityPostCard({
   item,
   onOpen,
   autoOpenComments,
+  isDetail = false,
 }: {
   item: PostFeedItem;
   onOpen?: (item: FeedItem) => void;
@@ -62,6 +66,9 @@ export function CommunityPostCard({
    * re-render where the value stays true can't re-force a manually-closed
    * sheet back open. */
   autoOpenComments?: boolean;
+  /** Rendered as the post page itself (PostDetail): the card does not open
+   * itself again, the full text is shown and the comments start open. */
+  isDetail?: boolean;
 }) {
   const navigate = useNavigate();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -77,7 +84,7 @@ export function CommunityPostCard({
     toggleCommentLike,
   } = useFeedPostInteractions(item.source, item.post_id);
 
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(isDetail);
   const [showLikers, setShowLikers] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [commentMentions, setCommentMentions] = useState<Mention[]>([]);
@@ -107,9 +114,18 @@ export function CommunityPostCard({
     setCommentCount(item.comments_count);
   }
 
-  const openProfile = () => {
+  const openProfile = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onOpen?.(item);
     navigate(`/u/${item.user_id}`);
+  };
+
+  // `fromFeed` tells PostDetail's back arrow it can simply go back in history,
+  // which lands the reader on the same spot in the feed (see Home.tsx).
+  const openPost = () => {
+    if (isDetail) return;
+    onOpen?.(item);
+    navigate(`/post/${item.source}/${item.post_id}`, { state: { fromFeed: true } });
   };
 
   // React to the FALSE -> TRUE transition, not just mount: /home/comments
@@ -261,19 +277,20 @@ export function CommunityPostCard({
   const background = hasMedia ? null : getPostBackground(item.background_style);
 
   return (
+    // Not role="button": the card holds its own buttons (author, heart, …), and
+    // nesting those inside a button role is invalid. Pointer taps on the body
+    // open the post; keyboard users get the same via the timestamp button.
     <Card
       ref={cardRef}
-      className={cn(cardShell, "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2")}
-      role="button"
-      tabIndex={0}
-      onClick={openProfile}
-      onKeyDown={(e) => {
-        // Only the card itself navigates — keys typed in the comment input or on
-        // the heart/comment buttons must not bubble up into navigation.
-        if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault();
-          openProfile();
-        }
+      className={cn(cardShell, !isDetail && "cursor-pointer")}
+      role="article"
+      data-testid="feed-post-card"
+      onClick={(e) => {
+        // React bubbles clicks from portals (kebab menu, report/edit dialogs,
+        // likers list) up to this card even though they render elsewhere in
+        // the DOM — only a tap physically on the card opens the post.
+        if (!cardRef.current?.contains(e.target as Node)) return;
+        openPost();
       }}
     >
       <FeedMedia videoUrl={item.video_url} imageUrl={item.image_url} />
@@ -282,7 +299,21 @@ export function CommunityPostCard({
         <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
           <MessageCircle className="h-3.5 w-3.5" />
           <span className="truncate">{t(reasonKeyFor(item))}</span>
-          <span className="ml-auto shrink-0 text-muted-foreground">{timeAgo(item.published_at)}</span>
+          {isDetail ? (
+            <span className="ms-auto shrink-0 text-muted-foreground">{timeAgo(item.published_at)}</span>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => {
+                stop(e);
+                openPost();
+              }}
+              aria-label={t("screens.postDetail.title")}
+              className="ms-auto shrink-0 rounded text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              {timeAgo(item.published_at)}
+            </button>
+          )}
         </div>
         {item.content &&
           (background ? (
@@ -294,7 +325,8 @@ export function CommunityPostCard({
             >
               <p
                 className={cn(
-                  "line-clamp-6 whitespace-pre-wrap break-words text-lg font-semibold leading-snug",
+                  "whitespace-pre-wrap break-words text-lg font-semibold leading-snug",
+                  !isDetail && "line-clamp-6",
                   background.textClass,
                 )}
               >
@@ -302,14 +334,24 @@ export function CommunityPostCard({
               </p>
             </div>
           ) : (
-            <p className="text-sm leading-relaxed text-foreground line-clamp-3 whitespace-pre-wrap break-words">
+            <p
+              className={cn(
+                "text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words",
+                !isDetail && "line-clamp-3",
+              )}
+            >
               {renderMentions(item.content, item.mentions)}
             </p>
           ))}
         {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} />}
 
         <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 min-w-0">
+          <button
+            type="button"
+            onClick={openProfile}
+            data-testid="feed-post-author"
+            className="flex items-center gap-2 min-w-0 rounded-full text-start hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             <Avatar className="h-7 w-7 shrink-0">
               {item.author_avatar && <AvatarImage src={item.author_avatar} alt="" />}
               <AvatarFallback className="text-xs">
@@ -317,7 +359,7 @@ export function CommunityPostCard({
               </AvatarFallback>
             </Avatar>
             <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
-          </div>
+          </button>
 
           <div className="flex items-center gap-3 shrink-0">
             <button
