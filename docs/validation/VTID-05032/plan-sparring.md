@@ -26,8 +26,10 @@
 
 ## Implementation decisions (recorded for Gate 2)
 
-- The existing `nameIntegrationComingSoon` copy in en, pt and sr was missing the space after `{name}` ("Apple Healthintegration").
-  The health cards now show it, so the space was added. No key was added and no other locale changed.
+- The existing `nameIntegrationComingSoon`/`nameIntegrationComingSoon2` copy was missing the space after `{name}` in en, pt, sr
+  (and `…2` in pl, ru), which the health cards now show ("Apple Healthintegration"). The space was added; no key was added.
+  Because the EN source changed, the source stamps of exactly these two keys were updated in the nine translated locales
+  after each translation was reviewed (meaning unchanged, whitespace only). No other stamp was touched.
 - Sleep and nutrition cards that said "Coming Soon" now show the existing `notConnected` badge, with the coming-soon text in the card. Only the four named keys are reused.
 
 ## Final plan

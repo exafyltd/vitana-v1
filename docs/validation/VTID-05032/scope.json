@@ -12,6 +12,7 @@
     "src/components/settings/__tests__/**",
     "src/components/ConnectAppPopup.tsx",
     "src/i18n/*/screens.json",
+    "i18n-source-stamps/*.json",
     "tests/e2e/staging/vtid-05032-health-connections-privacy.staging.spec.ts",
     "docs/SCREEN_INVENTORY.md",
     "docs/validation/VTID-05032/**"
