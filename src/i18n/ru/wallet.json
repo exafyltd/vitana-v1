@@ -223,6 +223,44 @@
     "backToWallet": "Назад в кошелёк",
     "_pending_review": {
       "backToWallet": true
+    },
+    "earnMore": {
+      "title": "Это ты ещё можешь заработать",
+      "intro": "Маленькие шаги, которые окупаются: нажми «Вперёд» и начни.",
+      "go": "Вперёд",
+      "allDone": "Отлично — сейчас ты собрал всё. Скоро будут новые VTNA.",
+      "goalTitle": "Твоя следующая цель",
+      "goalMissing": "Ещё {missing} VTNA до {item}",
+      "goalProgress": "{percent} % пройдено",
+      "goalBalance": "{balance} из {price} VTNA",
+      "goalRedeem": "Ты уже можешь обменять {item}!",
+      "toShop": "В магазин",
+      "_pending_review": {
+        "title": true,
+        "intro": true,
+        "go": true,
+        "allDone": true,
+        "goalTitle": true,
+        "goalMissing": true,
+        "goalProgress": true,
+        "goalBalance": true,
+        "goalRedeem": true,
+        "toShop": true
+      }
+    },
+    "rewardsPage": {
+      "seoTitle": "Награды | VITANA Wallet",
+      "title": "Награды",
+      "description": "Зарабатывай VTNA тем, что тебе полезно, и обменивай их в магазине.",
+      "tabEarned": "Заработано",
+      "tabEarnMore": "Заработать больше",
+      "_pending_review": {
+        "seoTitle": true,
+        "title": true,
+        "description": true,
+        "tabEarned": true,
+        "tabEarnMore": true
+      }
     }
   }
 }

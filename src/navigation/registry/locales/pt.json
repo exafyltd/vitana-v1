@@ -1379,12 +1379,11 @@
       "abrir recompensas e comissões"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Insights de recompensas",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "Ganhar mais",
     "phrasings": [
-      "como posso ganhar mais recompensas",
-      "mostra os insights de recompensas",
-      "onde vejo dicas pra aumentar meus ganhos"
+      "como ganho mais VTNA",
+      "o que ainda posso ganhar hoje"
     ]
   },
   "WALLET.REWARDS_SHOP": {

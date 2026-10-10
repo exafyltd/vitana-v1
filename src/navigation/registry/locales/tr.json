@@ -1866,15 +1866,11 @@
       "müşterilerime hizmet vererek ne kadar kazandığımı görmek istiyorum"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "Ödül Analizleri",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "Daha fazla kazan",
     "phrasings": [
-      "daha fazla ödül nasıl kazanabilirim",
-      "ödül içgörülerimi göster",
-      "kazanç ipuçlarını nerede bulabilirim",
-      "ödül analizleri sekmesini aç",
-      "daha fazla ödül kazanmak için önerileri nerede görebilirim",
-      "ödüllerimi artırmak için hangi adımları atmalıyım bunu görmek istiyorum"
+      "nasıl daha fazla VTNA kazanırım",
+      "bugün daha ne kazanabilirim"
     ]
   },
   "WALLET.REWARDS_SHOP": {

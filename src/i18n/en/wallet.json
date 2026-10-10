@@ -149,7 +149,26 @@
       },
       "_pending_review": {}
     },
-    "backToWallet": "Back to Wallet"
+    "backToWallet": "Back to Wallet",
+    "earnMore": {
+      "title": "You can still earn this",
+      "intro": "Small steps that pay off – tap “Let's go” and get started.",
+      "go": "Let's go",
+      "allDone": "Great – you've collected everything for now. New VTNA are coming soon.",
+      "goalTitle": "Your next goal",
+      "goalMissing": "{missing} VTNA to go until {item}",
+      "goalProgress": "{percent}% done",
+      "goalBalance": "{balance} of {price} VTNA",
+      "goalRedeem": "You can already redeem {item}!",
+      "toShop": "Go to the shop"
+    },
+    "rewardsPage": {
+      "seoTitle": "Rewards | VITANA Wallet",
+      "title": "Rewards",
+      "description": "Earn VTNA with what's good for you – and redeem them in the shop.",
+      "tabEarned": "Earned",
+      "tabEarnMore": "Earn more"
+    }
   },
   "_pending_review": {}
 }

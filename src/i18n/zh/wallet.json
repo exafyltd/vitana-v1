@@ -223,6 +223,44 @@
     "backToWallet": "返回钱包",
     "_pending_review": {
       "backToWallet": true
+    },
+    "earnMore": {
+      "title": "你还能赚到这些",
+      "intro": "小步骤也有回报——点“开始”立即行动。",
+      "go": "开始",
+      "allDone": "太棒了——目前你已全部领取。新的 VTNA 很快就来。",
+      "goalTitle": "你的下一个目标",
+      "goalMissing": "还差 {missing} VTNA 即可兑换 {item}",
+      "goalProgress": "已完成 {percent}%",
+      "goalBalance": "{balance} / {price} VTNA",
+      "goalRedeem": "你已可以兑换 {item}！",
+      "toShop": "前往商店",
+      "_pending_review": {
+        "title": true,
+        "intro": true,
+        "go": true,
+        "allDone": true,
+        "goalTitle": true,
+        "goalMissing": true,
+        "goalProgress": true,
+        "goalBalance": true,
+        "goalRedeem": true,
+        "toShop": true
+      }
+    },
+    "rewardsPage": {
+      "seoTitle": "奖励 | VITANA Wallet",
+      "title": "奖励",
+      "description": "做对你有益的事来赚取 VTNA，并在商店兑换。",
+      "tabEarned": "已赚取",
+      "tabEarnMore": "赚更多",
+      "_pending_review": {
+        "seoTitle": true,
+        "title": true,
+        "description": true,
+        "tabEarned": true,
+        "tabEarnMore": true
+      }
     }
   }
 }

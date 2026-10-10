@@ -1377,12 +1377,11 @@
       "查看推广收益"
     ]
   },
-  "WALLET.REWARDS_INTELLIGENCE": {
-    "title": "奖励洞察",
+  "WALLET.REWARDS_EARN_MORE": {
+    "title": "赚更多",
     "phrasings": [
-      "怎么赚更多奖励",
-      "打开奖励洞察页面",
-      "有没有提高奖励收益的建议"
+      "怎样赚更多 VTNA",
+      "今天我还能赚什么"
     ]
   },
   "WALLET.REWARDS_SHOP": {

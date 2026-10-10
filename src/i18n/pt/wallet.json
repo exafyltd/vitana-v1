@@ -223,6 +223,44 @@
     "backToWallet": "Voltar à carteira",
     "_pending_review": {
       "backToWallet": true
+    },
+    "earnMore": {
+      "title": "Isto ainda podes ganhar",
+      "intro": "Pequenos passos que valem a pena: toca em «Vamos» e começa já.",
+      "go": "Vamos",
+      "allDone": "Ótimo, já recolheste tudo por agora. Em breve há novos VTNA.",
+      "goalTitle": "O teu próximo objetivo",
+      "goalMissing": "Faltam {missing} VTNA para {item}",
+      "goalProgress": "{percent}% concluído",
+      "goalBalance": "{balance} de {price} VTNA",
+      "goalRedeem": "Já podes trocar {item}!",
+      "toShop": "Ir para a loja",
+      "_pending_review": {
+        "title": true,
+        "intro": true,
+        "go": true,
+        "allDone": true,
+        "goalTitle": true,
+        "goalMissing": true,
+        "goalProgress": true,
+        "goalBalance": true,
+        "goalRedeem": true,
+        "toShop": true
+      }
+    },
+    "rewardsPage": {
+      "seoTitle": "Recompensas | VITANA Wallet",
+      "title": "Recompensas",
+      "description": "Ganha VTNA com o que te faz bem e troca-os na loja.",
+      "tabEarned": "Ganho",
+      "tabEarnMore": "Ganhar mais",
+      "_pending_review": {
+        "seoTitle": true,
+        "title": true,
+        "description": true,
+        "tabEarned": true,
+        "tabEarnMore": true
+      }
     }
   }
 }
