@@ -169,10 +169,10 @@ export function ContactSyncModal({
                   <FileUp className="w-5 h-5 me-2" aria-hidden />
                   {t('mailhub.findFriends.import.file')}
                 </Button>
-                <div className="rounded-xl bg-muted/50 p-3 space-y-1 text-start">
+                <div className="rounded-xl bg-muted/50 p-3 space-y-1 text-start" data-testid="find-friends-file-help">
                   <p className="text-xs font-medium text-foreground">{t('mailhub.findFriends.import.fileHowTitle')}</p>
-                  <p className="text-xs text-muted-foreground">{t('mailhub.findFriends.import.fileHowIphone')}</p>
-                  <p className="text-xs text-muted-foreground">{t('mailhub.findFriends.import.fileHowAndroid')}</p>
+                  <p className="text-xs text-muted-foreground" data-testid="find-friends-file-help-iphone">{t('mailhub.findFriends.import.fileHowIphone')}</p>
+                  <p className="text-xs text-muted-foreground" data-testid="find-friends-file-help-android">{t('mailhub.findFriends.import.fileHowAndroid')}</p>
                 </div>
               </div>
             ) : (

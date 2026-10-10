@@ -73,8 +73,9 @@ test('VTID-05058: Invite friends shows the personal link and the one-tap contact
 
   const fileButton = page.getByTestId('find-friends-file');
   await expect(fileButton).toBeVisible({ timeout: 10_000 });
-  await expect(page.getByText(/iPhone/)).toBeVisible();
-  await expect(page.getByText(/Android/)).toBeVisible();
+  // The export steps for both phones (by test id: the iCloud row also says "iPhone").
+  await expect(page.getByTestId('find-friends-file-help-iphone')).toContainText('iPhone');
+  await expect(page.getByTestId('find-friends-file-help-android')).toContainText('Android');
   // The account sources stay one tap away; the phone tile is not shown twice.
   await expect(page.getByTestId('find-friends-source-google')).toBeVisible();
   await expect(page.getByTestId('find-friends-source-phonebook')).toHaveCount(0);
