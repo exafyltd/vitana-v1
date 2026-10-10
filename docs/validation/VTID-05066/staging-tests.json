@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05066",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "phone journey (Pixel 7, 4x CPU, Fast 4G): Events first ≤ 4000 ms (resized live-room cover), Postfach first ≤ 4000 ms (avatars drawn on the device), News return ≤ 1500 ms (ORB icon cached), no photo re-downloaded, no frame height change",
+      "spec": "tests/e2e/staging/screen-journey.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "root images (ORB icon) served with Cache-Control: public, max-age=86400; the SPA shell stays no-store",
+      "spec": "tests/e2e/staging/vtid-05066-root-image-cache.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "live-room covers through the resize CDN with one-shot fallback; DiceBear avatars drawn locally byte-identical to the API (fixtures); AvatarImage unchanged for every other src",
+      "ref": "npx vitest run src/lib/localAvatar.test.ts src/components/ui/avatar.vtid-05066.test.tsx src/components/liverooms/liveRoomCover.vtid-05066.test.tsx",
+      "cwd": ".",
+      "reason": "Byte identity, fallbacks and the unchanged pass-through are proven against fixtures and fake image errors, which a read-only staging run cannot provoke."
+    }
+  ]
+}

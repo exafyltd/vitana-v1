@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05066",
+  "kind": "fix",
+  "paths": [
+    "src/components/liverooms/LiveRoomEventCard.tsx",
+    "src/components/liverooms/LiveRoomCard.tsx",
+    "src/components/liverooms/liveRoomCover.vtid-05066.test.tsx",
+    "src/lib/localAvatar.ts",
+    "src/lib/localAvatar.test.ts",
+    "src/lib/__fixtures__/**",
+    "src/components/ui/avatar.tsx",
+    "src/components/ui/avatar.vtid-05066.test.tsx",
+    "package.json",
+    "package-lock.json",
+    "nginx.conf",
+    "tests/e2e/staging/screen-journey.staging.spec.ts",
+    "tests/e2e/staging/vtid-05066-root-image-cache.staging.spec.ts",
+    "docs/validation/VTID-05066/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05066/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
