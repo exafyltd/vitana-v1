@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, XCircle, AlertTriangle, Flag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { toast } from "sonner";
 import { notifyError, t } from '@/lib/i18n-toast';
 
@@ -43,15 +44,14 @@ const ReportedContent = () => {
     fetchReports();
     
     // Realtime subscription
-    const channel = supabase
-      .channel('admin-reports-changes')
+    const channel = realtimeChannel('admin-reports-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'content_reports' }, () => {
         fetchReports();
       })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, []);
 

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { notify, notifyError } from '@/lib/i18n-toast';
 
@@ -14,8 +15,7 @@ export const useAppointmentNotifications = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      channel = supabase
-        .channel("appointment-changes")
+      channel = realtimeChannel("appointment-changes")
         .on(
           "postgres_changes",
           {
@@ -118,7 +118,7 @@ export const useAppointmentNotifications = () => {
 
     return () => {
       if (channel) {
-        supabase.removeChannel(channel);
+        removeRealtimeChannel(channel);
       }
     };
   }, [toast]);

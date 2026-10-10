@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { notifyError } from '@/lib/i18n-toast';
 
@@ -358,8 +359,7 @@ export const useMessages = (threadId?: string, enableAutoFetch: boolean = false)
     }
     
     // Subscribe to new messages
-    const messageSubscription = supabase
-      .channel('messages-channel')
+    const messageSubscription = realtimeChannel('messages-channel')
       .on(
         'postgres_changes',
         {
@@ -394,8 +394,7 @@ export const useMessages = (threadId?: string, enableAutoFetch: boolean = false)
       .subscribe();
 
     // Subscribe to thread changes
-    const threadSubscription = supabase
-      .channel('threads-channel')
+    const threadSubscription = realtimeChannel('threads-channel')
       .on(
         'postgres_changes',
         {
@@ -410,8 +409,8 @@ export const useMessages = (threadId?: string, enableAutoFetch: boolean = false)
       .subscribe();
 
     return () => {
-      supabase.removeChannel(messageSubscription);
-      supabase.removeChannel(threadSubscription);
+      removeRealtimeChannel(messageSubscription);
+      removeRealtimeChannel(threadSubscription);
     };
   }, [threadId, fetchMessages, fetchThreads, enableAutoFetch]);
 

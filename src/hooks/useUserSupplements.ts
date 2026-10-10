@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { useHealthLogger } from './useHealthLogger';
 import { notify, notifyError } from '@/lib/i18n-toast';
@@ -131,8 +132,7 @@ export function useUserSupplements() {
     fetchSupplements();
 
     // Subscribe to realtime changes
-    const channel = supabase
-      .channel('user_supplements_changes')
+    const channel = realtimeChannel('user_supplements_changes')
       .on(
         'postgres_changes',
         {
@@ -147,7 +147,7 @@ export function useUserSupplements() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, []);
 

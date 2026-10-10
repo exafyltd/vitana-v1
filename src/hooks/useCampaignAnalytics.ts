@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useEffect } from "react";
 
 export interface CampaignChannelMetrics {
@@ -104,8 +105,7 @@ export function useCampaignAnalytics(campaignId: string) {
   useEffect(() => {
     if (!campaignId) return;
 
-    const channel = supabase
-      .channel(`campaign-recipients-${campaignId}`)
+    const channel = realtimeChannel(`campaign-recipients-${campaignId}`)
       .on(
         'postgres_changes',
         {
@@ -121,7 +121,7 @@ export function useCampaignAnalytics(campaignId: string) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [campaignId, refetch]);
 

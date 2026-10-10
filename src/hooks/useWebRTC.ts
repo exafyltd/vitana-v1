@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel } from '@/integrations/supabase/realtime';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 interface WebRTCConfig {
@@ -179,7 +180,7 @@ export const useWebRTC = (config: WebRTCConfig) => {
         console.log(`📡 Attempting to join room (attempt ${retries + 1}/${maxRetries})`);
         await initializeLocalStream();
 
-        const channel = supabase.channel(`room:${config.roomId}`, {
+        const channel = realtimeChannel(`room:${config.roomId}`, {
           config: {
             broadcast: { self: true }
           }

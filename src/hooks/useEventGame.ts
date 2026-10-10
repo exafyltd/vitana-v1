@@ -9,6 +9,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
 import { useNativeShare } from '@/hooks/useNativeShare';
@@ -168,8 +169,7 @@ export function useEventGameLeaderboard(eventGameId: string | undefined, opts: {
   // useGroupPosts.ts / ReportedContentNew.tsx.
   useEffect(() => {
     if (!eventGameId || !opts.live) return;
-    const channel = supabase
-      .channel(`event-game-points-${eventGameId}`)
+    const channel = realtimeChannel(`event-game-points-${eventGameId}`)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'event_game_points', filter: `event_game_id=eq.${eventGameId}` },
@@ -179,7 +179,7 @@ export function useEventGameLeaderboard(eventGameId: string | undefined, opts: {
       )
       .subscribe();
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventGameId, opts.live]);

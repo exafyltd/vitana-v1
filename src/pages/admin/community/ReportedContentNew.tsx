@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, Ban, ExternalLink, ShieldOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { notifySuccess, notifyError, t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 
@@ -129,12 +130,11 @@ export default function ReportedContentNew() {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-mod-center")
+    const ch = realtimeChannel("admin-mod-center")
       .on("postgres_changes", { event: "*", schema: "public", table: "content_reports" }, () => load())
       .on("postgres_changes", { event: "*", schema: "public", table: "user_suspensions" }, () => load())
       .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return () => { removeRealtimeChannel(ch); };
   }, [load]);
 
   const resolveReport = async (id: string, action: "removed" | "no_action") => {

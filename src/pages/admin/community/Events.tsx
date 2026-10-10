@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle, XCircle, Flag, Eye, Calendar, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { toast } from "sonner";
 import { notifyError, t } from '@/lib/i18n-toast';
 
@@ -42,15 +43,14 @@ const EventsModeration = () => {
     fetchEvents();
     
     // Realtime subscription
-    const channel = supabase
-      .channel('admin-events-changes')
+    const channel = realtimeChannel('admin-events-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'global_community_events' }, () => {
         fetchEvents();
       })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, []);
 

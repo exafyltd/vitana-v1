@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { useRealtimeConnection } from './useRealtimeConnection';
 import { measurePerformance } from '@/utils/performanceLogger';
@@ -758,8 +759,7 @@ export function useCalendarEvents() {
       if (!userId) return;
 
       // Real-time subscription scoped to current user
-      eventsChannel = supabase
-        .channel('calendar-events-changes')
+      eventsChannel = realtimeChannel('calendar-events-changes')
         .on('postgres_changes', {
           event: '*',
           schema: 'public',
@@ -772,8 +772,7 @@ export function useCalendarEvents() {
         .subscribe();
 
       // Invite responses scoped to current user
-      responsesChannel = supabase
-        .channel('calendar-responses-changes')
+      responsesChannel = realtimeChannel('calendar-responses-changes')
         .on('postgres_changes', {
           event: '*',
           schema: 'public',
@@ -792,8 +791,8 @@ export function useCalendarEvents() {
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current as any);
       }
-      if (eventsChannel) supabase.removeChannel(eventsChannel);
-      if (responsesChannel) supabase.removeChannel(responsesChannel);
+      if (eventsChannel) removeRealtimeChannel(eventsChannel);
+      if (responsesChannel) removeRealtimeChannel(responsesChannel);
     };
   }, []);
 

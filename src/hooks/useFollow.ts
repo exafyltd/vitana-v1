@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
 import { useRealtimeConnection } from "./useRealtimeConnection";
@@ -78,8 +79,7 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
   useEffect(() => {
     if (!validTarget) return;
 
-    const channel = supabase
-      .channel(`follow-rt-${validTarget}`)
+    const channel = realtimeChannel(`follow-rt-${validTarget}`)
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -93,7 +93,7 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
       })
       .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => { removeRealtimeChannel(channel); };
   }, [validTarget, validViewer, queryClient]);
 
   // ─── Fallback polling when realtime disconnected ───

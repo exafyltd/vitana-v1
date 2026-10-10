@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { BookmarkedItem, BookmarkItemType, BookmarkButtonItem } from '@/types/bookmarks';
 import { notify, notifyError } from '@/lib/i18n-toast';
@@ -117,8 +118,7 @@ export function useBookmarks() {
 
     if (!user) return;
 
-    const channel = supabase
-      .channel('bookmarks-changes')
+    const channel = realtimeChannel('bookmarks-changes')
       .on(
         'postgres_changes',
         {
@@ -134,7 +134,7 @@ export function useBookmarks() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [user]);
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { g1Analytics } from '@/lib/analytics-events';
 
 interface TypingUser {
@@ -51,7 +52,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
         userAvatar = profile?.avatar_url || undefined;
       }
       
-      const channel = supabase.channel(channelName);
+      const channel = realtimeChannel(channelName);
       await channel.send({
         type: 'broadcast',
         event: 'typing_start',
@@ -77,7 +78,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
     try {
       const channelName = `typing:${threadId}`;
       
-      const channel = supabase.channel(channelName);
+      const channel = realtimeChannel(channelName);
       await channel.send({
         type: 'broadcast',
         event: 'typing_stop',
@@ -101,8 +102,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
 
     const channelName = `typing:${threadId}`;
 
-    const typingChannel = supabase
-      .channel(channelName)
+    const typingChannel = realtimeChannel(channelName)
       .on('broadcast', { event: 'typing_start' }, (payload) => {
         const { user_id, name, avatar } = payload.payload;
         
@@ -138,7 +138,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
       .subscribe();
 
     return () => {
-      supabase.removeChannel(typingChannel);
+      removeRealtimeChannel(typingChannel);
     };
   }, [user, threadId, context, userCache]);
 

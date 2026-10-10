@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { notify, notifyError } from '@/lib/i18n-toast';
@@ -394,8 +395,7 @@ export function useCommunityEvents() {
 
   // Real-time subscription - updates React Query cache
   useEffect(() => {
-    const channel = supabase
-      .channel('events-realtime-changes')
+    const channel = realtimeChannel('events-realtime-changes')
       .on(
         'postgres_changes',
         {
@@ -453,7 +453,7 @@ export function useCommunityEvents() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [queryClient, queryKey]);
 

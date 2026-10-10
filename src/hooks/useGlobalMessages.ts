@@ -3,6 +3,7 @@ import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-quer
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { notifyNewMessage } from '@/lib/pushNotifications';
@@ -1546,8 +1547,7 @@ export function useGlobalMessages(
 
     const channelId = realtimeChannelId.current;
 
-    const channel = supabase
-      .channel(channelId)
+    const channel = realtimeChannel(channelId)
       .on(
         "postgres_changes",
         {
@@ -1662,7 +1662,7 @@ export function useGlobalMessages(
       });
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [user, isGlobalContext, queryClient]); // FIX 1.2: Remove unstable dependencies (updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads)
 

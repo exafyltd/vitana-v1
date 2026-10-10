@@ -8,6 +8,13 @@
       "ref": "npx vitest run src/integrations/supabase/data-routing.test.ts",
       "cwd": ".",
       "reason": "On staging VITE_DATA_API_URL_STAGING is unset until the proxy's staging twin is live, so the build must behave exactly as before; the community-app smoke suite proves that on the deployed chunk. The routing itself is proven here without touching any server."
+    },
+    {
+      "kind": "existing",
+      "name": "Realtime routing (part 7a): unset = supabase.channel exactly as today; set = one RealtimeClient on VITE_REALTIME_URL with apikey + member token (setAuth on sign-in/refresh/sign-out), no call site reaches supabase.channel, no silent fallback; guard against direct channel calls",
+      "ref": "npm run test:realtime-helper",
+      "cwd": ".",
+      "reason": "On staging VITE_REALTIME_URL_STAGING is unset until the self-hosted Realtime is live, so every channel must still open on Supabase exactly as before; the community-app smoke suite proves that on the deployed chunk. The routed path is proven here without opening any socket to a real server."
     }
   ]
 }

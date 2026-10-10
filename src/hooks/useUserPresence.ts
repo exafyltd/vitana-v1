@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { VITANA_BOT_USER_ID, isVitanaBot } from '@/lib/vitanaBotIdentity';
 
@@ -259,7 +260,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     if (!user?.id) return;
 
     const channelName = `presence_global`;
-    const channel = supabase.channel(channelName, {
+    const channel = realtimeChannel(channelName, {
       config: { 
         presence: { key: user.id },
         broadcast: { self: true }
@@ -417,7 +418,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
       if (retryTimeoutRef.current) {
         clearTimeout(retryTimeoutRef.current);
       }
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
       channelRef.current = null;
     };
   }, [user?.id, context]);

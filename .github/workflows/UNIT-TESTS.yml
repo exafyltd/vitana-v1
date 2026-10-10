@@ -57,3 +57,23 @@ jobs:
           deno-version: v2.x
       - name: Deno tests for the edge data client
         run: deno test --no-remote supabase/functions/_shared/data-client.test.ts
+
+  # VTID-05023 (Aurora cutover, part 7a): every realtime channel in src/ goes
+  # through src/integrations/supabase/realtime.ts, so VITE_REALTIME_URL moves
+  # all of them to the self-hosted Realtime server at once (no split).
+  realtime-helper:
+    name: Realtime helper (guard + Vitest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: No direct realtime channel calls in src/
+        run: node scripts/check-realtime-helper.mjs
+      - name: Install
+        run: npm ci
+      - name: Vitest for the realtime helper
+        run: npx vitest run src/integrations/supabase/realtime.test.ts src/integrations/supabase/realtime.call-sites.test.ts

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 
@@ -237,8 +238,7 @@ export function useProfileTheme(userId?: string) {
 
     // Subscribe to real-time theme changes
     if (userId) {
-      const channel = supabase
-        .channel(`profile-theme-${userId}`)
+      const channel = realtimeChannel(`profile-theme-${userId}`)
         .on(
           'postgres_changes',
           {
@@ -256,7 +256,7 @@ export function useProfileTheme(userId?: string) {
         .subscribe();
 
       return () => {
-        supabase.removeChannel(channel);
+        removeRealtimeChannel(channel);
       };
     }
   }, [userId]);

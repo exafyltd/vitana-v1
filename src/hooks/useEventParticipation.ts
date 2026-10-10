@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -70,8 +71,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   useEffect(() => {
     if (!eventId || !isValidUUID(eventId)) return;
 
-    const channel = supabase
-      .channel(`event-participants-${eventId}`)
+    const channel = realtimeChannel(`event-participants-${eventId}`)
       .on(
         'postgres_changes',
         {
@@ -103,7 +103,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      removeRealtimeChannel(channel);
     };
   }, [eventId, user?.id]);
 
