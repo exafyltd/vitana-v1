@@ -1,0 +1,300 @@
+{
+  "verdicts": {
+    "commerceConnect.seoTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.seoDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.lead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.addressLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.stepsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.step1Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.step1Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.step2Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.step2Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.step3Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.step3Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.canDoTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.canDo1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.canDo2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.canDo3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.canDo4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.canDo5": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.staysTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.stays1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.stays2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.stays3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.stays4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.toolsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_get_onboarding_status": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_create_business": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_update_business": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_add_product": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_list_products": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_update_product": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_check_verification": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_connect_store": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.tool_submit_for_verification": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.dataTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.dataBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.policyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.termsLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.supportTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.supportBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.ctaPortal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhoTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhoBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhatTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhat1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhat2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhat3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyWhyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyShareTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyShareBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyKeepTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyKeepBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyRightsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "commerceConnect.privacyRightsBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-10-10T10:10:40.367Z"
+}
