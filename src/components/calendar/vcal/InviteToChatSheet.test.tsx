@@ -164,6 +164,21 @@ describe("the invite picker (VTID-04917)", () => {
     await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
 
+  it("Escape closes the picker only, never the entry screen underneath", async () => {
+    const closeSheet = vi.fn();
+    const closeEntry = vi.fn();
+    wrap(
+      <>
+        <EntryScreen item={item()} now={NOW} onClose={closeEntry} onInvite={() => {}} />
+        <InviteToChatSheet item={item()} onClose={closeSheet} />
+      </>,
+    );
+    await screen.findByText("Ana");
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(closeSheet).toHaveBeenCalledTimes(1);
+    expect(closeEntry).not.toHaveBeenCalled();
+  });
+
   it("search narrows the list; a refusal is named", async () => {
     h.sendChatMessage.mockRejectedValue(new Error("NOT_INVITABLE"));
     wrap(<InviteToChatSheet item={item()} onClose={() => {}} />);
