@@ -313,6 +313,7 @@ const AdminMarketplaceOverview = lazy(() => import("./pages/admin/marketplace/Ov
 const AdminMarketplaceProducts = lazy(() => import("./pages/admin/marketplace/Products"));
 // VTID-03885: Partner Health Test Integration — admin portal (Orders + Inbox)
 const AdminPartnerHealthOrders = lazy(() => import("./pages/admin/marketplace/PartnerHealthOrders"));
+const AdminRewardsShop = lazy(() => import("./pages/admin/marketplace/RewardsShop"));
 // Overview Dashboard (replaces legacy dashboard)
 const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
 const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
@@ -1887,6 +1888,10 @@ const App = () => {
               cap), reached from Products/Overview or a direct link for now. */}
           <Route path="/admin/marketplace/partner-health" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminPartnerHealthOrders /></ProtectedRoute></AuthGuard>
+          } />
+          {/* VTID-05036: Admin › Rewards Shop — items, shipping fees, orders (exafy_admin gateway endpoints). */}
+          <Route path="/admin/marketplace/rewards" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminRewardsShop /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}

@@ -130,6 +130,10 @@ export default function MarketplaceOverview() {
             <Link to="/admin/marketplace/partner-health">
               <Button variant="outline" size="sm">{t('screens.admin.partnerHealthOrders')}</Button>
             </Link>
+            {/* VTID-05036: Rewards Shop admin — same reason, no free sidebar slot. */}
+            <Link to="/admin/marketplace/rewards">
+              <Button variant="outline" size="sm">{t('admin.rewardsShop.openLink')}</Button>
+            </Link>
             <Button variant="outline" size="sm" onClick={load}>
               <RefreshCw className="w-4 h-4 mr-2" />
               {t('screens.admin.refresh')}
