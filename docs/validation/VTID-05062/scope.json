@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05062",
+  "kind": "feature",
+  "paths": [
+    "src/lib/rum.ts",
+    "src/lib/screen-ready.ts",
+    "src/lib/screen-ready.test.ts",
+    "src/hooks/useScreenReadyTracking.ts",
+    "src/hooks/useScreenReadyTracking.test.tsx",
+    "src/App.tsx",
+    "tests/e2e/staging/screen-journey.staging.spec.ts",
+    "docs/validation/VTID-05062/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05062/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

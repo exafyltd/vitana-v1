@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05062",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "phone journey (Pixel 7, 4x CPU, Fast 4G) News → Postfach → Events → Reise → News → Events: first visits ready ≤ 4000 ms, return visits ≤ 1500 ms, no storage photo re-downloaded and no media frame height change on return",
+      "spec": "tests/e2e/staging/screen-journey.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "SCREEN_READY / IMG_REFETCH nav beacons: first vs return, 10 s cap, refetch counting, route normalisation, one beacon per navigation, payload shape; rum.ts beacons unchanged",
+      "ref": "npx vitest run src/lib/screen-ready.test.ts src/hooks/useScreenReadyTracking.test.tsx src/lib/rum.test.ts",
+      "cwd": ".",
+      "reason": "Nav beacon timing and refetch counting need a controlled clock, rAF and resource entries; the staging browser suite cannot read the beacons it sends (the guard aborts the POST)."
+    }
+  ]
+}

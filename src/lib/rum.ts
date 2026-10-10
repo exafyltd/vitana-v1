@@ -63,7 +63,8 @@ function rate(metric: Metric, value: number): Rating | undefined {
   return 'poor';
 }
 
-function getSessionId(): string {
+/** Per-tab random session id (sessionStorage). Shared with screen-ready.ts (VTID-05062). */
+export function getSessionId(): string {
   try {
     const existing = sessionStorage.getItem(SESSION_KEY);
     if (existing) return existing;
@@ -75,10 +76,18 @@ function getSessionId(): string {
   }
 }
 
-function send(beacon: RumBeacon): void {
+/**
+ * POST one JSON payload to the gateway's RUM beacon endpoint. Shared with the
+ * in-app navigation beacons in screen-ready.ts (VTID-05062).
+ */
+export function sendRumPayload(payload: object): void {
   // VTID-04516: sendBeacon's credentialed JSON POST is blocked by the
   // gateway's CORS policy; the anonymous keepalive fetch is not.
-  sendAnonymousBeacon(`${GATEWAY_URL}${BEACON_PATH}`, JSON.stringify(beacon));
+  sendAnonymousBeacon(`${GATEWAY_URL}${BEACON_PATH}`, JSON.stringify(payload));
+}
+
+function send(beacon: RumBeacon): void {
+  sendRumPayload(beacon);
 }
 
 /** The beacon for one metric sample, exported for tests. */
