@@ -2,6 +2,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { createDataClient } from "../_shared/data-client.ts";
 import { storageBridgeProvider, listFiles, removeFiles } from '../_shared/storage-bridge-client.ts';
 import { decideAfterErase } from '../_shared/erase-user-data.ts';
+import {
+  eraseUserStorage,
+  storageFullyErased,
+  type BucketResult,
+  type StorageAdapter,
+} from '../_shared/erase-user-storage.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -34,75 +40,37 @@ const USER_TABLES_NO_CASCADE = [
   { table: "autopilot_recommendations", column: "user_id" },
 ];
 
-// Storage buckets where user files live under {userId}/ prefix
-const USER_STORAGE_BUCKETS = [
-  "avatars",
-  "diary-photos",
-  "chat-attachments",
-  "media-uploads",
-  "voucher-pdfs",
-  "stream-recordings",
-  "event-images",
-];
-
+// VTID-05053: every member file at every folder depth, then verified empty.
+// The bucket list and the walk live in _shared/erase-user-storage.ts.
 async function deleteUserStorageFiles(
   serviceClient: any,
   userId: string
-): Promise<{ bucket: string; deleted: number; error?: string }[]> {
-  const results = [];
-
+): Promise<BucketResult[]> {
   // VTID-03815 (B6): STORAGE_BRIDGE_PROVIDER=bridge routes list+remove
   // through the gateway's storage-bridge route instead of calling Supabase
-  // Storage directly — default is byte-for-byte unchanged.
+  // Storage directly — default is unchanged.
   const useBridge = storageBridgeProvider() === 'bridge';
-
-  for (const bucket of USER_STORAGE_BUCKETS) {
-    try {
-      // List all files under the user's folder
-      let files: { name: string }[] | null;
-      if (useBridge) {
-        files = await listFiles(bucket, userId, { limit: 1000 });
-      } else {
-        const { data, error: listError } = await serviceClient.storage
-          .from(bucket)
-          .list(userId, { limit: 1000 });
-
-        if (listError) {
-          console.warn(`[Deletion] Could not list ${bucket}/${userId}:`, listError.message);
-          results.push({ bucket, deleted: 0, error: listError.message });
-          continue;
-        }
-        files = data;
+  const storage: StorageAdapter = useBridge
+    ? {
+        hasIds: false,
+        list: (bucket, prefix, limit) => listFiles(bucket, prefix, { limit }),
+        remove: async (bucket, paths) => {
+          await removeFiles(bucket, paths);
+        },
       }
-
-      if (!files || files.length === 0) {
-        results.push({ bucket, deleted: 0 });
-        continue;
-      }
-
-      const filePaths = files.map((f: any) => `${userId}/${f.name}`);
-      if (useBridge) {
-        await removeFiles(bucket, filePaths);
-        results.push({ bucket, deleted: filePaths.length });
-      } else {
-        const { error: removeError } = await serviceClient.storage
-          .from(bucket)
-          .remove(filePaths);
-
-        if (removeError) {
-          console.warn(`[Deletion] Could not remove files from ${bucket}:`, removeError.message);
-          results.push({ bucket, deleted: 0, error: removeError.message });
-        } else {
-          results.push({ bucket, deleted: filePaths.length });
-        }
-      }
-    } catch (e: any) {
-      console.warn(`[Deletion] Storage cleanup error for ${bucket}:`, e.message);
-      results.push({ bucket, deleted: 0, error: e.message });
-    }
-  }
-
-  return results;
+    : {
+        hasIds: true,
+        list: async (bucket, prefix, limit) => {
+          const { data, error } = await serviceClient.storage.from(bucket).list(prefix, { limit });
+          if (error) throw new Error(`list ${bucket}/${prefix}: ${error.message}`);
+          return data ?? [];
+        },
+        remove: async (bucket, paths) => {
+          const { error } = await serviceClient.storage.from(bucket).remove(paths);
+          if (error) throw new Error(`remove from ${bucket}: ${error.message}`);
+        },
+      };
+  return eraseUserStorage(storage, userId);
 }
 
 async function deleteUserTableData(
@@ -245,6 +213,21 @@ Deno.serve(async (req) => {
     const storageErrors = storageResults.filter((r) => r.error);
     if (storageErrors.length > 0) {
       console.warn("[Deletion] Some storage cleanups had errors:", storageErrors);
+    }
+    // VTID-05053: keep the account while any of the member's files remain
+    // (or could not be verified). Deleting it would leave the files with no
+    // account to erase them from; the request stays visible for a retry.
+    if (!storageFullyErased(storageResults)) {
+      const residual = storageResults.filter((r) => r.residual !== 0);
+      console.error("[Deletion] storage_incomplete — account NOT deleted, retry needed", residual);
+      await serviceClient
+        .from("account_deletion_requests")
+        .update({ status: "storage_incomplete", processed_at: new Date().toISOString() })
+        .eq("user_id", userId);
+      return new Response(JSON.stringify({ error: "Failed to delete account" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // ── Step 3: Delete the auth user (cascades remaining FK tables) ──

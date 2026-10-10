@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05053",
+  "kind": "fix",
+  "paths": [
+    "supabase/functions/_shared/erase-user-storage.ts",
+    "supabase/functions/request-account-deletion/index.ts",
+    "src/lib/erase-user-storage.test.ts",
+    "docs/validation/VTID-05053/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
