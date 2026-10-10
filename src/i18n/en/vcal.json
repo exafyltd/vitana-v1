@@ -64,7 +64,8 @@
       "community": "Community",
       "journey": "Your journey",
       "reminder": "Your reminder",
-      "subscription": "Your subscription"
+      "subscription": "Your subscription",
+      "testResult": "Your test result"
     },
     "subscription": {
       "renews": "Premium renews",

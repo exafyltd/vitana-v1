@@ -70,6 +70,7 @@
       "journey": "Ton parcours",
       "reminder": "Ton rappel",
       "subscription": "Ton abonnement",
+      "testResult": "Ton résultat de test",
       "_pending_review": {
         "autopilot": true
       }

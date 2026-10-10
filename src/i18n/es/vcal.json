@@ -69,6 +69,7 @@
       "journey": "Tu camino",
       "reminder": "Tu recordatorio",
       "subscription": "Tu suscripción",
+      "testResult": "El resultado de tu prueba",
       "_pending_review": {
         "autopilot": true
       }

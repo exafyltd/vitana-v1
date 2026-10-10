@@ -64,7 +64,8 @@
       "community": "Community",
       "journey": "Deine Journey",
       "reminder": "Deine Erinnerung",
-      "subscription": "Dein Abo"
+      "subscription": "Dein Abo",
+      "testResult": "Dein Testergebnis"
     },
     "subscription": {
       "renews": "Premium verlängert sich",

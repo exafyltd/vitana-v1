@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-04997",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "calendar regression suite (app)",
+      "ref": "npm run test:calendar",
+      "cwd": ".",
+      "reason": "Display half of VTID-04997 (source label for expected health-test results). Staging is read-only and shares the production database, so no order is created there; labels.testResult.vtid-04997.test.ts and entry-actions.test.ts pin the label, the title shown as the test name, and the read-only handling."
+    }
+  ]
+}

@@ -29,6 +29,8 @@ export function sourceLabel(item: CalendarWindowItem): string | null {
       return t("vcal.source.reminder");
     case "subscription":
       return t("vcal.source.subscription");
+    case "test_result":
+      return t("vcal.source.testResult");
     default:
       return null;
   }
