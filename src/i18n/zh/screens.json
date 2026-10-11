@@ -3947,6 +3947,8 @@
       "taskId": "任务 ID",
       "taskBoard": "任务看板",
       "realtimeCommandCockpit": "实时指挥中心",
+      "taskBoardAccessDenied": "无法访问任务看板",
+      "taskBoardAccessDeniedDescription": "你的账号无权读取任务。请让管理员为你开通访问权限。",
       "noTemplatesFoundMatchingYourCriteria": "没有找到符合你条件的模板",
       "searchTemplates": "搜索模板...",
       "liveTicker": "实时动态",

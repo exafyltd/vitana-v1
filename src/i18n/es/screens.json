@@ -3919,6 +3919,8 @@
       "taskId": "ID de Tarea",
       "taskBoard": "Tablero de Tareas",
       "realtimeCommandCockpit": "Panel de comandos en tiempo real",
+      "taskBoardAccessDenied": "Sin acceso al tablero de tareas",
+      "taskBoardAccessDeniedDescription": "Tu cuenta no tiene permiso para leer las tareas. Pide a un administrador que te dé acceso.",
       "noTemplatesFoundMatchingYourCriteria": "No se encontraron plantillas que coincidan con tus criterios",
       "searchTemplates": "Buscar plantillas...",
       "liveTicker": "Ticker en Vivo",

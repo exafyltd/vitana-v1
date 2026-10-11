@@ -3947,6 +3947,8 @@
       "taskId": "ID zadatka",
       "taskBoard": "Tabla zadataka",
       "realtimeCommandCockpit": "Komandna kabina u realnom vremenu",
+      "taskBoardAccessDenied": "Nema pristupa tabli zadataka",
+      "taskBoardAccessDeniedDescription": "Tvoj nalog ne sme da čita zadatke. Zamoli administratora da ti da pristup.",
       "noTemplatesFoundMatchingYourCriteria": "Nema pronađenih šablona koji odgovaraju vašim kriterijumima",
       "searchTemplates": "Pretraži šablone...",
       "liveTicker": "Tiker uživo",

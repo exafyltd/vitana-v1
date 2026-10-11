@@ -3947,6 +3947,8 @@
       "taskId": "ID de tâche",
       "taskBoard": "Tableau des tâches",
       "realtimeCommandCockpit": "Poste de commande en temps réel",
+      "taskBoardAccessDenied": "Pas d'accès au tableau des tâches",
+      "taskBoardAccessDeniedDescription": "Ton compte n'a pas le droit de lire les tâches. Demande à un administrateur de te donner l'accès.",
       "noTemplatesFoundMatchingYourCriteria": "Aucun modèle trouvé correspondant à tes critères",
       "searchTemplates": "Rechercher des modèles...",
       "liveTicker": "Fil d'actualité en direct",

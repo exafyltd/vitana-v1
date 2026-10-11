@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05063",
+  "kind": "fix",
+  "paths": [
+    "src/lib/taskApi.ts",
+    "src/hooks/useTaskStream.ts",
+    "src/hooks/useTaskStream.vtid-05063.test.ts",
+    "src/components/dev/TasksView.tsx",
+    "src/i18n/*/screens.json",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05063/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05063/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

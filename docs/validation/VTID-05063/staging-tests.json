@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05063",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/hooks/useTaskStream.vtid-05063.test.ts",
+      "reason": "The gateway read gate ships in log mode (vitana-platform part of VTID-05063), so staging still answers 200 and a staging spec cannot produce a 401/403. The behaviour is proven in Vitest: the session bearer is sent on GET /api/v1/tasks, no request is sent when signed out, and 401 and 403 each stop polling and stream reconnects and show the access-denied state."
+    }
+  ]
+}

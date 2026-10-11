@@ -3917,6 +3917,8 @@
       "taskId": "Task ID",
       "taskBoard": "Task Board",
       "realtimeCommandCockpit": "Real-time command cockpit",
+      "taskBoardAccessDenied": "No access to the task board",
+      "taskBoardAccessDeniedDescription": "Your account is not allowed to read the tasks. Ask an admin to give you access.",
       "noTemplatesFoundMatchingYourCriteria": "No templates found matching your criteria",
       "searchTemplates": "Search templates...",
       "liveTicker": "Live Ticker",

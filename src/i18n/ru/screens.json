@@ -3950,6 +3950,8 @@
       "taskId": "ID задачи",
       "taskBoard": "Доска задач",
       "realtimeCommandCockpit": "Панель управления в реальном времени",
+      "taskBoardAccessDenied": "Нет доступа к доске задач",
+      "taskBoardAccessDeniedDescription": "Твоему аккаунту нельзя читать задачи. Попроси администратора дать тебе доступ.",
       "noTemplatesFoundMatchingYourCriteria": "Не найдено шаблонов, соответствующих твоим критериям",
       "searchTemplates": "Искать шаблоны...",
       "liveTicker": "Лента событий",
