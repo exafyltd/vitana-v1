@@ -3,6 +3,7 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
 import { cn } from "@/lib/utils"
 import { isDiceBear9Url, localAvatarDataUri, peekLocalAvatar } from "@/lib/localAvatar"
+import { transformedCoverUrl } from "@/lib/eventCoverImage"
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -57,6 +58,35 @@ const DiceBearAvatarImage = React.forwardRef<
 })
 DiceBearAvatarImage.displayName = "DiceBearAvatarImage"
 
+/** Width an uploaded photo is resized to: the largest avatar (128 px call screens) at DPR 3. */
+const STORAGE_AVATAR_WIDTH = 384
+
+/**
+ * VTID-05066 (amendment A1): an uploaded profile photo from Supabase storage is
+ * served through the resize CDN instead of as the phone's original (1–3 MB
+ * each, measured on staging, saturating a 4G connection on Events and News).
+ * One-shot fallback to the original if the transform is rejected.
+ */
+const StorageAvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  AvatarImageProps & { src: string; resized: string }
+>(({ src, resized, ...props }, ref) => {
+  const [failed, setFailed] = React.useState(false)
+  React.useEffect(() => setFailed(false), [src])
+  return (
+    <AvatarPrimitive.Image
+      ref={ref}
+      src={failed ? src : resized}
+      {...props}
+      onLoadingStatusChange={(status) => {
+        if (status === "error" && !failed) setFailed(true)
+        props.onLoadingStatusChange?.(status)
+      }}
+    />
+  )
+})
+StorageAvatarImage.displayName = "StorageAvatarImage"
+
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   AvatarImageProps
@@ -64,6 +94,8 @@ const AvatarImage = React.forwardRef<
   const cls = cn("aspect-square h-full w-full object-cover", className)
   // Every other src renders exactly as before: no state, hook or effect.
   if (isDiceBear9Url(src)) return <DiceBearAvatarImage ref={ref} className={cls} src={src} {...props} />
+  const resized = typeof src === "string" ? transformedCoverUrl(src, STORAGE_AVATAR_WIDTH) : undefined
+  if (resized) return <StorageAvatarImage ref={ref} className={cls} src={src as string} resized={resized} {...props} />
   return <AvatarPrimitive.Image ref={ref} className={cls} src={src} {...props} />
 })
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
