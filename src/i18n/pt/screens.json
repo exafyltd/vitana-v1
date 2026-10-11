@@ -3924,7 +3924,7 @@
       "taskBoard": "Quadro de Tarefas",
       "realtimeCommandCockpit": "Cockpit de comando em tempo real",
       "taskBoardAccessDenied": "Sem acesso ao quadro de tarefas",
-      "taskBoardAccessDeniedDescription": "A tua conta não pode ler as tarefas. Pede a um administrador que te dê acesso.",
+      "taskBoardAccessDeniedDescription": "Sua conta não pode ler as tarefas. Peça a um administrador que dê acesso a você.",
       "noTemplatesFoundMatchingYourCriteria": "Nenhum modelo encontrado que corresponda aos seus critérios",
       "searchTemplates": "Pesquisar modelos...",
       "liveTicker": "Ticker ao Vivo",
