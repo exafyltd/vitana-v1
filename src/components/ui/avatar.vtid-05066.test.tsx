@@ -7,13 +7,22 @@
  * to observe the src AvatarImage hands it.
  */
 import * as React from 'react';
-import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, waitFor, cleanup, fireEvent } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@radix-ui/react-avatar', () => {
   const Root = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>((p, ref) => <span ref={ref} {...p} />);
-  const Image = React.forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>((p, ref) => (
-    <img ref={ref} data-testid="avatar-img" data-src={p.src ?? ''} alt={p.alt} className={p.className} />
+  type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { onLoadingStatusChange?: (s: string) => void };
+  // A test can make the primitive report a load error, as Radix does when the image fails.
+  const Image = React.forwardRef<HTMLImageElement, ImgProps>((p, ref) => (
+    <img
+      ref={ref}
+      data-testid="avatar-img"
+      data-src={p.src ?? ''}
+      alt={p.alt}
+      className={p.className}
+      onError={() => p.onLoadingStatusChange?.('error')}
+    />
   ));
   const Fallback = (p: React.HTMLAttributes<HTMLSpanElement>) => <span {...p} />;
   return { Root, Image, Fallback };
@@ -30,13 +39,40 @@ afterEach(() => {
 });
 
 describe('AvatarImage (VTID-05066)', () => {
-  it('passes an uploaded photo through unchanged, with the usual classes', () => {
-    const photo = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/avatars/u1.jpg';
+  it('passes a non-storage photo through unchanged, with the usual classes', () => {
+    const photo = 'https://images.example.com/u1.jpg';
     render(<Avatar><AvatarImage src={photo} alt="" className="extra" /></Avatar>);
     const img = screen.getByTestId('avatar-img');
     expect(img.getAttribute('data-src')).toBe(photo);
     expect(img.className).toContain('aspect-square');
     expect(img.className).toContain('extra');
+  });
+
+  it('serves an uploaded storage photo through the resize CDN at 384 px (amendment A1)', () => {
+    const photo = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/avatars/u1/avatar.jpeg';
+    render(<Avatar><AvatarImage src={photo} alt="" className="extra" /></Avatar>);
+    const img = screen.getByTestId('avatar-img');
+    expect(img.getAttribute('data-src')).toBe(
+      'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/render/image/public/avatars/u1/avatar.jpeg?width=384&quality=75&resize=contain',
+    );
+    expect(img.className).toContain('extra');
+  });
+
+  it('falls back once to the original storage photo when the resize fails', () => {
+    const photo = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/avatars/u1/avatar.jpeg';
+    render(<Avatar><AvatarImage src={photo} alt="" /></Avatar>);
+    fireEvent.error(screen.getByTestId('avatar-img'));
+    expect(screen.getByTestId('avatar-img').getAttribute('data-src')).toBe(photo);
+    fireEvent.error(screen.getByTestId('avatar-img'));
+    expect(screen.getByTestId('avatar-img').getAttribute('data-src')).toBe(photo);
+  });
+
+  it('leaves data: and blob: URLs untouched', () => {
+    for (const url of ['data:image/png;base64,AAAA', 'blob:https://vitanaland.com/1234']) {
+      const r = render(<Avatar><AvatarImage src={url} alt="" /></Avatar>);
+      expect(screen.getByTestId('avatar-img').getAttribute('data-src')).toBe(url);
+      r.unmount();
+    }
   });
 
   it('draws a DiceBear 9.x avatar locally as a data URI (no request to api.dicebear.com)', async () => {

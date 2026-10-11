@@ -123,3 +123,32 @@ the style list only), `package.json`/`package-lock.json`, `nginx.conf`,
 
 ## Round 2 — partner verdict
 F1–F6 closed; no new findings. Verdict: CONVERGED (2 rounds, standard class).
+
+## Amendment A1 (2026-10-11) — scope growth, sparred with the same partner
+- R1: F7 major (fallback state would break the stateless AvatarImage invariant) ACCEPTED → separate StorageAvatarImage; F8 minor (256 px too soft for 128 px call-screen avatars) ACCEPTED → 384 px; Q1 answered (data:/blob: untouched).
+- R2: F7, F8 closed, no new findings → CONVERGED.
+- Evidence: STAGING-VERIFY 38126306283 (community-app @ 8589a43): Events first 392 requests / 5.2 MB, News return up to 8.9 MB; largest downloads were uploaded avatar originals of 1.1–3.0 MB.
+
+## Amendment A1 — uploaded profile photos through the resize CDN (2026-10-11, scope growth → one sparring round)
+Evidence after items 1–4 shipped to staging (STAGING-VERIFY 38126306283, community-app @ 8589a43, with the
+robot's new per-step network accounting): Postfach now passes. Events first visit downloaded 392 requests /
+5.2 MB and News return 33–307 requests / 3.4–8.9 MB. The largest downloads are members' uploaded profile
+photos served as originals from `storage/v1/object/public/avatars/…`: 2989 KB, 2488 KB, 1670 KB, 1592 KB,
+1314 KB, 1112 KB… each one shown as a ~40–64 px avatar. They saturate the throttled connection, so the resized
+live-room cover (232 KB) and feed photos finish late.
+Change (one file + test): in `AvatarImage` (`src/components/ui/avatar.tsx`), a src on
+`*.supabase.co/storage/v1/object/public/` is served via `transformedCoverUrl(src, 384)` (the existing helper:
+`/render/image/`, `width=384&quality=75&resize=contain`; 384 px covers the largest avatar, the 128 px call
+screens, at DPR 3), with a one-shot fallback to the original on error (same contract as FeedMedia and the
+live-room covers). The fallback state lives in a separate `StorageAvatarImage` component that only mounts for
+such URLs (same pattern as `DiceBearAvatarImage`); `AvatarImage` stays stateless for every other src, and data:
+or blob: URLs are untouched (`transformedCoverUrl` returns undefined for them). Every other src keeps today's code path; DiceBear handling from item 2 is unchanged. Test: Vitest — storage avatar
+src becomes the 384 px render URL; error → original once; external and DiceBear srcs unchanged.
+Staging: the same journey at unchanged budgets.
+
+## Planner responses — amendment A1, round 1
+- F7 [major] ACCEPTED: the fallback state lives in a new `StorageAvatarImage` that mounts only for
+  `*.supabase.co/storage/v1/object/public/` srcs; `AvatarImage` keeps no state, hook or effect for every other src.
+- F8 [minor] ACCEPTED: width 384 instead of 256 (covers the 128 px call-screen avatars at DPR 3; still a small file).
+- Q1: data: and blob: URLs are untouched — `transformedCoverUrl` returns undefined for anything that is not a
+  Supabase public-object URL, and the wrapper only mounts when it returns a URL. Stated in the amendment.
