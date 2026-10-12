@@ -82,6 +82,34 @@ function installTapClock() {
   };
   document.addEventListener('pointerdown', onTap, { capture: true });
   document.addEventListener('touchstart', onTap, { capture: true });
+  // VTID-05081 diagnostics: main-thread long tasks, so a slow step can say
+  // whether it waited on the network or on the (4x throttled) CPU.
+  const lw = window as unknown as { __sjLong?: Array<[number, number]> };
+  lw.__sjLong = [];
+  try {
+    new PerformanceObserver((list) => {
+      for (const e of list.getEntries()) lw.__sjLong!.push([e.startTime, e.duration]);
+    }).observe({ type: 'longtask', buffered: true });
+  } catch {
+    /* longtask unsupported: the timeline reports no CPU figure */
+  }
+}
+
+/**
+ * VTID-05081 diagnostics, read after a slow step: main-thread long-task time
+ * since the tap, and every app script (/assets/*.js) still downloading at the
+ * tap or requested after it, with its start/end relative to the tap.
+ */
+function stepTimeline(): string {
+  const w = window as unknown as { __sjTapAt?: number; __sjLong?: Array<[number, number]> };
+  const tap = w.__sjTapAt ?? 0;
+  const long = (w.__sjLong ?? []).filter(([st, d]) => st + d > tap);
+  const busy = Math.round(long.reduce((n, [st, d]) => n + Math.min(d, st + d - tap), 0));
+  const longest = Math.round(long.reduce((m, [, d]) => Math.max(m, d), 0));
+  const scripts = (performance.getEntriesByType('resource') as PerformanceResourceTiming[])
+    .filter((r) => /\/assets\/[^/]+\.js$/.test(r.name.replace(/\?.*$/, '')) && r.responseEnd > tap)
+    .map((r) => `${r.name.replace(/\?.*$/, '').split('/').pop()} ${Math.round(r.startTime - tap)}..${Math.round(r.responseEnd - tap)}ms ${Math.round(r.transferSize / 1024)}KB`);
+  return `cpu: ${busy} ms in ${long.length} long task(s) since tap, longest ${longest} ms; scripts after tap: ${scripts.length ? scripts.slice(0, 8).join(', ') : 'none'}`;
 }
 
 function waitScreenReady(args: { path: string; cap: number; fromNavigationStart: boolean }): Promise<ReadyResult> {
@@ -395,8 +423,10 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
     const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
     const problems: string[] = [];
     const waited = ready.blocked_by.length ? ` (waiting on: ${ready.blocked_by.join(' | ')})` : '';
-    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited} [${networkSummary()}]`);
-    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited} [${networkSummary()}]`);
+    const slow = ready.timed_out || ready.ready_ms > budget;
+    const timeline = slow ? ` [${await page.evaluate(stepTimeline)}]` : '';
+    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited} [${networkSummary()}]${timeline}`);
+    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited} [${networkSummary()}]${timeline}`);
     if (nav === 'return' && images.step.refetches.length) problems.push(`re-downloaded ${images.step.refetches.length} photo(s): ${images.step.refetches.slice(0, 3).join(', ')}`);
     if (frameChanges) problems.push(`${frameChanges} media frame(s) changed height`);
 
