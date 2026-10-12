@@ -7,7 +7,7 @@
  * the recipient lands on — and can like/comment on — the specific post that was
  * liked or commented, instead of a generic profile or feed.
  */
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -79,6 +79,12 @@ async function fetchPost(source: "post" | "media", id: string): Promise<PostFeed
 export default function PostDetail() {
   const { source, id } = useParams<{ source: string; id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  // Set by the News feed card when it opens this page (VTID-04937). Going back
+  // in history then returns the reader to the exact spot they left in the
+  // feed — possibly posts from weeks ago — instead of pushing a fresh feed
+  // that starts at the newest post.
+  const openedFromFeed = (location.state as { fromFeed?: boolean } | null)?.fromFeed === true;
   const src: "post" | "media" = source === "media" ? "media" : "post";
 
   const { data: item, isLoading, isError } = useQuery({
@@ -93,7 +99,8 @@ export default function PostDetail() {
         <Button
           variant="ghost"
           size="icon"
-          // "/home/notif", not "/home": this page is the deep-link target for
+          // Opened from the feed → plain history back (see openedFromFeed).
+          // Otherwise "/home/notif", not "/home": this page is the deep-link target for
           // like/comment notifications (see file header), so a fresh page load
           // can land here directly without ever having visited a MAXINA landing
           // route. Going to "/home" would make this the FIRST landing-route hit
@@ -101,8 +108,9 @@ export default function PostDetail() {
           // top of the News feed. "/home/notif" renders the identical feed but
           // is deliberately excluded from useOrbFrontDoor's MAXINA_LANDING_ROUTES
           // (same carve-out App.tsx already uses for notification-tap deep links).
-          onClick={() => navigate("/home/notif")}
+          onClick={() => (openedFromFeed ? navigate(-1) : navigate("/home/notif"))}
           aria-label={t("screens.postDetail.back")}
+          data-testid="post-detail-back"
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -116,7 +124,7 @@ export default function PostDetail() {
       ) : isError || !item ? (
         <p className="py-20 text-center text-muted-foreground">{t("screens.postDetail.notFound")}</p>
       ) : (
-        <CommunityPostCard item={item} />
+        <CommunityPostCard item={item} isDetail />
       )}
     </div>
   );
