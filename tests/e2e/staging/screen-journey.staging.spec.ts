@@ -100,16 +100,18 @@ function installTapClock() {
  * since the tap, and every app script (/assets/*.js) still downloading at the
  * tap or requested after it, with its start/end relative to the tap.
  */
-function stepTimeline(): string {
+function stepTimeline(readyMs: number): string {
   const w = window as unknown as { __sjTapAt?: number; __sjLong?: Array<[number, number]> };
   const tap = w.__sjTapAt ?? 0;
-  const long = (w.__sjLong ?? []).filter(([st, d]) => st + d > tap);
-  const busy = Math.round(long.reduce((n, [st, d]) => n + Math.min(d, st + d - tap), 0));
+  // Only what happened between the tap and the moment the screen was ready.
+  const end = tap + readyMs;
+  const long = (w.__sjLong ?? []).filter(([st, d]) => st + d > tap && st < end);
+  const busy = Math.round(long.reduce((n, [st, d]) => n + Math.min(st + d, end) - Math.max(st, tap), 0));
   const longest = Math.round(long.reduce((m, [, d]) => Math.max(m, d), 0));
   const scripts = (performance.getEntriesByType('resource') as PerformanceResourceTiming[])
-    .filter((r) => /\/assets\/[^/]+\.js$/.test(r.name.replace(/\?.*$/, '')) && r.responseEnd > tap)
+    .filter((r) => /\/assets\/[^/]+\.js$/.test(r.name.replace(/\?.*$/, '')) && r.responseEnd > tap && r.startTime < end)
     .map((r) => `${r.name.replace(/\?.*$/, '').split('/').pop()} ${Math.round(r.startTime - tap)}..${Math.round(r.responseEnd - tap)}ms ${Math.round(r.transferSize / 1024)}KB`);
-  return `cpu: ${busy} ms in ${long.length} long task(s) since tap, longest ${longest} ms; scripts after tap: ${scripts.length ? scripts.slice(0, 8).join(', ') : 'none'}`;
+  return `cpu: ${busy} ms in ${long.length} long task(s) between tap and ready, longest ${longest} ms; scripts in flight: ${scripts.length ? scripts.slice(0, 8).join(', ') : 'none'}`;
 }
 
 function waitScreenReady(args: { path: string; cap: number; fromNavigationStart: boolean }): Promise<ReadyResult> {
@@ -412,6 +414,11 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
     await page.locator(`a[href="${path}"]:visible`).first().tap();
     const ready = await page.evaluate(waitScreenReady, { path, cap: CAP_MS, fromNavigationStart: false });
 
+    // Read before the return-visit stability wait, bounded at the ready time.
+    const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
+    const slow = ready.timed_out || ready.ready_ms > budget;
+    const timeline = slow ? ` [${await page.evaluate(stepTimeline, ready.ready_ms)}]` : '';
+
     let frameChanges = 0;
     if (nav === 'return') {
       const before = await page.evaluate(captureFrameHeights);
@@ -420,11 +427,8 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
       frameChanges = before.filter((h, i) => after[i] != null && Math.abs((after[i] as number) - h) > 1).length;
     }
 
-    const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
     const problems: string[] = [];
     const waited = ready.blocked_by.length ? ` (waiting on: ${ready.blocked_by.join(' | ')})` : '';
-    const slow = ready.timed_out || ready.ready_ms > budget;
-    const timeline = slow ? ` [${await page.evaluate(stepTimeline)}]` : '';
     if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited} [${networkSummary()}]${timeline}`);
     else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited} [${networkSummary()}]${timeline}`);
     if (nav === 'return' && images.step.refetches.length) problems.push(`re-downloaded ${images.step.refetches.length} photo(s): ${images.step.refetches.slice(0, 3).join(', ')}`);
