@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import {
   DiaryAudioRecorder,
+  markWebSpeechUnavailable,
+  shouldFallbackToBackendSTT,
   shouldUseBackendSTT,
   transcribeAudioBlob,
 } from "@/utils/diaryAudioRecorder";
@@ -48,11 +50,14 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastFinalTranscriptRef = useRef('');
   const lastFinalAtRef = useRef(0);
+  const gotResultRef = useRef(false);
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
   const { preferences } = useUserPreferences();
   const isAndroid = /Android/i.test(navigator.userAgent);
-  const useBackendSTT = shouldUseBackendSTT();
+  // VTID-05097: re-read at every tap (the Appilix bridge arrives late) and
+  // flipped by the Web Speech fallback.
+  const [useBackendSTT, setUseBackendSTT] = useState(shouldUseBackendSTT);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -194,8 +199,31 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
     }
   };
 
+  // VTID-05097: Web Speech failed before recognising anything (e.g. an Android
+  // WebView without a speech service). Drop it silently and record + transcribe
+  // instead; later taps in this session go straight to the backend path.
+  const switchToBackendSTT = () => {
+    markWebSpeechUnavailable();
+    setUseBackendSTT(true);
+    isRecordingRef.current = false;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    const stt = sttRef.current;
+    sttRef.current = null;
+    try { stt?.stop(); } catch { /* noop */ }
+    void startBackendRecording();
+  };
+
   const startRecording = async () => {
-    if (useBackendSTT) {
+    const backend = shouldUseBackendSTT();
+    setUseBackendSTT(backend);
+    if (backend) {
       return startBackendRecording();
     }
 
@@ -218,6 +246,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         onResult: (transcript, isFinal) => {
           const cleanedTranscript = transcript.trim();
           if (!cleanedTranscript) return;
+          gotResultRef.current = true;
 
           if (isFinal) {
             const normalized = cleanedTranscript.toLowerCase();
@@ -254,6 +283,10 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
           if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
             return;
           }
+          if (shouldFallbackToBackendSTT(error, gotResultRef.current)) {
+            switchToBackendSTT();
+            return;
+          }
           notifyError('toasts.memory.recognitionError', 'toasts.memory.speechRecognitionEncounteredErrorPleaseTry');
           stopRecording();
         },
@@ -283,6 +316,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         }
       });
 
+      gotResultRef.current = false;
       sttRef.current.setLanguage(sttLanguage);
       sttRef.current.start();
       setIsRecording(true);

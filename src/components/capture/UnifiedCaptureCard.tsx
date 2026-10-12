@@ -15,6 +15,8 @@ import { saveDiaryEntry as saveDiaryEntryApi } from "@/lib/memory-api";
 import { ClientSTT } from "@/utils/clientSTT";
 import {
   DiaryAudioRecorder,
+  markWebSpeechUnavailable,
+  shouldFallbackToBackendSTT,
   shouldUseBackendSTT,
   transcribeAudioBlob,
 } from "@/utils/diaryAudioRecorder";
@@ -106,6 +108,7 @@ export function UnifiedCaptureCard({
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastFinalTranscriptRef = useRef('');
   const lastFinalAtRef = useRef(0);
+  const gotResultRef = useRef(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { toast } = useToast();
@@ -113,7 +116,9 @@ export function UnifiedCaptureCard({
   const { translate } = useTranslation();
   const queryClient = useQueryClient();
   const isAndroid = /Android/i.test(navigator.userAgent);
-  const useBackendSTT = shouldUseBackendSTT();
+  // VTID-05097: re-read at every tap (the Appilix bridge arrives late) and
+  // flipped by the Web Speech fallback below.
+  const [useBackendSTT, setUseBackendSTT] = useState(shouldUseBackendSTT);
 
   // Progressive disclosure: show expanded UI when recording or transcript exists
   const hasContent = isRecording || transcript.length > 0 || isTranscribing;
@@ -235,8 +240,31 @@ export function UnifiedCaptureCard({
   };
 
   // ---- STT Logic ----
+  // VTID-05097: Web Speech failed before recognising anything (e.g. an Android
+  // WebView without a speech service). Drop it silently and record + transcribe
+  // instead; later taps in this session go straight to the backend path.
+  const switchToBackendSTT = () => {
+    markWebSpeechUnavailable();
+    setUseBackendSTT(true);
+    isRecordingRef.current = false;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    const stt = sttRef.current;
+    sttRef.current = null;
+    try { stt?.stop(); } catch { /* noop */ }
+    void startBackendRecording();
+  };
+
   const startRecording = () => {
-    if (useBackendSTT) {
+    const backend = shouldUseBackendSTT();
+    setUseBackendSTT(backend);
+    if (backend) {
       void startBackendRecording();
       return;
     }
@@ -261,6 +289,7 @@ export function UnifiedCaptureCard({
       onResult: (text, isFinal) => {
         const cleaned = text.trim();
         if (!cleaned) return;
+        gotResultRef.current = true;
 
         if (isFinal) {
           const normalized = cleaned.toLowerCase();
@@ -284,6 +313,10 @@ export function UnifiedCaptureCard({
       },
       onError: (error) => {
         if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
+          return;
+        }
+        if (shouldFallbackToBackendSTT(error, gotResultRef.current)) {
+          switchToBackendSTT();
           return;
         }
         toast({
@@ -312,6 +345,7 @@ export function UnifiedCaptureCard({
       },
     });
 
+    gotResultRef.current = false;
     sttRef.current.setLanguage(sttLanguage);
     sttRef.current.start();
     setIsRecording(true);

@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 369
+- **Pages scanned:** 370
 - **Distinct i18n keys consumed:** 4754
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -407,6 +407,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `mobilesupport` — **MISSING SHARD** in src/i18n/de/
 - `supportTickets` — used: 1, total in shard: 185
+
+### src/pages/MobileSupport.vtid-05097.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/MyIntents.tsx
 
