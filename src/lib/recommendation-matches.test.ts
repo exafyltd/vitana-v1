@@ -16,6 +16,7 @@ import { resolve } from 'node:path';
 import {
   rawMatchesFromResponse,
   normalizeRecommendationMatches,
+  recommendationContextLines,
   MIN_RECOMMENDATION_SCORE,
 } from '../../supabase/functions/_shared/recommendation-matches.ts';
 
@@ -105,6 +106,64 @@ describe('normalizeRecommendationMatches', () => {
   });
 });
 
+describe('VTID-05119 recommendationContextLines', () => {
+  const defaults = { interests: 'None', goals: 'None', location: 'Not specified', recentActivities: 'None' };
+  const long = 'd'.repeat(150);
+
+  it('maps the fetch-user-context response shape onto the four prompt lines', () => {
+    const response = {
+      context: {
+        community: { userInterests: ['yoga', 'hiking'], userLocation: 'Belgrade' },
+        health: {
+          goals: [],
+          recentDiaryEntries: [
+            { date: '2026-10-11', text: long, mood: 'good' },
+            { date: '2026-10-10', text: 'slept well' },
+          ],
+        },
+      },
+      cached: false,
+      cacheType: 'fresh',
+    };
+    expect(recommendationContextLines(response)).toEqual({
+      interests: 'yoga, hiking',
+      goals: 'None',
+      location: 'Belgrade',
+      recentActivities: `${'d'.repeat(100)}; slept well`,
+    });
+  });
+
+  it('joins string goals when the callee returns some', () => {
+    expect(recommendationContextLines({ context: { health: { goals: ['sleep', 'strength'] } } }).goals)
+      .toBe('sleep, strength');
+  });
+
+  for (const [label, value] of [
+    ['null', null],
+    ['an empty object', {}],
+    ['an empty context', { context: {} }],
+    ['a string', 'garbled'],
+    ['a number', 42],
+  ] as const) {
+    it(`yields every default for ${label}`, () => {
+      expect(recommendationContextLines(value)).toEqual(defaults);
+    });
+  }
+
+  it('skips non-string interests', () => {
+    expect(
+      recommendationContextLines({ context: { community: { userInterests: [7, 'yoga', null, { a: 1 }, 'tennis'] } } })
+        .interests,
+    ).toBe('yoga, tennis');
+  });
+
+  it('caps diary entries at 3', () => {
+    const entries = ['a', 'b', 'c', 'd', 'e'].map((text) => ({ text }));
+    expect(recommendationContextLines({ context: { health: { recentDiaryEntries: entries } } }).recentActivities)
+      .toBe('a; b; c');
+  });
+});
+
 describe('generate-enhanced-recommendations source contract', () => {
   const fnDir = resolve(__dirname, '../../supabase/functions');
   const src = readFileSync(resolve(fnDir, 'generate-enhanced-recommendations/index.ts'), 'utf8');
@@ -135,6 +194,18 @@ describe('generate-enhanced-recommendations source contract', () => {
   it('still localises the prompt for the member', () => {
     expect(src).toContain('buildLocalizedSystemPrompt(');
     expect(src).toContain('getUserLocale(supabaseClient, user.id)');
+  });
+
+  it('maps the fetch-user-context response through recommendationContextLines (VTID-05119)', () => {
+    expect(src).toContain('recommendationContextLines(contextData)');
+    expect(src).not.toContain('userContext.interests');
+    expect(src).not.toContain('userContext.profile');
+    expect(src).not.toContain('userContext.recentDiaryEntries');
+  });
+
+  it('logs a fetch-user-context invoke error instead of swallowing it (VTID-05119)', () => {
+    expect(src).toMatch(/const \{ data: contextData, error: contextError \} = await supabaseClient\.functions\.invoke\('fetch-user-context'\)/);
+    expect(src).toMatch(/if \(contextError\)[\s\S]{0,200}console\.warn\('\[enhanced-recommendations\] fetch-user-context failed'/);
   });
 
   it('retires the uncalled Gemini-only generate-recommendations function', () => {

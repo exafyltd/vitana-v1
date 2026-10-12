@@ -122,6 +122,23 @@ describe('VTID-05049 fetch-user-context', () => {
     expect(src).toMatch(/userId && userId !== auth\.user\.id/);
     expect(src).toMatch(/fetchAndReturnContext\(auth\.user\.id/);
   });
+
+  // VTID-05119: the bodyless call from generate-enhanced-recommendations got a 500.
+  it('parses the body with readJsonBody, never a bare req.json()', () => {
+    expect(fn('fetch-user-context')).toMatch(/from\s+["']\.\.\/_shared\/read-json-body\.ts["']/);
+    expect(src).not.toMatch(/await req\.json\(\)/);
+    const parse = src.indexOf('await readJsonBody(req)');
+    expect(parse).toBeGreaterThan(-1);
+    expect(parse).toBeLessThan(src.indexOf('isServiceRoleCaller(req)'));
+  });
+
+  it('answers an invalid body with 400', () => {
+    expect(src).toMatch(/if \(parsed\.kind === 'invalid'\) \{[\s\S]{0,200}status: 400/);
+  });
+
+  it('keeps the empty-body lenience at the call site, with a comment', () => {
+    expect(src).toMatch(/\/\/ An empty body is a valid request[^\n]*\n[\s\S]{0,250}const body: Record<string, unknown> = parsed\.kind === 'json' \? parsed\.value : \{\};/);
+  });
 });
 
 describe('VTID-05049 queue-campaign-recipients is service-role only', () => {
