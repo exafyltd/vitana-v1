@@ -20,8 +20,8 @@
 --   3. The guard also keeps attached_snapshot out of client hands.
 --   4. A trigger on calendar_events keeps shared snapshots current: times and
 --      status follow the entry (a deleted entry reads 'cancelled'); the card
---      title the member chose is kept; the place is updated only on a card
---      that already shows one.
+--      title the member chose is kept; the place is updated (or cleared)
+--      only on a card that already shows one.
 --   5. trg_notify_community_post: the share branch names a calendar_entry
 --      from the snapshot title. Everything else is unchanged.
 -- Idempotent. Tested by scripts/sql-tests/vtid-05126-calendar-entry-share.test.sql.
@@ -34,13 +34,11 @@ ALTER TABLE public.profile_posts ADD CONSTRAINT profile_posts_attached_ref_type_
 -- 2. The card a calendar_entry post carries.
 ALTER TABLE public.profile_posts ADD COLUMN IF NOT EXISTS attached_snapshot jsonb;
 
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'profile_posts_attached_snapshot_check') THEN
-    ALTER TABLE public.profile_posts ADD CONSTRAINT profile_posts_attached_snapshot_check
-      CHECK ((attached_ref_type = 'calendar_entry') = (attached_snapshot IS NOT NULL));
-  END IF;
-END $$;
+-- IS NOT DISTINCT FROM: a post with no reference (type NULL) must not carry a
+-- snapshot either; a plain `=` would yield NULL there, which a CHECK accepts.
+ALTER TABLE public.profile_posts DROP CONSTRAINT IF EXISTS profile_posts_attached_snapshot_check;
+ALTER TABLE public.profile_posts ADD CONSTRAINT profile_posts_attached_snapshot_check
+  CHECK ((attached_ref_type IS NOT DISTINCT FROM 'calendar_entry') = (attached_snapshot IS NOT NULL));
 
 -- 3. Only the service role (the gateway) sets or changes reference and snapshot.
 CREATE OR REPLACE FUNCTION public.profile_posts_guard_attached_ref()
@@ -95,8 +93,9 @@ BEGIN
             'start_time', NEW.start_time,
             'end_time', NEW.end_time,
             'status', CASE WHEN NEW.status = 'cancelled' THEN 'cancelled' ELSE 'confirmed' END)
-       || CASE WHEN p.attached_snapshot->>'location' IS NOT NULL AND NULLIF(TRIM(NEW.location), '') IS NOT NULL
-               THEN jsonb_build_object('location', TRIM(NEW.location)) ELSE '{}'::jsonb END
+       -- A card that shows the place follows it, and drops it when the member clears it.
+       || CASE WHEN p.attached_snapshot->>'location' IS NOT NULL
+               THEN jsonb_build_object('location', NULLIF(TRIM(NEW.location), '')) ELSE '{}'::jsonb END
    WHERE p.attached_ref_type = 'calendar_entry' AND p.attached_ref_id = NEW.id AND p.user_id = NEW.user_id;
   RETURN NEW;
 EXCEPTION WHEN OTHERS THEN

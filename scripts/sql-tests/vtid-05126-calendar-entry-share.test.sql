@@ -79,6 +79,8 @@ begin
   assert err like '%attached_snapshot_check%', format('calendar_entry without snapshot rejected (got %s)', err);
   err := pg_temp.rejected(format($q$insert into profile_posts (user_id, content, attached_ref_type, attached_ref_id, attached_snapshot) values (%L, 'x', 'community_event', %L, %L)$q$, ana, ev, snap));
   assert err like '%attached_snapshot_check%', format('event share with snapshot rejected (got %s)', err);
+  err := pg_temp.rejected(format($q$insert into profile_posts (user_id, content, attached_snapshot) values (%L, 'x', %L)$q$, ana, snap));
+  assert err like '%attached_snapshot_check%', format('snapshot without a reference rejected (got %s)', err);
   insert into profile_posts (user_id, content, attached_ref_type, attached_ref_id, attached_snapshot)
     values (ana, 'Wer ist dabei?', 'calendar_entry', entry, snap) returning id into post;
   select * into r from user_notifications where type = 'community_event_shared' and user_id = ben;
@@ -112,6 +114,9 @@ begin
   update calendar_events set location = 'Praxis Neu' where id = entry2;
   select attached_snapshot into snap from profile_posts where attached_ref_id = entry2;
   assert snap->>'location' = 'Praxis Neu' and snap->>'title' = 'Arzttermin', format('shown place follows (got %s)', snap);
+  update calendar_events set location = '  ' where id = entry2;
+  select attached_snapshot into snap from profile_posts where attached_ref_id = entry2;
+  assert snap->'location' = 'null'::jsonb, format('cleared place leaves the card (got %s)', snap);
   update calendar_events set status = 'cancelled' where id = entry2;
   select attached_snapshot into snap from profile_posts where attached_ref_id = entry2;
   assert snap->>'status' = 'cancelled', 'cancel reads cancelled';
