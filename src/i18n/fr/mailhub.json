@@ -248,6 +248,44 @@
       },
       "page": {
         "description": "Invite tes amis avec ton lien personnel ou retrouve-les dans tes contacts."
+      },
+      "verifyPhone": {
+        "title": "Ton numéro de téléphone",
+        "body": "Confirme ton numéro pour que les amis qui l'ont enregistré te trouvent sur Vitanaland.",
+        "verifiedLabel": "Vérifié :",
+        "verify": "Vérifier le numéro",
+        "change": "Modifier",
+        "remove": "Supprimer",
+        "removeTitle": "Supprimer ton numéro ?",
+        "removeBody": "Tes amis ne te trouveront plus grâce à ton numéro. Tu peux le vérifier à nouveau à tout moment.",
+        "removed": "Ton numéro a été supprimé.",
+        "dialogTitle": "Vérifier ton numéro de téléphone",
+        "numberLabel": "Numéro de portable",
+        "numberHelp": "Nous t'envoyons un code à 6 chiffres par SMS. Ton numéro reste privé.",
+        "sendCode": "Envoyer le code",
+        "codeLabel": "Code reçu par SMS",
+        "codeHelp": "Nous avons envoyé le code au",
+        "confirm": "Vérifier",
+        "resendIn": "Nouveau code dans {seconds} s",
+        "resend": "Envoyer un nouveau code",
+        "changeNumber": "Autre numéro",
+        "done": "Ton numéro est vérifié. Les amis qui l'ont enregistré peuvent maintenant te trouver.",
+        "hint": "Vérifie ton numéro pour que tes amis te trouvent.",
+        "hintAction": "Vérifier maintenant",
+        "errors": {
+          "INVALID_PHONE": "Ce numéro ne semble pas valide.",
+          "NOT_A_MOBILE_NUMBER": "Indique un numéro de portable.",
+          "COUNTRY_NOT_SUPPORTED": "Nous ne pouvons pas encore envoyer de SMS vers ce pays.",
+          "ACCOUNT_NOT_ELIGIBLE": "Ce n'est pas possible avec ce compte.",
+          "PHONE_IN_USE": "Ce numéro est déjà vérifié sur un autre compte.",
+          "TOO_MANY_REQUESTS": "Trop de tentatives. Réessaie plus tard.",
+          "SMS_SEND_FAILED": "Le SMS n'a pas pu être envoyé. Réessaie.",
+          "INVALID_CODE": "Ce code n'est pas correct.",
+          "CODE_EXPIRED": "Le code a expiré. Demandes-en un nouveau.",
+          "NO_PENDING_CODE": "Demande d'abord un code.",
+          "TOO_MANY_ATTEMPTS": "Trop d'essais incorrects. Demande un nouveau code.",
+          "unknown": "Ça n'a pas marché. Réessaie."
+        }
       }
     },
     "requested": {

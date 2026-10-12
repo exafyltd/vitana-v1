@@ -45,6 +45,8 @@ vi.mock("react-router-dom", async () => {
   return { ...real, useNavigate: () => navigate };
 });
 vi.mock("@/context/AuthProvider", () => ({ useAuth: () => ({ user: { id: "u1" } }) }));
+// VTID-05096: the verify-phone hint in the results reads the gateway switch; off here.
+vi.mock("@/hooks/usePhoneVerificationStatus", () => ({ usePhoneVerificationStatus: () => ({ status: undefined, available: false }) }));
 vi.mock("@/integrations/supabase/client", () => {
   const q: any = {
     select: () => q, eq: () => q, order: () => q, not: () => q,

@@ -262,6 +262,44 @@
       },
       "page": {
         "description": "Zaproś znajomych swoim osobistym linkiem albo znajdź ich w kontaktach."
+      },
+      "verifyPhone": {
+        "title": "Twój numer telefonu",
+        "body": "Zweryfikuj swój numer, aby znajomi, którzy go zapisali, znaleźli cię na Vitanaland.",
+        "verifiedLabel": "Zweryfikowany:",
+        "verify": "Zweryfikuj numer",
+        "change": "Zmień",
+        "remove": "Usuń",
+        "removeTitle": "Usunąć twój numer?",
+        "removeBody": "Znajomi nie znajdą cię już po numerze. W każdej chwili możesz go ponownie zweryfikować.",
+        "removed": "Twój numer został usunięty.",
+        "dialogTitle": "Zweryfikuj numer telefonu",
+        "numberLabel": "Numer komórkowy",
+        "numberHelp": "Wyślemy ci 6-cyfrowy kod SMS-em. Twój numer pozostaje prywatny.",
+        "sendCode": "Wyślij kod",
+        "codeLabel": "Kod z SMS-a",
+        "codeHelp": "Wysłaliśmy kod na numer",
+        "confirm": "Zweryfikuj",
+        "resendIn": "Nowy kod za {seconds} s",
+        "resend": "Wyślij nowy kod",
+        "changeNumber": "Inny numer",
+        "done": "Twój numer jest zweryfikowany. Znajomi, którzy go zapisali, mogą cię teraz znaleźć.",
+        "hint": "Zweryfikuj swój numer, aby znajomi mogli cię znaleźć.",
+        "hintAction": "Zweryfikuj teraz",
+        "errors": {
+          "INVALID_PHONE": "To nie wygląda na prawidłowy numer.",
+          "NOT_A_MOBILE_NUMBER": "Podaj numer komórkowy.",
+          "COUNTRY_NOT_SUPPORTED": "Nie możemy jeszcze wysyłać SMS-ów do tego kraju.",
+          "ACCOUNT_NOT_ELIGIBLE": "Z tym kontem to nie jest możliwe.",
+          "PHONE_IN_USE": "Ten numer jest już zweryfikowany na innym koncie.",
+          "TOO_MANY_REQUESTS": "Zbyt wiele prób. Spróbuj ponownie później.",
+          "SMS_SEND_FAILED": "Nie udało się wysłać SMS-a. Spróbuj ponownie.",
+          "INVALID_CODE": "Kod jest nieprawidłowy.",
+          "CODE_EXPIRED": "Kod wygasł. Poproś o nowy.",
+          "NO_PENDING_CODE": "Najpierw poproś o kod.",
+          "TOO_MANY_ATTEMPTS": "Zbyt wiele błędnych prób. Poproś o nowy kod.",
+          "unknown": "Nie udało się. Spróbuj ponownie."
+        }
       }
     },
     "requested": {

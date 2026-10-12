@@ -230,6 +230,44 @@
       },
       "page": {
         "description": "Lade Freunde mit deinem persönlichen Link ein oder finde sie in deinen Kontakten."
+      },
+      "verifyPhone": {
+        "title": "Deine Telefonnummer",
+        "body": "Bestätige deine Nummer, damit Freunde, die sie gespeichert haben, dich auf Vitanaland finden.",
+        "verifiedLabel": "Bestätigt:",
+        "verify": "Nummer bestätigen",
+        "change": "Ändern",
+        "remove": "Entfernen",
+        "removeTitle": "Nummer entfernen?",
+        "removeBody": "Freunde finden dich dann nicht mehr über deine Nummer. Du kannst sie jederzeit wieder bestätigen.",
+        "removed": "Deine Nummer wurde entfernt.",
+        "dialogTitle": "Telefonnummer bestätigen",
+        "numberLabel": "Handynummer",
+        "numberHelp": "Wir schicken dir einen 6-stelligen Code per SMS. Deine Nummer bleibt privat.",
+        "sendCode": "Code senden",
+        "codeLabel": "Code aus der SMS",
+        "codeHelp": "Wir haben den Code geschickt an",
+        "confirm": "Bestätigen",
+        "resendIn": "Neuer Code in {seconds} s",
+        "resend": "Neuen Code senden",
+        "changeNumber": "Andere Nummer",
+        "done": "Deine Nummer ist bestätigt. Freunde, die sie gespeichert haben, finden dich jetzt.",
+        "hint": "Bestätige deine Nummer, damit Freunde dich finden.",
+        "hintAction": "Jetzt bestätigen",
+        "errors": {
+          "INVALID_PHONE": "Das sieht nicht nach einer gültigen Nummer aus.",
+          "NOT_A_MOBILE_NUMBER": "Bitte gib eine Handynummer ein.",
+          "COUNTRY_NOT_SUPPORTED": "In dieses Land können wir noch keine SMS schicken.",
+          "ACCOUNT_NOT_ELIGIBLE": "Mit diesem Konto ist das nicht möglich.",
+          "PHONE_IN_USE": "Diese Nummer ist schon mit einem anderen Konto bestätigt.",
+          "TOO_MANY_REQUESTS": "Zu viele Versuche. Bitte versuch es später noch einmal.",
+          "SMS_SEND_FAILED": "Die SMS konnte nicht verschickt werden. Bitte versuch es noch einmal.",
+          "INVALID_CODE": "Der Code stimmt nicht.",
+          "CODE_EXPIRED": "Der Code ist abgelaufen. Fordere einen neuen an.",
+          "NO_PENDING_CODE": "Fordere zuerst einen Code an.",
+          "TOO_MANY_ATTEMPTS": "Zu viele falsche Versuche. Fordere einen neuen Code an.",
+          "unknown": "Das hat nicht geklappt. Bitte versuch es noch einmal."
+        }
       }
     },
     "requested": {
