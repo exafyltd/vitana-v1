@@ -47,9 +47,11 @@ test.use({
   hasTouch: true,
   userAgent: PIXEL_7_UA,
   // Same read-only lookups the signed-in app sends as POST as in VTID-05013's
-  // spec: still aborted, never writes.
+  // spec: still aborted, never writes. generate-daily-matches is the app's own
+  // once-a-day background job when News opens (aborted here, as in the
+  // VTID-04827/04957/04972 specs) — VTID-05081.
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/[a-z_]+|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/[a-z_]+|functions\/v1\/(list_my_memberships|generate-daily-matches))|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
