@@ -35,6 +35,7 @@ import { Maximize2, Volume2, VolumeX, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
 import { transformedCoverUrl } from "@/lib/eventCoverImage";
+import { useNewsActive } from "@/components/keepalive/NewsKeepAlive";
 
 // Instagram's published display bounds.
 const PORTRAIT_MIN_RATIO = 4 / 5; // 0.8 — tallest allowed (width / height)
@@ -374,6 +375,29 @@ export function FeedMedia({
   useEffect(() => {
     if (videoUrl && !farFromViewport) ensureFrameCaptured(videoUrl);
   }, [videoUrl, farFromViewport]);
+
+  // VTID-05081: News stays mounted behind other tabs. While it is hidden its
+  // clips pause (and the fullscreen overlay closes — it portals to <body> and
+  // would cover the next screen); on return a clip in range resumes. Acts on
+  // the change only, so a fresh mount keeps its plain autoPlay behaviour.
+  const newsActive = useNewsActive();
+  const wasNewsActive = useRef(newsActive);
+  useEffect(() => {
+    if (wasNewsActive.current === newsActive) return;
+    wasNewsActive.current = newsActive;
+    if (!newsActive) setExpanded(false);
+    const v = videoRef.current;
+    if (!v) return;
+    if (!newsActive) {
+      v.pause();
+    } else if (!farFromViewport) {
+      try {
+        void Promise.resolve(v.play()).catch(() => {});
+      } catch {
+        /* play() unsupported in this environment */
+      }
+    }
+  }, [newsActive, farFromViewport]);
 
   const closeExpanded = useCallback(() => setExpanded(false), []);
 

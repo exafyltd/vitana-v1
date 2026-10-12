@@ -18,8 +18,9 @@ vi.mock("@/hooks/useTenant", () => ({ useTenant: () => ({ activeTenantId: "t1", 
 vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => false }));
 vi.mock("@/components/ui/DelayedLoader", () => ({ DelayedLoader: () => <div data-testid="loader" /> }));
 vi.mock("@/pages/NotAuthorized", () => ({ default: () => <div data-testid="not-authorized" /> }));
+vi.mock("@/context/AuthProvider", () => ({ useAuth: () => ({ user: { id: "u1" } }) }));
 
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute, { __resetProtectedRouteSettled } from "./ProtectedRoute";
 import { useRole } from "@/hooks/useRole";
 
 /** Like CalendarPage: a page that reads the role itself. */
@@ -31,8 +32,7 @@ function Page() {
   return <div data-testid="page" />;
 }
 
-function renderGuarded() {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+function renderGuarded(qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })) {
   return render(
     <QueryClientProvider client={qc}>
       <ProtectedRoute requiredRole="community">
@@ -46,6 +46,7 @@ describe("ProtectedRoute (VTID-04867)", () => {
   beforeEach(() => {
     h.mounts = 0;
     h.rpc.mockReset();
+    __resetProtectedRouteSettled();
   });
 
   it("shows the loader first, then the page", async () => {
@@ -66,6 +67,23 @@ describe("ProtectedRoute (VTID-04867)", () => {
     expect(screen.getByTestId("page")).toBeInTheDocument();
     expect(screen.queryByTestId("loader")).toBeNull();
     expect(h.mounts).toBe(1);
+  });
+
+  // VTID-05081: a tab switch mounts a fresh guard. Once the role has resolved
+  // (or errored) for this member, a remount whose role query is loading again
+  // renders the page at once — no loader, so no spinner on a tab return.
+  it("shows the loader on the first mount only, not on a remount after it settled", async () => {
+    h.rpc.mockResolvedValue({ data: [{ role: "community" }], error: null });
+    const first = renderGuarded();
+    expect(screen.getByTestId("loader")).toBeInTheDocument();
+    await screen.findByTestId("page");
+    first.unmount();
+
+    // Fresh cache and a lookup that never answers: the role is loading again.
+    h.rpc.mockReturnValue(new Promise(() => {}));
+    renderGuarded();
+    expect(screen.queryByTestId("loader")).toBeNull();
+    expect(screen.getByTestId("page")).toBeInTheDocument();
   });
 
   it("still denies a role the member does not have", async () => {

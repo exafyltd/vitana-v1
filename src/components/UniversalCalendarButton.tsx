@@ -16,6 +16,12 @@ interface UniversalCalendarButtonProps {
   showEventCount?: boolean;
   showConflictIndicator?: boolean;
   showText?: boolean;
+  /**
+   * VTID-05081: listen for `calendar:open` (default true). The kept-alive News
+   * passes false while it is hidden behind another tab, so a voice/deep-link
+   * request navigates once — through the visible screen's listener only.
+   */
+  overlayEnabled?: boolean;
 }
 
 export function UniversalCalendarButton({
@@ -24,7 +30,8 @@ export function UniversalCalendarButton({
   className = "",
   showEventCount = true,
   showConflictIndicator = true,
-  showText = true
+  showText = true,
+  overlayEnabled = true,
 }: UniversalCalendarButtonProps) {
   const navigate = useNavigate();
 
@@ -33,7 +40,7 @@ export function UniversalCalendarButton({
   // VTID-04915 — the popup is retired).
   useWindowOverlay<{ tab?: CalendarOpenTab }>('calendar:open', (detail) => {
     navigate(calendarTargetFor(detail?.tab));
-  });
+  }, overlayEnabled);
 
   const { events, getUpcomingEvents } = useCalendarEvents();
   const { open } = useSidebarSafe();

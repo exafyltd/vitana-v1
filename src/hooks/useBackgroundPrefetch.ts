@@ -14,6 +14,20 @@ import { ADJACENT_PILLARS, prefetchForPath } from '@/lib/prefetch-registry';
 
 const PREFETCH_DEBOUNCE_MS = 250;
 
+// VTID-05081: once per session, not once per AppLayout. Every page mounts its
+// own AppLayout, so a per-instance ref re-ran the whole pillar fan-out
+// (intent-board, global messages, …) on every tab switch. Module scope keyed
+// by user + tenant (+ pillar path); a user/tenant change starts over. Each
+// prefetch's own staleness rules are unchanged.
+let prefetchedOwner: string | null = null;
+const prefetched = new Set<string>();
+
+/** Test helper. */
+export function __resetBackgroundPrefetch(): void {
+  prefetchedOwner = null;
+  prefetched.clear();
+}
+
 export function useBackgroundPrefetch() {
   const location = useLocation();
   const queryClient = useQueryClient();
@@ -21,7 +35,6 @@ export function useBackgroundPrefetch() {
   const tenantCtx = useTenantSafe();
   const activeTenantId = tenantCtx?.activeTenantId ?? null;
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const prefetchedRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     // Clear debounce on route change
@@ -34,14 +47,20 @@ export function useBackgroundPrefetch() {
       const basePath = '/' + location.pathname.split('/')[1];
       const adjacentPillars = ADJACENT_PILLARS[basePath] || [];
 
+      const owner = `${user?.id}-${activeTenantId}`;
+      if (prefetchedOwner !== owner) {
+        prefetchedOwner = owner;
+        prefetched.clear();
+      }
+
       // Prefetch adjacent pillars that haven't been prefetched in this session
       adjacentPillars.forEach(async (pillarPath) => {
         const cacheKey = `${pillarPath}-${user?.id}-${activeTenantId}`;
         
         // Skip if already prefetched this session
-        if (prefetchedRef.current.has(cacheKey)) return;
+        if (prefetched.has(cacheKey)) return;
         
-        prefetchedRef.current.add(cacheKey);
+        prefetched.add(cacheKey);
         
         try {
           await prefetchForPath(queryClient, pillarPath, user?.id, activeTenantId);
@@ -58,11 +77,6 @@ export function useBackgroundPrefetch() {
       }
     };
   }, [location.pathname, queryClient, user?.id, activeTenantId]);
-
-  // Reset prefetch cache when user changes
-  useEffect(() => {
-    prefetchedRef.current.clear();
-  }, [user?.id, activeTenantId]);
 }
 
 /**

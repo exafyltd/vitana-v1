@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05081",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "phone journey (Pixel 7, 4x CPU, Fast 4G) at unchanged budgets: News return ≤ 1500 ms (News kept alive, no pillar prefetch fan-out, no guard spinner), Events first ≤ 4000 ms, Postfach first ≤ 4000 ms, no photo re-downloaded, no frame height change; blockers name the delayed-loader test id",
+      "spec": "tests/e2e/staging/screen-journey.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "hidden News not re-rendered by navigation elsewhere, mounted once with the same DOM node reattached, one AppLayout at a time, foreign ?tab ignored, title follows the visible route, calendar:open handled once, sign-out / user switch unmounts, scroll saved and restored; prefetch once per pillar per user + tenant; ProtectedRoute loader on the first mount only; unread badge survives an unmount + remount in one tick",
+      "ref": "npx vitest run src/components/keepalive/NewsKeepAlive.test.tsx src/hooks/useBackgroundPrefetch.test.tsx src/components/ProtectedRoute.test.tsx src/hooks/useChatUnreadCount.test.ts",
+      "cwd": ".",
+      "reason": "Render counts, mount identity, listener counts, sign-out and user switches are internal React state a read-only staging run cannot observe or provoke (a user switch needs a second account)."
+    }
+  ]
+}
