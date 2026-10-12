@@ -56,7 +56,7 @@ import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { t } from '@/lib/i18n-toast';
+import { t, useI18nLocale } from '@/lib/i18n-toast';
 import { NewsKeepAliveSlot, registerNewsScrollKeeper, useNewsActive } from "@/components/keepalive/NewsKeepAlive";
 
 import { formatDistanceToNow } from '@/lib/locale-format';
@@ -84,6 +84,9 @@ export default function Home() {
  * (NewsKeepAlive.tsx), so nothing here re-renders until News is attached again.
  */
 export const HomeContent = memo(function HomeContent() {
+  // VTID-05081: memo'd and kept alive, so subscribe to the locale or a language
+  // switch would never reach News (VTID-03663).
+  useI18nLocale();
   // VTID-05081: false while News is kept alive behind another tab.
   const active = useNewsActive();
   const [searchParams, setSearchParams] = useSearchParams();

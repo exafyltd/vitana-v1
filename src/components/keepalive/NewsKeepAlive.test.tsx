@@ -37,7 +37,7 @@ vi.mock("@/hooks/useTenant", () => ({
 }));
 vi.mock("@/hooks/useRole", () => ({ useRole: () => ({ hasPermission: () => true, isLoading: false }) }));
 vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => true }));
-vi.mock("@/lib/i18n-toast", () => ({ t: (k: string) => k }));
+vi.mock("@/lib/i18n-toast", () => ({ t: (k: string) => k, useI18nLocale: () => "en" }));
 vi.mock("@/lib/product-analytics/client", () => ({ track: h.track }));
 vi.mock("@/lib/feature-flags", () => ({ isFeedV2Enabled: () => true }));
 vi.mock("@/lib/locale-format", () => ({ formatDistanceToNow: () => "" }));
