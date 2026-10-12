@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05118",
+  "kind": "fix",
+  "sparring_record": "docs/validation/VTID-05118/plan-sparring.md",
+  "paths": [
+    "supabase/functions/_shared/trigger-secret.ts",
+    "supabase/functions/_shared/caller-auth.ts",
+    "supabase/functions/send-welcome-discount/index.ts",
+    "src/lib/edge-functions-caller-identity.s4.test.ts",
+    "src/lib/trigger-secret.test.ts",
+    "docs/validation/VTID-05118/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -1,0 +1,4 @@
+ FAIL  src/lib/edge-functions-caller-identity.s4.test.ts [ src/lib/edge-functions-caller-identity.s4.test.ts ]
+ FAIL  src/lib/trigger-secret.test.ts [ src/lib/trigger-secret.test.ts ]
+ Test Files  2 failed (2)
+      Tests  no tests
