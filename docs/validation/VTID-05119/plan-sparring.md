@@ -218,3 +218,99 @@ Final plan-body hash: `c64d7e0f61630b54cbbf7658f2ffea5f698efed0e19a534e87941b38a
 ## Approval
 
 Owner approval (Gate 1): "Yes" — 2026-10-12, Claude Code session; plan hash c64d7e0f61630b54cbbf7658f2ffea5f698efed0e19a534e87941b38a1a6a708; sparring record 5d73d039-ac2f-4e98-b872-f71f118bcfa8.
+
+## Sparring partner findings (verbatim, round 1 then round 2)
+
+I now have sufficient evidence for a thorough Round 1 review.
+
+## Verified premises
+
+- **"Line 658 reads `const body = await req.json()` with no guard"** → TRUE — `supabase/functions/fetch-user-context/index.ts:658` is exactly `const body = await req.json();`, no try/catch or emptiness check before it. The outer catch at :678 turns it into a 500.
+
+- **"The only caller sends no body" (`generate-enhanced-recommendations/index.ts:39`)** → TRUE — `supabase/functions/generate-enhanced-recommendations/index.ts:39` is `const { data: contextData } = await supabaseClient.functions.invoke('fetch-user-context');` with no `body` argument. The caller ignores `error` at :40.
+
+- **"The callee answers `{ context, cached, cacheType }` and the caller reads top-level `.interests`, `.goals`, `.profile.location`, `.recentDiaryEntries`"** → TRUE — `fetch-user-context/index.ts:697-701` wraps everything under `context:`, with fields nested as `context.health.goals` (:533), `context.health.recentDiaryEntries` (:527), `context.community.userInterests` (:631). The caller reads `userContext.interests`, `userContext.goals`, `userContext.profile?.location`, `userContext.recentDiaryEntries` at `:97-100` -- none of which exist at the top level of the response.
+
+- **"`_shared` helpers are tested from `src/lib/` via Vitest" pattern** → TRUE — `src/lib/erase-user-data.test.ts:1-8` demonstrates the convention: a Vitest file importing directly from `../../supabase/functions/_shared/erase-user-data`.
+
+## Findings
+
+**F1 [minor] `readJsonBody` treating empty body as `{ ok: true, body: {} }` silently invents intent**
+
+Evidence: The plan says an empty body gives `{ ok: true, body: {} }`. This means a caller that accidentally omits a required body gets a 200 with a silently empty/defaulted result, instead of a clear error. The current 500 is bad, but flipping it to a silent success (the member's own context via JWT) is arguably correct only for the `generate-enhanced-recommendations` call path. A different future caller that requires a `userId` body field would silently get the wrong user's context.
+
+Suggestion: The fix is fine for this specific callee because the fallback to JWT is the documented, correct path (`:670-676`). But consider documenting in the helper's JSDoc that "empty body = empty object" is a deliberate leniency, not a universal best practice -- or, better, handle the empty-body case in the handler itself (before calling the helper) so the helper is a strict JSON-or-error parser and the leniency is explicit at the call site. This is minor because the current plan's behavior is safe for this callee.
+
+**F2 [major] The fix improves the callee but the user-visible outcome is unchanged -- the plan should make this explicit to the owner**
+
+Evidence: Problem 7 and the plan's own Risks section acknowledge that after this fix, recommendations still get "None" for every field because of the shape mismatch (`generate-enhanced-recommendations/index.ts:97-100` reads `userContext.interests` etc. but the response nests them under `context.health.*` / `context.community.*`). The plan explicitly defers this as a separate VTID. This means the plan ships a code change and a production edge-function deploy whose net user-visible effect is zero -- the recommendations were broken before (500 swallowed, context empty) and remain broken after (shape mismatch, context fields all "None"). The owner should understand this before approving a production deploy that also bundles two undeployed VTIDs (05023, 05049).
+
+Suggestion: The Owner Decisions section (point 2) already asks the owner to decide on the follow-up, but the plan should state plainly at the top -- not buried in Risks -- that this fix alone produces no user-visible improvement and the follow-up is required for the feature to work. If the owner prefers a single deploy that actually fixes the feature end to end, folding option (b) in is the right call, since the incremental deploy risk of shipping this alone is the same as shipping both together (same function, same snapshot).
+
+**F3 [minor] The plan claims `deno check` has exactly 4 pre-existing errors but does not list them**
+
+Evidence: Plan line 71 references `docs/VTID-05049/outputs/deno-check.txt` for the baseline. If that file is missing or its count has changed (e.g., the VTID-05023 `createDataClient` import added or removed one), the "no new errors" assertion has no anchor.
+
+Suggestion: Either list the 4 errors inline or add a guard test that counts them, so a reviewer or implementer can verify the baseline without hunting for a doc artifact.
+
+**F4 [minor] 44 other edge functions have the same bare `req.json()` pattern**
+
+Evidence: `grep -c 'req\.json()' supabase/functions/*/index.ts` returns 44 files. Each one is vulnerable to the same `SyntaxError` on an empty or malformed body. The plan fixes one but creates a shared helper -- if the helper exists, a follow-up to adopt it across the 44 other functions is a natural next step.
+
+Suggestion: Not in scope for this plan, but mention it as a follow-up so the helper's existence is justified beyond one call site.
+
+**F5 [major] Bundled deploy ships VTID-05023 (Aurora data client) for `fetch-user-context` without verifying `DATA_API_URL` is set**
+
+Evidence: The plan's Rollout section (point 3, bullet 3) says "check `DATA_API_URL` before dispatching" but does not say what to do if it is unset. `fetch-user-context/index.ts:707` uses `createDataClient(createClient, ...)`. If VTID-05023 changed `createDataClient` to route through `DATA_API_URL` and that var is unset, the function could fail on every call, not just the bodyless one. The plan acknowledges the risk but does not define a go/no-go gate for it.
+
+Suggestion: Add an explicit gate: "IF `DATA_API_URL` is not set in the Supabase project's edge-function secrets, THEN do not deploy until it is set or until we confirm `createDataClient` falls back to the direct Supabase client." This turns the risk into a checkable precondition.
+
+**F6 [minor] Test file location inconsistency**
+
+Evidence: The plan says "New `src/lib/read-json-body.test.ts`" but the helper lives at `supabase/functions/_shared/read-json-body.ts`. The existing convention (`erase-user-data.test.ts`) puts it under `src/lib/` too, so this is consistent. However, the test will import from `../../supabase/functions/_shared/read-json-body` -- worth confirming that `readJsonBody` has no Deno-specific imports (the plan says "no URL imports" -- good).
+
+Suggestion: No change needed, just confirming the plan is consistent with the existing pattern.
+
+## Questions for the planner
+
+1. Given that F2 means the user-visible outcome is unchanged, has the planner considered making the shape-mismatch fix (Problem 7) part of this plan? The marginal implementation cost is small (editing ~4 lines in `generate-enhanced-recommendations/index.ts:97-100`), and it avoids a deploy that changes nothing for the user while carrying two bundled undeployed VTIDs.
+
+2. For F5: what is the concrete fallback behavior of `createDataClient` when `DATA_API_URL` is unset? Does it fall back to the direct Supabase client, or does it throw? This determines whether the deploy is safe.
+
+3. The plan says "No other callers" but the grep was limited to `src/` and `supabase/`. Has the planner checked whether any gateway service in vitana-platform calls this edge function via the Supabase client or a direct HTTP call? (The plan says `git grep` over vitana-platform found nothing -- I will take that at face value since the plan states it explicitly.)
+
+## Verdict
+
+NOT CONVERGED
+
+Two majors are open: F2 (the fix produces no user-visible improvement and this should be explicit, with a clear recommendation on whether to fold in the shape-mismatch fix) and F5 (the bundled VTID-05023 deploy needs a concrete go/no-go gate on `DATA_API_URL`, not just "check it"). Neither is a design flaw -- both are completeness gaps in the rollout plan that the owner needs to evaluate.
+All new claims check out. Here is my Round 2 assessment.
+
+## Verified premises (round 2, new claims only)
+
+- **"`resolveDataApiUrl` passes through to direct Supabase when `DATA_API_URL` is unset; throws when `CUTOVER_DONE=true` without it" (Rollout 4)** → TRUE — `supabase/functions/_shared/data-client.ts:52-56` confirms exactly this behavior.
+- **"`recommendation-matches.ts` already exists as a `_shared` module imported by Vitest"** → TRUE — `src/lib/recommendation-matches.test.ts` imports from `../../supabase/functions/_shared/recommendation-matches.ts` and tests `rawMatchesFromResponse`, `normalizeRecommendationMatches`.
+- **"`community.userLocation` exists at line 632"** → TRUE — `fetch-user-context/index.ts:632` is `userLocation: communityProfile?.location`.
+
+## Prior findings — status
+
+- **F1 [minor]** → **closed**. The helper is now a strict three-way discriminator (`json`/`empty`/`invalid`), and the lenience is explicit at the call site with a comment. The test pins that the lenience is visible. Exactly what I suggested.
+- **F2 [major]** → **closed**. The caller shape fix is folded in. The plan now has a clear "User-visible result" section at the top stating what changes for the user and honestly noting that goals stay "None". The scope grew to 7 files and 2 deploys, which is appropriate.
+- **F3 [minor]** → **closed**. The 5 diagnostics are listed inline with message text and line numbers, anchored by message text (since line numbers shift). Acceptance rule is explicit.
+- **F4 [minor]** → **closed**. Deferred as a follow-up VTID in "Out of scope". Tracked.
+- **F5 [major]** → **closed**. The go/no-go precondition is concrete and checkable: secret names only, explicit GO/NO-GO matrix, cites `data-client.ts:53-55` and the test at `data-client.test.ts:115-129`. The NO-GO-if-unreadable fallback is conservative.
+- **F6 [minor]** → **closed**. Acknowledged, consistent with existing pattern.
+
+## Findings (round 2)
+
+No new blocker or major findings. The revision addresses every round-1 finding substantively. The scope increase (3 files to 7, 1 deploy to 2) is well-justified by the F2 fold-in, and the rollout precondition (F5) is now mechanically checkable.
+
+## Questions for the planner
+
+None.
+
+## Verdict
+
+CONVERGED
+
+All round-1 blockers and majors are closed with concrete, verifiable changes. The plan is internally consistent, the premises check out against the code, the rollout has an explicit go/no-go gate, the user-visible outcome is clearly stated, and the test plan covers the new helper, the mapping, and the source contracts.
