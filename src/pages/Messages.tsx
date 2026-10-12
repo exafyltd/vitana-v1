@@ -30,6 +30,7 @@ import { useChatGroupsAsThreads, isChatGroupThreadId, chatGroupIdFromThreadId } 
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
 import { markGroupRead } from "@/hooks/useChatApi";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
+import { useProgressiveCount } from "@/hooks/useProgressiveCount";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -268,6 +269,18 @@ export default function Messages() {
       return { ...thread, unread_count };
     });
   }, [threads, optimisticUnreadUpdates]);
+
+  // VTID-05081 (A2): the mobile list paints its first conversations at once and
+  // the rest over idle frames, so a large inbox (200+ threads) does not hold the
+  // first paint of Postfach. The end state is the full list.
+  // Desktop never reads it (total 0, nothing scheduled); a new inbox context
+  // starts small again; a list with a saved scroll position renders in full so
+  // the restore below lands where the member left it.
+  const hasSavedInboxScroll = (inboxListScrollMemory.get(messageContext) ?? 0) > 0;
+  const mobileListLimit = useProgressiveCount(isMobile ? displayThreads.length : 0, {
+    initial: hasSavedInboxScroll ? Number.POSITIVE_INFINITY : 24,
+    resetKey: messageContext,
+  });
 
   // Total unread across all conversations — drives the "Mark all as read" enablement.
   const totalUnread = React.useMemo(
@@ -1190,9 +1203,14 @@ export default function Messages() {
         }
       }, [] as (typeof displayThreads[0] & { _dedupeKey: string })[]);
 
+    // VTID-05081 (A2): progressive slice, but a search shows every match. A
+    // deep-linked thread may sit beyond the first slice; the deep link opens the
+    // conversation itself, so only its row highlight arrives a few idle frames later.
+    const visibleThreads = inboxSearchQuery.trim() ? sortedThreads : sortedThreads.slice(0, mobileListLimit);
+
     return (
       <div className="space-y-2">
-        {sortedThreads.map((thread) => (
+        {visibleThreads.map((thread) => (
           <FeedItemErrorBoundary
             key={thread.id}
             fallback={

@@ -18,7 +18,10 @@
     "tests/e2e/staging/screen-journey.staging.spec.ts",
     "docs/validation/VTID-05081/**",
     "src/components/mobile/MobileAppShell.tsx",
-    "src/components/mobile/MobileAppShell.vtid-05081.test.tsx"
+    "src/components/mobile/MobileAppShell.vtid-05081.test.tsx",
+    "src/pages/Messages.tsx",
+    "src/hooks/useProgressiveCount.ts",
+    "src/hooks/useProgressiveCount.test.ts"
   ],
   "sparring_record": "docs/validation/VTID-05081/plan-sparring.md",
   "weakens_tests": [],
