@@ -355,6 +355,24 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
     return `network: ${downloads.length} requests, ${Math.round(total / 1024)} KB; largest: ${top.join(' ; ')}`;
   };
 
+  // VTID-05081 diagnostics: a sampled CPU profile per step, summarised (self
+  // time by function, with its script and line:column) only when the step is
+  // slow, so the cause can be mapped back to source.
+  type ProfileNode = { id: number; hitCount?: number; callFrame: { functionName: string; url: string; lineNumber: number; columnNumber: number } };
+  const profileSummary = (profile: { nodes: ProfileNode[]; startTime: number; endTime: number; samples?: number[] }) => {
+    const total = profile.nodes.reduce((n, x) => n + (x.hitCount ?? 0), 0) || 1;
+    const msPerHit = (profile.endTime - profile.startTime) / 1000 / total;
+    const self = new Map<string, number>();
+    for (const n of profile.nodes) {
+      const f = n.callFrame;
+      const file = f.url.replace(/\?.*$/, '').split('/').pop() || f.url;
+      const key = f.url ? `${f.functionName || '(anon)'}@${file}:${f.lineNumber + 1}:${f.columnNumber + 1}` : f.functionName;
+      self.set(key, (self.get(key) ?? 0) + (n.hitCount ?? 0) * msPerHit);
+    }
+    const top = [...self.entries()].filter(([k]) => k !== '(idle)').sort((a, b) => b[1] - a[1]).slice(0, 15);
+    return `profile: ${top.map(([k, ms]) => `${Math.round(ms)}ms ${k}`).join(' ; ')}`;
+  };
+
   // Sign in (unthrottled) exactly as VTID-05013's spec does.
   await page.goto('/maxina', { waitUntil: 'domcontentloaded' });
   const anon = await page.evaluate(() => [...document.scripts].map((x) => x.src).find((x) => x.includes('/assets/index-')) ?? '');
@@ -388,6 +406,8 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
     uploadThroughput: Math.round((1.5 * 1024 * 1024) / 8),
   });
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await cdp.send('Profiler.enable');
+  await cdp.send('Profiler.setSamplingInterval', { interval: 1000 });
 
   // Start: cold load of News (covered by LCP RUM; logged, not asserted).
   images.beginStep();
@@ -411,13 +431,15 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
       w.__sjTapAt = undefined;
       w.__sjArmed = true;
     });
+    await cdp.send('Profiler.start');
     await page.locator(`a[href="${path}"]:visible`).first().tap();
     const ready = await page.evaluate(waitScreenReady, { path, cap: CAP_MS, fromNavigationStart: false });
+    const { profile } = (await cdp.send('Profiler.stop')) as unknown as { profile: { nodes: ProfileNode[]; startTime: number; endTime: number } };
 
     // Read before the return-visit stability wait, bounded at the ready time.
     const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
     const slow = ready.timed_out || ready.ready_ms > budget;
-    const timeline = slow ? ` [${await page.evaluate(stepTimeline, ready.ready_ms)}]` : '';
+    const timeline = slow ? ` [${await page.evaluate(stepTimeline, ready.ready_ms)}] [${profileSummary(profile)}]` : '';
 
     let frameChanges = 0;
     if (nav === 'return') {
