@@ -33,3 +33,9 @@ TEST: src/components/contacts/VerifyPhoneDialog.test.tsx — "PhoneNumberCard an
 
 AC-5 Every new string exists in all eleven locales; German is du-form.
 TEST: src/components/contacts/VerifyPhoneDialog.test.tsx — "i18n"
+
+## Fix forward — mobile Settings → Privacy (STAGING-VERIFY run 38284505767)
+STAGING-VERIFY on b9891fa5 failed the VTID-05096 spec: on a phone, `/settings/privacy` redirects to `MobileSettings` (`/settings?mode=privacy`), whose visibility section is a fixed list of switches — so neither the new phone number card nor VTID-05058's discoverability switch was on the screen phone members see, and `GET /api/v1/me/phone` was never requested. `MobileSettings` privacy.visibility now renders `PhoneNumberCard` and `PhoneDiscoverabilityToggle` (both hide themselves when unavailable).
+
+AC-6 On a phone, Settings → Privacy shows the phone number card and the discoverability switch.
+TEST: src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx (fails without the fix, passes with it); tests/e2e/staging/vtid-05096-verify-phone.staging.spec.ts

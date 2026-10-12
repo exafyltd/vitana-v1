@@ -26,6 +26,8 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAIConsent } from "@/hooks/useAIConsent";
+import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
+import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
@@ -288,6 +290,13 @@ export default function MobileSettings() {
                   <Switch defaultChecked={item.defaultChecked} />
                 </div>
               ))}
+              {/* VTID-05096: the same phone number card and "findable by my
+                  number" switch as the desktop Privacy page (VTID-05058); both
+                  hide themselves when unavailable. */}
+              <div className="space-y-4 pt-2" data-testid="mobile-privacy-phone">
+                <PhoneNumberCard />
+                <PhoneDiscoverabilityToggle />
+              </div>
             </CardContent>
           </Card>
         );
