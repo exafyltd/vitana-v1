@@ -454,7 +454,67 @@
       "verdict": "OK",
       "confidence": 0.95,
       "phase": "llm"
+    },
+    "autopilot.draft.titlePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.hint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.regenerate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:36:57.680Z"
+  "generatedAt": "2026-10-12T11:11:19.774Z"
 }

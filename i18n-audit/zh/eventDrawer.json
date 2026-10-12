@@ -294,7 +294,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "eventDrawer.attendingCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:30.696Z"
+  "generatedAt": "2026-10-12T11:11:54.098Z"
 }
