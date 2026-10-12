@@ -88,3 +88,49 @@ export function normalizeRecommendationMatches(
   }
   return out;
 }
+
+/** The four USER CONTEXT lines of the scoring prompt. */
+export interface RecommendationContextLines {
+  interests: string;
+  goals: string;
+  location: string;
+  recentActivities: string;
+}
+
+const asRecord = (v: unknown): Record<string, unknown> | null =>
+  v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : null;
+
+const strings = (v: unknown): string[] =>
+  (Array.isArray(v) ? v : []).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
+
+/**
+ * VTID-05119 — maps the `fetch-user-context` response (`{ context, cached, … }`)
+ * onto the scoring prompt's USER CONTEXT lines. The caller used to read
+ * top-level `interests` / `goals` / `profile` / `recentDiaryEntries`, which the
+ * callee never returns, so every line read "None". Every level is optional; a
+ * missing or garbled response yields today's defaults. The fallbacks are
+ * English prompt labels for the model, not speech.
+ */
+export function recommendationContextLines(contextResponse: unknown): RecommendationContextLines {
+  const context = asRecord(asRecord(contextResponse)?.context);
+  const community = asRecord(context?.community);
+  const health = asRecord(context?.health);
+
+  const interests = strings(community?.userInterests);
+  const goals = strings(health?.goals);
+  const rawLocation = community?.userLocation;
+  const location = typeof rawLocation === 'string' && rawLocation.trim() ? rawLocation : null;
+  const rawDiary = health?.recentDiaryEntries;
+  const diary = (Array.isArray(rawDiary) ? rawDiary : [])
+    .map((d) => asRecord(d)?.text)
+    .filter((t): t is string => typeof t === 'string' && t.trim().length > 0)
+    .slice(0, 3)
+    .map((t) => t.slice(0, 100));
+
+  return {
+    interests: interests.join(', ') || 'None',
+    goals: goals.join(', ') || 'None',
+    location: location || 'Not specified',
+    recentActivities: diary.join('; ') || 'None',
+  };
+}

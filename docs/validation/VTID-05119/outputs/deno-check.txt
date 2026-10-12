@@ -1,0 +1,30 @@
+### BEFORE (origin/main bcae4d0a, deno 2.3.1)
+== deno check supabase/functions/fetch-user-context/index.ts
+TS2353 [ERROR]: Object literal may only specify known properties, and 'exchangeRates' does not exist in type '{ balances: { USD: number; VTNA: number; CREDITS: number; }; recentTransactions: { type: string; amount: number; currency: string; timestamp: string; }[]; pendingPayments: number; }'.
+TS2353 [ERROR]: Object literal may only specify known properties, and 'aiMemoryHighlights' does not exist in type '{ recentConversations: { id: string; agentType: string; lastMessage: string; timestamp: string; }[]; rememberedInsights: { type: string; content: string; confidence: number; timestamp: string; }[]; learnedPreferences: Record<...>; patterns: { ...; }[]; actionHistory: { ...; }[]; }'.
+TS18046 [ERROR]: 'error' is of type 'unknown'.
+TS2339 [ERROR]: Property 'catch' does not exist on type 'PromiseLike<void>'.
+TS7006 [ERROR]: Parameter 'err' implicitly has an 'any' type.
+Found 5 errors.
+exit 1
+== deno check supabase/functions/generate-enhanced-recommendations/index.ts
+TS2345 [ERROR]: Argument of type 'SupabaseClient<any, "public", any>' is not assignable to parameter of type 'SupabaseClient<any, "public", "public", any, any>'.
+exit 1
+== deno check supabase/functions/_shared/recommendation-matches.ts
+exit 0
+### AFTER (branch fu/VTID-05119, deno 2.3.1)
+== deno check supabase/functions/fetch-user-context/index.ts
+TS2353 [ERROR]: Object literal may only specify known properties, and 'exchangeRates' does not exist in type '{ balances: { USD: number; VTNA: number; CREDITS: number; }; recentTransactions: { type: string; amount: number; currency: string; timestamp: string; }[]; pendingPayments: number; }'.
+TS2353 [ERROR]: Object literal may only specify known properties, and 'aiMemoryHighlights' does not exist in type '{ recentConversations: { id: string; agentType: string; lastMessage: string; timestamp: string; }[]; rememberedInsights: { type: string; content: string; confidence: number; timestamp: string; }[]; learnedPreferences: Record<...>; patterns: { ...; }[]; actionHistory: { ...; }[]; }'.
+TS18046 [ERROR]: 'error' is of type 'unknown'.
+TS2339 [ERROR]: Property 'catch' does not exist on type 'PromiseLike<void>'.
+TS7006 [ERROR]: Parameter 'err' implicitly has an 'any' type.
+Found 5 errors.
+exit 1
+== deno check supabase/functions/generate-enhanced-recommendations/index.ts
+TS2345 [ERROR]: Argument of type 'SupabaseClient<any, "public", any>' is not assignable to parameter of type 'SupabaseClient<any, "public", "public", any, any>'.
+exit 1
+== deno check supabase/functions/_shared/recommendation-matches.ts
+exit 0
+== deno check supabase/functions/_shared/read-json-body.ts
+exit 0

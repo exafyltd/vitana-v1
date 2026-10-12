@@ -1,0 +1,30 @@
+     × parses the body with readJsonBody, never a bare req.json() 17ms
+     × answers an invalid body with 400 1ms
+     × keeps the empty-body lenience at the call site, with a comment 1ms
+     × maps the fetch-user-context response shape onto the four prompt lines 4ms
+     × joins string goals when the callee returns some 1ms
+     × yields every default for null 0ms
+     × yields every default for an empty object 1ms
+     × yields every default for an empty context 1ms
+     × yields every default for a string 1ms
+     × yields every default for a number 3ms
+     × skips non-string interests 1ms
+     × caps diary entries at 3 1ms
+     × maps the fetch-user-context response through recommendationContextLines (VTID-05119) 33ms
+     × logs a fetch-user-context invoke error instead of swallowing it (VTID-05119) 11ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > parses the body with readJsonBody, never a bare req.json()
+ FAIL  src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > answers an invalid body with 400
+ FAIL  src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > keeps the empty-body lenience at the call site, with a comment
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > maps the fetch-user-context response shape onto the four prompt lines
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > joins string goals when the callee returns some
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for null
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for an empty object
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for an empty context
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for a string
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for a number
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > skips non-string interests
+ FAIL  src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > caps diary entries at 3
+ FAIL  src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > maps the fetch-user-context response through recommendationContextLines (VTID-05119)
+ FAIL  src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > logs a fetch-user-context invoke error instead of swallowing it (VTID-05119)
+ Test Files  2 failed (2)

@@ -3,6 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { createDataClient } from "../_shared/data-client.ts";
 import { isServiceRoleCaller, requireUser, forbidden } from "../_shared/caller-auth.ts";
+import { readJsonBody } from "../_shared/read-json-body.ts";
 
 // OPTIMIZATION: In-memory cache with 5-minute TTL
 const contextCache = new Map<string, { data: any, expiresAt: number }>();
@@ -654,10 +655,20 @@ serve(async (req) => {
   }
 
   try {
-    // Get userId and forceRefresh from request body
-    const body = await req.json();
-    const userId = body.userId;
-    const forceRefresh = body.forceRefresh || false;
+    // Get userId and forceRefresh from request body (VTID-05119: a bare
+    // req.json() threw on the empty body and answered 500).
+    const parsed = await readJsonBody(req);
+    if (parsed.kind === 'invalid') {
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON body' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    // An empty body is a valid request: "my own context". The only caller,
+    // generate-enhanced-recommendations, sends none. The user then comes from the JWT below.
+    const body: Record<string, unknown> = parsed.kind === 'json' ? parsed.value : {};
+    const userId = typeof body.userId === 'string' ? body.userId : undefined;
+    const forceRefresh = body.forceRefresh === true;
 
     // VTID-05049: a body userId is honoured only for a service-role caller.
     // verify_jwt=true accepts the public anon key, so before this anyone could
