@@ -40,7 +40,7 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
   // it does — which used to render "Access Denied" for a flash on every
   // role-gated route before the real role arrived and this re-rendered.
   if (isLoading && settledFor !== owner) {
-    return <DelayedLoader fullscreen />;
+    return <DelayedLoader fullscreen source="protected-route" />;
   }
 
   if (!hasPermission(requiredRole)) {

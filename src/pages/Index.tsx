@@ -35,7 +35,7 @@ const Index = () => {
   // post-login "wrong screen flashes before the first MAXINA screen" bug —
   // loading must look like loading (spinner), never like a different screen.
   if (authLoading || user) {
-    return <DelayedLoader fullscreen />;
+    return <DelayedLoader fullscreen source="index" />;
   }
 
   return (

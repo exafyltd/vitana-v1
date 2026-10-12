@@ -304,7 +304,7 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
   // show a full-screen spinner (not a blank screen) for that redirect window.
   if (!user) {
     if (allowGuest) return children;
-    return <DelayedLoader fullscreen />;
+    return <DelayedLoader fullscreen source="auth-guard" />;
   }
 
   return children;

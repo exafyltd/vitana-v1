@@ -513,7 +513,7 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
   // My Journey from flashing the Full-app shell before the Guided screen.
   // Returning users resolve from cache (guidedLoading=false) and skip this.
   if (isMobile && guidedLoading) {
-    return <DelayedLoader fullscreen />;
+    return <DelayedLoader fullscreen source="app-layout-guided" />;
   }
 
   return (
