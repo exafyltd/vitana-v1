@@ -273,7 +273,14 @@ export default function Messages() {
   // VTID-05081 (A2): the mobile list paints its first conversations at once and
   // the rest over idle frames, so a large inbox (200+ threads) does not hold the
   // first paint of Postfach. The end state is the full list.
-  const mobileListLimit = useProgressiveCount(displayThreads.length);
+  // Desktop never reads it (total 0, nothing scheduled); a new inbox context
+  // starts small again; a list with a saved scroll position renders in full so
+  // the restore below lands where the member left it.
+  const hasSavedInboxScroll = (inboxListScrollMemory.get(messageContext) ?? 0) > 0;
+  const mobileListLimit = useProgressiveCount(isMobile ? displayThreads.length : 0, {
+    initial: hasSavedInboxScroll ? Number.POSITIVE_INFINITY : 24,
+    resetKey: messageContext,
+  });
 
   // Total unread across all conversations — drives the "Mark all as read" enablement.
   const totalUnread = React.useMemo(

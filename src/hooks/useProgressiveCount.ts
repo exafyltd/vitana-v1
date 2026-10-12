@@ -13,13 +13,22 @@ type IdleWindow = Window & {
  * `total` grows). The end state is the full list; only the first paint is
  * cheaper. Pure render-count logic — it never touches data.
  */
-export function useProgressiveCount(total: number, { initial = 24, step = 40 }: { initial?: number; step?: number } = {}): number {
+export function useProgressiveCount(
+  total: number,
+  { initial = 24, step = 40, resetKey }: { initial?: number; step?: number; resetKey?: unknown } = {},
+): number {
   const [count, setCount] = useState(() => Math.min(total, initial));
+  // A new list (resetKey changed, e.g. another inbox context) starts small again.
+  const [key, setKey] = useState(resetKey);
+  if (key !== resetKey) {
+    setKey(resetKey);
+    setCount(Math.min(total, initial));
+  }
 
   useEffect(() => {
     if (count >= total) return;
     const w = window as IdleWindow;
-    const grow = () => setCount((c) => Math.min(total, Math.max(c, initial) + step));
+    const grow = () => setCount((c) => Math.min(total, Math.max(c, Math.min(total, initial)) + step));
     if (typeof w.requestIdleCallback === 'function') {
       const id = w.requestIdleCallback(grow, { timeout: 300 });
       return () => w.cancelIdleCallback?.(id);

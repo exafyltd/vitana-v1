@@ -73,4 +73,29 @@ describe('useProgressiveCount (VTID-05081 A2)', () => {
     flushIdle(1);
     expect(result.current).toBe(50);
   });
+
+  it('starts small again when the reset key changes (another inbox context)', () => {
+    const { result, rerender } = renderHook(({ total, key }) => useProgressiveCount(total, { initial: 24, step: 40, resetKey: key }), {
+      initialProps: { total: 213, key: 'global' },
+    });
+    flushIdle(10);
+    expect(result.current).toBe(213);
+    rerender({ total: 200, key: 'tenant' });
+    expect(result.current).toBe(24);
+    flushIdle(10);
+    expect(result.current).toBe(200);
+  });
+
+  it('renders everything at once with an infinite initial (saved scroll to restore)', () => {
+    const { result } = renderHook(() => useProgressiveCount(213, { initial: Number.POSITIVE_INFINITY }));
+    expect(result.current).toBe(213);
+  });
+
+  it('schedules nothing for a total of 0 (desktop)', () => {
+    const ric = vi.fn();
+    (window as unknown as IdleWindow).requestIdleCallback = ric;
+    const { result } = renderHook(() => useProgressiveCount(0));
+    expect(result.current).toBe(0);
+    expect(ric).not.toHaveBeenCalled();
+  });
 });
