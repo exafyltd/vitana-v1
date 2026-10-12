@@ -230,6 +230,44 @@
       },
       "page": {
         "description": "Invite friends with your personal link or find them in your contacts."
+      },
+      "verifyPhone": {
+        "title": "Your phone number",
+        "body": "Verify your number so friends who have it saved can find you on Vitanaland.",
+        "verifiedLabel": "Verified:",
+        "verify": "Verify number",
+        "change": "Change",
+        "remove": "Remove",
+        "removeTitle": "Remove your number?",
+        "removeBody": "Friends will no longer find you by your number. You can verify it again at any time.",
+        "removed": "Your number was removed.",
+        "dialogTitle": "Verify your phone number",
+        "numberLabel": "Mobile number",
+        "numberHelp": "We'll text you a 6-digit code. Your number stays private.",
+        "sendCode": "Send code",
+        "codeLabel": "Code from the text message",
+        "codeHelp": "We sent the code to",
+        "confirm": "Verify",
+        "resendIn": "New code in {seconds} s",
+        "resend": "Send a new code",
+        "changeNumber": "Different number",
+        "done": "Your number is verified. Friends who have it saved can now find you.",
+        "hint": "Verify your number so friends can find you.",
+        "hintAction": "Verify now",
+        "errors": {
+          "INVALID_PHONE": "That doesn't look like a valid number.",
+          "NOT_A_MOBILE_NUMBER": "Please enter a mobile number.",
+          "COUNTRY_NOT_SUPPORTED": "We can't send text messages to this country yet.",
+          "ACCOUNT_NOT_ELIGIBLE": "This isn't possible with this account.",
+          "PHONE_IN_USE": "This number is already verified on another account.",
+          "TOO_MANY_REQUESTS": "Too many attempts. Please try again later.",
+          "SMS_SEND_FAILED": "The text message couldn't be sent. Please try again.",
+          "INVALID_CODE": "That code isn't right.",
+          "CODE_EXPIRED": "The code has expired. Request a new one.",
+          "NO_PENDING_CODE": "Request a code first.",
+          "TOO_MANY_ATTEMPTS": "Too many wrong attempts. Request a new code.",
+          "unknown": "That didn't work. Please try again."
+        }
       }
     },
     "requested": {

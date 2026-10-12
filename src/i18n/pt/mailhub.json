@@ -262,6 +262,44 @@
       },
       "page": {
         "description": "Convide amigos com seu link pessoal ou encontre-os nos seus contatos."
+      },
+      "verifyPhone": {
+        "title": "Seu número de telefone",
+        "body": "Verifique seu número para que amigos que o têm salvo encontrem você no Vitanaland.",
+        "verifiedLabel": "Verificado:",
+        "verify": "Verificar número",
+        "change": "Alterar",
+        "remove": "Remover",
+        "removeTitle": "Remover seu número?",
+        "removeBody": "Seus amigos não vão mais encontrar você pelo número. Você pode verificá-lo de novo quando quiser.",
+        "removed": "Seu número foi removido.",
+        "dialogTitle": "Verificar seu número de telefone",
+        "numberLabel": "Número de celular",
+        "numberHelp": "Vamos enviar um código de 6 dígitos por SMS. Seu número continua privado.",
+        "sendCode": "Enviar código",
+        "codeLabel": "Código do SMS",
+        "codeHelp": "Enviamos o código para",
+        "confirm": "Verificar",
+        "resendIn": "Novo código em {seconds} s",
+        "resend": "Enviar novo código",
+        "changeNumber": "Outro número",
+        "done": "Seu número está verificado. Amigos que o têm salvo já podem encontrar você.",
+        "hint": "Verifique seu número para que seus amigos encontrem você.",
+        "hintAction": "Verificar agora",
+        "errors": {
+          "INVALID_PHONE": "Isso não parece um número válido.",
+          "NOT_A_MOBILE_NUMBER": "Digite um número de celular.",
+          "COUNTRY_NOT_SUPPORTED": "Ainda não conseguimos enviar SMS para este país.",
+          "ACCOUNT_NOT_ELIGIBLE": "Isso não é possível com esta conta.",
+          "PHONE_IN_USE": "Este número já está verificado em outra conta.",
+          "TOO_MANY_REQUESTS": "Muitas tentativas. Tente de novo mais tarde.",
+          "SMS_SEND_FAILED": "Não foi possível enviar o SMS. Tente de novo.",
+          "INVALID_CODE": "O código não está correto.",
+          "CODE_EXPIRED": "O código expirou. Peça um novo.",
+          "NO_PENDING_CODE": "Peça um código primeiro.",
+          "TOO_MANY_ATTEMPTS": "Muitas tentativas erradas. Peça um novo código.",
+          "unknown": "Não deu certo. Tente de novo."
+        }
       }
     },
     "requested": {

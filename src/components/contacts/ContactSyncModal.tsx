@@ -6,6 +6,7 @@ import { ContactConsentCard } from "./ContactConsentCard";
 import { ContactSourcePicker, ContactSource } from "./ContactSourcePicker";
 import { DedupePreviewList, MatchedContact, ImportedContact } from "./DedupePreviewList";
 import { ContactSyncErrorState, type ContactSyncErrorType } from "./ContactSyncErrorState";
+import { VerifyPhoneHint } from "./VerifyPhoneHint";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useContactSync, ConnectAppFirst, ContactFileError, phoneImportMode, type SyncResult } from "@/hooks/useContactSync";
@@ -247,6 +248,7 @@ export function ContactSyncModal({
               <DedupePreviewList matches={matches} nonMatches={nonMatches} onMessage={handleMessage} />
             </div>
             <p className="text-xs text-muted-foreground text-center">{t('mailhub.findFriends.results.later')}</p>
+            <VerifyPhoneHint />
             <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full min-h-11">
               {t('mailhub.findFriends.results.done')}
             </Button>

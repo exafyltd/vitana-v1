@@ -242,6 +242,44 @@
       },
       "page": {
         "description": "Pozovi prijatelje svojim ličnim linkom ili ih pronađi u kontaktima."
+      },
+      "verifyPhone": {
+        "title": "Tvoj broj telefona",
+        "body": "Potvrdi svoj broj da bi te prijatelji koji ga imaju sačuvanog našli na Vitanaland-u.",
+        "verifiedLabel": "Potvrđen:",
+        "verify": "Potvrdi broj",
+        "change": "Promeni",
+        "remove": "Ukloni",
+        "removeTitle": "Ukloniti tvoj broj?",
+        "removeBody": "Prijatelji te više neće pronaći preko broja. Možeš ga ponovo potvrditi bilo kada.",
+        "removed": "Tvoj broj je uklonjen.",
+        "dialogTitle": "Potvrdi broj telefona",
+        "numberLabel": "Broj mobilnog",
+        "numberHelp": "Poslaćemo ti šestocifreni kod putem SMS-a. Tvoj broj ostaje privatan.",
+        "sendCode": "Pošalji kod",
+        "codeLabel": "Kod iz SMS-a",
+        "codeHelp": "Poslali smo kod na",
+        "confirm": "Potvrdi",
+        "resendIn": "Novi kod za {seconds} s",
+        "resend": "Pošalji novi kod",
+        "changeNumber": "Drugi broj",
+        "done": "Tvoj broj je potvrđen. Prijatelji koji ga imaju sačuvanog sada mogu da te nađu.",
+        "hint": "Potvrdi svoj broj da bi te prijatelji našli.",
+        "hintAction": "Potvrdi sada",
+        "errors": {
+          "INVALID_PHONE": "Ovo ne izgleda kao ispravan broj.",
+          "NOT_A_MOBILE_NUMBER": "Unesi broj mobilnog telefona.",
+          "COUNTRY_NOT_SUPPORTED": "U ovu zemlju još ne možemo da šaljemo SMS.",
+          "ACCOUNT_NOT_ELIGIBLE": "Sa ovim nalogom to nije moguće.",
+          "PHONE_IN_USE": "Ovaj broj je već potvrđen na drugom nalogu.",
+          "TOO_MANY_REQUESTS": "Previše pokušaja. Pokušaj ponovo kasnije.",
+          "SMS_SEND_FAILED": "SMS nije mogao da se pošalje. Pokušaj ponovo.",
+          "INVALID_CODE": "Kod nije tačan.",
+          "CODE_EXPIRED": "Kod je istekao. Zatraži novi.",
+          "NO_PENDING_CODE": "Prvo zatraži kod.",
+          "TOO_MANY_ATTEMPTS": "Previše pogrešnih pokušaja. Zatraži novi kod.",
+          "unknown": "Nije uspelo. Pokušaj ponovo."
+        }
       }
     },
     "requested": {
