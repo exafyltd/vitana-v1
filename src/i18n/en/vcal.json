@@ -347,11 +347,7 @@
       "placeHidden": "Show the place – off: the place stays private",
       "showPlace": "Show place",
       "previewLabel": "What others see",
-      "sensitiveHint": "You're sharing a health appointment. Check the title and place – others only see what is shown here.",
-      "_pending_review": {
-        "alreadyShared": true,
-        "notShareable": true
-      }
+      "sensitiveHint": "You're sharing a health appointment. Check the title and place – others only see what is shown here."
     },
     "feedCard": {
       "upcoming": "Coming up",
