@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05096",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: Settings → Privacy reads GET /api/v1/me/phone from the staging gateway (enabled:false while PHONE_VERIFY_ENABLED is off), shows no phone number card and no verify button, keeps the discoverability switch, no overflow; read-only — nothing is sent or written",
+      "spec": "tests/e2e/staging/vtid-05096-verify-phone.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/contacts/VerifyPhoneDialog.test.tsx src/components/contacts/ContactSyncModal.test.tsx",
+      "reason": "Sending a code, confirming it and removing a number send an SMS and write to the shared production database, so they are proven here: the dialog steps and what each sends, numeric one-time-code autofill, the resend timer, a message for every gateway error code (unknown codes fall back), the card and the Find friends hint hidden while the switch is off or the status call fails, Verify / Change / Remove with a confirmation, numbers LTR inside RTL, and every new string in eleven locales (German du-form)."
+    }
+  ]
+}

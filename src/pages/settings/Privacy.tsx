@@ -20,6 +20,7 @@ import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { SpotlightConsentToggle } from "@/components/settings/SpotlightConsentToggle";
 import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
+import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
 import { t } from '@/lib/i18n-toast';
 
 function Privacy() {
@@ -156,6 +157,7 @@ function Privacy() {
                           <Switch />
                         </div>
                         <SpotlightConsentToggle />
+                        <PhoneNumberCard />
                         <PhoneDiscoverabilityToggle />
                       </div>
                     }

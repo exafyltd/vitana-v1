@@ -245,6 +245,44 @@
       },
       "page": {
         "description": "Invita a tus amigos con tu enlace personal o encuéntralos en tus contactos."
+      },
+      "verifyPhone": {
+        "title": "Tu número de teléfono",
+        "body": "Verifica tu número para que los amigos que lo tienen guardado te encuentren en Vitanaland.",
+        "verifiedLabel": "Verificado:",
+        "verify": "Verificar número",
+        "change": "Cambiar",
+        "remove": "Eliminar",
+        "removeTitle": "¿Eliminar tu número?",
+        "removeBody": "Tus amigos ya no te encontrarán por tu número. Puedes volver a verificarlo cuando quieras.",
+        "removed": "Tu número se ha eliminado.",
+        "dialogTitle": "Verificar tu número de teléfono",
+        "numberLabel": "Número de móvil",
+        "numberHelp": "Te enviaremos un código de 6 dígitos por SMS. Tu número sigue siendo privado.",
+        "sendCode": "Enviar código",
+        "codeLabel": "Código del SMS",
+        "codeHelp": "Enviamos el código a",
+        "confirm": "Verificar",
+        "resendIn": "Nuevo código en {seconds} s",
+        "resend": "Enviar un código nuevo",
+        "changeNumber": "Otro número",
+        "done": "Tu número está verificado. Los amigos que lo tienen guardado ya pueden encontrarte.",
+        "hint": "Verifica tu número para que tus amigos te encuentren.",
+        "hintAction": "Verificar ahora",
+        "errors": {
+          "INVALID_PHONE": "Eso no parece un número válido.",
+          "NOT_A_MOBILE_NUMBER": "Introduce un número de móvil.",
+          "COUNTRY_NOT_SUPPORTED": "Todavía no podemos enviar SMS a este país.",
+          "ACCOUNT_NOT_ELIGIBLE": "Esto no es posible con esta cuenta.",
+          "PHONE_IN_USE": "Este número ya está verificado en otra cuenta.",
+          "TOO_MANY_REQUESTS": "Demasiados intentos. Inténtalo más tarde.",
+          "SMS_SEND_FAILED": "No se pudo enviar el SMS. Inténtalo de nuevo.",
+          "INVALID_CODE": "El código no es correcto.",
+          "CODE_EXPIRED": "El código ha caducado. Pide uno nuevo.",
+          "NO_PENDING_CODE": "Primero pide un código.",
+          "TOO_MANY_ATTEMPTS": "Demasiados intentos fallidos. Pide un código nuevo.",
+          "unknown": "No ha funcionado. Inténtalo de nuevo."
+        }
       }
     },
     "requested": {
