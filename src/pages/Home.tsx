@@ -11,7 +11,7 @@
  *   - NewsCard swaps to fallback automatically if primary fails to load.
  */
 
-import { useState, useRef, useCallback, useEffect, useMemo } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo, memo } from "react";
 import { RefreshCw, Loader2, Plus, UserPlus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -57,6 +57,7 @@ import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
+import { NewsKeepAliveSlot, registerNewsScrollKeeper, useNewsActive } from "@/components/keepalive/NewsKeepAlive";
 
 import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterTab = "all" | "longevity" | "community";
@@ -64,7 +65,27 @@ type FilterTab = "all" | "longevity" | "community";
 /** Last scroll offset per feed tab, kept across unmounts of this route. */
 const feedScrollMemory = new Map<FilterTab, number>();
 
+/**
+ * VTID-05081: the /home route. News content lives in the keep-alive host
+ * (see NewsKeepAlive.tsx) and is attached here, so a tab switch no longer
+ * unmounts and rebuilds it. Exactly one AppLayout — this one — exists.
+ */
 export default function Home() {
+  return (
+    <AppLayout>
+      <NewsKeepAliveSlot content={HomeContent} />
+    </AppLayout>
+  );
+}
+
+/**
+ * The News body. Kept mounted while the member is on another tab; `active`
+ * is false then and the location it reads is frozen at the last /home* URL
+ * (NewsKeepAlive.tsx), so nothing here re-renders until News is attached again.
+ */
+export const HomeContent = memo(function HomeContent() {
+  // VTID-05081: false while News is kept alive behind another tab.
+  const active = useNewsActive();
   const [searchParams, setSearchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab") as FilterTab | null;
   const [activeTab, setActiveTabState] = useState<FilterTab>(
@@ -93,10 +114,11 @@ export default function Home() {
   // absent/invalid tab falls back to the default All feed. Read-only
   // (no setSearchParams here), so it can't loop with the setter above.
   useEffect(() => {
+    if (!active) return;
     const t = searchParams.get("tab");
     const next: FilterTab = t && ["all", "longevity", "community"].includes(t) ? (t as FilterTab) : "all";
     setActiveTabState((prev) => (prev === next ? prev : next));
-  }, [searchParams]);
+  }, [searchParams, active]);
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
@@ -107,7 +129,7 @@ export default function Home() {
   // button. Strips the param right after opening so back/refresh doesn't
   // reopen it.
   useEffect(() => {
-    if (searchParams.get("compose") !== "1") return;
+    if (!active || searchParams.get("compose") !== "1") return;
     // VTID-04504: an Autopilot draft the member reviewed rides along as ?draft=.
     const draft = searchParams.get("draft");
     if (draft) setComposeDraft(draft);
@@ -116,7 +138,7 @@ export default function Home() {
     next.delete("compose");
     next.delete("draft");
     setSearchParams(next, { replace: true });
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, active]);
   const navigate = useNavigate();
   const location = useLocation();
   // Path-based twin of "?compose=1" — Appilix's Android WebView silently
@@ -125,10 +147,10 @@ export default function Home() {
   // points here instead of the query-string form. Normalizes back to /home
   // right after opening, same as the query-string path above.
   useEffect(() => {
-    if (location.pathname !== "/home/compose") return;
+    if (!active || location.pathname !== "/home/compose") return;
     setCreatePostOpen(true);
     navigate("/home", { replace: true });
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, active]);
 
   // Path-based deep link for the "Reply & Like Comments" announcement
   // card's "Try it yourself" CTA — opens the comments sheet on the first
@@ -138,10 +160,10 @@ export default function Home() {
   // had a chance to mount the target card with the flag set.
   const [commentsDeepLinkActive, setCommentsDeepLinkActive] = useState(false);
   useEffect(() => {
-    if (location.pathname !== "/home/comments") return;
+    if (!active || location.pathname !== "/home/comments") return;
     setCommentsDeepLinkActive(true);
     navigate("/home", { replace: true });
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, active]);
   useEffect(() => {
     if (!commentsDeepLinkActive) return;
     const id = setTimeout(() => setCommentsDeepLinkActive(false), 500);
@@ -172,14 +194,26 @@ export default function Home() {
     fetchNextPage: fetchNextV2, hasNextPage: hasNextV2, isFetchingNextPage: isFetchingNextV2,
   } = useAllNewsFeed({ enabled: feedV2 && activeTab === "all" });
 
-  // One impression event per tab activation (fire-and-forget).
+  // One impression event per tab activation (fire-and-forget). VTID-05081:
+  // and per return to News, as when the route remounted; never while hidden.
   useEffect(() => {
+    if (!active) return;
     track("news_feed_viewed", {
       event_type: "content",
       feature_key: "news_feed",
       properties: { tab: activeTab, feed_v2: feedV2 },
     });
-  }, [activeTab, feedV2]);
+  }, [activeTab, feedV2, active]);
+
+  // VTID-05081: popups and sheets close when News is hidden (as the old
+  // unmount did) — they portal to <body> and would otherwise sit on top of
+  // the next screen.
+  useEffect(() => {
+    if (active) return;
+    setCreatePostOpen(false);
+    setComposeDraft(undefined);
+    setAutopilotOpen(false);
+  }, [active]);
 
   const articles = useMemo(() => {
     const allArticles: NewsArticle[] = [];
@@ -271,14 +305,47 @@ export default function Home() {
     // Restore once per tab activation, not on every feed update.
   }, [activeTab]);
 
+  const isActiveRef = useRef(active);
+  isActiveRef.current = active;
+  const activeTabRef = useRef(activeTab);
+  activeTabRef.current = activeTab;
+
+  // VTID-05081: detached while News is hidden — window scroll then belongs to
+  // another screen. Detaching skips the final remember(): the slot already
+  // saved News's offset before the next screen went in (see below).
   useEffect(() => {
+    if (!active) return;
     const remember = () => feedScrollMemory.set(activeTab, window.scrollY);
     window.addEventListener("scroll", remember, { passive: true });
     return () => {
-      remember();
+      if (isActiveRef.current) remember();
       window.removeEventListener("scroll", remember);
     };
-  }, [activeTab]);
+  }, [activeTab, active]);
+
+  // VTID-05081: a return to News is not a tab change, so the effect above
+  // never re-runs for it. The slot saves the offset on detach and restores it
+  // on attach (same two-frame wait as above), keyed by the current tab.
+  useEffect(() => {
+    let raf1 = 0;
+    let raf2 = 0;
+    registerNewsScrollKeeper({
+      save: () => feedScrollMemory.set(activeTabRef.current, window.scrollY),
+      restore: () => {
+        cancelAnimationFrame(raf1);
+        cancelAnimationFrame(raf2);
+        const saved = feedScrollMemory.get(activeTabRef.current) ?? 0;
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+        });
+      },
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      registerNewsScrollKeeper(null);
+    };
+  }, []);
 
   const handleArticleClick = (article: NewsArticle) => {
     navigate(`/news/${article.id}`, { state: { article } });
@@ -547,8 +614,9 @@ export default function Home() {
   };
 
   return (
-    <AppLayout>
-      <SEO title={t('screens.home.newsMaxina')} description="Longevity science & community updates" canonical={window.location.href} />
+    <>
+      {/* VTID-05081: only the visible screen sets the title. */}
+      {active && <SEO title={t('screens.home.newsMaxina')} description="Longevity science & community updates" canonical={window.location.href} />}
       <div className={isMobile
         ? "px-4 pt-2 pb-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
         : "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
@@ -576,7 +644,7 @@ export default function Home() {
               >
                 <UserPlus className="h-4 w-4" />
               </Button>
-              <UniversalCalendarButton showText={!isMobile} className="!px-2" />
+              <UniversalCalendarButton showText={!isMobile} className="!px-2" overlayEnabled={active} />
               <Button
                 onClick={() => setCreatePostOpen(true)}
                 variant="ghost"
@@ -611,7 +679,7 @@ export default function Home() {
           {isMobile && renderFeedContent()}
         </div>
       </div>
-      {isMobile ? (
+      {active && (isMobile ? (
         <MobileCreatePostSheet open={createPostOpen} onOpenChange={setCreatePostOpen} />
       ) : (
         <CreateContentPopup
@@ -619,8 +687,8 @@ export default function Home() {
           initialContent={composeDraft}
           onClose={() => { setCreatePostOpen(false); setComposeDraft(undefined); }}
         />
-      )}
-      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
-    </AppLayout>
+      ))}
+      {active && <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />}
+    </>
   );
-}
+});

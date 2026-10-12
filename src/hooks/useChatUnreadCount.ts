@@ -31,6 +31,11 @@ let groupChannel: ReturnType<typeof supabase.channel> | null = null;
 let subscribedGroupKey = ""; // sorted group-id set the group channel is bound to
 let refetchTimer: ReturnType<typeof setTimeout> | null = null;
 let periodicTimer: ReturnType<typeof setInterval> | null = null;
+// VTID-05081: a tab switch unmounts the old screen's badge and mounts the new
+// one's, so the listener count touches 0 for a moment. Tearing down there
+// meant a refetch + re-subscribe on every switch; teardown now waits one
+// macrotask and only runs if nobody registered in between.
+let teardownTimer: ReturnType<typeof setTimeout> | null = null;
 
 function notify() {
   listeners.forEach((cb) => cb());
@@ -155,6 +160,10 @@ export function useChatUnreadCount() {
 
   useEffect(() => {
     if (!user) return;
+    if (teardownTimer) {
+      clearTimeout(teardownTimer);
+      teardownTimer = null;
+    }
     init(user.id);
 
     const cb = () => rerender((n) => n + 1);
@@ -163,7 +172,13 @@ export function useChatUnreadCount() {
     return () => {
       listeners.delete(cb);
       if (listeners.size === 0) {
-        teardown();
+        if (teardownTimer) clearTimeout(teardownTimer);
+        teardownTimer = setTimeout(() => {
+          teardownTimer = null;
+          // Re-check: a remount split across commits (e.g. by Suspense) may
+          // have registered without clearing this timer first.
+          if (listeners.size === 0) teardown();
+        }, 0);
       }
     };
   }, [user]);

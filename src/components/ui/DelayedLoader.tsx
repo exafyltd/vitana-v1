@@ -35,6 +35,9 @@ export function DelayedLoader({ delayMs = 400, fullscreen = false, className }: 
       } ${className ?? ''}`}
       role="status"
       aria-live="polite"
+      // VTID-05081: lets the staging phone journey name this loader when it
+      // is what a screen waited on.
+      data-testid="delayed-loader"
     >
       <Loader2
         className={`h-8 w-8 animate-spin text-primary transition-opacity duration-300 ${

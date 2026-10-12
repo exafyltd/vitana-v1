@@ -52,6 +52,7 @@ import SupportTicketFiledListener from "./components/support/SupportTicketFiledL
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
+import { NewsKeepAliveHost } from "@/components/keepalive/NewsKeepAlive"; // VTID-05081
 import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
 import { useNewsFeedKeepAlive } from "@/hooks/useNewsFeedKeepAlive";
 import { useScreenReadyTracking } from "@/hooks/useScreenReadyTracking";
@@ -2331,6 +2332,8 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
                   </Suspense>
+                  {/* VTID-05081: News stays mounted across tab switches; the /home route attaches it. */}
+                  <NewsKeepAliveHost />
                   </GlobalErrorBoundary>
                   </PaywallProvider>{/* VTID-03107 */}
                   </AudiobookPlayerProvider>{/* VTID-04761 */}

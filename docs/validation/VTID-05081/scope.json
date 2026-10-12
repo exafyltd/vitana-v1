@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05081",
+  "kind": "fix",
+  "paths": [
+    "src/App.tsx",
+    "src/pages/Home.tsx",
+    "src/components/keepalive/NewsKeepAlive.tsx",
+    "src/components/keepalive/NewsKeepAlive.test.tsx",
+    "src/components/UniversalCalendarButton.tsx",
+    "src/components/media/FeedMedia.tsx",
+    "src/hooks/useBackgroundPrefetch.ts",
+    "src/hooks/useBackgroundPrefetch.test.tsx",
+    "src/components/ProtectedRoute.tsx",
+    "src/components/ProtectedRoute.test.tsx",
+    "src/components/ui/DelayedLoader.tsx",
+    "src/hooks/useChatUnreadCount.ts",
+    "src/hooks/useChatUnreadCount.test.ts",
+    "tests/e2e/staging/screen-journey.staging.spec.ts",
+    "docs/validation/VTID-05081/**",
+    "src/components/mobile/MobileAppShell.tsx",
+    "src/components/mobile/MobileAppShell.vtid-05081.test.tsx"
+  ],
+  "sparring_record": "docs/validation/VTID-05081/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
