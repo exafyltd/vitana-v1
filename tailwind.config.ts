@@ -226,7 +226,29 @@ export default {
 					}
 				}
 			},
+			/* VTID-05105 Spotlight tokens — see src/index.css (--sp-*). */
+			maxWidth: {
+				stage: 'var(--sp-stage-max)',
+				form: 'var(--sp-form)',
+				wide: 'calc(var(--sp-stage-max) + var(--sp-gap) + var(--sp-rail))',
+			},
+			spacing: {
+				'vcard-thumb': '4rem',
+				'vcard-row-thumb': '3rem',
+				'vcard-compact': '4.5rem',
+				'sp-gap': 'var(--sp-gap)',
+			},
+			aspectRatio: {
+				landscape: '4 / 3',
+				portrait: '4 / 5',
+			},
+			boxShadow: {
+				vcard: 'var(--sp-elevation-1)',
+				'vcard-raised': 'var(--sp-elevation-2)',
+			},
 			borderRadius: {
+				vcard: 'var(--sp-card-radius)',
+				'vcard-sm': 'var(--sp-card-radius-sm)',
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
