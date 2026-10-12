@@ -12,13 +12,19 @@
  *   - Review & publish   — lifecycle_state live
  *   - Partner terms     — VTID-04895: GET /:orgId/terms; its own row below the
  *                          steps (accept / re-accept in PartnerTermsSheet)
+ *   - Data processing   — VTID-05091: only when the onboarding checklist's
+ *     agreement (AVV)     `dpa` step is required for this business; GET
+ *                          /:orgId/dpa for version and date; its own row
+ *                          below the terms row (sign / re-sign in
+ *                          PartnerDpaSheet, "being prepared" while no
+ *                          version is published)
  * Both endpoints already exist and already require org_admin, so the hub is
  * only shown to a business's admins. Nothing is written from here except the
  * profile sheet, which saves through PATCH /:orgId/company (the endpoint the
  * onboarding API already has for exactly these facts).
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CheckCircle2, ChevronRight, Circle, Clock, Loader2, ShieldCheck, TriangleAlert } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Circle, Clock, FileSignature, Loader2, ShieldCheck, TriangleAlert } from 'lucide-react';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -39,6 +45,9 @@ import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { t, notifyError, getI18nLocale } from '@/lib/i18n-toast';
 import { fetchPartnerTerms, type TermsStatus } from '@/lib/commerce-terms';
 import { PartnerTermsSheet } from '@/components/commerce/PartnerTermsSheet';
+import { deriveDpaRow, dpaStepOf, fetchPartnerDpa, type DpaChecklistStep, type DpaRowState, type DpaStatus } from '@/lib/commerce-dpa';
+import { PartnerDpaSheet } from '@/components/commerce/PartnerDpaSheet';
+import { fmtDate } from '@/lib/locale-format';
 
 export type StepState = 'done' | 'in_progress' | 'attention' | 'todo';
 
@@ -125,6 +134,11 @@ export function SetupHub({
   // VTID-04895: the partner terms — accepted, pending, or re-acceptance needed.
   const [terms, setTerms] = useState<TermsStatus | null>(null);
   const [termsOpen, setTermsOpen] = useState(false);
+  // VTID-05091: the data processing agreement — only when the checklist requires it.
+  const [dpaStep, setDpaStep] = useState<DpaChecklistStep | null>(null);
+  const [legalName, setLegalName] = useState<string | null>(null);
+  const [dpa, setDpa] = useState<DpaStatus | null>(null);
+  const [dpaOpen, setDpaOpen] = useState(false);
 
   const loadTerms = useCallback(async () => {
     if (!org) return;
@@ -150,6 +164,8 @@ export function SetupHub({
         productCount: Array.isArray(cat?.products) ? cat.products.length : 0,
         hasMerchant: !!cat?.merchant,
       });
+      setDpaStep(dpaStepOf(ob?.checklist));
+      setLegalName(typeof ob?.organization?.legal_name === 'string' ? ob.organization.legal_name : null);
     } catch {
       setFailed(true);
     }
@@ -157,6 +173,7 @@ export function SetupHub({
 
   useEffect(() => {
     setFacts(null);
+    setDpaStep(null);
     void load();
   }, [load, refreshKey]);
 
@@ -164,6 +181,24 @@ export function SetupHub({
     setTerms(null);
     void loadTerms();
   }, [loadTerms, refreshKey]);
+
+  const dpaRequired = dpaStep?.required === true;
+  const loadDpa = useCallback(async () => {
+    if (!org) return;
+    try {
+      setDpa(await fetchPartnerDpa(org.id, getI18nLocale()));
+    } catch {
+      // The checklist step alone then decides what the row shows.
+      setDpa(null);
+    }
+  }, [org]);
+
+  useEffect(() => {
+    setDpa(null);
+    if (dpaRequired) void loadDpa();
+  }, [dpaRequired, loadDpa, refreshKey]);
+
+  const dpaRow = deriveDpaRow(dpaStep, dpa);
 
   const steps = useMemo(() => (facts ? deriveSetupSteps(facts) : []), [facts]);
   if (!org) return null;
@@ -266,10 +301,24 @@ export function SetupHub({
           {terms && terms.kind !== 'not_published' && (
             <TermsRow status={terms} onOpen={() => setTermsOpen(true)} />
           )}
+          {dpaRow && <DpaRow row={dpaRow} onOpen={() => setDpaOpen(true)} />}
         </>
       )}
 
       <PartnerTermsSheet open={termsOpen} onOpenChange={setTermsOpen} orgId={org.id} onAccepted={() => void loadTerms()} />
+
+      {dpaRequired && (
+        <PartnerDpaSheet
+          open={dpaOpen}
+          onOpenChange={setDpaOpen}
+          orgId={org.id}
+          legalName={legalName ?? org.display_name}
+          onSigned={() => {
+            void load();
+            void loadDpa();
+          }}
+        />
+      )}
 
       <ProfileSheet
         open={profileOpen}
@@ -320,6 +369,75 @@ function TermsRow({ status, onOpen }: { status: Exclude<TermsStatus, { kind: 'no
         <p className="font-semibold text-foreground">{t(reaccept ? `${K}.rowReacceptTitle` : `${K}.rowTitle`)}</p>
         <p className="text-sm text-muted-foreground">
           {t(reaccept ? `${K}.rowReacceptBody` : `${K}.rowBody`, { version: status.terms.version })}
+        </p>
+      </div>
+      <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
+        {t(`${K}.rowCta`)}
+        <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+      </span>
+    </button>
+  );
+}
+
+/**
+ * VTID-05091: the data processing agreement row. No version published yet →
+ * "being prepared by Vitanaland", nothing to click. Signed → version and date.
+ * Never signed → read and sign; signed an earlier version that a material
+ * update replaced → a banner-style row asking to sign the new version.
+ */
+function DpaRow({ row, onOpen }: { row: DpaRowState; onOpen: () => void }) {
+  const K = 'screens.commerceportal.dpa';
+  if (row.kind === 'pending_legal') {
+    return (
+      <div className="mt-2 flex min-h-14 items-center gap-3 rounded-2xl border border-border p-3" data-testid="setup-dpa" data-state="todo" data-dpa="pending_legal">
+        <Clock className="h-6 w-6 shrink-0 text-muted-foreground/70" />
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-foreground">{t(`${K}.rowTitle`)}</p>
+          <p className="text-sm text-muted-foreground">{t(`${K}.rowPending`)}</p>
+        </div>
+      </div>
+    );
+  }
+  if (row.kind === 'signed') {
+    const date = row.signedAt && !Number.isNaN(Date.parse(row.signedAt)) ? fmtDate(new Date(row.signedAt)) : null;
+    const body = row.version
+      ? date
+        ? t(`${K}.rowSigned`, { version: row.version, date })
+        : t(`${K}.rowSignedNoDate`, { version: row.version })
+      : t(`${K}.rowSignedPlain`);
+    return (
+      <div className="mt-2 flex min-h-14 items-center gap-3 rounded-2xl border border-border p-3" data-testid="setup-dpa" data-state="done">
+        <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-600" />
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-foreground">{t(`${K}.rowTitle`)}</p>
+          <p className="text-sm text-muted-foreground">{body}</p>
+        </div>
+        <button type="button" onClick={onOpen} className="min-h-11 shrink-0 text-sm font-semibold text-amber-800">
+          {t(`${K}.view`)}
+        </button>
+      </div>
+    );
+  }
+  const resign = row.kind === 'resign';
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      data-testid="setup-dpa"
+      data-state={resign ? 'resign' : 'todo'}
+      className={`mt-2 flex min-h-14 w-full items-center gap-3 rounded-2xl border p-3 text-start transition-colors ${
+        resign ? 'border-amber-400 bg-amber-50 hover:bg-amber-100' : 'border-border hover:border-amber-400 hover:bg-amber-50/50'
+      }`}
+    >
+      {resign ? <TriangleAlert className="h-6 w-6 shrink-0 text-amber-700" /> : <FileSignature className="h-6 w-6 shrink-0 text-muted-foreground/70" />}
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold text-foreground">{t(resign ? `${K}.rowResignTitle` : `${K}.rowTitle`)}</p>
+        <p className="text-sm text-muted-foreground">
+          {resign
+            ? t(`${K}.rowResignBody`, { version: row.version })
+            : row.version
+              ? t(`${K}.rowBody`, { version: row.version })
+              : t(`${K}.rowBodyNoVersion`)}
         </p>
       </div>
       <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
