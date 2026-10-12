@@ -2,6 +2,13 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { createDataClient } from "../_shared/data-client.ts";
 import { isServiceRoleCaller, unauthorizedResponse } from "../_shared/caller-auth.ts";
+import {
+  CampaignAudienceError,
+  hasMemberAudience,
+  resolveCampaignAudience,
+  type CampaignAudienceCounts,
+  type CampaignRecipient,
+} from "../_shared/campaign-audience.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,7 +34,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { campaignId, channels, audienceData } = await req.json();
+    const { campaignId, channels, audienceData: requestAudienceData } = await req.json();
 
     if (!campaignId || !channels) {
       throw new Error('Missing required fields: campaignId, channels');
@@ -62,168 +69,58 @@ serve(async (req) => {
       body: campaign.description || 'Campaign message'
     };
 
+    // VTID-05120: the audience comes from the campaign row too
+    // (distribution_config.audience_data, written by CampaignDialog), so a
+    // caller cannot widen it. The request's audienceData is a logged legacy
+    // fallback only.
+    let audienceData = campaign.distribution_config?.audience_data ?? null;
+    if (!audienceData && requestAudienceData) {
+      console.warn(`[queue-campaign-recipients] campaign ${campaignId} has no distribution_config.audience_data; using the request audienceData (legacy fallback)`);
+      audienceData = requestAudienceData;
+    }
+
     // campaigns has no tenant_id column: the campaign's tenant is its owner's
     // primary tenant (user_tenants.is_primary, else the oldest membership).
-    const { data: ownerTenants } = await supabaseClient
+    const { data: ownerTenants, error: ownerTenantError } = await supabaseClient
       .from('user_tenants')
       .select('tenant_id, is_primary, created_at')
       .eq('user_id', campaign.user_id)
       .order('is_primary', { ascending: false })
       .order('created_at', { ascending: true })
       .limit(1);
+    if (ownerTenantError) throw ownerTenantError;
     const tenantId: string | null = ownerTenants?.[0]?.tenant_id ?? null;
+
+    if (!tenantId && hasMemberAudience(audienceData)) {
+      return new Response(
+        JSON.stringify({ error: 'campaign_owner_has_no_tenant' }),
+        { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     console.log(`Queuing recipients for campaign ${campaignId}...`);
 
-    let allRecipients: any[] = [];
-
-    // Process Event Attendees and Organizer Followers
-    if (audienceData?.eventAttendees?.enabled && audienceData.eventAttendees.eventIds.length > 0) {
-      console.log('📅 Fetching event-based audiences...');
-      for (const eventId of audienceData.eventAttendees.eventIds) {
-        // VTID-05049: only the campaign owner's own events, and only members
-        // of the campaign's tenant (a non-matching embedded profile is null
-        // and skipped below).
-        const { data: ownedEvent } = await supabaseClient
-          .from('global_community_events')
-          .select('id')
-          .eq('id', eventId)
-          .eq('created_by', campaign.user_id)
-          .maybeSingle();
-        if (!ownedEvent || !tenantId) continue;
-
-        // Fetch event attendees
-        const { data: attendees, error: attendeesError } = await supabaseClient
-          .from('global_event_participants')
-          .select('user_id, profiles:user_id(display_name, contact_email, contact_phone, tenant_id)')
-          .eq('event_id', eventId)
-          .eq('response', 'attending')
-          .eq('profiles.tenant_id', tenantId);
-
-        if (!attendeesError && attendees) {
-          for (const attendee of attendees) {
-            const profile = (attendee as any).profiles;
-            if (profile) {
-              allRecipients.push({
-                name: profile.display_name || 'Event Attendee',
-                email: profile.contact_email,
-                phone: profile.contact_phone,
-                whatsapp_number: profile.contact_phone,
-                source: 'event_attendees',
-                source_id: eventId,
-              });
-            }
-          }
-        }
-
-        // Fetch event creator's followers
-        const { data: event } = await supabaseClient
-          .from('global_community_events')
-          .select('created_by')
-          .eq('id', eventId)
-          .single();
-
-        if (event) {
-          const { data: followers } = await supabaseClient
-            .from('social_connections')
-            .select('follower_id, profiles:follower_id(display_name, contact_email, contact_phone, tenant_id)')
-            .eq('following_id', event.created_by)
-            .eq('status', 'active')
-            .eq('profiles.tenant_id', tenantId);
-
-          if (followers) {
-            for (const follower of followers) {
-              const profile = (follower as any).profiles;
-              if (profile) {
-                allRecipients.push({
-                  name: profile.display_name || 'Follower',
-                  email: profile.contact_email,
-                  phone: profile.contact_phone,
-                  whatsapp_number: profile.contact_phone,
-                  source: 'organizer_followers',
-                  source_id: event.created_by,
-                });
-              }
-            }
-          }
-        }
+    let allRecipients: CampaignRecipient[];
+    let counts: CampaignAudienceCounts;
+    try {
+      ({ recipients: allRecipients, counts } = await resolveCampaignAudience(supabaseClient, {
+        ownerId: campaign.user_id,
+        tenantId,
+        audience: audienceData,
+      }));
+    } catch (error) {
+      if (error instanceof CampaignAudienceError) {
+        console.error(`[queue-campaign-recipients] audience step ${error.step} failed:`, error.original);
+        return new Response(
+          JSON.stringify({ error: 'campaign_audience_failed', step: error.step }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
-    }
-
-    // Process Vitana Contacts
-    if (audienceData?.vitanaContacts?.enabled && audienceData.vitanaContacts.contactIds?.length > 0) {
-      const { data: contacts } = await supabaseClient
-        .from('contacts')
-        .select('*')
-        .eq('user_id', campaign.user_id)
-        .in('id', audienceData.vitanaContacts.contactIds);
-
-      if (contacts) {
-        allRecipients.push(...contacts.map((c: any) => ({
-          name: c.contact_name,
-          email: c.contact_email,
-          phone: c.contact_phone,
-          source: 'vitana_contacts'
-        })));
-      }
-    }
-
-    // Process CSV uploads
-    if (audienceData?.csvUpload?.enabled && audienceData.csvUpload.data?.length > 0) {
-      allRecipients.push(...audienceData.csvUpload.data.map((row: any) => ({
-        name: row.name || 'Unknown',
-        email: row.email,
-        phone: row.phone,
-        whatsapp_number: row.whatsapp_number || row.phone, // Use phone as fallback
-        source: 'csv_upload'
-      })));
-    }
-
-    // Process Manual Entry
-    if (audienceData?.manualContacts?.enabled && audienceData.manualContacts.data?.length > 0) {
-      allRecipients.push(...audienceData.manualContacts.data.map((contact: any) => ({
-        name: contact.name || 'Unknown',
-        email: contact.email,
-        phone: contact.phone,
-        whatsapp_number: contact.whatsapp_number || contact.phone,
-        source: 'manual_entry'
-      })));
-    }
-
-    // Process Community Segments
-    if (audienceData?.segments?.enabled && audienceData.segments.segmentIds?.length > 0) {
-      // Fetch segment members
-      for (const segmentId of audienceData.segments.segmentIds) {
-        const { data: segment } = await supabaseClient
-          .from('campaign_audience_segments')
-          .select('criteria')
-          .eq('id', segmentId)
-          .eq('user_id', campaign.user_id)
-          .maybeSingle();
-
-        if (segment?.criteria && tenantId) {
-          // Apply segment criteria to find matching users
-          // This is a simplified version - would need more complex logic
-          const { data: profiles } = await supabaseClient
-            .from('profiles')
-            .select('user_id, display_name, full_name')
-            .eq('tenant_id', tenantId)
-            .limit(100);
-
-          if (profiles) {
-            allRecipients.push(...profiles.map((p: any) => ({
-              name: p.display_name || p.full_name || 'Unknown',
-              email: null, // Would need to fetch from user preferences
-              phone: null,
-              source: `segment_${segmentId}`
-            })));
-          }
-        }
-      }
+      throw error;
     }
 
     // Deduplicate recipients by email and phone
-    const uniqueRecipients: any[] = [];
+    const uniqueRecipients: CampaignRecipient[] = [];
     const seen = new Set<string>();
 
     for (const recipient of allRecipients) {
@@ -234,18 +131,33 @@ serve(async (req) => {
       }
     }
 
-    console.log(`Found ${allRecipients.length} total recipients (${uniqueRecipients.length} unique)`);
+    console.log(`Found ${allRecipients.length} total recipients (${uniqueRecipients.length} unique)`, JSON.stringify(counts));
 
-    if (uniqueRecipients.length === 0) {
+    // VTID-05120 (owner decision D1): the send path stays closed until
+    // CAMPAIGN_QUEUE_ENABLED is set. Until then this is a dry run: the audience
+    // is resolved and counted, and nothing is inserted or updated. The
+    // message_queue column mapping below is still the old, broken one and must
+    // be fixed (atomically with campaign_recipients) before that flag is set.
+    if (Deno.env.get('CAMPAIGN_QUEUE_ENABLED') !== 'true') {
+      console.log(`[queue-campaign-recipients] CAMPAIGN_QUEUE_ENABLED is not set: dry run for campaign ${campaignId}, nothing queued`);
       return new Response(
-        JSON.stringify({ message: 'No recipients found', queued: 0 }),
+        JSON.stringify({ dry_run: true, counts, unique_recipients: uniqueRecipients.length, queued: 0 }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Create campaign recipient records
-    const campaignRecipients = [];
-    const messageQueueItems = [];
+    if (uniqueRecipients.length === 0) {
+      return new Response(
+        JSON.stringify({ message: 'No recipients found', queued: 0, counts }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Build every row first, then insert in batches that throw on error, so a
+    // bad row never leaves a half-written set behind.
+    const recipientRecords: any[] = [];
+    const messageQueueItems: any[] = [];
+    const queuedAt = new Date().toISOString();
 
     for (const recipient of uniqueRecipients) {
       for (const channel of channels) {
@@ -254,8 +166,9 @@ serve(async (req) => {
         if (channel === 'sms' && !recipient.phone) continue;
         if (channel === 'whatsapp' && !recipient.whatsapp_number && !recipient.phone) continue;
 
-        // Create campaign recipient record
-        const recipientRecord = {
+        const recipientId = crypto.randomUUID();
+        recipientRecords.push({
+          id: recipientId,
           campaign_id: campaignId,
           recipient_name: recipient.name,
           recipient_email: recipient.email,
@@ -265,41 +178,40 @@ serve(async (req) => {
           status: 'pending',
           metadata: {
             source: recipient.source,
-            queued_at: new Date().toISOString()
+            queued_at: queuedAt
           }
-        };
+        });
 
-        const { data: insertedRecipient, error: recipientError } = await supabaseClient
-          .from('campaign_recipients')
-          .insert(recipientRecord)
-          .select()
-          .single();
-
-        if (recipientError) {
-          console.error('Error inserting recipient:', recipientError);
-          continue;
-        }
-
-        campaignRecipients.push(insertedRecipient);
-
-        // Create message queue item
-        const queueItem: any = {
+        messageQueueItems.push({
           campaign_id: campaignId,
-          recipient_id: insertedRecipient.id,
+          recipient_id: recipientId,
           channel: channel,
           recipient_email: recipient.email,
-          recipient_phone: channel === 'whatsapp' 
+          recipient_phone: channel === 'whatsapp'
             ? (recipient.whatsapp_number || recipient.phone)
             : recipient.phone,
           recipient_name: recipient.name,
           message_content: messageContent,
           status: 'pending',
           retry_count: 0,
-          scheduled_for: new Date().toISOString()
-        };
-
-        messageQueueItems.push(queueItem);
+          scheduled_for: queuedAt
+        });
       }
+    }
+
+    if (recipientRecords.length === 0) {
+      return new Response(
+        JSON.stringify({ message: 'No recipients reachable on the selected channels', queued: 0, counts }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { error: recipientError } = await supabaseClient
+      .from('campaign_recipients')
+      .insert(recipientRecords);
+    if (recipientError) {
+      console.error('Error inserting recipients:', recipientError);
+      throw recipientError;
     }
 
     // Batch insert message queue items
@@ -316,24 +228,26 @@ serve(async (req) => {
     console.log(`Queued ${queuedMessages.length} messages across ${channels.length} channels`);
 
     // Update campaign status
-    await supabaseClient
+    const { error: statusError } = await supabaseClient
       .from('campaigns')
-      .update({ 
+      .update({
         status: 'distributing',
         metadata: {
           total_recipients: uniqueRecipients.length,
           total_messages: queuedMessages.length,
-          queued_at: new Date().toISOString()
+          queued_at: queuedAt
         }
       })
       .eq('id', campaignId);
+    if (statusError) throw statusError;
 
     return new Response(
       JSON.stringify({
         success: true,
-        recipients: campaignRecipients.length,
+        recipients: recipientRecords.length,
         queued: queuedMessages.length,
-        channels: channels
+        channels: channels,
+        counts
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
