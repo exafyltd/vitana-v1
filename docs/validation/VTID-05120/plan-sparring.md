@@ -204,3 +204,102 @@ B2. **`process-campaign-queue` caller guard (sparring F2):**
 Approved by owner in Claude Code session https://claude.ai/code/session_01TMPMNGNEtPxKwmVqyfdx46 on 2026-10-12 ("Yes"), including the recommended option for every owner decision and the production steps named in the plan. Verdict: CONVERGED (2 rounds).
 
 Owner approval (Gate 1): "Yes" — 2026-10-12, Claude Code session; plan hash 63340e7c560d875fb69133798ebb9000a08d6c9e5ec4e072b15406eed819989d; sparring record 79a01f09-bd9d-4c09-975f-34a9c3c002d7.
+
+## Sparring partner findings (verbatim, round 1 then round 2)
+
+So `process-campaign-queue` has `verify_jwt=false` (config.toml L120-121) AND no caller-auth check. That is a security gap the plan's out-of-scope list should at minimum flag.
+
+Now I have all the evidence needed.
+
+## Verified premises
+
+- **Claim: `global_event_participants` has no `response` column; the live columns are `id, event_id, user_id, status, registered_at`** --> TRUE -- `/home/user/vitana-v1/src/integrations/supabase/types.ts:4341-4362` confirms exactly these five columns; the code at `queue-campaign-recipients/index.ts:100` uses `.eq('response', 'attending')` which will always fail.
+
+- **Claim: `social_connections` is the wrong table; real follow graph is `user_follows(follower_id, following_id)`** --> TRUE -- `social_connections` is not present in `/home/user/vitana-v1/src/integrations/supabase/types.ts` at all; `user_follows` with `follower_id, following_id` is confirmed at `types.ts:11496-11531`. The code at `queue-campaign-recipients/index.ts:128-131` queries a non-existent table.
+
+- **Claim: `profiles.contact_email` and `profiles.contact_phone` do not exist; correct columns are `email`, `phone`** --> TRUE -- `/home/user/vitana-v1/src/integrations/supabase/types.ts:8870-8920` shows `profiles` has `email` (L8883) and `phone` (L8910); there is no `contact_email` or `contact_phone` on `profiles`. (Those exist on the `contacts` table at L2876-2878.) The plan's claim about `phone_e164` is PARTIAL: it is not in the generated types.
+
+- **Claim: `trigger-scheduled-campaigns` reads `distributionConfig.audienceData` (camelCase) but the app stores `distribution_config.audience_data` (snake_case)** --> TRUE -- `CampaignDialog.tsx:239` stores `audience_data: audienceData` and `trigger-scheduled-campaigns/index.ts:64` reads `distributionConfig.audienceData`, which will always be `undefined`.
+
+- **Claim: `message_queue` columns `channel, recipient_email, recipient_phone, recipient_name, message_content, retry_count` do not exist** --> TRUE -- `/home/user/vitana-v1/src/integrations/supabase/types.ts:6927-6944` shows `message_queue` has `channel_type` (not `channel`), `payload` (not `message_content`), `attempts` (not `retry_count`), and no `recipient_email/phone/name`.
+
+## Findings
+
+**F1 [minor] `phone_e164` is not in the generated Supabase types**
+
+Evidence: `/home/user/vitana-v1/src/integrations/supabase/types.ts:8870-8920` -- the `profiles` table definition shows `phone` but no `phone_e164`. The plan's proposed fix at A1 selects `phone_e164` from `profiles`. If the column exists in the live DB but not in the generated types, the service-role client will still return it, so this is not a blocker -- but the plan should confirm `phone_e164` actually exists live (or drop it from the select) and note the types gap.
+
+Suggestion: Add a note that the implementer must verify `phone_e164` exists in the live schema (or via `information_schema`). If it does not, select only `phone`.
+
+**F2 [major] `process-campaign-queue` has `verify_jwt=false` and zero caller auth -- a wider security gap than mentioned**
+
+Evidence: `/home/user/vitana-v1/supabase/config.toml` L120-121 shows `verify_jwt = false` for `process-campaign-queue`. `/home/user/vitana-v1/supabase/functions/process-campaign-queue/index.ts` has no `isServiceRoleCaller` or `requireUser` import. The plan's out-of-scope section mentions adding auth to `trigger-scheduled-campaigns` but not to `process-campaign-queue`. With B1 closed, `queue-campaign-recipients` is dry-run-only, but `process-campaign-queue` reads from `message_queue` directly. An attacker who manually inserts rows into `message_queue` (via the anon key and PostgREST, if RLS allows) could then call `process-campaign-queue` to send them. Even without a write path, anyone can invoke the function and trigger processing of whatever is already in the queue.
+
+Suggestion: Either (a) add `process-campaign-queue` to the out-of-scope security VTID list explicitly and note the risk as acknowledged, or (b) add a `isServiceRoleCaller` guard to `process-campaign-queue` in this same PR since the `_shared/caller-auth.ts` infra already exists and it is a one-line addition.
+
+**F3 [major] The `contacts` table actually DOES have `contact_email` and `contact_phone` -- the plan says "logic unchanged" for `vitanaContacts` but the mapping from `contacts` columns to `campaign_recipients` columns is correct in the existing code**
+
+Evidence: `/home/user/vitana-v1/src/integrations/supabase/types.ts:2874-2887` shows `contacts` has `contact_name`, `contact_email`, `contact_phone`. The existing code at `queue-campaign-recipients/index.ts:162-168` maps `c.contact_name`, `c.contact_email`, `c.contact_phone`. The plan's A1 says contacts should map `contact_name/contact_email/contact_phone`, which matches existing code. However, the plan's new shared module at A1 proposes a profile lookup with `profiles.select('user_id, display_name, full_name, email, phone, phone_e164')` for the member-sourced audiences. The plan must ensure the new shared module does NOT accidentally apply the `profiles` column names to the `contacts` path. This is not a blocker since the plan says "logic unchanged" for contacts, but it warrants explicit clarity.
+
+Suggestion: Clarify in the plan that `contacts` keeps its own `contact_*` column mapping and does NOT go through the shared profile lookup. This prevents an implementer from "unifying" the two paths and breaking the contacts path.
+
+**F4 [minor] The `yourFollowers` audience has no FK from `user_follows` to `profiles`**
+
+Evidence: `/home/user/vitana-v1/src/integrations/supabase/types.ts:11517-11529` shows `user_follows` FK points to `signup_funnel` (via `auth_user_id`), not `profiles`. The plan's A1 does not use an embed (it selects `follower_id` from `user_follows` then does a separate `profiles.in('user_id', ids)` lookup), so this is fine. Just confirming the plan correctly avoids the embed trap.
+
+Suggestion: None needed, the two-step approach is correct.
+
+**F5 [major] The `campaign_recipients` insert columns DO exist -- the plan's item 8 conflates `campaign_recipients` with `message_queue`**
+
+Evidence: `/home/user/vitana-v1/src/integrations/supabase/types.ts:2177-2198` confirms `campaign_recipients` has `campaign_id, channel, recipient_email, recipient_name, recipient_phone, recipient_type, status, metadata` -- all columns the code inserts at L258-270. The plan's item 8 says "the function inserts `campaign_recipients` rows one by one and then throws on the `message_queue` insert" which is correct sequencing, but the plan's fix B1 says "move the `campaign_recipients` inserts after a successful build of the queue items" and "insert them in one batch." This is fine for atomicity, but the current one-by-one insert actually works (the `recipientError` at L278 is a real error check, not broken). The risk the plan identifies (orphan `campaign_recipients` when `message_queue` fails) is real. However, batching the `campaign_recipients` insert AFTER building queue items but BEFORE inserting into `message_queue` still leaves orphans if the `message_queue` insert fails. The plan should clarify: under B1's dry-run mode, neither `campaign_recipients` nor `message_queue` is written, so orphans cannot occur. When `CAMPAIGN_QUEUE_ENABLED` is eventually set, both inserts need to be in a transaction or the orphan problem returns.
+
+Suggestion: Note in the plan that the orphan problem is only solved by the dry-run guard, not by the reordering. When the guard is lifted (a future VTID), both inserts must be transactional or the `message_queue` column fix must land first.
+
+**F6 [minor] The plan's test file location `src/lib/campaign-audience.test.ts` imports a Deno module**
+
+Evidence: The plan says the test imports `_shared/campaign-audience.ts`. That file will use Deno-style imports (`https://esm.sh/...`). The existing pattern in `src/lib/edge-functions-caller-identity.s4.test.ts` (L14-21) works by reading the source text with `fs.readFileSync`, not importing it, because "Deno functions (URL imports, top-level serve) that Vitest cannot import" (L13-14). The plan says it "imports `_shared/campaign-audience.ts`, the same pattern as `src/lib/erase-user-data.test.ts`" but the audience module will live in the Deno `_shared/` directory. If it uses Deno URL imports, Vitest cannot import it.
+
+Suggestion: Either (a) write `campaign-audience.ts` without Deno-specific imports (use a dependency-injected Supabase client, which the plan already describes), or (b) use the source-reading guard pattern from `edge-functions-caller-identity.s4.test.ts` instead. Clarify this in the test section.
+
+**F7 [minor] The plan does not mention `process-campaign-queue` in scope but it is also broken**
+
+Evidence: `/home/user/vitana-v1/supabase/functions/process-campaign-queue/index.ts:14,58` reads `channel` from `message_queue` (should be `channel_type`), and at L20 reads `retry_count` (should be `attempts`). The plan's out-of-scope section mentions fixing the `message_queue` contract but not `process-campaign-queue` specifically. Since B1 keeps the queue empty, this is safe, but the out-of-scope list should name `process-campaign-queue` explicitly so a future implementer does not forget it.
+
+Suggestion: Add `process-campaign-queue/index.ts` column mapping to the out-of-scope list alongside the `message_queue` contract fix.
+
+## Questions for the planner
+
+1. The plan proposes loading `service_bot_accounts` and `notification_test_actors` via PostgREST in the edge function. Neither table appears in the generated Supabase types. Has the implementer confirmed these tables are accessible via PostgREST (i.e., they have `GRANT SELECT` for the service role and are in the `public` schema exposed by PostgREST)? The `generate-daily-matches` function already queries both successfully (`/home/user/vitana-v1/supabase/functions/generate-daily-matches/index.ts:123-124`), so this is likely fine, but worth confirming.
+
+2. On F5: under the eventual non-dry-run path, how will `campaign_recipients` and `message_queue` inserts be made atomic? A Supabase edge function cannot run a multi-table transaction via the PostgREST client. Is a DB function or the Aurora migration the intended path?
+
+3. On F6: will `campaign-audience.ts` use Deno URL imports or be written in a way Vitest can import directly? The plan's test design depends on the answer.
+
+## Verdict
+
+NOT CONVERGED -- F2 (security gap in `process-campaign-queue` not addressed) and F5 (orphan protection only works during dry-run, plan implies reordering solves it) are open majors. F3 could be clarified in a revision. F1, F4, F6, F7 are minor and can be acknowledged.
+## Verified premises
+
+(Round 1 premises remain valid; no code changes since.)
+
+## Prior findings — status
+
+- **F1 [minor] `phone_e164` not in types** --> `closed`. Plan A1 (L64) drops `phone_e164` from the select. The schema guard pins against the generated types.
+- **F2 [major] `process-campaign-queue` unauthenticated** --> `closed`. New step B2 (L98-104) adds `isServiceRoleCaller` guard, confirms the only caller (`trigger-scheduled-campaigns:95`) passes it, and adds a caller-identity test (L117-119). Deploy list (L134) updated to include `process-campaign-queue`.
+- **F3 [major] contacts path clarity** --> `closed`. Plan A1 (L73-74) explicitly says contacts keep their own `contact_*` mapping, skip the profile lookup, the tenant filter, and the exclusion step. A dedicated test case is listed (L116).
+- **F4 [minor] `user_follows` FK to `profiles`** --> `closed`. Acknowledged in round 1; the two-step approach stands.
+- **F5 [major] orphan protection only works in dry-run** --> `closed`. Plan B1 (L93-96) now states plainly that the dry-run guard is the protection, batching only narrows the window, and turning `CAMPAIGN_QUEUE_ENABLED` on requires follow-up FU4-b which must fix the `message_queue` contract and make both inserts atomic first.
+- **F6 [minor] Vitest vs Deno imports** --> `closed`. Plan A1 (L57) says `campaign-audience.ts` takes an injected client and has no URL imports. Vitest imports it directly.
+- **F7 [minor] `process-campaign-queue` not in out-of-scope** --> `closed`. Out-of-scope (L152-158) now names both `process-campaign-queue` and the full `message_queue` column mapping under FU4-b.
+
+## Findings
+
+No new blocker or major findings. The revision addressed every round-1 finding with concrete plan changes or explicit deferrals with named follow-ups. The scope, deploy list, tests, and out-of-scope sections are consistent with each other.
+
+## Questions for the planner
+
+None.
+
+## Verdict
+
+CONVERGED
