@@ -62,7 +62,7 @@ import { useEventsKeepAlive } from "@/hooks/useEventsKeepAlive";
 // Route loading fallback — a full-screen clean background + delayed spinner so a
 // lazy chunk that loads instantly never flashes a placeholder, and a slow one
 // covers the whole viewport rather than showing a partial/intermediate screen.
-const RouteFallback = () => <DelayedLoader fullscreen />;
+const RouteFallback = () => <DelayedLoader fullscreen source="route-chunk" />;
 
 // ─── Eager imports: shell-critical pages (auth, entry, public landing) ───
 import Index from "./pages/Index";

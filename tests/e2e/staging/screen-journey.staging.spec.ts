@@ -121,8 +121,11 @@ function waitScreenReady(args: { path: string; cap: number; fromNavigationStart:
     const src = el instanceof HTMLImageElement ? ` src=${(el.currentSrc || el.src).slice(0, 120)}` : '';
     // VTID-05081: name the nearest test id (e.g. the route guard's
     // delayed-loader) so a blocker says WHICH spinner it was. Diagnostics only.
-    const tid = el.closest('[data-testid]')?.getAttribute('data-testid');
-    return `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ''}${src}${tid ? ` in=${tid}` : ''}`;
+    // A delayed-loader also names its gate (route-chunk, auth-guard, …).
+    const host = el.closest('[data-testid]');
+    const tid = host?.getAttribute('data-testid');
+    const gate = host?.getAttribute('data-loader-source');
+    return `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ''}${src}${tid ? ` in=${tid}${gate ? `(${gate})` : ''}` : ''}`;
   };
   // What kept the screen from being ready at the last check (reported on a slow or timed-out step).
   const blockers = (): string[] => [

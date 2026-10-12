@@ -12,6 +12,12 @@ interface DelayedLoaderProps {
   /** Cover the full viewport (used as a whole-screen gate) instead of a region. */
   fullscreen?: boolean;
   className?: string;
+  /**
+   * Which gate shows this loader (route chunk, auth, role, layout…). Written to
+   * `data-loader-source` so the staging phone journey can say which one a slow
+   * screen waited on (VTID-05081). Not visible to members.
+   */
+  source?: string;
 }
 
 /**
@@ -20,7 +26,7 @@ interface DelayedLoaderProps {
  * immediately and fades in a centered spinner only if the load runs longer
  * than `delayMs`.
  */
-export function DelayedLoader({ delayMs = 400, fullscreen = false, className }: DelayedLoaderProps) {
+export function DelayedLoader({ delayMs = 400, fullscreen = false, className, source }: DelayedLoaderProps) {
   const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
@@ -38,6 +44,7 @@ export function DelayedLoader({ delayMs = 400, fullscreen = false, className }: 
       // VTID-05081: lets the staging phone journey name this loader when it
       // is what a screen waited on.
       data-testid="delayed-loader"
+      data-loader-source={source}
     >
       <Loader2
         className={`h-8 w-8 animate-spin text-primary transition-opacity duration-300 ${
