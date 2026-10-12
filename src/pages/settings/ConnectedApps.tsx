@@ -76,8 +76,9 @@ import {
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
-// VTID-03885: Partner Health Test Integration — real "connect DoctorBox" consent flow
+// VTID-03885 / VTID-05093: Partner Health Test Integration — per-partner consent dialog
 import { PartnerLabsConsentDialog } from "@/components/settings/PartnerLabsConsentDialog";
+import { findActiveConsent, useHealthConsents, type ConsentPartner } from "@/hooks/useHealthConsents";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
@@ -123,10 +124,36 @@ function ConnectedApps() {
   const [googleVerifyOpen, setGoogleVerifyOpen] = useState(false);
   const manageGoogle = () => setGoogleVerifyOpen(true);
 
-  // VTID-03885: Partner Health Test Integration — DoctorBox consent state,
-  // shared by both Clinical & Lab card sections below (mobile + desktop).
-  const [doctorBoxDialogOpen, setDoctorBoxDialogOpen] = useState(false);
-  const [doctorBoxConnected, setDoctorBoxConnected] = useState(false);
+  // VTID-05093 (Health Hub D10): every lab partner the gateway lists
+  // (GET /api/v1/health/consents), each with its own consent — not one
+  // hard-coded partner. Shared by both Clinical & Lab card sections below.
+  const healthConsents = useHealthConsents();
+  const labPartners: ConsentPartner[] = healthConsents.data?.partners ?? [];
+  const isPartnerConnected = (partnerKey: string) =>
+    Boolean(findActiveConsent(healthConsents.data, 'partner_results', partnerKey));
+  const [partnerDialog, setPartnerDialog] = useState<ConsentPartner | null>(null);
+
+  const labPartnerCard = (partner: ConsentPartner, idPrefix: string): StandardHorizontalCardProps => {
+    const connected = isPartnerConnected(partner.partner_key);
+    return {
+      id: `${idPrefix}-${partner.partner_key}`,
+      screenId: "settings-connected-apps",
+      icon: <TestTube className="w-5 h-5" />,
+      title: partner.display_name,
+      description: t('screens.settings.healthConsentUi.partnerSyncData'),
+      badges: connected ? [{ label: t('screens.settings.connected'), variant: 'default' as const }] : [],
+      primaryAction: {
+        label: connected ? t('screens.settings.partnerLabsRevokeAccess') : t('screens.settings.partnerLabsGrantAccess'),
+        onClick: () => setPartnerDialog(partner),
+        variant: connected ? ('outline' as const) : ('default' as const),
+      },
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {t('screens.settings.healthConsentUi.partnerConnectDescription', { name: partner.display_name })}
+        </div>
+      ),
+    };
+  };
 
   const startConnectorFlow = (connectorId: string) => {
     if (YOUTUBE_CONNECTOR_IDS.has(connectorId)) {
@@ -474,35 +501,9 @@ function ConnectedApps() {
         syncData: 'Clinical health records',
         comingSoon: true,
       },
-      {
-        id: 'doctorbox',
-        name: 'DoctorBox',
-        icon: TestTube,
-        connected: doctorBoxConnected,
-        syncData: 'Lab test results, biomarker tracking',
-        comingSoon: false,
-      },
     ];
 
-    return apps.map((app) => {
-      if (app.id === 'doctorbox') {
-        return {
-          id: `clinical-${app.id}`,
-          screenId: "settings-connected-apps",
-          icon: <app.icon className="w-5 h-5" />,
-          title: app.name,
-          description: app.syncData,
-          badges: app.connected ? [{ label: t('screens.settings.connected'), variant: 'default' as const }] : [],
-          primaryAction: {
-            label: app.connected ? t('screens.settings.partnerLabsRevokeAccess') : t('screens.settings.partnerLabsGrantAccess'),
-            onClick: () => setDoctorBoxDialogOpen(true),
-            variant: app.connected ? ('outline' as const) : ('default' as const),
-          },
-          expandedContent: (
-            <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.partnerLabsConnectDescription')}</div>
-          ),
-        };
-      }
+    const comingSoon = apps.map((app) => {
       return {
         id: `clinical-${app.id}`,
         screenId: "settings-connected-apps",
@@ -517,6 +518,7 @@ function ConnectedApps() {
         ),
       };
     });
+    return [...comingSoon, ...labPartners.map((partner) => labPartnerCard(partner, 'clinical'))];
   };
 
   // Mindfulness & Mental Health
@@ -1095,12 +1097,6 @@ function ConnectedApps() {
         description: 'Clinical health records',
       },
       {
-        id: 'doctorbox',
-        name: 'DoctorBox',
-        icon: TestTube,
-        description: 'Lab test results, biomarker tracking',
-      },
-      {
         id: 'metabolomics',
         name: 'Metabolomics Providers',
         icon: Hospital,
@@ -1108,25 +1104,7 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => {
-      if (app.id === 'doctorbox') {
-        return {
-          id: `clinical-labs-${app.id}`,
-          screenId: "settings-connected-apps",
-          icon: <app.icon className="w-5 h-5" />,
-          title: app.name,
-          description: app.description,
-          badges: doctorBoxConnected ? [{ label: t('screens.settings.connected'), variant: 'default' as const }] : [],
-          primaryAction: {
-            label: doctorBoxConnected ? t('screens.settings.partnerLabsRevokeAccess') : t('screens.settings.partnerLabsGrantAccess'),
-            onClick: () => setDoctorBoxDialogOpen(true),
-            variant: doctorBoxConnected ? ('outline' as const) : ('default' as const),
-          },
-          expandedContent: (
-            <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.partnerLabsConnectDescription')}</div>
-          ),
-        };
-      }
+    const comingSoon = apps.map((app) => {
       return {
         id: `clinical-labs-${app.id}`,
         screenId: "settings-connected-apps",
@@ -1146,6 +1124,7 @@ function ConnectedApps() {
         ),
       };
     });
+    return [...comingSoon, ...labPartners.map((partner) => labPartnerCard(partner, 'clinical-labs'))];
   };
 
   const getMentalHealthMindfulnessCards = (): StandardHorizontalCardProps[] => {
@@ -2100,10 +2079,11 @@ function ConnectedApps() {
         isOpen={actionPopupOpen}
         onClose={() => setActionPopupOpen(false)}
         onConnect={(integration) => {
-          // VTID-03885: DoctorBox opens the real consent dialog from the
-          // "browse all integrations" popup too, not just the two Clinical
-          // & Lab sections further down this page.
-          if (integration.id === 'doctorbox') setDoctorBoxDialogOpen(true);
+          // VTID-03885 / VTID-05093: a lab partner the gateway lists opens its
+          // consent dialog from the "browse all integrations" popup too, not
+          // just the two Clinical & Lab sections further down this page.
+          const partner = labPartners.find((p) => p.partner_key === integration.id);
+          if (partner) setPartnerDialog(partner);
         }}
       />
 
@@ -2124,11 +2104,13 @@ function ConnectedApps() {
           for OAuth, so the button never feels dead. */}
       <OAuthBouncePendingOverlay />
 
-      {/* VTID-03885: Partner Health Test Integration — DoctorBox consent */}
+      {/* VTID-03885 / VTID-05093: Partner Health Test Integration — per-partner consent */}
       <PartnerLabsConsentDialog
-        open={doctorBoxDialogOpen}
-        onOpenChange={setDoctorBoxDialogOpen}
-        onConnectedChange={setDoctorBoxConnected}
+        open={partnerDialog !== null}
+        onOpenChange={(open) => !open && setPartnerDialog(null)}
+        partnerKey={partnerDialog?.partner_key ?? null}
+        partnerName={partnerDialog?.display_name ?? null}
+        grantedVia="settings_connected_apps"
       />
     </AppLayout>
   );

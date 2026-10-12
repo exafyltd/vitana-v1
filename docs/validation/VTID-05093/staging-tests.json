@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05093",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "GET /api/v1/health/consents answers 401 JSON without a token and 200 JSON { ok, store_pending, categories, consents, partners, connectors } for the test user; Settings › Privacy › Data Sharing shows the two health switches on only for an active consent and otherwise off and disabled (draft wording ships gated), the 'Manage connected sources' row and its list of every partner and wearable connector with no grant possible; desktop, phone and dir=rtl captured; no non-GET request ever reaches /api/v1/health/consents (read-only)",
+      "spec": "tests/e2e/staging/vtid-05093-health-consent.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "consent dialog: versioned wording, unticked checkbox, Grant disabled until ticked, exact grant bodies (text_version from the catalogue + the locale actually displayed, EN fallback), per-partner resource_id and granted_via, draft wording never shown or grantable, store_pending and load-failure states, revoke only after confirmation and always available (also for a legacy partner row while the store is pending), every gateway error code → its own i18n toast; Privacy switches reflect consent rows and are never on by default; Manage connected sources lists partners + connectors and keeps legacy consents withdrawable; Connected Apps lists every gateway partner (no hard-coded partner); D8 confirm offers a separate, optional, unticked partner consent with granted_via partner_link_confirm; wording lock manifest guard (11-locale parity, released texts sha256-pinned, drafts marked); RTL class scan",
+      "ref": "npx vitest run src/lib/health-consent-wording.vtid-05093.test.ts src/components/settings/HealthConsentDialog.vtid-05093.test.tsx src/components/settings/integrationData.vtid-05093.test.ts src/components/patient/PartnerLinkRequestsCard.vtid-05093.test.tsx src/pages/settings/__tests__/privacy-health-consents.vtid-05093.test.tsx src/pages/settings/__tests__/privacy-data-sharing.test.tsx src/pages/settings/__tests__/connected-apps-health.test.tsx",
+      "cwd": ".",
+      "reason": "Staging is read-only against the production Supabase project, the VTID-05092 migration is applied only after its Gate 2 (staging answers store_pending), and the consent wording is still a draft, so staging can only observe the off/disabled state and the read path. Granting and withdrawing are writes; these Vitests render the real dialog, Privacy page, Connected Apps and D8 card against a mocked gateway and prove every write body, gate and error code."
+    }
+  ]
+}

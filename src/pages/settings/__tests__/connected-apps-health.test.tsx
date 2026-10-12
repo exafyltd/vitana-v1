@@ -16,7 +16,11 @@ import { fmtDateTime } from "@/lib/locale-format";
 const { passthrough, nothing, state } = vi.hoisted(() => ({
   passthrough: ({ children }: { children?: ReactNode }) => children ?? null,
   nothing: () => null,
-  state: { providers: [] as WearableProvider[] },
+  state: {
+    providers: [] as WearableProvider[],
+    // VTID-05093: lab partners + their consents (GET /api/v1/health/consents).
+    consents: undefined as unknown,
+  },
 }));
 
 vi.mock("@/components/AppLayout", () => ({ default: passthrough }));
@@ -48,6 +52,11 @@ vi.mock("@/hooks/useGoogleConnect", () => ({
   GOOGLE_CONNECTOR_IDS: new Set<string>(),
   YOUTUBE_CONNECTOR_IDS: new Set<string>(),
 }));
+
+vi.mock("@/hooks/useHealthConsents", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/hooks/useHealthConsents")>();
+  return { ...actual, useHealthConsents: () => ({ data: state.consents, isLoading: false, isError: false }) };
+});
 
 vi.mock("@/hooks/useWearableProviders", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/hooks/useWearableProviders")>();
@@ -105,6 +114,7 @@ function openDataSyncTab() {
 
 beforeEach(() => {
   state.providers = [];
+  state.consents = undefined;
   // jsdom has no IntersectionObserver; the card only uses it for view analytics.
   vi.stubGlobal(
     "IntersectionObserver",
@@ -196,5 +206,59 @@ describe("no hard-coded health connection state in source (VTID-05032)", () => {
       slice(connectedApps, "const connectedWearables", "  return (\n    <AppLayout>"),
     ];
     for (const block of scoped) expect(block).not.toMatch(/connected\s*:\s*true/);
+  });
+});
+
+describe("ConnectedApps lab partners come from the gateway (VTID-05093)", () => {
+  const partnersState = (consents: unknown[] = []) => ({
+    store_pending: false,
+    categories: [],
+    consents,
+    partners: [
+      { partner_key: "labnord", display_name: "Labor Nord", status: "active" },
+      { partner_key: "labsued", display_name: "Labor Süd", status: "sandbox" },
+    ],
+    connectors: [],
+  });
+
+  it("renders one Clinical & Lab card per listed partner, connected only with an active partner_results consent", () => {
+    state.consents = partnersState([
+      { category: "partner_results", resource_id: "labsued", active: true, granted_at: null, revoked_at: null, granted_via: null, text_version: "v1", shown_locale: "de" },
+      { category: "partner_results", resource_id: "labnord", active: false, granted_at: null, revoked_at: "2026-10-01T00:00:00Z", granted_via: null, text_version: "v1", shown_locale: "de" },
+    ]);
+    renderPage();
+    const connected = t("screens.settings.connected");
+    const check = (prefix: string) => {
+      expect(document.getElementById(`card-title-${prefix}-labnord`), prefix).toHaveTextContent("Labor Nord");
+      expect(badgesOf(`${prefix}-labnord`), prefix).not.toContain(connected);
+      expect(badgesOf(`${prefix}-labsued`), prefix).toContain(connected);
+    };
+    check("clinical");
+    // The "Available" tab's Clinical & Labs section lists the same partners.
+    const available = document.querySelector('[id$="-trigger-available"]');
+    expect(available).toBeTruthy();
+    fireEvent.mouseDown(available!, { button: 0, ctrlKey: false });
+    check("clinical-labs");
+  });
+
+  it("renders no partner card when the gateway lists no partner (no hard-coded partner)", () => {
+    state.consents = { ...partnersState(), partners: [] };
+    renderPage();
+    expect(document.querySelector('[id^="card-title-clinical-labs-lab"]')).toBeNull();
+    expect(document.getElementById("card-title-clinical-doctorbox")).toBeNull();
+  });
+
+  it("no consent UI file hard-codes a partner key", () => {
+    const root = path.resolve(__dirname, "../../../..");
+    for (const file of [
+      "src/pages/settings/ConnectedApps.tsx",
+      "src/components/settings/MobileConnectedAppsView.tsx",
+      "src/components/settings/PartnerLabsConsentDialog.tsx",
+      "src/components/settings/HealthConsentDialog.tsx",
+      "src/components/settings/HealthConsentSourcesDialog.tsx",
+      "src/hooks/useHealthConsents.ts",
+    ]) {
+      expect(readFileSync(path.join(root, file), "utf8"), file).not.toMatch(/doctorbox/i);
+    }
   });
 });

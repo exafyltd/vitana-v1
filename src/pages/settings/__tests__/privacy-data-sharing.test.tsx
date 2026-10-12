@@ -3,9 +3,16 @@
  * sharing as on. No consent record or export job exists yet, so the three
  * data-sharing switches are off and disabled and "Request data export" is
  * disabled.
+ *
+ * VTID-05093 (Health Hub D10): the two category switches are now bound to real
+ * consent records and "Third-party integrations" became the per-partner
+ * "Manage connected sources" row. When the consents cannot be loaded the
+ * switches still render unchecked and disabled — the VTID-05032 guarantee.
+ * The full consent behaviour is in privacy-health-consents.vtid-05093.test.tsx.
  */
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import type { ReactNode } from "react";
 import { t } from "@/lib/i18n-toast";
@@ -16,6 +23,8 @@ const { passthrough, nothing } = vi.hoisted(() => ({
 }));
 
 vi.mock("@/components/AppLayout", () => ({ default: passthrough }));
+// The consent store answers with an error: nothing may read as granted.
+vi.mock("@/lib/admin-api", () => ({ adminFetch: vi.fn().mockRejectedValue(new Error("CONSENTS_UNAVAILABLE")) }));
 vi.mock("@/components/SEO", () => ({ default: nothing }));
 vi.mock("@/components/SubNavigation", () => ({ default: nothing }));
 vi.mock("@/components/StandardHeader", () => ({ default: nothing }));
@@ -39,23 +48,26 @@ vi.mock("@/hooks/useAIConsent", () => ({
 import Privacy from "../Privacy";
 
 describe("Privacy data sharing (VTID-05032)", () => {
-  it("renders the three data-sharing switches unchecked and disabled, and the export button disabled", () => {
+  it("renders the data-sharing switches unchecked and disabled, and the export button disabled", () => {
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     render(
-      <MemoryRouter initialEntries={["/settings/privacy?section=data"]}>
-        <Privacy />
-      </MemoryRouter>,
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={["/settings/privacy?section=data"]}>
+          <Privacy />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     for (const key of [
       "screens.settings.healthDataAnalytics",
       "screens.settings.communityInsights",
-      "screens.settings.thirdpartyIntegrations",
     ]) {
       const sw = screen.getByRole("switch", { name: t(key) });
       expect(sw, key).toHaveAttribute("aria-checked", "false");
       expect(sw, key).toBeDisabled();
     }
 
+    expect(screen.getByTestId("health-consent-manage-sources")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: t("screens.settings.requestDataExport") })).toBeDisabled();
   });
 });

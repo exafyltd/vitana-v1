@@ -32,6 +32,7 @@ import {
   shoppingIntegrations,
   getConnectionStats,
   getAllIntegrations,
+  mergeLabPartners,
   type Integration,
 } from "./integrationData";
 // VTID-02403: AI Assistants hooks + modal for mobile
@@ -49,8 +50,9 @@ import {
   YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
-// VTID-03885: Partner Health Test Integration — real "connect DoctorBox" consent flow
+// VTID-03885 / VTID-05093: Partner Health Test Integration — per-partner consent dialog
 import { PartnerLabsConsentDialog } from "@/components/settings/PartnerLabsConsentDialog";
+import { findActiveConsent, useHealthConsents } from "@/hooks/useHealthConsents";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
 import { ToastAction } from "@/components/ui/toast";
@@ -89,8 +91,10 @@ export function MobileConnectedAppsView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [connectPopupOpen, setConnectPopupOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
-  // VTID-03885: Partner Health Test Integration — DoctorBox consent dialog.
-  const [doctorBoxDialogOpen, setDoctorBoxDialogOpen] = useState(false);
+  // VTID-03885 / VTID-05093: Partner Health Test Integration — the lab
+  // partner whose consent dialog is open (any partner the gateway lists).
+  const [partnerDialog, setPartnerDialog] = useState<Integration | null>(null);
+  const healthConsents = useHealthConsents();
   // VTID-NAV-CONNECTORS-TABS: the Connectors category mode pills. Vitana
   // deep-links a pill via /connectors?tab=<category>; the gateway catalog
   // routes "Connectors <Category>" here. Only an explicit valid value sets it.
@@ -186,7 +190,14 @@ export function MobileConnectedAppsView() {
   // the gateway says so; the header counts come from the same merged lists.
   const { data: wearableProviders } = useWearableProviders();
   const fitnessLive = mergeWearableState(fitnessIntegrations, wearableProviders);
-  const healthLive = mergeWearableState(healthIntegrations, wearableProviders);
+  // VTID-05093 (Health Hub D10): lab partners and their connected state come
+  // from the member's per-partner consents, not from a hard-coded partner.
+  const healthLive = mergeLabPartners(
+    mergeWearableState(healthIntegrations, wearableProviders),
+    healthConsents.data?.partners ?? [],
+    (partnerKey) => Boolean(findActiveConsent(healthConsents.data, 'partner_results', partnerKey)),
+    t('screens.settings.healthConsentUi.partnerSyncData'),
+  );
   const { connected, syncing } = getConnectionStats(
     getAllIntegrations({ fitness: fitnessLive, health: healthLive }),
   );
@@ -294,10 +305,10 @@ export function MobileConnectedAppsView() {
       });
       return;
     }
-    // VTID-03885: Partner Health Test Integration — DoctorBox opens the
-    // real consent dialog instead of the generic placeholder toast below.
-    if (integration.id === 'doctorbox') {
-      setDoctorBoxDialogOpen(true);
+    // VTID-03885 / VTID-05093: a lab partner opens its consent dialog
+    // instead of the generic placeholder toast below.
+    if (integration.labPartner) {
+      setPartnerDialog(integration);
       return;
     }
     // Check if it's a social platform
@@ -315,10 +326,10 @@ export function MobileConnectedAppsView() {
 
   // Handle disconnect action
   const handleDisconnect = (integration: Integration) => {
-    // VTID-03885: DoctorBox disconnect is a real revoke, routed through the
-    // same consent dialog (it shows the revoke-confirm copy when already connected).
-    if (integration.id === 'doctorbox') {
-      setDoctorBoxDialogOpen(true);
+    // VTID-03885 / VTID-05093: a lab partner's disconnect is a real revoke,
+    // routed through the same consent dialog (it offers Withdraw when active).
+    if (integration.labPartner) {
+      setPartnerDialog(integration);
       return;
     }
     toast({
@@ -540,10 +551,13 @@ export function MobileConnectedAppsView() {
           for OAuth, so the button never feels dead. */}
       <OAuthBouncePendingOverlay />
 
-      {/* VTID-03885: Partner Health Test Integration — DoctorBox consent */}
+      {/* VTID-03885 / VTID-05093: Partner Health Test Integration — per-partner consent */}
       <PartnerLabsConsentDialog
-        open={doctorBoxDialogOpen}
-        onOpenChange={setDoctorBoxDialogOpen}
+        open={partnerDialog !== null}
+        onOpenChange={(open) => !open && setPartnerDialog(null)}
+        partnerKey={partnerDialog?.id ?? null}
+        partnerName={partnerDialog?.name ?? null}
+        grantedVia="settings_connected_apps"
       />
     </div>
   );
