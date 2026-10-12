@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="620" viewBox="0 0 1440 620" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif"><title>Screen switching</title><defs>
+<linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0EA5A4"/><stop offset="1" stop-color="#0F766E"/></linearGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F59E0B"/><stop offset="1" stop-color="#E11D48"/></linearGradient>
+<linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#3B82F6"/></linearGradient>
+<linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#84CC16"/><stop offset="1" stop-color="#0EA5A4"/></linearGradient>
+<linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F472B6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
+<linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#94A3B8"/><stop offset="1" stop-color="#475569"/></linearGradient>
+<linearGradient id="pagebg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5F3FF"/><stop offset="0.5" stop-color="#EFF6FF"/><stop offset="1" stop-color="#FDF2F8"/></linearGradient>
+<linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3F4FB" stop-opacity="0"/><stop offset="1" stop-color="#F3F4FB" stop-opacity="1"/></linearGradient>
+<radialGradient id="orb" cx="0.35" cy="0.35" r="0.75"><stop offset="0" stop-color="#7C8DB5"/><stop offset="0.5" stop-color="#5A6A8A"/><stop offset="1" stop-color="#3A4A6A"/></radialGradient>
+<radialGradient id="orbglow" cx="0.5" cy="0.5" r="0.5"><stop offset="0.55" stop-color="#5A6E96" stop-opacity="0.55"/><stop offset="1" stop-color="#5A6E96" stop-opacity="0"/></radialGradient>
+<linearGradient id="idx" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ADE80" stop-opacity="0.35"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0.35"/></linearGradient>
+<linearGradient id="maxsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#93D3F8"/><stop offset="1" stop-color="#6CBDEB"/></linearGradient>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.10"/></filter>
+<filter id="shs" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.06"/></filter>
+</defs><rect width="1440" height="620" fill="#F4F5F9"/><text x="60" y="52" font-size="26" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">Switching screens — today vs Spotlight</text>
+<rect x="60" y="100" width="620" height="400" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="60" y="100" width="104" height="400" rx="14" fill="#18181B" opacity="1" />
+<rect x="150" y="100" width="14" height="400" rx="0" fill="#18181B" opacity="1" />
+<rect x="74" y="160" width="70" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="184" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="208" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="232" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="256" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="280" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="304" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="328" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="74" y="352" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<circle cx="112" cy="464" r="16" fill="url(#orb)" opacity="1"/>
+<text x="370" y="86" font-size="14" fill="#E11D48" font-weight="800" text-anchor="middle" opacity="1" letter-spacing="0">TODAY: click → blank panel → spinner after 400 ms</text>
+<rect x="164" y="101" width="515" height="398" rx="0" fill="#fff" opacity="1" />
+<circle cx="420" cy="300" r="18" fill="none" stroke="#94A3B8" stroke-width="4" stroke-dasharray="80 40"/>
+<text x="420" y="350" font-size="13" fill="#64748B" font-weight="500" text-anchor="middle" opacity="1" letter-spacing="0">previous screen torn down, nothing to look at</text>
+<rect x="760" y="100" width="620" height="400" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="760" y="100" width="104" height="400" rx="14" fill="#18181B" opacity="1" />
+<rect x="850" y="100" width="14" height="400" rx="0" fill="#18181B" opacity="1" />
+<rect x="774" y="160" width="70" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="184" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="208" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="232" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="256" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="280" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="304" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="328" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<rect x="774" y="352" width="60" height="8" rx="4" fill="#3F3F46" opacity="1" />
+<circle cx="812" cy="464" r="16" fill="url(#orb)" opacity="1"/>
+<text x="1070" y="86" font-size="14" fill="#0EA5A4" font-weight="800" text-anchor="middle" opacity="1" letter-spacing="0">SPOTLIGHT: old screen stays, thin progress bar, then fade</text>
+<rect x="864" y="101" width="319.3" height="3" rx="1" fill="#0EA5A4" opacity="1" />
+<rect x="880" y="118" width="480" height="30" rx="8" fill="#F1F5F9" opacity="1" />
+<rect x="880" y="156" width="480" height="22" rx="11" fill="#F8FAFC" opacity="1" />
+<rect x="880" y="190" width="300" height="200" rx="10" fill="#F8FAFC" opacity="1" />
+<rect x="892" y="202" width="276" height="130" rx="8" fill="url(#g1)" opacity="1" />
+<path d="M892 332 L988.6 273.5 L1043.8 299.5 L1099.0 260.5 L1168 306.0 L1168 332 Z" fill="#fff" opacity="0.18"/>
+<circle cx="1107.28" cy="234.5" r="10.4" fill="#fff" opacity="1"/>
+<rect x="892" y="344" width="200" height="10" rx="5" fill="#E2E8F0" opacity="1" />
+<rect x="892" y="362" width="140" height="10" rx="5" fill="#E2E8F0" opacity="1" />
+<rect x="1194" y="190" width="166" height="58" rx="10" fill="#F8FAFC" opacity="1" />
+<rect x="1194" y="258" width="166" height="58" rx="10" fill="#F8FAFC" opacity="1" />
+<rect x="1194" y="326" width="166" height="58" rx="10" fill="#F8FAFC" opacity="1" />
+<text x="1070" y="430" font-size="13" fill="#0EA5A4" font-weight="700" text-anchor="middle" opacity="1" letter-spacing="0">chrome (header, utility bar, sidebar, ORB) never flickers</text>
+<text x="1070" y="452" font-size="13" fill="#64748B" font-weight="500" text-anchor="middle" opacity="1" letter-spacing="0">next screen preloaded on hover · skeleton in the page’s own shape</text>
+<text x="60" y="550" font-size="15" fill="#0F172A" font-weight="700" text-anchor="start" opacity="1" letter-spacing="0">blank + spinner · layout jumps on arrival</text>
+<text x="760" y="550" font-size="15" fill="#0F172A" font-weight="700" text-anchor="start" opacity="1" letter-spacing="0">no blank frame · 150 ms cross-fade · no layout jump</text></svg>
