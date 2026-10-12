@@ -1,0 +1,13 @@
+{
+  "id": "calendar-find-a-time",
+  "added": "2026-10-12",
+  "title": {
+    "en": "Your calendar finds a time for you",
+    "de": "Dein Kalender findet eine Zeit für dich"
+  },
+  "description": {
+    "en": "Tap \"Find a time\" when you add an entry and get free slots that fit. If a time clashes with something else, your calendar tells you before you save.",
+    "de": "Tippe beim Eintragen auf „Zeit finden“ und du bekommst freie Zeiten, die passen. Wenn sich etwas überschneidet, sagt dir dein Kalender das, bevor du speicherst."
+  },
+  "deepLink": "/calendar"
+}

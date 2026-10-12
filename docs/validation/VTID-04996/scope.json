@@ -31,7 +31,8 @@
     "src/lib/calendar-window-client.ts",
     "src/components/calendar/vcal/FindTime.tsx",
     "src/components/calendar/vcal/FindTime.vtid-04996.test.tsx",
-    "docs/validation/VTID-04996/**"
+    "docs/validation/VTID-04996/**",
+    "src/whats-new/entries/calendar-find-a-time.json"
   ],
   "weakens_tests": [],
   "red_green_exempt": []
