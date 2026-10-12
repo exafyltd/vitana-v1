@@ -32,6 +32,8 @@ const recorderStartMock = vi.fn();
 const recorderStopMock = vi.fn();
 const recorderCancelMock = vi.fn();
 const transcribeAudioBlobMock = vi.fn();
+const markWebSpeechUnavailableMock = vi.fn();
+const toastMock = vi.fn();
 
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
@@ -41,7 +43,7 @@ vi.mock('@/integrations/supabase/client', () => ({
   },
 }));
 
-vi.mock('@/hooks/use-toast', () => ({ useToast: () => ({ toast: vi.fn() }) }));
+vi.mock('@/hooks/use-toast', () => ({ useToast: () => ({ toast: (...a: unknown[]) => toastMock(...a) }) }));
 vi.mock('@/hooks/useTranslation', () => ({
   useTranslation: () => ({ translate: (_k: string, fallback?: string) => fallback ?? _k }),
 }));
@@ -88,6 +90,10 @@ vi.mock('@/utils/diaryAudioRecorder', () => {
   return {
     DiaryAudioRecorder: MockDiaryAudioRecorder,
     shouldUseBackendSTT: (...a: unknown[]) => shouldUseBackendSTTMock(...a),
+    // Same rule as the real helper (unit-tested in diaryAudioRecorder.test.ts).
+    shouldFallbackToBackendSTT: (error: string, gotResult: boolean) =>
+      !gotResult && ['not-allowed', 'service-not-allowed', 'network'].includes(error),
+    markWebSpeechUnavailable: (...a: unknown[]) => markWebSpeechUnavailableMock(...a),
     transcribeAudioBlob: (...a: unknown[]) => transcribeAudioBlobMock(...a),
   };
 });
@@ -206,5 +212,90 @@ describe('UnifiedCaptureCard — desktop/Android still uses the live Web Speech 
 
     await waitFor(() => screen.getByRole('button', { name: /stop recording/i }));
     expect(recorderStartMock).not.toHaveBeenCalled();
+  });
+});
+
+// VTID-05097 — Android Appilix builds where neither the bridge (injected late)
+// nor the `wv` UA token is present, so shouldUseBackendSTT() is false at tap
+// time and the WebView's Web Speech API fails before recognising anything.
+describe('UnifiedCaptureCard — Web Speech fails before any result (VTID-05097)', () => {
+  class FailingRecognition {
+    static instanceCount = 0;
+    static error = 'not-allowed';
+    onresult: ((e: unknown) => void) | null = null;
+    onerror: ((e: { error: string }) => void) | null = null;
+    onend: (() => void) | null = null;
+    onstart: (() => void) | null = null;
+    constructor() { FailingRecognition.instanceCount += 1; }
+    start() {
+      this.onstart?.();
+      setTimeout(() => {
+        this.onerror?.({ error: FailingRecognition.error });
+        this.onend?.();
+      }, 0);
+    }
+    stop() { this.onend?.(); }
+    abort() {}
+  }
+
+  beforeEach(() => {
+    FailingRecognition.instanceCount = 0;
+    (window as FakeWindow).webkitSpeechRecognition = FailingRecognition;
+    shouldUseBackendSTTMock.mockReturnValue(false);
+    // The real helper persists the flag in sessionStorage; mirror that here.
+    markWebSpeechUnavailableMock.mockImplementation(() => shouldUseBackendSTTMock.mockReturnValue(true));
+  });
+
+  afterEach(() => {
+    delete (window as FakeWindow).webkitSpeechRecognition;
+  });
+
+  it.each(['not-allowed', 'service-not-allowed', 'network'])(
+    'switches to backend recording on %s without an error toast',
+    async (error) => {
+      FailingRecognition.error = error;
+      render(<UnifiedCaptureCard mode="health" />);
+      fireEvent.click(screen.getByRole('button', { name: /start recording/i }));
+
+      await waitFor(() => expect(recorderStartMock).toHaveBeenCalledTimes(1));
+      expect(markWebSpeechUnavailableMock).toHaveBeenCalledTimes(1);
+      expect(screen.getByRole('button', { name: /stop recording/i })).toBeInTheDocument();
+      expect(toastMock).not.toHaveBeenCalledWith(expect.objectContaining({ variant: 'destructive' }));
+    },
+  );
+
+  it('transcribes the fallback recording, and the next tap goes straight to the backend path', async () => {
+    render(<UnifiedCaptureCard mode="health" />);
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }));
+    await waitFor(() => expect(recorderStartMock).toHaveBeenCalledTimes(1));
+
+    fireEvent.click(screen.getByRole('button', { name: /stop recording/i }));
+    await waitFor(() => expect(screen.getByDisplayValue(/hello from the diary/i)).toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }));
+    await waitFor(() => expect(recorderStartMock).toHaveBeenCalledTimes(2));
+    expect(FailingRecognition.instanceCount).toBe(1);
+  });
+
+  it('keeps the error toast when Web Speech fails after it already recognised speech', async () => {
+    class ResultThenNetworkError extends FailingRecognition {
+      start() {
+        this.onstart?.();
+        setTimeout(() => {
+          this.onresult?.({ resultIndex: 0, results: [Object.assign([{ transcript: 'hallo' }], { isFinal: false })] });
+          this.onerror?.({ error: 'network' });
+        }, 0);
+      }
+    }
+    (window as FakeWindow).webkitSpeechRecognition = ResultThenNetworkError;
+
+    render(<UnifiedCaptureCard mode="health" />);
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }));
+
+    await waitFor(() =>
+      expect(toastMock).toHaveBeenCalledWith(expect.objectContaining({ variant: 'destructive' })),
+    );
+    expect(recorderStartMock).not.toHaveBeenCalled();
+    expect(markWebSpeechUnavailableMock).not.toHaveBeenCalled();
   });
 });

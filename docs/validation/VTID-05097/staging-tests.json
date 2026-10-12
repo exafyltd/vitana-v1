@@ -1,0 +1,34 @@
+{
+  "vtid": "VTID-05097",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "shouldUseBackendSTT decides at call time; fallback only before any result",
+      "ref": "npx vitest run src/utils/diaryAudioRecorder.test.ts",
+      "cwd": ".",
+      "reason": "Detection helper: bridge injected after import is seen, session flag sticks, desktop stays on Web Speech, blocked sessionStorage does not throw."
+    },
+    {
+      "kind": "existing",
+      "name": "diary capture card falls back to backend STT when Web Speech fails before any result",
+      "ref": "npx vitest run src/components/capture/UnifiedCaptureCard.test.tsx",
+      "cwd": ".",
+      "reason": "The Gesundheitstagebuch screen from the owner's report. Fails on main, passes with the fix. Staging browsers have no microphone and staging is read-only, so the on-device proof is the owner retrying the diary in the Android app after release."
+    },
+    {
+      "kind": "existing",
+      "name": "voice diary recorder falls back to backend STT",
+      "ref": "npx vitest run src/components/memory/VoiceDiaryRecorder.vtid-05097.test.tsx",
+      "cwd": ".",
+      "reason": "Same fallback on the second diary recorder. Fails on main, passes with the fix."
+    },
+    {
+      "kind": "existing",
+      "name": "support page voice input falls back to backend STT",
+      "ref": "npx vitest run src/pages/MobileSupport.vtid-05097.test.tsx",
+      "cwd": ".",
+      "reason": "Same fallback on the mobile support page. Fails on main, passes with the fix."
+    }
+  ]
+}
