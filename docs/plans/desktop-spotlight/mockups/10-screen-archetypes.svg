@@ -1,0 +1,314 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1140" viewBox="0 0 1440 1140" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif"><title>Spotlight screen archetypes</title><defs>
+<linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0EA5A4"/><stop offset="1" stop-color="#0F766E"/></linearGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F59E0B"/><stop offset="1" stop-color="#E11D48"/></linearGradient>
+<linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#3B82F6"/></linearGradient>
+<linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#84CC16"/><stop offset="1" stop-color="#0EA5A4"/></linearGradient>
+<linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F472B6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
+<linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#94A3B8"/><stop offset="1" stop-color="#475569"/></linearGradient>
+<linearGradient id="pagebg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5F3FF"/><stop offset="0.5" stop-color="#EFF6FF"/><stop offset="1" stop-color="#FDF2F8"/></linearGradient>
+<linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3F4FB" stop-opacity="0"/><stop offset="1" stop-color="#F3F4FB" stop-opacity="1"/></linearGradient>
+<radialGradient id="orb" cx="0.35" cy="0.35" r="0.75"><stop offset="0" stop-color="#7C8DB5"/><stop offset="0.5" stop-color="#5A6A8A"/><stop offset="1" stop-color="#3A4A6A"/></radialGradient>
+<radialGradient id="orbglow" cx="0.5" cy="0.5" r="0.5"><stop offset="0.55" stop-color="#5A6E96" stop-opacity="0.55"/><stop offset="1" stop-color="#5A6E96" stop-opacity="0"/></radialGradient>
+<linearGradient id="idx" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ADE80" stop-opacity="0.35"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0.35"/></linearGradient>
+<linearGradient id="maxsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#93D3F8"/><stop offset="1" stop-color="#6CBDEB"/></linearGradient>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.10"/></filter>
+<filter id="shs" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.06"/></filter>
+</defs><rect width="1440" height="1140" fill="#F4F5F9"/><text x="60" y="52" font-size="22" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">Spotlight Design Contract — 9 screen archetypes, every one of the 550+ screens maps to exactly one</text>
+<text x="60" y="78" font-size="13" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Purple = the one dominant element. Same chrome everywhere: sidebar (shortcut bar · search · nav · profile/role · soundscape · language · ORB) + header bar + utility bar.</text>
+<rect x="60" y="104" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="60" y="104" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="108" y="104" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="68" y="114" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="130" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="70" y="152" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="168" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="184" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="200" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="216" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="232" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="248" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="264" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="318" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="334" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="68" y="350" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="91" cy="378" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="132" y="114" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="416" y="114" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="450" y="114" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="132" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="174" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="216" y="140" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="258" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="300" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="400" y="140" width="80" height="12" rx="6" fill="#E2E5EE" opacity="1" />
+<rect x="132" y="160" width="222.72" height="162.72" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="132" y="331.76" width="222.72" height="54.239999999999995" rx="8" fill="#F1F5F9" opacity="0.7" />
+<rect x="362.72" y="160.0" width="117.28" height="50.5" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="362.72" y="216.5" width="117.28" height="50.5" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="362.72" y="273.0" width="117.28" height="50.5" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="362.72" y="329.5" width="117.28" height="50.5" rx="6" fill="#F1F5F9" opacity="1" />
+<text x="60" y="418" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">focus-feed</text>
+<text x="158" y="418" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">News · Media Hub · Live Rooms</text>
+<rect x="520" y="104" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="520" y="104" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="568" y="104" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="528" y="114" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="130" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="530" y="152" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="168" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="184" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="200" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="216" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="232" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="248" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="264" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="318" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="334" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="528" y="350" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="551" cy="378" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="592" y="112" width="348" height="10" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="592" y="128" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="876" y="128" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="910" y="128" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="592" y="154" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="634" y="154" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="676" y="154" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="718" y="154" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="760" y="154" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="592" y="174" width="348" height="10" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="592" y="190" width="348" height="89.03999999999999" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="592.0" y="296.0" width="81.0" height="90.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="679.0" y="296.0" width="81.0" height="90.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="766.0" y="296.0" width="81.0" height="90.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="853.0" y="296.0" width="81.0" height="90.0" rx="6" fill="#F1F5F9" opacity="1" />
+<text x="520" y="418" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">storefront</text>
+<text x="618" y="418" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Discover · Business Hub · Deals</text>
+<rect x="980" y="104" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="980" y="104" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="1028" y="104" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="988" y="114" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="130" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="990" y="152" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="168" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="184" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="200" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="216" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="232" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="248" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="264" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="318" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="334" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="988" y="350" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="1011" cy="378" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="1052" y="114" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="1336" y="114" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="1370" y="114" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="1052" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1094" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1136" y="140" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="1178" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1220" y="140" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1320" y="140" width="80" height="12" rx="6" fill="#E2E5EE" opacity="1" />
+<rect x="1052" y="160" width="222.72" height="226" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="1282.72" y="160.0" width="117.28" height="69.33333333333333" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="1282.72" y="235.33333333333331" width="117.28" height="69.33333333333333" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="1282.72" y="310.66666666666663" width="117.28" height="69.33333333333333" rx="6" fill="#F1F5F9" opacity="1" />
+<text x="980" y="418" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">detail</text>
+<text x="1042" y="418" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Post · Product · Event · Profile</text>
+<rect x="60" y="450" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="60" y="450" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="108" y="450" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="68" y="460" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="476" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="70" y="498" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="514" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="530" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="546" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="562" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="578" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="594" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="610" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="664" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="680" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="68" y="696" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="91" cy="724" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="132" y="458" width="348" height="10" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="132" y="474" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="416" y="474" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="450" y="474" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="132" y="500" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="174" y="500" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="216" y="500" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="258" y="500" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="300" y="500" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="132" y="520" width="348" height="10" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="132" y="536" width="81.0" height="91.0" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="219.0" y="536.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="306.0" y="536.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="393.0" y="536.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="132.0" y="634.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="219.0" y="634.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="306.0" y="634.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="393.0" y="634.0" width="81.0" height="91.0" rx="6" fill="#F1F5F9" opacity="1" />
+<text x="60" y="764" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">collection</text>
+<text x="158" y="764" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Groups · Members · Orders · Lists</text>
+<rect x="520" y="450" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="520" y="450" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="568" y="450" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="528" y="460" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="476" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="530" y="498" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="514" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="530" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="546" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="562" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="578" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="594" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="610" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="664" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="680" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="528" y="696" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="551" cy="724" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="592" y="460" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="876" y="460" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="910" y="460" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="592" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="634" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="676" y="486" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="718" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="760" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="860" y="486" width="80" height="12" rx="6" fill="#E2E5EE" opacity="1" />
+<rect x="592" y="506" width="222.72" height="101.7" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="592.0" y="619.0" width="68.24" height="113.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="666.24" y="619.0" width="68.24" height="113.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="740.48" y="619.0" width="68.24" height="113.0" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="822.72" y="506.0" width="117.28" height="69.33333333333333" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="822.72" y="581.3333333333334" width="117.28" height="69.33333333333333" rx="6" fill="#F1F5F9" opacity="1" />
+<rect x="822.72" y="656.6666666666666" width="117.28" height="69.33333333333333" rx="6" fill="#F1F5F9" opacity="1" />
+<text x="520" y="764" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">dashboard</text>
+<text x="609" y="764" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Health · Wallet · My Journey</text>
+<rect x="980" y="450" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="980" y="450" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="1028" y="450" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="988" y="460" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="476" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="990" y="498" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="514" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="530" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="546" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="562" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="578" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="594" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="610" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="664" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="680" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="988" y="696" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="1011" cy="724" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="1052" y="460" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="1336" y="460" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="1370" y="460" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="1052" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1094" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1136" y="486" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="1178" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1220" y="486" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="1320" y="486" width="80" height="12" rx="6" fill="#E2E5EE" opacity="1" />
+<rect x="1052" y="506.0" width="104.39999999999999" height="33.666666666666664" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="1052" y="543.6666666666666" width="104.39999999999999" height="33.666666666666664" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="1052" y="581.3333333333334" width="104.39999999999999" height="33.666666666666664" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="1052" y="619.0" width="104.39999999999999" height="33.666666666666664" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="1052" y="656.6666666666666" width="104.39999999999999" height="33.666666666666664" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="1052" y="694.3333333333333" width="104.39999999999999" height="33.666666666666664" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="1163.36" y="506" width="236.64000000000001" height="226" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<text x="980" y="764" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">conversation</text>
+<text x="1096" y="764" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Inbox · Messages · AI Assistant</text>
+<rect x="60" y="796" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="60" y="796" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="108" y="796" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="68" y="806" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="822" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="70" y="844" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="860" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="876" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="892" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="908" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="924" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="940" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="70" y="956" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="1010" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="68" y="1026" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="68" y="1042" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="91" cy="1070" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="132" y="806" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="416" y="806" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="450" y="806" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="132" y="832" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="174" y="832" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="216" y="832" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="258" y="832" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="300" y="832" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="184.2" y="852" width="243.6" height="226" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="196.2" y="864" width="219.6" height="18" rx="5" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="196.2" y="892" width="219.6" height="18" rx="5" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="196.2" y="920" width="219.6" height="18" rx="5" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="196.2" y="948" width="219.6" height="18" rx="5" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="196.2" y="976" width="219.6" height="18" rx="5" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<text x="60" y="1110" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">form</text>
+<text x="104" y="1110" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Settings · Edit profile · Auth · Legal</text>
+<rect x="520" y="796" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="520" y="796" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="568" y="796" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="528" y="806" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="822" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="530" y="844" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="860" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="876" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="892" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="908" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="924" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="940" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="530" y="956" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="1010" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="528" y="1026" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="528" y="1042" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="551" cy="1070" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="592" y="804" width="348" height="10" rx="5" fill="#F1F5F9" opacity="1" />
+<rect x="592" y="820" width="278" height="20" rx="6" fill="#F8FAFC" opacity="1" stroke="#E2E8F0" stroke-width="1" />
+<rect x="876" y="820" width="30" height="20" rx="6" fill="#FFE4E6" opacity="1" />
+<rect x="910" y="820" width="30" height="20" rx="6" fill="#DCFCE7" opacity="1" />
+<rect x="592" y="846" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="634" y="846" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="676" y="846" width="36" height="12" rx="6" fill="#0F172A" opacity="1" />
+<rect x="718" y="846" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="760" y="846" width="36" height="12" rx="6" fill="#E9EAF0" opacity="1" />
+<rect x="592" y="866" width="348" height="212" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<rect x="600" y="874.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<rect x="600" y="902.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<rect x="600" y="930.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<rect x="600" y="958.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<rect x="600" y="986.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<rect x="600" y="1014.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<rect x="600" y="1042.0" width="332" height="24.0" rx="3" fill="#fff" opacity="1" />
+<text x="520" y="1110" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">workspace</text>
+<text x="609" y="1110" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Admin · Backoffice · Dev · Pro · Staff</text>
+<rect x="980" y="796" width="430" height="290" rx="14" fill="#fff" opacity="1" stroke="#E2E8F0" stroke-width="1" filter="url(#shs)"/>
+<rect x="980" y="796" width="62" height="290" rx="14" fill="#18181B" opacity="1" />
+<rect x="1028" y="796" width="14" height="290" rx="0" fill="#18181B" opacity="1" />
+<rect x="988" y="806" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="822" width="46" height="10" rx="3" fill="#27272A" opacity="1" />
+<rect x="990" y="844" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="860" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="876" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="892" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="908" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="924" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="940" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="990" y="956" width="36" height="6" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="1010" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<rect x="988" y="1026" width="46" height="10" rx="3" fill="#134E4A" opacity="1" />
+<rect x="988" y="1042" width="46" height="10" rx="3" fill="#3F3F46" opacity="1" />
+<circle cx="1011" cy="1070" r="10" fill="url(#orb)" opacity="1"/>
+<rect x="1052" y="804" width="348" height="274" rx="8" fill="#EDE9FE" opacity="1" stroke="#7C3AED" stroke-width="2" />
+<text x="1226.0" y="946.0" font-size="13" fill="#7C3AED" font-weight="700" text-anchor="middle" opacity="1" letter-spacing="0">full-bleed media</text>
+<text x="980" y="1110" font-size="15" fill="#0F172A" font-weight="800" text-anchor="start" opacity="1" letter-spacing="0">immersive</text>
+<text x="1069" y="1110" font-size="12.5" fill="#64748B" font-weight="400" text-anchor="start" opacity="1" letter-spacing="0">Shop video · Live session · Fullscreen</text></svg>

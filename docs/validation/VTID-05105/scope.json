@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05105",
+  "kind": "docs",
+  "paths": [
+    "docs/plans/desktop-spotlight/**",
+    ".kiro/specs/desktop-spotlight/**",
+    "docs/validation/VTID-05105/**"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
