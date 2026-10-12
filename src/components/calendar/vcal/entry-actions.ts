@@ -117,13 +117,28 @@ export function sourceActionOf(item: CalendarWindowItem, now: Date): SourceActio
 }
 
 /** VTID-04917: may this entry be sent to someone as an invite? */
+/**
+ * VTID-05126: any of the member's own upcoming entries can be sent as an
+ * invite — the gateway decides (`invitable`); this keeps a defensive second
+ * look at the time and the done state.
+ */
 export function canInviteEntry(item: CalendarWindowItem, now: Date): boolean {
   if (!ownEntry(item)) return false;
   const e = item.event!;
   const end = item.end_time ? Date.parse(item.end_time) : Date.parse(item.start_time) + 60 * 60_000;
   if (!(end > now.getTime()) || isDone(e)) return false;
-  if (item.shareable === true) return true;
-  return EDITABLE_SOURCES.has(e.source_type) && !e.rrule && item.occurrence_index === null;
+  return item.invitable === true;
+}
+
+/**
+ * VTID-05126: shared as the member's own entry (a card with the title they
+ * choose), not as a community event or live room (which show their own live
+ * card).
+ */
+export function isOwnEntryShare(item: CalendarWindowItem): boolean {
+  const e = item.event;
+  if (!e) return false;
+  return !communityEventIdOf(item) && e.source_ref_type !== "live_room_session";
 }
 
 /** VTID-04917: the audiobook daily entry — opens the player, never "mark done". */

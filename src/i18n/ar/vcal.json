@@ -383,8 +383,8 @@
       "cancel": "إلغاء",
       "done": "تمت المشاركة – يرى المجتمع أنك ستحضر",
       "viewPost": "تمت المشاركة في الموجز – عرض المنشور",
-      "alreadyShared": "لقد شاركت هذا الحدث من قبل",
-      "notShareable": "لم يعد بالإمكان مشاركة هذا الحدث: انتهى أو أُلغي أو ليس عامًا.",
+      "alreadyShared": "لقد شاركت هذا الموعد من قبل",
+      "notShareable": "لم يعد بالإمكان مشاركة هذا الموعد: انتهى أو أُلغي أو اكتمل.",
       "limit": "لقد شاركت كثيرًا اليوم. حاول مرة أخرى غدًا.",
       "duplicate": "لقد نشرت هذا النص للتو. اكتب شيئًا آخر أو انتظر قليلًا.",
       "suspended": "لا يمكن لحسابك النشر الآن.",
@@ -405,8 +405,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "العنوان الذي يراه الآخرون",
+      "calendarTitle": "في تقويمك: {title}",
+      "defaultTextOwn": "في {date}: {title}. من سيأتي؟",
+      "placeShown": "المكان ظاهر: {place}",
+      "placeHidden": "إظهار المكان – متوقف: يبقى المكان خاصًا",
+      "showPlace": "إظهار المكان",
+      "previewLabel": "هكذا يراه الآخرون",
+      "sensitiveHint": "أنت تشارك موعدًا صحيًا. تحقّق من العنوان والمكان – لا يرى الآخرون إلا ما يظهر هنا."
     },
     "feedCard": {
       "upcoming": "قريبًا",
@@ -427,8 +443,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "أضِفه إلى تقويمي",
+      "added": "أُضيف إلى تقويمك",
+      "alreadyAdded": "موجود بالفعل في تقويمك",
+      "notOpen": "هذا الموعد انتهى أو أُلغي.",
+      "addError": "لم ينجح ذلك. حاول مرة أخرى بعد قليل."
     },
     "invite": {
       "action": "دعوة",

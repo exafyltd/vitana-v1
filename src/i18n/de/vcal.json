@@ -334,12 +334,20 @@
       "cancel": "Abbrechen",
       "done": "Geteilt – die Community sieht jetzt, dass du dabei bist",
       "viewPost": "Im Feed geteilt – Beitrag ansehen",
-      "alreadyShared": "Du hast dieses Event schon geteilt",
-      "notShareable": "Dieses Event kann nicht mehr geteilt werden – es ist vorbei, abgesagt oder nicht öffentlich.",
+      "alreadyShared": "Du hast diesen Eintrag schon geteilt",
+      "notShareable": "Dieser Eintrag kann nicht mehr geteilt werden – er ist vorbei, abgesagt oder erledigt.",
       "limit": "Du hast heute schon viel geteilt. Versuch es morgen wieder.",
       "duplicate": "Diesen Text hast du gerade erst gepostet. Schreib etwas anderes oder warte kurz.",
       "suspended": "Dein Konto kann gerade nichts posten.",
-      "error": "Teilen hat gerade nicht geklappt. Versuch es gleich nochmal."
+      "error": "Teilen hat gerade nicht geklappt. Versuch es gleich nochmal.",
+      "cardTitleLabel": "Titel, den andere sehen",
+      "calendarTitle": "Im Kalender heißt es: {title}",
+      "defaultTextOwn": "Am {date}: {title}. Wer ist dabei?",
+      "placeShown": "Ort wird gezeigt: {place}",
+      "placeHidden": "Ort zeigen – aus: der Ort bleibt privat",
+      "showPlace": "Ort zeigen",
+      "previewLabel": "So sehen es andere",
+      "sensitiveHint": "Du teilst einen Gesundheitstermin. Prüfe Titel und Ort – andere sehen nur, was hier gezeigt wird."
     },
     "feedCard": {
       "upcoming": "Demnächst",
@@ -350,7 +358,12 @@
       "openRoom": "Raum ansehen",
       "joinRoom": "Jetzt beitreten",
       "unavailable": "Dieses Event ist nicht mehr verfügbar.",
-      "untitled": "Event"
+      "untitled": "Event",
+      "addToCalendar": "In meinen Kalender",
+      "added": "In deinem Kalender eingetragen",
+      "alreadyAdded": "Steht schon in deinem Kalender",
+      "notOpen": "Dieser Termin ist vorbei oder abgesagt.",
+      "addError": "Das hat nicht geklappt. Versuch es gleich noch einmal."
     },
     "invite": {
       "action": "Einladen",

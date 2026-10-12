@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 370
+- **Pages scanned:** 371
 - **Distinct i18n keys consumed:** 4754
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -15,6 +15,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 ---
 
 ## __tests__/
+
+### src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/__tests__/partner-health-staff.vtid-05056.test.tsx
 
@@ -81,7 +85,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `vcal` — used: 9, total in shard: 307
+- `vcal` — used: 9, total in shard: 320
 
 ### src/pages/Changelog.tsx
 

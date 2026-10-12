@@ -71,7 +71,8 @@
       "src/components/calendar/vcal/InviteToChatSheet.test.tsx"
     ],
     "src/components/calendar/vcal/ShareToFeedPanel.tsx": [
-      "src/components/calendar/vcal/ShareToFeedPanel.test.tsx"
+      "src/components/calendar/vcal/ShareToFeedPanel.test.tsx",
+      "src/components/calendar/vcal/ShareAnyEntry.vtid-05126.test.tsx"
     ],
     "src/components/calendar/vcal/OverlapWarning.tsx": [
       "src/components/calendar/vcal/OverlapWarning.vtid-04995.test.tsx"
