@@ -17,7 +17,11 @@
     "src/components/ui/vcard/adapters/discover.vtid-05109.test.ts",
     "src/i18n/de/spotlightDiscover.json",
     "src/i18n/en/spotlightDiscover.json",
-    "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts"
+    "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts",
+    ".kiro/specs/desktop-spotlight/**",
+    "docs/SCREEN_INVENTORY.md",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "src/design/screen-manifest.json"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
   "weakens_tests": [],
