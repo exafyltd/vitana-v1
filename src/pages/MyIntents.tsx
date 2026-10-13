@@ -17,6 +17,10 @@ import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
 import { notifyError, t } from '@/lib/i18n-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TierBEmpty, TierBListSkeleton } from "@/components/spotlight/tier-b/TierBKit";
 
 const KIND_TABS: { value: IntentKind | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -28,8 +32,20 @@ const KIND_TABS: { value: IntentKind | "all"; label: string }[] = [
   { value: "mutual_aid", label: "Mutual aid" },
 ];
 
+// VTID-05111 — translated chip labels for the Spotlight branch (the legacy chips keep their English labels).
+const SPOTLIGHT_KIND_LABEL_KEYS: Partial<Record<IntentKind | "all", string>> = {
+  all: "screens.intents.kindFilter_all",
+  commercial_buy: "screens.intents.kindFilter_commercialBuy",
+  commercial_sell: "screens.intents.kindFilter_commercialSell",
+  activity_seek: "screens.intents.kindFilter_activitySeek",
+  partner_seek: "spotlightTierB.intents.kindPartner",
+  social_seek: "screens.intents.kindFilter_socialSeek",
+  mutual_aid: "screens.intents.kindFilter_mutualAid",
+};
+
 export default function MyIntents() {
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   const { toast } = useToast();
   const [intents, setIntents] = useState<UserIntent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,6 +77,68 @@ export default function MyIntents() {
   // Mobile users get the mobile-styled Find a Match → My Posts view.
   if (isMobile) {
     return <Navigate to="/comm/find-partner?view=posts" replace />;
+  }
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones redirect above, flag-off keeps the screen below).
+  // The legacy desktop page renders without AppLayout; the Spotlight frame puts it inside the app shell.
+  if (spotlight) {
+    const chip = (active: boolean) =>
+      `rounded-full border px-3 py-1 text-sm transition-colors ${
+        active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:bg-muted"
+      }`;
+    const kindLabel = (value: IntentKind | "all") => t(SPOTLIGHT_KIND_LABEL_KEYS[value] ?? "screens.intents.kindFilter_all");
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t('screens.myintents.myIntents'), description: t('screens.myintents.yourOpenRequestsListingsPartnerSearches'), emoji: '📌' }}
+          utility={{
+            children: (
+              <Button onClick={() => setComposerOpen(true)} size="sm">
+                <Plus className="me-1 h-4 w-4" /> {t('screens.myintents.new')}
+              </Button>
+            ),
+          }}
+        >
+          <div className="flex flex-col gap-4">
+            {!loading && (
+              <p className="text-xs text-muted-foreground">
+                {tab === "all"
+                  ? t('screens.myintents.lengthOpenUpPer_kind_slot_capPerCategory', { length: intents.length, PER_KIND_SLOT_CAP })
+                  : t('screens.myintents.lengthPer_kind_slot_capSlotsUsed', { length: intents.length, PER_KIND_SLOT_CAP })}
+                {tab !== "all" && intents.length >= PER_KIND_SLOT_CAP && (
+                  <span className="ms-2 text-status-warning">
+                    {t('screens.myintents.capReachedCloseOnePostNew')} {kindLabel(tab)}
+                  </span>
+                )}
+              </p>
+            )}
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('spotlightTierB.intents.filtersAria')}>
+              {KIND_TABS.map((k) => (
+                <button key={k.value} type="button" aria-pressed={tab === k.value} onClick={() => setTab(k.value)} className={chip(tab === k.value)}>
+                  {kindLabel(k.value)}
+                </button>
+              ))}
+            </div>
+            {loading ? (
+              <TierBListSkeleton size="row" count={4} />
+            ) : intents.length === 0 ? (
+              <TierBEmpty titleKey="screens.myintents.noIntentsThisView" actionKey="screens.myintents.new" onAction={() => setComposerOpen(true)} />
+            ) : (
+              <div className="flex flex-col gap-3">
+                {intents.map((intent) => (
+                  <IntentCard key={intent.intent_id} intent={intent} to={`/intents/match/${intent.intent_id}`} variant="my-posts" />
+                ))}
+              </div>
+            )}
+            <p className="text-center text-xs text-muted-foreground">
+              {t('screens.myintents.browseWhatOthersLookingFor')} <Link to="/intents/board" className="underline">{t('screens.myintents.communityBoard')}</Link>
+            </p>
+          </div>
+        </ScreenFrame>
+        <IntentComposer open={composerOpen} onOpenChange={setComposerOpen} onPosted={() => load()} />
+      </AppLayout>
+    );
   }
 
   return (

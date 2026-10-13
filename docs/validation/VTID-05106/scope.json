@@ -1,0 +1,20 @@
+{
+  "vtid": "VTID-05106",
+  "kind": "feature",
+  "paths": [
+    "docs/validation/VTID-05106/**",
+    ".kiro/specs/desktop-spotlight/**",
+    "src/App.tsx",
+    "src/components/RouteTransitionOverlay.tsx",
+    "src/components/layout/NavProgressBar.tsx",
+    "src/hooks/useNavigationPending.ts",
+    "src/hooks/useNavigationPending.vtid-05106.test.tsx",
+    "src/lib/intentPrefetch.ts",
+    "src/lib/intentPrefetch.vtid-05106.test.ts",
+    "src/lib/navigation-transition.vtid-05106.test.tsx",
+    "tests/e2e/staging/vtid-05106-navigation-feel.staging.spec.ts"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

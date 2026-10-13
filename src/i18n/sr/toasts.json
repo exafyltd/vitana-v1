@@ -1387,6 +1387,14 @@
       "capabilityRevoked": "Ovlašćenje opozvano",
       "grantFailed": "Ovlašćenje nije moglo biti dodeljeno",
       "revokeFailed": "Ovlašćenje nije moglo biti opozvano"
+    },
+    "vitanaCards": {
+      "dismissFailed": "Kartica nije mogla da se sakrije",
+      "connectFailed": "Povezivanje nije moglo da počne",
+      "interestsSaved": "Interesovanja sačuvana",
+      "interestsSaveFailed": "Interesovanja nisu mogla da se sačuvaju",
+      "notificationsEnabled": "Obaveštenja su uključena",
+      "notificationsFailed": "Obaveštenja nisu mogla da se uključe"
     }
   }
 }

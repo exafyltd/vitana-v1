@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { PolicyEditDialog } from "@/components/backoffice/PolicyEditDialog";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { hasAnyCapability } from "@/hooks/useBackOfficeCommands";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
@@ -21,6 +22,7 @@ import { t } from "@/lib/i18n-toast";
 const POLICY_CAPS = ["approvals.policy", "audit.view"] as const;
 
 export default function BackOfficePolicies() {
+  const spotlight = useSpotlightEnabled();
   const policy = useBackOfficePolicy();
   const me = useMyErpAccess();
   const canEdit = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, ["approvals.policy"]));
@@ -34,7 +36,7 @@ export default function BackOfficePolicies() {
   const isDefaultMfa = !!p && !!d && p.require_mfa_for_high === d.require_mfa_for_high;
 
   return (
-    <BackOfficePage sectionKey="approvals" screenId="BO-055" emoji="📜" title={t("screens.backoffice.policies.title")} description={t("screens.backoffice.policies.description")} capabilities={POLICY_CAPS} rightAction={canEdit && p ? <Button type="button" size="sm" onClick={openEdit} data-testid="policy-edit-open"><Pencil className="h-4 w-4 me-1" aria-hidden="true" />{t("screens.backoffice.policyEdit.button")}</Button> : undefined}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="approvals" screenId="BO-055" emoji="📜" title={t("screens.backoffice.policies.title")} description={t("screens.backoffice.policies.description")} capabilities={POLICY_CAPS} rightAction={canEdit && p ? <Button type="button" size="sm" onClick={openEdit} data-testid="policy-edit-open"><Pencil className="h-4 w-4 me-1" aria-hidden="true" />{t("screens.backoffice.policyEdit.button")}</Button> : undefined}>
       {!canEdit && me.data && <p className="text-xs text-muted-foreground">{t("screens.backoffice.policyEdit.readOnlyHint")}</p>}
       {editing && p && <PolicyEditDialog key={editSession} current={p} open onOpenChange={setEditing} />}
       {QueryState({ isLoading: policy.isLoading, error: policy.error, rows: 2 }) ?? (
@@ -76,6 +78,6 @@ export default function BackOfficePolicies() {
         </ul>
       </div>
       <DataSourceNote source="gateway" />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

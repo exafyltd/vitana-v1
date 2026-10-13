@@ -10,6 +10,8 @@ import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const columns = [
   {
@@ -34,12 +36,12 @@ const columns = [
   {
     key: "title",
     label: "Title",
-    render: (val: string) => <span className="text-sm line-clamp-1 max-w-[250px]">{val || "-"}</span>,
+    render: (val: string) => <span className="text-sm line-clamp-1 max-w-64">{val || "-"}</span>,
   },
   {
     key: "message",
     label: "Details",
-    render: (val: string) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-[200px]">{val || "-"}</span>,
+    render: (val: string) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-48">{val || "-"}</span>,
   },
   {
     key: "created_at",
@@ -50,6 +52,7 @@ const columns = [
 ];
 
 export default function AuditUserActivity() {
+  const spotlight = useSpotlightEnabled();
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
@@ -70,10 +73,8 @@ export default function AuditUserActivity() {
   const events = data?.data || [];
   const total = data?.total || 0;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminAuditNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.userActivity')} description="Authentication events, role changes, and user-related actions" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -96,7 +97,19 @@ export default function AuditUserActivity() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminAuditNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

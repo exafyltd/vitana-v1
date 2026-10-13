@@ -62,6 +62,10 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { MessagesSpotlight } from '@/components/messages/spotlight/MessagesSpotlight';
+import { compareInboxThreads } from '@/lib/inboxThreadOrder';
 
 // Session-scoped memory of the last inbox view (context + open conversation)
 // so navigating away (news feed, events, live rooms) and back restores the
@@ -94,6 +98,10 @@ export default function Messages() {
   const { translate } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  // VTID-05110: desktop Spotlight layout (tenant flag desktop_spotlight or
+  // ?spotlight=1). Always false on phones; flag off renders today's screen.
+  // Layout only — every data hook below is shared by both layouts.
+  const spotlight = useSpotlightEnabled();
   // Always start in 'global' (Community) context — this is where conversations
   // live for all users regardless of role.  The user can switch to 'tenant'
   // (Network) via the mode pill.  Previously we auto-switched based on
@@ -331,14 +339,7 @@ export default function Messages() {
       // in a "Loading group…" loop.
       const sortedThreads = [...displayThreads]
         .filter(t => !isChatGroupThreadId(t.id))
-        .sort((a, b) => {
-          const ap = pinnedThreads.has(a.id) ? 1 : 0;
-          const bp = pinnedThreads.has(b.id) ? 1 : 0;
-          if (ap !== bp) return bp - ap;
-          const ad = new Date(a.updated_at).getTime();
-          const bd = new Date(b.updated_at).getTime();
-          return bd - ad;
-        })
+        .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
         .reduce((acc, thread) => {
           if (thread.type === 'direct') {
             const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
@@ -553,7 +554,8 @@ export default function Messages() {
   // notification deep-link's recipient hasn't resolved to a thread yet
   // (resolvingDeepLink) — otherwise the list renders for one frame in
   // between, which is the flash reported from a chat notification tap.
-  if (((isLoading || isFetching) && threads.length === 0) || resolvingDeepLink) {
+  const showInboxSkeleton = ((isLoading || isFetching) && threads.length === 0) || resolvingDeepLink;
+  if (showInboxSkeleton && !spotlight) {
     // Mobile loading state
     if (isMobile) {
       return (
@@ -666,14 +668,7 @@ export default function Messages() {
               />
             ) : (
               [...filteredThreads]
-                .sort((a, b) => {
-                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
-                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
-                  if (ap !== bp) return bp - ap;
-                  const ad = new Date(a.updated_at).getTime();
-                  const bd = new Date(b.updated_at).getTime();
-                  return bd - ad;
-                })
+                .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
                 .reduce((acc, thread) => {
                   if (thread.type === 'direct') {
                     const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
@@ -934,14 +929,7 @@ export default function Messages() {
               </div>
             ) : (
               [...filteredThreads]
-                .sort((a, b) => {
-                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
-                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
-                  if (ap !== bp) return bp - ap;
-                  const ad = new Date(a.updated_at).getTime();
-                  const bd = new Date(b.updated_at).getTime();
-                  return bd - ad;
-                })
+                .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
                 .reduce((acc, thread) => {
                   const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
                   const key = counterpart?.user_id || 'unknown';
@@ -1178,14 +1166,7 @@ export default function Messages() {
 
     // Sort and dedupe threads (use searchFiltered to respect search query)
     const sortedThreads = [...searchFiltered]
-      .sort((a, b) => {
-        const ap = pinnedThreads.has(a.id) ? 1 : 0;
-        const bp = pinnedThreads.has(b.id) ? 1 : 0;
-        if (ap !== bp) return bp - ap;
-        const ad = new Date(a.updated_at).getTime();
-        const bd = new Date(b.updated_at).getTime();
-        return bd - ad;
-      })
+      .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
       .reduce((acc, thread) => {
         if (thread.type === 'direct') {
           const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
@@ -1394,6 +1375,92 @@ export default function Messages() {
 
           {user?.id && (
             <CallManager userId={user.id} userName={user.email || 'User'} />
+          )}
+        </AppLayout>
+      </CallProvider>
+    );
+  }
+
+  // VTID-05110: desktop Spotlight (archetype `conversation`). Same state,
+  // same handlers, same <ConversationView> props as the desktop layout below;
+  // only the frame around them changes. The skeleton shows inside the frame
+  // instead of the legacy full-page loading view.
+  if (spotlight) {
+    return (
+      <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
+        <AppLayout>
+          <SEO title={t('screens.messages.messages')} description={translate('inbox.description')} canonical={window.location.href} />
+          <MessagesSpotlight
+            context={messageContext}
+            onContextChange={(value) => { userSelectedContextRef.current = true; setMessageContext(value); }}
+            loading={showInboxSkeleton}
+            threads={displayThreads}
+            currentUserId={user?.id}
+            pinnedThreadIds={pinnedThreads}
+            selectedThreadId={selectedThreadId}
+            filter={conversationFilter}
+            onFilterChange={setConversationFilter}
+            onThreadOpen={handleThreadOpen}
+            totalUnread={totalUnread}
+            onMarkAllRead={handleMarkAllAsRead}
+            onNewMessage={() => setShowNewConversation(true)}
+            onCreateGroup={() => setShowCreateGroup(true)}
+            searchItems={searchDropdownItems}
+            onSearch={(query) => setInboxSearchQuery(query)}
+            onClearSearch={() => setInboxSearchQuery("")}
+            onSearchItemClick={handleSearchItemClick}
+            thread={
+              selectedThreadId || selectedRecipientId ? (
+                <ConversationErrorBoundary>
+                  <ConversationView
+                    threadId={selectedThreadId}
+                    recipientId={selectedRecipientId}
+                    context={messageContext}
+                    className="flex-1 min-h-0 min-w-0"
+                    onThreadRead={handleThreadRead}
+                    onConversationOpened={handleConversationOpened}
+                    onMessageSent={handleMessageSent}
+                    onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
+                  />
+                </ConversationErrorBoundary>
+              ) : null
+            }
+            contacts={
+              <ContactsTabContent
+                onStartConversation={handleMessageContact}
+                messageContext={messageContext}
+              />
+            }
+          >
+            {({ frame, stage }) => (
+              <ScreenFrame archetype="conversation" {...frame}>
+                {stage}
+              </ScreenFrame>
+            )}
+          </MessagesSpotlight>
+
+          {!showInboxSkeleton && (
+            <>
+              <NewConversationPopup
+                open={showNewConversation}
+                onOpenChange={handleNewConversationOpenChange}
+                initialRecipientId={contactRecipientId}
+                onConversationCreated={handleConversationCreated}
+                onGroupCreated={handleGroupCreated}
+                context={messageContext}
+              />
+              <CreateGroupPopup
+                open={showCreateGroup}
+                onOpenChange={setShowCreateGroup}
+                onGroupCreated={handleGroupCreated}
+                context={messageContext}
+              />
+              {user?.id && (
+                <CallManager userId={user.id} userName={user.email || 'User'} />
+              )}
+            </>
           )}
         </AppLayout>
       </CallProvider>

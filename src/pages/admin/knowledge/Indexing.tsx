@@ -16,10 +16,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { toast } from "sonner";
 import { useKBDocuments, useReindexKBDocument } from "@/hooks/useAdminKnowledge";
 import { notifySuccess, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const STATUS_ORDER = ["failed", "pending", "indexed"] as const;
 
 export default function KnowledgeIndexing() {
+  const spotlight = useSpotlightEnabled();
   const docsQuery = useKBDocuments();
   const reindexMutation = useReindexKBDocument();
   const docs = docsQuery.data || [];
@@ -45,10 +48,8 @@ export default function KnowledgeIndexing() {
     return "warning" as const;
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="knowledge" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="⚙️"
           title={t('screens.admin.indexingStatus')}
@@ -114,7 +115,19 @@ export default function KnowledgeIndexing() {
             </Card>
           );
         })}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="knowledge" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

@@ -12,7 +12,7 @@
  * itself only ever writes through services/partner-health/ingestion.ts.
  *
  * Modeled on Products.tsx's table/filter/patch pattern (same auth-header
- * helper, same GATEWAY_URL resolution, same load/toast/reload flow).
+ * helper, same GATEWAY_BASE resolution, same load/toast/reload flow).
  */
 
 import { useCallback, useEffect, useState } from "react";
@@ -34,11 +34,15 @@ import {
   ResponsiveDialogBody,
   ResponsiveDialogFooter,
 } from "@/components/ui/responsive-dialog";
-import { Loader2, RefreshCw, Upload, CheckCircle2 } from "lucide-react";
+import { RefreshCw, Upload, CheckCircle2 } from "lucide-react";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
 import { confirmMatchErrorKey, memberLinkBadgeKey, type MemberLinkStatus } from "@/hooks/usePartnerHealthOrders";
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
+// so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 interface PartnerOrder {
   id: string;
@@ -84,6 +88,7 @@ function partnerName(row: { partner_registry?: { display_name: string } | { disp
 }
 
 export default function PartnerHealthOrders() {
+  const spotlight = useSpotlightEnabled();
   const [orders, setOrders] = useState<PartnerOrder[]>([]);
   const [inbox, setInbox] = useState<InboxRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,7 +104,7 @@ export default function PartnerHealthOrders() {
   const [resolveOrderRef, setResolveOrderRef] = useState("");
 
   const load = useCallback(async () => {
-    if (!GATEWAY_URL) {
+    if (!GATEWAY_BASE) {
       notifyError('toasts.admin.gatewayUrlNotConfigured');
       setLoading(false);
       return;
@@ -108,8 +113,8 @@ export default function PartnerHealthOrders() {
     try {
       const headers = await authHeaders();
       const [ordersResp, inboxResp] = await Promise.all([
-        fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/orders`, { headers }),
-        fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox`, { headers }),
+        fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/orders`, { headers }),
+        fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/inbox`, { headers }),
       ]);
       if (!ordersResp.ok) throw new Error(`orders HTTP ${ordersResp.status}`);
       if (!inboxResp.ok) throw new Error(`inbox HTTP ${inboxResp.status}`);
@@ -132,7 +137,7 @@ export default function PartnerHealthOrders() {
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/orders/${orderId}`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/orders/${orderId}`, {
         method: "PATCH",
         headers,
         body: JSON.stringify({ status }),
@@ -162,7 +167,7 @@ export default function PartnerHealthOrders() {
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox/${uploadOrder.id}/upload-result`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/inbox/${uploadOrder.id}/upload-result`, {
         method: "POST",
         headers,
         // VTID-05056: no partner_key — the gateway takes it from the order's own partner.
@@ -192,7 +197,7 @@ export default function PartnerHealthOrders() {
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox/${resolveInboxRow.id}/confirm-match`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/inbox/${resolveInboxRow.id}/confirm-match`, {
         method: "POST",
         headers,
         body: JSON.stringify({
@@ -221,14 +226,8 @@ export default function PartnerHealthOrders() {
     }
   }
 
-  return (
-    <AppLayout>
-      <SEO
-        title={t('screens.admin.partnerHealthOrders')}
-        description="Partner Health Test Integration — orders and the quarantine inbox."
-        canonical={typeof window !== "undefined" ? window.location.href : ""}
-      />
-      <div className="p-6 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-4">
           <StandardHeader
             title={t('screens.admin.partnerHealthOrders')}
@@ -236,8 +235,9 @@ export default function PartnerHealthOrders() {
           />
 
           {loading ? (
-            <div className="p-8 flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loading')}
+            <div>
+              <ArchetypeSkeleton archetype="workspace" />
+              <span className="sr-only">{t('screens.admin.loading')}</span>
             </div>
           ) : (
             <Tabs defaultValue="orders">
@@ -255,13 +255,13 @@ export default function PartnerHealthOrders() {
                 <Card>
                   <CardContent className="p-0 overflow-x-auto">
                     <table className="w-full text-sm">
-                      <thead className="border-b bg-slate-50">
+                      <thead className="border-b bg-muted/50">
                         <tr>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.testColumn')}</th>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.partner')}</th>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.status')}</th>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.updated')}</th>
-                          <th className="p-3 text-left font-medium" />
+                          <th className="p-3 text-start font-medium">{t('screens.admin.testColumn')}</th>
+                          <th className="p-3 text-start font-medium">{t('screens.admin.partner')}</th>
+                          <th className="p-3 text-start font-medium">{t('screens.admin.status')}</th>
+                          <th className="p-3 text-start font-medium">{t('screens.admin.updated')}</th>
+                          <th className="p-3 text-start font-medium" />
                         </tr>
                       </thead>
                       <tbody>
@@ -286,9 +286,9 @@ export default function PartnerHealthOrders() {
                               </select>
                             </td>
                             <td className="p-3 text-xs text-muted-foreground">{new Date(o.status_updated_at).toLocaleString()}</td>
-                            <td className="p-3 text-right">
+                            <td className="p-3 text-end">
                               <Button size="sm" variant="outline" onClick={() => { setUploadOrder(o); setUploadJson(""); }}>
-                                <Upload className="w-4 h-4 mr-1" /> {t('screens.admin.uploadResult')}
+                                <Upload className="w-4 h-4 me-1" /> {t('screens.admin.uploadResult')}
                               </Button>
                             </td>
                           </tr>
@@ -303,12 +303,12 @@ export default function PartnerHealthOrders() {
                 <Card>
                   <CardContent className="p-0 overflow-x-auto">
                     <table className="w-full text-sm">
-                      <thead className="border-b bg-slate-50">
+                      <thead className="border-b bg-muted/50">
                         <tr>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.partner')}</th>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.reason')}</th>
-                          <th className="p-3 text-left font-medium">{t('screens.admin.received')}</th>
-                          <th className="p-3 text-left font-medium" />
+                          <th className="p-3 text-start font-medium">{t('screens.admin.partner')}</th>
+                          <th className="p-3 text-start font-medium">{t('screens.admin.reason')}</th>
+                          <th className="p-3 text-start font-medium">{t('screens.admin.received')}</th>
+                          <th className="p-3 text-start font-medium" />
                         </tr>
                       </thead>
                       <tbody>
@@ -326,10 +326,10 @@ export default function PartnerHealthOrders() {
                               </div>
                             </td>
                             <td className="p-3 text-xs text-muted-foreground">{new Date(row.created_at).toLocaleString()}</td>
-                            <td className="p-3 text-right">
+                            <td className="p-3 text-end">
                               {/* VTID-05056: a row waiting for the member cannot be re-proposed. */}
                               <Button size="sm" disabled={row.member_link_status === 'pending_member'} onClick={() => setResolveInboxRow(row)}>
-                                <CheckCircle2 className="w-4 h-4 mr-1" /> {t('screens.admin.resolve')}
+                                <CheckCircle2 className="w-4 h-4 me-1" /> {t('screens.admin.resolve')}
                               </Button>
                             </td>
                           </tr>
@@ -342,11 +342,27 @@ export default function PartnerHealthOrders() {
             </Tabs>
           )}
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO
+        title={t('screens.admin.partnerHealthOrders')}
+        description="Partner Health Test Integration — orders and the quarantine inbox."
+        canonical={typeof window !== "undefined" ? window.location.href : ""}
+      />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 min-h-screen">{adminBody}</div>
+      )}
 
       {/* Upload result dialog */}
       <ResponsiveDialog open={uploadOrder !== null} onOpenChange={(o) => { if (!o) setUploadOrder(null); }}>
-        <ResponsiveDialogContent className="sm:max-w-[560px]">
+        <ResponsiveDialogContent className="sm:max-w-xl">
           <ResponsiveDialogHeader>
             <ResponsiveDialogTitle>{t('screens.admin.uploadResultFor', { name: uploadOrder?.test_name ?? '' })}</ResponsiveDialogTitle>
           </ResponsiveDialogHeader>
@@ -371,7 +387,7 @@ export default function PartnerHealthOrders() {
 
       {/* Confirm-match dialog — the hard-stop step */}
       <ResponsiveDialog open={resolveInboxRow !== null} onOpenChange={(o) => { if (!o) setResolveInboxRow(null); }}>
-        <ResponsiveDialogContent className="sm:max-w-[520px]">
+        <ResponsiveDialogContent className="sm:max-w-lg">
           <ResponsiveDialogHeader>
             <ResponsiveDialogTitle>{t('screens.admin.confirmMatch')}</ResponsiveDialogTitle>
           </ResponsiveDialogHeader>

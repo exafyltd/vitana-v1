@@ -21,6 +21,7 @@ import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
 import PushDiagnostics from "@/components/PushDiagnostics";
+import { VitanaMessagesSettings } from "@/components/settings/VitanaMessagesSettings";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -261,6 +262,8 @@ export default function MobileSettings() {
               </div>
             </CardContent>
           </Card>
+          {/* VTID-05100: Vitana's proactive personal Messenger messages */}
+          <VitanaMessagesSettings className="rounded-2xl border-border/50 shadow-sm" />
           <PushDiagnostics />
           </>
         );

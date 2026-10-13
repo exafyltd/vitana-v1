@@ -93,6 +93,13 @@ the STAGING-VERIFY evidence.
 commit (see the scoping rules for in-session approval), then report the
 post-deploy check result in one line.
 
+## 🤝 CLAUDE CODE ↔ KIRO COLLABORATION (STANDING RULE — VTID-05145)
+
+Git is the only channel between Claude Code and Kiro sessions — the owner never relays. At session start run
+`node <vitana-platform>/scripts/collab/queue.mjs --repo <vitana-platform> --repo <vitana-v1>` and work lanes whose
+`next_actor` is you; state your session id + lane in your first reply; claim a lane before touching it, one session per
+lane; push and update the lane file before ending. Full rules: `.claude/rules/collaboration.md`.
+
 ## Overview
 
 VITANA community app (branded "MAXINA - Longevity Community"). React/Vite SPA with 551+ screens spanning community, health, AI, messaging, wallet, and admin features.
@@ -334,6 +341,12 @@ tenant overrides on top). **Adding a page in `App.tsx` means adding it to
 Routes must point at the page a member lands on, never at a `<Navigate>`
 redirect. The build publishes the merged registry as `/nav-registry.json`
 for the gateway. Details: `src/navigation/registry/README.md`.
+
+**Native parity ledger (VTID-05157).** A page added in `App.tsx` / `screens.json` / `exclusions.json` also needs its
+row in `apps/mobile/parity/ledger.json`: run `node scripts/native/parity-ledger.mjs --sync` (`not_started` is fine)
+and, if `--check` reports a `pending` scope, decide it in `scripts/native/parity-scope.json`. NATIVE-CI enforces
+this (program `docs/programs/native-app/NATIVE-APP-PLAN.md` §7: a mobile-visible change ships native too or records
+an exception). The native app itself lives in `apps/mobile/` (own lockfile, not a root workspace) — see its README.
 
 ## Key Patterns
 

@@ -3,7 +3,8 @@
  * Pending approvals the caller could decide (`can_decide` from the gateway).
  * Deciding is a Commit-level action and ships in the next slice.
  */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import ApprovalsTable from "@/components/backoffice/ApprovalsTable";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
@@ -12,13 +13,14 @@ import { useBackOfficeApprovals } from "@/hooks/useBackOfficeCommands";
 import { t } from "@/lib/i18n-toast";
 
 export default function BackOfficeInbox() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const anyCapability = !!me.data && (me.data.is_exafy_admin || me.data.capabilities.length > 0);
   const approvals = useBackOfficeApprovals("pending", { enabled: anyCapability });
   const mine = (approvals.data ?? []).filter((a) => a.can_decide);
 
   return (
-    <BackOfficePage sectionKey="overview" screenId="BO-002" emoji="📥" title={t("screens.backoffice.inbox.title")} description={t("screens.backoffice.inbox.description")}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="overview" screenId="BO-002" emoji="📥" title={t("screens.backoffice.inbox.title")} description={t("screens.backoffice.inbox.description")}>
       <p className="text-xs text-muted-foreground">{t("screens.backoffice.common.readOnlySlice")}</p>
       {me.data && !anyCapability ? (
         <p className="text-sm text-muted-foreground">{t("screens.backoffice.dashboard.noCapabilities")}</p>
@@ -28,6 +30,6 @@ export default function BackOfficeInbox() {
         )
       )}
       <DataSourceNote source="gateway" />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

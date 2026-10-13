@@ -178,12 +178,12 @@ export default function DevReleases() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
-                <tr className="text-left">
+                <tr className="text-start">
                   <th className="px-4 py-2 font-medium">Component</th>
                   <th className="px-4 py-2 font-medium">Version</th>
                   <th className="px-4 py-2 font-medium">Channel</th>
                   <th className="px-4 py-2 font-medium">Released</th>
-                  <th className="px-4 py-2 font-medium text-right">Pending</th>
+                  <th className="px-4 py-2 font-medium text-end">Pending</th>
                 </tr>
               </thead>
               <tbody>
@@ -212,7 +212,7 @@ export default function DevReleases() {
                       <td className="px-4 py-3 text-muted-foreground">
                         {relativeTime(c.current_released_at)}
                       </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
+                      <td className="px-4 py-3 text-end tabular-nums">
                         {c.pending_count}
                       </td>
                     </tr>
@@ -247,13 +247,13 @@ export default function DevReleases() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead className="bg-muted/50">
-                        <tr className="text-left">
+                        <tr className="text-start">
                           <th className="px-3 py-2 font-medium">Surface</th>
                           <th className="px-3 py-2 font-medium">Version</th>
                           <th className="px-3 py-2 font-medium">Channel</th>
                           <th className="px-3 py-2 font-medium">Min platform</th>
                           <th className="px-3 py-2 font-medium">Compat</th>
-                          <th className="px-3 py-2 font-medium text-right">Pending</th>
+                          <th className="px-3 py-2 font-medium text-end">Pending</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -278,7 +278,7 @@ export default function DevReleases() {
                             <td className="px-3 py-3">
                               <CompatibilityBadge status={s.compatibility} />
                             </td>
-                            <td className="px-3 py-3 text-right tabular-nums">
+                            <td className="px-3 py-3 text-end tabular-nums">
                               {s.pending_count}
                             </td>
                           </tr>

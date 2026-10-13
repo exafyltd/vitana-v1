@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05114",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900, signed in: /backoffice/dashboard, /backoffice/sales/leads, /backoffice/accounting/journals, /backoffice/audit/trail, /backoffice/settings/access — for a BackOffice account: ?spotlight=1 renders BackOfficeTabs directly above [data-archetype=\"workspace\"] (full width, no horizontal scroll) and ?spotlight=0 renders today's tree without [data-archetype]; for the test user without the BackOffice role: every route still renders NotAuthorized in place (no workspace frame, no BackOffice tabs) and the BackOffice-only part is skipped with that reason",
+      "spec": "tests/e2e/staging/vtid-05114-backoffice-workspace.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "BackOffice screen flag off = legacy tree (BackOfficeTabs + BackOfficePage's padded wrapper with the screen id, no [data-archetype]); flag on = BackOfficeTabs directly above ScreenFrame \"workspace\" (full width, no rail, same header, capability gate and content); /backoffice/* placeholder split the same way (404 and wave body); every BackOffice page reads useSpotlightEnabled() once and never moves BackOfficeTabs inside ScreenFrame; Approvals › Policies read-only render still green",
+      "ref": "npx vitest run src/pages/backoffice src/config/backoffice-navigation.test.ts src/design",
+      "cwd": ".",
+      "reason": "The staging test user has no BackOffice role, so the BackOffice screens themselves cannot be rendered on staging for that account; the flag-on/flag-off render and the per-page source contract are proven in jsdom."
+    }
+  ]
+}

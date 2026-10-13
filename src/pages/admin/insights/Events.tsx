@@ -26,6 +26,8 @@ import { useAdminAnalyticsEvents, AnalyticsEventRow } from "@/hooks/useAdminProd
 import { AnalyticsStates, PrivacyNote } from "@/components/admin/analytics/AnalyticsShared";
 import { fmtDateTime, fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const EVENT_TYPES = ["journey", "assistant", "feature", "interest", "friction", "performance", "content"] as const;
 const ALL_TYPES = "all";
@@ -38,7 +40,7 @@ function EventRow({ event }: { event: AnalyticsEventRow }) {
       <button
         type="button"
         onClick={() => hasProps && setExpanded((v) => !v)}
-        className="flex w-full flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-left"
+        className="flex w-full flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-start"
       >
         <span className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">
           {fmtDateTime(new Date(event.occurred_at))}
@@ -51,7 +53,7 @@ function EventRow({ event }: { event: AnalyticsEventRow }) {
           <span className="truncate font-mono text-xs text-muted-foreground">{event.feature_key}</span>
         )}
         {hasProps && (
-          <span className="ml-auto text-xs text-primary">
+          <span className="ms-auto text-xs text-primary">
             {expanded ? "−" : "+"} {t("screens.admin.paProperties")}
           </span>
         )}
@@ -66,6 +68,7 @@ function EventRow({ event }: { event: AnalyticsEventRow }) {
 }
 
 export default function Events() {
+  const spotlight = useSpotlightEnabled();
   const [eventType, setEventType] = useState<string>(ALL_TYPES);
   const [nameInput, setNameInput] = useState("");
   const [nameFilter, setNameFilter] = useState("");
@@ -79,10 +82,8 @@ export default function Events() {
 
   const isEmpty = !!data && data.events.length === 0;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="insights" />
-      <div className="space-y-6 p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🔎"
           title={t("screens.admin.paEventExplorer")}
@@ -92,7 +93,7 @@ export default function Events() {
         <Card>
           <CardContent className="flex flex-wrap items-center gap-3 p-4">
             <Select value={eventType} onValueChange={setEventType}>
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-40">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -112,10 +113,10 @@ export default function Events() {
                 if (e.key === "Enter") setNameFilter(nameInput.trim());
               }}
               placeholder={t("screens.admin.paEventNameFilter")}
-              className="w-[220px]"
+              className="w-56"
             />
             <Select value={String(limit)} onValueChange={(v) => setLimit(parseInt(v))}>
-              <SelectTrigger className="w-[100px]">
+              <SelectTrigger className="w-24">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -125,7 +126,7 @@ export default function Events() {
               </SelectContent>
             </Select>
             {data && (
-              <span className="ml-auto text-xs text-muted-foreground">
+              <span className="ms-auto text-xs text-muted-foreground">
                 {t("screens.admin.paShowingLatest", { count: fmtNumber(data.count) })}
               </span>
             )}
@@ -144,7 +145,19 @@ export default function Events() {
             <PrivacyNote />
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="insights" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

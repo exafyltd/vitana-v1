@@ -1,6 +1,7 @@
 /** BackOffice › Reports › P&L (BO-046) — VTID-03858, Read tier: `reports.pnl` over a preset date window. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
@@ -55,6 +56,7 @@ function LinesTable({ lines, total, title, emptyKey }: { lines: ErpPnlLine[]; to
 }
 
 export default function BackOfficeProfitAndLoss() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [preset, setPreset] = useState<ReportPreset>("ytd");
@@ -65,7 +67,7 @@ export default function BackOfficeProfitAndLoss() {
   const net = num(r?.net_income ?? 0);
 
   return (
-    <BackOfficePage sectionKey="reports" screenId="BO-046" emoji="📈" title={t("screens.backoffice.reports.pnl.title")} description={t("screens.backoffice.reports.pnl.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="reports" screenId="BO-046" emoji="📈" title={t("screens.backoffice.reports.pnl.title")} description={t("screens.backoffice.reports.pnl.description")} capabilities={CAPS}>
       <div className="flex flex-wrap items-center gap-3">
         <Select value={preset} onValueChange={(v) => setPreset(v as ReportPreset)}>
           <SelectTrigger className="w-56" aria-label={t("screens.backoffice.reports.common.period")}><SelectValue /></SelectTrigger>
@@ -88,6 +90,6 @@ export default function BackOfficeProfitAndLoss() {
         </div>
       )}
       <DataSourceNote command={pnl.data?.command} />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

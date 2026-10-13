@@ -19,6 +19,8 @@ import { VtnaRewardRules } from "@/components/wallet/VtnaRewardRules";
 import { RewardShop } from "@/components/wallet/RewardShop";
 import { EarnMore } from "@/components/wallet/EarnMore";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 function Rewards() {
   const [urlTab, setActiveTab] = useUrlTab("tab", "earned");
@@ -26,6 +28,7 @@ function Rewards() {
   const activeTab = urlTab === "intelligence" ? "earn" : urlTab;
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   // Radix Tabs (SplitBar) defaults to dir="ltr"; follow the app direction (same as settings/Support.tsx).
   const { isRTL } = useRTL();
   // VTID-04983: back from Stripe Checkout for a shipped reward.
@@ -41,9 +44,50 @@ function Rewards() {
     }
   }, [navigate]);
 
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('wallet.rewardsPage.seoTitle')} description={t('wallet.rewardsPage.description')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: walletNavigation }}
+          header={{ title: t('wallet.rewardsPage.title'), description: t('wallet.rewardsPage.description'), emoji: '🎁' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.wallet.searchRewardsCommissionsAchievements')} />
+                <UniversalCalendarButton />
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: 'earned', label: t('wallet.rewardsPage.tabEarned') },
+              { value: 'earn', label: t('wallet.rewardsPage.tabEarnMore') },
+              { value: 'shop', label: t('wallet.rewardShop.tab') },
+            ],
+          }}
+        >
+          <SplitBarContent value="earned">
+            <VtnaRewardRules />
+          </SplitBarContent>
+          <SplitBarContent value="earn">
+            <EarnMore />
+          </SplitBarContent>
+          <SplitBarContent value="shop">
+            <RewardShop shippingReturn={shippingReturn} />
+          </SplitBarContent>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
-      <SEO 
+      <SEO
         title={t('wallet.rewardsPage.seoTitle')}
         description={t('wallet.rewardsPage.description')}
       />

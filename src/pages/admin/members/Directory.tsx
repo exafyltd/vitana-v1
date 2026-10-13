@@ -28,6 +28,8 @@ import { useMembers, useRolesSummary } from "@/hooks/useAdminMembers";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   admin: "error",
   staff: "warning",
@@ -40,6 +42,7 @@ const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" |
 };
 
 export default function MembersDirectory() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
@@ -54,10 +57,8 @@ export default function MembersDirectory() {
     setRoleFilter("all");
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="members" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="👥"
           title={t('screens.admin.members')}
@@ -120,12 +121,12 @@ export default function MembersDirectory() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[40px]" />
+                  <TableHead className="w-10" />
                   <TableHead>{t('screens.admin.name')}</TableHead>
                   <TableHead>{t('screens.admin.email')}</TableHead>
                   <TableHead>{t('screens.admin.activeRole')}</TableHead>
                   <TableHead>{t('screens.admin.status')}</TableHead>
-                  <TableHead className="text-right">{t('screens.admin.joined')}</TableHead>
+                  <TableHead className="text-end">{t('screens.admin.joined')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -155,7 +156,7 @@ export default function MembersDirectory() {
                         {m.status}
                       </AdminStatusBadge>
                     </TableCell>
-                    <TableCell className="text-right text-xs text-muted-foreground">
+                    <TableCell className="text-end text-xs text-muted-foreground">
                       {fmtDate(new Date(m.created_at))}
                     </TableCell>
                   </TableRow>
@@ -164,7 +165,19 @@ export default function MembersDirectory() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="members" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

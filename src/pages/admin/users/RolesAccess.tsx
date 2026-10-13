@@ -25,6 +25,8 @@ import { adminUsersNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 // Placeholder dev-access users (would come from /api/v1/dev-access/users in production)
 const DEV_ACCESS_USERS = [
   { email: "admin@vitana.io", granted_at: "2026-01-15", status: "active" },
@@ -41,6 +43,7 @@ const ROLE_DISTRIBUTION = [
 ];
 
 export default function RolesAccess() {
+  const spotlight = useSpotlightEnabled();
   const [grantEmail, setGrantEmail] = useState("");
   const [granting, setGranting] = useState(false);
 
@@ -56,10 +59,8 @@ export default function RolesAccess() {
     setGrantEmail("");
   };
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminUsersNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.rolesAccess')}
@@ -72,7 +73,7 @@ export default function RolesAccess() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2">
-                  <Key className="h-5 w-5 text-amber-600" />
+                  <Key className="h-5 w-5 text-status-warning" />
                   <div>
                     <CardTitle>{t('screens.admin.devAccess')}</CardTitle>
                     <CardDescription>
@@ -139,7 +140,7 @@ export default function RolesAccess() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-violet-600" />
+                  <Shield className="h-5 w-5 text-category-2" />
                   <div>
                     <CardTitle>{t('screens.admin.roleDistribution')}</CardTitle>
                     <CardDescription>{t('screens.admin.breakdownUserRolesAcrossPlatformTotalusers', { totalUsers })}
@@ -190,7 +191,19 @@ export default function RolesAccess() {
             </Card>
           </div>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminUsersNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-raised to-surface-page-via min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

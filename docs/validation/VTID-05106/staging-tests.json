@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05106",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900, signed in: hover + click through the sidebar (/discover, /comm, /calendar, /wallet, /health, /home) — the full-screen route-chunk loader never mounts after the first load and the nav progress bar is gone once each screen is there",
+      "spec": "tests/e2e/staging/vtid-05106-navigation-feel.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "prototype gate (v7_startTransition keeps the old page, control shows the fallback), useNavigationPending + NavProgressBar under BrowserRouter, intent prefetch (80 ms dwell, once per path, internal links only, focus, cleanup)",
+      "ref": "npx vitest run src/lib/navigation-transition.vtid-05106.test.tsx src/hooks/useNavigationPending.vtid-05106.test.tsx src/lib/intentPrefetch.vtid-05106.test.ts",
+      "cwd": ".",
+      "reason": "Timing of a pending transition and the prefetch dwell are deterministic only with controlled chunks and timers; staging proves the end-to-end effect."
+    }
+  ]
+}

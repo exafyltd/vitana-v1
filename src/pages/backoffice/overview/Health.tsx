@@ -3,7 +3,8 @@
  * Four `erp.health.read*` commands (status, check-installation,
  * get-schema-version, list-modules); needs erp.admin or audit.view.
  */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
@@ -32,6 +33,7 @@ function Stat({ label, value }: { label: string; value: React.ReactNode }) {
 }
 
 export default function BackOfficeHealth() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, HEALTH_CAPS));
   const status = useErpRead<ErpStatus>("erp.health.read", {}, { enabled });
@@ -41,7 +43,7 @@ export default function BackOfficeHealth() {
   const yesNo = (v: boolean | undefined) => (v ? t("screens.backoffice.company.yes") : t("screens.backoffice.company.no"));
 
   return (
-    <BackOfficePage sectionKey="overview" screenId="BO-004" emoji="🩺" title={t("screens.backoffice.health.title")} description={t("screens.backoffice.health.description")} capabilities={HEALTH_CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="overview" screenId="BO-004" emoji="🩺" title={t("screens.backoffice.health.title")} description={t("screens.backoffice.health.description")} capabilities={HEALTH_CAPS}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base">{t("screens.backoffice.health.status")}</CardTitle></CardHeader>
@@ -128,6 +130,6 @@ export default function BackOfficeHealth() {
           <DataSourceNote command={modules.data?.command} />
         </CardContent>
       </Card>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

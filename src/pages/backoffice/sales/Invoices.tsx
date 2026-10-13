@@ -3,7 +3,8 @@
  * Overdue is computed client-side (due date passed, outstanding > 0); ERPClaw's `check-overdue` fails on Postgres today.
  */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
@@ -26,6 +27,7 @@ import { CREDIT_NOTE_SOURCE_STATUSES, canCancelInvoice, canSubmitInvoice, credit
 const CAPS = ["sales.view"] as const;
 
 export default function BackOfficeInvoices() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -41,7 +43,7 @@ export default function BackOfficeInvoices() {
   const d = detail.data?.result;
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-011" emoji="🧾" title={t("screens.backoffice.sales.invoices.title")} description={t("screens.backoffice.sales.invoices.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-011" emoji="🧾" title={t("screens.backoffice.sales.invoices.title")} description={t("screens.backoffice.sales.invoices.description")} capabilities={CAPS}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.sales.invoices.count")} value={fmtNumber(all.length)} subtitle={t("screens.backoffice.sales.invoices.countHint")} icon={Receipt} loading={enabled && list.isLoading} />
         <AdminStatsCard title={t("screens.backoffice.sales.invoices.outstanding")} value={formatMoney(outstanding)} subtitle={t("screens.backoffice.sales.invoices.outstandingHint")} icon={Coins} loading={enabled && list.isLoading} variant={outstanding > 0 ? "warning" : "default"} />
@@ -131,6 +133,6 @@ export default function BackOfficeInvoices() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

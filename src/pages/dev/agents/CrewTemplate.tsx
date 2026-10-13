@@ -10,21 +10,15 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Users, Layers, Settings, Plus } from "lucide-react";
 import { devAgentsNavigation } from "@/config/dev-navigation";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function AgentsCrewTemplate() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("definitions");
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — Crew Templates" 
-        description="Agent crew configurations and templates"
-        canonical={window.location.href}
-      />
-
-      <SubNavigation items={devAgentsNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           <DevStandardHeader 
@@ -40,13 +34,13 @@ export default function AgentsCrewTemplate() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               New Template
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="definitions">Crew Definitions</SplitBarTrigger>
               <SplitBarTrigger value="library">Template Library</SplitBarTrigger>
               <SplitBarTrigger value="analytics">Crew Analytics</SplitBarTrigger>
@@ -77,7 +71,26 @@ export default function AgentsCrewTemplate() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — Crew Templates" 
+        description="Agent crew configurations and templates"
+        canonical={window.location.href}
+      />
+
+      <SubNavigation items={devAgentsNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
     </>
   );
 }

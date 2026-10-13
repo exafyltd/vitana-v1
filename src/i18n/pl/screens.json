@@ -5277,11 +5277,13 @@
       "vitanaIndexUpSubtext": "Świetna robota!",
       "vitanaIndexDownSubtext": "Małe kroki się liczą.",
       "vitanaIndexStableSubtext": "Bądź konsekwentny.",
+      "vitanaIndexScoreSubtext": "Indeks {score} · {message}",
       "longevityJourneyEyebrow": "TWÓJ AUDIOBOOK O DŁUGOWIECZNOŚCI",
       "longevityJourneyContinue": "Kontynuuj odcinek {session}: {topic}",
       "longevityJourneyAllDone": "Wysłuchałeś wszystkich odcinków. Brawo!",
       "longevityJourneyNextStepHeadline": "Twój następny krok:",
       "longevityJourneySubtext": "Odcinek {session} na ciebie czeka.",
+      "longevityJourneyProgressSubtext": "Odcinek {session} czeka · ukończone: {done} · dziś {today}/{goal}",
       "longevityJourneyStartSession": "Odtwórz odcinek {session}",
       "longevityJourneyDoneLabel": "Gotowe",
       "longevityJourneyNowLabel": "Teraz",
@@ -6230,7 +6232,8 @@
       "vitanaOpenScreen": "Otwórz ekran",
       "viewFullscreen": "Pokaż na pełnym ekranie",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} utworzył(a) grupę",
@@ -6270,7 +6273,8 @@
       "imageDownloadFailed": "Nie udało się wczytać obrazu",
       "imageShareFailed": "Udostępnianie nie powiodło się",
       "imageLoading": "Ładowanie obrazu",
-      "unknownSize": "Nieznany rozmiar"
+      "unknownSize": "Nieznany rozmiar",
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Szukam…",
@@ -7696,6 +7700,34 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -8683,7 +8715,21 @@
       "viewIndex": "Zobacz Indeks",
       "viewJourney": "Zobacz Moją Podróż",
       "viewMatch": "Zobacz Dopasowanie",
-      "dismissCard": "Odrzuć kartę"
+      "dismissCard": "Odrzuć kartę",
+      "dailyDiary": "Dziennik",
+      "talkToVitana": "Porozmawiaj z Vitaną",
+      "autopilot": "Autopilot",
+      "calendar": "Kalendarz",
+      "uploadMedia": "Multimedia",
+      "discover": "Odkrywaj",
+      "profilePhoto": "Zdjęcie profilowe",
+      "profileSetup": "Profil",
+      "socialConnect": "Połącz",
+      "importContacts": "Kontakty",
+      "completeProfile": "Uzupełnij profil",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -13532,6 +13578,160 @@
       "startingSoon": "Zaraz się zacznie",
       "startNow": "Zacznij teraz",
       "eventsSectionTitle": "Pokoje na żywo"
+    },
+    "vitanaCards": {
+      "stripLabel": "Propozycje od Vitany",
+      "eyebrowProfile": "Twój profil",
+      "eyebrowConnect": "Połącz",
+      "eyebrowCommunity": "Społeczność",
+      "eyebrowNotifications": "Powiadomienia",
+      "E1": {
+        "title": "Pokaż swoją twarz",
+        "description": "Dodaj zdjęcie profilowe, żeby inni od razu Cię rozpoznali.",
+        "action": "Prześlij"
+      },
+      "E2": {
+        "title": "Opowiedz coś o sobie",
+        "description": "Kilka zdań o Tobie pomoże innym zacząć rozmowę.",
+        "action": "Napisz bio"
+      },
+      "E3": {
+        "title": "Udostępnij swój pierwszy post",
+        "description": "Przywitaj się ze społecznością – wystarczy krótka myśl.",
+        "action": "Opublikuj teraz"
+      },
+      "E4": {
+        "title": "Co Cię pasjonuje?",
+        "description": "Wybierz swoje zainteresowania, a Vitana znajdzie pasujących ludzi i treści.",
+        "action": "Wybierz"
+      },
+      "E5": {
+        "title": "Gdzie mieszkasz?",
+        "description": "Dodaj swoją lokalizację i odkrywaj ludzi oraz wydarzenia w pobliżu.",
+        "action": "Dodaj miejsce"
+      },
+      "E6": {
+        "title": "Połącz Instagram",
+        "description": "Udostępniaj swoje chwile z Vitany prosto na Instagramie.",
+        "action": "Połącz Instagram"
+      },
+      "E7": {
+        "title": "Połącz Facebooka",
+        "description": "Bądź blisko znajomych i udostępniaj jednym dotknięciem.",
+        "action": "Połącz Facebooka"
+      },
+      "E8": {
+        "title": "Połącz swój kalendarz",
+        "description": "Miej swoje terminy i wydarzenia Vitany w jednym miejscu.",
+        "action": "Połącz"
+      },
+      "E9": {
+        "title": "Zaimportuj kontakty",
+        "description": "Znajdź znajomych, którzy już są w Vitanie.",
+        "action": "Importuj"
+      },
+      "E10": {
+        "title": "Niczego nie przegap",
+        "description": "Włącz powiadomienia o wiadomościach, dopasowaniach i przypomnieniach.",
+        "action": "Włącz"
+      },
+      "E11": {
+        "title": "Dodaj zdjęcie w tle",
+        "description": "Zdjęcie w tle sprawia, że Twój profil jest bardziej osobisty.",
+        "action": "Prześlij"
+      },
+      "F3": {
+        "eyebrow": "Dziennik",
+        "title": "Jak się dziś czujesz?",
+        "description": "Powiedz kilka zdań do dziennika – Vitana słucha.",
+        "action": "Nagraj"
+      },
+      "F4": {
+        "eyebrow": "Zapytaj Vitanę",
+        "title": "Masz pytanie?",
+        "description": "Vitana pomoże Ci w sprawach zdrowia, społeczności i nie tylko.",
+        "action": "Zapytaj Vitanę"
+      },
+      "F5": {
+        "eyebrow": "Dopasowania",
+        "title": "Ludzie, którzy do Ciebie pasują",
+        "description": "Odkryj dzisiejsze dopasowania.",
+        "action": "Zobacz dopasowania"
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Twój autopilot jest gotowy",
+        "description": "Pozwól Vitanie zaplanować Twoje kolejne kroki.",
+        "action": "Otwórz",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "F9": {
+        "eyebrow": "Kalendarz",
+        "title": "Twój dzień w skrócie",
+        "description": "Terminy, wydarzenia i przypomnienia w jednym miejscu.",
+        "action": "Otwórz kalendarz"
+      },
+      "F10": {
+        "eyebrow": "Multimedia",
+        "title": "Udostępnij film lub muzykę",
+        "description": "Prześlij swoje multimedia i inspiruj społeczność.",
+        "action": "Utwórz"
+      },
+      "F11": {
+        "eyebrow": "Odkrywaj",
+        "title": "Odkryj coś nowego",
+        "description": "Produkty, usługi i oferty dla Twojego dobrego samopoczucia.",
+        "action": "Przeglądaj"
+      },
+      "G1": {
+        "eyebrow": "Twój profil",
+        "title": "Uzupełnij swój profil",
+        "description": "Pełny profil daje Ci lepsze dopasowania.",
+        "action": "Kontynuuj",
+        "metric": "Ukończono {value} · {message}"
+      },
+      "G2": {
+        "eyebrow": "Dopasowania",
+        "title": "Masz nowe dopasowania",
+        "description": "Zobacz, kto do Ciebie pasuje.",
+        "action": "Zobacz dopasowania",
+        "metric": "Nowe dopasowania: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Dziennik",
+        "title": "Twoja seria jest zagrożona",
+        "description": "Wczoraj nie było wpisu – podtrzymaj swoją serię dziś.",
+        "action": "Wpisz dziś",
+        "metric": "Seria: {count} dni · {message}"
+      }
+    },
+    "interests": {
+      "title": "Twoje zainteresowania",
+      "description": "Wybierz do {max} tematów, które kochasz.",
+      "selectedCount": "Wybrano {count} z {max}",
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "fitness": "Fitness",
+      "nutrition": "Odżywianie",
+      "sleep": "Sen",
+      "mindfulness": "Uważność",
+      "longevity": "Długowieczność",
+      "biohacking": "Biohacking",
+      "yoga": "Joga",
+      "running": "Bieganie",
+      "strength": "Trening siłowy",
+      "dance": "Taniec",
+      "nature": "Natura",
+      "cooking": "Gotowanie",
+      "social": "Wspólnota",
+      "travel": "Podróże",
+      "career": "Kariera",
+      "_pending_review": {
+        "fitness": true,
+        "biohacking": true
+      }
     }
   }
 }

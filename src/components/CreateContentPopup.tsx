@@ -17,12 +17,16 @@ import { PostBackgroundPicker } from "@/components/feed/PostBackgroundPicker";
 import { getPostBackground } from "@/lib/post-backgrounds";
 import type { PostMention } from "@/lib/news-feed-ranker";
 import { pruneMentions } from "@/lib/mentions";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
+import { CreatePostLauncherProvider, type CreatePostMode } from "@/components/vitana/create-post-launcher";
 
 interface CreateContentPopupProps {
   isOpen: boolean;
   onClose: () => void;
   /** VTID-04504: a draft the member reviewed in the Autopilot preview. */
   initialContent?: string;
+  /** VTID-05143: open on a given tab (the Upload Video/Music card opens "media"). */
+  initialType?: "post" | "article" | "media";
 }
 
 // Mirrors the limits enforced by MobileCreatePostSheet so both composers behave
@@ -33,7 +37,7 @@ const MAX_COMPRESSIBLE_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB
 
 type MediaKind = "image" | "video";
 
-export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateContentPopupProps) {
+export function CreateContentPopup({ isOpen, onClose, initialContent, initialType }: CreateContentPopupProps) {
   const [contentType, setContentType] = useState("post");
   const [formData, setFormData] = useState({
     title: "",
@@ -50,6 +54,11 @@ export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateCo
     setContentType("post");
     setFormData((prev) => (prev.content ? prev : { ...prev, content: initialContent }));
   }, [isOpen, initialContent]);
+
+  // VTID-05143: a card can open the composer straight on the media tab.
+  useEffect(() => {
+    if (isOpen && initialType) setContentType(initialType);
+  }, [isOpen, initialType]);
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const availableTags = ["Tips", "Motivation", "Progress", "Question", "Achievement", "Recipe", "Workout", "Community"];
@@ -253,6 +262,12 @@ export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateCo
             {t('screens.common.createNewContent')}
           </DialogTitle>
         </DialogHeader>
+
+        {/* VTID-05086: "Make a Post" cards above the form. A card here switches
+            this composer (post / media tab) instead of opening another one. */}
+        <CreatePostLauncherProvider open={(mode: CreatePostMode) => setContentType(mode === "media" ? "media" : "post")}>
+          <EnrichmentCardStrip screen="make-a-post" maxCards={2} />
+        </CreatePostLauncherProvider>
 
         <Tabs value={contentType} onValueChange={setContentType} className="w-full">
           <TabsList className="grid w-full grid-cols-3">

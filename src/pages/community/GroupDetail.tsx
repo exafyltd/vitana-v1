@@ -20,10 +20,18 @@ import { GroupFeed } from "@/components/community/GroupFeed";
 import { GroupMembersDialog } from "@/components/community/GroupMembersDialog";
 
 import { fmtNumber } from '@/lib/locale-format';
+// VTID-05110: desktop Spotlight (flag `desktop_spotlight`; off → unchanged render).
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { GroupDetailRail, GroupDetailStage } from "@/components/community/spotlight/GroupDetailSpotlight";
+import { SpotlightEmptyCard } from "@/components/community/spotlight/SocialStates";
+import { t } from "@/lib/i18n-toast";
 export default function GroupDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  // VTID-05110: never true on phones (< 1024 px), so mobile is unaffected.
+  const spotlight = useSpotlightEnabled();
   const { translate } = useTranslation();
   const { isMember, joinGroup, leaveGroup, isJoining, isLeaving, checkingMembership } = useGroupMembership(id);
   const [membersDialogOpen, setMembersDialogOpen] = useState(false);
@@ -59,6 +67,50 @@ export default function GroupDetail() {
     },
     enabled: !!id,
   });
+
+  if (spotlight) {
+    const frame = {
+      subNav: { items: communityNavigation },
+      header: { title: t('spotlightSocial.groupDetail.title'), description: t('spotlightSocial.groupDetail.description'), emoji: '👥' },
+      utility: {
+        children: (
+          <Button variant="ghost" size="sm" className="shrink-0 gap-1.5 rounded-full" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />
+            {t('spotlightSocial.common.back')}
+          </Button>
+        ),
+      },
+    };
+    return (
+      <AppLayout>
+        {group && (
+          <SEO title={group.name} description={group.description || t('spotlightSocial.groupDetail.description')} canonical={window.location.href} />
+        )}
+        <ScreenFrame
+          archetype="detail"
+          {...frame}
+          rail={group ? <GroupDetailRail memberCount={group.member_count} onShowMembers={() => setMembersDialogOpen(true)} /> : undefined}
+        >
+          {isLoading ? (
+            <ArchetypeSkeleton archetype="detail" />
+          ) : !group ? (
+            <SpotlightEmptyCard
+              spec={{ Icon: Users, titleKey: 'spotlightSocial.groupDetail.notFoundTitle', descriptionKey: 'spotlightSocial.groupDetail.notFoundDesc', actionKey: 'spotlightSocial.groupDetail.browse', onAction: () => navigate('/comm/groups') }}
+            />
+          ) : (
+            <GroupDetailStage
+              group={group}
+              membership={{ isMember, checking: checkingMembership, isJoining, isLeaving, join: joinGroup, leave: leaveGroup }}
+              feed={<GroupFeed groupId={group.id} isMember={isMember} />}
+            />
+          )}
+        </ScreenFrame>
+        {group && (
+          <GroupMembersDialog open={membersDialogOpen} onOpenChange={setMembersDialogOpen} groupId={group.id} memberCount={group.member_count} />
+        )}
+      </AppLayout>
+    );
+  }
 
   if (isLoading) {
     return (

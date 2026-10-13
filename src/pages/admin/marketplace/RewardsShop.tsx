@@ -10,7 +10,7 @@
  * layout).
  */
 import { useState } from 'react';
-import { Loader2, RefreshCw, ShieldAlert } from 'lucide-react';
+import { RefreshCw, ShieldAlert } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import SEO from '@/components/SEO';
 import AppLayout from '@/components/AppLayout';
@@ -31,11 +31,14 @@ import { RewardItemsSection } from '@/components/admin/rewards/RewardItemsSectio
 import { ShippingFeesSection } from '@/components/admin/rewards/ShippingFeesSection';
 import { RewardOrdersSection } from '@/components/admin/rewards/RewardOrdersSection';
 import { ServerError } from '@/components/admin/rewards/ServerError';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const SECTIONS = ['items', 'fees', 'orders'] as const;
 type Section = (typeof SECTIONS)[number];
 
 export default function RewardsShop() {
+  const spotlight = useSpotlightEnabled();
   const isMobile = useIsMobile();
   // Radix Tabs sets dir="ltr" on its root unless told otherwise, which would
   // flip every card inside back to LTR in Arabic.
@@ -48,14 +51,8 @@ export default function RewardsShop() {
   const forbidden = isForbidden(items.error) || isForbidden(fees.error);
   const loading = items.isLoading || fees.isLoading;
 
-  return (
-    <AppLayout>
-      <SEO
-        title={t('admin.rewardsShop.title')}
-        description={t('admin.rewardsShop.description')}
-        canonical={typeof window !== 'undefined' ? window.location.href : ''}
-      />
-      <div className="min-h-screen px-4 py-4 md:p-6">
+  const adminBody = (
+    <>
         <div className="mx-auto max-w-7xl space-y-4">
           <StandardHeader title={t('admin.rewardsShop.title')} description={t('admin.rewardsShop.description')} />
 
@@ -68,8 +65,9 @@ export default function RewardsShop() {
               </CardContent>
             </Card>
           ) : loading ? (
-            <div className="flex items-center gap-2 p-8 text-muted-foreground" data-testid="reward-admin-loading">
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> {t('admin.rewardsShop.loading')}
+            <div data-testid="reward-admin-loading">
+              <ArchetypeSkeleton archetype="workspace" />
+              <span className="sr-only">{t('admin.rewardsShop.loading')}</span>
             </div>
           ) : items.error || fees.error ? (
             <div className="space-y-3" data-testid="reward-admin-load-error">
@@ -127,7 +125,23 @@ export default function RewardsShop() {
             </Tabs>
           )}
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO
+        title={t('admin.rewardsShop.title')}
+        description={t('admin.rewardsShop.description')}
+        canonical={typeof window !== 'undefined' ? window.location.href : ''}
+      />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="min-h-screen px-4 py-4 md:p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

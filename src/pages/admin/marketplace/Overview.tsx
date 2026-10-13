@@ -17,12 +17,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
-import { ShoppingBag, Store, Activity, AlertTriangle, Zap, RefreshCw, Loader2 } from "lucide-react";
+import { ShoppingBag, Store, Activity, AlertTriangle, Zap, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtNumber } from '@/lib/locale-format';
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+// VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
+// so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 interface OverviewStats {
   merchants_active: number;
@@ -74,6 +78,7 @@ function timeAgo(iso: string): string {
 }
 
 export default function MarketplaceOverview() {
+  const spotlight = useSpotlightEnabled();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<{ stats: OverviewStats; runs: IngestionRun[] } | null>(null);
@@ -81,9 +86,9 @@ export default function MarketplaceOverview() {
   async function load() {
     setLoading(true);
     try {
-      if (!GATEWAY_URL) throw new Error("VITE_GATEWAY_URL not configured");
+      if (!GATEWAY_BASE) throw new Error("VITE_GATEWAY_URL not configured");
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/marketplace/overview`, { headers });
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/marketplace/overview`, { headers });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const json = (await resp.json()) as OverviewResponse;
       if (!json.ok || !json.stats) throw new Error(json.error || "No data");
@@ -101,12 +106,23 @@ export default function MarketplaceOverview() {
   }, []);
 
   if (loading) {
+    const adminBody = (
+      <>
+          <ArchetypeSkeleton archetype="workspace" />
+          <span className="sr-only">{t('screens.admin.loadingMarketplaceOverview')}</span>
+      </>
+    );
+
     return (
       <AppLayout>
         <SubNavigation items={adminMarketplaceCatalogNavigation} />
-        <div className="p-8 flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loadingMarketplaceOverview')}
-        </div>
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            <div className="flex items-center gap-2 text-muted-foreground">{adminBody}</div>
+          </ScreenFrame>
+        ) : (
+          <div className="p-8 flex items-center gap-2 text-muted-foreground">{adminBody}</div>
+        )}
       </AppLayout>
     );
   }
@@ -114,11 +130,8 @@ export default function MarketplaceOverview() {
   const s = data?.stats;
   const runs = data?.runs ?? [];
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.admin.marketplaceOverviewAdmin')} description="Live view of the autonomous marketplace system." canonical={typeof window !== "undefined" ? window.location.href : ""} />
-      <SubNavigation items={adminMarketplaceCatalogNavigation} />
-      <div className="p-6 min-h-screen">
+  const adminBody2 = (
+    <>
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-3">
             <StandardHeader
@@ -135,7 +148,7 @@ export default function MarketplaceOverview() {
               <Button variant="outline" size="sm">{t('admin.rewardsShop.openLink')}</Button>
             </Link>
             <Button variant="outline" size="sm" onClick={load}>
-              <RefreshCw className="w-4 h-4 mr-2" />
+              <RefreshCw className="w-4 h-4 me-2" />
               {t('screens.admin.refresh')}
             </Button>
           </div>
@@ -179,7 +192,7 @@ export default function MarketplaceOverview() {
                         <span className="font-medium">{r.source_network}</span>
                         <span className="text-muted-foreground">
                           +{r.products_inserted} / ~{r.products_updated}
-                          {r.errors > 0 && <span className="text-red-600">{t('screens.admin.ErrorsErr', { errors: r.errors })}</span>}
+                          {r.errors > 0 && <span className="text-status-error">{t('screens.admin.ErrorsErr', { errors: r.errors })}</span>}
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">{timeAgo(r.started_at)}</span>
@@ -190,7 +203,20 @@ export default function MarketplaceOverview() {
             </CardContent>
           </Card>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.admin.marketplaceOverviewAdmin')} description="Live view of the autonomous marketplace system." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SubNavigation items={adminMarketplaceCatalogNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody2}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 min-h-screen">{adminBody2}</div>
+      )}
     </AppLayout>
   );
 }
@@ -209,7 +235,7 @@ function StatCard({
   href?: string;
 }) {
   const inner = (
-    <Card className={tone === "warn" && typeof value === "number" && value > 0 ? "border-amber-300 bg-amber-50/50" : ""}>
+    <Card className={tone === "warn" && typeof value === "number" && value > 0 ? "border-status-warning/40 bg-status-warning-subtle/50" : ""}>
       <CardContent className="pt-6 pb-4">
         <div className="flex items-center justify-between">
           <div>
@@ -218,7 +244,7 @@ function StatCard({
               {typeof value === "number" ? fmtNumber(value) : value}
             </div>
           </div>
-          <Icon className={`w-6 h-6 ${tone === "warn" && typeof value === "number" && value > 0 ? "text-amber-600" : "text-muted-foreground"}`} />
+          <Icon className={`w-6 h-6 ${tone === "warn" && typeof value === "number" && value > 0 ? "text-status-warning" : "text-muted-foreground"}`} />
         </div>
       </CardContent>
     </Card>

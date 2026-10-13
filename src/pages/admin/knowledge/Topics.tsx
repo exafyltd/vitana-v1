@@ -13,8 +13,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useKBTopics, useKBDocuments } from "@/hooks/useAdminKnowledge";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function KnowledgeTopics() {
+  const spotlight = useSpotlightEnabled();
   const topicsQuery = useKBTopics();
   const docsQuery = useKBDocuments();
 
@@ -27,10 +30,8 @@ export default function KnowledgeTopics() {
     topicCounts[topic] = docs.filter((d) => d.topics?.includes(topic)).length;
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="knowledge" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🏷️"
           title={t('screens.admin.knowledgeTopics')}
@@ -68,7 +69,19 @@ export default function KnowledgeTopics() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="knowledge" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

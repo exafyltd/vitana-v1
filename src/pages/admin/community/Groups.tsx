@@ -16,6 +16,8 @@ import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface CommunityGroup {
   id: string;
@@ -41,6 +43,7 @@ interface CommunityGroup {
 }
 
 const GroupsModeration = () => {
+  const spotlight = useSpotlightEnabled();
   const { translate } = useTranslation();
   const [groups, setGroups] = useState<CommunityGroup[]>([]);
   const [loading, setLoading] = useState(true);
@@ -114,14 +117,8 @@ const GroupsModeration = () => {
     return <Badge variant={config.variant} className={config.color}>{translate(config.labelKey, status)}</Badge>;
   };
 
-  return (
-    <AdminGuard>
-      <AppLayout>
-        <SEO title={t('screens.admin.groupsModerationAdmin')} description="Review and moderate community groups" />
-        
-        <SubNavigation items={adminCommunityNavigation} />
-        
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const adminBody = (
+    <>
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
               title={t('screens.admin.groupsModeration')}
@@ -197,7 +194,7 @@ const GroupsModeration = () => {
                                       variant="outline"
                                       onClick={() => moderateGroup(group.id, 'approved')}
                                     >
-                                      <CheckCircle className="h-4 w-4 mr-1" />
+                                      <CheckCircle className="h-4 w-4 me-1" />
                                       {t('screens.admin.approve')}
                                     </Button>
                                     <Button
@@ -205,7 +202,7 @@ const GroupsModeration = () => {
                                       variant="outline"
                                       onClick={() => moderateGroup(group.id, 'rejected', 'Does not meet guidelines')}
                                     >
-                                      <XCircle className="h-4 w-4 mr-1" />
+                                      <XCircle className="h-4 w-4 me-1" />
                                       {t('screens.admin.reject')}
                                     </Button>
                                   </>
@@ -216,7 +213,7 @@ const GroupsModeration = () => {
                                     variant="outline"
                                     onClick={() => moderateGroup(group.id, 'flagged', 'Flagged for review')}
                                   >
-                                    <Flag className="h-4 w-4 mr-1" />
+                                    <Flag className="h-4 w-4 me-1" />
                                     {t('screens.admin.flag')}
                                   </Button>
                                 )}
@@ -234,7 +231,23 @@ const GroupsModeration = () => {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+    </>
+  );
+
+  return (
+    <AdminGuard>
+      <AppLayout>
+        <SEO title={t('screens.admin.groupsModerationAdmin')} description="Review and moderate community groups" />
+        
+        <SubNavigation items={adminCommunityNavigation} />
+        
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            {adminBody}
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+        )}
       </AppLayout>
     </AdminGuard>
   );

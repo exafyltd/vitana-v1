@@ -14,7 +14,8 @@
       "failed": "No ha funcionado. Inténtalo de nuevo.",
       "loading": "Cargando …",
       "redirecting": "Te estamos redirigiendo …",
-      "invalid": "Esta solicitud ha caducado o no es válida. Vuelve a iniciar la conexión en tu asistente de IA."
+      "invalid": "Esta solicitud ha caducado o no es válida. Vuelve a iniciar la conexión en tu asistente de IA.",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "Tu perfil",
@@ -25,7 +26,8 @@
       "peopleDesc": "Miembros que eligieron poder ser encontrados por asistentes de IA",
       "activities": "Actividades",
       "activitiesDesc": "Próximos eventos y encuentros de la comunidad",
-      "commerce": "Herramientas para proveedores (Vitanaland Commerce)"
+      "commerce": "Herramientas para proveedores (Vitanaland Commerce)",
+      "_pending_review": {}
     },
     "settings": {
       "title": "IA conectada",
@@ -49,7 +51,10 @@
       "loadFailed": "No se han podido cargar tus asistentes conectados.",
       "findableTitle": "Permitir que los asistentes de IA de otros miembros me encuentren",
       "findableDesc": "Si está activado, los miembros con ChatGPT o Claude conectados pueden ver tu nombre, tu foto, tu ciudad pública y tus intereses. Desactivado por defecto.",
-      "unknownClient": "Un asistente de IA"
-    }
-  }
+      "unknownClient": "Un asistente de IA",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

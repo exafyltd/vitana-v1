@@ -28,6 +28,9 @@ import { CreditCard, ExternalLink, Sparkles } from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import { useBilling, useOpenPortal } from '@/hooks/useBilling';
 import { SubscriptionStateCard } from '@/components/subscription/SubscriptionStateCard';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { TierBError } from '@/components/spotlight/tier-b/TierBKit';
 
 function BillingLoading() {
   return (
@@ -39,6 +42,8 @@ function BillingLoading() {
 }
 
 export default function Billing() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useBilling();
   const portal = useOpenPortal();
@@ -50,6 +55,78 @@ export default function Billing() {
     } catch {
       // billingFetch surfaces the error toast itself
     }
+  }
+
+  const billingBody = (
+    <>
+      {data && (
+        <>
+          {/* Live current-plan card — same component the Subscriptions screen uses */}
+          <SubscriptionStateCard data={data} />
+
+          {/* Quick actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <CreditCard className="h-4 w-4" aria-hidden="true" />
+                {t('billing.state.manage')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button
+                variant="outline"
+                onClick={() => navigate('/wallet/subscriptions')}
+                className="w-full justify-between"
+              >
+                <span className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                  {t('billing.state.viewPlans')}
+                </span>
+                <span aria-hidden="true">→</span>
+              </Button>
+
+              {data.stripe.has_customer && (
+                <Button
+                  variant="outline"
+                  onClick={handleOpenPortal}
+                  disabled={portal.isPending}
+                  className="w-full justify-between"
+                >
+                  <span className="flex items-center gap-2">
+                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                    {t('billing.state.manage')}
+                  </span>
+                  <span aria-hidden="true">↗</span>
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Creator payouts (Stripe Connect — VTID-01230, already wired) */}
+          <CreatorPaymentsSection />
+        </>
+      )}
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: form frame, skeleton while loading, shared error state.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.settings.billingSettings')} description={t('billing.subscriptionsPage.subtitle')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="form"
+          subNav={{ items: settingsNavigation }}
+          header={{ title: t('screens.settings.billing'), description: t('billing.subscriptionsPage.subtitle'), emoji: '💳' }}
+        >
+          <div className="flex flex-col gap-6">
+            {isLoading && <ArchetypeSkeleton archetype="form" />}
+            {isError && <TierBError />}
+            {billingBody}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
   }
 
   return (
@@ -79,53 +156,7 @@ export default function Billing() {
           </Card>
         )}
 
-        {data && (
-          <>
-            {/* Live current-plan card — same component the Subscriptions screen uses */}
-            <SubscriptionStateCard data={data} />
-
-            {/* Quick actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <CreditCard className="h-4 w-4" aria-hidden="true" />
-                  {t('billing.state.manage')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  onClick={() => navigate('/wallet/subscriptions')}
-                  className="w-full justify-between"
-                >
-                  <span className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4" aria-hidden="true" />
-                    {t('billing.state.viewPlans')}
-                  </span>
-                  <span aria-hidden="true">→</span>
-                </Button>
-
-                {data.stripe.has_customer && (
-                  <Button
-                    variant="outline"
-                    onClick={handleOpenPortal}
-                    disabled={portal.isPending}
-                    className="w-full justify-between"
-                  >
-                    <span className="flex items-center gap-2">
-                      <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                      {t('billing.state.manage')}
-                    </span>
-                    <span aria-hidden="true">↗</span>
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Creator payouts (Stripe Connect — VTID-01230, already wired) */}
-            <CreatorPaymentsSection />
-          </>
-        )}
+        {billingBody}
       </div>
     </AppLayout>
   );

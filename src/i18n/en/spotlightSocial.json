@@ -1,0 +1,121 @@
+{
+  "spotlightSocial": {
+    "common": {
+      "seeAll": "See all",
+      "details": "Details",
+      "member": "Community member",
+      "membersCount": "{count} members",
+      "live": "Live",
+      "back": "Back",
+      "errorTitle": "That didn't work just now",
+      "errorDesc": "Reload the page or try again in a moment.",
+      "retry": "Try again",
+      "_pending_review": {}
+    },
+    "community": {
+      "title": "Your community",
+      "description": "Your community's events, groups and live rooms at a glance.",
+      "liveNow": "Live now",
+      "today": "Today",
+      "thisWeek": "This week",
+      "groups": "Discover groups",
+      "emptyTodayTitle": "Nothing on today yet",
+      "emptyTodayDesc": "Have a look at what's coming up in the next few days.",
+      "emptyWeekTitle": "Nothing planned this week yet",
+      "emptyWeekDesc": "Start an event yourself and invite your community.",
+      "emptyGroupsTitle": "No new groups",
+      "emptyGroupsDesc": "You're already in every group – or start your own.",
+      "openEvents": "Go to events",
+      "_pending_review": {}
+    },
+    "events": {
+      "title": "Events & Meetups",
+      "description": "Meet your community – in person and live.",
+      "search": "Search events …",
+      "create": "Create",
+      "tabsLabel": "Filter events",
+      "tabs": {
+        "hot": "Popular",
+        "upcoming": "Upcoming",
+        "today": "Today",
+        "following": "Following",
+        "_pending_review": {}
+      },
+      "featured": "In focus",
+      "more": "More events",
+      "liveNow": "Live now",
+      "youFollow": "You follow",
+      "going": "{count} going",
+      "emptyTitle": "Nothing planned right now",
+      "emptyDesc": "Why not start an event for your community!",
+      "emptyFollowingTitle": "You're not following anyone yet",
+      "emptyFollowingDesc": "Follow members to see their events here.",
+      "emptyFollowedEventsTitle": "No events yet from people you follow",
+      "emptyFollowedEventsDesc": "As soon as they plan something, you'll see it here.",
+      "findPeople": "Find members",
+      "_pending_review": {}
+    },
+    "groups": {
+      "title": "Find your group",
+      "description": "Join groups with shared interests or start your own.",
+      "search": "Search groups …",
+      "create": "Create",
+      "tabsLabel": "Filter groups",
+      "tabs": {
+        "mine": "My groups",
+        "discover": "Discover",
+        "_pending_review": {}
+      },
+      "emptyMineTitle": "You're not in a group yet",
+      "emptyMineDesc": "Discover groups and join your first one.",
+      "discoverAction": "Discover groups",
+      "emptyDiscoverTitle": "No groups found",
+      "emptyDiscoverDesc": "Start the first group for your topic.",
+      "createAction": "Start a group",
+      "join": "Join",
+      "leave": "Leave",
+      "public": "Public",
+      "private": "Private",
+      "_pending_review": {}
+    },
+    "groupDetail": {
+      "title": "Group",
+      "description": "Share, ask and meet your group.",
+      "feed": "Posts",
+      "membersTitle": "Members",
+      "showMembers": "See all members",
+      "browse": "All groups",
+      "browseMeta": "Discover more groups",
+      "notFoundTitle": "Group not found",
+      "notFoundDesc": "This group was removed or doesn't exist.",
+      "_pending_review": {}
+    },
+    "liveRooms": {
+      "title": "Live rooms",
+      "description": "Talk live with your community – by audio or video.",
+      "search": "Search live rooms …",
+      "goLive": "Go live",
+      "tabsLabel": "Filter live rooms",
+      "tabs": {
+        "all": "All rooms",
+        "live": "Live now",
+        "scheduled": "Scheduled",
+        "past": "Past",
+        "_pending_review": {}
+      },
+      "listening": "{count} listening",
+      "join": "Join",
+      "notify": "Remind me",
+      "notifyOn": "Reminder on",
+      "liveNow": "Live now",
+      "comingUp": "Coming up",
+      "emptyTitle": "No room is open right now",
+      "emptyDesc": "Start the first live room for your community.",
+      "emptyPastTitle": "No recordings yet",
+      "emptyPastDesc": "Ended rooms with a recording appear here.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

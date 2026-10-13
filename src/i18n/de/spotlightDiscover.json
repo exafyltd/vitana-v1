@@ -1,0 +1,125 @@
+{
+  "spotlightDiscover": {
+    "storefront": {
+      "searchPlaceholder": "Produkte, Services und Coaches suchen",
+      "filtersAria": "Filter für den Marktplatz",
+      "chips": {
+        "all": "Alle",
+        "sleep": "Schlaf",
+        "energy": "Energie",
+        "gutHealth": "Darmgesundheit",
+        "strength": "Kraft & Regeneration",
+        "longevity": "Langlebigkeit",
+        "underPrice": "Unter {price}",
+        "topRated": "★ {rating}+"
+      },
+      "hero": {
+        "pickedForYou": "Für dich ausgewählt",
+        "topResult": "Top-Ergebnis"
+      },
+      "shelves": {
+        "picks": "Mehr für dich",
+        "supplements": "Nahrungsergänzung",
+        "deals": "Angebote",
+        "services": "Wellness-Services",
+        "coaches": "Ärzte & Coaches",
+        "shareEarn": "Teilen & verdienen"
+      },
+      "results": {
+        "heading": "Suchergebnisse",
+        "count": "{count} Treffer"
+      },
+      "empty": {
+        "feedTitle": "Noch keine Empfehlungen für dich",
+        "feedDesc": "Sobald wir passende Produkte für dich gefunden haben, erscheinen sie hier.",
+        "shelfTitle": "Hier ist gerade nichts",
+        "shelfDesc": "In diesem Bereich gibt es im Moment keine Produkte.",
+        "dealsTitle": "Gerade keine Angebote",
+        "dealsDesc": "Sobald Produkte reduziert sind, findest du sie hier.",
+        "servicesTitle": "Wellness-Services kommen bald",
+        "servicesDesc": "Buchbare Services sind noch nicht im Marktplatz. Was du dir gemerkt hast, findest du im Bereich Wellness-Services.",
+        "coachesTitle": "Ärzte & Coaches kommen bald",
+        "coachesDesc": "Buchbare Ärzte und Coaches sind noch nicht im Marktplatz. Was du dir gemerkt hast, findest du im Bereich Ärzte & Coaches.",
+        "shareTitle": "Du hast noch nichts empfohlen",
+        "shareDesc": "Öffne ein Produkt in der Schnellansicht und tippe auf Empfehlen – an jedem Kauf über deinen Link verdienst du mit.",
+        "shareGuestTitle": "Melde dich an, um mitzuverdienen",
+        "shareGuestDesc": "Mit deinem Konto kannst du Produkte empfehlen und an jedem Kauf über deinen Link mitverdienen.",
+        "resultsTitle": "Keine Treffer",
+        "resultsDesc": "Versuch es mit einem anderen Suchbegriff oder entferne einen Filter.",
+        "clearFilters": "Filter zurücksetzen",
+        "signIn": "Anmelden"
+      },
+      "error": {
+        "title": "Das hat gerade nicht geklappt",
+        "desc": "Wir konnten diesen Bereich nicht laden.",
+        "retry": "Erneut versuchen"
+      },
+      "share": {
+        "meta": "{clicks} Klicks · {earned} verdient"
+      }
+    },
+    "card": {
+      "quickView": "Schnellansicht",
+      "openFullPage": "Ganze Seite öffnen",
+      "seeAll": "Alle ansehen",
+      "discount": "−{percent} %"
+    },
+    "quickView": {
+      "title": "Schnellansicht",
+      "noDetails": "Für diesen Eintrag gibt es noch keine weiteren Details."
+    },
+    "supplements": {
+      "categoriesAria": "Kategorien für Nahrungsergänzung",
+      "sortAria": "Sortierung",
+      "picksTitle": "Für dich ausgewählte Nahrungsergänzung",
+      "sub": {
+        "all": "Alle",
+        "multivitamins": "Multivitamine",
+        "vitamins": "Vitamine",
+        "minerals": "Mineralstoffe",
+        "omega3": "Omega-3",
+        "adaptogens": "Adaptogene",
+        "nootropics": "Nootropika",
+        "longevity": "Langlebigkeit",
+        "immunity": "Immunsystem",
+        "antioxidants": "Antioxidantien",
+        "sleep": "Schlaf",
+        "performance": "Leistung",
+        "beauty": "Schönheit",
+        "gutHealth": "Darmgesundheit",
+        "herbs": "Kräuter",
+        "heartHealth": "Herzgesundheit"
+      },
+      "sort": {
+        "relevance": "Beliebt",
+        "rating": "Beste Bewertung",
+        "priceAsc": "Preis aufsteigend",
+        "priceDesc": "Preis absteigend"
+      }
+    },
+    "saved": {
+      "servicesTitle": "Noch keine Services gemerkt",
+      "servicesDesc": "Services, die du dir merkst, findest du hier.",
+      "providersTitle": "Noch keine Ärzte oder Coaches gemerkt",
+      "providersDesc": "Ärzte und Coaches, die du dir merkst, findest du hier.",
+      "dealsTitle": "Noch keine Angebote gemerkt",
+      "dealsDesc": "Angebote, die du dir merkst, findest du hier.",
+      "remove": "Entfernen"
+    },
+    "deals": {
+      "trendingTitle": "Noch keine Trends",
+      "trendingDesc": "Sobald wir genug echte Buchungen sehen, zeigen wir dir hier, was gerade gefragt ist."
+    },
+    "headers": {
+      "supplements": "Hochwertige Nahrungsergänzung für deine Langlebigkeit",
+      "services": "Wellness-Angebote, sortiert nach Gesundheitsbereichen",
+      "coaches": "Ärzte und Coaches für deine Langlebigkeit",
+      "deals": "Reduzierte Produkte und Empfehlungen für dich"
+    },
+    "tabs": {
+      "saved": "Gemerkt",
+      "myProviders": "Meine Ärzte & Coaches"
+    },
+    "searchSaved": "In deinen gemerkten Einträgen suchen"
+  }
+}

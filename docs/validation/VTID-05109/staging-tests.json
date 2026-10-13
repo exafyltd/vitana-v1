@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05109",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop, signed in, ?spotlight=1: /discover is a storefront (SubNavigation kept, no Overview SplitBar), exactly one hero spotlight card and shelves of standard cards; typing into the search pill returns real results with the top result as the hero; a product opens the quick-view sheet with 'Open full page' and Escape closes it; no horizontal scroll at 1280/1440 in LTR and RTL; ?spotlight=0 keeps the legacy screen with its Overview SplitBar",
+      "spec": "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "storefront model (search contract, real deals only, inline-end sheet side), one spotlight + standard shelves, empty states instead of sample services/providers/Share & Earn numbers, wired search and chips, quick view open/close, Share & Earn guest/member, loading skeletons + error retry, sub-page panes (Supplements chips, Doctors/Coaches without dead filters, saved services filtered by search, Deals hero + real discounts), Discover page flag on/off switch, discover VCard adapters",
+      "ref": "npx vitest run src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx src/pages/discover-spotlight.vtid-05109.test.tsx src/components/ui/vcard/adapters/discover.vtid-05109.test.ts",
+      "cwd": ".",
+      "reason": "Empty, error and loading states and the guest path depend on backend data the read-only staging account cannot control; the unit suites pin them deterministically, staging proves the real storefront end to end."
+    }
+  ]
+}

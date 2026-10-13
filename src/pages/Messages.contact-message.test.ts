@@ -11,8 +11,10 @@ const page = readFileSync(resolve(__dirname, "Messages.tsx"), "utf8");
 const popup = readFileSync(resolve(__dirname, "../components/NewConversationPopup.tsx"), "utf8");
 
 describe("Messages — Message on a contact", () => {
-  it("routes both the mobile and the desktop contacts tab through one handler", () => {
-    expect(page.match(/onStartConversation=\{handleMessageContact\}/g)).toHaveLength(2);
+  // VTID-05110: the desktop Spotlight layout is a third layout of this page; it
+  // uses the same handler and the same dialog pre-fill as the other two.
+  it("routes the mobile, desktop and desktop Spotlight contacts tab through one handler", () => {
+    expect(page.match(/onStartConversation=\{handleMessageContact\}/g)).toHaveLength(3);
   });
 
   it("opens an existing direct chat with the member before offering a new one", () => {
@@ -22,8 +24,8 @@ describe("Messages — Message on a contact", () => {
     expect(body).toMatch(/setContactRecipientId\(userId\)/);
   });
 
-  it("pre-fills the member in both new-chat dialogs and clears it on close", () => {
-    expect(page.match(/initialRecipientId=\{contactRecipientId\}/g)).toHaveLength(2);
+  it("pre-fills the member in every new-chat dialog (mobile, desktop, desktop Spotlight) and clears it on close", () => {
+    expect(page.match(/initialRecipientId=\{contactRecipientId\}/g)).toHaveLength(3);
     expect(page).toMatch(/if \(!open\) setContactRecipientId\(null\)/);
   });
 

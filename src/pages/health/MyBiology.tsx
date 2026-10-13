@@ -56,6 +56,32 @@ import {
 import { notifyError, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import {
+  IconThumb,
+  TIER_B_LIST,
+  TierBEmpty,
+  TierBError,
+  TierBListSkeleton,
+  TierBSection,
+} from "@/components/spotlight/tier-b/TierBKit";
+import { cardButtonProps } from "@/components/spotlight/tier-b/cardButtonProps";
+import type { LucideIcon } from 'lucide-react';
+
+// VTID-05111 — Spotlight row thumbnails per report type (labels come from the spotlightTierB shard).
+const REPORT_TYPE_ICON: Record<string, LucideIcon> = {
+  blood_panel: Droplets,
+  genomics: Dna,
+  metabolomics: FlaskConical,
+  microbiome: Bug,
+  allergy: AlertTriangle,
+  cancer: Heart,
+  hormones: FlaskConical,
+  imaging: Scan,
+  other: MoreHorizontal,
+};
 // Report type display config
 const REPORT_TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode; badgeClass: string }> = {
   blood_panel: { label: 'Blood Panel', icon: <Droplets className="w-4 h-4" />, badgeClass: 'bg-red-500/10 text-red-600 border-red-500/20' },
@@ -86,6 +112,7 @@ export default function MyBiology() {
   const [uploadDefaultCategory, setUploadDefaultCategory] = useState<string>('blood_panel');
   
   const { toast } = useToast();
+  const spotlight = useSpotlightEnabled();
 
   const { 
     supplements, 
@@ -211,10 +238,228 @@ export default function MyBiology() {
     return acc;
   }, {} as Record<string, number>);
 
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  if (spotlight) {
+    const reportRows = (reports: typeof labReports) =>
+      reports.map((report) => {
+        const typeKey = REPORT_TYPE_CONFIG[report.report_type || 'other'] ? report.report_type || 'other' : 'other';
+        const statusKey = STATUS_CONFIG[report.processing_status || 'uploaded'] ? report.processing_status || 'uploaded' : 'uploaded';
+        const date = formatDate(new Date(report.report_date || report.created_at), 'PP');
+        const open = () => {
+          if (report.file_path) handleViewReport(report.file_path);
+        };
+        return (
+          <VCard
+            key={report.id}
+            size="row"
+            {...(report.file_path ? cardButtonProps(open) : {})}
+            mediaSlot={<IconThumb icon={REPORT_TYPE_ICON[typeKey] ?? MoreHorizontal} />}
+            title={report.title || report.raw_file_ref || t('spotlightTierB.health.reportFallbackTitle')}
+            meta={[report.provider_name || report.source || t('health.unknownProvider'), t(`spotlightTierB.health.reportType.${typeKey}`), date].join(' · ')}
+            badge={<Badge variant={STATUS_CONFIG[statusKey].variant}>{t(`spotlightTierB.health.reportStatus.${statusKey}`)}</Badge>}
+          />
+        );
+      });
+
+    const reportsPane = (
+      reports: typeof labReports,
+      empty: { icon: typeof Droplets; titleKey: string; descKey: string; actionKey: string; category: string },
+      intro: { icon: typeof Droplets; titleKey: string; descKey: string },
+      actions: React.ReactNode,
+    ) => (
+      <TierBSection
+        title={
+          <span className="inline-flex items-center gap-2">
+            <intro.icon className="h-4 w-4" aria-hidden="true" />
+            {t(intro.titleKey)}
+          </span>
+        }
+        action={<div className="flex flex-wrap gap-2">{actions}</div>}
+      >
+        <p className="text-sm text-muted-foreground">{t(intro.descKey)}</p>
+        {reportsLoading ? (
+          <TierBListSkeleton />
+        ) : reportsError ? (
+          <TierBError onRetry={() => refetchReports()} />
+        ) : reports.length === 0 ? (
+          <TierBEmpty
+            Icon={empty.icon}
+            titleKey={empty.titleKey}
+            descriptionKey={empty.descKey}
+            actionKey={empty.actionKey}
+            onAction={() => openUploadSheet(empty.category)}
+          />
+        ) : (
+          <div className={TIER_B_LIST}>{reportRows(reports)}</div>
+        )}
+      </TierBSection>
+    );
+
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.myBiologyHealth')} description={t('spotlightTierB.health.biologyDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: healthNavigation }}
+          header={{ title: t('screens.health.yourBiologyCentralHub'), description: t('spotlightTierB.health.biologyDescription'), emoji: '🧬' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.health.searchBiomarkersTestsSupplements')} />
+                <UniversalCalendarButton />
+                <Button variant="default" size="sm" onClick={() => setBiomarkerActionsOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.health.addData')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: 'medical', label: t('screens.health.myMedical') },
+              { value: 'omics', label: t('screens.health.myOmics') },
+              { value: 'supplements', label: t('screens.health.mySupplements') },
+            ],
+          }}
+        >
+          <SplitBarContent value="medical">
+            {reportsPane(
+              medicalReports,
+              { icon: Droplets, titleKey: 'screens.health.noMedicalReportsYet', descKey: 'screens.health.uploadYourFirstBloodPanelStart', actionKey: 'screens.health.uploadBloodPanel', category: 'blood_panel' },
+              { icon: TestTube, titleKey: 'screens.health.medicalBiomarkers', descKey: 'screens.health.clinicalLabResultsFromBloodTests' },
+              <>
+                <Button variant="outline" size="sm" onClick={() => openUploadSheet('blood_panel')}>
+                  <Upload className="me-2 h-4 w-4" />
+                  {t('screens.health.uploadPdf')}
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => logDeviceConnect('Wearable Device')}>
+                  <Activity className="me-2 h-4 w-4" />
+                  {t('screens.health.connectDevice')}
+                </Button>
+              </>,
+            )}
+          </SplitBarContent>
+          <SplitBarContent value="omics">
+            {reportsPane(
+              omicsReports,
+              { icon: Dna, titleKey: 'screens.health.noOmicsDataYet', descKey: 'screens.health.uploadYourGenomicsMetabolomicsResultsUnlock', actionKey: 'screens.health.uploadOmicsReport', category: 'genomics' },
+              { icon: Dna, titleKey: 'screens.health.omicsBiomarkers', descKey: 'screens.health.genomicsEpigenomicsMetabolomicsMicrobiomeProteomic' },
+              <>
+                <Button variant="outline" size="sm" onClick={() => openUploadSheet('genomics')}>
+                  <FileText className="me-2 h-4 w-4" />
+                  {t('screens.health.uploadResults')}
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => logOmicsConnectAPI('API Provider')}>
+                  <Activity className="me-2 h-4 w-4" />
+                  {t('screens.health.connectApi')}
+                </Button>
+              </>,
+            )}
+          </SplitBarContent>
+          <SplitBarContent value="supplements">
+            <TierBSection
+              title={
+                <span className="inline-flex items-center gap-2">
+                  <Pill className="h-4 w-4" aria-hidden="true" />
+                  {t('screens.health.mySupplements2')}
+                </span>
+              }
+              action={
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => {
+                      setEditingSupplement(null);
+                      setSupplementDialogOpen(true);
+                    }}
+                  >
+                    <Plus className="me-2 h-4 w-4" />
+                    {t('screens.health.addSupplement')}
+                  </Button>
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <SelectTrigger className="w-56">
+                      <Filter className="me-2 h-4 w-4" />
+                      <SelectValue placeholder={t('screens.health.filterByCategory')} />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-80">
+                      <SelectItem value="all">{t('screens.health.allCategoriesLength', { length: supplements.length })}</SelectItem>
+                      {allCategories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {t('spotlightTierB.health.categoryCount', { category, count: activeCategoryCount[category] || 0 })}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              }
+            >
+              <p className="text-sm text-muted-foreground">{t('screens.health.trackYourSupplementRegimenAcross40')}</p>
+              {supplementsLoading ? (
+                <TierBListSkeleton />
+              ) : filteredSupplements.length > 0 ? (
+                <div className={TIER_B_LIST}>
+                  {filteredSupplements.map((supplement) => (
+                    <SupplementCard key={supplement.id} supplement={supplement} onEdit={handleEditSupplement} onDelete={handleDeleteSupplement} />
+                  ))}
+                </div>
+              ) : categoryFilter === 'all' ? (
+                <TierBEmpty
+                  Icon={Pill}
+                  titleKey="health.noSupplements"
+                  descriptionKey="health.noSupplementsDesc"
+                  actionKey="health.addSupplement"
+                  onAction={() => {
+                    setEditingSupplement(null);
+                    setSupplementDialogOpen(true);
+                  }}
+                />
+              ) : (
+                <TierBEmpty Icon={Pill} titleKey="spotlightTierB.health.noSupplementsInCategory" />
+              )}
+            </TierBSection>
+          </SplitBarContent>
+        </ScreenFrame>
+
+        <BiomarkersMasterActionPopup open={biomarkerActionsOpen} onOpenChange={setBiomarkerActionsOpen} />
+        <AddSupplementDialog
+          open={supplementDialogOpen}
+          onOpenChange={(open) => {
+            setSupplementDialogOpen(open);
+            if (!open) setEditingSupplement(null);
+          }}
+          onSubmit={handleSupplementSubmit}
+          initialData={
+            editingSupplement
+              ? {
+                  name: editingSupplement.name,
+                  category: editingSupplement.category,
+                  dosage: editingSupplement.dosage || '',
+                  frequency: editingSupplement.frequency || '',
+                  notes: editingSupplement.notes || '',
+                  start_date: editingSupplement.start_date || '',
+                  is_active: editingSupplement.is_active,
+                }
+              : undefined
+          }
+          mode={editingSupplement ? 'edit' : 'add'}
+        />
+        <HealthReportUploadSheet
+          open={uploadSheetOpen}
+          onOpenChange={setUploadSheetOpen}
+          onUploadComplete={() => refetchReports()}
+          defaultCategory={uploadDefaultCategory as React.ComponentProps<typeof HealthReportUploadSheet>["defaultCategory"]}
+        />
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
-      <SEO 
-        title={t('screens.health.myBiologyHealth')} 
+      <SEO
+        title={t('screens.health.myBiologyHealth')}
         description="Your medical biomarkers, omics data, and supplement tracking hub" 
         canonical={window.location.href} 
       />

@@ -18,6 +18,11 @@ import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { healthNavigation } from "@/config/navigation";
 import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain, Briefcase, BookOpen, Plus } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { TIER_B_GRID_2 } from "@/components/spotlight/tier-b/TierBKit";
+import { cardButtonProps } from "@/components/spotlight/tier-b/cardButtonProps";
 
 const servicesData = {
   preventiveCare: [
@@ -58,6 +63,7 @@ export default function WellnessServices() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [servicesActionsOpen, setServicesActionsOpen] = useState(false);
   const { translate } = useTranslation();
+  const spotlight = useSpotlightEnabled();
 
   const handleServiceClick = (service: any) => {
     setSelectedService(service);
@@ -117,6 +123,70 @@ export default function WellnessServices() {
       </div>
     );
   };
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  // Cards open the same service drawer. The invented "+N points" impacts, sample counts and the
+  // Book / Add plan / Ask AI buttons without a handler are not shown here (SR-24, SR-26).
+  if (spotlight) {
+    const sections: { value: keyof typeof servicesData; label: string; intro: string }[] = [
+      { value: 'preventiveCare', label: t('screens.health.preventiveCare'), intro: t('screens.health.earlyDetectionPreventionServicesMaintainOptimal') },
+      { value: 'medicalServices', label: t('screens.health.medicalServices'), intro: t('screens.health.professionalMedicalServicesConsultations') },
+      { value: 'wellnessPrograms', label: t('screens.health.wellnessPrograms'), intro: t('screens.health.personalizedWellnessProgramsForLastingLifestyle') },
+      { value: 'insuranceSupport', label: t('screens.health.insuranceSupport'), intro: t('screens.health.insuranceBillingSupportServices') },
+      { value: 'myServices', label: t('screens.health.myServices'), intro: t('screens.health.manageYourPersonalServicesAppointments') },
+    ];
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.servicesHubHealth')} description={t('spotlightTierB.health.servicesDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: healthNavigation }}
+          header={{ title: t('screens.health.servicesHub'), description: t('spotlightTierB.health.servicesDescription'), emoji: '🏥' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={translate('wellnessServices.searchPlaceholder', 'Search services, providers, or programs...')} />
+                <UniversalCalendarButton />
+                <Button variant="default" size="sm" onClick={() => setServicesActionsOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.health.serviceActions')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeSection,
+            onValueChange: setActiveSection,
+            items: sections.map((s) => ({ value: s.value, label: s.label })),
+          }}
+        >
+          {sections.map((section) => (
+            <SplitBarContent key={section.value} value={section.value}>
+              <p className="mb-4 text-sm text-muted-foreground">{section.intro}</p>
+              <div className={TIER_B_GRID_2}>
+                {servicesData[section.value].map((service) => {
+                  const card = cardButtonProps(() => handleServiceClick(service), t(service.titleKey));
+                  return (
+                    <VCard
+                      key={service.id}
+                      size="standard"
+                      {...card}
+                      eyebrow={<service.icon className="h-4 w-4" aria-hidden="true" />}
+                      title={t(service.titleKey)}
+                      body={t(service.descKey)}
+                      meta={'suggestionKey' in service && service.suggestionKey ? t(service.suggestionKey) : undefined}
+                    />
+                  );
+                })}
+              </div>
+            </SplitBarContent>
+          ))}
+        </ScreenFrame>
+        <ServiceDetailDrawer service={selectedService} open={drawerOpen} onOpenChange={setDrawerOpen} />
+        <ServicesMasterActionPopup open={servicesActionsOpen} onOpenChange={setServicesActionsOpen} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

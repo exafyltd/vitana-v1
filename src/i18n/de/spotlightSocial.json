@@ -1,0 +1,110 @@
+{
+  "spotlightSocial": {
+    "common": {
+      "seeAll": "Alle ansehen",
+      "details": "Details",
+      "member": "Community-Mitglied",
+      "membersCount": "{count} Mitglieder",
+      "live": "Live",
+      "back": "Zurück",
+      "errorTitle": "Das hat gerade nicht geklappt",
+      "errorDesc": "Lade die Seite neu oder versuch es gleich noch einmal.",
+      "retry": "Nochmal versuchen"
+    },
+    "community": {
+      "title": "Deine Community",
+      "description": "Events, Gruppen und Live-Räume deiner Community auf einen Blick.",
+      "liveNow": "Jetzt live",
+      "today": "Heute",
+      "thisWeek": "Diese Woche",
+      "groups": "Gruppen entdecken",
+      "emptyTodayTitle": "Heute steht noch nichts an",
+      "emptyTodayDesc": "Schau dir an, was in den nächsten Tagen passiert.",
+      "emptyWeekTitle": "Diese Woche ist noch nichts geplant",
+      "emptyWeekDesc": "Starte selbst ein Event und lade deine Community ein.",
+      "emptyGroupsTitle": "Keine neuen Gruppen",
+      "emptyGroupsDesc": "Du bist schon in allen Gruppen – oder gründe deine eigene.",
+      "openEvents": "Zu den Events"
+    },
+    "events": {
+      "title": "Events & Meetups",
+      "description": "Triff deine Community – vor Ort und live.",
+      "search": "Events suchen …",
+      "create": "Erstellen",
+      "tabsLabel": "Events filtern",
+      "tabs": {
+        "hot": "Angesagt",
+        "upcoming": "Demnächst",
+        "today": "Heute",
+        "following": "Gefolgt"
+      },
+      "featured": "Im Fokus",
+      "more": "Weitere Events",
+      "liveNow": "Jetzt live",
+      "youFollow": "Du folgst",
+      "going": "{count} dabei",
+      "emptyTitle": "Hier ist gerade nichts geplant",
+      "emptyDesc": "Starte doch selbst ein Event für deine Community!",
+      "emptyFollowingTitle": "Du folgst noch niemandem",
+      "emptyFollowingDesc": "Folge Mitgliedern, um ihre Events hier zu sehen.",
+      "emptyFollowedEventsTitle": "Noch keine Events von Leuten, denen du folgst",
+      "emptyFollowedEventsDesc": "Sobald sie etwas planen, siehst du es hier.",
+      "findPeople": "Mitglieder finden"
+    },
+    "groups": {
+      "title": "Finde deine Gruppe",
+      "description": "Tritt Gruppen mit gemeinsamen Interessen bei oder gründe deine eigene.",
+      "search": "Gruppen suchen …",
+      "create": "Erstellen",
+      "tabsLabel": "Gruppen filtern",
+      "tabs": {
+        "mine": "Meine Gruppen",
+        "discover": "Entdecken"
+      },
+      "emptyMineTitle": "Du bist noch in keiner Gruppe",
+      "emptyMineDesc": "Entdecke Gruppen und tritt deiner ersten bei.",
+      "discoverAction": "Gruppen entdecken",
+      "emptyDiscoverTitle": "Keine Gruppen gefunden",
+      "emptyDiscoverDesc": "Gründe die erste Gruppe für dein Thema.",
+      "createAction": "Gruppe gründen",
+      "join": "Beitreten",
+      "leave": "Verlassen",
+      "public": "Öffentlich",
+      "private": "Privat"
+    },
+    "groupDetail": {
+      "title": "Gruppe",
+      "description": "Teile, frag nach und triff deine Gruppe.",
+      "feed": "Beiträge",
+      "membersTitle": "Mitglieder",
+      "showMembers": "Alle Mitglieder ansehen",
+      "browse": "Alle Gruppen",
+      "browseMeta": "Weitere Gruppen entdecken",
+      "notFoundTitle": "Gruppe nicht gefunden",
+      "notFoundDesc": "Diese Gruppe wurde entfernt oder existiert nicht."
+    },
+    "liveRooms": {
+      "title": "Live-Räume",
+      "description": "Sprich live mit deiner Community – per Audio oder Video.",
+      "search": "Live-Räume suchen …",
+      "goLive": "Live gehen",
+      "tabsLabel": "Live-Räume filtern",
+      "tabs": {
+        "all": "Alle Räume",
+        "live": "Jetzt live",
+        "scheduled": "Geplant",
+        "past": "Rückblick"
+      },
+      "listening": "{count} hören zu",
+      "join": "Beitreten",
+      "notify": "Erinnere mich",
+      "notifyOn": "Erinnerung an",
+      "liveNow": "Jetzt live",
+      "comingUp": "Demnächst",
+      "emptyTitle": "Gerade ist kein Raum offen",
+      "emptyDesc": "Starte den ersten Live-Raum für deine Community.",
+      "emptyPastTitle": "Noch keine Aufzeichnungen",
+      "emptyPastDesc": "Beendete Räume mit Aufzeichnung erscheinen hier."
+    }
+  }
+}

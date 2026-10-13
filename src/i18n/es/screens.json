@@ -5339,11 +5339,13 @@
       "vitanaIndexUpSubtext": "¡Buen trabajo!",
       "vitanaIndexDownSubtext": "Los pequeños pasos cuentan.",
       "vitanaIndexStableSubtext": "Mantén la constancia.",
+      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
       "longevityJourneyEyebrow": "TU AUDIOLIBRO DE LONGEVIDAD",
       "longevityJourneyContinue": "Continúa con el episodio {session}: {topic}",
       "longevityJourneyAllDone": "Has escuchado todos los episodios. ¡Muy bien!",
       "longevityJourneyNextStepHeadline": "Tu siguiente paso:",
       "longevityJourneySubtext": "El episodio {session} te espera.",
+      "longevityJourneyProgressSubtext": "El episodio {session} te espera · {done} completados · hoy {today}/{goal}",
       "longevityJourneyStartSession": "Reproducir episodio {session}",
       "longevityJourneyDoneLabel": "Hecho",
       "longevityJourneyNowLabel": "Ahora",
@@ -6232,7 +6234,12 @@
       "imageDownloadFailed": "No se pudo cargar la imagen",
       "imageShareFailed": "No se pudo compartir",
       "imageLoading": "Cargando imagen",
-      "unknownSize": "Tamaño desconocido"
+      "unknownSize": "Tamaño desconocido",
+      "_pending_review": {
+        "forwardChat": true,
+        "talkToVitana": true
+      },
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Buscando…",
@@ -7632,7 +7639,35 @@
       "partnerLabsRevokeConfirm": "¿Revocar el acceso de DoctorBox a tus resultados de pruebas? Los resultados futuros ya no se compartirán con Vitana.",
       "partnerLabsGrantSuccess": "Acceso concedido — Vitana ahora puede discutir tus resultados de DoctorBox contigo.",
       "partnerLabsRevokeSuccess": "Acceso revocado.",
-      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo."
+      "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+      "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
+      }
     },
     "sharing": {
       "activateCampaign": "Activar campaña",
@@ -10447,7 +10482,18 @@
       "viewIndex": "Ver Índice",
       "viewJourney": "Ver Mi Viaje",
       "viewMatch": "Ver Pareja",
-      "dismissCard": "Descartar tarjeta"
+      "dismissCard": "Descartar tarjeta",
+      "dailyDiary": "Diario",
+      "talkToVitana": "Habla con Vitana",
+      "autopilot": "Piloto automático",
+      "calendar": "Calendario",
+      "uploadMedia": "Multimedia",
+      "discover": "Descubrir",
+      "profilePhoto": "Foto de perfil",
+      "profileSetup": "Perfil",
+      "socialConnect": "Conectar",
+      "importContacts": "Contactos",
+      "completeProfile": "Completa tu perfil"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirigiendo a la App Store",
@@ -12383,6 +12429,141 @@
       "startingSoon": "Empieza pronto",
       "startNow": "Empezar ahora",
       "eventsSectionTitle": "Salas en vivo"
+    },
+    "vitanaCards": {
+      "stripLabel": "Sugerencias de Vitana",
+      "eyebrowProfile": "Tu perfil",
+      "eyebrowConnect": "Conectar",
+      "eyebrowCommunity": "Comunidad",
+      "eyebrowNotifications": "Notificaciones",
+      "E1": {
+        "title": "Muestra tu cara",
+        "description": "Sube una foto de perfil para que los demás te reconozcan enseguida.",
+        "action": "Subir"
+      },
+      "E2": {
+        "title": "Cuéntanos algo sobre ti",
+        "description": "Unas frases sobre ti ayudan a los demás a empezar una conversación.",
+        "action": "Escribir bio"
+      },
+      "E3": {
+        "title": "Comparte tu primera publicación",
+        "description": "Saluda a la comunidad: basta con una idea corta.",
+        "action": "Publicar ahora"
+      },
+      "E4": {
+        "title": "¿Qué te apasiona?",
+        "description": "Elige tus intereses para que Vitana encuentre personas y contenidos a tu medida.",
+        "action": "Elegir intereses"
+      },
+      "E5": {
+        "title": "¿Dónde vives?",
+        "description": "Añade tu ubicación y descubre personas y eventos cerca de ti.",
+        "action": "Añadir ubicación"
+      },
+      "E6": {
+        "title": "Conecta Instagram",
+        "description": "Comparte tus momentos de Vitana directamente en Instagram.",
+        "action": "Conectar Instagram"
+      },
+      "E7": {
+        "title": "Conecta Facebook",
+        "description": "Mantente cerca de tus amigos y comparte con un toque.",
+        "action": "Conectar Facebook"
+      },
+      "E8": {
+        "title": "Conecta tu calendario",
+        "description": "Ve tus citas y los eventos de Vitana en un solo lugar.",
+        "action": "Conectar"
+      },
+      "E9": {
+        "title": "Importa tus contactos",
+        "description": "Encuentra amigos que ya están en Vitana.",
+        "action": "Importar"
+      },
+      "E10": {
+        "title": "No te pierdas nada",
+        "description": "Activa las notificaciones de mensajes, matches y recordatorios.",
+        "action": "Activar"
+      },
+      "E11": {
+        "title": "Añade una foto de portada",
+        "description": "Una foto de portada hace tu perfil más personal.",
+        "action": "Subir"
+      },
+      "F3": {
+        "eyebrow": "Diario",
+        "title": "¿Cómo estás hoy?",
+        "description": "Di unas frases en tu diario: Vitana te escucha.",
+        "action": "Grabar"
+      },
+      "F4": {
+        "eyebrow": "Pregunta a Vitana",
+        "title": "¿Tienes una pregunta?",
+        "description": "Vitana te ayuda con la salud, la comunidad y mucho más.",
+        "action": "Preguntar a Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matches",
+        "title": "Personas afines a ti",
+        "description": "Descubre tus matches de hoy.",
+        "action": "Ver matches",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "F6": {
+        "eyebrow": "Piloto automático",
+        "title": "Tu piloto automático está listo",
+        "description": "Deja que Vitana planifique tus próximos pasos.",
+        "action": "Abrir"
+      },
+      "F9": {
+        "eyebrow": "Calendario",
+        "title": "Tu día de un vistazo",
+        "description": "Citas, eventos y recordatorios en un solo lugar.",
+        "action": "Abrir calendario"
+      },
+      "F10": {
+        "eyebrow": "Multimedia",
+        "title": "Comparte un vídeo o música",
+        "description": "Sube tu contenido e inspira a la comunidad.",
+        "action": "Crear"
+      },
+      "F11": {
+        "eyebrow": "Descubrir",
+        "title": "Descubre algo nuevo",
+        "description": "Productos, servicios y ofertas para tu bienestar.",
+        "action": "Explorar"
+      }
+    },
+    "interests": {
+      "title": "Tus intereses",
+      "description": "Elige hasta {max} temas que te encanten.",
+      "selectedCount": "{count} de {max} seleccionados",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "fitness": "Fitness",
+      "nutrition": "Nutrición",
+      "sleep": "Sueño",
+      "mindfulness": "Mindfulness",
+      "longevity": "Longevidad",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Correr",
+      "strength": "Entrenamiento de fuerza",
+      "dance": "Baile",
+      "nature": "Naturaleza",
+      "cooking": "Cocina",
+      "social": "Comunidad",
+      "travel": "Viajes",
+      "career": "Carrera profesional",
+      "_pending_review": {
+        "fitness": true,
+        "mindfulness": true,
+        "biohacking": true,
+        "yoga": true
+      }
     }
   }
 }

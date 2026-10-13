@@ -17,14 +17,15 @@ import { NotificationControlsTab } from "@/components/admin/notifications/Notifi
 import { NotificationCategoriesTab } from "@/components/admin/notifications/NotificationCategoriesTab";
 import { NotificationActivityTab } from "@/components/admin/notifications/NotificationActivityTab";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export type NotificationsAdminTab = "notifications" | "categories" | "activity";
 
 export default function NotificationsAdmin({ tab = "notifications" }: { tab?: NotificationsAdminTab }) {
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="notifications" />
-      <div className="space-y-6 p-4 sm:p-6">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
         <AdminHeader
           title={t(`notificationControls.pages.${tab}.title`)}
           description={t(`notificationControls.pages.${tab}.description`)}
@@ -32,7 +33,19 @@ export default function NotificationsAdmin({ tab = "notifications" }: { tab?: No
         {tab === "notifications" && <NotificationControlsTab />}
         {tab === "categories" && <NotificationCategoriesTab />}
         {tab === "activity" && <NotificationActivityTab />}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="notifications" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-4 sm:p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

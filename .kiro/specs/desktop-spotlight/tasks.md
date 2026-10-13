@@ -35,11 +35,22 @@ Status: implemented in PR #1349 (VTID-05105). Decisions taken (inside the plan, 
 
 
 ## Phase 1b — Navigation feel · VTID-05106 (not flag-gated)
-- [ ] 1b.1 **Prototype gate:** Vitest proving `v7_startTransition` keeps the old page mounted and no `RouteFallback` during a lazy load. Fails → stop, re-spar.
-- [ ] 1b.2 `future={{ v7_startTransition: true }}` on `<BrowserRouter>` (`App.tsx:764`) — the only `App.tsx` edit.
-- [ ] 1b.3 `useNavigationPending` + `NavProgressBar` rendered from `RouteTransitionOverlay.tsx`. _R6.1_
-- [ ] 1b.4 Document-level intent prefetch (pointerover/focusin on `a[href]`, ≥ 80 ms, once per href) → chunk + data prefetch. _R6.3_
-- [ ] 1b.5 Keep `tests/loading-no-flash.cjs`, keep-alive tests, `screen-journey.staging.spec.ts` green; staging spec: route switch never shows the DelayedLoader test id after first load. _R6.6_
+- [x] 1b.1 **Prototype gate:** Vitest proving `v7_startTransition` keeps the old page mounted and no `RouteFallback` during a lazy load. Fails → stop, re-spar.
+  Passed (`src/lib/navigation-transition.vtid-05106.test.tsx`; the control without the flag shows the fallback).
+- [x] 1b.2 `future={{ v7_startTransition: true }}` on `<BrowserRouter>` (`App.tsx:764`) — the only `App.tsx` edit.
+- [x] 1b.3 `useNavigationPending` + `NavProgressBar` rendered from `RouteTransitionOverlay.tsx`. _R6.1_
+- [x] 1b.4 Document-level intent prefetch (pointerover/focusin on `a[href]`, ≥ 80 ms, once per href) → chunk + data prefetch. _R6.3_
+- [x] 1b.5 Keep `tests/loading-no-flash.cjs`, keep-alive tests, `screen-journey.staging.spec.ts` green; staging spec: route switch never shows the DelayedLoader test id after first load. _R6.6_
+
+Status: implemented (VTID-05106). Decisions taken (inside the plan, for Gate 2):
+- Pending detection: `<BrowserRouter>` has no `useNavigation()`, so `useNavigationPending` compares the router's committed
+  location with the browser URL, re-read on `popstate`, the Navigation API's `currententrychange` and after clicks. No
+  `history` patching; where the Navigation API is missing, a pushState-only switch shows no bar (never a stuck bar).
+- The bar appears only for switches slower than 150 ms; reduced motion → no animation.
+- Intent prefetch reuses the existing `ROUTE_CHUNK_IMPORTERS` + `prefetchForPath` (prefetch-registry) instead of a second
+  map in `preloadHotChunks.ts`; unknown paths are a no-op. Skipped on save-data / 2g like `preloadHotChunks`.
+- `tests/loading-no-flash.cjs` was not run locally: it boots a production build wired to the production Supabase project
+  (absolute rule); it is not in CI. Its "no wrong screen" guarantee is the RouteTransitionOverlay path, which is unchanged.
 
 ## Phase 1c — Design contract & enforcement · VTID-05107
 - [x] 1c.1 `docs/design-system/SPOTLIGHT_RULES.md` from design.md §4–§7 (SR-01…30, archetypes, mobile mapping, palette→token table). Header pointer in `docs/UNIVERSAL_SCREEN_PATTERN.md`. _R7.3_
@@ -59,34 +70,80 @@ Manifest: 345 screens (workspace 187 · collection 84 · form 32 · detail 18 ·
 storefront 3 · immersive 2), all `legacy`.
 
 ## Phase 2 — News Feed · VTID-05108
-- [ ] 2.1 `feed-compose.ts` `placement: 'stream' | 'rail'` (+ tests); info cards, DidYouKnow, EventGameFeedBadge → rail. _R4.4_
-- [ ] 2.2 Desktop focus feed in `Home.tsx` behind `useSpotlightEnabled()` via `ScreenFrame archetype="focus-feed"`; legacy branch untouched. _R4_
-- [ ] 2.3 Rail: Up next, Today, Vitana Index / journey, People to meet. _R1_
-- [ ] 2.4 Keyboard J/K/↑↓, centre-line focus, dim with AA contrast. _R4.2–4.3_
-- [ ] 2.5 Manifest: `/home` → `migrated`; lower the design baseline for touched files.
-- [ ] 2.6 Staging spec: no gap > 48 px at 1280/1440/1920, one spotlight, rail present, J/K, RTL, chrome invariants. _R4.5_
+- [x] 2.1 `feed-compose.ts` `placement: 'stream' | 'rail'` (+ tests); info cards, DidYouKnow, EventGameFeedBadge → rail. _R4.4_
+- [x] 2.2 Desktop focus feed in `Home.tsx` behind `useSpotlightEnabled()` via `ScreenFrame archetype="focus-feed"`; legacy branch untouched. _R4_
+- [x] 2.3 Rail: Up next, Today, Vitana Index / journey, People to meet. _R1_
+- [x] 2.4 Keyboard J/K/↑↓, centre-line focus, dim with AA contrast. _R4.2–4.3_
+- [x] 2.5 Manifest: `/home` → `migrated`; lower the design baseline for touched files.
+- [x] 2.6 Staging spec: no gap > 48 px at 1280/1440/1920, one spotlight, rail present, J/K, RTL, chrome invariants. _R4.5_
+
+Status: implemented (VTID-05108). Migrated: `/home` (focus-feed). Decisions taken (for Gate 2):
+- Only the Spotlight branch changes; phones and flag-off keep the legacy feed and its order exactly.
+- VTID-05143's Home enrichment cards are Vitana cards, so on desktop Spotlight they sit in the rail with the other info cards.
+- Design baseline: `src/pages/Home.tsx` 13 → 12.
 
 ## Phase 3 — Discover storefront · VTID-05109
-- [ ] 3.1 Storefront overview (`ScreenFrame archetype="storefront"`): SubNavigation kept, Overview SplitBar removed, chips, hero, shelves, Share & Earn shelf. _R5.1–5.2_
-- [ ] 3.2 Product/service/provider adapters; quick-view sheet generalised from `ProductDetailsDrawer`. _R5.3_
-- [ ] 3.3 Wire overview search; wire or remove doctor filters; mock-only sections → empty states; raw strings → `t()`. _R5.5–5.6_
-- [ ] 3.4 Sub-pages: their SplitBar moves to the utility trailing slot; results grid of `standard` cards.
-- [ ] 3.5 Manifest + baseline; staging spec: hero + shelves, search returns results, quick-view opens (read-only).
+- [x] 3.1 Storefront overview (`ScreenFrame archetype="storefront"`): SubNavigation kept, Overview SplitBar removed, chips, hero, shelves, Share & Earn shelf. _R5.1–5.2_
+- [x] 3.2 Product/service/provider adapters; quick-view sheet generalised from `ProductDetailsDrawer`. _R5.3_
+- [x] 3.3 Wire overview search; wire or remove doctor filters; mock-only sections → empty states; raw strings → `t()`. _R5.5–5.6_
+- [x] 3.4 Sub-pages: their SplitBar moves to the utility trailing slot; results grid of `standard` cards.
+- [x] 3.5 Manifest + baseline; staging spec: hero + shelves, search returns results, quick-view opens (read-only).
+
+Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`, `/discover/wellness-services`,
+`/discover/doctors-coaches`, `/discover/orders`. Decisions taken (for Gate 2):
+- Only the Spotlight branch changes; flag-off Discover (incl. its dead search and doctor filters) stays identical.
+- Shelves show at most 4 real items (2 columns, 4 from xl); a short shelf shows what exists, never padding.
+- Wellness services / providers have no real catalogue: empty states + the member's saved items, no sample data.
+- Goal / price / rating chips use the gateway's existing `health_goals`, `price_max_cents`, `rating_min` — no contract change.
+- `/discover/deals-offers` stays `legacy` until staging shows a real discounted product (empty → no hero by design).
+- Orders keeps `StandardHorizontalCard` rows (VCard conversion is Phase 5/6). Detail sub-pages untouched.
 
 ## Phase 4 — Social screens · VTID-05110
-- [ ] 4.1 Community overview, Events & Meetups (featured event + list + rail; no empty bento slots), Groups, GroupDetail, Live Rooms, Media Hub, Public profile, Post detail, Messages — each via its archetype. _R1, R3_
-- [ ] 4.2 Remaining adapters (event, liveRoom, group, member).
+- [~] 4.1 Community overview, Events & Meetups (featured event + list + rail; no empty bento slots), Groups, GroupDetail, Live Rooms, Media Hub, Public profile, Post detail, Messages — each via its archetype. _R1, R3_
+  Part 1 done (VTID-05110): Community overview, Events & Meetups, Groups, Group detail, Live Rooms. Decisions (for Gate 2):
+  Events keeps its `collection` archetype with a stage + rail inside it; full rows as a `standard` grid, the remainder as
+  `row` cards (no empty slots); Community overview shows only real data (live rooms, today, this week, groups you have
+  not joined — the legacy mock rows, invented counters and the console-only search are not rendered; no member list,
+  to keep test accounts out); empty dominant screens show one text-only spotlight card; existing drawers, deep links
+  and dialogs are shared with the legacy render. Part 2 done: Media Hub (focus-feed; demo shorts/playlists/shows not rendered, search really filters) and Messages
+  (conversation; same ConversationView props, data hooks/realtime/keep-alive untouched). Left: Post detail (after Phase 2),
+  Public profile (needs an owner design call), the Live Rooms "Past" tab with recordings.
+- [x] 4.2 Remaining adapters (event, liveRoom, group, member).
 - [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
 
 ## Phase 5 — Tier B adoption · VTID-05111
-- [ ] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
-- [ ] 5.2 PR body: list of every card component still not on VCard (input to Phase 6).
+- [x] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
+- [x] 5.2 PR body: list of every card component still not on VCard (input to Phase 6).
+
+Status: implemented (VTID-05111). Migrated 35 routes (31 static + 4 parameterised): `/ai`, `/ai/companion`,
+`/ai/daily-summary`, `/ai/insights`, `/ai/recommendations`, `/assistant`, `/calendar`, `/calendar/entry/:entryId`,
+`/connectors`, `/health` + 7 health sections, `/intents/board`, `/intents/mine`, `/intents/match/:id`, `/reminders`,
+`/reminders/fire/:fireId`, `/settings/{billing,limitations,notifications,tenant-role}`, `/sharing`, `/sharing/campaigns`,
+`/sharing/campaigns/:id`, `/sharing/data-consent`, `/support`, `/wallet` + balance/rewards/subscriptions.
+Decisions taken (for Gate 2):
+- Only the Spotlight branch changes; phones and flag-off keep the legacy JSX verbatim.
+- Sample content without real data is left out on Spotlight (SR-24/26): Health demo sections, invented ratings and view
+  counts, wallet "special offer" cards, sharing nudge.
+- Main's VTID-05143 Calendar enrichment strip and VTID-05100 Vitana messages settings render on both paths; the
+  VTID-05100 settings harness pins the Spotlight flag off (no assertion changed).
+- Design baseline lowered by one (require-screen-frame) in 31 files.
 
 ## Phase 7 — Workspace & remaining screens (parallel with 2–4)
-- [ ] 7.1 Admin · VTID-05113 — `workspace`, `AdminTabs` kept, admin-shell contract respected.
-- [ ] 7.2 Backoffice · VTID-05114
-- [ ] 7.3 Dev · VTID-05115
-- [ ] 7.4 Professional + Staff · VTID-05116
+- [x] 7.1 Admin · VTID-05113 — `workspace`, `AdminTabs` kept, admin-shell contract respected.
+  Status: 92 `/admin/*` routes migrated (`/admin/init-events` stays legacy: no AppLayout, no guard — own decision).
+  Admin `design/*` errors 409 → 0. Decisions (for Gate 2): flag-gated `ScreenFrame` like every other phase, but the
+  token / logical-direction / size / skeleton changes apply on both paths (the lint cannot tell them apart), so with the
+  flag off admin shows small visual differences (dark-mode text on coloured fills, ≤ 8 px size steps, skeletons instead
+  of spinners); behaviour, data, routes and AdminTabs unchanged. `AdminHeader` stays in the content (the ScreenFrame
+  header carries member tiles). 25 `design-allow-next-line` with reasons (viewport-sized scroll areas, modal backdrops,
+  device bezel). `src/components/admin/**` not migrated yet. The staging design-lint skips role-gated operator routes;
+  `vtid-05113-admin-workspace.staging.spec.ts` checks them (gate for a non-admin, workspace frame for an admin).
+- [x] 7.2 Backoffice · VTID-05114
+  Status: implemented (VTID-05114). All 27 `/backoffice/*` routes migrated (`workspace`, BackOfficeTabs kept above the frame). Decisions (for Gate 2): `BackOfficePage` itself is not edited — a page-local `BackOfficeWorkspacePage` wraps it; token fixes apply on both paths (status colours, spacing scale); one reasoned `design-allow-next-line` keeps the flag-off placeholder 404 centring. BackOffice `design/*` errors 12 → 0.
+- [x] 7.3 Dev · VTID-05115
+  Status: implemented (VTID-05115). 48 `/dev/*` routes migrated (`workspace`, section tabs kept above the frame). Left legacy: `/dev` (redirect to `/dev/dashboard`) and `/dev/login` (sign-in screen outside DevLayout; token fixes only). Decisions (for Gate 2): token fixes apply on both paths (surface tokens, logical directions, spacing scale); unrouted DevReleases / DevDocsBacklog get token fixes only. `src/pages/dev` `design/*` errors 139 → 0.
+- [x] 7.4 Professional + Staff · VTID-05116
+  Status: implemented (VTID-05116). Migrated `/professional/dashboard`, `/staff/dashboard`, `/staff/queue` (`workspace`). The other `/professional/*` and `/staff/*` routes render the shared ComingSoonPlaceholder and move with 7.5. Decisions (for Gate 2): content, demo data and the queue card layout unchanged; token fixes on both paths (status tokens, logical border/spacing); the phone bottom-bar clearance (VTID-04001) is kept on the flag-off path. `design/*` errors professional 4 → 0, staff 18 → 0.
 - [ ] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
 
 ## Phase 6 — Card consolidation · VTID-05112 (last)

@@ -7,19 +7,13 @@ import { adminCommunityNavigation } from "@/config/navigation";
 import { Card } from "@/components/ui/card";
 import { Flag, Users, Calendar, AlertCircle } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const CommunitySupervision = () => {
-  return (
-    <AdminGuard>
-      <AppLayout>
-        <SEO 
-          title={t('screens.admin.communitySupervisionAdmin')}
-          description="Monitor and moderate community content, events, and groups"
-        />
-        
-        <SubNavigation items={adminCommunityNavigation} />
-        
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
               title={t('screens.admin.communitySupervision')}
@@ -35,8 +29,8 @@ const CommunitySupervision = () => {
                     <p className="text-3xl font-bold mt-2">3</p>
                     <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.requiresAttention')}</p>
                   </div>
-                  <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                    <Flag className="h-6 w-6 text-red-600 dark:text-red-400" />
+                  <div className="p-3 bg-status-error-subtle rounded-lg">
+                    <Flag className="h-6 w-6 text-status-error" />
                   </div>
                 </div>
               </Card>
@@ -48,8 +42,8 @@ const CommunitySupervision = () => {
                     <p className="text-3xl font-bold mt-2">24</p>
                     <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.text7PendingApproval')}</p>
                   </div>
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                    <Calendar className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  <div className="p-3 bg-status-info-subtle rounded-lg">
+                    <Calendar className="h-6 w-6 text-status-info" />
                   </div>
                 </div>
               </Card>
@@ -61,8 +55,8 @@ const CommunitySupervision = () => {
                     <p className="text-3xl font-bold mt-2">12</p>
                     <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.allApproved')}</p>
                   </div>
-                  <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                    <Users className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  <div className="p-3 bg-status-success-subtle rounded-lg">
+                    <Users className="h-6 w-6 text-status-success" />
                   </div>
                 </div>
               </Card>
@@ -74,8 +68,8 @@ const CommunitySupervision = () => {
                     <p className="text-3xl font-bold mt-2">2</p>
                     <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.underReview')}</p>
                   </div>
-                  <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-                    <AlertCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+                  <div className="p-3 bg-status-warning-subtle rounded-lg">
+                    <AlertCircle className="h-6 w-6 text-status-warning" />
                   </div>
                 </div>
               </Card>
@@ -87,7 +81,7 @@ const CommunitySupervision = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between py-3 border-b">
                   <div className="flex items-center gap-3">
-                    <Flag className="h-5 w-5 text-red-500" />
+                    <Flag className="h-5 w-5 text-status-error" />
                     <div>
                       <p className="font-medium">{t('screens.admin.spamReportReviewed')}</p>
                       <p className="text-sm text-muted-foreground">{t('screens.admin.eventWeekendYogaRetreatNo')}</p>
@@ -97,7 +91,7 @@ const CommunitySupervision = () => {
                 </div>
                 <div className="flex items-center justify-between py-3 border-b">
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-blue-500" />
+                    <Calendar className="h-5 w-5 text-status-info" />
                     <div>
                       <p className="font-medium">{t('screens.admin.eventApproved')}</p>
                       <p className="text-sm text-muted-foreground">{t('screens.admin.mentalHealthWorkshopByDrSarah')}</p>
@@ -107,7 +101,7 @@ const CommunitySupervision = () => {
                 </div>
                 <div className="flex items-center justify-between py-3">
                   <div className="flex items-center gap-3">
-                    <Users className="h-5 w-5 text-green-500" />
+                    <Users className="h-5 w-5 text-status-success" />
                     <div>
                       <p className="font-medium">{t('screens.admin.groupCreated')}</p>
                       <p className="text-sm text-muted-foreground">{t('screens.admin.nutritionEnthusiastsAutoapproved')}</p>
@@ -118,7 +112,26 @@ const CommunitySupervision = () => {
               </div>
             </Card>
           </div>
-        </div>
+    </>
+  );
+
+  return (
+    <AdminGuard>
+      <AppLayout>
+        <SEO 
+          title={t('screens.admin.communitySupervisionAdmin')}
+          description="Monitor and moderate community content, events, and groups"
+        />
+        
+        <SubNavigation items={adminCommunityNavigation} />
+        
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            {adminBody}
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+        )}
       </AppLayout>
     </AdminGuard>
   );

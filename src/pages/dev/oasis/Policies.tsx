@@ -10,21 +10,15 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Shield, FileCheck, Lock, Plus } from "lucide-react";
 import { devOasisNavigation } from "@/config/dev-navigation";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function OasisPolicies() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("list");
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — OASIS Policies" 
-        description="OASIS policies and rules engine"
-        canonical={window.location.href}
-      />
-
-      <SubNavigation items={devOasisNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           <DevStandardHeader 
@@ -40,13 +34,13 @@ export default function OasisPolicies() {
             />
             <UniversalCalendarButton />
             <Button size="sm" disabled>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               New Policy
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="list">Policy List</SplitBarTrigger>
               <SplitBarTrigger value="editor">Policy Editor</SplitBarTrigger>
               <SplitBarTrigger value="logs">Evaluation Logs</SplitBarTrigger>
@@ -77,7 +71,26 @@ export default function OasisPolicies() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — OASIS Policies" 
+        description="OASIS policies and rules engine"
+        canonical={window.location.href}
+      />
+
+      <SubNavigation items={devOasisNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
     </>
   );
 }

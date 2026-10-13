@@ -1393,6 +1393,14 @@
         "grantFailed": true,
         "revokeFailed": true
       }
+    },
+    "vitanaCards": {
+      "dismissFailed": "Не удалось скрыть карточку",
+      "connectFailed": "Не удалось начать подключение",
+      "interestsSaved": "Интересы сохранены",
+      "interestsSaveFailed": "Не удалось сохранить интересы",
+      "notificationsEnabled": "Уведомления включены",
+      "notificationsFailed": "Не удалось включить уведомления"
     }
   }
 }

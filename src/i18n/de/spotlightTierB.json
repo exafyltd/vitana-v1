@@ -1,0 +1,103 @@
+{
+  "spotlightTierB": {
+    "common": {
+      "errorTitle": "Das konnte gerade nicht geladen werden",
+      "errorDesc": "Bitte versuche es gleich noch einmal.",
+      "retry": "Erneut versuchen"
+    },
+    "health": {
+      "description": "Entdecke Gesundheitsservices, Programme und Wissen für deinen Weg zu mehr Wohlbefinden.",
+      "pillarsAria": "Deine fünf Säulen",
+      "conditionsDescription": "Schätze deine Gesundheitsrisiken ein und erstelle Präventionspläne für dein langfristiges Wohlbefinden.",
+      "educationDescription": "Ausgewähltes Gesundheitswissen zu deinen Interessen.",
+      "noVideosTitle": "Noch keine Videos",
+      "noVideosDesc": "Sobald es Videos zu deinen Themen gibt, findest du sie hier.",
+      "noPodcastsTitle": "Noch keine Podcasts",
+      "noPodcastsDesc": "Sobald es Podcasts zu deinen Themen gibt, findest du sie hier.",
+      "servicesDescription": "Buche Termine, Vorsorge-Untersuchungen und Programme, die zu dir passen.",
+      "plansDescription": "KI-gestützte Pläne, abgestimmt auf dein Gesundheitsprofil und deine Ziele.",
+      "biologyDescription": "Medizinische Biomarker, Omics-Daten und Nahrungsergänzungen an einem Ort.",
+      "reportFallbackTitle": "Gesundheitsbericht",
+      "reportType": {
+        "blood_panel": "Blutbild",
+        "genomics": "Genomik",
+        "metabolomics": "Metabolomik",
+        "microbiome": "Mikrobiom",
+        "allergy": "Allergie",
+        "cancer": "Krebsvorsorge",
+        "hormones": "Hormone",
+        "imaging": "Bildgebung",
+        "other": "Sonstiges"
+      },
+      "reportStatus": {
+        "uploaded": "Hochgeladen",
+        "processing": "In Bearbeitung",
+        "parsed": "Ausgewertet",
+        "failed": "Fehlgeschlagen"
+      },
+      "categoryCount": "{category} ({count})",
+      "noSupplementsInCategory": "Keine Nahrungsergänzungen in dieser Kategorie",
+      "indexDescription": "Deine eine Zahl für Langlebigkeit über alle fünf Säulen."
+    },
+    "wallet": {
+      "description": "Dein digitales Konto für Gesundheits-Belohnungen und Vorteile.",
+      "creditsLine": "{amount} VTNA Credits",
+      "send": "Senden",
+      "request": "Anfordern",
+      "exchange": "Tauschen",
+      "withdraw": "Auszahlen",
+      "clearFilter": "Filter entfernen",
+      "noMatchingTransactions": "Keine passenden Transaktionen",
+      "txType": {
+        "transfer": "Überweisung",
+        "exchange": "Tausch",
+        "reward": "Belohnung",
+        "purchase": "Kauf",
+        "withdrawal": "Auszahlung",
+        "stake": "Staking",
+        "reseller_commission": "Provision aus Teilen & Verdienen"
+      },
+      "txStatus": {
+        "pending": "Ausstehend",
+        "completed": "Abgeschlossen",
+        "failed": "Fehlgeschlagen",
+        "cancelled": "Storniert"
+      },
+      "balanceDescription": "Verwalte deine Credits, Tokens und Mitgliedschafts-Vorteile.",
+      "creditsAmount": "{amount} Credits",
+      "vtnaAmount": "{amount} VTNA",
+      "usdAmount": "${amount}"
+    },
+    "ai": {
+      "overviewDescription": "Deine persönlichen KI-Einblicke und Empfehlungen für dein Wohlbefinden.",
+      "assistantDescription": "Hier stellst du deinen persönlichen KI-Assistenten ein.",
+      "assistantTabAi": "KI"
+    },
+    "settings": {
+      "connectorsDescription": "Verbinde deine Apps und Dienste und behalte deine Integrationen im Blick.",
+      "limitationsDescription": "Diese festen Regeln gelten für jede Produktempfehlung. Allergien, medizinische Gegenanzeigen und Wechselwirkungen mit Medikamenten werden nie übergangen.",
+      "tenantRoleDescription": "Verwalte deinen Kontext und deine Berechtigungen."
+    },
+    "calendar": {
+      "description": "Dein Tag, deine Woche und dein Monat auf einen Blick.",
+      "viewsAria": "Kalenderansicht"
+    },
+    "intents": {
+      "filtersAria": "Nach Art filtern",
+      "anyStyle": "Alle",
+      "emptyBoard": "In dieser Ansicht gibt es noch keine offenen Anliegen. Sei die oder der Erste.",
+      "emptyDance": "Noch keine offenen Tanz-Beiträge. Poste deinen als Erste oder Erster.",
+      "kindPartner": "Partnersuche",
+      "matchTitle": "Dein Anliegen",
+      "matchDescription": "Dein Anliegen und die passenden Treffer."
+    },
+    "sharing": {
+      "description": "Teile deine Inhalte über mehrere Kanäle und verwalte, welche Daten du teilst.",
+      "campaignsDescription": "Plane, starte und verfolge Kampagnen mit mehreren Beiträgen.",
+      "bulkActions": "Mehrfachauswahl",
+      "exitBulkMode": "Mehrfachauswahl beenden",
+      "consentDescription": "Lege fest, wer auf deine Daten zugreifen darf, und verwalte Berechtigungen.",
+      "campaignDetailDescription": "Details, Beiträge und Status deiner Kampagne."
+    }
+  }
+}

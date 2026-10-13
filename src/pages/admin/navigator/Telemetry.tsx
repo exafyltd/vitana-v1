@@ -28,21 +28,23 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigatorNavigation } from "@/config/navigation";
 import { useNavTelemetry } from "@/hooks/useAdminNavigator";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function NavigatorTelemetry() {
+  const spotlight = useSpotlightEnabled();
   const [days, setDays] = useState(30);
   const { data, isLoading, error } = useNavTelemetry(days);
 
-  return (
-    <AppLayout>
-      <div className="space-y-6 p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📊"
           title={t('screens.admin.navigatorTelemetry')}
           description="What Vitana actually decided in real sessions. Use the failed utterances and near-misses lists to discover which triggers to tune."
           rightAction={
             <Select value={String(days)} onValueChange={(v) => setDays(parseInt(v))}>
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-36">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -88,6 +90,7 @@ export default function NavigatorTelemetry() {
                 <CardHeader>
                   <CardTitle className="text-base">{t('screens.admin.topFiringScreens')}</CardTitle>
                 </CardHeader>
+                {/* design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token */}
                 <CardContent className="max-h-[60vh] overflow-y-auto">
                   {data.top_screens.length === 0 ? (
                     <p className="text-sm italic text-muted-foreground">{t('screens.admin.noScreenFiringsRecorded')}</p>
@@ -112,6 +115,7 @@ export default function NavigatorTelemetry() {
                 <CardHeader>
                   <CardTitle className="text-base">{t('screens.admin.nearmisses4')}</CardTitle>
                 </CardHeader>
+                {/* design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token */}
                 <CardContent className="max-h-[60vh] overflow-y-auto">
                   {data.near_misses.length === 0 ? (
                     <p className="text-sm italic text-muted-foreground">{t('screens.admin.noCloseDecisionsWindow')}</p>
@@ -151,6 +155,7 @@ export default function NavigatorTelemetry() {
               <CardHeader>
                 <CardTitle className="text-base">{t('screens.admin.failedUtterancesLowConfidence')}</CardTitle>
               </CardHeader>
+              {/* design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token */}
               <CardContent className="max-h-[60vh] overflow-y-auto">
                 {data.failed_utterances.length === 0 ? (
                   <p className="text-sm italic text-muted-foreground">{t('screens.admin.noLowconfidenceConsultsWindow')}
@@ -168,7 +173,18 @@ export default function NavigatorTelemetry() {
             </Card>
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

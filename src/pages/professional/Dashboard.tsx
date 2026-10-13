@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Users, Calendar, Activity, DollarSign } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function ProfessionalDashboard() {
-  return (
-    <AppLayout>
-    <div className="p-6 pb-28 md:pb-6 space-y-6">
+  const spotlight = useSpotlightEnabled();
+  const professionalBody = (
+    <>
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.professional.professionalDashboard')}</h1>
         <p className="text-muted-foreground">
@@ -107,21 +109,32 @@ export default function ProfessionalDashboard() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
-              <Users className="mr-2 h-4 w-4" />
+              <Users className="me-2 h-4 w-4" />
               {t('screens.professional.viewPatientList')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
-              <Calendar className="mr-2 h-4 w-4" />
+              <Calendar className="me-2 h-4 w-4" />
               {t('screens.professional.manageSchedule')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
-              <Activity className="mr-2 h-4 w-4" />
+              <Activity className="me-2 h-4 w-4" />
               {t('screens.professional.clinicalTools')}
             </Button>
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{professionalBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 pb-28 md:pb-6 space-y-6">{professionalBody}</div>
+      )}
     </AppLayout>
   );
 }

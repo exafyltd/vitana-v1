@@ -46,6 +46,8 @@ export function articleToVCard(article: ArticleFeedItem): VCardData {
   };
 }
 
+export { newsArticleToVCard, feedPersonToVCard, communityEventToVCard } from './feed';
+
 /** A marketplace product. Price is formatted with the existing marketplace helper. */
 export function productToVCard(product: MarketplaceProduct): VCardData {
   const price = formatPrice(product.price_cents, product.currency);
@@ -58,3 +60,8 @@ export function productToVCard(product: MarketplaceProduct): VCardData {
     href: `/discover/product/${product.id}`,
   };
 }
+export * from './discover';
+export { eventToVCard } from './event';
+export { liveRoomToVCard } from './liveRoom';
+export { groupToVCard } from './group';
+export { memberToVCard } from './member';

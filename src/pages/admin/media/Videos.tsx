@@ -17,7 +17,10 @@ import { useToast } from '@/hooks/use-toast';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 export default function Videos() {
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
@@ -104,16 +107,8 @@ export default function Videos() {
     (video as any).uploader?.display_name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  return (
-    <AppLayout>
-      <SEO 
-        title={t('screens.admin.videosMediaManagement')} 
-        description="Manage video content"
-        canonical={window.location.href}
-      />
-      <SubNavigation items={adminMediaNavigation} />
-      
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <div>
           <h1 className="text-3xl font-bold mb-2">{t('screens.admin.videoManagement')}</h1>
           <p className="text-muted-foreground">{t('screens.admin.reviewModerateVideoUploads')}</p>
@@ -125,17 +120,17 @@ export default function Videos() {
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input 
                     placeholder={t('screens.admin.searchVideos')} 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
+                    className="ps-9"
                   />
                 </div>
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-44">
                   <SelectValue placeholder={t('screens.admin.filterByStatus2')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -163,7 +158,7 @@ export default function Videos() {
                   <TableHead>{t('screens.admin.likes')}</TableHead>
                   <TableHead>{t('screens.admin.status')}</TableHead>
                   <TableHead>{t('screens.admin.date')}</TableHead>
-                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
+                  <TableHead className="text-end">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -206,11 +201,11 @@ export default function Videos() {
                       </Badge>
                     </TableCell>
                     <TableCell>{formatDate(new Date(video.created_at), 'MMM d, yyyy')}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-end">
                       <div className="flex items-center justify-end gap-2">
                         {video.status !== 'approved' && (
                           <Button size="sm" variant="ghost" onClick={() => updateStatus(video.id, 'approved')}>
-                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            <CheckCircle className="w-4 h-4 text-status-success" />
                           </Button>
                         )}
                         {video.status !== 'rejected' && (
@@ -220,7 +215,7 @@ export default function Videos() {
                         )}
                         {video.status !== 'flagged' && (
                           <Button size="sm" variant="ghost" onClick={() => updateStatus(video.id, 'flagged')}>
-                            <Flag className="w-4 h-4 text-yellow-600" />
+                            <Flag className="w-4 h-4 text-status-warning" />
                           </Button>
                         )}
                         <Button size="sm" variant="ghost" onClick={() => deleteVideo(video.id)}>
@@ -234,7 +229,25 @@ export default function Videos() {
             </Table>
           </CardContent>
         </Card>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={t('screens.admin.videosMediaManagement')} 
+        description="Manage video content"
+        canonical={window.location.href}
+      />
+      <SubNavigation items={adminMediaNavigation} />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

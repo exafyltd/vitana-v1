@@ -60,7 +60,7 @@ export default function DevLogin() {
       if (error) throw error;
 
       // Navigation is handled by onAuthStateChange
-    } catch (error: any) {
+    } catch {
       notifyError('toasts.dev.error');
     } finally {
       setLoading(false);
@@ -81,14 +81,14 @@ export default function DevLogin() {
       });
 
       if (error) throw error;
-    } catch (error: any) {
+    } catch {
       notifyError('toasts.dev.error');
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to flex items-center justify-center p-6">
       <SEO 
         title="Vitana DEV — Sign In" 
         description="Developer command hub for Vitana platform operations"
@@ -129,12 +129,12 @@ export default function DevLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
-                  className="pr-10"
+                  className="pe-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   disabled={loading}
                 >
                   {showPassword ? (
@@ -159,7 +159,7 @@ export default function DevLogin() {
               </Label>
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              {loading && <Loader2 className="h-4 w-4 animate-spin me-2" />}
               Sign In
             </Button>
           </form>

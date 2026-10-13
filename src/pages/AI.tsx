@@ -20,8 +20,12 @@ import { useNavigate } from "react-router-dom";
 import { aiNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function AI() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -55,6 +59,125 @@ export default function AI() {
     { icon: Thermometer, label: contextPulse.weather, color: "bg-calendar-secondary/10 text-calendar-secondary" }
   ];
 
+  const aiCards = (
+    <>
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4 px-6">
+          {/* Priority Actions - C-001 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-001">
+            <CrossoverCard
+              icon={CheckCircle}
+              category="ai"
+              title={t('screens.ai.todaySPriorityActions')}
+              subtitle={t('screens.ai.subtitle_priorityActions')}
+              buttonText={t('screens.ai.button_viewAllTasks')}
+              onButtonClick={() => handleActionClick('view-all')}
+              content={
+                <div className="space-y-2">
+                  {todayActions.slice(0, 3).map((action) => (
+                    <div key={action.id} className="p-2 bg-background/50 rounded-lg border">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="text-xs font-medium text-foreground">{action.label}</h4>
+                        <Badge variant={action.priority === 'high' ? 'destructive' : 'default'} className="text-xs">
+                          {action.etaMins}m
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{action.reason}</p>
+                    </div>
+                  ))}
+                </div>
+              }
+            />
+          </div>
+
+          {/* Autopilot Status - C-002 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-002">
+            <CrossoverCard
+              icon={Zap}
+              category="autopilot"
+              title={t('screens.ai.autopilotStatus')}
+              subtitle={t('screens.ai.subtitle_autopilotStatus')}
+              buttonText={t('screens.ai.button_viewAutopilotLog')}
+              onButtonClick={() => handleActionClick('autopilot-log')}
+              content={
+                <div className="space-y-2">
+                  <div className="p-2 bg-background/50 rounded-lg border">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-foreground">{t('screens.ai.rescheduledMeeting')}</span>
+                      <span className="text-xs text-muted-foreground">{t('screens.ai.text2hAgo')}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{t('screens.ai.protectedFocusTimeForWellnessTasks')}</p>
+                  </div>
+                  <div className="p-2 bg-background/50 rounded-lg border">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-foreground">{t('screens.ai.hydrationReminderSent')}</span>
+                      <span className="text-xs text-muted-foreground">{t('screens.ai.text45mAgo')}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{t('screens.ai.behindDailyWaterIntakeGoal')}</p>
+                  </div>
+                </div>
+              }
+            />
+          </div>
+
+          {/* Memory Highlights - C-003 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-003">
+            <SmartSuggestions
+              suggestions={memoryHighlights.map(highlight => ({
+                title: highlight.title,
+                description: highlight.body,
+                type: "insight" as const,
+                priority: "medium" as const,
+                action: t('screens.ai.actionLabel_seeDetails')
+              }))}
+              variant="card"
+              maxItems={3}
+            />
+          </div>
+
+          {/* Smart Calendar - C-006 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-006">
+            <SmartCalendarCard />
+          </div>
+
+          {/* Progress Tracking - C-007 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-007">
+            <ProgressStreaksCard />
+          </div>
+
+          {/* Context Pulse - C-004 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-CX-006" data-system-card-id="C-004">
+            <LifestylePlanCard type="mental" />
+          </div>
+
+          {/* Inspiration Spark - C-005 */}
+          <div className="break-inside-avoid mb-4" data-template-id="CT-CX-011" data-system-card-id="C-005">
+            <MotivationCard
+              quote={inspiration.title}
+              author={inspiration.category}
+              hasVideo={true}
+            />
+          </div>
+        </div>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: same cards inside ScreenFrame (archetype from the manifest).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.ai.aiIntelligence')} description={t('spotlightTierB.ai.overviewDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="conversation"
+          subNav={{ items: aiNavigation }}
+          header={{ title: t('screens.ai.aiIntelligenceOverview'), description: t('spotlightTierB.ai.overviewDescription'), emoji: '✨' }}
+        >
+          {aiCards}
+        </ScreenFrame>
+        <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title={t('screens.ai.aiIntelligence')} description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
@@ -70,103 +193,7 @@ export default function AI() {
         </div>
 
         {/* Pinterest-style Masonry Grid Layout */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4 px-6">
-            {/* Priority Actions - C-001 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-001">
-              <CrossoverCard
-                icon={CheckCircle}
-                category="ai"
-                title={t('screens.ai.todaySPriorityActions')}
-                subtitle={t('screens.ai.subtitle_priorityActions')}
-                buttonText={t('screens.ai.button_viewAllTasks')}
-                onButtonClick={() => handleActionClick('view-all')}
-                content={
-                  <div className="space-y-2">
-                    {todayActions.slice(0, 3).map((action) => (
-                      <div key={action.id} className="p-2 bg-background/50 rounded-lg border">
-                        <div className="flex items-start justify-between mb-1">
-                          <h4 className="text-xs font-medium text-foreground">{action.label}</h4>
-                          <Badge variant={action.priority === 'high' ? 'destructive' : 'default'} className="text-xs">
-                            {action.etaMins}m
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{action.reason}</p>
-                      </div>
-                    ))}
-                  </div>
-                }
-              />
-            </div>
-
-            {/* Autopilot Status - C-002 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-002">
-              <CrossoverCard
-                icon={Zap}
-                category="autopilot"
-                title={t('screens.ai.autopilotStatus')}
-                subtitle={t('screens.ai.subtitle_autopilotStatus')}
-                buttonText={t('screens.ai.button_viewAutopilotLog')}
-                onButtonClick={() => handleActionClick('autopilot-log')}
-                content={
-                  <div className="space-y-2">
-                    <div className="p-2 bg-background/50 rounded-lg border">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground">{t('screens.ai.rescheduledMeeting')}</span>
-                        <span className="text-xs text-muted-foreground">{t('screens.ai.text2hAgo')}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{t('screens.ai.protectedFocusTimeForWellnessTasks')}</p>
-                    </div>
-                    <div className="p-2 bg-background/50 rounded-lg border">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground">{t('screens.ai.hydrationReminderSent')}</span>
-                        <span className="text-xs text-muted-foreground">{t('screens.ai.text45mAgo')}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{t('screens.ai.behindDailyWaterIntakeGoal')}</p>
-                    </div>
-                  </div>
-                }
-              />
-            </div>
-
-            {/* Memory Highlights - C-003 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-003">
-              <SmartSuggestions
-                suggestions={memoryHighlights.map(highlight => ({
-                  title: highlight.title,
-                  description: highlight.body,
-                  type: "insight" as const,
-                  priority: "medium" as const,
-                  action: t('screens.ai.actionLabel_seeDetails')
-                }))}
-                variant="card"
-                maxItems={3}
-              />
-            </div>
-
-            {/* Smart Calendar - C-006 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-006">
-              <SmartCalendarCard />
-            </div>
-
-            {/* Progress Tracking - C-007 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-007">
-              <ProgressStreaksCard />
-            </div>
-
-            {/* Context Pulse - C-004 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-006" data-system-card-id="C-004">
-              <LifestylePlanCard type="mental" />
-            </div>
-
-            {/* Inspiration Spark - C-005 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-011" data-system-card-id="C-005">
-              <MotivationCard
-                quote={inspiration.title}
-                author={inspiration.category}
-                hasVideo={true}
-              />
-            </div>
-          </div>
+        {aiCards}
 
       </div>
       

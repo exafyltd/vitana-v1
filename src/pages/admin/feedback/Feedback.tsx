@@ -27,6 +27,9 @@ import { notifyError, t } from '@/lib/i18n-toast';
 import { adminStatusLabel } from './admin-ticket-labels';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import AdminTabs from "@/components/admin/AdminTabs";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
   { key: "specialists", label: "Specialists", path: "/admin/feedback/specialists" },
@@ -230,7 +233,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
               <button
                 type="button"
                 onClick={() => setExpanded(s => ({ ...s, [g.customer_key]: !isOpen }))}
-                className="flex flex-1 min-w-0 items-center gap-3 text-left"
+                className="flex flex-1 min-w-0 items-center gap-3 text-start"
               >
                 {/* VTID-02659: real avatar (profiles.avatar_url) when present;
                     otherwise initials on deterministic pastel. */}
@@ -250,7 +253,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                   />
                 ) : null}
                 <div
-                  className={`h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white ${g.avatar_url ? "hidden" : "flex"}`}
+                  className={`h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-primary-foreground ${g.avatar_url ? "hidden" : "flex"}`}
                   style={{ background: color }}
                   aria-label={t('supportTickets.adminList.avatarAlt', { name: g.customer_key })}
                 >
@@ -283,10 +286,10 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                     {g.latest.resolver_agent && (
                       <span>{t('screens.admin.handledByResolver_agent', { resolver_agent: g.latest.resolver_agent })}</span>
                     )}
-                    <span className="ml-auto">{fmtDateTime(new Date(g.latest.created_at))}</span>
+                    <span className="ms-auto">{fmtDateTime(new Date(g.latest.created_at))}</span>
                   </div>
                 </div>
-                <span className="ml-2 text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
+                <span className="ms-2 text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
               </button>
               {/* VTID-02659: per-customer Approve-All. Visible only when this
                   customer has at least one ticket waiting in spec_ready or
@@ -321,10 +324,10 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                       type="button"
                       key={t.id}
                       onClick={() => onSelectTicket(t)}
-                      className={`flex w-full flex-col gap-1 px-4 py-3 text-left text-sm border-t border-border/60 hover:bg-accent ${accent.border} ${accent.tint}`}
+                      className={`flex w-full flex-col gap-1 px-4 py-3 text-start text-sm border-t border-border/60 hover:bg-accent ${accent.border} ${accent.tint}`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-6 shrink-0 text-right font-mono text-xs text-muted-foreground/70">
+                        <span className="w-6 shrink-0 text-end font-mono text-xs text-muted-foreground/70">
                           {idx + 1}.
                         </span>
                         <span className="font-mono text-xs">{t.ticket_number}</span>
@@ -342,12 +345,12 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                         {t.resolver_agent && (
                           <span className="text-xs text-muted-foreground">{t.resolver_agent}</span>
                         )}
-                        <span className="ml-auto text-xs text-muted-foreground">
+                        <span className="ms-auto text-xs text-muted-foreground">
                           {fmtDateTime(new Date(t.created_at))}
                         </span>
                       </div>
                       {t.raw_transcript_excerpt && (
-                        <p className="ml-9 line-clamp-2 text-xs text-foreground/80">
+                        <p className="ms-9 line-clamp-2 text-xs text-foreground/80">
                           {t.raw_transcript_excerpt}
                         </p>
                       )}
@@ -493,6 +496,7 @@ function SpecialistEnableToggle({
 }
 
 export default function AdminFeedback() {
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   const { tab } = useParams<{ tab?: string }>();
   const activeTab = tab && TABS.find(t => t.key === tab) ? tab : "tickets";
@@ -559,36 +563,8 @@ export default function AdminFeedback() {
     return <Navigate to="/admin/feedback/tickets" replace />;
   }
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.admin.feedbackAdmin')} description={t('supportTickets.adminList.seoDescription')} />
-      <StandardHeader
-        title={t('screens.admin.feedback')}
-        description={t('supportTickets.adminList.pageDescription')}
-      />
-
-      <div className="border-b border-border">
-        <div className="flex gap-1 px-4">
-          {TABS.map(t => (
-            <button
-              key={t.key}
-              onClick={() => navigate(t.path)}
-              className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-                activeTab === t.key
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t.label}
-              {activeTab === t.key && (
-                <span className="absolute inset-x-0 bottom-0 h-0.5 bg-primary" />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="p-4 space-y-4">
+  const adminBody = (
+    <>
         {activeTab === "tickets" && (
           <>
             <div className="flex gap-2 text-xs items-center flex-wrap">
@@ -599,7 +575,7 @@ export default function AdminFeedback() {
                   resolved/rejected tickets disappear from the supervisor's
                   view immediately after they're acted on. Switch to Archive
                   to read past decisions without cluttering the live work. */}
-              <div className="ml-auto flex gap-1 rounded-md bg-muted p-0.5">
+              <div className="ms-auto flex gap-1 rounded-md bg-muted p-0.5">
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "active" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("active")}
@@ -723,7 +699,54 @@ export default function AdminFeedback() {
             )}
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.admin.feedbackAdmin')} description={t('supportTickets.adminList.seoDescription')} />
+      {spotlight ? (
+        <>
+          {/* VTID-05113: the section tabs come from the admin shell (ADMIN_SECTIONS.feedback, SR-05). */}
+          <AdminTabs sectionKey="feedback" />
+          <ScreenFrame
+            archetype="workspace"
+            header={{ title: t('screens.admin.feedback'), description: t('supportTickets.adminList.pageDescription') }}
+          >
+            <div className="space-y-4">{adminBody}</div>
+          </ScreenFrame>
+        </>
+      ) : (
+        <>
+          <StandardHeader
+            title={t('screens.admin.feedback')}
+            description={t('supportTickets.adminList.pageDescription')}
+          />
+
+          <div className="border-b border-border">
+            <div className="flex gap-1 px-4">
+              {TABS.map(t => (
+                <button
+                  key={t.key}
+                  onClick={() => navigate(t.path)}
+                  className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+                    activeTab === t.key
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t.label}
+                  {activeTab === t.key && (
+                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-primary" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-4 space-y-4">{adminBody}</div>
+        </>
+      )}
     </AppLayout>
   );
 }

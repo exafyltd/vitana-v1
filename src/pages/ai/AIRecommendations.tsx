@@ -10,6 +10,8 @@ import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard"
 import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -20,6 +22,8 @@ const aiSubItems = [
 ];
 
 export default function AIRecommendations() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   
   const handleRecommendationClick = (item: any, type: string) => {
@@ -88,6 +92,111 @@ export default function AIRecommendations() {
     }
   ];
 
+  const recommendationCards = (
+    <>
+      {/* Pinterest-style Masonry Grid Layout */}
+      <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        {/* Progress Tracking - C-012 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-012">
+          <ProgressStreaksCard />
+        </div>
+
+        {/* Health Recommendations - C-010 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-010">
+          <RecommendationCard
+            title={t('screens.ai.healthRecommendations')}
+            items={healthRecommendations}
+            onItemClick={(item) => handleRecommendationClick(item, "C-010")}
+            maxItems={3}
+          />
+        </div>
+
+        {/* Lifestyle Suggestions - C-011 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-011">
+          <RecommendationCard
+            title={t('screens.ai.lifestyle')}
+            items={lifestyleSuggestions}
+            onItemClick={(item) => handleRecommendationClick(item, "C-011")}
+            maxItems={3}
+          />
+        </div>
+
+        {/* Smart Calendar - matching Dashboard sizing */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-016">
+          <SmartCalendarCard />
+        </div>
+
+        {/* Wellness Services - C-013 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-WS-001" data-system-card-id="C-013">
+          <OfferCard
+            title={t('screens.ai.wellnessServices')}
+            offers={[{
+              id: "wellness-001",
+              title: t('screens.ai.offerTitle_wellnessAssessment'),
+              provider: "VITANA Partners",
+              price: 199,
+              description: t('screens.ai.offerDesc_wellnessAssessment'),
+              category: "wellness",
+              type: "service" as const
+            }]}
+            variant="grid"
+            showPricing={true}
+            onOfferClick={() => handleOfferClaim("C-013")}
+            maxItems={1}
+          />
+        </div>
+
+        {/* Lab Test Recommendations - C-014 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-LT-001" data-system-card-id="C-014">
+          <LabTestCard
+            labTest={{
+              id: "lab-001",
+              name: t('screens.ai.labName_healthPanel'),
+              description: t('screens.ai.labDesc_healthPanel'),
+              category: "blood_markers",
+              biomarkers: [
+                t('screens.ai.biomarker_cholesterol'),
+                t('screens.ai.biomarker_glucose'),
+                t('screens.ai.biomarker_vitamins'),
+              ],
+              price: 89,
+              turnaround_days: 2,
+              sample_type: t('screens.ai.sampleType_blood'),
+              provider_name: "LabCorp"
+            }}
+            onOrder={() => handleLabTest("C-014")}
+          />
+        </div>
+
+        {/* Personalization Insights - C-015 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-015">
+          <RecommendationCard
+            title={t('screens.ai.personalizationInsights')}
+            items={personalizationInsights}
+            onItemClick={(item) => handleRecommendationClick(item, "C-015")}
+            maxItems={2}
+          />
+        </div>
+      </div>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: same content inside ScreenFrame (archetype from the manifest).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.ai.recommendationsAiIntelligence')} description={t('screens.ai.personalizedSuggestionsEnhanceYourWellnessJourney')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: aiSubItems }}
+          header={{ title: t('screens.ai.aiRecommendations'), description: t('screens.ai.personalizedSuggestionsEnhanceYourWellnessJourney'), emoji: '💡' }}
+        >
+          {recommendationCards}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title={t('screens.ai.recommendationsAiIntelligence')} description="Personalized AI recommendations for wellness" canonical={window.location.href} />
@@ -118,90 +227,7 @@ export default function AIRecommendations() {
             </div>
           </div>
 
-          {/* Pinterest-style Masonry Grid Layout */}
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-            {/* Progress Tracking - C-012 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-012">
-              <ProgressStreaksCard />
-            </div>
-
-            {/* Health Recommendations - C-010 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-010">
-              <RecommendationCard
-                title={t('screens.ai.healthRecommendations')}
-                items={healthRecommendations}
-                onItemClick={(item) => handleRecommendationClick(item, "C-010")}
-                maxItems={3}
-              />
-            </div>
-
-            {/* Lifestyle Suggestions - C-011 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-011">
-              <RecommendationCard
-                title={t('screens.ai.lifestyle')}
-                items={lifestyleSuggestions}
-                onItemClick={(item) => handleRecommendationClick(item, "C-011")}
-                maxItems={3}
-              />
-            </div>
-
-            {/* Smart Calendar - matching Dashboard sizing */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-016">
-              <SmartCalendarCard />
-            </div>
-
-            {/* Wellness Services - C-013 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-WS-001" data-system-card-id="C-013">
-              <OfferCard
-                title={t('screens.ai.wellnessServices')}
-                offers={[{
-                  id: "wellness-001",
-                  title: t('screens.ai.offerTitle_wellnessAssessment'),
-                  provider: "VITANA Partners",
-                  price: 199,
-                  description: t('screens.ai.offerDesc_wellnessAssessment'),
-                  category: "wellness",
-                  type: "service" as const
-                }]}
-                variant="grid"
-                showPricing={true}
-                onOfferClick={() => handleOfferClaim("C-013")}
-                maxItems={1}
-              />
-            </div>
-
-            {/* Lab Test Recommendations - C-014 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-LT-001" data-system-card-id="C-014">
-              <LabTestCard
-                labTest={{
-                  id: "lab-001",
-                  name: t('screens.ai.labName_healthPanel'),
-                  description: t('screens.ai.labDesc_healthPanel'),
-                  category: "blood_markers",
-                  biomarkers: [
-                    t('screens.ai.biomarker_cholesterol'),
-                    t('screens.ai.biomarker_glucose'),
-                    t('screens.ai.biomarker_vitamins'),
-                  ],
-                  price: 89,
-                  turnaround_days: 2,
-                  sample_type: t('screens.ai.sampleType_blood'),
-                  provider_name: "LabCorp"
-                }}
-                onOrder={() => handleLabTest("C-014")}
-              />
-            </div>
-
-            {/* Personalization Insights - C-015 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-015">
-              <RecommendationCard
-                title={t('screens.ai.personalizationInsights')}
-                items={personalizationInsights}
-                onItemClick={(item) => handleRecommendationClick(item, "C-015")}
-                maxItems={2}
-              />
-            </div>
-          </div>
+          {recommendationCards}
 
         </div>
       </div>

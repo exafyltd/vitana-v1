@@ -1,0 +1,144 @@
+{
+  "spotlightDiscover": {
+    "storefront": {
+      "searchPlaceholder": "Search products, services and coaches",
+      "filtersAria": "Marketplace filters",
+      "chips": {
+        "all": "All",
+        "sleep": "Sleep",
+        "energy": "Energy",
+        "gutHealth": "Gut health",
+        "strength": "Strength & recovery",
+        "longevity": "Longevity",
+        "underPrice": "Under {price}",
+        "topRated": "★ {rating}+",
+        "_pending_review": {}
+      },
+      "hero": {
+        "pickedForYou": "Picked for you",
+        "topResult": "Top result",
+        "_pending_review": {}
+      },
+      "shelves": {
+        "picks": "More for you",
+        "supplements": "Supplements",
+        "deals": "Deals",
+        "services": "Wellness services",
+        "coaches": "Doctors & coaches",
+        "shareEarn": "Share & Earn",
+        "_pending_review": {}
+      },
+      "results": {
+        "heading": "Search results",
+        "count": "{count} results",
+        "_pending_review": {}
+      },
+      "empty": {
+        "feedTitle": "No recommendations for you yet",
+        "feedDesc": "As soon as we find products that fit you, they show up here.",
+        "shelfTitle": "Nothing here right now",
+        "shelfDesc": "There are no products in this section at the moment.",
+        "dealsTitle": "No deals right now",
+        "dealsDesc": "When products are discounted, you'll find them here.",
+        "servicesTitle": "Wellness services are coming soon",
+        "servicesDesc": "Bookable services aren't in the marketplace yet. Anything you saved is in the Wellness Services section.",
+        "coachesTitle": "Doctors & coaches are coming soon",
+        "coachesDesc": "Bookable doctors and coaches aren't in the marketplace yet. Anything you saved is in the Doctors & Coaches section.",
+        "shareTitle": "You haven't recommended anything yet",
+        "shareDesc": "Open a product in quick view and tap Recommend — you earn on every purchase made through your link.",
+        "shareGuestTitle": "Sign in to start earning",
+        "shareGuestDesc": "With an account you can recommend products and earn on every purchase made through your link.",
+        "resultsTitle": "No results",
+        "resultsDesc": "Try a different search term or remove a filter.",
+        "clearFilters": "Clear filters",
+        "signIn": "Sign in",
+        "_pending_review": {}
+      },
+      "error": {
+        "title": "Something went wrong",
+        "desc": "We couldn't load this section.",
+        "retry": "Try again",
+        "_pending_review": {}
+      },
+      "share": {
+        "meta": "{clicks} clicks · {earned} earned",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "card": {
+      "quickView": "Quick view",
+      "openFullPage": "Open full page",
+      "seeAll": "See all",
+      "discount": "−{percent}%",
+      "_pending_review": {}
+    },
+    "quickView": {
+      "title": "Quick view",
+      "noDetails": "There are no further details for this item yet.",
+      "_pending_review": {}
+    },
+    "supplements": {
+      "categoriesAria": "Supplement categories",
+      "sortAria": "Sort order",
+      "picksTitle": "Supplements picked for you",
+      "sub": {
+        "all": "All",
+        "multivitamins": "Multivitamins",
+        "vitamins": "Vitamins",
+        "minerals": "Minerals",
+        "omega3": "Omega-3",
+        "adaptogens": "Adaptogens",
+        "nootropics": "Nootropics",
+        "longevity": "Longevity",
+        "immunity": "Immunity",
+        "antioxidants": "Antioxidants",
+        "sleep": "Sleep",
+        "performance": "Performance",
+        "beauty": "Beauty",
+        "gutHealth": "Gut health",
+        "herbs": "Herbs",
+        "heartHealth": "Heart health",
+        "_pending_review": {}
+      },
+      "sort": {
+        "relevance": "Popular",
+        "rating": "Top rated",
+        "priceAsc": "Price: low to high",
+        "priceDesc": "Price: high to low",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "saved": {
+      "servicesTitle": "No saved services yet",
+      "servicesDesc": "Services you save show up here.",
+      "providersTitle": "No saved doctors or coaches yet",
+      "providersDesc": "Doctors and coaches you save show up here.",
+      "dealsTitle": "No saved deals yet",
+      "dealsDesc": "Deals you save show up here.",
+      "remove": "Remove",
+      "_pending_review": {}
+    },
+    "deals": {
+      "trendingTitle": "No trends yet",
+      "trendingDesc": "Once we see enough real bookings, we'll show you what's popular right now.",
+      "_pending_review": {}
+    },
+    "headers": {
+      "supplements": "Quality supplements for your longevity",
+      "services": "Wellness offers, sorted by health area",
+      "coaches": "Doctors and coaches for your longevity",
+      "deals": "Discounted products and picks for you",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "saved": "Saved",
+      "myProviders": "My doctors & coaches",
+      "_pending_review": {}
+    },
+    "searchSaved": "Search your saved items",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

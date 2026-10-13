@@ -1,6 +1,7 @@
 /** BackOffice › Sales & CRM › Credit Notes (BO-012) — VTID-03855, Read tier: `sales.credit_note.list` (a credit note is a sales return against a posted invoice). */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
 import QueryState from "@/components/backoffice/QueryState";
@@ -15,6 +16,7 @@ import { t } from "@/lib/i18n-toast";
 const CAPS = ["sales.view"] as const;
 
 export default function BackOfficeCreditNotes() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -22,7 +24,7 @@ export default function BackOfficeCreditNotes() {
   const rows = (list.data?.result?.credit_notes ?? []).filter((c) => fullTextMatch(search, c.customer_name, c.naming_series, c.status, c.return_against));
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-012" emoji="↩️" title={t("screens.backoffice.sales.creditNotes.title")} description={t("screens.backoffice.sales.creditNotes.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-012" emoji="↩️" title={t("screens.backoffice.sales.creditNotes.title")} description={t("screens.backoffice.sales.creditNotes.description")} capabilities={CAPS}>
       <p className="text-xs text-muted-foreground">{t("screens.backoffice.sales.creditNotes.highRiskNote")}</p>
       <AdminFilterBar searchValue={search} onSearchChange={setSearch} searchPlaceholder={t("screens.backoffice.sales.creditNotes.searchPlaceholder")} onReset={() => setSearch("")} />
       {QueryState({ isLoading: me.isLoading || list.isLoading, error: list.error, isEmpty: rows.length === 0, emptyTitle: t("screens.backoffice.sales.creditNotes.empty"), emptyDescription: t("screens.backoffice.sales.creditNotes.emptyHint") }) ?? (
@@ -54,6 +56,6 @@ export default function BackOfficeCreditNotes() {
         </div>
       )}
       <DataSourceNote command={list.data?.command} />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

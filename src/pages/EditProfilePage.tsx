@@ -47,6 +47,9 @@ import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareSc
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { t } from '@/lib/i18n-toast';
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
+import { InterestsPicker } from "@/components/profile/InterestsPicker";
+import { useProfileEditorDeepLink } from "@/hooks/useProfileEditorDeepLink";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -83,6 +86,18 @@ export default function EditProfilePage() {
     if (which === "cover-library") setCoverLibraryDrawerOpen(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
+  // VTID-05085: Unified Card System deep links land on the right editor —
+  // /me/profile#avatar | #cover | #about | #location | #interests. The hash is
+  // consumed, so tapping the same card again reopens it (VTID-05143), and
+  // closing an editor re-reads the cards so a completed one goes away.
+  const [interestsOpen, setInterestsOpen] = useState(false);
+  const { onEditorClosed: refreshEnrichmentCards } = useProfileEditorDeepLink({
+    avatar: () => setIdentityDrawerOpen(true),
+    about: () => setAboutDrawerOpen(true),
+    location: () => setAboutDrawerOpen(true),
+    cover: () => setCoverLibraryDrawerOpen(true),
+    interests: () => setInterestsOpen(true),
+  });
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
@@ -420,6 +435,10 @@ export default function EditProfilePage() {
         {/* NO EditToolbar on mobile! */}
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
+          {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
+          <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} only="server" className="px-4 pt-3" />
+          {/* VTID-05086: the profile's feature cards, stacked below the carousel. */}
+          <EnrichmentCardStrip screen="profile" layout="stacked" only="features" className="px-4 pt-2" />
           {/* ID Card Switcher - Front/Back with segmented control */}
           <MobileIdCardSwitcher
             profile={profile}
@@ -553,6 +572,7 @@ export default function EditProfilePage() {
             setIdentityDrawerOpen(open);
             if (!open) {
               refetchProfile();
+              refreshEnrichmentCards();
               completeBySourceRef('onboarding_profile');
               completeBySourceRef('onboarding_avatar');
             }
@@ -563,7 +583,10 @@ export default function EditProfilePage() {
           open={aboutDrawerOpen}
           onOpenChange={(open) => {
             setAboutDrawerOpen(open);
-            if (!open) refetchProfile();
+            if (!open) {
+              refetchProfile();
+              refreshEnrichmentCards();
+            }
           }}
         />
 
@@ -599,7 +622,10 @@ export default function EditProfilePage() {
             otherwise the new tile sets state but no dialog renders. */}
         <CoverLibraryDrawer
           open={coverLibraryDrawerOpen}
-          onOpenChange={setCoverLibraryDrawerOpen}
+          onOpenChange={(open) => {
+            setCoverLibraryDrawerOpen(open);
+            if (!open) refreshEnrichmentCards();
+          }}
         />
 
         {/* Autopilot Popup */}
@@ -639,6 +665,7 @@ export default function EditProfilePage() {
           profileHandle={profile.handle}
           avatarUrl={profile.avatarUrl}
         />
+        <InterestsPicker open={interestsOpen} onOpenChange={setInterestsOpen} onSaved={refreshEnrichmentCards} />
       </AppLayout>
     );
   }
@@ -651,6 +678,13 @@ export default function EditProfilePage() {
         description="Edit your VITANA profile and customize your public presence" 
       />
       
+      {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
+      <div className="container mx-auto px-4 pt-4">
+        <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} only="server" />
+        {/* VTID-05086: the profile's feature cards, stacked below the carousel. */}
+        <EnrichmentCardStrip screen="profile" layout="stacked" only="features" className="mt-2" />
+      </div>
+
       <ProfileLayout
         profile={profile}
         scope={scope}
@@ -691,14 +725,20 @@ export default function EditProfilePage() {
 
       <IdentityDrawer
         open={identityDrawerOpen}
-        onOpenChange={setIdentityDrawerOpen}
+        onOpenChange={(open) => {
+          setIdentityDrawerOpen(open);
+          if (!open) refreshEnrichmentCards();
+        }}
       />
 
       <AboutDrawer
         open={aboutDrawerOpen}
         onOpenChange={(open) => {
           setAboutDrawerOpen(open);
-          if (!open) refetchProfile();
+          if (!open) {
+            refetchProfile();
+            refreshEnrichmentCards();
+          }
         }}
       />
 
@@ -745,7 +785,10 @@ export default function EditProfilePage() {
       {/* VTID-02806: cover library drawer (deep-linkable via ?drawer=cover-library) */}
       <CoverLibraryDrawer
         open={coverLibraryDrawerOpen}
-        onOpenChange={setCoverLibraryDrawerOpen}
+        onOpenChange={(open) => {
+          setCoverLibraryDrawerOpen(open);
+          if (!open) refreshEnrichmentCards();
+        }}
       />
 
       {/* VTID-DANCE-D5: dance preferences drawer (also available via settings entry below) */}
@@ -756,6 +799,7 @@ export default function EditProfilePage() {
           if (!open) refetchProfile();
         }}
       />
+      <InterestsPicker open={interestsOpen} onOpenChange={setInterestsOpen} onSaved={refreshEnrichmentCards} />
     </AppLayout>
   );
 }

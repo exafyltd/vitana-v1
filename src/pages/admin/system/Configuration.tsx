@@ -9,6 +9,8 @@ import { adminSystemNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const columns = [
   {
@@ -29,7 +31,7 @@ const columns = [
   {
     key: "reason",
     label: "Reason",
-    render: (val: string) => <span className="text-sm text-muted-foreground line-clamp-1 max-w-[250px]">{val || "-"}</span>,
+    render: (val: string) => <span className="text-sm text-muted-foreground line-clamp-1 max-w-64">{val || "-"}</span>,
   },
   {
     key: "updated_by",
@@ -50,6 +52,7 @@ const columns = [
 ];
 
 export default function SystemConfiguration() {
+  const spotlight = useSpotlightEnabled();
   const { data, isLoading } = useQuery({
     queryKey: ["admin-system-controls"],
     queryFn: async () => {
@@ -67,10 +70,8 @@ export default function SystemConfiguration() {
   const disabledCount = controls.filter((c: any) => !c.enabled).length;
   const expiringCount = controls.filter((c: any) => c.expires_at).length;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminSystemNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.systemConfiguration')} description="Governance controls and system toggles" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -88,7 +89,19 @@ export default function SystemConfiguration() {
           searchPlaceholder="Search controls..."
           emptyMessage="No system controls configured"
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminSystemNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

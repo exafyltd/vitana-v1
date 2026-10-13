@@ -10,21 +10,15 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Package, Archive, Download, Filter } from "lucide-react";
 import { devCICDNavigation } from "@/config/dev-navigation";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function CICDArtifacts() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("registry");
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — Build Artifacts" 
-        description="Build artifacts and deployables"
-        canonical={window.location.href}
-      />
-
-      <SubNavigation items={devCICDNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           <DevStandardHeader 
@@ -40,13 +34,13 @@ export default function CICDArtifacts() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Filter className="w-4 h-4 mr-2" />
+              <Filter className="w-4 h-4 me-2" />
               Filter
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="registry">Artifact Registry</SplitBarTrigger>
               <SplitBarTrigger value="downloads">Download Links</SplitBarTrigger>
               <SplitBarTrigger value="metadata">Artifact Metadata</SplitBarTrigger>
@@ -77,7 +71,26 @@ export default function CICDArtifacts() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — Build Artifacts" 
+        description="Build artifacts and deployables"
+        canonical={window.location.href}
+      />
+
+      <SubNavigation items={devCICDNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
     </>
   );
 }

@@ -8,9 +8,12 @@ import { NotificationPreview } from "@/components/admin/NotificationPreview";
 import { useTenant } from "@/hooks/useTenant";
 import { useComposeNotification } from "@/hooks/useAdminNotifications";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function NotificationsCompose() {
   // VTID-04675: the admin's own tenant (was a hardcoded all-zero placeholder).
+  const spotlight = useSpotlightEnabled();
   const { activeTenantId } = useTenant();
   const DEFAULT_TENANT_ID = activeTenantId || "";
   const { toast } = useToast();
@@ -59,10 +62,8 @@ export default function NotificationsCompose() {
     }
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="notifications" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           title={t('screens.admin.composeNotification')}
           description={t("notificationControls.pages.compose.description")}
@@ -93,7 +94,19 @@ export default function NotificationsCompose() {
             </div>
           </div>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="notifications" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

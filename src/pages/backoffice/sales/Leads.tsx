@@ -1,6 +1,7 @@
 /** BackOffice › Sales & CRM › Leads (BO-005) — VTID-03855, Read tier: `crm.lead.list` + `crm.lead.get` on selection. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
@@ -19,6 +20,7 @@ import { canConvertLead, isLeadEditable, leadConvertInitial, leadUpdateInitial }
 const CAPS = ["crm.view"] as const;
 
 export default function BackOfficeLeads() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -32,7 +34,7 @@ export default function BackOfficeLeads() {
   const d = detail.data?.result?.lead;
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-005" emoji="🎯" title={t("screens.backoffice.sales.leads.title")} description={t("screens.backoffice.sales.leads.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="lead" />}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-005" emoji="🎯" title={t("screens.backoffice.sales.leads.title")} description={t("screens.backoffice.sales.leads.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="lead" />}>
       <AdminFilterBar
         searchValue={search}
         onSearchChange={setSearch}
@@ -122,6 +124,6 @@ export default function BackOfficeLeads() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

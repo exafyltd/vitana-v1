@@ -28,6 +28,8 @@ import { notifySuccess, notifyError, t } from '@/lib/i18n-toast';
 import { fmtDateTime } from '@/lib/locale-format';
 import { useTenant } from '@/hooks/useTenant';
 import type { EventGame } from '@/hooks/useEventGame';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface LedgerRow {
   id: string;
@@ -57,6 +59,7 @@ const EMPTY: Partial<EventGame> = {
 };
 
 export default function EventGameAdmin() {
+  const spotlight = useSpotlightEnabled();
   const { activeTenantId } = useTenant();
   const [game, setGame] = useState<Partial<EventGame>>(EMPTY);
   const [saving, setSaving] = useState(false);
@@ -150,10 +153,8 @@ export default function EventGameAdmin() {
     }
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="community" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader emoji="🏆" title={t('eventGame.admin.title')} description="" />
 
         <Card className="p-6 space-y-4">
@@ -308,7 +309,19 @@ export default function EventGameAdmin() {
             </Card>
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="community" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

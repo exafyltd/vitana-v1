@@ -23,8 +23,60 @@ import { Bookmark } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Clock, DollarSign, Star, MapPin } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { DiscoverRefreshButton, DiscoverUtilityActions } from "@/components/discover/spotlight/DiscoverUtility";
+import { WellnessServicesPanes } from "@/components/discover/spotlight/DiscoverSectionPanes";
 
 export default function WellnessServices() {
+  // VTID-05109 — Spotlight (desktop + flag) gets the collection layout; phones and flag-off keep the legacy screen.
+  const spotlight = useSpotlightEnabled();
+  return spotlight ? <WellnessServicesSpotlight /> : <WellnessServicesLegacy />;
+}
+
+function WellnessServicesSpotlight() {
+  const [tab, setTab] = useState("categories");
+  const [query, setQuery] = useState("");
+  const [masterActionOpen, setMasterActionOpen] = useState(false);
+  return (
+    <AppLayout>
+      <SEO
+        title={t('screens.discover.wellnessServicesDiscover')}
+        description={t('spotlightDiscover.headers.services')}
+        canonical={window.location.href}
+      />
+      <ScreenFrame
+        archetype="collection"
+        subNav={{ items: discoverNavigation }}
+        header={{ title: t('screens.discover.wellnessServices'), description: t('spotlightDiscover.headers.services'), emoji: "🧘" }}
+        utility={{
+          children: (
+            <DiscoverUtilityActions
+              searchPlaceholder={t('spotlightDiscover.searchSaved')}
+              onSearch={setQuery}
+              onAction={() => setMasterActionOpen(true)}
+            />
+          ),
+          trailingElement: <DiscoverRefreshButton />,
+        }}
+        tabs={{
+          value: tab,
+          onValueChange: setTab,
+          items: [
+            { value: "categories", label: t('screens.discover.allCategories') },
+            { value: "recommended", label: t('screens.discover.recommended') },
+            { value: "bookmarked", label: t('spotlightDiscover.tabs.saved') },
+          ],
+        }}
+      >
+        <WellnessServicesPanes query={query} />
+      </ScreenFrame>
+      <DiscoverBookActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
+    </AppLayout>
+  );
+}
+
+function WellnessServicesLegacy() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);

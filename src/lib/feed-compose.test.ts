@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { FeedItem } from "@/lib/news-feed-ranker";
-import { composeFeed } from "./feed-compose";
+import { composeFeed, withHomeNewCards, HOME_NEW_CARD_CAP, placementOf, splitByPlacement } from "./feed-compose";
 
 const item = (id: string, kind: string) => ({ id, kind, published_at: "2026-10-08T00:00:00Z" }) as unknown as FeedItem;
 const post = (n: number) => item(`post-${n}`, "post");
@@ -72,5 +72,81 @@ describe("composeFeed (VTID-04973)", () => {
     const copy = [...input];
     expect(composeFeed(input, cards).map(label)).toEqual(composeFeed(input, cards).map(label));
     expect(input).toEqual(copy);
+  });
+});
+
+describe("withHomeNewCards (VTID-05085 Home cap)", () => {
+  it("adds at most 3 new cards to Home, in front, and keeps the existing order", () => {
+    const fresh = ["E1", "E2", "E3", "E6", "E7"];
+    const out = withHomeNewCards(fresh, cards);
+    expect(HOME_NEW_CARD_CAP).toBe(3);
+    expect(out).toEqual(["E1", "E2", "E3", ...cards]);
+    expect(out.length - cards.length).toBe(3);
+  });
+
+  it("with the Phase 1 top-2 enrichment cards, they land at feed positions 1 and 3 and the rest keep their slots in order", () => {
+    const vitana = withHomeNewCards(["E1", "E2"], cards);
+    const out = composeFeed([post(1), post(2), post(3), post(4), post(5), post(6), post(7)], vitana);
+    const ids = out.map(label);
+    expect(ids.slice(0, 4)).toEqual(["E1", "post-1", "E2", "post-2"]);
+    const existing = ids.filter((id) => cards.includes(id));
+    expect(existing).toEqual(cards);
+  });
+
+  it("no new cards → the feed is exactly what it was", () => {
+    const ranked = [feat(1), mem(1), post(1), post(2), post(3), post(4), post(5), post(6)];
+    expect(composeFeed(ranked, withHomeNewCards([], cards)).map(label)).toEqual(composeFeed(ranked, cards).map(label));
+  });
+});
+
+const match = (n: number) => item(`match-${n}`, "match");
+const performer = (n: number) => item(`perf-${n}`, "performer");
+
+describe("composeFeed placement (VTID-05108)", () => {
+  it("puts Vitana cards and info-role items in the rail, posts and articles in the stream", () => {
+    const out = composeFeed([feat(1), mem(1), post(1), article(1), post(2)], cards);
+    const byId = Object.fromEntries(out.map((e) => [label(e), e.placement]));
+    expect(byId).toMatchObject({
+      index: "rail",
+      journey: "rail",
+      invite: "rail",
+      match: "rail",
+      "feat-1": "rail",
+      "mem-1": "rail",
+      "post-1": "stream",
+      "article-1": "stream",
+      "post-2": "stream",
+    });
+  });
+
+  it("further feature / new-member / match / performer items left in the stream still go to the rail", () => {
+    const out = composeFeed([feat(1), feat(2), mem(1), mem(2), match(1), performer(1), post(1)], []);
+    const rail = out.filter((e) => e.placement === "rail").map(label);
+    expect(rail.sort()).toEqual(["feat-1", "feat-2", "match-1", "mem-1", "mem-2", "perf-1"]);
+    expect(out.filter((e) => e.placement === "stream").map(label)).toEqual(["post-1"]);
+  });
+
+  it("splitByPlacement keeps composed order inside each part and drops nothing", () => {
+    const ranked = [post(1), feat(1), article(1), mem(1), post(2), post(3)];
+    const out = composeFeed(ranked, cards);
+    const { stream, rail } = splitByPlacement(out);
+    expect(stream.map(label)).toEqual(out.filter((e) => e.placement === "stream").map(label));
+    expect(rail.map(label)).toEqual(out.filter((e) => e.placement === "rail").map(label));
+    expect(stream.length + rail.length).toBe(out.length);
+    expect(stream.map(label)).toEqual(["post-1", "article-1", "post-2", "post-3"]);
+  });
+
+  it("does not change the order the phone / legacy grid renders", () => {
+    const out = composeFeed([post(1), post(2), post(3), post(4)], cards);
+    expect(out.map(label)).toEqual(["index", "post-1", "journey", "post-2", "invite", "post-3", "match", "post-4"]);
+  });
+
+  it("placementOf classifies every feed kind", () => {
+    expect(placementOf(post(1))).toBe("stream");
+    expect(placementOf(article(1))).toBe("stream");
+    expect(placementOf(feat(1))).toBe("rail");
+    expect(placementOf(mem(1))).toBe("rail");
+    expect(placementOf(match(1))).toBe("rail");
+    expect(placementOf(performer(1))).toBe("rail");
   });
 });
