@@ -34,15 +34,50 @@ export interface FileValidationResult {
  * Generate a signed URL for a chat attachment (private bucket)
  */
 export async function getSignedAttachmentUrl(path: string): Promise<string | null> {
-  const { data, error } = await supabase.storage
-    .from('chat-attachments')
-    .createSignedUrl(path, 3600); // 1 hour expiry
-  
-  if (error) {
+  try {
+    const { data, error } = await supabase.storage
+      .from('chat-attachments')
+      .createSignedUrl(path, 3600); // 1 hour expiry
+
+    if (error || !data?.signedUrl) {
+      console.error('Error creating signed URL:', error);
+      return null;
+    }
+    return data.signedUrl;
+  } catch (error) {
+    // VTID-05138: a network failure must read as "could not sign", never
+    // as an unhandled rejection that leaves the bubble waiting forever.
     console.error('Error creating signed URL:', error);
     return null;
   }
-  return data.signedUrl;
+}
+
+/**
+ * VTID-05138 — copy a chat attachment into the forwarder's own folder for
+ * another conversation, so the people in that conversation can read it.
+ *
+ * Read access to the private bucket is decided by the path
+ * (`can_access_chat_attachment`): segment 1 is the uploader, segment 2 the
+ * DM recipient's user id or the group id. A forwarded file therefore needs a
+ * copy at `{me}/{targetThreadId}/{ts}_{rand}.{ext}` — the same shape
+ * `uploadChatAttachment` writes — before it is sent there.
+ */
+export async function copyChatAttachmentForThread(
+  sourcePath: string,
+  userId: string,
+  targetThreadId: string
+): Promise<{ path: string; url: string }> {
+  const lastSegment = sourcePath.split('/').pop() || '';
+  const ext = lastSegment.includes('.') ? lastSegment.split('.').pop() || '' : '';
+  const randomId = Math.random().toString(36).substring(2);
+  const destPath = `${userId}/${targetThreadId}/${Date.now()}_${randomId}${ext ? `.${ext}` : ''}`;
+
+  const { error } = await supabase.storage.from('chat-attachments').copy(sourcePath, destPath);
+  if (error) throw error;
+
+  const url = await getSignedAttachmentUrl(destPath);
+  if (!url) throw new Error('Failed to generate signed URL for copied attachment');
+  return { path: destPath, url };
 }
 
 /**
