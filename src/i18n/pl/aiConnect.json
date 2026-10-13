@@ -14,7 +14,8 @@
       "failed": "Nie udało się. Spróbuj ponownie.",
       "loading": "Ładowanie …",
       "redirecting": "Przekierowujemy cię …",
-      "invalid": "Ta prośba wygasła lub jest nieprawidłowa. Rozpocznij łączenie ponownie w swoim asystencie AI."
+      "invalid": "Ta prośba wygasła lub jest nieprawidłowa. Rozpocznij łączenie ponownie w swoim asystencie AI.",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "Twój profil",
@@ -25,7 +26,8 @@
       "peopleDesc": "Członkowie, którzy zgodzili się, by asystenci AI mogli ich znaleźć",
       "activities": "Aktywności",
       "activitiesDesc": "Nadchodzące wydarzenia i spotkania społeczności",
-      "commerce": "Narzędzia dla dostawców (Vitanaland Commerce)"
+      "commerce": "Narzędzia dla dostawców (Vitanaland Commerce)",
+      "_pending_review": {}
     },
     "settings": {
       "title": "Połączona AI",
@@ -49,7 +51,10 @@
       "loadFailed": "Nie udało się wczytać połączonych asystentów.",
       "findableTitle": "Pozwól asystentom AI innych członków mnie znaleźć",
       "findableDesc": "Gdy włączone, członkowie z połączonym ChatGPT lub Claude mogą zobaczyć twoje imię, zdjęcie, publiczne miasto i zainteresowania. Domyślnie wyłączone.",
-      "unknownClient": "Asystent AI"
-    }
-  }
+      "unknownClient": "Asystent AI",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

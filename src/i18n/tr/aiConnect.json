@@ -14,7 +14,8 @@
       "failed": "Olmadı. Lütfen tekrar dene.",
       "loading": "Yükleniyor …",
       "redirecting": "Yönlendiriliyorsun …",
-      "invalid": "Bu istek süresi dolmuş veya geçersiz. Bağlantıyı yapay zekâ asistanında yeniden başlat."
+      "invalid": "Bu istek süresi dolmuş veya geçersiz. Bağlantıyı yapay zekâ asistanında yeniden başlat.",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "Profilin",
@@ -25,7 +26,8 @@
       "peopleDesc": "Yapay zekâ asistanlarının kendilerini bulmasına izin veren üyeler",
       "activities": "Etkinlikler",
       "activitiesDesc": "Topluluğun yaklaşan etkinlikleri ve buluşmaları",
-      "commerce": "Tedarikçi araçları (Vitanaland Commerce)"
+      "commerce": "Tedarikçi araçları (Vitanaland Commerce)",
+      "_pending_review": {}
     },
     "settings": {
       "title": "Bağlı yapay zekâ",
@@ -49,7 +51,10 @@
       "loadFailed": "Bağlı asistanların yüklenemedi.",
       "findableTitle": "Diğer üyelerin yapay zekâ asistanları beni bulabilsin",
       "findableDesc": "Açıkken ChatGPT veya Claude bağlamış üyeler adını, fotoğrafını, herkese açık şehrini ve ilgi alanlarını görebilir. Varsayılan olarak kapalı.",
-      "unknownClient": "Bir yapay zekâ asistanı"
-    }
-  }
+      "unknownClient": "Bir yapay zekâ asistanı",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
