@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05133",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: Settings → Connected apps shows the Connected AI section with a demo connected assistant, the 'find me' switch off, and the ChatGPT steps with the /mcp/community/chatgpt address; a stale authorization on the consent page shows the invalid state. Grants, privacy row and connector metadata answered in the browser; no switch flipped, nothing disconnected; read-only",
+      "spec": "tests/e2e/staging/vtid-05133-connected-ai.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/ai-connect/ai-connect.vtid-05133.test.tsx src/components/commerce/connect-authorize.vtid-04970.test.ts",
+      "reason": "approving, cancelling, changing categories, disconnecting and the 'find me' switch all write, so they are proven in CI: grant recorded before Supabase approval (fail closed), cancel records nothing, the RPCs Settings calls, the member's own privacy row, and the aiConnect copy in every locale"
+    }
+  ]
+}

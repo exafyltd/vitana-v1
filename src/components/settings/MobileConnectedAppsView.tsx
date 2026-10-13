@@ -64,6 +64,7 @@ import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { XIcon } from "@/components/icons/XIcon";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { ConnectedAiSection } from '@/components/ai-connect/ConnectedAiSection';
 
 type SocialPlatform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -399,6 +400,13 @@ export function MobileConnectedAppsView() {
           connectedCount={connected}
           syncingCount={syncing}
         />
+
+        {/* VTID-05133: Connected AI — a member's ChatGPT / Claude reads their Maxina community */}
+        {(activeCategory === 'all' || activeCategory === 'ai') && (
+          <div className="mb-3">
+            <ConnectedAiSection />
+          </div>
+        )}
 
         {/* Integration Sections */}
         <div className="space-y-3">

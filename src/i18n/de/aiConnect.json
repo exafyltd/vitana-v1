@@ -1,0 +1,55 @@
+{
+  "aiConnect": {
+    "consent": {
+      "title": "{client} mit deinem Maxina-Konto verbinden",
+      "lead": "{client} möchte dein Maxina-Konto nutzen. Wähle, was es sehen darf. Du kannst das jederzeit in Maxina ändern oder entfernen.",
+      "signedInAs": "Angemeldet als {email}",
+      "chooseTitle": "{client} darf:",
+      "readOnly": "Nur lesen: Dein Assistent kann nichts posten, keine Nachrichten senden und nichts ändern.",
+      "notShared": "Nie geteilt: Gesundheitsdaten, Vitana Index, Tagebuch, Erinnerungen und private Nachrichten.",
+      "redirectsTo": "Nach deiner Zustimmung geht es zurück zu {host}.",
+      "noneSelected": "Wähle mindestens einen Bereich aus.",
+      "approve": "Erlauben",
+      "deny": "Abbrechen",
+      "failed": "Das hat nicht geklappt. Bitte versuche es noch einmal.",
+      "loading": "Wird geladen …",
+      "redirecting": "Du wirst weitergeleitet …",
+      "invalid": "Diese Anfrage ist abgelaufen oder ungültig. Starte die Verbindung in deinem KI-Assistenten neu."
+    },
+    "categories": {
+      "profile": "Dein Profil",
+      "profileDesc": "Dein Name, deine Stadt, deine Interessen und Ziele",
+      "matches": "Deine Matches",
+      "matchesDesc": "Die Menschen, die Maxina dir zum Kennenlernen empfiehlt",
+      "people": "Menschen finden",
+      "peopleDesc": "Mitglieder, die sich für KI-Assistenten auffindbar gemacht haben",
+      "activities": "Aktivitäten",
+      "activitiesDesc": "Kommende Events und Treffen in der Community",
+      "commerce": "Anbieter-Tools (Vitanaland Commerce)"
+    },
+    "settings": {
+      "title": "Verbundene KI",
+      "lead": "Hol dir ChatGPT oder Claude in deine Maxina-Community. Dein Assistent liest nur, was du erlaubst.",
+      "connectChatgpt": "ChatGPT verbinden",
+      "connectClaude": "Claude verbinden",
+      "howTitle": "{assistant} in drei Schritten verbinden",
+      "step1Claude": "Öffne in Claude: Einstellungen → Konnektoren → Eigenen Konnektor hinzufügen.",
+      "step1Chatgpt": "Öffne in ChatGPT: Einstellungen → Apps & Konnektoren → Erstellen.",
+      "step2": "Füge diese Adresse ein:",
+      "step3": "Melde dich mit deinem Maxina-Konto an und wähle, was dein Assistent sehen darf.",
+      "copy": "Kopieren",
+      "copied": "Kopiert",
+      "close": "Schließen",
+      "empty": "Noch kein KI-Assistent verbunden.",
+      "connectedSince": "Verbunden seit {date}",
+      "disconnect": "Trennen",
+      "disconnected": "Getrennt",
+      "disconnectedNote": "Getrennt: Dieser Assistent kann Maxina nicht mehr nutzen. Du kannst ihn auch in ChatGPT oder Claude entfernen.",
+      "saveFailed": "Konnte nicht gespeichert werden. Bitte versuche es noch einmal.",
+      "loadFailed": "Deine verbundenen Assistenten konnten nicht geladen werden.",
+      "findableTitle": "Für die KI-Assistenten anderer Mitglieder auffindbar sein",
+      "findableDesc": "Wenn aktiv, können Mitglieder mit verbundenem ChatGPT oder Claude deinen Namen, dein Profilbild, deine öffentliche Stadt und deine Interessen sehen. Standardmäßig aus.",
+      "unknownClient": "Ein KI-Assistent"
+    }
+  }
+}

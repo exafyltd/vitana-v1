@@ -1,0 +1,55 @@
+{
+  "aiConnect": {
+    "consent": {
+      "title": "Połącz {client} ze swoim kontem Maxina",
+      "lead": "{client} chce korzystać z twojego konta Maxina. Wybierz, co może widzieć. Możesz to w każdej chwili zmienić lub usunąć w Maxinie.",
+      "signedInAs": "Zalogowano jako {email}",
+      "chooseTitle": "{client} może:",
+      "readOnly": "Tylko odczyt: twój asystent nie może publikować, wysyłać wiadomości ani niczego zmieniać.",
+      "notShared": "Nigdy nie udostępniamy: danych zdrowotnych, Vitana Index, dziennika, wspomnień i prywatnych wiadomości.",
+      "redirectsTo": "Po zgodzie wrócisz do {host}.",
+      "noneSelected": "Wybierz co najmniej jeden obszar.",
+      "approve": "Zezwól",
+      "deny": "Anuluj",
+      "failed": "Nie udało się. Spróbuj ponownie.",
+      "loading": "Ładowanie …",
+      "redirecting": "Przekierowujemy cię …",
+      "invalid": "Ta prośba wygasła lub jest nieprawidłowa. Rozpocznij łączenie ponownie w swoim asystencie AI."
+    },
+    "categories": {
+      "profile": "Twój profil",
+      "profileDesc": "Twoje imię, miasto, zainteresowania i cele",
+      "matches": "Twoje dopasowania",
+      "matchesDesc": "Osoby, które Maxina poleca ci poznać",
+      "people": "Znajdź ludzi",
+      "peopleDesc": "Członkowie, którzy zgodzili się, by asystenci AI mogli ich znaleźć",
+      "activities": "Aktywności",
+      "activitiesDesc": "Nadchodzące wydarzenia i spotkania społeczności",
+      "commerce": "Narzędzia dla dostawców (Vitanaland Commerce)"
+    },
+    "settings": {
+      "title": "Połączona AI",
+      "lead": "Wprowadź ChatGPT lub Claude do swojej społeczności Maxina. Twój asystent czyta tylko to, na co pozwolisz.",
+      "connectChatgpt": "Połącz ChatGPT",
+      "connectClaude": "Połącz Claude",
+      "howTitle": "Połącz {assistant} w trzech krokach",
+      "step1Claude": "W Claude otwórz Ustawienia → Konektory → Dodaj własny konektor.",
+      "step1Chatgpt": "W ChatGPT otwórz Ustawienia → Aplikacje i konektory → Utwórz.",
+      "step2": "Wklej ten adres:",
+      "step3": "Zaloguj się kontem Maxina i wybierz, co twój asystent może widzieć.",
+      "copy": "Kopiuj",
+      "copied": "Skopiowano",
+      "close": "Zamknij",
+      "empty": "Nie połączono jeszcze żadnego asystenta AI.",
+      "connectedSince": "Połączono {date}",
+      "disconnect": "Rozłącz",
+      "disconnected": "Rozłączono",
+      "disconnectedNote": "Rozłączono: ten asystent nie może już korzystać z Maxiny. Możesz go też usunąć w ChatGPT lub Claude.",
+      "saveFailed": "Nie udało się zapisać. Spróbuj ponownie.",
+      "loadFailed": "Nie udało się wczytać połączonych asystentów.",
+      "findableTitle": "Pozwól asystentom AI innych członków mnie znaleźć",
+      "findableDesc": "Gdy włączone, członkowie z połączonym ChatGPT lub Claude mogą zobaczyć twoje imię, zdjęcie, publiczne miasto i zainteresowania. Domyślnie wyłączone.",
+      "unknownClient": "Asystent AI"
+    }
+  }
+}
