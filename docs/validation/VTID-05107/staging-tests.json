@@ -11,7 +11,7 @@
     {
       "kind": "existing",
       "name": "six design/* ESLint rules (valid + invalid fixtures, escape hatch with/without reason), screen manifest covers every App.tsx route with a valid archetype, ratchet-design compares against the base commit (a raised count fails even when the PR edits the baseline; only eslint-rules/design changes use the head baseline), Kiro steering twin for .claude/rules/design.md",
-      "ref": "npx vitest run src/design && node --test scripts/ci/pr-gate/__tests__/*.test.mjs && node scripts/ci/kiro-steering/guard.cjs .",
+      "ref": "npm run test:design-contract",
       "cwd": ".",
       "reason": "Lint rules, the manifest and the PR-GATE ratchet are build-time machinery with no runtime surface; staging only renders the semantic colour tokens, which no screen uses until Phase 2."
     }
