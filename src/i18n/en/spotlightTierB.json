@@ -3,7 +3,8 @@
     "common": {
       "errorTitle": "This couldn't be loaded right now",
       "errorDesc": "Please try again in a moment.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "_pending_review": {}
     },
     "health": {
       "description": "Discover health services, programs and knowledge for your wellness journey.",
@@ -27,17 +28,20 @@
         "cancer": "Cancer screening",
         "hormones": "Hormones",
         "imaging": "Imaging",
-        "other": "Other"
+        "other": "Other",
+        "_pending_review": {}
       },
       "reportStatus": {
         "uploaded": "Uploaded",
         "processing": "Processing",
         "parsed": "Analyzed",
-        "failed": "Failed"
+        "failed": "Failed",
+        "_pending_review": {}
       },
       "categoryCount": "{category} ({count})",
       "noSupplementsInCategory": "No supplements in this category",
-      "indexDescription": "Your one number for longevity across all five pillars."
+      "indexDescription": "Your one number for longevity across all five pillars.",
+      "_pending_review": {}
     },
     "wallet": {
       "description": "Your digital account for health rewards and benefits.",
@@ -55,32 +59,38 @@
         "purchase": "Purchase",
         "withdrawal": "Withdrawal",
         "stake": "Staking",
-        "reseller_commission": "Sell & earn commission"
+        "reseller_commission": "Sell & earn commission",
+        "_pending_review": {}
       },
       "txStatus": {
         "pending": "Pending",
         "completed": "Completed",
         "failed": "Failed",
-        "cancelled": "Cancelled"
+        "cancelled": "Cancelled",
+        "_pending_review": {}
       },
       "balanceDescription": "Manage your credits, tokens and membership benefits.",
       "creditsAmount": "{amount} credits",
       "vtnaAmount": "{amount} VTNA",
-      "usdAmount": "${amount}"
+      "usdAmount": "${amount}",
+      "_pending_review": {}
     },
     "ai": {
       "overviewDescription": "Your personal AI insights and recommendations for your wellbeing.",
       "assistantDescription": "Set up your personal AI assistant here.",
-      "assistantTabAi": "AI"
+      "assistantTabAi": "AI",
+      "_pending_review": {}
     },
     "settings": {
       "connectorsDescription": "Connect your apps and services and keep an eye on your integrations.",
       "limitationsDescription": "These fixed rules apply to every product recommendation. Allergies, medical contraindications and medication interactions are never overridden.",
-      "tenantRoleDescription": "Manage your context and permissions."
+      "tenantRoleDescription": "Manage your context and permissions.",
+      "_pending_review": {}
     },
     "calendar": {
       "description": "Your day, week and month at a glance.",
-      "viewsAria": "Calendar view"
+      "viewsAria": "Calendar view",
+      "_pending_review": {}
     },
     "intents": {
       "filtersAria": "Filter by kind",
@@ -89,7 +99,8 @@
       "emptyDance": "No open dance posts yet. Post yours and be the first.",
       "kindPartner": "Partner",
       "matchTitle": "Your intent",
-      "matchDescription": "Your intent and its matches."
+      "matchDescription": "Your intent and its matches.",
+      "_pending_review": {}
     },
     "sharing": {
       "description": "Share your content across channels and manage what data you share.",
@@ -97,7 +108,10 @@
       "bulkActions": "Bulk actions",
       "exitBulkMode": "Exit bulk mode",
       "consentDescription": "Control who can access your data and manage permissions.",
-      "campaignDetailDescription": "Details, posts and status of your campaign."
-    }
-  }
+      "campaignDetailDescription": "Details, posts and status of your campaign.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
