@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Timeline – Vitana",
       "title": "Your timeline",
-      "description": "Your Vitana Index and everything that moves it – day by day."
+      "description": "Your Vitana Index and everything that moves it – day by day.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "All",
       "more": "More",
       "pillarsLabel": "Filter by pillar",
       "categoriesLabel": "Filter by area",
-      "clear": "Clear filters"
+      "clear": "Clear filters",
+      "_pending_review": {}
     },
     "day": {
       "today": "Today",
-      "yesterday": "Yesterday"
+      "yesterday": "Yesterday",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Your five pillars",
       "improve": "Strengthen {pillar}",
       "empty": "You don't have a Vitana Index yet.",
-      "start": "Start now"
+      "start": "Start now",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Your pillars are in balance – full score.",
-      "held_back": "{pillar} is holding your balance back (−{pct}%)."
+      "held_back": "{pillar} is holding your balance back (−{pct}%).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "rising",
       "steady": "steady",
-      "slipping": "slipping"
+      "slipping": "slipping",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Counts for {pillar}"
+      "counted": "Counts for {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} h",
       "minutes": "{n} min",
       "days": "{n} days",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "by voice",
       "manual": "manually",
-      "diary": "from your diary"
+      "diary": "from your diary",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Your Vitana Index rose to {score} ({delta})",
       "fell": "Your Vitana Index fell to {score} ({delta})",
       "changed": "Your Vitana Index changed ({delta})",
-      "dailyUpdate": "Daily update"
+      "dailyUpdate": "Daily update",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Your day: {n} little things"
+      "title": "Your day: {n} little things",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Loading …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana uses this entry for better suggestions.",
       "learnOff": "Hidden from Vitana – you still see it here.",
       "open": "Open",
-      "delete": "Delete"
+      "delete": "Delete",
+      "_pending_review": {}
     },
     "delete": {
       "title": "Delete entry?",
       "description": "The entry disappears from your timeline and Vitana stops using it. This can't be undone.",
       "cancel": "Cancel",
-      "confirm": "Delete"
+      "confirm": "Delete",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Entry deleted",
       "deleteFailed": "Couldn't delete",
-      "hideFailed": "That didn't work. Please try again."
+      "hideFailed": "That didn't work. Please try again.",
+      "_pending_review": {}
     },
     "transparency": "Vitana learns from your entries to support you better.",
     "transparencyLink": "Manage settings",
@@ -171,7 +185,8 @@
       "consent_changed": "You changed a consent",
       "data_export": "You requested a data export",
       "settings_other": "Settings changed",
-      "notification_opened": "Notifications opened"
+      "notification_opened": "Notifications opened",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Wallet",
       "account": "Account & privacy",
       "app_usage": "App usage",
-      "system": "System"
+      "system": "System",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },
