@@ -1,0 +1,21 @@
+{
+  "native": {
+    "unported": {
+      "title": "Not in the app yet",
+      "body": "This area isn't available in the app yet. We're working on it – until then, you can use it in the web version."
+    },
+    "adminInBrowser": {
+      "title": "Admin in the browser",
+      "body": "You use this area in the browser, not in the app. No web address is set up for it in this version yet."
+    },
+    "configMissing": {
+      "title": "Configuration missing",
+      "body": "This app version is missing settings it needs to start. The missing values are listed below."
+    },
+    "a11y": {
+      "unread": "{count} unread messages",
+      "openNotifications": "Open notifications, {count} unread",
+      "openCart": "Open cart, {count} items"
+    }
+  }
+}

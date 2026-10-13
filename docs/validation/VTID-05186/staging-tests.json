@@ -1,0 +1,33 @@
+{
+  "vtid": "VTID-05186",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "native shard shipped: signed out at 390x844, /maxina in de and in ar — the app's loaded i18n catalog (entry-chunk `catalogs` export; fallbacks the exported `de` catalog / the fetched locale-ar chunk) holds a parseable `native` namespace with exactly the 9 expected keys, every value a non-empty string, {count} kept in the 3 a11y labels, ar differs from de; html[dir] is ltr for de and rtl for ar. No sign-in, nothing clicked, language set in browser localStorage only; read-only",
+      "spec": "tests/e2e/staging/vtid-05186-native-shard.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "every shipping locale's native.* keys are stamped against their current source (no language left behind)",
+      "ref": "npm run i18n:stale",
+      "cwd": ".",
+      "reason": "The 9 native.* keys were written in all 11 locales in this PR (DE first, EN mirror, 9 translations) and stamped against their current source; the freshness gate proves no locale is stale relative to DE/EN, which the staging bundle check cannot see."
+    },
+    {
+      "kind": "existing",
+      "name": "informal register in every locale (du / tú / tu / ti / ты / ty / sen / 你 / você)",
+      "ref": "npm run i18n:register",
+      "cwd": ".",
+      "reason": "Brand voice is informal in every language; the register guard checks the new native.* values against the German source, which a rendered-bundle check cannot judge."
+    },
+    {
+      "kind": "existing",
+      "name": "locale registration round trip (every locale directory is registered in the loader)",
+      "ref": "npx vitest run src/i18n",
+      "cwd": ".",
+      "reason": "The new shard is picked up by the existing import.meta.glob loaders; the registration guard proves all 11 locales stay registered so native.json is composed into every catalog."
+    }
+  ]
+}

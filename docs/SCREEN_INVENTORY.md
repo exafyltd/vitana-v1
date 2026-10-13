@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 387
+- **Pages scanned:** 388
 - **Distinct i18n keys consumed:** 4761
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -15,6 +15,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 ---
 
 ## __tests__/
+
+### src/pages/__tests__/gateway-prefix.vtid-05155.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx
 
