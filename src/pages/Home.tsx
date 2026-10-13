@@ -61,6 +61,15 @@ import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t, useI18nLocale } from '@/lib/i18n-toast';
 import { NewsKeepAliveSlot, registerNewsScrollKeeper, useNewsActive } from "@/components/keepalive/NewsKeepAlive";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { prefersReducedMotion } from "@/components/layout/spotlight/useFocusedCard";
+import { NewsFocusStage } from "@/components/home/desktop/NewsFocusStage";
+import { NewsFocusRail, type UpNextPreview } from "@/components/home/desktop/NewsFocusRail";
+import { FocusArticleCard, FocusPostCard } from "@/components/home/desktop/FocusStageCard";
+import { timeAgo, type StageCardState } from "@/components/home/desktop/focusCardUtils";
+import { modelFromArticles, modelFromFeed, upNextOf, type StageItem } from "@/components/home/desktop/focusFeedModel";
+import { reasonKeyFor } from "@/lib/news-feed-ranker";
 
 import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterTab = "all" | "longevity" | "community";
@@ -92,6 +101,10 @@ export const HomeContent = memo(function HomeContent() {
   useI18nLocale();
   // VTID-05081: false while News is kept alive behind another tab.
   const active = useNewsActive();
+  // VTID-05108: desktop Spotlight focus feed (tenant flag desktop_spotlight or
+  // ?spotlight=1). Always false on phones; when false nothing below changes.
+  const spotlight = useSpotlightEnabled();
+  const [focusedIndex, setFocusedIndex] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab") as FilterTab | null;
   const [activeTab, setActiveTabState] = useState<FilterTab>(
@@ -648,6 +661,61 @@ export const HomeContent = memo(function HomeContent() {
     );
   };
 
+  const popups = (
+    <>
+      {active && (isMobile ? (
+        <MobileCreatePostSheet open={createPostOpen} onOpenChange={setCreatePostOpen} />
+      ) : (
+        <CreateContentPopup
+          isOpen={createPostOpen}
+          initialContent={composeDraft}
+          onClose={() => { setCreatePostOpen(false); setComposeDraft(undefined); }}
+        />
+      ))}
+      {active && <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />}
+    </>
+  );
+
+  if (spotlight) {
+    return (
+      <>
+        {active && <SEO title={t('screens.home.newsMaxina')} description={t('spotlightFeed.header.description')} canonical={window.location.href} />}
+        <NewsSpotlight
+          active={active}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          feedV2={feedV2}
+          feedItems={feedItems}
+          articles={visibleArticles}
+          isLoading={activeTab === "all" && feedV2 ? isLoadingFeedV2 : isLoading}
+          isFetchingMore={activeTab === "all" && feedV2 ? isFetchingNextV2 : isFetchingNextPage}
+          hasMore={activeTab === "all" && feedV2 ? !!hasNextV2 : activeTab !== "community" && !!hasNextPage}
+          showEnd={activeTab !== "community"}
+          onLoadMore={() => {
+            if (activeTab === "all" && feedV2) {
+              if (hasNextV2 && !isFetchingNextV2) fetchNextV2();
+            } else if (hasNextPage && !isFetchingNextPage && activeTab !== "community") {
+              fetchNextPage();
+            }
+          }}
+          onRefresh={handleRefresh}
+          onSearch={setSearchQuery}
+          onCreatePost={() => setCreatePostOpen(true)}
+          onInvite={() => void shareInvite()}
+          focusedIndex={focusedIndex}
+          onFocusChange={setFocusedIndex}
+          commentsDeepLinkActive={commentsDeepLinkActive}
+          onFeedItemOpen={handleFeedItemOpen}
+          onFeedArticleClick={handleFeedArticleClick}
+          onNewsArticleClick={handleArticleClick}
+          getCardImages={getCardImages}
+          formatTimestamp={formatTimestamp}
+        />
+        {popups}
+      </>
+    );
+  }
+
   return (
     <>
       {/* VTID-05081: only the visible screen sets the title. */}
@@ -727,3 +795,225 @@ export const HomeContent = memo(function HomeContent() {
     </>
   );
 });
+
+/**
+ * VTID-05108 — the News screen on desktop with Spotlight on: one focused
+ * column of cards (one `spotlight` lead, `standard` rows after it) and the
+ * context rail beside it (up next, today, your journey, people to meet, good
+ * to know). Chrome comes only from ScreenFrame (contract SR-02/SR-03); the
+ * info cards that sit inside the phone feed live in the rail here (R4.4).
+ */
+interface NewsSpotlightProps {
+  active: boolean;
+  activeTab: FilterTab;
+  onTabChange: (tab: FilterTab) => void;
+  feedV2: boolean;
+  feedItems: FeedItem[];
+  articles: NewsArticle[];
+  isLoading: boolean;
+  isFetchingMore: boolean;
+  hasMore: boolean;
+  showEnd: boolean;
+  onLoadMore: () => void;
+  onRefresh: () => void;
+  onSearch: (query: string) => void;
+  onCreatePost: () => void;
+  onInvite: () => void;
+  focusedIndex: number;
+  onFocusChange: (index: number) => void;
+  commentsDeepLinkActive: boolean;
+  onFeedItemOpen: (item: FeedItem) => void;
+  onFeedArticleClick: (article: ArticleFeedItem) => void;
+  onNewsArticleClick: (article: NewsArticle) => void;
+  getCardImages: (article: NewsArticle) => { primary: string; fallback: string };
+  formatTimestamp: (iso: string) => string;
+}
+
+function NewsSpotlight({
+  active,
+  activeTab,
+  onTabChange,
+  feedV2,
+  feedItems,
+  articles,
+  isLoading,
+  isFetchingMore,
+  hasMore,
+  showEnd,
+  onLoadMore,
+  onRefresh,
+  onSearch,
+  onCreatePost,
+  onInvite,
+  focusedIndex,
+  onFocusChange,
+  commentsDeepLinkActive,
+  onFeedItemOpen,
+  onFeedArticleClick,
+  onNewsArticleClick,
+  getCardImages,
+  formatTimestamp,
+}: NewsSpotlightProps) {
+  const navigate = useNavigate();
+  const unified = activeTab === "all" && feedV2;
+  const model = useMemo(
+    () => (unified ? modelFromFeed(feedItems) : modelFromArticles(articles)),
+    [unified, feedItems, articles],
+  );
+
+  // A new tab starts at its first card.
+  useEffect(() => {
+    onFocusChange(0);
+  }, [activeTab, onFocusChange]);
+
+  const firstCommentableId = commentsDeepLinkActive
+    ? model.stage.find((s) => s.type === "post")?.key
+    : undefined;
+
+  const articleFallback = (item: ArticleFeedItem) =>
+    getNewsImage(item.tags, item.id, item.title, item.summary || undefined);
+
+  const renderItem = (s: StageItem, state: StageCardState) => {
+    if (s.type === "post") {
+      return (
+        <FocusPostCard
+          {...state}
+          item={s.item}
+          onOpen={onFeedItemOpen}
+          onOpenProfile={(userId) => navigate(`/u/${userId}`)}
+          autoOpenComments={s.key === firstCommentableId}
+        />
+      );
+    }
+    if (s.type === "article") {
+      const fallback = articleFallback(s.item);
+      return (
+        <FocusArticleCard
+          {...state}
+          focusKey={s.key}
+          eyebrow={t(reasonKeyFor(s.item))}
+          title={s.item.title}
+          meta={[s.item.source_name, timeAgo(s.item.published_at)].filter(Boolean).join(" · ")}
+          summary={s.item.summary}
+          image={s.item.image_url || fallback}
+          fallbackImage={fallback}
+          onOpen={() => onFeedArticleClick(s.item)}
+        />
+      );
+    }
+    const { primary, fallback } = getCardImages(s.article);
+    return (
+      <FocusArticleCard
+        {...state}
+        focusKey={s.key}
+        eyebrow={s.article.source === "community" ? t("screens.home.community") : t("screens.home.longevity")}
+        title={s.article.title}
+        meta={[s.article.source_name, formatTimestamp(s.article.published_at)].filter(Boolean).join(" · ")}
+        summary={s.article.summary}
+        image={primary}
+        fallbackImage={fallback}
+        onOpen={() => onNewsArticleClick(s.article)}
+      />
+    );
+  };
+
+  const previewOf = (s: StageItem): UpNextPreview => {
+    if (s.type === "post") {
+      const first = s.item.content.split("\n").map((l) => l.trim()).find(Boolean);
+      return { key: s.key, title: first || s.item.author_name, meta: s.item.author_name, image: s.item.image_url };
+    }
+    if (s.type === "article") {
+      return { key: s.key, title: s.item.title, meta: s.item.source_name, image: s.item.image_url || articleFallback(s.item) };
+    }
+    return { key: s.key, title: s.article.title, meta: s.article.source_name, image: getCardImages(s.article).primary };
+  };
+
+  const selectUpNext = (key: string) => {
+    const i = model.stage.findIndex((s) => s.key === key);
+    if (i < 0) return;
+    onFocusChange(i);
+    const el = Array.from(document.querySelectorAll<HTMLElement>("[data-focus-key]")).find((n) => n.dataset.focusKey === key);
+    el?.scrollIntoView?.({ block: "center", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
+      <ScreenFrame
+        archetype="focus-feed"
+        header={{ title: t("screens.home.news"), description: t("spotlightFeed.header.description"), emoji: "📰" }}
+        utility={{
+          children: (
+            <div className="flex min-w-max items-center gap-1">
+              <ExpandableSearchButton compact placeholder={t("screens.home.searchNewsTopicsSources")} onSearch={onSearch} />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="shrink-0 rounded-full"
+                onClick={onInvite}
+                title={t("screens.downloadFlyer.inviteCardCta")}
+                aria-label={t("screens.downloadFlyer.inviteCardCta")}
+              >
+                <UserPlus className="h-4 w-4" />
+              </Button>
+              <UniversalCalendarButton showText className="!px-2" overlayEnabled={active} />
+              <Button onClick={onCreatePost} size="sm" className="h-9 shrink-0 gap-1.5 rounded-full px-3">
+                <Plus className="h-4 w-4" />
+                <span className="text-sm">{t("screens.home.createPost")}</span>
+              </Button>
+            </div>
+          ),
+          trailingElement: (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={onRefresh}
+              title={t("screens.home.refreshNews")}
+              aria-label={t("screens.home.refreshNews")}
+              disabled={isLoading}
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          ),
+        }}
+        tabs={{
+          value: activeTab,
+          onValueChange: (v) => onTabChange(v as FilterTab),
+          ariaLabel: t("spotlightFeed.tabs.ariaLabel"),
+          items: [
+            { value: "all", label: t("screens.home.all") },
+            { value: "longevity", label: t("screens.home.longevity") },
+            { value: "community", label: t("screens.home.community") },
+          ],
+        }}
+        railLabel={t("spotlightFeed.rail.label")}
+        rail={
+          <NewsFocusRail
+            upNext={upNextOf(model.stage, focusedIndex).map(previewOf)}
+            onSelectUpNext={selectUpNext}
+            people={model.people}
+            features={model.features}
+            onItemOpen={onFeedItemOpen}
+          />
+        }
+      >
+        <SplitBarContent value={activeTab} className="mt-0">
+          <NewsFocusStage
+            key={activeTab}
+            items={model.stage}
+            renderItem={renderItem}
+            focusedIndex={focusedIndex}
+            onFocusChange={onFocusChange}
+            active={active}
+            isLoading={isLoading}
+            isFetchingMore={isFetchingMore}
+            hasMore={hasMore}
+            showEnd={showEnd}
+            onLoadMore={onLoadMore}
+            onRefresh={onRefresh}
+          />
+        </SplitBarContent>
+      </ScreenFrame>
+    </div>
+  );
+}

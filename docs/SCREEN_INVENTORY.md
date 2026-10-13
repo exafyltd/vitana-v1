@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 377
+- **Pages scanned:** 378
 - **Distinct i18n keys consumed:** 4754
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -268,6 +268,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `health` — used: 11, total in shard: 58, **MISSING:** health.pillars.${key}, health.subtitle, health.searchPlaceholder, health.upload
 - `screens` — used: 11, total in shard: 11778
+
+### src/pages/Home.spotlight.vtid-05108.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/Home.tsx
 
