@@ -77,6 +77,23 @@ jobs:
           node --test scripts/ci/kiro-steering/guard.test.cjs
           node scripts/ci/kiro-steering/guard.cjs .
 
+      # VTID-05145: Claude Code ↔ Kiro handoff/lane files, state transitions and session/lane trailers.
+      # The one copy of the script lives in vitana-platform (scripts/collab/queue.mjs), fetched like
+      # staging-guard.ts below. Report-only until 2026-10-20: not in the Verdict OUTCOMES yet.
+      - name: Collab handoff
+        id: collab
+        continue-on-error: true
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: |
+          if ! gh api -H 'Accept: application/vnd.github.raw' \
+              "repos/exafyltd/vitana-platform/contents/scripts/collab/queue.mjs?ref=main" > "$RUNNER_TEMP/queue.mjs"; then
+            echo "➖ **collab handoff** — skipped: could not fetch scripts/collab/queue.mjs from vitana-platform" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node "$RUNNER_TEMP/queue.mjs" validate --repo . --base "$BASE" --head "$HEAD" --branch "$HEAD_REF" --summary "$GITHUB_STEP_SUMMARY"
+
       - name: Scope guard
         id: scope
         continue-on-error: true
