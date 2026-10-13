@@ -7643,6 +7643,100 @@
       "partnerLabsGrantSuccess": "Acesso concedido — a Vitana agora pode discutir seus resultados do DoctorBox com você.",
       "partnerLabsRevokeSuccess": "Acesso revogado.",
       "partnerLabsError": "Algo deu errado. Por favor, tente novamente.",
+      "healthConsentUi": {
+        "statusGranted": "Concedido em {date}",
+        "statusActive": "Concedido",
+        "statusNotGranted": "Não concedido",
+        "loading": "Carregando …",
+        "storePending": "Os consentimentos de saúde estão sendo configurados. Em breve você poderá concedê-los aqui. Você pode revogar os consentimentos existentes a qualquer momento.",
+        "storePendingShort": "Em configuração.",
+        "draftPending": "Em breve: estamos finalizando o texto do consentimento. Até lá, isto fica desativado.",
+        "draftPendingShort": "Em breve.",
+        "unavailable": "Não foi possível carregar seus consentimentos agora. Tente novamente mais tarde.",
+        "unavailableShort": "Indisponível no momento.",
+        "dialogDescription": "A decisão é sua. Sem o seu consentimento, isto fica desativado.",
+        "activeBody": "Você deu este consentimento. Você pode revogá-lo a qualquer momento.",
+        "grant": "Dar consentimento",
+        "revoke": "Revogar",
+        "allow": "Permitir",
+        "cancel": "Cancelar",
+        "close": "Fechar",
+        "revokeConfirmTitle": "Revogar o consentimento?",
+        "revokeConfirmBody": "A partir de agora, nenhum dado novo será processado com base nisso. Os dados já compartilhados não são excluídos por isso.",
+        "revokeConfirmAction": "Sim, revogar",
+        "grantedToast": "Obrigado! Seu consentimento foi salvo.",
+        "revokedToast": "Seu consentimento foi revogado.",
+        "versionLabel": "Versão do texto {version}",
+        "displayedInFallback": "Este texto de consentimento ainda não está disponível no seu idioma, por isso é exibido em outro idioma.",
+        "manageSources": "Gerenciar",
+        "manageSourcesTitle": "Fontes conectadas",
+        "manageSourcesDescription": "Decida para cada laboratório parceiro e cada dispositivo se seus dados de saúde podem ser enviados à Vitana.",
+        "manageSourcesRowDescription": "Consentimentos por laboratório parceiro e dispositivo",
+        "partnersHeading": "Laboratórios parceiros",
+        "devicesHeading": "Dispositivos e apps",
+        "noSources": "Nenhuma fonte disponível no momento.",
+        "partnerSyncData": "Resultados de laboratório e biomarcadores",
+        "partnerConnectDescription": "Permita que {name} envie seus resultados de exames à Vitana para que a Vitana possa conversar com você sobre eles.",
+        "linkConsentTitle": "Receber diretamente os próximos resultados de {partner}?",
+        "linkConsentBody": "Opcional e separado da sua confirmação: você pode permitir que {partner} envie os próximos resultados diretamente para você. Você também pode fazer isso depois nas Configurações.",
+        "linkConsentAction": "Ver consentimento",
+        "linkConsentSkip": "Agora não",
+        "categories": {
+          "wearables": "Dados do dispositivo {name}",
+          "partner_results": "Resultados de laboratório de {name}",
+          "ai_health_analysis": "Análise por IA dos seus dados de saúde",
+          "health_data_analytics": "Análise de dados de saúde",
+          "community_insights": "Insights da comunidade"
+        },
+        "errors": {
+          "generic": "Não deu certo. Tente novamente.",
+          "signIn": "Entre novamente e tente outra vez.",
+          "invalidRequest": "A solicitação estava incompleta. Tente novamente.",
+          "unknownCategory": "Este consentimento não existe mais. Recarregue a página.",
+          "unknownResource": "Esta fonte não está mais disponível.",
+          "staleText": "O texto do consentimento foi atualizado. Leia-o novamente e confirme.",
+          "storePending": "Ainda não é possível salvar consentimentos. Tente novamente mais tarde.",
+          "unavailable": "O serviço não está acessível no momento. Tente novamente mais tarde.",
+          "writeFailed": "Não foi possível salvar seu consentimento. Tente novamente."
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] Enviar à Vitana os dados do dispositivo {name}",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, a Vitana recebe os dados de saúde que {name} fornece sobre você (por exemplo passos, sono e frequência cardíaca) e os salva na sua conta para que você possa vê-los na Vitana.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhum dado novo de {name} é incorporado.",
+            "checkbox": "Eu consinto expressamente que a Vitana receba e salve meus dados de saúde de {name}, conforme descrito."
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] Enviar à Vitana os resultados de laboratório de {name}",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, {name} pode enviar seus resultados de laboratório à Vitana. A Vitana os salva na sua conta e os mostra nos seus resultados.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhum resultado novo de {name} é incorporado.",
+            "checkbox": "Eu consinto expressamente que {name} envie meus resultados de laboratório à Vitana, conforme descrito."
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] Análise por IA dos seus dados de saúde",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, a IA da Vitana pode analisar os dados dos seus dispositivos e seus resultados de laboratório para dar dicas pessoais e responder às suas perguntas sobre eles.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, a IA deixa de analisar esses dados.",
+            "checkbox": "Eu consinto expressamente que a IA da Vitana analise meus dados de saúde para esta finalidade."
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] Análise de dados de saúde",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, a Vitana pode analisar seus dados de saúde de forma anonimizada para melhorar suas funções.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, seus dados deixam de ser usados para isso.",
+            "checkbox": "Eu consinto expressamente que meus dados de saúde sejam analisados de forma anonimizada para esta finalidade."
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] Insights da comunidade",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, seu progresso pode entrar nas estatísticas da comunidade de forma agregada e anonimizada.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, seus dados deixam de ser incluídos.",
+            "checkbox": "Eu consinto expressamente que meus dados de saúde sejam usados de forma anonimizada para esta finalidade."
+          }
+        }
+      },
       "vitanaMessages": {
         "_pending_review": {
           "title": true,

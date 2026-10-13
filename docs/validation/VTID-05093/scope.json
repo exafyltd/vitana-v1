@@ -1,0 +1,32 @@
+{
+  "vtid": "VTID-05093",
+  "kind": "feature",
+  "paths": [
+    "src/hooks/useHealthConsents.ts",
+    "src/lib/health-consent-wording.ts",
+    "src/lib/health-consent-wording.vtid-05093.test.ts",
+    "src/i18n/health-consent-texts.lock.json",
+    "src/components/settings/HealthConsentDialog.tsx",
+    "src/components/settings/HealthConsentDialog.vtid-05093.test.tsx",
+    "src/components/settings/HealthConsentSwitch.tsx",
+    "src/components/settings/HealthConsentSourcesDialog.tsx",
+    "src/components/settings/PartnerLabsConsentDialog.tsx",
+    "src/components/settings/MobileConnectedAppsView.tsx",
+    "src/components/settings/integrationData.ts",
+    "src/components/settings/integrationData.vtid-05093.test.ts",
+    "src/components/patient/PartnerLinkRequestsCard.tsx",
+    "src/components/patient/PartnerLinkRequestsCard.vtid-05093.test.tsx",
+    "src/pages/settings/Privacy.tsx",
+    "src/pages/settings/ConnectedApps.tsx",
+    "src/pages/settings/__tests__/privacy-data-sharing.test.tsx",
+    "src/pages/settings/__tests__/privacy-health-consents.vtid-05093.test.tsx",
+    "src/pages/settings/__tests__/connected-apps-health.test.tsx",
+    "src/i18n/*/screens.json",
+    "tests/e2e/staging/vtid-05093-health-consent.staging.spec.ts",
+    "tests/e2e/staging/vtid-05032-health-connections-privacy.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05093/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

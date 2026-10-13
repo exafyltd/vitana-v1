@@ -7551,6 +7551,100 @@
       "partnerLabsGrantSuccess": "Access granted — Vitana can now discuss your DoctorBox results with you.",
       "partnerLabsRevokeSuccess": "Access revoked.",
       "partnerLabsError": "Something went wrong. Please try again.",
+      "healthConsentUi": {
+        "statusGranted": "Granted on {date}",
+        "statusActive": "Granted",
+        "statusNotGranted": "Not granted",
+        "loading": "Loading …",
+        "storePending": "Health consents are being set up. Soon you'll be able to grant them here. You can withdraw existing consents at any time.",
+        "storePendingShort": "Being set up.",
+        "draftPending": "Coming soon: we're finalising the consent text. Until then this stays off.",
+        "draftPendingShort": "Coming soon.",
+        "unavailable": "Your consents couldn't be loaded right now. Please try again later.",
+        "unavailableShort": "Not available right now.",
+        "dialogDescription": "It's your decision. Without your consent this stays off.",
+        "activeBody": "You've given this consent. You can withdraw it at any time.",
+        "grant": "Give consent",
+        "revoke": "Withdraw",
+        "allow": "Allow",
+        "cancel": "Cancel",
+        "close": "Close",
+        "revokeConfirmTitle": "Withdraw consent?",
+        "revokeConfirmBody": "From now on no new data will be processed on this basis. Data that was already shared is not deleted by this.",
+        "revokeConfirmAction": "Yes, withdraw",
+        "grantedToast": "Thanks! Your consent has been saved.",
+        "revokedToast": "Your consent has been withdrawn.",
+        "versionLabel": "Text version {version}",
+        "displayedInFallback": "This consent text isn't available in your language yet, so it is shown in another language.",
+        "manageSources": "Manage",
+        "manageSourcesTitle": "Connected sources",
+        "manageSourcesDescription": "Decide for each lab partner and each device whether your health data may be sent to Vitana.",
+        "manageSourcesRowDescription": "Consents per lab partner and device",
+        "partnersHeading": "Lab partners",
+        "devicesHeading": "Devices and apps",
+        "noSources": "No sources are available right now.",
+        "partnerSyncData": "Lab results and biomarkers",
+        "partnerConnectDescription": "Allow {name} to send your test results to Vitana so Vitana can discuss them with you.",
+        "linkConsentTitle": "Receive future results from {partner} directly?",
+        "linkConsentBody": "Optional and separate from your confirmation: you can allow {partner} to send you future results directly. You can also do this later in Settings.",
+        "linkConsentAction": "View consent",
+        "linkConsentSkip": "Not now",
+        "categories": {
+          "wearables": "Device data from {name}",
+          "partner_results": "Lab results from {name}",
+          "ai_health_analysis": "AI analysis of your health data",
+          "health_data_analytics": "Health data analytics",
+          "community_insights": "Community insights"
+        },
+        "errors": {
+          "generic": "That didn't work. Please try again.",
+          "signIn": "Please sign in again and then try once more.",
+          "invalidRequest": "The request was incomplete. Please try again.",
+          "unknownCategory": "This consent no longer exists. Please reload the page.",
+          "unknownResource": "This source is no longer available.",
+          "staleText": "The consent text has been updated. Please read it again and confirm it.",
+          "storePending": "Consents can't be saved yet. Please try again later.",
+          "unavailable": "The service can't be reached right now. Please try again later.",
+          "writeFailed": "Your consent couldn't be saved. Please try again."
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] Send device data from {name} to Vitana",
+            "body": "DRAFT – not yet approved.\nIf you agree, Vitana receives the health data that {name} provides about you (for example steps, sleep and heart rate) and stores it in your account so you can see it in Vitana.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new data from {name} is taken over.",
+            "checkbox": "I explicitly consent to Vitana receiving and storing my health data from {name} as described."
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] Send lab results from {name} to Vitana",
+            "body": "DRAFT – not yet approved.\nIf you agree, {name} may send your lab results to Vitana. Vitana stores them in your account and shows them in your results.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new results from {name} are taken over.",
+            "checkbox": "I explicitly consent to {name} sending my lab results to Vitana as described."
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] AI analysis of your health data",
+            "body": "DRAFT – not yet approved.\nIf you agree, Vitana's AI may analyse your device data and lab results to give you personal tips and answer your questions about them.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on the AI no longer analyses this data.",
+            "checkbox": "I explicitly consent to Vitana's AI analysing my health data for this purpose."
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] Health data analytics",
+            "body": "DRAFT – not yet approved.\nIf you agree, Vitana may analyse your health data in anonymised form to improve its features.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on your data is no longer used for this.",
+            "checkbox": "I explicitly consent to my health data being analysed in anonymised form for this purpose."
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] Community insights",
+            "body": "DRAFT – not yet approved.\nIf you agree, your progress may be included in community statistics in aggregated, anonymised form.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on your data is no longer included.",
+            "checkbox": "I explicitly consent to my health data being used in anonymised form for this purpose."
+          }
+        }
+      },
       "vitanaMessages": {
         "title": "Messages from Vitana",
         "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",

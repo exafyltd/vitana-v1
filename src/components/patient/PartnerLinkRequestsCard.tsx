@@ -9,9 +9,19 @@
  *
  * Renders nothing while loading, when there are no requests, or when the
  * request fails (any gateway or migration state) — it never blocks Results.
+ * VTID-05093 (Health Hub D10, WP2): after "Yes, this is my test" succeeds,
+ * a SEPARATE, optional step may offer that partner's `partner_results`
+ * consent (future results sent directly). It is never part of the
+ * confirmation, never pre-ticked (HealthConsentDialog's checkbox starts
+ * unticked), and only offered when the consent can actually be granted —
+ * the partner is identified unambiguously among the gateway's partners, the
+ * member has no active consent for it, and the wording is released. "Not
+ * now" sends nothing.
+ *
  * RTL-safe: logical spacing and alignment only.
  */
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { FlaskConical } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -29,7 +39,14 @@ import {
   useDeclinePartnerLink,
   type PartnerLinkRequest,
 } from '@/hooks/usePartnerLinkRequests';
-import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { HealthConsentDialog } from '@/components/settings/HealthConsentDialog';
+import {
+  HEALTH_CONSENTS_KEY,
+  fetchHealthConsents,
+  partnerConsentOffer,
+  type ConsentPartner,
+} from '@/hooks/useHealthConsents';
+import { getI18nLocale, notify, notifyError, t } from '@/lib/i18n-toast';
 import { fmtDate } from '@/lib/locale-format';
 
 function partnerLabel(r: PartnerLinkRequest): string {
@@ -41,17 +58,68 @@ export function PartnerLinkRequestsCard() {
   const confirm = useConfirmPartnerLink();
   const decline = useDeclinePartnerLink();
   const [confirming, setConfirming] = useState<PartnerLinkRequest | null>(null);
+  const qc = useQueryClient();
+  const [consentOffer, setConsentOffer] = useState<ConsentPartner | null>(null);
+  const [consentOpen, setConsentOpen] = useState(false);
 
-  if (isError || !requests || requests.length === 0) return null;
+  const offerConsentFor = (partnerDisplayName: string) => {
+    qc.fetchQuery({ queryKey: HEALTH_CONSENTS_KEY, queryFn: fetchHealthConsents })
+      .then((data) => setConsentOffer(partnerConsentOffer(data, partnerDisplayName, getI18nLocale())))
+      // Optional step: if the consents cannot be loaded, simply offer nothing.
+      .catch(() => setConsentOffer(null));
+  };
+
+  // The optional consent step outlives the card (the confirmed request leaves the list).
+  const consentStep = (
+    <>
+      <ResponsiveDialog open={consentOffer !== null && !consentOpen} onOpenChange={(open) => !open && setConsentOffer(null)}>
+        <ResponsiveDialogContent data-testid="partner-link-consent-offer">
+          <ResponsiveDialogHeader>
+            <ResponsiveDialogTitle>
+              {t('screens.settings.healthConsentUi.linkConsentTitle', { partner: consentOffer?.display_name ?? '' })}
+            </ResponsiveDialogTitle>
+            <ResponsiveDialogDescription>
+              {t('screens.settings.healthConsentUi.linkConsentBody', { partner: consentOffer?.display_name ?? '' })}
+            </ResponsiveDialogDescription>
+          </ResponsiveDialogHeader>
+          <ResponsiveDialogFooter>
+            <Button variant="outline" onClick={() => setConsentOffer(null)}>
+              {t('screens.settings.healthConsentUi.linkConsentSkip')}
+            </Button>
+            <Button onClick={() => setConsentOpen(true)}>{t('screens.settings.healthConsentUi.linkConsentAction')}</Button>
+          </ResponsiveDialogFooter>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
+      {consentOffer && (
+        <HealthConsentDialog
+          open={consentOpen}
+          onOpenChange={(open) => {
+            if (!open) {
+              setConsentOpen(false);
+              setConsentOffer(null);
+            }
+          }}
+          category="partner_results"
+          resourceId={consentOffer.partner_key}
+          resourceName={consentOffer.display_name}
+          grantedVia="partner_link_confirm"
+        />
+      )}
+    </>
+  );
+
+  if (isError || !requests || requests.length === 0) return consentStep;
 
   const busy = confirm.isPending || decline.isPending;
 
   const onConfirm = () => {
     if (!confirming) return;
+    const partnerName = confirming.partner_display_name;
     confirm.mutate(confirming.id, {
       onSuccess: () => {
         notify('screens.patient.results.linkRequests.confirmed');
         setConfirming(null);
+        offerConsentFor(partnerName);
       },
       onError: () => notifyError('screens.patient.results.linkRequests.failed'),
     });
@@ -130,6 +198,7 @@ export function PartnerLinkRequestsCard() {
           </ResponsiveDialogFooter>
         </ResponsiveDialogContent>
       </ResponsiveDialog>
+      {consentStep}
     </>
   );
 }

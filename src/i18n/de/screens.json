@@ -7551,6 +7551,100 @@
       "partnerLabsGrantSuccess": "Zugriff erlaubt — Vitana kann jetzt deine DoctorBox-Ergebnisse mit dir besprechen.",
       "partnerLabsRevokeSuccess": "Zugriff entzogen.",
       "partnerLabsError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "healthConsentUi": {
+        "statusGranted": "Erteilt am {date}",
+        "statusActive": "Erteilt",
+        "statusNotGranted": "Nicht erteilt",
+        "loading": "Wird geladen …",
+        "storePending": "Gesundheits-Einwilligungen werden gerade eingerichtet. Bald kannst du sie hier erteilen. Bestehende Einwilligungen kannst du jederzeit widerrufen.",
+        "storePendingShort": "Wird gerade eingerichtet.",
+        "draftPending": "Bald verfügbar: Der Einwilligungstext wird gerade fertiggestellt. Bis dahin bleibt diese Freigabe aus.",
+        "draftPendingShort": "Bald verfügbar.",
+        "unavailable": "Deine Einwilligungen konnten gerade nicht geladen werden. Bitte versuche es später erneut.",
+        "unavailableShort": "Gerade nicht verfügbar.",
+        "dialogDescription": "Du entscheidest selbst. Ohne deine Einwilligung bleibt diese Freigabe aus.",
+        "activeBody": "Du hast diese Einwilligung erteilt. Du kannst sie jederzeit widerrufen.",
+        "grant": "Einwilligen",
+        "revoke": "Widerrufen",
+        "allow": "Erlauben",
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "revokeConfirmTitle": "Einwilligung widerrufen?",
+        "revokeConfirmBody": "Ab jetzt werden auf dieser Grundlage keine neuen Daten mehr verarbeitet. Daten, die bereits geteilt wurden, werden dadurch nicht gelöscht.",
+        "revokeConfirmAction": "Ja, widerrufen",
+        "grantedToast": "Danke! Deine Einwilligung ist gespeichert.",
+        "revokedToast": "Deine Einwilligung wurde widerrufen.",
+        "versionLabel": "Textversion {version}",
+        "displayedInFallback": "Dieser Einwilligungstext ist in deiner Sprache noch nicht verfügbar und wird daher in einer anderen Sprache angezeigt.",
+        "manageSources": "Verwalten",
+        "manageSourcesTitle": "Verbundene Quellen",
+        "manageSourcesDescription": "Lege für jeden Labor-Partner und jedes Gerät einzeln fest, ob deine Gesundheitsdaten an Vitana übermittelt werden dürfen.",
+        "manageSourcesRowDescription": "Einwilligungen pro Labor-Partner und Gerät",
+        "partnersHeading": "Labor-Partner",
+        "devicesHeading": "Geräte und Apps",
+        "noSources": "Gerade sind keine Quellen verfügbar.",
+        "partnerSyncData": "Laborergebnisse und Biomarker",
+        "partnerConnectDescription": "Erlaube {name}, deine Testergebnisse an Vitana zu senden, damit Vitana sie mit dir besprechen kann.",
+        "linkConsentTitle": "Künftige Ergebnisse von {partner} direkt erhalten?",
+        "linkConsentBody": "Optional und unabhängig von deiner Bestätigung: Du kannst {partner} erlauben, dir künftige Ergebnisse direkt zu senden. Das kannst du auch später in den Einstellungen tun.",
+        "linkConsentAction": "Einwilligung ansehen",
+        "linkConsentSkip": "Nicht jetzt",
+        "categories": {
+          "wearables": "Gerätedaten von {name}",
+          "partner_results": "Laborergebnisse von {name}",
+          "ai_health_analysis": "KI-Analyse deiner Gesundheitsdaten",
+          "health_data_analytics": "Gesundheitsdaten-Analyse",
+          "community_insights": "Community-Einblicke"
+        },
+        "errors": {
+          "generic": "Das hat nicht geklappt. Bitte versuche es erneut.",
+          "signIn": "Bitte melde dich erneut an und versuche es dann noch einmal.",
+          "invalidRequest": "Die Anfrage war unvollständig. Bitte versuche es erneut.",
+          "unknownCategory": "Diese Einwilligung gibt es nicht mehr. Bitte lade die Seite neu.",
+          "unknownResource": "Diese Quelle ist nicht mehr verfügbar.",
+          "staleText": "Der Einwilligungstext wurde aktualisiert. Bitte lies ihn erneut und bestätige ihn.",
+          "storePending": "Einwilligungen können gerade noch nicht gespeichert werden. Bitte versuche es später erneut.",
+          "unavailable": "Der Dienst ist gerade nicht erreichbar. Bitte versuche es später erneut.",
+          "writeFailed": "Deine Einwilligung konnte nicht gespeichert werden. Bitte versuche es erneut."
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] Gerätedaten von {name} an Vitana übermitteln",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, empfängt Vitana die Gesundheitsdaten, die {name} über dich bereitstellt (zum Beispiel Schritte, Schlaf und Herzfrequenz), und speichert sie in deinem Konto, damit du sie in Vitana sehen kannst.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen Daten von {name} mehr übernommen.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitana meine Gesundheitsdaten von {name} wie beschrieben empfängt und speichert."
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] Laborergebnisse von {name} an Vitana übermitteln",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, darf {name} deine Laborergebnisse an Vitana übermitteln. Vitana speichert sie in deinem Konto und zeigt sie dir in deinen Ergebnissen an.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen Ergebnisse von {name} mehr übernommen.",
+            "checkbox": "Ich willige ausdrücklich ein, dass {name} meine Laborergebnisse wie beschrieben an Vitana übermittelt."
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] KI-Analyse deiner Gesundheitsdaten",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, darf Vitanas KI deine Gerätedaten und Laborergebnisse auswerten, um dir persönliche Hinweise zu geben und deine Fragen dazu zu beantworten.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann wertet die KI diese Daten nicht mehr aus.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitanas KI meine Gesundheitsdaten zu diesem Zweck auswertet."
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] Gesundheitsdaten-Analyse",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, darf Vitana deine Gesundheitsdaten in anonymisierter Form auswerten, um seine Funktionen zu verbessern.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden deine Daten dafür nicht mehr verwendet.",
+            "checkbox": "Ich willige ausdrücklich ein, dass meine Gesundheitsdaten zu diesem Zweck anonymisiert ausgewertet werden."
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] Community-Einblicke",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, darf dein Fortschritt in zusammengefasster, anonymisierter Form in Statistiken für die Community einfließen.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann fließen deine Daten nicht mehr ein.",
+            "checkbox": "Ich willige ausdrücklich ein, dass meine Gesundheitsdaten zu diesem Zweck anonymisiert verwendet werden."
+          }
+        }
+      },
       "vitanaMessages": {
         "title": "Nachrichten von Vitana",
         "desc": "Vitana schreibt dir ab und zu eine persönliche Nachricht im Messenger – mit einem Tipp, der gerade zu dir passt.",
