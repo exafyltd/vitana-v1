@@ -12776,6 +12776,27 @@
         "title": "Discover something new",
         "description": "Products, services and offers for your well-being.",
         "action": "Browse"
+      },
+      "G1": {
+        "eyebrow": "ملفك الشخصي",
+        "title": "أكمل ملفك الشخصي",
+        "description": "الملف المكتمل يجلب لك تطابقات أنسب.",
+        "action": "متابعة الإعداد",
+        "metric": "تم إنجاز {value} · {message}"
+      },
+      "G2": {
+        "eyebrow": "التطابقات",
+        "title": "لديك تطابقات جديدة",
+        "description": "اكتشف من يناسبك.",
+        "action": "عرض التطابقات",
+        "metric": "تطابقات جديدة: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "اليوميات",
+        "title": "سلسلتك في خطر",
+        "description": "فاتك تسجيل الأمس – حافظ على سلسلتك اليوم.",
+        "action": "سجّل اليوم",
+        "metric": "السلسلة (أيام): {count} · {message}"
       }
     },
     "interests": {
