@@ -394,7 +394,7 @@ export function PaymentMessageHandler({
             </div>
             <Badge variant={effectiveStatus === 'completed' ? 'default' : effectiveStatus === 'declined' ? 'destructive' : 'secondary'}>
               {getStatusIcon(effectiveStatus)}
-              <span className="ml-1 capitalize">{effectiveStatus}</span>
+              <span className="ms-1 capitalize">{effectiveStatus}</span>
             </Badge>
           </div>
           
@@ -513,7 +513,7 @@ export function PaymentMessageHandler({
             </div>
             <Badge variant={effectiveStatus === 'completed' ? 'default' : effectiveStatus === 'declined' ? 'destructive' : 'secondary'}>
               {getStatusIcon(effectiveStatus)}
-              <span className="ml-1 capitalize">{effectiveStatus}</span>
+              <span className="ms-1 capitalize">{effectiveStatus}</span>
             </Badge>
           </div>
           

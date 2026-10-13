@@ -221,7 +221,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
                 {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{t('screens.profile.save')}
+                {saving && <Loader2 className="h-4 w-4 animate-spin me-2" />}{t('screens.profile.save')}
               </Button>
             </div>
           </div>

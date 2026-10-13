@@ -5,7 +5,9 @@ import { useTenant } from "@/hooks/useTenant";
 import { getIntroVideoSrc } from "@/utils/introVideo";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelDescription as CardDescription, PanelHeader as CardHeader, PanelTitle as CardTitle } from "@/components/layout/spotlight/Panel";
+import { FrameWhen } from "@/components/layout/spotlight/FrameWhen";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -36,6 +38,7 @@ const MaxinaPortal = () => {
   const hasRedirectedRef = useRef(false);
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   // VitanaOrb widget handles voice overlay externally
   const { startFresh } = useSoundscape();
@@ -436,14 +439,15 @@ const MaxinaPortal = () => {
           />
         )}
         
-        {/* Dark overlay */}
-        <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
-        
+        {/* Dark overlay — VTID-05117: dark-theme tokens in a `dark` scope keep the scrim and copy light-on-dark in both themes */}
+        <div className="dark fixed inset-0 bg-gradient-to-b from-background/25 via-background/5 to-transparent z-10" />
+
         {/* Content */}
-        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin text-white" />
+        <div className="dark relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
+          {/* design-allow-next-line: auth hand-off in flight over the intro video (redirect follows), not a data-loading placeholder */}
+          <Loader2 className="h-8 w-8 animate-spin text-foreground" />
           {isProcessingOAuth && (
-            <p className="text-white/70 text-sm animate-pulse">{t('screens.portals.signingYou')}</p>
+            <p className="text-foreground/70 text-sm animate-pulse">{t('screens.portals.signingYou')}</p>
           )}
         </div>
       </div>
@@ -457,10 +461,10 @@ const MaxinaPortal = () => {
         {videoSrc && (
           <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" src={videoSrc} />
         )}
-        <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
-        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
-          <p className="text-white text-lg font-medium">{t('screens.portals.somethingWentWrong')}</p>
-          <p className="text-white/70 text-sm text-center">{t('screens.portals.signinTakingLongerThanExpected')}</p>
+        <div className="dark fixed inset-0 bg-gradient-to-b from-background/50 via-background/30 to-background/50 z-10" />
+        <div className="dark relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
+          <p className="text-foreground text-lg font-medium">{t('screens.portals.somethingWentWrong')}</p>
+          <p className="text-foreground/70 text-sm text-center">{t('screens.portals.signinTakingLongerThanExpected')}</p>
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <Button
               onClick={async () => {
@@ -480,7 +484,7 @@ const MaxinaPortal = () => {
                   handleSocialLogin('apple');
                 }
               }}
-              className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
+              className="w-full rounded-full bg-gradient-to-r from-category-4 to-ruby hover:from-category-4/90 hover:to-ruby/90 text-primary-foreground px-8"
             >{t('screens.portals.tryAppleSigninAgain')}
             </Button>
             <Button
@@ -491,7 +495,7 @@ const MaxinaPortal = () => {
                 navigate('/maxina');
               }}
               variant="ghost"
-              className="w-full rounded-full text-white/80 hover:text-white hover:bg-white/10"
+              className="w-full rounded-full text-foreground/80 hover:text-foreground hover:bg-foreground/10"
             >{t('screens.portals.backLogin')}
             </Button>
           </div>
@@ -522,15 +526,17 @@ const MaxinaPortal = () => {
       )}
       
       {/* Premium multi-layer gradient overlay for readability */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
-      <div className="fixed inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
+      <div className="dark fixed inset-0 bg-gradient-to-b from-background/50 via-background/30 to-background/50 z-10" />
+      <div className="dark fixed inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent z-10" />
       
       {/* Content layer - pulled up with safe bottom spacing */}
       <div className="relative z-20 flex flex-col items-center justify-start min-h-screen px-4 pt-16 md:pt-16 md:justify-center md:px-6 pb-32 md:pb-6 maxina-page-content maxina-signin-page" data-maxina-app="true">
-        <div className="max-w-md w-full">
+        {/* VTID-05117: Spotlight on → the `form` archetype column around the card. */}
+        <FrameWhen on={spotlight} archetype="form" className="w-full">
+        <div className="max-w-md w-full mx-auto">
           {/* Auth Tabs - Compact card */}
           <Card
-            className="bg-white/80 dark:bg-card/90 backdrop-blur-xl rounded-2xl border border-white/30 dark:border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.25)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+            className="bg-card/80 dark:bg-card/90 backdrop-blur-xl rounded-2xl border border-border/30 shadow-2xl"
             onClick={ensureSoundscapePlaying}
           >
             <Tabs defaultValue={searchParams.get('tab') === 'signup' ? 'signup' : 'signin'} className="w-full">
@@ -583,12 +589,12 @@ const MaxinaPortal = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           disabled={loading}
-                          className="pr-10 h-10 md:h-11"
+                          className="pe-10 h-10 md:h-11"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                          className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                           tabIndex={-1}
                         >
                           {showPassword ? (
@@ -618,7 +624,7 @@ const MaxinaPortal = () => {
                         </div>
                         <Link
                           to="/reset-password" 
-                          className="text-xs text-muted-foreground hover:text-[#FF7BAC] transition-colors"
+                          className="text-xs text-muted-foreground hover:text-ruby transition-colors"
                         >
                           {translate('portals.maxina.forgotPassword', 'Forgot password?')}
                         </Link>
@@ -626,12 +632,12 @@ const MaxinaPortal = () => {
                     
                       <Button 
                         type="submit" 
-                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
+                        className="w-full rounded-full bg-gradient-to-r from-category-4 to-ruby hover:from-category-4/90 hover:to-ruby/90 text-primary-foreground hover:shadow-lg hover:shadow-ruby/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
                         disabled={loading}
                       >
                         {loading ? (
                           <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2 className="me-2 h-4 w-4 animate-spin" />
                             {translate('portals.maxina.signingIn', 'Signing in…')}
                           </>
                         ) : (
@@ -658,7 +664,7 @@ const MaxinaPortal = () => {
                           disabled={loading}
                           className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="me-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -672,7 +678,7 @@ const MaxinaPortal = () => {
                           disabled={loading}
                           className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="me-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/>
                           </svg>{t('screens.portals.apple')}
                         </Button>
@@ -684,8 +690,8 @@ const MaxinaPortal = () => {
               <TabsContent value="signup">
                 {signupSuccess && signupEmail ? (
                   <div className="px-4 md:px-6 py-8 text-center space-y-4">
-                    <div className="mx-auto w-14 h-14 rounded-full bg-[#FF7BAC]/10 flex items-center justify-center">
-                      <MailCheck className="h-7 w-7 text-[#FF7BAC]" />
+                    <div className="mx-auto w-14 h-14 rounded-full bg-ruby/10 flex items-center justify-center">
+                      <MailCheck className="h-7 w-7 text-ruby" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">{t('screens.portals.checkYourEmail')}</h3>
                     <p className="text-sm text-muted-foreground">
@@ -756,12 +762,12 @@ const MaxinaPortal = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           disabled={loading}
-                          className="pr-10 h-10 md:h-11"
+                          className="pe-10 h-10 md:h-11"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                          className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                           tabIndex={-1}
                         >
                           {showPassword ? (
@@ -776,12 +782,12 @@ const MaxinaPortal = () => {
                     
                       <Button 
                         type="submit" 
-                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
+                        className="w-full rounded-full bg-gradient-to-r from-category-4 to-ruby hover:from-category-4/90 hover:to-ruby/90 text-primary-foreground hover:shadow-lg hover:shadow-ruby/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
                         disabled={loading}
                       >
                         {loading ? (
                           <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2 className="me-2 h-4 w-4 animate-spin" />
                             {translate('portals.maxina.creatingAccount', 'Creating account…')}
                           </>
                         ) : (
@@ -808,7 +814,7 @@ const MaxinaPortal = () => {
                           disabled={loading}
                           className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="me-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -822,7 +828,7 @@ const MaxinaPortal = () => {
                           disabled={loading}
                           className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="me-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/>
                           </svg>{t('screens.portals.apple')}
                         </Button>
@@ -836,28 +842,29 @@ const MaxinaPortal = () => {
           </Card>
 
           {/* Compact Trust & Navigation Footer */}
-          <div className="space-y-2 mt-3 md:mt-4" data-maxina-footer="true">
-            <p className="text-center text-white/60 text-[10px] md:text-xs tracking-wide">
+          <div className="dark space-y-2 mt-3 md:mt-4" data-maxina-footer="true">
+            <p className="text-center text-foreground/60 text-[10px] md:text-xs tracking-wide">
               {translate('portals.maxina.partOfVitana', 'Maxina is part of the VITANA ecosystem.')}
             </p>
             
             <div className="flex justify-center items-center space-x-3 text-xs md:text-sm">
-              <Link to="/privacy" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
+              <Link to="/privacy" className="text-foreground/70 hover:text-foreground font-medium transition-colors tracking-wide">
                 {t('screens.portals.privacy')}
               </Link>
-              <span className="text-white/30">·</span>
-              <Link to="/terms" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
+              <span className="text-foreground/30">·</span>
+              <Link to="/terms" className="text-foreground/70 hover:text-foreground font-medium transition-colors tracking-wide">
                 {t('screens.portals.terms')}
               </Link>
-              <span className="text-white/30">·</span>
-              <a href="mailto:support@exafy.io" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
+              <span className="text-foreground/30">·</span>
+              <a href="mailto:support@exafy.io" className="text-foreground/70 hover:text-foreground font-medium transition-colors tracking-wide">
                 {t('screens.portals.help')}
               </a>
             </div>
-            
+
           </div>
         </div>
-        
+        </FrameWhen>
+
         <div className="pb-6 md:pb-0" />
 
 

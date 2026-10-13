@@ -156,29 +156,29 @@ export const NewsArticleCardMenu: React.FC<NewsArticleCardMenuProps> = ({
     <KebabMenu className={className}>
       {/* Group A — article actions */}
       <DropdownMenuItem onClick={stop(handleShare)}>
-        <Share2 className="h-4 w-4 mr-2" />
+        <Share2 className="h-4 w-4 me-2" />
         {translate("newsCard.menu.share", "Share")}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={stop(handleSaveToggle)}>
         {saved ? (
-          <BookmarkCheck className="h-4 w-4 mr-2" />
+          <BookmarkCheck className="h-4 w-4 me-2" />
         ) : (
-          <Bookmark className="h-4 w-4 mr-2" />
+          <Bookmark className="h-4 w-4 me-2" />
         )}
         {saved
           ? translate("newsCard.menu.saved", "Saved")
           : translate("newsCard.menu.save", "Save")}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={stop(handleSummarize)}>
-        <Sparkles className="h-4 w-4 mr-2" />
+        <Sparkles className="h-4 w-4 me-2" />
         {translate("newsCard.menu.summarize", "Summarize with Vitana")}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={stop(copyLink)} disabled={!link}>
-        <Link2 className="h-4 w-4 mr-2" />
+        <Link2 className="h-4 w-4 me-2" />
         {translate("newsCard.menu.copyLink", "Copy link")}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={stop(handleOpenInBrowser)} disabled={!link}>
-        <ExternalLink className="h-4 w-4 mr-2" />
+        <ExternalLink className="h-4 w-4 me-2" />
         {translate("newsCard.menu.openInBrowser", "Open in browser")}
       </DropdownMenuItem>
 
@@ -186,18 +186,18 @@ export const NewsArticleCardMenu: React.FC<NewsArticleCardMenuProps> = ({
 
       {/* Group B — feed controls */}
       <DropdownMenuItem onClick={stop(handleHide)}>
-        <EyeOff className="h-4 w-4 mr-2" />
+        <EyeOff className="h-4 w-4 me-2" />
         {translate("newsCard.menu.hide", "Hide this article")}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={stop(handleShowLess)}>
-        <ThumbsDown className="h-4 w-4 mr-2" />
+        <ThumbsDown className="h-4 w-4 me-2" />
         {translate("newsCard.menu.showLess", "Show less like this")}
       </DropdownMenuItem>
       <DropdownMenuItem
         onClick={stop(handleMuteSource)}
         disabled={!sourceName}
       >
-        <VolumeX className="h-4 w-4 mr-2" />
+        <VolumeX className="h-4 w-4 me-2" />
         {translate("newsCard.menu.muteSource", "Mute this source")}
       </DropdownMenuItem>
     </KebabMenu>

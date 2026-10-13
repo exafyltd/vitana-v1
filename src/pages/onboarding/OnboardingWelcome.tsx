@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Headphones, Play } from 'lucide-react';
@@ -10,6 +10,8 @@ import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 import { useAuth } from '@/context/AuthProvider';
 import { t } from '@/lib/i18n-toast';
 import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 // VTID-04760: 'start' — after the name form, a newcomer gets ONE clear action
 // (play Episode 1 of the Audiobook) instead of being dropped onto the feed.
@@ -25,6 +27,7 @@ function getDefaultTarget(): string {
 
 export default function OnboardingWelcome() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const audiobook = useAudiobookPlayer(); // VTID-04761
@@ -91,8 +94,10 @@ export default function OnboardingWelcome() {
   // Show nothing while checking onboarding status or redirecting away
   if (phase !== 'start' && (onboardingLoading || !needsOnboarding)) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+      <div className="dark min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="w-full max-w-sm">
+          <ArchetypeSkeleton archetype="form" />
+        </div>
       </div>
     );
   }
@@ -112,10 +117,11 @@ export default function OnboardingWelcome() {
       )}
 
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50 z-10" />
+      {/* VTID-05117: dark-theme tokens in a `dark` scope keep the scrim and the copy over the video light-on-dark in both themes */}
+      <div className="dark fixed inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/50 z-10" />
 
-      {/* Content */}
-      <div className="relative z-20 min-h-screen flex flex-col">
+      {/* Content — VTID-05117: Spotlight on → the `form` archetype (one form column over the video). */}
+      <ContentLayer spotlight={spotlight}>
         <AnimatePresence mode="wait">
           {phase === 'speech' && (
             <motion.div
@@ -132,14 +138,14 @@ export default function OnboardingWelcome() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="text-2xl font-bold text-white"
+                  className="dark text-2xl font-bold text-foreground"
                 >{t('screens.onboarding.welcomeMaxina')}
                 </motion.h1>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
-                  className="text-white/60 text-sm mt-1"
+                  className="dark text-foreground/60 text-sm mt-1"
                 >{t('screens.onboarding.yourLongevityJourneyBeginsNow')}
                 </motion.p>
               </div>
@@ -172,14 +178,14 @@ export default function OnboardingWelcome() {
               className="flex-1 flex items-center justify-center px-4 py-12"
             >
               <div
-                className="w-full max-w-sm rounded-3xl bg-white/90 backdrop-blur-md p-6 text-center shadow-xl"
+                className="w-full max-w-sm rounded-3xl bg-card/90 backdrop-blur-md p-6 text-center shadow-xl"
                 data-testid="onboarding-audiobook-start"
               >
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#C084FC] shadow-md">
-                  <Headphones className="h-8 w-8 text-white" aria-hidden="true" />
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-ruby to-category-2 shadow-md">
+                  <Headphones className="h-8 w-8 text-primary-foreground" aria-hidden="true" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">{t('screens.onboarding.audiobookReadyTitle')}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-gray-700">{t('screens.onboarding.audiobookReadyBody')}</p>
+                <h2 className="text-xl font-semibold text-foreground">{t('screens.onboarding.audiobookReadyTitle')}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('screens.onboarding.audiobookReadyBody')}</p>
                 <Button
                   size="lg"
                   className="mt-6 h-12 w-full gap-2 text-base"
@@ -191,7 +197,7 @@ export default function OnboardingWelcome() {
                 </Button>
                 <Button
                   variant="ghost"
-                  className="mt-2 h-11 w-full text-gray-600"
+                  className="mt-2 h-11 w-full text-muted-foreground"
                   onClick={handleLater}
                   data-testid="onboarding-audiobook-later"
                 >
@@ -201,7 +207,18 @@ export default function OnboardingWelcome() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </ContentLayer>
     </div>
   );
+}
+
+function ContentLayer({ spotlight, children }: { spotlight: boolean; children: ReactNode }) {
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className="relative z-20 min-h-screen">
+        {children}
+      </ScreenFrame>
+    );
+  }
+  return <div className="relative z-20 min-h-screen flex flex-col">{children}</div>;
 }

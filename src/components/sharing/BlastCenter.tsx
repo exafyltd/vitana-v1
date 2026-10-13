@@ -348,7 +348,7 @@ export function BlastCenter() {
                     `}
                   >
                     <Icon className="w-4 h-4" />
-                    <span className="text-sm font-medium flex-1 text-left">{channel.channel_name}</span>
+                    <span className="text-sm font-medium flex-1 text-start">{channel.channel_name}</span>
                     {isConnected ? (
                       <CheckCircle className="w-4 h-4 text-green-600" />
                     ) : (
@@ -386,9 +386,9 @@ export function BlastCenter() {
             disabled={createPost.isPending || blastNow.isPending}
           >
             {(createPost.isPending || blastNow.isPending) ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-4 h-4 me-2 animate-spin" />
             ) : (
-              <Send className="w-4 h-4 mr-2" />
+              <Send className="w-4 h-4 me-2" />
             )}{t('screens.sharing.blastNow')}
           </Button>
           <Button 
@@ -398,9 +398,9 @@ export function BlastCenter() {
             disabled={createPost.isPending}
           >
             {createPost.isPending ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-4 h-4 me-2 animate-spin" />
             ) : (
-              <CalendarIcon className="w-4 h-4 mr-2" />
+              <CalendarIcon className="w-4 h-4 me-2" />
             )}{t('screens.sharing.schedule')}
           </Button>
           <Button 

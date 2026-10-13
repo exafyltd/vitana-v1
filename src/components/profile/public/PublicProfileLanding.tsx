@@ -125,11 +125,11 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
             {/* CTA Buttons */}
             <div className="flex gap-3 mt-6">
               <Button className="rounded-full px-6" onClick={() => navigate(`/maxina?redirectTo=/u/${profile.handle}`)}>
-                <UserPlus className="h-4 w-4 mr-2" />
+                <UserPlus className="h-4 w-4 me-2" />
                 {translate('publicProfile.follow', 'Follow')}
               </Button>
               <Button variant="outline" className="rounded-full px-6" onClick={() => navigate(`/maxina?redirectTo=/u/${profile.handle}`)}>
-                <MessageSquare className="h-4 w-4 mr-2" />
+                <MessageSquare className="h-4 w-4 me-2" />
                 {translate('publicProfile.sendMessage', 'Message')}
               </Button>
             </div>
@@ -211,7 +211,7 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
           className="rounded-full px-8"
           onClick={() => navigate(`/maxina?redirectTo=/u/${profile.handle}`)}
         >
-          <ExternalLink className="h-4 w-4 mr-2" />
+          <ExternalLink className="h-4 w-4 me-2" />
           {translate('publicProfile.viewFull', 'View Full Profile')}
         </Button>
         <p className="text-xs text-muted-foreground mt-3">

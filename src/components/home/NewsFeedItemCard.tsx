@@ -109,7 +109,7 @@ export function NewsFeedItemCard({
         cornerBadge={
           <svg
             viewBox="0 0 80 88"
-            className="pointer-events-none absolute right-2.5 top-[44px] h-[88px] w-[80px]"
+            className="pointer-events-none absolute end-2.5 top-[44px] h-[88px] w-20"
             aria-hidden="true"
           >
             <defs>
@@ -138,7 +138,7 @@ export function NewsFeedItemCard({
           </svg>
         }
       >
-        <div className="flex items-center gap-1.5 pr-24">
+        <div className="flex items-center gap-1.5 pe-24">
           <Avatar className="h-7 w-7 shrink-0">
             {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
             <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
@@ -150,8 +150,8 @@ export function NewsFeedItemCard({
             </p>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1 pr-24">{t("screens.home.findAMatchSubtext")}</p>
-        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors pr-24">
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1 pe-24">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors pe-24">
           <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
           <ArrowRight className="w-3 h-3 shrink-0" />
         </span>

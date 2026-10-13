@@ -282,9 +282,9 @@ export function OrganizerEventSalesSheet({
                 <div className="flex justify-end">
                   <Button variant="outline" size="sm" onClick={handleExportCSV} disabled={exporting}>
                     {exporting ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-4 h-4 me-2 animate-spin" />
                     ) : (
-                      <Download className="w-4 h-4 mr-2" />
+                      <Download className="w-4 h-4 me-2" />
                     )}
                     {t('screens.business.exportCsv')}
                   </Button>

@@ -38,7 +38,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
   return (
     <Dialog open onOpenChange={() => onClose()}>
       <DialogContent className="max-w-6xl h-[90vh] p-0 bg-black/95 border-none">
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 end-4 z-50">
           <Button
             variant="ghost"
             size="icon"
@@ -54,7 +54,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-4 z-50 text-white hover:bg-white/20 h-10 w-10 rounded-full"
+              className="absolute start-4 z-50 text-white hover:bg-white/20 h-10 w-10 rounded-full"
               onClick={goPrev}
             >
               <ChevronLeft className="h-6 w-6" />
@@ -74,7 +74,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-4 z-50 text-white hover:bg-white/20 h-10 w-10 rounded-full"
+              className="absolute end-4 z-50 text-white hover:bg-white/20 h-10 w-10 rounded-full"
               onClick={goNext}
             >
               <ChevronRight className="h-6 w-6" />
@@ -82,7 +82,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
           )}
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 bg-black/80 border-t border-white/10 p-4">
+        <div className="absolute bottom-0 start-0 end-0 bg-black/80 border-t border-white/10 p-4">
           <div className="flex items-center justify-between">
             <p className="text-white text-sm font-medium">{video.title || "Video"}</p>
             {videos.length > 1 && (

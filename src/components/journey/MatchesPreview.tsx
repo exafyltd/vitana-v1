@@ -61,7 +61,7 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
                 <button
                   type="button"
                   onClick={() => navigate(`/u/${m.user_id}`)}
-                  className="w-full flex items-center gap-3 p-2 rounded-xl bg-white/70 dark:bg-white/5 border border-pink-200/40 text-left hover:bg-white dark:hover:bg-white/10 transition-colors"
+                  className="w-full flex items-center gap-3 p-2 rounded-xl bg-white/70 dark:bg-white/5 border border-pink-200/40 text-start hover:bg-white dark:hover:bg-white/10 transition-colors"
                 >
                   <Avatar className="w-10 h-10 ring-2 ring-white shadow-sm shrink-0">
                     <AvatarImage src={m.avatar_url ?? undefined} alt="" />

@@ -149,7 +149,7 @@ export function ProfileInsightTab({
                     <h2 className="text-2xl font-bold text-foreground">{profile.name || 'Anonymous'}</h2>
                     {profile.professionalCredentials?.isLiveStreamingEnabled && (
                       <Badge className="bg-gradient-to-r from-blue-500 to-sky-500 text-white border-0 rounded-full px-3 py-1">
-                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
+                        <CheckCircle2 className="h-3.5 w-3.5 me-1" />
                         {t('screens.profile.pro')}
                       </Badge>
                     )}
@@ -287,7 +287,7 @@ export function ProfileInsightTab({
               </div>
               {profile.vitanaPercentile && (
                 <Badge className="w-full justify-center bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full py-2">
-                  <TrendingUp className="h-3 w-3 mr-1.5" />{t('screens.profile.topValue0Wellness', { value0: 100 - profile.vitanaPercentile })}
+                  <TrendingUp className="h-3 w-3 me-1.5" />{t('screens.profile.topValue0Wellness', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
             </CardContent>

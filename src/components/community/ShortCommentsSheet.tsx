@@ -92,7 +92,7 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
     // One-level threading: replying to a reply still attaches to its top-level parent.
     const parentId = comment.parent_id ?? comment.id;
     return (
-      <div key={comment.id} className={cn('flex items-start gap-2', isReply && 'ml-10')}>
+      <div key={comment.id} className={cn('flex items-start gap-2', isReply && 'ms-10')}>
         <ClickableAvatar
           userId={comment.user_id}
           src={comment.avatar_url || undefined}
@@ -155,7 +155,7 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
         className={cn(
           'absolute z-[91] flex flex-col bg-background shadow-2xl',
           'inset-x-0 bottom-0 max-h-[75vh] rounded-t-2xl',
-          'sm:inset-y-0 sm:right-0 sm:left-auto sm:bottom-auto sm:h-full sm:w-[420px] sm:max-h-none sm:rounded-none sm:border-l',
+          'sm:inset-y-0 sm:end-0 sm:start-auto sm:bottom-auto sm:h-full sm:w-[420px] sm:max-h-none sm:rounded-none sm:border-s',
         )}
         onClick={(e) => e.stopPropagation()}
       >
@@ -165,7 +165,7 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
             <h2 className="text-base font-semibold text-foreground">
               {translate('mediaHub.comments.title', 'Comments')}
               {comments.length > 0 && (
-                <span className="ml-2 text-sm font-normal text-muted-foreground">{comments.length}</span>
+                <span className="ms-2 text-sm font-normal text-muted-foreground">{comments.length}</span>
               )}
             </h2>
             {videoTitle && <p className="text-xs text-muted-foreground truncate max-w-[300px]">{videoTitle}</p>}

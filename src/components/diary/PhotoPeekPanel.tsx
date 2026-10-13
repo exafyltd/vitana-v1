@@ -109,13 +109,13 @@ export function PhotoPeekPanel({
         {/* Navigation for multiple images */}
         {images.length > 1 && (
           <>
-            <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full">
+            <div className="absolute top-2 end-2 bg-black/70 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full">
               {currentIndex + 1} / {images.length}
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30"
+              className="absolute start-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30"
               onClick={handlePrevious}
               disabled={currentIndex === 0}
             >
@@ -124,7 +124,7 @@ export function PhotoPeekPanel({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30"
+              className="absolute end-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30"
               onClick={handleNext}
               disabled={currentIndex === images.length - 1}
             >
@@ -183,7 +183,7 @@ export function PhotoPeekPanel({
           onClick={handleDownload}
           className="flex-1 text-sm font-medium"
         >
-          <Download className="h-4 w-4 mr-2" />
+          <Download className="h-4 w-4 me-2" />
           {t('screens.diary.download')}
         </Button>
         <Button
@@ -192,7 +192,7 @@ export function PhotoPeekPanel({
           onClick={onOpenFull}
           className="flex-1 text-sm font-medium"
         >
-          <Maximize2 className="h-4 w-4 mr-2" />
+          <Maximize2 className="h-4 w-4 me-2" />
           {t('screens.diary.openFull')}
         </Button>
         
@@ -211,7 +211,7 @@ export function PhotoPeekPanel({
                 notifySuccess('toasts.diary.linkCopiedClipboard');
               }
             }}>
-              <Copy className="h-4 w-4 mr-2" />
+              <Copy className="h-4 w-4 me-2" />
               {t('screens.diary.copyLink')}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
@@ -226,7 +226,7 @@ export function PhotoPeekPanel({
                 notifyInfo('toasts.diary.sharingNotAvailableThisDevice');
               }
             }}>
-              <Share2 className="h-4 w-4 mr-2" />
+              <Share2 className="h-4 w-4 me-2" />
               {t('screens.diary.shareVia')}
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -241,13 +241,13 @@ export function PhotoPeekPanel({
           <DropdownMenuContent align="end" className="w-48">
             {onAddToFavorites && (
               <DropdownMenuItem onClick={onAddToFavorites}>
-                <Heart className="h-4 w-4 mr-2" />
+                <Heart className="h-4 w-4 me-2" />
                 {t('screens.diary.addFavorites')}
               </DropdownMenuItem>
             )}
             {onEdit && (
               <DropdownMenuItem onClick={onEdit}>
-                <Edit className="h-4 w-4 mr-2" />
+                <Edit className="h-4 w-4 me-2" />
                 {t('screens.diary.editDetails')}
               </DropdownMenuItem>
             )}
@@ -257,13 +257,13 @@ export function PhotoPeekPanel({
                 onClick={onDelete}
                 className="text-destructive focus:text-destructive"
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-4 w-4 me-2" />
                 {t('screens.diary.deletePhoto')}
               </DropdownMenuItem>
             )}
             {onReport && (
               <DropdownMenuItem onClick={onReport}>
-                <Flag className="h-4 w-4 mr-2" />
+                <Flag className="h-4 w-4 me-2" />
                 {t('screens.diary.report')}
               </DropdownMenuItem>
             )}
@@ -282,7 +282,7 @@ export function PhotoPeekPanel({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-2 right-2"
+              className="absolute top-2 end-2"
               onClick={() => onOpenChange(false)}
             >
               <X className="h-5 w-5" />
@@ -301,7 +301,7 @@ export function PhotoPeekPanel({
         className="w-[38vw] min-w-[420px] max-w-[560px] bg-card/95 backdrop-blur-sm border-white/10 shadow-xl p-0 overflow-hidden flex flex-col"
       >
         <SheetHeader className="p-6 pb-0 shrink-0">
-          <SheetTitle className="text-left">{t('screens.diary.photoPreview')}</SheetTitle>
+          <SheetTitle className="text-start">{t('screens.diary.photoPreview')}</SheetTitle>
         </SheetHeader>
         {content}
       </SheetContent>

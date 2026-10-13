@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { Loader2 } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 /**
  * Logout Page - For Appilix Mobile Drawer Integration
@@ -17,6 +19,7 @@ import { t } from '@/lib/i18n-toast';
 export default function Logout() {
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
 
   useEffect(() => {
     const performLogout = async () => {
@@ -61,12 +64,26 @@ export default function Logout() {
     performLogout();
   }, [signOut, navigate]);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+  const status = (
       <div className="flex flex-col items-center gap-4">
+        {/* design-allow-next-line: action progress indicator (sign-out in flight), not a data-loading placeholder */}
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <p className="text-muted-foreground">{t('screens.logout.signingOut')}</p>
       </div>
+  );
+
+  // VTID-05117: Spotlight on → the `form` archetype (single column, no rail).
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className="min-h-screen bg-background">
+        {status}
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      {status}
     </div>
   );
 }

@@ -20,6 +20,10 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import type { ReactNode } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -113,7 +117,7 @@ function QuantityStepper({
       >
         <Minus className="h-4 w-4" />
       </Button>
-      <span className="min-w-[2ch] text-center tabular-nums">{item.quantity}</span>
+      <span className="min-w-4 text-center tabular-nums">{item.quantity}</span>
       <Button
         type="button"
         variant="ghost"
@@ -167,8 +171,8 @@ function CartLineHeader({ item }: { item: UniversalCartItem }) {
           <div className="font-medium break-words">{title}</div>
         ) : isLoading ? (
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            <span>{t("universalCart.page.loading")}</span>
+            <Skeleton className="h-4 w-32" aria-hidden="true" />
+            <span className="sr-only">{t("universalCart.page.loading")}</span>
           </div>
         ) : (
           <div className="font-medium break-words">
@@ -194,6 +198,7 @@ function CartLineHeader({ item }: { item: UniversalCartItem }) {
 
 export default function UniversalCartPage() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const {
     cart,
     cartItems,
@@ -242,7 +247,7 @@ export default function UniversalCartPage() {
   // -- Role-blocked: explicit community-only empty state ---------------------
   if (roleBlocked) {
     return (
-      <main className="container mx-auto max-w-2xl px-4 py-10">
+      <CartMain spotlight={spotlight}>
         <h1 className="text-2xl font-semibold flex items-center gap-2">
           <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
@@ -257,28 +262,28 @@ export default function UniversalCartPage() {
             </p>
           </CardContent>
         </Card>
-      </main>
+      </CartMain>
     );
   }
 
   if (isLoading) {
     return (
-      <main className="container mx-auto max-w-2xl px-4 py-10">
+      <CartMain spotlight={spotlight}>
         <h1 className="text-2xl font-semibold flex items-center gap-2">
           <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
-        <div className="mt-10 flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          <span>{t("universalCart.page.loading")}</span>
+        <div className="mt-10 space-y-3">
+          <ArchetypeSkeleton archetype="collection" />
+          <span className="sr-only">{t("universalCart.page.loading")}</span>
         </div>
-      </main>
+      </CartMain>
     );
   }
 
   if (error && !roleBlocked) {
     return (
-      <main className="container mx-auto max-w-2xl px-4 py-10">
+      <CartMain spotlight={spotlight}>
         <h1 className="text-2xl font-semibold flex items-center gap-2">
           <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
@@ -293,7 +298,7 @@ export default function UniversalCartPage() {
             </p>
           </CardContent>
         </Card>
-      </main>
+      </CartMain>
     );
   }
 
@@ -446,7 +451,7 @@ export default function UniversalCartPage() {
   };
 
   return (
-    <main className="container mx-auto max-w-2xl px-4 py-10">
+    <CartMain spotlight={spotlight}>
       <header className="mb-6">
         <div className="flex items-start justify-between gap-2">
           <h1 className="text-2xl font-semibold flex items-center gap-2">
@@ -457,7 +462,7 @@ export default function UniversalCartPage() {
             type="button"
             variant="ghost"
             size="icon"
-            className="-mr-2 shrink-0"
+            className="-me-2 shrink-0"
             onClick={() => navigate(-1)}
             aria-label={t("universalCart.page.close")}
           >
@@ -512,12 +517,12 @@ export default function UniversalCartPage() {
               >
                 {isProposing ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                     {t("universalCart.agent.proposing")}
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 h-4 w-4" />
+                    <Sparkles className="me-2 h-4 w-4" />
                     {t("universalCart.agent.proposeCta")}
                   </>
                 )}
@@ -533,12 +538,12 @@ export default function UniversalCartPage() {
               >
                 {isReordering ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                     {t("universalCart.agent.reordering")}
                   </>
                 ) : (
                   <>
-                    <RotateCcw className="mr-2 h-4 w-4" />
+                    <RotateCcw className="me-2 h-4 w-4" />
                     {t("universalCart.agent.reorderCta")}
                   </>
                 )}
@@ -678,7 +683,7 @@ export default function UniversalCartPage() {
                       onClick={() => onSetSaved(item, true)}
                       disabled={isPatching}
                     >
-                      <Bookmark className="mr-2 h-4 w-4" />
+                      <Bookmark className="me-2 h-4 w-4" />
                       {t("universalCart.saved.saveForLater")}
                     </Button>
                   </CardContent>
@@ -705,7 +710,7 @@ export default function UniversalCartPage() {
                         className="w-full justify-start"
                       >
                         <a href={r.affiliate_url} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
+                          <ExternalLink className="me-2 h-4 w-4" />
                           {t("marketplaceCheckout.checkout.affiliateLink")}
                         </a>
                       </Button>
@@ -723,12 +728,12 @@ export default function UniversalCartPage() {
               >
                 {isCheckingOut ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                     {t("marketplaceCheckout.checkout.processing")}
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    <ShoppingBag className="me-2 h-4 w-4" />
                     {t("marketplaceCheckout.checkout.button")}
                   </>
                 )}
@@ -777,7 +782,7 @@ export default function UniversalCartPage() {
                       onClick={() => onSetSaved(item, false)}
                       disabled={isPatching}
                     >
-                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      <ShoppingBag className="me-2 h-4 w-4" />
                       {t("universalCart.saved.moveToCart")}
                     </Button>
                   </CardContent>
@@ -794,6 +799,19 @@ export default function UniversalCartPage() {
         initialCurrency={addMoneyCurrency}
         initialAmountMajor={addMoneyAmount}
       />
-    </main>
+    </CartMain>
+  );
+}
+
+/**
+ * VTID-05117: Spotlight on → the manifest's `collection` frame around the cart
+ * column; off → today's centred container.
+ */
+function CartMain({ spotlight, children }: { spotlight: boolean; children: ReactNode }) {
+  if (!spotlight) return <main className="container mx-auto max-w-2xl px-4 py-10">{children}</main>;
+  return (
+    <ScreenFrame archetype="collection">
+      <main className="mx-auto max-w-2xl">{children}</main>
+    </ScreenFrame>
   );
 }

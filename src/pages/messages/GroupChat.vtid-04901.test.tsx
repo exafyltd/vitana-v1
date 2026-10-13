@@ -7,6 +7,8 @@
  * 8s poll re-fetched the whole roster.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+// VTID-05117: the page now reads the Spotlight flag; this suite covers the legacy (flag-off) screen.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 

@@ -203,7 +203,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
                                   <h4 className="font-semibold">{item.name}</h4>
                                   <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                                 </div>
-                                <Badge variant="secondary" className="ml-3">{t('screens.wallet.costCredits', { cost: item.cost })}
+                                <Badge variant="secondary" className="ms-3">{t('screens.wallet.costCredits', { cost: item.cost })}
                                 </Badge>
                               </div>
                             </div>

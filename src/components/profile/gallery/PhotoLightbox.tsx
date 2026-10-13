@@ -54,7 +54,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 z-10 text-white hover:bg-white/10"
+        className="absolute top-4 end-4 z-10 text-white hover:bg-white/10"
         onClick={onClose}
       >
         <X className="h-6 w-6" />
@@ -66,7 +66,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 h-12 w-12"
+            className="absolute start-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 h-12 w-12"
             onClick={(e) => { e.stopPropagation(); goPrev(); }}
           >
             <ChevronLeft className="h-8 w-8" />
@@ -74,7 +74,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 h-12 w-12"
+            className="absolute end-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 h-12 w-12"
             onClick={(e) => { e.stopPropagation(); goNext(); }}
           >
             <ChevronRight className="h-8 w-8" />

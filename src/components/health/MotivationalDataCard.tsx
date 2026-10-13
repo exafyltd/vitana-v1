@@ -49,7 +49,7 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
             onClick={() => navigate('/health/biomarker-results')}
           >
-            <Upload className="w-4 h-4 mr-2" />
+            <Upload className="w-4 h-4 me-2" />
             {t('screens.health.uploadBloodTest')}
           </Button>
           <Button 

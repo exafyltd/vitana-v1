@@ -68,9 +68,9 @@ const getEffortColor = (effort: OptimizationStrategy["effort"]) => {
 
 const getCategoryColor = (category: OptimizationStrategy["category"]) => {
   switch (category) {
-    case "immediate": return "border-l-red-500";
-    case "short-term": return "border-l-amber-500";
-    case "long-term": return "border-l-emerald-500";
+    case "immediate": return "border-s-red-500";
+    case "short-term": return "border-s-amber-500";
+    case "long-term": return "border-s-emerald-500";
   }
 };
 
@@ -124,7 +124,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
             {mockStrategies.map((strategy) => (
               <div 
                 key={strategy.id} 
-                className={`p-3 rounded-lg border-l-4 bg-card/50 hover:bg-card/80 transition-colors ${getCategoryColor(strategy.category)}`}
+                className={`p-3 rounded-lg border-s-4 bg-card/50 hover:bg-card/80 transition-colors ${getCategoryColor(strategy.category)}`}
               >
                 <div className="flex items-start justify-between mb-2">
                   <div>
@@ -181,7 +181,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
 
           {/* Action Button */}
           <Button className="w-full">
-            <Zap className="h-4 w-4 mr-2" />
+            <Zap className="h-4 w-4 me-2" />
             {t('screens.wallet.activateAllOptimizations')}
           </Button>
         </CardContent>

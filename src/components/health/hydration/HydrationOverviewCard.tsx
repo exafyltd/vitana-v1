@@ -99,7 +99,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
             <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
-            <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
+            <span className="text-xs text-muted-foreground whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
           </div>
           <p className="text-sm font-medium italic text-slate-700/90 dark:text-slate-300/90">
             "{planData.aiInsight}"
@@ -113,7 +113,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         className="w-full"
         onClick={onRecalibrate}
       >
-        <Sparkles className="w-4 h-4 mr-2" />
+        <Sparkles className="w-4 h-4 me-2" />
         {t('screens.health.recalibratePlan')}
       </Button>
       

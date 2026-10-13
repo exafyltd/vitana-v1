@@ -45,7 +45,7 @@ export function VaeaCatalogPanel() {
           <p className="text-xs text-muted-foreground">{t('screens.business.ownProductsRankAboveVettedPartners')}</p>
         </div>
         <Button size="sm" onClick={() => setShowForm((v) => !v)}>
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="h-4 w-4 me-1" />
           {showForm ? "Close" : "Add item"}
         </Button>
       </div>
@@ -171,7 +171,7 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
               }
             }}
           >
-            {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
+            {busy && <Loader2 className="h-4 w-4 me-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         </div>
       </CardContent>

@@ -153,7 +153,7 @@ export function CategoryShopSections({ category = "supplements", title }: Catego
               className="text-xs text-muted-foreground h-7 px-2"
               onClick={() => navigate(`/discover/category/${meta.key}`)}
             >
-              {translate("discover.seeAll")} <ChevronRight className="h-3 w-3 ml-0.5" />
+              {translate("discover.seeAll")} <ChevronRight className="h-3 w-3 ms-0.5" />
             </Button>
           </div>
 

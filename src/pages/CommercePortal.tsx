@@ -37,7 +37,6 @@ import {
   ChevronRight,
   FileUp,
   FlaskConical,
-  Loader2,
   PackagePlus,
   ShieldCheck,
   Sparkles,
@@ -74,6 +73,9 @@ import { fetchMcpReady } from '@/lib/commerce-mcp';
 import { MY_PORTAL_API, PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { t, notifyError } from '@/lib/i18n-toast';
 import { pickActiveOrg, readActiveOrgId, setActiveOrgId } from '@/lib/business-mode';
+import { ArchetypeSkeleton } from '@/components/layout/spotlight';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 // VTID-04791: the supplier's journey in their words — account, products,
 // verification — not the API-connection pipeline (mapping, sandbox, release),
@@ -138,6 +140,7 @@ export default function CommercePortal() {
   };
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const reduce = useReducedMotion();
   const agentCardRef = useRef<HTMLElement>(null);
   const [agentDialogOpen, setAgentDialogOpen] = useState(false);
@@ -376,9 +379,7 @@ export default function CommercePortal() {
 
         <div className="mt-4">
           {myOrgs === null ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
+            <ArchetypeSkeleton archetype="collection" />
           ) : myOrgs.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border bg-card px-5 py-10 text-center">
               <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.orgsEmpty')}</p>
@@ -536,6 +537,8 @@ export default function CommercePortal() {
 
   return (
     <CommerceShell>
+    {/* VTID-05117: Spotlight on → the page body in the `collection` frame; dialogs stay outside. */}
+    <FrameWhen on={spotlight} archetype="collection">
       {/* HERO — headline, subhead, and the CTA(s), always visible at every
           width. No eyebrow pill (the sticky header's own
           "VITANALAND · Commerce Portal" already says this — repeating it
@@ -675,9 +678,7 @@ export default function CommercePortal() {
 
             <div className="mt-4">
               {rows === null ? (
-                <div className="flex justify-center py-12">
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                </div>
+                <ArchetypeSkeleton archetype="collection" />
               ) : rows.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-border bg-card px-5 py-10 text-center">
                   <p className="text-sm text-muted-foreground">{t('screens.commerceportal.empty')}</p>
@@ -702,6 +703,7 @@ export default function CommercePortal() {
       {user && !hasOrgs && orgsSection}
 
       <p className="mt-8 text-center text-xs text-muted-foreground">{t('screens.commerceportal.footNote')}</p>
+    </FrameWhen>
 
       <ManualConnectDialog
         open={manualOpen}

@@ -1,4 +1,7 @@
 import { ArrowLeft } from "lucide-react";
+import { PublicMain } from "@/components/layout/spotlight/PublicMain";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { cn } from "@/lib/utils";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
@@ -12,6 +15,7 @@ const TermsOfUse = () => {
   const lang: LegalLang | null =
     urlLang === "de" || urlLang === "en" ? urlLang : null;
   const t = useScopedT(lang);
+  const spotlight = useSpotlightEnabled();
 
   return (
     <div className="min-h-screen bg-background">
@@ -23,7 +27,7 @@ const TermsOfUse = () => {
 
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+        <div className={cn(spotlight ? "max-w-form" : "max-w-4xl", "mx-auto px-4 py-4 flex items-center gap-4")}>
           <Button
             variant="ghost"
             size="icon"
@@ -33,14 +37,14 @@ const TermsOfUse = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.termsUse')}</h1>
-          <div className="ml-auto">
+          <div className="ms-auto">
             <LegalLocaleToggle />
           </div>
         </div>
       </header>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+      <PublicMain spotlight={spotlight} archetype="form" legacyClassName="max-w-4xl mx-auto px-4 py-8 md:py-12">
         <article className="prose prose-neutral dark:prose-invert max-w-none">
           {/* Title */}
           <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
@@ -72,7 +76,7 @@ const TermsOfUse = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text2Accounts')}
           </h2>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.createSingleTruthfulAccountKeepCredentials')}</li>
             <li>{t('screens.legal.weMaySuspendTerminateAccountsFor')}</li>
           </ul>
@@ -81,7 +85,7 @@ const TermsOfUse = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text4MaxinaExperienceEvents')}
           </h2>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.eventsOrganisedByIndependentThirdpartyPartners')}</li>
             <li>{t('screens.legal.cancellationAmpRefunds100RefundIf')}</li>
             <li>{t('screens.legal.participantRequirementsMinimumAge16Under18s')}</li>
@@ -92,7 +96,7 @@ const TermsOfUse = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text5DiscoverShop')}
           </h2>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.weListThirdpartyPhysicalDigitalProductsservices')}</li>
             <li>{t('screens.legal.shippingAmpReturnsForPhysicalGoods')}</li>
             <li>{t('screens.legal.titleRiskForGoodsPassYou')}</li>
@@ -136,7 +140,7 @@ const TermsOfUse = () => {
           <p className="text-foreground/90 leading-relaxed mb-4">
             {t('screens.legal.youAgreeNot')}
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.violateAnyApplicableLawRegulation')}</li>
             <li>{t('screens.legal.infringeIntellectualpropertyPrivacyRights')}</li>
             <li>{t('screens.legal.uploadMaliciousCodeAttemptGainUnauthorised')}</li>
@@ -156,7 +160,7 @@ const TermsOfUse = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text11GoverningLawAmpDisputeResolution')}
           </h2>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.governingLaw')}</strong> {t('screens.legal.abuDhabiGlobalMarketAdgmLaw')}</li>
             <li><strong>{t('screens.legal.arbitration')}</strong> {t('screens.legal.anyDisputeNotResolvedAmicablyWithin')}</li>
             <li><strong>{t('screens.legal.euConsumers')}</strong> {t('screens.legal.youMayAdditionallySubmitDisputesVia')}</li>
@@ -196,7 +200,7 @@ const TermsOfUse = () => {
             </p>
           </div>
         </article>
-      </main>
+      </PublicMain>
     </div>
   );
 };

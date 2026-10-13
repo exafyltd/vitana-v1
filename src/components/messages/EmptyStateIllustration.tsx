@@ -30,7 +30,7 @@ export default function EmptyStateIllustration({
             <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
               <Users className="w-10 h-10 text-primary/60" />
             </div>
-            <div className="absolute -top-1 -right-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center">
+            <div className="absolute -top-1 -end-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center">
               <Plus className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -56,7 +56,7 @@ export default function EmptyStateIllustration({
           <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
             <MessageSquare className="w-10 h-10 text-primary/60" />
           </div>
-          <div className="absolute -top-1 -right-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center">
+          <div className="absolute -top-1 -end-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center">
             <Plus className="w-4 h-4 text-white" />
           </div>
         </div>

@@ -13,7 +13,7 @@ interface MentalOverviewCardProps {
 
 export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCardProps) {
   return (
-    <Card className="overflow-hidden bg-gradient-to-br from-[#FDE2E4]/60 via-[#FAD4C0]/60 to-[#CDEDF6]/60 dark:from-[#1A1013]/90 dark:via-[#1E1C1B]/90 dark:to-[#122025]/90 border border-slate-200/60 dark:border-slate-800/60">
+    <Card className="overflow-hidden bg-gradient-to-br from-[#FDE2E4]/60 via-[#FAD4C0]/60 to-[#CDEDF6]/60 dark:from-[#1A1013]/90 dark:via-[#1E1C1B]/90 dark:to-[#122025]/90 border border-border/60">
       <div className="p-6 space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -25,8 +25,8 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
               {t('screens.health.aiguidedInsightsHelpYouManageStress')}
             </p>
           </div>
-          <Badge variant="secondary" className="bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60">
-            <Brain className="w-3 h-3 mr-1 animate-pulse" />
+          <Badge variant="secondary" className="bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-border/60">
+            <Brain className="w-3 h-3 me-1 animate-pulse" />
             {t('screens.health.aiOptimized')}
           </Badge>
         </div>
@@ -77,7 +77,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
               <p className="text-sm font-medium italic text-slate-600/90 dark:text-slate-300/80">
                 {planData.aiInsight}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</p>
+              <p className="text-xs text-muted-foreground mt-2">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</p>
             </div>
           </div>
         </div>
@@ -86,13 +86,13 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
         <div className="pt-2 space-y-3">
           <Button 
             variant="outline" 
-            className="w-full bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60"
+            className="w-full bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-border/60"
             onClick={onRecalibrate}
           >
-            <Settings className="w-4 h-4 mr-2" />
+            <Settings className="w-4 h-4 me-2" />
             {t('screens.health.recalibratePlan')}
           </Button>
-          <p className="text-xs text-center text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-center text-muted-foreground">
             {t('screens.health.recalibrationAdjustsYourMentalGoalsBased')}
           </p>
         </div>

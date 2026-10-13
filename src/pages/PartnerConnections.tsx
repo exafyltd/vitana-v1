@@ -6,7 +6,10 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader, PanelTitle as CardTitle } from '@/components/layout/spotlight/Panel';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { VCardSkeleton } from '@/components/ui/vcard';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -32,6 +35,7 @@ const stateLabel = (state: string) => t(`screens.partnerportal.states.${state}`)
 
 export default function PartnerConnections() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -79,6 +83,8 @@ export default function PartnerConnections() {
   };
 
   return (
+    // VTID-05117: Spotlight on → the manifest's `collection` frame around the same panel.
+    <FrameWhen on={spotlight} archetype="collection">
     <div className="mx-auto w-full max-w-4xl space-y-4 p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
@@ -88,7 +94,7 @@ export default function PartnerConnections() {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button>
-              <Plug className="mr-2 h-4 w-4" />
+              <Plug className="me-2 h-4 w-4" />
               {t('screens.partnerportal.newConnection')}
             </Button>
           </DialogTrigger>
@@ -136,7 +142,7 @@ export default function PartnerConnections() {
               >
                 {creating ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                     {t('screens.partnerportal.creating')}
                   </>
                 ) : (
@@ -154,8 +160,10 @@ export default function PartnerConnections() {
         </CardHeader>
         <CardContent>
           {rows === null ? (
-            <div className="flex justify-center py-8">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            <div className="flex flex-col gap-2 py-2" aria-busy="true">
+              {[0, 1, 2].map((i) => (
+                <VCardSkeleton key={i} size="row" />
+              ))}
             </div>
           ) : rows.length === 0 ? (
             <p className="py-6 text-center text-sm text-muted-foreground">{t('screens.partnerportal.empty')}</p>
@@ -165,7 +173,7 @@ export default function PartnerConnections() {
                 <li key={row.id}>
                   <button
                     type="button"
-                    className="flex w-full flex-wrap items-center justify-between gap-2 py-3 text-left hover:bg-muted/50"
+                    className="flex w-full flex-wrap items-center justify-between gap-2 py-3 text-start hover:bg-muted/50"
                     onClick={() => navigate(`/partner/connections/${row.id}`)}
                   >
                     <div className="min-w-0">
@@ -186,5 +194,6 @@ export default function PartnerConnections() {
         </CardContent>
       </Card>
     </div>
+    </FrameWhen>
   );
 }

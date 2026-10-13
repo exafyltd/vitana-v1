@@ -195,14 +195,14 @@ export function EventTicket({
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.08]">
           {/* Large subtle orb - top right */}
           <div 
-            className="absolute -top-20 -right-20 w-64 h-64 rounded-full"
+            className="absolute -top-20 -end-20 w-64 h-64 rounded-full"
             style={{
               background: 'radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%)',
             }}
           />
           {/* Smaller orb - bottom left */}
           <div 
-            className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full"
+            className="absolute -bottom-16 -start-16 w-48 h-48 rounded-full"
             style={{
               background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
             }}
@@ -243,7 +243,7 @@ export function EventTicket({
         />
 
         {/* Holographic Seal - Bottom Right - Tenant Branded */}
-        <div className="absolute bottom-24 right-4 w-16 h-16 pointer-events-none z-10">
+        <div className="absolute bottom-24 end-4 w-16 h-16 pointer-events-none z-10">
           {/* Outer glow ring with tenant accent */}
           <div 
             className="absolute inset-0 rounded-full opacity-40"
@@ -354,9 +354,9 @@ export function EventTicket({
           
           {/* Strong Divider Line with Cutouts - Boarding Pass Style */}
           <div className="relative flex items-center my-3">
-            <div className="absolute -left-4 w-5 h-5 bg-black/80 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]" />
+            <div className="absolute -start-4 w-5 h-5 bg-black/80 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]" />
             <div className="flex-1 border-t-2 border-dashed border-white/40" />
-            <div className="absolute -right-4 w-5 h-5 bg-black/80 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]" />
+            <div className="absolute -end-4 w-5 h-5 bg-black/80 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]" />
           </div>
           
           {/* Two-Column Attendee Row - with subtle dark backing */}
@@ -369,7 +369,7 @@ export function EventTicket({
                 {buyerName}
               </p>
             </div>
-            <div className="text-right">
+            <div className="text-end">
               <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
                 {t('screens.tickets.qty')}
               </div>
@@ -438,14 +438,14 @@ export function EventTicket({
           className="flex-1 rounded-xl"
           onClick={handleDownload}
         >
-          <Download className="h-4 w-4 mr-2" />
+          <Download className="h-4 w-4 me-2" />
           {t('screens.tickets.download')}
         </Button>
         <Button
           className="flex-1 rounded-xl"
           onClick={() => setShareSheetOpen(true)}
         >
-          <Share2 className="h-4 w-4 mr-2" />
+          <Share2 className="h-4 w-4 me-2" />
           {t('screens.tickets.share')}
         </Button>
       </div>

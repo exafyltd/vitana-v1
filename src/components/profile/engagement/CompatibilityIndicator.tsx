@@ -94,7 +94,7 @@ export function CompatibilityIndicator({
           
           {mutualConnections > 0 && (
             <Badge variant="outline" className="text-xs">
-              <Users className="h-3 w-3 mr-1" />{t('screens.profile.mutualconnectionsMutual', { mutualConnections })}
+              <Users className="h-3 w-3 me-1" />{t('screens.profile.mutualconnectionsMutual', { mutualConnections })}
             </Badge>
           )}
         </div>

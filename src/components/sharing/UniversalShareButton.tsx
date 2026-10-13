@@ -75,7 +75,7 @@ export function UniversalShareButton({
       >
         <Share2 className="h-4 w-4" />
         {showLabel && size !== "icon" && (
-          <span className="ml-2">{translate("common.share", "Share")}</span>
+          <span className="ms-2">{translate("common.share", "Share")}</span>
         )}
       </Button>
 

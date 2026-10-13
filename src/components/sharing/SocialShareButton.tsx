@@ -191,7 +191,7 @@ export default function SocialShareButton({
         className={variant === 'icon' ? `p-2 ${className || ''}` : className}
       >
         <Share2 className="w-4 h-4" />
-        {variant === 'button' && <span className="ml-2">{translate('common.share', 'Share')}</span>}
+        {variant === 'button' && <span className="ms-2">{translate('common.share', 'Share')}</span>}
       </Button>
 
       {/* Instagram Share Modal */}
@@ -211,7 +211,7 @@ export default function SocialShareButton({
       />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-md max-h-[90dvh] overflow-y-auto [&>button]:not-sr-only [&>button]:absolute [&>button]:right-4 [&>button]:top-4">
+        <DialogContent className="max-w-md max-h-[90dvh] overflow-y-auto [&>button]:not-sr-only [&>button]:absolute [&>button]:end-4 [&>button]:top-4">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Share2 className="w-5 h-5 text-primary" />{t('screens.sharing.shareValue0', { value0: type.charAt(0).toUpperCase() + type.slice(1) })}</DialogTitle>
@@ -299,7 +299,7 @@ export default function SocialShareButton({
                           <div className="relative">
                             <Icon className={`h-5 w-5 ${isConnected ? option.color : "text-muted-foreground"}`} />
                             {isConnected && (
-                              <CheckCircle2 className="absolute -top-1 -right-1 h-3 w-3 text-green-600 bg-background rounded-full" />
+                              <CheckCircle2 className="absolute -top-1 -end-1 h-3 w-3 text-green-600 bg-background rounded-full" />
                             )}
                           </div>
                           <span className={`text-[10px] ${!isConnected && "text-muted-foreground"}`}>
@@ -321,7 +321,7 @@ export default function SocialShareButton({
                               e.stopPropagation();
                               handleConnectPlatform();
                             }}
-                            className="absolute top-1 right-1 p-1 rounded bg-background/80 hover:bg-background border border-border hover:border-primary transition-colors"
+                            className="absolute top-1 end-1 p-1 rounded bg-background/80 hover:bg-background border border-border hover:border-primary transition-colors"
                             title={`Connect ${option.name}`}
                           >
                             <Plus className="h-3 w-3 text-muted-foreground" />

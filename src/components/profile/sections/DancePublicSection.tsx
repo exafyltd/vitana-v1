@@ -71,7 +71,7 @@ export function DancePublicSection({ userId, isOwn = false }: Props) {
               >
                 <span className="capitalize">{v}</span>
                 {level && (
-                  <span className="ml-1.5 text-xs opacity-70">· {level}</span>
+                  <span className="ms-1.5 text-xs opacity-70">· {level}</span>
                 )}
               </span>
             );

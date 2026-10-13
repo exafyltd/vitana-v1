@@ -25,7 +25,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             <p className="text-xs text-muted-foreground">{translate('autopilot.suggestions.bannerDesc')}</p>
           </div>
           <Button size="sm" variant="outline">
-            <Plane className="h-3 w-3 mr-1" />
+            <Plane className="h-3 w-3 me-1" />
             {translate('autopilot.suggestions.enable')}
           </Button>
         </div>
@@ -89,7 +89,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             className="h-7 text-xs"
             onClick={() => onSuggestionClick?.('suggest-popular')}
           >
-            <TrendingUp className="h-3 w-3 mr-1" />
+            <TrendingUp className="h-3 w-3 me-1" />
             {translate('autopilot.suggestions.suggestPopular')}
           </Button>
           <Button 
@@ -98,7 +98,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             className="h-7 text-xs"
             onClick={() => onSuggestionClick?.('suggest-recent')}
           >
-            <Sparkles className="h-3 w-3 mr-1" />
+            <Sparkles className="h-3 w-3 me-1" />
             {translate('autopilot.suggestions.recentHighlights')}
           </Button>
         </div>
@@ -123,7 +123,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
           className="h-7 text-xs"
           onClick={() => onSuggestionClick?.('update-archetype')}
         >
-          <Sparkles className="h-3 w-3 mr-1" />
+          <Sparkles className="h-3 w-3 me-1" />
           {translate('autopilot.suggestions.updateArchetype')}
         </Button>
       </Card>
@@ -152,7 +152,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             </div>
             <Button 
               onClick={() => setShowPopup(true)}
-              className="ml-4 flex-shrink-0"
+              className="ms-4 flex-shrink-0"
               data-autopilot-trigger
             >
               {translate('autopilot.suggestions.tryAutopilot')}

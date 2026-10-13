@@ -87,7 +87,7 @@ export function RecommendButton({ productId, className, variant = "badge", size 
       onClick={handleClick}
       disabled={isRecommending || isRecommended}
       className={cn(
-        "absolute top-1 left-1 z-10 rounded-full border shadow-sm",
+        "absolute top-1 start-1 z-10 rounded-full border shadow-sm",
         "transition-all duration-300 hover:scale-110",
         !isRecommended && "border-white/50 dark:border-white/15",
         className,

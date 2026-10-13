@@ -21,6 +21,10 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
 import { useShareOrCopy } from '@/hooks/useShareOrCopy';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { discoverNavigation } from "@/config/navigation";
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
   const { shareOrCopy } = useShareOrCopy({ contentId: id ?? 'provider', contentType: 'provider' });
@@ -29,6 +33,10 @@ export default function ProviderProfile() {
   const queryClient = useQueryClient();
   const [bookingOpen, setBookingOpen] = useState(false);
   const { getBalance } = useWallet();
+  // VTID-05117 — Spotlight (desktop + flag): there is no provider catalogue yet — the legacy page
+  // shows three sample providers — so the detail screen's one spotlight card says so honestly
+  // (SR-06, SR-24). Phones and flag-off keep the page below.
+  const spotlight = useSpotlightEnabled();
   
   // Mock provider data - matches DoctorsCoaches.tsx
   const providers = [
@@ -128,6 +136,26 @@ export default function ProviderProfile() {
     setBookingOpen(false);
   };
   
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.discover.providerNotFound')} description={t('spotlightMember.discover.providerSoonDesc')} />
+        <ScreenFrame archetype="detail" subNav={{ items: discoverNavigation }}>
+          <VCard
+            size="spotlight"
+            eyebrow={t('spotlightMember.discover.providerEyebrow')}
+            title={t('spotlightMember.discover.providerSoonTitle')}
+            body={t('spotlightMember.discover.providerSoonDesc')}
+            actions={
+              <Button onClick={() => navigate('/discover/doctors-coaches')}>{t('screens.discover.backProviders')}</Button>
+            }
+            data-provider-placeholder=""
+          />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   if (!provider) {
     return (
       <AppLayout>

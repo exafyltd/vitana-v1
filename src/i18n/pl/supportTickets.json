@@ -15,7 +15,8 @@
       "account_issue": "Problem z kontem",
       "marketplace_claim": "Zamówienie lub płatność",
       "feature_request": "Prośba o funkcję",
-      "other": "Inne"
+      "other": "Inne",
+      "_pending_review": {}
     },
     "kindHint": {
       "feedback": "Pomysły, przemyślenia, cokolwiek innego",
@@ -24,7 +25,8 @@
       "support_question": "Pytanie o korzystanie z Vitany",
       "account_issue": "Logowanie, profil, dane",
       "marketplace_claim": "Zwroty, marketplace",
-      "feature_request": "Coś, czego Ci brakuje"
+      "feature_request": "Coś, czego Ci brakuje",
+      "_pending_review": {}
     },
     "status": {
       "received": "Przyjęte",
@@ -32,7 +34,8 @@
       "in_progress": "W naprawie",
       "fixed": "Rozwiązane",
       "wont_fix": "Nie zostanie zrobione",
-      "duplicate": "Duplikat"
+      "duplicate": "Duplikat",
+      "_pending_review": {}
     },
     "timelineLabel": "Postęp",
     "reportedOn": "Zgłoszono {date}",
@@ -49,7 +52,8 @@
       "low": "Niski",
       "medium": "Średni",
       "high": "Wysoki",
-      "critical": "Krytyczny"
+      "critical": "Krytyczny",
+      "_pending_review": {}
     },
     "submittedTitle": "Dzięki – Twoje zgłoszenie zostało utworzone",
     "submittedNumber": "Twój numer zgłoszenia: {number}",
@@ -61,7 +65,8 @@
       "seoDescription": "Zgłaszaj błędy, zadawaj pytania lub dziel się opinią. Vitana i jej współpracownicy odezwą się do Ciebie.",
       "headerDescription": "Błędy, pytania, opinie – Vitana przekazuje temat specjaliście, gdy wykracza poza jej obszar.",
       "send": "Wyślij do Vitany",
-      "sending": "Wysyłanie …"
+      "sending": "Wysyłanie …",
+      "_pending_review": {}
     },
     "support": {
       "seoTitle": "Obsługa klienta",
@@ -82,10 +87,12 @@
       "voiceBody": "Po prostu powiedz Vitanie, co się dzieje. Utworzy zgłoszenie za Ciebie i poda Ci jego numer.",
       "voiceButton": "Zgłoś głosem",
       "emailTitle": "E-mail",
-      "emailBody": "Możesz też napisać do nas bezpośrednio."
+      "emailBody": "Możesz też napisać do nas bezpośrednio.",
+      "_pending_review": {}
     },
     "diary": {
-      "title": "Moje zgłoszenia"
+      "title": "Moje zgłoszenia",
+      "_pending_review": {}
     },
     "admin": {
       "copyVtid": "Kopiuj VTID",
@@ -96,7 +103,8 @@
         "marketplace_claim": "Reklamacja w marketplace",
         "account_issue": "Problem z kontem",
         "feedback": "Opinia (bez szkicu)",
-        "feature_request": "Prośba o funkcję"
+        "feature_request": "Prośba o funkcję",
+        "_pending_review": {}
       },
       "kindDesc": {
         "bug": "Błąd w kodzie — przechodzi przez specyfikację Devona → Dev Autopilot",
@@ -105,7 +113,8 @@
         "marketplace_claim": "Zwrot / spór — Atlas przygotowuje rozwiązanie",
         "account_issue": "Logowanie / rola / dane — Mira przygotowuje rozwiązanie",
         "feedback": "Opinia / fajnie by było — od razu w toku",
-        "feature_request": "Nowa funkcja — od razu w toku"
+        "feature_request": "Nowa funkcja — od razu w toku",
+        "_pending_review": {}
       },
       "status": {
         "new": "Zgłoszone",
@@ -123,7 +132,8 @@
         "rejected": "Odrzucone",
         "wont_fix": "Nie zostanie naprawione",
         "needs_more_info": "Potrzeba informacji",
-        "reopened": "Ponownie otwarte"
+        "reopened": "Ponownie otwarte",
+        "_pending_review": {}
       },
       "stage": {
         "cooling": "W kolejce",
@@ -146,32 +156,37 @@
         "verifying": "podczas weryfikacji po wdrożeniu",
         "plan_gen": "podczas generowania planu",
         "approve_safety": "na bramce bezpieczeństwa",
-        "other": "na etapie {stage}"
+        "other": "na etapie {stage}",
+        "_pending_review": {}
       },
       "run": {
         "failed": "Uruchomienie nie powiodło się",
         "failedWhere": "Uruchomienie nie powiodło się {where}",
         "completed": "Zakończone — wdrożone na produkcję",
-        "running": "Działa w Dev Autopilot — {stage}"
+        "running": "Działa w Dev Autopilot — {stage}",
+        "_pending_review": {}
       },
       "generate": {
         "devon": "Wygeneruj specyfikację (Devon)",
         "sage": "Wygeneruj odpowiedź (Sage)",
         "atlas": "Wygeneruj rozwiązanie (Atlas)",
-        "mira": "Wygeneruj rozwiązanie (Mira)"
+        "mira": "Wygeneruj rozwiązanie (Mira)",
+        "_pending_review": {}
       },
       "draftNoun": {
         "spec_md": "specyfikacja",
         "draft_answer_md": "szkic odpowiedzi",
         "resolution_md": "rozwiązanie",
-        "none": "zadanie"
+        "none": "zadanie",
+        "_pending_review": {}
       },
       "placeholder": {
         "devon": "np. Prawdziwy błąd tkwi w logice ponownego łączenia SSE; użytkownik widzi objaw, ale przyczyna leży w orb-live.ts. Zmieniaj tylko część odpowiedzialną za ponowne łączenie. Dodaj test jednostkowy dla przypadku pojedynczej wypowiedzi.",
         "sage": "np. Odpowiedź powinna wspomnieć o nowym procesie zapisu do bety w /settings, a nie o starym przełączniku.",
         "atlas": "np. Ta reklamacja graniczy z oszustwem — zacznij od sprawdzenia uprawnień i wstrzymaj każdy zwrot do czasu weryfikacji przez operatora.",
         "mira": "np. Najpierw zweryfikuj e-mail użytkownika; uszkodzona rola to prawdopodobnie nieaktualny claim OAuth, a nie problem z DB.",
-        "default": "Twoje wskazówki do zadania."
+        "default": "Twoje wskazówki do zadania.",
+        "_pending_review": {}
       },
       "action": {
         "generate": "Wygeneruj",
@@ -188,7 +203,8 @@
         "rollbackConfirm": "Cofnąć {pr} i ponownie otworzyć {ticket}?\n\nZostanie utworzony PR z revertem i automatycznie scalony. To wdroży wycofanie zmian na produkcję.",
         "working": "Pracuję — proszę czekać",
         "close": "Zamknij",
-        "rejectPrompt": "Powód odrzucenia {ticket}? (opcjonalnie)"
+        "rejectPrompt": "Powód odrzucenia {ticket}? (opcjonalnie)",
+        "_pending_review": {}
       },
       "toast": {
         "reclassifiedTitle": "{ticket} przeklasyfikowane",
@@ -209,8 +225,10 @@
       "error": {
         "alreadyDispatched": "To zgłoszenie jest już realizowane w Dev Autopilot. Po przekazaniu zmiana klasyfikacji jest zablokowana.",
         "draftRequired": "Najpierw wygeneruj szkic — napisz instrukcje i kliknij Wygeneruj.",
-        "alreadyInProgress": "To zgłoszenie jest już realizowane. Autopilot zamknie je po zakończeniu."
-      }
+        "alreadyInProgress": "To zgłoszenie jest już realizowane. Autopilot zamknie je po zakończeniu.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "adminList": {
       "approveAllConfirm": "Zatwierdzić wszystkie zgłoszenia do obsługi ({count}) od {customer}?",
@@ -231,7 +249,10 @@
       "toggleOn": "Włącz {name}",
       "toggleOff": "Wyłącz {name}",
       "seoDescription": "Zgłoszenia z opiniami najemcy i zespół specjalistów AI",
-      "pageDescription": "Zgłoszenia, które twoi członkowie wysłali do Vitany. Obsługują je specjaliści AI — ludzie zatwierdzają, zanim jakakolwiek akcja zostanie zastosowana."
-    }
-  }
+      "pageDescription": "Zgłoszenia, które twoi członkowie wysłali do Vitany. Obsługują je specjaliści AI — ludzie zatwierdzają, zanim jakakolwiek akcja zostanie zastosowana.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

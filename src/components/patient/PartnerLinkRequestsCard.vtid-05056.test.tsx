@@ -7,6 +7,8 @@
  * request fails — it never blocks the Results page.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
+// VTID-05117: the page now reads the Spotlight flag; this suite covers the legacy (flag-off) screen.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";

@@ -178,7 +178,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
             <Field label="Handle">
               <div className="flex items-center">
-                <span className="text-muted-foreground mr-2">@</span>
+                <span className="text-muted-foreground me-2">@</span>
                 <Input
                   value={form.handle}
                   onChange={(e) =>
@@ -328,11 +328,11 @@ function DateOfBirthPicker({
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full justify-start text-start font-normal",
             !parsed && "text-muted-foreground",
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          <CalendarIcon className="me-2 h-4 w-4" />
           {parsed ? formatDate(parsed, "PPP") : "Select birth date"}
         </Button>
       </PopoverTrigger>

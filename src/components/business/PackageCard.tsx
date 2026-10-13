@@ -87,7 +87,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
   return (
     <Card className="group relative overflow-hidden">
       {/* Status Badge */}
-      <div className="absolute top-3 right-3 z-10">
+      <div className="absolute top-3 end-3 z-10">
         <Badge variant="outline" className={cn("text-xs", statusConfig.color)}>
           {translate(statusConfig.labelKey, statusConfig.fallback)}
         </Badge>
@@ -101,7 +101,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
           )}>
             <TypeIcon className="w-5 h-5" />
           </div>
-          <div className="flex-1 min-w-0 pr-16">
+          <div className="flex-1 min-w-0 pe-16">
             <h3 className="font-semibold text-foreground truncate">{pkg.title}</h3>
             <Badge variant="outline" className={cn("text-xs mt-1", typeConfig.color)}>
               {translate(typeConfig.labelKey, typeConfig.fallback)}
@@ -166,25 +166,25 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => onEdit?.(pkg)}>
-              <Edit className="w-4 h-4 mr-2" />
+              <Edit className="w-4 h-4 me-2" />
               {translate('buttons.edit', 'Edit')}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleToggleStatus}>
               {pkg.status === 'published' ? (
                 <>
-                  <EyeOff className="w-4 h-4 mr-2" />
+                  <EyeOff className="w-4 h-4 me-2" />
                   {translate('packages.unpublish', 'Unpublish')}
                 </>
               ) : (
                 <>
-                  <Eye className="w-4 h-4 mr-2" />
+                  <Eye className="w-4 h-4 me-2" />
                   {translate('packages.publish', 'Publish')}
                 </>
               )}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDelete} className="text-destructive">
-              <Trash2 className="w-4 h-4 mr-2" />
+              <Trash2 className="w-4 h-4 me-2" />
               {translate('buttons.delete', 'Delete')}
             </DropdownMenuItem>
           </DropdownMenuContent>

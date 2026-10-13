@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SEO from '@/components/SEO';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { t, notifySuccess, notifyError } from '@/lib/i18n-toast';
 import { redirectViaSystemBrowser, isAppilixWebView } from '@/lib/webview';
 import { detectInAppBrowser, type InAppBrowser } from '@/lib/in-app-browser';
@@ -48,6 +50,7 @@ function detectPlatform(): Platform {
 }
 
 export default function MaxinaAppRedirect() {
+  const spotlight = useSpotlightEnabled();
   const [platform] = useState<Platform>(detectPlatform);
   const [inApp] = useState<InAppBrowser | null>(() => detectInAppBrowser());
 
@@ -154,8 +157,8 @@ export default function MaxinaAppRedirect() {
   const showsButtons =
     iosInWebview || platform === 'other' || inApp !== null || inOwnApp;
 
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6 py-10 text-center">
+  const body = (
+    <>
       <SEO
         title={t('screens.maxinaAppRedirect.seoTitle')}
         canonical="https://vitanaland.com/maxina/app"
@@ -256,6 +259,21 @@ export default function MaxinaAppRedirect() {
           </button>
         </>
       )}
+    </>
+  );
+
+  // VTID-05117: Spotlight on (desktop only) → the `form` archetype column.
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className="min-h-screen bg-background">
+        <div className="flex flex-col items-center gap-6 py-10 text-center">{body}</div>
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6 py-10 text-center">
+      {body}
     </div>
   );
 }

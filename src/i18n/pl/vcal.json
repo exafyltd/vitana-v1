@@ -22,27 +22,32 @@
       "morning": "Dzień dobry ☀️",
       "afternoon": "Miłego popołudnia 🌤️",
       "evening": "Dobry wieczór 🌙",
-      "night": "Dobranoc 🌙"
+      "night": "Dobranoc 🌙",
+      "_pending_review": {}
     },
     "day": {
-      "addFor": "Nowy wpis na {date}"
+      "addFor": "Nowy wpis na {date}",
+      "_pending_review": {}
     },
     "views": {
       "day": "Dzień",
       "week": "Tydzień",
-      "month": "Miesiąc"
+      "month": "Miesiąc",
+      "_pending_review": {}
     },
     "rel": {
       "now": "teraz",
       "minutes": "za {count} min",
       "hours": "za {count} godz.",
-      "days": "za {count} dni"
+      "days": "za {count} dni",
+      "_pending_review": {}
     },
     "reminder": {
       "eveningBefore": "Wieczór wcześniej o {time}",
       "atStart": "Na start",
       "hoursBefore": "{count} godz. wcześniej",
-      "minutesBefore": "{count} min wcześniej"
+      "minutesBefore": "{count} min wcześniej",
+      "_pending_review": {}
     },
     "kinds": {
       "nutrition": "Odżywianie",
@@ -78,28 +83,33 @@
     "subscription": {
       "renews": "Premium się odnawia",
       "ends": "Premium się kończy",
-      "trialEnds": "Okres próbny się kończy"
+      "trialEnds": "Okres próbny się kończy",
+      "_pending_review": {}
     },
     "overlap": {
       "title": "To nachodzi na siebie",
       "own": "{{title}} · {{time}}",
       "busy": "Zajęte · {{time}}",
-      "external": "Zajęte (inny kalendarz) · {{time}}"
+      "external": "Zajęte (inny kalendarz) · {{time}}",
+      "_pending_review": {}
     },
     "findTime": {
       "action": "Znajdź termin",
       "loading": "Szukam wolnego czasu …",
       "pick": "Pasujące terminy",
       "none": "W najbliższych dniach nie ma nic pasującego.",
-      "error": "Nie udało się wczytać wolnych terminów."
+      "error": "Nie udało się wczytać wolnych terminów.",
+      "_pending_review": {}
     },
     "empty": {
       "title": "Nic zaplanowanego – spokojny dzień",
-      "hint": "Powiedz Vitanie, co planujesz, a ona to doda."
+      "hint": "Powiedz Vitanie, co planujesz, a ona to doda.",
+      "_pending_review": {}
     },
     "week": {
       "title": "Tydzień od {date}",
-      "free": "wolne"
+      "free": "wolne",
+      "_pending_review": {}
     },
     "month": {
       "more": "+{count}",
@@ -135,7 +145,8 @@
       "autopilot_review": "Czeka na twój przegląd",
       "ticket_due": "Termin zgłoszenia",
       "erp_approval": "Zatwierdzenie czeka",
-      "readOnly": "Kończysz to tam, gdzie powstało – kalendarz pokazuje tylko, kiedy przypada."
+      "readOnly": "Kończysz to tam, gdzie powstało – kalendarz pokazuje tylko, kiedy przypada.",
+      "_pending_review": {}
     },
     "subscribe": {
       "title": "Pokaż w mojej aplikacji kalendarza",
@@ -157,23 +168,28 @@
       "titleFor": {
         "google": "Połącz Kalendarz Google",
         "apple": "Połącz Kalendarz Apple",
-        "outlook": "Połącz Outlook"
+        "outlook": "Połącz Outlook",
+        "_pending_review": {}
       },
       "introFor": {
         "google": "Twoje wpisy z Vitanaland pojawią się w Kalendarzu Google i będą tam aktualne.",
         "apple": "Twoje wpisy z Vitanaland pojawią się w Kalendarzu na iPhonie, iPadzie i Macu i będą tam aktualne.",
-        "outlook": "Twoje wpisy z Vitanaland pojawią się w kalendarzu Outlook i będą tam aktualne."
+        "outlook": "Twoje wpisy z Vitanaland pojawią się w kalendarzu Outlook i będą tam aktualne.",
+        "_pending_review": {}
       },
       "createFor": {
         "google": "Utwórz link dla Google",
         "apple": "Utwórz link dla Apple",
-        "outlook": "Utwórz link dla Outlook"
+        "outlook": "Utwórz link dla Outlook",
+        "_pending_review": {}
       },
       "openIn": {
         "google": "Dodaj do Kalendarza Google",
         "apple": "Dodaj do Kalendarza Apple",
-        "outlook": "Dodaj do Outlook"
-      }
+        "outlook": "Dodaj do Outlook",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "move": {
       "action": "Przesuń",
@@ -187,8 +203,10 @@
         "owned_by_source": "To pochodzi z rezerwacji lub planu – przesuń to tam, inaczej wróci.",
         "recurring": "Serię przesuwasz z poziomu samej serii.",
         "completed": "Zrobione zostaje tam, gdzie było.",
-        "cancelled": "Odwołanego nie da się przesunąć."
-      }
+        "cancelled": "Odwołanego nie da się przesunąć.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "google": {
       "title": "Synchronizuj z Kalendarzem Google",
@@ -202,12 +220,14 @@
       "problem": "Ostatnia synchronizacja się nie udała – spróbujemy ponownie automatycznie.",
       "error": "Teraz się nie udało. Spróbuj za chwilę.",
       "busy": "Zajęte (Google)",
-      "busyHint": "Wydarzenie z Twojego Kalendarza Google – widać tylko godzinę"
+      "busyHint": "Wydarzenie z Twojego Kalendarza Google – widać tylko godzinę",
+      "_pending_review": {}
     },
     "quietHours": {
       "title": "Godziny ciszy",
       "body": "W godzinach ciszy nie przychodzą przypomnienia – przychodzą tuż przed nimi.",
-      "link": "Ustaw godziny ciszy"
+      "link": "Ustaw godziny ciszy",
+      "_pending_review": {}
     },
     "guide": {
       "eyebrow": "Vitana podpowiada",
@@ -224,7 +244,8 @@
       "planWithVitana": "Zaplanuj z Vitaną",
       "seeWeek": "Zobacz tydzień",
       "connectAction": "Połącz kalendarz",
-      "dismiss": "Ukryj na dziś"
+      "dismiss": "Ukryj na dziś",
+      "_pending_review": {}
     },
     "journey": {
       "title": "Twoja podróż",
@@ -243,14 +264,16 @@
       "dailyAt": "Codziennie o",
       "addConfirm": "Dodaj",
       "inCalendar": "W kalendarzu",
-      "habitAdded": "Nawyk dodany do kalendarza"
+      "habitAdded": "Nawyk dodany do kalendarza",
+      "_pending_review": {}
     },
     "remindersSection": {
       "title": "Przypomnienia",
       "none": "Brak zaplanowanych",
       "upcoming": "Nadchodzące: {count}",
       "upcomingOne": "1 nadchodzące",
-      "next": "następne {when}"
+      "next": "następne {when}",
+      "_pending_review": {}
     },
     "calendars": {
       "title": "Kalendarze",
@@ -276,12 +299,14 @@
       "connect": "Połącz",
       "reconnect": "Połącz ponownie",
       "manage": "Zarządzaj w Połączonych aplikacjach",
-      "showInAppHint": "Zobacz wpisy Vitanaland w swojej aplikacji kalendarza"
+      "showInAppHint": "Zobacz wpisy Vitanaland w swojej aplikacji kalendarza",
+      "_pending_review": {}
     },
     "add": {
       "title": "Nowy wpis",
       "created": "Dodano ✨",
-      "error": "Nie udało się teraz zapisać. Spróbuj ponownie za chwilę."
+      "error": "Nie udało się teraz zapisać. Spróbuj ponownie za chwilę.",
+      "_pending_review": {}
     },
     "form": {
       "title": "Tytuł",
@@ -304,8 +329,10 @@
         "health": "Zdrowie",
         "workout": "Trening",
         "community": "Społeczność",
-        "nutrition": "Odżywianie"
-      }
+        "nutrition": "Odżywianie",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "milestone": "Kamień milowy: {title}",
     "more": "+{count} więcej",
@@ -314,13 +341,15 @@
       "entriesOne": "1 wpis",
       "entries": "Wpisy: {count}",
       "next": "następny o {time}",
-      "done": "zrobione: {count}"
+      "done": "zrobione: {count}",
+      "_pending_review": {}
     },
     "workSection": {
       "title": "Praca",
       "waitingOne": "1 rzecz na ciebie czeka",
       "waiting": "Czeka na ciebie: {count}",
-      "open": "Otwórz w panelu admina"
+      "open": "Otwórz w panelu admina",
+      "_pending_review": {}
     },
     "indexGain": "+{points} {pillar} w twoim Vitana Index",
     "edit": {
@@ -534,5 +563,6 @@
         "listen": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }
