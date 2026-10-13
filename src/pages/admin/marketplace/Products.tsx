@@ -26,7 +26,9 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { fmtNumber } from '@/lib/locale-format';
 import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
+// so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 interface Product {
   id: string;
@@ -79,7 +81,7 @@ export default function MarketplaceProducts() {
   const inactiveOnly = searchParams.get("is_active") === "false";
 
   const load = useCallback(async () => {
-    if (!GATEWAY_URL) {
+    if (!GATEWAY_BASE) {
       notifyError('toasts.admin.gatewayUrlNotConfigured');
       setLoading(false);
       return;
@@ -92,7 +94,7 @@ export default function MarketplaceProducts() {
       if (inactiveOnly) params.set("is_active", "false");
       if (search.trim()) params.set("search", search.trim());
       params.set("limit", "50");
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/marketplace/products?${params.toString()}`, { headers });
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/marketplace/products?${params.toString()}`, { headers });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const json = await resp.json();
       setItems(json.items ?? []);
@@ -115,11 +117,11 @@ export default function MarketplaceProducts() {
       notify('toasts.admin.noProductsSelected');
       return;
     }
-    if (!GATEWAY_URL) return;
+    if (!GATEWAY_BASE) return;
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/marketplace/products/bulk-action`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/marketplace/products/bulk-action`, {
         method: "POST",
         headers,
         body: JSON.stringify({ product_ids: Array.from(selected), action }),

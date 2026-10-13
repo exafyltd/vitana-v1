@@ -1,0 +1,39 @@
+{
+  "vtid": "VTID-05155",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "gateway prefix: signed in, /settings/limitations on desktop (1400x900) and phone (390x844) sends GET <gateway>/api/v1/user/limitations and /impact, both answer 200 JSON; no request in the session contains /api/v1/api/v1; GET /api/v1/admin/partner-health/orders with the test user's token answers JSON 401/403, not an HTML 404. Clicks nothing, saves nothing; read-only",
+      "spec": "tests/e2e/staging/vtid-05155-gateway-prefix.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "http",
+      "name": "the single-prefix admin partner-health route the page now calls exists and refuses an invalid bearer with JSON",
+      "target": "gateway",
+      "method": "GET",
+      "path": "/api/v1/admin/partner-health/orders",
+      "rejected_probe": true,
+      "expect_status": 401,
+      "expect_json": { "ok": false }
+    },
+    {
+      "kind": "http",
+      "name": "the single-prefix member limitations route the page now calls exists and refuses an invalid bearer with JSON",
+      "target": "gateway",
+      "method": "GET",
+      "path": "/api/v1/user/limitations",
+      "rejected_probe": true,
+      "expect_status": 401,
+      "expect_json": { "ok": false }
+    },
+    {
+      "kind": "existing",
+      "name": "admin marketplace Overview / Products / Partner Health and Limitations build one /api/v1",
+      "ref": "npx vitest run src/pages/__tests__/gateway-prefix.vtid-05155.test.tsx src/pages/__tests__/partner-health-staff.vtid-05056.test.tsx src/lib/gateway-base.test.ts",
+      "cwd": ".",
+      "reason": "The three admin marketplace pages need an admin role the staging test user does not have, and saving limitations is a member write that a read-only staging suite cannot do. These render PartnerHealthOrders and Limitations with the build's env (origin + /api/v1) and a mocked fetch and assert every URL is <origin>/api/v1/... exactly once, pin the full partner-health URLs (no endsWith), and scan src/ so no other module adds /api/v1 to a base built from VITE_GATEWAY_URL (known out-of-scope files listed with reasons)."
+    }
+  ]
+}
