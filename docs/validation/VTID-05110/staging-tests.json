@@ -25,7 +25,8 @@
       "kind": "existing",
       "name": "Media/thread adapters, Media Hub + Messages Spotlight components, page flag switch (off/on/phone), same ConversationView props, real rows only",
       "ref": "npx vitest run src/components/ui/vcard/adapters/media-thread.vtid-05110.test.ts src/components/media/spotlight src/components/messages/spotlight src/pages/Messages.spotlight.vtid-05110.test.tsx src/pages/community/MediaHub.spotlight.vtid-05110.test.tsx src/pages/Messages.contact-message.test.ts",
-      "cwd": "."
+      "cwd": ".",
+      "reason": "Media Hub and Messages run real media players, uploads, chat realtime and send paths; staging is read-only and never plays, types or sends, so the adapters, the flag switch, the shared ConversationView props and the real-rows-only rule are proven in these unit tests."
     }
   ]
 }
