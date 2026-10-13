@@ -19,20 +19,16 @@
       "rejected": "Rejeté",
       "flagged": "Signalé",
       "podcastManagement": "Gestion des podcasts",
-      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts",
-      "_pending_review": {}
+      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts"
     },
     "notifications": {
       "tabs": {
         "notifications": "Notifications",
         "categories": "Catégories",
         "activity": "Activité",
-        "compose": "Envoyer",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Envoyer"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "Gérer la boutique de récompenses",
       "description": "Articles, frais de livraison et commandes de la boutique de récompenses.",
@@ -339,6 +335,5 @@
         "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

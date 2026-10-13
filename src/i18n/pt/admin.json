@@ -19,20 +19,16 @@
       "rejected": "Rejeitado",
       "flagged": "Sinalizado",
       "podcastManagement": "Gerenciamento de Podcasts",
-      "podcastManagementDesc": "Revisar e moderar uploads de podcasts",
-      "_pending_review": {}
+      "podcastManagementDesc": "Revisar e moderar uploads de podcasts"
     },
     "notifications": {
       "tabs": {
         "notifications": "Notificações",
         "categories": "Categorias",
         "activity": "Atividade",
-        "compose": "Enviar",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Enviar"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "Gerir a loja de recompensas",
       "description": "Itens, custos de envio e pedidos da loja de recompensas.",
@@ -339,6 +335,5 @@
         "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }
