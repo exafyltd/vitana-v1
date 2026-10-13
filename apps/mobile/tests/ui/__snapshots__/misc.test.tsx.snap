@@ -1,0 +1,2023 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accordion dark snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {},
+        }
+      }
+      jestInlineStyle={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(217.2, 32.6%, 17.5%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+      style={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(217.2, 32.6%, 17.5%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": true,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingVertical": 16,
+            },
+            {
+              "opacity": 1,
+            },
+            undefined,
+          ]
+        }
+        testID="ta"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(210, 40%, 98%)",
+                "fontFamily": undefined,
+                "fontSize": 16,
+                "fontWeight": "500",
+                "writingDirection": "ltr",
+              },
+              {
+                "flex": 1,
+              },
+            ]
+          }
+        >
+          A
+        </Text>
+        <RNSVGSvgView
+          align="xMidYMid"
+          aria-hidden="true"
+          bbHeight={16}
+          bbWidth={16}
+          className="lucide lucide-chevron-down"
+          fill="none"
+          focusable={false}
+          height={16}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          stroke="hsl(210, 40%, 98%)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "transform": [
+                  {
+                    "rotate": "180deg",
+                  },
+                ],
+              },
+              {
+                "flex": 0,
+                "height": 16,
+                "width": 16,
+              },
+            ]
+          }
+          transform={
+            [
+              {
+                "rotate": "180deg",
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={16}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+                "strokeLinejoin",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4294507260,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeLinejoin={1}
+            strokeWidth={2}
+          >
+            <RNSVGPath
+              d="m6 9 6 6 6-6"
+              fill={null}
+              matrix={
+                [
+                  -1,
+                  1.2246467991473532e-16,
+                  -1.2246467991473532e-16,
+                  -1,
+                  0,
+                  0,
+                ]
+              }
+              propList={
+                [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                  "strokeLinecap",
+                  "strokeLinejoin",
+                ]
+              }
+              stroke={
+                {
+                  "payload": 4294507260,
+                  "type": 0,
+                }
+              }
+              strokeLinecap={1}
+              strokeLinejoin={1}
+              strokeWidth={2}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+      <View
+        collapsable={false}
+        jestAnimatedProps={
+          {
+            "value": {},
+          }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {},
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "paddingBottom": 16,
+            },
+            undefined,
+          ]
+        }
+        style={
+          [
+            {
+              "paddingBottom": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(210, 40%, 98%)",
+                "fontFamily": undefined,
+                "fontSize": 14,
+                "fontWeight": "400",
+                "writingDirection": "ltr",
+              },
+              undefined,
+            ]
+          }
+        >
+          Body A
+        </Text>
+      </View>
+    </View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {},
+        }
+      }
+      jestInlineStyle={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(217.2, 32.6%, 17.5%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+      style={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(217.2, 32.6%, 17.5%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": false,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingVertical": 16,
+            },
+            {
+              "opacity": 1,
+            },
+            undefined,
+          ]
+        }
+        testID="tb"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(210, 40%, 98%)",
+                "fontFamily": undefined,
+                "fontSize": 16,
+                "fontWeight": "500",
+                "writingDirection": "ltr",
+              },
+              {
+                "flex": 1,
+              },
+            ]
+          }
+        >
+          B
+        </Text>
+        <RNSVGSvgView
+          align="xMidYMid"
+          aria-hidden="true"
+          bbHeight={16}
+          bbWidth={16}
+          className="lucide lucide-chevron-down"
+          fill="none"
+          focusable={false}
+          height={16}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          stroke="hsl(210, 40%, 98%)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "transform": [
+                  {
+                    "rotate": "0deg",
+                  },
+                ],
+              },
+              {
+                "flex": 0,
+                "height": 16,
+                "width": 16,
+              },
+            ]
+          }
+          transform={
+            [
+              {
+                "rotate": "0deg",
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={16}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+                "strokeLinejoin",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4294507260,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeLinejoin={1}
+            strokeWidth={2}
+          >
+            <RNSVGPath
+              d="m6 9 6 6 6-6"
+              fill={null}
+              matrix={
+                [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                ]
+              }
+              propList={
+                [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                  "strokeLinecap",
+                  "strokeLinejoin",
+                ]
+              }
+              stroke={
+                {
+                  "payload": 4294507260,
+                  "type": 0,
+                }
+              }
+              strokeLinecap={1}
+              strokeLinejoin={1}
+              strokeWidth={2}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Accordion ltr snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {},
+        }
+      }
+      jestInlineStyle={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+      style={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": true,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingVertical": 16,
+            },
+            {
+              "opacity": 1,
+            },
+            undefined,
+          ]
+        }
+        testID="ta"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(222.2, 84%, 4.9%)",
+                "fontFamily": undefined,
+                "fontSize": 16,
+                "fontWeight": "500",
+                "writingDirection": "ltr",
+              },
+              {
+                "flex": 1,
+              },
+            ]
+          }
+        >
+          A
+        </Text>
+        <RNSVGSvgView
+          align="xMidYMid"
+          aria-hidden="true"
+          bbHeight={16}
+          bbWidth={16}
+          className="lucide lucide-chevron-down"
+          fill="none"
+          focusable={false}
+          height={16}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          stroke="hsl(222.2, 84%, 4.9%)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "transform": [
+                  {
+                    "rotate": "180deg",
+                  },
+                ],
+              },
+              {
+                "flex": 0,
+                "height": 16,
+                "width": 16,
+              },
+            ]
+          }
+          transform={
+            [
+              {
+                "rotate": "180deg",
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={16}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+                "strokeLinejoin",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4278323223,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeLinejoin={1}
+            strokeWidth={2}
+          >
+            <RNSVGPath
+              d="m6 9 6 6 6-6"
+              fill={null}
+              matrix={
+                [
+                  -1,
+                  1.2246467991473532e-16,
+                  -1.2246467991473532e-16,
+                  -1,
+                  0,
+                  0,
+                ]
+              }
+              propList={
+                [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                  "strokeLinecap",
+                  "strokeLinejoin",
+                ]
+              }
+              stroke={
+                {
+                  "payload": 4278323223,
+                  "type": 0,
+                }
+              }
+              strokeLinecap={1}
+              strokeLinejoin={1}
+              strokeWidth={2}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+      <View
+        collapsable={false}
+        jestAnimatedProps={
+          {
+            "value": {},
+          }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {},
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "paddingBottom": 16,
+            },
+            undefined,
+          ]
+        }
+        style={
+          [
+            {
+              "paddingBottom": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(222.2, 84%, 4.9%)",
+                "fontFamily": undefined,
+                "fontSize": 14,
+                "fontWeight": "400",
+                "writingDirection": "ltr",
+              },
+              undefined,
+            ]
+          }
+        >
+          Body A
+        </Text>
+      </View>
+    </View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {},
+        }
+      }
+      jestInlineStyle={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+      style={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": false,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingVertical": 16,
+            },
+            {
+              "opacity": 1,
+            },
+            undefined,
+          ]
+        }
+        testID="tb"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(222.2, 84%, 4.9%)",
+                "fontFamily": undefined,
+                "fontSize": 16,
+                "fontWeight": "500",
+                "writingDirection": "ltr",
+              },
+              {
+                "flex": 1,
+              },
+            ]
+          }
+        >
+          B
+        </Text>
+        <RNSVGSvgView
+          align="xMidYMid"
+          aria-hidden="true"
+          bbHeight={16}
+          bbWidth={16}
+          className="lucide lucide-chevron-down"
+          fill="none"
+          focusable={false}
+          height={16}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          stroke="hsl(222.2, 84%, 4.9%)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "transform": [
+                  {
+                    "rotate": "0deg",
+                  },
+                ],
+              },
+              {
+                "flex": 0,
+                "height": 16,
+                "width": 16,
+              },
+            ]
+          }
+          transform={
+            [
+              {
+                "rotate": "0deg",
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={16}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+                "strokeLinejoin",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4278323223,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeLinejoin={1}
+            strokeWidth={2}
+          >
+            <RNSVGPath
+              d="m6 9 6 6 6-6"
+              fill={null}
+              matrix={
+                [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                ]
+              }
+              propList={
+                [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                  "strokeLinecap",
+                  "strokeLinejoin",
+                ]
+              }
+              stroke={
+                {
+                  "payload": 4278323223,
+                  "type": 0,
+                }
+              }
+              strokeLinecap={1}
+              strokeLinejoin={1}
+              strokeWidth={2}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Accordion rtl snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {},
+        }
+      }
+      jestInlineStyle={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+      style={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": true,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingVertical": 16,
+            },
+            {
+              "opacity": 1,
+            },
+            undefined,
+          ]
+        }
+        testID="ta"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(222.2, 84%, 4.9%)",
+                "fontFamily": undefined,
+                "fontSize": 16,
+                "fontWeight": "500",
+                "writingDirection": "rtl",
+              },
+              {
+                "flex": 1,
+              },
+            ]
+          }
+        >
+          A
+        </Text>
+        <RNSVGSvgView
+          align="xMidYMid"
+          aria-hidden="true"
+          bbHeight={16}
+          bbWidth={16}
+          className="lucide lucide-chevron-down"
+          fill="none"
+          focusable={false}
+          height={16}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          stroke="hsl(222.2, 84%, 4.9%)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "transform": [
+                  {
+                    "rotate": "180deg",
+                  },
+                ],
+              },
+              {
+                "flex": 0,
+                "height": 16,
+                "width": 16,
+              },
+            ]
+          }
+          transform={
+            [
+              {
+                "rotate": "180deg",
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={16}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+                "strokeLinejoin",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4278323223,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeLinejoin={1}
+            strokeWidth={2}
+          >
+            <RNSVGPath
+              d="m6 9 6 6 6-6"
+              fill={null}
+              matrix={
+                [
+                  -1,
+                  1.2246467991473532e-16,
+                  -1.2246467991473532e-16,
+                  -1,
+                  0,
+                  0,
+                ]
+              }
+              propList={
+                [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                  "strokeLinecap",
+                  "strokeLinejoin",
+                ]
+              }
+              stroke={
+                {
+                  "payload": 4278323223,
+                  "type": 0,
+                }
+              }
+              strokeLinecap={1}
+              strokeLinejoin={1}
+              strokeWidth={2}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+      <View
+        collapsable={false}
+        jestAnimatedProps={
+          {
+            "value": {},
+          }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {},
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "paddingBottom": 16,
+            },
+            undefined,
+          ]
+        }
+        style={
+          [
+            {
+              "paddingBottom": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(222.2, 84%, 4.9%)",
+                "fontFamily": undefined,
+                "fontSize": 14,
+                "fontWeight": "400",
+                "writingDirection": "rtl",
+              },
+              undefined,
+            ]
+          }
+        >
+          Body A
+        </Text>
+      </View>
+    </View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {},
+        }
+      }
+      jestInlineStyle={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+      style={
+        [
+          {
+            "borderBottomWidth": 1,
+            "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+            "overflow": "hidden",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": false,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingVertical": 16,
+            },
+            {
+              "opacity": 1,
+            },
+            undefined,
+          ]
+        }
+        testID="tb"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "hsl(222.2, 84%, 4.9%)",
+                "fontFamily": undefined,
+                "fontSize": 16,
+                "fontWeight": "500",
+                "writingDirection": "rtl",
+              },
+              {
+                "flex": 1,
+              },
+            ]
+          }
+        >
+          B
+        </Text>
+        <RNSVGSvgView
+          align="xMidYMid"
+          aria-hidden="true"
+          bbHeight={16}
+          bbWidth={16}
+          className="lucide lucide-chevron-down"
+          fill="none"
+          focusable={false}
+          height={16}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          stroke="hsl(222.2, 84%, 4.9%)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "transform": [
+                  {
+                    "rotate": "0deg",
+                  },
+                ],
+              },
+              {
+                "flex": 0,
+                "height": 16,
+                "width": 16,
+              },
+            ]
+          }
+          transform={
+            [
+              {
+                "rotate": "0deg",
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={16}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+                "strokeLinejoin",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4278323223,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeLinejoin={1}
+            strokeWidth={2}
+          >
+            <RNSVGPath
+              d="m6 9 6 6 6-6"
+              fill={null}
+              matrix={
+                [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                ]
+              }
+              propList={
+                [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                  "strokeLinecap",
+                  "strokeLinejoin",
+                ]
+              }
+              stroke={
+                {
+                  "payload": 4278323223,
+                  "type": 0,
+                }
+              }
+              strokeLinecap={1}
+              strokeLinejoin={1}
+              strokeWidth={2}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Progress dark snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    accessibilityRole="progressbar"
+    accessibilityValue={
+      {
+        "max": 100,
+        "min": 0,
+        "now": 60,
+      }
+    }
+    style={
+      [
+        {
+          "height": 16,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "hsl(217.2, 32.6%, 17.5%)",
+          "borderRadius": 9999,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "height": "100%",
+            "overflow": "hidden",
+          },
+          {
+            "opacity": 0.8,
+            "width": "60%",
+          },
+        ]
+      }
+      testID="progress-fill"
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "end": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "width": "166.66666666666669%",
+            },
+          ]
+        }
+      >
+        <RNSVGSvgView
+          bbHeight="100%"
+          bbWidth="100%"
+          focusable={false}
+          height="100%"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "flex": 0,
+                "height": "100%",
+                "width": "100%",
+              },
+            ]
+          }
+          width="100%"
+        >
+          <RNSVGGroup
+            fill={
+              {
+                "payload": 4278190080,
+                "type": 0,
+              }
+            }
+          >
+            <RNSVGDefs>
+              <RNSVGLinearGradient
+                gradient={
+                  [
+                    0,
+                    -154449,
+                    0.5,
+                    -148876,
+                    1,
+                    -10556716,
+                  ]
+                }
+                gradientTransform={null}
+                gradientUnits={0}
+                name="vprogr5"
+                x1="0"
+                x2="1"
+                y1="0"
+                y2="0"
+              />
+            </RNSVGDefs>
+            <RNSVGRect
+              fill={
+                {
+                  "brushRef": "vprogr5",
+                  "type": 1,
+                }
+              }
+              height="100%"
+              propList={
+                [
+                  "fill",
+                ]
+              }
+              width="100%"
+              x="0"
+              y="0"
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Progress ltr snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    accessibilityRole="progressbar"
+    accessibilityValue={
+      {
+        "max": 100,
+        "min": 0,
+        "now": 60,
+      }
+    }
+    style={
+      [
+        {
+          "height": 16,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "hsl(210, 40%, 96.1%)",
+          "borderRadius": 9999,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "height": "100%",
+            "overflow": "hidden",
+          },
+          {
+            "opacity": 0.8,
+            "width": "60%",
+          },
+        ]
+      }
+      testID="progress-fill"
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "end": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "width": "166.66666666666669%",
+            },
+          ]
+        }
+      >
+        <RNSVGSvgView
+          bbHeight="100%"
+          bbWidth="100%"
+          focusable={false}
+          height="100%"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "flex": 0,
+                "height": "100%",
+                "width": "100%",
+              },
+            ]
+          }
+          width="100%"
+        >
+          <RNSVGGroup
+            fill={
+              {
+                "payload": 4278190080,
+                "type": 0,
+              }
+            }
+          >
+            <RNSVGDefs>
+              <RNSVGLinearGradient
+                gradient={
+                  [
+                    0,
+                    -154449,
+                    0.5,
+                    -148876,
+                    1,
+                    -10556716,
+                  ]
+                }
+                gradientTransform={null}
+                gradientUnits={0}
+                name="vprogr3"
+                x1="0"
+                x2="1"
+                y1="0"
+                y2="0"
+              />
+            </RNSVGDefs>
+            <RNSVGRect
+              fill={
+                {
+                  "brushRef": "vprogr3",
+                  "type": 1,
+                }
+              }
+              height="100%"
+              propList={
+                [
+                  "fill",
+                ]
+              }
+              width="100%"
+              x="0"
+              y="0"
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Progress rtl snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    accessibilityRole="progressbar"
+    accessibilityValue={
+      {
+        "max": 100,
+        "min": 0,
+        "now": 60,
+      }
+    }
+    style={
+      [
+        {
+          "height": 16,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "hsl(210, 40%, 96.1%)",
+          "borderRadius": 9999,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "height": "100%",
+            "overflow": "hidden",
+          },
+          {
+            "opacity": 0.8,
+            "width": "60%",
+          },
+        ]
+      }
+      testID="progress-fill"
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "end": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "width": "166.66666666666669%",
+            },
+          ]
+        }
+      >
+        <RNSVGSvgView
+          bbHeight="100%"
+          bbWidth="100%"
+          focusable={false}
+          height="100%"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "flex": 0,
+                "height": "100%",
+                "width": "100%",
+              },
+            ]
+          }
+          width="100%"
+        >
+          <RNSVGGroup
+            fill={
+              {
+                "payload": 4278190080,
+                "type": 0,
+              }
+            }
+          >
+            <RNSVGDefs>
+              <RNSVGLinearGradient
+                gradient={
+                  [
+                    0,
+                    -154449,
+                    0.5,
+                    -148876,
+                    1,
+                    -10556716,
+                  ]
+                }
+                gradientTransform={null}
+                gradientUnits={0}
+                name="vprogr4"
+                x1="1"
+                x2="0"
+                y1="0"
+                y2="0"
+              />
+            </RNSVGDefs>
+            <RNSVGRect
+              fill={
+                {
+                  "brushRef": "vprogr4",
+                  "type": 1,
+                }
+              }
+              height="100%"
+              propList={
+                [
+                  "fill",
+                ]
+              }
+              width="100%"
+              x="0"
+              y="0"
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
