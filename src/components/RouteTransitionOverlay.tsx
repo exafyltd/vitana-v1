@@ -3,6 +3,13 @@ import { useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { routeTransitionStore } from "@/lib/routeTransition";
 import { t } from "@/lib/i18n-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/context/AuthProvider";
+import { useTenantSafe } from "@/hooks/useTenant";
+import { useNavigationPending } from "@/hooks/useNavigationPending";
+import { NavProgressBar } from "@/components/layout/NavProgressBar";
+import { startIntentPrefetch } from "@/lib/intentPrefetch";
+import { prefetchForPath, ROUTE_CHUNK_IMPORTERS } from "@/lib/prefetch-registry";
 
 /**
  * Full-screen spinner that covers the current page during route changes and
@@ -16,8 +23,9 @@ import { t } from "@/lib/i18n-toast";
  *    inside the settle window, the overlay raises itself so the intermediate
  *    screen never shows.
  *  - A single, settled navigation never triggers it — instant cached navigation
- *    stays instant. Slow lazy chunks are covered by the route <Suspense>
- *    fallback, not this overlay.
+ *    stays instant. A slow lazy chunk no longer blanks the screen: with
+ *    v7_startTransition the old screen stays and NavProgressBar shows instead
+ *    (VTID-05106); the route <Suspense> fallback is left for the first load.
  */
 const SETTLE_MS = 280;
 
@@ -66,7 +74,30 @@ export default function RouteTransitionOverlay() {
     };
   }, [location.pathname, location.search]);
 
-  if (!active) return null;
+  // VTID-05106: thin progress bar while a route switch is pending (the old
+  // screen stays mounted under v7_startTransition) + hover/focus intent
+  // prefetch for every internal link.
+  const navPending = useNavigationPending();
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const tenantId = useTenantSafe()?.activeTenantId ?? undefined;
+  const prefetchCtx = useRef({ userId: user?.id, tenantId });
+  prefetchCtx.current = { userId: user?.id, tenantId };
+
+  useEffect(
+    () =>
+      startIntentPrefetch({
+        basename: import.meta.env.BASE_URL,
+        onIntent: (path) => {
+          ROUTE_CHUNK_IMPORTERS[path]?.().catch(() => {});
+          const { userId, tenantId: tid } = prefetchCtx.current;
+          if (userId) void prefetchForPath(queryClient, path, userId, tid).catch(() => {});
+        },
+      }),
+    [queryClient],
+  );
+
+  if (!active) return <NavProgressBar pending={navPending} />;
 
   return (
     <div
