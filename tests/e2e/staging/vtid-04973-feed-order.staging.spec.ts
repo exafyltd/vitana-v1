@@ -44,13 +44,17 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
 
 // One in-page reading of the live feed grid (the feed re-renders while profile
 // lookups settle, so a handle taken earlier can be a detached node). Wrappers
-// are `display: contents` for items, so visibility is judged on their first child.
+// are `display: contents` for items, so visibility is judged on the first
+// descendant that has a box. VTID-05129: article cards add a second
+// `display: contents` layer (withCardId), so one level down still measured 0×0
+// and every article dropped out — "info, article, info" read as "info, info".
 const measureFeed = () => {
   const grid = document.querySelector('[data-testid="feed-grid"]');
   if (!grid) return null;
   const kinds = [...grid.querySelectorAll(':scope > [data-feed-kind]')]
     .filter((el) => {
-      const box = getComputedStyle(el).display === 'contents' ? el.firstElementChild : el;
+      let box: Element | null = el;
+      while (box && getComputedStyle(box).display === 'contents') box = box.firstElementChild;
       if (!box) return false;
       const r = box.getBoundingClientRect();
       return r.width > 0 && r.height > 0;

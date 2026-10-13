@@ -10152,10 +10152,7 @@
           "cancel": "Cancel",
           "confirmed": "Thanks! The result is being added to your health records.",
           "declined": "Got it. The result will not be added to your records.",
-          "failed": "That didn't work. Please try again.",
-          "_pending_review": {
-            "unknownPartner": true
-          }
+          "failed": "That didn't work. Please try again."
         }
       },
       "comingSoon": {

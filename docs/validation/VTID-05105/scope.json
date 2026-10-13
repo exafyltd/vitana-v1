@@ -1,10 +1,23 @@
 {
   "vtid": "VTID-05105",
-  "kind": "docs",
+  "kind": "feature",
   "paths": [
     "docs/plans/desktop-spotlight/**",
     ".kiro/specs/desktop-spotlight/**",
-    "docs/validation/VTID-05105/**"
+    "docs/validation/VTID-05105/**",
+    "docs/design-system/desktop-screen-inventory.md",
+    "scripts/design/desktop-screen-inventory.mjs",
+    "src/index.css",
+    "tailwind.config.ts",
+    "src/components/ui/vcard/**",
+    "src/components/layout/spotlight/**",
+    "src/components/StandardHeader.tsx",
+    "src/components/StandardHeader.vtid-05105.test.tsx",
+    "src/hooks/useTenantFeatureFlag.ts",
+    "src/hooks/useSpotlightEnabled.ts",
+    "src/hooks/useSpotlightEnabled.test.ts",
+    "src/pages/admin/settings/FeatureFlags.tsx",
+    "tests/e2e/staging/vtid-05105-spotlight-foundation.staging.spec.ts"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
   "weakens_tests": [],

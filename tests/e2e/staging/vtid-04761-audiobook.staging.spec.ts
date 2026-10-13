@@ -19,8 +19,11 @@ import { test, expect } from './staging-guard';
 
 test.use({
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|journey\/mode)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log))/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|journey\/mode)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log|daily_matches))/,
 });
+// VTID-05129: /autopilot renders MatchesPreview, which marks the shown matches
+// as viewed (daily_matches PATCH) — not this spec's subject; it stays aborted.
+// App-wide read RPCs / prewarm are tolerated by the guard's shared list.
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const GATEWAY = 'https://preview-aws-gateway.vitanaland.com';

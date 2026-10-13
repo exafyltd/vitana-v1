@@ -182,9 +182,25 @@ All colors MUST be HSL.
     --contact-source-whatsapp: 142 70% 45%;
     --contact-success: 142 76% 36%;
     --contact-warning: 38 92% 50%;
+
+    /* VTID-05105 Spotlight desktop tokens (docs/plans/desktop-spotlight). */
+    --sp-stage-min: 680px;
+    --sp-stage-max: 760px;
+    --sp-rail: 340px;
+    --sp-gap: 28px;
+    --sp-form: 680px;
+    --sp-rail-breakpoint: 1060px;
+    --sp-card-radius: 1.125rem;
+    --sp-card-radius-sm: 0.75rem;
+    --sp-elevation-1: 0 2px 6px hsl(222 47% 11% / 0.06);
+    --sp-elevation-2: 0 6px 20px hsl(222 47% 11% / 0.10);
+    --sp-focus-ring: 0 0 0 2px hsl(var(--ring) / 0.6);
   }
 
   .dark {
+    /* VTID-05105 Spotlight: deeper shadows read on dark surfaces. */
+    --sp-elevation-1: 0 2px 6px hsl(0 0% 0% / 0.35);
+    --sp-elevation-2: 0 6px 20px hsl(0 0% 0% / 0.45);
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -337,6 +353,48 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* VTID-05105 Spotlight layout. The rail rule is a container query on the
+   layout itself, not a viewport breakpoint, so a collapsed or expanded
+   sidebar is accounted for (rail visible when the main area is >= 1060 px). */
+@layer components {
+  .sp-layout {
+    container-type: inline-size;
+    container-name: spotlight;
+    width: 100%;
+  }
+  .sp-grid {
+    display: grid;
+    grid-template-columns: minmax(0, var(--sp-stage-max));
+    justify-content: center;
+    gap: var(--sp-gap);
+  }
+  .sp-layout[data-width="wide"] .sp-grid {
+    grid-template-columns: minmax(0, calc(var(--sp-stage-max) + var(--sp-gap) + var(--sp-rail)));
+  }
+  .sp-layout[data-width="form"] .sp-grid {
+    grid-template-columns: minmax(0, var(--sp-form));
+  }
+  .sp-layout[data-width="full"] .sp-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sp-rail { display: none; }
+  .sp-rail-toggle { display: flex; justify-content: flex-end; }
+  @container spotlight (min-width: 1060px) {
+    .sp-layout[data-width="stage-rail"] .sp-grid {
+      grid-template-columns: minmax(var(--sp-stage-min), var(--sp-stage-max)) var(--sp-rail);
+    }
+    .sp-layout[data-width="stage-rail"] .sp-rail {
+      display: block;
+      position: sticky;
+      top: 1rem;
+      align-self: start;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+    }
+    .sp-layout[data-width="stage-rail"] .sp-rail-toggle { display: none; }
   }
 }
 

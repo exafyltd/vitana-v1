@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05105",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900, Spotlight off: /home and /discover keep today's large header, no ScreenFrame / compact header rendered, sidebar chrome intact (shortcut bar, global search, nav items, footer controls)",
+      "spec": "tests/e2e/staging/vtid-05105-spotlight-foundation.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "VCard sizes/ratios/placeholder/RTL, adapters, Spotlight switch (flag, override both ways, phones never, blocked storage), container-query rail rule, ScreenFrame chrome order + immersive, J/K focus feed, archetype skeletons, StandardHeader compact vs default",
+      "ref": "npx vitest run src/components/ui/vcard src/hooks/useSpotlightEnabled.test.ts src/components/layout/spotlight src/components/StandardHeader.vtid-05105.test.tsx",
+      "cwd": ".",
+      "reason": "Phase 1a builds components that no screen renders yet (everything is behind desktop_spotlight, which no page reads until Phase 2), so their behaviour is only observable in unit tests; staging proves the flag-off desktop is unchanged."
+    }
+  ]
+}

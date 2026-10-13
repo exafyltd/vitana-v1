@@ -1,0 +1,16 @@
+{
+  "spotlight": {
+    "rail": {
+      "open": "More on this",
+      "title": "More on this",
+      "label": "Related to this screen"
+    },
+    "header": {
+      "vitanaIndexLabel": "Vitana Index",
+      "vitanaIndexAria": "Vitana Index: {value}. Tap for details."
+    },
+    "feed": {
+      "keyboardHint": "J / K or ↑ ↓: next card"
+    }
+  }
+}

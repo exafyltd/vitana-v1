@@ -60,6 +60,9 @@ test('connect your system: one URL first, developer settings on request, not-rec
   // The business being set up stays in view.
   await expect(page.getByTestId('business-context')).toContainText('Demo Studio');
   await page.getByTestId('setup-option-shop').click();
+  // VTID-05129: the chooser closes with an animation while the connect dialog
+  // opens, so both carry business-context for a moment — wait for it to go.
+  await expect(page.getByTestId('setup-option-shop')).toHaveCount(0);
   await expect(page.getByTestId('business-context')).toContainText('Demo Studio');
 
   // One question first; no technical identifiers on show.

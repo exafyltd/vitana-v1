@@ -165,23 +165,53 @@ describe('VTID-05049 queue-campaign-recipients is service-role only', () => {
     expect(src).toMatch(/const messageContent = campaign\.distribution_config\?\.messageContent/);
   });
 
+  // VTID-05120 moved the recipient queries into _shared/campaign-audience.ts
+  // (scoped to ownerId = campaign.user_id) and replaced the embedded
+  // `profiles.tenant_id` filter, which only nulled the embed, with a real
+  // `profiles.tenant_id` row filter.
   it('scopes every recipient query to the campaign owner or the owner\'s tenant', () => {
+    const audience = readFileSync(join(FUNCTIONS, '_shared', 'campaign-audience.ts'), 'utf8');
     expect(src).toMatch(/\.from\('user_tenants'\)[\s\S]*?\.eq\('user_id', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('contacts'\)\s*\.select\('\*'\)\s*\.eq\('user_id', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('campaign_audience_segments'\)[\s\S]*?\.eq\('user_id', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('global_community_events'\)[\s\S]*?\.eq\('created_by', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('profiles'\)[\s\S]*?\.eq\('tenant_id', tenantId\)/);
-    expect((src.match(/\.eq\('profiles\.tenant_id', tenantId\)/g) || []).length).toBe(2);
+    expect(src).toMatch(/resolveCampaignAudience\(supabaseClient, \{\s*ownerId: campaign\.user_id,\s*tenantId,/);
+    expect(audience).toMatch(/\.from\('contacts'\)\s*\.select\([^)]*\)\s*\.eq\('user_id', ownerId\)/);
+    expect(audience).toMatch(/\.from\('campaign_audience_segments'\)[\s\S]*?\.eq\('user_id', ownerId\)/);
+    expect(audience).toMatch(/\.from\('global_community_events'\)[\s\S]*?\.eq\('created_by', ownerId\)/);
+    expect(audience).toMatch(/\.from\('profiles'\)[\s\S]*?\.eq\('tenant_id', tenantId\)/);
+    expect(src + audience).not.toMatch(/\.eq\('profiles\.tenant_id'/);
   });
 });
 
-describe('VTID-05049 send-welcome-discount is service-role only', () => {
+// VTID-05118: deliberate contract change from VTID-05049 "service-role only".
+// The pg_net trigger has no service-role key in vault, so it now sends the
+// shared X-Trigger-Secret instead.
+describe('send-welcome-discount accepts only a service-role or trigger-secret caller', () => {
   const src = handler(fn('send-welcome-discount'));
+  const GUARD = /if\s*\(\s*!\(\s*isTriggerSecretCaller\(req\)\s*\|\|\s*\(await isServiceRoleCaller\(req\)\)\s*\)\s*\)/;
 
-  it('calls isServiceRoleCaller before reading the body', () => {
-    const gate = src.indexOf('await isServiceRoleCaller(req)');
-    expect(gate).toBeGreaterThan(-1);
-    expect(gate).toBeLessThan(src.indexOf('req.json()'));
+  it('checks both callers before reading the body', () => {
+    const serviceRole = src.indexOf('isServiceRoleCaller(req)');
+    const triggerSecret = src.indexOf('isTriggerSecretCaller(req)');
+    const body = src.indexOf('req.json()');
+    expect(serviceRole).toBeGreaterThan(-1);
+    expect(triggerSecret).toBeGreaterThan(-1);
+    expect(serviceRole).toBeLessThan(body);
+    expect(triggerSecret).toBeLessThan(body);
+  });
+
+  it('combines both checks in one guard that answers 401', () => {
+    const m = GUARD.exec(src);
+    expect(m).not.toBeNull();
+    const after = src.slice(m!.index + m![0].length);
+    expect(after.indexOf('unauthorizedResponse(')).toBeGreaterThan(-1);
+    expect(after.indexOf('unauthorizedResponse(')).toBeLessThan(after.indexOf('req.json()'));
+  });
+
+  it('keeps the CORS allow-headers string (no browser calls with the trigger secret)', () => {
+    const full = fn('send-welcome-discount');
+    expect(full).toMatch(/"authorization, x-client-info, apikey, content-type"/);
+    expect(full).not.toMatch(/x-trigger-secret/);
+    const allow = /"Access-Control-Allow-Headers":\s*"([^"]*)"/.exec(full);
+    expect(allow?.[1]).toBe('authorization, x-client-info, apikey, content-type');
   });
 
   it('reads recipient, code, percent and expiry from user_discount_codes, not the body', () => {
@@ -195,6 +225,33 @@ describe('VTID-05049 send-welcome-discount is service-role only', () => {
     expect(src).toMatch(/\$\{escapeHtml\(userName\)\}/);
     expect(src).not.toMatch(/^\s*\$\{code\}\s*$/m);
     expect(src).not.toMatch(/<strong>\$\{discount_percent\}/);
+  });
+});
+
+describe('VTID-05118 _shared/trigger-secret.ts', () => {
+  const src = readFileSync(join(FUNCTIONS, '_shared', 'trigger-secret.ts'), 'utf8');
+
+  it('has no imports, so Vitest can load it', () => {
+    expect(src).not.toMatch(/^\s*import\s/m);
+  });
+
+  it('exports timingSafeEqual and isTriggerSecretCaller', () => {
+    expect(src).toMatch(/export function timingSafeEqual\(/);
+    expect(src).toMatch(/export function isTriggerSecretCaller\(/);
+  });
+
+  it('compares X-Trigger-Secret with EMAIL_TRIGGER_SECRET in constant time', () => {
+    expect(src).toMatch(/"EMAIL_TRIGGER_SECRET"/);
+    const body = src.slice(src.indexOf('export function isTriggerSecretCaller('));
+    expect(body).toMatch(/timingSafeEqual\(/);
+    expect(body).not.toMatch(/(?:!==|===)\s*secret\b|\bsecret\s*(?:!==|===)/);
+  });
+
+  it('caller-auth.ts imports timingSafeEqual from it and re-exports isTriggerSecretCaller', () => {
+    const auth = callerAuth();
+    expect(auth).toMatch(/import\s*\{\s*timingSafeEqual\s*\}\s*from\s*"\.\/trigger-secret\.ts"/);
+    expect(auth).not.toMatch(/function timingSafeEqual\(/);
+    expect(auth).toMatch(/export\s*\{\s*isTriggerSecretCaller\s*\}\s*from\s*"\.\/trigger-secret\.ts"/);
   });
 });
 

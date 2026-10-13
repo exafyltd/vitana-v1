@@ -59,7 +59,13 @@ test('setup hub → four options, AI in development; Product/Service/Experience;
   // Four ways in; AI-assisted setup is marked in development, not recommended.
   await page.getByTestId('setup-step-products').getByRole('button').click();
   for (const id of ['ai', 'shop', 'manual', 'api']) await expect(page.getByTestId(`setup-option-${id}`)).toBeVisible();
-  await expect(page.getByTestId('setup-option-ai').locator('.border-amber-300')).toHaveCount(1);
+  // VTID-05129: since VTID-04839 the "in development" badge only shows while
+  // AI setup is switched off (SetupChooser). Read the same flag the page reads.
+  const aiStatus = await request.get('https://preview-aws-gateway.vitanaland.com/api/v1/commerce/ai-setup/status', {
+    headers: { Authorization: `Bearer ${session.access_token}` },
+  });
+  const aiReady = aiStatus.ok() && (await aiStatus.json())?.enabled === true;
+  await expect(page.getByTestId('setup-option-ai').locator('.border-amber-300')).toHaveCount(aiReady ? 0 : 1);
 
   // Add myself → Product / Service / Experience; a service gets service wording.
   await page.getByTestId('setup-option-manual').click();

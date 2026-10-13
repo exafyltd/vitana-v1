@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05118",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "send-welcome-discount accepts only a service-role or trigger-secret caller",
+      "ref": "npx vitest run src/lib/trigger-secret.test.ts src/lib/edge-functions-caller-identity.s4.test.ts",
+      "cwd": ".",
+      "reason": "The change is one Supabase edge function plus an import-free _shared helper; the community-app bundle is unchanged (only Vitest files under src/lib). Edge functions have no staging project (one shared Supabase), so nothing is probed and no POST is sent. The unit test covers the X-Trigger-Secret check with a stubbed env (match, mismatch, missing header, unset or blank secret, bearer ignored) and the source guard pins the combined guard before req.json() and the unchanged CORS string. After the manual dispatch of supabase-functions-deploy.yml the deploy is verified read-only: list_edge_functions shows the new send-welcome-discount version and its logs show no new errors."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05120",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "campaign audience resolution, send-path guard and process-campaign-queue caller guard",
+      "ref": "npx vitest run src/lib/campaign-audience.test.ts src/lib/campaign-queue.vtid-05120.test.ts src/lib/edge-functions-caller-identity.s4.test.ts",
+      "cwd": ".",
+      "reason": "The change is three Supabase edge functions plus a shared module; the community-app bundle is unchanged. Edge functions have no staging project (one shared Supabase), so STAGING-VERIFY does not apply, and they are never invoked with the service role against a real campaign (staging writes to production Supabase, rule 48; there are no test campaigns). Behaviour is proven by the Vitest suite. After the approved manual dispatch of supabase-functions-deploy.yml the deploy is verified read-only: an unauthenticated POST to queue-campaign-recipients and to process-campaign-queue is refused with 401 (rejected probe, nothing written), list_edge_functions shows the new versions, and SELECT status, count(*) FROM campaigns GROUP BY 1 plus counts on campaign_recipients and message_queue are unchanged from the baseline (40 draft, 0, 0). CAMPAIGN_QUEUE_ENABLED stays unset."
+    }
+  ]
+}

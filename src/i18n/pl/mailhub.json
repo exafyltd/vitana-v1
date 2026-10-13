@@ -186,11 +186,13 @@
         "_pending_review": {},
         "file_too_large": {
           "title": "Plik jest za duży",
-          "body": "Wyeksportuj kontakty bez zdjęć albo wybierz mniejszy plik (do 10 MB)."
+          "body": "Wyeksportuj kontakty bez zdjęć albo wybierz mniejszy plik (do 10 MB).",
+          "_pending_review": {}
         },
         "file_empty": {
           "title": "Brak kontaktów w pliku",
-          "body": "Wybierz plik .vcf wyeksportowany z aplikacji Kontakty w telefonie."
+          "body": "Wybierz plik .vcf wyeksportowany z aplikacji Kontakty w telefonie.",
+          "_pending_review": {}
         }
       },
       "consent": {
@@ -218,7 +220,8 @@
         "fileHowTitle": "Jak wyeksportować kontakty:",
         "fileHowIphone": "iPhone: Kontakty → Listy → przytrzymaj „Wszystkie kontakty” → Eksportuj.",
         "fileHowAndroid": "Android: Kontakty → Popraw i zarządzaj → Eksportuj do pliku.",
-        "accounts": "Lub z konta"
+        "accounts": "Lub z konta",
+        "_pending_review": {}
       },
       "results": {
         "summary": "Zaimportowano kontakty: {total} · już na Vitanaland: {members}",
@@ -231,7 +234,8 @@
         "noContactInfo": "Brak danych kontaktowych",
         "overLimit": "Zaimportowano pierwsze {limit} kontaktów.",
         "later": "Wszystkie kontakty znajdziesz w Wiadomości → Kontakty.",
-        "done": "Gotowe"
+        "done": "Gotowe",
+        "_pending_review": {}
       },
       "invite": {
         "whatsapp": "WhatsApp",
@@ -241,27 +245,32 @@
         "message": "Cześć {name}! Jestem na Vitanaland – w społeczności dla zdrowego, długiego życia. Dołącz: {link}",
         "messageGeneric": "Jestem na Vitanaland – w społeczności dla zdrowego, długiego życia. Dołącz: {link}",
         "opened": "Zaproszenie jest gotowe – wystarczy je wysłać.",
-        "linkFailed": "Nie udało się wczytać twojego linku z zaproszeniem. Spróbuj ponownie za chwilę."
+        "linkFailed": "Nie udało się wczytać twojego linku z zaproszeniem. Spróbuj ponownie za chwilę.",
+        "_pending_review": {}
       },
       "remove": {
         "button": "Usuń kontakty zaimportowane z telefonu",
         "confirmTitle": "Usunąć kontakty z telefonu?",
         "confirmBody": "Wszystkie kontakty zaimportowane z telefonu zostaną usunięte z Vitanaland. W telefonie nic się nie zmieni.",
         "confirm": "Usuń",
-        "done": "Kontakty z telefonu zostały usunięte."
+        "done": "Kontakty z telefonu zostały usunięte.",
+        "_pending_review": {}
       },
       "privacy": {
         "title": "Mogę zostać znaleziony po numerze telefonu",
-        "body": "Osoby, które mają twój zweryfikowany numer w kontaktach, zobaczą, że jesteś na Vitanaland."
+        "body": "Osoby, które mają twój zweryfikowany numer w kontaktach, zobaczą, że jesteś na Vitanaland.",
+        "_pending_review": {}
       },
       "added": {
         "onPlatformTitle": "Dodano kontakt",
         "onPlatformBody": "{name} jest już na Vitanaland – napisz wiadomość.",
         "savedTitle": "Zapisano kontakt",
-        "savedBody": "{name} jest teraz w twoich kontaktach."
+        "savedBody": "{name} jest teraz w twoich kontaktach.",
+        "_pending_review": {}
       },
       "page": {
-        "description": "Zaproś znajomych swoim osobistym linkiem albo znajdź ich w kontaktach."
+        "description": "Zaproś znajomych swoim osobistym linkiem albo znajdź ich w kontaktach.",
+        "_pending_review": {}
       },
       "verifyPhone": {
         "title": "Twój numer telefonu",
@@ -298,8 +307,10 @@
           "CODE_EXPIRED": "Kod wygasł. Poproś o nowy.",
           "NO_PENDING_CODE": "Najpierw poproś o kod.",
           "TOO_MANY_ATTEMPTS": "Zbyt wiele błędnych prób. Poproś o nowy kod.",
-          "unknown": "Nie udało się. Spróbuj ponownie."
-        }
+          "unknown": "Nie udało się. Spróbuj ponownie.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       }
     },
     "requested": {

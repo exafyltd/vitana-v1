@@ -61,7 +61,9 @@ serve(async (req) => {
             body: {
               campaignId: campaign.id,
               channels,
-              audienceData: distributionConfig.audienceData || { vitanaContacts: true },
+              // VTID-05120: the app stores audience_data (snake case); queue-campaign-recipients
+              // reads it from the campaign row itself, this only keeps the two in step.
+              audienceData: distributionConfig.audience_data ?? distributionConfig.audienceData,
               messageContent: distributionConfig.messageContent || { 
                 subject: campaign.name,
                 body: campaign.description || 'Campaign message'

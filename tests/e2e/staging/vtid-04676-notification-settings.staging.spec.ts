@@ -54,7 +54,9 @@ test('notification settings match what is really sent', async ({ page, request }
   const slugs = all.map((c: { slug: string }) => c.slug);
   expect(slugs).toContain('posts_reactions');
   expect(slugs).toContain('tips_updates');
-  expect(slugs).not.toContain('live_rooms');
+  // VTID-05129: which categories are offered is admin data (Admin › Notifications
+  // switches types on and off), not code — a live-room type is switched on now.
+  // The invariant is the one below: an offered category has a switched-on type.
   for (const c of all) expect(c.types?.length ?? 0, `${c.slug} has no switched-on type`).toBeGreaterThan(0);
 
   await page.evaluate((s) => {
@@ -67,5 +69,6 @@ test('notification settings match what is really sent', async ({ page, request }
   const posts = page.getByTestId('member-category-posts_reactions');
   await expect(posts).toBeVisible({ timeout: 20_000 });
   await expect(posts.getByRole('switch')).toBeEnabled();
-  await expect(page.getByTestId('member-category-live_rooms')).toHaveCount(0);
+  // Every category the API offers is shown on the screen.
+  for (const slug of slugs) await expect(page.getByTestId(`member-category-${slug}`)).toHaveCount(1);
 });

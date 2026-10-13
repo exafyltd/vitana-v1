@@ -1,0 +1,11 @@
+# VTID-05118 (vitana-v1 part) — commands run (2026-10-12), worktree on origin/main 6667c2ba5
+npm ci --ignore-scripts
+npx vitest run src/lib/trigger-secret.test.ts src/lib/edge-functions-caller-identity.s4.test.ts src/lib/edge-functions-getclaims.vtid-05008.test.ts   # -> outputs/vitest.txt (3 files, 43 passed)
+(supabase/functions changes stashed, trigger-secret.ts moved aside) npx vitest run src/lib/trigger-secret.test.ts src/lib/edge-functions-caller-identity.s4.test.ts   # -> outputs/vitest-red-without-source-change.txt (both files fail)
+npx tsc --noEmit -p tsconfig.app.json   # 176 errors before and after (all pre-existing, none in touched files)
+npx eslint supabase/functions/_shared/trigger-secret.ts supabase/functions/_shared/caller-auth.ts src/lib/trigger-secret.test.ts src/lib/edge-functions-caller-identity.s4.test.ts   # clean
+npx eslint supabase/functions/send-welcome-discount/index.ts   # 3 pre-existing errors (no-explicit-any x2, toLocaleDateString('en-US')), same as origin/main
+node -e "require('<vitana-platform>/scripts/ci/staging-verify/lib.cjs').validateManifest(require('./docs/validation/VTID-05118/staging-tests.json'),{vtid:'VTID-05118',service:'community-app'})"   # { ok: true, errors: [] }
+
+# Not run here (orchestrator): manual dispatch of supabase-functions-deploy.yml for send-welcome-discount, before the
+# vitana-platform migration is applied; then read-only list_edge_functions / function logs.
