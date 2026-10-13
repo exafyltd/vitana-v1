@@ -5279,11 +5279,13 @@
       "vitanaIndexUpSubtext": "Отличная работа!",
       "vitanaIndexDownSubtext": "Маленькие шаги имеют значение.",
       "vitanaIndexStableSubtext": "Будь последовательным.",
+      "vitanaIndexScoreSubtext": "Индекс {score} · {message}",
       "longevityJourneyEyebrow": "ТВОЯ АУДИОКНИГА О ДОЛГОЛЕТИИ",
       "longevityJourneyContinue": "Продолжить эпизод {session}: {topic}",
       "longevityJourneyAllDone": "Ты прослушал все эпизоды. Отлично!",
       "longevityJourneyNextStepHeadline": "Твой следующий шаг:",
       "longevityJourneySubtext": "Эпизод {session} ждет тебя.",
+      "longevityJourneyProgressSubtext": "Эпизод {session} ждёт · пройдено: {done} · сегодня {today}/{goal}",
       "longevityJourneyStartSession": "Слушать эпизод {session}",
       "longevityJourneyDoneLabel": "Готово",
       "longevityJourneyNowLabel": "Сейчас",
@@ -6232,8 +6234,7 @@
       "vitanaOpenScreen": "Открой экран",
       "viewFullscreen": "Посмотреть на весь экран",
       "_pending_review": {
-        "conversationRowError": true,
-        "talkToVitana": true
+        "conversationRowError": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} создал(а) группу",
@@ -6273,8 +6274,7 @@
       "imageDownloadFailed": "Не удалось загрузить изображение",
       "imageShareFailed": "Не удалось поделиться",
       "imageLoading": "Загрузка изображения",
-      "unknownSize": "Неизвестный размер",
-      "talkToVitana": "Talk to Vitana"
+      "unknownSize": "Неизвестный размер"
     },
     "mobile": {
       "searching": "Поиск…",
@@ -7700,34 +7700,6 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
-      },
-      "vitanaMessages": {
-        "_pending_review": {
-          "title": true,
-          "desc": true,
-          "enabled": true,
-          "enabledDesc": true,
-          "topics": true,
-          "health": true,
-          "healthDesc": true,
-          "community": true,
-          "communityDesc": true,
-          "business": true,
-          "businessDesc": true,
-          "loadError": true
-        },
-        "title": "Messages from Vitana",
-        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
-        "enabled": "Receive messages from Vitana",
-        "enabledDesc": "At most one message a day. You can turn them off at any time.",
-        "topics": "Topics",
-        "health": "Health",
-        "healthDesc": "Tips for your health and your Vitana Index.",
-        "community": "Community",
-        "communityDesc": "People, groups and events that suit you.",
-        "business": "Business & income",
-        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -8715,7 +8687,18 @@
       "viewIndex": "Посмотри индекс",
       "viewJourney": "Посмотри мой путь",
       "viewMatch": "Посмотри пару",
-      "dismissCard": "Скрыть карточку"
+      "dismissCard": "Скрыть карточку",
+      "dailyDiary": "Дневник",
+      "talkToVitana": "Поговори с Vitana",
+      "autopilot": "Автопилот",
+      "calendar": "Календарь",
+      "uploadMedia": "Медиа",
+      "discover": "Обзор",
+      "profilePhoto": "Фото профиля",
+      "profileSetup": "Профиль",
+      "socialConnect": "Подключить",
+      "importContacts": "Контакты",
+      "completeProfile": "Заполни профиль"
     },
     "voucher": {
       "friendExampleCom": "друг@example.com",
@@ -13510,6 +13493,132 @@
       "startingSoon": "Скоро начнётся",
       "startNow": "Начать сейчас",
       "eventsSectionTitle": "Прямые эфиры"
+    },
+    "vitanaCards": {
+      "stripLabel": "Предложения от Vitana",
+      "eyebrowProfile": "Твой профиль",
+      "eyebrowConnect": "Подключение",
+      "eyebrowCommunity": "Сообщество",
+      "eyebrowNotifications": "Уведомления",
+      "E1": {
+        "title": "Покажи своё лицо",
+        "description": "Загрузи фото профиля, чтобы тебя сразу узнавали.",
+        "action": "Загрузить"
+      },
+      "E2": {
+        "title": "Расскажи о себе",
+        "description": "Пара предложений о тебе поможет другим начать разговор.",
+        "action": "Написать о себе"
+      },
+      "E3": {
+        "title": "Поделись первым постом",
+        "description": "Поздоровайся с сообществом – хватит и короткой мысли.",
+        "action": "Опубликовать"
+      },
+      "E4": {
+        "title": "Что тебя вдохновляет?",
+        "description": "Выбери свои интересы, чтобы Vitana подобрала подходящих людей и контент.",
+        "action": "Выбрать интересы"
+      },
+      "E5": {
+        "title": "Где ты живёшь?",
+        "description": "Укажи своё местоположение и находи людей и события рядом.",
+        "action": "Указать место"
+      },
+      "E6": {
+        "title": "Подключи Instagram",
+        "description": "Делись моментами из Vitana прямо в Instagram.",
+        "action": "Подключить Instagram"
+      },
+      "E7": {
+        "title": "Подключи Facebook",
+        "description": "Будь ближе к друзьям и делись в одно касание.",
+        "action": "Подключить Facebook"
+      },
+      "E8": {
+        "title": "Подключи свой календарь",
+        "description": "Все встречи и события Vitana в одном месте.",
+        "action": "Подключить"
+      },
+      "E9": {
+        "title": "Импортируй контакты",
+        "description": "Найди друзей, которые уже в Vitana.",
+        "action": "Импортировать"
+      },
+      "E10": {
+        "title": "Ничего не пропусти",
+        "description": "Включи уведомления о сообщениях, совпадениях и напоминаниях.",
+        "action": "Включить"
+      },
+      "E11": {
+        "title": "Добавь обложку",
+        "description": "Обложка делает твой профиль более личным.",
+        "action": "Загрузить"
+      },
+      "F3": {
+        "eyebrow": "Дневник",
+        "title": "Как ты сегодня?",
+        "description": "Надиктуй пару фраз в дневник – Vitana слушает.",
+        "action": "Записать"
+      },
+      "F4": {
+        "eyebrow": "Спроси Vitana",
+        "title": "Есть вопрос?",
+        "description": "Vitana поможет со здоровьем, сообществом и не только.",
+        "action": "Спросить Vitana"
+      },
+      "F5": {
+        "eyebrow": "Совпадения",
+        "title": "Люди, которые тебе подходят",
+        "description": "Посмотри сегодняшние совпадения.",
+        "action": "Смотреть"
+      },
+      "F6": {
+        "eyebrow": "Автопилот",
+        "title": "Твой автопилот готов",
+        "description": "Позволь Vitana спланировать твои следующие шаги.",
+        "action": "Открыть"
+      },
+      "F9": {
+        "eyebrow": "Календарь",
+        "title": "Твой день с первого взгляда",
+        "description": "Встречи, события и напоминания в одном месте.",
+        "action": "Открыть календарь"
+      },
+      "F10": {
+        "eyebrow": "Медиа",
+        "title": "Поделись видео или музыкой",
+        "description": "Загрузи свои медиа и вдохнови сообщество.",
+        "action": "Создать"
+      },
+      "F11": {
+        "eyebrow": "Обзор",
+        "title": "Открой для себя что-то новое",
+        "description": "Товары, услуги и предложения для твоего благополучия.",
+        "action": "Смотреть"
+      }
+    },
+    "interests": {
+      "title": "Твои интересы",
+      "description": "Выбери до {max} тем, которые тебе нравятся.",
+      "selectedCount": "Выбрано {count} из {max}",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "fitness": "Фитнес",
+      "nutrition": "Питание",
+      "sleep": "Сон",
+      "mindfulness": "Осознанность",
+      "longevity": "Долголетие",
+      "biohacking": "Биохакинг",
+      "yoga": "Йога",
+      "running": "Бег",
+      "strength": "Силовые тренировки",
+      "dance": "Танцы",
+      "nature": "Природа",
+      "cooking": "Кулинария",
+      "social": "Общение",
+      "travel": "Путешествия",
+      "career": "Карьера"
     }
   }
 }
