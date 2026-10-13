@@ -6232,7 +6232,8 @@
       "vitanaOpenScreen": "Otwórz ekran",
       "viewFullscreen": "Pokaż na pełnym ekranie",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} utworzył(a) grupę",
@@ -6272,7 +6273,8 @@
       "imageDownloadFailed": "Nie udało się wczytać obrazu",
       "imageShareFailed": "Udostępnianie nie powiodło się",
       "imageLoading": "Ładowanie obrazu",
-      "unknownSize": "Nieznany rozmiar"
+      "unknownSize": "Nieznany rozmiar",
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Szukam…",
@@ -7698,6 +7700,34 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -8696,7 +8726,10 @@
       "profileSetup": "Profil",
       "socialConnect": "Połącz",
       "importContacts": "Kontakty",
-      "completeProfile": "Uzupełnij profil"
+      "completeProfile": "Uzupełnij profil",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -13585,7 +13618,10 @@
         "eyebrow": "Autopilot",
         "title": "Twój autopilot jest gotowy",
         "description": "Pozwól Vitanie zaplanować Twoje kolejne kroki.",
-        "action": "Otwórz"
+        "action": "Otwórz",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "F9": {
         "eyebrow": "Kalendarz",
@@ -13626,7 +13662,11 @@
       "cooking": "Gotowanie",
       "social": "Wspólnota",
       "travel": "Podróże",
-      "career": "Kariera"
+      "career": "Kariera",
+      "_pending_review": {
+        "fitness": true,
+        "biohacking": true
+      }
     }
   }
 }
