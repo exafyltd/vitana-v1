@@ -9,6 +9,7 @@ import { EventGameLandingView } from '@/components/event-game/EventGameLandingVi
 import { EventGameCelebration } from '@/components/event-game/EventGameCelebration';
 import { EventGameLeaderboardView } from '@/components/event-game/EventGameLeaderboardView';
 import { readStoredTenantSlug } from '@/lib/retired-tenants';
+import { currentRegistrySync, tenantLoginRoute } from '@/lib/tenant-registry';
 
 /** The QR-code destination: /e/game/:slug — public, no login wall (mounted
  * with AuthGuard allowGuest in App.tsx), event-specific (never a generic
@@ -28,8 +29,8 @@ export default function EventGamePublicLanding() {
 
   const handleJoin = async () => {
     if (!user) {
-      const slugForTenant = readStoredTenantSlug('tenant_slug') || 'maxina';
-      const loginRoute = ['maxina', 'alkalma'].includes(slugForTenant) ? `/${slugForTenant}` : '/maxina';
+      // VTID-05151: any registry tenant has its own portal; anything else keeps the /maxina default.
+      const loginRoute = tenantLoginRoute(readStoredTenantSlug('tenant_slug'), currentRegistrySync(), '/maxina');
       navigate(`${loginRoute}?redirectTo=${encodeURIComponent(window.location.pathname)}`);
       return;
     }

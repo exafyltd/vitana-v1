@@ -6,6 +6,8 @@ import { useRole } from "@/hooks/useRole";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { markRouteTransition } from "@/lib/routeTransition";
 import { RETIRED_TENANT_PATH_PREFIXES, readStoredTenantSlug } from "@/lib/retired-tenants";
+import { useTenantRegistry } from "@/hooks/useTenantRegistry";
+import { communityLandingPath, isTenantPortalPath, tenantLoginRoute, tenantSlugFromPath } from "@/lib/tenant-registry";
 
 // ── Role-route enforcement ──────────────────────────────────────────
 // Call from AppLayout so it runs on every authenticated page.
@@ -13,7 +15,9 @@ import { RETIRED_TENANT_PATH_PREFIXES, readStoredTenantSlug } from "@/lib/retire
 const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
 // VTID-04836: retired tenant prefixes (/earthlinks) stay pass-through so the
 // App.tsx redirect to /maxina runs instead of a role bounce.
-const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', ...RETIRED_TENANT_PATH_PREFIXES, '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
+// VTID-05151: tenant portals (/maxina, /alkalma, /<slug>) are matched by
+// isTenantPortalPath() against the registry, not listed here.
+const SHARED_PATHS = ['/exafy-admin', ...RETIRED_TENANT_PATH_PREFIXES, '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
 // VTID-03988: consumer surfaces that happen to live under a role prefix.
 // /patient/results shows the caller's own RLS-scoped data and is unlocked by
 // patient_profiles (see usePatientAccess.ts), not by the active role — so a
@@ -37,6 +41,7 @@ export function useRoleRouteEnforcement() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
+  const registry = useTenantRegistry();
 
   useEffect(() => {
     if (authLoading || roleLoading || !user) return;
@@ -51,6 +56,7 @@ export function useRoleRouteEnforcement() {
 
     // Don't enforce on portal, auth, settings, or dev pages (shared across roles)
     if (SHARED_PATHS.some(p => path === p || (p !== '/' && path.startsWith(p)))) return;
+    if (isTenantPortalPath(path, registry)) return;
     if (CONSUMER_PATHS.includes(path)) return;
 
     const isOnCommunity = COMMUNITY_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
@@ -96,7 +102,7 @@ export function useRoleRouteEnforcement() {
       navigate('/home', { replace: true });
       return;
     }
-  }, [user, authLoading, roleLoading, dbRole, isMobile, location.pathname, navigate]);
+  }, [user, authLoading, roleLoading, dbRole, isMobile, location.pathname, navigate, registry]);
 }
 
 // News (the "All News" home feed at /home) is the default landing screen after
@@ -121,20 +127,23 @@ export function useSmartRouting() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
+  const registry = useTenantRegistry();
 
   useEffect(() => {
     // Don't redirect while auth is still loading
     if (authLoading) return;
 
     // Don't redirect if already on a portal page or auth page
-    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', ...RETIRED_TENANT_PATH_PREFIXES, '/community', '/auth', '/_intro', '/dev'];
+    const portalPaths = ['/exafy-admin', ...RETIRED_TENANT_PATH_PREFIXES, '/community', '/auth', '/_intro', '/dev'];
     if (portalPaths.some(path => location.pathname.startsWith(path))) return;
+    if (isTenantPortalPath(location.pathname, registry)) return;
 
     // If user is not authenticated, handle based on current path
     if (!user) {
       // Allow access to public pages and portal pages
-      const publicPaths = ['/', '/maxina', '/alkalma', ...RETIRED_TENANT_PATH_PREFIXES, '/exafy-admin', '/_intro'];
+      const publicPaths = ['/', ...RETIRED_TENANT_PATH_PREFIXES, '/exafy-admin', '/_intro'];
       if (publicPaths.some(path => location.pathname === path || location.pathname.startsWith(path))) return;
+      if (isTenantPortalPath(location.pathname, registry)) return;
       
       // Redirect unauthenticated users trying to access protected pages to landing page
       // Use replace to avoid back button issues during logout
@@ -167,23 +176,10 @@ export function useSmartRouting() {
               break;
             case "community":
             default:
-              // Default to community experience based on tenant.
-              // Maxina users go through onboarding; OnboardingWelcome self-redirects if completed.
-              if (tenant?.slug) {
-                switch (tenant.slug) {
-                  case 'alkalma':
-                    navigate("/alkalma");
-                    break;
-                  case 'maxina':
-                    navigate("/onboarding/welcome");
-                    break;
-                  default:
-                    navigate("/maxina");
-                    break;
-                }
-              } else {
-                navigate("/home");
-              }
+              // Default to community experience based on tenant (VTID-05151: the
+              // tenant's landing.post_login_path; Maxina's is /onboarding/welcome,
+              // which self-redirects if completed). Unknown tenant → /home.
+              navigate(tenant?.slug ? communityLandingPath(tenant.slug, registry) : "/home");
               break;
           }
         }
@@ -209,29 +205,16 @@ export function useSmartRouting() {
             break;
           case "community":
           default:
-            // Redirect community users to tenant-specific pages based on their active tenant.
-            // Maxina users go through onboarding; OnboardingWelcome self-redirects if completed.
-            if (tenant?.slug) {
-              switch (tenant.slug) {
-                case 'alkalma':
-                  navigate("/alkalma");
-                  break;
-                case 'maxina':
-                  navigate("/onboarding/welcome");
-                  break;
-                default:
-                  navigate("/maxina");
-                  break;
-              }
-            } else {
-              // Fallback to News (default landing) if no tenant info available
-              navigate("/home");
-            }
+            // Redirect community users to their active tenant's landing
+            // (VTID-05151: landing.post_login_path from the registry; Maxina's
+            // is /onboarding/welcome, which self-redirects if completed).
+            // Unknown tenant or no tenant info → News (/home).
+            navigate(tenant?.slug ? communityLandingPath(tenant.slug, registry) : "/home");
             break;
         }
       }
     }
-  }, [user, authLoading, isExafyAdmin, dbRole, isMobile, tenant, location.pathname, navigate]);
+  }, [user, authLoading, isExafyAdmin, dbRole, isMobile, tenant, location.pathname, navigate, registry]);
 }
 
 // Hook to get appropriate redirect URL based on user type
@@ -247,6 +230,7 @@ export function useRoleBasedRedirect() {
   // comment. A backoffice account confirming email on mobile lands on /home,
   // not the desktop-only BackOffice UI.
   const isMobile = useIsMobile();
+  const registry = useTenantRegistry();
 
   const getRedirectUrl = () => {
     // Exafy Admins fall through to the same dbRole switch — no hardcoded admin redirect
@@ -262,19 +246,10 @@ export function useRoleBasedRedirect() {
         return "/patient/dashboard";
       case "community":
       default:
-        // Redirect community users to tenant-specific pages.
-        // Maxina users go through onboarding; OnboardingWelcome self-redirects if completed.
-        if (tenant?.slug) {
-          switch (tenant.slug) {
-            case 'alkalma':
-              return "/alkalma";
-            case 'maxina':
-              return "/onboarding/welcome";
-            default:
-              return "/maxina";
-          }
-        }
-        return "/home";
+        // Redirect community users to their tenant's landing (VTID-05151:
+        // registry landing.post_login_path; Maxina's is /onboarding/welcome,
+        // which self-redirects if completed). Unknown tenant → /home.
+        return tenant?.slug ? communityLandingPath(tenant.slug, registry) : "/home";
     }
   };
 
@@ -284,7 +259,8 @@ export function useRoleBasedRedirect() {
 // Hook to get tenant-specific logout redirect URL
 export function useTenantLogoutRedirect() {
   const { isExafyAdmin, tenant } = useTenant();
-  
+  const registry = useTenantRegistry();
+
   const getLogoutRedirectUrl = () => {
     if (isExafyAdmin) {
       return "/exafy-admin";
@@ -293,14 +269,8 @@ export function useTenantLogoutRedirect() {
     // Try to get tenant slug from current context or localStorage
     const tenantSlug = tenant?.slug || readStoredTenantSlug('logout_tenant_slug');
     
-    switch (tenantSlug) {
-      case "maxina":
-        return "/maxina";
-      case "alkalma": 
-        return "/alkalma";
-      default:
-        return "/";
-    }
+    // VTID-05151: the tenant's portal when the registry knows it, else /.
+    return tenantLoginRoute(tenantSlug, registry, "/");
   };
   
   return { getLogoutRedirectUrl };
@@ -309,12 +279,10 @@ export function useTenantLogoutRedirect() {
 // Tenant detection from URL
 export function useTenantFromUrl() {
   const location = useLocation();
-  
-  const getTenantFromPath = (): string | null => {
-    if (location.pathname.startsWith('/maxina')) return 'maxina';
-    if (location.pathname.startsWith('/alkalma')) return 'alkalma';
-    return null;
-  };
+  const registry = useTenantRegistry();
+
+  // VTID-05151: the first path segment, when it is a registry tenant.
+  const getTenantFromPath = (): string | null => tenantSlugFromPath(location.pathname, registry);
 
   return { getTenantFromPath };
 }

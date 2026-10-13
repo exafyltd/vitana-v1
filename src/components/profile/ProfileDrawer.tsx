@@ -21,7 +21,7 @@ import { User, LogOut, Shield, Trash2, Loader2, ArrowLeftRight } from "lucide-re
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { UserRole } from "@/hooks/useRole";
-import { useTenant, TenantType } from "@/hooks/useTenant";
+import { useTenant } from "@/hooks/useTenant";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
 import { useRoleSwitch } from "@/hooks/useRoleSwitch";
 import { roleLabel } from "@/lib/role-labels";
@@ -33,11 +33,6 @@ import { t } from '@/lib/i18n-toast';
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
 }
-
-const TENANT_LABELS: Record<TenantType, string> = {
-  maxina: "Maxina",
-  alkalma: "AlKalma",
-};
 
 export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const navigate = useNavigate();

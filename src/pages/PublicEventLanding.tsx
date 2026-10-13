@@ -13,6 +13,7 @@ import { t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
 import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
+import { currentRegistrySync, tenantLoginRoute } from '@/lib/tenant-registry';
 interface PublicEventData {
   id: string;
   title: string;
@@ -34,16 +35,11 @@ interface PublicEventData {
   is_sold_out?: boolean;
 }
 
-// Helper to get tenant-specific login route
-const getTenantLoginRoute = (tenantSlug: string | null): string => {
-  const tenantRoutes: Record<string, string> = {
-    maxina: '/maxina',
-    alkalma: '/alkalma',
-  };
-  // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
-    const slug = canonicalTenantSlug(tenantSlug);
-    return slug && tenantRoutes[slug] ? tenantRoutes[slug] : '/maxina';
-};
+// Helper to get tenant-specific login route.
+// VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
+// VTID-05151: any registry tenant has its own portal; anything else keeps the /maxina default.
+const getTenantLoginRoute = (tenantSlug: string | null): string =>
+  tenantLoginRoute(canonicalTenantSlug(tenantSlug), currentRegistrySync(), '/maxina');
 
 // Check if a string is a valid UUID
 const isUUID = (str: string): boolean => {
