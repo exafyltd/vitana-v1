@@ -9,8 +9,11 @@ import { useAdminAnalyticsSummary } from "@/hooks/useAdminProductAnalytics";
 import { DaysSelect, KpiCard } from "@/components/admin/analytics/AnalyticsShared";
 import { BarListCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function Engagement() {
+  const spotlight = useSpotlightEnabled();
   const [days, setDays] = useState(30);
   const summaryQuery = useOverviewSummary();
   const membersQuery = useMembers({ limit: 50 });
@@ -21,10 +24,8 @@ export default function Engagement() {
   const members = membersQuery.data || [];
   const analytics = analyticsQuery.data;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="insights" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="💬"
           title={t('screens.admin.engagement')}
@@ -77,7 +78,19 @@ export default function Engagement() {
             />
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="insights" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

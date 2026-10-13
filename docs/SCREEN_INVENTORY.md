@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 371
+- **Pages scanned:** 373
 - **Distinct i18n keys consumed:** 4754
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -645,6 +645,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 14, total in shard: 11748
 - `toasts` — used: 3, total in shard: 1282
 - `wallet` — used: 18, total in shard: 131
+
+### src/pages/discover-spotlight.vtid-05109.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/role-section-app-layout.test.ts
 
@@ -1558,6 +1562,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 8, total in shard: 11748
+
+### src/pages/admin/vtid-05113-admin-workspace.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## ai/
 

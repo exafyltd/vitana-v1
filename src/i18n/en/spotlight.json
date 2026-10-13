@@ -3,14 +3,19 @@
     "rail": {
       "open": "More on this",
       "title": "More on this",
-      "label": "Related to this screen"
+      "label": "Related to this screen",
+      "_pending_review": {}
     },
     "header": {
       "vitanaIndexLabel": "Vitana Index",
-      "vitanaIndexAria": "Vitana Index: {value}. Tap for details."
+      "vitanaIndexAria": "Vitana Index: {value}. Tap for details.",
+      "_pending_review": {}
     },
     "feed": {
-      "keyboardHint": "J / K or ↑ ↓: next card"
-    }
-  }
+      "keyboardHint": "J / K or ↑ ↓: next card",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

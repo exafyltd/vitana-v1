@@ -151,6 +151,10 @@ So **every new file must be clean**, and every migration PR lowers the baselines
 - no horizontal scroll;
 - no `DelayedLoader` after the first load.
 
+Role-gated operator routes (`/admin`, `/backoffice`, `/dev`, `/professional`, `/staff`) are left out of this loop: the
+community test account cannot open them. Each operator phase ships its own staging spec that checks the screen for an
+account with the role and the gate for one without it (VTID-05113 for admin).
+
 `ScreenFrame` exposes `data-archetype` and `VCard` exposes `data-vcard-size`, so these checks read structure, not pixels.
 
 ## D. Desktop ↔ phone mapping

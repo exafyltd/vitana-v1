@@ -19,6 +19,8 @@ import { useAutopilotRuns } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   running: "info",
   completed: "active",
@@ -34,6 +36,7 @@ function formatDuration(ms: number | null): string {
 }
 
 export default function AutopilotRuns() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -53,10 +56,8 @@ export default function AutopilotRuns() {
     setStatusFilter("all");
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="autopilot" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📋"
           title={t('screens.admin.executionRuns')}
@@ -111,7 +112,7 @@ export default function AutopilotRuns() {
                   <TableHead>{t('screens.admin.status')}</TableHead>
                   <TableHead>{t('screens.admin.duration')}</TableHead>
                   <TableHead>{t('screens.admin.vtid')}</TableHead>
-                  <TableHead className="text-right">{t('screens.admin.started')}</TableHead>
+                  <TableHead className="text-end">{t('screens.admin.started')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -128,7 +129,7 @@ export default function AutopilotRuns() {
                     <TableCell className="text-xs font-mono text-muted-foreground">
                       {run.activated_vtid || "—"}
                     </TableCell>
-                    <TableCell className="text-right text-xs text-muted-foreground">
+                    <TableCell className="text-end text-xs text-muted-foreground">
                       {fmtDateTime(new Date(run.started_at))}
                     </TableCell>
                   </TableRow>
@@ -137,7 +138,19 @@ export default function AutopilotRuns() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="autopilot" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

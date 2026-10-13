@@ -10,6 +10,8 @@ import { t } from '@/lib/i18n-toast';
 
 import { fmtTime } from '@/lib/locale-format';
 import { GATEWAY_BASE } from '@/lib/gateway-base';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const SERVICES = [
   { name: "Gateway", url: `${GATEWAY_BASE}/alive` },
 ];
@@ -24,6 +26,7 @@ interface ServiceStatus {
 }
 
 export default function AuditApiMonitor() {
+  const spotlight = useSpotlightEnabled();
   const { data: statuses, isLoading } = useQuery({
     queryKey: ["admin-api-health"],
     queryFn: async () => {
@@ -52,10 +55,8 @@ export default function AuditApiMonitor() {
   const healthy = services.filter((s) => s.status === "healthy").length;
   const unhealthy = services.filter((s) => s.status === "unhealthy").length;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminAuditNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           title={t('screens.admin.apiMonitor')}
           description="Real-time health status of platform services"
@@ -83,11 +84,11 @@ export default function AuditApiMonitor() {
                   <CardHeader className="pb-2">
                     <CardTitle className="flex items-center gap-2 text-base">
                       {svc.status === "healthy" ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                        <CheckCircle2 className="h-5 w-5 text-status-success" />
                       ) : svc.status === "unhealthy" ? (
-                        <XCircle className="h-5 w-5 text-red-500" />
+                        <XCircle className="h-5 w-5 text-status-error" />
                       ) : (
-                        <Clock className="h-5 w-5 text-muted-foreground animate-spin" />
+                        <Clock className="h-5 w-5 text-muted-foreground animate-pulse" />
                       )}
                       {svc.name}
                     </CardTitle>
@@ -123,7 +124,19 @@ export default function AuditApiMonitor() {
         <p className="text-xs text-muted-foreground">
           {t('screens.admin.autorefreshesEvery30SecondsAdditionalServices')}
         </p>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminAuditNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

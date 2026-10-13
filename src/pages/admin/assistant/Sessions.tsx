@@ -15,6 +15,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { adminFetch } from "@/lib/admin-api";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface Session {
   session_id: string;
@@ -27,6 +29,7 @@ interface Session {
 }
 
 export default function AssistantSessions() {
+  const spotlight = useSpotlightEnabled();
   const sessionsQuery = useQuery({
     queryKey: ["admin-voice-sessions"],
     queryFn: async () => {
@@ -50,10 +53,8 @@ export default function AssistantSessions() {
     return "inactive" as const;
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="assistant" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📡"
           title={t('screens.admin.voiceSessions')}
@@ -111,7 +112,19 @@ export default function AssistantSessions() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="assistant" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

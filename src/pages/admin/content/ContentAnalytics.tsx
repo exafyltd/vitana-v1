@@ -5,6 +5,8 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useContentStats } from "@/hooks/useAdminContent";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-amber-100 text-amber-800",
@@ -14,12 +16,11 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function ContentAnalytics() {
+  const spotlight = useSpotlightEnabled();
   const { data: stats, isLoading } = useContentStats();
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="content" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📈"
           title={t('screens.admin.contentAnalytics')}
@@ -50,7 +51,7 @@ export default function ContentAnalytics() {
                       <CardTitle className="text-sm font-medium text-muted-foreground capitalize">{status}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <span className={`inline-block rounded-full px-3 py-1 text-lg font-bold ${STATUS_COLORS[status] || "bg-gray-100 text-gray-800"}`}>
+                      <span className={`inline-block rounded-full px-3 py-1 text-lg font-bold ${STATUS_COLORS[status] || "bg-muted text-foreground"}`}>
                         {count}
                       </span>
                     </CardContent>
@@ -76,7 +77,19 @@ export default function ContentAnalytics() {
             </div>
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="content" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

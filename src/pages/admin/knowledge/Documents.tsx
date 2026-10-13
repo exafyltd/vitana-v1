@@ -56,6 +56,8 @@ import {
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 type Selected = { scope: KbScope; id: string; title: string } | null;
 
 interface ScopeConfig {
@@ -72,6 +74,7 @@ const SCOPES: ScopeConfig[] = [
 ];
 
 export default function KnowledgeDocuments() {
+  const spotlight = useSpotlightEnabled();
   const treeQuery = useUnifiedKbTree();
   const tree = treeQuery.data;
 
@@ -123,10 +126,8 @@ export default function KnowledgeDocuments() {
     };
   }, [tree, search]);
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="knowledge" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📚"
           title={t('screens.admin.knowledgeBaseDocuments')}
@@ -169,7 +170,8 @@ export default function KnowledgeDocuments() {
                 </p>
               )}
               {filteredTree && (
-                <ScrollArea className="h-[65vh] pr-3">
+                // design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token
+                <ScrollArea className="h-[65vh] pe-3">
                   <div className="space-y-4">
                     {SCOPES.map((scope) => (
                       <ScopeSection
@@ -210,7 +212,19 @@ export default function KnowledgeDocuments() {
             </CardContent>
           </Card>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="knowledge" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }
@@ -237,7 +251,7 @@ function ScopeSection({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 w-full text-left text-sm font-semibold py-1"
+        className="flex items-center gap-2 w-full text-start text-sm font-semibold py-1"
       >
         {open ? (
           <ChevronDown className="h-4 w-4" />
@@ -246,10 +260,10 @@ function ScopeSection({
         )}
         <Icon className="h-4 w-4" />
         <span>{scope.label}</span>
-        <span className="text-xs text-muted-foreground ml-auto">{total}</span>
+        <span className="text-xs text-muted-foreground ms-auto">{total}</span>
       </button>
       {open && (
-        <div className="pl-5 mt-1 space-y-2">
+        <div className="ps-5 mt-1 space-y-2">
           {total === 0 && (
             <p className="text-xs text-muted-foreground py-1">{scope.emptyHint}</p>
           )}
@@ -290,10 +304,10 @@ function TreeGroup({
           <ChevronRight className="h-3 w-3" />
         )}
         <span>{group.group}</span>
-        <span className="ml-1">({group.docs.length})</span>
+        <span className="ms-1">({group.docs.length})</span>
       </button>
       {open && (
-        <ul className="pl-4 mt-0.5 space-y-0.5">
+        <ul className="ps-4 mt-0.5 space-y-0.5">
           {group.docs.map((d) => {
             const isActive = selected && selected.id === d.id;
             return (
@@ -301,7 +315,7 @@ function TreeGroup({
                 <button
                   type="button"
                   onClick={() => onSelect(d)}
-                  className={`w-full text-left px-2 py-1 rounded text-xs transition ${
+                  className={`w-full text-start px-2 py-1 rounded text-xs transition ${
                     isActive
                       ? "bg-accent text-accent-foreground"
                       : "hover:bg-muted"
@@ -405,9 +419,9 @@ function SystemDocViewer({ id }: { id: string }) {
             <span className="text-xs text-muted-foreground">{t('screens.admin.readonly')}</span>
           )}
           {editing && (
-            <span className="text-xs text-amber-600 font-medium">{t('screens.admin.editing')}</span>
+            <span className="text-xs text-status-warning font-medium">{t('screens.admin.editing')}</span>
           )}
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ms-auto flex items-center gap-2">
             {commandHubUrl && !editing && (
               <a
                 href={commandHubUrl}
@@ -461,6 +475,7 @@ function SystemDocViewer({ id }: { id: string }) {
           className="font-mono text-sm"
         />
       ) : (
+        // design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token
         <ScrollArea className="h-[55vh] rounded-md border p-4 bg-muted/30">
           <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">
             {doc.content}
@@ -485,7 +500,7 @@ function SystemDocViewer({ id }: { id: string }) {
           >
             {t('screens.admin.cancel')}
           </Button>
-          <span className="text-xs text-muted-foreground ml-auto">
+          <span className="text-xs text-muted-foreground ms-auto">
             {t('screens.admin.savingWillApplyEveryTenantImmediately')}
           </span>
         </div>
@@ -626,13 +641,13 @@ function KbDocViewer({
           </Badge>
           <AdminStatusBadge variant={statusVariant as any}>{doc.status}</AdminStatusBadge>
           {editing && (
-            <span className="text-xs text-amber-600 font-medium">{t('screens.admin.editing')}</span>
+            <span className="text-xs text-status-warning font-medium">{t('screens.admin.editing')}</span>
           )}
           {canEditBaseline && !editing && (
             <Button
               size="sm"
               variant="outline"
-              className="ml-auto"
+              className="ms-auto"
               onClick={startEdit}
             >
               {t('screens.admin.edit')}
@@ -674,6 +689,7 @@ function KbDocViewer({
           className="font-mono text-sm"
         />
       ) : (
+        // design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token
         <ScrollArea className="h-[50vh] rounded-md border p-4 bg-muted/30">
           <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">
             {doc.body || "(no body)"}
@@ -699,7 +715,7 @@ function KbDocViewer({
             >
               {t('screens.admin.cancel')}
             </Button>
-            <span className="text-xs text-muted-foreground ml-auto">
+            <span className="text-xs text-muted-foreground ms-auto">
               {t('screens.admin.appliesAllNonoptedoutTenants')}
             </span>
           </>
@@ -721,7 +737,7 @@ function KbDocViewer({
               className="text-destructive"
             >{t('screens.admin.delete')}
             </Button>
-            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: fmtDateTime(new Date(doc.updated_at)) })}</span>
+            <span className="text-xs text-muted-foreground ms-auto">{t('screens.admin.updatedValue02', { value0: fmtDateTime(new Date(doc.updated_at)) })}</span>
           </>
         ) : (
           <>
@@ -733,7 +749,7 @@ function KbDocViewer({
               />
               {t('screens.admin.optOutThisBaselineDocFor')}
             </label>
-            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: fmtDateTime(new Date(doc.updated_at)) })}</span>
+            <span className="text-xs text-muted-foreground ms-auto">{t('screens.admin.updatedValue02', { value0: fmtDateTime(new Date(doc.updated_at)) })}</span>
           </>
         )}
       </div>

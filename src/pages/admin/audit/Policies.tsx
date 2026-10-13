@@ -7,12 +7,13 @@ import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function AuditPolicies() {
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="audit" />
-      <div className="p-6 space-y-4">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📜"
           title={t('screens.admin.policies')}
@@ -23,7 +24,19 @@ export default function AuditPolicies() {
           title={t('screens.admin.policyManagementComingSoon')}
           description="Configure data retention policies, access control rules, content moderation policies, and compliance requirements (HIPAA, GDPR, SOC2). This feature is under development."
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="audit" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

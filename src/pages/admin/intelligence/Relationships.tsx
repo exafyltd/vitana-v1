@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const NODE_TYPE_VARIANT: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
   person: "default",
   group: "secondary",
@@ -79,6 +81,7 @@ const edgeColumns = [
 ];
 
 export default function IntelligenceRelationships() {
+  const spotlight = useSpotlightEnabled();
   const [tab, setTab] = useState<"nodes" | "edges">("nodes");
   const [page, setPage] = useState(0);
   const pageSize = 50;
@@ -115,10 +118,8 @@ export default function IntelligenceRelationships() {
   const records = activeQuery.data?.data || [];
   const total = activeQuery.data?.total || 0;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminIntelligenceNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.relationshipGraph')} description="Nodes and edges in the relationship memory graph" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -154,7 +155,19 @@ export default function IntelligenceRelationships() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminIntelligenceNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

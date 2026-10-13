@@ -40,9 +40,12 @@ import {
 import { notifyError, notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const AVAILABLE_ROLES = ["community", "patient", "professional", "staff", "admin"];
 
 export default function MembersInvitations() {
+  const spotlight = useSpotlightEnabled();
   const [statusFilter, setStatusFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState("");
@@ -104,17 +107,15 @@ export default function MembersInvitations() {
     return { label: "Pending", variant: "warning" };
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="members" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="✉️"
           title={t('screens.admin.invitations')}
           description="Invite new members to your tenant by email"
           rightAction={
             <Button onClick={() => setShowForm(!showForm)} size="sm">
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="me-2 h-4 w-4" />
               {t('screens.admin.inviteMember')}
             </Button>
           }
@@ -208,7 +209,7 @@ export default function MembersInvitations() {
                   <TableHead>{t('screens.admin.status')}</TableHead>
                   <TableHead>{t('screens.admin.created')}</TableHead>
                   <TableHead>{t('screens.admin.expires')}</TableHead>
-                  <TableHead className="w-[80px]" />
+                  <TableHead className="w-20" />
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -254,7 +255,19 @@ export default function MembersInvitations() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="members" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

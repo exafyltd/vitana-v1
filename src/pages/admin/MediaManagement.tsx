@@ -10,8 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function MediaManagement() {
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
 
   const { data: stats } = useQuery({
@@ -61,16 +64,8 @@ export default function MediaManagement() {
     }
   });
 
-  return (
-    <AppLayout>
-      <SEO 
-        title={t('screens.admin.mediaManagementAdmin')} 
-        description="Manage platform media content"
-        canonical={window.location.href}
-      />
-      <SubNavigation items={adminMediaNavigation} />
-      
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <div>
           <h1 className="text-3xl font-bold mb-2">{t('screens.admin.mediaManagement')}</h1>
           <p className="text-muted-foreground">
@@ -130,7 +125,7 @@ export default function MediaManagement() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/media/videos?status=pending')}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">{t('screens.admin.pendingModeration')}</CardTitle>
-              <Clock className="w-4 h-4 text-yellow-500" />
+              <Clock className="w-4 h-4 text-status-warning" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.pending || 0}</div>
@@ -158,7 +153,7 @@ export default function MediaManagement() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">{t('screens.admin.approved')}</CardTitle>
-              <CheckCircle className="w-4 h-4 text-green-500" />
+              <CheckCircle className="w-4 h-4 text-status-success" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.approved || 0}</div>
@@ -204,7 +199,25 @@ export default function MediaManagement() {
             </div>
           </Button>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={t('screens.admin.mediaManagementAdmin')} 
+        description="Manage platform media content"
+        canonical={window.location.href}
+      />
+      <SubNavigation items={adminMediaNavigation} />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

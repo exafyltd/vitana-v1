@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const SOURCE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   orb_text: "default",
   orb_voice: "default",
@@ -35,7 +37,7 @@ const itemColumns = [
     key: "content",
     label: "Content",
     render: (val: string) => (
-      <span className="text-sm line-clamp-2 max-w-[400px]">{val || "-"}</span>
+      <span className="text-sm line-clamp-2 max-w-96">{val || "-"}</span>
     ),
   },
   {
@@ -62,7 +64,7 @@ const factColumns = [
   {
     key: "fact_value",
     label: "Value",
-    render: (val: string) => <span className="text-sm max-w-[300px] truncate block">{val}</span>,
+    render: (val: string) => <span className="text-sm max-w-72 truncate block">{val}</span>,
   },
   {
     key: "entity",
@@ -88,6 +90,7 @@ const factColumns = [
 ];
 
 export default function IntelligenceMemory() {
+  const spotlight = useSpotlightEnabled();
   const [tab, setTab] = useState<"items" | "facts">("items");
   const [page, setPage] = useState(0);
   const pageSize = 50;
@@ -125,10 +128,8 @@ export default function IntelligenceMemory() {
   const records = activeQuery.data?.data || [];
   const total = activeQuery.data?.total || 0;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminIntelligenceNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.memoryGarden')} description="Browse memory items and extracted facts across all users" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -165,7 +166,19 @@ export default function IntelligenceMemory() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminIntelligenceNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

@@ -14,7 +14,8 @@
       "failed": "That did not work. Please try again.",
       "loading": "Loading …",
       "redirecting": "Taking you back …",
-      "invalid": "This request has expired or is not valid. Start the connection again in your AI assistant."
+      "invalid": "This request has expired or is not valid. Start the connection again in your AI assistant.",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "Your profile",
@@ -25,7 +26,8 @@
       "peopleDesc": "Members who chose to be findable by AI assistants",
       "activities": "Activities",
       "activitiesDesc": "Upcoming community events and meetups",
-      "commerce": "Supplier tools (Vitanaland Commerce)"
+      "commerce": "Supplier tools (Vitanaland Commerce)",
+      "_pending_review": {}
     },
     "settings": {
       "title": "Connected AI",
@@ -49,7 +51,10 @@
       "loadFailed": "Your connected assistants could not be loaded.",
       "findableTitle": "Let other members' AI assistants find me",
       "findableDesc": "When on, members who connected ChatGPT or Claude can see your name, avatar, public city and interests. Off by default.",
-      "unknownClient": "An AI assistant"
-    }
-  }
+      "unknownClient": "An AI assistant",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

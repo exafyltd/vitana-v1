@@ -12,6 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
 import { notifySuccess, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -26,6 +28,7 @@ function ColorField({ label, value, onChange }: { label: string; value: string; 
 }
 
 export default function SettingsBranding() {
+  const spotlight = useSpotlightEnabled();
   const settingsQuery = useTenantSettings();
   const updateMutation = useUpdateTenantSettings();
   const branding = (settingsQuery.data?.branding || {}) as Record<string, string>;
@@ -54,10 +57,8 @@ export default function SettingsBranding() {
     );
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="settings" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🎨"
           title={t('screens.admin.branding')}
@@ -94,8 +95,8 @@ export default function SettingsBranding() {
                 <CardContent>
                   <div className="flex gap-2 h-12 rounded-md overflow-hidden border">
                     {bg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: bg, color: fg || "#000" }}>{t('screens.admin.background')}</div>}
-                    {accent && <div className="flex-1 flex items-center justify-center text-xs text-white" style={{ backgroundColor: accent }}>{t('screens.admin.accent')}</div>}
-                    {fg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: fg, color: "#fff" }}>{t('screens.admin.foreground')}</div>}
+                    {accent && <div className="flex-1 flex items-center justify-center text-xs text-primary-foreground" style={{ backgroundColor: accent }}>{t('screens.admin.accent')}</div>}
+                    {fg && <div className="flex-1 flex items-center justify-center text-xs text-primary-foreground" style={{ backgroundColor: fg }}>{t('screens.admin.foreground')}</div>}
                   </div>
                 </CardContent>
               </Card>
@@ -106,7 +107,19 @@ export default function SettingsBranding() {
             </Button>
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="settings" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

@@ -158,6 +158,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
   if (personaQuery.isLoading) {
     return (
       <div
+        // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
         className="fixed inset-0 z-50 flex justify-end bg-black/40"
         onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       >
@@ -177,6 +178,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       : "Couldn't reach the admin endpoint.";
     return (
       <div
+        // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
         className="fixed inset-0 z-50 flex justify-end bg-black/40"
         onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       >
@@ -203,6 +205,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
 
   return (
     <div
+      // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
       className="fixed inset-0 z-50 flex justify-end bg-black/40"
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
@@ -236,7 +239,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 {ph}
                 <button
                   onClick={() => removePhrase(ph, forwardPhrases, setForwardPhrases)}
-                  className="ml-1"
+                  className="ms-1"
                   aria-label={`Remove ${ph}`}
                 >
                   <X className="h-3 w-3" />
@@ -282,7 +285,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 {ph}
                 <button
                   onClick={() => removePhrase(ph, stayInlinePhrases, setStayInlinePhrases)}
-                  className="ml-1"
+                  className="ms-1"
                   aria-label={`Remove ${ph}`}
                 >
                   <X className="h-3 w-3" />

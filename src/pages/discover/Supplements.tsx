@@ -29,6 +29,10 @@ import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActio
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { t } from '@/lib/i18n-toast';
 import { fmtNumber } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { DiscoverRefreshButton, DiscoverUtilityActions } from "@/components/discover/spotlight/DiscoverUtility";
+import { SupplementsPanes } from "@/components/discover/spotlight/DiscoverSectionPanes";
 
 interface Supplement {
   id: string;
@@ -48,10 +52,56 @@ interface Supplement {
 }
 
 export default function Supplements() {
+  // VTID-05109 — Spotlight (desktop + flag) gets the collection layout; phones and flag-off keep the legacy screen.
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) return <SupplementsSpotlight />;
   return (
     <ProductSelectionProvider>
       <SupplementsInner />
     </ProductSelectionProvider>
+  );
+}
+
+function SupplementsSpotlight() {
+  const [urlParams] = useSearchParams();
+  const [tab, setTab] = useState("browse");
+  const [query, setQuery] = useState("");
+  const [masterActionOpen, setMasterActionOpen] = useState(false);
+  return (
+    <AppLayout>
+      <SEO
+        title={t('screens.discover.supplementsDiscover')}
+        description={t('spotlightDiscover.headers.supplements')}
+        canonical={window.location.href}
+      />
+      <ScreenFrame
+        archetype="collection"
+        subNav={{ items: discoverNavigation }}
+        header={{ title: t('screens.discover.supplements'), description: t('spotlightDiscover.headers.supplements'), emoji: "💊" }}
+        utility={{
+          children: (
+            <DiscoverUtilityActions
+              searchPlaceholder={t('screens.discover.searchSupplements')}
+              onSearch={setQuery}
+              onAction={() => setMasterActionOpen(true)}
+            />
+          ),
+          trailingElement: <DiscoverRefreshButton />,
+        }}
+        tabs={{
+          value: tab,
+          onValueChange: setTab,
+          items: [
+            { value: "browse", label: t('screens.discover.browseAll') },
+            { value: "picks", label: t('screens.discover.topPicks') },
+            { value: "stack", label: t('screens.discover.myStack') },
+          ],
+        }}
+      >
+        <SupplementsPanes query={query} initialSubcategory={urlParams.get("category")} />
+      </ScreenFrame>
+      <DiscoverShopActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
+    </AppLayout>
   );
 }
 

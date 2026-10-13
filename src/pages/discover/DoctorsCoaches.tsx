@@ -32,7 +32,59 @@ import { useWallet } from "@/hooks/useWallet";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { DiscoverRefreshButton, DiscoverUtilityActions } from "@/components/discover/spotlight/DiscoverUtility";
+import { DoctorsCoachesPanes } from "@/components/discover/spotlight/DiscoverSectionPanes";
 export default function DoctorsCoaches() {
+  // VTID-05109 — Spotlight (desktop + flag) gets the collection layout; phones and flag-off keep the legacy screen.
+  const spotlight = useSpotlightEnabled();
+  return spotlight ? <DoctorsCoachesSpotlight /> : <DoctorsCoachesLegacy />;
+}
+
+function DoctorsCoachesSpotlight() {
+  const [tab, setTab] = useState("find");
+  const [query, setQuery] = useState("");
+  const [masterActionOpen, setMasterActionOpen] = useState(false);
+  return (
+    <AppLayout>
+      <SEO
+        title={t('screens.discover.doctorsCoachesDiscover')}
+        description={t('spotlightDiscover.headers.coaches')}
+        canonical={window.location.href}
+      />
+      <ScreenFrame
+        archetype="collection"
+        subNav={{ items: discoverNavigation }}
+        header={{ title: t('screens.discover.doctorsCoaches'), description: t('spotlightDiscover.headers.coaches'), emoji: "👨‍⚕️" }}
+        utility={{
+          children: (
+            <DiscoverUtilityActions
+              searchPlaceholder={t('spotlightDiscover.searchSaved')}
+              onSearch={setQuery}
+              onAction={() => setMasterActionOpen(true)}
+            />
+          ),
+          trailingElement: <DiscoverRefreshButton />,
+        }}
+        tabs={{
+          value: tab,
+          onValueChange: setTab,
+          items: [
+            { value: "find", label: t('screens.discover.findProviders') },
+            { value: "matches", label: t('screens.discover.bestMatches') },
+            { value: "myproviders", label: t('spotlightDiscover.tabs.myProviders') },
+          ],
+        }}
+      >
+        <DoctorsCoachesPanes query={query} />
+      </ScreenFrame>
+      <DiscoverBookActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
+    </AppLayout>
+  );
+}
+
+function DoctorsCoachesLegacy() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { pendingCount, getLatestActions } = useAutopilot();

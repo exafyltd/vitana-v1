@@ -205,6 +205,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
   if (overridesQuery.isLoading) {
     return (
       <div
+        // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
         className="fixed inset-0 z-50 flex justify-end bg-black/40"
         onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       >
@@ -226,6 +227,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
       : "The overrides endpoint did not return data.";
     return (
       <div
+        // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
         className="fixed inset-0 z-50 flex justify-end bg-black/40"
         onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       >
@@ -250,6 +252,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
 
   return (
     <div
+      // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
       className="fixed inset-0 z-50 flex justify-end bg-black/40"
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
@@ -291,7 +294,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
             {kbScopes.map(s => (
               <Badge key={s} variant="secondary" className="gap-1">
                 {s}
-                <button onClick={() => removeKbScope(s)} className="ml-1"><X className="h-3 w-3" /></button>
+                <button onClick={() => removeKbScope(s)} className="ms-1"><X className="h-3 w-3" /></button>
               </Badge>
             ))}
             {kbScopes.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.none')}</span>}
@@ -325,7 +328,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
             {keywords.map(k => (
               <Badge key={k.keyword} variant="secondary" className="gap-1">
                 {k.keyword}
-                <button onClick={() => removeKeyword(k.keyword)} className="ml-1"><X className="h-3 w-3" /></button>
+                <button onClick={() => removeKeyword(k.keyword)} className="ms-1"><X className="h-3 w-3" /></button>
               </Badge>
             ))}
             {keywords.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.none')}</span>}

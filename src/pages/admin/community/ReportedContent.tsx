@@ -18,6 +18,8 @@ import { toast } from "sonner";
 import { notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 interface ContentReport {
   id: string;
   reporter_user_id: string;
@@ -34,6 +36,7 @@ interface ContentReport {
 }
 
 const ReportedContent = () => {
+  const spotlight = useSpotlightEnabled();
   const [reports, setReports] = useState<ContentReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("pending");
@@ -127,14 +130,8 @@ const ReportedContent = () => {
     return <Badge className={colors[reason as keyof typeof colors] || colors.other}>{reason}</Badge>;
   };
 
-  return (
-    <AdminGuard>
-      <AppLayout>
-        <SEO title={t('screens.admin.reportedContentAdmin')} description="Review and resolve user reports" />
-        
-        <SubNavigation items={adminCommunityNavigation} />
-        
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const adminBody = (
+    <>
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
               title={t('screens.admin.reportedContent')}
@@ -189,7 +186,7 @@ const ReportedContent = () => {
                               {report.status === 'pending' || report.status === 'reviewing' ? (
                                 <div className="flex items-center gap-2">
                                   {selectedReport === report.id ? (
-                                    <div className="flex flex-col gap-2 min-w-[200px]">
+                                    <div className="flex flex-col gap-2 min-w-48">
                                       <Textarea
                                         placeholder={t('screens.admin.adminNotesOptional')}
                                         value={adminNotes}
@@ -225,7 +222,7 @@ const ReportedContent = () => {
                                       variant="outline"
                                       onClick={() => setSelectedReport(report.id)}
                                     >
-                                      <AlertTriangle className="h-4 w-4 mr-1" />
+                                      <AlertTriangle className="h-4 w-4 me-1" />
                                       {t('screens.admin.review')}
                                     </Button>
                                   )}
@@ -247,7 +244,23 @@ const ReportedContent = () => {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+    </>
+  );
+
+  return (
+    <AdminGuard>
+      <AppLayout>
+        <SEO title={t('screens.admin.reportedContentAdmin')} description="Review and resolve user reports" />
+        
+        <SubNavigation items={adminCommunityNavigation} />
+        
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            {adminBody}
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+        )}
       </AppLayout>
     </AdminGuard>
   );

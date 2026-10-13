@@ -5,6 +5,8 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface ServiceCardProps {
   name: string;
@@ -15,8 +17,8 @@ interface ServiceCardProps {
 function ServiceCard({ name, description, healthy }: ServiceCardProps) {
   return (
     <Card
-      className={`overflow-hidden border-l-4 transition-all hover:shadow-md ${
-        healthy ? "border-l-green-500" : "border-l-red-500"
+      className={`overflow-hidden border-s-4 transition-all hover:shadow-md ${
+        healthy ? "border-s-status-success" : "border-s-status-error"
       }`}
     >
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
@@ -26,9 +28,9 @@ function ServiceCard({ name, description, healthy }: ServiceCardProps) {
         </div>
         <div className="flex items-center gap-2">
           {healthy ? (
-            <Wifi className="h-4 w-4 text-green-500" />
+            <Wifi className="h-4 w-4 text-status-success" />
           ) : (
-            <WifiOff className="h-4 w-4 text-red-500" />
+            <WifiOff className="h-4 w-4 text-status-error" />
           )}
         </div>
       </CardHeader>
@@ -36,12 +38,12 @@ function ServiceCard({ name, description, healthy }: ServiceCardProps) {
         <div className="flex items-center gap-2">
           <div
             className={`h-2.5 w-2.5 rounded-full ${
-              healthy ? "bg-green-500 animate-pulse" : "bg-red-500"
+              healthy ? "bg-status-success animate-pulse" : "bg-status-error"
             }`}
           />
           <span
             className={`text-sm font-medium ${
-              healthy ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
+              healthy ? "text-status-success" : "text-status-error"
             }`}
           >
             {healthy ? "Healthy" : "Unreachable"}
@@ -84,10 +86,9 @@ const services: ServiceCardProps[] = [
 ];
 
 export default function SystemHealth() {
-  return (
-    <AppLayout>
-      <SubNavigation items={adminDashboardNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.systemHealth')}
@@ -125,7 +126,19 @@ export default function SystemHealth() {
             </CardContent>
           </Card>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminDashboardNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-raised to-surface-page-via min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }
