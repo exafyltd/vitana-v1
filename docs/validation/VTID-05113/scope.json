@@ -110,7 +110,13 @@
     "src/pages/admin/users/RolesAccess.tsx",
     "src/pages/admin/users/SignupFunnel.tsx",
     "src/pages/admin/vtid-05113-admin-workspace.test.tsx",
-    "tests/e2e/staging/vtid-05113-admin-workspace.staging.spec.ts"
+    "tests/e2e/staging/vtid-05113-admin-workspace.staging.spec.ts",
+    ".kiro/specs/desktop-spotlight/**",
+    "docs/SCREEN_INVENTORY.md",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "src/design/screen-manifest.json",
+    "tests/e2e/staging/design-contract.staging.spec.ts",
+    "docs/design-system/SPOTLIGHT_RULES.md"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
   "weakens_tests": [],

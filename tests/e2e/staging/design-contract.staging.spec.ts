@@ -39,7 +39,13 @@ function loadManifest(): Entry[] {
 }
 
 const manifest = loadManifest();
-const migrated = manifest.filter((e) => e.status === 'migrated' && !e.path.includes(':') && !e.path.includes('*'));
+// Operator surfaces (admin, backoffice, dev, professional, staff) are role-gated:
+// the community test account cannot open them, so their own phase specs verify
+// them (e.g. vtid-05113-admin-workspace, which checks the gate for a non-admin).
+const OPERATOR = /^\/(admin|backoffice|dev|professional|staff)(\/|$)/;
+const migrated = manifest.filter(
+  (e) => e.status === 'migrated' && !e.path.includes(':') && !e.path.includes('*') && !OPERATOR.test(e.path),
+);
 
 async function signIn(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext) {
   const email = process.env.TEST_USER_EMAIL ?? '';
