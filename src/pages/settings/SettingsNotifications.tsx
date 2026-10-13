@@ -58,8 +58,12 @@ export default function SettingsNotifications() {
         <SEO title={t('screens.settings.notificationsSettings')} description={t('screens.settings.configureYourNotificationPreferences')} canonical={window.location.href} />
         <SubNavigation items={settingsNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-          <div className="max-w-7xl mx-auto flex items-center justify-center min-h-[400px]">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <div className="max-w-7xl mx-auto space-y-6">
+            <div className="flex items-center justify-center min-h-[400px]">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+            {/* VTID-05100: own query and loading state — never waits for the other preferences. */}
+            <VitanaMessagesSettings />
           </div>
         </div>
       </AppLayout>
