@@ -46,7 +46,10 @@ export function buildConfig(profileValue: string | undefined): ExpoConfig {
     userInterfaceStyle: 'automatic',
     ios: { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false },
     android: { package: IDENTIFIERS.android },
-    plugins: ['expo-router', 'expo-localization'],
+    // VTID-05180: the native ORB voice module. Its microphone usage string comes
+    // from the i18n catalog at prebuild (fails closed without the keys); dev-only
+    // local networking for the fake gateway.
+    plugins: ['expo-router', 'expo-localization', ['./modules/vitana-voice/plugin/withVitanaVoice', { profile }]],
     experiments: { typedRoutes: false },
     extra: { profile },
   };
