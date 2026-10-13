@@ -2,7 +2,12 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "paths": {
+      "@vitana/ui": ["./src/ui/index.ts"],
+      "@vitana/ui/*": ["./src/ui/*"],
+      "@vitana/tokens": ["./src/ui/theme/tokens-stub.ts"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist", ".expo", "android", "ios"]
