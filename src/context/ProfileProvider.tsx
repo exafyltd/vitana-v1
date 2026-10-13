@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { UserRole } from "@/hooks/useRole";
-import { TenantType } from "@/hooks/useTenant";
 import { supabase } from "@/integrations/supabase/client";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import {
@@ -18,7 +17,7 @@ interface ProfileData {
   avatarOffsetY?: number;
   displayName: string;
   role: UserRole;
-  tenantId: TenantType;
+  tenantId: string;
   initials: string;
   handle?: string;
   // VTID-01967: Canonical Vitana ID. Permanent once locked. Under the

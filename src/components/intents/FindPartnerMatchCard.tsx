@@ -269,7 +269,7 @@ export function FindPartnerMatchCard({
             {!isRedacted && (
               <span
                 aria-hidden
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-[88px] leading-none opacity-25 select-none"
+                className="absolute end-5 top-1/2 -translate-y-1/2 text-[88px] leading-none opacity-25 select-none"
               >
                 {theme.deco}
               </span>
@@ -296,7 +296,7 @@ export function FindPartnerMatchCard({
         {/* Top-left vertical badge — tinted by theme to match the
             reference design's pink-Dance / emerald-Fitness pills. */}
         <span
-          className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full backdrop-blur shadow-sm ${theme.pillClass}`}
+          className={`absolute top-3 start-3 inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full backdrop-blur shadow-sm ${theme.pillClass}`}
         >
           <span aria-hidden>{theme.icon}</span>
           <span>{theme.label}</span>
@@ -305,7 +305,7 @@ export function FindPartnerMatchCard({
         {/* Top-right card — single dark rounded panel with score on top
             and (optional) active-status pill underneath. Compass-aligned
             ribbon stays separate just below. */}
-        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+        <div className="absolute top-3 end-3 flex flex-col items-end gap-1.5">
           {/* BOOTSTRAP-MATCHMAKING-V4 — colored tier badge with a victory icon
               so a strong match reads as a win at a glance. */}
           <span
@@ -335,7 +335,7 @@ export function FindPartnerMatchCard({
         </div>
 
         {/* Bottom identity strip — name, handle, plus 2-3 cover tags. */}
-        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-left text-white">
+        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-start text-white">
           {isRedacted ? (
             <h3 className="text-lg font-semibold leading-tight">Anonymous match</h3>
           ) : (

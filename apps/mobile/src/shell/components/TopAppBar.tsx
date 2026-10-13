@@ -22,10 +22,10 @@ export function TopAppBar({ onMenuClick }: { onMenuClick: () => void }) {
   const { colors } = useUITheme();
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
-  const { tenant, storedSlug } = useTenant();
+  const { tenant, storedSlug, registry } = useTenant();
   const soundscape = useSoundscape();
 
-  const instantName = getInstantTenantName(pathname, storedSlug);
+  const instantName = getInstantTenantName(pathname, storedSlug, registry);
   const tenantName = instantName || tenant?.name || '';
   const resolvedSlug = instantName ? instantName.toLowerCase() : tenant?.slug;
   const isMaxina = resolvedSlug === 'maxina';

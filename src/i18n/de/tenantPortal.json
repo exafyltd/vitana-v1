@@ -1,0 +1,29 @@
+{
+  "tenantPortal": {
+    "tagline": "Willkommen bei {brand} – deiner Community auf Vitanaland.",
+    "logoAlt": "Logo von {brand}",
+    "tabsAria": "Anmelden oder beitreten",
+    "signInTab": "Anmelden",
+    "signUpTab": "Beitreten",
+    "signInTitle": "Bei {brand} anmelden",
+    "signUpTitle": "{brand} beitreten",
+    "signInButton": "Anmelden",
+    "signUpButton": "Konto erstellen",
+    "checkEmail": "Wir haben dir einen Bestätigungslink an {email} geschickt. Öffne ihn, um dein Konto zu aktivieren.",
+    "confirmed": "Deine E-Mail-Adresse ist bestätigt. Melde dich jetzt an.",
+    "joinIntro": "Du bist angemeldet, aber noch kein Mitglied von {brand}.",
+    "join": "{brand} beitreten",
+    "inviteOnly": "{brand} ist nur mit Einladung zugänglich. Nutze den Einladungslink, den du bekommen hast.",
+    "retry": "Erneut versuchen",
+    "loadError": {
+      "title": "Diese Community konnte nicht geladen werden",
+      "description": "Prüfe deine Verbindung und versuche es noch einmal."
+    },
+    "errors": {
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+      "signInFailed": "Anmeldung fehlgeschlagen. Prüfe deine E-Mail-Adresse und dein Passwort.",
+      "alreadyRegistered": "Diese E-Mail-Adresse ist bereits registriert. Melde dich stattdessen an.",
+      "notJoinable": "Du kannst {brand} gerade nicht beitreten."
+    }
+  }
+}

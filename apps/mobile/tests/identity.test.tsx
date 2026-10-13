@@ -28,7 +28,7 @@ const session = fakeSession('u-1', { user: { id: 'u-1', app_metadata: { active_t
 function double(rpc: Record<string, (a: unknown) => unknown> = {}) {
   return createSupabaseDouble({
     session,
-    tables: { tenants: [{ tenant_id: TENANT, slug: 'maxina', name: 'Maxina' }], patient_profiles: [] },
+    tables: { tenants: [{ tenant_id: TENANT, slug: 'maxina', name: 'Maxina', brand: { accent: '#FF7BAC' } }], patient_profiles: [] },
     rpc: {
       get_role_preference: () => ({ data: [{ role: 'community' }], error: null }),
       get_my_permitted_roles: () => ({ data: { ok: true, roles: ['community', 'staff'] }, error: null }),
@@ -46,7 +46,7 @@ beforeEach(() => {
 afterAll(() => __setSupabaseForTests(null));
 
 describe('tenant', () => {
-  it('reads the active tenant from app_metadata and merges TENANT_CONFIGS', async () => {
+  it('reads the active tenant from app_metadata and resolves it from the registry (VTID-05151)', async () => {
     const d = double();
     const { result } = renderHook(() => useTenant(), { wrapper: makeWrapper({ client: d.client }) });
     await waitFor(() => expect(result.current.tenant?.name).toBe('Maxina'));

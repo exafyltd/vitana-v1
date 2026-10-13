@@ -13,11 +13,13 @@ import { shellColors } from '../ports/tokens';
 import { useAuth } from '../auth/AuthProvider';
 import { ConfigMissing } from '../screens/ConfigMissing';
 import { OverlayHost } from './OverlayHost';
+import { useAuthLinkBridge } from '../auth/link-bridge';
 
 export function ShellRoot({ children }: { children: ReactNode }) {
   const { rtl, t } = useI18n();
   const { scheme } = useThemeMode();
   const { configMissing } = useAuth();
+  useAuthLinkBridge();
   const direction = rtl ? 'rtl' : 'ltr';
   return (
     <UIProvider colorScheme={scheme} direction={direction} t={t}>

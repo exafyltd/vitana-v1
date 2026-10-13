@@ -143,7 +143,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
             <p className="text-xs text-muted-foreground mt-0.5">{match.kind_pairing.replace("::", " ↔ ")}</p>
           </div>
         </div>
-        <div className="text-right shrink-0">
+        <div className="text-end shrink-0">
           <p className="text-sm font-semibold">{scorePct}%</p>
           {match.compass_aligned && (
             <p className="text-xs text-amber-600 mt-0.5">{t('screens.intents.compassaligned')}</p>
@@ -197,7 +197,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
             <button
               type="button"
               onClick={() => setDisputeOpen(true)}
-              className="ml-auto text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
+              className="ms-auto text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
             >
               <Flag className="h-3 w-3" /> {t('screens.intents.report')}
             </button>

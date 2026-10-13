@@ -10,7 +10,15 @@ import { resolveBottomNav, shouldHideBottomNav, barItemActive } from '../src/she
 import { routeGuard } from '../src/shell/logic/route-guard';
 import { getInstantTenantName } from '../src/shell/logic/tenant-display';
 import { findActiveLabel, initiallyExpandedGroups, type ModeOption } from '../src/shell/logic/mode-pill';
-import { CROSS_MODE_IDS, drawerNavIconTones, getRoleSwitchDestination, isExternalRoleSwitchDestination, computeAvailableRoles, resolveRoleBottomNav } from '../src/ports/core';
+import { FALLBACK_REGISTRY, normalizeEntry, type TenantEntry, type TenantRegistry, CROSS_MODE_IDS, drawerNavIconTones, getRoleSwitchDestination, isExternalRoleSwitchDestination, computeAvailableRoles, resolveRoleBottomNav } from '../src/ports/core';
+
+const REG: TenantRegistry = {
+  source: 'rpc',
+  tenants: [
+    normalizeEntry({ tenant_id: 't-m', slug: 'maxina', name: 'Maxina', display_name: 'Maxina', open_signup: true }) as TenantEntry,
+    normalizeEntry({ tenant_id: 't-a', slug: 'alkalma', name: 'AlKalma', display_name: 'AlKalma', open_signup: true }) as TenantEntry,
+  ],
+};
 
 const base: DrawerInput = { dbRole: 'community', isPatient: false, isPartnerOrgMember: false, iapRestricted: false, business: null };
 const ids = (input: Partial<DrawerInput>) => composeDrawerRows({ ...base, ...input }).map((r) => r.id);
@@ -183,9 +191,10 @@ describe('route guard (useSmartRouting.mobile.test.ts)', () => {
     ['/discover', 'professional', '/professional/dashboard'],
     ['/settings', 'patient', null],
     ['/maxina', 'admin', null],
+    ['/alkalma/x', 'patient', null],
     ['/admin/device-preview', 'community', null],
   ] as const)('%s as %s → %s', (path, role, want) => {
-    expect(routeGuard(path, role)).toBe(want);
+    expect(routeGuard(path, role, REG)).toBe(want);
   });
 });
 
@@ -207,11 +216,14 @@ describe('role switch destinations (role-switch-destination.test.ts, useRoleSwit
 });
 
 describe('tenant name and mode pill', () => {
-  it('tenant name: URL slug, then the stored slug (retired → successor), else empty', () => {
-    expect(getInstantTenantName('/alkalma', 'maxina')).toBe('AlKalma');
-    expect(getInstantTenantName('/home', 'alkalma')).toBe('AlKalma');
-    expect(getInstantTenantName('/home', 'earthlinks')).toBe('Maxina');
-    expect(getInstantTenantName('/home', null)).toBe('');
+  it('tenant name (registry, VTID-05151): URL slug, then the stored slug (retired → successor), else empty', () => {
+    expect(getInstantTenantName('/alkalma', 'maxina', REG)).toBe('AlKalma');
+    expect(getInstantTenantName('/home', 'alkalma', REG)).toBe('AlKalma');
+    expect(getInstantTenantName('/home', 'earthlinks', REG)).toBe('Maxina');
+    expect(getInstantTenantName('/home', null, REG)).toBe('');
+    // With only the compiled fallback, an unlisted tenant shows no name (never a wrong brand).
+    expect(getInstantTenantName('/alkalma', null, FALLBACK_REGISTRY)).toBe('');
+    expect(getInstantTenantName('/maxina', null, FALLBACK_REGISTRY)).toBe('Maxina');
   });
 
   const modes: ModeOption[] = [

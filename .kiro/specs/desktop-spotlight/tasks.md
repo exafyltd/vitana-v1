@@ -109,7 +109,9 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
   (conversation; same ConversationView props, data hooks/realtime/keep-alive untouched). Left: Post detail (after Phase 2),
   Public profile (needs an owner design call), the Live Rooms "Past" tab with recordings.
 - [x] 4.2 Remaining adapters (event, liveRoom, group, member).
-- [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+- [x] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+  Done with VTID-05110: Phase 4 routes `migrated` in the manifest, baselines lowered, staging specs
+  `vtid-05110-social-spotlight` + `vtid-05110-media-messages-spotlight` passed STAGING-VERIFY at `e634f79`.
 
 ## Phase 5 — Tier B adoption · VTID-05111
 - [x] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
@@ -231,6 +233,10 @@ Decisions taken (for Gate 2):
   crossover, health, journey, diary, memory, calendar, home, sharing, wallet, commerce, payment, business, tickets, event
   game, discover): `design/*` errors there 3,228 → 2,400 — physical direction 762 → 12, arbitrary size 231 → 179,
   raw palette 2,235 → 2,209 (26 exact light/dark pairs → tokens). Design + ESLint baselines lowered for 259 files.
+  Part 2 (VTID-05112): the same mechanical physical→logical rewrite for the remaining 173 files (pages, dev, admin,
+  meetups, mobile, intents, voucher, popups …): `design/no-physical-direction` 597 → 2 there, no file worse on any rule,
+  Vitest 420/420. Not rewritten: sidebar chrome (`AppLayout`, `DevSidebar`), lines with `translate-x`, slide animations,
+  carousels or `side`/`direction`-bound sheets (e.g. the `direction="right"` Meetup drawer stays physical).
   Left on purpose: `left-1/2 -translate-x-1/2` centring and carousel/sheet overrides (a logical class would misplace them
   in RTL); arbitrary sizes without an exact scale class (vh/dvh/calc/odd px).
   **Blocked on an owner decision:** no raw palette colour has a token with the same value in both light and dark mode, so

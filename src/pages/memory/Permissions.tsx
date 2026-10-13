@@ -168,7 +168,7 @@ function Permissions() {
           <ExpandableSearchButton placeholder={t('screens.memory.searchPrivacySecuritySettings')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.manageAccess')}
           </Button>
         </UtilityActionButton>
@@ -200,7 +200,7 @@ function Permissions() {
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.personalizedInsights')}</span>
+                      <span className="text-xs text-muted-foreground ms-8 block">{t('screens.memory.personalizedInsights')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
@@ -211,7 +211,7 @@ function Permissions() {
                         </div>
                         <Switch className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.contributeResearch')}</span>
+                      <span className="text-xs text-muted-foreground ms-8 block">{t('screens.memory.contributeResearch')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
@@ -222,7 +222,7 @@ function Permissions() {
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.shareAnonymously')}</span>
+                      <span className="text-xs text-muted-foreground ms-8 block">{t('screens.memory.shareAnonymously')}</span>
                     </div>
                   </div>
                   
@@ -302,7 +302,7 @@ function Permissions() {
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.medicalProfessionalsOnly')}</span>
+                      <span className="text-xs text-muted-foreground ms-8 block">{t('screens.memory.medicalProfessionalsOnly')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
@@ -313,7 +313,7 @@ function Permissions() {
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.firstRespondersAccess')}</span>
+                      <span className="text-xs text-muted-foreground ms-8 block">{t('screens.memory.firstRespondersAccess')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
@@ -324,7 +324,7 @@ function Permissions() {
                         </div>
                         <Switch className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.trustedFamilyContacts')}</span>
+                      <span className="text-xs text-muted-foreground ms-8 block">{t('screens.memory.trustedFamilyContacts')}</span>
                     </div>
                   </div>
                   

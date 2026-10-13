@@ -525,6 +525,173 @@ export function tenantBrand(slug: string | null | undefined): TenantBrand {
   return { brandAccent: config.brandAccent, brandBg: config.brandBg, brandFg: config.brandFg };
 }
 
+// ── tenant registry (src/lib/tenant-registry.ts, VTID-05151) ────────────
+// Pure parts only; the RPC + snapshot live in src/identity/tenant-registry.ts.
+// Names are the web module's; N1 confirms its final export names (pending).
+export interface TenantLanding {
+  tagline?: Record<string, string>;
+  intro?: boolean;
+  auto_switch_on_visit?: boolean;
+  post_login_path?: string;
+  oauth?: boolean;
+}
+
+export interface TenantEntry {
+  tenant_id: string;
+  slug: string;
+  name: string;
+  display_name: string;
+  open_signup: boolean;
+  brand: { accent?: string; bg?: string; fg?: string; logo_path?: string; favicon_path?: string; og_image_path?: string };
+  landing: TenantLanding;
+  locales: string[] | null;
+}
+
+export type RegistrySource = 'rpc' | 'snapshot' | 'fallback';
+
+export interface TenantRegistry {
+  source: RegistrySource;
+  tenants: TenantEntry[];
+}
+
+export interface ResolvedTenant {
+  tenant_id: string;
+  id: '';
+  tenantId: string;
+  slug: string;
+  name: string;
+  displayName: string;
+  openSignup: boolean;
+  landing: TenantLanding;
+  brandAccent?: string;
+  brandBg?: string;
+  brandFg?: string;
+}
+
+export const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,39}$/;
+export const REGISTRY_SNAPSHOT_KEY = 'tenant_registry_v1';
+
+export const COMPILED_MAXINA_FALLBACK: Readonly<TenantEntry> = Object.freeze({
+  tenant_id: '',
+  slug: 'maxina',
+  name: 'Maxina',
+  display_name: 'Maxina',
+  open_signup: true,
+  brand: Object.freeze({ accent: '#FF7BAC', bg: '#FFF5F8', fg: '#1A1A1A' }),
+  landing: Object.freeze({ intro: true, auto_switch_on_visit: true, post_login_path: '/onboarding/welcome', oauth: true }),
+  locales: null,
+}) as Readonly<TenantEntry>;
+
+export const FALLBACK_REGISTRY: TenantRegistry = Object.freeze({
+  source: 'fallback',
+  tenants: [COMPILED_MAXINA_FALLBACK as TenantEntry],
+}) as TenantRegistry;
+
+export function safeHex(v: unknown): string | undefined {
+  return typeof v === 'string' && /^#[0-9a-fA-F]{6}$/.test(v) ? v : undefined;
+}
+
+export function safeInternalPath(p: unknown, fallback = '/home'): string {
+  if (typeof p !== 'string') return fallback;
+  const v = p.trim();
+  if (!v.startsWith('/') || v.startsWith('//') || v.includes('\\')) return fallback;
+  // eslint-disable-next-line no-control-regex
+  if (/[\u0000-\u001f\u007f]/.test(v)) return fallback;
+  if (/^\/[^/?#]*:/.test(v)) return fallback;
+  return v;
+}
+
+export function normalizeEntry(raw: unknown): TenantEntry | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Record<string, unknown>;
+  if (typeof r.slug !== 'string' || !SLUG_RE.test(r.slug)) return null;
+  if (typeof r.tenant_id !== 'string' || typeof r.name !== 'string') return null;
+  const b = (r.brand && typeof r.brand === 'object' ? r.brand : {}) as Record<string, unknown>;
+  const l = (r.landing && typeof r.landing === 'object' ? r.landing : {}) as Record<string, unknown>;
+  const landing: TenantLanding = {};
+  if (typeof l.intro === 'boolean') landing.intro = l.intro;
+  if (typeof l.auto_switch_on_visit === 'boolean') landing.auto_switch_on_visit = l.auto_switch_on_visit;
+  if (typeof l.post_login_path === 'string') landing.post_login_path = l.post_login_path;
+  if (typeof l.oauth === 'boolean') landing.oauth = l.oauth;
+  const brand: TenantEntry['brand'] = {};
+  if (safeHex(b.accent)) brand.accent = b.accent as string;
+  if (safeHex(b.bg)) brand.bg = b.bg as string;
+  if (safeHex(b.fg)) brand.fg = b.fg as string;
+  return {
+    tenant_id: r.tenant_id,
+    slug: r.slug,
+    name: r.name,
+    display_name: typeof r.display_name === 'string' && r.display_name ? r.display_name : r.name,
+    open_signup: r.open_signup === true,
+    brand,
+    landing,
+    locales: Array.isArray(r.locales) ? r.locales.filter((x): x is string => typeof x === 'string') : null,
+  };
+}
+
+export function findBySlug(reg: TenantRegistry, slug: string | null | undefined): TenantEntry | undefined {
+  if (!slug) return undefined;
+  const s = canonicalTenantSlug(slug.trim().toLowerCase());
+  return reg.tenants.find((t) => t.slug === s);
+}
+
+export function findById(reg: TenantRegistry, tenantId: string | null | undefined): TenantEntry | undefined {
+  if (!tenantId) return undefined;
+  return reg.tenants.find((t) => t.tenant_id && t.tenant_id === tenantId);
+}
+
+export function tenantSlugFromPath(pathname: string, reg: TenantRegistry): string | null {
+  const seg = pathname.split('?')[0].replace(/^\/+/, '').split('/')[0];
+  if (!seg) return null;
+  return findBySlug(reg, seg)?.slug ?? null;
+}
+
+export function isTenantPortalPath(pathname: string, reg: TenantRegistry): boolean {
+  const seg = pathname.split('?')[0].replace(/^\/+/, '').split('/')[0].toLowerCase();
+  if (!seg) return false;
+  return seg in RETIRED_TENANT_SLUGS || !!findBySlug(reg, seg);
+}
+
+export const LEGACY_PORTAL_SLUGS: readonly string[] = ['maxina', 'alkalma'];
+
+export function tenantDisplayNameFor(slug: string | null | undefined, reg: TenantRegistry): string {
+  return findBySlug(reg, slug)?.display_name ?? '';
+}
+
+export function resolvedTenantFromEntry(entry: TenantEntry, tenantId: string): ResolvedTenant {
+  return {
+    tenant_id: tenantId,
+    id: '',
+    tenantId,
+    slug: entry.slug,
+    name: entry.display_name,
+    displayName: entry.display_name,
+    openSignup: entry.open_signup,
+    landing: entry.landing,
+    brandAccent: safeHex(entry.brand.accent),
+    brandBg: safeHex(entry.brand.bg),
+    brandFg: safeHex(entry.brand.fg),
+  };
+}
+
+export function neutralTenant(row: { tenant_id: string; slug: string | null; name: string }): ResolvedTenant {
+  return { tenant_id: row.tenant_id, id: '', tenantId: row.tenant_id, slug: row.slug ?? '', name: row.name, displayName: row.name, openSignup: false, landing: {} };
+}
+
+export function resolveActiveTenant(
+  activeTenantId: string | null,
+  reg: TenantRegistry,
+  row: { tenant_id: string; slug: string | null; name: string } | null | undefined,
+): ResolvedTenant | null {
+  if (!activeTenantId) return null;
+  const byId = findById(reg, activeTenantId);
+  if (byId) return resolvedTenantFromEntry(byId, activeTenantId);
+  if (!row) return null;
+  const bySlug = findBySlug(reg, row.slug);
+  if (bySlug && (!bySlug.tenant_id || bySlug.tenant_id === row.tenant_id)) return resolvedTenantFromEntry(bySlug, row.tenant_id);
+  return neutralTenant(row);
+}
+
 // ── @vitana/core/language (src/contexts/LanguageContext.tsx, locale-presentation.ts, RTLProvider.tsx) ──
 export const languageOptions: Array<{ label: string; value: string; status: 'ga' | 'beta' | 'draft' }> = [
   { label: 'German (DE)', value: 'de-DE', status: 'ga' },

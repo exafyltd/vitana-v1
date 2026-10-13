@@ -63,7 +63,10 @@ export function createSupabaseDouble(opts: DoubleOptions = {}) {
   const rpc = jest.fn(async (name: string, args?: any) => {
     record(`rpc.${name}`, [args]);
     const h = opts.rpc?.[name];
-    return h ? h(args) : ok(null);
+    if (h) return h(args);
+    // The tenant registry (VTID-05151) lists the double's tenants by default.
+    if (name === 'list_public_tenants') return ok((tables.tenants ?? []).map((t) => ({ display_name: t.name, open_signup: true, ...t })));
+    return ok(null);
   });
 
   function from(table: string) {

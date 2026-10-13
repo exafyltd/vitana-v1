@@ -10,6 +10,7 @@ import { Redirect, useGlobalSearchParams, usePathname } from 'expo-router';
 import { DelayedLoader } from '../ports/ui';
 import { useAuth } from '../auth/AuthProvider';
 import { useRole } from '../identity/useRole';
+import { useTenant } from '../identity/TenantProvider';
 import { useI18n } from '../i18n/I18nProvider';
 import { GUEST_PATHS } from '../navigation/guest-paths';
 import { matchPattern } from '../navigation/resolve';
@@ -35,6 +36,7 @@ export function useCurrentHref(): string {
 export function AuthGate({ member, guest }: { member: ReactNode; guest: ReactNode }) {
   const { user, loading } = useAuth();
   const { dbRole, isLoading: roleLoading } = useRole();
+  const { registry } = useTenant();
   const { t } = useI18n();
   const pathname = usePathname();
   const href = useCurrentHref();
@@ -44,7 +46,7 @@ export function AuthGate({ member, guest }: { member: ReactNode; guest: ReactNod
     return <Redirect href={`/maxina?redirectTo=${encodeURIComponent(href)}` as never} />;
   }
   if (!roleLoading) {
-    const bounce = routeGuard(pathname, dbRole);
+    const bounce = routeGuard(pathname, dbRole, registry);
     if (bounce && bounce !== pathname) return <Redirect href={bounce as never} />;
   }
   return <>{member}</>;

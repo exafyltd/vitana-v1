@@ -245,12 +245,12 @@ function Timeline() {
         {
           label: 'Save to Knowledge',
           onClick: () => handlePromoteToKnowledge(item.id),
-          icon: <Sparkles className="w-3 h-3 mr-1" />
+          icon: <Sparkles className="w-3 h-3 me-1" />
         },
         { 
           label: 'Delete', 
           onClick: () => handleDeleteActivity(item.id, isConversation ? 'conversation' : 'activity'), 
-          icon: <Trash2 className="w-3 h-3 mr-1" /> 
+          icon: <Trash2 className="w-3 h-3 me-1" /> 
         }
       ],
       expandedContent: isConversation ? (
@@ -443,7 +443,7 @@ function Timeline() {
           <ExpandableSearchButton placeholder={translate('timeline.searchPlaceholder', 'Search activity...')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.manageHistory')}
           </Button>
           <Button
@@ -538,7 +538,7 @@ function Timeline() {
                       >
                         <span className="text-base">{category.emoji}</span>
                         <span className="font-medium text-sm whitespace-nowrap">{category.label}</span>
-                        <Badge variant={isActive ? "secondary" : "outline"} className="text-xs ml-1">
+                        <Badge variant={isActive ? "secondary" : "outline"} className="text-xs ms-1">
                           {count}
                         </Badge>
                       </Button>

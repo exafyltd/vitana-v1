@@ -426,7 +426,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                   placeholder={t('streamTitleHint')}
                   maxLength={100}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                <span className="absolute end-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                   {title.length}/100
                 </span>
               </div>
@@ -459,7 +459,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                   className="flex-1"
                   onClick={() => setStreamType("audio")}
                 >
-                  <Mic className="w-4 h-4 mr-2" />
+                  <Mic className="w-4 h-4 me-2" />
                   {t('streamTypeAudio', 'Audio')}
                 </Button>
                 <Button
@@ -468,7 +468,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                   className="flex-1"
                   onClick={() => setStreamType("video")}
                 >
-                  <Video className="w-4 h-4 mr-2" />
+                  <Video className="w-4 h-4 me-2" />
                   {t('streamTypeVideo', 'Video')}
                 </Button>
               </div>
@@ -482,7 +482,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 onValueChange={(v) => setDurationMinutes(Number(v))}
               >
                 <SelectTrigger className="mt-2">
-                  <Clock className="w-4 h-4 mr-2" />
+                  <Clock className="w-4 h-4 me-2" />
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -526,7 +526,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                   <Button
                     variant="destructive"
                     size="icon"
-                    className="absolute top-2 right-2"
+                    className="absolute top-2 end-2"
                     onClick={handleRemoveImage}
                   >
                     <X className="w-4 h-4" />
@@ -647,11 +647,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal mt-1",
+                          "w-full justify-start text-start font-normal mt-1",
                           !scheduleDate && "text-muted-foreground"
                         )}
                       >
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className="me-2 h-4 w-4" />
                         {scheduleDate && scheduleTime
                           ? applyReplacements(t('scheduledAt', '{date} at {time}'), { date: formatDate(scheduleDate, "PPP"), time: scheduleTime })
                           : scheduleDate

@@ -178,14 +178,14 @@ function AIPicksInner() {
             subcategory={rec.subcategory}
             sizeClass="w-full h-40"
           />
-          <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs">
+          <Badge className="absolute top-2 start-2 bg-purple-500 text-white text-xs">
             {rec.badge}
           </Badge>
-          <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
+          <div className="absolute top-2 end-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
             <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
           </div>
           <div className={cn(
-            "absolute bottom-2 left-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
+            "absolute bottom-2 start-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
             getTypeColor(rec.type)
           )}>
             {getTypeIcon(rec.type)}
@@ -317,9 +317,9 @@ function AIPicksInner() {
               variant="ghost"
               size="sm"
               onClick={() => navigate('/discover')}
-              className="mb-2 -ml-2"
+              className="mb-2 -ms-2"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-4 w-4 me-2" />
               {translate('discover.aiPicks.backToDiscover')}
             </Button>
           )}
@@ -334,23 +334,23 @@ function AIPicksInner() {
           <SplitBar value={activeFilter} onValueChange={setActiveFilter}>
             <SplitBarList className={cn(isMobile && "overflow-x-auto")}>
               <SplitBarTrigger value="all">
-                <Sparkles className="h-4 w-4 mr-1.5" />
+                <Sparkles className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.all')}
               </SplitBarTrigger>
               <SplitBarTrigger value="service">
-                <Heart className="h-4 w-4 mr-1.5" />
+                <Heart className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.services')}
               </SplitBarTrigger>
               <SplitBarTrigger value="supplement">
-                <Pill className="h-4 w-4 mr-1.5" />
+                <Pill className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.supplements')}
               </SplitBarTrigger>
               <SplitBarTrigger value="expert">
-                <Stethoscope className="h-4 w-4 mr-1.5" />
+                <Stethoscope className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.experts')}
               </SplitBarTrigger>
               <SplitBarTrigger value="deal">
-                <Tag className="h-4 w-4 mr-1.5" />
+                <Tag className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.deals')}
               </SplitBarTrigger>
             </SplitBarList>
@@ -376,7 +376,7 @@ function AIPicksInner() {
                   {filteredRecommendations.map((rec) => (
                     <div
                       key={rec.id}
-                      className="flex-none w-[85vw] px-2 first:pl-4 last:pr-4"
+                      className="flex-none w-[85vw] px-2 first:ps-4 last:pe-4"
                     >
                       <RecommendationCard rec={rec} />
                     </div>

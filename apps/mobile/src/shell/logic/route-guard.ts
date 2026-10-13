@@ -4,18 +4,19 @@
  * `CONSUMER_PATHS`, `useRoleRouteEnforcement`) with `isMobile` always true.
  * Pure: returns where to bounce, or null. Pinned in scripts/native/shell-pins.json.
  */
-import type { UserRole } from '../../ports/core';
+import { isTenantPortalPath, type TenantRegistry, type UserRole } from '../../ports/core';
 
 export const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
-/** useSmartRouting.tsx SHARED_PATHS incl. RETIRED_TENANT_PATH_PREFIXES ('/earthlinks'). */
-export const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
+/** useSmartRouting.tsx SHARED_PATHS incl. RETIRED_TENANT_PATH_PREFIXES ('/earthlinks'); tenant portals come from the registry. */
+export const SHARED_PATHS = ['/exafy-admin', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
 export const CONSUMER_PATHS = ['/patient/results'];
 
 const under = (path: string, p: string) => path === p || path.startsWith(p + '/');
 
-export function routeGuard(path: string, dbRole: UserRole): string | null {
+export function routeGuard(path: string, dbRole: UserRole, reg: TenantRegistry): string | null {
   if (path === '/admin/device-preview') return null;
   if (SHARED_PATHS.some((p) => path === p || (p !== '/' && path.startsWith(p)))) return null;
+  if (isTenantPortalPath(path, reg)) return null;
   if (CONSUMER_PATHS.includes(path)) return null;
 
   const isOnCommunity = COMMUNITY_PREFIXES.some((p) => under(path, p));

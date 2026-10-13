@@ -260,7 +260,7 @@ export default function Marketplace() {
                 key={o.value}
                 type="button"
                 onClick={() => { setView(o.value); setPickerOpen(false); }}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${
+                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-start ${
                   view === o.value ? "border-primary bg-primary/10" : "border-border hover:bg-muted"
                 }`}
               >

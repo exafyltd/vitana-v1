@@ -54,7 +54,7 @@ export default function PublicAppShell({ children }: PublicAppShellProps) {
           {/* Sign in */}
           <Button size="sm" onClick={goToSignIn} className="shrink-0">
             <LogIn className="h-4 w-4" />
-            <span className="ml-2">{translate("discover.guest.signIn", "Sign in")}</span>
+            <span className="ms-2">{translate("discover.guest.signIn", "Sign in")}</span>
           </Button>
         </div>
       </header>

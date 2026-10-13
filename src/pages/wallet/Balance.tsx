@@ -139,7 +139,7 @@ function Balance() {
                 </Button>
               </div>
               <Button className="w-full">
-                <CreditCard className="h-4 w-4 mr-2" />
+                <CreditCard className="h-4 w-4 me-2" />
                 {t('screens.wallet.purchaseCredits')}
               </Button>
             </div>
@@ -158,11 +158,11 @@ function Balance() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="outline" className="h-16">
-                  <Coins className="h-4 w-4 mr-2" />
+                  <Coins className="h-4 w-4 me-2" />
                   {t('screens.wallet.buyTokens')}
                 </Button>
                 <Button variant="outline" className="h-16">
-                  <Shield className="h-4 w-4 mr-2" />
+                  <Shield className="h-4 w-4 me-2" />
                   {t('screens.wallet.stakeTokens')}
                 </Button>
               </div>
@@ -196,7 +196,7 @@ function Balance() {
                 </ul>
               </div>
               <Button className="w-full">
-                <TrendingUp className="h-4 w-4 mr-2" />
+                <TrendingUp className="h-4 w-4 me-2" />
                 {t('screens.wallet.upgradeNow')}
               </Button>
             </div>
@@ -345,7 +345,7 @@ function Balance() {
           <UniversalCalendarButton />
           {contextualAction && (
             <Button size="sm" onClick={contextualAction.onClick}>
-              <contextualAction.icon className="h-4 w-4 mr-2" />
+              <contextualAction.icon className="h-4 w-4 me-2" />
               {contextualAction.label}
             </Button>
           )}

@@ -33,6 +33,7 @@
   },
   "paths": {
     "/_intro/:tenantSlug": { "scope": "in", "reason": "Pre-login tenant intro." },
+    "/:tenantSlug": { "scope": "in", "lane": "public-auth", "reason": "Generic community portal for registry tenants (VTID-05151); same scope as the /maxina and /alkalma portals." },
     "/auth/confirmed": { "scope": "in", "reason": "Sign-up confirmation landing (universal link target)." },
     "/maxina/confirmed": { "scope": "in", "reason": "Sign-up confirmation landing (universal link target)." },
     "/alkalma/confirmed": { "scope": "in", "reason": "Sign-up confirmation landing (universal link target)." },

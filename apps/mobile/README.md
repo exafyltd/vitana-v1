@@ -38,6 +38,24 @@ production Supabase project and the staging hosts (`preview-aws*.vitanaland.com`
 database (root `CLAUDE.md`, "Why no host is exempt"). Native dev and test builds only ever point at G1. ESLint bans
 importing the web clients (`@/integrations/supabase/client`, `@/lib/gateway-base`) here: both fall back to production.
 
+## Remote config, push and links (Wave 1, N4-APP, VTID-05178)
+
+All dark until G1 / G2; none of it makes a network call in a build without a G1 gateway URL.
+
+- `src/config/remote-config.ts` — `GET <gateway>/api/v1/app-config` (N4-GW) on launch and foreground, at most once per
+  `ttl_seconds`; `useAppConfig()` gives `{ flags, updateRequired, updateRecommended, updateUrl, source }`. Failure or
+  no URL → the cached config (< 7 days) or the defaults (every flag off, minimum version `0.0.0`). The cache uses the
+  `KeyValueStore` port (`src/config/kv-store.ts`, in-memory until N1's MMKV adapter lands).
+- `src/push/` — the provider-neutral `PushProvider` port with `NoopPushProvider`, the only implementation until G2
+  (React Native Firebase comes with N4-FCM). `registerPushToken` / `unregisterPushToken` / `syncBadge` run only when
+  the provider is available **and** `push_enabled` is on.
+- `src/linking/` — `resolveLink` is the one resolver for push taps (`data.url`, then `open_link_url`), universal
+  links and `maxina://`; `app/+native-intent.tsx` hands every system link to it. Auth, OAuth-return and invite links
+  go to N3 through `auth-port.ts` (`onAuthLink`, `onInviteLink`, `setSession`); route targets wait for a session.
+- `APP_LINK_HOSTS` (test-g1 only) — the G1 test web host for associated domains / App Links. Unset until G1 has a
+  host; production and staging hosts fail the build. `public/.well-known/*` is pinned by
+  `tests/well-known-unchanged.test.ts` (store-app universal links are a Wave 3 item).
+
 ## i18n
 
 The app reads the web app's own catalog shards (`src/i18n/<locale>/*.json`) read-only. Metro has no
