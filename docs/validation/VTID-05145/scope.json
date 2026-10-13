@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05145",
+  "kind": "infra",
+  "paths": [
+    "docs/validation/VTID-05145/**",
+    ".kiro/specs/desktop-spotlight/handoff.md",
+    ".kiro/specs/desktop-spotlight/lanes/**",
+    ".claude/rules/collaboration.md",
+    ".kiro/steering/vitana-collaboration.md",
+    ".kiro/steering/vitana-kiro-notes.md",
+    ".github/workflows/PR-GATE.yml",
+    "CLAUDE.md"
+  ],
+  "collab_allow_initial": ["desktop-spotlight"],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

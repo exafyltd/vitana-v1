@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05143",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Unified Card System Phase 1 (VTID-05085 plan): signed in, Home's GET /api/v1/enrichment-cards?screen=home answers 200 JSON and at most 3 (and never more than the server offered) new enrichment cards render; /me/profile's GET answers 200 and the profile strip renders with its cards, or is absent when everything is complete. Taps nothing — no dismiss POST, no action button, no interests save; read-only",
+      "spec": "tests/e2e/staging/vtid-05085-enrichment-cards.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "Unified Card System Phase 2 (VTID-05086 plan): signed in, /health/vitana-index, /autopilot, /comm/media-hub, /comm/talk-to-vitana and /calendar each GET /api/v1/enrichment-cards?screen=<screen> (200 JSON) and show their card strip; no uncaught page errors. Taps nothing; read-only",
+      "spec": "tests/e2e/staging/vtid-05086-feature-cards.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "card shell, action button shapes, server dismiss with rollback, local feature dismiss TTL, every card's action (E1–E11, F1–F11), restyled existing cards, strip layouts/caps/states/halves, Make a Post launcher, chat adapter, interests picker, Home cap, deep links",
+      "ref": "npx vitest run src/components/vitana src/components/enrichment src/components/feature src/components/profile/InterestsPicker.test.tsx src/hooks/useEnrichmentCards.test.ts src/hooks/useCardDismiss.test.ts src/lib/feed-compose.test.ts src/components/home",
+      "cwd": ".",
+      "reason": "Dismissing a card is a POST, saving interests and enabling notifications are member writes, and starting OAuth leaves the app. Staging writes to the production Supabase project, so these paths are proven here with the gateway and Supabase mocked: optimistic dismiss + rollback + toast, 7-day local TTL, each card's action (navigation, composer, picker, OAuth start, push subscribe), strip caps/layouts/loading/empty/error, chat payload guard and no X on feature cards in a chat, the Home cap of 3 with the existing order unchanged, and every deep link resolving to a real non-redirect route."
+    }
+  ]
+}

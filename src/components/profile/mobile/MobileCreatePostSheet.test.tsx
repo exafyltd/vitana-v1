@@ -48,6 +48,8 @@ vi.mock('@/lib/i18n-toast', () => ({
   t: (k: string) => k,
 }));
 vi.mock('@/hooks/use-toast', () => ({ toast: vi.fn() }));
+// VTID-05086: the sheet now carries the "Make a Post" card strip (own tests).
+vi.mock('@/components/vitana/EnrichmentCardStrip', () => ({ EnrichmentCardStrip: () => null }));
 vi.mock('@/hooks/useTranslation', () => ({
   useTranslation: () => ({ translate: (_k: string, fallback?: string) => fallback ?? _k }),
 }));

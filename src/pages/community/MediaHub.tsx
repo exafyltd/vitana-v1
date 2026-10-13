@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -765,6 +766,9 @@ export default function MediaHub() {
               </UtilityActionButton>
             </>
           )}
+
+          {/* VTID-05086: Unified Card System — carousel at the top. */}
+          <EnrichmentCardStrip screen="community" layout="carousel" className={isMobile ? "mt-2 mb-2" : "mb-4"} />
 
           {/* Media Hub Subtabs */}
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className={cn("w-full", isMobile && "mt-1")}>

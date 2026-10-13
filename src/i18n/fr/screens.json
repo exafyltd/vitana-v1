@@ -5276,11 +5276,13 @@
       "vitanaIndexUpSubtext": "Excellent travail !",
       "vitanaIndexDownSubtext": "Les petits pas comptent.",
       "vitanaIndexStableSubtext": "Reste constant.",
+      "vitanaIndexScoreSubtext": "Indice {score} · {message}",
       "longevityJourneyEyebrow": "TON LIVRE AUDIO LONGÉVITÉ",
       "longevityJourneyContinue": "Continuer avec l'épisode {session} : {topic}",
       "longevityJourneyAllDone": "Tu as écouté tous les épisodes. Bravo !",
       "longevityJourneyNextStepHeadline": "Ta prochaine étape :",
       "longevityJourneySubtext": "L'épisode {session} t'attend.",
+      "longevityJourneyProgressSubtext": "L'épisode {session} t'attend · {done} terminés · aujourd'hui {today}/{goal}",
       "longevityJourneyStartSession": "Écouter l'épisode {session}",
       "longevityJourneyDoneLabel": "Terminé",
       "longevityJourneyNowLabel": "Maintenant",
@@ -8697,7 +8699,18 @@
       "viewIndex": "Voir l'Index",
       "viewJourney": "Voir mon parcours",
       "viewMatch": "Voir la correspondance",
-      "dismissCard": "Ignorer la carte"
+      "dismissCard": "Ignorer la carte",
+      "dailyDiary": "Journal",
+      "talkToVitana": "Parle à Vitana",
+      "autopilot": "Pilote automatique",
+      "calendar": "Calendrier",
+      "uploadMedia": "Médias",
+      "discover": "Découvrir",
+      "profilePhoto": "Photo de profil",
+      "profileSetup": "Profil",
+      "socialConnect": "Connecter",
+      "importContacts": "Contacts",
+      "completeProfile": "Compléter le profil"
     },
     "voucher": {
       "friendExampleCom": "ami@exemple.com",
@@ -13481,6 +13494,132 @@
       "startingSoon": "Commence bientôt",
       "startNow": "Lancer maintenant",
       "eventsSectionTitle": "Salles en direct"
+    },
+    "vitanaCards": {
+      "stripLabel": "Suggestions de Vitana",
+      "eyebrowProfile": "Ton profil",
+      "eyebrowConnect": "Connecter",
+      "eyebrowCommunity": "Communauté",
+      "eyebrowNotifications": "Notifications",
+      "E1": {
+        "title": "Montre ton visage",
+        "description": "Ajoute une photo de profil pour que les autres te reconnaissent tout de suite.",
+        "action": "Ajouter"
+      },
+      "E2": {
+        "title": "Parle un peu de toi",
+        "description": "Quelques phrases sur toi aident les autres à engager la conversation.",
+        "action": "Écrire ma bio"
+      },
+      "E3": {
+        "title": "Partage ta première publication",
+        "description": "Dis bonjour à la communauté – une petite pensée suffit.",
+        "action": "Publier"
+      },
+      "E4": {
+        "title": "Qu'est-ce qui te passionne ?",
+        "description": "Choisis tes centres d’intérêt pour que Vitana trouve des personnes et contenus faits pour toi.",
+        "action": "Choisir"
+      },
+      "E5": {
+        "title": "Où vis-tu ?",
+        "description": "Ajoute ta ville et découvre des personnes et des événements près de chez toi.",
+        "action": "Ajouter un lieu"
+      },
+      "E6": {
+        "title": "Connecte Instagram",
+        "description": "Partage tes moments Vitana directement sur Instagram.",
+        "action": "Connecter Instagram"
+      },
+      "E7": {
+        "title": "Connecte Facebook",
+        "description": "Reste proche de tes amis et partage en un geste.",
+        "action": "Connecter Facebook"
+      },
+      "E8": {
+        "title": "Connecte ton calendrier",
+        "description": "Retrouve tes rendez-vous et les événements Vitana au même endroit.",
+        "action": "Connecter"
+      },
+      "E9": {
+        "title": "Importe tes contacts",
+        "description": "Retrouve les amis qui sont déjà sur Vitana.",
+        "action": "Importer"
+      },
+      "E10": {
+        "title": "Ne rate plus rien",
+        "description": "Active les notifications pour les messages, les matchs et les rappels.",
+        "action": "Activer"
+      },
+      "E11": {
+        "title": "Ajoute une photo de couverture",
+        "description": "Une photo de couverture rend ton profil plus personnel.",
+        "action": "Ajouter"
+      },
+      "F3": {
+        "eyebrow": "Journal",
+        "title": "Comment vas-tu aujourd’hui ?",
+        "description": "Dis quelques phrases dans ton journal – Vitana t’écoute.",
+        "action": "Enregistrer"
+      },
+      "F4": {
+        "eyebrow": "Demande à Vitana",
+        "title": "Tu as une question ?",
+        "description": "Vitana t’aide pour la santé, la communauté et plus encore.",
+        "action": "Demander à Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matchs",
+        "title": "Des personnes faites pour toi",
+        "description": "Découvre tes matchs du jour.",
+        "action": "Voir les matchs"
+      },
+      "F6": {
+        "eyebrow": "Pilote automatique",
+        "title": "Ton pilote automatique est prêt",
+        "description": "Laisse Vitana planifier tes prochaines étapes.",
+        "action": "Ouvrir"
+      },
+      "F9": {
+        "eyebrow": "Calendrier",
+        "title": "Ta journée en un coup d’œil",
+        "description": "Rendez-vous, événements et rappels au même endroit.",
+        "action": "Ouvrir le calendrier"
+      },
+      "F10": {
+        "eyebrow": "Médias",
+        "title": "Partage une vidéo ou de la musique",
+        "description": "Publie tes médias et inspire la communauté.",
+        "action": "Créer"
+      },
+      "F11": {
+        "eyebrow": "Découvrir",
+        "title": "Découvre quelque chose de nouveau",
+        "description": "Produits, services et offres pour ton bien-être.",
+        "action": "Parcourir"
+      }
+    },
+    "interests": {
+      "title": "Tes centres d’intérêt",
+      "description": "Choisis jusqu'à {max} sujets qui te plaisent.",
+      "selectedCount": "{count} sur {max} sélectionnés",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sommeil",
+      "mindfulness": "Pleine conscience",
+      "longevity": "Longévité",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Course à pied",
+      "strength": "Musculation",
+      "dance": "Danse",
+      "nature": "Nature",
+      "cooking": "Cuisine",
+      "social": "Vie sociale",
+      "travel": "Voyages",
+      "career": "Carrière"
     }
   }
 }

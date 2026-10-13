@@ -1383,6 +1383,14 @@
       "capabilityRevoked": "Berechtigung widerrufen",
       "grantFailed": "Berechtigung konnte nicht erteilt werden",
       "revokeFailed": "Berechtigung konnte nicht widerrufen werden"
+    },
+    "vitanaCards": {
+      "dismissFailed": "Karte konnte nicht ausgeblendet werden",
+      "connectFailed": "Verbindung konnte nicht gestartet werden",
+      "interestsSaved": "Interessen gespeichert",
+      "interestsSaveFailed": "Interessen konnten nicht gespeichert werden",
+      "notificationsEnabled": "Benachrichtigungen sind an",
+      "notificationsFailed": "Benachrichtigungen konnten nicht aktiviert werden"
     }
   }
 }

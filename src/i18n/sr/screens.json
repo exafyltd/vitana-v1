@@ -5370,11 +5370,13 @@
       "vitanaIndexUpSubtext": "Odličan posao!",
       "vitanaIndexDownSubtext": "Mali koraci se računaju.",
       "vitanaIndexStableSubtext": "Budi dosledan.",
+      "vitanaIndexScoreSubtext": "Indeks {score} · {message}",
       "longevityJourneyEyebrow": "TVOJA AUDIO-KNJIGA O DUGOVEČNOSTI",
       "longevityJourneyContinue": "Nastavi sa epizodom {session}: {topic}",
       "longevityJourneyAllDone": "Saslušao si sve epizode. Bravo!",
       "longevityJourneyNextStepHeadline": "Tvoj sledeći korak:",
       "longevityJourneySubtext": "Epizoda {session} te čeka.",
+      "longevityJourneyProgressSubtext": "Epizoda {session} te čeka · {done} završeno · danas {today}/{goal}",
       "longevityJourneyStartSession": "Pusti epizodu {session}",
       "longevityJourneyDoneLabel": "Gotovo",
       "longevityJourneyNowLabel": "Sada",
@@ -10552,7 +10554,18 @@
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu"
+      "dismissCard": "Odbaci karticu",
+      "dailyDiary": "Dnevnik",
+      "talkToVitana": "Razgovaraj sa Vitanom",
+      "autopilot": "Autopilot",
+      "calendar": "Kalendar",
+      "uploadMedia": "Mediji",
+      "discover": "Otkrij",
+      "profilePhoto": "Profilna fotografija",
+      "profileSetup": "Profil",
+      "socialConnect": "Poveži",
+      "importContacts": "Kontakti",
+      "completeProfile": "Dovrši profil"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -12564,6 +12577,132 @@
       "startingSoon": "Uskoro počinje",
       "startNow": "Pokreni sada",
       "eventsSectionTitle": "Sobe uživo"
+    },
+    "vitanaCards": {
+      "stripLabel": "Predlozi od Vitane",
+      "eyebrowProfile": "Tvoj profil",
+      "eyebrowConnect": "Poveži",
+      "eyebrowCommunity": "Zajednica",
+      "eyebrowNotifications": "Obaveštenja",
+      "E1": {
+        "title": "Pokaži svoje lice",
+        "description": "Postavi profilnu fotografiju da te drugi odmah prepoznaju.",
+        "action": "Otpremi"
+      },
+      "E2": {
+        "title": "Ispričaj nešto o sebi",
+        "description": "Nekoliko rečenica o tebi pomaže drugima da započnu razgovor.",
+        "action": "Napiši biografiju"
+      },
+      "E3": {
+        "title": "Podeli svoju prvu objavu",
+        "description": "Pozdravi zajednicu – dovoljna je kratka misao.",
+        "action": "Objavi sada"
+      },
+      "E4": {
+        "title": "Šta te oduševljava?",
+        "description": "Izaberi svoja interesovanja da bi Vitana pronašla ljude i sadržaje za tebe.",
+        "action": "Izaberi interesovanja"
+      },
+      "E5": {
+        "title": "Gde živiš?",
+        "description": "Dodaj svoju lokaciju i otkrij ljude i događaje u blizini.",
+        "action": "Dodaj lokaciju"
+      },
+      "E6": {
+        "title": "Poveži Instagram",
+        "description": "Deli svoje trenutke iz Vitane direktno na Instagramu.",
+        "action": "Poveži Instagram"
+      },
+      "E7": {
+        "title": "Poveži Facebook",
+        "description": "Ostani blizu prijatelja i deli jednim dodirom.",
+        "action": "Poveži Facebook"
+      },
+      "E8": {
+        "title": "Poveži svoj kalendar",
+        "description": "Vidi svoje obaveze i Vitana događaje na jednom mestu.",
+        "action": "Poveži"
+      },
+      "E9": {
+        "title": "Uvezi svoje kontakte",
+        "description": "Pronađi prijatelje koji su već na Vitani.",
+        "action": "Uvezi"
+      },
+      "E10": {
+        "title": "Ne propusti ništa",
+        "description": "Uključi obaveštenja za poruke, poklapanja i podsetnike.",
+        "action": "Uključi"
+      },
+      "E11": {
+        "title": "Dodaj naslovnu fotografiju",
+        "description": "Naslovna fotografija čini tvoj profil ličnijim.",
+        "action": "Otpremi"
+      },
+      "F3": {
+        "eyebrow": "Dnevnik",
+        "title": "Kako si danas?",
+        "description": "Izgovori nekoliko rečenica u svoj dnevnik – Vitana sluša.",
+        "action": "Snimi"
+      },
+      "F4": {
+        "eyebrow": "Pitaj Vitanu",
+        "title": "Imaš li pitanje?",
+        "description": "Vitana ti pomaže oko zdravlja, zajednice i još mnogo toga.",
+        "action": "Pitaj Vitanu"
+      },
+      "F5": {
+        "eyebrow": "Poklapanja",
+        "title": "Ljudi koji ti odgovaraju",
+        "description": "Otkrij današnja poklapanja.",
+        "action": "Pogledaj poklapanja"
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Tvoj autopilot je spreman",
+        "description": "Pusti Vitanu da isplanira tvoje sledeće korake.",
+        "action": "Otvori"
+      },
+      "F9": {
+        "eyebrow": "Kalendar",
+        "title": "Tvoj dan na prvi pogled",
+        "description": "Obaveze, događaji i podsetnici na jednom mestu.",
+        "action": "Otvori kalendar"
+      },
+      "F10": {
+        "eyebrow": "Mediji",
+        "title": "Podeli video ili muziku",
+        "description": "Otpremi svoje medije i inspiriši zajednicu.",
+        "action": "Napravi"
+      },
+      "F11": {
+        "eyebrow": "Otkrij",
+        "title": "Otkrij nešto novo",
+        "description": "Proizvodi, usluge i ponude za tvoje blagostanje.",
+        "action": "Pregledaj"
+      }
+    },
+    "interests": {
+      "title": "Tvoja interesovanja",
+      "description": "Izaberi do {max} tema koje voliš.",
+      "selectedCount": "Izabrano {count} od {max}",
+      "save": "Sačuvaj",
+      "cancel": "Otkaži",
+      "fitness": "Fitnes",
+      "nutrition": "Ishrana",
+      "sleep": "San",
+      "mindfulness": "Svesnost",
+      "longevity": "Dugovečnost",
+      "biohacking": "Biohaking",
+      "yoga": "Joga",
+      "running": "Trčanje",
+      "strength": "Trening snage",
+      "dance": "Ples",
+      "nature": "Priroda",
+      "cooking": "Kuvanje",
+      "social": "Zajedništvo",
+      "travel": "Putovanja",
+      "career": "Karijera"
     }
   }
 }
