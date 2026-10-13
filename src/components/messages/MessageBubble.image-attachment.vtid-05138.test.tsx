@@ -85,12 +85,17 @@ function renderBubble(message: Record<string, unknown>) {
 
 function openDrawer() {
   vi.useFakeTimers();
-  const bubble = document.querySelector('[tabindex="0"]') as HTMLElement;
+  // The bubble is the element carrying the touch handlers (touch-action on
+  // mobile); the first [tabindex="0"] is the sender's avatar.
+  const bubble = document.querySelector('[style*="touch-action"]') as HTMLElement;
+  expect(bubble).toBeTruthy();
   fireEvent.touchStart(bubble, { touches: [{ clientX: 10, clientY: 10 }] });
   act(() => {
     vi.advanceTimersByTime(600);
   });
-  fireEvent.touchEnd(bubble);
+  act(() => {
+    fireEvent.touchEnd(bubble);
+  });
   vi.useRealTimers();
 }
 
