@@ -19,84 +19,54 @@
       "rejected": "مرفوض",
       "flagged": "مبلغ عنه",
       "podcastManagement": "إدارة البودكاست",
-      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست",
-      "_pending_review": {}
+      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست"
     },
     "notifications": {
       "tabs": {
         "notifications": "إشعارات",
         "categories": "فئات",
         "activity": "نشاط",
-        "compose": "إرسال",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "إرسال"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "إدارة متجر المكافآت",
-      "description": "منتجات متجر المكافآت ورسوم الشحن والطلبات.",
+      "description": "العناصر، رسوم الشحن، وطلبات متجر المكافآت.",
       "openLink": "متجر المكافآت",
       "loading": "جارٍ التحميل …",
       "retry": "حاول مرة أخرى",
       "refresh": "تحديث",
       "forbiddenTitle": "لمسؤولي Exafy فقط",
-      "forbiddenBody": "يمكن لمسؤولي Exafy فقط إدارة متجر المكافآت. حسابك لا يملك هذه الصلاحية.",
-      "sectionLabel": "القسم",
+      "forbiddenBody": "يمكن لمسؤولي Exafy فقط إدارة متجر المكافآت. حسابك لا يملك هذا الإذن.",
+      "sectionLabel": "قسم",
       "sections": {
-        "items": "المنتجات",
+        "items": "العناصر",
         "fees": "رسوم الشحن",
-        "orders": "الطلبات",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "orders": "الطلبات"
       },
       "fulfilment": {
         "ship": "شحن",
-        "event": "تذكرة فعالية",
-        "digital": "رقمي",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "event": "تذكرة حدث",
+        "digital": "رقمي"
       },
       "items": {
-        "count": "عدد المنتجات: {count}",
-        "newItem": "منتج جديد",
-        "empty": "لا توجد منتجات بعد. أضف المنتج الأول.",
+        "count": "{count} عناصر",
+        "newItem": "عنصر جديد",
+        "empty": "لا توجد عناصر بعد. أضف الأول.",
         "edit": "تعديل",
-        "active": "مفعّل",
-        "inactive": "غير مفعّل",
+        "active": "نشط",
+        "inactive": "غير نشط",
         "activeToggle": "تفعيل {title}",
-        "toggleFailed": "تعذّر التبديل: {reason}",
+        "toggleFailed": "تعذر التبديل: {reason}",
         "price": "{amount} VTNA",
         "approx": "≈ {money}",
         "stock": "المخزون: {count}",
         "stockUnlimited": "المخزون: غير محدود",
         "reserved": "محجوز: {count}",
-        "noPhoto": "لا توجد صورة",
-        "_pending_review": {
-          "count": true,
-          "newItem": true,
-          "empty": true,
-          "edit": true,
-          "active": true,
-          "inactive": true,
-          "activeToggle": true,
-          "toggleFailed": true,
-          "price": true,
-          "approx": true,
-          "stock": true,
-          "stockUnlimited": true,
-          "reserved": true,
-          "noPhoto": true
-        }
+        "noPhoto": "لا توجد صورة"
       },
       "form": {
-        "createTitle": "منتج جديد",
+        "createTitle": "عنصر جديد",
         "editTitle": "تعديل المنتج",
         "titleDe": "العنوان (بالألمانية)",
         "titleEn": "العنوان (بالإنجليزية، اختياري)",
@@ -132,7 +102,6 @@
         "cancel": "إلغاء",
         "saved": "تم حفظ المنتج",
         "_pending_review": {
-          "createTitle": true,
           "editTitle": true,
           "titleDe": true,
           "titleEn": true,
@@ -326,19 +295,7 @@
           "readOnly": true,
           "statusUpdated": true
         }
-      },
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

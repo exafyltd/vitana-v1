@@ -18,6 +18,8 @@ const KNOWN_FLAGS = [
   { key: "enable_navigator", label: "Navigator", description: "Enable the guided journey navigator" },
   { key: "enable_notifications", label: "Notifications", description: "Enable push and in-app notifications" },
   { key: "enable_event_game", label: "Maxina Longevity Game", description: "Enable the temporary event-game layer (join/post/leaderboard) and its two scheduled notifications" },
+  // VTID-05105 — Spotlight desktop redesign (docs/plans/desktop-spotlight). Off = today's desktop exactly.
+  { key: "desktop_spotlight", label: "Desktop Spotlight", description: "New desktop design: one dominant card per screen with a context rail (desktop only; phones unchanged)" },
 ] as const;
 
 export default function SettingsFeatureFlags() {

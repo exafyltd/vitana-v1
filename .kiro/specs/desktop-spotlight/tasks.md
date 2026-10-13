@@ -15,16 +15,24 @@ Dependencies: 1a + 1c → 2, 3, 4, 7 (parallel) → 5 → 6. 1b is independent.
 ---
 
 ## Phase 1a — Design foundation · VTID-05105
-- [ ] 1a.1 Generate `docs/design-system/desktop-screen-inventory.md` from `App.tsx` + `screens.json` (exact route counts, tier per route). _R7_
-- [ ] 1a.2 Tokens in `src/index.css` (light + dark) + `tailwind.config.ts` extend: width tokens, VCard radius/elevation/ratios, focus ring. _R3, SR-14…17_
-- [ ] 1a.3 `VCard` (4 sizes, slots, `data-vcard-size`, RTL, 2-line title clamp, missing-media fallback) + `VCardSkeleton`. _R3_
-- [ ] 1a.4 Adapters: post, news, product (others land with their phases). _R3_
-- [ ] 1a.5 `SpotlightLayout` (container query, `container-type: inline-size`, rail ≥ 1060 px else `RailSheet`), `StageCrossFade`, `useFocusedCard`. _R1, R6.4_
-- [ ] 1a.6 `ScreenFrame archetype` composing existing chrome; `StandardHeader density="compact"` (additive prop; default unchanged); SplitBar via `trailingElement`. _R2_
-- [ ] 1a.7 Archetype skeletons. _R6.2_
-- [ ] 1a.8 `useTenantFeatureFlag`, `useSpotlightEnabled` (+ `?spotlight=` override), `desktop_spotlight` in `KNOWN_FLAGS`. _R8_
-- [ ] 1a.9 Vitest: VCard sizes × adapters, RTL, clamp, missing media; container-type asserted; rail rule; StandardHeader compact keeps Autopilot + Index tiles and default is unchanged; flag on/off/override; reduced motion. _R1–R3, R8_
-- [ ] 1a.10 No screen renders differently with the flag off (snapshot of Home/Discover legacy trees unchanged).
+- [x] 1a.1 Generate `docs/design-system/desktop-screen-inventory.md` from `App.tsx` + `screens.json` (exact route counts, tier per route). _R7_
+- [x] 1a.2 Tokens in `src/index.css` (light + dark) + `tailwind.config.ts` extend: width tokens, VCard radius/elevation/ratios, focus ring. _R3, SR-14…17_
+- [x] 1a.3 `VCard` (4 sizes, slots, `data-vcard-size`, RTL, 2-line title clamp, missing-media fallback) + `VCardSkeleton`. _R3_
+- [x] 1a.4 Adapters: post, news, product (others land with their phases). _R3_
+- [x] 1a.5 `SpotlightLayout` (container query, `container-type: inline-size`, rail ≥ 1060 px else `RailSheet`), `StageCrossFade`, `useFocusedCard`. _R1, R6.4_
+- [x] 1a.6 `ScreenFrame archetype` composing existing chrome; `StandardHeader density="compact"` (additive prop; default unchanged); SplitBar at the end of the utility row (see decisions). _R2_
+- [x] 1a.7 Archetype skeletons. _R6.2_
+- [x] 1a.8 `useTenantFeatureFlag`, `useSpotlightEnabled` (+ `?spotlight=` override), `desktop_spotlight` in `KNOWN_FLAGS`. _R8_
+- [x] 1a.9 Vitest: VCard sizes × adapters, RTL, clamp, missing media; container-type asserted; rail rule; StandardHeader compact keeps Autopilot + Index tiles and default is unchanged; flag on/off/override; reduced motion. _R1–R3, R8_
+- [x] 1a.10 No screen renders differently with the flag off — no page imports the new components yet; verified by the read-only staging spec
+  `tests/e2e/staging/vtid-05105-spotlight-foundation.staging.spec.ts` (/home and /discover keep today's header, no `[data-archetype]`).
+
+Status: implemented in PR #1349 (VTID-05105). Decisions taken (inside the plan, for Gate 2):
+- `ScreenFrame` lays the SplitBar out next to the utility row, not in `trailingElement` (that slot sits inside the row's horizontal scroller).
+- `StandardHeader density="compact"` drops the hover preview of the latest Autopilot actions; the tile still opens the Autopilot popup.
+- The inventory counts 345 distinct screen routes (429 `<Route>` − 82 redirects − catch-all); the 551 in `docs/SCREEN_REGISTRY.md` also counts tabs/overlays.
+- New strings: DE + EN by hand; the other 9 locales seeded by I18N-PROPAGATE as `_pending_review` until the translate run.
+
 
 ## Phase 1b — Navigation feel · VTID-05106 (not flag-gated)
 - [ ] 1b.1 **Prototype gate:** Vitest proving `v7_startTransition` keeps the old page mounted and no `RouteFallback` during a lazy load. Fails → stop, re-spar.
