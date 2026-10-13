@@ -12,7 +12,7 @@
  * itself only ever writes through services/partner-health/ingestion.ts.
  *
  * Modeled on Products.tsx's table/filter/patch pattern (same auth-header
- * helper, same GATEWAY_URL resolution, same load/toast/reload flow).
+ * helper, same GATEWAY_BASE resolution, same load/toast/reload flow).
  */
 
 import { useCallback, useEffect, useState } from "react";
@@ -40,7 +40,9 @@ import { confirmMatchErrorKey, memberLinkBadgeKey, type MemberLinkStatus } from 
 import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
+// so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 interface PartnerOrder {
   id: string;
@@ -102,7 +104,7 @@ export default function PartnerHealthOrders() {
   const [resolveOrderRef, setResolveOrderRef] = useState("");
 
   const load = useCallback(async () => {
-    if (!GATEWAY_URL) {
+    if (!GATEWAY_BASE) {
       notifyError('toasts.admin.gatewayUrlNotConfigured');
       setLoading(false);
       return;
@@ -111,8 +113,8 @@ export default function PartnerHealthOrders() {
     try {
       const headers = await authHeaders();
       const [ordersResp, inboxResp] = await Promise.all([
-        fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/orders`, { headers }),
-        fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox`, { headers }),
+        fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/orders`, { headers }),
+        fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/inbox`, { headers }),
       ]);
       if (!ordersResp.ok) throw new Error(`orders HTTP ${ordersResp.status}`);
       if (!inboxResp.ok) throw new Error(`inbox HTTP ${inboxResp.status}`);
@@ -135,7 +137,7 @@ export default function PartnerHealthOrders() {
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/orders/${orderId}`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/orders/${orderId}`, {
         method: "PATCH",
         headers,
         body: JSON.stringify({ status }),
@@ -165,7 +167,7 @@ export default function PartnerHealthOrders() {
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox/${uploadOrder.id}/upload-result`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/inbox/${uploadOrder.id}/upload-result`, {
         method: "POST",
         headers,
         // VTID-05056: no partner_key — the gateway takes it from the order's own partner.
@@ -195,7 +197,7 @@ export default function PartnerHealthOrders() {
     setBusy(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/partner-health/inbox/${resolveInboxRow.id}/confirm-match`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/partner-health/inbox/${resolveInboxRow.id}/confirm-match`, {
         method: "POST",
         headers,
         body: JSON.stringify({

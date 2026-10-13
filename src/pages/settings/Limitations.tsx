@@ -29,7 +29,9 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { fmtDate, fmtDateTime, fmtNumber } from '@/lib/locale-format';
 import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
+// so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 interface Limitations {
   allergies: string[];
@@ -167,7 +169,7 @@ export default function Limitations() {
   const [lastVerified, setLastVerified] = useState<Record<string, string>>({});
 
   async function loadAll() {
-    if (!GATEWAY_URL) {
+    if (!GATEWAY_BASE) {
       notifyError('toasts.settings.gatewayUrlNotConfigured');
       setLoading(false);
       return;
@@ -175,8 +177,8 @@ export default function Limitations() {
     try {
       const headers = await authHeaders();
       const [limResp, impactResp] = await Promise.all([
-        fetch(`${GATEWAY_URL}/api/v1/user/limitations`, { headers }),
-        fetch(`${GATEWAY_URL}/api/v1/user/limitations/impact`, { headers }),
+        fetch(`${GATEWAY_BASE}/api/v1/user/limitations`, { headers }),
+        fetch(`${GATEWAY_BASE}/api/v1/user/limitations/impact`, { headers }),
       ]);
       if (!limResp.ok) throw new Error(`Load failed: ${limResp.status}`);
       const limJson = await limResp.json();
@@ -214,11 +216,11 @@ export default function Limitations() {
   }, []);
 
   async function save(partial: Partial<Limitations>) {
-    if (!GATEWAY_URL) return;
+    if (!GATEWAY_BASE) return;
     setSaving(true);
     try {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/user/limitations`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/user/limitations`, {
         method: "PATCH",
         headers,
         body: JSON.stringify(partial),
@@ -226,7 +228,7 @@ export default function Limitations() {
       if (!resp.ok) throw new Error(`Save failed: ${resp.status}`);
       notify('toasts.settings.saved');
       // Refresh impact counter
-      const impactResp = await fetch(`${GATEWAY_URL}/api/v1/user/limitations/impact`, { headers });
+      const impactResp = await fetch(`${GATEWAY_BASE}/api/v1/user/limitations/impact`, { headers });
       if (impactResp.ok) setImpact(await impactResp.json());
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
