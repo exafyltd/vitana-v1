@@ -2,20 +2,26 @@
   "native": {
     "unported": {
       "title": "Not in the app yet",
-      "body": "This area isn't available in the app yet. We're working on it – until then, you can use it in the web version."
+      "body": "This area isn't available in the app yet. We're working on it – until then, you can use it in the web version.",
+      "_pending_review": {}
     },
     "adminInBrowser": {
       "title": "Admin in the browser",
-      "body": "You use this area in the browser, not in the app. No web address is set up for it in this version yet."
+      "body": "You use this area in the browser, not in the app. No web address is set up for it in this version yet.",
+      "_pending_review": {}
     },
     "configMissing": {
       "title": "Configuration missing",
-      "body": "This app version is missing settings it needs to start. The missing values are listed below."
+      "body": "This app version is missing settings it needs to start. The missing values are listed below.",
+      "_pending_review": {}
     },
     "a11y": {
       "unread": "{count} unread messages",
       "openNotifications": "Open notifications, {count} unread",
-      "openCart": "Open cart, {count} items"
-    }
-  }
+      "openCart": "Open cart, {count} items",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
