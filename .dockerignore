@@ -13,3 +13,7 @@ scripts
 
 # VTID-05059: Kiro IDE steering files are editor config, never image content
 .kiro
+
+# VTID-05157: the native app (apps/mobile, incl. its own node_modules) is never
+# web image content. Keep this as the whole apps/ folder — never narrow it to a sub-path.
+apps/

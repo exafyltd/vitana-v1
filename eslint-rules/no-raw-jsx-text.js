@@ -37,6 +37,8 @@ const I18N_FUNCTION_CALLS = new Set([
 
 const I18N_ATTRIBUTES = new Set([
   'placeholder', 'title', 'aria-label', 'aria-description', 'alt',
+  // VTID-05157 — React Native's screen-reader props (apps/mobile).
+  'accessibilityLabel', 'accessibilityHint',
 ]);
 // TODO(i18n): expand to catch `description`/`label`/`subtitle`/`heading` props on
 // shared component primitives (StandardHeader/SEO/card subtitles). Current sweep
