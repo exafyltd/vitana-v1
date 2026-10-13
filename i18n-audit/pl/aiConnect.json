@@ -1,0 +1,239 @@
+{
+  "verdicts": {
+    "aiConnect.settings.disconnectedNote": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "aiConnect.consent.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.lead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.signedInAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.chooseTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.readOnly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.notShared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.redirectsTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.noneSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.approve": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.deny": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.redirecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.invalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.profile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.profileDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.matches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.matchesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.people": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.peopleDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.activities": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.activitiesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.commerce": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.lead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.connectChatgpt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.connectClaude": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.howTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.step1Claude": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.step1Chatgpt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.step2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.step3": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The preposition 'with' is not accurately conveyed; 'kontem Maxina' is a bit terse. 'Za pomocą konta' or 'swoim kontem' would be more precise.",
+      "suggested": "Zaloguj się za pomocą konta Maxina i wybierz, co twój asystent może widzieć.",
+      "phase": "llm"
+    },
+    "aiConnect.settings.copy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.copied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.connectedSince": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The word 'since' is missing from the translation.",
+      "suggested": "Połączono od {date}",
+      "phase": "llm"
+    },
+    "aiConnect.settings.disconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.disconnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.loadFailed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The possessive 'Your' is missing from the translation.",
+      "suggested": "Nie udało się wczytać twoich połączonych asystentów.",
+      "phase": "llm"
+    },
+    "aiConnect.settings.findableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.findableDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The phrase 'members who connected' is awkwardly translated as 'członkowie z połączonym'. 'Avatar' should be 'awatar' for precision in a tech context, not 'zdjęcie'.",
+      "suggested": "Gdy włączone, członkowie, którzy połączyli ChatGPT lub Claude, mogą zobaczyć twoje imię, awatar, publiczne miasto i zainteresowania. Domyślnie wyłączone.",
+      "phase": "llm"
+    },
+    "aiConnect.settings.unknownClient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-10-13T10:52:49.424Z"
+}
