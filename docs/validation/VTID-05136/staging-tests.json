@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05136",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Get ready to sell at 390x844 and 1280x900: an admin-approved demo business shows verification done, 'Still needed' lists the one open step, Resubmit opens the confirm dialog and Cancel closes it; the submit route is aborted and no submit request is sent (demo business served in the browser, read-only)",
+      "spec": "tests/e2e/staging/vtid-05136-setup-hub-submit.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/commerce/SetupHub.test.ts src/components/commerce/SetupHub.vtid-05136.test.tsx src/components/commerce/supplier-journey-language.test.ts",
+      "reason": "submitting writes, so the whole manual flow is proven in CI with a mocked adminFetch: one POST after confirm, no double submit, needs_action → open steps, reviewer note as text, Resubmit → live, refused submit → reload, hidden states; plus the checklist rules and the plain-language copy check"
+    }
+  ]
+}

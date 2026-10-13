@@ -1,0 +1,15 @@
+src/components/commerce/SetupHub.tsx syntax ok
+src/components/commerce/SetupHub.test.ts syntax ok
+src/components/commerce/SetupHub.vtid-05136.test.tsx syntax ok
+tests/e2e/staging/vtid-05136-setup-hub-submit.staging.spec.ts syntax ok
+ar 52
+de 52
+en 52
+es 52
+fr 52
+pl 52
+pt 52
+ru 52
+sr 52
+tr 52
+zh 52
