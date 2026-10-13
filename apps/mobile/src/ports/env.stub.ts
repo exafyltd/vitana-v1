@@ -6,7 +6,7 @@
  * this file is deleted.
  */
 import { config as baseConfig, requireUrl, ConfigMissingError, type AppConfig } from '../config/env';
-import type { CoreEndpoints } from './core.stub';
+import type { CoreEndpoints } from './core';
 
 /** The production Supabase project ref (CLAUDE.md); a key for it is refused. */
 const PROD_REF = 'inmkhvwdcuyhnxkgfvsb';
