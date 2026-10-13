@@ -6236,7 +6236,8 @@
       "imageDownloadFailed": "Não foi possível carregar a imagem",
       "imageShareFailed": "Não foi possível partilhar",
       "imageLoading": "A carregar imagem",
-      "unknownSize": "Tamanho desconhecido"
+      "unknownSize": "Tamanho desconhecido",
+      "talkToVitana": "Falar com a Vitana"
     },
     "mobile": {
       "searching": "A pesquisar…",
@@ -7636,7 +7637,21 @@
       "partnerLabsRevokeConfirm": "Revogar o acesso do DoctorBox aos seus resultados de exames? Resultados futuros não serão mais compartilhados com a Vitana.",
       "partnerLabsGrantSuccess": "Acesso concedido — a Vitana agora pode discutir seus resultados do DoctorBox com você.",
       "partnerLabsRevokeSuccess": "Acesso revogado.",
-      "partnerLabsError": "Algo deu errado. Por favor, tente novamente."
+      "partnerLabsError": "Algo deu errado. Por favor, tente novamente.",
+      "vitanaMessages": {
+        "title": "Mensagens da Vitana",
+        "desc": "De vez em quando, a Vitana envia uma mensagem pessoal para você no Messenger, com uma dica que combina com você agora.",
+        "enabled": "Receber mensagens da Vitana",
+        "enabledDesc": "No máximo uma mensagem por dia. Você pode desativá-las a qualquer momento.",
+        "topics": "Temas",
+        "health": "Saúde",
+        "healthDesc": "Dicas para a sua saúde e o seu Vitana Index.",
+        "community": "Comunidade",
+        "communityDesc": "Pessoas, grupos e eventos que combinam com você.",
+        "business": "Negócios e renda",
+        "businessDesc": "Opcional: ideias para ganhar dinheiro com o seu conhecimento na Vitanaland. Desativado por padrão – só se você ativar.",
+        "loadError": "Não foi possível carregar suas configurações das mensagens da Vitana."
+      }
     },
     "sharing": {
       "activateCampaign": "Ativar Campanha",

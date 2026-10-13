@@ -24,6 +24,7 @@ import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandle
 import {
   ArrowLeft,
   Loader2,
+  Mic,
   Settings2,
   UserPlus
 } from 'lucide-react';
@@ -40,6 +41,7 @@ import { isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { composerPlaceholder, getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { activateOrb } from '@/lib/orbActivate';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
@@ -1007,6 +1009,21 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 >
                   <Settings2 className="w-4 h-4" />
                   <span className="hidden sm:inline">{t('screens.messages.editGroup')}</span>
+                </Button>
+              )}
+              {/* VTID-05100: in the Vitana thread only, talk to her by voice. The
+                  global ORB FAB stays hidden in chats; this opens the ORB directly. */}
+              {!isGroupChat() && isVitanaBot(effectiveRecipientId) && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1.5"
+                  onClick={() => activateOrb()}
+                  aria-label={t('screens.messages.talkToVitana')}
+                  data-testid="talk-to-vitana-button"
+                >
+                  <Mic className="w-4 h-4" />
+                  <span className="hidden sm:inline">{t('screens.messages.talkToVitana')}</span>
                 </Button>
               )}
               {!isGroupChat() && effectiveRecipientId && (

@@ -5,7 +5,7 @@ import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 
-import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { isVitanaBot, VITANA_BOT_USER_ID, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { notifyNewMessage } from '@/lib/pushNotifications';
 import {
   persistThreads,
@@ -536,10 +536,6 @@ async function fetchLegacyMessages(
   }
 }
 
-// ── Vitana Bot ────────────────────────────────────────────────────────
-
-const VITANA_BOT_USER_ID = '00000000-0000-0000-0000-000000000001';
-
 // ── Direct chat_messages Supabase fallback ────────────────────────────
 /**
  * When the gateway is down and no legacy threads exist, query
@@ -773,7 +769,10 @@ export async function buildGlobalThreadsQueryFn(
     }
   }
 
-  // Auto-seed Vitana thread if not present
+  // Auto-seed the Vitana thread only while no Vitana conversation exists yet.
+  // The 2000-01-01 updated_at keeps this placeholder at the bottom; once a real
+  // Vitana message exists the real thread replaces it and the inbox sort
+  // (src/lib/inboxThreadOrder.ts) lifts it to the top while it is unread.
   const hasVitana = merged.some((t) => t.id === VITANA_BOT_USER_ID);
   if (!hasVitana) {
     merged.push({
