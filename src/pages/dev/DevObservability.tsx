@@ -13,8 +13,11 @@ import { FileText, GitBranch, BarChart, DollarSign, Plus } from "lucide-react";
 import { devObservabilityNavigation } from "@/config/dev-navigation";
 import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
 import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function DevObservability() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("logs");
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
@@ -26,18 +29,8 @@ export default function DevObservability() {
             activeTab === "metrics" ? "Metrics" : "Costs",
   });
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — Observability" 
-        description="Observability and monitoring for Vitana platform"
-        canonical={window.location.href}
-      />
-
-      {/* Horizontal Navigation */}
-      <SubNavigation items={devObservabilityNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           {/* 3-Card Header */}
@@ -57,14 +50,14 @@ export default function DevObservability() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Create Alert
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="logs">📝 Logs</SplitBarTrigger>
               <SplitBarTrigger value="traces">🔍 Traces</SplitBarTrigger>
               <SplitBarTrigger value="metrics">📈 Metrics</SplitBarTrigger>
@@ -104,7 +97,27 @@ export default function DevObservability() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — Observability" 
+        description="Observability and monitoring for Vitana platform"
+        canonical={window.location.href}
+      />
+
+      {/* Horizontal Navigation */}
+      <SubNavigation items={devObservabilityNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
 
       <RestoreSessionModal 
         open={restoreSessionOpen} 

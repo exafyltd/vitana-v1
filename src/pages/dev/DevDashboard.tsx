@@ -15,8 +15,11 @@ import { Activity, Bell, Heart, Plus } from "lucide-react";
 import { devDashboardNavigation } from "@/config/dev-navigation";
 import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
 import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function DevDashboard() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("overview");
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
   const [tenantFilter, setTenantFilter] = useState(() => {
@@ -38,18 +41,8 @@ export default function DevDashboard() {
   const tenants = ['All', 'System', 'Maxina', 'AlKalma'];
   const statuses = ['All', 'Green', 'Blue', 'Yellow', 'Red'];
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — Dashboard" 
-        description="Command hub dashboard for Vitana platform operations"
-        canonical={window.location.href}
-      />
-
-      {/* Horizontal Navigation for Dashboard category */}
-      <SubNavigation items={devDashboardNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           {/* 3-Card Header */}
@@ -69,14 +62,14 @@ export default function DevDashboard() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Action
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar (sub-tabs) */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="overview">📊 Overview</SplitBarTrigger>
               <SplitBarTrigger value="ai-feed">🤖 AI Feed</SplitBarTrigger>
               <SplitBarTrigger value="alerts">🔔 Alerts</SplitBarTrigger>
@@ -96,7 +89,7 @@ export default function DevDashboard() {
                         variant={tenantFilter === tenant.toLowerCase() ? "default" : "outline"}
                         size="sm"
                         onClick={() => setTenantFilter(tenant.toLowerCase())}
-                        className="min-h-[44px] md:min-h-0 whitespace-nowrap"
+                        className="min-h-11 md:min-h-0 whitespace-nowrap"
                       >
                         {tenant}
                       </Button>
@@ -113,7 +106,7 @@ export default function DevDashboard() {
                         variant={statusFilter === status.toLowerCase() ? "default" : "outline"}
                         size="sm"
                         onClick={() => setStatusFilter(status.toLowerCase())}
-                        className="min-h-[44px] md:min-h-0 whitespace-nowrap"
+                        className="min-h-11 md:min-h-0 whitespace-nowrap"
                       >
                         {status}
                       </Button>
@@ -166,7 +159,27 @@ export default function DevDashboard() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — Dashboard" 
+        description="Command hub dashboard for Vitana platform operations"
+        canonical={window.location.href}
+      />
+
+      {/* Horizontal Navigation for Dashboard category */}
+      <SubNavigation items={devDashboardNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
 
       <RestoreSessionModal 
         open={restoreSessionOpen} 

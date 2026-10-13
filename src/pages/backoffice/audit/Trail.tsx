@@ -1,6 +1,7 @@
 /** BackOffice › Audit › Independent Audit Trail (BO-058) — VTID-03849, Read tier: Vitana's append-only erp_audit_log (GET /audit). */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
@@ -23,6 +24,7 @@ function eventVariant(event: string): "active" | "warning" | "error" | "inactive
 }
 
 export default function BackOfficeAuditTrail() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, AUDIT_CAPS));
   const [search, setSearch] = useState("");
@@ -31,7 +33,7 @@ export default function BackOfficeAuditTrail() {
   const rows = (audit.data ?? []).filter((r) => !q || r.event.toLowerCase().includes(q) || (r.command_id ?? "").toLowerCase().includes(q) || (r.actor_id ?? "").toLowerCase().includes(q));
 
   return (
-    <BackOfficePage sectionKey="audit" screenId="BO-058" emoji="🔏" title={t("screens.backoffice.trail.title")} description={t("screens.backoffice.trail.description")} capabilities={AUDIT_CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="audit" screenId="BO-058" emoji="🔏" title={t("screens.backoffice.trail.title")} description={t("screens.backoffice.trail.description")} capabilities={AUDIT_CAPS}>
       <AdminFilterBar searchValue={search} onSearchChange={setSearch} searchPlaceholder={t("screens.backoffice.trail.searchPlaceholder")} onReset={() => setSearch("")} />
       {QueryState({ isLoading: me.isLoading || audit.isLoading, error: audit.error, isEmpty: rows.length === 0, emptyTitle: t("screens.backoffice.trail.empty") }) ?? (
         <div className="rounded-md border overflow-x-auto">
@@ -69,6 +71,6 @@ export default function BackOfficeAuditTrail() {
         </div>
       )}
       <DataSourceNote source="gateway" />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

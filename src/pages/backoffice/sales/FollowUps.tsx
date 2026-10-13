@@ -1,6 +1,7 @@
 /** BackOffice › Sales & CRM › Follow-ups (BO-008) — VTID-03855, Read tier: CRM tasks (`crm.task.list`) and activities (`crm.activity.list`). */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
 import QueryState from "@/components/backoffice/QueryState";
@@ -19,6 +20,7 @@ import { isTaskActionable, taskUpdateInitial } from "@/lib/backoffice-draft";
 const CAPS = ["crm.view"] as const;
 
 export default function BackOfficeFollowUps() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -31,7 +33,7 @@ export default function BackOfficeFollowUps() {
   const activityRows = (activities.data?.result?.activities ?? []).filter((a) => fullTextMatch(search, a.subject, a.activity_type, a.description));
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-008" emoji="📌" title={t("screens.backoffice.sales.followups.title")} description={t("screens.backoffice.sales.followups.description")} capabilities={CAPS} rightAction={<div className="flex flex-wrap gap-2"><DraftCommandButton formId="task" /><DraftCommandButton formId="activity" /></div>}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-008" emoji="📌" title={t("screens.backoffice.sales.followups.title")} description={t("screens.backoffice.sales.followups.description")} capabilities={CAPS} rightAction={<div className="flex flex-wrap gap-2"><DraftCommandButton formId="task" /><DraftCommandButton formId="activity" /></div>}>
       <AdminFilterBar
         searchValue={search}
         onSearchChange={setSearch}
@@ -117,6 +119,6 @@ export default function BackOfficeFollowUps() {
           <DataSourceNote command={activities.data?.command} />
         </CardContent>
       </Card>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

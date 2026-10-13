@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05116",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900, signed in: /professional/dashboard, /staff/dashboard, /staff/queue — for an account with the roles: ?spotlight=1 renders the page inside [data-archetype=\"workspace\"] (full width, no rail, no horizontal scroll) and ?spotlight=0 renders today's tree without [data-archetype]; for the test user without the roles: every route still renders NotAuthorized in place (no workspace frame) and the role-only part is skipped with that reason",
+      "spec": "tests/e2e/staging/vtid-05116-role-workspace.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Professional + Staff page flag off = legacy tree (AppLayout + the padded wrapper that clears the phone bottom bar, no [data-archetype]); flag on = same content inside ScreenFrame \"workspace\" (full width, no rail); staff queue keeps its three cards and actions on both paths; the three pages read useSpotlightEnabled() once; VTID-04001 phone layout and VTID-03909 AppLayout guards still green",
+      "ref": "npx vitest run src/pages/staff src/pages/professional src/pages/role-section-app-layout.test.ts src/design",
+      "cwd": ".",
+      "reason": "The staging test user has neither the professional nor the staff role, so these screens cannot be rendered on staging for that account; the flag-on/flag-off render and the source contract are proven in jsdom."
+    }
+  ]
+}

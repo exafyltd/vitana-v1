@@ -28,6 +28,8 @@ import {
   isExplicitOnlyCapability,
 } from "@/hooks/useBackOfficeAccess";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 const CAPABILITY_VARIANT = (capability: string): "active" | "warning" | "error" | "inactive" | "info" => {
   if (capability === "erp.admin") return "error";
@@ -38,6 +40,7 @@ const CAPABILITY_VARIANT = (capability: string): "active" | "warning" | "error" 
 };
 
 export default function BackOfficeSettingsAccess() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [grantUserId, setGrantUserId] = useState<string | null>(null);
   const [grantCapability, setGrantCapability] = useState<string>("");
@@ -76,10 +79,8 @@ export default function BackOfficeSettingsAccess() {
     }
   }
 
-  return (
-    <AppLayout>
-      <BackOfficeTabs sectionKey="settings" />
-      <div className="p-6 space-y-4" data-screen-id="BO-060">
+  const backOfficeBody = (
+    <>
         <AdminHeader
           emoji="🔐"
           title={t("screens.backoffice.access.title")}
@@ -120,11 +121,11 @@ export default function BackOfficeSettingsAccess() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[40px]" />
+                  <TableHead className="w-10" />
                   <TableHead>{t("screens.backoffice.access.member")}</TableHead>
                   <TableHead>{t("screens.backoffice.access.role")}</TableHead>
                   <TableHead>{t("screens.backoffice.access.granted")}</TableHead>
-                  <TableHead className="w-[260px]">{t("screens.backoffice.access.grant")}</TableHead>
+                  <TableHead className="w-64">{t("screens.backoffice.access.grant")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -177,7 +178,7 @@ export default function BackOfficeSettingsAccess() {
                         {!canManage ? null : isEditing ? (
                           <div className="flex gap-1">
                             <Select value={grantCapability} onValueChange={setGrantCapability}>
-                              <SelectTrigger className="h-7 text-xs w-[170px]" dir="ltr">
+                              <SelectTrigger className="h-7 text-xs w-44" dir="ltr">
                                 <SelectValue placeholder={t("screens.backoffice.access.pick")} />
                               </SelectTrigger>
                               <SelectContent>
@@ -228,7 +229,19 @@ export default function BackOfficeSettingsAccess() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <BackOfficeTabs sectionKey="settings" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4" data-screen-id="BO-060">{backOfficeBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4" data-screen-id="BO-060">{backOfficeBody}</div>
+      )}
     </AppLayout>
   );
 }

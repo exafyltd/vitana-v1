@@ -1,5 +1,6 @@
 /** BackOffice › Audit › ERP Audit Log (BO-057) — VTID-03849, Read tier: ERPClaw's own audit_log via `audit.erp_log.read`. */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -30,13 +31,14 @@ function summarize(values: Record<string, unknown> | null): string {
 }
 
 export default function BackOfficeErpLog() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, AUDIT_CAPS));
   const log = useErpRead<ErpAuditLog>("audit.erp_log.read", { limit: 100 }, { enabled });
   const entries = log.data?.result?.entries ?? [];
 
   return (
-    <BackOfficePage sectionKey="audit" screenId="BO-057" emoji="📒" title={t("screens.backoffice.erpLog.title")} description={t("screens.backoffice.erpLog.description")} capabilities={AUDIT_CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="audit" screenId="BO-057" emoji="📒" title={t("screens.backoffice.erpLog.title")} description={t("screens.backoffice.erpLog.description")} capabilities={AUDIT_CAPS}>
       {QueryState({ isLoading: me.isLoading || log.isLoading, error: log.error, isEmpty: entries.length === 0, emptyTitle: t("screens.backoffice.erpLog.empty") }) ?? (
         <div className="rounded-md border overflow-x-auto">
           <Table>
@@ -71,6 +73,6 @@ export default function BackOfficeErpLog() {
         </div>
       )}
       <DataSourceNote command={log.data?.command} />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

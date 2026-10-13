@@ -1,5 +1,6 @@
 /** BackOffice › Approvals › My Requests (BO-054) — VTID-03849, Read tier: the caller's own commands. */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import CommandsTable from "@/components/backoffice/CommandsTable";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
@@ -8,6 +9,7 @@ import { useBackOfficeCommands } from "@/hooks/useBackOfficeCommands";
 import { t } from "@/lib/i18n-toast";
 
 export default function BackOfficeMyRequests() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const commands = useBackOfficeCommands({ limit: 200 });
   // The gateway already narrows to own rows for callers without audit.view; narrow again for everyone else.
@@ -16,7 +18,7 @@ export default function BackOfficeMyRequests() {
   const rest = rows.filter((c) => c.status !== "awaiting_approval");
 
   return (
-    <BackOfficePage sectionKey="approvals" screenId="BO-054" emoji="🙋" title={t("screens.backoffice.myRequests.title")} description={t("screens.backoffice.myRequests.description")}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="approvals" screenId="BO-054" emoji="🙋" title={t("screens.backoffice.myRequests.title")} description={t("screens.backoffice.myRequests.description")}>
       {QueryState({ isLoading: me.isLoading || commands.isLoading, error: commands.error, isEmpty: rows.length === 0, emptyTitle: t("screens.backoffice.myRequests.empty") }) ?? (
         <div className="space-y-6">
           {open.length > 0 && (
@@ -34,6 +36,6 @@ export default function BackOfficeMyRequests() {
         </div>
       )}
       <DataSourceNote source="gateway" />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

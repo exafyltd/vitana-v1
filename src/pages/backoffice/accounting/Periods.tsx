@@ -1,6 +1,7 @@
 /** BackOffice › Accounting › Fiscal Periods & Close (BO-020) — VTID-03857, Read tier: `accounting.period.list`, `accounting.period.validate`, `accounting.gl.integrity_check`, `accounting.cost_center.list`. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import QueryState from "@/components/backoffice/QueryState";
@@ -20,6 +21,7 @@ const CAPS = ["accounting.view"] as const;
 const STATE_VARIANT = { closed: "inactive", current: "active", past: "warning", future: "info" } as const;
 
 export default function BackOfficePeriods() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [picked, setPicked] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export default function BackOfficePeriods() {
   const openCount = all.filter((y) => !flag(y.is_closed)).length;
 
   return (
-    <BackOfficePage sectionKey="accounting" screenId="BO-020" emoji="🗓️" title={t("screens.backoffice.accounting.periods.title")} description={t("screens.backoffice.accounting.periods.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="accounting" screenId="BO-020" emoji="🗓️" title={t("screens.backoffice.accounting.periods.title")} description={t("screens.backoffice.accounting.periods.description")} capabilities={CAPS}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.accounting.periods.years")} value={fmtNumber(all.length)} subtitle={t("screens.backoffice.accounting.periods.yearsHint", { open: fmtNumber(openCount) })} icon={CalendarRange} loading={enabled && years.isLoading} />
         <AdminStatsCard title={t("screens.backoffice.accounting.periods.glBalance")} value={g ? (g.balanced ? t("screens.backoffice.accounting.common.balanced") : t("screens.backoffice.accounting.common.unbalanced")) : "—"} subtitle={g ? t("screens.backoffice.accounting.periods.glHint", { difference: formatMoney(g.difference) }) : ""} icon={Scale} loading={enabled && integrity.isLoading} variant={g ? (g.balanced ? "success" : "error") : "default"} />
@@ -109,6 +111,6 @@ export default function BackOfficePeriods() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }
