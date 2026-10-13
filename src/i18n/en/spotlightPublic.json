@@ -2,7 +2,10 @@
   "spotlightPublic": {
     "event": {
       "free": "Free",
-      "fromPrice": "From {price}"
-    }
-  }
+      "fromPrice": "From {price}",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
