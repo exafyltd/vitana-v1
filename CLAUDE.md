@@ -342,6 +342,12 @@ Routes must point at the page a member lands on, never at a `<Navigate>`
 redirect. The build publishes the merged registry as `/nav-registry.json`
 for the gateway. Details: `src/navigation/registry/README.md`.
 
+**Native parity ledger (VTID-05157).** A page added in `App.tsx` / `screens.json` / `exclusions.json` also needs its
+row in `apps/mobile/parity/ledger.json`: run `node scripts/native/parity-ledger.mjs --sync` (`not_started` is fine)
+and, if `--check` reports a `pending` scope, decide it in `scripts/native/parity-scope.json`. NATIVE-CI enforces
+this (program `docs/programs/native-app/NATIVE-APP-PLAN.md` §7: a mobile-visible change ships native too or records
+an exception). The native app itself lives in `apps/mobile/` (own lockfile, not a root workspace) — see its README.
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper
