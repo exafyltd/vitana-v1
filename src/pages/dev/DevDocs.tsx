@@ -23,8 +23,11 @@ import { UploadFrontpageModal } from "@/components/dev/modals/UploadFrontpageMod
 import { AddRoleViewModal } from "@/components/dev/modals/AddRoleViewModal";
 import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
 import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function DevDocs() {
+  const spotlight = useSpotlightEnabled();
   const location = useLocation();
   const activeTab = location.pathname === "/dev/docs" 
     ? "overview" 
@@ -88,20 +91,8 @@ export default function DevDocs() {
     }
   };
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — Docs" 
-        description="Documentation hub for Vitana platform"
-        canonical={window.location.href}
-      />
-
-      {/* Main Navigation */}
-      <SubNavigation 
-        items={devDocsNavigation}
-      />
-
-      <div className="p-6 pb-24 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           {/* 3-Card Header */}
@@ -121,7 +112,7 @@ export default function DevDocs() {
             />
             <UniversalCalendarButton />
             <Button size="sm" onClick={handleActionClick}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {getButtonLabel()}
             </Button>
           </UtilityActionButton>
@@ -133,7 +124,29 @@ export default function DevDocs() {
           {activeTab === "frontpages" && <DocsFrontpagesView />}
           {activeTab === "role-views" && <DocsRoleViewsView />}
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — Docs" 
+        description="Documentation hub for Vitana platform"
+        canonical={window.location.href}
+      />
+
+      {/* Main Navigation */}
+      <SubNavigation 
+        items={devDocsNavigation}
+      />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 pb-24 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
 
       {/* Modals */}
       <UploadDocumentModal 

@@ -13,23 +13,16 @@ import { Plus, BarChart3, Search } from "lucide-react";
 import { devVTIDNavigation } from "@/config/dev-navigation";
 import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
 import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function DevVTID() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("registry");
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — VTID" 
-        description="VTID management for Vitana platform"
-        canonical={window.location.href}
-      />
-
-      {/* Horizontal Navigation */}
-      <SubNavigation items={devVTIDNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           {/* 3-Card Header */}
@@ -49,14 +42,14 @@ export default function DevVTID() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Issue VTID
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="registry">📚 Registry</SplitBarTrigger>
               <SplitBarTrigger value="issue">🎫 Issue</SplitBarTrigger>
               <SplitBarTrigger value="analytics">📊 Analytics</SplitBarTrigger>
@@ -92,7 +85,27 @@ export default function DevVTID() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — VTID" 
+        description="VTID management for Vitana platform"
+        canonical={window.location.href}
+      />
+
+      {/* Horizontal Navigation */}
+      <SubNavigation items={devVTIDNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
 
       <RestoreSessionModal 
         open={restoreSessionOpen} 

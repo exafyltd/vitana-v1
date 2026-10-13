@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05115",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900, signed in: /dev/agents/worker, /dev/cicd/runs, /dev/oasis/state, /dev/settings/flags, /dev/vtid/search — ?spotlight=1 renders the section tabs (SubNavigation) directly above [data-archetype=\"workspace\"] (full width, no rail, no horizontal scroll) and ?spotlight=0 renders today's tree without [data-archetype]; DevLayout's admin view-role request is a POST the staging guard aborts; if the Command Hub is switched off on the staging build the spec skips with that reason",
+      "spec": "tests/e2e/staging/vtid-05115-dev-workspace.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Dev screen flag off = legacy tree (section tabs + padded gradient wrapper, no [data-archetype]); flag on = section tabs directly above ScreenFrame \"workspace\" (full width, no rail, same header, utility row, tabs and panes); every routed Dev page reads useSpotlightEnabled() once, composes ScreenFrame \"workspace\" behind it and never moves SubNavigation inside it",
+      "ref": "npx vitest run src/pages/dev src/design",
+      "cwd": ".",
+      "reason": "Covers the per-page source contract for all 42 routed Command Hub pages in jsdom; the staging spec samples five of them in a real browser."
+    }
+  ]
+}
