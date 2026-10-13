@@ -17,13 +17,17 @@
     "retry": "Try again",
     "loadError": {
       "title": "This community could not be loaded",
-      "description": "Check your connection and try again."
+      "description": "Check your connection and try again.",
+      "_pending_review": {}
     },
     "errors": {
       "generic": "Something went wrong. Please try again.",
       "signInFailed": "Sign-in failed. Check your email address and password.",
       "alreadyRegistered": "This email address is already registered. Sign in instead.",
-      "notJoinable": "You cannot join {brand} right now."
-    }
-  }
+      "notJoinable": "You cannot join {brand} right now.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
