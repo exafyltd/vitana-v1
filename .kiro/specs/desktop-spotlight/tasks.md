@@ -35,11 +35,22 @@ Status: implemented in PR #1349 (VTID-05105). Decisions taken (inside the plan, 
 
 
 ## Phase 1b — Navigation feel · VTID-05106 (not flag-gated)
-- [ ] 1b.1 **Prototype gate:** Vitest proving `v7_startTransition` keeps the old page mounted and no `RouteFallback` during a lazy load. Fails → stop, re-spar.
-- [ ] 1b.2 `future={{ v7_startTransition: true }}` on `<BrowserRouter>` (`App.tsx:764`) — the only `App.tsx` edit.
-- [ ] 1b.3 `useNavigationPending` + `NavProgressBar` rendered from `RouteTransitionOverlay.tsx`. _R6.1_
-- [ ] 1b.4 Document-level intent prefetch (pointerover/focusin on `a[href]`, ≥ 80 ms, once per href) → chunk + data prefetch. _R6.3_
-- [ ] 1b.5 Keep `tests/loading-no-flash.cjs`, keep-alive tests, `screen-journey.staging.spec.ts` green; staging spec: route switch never shows the DelayedLoader test id after first load. _R6.6_
+- [x] 1b.1 **Prototype gate:** Vitest proving `v7_startTransition` keeps the old page mounted and no `RouteFallback` during a lazy load. Fails → stop, re-spar.
+  Passed (`src/lib/navigation-transition.vtid-05106.test.tsx`; the control without the flag shows the fallback).
+- [x] 1b.2 `future={{ v7_startTransition: true }}` on `<BrowserRouter>` (`App.tsx:764`) — the only `App.tsx` edit.
+- [x] 1b.3 `useNavigationPending` + `NavProgressBar` rendered from `RouteTransitionOverlay.tsx`. _R6.1_
+- [x] 1b.4 Document-level intent prefetch (pointerover/focusin on `a[href]`, ≥ 80 ms, once per href) → chunk + data prefetch. _R6.3_
+- [x] 1b.5 Keep `tests/loading-no-flash.cjs`, keep-alive tests, `screen-journey.staging.spec.ts` green; staging spec: route switch never shows the DelayedLoader test id after first load. _R6.6_
+
+Status: implemented (VTID-05106). Decisions taken (inside the plan, for Gate 2):
+- Pending detection: `<BrowserRouter>` has no `useNavigation()`, so `useNavigationPending` compares the router's committed
+  location with the browser URL, re-read on `popstate`, the Navigation API's `currententrychange` and after clicks. No
+  `history` patching; where the Navigation API is missing, a pushState-only switch shows no bar (never a stuck bar).
+- The bar appears only for switches slower than 150 ms; reduced motion → no animation.
+- Intent prefetch reuses the existing `ROUTE_CHUNK_IMPORTERS` + `prefetchForPath` (prefetch-registry) instead of a second
+  map in `preloadHotChunks.ts`; unknown paths are a no-op. Skipped on save-data / 2g like `preloadHotChunks`.
+- `tests/loading-no-flash.cjs` was not run locally: it boots a production build wired to the production Supabase project
+  (absolute rule); it is not in CI. Its "no wrong screen" guarantee is the RouteTransitionOverlay path, which is unchanged.
 
 ## Phase 1c — Design contract & enforcement · VTID-05107
 - [x] 1c.1 `docs/design-system/SPOTLIGHT_RULES.md` from design.md §4–§7 (SR-01…30, archetypes, mobile mapping, palette→token table). Header pointer in `docs/UNIVERSAL_SCREEN_PATTERN.md`. _R7.3_
