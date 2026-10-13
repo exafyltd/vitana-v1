@@ -55,3 +55,18 @@ export function composeFeed<V>(ranked: FeedItem[], vitanaCards: V[]): ComposedEn
   for (const item of stream) out.push({ type: "item", item, role: "stream" });
   return out;
 }
+
+/**
+ * VTID-05085 — Home takes at most this many NEW Unified Card System cards
+ * (top 2 open enrichment cards now, plus 1 boost card in Phase 3).
+ */
+export const HOME_NEW_CARD_CAP = 3;
+
+/**
+ * Put the new cards in front of Home's existing Vitana cards, capped at
+ * HOME_NEW_CARD_CAP. The existing cards keep their order. Runs in Home.tsx
+ * BEFORE composeFeed, so composeFeed itself is unchanged.
+ */
+export function withHomeNewCards<V>(newCards: V[], existingCards: V[], cap: number = HOME_NEW_CARD_CAP): V[] {
+  return [...newCards.slice(0, Math.max(0, cap)), ...existingCards];
+}

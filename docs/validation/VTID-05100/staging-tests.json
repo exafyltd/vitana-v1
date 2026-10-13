@@ -10,8 +10,8 @@
   },
   {
    "kind": "existing",
-   "name": "Vitana thread on top while unread (then pinned, then newest), one bot id everywhere, Talk to Vitana button only in the Vitana DM and it calls activateOrb, settings PATCH sends only the toggled field and disables switches on a load error, vitana_companion_message routes to the Vitana DM",
-   "ref": "npx vitest run src/lib/inboxThreadOrder.vtid-05100.test.ts src/lib/notification-types.companion.vtid-05100.test.ts src/components/settings/VitanaMessagesSettings.vtid-05100.test.tsx src/components/messages/ConversationView.talk-to-vitana.vtid-05100.test.tsx src/pages/settings/SettingsNotifications.vtid-04676.test.tsx",
+   "name": "Vitana thread on top while unread (then pinned, then newest), one bot id everywhere, Talk to Vitana button only in the Vitana DM and it calls activateOrb, settings PATCH sends only the toggled field and disables switches on a load error, vitana_companion_message routes to the Vitana DM; the Vitana messages section shows while the other notification preferences are still loading",
+   "ref": "npx vitest run src/lib/inboxThreadOrder.vtid-05100.test.ts src/lib/notification-types.companion.vtid-05100.test.ts src/components/settings/VitanaMessagesSettings.vtid-05100.test.tsx src/components/messages/ConversationView.talk-to-vitana.vtid-05100.test.tsx src/pages/settings/SettingsNotifications.vtid-04676.test.tsx src/pages/settings/SettingsNotifications.vtid-05100.test.tsx",
    "cwd": ".",
    "reason": "Thread order needs an unread Vitana message in the test account's inbox and the voice button opens a live ORB session; a toggle would write the member's preferences row into the production database staging shares. Proven with Vitest instead."
   }

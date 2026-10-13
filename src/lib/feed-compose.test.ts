@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { FeedItem } from "@/lib/news-feed-ranker";
-import { composeFeed } from "./feed-compose";
+import { composeFeed, withHomeNewCards, HOME_NEW_CARD_CAP } from "./feed-compose";
 
 const item = (id: string, kind: string) => ({ id, kind, published_at: "2026-10-08T00:00:00Z" }) as unknown as FeedItem;
 const post = (n: number) => item(`post-${n}`, "post");
@@ -72,5 +72,29 @@ describe("composeFeed (VTID-04973)", () => {
     const copy = [...input];
     expect(composeFeed(input, cards).map(label)).toEqual(composeFeed(input, cards).map(label));
     expect(input).toEqual(copy);
+  });
+});
+
+describe("withHomeNewCards (VTID-05085 Home cap)", () => {
+  it("adds at most 3 new cards to Home, in front, and keeps the existing order", () => {
+    const fresh = ["E1", "E2", "E3", "E6", "E7"];
+    const out = withHomeNewCards(fresh, cards);
+    expect(HOME_NEW_CARD_CAP).toBe(3);
+    expect(out).toEqual(["E1", "E2", "E3", ...cards]);
+    expect(out.length - cards.length).toBe(3);
+  });
+
+  it("with the Phase 1 top-2 enrichment cards, they land at feed positions 1 and 3 and the rest keep their slots in order", () => {
+    const vitana = withHomeNewCards(["E1", "E2"], cards);
+    const out = composeFeed([post(1), post(2), post(3), post(4), post(5), post(6), post(7)], vitana);
+    const ids = out.map(label);
+    expect(ids.slice(0, 4)).toEqual(["E1", "post-1", "E2", "post-2"]);
+    const existing = ids.filter((id) => cards.includes(id));
+    expect(existing).toEqual(cards);
+  });
+
+  it("no new cards → the feed is exactly what it was", () => {
+    const ranked = [feat(1), mem(1), post(1), post(2), post(3), post(4), post(5), post(6)];
+    expect(composeFeed(ranked, withHomeNewCards([], cards)).map(label)).toEqual(composeFeed(ranked, cards).map(label));
   });
 });

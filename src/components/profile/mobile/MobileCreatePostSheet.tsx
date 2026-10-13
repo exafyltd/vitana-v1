@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { X, Send, Loader2, ImagePlus } from 'lucide-react';
@@ -12,6 +12,8 @@ import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
 import { getPostBackground } from '@/lib/post-backgrounds';
 import type { PostMention } from '@/lib/news-feed-ranker';
 import { pruneMentions } from '@/lib/mentions';
+import { EnrichmentCardStrip } from '@/components/vitana/EnrichmentCardStrip';
+import { CreatePostLauncherProvider, type CreatePostMode } from '@/components/vitana/create-post-launcher';
 
 /** Maxina Longevity Game (event-specific, optional) — when present, the
  * sheet shows the Event/Longevity category switch and tags the resulting
@@ -30,6 +32,11 @@ interface MobileCreatePostSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   eventGameContext?: EventGamePostContext;
+  /**
+   * VTID-05143: the Upload Video/Music card opens the sheet in media mode —
+   * the photo/video picker opens right away (same tap, so the browser allows it).
+   */
+  pickMediaOnOpen?: boolean;
 }
 
 const MAX_CHARS = 500;
@@ -43,7 +50,7 @@ const MAX_COMPRESSIBLE_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB
 
 type MediaKind = 'image' | 'video';
 
-export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext }: MobileCreatePostSheetProps) {
+export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pickMediaOnOpen }: MobileCreatePostSheetProps) {
   const [content, setContent] = useState('');
   const [backgroundStyle, setBackgroundStyle] = useState<string | null>(null);
   const [mentions, setMentions] = useState<PostMention[]>([]);
@@ -65,6 +72,13 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext }: 
   const uploadPathRef = useRef<string | null>(null);
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
+
+  useEffect(() => {
+    if (!open || !pickMediaOnOpen) return;
+    // One frame so the sheet's hidden file input is mounted.
+    const id = requestAnimationFrame(() => fileInputRef.current?.click());
+    return () => cancelAnimationFrame(id);
+  }, [open, pickMediaOnOpen]);
 
   const handleMediaSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -289,6 +303,17 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext }: 
 
         {/* Content */}
         <div className="flex-1 p-4 overflow-y-auto">
+          {/* VTID-05086: "Make a Post" cards above the form (not in the event game).
+              A card here acts on this sheet (media → the picker) instead of opening another. */}
+          {!eventGameContext && (
+            <CreatePostLauncherProvider
+              open={(mode: CreatePostMode) => {
+                if (mode === 'media') fileInputRef.current?.click();
+              }}
+            >
+              <EnrichmentCardStrip screen="make-a-post" maxCards={2} className="mb-3" />
+            </CreatePostLauncherProvider>
+          )}
           {eventGameContext && (
             <div className="flex gap-2 mb-3">
               <Button

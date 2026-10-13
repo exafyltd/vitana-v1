@@ -17,6 +17,8 @@
  */
 import { type ReactNode } from 'react';
 import { ArrowRight, Lightbulb, Sparkles } from 'lucide-react';
+import { VitanaCardActionButton } from '@/components/vitana/VitanaCardActionButton';
+import { ACCENT_CLASSES, type CardAccent } from '@/components/vitana/vitana-card-catalog';
 import { useNavigate } from 'react-router-dom';
 import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
@@ -57,7 +59,7 @@ const VARIANT_COPY: Record<
 
 const VARIANT_STYLE: Record<
   FeatureAnnouncementVariant,
-  { shell: string; iconWrap: string; iconColor: string; eyebrowColor: string; ctaColor: string; DefaultIcon: typeof Sparkles }
+  { shell: string; iconWrap: string; iconColor: string; eyebrowColor: string; DefaultIcon: typeof Sparkles; accent: CardAccent }
 > = {
   'brand-new-feature': {
     shell: 'border-sys-feature-new-card-border bg-sys-feature-new-card',
@@ -65,16 +67,16 @@ const VARIANT_STYLE: Record<
       'bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-[0_0_0_5px_hsl(var(--sys-feature-new-accent)/0.15)]',
     iconColor: 'text-white',
     eyebrowColor: 'text-sys-feature-new-accent',
-    ctaColor: 'text-sys-feature-new-accent group-hover:text-sys-feature-new-accent/80',
     DefaultIcon: Sparkles,
+    accent: 'violet',
   },
   'did-you-know-feature': {
     shell: 'border-sys-feature-tip-card-border bg-sys-feature-tip-card',
     iconWrap: 'bg-sys-feature-tip-tint',
     iconColor: 'text-sys-feature-tip-accent',
     eyebrowColor: 'text-sys-feature-tip-accent',
-    ctaColor: 'text-sys-feature-tip-accent group-hover:text-sys-feature-tip-accent/80',
     DefaultIcon: Lightbulb,
+    accent: 'indigo', // F8 "Did you know" (Unified Card System)
   },
 };
 
@@ -115,6 +117,7 @@ export function FeatureAnnouncementCard({
         'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
         'animate-fade-in',
         style.shell,
+        ACCENT_CLASSES[style.accent].border,
       )}
     >
       {isTip ? (
@@ -150,15 +153,15 @@ export function FeatureAnnouncementCard({
         {description}
       </p>
 
-      <span
-        className={cn(
-          'mt-3 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors',
-          style.ctaColor,
-        )}
-      >
-        {t(copy.ctaKey)}
-        <ArrowRight className="h-3.5 w-3.5 shrink-0" />
-      </span>
+      {/* VTID-05086: the Unified Card System action button (same tap target as the card). */}
+      <VitanaCardActionButton
+        className="mt-3"
+        shape="pill"
+        accent={style.accent}
+        icon={ArrowRight}
+        label={t(copy.ctaKey)}
+        onClick={open}
+      />
 
       {copy.closingKey && (
         <p className="mt-2 text-xs text-muted-foreground">{t(copy.closingKey)}</p>

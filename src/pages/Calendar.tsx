@@ -12,6 +12,7 @@
  * leads back to its community event or live room.
  */
 import { useEffect, useMemo, useState } from "react";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -406,6 +407,9 @@ export default function CalendarPage() {
           </header>
 
           <ViewSwitch view={view} onChange={changeView} />
+
+          {/* VTID-05086: Unified Card System — stacked below the calendar header. */}
+          <EnrichmentCardStrip screen="calendar" />
 
           {/* VTID-04682: connecting a calendar app is right here until one is connected. */}
           {view === "day" && <ConnectCalendarCard onSubscribe={(provider) => setSubscribeOpen({ provider })} />}

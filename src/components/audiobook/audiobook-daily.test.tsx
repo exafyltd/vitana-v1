@@ -124,7 +124,10 @@ describe('entry points', () => {
   it('Home plays today\'s episode in one tap', () => {
     const src = read('src/components/home/LongevityJourneyCard.tsx');
     expect(src).toContain('audiobook.start({ episode: nextSession.session })');
-    expect(src).toContain('e.stopPropagation()');
+    // VTID-05143: the play button is the shared Unified Card System button,
+    // which stops the tap before it reaches the card (so it plays, not opens).
+    expect(src).toContain('data-testid="home-play-todays-episode"');
+    expect(read('src/components/vitana/VitanaCardActionButton.tsx')).toContain('e.stopPropagation()');
   });
 
   it('the push deep link is a plain path the router and the registry know', () => {

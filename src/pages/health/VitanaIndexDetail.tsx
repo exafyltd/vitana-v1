@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -629,6 +630,9 @@ export default function VitanaIndexDetail() {
           {isError && (
             <p className="rounded-2xl bg-red-50 p-3 text-sm text-red-700">{t("screens.health.couldNotLoadYourIndexTry")}</p>
           )}
+
+          {/* VTID-05086: Unified Card System — stacked below the index display. */}
+          <EnrichmentCardStrip screen="vitana-index" />
 
           <NextSteps steps={steps} views={views} />
 

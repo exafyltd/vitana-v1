@@ -1,0 +1,10 @@
+{
+  "id": "profile-enrichment-cards",
+  "added": "2026-10-13",
+  "title": { "en": "Vitana helps you complete your profile", "de": "Vitana hilft dir, dein Profil zu vervollständigen" },
+  "description": {
+    "en": "Small Vitana cards now show you what's still missing – a photo, your bio, your interests or a connected calendar. One tap and it's done; finished cards disappear by themselves.",
+    "de": "Kleine Vitana-Karten zeigen dir jetzt, was noch fehlt – ein Foto, deine Bio, deine Interessen oder ein verbundener Kalender. Ein Tipp und es ist erledigt; fertige Karten verschwinden von selbst."
+  },
+  "deepLink": "/me/profile"
+}

@@ -92,6 +92,9 @@ vi.mock("@/components/home/LongevityJourneyCard", () => ({ LongevityJourneyCard:
 vi.mock("@/components/home/InviteFriendCard", () => ({ InviteFriendCard: () => null }));
 vi.mock("@/components/home/NewsFeedItemCard", () => ({ NewsFeedItemCard: () => null }));
 vi.mock("@/components/home/NewMemberCard", () => ({ NewMemberCard: () => null }));
+// VTID-05085: Home now reads the Unified Card System state.
+vi.mock("@/hooks/useEnrichmentCards", () => ({ useEnrichmentCards: () => ({ cards: [], dismiss: vi.fn() }) }));
+vi.mock("@/components/vitana/card-registry", () => ({ getVitanaCardComponent: () => null }));
 vi.mock("@/hooks/useInviteFriendShare", () => ({ useInviteFriendShare: () => ({ shareInvite: vi.fn() }) }));
 vi.mock("@/hooks/useNewsFeed", () => ({
   useLongevityNewsFeed: () => ({ data: undefined, fetchNextPage: vi.fn(), hasNextPage: false, isFetchingNextPage: false, isLoading: false, refetch: vi.fn() }),
