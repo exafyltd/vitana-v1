@@ -100,7 +100,8 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
   `row` cards (no empty slots); Community overview shows only real data (live rooms, today, this week, groups you have
   not joined — the legacy mock rows, invented counters and the console-only search are not rendered; no member list,
   to keep test accounts out); empty dominant screens show one text-only spotlight card; existing drawers, deep links
-  and dialogs are shared with the legacy render. Left: Media Hub + Messages (in progress), Post detail (after Phase 2),
+  and dialogs are shared with the legacy render. Part 2 done: Media Hub (focus-feed; demo shorts/playlists/shows not rendered, search really filters) and Messages
+  (conversation; same ConversationView props, data hooks/realtime/keep-alive untouched). Left: Post detail (after Phase 2),
   Public profile (needs an owner design call), the Live Rooms "Past" tab with recordings.
 - [x] 4.2 Remaining adapters (event, liveRoom, group, member).
 - [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
