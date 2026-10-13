@@ -34,7 +34,8 @@
     "src/i18n/en/spotlightMedia.json",
     "src/pages/community/MediaHub.spotlight.vtid-05110.test.tsx",
     "src/pages/Messages.spotlight.vtid-05110.test.tsx",
-    "tests/e2e/staging/vtid-05110-media-messages-spotlight.staging.spec.ts"
+    "tests/e2e/staging/vtid-05110-media-messages-spotlight.staging.spec.ts",
+    "i18n-source-stamps/en.json"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
   "weakens_tests": [],
