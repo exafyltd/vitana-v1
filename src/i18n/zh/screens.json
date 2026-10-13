@@ -13601,6 +13601,27 @@
         "title": "发现新鲜事物",
         "description": "为你的健康精选的产品、服务和优惠。",
         "action": "浏览"
+      },
+      "G1": {
+        "eyebrow": "你的资料",
+        "title": "完善你的资料",
+        "description": "完整的资料能为你带来更契合的匹配。",
+        "action": "继续设置",
+        "metric": "已完成 {value} · {message}"
+      },
+      "G2": {
+        "eyebrow": "匹配",
+        "title": "你有新的匹配",
+        "description": "看看谁和你契合。",
+        "action": "查看匹配",
+        "metric": "新匹配：{count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "日记",
+        "title": "你的连续记录快要中断了",
+        "description": "昨天没有记录——今天记一下，保持连续吧。",
+        "action": "今天记录",
+        "metric": "连续 {count} 天 · {message}"
       }
     },
     "interests": {

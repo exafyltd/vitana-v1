@@ -3,7 +3,9 @@
  *
  * Server cards (enrichment/boost, already in priority order, already
  * localized) come first, then the screen's static feature cards that the
- * member has not hidden on this device. Capped at `maxCards`.
+ * member has not hidden on this device. Capped at `maxCards`. Boost cards
+ * (G1–G3) show only on the screens plan §4 places them (`CARD_SCREENS.boost`)
+ * and get their number through `params`.
  *
  * Never an empty box: while loading, when nothing is left, or when the
  * gateway fails, it renders nothing (a failed request drops only the server
@@ -16,16 +18,23 @@ import { t } from '@/lib/i18n-toast';
 import { useEnrichmentCards } from '@/hooks/useEnrichmentCards';
 import { isFeatureCardDismissed, rememberFeatureCardDismissed } from '@/hooks/useCardDismiss';
 import { getVitanaCardComponent } from '@/components/vitana/card-registry';
-import { CARD_SCREENS, type CardScreen, type VitanaCardType } from '@/components/vitana/vitana-card-catalog';
+import {
+  CARD_SCREENS,
+  cardCategory,
+  isServerCardPlaced,
+  type CardScreen,
+  type VitanaCardType,
+} from '@/components/vitana/vitana-card-catalog';
 
 export interface EnrichmentCardStripProps {
   screen: CardScreen;
   maxCards?: number;
   layout?: 'carousel' | 'stacked';
   /**
-   * Render only the server (enrichment/boost) or only the static feature
-   * cards — Profile shows its enrichment carousel with the feature cards
-   * stacked below it (plan §4). Both halves share one cached request.
+   * Render only the enrichment cards (`server`) or only the boost + static
+   * feature cards (`features`) — Profile shows its enrichment carousel with
+   * the feature/boost cards stacked below it (plan §4). Both halves share
+   * one cached request.
    */
   only?: 'server' | 'features';
   className?: string;
@@ -35,6 +44,7 @@ interface StripEntry {
   cardType: VitanaCardType;
   title?: string;
   description?: string;
+  params?: Record<string, number>;
   server: boolean;
 }
 
@@ -65,10 +75,13 @@ export function EnrichmentCardStrip({ screen, maxCards = 3, layout = 'stacked', 
   const [localVersion, setLocalVersion] = useState(0);
 
   const entries = useMemo<StripEntry[]>(() => {
-    const server = (only === 'features' ? [] : cards)
-      .filter((c) => !config.allow || config.allow.includes(c.card_type))
+    // `server` half: enrichment only; `features` half: boost + feature cards.
+    const inHalf = (type: VitanaCardType) =>
+      !only || (only === 'server' ? cardCategory(type) !== 'boost' : cardCategory(type) === 'boost');
+    const server = cards
+      .filter((c) => inHalf(c.card_type) && isServerCardPlaced(config, c.card_type))
       .filter((c) => getVitanaCardComponent(c.card_type))
-      .map((c) => ({ cardType: c.card_type, title: c.title, description: c.description, server: true }));
+      .map((c) => ({ cardType: c.card_type, title: c.title, description: c.description, params: c.params, server: true }));
     const features = (only === 'server' ? [] : config.features)
       .filter((type) => getVitanaCardComponent(type) && !isFeatureCardDismissed(type))
       .map((type) => ({ cardType: type as VitanaCardType, server: false }));
@@ -77,7 +90,9 @@ export function EnrichmentCardStrip({ screen, maxCards = 3, layout = 'stacked', 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cards, config, maxCards, only, localVersion]);
 
-  if (config.server && isLoading && only !== 'features') return null;
+  // The feature half waits only when it can hold boost cards (no jump when they arrive).
+  const waitsForServer = only !== 'features' || (config.boost?.length ?? 0) > 0;
+  if (config.server && isLoading && waitsForServer) return null;
   if (entries.length === 0) return null;
 
   const nodes = entries.map((entry) => {
@@ -88,7 +103,9 @@ export function EnrichmentCardStrip({ screen, maxCards = 3, layout = 'stacked', 
           rememberFeatureCardDismissed(entry.cardType);
           setLocalVersion((v) => v + 1);
         };
-    return <Card key={entry.cardType} title={entry.title} description={entry.description} onDismiss={onDismiss} />;
+    return (
+      <Card key={entry.cardType} title={entry.title} description={entry.description} params={entry.params} onDismiss={onDismiss} />
+    );
   });
 
   return (

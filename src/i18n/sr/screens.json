@@ -12686,6 +12686,27 @@
         "title": "Otkrij nešto novo",
         "description": "Proizvodi, usluge i ponude za tvoje blagostanje.",
         "action": "Pregledaj"
+      },
+      "G1": {
+        "eyebrow": "Tvoj profil",
+        "title": "Dovrši svoj profil",
+        "description": "Potpun profil ti donosi bolja poklapanja.",
+        "action": "Nastavi podešavanje",
+        "metric": "{value} završeno · {message}"
+      },
+      "G2": {
+        "eyebrow": "Poklapanja",
+        "title": "Imaš nova poklapanja",
+        "description": "Pogledaj ko ti odgovara.",
+        "action": "Pogledaj poklapanja",
+        "metric": "Nova poklapanja: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Dnevnik",
+        "title": "Tvoj niz je u opasnosti",
+        "description": "Juče nije bilo upisa – sačuvaj svoj niz danas.",
+        "action": "Upiši danas",
+        "metric": "Niz: {count} dana · {message}"
       }
     },
     "interests": {

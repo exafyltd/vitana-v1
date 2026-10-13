@@ -2,7 +2,12 @@
  * VTID-05085 — the member's Unified Card System state from the gateway.
  *
  *   GET  /api/v1/enrichment-cards?screen=<screen>
- *        → { ok, cards: [{ card_type, category, priority, title, description }], profile_completion_pct }
+ *        → { ok, cards: [{ card_type, category, priority, title, description, data? }], profile_completion_pct }
+ *        Boost cards (G1–G3, Phase 3) carry their number in `data`:
+ *        G1 `completion_pct`, G2 `unread_match_count`, G3 `streak_days`
+ *        (gateway PR exafyltd/vitana-platform#4095). The client hands it to
+ *        the card as `params.percentage` / `params.count` / `params.streak`,
+ *        the same names a card shared in a chat uses.
  *   POST /api/v1/enrichment-cards/dismiss  { card_type } → { ok, dismissed_until }
  *
  * The server decides which enrichment/boost cards are still open (completion
@@ -26,6 +31,25 @@ export interface EnrichmentCard {
   priority: number;
   title: string;
   description: string;
+  /** Numeric card params (boost cards); absent when the row has none. */
+  params?: Record<string, number>;
+}
+
+/** Gateway `data` field → card param, for the numbers a boost card shows. Anything else is ignored. */
+export const CARD_DATA_PARAMS: Readonly<Record<string, 'percentage' | 'count' | 'streak'>> = {
+  completion_pct: 'percentage',
+  unread_match_count: 'count',
+  streak_days: 'streak',
+};
+
+function readParams(row: Record<string, unknown>): Record<string, number> | undefined {
+  const data = row.data && typeof row.data === 'object' ? (row.data as Record<string, unknown>) : {};
+  const out: Record<string, number> = {};
+  for (const [field, param] of Object.entries(CARD_DATA_PARAMS)) {
+    const value = data[field];
+    if (typeof value === 'number' && Number.isFinite(value)) out[param] = value;
+  }
+  return Object.keys(out).length > 0 ? out : undefined;
 }
 
 export interface EnrichmentCardsPayload {
@@ -58,13 +82,17 @@ export function parseEnrichmentCards(json: unknown): EnrichmentCardsPayload {
   if (body.ok === false || !Array.isArray(body.cards)) throw new Error('enrichment-cards: bad payload');
   const cards = body.cards
     .filter((c): c is EnrichmentCard => !!c && typeof c === 'object' && isVitanaCardType((c as EnrichmentCard).card_type))
-    .map((c) => ({
-      card_type: c.card_type,
-      category: c.category,
-      priority: Number(c.priority) || 0,
-      title: typeof c.title === 'string' ? c.title : '',
-      description: typeof c.description === 'string' ? c.description : '',
-    }));
+    .map((c) => {
+      const params = readParams(c as unknown as Record<string, unknown>);
+      return {
+        card_type: c.card_type,
+        category: c.category,
+        priority: Number(c.priority) || 0,
+        title: typeof c.title === 'string' ? c.title : '',
+        description: typeof c.description === 'string' ? c.description : '',
+        ...(params ? { params } : {}),
+      };
+    });
   const pct = typeof body.profile_completion_pct === 'number' ? body.profile_completion_pct : null;
   return { cards, profile_completion_pct: pct };
 }

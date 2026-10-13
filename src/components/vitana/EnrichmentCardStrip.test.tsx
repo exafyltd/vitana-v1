@@ -7,7 +7,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import type { VitanaCardProps } from './card-props';
 
 type Hook = {
-  cards: Array<{ card_type: string; category: string; priority: number; title: string; description: string }>;
+  cards: Array<{ card_type: string; category: string; priority: number; title: string; description: string; params?: Record<string, number> }>;
   isLoading: boolean;
   isError: boolean;
   dismiss: ReturnType<typeof vi.fn>;
@@ -23,9 +23,9 @@ vi.mock('@/hooks/useEnrichmentCards', () => ({
 }));
 
 function Stub(type: string) {
-  return function StubCard({ title, onDismiss }: VitanaCardProps) {
+  return function StubCard({ title, params, onDismiss }: VitanaCardProps) {
     return (
-      <div data-testid={`card-${type}`}>
+      <div data-testid={`card-${type}`} data-params={params ? JSON.stringify(params) : undefined}>
         {title}
         {onDismiss && (
           <button type="button" onClick={onDismiss}>
@@ -37,7 +37,7 @@ function Stub(type: string) {
   };
 }
 vi.mock('./card-registry', () => {
-  const map: Record<string, unknown> = { E1: Stub('E1'), E2: Stub('E2'), E3: Stub('E3'), E4: Stub('E4'), F3: Stub('F3'), F9: Stub('F9') };
+  const map: Record<string, unknown> = { E1: Stub('E1'), E2: Stub('E2'), E3: Stub('E3'), E4: Stub('E4'), F3: Stub('F3'), F9: Stub('F9'), G1: Stub('G1'), G2: Stub('G2'), G3: Stub('G3') };
   return { getVitanaCardComponent: (t: string) => map[t] ?? null, VITANA_CARD_REGISTRY: map };
 });
 vi.mock('./vitana-card-catalog', async (orig) => {
@@ -48,6 +48,7 @@ vi.mock('./vitana-card-catalog', async (orig) => {
       ...real.CARD_SCREENS,
       calendar: { server: 'calendar', features: ['F3', 'F9'] },
       'make-a-post': { server: 'community', allow: ['E3'], features: [] },
+      'longevity-journey': { server: 'longevity-journey', boost: ['G3'], features: ['F3'] },
     },
   };
 });
@@ -56,6 +57,8 @@ import { EnrichmentCardStrip } from './EnrichmentCardStrip';
 import { __resetFeatureCardDismissMemory } from '@/hooks/useCardDismiss';
 
 const card = (t: string) => ({ card_type: t, category: 'enrichment', priority: 1, title: `title-${t}`, description: '' });
+const boost = (t: string, params?: Record<string, number>) => ({ card_type: t, category: 'boost', priority: 1, title: `title-${t}`, description: '', params });
+const ids = () => screen.getAllByTestId(/^card-/).map((n) => n.getAttribute('data-testid'));
 
 beforeAll(() => {
   // embla needs these in jsdom
@@ -190,5 +193,63 @@ describe('EnrichmentCardStrip', () => {
       set.mockRestore();
       __resetFeatureCardDismissMemory();
     }
+  });
+
+  // VTID-05143 Phase 3 — boost cards (G1–G3), plan §4 placement.
+  it('boost cards show only on the screens plan §4 places them (Vitana Index: G3 only)', () => {
+    hook.cards = [boost('G1'), boost('G2'), boost('G3')];
+    render(<EnrichmentCardStrip screen="vitana-index" />);
+    // G3 first, then the screen's feature cards (F3 is the only stubbed one there)
+    expect(ids()).toEqual(['card-G3', 'card-F3']);
+  });
+
+  it('a screen with no boost placement drops every boost card the server sends', () => {
+    hook.cards = [card('E1'), boost('G3')];
+    render(<EnrichmentCardStrip screen="calendar" maxCards={5} />);
+    expect(ids()).toEqual(['card-E1', 'card-F3', 'card-F9']);
+  });
+
+  it('My Journey (/autopilot, the Longevity Journey surface) and Home take their boost cards', () => {
+    hook.cards = [boost('G3'), boost('G1')];
+    const { unmount } = render(<EnrichmentCardStrip screen="autopilot" />);
+    expect(ids()).toEqual(['card-G3', 'card-F3', 'card-F9']);
+    unmount();
+    hook.cards = [boost('G3'), boost('G2'), boost('G1')];
+    render(<EnrichmentCardStrip screen="home" />);
+    expect(ids()).toEqual(['card-G3', 'card-G2', 'card-G1']);
+  });
+
+  it('passes the gateway params (the card number) to the card', () => {
+    hook.cards = [boost('G3', { streak: 9 })];
+    render(<EnrichmentCardStrip screen="vitana-index" />);
+    expect(screen.getByTestId('card-G3').getAttribute('data-params')).toBe('{"streak":9}');
+  });
+
+  it('a boost X dismisses on the server', () => {
+    hook.cards = [boost('G3')];
+    render(<EnrichmentCardStrip screen="vitana-index" />);
+    fireEvent.click(screen.getByText('x-G3'));
+    expect(hook.dismiss).toHaveBeenCalledWith('G3');
+  });
+
+  it('Profile: G1 sits in the stacked half with the feature cards, not in the enrichment carousel', () => {
+    hook.cards = [card('E1'), boost('G1')];
+    const { unmount } = render(<EnrichmentCardStrip screen="profile" only="server" maxCards={11} />);
+    expect(ids()).toEqual(['card-E1']);
+    unmount();
+    render(<EnrichmentCardStrip screen="profile" only="features" />);
+    expect(ids()).toEqual(['card-G1']);
+  });
+
+  it('the stacked half of a screen with boost cards waits for the gateway, then puts boost before feature cards', () => {
+    hook.isLoading = true;
+    hook.cards = [];
+    const { container, unmount } = render(<EnrichmentCardStrip screen="longevity-journey" only="features" />);
+    expect(container.innerHTML).toBe('');
+    unmount();
+    hook.isLoading = false;
+    hook.cards = [boost('G3')];
+    render(<EnrichmentCardStrip screen="longevity-journey" only="features" />);
+    expect(ids()).toEqual(['card-G3', 'card-F3']);
   });
 });

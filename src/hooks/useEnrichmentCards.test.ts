@@ -165,4 +165,32 @@ describe('parseEnrichmentCards', () => {
     expect(() => parseEnrichmentCards({ ok: true })).toThrow();
     expect(() => parseEnrichmentCards({ ok: false, cards: [] })).toThrow();
   });
+
+  // VTID-05143 Phase 3: boost cards carry their number (G1 %, G2 count, G3 streak).
+  it('keeps boost rows and maps their gateway data to card params (G1 %, G2 count, G3 streak)', () => {
+    const row = { category: 'boost', completed: false, dismissed_until: null, description: 'd' };
+    const out = parseEnrichmentCards({
+      ok: true,
+      cards: [
+        { ...row, card_type: 'G3', priority: 1, title: 'Serie', data: { streak_days: 6 } },
+        { ...row, card_type: 'G2', priority: 2, title: 'Matches', data: { unread_match_count: 2 } },
+        { ...row, card_type: 'G1', priority: 3, title: 'Profil', data: { completion_pct: 55, note: 'x' } },
+      ],
+      profile_completion_pct: 30,
+    });
+    expect(out.cards.map((c) => [c.card_type, c.category, c.params])).toEqual([
+      ['G3', 'boost', { streak: 6 }],
+      ['G2', 'boost', { count: 2 }],
+      ['G1', 'boost', { percentage: 55 }],
+    ]);
+  });
+
+  it('a row without numbers has no params (E cards unchanged)', () => {
+    const out = parseEnrichmentCards({ ok: true, cards: [{ card_type: 'E1', category: 'enrichment', priority: 1, title: 't', description: 'd' }] });
+    expect(out.cards[0]).toEqual({ card_type: 'E1', category: 'enrichment', priority: 1, title: 't', description: 'd' });
+    const bad = parseEnrichmentCards({ ok: true, cards: [{ card_type: 'G2', category: 'boost', priority: 1, title: 't', description: 'd', data: { unread_match_count: 'lots' } }] });
+    expect(bad.cards[0].params).toBeUndefined();
+    const none = parseEnrichmentCards({ ok: true, cards: [{ card_type: 'G1', category: 'boost', priority: 1, title: 't', description: 'd', data: {} }] });
+    expect(none.cards[0].params).toBeUndefined();
+  });
 });
