@@ -32,7 +32,7 @@ export function useCurrentHref(): string {
   return qs ? `${pathname}?${qs}` : pathname;
 }
 
-export function AuthGate({ children, guest }: { children: ReactNode; guest: (content: ReactNode) => ReactNode }) {
+export function AuthGate({ member, guest }: { member: ReactNode; guest: ReactNode }) {
   const { user, loading } = useAuth();
   const { dbRole, isLoading: roleLoading } = useRole();
   const { t } = useI18n();
@@ -40,12 +40,12 @@ export function AuthGate({ children, guest }: { children: ReactNode; guest: (con
   const href = useCurrentHref();
   if (loading) return <DelayedLoader accessibilityLabel={t('common.loading')} />;
   if (!user) {
-    if (isGuestPath(pathname)) return <>{guest(children)}</>;
+    if (isGuestPath(pathname)) return <>{guest}</>;
     return <Redirect href={`/maxina?redirectTo=${encodeURIComponent(href)}` as never} />;
   }
   if (!roleLoading) {
     const bounce = routeGuard(pathname, dbRole);
     if (bounce && bounce !== pathname) return <Redirect href={bounce as never} />;
   }
-  return <>{children}</>;
+  return <>{member}</>;
 }

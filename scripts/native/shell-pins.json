@@ -14,7 +14,12 @@
     {"id":"getInstantTenantName:names","web":"src/lib/tenant-display.ts","declaration":"SLUG_TO_NAME","native":"apps/mobile/src/shell/logic/tenant-display.ts","sha256":"26dbc3cd443919466df0ac6aaba8641af5a56bb8619f69ba731a75f87664b973"},
     {"id":"getInstantTenantName","web":"src/lib/tenant-display.ts","declaration":"getInstantTenantName","native":"apps/mobile/src/shell/logic/tenant-display.ts","sha256":"5ad3b52e7bd69a9b8d7d53b86194f938b5b6c36679efe3b4a92af2b10680077f"},
     {"id":"findActiveLabel","web":"src/components/ui/MobileModePill.tsx","declaration":"findActiveLabel","native":"apps/mobile/src/shell/logic/mode-pill.ts","sha256":"ac2909c8b83a7dd63f5ccec833eaf2f39f5fb269de66e87fdad52f176cbd0314"},
-    {"id":"authBootstrapTimeout","web":"src/context/AuthProvider.tsx","declaration":"AuthProvider","inner":["authBootstrapTimeout"],"native":"apps/mobile/src/auth/AuthProvider.tsx","sha256":"7fa3e5ede05baa62f1e31a0a970b8f0fc24dffac8e3df3c4ea4fe7567a4bb686"}
+    {"id":"authBootstrapTimeout","web":"src/context/AuthProvider.tsx","declaration":"AuthProvider","inner":["authBootstrapTimeout"],"native":"apps/mobile/src/auth/AuthProvider.tsx","sha256":"7fa3e5ede05baa62f1e31a0a970b8f0fc24dffac8e3df3c4ea4fe7567a4bb686"},
+    {"id":"drawerSearch","web":"src/components/mobile/SideDrawerNav.tsx","declaration":"SideDrawerNav","inner":["closeSearch","handleItemClick"],"native":"apps/mobile/src/shell/components/SideDrawer.tsx","sha256":"2d1a2514952be5882c0d2cc5c5afbb28af41aa503077d0c88e12527f3626efa7"},
+    {"id":"topAppBar","web":"src/components/mobile/TopAppBar.tsx","declaration":"TopAppBar","inner":["instantName","tenantName","resolvedSlug","isMaxina","isInLiveRoom","showLive"],"native":"apps/mobile/src/shell/components/TopAppBar.tsx","sha256":"915e8b9c24de5187cbf4f58e096cd37612daf08fe79bfab6c578c185fbb1bd88"},
+    {"id":"edgeSwipe","web":"src/components/mobile/MobileAppShell.tsx","declaration":"MobileAppShell","inner":["onEnd"],"native":"apps/mobile/src/shell/components/MobileAppShell.tsx","sha256":"7d932ebaf14bf76dd2de1de330797e6137495b20886d8864a93695901e78bf26"},
+    {"id":"roleSwitcherSheet","web":"src/components/mobile/RoleSwitcherSheet.tsx","declaration":"RoleSwitcherSheet","inner":["inBusiness","activeBusiness","activeModeLabel"],"native":"apps/mobile/src/shell/components/RoleSwitcherSheet.tsx","sha256":"0e537fbe446ea3c6853b805f204798160fe918dd12d11f6b34937203f79188c4"},
+    {"id":"roleLabels","web":"src/lib/role-labels.ts","declaration":"ROLE_LABEL_KEY","native":"apps/mobile/src/shell/logic/role-labels.ts","sha256":"895d768f50bf4ac7217324e1f146b985b4227e66e0592a0f32d8714acc7a9942"}
   ],
   "guest_paths": {"web":"src/App.tsx","native":"apps/mobile/src/navigation/guest-paths.ts","export":"GUEST_PATHS"}
 }
