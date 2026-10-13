@@ -5480,14 +5480,12 @@
       "cancelReply": "إلغاء الرد",
       "likeComment": "أعجبني التعليق",
       "_pending_review": {
-        "feedItemError": true,
-        "vitanaIndexScoreSubtext": true,
-        "longevityJourneyProgressSubtext": true
+        "feedItemError": true
       },
       "feedItemError": "This post couldn't be shown.",
       "playTodaysEpisode": "تشغيل الحلقة {session}",
-      "vitanaIndexScoreSubtext": "Index {score} · {message}",
-      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}"
+      "vitanaIndexScoreSubtext": "المؤشر {score} · {message}",
+      "longevityJourneyProgressSubtext": "الحلقة {session} بانتظارك · أُنجز {done} · اليوم {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (تويتر سابقًا)"
@@ -8717,30 +8715,17 @@
       "viewJourney": "عرض رحلتي",
       "viewMatch": "عرض التطابق",
       "dismissCard": "تجاهل البطاقة",
-      "_pending_review": {
-        "dailyDiary": true,
-        "talkToVitana": true,
-        "autopilot": true,
-        "calendar": true,
-        "uploadMedia": true,
-        "discover": true,
-        "profilePhoto": true,
-        "profileSetup": true,
-        "socialConnect": true,
-        "importContacts": true,
-        "completeProfile": true
-      },
-      "dailyDiary": "Diary",
-      "talkToVitana": "Talk to Vitana",
-      "autopilot": "Autopilot",
-      "calendar": "Calendar",
-      "uploadMedia": "Media",
-      "discover": "Discover",
-      "profilePhoto": "Profile photo",
-      "profileSetup": "Profile",
-      "socialConnect": "Connect",
-      "importContacts": "Contacts",
-      "completeProfile": "Complete profile"
+      "dailyDiary": "اليوميات",
+      "talkToVitana": "تحدّث مع Vitana",
+      "autopilot": "الطيار الآلي",
+      "calendar": "التقويم",
+      "uploadMedia": "الوسائط",
+      "discover": "اكتشف",
+      "profilePhoto": "صورة الملف الشخصي",
+      "profileSetup": "الملف الشخصي",
+      "socialConnect": "ربط",
+      "importContacts": "جهات الاتصال",
+      "completeProfile": "أكمل ملفك"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -12571,211 +12556,107 @@
       "eventsSectionTitle": "الغرف المباشرة"
     },
     "vitanaCards": {
-      "_pending_review": {
-        "stripLabel": true,
-        "eyebrowProfile": true,
-        "eyebrowConnect": true,
-        "eyebrowCommunity": true,
-        "eyebrowNotifications": true
-      },
-      "stripLabel": "Suggestions from Vitana",
-      "eyebrowProfile": "Your profile",
-      "eyebrowConnect": "Connect",
-      "eyebrowCommunity": "Community",
-      "eyebrowNotifications": "Notifications",
+      "stripLabel": "اقتراحات من Vitana",
+      "eyebrowProfile": "ملفك الشخصي",
+      "eyebrowConnect": "اتصال",
+      "eyebrowCommunity": "المجتمع",
+      "eyebrowNotifications": "الإشعارات",
       "E1": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Show your face",
-        "description": "Upload a profile photo so others recognise you right away.",
-        "action": "Upload"
+        "title": "أظهر وجهك",
+        "description": "ارفع صورة للملف الشخصي ليتعرّف عليك الآخرون فورًا.",
+        "action": "رفع"
       },
       "E2": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Tell others about you",
-        "description": "A few sentences about you help others start a conversation.",
-        "action": "Write bio"
+        "title": "أخبرنا عن نفسك",
+        "description": "بضع جمل عنك تساعد الآخرين على بدء محادثة معك.",
+        "action": "اكتب نبذة"
       },
       "E3": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Share your first post",
-        "description": "Say hello to the community – a short thought is enough.",
-        "action": "Post now"
+        "title": "شارك منشورك الأول",
+        "description": "قل مرحبًا للمجتمع – تكفي فكرة قصيرة.",
+        "action": "انشر الآن"
       },
       "E4": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "What are you into?",
-        "description": "Pick your interests so Vitana can find people and content that fit you.",
-        "action": "Pick interests"
+        "title": "ما الذي يشغفك؟",
+        "description": "اختر اهتماماتك لتجد Vitana أشخاصًا ومحتوى يناسبونك.",
+        "action": "اختر اهتماماتك"
       },
       "E5": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Where are you based?",
-        "description": "Add your location to discover people and events near you.",
-        "action": "Add location"
+        "title": "أين تقيم؟",
+        "description": "أضف موقعك واكتشف أشخاصًا وفعاليات بالقرب منك.",
+        "action": "أضف موقعك"
       },
       "E6": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Connect Instagram",
-        "description": "Share your moments from Vitana straight to Instagram.",
-        "action": "Connect Instagram"
+        "title": "اربط Instagram",
+        "description": "شارك لحظاتك من Vitana مباشرةً على Instagram.",
+        "action": "ربط Instagram"
       },
       "E7": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Connect Facebook",
-        "description": "Stay close to your friends and share in one tap.",
-        "action": "Connect Facebook"
+        "title": "اربط Facebook",
+        "description": "ابقَ قريبًا من أصدقائك وشارك بلمسة واحدة.",
+        "action": "ربط Facebook"
       },
       "E8": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Connect your calendar",
-        "description": "See your appointments and Vitana events in one place.",
-        "action": "Connect"
+        "title": "اربط تقويمك",
+        "description": "شاهد مواعيدك وفعاليات Vitana في مكان واحد.",
+        "action": "ربط"
       },
       "E9": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Import your contacts",
-        "description": "Find friends who are already on Vitana.",
-        "action": "Import"
+        "title": "استورد جهات اتصالك",
+        "description": "اعثر على أصدقاء موجودين بالفعل على Vitana.",
+        "action": "استيراد"
       },
       "E10": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Don't miss a thing",
-        "description": "Turn on notifications for messages, matches and reminders.",
-        "action": "Turn on"
+        "title": "لا يفوتك شيء",
+        "description": "فعّل الإشعارات للرسائل والتطابقات والتذكيرات.",
+        "action": "تفعيل"
       },
       "E11": {
-        "_pending_review": {
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "title": "Add a cover photo",
-        "description": "A cover photo makes your profile feel like you.",
-        "action": "Upload"
+        "title": "أضف صورة غلاف",
+        "description": "صورة الغلاف تجعل ملفك الشخصي أكثر تعبيرًا عنك.",
+        "action": "رفع"
       },
       "F3": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Diary",
-        "title": "How are you today?",
-        "description": "Speak a few sentences into your diary – Vitana is listening.",
-        "action": "Record"
+        "eyebrow": "اليوميات",
+        "title": "كيف حالك اليوم؟",
+        "description": "قل بضع جمل في يومياتك – Vitana تستمع إليك.",
+        "action": "تسجيل"
       },
       "F4": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Ask Vitana",
-        "title": "Got a question?",
-        "description": "Vitana helps you with health, community and more.",
-        "action": "Ask Vitana"
+        "eyebrow": "اسأل Vitana",
+        "title": "هل لديك سؤال؟",
+        "description": "تساعدك Vitana في الصحة والمجتمع وغير ذلك.",
+        "action": "اسأل Vitana"
       },
       "F5": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Matches",
-        "title": "People who match you",
-        "description": "Discover today’s matches.",
-        "action": "See matches"
+        "eyebrow": "التطابقات",
+        "title": "أشخاص يناسبونك",
+        "description": "اكتشف تطابقات اليوم.",
+        "action": "عرض التطابقات"
       },
       "F6": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Autopilot",
-        "title": "Your Autopilot is ready",
-        "description": "Let Vitana plan your next steps.",
-        "action": "Open"
+        "eyebrow": "الطيار الآلي",
+        "title": "طيارك الآلي جاهز",
+        "description": "دع Vitana تخطط لخطواتك التالية.",
+        "action": "فتح"
       },
       "F9": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Calendar",
-        "title": "Your day at a glance",
-        "description": "Appointments, events and reminders in one place.",
-        "action": "Open calendar"
+        "eyebrow": "التقويم",
+        "title": "يومك في لمحة",
+        "description": "المواعيد والفعاليات والتذكيرات في مكان واحد.",
+        "action": "افتح التقويم"
       },
       "F10": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Media",
-        "title": "Share a video or music",
-        "description": "Upload your media and inspire the community.",
-        "action": "Create"
+        "eyebrow": "الوسائط",
+        "title": "شارك فيديو أو موسيقى",
+        "description": "ارفع وسائطك وألهم المجتمع.",
+        "action": "إنشاء"
       },
       "F11": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true
-        },
-        "eyebrow": "Discover",
-        "title": "Discover something new",
-        "description": "Products, services and offers for your well-being.",
-        "action": "Browse"
+        "eyebrow": "اكتشف",
+        "title": "اكتشف شيئًا جديدًا",
+        "description": "منتجات وخدمات وعروض لعافيتك.",
+        "action": "تصفّح"
       },
       "G1": {
         "eyebrow": "ملفك الشخصي",
@@ -12800,48 +12681,26 @@
       }
     },
     "interests": {
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "selectedCount": true,
-        "save": true,
-        "cancel": true,
-        "fitness": true,
-        "nutrition": true,
-        "sleep": true,
-        "mindfulness": true,
-        "longevity": true,
-        "biohacking": true,
-        "yoga": true,
-        "running": true,
-        "strength": true,
-        "dance": true,
-        "nature": true,
-        "cooking": true,
-        "social": true,
-        "travel": true,
-        "career": true
-      },
-      "title": "Your interests",
-      "description": "Pick up to {max} topics you love.",
-      "selectedCount": "{count} of {max} selected",
-      "save": "Save",
-      "cancel": "Cancel",
-      "fitness": "Fitness",
-      "nutrition": "Nutrition",
-      "sleep": "Sleep",
-      "mindfulness": "Mindfulness",
-      "longevity": "Longevity",
-      "biohacking": "Biohacking",
-      "yoga": "Yoga",
-      "running": "Running",
-      "strength": "Strength training",
-      "dance": "Dance",
-      "nature": "Nature",
-      "cooking": "Cooking",
-      "social": "Community",
-      "travel": "Travel",
-      "career": "Career"
+      "title": "اهتماماتك",
+      "description": "اختر حتى {max} مواضيع تحبها.",
+      "selectedCount": "تم اختيار {count} من {max}",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "fitness": "اللياقة البدنية",
+      "nutrition": "التغذية",
+      "sleep": "النوم",
+      "mindfulness": "اليقظة الذهنية",
+      "longevity": "طول العمر",
+      "biohacking": "البيوهاكينغ",
+      "yoga": "اليوغا",
+      "running": "الجري",
+      "strength": "تمارين القوة",
+      "dance": "الرقص",
+      "nature": "الطبيعة",
+      "cooking": "الطبخ",
+      "social": "التواصل الاجتماعي",
+      "travel": "السفر",
+      "career": "المسيرة المهنية"
     }
   }
 }

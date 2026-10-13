@@ -22,27 +22,32 @@
       "morning": "صباح الخير ☀️",
       "afternoon": "مساء الخير 🌤️",
       "evening": "مساء الخير 🌙",
-      "night": "تصبح على خير 🌙"
+      "night": "تصبح على خير 🌙",
+      "_pending_review": {}
     },
     "day": {
-      "addFor": "إدخال جديد لـ {date}"
+      "addFor": "إدخال جديد لـ {date}",
+      "_pending_review": {}
     },
     "views": {
       "day": "يوم",
       "week": "أسبوع",
-      "month": "شهر"
+      "month": "شهر",
+      "_pending_review": {}
     },
     "rel": {
       "now": "الآن",
       "minutes": "بعد {count} دقيقة",
       "hours": "بعد {count} ساعة",
-      "days": "بعد {count} يوم"
+      "days": "بعد {count} يوم",
+      "_pending_review": {}
     },
     "reminder": {
       "eveningBefore": "في الليلة السابقة الساعة {time}",
       "atStart": "عند البدء",
       "hoursBefore": "قبل {count} ساعة",
-      "minutesBefore": "قبل {count} دقيقة"
+      "minutesBefore": "قبل {count} دقيقة",
+      "_pending_review": {}
     },
     "kinds": {
       "nutrition": "التغذية",
@@ -78,28 +83,33 @@
     "subscription": {
       "renews": "يتجدد Premium",
       "ends": "ينتهي Premium",
-      "trialEnds": "تنتهي الفترة التجريبية"
+      "trialEnds": "تنتهي الفترة التجريبية",
+      "_pending_review": {}
     },
     "overlap": {
       "title": "هذا يتعارض",
       "own": "{{title}} · {{time}}",
       "busy": "مشغول · {{time}}",
-      "external": "مشغول (تقويم آخر) · {{time}}"
+      "external": "مشغول (تقويم آخر) · {{time}}",
+      "_pending_review": {}
     },
     "findTime": {
       "action": "ابحث عن وقت",
       "loading": "أبحث عن وقت فارغ …",
       "pick": "أوقات مناسبة",
       "none": "لا يوجد وقت فارغ مناسب في الأيام القادمة.",
-      "error": "تعذّر تحميل الأوقات الفارغة الآن."
+      "error": "تعذّر تحميل الأوقات الفارغة الآن.",
+      "_pending_review": {}
     },
     "empty": {
       "title": "لا شيء مخطط – يوم هادئ",
-      "hint": "أخبر فيتانا بما تنوي وستضيفه."
+      "hint": "أخبر فيتانا بما تنوي وستضيفه.",
+      "_pending_review": {}
     },
     "week": {
       "title": "أسبوع {date}",
-      "free": "متاح"
+      "free": "متاح",
+      "_pending_review": {}
     },
     "month": {
       "more": "+{count}",
@@ -135,7 +145,8 @@
       "autopilot_review": "بانتظار مراجعتك",
       "ticket_due": "موعد التذكرة",
       "erp_approval": "موافقة بانتظارك",
-      "readOnly": "تُنجز هذا حيث نشأ – التقويم يُظهر فقط موعد استحقاقه."
+      "readOnly": "تُنجز هذا حيث نشأ – التقويم يُظهر فقط موعد استحقاقه.",
+      "_pending_review": {}
     },
     "subscribe": {
       "title": "اعرضه في تطبيق التقويم",
@@ -157,23 +168,28 @@
       "titleFor": {
         "google": "اربط تقويم Google",
         "apple": "اربط تقويم Apple",
-        "outlook": "اربط Outlook"
+        "outlook": "اربط Outlook",
+        "_pending_review": {}
       },
       "introFor": {
         "google": "تظهر مواعيدك في Vitanaland في تقويم Google وتبقى محدَّثة هناك.",
         "apple": "تظهر مواعيدك في Vitanaland في تقويم iPhone وiPad وMac وتبقى محدَّثة هناك.",
-        "outlook": "تظهر مواعيدك في Vitanaland في تقويم Outlook وتبقى محدَّثة هناك."
+        "outlook": "تظهر مواعيدك في Vitanaland في تقويم Outlook وتبقى محدَّثة هناك.",
+        "_pending_review": {}
       },
       "createFor": {
         "google": "أنشئ رابطًا لـ Google",
         "apple": "أنشئ رابطًا لـ Apple",
-        "outlook": "أنشئ رابطًا لـ Outlook"
+        "outlook": "أنشئ رابطًا لـ Outlook",
+        "_pending_review": {}
       },
       "openIn": {
         "google": "أضف إلى تقويم Google",
         "apple": "أضف إلى تقويم Apple",
-        "outlook": "أضف إلى Outlook"
-      }
+        "outlook": "أضف إلى Outlook",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "move": {
       "action": "نقل",
@@ -187,8 +203,10 @@
         "owned_by_source": "هذا من حجز أو خطة – انقله من هناك، وإلا سيعود إلى مكانه.",
         "recurring": "تُنقل السلسلة من السلسلة نفسها.",
         "completed": "ما أُنجز يبقى في مكانه.",
-        "cancelled": "لا يمكن نقل موعد ملغى."
-      }
+        "cancelled": "لا يمكن نقل موعد ملغى.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "google": {
       "title": "المزامنة مع تقويم Google",
@@ -202,12 +220,14 @@
       "problem": "فشلت آخر مزامنة – سنحاول مجددًا تلقائيًا.",
       "error": "لم ينجح ذلك الآن. حاول مرة أخرى بعد قليل.",
       "busy": "مشغول (Google)",
-      "busyHint": "حدث من تقويم Google الخاص بك – يظهر الوقت فقط"
+      "busyHint": "حدث من تقويم Google الخاص بك – يظهر الوقت فقط",
+      "_pending_review": {}
     },
     "quietHours": {
       "title": "ساعات الهدوء",
       "body": "لا تصل تذكيرات خلال ساعات الهدوء – تصل قبلها بقليل.",
-      "link": "ضبط ساعات الهدوء"
+      "link": "ضبط ساعات الهدوء",
+      "_pending_review": {}
     },
     "guide": {
       "eyebrow": "اقتراح من Vitana",
@@ -224,7 +244,8 @@
       "planWithVitana": "خطط مع Vitana",
       "seeWeek": "عرض الأسبوع",
       "connectAction": "اربط التقويم",
-      "dismiss": "إخفاء لليوم"
+      "dismiss": "إخفاء لليوم",
+      "_pending_review": {}
     },
     "journey": {
       "title": "رحلتك",
@@ -243,14 +264,16 @@
       "dailyAt": "يوميًا في",
       "addConfirm": "أضف",
       "inCalendar": "في التقويم",
-      "habitAdded": "أُضيفت العادة إلى تقويمك"
+      "habitAdded": "أُضيفت العادة إلى تقويمك",
+      "_pending_review": {}
     },
     "remindersSection": {
       "title": "التذكيرات",
       "none": "لا شيء مجدول",
       "upcoming": "قادمة: {count}",
       "upcomingOne": "تذكير واحد قادم",
-      "next": "التالي {when}"
+      "next": "التالي {when}",
+      "_pending_review": {}
     },
     "calendars": {
       "title": "التقويمات",
@@ -276,12 +299,14 @@
       "connect": "اربط",
       "reconnect": "أعد الربط",
       "manage": "الإدارة في التطبيقات المتصلة",
-      "showInAppHint": "شاهد مواعيد Vitanaland في تطبيق التقويم لديك"
+      "showInAppHint": "شاهد مواعيد Vitanaland في تطبيق التقويم لديك",
+      "_pending_review": {}
     },
     "add": {
       "title": "إدخال جديد",
       "created": "تمت الإضافة ✨",
-      "error": "تعذّر الحفظ الآن. حاول مرة أخرى بعد قليل."
+      "error": "تعذّر الحفظ الآن. حاول مرة أخرى بعد قليل.",
+      "_pending_review": {}
     },
     "form": {
       "title": "العنوان",
@@ -304,8 +329,10 @@
         "health": "صحة",
         "workout": "تمرين",
         "community": "مجتمع",
-        "nutrition": "تغذية"
-      }
+        "nutrition": "تغذية",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "milestone": "محطة مهمة: {title}",
     "more": "+{count} أخرى",
@@ -314,13 +341,15 @@
       "entriesOne": "موعد واحد",
       "entries": "المواعيد: {count}",
       "next": "التالي في {time}",
-      "done": "المنجز: {count}"
+      "done": "المنجز: {count}",
+      "_pending_review": {}
     },
     "workSection": {
       "title": "العمل",
       "waitingOne": "أمر واحد بانتظارك",
       "waiting": "بانتظارك: {count}",
-      "open": "افتح في الإدارة"
+      "open": "افتح في الإدارة",
+      "_pending_review": {}
     },
     "indexGain": "+{points} {pillar} في مؤشر Vitana الخاص بك",
     "edit": {
@@ -534,5 +563,6 @@
         "listen": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }
