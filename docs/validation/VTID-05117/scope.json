@@ -108,7 +108,16 @@
     "src/pages/portals/MaxinaPortal.tsx",
     "tests/e2e/staging/vtid-05117-public-leftovers.staging.spec.ts",
     "tests/e2e/staging/design-contract.staging.spec.ts",
-    "docs/design-system/SPOTLIGHT_RULES.md"
+    "docs/design-system/SPOTLIGHT_RULES.md",
+    "src/pages/PostDetail.tsx",
+    "src/pages/MatchesPage.tsx",
+    "src/pages/PrivacySettings.tsx",
+    "src/pages/dev/DevLogin.tsx",
+    "src/components/discover/spotlight/DiscoverSectionPanes.tsx",
+    "src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx",
+    "src/pages/vtid-05117-leftovers-2.test.tsx",
+    "tests/e2e/staging/vtid-05117-leftovers-2.staging.spec.ts",
+    "src/pages/PostDetail.mentions.vtid-04926.test.tsx"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
   "weakens_tests": [],

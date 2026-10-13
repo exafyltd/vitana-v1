@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 386
+- **Pages scanned:** 387
 - **Distinct i18n keys consumed:** 4761
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -667,6 +667,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/spotlight-tier-b.vtid-05111.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/vtid-05117-leftovers-2.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
@@ -1675,7 +1679,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 1, total in shard: 11763
+- `screens` — used: 1, total in shard: 11778
 
 ### src/pages/backoffice/accounting/ChartOfAccounts.tsx
 

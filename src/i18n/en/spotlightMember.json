@@ -125,6 +125,14 @@
     "tickets": {
       "eventFallback": "Event",
       "generalAdmission": "General admission"
+    },
+    "post": {
+      "desc": "The post your notification is about.",
+      "notFoundDesc": "It may have been deleted or is no longer visible. The News feed has everything new from the community.",
+      "backToFeed": "Go to News"
+    },
+    "privacy": {
+      "desc": "Choose who sees which parts of your profile. Tap a tier to change it."
     }
   }
 }

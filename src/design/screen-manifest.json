@@ -1614,7 +1614,7 @@
       "archetype": "workspace",
       "tier": "C",
       "area": "Dev",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "7"
     },
     {
@@ -1806,7 +1806,7 @@
       "archetype": "storefront",
       "tier": "A",
       "area": "Discover & marketplace",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1886,7 +1886,7 @@
       "archetype": "detail",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1979,26 +1979,26 @@
     },
     {
       "path": "/home/comments",
-      "archetype": "collection",
+      "archetype": "focus-feed",
       "tier": "A",
       "area": "News & posts",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
       "path": "/home/compose",
-      "archetype": "form",
+      "archetype": "focus-feed",
       "tier": "A",
       "area": "News & posts",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
       "path": "/home/notif",
-      "archetype": "collection",
+      "archetype": "focus-feed",
       "tier": "A",
       "area": "News & posts",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2158,7 +2158,7 @@
       "archetype": "collection",
       "tier": "A",
       "area": "Profile",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2342,7 +2342,7 @@
       "archetype": "detail",
       "tier": "A",
       "area": "News & posts",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2382,7 +2382,7 @@
       "archetype": "workspace",
       "tier": "C",
       "area": "Professional",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "7"
     },
     {
@@ -2427,10 +2427,10 @@
     },
     {
       "path": "/profile/me/privacy",
-      "archetype": "collection",
+      "archetype": "form",
       "tier": "A",
       "area": "Profile",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {

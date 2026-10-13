@@ -309,4 +309,15 @@ describe('VTID-05109 Discover sub-page panes', () => {
     const r = inTabs('trending', <DealsPanes query="" />);
     expect(r.container.querySelector('[data-discover-empty]')).not.toBeNull();
   });
+
+  it('VTID-05117 Deals: no real discount → the one hero is an honest text-only spotlight, no sample deal', () => {
+    setData({ deals: [prod('d1'), prod('d2')] });
+    const { container } = inTabs('flash', <DealsPanes query="" />);
+    const heroes = container.querySelectorAll('[data-vcard-size="spotlight"]');
+    expect(heroes).toHaveLength(1);
+    expect(heroes[0].hasAttribute('data-deals-empty')).toBe(true);
+    expect(heroes[0].querySelector('[data-vcard-media]')).toBeNull();
+    expect(container.querySelectorAll('[data-product-id]')).toHaveLength(0);
+    expect(screen.getByText('spotlightDiscover.storefront.empty.dealsTitle')).toBeInTheDocument();
+  });
 });

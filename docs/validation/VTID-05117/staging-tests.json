@@ -27,6 +27,19 @@
       "ref": "npx vitest run src/pages/vtid-05117-public-leftovers.test.tsx",
       "cwd": ".",
       "reason": "The auth hand-off screens (/logout, /oauth/complete, /oauth/consent, the e-mail confirmation pages) sign out or consume auth state when opened, and the professional/staff, /patient and /partner/connections screens need roles the read-only staging account does not have; the unit suite renders them deterministically, the staging spec proves the reachable frames end to end."
+    },
+    {
+      "kind": "playwright",
+      "name": "part C, desktop 1280/1440, signed in, ?spotlight=1: /home/notif (focus-feed), /me/matches (collection), /profile/me/privacy (form), /discover/deals-offers (storefront), a post that does not exist and a game slug that does not exist (detail) are framed with their manifest archetype, keep the sidebar chrome, show no page spinner or skeleton after load, show exactly one spotlight card on focus-feed/storefront/detail (an honest text-only card when there is nothing to show) and have no horizontal scroll in LTR and RTL; signed out, /dev/login is framed as workspace around the sign-in form; nothing is clicked",
+      "spec": "tests/e2e/staging/vtid-05117-leftovers-2.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "part C flag on/off per page: post detail (one spotlight post card, skeleton, not-found card), Matches (row cards, skeleton, empty), Privacy & Visibility (form panels with the same 15 controls), dev sign-in (workspace frame around the same form), event-game QR landing (one spotlight card with Join + Leaderboard, ended state); today’s trees with the flag off; deals storefront without a real discount shows one text-only spotlight and no sample deal; manifest archetypes of /home/compose|comments|notif match /home; the PostDetail mentions suite (VTID-04926) stays green on the flag-off path",
+      "ref": "npx vitest run src/pages/vtid-05117-leftovers-2.test.tsx src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx src/pages/PostDetail.mentions.vtid-04926.test.tsx",
+      "cwd": ".",
+      "reason": "Loading, empty and not-found states, the event-game join flow and the ended phase depend on data the read-only staging account cannot control or must not create, /home/compose and /home/comments open the composer and comments sheet, and the flag-off legacy path is not reachable with ?spotlight=1; the unit suites pin them deterministically, the staging spec proves the reachable frames end to end."
     }
   ]
 }

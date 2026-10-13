@@ -150,8 +150,9 @@ Decisions taken (for Gate 2):
     Game, Creator onboarded, My Tickets, Distribution, live-room viewer, `/patient/*`).
   - [x] Part B: public, auth, legal, commerce-portal and operator-placeholder screens (`FrameWhen`, `PublicMain`, `Panel`).
   - [x] Manifest, design + ESLint baselines (61 files lowered each), validation (scope + staging-tests), inventory, EN source stamps.
-  - [ ] Blocked / not done (stay `legacy`): `/home/*`, `/calendar/entry/:entryId`, `/reminders/fire/:fireId`,
-    `/intents/match/:id`, `/sharing/campaigns/:id`, `/redeem`, `/tickets/*`, `/delete-account`, `/dev/login`.
+  - [x] Part C: the remaining legacy routes that need no owner decision (below).
+  - [ ] Still `legacy` (17 of 345, each with its reason under part C): owner decisions, pure redirects, `/business/sell-earn`,
+    `/me/profile`.
   Status: implemented (VTID-05117). Migrated: 95 routes (manifest 223 → 318 of 345 with Phases 2–7.4) — public/auth/legal (`/`, `/maxina`,
   `/alkalma`, `/_intro/:tenantSlug`, `/reset-password`, `/privacy`, `/terms`, `/apply`, `/logout`, `/oauth/*`,
   `/auth/confirmed`, `/maxina/confirmed`, `/alkalma/confirmed`, `/onboarding/welcome`, `/maxina_support`, `/download`,
@@ -177,6 +178,37 @@ Decisions taken (for Gate 2):
   - `/shop` (`immersive`) and the commerce portal keep rendering without the app shell, as before the phase (no sidebar).
   - The part-B unit test was aligned with the merged `ComingSoonPlaceholder` (part A routes `/patient/*` through
     `PatientComingSoonSpotlight`), and stubs `StandardHeader` because the patient frame now carries a header.
+  Part C status: implemented (VTID-05117). Migrated 10 routes (manifest 318 → 328 of 345): `/home/compose`,
+  `/home/comments`, `/home/notif` (`focus-feed` — they render the News page), `/post/:source/:id` (`detail`, the post is
+  the one spotlight card with the feed's like / comments / moderation controls), `/me/matches` (`collection`, row cards of
+  the real matches), `/profile/me/privacy` (`form`, one panel per section, same save path), `/dev/login` (`workspace`, same
+  sign-in card), `/e/game/:slug` (`detail`, the game is the one spotlight card with Join + Leaderboard),
+  `/discover/deals-offers` (`storefront`) and `/professional/patients` (`workspace`, the shared placeholder was already
+  framed). Remaining `legacy`, with reasons:
+  - Owner decision / not ours: `/redeem`, `/tickets/demo`, `/tickets/success`, `/delete-account`, `/u/:identifier` and
+    `/profile/:id` (public profile design call), `/dev` (redirect to `/dev/dashboard`).
+  - `/me/profile`: renders the shared `ProfileLayout` of the public profile (`/u/:identifier`) in edit mode, so its
+    desktop design follows the owner's public-profile design call.
+  - `/business/sell-earn`: unchanged reason — `collection` for resellers, the `storefront` overview for everyone else.
+  - Pure redirects that render no screen (the inventory only recognises `<Navigate>` elements): `/settings` and
+    `/profile/subscriptions` (desktop redirects; MobileSettings / MobileSubscriptions on phones only),
+    `/settings/connected-apps`, `/settings/social` (→ `/connectors`), `/commerce/connections/:id` (→ `/commerce`),
+    `/earthlinks/*` (→ `/maxina`), `/i/:code` (→ `/maxina?tab=signup`), and `/daily-diary` (desktop → `/memory/diary`,
+    the mobile diary otherwise). Each target screen carries the contract.
+  Decisions taken (for Gate 2):
+  - Archetype changes: `/home/compose|comments|notif` `form`/`collection` → `focus-feed` (the same News page as `/home`);
+    `/profile/me/privacy` `collection` → `form` (a settings screen is `form` in the contract). `/dev/login` keeps `workspace`:
+    the manifest test pins every operator (tier C) route to `workspace`, so the sign-in card sits in the workspace frame
+    (a `form` archetype for operator sign-in screens would be a contract change).
+  - `/discover/deals-offers`: without a real discount the storefront's hero is an honest text-only spotlight card
+    ("Gerade keine Angebote") instead of the dashed empty state, so the screen keeps exactly one spotlight (SR-06) without
+    sample data (SR-24) — the Phase 3 note "stays legacy until staging shows a real discounted product" no longer applies.
+  - `/post/:source/:id` and `/e/game/:slug`: a missing post / unavailable game is one text-only spotlight card. The
+    post page renders inside `AppLayout` with Spotlight on (member screen, SR-01); the public QR landing does not.
+  - Legacy paths unchanged (phones and flag-off): Privacy & Visibility uses token colours only in its Spotlight branch;
+    shared rows/dialogs were extracted, not changed.
+  - `design-contract.staging.spec.ts` accepts the aborted `daily_matches` PATCH that `/me/matches` sends (VTID-04827,
+    the guard aborts it; nothing is written).
 
 ## Phase 6 — Card consolidation · VTID-05112 (last)
 - [ ] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
