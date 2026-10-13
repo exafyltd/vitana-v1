@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05166",
+  "kind": "feature",
+  "paths": [
+    "src/i18n/*/screens.json",
+    "src/i18n/health-consent-texts.lock.json",
+    "src/lib/health-consent-wording.ts",
+    "src/lib/health-consent-wording.vtid-05166.test.ts",
+    "src/hooks/useHealthConsents.ts",
+    "src/components/settings/HealthConsentSourcesDialog.tsx",
+    "src/components/settings/HealthConsentSourcesDialog.vtid-05166.test.tsx",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05166/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

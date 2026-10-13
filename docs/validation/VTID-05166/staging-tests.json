@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05166",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Health Sync consent copy (sync_activity, sync_sleep, sync_heart, sync_body, self_logged_health): the five keys mirror the VTID-05164 gateway catalogue (sync_* per source, self_logged_health whole-category); v1 wording ships as a DRAFT in all 11 locales (lock status draft, [DRAFT] title, never displayable or grantable) with matching placeholders, chrome labels in all 11 locales and DE du-form; Settings › Privacy › Manage connected sources stays dark until the gateway catalogue carries the keys, then lists one row per sync category × phone store plus the self-logged row, all off and not grantable; a consent granted in the app is always withdrawable with the exact revoke body; RTL class scan; the VTID-05093 consent suites stay green unchanged",
+      "ref": "npx vitest run src/lib/health-consent-wording.vtid-05166.test.ts src/components/settings/HealthConsentSourcesDialog.vtid-05166.test.tsx src/lib/health-consent-wording.vtid-05093.test.ts src/components/settings/HealthConsentDialog.vtid-05093.test.tsx src/pages/settings/__tests__/privacy-health-consents.vtid-05093.test.tsx src/pages/settings/__tests__/privacy-data-sharing.test.tsx",
+      "cwd": ".",
+      "reason": "Staging is read-only against the production Supabase project and the VTID-05164 consent keys reach the gateway catalogue only after C1's own Gate 2; the wording is still a draft (counsel wording pending), so on staging the new rows are absent or off and nothing is grantable. Withdrawing is a write; these Vitests render the real sources dialog and consent dialog against a mocked gateway and prove the listing, the draft gate and every revoke body. The plan's Playwright check (preview-aws: the five new keys render off, the dialog opens and closes without granting, mobile + ar RTL screenshot) is added when the PR leaves draft with counsel's wording, once C1 is live."
+    }
+  ]
+}

@@ -7743,7 +7743,12 @@
           "partner_results": "{name} 的化验结果",
           "ai_health_analysis": "用 AI 分析你的健康数据",
           "health_data_analytics": "健康数据分析",
-          "community_insights": "社区洞察"
+          "community_insights": "社区洞察",
+          "sync_activity": "{name} 的活动数据",
+          "sync_sleep": "{name} 的睡眠数据",
+          "sync_heart": "{name} 的心脏数据",
+          "sync_body": "{name} 的身体数据",
+          "self_logged_health": "你自己记录的健康数据"
         },
         "errors": {
           "generic": "操作未成功。请重试。",
@@ -7755,6 +7760,12 @@
           "storePending": "暂时还无法保存同意。请稍后再试。",
           "unavailable": "服务暂时无法访问。请稍后再试。",
           "writeFailed": "无法保存你的同意。请重试。"
+        },
+        "healthSyncHeading": "你手机上的健康应用",
+        "selfLoggedHeading": "你自己记录的",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect"
         }
       },
       "healthConsent": {
@@ -7791,6 +7802,41 @@
             "title": "[DRAFT] 社区洞察",
             "body": "草稿——尚未批准。\n如果你同意，你的进展可以以汇总、匿名的形式纳入社区统计。\n此同意是自愿的。你可以随时在设置中撤回；撤回后你的数据将不再被纳入。",
             "checkbox": "我明确同意为此目的以匿名形式使用我的健康数据。"
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] 将 {name} 中的活动数据发送给 Vitana",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 应用会将你在 {name} 中的活动数据（例如步数、活动热量、锻炼分钟数、距离和训练）发送给 Vitana，并保存在你的账户中，方便你在 Vitana 中查看。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再接收来自 {name} 的新活动数据。",
+            "checkbox": "我明确同意 Vitana 按上述方式接收并保存我来自 {name} 的活动数据。"
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] 将 {name} 中的睡眠数据发送给 Vitana",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 应用会将你在 {name} 中的睡眠数据（例如睡眠时长和睡眠阶段）发送给 Vitana，并保存在你的账户中，方便你在 Vitana 中查看。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再接收来自 {name} 的新睡眠数据。",
+            "checkbox": "我明确同意 Vitana 按上述方式接收并保存我来自 {name} 的睡眠数据。"
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] 将 {name} 中的心脏数据发送给 Vitana",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 应用会将你在 {name} 中的心脏数据（例如心率、静息心率和心率变异性）发送给 Vitana，并保存在你的账户中，方便你在 Vitana 中查看。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再接收来自 {name} 的新心脏数据。",
+            "checkbox": "我明确同意 Vitana 按上述方式接收并保存我来自 {name} 的心脏数据。"
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] 将 {name} 中的身体数据发送给 Vitana",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 应用会将你在 {name} 中的身体数据（例如体重和体脂率）发送给 Vitana，并保存在你的账户中，方便你在 Vitana 中查看。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再接收来自 {name} 的新身体数据。",
+            "checkbox": "我明确同意 Vitana 按上述方式接收并保存我来自 {name} 的身体数据。"
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] 保存你自己记录的健康数据",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 会将你自己记录的健康信息（在日记中、通过语音或手动输入）保存在你的账户中，方便你在 Vitana 中查看。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再保存你自己记录的新健康信息。",
+            "checkbox": "我明确同意 Vitana 按上述方式保存我自己记录的健康信息。"
           }
         }
       },

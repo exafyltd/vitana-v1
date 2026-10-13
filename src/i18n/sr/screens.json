@@ -7742,7 +7742,12 @@
           "partner_results": "Laboratorijski rezultati od {name}",
           "ai_health_analysis": "AI analiza tvojih zdravstvenih podataka",
           "health_data_analytics": "Analitika zdravstvenih podataka",
-          "community_insights": "Uvidi zajednice"
+          "community_insights": "Uvidi zajednice",
+          "sync_activity": "Podaci o aktivnosti iz {name}",
+          "sync_sleep": "Podaci o snu iz {name}",
+          "sync_heart": "Podaci o srcu iz {name}",
+          "sync_body": "Podaci o telu iz {name}",
+          "self_logged_health": "Zdravstveni podaci koje sam unosiš"
         },
         "errors": {
           "generic": "Nije uspelo. Pokušaj ponovo.",
@@ -7754,6 +7759,12 @@
           "storePending": "Saglasnosti još ne mogu da se sačuvaju. Pokušaj ponovo kasnije.",
           "unavailable": "Usluga trenutno nije dostupna. Pokušaj ponovo kasnije.",
           "writeFailed": "Tvoja saglasnost nije mogla da se sačuva. Pokušaj ponovo."
+        },
+        "healthSyncHeading": "Zdravstvene aplikacije na tvom telefonu",
+        "selfLoggedHeading": "Ono što sam unosiš",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect"
         }
       },
       "healthConsent": {
@@ -7790,6 +7801,41 @@
             "title": "[DRAFT] Uvidi zajednice",
             "body": "NACRT – još nije odobren.\nAko se složiš, tvoj napredak sme da uđe u statistiku zajednice u zbirnom, anonimizovanom obliku.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se tvoji podaci više ne uključuju.",
             "checkbox": "Izričito pristajem da se moji zdravstveni podaci u ovu svrhu koriste u anonimizovanom obliku."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Slanje podataka o aktivnosti iz {name} Vitani",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana aplikacija šalje tvoje podatke o aktivnosti iz {name} (na primer koraci, aktivne kalorije, minuti vežbanja, razdaljina i treninzi) Vitani. Vitana ih čuva na tvom nalogu da bi mogao da ih vidiš u Vitani.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi podaci o aktivnosti iz {name} više ne preuzimaju.",
+            "checkbox": "Izričito pristajem da Vitana prima i čuva moje podatke o aktivnosti iz {name} kao što je opisano."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Slanje podataka o snu iz {name} Vitani",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana aplikacija šalje tvoje podatke o snu iz {name} (na primer trajanje i faze sna) Vitani. Vitana ih čuva na tvom nalogu da bi mogao da ih vidiš u Vitani.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi podaci o snu iz {name} više ne preuzimaju.",
+            "checkbox": "Izričito pristajem da Vitana prima i čuva moje podatke o snu iz {name} kao što je opisano."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Slanje podataka o srcu iz {name} Vitani",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana aplikacija šalje tvoje podatke o srcu iz {name} (na primer puls, puls u mirovanju i varijabilnost srčanog ritma) Vitani. Vitana ih čuva na tvom nalogu da bi mogao da ih vidiš u Vitani.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi podaci o srcu iz {name} više ne preuzimaju.",
+            "checkbox": "Izričito pristajem da Vitana prima i čuva moje podatke o srcu iz {name} kao što je opisano."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Slanje podataka o telu iz {name} Vitani",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana aplikacija šalje tvoje podatke o telu iz {name} (na primer težina i procenat telesne masti) Vitani. Vitana ih čuva na tvom nalogu da bi mogao da ih vidiš u Vitani.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi podaci o telu iz {name} više ne preuzimaju.",
+            "checkbox": "Izričito pristajem da Vitana prima i čuva moje podatke o telu iz {name} kao što je opisano."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Čuvanje zdravstvenih podataka koje sam unosiš",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana čuva na tvom nalogu zdravstvene podatke koje sam unosiš – u dnevniku, glasom ili ručno – da bi mogao da ih vidiš u Vitani.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi zdravstveni podaci koje sam uneseš više ne čuvaju.",
+            "checkbox": "Izričito pristajem da Vitana čuva zdravstvene podatke koje sam unosim kao što je opisano."
           }
         }
       },

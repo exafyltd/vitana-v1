@@ -7683,7 +7683,12 @@
           "partner_results": "Resultados de laboratorio de {name}",
           "ai_health_analysis": "Análisis con IA de tus datos de salud",
           "health_data_analytics": "Análisis de datos de salud",
-          "community_insights": "Información de la comunidad"
+          "community_insights": "Información de la comunidad",
+          "sync_activity": "Datos de actividad de {name}",
+          "sync_sleep": "Datos de sueño de {name}",
+          "sync_heart": "Datos cardíacos de {name}",
+          "sync_body": "Datos corporales de {name}",
+          "self_logged_health": "Datos de salud registrados por ti"
         },
         "errors": {
           "generic": "No ha funcionado. Inténtalo de nuevo.",
@@ -7695,6 +7700,12 @@
           "storePending": "Todavía no se pueden guardar los consentimientos. Inténtalo más tarde.",
           "unavailable": "Ahora mismo no se puede acceder al servicio. Inténtalo más tarde.",
           "writeFailed": "No se ha podido guardar tu consentimiento. Inténtalo de nuevo."
+        },
+        "healthSyncHeading": "Apps de salud de tu móvil",
+        "selfLoggedHeading": "Registrado por ti",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect"
         }
       },
       "healthConsent": {
@@ -7731,6 +7742,41 @@
             "title": "[DRAFT] Información de la comunidad",
             "body": "BORRADOR – aún no aprobado.\nSi aceptas, tu progreso puede incluirse en estadísticas de la comunidad de forma agregada y anonimizada.\nEste consentimiento es voluntario. Puedes retirarlo en cualquier momento en Ajustes; a partir de entonces tus datos dejan de incluirse.",
             "checkbox": "Doy mi consentimiento explícito para que mis datos de salud se usen de forma anonimizada con este fin."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Enviar a Vitana tus datos de actividad de {name}",
+            "body": "BORRADOR – aún no aprobado.\nSi aceptas, la app de Vitana envía tus datos de actividad de {name} (por ejemplo pasos, calorías activas, minutos de ejercicio, distancia y entrenamientos) a Vitana. Vitana los guarda en tu cuenta para que puedas verlos en Vitana.\nEste consentimiento es voluntario. Puedes retirarlo en cualquier momento en Ajustes; a partir de entonces no se incorporarán datos de actividad nuevos de {name}.",
+            "checkbox": "Doy mi consentimiento explícito para que Vitana reciba y guarde mis datos de actividad de {name} tal como se describe."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Enviar a Vitana tus datos de sueño de {name}",
+            "body": "BORRADOR – aún no aprobado.\nSi aceptas, la app de Vitana envía tus datos de sueño de {name} (por ejemplo duración y fases del sueño) a Vitana. Vitana los guarda en tu cuenta para que puedas verlos en Vitana.\nEste consentimiento es voluntario. Puedes retirarlo en cualquier momento en Ajustes; a partir de entonces no se incorporarán datos de sueño nuevos de {name}.",
+            "checkbox": "Doy mi consentimiento explícito para que Vitana reciba y guarde mis datos de sueño de {name} tal como se describe."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Enviar a Vitana tus datos cardíacos de {name}",
+            "body": "BORRADOR – aún no aprobado.\nSi aceptas, la app de Vitana envía tus datos cardíacos de {name} (por ejemplo frecuencia cardíaca, frecuencia cardíaca en reposo y variabilidad de la frecuencia cardíaca) a Vitana. Vitana los guarda en tu cuenta para que puedas verlos en Vitana.\nEste consentimiento es voluntario. Puedes retirarlo en cualquier momento en Ajustes; a partir de entonces no se incorporarán datos cardíacos nuevos de {name}.",
+            "checkbox": "Doy mi consentimiento explícito para que Vitana reciba y guarde mis datos cardíacos de {name} tal como se describe."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Enviar a Vitana tus datos corporales de {name}",
+            "body": "BORRADOR – aún no aprobado.\nSi aceptas, la app de Vitana envía tus datos corporales de {name} (por ejemplo peso y porcentaje de grasa corporal) a Vitana. Vitana los guarda en tu cuenta para que puedas verlos en Vitana.\nEste consentimiento es voluntario. Puedes retirarlo en cualquier momento en Ajustes; a partir de entonces no se incorporarán datos corporales nuevos de {name}.",
+            "checkbox": "Doy mi consentimiento explícito para que Vitana reciba y guarde mis datos corporales de {name} tal como se describe."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Guardar los datos de salud que registras tú",
+            "body": "BORRADOR – aún no aprobado.\nSi aceptas, Vitana guarda en tu cuenta la información de salud que registras tú mismo – en el diario, por voz o a mano – para que puedas verla en Vitana.\nEste consentimiento es voluntario. Puedes retirarlo en cualquier momento en Ajustes; a partir de entonces no se guardará nueva información de salud registrada por ti.",
+            "checkbox": "Doy mi consentimiento explícito para que Vitana guarde la información de salud que registro yo mismo tal como se describe."
           }
         }
       },

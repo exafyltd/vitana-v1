@@ -7744,7 +7744,12 @@
           "partner_results": "Wyniki laboratoryjne od {name}",
           "ai_health_analysis": "Analiza twoich danych zdrowotnych przez AI",
           "health_data_analytics": "Analiza danych zdrowotnych",
-          "community_insights": "Statystyki społeczności"
+          "community_insights": "Statystyki społeczności",
+          "sync_activity": "Dane o aktywności z {name}",
+          "sync_sleep": "Dane o śnie z {name}",
+          "sync_heart": "Dane dotyczące serca z {name}",
+          "sync_body": "Dane dotyczące ciała z {name}",
+          "self_logged_health": "Samodzielnie wprowadzone dane zdrowotne"
         },
         "errors": {
           "generic": "Nie udało się. Spróbuj ponownie.",
@@ -7756,6 +7761,12 @@
           "storePending": "Zgód nie można jeszcze zapisać. Spróbuj ponownie później.",
           "unavailable": "Usługa jest teraz niedostępna. Spróbuj ponownie później.",
           "writeFailed": "Nie udało się zapisać twojej zgody. Spróbuj ponownie."
+        },
+        "healthSyncHeading": "Aplikacje zdrowotne w twoim telefonie",
+        "selfLoggedHeading": "Wprowadzone przez ciebie",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect"
         }
       },
       "healthConsent": {
@@ -7792,6 +7803,41 @@
             "title": "[DRAFT] Statystyki społeczności",
             "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, twoje postępy mogą być uwzględniane w statystykach społeczności w formie zbiorczej i zanonimizowanej.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu twoje dane nie są już uwzględniane.",
             "checkbox": "Wyrażam wyraźną zgodę na wykorzystanie moich danych zdrowotnych w formie zanonimizowanej w tym celu."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Przekazywanie do Vitany danych o aktywności z {name}",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, aplikacja Vitana przekazuje twoje dane o aktywności z {name} (na przykład kroki, aktywne kalorie, minuty ćwiczeń, dystans i treningi) do Vitany. Vitana zapisuje je na twoim koncie, abyś mógł je zobaczyć w Vitanie.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe dane o aktywności z {name} nie będą przejmowane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby Vitana otrzymywała i zapisywała moje dane o aktywności z {name} zgodnie z opisem."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Przekazywanie do Vitany danych o śnie z {name}",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, aplikacja Vitana przekazuje twoje dane o śnie z {name} (na przykład czas trwania i fazy snu) do Vitany. Vitana zapisuje je na twoim koncie, abyś mógł je zobaczyć w Vitanie.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe dane o śnie z {name} nie będą przejmowane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby Vitana otrzymywała i zapisywała moje dane o śnie z {name} zgodnie z opisem."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Przekazywanie do Vitany danych dotyczących serca z {name}",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, aplikacja Vitana przekazuje twoje dane dotyczące serca z {name} (na przykład tętno, tętno spoczynkowe i zmienność rytmu serca) do Vitany. Vitana zapisuje je na twoim koncie, abyś mógł je zobaczyć w Vitanie.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe dane dotyczące serca z {name} nie będą przejmowane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby Vitana otrzymywała i zapisywała moje dane dotyczące serca z {name} zgodnie z opisem."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Przekazywanie do Vitany danych dotyczących ciała z {name}",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, aplikacja Vitana przekazuje twoje dane dotyczące ciała z {name} (na przykład waga i procent tkanki tłuszczowej) do Vitany. Vitana zapisuje je na twoim koncie, abyś mógł je zobaczyć w Vitanie.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe dane dotyczące ciała z {name} nie będą przejmowane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby Vitana otrzymywała i zapisywała moje dane dotyczące ciała z {name} zgodnie z opisem."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Zapisywanie danych zdrowotnych, które wprowadzasz sam",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, Vitana zapisuje na twoim koncie informacje o zdrowiu, które wprowadzasz sam – w dzienniku, głosowo lub ręcznie – abyś mógł je zobaczyć w Vitanie.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe samodzielnie wprowadzone informacje o zdrowiu nie będą zapisywane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby Vitana zapisywała informacje o zdrowiu, które wprowadzam sam, zgodnie z opisem."
           }
         }
       },

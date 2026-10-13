@@ -7743,7 +7743,12 @@
           "partner_results": "{name} laboratuvar sonuçları",
           "ai_health_analysis": "Sağlık verilerinin yapay zekâ ile analizi",
           "health_data_analytics": "Sağlık verisi analizi",
-          "community_insights": "Topluluk içgörüleri"
+          "community_insights": "Topluluk içgörüleri",
+          "sync_activity": "{name} aktivite verileri",
+          "sync_sleep": "{name} uyku verileri",
+          "sync_heart": "{name} kalp verileri",
+          "sync_body": "{name} vücut verileri",
+          "self_logged_health": "Kendi girdiğin sağlık verileri"
         },
         "errors": {
           "generic": "Olmadı. Lütfen tekrar dene.",
@@ -7755,6 +7760,12 @@
           "storePending": "Onaylar henüz kaydedilemiyor. Lütfen daha sonra tekrar dene.",
           "unavailable": "Hizmete şu anda ulaşılamıyor. Lütfen daha sonra tekrar dene.",
           "writeFailed": "Onayın kaydedilemedi. Lütfen tekrar dene."
+        },
+        "healthSyncHeading": "Telefonundaki sağlık uygulamaları",
+        "selfLoggedHeading": "Kendi girdiklerin",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect"
         }
       },
       "healthConsent": {
@@ -7791,6 +7802,41 @@
             "title": "[DRAFT] Topluluk içgörüleri",
             "body": "TASLAK – henüz onaylanmadı.\nKabul edersen ilerlemen, toplu ve anonimleştirilmiş biçimde topluluk istatistiklerine dahil edilebilir.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren verilerin dahil edilmez.",
             "checkbox": "Sağlık verilerimin bu amaçla anonimleştirilmiş biçimde kullanılmasına açıkça onay veriyorum."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] {name} kaynağındaki aktivite verilerinin Vitana’ya gönderilmesi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana uygulaması, {name} kaynağındaki aktivite verilerini (örneğin adımlar, aktif kaloriler, egzersiz dakikaları, mesafe ve antrenmanlar) Vitana’ya gönderir. Vitana bunları, Vitana’da görebilmen için hesabında saklar.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren {name} kaynağından yeni aktivite verileri alınmaz.",
+            "checkbox": "Vitana’nın {name} kaynağından gelen aktivite verilerimi açıklandığı şekilde almasına ve saklamasına açıkça onay veriyorum."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] {name} kaynağındaki uyku verilerinin Vitana’ya gönderilmesi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana uygulaması, {name} kaynağındaki uyku verilerini (örneğin uyku süresi ve uyku evreleri) Vitana’ya gönderir. Vitana bunları, Vitana’da görebilmen için hesabında saklar.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren {name} kaynağından yeni uyku verileri alınmaz.",
+            "checkbox": "Vitana’nın {name} kaynağından gelen uyku verilerimi açıklandığı şekilde almasına ve saklamasına açıkça onay veriyorum."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] {name} kaynağındaki kalp verilerinin Vitana’ya gönderilmesi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana uygulaması, {name} kaynağındaki kalp verilerini (örneğin nabız, dinlenme nabzı ve kalp atış hızı değişkenliği) Vitana’ya gönderir. Vitana bunları, Vitana’da görebilmen için hesabında saklar.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren {name} kaynağından yeni kalp verileri alınmaz.",
+            "checkbox": "Vitana’nın {name} kaynağından gelen kalp verilerimi açıklandığı şekilde almasına ve saklamasına açıkça onay veriyorum."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] {name} kaynağındaki vücut verilerinin Vitana’ya gönderilmesi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana uygulaması, {name} kaynağındaki vücut verilerini (örneğin kilo ve vücut yağ oranı) Vitana’ya gönderir. Vitana bunları, Vitana’da görebilmen için hesabında saklar.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren {name} kaynağından yeni vücut verileri alınmaz.",
+            "checkbox": "Vitana’nın {name} kaynağından gelen vücut verilerimi açıklandığı şekilde almasına ve saklamasına açıkça onay veriyorum."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Kendi girdiğin sağlık verilerinin saklanması",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana, kendi girdiğin sağlık bilgilerini – günlükte, sesle veya elle – Vitana’da görebilmen için hesabında saklar.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren kendi girdiğin yeni sağlık bilgileri saklanmaz.",
+            "checkbox": "Vitana’nın kendi girdiğim sağlık bilgilerini açıklandığı şekilde saklamasına açıkça onay veriyorum."
           }
         }
       },
