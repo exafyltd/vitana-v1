@@ -47,6 +47,9 @@ import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareSc
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { t } from '@/lib/i18n-toast';
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
+import { InterestsPicker } from "@/components/profile/InterestsPicker";
+import { useInvalidateEnrichmentCards } from "@/hooks/useEnrichmentCards";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -83,6 +86,17 @@ export default function EditProfilePage() {
     if (which === "cover-library") setCoverLibraryDrawerOpen(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
+  // VTID-05085: Unified Card System deep links land on the right editor —
+  // /me/profile#avatar | #cover | #about | #location | #interests.
+  const [interestsOpen, setInterestsOpen] = useState(false);
+  const refreshEnrichmentCards = useInvalidateEnrichmentCards();
+  useEffect(() => {
+    const hash = location.hash.replace(/^#/, "");
+    if (hash === "avatar") setIdentityDrawerOpen(true);
+    if (hash === "about" || hash === "location") setAboutDrawerOpen(true);
+    if (hash === "cover") setCoverLibraryDrawerOpen(true);
+    if (hash === "interests") setInterestsOpen(true);
+  }, [location.hash]);
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
@@ -420,6 +434,8 @@ export default function EditProfilePage() {
         {/* NO EditToolbar on mobile! */}
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
+          {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
+          <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} className="px-4 pt-3" />
           {/* ID Card Switcher - Front/Back with segmented control */}
           <MobileIdCardSwitcher
             profile={profile}
@@ -639,6 +655,7 @@ export default function EditProfilePage() {
           profileHandle={profile.handle}
           avatarUrl={profile.avatarUrl}
         />
+        <InterestsPicker open={interestsOpen} onOpenChange={setInterestsOpen} onSaved={refreshEnrichmentCards} />
       </AppLayout>
     );
   }
@@ -651,6 +668,11 @@ export default function EditProfilePage() {
         description="Edit your VITANA profile and customize your public presence" 
       />
       
+      {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
+      <div className="container mx-auto px-4 pt-4">
+        <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} />
+      </div>
+
       <ProfileLayout
         profile={profile}
         scope={scope}
@@ -756,6 +778,7 @@ export default function EditProfilePage() {
           if (!open) refetchProfile();
         }}
       />
+      <InterestsPicker open={interestsOpen} onOpenChange={setInterestsOpen} onSaved={refreshEnrichmentCards} />
     </AppLayout>
   );
 }

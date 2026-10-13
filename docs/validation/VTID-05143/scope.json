@@ -1,0 +1,33 @@
+{
+  "vtid": "VTID-05143",
+  "kind": "feature",
+  "paths": [
+    "src/components/vitana/**",
+    "src/components/enrichment/**",
+    "src/components/profile/InterestsPicker.tsx",
+    "src/components/profile/InterestsPicker.test.tsx",
+    "src/hooks/useEnrichmentCards.ts",
+    "src/hooks/useEnrichmentCards.test.ts",
+    "src/hooks/useCardDismiss.ts",
+    "src/hooks/useCardDismiss.test.ts",
+    "src/hooks/useGoogleConnect.ts",
+    "src/components/CreateContentPopup.tsx",
+    "src/components/profile/mobile/MobileCreatePostSheet.tsx",
+    "src/lib/feed-compose.ts",
+    "src/lib/feed-compose.test.ts",
+    "src/pages/Home.tsx",
+    "src/pages/EditProfilePage.tsx",
+    "src/components/keepalive/NewsKeepAlive.test.tsx",
+    "src/i18n/*/screens.json",
+    "src/i18n/*/toasts.json",
+    "src/whats-new/entries/profile-enrichment-cards.json",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "scripts/ci/pr-gate/baseline/eslint.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-05085-enrichment-cards.staging.spec.ts",
+    "docs/validation/VTID-05143/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05143/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

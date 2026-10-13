@@ -1393,6 +1393,14 @@
         "grantFailed": true,
         "revokeFailed": true
       }
+    },
+    "vitanaCards": {
+      "dismissFailed": "Kart gizlenemedi",
+      "connectFailed": "Bağlantı başlatılamadı",
+      "interestsSaved": "İlgi alanları kaydedildi",
+      "interestsSaveFailed": "İlgi alanların kaydedilemedi",
+      "notificationsEnabled": "Bildirimler açık",
+      "notificationsFailed": "Bildirimler açılamadı"
     }
   }
 }

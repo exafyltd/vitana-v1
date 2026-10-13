@@ -8682,7 +8682,18 @@
       "viewIndex": "عرض المؤشر",
       "viewJourney": "عرض رحلتي",
       "viewMatch": "عرض التطابق",
-      "dismissCard": "تجاهل البطاقة"
+      "dismissCard": "تجاهل البطاقة",
+      "dailyDiary": "اليوميات",
+      "talkToVitana": "تحدّث مع Vitana",
+      "autopilot": "الطيار الآلي",
+      "calendar": "التقويم",
+      "uploadMedia": "الوسائط",
+      "discover": "اكتشف",
+      "profilePhoto": "صورة الملف الشخصي",
+      "profileSetup": "الملف الشخصي",
+      "socialConnect": "ربط",
+      "importContacts": "جهات الاتصال",
+      "completeProfile": "أكمل ملفك"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -12511,6 +12522,90 @@
       "startingSoon": "يبدأ قريبًا",
       "startNow": "ابدأ الآن",
       "eventsSectionTitle": "الغرف المباشرة"
+    },
+    "vitanaCards": {
+      "stripLabel": "اقتراحات من Vitana",
+      "eyebrowProfile": "ملفك الشخصي",
+      "eyebrowConnect": "اتصال",
+      "eyebrowCommunity": "المجتمع",
+      "eyebrowNotifications": "الإشعارات",
+      "E1": {
+        "title": "أظهر وجهك",
+        "description": "ارفع صورة للملف الشخصي ليتعرّف عليك الآخرون فورًا.",
+        "action": "رفع"
+      },
+      "E2": {
+        "title": "أخبرنا عن نفسك",
+        "description": "بضع جمل عنك تساعد الآخرين على بدء محادثة معك.",
+        "action": "اكتب نبذة"
+      },
+      "E3": {
+        "title": "شارك منشورك الأول",
+        "description": "قل مرحبًا للمجتمع – تكفي فكرة قصيرة.",
+        "action": "انشر الآن"
+      },
+      "E4": {
+        "title": "ما الذي يشغفك؟",
+        "description": "اختر اهتماماتك لتجد Vitana أشخاصًا ومحتوى يناسبونك.",
+        "action": "اختر اهتماماتك"
+      },
+      "E5": {
+        "title": "أين تقيم؟",
+        "description": "أضف موقعك واكتشف أشخاصًا وفعاليات بالقرب منك.",
+        "action": "أضف موقعك"
+      },
+      "E6": {
+        "title": "اربط Instagram",
+        "description": "شارك لحظاتك من Vitana مباشرةً على Instagram.",
+        "action": "ربط Instagram"
+      },
+      "E7": {
+        "title": "اربط Facebook",
+        "description": "ابقَ قريبًا من أصدقائك وشارك بلمسة واحدة.",
+        "action": "ربط Facebook"
+      },
+      "E8": {
+        "title": "اربط تقويمك",
+        "description": "شاهد مواعيدك وفعاليات Vitana في مكان واحد.",
+        "action": "ربط"
+      },
+      "E9": {
+        "title": "استورد جهات اتصالك",
+        "description": "اعثر على أصدقاء موجودين بالفعل على Vitana.",
+        "action": "استيراد"
+      },
+      "E10": {
+        "title": "لا يفوتك شيء",
+        "description": "فعّل الإشعارات للرسائل والتطابقات والتذكيرات.",
+        "action": "تفعيل"
+      },
+      "E11": {
+        "title": "أضف صورة غلاف",
+        "description": "صورة الغلاف تجعل ملفك الشخصي أكثر تعبيرًا عنك.",
+        "action": "رفع"
+      }
+    },
+    "interests": {
+      "title": "اهتماماتك",
+      "description": "اختر حتى {max} مواضيع تحبها.",
+      "selectedCount": "تم اختيار {count} من {max}",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "fitness": "اللياقة البدنية",
+      "nutrition": "التغذية",
+      "sleep": "النوم",
+      "mindfulness": "اليقظة الذهنية",
+      "longevity": "طول العمر",
+      "biohacking": "البيوهاكينغ",
+      "yoga": "اليوغا",
+      "running": "الجري",
+      "strength": "تمارين القوة",
+      "dance": "الرقص",
+      "nature": "الطبيعة",
+      "cooking": "الطبخ",
+      "social": "التواصل الاجتماعي",
+      "travel": "السفر",
+      "career": "المسيرة المهنية"
     }
   }
 }

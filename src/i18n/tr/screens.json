@@ -8682,7 +8682,18 @@
       "viewIndex": "Endeksi Gör",
       "viewJourney": "Yolculuğumu Gör",
       "viewMatch": "Eşleşmeyi Gör",
-      "dismissCard": "Kartı kapat"
+      "dismissCard": "Kartı kapat",
+      "dailyDiary": "Günlük",
+      "talkToVitana": "Vitana'yla konuş",
+      "autopilot": "Otopilot",
+      "calendar": "Takvim",
+      "uploadMedia": "Medya",
+      "discover": "Keşfet",
+      "profilePhoto": "Profil fotoğrafı",
+      "profileSetup": "Profil",
+      "socialConnect": "Bağla",
+      "importContacts": "Kişiler",
+      "completeProfile": "Profili tamamla"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -13466,6 +13477,90 @@
       "startingSoon": "Birazdan başlıyor",
       "startNow": "Şimdi başlat",
       "eventsSectionTitle": "Canlı Odalar"
+    },
+    "vitanaCards": {
+      "stripLabel": "Vitana'dan öneriler",
+      "eyebrowProfile": "Profilin",
+      "eyebrowConnect": "Bağlan",
+      "eyebrowCommunity": "Topluluk",
+      "eyebrowNotifications": "Bildirimler",
+      "E1": {
+        "title": "Yüzünü göster",
+        "description": "Bir profil fotoğrafı yükle, diğerleri seni hemen tanısın.",
+        "action": "Yükle"
+      },
+      "E2": {
+        "title": "Kendinden bahset",
+        "description": "Hakkında birkaç cümle, başkalarının seninle sohbet başlatmasına yardım eder.",
+        "action": "Biyografi yaz"
+      },
+      "E3": {
+        "title": "İlk gönderini paylaş",
+        "description": "Topluluğa merhaba de – kısa bir düşünce yeter.",
+        "action": "Şimdi paylaş"
+      },
+      "E4": {
+        "title": "Seni ne heyecanlandırıyor?",
+        "description": "İlgi alanlarını seç, Vitana sana uygun insanları ve içerikleri bulsun.",
+        "action": "İlgi alanı seç"
+      },
+      "E5": {
+        "title": "Nerede yaşıyorsun?",
+        "description": "Konumunu ekle, yakınındaki insanları ve etkinlikleri keşfet.",
+        "action": "Konum ekle"
+      },
+      "E6": {
+        "title": "Instagram'ı bağla",
+        "description": "Vitana'daki anlarını doğrudan Instagram'da paylaş.",
+        "action": "Instagram'ı bağla"
+      },
+      "E7": {
+        "title": "Facebook'u bağla",
+        "description": "Arkadaşlarınla bağlantıda kal, tek dokunuşla paylaş.",
+        "action": "Facebook'u bağla"
+      },
+      "E8": {
+        "title": "Takvimini bağla",
+        "description": "Randevularını ve Vitana etkinliklerini tek yerde gör.",
+        "action": "Bağla"
+      },
+      "E9": {
+        "title": "Kişilerini içe aktar",
+        "description": "Zaten Vitana'da olan arkadaşlarını bul.",
+        "action": "İçe aktar"
+      },
+      "E10": {
+        "title": "Hiçbir şeyi kaçırma",
+        "description": "Mesajlar, eşleşmeler ve hatırlatıcılar için bildirimleri aç.",
+        "action": "Aç"
+      },
+      "E11": {
+        "title": "Kapak fotoğrafı ekle",
+        "description": "Kapak fotoğrafı profilini daha kişisel yapar.",
+        "action": "Yükle"
+      }
+    },
+    "interests": {
+      "title": "İlgi alanların",
+      "description": "Sevdiğin en fazla {max} konu seç.",
+      "selectedCount": "{max} içinden {count} seçildi",
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "fitness": "Fitness",
+      "nutrition": "Beslenme",
+      "sleep": "Uyku",
+      "mindfulness": "Farkındalık",
+      "longevity": "Uzun yaşam",
+      "biohacking": "Biyohacking",
+      "yoga": "Yoga",
+      "running": "Koşu",
+      "strength": "Kuvvet antrenmanı",
+      "dance": "Dans",
+      "nature": "Doğa",
+      "cooking": "Yemek yapmak",
+      "social": "Topluluk",
+      "travel": "Seyahat",
+      "career": "Kariyer"
     }
   }
 }

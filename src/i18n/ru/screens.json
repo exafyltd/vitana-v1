@@ -8685,7 +8685,18 @@
       "viewIndex": "Посмотри индекс",
       "viewJourney": "Посмотри мой путь",
       "viewMatch": "Посмотри пару",
-      "dismissCard": "Скрыть карточку"
+      "dismissCard": "Скрыть карточку",
+      "dailyDiary": "Дневник",
+      "talkToVitana": "Поговори с Vitana",
+      "autopilot": "Автопилот",
+      "calendar": "Календарь",
+      "uploadMedia": "Медиа",
+      "discover": "Обзор",
+      "profilePhoto": "Фото профиля",
+      "profileSetup": "Профиль",
+      "socialConnect": "Подключить",
+      "importContacts": "Контакты",
+      "completeProfile": "Заполни профиль"
     },
     "voucher": {
       "friendExampleCom": "друг@example.com",
@@ -13480,6 +13491,90 @@
       "startingSoon": "Скоро начнётся",
       "startNow": "Начать сейчас",
       "eventsSectionTitle": "Прямые эфиры"
+    },
+    "vitanaCards": {
+      "stripLabel": "Предложения от Vitana",
+      "eyebrowProfile": "Твой профиль",
+      "eyebrowConnect": "Подключение",
+      "eyebrowCommunity": "Сообщество",
+      "eyebrowNotifications": "Уведомления",
+      "E1": {
+        "title": "Покажи своё лицо",
+        "description": "Загрузи фото профиля, чтобы тебя сразу узнавали.",
+        "action": "Загрузить"
+      },
+      "E2": {
+        "title": "Расскажи о себе",
+        "description": "Пара предложений о тебе поможет другим начать разговор.",
+        "action": "Написать о себе"
+      },
+      "E3": {
+        "title": "Поделись первым постом",
+        "description": "Поздоровайся с сообществом – хватит и короткой мысли.",
+        "action": "Опубликовать"
+      },
+      "E4": {
+        "title": "Что тебя вдохновляет?",
+        "description": "Выбери свои интересы, чтобы Vitana подобрала подходящих людей и контент.",
+        "action": "Выбрать интересы"
+      },
+      "E5": {
+        "title": "Где ты живёшь?",
+        "description": "Укажи своё местоположение и находи людей и события рядом.",
+        "action": "Указать место"
+      },
+      "E6": {
+        "title": "Подключи Instagram",
+        "description": "Делись моментами из Vitana прямо в Instagram.",
+        "action": "Подключить Instagram"
+      },
+      "E7": {
+        "title": "Подключи Facebook",
+        "description": "Будь ближе к друзьям и делись в одно касание.",
+        "action": "Подключить Facebook"
+      },
+      "E8": {
+        "title": "Подключи свой календарь",
+        "description": "Все встречи и события Vitana в одном месте.",
+        "action": "Подключить"
+      },
+      "E9": {
+        "title": "Импортируй контакты",
+        "description": "Найди друзей, которые уже в Vitana.",
+        "action": "Импортировать"
+      },
+      "E10": {
+        "title": "Ничего не пропусти",
+        "description": "Включи уведомления о сообщениях, совпадениях и напоминаниях.",
+        "action": "Включить"
+      },
+      "E11": {
+        "title": "Добавь обложку",
+        "description": "Обложка делает твой профиль более личным.",
+        "action": "Загрузить"
+      }
+    },
+    "interests": {
+      "title": "Твои интересы",
+      "description": "Выбери до {max} тем, которые тебе нравятся.",
+      "selectedCount": "Выбрано {count} из {max}",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "fitness": "Фитнес",
+      "nutrition": "Питание",
+      "sleep": "Сон",
+      "mindfulness": "Осознанность",
+      "longevity": "Долголетие",
+      "biohacking": "Биохакинг",
+      "yoga": "Йога",
+      "running": "Бег",
+      "strength": "Силовые тренировки",
+      "dance": "Танцы",
+      "nature": "Природа",
+      "cooking": "Кулинария",
+      "social": "Общение",
+      "travel": "Путешествия",
+      "career": "Карьера"
     }
   }
 }

@@ -8682,7 +8682,18 @@
       "viewIndex": "Voir l'Index",
       "viewJourney": "Voir mon parcours",
       "viewMatch": "Voir la correspondance",
-      "dismissCard": "Ignorer la carte"
+      "dismissCard": "Ignorer la carte",
+      "dailyDiary": "Journal",
+      "talkToVitana": "Parle à Vitana",
+      "autopilot": "Pilote automatique",
+      "calendar": "Calendrier",
+      "uploadMedia": "Médias",
+      "discover": "Découvrir",
+      "profilePhoto": "Photo de profil",
+      "profileSetup": "Profil",
+      "socialConnect": "Connecter",
+      "importContacts": "Contacts",
+      "completeProfile": "Compléter le profil"
     },
     "voucher": {
       "friendExampleCom": "ami@exemple.com",
@@ -13466,6 +13477,90 @@
       "startingSoon": "Commence bientôt",
       "startNow": "Lancer maintenant",
       "eventsSectionTitle": "Salles en direct"
+    },
+    "vitanaCards": {
+      "stripLabel": "Suggestions de Vitana",
+      "eyebrowProfile": "Ton profil",
+      "eyebrowConnect": "Connecter",
+      "eyebrowCommunity": "Communauté",
+      "eyebrowNotifications": "Notifications",
+      "E1": {
+        "title": "Montre ton visage",
+        "description": "Ajoute une photo de profil pour que les autres te reconnaissent tout de suite.",
+        "action": "Ajouter"
+      },
+      "E2": {
+        "title": "Parle un peu de toi",
+        "description": "Quelques phrases sur toi aident les autres à engager la conversation.",
+        "action": "Écrire ma bio"
+      },
+      "E3": {
+        "title": "Partage ta première publication",
+        "description": "Dis bonjour à la communauté – une petite pensée suffit.",
+        "action": "Publier"
+      },
+      "E4": {
+        "title": "Qu'est-ce qui te passionne ?",
+        "description": "Choisis tes centres d’intérêt pour que Vitana trouve des personnes et contenus faits pour toi.",
+        "action": "Choisir"
+      },
+      "E5": {
+        "title": "Où vis-tu ?",
+        "description": "Ajoute ta ville et découvre des personnes et des événements près de chez toi.",
+        "action": "Ajouter un lieu"
+      },
+      "E6": {
+        "title": "Connecte Instagram",
+        "description": "Partage tes moments Vitana directement sur Instagram.",
+        "action": "Connecter Instagram"
+      },
+      "E7": {
+        "title": "Connecte Facebook",
+        "description": "Reste proche de tes amis et partage en un geste.",
+        "action": "Connecter Facebook"
+      },
+      "E8": {
+        "title": "Connecte ton calendrier",
+        "description": "Retrouve tes rendez-vous et les événements Vitana au même endroit.",
+        "action": "Connecter"
+      },
+      "E9": {
+        "title": "Importe tes contacts",
+        "description": "Retrouve les amis qui sont déjà sur Vitana.",
+        "action": "Importer"
+      },
+      "E10": {
+        "title": "Ne rate plus rien",
+        "description": "Active les notifications pour les messages, les matchs et les rappels.",
+        "action": "Activer"
+      },
+      "E11": {
+        "title": "Ajoute une photo de couverture",
+        "description": "Une photo de couverture rend ton profil plus personnel.",
+        "action": "Ajouter"
+      }
+    },
+    "interests": {
+      "title": "Tes centres d’intérêt",
+      "description": "Choisis jusqu'à {max} sujets qui te plaisent.",
+      "selectedCount": "{count} sur {max} sélectionnés",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sommeil",
+      "mindfulness": "Pleine conscience",
+      "longevity": "Longévité",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Course à pied",
+      "strength": "Musculation",
+      "dance": "Danse",
+      "nature": "Nature",
+      "cooking": "Cuisine",
+      "social": "Vie sociale",
+      "travel": "Voyages",
+      "career": "Carrière"
     }
   }
 }

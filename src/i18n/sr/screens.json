@@ -10537,7 +10537,18 @@
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu"
+      "dismissCard": "Odbaci karticu",
+      "dailyDiary": "Dnevnik",
+      "talkToVitana": "Razgovaraj sa Vitanom",
+      "autopilot": "Autopilot",
+      "calendar": "Kalendar",
+      "uploadMedia": "Mediji",
+      "discover": "Otkrij",
+      "profilePhoto": "Profilna fotografija",
+      "profileSetup": "Profil",
+      "socialConnect": "Poveži",
+      "importContacts": "Kontakti",
+      "completeProfile": "Dovrši profil"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -12549,6 +12560,90 @@
       "startingSoon": "Uskoro počinje",
       "startNow": "Pokreni sada",
       "eventsSectionTitle": "Sobe uživo"
+    },
+    "vitanaCards": {
+      "stripLabel": "Predlozi od Vitane",
+      "eyebrowProfile": "Tvoj profil",
+      "eyebrowConnect": "Poveži",
+      "eyebrowCommunity": "Zajednica",
+      "eyebrowNotifications": "Obaveštenja",
+      "E1": {
+        "title": "Pokaži svoje lice",
+        "description": "Postavi profilnu fotografiju da te drugi odmah prepoznaju.",
+        "action": "Otpremi"
+      },
+      "E2": {
+        "title": "Ispričaj nešto o sebi",
+        "description": "Nekoliko rečenica o tebi pomaže drugima da započnu razgovor.",
+        "action": "Napiši biografiju"
+      },
+      "E3": {
+        "title": "Podeli svoju prvu objavu",
+        "description": "Pozdravi zajednicu – dovoljna je kratka misao.",
+        "action": "Objavi sada"
+      },
+      "E4": {
+        "title": "Šta te oduševljava?",
+        "description": "Izaberi svoja interesovanja da bi Vitana pronašla ljude i sadržaje za tebe.",
+        "action": "Izaberi interesovanja"
+      },
+      "E5": {
+        "title": "Gde živiš?",
+        "description": "Dodaj svoju lokaciju i otkrij ljude i događaje u blizini.",
+        "action": "Dodaj lokaciju"
+      },
+      "E6": {
+        "title": "Poveži Instagram",
+        "description": "Deli svoje trenutke iz Vitane direktno na Instagramu.",
+        "action": "Poveži Instagram"
+      },
+      "E7": {
+        "title": "Poveži Facebook",
+        "description": "Ostani blizu prijatelja i deli jednim dodirom.",
+        "action": "Poveži Facebook"
+      },
+      "E8": {
+        "title": "Poveži svoj kalendar",
+        "description": "Vidi svoje obaveze i Vitana događaje na jednom mestu.",
+        "action": "Poveži"
+      },
+      "E9": {
+        "title": "Uvezi svoje kontakte",
+        "description": "Pronađi prijatelje koji su već na Vitani.",
+        "action": "Uvezi"
+      },
+      "E10": {
+        "title": "Ne propusti ništa",
+        "description": "Uključi obaveštenja za poruke, poklapanja i podsetnike.",
+        "action": "Uključi"
+      },
+      "E11": {
+        "title": "Dodaj naslovnu fotografiju",
+        "description": "Naslovna fotografija čini tvoj profil ličnijim.",
+        "action": "Otpremi"
+      }
+    },
+    "interests": {
+      "title": "Tvoja interesovanja",
+      "description": "Izaberi do {max} tema koje voliš.",
+      "selectedCount": "Izabrano {count} od {max}",
+      "save": "Sačuvaj",
+      "cancel": "Otkaži",
+      "fitness": "Fitnes",
+      "nutrition": "Ishrana",
+      "sleep": "San",
+      "mindfulness": "Svesnost",
+      "longevity": "Dugovečnost",
+      "biohacking": "Biohaking",
+      "yoga": "Joga",
+      "running": "Trčanje",
+      "strength": "Trening snage",
+      "dance": "Ples",
+      "nature": "Priroda",
+      "cooking": "Kuvanje",
+      "social": "Zajedništvo",
+      "travel": "Putovanja",
+      "career": "Karijera"
     }
   }
 }

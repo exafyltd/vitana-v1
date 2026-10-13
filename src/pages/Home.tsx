@@ -50,7 +50,9 @@ import { useAllNewsFeed } from "@/hooks/useAllNewsFeed";
 import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { NewMemberCard } from "@/components/home/NewMemberCard";
 import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
-import { composeFeed } from "@/lib/feed-compose";
+import { composeFeed, withHomeNewCards } from "@/lib/feed-compose";
+import { useEnrichmentCards } from "@/hooks/useEnrichmentCards";
+import { getVitanaCardComponent } from "@/components/vitana/card-registry";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
@@ -196,6 +198,10 @@ export const HomeContent = memo(function HomeContent() {
     items: feedItems, isLoading: isLoadingFeedV2, refetch: refetchFeedV2,
     fetchNextPage: fetchNextV2, hasNextPage: hasNextV2, isFetchingNextPage: isFetchingNextV2,
   } = useAllNewsFeed({ enabled: feedV2 && activeTab === "all" });
+
+  // VTID-05085: the member's top open enrichment cards (server-ordered) join
+  // the Vitana cards on Home — at most 2 here, capped again before composeFeed.
+  const { cards: homeEnrichmentCards, dismiss: dismissHomeCard } = useEnrichmentCards("home");
 
   // One impression event per tab activation (fire-and-forget). VTID-05081:
   // and per return to News, as when the route remounted; never while hidden.
@@ -405,13 +411,25 @@ export const HomeContent = memo(function HomeContent() {
       ? streamItems.find((item) => item.kind === "post")?.id
       : undefined;
 
-    const vitanaCards: { key: string; node: JSX.Element }[] = [
+    // VTID-05085: top 2 open enrichment cards, rendered by the shared card registry.
+    const newCards: { key: string; node: JSX.Element }[] = homeEnrichmentCards
+      .filter((c) => c.category === "enrichment" && getVitanaCardComponent(c.card_type))
+      .slice(0, 2)
+      .map((c) => {
+        const Card = getVitanaCardComponent(c.card_type)!;
+        return {
+          key: `card-enrichment-${c.card_type}`,
+          node: <Card title={c.title} description={c.description} onDismiss={() => dismissHomeCard(c.card_type)} />,
+        };
+      });
+
+    const existingCards: { key: string; node: JSX.Element }[] = [
       { key: "card-vitana-index", node: <VitanaIndexCard /> },
       { key: "card-guided-journey", node: <LongevityJourneyCard /> },
       { key: "card-invite-friend", node: <InviteFriendCard /> },
     ];
     if (matchItem) {
-      vitanaCards.push({
+      existingCards.push({
         key: `card-find-a-match-${matchItem.id}`,
         node: (
           <FeedItemErrorBoundary fallback={feedItemErrorFallback}>
@@ -424,6 +442,9 @@ export const HomeContent = memo(function HomeContent() {
         ),
       });
     }
+
+    // VTID-05085: at most 3 new cards in front; the existing cards keep their order.
+    const vitanaCards = withHomeNewCards(newCards, existingCards);
 
     // VTID-04973: info card, user post, info card, user post … Posts keep
     // priority — a Vitana card that renders nothing (dismissed/ineligible) just

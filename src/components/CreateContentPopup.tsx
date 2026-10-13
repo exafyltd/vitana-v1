@@ -23,6 +23,8 @@ interface CreateContentPopupProps {
   onClose: () => void;
   /** VTID-04504: a draft the member reviewed in the Autopilot preview. */
   initialContent?: string;
+  /** VTID-05143: open on a given tab (the Upload Video/Music card opens "media"). */
+  initialType?: "post" | "article" | "media";
 }
 
 // Mirrors the limits enforced by MobileCreatePostSheet so both composers behave
@@ -33,7 +35,7 @@ const MAX_COMPRESSIBLE_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB
 
 type MediaKind = "image" | "video";
 
-export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateContentPopupProps) {
+export function CreateContentPopup({ isOpen, onClose, initialContent, initialType }: CreateContentPopupProps) {
   const [contentType, setContentType] = useState("post");
   const [formData, setFormData] = useState({
     title: "",
@@ -50,6 +52,11 @@ export function CreateContentPopup({ isOpen, onClose, initialContent }: CreateCo
     setContentType("post");
     setFormData((prev) => (prev.content ? prev : { ...prev, content: initialContent }));
   }, [isOpen, initialContent]);
+
+  // VTID-05143: a card can open the composer straight on the media tab.
+  useEffect(() => {
+    if (isOpen && initialType) setContentType(initialType);
+  }, [isOpen, initialType]);
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const availableTags = ["Tips", "Motivation", "Progress", "Question", "Achievement", "Recipe", "Workout", "Community"];
