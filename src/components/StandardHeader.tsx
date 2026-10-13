@@ -83,7 +83,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
             onClick={() => navigate('/health/vitana-index')}
             aria-label={t('spotlight.header.vitanaIndexAria', { value: vitanaIndexDisplay })}
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 text-sm font-bold text-primary">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 text-sm font-bold text-primary">
               {vitanaIndexDisplay}
             </span>
             <span className="text-xs text-muted-foreground">{t('spotlight.header.vitanaIndexLabel')}</span>

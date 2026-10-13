@@ -42,15 +42,21 @@ Status: implemented in PR #1349 (VTID-05105). Decisions taken (inside the plan, 
 - [ ] 1b.5 Keep `tests/loading-no-flash.cjs`, keep-alive tests, `screen-journey.staging.spec.ts` green; staging spec: route switch never shows the DelayedLoader test id after first load. _R6.6_
 
 ## Phase 1c — Design contract & enforcement · VTID-05107
-- [ ] 1c.1 `docs/design-system/SPOTLIGHT_RULES.md` from design.md §4–§7 (SR-01…30, archetypes, mobile mapping, palette→token table). Header pointer in `docs/UNIVERSAL_SCREEN_PATTERN.md`. _R7.3_
-- [ ] 1c.2 `.claude/rules/design.md` (paths `src/pages/**`, `src/components/**`) and `.kiro/steering/vitana-design.md` (same fileMatch) linking the contract; short pointer paragraph in `CLAUDE.md`.
-- [ ] 1c.3 Semantic colour tokens `status.*`, `severity.*`, `category.1–8`, `surface.*` (incl. today's page gradient), light + dark. _R7.6_
-- [ ] 1c.4 `src/design/screen-manifest.json` (every non-redirect route; archetype, tier, status `legacy`, phase) + `screen-manifest.test.ts` via `extractSpaRoutes`. _R7.1–7.2_
-- [ ] 1c.5 `eslint-rules/design/*` (6 rules) + escape hatch + RuleTester tests; register in `eslint.config.js` at error. _R7.4, R7.7_
-- [ ] 1c.6 `npm run design:allowances` report.
-- [ ] 1c.7 Regenerate `scripts/ci/pr-gate/baseline/eslint.json`; create `baseline/design.json`; PR body lists starting counts per rule.
-- [ ] 1c.8 `ratchet-design` in `gate.mjs`/`lib.mjs` reading the base commit's baseline; unit tests prove a raised count fails even when the PR edits the baseline; one step in `PR-GATE.yml`. _R7.5_
-- [ ] 1c.9 `tests/e2e/staging/design-contract.staging.spec.ts` (iterates `migrated` manifest entries; empty set passes). _R7_
+- [x] 1c.1 `docs/design-system/SPOTLIGHT_RULES.md` from design.md §4–§7 (SR-01…30, archetypes, mobile mapping, palette→token table). Header pointer in `docs/UNIVERSAL_SCREEN_PATTERN.md`. _R7.3_
+- [x] 1c.2 `.claude/rules/design.md` (paths `src/pages/**`, `src/components/**`) and `.kiro/steering/vitana-design.md` (same fileMatch) linking the contract; short pointer paragraph in `CLAUDE.md`.
+- [x] 1c.3 Semantic colour tokens `status.*`, `severity.*`, `category.1–8`, `surface.*` (incl. today's page gradient), light + dark. _R7.6_
+- [x] 1c.4 `src/design/screen-manifest.json` (every non-redirect route; archetype, tier, status `legacy`, phase) + `screen-manifest.test.ts` via `extractSpaRoutes`. _R7.1–7.2_
+- [x] 1c.5 `eslint-rules/design/*` (6 rules) + escape hatch + RuleTester tests; register in `eslint.config.js` at error. _R7.4, R7.7_
+- [x] 1c.6 `npm run design:allowances` report.
+- [x] 1c.7 Regenerate `scripts/ci/pr-gate/baseline/eslint.json`; create `baseline/design.json`; PR body lists starting counts per rule.
+- [x] 1c.8 `ratchet-design` in `gate.mjs`/`lib.mjs` reading the base commit's baseline; unit tests prove a raised count fails even when the PR edits the baseline; one step in `PR-GATE.yml`. _R7.5_
+- [x] 1c.9 `tests/e2e/staging/design-contract.staging.spec.ts` (iterates `migrated` manifest entries; empty set passes). _R7_
+
+Status: implemented (VTID-05107). Starting legacy counts carried by the ratchets: 5,487 `design/*` errors in 846 files
+(no-raw-palette 2,985 · no-physical-direction 1,670 · no-arbitrary-size 513 · require-screen-frame 185 ·
+no-page-spinner 68 · no-raw-content-card 67 — one fixed in this PR: the compact StandardHeader now uses status tokens).
+Manifest: 345 screens (workspace 187 · collection 84 · form 32 · detail 18 · conversation 12 · dashboard 4 · focus-feed 3 ·
+storefront 3 · immersive 2), all `legacy`.
 
 ## Phase 2 — News Feed · VTID-05108
 - [ ] 2.1 `feed-compose.ts` `placement: 'stream' | 'rail'` (+ tests); info cards, DidYouKnow, EventGameFeedBadge → rail. _R4.4_

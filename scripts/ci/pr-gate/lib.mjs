@@ -105,6 +105,45 @@ export function countEslint(results, root) {
   return counts;
 }
 
+/**
+ * VTID-05107 — per-file count of Spotlight design-rule errors (`design/*`)
+ * from an ESLint JSON report.
+ */
+export function countDesign(results, root) {
+  const counts = {};
+  const prefix = root.endsWith('/') ? root : `${root}/`;
+  for (const r of results) {
+    const n = (r.messages || []).filter((m) => m.severity === 2 && typeof m.ruleId === 'string' && m.ruleId.startsWith('design/')).length;
+    if (!n) continue;
+    const f = r.filePath.startsWith(prefix) ? r.filePath.slice(prefix.length) : r.filePath;
+    counts[f] = n;
+  }
+  return counts;
+}
+
+export const DESIGN_RULES_GLOB = 'eslint-rules/design/**';
+
+/**
+ * VTID-05107 — which baseline the design ratchet compares against.
+ * Normally the BASE commit's copy, so a PR cannot raise its own baseline.
+ * Only a PR that changes the rules themselves (a sparred contract change)
+ * is measured against its own head copy.
+ */
+export function chooseDesignBaseline({ changed, baseText, headText }) {
+  const rulesChanged = changed.some((f) => matchesAny(f, [DESIGN_RULES_GLOB]));
+  if (rulesChanged) return { source: 'head (PR changes eslint-rules/design/**)', counts: parseBaseline(headText) };
+  return { source: 'base commit', counts: parseBaseline(baseText) };
+}
+
+function parseBaseline(text) {
+  if (!text) return {};
+  try {
+    return JSON.parse(text).counts || {};
+  } catch {
+    return {};
+  }
+}
+
 /** Fails when any file has more errors than its baseline (new files: baseline 0). */
 export function compareRatchet(baseline, current) {
   const worse = [];

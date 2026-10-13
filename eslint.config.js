@@ -6,6 +6,7 @@ import tseslint from "typescript-eslint";
 import noRawJsxText from "./eslint-rules/no-raw-jsx-text.js";
 import noRawToastArg from "./eslint-rules/no-raw-toast-arg.js";
 import noRawLocaleCall from "./eslint-rules/no-raw-locale-call.js";
+import designPlugin from "./eslint-rules/design/index.js";
 
 const i18nPlugin = {
   rules: {
@@ -46,6 +47,23 @@ export default tseslint.config(
       // pre-existing sites on the i18n-locale-aware-dates branch; rule is now
       // ERROR-level to prevent regressions.
       "i18n/no-raw-locale-call": "error",
+    },
+  },
+  // VTID-05107 — Spotlight Design Contract (docs/design-system/SPOTLIGHT_RULES.md §C).
+  // Error level from day one: existing violations are carried per file by the
+  // ESLint ratchet and the base-branch `ratchet-design` PR-GATE check, so they may
+  // only go down and every new file must be clean. UI primitives are exempt.
+  {
+    files: ["src/pages/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
+    ignores: ["src/components/ui/**", "**/*.test.{ts,tsx}"],
+    plugins: { design: designPlugin },
+    rules: {
+      "design/no-arbitrary-size": "error",
+      "design/no-raw-palette": "error",
+      "design/no-physical-direction": "error",
+      "design/no-page-spinner": "error",
+      "design/require-screen-frame": "error",
+      "design/no-raw-content-card": "error",
     },
   }
 );
