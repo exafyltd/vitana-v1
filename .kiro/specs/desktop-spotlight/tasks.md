@@ -109,7 +109,9 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
   (conversation; same ConversationView props, data hooks/realtime/keep-alive untouched). Left: Post detail (after Phase 2),
   Public profile (needs an owner design call), the Live Rooms "Past" tab with recordings.
 - [x] 4.2 Remaining adapters (event, liveRoom, group, member).
-- [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+- [x] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+  Done with VTID-05110: Phase 4 routes `migrated` in the manifest, baselines lowered, staging specs
+  `vtid-05110-social-spotlight` + `vtid-05110-media-messages-spotlight` passed STAGING-VERIFY at `e634f79`.
 
 ## Phase 5 — Tier B adoption · VTID-05111
 - [x] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
