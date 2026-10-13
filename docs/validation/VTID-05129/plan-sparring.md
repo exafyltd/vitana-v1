@@ -163,3 +163,87 @@ spec files, `docs/validation/<VTID>/*`. One VTID across both repos.
 - Q2 — answered in Merge order.
 - Q3 — all 16 are covered; see Coverage (13 pre-existing, VTID-04973 data-dependent since 10/11,
   VTID-04682/04827 intermittent guard aborts).
+
+
+---
+
+# Amendment A1 — phone journey judged on the median of 3 passes
+
+Owner decision 2026-10-13 (in session): "Median + merge pause". Sparred with the plan-sparring-partner, 2 rounds, verdict **CONVERGED** (no open blocker or major). Plan hash (sha256 of the text between the markers): `b70925f930c11d12d43530b1e7e82b8e7ea38488f44d17bd66a3b4253c3b0214`.
+
+# VTID-05129 amendment A1 — phone journey judged on the median of 3 passes
+
+<!-- plan:begin -->
+## Why
+Owner decision 2026-10-13 (chose "median + merge pause"): the community-app full STAGING-VERIFY run must be green
+before production. After VTID-05129's fixes every original failure passes; the remaining red is the phone journey
+(`tests/e2e/staging/screen-journey.staging.spec.ts`, referenced by the smoke suite and the VTID-05062 / VTID-05066 /
+VTID-05081 manifests). In each of three full runs one of the ~4 journey executions missed one timing budget by
+1–11 %, a different step each time:
+- run 38363989362: Events first visit timed out at 10 s waiting on one live-room cover image (3 other journeys ~1 s);
+- run 38372005093: Postfach first 4454 / 4354 ms vs 4000 (the same step read 3262 / 2006 ms in the other journeys);
+- run 38376258040: News return 1518 ms vs 1500 (other journeys 1242 / 1250 / 1030 ms).
+A single sample on a shared CI runner with 4x CPU throttle has more spread than the budget margin.
+
+## Change (vitana-v1, one spec file)
+1. The journey body (cold `/home` load + the 5 tab taps) becomes `runPass(passNo)` returning its rows; the test runs
+   3 passes on the SAME guarded `page` (the staging guard is a `page` fixture; a new context would be unguarded —
+   never used). Sign-in, CDP throttling (4x CPU, Fast 4G) and the ORB-widget abort stay as today, set once.
+2. Between passes: `localStorage.clear()`, `sessionStorage.clear()`, Cache Storage cleared, the three auth keys
+   written back from the same session object; the in-test image cache is reset (new `reset()` clears entries,
+   `everLoaded` and the step counters); then the cold `/home` load. Pass 2 and 3 therefore start as cold as pass 1
+   (Playwright already disables the browser HTTP cache because routes exist — header comment of the spec).
+3. Verdict per journey step (same step index across passes):
+   - timing: the MEDIAN of the three `ready_ms` (a timed-out sample counts as `CAP_MS`) must be ≤ the unchanged
+     budget (first 4000 ms, return 1500 ms); a median at `CAP_MS` reads "not ready within 10000 ms";
+   - photo re-download on a return step and media frame-height change: still fail if they happen in ANY pass
+     (deterministic properties, not timing noise);
+   - every failure line names all three samples, and the slow samples keep their diagnostics (network summary,
+     timeline, CPU profile) as today.
+4. `console.table` prints every pass plus a median row per step; the JSON attachment carries all passes.
+5. `test.setTimeout` 5 → 12 min (3 passes ~40 s each plus sign-in, within the runner's 15-min per-spec limit). The
+   spec runs 4 times per full run (smoke + VTID-05062/05066/05081), so a full run grows ~5.5 min: the three cited
+   runs' verify steps took 45 / 45 / 45 min → ~51 min, within the 75-min job timeout from fix-forward 1.
+6. `runPass()` starts with `downloads = []` (sparring F4).
+
+Budgets, the device profile, the journey order and the read-only guarantees do not change. What changes on purpose:
+one slow sample out of three no longer fails a step; two out of three still do. This is stated in the spec header
+and in the PR.
+
+## Merge pause (owner action, not code)
+The owner pauses vitana-v1 merges for ~50 minutes while the final full run executes on the commit staging serves
+(the after-run deploy check failed in all three runs because main moved mid-run). The session tells the owner when
+the window starts and ends.
+
+## Verification
+- The spec typechecks (strict tsc with the guard present) and `playwright test --list` loads it.
+- No write path is added: same page, same guard, same allowAbortedWrites.
+- Proof: full STAGING-VERIFY community-app run during the merge pause, target 0 failures; then Gate 2.
+
+## Change class / scope
+light — one spec file (`tests/e2e/staging/screen-journey.staging.spec.ts`) plus
+`docs/validation/VTID-05129/{plan-sparring.md,README.md}` in vitana-v1. No product code, no workflow, no migration.
+<!-- plan:end -->
+
+## Planner responses — round 1
+- F1 [minor] spec timeout vs config 90 s — ACKNOWLEDGED, no change (spec-level `test.setTimeout` wins).
+- F2 [major] wall time vs 75-min job timeout — ACCEPTED with evidence: the verify step of the three cited full runs
+  took 45 min (07:45:22→08:30:15, cancelled at the old 45-min cap during the final deploy check), 45 min
+  (≈08:52→09:36:49) and 45 min (09:37→10:21:56). +4 executions × ~80 s ≈ +5.5 min → ~51 min, 24 min below the 75-min
+  cap. Plan text updated with these figures.
+- F3 [minor] reset vs response listener / WeakSet — ACKNOWLEDGED, no change (benign, as you concluded).
+- F4 [minor] `downloads` not reset per pass — ACCEPTED: `runPass()` starts with `downloads = []`.
+- F5 [minor] init script re-runs, orphaned long-task observer — ACKNOWLEDGED, no change (reassignment handles it).
+- F6 [minor] profiler state — ACKNOWLEDGED, no change.
+- F7 [minor] table size — ACKNOWLEDGED: 24 rows; the JSON attachment carries all passes.
+- Q1 — answered in F2 (45 / 45 / 45 min).
+- Q2 (3 passes only in the smoke execution) — REJECTED: the VTID-05062/05066/05081 manifests run the same spec file
+  with the same budgets; a single-pass execution there would keep flapping exactly as in runs 1–3 (run 2's two
+  failures were the VTID-05062 and VTID-05081 executions). One behaviour for every execution, no env switch.
+
+
+## Partner — round 1 (summary)
+F1 minor (spec timeout vs config 90 s — no issue); F2 major (full-run wall time vs 75-min job timeout — asked for observed durations); F3 minor (image reset vs response listener — benign); F4 minor (reset `downloads` per pass); F5 minor (init script re-run — benign); F6 minor (profiler state — fine); F7 minor (table size); Q1 durations; Q2 three passes only in smoke? Verdict: NOT CONVERGED pending F2.
+
+## Partner — round 2
+F1–F7 closed; Q2 rejection acknowledged; no new blocker or major. Verdict: **CONVERGED**.
