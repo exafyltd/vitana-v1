@@ -119,3 +119,42 @@ describe('authRedirectUrl, webBaseUrl and the Google client ids', () => {
     }
   });
 });
+
+/**
+ * VTID-05186 — the key check behind `src/ports/env` (N1's `assertNotProductionKey`;
+ * on this branch its stand-in). Same behaviour either side of the port swap.
+ */
+describe('Supabase key and endpoints through the env port', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const port = require('../src/ports/env') as typeof import('../src/ports/env');
+  const jwt = (payload: object) => `eyJhbGciOiJIUzI1NiJ9.${Buffer.from(JSON.stringify(payload)).toString('base64url')}.sig`;
+
+  it('refuses the production anon key (legacy JWT ref) and the production sb_publishable_ key', () => {
+    expect(() => port.assertNotProductionKey(jwt({ ref: 'inmkhvwdcuyhnxkgfvsb', role: 'anon' }))).toThrow(/production/);
+    expect(() => port.assertNotProductionKey('sb_publishable_inmkhvwdcuyhnxkgfvsb_abc')).toThrow(/production/);
+    expect(() => port.assertNotProductionKey('not-a-key')).toThrow(/Invalid/);
+  });
+
+  it('accepts a G1-shaped key only together with a non-production URL', () => {
+    const key = port.assertNotProductionKey(jwt({ ref: 'g1testproject', role: 'anon' }));
+    expect(port.endpoints({ gatewayUrl: 'https://g1-gw.example.org', supabaseUrl: 'https://g1testproject.example.org', supabasePublishableKey: key })).toEqual({
+      gatewayOrigin: 'https://g1-gw.example.org',
+      supabaseUrl: 'https://g1testproject.example.org',
+      supabasePublishableKey: key,
+    });
+    expect(() => port.endpoints({ gatewayUrl: 'https://g1-gw.example.org', supabaseUrl: 'https://inmkhvwdcuyhnxkgfvsb.supabase.co', supabasePublishableKey: key })).toThrow(
+      /never reach production or staging/,
+    );
+  });
+
+  it('endpoints({}) names every missing value; the build config sets none', () => {
+    expect(() => port.endpoints({})).toThrow(port.ConfigMissingError);
+    try {
+      port.endpoints({});
+    } catch (e) {
+      expect((e as InstanceType<typeof port.ConfigMissingError>).keys).toEqual(['gatewayUrl', 'supabaseUrl', 'supabasePublishableKey']);
+    }
+    expect(() => port.requireValue({}, 'googleWebClientId')).toThrow(/not set/);
+    expect(port.config.supabasePublishableKey).toBeUndefined();
+  });
+});
