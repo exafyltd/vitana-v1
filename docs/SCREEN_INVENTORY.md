@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 389
-- **Distinct i18n keys consumed:** 4732
+- **Pages scanned:** 390
+- **Distinct i18n keys consumed:** 4742
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -19,6 +19,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 ### src/pages/__tests__/gateway-prefix.vtid-05155.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/__tests__/mobile-settings-privacy-data.vtid-05173.test.tsx
+
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 11778
 
 ### src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx
 
@@ -404,11 +412,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSettings.tsx
 
-**Status:** ✅ clean — keys consumed: 76, namespaces: 2
+**Status:** ✅ clean — keys consumed: 84, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 67, total in shard: 11778
+- `screens` — used: 75, total in shard: 11778
 - `settings` — used: 9, total in shard: 31, **MISSING:** settings.updateFailed, settings.chat, settings.calendar, settings.community, settings.search
 
 ### src/pages/MobileSubscriptions.tsx
@@ -3077,7 +3085,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 256 |
+| `screens` | 257 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
