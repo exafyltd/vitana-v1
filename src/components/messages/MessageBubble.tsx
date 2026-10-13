@@ -133,7 +133,7 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
       >
         {playing
           ? <Pause className="h-3.5 w-3.5" />
-          : <Play className="h-3.5 w-3.5 ml-0.5" />
+          : <Play className="h-3.5 w-3.5 ms-0.5" />
         }
       </button>
 
@@ -433,7 +433,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const textTimestampSpacer = (
     <span
       aria-hidden="true"
-      className="inline-flex items-center gap-1 ml-2 text-[10px] leading-none invisible select-none pointer-events-none"
+      className="inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"
     >
       {timestampInner}
     </span>
@@ -442,7 +442,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const textTimestampOverlay = (
     <span
       className={cn(
-        "absolute bottom-1.5 right-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none",
+        "absolute bottom-1.5 end-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none",
         timestampColorClass
       )}
     >
@@ -1187,7 +1187,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               ? VITANA_BOT_DISPLAY_NAME
               : message.sender?.display_name || message.sender?.full_name || 'Unknown User';
             return (
-              <span className="text-xs text-muted-foreground mb-0.5 ml-3">
+              <span className="text-xs text-muted-foreground mb-0.5 ms-3">
                 {isBot ? name : <MemberLink userId={senderId}>{name}</MemberLink>}
               </span>
             );
@@ -1254,10 +1254,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     />
                     <div className="flex gap-2 justify-end">
                       <Button variant="outline" size="sm" onClick={handleEditCancel} className="text-foreground">
-                        <X className="w-3 h-3 mr-1" /> {t('screens.messages.cancel')}
+                        <X className="w-3 h-3 me-1" /> {t('screens.messages.cancel')}
                       </Button>
                       <Button size="sm" onClick={handleEditSave} disabled={!editContent.trim()}>
-                        <Check className="w-3 h-3 mr-1" /> {t('screens.messages.save')}
+                        <Check className="w-3 h-3 me-1" /> {t('screens.messages.save')}
                       </Button>
                     </div>
                     {inlineBelowTimestamp}
@@ -1413,7 +1413,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     onClick={handleDeleteConfirmed}
                     disabled={isDeletePending}
                   >
-                    {isDeletePending ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Trash2 className="w-4 h-4 mr-1" />}{t('screens.messages.delete')}
+                    {isDeletePending ? <Loader2 className="w-4 h-4 animate-spin me-1" /> : <Trash2 className="w-4 h-4 me-1" />}{t('screens.messages.delete')}
                   </Button>
                 </div>
               </div>

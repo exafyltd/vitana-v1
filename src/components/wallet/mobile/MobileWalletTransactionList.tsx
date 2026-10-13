@@ -176,7 +176,7 @@ export function MobileWalletTransactionList({
                 <p className="text-xs text-muted-foreground">
                   {formatDate(new Date(tx.created_at), 'MMM d, h:mm a')}
                   {tx.status !== 'completed' && (
-                    <span className={`ml-2 ${getStatusColor(tx.status)}`}>
+                    <span className={`ms-2 ${getStatusColor(tx.status)}`}>
                       • {tx.status}
                     </span>
                   )}
@@ -184,7 +184,7 @@ export function MobileWalletTransactionList({
               </div>
               
               {/* Amount */}
-              <div className="text-right flex-shrink-0">
+              <div className="text-end flex-shrink-0">
                 <p className={`text-sm font-semibold ${tx.amount > 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}>
                   {formatAmount(tx)}
                 </p>

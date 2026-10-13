@@ -39,20 +39,20 @@ export function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         
         {hasAIUpdate && (
-          <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full 
+          <div className="absolute top-3 start-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full 
             bg-blue-500/90 backdrop-blur-sm animate-pulse">
             <Brain className="w-3.5 h-3.5 text-white" />
             <span className="text-xs font-medium text-white">{t('screens.health.aiUpdated')}</span>
           </div>
         )}
         
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 end-3">
           <Badge variant="secondary" className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
             {workout.day}
           </Badge>
         </div>
         
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+        <div className="absolute bottom-0 start-0 end-0 p-4 text-white">
           <h4 className="font-bold text-lg mb-2 line-clamp-1">{workout.title}</h4>
           
           <div className="flex items-center gap-3 flex-wrap">

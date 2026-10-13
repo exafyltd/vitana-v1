@@ -213,7 +213,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
       {/* Instructions */}
       <div className="text-xs text-muted-foreground space-y-1">
         <p className="font-medium">{t('screens.sharing.csvFormatRequirements')}</p>
-        <ul className="list-disc list-inside space-y-0.5 ml-2">
+        <ul className="list-disc list-inside space-y-0.5 ms-2">
           <li>{t('screens.sharing.firstRowMustContainColumnHeaders')}</li>
           <li>{t('screens.sharing.requiredColumn')} <code>{t('screens.sharing.name')}</code></li>
           <li>{t('screens.sharing.optionalColumns')} <code>{t('screens.sharing.email')}</code>, <code>{t('screens.sharing.phone')}</code>, <code>{t('screens.sharing.whatsapp_number')}</code></li>

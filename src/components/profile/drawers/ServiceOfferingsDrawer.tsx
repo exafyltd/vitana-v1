@@ -126,7 +126,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="absolute top-1.5 right-1.5 h-7 w-7 text-muted-foreground hover:text-destructive"
+                  className="absolute top-1.5 end-1.5 h-7 w-7 text-muted-foreground hover:text-destructive"
                   onClick={() => removeOffer(idx)}
                   aria-label={t('screens.profile.removeOffering')}
                 >
@@ -223,7 +223,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                 {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{t('screens.profile.save')}
+                {saving && <Loader2 className="h-4 w-4 animate-spin me-2" />}{t('screens.profile.save')}
               </Button>
             </div>
           </div>

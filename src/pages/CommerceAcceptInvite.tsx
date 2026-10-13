@@ -20,12 +20,16 @@ import { PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { businessHomeFor, setActiveOrgId } from '@/lib/business-mode';
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import type { ReactNode } from 'react';
 
 type State = 'pending' | 'success' | 'already' | 'expired' | 'notFound' | 'wrongEmail' | 'failed';
 
 export default function CommerceAcceptInvite() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [state, setState] = useState<State>('pending');
 
   useEffect(() => {
@@ -64,10 +68,11 @@ export default function CommerceAcceptInvite() {
   if (state === 'pending' || state === 'success') {
     return (
       <CommerceShell>
-        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3">
+        <InviteFrame spotlight={spotlight} className="gap-3">
+          {/* design-allow-next-line: action progress indicator (the invite is being accepted), not a data-loading placeholder */}
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           <p className="text-sm text-muted-foreground">{t('screens.commerceportal.orgOnboarding.acceptPending')}</p>
-        </div>
+        </InviteFrame>
       </CommerceShell>
     );
   }
@@ -83,9 +88,9 @@ export default function CommerceAcceptInvite() {
 
   return (
     <CommerceShell>
-    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
-      <div className="max-w-sm rounded-3xl border border-amber-500/25 bg-card p-6">
-        <Icon className="mx-auto h-8 w-8 text-amber-500 dark:text-amber-400" />
+    <InviteFrame spotlight={spotlight} className="gap-4 px-6 text-center">
+      <div className="max-w-sm rounded-3xl border border-status-warning/25 bg-card p-6">
+        <Icon className="mx-auto h-8 w-8 text-status-warning" />
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
         <Button
           onClick={() => navigate('/commerce')}
@@ -95,7 +100,23 @@ export default function CommerceAcceptInvite() {
           {t('screens.commerceportal.orgOnboarding.goToPortal')}
         </Button>
       </div>
-    </div>
+    </InviteFrame>
     </CommerceShell>
   );
+}
+
+/**
+ * VTID-05117: Spotlight on → the `form` archetype (one column, no rail);
+ * off → today's vertically centred block.
+ */
+function InviteFrame({ spotlight, className, children }: { spotlight: boolean; className: string; children: ReactNode }) {
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form">
+        <div className={`flex flex-col items-center justify-center py-16 ${className}`}>{children}</div>
+      </ScreenFrame>
+    );
+  }
+  // design-allow-next-line: legacy (flag-off) block keeps its viewport-relative centring unchanged
+  return <div className={`flex min-h-[60vh] flex-col items-center justify-center ${className}`}>{children}</div>;
 }

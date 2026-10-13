@@ -35,8 +35,8 @@ export function EventGameHomeView({ game, onViewLeaderboard }: EventGameHomeView
       }}
     >
       {/* Decorative corner glow + footer wave — purely cosmetic */}
-      <div className="pointer-events-none absolute -top-10 -left-10 w-64 h-64 rounded-full bg-white/25 blur-2xl" />
-      <DecorativeWave className="pointer-events-none absolute bottom-0 left-0 w-full h-20 text-white/40" />
+      <div className="pointer-events-none absolute -top-10 -start-10 w-64 h-64 rounded-full bg-white/25 blur-2xl" />
+      <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-20 text-white/40" />
 
       <div className="relative flex flex-col items-center px-6 py-10 gap-6 max-w-md w-full mx-auto">
         <div className="w-20 h-20 rounded-full bg-white/50 backdrop-blur flex items-center justify-center ring-4 ring-white/40 shadow-lg">
@@ -51,14 +51,14 @@ export function EventGameHomeView({ game, onViewLeaderboard }: EventGameHomeView
           <div className="relative overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(31,143,199,0.25)] p-5">
             <div className="text-xs uppercase tracking-wide text-muted-foreground">{t('eventGame.home.score')}</div>
             <div className="text-5xl font-extrabold bg-gradient-to-r from-[#6CC5EC] to-[#1B8FC7] bg-clip-text text-transparent">{score}</div>
-            <DecorativeWave className="pointer-events-none absolute bottom-0 left-0 w-full h-6 text-[#E3F5FD]" />
+            <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-6 text-[#E3F5FD]" />
           </div>
           <div className="relative overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(31,143,199,0.25)] p-5">
             <div className="text-xs uppercase tracking-wide text-muted-foreground">{t('eventGame.home.rank')}</div>
             <div className="text-5xl font-extrabold bg-gradient-to-r from-[#6CC5EC] to-[#1B8FC7] bg-clip-text text-transparent">
               {rank === 1 ? '#1' : `#${rank || '—'}`}
             </div>
-            <DecorativeWave className="pointer-events-none absolute bottom-0 left-0 w-full h-6 text-[#E3F5FD]" />
+            <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-6 text-[#E3F5FD]" />
           </div>
         </div>
 

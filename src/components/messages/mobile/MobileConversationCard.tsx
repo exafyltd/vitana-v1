@@ -53,11 +53,11 @@ export function MobileConversationCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[64px] text-left ${
+      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-16 text-start ${
         isActive 
-          ? 'bg-primary/10 border-l-2 border-l-primary' 
+          ? 'bg-primary/10 border-s-2 border-s-primary' 
           : 'bg-card hover:bg-muted/50'
-      } ${hasUnread ? 'border-l-2 border-l-primary/60' : ''}`}
+      } ${hasUnread ? 'border-s-2 border-s-primary/60' : ''}`}
     >
       {/* Avatar with presence */}
       <div className="relative shrink-0">
@@ -71,7 +71,7 @@ export function MobileConversationCard({
           loading="lazy"
         />
         {!isGroup && participantUserId && (
-          <div className="absolute -bottom-0.5 -right-0.5">
+          <div className="absolute -bottom-0.5 -end-0.5">
             <PresenceIndicator 
               userId={participantUserId} 
               context={context}
@@ -80,7 +80,7 @@ export function MobileConversationCard({
           </div>
         )}
         {isPinned && (
-          <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full" />
+          <div className="absolute -top-1 -end-1 w-3 h-3 bg-primary rounded-full" />
         )}
       </div>
 

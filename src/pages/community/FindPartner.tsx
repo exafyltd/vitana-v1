@@ -61,6 +61,8 @@ import {
   type UserIntent,
 } from '@/lib/intentApi';
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const MEMBERS_TAB_THRESHOLD = 1000;
 
@@ -113,6 +115,7 @@ const MEMBER_COUNT_STALE_TIME = 10 * 60 * 1000;
 export default function FindPartner() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -296,59 +299,8 @@ export default function FindPartner() {
     [showMembersTab]
   );
 
-  return (
-    <>
-      <SEO title={t('screens.community.findMatchVitana')} description="Find a dance or fitness match in the Vitana community." />
-
-      <AppLayout>
-        {!isMobile && <SubNavigation items={communityNavigation} />}
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-          <div className="max-w-7xl mx-auto">
-        <StandardHeader
-          title={t('screens.community.findMatch')}
-          description={t('screens.community.findMatchDescription')}
-        />
-
-        <UtilityActionButton className="min-w-0" compact={isMobile}>
-          <div className="flex items-center gap-2 min-w-max">
-            <ExpandableSearchButton
-              placeholder={t('screens.community.searchPostsMatches')}
-              onSearch={(query) => setSearchQuery(query)}
-              onClear={() => setSearchQuery('')}
-              // Mobile uses the chip + sheet picker to switch views;
-              // desktop has the SplitBar tab bar directly below this
-              // utility row, so the chip would be redundant.
-              filterLabel={isMobile ? filterLabel : undefined}
-              onFilterClick={isMobile ? () => setPickerOpen(true) : undefined}
-              // Filter sheet lives inside the expanded search (matches view
-              // only) instead of as a standalone utility-bar icon.
-              onFilterToggle={view === 'matches' ? () => setFilterOpen(true) : undefined}
-              filterActiveCount={activeFilterCount}
-            />
-            <Button
-              onClick={() => setComposerOpen(true)}
-              variant="ghost"
-              size="sm"
-              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="text-sm">{t('screens.community.newWish')}</span>
-            </Button>
-          </div>
-        </UtilityActionButton>
-
-        {!isMobile && (
-          <SplitBar value={view} onValueChange={(v) => setView(v as View)} className="w-full mt-2">
-            <SplitBarList>
-              {visibleViewOptions.map((o) => (
-                <SplitBarTrigger key={o.value} value={o.value}>
-                  {o.icon} {t(o.labelKey)}
-                </SplitBarTrigger>
-              ))}
-            </SplitBarList>
-          </SplitBar>
-        )}
-
+  // VTID-05117 — the result area, shared unchanged by the legacy screen and the Spotlight frame.
+  const resultsBody = (
         <div className="mt-4">
           {loading && (
             <FindPartnerLoadingSkeleton view={view} isMobile={isMobile} />
@@ -507,6 +459,116 @@ export default function FindPartner() {
             )
           )}
         </div>
+  );
+
+  // VTID-05117 — Spotlight (desktop + flag): collection frame; the four views move to the tabs at
+  // the end of the utility row. Phones and flag-off keep the screen below.
+  if (spotlight) {
+    return (
+      <>
+        <SEO title={t('screens.community.findMatchVitana')} description={t('screens.community.findMatchDescription')} />
+        <AppLayout>
+          <ScreenFrame
+            archetype="collection"
+            subNav={{ items: communityNavigation }}
+            header={{ title: t('screens.community.findMatch'), description: t('screens.community.findMatchDescription') }}
+            utility={{
+              children: (
+                <>
+                  <ExpandableSearchButton
+                    placeholder={t('screens.community.searchPostsMatches')}
+                    onSearch={(query) => setSearchQuery(query)}
+                    onClear={() => setSearchQuery('')}
+                    onFilterToggle={view === 'matches' ? () => setFilterOpen(true) : undefined}
+                    filterActiveCount={activeFilterCount}
+                  />
+                  <Button size="sm" className="gap-2" onClick={() => setComposerOpen(true)}>
+                    <Plus className="size-4" />
+                    {t('screens.community.newWish')}
+                  </Button>
+                </>
+              ),
+            }}
+            tabs={{
+              value: view,
+              onValueChange: (v) => setView(v as View),
+              items: visibleViewOptions.map((o) => ({ value: o.value, label: t(o.labelKey) })),
+            }}
+          >
+            {resultsBody}
+          </ScreenFrame>
+        </AppLayout>
+        <FindMatchFilterSheet
+          open={filterOpen}
+          onOpenChange={setFilterOpen}
+          filters={filters}
+          onApply={setFilters}
+          matches={allMatches}
+          viewedIds={viewedIds}
+        />
+        <IntentComposer
+          open={composerOpen}
+          onOpenChange={setComposerOpen}
+          onPosted={() => { setComposerOpen(false); refresh(); }}
+        />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <SEO title={t('screens.community.findMatchVitana')} description="Find a dance or fitness match in the Vitana community." />
+
+      <AppLayout>
+        {!isMobile && <SubNavigation items={communityNavigation} />}
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto">
+        <StandardHeader
+          title={t('screens.community.findMatch')}
+          description={t('screens.community.findMatchDescription')}
+        />
+
+        <UtilityActionButton className="min-w-0" compact={isMobile}>
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton
+              placeholder={t('screens.community.searchPostsMatches')}
+              onSearch={(query) => setSearchQuery(query)}
+              onClear={() => setSearchQuery('')}
+              // Mobile uses the chip + sheet picker to switch views;
+              // desktop has the SplitBar tab bar directly below this
+              // utility row, so the chip would be redundant.
+              filterLabel={isMobile ? filterLabel : undefined}
+              onFilterClick={isMobile ? () => setPickerOpen(true) : undefined}
+              // Filter sheet lives inside the expanded search (matches view
+              // only) instead of as a standalone utility-bar icon.
+              onFilterToggle={view === 'matches' ? () => setFilterOpen(true) : undefined}
+              filterActiveCount={activeFilterCount}
+            />
+            <Button
+              onClick={() => setComposerOpen(true)}
+              variant="ghost"
+              size="sm"
+              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="text-sm">{t('screens.community.newWish')}</span>
+            </Button>
+          </div>
+        </UtilityActionButton>
+
+        {!isMobile && (
+          <SplitBar value={view} onValueChange={(v) => setView(v as View)} className="w-full mt-2">
+            <SplitBarList>
+              {visibleViewOptions.map((o) => (
+                <SplitBarTrigger key={o.value} value={o.value}>
+                  {o.icon} {t(o.labelKey)}
+                </SplitBarTrigger>
+              ))}
+            </SplitBarList>
+          </SplitBar>
+        )}
+
+        {resultsBody}
           </div>
         </div>
       </AppLayout>

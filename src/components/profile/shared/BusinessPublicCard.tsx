@@ -70,7 +70,7 @@ export function BusinessPublicCard({ vitanaId, className }: BusinessPublicCardPr
               <div className="flex-1 min-w-0">
                 <h4 className="text-sm font-medium leading-snug line-clamp-1">{item.product_title}</h4>
               </div>
-              <span className="text-xs font-semibold text-primary shrink-0 pr-1">
+              <span className="text-xs font-semibold text-primary shrink-0 pe-1">
                 {t("profile.business.viewProduct")}
               </span>
             </Link>

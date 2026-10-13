@@ -152,7 +152,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         <div className={`absolute inset-0 ${themeConfig.card.overlay} pointer-events-none transition-all duration-500 ease-in-out`} />
         
         {/* Top Right Corner - ID Chip (Theme Switcher Disabled - Focus is Exclusive) */}
-        <div className="absolute top-4 right-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
+        <div className="absolute top-4 end-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
           {/* User ID Chip */}
           <div className="px-3 py-1.5 rounded-full bg-gradient-to-br from-white/30 to-white/10 dark:from-gray-800/30 dark:to-gray-800/10 backdrop-blur-md border border-white/40 dark:border-gray-700/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
             <span className="text-xs font-mono font-semibold text-foreground/70 tracking-wide">🆔 {profile.id.slice(0, 8)}</span>
@@ -246,7 +246,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                 
                 {/* Premium percentile badge — real rank only (VTID-04498) */}
                 {standing && (
-                  <div className="absolute -top-1.5 -right-3 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
+                  <div className="absolute -top-1.5 -end-3 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
                     <div 
                       className="relative h-5 px-2.5 py-0.5 rounded-full
                                  bg-[color-mix(in_oklab,hsl(var(--accent))_20%,hsl(var(--background)))]
@@ -317,7 +317,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   onClick={() => window.open(profileUrl, '_blank')}
                   className={`rounded-full ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 shadow-[0_6px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] active:scale-100 ease-out`}
                 >
-                  <ExternalLink className="h-4 w-4 mr-2" />
+                  <ExternalLink className="h-4 w-4 me-2" />
                   <span className="font-medium">{t('screens.profile.viewPublicProfile')}</span>
                 </Button>
               </>
@@ -329,7 +329,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   onClick={handleFollowClick}
                   disabled={followLoading}
                 >
-                  <UserPlus className="h-4 w-4 mr-2" />
+                  <UserPlus className="h-4 w-4 me-2" />
                   {followLoading ? "..." : isFollowing ? "Following" : "Follow"}
                 </Button>
                 

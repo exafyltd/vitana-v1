@@ -81,13 +81,13 @@ export function EventsPreview({ limit = 2 }: { limit?: number }) {
                 key={e.id}
                 type="button"
                 onClick={() => navigate(`/comm/events-meetups?tab=hot&event=${e.id}`)}
-                className="text-left rounded-xl overflow-hidden bg-white/70 dark:bg-white/5 border border-amber-200/40 hover:shadow-md transition-shadow"
+                className="text-start rounded-xl overflow-hidden bg-white/70 dark:bg-white/5 border border-amber-200/40 hover:shadow-md transition-shadow"
               >
                 <div className={`h-20 relative ${e.image_url ? "" : GRADIENTS[i % GRADIENTS.length]}`}>
                   {e.image_url && (
                     <img src={e.image_url} alt="" className="absolute inset-0 w-full h-full object-cover" />
                   )}
-                  <div className="absolute top-2 left-2 bg-white/95 dark:bg-black/70 rounded-md px-1.5 py-1 text-center leading-tight shadow-sm">
+                  <div className="absolute top-2 start-2 bg-white/95 dark:bg-black/70 rounded-md px-1.5 py-1 text-center leading-tight shadow-sm">
                     <div className="text-[9px] uppercase font-bold text-muted-foreground">
                       {formatDate(e.start_time, "EEE")}
                     </div>

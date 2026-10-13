@@ -158,7 +158,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   disabled={loading === "export"}
                 >
                   <Download className="w-5 h-5 text-primary" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.exportHistory', 'Export History')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.exportHistoryDesc', 'Download your activity data (CSV/JSON)')}
@@ -175,7 +175,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   onClick={handleViewStatistics}
                 >
                   <BarChart3 className="w-5 h-5 text-accent" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.viewStatistics', 'View Statistics')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.viewStatisticsDesc', 'See insights, trends, and usage patterns')}
@@ -189,7 +189,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   onClick={handleAdvancedSearch}
                 >
                   <Search className="w-5 h-5 text-secondary" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.advancedSearch', 'Advanced Search')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.advancedSearchDesc', 'Filter by date range, category, keywords')}
@@ -213,7 +213,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   onClick={handleBulkActions}
                 >
                   <CheckSquare className="w-5 h-5 text-primary" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium flex items-center gap-2">
                       {translate('historyManagement.bulkActions', 'Bulk Actions')}
                       <span className="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">
@@ -232,7 +232,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   onClick={handleArchiveSettings}
                 >
                   <Archive className="w-5 h-5 text-accent" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.archiveSettings', 'Archive Settings')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.archiveSettingsDesc', 'Configure auto-archiving for old items')}
@@ -246,7 +246,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   onClick={handleManageCategories}
                 >
                   <FolderOpen className="w-5 h-5 text-secondary" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.manageCategories', 'Manage Categories')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.manageCategoriesDesc', 'Customize category labels and filters')}
@@ -270,7 +270,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   onClick={handlePrivacyControls}
                 >
                   <Shield className="w-5 h-5 text-primary" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.privacyControls', 'Privacy Controls')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.privacyControlsDesc', 'Manage what activities are tracked')}
@@ -285,7 +285,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   disabled={loading === "clear-old"}
                 >
                   <Clock className="w-5 h-5 text-accent" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium">{translate('historyManagement.clearOldHistory', 'Clear Old History')}</div>
                     <div className="text-xs text-muted-foreground">
                       {translate('historyManagement.clearOldHistoryDesc', 'Remove items older than 90 days')}
@@ -303,7 +303,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   disabled={loading === "delete-all"}
                 >
                   <Trash2 className="w-5 h-5 text-destructive" />
-                  <div className="flex-1 text-left">
+                  <div className="flex-1 text-start">
                     <div className="font-medium flex items-center gap-2">
                       {translate('historyManagement.deleteAllHistory', 'Delete All History')}
                       <span className="text-xs px-1.5 py-0.5 rounded-full bg-destructive/10 text-destructive">

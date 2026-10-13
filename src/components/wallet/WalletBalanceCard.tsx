@@ -189,7 +189,7 @@ export function WalletBalanceCard({
                 variant={primaryAction.variant || "default"}
                 onClick={primaryAction.onClick}
               >
-                {React.createElement(primaryAction.icon, { className: "h-4 w-4 mr-1" })}
+                {React.createElement(primaryAction.icon, { className: "h-4 w-4 me-1" })}
                 {primaryAction.label}
               </Button>
             )}
@@ -207,7 +207,7 @@ export function WalletBalanceCard({
                         setTimeout(() => action.onClick(), 0);
                       }}
                     >
-                      {React.createElement(action.icon, { className: "h-4 w-4 mr-2" })}
+                      {React.createElement(action.icon, { className: "h-4 w-4 me-2" })}
                       {action.label}
                     </DropdownMenuItem>
                   ))}

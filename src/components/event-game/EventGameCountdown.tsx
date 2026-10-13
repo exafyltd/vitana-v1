@@ -52,7 +52,7 @@ export function EventGameCountdown({ endsAt, onThreshold, className }: EventGame
   return (
     <div className={className}>
       <span className="text-4xl font-extrabold tabular-nums bg-gradient-to-r from-[#6CC5EC] to-[#1B8FC7] bg-clip-text text-transparent">{formatRemaining(remainingMs)}</span>
-      <span className="ml-2 text-sm text-muted-foreground uppercase tracking-wide">
+      <span className="ms-2 text-sm text-muted-foreground uppercase tracking-wide">
         {t('eventGame.home.countdownLeft')}
       </span>
     </div>

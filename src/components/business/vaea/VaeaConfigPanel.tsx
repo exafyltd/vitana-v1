@@ -168,7 +168,7 @@ function DisclosureField({ value, onSave, saving }: { value: string; onSave: (v:
             disabled={saving}
             onClick={() => onSave(draft)}
           >
-            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
+            {saving && <Loader2 className="h-4 w-4 me-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         )}
       </div>
@@ -200,7 +200,7 @@ function ExpertiseField({ zones, onSave, saving }: { zones: string[]; onSave: (v
             disabled={saving}
             onClick={() => onSave(draft.split(",").map((s) => s.trim()).filter(Boolean))}
           >
-            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
+            {saving && <Loader2 className="h-4 w-4 me-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         )}
       </div>

@@ -258,7 +258,7 @@ export function GoalNorthStar({
             style={{ width: RING_SIZE, height: RING_SIZE }}
           >
             <CalendarClock className="w-10 h-10 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground max-w-[12rem]">
+            <p className="text-sm text-muted-foreground max-w-48">
               {t("screens.autopilotdashboard.noDeadlineHint")}
             </p>
           </div>

@@ -25,7 +25,8 @@
       "purchases": "Zakupy",
       "pending": "Oczekujące wypłaty",
       "withdrawals": "Wypłaty",
-      "stakes": "Stakowanie"
+      "stakes": "Stakowanie",
+      "_pending_review": {}
     },
     "noActivity": "Brak aktywności",
     "noActivityDesc": "Twoje transakcje pojawią się tutaj.",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

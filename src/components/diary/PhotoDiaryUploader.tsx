@@ -169,7 +169,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
           size="lg"
           variant="outline"
         >
-          <Image className="w-5 h-5 mr-2" />{t('screens.diary.uploadTodaySEntry')}
+          <Image className="w-5 h-5 me-2" />{t('screens.diary.uploadTodaySEntry')}
         </Button>
       ) : (
         <div className="space-y-4">
@@ -183,7 +183,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
                 />
                 <button
                   onClick={() => removeFile(index)}
-                  className="absolute top-1 right-1 bg-background/80 rounded-full p-1 hover:bg-background"
+                  className="absolute top-1 end-1 bg-background/80 rounded-full p-1 hover:bg-background"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -204,14 +204,14 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
               disabled={isUploading}
               className="flex-1"
             >
-              <Upload className="w-4 h-4 mr-2" />
+              <Upload className="w-4 h-4 me-2" />
               {isUploading ? t('screens.diary.uploading') : t('screens.diary.saveEntry')}
             </Button>
             <Button
               onClick={() => fileInputRef.current?.click()}
               variant="outline"
             >
-              <Image className="w-4 h-4 mr-2" />{t('screens.diary.addMore')}
+              <Image className="w-4 h-4 me-2" />{t('screens.diary.addMore')}
             </Button>
           </div>
         </div>

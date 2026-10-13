@@ -310,7 +310,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
             {totalTickets === 0 ? formatPrice(0, summaryCurrency) : totalAmount === 0 ? translate('discount.free', 'Free') : (
               appliedCode && discountedTotal !== totalAmount ? (
                 <>
-                  <span className="line-through text-muted-foreground mr-2">{formatPrice(totalAmount, summaryCurrency)}</span>
+                  <span className="line-through text-muted-foreground me-2">{formatPrice(totalAmount, summaryCurrency)}</span>
                   <span className="text-green-600">{formatPrice(discountedTotal, summaryCurrency)}</span>
                 </>
               ) : formatPrice(totalAmount, summaryCurrency)
@@ -326,7 +326,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
         >
           {purchasing ? (
             <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 me-2 animate-spin" />
               {translate('eventCta.processing', 'Processing...')}
             </>
           ) : totalTickets === 0 ? (

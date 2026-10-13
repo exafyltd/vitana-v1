@@ -16,6 +16,11 @@ import { CommunityPostCard } from "@/components/home/CommunityPostCard";
 import { t } from "@/lib/i18n-toast";
 import type { PostFeedItem } from "@/lib/news-feed-ranker";
 import { attachedRefOf } from "@/lib/post-attachment";
+import AppLayout from "@/components/AppLayout";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { VCard } from "@/components/ui/vcard";
+import { FocusPostCard } from "@/components/home/desktop/FocusStageCard";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 async function fetchAuthor(userId: string): Promise<{ name: string; avatar: string | null }> {
   const { data } = await supabase
@@ -86,6 +91,43 @@ export default function PostDetail() {
     enabled: !!id,
     queryFn: () => fetchPost(src, id!),
   });
+  // VTID-05117 — Spotlight (desktop + flag): the `detail` archetype inside the
+  // app shell; the post is the screen's one spotlight card with the same like /
+  // comments / moderation controls as the News focus feed. Phones and flag-off
+  // keep the page below unchanged.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="detail"
+          header={{ title: t("screens.postDetail.title"), description: t("spotlightMember.post.desc") }}
+        >
+          {isLoading ? (
+            <ArchetypeSkeleton archetype="detail" />
+          ) : isError || !item ? (
+            <VCard
+              size="spotlight"
+              title={<h1>{t("screens.postDetail.notFound")}</h1>}
+              body={t("spotlightMember.post.notFoundDesc")}
+              // "/home/notif", not "/home" — see the back button below.
+              actions={<Button onClick={() => navigate("/home/notif")}>{t("spotlightMember.post.backToFeed")}</Button>}
+              data-post-not-found=""
+            />
+          ) : (
+            <FocusPostCard
+              item={item}
+              size="spotlight"
+              focused={false}
+              dimmed={false}
+              onOpenProfile={(userId) => navigate(`/u/${userId}`)}
+            />
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-4">

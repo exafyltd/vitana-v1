@@ -254,7 +254,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                             {entry.duration && (
                               <Badge variant="outline">{Math.round(entry.duration)}s</Badge>
                             )}
-                            <span className="text-xs text-muted-foreground ml-auto">
+                            <span className="text-xs text-muted-foreground ms-auto">
                               {formatDistanceToNow(new Date(entry.created_at), { addSuffix: true })}
                             </span>
                             <button

@@ -47,7 +47,7 @@ export function ComplianceForm() {
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
               {t('screens.profile.thisSectionOnlyAvailableForUsers')} 
-              <Button variant="link" className="h-auto p-0 ml-1">
+              <Button variant="link" className="h-auto p-0 ms-1">
                 {t('screens.profile.switchProfessionalRole')}
               </Button>
             </AlertDescription>
@@ -113,7 +113,7 @@ export function ComplianceForm() {
               ))}
             </div>
             <Button variant="outline" onClick={handleLicenseUpload}>
-              <Upload className="w-4 h-4 mr-2" />
+              <Upload className="w-4 h-4 me-2" />
               {t('screens.profile.uploadLicense')}
             </Button>
           </div>
@@ -131,7 +131,7 @@ export function ComplianceForm() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-auto p-0 ml-1"
+                className="h-auto p-0 ms-1"
                 onClick={() => removeSpecialty(specialty)}
               >
                 <X className="w-3 h-3" />

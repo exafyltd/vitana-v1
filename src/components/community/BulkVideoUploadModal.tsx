@@ -108,7 +108,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
             alt={t('screens.community.selectedThumbnail')} 
             className="w-full h-full object-cover"
           />
-          <Badge className="absolute top-2 right-2 text-xs">
+          <Badge className="absolute top-2 end-2 text-xs">
             {item.thumbnail.type === 'auto' ? 'Auto' : item.thumbnail.type === 'frame' ? 'Frame' : 'Custom'}
           </Badge>
         </div>
@@ -118,7 +118,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
       {isLoadingThumbs ? (
         <div className="flex items-center justify-center py-4">
           <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">{t('screens.community.generatingThumbnails')}</span>
+          <span className="ms-2 text-sm text-muted-foreground">{t('screens.community.generatingThumbnails')}</span>
         </div>
       ) : autoThumbnails.length > 0 && (
         <div className="space-y-2">
@@ -180,7 +180,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
               variant="outline"
               onClick={handleCaptureFrame}
             >
-              <Film className="w-4 h-4 mr-1" />
+              <Film className="w-4 h-4 me-1" />
               {t('screens.community.useFrame')}
             </Button>
           </div>
@@ -203,7 +203,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
           onClick={() => fileInputRef.current?.click()}
           className="w-full"
         >
-          <ImageIcon className="w-4 h-4 mr-2" />
+          <ImageIcon className="w-4 h-4 me-2" />
           {t('screens.community.uploadCustomImage')}
         </Button>
       </div>
@@ -295,13 +295,13 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
               <p className="font-medium text-sm truncate">{item.title}</p>
               {autoMetadata.loading && item.status === 'queued' && (
                 <Badge className="text-xs bg-violet-100 text-violet-700 border-0">
-                  <Sparkles className="w-3 h-3 mr-1 animate-pulse" />
+                  <Sparkles className="w-3 h-3 me-1 animate-pulse" />
                   {t('screens.community.analyzing')}
                 </Badge>
               )}
               {autoApplied && !autoMetadata.loading && item.status === 'queued' && (
                 <Badge className="text-xs bg-violet-100 text-violet-700 border-0">
-                  <Sparkles className="w-3 h-3 mr-1" />
+                  <Sparkles className="w-3 h-3 me-1" />
                   {t('screens.community.smartfilled')}
                 </Badge>
               )}
@@ -363,7 +363,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
               >
                 {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 {!isExpanded && item.hasGenericTitle && item.status === 'queued' && (
-                  <span className="ml-1 text-xs">{t('screens.community.edit')}</span>
+                  <span className="ms-1 text-xs">{t('screens.community.edit')}</span>
                 )}
               </Button>
             </CollapsibleTrigger>
@@ -625,13 +625,13 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">
                     {t('screens.community.use')} <code className="px-1 py-0.5 bg-muted rounded">{'{base}'}</code>{t('screens.community.forFilename')} 
-                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{index}'}</code>{t('screens.community.forNumber')} 
-                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{date}'}</code>{t('screens.community.forTodaySDate')}
+                    <code className="px-1 py-0.5 bg-muted rounded ms-1">{'{index}'}</code>{t('screens.community.forNumber')} 
+                    <code className="px-1 py-0.5 bg-muted rounded ms-1">{'{date}'}</code>{t('screens.community.forTodaySDate')}
                   </p>
                   {titlePattern !== '{base}' && items.length > 0 && (
                     <div className="bg-background p-2 rounded text-xs border border-border">
                       <strong className="text-muted-foreground">{t('screens.community.preview')}</strong> 
-                      <span className="ml-2 text-foreground">
+                      <span className="ms-2 text-foreground">
                         {applyTitlePattern(items[0]?.title.replace(/download/i, 'Video') || 'Example', 0)}
                       </span>
                     </div>
@@ -792,11 +792,11 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 >
                   {isUploading ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.publishing')}
+                      <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.community.publishing')}
                     </>
                   ) : items.some(item => item.status === 'queued' && item.hasGenericTitle) ? (
                     <>
-                      <AlertCircle className="w-4 h-4 mr-2" />
+                      <AlertCircle className="w-4 h-4 me-2" />
                       {t('screens.community.fixTitlesBeforeUploading')}
                     </>
                   ) : (

@@ -4,6 +4,8 @@
  * mentionable (service/test accounts), never a member without a name.
  */
 import { describe, it, expect, vi } from "vitest";
+// VTID-05117: the page now reads the Spotlight flag; this suite covers the legacy (flag-off) screen.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 import { render, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 

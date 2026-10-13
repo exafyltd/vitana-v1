@@ -74,7 +74,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'LinkedIn', 
       platform: 'linkedin',
-      icon: <LinkedInIcon className="h-[32px] w-[32px]" connected={true} />, 
+      icon: <LinkedInIcon className="h-8 w-8" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.15)]',
       urlPattern: /linkedin\.com/i,
       brandColor: '#0A66C2',
@@ -86,7 +86,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'Instagram', 
       platform: 'instagram',
-      icon: <InstagramIcon className="h-[32px] w-[32px]" connected={true} />, 
+      icon: <InstagramIcon className="h-8 w-8" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(221,42,123,0.12)]',
       urlPattern: /instagram\.com/i,
       brandColor: '#DD2A7B',
@@ -98,7 +98,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'X', 
       platform: 'x',
-      icon: <XIcon className="h-[32px] w-[32px]" />, 
+      icon: <XIcon className="h-8 w-8" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(15,20,25,0.15)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]',
       urlPattern: /twitter\.com|x\.com/i,
       brandColor: '#0F1419',
@@ -110,7 +110,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'TikTok', 
       platform: 'tiktok',
-      icon: <TikTokIcon className="h-[32px] w-[32px]" connected={true} />, 
+      icon: <TikTokIcon className="h-8 w-8" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(0,242,234,0.15)]',
       urlPattern: /tiktok\.com/i,
       brandColor: '#00f2ea',
@@ -122,7 +122,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'YouTube', 
       platform: 'youtube',
-      icon: <YouTubeIcon className="h-[32px] w-[32px]" connected={true} />, 
+      icon: <YouTubeIcon className="h-8 w-8" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(255,0,0,0.15)]',
       urlPattern: /youtube\.com|youtu\.be/i,
       brandColor: '#FF0000',
@@ -134,7 +134,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'Facebook', 
       platform: 'facebook',
-      icon: <FacebookIcon className="h-[32px] w-[32px]" connected={true} />, 
+      icon: <FacebookIcon className="h-8 w-8" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.15)]',
       urlPattern: /facebook\.com/i,
       brandColor: '#1877F2',
@@ -182,14 +182,14 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
         
         {/* Left edge glow (ambient light bleed for dark theme) */}
         {themeConfig.backCard.leftEdgeGlow && (
-          <div className={`absolute left-0 top-0 bottom-0 w-32 ${themeConfig.backCard.leftEdgeGlow} opacity-60 pointer-events-none transition-all duration-500 ease-in-out`} />
+          <div className={`absolute start-0 top-0 bottom-0 w-32 ${themeConfig.backCard.leftEdgeGlow} opacity-60 pointer-events-none transition-all duration-500 ease-in-out`} />
         )}
         
         {/* Themed corner glow */}
-        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-500 ease-in-out`} />
+        <div className={`absolute top-0 end-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-500 ease-in-out`} />
         
         {/* Themed top stripe */}
-        <div className={`absolute top-0 left-0 right-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-500 ease-in-out`} />
+        <div className={`absolute top-0 start-0 end-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-500 ease-in-out`} />
         
         <div className="relative z-10 text-center mb-8">
           <h2 className={`text-2xl font-bold mb-2 transition-colors duration-500 ${themeConfig.backCard.textHeader || 'text-foreground'}`}>
@@ -256,7 +256,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                 aria-label={connected ? `Open ${platform.name} profile` : undefined}
               >
                 {/* Icon with colored ring for connected, green check overlay */}
-                <div className="relative flex items-center justify-center h-[40px] mb-3">
+                <div className="relative flex items-center justify-center h-10 mb-3">
                   <div 
                     className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:rotate-3' : ''}`}
                   >
@@ -283,15 +283,15 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                       }}
                     >
                       {platform.platform === 'instagram' ? (
-                        <InstagramIcon className="h-[32px] w-[32px]" connected={connected} />
+                        <InstagramIcon className="h-8 w-8" connected={connected} />
                       ) : platform.platform === 'linkedin' ? (
-                        <LinkedInIcon className="h-[32px] w-[32px]" connected={connected} />
+                        <LinkedInIcon className="h-8 w-8" connected={connected} />
                       ) : platform.platform === 'tiktok' ? (
-                        <TikTokIcon className="h-[32px] w-[32px]" connected={connected} />
+                        <TikTokIcon className="h-8 w-8" connected={connected} />
                       ) : platform.platform === 'youtube' ? (
-                        <YouTubeIcon className="h-[32px] w-[32px]" connected={connected} />
+                        <YouTubeIcon className="h-8 w-8" connected={connected} />
                       ) : platform.platform === 'facebook' ? (
-                        <FacebookIcon className="h-[32px] w-[32px]" connected={connected} />
+                        <FacebookIcon className="h-8 w-8" connected={connected} />
                       ) : (
                         platform.icon
                       )}
@@ -299,7 +299,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                     
                     {/* Green check overlay for connected */}
                     {connected && (
-                      <div className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-[0_4px_12px_rgba(34,197,94,0.4)]">
+                      <div className="absolute -top-1 -end-1 z-20 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-[0_4px_12px_rgba(34,197,94,0.4)]">
                         <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
@@ -413,8 +413,8 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
         )}
 
         {/* ID Card decorative elements */}
-        <div className="absolute top-4 right-4 text-xs text-muted-foreground/50">{t('screens.profile.idValue0', { value0: profile.id.slice(0, 8) })}</div>
-        <div className="absolute bottom-4 left-4 text-xs text-muted-foreground/50">
+        <div className="absolute top-4 end-4 text-xs text-muted-foreground/50">{t('screens.profile.idValue0', { value0: profile.id.slice(0, 8) })}</div>
+        <div className="absolute bottom-4 start-4 text-xs text-muted-foreground/50">
           @{profile.handle}
         </div>
       </div>

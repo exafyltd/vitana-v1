@@ -46,16 +46,16 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={handlePrintTickets}>
-          <Printer className="w-4 h-4 mr-2" />
+          <Printer className="w-4 h-4 me-2" />
           {t('screens.business.printTickets')}
         </Button>
         <Button variant="outline" size="sm" onClick={handleResendConfirmation}>
-          <Mail className="w-4 h-4 mr-2" />
+          <Mail className="w-4 h-4 me-2" />
           {t('screens.business.resendConfirmation')}
         </Button>
         {order.status === "completed" && (
           <Button variant="outline" size="sm" onClick={handleRefund} className="text-destructive hover:text-destructive">
-            <RefreshCw className="w-4 h-4 mr-2" />
+            <RefreshCw className="w-4 h-4 me-2" />
             {t('screens.business.refund')}
           </Button>
         )}
@@ -152,10 +152,10 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
             <table className="w-full">
               <thead>
                 <tr className="bg-muted/50 text-sm">
-                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.ticket')}</th>
-                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.name')}</th>
-                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.type')}</th>
-                  <th className="text-right px-4 py-2 font-semibold">{t('screens.business.price')}</th>
+                  <th className="text-start px-4 py-2 font-semibold">{t('screens.business.ticket')}</th>
+                  <th className="text-start px-4 py-2 font-semibold">{t('screens.business.name')}</th>
+                  <th className="text-start px-4 py-2 font-semibold">{t('screens.business.type')}</th>
+                  <th className="text-end px-4 py-2 font-semibold">{t('screens.business.price')}</th>
                   <th className="text-center px-4 py-2 font-semibold">{t('screens.business.checkin')}</th>
                 </tr>
               </thead>
@@ -169,13 +169,13 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                     <td className="px-4 py-3">
                       <Badge variant="outline">{order.ticket_type_name}</Badge>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-end">
                       ${order.unit_price.toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-center">
                       {order.checked_in_at ? (
                         <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                          <Check className="w-3 h-3 mr-1" />
+                          <Check className="w-3 h-3 me-1" />
                           {t('screens.business.checked')}
                         </Badge>
                       ) : (

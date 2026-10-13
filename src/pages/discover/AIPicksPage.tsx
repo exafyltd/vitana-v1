@@ -27,6 +27,12 @@ import { ProductImage } from '@/components/discover/ProductImage';
 import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
 import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { discoverNavigation } from '@/config/navigation';
+import { ProductVCard } from '@/components/discover/spotlight/DiscoverCards';
+import { DiscoverEmpty, DiscoverGridSkeleton } from '@/components/discover/spotlight/DiscoverStates';
+import { DISCOVER_GRID } from '@/components/discover/spotlight/storefront-model';
 
 interface AIRecommendation {
   id: string;
@@ -60,6 +66,8 @@ function AIPicksInner() {
   const { selectProduct } = useProductSelection();
   const [activeFilter, setActiveFilter] = useState('all');
   const [error, setError] = useState(false);
+  // VTID-05117 — Spotlight (desktop + flag): collection of standard VCards; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
 
   const { data: feedData, isLoading } = useMarketplaceFeed({ limit: 24 });
   
@@ -230,6 +238,52 @@ function AIPicksInner() {
       </Card>
     );
   };
+
+  // The feed only yields supplements and deals (services/experts never come back), and the legacy
+  // "match %" falls back to an invented 70 % — so the Spotlight grid offers the real filters only and
+  // shows no match percentage (SR-24, SR-26).
+  if (spotlight) {
+    const filter = activeFilter === 'supplement' || activeFilter === 'deal' ? activeFilter : 'all';
+    const shown = filter === 'all' ? aiRecommendations : aiRecommendations.filter((rec) => rec.type === filter);
+    return (
+      <AppLayout>
+        <SEO title={t('screens.discover.aiPicksVitana')} description={translate('discover.aiPicks.description')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: discoverNavigation }}
+          header={{ title: translate('discover.aiPicks.title'), description: translate('discover.aiPicks.description'), emoji: "🧠" }}
+          tabs={{
+            value: filter,
+            onValueChange: setActiveFilter,
+            items: [
+              { value: 'all', label: translate('discover.filters.all') },
+              { value: 'supplement', label: translate('discover.filters.supplements') },
+              { value: 'deal', label: translate('discover.filters.deals') },
+            ],
+          }}
+        >
+          {isLoading ? (
+            <DiscoverGridSkeleton count={8} />
+          ) : shown.length === 0 ? (
+            <DiscoverEmpty
+              Icon={Brain}
+              titleKey="discover.aiPicks.noRecommendations"
+              descriptionKey="discover.aiPicks.noRecommendationsDesc"
+              actionKey="discover.aiPicks.viewAllPicks"
+              onAction={() => setActiveFilter('all')}
+            />
+          ) : (
+            <ul className={DISCOVER_GRID}>
+              {shown.map((rec) =>
+                rec._product ? <ProductVCard key={rec.id} product={rec._product} onOpen={selectProduct} /> : null,
+              )}
+            </ul>
+          )}
+        </ScreenFrame>
+        <ProductDetailsDrawer />
+      </AppLayout>
+    );
+  }
 
   if (isLoading) {
     return (

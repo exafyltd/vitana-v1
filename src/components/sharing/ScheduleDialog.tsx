@@ -87,7 +87,7 @@ export function ScheduleDialog({
           <Button onClick={handleConfirm} disabled={!selectedDate || isLoading}>
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.sharing.scheduling')}
+                <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.sharing.scheduling')}
               </>
             ) : (
               "Schedule Post"

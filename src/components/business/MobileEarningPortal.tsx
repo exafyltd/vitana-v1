@@ -102,7 +102,7 @@ export function MobileEarningPortal({
             onClick={() => setIsOpen(true)}
             className="mt-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-md"
           >
-            <Rocket className="w-4 h-4 mr-2" />
+            <Rocket className="w-4 h-4 me-2" />
             {translate('business.earning.startEarning')}
           </Button>
         </div>

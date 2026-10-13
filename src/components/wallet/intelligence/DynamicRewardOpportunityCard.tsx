@@ -146,7 +146,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
               className={`p-3 rounded-lg border bg-gradient-to-r ${config.gradient} hover:scale-[1.02] transition-all duration-200 cursor-pointer group relative`}
             >
               {/* Urgency indicator */}
-              <div className={`absolute top-2 right-2 w-2 h-2 rounded-full ${getUrgencyColor(opportunity.urgency)}`} />
+              <div className={`absolute top-2 end-2 w-2 h-2 rounded-full ${getUrgencyColor(opportunity.urgency)}`} />
               
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -223,7 +223,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
 
         {/* Action Button */}
         <Button className="w-full" variant="default">
-          <Gift className="h-4 w-4 mr-2" />
+          <Gift className="h-4 w-4 me-2" />
           {t('screens.wallet.viewAllOpportunities')}
         </Button>
       </CardContent>

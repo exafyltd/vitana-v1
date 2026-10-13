@@ -51,7 +51,7 @@ export function PhotoCarouselModal({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-4 right-4 z-50 text-white hover:bg-white/20"
+          className="absolute top-4 end-4 z-50 text-white hover:bg-white/20"
           onClick={() => onOpenChange(false)}
         >
           <X className="h-6 w-6" />
@@ -102,7 +102,7 @@ export function PhotoCarouselModal({
                 className="text-white hover:bg-white/20"
                 onClick={() => handleDownload(images[currentIndex])}
               >
-                <Download className="h-4 w-4 mr-2" />
+                <Download className="h-4 w-4 me-2" />
                 {t('screens.diary.download')}
               </Button>
             </div>

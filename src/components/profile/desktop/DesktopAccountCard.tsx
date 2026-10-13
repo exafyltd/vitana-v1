@@ -38,7 +38,7 @@ export function DesktopAccountCard({
         <button
           onClick={onEdit}
           aria-label={t('screens.profile.editAccountDetails')}
-          className="absolute top-4 right-4 h-9 w-9 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground z-10 flex items-center justify-center transition-colors"
+          className="absolute top-4 end-4 h-9 w-9 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground z-10 flex items-center justify-center transition-colors"
         >
           <Pencil className="h-4 w-4" />
         </button>

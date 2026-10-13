@@ -25,7 +25,8 @@
       "purchases": "Compras",
       "pending": "Pagamentos Pendentes",
       "withdrawals": "Saques",
-      "stakes": "Aposta"
+      "stakes": "Aposta",
+      "_pending_review": {}
     },
     "noActivity": "Nenhuma atividade ainda",
     "noActivityDesc": "Suas transações aparecerão aqui.",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

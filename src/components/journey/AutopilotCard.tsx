@@ -30,7 +30,7 @@ export function AutopilotCard({
       <button
         type="button"
         onClick={onOpen}
-        className="w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+        className="w-full text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
         aria-label={t("screens.autopilotdashboard.openAutopilot")}
       >
         <CardContent className="p-4 space-y-3">

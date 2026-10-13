@@ -37,7 +37,7 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         
         {/* Content Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+        <div className="absolute bottom-0 start-0 end-0 p-4 text-white">
           <h4 className="font-semibold text-base mb-2 line-clamp-2">
             {recipe.title}
           </h4>
@@ -56,7 +56,7 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
         
         {/* Tags (top-right) */}
         {recipe.tags.length > 0 && (
-          <div className="absolute top-2 right-2 flex gap-1">
+          <div className="absolute top-2 end-2 flex gap-1">
             {recipe.tags.slice(0, 2).map(tag => (
               <Badge key={tag} variant="outline" className="bg-white/90 backdrop-blur-sm text-xs border-transparent">
                 {tag}

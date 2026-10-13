@@ -139,7 +139,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               
               {/* Title Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
+              <div className="absolute bottom-0 start-0 end-0 p-6">
                 <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
                   {recipe.title}
                 </h2>
@@ -148,7 +148,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {/* Close Button (top-right) */}
               <button
                 onClick={() => onOpenChange(false)}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
+                className="absolute top-4 end-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
               >
                 <X className="w-5 h-5 text-white" />
               </button>
@@ -156,7 +156,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {/* Back Arrow (mobile only) */}
               <button
                 onClick={() => onOpenChange(false)}
-                className="md:hidden absolute top-4 left-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
+                className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
               >
                 <ArrowLeft className="w-5 h-5 text-white" />
               </button>
@@ -239,7 +239,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                     size="sm"
                     onClick={() => notifySuccess('toasts.health.addedShoppingList')}
                   >
-                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    <ShoppingCart className="w-4 h-4 me-2" />
                     {t('screens.health.addList')}
                   </Button>
                 </div>
@@ -260,7 +260,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                           <strong>{scaleQuantity(ing.qty, scaleFactor)}</strong> {ing.item}
                         </span>
                         {ing.optional && (
-                          <Badge variant="outline" className="ml-2 text-xs">{t('screens.health.optional')}</Badge>
+                          <Badge variant="outline" className="ms-2 text-xs">{t('screens.health.optional')}</Badge>
                         )}
                         {ing.notes && (
                           <p className="text-xs text-muted-foreground mt-1">{ing.notes}</p>
@@ -313,7 +313,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                       return (
                         <button
                           key={idx}
-                          className="w-full p-4 rounded-xl border border-border bg-gradient-to-r from-muted/30 to-muted/10 hover:from-muted/50 hover:to-muted/30 transition-all hover:scale-[1.02] hover:shadow-md flex items-start gap-3 text-left"
+                          className="w-full p-4 rounded-xl border border-border bg-gradient-to-r from-muted/30 to-muted/10 hover:from-muted/50 hover:to-muted/30 transition-all hover:scale-[1.02] hover:shadow-md flex items-start gap-3 text-start"
                           onClick={() => {
                             toast.info(`Applying: ${swap.label}`);
                           }}

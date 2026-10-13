@@ -25,6 +25,8 @@ import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 import { setI18nLocale, t } from '@/lib/i18n-toast';
 import { redirectViaSystemBrowser } from '@/lib/webview';
 import { APP_STORE_URL, PLAY_STORE_URL, PLAY_STORE_MARKET_URL } from '@/lib/store-links';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 /** GA locales only — draft locales fall back to normal detection (de). */
 const LANG_TO_LOCALE: Record<string, string> = {
@@ -60,13 +62,13 @@ function StoreBadge({ href, marketHref, src, alt }: { href: string; marketHref?:
 
 function FeatureRow({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="flex items-start gap-3 text-left">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+    <div className="flex items-start gap-3 text-start">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-category-2/15 text-category-2">
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{title}</p>
-        <p className="text-sm text-slate-500 dark:text-slate-400">{body}</p>
+        <p className="text-sm font-semibold text-foreground">{title}</p>
+        <p className="text-sm text-muted-foreground">{body}</p>
       </div>
     </div>
   );
@@ -75,7 +77,7 @@ function FeatureRow({ icon, title, body }: { icon: React.ReactNode; title: strin
 /** White-bezel phone frame around a real app screenshot. */
 function PhoneShot({ src, className, fill }: { src: string; className?: string; fill?: boolean }) {
   return (
-    <div className={`overflow-hidden rounded-[1.75rem] border-4 border-white bg-white shadow-2xl shadow-indigo-900/20 dark:border-slate-700 dark:bg-slate-800 ${className ?? ''}`}>
+    <div className={`overflow-hidden rounded-[1.75rem] border-4 border-card bg-card shadow-2xl shadow-primary/20 dark:border-border ${className ?? ''}`}>
       <img src={src} alt="" aria-hidden="true" className={fill ? 'block h-full w-full object-cover object-top' : 'block w-full'} />
     </div>
   );
@@ -83,6 +85,7 @@ function PhoneShot({ src, className, fill }: { src: string; className?: string; 
 
 export default function DownloadFlyer() {
   const [searchParams] = useSearchParams();
+  const spotlight = useSpotlightEnabled();
   const [, bump] = useReducer((x: number) => x + 1, 0);
 
   // Re-render once a lazily-loaded locale catalog (en) finishes loading.
@@ -97,11 +100,11 @@ export default function DownloadFlyer() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-sky-100 via-indigo-100/70 to-rose-50 dark:from-slate-950 dark:via-indigo-950 dark:to-slate-900">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-surface-page-via via-surface-page-from to-surface-page-to">
       {/* Iridescent pearl highlights */}
-      <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl dark:bg-violet-500/10" />
-      <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-96 h-72 w-72 rounded-full bg-sky-300/40 blur-3xl dark:bg-sky-500/10" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-24 left-1/4 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl dark:bg-amber-500/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute -start-24 top-24 h-72 w-72 rounded-full bg-category-2/20 blur-3xl dark:bg-category-2/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute -end-24 top-96 h-72 w-72 rounded-full bg-category-7/20 blur-3xl dark:bg-category-7/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-24 start-1/4 h-72 w-72 rounded-full bg-category-5/20 blur-3xl dark:bg-category-5/10" />
 
       <SEO
         title={t('screens.downloadFlyer.seoTitle')}
@@ -109,54 +112,58 @@ export default function DownloadFlyer() {
         canonical="https://vitanaland.com/download"
       />
 
+      {/* VTID-05117: Spotlight on → the flyer column inside the manifest's `collection` frame. */}
+      <FrameWhen on={spotlight} archetype="collection" className="relative">
       <div className="relative mx-auto flex max-w-md flex-col items-center px-6 py-12 text-center">
         {/* Brand */}
-        <h1 className="bg-gradient-to-r from-indigo-700 via-violet-600 to-sky-500 bg-clip-text text-4xl font-light tracking-[0.4em] text-transparent dark:from-indigo-300 dark:via-violet-300 dark:to-sky-300">
+        <h1 className="bg-gradient-to-r from-category-3 via-category-2 to-category-7 bg-clip-text text-4xl font-light tracking-[0.4em] text-transparent">
           {t('screens.downloadFlyer.brandName')}
         </h1>
-        <div className="mt-3 flex w-32 items-center gap-2 text-violet-400" aria-hidden="true">
+        <div className="mt-3 flex w-32 items-center gap-2 text-category-2/70" aria-hidden="true">
           <span className="h-px flex-1 bg-current" />
           <Heart className="h-3 w-3 fill-current" />
           <span className="h-px flex-1 bg-current" />
         </div>
-        <p className="mt-1 font-serif italic text-amber-600/90 dark:text-amber-400/90">
+        <p className="mt-1 font-serif italic text-category-5">
           {t('screens.downloadFlyer.brandSubline')}
         </p>
 
         {/* Headline */}
-        <h2 className="mt-8 font-serif text-[2.6rem] font-bold leading-[1.15] text-indigo-950 dark:text-indigo-50">
+        <h2 className="mt-8 font-serif text-[2.6rem] font-bold leading-[1.15] text-foreground">
           {t('screens.downloadFlyer.headline')}
         </h2>
-        <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+        <p className="mt-4 text-lg text-muted-foreground">
           {t('screens.downloadFlyer.tagline')}
         </p>
 
         {/* Phone collage — real app screens */}
+        {/* design-allow-next-line: fixed stage height of the three absolutely positioned phone mock-ups (a composition, not a card) */}
         <div className="relative mt-12 h-[440px] w-full">
           {/* Side cards mirror each other: same size (w-36 h-64), same top
               offset, opposite edge inset and rotation as the orb card. */}
-          <PhoneShot src="/images/flyer/phone-health.jpg" fill className="absolute -left-2 top-16 h-64 w-36 -rotate-6" />
+          <PhoneShot src="/images/flyer/phone-health.jpg" fill className="absolute -start-2 top-16 h-64 w-36 -rotate-6" />
           {/* Vitana orb card — replica of the real "Vitana speaking" screen:
               steel-blue orb (vitana-orb-clean.svg) with amber glow on a
               near-black screen, caption + mic/close controls. */}
-          <div className="absolute -right-2 top-16 flex h-64 w-36 rotate-6 flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[1.75rem] border-4 border-white bg-[#101318] shadow-2xl shadow-indigo-900/30 dark:border-slate-700">
+          {/* VTID-05117: the replica app screen is dark in both themes — dark-theme tokens in a `dark` scope. */}
+          <div className="dark absolute -end-2 top-16 flex h-64 w-36 rotate-6 flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[1.75rem] border-4 border-foreground bg-background shadow-2xl shadow-primary/30">
             <div className="relative">
-              <div aria-hidden="true" className="absolute inset-0 -m-4 rounded-full bg-amber-500/60 blur-xl" />
+              <div aria-hidden="true" className="absolute inset-0 -m-4 rounded-full bg-category-5/60 blur-xl" />
               <img
                 src="/vitana-orb-clean.svg"
                 alt={t('screens.vitanaIdentity.orbAlt')}
                 className="relative h-20 w-20"
               />
             </div>
-            <p className="text-[9px] font-medium text-amber-400/90">
+            <p className="text-[9px] font-medium text-category-5">
               {t('screens.common.vitanaSpeaking')}
             </p>
             <div aria-hidden="true" className="mt-1 flex gap-2.5">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1e3a5f]">
-                <Mic className="h-3.5 w-3.5 text-sky-300" />
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-category-3/30">
+                <Mic className="h-3.5 w-3.5 text-category-7" />
               </span>
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a2f36]">
-                <X className="h-3.5 w-3.5 text-slate-300" />
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted">
+                <X className="h-3.5 w-3.5 text-muted-foreground" />
               </span>
             </div>
           </div>
@@ -164,7 +171,7 @@ export default function DownloadFlyer() {
         </div>
 
         {/* Features */}
-        <div className="z-10 -mt-6 w-full space-y-5 rounded-[2rem] bg-white/70 p-6 shadow-lg shadow-indigo-900/10 backdrop-blur-md dark:bg-white/5">
+        <div className="z-10 -mt-6 w-full space-y-5 rounded-[2rem] bg-card/70 p-6 shadow-lg shadow-primary/10 backdrop-blur-md dark:bg-card/5">
           <FeatureRow
             icon={<Compass className="h-5 w-5" />}
             title={t('screens.downloadFlyer.featureJourneysTitle')}
@@ -188,16 +195,16 @@ export default function DownloadFlyer() {
         </div>
 
         {/* Join card */}
-        <div className="mt-8 w-full rounded-[2rem] bg-white/60 p-8 shadow-lg shadow-indigo-900/10 backdrop-blur-md dark:bg-white/5">
-          <p className="bg-gradient-to-r from-indigo-800 via-violet-700 to-sky-600 bg-clip-text font-serif text-3xl font-bold text-transparent dark:from-indigo-200 dark:via-violet-200 dark:to-sky-200">
+        <div className="mt-8 w-full rounded-[2rem] bg-card/60 p-8 shadow-lg shadow-primary/10 backdrop-blur-md dark:bg-card/5">
+          <p className="bg-gradient-to-r from-category-3 via-category-2 to-category-7 bg-clip-text font-serif text-3xl font-bold text-transparent">
             {t('screens.downloadFlyer.joinTitle')}
           </p>
-          <div className="mx-auto mt-3 flex w-24 items-center gap-2 text-violet-400" aria-hidden="true">
+          <div className="mx-auto mt-3 flex w-24 items-center gap-2 text-category-2/70" aria-hidden="true">
             <span className="h-px flex-1 bg-current" />
             <Heart className="h-3 w-3 fill-current" />
             <span className="h-px flex-1 bg-current" />
           </div>
-          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+          <p className="mt-3 text-sm text-muted-foreground">
             {t('screens.downloadFlyer.joinSubtitle')}
           </p>
         </div>
@@ -220,6 +227,7 @@ export default function DownloadFlyer() {
           />
         </div>
       </div>
+      </FrameWhen>
     </div>
   );
 }

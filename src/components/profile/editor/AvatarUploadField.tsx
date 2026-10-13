@@ -122,7 +122,7 @@ export function AvatarUploadField({
           onClick={handleClick}
           disabled={uploading}
         >
-          <Upload className="w-4 h-4 mr-2" />
+          <Upload className="w-4 h-4 me-2" />
           {uploading ? "Uploading…" : "Upload"}
         </Button>
         {value.url && (
@@ -133,7 +133,7 @@ export function AvatarUploadField({
             onClick={() => setShowPositioner(true)}
             disabled={uploading}
           >
-            <Move className="w-4 h-4 mr-2" />
+            <Move className="w-4 h-4 me-2" />
             {t('screens.profile.reposition')}
           </Button>
         )}
@@ -147,7 +147,7 @@ export function AvatarUploadField({
             }
             disabled={uploading}
           >
-            <X className="w-4 h-4 mr-2" />
+            <X className="w-4 h-4 me-2" />
             {t('screens.profile.remove')}
           </Button>
         )}

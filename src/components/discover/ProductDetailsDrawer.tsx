@@ -103,7 +103,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
           sizeClass="w-full h-64 md:h-72"
         />
         {p.availability && p.availability !== "in_stock" && (
-          <Badge className="absolute top-3 right-3 bg-red-500 text-white">
+          <Badge className="absolute top-3 end-3 bg-red-500 text-white">
             {p.availability === "out_of_stock" ? "Out of Stock" : p.availability}
           </Badge>
         )}
@@ -134,7 +134,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
             {p.subcategory && <Badge variant="secondary">{p.subcategory}</Badge>}
             <Link
               to={`/discover/product/${p.id}`}
-              className="ml-auto text-xs text-primary hover:underline inline-flex items-center gap-0.5"
+              className="ms-auto text-xs text-primary hover:underline inline-flex items-center gap-0.5"
               onClick={() => onClose()}
             >{t('screens.discover.openFullPage')} <ExternalLink className="w-3 h-3" />
             </Link>
@@ -300,7 +300,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
                         {e.title ?? e.url}
                       </a>
                       {e.source_type && (
-                        <Badge variant="outline" className="ml-2 text-[10px] capitalize">
+                        <Badge variant="outline" className="ms-2 text-[10px] capitalize">
                           {e.source_type.replace(/_/g, " ")}
                         </Badge>
                       )}
@@ -320,7 +320,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
       </div>
 
       {/* Sticky action bar */}
-      <div className="sticky bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur px-5 py-3 flex gap-2">
+      <div className="sticky bottom-0 start-0 end-0 border-t bg-background/95 backdrop-blur px-5 py-3 flex gap-2">
         <AddToCartButton
           item={{
             item_type: "product",
@@ -335,7 +335,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
         />
         <Button asChild variant="outline" className="flex-shrink-0">
           <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-            {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
+            {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ms-1.5" />
           </a>
         </Button>
         <RecommendButton productId={p.id} variant="cta" size="sm" className="flex-shrink-0" />

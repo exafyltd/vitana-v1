@@ -55,12 +55,12 @@ export function NextScheduledPosts() {
         {
           label: isPaused ? 'Resume' : 'Pause',
           onClick: () => isPaused ? handleResume(scheduled.id) : handlePause(scheduled.id),
-          icon: isPaused ? <Play className="w-4 h-4 mr-2" /> : <Pause className="w-4 h-4 mr-2" />,
+          icon: isPaused ? <Play className="w-4 h-4 me-2" /> : <Pause className="w-4 h-4 me-2" />,
         },
         {
           label: 'Cancel',
           onClick: () => handleCancel(scheduled.id),
-          icon: <X className="w-4 h-4 mr-2" />,
+          icon: <X className="w-4 h-4 me-2" />,
         }
       ],
       expandedContent: scheduled.channels && scheduled.channels.length > 0 ? (

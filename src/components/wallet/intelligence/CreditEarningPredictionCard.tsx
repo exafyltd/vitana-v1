@@ -116,7 +116,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
                     <p className="text-xs text-muted-foreground">{t('screens.wallet.confidenceConfidenceTimeframe', { confidence: prediction.confidence, timeframe: prediction.timeframe })}</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.predictionCredits', { prediction: prediction.prediction })}
                   </Badge>
                   <div className={`text-xs ${getTrendColor(prediction.trend)}`}>
@@ -146,7 +146,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
 
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
-          <Zap className="h-4 w-4 mr-2" />
+          <Zap className="h-4 w-4 me-2" />
           {t('screens.wallet.optimizeEarningStrategy')}
         </Button>
       </CardContent>

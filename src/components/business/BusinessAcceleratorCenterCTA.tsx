@@ -130,7 +130,7 @@ export function BusinessAcceleratorCenterCTA({
                 onClick={() => setIsModalOpen(true)}
                 className="relative px-8 py-6 text-base font-medium rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg transition-shadow duration-200"
               >
-                <Rocket className="h-5 w-5 mr-2" />
+                <Rocket className="h-5 w-5 me-2" />
                 {translate('business.earning.startEarning')}
               </Button>
             </motion.div>
@@ -155,7 +155,7 @@ export function BusinessAcceleratorCenterCTA({
               <motion.button
                 key={option.id}
                 onClick={() => handleOptionSelect(option.action)}
-                className="flex flex-col items-start p-4 rounded-xl border border-border/60 bg-card hover:bg-accent/50 hover:border-primary/30 transition-colors duration-200 text-left group"
+                className="flex flex-col items-start p-4 rounded-xl border border-border/60 bg-card hover:bg-accent/50 hover:border-primary/30 transition-colors duration-200 text-start group"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}

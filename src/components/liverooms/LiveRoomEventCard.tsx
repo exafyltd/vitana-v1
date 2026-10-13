@@ -124,7 +124,7 @@ export function LiveRoomEventCard({
           {isCreator && (
             <KebabMenu className="rounded-full bg-black/35 text-white backdrop-blur-md hover:bg-black/50">
               <DropdownMenuItem onClick={(e) => cta(e, onEdit)}>
-                <Pencil className="mr-2 h-4 w-4" />
+                <Pencil className="me-2 h-4 w-4" />
                 {t('screens.liverooms.edit')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -132,7 +132,7 @@ export function LiveRoomEventCard({
                 onClick={(e) => cta(e, onDelete)}
                 className="text-destructive focus:text-destructive"
               >
-                <Trash2 className="mr-2 h-4 w-4" />
+                <Trash2 className="me-2 h-4 w-4" />
                 {t('screens.liverooms.delete')}
               </DropdownMenuItem>
             </KebabMenu>
@@ -190,7 +190,7 @@ export function LiveRoomEventCard({
             <button
               type="button"
               data-testid="live-room-interested"
-              className={cn(pill, 'min-h-[32px] hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white')}
+              className={cn(pill, 'min-h-8 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white')}
               aria-label={t('screens.liverooms.interestedAria')}
               onClick={(e) => {
                 e.stopPropagation();

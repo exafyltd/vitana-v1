@@ -1,4 +1,7 @@
 import { ArrowLeft } from "lucide-react";
+import { PublicMain } from "@/components/layout/spotlight/PublicMain";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { cn } from "@/lib/utils";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
@@ -12,6 +15,7 @@ const PrivacyPolicy = () => {
   const lang: LegalLang | null =
     urlLang === "de" || urlLang === "en" ? urlLang : null;
   const t = useScopedT(lang);
+  const spotlight = useSpotlightEnabled();
 
   return (
     <div className="min-h-screen bg-background">
@@ -23,7 +27,7 @@ const PrivacyPolicy = () => {
 
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+        <div className={cn(spotlight ? "max-w-form" : "max-w-4xl", "mx-auto px-4 py-4 flex items-center gap-4")}>
           <Button
             variant="ghost"
             size="icon"
@@ -33,14 +37,14 @@ const PrivacyPolicy = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.privacyPolicy')}</h1>
-          <div className="ml-auto">
+          <div className="ms-auto">
             <LegalLocaleToggle />
           </div>
         </div>
       </header>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+      <PublicMain spotlight={spotlight} archetype="form" legacyClassName="max-w-4xl mx-auto px-4 py-8 md:py-12">
         <article className="prose prose-neutral dark:prose-invert max-w-none">
           {/* Title */}
           <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
@@ -70,7 +74,7 @@ const PrivacyPolicy = () => {
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text13Compliance')}</h3>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.gdpr')}</strong> {t('screens.legal.weAdhereEuGeneralDataProtection')}</li>
             <li><strong>{t('screens.legal.uaeRegulations')}</strong> {t('screens.legal.asAbuDhabibasedCompanyWeAlso')}</li>
             <li><strong>{t('screens.legal.appStorePlayStoreRequirements')}</strong> {t('screens.legal.weFollowAppleAppStoreGoogle')}</li>
@@ -82,14 +86,14 @@ const PrivacyPolicy = () => {
           </h2>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text21AccountInformation')}</h3>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.accountInformation')}</strong> {t('screens.legal.nameEmailAddressPhoneNumberOther')}</li>
             <li><strong>{t('screens.legal.profileInformation')}</strong> {t('screens.legal.userProfilePicturesUsernamesOtherDetails')}</li>
             <li><strong>{t('screens.legal.contactInformation')}</strong> {t('screens.legal.ifYouCommunicateWithUsWe')}</li>
           </ul>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text22UsageData')}</h3>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.deviceInformation')}</strong> {t('screens.legal.ipAddressDeviceModelOperatingSystem')}</li>
             <li><strong>{t('screens.legal.activityLogs')}</strong> {t('screens.legal.informationAboutHowYouInteractWith')}</li>
           </ul>
@@ -109,7 +113,7 @@ const PrivacyPolicy = () => {
           <p className="text-foreground/90 leading-relaxed mb-4">
             {t('screens.legal.weCollectPersonalDataFollowingWays')}
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.directlyFromYou')}</strong> {t('screens.legal.whenYouRegisterAccountEnterInformation')}</li>
             <li><strong>{t('screens.legal.automatically')}</strong> {t('screens.legal.throughUseCookiesLogDataDevice')}</li>
             <li><strong>{t('screens.legal.fromThirdParties')}</strong> {t('screens.legal.weMayReceivePersonalDataFrom')}</li>
@@ -122,7 +126,7 @@ const PrivacyPolicy = () => {
           <p className="text-foreground/90 leading-relaxed mb-4">
             {t('screens.legal.weProcessYourPersonalDataFor')}
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.provideMaintainService')}</strong> {t('screens.legal.weUseYourDataEnableCore')}</li>
             <li><strong>{t('screens.legal.improveApp')}</strong> {t('screens.legal.improveAppDescription')}</li>
             <li><strong>{t('screens.legal.communicateWithYou')}</strong> {t('screens.legal.communicateWithYouDescription')}</li>
@@ -138,7 +142,7 @@ const PrivacyPolicy = () => {
           <p className="text-foreground/90 leading-relaxed mb-4">
             {t('screens.legal.weDoNotSellRentYour')}
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.serviceProvidersPartners')}</strong> {t('screens.legal.helpUsOperateMaintainImproveApp')}</li>
             <li><strong>{t('screens.legal.aiServiceProviders')}</strong> {t('screens.legal.powerInappAiAssistantRelatedAi')}</li>
             <li><strong>{t('screens.legal.affiliatesSubsidiaries')}</strong> {t('screens.legal.weMayShareDataWithSubsidiaries')}</li>
@@ -159,7 +163,7 @@ const PrivacyPolicy = () => {
           </h2>
           <p className="text-foreground/90 leading-relaxed mb-4">{t('screens.legal.weWillOnlyRetainYourPersonal')}
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
+          <ul className="list-disc ps-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.durationYourRelationshipWithUsE')}</li>
             <li>{t('screens.legal.legalRetentionObligations')}</li>
             <li>{t('screens.legal.securityFraudPreventionReasons')}</li>
@@ -183,7 +187,7 @@ const PrivacyPolicy = () => {
           <p className="text-foreground/90 leading-relaxed mb-4">
             {t('screens.legal.ifYouLocatedEuropeanUnionYou')}
           </p>
-          <ol className="list-decimal pl-6 space-y-2 text-foreground/90">
+          <ol className="list-decimal ps-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.rightAccess')}</strong> {t('screens.legal.youCanRequestAccessPersonalData')}</li>
             <li><strong>{t('screens.legal.rightRectification')}</strong> {t('screens.legal.youCanRequestCorrectionIncompleteInaccurate')}</li>
             <li><strong>{t('screens.legal.rightErasureRightForgotten')}</strong> {t('screens.legal.youCanRequestDeletionYourData')}</li>
@@ -241,7 +245,7 @@ const PrivacyPolicy = () => {
             </p>
           </div>
         </article>
-      </main>
+      </PublicMain>
     </div>
   );
 };

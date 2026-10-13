@@ -63,10 +63,10 @@ interface CampaignCardProps {
 
 function getStatusAccentBar(status: string): string {
   const bars = {
-    active: "border-l-4 border-l-green-500",
-    draft: "border-l-4 border-l-amber-500",
-    paused: "border-l-4 border-l-yellow-500",
-    completed: "border-l-4 border-l-purple-500",
+    active: "border-s-4 border-s-green-500",
+    draft: "border-s-4 border-s-amber-500",
+    paused: "border-s-4 border-s-yellow-500",
+    completed: "border-s-4 border-s-purple-500",
   };
   return bars[status as keyof typeof bars] || bars.draft;
 }
@@ -234,7 +234,7 @@ export function CampaignCard({
       {/* Bulk Selection Checkbox */}
       {bulkMode && (
         <div className={cn(
-          "absolute top-3 left-3 z-10",
+          "absolute top-3 start-3 z-10",
           "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
           isSelected && "opacity-100"
         )}>
@@ -332,7 +332,7 @@ export function CampaignCard({
                   {campaign.description}
                 </p>
                 {/* Fade mask after 2 lines */}
-                <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white/85 to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 start-0 end-0 h-4 bg-gradient-to-t from-white/85 to-transparent pointer-events-none" />
               </div>
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
@@ -427,7 +427,7 @@ export function CampaignCard({
               {t('screens.sharing.scheduledSweetSpots')}
             </h4>
           </div>
-          <p className="text-[10px] text-gray-500/70 mb-2 ml-5">
+          <p className="text-[10px] text-gray-500/70 mb-2 ms-5">
             {t('screens.sharing.airecommendedPostingTimes')}
           </p>
           <TooltipProvider>
@@ -486,7 +486,7 @@ export function CampaignCard({
                         setShowAllSchedules(!showAllSchedules);
                       }}
                       className={cn(
-                        "text-xs font-medium ml-2 px-2 py-1 rounded-md",
+                        "text-xs font-medium ms-2 px-2 py-1 rounded-md",
                         "text-teal-600 hover:text-teal-700",
                         "hover:bg-teal-50 transition-all duration-200",
                         "flex items-center gap-1"
@@ -562,7 +562,7 @@ export function CampaignCard({
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Radio className="w-3.5 h-3.5 text-green-600" />
-                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                  <div className="absolute -top-1 -end-1 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-base font-bold text-green-600 leading-none">
@@ -606,7 +606,7 @@ export function CampaignCard({
       {/* Quick Actions Overlay */}
       <div
         className={cn(
-          "absolute bottom-0 left-0 right-0 p-3",
+          "absolute bottom-0 start-0 end-0 p-3",
           "bg-gradient-to-t from-white/95 via-white/90 to-transparent backdrop-blur-sm",
           "opacity-0 group-hover:opacity-100",
           "translate-y-2 group-hover:translate-y-0",

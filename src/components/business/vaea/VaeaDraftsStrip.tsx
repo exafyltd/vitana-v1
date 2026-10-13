@@ -33,7 +33,7 @@ export function VaeaDraftsStrip() {
           onClick={() => setOpen((v) => !v)}
           className="w-full flex items-center justify-between gap-2"
         >
-          <div className="text-left">
+          <div className="text-start">
             <div className="font-medium text-sm">{t('screens.business.autopilotHasLengthReferralDraftValue1', { length: drafts.length, value1: drafts.length === 1 ? "" : "s" })}</div>
             <p className="text-xs text-muted-foreground">{t('screens.business.shadowDraftsReviewDismissPostingArrives')}</p>
           </div>

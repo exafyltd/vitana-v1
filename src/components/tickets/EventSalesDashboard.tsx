@@ -244,7 +244,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
               <Users className="h-4 w-4" />{t('screens.tickets.ticketBuyersLength', { length: completedSales.length })}
             </CardTitle>
             <Button variant="outline" size="sm" onClick={exportToCSV}>
-              <Download className="h-4 w-4 mr-2" />
+              <Download className="h-4 w-4 me-2" />
               {t('screens.tickets.exportCsv')}
             </Button>
           </div>
@@ -262,7 +262,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                       <p className="font-medium truncate">{sale.buyer_name}</p>
                       {sale.checked_in_at && (
                         <Badge variant="secondary" className="text-xs bg-green-500/10 text-green-600">
-                          <CheckCircle className="h-3 w-3 mr-1" />
+                          <CheckCircle className="h-3 w-3 me-1" />
                           {t('screens.tickets.checked')}
                         </Badge>
                       )}
@@ -278,7 +278,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                       <span>{formatDate(new Date(sale.created_at), "MMM d, h:mm a")}</span>
                     </div>
                   </div>
-                  <div className="text-right ml-4">
+                  <div className="text-end ms-4">
                     <p className="font-semibold">${sale.total_amount.toFixed(2)}</p>
                     <p className="text-xs text-muted-foreground font-mono">
                       {sale.ticket_number}

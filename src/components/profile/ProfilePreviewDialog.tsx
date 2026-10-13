@@ -129,7 +129,7 @@ export function ProfilePreviewDialog() {
         {isMobile && (
           <button
             onClick={closePreview}
-            className="absolute right-3 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
+            className="absolute end-3 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
             style={{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
           >
             <X className="h-5 w-5" />

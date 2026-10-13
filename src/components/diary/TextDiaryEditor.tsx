@@ -66,7 +66,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
           rows={6}
           className="resize-none"
         />
-        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">{t('screens.diary.lengthCharacters', { length: text.length })}
+        <div className="absolute bottom-2 end-2 text-xs text-muted-foreground">{t('screens.diary.lengthCharacters', { length: text.length })}
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
         className="w-full"
         size="lg"
       >
-        <Save className="w-4 h-4 mr-2" />
+        <Save className="w-4 h-4 me-2" />
         {isSaving ? t('screens.diary.saving') : t('screens.diary.saveEntry')}
       </Button>
     </div>

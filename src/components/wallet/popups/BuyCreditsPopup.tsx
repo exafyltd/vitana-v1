@@ -144,7 +144,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                   ) : (
                     <CreditCard className="h-4 w-4 text-blue-600" />
                   )}
-                  <div className="text-left">
+                  <div className="text-start">
                     <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtNumber(pkg.credits) })}</div>
                     <div className="text-xs text-muted-foreground">${pkg.cost}</div>
                   </div>
@@ -187,9 +187,9 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
               disabled={loading || !creditAmount}
             >
               {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                <Loader2 className="h-4 w-4 animate-spin me-2" />
               ) : (
-                <Zap className="h-4 w-4 mr-2" />
+                <Zap className="h-4 w-4 me-2" />
               )}{t('screens.wallet.buyCustomAmount')}
             </Button>
           </div>
