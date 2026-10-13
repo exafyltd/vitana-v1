@@ -12,14 +12,15 @@ import { useAccessLog } from "@/hooks/useAdminAudit";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 export default function AuditAccess() {
+  const spotlight = useSpotlightEnabled();
   const query = useAccessLog(100);
   const entries = query.data || [];
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="audit" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🔐"
           title={t('screens.admin.accessLog')}
@@ -69,7 +70,19 @@ export default function AuditAccess() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="audit" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

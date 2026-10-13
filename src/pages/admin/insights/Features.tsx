@@ -29,8 +29,11 @@ import {
 } from "@/components/admin/analytics/AnalyticsCharts";
 import { fmtNumber, fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function Features() {
+  const spotlight = useSpotlightEnabled();
   const [days, setDays] = useState(30);
   const { data, isLoading, error } = useAdminFeatureAnalytics(days);
 
@@ -68,10 +71,8 @@ export default function Features() {
       values: [f.assisted_opens, Math.max(0, f.opens - f.assisted_opens)],
     }));
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="insights" />
-      <div className="space-y-6 p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🧩"
           title={t("screens.admin.paFeatureUsage")}
@@ -131,6 +132,7 @@ export default function Features() {
               <CardHeader>
                 <CardTitle className="text-base">{t("screens.admin.paLowAdoption")}</CardTitle>
               </CardHeader>
+              {/* design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token */}
               <CardContent className="max-h-[60vh] overflow-y-auto">
                 {lowAdoption.length === 0 ? (
                   <p className="text-sm italic text-muted-foreground">{t("screens.admin.noAnalyticsData")}</p>
@@ -155,7 +157,19 @@ export default function Features() {
             <PrivacyNote />
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="insights" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

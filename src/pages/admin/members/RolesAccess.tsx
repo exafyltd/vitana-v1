@@ -35,6 +35,8 @@ import { toast } from "sonner";
 import { useTenant } from "@/hooks/useTenant";
 import { useMembers, useGrantRole, useRevokeRole } from "@/hooks/useAdminMembers";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 // VTID-03832: backoffice is tenant-admin-grantable (decision 4b); developer/infra stay Exafy-only
 const TENANT_ADMIN_ROLES = ["community", "patient", "professional", "staff", "backoffice", "admin"];
@@ -52,6 +54,7 @@ const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" |
 };
 
 export default function MembersRolesAccess() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [grantUserId, setGrantUserId] = useState<string | null>(null);
   const [grantRole, setGrantRole] = useState<string>("");
@@ -90,10 +93,8 @@ export default function MembersRolesAccess() {
     }
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="members" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🔐"
           title={t('screens.admin.rolesAccess')}
@@ -120,11 +121,11 @@ export default function MembersRolesAccess() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[40px]" />
+                  <TableHead className="w-10" />
                   <TableHead>{t('screens.admin.member')}</TableHead>
                   <TableHead>{t('screens.admin.activeRole')}</TableHead>
                   <TableHead>{t('screens.admin.grantedRoles')}</TableHead>
-                  <TableHead className="w-[200px]">{t('screens.admin.grantRole')}</TableHead>
+                  <TableHead className="w-48">{t('screens.admin.grantRole')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -181,7 +182,7 @@ export default function MembersRolesAccess() {
                         {isEditing ? (
                           <div className="flex gap-1">
                             <Select value={grantRole} onValueChange={setGrantRole}>
-                              <SelectTrigger className="h-7 text-xs w-[120px]">
+                              <SelectTrigger className="h-7 text-xs w-32">
                                 <SelectValue placeholder={t('screens.admin.pickRole')} />
                               </SelectTrigger>
                               <SelectContent>
@@ -226,7 +227,19 @@ export default function MembersRolesAccess() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="members" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

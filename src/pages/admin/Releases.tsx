@@ -82,7 +82,7 @@ function OverviewTab() {
         <CardContent className="p-0">
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
-              <tr className="text-left">
+              <tr className="text-start">
                 <th className="px-4 py-2 font-medium">Component</th>
                 <th className="px-4 py-2 font-medium">Version</th>
                 <th className="px-4 py-2 font-medium">Channel</th>
@@ -111,13 +111,13 @@ function OverviewTab() {
           <CardContent className="p-0">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
-                <tr className="text-left">
+                <tr className="text-start">
                   <th className="px-3 py-2 font-medium">Surface</th>
                   <th className="px-3 py-2 font-medium">Version</th>
                   <th className="px-3 py-2 font-medium">Channel</th>
                   <th className="px-3 py-2 font-medium">Min platform</th>
                   <th className="px-3 py-2 font-medium">Compat</th>
-                  <th className="px-3 py-2 font-medium text-right">Pending</th>
+                  <th className="px-3 py-2 font-medium text-end">Pending</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,7 @@ function OverviewTab() {
                     </td>
                     <td className="px-3 py-3 font-mono text-xs text-muted-foreground">{s.min_platform_version ?? '—'}</td>
                     <td className="px-3 py-3"><CompatibilityBadge status={s.compatibility} /></td>
-                    <td className="px-3 py-3 text-right tabular-nums">{s.pending_count}</td>
+                    <td className="px-3 py-3 text-end tabular-nums">{s.pending_count}</td>
                   </tr>
                 ))}
               </tbody>

@@ -22,6 +22,8 @@ import {
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   new: "info",
   activated: "active",
@@ -36,6 +38,7 @@ const RISK_VARIANT: Record<string, "active" | "warning" | "error" | "inactive"> 
 };
 
 export default function AutopilotRecommendations() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [domainFilter, setDomainFilter] = useState("all");
@@ -62,10 +65,8 @@ export default function AutopilotRecommendations() {
     setDomainFilter("all");
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="autopilot" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🤖"
           title={t('screens.admin.recommendations')}
@@ -82,7 +83,7 @@ export default function AutopilotRecommendations() {
         )}
 
         {recsQuery.data && !recsQuery.data.autopilot_enabled && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-300">
+          <div className="bg-status-warning-subtle border border-status-warning/40 rounded-lg p-4 text-sm text-foreground">
             {t('screens.admin.autopilotCurrentlyDisabledForThisTenant')}
           </div>
         )}
@@ -149,7 +150,7 @@ export default function AutopilotRecommendations() {
                   <TableHead className="text-center">{t('screens.admin.impact')}</TableHead>
                   <TableHead className="text-center">{t('screens.admin.effort')}</TableHead>
                   <TableHead>{t('screens.admin.status')}</TableHead>
-                  <TableHead className="text-right">{t('screens.admin.created')}</TableHead>
+                  <TableHead className="text-end">{t('screens.admin.created')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -176,7 +177,7 @@ export default function AutopilotRecommendations() {
                         {r.status}
                       </AdminStatusBadge>
                     </TableCell>
-                    <TableCell className="text-right text-xs text-muted-foreground">
+                    <TableCell className="text-end text-xs text-muted-foreground">
                       {fmtDate(new Date(r.created_at))}
                     </TableCell>
                   </TableRow>
@@ -185,7 +186,19 @@ export default function AutopilotRecommendations() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="autopilot" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

@@ -9,20 +9,15 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { adminLiveStreamNavigation } from "@/config/navigation";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function LiveStreamOverview() {
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
 
-  return (
-    <AppLayout>
-      <SEO 
-        title={t('screens.admin.liveStreamAdminVitana')} 
-        description="Manage Vertex AI streaming, community live rooms, and telemedicine sessions" 
-        canonical={window.location.href} 
-      />
-      <SubNavigation items={adminLiveStreamNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.liveStreamManagement')}
@@ -72,8 +67,8 @@ export default function LiveStreamOverview() {
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                      <TestTube className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    <div className="p-2 bg-category-2/15 rounded-lg">
+                      <TestTube className="h-5 w-5 text-category-2" />
                     </div>
                     <div>
                       <CardTitle className="text-sm">{t('screens.admin.testVertexAi')}</CardTitle>
@@ -94,8 +89,8 @@ export default function LiveStreamOverview() {
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                      <Plus className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <div className="p-2 bg-status-info-subtle rounded-lg">
+                      <Plus className="h-5 w-5 text-status-info" />
                     </div>
                     <div>
                       <CardTitle className="text-sm">{t('screens.admin.createRoom')}</CardTitle>
@@ -115,8 +110,8 @@ export default function LiveStreamOverview() {
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                      <Calendar className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    <div className="p-2 bg-status-success-subtle rounded-lg">
+                      <Calendar className="h-5 w-5 text-status-success" />
                     </div>
                     <div>
                       <CardTitle className="text-sm">{t('screens.admin.scheduleSession')}</CardTitle>
@@ -137,8 +132,8 @@ export default function LiveStreamOverview() {
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                      <TrendingUp className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                    <div className="p-2 bg-category-5/15 rounded-lg">
+                      <TrendingUp className="h-5 w-5 text-category-5" />
                     </div>
                     <div>
                       <CardTitle className="text-sm">{t('screens.admin.viewReports')}</CardTitle>
@@ -176,7 +171,7 @@ export default function LiveStreamOverview() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>{t('screens.admin.vertexAi')}
+                  <div className="w-2 h-2 rounded-full bg-status-success"></div>{t('screens.admin.vertexAi')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -189,7 +184,7 @@ export default function LiveStreamOverview() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>{t('screens.admin.communityRooms')}
+                  <div className="w-2 h-2 rounded-full bg-status-success"></div>{t('screens.admin.communityRooms')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -201,7 +196,7 @@ export default function LiveStreamOverview() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>{t('screens.admin.telemedicine')}
+                  <div className="w-2 h-2 rounded-full bg-status-warning"></div>{t('screens.admin.telemedicine')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -212,7 +207,25 @@ export default function LiveStreamOverview() {
             </Card>
           </div>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={t('screens.admin.liveStreamAdminVitana')} 
+        description="Manage Vertex AI streaming, community live rooms, and telemedicine sessions" 
+        canonical={window.location.href} 
+      />
+      <SubNavigation items={adminLiveStreamNavigation} />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

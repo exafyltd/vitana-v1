@@ -17,6 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { useAssistantSurface, useUpdateAssistantSurface } from "@/hooks/useAdminAssistant";
 import { notifySuccess, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const LANGUAGES = [
   { value: "de-DE", label: "Deutsch" },
@@ -27,6 +29,7 @@ const LANGUAGES = [
 ];
 
 export default function AssistantVoice() {
+  const spotlight = useSpotlightEnabled();
   const surfaceQuery = useAssistantSurface("voice_live");
   const updateMutation = useUpdateAssistantSurface();
 
@@ -59,10 +62,8 @@ export default function AssistantVoice() {
     }
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="assistant" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🎙️"
           title={t('screens.admin.voiceConfiguration')}
@@ -125,7 +126,19 @@ export default function AssistantVoice() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="assistant" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

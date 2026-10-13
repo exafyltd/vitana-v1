@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 372
+- **Pages scanned:** 373
 - **Distinct i18n keys consumed:** 4754
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -1562,6 +1562,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 8, total in shard: 11664
+
+### src/pages/admin/vtid-05113-admin-workspace.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## ai/
 

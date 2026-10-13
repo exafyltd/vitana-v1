@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05113",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900, signed in: /admin/dashboard, /admin/members/directory, /admin/settings/feature-flags, /admin/autopilot/runs, /admin/audit/actions \u2014 for an admin account: ?spotlight=1 renders AdminTabs directly above [data-archetype=\"workspace\"] (full width, no horizontal scroll) and ?spotlight=0 renders today's tree without [data-archetype]; for the non-admin test user: every route still renders NotAuthorized in place (no workspace frame, no admin tabs) and the admin-only part is skipped with that reason",
+      "spec": "tests/e2e/staging/vtid-05113-admin-workspace.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "admin page flag off = legacy tree (AdminTabs + padded wrapper, no [data-archetype]); flag on = AdminTabs directly above ScreenFrame \"workspace\" (full width, no rail, same content and controls); loading = workspace skeleton, no spinner; every admin page with AppLayout composes ScreenFrame \"workspace\" behind useSpotlightEnabled() and never moves AdminTabs inside it; Rewards Shop admin end-to-end over a mocked gateway still green",
+      "ref": "npx vitest run src/pages/admin src/pages/__tests__/partner-health-staff.vtid-05056.test.tsx src/design",
+      "cwd": ".",
+      "reason": "The staging test user is not an admin, so the admin screens themselves cannot be rendered on staging for that account; the flag-on/flag-off render and the per-page source contract are proven in jsdom."
+    }
+  ]
+}

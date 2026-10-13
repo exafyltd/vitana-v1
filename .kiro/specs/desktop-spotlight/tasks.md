@@ -103,7 +103,15 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
 - [ ] 5.2 PR body: list of every card component still not on VCard (input to Phase 6).
 
 ## Phase 7 — Workspace & remaining screens (parallel with 2–4)
-- [ ] 7.1 Admin · VTID-05113 — `workspace`, `AdminTabs` kept, admin-shell contract respected.
+- [x] 7.1 Admin · VTID-05113 — `workspace`, `AdminTabs` kept, admin-shell contract respected.
+  Status: 92 `/admin/*` routes migrated (`/admin/init-events` stays legacy: no AppLayout, no guard — own decision).
+  Admin `design/*` errors 409 → 0. Decisions (for Gate 2): flag-gated `ScreenFrame` like every other phase, but the
+  token / logical-direction / size / skeleton changes apply on both paths (the lint cannot tell them apart), so with the
+  flag off admin shows small visual differences (dark-mode text on coloured fills, ≤ 8 px size steps, skeletons instead
+  of spinners); behaviour, data, routes and AdminTabs unchanged. `AdminHeader` stays in the content (the ScreenFrame
+  header carries member tiles). 25 `design-allow-next-line` with reasons (viewport-sized scroll areas, modal backdrops,
+  device bezel). `src/components/admin/**` not migrated yet. The staging design-lint skips role-gated operator routes;
+  `vtid-05113-admin-workspace.staging.spec.ts` checks them (gate for a non-admin, workspace frame for an admin).
 - [ ] 7.2 Backoffice · VTID-05114
 - [ ] 7.3 Dev · VTID-05115
 - [ ] 7.4 Professional + Staff · VTID-05116

@@ -26,6 +26,8 @@ import {
 import AppLayout from "@/components/AppLayout";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 // Device model names are proper nouns — kept as literals, rendered via a
 // variable (not raw JSX text) so the i18n lint rule is satisfied.
@@ -54,6 +56,7 @@ type EnvKey = keyof typeof ENVIRONMENTS;
 const SCALES = [1, 0.75, 0.5] as const;
 
 export default function DevicePreview() {
+  const spotlight = useSpotlightEnabled();
   const [deviceId, setDeviceId] = useState<string>(DEVICES[0].id);
   // VTID-03611: default to Staging (AWS), not plain "staging"
   // (preview.vitanaland.com). The plain staging build is the pre-cutover
@@ -85,9 +88,8 @@ export default function DevicePreview() {
   const frameW = landscape ? device.height : device.width;
   const frameH = landscape ? device.width : device.height;
 
-  return (
-    <AppLayout>
-      <div className="space-y-6 p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📱"
           title={t("screens.admin.devicePreview")}
@@ -154,13 +156,13 @@ export default function DevicePreview() {
                 onClick={() => setLandscape((v) => !v)}
                 title={t("screens.admin.devicePreviewRotate")}
               >
-                <RotateCw className="mr-1 h-4 w-4" />
+                <RotateCw className="me-1 h-4 w-4" />
                 {landscape
                   ? t("screens.admin.devicePreviewLandscape")
                   : t("screens.admin.devicePreviewPortrait")}
               </Button>
               <Select value={String(scale)} onValueChange={(v) => setScale(parseFloat(v))}>
-                <SelectTrigger className="w-[90px]">
+                <SelectTrigger className="w-24">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -178,12 +180,12 @@ export default function DevicePreview() {
         {/* Action row */}
         <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setReloadKey((k) => k + 1)} disabled={!src}>
-            <RefreshCw className="mr-1 h-4 w-4" />
+            <RefreshCw className="me-1 h-4 w-4" />
             {t("screens.admin.devicePreviewReload")}
           </Button>
           <Button variant="outline" size="sm" asChild disabled={!src}>
             <a href={src || undefined} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="mr-1 h-4 w-4" />
+              <ExternalLink className="me-1 h-4 w-4" />
               {t("screens.admin.devicePreviewOpenNewTab")}
             </a>
           </Button>
@@ -191,8 +193,8 @@ export default function DevicePreview() {
         </div>
 
         {/* Shell caveat */}
-        <div className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
+        <div className="flex items-start gap-2 rounded-md border border-status-warning/40 bg-status-warning/10 p-3 text-sm">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-status-warning" />
           <span>{t("screens.admin.devicePreviewShellNote")}</span>
         </div>
 
@@ -210,6 +212,7 @@ export default function DevicePreview() {
                   transform: `scale(${scale})`,
                   transformOrigin: "top left",
                 }}
+                // design-allow-next-line: device bezel mock-up — a fixed dark phone frame in both themes; left-0 pairs with transformOrigin "top left" of the scaled frame
                 className="absolute left-0 top-0 rounded-[2.25rem] border-[10px] border-neutral-800 bg-neutral-800 shadow-2xl"
               >
                 <iframe
@@ -222,7 +225,7 @@ export default function DevicePreview() {
                   // fails silently as a "Mikrofon-Problem" disconnect in ORB.
                   allow="fullscreen; microphone"
                   allowFullScreen
-                  className="h-full w-full rounded-[1.6rem] bg-white"
+                  className="h-full w-full rounded-[1.6rem] bg-surface-raised"
                 />
               </div>
             </div>
@@ -238,7 +241,18 @@ export default function DevicePreview() {
         <p className="text-center text-xs text-muted-foreground">
           {t("screens.admin.devicePreviewFrameBlockedNote")}
         </p>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

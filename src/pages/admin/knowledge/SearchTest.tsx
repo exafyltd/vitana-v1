@@ -16,8 +16,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { useKBSearch } from "@/hooks/useAdminKnowledge";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function KnowledgeSearchTest() {
+  const spotlight = useSpotlightEnabled();
   const [query, setQuery] = useState("");
   const [activeQuery, setActiveQuery] = useState("");
 
@@ -28,10 +31,8 @@ export default function KnowledgeSearchTest() {
     setActiveQuery(query.trim());
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="knowledge" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🔍"
           title={t('screens.admin.searchTest')}
@@ -80,7 +81,7 @@ export default function KnowledgeSearchTest() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 ml-3">
+                  <div className="flex items-center gap-2 ms-3">
                     <AdminStatusBadge variant={r.source === "tenant" ? "active" : "info"}>
                       {r.source}
                     </AdminStatusBadge>
@@ -93,7 +94,19 @@ export default function KnowledgeSearchTest() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="knowledge" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

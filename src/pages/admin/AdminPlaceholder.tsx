@@ -16,8 +16,11 @@ import {
   getAdminTabByPath,
 } from "@/config/admin-navigation";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function AdminPlaceholder() {
+  const spotlight = useSpotlightEnabled();
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -43,15 +46,26 @@ export default function AdminPlaceholder() {
 
   // No matching section at all — fall through to 404-style body still inside AppLayout
   if (!section) {
-    return (
-      <AppLayout>
-        <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
+    const adminBody = (
+      <>
           <div className="text-6xl font-bold text-muted-foreground mb-4">404</div>
           <p className="text-lg text-muted-foreground mb-2">{t('screens.admin.noAdminSectionMatches')} <code className="font-mono text-sm">{pathname}</code>
           </p>
           <p className="text-sm text-muted-foreground">{t('screens.admin.sidebarCanonicalListSectionsPickOne')}
           </p>
-        </div>
+      </>
+    );
+
+    return (
+      <AppLayout>
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            <div className="flex flex-col items-center justify-center py-16 text-center">{adminBody}</div>
+          </ScreenFrame>
+        ) : (
+          // design-allow-next-line: legacy (flag-off) 404 body keeps its viewport-relative centring unchanged
+          <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">{adminBody}</div>
+        )}
       </AppLayout>
     );
   }
@@ -60,10 +74,8 @@ export default function AdminPlaceholder() {
   const sectionLabel = section.label;
   const tabLabel = tab?.label ?? section.tabs[0]?.label ?? "";
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey={section.key} />
-      <div className="px-6 py-10">
+  const adminBody2 = (
+    <>
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-2xl font-semibold">{sectionLabel}</h1>
@@ -75,7 +87,7 @@ export default function AdminPlaceholder() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background border border-border text-xs font-medium mb-4">
               {wave === 1 ? (
                 <>
-                  <span className="h-2 w-2 rounded-full bg-amber-500" />{t('screens.admin.comingWave1')}
+                  <span className="h-2 w-2 rounded-full bg-status-warning" />{t('screens.admin.comingWave1')}
                 </>
               ) : (
                 <>
@@ -87,7 +99,19 @@ export default function AdminPlaceholder() {
             </p>
           </div>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey={section.key} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody2}
+        </ScreenFrame>
+      ) : (
+        <div className="px-6 py-10">{adminBody2}</div>
+      )}
     </AppLayout>
   );
 }

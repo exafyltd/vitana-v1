@@ -9,9 +9,12 @@ import { adminIntelligenceNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function IntelligenceEmbeddings() {
   // Count memory items (total and those with embeddings)
+  const spotlight = useSpotlightEnabled();
   const totalQuery = useQuery({
     queryKey: ["admin-embeddings-total"],
     queryFn: async () => {
@@ -63,10 +66,8 @@ export default function IntelligenceEmbeddings() {
   const isLoading = totalQuery.isLoading || factsQuery.isLoading;
   const sortedCategories = Object.entries(categories).sort(([, a], [, b]) => (b as number) - (a as number));
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminIntelligenceNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.embeddings')} description="Embedding pipeline status and memory distribution" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -142,7 +143,19 @@ export default function IntelligenceEmbeddings() {
             </CardContent>
           </Card>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminIntelligenceNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

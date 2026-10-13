@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   live: "default",
   lobby: "secondary",
@@ -64,6 +66,7 @@ const columns = [
 ];
 
 export default function LiveSessions() {
+  const spotlight = useSpotlightEnabled();
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
@@ -85,10 +88,8 @@ export default function LiveSessions() {
   const liveCount = sessions.filter((s: any) => s.status === "live").length;
   const endedCount = sessions.filter((s: any) => s.status === "ended").length;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminLiveNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.sessions')} description="History of all live room sessions" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -111,7 +112,19 @@ export default function LiveSessions() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminLiveNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

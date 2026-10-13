@@ -24,6 +24,8 @@ import {
 import { BarListCard, StackedBarListCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface TopicRow {
   topic: string;
@@ -53,6 +55,7 @@ function suggestedAction(
 }
 
 export default function Interests() {
+  const spotlight = useSpotlightEnabled();
   const [days, setDays] = useState(30);
   const { data, isLoading, error } = useAdminInterestAnalytics(days);
 
@@ -72,10 +75,8 @@ export default function Interests() {
     ),
   }));
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="insights" />
-      <div className="space-y-6 p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="💡"
           title={t("screens.admin.paUserInterests")}
@@ -120,6 +121,7 @@ export default function Interests() {
               <CardHeader>
                 <CardTitle className="text-base">{t("screens.admin.paSuggestedAction")}</CardTitle>
               </CardHeader>
+              {/* design-allow-next-line: viewport-relative scroll region of an operator panel; the contract has no viewport-height token */}
               <CardContent className="max-h-[70vh] overflow-y-auto">
                 <div className="space-y-2">
                   {data.top_topics.slice(0, 10).map((topic) => (
@@ -150,7 +152,19 @@ export default function Interests() {
             <PrivacyNote />
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="insights" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

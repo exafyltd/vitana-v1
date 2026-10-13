@@ -10,6 +10,8 @@ import { adminIntelligenceNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const columns = [
   {
@@ -34,7 +36,7 @@ const columns = [
   {
     key: "message",
     label: "Message",
-    render: (val: string) => <span className="text-sm line-clamp-1 max-w-[300px]">{val || "-"}</span>,
+    render: (val: string) => <span className="text-sm line-clamp-1 max-w-72">{val || "-"}</span>,
   },
   {
     key: "confidence",
@@ -50,6 +52,7 @@ const columns = [
 ];
 
 export default function IntelligenceSignals() {
+  const spotlight = useSpotlightEnabled();
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
@@ -72,10 +75,8 @@ export default function IntelligenceSignals() {
 
   // If the table doesn't exist yet, show a graceful message
   if (error) {
-    return (
-      <AppLayout>
-        <SubNavigation items={adminIntelligenceNavigation} />
-        <div className="p-6 space-y-6">
+    const adminBody = (
+      <>
           <AdminHeader title={t('screens.admin.predictiveSignals')} description="D44 predictive intervention signals" />
           <div className="rounded-xl border bg-card p-8 text-center">
             <Zap className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -83,15 +84,25 @@ export default function IntelligenceSignals() {
             <p className="text-sm text-muted-foreground max-w-md mx-auto">{t('screens.admin.predictiveSignalsEngineHasNotActivated')}
             </p>
           </div>
-        </div>
+      </>
+    );
+
+    return (
+      <AppLayout>
+        <SubNavigation items={adminIntelligenceNavigation} />
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            <div className="space-y-6">{adminBody}</div>
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 space-y-6">{adminBody}</div>
+        )}
       </AppLayout>
     );
   }
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminIntelligenceNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody2 = (
+    <>
         <AdminHeader title={t('screens.admin.predictiveSignals')} description="D44 predictive intervention signals" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -114,7 +125,19 @@ export default function IntelligenceSignals() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminIntelligenceNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody2}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody2}</div>
+      )}
     </AppLayout>
   );
 }

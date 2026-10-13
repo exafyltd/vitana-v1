@@ -15,6 +15,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { adminFetch } from "@/lib/admin-api";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface Message {
   role: "user" | "assistant";
@@ -22,6 +24,7 @@ interface Message {
 }
 
 export default function AssistantPlayground() {
+  const spotlight = useSpotlightEnabled();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -52,10 +55,8 @@ export default function AssistantPlayground() {
     }
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="assistant" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🧪"
           title={t('screens.admin.playground')}
@@ -78,6 +79,7 @@ export default function AssistantPlayground() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
+                    // design-allow-next-line: chat-bubble width relative to its thread column; the contract has no fractional width token
                     className={`max-w-[80%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap ${
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground"
@@ -114,7 +116,19 @@ export default function AssistantPlayground() {
 
         <p className="text-xs text-muted-foreground">{t('screens.admin.messagesSentGatewayConversationEndpointWith')}
         </p>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="assistant" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }
