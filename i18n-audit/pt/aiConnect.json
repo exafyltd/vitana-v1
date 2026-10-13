@@ -1,0 +1,273 @@
+{
+  "verdicts": {
+    "aiConnect.consent.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Conecta {client} à tua conta Maxina",
+      "phase": "llm"
+    },
+    "aiConnect.consent.lead": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "{client} quer usar a tua conta Maxina. Escolhe o que ele pode ver. Tu podes alterar ou remover isso a qualquer momento na Maxina.",
+      "phase": "llm"
+    },
+    "aiConnect.consent.signedInAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.chooseTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.readOnly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.notShared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.redirectsTo": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Depois de permitir, tu voltas para {host}.",
+      "phase": "llm"
+    },
+    "aiConnect.consent.noneSelected": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Escolhe pelo menos uma área.",
+      "phase": "llm"
+    },
+    "aiConnect.consent.approve": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.deny": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.failed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Não funcionou. Tenta de novo.",
+      "phase": "llm"
+    },
+    "aiConnect.consent.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.redirecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.consent.invalid": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Esta solicitação expirou ou não é válida. Começa a conexão de novo no teu assistente de IA.",
+      "phase": "llm"
+    },
+    "aiConnect.categories.profile": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'seu' instead of informal 'teu')",
+      "suggested": "Teu perfil",
+      "phase": "llm"
+    },
+    "aiConnect.categories.profileDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'seu' instead of informal 'teu')",
+      "suggested": "Teu nome, cidade, interesses e objetivos",
+      "phase": "llm"
+    },
+    "aiConnect.categories.matches": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'seus' instead of informal 'teus')",
+      "suggested": "Teus matches",
+      "phase": "llm"
+    },
+    "aiConnect.categories.matchesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "As pessoas que a Maxina recomenda que tu conheças",
+      "phase": "llm"
+    },
+    "aiConnect.categories.people": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.peopleDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.activities": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.activitiesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.categories.commerce": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.lead": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Traz o ChatGPT ou o Claude para a tua comunidade Maxina. Teu assistente só lê o que tu permitires.",
+      "phase": "llm"
+    },
+    "aiConnect.settings.connectChatgpt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.connectClaude": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "aiConnect.settings.howTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "Conecta {assistant} em três passos",
+      "phase": "llm"
+    },
+    "aiConnect.settings.step1Claude": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "No Claude, abre Configurações → Conectores → Adicionar conector personalizado.",
+      "phase": "llm"
+    },
+    "aiConnect.settings.step1Chatgpt": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent (formal 'você' form instead of informal 'tu' form)",
+      "suggested": "No ChatGPT, abre Configurações → Apps e conectores → Criar.",
+      "phase": "llm"
+    },
+    "aiConnect.settings.step2": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.step3": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.copy": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.copied": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.close": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.empty": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.connectedSince": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.disconnect": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.disconnected": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.disconnectedNote": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.saveFailed": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.loadFailed": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.findableTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.findableDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "aiConnect.settings.unknownClient": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    }
+  },
+  "generatedAt": "2026-10-13T10:53:09.489Z"
+}
