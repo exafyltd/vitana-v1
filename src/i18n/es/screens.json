@@ -6235,10 +6235,11 @@
       "imageShareFailed": "No se pudo compartir",
       "imageLoading": "Cargando imagen",
       "unknownSize": "Tamaño desconocido",
-      "talkToVitana": "Hablar con Vitana",
       "_pending_review": {
-        "forwardChat": true
-      }
+        "forwardChat": true,
+        "talkToVitana": true
+      },
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Buscando…",
@@ -7640,18 +7641,32 @@
       "partnerLabsRevokeSuccess": "Acceso revocado.",
       "partnerLabsError": "Algo salió mal. Por favor, inténtalo de nuevo.",
       "vitanaMessages": {
-        "title": "Mensajes de Vitana",
-        "desc": "De vez en cuando, Vitana te envía un mensaje personal en el Messenger, con un consejo que encaja contigo en este momento.",
-        "enabled": "Recibir mensajes de Vitana",
-        "enabledDesc": "Como máximo un mensaje al día. Puedes desactivarlos en cualquier momento.",
-        "topics": "Temas",
-        "health": "Salud",
-        "healthDesc": "Consejos para tu salud y tu Vitana Index.",
-        "community": "Comunidad",
-        "communityDesc": "Personas, grupos y eventos que encajan contigo.",
-        "business": "Negocio e ingresos",
-        "businessDesc": "Opcional: ideas para ganar dinero con tus conocimientos en Vitanaland. Desactivado por defecto: solo si lo activas.",
-        "loadError": "No se pudieron cargar tus ajustes de los mensajes de Vitana."
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -12448,7 +12463,10 @@
         "eyebrow": "Matches",
         "title": "Personas afines a ti",
         "description": "Descubre tus matches de hoy.",
-        "action": "Ver matches"
+        "action": "Ver matches",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "F6": {
         "eyebrow": "Piloto automático",
@@ -12516,7 +12534,13 @@
       "cooking": "Cocina",
       "social": "Comunidad",
       "travel": "Viajes",
-      "career": "Carrera profesional"
+      "career": "Carrera profesional",
+      "_pending_review": {
+        "fitness": true,
+        "mindfulness": true,
+        "biohacking": true,
+        "yoga": true
+      }
     }
   }
 }

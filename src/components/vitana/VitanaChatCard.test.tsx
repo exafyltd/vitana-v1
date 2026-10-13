@@ -92,4 +92,12 @@ describe('VitanaChatCard', () => {
     expect(dismiss).toHaveBeenCalledTimes(1);
     expect(screen.queryByTestId('card-E1')).toBeNull();
   });
+
+  it('VTID-05100: dismissible={false} shows no X on an enrichment card either', () => {
+    render(<VitanaChatCard card_type="E1" params={{ n: 1 }} dismissible={false} />);
+    expect(screen.getByTestId('card-E1')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'x' })).toBeNull();
+    expect(seen.at(-1)?.props.onDismiss).toBeUndefined();
+    expect(seen.at(-1)?.props.params).toEqual({ n: 1 });
+  });
 });

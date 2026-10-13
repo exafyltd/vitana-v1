@@ -62,6 +62,7 @@ import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/l
 import { formatDate } from '@/lib/locale-format';
 import { CalendarInviteCard } from '@/components/messages/CalendarInviteCard';
 import { isInviteCard } from '@/lib/calendar-window-client';
+import { VitanaChatCard, isVitanaCardPayload } from '@/components/vitana/VitanaChatCard';
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
   isOwnMessage: boolean;
@@ -1122,6 +1123,17 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   };
 
+  // VTID-05100 — a Vitana companion message carries a Unified Card System card
+  // in its metadata (`content_data.card`, numbers only). It renders under
+  // Vitana's note with the same card component as everywhere else (owner
+  // decision D3). Only the Vitana bot's own messages get a card; anything
+  // else, or a payload the guard rejects, stays a plain bubble.
+  const companionCard =
+    isVitanaBot(message.sender_id || message.sender?.user_id) &&
+    isVitanaCardPayload(message.content_data?.card)
+      ? message.content_data.card
+      : null;
+
   // Hide deleted messages optimistically
   if (isDeleted) return null;
 
@@ -1278,6 +1290,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </div>
             </ReactionPopover>
           </div>
+
+          {/* VTID-05100 — the card sits under the bubble, outside its context
+              menu, so a tap opens the card's screen. No X in the chat. */}
+          {companionCard && (
+            <div className="mt-1.5 w-full max-w-md" data-testid="vitana-companion-card">
+              <VitanaChatCard card_type={companionCard.card_type} params={companionCard.params} dismissible={false} />
+            </div>
+          )}
         </div>
       </div>
 
