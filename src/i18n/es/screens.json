@@ -12504,7 +12504,10 @@
         "title": "Tienes nuevos matches",
         "description": "Mira quién encaja contigo.",
         "action": "Ver quién hizo match",
-        "metric": "Matches nuevos: {count} · {message}"
+        "metric": "Matches nuevos: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "G3": {
         "eyebrow": "Diario",

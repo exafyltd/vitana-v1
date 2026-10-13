@@ -13564,7 +13564,10 @@
         "title": "Você tem novos matches",
         "description": "Veja quem combina com você.",
         "action": "Ver matches",
-        "metric": "Novos matches: {count} · {message}"
+        "metric": "Novos matches: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "G3": {
         "eyebrow": "Diário",
