@@ -1,0 +1,31 @@
+{
+  "_comment": "VTID-05157 — npm packages that only work in a browser DOM. An import of one is a `web-pkg` signal in scripts/native/extraction-deps.mjs and makes the module web-only (class C). The native equivalents are in docs/programs/native-app/NATIVE-APP-PLAN.md §3 'Library mapping'.",
+  "packages": [
+    "react-dom",
+    "react-router-dom",
+    "react-router",
+    "sonner",
+    "lucide-react",
+    "vaul",
+    "framer-motion",
+    "embla-carousel-react",
+    "next-themes",
+    "html2canvas",
+    "canvas-confetti",
+    "qrcode.react",
+    "@daily-co/daily-js",
+    "recharts",
+    "cmdk",
+    "input-otp",
+    "react-day-picker",
+    "react-resizable-panels",
+    "@stripe/react-stripe-js",
+    "@stripe/stripe-js",
+    "@axe-core/react",
+    "jspdf",
+    "livekit-client",
+    "web-vitals",
+    "firebase"
+  ],
+  "prefixes": ["@radix-ui/", "@ffmpeg/"]
+}

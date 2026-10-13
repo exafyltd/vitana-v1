@@ -211,8 +211,6 @@
       "emptyDesc": "Start the first live room for your community.",
       "emptyPastTitle": "No recordings yet",
       "emptyPastDesc": "Ended rooms with a recording appear here."
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }

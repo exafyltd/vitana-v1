@@ -21,8 +21,11 @@ import {
 import { useTranslation } from "@/hooks/useTranslation";
 import { useMyErpAccess } from "@/hooks/useBackOfficeAccess";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function BackOfficePlaceholder() {
+  const spotlight = useSpotlightEnabled();
   const location = useLocation();
   const pathname = location.pathname;
   const { translate } = useTranslation();
@@ -46,15 +49,25 @@ export default function BackOfficePlaceholder() {
 
   // No matching section at all — 404-style body still inside AppLayout
   if (!section) {
+    const notFoundBody = (
+      <>
+        <div className="text-6xl font-bold text-muted-foreground mb-4">404</div>
+        <p className="text-lg text-muted-foreground mb-2">
+          {t("screens.backoffice.noSectionMatches")} <code className="font-mono text-sm" dir="ltr">{pathname}</code>
+        </p>
+        <p className="text-sm text-muted-foreground">{t("screens.backoffice.sidebarIsCanonical")}</p>
+      </>
+    );
     return (
       <AppLayout>
-        <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
-          <div className="text-6xl font-bold text-muted-foreground mb-4">404</div>
-          <p className="text-lg text-muted-foreground mb-2">
-            {t("screens.backoffice.noSectionMatches")} <code className="font-mono text-sm" dir="ltr">{pathname}</code>
-          </p>
-          <p className="text-sm text-muted-foreground">{t("screens.backoffice.sidebarIsCanonical")}</p>
-        </div>
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            <div className="flex flex-col items-center justify-center py-16 text-center">{notFoundBody}</div>
+          </ScreenFrame>
+        ) : (
+          // design-allow-next-line: legacy (flag-off) 404 body keeps its viewport-relative centring unchanged
+          <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">{notFoundBody}</div>
+        )}
       </AppLayout>
     );
   }
@@ -64,16 +77,21 @@ export default function BackOfficePlaceholder() {
   // VTID-03834: capability gate (mirrors the sidebar filter; the gateway enforces on data)
   const allowed = erpAccess.isLoading || canUseBackOfficeSection(section, erpAccess.data?.capabilities ?? null);
   if (!allowed) {
+    const noAccessBody = (
+      <div className="max-w-3xl mx-auto rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
+        <h1 className="text-xl font-semibold mb-2">{sectionLabel}</h1>
+        <p className="text-sm text-muted-foreground">{t("screens.backoffice.noAccess")}</p>
+        <p className="text-xs text-muted-foreground mt-2" dir="ltr">{(section.capabilities ?? []).join(" · ")}</p>
+      </div>
+    );
     return (
       <AppLayout>
         <BackOfficeTabs sectionKey={section.key} />
-        <div className="px-6 py-10">
-          <div className="max-w-3xl mx-auto rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
-            <h1 className="text-xl font-semibold mb-2">{sectionLabel}</h1>
-            <p className="text-sm text-muted-foreground">{t("screens.backoffice.noAccess")}</p>
-            <p className="text-xs text-muted-foreground mt-2" dir="ltr">{(section.capabilities ?? []).join(" · ")}</p>
-          </div>
-        </div>
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">{noAccessBody}</ScreenFrame>
+        ) : (
+          <div className="px-6 py-10">{noAccessBody}</div>
+        )}
       </AppLayout>
     );
   }
@@ -83,10 +101,7 @@ export default function BackOfficePlaceholder() {
     : "";
   const waveKey = wave === 1 ? "comingWave1" : wave === 2 ? "comingWave2" : "comingWave3";
 
-  return (
-    <AppLayout>
-      <BackOfficeTabs sectionKey={section.key} />
-      <div className="px-6 py-10" data-screen-id={`BO-${section.key}-${effectiveTab?.key ?? ""}`}>
+  const placeholderBody = (
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-2xl font-semibold">{sectionLabel}</h1>
@@ -98,7 +113,7 @@ export default function BackOfficePlaceholder() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background border border-border text-xs font-medium mb-4">
               <span
                 className={
-                  wave === 1 ? "h-2 w-2 rounded-full bg-amber-500" : "h-2 w-2 rounded-full bg-muted-foreground"
+                  wave === 1 ? "h-2 w-2 rounded-full bg-status-warning" : "h-2 w-2 rounded-full bg-muted-foreground"
                 }
                 aria-hidden="true"
               />
@@ -107,7 +122,19 @@ export default function BackOfficePlaceholder() {
             <p className="text-sm text-muted-foreground max-w-lg mx-auto">{t("screens.backoffice.placeholderBody")}</p>
           </div>
         </div>
-      </div>
+  );
+  const screenId = `BO-${section.key}-${effectiveTab?.key ?? ""}`;
+
+  return (
+    <AppLayout>
+      <BackOfficeTabs sectionKey={section.key} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div data-screen-id={screenId}>{placeholderBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="px-6 py-10" data-screen-id={screenId}>{placeholderBody}</div>
+      )}
     </AppLayout>
   );
 }

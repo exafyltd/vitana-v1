@@ -1,6 +1,7 @@
 /** BackOffice › Sales & CRM › Quotations (BO-009) — VTID-03855, Read tier: `sales.quotation.list` + `sales.quotation.get`. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
@@ -18,6 +19,7 @@ import { t } from "@/lib/i18n-toast";
 const CAPS = ["sales.view"] as const;
 
 export default function BackOfficeQuotations() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -29,7 +31,7 @@ export default function BackOfficeQuotations() {
   const d = detail.data?.result;
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-009" emoji="📄" title={t("screens.backoffice.sales.quotations.title")} description={t("screens.backoffice.sales.quotations.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-009" emoji="📄" title={t("screens.backoffice.sales.quotations.title")} description={t("screens.backoffice.sales.quotations.description")} capabilities={CAPS}>
       <AdminFilterBar searchValue={search} onSearchChange={setSearch} searchPlaceholder={t("screens.backoffice.sales.quotations.searchPlaceholder")} onReset={() => setSearch("")} />
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="xl:col-span-2 space-y-2">
@@ -86,6 +88,6 @@ export default function BackOfficeQuotations() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

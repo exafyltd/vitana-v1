@@ -5,7 +5,8 @@
  * no id travels from the browser), and its fiscal years via
  * `accounting.period.list` when the caller may read accounting.
  */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
@@ -50,6 +51,7 @@ function Row({ label, value, mono }: { label: string; value: React.ReactNode; mo
 }
 
 export default function BackOfficeCompany() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, COMPANY_CAPS));
   const canAccounting = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, ["accounting.view"]));
@@ -63,7 +65,7 @@ export default function BackOfficeCompany() {
   const companies = list.data?.result?.companies ?? [];
 
   return (
-    <BackOfficePage sectionKey="settings" screenId="BO-059" emoji="🏢" title={t("screens.backoffice.company.title")} description={t("screens.backoffice.company.description")} capabilities={COMPANY_CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="settings" screenId="BO-059" emoji="🏢" title={t("screens.backoffice.company.title")} description={t("screens.backoffice.company.description")} capabilities={COMPANY_CAPS}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base">{t("screens.backoffice.company.active")}</CardTitle></CardHeader>
@@ -168,6 +170,6 @@ export default function BackOfficeCompany() {
           <DataSourceNote command={list.data?.command} />
         </CardContent>
       </Card>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

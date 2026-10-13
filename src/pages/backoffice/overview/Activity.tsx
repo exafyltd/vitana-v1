@@ -1,6 +1,7 @@
 /** BackOffice › Overview › Activity (BO-003) — VTID-03849, Read tier: the tenant's command history. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import CommandsTable from "@/components/backoffice/CommandsTable";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
@@ -12,6 +13,7 @@ import { t } from "@/lib/i18n-toast";
 const STATUSES: CommandStatus[] = ["executed", "awaiting_approval", "failed", "rejected"];
 
 export default function BackOfficeActivity() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string>("all");
@@ -20,7 +22,7 @@ export default function BackOfficeActivity() {
   const rows = (commands.data ?? []).filter((c) => !q || c.type.toLowerCase().includes(q) || c.command_id.toLowerCase().includes(q) || (c.reason ?? "").toLowerCase().includes(q));
 
   return (
-    <BackOfficePage sectionKey="overview" screenId="BO-003" emoji="🕒" title={t("screens.backoffice.activity.title")} description={t("screens.backoffice.activity.description")}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="overview" screenId="BO-003" emoji="🕒" title={t("screens.backoffice.activity.title")} description={t("screens.backoffice.activity.description")}>
       <AdminFilterBar
         searchValue={search}
         onSearchChange={setSearch}
@@ -37,6 +39,6 @@ export default function BackOfficeActivity() {
         <CommandsTable commands={rows} meUserId={me.data?.user_id} />
       )}
       <DataSourceNote source="gateway" />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

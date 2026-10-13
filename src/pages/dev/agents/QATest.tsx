@@ -10,21 +10,15 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { TestTube, CheckSquare, BarChart, Play } from "lucide-react";
 import { devAgentsNavigation } from "@/config/dev-navigation";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function AgentsQATest() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("suites");
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="Vitana DEV — QA & Test Agents" 
-        description="Automated test results and QA reports"
-        canonical={window.location.href}
-      />
-
-      <SubNavigation items={devAgentsNavigation} />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           <DevStandardHeader 
@@ -40,13 +34,13 @@ export default function AgentsQATest() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Play className="w-4 h-4 mr-2" />
+              <Play className="w-4 h-4 me-2" />
               Run Tests
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="suites">Test Suites</SplitBarTrigger>
               <SplitBarTrigger value="results">Test Results</SplitBarTrigger>
               <SplitBarTrigger value="coverage">Coverage Reports</SplitBarTrigger>
@@ -77,7 +71,26 @@ export default function AgentsQATest() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Vitana DEV — QA & Test Agents" 
+        description="Automated test results and QA reports"
+        canonical={window.location.href}
+      />
+
+      <SubNavigation items={devAgentsNavigation} />
+
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
     </>
   );
 }

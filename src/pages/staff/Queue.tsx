@@ -5,6 +5,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Clock, User, AlertCircle, CheckCircle } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 // VTID-04001: on a phone each queue card used to force three metadata spans
 // and two buttons into one non-wrapping row, so the row overflowed the card
@@ -13,9 +15,9 @@ import AppLayout from "@/components/AppLayout";
 // still the demo data this screen has always shown — there is no backing
 // table for a staff patient queue.
 export default function StaffQueue() {
-  return (
-    <AppLayout>
-    <div className="p-6 pb-28 md:pb-6 space-y-6">
+  const spotlight = useSpotlightEnabled();
+  const staffBody = (
+    <>
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.staff.patientQueue')}</h1>
         <p className="text-muted-foreground">
@@ -27,7 +29,7 @@ export default function StaffQueue() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('screens.staff.waiting')}</CardTitle>
-            <Clock className="h-4 w-4 text-orange-500" />
+            <Clock className="h-4 w-4 text-status-warning" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">8</div>
@@ -40,7 +42,7 @@ export default function StaffQueue() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('screens.staff.progress')}</CardTitle>
-            <User className="h-4 w-4 text-blue-500" />
+            <User className="h-4 w-4 text-status-info" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">5</div>
@@ -53,7 +55,7 @@ export default function StaffQueue() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('screens.staff.urgent')}</CardTitle>
-            <AlertCircle className="h-4 w-4 text-red-500" />
+            <AlertCircle className="h-4 w-4 text-status-error" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">2</div>
@@ -66,7 +68,7 @@ export default function StaffQueue() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('screens.staff.completed')}</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
+            <CheckCircle className="h-4 w-4 text-status-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">24</div>
@@ -80,12 +82,12 @@ export default function StaffQueue() {
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">{t('screens.staff.currentQueue')}</h2>
         
-        <Card className="border-l-4 border-l-red-500">
+        <Card className="border-s-4 border-s-status-error">
           <CardHeader>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="flex min-w-0 items-center gap-4">
                 <Avatar>
-                  <AvatarFallback className="bg-red-100 text-red-800">{t('screens.staff.jd')}</AvatarFallback>
+                  <AvatarFallback className="bg-status-error-subtle text-status-error">{t('screens.staff.jd')}</AvatarFallback>
                 </Avatar>
                 <div className="min-w-0">
                   <CardTitle className="truncate text-lg">{t('screens.staff.johnDoe')}</CardTitle>
@@ -110,12 +112,12 @@ export default function StaffQueue() {
           </CardContent>
         </Card>
 
-        <Card className="border-l-4 border-l-orange-500">
+        <Card className="border-s-4 border-s-status-warning">
           <CardHeader>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="flex min-w-0 items-center gap-4">
                 <Avatar>
-                  <AvatarFallback className="bg-orange-100 text-orange-800">{t('screens.staff.sj')}</AvatarFallback>
+                  <AvatarFallback className="bg-status-warning-subtle text-status-warning">{t('screens.staff.sj')}</AvatarFallback>
                 </Avatar>
                 <div className="min-w-0">
                   <CardTitle className="truncate text-lg">{t('screens.staff.sarahJohnson')}</CardTitle>
@@ -140,12 +142,12 @@ export default function StaffQueue() {
           </CardContent>
         </Card>
 
-        <Card className="border-l-4 border-l-blue-500">
+        <Card className="border-s-4 border-s-status-info">
           <CardHeader>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="flex min-w-0 items-center gap-4">
                 <Avatar>
-                  <AvatarFallback className="bg-blue-100 text-blue-800">{t('screens.staff.mw')}</AvatarFallback>
+                  <AvatarFallback className="bg-status-info-subtle text-status-info">{t('screens.staff.mw')}</AvatarFallback>
                 </Avatar>
                 <div className="min-w-0">
                   <CardTitle className="truncate text-lg">{t('screens.staff.mikeWilson')}</CardTitle>
@@ -169,7 +171,18 @@ export default function StaffQueue() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{staffBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 pb-28 md:pb-6 space-y-6">{staffBody}</div>
+      )}
     </AppLayout>
   );
 }

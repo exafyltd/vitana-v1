@@ -151,7 +151,7 @@ export default function DevDocsBacklog() {
               key={doc.path + doc.source}
               onClick={() => setSelected(doc)}
               className={
-                'w-full text-left px-3 py-2 rounded-md transition border ' +
+                'w-full text-start px-3 py-2 rounded-md transition border ' +
                 (selected === doc
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:bg-muted/50')
@@ -197,7 +197,7 @@ export default function DevDocsBacklog() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  GitHub <ExternalLink className="h-3 w-3 ml-1" />
+                  GitHub <ExternalLink className="h-3 w-3 ms-1" />
                 </a>
               </Button>
             </div>

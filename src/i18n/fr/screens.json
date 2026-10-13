@@ -6231,7 +6231,8 @@
       "vitanaOpenScreen": "Ouvrir l'écran",
       "viewFullscreen": "Afficher en plein écran",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} a créé le groupe",
@@ -7794,6 +7795,20 @@
         }
       },
       "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
         "title": "Messages from Vitana",
         "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
         "enabled": "Receive messages from Vitana",

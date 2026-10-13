@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 380
-- **Distinct i18n keys consumed:** 4758
+- **Pages scanned:** 385
+- **Distinct i18n keys consumed:** 4759
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -15,6 +15,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 ---
 
 ## __tests__/
+
+### src/pages/__tests__/gateway-prefix.vtid-05155.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx
 
@@ -1661,6 +1665,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 5, total in shard: 11844, **MISSING:** screens.backoffice.${waveKey}
 - `sidebar` — used: 1, total in shard: 60, **MISSING:** sidebar.backoffice.${section.key}
 
+### src/pages/backoffice/BackOfficeWorkspacePage.tsx
+
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 1, total in shard: 11844
+
 ### src/pages/backoffice/accounting/ChartOfAccounts.tsx
 
 **Status:** ✅ clean — keys consumed: 31, namespaces: 1
@@ -1874,6 +1886,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 31, total in shard: 11844
+
+### src/pages/backoffice/vtid-05114-backoffice-workspace.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## community/
 
@@ -2127,10 +2143,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `Events Refresh Interval`
 - `VTID Refresh Interval`
-- `[title] Vitana DEV — Settings`
 - `[title] Settings`
 - `[placeholder] Search settings…`
 - `[title] Authentication Settings`
+- `[title] Vitana DEV — Settings`
 
 </details>
 
@@ -2412,10 +2428,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 <details><summary>Hardcoded suspects (top 10)</summary>
 
 - `🎫 JWT Settings`
-- `[title] Vitana DEV — Authentication Settings`
 - `[title] Authentication Settings`
 - `[placeholder] Search settings…`
 - `[title] JWT Settings`
+- `[title] Vitana DEV — Authentication Settings`
 
 </details>
 
@@ -2438,6 +2454,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `[placeholder] Search tenants…`
 
 </details>
+
+### src/pages/dev/vtid-05115-dev-workspace.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/dev/vtid/Analytics.tsx
 
@@ -2466,10 +2486,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 <details><summary>Hardcoded suspects (top 10)</summary>
 
 - `Search Interface`
-- `[title] Vitana DEV — VTID Search`
 - `[title] VTID Search`
 - `[placeholder] Search VTIDs…`
 - `[title] Search Interface`
+- `[title] Vitana DEV — VTID Search`
 
 </details>
 
@@ -3011,6 +3031,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
+### src/pages/staff/vtid-05116-role-workspace.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ## wallet/
 
 ### src/pages/wallet/Balance.tsx
@@ -3041,7 +3065,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 256 |
+| `screens` | 257 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |

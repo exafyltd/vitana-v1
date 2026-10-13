@@ -10,21 +10,15 @@ import { devDashboardNavigation } from "@/config/dev-navigation";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { Heart, Activity, CheckCircle, Plus } from "lucide-react";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function DashboardSystemHealth() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useState("metrics");
 
-  return (
+  const devBody = (
     <>
-      <SEO 
-        title="VITANA DEV — System Health" 
-        description="Monitor overall system health and performance indicators"
-        canonical={window.location.href}
-      />
-      
-      <SubNavigation items={devDashboardNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
           <DevStandardHeader 
@@ -40,13 +34,13 @@ export default function DashboardSystemHealth() {
             />
             <UniversalCalendarButton />
             <Button size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Configure
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full mb-6 bg-surface-raised/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="metrics">Health Metrics</SplitBarTrigger>
               <SplitBarTrigger value="components">Component Status</SplitBarTrigger>
               <SplitBarTrigger value="uptime">Uptime Monitor</SplitBarTrigger>
@@ -77,7 +71,26 @@ export default function DashboardSystemHealth() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="VITANA DEV — System Health" 
+        description="Monitor overall system health and performance indicators"
+        canonical={window.location.href}
+      />
+      
+      <SubNavigation items={devDashboardNavigation} />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {devBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to dark:from-background dark:via-background dark:to-background min-h-screen">{devBody}</div>
+      )}
     </>
   );
 }

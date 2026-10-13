@@ -1,5 +1,6 @@
 /** BackOffice › Reports › AR / AP Aging (BO-050) — VTID-03858, Read tier: `reports.ar_aging`, `reports.ap_aging` as of today. */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
@@ -49,6 +50,7 @@ function AgingTable({ rows, partyLabel, nameOf, emptyKey }: { rows: ErpAgingRow[
 }
 
 export default function BackOfficeAging() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const asOf = isoDate(new Date());
@@ -60,7 +62,7 @@ export default function BackOfficeAging() {
   const apShare = overdueShare(apRows);
 
   return (
-    <BackOfficePage sectionKey="reports" screenId="BO-050" emoji="⏳" title={t("screens.backoffice.reports.aging.title")} description={t("screens.backoffice.reports.aging.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="reports" screenId="BO-050" emoji="⏳" title={t("screens.backoffice.reports.aging.title")} description={t("screens.backoffice.reports.aging.description")} capabilities={CAPS}>
       <p className="text-sm text-muted-foreground">{t("screens.backoffice.reports.aging.asOf", { date: fmtDate(asOf, { dateStyle: "medium" }) })}</p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.reports.aging.receivables")} value={formatMoney(ar.data?.result?.total_outstanding ?? 0)} subtitle={t("screens.backoffice.reports.aging.receivablesHint", { count: String(arRows.length) })} icon={ArrowDownToLine} loading={enabled && ar.isLoading} variant="success" />
@@ -86,6 +88,6 @@ export default function BackOfficeAging() {
         </CardContent>
       </Card>
       <p className="text-xs text-muted-foreground">{t("screens.backoffice.reports.aging.negativeNote")}</p>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

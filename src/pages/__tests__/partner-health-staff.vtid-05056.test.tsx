@@ -23,6 +23,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import type { ReactNode } from "react";
 import { t } from "@/lib/i18n-toast";
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 const { adminFetch, notify, notifyError, passthrough, nothing } = vi.hoisted(() => ({
   adminFetch: vi.fn(),
@@ -121,6 +122,9 @@ function openInboxTab() {
 
 describe("admin PartnerHealthOrders (VTID-05056)", () => {
   const fetchMock = vi.fn();
+  // VTID-05155: full URLs, one /api/v1 — an endsWith check let a doubled
+  // /api/v1/api/v1 prefix through.
+  const API = `${GATEWAY_BASE}/api/v1/admin/partner-health`;
 
   function json(status: number, body: unknown) {
     return { ok: status >= 200 && status < 300, status, json: async () => body };
@@ -129,8 +133,8 @@ describe("admin PartnerHealthOrders (VTID-05056)", () => {
   function routeFetch(confirmResponse: () => unknown, inboxRow: Record<string, unknown> = INBOX_ROW) {
     fetchMock.mockImplementation(async (url: string, init?: RequestInit) => {
       const method = init?.method ?? "GET";
-      if (method === "GET" && url.endsWith("/admin/partner-health/orders")) return json(200, { orders: [ORDER] });
-      if (method === "GET" && url.endsWith("/admin/partner-health/inbox")) return json(200, { inbox: [inboxRow] });
+      if (method === "GET" && url === `${API}/orders`) return json(200, { orders: [ORDER] });
+      if (method === "GET" && url === `${API}/inbox`) return json(200, { inbox: [inboxRow] });
       if (method === "POST" && url.endsWith("/confirm-match")) return confirmResponse();
       if (method === "POST" && url.endsWith("/upload-result")) return json(200, { ok: true });
       throw new Error(`unexpected ${method} ${url}`);
@@ -151,7 +155,7 @@ describe("admin PartnerHealthOrders (VTID-05056)", () => {
     fireEvent.click(screen.getByRole("button", { name: t("screens.admin.upload") }));
 
     await waitFor(() => expect(notify).toHaveBeenCalledWith("screens.admin.resultUploaded"));
-    const call = fetchMock.mock.calls.find(([url, init]) => String(url).endsWith("/upload-result") && init?.method === "POST");
+    const call = fetchMock.mock.calls.find(([url, init]) => String(url) === `${API}/inbox/order-1/upload-result` && init?.method === "POST");
     const body = JSON.parse(String(call![1].body));
     expect(body).toEqual({ order_id: "order-1", result: { biomarkers: [] } });
     expect("partner_key" in body).toBe(false);
@@ -168,7 +172,7 @@ describe("admin PartnerHealthOrders (VTID-05056)", () => {
     await waitFor(() => expect(notify).toHaveBeenCalledWith("screens.admin.matchProposed"));
     expect(notify).not.toHaveBeenCalledWith("screens.admin.matchConfirmed");
     expect(notifyError).not.toHaveBeenCalled();
-    const call = fetchMock.mock.calls.find(([url]) => String(url).endsWith("/inbox/inbox-1/confirm-match"));
+    const call = fetchMock.mock.calls.find(([url]) => String(url) === `${API}/inbox/inbox-1/confirm-match`);
     expect(JSON.parse(String(call![1].body))).toEqual({
       matched_user_id: "user-9",
       matched_tenant_id: "tenant-9",
