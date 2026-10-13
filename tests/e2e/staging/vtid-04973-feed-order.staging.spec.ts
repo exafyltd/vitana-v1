@@ -48,20 +48,32 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
 // descendant that has a box. VTID-05129: article cards add a second
 // `display: contents` layer (withCardId), so one level down still measured 0×0
 // and every article dropped out — "info, article, info" read as "info, info".
+// VTID-05129: a Vitana card that renders nothing (VitanaIndexCard returns null
+// while loading, without an index, or once dismissed) collapses its slot
+// (`empty:hidden`). `slots` keeps every slot in DOM order — such a slot reads
+// "info-hidden" — so the composition order is checked even when the viewer
+// sees two posts in a row there (composeFeed's documented trade-off).
 const measureFeed = () => {
   const grid = document.querySelector('[data-testid="feed-grid"]');
   if (!grid) return null;
-  const kinds = [...grid.querySelectorAll(':scope > [data-feed-kind]')]
-    .filter((el) => {
-      let box: Element | null = el;
-      while (box && getComputedStyle(box).display === 'contents') box = box.firstElementChild;
-      if (!box) return false;
-      const r = box.getBoundingClientRect();
-      return r.width > 0 && r.height > 0;
+  const visible = (el: Element) => {
+    let box: Element | null = el;
+    while (box && getComputedStyle(box).display === 'contents') box = box.firstElementChild;
+    if (!box) return false;
+    const r = box.getBoundingClientRect();
+    return r.width > 0 && r.height > 0;
+  };
+  const slots = [...grid.querySelectorAll(':scope > [data-feed-kind]')]
+    .map((el) => {
+      const kind = el.getAttribute('data-feed-kind') as string;
+      if (visible(el)) return kind;
+      return kind === 'info' && el.childElementCount === 0 ? 'info-hidden' : null;
     })
-    .map((el) => el.getAttribute('data-feed-kind') as string);
+    .filter((k): k is string => k !== null);
+  const kinds = slots.filter((k) => k !== 'info-hidden');
   const tip = document.querySelector('[data-testid="feature-announcement-did-you-know-feature"]');
   return {
+    slots: slots.slice(0, 8),
     kinds: kinds.slice(0, 8),
     total: kinds.length,
     tip: tip ? { hasOrb: !!tip.querySelector('img'), text: (tip as HTMLElement).innerText } : null,
@@ -83,7 +95,10 @@ test('VTID-04973: the feed starts with an info card and info cards never sit sid
   test.skip(!m!.kinds.includes('post'), 'no user post in the first items for this account');
   // Weak invariant (strict alternation is a Vitest property of composeFeed: a
   // dismissed Vitana card is invisible to it, and posts keep priority).
-  expect(m!.kinds[0], `first feed item is "${m!.kinds[0]}", expected an info card (${m!.kinds.join(',')})`).toBe('info');
+  // The composition starts with an info slot; it may be one that renders
+  // nothing for this account (then the first VISIBLE item is a post).
+  expect(m!.slots[0], `first feed slot is "${m!.slots[0]}", expected an info card (${m!.slots.join(',')})`).toMatch(/^info/);
+  if (m!.slots[0] === 'info') expect(m!.kinds[0], `first visible feed item (${m!.kinds.join(',')})`).toBe('info');
   // Adjacency only counts while a non-info item still follows: once the
   // account's posts/articles run out, only info cards are left to show.
   const lastNonInfo = m!.kinds.lastIndexOf('post') > m!.kinds.lastIndexOf('other') ? m!.kinds.lastIndexOf('post') : m!.kinds.lastIndexOf('other');
