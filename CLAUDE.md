@@ -314,6 +314,16 @@ card + push, once, automatically. Do not publish these cards by hand any more.
 VTID in your PR title. Adding the entry yourself is still preferred (you know
 the wording best) and a PR that adds one is never drafted for.
 
+## Spotlight Design Contract — every screen (VTID-05107)
+
+Every screen follows **`docs/design-system/SPOTLIGHT_RULES.md`** (owner decision 2026-10-12, "harden the rules
+across the whole Vitanaland system"). **Adding a page in `App.tsx` also means giving it an archetype** in
+`src/design/screen-manifest.json` (`npm run design:manifest`; `npm test` fails until you do). Compose screens with
+`ScreenFrame` + `VCard`, use design tokens only, never touch the sidebar/ORB chrome. ESLint `design/*` rules run at
+error level on a base-branch ratchet in PR-GATE: new files must be clean, migrations lower the baselines. Details,
+escape hatch and the palette→token table: the contract itself and `.claude/rules/design.md` (loaded when you
+touch `src/pages/**` or `src/components/**`).
+
 ## Voice navigation — the screen registry (VTID-04502)
 
 `src/navigation/registry/` is the single list of screens Vitana can take a

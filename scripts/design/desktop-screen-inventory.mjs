@@ -44,7 +44,7 @@ const RULES = [
   ['P', 'Public, auth, legal & portals', /.*/],
 ];
 
-function classify(path) {
+export function classify(path) {
   for (const [tier, area, re] of RULES) if (re.test(path)) return { tier, area };
   return { tier: 'P', area: 'Public, auth, legal & portals' };
 }

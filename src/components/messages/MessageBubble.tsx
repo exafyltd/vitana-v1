@@ -39,8 +39,16 @@ import {
   Mic
 } from 'lucide-react';
 import { VitanaMessageActions } from './VitanaMessageActions';
-import { ImageZoomModal } from './ImageZoomModal';
-import { formatFileSize, isImageType, getSignedAttachmentUrl } from '@/lib/fileUpload';
+import { ChatImageViewer, type ChatViewerImage } from './ChatImageViewer';
+import { ForwardMessageSheet, type ForwardPayload } from './ForwardMessageSheet';
+import { formatFileSize, getSignedAttachmentUrl } from '@/lib/fileUpload';
+import {
+  canForwardMessage,
+  copyImageAndNotify,
+  downloadChatFile,
+  isImageAttachment,
+  type ChatAttachmentLike,
+} from '@/lib/chatImageActions';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
@@ -201,13 +209,18 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const lastTapTime = useRef(0);
   const [showDoubleTapReactions, setShowDoubleTapReactions] = useState(false);
-  const [imageZoomModal, setImageZoomModal] = useState<{ isOpen: boolean; url: string; filename: string }>({
-    isOpen: false,
-    url: '',
-    filename: ''
-  });
+  // VTID-05138: full-screen viewer for this message's pictures + forward sheet.
+  const [viewer, setViewer] = useState<{ open: boolean; index: number }>({ open: false, index: 0 });
+  const [forwardOpen, setForwardOpen] = useState(false);
   const [showReactionPopover, setShowReactionPopover] = useState(false);
   const [resolvedUrls, setResolvedUrls] = useState<Map<string, string>>(new Map());
+  // VTID-05138: image failures are keyed by URL (a fresh signed URL gets its
+  // own chance), paths that could not be signed fall back to the stored URL,
+  // and a path is re-signed at most once after its picture fails to load.
+  const [failedUrls, setFailedUrls] = useState<Set<string>>(new Set());
+  const [unsignablePaths, setUnsignablePaths] = useState<Set<string>>(new Set());
+  const [resigningPaths, setResigningPaths] = useState<Set<string>>(new Set());
+  const resignedPathsRef = useRef<Set<string>>(new Set());
 
   // Resolve fresh signed URLs for attachments from private bucket
   const resolveAttachmentUrl = useCallback(async (attachment: any): Promise<string> => {
@@ -232,18 +245,108 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     return contentData.attachments as any[];
   }, [contentData]);
 
+  // VTID-05138: legacy `content_data.files` entries that carry a link or a
+  // storage path render like attachments (pictures inline).
+  const legacyFileAttachments = useMemo<ChatAttachmentLike[]>(() => {
+    if (!Array.isArray(contentData?.files)) return [];
+    return (contentData.files as any[])
+      .filter((f) => f && (f.url || f.path))
+      .map((f) => ({
+        type: typeof f.type === 'string' && f.type.startsWith('image/') ? 'image' : 'file',
+        mime: typeof f.type === 'string' ? f.type : undefined,
+        filename: f.name || f.filename,
+        name: f.name || f.filename,
+        size: f.size,
+        url: f.url,
+        path: f.path,
+      }));
+  }, [contentData]);
+
+  const allAttachments = useMemo<ChatAttachmentLike[]>(
+    () => [...attachments, ...legacyFileAttachments],
+    [attachments, legacyFileAttachments]
+  );
+
   useEffect(() => {
-    attachments.forEach((att: any) => {
-      if (att.path && !resolvedUrls.has(att.path)) {
-        getSignedAttachmentUrl(att.path).then(url => {
+    let cancelled = false;
+    allAttachments.forEach((att) => {
+      const path = att.path;
+      if (path && !resolvedUrls.has(path)) {
+        getSignedAttachmentUrl(path).then(url => {
+          if (cancelled) return;
           if (url) {
-            setResolvedUrls(prev => new Map(prev).set(att.path, url));
+            setResolvedUrls(prev => new Map(prev).set(path, url));
+          } else {
+            setUnsignablePaths(prev => new Set(prev).add(path));
           }
         });
       }
     });
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attachments]);
+  }, [allAttachments]);
+
+  /**
+   * The URL a picture should be shown from: the fresh signed URL for a stored
+   * path, never the stale upload-time one first. `undefined` = still signing
+   * (render a skeleton). The stored URL is used only when signing failed or
+   * the attachment has no path.
+   */
+  const displayUrlFor = useCallback((att: ChatAttachmentLike): string | undefined => {
+    if (att.path) {
+      const fresh = resolvedUrls.get(att.path);
+      if (fresh) return fresh;
+      if (unsignablePaths.has(att.path)) return att.url || '';
+      return undefined;
+    }
+    return att.url || '';
+  }, [resolvedUrls, unsignablePaths]);
+
+  const handleImageError = useCallback((att: ChatAttachmentLike, failedUrl: string) => {
+    console.warn('[Attachment] Image failed to load:', att.filename || att.name);
+    const path = att.path;
+    if (path && !resignedPathsRef.current.has(path)) {
+      // One fresh signature (bypassing the cached one) before giving up.
+      resignedPathsRef.current.add(path);
+      setResigningPaths(prev => new Set(prev).add(path));
+      getSignedAttachmentUrl(path).then(url => {
+        setResigningPaths(prev => {
+          const next = new Set(prev);
+          next.delete(path);
+          return next;
+        });
+        if (url && url !== failedUrl) {
+          setResolvedUrls(prev => new Map(prev).set(path, url));
+        }
+        setFailedUrls(prev => new Set(prev).add(failedUrl));
+      });
+      return;
+    }
+    setFailedUrls(prev => new Set(prev).add(failedUrl));
+  }, []);
+
+  const imageAttachments = useMemo(
+    () => allAttachments.filter(isImageAttachment),
+    [allAttachments]
+  );
+
+  const viewerImages = useMemo<ChatViewerImage[]>(
+    () => imageAttachments.map((att) => ({
+      url: displayUrlFor(att) || '',
+      filename: att.filename || att.name || '',
+    })),
+    [imageAttachments, displayUrlFor]
+  );
+
+  const canForward = canForwardMessage(message);
+  const forwardPayload = useMemo<ForwardPayload>(() => {
+    const body = (message.body || message.content || '') as string;
+    return {
+      body: isLegacySharedPlaceholder(body, message.content_data) ? '' : body,
+      attachments: allAttachments,
+    };
+  }, [message.body, message.content, message.content_data, allAttachments]);
+  const isForwarded = message.content_data?.forwarded === true;
 
   // Use reactions hook
   const { reactionSummary, addReaction, removeReaction } = useMessageReactions(message.id);
@@ -358,9 +461,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     </div>
   );
 
-  const handleImageClick = async (attachment: any) => {
-    const url = await resolveAttachmentUrl(attachment);
-    setImageZoomModal({ isOpen: true, url, filename: attachment.filename });
+  const handleImageClick = (attachment: ChatAttachmentLike) => {
+    const index = Math.max(0, imageAttachments.indexOf(attachment));
+    setViewer({ open: true, index });
   };
 
   const handleFileClick = async (attachment: any) => {
@@ -376,12 +479,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const handleDownload = async (attachment: any) => {
     const url = await resolveAttachmentUrl(attachment);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = attachment.filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    await downloadChatFile(url, attachment.filename || attachment.name || '');
   };
 
   // Reaction and action handlers
@@ -396,13 +494,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [onReply, message]);
 
   const handleCopy = useCallback(() => {
+    // VTID-05138: a picture-only message copies the picture itself.
+    const text = forwardPayload.body.trim();
+    if (!text && imageAttachments.length > 0) {
+      void copyImageAndNotify(viewerImages[0]?.url || '');
+      return;
+    }
     navigator.clipboard.writeText(message.body || message.content || '');
-  }, [message]);
+  }, [message, forwardPayload.body, imageAttachments.length, viewerImages]);
 
   const handleForward = useCallback(() => {
-    // TODO: Implement forward functionality
-    console.log('Forward message:', message.id);
-  }, [message]);
+    setViewer(v => ({ ...v, open: false }));
+    setForwardOpen(true);
+  }, []);
 
   const handleStar = useCallback(() => {
     // TODO: Implement star functionality
@@ -566,8 +670,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     finalizeLongPressGesture();
   }, [finalizeLongPressGesture]);
 
-  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
-
   const renderLinkedText = useCallback((text?: string, className?: string, trailingInline?: React.ReactNode) => {
     if (!text) return null;
 
@@ -689,37 +791,52 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     );
   }, [isOwnMessage, navigate, messageMentions]);
 
-  const renderAttachment = (attachment: any, index: number) => {
+  const renderAttachment = (attachment: any, key: string) => {
     // Mime can be empty on Android pickers; fall back to filename extension
     // so already-sent screenshots stored as type:'file' still render inline
     // (previous send-side detection missed empty-mime PNGs from SAF).
-    const filename: string = attachment.filename || attachment.name || '';
-    const looksLikeImageName = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i.test(filename);
-    const isImage = attachment.type === 'image'
-      || isImageType(attachment.mime || '')
-      || looksLikeImageName;
-    const imageLoadFailed = failedImages.has(index);
-    const displayUrl = (attachment.path && resolvedUrls.get(attachment.path)) || attachment.url;
+    const isImage = isImageAttachment(attachment);
+    const displayUrl = displayUrlFor(attachment);
+    const isResigning = !!attachment.path && resigningPaths.has(attachment.path);
+    // VTID-05138: until the fresh signed URL is there, hold the place with a
+    // fixed-size skeleton — never try the stale stored URL first.
+    if (isImage && (displayUrl === undefined || isResigning)) {
+      return (
+        <div
+          key={key}
+          className="h-48 w-64 max-w-full animate-pulse rounded-lg bg-muted"
+          role="status"
+          aria-label={t('screens.messages.imageLoading')}
+          data-testid="chat-image-skeleton"
+        />
+      );
+    }
+    const imageLoadFailed = !displayUrl || failedUrls.has(displayUrl);
 
     if (isImage && !imageLoadFailed) {
       return (
         <div 
-          key={index}
+          key={key}
           className="relative group cursor-pointer max-w-xs"
           onClick={() => handleImageClick(attachment)}
+          data-testid="chat-image-attachment"
         >
           <img
             src={displayUrl}
-            alt={attachment.filename}
+            alt={attachment.filename || attachment.name}
             className="w-full h-auto rounded-lg max-h-64 object-cover"
             loading="lazy"
-            onError={() => {
-              console.warn('[Attachment] Image failed to load, falling back to file chip:', attachment.filename);
-              setFailedImages(prev => new Set(prev).add(index));
-            }}
+            onError={() => handleImageError(attachment, displayUrl as string)}
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
-          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+          {/* VTID-05138: the hover shade and toolbar take no taps until hovered —
+              on a phone (no hover) they stayed invisible but still caught taps,
+              so a tap on the picture's corner downloaded it instead of opening
+              the viewer, whose own toolbar covers download/copy/share/forward. */}
+          <div className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
+          <div
+            className="pointer-events-none absolute bottom-2 end-2 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 transition-opacity flex gap-1"
+            data-testid="chat-image-hover-actions"
+          >
             <Button
               size="sm"
               variant="secondary"
@@ -750,13 +867,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     } else {
       return (
         <div
-          key={index}
+          key={key}
           className="flex items-center gap-3 p-3 bg-background/50 rounded-lg border cursor-pointer hover:bg-background/70 transition-colors max-w-xs"
           onClick={() => handleFileClick(attachment)}
+          data-testid="chat-file-chip"
         >
           <FileText className="w-8 h-8 text-muted-foreground flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{attachment.filename}</p>
+            <p className="text-sm font-medium truncate">{attachment.filename || attachment.name}</p>
             <p className="text-xs text-muted-foreground">
               {formatFileSize(attachment.size)}
             </p>
@@ -953,17 +1071,23 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             {message.content_data?.attachments && (
               <div className="space-y-2">
                 {message.content_data.attachments.map((attachment: any, index: number) => 
-                  renderAttachment(attachment, index)
+                  renderAttachment(attachment, `att-${index}`)
                 )}
               </div>
             )}
             
-            {/* Legacy attachment format support */}
+            {/* Legacy attachment format support — VTID-05138: entries with a
+                link or a storage path render like attachments (pictures inline). */}
             {message.content_data?.files && (
               <div className="space-y-2">
-                {message.content_data.files.map((file: any, index: number) => (
+                {legacyFileAttachments.map((attachment, index) =>
+                  renderAttachment(attachment, `legacy-${index}`)
+                )}
+                {message.content_data.files
+                  .filter((file: any) => !(file?.url || file?.path))
+                  .map((file: any, index: number) => (
                   <div
-                    key={index}
+                    key={`legacy-meta-${index}`}
                     className="flex items-center gap-2 p-2 bg-background/50 rounded-lg border"
                   >
                     {file.type?.startsWith('image/') ? (
@@ -974,7 +1098,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{file.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {file.size ? formatFileSize(file.size) : 'Unknown size'}
+                        {file.size ? formatFileSize(file.size) : t('screens.messages.unknownSize')}
                       </p>
                     </div>
                   </div>
@@ -1061,7 +1185,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             <MessageContextMenu
               onReply={onReply ? handleReply : undefined}
               onCopy={handleCopy}
-              onForward={handleForward}
+              onForward={canForward ? handleForward : undefined}
               onStar={handleStar}
               onPin={handlePin}
               onDelete={isOwnMessage ? handleDelete : undefined}
@@ -1098,6 +1222,16 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   />
                 )}
                 
+                {isForwarded && !isEditing && (
+                  <div
+                    className="mb-1 flex items-center gap-1 text-xs italic opacity-70"
+                    data-testid="message-forwarded-label"
+                  >
+                    <Forward className="h-3 w-3" aria-hidden />
+                    <span>{t('screens.messages.forwardedLabel')}</span>
+                  </div>
+                )}
+
                 {isEditing ? (
                   <div ref={editContainerRef} className="p-2 space-y-2">
                     <textarea
@@ -1147,13 +1281,25 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         </div>
       </div>
 
-      {/* Image Zoom Modal */}
-      <ImageZoomModal
-        isOpen={imageZoomModal.isOpen}
-        onClose={() => setImageZoomModal({ isOpen: false, url: '', filename: '' })}
-        imageUrl={imageZoomModal.url}
-        filename={imageZoomModal.filename}
-      />
+      {/* VTID-05138: full-screen picture viewer */}
+      {viewer.open && (
+        <ChatImageViewer
+          open={viewer.open}
+          images={viewerImages}
+          initialIndex={viewer.index}
+          onClose={() => setViewer(v => ({ ...v, open: false }))}
+          onForward={canForward ? handleForward : undefined}
+        />
+      )}
+
+      {/* VTID-05138: forward to up to five chats or groups */}
+      {forwardOpen && (
+        <ForwardMessageSheet
+          open={forwardOpen}
+          onOpenChange={setForwardOpen}
+          payload={forwardPayload}
+        />
+      )}
 
       {/* Mobile long-press reaction/action drawer */}
       <Drawer open={showDoubleTapReactions} onOpenChange={(open) => { setShowDoubleTapReactions(open); if (!open) setShowDeleteConfirm(false); }} repositionInputs={false}>
@@ -1194,17 +1340,21 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <button
                 onClick={() => { handleCopy(); setShowDoubleTapReactions(false); }}
                 className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+                data-testid="message-action-copy"
               >
                 <Copy className="w-5 h-5 text-foreground" />
                 <span className="text-xs text-muted-foreground">{t('screens.messages.copy')}</span>
               </button>
-              <button
-                onClick={() => { handleForward(); setShowDoubleTapReactions(false); }}
-                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
-              >
-                <Forward className="w-5 h-5 text-foreground" />
-                <span className="text-xs text-muted-foreground">{t('screens.messages.forward')}</span>
-              </button>
+              {canForward && (
+                <button
+                  onClick={() => { setShowDoubleTapReactions(false); handleForward(); }}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+                  data-testid="message-action-forward"
+                >
+                  <Forward className="w-5 h-5 text-foreground" />
+                  <span className="text-xs text-muted-foreground">{t('screens.messages.forward')}</span>
+                </button>
+              )}
               {isOwnMessage && (
                 <button
                   onClick={() => { handleEdit(); setShowDoubleTapReactions(false); }}

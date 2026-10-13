@@ -61,27 +61,36 @@ self.addEventListener('push', (event) => {
 
   // Build the best possible title — prefer sender_name from data
   const senderName = data.sender_name || data.senderName || data.sender || data.from_name || data.fromName;
-  const title = senderName || notif.title || data.title || 'Vitana';
+  // VTID-05137: a group push is titled by the group (its body already starts
+  // with the sender), like WhatsApp.
+  const title = (data.group_id ? notif.title : null) || senderName || notif.title || data.title || 'Vitana';
   const body = notif.body || data.body || data.message || '';
 
   console.log('[SW v4] Resolved title:', title, '| body:', body);
 
-  // Build a stable tag for deduplication
-  const tag = data.message_id || data.messageId
+  // VTID-05137: a chat push carries data.tag = "chat:<conversation>", so a new
+  // message REPLACES the conversation's card instead of stacking another one
+  // (WhatsApp style). Other pushes keep the old order.
+  const isChatTag = typeof data.tag === 'string' && data.tag.indexOf('chat:') === 0;
+  const tag = (isChatTag ? data.tag : null)
+    || data.message_id || data.messageId
     || (data.thread_id ? `thread-${data.thread_id}` : null)
     || (data.threadId ? `thread-${data.threadId}` : null)
     || data.tag
     || `vitana-${hashCode(title + body)}`;
 
-  // Deduplicate by tag (5-second window)
-  if (recentTags.has(tag)) {
-    console.log('[SW v4] Skipping duplicate tag:', tag);
+  // Deduplicate the same push delivered twice (5-second window). Keyed on the
+  // message when there is one, so two different messages of one conversation
+  // are never mistaken for a duplicate now that they share a tag.
+  const dedupeKey = data.message_id || data.messageId || tag;
+  if (recentTags.has(dedupeKey)) {
+    console.log('[SW v4] Skipping duplicate:', dedupeKey);
     event.stopImmediatePropagation();
     event.waitUntil(Promise.resolve());
     return;
   }
-  recentTags.add(tag);
-  setTimeout(() => recentTags.delete(tag), 5000);
+  recentTags.add(dedupeKey);
+  setTimeout(() => recentTags.delete(dedupeKey), 5000);
 
   // Build click URL — use null for intermediate fallbacks so final '/' is the true default.
   // Path-based form (/inbox/t/<id>) — query-string form silently fails in Appilix's
@@ -102,7 +111,8 @@ self.addEventListener('push', (event) => {
       icon: notif.icon || data.icon || '/favicon.ico',
       badge: notif.badge || data.badge || undefined,
       tag: tag,
-      renotify: false,
+      // A replaced chat card still alerts, like WhatsApp.
+      renotify: isChatTag,
       data: { ...data, url: url },
     })
   );

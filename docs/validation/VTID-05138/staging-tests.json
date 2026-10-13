@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05138",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: the Alle Beisammen group renders a chat picture as an <img> (not the file chip) once its signed URL arrives, no picture in the list falls back to the chip, tapping it opens the full-screen viewer with Download / Copy / Forward, and Esc closes it. Signed-URL requests and the picture are answered in the browser and one fixture message is added to the read message list; nothing is sent; read-only",
+      "spec": "tests/e2e/staging/vtid-05138-chat-image-viewer.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/messages/MessageBubble.image-attachment.vtid-05138.test.tsx src/components/messages/ChatImageViewer.vtid-05138.test.tsx src/components/messages/ForwardMessageSheet.vtid-05138.test.tsx",
+      "reason": "forwarding copies attachments and sends messages, and copying writes to the clipboard, so they are proven in CI with Supabase and the chat API mocked: skeleton until signed, re-sign once then chip, legacy pictures inline, viewer swipe/keys/zoom/toolbar, unsupported-clipboard toast, per-target copy-then-send with forwarded=true, failed copy skips only that target, voice never forwarded, five-target cap"
+    }
+  ]
+}

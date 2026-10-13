@@ -6,8 +6,10 @@
  *   - Business profile   — the business has a country
  *                          (GET /partner-onboarding/:orgId → organization)
  *   - Products/services  — at least one product (GET /:orgId/catalogue)
- *   - Verification       — lifecycle_state submitted/verifying = in progress,
- *                          needs_action = needs attention, live = done
+ *   - Verification       — VTID-05136: the checklist's own verification step
+ *                          (done / failed / reviewer note / in review); the
+ *                          lifecycle_state is only the fallback when no
+ *                          checklist came back
  *   - Sales setup        — the business's shop record exists (catalogue.merchant)
  *   - Review & publish   — lifecycle_state live
  *   - Partner terms     — VTID-04895: GET /:orgId/terms; its own row below the
@@ -21,14 +23,17 @@
  * Both endpoints already exist and already require org_admin, so the hub is
  * only shown to a business's admins. Nothing is written from here except the
  * profile sheet, which saves through PATCH /:orgId/company (the endpoint the
- * onboarding API already has for exactly these facts).
+ * onboarding API already has for exactly these facts), and — VTID-05136 — the
+ * Submit / Resubmit button, which calls POST /:orgId/submit once, after the
+ * supplier confirms. The server decides the outcome; the hub only shows it.
  */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CheckCircle2, ChevronRight, Circle, Clock, FileSignature, Loader2, ShieldCheck, TriangleAlert } from 'lucide-react';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
   ResponsiveDialogContent,
+  ResponsiveDialogDescription,
   ResponsiveDialogFooter,
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
@@ -51,12 +56,97 @@ import { fmtDate } from '@/lib/locale-format';
 
 export type StepState = 'done' | 'in_progress' | 'attention' | 'todo';
 
+/** VTID-05136: one step of the server's onboarding checklist. */
+export interface ChecklistStepFact {
+  key: string;
+  required: boolean;
+  status: string;
+  missing: string[];
+  detail: Record<string, unknown> | null;
+}
+
+/** VTID-05136: the part of GET /partner-onboarding/:orgId → checklist the hub uses. */
+export interface ChecklistFacts {
+  steps: ChecklistStepFact[];
+  submitReady: boolean;
+}
+
 export interface HubFacts {
   country: string | null;
   website: string | null;
   lifecycleState: string | null;
   productCount: number;
   hasMerchant: boolean;
+  /** Absent when the server sent no checklist (e.g. a business without a type). */
+  checklist?: ChecklistFacts | null;
+}
+
+/** Reads the checklist from a server response; null when it is missing or malformed. */
+export function parseChecklist(raw: unknown): ChecklistFacts | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const c = raw as Record<string, unknown>;
+  if (!Array.isArray(c.steps)) return null;
+  const steps: ChecklistStepFact[] = [];
+  for (const s of c.steps as unknown[]) {
+    if (!s || typeof s !== 'object') continue;
+    const r = s as Record<string, unknown>;
+    if (typeof r.key !== 'string' || typeof r.status !== 'string') continue;
+    steps.push({
+      key: r.key,
+      required: r.required === true,
+      status: r.status,
+      missing: Array.isArray(r.missing) ? r.missing.filter((m): m is string => typeof m === 'string') : [],
+      detail: r.detail && typeof r.detail === 'object' ? (r.detail as Record<string, unknown>) : null,
+    });
+  }
+  return { steps, submitReady: c.submit_ready === true };
+}
+
+/** The reviewer's request-changes note on the verification step, if any. */
+export function reviewNote(checklist: ChecklistFacts | null | undefined): string | null {
+  const v = checklist?.steps.find((s) => s.key === 'verification');
+  const note = v?.detail?.review_note;
+  if (!note || typeof note !== 'object') return null;
+  const reason = (note as Record<string, unknown>).reason;
+  return typeof reason === 'string' && reason.trim() ? reason.trim() : null;
+}
+
+/** What is still open, in plain words: required steps the server reports as todo or failed. */
+export type OpenItem = { key: string; label: string };
+
+export function openSteps(checklist: ChecklistFacts | null | undefined): OpenItem[] {
+  if (!checklist) return [];
+  return checklist.steps
+    .filter((s) => s.required && (s.status === 'todo' || s.status === 'failed'))
+    .map((s) => {
+      const label =
+        s.key === 'mapping' && s.missing.includes('complete_offering')
+          ? 'screens.commerceportal.setupHub.openCompleteOffering'
+          : (OPEN_STEP_LABEL[s.key] ?? 'screens.commerceportal.setupHub.openOther');
+      return { key: s.key, label };
+    });
+}
+
+const OPEN_STEP_LABEL: Record<string, string> = {
+  account: 'screens.commerceportal.setupHub.openAccount',
+  company: 'screens.commerceportal.setupHub.openCompany',
+  verification: 'screens.commerceportal.setupHub.openVerification',
+  catalogue: 'screens.commerceportal.setupHub.openCatalogue',
+  mapping: 'screens.commerceportal.setupHub.openShopLink',
+  tracking_test: 'screens.commerceportal.setupHub.openTrackingTest',
+  results_channel: 'screens.commerceportal.setupHub.openResultsChannel',
+  terms: 'screens.commerceportal.setupHub.openTerms',
+  dpa: 'screens.commerceportal.setupHub.openDpa',
+  billing_mandate: 'screens.commerceportal.setupHub.openBillingMandate',
+  team: 'screens.commerceportal.setupHub.openTeam',
+};
+
+/** Submit (draft) or Resubmit (needs_action), only when the server says it is ready. */
+export function submitMode(f: HubFacts): 'submit' | 'resubmit' | null {
+  if (!f.checklist?.submitReady) return null;
+  if (f.lifecycleState === 'draft') return 'submit';
+  if (f.lifecycleState === 'needs_action') return 'resubmit';
+  return null;
 }
 
 export interface HubStep {
@@ -67,13 +157,7 @@ export interface HubStep {
 /** The checklist, derived only from server facts. Exported for tests. */
 export function deriveSetupSteps(f: HubFacts): HubStep[] {
   const live = f.lifecycleState === 'live';
-  const verification: StepState = live
-    ? 'done'
-    : f.lifecycleState === 'needs_action' || f.lifecycleState === 'exception'
-      ? 'attention'
-      : f.lifecycleState === 'submitted' || f.lifecycleState === 'verifying'
-        ? 'in_progress'
-        : 'todo';
+  const verification = f.checklist ? verificationFromChecklist(f) : verificationFromLifecycle(f.lifecycleState);
   return [
     { id: 'profile', state: f.country ? 'done' : 'todo' },
     { id: 'products', state: f.productCount > 0 ? 'done' : 'todo' },
@@ -81,6 +165,30 @@ export function deriveSetupSteps(f: HubFacts): HubStep[] {
     { id: 'sales', state: f.hasMerchant ? 'done' : 'todo' },
     { id: 'publish', state: live ? 'done' : 'todo' },
   ];
+}
+
+/**
+ * VTID-05136: the verification row follows the checklist's verification step,
+ * so an admin-approved business that is waiting on OTHER steps no longer reads
+ * "verification needs your attention". First match wins.
+ */
+function verificationFromChecklist(f: HubFacts): StepState {
+  const v = f.checklist?.steps.find((s) => s.key === 'verification');
+  if (v?.status === 'done') return 'done';
+  if (v?.status === 'failed') return 'attention';
+  if (v?.status === 'todo' && reviewNote(f.checklist)) return 'attention';
+  if (v?.status === 'in_progress') return 'in_progress';
+  if (f.lifecycleState === 'submitted' || f.lifecycleState === 'verifying') return 'in_progress';
+  if (f.lifecycleState === 'rejected') return 'attention';
+  return 'todo';
+}
+
+/** The pre-VTID-05136 mapping, kept for a response without a checklist. */
+function verificationFromLifecycle(lifecycleState: string | null): StepState {
+  if (lifecycleState === 'live') return 'done';
+  if (lifecycleState === 'needs_action' || lifecycleState === 'exception') return 'attention';
+  if (lifecycleState === 'submitted' || lifecycleState === 'verifying') return 'in_progress';
+  return 'todo';
 }
 
 export function readinessPercent(steps: HubStep[]): number {
@@ -100,6 +208,25 @@ const STATE_LABEL: Record<StepState, string> = {
   in_progress: 'screens.commerceportal.setupHub.stateInProgress',
   attention: 'screens.commerceportal.setupHub.stateAttention',
   todo: 'screens.commerceportal.setupHub.stateTodo',
+};
+
+/** VTID-05136: what the hub says after a submit, from the state the server returned. */
+export type SubmitResult = 'live' | 'needs_action' | 'in_review' | 'unchanged' | 'failed';
+
+export function submitResultFor(after: string | null, transitions: unknown): SubmitResult {
+  // No transition = the server recorded the submit and changed nothing.
+  if (!Array.isArray(transitions) || transitions.length === 0 || !after) return 'unchanged';
+  if (after === 'live') return 'live';
+  if (after === 'needs_action') return 'needs_action';
+  return 'in_review';
+}
+
+const SUBMIT_RESULT_COPY: Record<SubmitResult, string> = {
+  live: 'screens.commerceportal.setupHub.submitResultLive',
+  needs_action: 'screens.commerceportal.setupHub.submitResultNeedsAction',
+  in_review: 'screens.commerceportal.setupHub.submitResultInReview',
+  unchanged: 'screens.commerceportal.setupHub.submitResultUnchanged',
+  failed: 'screens.commerceportal.setupHub.submitFailed',
 };
 
 function StateIcon({ state }: { state: StepState }) {
@@ -139,6 +266,11 @@ export function SetupHub({
   const [legalName, setLegalName] = useState<string | null>(null);
   const [dpa, setDpa] = useState<DpaStatus | null>(null);
   const [dpaOpen, setDpaOpen] = useState(false);
+  // VTID-05136: submit / resubmit for verification.
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<SubmitResult | null>(null);
+  const submittingRef = useRef(false);
 
   const loadTerms = useCallback(async () => {
     if (!org) return;
@@ -163,6 +295,7 @@ export function SetupHub({
         lifecycleState: ob?.organization?.lifecycle_state ?? org.lifecycle_state ?? null,
         productCount: Array.isArray(cat?.products) ? cat.products.length : 0,
         hasMerchant: !!cat?.merchant,
+        checklist: parseChecklist(ob?.checklist),
       });
       setDpaStep(dpaStepOf(ob?.checklist));
       setLegalName(typeof ob?.organization?.legal_name === 'string' ? ob.organization.legal_name : null);
@@ -176,6 +309,42 @@ export function SetupHub({
     setDpaStep(null);
     void load();
   }, [load, refreshKey]);
+
+  // A result belongs to the business it was shown for.
+  useEffect(() => {
+    setSubmitResult(null);
+  }, [org?.id]);
+
+  /** One POST, after the supplier confirmed. The server decides; the hub shows what it said. */
+  const submit = async () => {
+    if (!org || submittingRef.current) return;
+    submittingRef.current = true;
+    setSubmitting(true);
+    try {
+      const r = await adminFetch(`${PARTNER_ONBOARDING_API}/${org.id}/submit`, { method: 'POST' });
+      const after: string | null = r?.organization?.lifecycle_state ?? null;
+      setFacts((f) =>
+        f
+          ? {
+              ...f,
+              country: r?.organization?.country ?? f.country,
+              website: r?.organization?.website ?? f.website,
+              lifecycleState: after ?? f.lifecycleState,
+              checklist: parseChecklist(r?.checklist) ?? f.checklist,
+            }
+          : f,
+      );
+      setSubmitResult(submitResultFor(after, r?.transitions));
+    } catch {
+      // adminFetch keeps only the error code; the refreshed checklist says what is open.
+      setSubmitResult('failed');
+      void load();
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+      setConfirmOpen(false);
+    }
+  };
 
   useEffect(() => {
     setTerms(null);
@@ -201,6 +370,9 @@ export function SetupHub({
   const dpaRow = deriveDpaRow(dpaStep, dpa);
 
   const steps = useMemo(() => (facts ? deriveSetupSteps(facts) : []), [facts]);
+  const open = useMemo(() => (facts && facts.lifecycleState !== 'live' ? openSteps(facts.checklist) : []), [facts]);
+  const note = facts ? reviewNote(facts.checklist) : null;
+  const mode = facts ? submitMode(facts) : null;
   if (!org) return null;
 
   const action = (id: HubStep['id'], state: StepState) => {
@@ -270,6 +442,12 @@ export function SetupHub({
                     <p className="text-sm text-muted-foreground">
                       {state === 'todo' || state === 'done' ? t(STEP_COPY[id].body) : t(STATE_LABEL[state])}
                     </p>
+                    {id === 'verification' && note && state !== 'done' ? (
+                      <p className="mt-1 text-sm text-foreground" data-testid="setup-review-note">
+                        <span className="font-semibold">{t('screens.commerceportal.setupHub.reviewNoteLabel')}</span>{' '}
+                        {note}
+                      </p>
+                    ) : null}
                   </div>
                   {a ? (
                     <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
@@ -302,8 +480,78 @@ export function SetupHub({
             <TermsRow status={terms} onOpen={() => setTermsOpen(true)} />
           )}
           {dpaRow && <DpaRow row={dpaRow} onOpen={() => setDpaOpen(true)} />}
+          {open.length > 0 && (
+            <div className="mt-4 rounded-2xl border border-border bg-muted/40 p-3" data-testid="setup-still-needed">
+              <p className="text-sm font-semibold text-foreground">{t('screens.commerceportal.setupHub.stillNeeded')}</p>
+              <ul className="mt-1 list-disc space-y-0.5 ps-5 text-sm text-muted-foreground">
+                {open.map((o) => (
+                  <li key={o.key} data-step={o.key}>
+                    {t(o.label)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {submitResult && (
+            <p
+              className={`mt-4 text-sm font-medium ${submitResult === 'failed' ? 'text-status-error' : 'text-foreground'}`}
+              role="status"
+              aria-live="polite"
+              data-testid="setup-submit-result"
+              data-result={submitResult}
+            >
+              {t(SUBMIT_RESULT_COPY[submitResult])}
+            </p>
+          )}
+          {mode && (
+            <Button
+              type="button"
+              className="mt-4 h-12 w-full text-base font-semibold md:w-auto"
+              disabled={submitting}
+              onClick={() => setConfirmOpen(true)}
+              data-testid="setup-submit"
+              data-mode={mode}
+            >
+              {t(mode === 'submit' ? 'screens.commerceportal.setupHub.submitCta' : 'screens.commerceportal.setupHub.resubmitCta')}
+            </Button>
+          )}
         </>
       )}
+
+      <ResponsiveDialog open={confirmOpen} onOpenChange={(next) => (submitting ? undefined : setConfirmOpen(next))}>
+        <ResponsiveDialogContent>
+          <ResponsiveDialogHeader className="text-start">
+            <ResponsiveDialogTitle className="text-2xl font-bold">
+              {t(mode === 'resubmit' ? 'screens.commerceportal.setupHub.resubmitConfirmTitle' : 'screens.commerceportal.setupHub.submitConfirmTitle')}
+            </ResponsiveDialogTitle>
+            <ResponsiveDialogDescription className="text-start">
+              {t('screens.commerceportal.setupHub.submitConfirmBody')}
+            </ResponsiveDialogDescription>
+          </ResponsiveDialogHeader>
+          <ResponsiveDialogFooter className="flex-row gap-2 md:mt-4">
+            <Button
+              type="button"
+              variant="outline"
+              className="h-12 flex-1 text-base"
+              disabled={submitting}
+              onClick={() => setConfirmOpen(false)}
+              data-testid="setup-submit-cancel"
+            >
+              {t('screens.commerceportal.setupHub.submitCancel')}
+            </Button>
+            <Button
+              type="button"
+              className="h-12 flex-1 text-base font-semibold"
+              disabled={submitting}
+              onClick={() => void submit()}
+              data-testid="setup-submit-confirm"
+            >
+              {submitting && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
+              {t('screens.commerceportal.setupHub.submitConfirm')}
+            </Button>
+          </ResponsiveDialogFooter>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
 
       <PartnerTermsSheet open={termsOpen} onOpenChange={setTermsOpen} orgId={org.id} onAccepted={() => void loadTerms()} />
 

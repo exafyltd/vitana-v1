@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05137",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/firebase-messaging-sw.chat-tag.vtid-05137.test.ts",
+      "reason": "the service worker runs the real public/firebase-messaging-sw.js in a sandbox: chat pushes share one tag per conversation (replace + re-alert), the same message twice is shown once, a group push is titled by the group, non-chat pushes keep the old tag order; a push needs a device and a real sender, so it is proven in CI, never on staging"
+    }
+  ]
+}

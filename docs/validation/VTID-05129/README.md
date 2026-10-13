@@ -17,3 +17,12 @@ that measured the page wrongly. No product code changes.
 | VTID-04682, deploy, VTID-04989 | runner/guard half (vitana-platform #4072) |
 
 Proof: a full STAGING-VERIFY community-app run with 0 failures after both PRs merge.
+
+## Fix-forward 1 (after proof run 38363989362: 518 passed, 5 failed)
+
+| Suite | Change |
+|---|---|
+| VTID-04973 | The feed now measures correctly (`post,info,post,info,…`). The first slot is the VitanaIndexCard, which renders nothing for the account (it returns null while loading, without an index, or once dismissed; its slot is `empty:hidden`). That is composeFeed's documented trade-off. The spec now checks that the first slot in the DOM is an info slot, visible or hidden, and that visible info cards never sit side by side. |
+| VTID-04901, VTID-04902 | No change. They failed at 07:58, while staging switched to 2a193a17 mid-run (stage deploy 07:54–08:00). |
+| VTID-04989, job timeout | Runner half (vitana-platform #4075). |
+| VTID-05081 phone journey | No change. In 1 of 4 journeys in the same run, Events waited more than 10 s on one live-room cover image; the other 3 were ready in about 1 s. This is re-observed in proof run 2. |

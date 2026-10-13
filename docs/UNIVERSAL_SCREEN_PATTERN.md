@@ -1,3 +1,7 @@
+> **Superseded by v2 — the Spotlight Design Contract:** [`docs/design-system/SPOTLIGHT_RULES.md`](design-system/SPOTLIGHT_RULES.md)
+> (VTID-05107, owner-approved 2026-10-12). Screens migrated to Spotlight follow that contract; this v1 pattern
+> remains the description of `legacy` screens until they migrate. Nothing below was deleted.
+
 # Universal Screen Pattern Documentation
 **Version**: 1.0  
 **Status**: CTO Approved  
