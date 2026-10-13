@@ -11,3 +11,5 @@ expo-env.d.ts
 # Generated before typecheck/test/bundle by scripts/native/gen-i18n-map.mjs.
 src/i18n/catalog-map.generated.ts
 *.log
+# VTID-05179 — fake ORB gateway recordings (device checklist evidence, never committed).
+tools/orb-fake-gateway/out/
