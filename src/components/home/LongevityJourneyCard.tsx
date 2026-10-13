@@ -11,11 +11,20 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, Play } from 'lucide-react';
+import { Check, Play, Zap } from 'lucide-react';
 import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
 import { useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
 import { t } from '@/lib/i18n-toast';
 import { VitanaRecommendationCard } from '@/components/vitana/VitanaRecommendationCard';
+import { VitanaCardActionButton } from '@/components/vitana/VitanaCardActionButton';
+import { ACCENT_CLASSES, CARD_STYLE } from '@/components/vitana/vitana-card-catalog';
+
+const STYLE = CARD_STYLE.F1; // VTID-05086: Unified Card System accent + button shape
+
+export interface LongevityJourneyCardProps {
+  /** VTID-05086: undefined = hide for this view; function = called on X; null = no X (chat). */
+  onDismiss?: (() => void) | null;
+}
 
 function ProgressDot({
   value,
@@ -38,7 +47,7 @@ function ProgressDot({
   );
 }
 
-export function LongevityJourneyCard() {
+export function LongevityJourneyCard({ onDismiss }: LongevityJourneyCardProps = {}) {
   const navigate = useNavigate();
   const { totalSessions, completedInOrder, nextSession, completedToday, dailyGoal, loading } =
     useGuidedJourneyProgress();
@@ -55,8 +64,16 @@ export function LongevityJourneyCard() {
       feature="guided-journey"
       eyebrow={t('screens.home.longevityJourneyEyebrow')}
       onOpen={goToJourney}
-      onDismiss={() => setDismissed(true)}
+      onDismiss={
+        onDismiss === null
+          ? undefined
+          : () => {
+              onDismiss?.();
+              setDismissed(true);
+            }
+      }
       dismissLabel={t('screens.vitanaIdentity.dismissCard')}
+      accentClassName={ACCENT_CLASSES[STYLE.accent].border}
       widget={
         nextSession ? (
           <div className="flex items-center gap-0.5">
@@ -110,10 +127,14 @@ export function LongevityJourneyCard() {
           <span className="truncate">{t('screens.home.playTodaysEpisode', { session: nextSession.session })}</span>
         </button>
       ) : (
-        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
-          <span className="truncate">{t('screens.vitanaIdentity.viewJourney')}</span>
-          <ArrowRight className="w-3 h-3 shrink-0" />
-        </span>
+        <VitanaCardActionButton
+          className="mt-1.5"
+          shape={STYLE.shape}
+          accent={STYLE.accent}
+          icon={Zap}
+          label={t('screens.vitanaIdentity.viewJourney')}
+          onClick={goToJourney}
+        />
       )}
     </VitanaRecommendationCard>
   );

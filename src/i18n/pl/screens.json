@@ -13560,6 +13560,48 @@
         "title": "Dodaj zdjęcie w tle",
         "description": "Zdjęcie w tle sprawia, że Twój profil jest bardziej osobisty.",
         "action": "Prześlij"
+      },
+      "F3": {
+        "eyebrow": "Dziennik",
+        "title": "Jak się dziś czujesz?",
+        "description": "Powiedz kilka zdań do dziennika – Vitana słucha.",
+        "action": "Nagraj"
+      },
+      "F4": {
+        "eyebrow": "Zapytaj Vitanę",
+        "title": "Masz pytanie?",
+        "description": "Vitana pomoże Ci w sprawach zdrowia, społeczności i nie tylko.",
+        "action": "Zapytaj Vitanę"
+      },
+      "F5": {
+        "eyebrow": "Dopasowania",
+        "title": "Ludzie, którzy do Ciebie pasują",
+        "description": "Odkryj dzisiejsze dopasowania.",
+        "action": "Zobacz dopasowania"
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Twój autopilot jest gotowy",
+        "description": "Pozwól Vitanie zaplanować Twoje kolejne kroki.",
+        "action": "Otwórz"
+      },
+      "F9": {
+        "eyebrow": "Kalendarz",
+        "title": "Twój dzień w skrócie",
+        "description": "Terminy, wydarzenia i przypomnienia w jednym miejscu.",
+        "action": "Otwórz kalendarz"
+      },
+      "F10": {
+        "eyebrow": "Multimedia",
+        "title": "Udostępnij film lub muzykę",
+        "description": "Prześlij swoje multimedia i inspiruj społeczność.",
+        "action": "Utwórz"
+      },
+      "F11": {
+        "eyebrow": "Odkrywaj",
+        "title": "Odkryj coś nowego",
+        "description": "Produkty, usługi i oferty dla Twojego dobrego samopoczucia.",
+        "action": "Przeglądaj"
       }
     },
     "interests": {

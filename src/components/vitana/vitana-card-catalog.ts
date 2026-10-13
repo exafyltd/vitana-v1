@@ -148,7 +148,7 @@ export const CARD_DEEP_LINKS: Partial<Record<VitanaCardType, string>> = {
  *   gateway contract and for a future dedicated page.
  * - `make-a-post` lives inside the create sheet itself and has no gateway
  *   screen of its own, so it asks for `community` and keeps only E3.
- * - Phase 1 (VTID-05085) ships no feature lists; Phase 2 (VTID-05086) fills them.
+ * - Feature lists follow plan §4 (Phase 2, VTID-05086). Boost cards (G*) are Phase 3.
  */
 export type CardScreen =
   | 'home'
@@ -169,16 +169,18 @@ export interface CardScreenConfig {
 }
 
 export const CARD_SCREENS: Record<CardScreen, CardScreenConfig> = {
+  // Home: no new feature cards (plan §4; owner question open) — its existing
+  // Vitana cards stay as they are in Home.tsx.
   home: { server: 'home', features: [] },
-  profile: { server: 'profile', features: [] },
-  'vitana-index': { server: 'vitana-index', features: [] },
-  autopilot: { server: 'autopilot', features: [] },
-  community: { server: 'community', features: [] },
-  'talk-to-vitana': { server: 'talk-to-vitana', features: [] },
-  calendar: { server: 'calendar', features: [] },
-  'longevity-journey': { server: 'longevity-journey', features: [] },
+  profile: { server: 'profile', features: ['F2', 'F4', 'F7'] },
+  'vitana-index': { server: 'vitana-index', features: ['F3', 'F4', 'F6'] },
+  autopilot: { server: 'autopilot', features: ['F1', 'F2', 'F3', 'F9'] },
+  community: { server: 'community', features: ['F5', 'F7', 'F10'] },
+  'talk-to-vitana': { server: 'talk-to-vitana', features: ['F1', 'F2', 'F3'] },
+  calendar: { server: 'calendar', features: ['F1', 'F6', 'F8'] },
+  'longevity-journey': { server: 'longevity-journey', features: ['F1', 'F2', 'F3', 'F5', 'F8'] },
   messenger: { server: 'messenger', features: [] },
-  'make-a-post': { server: 'community', allow: ['E3'], features: [] },
+  'make-a-post': { server: 'community', allow: ['E3'], features: ['F5', 'F7', 'F10'] },
 };
 
 /** Feature cards hidden by the X come back after 7 days (plan §3.4). */

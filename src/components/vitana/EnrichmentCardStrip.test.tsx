@@ -157,4 +157,16 @@ describe('EnrichmentCardStrip', () => {
     expect(screen.getByTestId('card-F9')).toBeInTheDocument();
     expect(hook.dismiss).not.toHaveBeenCalled();
   });
+
+  it('only="server" / only="features" split one screen into its two halves (Profile)', () => {
+    hook.cards = [card('E1')];
+    const { unmount } = render(<EnrichmentCardStrip screen="calendar" only="server" />);
+    expect(screen.getAllByTestId(/^card-/).map((n) => n.getAttribute('data-testid'))).toEqual(['card-E1']);
+    expect(screen.getByTestId('vitana-card-strip-calendar-server')).toBeInTheDocument();
+    unmount();
+    hook.isLoading = true;
+    render(<EnrichmentCardStrip screen="calendar" only="features" />);
+    // the feature half does not wait for the gateway
+    expect(screen.getAllByTestId(/^card-/).map((n) => n.getAttribute('data-testid'))).toEqual(['card-F3', 'card-F9']);
+  });
 });

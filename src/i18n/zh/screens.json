@@ -13542,6 +13542,48 @@
         "title": "添加封面照片",
         "description": "封面照片让你的资料更有个性。",
         "action": "上传"
+      },
+      "F3": {
+        "eyebrow": "日记",
+        "title": "你今天感觉怎么样？",
+        "description": "对着日记说几句话吧——Vitana 在听。",
+        "action": "录音"
+      },
+      "F4": {
+        "eyebrow": "问问 Vitana",
+        "title": "有问题吗？",
+        "description": "Vitana 可以在健康、社区等方面帮助你。",
+        "action": "问 Vitana"
+      },
+      "F5": {
+        "eyebrow": "匹配",
+        "title": "与你契合的人",
+        "description": "看看你今天的匹配。",
+        "action": "查看匹配"
+      },
+      "F6": {
+        "eyebrow": "自动驾驶",
+        "title": "你的自动驾驶已就绪",
+        "description": "让 Vitana 规划你的下一步。",
+        "action": "打开"
+      },
+      "F9": {
+        "eyebrow": "日历",
+        "title": "一眼看清你的一天",
+        "description": "日程、活动和提醒，尽在一处。",
+        "action": "打开日历"
+      },
+      "F10": {
+        "eyebrow": "媒体",
+        "title": "分享视频或音乐",
+        "description": "上传你的媒体，激励社区。",
+        "action": "创建"
+      },
+      "F11": {
+        "eyebrow": "发现",
+        "title": "发现新鲜事物",
+        "description": "为你的健康精选的产品、服务和优惠。",
+        "action": "浏览"
       }
     },
     "interests": {

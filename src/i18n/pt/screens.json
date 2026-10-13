@@ -13472,6 +13472,48 @@
         "title": "Adicione uma foto de capa",
         "description": "Uma foto de capa deixa seu perfil com a sua cara.",
         "action": "Enviar"
+      },
+      "F3": {
+        "eyebrow": "Diário",
+        "title": "Como você está hoje?",
+        "description": "Fale algumas frases no seu diário – a Vitana está ouvindo.",
+        "action": "Gravar"
+      },
+      "F4": {
+        "eyebrow": "Pergunte à Vitana",
+        "title": "Tem alguma pergunta?",
+        "description": "A Vitana ajuda você com saúde, comunidade e muito mais.",
+        "action": "Perguntar à Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matches",
+        "title": "Pessoas que combinam com você",
+        "description": "Descubra seus matches de hoje.",
+        "action": "Ver matches"
+      },
+      "F6": {
+        "eyebrow": "Piloto automático",
+        "title": "Seu piloto automático está pronto",
+        "description": "Deixe a Vitana planejar seus próximos passos.",
+        "action": "Abrir"
+      },
+      "F9": {
+        "eyebrow": "Calendário",
+        "title": "Seu dia num piscar de olhos",
+        "description": "Compromissos, eventos e lembretes em um só lugar.",
+        "action": "Abrir calendário"
+      },
+      "F10": {
+        "eyebrow": "Mídia",
+        "title": "Compartilhe um vídeo ou música",
+        "description": "Envie sua mídia e inspire a comunidade.",
+        "action": "Criar"
+      },
+      "F11": {
+        "eyebrow": "Descobrir",
+        "title": "Descubra algo novo",
+        "description": "Produtos, serviços e ofertas para o seu bem-estar.",
+        "action": "Explorar"
       }
     },
     "interests": {

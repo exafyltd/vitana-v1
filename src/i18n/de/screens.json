@@ -12188,6 +12188,48 @@
         "title": "Gib deinem Profil ein Titelbild",
         "description": "Ein Titelbild macht dein Profil persönlicher.",
         "action": "Hochladen"
+      },
+      "F3": {
+        "eyebrow": "Tagebuch",
+        "title": "Wie geht es dir heute?",
+        "description": "Sprich ein paar Sätze in dein Tagebuch – Vitana hört zu.",
+        "action": "Aufnehmen"
+      },
+      "F4": {
+        "eyebrow": "Vitana fragen",
+        "title": "Hast du eine Frage?",
+        "description": "Vitana hilft dir bei Gesundheit, Community und mehr.",
+        "action": "Vitana fragen"
+      },
+      "F5": {
+        "eyebrow": "Matches",
+        "title": "Menschen, die zu dir passen",
+        "description": "Entdecke deine heutigen Matches.",
+        "action": "Matches ansehen"
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Dein Autopilot ist bereit",
+        "description": "Lass Vitana deine nächsten Schritte planen.",
+        "action": "Öffnen"
+      },
+      "F9": {
+        "eyebrow": "Kalender",
+        "title": "Dein Tag auf einen Blick",
+        "description": "Termine, Events und Erinnerungen an einem Ort.",
+        "action": "Kalender öffnen"
+      },
+      "F10": {
+        "eyebrow": "Medien",
+        "title": "Teile ein Video oder Musik",
+        "description": "Lade deine Medien hoch und inspiriere die Community.",
+        "action": "Erstellen"
+      },
+      "F11": {
+        "eyebrow": "Entdecken",
+        "title": "Entdecke etwas Neues",
+        "description": "Produkte, Services und Angebote für dein Wohlbefinden.",
+        "action": "Stöbern"
       }
     },
     "interests": {

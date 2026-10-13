@@ -435,7 +435,9 @@ export default function EditProfilePage() {
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
           {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
-          <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} className="px-4 pt-3" />
+          <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} only="server" className="px-4 pt-3" />
+          {/* VTID-05086: the profile's feature cards, stacked below the carousel. */}
+          <EnrichmentCardStrip screen="profile" layout="stacked" only="features" className="px-4 pt-2" />
           {/* ID Card Switcher - Front/Back with segmented control */}
           <MobileIdCardSwitcher
             profile={profile}
@@ -670,7 +672,9 @@ export default function EditProfilePage() {
       
       {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
       <div className="container mx-auto px-4 pt-4">
-        <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} />
+        <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} only="server" />
+        {/* VTID-05086: the profile's feature cards, stacked below the carousel. */}
+        <EnrichmentCardStrip screen="profile" layout="stacked" only="features" className="mt-2" />
       </div>
 
       <ProfileLayout

@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
@@ -418,6 +419,8 @@ export default function AutopilotDashboard() {
     <div className="space-y-4">
       <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch above Journey card — more prominent for first-time users */}
       {dreamHero}
+      {/* VTID-05086: Unified Card System — My Journey is also the Longevity Journey surface, so one strip. */}
+      <EnrichmentCardStrip screen="autopilot" />
       {/* VTID-03284: the switch swaps the screen. Guided = catalog-led onboarding
           (Full App feed hidden); Full App = the existing feed (no catalog). The
           start view (Journey card + switch) is shared by both. */}
@@ -500,6 +503,7 @@ export default function AutopilotDashboard() {
             <div className="lg:col-span-2 space-y-4">
               <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch above Journey card — more prominent for first-time users */}
               {northStar}
+              <EnrichmentCardStrip screen="autopilot" />{/* VTID-05086 */}
               {!isGuided && (
                 <>
                   {todaysGoal}

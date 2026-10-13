@@ -12188,6 +12188,48 @@
         "title": "Add a cover photo",
         "description": "A cover photo makes your profile feel like you.",
         "action": "Upload"
+      },
+      "F3": {
+        "eyebrow": "Diary",
+        "title": "How are you today?",
+        "description": "Speak a few sentences into your diary – Vitana is listening.",
+        "action": "Record"
+      },
+      "F4": {
+        "eyebrow": "Ask Vitana",
+        "title": "Got a question?",
+        "description": "Vitana helps you with health, community and more.",
+        "action": "Ask Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matches",
+        "title": "People who match you",
+        "description": "Discover today’s matches.",
+        "action": "See matches"
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Your Autopilot is ready",
+        "description": "Let Vitana plan your next steps.",
+        "action": "Open"
+      },
+      "F9": {
+        "eyebrow": "Calendar",
+        "title": "Your day at a glance",
+        "description": "Appointments, events and reminders in one place.",
+        "action": "Open calendar"
+      },
+      "F10": {
+        "eyebrow": "Media",
+        "title": "Share a video or music",
+        "description": "Upload your media and inspire the community.",
+        "action": "Create"
+      },
+      "F11": {
+        "eyebrow": "Discover",
+        "title": "Discover something new",
+        "description": "Products, services and offers for your well-being.",
+        "action": "Browse"
       }
     },
     "interests": {

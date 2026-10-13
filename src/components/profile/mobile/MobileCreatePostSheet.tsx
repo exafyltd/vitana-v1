@@ -12,6 +12,8 @@ import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
 import { getPostBackground } from '@/lib/post-backgrounds';
 import type { PostMention } from '@/lib/news-feed-ranker';
 import { pruneMentions } from '@/lib/mentions';
+import { EnrichmentCardStrip } from '@/components/vitana/EnrichmentCardStrip';
+import { CreatePostLauncherProvider, type CreatePostMode } from '@/components/vitana/create-post-launcher';
 
 /** Maxina Longevity Game (event-specific, optional) — when present, the
  * sheet shows the Event/Longevity category switch and tags the resulting
@@ -301,6 +303,17 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
 
         {/* Content */}
         <div className="flex-1 p-4 overflow-y-auto">
+          {/* VTID-05086: "Make a Post" cards above the form (not in the event game).
+              A card here acts on this sheet (media → the picker) instead of opening another. */}
+          {!eventGameContext && (
+            <CreatePostLauncherProvider
+              open={(mode: CreatePostMode) => {
+                if (mode === 'media') fileInputRef.current?.click();
+              }}
+            >
+              <EnrichmentCardStrip screen="make-a-post" maxCards={2} className="mb-3" />
+            </CreatePostLauncherProvider>
+          )}
           {eventGameContext && (
             <div className="flex gap-2 mb-3">
               <Button

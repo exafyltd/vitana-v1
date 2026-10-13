@@ -12621,6 +12621,48 @@
         "title": "Dodaj naslovnu fotografiju",
         "description": "Naslovna fotografija čini tvoj profil ličnijim.",
         "action": "Otpremi"
+      },
+      "F3": {
+        "eyebrow": "Dnevnik",
+        "title": "Kako si danas?",
+        "description": "Izgovori nekoliko rečenica u svoj dnevnik – Vitana sluša.",
+        "action": "Snimi"
+      },
+      "F4": {
+        "eyebrow": "Pitaj Vitanu",
+        "title": "Imaš li pitanje?",
+        "description": "Vitana ti pomaže oko zdravlja, zajednice i još mnogo toga.",
+        "action": "Pitaj Vitanu"
+      },
+      "F5": {
+        "eyebrow": "Poklapanja",
+        "title": "Ljudi koji ti odgovaraju",
+        "description": "Otkrij današnja poklapanja.",
+        "action": "Pogledaj poklapanja"
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Tvoj autopilot je spreman",
+        "description": "Pusti Vitanu da isplanira tvoje sledeće korake.",
+        "action": "Otvori"
+      },
+      "F9": {
+        "eyebrow": "Kalendar",
+        "title": "Tvoj dan na prvi pogled",
+        "description": "Obaveze, događaji i podsetnici na jednom mestu.",
+        "action": "Otvori kalendar"
+      },
+      "F10": {
+        "eyebrow": "Mediji",
+        "title": "Podeli video ili muziku",
+        "description": "Otpremi svoje medije i inspiriši zajednicu.",
+        "action": "Napravi"
+      },
+      "F11": {
+        "eyebrow": "Otkrij",
+        "title": "Otkrij nešto novo",
+        "description": "Proizvodi, usluge i ponude za tvoje blagostanje.",
+        "action": "Pregledaj"
       }
     },
     "interests": {

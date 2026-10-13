@@ -11,11 +11,13 @@
  */
 
 import { useState } from 'react';
-import { ArrowRight, TrendingDown, TrendingUp, Minus } from 'lucide-react';
+import { HeartPulse, TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { useVitanaIndex } from '@/hooks/useVitanaIndex';
 import { VITANA_INDEX_OPEN_EVENT } from '@/components/health/VitanaIndexSheet';
 import { t } from '@/lib/i18n-toast';
 import { VitanaRecommendationCard } from '@/components/vitana/VitanaRecommendationCard';
+import { VitanaCardActionButton } from '@/components/vitana/VitanaCardActionButton';
+import { ACCENT_CLASSES, CARD_STYLE } from '@/components/vitana/vitana-card-catalog';
 import { cn } from '@/lib/utils';
 
 /** Fixed, decorative bar heights (%) per trend — never derived from real per-bar data. */
@@ -57,7 +59,17 @@ function weeklyChangePct(history: Array<{ score: number }>): number {
   return Math.round(((last - first) / 999) * 100);
 }
 
-export function VitanaIndexCard() {
+const STYLE = CARD_STYLE.F2; // VTID-05086: Unified Card System accent + button shape
+
+export interface VitanaIndexCardProps {
+  /**
+   * VTID-05086: undefined = hide for this view (Home, unchanged); a function
+   * is called on X (the strip's 7-day hide); null = no X (a card in a chat).
+   */
+  onDismiss?: (() => void) | null;
+}
+
+export function VitanaIndexCard({ onDismiss }: VitanaIndexCardProps = {}) {
   const { index, isLoading } = useVitanaIndex();
   const [dismissed, setDismissed] = useState(false);
 
@@ -75,8 +87,16 @@ export function VitanaIndexCard() {
       feature="vitana-index"
       eyebrow={t('screens.home.vitanaIndexEyebrow')}
       onOpen={openIndex}
-      onDismiss={() => setDismissed(true)}
+      onDismiss={
+        onDismiss === null
+          ? undefined
+          : () => {
+              onDismiss?.();
+              setDismissed(true);
+            }
+      }
       dismissLabel={t('screens.vitanaIdentity.dismissCard')}
+      accentClassName={ACCENT_CLASSES[STYLE.accent].border}
       widget={
         <div className="flex items-end gap-1">
           <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-sky-300 shadow-sm">
@@ -99,10 +119,14 @@ export function VitanaIndexCard() {
         {t(style.headlineKey, { pct })}
       </p>
       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(style.subtextKey)}</p>
-      <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
-        <span className="truncate">{t('screens.vitanaIdentity.viewIndex')}</span>
-        <ArrowRight className="w-3 h-3 shrink-0" />
-      </span>
+      <VitanaCardActionButton
+        className="mt-1"
+        shape={STYLE.shape}
+        accent={STYLE.accent}
+        icon={HeartPulse}
+        label={t('screens.vitanaIdentity.viewIndex')}
+        onClick={openIndex}
+      />
     </VitanaRecommendationCard>
   );
 }

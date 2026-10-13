@@ -17,6 +17,8 @@ import { PostBackgroundPicker } from "@/components/feed/PostBackgroundPicker";
 import { getPostBackground } from "@/lib/post-backgrounds";
 import type { PostMention } from "@/lib/news-feed-ranker";
 import { pruneMentions } from "@/lib/mentions";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
+import { CreatePostLauncherProvider, type CreatePostMode } from "@/components/vitana/create-post-launcher";
 
 interface CreateContentPopupProps {
   isOpen: boolean;
@@ -260,6 +262,12 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
             {t('screens.common.createNewContent')}
           </DialogTitle>
         </DialogHeader>
+
+        {/* VTID-05086: "Make a Post" cards above the form. A card here switches
+            this composer (post / media tab) instead of opening another one. */}
+        <CreatePostLauncherProvider open={(mode: CreatePostMode) => setContentType(mode === "media" ? "media" : "post")}>
+          <EnrichmentCardStrip screen="make-a-post" maxCards={2} />
+        </CreatePostLauncherProvider>
 
         <Tabs value={contentType} onValueChange={setContentType} className="w-full">
           <TabsList className="grid w-full grid-cols-3">

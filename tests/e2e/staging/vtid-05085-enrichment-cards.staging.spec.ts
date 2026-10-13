@@ -78,7 +78,7 @@ test('Home asks for the enrichment cards and shows at most 3 new cards; Profile 
   const profile = await profileCards;
   expect(profile.status(), 'GET enrichment-cards?screen=profile').toBe(200);
   const profileBody = await profile.json();
-  const strip = page.getByTestId('vitana-card-strip-profile').first();
+  const strip = page.getByTestId('vitana-card-strip-profile-server').first();
   if (profileBody.cards.length > 0) {
     await expect(strip).toBeVisible({ timeout: 30_000 });
     await expect(strip.locator('[data-vitana-card]').first()).toBeVisible();

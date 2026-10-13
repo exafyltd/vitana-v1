@@ -56,7 +56,7 @@ import { VITANA_CARD_REGISTRY } from '@/components/vitana/card-registry';
 import { ENRICHMENT_CARD_TYPES, CARD_DEEP_LINKS, type VitanaCardType } from '@/components/vitana/vitana-card-catalog';
 import de from '@/i18n/de/screens.json';
 
-const deCards = (de as { screens: { vitanaCards: Record<string, { title: string; action: string }> } }).screens.vitanaCards;
+const deCards = (de as unknown as { screens: { vitanaCards: Record<string, { title: string; action: string }> } }).screens.vitanaCards;
 
 function Where() {
   const loc = useLocation();

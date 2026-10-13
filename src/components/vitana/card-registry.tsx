@@ -18,6 +18,36 @@ import { ConnectCalendarCard } from '@/components/enrichment/ConnectCalendarCard
 import { ImportContactsCard } from '@/components/enrichment/ImportContactsCard';
 import { EnableNotificationsCard } from '@/components/enrichment/EnableNotificationsCard';
 import { UploadCoverCard } from '@/components/enrichment/UploadCoverCard';
+import { DailyDiaryCard } from '@/components/feature/DailyDiaryCard';
+import { TalkToVitanaCard } from '@/components/feature/TalkToVitanaCard';
+import { FindAMatchCard } from '@/components/feature/FindAMatchCard';
+import { AutopilotCard } from '@/components/feature/AutopilotCard';
+import { CalendarCard } from '@/components/feature/CalendarCard';
+import { UploadMediaCard } from '@/components/feature/UploadMediaCard';
+import { DiscoverCard } from '@/components/feature/DiscoverCard';
+import { LongevityJourneyCard } from '@/components/home/LongevityJourneyCard';
+import { VitanaIndexCard } from '@/components/home/VitanaIndexCard';
+import { InviteFriendCard } from '@/components/home/InviteFriendCard';
+import { DidYouKnowCard } from '@/components/proactive/DidYouKnowCard';
+
+/*
+ * VTID-05086: the existing feature cards keep their own content (live Index
+ * score, journey progress, server-paced tip). Outside Home they get the
+ * strip's dismiss, or no X at all in a chat (no onDismiss → null).
+ */
+function GuidedJourneyFeatureCard({ onDismiss }: VitanaCardProps) {
+  return <LongevityJourneyCard onDismiss={onDismiss ?? null} />;
+}
+function VitanaIndexFeatureCard({ onDismiss }: VitanaCardProps) {
+  return <VitanaIndexCard onDismiss={onDismiss ?? null} />;
+}
+function InviteFriendFeatureCard({ onDismiss }: VitanaCardProps) {
+  return <InviteFriendCard onDismiss={onDismiss ?? null} />;
+}
+/** The tip's own X declines that tip on the server (the tour paces the next one). */
+function DidYouKnowFeatureCard({ onDismiss }: VitanaCardProps) {
+  return <DidYouKnowCard hideDismiss={!onDismiss} />;
+}
 
 export const VITANA_CARD_REGISTRY: Partial<Record<VitanaCardType, ComponentType<VitanaCardProps>>> = {
   E1: UploadPhotoCard,
@@ -31,6 +61,17 @@ export const VITANA_CARD_REGISTRY: Partial<Record<VitanaCardType, ComponentType<
   E9: ImportContactsCard,
   E10: EnableNotificationsCard,
   E11: UploadCoverCard,
+  F1: GuidedJourneyFeatureCard,
+  F2: VitanaIndexFeatureCard,
+  F3: DailyDiaryCard,
+  F4: TalkToVitanaCard,
+  F5: FindAMatchCard,
+  F6: AutopilotCard,
+  F7: InviteFriendFeatureCard,
+  F8: DidYouKnowFeatureCard,
+  F9: CalendarCard,
+  F10: UploadMediaCard,
+  F11: DiscoverCard,
 };
 
 export function getVitanaCardComponent(cardType: string): ComponentType<VitanaCardProps> | null {

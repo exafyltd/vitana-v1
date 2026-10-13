@@ -13538,6 +13538,48 @@
         "title": "Kapak fotoğrafı ekle",
         "description": "Kapak fotoğrafı profilini daha kişisel yapar.",
         "action": "Yükle"
+      },
+      "F3": {
+        "eyebrow": "Günlük",
+        "title": "Bugün nasılsın?",
+        "description": "Günlüğüne birkaç cümle söyle – Vitana dinliyor.",
+        "action": "Kaydet"
+      },
+      "F4": {
+        "eyebrow": "Vitana'ya sor",
+        "title": "Bir sorun mu var?",
+        "description": "Vitana sağlık, topluluk ve daha fazlası konusunda sana yardım eder.",
+        "action": "Vitana'ya sor"
+      },
+      "F5": {
+        "eyebrow": "Eşleşmeler",
+        "title": "Sana uygun insanlar",
+        "description": "Bugünkü eşleşmelerini keşfet.",
+        "action": "Eşleşmeleri gör"
+      },
+      "F6": {
+        "eyebrow": "Otopilot",
+        "title": "Otopilotun hazır",
+        "description": "Sonraki adımlarını Vitana planlasın.",
+        "action": "Aç"
+      },
+      "F9": {
+        "eyebrow": "Takvim",
+        "title": "Günün bir bakışta",
+        "description": "Randevular, etkinlikler ve hatırlatıcılar tek yerde.",
+        "action": "Takvimi aç"
+      },
+      "F10": {
+        "eyebrow": "Medya",
+        "title": "Bir video ya da müzik paylaş",
+        "description": "Medyanı yükle ve topluluğa ilham ver.",
+        "action": "Oluştur"
+      },
+      "F11": {
+        "eyebrow": "Keşfet",
+        "title": "Yeni bir şey keşfet",
+        "description": "İyi oluşun için ürünler, hizmetler ve fırsatlar.",
+        "action": "Göz at"
       }
     },
     "interests": {

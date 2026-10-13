@@ -6,12 +6,21 @@
  */
 
 import { useState } from 'react';
-import { ArrowRight, Share2 } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import { useInviteFriendShare } from '@/hooks/useInviteFriendShare';
 import { VitanaRecommendationCard } from '@/components/vitana/VitanaRecommendationCard';
+import { VitanaCardActionButton } from '@/components/vitana/VitanaCardActionButton';
+import { ACCENT_CLASSES, CARD_STYLE } from '@/components/vitana/vitana-card-catalog';
 
-export function InviteFriendCard() {
+const STYLE = CARD_STYLE.F7; // VTID-05086: Unified Card System accent + button shape
+
+export interface InviteFriendCardProps {
+  /** VTID-05086: undefined = hide for this view; function = called on X; null = no X (chat). */
+  onDismiss?: (() => void) | null;
+}
+
+export function InviteFriendCard({ onDismiss }: InviteFriendCardProps = {}) {
   const { shareInvite } = useInviteFriendShare();
   const [dismissed, setDismissed] = useState(false);
 
@@ -22,24 +31,33 @@ export function InviteFriendCard() {
       feature="invite-friend"
       eyebrow={t('screens.downloadFlyer.inviteCardEyebrow')}
       onOpen={() => void shareInvite()}
-      onDismiss={() => setDismissed(true)}
+      onDismiss={
+        onDismiss === null
+          ? undefined
+          : () => {
+              onDismiss?.();
+              setDismissed(true);
+            }
+      }
       dismissLabel={t('screens.vitanaIdentity.dismissCard')}
+      accentClassName={ACCENT_CLASSES[STYLE.accent].border}
+      widgetInteractive
       widget={
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-300 to-blue-500 shadow-sm">
-          <Share2 className="w-4 h-4 text-white" />
-        </div>
+        <VitanaCardActionButton
+          shape={STYLE.shape}
+          accent={STYLE.accent}
+          icon={Share2}
+          label={t('screens.downloadFlyer.inviteCardCta')}
+          onClick={() => void shareInvite()}
+        />
       }
     >
-      <p className="text-sm font-bold text-blue-700 dark:text-blue-400 leading-tight line-clamp-2">
+      <p className="text-sm font-bold text-foreground leading-tight line-clamp-2">
         {t('screens.downloadFlyer.inviteCardTitle')}
       </p>
       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
         {t('screens.downloadFlyer.inviteCardBody')}
       </p>
-      <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
-        <span className="truncate">{t('screens.downloadFlyer.inviteCardCta')}</span>
-        <ArrowRight className="w-3 h-3 shrink-0" />
-      </span>
     </VitanaRecommendationCard>
   );
 }

@@ -3,6 +3,7 @@
 // feedback pipeline. Voice intake (orb handoff to specialists) lands in
 // later PRs.
 import { useState } from "react";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { MessageSquare, Send } from "lucide-react";
@@ -125,6 +126,9 @@ export default function TalkToVitana() {
             {t('screens.community.vitanaDevonSageAtlasMiraAi')}
           </p>
         </Card>
+
+        {/* VTID-05086: Unified Card System — stacked below the assistant. */}
+        <EnrichmentCardStrip screen="talk-to-vitana" />
 
         <MyTicketsList headingKey="screens.community.yourReports" />
       </div>
