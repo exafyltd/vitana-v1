@@ -9,8 +9,13 @@
 import type { LucideIcon } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import { t } from '@/lib/i18n-toast';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { PatientComingSoonSpotlight } from '@/components/spotlight/member/PatientSpotlight';
 
 export function ComingSoonPlaceholder({ icon: Icon, titleKey }: { icon: LucideIcon; titleKey: string }) {
+  // VTID-05117 — Spotlight (desktop + flag): the same honest state inside the collection frame.
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) return <PatientComingSoonSpotlight titleKey={titleKey} Icon={Icon} />;
   return (
     <AppLayout>
       <div className="p-6">

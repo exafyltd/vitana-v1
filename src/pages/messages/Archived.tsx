@@ -16,6 +16,10 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightEmpty } from "@/components/spotlight/member/MemberSpotlight";
 
 export default function Archived() {
   const [activeTab, setActiveTab] = useState("all");
@@ -30,6 +34,33 @@ export default function Archived() {
   ];
 
   const categories = ["All", "Healthcare", "Fitness", "Nutrition", "Activities"];
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): there is no conversation archive behind this screen
+  // (the legacy list, statistics and switches are samples), so the frame shows an honest empty
+  // state (SR-24, SR-26). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.messages.archivedMessages2')} description={t('spotlightMember.inbox.archivedDesc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="conversation"
+          subNav={{ items: messagesNavigation }}
+          header={{ title: t('screens.messages.neverLoseImportantConversations'), description: t('spotlightMember.inbox.archivedDesc'), emoji: "📦" }}
+          utility={{ children: <UniversalCalendarButton /> }}
+        >
+          <SpotlightEmpty
+            Icon={Archive}
+            titleKey="spotlightMember.inbox.archivedEmptyTitle"
+            descriptionKey="spotlightMember.inbox.archivedEmptyDesc"
+            actionKey="spotlightMember.inbox.openInbox"
+            onAction={() => navigate('/inbox')}
+          />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">

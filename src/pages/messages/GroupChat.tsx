@@ -37,6 +37,12 @@ import type { MentionCandidate } from "@/hooks/useMentionCandidates";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
+import { MessageSquareOff } from "lucide-react";
+import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { messagesNavigation } from "@/config/navigation";
+import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 // Realtime drives live updates now; the poll is a reconnect-safety fallback.
 // VTID-04901: the poll and realtime refresh MESSAGES only. The group itself
@@ -94,6 +100,10 @@ export default function GroupChat() {
   const { user } = useAuth();
   const { translate } = useTranslation();
   const userId = user?.id;
+  // VTID-05117 — Spotlight (desktop + flag): the thread opens inside the Vitanaland frame
+  // (sidebar + Inbox sections) on the conversation archetype; phones and flag-off keep the
+  // full-screen chat below. Same refs, same pinning/scroll logic, same composer.
+  const spotlight = useSpotlightEnabled();
 
   const [group, setGroup] = useState<GroupWithMembers | null>(null);
   const [messages, setMessages] = useState<ChatGroupMessage[]>([]);
@@ -390,6 +400,103 @@ export default function GroupChat() {
   );
   const headerClassName = "sticky top-0 z-10 flex items-center gap-2 border-b bg-white px-2 pb-2";
   const headerStyle = { paddingTop: "calc(env(safe-area-inset-top, 0px) + 0.5rem)" };
+
+  if (spotlight) {
+    const loaded = !!group && !(loadError && !messagesLoaded) && !isLoading;
+    const failed = !!loadError && (!group || !messagesLoaded);
+    const groupAvatar = (group?.metadata as Record<string, unknown> | null)?.avatar_url;
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="conversation"
+          subNav={{ items: messagesNavigation }}
+          header={
+            group && loaded
+              ? {
+                  title: group.name,
+                  description: `${group.member_count} ${group.member_count === 1 ? translate("inbox.group.memberOne") : translate("inbox.group.memberOther")}${group.is_system ? ` · ${translate("inbox.group.officialBadge")}` : ""}`,
+                }
+              : undefined
+          }
+        >
+          <div className="mx-auto flex w-full max-w-wide flex-col" data-group-thread="">
+            <div className="mb-3 flex items-center gap-2">
+              <button
+                type="button"
+                data-testid="group-chat-back"
+                aria-label={translate("inbox.group.back")}
+                className="flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-muted active:bg-muted"
+                onClick={goBack}
+              >
+                <ArrowLeft className="size-6 rtl:rotate-180" aria-hidden="true" />
+              </button>
+              {group && typeof groupAvatar === "string" && (
+                <Avatar className="size-9">
+                  <AvatarImage src={groupAvatar} alt={group.name} className="object-cover" />
+                  <AvatarFallback>{group.name?.[0] ?? "#"}</AvatarFallback>
+                </Avatar>
+              )}
+            </div>
+            {failed ? (
+              <SpotlightEmpty Icon={MessageSquareOff} titleKey="inbox.group.cantOpen" actionKey="inbox.group.backToInbox" onAction={goBack} />
+            ) : !loaded || !group ? (
+              <SpotlightRowsSkeleton count={6} />
+            ) : (
+              <section className="flex flex-col rounded-vcard border bg-card shadow-vcard">
+                <main ref={mainRef} className="px-4 py-4">
+                  <div ref={contentRef}>
+                    {messages.length === 0 ? (
+                      <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        {messageItems.map(item => {
+                          if (item.type === "date") {
+                            return <MessageDivider key={item.id} type="date" text={item.text} />;
+                          }
+                          const msg = item.message;
+                          const isOwn = msg.sender_id === userId;
+                          const sender = memberById.get(msg.sender_id);
+                          return (
+                            <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-150">
+                              <MessageBubble
+                                message={{
+                                  ...toBubbleMessage(msg, group.id),
+                                  sender: sender
+                                    ? { user_id: sender.user_id, display_name: sender.display_name, avatar_url: sender.avatar_url }
+                                    : null,
+                                }}
+                                isOwnMessage={isOwn}
+                                showAvatar={!isOwn}
+                                onUpdateMessage={handleUpdateMessage}
+                                onDeleteMessage={handleDeleteMessage}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    <div ref={streamEndRef} />
+                  </div>
+                </main>
+                <footer className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
+                  <MessageInput
+                    threadId={group.id}
+                    activeThread={{ id: group.id, type: "group" }}
+                    conversationType="group"
+                    onSendMessage={handleSend}
+                    isSending={isSending}
+                    placeholder={translate("inbox.group.composerPlaceholder")}
+                    mentionCandidates={mentionCandidates}
+                  />
+                </footer>
+                <div ref={pageEndRef} aria-hidden="true" />
+              </section>
+            )}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   if (isLoading || (!group && !loadError)) {
     return (

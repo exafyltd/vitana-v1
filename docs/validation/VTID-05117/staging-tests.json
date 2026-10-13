@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05117",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1280/1440, signed in, ?spotlight=1: every static member screen this phase migrated (Memory, Timeline, Recall, Permissions, Settings Privacy/Preferences, My Journey, Business Hub + sections, Opportunities, Listings, AI Picks, Marketplace, a category list, provider detail, Inbox Archived/Inspiration, Search, Members, Open Asks, Find a Match, Talk to Vitana, Event Game, Creator onboarded, My Tickets, Distribution, Patient results) is framed with its manifest archetype, keeps the sidebar chrome, shows no page spinner after load, shows exactly one spotlight card on dashboard/storefront/detail screens and has no horizontal scroll in LTR and RTL; nothing that writes is clicked",
+      "spec": "tests/e2e/staging/vtid-05117-member-leftovers.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "flag on/off switch per screen (legacy screen unchanged with the flag off, compact header + archetype frame with it on), sample content left out on Spotlight (Recall, Permissions, Archived, Distribution, provider, patient health/appointments), honest empty states, My Journey hero (loading skeleton, no-goal text-only spotlight, error retry, real progress line, compact rail), Business Hub hero and real-only ledger, product detail body (skeleton, not-found, one spotlight + real sections), shared states; legacy suites of GroupChat, LiveRoomViewer, Privacy and Patient results still green with the flag off",
+      "ref": "npx vitest run src/pages/member-spotlight.vtid-05117.test.tsx src/components/spotlight/member/member-spotlight.vtid-05117.test.tsx src/pages/messages src/pages/community/LiveRoomViewer.vtid-04906.test.tsx src/pages/settings/__tests__/privacy-data-sharing.test.tsx src/components/patient/PartnerLinkRequestsCard.vtid-05056.test.tsx",
+      "cwd": ".",
+      "reason": "Loading, empty, error and no-goal states, the flag-off legacy path and the parameterised screens (product, group chat, live room) depend on data the read-only staging account cannot control; the unit suites pin them deterministically, staging proves the real frames end to end."
+    }
+  ]
+}

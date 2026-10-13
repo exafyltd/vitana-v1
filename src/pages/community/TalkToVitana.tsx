@@ -21,6 +21,10 @@ import { notifyError, t } from '@/lib/i18n-toast';
 import { TICKET_KINDS, type TicketKind } from "@/lib/feedback-ticket";
 import { MyTicketsList } from "@/components/support/MyTicketsList";
 import { MY_TICKETS_QUERY_KEY } from "@/lib/feedback-ticket";
+import { CheckCircle2 } from "lucide-react";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightNotice, SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
 
 // VTID-04335: the ticket list is the shared MyTicketsList (one status
 // vocabulary, ticket numbers, answers, ?ticket= deep link); every visible
@@ -31,6 +35,9 @@ export default function TalkToVitana() {
   const [submitting, setSubmitting] = useState(false);
   const [lastTicket, setLastTicket] = useState<{ id: string; ticket_number: string } | null>(null);
   const queryClient = useQueryClient();
+  // VTID-05117 — Spotlight (desktop + flag): collection frame (Community sections, compact header);
+  // phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
 
   const handleSubmit = async () => {
     if (!text.trim()) {
@@ -64,6 +71,70 @@ export default function TalkToVitana() {
       setSubmitting(false);
     }
   };
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.community.talkVitana')} description={t('supportTickets.talk.seoDescription')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: communityNavigation }}
+          header={{ title: t('screens.community.talkVitana'), description: t('supportTickets.talk.headerDescription') }}
+        >
+          <div className="mx-auto flex max-w-stage flex-col gap-6">
+            <SpotlightPanel Icon={MessageSquare} title={t('screens.community.whatSYourMind')}>
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="mb-1 block text-xs text-muted-foreground" htmlFor="sp-ticket-kind">{t('screens.community.topic')}</label>
+                  <Select value={kind} onValueChange={v => setKind(v as TicketKind)}>
+                    <SelectTrigger id="sp-ticket-kind">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TICKET_KINDS.map(k => (
+                        <SelectItem key={k} value={k}>
+                          <span className="font-medium">{t(`supportTickets.kind.${k}`)}</span>
+                          <span className="ms-2 text-xs text-muted-foreground">{t(`supportTickets.kindHint.${k}`)}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Textarea
+                  aria-label={t('screens.community.whatSYourMind')}
+                  placeholder={t('screens.community.describeWhatHappenedWhatYouTried')}
+                  value={text}
+                  onChange={e => setText(e.target.value)}
+                  rows={6}
+                  className="resize-none"
+                  maxLength={10_000}
+                />
+                <div className="flex justify-end">
+                  <Button className="gap-2" onClick={handleSubmit} disabled={submitting || !text.trim()}>
+                    <Send className="size-4" />
+                    {submitting ? t('supportTickets.talk.sending') : t('supportTickets.talk.send')}
+                  </Button>
+                </div>
+                {lastTicket && (
+                  <div data-testid="ticket-created">
+                    <SpotlightNotice tone="success" Icon={CheckCircle2}>
+                      <div className="font-medium">{t('supportTickets.submittedTitle')}</div>
+                      <div>{t('supportTickets.submittedNumber', { number: lastTicket.ticket_number })}</div>
+                      <Link className="text-primary underline" to={`/comm/talk-to-vitana?ticket=${encodeURIComponent(lastTicket.id)}`}>
+                        {t('supportTickets.viewTicket')}
+                      </Link>
+                    </SpotlightNotice>
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground">{t('screens.community.vitanaDevonSageAtlasMiraAi')}</p>
+              </div>
+            </SpotlightPanel>
+            <MyTicketsList headingKey="screens.community.yourReports" />
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

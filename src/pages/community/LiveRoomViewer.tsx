@@ -3,6 +3,8 @@ import { cn } from '@/lib/utils';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import AppLayout from '@/components/AppLayout';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import SubNavigation from '@/components/SubNavigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -54,6 +56,7 @@ export default function LiveRoomViewer() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
 
   // Get state passed from navigation
   const { userId, userName, room, isHost } = location.state || {};
@@ -270,15 +273,9 @@ export default function LiveRoomViewer() {
     }
   };
 
-  return (
-    <>
-      <SEO
-        title={t('screens.liveRoom.seoTitle', { title: streamTitle })}
-        description={streamDescription || t('screens.liveRoom.seoDescription', { name: effectiveUserName })}
-      />
-      <AppLayout>
-        {!isMobile && !roomMode && <SubNavigation items={communityNavigation} />}
-
+  // VTID-05117 — the room surface, shared by the legacy screen and the Spotlight `immersive` frame
+  // (desktop + flag: no in-screen chrome — the SubNavigation is left out — sidebar and ORB stay).
+  const viewer = (
         <div
           data-testid="live-room-viewer"
           className={cn(
@@ -414,6 +411,18 @@ export default function LiveRoomViewer() {
             )}
           </div>
         </div>
+  );
+
+  return (
+    <>
+      <SEO
+        title={t('screens.liveRoom.seoTitle', { title: streamTitle })}
+        description={streamDescription || t('screens.liveRoom.seoDescription', { name: effectiveUserName })}
+      />
+      <AppLayout>
+        {!isMobile && !roomMode && !spotlight && <SubNavigation items={communityNavigation} />}
+
+        {spotlight ? <ScreenFrame archetype="immersive">{viewer}</ScreenFrame> : viewer}
       </AppLayout>
 
       <ResponsiveConfirmDialog open={endConfirmOpen} onOpenChange={setEndConfirmOpen}>

@@ -23,6 +23,10 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SplitBarContent } from "@/components/ui/split-bar";
+import { SpotlightEmpty, SpotlightNotice } from "@/components/spotlight/member/MemberSpotlight";
 // Category configuration
 const CATEGORIES = [
   { filter: "chat", emoji: "💬", label: "Chat" },
@@ -43,6 +47,8 @@ function Timeline() {
   const [expandedCategory, setExpandedCategory] = useState<string | undefined>(undefined);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { translate } = useTranslation();
+  // VTID-05117 — Spotlight (desktop + flag): collection frame; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
   
   const allLoadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -281,6 +287,140 @@ function Timeline() {
 
   // Transform items for horizontal cards
   const transformedAllItems: StandardHorizontalCardProps[] = allItems.map(transformActivityToHorizontalCard);
+
+  if (spotlight) {
+    const visible = <T extends { itemType?: string; activityType?: string }>(items: T[]) =>
+      items.filter((i) => (i.itemType === 'activity' ? i.activityType !== 'memory.delete' : true));
+    const selected = CATEGORIES.find((c) => c.filter === expandedCategory);
+    const selectedHook = selected ? categoryHooks[selected.filter] : undefined;
+    return (
+      <AppLayout>
+        <SEO title={t('screens.memory.activityTimelineVitana')} description={t('spotlightMember.memory.timeline.desc')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: memoryNavigation }}
+          header={{ title: t('screens.memory.activityTimeline'), description: t('spotlightMember.memory.timeline.desc'), emoji: "📜" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.memory.manageHistory')}
+                </Button>
+              </>
+            ),
+            trailingElement: (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                title={t('screens.memory.refreshTimeline')}
+                aria-label={t('screens.memory.refreshTimeline')}
+              >
+                <RefreshCw className={isRefreshing ? 'size-4 animate-spin motion-reduce:animate-none' : 'size-4'} />
+              </Button>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: (v) => setActiveTab(v as "all" | "by-category"),
+            items: [
+              { value: "all", label: t('screens.memory.all') },
+              { value: "by-category", label: t('screens.memory.byCategory') },
+            ],
+          }}
+        >
+          <SplitBarContent value="all">
+            <div className="flex flex-col gap-4">
+              <SpotlightNotice>
+                <strong>{t('screens.memory.activityHistory')}</strong>
+                {t('screens.memory.readonlyChronologicalRecordYourSystemUsage')}
+              </SpotlightNotice>
+              <HorizontalCardList
+                items={transformedAllItems}
+                variant="standard"
+                groupBy="date"
+                screenId={SCREEN_IDS.MEMORY_TIMELINE}
+                listId="timeline-all"
+                infiniteScroll={true}
+                onLoadMore={fetchNextAll}
+                hasMore={hasNextAll}
+                isLoading={isFetchingNextAll || isLoadingAll}
+                gap="sm"
+                className="pb-4"
+                emptyState={
+                  <SpotlightEmpty
+                    Icon={CalendarIcon}
+                    titleKey="screens.memory.noActivityHistoryYetStartUsing"
+                    actionKey="screens.memory.addMemory"
+                    onAction={() => setActionPopupOpen(true)}
+                  />
+                }
+              />
+            </div>
+          </SplitBarContent>
+          <SplitBarContent value="by-category">
+            <div className="flex flex-col gap-4">
+              <SpotlightNotice>
+                <strong>{t('screens.memory.byCategory')}</strong>
+                {t('screens.memory.browseYourActivityOrganizedBySystem')}
+              </SpotlightNotice>
+              <div className="flex flex-wrap gap-2" role="group" aria-label={t('screens.memory.byCategory')}>
+                {CATEGORIES.map((category) => {
+                  const count = getCountLast30Days(visible(categoryHooks[category.filter]?.allItems ?? []));
+                  const isActive = expandedCategory === category.filter;
+                  return (
+                    <Button
+                      key={category.filter}
+                      size="sm"
+                      variant={isActive ? "default" : "outline"}
+                      className="gap-2 rounded-full"
+                      aria-pressed={isActive}
+                      onClick={() => setExpandedCategory(category.filter)}
+                    >
+                      <span aria-hidden="true">{category.emoji}</span>
+                      <span>{t(`spotlightMember.memory.timeline.categories.${category.filter}`)}</span>
+                      <Badge variant={isActive ? "secondary" : "outline"} className="text-xs">
+                        {count}
+                      </Badge>
+                    </Button>
+                  );
+                })}
+              </div>
+              {selected && selectedHook && (
+                <HorizontalCardList
+                  items={visible(selectedHook.allItems).map(transformActivityToHorizontalCard)}
+                  variant="standard"
+                  groupBy="date"
+                  screenId={SCREEN_IDS.MEMORY_TIMELINE}
+                  listId={`timeline-${selected.filter}`}
+                  infiniteScroll={true}
+                  onLoadMore={() => selectedHook.fetchNextPage()}
+                  hasMore={selectedHook.hasNextPage}
+                  isLoading={selectedHook.isFetchingNextPage || selectedHook.isLoading}
+                  gap="sm"
+                  className="pb-4"
+                  emptyState={
+                    <SpotlightEmpty
+                      Icon={CalendarIcon}
+                      titleKey="spotlightMember.memory.timeline.categoryEmpty"
+                      actionKey="screens.memory.viewAllActivity"
+                      onAction={() => setActiveTab("all")}
+                    />
+                  }
+                />
+              )}
+            </div>
+          </SplitBarContent>
+        </ScreenFrame>
+        <HistoryMasterActionPopup open={actionPopupOpen} onOpenChange={setActionPopupOpen} />
+        <PromoteToKnowledgeDialog activity={promotingActivity} open={promoteDialogOpen} onOpenChange={setPromoteDialogOpen} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

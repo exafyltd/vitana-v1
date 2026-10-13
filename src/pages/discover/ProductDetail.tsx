@@ -47,6 +47,10 @@ import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtNumber } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { discoverNavigation } from "@/config/navigation";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { ProductDetailSpotlight } from "@/components/spotlight/member/ProductDetailSpotlight";
 function useRecommendationId(productId: string | undefined): string | null {
   const [searchParams] = useSearchParams();
   const urlRecId = searchParams.get("rec");
@@ -67,6 +71,25 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, error } = useMarketplaceProduct(id);
   const recId = useRecommendationId(id);
+  // VTID-05117 — Spotlight (desktop + flag): the product is the one spotlight card of a detail
+  // screen; phones and flag-off keep the page below.
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) {
+    const title = data?.ok ? data.product?.title : undefined;
+    return (
+      <AppLayout>
+        <SEO
+          title={title ? `${title} | VITANA` : t('screens.discover.productNotFoundVitana')}
+          description={data?.product?.description?.slice(0, 200) ?? t('spotlightMember.discover.productDesc')}
+          canonical={typeof window !== "undefined" ? window.location.href : undefined}
+          image={data?.product?.images?.[0] ?? undefined}
+        />
+        <ScreenFrame archetype="detail" subNav={{ items: discoverNavigation }}>
+          <ProductDetailSpotlight data={data} isLoading={isLoading} error={error} recId={recId} />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   if (isLoading) {
     return (

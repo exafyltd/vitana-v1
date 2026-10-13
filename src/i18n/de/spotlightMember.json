@@ -1,0 +1,130 @@
+{
+  "spotlightMember": {
+    "common": {
+      "error": {
+        "title": "Das hat nicht geklappt",
+        "desc": "Wir konnten die Daten gerade nicht laden. Versuch es gleich noch einmal.",
+        "retry": "Erneut versuchen"
+      }
+    },
+    "memory": {
+      "overview": {
+        "desc": "Verfolge und betrachte deine Wellness-Reise mit KI-gestützten Einblicken."
+      },
+      "timeline": {
+        "desc": "Verfolge deinen Aktivitätsverlauf über alle Bereiche hinweg.",
+        "categoryEmpty": "In dieser Kategorie gibt es noch keine Aktivität.",
+        "categories": {
+          "chat": "Chat",
+          "memory": "Gedächtnis",
+          "wallet": "Wallet",
+          "discover": "Entdecken",
+          "calendar": "Kalender",
+          "autopilot": "Autopilot",
+          "health": "Gesundheit",
+          "community": "Community"
+        }
+      },
+      "recall": {
+        "desc": "Frag Vitana nach deinen Erinnerungen und finde Muster in deiner Wellness-Reise.",
+        "emptyTitle": "Frag Vitana einfach",
+        "emptyDesc": "Sag zum Beispiel „Was hat meinen Schlaf verbessert?“ — Vitana durchsucht dein Gedächtnis und antwortet dir. Gespeicherte Ergebnisse erscheinen hier, sobald es welche gibt.",
+        "emptyAction": "Zum Gedächtnis"
+      },
+      "permissions": {
+        "desc": "Lege fest, wer deine Gesundheitserinnerungen sehen und nutzen darf.",
+        "panelTitle": "Datenschutz und Zugriff",
+        "panelDesc": "Deine Einstellungen für Sichtbarkeit, Datennutzung und Sicherheit verwaltest du an einem Ort: in den Datenschutz-Einstellungen.",
+        "openPrivacy": "Datenschutz öffnen"
+      },
+      "diary": {
+        "listView": "Listenansicht",
+        "galleryView": "Galerieansicht"
+      }
+    },
+    "settings": {
+      "privacy": {
+        "desc": "Deine Daten, deine Entscheidung — lege fest, wer was sieht und was geteilt wird.",
+        "passwordDesc": "Ändere dein Passwort oder lass dir einen Link zum Zurücksetzen schicken.",
+        "deleteTitle": "Konto löschen",
+        "deleteDesc": "Lösche dein Konto und alle Daten dauerhaft.",
+        "deleteAction": "Weiter zum Löschen"
+      },
+      "preferences": {
+        "desc": "Passe Darstellung und Sprache so an, wie es für dich passt.",
+        "accessibilityNote": "Vitanaland folgt den Bedienungshilfen deines Geräts — zum Beispiel „Bewegung reduzieren“ und der Textgröße deines Browsers."
+      }
+    },
+    "journey": {
+      "eyebrow": "Dein Ziel",
+      "indexPending": "Wird berechnet"
+    },
+    "business": {
+      "hero": {
+        "eyebrow": "Deine Einnahmen",
+        "meta": "{last30} in den letzten 30 Tagen · {pending} ausstehend"
+      },
+      "history": "Letzte Buchungen",
+      "opportunitiesEmpty": "Noch keine Anfragen. Wir melden uns, sobald jemand sucht, was du anbietest — pflege dafür deine Angebote.",
+      "listingsEmpty": "Noch keine Angebote. Leg eines an — oder sag Vitana einfach „Ich biete … an“."
+    },
+    "discover": {
+      "productDesc": "Produktdetails im Vitana-Marktplatz.",
+      "outOfStock": "Ausverkauft",
+      "wasPrice": "statt {price}",
+      "providerEyebrow": "Ärzte & Coaches",
+      "providerSoonTitle": "Profile von Anbietern kommen bald",
+      "providerSoonDesc": "Wir zeigen hier nur echte, geprüfte Anbieter. Sobald es welche gibt, findest du ihr Profil, ihre Termine und Bewertungen an dieser Stelle.",
+      "marketplaceDesc": "Kaufe und verkaufe mit der Vitana-Community.",
+      "marketplaceMineEmpty": "Stell eine Kauf- oder Verkaufsanfrage ein — Vitana bringt dich mit passenden Leuten zusammen."
+    },
+    "inbox": {
+      "archivedDesc": "Archivierte Unterhaltungen an einem Ort.",
+      "archivedEmptyTitle": "Noch kein Archiv",
+      "archivedEmptyDesc": "Das Archivieren von Unterhaltungen gibt es noch nicht. Alle deine Unterhaltungen bleiben in deinem Posteingang.",
+      "openInbox": "Zum Posteingang",
+      "inspirationDesc": "Vorlagen, die du kopieren und in deinen Unterhaltungen nutzen kannst."
+    },
+    "search": {
+      "title": "Suche",
+      "desc": "Finde Mitglieder der Community.",
+      "inputLabel": "Mitglieder suchen",
+      "placeholder": "Name eingeben …",
+      "submit": "Suchen",
+      "emptyTitle": "Keine Mitglieder gefunden",
+      "emptyDesc": "Versuch es mit einem anderen Namen — mindestens zwei Buchstaben.",
+      "resultsLabel": "Suchergebnisse",
+      "memberMeta": "Community-Mitglied"
+    },
+    "members": {
+      "sort": {
+        "newest": "Neueste",
+        "oldest": "Gründer zuerst",
+        "name": "Nach Name"
+      },
+      "dance": {
+        "all": "Alle",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Standardtanz",
+        "hiphop": "Hip-Hop"
+      },
+      "empty": "Noch keine Mitglieder.",
+      "emptyDance": "Noch niemand hat diesen Tanz als Vorliebe angegeben — sei die oder der Erste!",
+      "fallbackName": "Mitglied"
+    },
+    "sharing": {
+      "distributionDesc": "Vorlagen, Automatisierungen und Markenrichtlinien für deine Kampagnen.",
+      "distributionEmptyTitle": "Verteilungs-Werkzeuge kommen bald",
+      "distributionEmptyDesc": "Vorlagen, Regeln und Markenrichtlinien sind noch nicht verfügbar. Deine Kampagnen planst und versendest du schon jetzt unter Kampagnen.",
+      "openCampaigns": "Zu den Kampagnen"
+    },
+    "tickets": {
+      "eventFallback": "Event",
+      "generalAdmission": "Standardticket"
+    }
+  }
+}
