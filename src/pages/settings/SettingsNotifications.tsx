@@ -10,6 +10,7 @@ import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { notify, notifyError, t, useI18nLocale } from '@/lib/i18n-toast';
 import { settingsNavigation } from "@/config/navigation";
+import { VitanaMessagesSettings } from "@/components/settings/VitanaMessagesSettings";
 
 const TYPE_CONFIG = {
   chat: { labelKey: "screens.settings.notificationsSettingsSection_chat", icon: MessageSquare },
@@ -143,6 +144,9 @@ export default function SettingsNotifications() {
             </Card>
           );
         })}
+
+        {/* VTID-05100: Vitana's proactive personal Messenger messages */}
+        <VitanaMessagesSettings />
 
         {/* VTID-04676: notifications the caller's role receives (admin / developer / staff) */}
         {role && roleNotifications.length > 0 && (

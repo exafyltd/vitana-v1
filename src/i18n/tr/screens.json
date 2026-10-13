@@ -6271,7 +6271,8 @@
       "imageDownloadFailed": "Görsel yüklenemedi",
       "imageShareFailed": "Paylaşılamadı",
       "imageLoading": "Görsel yükleniyor",
-      "unknownSize": "Bilinmeyen boyut"
+      "unknownSize": "Bilinmeyen boyut",
+      "talkToVitana": "Vitana ile konuş"
     },
     "mobile": {
       "searching": "Aranıyor...",
@@ -7697,6 +7698,20 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "title": "Vitana'dan mesajlar",
+        "desc": "Vitana zaman zaman Messenger'da sana, şu an sana uyan bir ipucuyla kişisel bir mesaj gönderir.",
+        "enabled": "Vitana'dan mesaj al",
+        "enabledDesc": "Günde en fazla bir mesaj. İstediğin zaman kapatabilirsin.",
+        "topics": "Konular",
+        "health": "Sağlık",
+        "healthDesc": "Sağlığın ve Vitana Index'in için öneriler.",
+        "community": "Topluluk",
+        "communityDesc": "Sana uyan kişiler, gruplar ve etkinlikler.",
+        "business": "İş ve gelir",
+        "businessDesc": "İsteğe bağlı: Vitanaland'de bilginle para kazanma fikirleri. Varsayılan olarak kapalı – yalnızca sen açarsan.",
+        "loadError": "Vitana mesajları ayarların yüklenemedi."
       }
     },
     "sharing": {
