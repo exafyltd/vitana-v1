@@ -13,6 +13,7 @@ import {
   shortToVCard,
 } from './media';
 import { filterThreads, lastMessageSenderName, orderThreadsForList, threadCounterpartId, threadToVCard, type InboxThreadLike } from './thread';
+import { VITANA_BOT_USER_ID } from '@/lib/vitanaBotIdentity';
 
 describe('VTID-05110 media adapters', () => {
   it('formats durations as m:ss and drops empty values', () => {
@@ -78,6 +79,14 @@ describe('VTID-05110 thread adapters', () => {
   it('"all": newest first, one direct thread per counterpart, pinned on top', () => {
     expect(orderThreadsForList(threads, 'all', new Set(), me).map((t) => t.id)).toEqual(['d-new', 'd-ben', 'g1', 'g2']);
     expect(orderThreadsForList(threads, 'all', new Set(['g2']), me).map((t) => t.id)).toEqual(['g2', 'd-new', 'd-ben', 'g1']);
+  });
+
+  it('VTID-05100 order: an unread Vitana thread sits on top, above pinned; once read it falls back', () => {
+    const vitanaUnread = dm('d-vitana', VITANA_BOT_USER_ID, '2026-09-01T10:00:00Z', { unread_count: 1 });
+    const vitanaRead = dm('d-vitana', VITANA_BOT_USER_ID, '2026-09-01T10:00:00Z', { unread_count: 0 });
+    expect(orderThreadsForList([...threads, vitanaUnread], 'all', new Set(['g2']), me)[0].id).toBe('d-vitana');
+    expect(orderThreadsForList([...threads, vitanaUnread], 'direct', new Set(), me)[0].id).toBe('d-vitana');
+    expect(orderThreadsForList([...threads, vitanaRead], 'all', new Set(['g2']), me).map((t) => t.id)).toEqual(['g2', 'd-new', 'd-ben', 'g1', 'd-vitana']);
   });
 
   it('"groups": pinned, then unread, then newest; "direct": deduped; "contacts": no threads', () => {
