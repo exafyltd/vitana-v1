@@ -108,7 +108,9 @@ test('a chat picture renders inline and opens the full-screen viewer', async ({ 
   const chipNames = await page.locator('[data-testid="chat-file-chip"] p.truncate').allTextContents();
   expect(chipNames.filter((n) => IMAGE_EXT.test(n.trim())), 'a picture fell back to the file chip').toEqual([]);
 
-  await picture.click();
+  // Click the attachment itself (the element that owns the click). The hover
+  // toolbar no longer takes pointer events until hovered (VTID-05138 fix-forward 3).
+  await fixtureMsg.locator('[data-testid="chat-image-attachment"]').click();
   const viewer = page.getByTestId('chat-image-viewer');
   await expect(viewer).toBeVisible();
   await expect(viewer.getByTestId('chat-image-viewer-image')).toHaveAttribute('alt', FIXTURE_NAME);

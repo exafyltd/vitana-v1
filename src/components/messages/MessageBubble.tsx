@@ -828,8 +828,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             loading="lazy"
             onError={() => handleImageError(attachment, displayUrl as string)}
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
-          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+          {/* VTID-05138: the hover shade and toolbar take no taps until hovered —
+              on a phone (no hover) they stayed invisible but still caught taps,
+              so a tap on the picture's corner downloaded it instead of opening
+              the viewer, whose own toolbar covers download/copy/share/forward. */}
+          <div className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
+          <div
+            className="pointer-events-none absolute bottom-2 end-2 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 transition-opacity flex gap-1"
+            data-testid="chat-image-hover-actions"
+          >
             <Button
               size="sm"
               variant="secondary"
