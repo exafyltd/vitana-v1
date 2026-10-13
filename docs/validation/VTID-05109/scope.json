@@ -21,7 +21,8 @@
     ".kiro/specs/desktop-spotlight/**",
     "docs/SCREEN_INVENTORY.md",
     "scripts/ci/pr-gate/baseline/design.json",
-    "src/design/screen-manifest.json"
+    "src/design/screen-manifest.json",
+    "i18n-source-stamps/en.json"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
   "weakens_tests": [],
