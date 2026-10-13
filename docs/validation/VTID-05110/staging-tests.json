@@ -1,0 +1,32 @@
+{
+  "vtid": "VTID-05110",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop 1280 + 1440, signed in, ?spotlight=1: /comm, /comm/events-meetups, /comm/groups (collection) and /comm/live-rooms (focus-feed) are framed by ScreenFrame with their manifest archetype, compact header, sidebar chrome intact, exactly one spotlight card on the focus-feed screen and at most one elsewhere, rails hold only compact/row cards, no horizontal scroll in LTR or RTL; ?spotlight=0 renders today's screens; group detail (reached by following the first group link) is a detail screen with one spotlight card",
+      "spec": "tests/e2e/staging/vtid-05110-social-spotlight.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "event / live room / group / member adapters, full rows only (no empty bento slots), one spotlight card per dominant body, rail sizes, loading/empty/error states, handlers wired (open drawer, join, remind me, members dialog), manifest archetype per page, flag off = legacy render / flag on = ScreenFrame on Groups and Group detail",
+      "ref": "npx vitest run src/components/community/spotlight/social-spotlight.vtid-05110.test.tsx src/pages/community/social-spotlight-pages.vtid-05110.test.tsx src/components/ui/vcard src/components/layout/spotlight src/design",
+      "cwd": ".",
+      "reason": "Join / leave / remind-me / create are writes; staging is read-only (production Supabase), so their wiring is proven here with mocked hooks and staging only proves structure."
+    },
+    {
+      "kind": "playwright",
+      "name": "desktop 1440x900: /comm/media-hub and /inbox unchanged with ?spotlight=0; with ?spotlight=1 Media Hub is a focus-feed (one spotlight card in the first viewport per tab, rail only compact/row, no sideways scroll) and Messages is a conversation screen (list + thread stage inside the viewport, only row cards); sidebar chrome intact; read-only, never types, sends or plays",
+      "spec": "tests/e2e/staging/vtid-05110-media-messages-spotlight.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Media/thread adapters, Media Hub + Messages Spotlight components, page flag switch (off/on/phone), same ConversationView props, real rows only",
+      "ref": "npx vitest run src/components/ui/vcard/adapters/media-thread.vtid-05110.test.ts src/components/media/spotlight src/components/messages/spotlight src/pages/Messages.spotlight.vtid-05110.test.tsx src/pages/community/MediaHub.spotlight.vtid-05110.test.tsx src/pages/Messages.contact-message.test.ts",
+      "cwd": ".",
+      "reason": "Media Hub and Messages run real media players, uploads, chat realtime and send paths; staging is read-only and never plays, types or sends, so the adapters, the flag switch, the shared ConversationView props and the real-rows-only rule are proven in these unit tests."
+    }
+  ]
+}

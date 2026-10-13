@@ -1,0 +1,54 @@
+{
+  "spotlightMedia": {
+    "media": {
+      "tabsLabel": "Medienart",
+      "play": "Abspielen",
+      "pause": "Pausieren",
+      "playShort": "Kurzvideo „{title}“ abspielen",
+      "playItem": "„{title}“ abspielen",
+      "pauseItem": "„{title}“ pausieren",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "bookmark": "Merken",
+      "unbookmark": "Nicht mehr merken",
+      "favorite": "Zu deinen Favoriten",
+      "unfavorite": "Aus deinen Favoriten entfernen",
+      "share": "Teilen",
+      "shareText": "Hör dir „{title}“ auf Vitana an",
+      "linkCopiedDesc": "Der Link ist in deiner Zwischenablage.",
+      "views": "{count} Aufrufe",
+      "likes": "{count} Likes",
+      "episodeCount": "{count} Episoden",
+      "moreTracks": "Weitere Titel",
+      "moreEpisodes": "Weitere Episoden",
+      "nowPlaying": "Läuft gerade",
+      "latestMusic": "Neue Musik",
+      "interestFilter": "Gefiltert nach deinen Interessen",
+      "noSearchResults": "Nichts gefunden für „{query}“",
+      "clearSearch": "Suche zurücksetzen",
+      "empty": {
+        "shortsTitle": "Noch keine Kurzvideos",
+        "shortsDesc": "Lade das erste Kurzvideo hoch und inspiriere deine Community.",
+        "musicTitle": "Noch keine Musik",
+        "podcastsTitle": "Noch keine Podcasts",
+        "railTitle": "Hier ist gerade nichts weiter"
+      },
+      "error": {
+        "title": "Das konnte gerade nicht geladen werden",
+        "desc": "Prüf deine Verbindung und versuch es noch einmal.",
+        "retry": "Erneut versuchen"
+      }
+    },
+    "messages": {
+      "contextLabel": "Bereich",
+      "listLabel": "Unterhaltungen",
+      "filterLabel": "Unterhaltungen filtern",
+      "threadLabel": "Geöffnete Unterhaltung",
+      "untitled": "Unterhaltung",
+      "unread": "{count} ungelesen",
+      "openProfile": "Profil von {name} ansehen",
+      "pinned": "Angeheftet",
+      "selectDesc": "Wähle eine Unterhaltung aus der Liste, um weiterzuschreiben."
+    }
+  }
+}
