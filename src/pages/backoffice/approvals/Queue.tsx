@@ -1,6 +1,7 @@
 /** BackOffice › Approvals › Queue (BO-053) — VTID-03849 Read tier; VTID-03873 approve / reject from the row (ApprovalDecisionDialog). */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import ApprovalsTable from "@/components/backoffice/ApprovalsTable";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
@@ -14,6 +15,7 @@ import { t } from "@/lib/i18n-toast";
 const STATUSES: ApprovalStatus[] = ["pending", "approved", "rejected"];
 
 export default function BackOfficeApprovalsQueue() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const anyCapability = !!me.data && (me.data.is_exafy_admin || me.data.capabilities.length > 0);
   const [search, setSearch] = useState("");
@@ -24,7 +26,7 @@ export default function BackOfficeApprovalsQueue() {
   const rows = (approvals.data ?? []).filter((a) => !q || a.command_id.toLowerCase().includes(q) || a.approve_capability.toLowerCase().includes(q) || a.requester_id.toLowerCase().includes(q));
 
   return (
-    <BackOfficePage sectionKey="approvals" screenId="BO-053" emoji="✅" title={t("screens.backoffice.queue.title")} description={t("screens.backoffice.queue.description")}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="approvals" screenId="BO-053" emoji="✅" title={t("screens.backoffice.queue.title")} description={t("screens.backoffice.queue.description")}>
       <p className="text-xs text-muted-foreground">{t("screens.backoffice.decide.queueHint")}</p>
       <AdminFilterBar
         searchValue={search}
@@ -47,6 +49,6 @@ export default function BackOfficeApprovalsQueue() {
       )}
       <DataSourceNote source="gateway" />
       {deciding && <ApprovalDecisionDialog key={`${deciding.approval.id}-${deciding.verdict}`} approval={deciding.approval} verdict={deciding.verdict} open onOpenChange={(o) => { if (!o) setDeciding(null); }} />}
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

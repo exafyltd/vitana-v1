@@ -1,6 +1,7 @@
 /** BackOffice › Accounting › Chart of Accounts (BO-019) — VTID-03857, Read tier: `accounting.coa.list`, `accounting.coa.get`. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import QueryState from "@/components/backoffice/QueryState";
@@ -24,6 +25,7 @@ function rootTypeLabel(rt: string): string {
 }
 
 export default function BackOfficeChartOfAccounts() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -40,7 +42,7 @@ export default function BackOfficeChartOfAccounts() {
   const parentName = (id: string | null) => (id ? all.find((a) => a.id === id)?.name ?? shortId(id) : "—");
 
   return (
-    <BackOfficePage sectionKey="accounting" screenId="BO-019" emoji="🗂️" title={t("screens.backoffice.accounting.coa.title")} description={t("screens.backoffice.accounting.coa.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="accounting" screenId="BO-019" emoji="🗂️" title={t("screens.backoffice.accounting.coa.title")} description={t("screens.backoffice.accounting.coa.description")} capabilities={CAPS}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.accounting.coa.accounts")} value={fmtNumber(summary.total)} subtitle={t("screens.backoffice.accounting.coa.accountsHint", { groups: fmtNumber(summary.groups), ledgers: fmtNumber(summary.ledgers) })} icon={ListTree} loading={enabled && list.isLoading} />
         <AdminStatsCard title={t("screens.backoffice.accounting.coa.frozen")} value={fmtNumber(summary.frozen)} subtitle={t("screens.backoffice.accounting.coa.frozenHint")} icon={Snowflake} loading={enabled && list.isLoading} variant={summary.frozen > 0 ? "warning" : "default"} />
@@ -127,6 +129,6 @@ export default function BackOfficeChartOfAccounts() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

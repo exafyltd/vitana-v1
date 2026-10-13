@@ -10,6 +10,11 @@ import { MemoryRouter } from 'react-router-dom';
 vi.mock('@/components/AppLayout', () => ({ default: ({ children }: { children: React.ReactNode }) => <div data-testid="layout">{children}</div> }));
 vi.mock('@/components/backoffice/BackOfficeTabs', () => ({ default: () => <nav data-testid="tabs" /> }));
 vi.mock('@/hooks/useTenant', () => ({ useTenant: () => ({ activeTenantId: 'tenant-1' }) }));
+// VTID-05114: the page reads the Spotlight switch (tenant flag + preview
+// override). This harness has no TenantProvider and no Supabase stub, so it
+// pins the off value (today's layout, the one these assertions were written
+// against) instead of letting the flag hook query tenant_settings.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 vi.mock('@/hooks/useBackOfficeAccess', () => ({
   useMyErpAccess: () => ({ isLoading: false, data: { ok: true, user_id: 'u1', tenant_id: 'tenant-1', role: 'backoffice', is_exafy_admin: false, capabilities: ['audit.view'], defaults: [], explicit: [], can_manage_access: false, catalog: [] } }),
 }));

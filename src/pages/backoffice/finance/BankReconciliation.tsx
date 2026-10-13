@@ -4,7 +4,8 @@
  * what never reached the ledger (drafts), what is settled. Matching itself is `finance.bank.reconcile`
  * (Commit, `finance.reconcile`) and belongs to a later slice.
  */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
 import QueryState from "@/components/backoffice/QueryState";
@@ -56,6 +57,7 @@ function PaymentsTable({ rows, showUnallocated }: { rows: ErpPaymentRow[]; showU
 }
 
 export default function BackOfficeBankReconciliation() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const list = useErpRead<{ payments?: ErpPaymentRow[] }>("finance.payment.list", { limit: 200 }, { enabled });
@@ -63,7 +65,7 @@ export default function BackOfficeBankReconciliation() {
   const unallocatedNet = b.totals.unallocatedIn - b.totals.unallocatedOut;
 
   return (
-    <BackOfficePage sectionKey="finance" screenId="BO-026" emoji="🏦" title={t("screens.backoffice.finance.reconciliation.title")} description={t("screens.backoffice.finance.reconciliation.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="finance" screenId="BO-026" emoji="🏦" title={t("screens.backoffice.finance.reconciliation.title")} description={t("screens.backoffice.finance.reconciliation.description")} capabilities={CAPS}>
       <p className="text-xs text-muted-foreground">{t("screens.backoffice.finance.reconciliation.readOnlyNote")}</p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.finance.reconciliation.unmatched")} value={fmtNumber(b.unallocated.length)} subtitle={t("screens.backoffice.finance.reconciliation.unmatchedHint", { amount: formatMoney(unallocatedNet) })} icon={Scale} loading={enabled && list.isLoading} variant={b.unallocated.length > 0 ? "warning" : "default"} />
@@ -96,6 +98,6 @@ export default function BackOfficeBankReconciliation() {
         </>
       )}
       <DataSourceNote command={list.data?.command} />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

@@ -1,6 +1,7 @@
 /** BackOffice › Sales & CRM › Contacts & Companies (BO-006) — VTID-03855, Read tier: CRM contacts, CRM companies, customers. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
 import QueryState from "@/components/backoffice/QueryState";
@@ -16,6 +17,7 @@ import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 const CAPS = ["crm.view", "sales.view"] as const;
 
 export default function BackOfficeContacts() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const canCrm = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, ["crm.view"]));
   const canSales = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, ["sales.view"]));
@@ -29,7 +31,7 @@ export default function BackOfficeContacts() {
   const customerRows = (customers.data?.result?.customers ?? []).filter((c) => fullTextMatch(search, c.name, c.customer_group, c.territory, c.customer_type));
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-006" emoji="👥" title={t("screens.backoffice.sales.contacts.title")} description={t("screens.backoffice.sales.contacts.description")} capabilities={CAPS} rightAction={<div className="flex flex-wrap gap-2"><DraftCommandButton formId="contact" /><DraftCommandButton formId="company" /></div>}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-006" emoji="👥" title={t("screens.backoffice.sales.contacts.title")} description={t("screens.backoffice.sales.contacts.description")} capabilities={CAPS} rightAction={<div className="flex flex-wrap gap-2"><DraftCommandButton formId="contact" /><DraftCommandButton formId="company" /></div>}>
       <AdminFilterBar searchValue={search} onSearchChange={setSearch} searchPlaceholder={t("screens.backoffice.sales.contacts.searchPlaceholder")} onReset={() => setSearch("")} />
 
       <Card>
@@ -145,6 +147,6 @@ export default function BackOfficeContacts() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

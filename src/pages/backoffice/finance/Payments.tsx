@@ -1,6 +1,7 @@
 /** BackOffice › Finance & Treasury › Payments (BO-025) — VTID-03856 Read tier; VTID-03871 payment Draft card: `finance.payment.summary`, `finance.payment.list`, `finance.payment.get`, `finance.fx.list*`. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
@@ -22,6 +23,7 @@ import { DraftCommandButton } from "@/components/backoffice/DraftCommandDialog";
 const CAPS = ["finance.view"] as const;
 
 export default function BackOfficePayments() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -41,7 +43,7 @@ export default function BackOfficePayments() {
   const unallocatedTotal = all.filter((p) => String(p.status).toLowerCase() !== "draft" && String(p.status).toLowerCase() !== "cancelled").reduce((acc, p) => acc + num(p.unallocated_amount), 0);
 
   return (
-    <BackOfficePage sectionKey="finance" screenId="BO-025" emoji="💸" title={t("screens.backoffice.finance.payments.title")} description={t("screens.backoffice.finance.payments.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="payment" />}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="finance" screenId="BO-025" emoji="💸" title={t("screens.backoffice.finance.payments.title")} description={t("screens.backoffice.finance.payments.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="payment" />}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AdminStatsCard title={t("screens.backoffice.finance.payments.receivedYtd")} value={formatMoney(s?.total_received ?? 0)} subtitle={t("screens.backoffice.finance.payments.receivedYtdHint", { from: fmtDate(window.from_date, { dateStyle: "medium" }) })} icon={ArrowDownToLine} loading={enabled && summary.isLoading} variant="success" />
         <AdminStatsCard title={t("screens.backoffice.finance.payments.paidYtd")} value={formatMoney(s?.total_paid ?? 0)} subtitle={t("screens.backoffice.finance.payments.paidYtdHint")} icon={ArrowUpFromLine} loading={enabled && summary.isLoading} />
@@ -165,6 +167,6 @@ export default function BackOfficePayments() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

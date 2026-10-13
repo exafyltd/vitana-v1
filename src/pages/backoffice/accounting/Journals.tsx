@@ -1,6 +1,7 @@
 /** BackOffice › Accounting › Journals (BO-018) — VTID-03857 Read tier; VTID-03872 journal Draft card: `accounting.journal.list`, `accounting.journal.get`. */
 import { useState } from "react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DetailList from "@/components/backoffice/DetailList";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
@@ -23,6 +24,7 @@ import { canCancelJournal, canSubmitJournal } from "@/lib/backoffice-draft";
 const CAPS = ["accounting.view"] as const;
 
 export default function BackOfficeJournals() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const [search, setSearch] = useState("");
@@ -39,7 +41,7 @@ export default function BackOfficeJournals() {
   const statusOptions = ["all", "draft", "submitted", "cancelled"].map((v) => ({ value: v, label: v === "all" ? t("screens.backoffice.common.all") : t(`screens.backoffice.sales.status.${v}`) }));
 
   return (
-    <BackOfficePage sectionKey="accounting" screenId="BO-018" emoji="📒" title={t("screens.backoffice.accounting.journals.title")} description={t("screens.backoffice.accounting.journals.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="journal" />}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="accounting" screenId="BO-018" emoji="📒" title={t("screens.backoffice.accounting.journals.title")} description={t("screens.backoffice.accounting.journals.description")} capabilities={CAPS} rightAction={<DraftCommandButton formId="journal" />}>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <AdminStatsCard title={t("screens.backoffice.accounting.journals.entries")} value={fmtNumber(summary.total)} subtitle={t("screens.backoffice.accounting.journals.entriesHint", { submitted: fmtNumber(summary.submitted), cancelled: fmtNumber(summary.cancelled) })} icon={BookOpenText} loading={enabled && list.isLoading} />
         <AdminStatsCard title={t("screens.backoffice.accounting.journals.posted")} value={formatMoney(summary.postedDebit)} subtitle={t("screens.backoffice.accounting.journals.postedHint")} icon={Sigma} loading={enabled && list.isLoading} variant="success" />
@@ -77,7 +79,7 @@ export default function BackOfficeJournals() {
                       <TableCell className="text-xs">{e.entry_type ?? "—"}</TableCell>
                       <TableCell className="text-end text-sm whitespace-nowrap">{formatMoney(e.total_debit)}</TableCell>
                       <TableCell className="text-end text-sm whitespace-nowrap">{formatMoney(e.total_credit)}</TableCell>
-                      <TableCell className="text-sm max-w-[16rem] truncate" title={e.remark ?? undefined}>{e.remark ?? "—"}</TableCell>
+                      <TableCell className="text-sm max-w-64 truncate" title={e.remark ?? undefined}>{e.remark ?? "—"}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
                           <DocStatusBadge status={e.status} />
@@ -152,6 +154,6 @@ export default function BackOfficeJournals() {
           </CardContent>
         </Card>
       </div>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

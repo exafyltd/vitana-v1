@@ -1,5 +1,6 @@
 /** BackOffice › Sales & CRM › Opportunities (BO-007) — VTID-03855, Read tier: pipeline report + board by stage. */
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import DocStatusBadge from "@/components/backoffice/DocStatusBadge";
 import QueryState from "@/components/backoffice/QueryState";
@@ -17,6 +18,7 @@ import { t } from "@/lib/i18n-toast";
 const CAPS = ["crm.view"] as const;
 
 export default function BackOfficeOpportunities() {
+  const spotlight = useSpotlightEnabled();
   const me = useMyErpAccess();
   const enabled = !!me.data && (me.data.is_exafy_admin || hasAnyCapability(me.data.capabilities, CAPS));
   const report = useErpRead<ErpPipelineReport>("crm.pipeline.report", {}, { enabled });
@@ -25,7 +27,7 @@ export default function BackOfficeOpportunities() {
   const columns = groupOpportunitiesByStage(report.data?.result, opps.data?.result?.opportunities ?? []);
 
   return (
-    <BackOfficePage sectionKey="sales" screenId="BO-007" emoji="📈" title={t("screens.backoffice.sales.opportunities.title")} description={t("screens.backoffice.sales.opportunities.description")} capabilities={CAPS}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="sales" screenId="BO-007" emoji="📈" title={t("screens.backoffice.sales.opportunities.title")} description={t("screens.backoffice.sales.opportunities.description")} capabilities={CAPS}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <AdminStatsCard title={t("screens.backoffice.sales.opportunities.open")} value={fmtNumber(p?.total_opportunities ?? 0)} subtitle={t("screens.backoffice.sales.opportunities.openHint")} icon={Target} loading={enabled && report.isLoading} />
         <AdminStatsCard title={t("screens.backoffice.sales.opportunities.won")} value={fmtNumber(p?.total_won ?? 0)} subtitle={t("screens.backoffice.sales.opportunities.wonHint")} icon={Trophy} loading={enabled && report.isLoading} variant="success" />
@@ -35,7 +37,7 @@ export default function BackOfficeOpportunities() {
       {QueryState({ isLoading: me.isLoading || report.isLoading || opps.isLoading, error: report.error ?? opps.error, isEmpty: columns.length === 0, emptyTitle: t("screens.backoffice.sales.opportunities.empty"), emptyDescription: t("screens.backoffice.sales.opportunities.emptyHint") }) ?? (
         <div className="flex gap-4 overflow-x-auto pb-2" role="list" aria-label={t("screens.backoffice.sales.opportunities.board")}>
           {columns.map((col) => (
-            <Card key={col.stage} className="min-w-[280px] w-[280px] shrink-0" role="listitem">
+            <Card key={col.stage} className="min-w-72 w-72 shrink-0" role="listitem">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center justify-between gap-2">
                   <span>{col.stage}</span>
@@ -77,6 +79,6 @@ export default function BackOfficeOpportunities() {
         </div>
       )}
       <DataSourceNote command={report.data?.command ?? opps.data?.command} />
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }

@@ -6,7 +6,8 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ClipboardCheck, Inbox, CheckCircle2, XCircle, Activity as ActivityIcon } from "lucide-react";
-import BackOfficePage from "@/components/backoffice/BackOfficePage";
+import BackOfficeWorkspacePage from "@/pages/backoffice/BackOfficeWorkspacePage";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import CommandsTable from "@/components/backoffice/CommandsTable";
 import DataSourceNote from "@/components/backoffice/DataSourceNote";
 import QueryState from "@/components/backoffice/QueryState";
@@ -24,6 +25,7 @@ interface ErpStatus { status?: string; companies?: number; currencies?: number; 
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 export default function BackOfficeDashboard() {
+  const spotlight = useSpotlightEnabled();
   const { translate } = useTranslation();
   const me = useMyErpAccess();
   const caps = me.data?.capabilities ?? null;
@@ -51,7 +53,7 @@ export default function BackOfficeDashboard() {
   const erpVariant = !canHealth || health.isLoading ? "default" : health.error ? "error" : health.data?.result?.status === "ok" ? "success" : "warning";
 
   return (
-    <BackOfficePage sectionKey="overview" screenId="BO-001" emoji="📊" title={t("screens.backoffice.dashboard.title")} description={t("screens.backoffice.dashboard.description")}>
+    <BackOfficeWorkspacePage spotlight={spotlight} sectionKey="overview" screenId="BO-001" emoji="📊" title={t("screens.backoffice.dashboard.title")} description={t("screens.backoffice.dashboard.description")}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <AdminStatsCard
           title={t("screens.backoffice.dashboard.pendingApprovals")}
@@ -123,7 +125,7 @@ export default function BackOfficeDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className={`text-2xl font-semibold ${erpVariant === "error" ? "text-red-600 dark:text-red-400" : erpVariant === "success" ? "text-green-600 dark:text-green-400" : erpVariant === "warning" ? "text-yellow-600 dark:text-yellow-400" : ""}`}>{erpValue}</div>
+            <div className={`text-2xl font-semibold ${erpVariant === "error" ? "text-status-error" : erpVariant === "success" ? "text-status-success" : erpVariant === "warning" ? "text-status-warning" : ""}`}>{erpValue}</div>
             {canHealth && health.data && (
               <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
                 <dt className="text-muted-foreground">{t("screens.backoffice.health.companies")}</dt>
@@ -153,6 +155,6 @@ export default function BackOfficeDashboard() {
           <div className="mt-2"><DataSourceNote source="gateway" /></div>
         </CardContent>
       </Card>
-    </BackOfficePage>
+    </BackOfficeWorkspacePage>
   );
 }
