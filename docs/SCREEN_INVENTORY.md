@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 382
+- **Pages scanned:** 383
 - **Distinct i18n keys consumed:** 4761
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -3020,6 +3020,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 35, total in shard: 11778
 
 ### src/pages/staff/role-screens-mobile.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/staff/vtid-05116-role-workspace.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

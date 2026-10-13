@@ -2366,7 +2366,7 @@
       "archetype": "workspace",
       "tier": "C",
       "area": "Professional",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "7"
     },
     {
@@ -2630,7 +2630,7 @@
       "archetype": "workspace",
       "tier": "C",
       "area": "Staff",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "7"
     },
     {
@@ -2638,7 +2638,7 @@
       "archetype": "workspace",
       "tier": "C",
       "area": "Staff",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "7"
     },
     {
