@@ -7708,7 +7708,11 @@
         "selfLoggedHeading": "Registrado por você",
         "phoneStores": {
           "apple_health": "Apple Health",
-          "health_connect": "Health Connect"
+          "health_connect": "Health Connect",
+          "_pending_review": {
+            "apple_health": true,
+            "health_connect": true
+          }
         }
       },
       "healthConsent": {
@@ -13691,6 +13695,48 @@
         "title": "Descubra algo novo",
         "description": "Produtos, serviços e ofertas para o seu bem-estar.",
         "action": "Explorar"
+      },
+      "G1": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true,
+          "metric": true
+        },
+        "eyebrow": "Your profile",
+        "title": "Complete your profile",
+        "description": "A complete profile brings you better matches.",
+        "action": "Continue setup",
+        "metric": "{value} done · {message}"
+      },
+      "G2": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true,
+          "metric": true
+        },
+        "eyebrow": "Matches",
+        "title": "You have new matches",
+        "description": "See who is a good fit for you.",
+        "action": "See who matched",
+        "metric": "New matches: {count} · {message}"
+      },
+      "G3": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true,
+          "metric": true
+        },
+        "eyebrow": "Diary",
+        "title": "Your streak is at risk",
+        "description": "You missed yesterday – keep your streak alive today.",
+        "action": "Log today",
+        "metric": "Streak: {count} days · {message}"
       }
     },
     "interests": {

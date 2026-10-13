@@ -7765,7 +7765,11 @@
         "selfLoggedHeading": "Kendi girdiklerin",
         "phoneStores": {
           "apple_health": "Apple Health",
-          "health_connect": "Health Connect"
+          "health_connect": "Health Connect",
+          "_pending_review": {
+            "apple_health": true,
+            "health_connect": true
+          }
         }
       },
       "healthConsent": {
