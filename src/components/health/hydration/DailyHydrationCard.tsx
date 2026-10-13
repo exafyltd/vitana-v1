@@ -38,12 +38,12 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
       {/* Card Content */}
       <div className="p-4 md:p-5">
         {/* Header Row */}
-        <div className="flex items-center justify-between min-h-[40px] mb-2">
+        <div className="flex items-center justify-between min-h-10 mb-2">
           <div className="flex items-center gap-2">
             <span className="text-[13px] font-semibold text-slate-900 dark:text-white">
               {data.day}
             </span>
-            <span className="text-[13px] text-slate-500 dark:text-slate-400 font-normal">
+            <span className="text-[13px] text-muted-foreground font-normal">
               {fmtDate(new Date(data.date), { weekday: 'short', month: 'short', day: 'numeric' })}
             </span>
           </div>
@@ -86,7 +86,7 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
               {(data.currentAmount / 1000).toFixed(1)}L / {(data.targetAmount / 1000).toFixed(1)}L
             </span>
           </div>
-          <div className="relative h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+          <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
             <div 
               className="h-full bg-cyan-600 dark:bg-cyan-500 transition-all ease-in-out duration-500 rounded-full relative overflow-hidden
                 before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent
@@ -95,16 +95,16 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
             />
           </div>
           <div className="flex items-center justify-between mt-1">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">{t('screens.health.completionpercentageComplete', { completionPercentage: data.completionPercentage })}
+            <span className="text-[11px] text-muted-foreground">{t('screens.health.completionpercentageComplete', { completionPercentage: data.completionPercentage })}
             </span>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+            <span className="text-[11px] text-muted-foreground">
               {!isComplete && !isBelowHalf && getStatusText()}
             </span>
           </div>
         </div>
         
         {/* Next Reminder */}
-        <div className="flex items-center gap-2 mb-2 text-[11px] text-slate-500 dark:text-slate-400">
+        <div className="flex items-center gap-2 mb-2 text-[11px] text-muted-foreground">
           <Clock className="w-3.5 h-3.5" />
           <span>{data.nextReminder}</span>
         </div>
@@ -123,7 +123,7 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
         
         {/* AI Note */}
         {data.aiNote && (
-          <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2">
+          <div className="mt-2 text-[11px] text-muted-foreground line-clamp-2">
             {data.aiNote}
           </div>
         )}

@@ -40,7 +40,7 @@ function StepRow({
     <button
       type="button"
       onClick={() => onToggle(step)}
-      className={`w-full flex items-start gap-3 rounded-xl border p-3 text-left shadow-sm transition-colors ${
+      className={`w-full flex items-start gap-3 rounded-xl border p-3 text-start shadow-sm transition-colors ${
         done
           ? "border-emerald-500/30 bg-gradient-to-r from-green-500/5 via-emerald-500/5 to-teal-500/5"
           : highlight
@@ -78,7 +78,7 @@ function CadenceRow({ step, dates }: { step: GoalPlanStep; dates: string[] }) {
       <button
         type="button"
         onClick={() => hasDates && setOpen((o) => !o)}
-        className={`w-full flex items-start gap-3 p-3 text-left ${hasDates ? "hover:bg-muted/30 transition-colors" : ""}`}
+        className={`w-full flex items-start gap-3 p-3 text-start ${hasDates ? "hover:bg-muted/30 transition-colors" : ""}`}
       >
         <Flag className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
         <div className="min-w-0 flex-1">
@@ -94,7 +94,7 @@ function CadenceRow({ step, dates }: { step: GoalPlanStep; dates: string[] }) {
         )}
       </button>
       {open && hasDates && (
-        <div className="px-3 pb-3 pl-10 flex flex-wrap gap-1.5">
+        <div className="px-3 pb-3 ps-10 flex flex-wrap gap-1.5">
           {dates.map((d) => (
             <span key={d} className="text-[11px] text-muted-foreground bg-muted/40 rounded-full px-2 py-0.5">
               {fmtDate(new Date(d), { day: "numeric", month: "short" })}
@@ -261,7 +261,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
               <Button className="w-full" onClick={submitAnswers} disabled={generate.isPending}>
                 {generate.isPending ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="w-4 h-4 me-2 animate-spin" />
                     {t("screens.autopilotdashboard.planBuilding")}
                   </>
                 ) : (
@@ -285,7 +285,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
               <Button onClick={() => generate.mutate()} disabled={generate.isPending}>
                 {generate.isPending ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="w-4 h-4 me-2 animate-spin" />
                     {t("screens.autopilotdashboard.planBuilding")}
                   </>
                 ) : (
@@ -404,7 +404,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                       const isNext = nextMilestone?.id === s.id;
                       return (
                         <div key={s.id} className="space-y-1">
-                          <div className="flex items-center gap-2 pl-1">
+                          <div className="flex items-center gap-2 ps-1">
                             {s.scheduled_date && (
                               <p className="text-[11px] text-muted-foreground">
                                 {fmtDate(new Date(s.scheduled_date), { day: "numeric", month: "short" })}
@@ -435,7 +435,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
               >
                 {generate.isPending ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 me-2 animate-spin" />
                     {t("screens.autopilotdashboard.planBuilding")}
                   </>
                 ) : (

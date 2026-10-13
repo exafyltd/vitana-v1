@@ -110,7 +110,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         className="w-full"
         onClick={onRecalibrate}
       >
-        <Sparkles className="w-4 h-4 mr-2" />
+        <Sparkles className="w-4 h-4 me-2" />
         {t('screens.health.recalibratePlan')}
       </Button>
     </Card>

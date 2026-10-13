@@ -180,7 +180,7 @@ export function PhotoLightbox({
         aria-label={t('screens.diary.photoPreview')}
       >
         {/* Chrome Bar - Semi-transparent with gradient fade */}
-        <div className="absolute top-0 left-0 right-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
+        <div className="absolute top-0 start-0 end-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
           <div className="flex items-center gap-3">
             <span className="text-[13px] text-white/80">{t('screens.diary.timelineDiaryEntry')}</span>
             {createdAt && (
@@ -271,7 +271,7 @@ export function PhotoLightbox({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
+                  className="absolute start-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
                   onClick={() => onIndexChange(currentIndex - 1)}
                   disabled={currentIndex === 0}
                   aria-label={t('screens.diary.previousImage')}
@@ -281,7 +281,7 @@ export function PhotoLightbox({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
+                  className="absolute end-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
                   onClick={() => onIndexChange(currentIndex + 1)}
                   disabled={currentIndex === images.length - 1}
                   aria-label={t('screens.diary.nextImage')}
@@ -319,7 +319,7 @@ export function PhotoLightbox({
 
         {/* Filmstrip - Keep at bottom */}
         {showFilmstrip && images.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-black/30 backdrop-blur-md border-t border-white/10 px-6">
+          <div className="absolute bottom-0 start-0 end-0 h-16 bg-black/30 backdrop-blur-md border-t border-white/10 px-6">
             <div className="flex items-center gap-2 h-full overflow-x-auto">
               {images.map((img, index) => (
                 <button

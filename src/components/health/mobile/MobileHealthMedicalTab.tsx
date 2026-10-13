@@ -97,7 +97,7 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
             <Upload className="h-6 w-6 text-primary" />
           </div>
-          <div className="text-left">
+          <div className="text-start">
             <p className="font-semibold text-foreground">{translate('health.uploadBloodTest', 'Upload Health Report')}</p>
             <p className="text-sm text-muted-foreground">{translate('health.uploadDescription')}</p>
           </div>
@@ -131,7 +131,7 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
               <button
                 key={report.id}
                 onClick={() => handleViewReport(report.file_path ?? report.raw_file_ref)}
-                className="w-full flex items-center gap-3 p-3 rounded-xl bg-card border border-border hover:bg-accent/50 transition-colors text-left"
+                className="w-full flex items-center gap-3 p-3 rounded-xl bg-card border border-border hover:bg-accent/50 transition-colors text-start"
               >
                 <span className="text-2xl">{icon}</span>
                 <div className="flex-1 min-w-0">

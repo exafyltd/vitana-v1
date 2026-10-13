@@ -70,7 +70,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.consistency')}</p>
           <Badge variant="outline" className="mt-1 text-xs">
-            <TrendingUp className="w-3 h-3 mr-1" />
+            <TrendingUp className="w-3 h-3 me-1" />
             +{progress.consistencyTrend}%
           </Badge>
         </div>

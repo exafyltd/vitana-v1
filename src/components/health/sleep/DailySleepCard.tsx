@@ -43,7 +43,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
     >
       {/* AI Badge (if applicable) */}
       {hasAINote && (
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 end-3 z-10">
           <Badge variant="secondary" className="gap-1 bg-indigo-500/90 text-white backdrop-blur-sm animate-pulse">
             <Brain className="w-3 h-3" />
             AI
@@ -82,7 +82,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
               background: 'rgb(226 232 240 / 0.5)'
             }}
           />
-          <p className="text-xs text-slate-500 dark:text-slate-400 italic mt-1.5">
+          <p className="text-xs text-muted-foreground italic mt-1.5">
             {getStatusText()}
           </p>
         </div>
@@ -117,7 +117,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
       
       {/* Excellence Badge Overlay */}
       {isExcellent && (
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 start-3">
           <Badge className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white text-xs font-semibold px-2 py-1 rounded-full gap-1 border-0">
             <Sparkles className="w-3 h-3" />
             {t('screens.health.excellent')}

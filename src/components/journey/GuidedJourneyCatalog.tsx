@@ -344,7 +344,7 @@ export function GuidedJourneyCatalog({
               <button
                 type="button"
                 onClick={() => handleSessionClick(s)}
-                className="flex w-full items-center gap-2 px-1 text-left"
+                className="flex w-full items-center gap-2 px-1 text-start"
               >
                 {sessionComplete ? (
                   <CheckCircle2
@@ -377,7 +377,7 @@ export function GuidedJourneyCatalog({
                     })
                   )}
                 </span>
-                <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                <span className="ms-auto text-[10px] uppercase tracking-wider text-muted-foreground">
                   {seasonLabel(s.chapterId)}
                 </span>
                 {audiobook && (
@@ -393,10 +393,10 @@ export function GuidedJourneyCatalog({
               </button>
 
               {/* Steps — connected by a soft vertical rail on the left */}
-              <div className="relative space-y-2 pl-1">
+              <div className="relative space-y-2 ps-1">
                 <span
                   aria-hidden
-                  className="absolute left-[22px] top-3 bottom-3 w-px bg-gradient-to-b from-border via-border/60 to-transparent"
+                  className="absolute start-[22px] top-3 bottom-3 w-px bg-gradient-to-b from-border via-border/60 to-transparent"
                 />
                 {s.topics.map((topic) => {
                   // VTID-03679: per-topic checkmark must be per-topic completion
@@ -418,7 +418,7 @@ export function GuidedJourneyCatalog({
                       key={topic.topicId}
                       type="button"
                       onClick={() => handleTopicClick(topic)}
-                      className="relative block w-full text-left"
+                      className="relative block w-full text-start"
                     >
                       <Card
                         className={cn(
@@ -479,7 +479,7 @@ export function GuidedJourneyCatalog({
             <button
               type="button"
               aria-label={t('screens.guidedCatalog.close')}
-              className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="absolute end-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="h-4 w-4" />
             </button>
@@ -662,7 +662,7 @@ function ExplanationCard({
       <span className={cn('text-xs font-semibold uppercase tracking-wide', tint.label)}>
         {label}
       </span>
-      {onClick && <ArrowRight className={cn('ml-auto h-4 w-4', tint.glyph)} aria-hidden />}
+      {onClick && <ArrowRight className={cn('ms-auto h-4 w-4', tint.glyph)} aria-hidden />}
     </div>
   );
   const body = <p className="text-sm leading-relaxed text-foreground/90">{value}</p>;
@@ -673,7 +673,7 @@ function ExplanationCard({
         type="button"
         onClick={onClick}
         className={cn(
-          'w-full rounded-2xl border p-3 text-left transition-all hover:shadow-md hover:ring-2 hover:ring-inset hover:ring-current/20',
+          'w-full rounded-2xl border p-3 text-start transition-all hover:shadow-md hover:ring-2 hover:ring-inset hover:ring-current/20',
           tint.card,
         )}
       >

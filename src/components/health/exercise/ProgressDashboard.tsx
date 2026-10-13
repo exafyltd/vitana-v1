@@ -52,7 +52,7 @@ export function ProgressDashboard({ progress, aiSummary }: ProgressDashboardProp
           <p className="text-2xl font-bold">{progress.recoveryScore}/100</p>
           <p className="text-xs text-muted-foreground">{t('screens.health.recovery')}</p>
           <Badge variant="outline" className="mt-1 text-xs">
-            <TrendingUp className="w-3 h-3 mr-1" />
+            <TrendingUp className="w-3 h-3 me-1" />
             +5
           </Badge>
         </div>

@@ -56,7 +56,7 @@ export function PostLikersDialog({
                     onOpenChange(false);
                     navigate(`/u/${liker.user_id}`);
                   }}
-                  className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-muted/50"
+                  className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-start transition-colors hover:bg-muted/50"
                 >
                   <Avatar className="h-9 w-9 shrink-0">
                     {liker.avatar_url && <AvatarImage src={liker.avatar_url} alt="" />}

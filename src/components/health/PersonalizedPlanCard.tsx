@@ -84,7 +84,7 @@ export function PersonalizedPlanCard({
   
   const statusConfig = {
     "synced": { label: "AI Optimized ✅", bg: "bg-emerald-100/60 dark:bg-emerald-800/60", text: "text-emerald-700 dark:text-emerald-300" },
-    "manual": { label: "Manual 📝", bg: "bg-slate-100/60 dark:bg-slate-800/60", text: "text-slate-600 dark:text-slate-400" },
+    "manual": { label: "Manual 📝", bg: "bg-muted/60", text: "text-slate-600 dark:text-slate-400" },
     "needs-update": { label: "Needs Update ⚠️", bg: "bg-amber-100/60 dark:bg-amber-800/60", text: "text-amber-700 dark:text-amber-300" }
   };
 
@@ -97,12 +97,12 @@ export function PersonalizedPlanCard({
         "transition-shadow duration-200",
         "hover:-translate-y-[1px] transform-gpu",
         "motion-reduce:hover:translate-y-0",
-        "h-auto min-h-[240px]"
+        "h-auto min-h-60"
       )}
     >
       {/* Top-Right Meta Badge - z-20 (Always Visible) */}
       <div 
-        className="absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 px-2.5 py-1 text-[12px] font-medium"
+        className="absolute end-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 px-2.5 py-1 text-[12px] font-medium"
         aria-label={`AI Optimized ${summary.lastUpdated}`}
       >
         <span>{t('screens.health.aiOptimized')}</span>
@@ -116,7 +116,7 @@ export function PersonalizedPlanCard({
         <div className="flex items-center justify-between gap-3 pb-3">
           <div className="flex items-center gap-2.5">
             {/* Icon Badge - Smaller, neutral container */}
-            <div className="inline-flex p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+            <div className="inline-flex p-2 rounded-lg bg-muted">
               <Icon className="w-5 h-5" style={{ color: dotColor }} />
             </div>
             
@@ -137,7 +137,7 @@ export function PersonalizedPlanCard({
 
         {/* Subtle Divider */}
         <div 
-          className="h-[6px] rounded-full bg-slate-100 dark:bg-slate-800 mt-3 mb-4"
+          className="h-1.5 rounded-full bg-muted mt-3 mb-4"
           role="presentation"
           aria-hidden="true"
         />
@@ -179,16 +179,16 @@ export function PersonalizedPlanCard({
                 {plan.adherence_score}%
               </span>
             </div>
-            <div className="relative h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div className="relative h-2 rounded-full bg-muted overflow-hidden">
               <div 
-                className="absolute left-0 top-0 h-full rounded-full bg-slate-900/80 dark:bg-slate-100/80 transition-all duration-500"
+                className="absolute start-0 top-0 h-full rounded-full bg-slate-900/80 dark:bg-slate-100/80 transition-all duration-500"
                 style={{ width: `${plan.adherence_score}%` }}
               />
             </div>
           </div>
           
           {/* Meta Text */}
-          <div className="text-[12px] text-slate-500 dark:text-slate-400 text-right">
+          <div className="text-[12px] text-muted-foreground text-end">
             {summary.footerLine}
           </div>
         </div>

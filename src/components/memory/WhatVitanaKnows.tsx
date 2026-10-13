@@ -108,7 +108,7 @@ export function WhatVitanaKnows() {
             onClick={() => navigate(data.user_controls.edit_memory_url)}
             className="h-8 text-xs"
           >
-            <Edit3 className="w-3 h-3 mr-1.5" />
+            <Edit3 className="w-3 h-3 me-1.5" />
             {t('screens.memory.editWhatIRemember')}
           </Button>
           <Button
@@ -117,7 +117,7 @@ export function WhatVitanaKnows() {
             onClick={() => navigate(data.user_controls.pause_proactivity_url)}
             className="h-8 text-xs"
           >
-            <Pause className="w-3 h-3 mr-1.5" />
+            <Pause className="w-3 h-3 me-1.5" />
             {t('screens.memory.pauseProactivity')}
           </Button>
         </div>
