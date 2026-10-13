@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import type { PostMention } from '@/lib/news-feed-ranker';
+import { enrichmentCardsKey } from '@/hooks/useEnrichmentCards';
 
 export interface ProfilePost {
   id: string;
@@ -91,6 +92,8 @@ export function useProfilePosts(userId?: string) {
       // Launch-phase News feed shows the author's own posts too — refresh it
       // immediately so a new post appears without waiting for realtime/poll.
       queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
+      // VTID-05143: a post completes the E3 "First post" card on every screen.
+      queryClient.invalidateQueries({ queryKey: enrichmentCardsKey(user?.id) });
     },
   });
 

@@ -201,7 +201,9 @@ export const HomeContent = memo(function HomeContent() {
 
   // VTID-05085: the member's top open enrichment cards (server-ordered) join
   // the Vitana cards on Home — at most 2 here, capped again before composeFeed.
-  const { cards: homeEnrichmentCards, dismiss: dismissHomeCard } = useEnrichmentCards("home");
+  // Paused while News is kept alive behind another tab; a stale list (a card
+  // completed meanwhile) is re-read as soon as News is shown again.
+  const { cards: homeEnrichmentCards, dismiss: dismissHomeCard } = useEnrichmentCards("home", { active });
 
   // One impression event per tab activation (fire-and-forget). VTID-05081:
   // and per return to News, as when the route remounted; never while hidden.

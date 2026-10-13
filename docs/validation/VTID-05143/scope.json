@@ -41,7 +41,11 @@
     "src/pages/Calendar.tsx",
     "tests/e2e/staging/vtid-05086-feature-cards.staging.spec.ts",
     "src/components/audiobook/audiobook-daily.test.tsx",
-    "src/components/proactive/split-tip-copy.ts"
+    "src/components/proactive/split-tip-copy.ts",
+    "src/hooks/useProfileEditorDeepLink.ts",
+    "src/hooks/useProfileEditorDeepLink.test.tsx",
+    "src/hooks/useProfilePosts.ts",
+    "src/hooks/useProfilePosts.enrichment.test.ts"
   ],
   "sparring_record": "docs/validation/VTID-05143/plan-sparring.md",
   "weakens_tests": [

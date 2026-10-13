@@ -34,6 +34,15 @@ export interface EnrichmentCardsPayload {
 }
 
 /** All enrichment-card queries of one member share this prefix (a dismiss touches every screen). */
+/**
+ * How long a card list counts as fresh. Short on purpose: a card is completed
+ * outside this hook (a profile save, a first post, an OAuth round-trip), so a
+ * stale list is re-read on window focus, on mount and when a kept-alive screen
+ * becomes active again. Flows we own also invalidate it right away
+ * (useInvalidateEnrichmentCards).
+ */
+export const ENRICHMENT_CARDS_STALE_MS = 60 * 1000;
+
 export const enrichmentCardsKey = (userId: string | undefined) => ['enrichment-cards', userId ?? null] as const;
 
 async function bearer(): Promise<string> {
@@ -125,15 +134,25 @@ export function useInvalidateEnrichmentCards() {
   return () => void qc.invalidateQueries({ queryKey: enrichmentCardsKey(user?.id) });
 }
 
-export function useEnrichmentCards(screen: string | null) {
+export interface UseEnrichmentCardsOptions {
+  /**
+   * False while a kept-alive screen is hidden (Home): no requests then, and
+   * a stale list is re-read the moment it is shown again. Default true.
+   */
+  active?: boolean;
+}
+
+export function useEnrichmentCards(screen: string | null, { active = true }: UseEnrichmentCardsOptions = {}) {
   const { user } = useAuth();
   const dismiss = useEnrichmentCardDismiss();
   const query = useQuery({
     queryKey: [...enrichmentCardsKey(user?.id), screen],
     queryFn: () => fetchEnrichmentCards(screen as string),
-    enabled: !!user && !!screen,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
+    enabled: !!user && !!screen && active,
+    staleTime: ENRICHMENT_CARDS_STALE_MS,
+    // Overrides the app default (main.tsx: false) — see ENRICHMENT_CARDS_STALE_MS.
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
     retry: 1,
   });
   return {

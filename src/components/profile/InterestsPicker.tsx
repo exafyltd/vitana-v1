@@ -67,25 +67,37 @@ export function InterestsPicker({ open, onOpenChange, onSaved }: InterestsPicker
   const { user } = useAuth();
   const [selected, setSelected] = useState<InterestSlug[]>([]);
   const [saving, setSaving] = useState(false);
+  // Same guard as AboutDrawer: until the member's saved interests have been
+  // read, `selected` is not their real list, so picking and saving stay off —
+  // an early Save would write [] over what they already chose.
+  const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>('loading');
 
   // Load the member's current interests each time the picker opens.
   useEffect(() => {
     if (!open || !user?.id) return;
     let cancelled = false;
+    setLoadState('loading');
+    setSelected([]);
     (async () => {
       // `interests` is newer than the generated types (VTID-05085 migration).
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data } = await (supabase as any).from('profiles').select('interests').eq('user_id', user.id).maybeSingle();
+      const { data, error } = await (supabase as any).from('profiles').select('interests').eq('user_id', user.id).maybeSingle();
+      if (error) throw error;
       if (cancelled) return;
       const current = Array.isArray(data?.interests) ? (data.interests as unknown[]).filter(isSlug) : [];
       setSelected(current.slice(0, MAX_INTERESTS));
+      setLoadState('loaded');
     })().catch(() => {
-      /* nothing preselected — the member can still pick */
+      if (cancelled) return;
+      setLoadState('error');
+      notifyError('toasts.error.loadFailed', 'toasts.error.loadFailedDesc');
     });
     return () => {
       cancelled = true;
     };
   }, [open, user?.id]);
+
+  const loaded = loadState === 'loaded';
 
   const toggle = (slug: InterestSlug) =>
     setSelected((prev) =>
@@ -93,7 +105,7 @@ export function InterestsPicker({ open, onOpenChange, onSaved }: InterestsPicker
     );
 
   const save = async () => {
-    if (!user?.id || saving) return;
+    if (!user?.id || saving || !loaded) return;
     setSaving(true);
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,7 +142,7 @@ export function InterestsPicker({ open, onOpenChange, onSaved }: InterestsPicker
                 key={slug}
                 type="button"
                 aria-pressed={on}
-                disabled={!on && full}
+                disabled={!loaded || (!on && full)}
                 onClick={() => toggle(slug)}
                 data-testid={`interest-${slug}`}
                 className={cn(
@@ -155,7 +167,7 @@ export function InterestsPicker({ open, onOpenChange, onSaved }: InterestsPicker
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving}>
             {t('screens.interests.cancel')}
           </Button>
-          <Button onClick={() => void save()} disabled={saving || !user?.id} data-testid="interests-save">
+          <Button onClick={() => void save()} disabled={saving || !user?.id || !loaded} data-testid="interests-save">
             {t('screens.interests.save')}
           </Button>
         </DialogFooter>

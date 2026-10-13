@@ -5,7 +5,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createElement, type ReactNode } from 'react';
 import { renderHook, waitFor, act } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
 
 const notifyError = vi.fn();
 vi.mock('@/lib/i18n-toast', async (orig) => ({ ...(await orig<typeof import('@/lib/i18n-toast')>()), notifyError: (...a: unknown[]) => notifyError(...a) }));
@@ -15,7 +15,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 vi.mock('@/lib/gateway-base', () => ({ GATEWAY_API_URL: 'https://gw.test/api/v1' }));
 
-import { useEnrichmentCards, parseEnrichmentCards } from './useEnrichmentCards';
+import { useEnrichmentCards, parseEnrichmentCards, useInvalidateEnrichmentCards, ENRICHMENT_CARDS_STALE_MS } from './useEnrichmentCards';
 
 const homePayload = {
   ok: true,
@@ -99,6 +99,64 @@ describe('useEnrichmentCards', () => {
     act(() => result.current.dismiss('E1'));
     await waitFor(() => expect(notifyError).toHaveBeenCalledWith('toasts.vitanaCards.dismissFailed'));
     await waitFor(() => expect(result.current.cards.map((c) => c.card_type)).toEqual(['E1', 'E2']));
+  });
+});
+
+// Review finding (PR #1366, P1): a card whose step was just done must not stay
+// on screen — completion flows invalidate, and focus / re-activation refetch.
+describe('useEnrichmentCards — completed cards go away', () => {
+  const afterE1 = { ...homePayload, cards: homePayload.cards.slice(1) };
+
+  afterEach(() => {
+    focusManager.setFocused(undefined);
+    vi.restoreAllMocks();
+  });
+
+  it('a completing action (useInvalidateEnrichmentCards) re-reads the list and the done card disappears', async () => {
+    fetchMock.mockResolvedValueOnce(json(homePayload));
+    const { W } = wrapper();
+    const { result } = renderHook(() => ({ cards: useEnrichmentCards('home'), refresh: useInvalidateEnrichmentCards() }), { wrapper: W });
+    await waitFor(() => expect(result.current.cards.cards).toHaveLength(2));
+    fetchMock.mockResolvedValueOnce(json(afterE1));
+    act(() => result.current.refresh());
+    await waitFor(() => expect(result.current.cards.cards.map((c) => c.card_type)).toEqual(['E2']));
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('coming back to the app (window focus) re-reads a stale list — e.g. after an OAuth round-trip', async () => {
+    fetchMock.mockResolvedValueOnce(json(homePayload));
+    const { W } = wrapper();
+    const { result } = renderHook(() => useEnrichmentCards('home'), { wrapper: W });
+    await waitFor(() => expect(result.current.cards).toHaveLength(2));
+    const later = Date.now() + ENRICHMENT_CARDS_STALE_MS + 1000;
+    vi.spyOn(Date, 'now').mockReturnValue(later);
+    fetchMock.mockResolvedValueOnce(json(afterE1));
+    act(() => {
+      focusManager.setFocused(false);
+      focusManager.setFocused(true);
+    });
+    await waitFor(() => expect(result.current.cards.map((c) => c.card_type)).toEqual(['E2']));
+  });
+
+  it('a kept-alive screen re-reads a stale list when it becomes active again, not while hidden', async () => {
+    fetchMock.mockResolvedValueOnce(json(homePayload));
+    const { W, qc } = wrapper();
+    const { result, rerender } = renderHook(({ active }) => useEnrichmentCards('home', { active }), {
+      wrapper: W,
+      initialProps: { active: true },
+    });
+    await waitFor(() => expect(result.current.cards).toHaveLength(2));
+    rerender({ active: false });
+    fetchMock.mockResolvedValue(json(afterE1));
+    // a completion while Home is hidden: no request yet …
+    await act(async () => {
+      await qc.invalidateQueries({ queryKey: ['enrichment-cards'] });
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(result.current.cards).toHaveLength(2);
+    // … but the moment Home is shown again it re-reads.
+    rerender({ active: true });
+    await waitFor(() => expect(result.current.cards.map((c) => c.card_type)).toEqual(['E2']));
   });
 });
 

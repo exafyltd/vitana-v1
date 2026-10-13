@@ -49,7 +49,7 @@ import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { t } from '@/lib/i18n-toast';
 import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import { InterestsPicker } from "@/components/profile/InterestsPicker";
-import { useInvalidateEnrichmentCards } from "@/hooks/useEnrichmentCards";
+import { useProfileEditorDeepLink } from "@/hooks/useProfileEditorDeepLink";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -87,16 +87,17 @@ export default function EditProfilePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
   // VTID-05085: Unified Card System deep links land on the right editor —
-  // /me/profile#avatar | #cover | #about | #location | #interests.
+  // /me/profile#avatar | #cover | #about | #location | #interests. The hash is
+  // consumed, so tapping the same card again reopens it (VTID-05143), and
+  // closing an editor re-reads the cards so a completed one goes away.
   const [interestsOpen, setInterestsOpen] = useState(false);
-  const refreshEnrichmentCards = useInvalidateEnrichmentCards();
-  useEffect(() => {
-    const hash = location.hash.replace(/^#/, "");
-    if (hash === "avatar") setIdentityDrawerOpen(true);
-    if (hash === "about" || hash === "location") setAboutDrawerOpen(true);
-    if (hash === "cover") setCoverLibraryDrawerOpen(true);
-    if (hash === "interests") setInterestsOpen(true);
-  }, [location.hash]);
+  const { onEditorClosed: refreshEnrichmentCards } = useProfileEditorDeepLink({
+    avatar: () => setIdentityDrawerOpen(true),
+    about: () => setAboutDrawerOpen(true),
+    location: () => setAboutDrawerOpen(true),
+    cover: () => setCoverLibraryDrawerOpen(true),
+    interests: () => setInterestsOpen(true),
+  });
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
@@ -571,6 +572,7 @@ export default function EditProfilePage() {
             setIdentityDrawerOpen(open);
             if (!open) {
               refetchProfile();
+              refreshEnrichmentCards();
               completeBySourceRef('onboarding_profile');
               completeBySourceRef('onboarding_avatar');
             }
@@ -581,7 +583,10 @@ export default function EditProfilePage() {
           open={aboutDrawerOpen}
           onOpenChange={(open) => {
             setAboutDrawerOpen(open);
-            if (!open) refetchProfile();
+            if (!open) {
+              refetchProfile();
+              refreshEnrichmentCards();
+            }
           }}
         />
 
@@ -617,7 +622,10 @@ export default function EditProfilePage() {
             otherwise the new tile sets state but no dialog renders. */}
         <CoverLibraryDrawer
           open={coverLibraryDrawerOpen}
-          onOpenChange={setCoverLibraryDrawerOpen}
+          onOpenChange={(open) => {
+            setCoverLibraryDrawerOpen(open);
+            if (!open) refreshEnrichmentCards();
+          }}
         />
 
         {/* Autopilot Popup */}
@@ -717,14 +725,20 @@ export default function EditProfilePage() {
 
       <IdentityDrawer
         open={identityDrawerOpen}
-        onOpenChange={setIdentityDrawerOpen}
+        onOpenChange={(open) => {
+          setIdentityDrawerOpen(open);
+          if (!open) refreshEnrichmentCards();
+        }}
       />
 
       <AboutDrawer
         open={aboutDrawerOpen}
         onOpenChange={(open) => {
           setAboutDrawerOpen(open);
-          if (!open) refetchProfile();
+          if (!open) {
+            refetchProfile();
+            refreshEnrichmentCards();
+          }
         }}
       />
 
@@ -771,7 +785,10 @@ export default function EditProfilePage() {
       {/* VTID-02806: cover library drawer (deep-linkable via ?drawer=cover-library) */}
       <CoverLibraryDrawer
         open={coverLibraryDrawerOpen}
-        onOpenChange={setCoverLibraryDrawerOpen}
+        onOpenChange={(open) => {
+          setCoverLibraryDrawerOpen(open);
+          if (!open) refreshEnrichmentCards();
+        }}
       />
 
       {/* VTID-DANCE-D5: dance preferences drawer (also available via settings entry below) */}

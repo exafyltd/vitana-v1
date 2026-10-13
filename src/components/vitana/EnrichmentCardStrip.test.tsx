@@ -53,6 +53,7 @@ vi.mock('./vitana-card-catalog', async (orig) => {
 });
 
 import { EnrichmentCardStrip } from './EnrichmentCardStrip';
+import { __resetFeatureCardDismissMemory } from '@/hooks/useCardDismiss';
 
 const card = (t: string) => ({ card_type: t, category: 'enrichment', priority: 1, title: `title-${t}`, description: '' });
 
@@ -168,5 +169,26 @@ describe('EnrichmentCardStrip', () => {
     render(<EnrichmentCardStrip screen="calendar" only="features" />);
     // the feature half does not wait for the gateway
     expect(screen.getAllByTestId(/^card-/).map((n) => n.getAttribute('data-testid'))).toEqual(['card-F3', 'card-F9']);
+  });
+
+  // Review finding (PR #1366, P2): with storage blocked the X used to bounce
+  // straight back, because the strip re-reads storage after the dismiss.
+  it('a feature X still hides the card for this session when storage is blocked', () => {
+    const set = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    try {
+      const { unmount } = render(<EnrichmentCardStrip screen="calendar" />);
+      fireEvent.click(screen.getByText('x-F9'));
+      expect(screen.queryByTestId('card-F9')).toBeNull();
+      expect(screen.getByTestId('card-F3')).toBeInTheDocument();
+      unmount();
+      // a re-mount in the same session (keep-alive / navigation) still has it hidden
+      render(<EnrichmentCardStrip screen="calendar" />);
+      expect(screen.queryByTestId('card-F9')).toBeNull();
+    } finally {
+      set.mockRestore();
+      __resetFeatureCardDismissMemory();
+    }
   });
 });

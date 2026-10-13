@@ -5,7 +5,7 @@ import { renderHook, act } from '@testing-library/react';
 const serverDismiss = vi.fn();
 vi.mock('@/hooks/useEnrichmentCards', () => ({ useEnrichmentCardDismiss: () => serverDismiss }));
 
-import { useCardDismiss, isFeatureCardDismissed, rememberFeatureCardDismissed } from './useCardDismiss';
+import { useCardDismiss, isFeatureCardDismissed, rememberFeatureCardDismissed, __resetFeatureCardDismissMemory } from './useCardDismiss';
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -48,5 +48,23 @@ describe('useCardDismiss', () => {
     expect(() => rememberFeatureCardDismissed('F3')).not.toThrow();
     get.mockRestore();
     set.mockRestore();
+  });
+
+  // Review finding (PR #1366, P2): a dismiss whose write fails is kept in memory.
+  it('a dismiss with blocked storage still holds for this session (and its 7-day TTL)', () => {
+    const set = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('quota');
+    });
+    try {
+      const now = Date.now();
+      rememberFeatureCardDismissed('F5', now);
+      expect(isFeatureCardDismissed('F5', now)).toBe(true);
+      expect(isFeatureCardDismissed('F5', now + 8 * DAY)).toBe(false);
+      const { result } = renderHook(() => useCardDismiss('F5'));
+      expect(result.current.isDismissed).toBe(true);
+    } finally {
+      set.mockRestore();
+      __resetFeatureCardDismissMemory();
+    }
   });
 });

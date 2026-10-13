@@ -4,7 +4,8 @@
  * - Feature cards (F*): per device, `localStorage` key
  *   `vitana.card.<type>.dismissed_at`, back after 7 days. Every access is
  *   wrapped in try/catch (private mode, blocked storage), like
- *   EnableRemindersPrompt — no storage simply means "not dismissed".
+ *   EnableRemindersPrompt. A write that fails is kept in memory for the rest
+ *   of the session, so the X still holds until the page reloads.
  * - Enrichment / boost cards (E*, G*): `POST /api/v1/enrichment-cards/dismiss`
  *   (server cooldown, every device) and the card query is invalidated.
  */
@@ -17,12 +18,22 @@ import {
   type VitanaCardType,
 } from '@/components/vitana/vitana-card-catalog';
 
+/**
+ * Dismissals whose `localStorage` write failed (private mode, quota, blocked
+ * storage). Kept for the rest of this page session so the strip, which
+ * re-reads after a dismiss, does not bring the card straight back.
+ */
+const sessionDismissedAt = new Map<VitanaCardType, number>();
+
+const withinTtl = (at: number, now: number) => Number.isFinite(at) && now - at < FEATURE_CARD_DISMISS_TTL_MS;
+
 export function isFeatureCardDismissed(cardType: VitanaCardType, now: number = Date.now()): boolean {
+  const inSession = sessionDismissedAt.get(cardType);
+  if (inSession !== undefined && withinTtl(inSession, now)) return true;
   try {
     const raw = localStorage.getItem(featureCardDismissKey(cardType));
     if (!raw) return false;
-    const at = Number(raw);
-    return Number.isFinite(at) && now - at < FEATURE_CARD_DISMISS_TTL_MS;
+    return withinTtl(Number(raw), now);
   } catch {
     return false;
   }
@@ -31,9 +42,16 @@ export function isFeatureCardDismissed(cardType: VitanaCardType, now: number = D
 export function rememberFeatureCardDismissed(cardType: VitanaCardType, now: number = Date.now()): void {
   try {
     localStorage.setItem(featureCardDismissKey(cardType), String(now));
+    sessionDismissedAt.delete(cardType);
   } catch {
-    /* storage unavailable — the card hides for this render only */
+    // storage unavailable — hide it for the rest of this session instead
+    sessionDismissedAt.set(cardType, now);
   }
+}
+
+/** Test-only: forget the in-memory fallback. */
+export function __resetFeatureCardDismissMemory(): void {
+  sessionDismissedAt.clear();
 }
 
 export function useCardDismiss(cardType: VitanaCardType): { isDismissed: boolean; dismiss: () => void } {
