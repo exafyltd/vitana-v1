@@ -3,8 +3,8 @@
   "service": "community-app",
   "tests": [
     { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
-      "expect_status": 200, "expect_body_contains": "orb-widget.js?v=20260928-vtid-04723-refetch",
-      "reason": "the app loads the voice widget under an address no browser has cached, so every browser fetches the widget with the after_turn branch" },
+      "expect_status": 200, "expect_body_contains": "/command-hub/orb-widget.js?v=",
+      "reason": "VTID-05129: version-agnostic (later VTIDs bump ?v=; VTID-04843 pins the current one). The app loads the voice widget; originally: under an address no browser has cached, so every browser fetches the widget with the after_turn branch" },
     { "kind": "http", "target": "gateway", "method": "GET", "path": "/command-hub/orb-widget.js?v=20260928-vtid-04723-refetch",
       "expect_status": 200, "expect_body_contains": "msg.after_turn === true",
       "reason": "the exact widget URL the app loads carries the VTID-04644 after_turn branch" },
