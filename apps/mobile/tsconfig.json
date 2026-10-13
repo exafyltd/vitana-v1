@@ -2,7 +2,11 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "paths": {
+      "@web/navigation/orb-navigation": ["../../src/navigation/orb-navigation.ts"],
+      "@web/lib/orb-view-profile": ["../../src/lib/orb-view-profile.ts"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist", ".expo", "android", "ios"]

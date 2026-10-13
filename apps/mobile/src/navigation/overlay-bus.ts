@@ -40,6 +40,14 @@ export const overlayBus = {
       set?.delete(handler);
     };
   },
+  /**
+   * How many handlers are registered for `event`. VTID-05182: the ORB's
+   * navigation directives open a native overlay only when a screen lane has
+   * registered it, and report `not_found` otherwise.
+   */
+  listenerCount(event: BusEvent): number {
+    return handlers.get(event)?.size ?? 0;
+  },
   /** Test helper. */
   clear(): void {
     handlers.clear();
