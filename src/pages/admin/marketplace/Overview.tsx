@@ -24,7 +24,9 @@ import { notifyError, t } from '@/lib/i18n-toast';
 import { fmtNumber } from '@/lib/locale-format';
 import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
+// so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
+import { GATEWAY_BASE } from "@/lib/gateway-base";
 
 interface OverviewStats {
   merchants_active: number;
@@ -84,9 +86,9 @@ export default function MarketplaceOverview() {
   async function load() {
     setLoading(true);
     try {
-      if (!GATEWAY_URL) throw new Error("VITE_GATEWAY_URL not configured");
+      if (!GATEWAY_BASE) throw new Error("VITE_GATEWAY_URL not configured");
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/marketplace/overview`, { headers });
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/admin/marketplace/overview`, { headers });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const json = (await resp.json()) as OverviewResponse;
       if (!json.ok || !json.stats) throw new Error(json.error || "No data");

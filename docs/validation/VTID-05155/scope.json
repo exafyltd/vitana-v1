@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05155",
+  "kind": "fix",
+  "paths": [
+    "src/pages/admin/marketplace/PartnerHealthOrders.tsx",
+    "src/pages/admin/marketplace/Overview.tsx",
+    "src/pages/admin/marketplace/Products.tsx",
+    "src/pages/settings/Limitations.tsx",
+    "src/pages/__tests__/gateway-prefix.vtid-05155.test.tsx",
+    "src/pages/__tests__/partner-health-staff.vtid-05056.test.tsx",
+    "tests/e2e/staging/vtid-05155-gateway-prefix.staging.spec.ts",
+    "docs/validation/VTID-05155/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05155/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

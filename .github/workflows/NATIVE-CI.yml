@@ -1,0 +1,169 @@
+# NATIVE-CI — the native app (apps/mobile, Expo) on Linux, plus the parity
+# ledger and the extraction analysis (VTID-05157, Native app Wave 0;
+# program docs/programs/native-app/NATIVE-APP-PLAN.md §4–5).
+#
+# Nothing here deploys, signs, or calls a Vitana service: no secrets, no
+# Expo/EAS token, no store or Firebase calls. Expo runs offline
+# (EXPO_OFFLINE=1). Native builds (prebuild, Gradle/Xcode) are row 8b and
+# wait for macOS minutes / G1 / G2.
+#
+# Not a required status check yet (branch protection is an admin setting).
+
+name: NATIVE-CI
+
+run-name: 'NATIVE-CI (${{ github.event_name }} on ${{ github.ref_name }})'
+
+on:
+  pull_request:
+    paths:
+      - 'apps/mobile/**'
+      - 'scripts/native/**'
+      - 'scripts/nav/spa-routes.mjs'
+      - 'src/navigation/registry/**'
+      - 'src/App.tsx'
+      - 'src/i18n/**'
+      - 'eslint-rules/**'
+      - 'eslint.config.js'
+      - '.github/workflows/NATIVE-CI.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'scripts/native/**'
+      - 'scripts/nav/spa-routes.mjs'
+      - 'src/navigation/registry/**'
+      - 'src/App.tsx'
+      - 'src/i18n/**'
+      - 'eslint-rules/**'
+      - 'eslint.config.js'
+      - '.github/workflows/NATIVE-CI.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  EXPO_OFFLINE: '1'
+  EXPO_NO_TELEMETRY: '1'
+  CI: '1'
+
+jobs:
+  mobile:
+    name: apps/mobile — typecheck, test, bundle (iOS + Android JS)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: apps/mobile
+    env:
+      APP_PROFILE: development
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - name: Install (apps/mobile only, its own lockfile)
+        run: npm ci
+      # Offline on purpose: validates every dependency against the pinned SDK's
+      # own bundledNativeModules.json. The online check also flags newer SDK
+      # patch releases, which the "pinned, at least two weeks old" policy
+      # deliberately does not take — run `npx expo install --check` (online)
+      # locally before an SDK bump (apps/mobile/README.md).
+      - name: Dependencies match the pinned Expo SDK
+        run: npm run deps:check
+      - name: Generate the i18n catalog map (gitignored)
+        run: npm run gen:i18n
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Test (jest-expo)
+        run: npm test -- --ci
+      - name: Bundle JS for iOS and Android (Metro + Hermes, no native build)
+        run: npm run bundle
+      - name: Bundle sizes
+        run: |
+          {
+            echo "### apps/mobile bundles"
+            echo ""
+            echo "| platform | file | bytes |"
+            echo "|---|---|---|"
+            for f in dist/_expo/static/js/*/*; do
+              echo "| $(basename "$(dirname "$f")") | $(basename "$f") | $(stat -c %s "$f") |"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  parity-ledger:
+    name: Parity ledger + native script tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # Only the TypeScript compiler (for scripts/nav/spa-routes.mjs and the
+      # extraction analysis), at the root lockfile's version, outside the
+      # root project so no root `npm ci` runs.
+      - name: Install the TypeScript compiler (root lockfile version)
+        run: |
+          TS_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/typescript'].version")
+          mkdir -p "$RUNNER_TEMP/ts"
+          npm install --prefix "$RUNNER_TEMP/ts" --no-save --no-audit --no-fund "typescript@$TS_VERSION"
+          ln -s "$RUNNER_TEMP/ts/node_modules" node_modules
+          node -p "'typescript ' + require('typescript').version"
+      - name: Script tests (node --test)
+        run: node --test scripts/native/__tests__/*.test.mjs
+      - name: Parity ledger check
+        run: node scripts/native/parity-ledger.mjs --check
+      - name: Parity ledger report
+        if: always()
+        run: node scripts/native/parity-ledger.mjs --report
+
+  lint-rules:
+    name: ESLint native override + i18n rule tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install (root)
+        run: npm ci
+      - name: ESLint tests (node --test, repo eslint.config.js)
+        run: node --test scripts/native/__tests__/eslint/*.test.mjs
+      - name: Lint apps/mobile
+        run: npx eslint apps/mobile
+
+  extraction-analysis:
+    name: Extraction dependency analysis (artefact)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install the TypeScript compiler (root lockfile version)
+        run: |
+          TS_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/typescript'].version")
+          mkdir -p "$RUNNER_TEMP/ts"
+          npm install --prefix "$RUNNER_TEMP/ts" --no-save --no-audit --no-fund "typescript@$TS_VERSION"
+          ln -s "$RUNNER_TEMP/ts/node_modules" node_modules
+      - name: Analyse src/ (never fails on drift)
+        run: |
+          mkdir -p "$RUNNER_TEMP/extraction"
+          node scripts/native/extraction-deps.mjs --json "$RUNNER_TEMP/extraction/extraction-deps.json" --md "$RUNNER_TEMP/extraction/EXTRACTION-ANALYSIS.md"
+          cat "$RUNNER_TEMP/extraction/EXTRACTION-ANALYSIS.md" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extraction-analysis-${{ github.sha }}
+          path: ${{ runner.temp }}/extraction/
+          retention-days: 90

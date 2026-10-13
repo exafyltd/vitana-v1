@@ -17,7 +17,17 @@ const i18nPlugin = {
 };
 
 export default tseslint.config(
-  { ignores: ["dist", "node_modules", "scripts/**"] },
+  {
+    ignores: [
+      "dist",
+      "node_modules",
+      "scripts/**",
+      // VTID-05157 — native app (apps/mobile): build output, generated native
+      // projects, its own node_modules and the generated i18n catalog map.
+      "apps/mobile/{.expo,dist,android,ios,node_modules}/**",
+      "apps/mobile/src/i18n/catalog-map.generated.ts",
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -47,6 +57,74 @@ export default tseslint.config(
       // pre-existing sites on the i18n-locale-aware-dates branch; rule is now
       // ERROR-level to prevent regressions.
       "i18n/no-raw-locale-call": "error",
+    },
+  },
+  // VTID-05157 — native app (apps/mobile, React Native / Expo). The i18n rules
+  // above still apply; this block only swaps the web assumptions out. Web
+  // files are not matched, so their lint result is unchanged.
+  {
+    files: ["apps/mobile/**/*.{ts,tsx}"],
+    languageOptions: {
+      globals: {
+        // No browser globals in React Native …
+        ...Object.fromEntries(Object.keys(globals.browser).map((name) => [name, "off"])),
+        // … only what the RN runtime provides.
+        __DEV__: "readonly",
+        global: "readonly",
+        globalThis: "readonly",
+        console: "readonly",
+        fetch: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+        queueMicrotask: "readonly",
+        navigator: "readonly",
+        process: "readonly",
+        require: "readonly",
+        module: "readonly",
+      },
+    },
+    rules: {
+      "react-refresh/only-export-components": "off",
+      // navigator stays allowed: React Native ships a partial one.
+      "no-restricted-globals": [
+        "error",
+        ...["window", "document", "localStorage", "sessionStorage", "matchMedia"].map((name) => ({
+          name,
+          message: `"${name}" does not exist in React Native (VTID-05157). Use a native API or a storage adapter.`,
+        })),
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "MetaProperty",
+          message: "import.meta is Vite-only; Metro has no equivalent (VTID-05157). Read config from src/config/env.ts.",
+        },
+      ],
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@/integrations/supabase/client",
+              message: "The web Supabase client falls back to the production project and uses localStorage (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+            {
+              name: "@/lib/gateway-base",
+              message: "The web gateway base defaults to the production gateway (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+          ],
+          patterns: [
+            {
+              regex: "(^|/)integrations/supabase/client(\\.ts)?$|(^|/)lib/gateway-base(\\.ts)?$",
+              message: "The web Supabase client / gateway base reach production by default (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+          ],
+        },
+      ],
     },
   },
   // VTID-05107 — Spotlight Design Contract (docs/design-system/SPOTLIGHT_RULES.md §C).
