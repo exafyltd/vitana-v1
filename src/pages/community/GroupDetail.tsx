@@ -24,7 +24,7 @@ import { fmtNumber } from '@/lib/locale-format';
 import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { GroupDetailRail, GroupDetailStage } from "@/components/community/spotlight/GroupDetailSpotlight";
-import { SocialEmpty } from "@/components/community/spotlight/SocialStates";
+import { SpotlightEmptyCard } from "@/components/community/spotlight/SocialStates";
 import { t } from "@/lib/i18n-toast";
 export default function GroupDetail() {
   const { id } = useParams();
@@ -94,7 +94,7 @@ export default function GroupDetail() {
           {isLoading ? (
             <ArchetypeSkeleton archetype="detail" />
           ) : !group ? (
-            <SocialEmpty
+            <SpotlightEmptyCard
               spec={{ Icon: Users, titleKey: 'spotlightSocial.groupDetail.notFoundTitle', descriptionKey: 'spotlightSocial.groupDetail.notFoundDesc', actionKey: 'spotlightSocial.groupDetail.browse', onAction: () => navigate('/comm/groups') }}
             />
           ) : (

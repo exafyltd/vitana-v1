@@ -6,7 +6,7 @@ import { t } from '@/lib/i18n-toast';
 import { FullRowGrid } from './FullRowGrid';
 import { SocialVCard } from './SocialVCard';
 import { RailHeading } from './SpotlightSection';
-import { SocialEmpty, StageListSkeleton, type EmptySpec } from './SocialStates';
+import { SpotlightEmptyCard, StageListSkeleton, type EmptySpec } from './SocialStates';
 
 /**
  * VTID-05110 — Live Rooms on desktop Spotlight (`focus-feed`): the first room
@@ -58,7 +58,7 @@ export function LiveRoomsStage({
   actions: LiveRoomActions;
 }) {
   if (loading && rooms.length === 0) return <StageListSkeleton />;
-  if (rooms.length === 0) return <SocialEmpty spec={empty} />;
+  if (rooms.length === 0) return <SpotlightEmptyCard spec={empty} />;
   const [hero, ...rest] = rooms;
   return (
     <div className="flex flex-col gap-6">

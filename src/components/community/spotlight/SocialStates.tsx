@@ -1,6 +1,8 @@
 import { AlertCircle, type LucideIcon } from 'lucide-react';
 import { I18nEmptyState } from '@/components/ui/i18n-empty-state';
-import { VCardSkeleton } from '@/components/ui/vcard';
+import { Button } from '@/components/ui/button';
+import { VCard, VCardSkeleton } from '@/components/ui/vcard';
+import { t } from '@/lib/i18n-toast';
 
 /**
  * VTID-05110 — loading / empty / error states for the social Spotlight screens
@@ -50,6 +52,30 @@ export function SocialEmpty({ spec }: { spec: EmptySpec }) {
         onAction={spec.onAction}
       />
     </div>
+  );
+}
+
+/**
+ * Empty state for the dominant archetypes (focus-feed / detail): a text-only
+ * `spotlight` VCard, so the screen still has exactly one dominant card (SR-06)
+ * without inventing content — it says plainly that there is nothing yet.
+ */
+export function SpotlightEmptyCard({ spec }: { spec: EmptySpec }) {
+  return (
+    <VCard
+      size="spotlight"
+      data-social-empty=""
+      eyebrow={spec.Icon ? <spec.Icon className="h-5 w-5" aria-hidden="true" /> : undefined}
+      title={t(spec.titleKey)}
+      body={spec.descriptionKey ? t(spec.descriptionKey) : undefined}
+      actions={
+        spec.actionKey && spec.onAction ? (
+          <Button size="sm" onClick={spec.onAction}>
+            {t(spec.actionKey)}
+          </Button>
+        ) : undefined
+      }
+    />
   );
 }
 

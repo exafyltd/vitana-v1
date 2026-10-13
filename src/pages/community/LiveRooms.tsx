@@ -59,7 +59,7 @@ import { ScreenFrame } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { LiveRoomsRail, LiveRoomsStage } from "@/components/community/spotlight/LiveRoomsSpotlight";
 import { pickRailRooms } from "@/components/community/spotlight/listHelpers";
-import { SocialEmpty, StageListSkeleton } from "@/components/community/spotlight/SocialStates";
+import { SpotlightEmptyCard, StageListSkeleton } from "@/components/community/spotlight/SocialStates";
 import { fmtNumber } from "@/lib/locale-format";
 
 export default function LiveRooms() {
@@ -694,7 +694,7 @@ export default function LiveRooms() {
             isLoadingEnded ? (
               <StageListSkeleton />
             ) : endedStreams.length === 0 ? (
-              <SocialEmpty spec={{ titleKey: 'spotlightSocial.liveRooms.emptyPastTitle', descriptionKey: 'spotlightSocial.liveRooms.emptyPastDesc' }} />
+              <SpotlightEmptyCard spec={{ titleKey: 'spotlightSocial.liveRooms.emptyPastTitle', descriptionKey: 'spotlightSocial.liveRooms.emptyPastDesc' }} />
             ) : (
               <div className="flex flex-col gap-4">
                 {endedStreams.map((stream) => {

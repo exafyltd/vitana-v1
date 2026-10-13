@@ -289,9 +289,12 @@ describe('VTID-05110 Live Rooms', () => {
     expect(a.onNotify).toHaveBeenCalledWith('r2');
   });
 
-  it('empty → shared empty state with Go live; rail holds only compact cards', () => {
+  it('empty → a text-only spotlight card (focus-feed keeps one dominant card, SR-06) with Go live; rail holds only compact cards', () => {
     const onAction = vi.fn();
-    inRouter(<LiveRoomsStage rooms={[]} loading={false} empty={{ ...empty, actionKey: 'spotlightSocial.liveRooms.goLive', onAction }} actions={actions()} />);
+    const empty1 = inRouter(<LiveRoomsStage rooms={[]} loading={false} empty={{ ...empty, actionKey: 'spotlightSocial.liveRooms.goLive', onAction }} actions={actions()} />);
+    expect(sizes(empty1.container, 'spotlight')).toHaveLength(1);
+    expect(empty1.container.querySelector('[data-vcard-media]')).toBeNull();
+    expect(screen.getByText('spotlightSocial.liveRooms.emptyTitle')).toBeInTheDocument();
     fireEvent.click(screen.getByText('spotlightSocial.liveRooms.goLive'));
     expect(onAction).toHaveBeenCalled();
     const onOpen = vi.fn();
