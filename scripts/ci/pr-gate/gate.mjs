@@ -4,6 +4,7 @@
 //
 //   node scripts/ci/pr-gate/gate.mjs <check> --base <sha> --head <sha> --title "<PR title>"
 //   checks: scope | sparring | weakening | ratchet-tsc <file> | ratchet-eslint <file>
+//           | ratchet-design <eslint-json> --base <sha> (VTID-05107) | baseline-design <eslint-json>
 //           | red-green | migrations | baseline-tsc <file> | baseline-eslint <file>
 import { existsSync, mkdtempSync, readFileSync, writeFileSync, copyFileSync, mkdirSync, symlinkSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -91,6 +92,37 @@ const checks = {
   },
   'ratchet-eslint'() {
     ratchet('eslint', L.countEslint(JSON.parse(readFileSync(args[1], 'utf8')), ROOT));
+  },
+  // VTID-05107 — Spotlight design rules: per-file `design/*` error counts may
+  // only go down, measured against the baseline on the BASE commit (a PR
+  // cannot raise its own baseline). A PR that changes eslint-rules/design/**
+  // is a contract change and is measured against its own head baseline.
+  'ratchet-design'() {
+    const current = L.countDesign(JSON.parse(readFileSync(args[1], 'utf8')), ROOT);
+    const file = `${BASELINE_DIR}/design.json`;
+    const { source, counts } = L.chooseDesignBaseline({
+      changed: L.changedFiles(base, head),
+      baseText: L.showFile(base, file),
+      headText: existsSync(file) ? readFileSync(file, 'utf8') : null,
+    });
+    const r = L.compareRatchet(counts, current);
+    const total = Object.values(current).reduce((a, b) => a + b, 0);
+    const better = r.better.length ? `\n\n${r.better.length} file(s) improved — lower the baseline in this PR: \`node scripts/ci/pr-gate/gate.mjs baseline-design <eslint-json>\`` : '';
+    // A rule-change PR brings its own baseline: it must equal today's counts
+    // exactly, so it cannot carry stale or inflated slack forward.
+    if (source.startsWith('head')) {
+      const stale = L.baselineDrift(counts, current);
+      if (stale.length) {
+        done(false, `❌ **design ratchet** (baseline: ${source}) — a PR that changes the design rules must commit a baseline equal to the current counts; ${stale.length} file(s) differ:\n${stale.slice(0, 40).map((d) => `- \`${d.file}\`: baseline ${d.baseline}, now ${d.now}`).join('\n')}\n\nRegenerate: \`node scripts/ci/pr-gate/gate.mjs baseline-design <eslint-json>\``);
+      }
+    }
+    if (!r.ok) {
+      done(false, `❌ **design ratchet** (baseline: ${source}) — ${r.worse.length} file(s) gained Spotlight design violations (SPOTLIGHT_RULES.md):\n${r.worse.slice(0, 40).map((w) => `- \`${w.file}\`: ${w.baseline} → ${w.now}`).join('\n')}${better}`);
+    }
+    done(true, `✅ **design ratchet** (baseline: ${source}) — no file gained design violations (${total} legacy in ${Object.keys(current).length} file(s))${better}`);
+  },
+  'baseline-design'() {
+    writeBaseline('design', L.countDesign(JSON.parse(readFileSync(args[1], 'utf8')), ROOT));
   },
   'baseline-tsc'() {
     writeBaseline('tsc', L.countTsc(readFileSync(args[1], 'utf8')));
@@ -193,7 +225,7 @@ if (!checks[check]) {
   console.error(`unknown check "${check}". Known: ${Object.keys(checks).join(', ')}`);
   process.exit(2);
 }
-if (!['baseline-tsc', 'baseline-eslint', 'ratchet-tsc', 'ratchet-eslint'].includes(check) && !base) {
+if (!['baseline-tsc', 'baseline-eslint', 'baseline-design', 'ratchet-tsc', 'ratchet-eslint'].includes(check) && !base) {
   console.error('--base <sha> is required');
   process.exit(2);
 }

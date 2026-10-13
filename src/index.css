@@ -195,12 +195,68 @@ All colors MUST be HSL.
     --sp-elevation-1: 0 2px 6px hsl(222 47% 11% / 0.06);
     --sp-elevation-2: 0 6px 20px hsl(222 47% 11% / 0.10);
     --sp-focus-ring: 0 0 0 2px hsl(var(--ring) / 0.6);
+
+    /* VTID-05107 Spotlight semantic colour roles (contract SR-18). Pages use
+       these token classes (text-status-success, bg-severity-high, …) instead
+       of raw Tailwind palette classes; see docs/design-system/SPOTLIGHT_RULES.md. */
+    --status-success: 142 71% 35%;
+    --status-success-subtle: 141 76% 94%;
+    --status-warning: 32 95% 44%;
+    --status-warning-subtle: 48 100% 92%;
+    --status-error: 0 72% 51%;
+    --status-error-subtle: 0 86% 96%;
+    --status-info: 217 91% 50%;
+    --status-info-subtle: 214 95% 94%;
+    --severity-low: 199 89% 40%;
+    --severity-medium: 38 92% 45%;
+    --severity-high: 21 90% 48%;
+    --severity-critical: 0 72% 45%;
+    --category-1: 174 72% 36%;
+    --category-2: 262 70% 58%;
+    --category-3: 217 85% 55%;
+    --category-4: 330 75% 55%;
+    --category-5: 38 92% 50%;
+    --category-6: 142 60% 40%;
+    --category-7: 199 80% 45%;
+    --category-8: 0 70% 55%;
+    --surface-page: 230 33% 97%;
+    --surface-raised: 0 0% 100%;
+    --surface-sunken: 220 20% 94%;
+    --surface-page-from: 270 100% 98%;
+    --surface-page-via: 214 100% 97%;
+    --surface-page-to: 327 73% 97%;
   }
 
   .dark {
     /* VTID-05105 Spotlight: deeper shadows read on dark surfaces. */
     --sp-elevation-1: 0 2px 6px hsl(0 0% 0% / 0.35);
     --sp-elevation-2: 0 6px 20px hsl(0 0% 0% / 0.45);
+    --status-success: 142 69% 58%;
+    --status-success-subtle: 143 64% 14%;
+    --status-warning: 43 96% 56%;
+    --status-warning-subtle: 32 81% 15%;
+    --status-error: 0 91% 71%;
+    --status-error-subtle: 0 63% 18%;
+    --status-info: 213 94% 68%;
+    --status-info-subtle: 217 60% 18%;
+    --severity-low: 199 89% 60%;
+    --severity-medium: 43 96% 56%;
+    --severity-high: 27 96% 61%;
+    --severity-critical: 0 91% 71%;
+    --category-1: 172 66% 50%;
+    --category-2: 258 90% 76%;
+    --category-3: 213 94% 68%;
+    --category-4: 329 86% 70%;
+    --category-5: 43 96% 56%;
+    --category-6: 142 69% 58%;
+    --category-7: 198 93% 60%;
+    --category-8: 0 91% 71%;
+    --surface-page: 222 47% 7%;
+    --surface-raised: 222 40% 11%;
+    --surface-sunken: 222 47% 5%;
+    --surface-page-from: 263 50% 10%;
+    --surface-page-via: 222 47% 9%;
+    --surface-page-to: 326 40% 10%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 

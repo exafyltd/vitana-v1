@@ -132,6 +132,31 @@ export default {
 						tint: 'hsl(var(--pill-sleep-tint))'
 					}
 				},
+				/* VTID-05107 Spotlight semantic colour roles (SR-18). */
+				status: {
+					success: { DEFAULT: 'hsl(var(--status-success))', subtle: 'hsl(var(--status-success-subtle))' },
+					warning: { DEFAULT: 'hsl(var(--status-warning))', subtle: 'hsl(var(--status-warning-subtle))' },
+					error: { DEFAULT: 'hsl(var(--status-error))', subtle: 'hsl(var(--status-error-subtle))' },
+					info: { DEFAULT: 'hsl(var(--status-info))', subtle: 'hsl(var(--status-info-subtle))' },
+				},
+				severity: {
+					low: 'hsl(var(--severity-low))',
+					medium: 'hsl(var(--severity-medium))',
+					high: 'hsl(var(--severity-high))',
+					critical: 'hsl(var(--severity-critical))',
+				},
+				category: {
+					1: 'hsl(var(--category-1))', 2: 'hsl(var(--category-2))', 3: 'hsl(var(--category-3))', 4: 'hsl(var(--category-4))',
+					5: 'hsl(var(--category-5))', 6: 'hsl(var(--category-6))', 7: 'hsl(var(--category-7))', 8: 'hsl(var(--category-8))',
+				},
+				surface: {
+					page: 'hsl(var(--surface-page))',
+					raised: 'hsl(var(--surface-raised))',
+					sunken: 'hsl(var(--surface-sunken))',
+					'page-from': 'hsl(var(--surface-page-from))',
+					'page-via': 'hsl(var(--surface-page-via))',
+					'page-to': 'hsl(var(--surface-page-to))',
+				},
 				sys: {
 					vitana: {
 						accent: 'hsl(var(--sys-vitana-accent))',

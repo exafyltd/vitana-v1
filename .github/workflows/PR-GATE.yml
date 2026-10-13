@@ -127,6 +127,13 @@ jobs:
           npx eslint . -f json -o "$RUNNER_TEMP/eslint.json" || true
           node scripts/ci/pr-gate/gate.mjs ratchet-eslint "$RUNNER_TEMP/eslint.json"
 
+      # VTID-05107: Spotlight design rules (design/*) may only go down per file,
+      # measured against the BASE commit's baseline/design.json.
+      - name: Design ratchet
+        id: design
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs ratchet-design "$RUNNER_TEMP/eslint.json" --base "$BASE" --head "$HEAD"
+
       - name: Regression scripts
         id: regressions
         continue-on-error: true
@@ -149,6 +156,7 @@ jobs:
             migrations=${{ steps.migrations.outcome }}
             tsc=${{ steps.tsc.outcome }}
             eslint=${{ steps.eslint.outcome }}
+            design=${{ steps.design.outcome }}
             regressions=${{ steps.regressions.outcome }}
             build=${{ steps.build.outcome }}
         run: |

@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05107",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Spotlight design-lint: manifest readable (345 screens, archetype + status each); every migrated static screen at 1024/1440/1920 keeps sidebar chrome, ScreenFrame archetype, exactly one spotlight card for dominant archetypes, no horizontal scroll (LTR + RTL), no DelayedLoader — zero migrated screens yet, so only the manifest check runs in this phase",
+      "spec": "tests/e2e/staging/design-contract.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "six design/* ESLint rules (valid + invalid fixtures, escape hatch with/without reason), screen manifest covers every App.tsx route with a valid archetype, ratchet-design compares against the base commit (a raised count fails even when the PR edits the baseline; only eslint-rules/design changes use the head baseline), Kiro steering twin for .claude/rules/design.md",
+      "ref": "npm run test:design-contract",
+      "cwd": ".",
+      "reason": "Lint rules, the manifest and the PR-GATE ratchet are build-time machinery with no runtime surface; staging only renders the semantic colour tokens, which no screen uses until Phase 2."
+    }
+  ]
+}
