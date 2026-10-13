@@ -6271,8 +6271,7 @@
       "imageDownloadFailed": "Impossible de charger l'image",
       "imageShareFailed": "Le partage n'a pas fonctionné",
       "imageLoading": "Chargement de l'image",
-      "unknownSize": "Taille inconnue",
-      "talkToVitana": "Parler à Vitana"
+      "unknownSize": "Taille inconnue"
     },
     "mobile": {
       "searching": "Recherche…",
@@ -7698,20 +7697,6 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
-      },
-      "vitanaMessages": {
-        "title": "Messages de Vitana",
-        "desc": "De temps en temps, Vitana t'envoie un message personnel dans le Messenger, avec un conseil adapté à ta situation du moment.",
-        "enabled": "Recevoir les messages de Vitana",
-        "enabledDesc": "Au maximum un message par jour. Tu peux les désactiver à tout moment.",
-        "topics": "Thèmes",
-        "health": "Santé",
-        "healthDesc": "Des conseils pour ta santé et ton Vitana Index.",
-        "community": "Communauté",
-        "communityDesc": "Des personnes, groupes et événements qui te correspondent.",
-        "business": "Activité et revenus",
-        "businessDesc": "Facultatif : des idées pour gagner de l'argent grâce à tes connaissances sur Vitanaland. Désactivé par défaut – seulement si tu l'actives.",
-        "loadError": "Impossible de charger tes paramètres des messages de Vitana."
       }
     },
     "sharing": {

@@ -29,6 +29,10 @@ import { communityNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtNumber } from '@/lib/locale-format';
+// VTID-05110: desktop Spotlight (flag `desktop_spotlight`; off → unchanged render).
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { GroupsSpotlightBody } from '@/components/community/spotlight/GroupsSpotlightBody';
 function GroupCard({ group, onClick, actionSlot }: { 
   group: { id: string; name: string; description?: string | null; category?: string | null; cover_url?: string | null; member_count: number; is_public?: boolean };
   onClick: () => void;
@@ -106,6 +110,62 @@ export default function Groups() {
   // Filter out groups user already joined for "Recommended" tab
   const myGroupIds = new Set(myGroups.map(g => g.id));
   const recommendedGroups = allGroups.filter(g => !myGroupIds.has(g.id));
+  // VTID-05110: never true on phones (< 1024 px), so mobile is unaffected.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    const mine = activeTab !== 'recommended';
+    return (
+      <AppLayout>
+        <SEO title={t('screens.community.groupsCommunity')} description={t('spotlightSocial.groups.description')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: communityNavigation }}
+          header={{ title: t('spotlightSocial.groups.title'), description: t('spotlightSocial.groups.description'), emoji: '👥' }}
+          utility={{
+            children: (
+              <div className="flex min-w-max items-center gap-2.5">
+                <ExpandableSearchButton
+                  placeholder={t('spotlightSocial.groups.search')}
+                  onSearch={(query) => setSearchQuery(query)}
+                />
+                <UniversalCalendarButton />
+                <Button size="sm" className="shrink-0 gap-1.5 rounded-full" onClick={() => setCreateGroupOpen(true)}>
+                  <Plus className="h-4 w-4" />
+                  {t('spotlightSocial.groups.create')}
+                </Button>
+              </div>
+            ),
+          }}
+          tabs={{
+            value: mine ? 'my-groups' : 'recommended',
+            onValueChange: setActiveTab,
+            ariaLabel: t('spotlightSocial.groups.tabsLabel'),
+            items: [
+              { value: 'my-groups', label: t('spotlightSocial.groups.tabs.mine') },
+              { value: 'recommended', label: t('spotlightSocial.groups.tabs.discover') },
+            ],
+          }}
+        >
+          {mine ? (
+            <GroupsSpotlightBody
+              groups={myGroups}
+              loading={loadingMyGroups}
+              empty={{ Icon: Users, titleKey: 'spotlightSocial.groups.emptyMineTitle', descriptionKey: 'spotlightSocial.groups.emptyMineDesc', actionKey: 'spotlightSocial.groups.discoverAction', onAction: () => setActiveTab('recommended') }}
+            />
+          ) : (
+            <GroupsSpotlightBody
+              groups={recommendedGroups}
+              loading={loadingDirectory}
+              withJoin
+              empty={{ Icon: Users, titleKey: 'spotlightSocial.groups.emptyDiscoverTitle', descriptionKey: 'spotlightSocial.groups.emptyDiscoverDesc', actionKey: 'spotlightSocial.groups.createAction', onAction: () => setCreateGroupOpen(true) }}
+            />
+          )}
+        </ScreenFrame>
+        <CreateGroupPopup isOpen={createGroupOpen} onClose={() => setCreateGroupOpen(false)} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

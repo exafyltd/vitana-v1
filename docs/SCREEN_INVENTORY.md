@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 373
+- **Pages scanned:** 376
 - **Distinct i18n keys consumed:** 4754
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -370,6 +370,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 7, total in shard: 11763
 
 ### src/pages/Messages.contact-message.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/Messages.spotlight.vtid-05110.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
@@ -1956,6 +1960,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 22, total in shard: 11763
 - `toasts` — used: 14, total in shard: 1282
 
+### src/pages/community/MediaHub.spotlight.vtid-05110.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ### src/pages/community/MediaHub.tsx
 
 **Status:** ✅ clean — keys consumed: 61, namespaces: 3
@@ -1990,6 +1998,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 5, total in shard: 11763
 - `toasts` — used: 3, total in shard: 1282
+
+### src/pages/community/social-spotlight-pages.vtid-05110.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## dev/
 

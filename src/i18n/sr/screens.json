@@ -6231,7 +6231,8 @@
       "anonymous": "Anoniman",
       "vitanaOpenScreen": "Otvori ekran",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} je napravio/la grupu",
@@ -6272,7 +6273,7 @@
       "imageShareFailed": "Deljenje nije uspelo",
       "imageLoading": "Učitavanje slike",
       "unknownSize": "Nepoznata veličina",
-      "talkToVitana": "Razgovaraj sa Vitanom"
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Pretražujem…",
@@ -7700,18 +7701,32 @@
         "partnerLabsError": true
       },
       "vitanaMessages": {
-        "title": "Poruke od Vitane",
-        "desc": "S vremena na vreme Vitana ti pošalje ličnu poruku u Messengeru, sa savetom koji ti trenutno odgovara.",
-        "enabled": "Primaj poruke od Vitane",
-        "enabledDesc": "Najviše jedna poruka dnevno. Možeš ih isključiti u bilo kom trenutku.",
-        "topics": "Teme",
-        "health": "Zdravlje",
-        "healthDesc": "Saveti za tvoje zdravlje i tvoj Vitana Index.",
-        "community": "Zajednica",
-        "communityDesc": "Ljudi, grupe i događaji koji ti odgovaraju.",
-        "business": "Posao i prihod",
-        "businessDesc": "Opciono: ideje kako da zaradiš od svog znanja u Vitanalandu. Podrazumevano isključeno – samo ako ga uključiš.",
-        "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke."
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {

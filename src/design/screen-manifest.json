@@ -1158,7 +1158,7 @@
       "archetype": "collection",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1166,7 +1166,7 @@
       "archetype": "collection",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1182,7 +1182,7 @@
       "archetype": "collection",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1190,7 +1190,7 @@
       "archetype": "detail",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1198,7 +1198,7 @@
       "archetype": "focus-feed",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1214,7 +1214,7 @@
       "archetype": "focus-feed",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -1230,7 +1230,7 @@
       "archetype": "detail",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2014,7 +2014,7 @@
       "archetype": "conversation",
       "tier": "A",
       "area": "Messages",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2054,7 +2054,7 @@
       "archetype": "conversation",
       "tier": "A",
       "area": "Messages",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2062,7 +2062,7 @@
       "archetype": "conversation",
       "tier": "A",
       "area": "Messages",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2070,7 +2070,7 @@
       "archetype": "conversation",
       "tier": "A",
       "area": "Messages",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2078,7 +2078,7 @@
       "archetype": "conversation",
       "tier": "A",
       "area": "Messages",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
