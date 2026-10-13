@@ -5,7 +5,8 @@
 //
 // Read-only: './staging-guard' (copied in by the runner) aborts every write,
 // and this spec never presses "Create supplier account" — the test user has no
-// business, so /commerce opens the registration sheet by itself. Only local
+// business, so /commerce opens onboarding by itself (since VTID-04839 the AI /
+// agent sheet first when switched on; registration is its manual fallback). Only local
 // clicks and typing; the draft lives in this browser's localStorage and is
 // removed at the end.
 import { test, expect } from './staging-guard';
@@ -16,6 +17,22 @@ test.use({
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
+
+// VTID-05129: since VTID-04839 / VTID-04848 (owner decisions 2026-10-02) the
+// first visit opens the "connect your AI agent" or "set up with AI" sheet when
+// those are switched on, and registration is that sheet's manual fallback.
+// Which one opens depends on the MCP/AI flags (CommercePortal.tsx, the
+// VTID-04793 auto-open effect); with both off, registration opens by itself.
+// Both fallbacks only close one sheet and open the other — nothing is written.
+async function openRegistration(page: import('@playwright/test').Page) {
+  const next = page.getByTestId('register-next');
+  const fallback = page
+    .locator('[role="dialog"] [data-testid="mcp-register-manually"], [role="dialog"] [data-testid="ai-prefer-manual"]')
+    .filter({ visible: true })
+    .first();
+  await expect(next.or(fallback).first()).toBeVisible({ timeout: 30_000 });
+  if (!(await next.isVisible())) await fallback.click();
+}
 test('first-time supplier: registration opens by itself, two steps, no short-name field, resumes after reload', async ({ page, request }) => {
   const email = process.env.TEST_USER_EMAIL ?? '';
   const password = process.env.TEST_USER_PASSWORD ?? '';
@@ -48,8 +65,9 @@ test('first-time supplier: registration opens by itself, two steps, no short-nam
   }, session);
 
   await page.goto('/commerce', { waitUntil: 'domcontentloaded' });
+  await openRegistration(page);
 
-  // Step 1: the sheet is already open, with the seven categories.
+  // Step 1: the registration sheet, with the seven categories.
   const next = page.getByTestId('register-next');
   await expect(next).toBeVisible({ timeout: 30_000 });
   await expect(page.locator('[data-testid^="register-category-"]')).toHaveCount(7);
@@ -78,6 +96,7 @@ test('first-time supplier: registration opens by itself, two steps, no short-nam
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.evaluate(() => sessionStorage.removeItem('vitana.commerce.autoRegisterShown'));
   await page.reload({ waitUntil: 'domcontentloaded' });
+  await openRegistration(page);
   await expect(page.locator('#ro-name')).toHaveValue('Staging Read Only Check', { timeout: 30_000 });
 
   await page.evaluate(() => localStorage.removeItem('vitana.commerce.registerDraft'));
@@ -114,6 +133,7 @@ test('mobile 375px: the registration sheet fits without horizontal scroll', asyn
     localStorage.setItem('vitana.viewRole', 'community');
   }, session);
   await page.goto('/commerce', { waitUntil: 'domcontentloaded' });
+  await openRegistration(page);
   await expect(page.getByTestId('register-next')).toBeVisible({ timeout: 30_000 });
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(0);
