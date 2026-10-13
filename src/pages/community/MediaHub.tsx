@@ -69,6 +69,10 @@ import {
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
 import { t } from '@/lib/i18n-toast';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { MediaHubSpotlight, type MediaHubShort, type MediaListStatus } from '@/components/media/spotlight/MediaHubSpotlight';
+import { musicArtist, musicMetadata } from '@/components/ui/vcard/adapters/media';
 // SubscribeButton component
   function SubscribeButton({ show }: { show: PopularShow }) {
     const { user } = useAuth();
@@ -212,6 +216,9 @@ export default function MediaHub() {
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  // VTID-05110: desktop Spotlight design (tenant flag desktop_spotlight or
+  // ?spotlight=1). Always false on phones; flag off renders today's screen.
+  const spotlight = useSpotlightEnabled();
   const {
     pendingCount,
     getLatestActions
@@ -330,7 +337,7 @@ export default function MediaHub() {
   };
 
   // Fetch approved music from database
-  const { data: approvedMusic = [], refetch: refetchMusic } = useQuery({
+  const { data: approvedMusic = [], refetch: refetchMusic, isLoading: isMusicLoading, isError: isMusicError } = useQuery({
     queryKey: ['community-music'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -361,7 +368,7 @@ export default function MediaHub() {
     }
   });
   // Fetch real video shorts from database with filtering
-  const { data: realShorts = [], isLoading: isShortsLoading, refetch: refetchShorts } = useShorts({ 
+  const { data: realShorts = [], isLoading: isShortsLoading, isError: isShortsError, refetch: refetchShorts } = useShorts({ 
     limit: 100,
     tags: activeTags.length > 0 && filteringEnabled ? activeTags : undefined
   });
@@ -528,7 +535,7 @@ export default function MediaHub() {
     });
   };
   // Fetch approved podcasts from database
-  const { data: approvedPodcasts = [], refetch: refetchPodcasts } = useQuery({
+  const { data: approvedPodcasts = [], refetch: refetchPodcasts, isLoading: isPodcastsLoading, isError: isPodcastsError } = useQuery({
     queryKey: ['community-podcasts'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -581,12 +588,113 @@ export default function MediaHub() {
     category: "Nutrition",
     avatar: "NC"
   }];
+
+  // VTID-05110 Spotlight: real shorts only — the demo fallback shorts above
+  // are never shown on the Spotlight screen (contract SR-24).
+  const spotlightShorts = realShorts.length > 0 ? (videoShorts as MediaHubShort[]) : [];
+  const spotlightStatus = (loading: boolean, error: boolean, hasRows: boolean): MediaListStatus =>
+    loading && !hasRows ? 'loading' : error && !hasRows ? 'error' : 'ready';
   
   return (
     <AppLayout>
       <SEO title={t('screens.community.mediaHubCommunity')} description="Discover videos, podcasts, and community content" canonical={window.location.href} />
-      {!isMobile && <SubNavigation items={communityNavigation} />}
-      <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen")}>
+      {spotlight ? (
+        <MediaHubSpotlight
+          activeTab={activeMediaTab as 'shorts' | 'music' | 'podcasts'}
+          onTabChange={setActiveMediaTab}
+          currentUserId={user?.id}
+          shorts={spotlightShorts}
+          shortsStatus={spotlightStatus(isShortsLoading, isShortsError, realShorts.length > 0)}
+          onRetryShorts={() => { void refetchShorts(); }}
+          onOpenShort={(index) => handleVideoClick(videoShorts[index], index)}
+          onEditShort={(short) => setEditingVideo(short)}
+          onDeleteShort={(short) => {
+            setVideoToDelete({ id: short.id, src_url: short.src_url, thumbnail_url: short.thumbnail_url ?? undefined });
+            setDeleteVideoDialogOpen(true);
+          }}
+          interestTags={activeTags.length > 0 && filteringEnabled ? activeTags : []}
+          onClearInterestFilter={() => {
+            useUserInterestsStore.getState().setFilteringEnabled(false);
+            toast({
+              title: translate('mediaHub.toast.filtersCleared'),
+              description: translate('mediaHub.toast.filtersClearedDesc'),
+            });
+          }}
+          music={approvedMusic}
+          musicStatus={spotlightStatus(isMusicLoading, isMusicError, approvedMusic.length > 0)}
+          onRetryMusic={() => { void refetchMusic(); }}
+          isMusicBookmarked={(id) => isBookmarked('music', id)}
+          onToggleMusicBookmark={(track) => {
+            void toggleBookmark({
+              item_type: 'music',
+              item_id: track.id,
+              item_name: track.title,
+              item_metadata: {
+                artist: musicArtist(track) || 'Unknown Artist',
+                duration: track.duration,
+                genre: musicMetadata(track)?.genre,
+                file_url: track.file_url,
+                tags: track.tags || []
+              }
+            });
+          }}
+          podcasts={approvedPodcasts}
+          podcastsStatus={spotlightStatus(isPodcastsLoading, isPodcastsError, approvedPodcasts.length > 0)}
+          onRetryPodcasts={() => { void refetchPodcasts(); }}
+          onDeletePodcast={(podcastId) => {
+            setPodcastToDelete(podcastId);
+            setDeleteDialogOpen(true);
+          }}
+          currentMediaId={currentMedia?.id ?? null}
+          isPlaying={isPlaying}
+          onToggleMusic={(track) => {
+            // Same rule as the legacy music list's play button.
+            if (currentMedia?.id === track.id && isPlaying) {
+              pause();
+            } else {
+              playMedia({
+                id: track.id,
+                title: track.title,
+                creator: musicArtist(track) || 'Unknown Artist',
+                audioUrl: track.file_url,
+                duration: track.duration || 0,
+                mediaType: 'music'
+              });
+            }
+          }}
+          onTogglePodcast={(episode) => {
+            // Same rule as PodcastCard's play button.
+            if (currentMedia?.id === episode.id) {
+              togglePlay();
+            } else {
+              const meta = Array.isArray(episode.podcast_metadata) ? episode.podcast_metadata[0] : episode.podcast_metadata;
+              playMedia({
+                id: episode.id,
+                title: episode.title,
+                creator: meta?.host_name || translate('mediaHub.unknownHost'),
+                audioUrl: episode.file_url,
+                duration: episode.duration || 0,
+                imageUrl: episode.thumbnail_url ?? undefined,
+                mediaType: 'podcast'
+              });
+            }
+          }}
+          onUpload={(kind) => {
+            setInitialMediaType(kind);
+            setIsUnifiedUploadOpen(true);
+          }}
+          onBulkUpload={() => setIsBulkUploadOpen(true)}
+        >
+          {({ frame, stage }) => (
+            <ScreenFrame archetype="focus-feed" {...frame}>
+              {stage}
+            </ScreenFrame>
+          )}
+        </MediaHubSpotlight>
+      ) : (
+        !isMobile && <SubNavigation items={communityNavigation} />
+      )}
+      {!spotlight && <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen")}>
         <div className="max-w-7xl mx-auto">
           
           {/* Mobile Header */}
@@ -1334,7 +1442,7 @@ export default function MediaHub() {
             </SplitBarContent>
           </SplitBar>
         </div>
-      </div>
+      </div>}
 
 
       {/* Mobile TikTok-style Shorts Feed */}

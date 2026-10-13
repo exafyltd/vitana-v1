@@ -1,0 +1,54 @@
+{
+  "spotlightMedia": {
+    "media": {
+      "tabsLabel": "Media type",
+      "play": "Play",
+      "pause": "Pause",
+      "playShort": "Play short “{title}”",
+      "playItem": "Play “{title}”",
+      "pauseItem": "Pause “{title}”",
+      "edit": "Edit",
+      "delete": "Delete",
+      "bookmark": "Save",
+      "unbookmark": "Remove from saved",
+      "favorite": "Add to your favourites",
+      "unfavorite": "Remove from your favourites",
+      "share": "Share",
+      "shareText": "Listen to “{title}” on Vitana",
+      "linkCopiedDesc": "The link is in your clipboard.",
+      "views": "{count} views",
+      "likes": "{count} likes",
+      "episodeCount": "{count} episodes",
+      "moreTracks": "More tracks",
+      "moreEpisodes": "More episodes",
+      "nowPlaying": "Now playing",
+      "latestMusic": "New music",
+      "interestFilter": "Filtered by your interests",
+      "noSearchResults": "Nothing found for “{query}”",
+      "clearSearch": "Clear search",
+      "empty": {
+        "shortsTitle": "No shorts yet",
+        "shortsDesc": "Upload the first short and inspire your community.",
+        "musicTitle": "No music yet",
+        "podcastsTitle": "No podcasts yet",
+        "railTitle": "Nothing else here right now"
+      },
+      "error": {
+        "title": "This couldn't be loaded right now",
+        "desc": "Check your connection and try again.",
+        "retry": "Try again"
+      }
+    },
+    "messages": {
+      "contextLabel": "Area",
+      "listLabel": "Conversations",
+      "filterLabel": "Filter conversations",
+      "threadLabel": "Open conversation",
+      "untitled": "Conversation",
+      "unread": "{count} unread",
+      "openProfile": "View {name}'s profile",
+      "pinned": "Pinned",
+      "selectDesc": "Pick a conversation from the list to keep writing."
+    }
+  }
+}
