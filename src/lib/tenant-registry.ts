@@ -313,6 +313,19 @@ export function communityLandingPath(slug: string | null | undefined, reg: Tenan
   return isTenantPortalPath(target, reg) ? '/home' : target;
 }
 
+/**
+ * Where a member goes from a tenant portal (VTID-05151, TenantPortal): the
+ * tenant's post_login_path, unless that is a portal itself (its own `/<slug>`
+ * or any tenant portal path) — then /home, so the portal can never loop.
+ */
+export function portalLandingTarget(entry: TenantEntry, reg: TenantRegistry): string {
+  const target = safeInternalPath(entry.landing.post_login_path ?? '/onboarding/welcome');
+  const path = target.split(/[?#]/)[0];
+  const own = `/${entry.slug}`;
+  if (path === own || path.startsWith(`${own}/`) || isTenantPortalPath(path, reg)) return '/home';
+  return target;
+}
+
 /** The brand name shown in chrome (sidebar header, top bar). Empty when nothing is known. */
 export function tenantDisplayNameFor(slug: string | null | undefined, reg: TenantRegistry): string {
   return findBySlug(reg, slug)?.display_name ?? '';
