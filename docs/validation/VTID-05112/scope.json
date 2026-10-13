@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05112",
+  "kind": "refactor",
+  "paths": [
+    "docs/validation/VTID-05112/**",
+    ".kiro/specs/desktop-spotlight/**",
+    "src/components/templates/EventCard.tsx",
+    "src/components/templates/StatCard.tsx",
+    "src/components/wallet/WalletRewardCard.tsx",
+    "src/components/wallet/intelligence/CommissionForecastingCard.tsx",
+    "src/components/wallet/intelligence/EarningStreaksAnalyticsCard.tsx",
+    "src/components/wallet/intelligence/SocialEarningIntelligenceCard.tsx",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "scripts/ci/pr-gate/baseline/eslint.json"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

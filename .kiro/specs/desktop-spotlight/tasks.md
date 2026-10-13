@@ -211,7 +211,21 @@ Decisions taken (for Gate 2):
     the guard aborts it; nothing is written).
 
 ## Phase 6 — Card consolidation · VTID-05112 (last)
-- [ ] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
+- [x] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
+  Status: implemented (VTID-05112). Inventory of 150 card-like components (`docs/validation/VTID-05112/card-inventory.md`):
+  6 have zero static and zero dynamic references and are retired — `templates/EventCard`, `templates/StatCard`,
+  `wallet/WalletRewardCard`, `wallet/intelligence/{CommissionForecastingCard,EarningStreaksAnalyticsCard,SocialEarningIntelligenceCard}`;
+  144 stay. 6 ≤ 20, so no 6.1b. Decisions taken (for Gate 2):
+  - Phase 5's PR body did not enumerate card components (5.2's list was not published in it). The plan defines the list
+    as every card component still not on VCard, so the whole `src/components/**/*Card*.tsx` set plus the card modules
+    the Phase-5 pages import was inventoried; none of the six retired files renders through VCard. No used component
+    was modified.
+  - `templates/StatCard` counts as zero dynamic references: the two plain-string hits are an unrelated local
+    `function StatCard` (`admin/marketplace/Overview.tsx`) and `interface StatCard` (`dev/AnalyticsView.tsx`).
+  - Lint-ratchet path lists (`baseline/*.json`) and `docs/` mentions are not references; the retired files' baseline
+    entries were removed (design + eslint, 5 each — `templates/EventCard` had none). No test file existed or changed.
+  - Mobile screenshots unchanged by construction: every JS chunk of the build is byte-identical to base (hashes
+    aside); only `index.css` loses 442 bytes of utilities no remaining file uses.
 - [ ] 6.2 Design part of the ESLint baseline = 0; mobile screenshots unchanged.
 
 ## System-wide done

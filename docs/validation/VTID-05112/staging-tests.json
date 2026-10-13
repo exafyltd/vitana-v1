@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05112",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "retired cards had no importer: the wallet and Spotlight Tier B harnesses (Wallet Rewards on a phone, Tier B flag-on/flag-off render), the design manifest test and the full type check still pass without them",
+      "ref": "npx vitest run src/pages/wallet src/pages/spotlight-tier-b.vtid-05111.test.tsx src/design",
+      "cwd": ".",
+      "reason": "Only files with zero static and zero dynamic references are deleted; a production build of this commit emits every JavaScript chunk byte-identical to the base build (content hashes aside) and only drops 442 bytes of Tailwind utilities that no remaining file uses, so the deployed screens cannot change. The community-app smoke suite covers the deployed build itself."
+    }
+  ]
+}
