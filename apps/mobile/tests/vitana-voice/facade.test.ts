@@ -3,7 +3,9 @@ import {
   createVitanaVoice,
   getVitanaVoice,
   normaliseCapabilities,
+  normaliseMicPermission,
   resetVitanaVoiceForTests,
+  UNKNOWN_MIC_PERMISSION,
   SAFE_CAPABILITIES,
   VOICE_FORMAT,
   type NativeVitanaVoiceModule,
@@ -24,6 +26,8 @@ function fakeNative(overrides: Partial<NativeVitanaVoiceModule> = {}) {
       aec: true, ns: true, agc: true, voiceProcessing: true,
       aecPath: 'vpio-engine', fullDuplexSafe: true, playbackRateMode: 'varispeed',
     })),
+    getMicrophonePermission: jest.fn(async () => ({ status: 'undetermined', canAskAgain: true, granted: false })),
+    requestMicrophonePermission: jest.fn(async () => ({ status: 'granted', canAskAgain: true, granted: true })),
     addListener: jest.fn(() => ({ remove: jest.fn() })),
     ...overrides,
   };
@@ -113,6 +117,28 @@ describe('VitanaVoice facade', () => {
     const failing = createVitanaVoice(fakeNative({ getCapabilities: jest.fn(async () => { throw new Error('boom'); }) }));
     await expect(failing.getCapabilities()).resolves.toEqual(SAFE_CAPABILITIES);
     expect(SAFE_CAPABILITIES.fullDuplexSafe).toBe(false);
+  });
+
+  // VTID-05182 (N6d, plan Change 16): only an explicit OS "granted" lets a session start.
+  it('reads the microphone permission fail-safe: only an explicit grant is granted', async () => {
+    expect(normaliseMicPermission({ status: 'granted', granted: true, canAskAgain: true })).toEqual({ status: 'granted', canAskAgain: true });
+    expect(normaliseMicPermission({ status: 'denied', granted: false, canAskAgain: false })).toEqual({ status: 'denied', canAskAgain: false });
+    expect(normaliseMicPermission({ status: 'denied', granted: false })).toEqual({ status: 'denied', canAskAgain: true });
+    expect(normaliseMicPermission({ status: 'granted', granted: false })).toEqual(UNKNOWN_MIC_PERMISSION);
+    expect(normaliseMicPermission({ status: 'maybe' })).toEqual(UNKNOWN_MIC_PERMISSION);
+    expect(normaliseMicPermission(null)).toEqual(UNKNOWN_MIC_PERMISSION);
+    const native = fakeNative();
+    const voice = createVitanaVoice(native);
+    await expect(voice.getMicrophonePermission()).resolves.toEqual({ status: 'undetermined', canAskAgain: true });
+    await expect(voice.requestMicrophonePermission()).resolves.toEqual({ status: 'granted', canAskAgain: true });
+    const failing = createVitanaVoice(
+      fakeNative({
+        getMicrophonePermission: jest.fn(async () => { throw new Error('boom'); }),
+        requestMicrophonePermission: jest.fn(async () => { throw new Error('boom'); }),
+      }),
+    );
+    await expect(failing.getMicrophonePermission()).resolves.toEqual(UNKNOWN_MIC_PERMISSION);
+    await expect(failing.requestMicrophonePermission()).resolves.toEqual({ status: 'denied', canAskAgain: true });
   });
 
   it('resolves the native module lazily, once', () => {

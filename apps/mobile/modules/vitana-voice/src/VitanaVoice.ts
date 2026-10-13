@@ -34,6 +34,13 @@ export type VoiceCapabilities = {
   playbackRateMode: PlaybackRateMode;
 };
 export type StartOptions = { leadFirstOnly: boolean; playbackRate: number };
+/**
+ * VTID-05182 (N6d, plan Change 16) — microphone permission, the shape Expo's
+ * permission modules use. `undetermined` ⇒ show the in-app rationale first;
+ * `denied` with `canAskAgain: false` ⇒ only the OS settings can grant it.
+ */
+export type MicPermissionStatus = 'granted' | 'denied' | 'undetermined';
+export type MicPermission = { status: MicPermissionStatus; canAskAgain: boolean };
 export type Subscription = { remove(): void };
 
 export interface VitanaVoice {
@@ -46,6 +53,10 @@ export interface VitanaVoice {
   stopPlayback(): void;
   setPlaybackRate(rate: number): void;
   getCapabilities(): Promise<VoiceCapabilities>;
+  /** Reads the microphone permission without prompting. */
+  getMicrophonePermission(): Promise<MicPermission>;
+  /** Shows the OS prompt (only after the in-app rationale, N6d). */
+  requestMicrophonePermission(): Promise<MicPermission>;
   addListener(e: 'onFrame', cb: (f: VoiceFrame) => void): Subscription;
   addListener(e: 'onPlaybackState', cb: (s: PlaybackState) => void): Subscription;
   addListener(e: 'onInterruption', cb: (i: Interruption) => void): Subscription;
@@ -75,6 +86,8 @@ export const NATIVE_FUNCTIONS = {
   stopPlayback: 'sync',
   setPlaybackRate: 'sync',
   getCapabilities: 'async',
+  getMicrophonePermission: 'async',
+  requestMicrophonePermission: 'async',
 } as const;
 
 const AEC_PATHS: readonly AecPath[] = ['vpio-engine', 'session-voicechat', 'android-aec', 'none'];
@@ -99,6 +112,8 @@ export type NativeVitanaVoiceModule = {
   stopPlayback(): void;
   setPlaybackRate(rate: number): void;
   getCapabilities(): Promise<unknown>;
+  getMicrophonePermission(): Promise<unknown>;
+  requestMicrophonePermission(): Promise<unknown>;
   addListener(event: string, cb: (payload: never) => void): Subscription;
 };
 
@@ -134,6 +149,26 @@ export function normaliseCapabilities(raw: unknown): VoiceCapabilities {
     fullDuplexSafe: (r.fullDuplexSafe as boolean) && aecPath !== 'none' && (r.aec as boolean),
     playbackRateMode: r.playbackRateMode as PlaybackRateMode,
   };
+}
+
+/** What the client assumes when a permission answer cannot be read: not granted, ask again. */
+export const UNKNOWN_MIC_PERMISSION: MicPermission = Object.freeze({ status: 'undetermined', canAskAgain: true });
+
+const MIC_STATUSES: readonly MicPermissionStatus[] = ['granted', 'denied', 'undetermined'];
+
+/**
+ * Reads a native permission answer ({ status, canAskAgain, granted } on both
+ * platforms). Only an explicit `granted` counts as granted; anything
+ * unreadable is `undetermined`, so no session ever starts without the OS
+ * saying yes.
+ */
+export function normaliseMicPermission(raw: unknown): MicPermission {
+  if (!raw || typeof raw !== 'object') return UNKNOWN_MIC_PERMISSION;
+  const r = raw as Record<string, unknown>;
+  if (!MIC_STATUSES.includes(r.status as MicPermissionStatus)) return UNKNOWN_MIC_PERMISSION;
+  const status = r.status as MicPermissionStatus;
+  if (status === 'granted' && r.granted === false) return UNKNOWN_MIC_PERMISSION;
+  return { status, canAskAgain: status === 'granted' ? true : r.canAskAgain !== false };
 }
 
 /** Wraps a native module (or a test double) in the validated VitanaVoice API. */
@@ -174,6 +209,20 @@ export function createVitanaVoice(native: NativeVitanaVoiceModule): VitanaVoice 
         return normaliseCapabilities(await native.getCapabilities());
       } catch {
         return SAFE_CAPABILITIES;
+      }
+    },
+    async getMicrophonePermission(): Promise<MicPermission> {
+      try {
+        return normaliseMicPermission(await native.getMicrophonePermission());
+      } catch {
+        return UNKNOWN_MIC_PERMISSION;
+      }
+    },
+    async requestMicrophonePermission(): Promise<MicPermission> {
+      try {
+        return normaliseMicPermission(await native.requestMicrophonePermission());
+      } catch {
+        return { status: 'denied', canAskAgain: true };
       }
     },
     addListener(event: VoiceEvent, cb: (payload: never) => void): Subscription {

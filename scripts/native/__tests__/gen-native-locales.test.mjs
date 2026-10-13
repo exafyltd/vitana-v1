@@ -6,6 +6,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  DEFAULT_I18N_DIR,
   collectMicStrings,
   escapeStringsValue,
   findFormalGerman,
@@ -70,7 +71,7 @@ test('fails closed, writing nothing, when a locale or the key is missing', () =>
   }
 });
 
-test('reports every locale without an orbNative.json (today: all of them, until N6d adds the keys)', () => {
+test('reports every locale without an orbNative.json (a catalog with no orbNative namespace)', () => {
   const fx = tree({ 'src/i18n/de/audio.json': { audio: {} } });
   try {
     const { problems } = collectMicStrings(join(fx.root, 'src/i18n'), SHIPPED);
@@ -115,6 +116,28 @@ test('values are escaped for InfoPlist.strings, the base value stays raw', () =>
     generate({ i18nDir: join(fx.root, 'src/i18n'), outDir: out });
     assert.equal(JSON.parse(readFileSync(join(out, 'en.json'), 'utf8')).ios.NSMicrophoneUsageDescription, 'Talk to \\"Vitana\\"');
     assert.equal(JSON.parse(readFileSync(join(out, 'base.json'), 'utf8')).NSMicrophoneUsageDescription, 'Talk to "Vitana"');
+  } finally {
+    fx.cleanup();
+  }
+});
+
+// VTID-05182 (N6d): the shipped catalog now carries orbNative.micUsageDescription in all 11 locales.
+test('the shipped catalog: 11 locales, DE du-form, deterministic output', () => {
+  const map = loadLocaleMap();
+  const { strings, problems } = collectMicStrings(DEFAULT_I18N_DIR, Object.keys(map.ios));
+  assert.deepEqual(problems, []);
+  assert.deepEqual(Object.keys(strings).sort(), SHIPPED);
+  assert.deepEqual(findFormalGerman(strings.de), []);
+  for (const l of SHIPPED.filter((x) => x !== 'de')) assert.notEqual(strings[l], strings.de, `${l} is translated, not a copy of de`);
+  const fx = tree({});
+  try {
+    const a = join(fx.root, 'a');
+    const b = join(fx.root, 'b');
+    assert.equal(generate({ outDir: a }).ok, true);
+    assert.equal(generate({ outDir: b }).ok, true);
+    const names = readdirSync(a).sort();
+    assert.equal(names.length, 12);
+    assert.deepEqual(names.map((n) => readFileSync(join(a, n), 'utf8')), names.map((n) => readFileSync(join(b, n), 'utf8')));
   } finally {
     fx.cleanup();
   }

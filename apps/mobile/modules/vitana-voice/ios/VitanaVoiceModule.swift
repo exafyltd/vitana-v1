@@ -2,6 +2,7 @@
 // Interfaces). The JS side is apps/mobile/modules/vitana-voice/src/VitanaVoice.ts;
 // names here are checked against it by tests/vitana-voice/native-contract.test.ts.
 
+import AVFoundation
 import ExpoModulesCore
 
 struct VitanaVoiceStartOptions: Record {
@@ -48,6 +49,19 @@ public class VitanaVoiceModule: Module {
     AsyncFunction("getCapabilities") { () throws -> [String: Any] in
       return try self.requireEngine().capabilities()
     }
+
+    // VTID-05182 (N6d, plan Change 16): the app shows its in-app rationale
+    // first and asks the OS only after that. Same answer shape as Expo's
+    // permission modules ({ status, granted, canAskAgain, expires }).
+    AsyncFunction("getMicrophonePermission") { () -> [String: Any] in
+      return MicrophonePermission.response(AVAudioSession.sharedInstance().recordPermission)
+    }
+
+    AsyncFunction("requestMicrophonePermission") { (promise: Promise) in
+      AVAudioSession.sharedInstance().requestRecordPermission { _ in
+        promise.resolve(MicrophonePermission.response(AVAudioSession.sharedInstance().recordPermission))
+      }
+    }
   }
 
   private func requireEngine() throws -> VoiceEngine {
@@ -73,5 +87,20 @@ public class VitanaVoiceModule: Module {
         self?.sendEvent("onBackground", [:])
       }
     )
+  }
+}
+
+/// VTID-05182 — AVAudioSession record permission → the JS `MicPermission` shape.
+/// iOS asks once: after a denial only the Settings app can grant it.
+enum MicrophonePermission {
+  static func response(_ permission: AVAudioSession.RecordPermission) -> [String: Any] {
+    switch permission {
+    case .granted:
+      return ["status": "granted", "granted": true, "canAskAgain": true, "expires": "never"]
+    case .denied:
+      return ["status": "denied", "granted": false, "canAskAgain": false, "expires": "never"]
+    default:
+      return ["status": "undetermined", "granted": false, "canAskAgain": true, "expires": "never"]
+    }
   }
 }
