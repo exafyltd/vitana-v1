@@ -287,9 +287,18 @@ export function isTenantPortalPath(pathname: string, reg: TenantRegistry): boole
 // ── routing decisions (formerly hardcoded per tenant) ───────────────────
 
 /** Sign-in portal for a tenant: `/<slug>` for a registry slug, else `fallback`. */
+/**
+ * Portals that have their own route in App.tsx since before the registry.
+ * Kept as an outage/bootstrap fallback: when the registry request fails, a
+ * visitor of one of these portals still returns to it, never to /maxina.
+ */
+export const LEGACY_PORTAL_SLUGS: readonly string[] = ['maxina', 'alkalma'];
+
 export function tenantLoginRoute(slug: string | null | undefined, reg: TenantRegistry, fallback: string): string {
   const entry = findBySlug(reg, slug);
-  return entry ? `/${entry.slug}` : fallback;
+  if (entry) return `/${entry.slug}`;
+  const s = (slug ?? '').trim().toLowerCase();
+  return LEGACY_PORTAL_SLUGS.includes(s) ? `/${s}` : fallback;
 }
 
 /**

@@ -159,6 +159,14 @@ describe('routing decisions', () => {
     expect(tenantLoginRoute(null, REG, '/')).toBe('/');
   });
 
+  it('login route: registry outage keeps the legacy portals (alkalma never falls to /maxina)', () => {
+    const outage: TenantRegistry = { source: 'fallback', tenants: [COMPILED_MAXINA_FALLBACK] };
+    expect(tenantLoginRoute('alkalma', outage, '/maxina')).toBe('/alkalma');
+    expect(tenantLoginRoute('ALKALMA', outage, '/maxina')).toBe('/alkalma');
+    expect(tenantLoginRoute('maxina', outage, '/')).toBe('/maxina');
+    expect(tenantLoginRoute('newco', outage, '/maxina')).toBe('/maxina');
+  });
+
   it('community landing: post_login_path, /home for an unknown tenant, never a portal path (cycle guard)', () => {
     expect(communityLandingPath('maxina', REG)).toBe('/onboarding/welcome');
     expect(communityLandingPath('alkalma', REG)).toBe('/home');
