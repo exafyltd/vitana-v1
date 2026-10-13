@@ -9,7 +9,11 @@
       "back": "Back",
       "errorTitle": "That didn't work just now",
       "errorDesc": "Reload the page or try again in a moment.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "_pending_review": {
+        "details": true,
+        "live": true
+      }
     },
     "community": {
       "title": "Your community",
@@ -49,7 +53,10 @@
       "emptyFollowingDesc": "Follow members to see their events here.",
       "emptyFollowedEventsTitle": "No events yet from people you follow",
       "emptyFollowedEventsDesc": "As soon as they plan something, you'll see it here.",
-      "findPeople": "Find members"
+      "findPeople": "Find members",
+      "_pending_review": {
+        "title": true
+      }
     },
     "groups": {
       "title": "Find your group",

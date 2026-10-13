@@ -31,13 +31,16 @@
         "shortsDesc": "Upload the first short and inspire your community.",
         "musicTitle": "No music yet",
         "podcastsTitle": "No podcasts yet",
-        "railTitle": "Nothing else here right now"
+        "railTitle": "Nothing else here right now",
+        "_pending_review": {}
       },
       "error": {
         "title": "This couldn't be loaded right now",
         "desc": "Check your connection and try again.",
-        "retry": "Try again"
-      }
+        "retry": "Try again",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "messages": {
       "contextLabel": "Area",
@@ -48,7 +51,10 @@
       "unread": "{count} unread",
       "openProfile": "View {name}'s profile",
       "pinned": "Pinned",
-      "selectDesc": "Pick a conversation from the list to keep writing."
-    }
-  }
+      "selectDesc": "Pick a conversation from the list to keep writing.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
