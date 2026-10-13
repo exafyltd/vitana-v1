@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05126",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in on a phone viewport: a reminder (no Share/Invite before) offers both; the share panel renames the card, keeps the place hidden until switched on, and the preview follows; the invite sheet offers the same card choices. Calendar window answered in the browser with demo data; nothing is posted or sent; read-only",
+      "spec": "tests/e2e/staging/vtid-05126-calendar-share-any-entry.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/calendar/vcal/ShareAnyEntry.vtid-05126.test.tsx src/components/calendar/vcal/InviteToChatSheet.test.tsx src/components/feed/EventAttachmentCard.test.tsx src/components/calendar/__regression__",
+      "reason": "posting reaches the whole community, an invite reaches a real person, and 'In meinen Kalender' writes another member's calendar, so all three are proven without staging: the share payload (card title, place only on request, visibility), the health hint, an event share unchanged, the feed card rendered from the post's snapshot with 'In meinen Kalender' for others only (never the author, never a cancelled or finished entry), and the invite's card choices"
+    }
+  ]
+}

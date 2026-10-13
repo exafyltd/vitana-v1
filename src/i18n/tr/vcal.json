@@ -383,8 +383,8 @@
       "cancel": "İptal",
       "done": "Paylaşıldı – topluluk katılacağını görüyor",
       "viewPost": "Akışta paylaşıldı – gönderiyi gör",
-      "alreadyShared": "Bu etkinliği zaten paylaştın",
-      "notShareable": "Bu etkinlik artık paylaşılamaz – bitti, iptal edildi ya da herkese açık değil.",
+      "alreadyShared": "Bu kaydı zaten paylaştın",
+      "notShareable": "Bu kayıt artık paylaşılamaz: geçti, iptal edildi ya da tamamlandı.",
       "limit": "Bugün zaten çok paylaştın. Yarın tekrar dene.",
       "duplicate": "Bu metni az önce paylaştın. Başka bir şey yaz ya da biraz bekle.",
       "suspended": "Hesabın şu anda paylaşım yapamıyor.",
@@ -405,8 +405,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Başkalarının gördüğü başlık",
+      "calendarTitle": "Takviminde: {title}",
+      "defaultTextOwn": "{date}: {title}. Kim geliyor?",
+      "placeShown": "Yer gösteriliyor: {place}",
+      "placeHidden": "Yeri göster – kapalı: yer gizli kalır",
+      "showPlace": "Yeri göster",
+      "previewLabel": "Başkaları böyle görür",
+      "sensitiveHint": "Bir sağlık randevusu paylaşıyorsun. Başlığı ve yeri kontrol et – başkaları yalnızca burada gösterileni görür."
     },
     "feedCard": {
       "upcoming": "Yakında",
@@ -427,8 +443,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "Takvimime ekle",
+      "added": "Takvimine eklendi",
+      "alreadyAdded": "Zaten takviminde",
+      "notOpen": "Bu randevu geçti ya da iptal edildi.",
+      "addError": "Olmadı. Birazdan tekrar dene."
     },
     "invite": {
       "action": "Davet et",

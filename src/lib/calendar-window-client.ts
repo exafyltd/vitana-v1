@@ -67,9 +67,13 @@ export interface CalendarWindowItem {
   movable?: boolean;
   /** VTID-04372: a busy block pulled from the member's Google calendar. */
   source?: "google";
-  /** VTID-04916: a community event or live room the member can post to the feed. */
+  /** VTID-04916/05126: one of the member's own upcoming entries they can post to the feed. */
   shareable?: boolean;
-  /** VTID-04916: the member's feed post about this event, once shared. */
+  /** VTID-05126: the member can send it as an invite card to a chat. */
+  invitable?: boolean;
+  /** VTID-05126: a health entry — sharing it is the member's informed choice. */
+  sensitive?: boolean;
+  /** VTID-04916: the member's feed post about this entry, once shared. */
   shared_post_id?: string | null;
 }
 
@@ -324,20 +328,32 @@ export function moveBlockReasonOf(err: unknown): MoveBlockReason | null {
 
 // =============================================================================
 // VTID-04916 — share an entry to the news feed
-//   POST /api/v1/calendar/events/:id/share-to-feed { text?, is_public? }
-// Only community events and live room sessions; the gateway checks the event
-// is still on, and answers 409 ALREADY_SHARED (with post_id) for a second try.
+//   POST /api/v1/calendar/events/:id/share-to-feed
+//        { text?, is_public?, card_title?, include_location? }
+// Any of the member's own upcoming entries (VTID-05126): an event or live room
+// is shared as that event; any other entry as a card with the title the member
+// chose and the place only if they chose to show it. 409 ALREADY_SHARED (with
+// post_id) for a second try.
 // =============================================================================
 
 export interface ShareToFeedInput {
   text: string;
   is_public: boolean;
+  /** For an own entry: the title others see (empty → the entry title). */
+  card_title?: string;
+  /** For an own entry: show the place on the card. */
+  include_location?: boolean;
 }
 
 export async function shareCalendarEntryToFeed(eventId: string, input: ShareToFeedInput, role: string | null): Promise<string> {
   const body = await authedFetch(`/api/v1/calendar/events/${encodeURIComponent(eventId)}/share-to-feed`, role, {
     method: "POST",
-    body: JSON.stringify({ text: input.text, is_public: input.is_public }),
+    body: JSON.stringify({
+      text: input.text,
+      is_public: input.is_public,
+      ...(input.card_title?.trim() ? { card_title: input.card_title.trim() } : {}),
+      ...(input.include_location !== undefined ? { include_location: input.include_location } : {}),
+    }),
   });
   const postId = (body.data as { post_id?: string } | undefined)?.post_id;
   if (!postId) throw new CalendarApiError("NO_POST_ID", 500);
@@ -464,4 +480,17 @@ export async function enableGoogleSync(): Promise<"enabled" | "needs_google"> {
 
 export async function disableGoogleSync(): Promise<void> {
   await authedFetch("/api/v1/calendar/google/disable", null, { method: "POST" });
+}
+
+// =============================================================================
+// VTID-05126 — "In meinen Kalender": add a shared own entry from the feed
+//   POST /api/v1/calendar/feed-posts/:postId/add → { action: added|already }
+//   409 NOT_OPEN (cancelled / over) · 409 OWN_POST · 404 NOT_FOUND
+// =============================================================================
+
+export type AddFromPostResult = "added" | "already";
+
+export async function addSharedEntryToCalendar(postId: string): Promise<AddFromPostResult> {
+  const body = await authedFetch(`/api/v1/calendar/feed-posts/${encodeURIComponent(postId)}/add`, null, { method: "POST", body: "{}" });
+  return (body.data as { action?: AddFromPostResult } | undefined)?.action === "already" ? "already" : "added";
 }

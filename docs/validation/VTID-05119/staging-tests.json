@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05119",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "fetch-user-context strict body parse + generate-enhanced-recommendations context mapping (no staging target)",
+      "ref": "npx vitest run src/lib/read-json-body.test.ts src/lib/recommendation-matches.test.ts src/lib/edge-functions-caller-identity.s4.test.ts src/lib/vtna-token-name.test.ts",
+      "cwd": ".",
+      "reason": "No staging target: the change is two Supabase edge functions plus two pure _shared helpers; the community-app bundle is unchanged. Edge functions have no staging twin (one shared Supabase project; staging frontends use production), so STAGING-VERIFY cannot exercise them (VTID-04860 precedent). The suites fail on origin/main and pass on this branch. After the owner-approved manual dispatch of supabase-functions-deploy.yml (callee first, then caller, conditional on the CUTOVER_DONE/DATA_API_URL secret-name precondition) the deploy is verified read-only: list_edge_functions shows new versions with verify_jwt=true, function logs show no 5xx, no DataApiNotConfiguredError and no new 'fetch-user-context failed' warning; no probe is sent to production."
+    }
+  ]
+}
