@@ -383,8 +383,8 @@
       "cancel": "Cancelar",
       "done": "Compartilhado – a comunidade já sabe que você vai",
       "viewPost": "Compartilhado no feed – ver publicação",
-      "alreadyShared": "Você já compartilhou este evento",
-      "notShareable": "Este evento não pode mais ser compartilhado: acabou, foi cancelado ou não é público.",
+      "alreadyShared": "Você já compartilhou esta entrada",
+      "notShareable": "Esta entrada não pode mais ser compartilhada: já passou, foi cancelada ou concluída.",
       "limit": "Você já compartilhou bastante hoje. Tente de novo amanhã.",
       "duplicate": "Você acabou de publicar este texto. Escreva outra coisa ou espere um pouco.",
       "suspended": "Sua conta não pode publicar agora.",
@@ -405,8 +405,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Título que os outros veem",
+      "calendarTitle": "No seu calendário: {title}",
+      "defaultTextOwn": "Em {date}: {title}. Quem vem?",
+      "placeShown": "Local visível: {place}",
+      "placeHidden": "Mostrar o local – desativado: o local continua privado",
+      "showPlace": "Mostrar local",
+      "previewLabel": "Assim os outros veem",
+      "sensitiveHint": "Você está compartilhando uma consulta de saúde. Confira o título e o local – os outros só veem o que aparece aqui."
     },
     "feedCard": {
       "upcoming": "Em breve",
@@ -427,8 +443,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "Adicionar ao meu calendário",
+      "added": "Adicionado ao seu calendário",
+      "alreadyAdded": "Já está no seu calendário",
+      "notOpen": "Este compromisso já passou ou foi cancelado.",
+      "addError": "Não funcionou. Tente de novo em instantes."
     },
     "invite": {
       "action": "Convidar",

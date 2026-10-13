@@ -383,8 +383,8 @@
       "cancel": "Anuluj",
       "done": "Udostępniono – społeczność widzi, że idziesz",
       "viewPost": "Udostępniono w feedzie – zobacz post",
-      "alreadyShared": "To wydarzenie zostało już przez ciebie udostępnione",
-      "notShareable": "Tego wydarzenia nie można już udostępnić – zakończyło się, zostało odwołane lub nie jest publiczne.",
+      "alreadyShared": "Ten wpis został już przez ciebie udostępniony",
+      "notShareable": "Tego wpisu nie można już udostępnić – minął, został odwołany lub wykonany.",
       "limit": "Dziś udostępniono już dużo. Spróbuj jutro.",
       "duplicate": "Ten tekst został właśnie opublikowany. Napisz coś innego lub chwilę poczekaj.",
       "suspended": "Twoje konto nie może teraz publikować.",
@@ -405,8 +405,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Tytuł widoczny dla innych",
+      "calendarTitle": "W twoim kalendarzu: {title}",
+      "defaultTextOwn": "{date}: {title}. Kto idzie?",
+      "placeShown": "Miejsce widoczne: {place}",
+      "placeHidden": "Pokaż miejsce – wyłączone: miejsce pozostaje prywatne",
+      "showPlace": "Pokaż miejsce",
+      "previewLabel": "Tak widzą to inni",
+      "sensitiveHint": "Udostępniasz wizytę zdrowotną. Sprawdź tytuł i miejsce – inni widzą tylko to, co jest tu pokazane."
     },
     "feedCard": {
       "upcoming": "Wkrótce",
@@ -427,8 +443,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "Dodaj do mojego kalendarza",
+      "added": "Dodano do twojego kalendarza",
+      "alreadyAdded": "Jest już w twoim kalendarzu",
+      "notOpen": "Ten termin minął lub został odwołany.",
+      "addError": "Nie udało się. Spróbuj ponownie za chwilę."
     },
     "invite": {
       "action": "Zaproś",

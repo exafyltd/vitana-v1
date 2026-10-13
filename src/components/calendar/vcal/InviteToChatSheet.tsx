@@ -17,6 +17,7 @@ import { chatGroupsQueryKey } from "@/hooks/useChatGroupsAsThreads";
 import { isVitanaBot } from "@/lib/vitanaBotIdentity";
 import { inviteRefusalOf, type CalendarWindowItem } from "@/lib/calendar-window-client";
 import { entryTitle } from "./labels";
+import { isOwnEntryShare } from "./entry-actions";
 import { SURFACE } from "./theme";
 
 export interface InviteTarget {
@@ -40,8 +41,17 @@ export function dmTargets(threads: GlobalMessageThread[] | undefined): InviteTar
   return out;
 }
 
-export async function sendInvite(target: InviteTarget, entryId: string): Promise<void> {
-  const opts = { messageType: "calendar_invite", contentData: { entry_id: entryId } };
+/** VTID-05126: for an own entry, the title on the card and whether the place is shown. */
+export interface InviteCardChoice {
+  card_title?: string;
+  include_location?: boolean;
+}
+
+export async function sendInvite(target: InviteTarget, entryId: string, choice: InviteCardChoice = {}): Promise<void> {
+  const contentData: Record<string, unknown> = { entry_id: entryId };
+  if (choice.card_title?.trim()) contentData.card_title = choice.card_title.trim();
+  if (choice.include_location !== undefined) contentData.include_location = choice.include_location;
+  const opts = { messageType: "calendar_invite", contentData };
   if (target.kind === "dm") await sendChatMessage(target.id, "", opts);
   else await sendGroupMessage(target.id, "", opts);
 }
@@ -57,6 +67,12 @@ export function InviteToChatSheet({ item, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<InviteTarget | null>(null);
+  // VTID-05126: what the card shows for an own entry.
+  const own = isOwnEntryShare(item);
+  const entryName = item.event ? entryTitle(item.event) : "";
+  const place = (item.event?.location ?? "").trim();
+  const [cardTitle, setCardTitle] = useState(entryName);
+  const [showPlace, setShowPlace] = useState(false);
 
   const threadsKey = ["global-threads", user?.id] as const;
   const threads = useQuery({
@@ -82,7 +98,8 @@ export function InviteToChatSheet({ item, onClose }: Props) {
   }, [threads.data, groups.data, query]);
 
   const send = useMutation({
-    mutationFn: (target: InviteTarget) => sendInvite(target, item.event_id),
+    mutationFn: (target: InviteTarget) =>
+      sendInvite(target, item.event_id, own ? { card_title: cardTitle.trim() || entryName, include_location: showPlace } : {}),
     onSuccess: (_d, target) => {
       notify("vcal.invite.sent", undefined, { name: target.name });
       onClose();
@@ -139,6 +156,40 @@ export function InviteToChatSheet({ item, onClose }: Props) {
             ✕
           </button>
         </div>
+
+        {own && (
+          <div className="grid grid-cols-2 gap-2.5" data-testid="vcal-invite-card">
+            <label className="flex min-w-0 flex-col gap-1 text-xs" style={{ color: SURFACE.muted }}>
+              {t("vcal.share.cardTitleLabel")}
+              <input
+                value={cardTitle}
+                onChange={(ev) => setCardTitle(ev.target.value)}
+                maxLength={120}
+                className="h-11 w-full min-w-0 rounded-xl bg-white px-3 text-base text-slate-900"
+                data-testid="vcal-invite-card-title"
+              />
+            </label>
+            {place ? (
+              <label className="flex items-center gap-2 self-end rounded-xl bg-white px-3 text-sm text-slate-900" style={{ minHeight: 44 }}>
+                <input
+                  type="checkbox"
+                  checked={showPlace}
+                  onChange={(ev) => setShowPlace(ev.target.checked)}
+                  className="h-5 w-5 shrink-0"
+                  data-testid="vcal-invite-location"
+                />
+                <span>{t("vcal.share.showPlace")}</span>
+              </label>
+            ) : (
+              <span />
+            )}
+          </div>
+        )}
+        {item.sensitive && (
+          <p role="note" className="m-0 rounded-xl bg-orange-50 px-3 py-2 text-sm text-orange-900" data-testid="vcal-invite-sensitive">
+            {t("vcal.share.sensitiveHint")}
+          </p>
+        )}
 
         <input
           type="search"

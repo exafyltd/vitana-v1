@@ -1,0 +1,42 @@
+name: SQL-CALENDAR-ENTRY-SHARE
+# VTID-05126: tests the calendar-entry share migration on a throwaway
+# Postgres in the runner — clients can set neither reference nor snapshot,
+# the snapshot follows the member's entry (chosen title and hidden place
+# kept, cancel/delete read cancelled), and the share notification names the
+# card title, never the private calendar title. No secrets, no shared database.
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/20261007100000_vtid_04916_profile_posts_event_attachment.sql'
+      - 'supabase/migrations/20261012120000_vtid_05126_profile_posts_calendar_entry_share.sql'
+      - 'scripts/sql-tests/vtid-05126-calendar-entry-share.test.sql'
+      - 'scripts/sql-tests/run-calendar-entry-share-test.sh'
+      - '.github/workflows/SQL-CALENDAR-ENTRY-SHARE.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        # AWS mirror of the official image; Docker Hub rate limits/outage failed CI on 2026-10-09 (VTID-05016).
+        image: public.ecr.aws/docker/library/postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the migration test
+        run: bash scripts/sql-tests/run-calendar-entry-share-test.sh

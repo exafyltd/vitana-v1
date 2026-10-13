@@ -386,8 +386,8 @@
       "cancel": "Otkaži",
       "done": "Podeljeno – zajednica vidi da ideš",
       "viewPost": "Podeljeno u fidu – pogledaj objavu",
-      "alreadyShared": "Već si podelio ovaj događaj",
-      "notShareable": "Ovaj događaj više ne može da se podeli – završen je, otkazan ili nije javan.",
+      "alreadyShared": "Već si podelio ovaj unos",
+      "notShareable": "Ovaj unos više ne može da se podeli – prošao je, otkazan je ili završen.",
       "limit": "Danas si već mnogo delio. Pokušaj ponovo sutra.",
       "duplicate": "Upravo si objavio ovaj tekst. Napiši nešto drugo ili sačekaj trenutak.",
       "suspended": "Tvoj nalog trenutno ne može da objavljuje.",
@@ -408,8 +408,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Naslov koji drugi vide",
+      "calendarTitle": "U tvom kalendaru: {title}",
+      "defaultTextOwn": "{date}: {title}. Ko ide sa mnom?",
+      "placeShown": "Mesto je prikazano: {place}",
+      "placeHidden": "Prikaži mesto – isključeno: mesto ostaje privatno",
+      "showPlace": "Prikaži mesto",
+      "previewLabel": "Ovako to vide drugi",
+      "sensitiveHint": "Deliš zdravstveni termin. Proveri naslov i mesto – drugi vide samo ono što je ovde prikazano."
     },
     "feedCard": {
       "upcoming": "Uskoro",
@@ -430,8 +446,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "U moj kalendar",
+      "added": "Dodato u tvoj kalendar",
+      "alreadyAdded": "Već je u tvom kalendaru",
+      "notOpen": "Ovaj termin je prošao ili je otkazan.",
+      "addError": "Nije uspelo. Pokušaj ponovo za trenutak."
     },
     "invite": {
       "action": "Pozovi",

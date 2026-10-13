@@ -306,7 +306,7 @@ export function CommunityPostCard({
               {renderMentions(item.content, item.mentions)}
             </p>
           ))}
-        {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} />}
+        {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} postId={item.post_id} isOwnPost={!!user?.id && user.id === item.user_id} />}
 
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">

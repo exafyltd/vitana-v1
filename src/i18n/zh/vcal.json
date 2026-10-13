@@ -383,8 +383,8 @@
       "cancel": "取消",
       "done": "已分享——社区知道你会去了",
       "viewPost": "已分享到动态——查看帖子",
-      "alreadyShared": "你已经分享过这个活动",
-      "notShareable": "这个活动已无法分享：已结束、已取消或不公开。",
+      "alreadyShared": "你已经分享过这个日程",
+      "notShareable": "这个日程无法再分享：已结束、已取消或已完成。",
       "limit": "你今天已经分享很多了，明天再试吧。",
       "duplicate": "你刚刚发过这段文字。换点别的内容，或稍等一会儿。",
       "suspended": "你的账号目前无法发帖。",
@@ -405,8 +405,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "其他人看到的标题",
+      "calendarTitle": "在你的日历中：{title}",
+      "defaultTextOwn": "{date}：{title}。谁一起来？",
+      "placeShown": "显示地点：{place}",
+      "placeHidden": "显示地点 – 关闭：地点保持私密",
+      "showPlace": "显示地点",
+      "previewLabel": "其他人看到的样子",
+      "sensitiveHint": "你正在分享一个健康预约。请检查标题和地点——其他人只能看到这里显示的内容。"
     },
     "feedCard": {
       "upcoming": "即将开始",
@@ -427,8 +443,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "加入我的日历",
+      "added": "已加入你的日历",
+      "alreadyAdded": "已在你的日历中",
+      "notOpen": "这个日程已结束或已取消。",
+      "addError": "没有成功，请稍后再试。"
     },
     "invite": {
       "action": "邀请",
