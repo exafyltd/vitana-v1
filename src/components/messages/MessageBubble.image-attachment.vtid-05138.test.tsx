@@ -169,6 +169,14 @@ describe('MessageBubble picture attachments (VTID-05138)', () => {
     expect(viewer.querySelector('img')?.getAttribute('src')).toBe('https://fresh.example/a.png?token=1');
   });
 
+  it('the invisible hover toolbar never catches a tap (no hover on phones)', async () => {
+    h.sign.mockResolvedValue('https://fresh.example/a.png?token=1');
+    renderBubble(msg());
+    const actions = await screen.findByTestId('chat-image-hover-actions');
+    expect(actions.className).toContain('pointer-events-none');
+    expect(actions.className).toContain('group-hover:pointer-events-auto');
+  });
+
   it('labels a forwarded message', async () => {
     renderBubble(msg({ message_type: 'text', body: 'Schau mal', content: 'Schau mal', content_data: { forwarded: true } }));
     expect(screen.getByTestId('message-forwarded-label').textContent).toContain('screens.messages.forwardedLabel');
