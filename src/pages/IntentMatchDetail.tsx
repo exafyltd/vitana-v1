@@ -15,11 +15,16 @@ import { getIntent, getIntentMatches, getIncomingMatches, getOutgoingMatches, cl
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TierBEmpty, TierBSection } from "@/components/spotlight/tier-b/TierBKit";
 
 export default function IntentMatchDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const spotlight = useSpotlightEnabled();
   const [intent, setIntent] = useState<UserIntent | null>(null);
   const [matches, setMatches] = useState<IntentMatch[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,6 +93,56 @@ export default function IntentMatchDetail() {
       notifyError('toasts.intentmatchdetail.couldNotClose');
     }
   };
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screens below).
+  // The legacy page renders without AppLayout; the Spotlight frame puts it inside the app shell.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="detail"
+          header={{ title: t('spotlightTierB.intents.matchTitle'), description: t('spotlightTierB.intents.matchDescription'), emoji: '🤝' }}
+          utility={{
+            children: (
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/intents/mine">
+                  <ArrowLeft className="me-1 h-4 w-4 rtl:rotate-180" /> {t('screens.intentmatchdetail.backMyIntents')}
+                </Link>
+              </Button>
+            ),
+          }}
+        >
+          {loading ? (
+            <ArchetypeSkeleton archetype="detail" />
+          ) : !intent ? (
+            <TierBEmpty titleKey="screens.intentmatchdetail.intentNotFound" actionKey="screens.intentmatchdetail.backMyIntents" onAction={() => navigate("/intents/mine")} />
+          ) : (
+            <div className="flex flex-col gap-6">
+              <IntentCard intent={intent} />
+              {intent.status === "open" && (
+                <div className="flex justify-end">
+                  <Button variant="outline" size="sm" onClick={handleClose}>
+                    <X className="me-1 h-4 w-4" /> {t('screens.intentmatchdetail.closeIntent')}
+                  </Button>
+                </div>
+              )}
+              <TierBSection title={t('screens.intentmatchdetail.matchesLength', { length: matches.length })}>
+                {matches.length === 0 ? (
+                  <TierBEmpty titleKey="screens.intentmatchdetail.noMatchesYetWeLlKeep" />
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {matches.map((match) => (
+                      <IntentMatchCard key={match.match_id} match={match} perspective="outgoing" onAction={() => load()} />
+                    ))}
+                  </div>
+                )}
+              </TierBSection>
+            </div>
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   if (loading) {
     return (

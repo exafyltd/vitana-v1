@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -28,6 +30,8 @@ const aiSubItems = [
 ];
 
 export default function Companion() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   const { completeBySourceRef } = useAutopilotComplete();
   useEffect(() => { completeBySourceRef('onboarding_maxina'); }, [completeBySourceRef]);
@@ -100,6 +104,166 @@ export default function Companion() {
     action: "Do Now"
   }));
 
+  const companionBody = (
+    <>
+      {/* 2-Column Layout with Chat + Sidebar */}
+      <div className="flex flex-col lg:flex-row gap-6 mb-6">
+        {/* Chat Interface - Takes up 2/3 */}
+        <div className="flex-1 lg:flex-[2]">
+          <HealthCoachChat
+            context="general"
+            variant="card"
+            onSendMessage={handleSendMessage}
+            onStartVoiceCall={() => handleChatAction("voice_call")}
+            onStartVideoCall={() => handleChatAction("video_call")}
+          />
+        </div>
+
+        {/* Sidebar - Takes up 1/3 */}
+        <div className="lg:flex-1 space-y-4">
+          {/* Vitana Index Mini Widget - C-022 */}
+          <div data-template-id="CT-HS-002" data-system-card-id="C-022">
+            <VitanaIndexMini
+              score={companionData.vitanaIndex}
+              trend="up"
+            />
+          </div>
+
+          {/* Smart Suggestions - C-023 */}
+          <div data-template-id="CT-HS-001" data-system-card-id="C-023">
+            <SmartSuggestions
+              suggestions={smartSuggestions}
+              variant="card"
+              maxItems={4}
+            />
+          </div>
+
+          {/* Autopilot Widget - C-024 */}
+          <div data-template-id="CT-HS-003" data-system-card-id="C-024">
+            <AutopilotWidget
+              suggestions={["Schedule meditation break", "Hydration reminder in 15 min"]}
+              isEnabled={true}
+              onToggle={(enabled) => handleChatAction(`autopilot_${enabled ? 'on' : 'off'}`)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Pinterest-style Masonry Grid for Additional Cards */}
+      <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        {/* AI Autopilot Log - C-022 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-022">
+          <CrossoverCard
+            icon={Zap}
+            category="autopilot"
+            title={t('screens.ai.autopilotActivityLog')}
+            subtitle={t('screens.ai.subtitle_recentAiActions')}
+            buttonText={t('screens.ai.button_viewFullLog')}
+            onButtonClick={() => handleAutopilotClick('view-all')}
+            content={
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {chat.autopilotLog.map((entry) => (
+                  <div 
+                    key={entry.id}
+                    className="p-2 bg-background/50 rounded-lg border cursor-pointer hover:bg-background/80 transition-colors group"
+                    onClick={() => handleAutopilotClick(entry.id)}
+                  >
+                    <div className="flex items-start justify-between mb-1">
+                      <h4 className="text-xs font-medium text-foreground group-hover:text-calendar-primary transition-colors">
+                        {entry.action}
+                      </h4>
+                      <span className="text-xs text-muted-foreground">{entry.timestamp}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-1">{entry.reason}</p>
+                    <div className="text-xs text-calendar-success">{t('screens.ai.impactImpact', { impact: entry.impact })}</div>
+                  </div>
+                ))}
+              </div>
+            }
+          />
+        </div>
+
+        {/* Memory Recall Request - C-023 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-023">
+          <SmartSuggestions
+            suggestions={chat.memoryPeek.map(memory => ({
+              title: memory.key,
+              description: memory.value,
+              type: "action" as const,
+              priority: "low" as const,
+              action: "Recall",
+              onAction: () => handleMemoryClick(memory.key.toLowerCase())
+            }))}
+            variant="card"
+            maxItems={5}
+          />
+        </div>
+
+        {/* Personalized Storytelling - C-024 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-024">
+          <SmartSuggestions
+            suggestions={[
+              {
+                title: t('screens.ai.storyTitle_thisWeeksJourney'),
+                description: t('screens.ai.storyDesc_thisWeeksJourney'),
+                type: "insight" as const,
+                priority: "high" as const,
+                action: t('screens.ai.actionLabel_readFullStory'),
+                onAction: () => handleMemoryClick('weekly_story')
+              },
+              {
+                title: t('screens.ai.storyTitle_patternDiscovery'),
+                description: t('screens.ai.storyDesc_patternDiscovery'),
+                type: "insight" as const,
+                priority: "medium" as const,
+                action: t('screens.ai.actionLabel_explorePattern'),
+                onAction: () => handleMemoryClick('sleep_pattern')
+              }
+            ]}
+            variant="card"
+            maxItems={2}
+          />
+        </div>
+
+        {/* Progress Tracking - C-025 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-025">
+          <ProgressStreaksCard />
+        </div>
+
+        {/* Smart Calendar - C-026 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-026">
+          <SmartCalendarCard />
+        </div>
+
+        {/* Lifestyle Plan - C-027 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-006" data-system-card-id="C-027">
+          <LifestylePlanCard type="nutrition" />
+        </div>
+
+        {/* Motivation Card - C-028 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-011" data-system-card-id="C-028">
+          <MotivationCard />
+        </div>
+      </div>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: same content inside ScreenFrame (archetype from the manifest).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.ai.aiCompanionAiIntelligence')} description={t('screens.ai.yourPersonalAiWellnessCompanionFor')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="conversation"
+          subNav={{ items: aiSubItems }}
+          header={{ title: t('screens.ai.aiCompanion'), description: t('screens.ai.yourPersonalAiWellnessCompanionFor'), emoji: '🤖' }}
+        >
+          {companionBody}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title={t('screens.ai.aiCompanionAiIntelligence')} description="Your personal AI wellness companion" canonical={window.location.href} />
@@ -130,145 +294,7 @@ export default function Companion() {
             </div>
           </div>
 
-          {/* 2-Column Layout with Chat + Sidebar */}
-          <div className="flex flex-col lg:flex-row gap-6 mb-6">
-            {/* Chat Interface - Takes up 2/3 */}
-            <div className="flex-1 lg:flex-[2]">
-              <HealthCoachChat
-                context="general"
-                variant="card"
-                onSendMessage={handleSendMessage}
-                onStartVoiceCall={() => handleChatAction("voice_call")}
-                onStartVideoCall={() => handleChatAction("video_call")}
-              />
-            </div>
-
-            {/* Sidebar - Takes up 1/3 */}
-            <div className="lg:flex-1 space-y-4">
-              {/* Vitana Index Mini Widget - C-022 */}
-              <div data-template-id="CT-HS-002" data-system-card-id="C-022">
-                <VitanaIndexMini
-                  score={companionData.vitanaIndex}
-                  trend="up"
-                />
-              </div>
-
-              {/* Smart Suggestions - C-023 */}
-              <div data-template-id="CT-HS-001" data-system-card-id="C-023">
-                <SmartSuggestions
-                  suggestions={smartSuggestions}
-                  variant="card"
-                  maxItems={4}
-                />
-              </div>
-
-              {/* Autopilot Widget - C-024 */}
-              <div data-template-id="CT-HS-003" data-system-card-id="C-024">
-                <AutopilotWidget
-                  suggestions={["Schedule meditation break", "Hydration reminder in 15 min"]}
-                  isEnabled={true}
-                  onToggle={(enabled) => handleChatAction(`autopilot_${enabled ? 'on' : 'off'}`)}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Pinterest-style Masonry Grid for Additional Cards */}
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-            {/* AI Autopilot Log - C-022 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-022">
-              <CrossoverCard
-                icon={Zap}
-                category="autopilot"
-                title={t('screens.ai.autopilotActivityLog')}
-                subtitle={t('screens.ai.subtitle_recentAiActions')}
-                buttonText={t('screens.ai.button_viewFullLog')}
-                onButtonClick={() => handleAutopilotClick('view-all')}
-                content={
-                  <div className="space-y-2 max-h-48 overflow-y-auto">
-                    {chat.autopilotLog.map((entry) => (
-                      <div 
-                        key={entry.id}
-                        className="p-2 bg-background/50 rounded-lg border cursor-pointer hover:bg-background/80 transition-colors group"
-                        onClick={() => handleAutopilotClick(entry.id)}
-                      >
-                        <div className="flex items-start justify-between mb-1">
-                          <h4 className="text-xs font-medium text-foreground group-hover:text-calendar-primary transition-colors">
-                            {entry.action}
-                          </h4>
-                          <span className="text-xs text-muted-foreground">{entry.timestamp}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground mb-1">{entry.reason}</p>
-                        <div className="text-xs text-calendar-success">{t('screens.ai.impactImpact', { impact: entry.impact })}</div>
-                      </div>
-                    ))}
-                  </div>
-                }
-              />
-            </div>
-
-            {/* Memory Recall Request - C-023 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-023">
-              <SmartSuggestions
-                suggestions={chat.memoryPeek.map(memory => ({
-                  title: memory.key,
-                  description: memory.value,
-                  type: "action" as const,
-                  priority: "low" as const,
-                  action: "Recall",
-                  onAction: () => handleMemoryClick(memory.key.toLowerCase())
-                }))}
-                variant="card"
-                maxItems={5}
-              />
-            </div>
-
-            {/* Personalized Storytelling - C-024 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-024">
-              <SmartSuggestions
-                suggestions={[
-                  {
-                    title: t('screens.ai.storyTitle_thisWeeksJourney'),
-                    description: t('screens.ai.storyDesc_thisWeeksJourney'),
-                    type: "insight" as const,
-                    priority: "high" as const,
-                    action: t('screens.ai.actionLabel_readFullStory'),
-                    onAction: () => handleMemoryClick('weekly_story')
-                  },
-                  {
-                    title: t('screens.ai.storyTitle_patternDiscovery'),
-                    description: t('screens.ai.storyDesc_patternDiscovery'),
-                    type: "insight" as const,
-                    priority: "medium" as const,
-                    action: t('screens.ai.actionLabel_explorePattern'),
-                    onAction: () => handleMemoryClick('sleep_pattern')
-                  }
-                ]}
-                variant="card"
-                maxItems={2}
-              />
-            </div>
-
-            {/* Progress Tracking - C-025 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-025">
-              <ProgressStreaksCard />
-            </div>
-
-            {/* Smart Calendar - C-026 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-026">
-              <SmartCalendarCard />
-            </div>
-
-            {/* Lifestyle Plan - C-027 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-006" data-system-card-id="C-027">
-              <LifestylePlanCard type="nutrition" />
-            </div>
-
-            {/* Motivation Card - C-028 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-011" data-system-card-id="C-028">
-              <MotivationCard />
-            </div>
-          </div>
+          {companionBody}
 
         </div>
       </div>

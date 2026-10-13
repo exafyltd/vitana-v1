@@ -6,6 +6,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 
+// VTID-05111: the page reads the Spotlight flag; this harness pins it off (no router / tenant here).
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/components/AppLayout", () => ({ default: ({ children }: { children: React.ReactNode }) => <div>{children}</div> }));
 vi.mock("@/components/SubNavigation", () => ({ default: () => null }));
 vi.mock("@/components/SEO", () => ({ default: () => null }));

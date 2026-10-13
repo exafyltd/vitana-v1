@@ -19,8 +19,13 @@ import AppLayout from "@/components/AppLayout";
 import RemindersPanel from "@/components/reminders/RemindersPanel";
 import { Bell } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { useParams } from "react-router-dom";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 const Reminders: React.FC = () => {
+  const spotlight = useSpotlightEnabled();
+  const { fireId } = useParams<{ fireId?: string }>();
   useEffect(() => {
     const prev = document.title;
     document.title = "Reminders | Vitana";
@@ -28,6 +33,22 @@ const Reminders: React.FC = () => {
       document.title = prev;
     };
   }, []);
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype={fireId ? "detail" : "collection"}
+          header={{ title: t('screens.reminders.reminders'), description: t('screens.reminders.subtitleDefault'), emoji: '🔔' }}
+        >
+          <div data-testid="reminders-page">
+            <RemindersPanel />
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

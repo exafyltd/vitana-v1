@@ -1,5 +1,5 @@
 import { useUrlTab } from "@/hooks/useUrlTab";
-import { useState, useMemo } from "react";
+import { useState, useMemo, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -25,6 +25,9 @@ import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
 import { calculateAutopilotContext } from "@/services/autopilotContext";
 import { toast } from "sonner";
 import { lookup, t } from '@/lib/i18n-toast';
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TIER_B_GRID, TierBSection } from "@/components/spotlight/tier-b/TierBKit";
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -32,7 +35,8 @@ export default withScreenId(function Plans() {
   const [selectedPlanType, setSelectedPlanType] = useState<string | undefined>(undefined);
   const { plans, isLoading } = useHealthPlans();
   const navigate = useNavigate();
-  
+  const spotlight = useSpotlightEnabled();
+
   // Calculate autopilot context
   const autopilotData = useMemo(() => {
     return calculateAutopilotContext(plans || []);
@@ -75,10 +79,118 @@ export default withScreenId(function Plans() {
     });
   };
   
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  if (spotlight) {
+    const planTabs: { value: string; label: string; view?: ReactNode }[] = [
+      { value: 'all', label: t('screens.health.allPlans') },
+      { value: 'nutrition', label: t('screens.health.nutrition'), view: <NutritionPlanView /> },
+      { value: 'exercise', label: t('screens.health.exercise'), view: <ExercisePlanView /> },
+      { value: 'hydration', label: t('screens.health.hydration'), view: <HydrationPlanView /> },
+      { value: 'sleep', label: t('screens.health.sleep'), view: <SleepPlanView /> },
+      { value: 'mental', label: t('screens.health.mental'), view: <MentalPlanView /> },
+    ];
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.personalizedHealthPlansVitana')} description={t('spotlightTierB.health.plansDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: healthNavigation }}
+          header={{ title: t('screens.health.yourPersonalizedHealthPlans'), description: t('spotlightTierB.health.plansDescription'), emoji: '🎯' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.health.searchPlans')} />
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedPlanType(undefined);
+                    setWizardOpen(true);
+                  }}
+                >
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.health.generateNewPlan')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{ value: activeTab, onValueChange: setActiveTab, items: planTabs.map(({ value, label }) => ({ value, label })) }}
+        >
+          <SplitBarContent value="all">
+            {isLoading ? (
+              <ArchetypeSkeleton archetype="collection" />
+            ) : (
+              <div className="flex flex-col gap-6">
+                <div className={TIER_B_GRID}>
+                  {['nutrition', 'exercise', 'hydration', 'sleep', 'mental', 'supplement'].map((planType) => (
+                    <PersonalizedPlanCard
+                      key={planType}
+                      type={planType as Parameters<typeof PersonalizedPlanCard>[0]['type']}
+                      onGenerateClick={() => {
+                        setSelectedPlanType(planType);
+                        setWizardOpen(true);
+                      }}
+                    />
+                  ))}
+                </div>
+                <CrossPlanRelationshipWidget relationships={autopilotData.relationships} lastSynced={autopilotData.lastRecalibration} />
+                <TierBSection title={t('screens.health.autopilotSummary')} className="rounded-vcard border bg-card p-5 shadow-vcard">
+                  <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+                    <div>
+                      <VitanaScoreTooltip score={autopilotData.vitanaScore}>
+                        <button type="button" className="font-semibold transition-colors hover:text-foreground">
+                          {t('screens.health.vitanascoreVitanaScore', { vitanaScore: autopilotData.vitanaScore })}
+                        </button>
+                      </VitanaScoreTooltip>
+                      <span>{t('screens.health.text5ActivePlansSyncedCrosspillarSynergy', { synergyScore: autopilotData.synergyScore })}</span>
+                    </div>
+                    <div>
+                      {t('screens.health.nextRecalibration')} <span className="font-medium text-foreground">{autopilotData.nextRecalibration}</span>
+                      {t('screens.health.adjustmentLastadjustment', { lastAdjustment: autopilotData.lastAdjustment })}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button size="sm" className="rounded-full" onClick={handleRecalibrateAll}>
+                      {t('screens.health.recalibrateAll')}
+                    </Button>
+                    <Button size="sm" variant="outline" className="rounded-full" onClick={handleViewReport}>
+                      {t('screens.health.viewDetailedReport')}
+                    </Button>
+                    <Button size="sm" variant="outline" className="rounded-full" onClick={handleOptimizeWeakest}>
+                      {t('screens.health.optimizeWeakestPillar')}
+                    </Button>
+                  </div>
+                </TierBSection>
+              </div>
+            )}
+          </SplitBarContent>
+          {planTabs
+            .filter((tab) => tab.view)
+            .map((tab) => (
+              <SplitBarContent key={tab.value} value={tab.value}>
+                {tab.view}
+              </SplitBarContent>
+            ))}
+          <SplitBarContent value="supplement">
+            <PersonalizedPlanCard type="supplement" detailed />
+          </SplitBarContent>
+        </ScreenFrame>
+        <PlanGeneratorWizard
+          open={wizardOpen}
+          onOpenChange={(open) => {
+            setWizardOpen(open);
+            if (!open) setSelectedPlanType(undefined);
+          }}
+          defaultPlanType={selectedPlanType}
+        />
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
-      <SEO 
-        title={t('screens.health.personalizedHealthPlansVitana')} 
+      <SEO
+        title={t('screens.health.personalizedHealthPlansVitana')}
         description="AI-powered nutrition, exercise, hydration, sleep, and wellness plans tailored to your unique health profile and goals"
         canonical={window.location.href}
       />

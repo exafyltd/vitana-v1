@@ -439,7 +439,8 @@ All colors MUST be HSL.
   .sp-rail { display: none; }
   .sp-rail-toggle { display: flex; justify-content: flex-end; }
   @container spotlight (min-width: 1060px) {
-    .sp-layout[data-width="stage-rail"] .sp-grid {
+    /* VTID-05111: only when a rail exists — a stage-rail screen without a rail (Tier B) stays one centred stage column. */
+    .sp-layout[data-width="stage-rail"] .sp-grid:has(> .sp-rail) {
       grid-template-columns: minmax(var(--sp-stage-min), var(--sp-stage-max)) var(--sp-rail);
     }
     .sp-layout[data-width="stage-rail"] .sp-rail {

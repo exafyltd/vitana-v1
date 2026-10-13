@@ -49,6 +49,9 @@ import { MobileHealthSupplementsTab } from "@/components/health/mobile/MobileHea
 import { HealthReportUploadSheet } from "@/components/health/mobile/HealthReportUploadSheet";
 import { QuickLabOrderSheet } from "@/components/health/mobile/QuickLabOrderSheet";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VitanaIndexHeroCard } from "@/components/spotlight/tier-b/VitanaIndexHeroCard";
 
 const overviewCards = [
   {
@@ -123,6 +126,8 @@ export default withScreenId(function Health() {
   const { completeBySourceRef } = useAutopilotComplete();
   useEffect(() => { completeBySourceRef('onboarding_health'); }, [completeBySourceRef]);
   const isMobile = useIsMobile();
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screens below).
+  const spotlight = useSpotlightEnabled();
   const { profile } = useProfile();
   const { translate } = useTranslation();
   const { pendingCount, getLatestActions } = useAutopilot();
@@ -132,7 +137,7 @@ export default withScreenId(function Health() {
   const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const queryClient = useQueryClient();
-  const { index: liveVitanaIndex } = useVitanaIndexCache();
+  const { index: liveVitanaIndex, isLoading: liveVitanaIndexLoading } = useVitanaIndexCache();
   // VTID-04483: real community standing behind VITE_HEALTH_REAL_DATA. Off
   // keeps the existing demo figure; on shows the server's "Top X%" or
   // nothing when there are too few members to compare against.
@@ -420,6 +425,67 @@ export default withScreenId(function Health() {
           open={orderSheetOpen}
           onOpenChange={setOrderSheetOpen}
         />
+      </AppLayout>
+    );
+  }
+
+  // VTID-05111 — Spotlight dashboard: one Vitana Index spotlight card, then the
+  // member's real pillar agents and next best action. The sample sections of
+  // the legacy desktop (demo actions, schedule, community activity, the fixed
+  // 45 % completeness) are not shown here (contract SR-24).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.health')} description={translate('health.description')} canonical={window.location.href} />
+        <VitanaBaselineSurveyModal />
+        <ScreenFrame
+          archetype="dashboard"
+          subNav={{ items: healthNavigation }}
+          header={{ title: t('screens.health.letSImproveQualityLife'), description: t('spotlightTierB.health.description'), emoji: '🌱' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.health.searchHealthServicesArticlesCommunity')} />
+                <UniversalCalendarButton />
+                <Button variant="default" size="sm" onClick={() => setHealthActionsOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.health.healthActions')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          <div className="flex flex-col gap-6">
+            <VitanaIndexHeroCard
+              index={liveVitanaIndex}
+              isLoading={liveVitanaIndexLoading}
+              onOpen={handleOpenIndexSheet}
+              openLabel={t('screens.health.openVitanaIndexForecast')}
+              actions={
+                <Button variant="ghost" size="sm" onClick={() => navigate('/autopilot')}>
+                  {t('screens.health.viewMyJourney')}
+                  <ChevronRight className="ms-0.5 h-4 w-4 rtl:-scale-x-100" />
+                </Button>
+              }
+            />
+            <VitanaPillarAgentsPanel />
+            <NextBestActionCard />
+          </div>
+        </ScreenFrame>
+
+        <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+        <HealthMasterActionPopup
+          open={healthActionsOpen}
+          onOpenChange={setHealthActionsOpen}
+          onUploadOpen={() => setUploadSheetOpen(true)}
+          onOrderOpen={() => setOrderSheetOpen(true)}
+        />
+        <HealthReportUploadSheet
+          open={uploadSheetOpen}
+          onOpenChange={setUploadSheetOpen}
+          onUploadComplete={() => queryClient.invalidateQueries({ queryKey: ['lab-reports'] })}
+        />
+        <QuickLabOrderSheet open={orderSheetOpen} onOpenChange={setOrderSheetOpen} />
       </AppLayout>
     );
   }

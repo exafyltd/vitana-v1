@@ -12,7 +12,6 @@
  * leads back to its community event or live room.
  */
 import { useEffect, useMemo, useState } from "react";
-import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -72,7 +71,7 @@ import {
   useCalendarApps,
 } from "@/components/calendar/vcal/sections";
 import { hhmm, sameDay, stepAnchor, viewRange, type CalendarView } from "@/components/calendar/vcal/time";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   INDEX_CARD,
@@ -82,6 +81,11 @@ import {
   INDEX_PRIMARY_BTN,
   INDEX_SOFT_BTN,
 } from "@/lib/index-look";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { Button } from "@/components/ui/button";
+import { TierBError, TierBListSkeleton } from "@/components/spotlight/tier-b/TierBKit";
 
 const VIEW_KEY = "vitana.calendar.view";
 const GUIDE_DISMISSED_KEY = "vitana.calendar.guide.dismissed";
@@ -117,6 +121,8 @@ function useNow(intervalMs = 60_000): Date {
 }
 
 export default function CalendarPage() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const now = useNow();
   const { currentRole } = useRole();
   const queryClient = useQueryClient();
@@ -361,126 +367,88 @@ export default function CalendarPage() {
   const dayTitle = fmtDate(anchor, { weekday: "long", day: "numeric", month: "long" });
   const dayTitleParts = dayTitle.split(/(\d+|[\u0660-\u0669]+)/);
 
-  return (
-    <AppLayout>
-      <div className="min-h-screen bg-slate-50/60 px-4 pb-40 pt-4 sm:px-6 sm:pt-6" style={{ color: SURFACE.ink }} data-testid="vcal-page">
-        <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
-          <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
-            <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
-            <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-date">
-              {view === "day"
-                ? dayTitleParts.map((part, i) =>
-                    i % 2 === 1 ? (
-                      <span key={i} style={CALENDAR_NUMBER_STYLE} data-testid="vcal-day-number">
-                        {part}
-                      </span>
-                    ) : (
-                      part
-                    ),
-                  )
-                : rangeTitle}
-            </h1>
+  const vcalHero = (
+    <>
+      <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
+        <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
+        <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-date">
+          {view === "day"
+            ? dayTitleParts.map((part, i) =>
+                i % 2 === 1 ? (
+                  <span key={i} style={CALENDAR_NUMBER_STYLE} data-testid="vcal-day-number">
+                    {part}
+                  </span>
+                ) : (
+                  part
+                ),
+              )
+            : rangeTitle}
+        </h1>
 
-            <div className="mt-5 flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => setAnchor((a) => stepAnchor(view, a, -1))}
-                aria-label={t("vcal.prev")}
-                className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
-              >
-                <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
-              </button>
-              {!isTodayAnchor && (
-                <button type="button" onClick={() => setAnchor(new Date())} className={INDEX_SOFT_BTN}>
-                  {t("vcal.today")}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => setAnchor((a) => stepAnchor(view, a, 1))}
-                aria-label={t("vcal.next")}
-                className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
-              >
-                <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
-              </button>
-            </div>
-          </header>
-
-          <ViewSwitch view={view} onChange={changeView} />
-
-          {/* VTID-05086: Unified Card System — stacked below the calendar header. */}
-          <EnrichmentCardStrip screen="calendar" />
-
-          {/* VTID-04682: connecting a calendar app is right here until one is connected. */}
-          {view === "day" && <ConnectCalendarCard onSubscribe={(provider) => setSubscribeOpen({ provider })} />}
-
-          {showGuide && guidance && (
-            <GuideCard
-              guidance={guidance}
-              actions={{
-                onStartStep: (id) => setOpenItem(openSteps.find((i) => i.id === id) ?? null),
-                onFindEvent: () => navigate("/comm/events-meetups"),
-                onAskVitana: () => activateOrb(),
-                onShowWeek: () => changeView("week"),
-                onConnect: () => document.getElementById("vcal-calendars")?.scrollIntoView({ behavior: "smooth", block: "center" }),
-                onDismiss: dismissGuide,
-              }}
-            />
-          )}
-
-          {query.isLoading ? (
-            <div className="flex flex-col gap-2" aria-busy="true" aria-label={t("vcal.loading")}>
-              {[0, 1, 2].map((i) => (
-                <div key={i} className="h-16 animate-pulse rounded-2xl border border-slate-100 bg-white" />
-              ))}
-            </div>
-          ) : query.isError ? (
-            <div className={`${INDEX_CARD} flex flex-col items-center gap-3 py-8 text-center`} role="alert">
-              <span className="font-semibold">{t("vcal.error")}</span>
-              <button
-                type="button"
-                onClick={() => query.refetch()}
-                className={INDEX_PRIMARY_BTN}
-              >
-                {t("vcal.retry")}
-              </button>
-            </div>
-          ) : view === "day" ? (
-            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} />
-          ) : view === "week" ? (
-            <WeekView key={viewRange("week", anchor).from.toISOString()} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
-          ) : (
-            <MonthView key={`${anchor.getFullYear()}-${anchor.getMonth()}`} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
-          )}
-
-          {/* VTID-04536: folding sections — each closed header says what is inside. */}
-          <div className="flex flex-col gap-2 pt-2">
-            <JourneySection steps={openSteps} now={now} onOpenStep={setOpenItem} addedHabitIds={addedHabitIds} role={currentRole ?? null} />
-            <RemindersSection />
-            <WorkSection role={currentRole ?? null} now={now} />
-            <div id="vcal-calendars" className="scroll-mt-24">
-              <CalendarsSection onShowInApp={(provider) => setSubscribeOpen({ provider })} />
-            </div>
-          </div>
-        </div>
-
-        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 px-4 sm:px-6 md:bottom-6">
-          <div className={`mx-auto flex ${view === "week" ? "max-w-6xl" : "max-w-2xl"} justify-end`}>
-          {/* VTID-04536: add an entry by hand, saved through the gateway. */}
+        <div className="mt-5 flex items-center justify-center gap-2">
           <button
             type="button"
-            onClick={() => setAddFor(anchor)}
-            aria-label={t("vcal.add.title")}
-            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
-            style={{ background: SURFACE.ink }}
-            data-testid="vcal-add"
+            onClick={() => setAnchor((a) => stepAnchor(view, a, -1))}
+            aria-label={t("vcal.prev")}
+            className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
           >
-            <span aria-hidden className="leading-none">+</span>
+            <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
           </button>
-          </div>
+          {!isTodayAnchor && (
+            <button type="button" onClick={() => setAnchor(new Date())} className={INDEX_SOFT_BTN}>
+              {t("vcal.today")}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setAnchor((a) => stepAnchor(view, a, 1))}
+            aria-label={t("vcal.next")}
+            className={cn(INDEX_SOFT_BTN, "w-11 px-0")}
+          >
+            <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
+          </button>
+        </div>
+      </header>
+    </>
+  );
+
+  const vcalGuide = (
+    <>
+      {/* VTID-04682: connecting a calendar app is right here until one is connected. */}
+      {view === "day" && <ConnectCalendarCard onSubscribe={(provider) => setSubscribeOpen({ provider })} />}
+
+      {showGuide && guidance && (
+        <GuideCard
+          guidance={guidance}
+          actions={{
+            onStartStep: (id) => setOpenItem(openSteps.find((i) => i.id === id) ?? null),
+            onFindEvent: () => navigate("/comm/events-meetups"),
+            onAskVitana: () => activateOrb(),
+            onShowWeek: () => changeView("week"),
+            onConnect: () => document.getElementById("vcal-calendars")?.scrollIntoView({ behavior: "smooth", block: "center" }),
+            onDismiss: dismissGuide,
+          }}
+        />
+      )}
+    </>
+  );
+
+  const vcalSections = (
+    <>
+      {/* VTID-04536: folding sections — each closed header says what is inside. */}
+      <div className="flex flex-col gap-2 pt-2">
+        <JourneySection steps={openSteps} now={now} onOpenStep={setOpenItem} addedHabitIds={addedHabitIds} role={currentRole ?? null} />
+        <RemindersSection />
+        <WorkSection role={currentRole ?? null} now={now} />
+        <div id="vcal-calendars" className="scroll-mt-24">
+          <CalendarsSection onShowInApp={(provider) => setSubscribeOpen({ provider })} />
         </div>
       </div>
+    </>
+  );
 
+  const vcalDialogs = (
+    <>
       {openItem?.event && (
         <EntryScreen
           item={openItem}
@@ -507,6 +475,116 @@ export default function CalendarPage() {
       {inviteItem && <InviteToChatSheet item={inviteItem} onClose={() => setInviteItem(null)} />}
       {subscribeOpen && <SubscribeSheet provider={subscribeOpen.provider} onClose={() => setSubscribeOpen(false)} />}
       {addFor && <AddEntrySheet day={addFor} role={currentRole ?? null} onClose={() => setAddFor(null)} />}
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  // Day / Week / Month move into the utility row (SplitBar); "New entry" sits in the utility row
+  // instead of the floating button; loading and error use the shared states.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype={entryId ? "detail" : "collection"}
+          header={{ title: t("vcal.title"), description: t("spotlightTierB.calendar.description"), emoji: "📅" }}
+          utility={{
+            children: (
+              <Button size="sm" onClick={() => setAddFor(anchor)} data-testid="vcal-add">
+                <Plus className="me-2 h-4 w-4" aria-hidden />
+                {t("vcal.add.title")}
+              </Button>
+            ),
+          }}
+          tabs={{
+            value: view,
+            onValueChange: (v) => changeView(v as CalendarView),
+            ariaLabel: t("spotlightTierB.calendar.viewsAria"),
+            items: (["day", "week", "month"] as const).map((v) => ({ value: v, label: t(`vcal.views.${v}`) })),
+          }}
+        >
+          <div className="flex flex-col gap-4" data-testid="vcal-page">
+            {vcalHero}
+            {/* VTID-05086: Unified Card System — stacked below the calendar header. */}
+            <EnrichmentCardStrip screen="calendar" />
+            {vcalGuide}
+            {query.isLoading ? (
+              <TierBListSkeleton count={3} />
+            ) : query.isError ? (
+              <TierBError onRetry={() => query.refetch()} />
+            ) : view === "day" ? (
+              <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} />
+            ) : view === "week" ? (
+              <WeekView key={viewRange("week", anchor).from.toISOString()} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
+            ) : (
+              <MonthView key={`${anchor.getFullYear()}-${anchor.getMonth()}`} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
+            )}
+            {vcalSections}
+          </div>
+        </ScreenFrame>
+        {vcalDialogs}
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <div className="min-h-screen bg-slate-50/60 px-4 pb-40 pt-4 sm:px-6 sm:pt-6" style={{ color: SURFACE.ink }} data-testid="vcal-page">
+        <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
+          {vcalHero}
+
+          <ViewSwitch view={view} onChange={changeView} />
+
+          {/* VTID-05086: Unified Card System — stacked below the calendar header. */}
+          <EnrichmentCardStrip screen="calendar" />
+
+          {vcalGuide}
+
+          {query.isLoading ? (
+            <div className="flex flex-col gap-2" aria-busy="true" aria-label={t("vcal.loading")}>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-16 animate-pulse rounded-2xl border border-slate-100 bg-white" />
+              ))}
+            </div>
+          ) : query.isError ? (
+            <div className={`${INDEX_CARD} flex flex-col items-center gap-3 py-8 text-center`} role="alert">
+              <span className="font-semibold">{t("vcal.error")}</span>
+              <button
+                type="button"
+                onClick={() => query.refetch()}
+                className={INDEX_PRIMARY_BTN}
+              >
+                {t("vcal.retry")}
+              </button>
+            </div>
+          ) : view === "day" ? (
+            <DayView key={anchor.toDateString()} items={items} onOpen={setOpenItem} summary={daySummary} />
+          ) : view === "week" ? (
+            <WeekView key={viewRange("week", anchor).from.toISOString()} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
+          ) : (
+            <MonthView key={`${anchor.getFullYear()}-${anchor.getMonth()}`} anchor={anchor} items={items} now={now} onOpen={setOpenItem} onAdd={setAddFor} />
+          )}
+
+          {vcalSections}
+        </div>
+
+        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 px-4 sm:px-6 md:bottom-6">
+          <div className={`mx-auto flex ${view === "week" ? "max-w-6xl" : "max-w-2xl"} justify-end`}>
+          {/* VTID-04536: add an entry by hand, saved through the gateway. */}
+          <button
+            type="button"
+            onClick={() => setAddFor(anchor)}
+            aria-label={t("vcal.add.title")}
+            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            style={{ background: SURFACE.ink }}
+            data-testid="vcal-add"
+          >
+            <span aria-hidden className="leading-none">+</span>
+          </button>
+          </div>
+        </div>
+      </div>
+
+      {vcalDialogs}
     </AppLayout>
   );
 }

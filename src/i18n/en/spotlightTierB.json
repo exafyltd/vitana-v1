@@ -1,0 +1,103 @@
+{
+  "spotlightTierB": {
+    "common": {
+      "errorTitle": "This couldn't be loaded right now",
+      "errorDesc": "Please try again in a moment.",
+      "retry": "Try again"
+    },
+    "health": {
+      "description": "Discover health services, programs and knowledge for your wellness journey.",
+      "pillarsAria": "Your five pillars",
+      "conditionsDescription": "Assess your health risks and create preventive plans for your long-term wellness.",
+      "educationDescription": "Curated health knowledge linked to your interests.",
+      "noVideosTitle": "No videos yet",
+      "noVideosDesc": "Videos on your topics will show up here once they exist.",
+      "noPodcastsTitle": "No podcasts yet",
+      "noPodcastsDesc": "Podcasts on your topics will show up here once they exist.",
+      "servicesDescription": "Book appointments, screenings and programs that fit you.",
+      "plansDescription": "AI-powered plans tailored to your health profile and goals.",
+      "biologyDescription": "Medical biomarkers, omics data and supplements in one place.",
+      "reportFallbackTitle": "Health report",
+      "reportType": {
+        "blood_panel": "Blood panel",
+        "genomics": "Genomics",
+        "metabolomics": "Metabolomics",
+        "microbiome": "Microbiome",
+        "allergy": "Allergy",
+        "cancer": "Cancer screening",
+        "hormones": "Hormones",
+        "imaging": "Imaging",
+        "other": "Other"
+      },
+      "reportStatus": {
+        "uploaded": "Uploaded",
+        "processing": "Processing",
+        "parsed": "Analyzed",
+        "failed": "Failed"
+      },
+      "categoryCount": "{category} ({count})",
+      "noSupplementsInCategory": "No supplements in this category",
+      "indexDescription": "Your one number for longevity across all five pillars."
+    },
+    "wallet": {
+      "description": "Your digital account for health rewards and benefits.",
+      "creditsLine": "{amount} VTNA Credits",
+      "send": "Send",
+      "request": "Request",
+      "exchange": "Exchange",
+      "withdraw": "Withdraw",
+      "clearFilter": "Clear filter",
+      "noMatchingTransactions": "No matching transactions",
+      "txType": {
+        "transfer": "Transfer",
+        "exchange": "Exchange",
+        "reward": "Reward",
+        "purchase": "Purchase",
+        "withdrawal": "Withdrawal",
+        "stake": "Staking",
+        "reseller_commission": "Sell & earn commission"
+      },
+      "txStatus": {
+        "pending": "Pending",
+        "completed": "Completed",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "balanceDescription": "Manage your credits, tokens and membership benefits.",
+      "creditsAmount": "{amount} credits",
+      "vtnaAmount": "{amount} VTNA",
+      "usdAmount": "${amount}"
+    },
+    "ai": {
+      "overviewDescription": "Your personal AI insights and recommendations for your wellbeing.",
+      "assistantDescription": "Set up your personal AI assistant here.",
+      "assistantTabAi": "AI"
+    },
+    "settings": {
+      "connectorsDescription": "Connect your apps and services and keep an eye on your integrations.",
+      "limitationsDescription": "These fixed rules apply to every product recommendation. Allergies, medical contraindications and medication interactions are never overridden.",
+      "tenantRoleDescription": "Manage your context and permissions."
+    },
+    "calendar": {
+      "description": "Your day, week and month at a glance.",
+      "viewsAria": "Calendar view"
+    },
+    "intents": {
+      "filtersAria": "Filter by kind",
+      "anyStyle": "Any",
+      "emptyBoard": "No open intents in this view yet. Be the first to post.",
+      "emptyDance": "No open dance posts yet. Post yours and be the first.",
+      "kindPartner": "Partner",
+      "matchTitle": "Your intent",
+      "matchDescription": "Your intent and its matches."
+    },
+    "sharing": {
+      "description": "Share your content across channels and manage what data you share.",
+      "campaignsDescription": "Plan, run and track multi-post campaigns.",
+      "bulkActions": "Bulk actions",
+      "exitBulkMode": "Exit bulk mode",
+      "consentDescription": "Control who can access your data and manage permissions.",
+      "campaignDetailDescription": "Details, posts and status of your campaign."
+    }
+  }
+}

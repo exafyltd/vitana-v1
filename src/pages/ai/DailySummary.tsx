@@ -8,6 +8,10 @@ import { t } from '@/lib/i18n-toast';
 import { fmtDate } from '@/lib/locale-format';
 import { useVitanaIndexHistory } from "@/hooks/useVitanaIndexHistory";
 import { fetchDailyLearnings } from "@/lib/memory-api";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { TIER_B_LIST, TierBEmpty, TierBListSkeleton, TierBSection } from "@/components/spotlight/tier-b/TierBKit";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -25,6 +29,7 @@ const aiSubItems = [
  */
 export default function DailySummary() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const { history } = useVitanaIndexHistory(7);
   const latestScore = history.length ? history[history.length - 1].score : null;
   const { data: learnings, isLoading } = useQuery({
@@ -32,6 +37,47 @@ export default function DailySummary() {
     queryFn: () => fetchDailyLearnings(14),
     staleTime: 5 * 60_000,
   });
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  // The compact header already carries the Vitana Index tile, so the separate score circle is not repeated.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.ai.dailySummaryAiIntelligence')} description={t('screens.ai.yourComprehensiveDailyWellnessRecapTomorrow')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: aiSubItems }}
+          header={{ title: t('screens.ai.dailySummary'), description: t('screens.ai.yourComprehensiveDailyWellnessRecapTomorrow'), emoji: '📝' }}
+        >
+          <TierBSection
+            title={
+              <span className="inline-flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
+                {t('screens.ai.dailyLearningsTitle')}
+              </span>
+            }
+          >
+            {isLoading ? (
+              <TierBListSkeleton size="standard" count={3} />
+            ) : !learnings || learnings.length === 0 ? (
+              <TierBEmpty Icon={Sparkles} titleKey="screens.ai.dailyLearningsEmpty" />
+            ) : (
+              <div className={TIER_B_LIST}>
+                {learnings.map((l) => (
+                  <VCard
+                    key={l.id}
+                    size="standard"
+                    title={fmtDate(new Date(`${l.date}T12:00:00`), { weekday: 'long', day: 'numeric', month: 'long' })}
+                    body={<span className="text-foreground">{l.content}</span>}
+                  />
+                ))}
+              </div>
+            )}
+          </TierBSection>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

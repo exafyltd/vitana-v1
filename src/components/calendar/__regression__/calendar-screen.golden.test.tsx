@@ -36,6 +36,8 @@ const h = vi.hoisted(() => ({
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { auth: { getSession: vi.fn() } } }));
 vi.mock("@/components/AppLayout", () => ({ default: ({ children }: { children: ReactNode }) => <div data-testid="app-layout">{children}</div> }));
 vi.mock("@/hooks/useRole", () => ({ useRole: () => ({ currentRole: h.role }) }));
+// VTID-05111: the page now reads the Spotlight flag; this harness pins it off (no TenantProvider here).
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/lib/orbActivate", () => ({ activateOrb: h.activateOrb }));
 // VTID-05086: the Unified Card System strip on /calendar has its own suite
 // (EnrichmentCardStrip.test.tsx); the calendar's recorded screen stays as is.

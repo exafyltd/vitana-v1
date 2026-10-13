@@ -32,6 +32,10 @@ import { YourEarningsWidget } from '@/components/subscription/YourEarningsWidget
 import { WhySubscribeFAQ } from '@/components/subscription/WhySubscribeFAQ';
 import { FoundingBanner } from '@/components/subscription/FoundingBanner';
 import { LaunchGrantBanner } from '@/components/subscription/LaunchGrantBanner';
+import { AlertCircle } from 'lucide-react';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { TierBEmpty } from '@/components/spotlight/tier-b/TierBKit';
 
 function SubscriptionsLoading() {
   return (
@@ -58,6 +62,41 @@ function SubscriptionsError({ message }: { message: string }) {
 
 function Subscriptions() {
   const { data, isLoading, isError, error } = useBilling();
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('billing.subscriptionsPage.title')} description={t('billing.subscriptionsPage.subtitle')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: walletNavigation }}
+          header={{ title: t('billing.subscriptionsPage.title'), description: t('billing.subscriptionsPage.subtitle'), emoji: '⭐' }}
+        >
+          {isLoading && <ArchetypeSkeleton archetype="collection" />}
+          {isError && (
+            <TierBEmpty Icon={AlertCircle} titleKey="spotlightTierB.common.errorTitle" descriptionKey="billing.checkoutErrors.checkoutFailed" />
+          )}
+          {data && (
+            <div className="flex flex-col gap-6">
+              <PrivacyFirstPromises />
+              <LaunchGrantBanner data={data} />
+              <FoundingBanner />
+              {data.plan.plan_key === 'free' && <RedeemCodeCard />}
+              <SubscriptionStateCard data={data} />
+              <YourEarningsWidget data={data} />
+              <PlansGridHeadline currentPlanKey={data.plan.plan_key} />
+              <PlansGridExpanded currentPlanKey={data.plan.plan_key} />
+              <FeatureComparisonTable data={data} />
+              <AddExtraMinutesTile />
+              <WhySubscribeFAQ />
+            </div>
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

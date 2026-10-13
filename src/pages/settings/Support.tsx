@@ -28,6 +28,8 @@ import { buildSupportContactBody, SUPPORT_CATEGORIES, type SupportCategory } fro
 import { MyTicketsList } from "@/components/support/MyTicketsList";
 import { useRTL } from "@/components/RTLProvider";
 import { MY_TICKETS_QUERY_KEY } from "@/lib/feedback-ticket";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 type TabKey = "contact" | "tickets" | "knowledge" | "community";
 
@@ -68,6 +70,8 @@ const CATEGORY_LABEL: Record<SupportCategory, string> = {
 const FAQ_KEYS = ["CreateAccount", "ResetPassword", "UpdateProfile", "PaymentMethods", "DataSecure", "DeleteAccount"] as const;
 
 function Support() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   // Radix Tabs (SplitBar) defaults to dir="ltr"; follow the app direction so
   // Arabic lays out right-to-left.
@@ -128,6 +132,190 @@ function Support() {
     if (!activateOrbForSupportReport()) notifyError("supportTickets.orbUnavailable");
   };
 
+  const supportPanes = (
+    <>
+      <SplitBarContent value="contact">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-12 lg:col-span-8">
+            <Card>
+              <CardContent className="space-y-4 p-5">
+                {created ? (
+                  <div className="flex flex-col items-center gap-3 py-6 text-center" data-testid="ticket-created">
+                    <CheckCircle2 className="h-10 w-10 text-emerald-600" />
+                    <h3 className="text-lg font-semibold">{t("supportTickets.submittedTitle")}</h3>
+                    <p className="text-base font-semibold" dir="auto">
+                      {t("supportTickets.submittedNumber", { number: created.ticket_number })}
+                    </p>
+                    <p className="max-w-md text-sm text-muted-foreground">{t("supportTickets.submittedBody")}</p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      <Button onClick={() => { handleTabChange("tickets", { ticket: created.id }); setCreated(null); }}>
+                        {t("supportTickets.viewTicket")}
+                      </Button>
+                      <Button variant="outline" onClick={() => setCreated(null)}>
+                        {t("supportTickets.sendAnother")}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <h3 className="flex items-center gap-2 font-semibold">
+                        <Send className="h-4 w-4 text-primary" />
+                        {t("supportTickets.support.contactTitle")}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{t("supportTickets.support.contactSubtitle")}</p>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label htmlFor="support-category" className="text-sm font-medium">{t("mobilesupport.categoryLabel")}</label>
+                      <Select value={category} onValueChange={(v) => setCategory(v as SupportCategory)}>
+                        <SelectTrigger id="support-category">
+                          <SelectValue placeholder={t("mobilesupport.categoryPlaceholder")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {SUPPORT_CATEGORIES.map((c) => (
+                            <SelectItem key={c} value={c}>{t(CATEGORY_LABEL[c])}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label htmlFor="support-message" className="text-sm font-medium">{t("supportTickets.support.messageLabel")}</label>
+                      <Textarea
+                        id="support-message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder={t("supportTickets.support.messagePlaceholder")}
+                        className="min-h-32"
+                        maxLength={10_000}
+                      />
+                    </div>
+                    <Button className="w-full" onClick={handleSubmit} disabled={sending || !message.trim()}>
+                      <Send className="me-2 h-4 w-4" />
+                      {sending ? t("supportTickets.support.sending") : t("supportTickets.support.submit")}
+                    </Button>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="col-span-12 space-y-4 lg:col-span-4">
+            <Card>
+              <CardContent className="space-y-3 p-5">
+                <h3 className="flex items-center gap-2 font-semibold">
+                  <Mic className="h-4 w-4 text-primary" />
+                  {t("supportTickets.support.voiceTitle")}
+                </h3>
+                <p className="text-sm text-muted-foreground">{t("supportTickets.support.voiceBody")}</p>
+                <Button variant="outline" className="w-full" onClick={handleVoice}>
+                  <Mic className="me-2 h-4 w-4" />
+                  {t("supportTickets.support.voiceButton")}
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="space-y-3 p-5">
+                <h3 className="flex items-center gap-2 font-semibold">
+                  <Mail className="h-4 w-4 text-primary" />
+                  {t("supportTickets.support.emailTitle")}
+                </h3>
+                <p className="text-sm text-muted-foreground">{t("supportTickets.support.emailBody")}</p>
+                <Button variant="ghost" className="w-full" onClick={() => { window.location.href = "mailto:support@exafy.io"; }}>
+                  <span dir="ltr">{t("mobilesupport.quickContactEmailSub")}</span>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="col-span-12">
+            <MyTicketsList pageSize={3} headingKey="supportTickets.title" />
+          </div>
+        </div>
+      </SplitBarContent>
+
+      <SplitBarContent value="tickets">
+        <p className="mb-3 text-sm text-muted-foreground">{t("supportTickets.subtitle")}</p>
+        <MyTicketsList hideHeading />
+      </SplitBarContent>
+
+      <SplitBarContent value="knowledge">
+        <Card>
+          <CardContent className="space-y-3 p-5">
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-primary" />
+              <div>
+                <h3 className="font-semibold">{t("mobilesupport.faqsTitle")}</h3>
+                <p className="text-sm text-muted-foreground">{t("mobilesupport.faqsSubtitle")}</p>
+              </div>
+            </div>
+            <Accordion type="single" collapsible className="w-full">
+              {FAQ_KEYS.map((k) => (
+                <AccordionItem key={k} value={k}>
+                  <AccordionTrigger className="text-start text-sm">{t(`mobilesupport.faq${k}Q`)}</AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground">{t(`mobilesupport.faq${k}A`)}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+            <Button variant="outline" onClick={() => navigate("/maxina_support")}>
+              {t("mobilesupport.faqsOpenHelpCenter")}
+            </Button>
+          </CardContent>
+        </Card>
+      </SplitBarContent>
+
+      <SplitBarContent value="community">
+        <Card>
+          <CardContent className="space-y-4 p-5">
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-primary" />
+              <div>
+                <h3 className="font-semibold">{t("mobilesupport.communityTitle")}</h3>
+                <p className="text-sm text-muted-foreground">{t("mobilesupport.communitySubtitle")}</p>
+              </div>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="space-y-2 rounded-xl border p-4">
+                <h4 className="text-sm font-medium">{t("mobilesupport.communityGroupTitle")}</h4>
+                <p className="text-sm text-muted-foreground">{t("mobilesupport.communityGroupBody")}</p>
+                <Button size="sm" onClick={() => navigate("/comm/groups")}>{t("mobilesupport.communityGroupCta")}</Button>
+              </div>
+              <div className="space-y-2 rounded-xl border p-4">
+                <h4 className="text-sm font-medium">{t("mobilesupport.communityForumTitle")}</h4>
+                <p className="text-sm text-muted-foreground">{t("mobilesupport.communityForumBody")}</p>
+                <Button size="sm" variant="outline" onClick={() => navigate("/comm/groups")}>{t("mobilesupport.communityForumCta")}</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </SplitBarContent>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: the tabs move into the utility row; the panes are the same.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t("supportTickets.support.seoTitle")} description={t("supportTickets.support.seoDescription")} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t("supportTickets.support.headerTitle"), description: t("supportTickets.support.headerDescription"), emoji: "🛟" }}
+          tabs={{
+            value: activeTab,
+            onValueChange: (v) => handleTabChange(v),
+            items: [
+              { value: "contact", label: t("supportTickets.support.tabContact") },
+              { value: "tickets", label: t("supportTickets.support.tabTickets") },
+              { value: "knowledge", label: t("supportTickets.support.tabFaqs") },
+              { value: "community", label: t("supportTickets.support.tabCommunity") },
+            ],
+          }}
+        >
+          {supportPanes}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title={t("supportTickets.support.seoTitle")} description={t("supportTickets.support.seoDescription")} canonical={window.location.href} />
@@ -146,160 +334,7 @@ function Support() {
               <SplitBarTrigger value="community">{t("supportTickets.support.tabCommunity")}</SplitBarTrigger>
             </SplitBarList>
 
-            <SplitBarContent value="contact">
-              <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-12 lg:col-span-8">
-                  <Card>
-                    <CardContent className="space-y-4 p-5">
-                      {created ? (
-                        <div className="flex flex-col items-center gap-3 py-6 text-center" data-testid="ticket-created">
-                          <CheckCircle2 className="h-10 w-10 text-emerald-600" />
-                          <h3 className="text-lg font-semibold">{t("supportTickets.submittedTitle")}</h3>
-                          <p className="text-base font-semibold" dir="auto">
-                            {t("supportTickets.submittedNumber", { number: created.ticket_number })}
-                          </p>
-                          <p className="max-w-md text-sm text-muted-foreground">{t("supportTickets.submittedBody")}</p>
-                          <div className="flex flex-wrap justify-center gap-2">
-                            <Button onClick={() => { handleTabChange("tickets", { ticket: created.id }); setCreated(null); }}>
-                              {t("supportTickets.viewTicket")}
-                            </Button>
-                            <Button variant="outline" onClick={() => setCreated(null)}>
-                              {t("supportTickets.sendAnother")}
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          <div>
-                            <h3 className="flex items-center gap-2 font-semibold">
-                              <Send className="h-4 w-4 text-primary" />
-                              {t("supportTickets.support.contactTitle")}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">{t("supportTickets.support.contactSubtitle")}</p>
-                          </div>
-                          <div className="space-y-1.5">
-                            <label htmlFor="support-category" className="text-sm font-medium">{t("mobilesupport.categoryLabel")}</label>
-                            <Select value={category} onValueChange={(v) => setCategory(v as SupportCategory)}>
-                              <SelectTrigger id="support-category">
-                                <SelectValue placeholder={t("mobilesupport.categoryPlaceholder")} />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {SUPPORT_CATEGORIES.map((c) => (
-                                  <SelectItem key={c} value={c}>{t(CATEGORY_LABEL[c])}</SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div className="space-y-1.5">
-                            <label htmlFor="support-message" className="text-sm font-medium">{t("supportTickets.support.messageLabel")}</label>
-                            <Textarea
-                              id="support-message"
-                              value={message}
-                              onChange={(e) => setMessage(e.target.value)}
-                              placeholder={t("supportTickets.support.messagePlaceholder")}
-                              className="min-h-32"
-                              maxLength={10_000}
-                            />
-                          </div>
-                          <Button className="w-full" onClick={handleSubmit} disabled={sending || !message.trim()}>
-                            <Send className="me-2 h-4 w-4" />
-                            {sending ? t("supportTickets.support.sending") : t("supportTickets.support.submit")}
-                          </Button>
-                        </>
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="col-span-12 space-y-4 lg:col-span-4">
-                  <Card>
-                    <CardContent className="space-y-3 p-5">
-                      <h3 className="flex items-center gap-2 font-semibold">
-                        <Mic className="h-4 w-4 text-primary" />
-                        {t("supportTickets.support.voiceTitle")}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{t("supportTickets.support.voiceBody")}</p>
-                      <Button variant="outline" className="w-full" onClick={handleVoice}>
-                        <Mic className="me-2 h-4 w-4" />
-                        {t("supportTickets.support.voiceButton")}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="space-y-3 p-5">
-                      <h3 className="flex items-center gap-2 font-semibold">
-                        <Mail className="h-4 w-4 text-primary" />
-                        {t("supportTickets.support.emailTitle")}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{t("supportTickets.support.emailBody")}</p>
-                      <Button variant="ghost" className="w-full" onClick={() => { window.location.href = "mailto:support@exafy.io"; }}>
-                        <span dir="ltr">{t("mobilesupport.quickContactEmailSub")}</span>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="col-span-12">
-                  <MyTicketsList pageSize={3} headingKey="supportTickets.title" />
-                </div>
-              </div>
-            </SplitBarContent>
-
-            <SplitBarContent value="tickets">
-              <p className="mb-3 text-sm text-muted-foreground">{t("supportTickets.subtitle")}</p>
-              <MyTicketsList hideHeading />
-            </SplitBarContent>
-
-            <SplitBarContent value="knowledge">
-              <Card>
-                <CardContent className="space-y-3 p-5">
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
-                    <div>
-                      <h3 className="font-semibold">{t("mobilesupport.faqsTitle")}</h3>
-                      <p className="text-sm text-muted-foreground">{t("mobilesupport.faqsSubtitle")}</p>
-                    </div>
-                  </div>
-                  <Accordion type="single" collapsible className="w-full">
-                    {FAQ_KEYS.map((k) => (
-                      <AccordionItem key={k} value={k}>
-                        <AccordionTrigger className="text-start text-sm">{t(`mobilesupport.faq${k}Q`)}</AccordionTrigger>
-                        <AccordionContent className="text-sm text-muted-foreground">{t(`mobilesupport.faq${k}A`)}</AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                  <Button variant="outline" onClick={() => navigate("/maxina_support")}>
-                    {t("mobilesupport.faqsOpenHelpCenter")}
-                  </Button>
-                </CardContent>
-              </Card>
-            </SplitBarContent>
-
-            <SplitBarContent value="community">
-              <Card>
-                <CardContent className="space-y-4 p-5">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-primary" />
-                    <div>
-                      <h3 className="font-semibold">{t("mobilesupport.communityTitle")}</h3>
-                      <p className="text-sm text-muted-foreground">{t("mobilesupport.communitySubtitle")}</p>
-                    </div>
-                  </div>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    <div className="space-y-2 rounded-xl border p-4">
-                      <h4 className="text-sm font-medium">{t("mobilesupport.communityGroupTitle")}</h4>
-                      <p className="text-sm text-muted-foreground">{t("mobilesupport.communityGroupBody")}</p>
-                      <Button size="sm" onClick={() => navigate("/comm/groups")}>{t("mobilesupport.communityGroupCta")}</Button>
-                    </div>
-                    <div className="space-y-2 rounded-xl border p-4">
-                      <h4 className="text-sm font-medium">{t("mobilesupport.communityForumTitle")}</h4>
-                      <p className="text-sm text-muted-foreground">{t("mobilesupport.communityForumBody")}</p>
-                      <Button size="sm" variant="outline" onClick={() => navigate("/comm/groups")}>{t("mobilesupport.communityForumCta")}</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </SplitBarContent>
+            {supportPanes}
           </SplitBar>
         </div>
       </div>
