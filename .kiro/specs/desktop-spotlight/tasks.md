@@ -138,7 +138,8 @@ Decisions taken (for Gate 2):
   header carries member tiles). 25 `design-allow-next-line` with reasons (viewport-sized scroll areas, modal backdrops,
   device bezel). `src/components/admin/**` not migrated yet. The staging design-lint skips role-gated operator routes;
   `vtid-05113-admin-workspace.staging.spec.ts` checks them (gate for a non-admin, workspace frame for an admin).
-- [ ] 7.2 Backoffice · VTID-05114
+- [x] 7.2 Backoffice · VTID-05114
+  Status: implemented (VTID-05114). All 27 `/backoffice/*` routes migrated (`workspace`, BackOfficeTabs kept above the frame). Decisions (for Gate 2): `BackOfficePage` itself is not edited — a page-local `BackOfficeWorkspacePage` wraps it; token fixes apply on both paths (status colours, spacing scale); one reasoned `design-allow-next-line` keeps the flag-off placeholder 404 centring. BackOffice `design/*` errors 12 → 0.
 - [ ] 7.3 Dev · VTID-05115
 - [ ] 7.4 Professional + Staff · VTID-05116
 - [ ] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117

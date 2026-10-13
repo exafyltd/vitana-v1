@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 379
-- **Distinct i18n keys consumed:** 4760
+- **Pages scanned:** 381
+- **Distinct i18n keys consumed:** 4761
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -1661,6 +1661,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 5, total in shard: 11778, **MISSING:** screens.backoffice.${waveKey}
 - `sidebar` — used: 1, total in shard: 60, **MISSING:** sidebar.backoffice.${section.key}
 
+### src/pages/backoffice/BackOfficeWorkspacePage.tsx
+
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 1, total in shard: 11763
+
 ### src/pages/backoffice/accounting/ChartOfAccounts.tsx
 
 **Status:** ✅ clean — keys consumed: 31, namespaces: 1
@@ -1874,6 +1882,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 31, total in shard: 11778
+
+### src/pages/backoffice/vtid-05114-backoffice-workspace.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## community/
 
@@ -3037,7 +3049,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 256 |
+| `screens` | 257 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
