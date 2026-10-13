@@ -70,7 +70,7 @@ function DpaBody({ dpa }: { dpa: PartnerDpa }) {
             {b.text}
           </h4>
         ) : b.kind === 'marker' ? (
-          <p key={i} className="rounded-lg bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-900" dir="ltr">
+          <p key={i} className="rounded-lg bg-status-warning-subtle px-2 py-1 text-xs font-semibold text-foreground" dir="ltr">
             {b.text}
           </p>
         ) : b.kind === 'item' ? (
@@ -193,12 +193,12 @@ export function PartnerDpaSheet({
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent
         fullscreenOnMobile
-        className="md:max-w-3xl lg:flex lg:max-h-[calc(100dvh-2rem)] lg:flex-col lg:overflow-hidden lg:[&>div]:min-h-0 lg:[&>div]:flex-1"
+        className="md:max-w-3xl lg:flex lg:max-h-dvh lg:flex-col lg:overflow-hidden lg:[&>div]:min-h-0 lg:[&>div]:flex-1"
         data-testid="partner-dpa-sheet"
       >
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="flex items-center gap-2 text-2xl font-bold">
-            <FileSignature className="h-6 w-6 shrink-0 text-amber-700" />
+            <FileSignature className="h-6 w-6 shrink-0 text-status-warning" />
             {t(`${K}.title`)}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
@@ -219,17 +219,17 @@ export function PartnerDpaSheet({
           ) : (
             <>
               {updated && (
-                <p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" data-testid="partner-dpa-updated">
+                <p className="rounded-xl border border-status-warning/40 bg-status-warning-subtle p-3 text-sm text-foreground" data-testid="partner-dpa-updated">
                   {t(`${K}.updated`)}
                 </p>
               )}
               {status?.kind === 'unsigned' && status.resign && (
-                <p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" data-testid="partner-dpa-resign">
+                <p className="rounded-xl border border-status-warning/40 bg-status-warning-subtle p-3 text-sm text-foreground" data-testid="partner-dpa-resign">
                   {t(`${K}.resignNotice`, { version: isolate(dpa.version) })}
                 </p>
               )}
               {signed && (
-                <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900" data-testid="partner-dpa-signed">
+                <p className="rounded-xl border border-status-success/30 bg-status-success-subtle p-3 text-sm text-foreground" data-testid="partner-dpa-signed">
                   {signedDate
                     ? t(`${K}.signedNotice`, { version: isolate(signed.signedVersion), date: isolate(signedDate) })
                     : t(`${K}.signedNoticeNoDate`, { version: isolate(signed.signedVersion) })}
@@ -264,14 +264,14 @@ export function PartnerDpaSheet({
               </div>
 
               {/* German is binding — always on screen, whatever language is shown. */}
-              <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-sm text-amber-950" data-testid="partner-dpa-binding-notice">
+              <div className="rounded-xl border border-status-warning/30 bg-status-warning-subtle/70 p-3 text-sm text-foreground" data-testid="partner-dpa-binding-notice">
                 <p>{t(`${K}.bindingNotice`)}</p>
                 {!showingGerman && (
                   <button
                     type="button"
                     onClick={() => void switchTo(BINDING_DPA_LOCALE)}
                     disabled={switching}
-                    className="mt-1 min-h-11 font-semibold text-amber-800 underline underline-offset-2"
+                    className="mt-1 min-h-11 font-semibold text-status-warning underline underline-offset-2"
                     data-testid="partner-dpa-read-german"
                   >
                     {t(`${K}.readGerman`)}
@@ -308,7 +308,7 @@ export function PartnerDpaSheet({
         {/* The signer's name, role, the declaration and Sign live together in the footer, always on screen. */}
         <ResponsiveDialogFooter className="flex-col gap-3 sm:flex-col sm:justify-start sm:space-x-0" data-testid="partner-dpa-footer">
           {dpa && !signed && !loading && !failed && (
-            <div className="space-y-3 rounded-xl bg-amber-50/60 p-3" data-testid="partner-dpa-form">
+            <div className="space-y-3 rounded-xl bg-status-warning-subtle/60 p-3" data-testid="partner-dpa-form">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="dpa-signer-name">{t(`${K}.nameLabel`)}</Label>
@@ -318,7 +318,7 @@ export function PartnerDpaSheet({
                     onChange={(e) => setSignerName(e.target.value)}
                     maxLength={MAX_SIGNER_NAME}
                     autoComplete="name"
-                    className="h-11 text-base focus-visible:ring-amber-500"
+                    className="h-11 text-base focus-visible:ring-status-warning"
                     data-testid="partner-dpa-name"
                   />
                 </div>
@@ -330,7 +330,7 @@ export function PartnerDpaSheet({
                     onChange={(e) => setSignerRole(e.target.value)}
                     maxLength={MAX_SIGNER_ROLE}
                     autoComplete="organization-title"
-                    className="h-11 text-base focus-visible:ring-amber-500"
+                    className="h-11 text-base focus-visible:ring-status-warning"
                     data-testid="partner-dpa-role"
                   />
                 </div>
@@ -370,7 +370,7 @@ export function PartnerDpaSheet({
                 onClick={() => void sign()}
                 disabled={!ready || saving || switching || loading}
                 data-testid="partner-dpa-sign"
-                className="h-12 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800 sm:flex-none"
+                className="h-12 flex-1 rounded-xl bg-status-warning font-semibold text-primary-foreground hover:bg-status-warning/90 sm:flex-none"
               >
                 {saving ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : null}
                 {t(`${K}.sign`)}

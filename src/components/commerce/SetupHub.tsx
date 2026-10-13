@@ -655,12 +655,12 @@ function DpaRow({ row, onOpen }: { row: DpaRowState; onOpen: () => void }) {
       : t(`${K}.rowSignedPlain`);
     return (
       <div className="mt-2 flex min-h-14 items-center gap-3 rounded-2xl border border-border p-3" data-testid="setup-dpa" data-state="done">
-        <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-600" />
+        <CheckCircle2 className="h-6 w-6 shrink-0 text-status-success" />
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-foreground">{t(`${K}.rowTitle`)}</p>
           <p className="text-sm text-muted-foreground">{body}</p>
         </div>
-        <button type="button" onClick={onOpen} className="min-h-11 shrink-0 text-sm font-semibold text-amber-800">
+        <button type="button" onClick={onOpen} className="min-h-11 shrink-0 text-sm font-semibold text-status-warning">
           {t(`${K}.view`)}
         </button>
       </div>
@@ -674,10 +674,10 @@ function DpaRow({ row, onOpen }: { row: DpaRowState; onOpen: () => void }) {
       data-testid="setup-dpa"
       data-state={resign ? 'resign' : 'todo'}
       className={`mt-2 flex min-h-14 w-full items-center gap-3 rounded-2xl border p-3 text-start transition-colors ${
-        resign ? 'border-amber-400 bg-amber-50 hover:bg-amber-100' : 'border-border hover:border-amber-400 hover:bg-amber-50/50'
+        resign ? 'border-status-warning/60 bg-status-warning-subtle hover:bg-status-warning-subtle/70' : 'border-border hover:border-status-warning/60 hover:bg-status-warning-subtle/50'
       }`}
     >
-      {resign ? <TriangleAlert className="h-6 w-6 shrink-0 text-amber-700" /> : <FileSignature className="h-6 w-6 shrink-0 text-muted-foreground/70" />}
+      {resign ? <TriangleAlert className="h-6 w-6 shrink-0 text-status-warning" /> : <FileSignature className="h-6 w-6 shrink-0 text-muted-foreground/70" />}
       <div className="min-w-0 flex-1">
         <p className="font-semibold text-foreground">{t(resign ? `${K}.rowResignTitle` : `${K}.rowTitle`)}</p>
         <p className="text-sm text-muted-foreground">
@@ -688,7 +688,7 @@ function DpaRow({ row, onOpen }: { row: DpaRowState; onOpen: () => void }) {
               : t(`${K}.rowBodyNoVersion`)}
         </p>
       </div>
-      <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
+      <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-status-warning">
         {t(`${K}.rowCta`)}
         <ChevronRight className="h-4 w-4 rtl:rotate-180" />
       </span>
