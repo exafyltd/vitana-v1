@@ -8,6 +8,7 @@ import {
   type BucketResult,
   type StorageAdapter,
 } from '../_shared/erase-user-storage.ts';
+import { eraseHealthRaw, healthRawFullyErased } from '../_shared/erase-health-raw.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -207,6 +208,30 @@ Deno.serve(async (req) => {
       console.error(`[Deletion] ${erase.detail}`);
     }
 
+    // ── Step 1c (VTID-05160): erase the member's raw health batches ──
+    // They live in the health store's own S3 bucket, which neither
+    // erase_user_data nor the Storage walk below reaches. Same rule as the
+    // Storage step: keep the account unless the bucket is verified empty.
+    // A store that was never enabled (404 HEALTH_STORE_DISABLED) holds nothing.
+    console.log(`[Deletion] Erasing raw health batches for user ${userId}`);
+    const healthRaw = await eraseHealthRaw(userId);
+    if (!healthRawFullyErased(healthRaw)) {
+      console.error("[Deletion] storage_incomplete (health raw batches) — account NOT deleted, retry needed", healthRaw);
+      await serviceClient
+        .from("account_deletion_requests")
+        .update({ status: "storage_incomplete", processed_at: new Date().toISOString() })
+        .eq("user_id", userId);
+      return new Response(JSON.stringify({ error: "Failed to delete account" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    console.log(
+      healthRaw.disabled
+        ? "[Deletion] health store not enabled — no raw health batches stored"
+        : `[Deletion] deleted ${healthRaw.deleted} raw health batches`,
+    );
+
     // ── Step 2: Delete storage files ──
     console.log(`[Deletion] Cleaning storage buckets for user ${userId}`);
     const storageResults = await deleteUserStorageFiles(serviceClient, userId);
@@ -266,6 +291,7 @@ Deno.serve(async (req) => {
           table_errors: tableErrors.length,
           storage_buckets_cleaned: storageResults.filter((r) => r.deleted > 0).length,
           storage_files_deleted: storageResults.reduce((sum, r) => sum + r.deleted, 0),
+          health_raw_batches_deleted: healthRaw.deleted,
         },
       }),
       {
