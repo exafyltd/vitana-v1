@@ -9,6 +9,8 @@ import { adminLiveNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const columns = [
   {
@@ -41,6 +43,7 @@ const columns = [
 ];
 
 export default function LiveAttendance() {
+  const spotlight = useSpotlightEnabled();
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
@@ -64,10 +67,8 @@ export default function LiveAttendance() {
     ? Math.round(records.filter((r: any) => r.duration_minutes != null).reduce((sum: number, r: any) => sum + r.duration_minutes, 0) / records.filter((r: any) => r.duration_minutes != null).length)
     : 0;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminLiveNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.attendance')} description="Track who joined which rooms and for how long" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -90,7 +91,19 @@ export default function LiveAttendance() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminLiveNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

@@ -16,6 +16,8 @@ import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAutomationCatalog, useUpsertBinding } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const DOMAIN_VARIANT: Record<string, "active" | "warning" | "error" | "info" | "inactive"> = {
   "connect-people": "active",
@@ -59,6 +61,7 @@ function formatTrigger(entry: { trigger_type: string; trigger_config: any }): st
 }
 
 export default function AutopilotAutomations() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [domainFilter, setDomainFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -97,10 +100,8 @@ export default function AutopilotAutomations() {
   // Extract unique domains from catalog
   const domains = [...new Set(catalog.map(a => a.domain))].sort();
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="autopilot" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="⚡"
           title={t('screens.admin.activeAutomations')}
@@ -162,7 +163,7 @@ export default function AutopilotAutomations() {
 
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((entry) => (
-            <Card key={entry.id} className={entry.enabled ? "border-green-200 dark:border-green-800" : ""}>
+            <Card key={entry.id} className={entry.enabled ? "border-status-success/40" : ""}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -195,7 +196,19 @@ export default function AutopilotAutomations() {
             </Card>
           ))}
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="autopilot" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

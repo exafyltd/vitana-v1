@@ -14,21 +14,22 @@ import { useOverviewActivity } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 export default function AuditOasisEvents() {
+  const spotlight = useSpotlightEnabled();
   const activityQuery = useOverviewActivity(100);
   const events = activityQuery.data || [];
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="audit" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📡"
           title={t('screens.admin.oasisEvents')}
           description="All OASIS telemetry events for audit and compliance review"
           rightAction={
             <Button variant="outline" size="sm" onClick={() => activityQuery.refetch()} disabled={activityQuery.isFetching}>
-              <RefreshCw className={`h-4 w-4 mr-2 ${activityQuery.isFetching ? "animate-spin" : ""}`} />
+              <RefreshCw className={`h-4 w-4 me-2 ${activityQuery.isFetching ? "animate-spin" : ""}`} />
               {t('screens.admin.refresh')}
             </Button>
           }
@@ -77,7 +78,19 @@ export default function AuditOasisEvents() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="audit" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

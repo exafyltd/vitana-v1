@@ -6,8 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useOverviewSummary } from "@/hooks/useAdminOverview";
 import { useSignupReport } from "@/hooks/useAdminInsights";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function Growth() {
+  const spotlight = useSpotlightEnabled();
   const summaryQuery = useOverviewSummary();
   const signupQuery = useSignupReport();
 
@@ -15,10 +18,8 @@ export default function Growth() {
   const roles = summaryQuery.data?.role_distribution || {};
   const signup = signupQuery.data;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="insights" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🌱"
           title={t('screens.admin.growth')}
@@ -42,7 +43,7 @@ export default function Growth() {
                 <CardContent className="p-4">
                   <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.newSignups7d')}</div>
                   <div className="text-3xl font-bold mt-1">{kpi.new_signups_7d}</div>
-                  <span className={`text-xs ${kpi.new_signups_delta_pct >= 0 ? "text-green-600" : "text-red-600"}`}>{t('screens.admin.value0New_signups_delta_pctVsPriorWeek', { value0: kpi.new_signups_delta_pct >= 0 ? "+" : "", new_signups_delta_pct: kpi.new_signups_delta_pct })}
+                  <span className={`text-xs ${kpi.new_signups_delta_pct >= 0 ? "text-status-success" : "text-status-error"}`}>{t('screens.admin.value0New_signups_delta_pctVsPriorWeek', { value0: kpi.new_signups_delta_pct >= 0 ? "+" : "", new_signups_delta_pct: kpi.new_signups_delta_pct })}
                   </span>
                 </CardContent>
               </Card>
@@ -82,7 +83,7 @@ export default function Growth() {
                               style={{ width: `${pct}%` }}
                             />
                           </div>
-                          <span className="text-sm font-medium w-16 text-right">{count} ({pct}%)</span>
+                          <span className="text-sm font-medium w-16 text-end">{count} ({pct}%)</span>
                         </div>
                       );
                     })}
@@ -91,7 +92,19 @@ export default function Growth() {
             </Card>
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="insights" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

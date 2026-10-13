@@ -13,10 +13,13 @@ import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const statusVariant = (s: string) =>
   s === "approved" ? "active" : s === "rejected" ? "error" : "warning";
 
 export default function Videos() {
+  const spotlight = useSpotlightEnabled();
   const { data: items = [], isLoading } = useContentItems({ type: "video" });
   const moderate = useModerateContent();
   const [search, setSearch] = useState("");
@@ -32,10 +35,8 @@ export default function Videos() {
     });
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="content" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🎬"
           title={t('screens.admin.videos')}
@@ -60,13 +61,13 @@ export default function Videos() {
                   <TableHead>{t('screens.admin.status')}</TableHead>
                   <TableHead>{t('screens.admin.submitted')}</TableHead>
                   <TableHead>URL</TableHead>
-                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
+                  <TableHead className="text-end">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered.map((v) => (
                   <TableRow key={v.id}>
-                    <TableCell className="font-medium max-w-[200px] truncate">{v.title}</TableCell>
+                    <TableCell className="font-medium max-w-48 truncate">{v.title}</TableCell>
                     <TableCell>
                       <AdminStatusBadge variant={statusVariant(v.status)}>
                         {v.status}
@@ -77,14 +78,14 @@ export default function Videos() {
                     </TableCell>
                     <TableCell>
                       {v.external_url ? (
-                        <a href={v.external_url as string} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
+                        <a href={v.external_url as string} target="_blank" rel="noreferrer" className="text-status-info underline text-sm">
                           {t('screens.admin.link')}
                         </a>
                       ) : (
                         <span className="text-muted-foreground text-sm">--</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right space-x-1">
+                    <TableCell className="text-end space-x-1">
                       <Button size="sm" variant="outline" onClick={() => handleAction(v.id, "approve")}>{t('screens.admin.approve')}</Button>
                       <Button size="sm" variant="outline" onClick={() => handleAction(v.id, "reject")}>{t('screens.admin.reject')}</Button>
                       <Button size="sm" variant="outline" onClick={() => handleAction(v.id, "flag")}>{t('screens.admin.flag')}</Button>
@@ -95,7 +96,19 @@ export default function Videos() {
             </Table>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="content" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

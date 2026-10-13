@@ -15,6 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { adminSystemNavigation } from "@/config/navigation";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface BootstrapResult {
   email: string;
@@ -31,6 +33,7 @@ interface AdminUser {
 }
 
 export default function Bootstrap() {
+  const spotlight = useSpotlightEnabled();
   const { hasPermission } = usePermissions();
   const { toast } = useToast();
   const [emailInput, setEmailInput] = useState("");
@@ -43,10 +46,8 @@ export default function Bootstrap() {
 
   // Security check - only Exafy admins can access
   if (!hasPermission("exafy.admin")) {
-    return (
-      <AppLayout>
-        <SEO title={t('screens.admin.adminBootstrapAccessDenied')} />
-        <div className="min-h-screen flex items-center justify-center p-4">
+    const adminBody = (
+      <>
           <Card className="max-w-md w-full">
             <CardContent className="flex flex-col items-center space-y-4 p-6">
               <AlertCircle className="h-16 w-16 text-destructive" />
@@ -58,7 +59,19 @@ export default function Bootstrap() {
               </div>
             </CardContent>
           </Card>
-        </div>
+      </>
+    );
+
+    return (
+      <AppLayout>
+        <SEO title={t('screens.admin.adminBootstrapAccessDenied')} />
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            <div className="flex items-center justify-center">{adminBody}</div>
+          </ScreenFrame>
+        ) : (
+          <div className="min-h-screen flex items-center justify-center p-4">{adminBody}</div>
+        )}
       </AppLayout>
     );
   }
@@ -189,12 +202,8 @@ export default function Bootstrap() {
     }
   };
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.admin.adminBootstrap')} description="Manage super administrator accounts" />
-      <SubNavigation items={adminSystemNavigation} />
-      
-      <div className="p-6 space-y-6">
+  const adminBody2 = (
+    <>
         <AdminHeader
           title={t('screens.admin.adminBootstrap')}
           description="Elevate users to Exafy super administrators and manage admin accounts"
@@ -293,7 +302,7 @@ export default function Bootstrap() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant="secondary">
-                            <Shield className="h-3 w-3 mr-1" />
+                            <Shield className="h-3 w-3 me-1" />
                             {t('screens.admin.admin')}
                           </Badge>
                           <Button
@@ -355,7 +364,21 @@ export default function Bootstrap() {
             <strong>{t('screens.admin.securityNotice')}</strong>{t('screens.admin.superAdministratorsHaveFullAccessAll')}
           </AlertDescription>
         </Alert>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.admin.adminBootstrap')} description="Manage super administrator accounts" />
+      <SubNavigation items={adminSystemNavigation} />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody2}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody2}</div>
+      )}
 
       {/* Confirmation Dialog */}
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>

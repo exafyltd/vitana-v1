@@ -19,11 +19,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useAutopilotSettings, useUpdateAutopilotSettings } from "@/hooks/useAdminAutopilot";
 import type { AutopilotSettings } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const ALL_DOMAINS = ["health", "community", "longevity", "professional", "general"];
 const ALL_RISK_LEVELS = ["low", "medium", "high"];
 
 export default function AutopilotGuardrails() {
+  const spotlight = useSpotlightEnabled();
   const settingsQuery = useAutopilotSettings();
   const updateSettings = useUpdateAutopilotSettings();
 
@@ -63,10 +66,8 @@ export default function AutopilotGuardrails() {
     setDirty(false);
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="autopilot" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🛡️"
           title={t('screens.admin.guardrails')}
@@ -144,7 +145,7 @@ export default function AutopilotGuardrails() {
                     <Label htmlFor={`risk-${level}`} className="text-sm capitalize">
                       {level}
                       {level === "high" && (
-                        <span className="ml-1 text-xs text-destructive">{t('screens.admin.destructiveActionsPossible')}</span>
+                        <span className="ms-1 text-xs text-destructive">{t('screens.admin.destructiveActionsPossible')}</span>
                       )}
                     </Label>
                   </div>
@@ -253,9 +254,21 @@ export default function AutopilotGuardrails() {
         )}
 
         {updateSettings.isSuccess && !dirty && (
-          <p className="text-sm text-green-600 dark:text-green-400 text-center">{t('screens.admin.settingsSavedSuccessfully')}</p>
+          <p className="text-sm text-status-success text-center">{t('screens.admin.settingsSavedSuccessfully')}</p>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="autopilot" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

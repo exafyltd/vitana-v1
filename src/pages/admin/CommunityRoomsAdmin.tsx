@@ -8,18 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Plus, Users, Calendar, TrendingUp, Shield } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function CommunityRoomsAdmin() {
-  return (
-    <AppLayout>
-      <SEO 
-        title={t('screens.admin.communityRoomsAdminVitana')} 
-        description="Manage community live rooms and sessions" 
-        canonical={window.location.href} 
-      />
-      <SubNavigation items={adminLiveStreamNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.communityRoomsManagement')}
@@ -93,7 +88,7 @@ export default function CommunityRoomsAdmin() {
               </TabsList>
               
               <Button>
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 me-2" />
                 {t('screens.admin.createRoom')}
               </Button>
             </div>
@@ -155,7 +150,25 @@ export default function CommunityRoomsAdmin() {
             </TabsContent>
           </Tabs>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={t('screens.admin.communityRoomsAdminVitana')} 
+        description="Manage community live rooms and sessions" 
+        canonical={window.location.href} 
+      />
+      <SubNavigation items={adminLiveStreamNavigation} />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

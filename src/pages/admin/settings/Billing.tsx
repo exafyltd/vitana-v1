@@ -9,16 +9,17 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings } from "@/hooks/useAdminSettings";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function SettingsBilling() {
+  const spotlight = useSpotlightEnabled();
   const settingsQuery = useTenantSettings();
   const billing = (settingsQuery.data?.billing || {}) as Record<string, unknown>;
   const hasBilling = Object.keys(billing).length > 0;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="settings" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="💳"
           title={t('screens.admin.billing')}
@@ -70,7 +71,19 @@ export default function SettingsBilling() {
             </Card>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="settings" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

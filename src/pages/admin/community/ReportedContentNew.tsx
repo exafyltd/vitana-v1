@@ -26,6 +26,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { notifySuccess, notifyError, t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 interface ReportRow {
   id: string;
@@ -47,6 +49,7 @@ interface AuditRow { id: string; actor_id: string | null; action: string; target
 const REPORT_VIEW = "reports", BANS_VIEW = "bans", AUDIT_VIEW = "audit";
 
 export default function ReportedContentNew() {
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   const [view, setView] = useState<string>(REPORT_VIEW);
   const [statusFilter, setStatusFilter] = useState("pending");
@@ -179,10 +182,8 @@ export default function ReportedContentNew() {
   const pendingCount = reports.filter((r) => r.status === "pending").length;
   const statusVariant = (s: string) => (s === "pending" ? "warning" : s === "resolved" ? "active" : "inactive") as "warning" | "active" | "inactive";
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="community" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader emoji="🚩" title={t("screens.admin.reportedContent")} description={t("screens.admin.modCenterDesc")} />
 
         {/* view switch */}
@@ -232,13 +233,13 @@ export default function ReportedContentNew() {
                           {r.status === "pending" || r.status === "reviewing" ? (
                             <div className="flex flex-wrap gap-2">
                               {r.authorId && (
-                                <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${r.authorId}`)}><ExternalLink className="h-4 w-4 mr-1" />{t("screens.admin.modView")}</Button>
+                                <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${r.authorId}`)}><ExternalLink className="h-4 w-4 me-1" />{t("screens.admin.modView")}</Button>
                               )}
                               {r.content_type === "profile_post" && (
-                                <Button size="sm" variant="destructive" onClick={() => removePost(r)}><Trash2 className="h-4 w-4 mr-1" />{t("screens.admin.modRemovePost")}</Button>
+                                <Button size="sm" variant="destructive" onClick={() => removePost(r)}><Trash2 className="h-4 w-4 me-1" />{t("screens.admin.modRemovePost")}</Button>
                               )}
                               {r.authorId && (
-                                <Button size="sm" variant="outline" className="text-destructive" onClick={() => banAuthor(r)}><Ban className="h-4 w-4 mr-1" />{t("screens.admin.modBanAuthor")}</Button>
+                                <Button size="sm" variant="outline" className="text-destructive" onClick={() => banAuthor(r)}><Ban className="h-4 w-4 me-1" />{t("screens.admin.modBanAuthor")}</Button>
                               )}
                               <Button size="sm" variant="outline" onClick={() => dismiss(r)}>{t("screens.admin.dismiss")}</Button>
                             </div>
@@ -273,7 +274,7 @@ export default function ReportedContentNew() {
                       <TableCell className="text-sm">{b.name}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{b.reason || "—"}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{fmtDate(new Date(b.created_at))}</TableCell>
-                      <TableCell><Button size="sm" variant="outline" onClick={() => unban(b)}><ShieldOff className="h-4 w-4 mr-1" />{t("screens.admin.modUnban")}</Button></TableCell>
+                      <TableCell><Button size="sm" variant="outline" onClick={() => unban(b)}><ShieldOff className="h-4 w-4 me-1" />{t("screens.admin.modUnban")}</Button></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -298,7 +299,7 @@ export default function ReportedContentNew() {
                   {audit.map((a) => (
                     <TableRow key={a.id}>
                       <TableCell><Badge variant="outline" className="capitalize">{a.action.replace(/_/g, " ")}</Badge></TableCell>
-                      <TableCell className="text-xs text-muted-foreground truncate max-w-[180px]">{a.target_type}: {a.target_id}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground truncate max-w-44">{a.target_type}: {a.target_id}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{a.reason || "—"}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{fmtDate(new Date(a.created_at))}</TableCell>
                     </TableRow>
@@ -308,7 +309,19 @@ export default function ReportedContentNew() {
             </Card>
           )
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="community" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

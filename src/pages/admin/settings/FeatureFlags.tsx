@@ -10,6 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const KNOWN_FLAGS = [
   { key: "enable_voice_widget", label: "Voice Widget", description: "Enable the ORB voice assistant widget" },
@@ -23,6 +25,7 @@ const KNOWN_FLAGS = [
 ] as const;
 
 export default function SettingsFeatureFlags() {
+  const spotlight = useSpotlightEnabled();
   const settingsQuery = useTenantSettings();
   const updateMutation = useUpdateTenantSettings();
   const flags = (settingsQuery.data?.feature_flags || {}) as Record<string, boolean>;
@@ -38,10 +41,8 @@ export default function SettingsFeatureFlags() {
     );
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="settings" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🚩"
           title={t('screens.admin.featureFlags')}
@@ -77,7 +78,19 @@ export default function SettingsFeatureFlags() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="settings" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

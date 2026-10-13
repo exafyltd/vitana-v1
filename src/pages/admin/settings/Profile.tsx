@@ -13,8 +13,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
 import { notifySuccess, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function SettingsProfile() {
+  const spotlight = useSpotlightEnabled();
   const settingsQuery = useTenantSettings();
   const updateMutation = useUpdateTenantSettings();
   const profile = (settingsQuery.data?.profile || {}) as Record<string, string>;
@@ -43,10 +46,8 @@ export default function SettingsProfile() {
     );
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="settings" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🏢"
           title={t('screens.admin.profile')}
@@ -99,7 +100,19 @@ export default function SettingsProfile() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="settings" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

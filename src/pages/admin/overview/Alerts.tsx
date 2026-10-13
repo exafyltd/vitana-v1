@@ -14,21 +14,22 @@ import { useOverviewAlerts } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 export default function OverviewAlerts() {
+  const spotlight = useSpotlightEnabled();
   const alertsQuery = useOverviewAlerts();
   const alerts = alertsQuery.data || [];
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="overview" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🚨"
           title={t('screens.admin.alerts')}
           description="Critical and error-level events in the last 24 hours"
           rightAction={
             <Button variant="outline" size="sm" onClick={() => alertsQuery.refetch()} disabled={alertsQuery.isFetching}>
-              <RefreshCw className={`h-4 w-4 mr-2 ${alertsQuery.isFetching ? "animate-spin" : ""}`} />
+              <RefreshCw className={`h-4 w-4 me-2 ${alertsQuery.isFetching ? "animate-spin" : ""}`} />
               {t('screens.admin.refresh')}
             </Button>
           }
@@ -48,7 +49,7 @@ export default function OverviewAlerts() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[30px]" />
+                  <TableHead className="w-8" />
                   <TableHead>{t('screens.admin.time')}</TableHead>
                   <TableHead>{t('screens.admin.topic')}</TableHead>
                   <TableHead>{t('screens.admin.status')}</TableHead>
@@ -73,7 +74,19 @@ export default function OverviewAlerts() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="overview" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }
