@@ -6,7 +6,7 @@ import * as RN from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { ReactNode } from 'react';
 import { ThemeProvider, useThemeMode, useShellTheme, DEFAULT_THEME_MODE } from '../src/theme/ThemeProvider';
-import { tenantBrand } from '../src/ports/core';
+import { FALLBACK_REGISTRY, normalizeEntry, tenantBrand, type TenantEntry } from '../src/ports/core';
 
 const wrapper = ({ children }: { children: ReactNode }) => <ThemeProvider>{children}</ThemeProvider>;
 
@@ -35,11 +35,21 @@ describe('theme', () => {
     expect(await AsyncStorage.getItem('vitana.themeMode')).toBe('dark');
   });
 
-  it('dark and light colours differ; Maxina vs Alkalma accents come from tenantBrand', () => {
-    const { result } = renderHook(() => ({ m: useShellTheme('maxina'), a: useShellTheme('alkalma'), mode: useThemeMode() }), { wrapper });
-    expect(result.current.m.brand.brandAccent).toBe(tenantBrand('maxina').brandAccent);
-    expect(result.current.m.brand.brandAccent).toBe('#FF7BAC');
-    expect(result.current.a.brand.brandAccent).toBe('#3B82F6');
+  it('dark and light colours differ; brands come from the tenant registry; an unlisted tenant is neutral', () => {
+    const reg = {
+      source: 'rpc' as const,
+      tenants: [
+        normalizeEntry({ tenant_id: 't-m', slug: 'maxina', name: 'Maxina', brand: { accent: '#FF7BAC' } }) as TenantEntry,
+        normalizeEntry({ tenant_id: 't-a', slug: 'alkalma', name: 'AlKalma', brand: { accent: '#123456' } }) as TenantEntry,
+      ],
+    };
+    const { result } = renderHook(() => ({ m: useShellTheme('maxina', reg), a: useShellTheme('alkalma', reg), x: useShellTheme('nope', reg), f: useShellTheme('alkalma'), mode: useThemeMode() }), { wrapper });
+    expect(result.current.m.brand?.brandAccent).toBe('#FF7BAC');
+    expect(result.current.a.brand?.brandAccent).toBe('#123456');
+    expect(result.current.x.brand).toBeNull();
+    // With only the compiled fallback, Alkalma is unlisted → neutral, never Maxina.
+    expect(result.current.f.brand).toBeNull();
+    expect(tenantBrand('maxina', FALLBACK_REGISTRY)?.brandAccent).toBe('#FF7BAC');
     expect(result.current.m.isMaxina).toBe(true);
     expect(result.current.a.isMaxina).toBe(false);
     const light = result.current.m.colors.background;

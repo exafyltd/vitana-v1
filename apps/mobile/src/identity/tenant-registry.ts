@@ -6,9 +6,12 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, type QueryClient } from '@tanstack/react-query';
-import { FALLBACK_REGISTRY, REGISTRY_SNAPSHOT_KEY, normalizeEntry, type TenantEntry, type TenantRegistry } from '../ports/core';
+import { FALLBACK_REGISTRY, normalizeEntry, type TenantEntry, type TenantRegistry } from '../ports/core';
 import { getSupabase } from '../auth/client';
 import { deviceStorage } from './device-storage';
+
+/** The web's snapshot key (tenant-registry.ts REGISTRY_SNAPSHOT_KEY). */
+export const REGISTRY_SNAPSHOT_KEY = 'tenant_registry_v1';
 
 export const TENANT_REGISTRY_QUERY_KEY = ['tenant-registry', 'v1'] as const;
 

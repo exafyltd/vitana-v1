@@ -4,12 +4,13 @@
  * `light | dark | system`, default **light** like the web (`main.tsx:108`
  * `defaultTheme="light"`), persisted per device in AsyncStorage. Colours come
  * from the tokens port; the tenant brand accent/bg/fg from N1's
- * `tenantBrand(slug)`. The DB brand pack (VTID-05150) is not consumed.
+ * `tenantBrand(slug, registry)` — the tenant registry (VTID-05151): an
+ * unlisted tenant has no brand (null) and renders neutral, never as Maxina.
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useColorScheme } from 'react-native';
 import { shellColors, maxinaTopbar, type ColorScheme, type ShellColors } from '../ports/tokens';
-import { canonicalTenantSlug, tenantBrand, type TenantBrand } from '../ports/core';
+import { FALLBACK_REGISTRY, canonicalTenantSlug, tenantBrand, type TenantBrand, type TenantRegistry } from '../ports/core';
 import { deviceStorage, STORAGE_KEYS } from '../identity/device-storage';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -52,16 +53,17 @@ export function useThemeMode(): ModeValue {
 export type ShellTheme = {
   scheme: ColorScheme;
   colors: ShellColors;
-  brand: TenantBrand;
+  /** null for a tenant the registry does not list (neutral, never Maxina). */
+  brand: TenantBrand | null;
   isMaxina: boolean;
   maxinaTopbar: typeof maxinaTopbar;
 };
 
-/** Theme values for a tenant slug (the shell passes the resolved one). */
-export function useShellTheme(slug: string | null | undefined): ShellTheme {
+/** Theme values for a tenant slug and the registry (the shell passes the resolved ones). */
+export function useShellTheme(slug: string | null | undefined, registry: TenantRegistry = FALLBACK_REGISTRY): ShellTheme {
   const { scheme } = useThemeMode();
   return useMemo(() => {
-    const brand = tenantBrand(slug);
+    const brand = tenantBrand(slug, registry);
     return { scheme, colors: shellColors(scheme), brand, isMaxina: canonicalTenantSlug(slug ?? null) === 'maxina', maxinaTopbar };
-  }, [scheme, slug]);
+  }, [scheme, slug, registry]);
 }

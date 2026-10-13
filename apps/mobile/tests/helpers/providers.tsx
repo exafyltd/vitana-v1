@@ -14,6 +14,12 @@ import { ThemeProvider, type ThemeMode } from '../../src/theme/ThemeProvider';
 
 export type GatewayRoutes = Record<string, unknown>;
 
+/** Clients created by makeWrapper; cleared after each test so no gc timer keeps jest alive. */
+const clients: QueryClient[] = [];
+afterEach(() => {
+  while (clients.length) clients.pop()?.clear();
+});
+
 /** A fake gateway fetch: JSON per path, 404 otherwise. */
 export function fakeGateway(routes: GatewayRoutes) {
   const calls: string[] = [];
@@ -29,6 +35,7 @@ export function makeWrapper(opts: { client: unknown; gateway?: GatewayRoutes; la
   __setSupabaseForTests(opts.client as never);
   __setGatewayForTests(fakeGateway(opts.gateway ?? {}).fetch);
   const qc = opts.queryClient ?? new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity }, mutations: { gcTime: Infinity } } });
+  clients.push(qc);
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
       <QueryClientProvider client={qc}>

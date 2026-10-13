@@ -18,7 +18,10 @@
     {"id":"topAppBar","web":"src/components/mobile/TopAppBar.tsx","declaration":"TopAppBar","inner":["instantName","tenantName","resolvedSlug","isMaxina","isInLiveRoom","showLive"],"native":"apps/mobile/src/shell/components/TopAppBar.tsx","sha256":"915e8b9c24de5187cbf4f58e096cd37612daf08fe79bfab6c578c185fbb1bd88"},
     {"id":"edgeSwipe","web":"src/components/mobile/MobileAppShell.tsx","declaration":"MobileAppShell","inner":["onEnd"],"native":"apps/mobile/src/shell/components/MobileAppShell.tsx","sha256":"7d932ebaf14bf76dd2de1de330797e6137495b20886d8864a93695901e78bf26"},
     {"id":"roleSwitcherSheet","web":"src/components/mobile/RoleSwitcherSheet.tsx","declaration":"RoleSwitcherSheet","inner":["inBusiness","activeBusiness","activeModeLabel"],"native":"apps/mobile/src/shell/components/RoleSwitcherSheet.tsx","sha256":"0e537fbe446ea3c6853b805f204798160fe918dd12d11f6b34937203f79188c4"},
-    {"id":"roleLabels","web":"src/lib/role-labels.ts","declaration":"ROLE_LABEL_KEY","native":"apps/mobile/src/shell/logic/role-labels.ts","sha256":"895d768f50bf4ac7217324e1f146b985b4227e66e0592a0f32d8714acc7a9942"}
+    {"id":"roleLabels","web":"src/lib/role-labels.ts","declaration":"ROLE_LABEL_KEY","native":"apps/mobile/src/shell/logic/role-labels.ts","sha256":"895d768f50bf4ac7217324e1f146b985b4227e66e0592a0f32d8714acc7a9942"},
+    {"id":"registry:tenantSlugFromPath","web":"src/lib/tenant-registry.ts","declaration":"tenantSlugFromPath","native":"apps/mobile/src/shell/logic/tenant-registry.ts","sha256":"cd23233c8445a1e61191c7c61a7046a292fd7a5530a4cdfbbe46ebf216530ec2"},
+    {"id":"registry:isTenantPortalPath","web":"src/lib/tenant-registry.ts","declaration":"isTenantPortalPath","native":"apps/mobile/src/shell/logic/tenant-registry.ts","sha256":"714936b3c054b7eef635ad112883d738510aece3af84b63abdef4c6880dff8d0"},
+    {"id":"registry:tenantDisplayNameFor","web":"src/lib/tenant-registry.ts","declaration":"tenantDisplayNameFor","native":"apps/mobile/src/shell/logic/tenant-registry.ts","sha256":"e504466f448970a794a5df8e0645ffa881cff4a78e4d135a88a9d67dbc55e549"}
   ],
   "guest_paths": {"web":"src/App.tsx","native":"apps/mobile/src/navigation/guest-paths.ts","export":"GUEST_PATHS"}
 }

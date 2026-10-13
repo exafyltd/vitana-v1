@@ -4,7 +4,8 @@
  * `CONSUMER_PATHS`, `useRoleRouteEnforcement`) with `isMobile` always true.
  * Pure: returns where to bounce, or null. Pinned in scripts/native/shell-pins.json.
  */
-import { isTenantPortalPath, type TenantRegistry, type UserRole } from '../../ports/core';
+import type { TenantRegistry, UserRole } from '../../ports/core';
+import { isTenantPortalPath } from './tenant-registry';
 
 export const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
 /** useSmartRouting.tsx SHARED_PATHS incl. RETIRED_TENANT_PATH_PREFIXES ('/earthlinks'); tenant portals come from the registry. */

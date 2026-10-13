@@ -4,7 +4,8 @@
  * localStorage on native). Names come from the registry, never compiled in.
  * Pinned in scripts/native/shell-pins.json.
  */
-import { tenantDisplayNameFor, tenantSlugFromPath, type TenantRegistry } from '../../ports/core';
+import type { TenantRegistry } from '../../ports/core';
+import { tenantDisplayNameFor, tenantSlugFromPath } from './tenant-registry';
 
 export function getInstantTenantName(pathname: string, storedSlug: string | null, reg: TenantRegistry): string {
   const fromUrl = tenantSlugFromPath(pathname, reg);
