@@ -1411,7 +1411,7 @@ function CommunityLegacy() {
             />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.community.hub')}
             </Button>
           </UtilityActionButton>
@@ -1506,7 +1506,7 @@ function CommunityLegacy() {
                       rankingsTab?.click();
                     }}
                   >
-                    <Trophy className="w-3 h-3 mr-1" />
+                    <Trophy className="w-3 h-3 me-1" />
                     {t('screens.community.viewAllRankings')}
                   </Button>
                 </div>
@@ -1529,13 +1529,13 @@ function CommunityLegacy() {
                   <h3 className="text-xl font-bold">{t('screens.community.discoverPeople')}</h3>
                   {membersLoading && (
                     <Badge variant="outline" className="animate-pulse">
-                      <Users className="w-3 h-3 mr-1" />
+                      <Users className="w-3 h-3 me-1" />
                       {t('screens.community.loading')}
                     </Badge>
                   )}
                   {!membersLoading && realCommunityPeople.length > 0 && (
                     <Badge variant="secondary">
-                      <Users className="w-3 h-3 mr-1" />{t('screens.community.lengthMembers', { length: members.length })}
+                      <Users className="w-3 h-3 me-1" />{t('screens.community.lengthMembers', { length: members.length })}
                     </Badge>
                   )}
                 </div>
@@ -1788,11 +1788,11 @@ function CommunityLegacy() {
                     >
                       {generating ? (
                         <>
-                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.analyzingYourProfile')}
+                          <RefreshCw className="w-4 h-4 me-2 animate-spin" />{t('screens.community.analyzingYourProfile')}
                         </>
                       ) : (
                         <>
-                          <Sparkles className="w-4 h-4 mr-2" />
+                          <Sparkles className="w-4 h-4 me-2" />
                           {t('screens.community.generateAiRecommendations')}
                         </>
                       )}
@@ -1808,7 +1808,7 @@ function CommunityLegacy() {
                     <div className="flex items-center gap-2">
                       <h3 className="text-xl font-bold">{t('screens.community.aiRecommendedForYou')}</h3>
                       <Badge className="bg-gradient-to-r from-blue-500 to-purple-500">
-                        <Sparkles className="w-3 h-3 mr-1" />
+                        <Sparkles className="w-3 h-3 me-1" />
                         {t('screens.community.aiPowered')}
                       </Badge>
                     </div>
@@ -1818,7 +1818,7 @@ function CommunityLegacy() {
                       onClick={() => generateRecommendations('events')}
                       disabled={generating}
                     >
-                      <RefreshCw className={`w-3 h-3 mr-1 ${generating ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`w-3 h-3 me-1 ${generating ? 'animate-spin' : ''}`} />
                       {t('screens.community.refresh')}
                     </Button>
                   </div>

@@ -279,7 +279,7 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
             className="w-full"
             variant="default"
           >
-            <RefreshCw className="mr-2 h-4 w-4" />
+            <RefreshCw className="me-2 h-4 w-4" />
             {t('screens.common.tryAppleSigninAgain')}
           </Button>
           <Button
@@ -292,7 +292,7 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
             variant="outline"
             className="w-full"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="me-2 h-4 w-4" />
             {t('screens.common.backLogin')}
           </Button>
         </div>

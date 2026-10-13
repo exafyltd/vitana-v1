@@ -775,7 +775,7 @@ export default function LiveRooms() {
                 {pendingCount > 0 && (
                   <Badge 
                     variant="destructive" 
-                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                    className="absolute -top-1 -end-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                   >
                     {pendingCount}
                   </Badge>
@@ -826,7 +826,7 @@ export default function LiveRooms() {
               <SplitBarTrigger value="all">
                 ✨ {translate('liveRooms.tabs.all', 'All Rooms')}
                 {filteredAllRooms.length > 0 && (
-                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                  <Badge variant="secondary" className="ms-2 px-1.5 py-0.5 text-xs">
                     {filteredAllRooms.length}
                   </Badge>
                 )}
@@ -834,10 +834,10 @@ export default function LiveRooms() {
               <SplitBarTrigger value="live">
                 📡 {translate('liveRooms.tabs.live', 'Live Now')}
                 {filteredLiveRooms.length > 0 && (
-                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                  <Badge variant="secondary" className="ms-2 px-1.5 py-0.5 text-xs">
                     {filteredLiveRooms.length}
                     {liveStreams.length === 0 && (
-                      <span className="ml-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
+                      <span className="ms-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
                     )}
                   </Badge>
                 )}
@@ -845,10 +845,10 @@ export default function LiveRooms() {
               <SplitBarTrigger value="scheduled">
                 📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
                 {filteredScheduledRooms.length > 0 && (
-                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                  <Badge variant="secondary" className="ms-2 px-1.5 py-0.5 text-xs">
                     {filteredScheduledRooms.length}
                     {scheduledStreams.length === 0 && (
-                      <span className="ml-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
+                      <span className="ms-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
                     )}
                   </Badge>
                 )}
@@ -904,7 +904,7 @@ export default function LiveRooms() {
                   className="mt-4"
                   onClick={() => setIsGoLiveOpen(true)}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {translate('liveRooms.beFirst', 'Be the first to go live')}
                 </Button>
               </div>
@@ -956,7 +956,7 @@ export default function LiveRooms() {
                   className="mt-4"
                   onClick={() => setIsGoLiveOpen(true)}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {translate('liveRooms.beFirst', 'Be the first to go live')}
                 </Button>
               </div>
@@ -1008,7 +1008,7 @@ export default function LiveRooms() {
                   className="mt-4"
                   onClick={() => setIsGoLiveOpen(true)}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {t('screens.community.scheduleLiveRoom')}
                 </Button>
               </div>

@@ -53,7 +53,7 @@ function GroupCard({ group, onClick, actionSlot }: {
         <div className="flex justify-end gap-2">
           {group.is_public !== undefined && (
             <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-white text-xs">
-              {group.is_public ? <Globe className="h-3 w-3 mr-1" /> : <Lock className="h-3 w-3 mr-1" />}
+              {group.is_public ? <Globe className="h-3 w-3 me-1" /> : <Lock className="h-3 w-3 me-1" />}
               {group.is_public ? 'Public' : 'Private'}
             </Badge>
           )}
@@ -250,7 +250,7 @@ export default function Groups() {
                   <h3 className="text-lg font-semibold mb-2">{t('screens.community.noGroupsDiscover')}</h3>
                   <p className="text-muted-foreground mb-4">{t('screens.community.firstStartCommunity')}</p>
                   <Button onClick={() => setCreateGroupOpen(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4 me-2" />
                     {t('screens.community.createGroup')}
                   </Button>
                 </div>

@@ -481,7 +481,7 @@ export default function MyBiology() {
               size="sm"
               onClick={() => setBiomarkerActionsOpen(true)}
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.health.addData')}
             </Button>
           </UtilityActionButton>
@@ -518,7 +518,7 @@ export default function MyBiology() {
                         size="sm"
                         onClick={() => openUploadSheet('blood_panel')}
                       >
-                        <Upload className="w-4 h-4 mr-2" />
+                        <Upload className="w-4 h-4 me-2" />
                         {t('screens.health.uploadPdf')}
                       </Button>
                       <Button 
@@ -526,7 +526,7 @@ export default function MyBiology() {
                         size="sm"
                         onClick={() => logDeviceConnect('Wearable Device')}
                       >
-                        <Activity className="w-4 h-4 mr-2" />
+                        <Activity className="w-4 h-4 me-2" />
                         {t('screens.health.connectDevice')}
                       </Button>
                     </div>
@@ -553,7 +553,7 @@ export default function MyBiology() {
                             <p className="font-medium mb-1">{t('screens.health.noMedicalReportsYet')}</p>
                             <p className="text-sm">{t('screens.health.uploadYourFirstBloodPanelStart')}</p>
                             <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('blood_panel')}>
-                              <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadBloodPanel')}
+                              <Upload className="w-4 h-4 me-2" /> {t('screens.health.uploadBloodPanel')}
                             </Button>
                           </div>
                         }
@@ -584,7 +584,7 @@ export default function MyBiology() {
                         size="sm"
                         onClick={() => openUploadSheet('genomics')}
                       >
-                        <FileText className="w-4 h-4 mr-2" />
+                        <FileText className="w-4 h-4 me-2" />
                         {t('screens.health.uploadResults')}
                       </Button>
                       <Button 
@@ -592,7 +592,7 @@ export default function MyBiology() {
                         size="sm"
                         onClick={() => logOmicsConnectAPI('API Provider')}
                       >
-                        <Activity className="w-4 h-4 mr-2" />
+                        <Activity className="w-4 h-4 me-2" />
                         {t('screens.health.connectApi')}
                       </Button>
                     </div>
@@ -619,7 +619,7 @@ export default function MyBiology() {
                             <p className="font-medium mb-1">{t('screens.health.noOmicsDataYet')}</p>
                             <p className="text-sm">{t('screens.health.uploadYourGenomicsMetabolomicsResultsUnlock')}</p>
                             <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('genomics')}>
-                              <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadOmicsReport')}
+                              <Upload className="w-4 h-4 me-2" /> {t('screens.health.uploadOmicsReport')}
                             </Button>
                           </div>
                         }
@@ -653,13 +653,13 @@ export default function MyBiology() {
                           setSupplementDialogOpen(true);
                         }}
                       >
-                        <Plus className="w-4 h-4 mr-2" />
+                        <Plus className="w-4 h-4 me-2" />
                         {t('screens.health.addSupplement')}
                       </Button>
                       
                       <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                         <SelectTrigger className="w-[200px]">
-                          <Filter className="w-4 h-4 mr-2" />
+                          <Filter className="w-4 h-4 me-2" />
                           <SelectValue placeholder={t('screens.health.filterByCategory')} />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">

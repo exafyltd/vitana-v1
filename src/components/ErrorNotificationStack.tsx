@@ -25,7 +25,7 @@ const ErrorNotification = ({ id, title, description, onDismiss }: ErrorNotificat
         e.stopPropagation();
         onDismiss(id);
       }}
-      className="absolute top-2 right-2 h-8 w-8 hover:bg-destructive/20"
+      className="absolute top-2 end-2 h-8 w-8 hover:bg-destructive/20"
       aria-label={t('screens.common.closeErrorNotification')}
     >
       <X className="h-4 w-4 text-destructive" />
@@ -48,7 +48,7 @@ export const ErrorNotificationStack = ({
   if (errors.length === 0) return null;
   
   return (
-    <div className="fixed top-20 right-4 z-[110] max-w-md space-y-3">
+    <div className="fixed top-20 end-4 z-[110] max-w-md space-y-3">
       {errors.map(error => (
         <ErrorNotification
           key={error.id}

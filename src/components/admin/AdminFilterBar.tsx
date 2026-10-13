@@ -42,12 +42,12 @@ export default function AdminFilterBar({
   return (
     <div className="flex flex-wrap items-center gap-2">
       <div className="relative flex-1 min-w-[200px] max-w-sm">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute start-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder={searchPlaceholder}
-          className="pl-8 h-9 text-sm"
+          className="ps-8 h-9 text-sm"
         />
       </div>
 
@@ -68,12 +68,12 @@ export default function AdminFilterBar({
 
       {hasActiveFilters && onReset && (
         <Button variant="ghost" size="sm" onClick={onReset} className="h-9 px-2">
-          <X className="h-4 w-4 mr-1" />
+          <X className="h-4 w-4 me-1" />
           {t('screens.admin.reset')}
         </Button>
       )}
 
-      {rightActions && <div className="ml-auto flex items-center gap-2">{rightActions}</div>}
+      {rightActions && <div className="ms-auto flex items-center gap-2">{rightActions}</div>}
     </div>
   );
 }

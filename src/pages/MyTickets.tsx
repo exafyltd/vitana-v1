@@ -254,7 +254,7 @@ function TicketCard({ ticket, onClick, isPast }: TicketCardProps) {
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left bg-card border border-border rounded-xl p-4 hover:bg-accent/5 transition-colors ${
+      className={`w-full text-start bg-card border border-border rounded-xl p-4 hover:bg-accent/5 transition-colors ${
         isPast ? "opacity-70" : ""
       }`}
     >

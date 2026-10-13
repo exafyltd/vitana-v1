@@ -91,7 +91,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
         {/* Standard unframed X close, top-right. Wrapped in a span so it isn't
             a direct <button> child of DialogContent — that's what the framework's
             [&>button]:sr-only selector hides. */}
-        <span className="absolute right-3 top-3 z-10">
+        <span className="absolute end-3 top-3 z-10">
           <DialogClose
             aria-label={t('screens.common.close')}
             style={{ boxShadow: 'none' }}
@@ -101,7 +101,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
           </DialogClose>
         </span>
 
-        <DialogHeader className="pr-8">
+        <DialogHeader className="pe-8">
           <div className="flex items-center gap-2 mb-1">
             <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-green-500 shrink-0" />
             <DialogTitle className="text-xl sm:text-2xl break-words">{t('screens.common.healthActions')}
@@ -117,7 +117,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
                 key={action.title}
                 onClick={action.action}
                 className={cn(
-                  "flex items-start gap-3 p-3 sm:p-4 rounded-lg border-2 text-left transition-all w-full min-w-0",
+                  "flex items-start gap-3 p-3 sm:p-4 rounded-lg border-2 text-start transition-all w-full min-w-0",
                   "hover:border-primary hover:shadow-md",
                   `bg-gradient-to-r ${action.gradient}`
                 )}

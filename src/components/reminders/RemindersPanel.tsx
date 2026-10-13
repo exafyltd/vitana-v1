@@ -268,7 +268,7 @@ const RemindersPanel: React.FC<RemindersPanelProps> = ({ embedded = false }) => 
             <span />
           )}
           <Button variant="ghost" size="sm" onClick={() => setOpenCreate(true)}>
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 me-1" />
             {t('screens.reminders.addManually')}
           </Button>
         </div>

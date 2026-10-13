@@ -183,7 +183,7 @@ export function IntentCard({
             }}
           />
           {showOverlay && overlayHasContent && (
-            <div className="absolute bottom-2 left-2 flex flex-wrap items-center gap-1.5">
+            <div className="absolute bottom-2 start-2 flex flex-wrap items-center gap-1.5">
               {overlayLocationChips.map((c, i) => (
                 <span
                   key={i}

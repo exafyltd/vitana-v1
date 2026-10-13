@@ -77,11 +77,11 @@ export function ActiveRunsList() {
 
             <div className="flex gap-2 pt-2">
               <Button size="sm" variant="outline" className="flex-1">
-                <FileText className="w-3 h-3 mr-2" />
+                <FileText className="w-3 h-3 me-2" />
                 {t('screens.dev.viewLogs')}
               </Button>
               <Button size="sm" variant="destructive" className="flex-1">
-                <StopCircle className="w-3 h-3 mr-2" />
+                <StopCircle className="w-3 h-3 me-2" />
                 {t('screens.dev.stop')}
               </Button>
             </div>

@@ -253,7 +253,7 @@ export default function Members() {
         />
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.sort')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.sort')}</span>
           {(["newest", "oldest", "name"] as const).map((s) => (
             <button
               key={s}
@@ -269,7 +269,7 @@ export default function Members() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.dance')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.dance')}</span>
           {VARIETY_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}
@@ -301,7 +301,7 @@ export default function Members() {
             key={m.vitana_id ?? `${m.registration_seq}`}
             type="button"
             onClick={() => m.vitana_id && navigate(`/profile/${m.vitana_id}`)}
-            className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
+            className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-start"
           >
             <Avatar className="h-12 w-12 flex-shrink-0">
               {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ""} /> : null}

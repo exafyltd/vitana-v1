@@ -131,7 +131,7 @@ export default function TicketPurchaseSuccess() {
           className="w-full"
           onClick={() => navigate("/my-tickets")}
         >
-          <Calendar className="h-4 w-4 mr-2" />
+          <Calendar className="h-4 w-4 me-2" />
           {t('screens.ticketpurchasesuccess.viewAllMyTickets')}
         </Button>
         
@@ -140,7 +140,7 @@ export default function TicketPurchaseSuccess() {
           onClick={() => navigate("/comm/events-meetups")}
         >
           {t('screens.ticketpurchasesuccess.discoverMoreEvents')}
-          <ArrowRight className="h-4 w-4 ml-2" />
+          <ArrowRight className="h-4 w-4 ms-2" />
         </Button>
       </div>
     </div>

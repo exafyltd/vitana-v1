@@ -108,7 +108,7 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
                 </div>
               </div>
               {/* Message bubble */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl rounded-tl-md px-4 py-3 shadow-sm max-w-[85%]">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl rounded-ss-md px-4 py-3 shadow-sm max-w-[85%]">
                 <p className="text-sm text-gray-800 leading-relaxed">{msg}</p>
               </div>
             </motion.div>
@@ -127,7 +127,7 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
                 <span className="text-white text-xs font-bold">V</span>
               </div>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl rounded-tl-md px-4 py-3 shadow-sm">
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl rounded-ss-md px-4 py-3 shadow-sm">
               <div className="flex gap-1">
                 <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />

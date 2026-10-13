@@ -80,7 +80,7 @@ export function AdminActivityFeed() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[400px] pr-4">
+        <ScrollArea className="h-[400px] pe-4">
           {loading ? (
             <div className="space-y-4">
               {Array.from({ length: 5 }).map((_, i) => (

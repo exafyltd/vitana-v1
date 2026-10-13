@@ -202,7 +202,7 @@ export function OpenTasksList() {
                   <CollapsibleTrigger className="w-full">
                     <CardContent className="p-5">
                       <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 min-w-0 text-left">
+                        <div className="flex-1 min-w-0 text-start">
                           {/* Header row */}
                           <div className="flex items-center gap-2 mb-3">
                             <Badge

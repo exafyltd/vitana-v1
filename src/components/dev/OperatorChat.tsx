@@ -123,7 +123,7 @@ export default function OperatorChat() {
           </div>
         ) : (
           items.map((m, i) => (
-            <div key={i} className={`max-w-[85%] ${m.role==="user"?"ml-auto":"mr-auto"}`}>
+            <div key={i} className={`max-w-[85%] ${m.role==="user"?"ms-auto":"me-auto"}`}>
               <div className={`rounded-2xl px-4 py-2 shadow-sm ${
                 m.role==="user"?"bg-primary text-primary-foreground":"bg-card border"
               }`}>
