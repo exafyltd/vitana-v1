@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useProductSelection } from "@/context/ProductSelectionContext";
-import { formatPrice, getRedirectUrl } from "@/hooks/useMarketplace";
+import { formatPrice, getRedirectUrl, type MarketplaceProduct } from "@/hooks/useMarketplace";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
@@ -41,7 +41,7 @@ export function ProductDetailsDrawer() {
   const isMobile = useIsMobile();
   const open = !!selectedProduct;
 
-  const content = selectedProduct ? <DrawerBody /> : null;
+  const content = selectedProduct ? <ProductDetailsBody product={selectedProduct} onClose={clearSelection} /> : null;
 
   if (isMobile) {
     return (
@@ -68,9 +68,11 @@ export function ProductDetailsDrawer() {
   );
 }
 
-function DrawerBody() {
-  const { selectedProduct: p, clearSelection } = useProductSelection();
-  if (!p) return null;
+/**
+ * VTID-05109 — the product body, shared by this drawer and the Spotlight
+ * Discover quick-view sheet (`components/discover/spotlight/DiscoverQuickViewSheet`).
+ */
+export function ProductDetailsBody({ product: p, onClose }: { product: MarketplaceProduct; onClose: () => void }) {
 
   const hasDiscount =
     p.compare_at_price_cents &&
@@ -133,7 +135,7 @@ function DrawerBody() {
             <Link
               to={`/discover/product/${p.id}`}
               className="ml-auto text-xs text-primary hover:underline inline-flex items-center gap-0.5"
-              onClick={() => clearSelection()}
+              onClick={() => onClose()}
             >{t('screens.discover.openFullPage')} <ExternalLink className="w-3 h-3" />
             </Link>
           </div>

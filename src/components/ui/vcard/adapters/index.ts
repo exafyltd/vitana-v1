@@ -58,3 +58,4 @@ export function productToVCard(product: MarketplaceProduct): VCardData {
     href: `/discover/product/${product.id}`,
   };
 }
+export * from './discover';

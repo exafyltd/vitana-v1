@@ -78,11 +78,20 @@ storefront 3 · immersive 2), all `legacy`.
 - [ ] 2.6 Staging spec: no gap > 48 px at 1280/1440/1920, one spotlight, rail present, J/K, RTL, chrome invariants. _R4.5_
 
 ## Phase 3 — Discover storefront · VTID-05109
-- [ ] 3.1 Storefront overview (`ScreenFrame archetype="storefront"`): SubNavigation kept, Overview SplitBar removed, chips, hero, shelves, Share & Earn shelf. _R5.1–5.2_
-- [ ] 3.2 Product/service/provider adapters; quick-view sheet generalised from `ProductDetailsDrawer`. _R5.3_
-- [ ] 3.3 Wire overview search; wire or remove doctor filters; mock-only sections → empty states; raw strings → `t()`. _R5.5–5.6_
-- [ ] 3.4 Sub-pages: their SplitBar moves to the utility trailing slot; results grid of `standard` cards.
-- [ ] 3.5 Manifest + baseline; staging spec: hero + shelves, search returns results, quick-view opens (read-only).
+- [x] 3.1 Storefront overview (`ScreenFrame archetype="storefront"`): SubNavigation kept, Overview SplitBar removed, chips, hero, shelves, Share & Earn shelf. _R5.1–5.2_
+- [x] 3.2 Product/service/provider adapters; quick-view sheet generalised from `ProductDetailsDrawer`. _R5.3_
+- [x] 3.3 Wire overview search; wire or remove doctor filters; mock-only sections → empty states; raw strings → `t()`. _R5.5–5.6_
+- [x] 3.4 Sub-pages: their SplitBar moves to the utility trailing slot; results grid of `standard` cards.
+- [x] 3.5 Manifest + baseline; staging spec: hero + shelves, search returns results, quick-view opens (read-only).
+
+Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`, `/discover/wellness-services`,
+`/discover/doctors-coaches`, `/discover/orders`. Decisions taken (for Gate 2):
+- Only the Spotlight branch changes; flag-off Discover (incl. its dead search and doctor filters) stays identical.
+- Shelves show at most 4 real items (2 columns, 4 from xl); a short shelf shows what exists, never padding.
+- Wellness services / providers have no real catalogue: empty states + the member's saved items, no sample data.
+- Goal / price / rating chips use the gateway's existing `health_goals`, `price_max_cents`, `rating_min` — no contract change.
+- `/discover/deals-offers` stays `legacy` until staging shows a real discounted product (empty → no hero by design).
+- Orders keeps `StandardHorizontalCard` rows (VCard conversion is Phase 5/6). Detail sub-pages untouched.
 
 ## Phase 4 — Social screens · VTID-05110
 - [ ] 4.1 Community overview, Events & Meetups (featured event + list + rail; no empty bento slots), Groups, GroupDetail, Live Rooms, Media Hub, Public profile, Post detail, Messages — each via its archetype. _R1, R3_

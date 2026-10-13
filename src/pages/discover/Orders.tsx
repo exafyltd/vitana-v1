@@ -31,6 +31,10 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SplitBarContent } from "@/components/ui/split-bar";
+import { DiscoverRefreshButton, DiscoverUtilityActions } from "@/components/discover/spotlight/DiscoverUtility";
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
   id: string;
@@ -58,6 +62,10 @@ export default function Orders() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  // VTID-05109 — Spotlight (desktop + flag): collection layout, real orders only (no sample tickets), wired search.
+  const spotlight = useSpotlightEnabled();
+  const [ordersTab, setOrdersTab] = useState("active");
+  const [orderQuery, setOrderQuery] = useState("");
   const { translate } = useTranslation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -192,8 +200,8 @@ export default function Orders() {
   ];
 
   // Use mock data when no real tickets exist
-  const displayTickets = tickets.length > 0 ? tickets : mockTickets;
-  const isShowingMockData = tickets.length === 0 && !ticketsLoading;
+  const displayTickets = tickets.length > 0 || spotlight ? tickets : mockTickets;
+  const isShowingMockData = !spotlight && tickets.length === 0 && !ticketsLoading;
 
   useEffect(() => {
     if (user) {
@@ -518,6 +526,104 @@ export default function Orders() {
 
   const isLoading = loading || ticketsLoading || vouchersLoading;
 
+  // VTID-05109 — the tab bodies, shared by the legacy Tabs and the Spotlight SplitBar (legacy renders exactly as before).
+  const orderQ = orderQuery.trim().toLowerCase();
+  const matchesQuery = (o: UnifiedOrder) =>
+    !spotlight || !orderQ || o.title.toLowerCase().includes(orderQ) || o.provider.toLowerCase().includes(orderQ);
+  const shownActiveOrders = unifiedActiveOrders.filter(matchesQuery);
+  const shownHistoryOrders = unifiedHistoryOrders.filter(matchesQuery);
+  const activeOrdersContent = (
+    <>
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : shownActiveOrders.length > 0 ? (
+        <div className="space-y-3">
+          {shownActiveOrders.map(order => (
+            <StandardHorizontalCard
+              key={order.id}
+              {...transformToCardProps(order)}
+            />
+          ))}
+        </div>
+      ) : (
+        <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
+          <CardContent className="p-8 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
+              <Package className="w-8 h-8 text-muted-foreground/60" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">{translate('orders.emptyActive.title')}</h3>
+            <p className="text-muted-foreground mb-4">{translate('orders.emptyActive.description')}</p>
+            <div className="flex gap-3 justify-center">
+              <Button onClick={() => navigate('/discover')}>
+                {translate('orders.browseProducts')}
+              </Button>
+              <Button variant="outline" onClick={() => navigate('/comm/events-meetups')}>
+                {translate('orders.findEvents')}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </>
+  );
+  const historyOrdersContent = (
+    <>
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : shownHistoryOrders.length > 0 ? (
+        <div className="space-y-3">
+          {shownHistoryOrders.map(order => (
+            <StandardHorizontalCard
+              key={order.id}
+              {...transformToCardProps(order)}
+            />
+          ))}
+        </div>
+      ) : (
+        <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
+          <CardContent className="p-8 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-muted-foreground/60" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              {historyFilter === 'all' 
+                ? translate('orders.emptyHistory.title') 
+                : translate('orders.noFilter', translate(`orders.filters.${historyFilter}`))}
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              {historyFilter === 'all' 
+                ? translate('orders.emptyHistory.description')
+                : translate('orders.noFilterDesc', translate(`orders.filters.${historyFilter}`))}
+            </p>
+            <Button onClick={() => navigate('/discover')}>
+              {translate('orders.startShopping')}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+    </>
+  );
+
+  const ticketDialog = (
+    <Dialog open={!!selectedTicket} onOpenChange={(open) => !open && setSelectedTicket(null)}>
+      <DialogContent className="max-w-md p-0 overflow-hidden rounded-2xl border-0 bg-transparent shadow-none [&>button]:hidden">
+        {selectedTicket && selectedTicket.event && (
+          <EventTicket
+            eventTitle={selectedTicket.event.title}
+            eventDate={new Date(selectedTicket.event.start_time)}
+            eventLocation={selectedTicket.event.location || 'Location TBD'}
+            ticketType={selectedTicket.ticket_type?.name || 'General'}
+            ticketNumber={selectedTicket.ticket_number}
+            buyerName={selectedTicket.buyer_name}
+            quantity={selectedTicket.quantity}
+            qrCodeData={selectedTicket.qr_code_token}
+            eventImageUrl={selectedTicket.event.image_url}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+
   // Mobile view
   if (isMobile) {
     return (
@@ -528,6 +634,41 @@ export default function Orders() {
           isLoading={isLoading}
           isShowingMockData={isShowingMockData}
         />
+      </AppLayout>
+    );
+  }
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.discover.ordersDiscover')} description={translate('orders.trackDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: discoverNavigation }}
+          header={{ title: translate('orders.myOrders'), description: translate('orders.trackDescription'), emoji: "📦" }}
+          utility={{
+            children: <DiscoverUtilityActions searchPlaceholder={translate('orders.searchPlaceholder')} onSearch={setOrderQuery} />,
+            trailingElement: <DiscoverRefreshButton />,
+          }}
+          tabs={{
+            value: ordersTab,
+            onValueChange: setOrdersTab,
+            items: [
+              { value: "active", label: `${translate('orders.tabs.active')} (${shownActiveOrders.length})` },
+              { value: "history", label: `${translate('orders.tabs.history')} (${shownHistoryOrders.length})` },
+            ],
+          }}
+        >
+          <SplitBarContent value="active" className="space-y-3">
+            {activeOrdersContent}
+          </SplitBarContent>
+          <SplitBarContent value="history" className="space-y-3">
+            <HistoryFilterRow />
+            {historyOrdersContent}
+          </SplitBarContent>
+        </ScreenFrame>
+        {ticketDialog}
+        <DiscoverOrderActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
       </AppLayout>
     );
   }
@@ -596,96 +737,19 @@ export default function Orders() {
             
             {/* Active Orders Tab */}
             <TabsContent value="active" className="space-y-3">
-              {isLoading ? (
-                <LoadingSkeleton />
-              ) : unifiedActiveOrders.length > 0 ? (
-                <div className="space-y-3">
-                  {unifiedActiveOrders.map(order => (
-                    <StandardHorizontalCard
-                      key={order.id}
-                      {...transformToCardProps(order)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
-                  <CardContent className="p-8 text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
-                      <Package className="w-8 h-8 text-muted-foreground/60" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">{translate('orders.emptyActive.title')}</h3>
-                    <p className="text-muted-foreground mb-4">{translate('orders.emptyActive.description')}</p>
-                    <div className="flex gap-3 justify-center">
-                      <Button onClick={() => navigate('/discover')}>
-                        {translate('orders.browseProducts')}
-                      </Button>
-                      <Button variant="outline" onClick={() => navigate('/comm/events-meetups')}>
-                        {translate('orders.findEvents')}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+              {activeOrdersContent}
             </TabsContent>
             
             {/* History Tab */}
             <TabsContent value="history" className="space-y-3">
               <HistoryFilterRow />
               
-              {isLoading ? (
-                <LoadingSkeleton />
-              ) : unifiedHistoryOrders.length > 0 ? (
-                <div className="space-y-3">
-                  {unifiedHistoryOrders.map(order => (
-                    <StandardHorizontalCard
-                      key={order.id}
-                      {...transformToCardProps(order)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
-                  <CardContent className="p-8 text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 text-muted-foreground/60" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">
-                      {historyFilter === 'all' 
-                        ? translate('orders.emptyHistory.title') 
-                        : translate('orders.noFilter', translate(`orders.filters.${historyFilter}`))}
-                    </h3>
-                    <p className="text-muted-foreground mb-4">
-                      {historyFilter === 'all' 
-                        ? translate('orders.emptyHistory.description')
-                        : translate('orders.noFilterDesc', translate(`orders.filters.${historyFilter}`))}
-                    </p>
-                    <Button onClick={() => navigate('/discover')}>
-                      {translate('orders.startShopping')}
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
+              {historyOrdersContent}
             </TabsContent>
           </Tabs>
 
           {/* Ticket Detail Dialog */}
-          <Dialog open={!!selectedTicket} onOpenChange={(open) => !open && setSelectedTicket(null)}>
-            <DialogContent className="max-w-md p-0 overflow-hidden rounded-2xl border-0 bg-transparent shadow-none [&>button]:hidden">
-              {selectedTicket && selectedTicket.event && (
-                <EventTicket
-                  eventTitle={selectedTicket.event.title}
-                  eventDate={new Date(selectedTicket.event.start_time)}
-                  eventLocation={selectedTicket.event.location || 'Location TBD'}
-                  ticketType={selectedTicket.ticket_type?.name || 'General'}
-                  ticketNumber={selectedTicket.ticket_number}
-                  buyerName={selectedTicket.buyer_name}
-                  quantity={selectedTicket.quantity}
-                  qrCodeData={selectedTicket.qr_code_token}
-                  eventImageUrl={selectedTicket.event.image_url}
-                />
-              )}
-            </DialogContent>
-          </Dialog>
+          {ticketDialog}
         </div>
       </div>
 
