@@ -211,7 +211,12 @@
       "system": "النظام",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "insight": {
+      "weakest_pillar_streak": "{pillar} هي ركيزتك الأضعف منذ أيام وتعيق توازنك.",
+      "pillar_slipping": "انخفضت {pillar} بشكل ملحوظ هذا الأسبوع.",
+      "pillar_rising": "ارتفعت {pillar} بشكل ملحوظ هذا الأسبوع."
+    }
   },
   "_pending_review": {}
 }

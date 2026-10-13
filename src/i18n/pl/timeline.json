@@ -211,7 +211,12 @@
       "system": "System",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "insight": {
+      "weakest_pillar_streak": "{pillar} od kilku dni jest twoim najsłabszym filarem i hamuje twoją równowagę.",
+      "pillar_slipping": "{pillar} wyraźnie spadł w tym tygodniu.",
+      "pillar_rising": "{pillar} wyraźnie wzrósł w tym tygodniu."
+    }
   },
   "_pending_review": {}
 }

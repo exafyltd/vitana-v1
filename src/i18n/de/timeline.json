@@ -194,6 +194,11 @@
       "account": "Konto & Datenschutz",
       "app_usage": "App-Nutzung",
       "system": "System"
+    },
+    "insight": {
+      "weakest_pillar_streak": "{pillar} ist seit Tagen deine schwächste Säule und bremst deine Balance.",
+      "pillar_slipping": "{pillar} ist diese Woche deutlich gesunken.",
+      "pillar_rising": "{pillar} ist diese Woche deutlich gestiegen."
     }
   }
 }

@@ -1,0 +1,9 @@
+# VTID-05172 commands (stacked on VTID-05170, branch claude/activity-timeline-rebuild-vrtcv4)
+python3 <scratchpad>/gen_memory_learning_i18n.py /home/user/vitana-v1   # 53 memoryLearning keys + 3 timeline.insight keys x 11 locales
+for l in en es sr fr pt ru pl ar zh tr; do node scripts/i18n-stamp-source.mjs --locale=$l; done   # 56 stamps added per locale, 0 lost
+npm run -s i18n:gate   -> 17 failing checks, identical to origin/main (outputs/i18n-gate.txt)
+npm run -s i18n:inventory   -> docs/SCREEN_INVENTORY.md
+npx eslint <changed files>   -> outputs/eslint.txt (0 errors)
+npx vitest run src/components/memory/learning src/components/timeline src/design src/navigation   -> outputs/vitest.txt
+node outputs/local-visual-check.cjs outputs   # temporary harness on 127.0.0.1 (removed), fixtures, every other host aborted -> outputs/visual-check.txt + screenshots
+# No production or staging write.

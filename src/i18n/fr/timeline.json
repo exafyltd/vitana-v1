@@ -211,7 +211,12 @@
       "system": "Système",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "insight": {
+      "weakest_pillar_streak": "{pillar} est ton pilier le plus faible depuis des jours et freine ton équilibre.",
+      "pillar_slipping": "{pillar} a nettement baissé cette semaine.",
+      "pillar_rising": "{pillar} a nettement augmenté cette semaine."
+    }
   },
   "_pending_review": {}
 }

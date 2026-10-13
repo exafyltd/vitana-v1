@@ -211,7 +211,12 @@
       "system": "系统",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "insight": {
+      "weakest_pillar_streak": "{pillar}几天来一直是你最弱的支柱，拖累了你的平衡。",
+      "pillar_slipping": "{pillar}本周明显下降。",
+      "pillar_rising": "{pillar}本周明显上升。"
+    }
   },
   "_pending_review": {}
 }

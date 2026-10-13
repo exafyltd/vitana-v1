@@ -1,0 +1,73 @@
+{
+  "memoryLearning": {
+    "header": {
+      "overviewTitle": "الذاكرة",
+      "overviewDescription": "ما تعرفه Vitana عنك – وكيف كان أسبوعك في Vitana Index.",
+      "permissionsTitle": "ما يمكن أن تتعلمه Vitana",
+      "permissionsDescription": "أنت تقرر ما تتعلم منه Vitana. لا أحد غيرك يرى هذه البيانات."
+    },
+    "week": {
+      "title": "أسبوعك في Vitana Index",
+      "change": "{delta} خلال 7 أيام",
+      "noChange": "لا تغيير خلال 7 أيام",
+      "rising": "في ارتفاع: {pillars}",
+      "slipping": "في انخفاض: {pillars}",
+      "steady": "الركائز الخمس كلها مستقرة.",
+      "openTimeline": "افتح خطك الزمني",
+      "empty": "لا يوجد Vitana Index بعد. أجرِ الفحص الأولي – وستخبرك هذه البطاقة كل أسبوع بما تغيّر.",
+      "start": "أجرِ الفحص الأولي"
+    },
+    "routines": {
+      "title": "روتينات لاحظتها Vitana",
+      "description": "هكذا تتعرف Vitana على يومك. اطلب منها نسيان ما ليس صحيحًا.",
+      "empty": "لم تلاحظ Vitana أي روتين بعد. سيظهر ذلك بعد استخدامك التطبيق بضعة أيام.",
+      "forget": "انسَ",
+      "manage": "تحكّم فيما تتعلمه Vitana"
+    },
+    "routine": {
+      "screen_habit": "تفتح {screen} في {days} من 28 يومًا",
+      "active_hours": "تكون نشطًا غالبًا {bucket}",
+      "feature_affinity": "أكثر ما تستخدمه هو {area}",
+      "pillar_rhythm": "{pillar}: غالبًا {bucket}، نحو {n} أيام في الأسبوع",
+      "time_of_day_preference": "تنجز أنشطة تقويمك غالبًا {bucket}",
+      "day_of_week_rhythm": "{day} من أكثر أيامك نشاطًا",
+      "category_affinity": "تقوم كثيرًا بـ «{tag}»",
+      "generic": "إيقاع في يومك"
+    },
+    "bucket": {
+      "morning": "صباحًا",
+      "midday": "وقت الظهيرة",
+      "afternoon": "بعد الظهر",
+      "evening": "مساءً",
+      "night": "ليلًا"
+    },
+    "switches": {
+      "title": "ما يمكن أن تتعلم منه Vitana",
+      "description": "الإيقاف يعني: لن تستخدم Vitana هذا المجال في المحادثات والروتينات والتوصيات. تبقى إدخالاتك في خطك الزمني.",
+      "pillarsTitle": "ركائزك الخمس",
+      "lifeTitle": "حياتك في Vitanaland",
+      "appUsageTitle": "استخدامك للتطبيق",
+      "appUsageDescription": "أي الأقسام تفتحها ومتى. لا يُعرض أبدًا – تستخدمه Vitana فقط للتعرف على روتينك.",
+      "appUsageOff": "الإيقاف يحذف أيضًا الروتينات التي تعلمتها Vitana منه.",
+      "healthNote": "تبقى البيانات الصحية محمية أيضًا بموافقاتك.",
+      "unavailable": "ستتوفر هذه المفاتيح قريبًا."
+    },
+    "usage": {
+      "title": "بيانات استخدامك",
+      "description": "زيارات الشاشات والآثار التقنية. لا تظهر أبدًا في خطك الزمني.",
+      "count": "{n} إدخالات محفوظة",
+      "countUnavailable": "ستتوفر النظرة العامة قريبًا.",
+      "export": "تصدير",
+      "delete": "حذف الكل",
+      "deleteTitle": "حذف جميع بيانات الاستخدام؟",
+      "deleteDescription": "ستُحذف زيارات الشاشات والآثار التقنية مع الروتينات التي تعلمتها Vitana منها. يبقى خطك الزمني.",
+      "cancel": "إلغاء",
+      "confirm": "حذف"
+    },
+    "toast": {
+      "saveFailed": "لم ينجح ذلك. حاول مرة أخرى.",
+      "forgotten": "نسيت Vitana ذلك.",
+      "deleted": "تم حذف بيانات استخدامك."
+    }
+  }
+}
