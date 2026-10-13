@@ -1,23 +1,17 @@
 /**
- * VTID-05157 — Wave 0 placeholder at `/`. Renders only an existing catalog key
- * (common.loading): no hardcoded strings and no new i18n keys (a new key would
- * touch src/, a deploy path). Listed in the parity ledger's `native_only`.
+ * VTID-05186 (N3, plan change 14) — `/`: the landing redirect
+ * (useSmartRouting.tsx:102-110): signed in → `/home` (News), signed out →
+ * `/maxina`. Listed in the parity ledger's `native_only` (the web `/` is
+ * PUBLIC.LANDING, a public-auth lane screen).
  */
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { Redirect } from 'expo-router';
+import { DelayedLoader } from '../src/ports/ui';
+import { useAuth } from '../src/auth/AuthProvider';
 import { useI18n } from '../src/i18n/I18nProvider';
 
-export default function Placeholder() {
+export default function Landing() {
+  const { user, loading } = useAuth();
   const { t } = useI18n();
-  const label = t('common.loading');
-  return (
-    <View style={styles.root} accessibilityLabel={label} testID="placeholder">
-      <ActivityIndicator />
-      <Text style={styles.text}>{label}</Text>
-    </View>
-  );
+  if (loading) return <DelayedLoader accessibilityLabel={t('common.loading')} />;
+  return <Redirect href={user ? '/home' : '/maxina'} />;
 }
-
-const styles = StyleSheet.create({
-  root: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  text: { fontSize: 16, textAlign: 'center' },
-});

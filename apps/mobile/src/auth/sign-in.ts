@@ -82,7 +82,7 @@ export function emailRedirectFor(tenant: PortalTenant): string {
 }
 
 export function resetRedirect(): string {
-  return `${linkBase()}/reset-password`;
+  return `${linkBase()}/reset-password?type=recovery`;
 }
 
 export async function signInWithPassword(email: string, password: string, supabase: SupabaseClient = getSupabase()): Promise<SignInResult> {

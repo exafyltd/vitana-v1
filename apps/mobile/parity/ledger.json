@@ -4,7 +4,11 @@
   "native_only": [
     {
       "path": "/",
-      "reason": "Wave 0 placeholder (app/index.tsx, VTID-05157); it is not a port of PUBLIC.LANDING, whose row stays not_started."
+      "reason": "Landing redirect (app/index.tsx, VTID-05186): signed in → /home, signed out → /maxina (useSmartRouting.tsx:102-110). Not a port of PUBLIC.LANDING, whose row stays not_started (public-auth lane)."
+    },
+    {
+      "path": "/*",
+      "reason": "Resolver route (app/(app)/[...path].tsx, VTID-05186): registry destinations not yet native render Unported, unknown paths render not-found; internal builds only — program decision 4."
     }
   ],
   "rows": [

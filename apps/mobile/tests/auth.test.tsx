@@ -77,10 +77,10 @@ describe('email and password (MaxinaPortal.tsx shapes)', () => {
     });
   });
 
-  it('password reset redirects to authRedirectUrl/reset-password', async () => {
+  it('password reset redirects to authRedirectUrl/reset-password?type=recovery (ResetPassword.tsx)', async () => {
     const d = createSupabaseDouble();
     await sendPasswordReset('a@b.c', d.client);
-    expect(d.client.auth.resetPasswordForEmail).toHaveBeenCalledWith('a@b.c', { redirectTo: 'https://g1-auth.example.org/reset-password' });
+    expect(d.client.auth.resetPasswordForEmail).toHaveBeenCalledWith('a@b.c', { redirectTo: 'https://g1-auth.example.org/reset-password?type=recovery' });
   });
 
   it('a stalled sign-in resolves at the 15 s deadline with the portal key', async () => {
