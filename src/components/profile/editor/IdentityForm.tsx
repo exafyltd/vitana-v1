@@ -216,7 +216,7 @@ export function IdentityForm({ onDataChange, onLoadStatusChange }: IdentityFormP
               onClick={handleAvatarUpload}
               disabled={uploading}
             >
-              <Upload className="w-4 h-4 mr-2" />
+              <Upload className="w-4 h-4 me-2" />
               {uploading ? translate('profileEditor.identity.uploading') : translate('profileEditor.identity.upload')}
             </Button>
             {avatarUrl && (
@@ -226,7 +226,7 @@ export function IdentityForm({ onDataChange, onLoadStatusChange }: IdentityFormP
                 onClick={() => setShowPositioner(true)}
                 disabled={uploading}
               >
-                <Move className="w-4 h-4 mr-2" />
+                <Move className="w-4 h-4 me-2" />
                 {translate('profileEditor.identity.reposition', 'Reposition')}
               </Button>
             )}
@@ -237,7 +237,7 @@ export function IdentityForm({ onDataChange, onLoadStatusChange }: IdentityFormP
                 onClick={() => { setAvatarUrl(""); setAvatarOffsetX(50); setAvatarOffsetY(50); }}
                 disabled={uploading}
               >
-                <X className="w-4 h-4 mr-2" />
+                <X className="w-4 h-4 me-2" />
                 {translate('profileEditor.identity.remove')}
               </Button>
             )}
@@ -260,7 +260,7 @@ export function IdentityForm({ onDataChange, onLoadStatusChange }: IdentityFormP
       <div className="space-y-2">
         <Label htmlFor="handle">{translate('profileEditor.identity.handle')}</Label>
         <div className="flex items-center">
-          <span className="text-muted-foreground mr-2">@</span>
+          <span className="text-muted-foreground me-2">@</span>
           <Input
             id="handle"
             value={handle}

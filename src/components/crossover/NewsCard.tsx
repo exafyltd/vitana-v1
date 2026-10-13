@@ -456,7 +456,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
               {/* Right side - Edit button pinned top-right */}
               {utilityTopRight && (
-                <div className="flex-shrink-0 ml-auto pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="flex-shrink-0 ms-auto pointer-events-auto" onClick={(e) => e.stopPropagation()}>
                   {utilityTopRight}
                 </div>
               )}
@@ -529,7 +529,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             </div>
 
             {/* Action Button Zone - Absolutely positioned at bottom */}
-            <div className="absolute bottom-6 right-2 flex items-center gap-2">
+            <div className="absolute bottom-6 end-2 flex items-center gap-2">
               {actionButton}
               {getSmartAction()}
             </div>

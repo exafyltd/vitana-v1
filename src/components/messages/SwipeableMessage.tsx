@@ -83,7 +83,7 @@ export function SwipeableMessage({ children, onReply, isOwnMessage, enabled = tr
       {/* Reply icon that slides in from the left */}
       <div
         className={cn(
-          "absolute left-2 top-1/2 -translate-y-1/2 flex items-center justify-center",
+          "absolute start-2 top-1/2 -translate-y-1/2 flex items-center justify-center",
           "w-8 h-8 rounded-full bg-primary/15 text-primary transition-opacity",
           progress > 0.3 ? "opacity-100" : "opacity-0"
         )}

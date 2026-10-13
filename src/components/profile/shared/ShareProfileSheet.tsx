@@ -69,7 +69,7 @@ export function ShareProfileSheet({
           <button
             type="button"
             onClick={handleNativeShare}
-            className="flex w-full items-center gap-3 rounded-lg border p-3 text-left hover:bg-accent transition-colors"
+            className="flex w-full items-center gap-3 rounded-lg border p-3 text-start hover:bg-accent transition-colors"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Share2 className="h-5 w-5" />
@@ -85,7 +85,7 @@ export function ShareProfileSheet({
           <button
             type="button"
             onClick={handleShowQR}
-            className="flex w-full items-center gap-3 rounded-lg border p-3 text-left hover:bg-accent transition-colors"
+            className="flex w-full items-center gap-3 rounded-lg border p-3 text-start hover:bg-accent transition-colors"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
               <QrCode className="h-5 w-5" />

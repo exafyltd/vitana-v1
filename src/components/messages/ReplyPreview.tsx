@@ -26,7 +26,7 @@ export const ReplyPreview: React.FC<ReplyPreviewProps> = ({
 
   return (
     <div className={cn(
-      "flex items-center gap-3 px-4 py-2 bg-muted/50 border-l-4 border-primary",
+      "flex items-center gap-3 px-4 py-2 bg-muted/50 border-s-4 border-primary",
       className
     )}>
       <Reply className="w-4 h-4 text-primary flex-shrink-0" />

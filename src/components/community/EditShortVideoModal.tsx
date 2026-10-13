@@ -291,7 +291,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isSaving || isRegenerating}
               >
-                <Upload className="w-4 h-4 mr-2" />{t('screens.community.uploadImage')}
+                <Upload className="w-4 h-4 me-2" />{t('screens.community.uploadImage')}
               </Button>
             </div>
 
@@ -318,11 +318,11 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 >
                   {isRegenerating ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.capturing')}
+                      <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.community.capturing')}
                     </>
                   ) : (
                     <>
-                      <ImageIcon className="w-4 h-4 mr-2" />
+                      <ImageIcon className="w-4 h-4 me-2" />
                       {t('screens.community.capture')}
                     </>
                   )}
@@ -339,7 +339,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
           <Button onClick={handleSave} disabled={isSaving || !title.trim()}>
             {isSaving ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.saving')}
+                <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.community.saving')}
               </>
             ) : (
               'Save Changes'

@@ -218,7 +218,7 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
           <Button onClick={handleImport} disabled={importing}>
             {importing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="me-2 h-4 w-4 animate-spin" />
                 {translate('socialImport.importing', 'Importing...')}
               </>
             ) : (

@@ -117,7 +117,7 @@ export function MobileMusicList({ tracks }: MobileMusicListProps) {
               {isCurrentlyPlaying ? (
                 <Pause className="h-5 w-5" />
               ) : (
-                <Play className="h-5 w-5 ml-0.5" />
+                <Play className="h-5 w-5 ms-0.5" />
               )}
             </Button>
 

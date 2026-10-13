@@ -42,7 +42,7 @@ function ProgressStreaksCardBase({
       
       <div className="text-sm">
         <span className="font-medium">{topStreak.type}</span>
-        <span className="ml-1">{topStreak.emoji}</span>
+        <span className="ms-1">{topStreak.emoji}</span>
       </div>
       
       <div className="text-xs text-muted-foreground">

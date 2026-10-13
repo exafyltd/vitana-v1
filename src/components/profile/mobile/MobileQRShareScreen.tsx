@@ -148,7 +148,7 @@ export function MobileQRShareScreen({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-safe-top right-4 mt-4 h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 text-white z-10"
+            className="absolute top-safe-top end-4 mt-4 h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 text-white z-10"
             onClick={onClose}
           >
             <X className="h-5 w-5" />
