@@ -391,8 +391,8 @@
       "cancel": "Annuler",
       "done": "Partagé – la communauté voit que tu y vas",
       "viewPost": "Partagé dans le fil – voir la publication",
-      "alreadyShared": "Tu as déjà partagé cet événement",
-      "notShareable": "Cet événement ne peut plus être partagé : il est terminé, annulé ou non public.",
+      "alreadyShared": "Tu as déjà partagé cette entrée",
+      "notShareable": "Cette entrée ne peut plus être partagée : elle est passée, annulée ou terminée.",
       "limit": "Tu as déjà beaucoup partagé aujourd'hui. Réessaie demain.",
       "duplicate": "Tu viens de publier ce texte. Écris autre chose ou attends un instant.",
       "suspended": "Ton compte ne peut pas publier pour le moment.",
@@ -413,8 +413,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Titre visible par les autres",
+      "calendarTitle": "Dans ton calendrier : {title}",
+      "defaultTextOwn": "Le {date} : {title}. Qui vient ?",
+      "placeShown": "Lieu affiché : {place}",
+      "placeHidden": "Afficher le lieu – désactivé : le lieu reste privé",
+      "showPlace": "Afficher le lieu",
+      "previewLabel": "Ce que voient les autres",
+      "sensitiveHint": "Tu partages un rendez-vous de santé. Vérifie le titre et le lieu : les autres ne voient que ce qui est affiché ici."
     },
     "feedCard": {
       "upcoming": "Bientôt",
@@ -435,8 +451,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "Ajouter à mon calendrier",
+      "added": "Ajouté à ton calendrier",
+      "alreadyAdded": "Déjà dans ton calendrier",
+      "notOpen": "Ce rendez-vous est passé ou annulé.",
+      "addError": "Ça n'a pas marché. Réessaie dans un instant."
     },
     "invite": {
       "action": "Inviter",

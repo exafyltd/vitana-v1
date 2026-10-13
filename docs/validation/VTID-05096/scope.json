@@ -15,7 +15,9 @@
     "i18n-source-stamps/*.json",
     "tests/e2e/staging/vtid-05096-verify-phone.staging.spec.ts",
     "docs/SCREEN_INVENTORY.md",
-    "docs/validation/VTID-05096/**"
+    "docs/validation/VTID-05096/**",
+    "src/pages/MobileSettings.tsx",
+    "src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx"
   ],
   "weakens_tests": [],
   "red_green_exempt": []

@@ -383,8 +383,8 @@
       "cancel": "Отмена",
       "done": "Готово – сообщество видит, что ты идёшь",
       "viewPost": "Опубликовано в ленте – посмотреть",
-      "alreadyShared": "Ты уже делился этим событием",
-      "notShareable": "Этим событием больше нельзя поделиться: оно закончилось, отменено или не публичное.",
+      "alreadyShared": "Ты уже поделился этой записью",
+      "notShareable": "Этой записью больше нельзя поделиться: она прошла, отменена или выполнена.",
       "limit": "Сегодня ты уже много публиковал. Попробуй завтра.",
       "duplicate": "Ты только что опубликовал этот текст. Напиши что-то другое или подожди немного.",
       "suspended": "Твой аккаунт сейчас не может публиковать.",
@@ -405,8 +405,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Название, которое видят другие",
+      "calendarTitle": "В твоём календаре: {title}",
+      "defaultTextOwn": "{date}: {title}. Кто со мной?",
+      "placeShown": "Место показано: {place}",
+      "placeHidden": "Показать место – выкл.: место остаётся скрытым",
+      "showPlace": "Показать место",
+      "previewLabel": "Так это увидят другие",
+      "sensitiveHint": "Ты делишься визитом к врачу. Проверь название и место – другие видят только то, что показано здесь."
     },
     "feedCard": {
       "upcoming": "Скоро",
@@ -427,8 +443,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "В мой календарь",
+      "added": "Добавлено в твой календарь",
+      "alreadyAdded": "Уже есть в твоём календаре",
+      "notOpen": "Эта запись прошла или отменена.",
+      "addError": "Не получилось. Попробуй ещё раз чуть позже."
     },
     "invite": {
       "action": "Пригласить",

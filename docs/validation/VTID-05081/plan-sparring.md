@@ -146,3 +146,52 @@ bubble through the DOM, so they arrive from the portaled News content as from an
 thresholds unchanged (`x < 30`, `deltaX > 50`, `deltaX > deltaY`). Test: Vitest — a native edge swipe dispatched
 on a node inside the shell opens the drawer, a short or vertical swipe does not; the existing behaviour on other
 screens is unchanged.
+
+## Amendment A2 — Postfach first visit: render the mobile inbox list progressively (2026-10-12, found on staging after merge)
+Evidence (STAGING-VERIFY community-app, phone journey, unchanged budgets):
+- 31979f8 / 41136f8 / 1c25bf8 / 2850de5: News return and Events now pass; **Postfach /inbox first visit fails in
+  every run: 4374–6922 ms vs 4000 ms**, waiting on `delayed-loader(route-chunk)` (the Suspense fallback stays
+  until the Messages tree commits).
+- Run 38283721893: 5755 ms of main-thread long tasks between tap and ready (longest 3563 ms), **no script in flight**
+  → CPU, not network.
+- Run 38286655583 (sampled CPU profile, mapped through a sourcemapped build of the same commit): Postfach step
+  self time is dominated by `(program)` — 2867 ms and 5849 ms (browser style/layout/paint, not JS); the JS frames
+  are forced-layout reads (`use-mobile.tsx:11` matchMedia/innerWidth, ~300 ms) and React reconciliation
+  (`react-jsx-runtime` ~258–298 ms).
+- Read-only count: the staging robot's account has **211 direct conversations + 2 groups**. On mobile,
+  `Messages.tsx` `renderMobileConversationList()` (`src/pages/Messages.tsx:1134-1215`) renders **every** thread as a
+  `MobileConversationCard` (avatar, badges, timestamp) in one commit — 213 cards laid out and painted before
+  Postfach can paint at all. Members with large inboxes (hosts, admins, early members) pay the same.
+Not caused by the keep-alive (the detached News node is out of the document: `NewsKeepAlive.tsx:207/215`), but it
+is the one remaining failure of this VTID's acceptance run, so it is fixed here rather than leaving
+STAGING-VERIFY community-app red for everyone.
+
+Change (two files + test):
+1. New `src/hooks/useProgressiveCount.ts`: `useProgressiveCount(total, { initial = 24, step = 40 })` returns how
+   many items to render: `min(total, initial)` on the first render, then grows by `step` per idle callback
+   (`requestIdleCallback` with `timeout: 300`, fallback `setTimeout(…, 50)`) until it reaches `total`; growth
+   continues when `total` increases; pending callbacks are cancelled on unmount. Pure render-count logic, no data.
+2. `src/pages/Messages.tsx`, mobile path only: `renderMobileConversationList` renders
+   `sortedThreads.slice(0, mobileLimit)`. While an inbox search query is active the full filtered list renders
+   (search results are small and must be complete). Sorting, dedupe, filters, pinned order, selection,
+   deep links (`/inbox/t/:id`, `/inbox/u/:id`), the empty states and the desktop layout are unchanged. A code comment notes that a deep-linked thread can sit beyond the first slice; the
+   deep link opens the conversation itself, so only its row highlight arrives a few idle frames later.
+   Progressive count rather than the existing `VirtualizedList` (`src/components/ui/virtualized-list.tsx`), which
+   needs a fixed `itemHeight`; conversation cards vary in height. The final
+   state is identical to today (all threads rendered) — a 213-thread inbox completes within a few idle frames.
+Test: Vitest for the hook (initial cap, grows to total via idle callbacks, follows a growing total, cleans up on
+unmount, `total < initial` renders all at once). Staging: the same journey at unchanged budgets (Postfach first
+≤ 4000 ms). Robot diagnostics from #1338/#1341/#1343 stay (diagnostics only).
+
+## Planner responses — amendment A2, round 1 (partner ab568b7203ae959e7)
+- F1 [minor] ACCEPTED: code comment at the slice — a deep-linked thread may be beyond the first slice; the deep
+  link opens the conversation view itself, so only the row highlight arrives a few idle frames later.
+- F2 [minor] ACCEPTED: rationale added to the Change section (VirtualizedList needs a fixed itemHeight; cards vary).
+- F3 [minor] ACCEPTED: fallback `setTimeout` is 50 ms; the idle path keeps `timeout: 300`.
+- Q1: typing a query switches the list to the full filtered result in that render (no cap while a query is
+  active); clearing the query returns to the progressive count, which has usually already reached the total.
+
+## Amendment A2 — verdict
+CONVERGED — 2 passes with the same partner (ab568b7203ae959e7): round 1 F1–F3 minors + Q1, all accepted; round 2
+all closed, no new findings. Within VTID-05081's approved acceptance (STAGING-VERIFY community-app must pass the
+phone journey at unchanged budgets); fix-forward attempt 2 of 3.

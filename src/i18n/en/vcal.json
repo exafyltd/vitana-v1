@@ -334,12 +334,20 @@
       "cancel": "Cancel",
       "done": "Shared – the community can see you are going",
       "viewPost": "Shared to the feed – view post",
-      "alreadyShared": "You have already shared this event",
-      "notShareable": "This event can no longer be shared – it is over, cancelled or not public.",
+      "alreadyShared": "You have already shared this entry",
+      "notShareable": "This entry can no longer be shared – it is over, cancelled or done.",
       "limit": "You have shared a lot today. Try again tomorrow.",
       "duplicate": "You just posted this text. Write something else or wait a moment.",
       "suspended": "Your account cannot post right now.",
-      "error": "Sharing did not work just now. Try again in a moment."
+      "error": "Sharing did not work just now. Try again in a moment.",
+      "cardTitleLabel": "Title others see",
+      "calendarTitle": "In your calendar: {title}",
+      "defaultTextOwn": "On {date}: {title}. Who's in?",
+      "placeShown": "Place shown: {place}",
+      "placeHidden": "Show the place – off: the place stays private",
+      "showPlace": "Show place",
+      "previewLabel": "What others see",
+      "sensitiveHint": "You're sharing a health appointment. Check the title and place – others only see what is shown here."
     },
     "feedCard": {
       "upcoming": "Coming up",
@@ -350,7 +358,12 @@
       "openRoom": "View room",
       "joinRoom": "Join now",
       "unavailable": "This event is no longer available.",
-      "untitled": "Event"
+      "untitled": "Event",
+      "addToCalendar": "Add to my calendar",
+      "added": "Added to your calendar",
+      "alreadyAdded": "Already in your calendar",
+      "notOpen": "This entry is over or cancelled.",
+      "addError": "That didn't work. Please try again in a moment."
     },
     "invite": {
       "action": "Invite",

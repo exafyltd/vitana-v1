@@ -58,7 +58,8 @@ function item(over: Partial<CalendarEntry> = {}, itemOver: Partial<CalendarWindo
     role_context: "community", completion_status: null, completed_at: null, wellness_tags: null, pillar: null,
     rrule: null, emoji: null, attendees_count: null, metadata: null, ...over,
   };
-  return { id: "e1", event_id: "e1", start_time: event.start_time, end_time: event.end_time, busy: false, occurrence_index: null, event, ...itemOver };
+  // VTID-05126: the gateway marks an own upcoming entry invitable.
+  return { id: "e1", event_id: "e1", start_time: event.start_time, end_time: event.end_time, busy: false, occurrence_index: null, invitable: true, event, ...itemOver };
 }
 
 function wrap(node: React.ReactNode) {
@@ -80,23 +81,22 @@ beforeEach(() => {
   h.groups = [{ id: "g-1", name: "Laufgruppe" }];
 });
 
-describe("who can be invited to what (VTID-04917)", () => {
-  it("a shareable event or room, or the member's own one-off entry", () => {
+describe("who can be invited to what (VTID-04917, VTID-05126)", () => {
+  it("any own entry the gateway marks invitable — events, rooms, private, health, reminders", () => {
     expect(canInviteEntry(item(), NOW)).toBe(true);
-    expect(canInviteEntry(item({ source_type: "invite" }), NOW)).toBe(true);
-    expect(canInviteEntry(item({ source_type: "community_rsvp" }, { shareable: true }), NOW)).toBe(true);
+    for (const source_type of ["invite", "community_rsvp", "reminder", "health_plan", "appointment", "autopilot", "assistant"]) {
+      expect(canInviteEntry(item({ source_type }), NOW)).toBe(true);
+    }
+    expect(canInviteEntry(item({}, { invitable: false }), NOW)).toBe(false);
+    expect(canInviteEntry(item({}, { invitable: undefined }), NOW)).toBe(false);
   });
 
-  it("never a series, a finished, done or cancelled entry, a busy block or a source-owned entry", () => {
-    expect(canInviteEntry(item({ rrule: "FREQ=WEEKLY" }), NOW)).toBe(false);
-    expect(canInviteEntry(item({}, { occurrence_index: 2 }), NOW)).toBe(false);
+  it("never what the gateway marks closed (series, cancelled); never finished, done or a busy block even if marked", () => {
+    expect(canInviteEntry(item({ rrule: "FREQ=WEEKLY" }, { invitable: false }), NOW)).toBe(false);
+    expect(canInviteEntry(item({ status: "cancelled" }, { invitable: false }), NOW)).toBe(false);
     expect(canInviteEntry(item({ start_time: "2026-10-09T08:00:00Z" }, { start_time: "2026-10-09T08:00:00Z", end_time: "2026-10-09T09:00:00Z" }), NOW)).toBe(false);
     expect(canInviteEntry(item({ completion_status: "completed", completed_at: "2026-10-10T09:00:00Z" }), NOW)).toBe(false);
-    expect(canInviteEntry(item({ status: "cancelled" }), NOW)).toBe(false);
     expect(canInviteEntry(item({}, { busy: true }), NOW)).toBe(false);
-    for (const source_type of ["health_plan", "lab_order", "appointment", "autopilot", "assistant", "audiobook", "community_rsvp"]) {
-      expect(canInviteEntry(item({ source_type }), NOW)).toBe(false);
-    }
   });
 
   it("the entry screen offers Invite only with a handler and hands the entry over", () => {
@@ -114,7 +114,8 @@ describe("the audiobook entry (VTID-04917)", () => {
   const audiobook = () =>
     item(
       { title: "Audiobook", source_type: "audiobook", source_ref_type: "audiobook_reminder", rrule: "FREQ=DAILY", event_type: "wellness_nudge" },
-      { occurrence_index: null, start_time: "2026-10-10T18:00:00Z", end_time: "2026-10-10T18:20:00Z" },
+      // A daily series: the gateway marks it not invitable (VTID-05126).
+      { occurrence_index: null, start_time: "2026-10-10T18:00:00Z", end_time: "2026-10-10T18:20:00Z", invitable: false },
     );
 
   it("has a localised title and source", () => {
@@ -138,7 +139,7 @@ describe("the invite picker (VTID-04917)", () => {
     expect(dmTargets(h.threads as never)).toEqual([{ kind: "dm", id: "peer-1", name: "Ana" }]);
   });
 
-  it("sends nothing until a chat is picked, then sends only the entry id", async () => {
+  it("sends nothing until a chat is picked, then the entry id and the card choices (VTID-05126)", async () => {
     wrap(<InviteToChatSheet item={item()} onClose={() => {}} />);
     await screen.findByText("Ana");
     expect(screen.getByText("Laufgruppe")).toBeTruthy();
@@ -151,7 +152,7 @@ describe("the invite picker (VTID-04917)", () => {
     fireEvent.click(screen.getByText("Ana"));
     expect(send.textContent).toBe('vcal.invite.sendTo:{"name":"Ana"}');
     fireEvent.click(send);
-    await waitFor(() => expect(h.sendChatMessage).toHaveBeenCalledWith("peer-1", "", { messageType: "calendar_invite", contentData: { entry_id: "e1" } }));
+    await waitFor(() => expect(h.sendChatMessage).toHaveBeenCalledWith("peer-1", "", { messageType: "calendar_invite", contentData: { entry_id: "e1", card_title: "Kaffee bei Luigi", include_location: false } }));
     await waitFor(() => expect(h.notify).toHaveBeenCalledWith("vcal.invite.sent", undefined, { name: "Ana" }));
   });
 
@@ -160,7 +161,7 @@ describe("the invite picker (VTID-04917)", () => {
     wrap(<InviteToChatSheet item={item()} onClose={onClose} />);
     fireEvent.click(await screen.findByText("Laufgruppe"));
     fireEvent.click(screen.getByTestId("vcal-invite-send"));
-    await waitFor(() => expect(h.sendGroupMessage).toHaveBeenCalledWith("g-1", "", { messageType: "calendar_invite", contentData: { entry_id: "e1" } }));
+    await waitFor(() => expect(h.sendGroupMessage).toHaveBeenCalledWith("g-1", "", { messageType: "calendar_invite", contentData: { entry_id: "e1", card_title: "Kaffee bei Luigi", include_location: false } }));
     await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
 

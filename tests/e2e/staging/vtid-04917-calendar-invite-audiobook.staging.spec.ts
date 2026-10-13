@@ -65,7 +65,7 @@ function demoItems() {
   });
   return [
     { id: 'demo-own', event_id: 'demo-own', start_time: s, end_time: e, busy: false, occurrence_index: null, movable: true, reminders: [],
-      shareable: false, shared_post_id: null,
+      shareable: false, invitable: true, shared_post_id: null, // VTID-05126: the gateway sends invitable
       event: ev({ id: 'demo-own', title: 'Demo own plan', start_time: s, end_time: e, event_type: 'personal', source_type: 'manual' }) },
     { id: 'demo-audiobook::1', event_id: 'demo-audiobook', start_time: later.toISOString(),
       end_time: new Date(later.getTime() + 20 * 60_000).toISOString(), busy: false, occurrence_index: 1, movable: false, reminders: [],

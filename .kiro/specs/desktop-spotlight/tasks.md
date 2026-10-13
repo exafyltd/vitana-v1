@@ -1,0 +1,84 @@
+# Tasks — Vitanaland Desktop "Spotlight"
+
+Rules for every task (from `CLAUDE.md` / steering, unchanged):
+- One PR per phase VTID; PR title starts with the VTID; `docs/validation/<VTID>/scope.json` lists the paths and sets
+  `"sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md"`; add `docs/validation/<VTID>/staging-tests.json` for any PR that deploys.
+- Before work on a VTID: `scripts/dev/resume-vtid.sh <VTID>` (vitana-platform) and update the ledger row to `in_progress`.
+- Local checks before push: `npm run lint`, `npx tsc --noEmit`, `npm test`, `npm run build`, `npm run i18n:inventory` (commit `docs/SCREEN_INVENTORY.md`).
+- Screenshots 1400×900 desktop (flag on and off) + 390×844 mobile (must be unchanged) in every UI PR.
+- Never write to production; staging specs are read-only. No What's New entry.
+- Work outside this spec = plan change → spar → owner. Inside the spec, take the conservative option and list it under "Decisions taken".
+- After merge: watch STAGING-VERIFY for the merge commit; Gate 2 to the owner only from its evidence.
+
+Dependencies: 1a + 1c → 2, 3, 4, 7 (parallel) → 5 → 6. 1b is independent.
+
+---
+
+## Phase 1a — Design foundation · VTID-05105
+- [ ] 1a.1 Generate `docs/design-system/desktop-screen-inventory.md` from `App.tsx` + `screens.json` (exact route counts, tier per route). _R7_
+- [ ] 1a.2 Tokens in `src/index.css` (light + dark) + `tailwind.config.ts` extend: width tokens, VCard radius/elevation/ratios, focus ring. _R3, SR-14…17_
+- [ ] 1a.3 `VCard` (4 sizes, slots, `data-vcard-size`, RTL, 2-line title clamp, missing-media fallback) + `VCardSkeleton`. _R3_
+- [ ] 1a.4 Adapters: post, news, product (others land with their phases). _R3_
+- [ ] 1a.5 `SpotlightLayout` (container query, `container-type: inline-size`, rail ≥ 1060 px else `RailSheet`), `StageCrossFade`, `useFocusedCard`. _R1, R6.4_
+- [ ] 1a.6 `ScreenFrame archetype` composing existing chrome; `StandardHeader density="compact"` (additive prop; default unchanged); SplitBar via `trailingElement`. _R2_
+- [ ] 1a.7 Archetype skeletons. _R6.2_
+- [ ] 1a.8 `useTenantFeatureFlag`, `useSpotlightEnabled` (+ `?spotlight=` override), `desktop_spotlight` in `KNOWN_FLAGS`. _R8_
+- [ ] 1a.9 Vitest: VCard sizes × adapters, RTL, clamp, missing media; container-type asserted; rail rule; StandardHeader compact keeps Autopilot + Index tiles and default is unchanged; flag on/off/override; reduced motion. _R1–R3, R8_
+- [ ] 1a.10 No screen renders differently with the flag off (snapshot of Home/Discover legacy trees unchanged).
+
+## Phase 1b — Navigation feel · VTID-05106 (not flag-gated)
+- [ ] 1b.1 **Prototype gate:** Vitest proving `v7_startTransition` keeps the old page mounted and no `RouteFallback` during a lazy load. Fails → stop, re-spar.
+- [ ] 1b.2 `future={{ v7_startTransition: true }}` on `<BrowserRouter>` (`App.tsx:764`) — the only `App.tsx` edit.
+- [ ] 1b.3 `useNavigationPending` + `NavProgressBar` rendered from `RouteTransitionOverlay.tsx`. _R6.1_
+- [ ] 1b.4 Document-level intent prefetch (pointerover/focusin on `a[href]`, ≥ 80 ms, once per href) → chunk + data prefetch. _R6.3_
+- [ ] 1b.5 Keep `tests/loading-no-flash.cjs`, keep-alive tests, `screen-journey.staging.spec.ts` green; staging spec: route switch never shows the DelayedLoader test id after first load. _R6.6_
+
+## Phase 1c — Design contract & enforcement · VTID-05107
+- [ ] 1c.1 `docs/design-system/SPOTLIGHT_RULES.md` from design.md §4–§7 (SR-01…30, archetypes, mobile mapping, palette→token table). Header pointer in `docs/UNIVERSAL_SCREEN_PATTERN.md`. _R7.3_
+- [ ] 1c.2 `.claude/rules/design.md` (paths `src/pages/**`, `src/components/**`) and `.kiro/steering/vitana-design.md` (same fileMatch) linking the contract; short pointer paragraph in `CLAUDE.md`.
+- [ ] 1c.3 Semantic colour tokens `status.*`, `severity.*`, `category.1–8`, `surface.*` (incl. today's page gradient), light + dark. _R7.6_
+- [ ] 1c.4 `src/design/screen-manifest.json` (every non-redirect route; archetype, tier, status `legacy`, phase) + `screen-manifest.test.ts` via `extractSpaRoutes`. _R7.1–7.2_
+- [ ] 1c.5 `eslint-rules/design/*` (6 rules) + escape hatch + RuleTester tests; register in `eslint.config.js` at error. _R7.4, R7.7_
+- [ ] 1c.6 `npm run design:allowances` report.
+- [ ] 1c.7 Regenerate `scripts/ci/pr-gate/baseline/eslint.json`; create `baseline/design.json`; PR body lists starting counts per rule.
+- [ ] 1c.8 `ratchet-design` in `gate.mjs`/`lib.mjs` reading the base commit's baseline; unit tests prove a raised count fails even when the PR edits the baseline; one step in `PR-GATE.yml`. _R7.5_
+- [ ] 1c.9 `tests/e2e/staging/design-contract.staging.spec.ts` (iterates `migrated` manifest entries; empty set passes). _R7_
+
+## Phase 2 — News Feed · VTID-05108
+- [ ] 2.1 `feed-compose.ts` `placement: 'stream' | 'rail'` (+ tests); info cards, DidYouKnow, EventGameFeedBadge → rail. _R4.4_
+- [ ] 2.2 Desktop focus feed in `Home.tsx` behind `useSpotlightEnabled()` via `ScreenFrame archetype="focus-feed"`; legacy branch untouched. _R4_
+- [ ] 2.3 Rail: Up next, Today, Vitana Index / journey, People to meet. _R1_
+- [ ] 2.4 Keyboard J/K/↑↓, centre-line focus, dim with AA contrast. _R4.2–4.3_
+- [ ] 2.5 Manifest: `/home` → `migrated`; lower the design baseline for touched files.
+- [ ] 2.6 Staging spec: no gap > 48 px at 1280/1440/1920, one spotlight, rail present, J/K, RTL, chrome invariants. _R4.5_
+
+## Phase 3 — Discover storefront · VTID-05109
+- [ ] 3.1 Storefront overview (`ScreenFrame archetype="storefront"`): SubNavigation kept, Overview SplitBar removed, chips, hero, shelves, Share & Earn shelf. _R5.1–5.2_
+- [ ] 3.2 Product/service/provider adapters; quick-view sheet generalised from `ProductDetailsDrawer`. _R5.3_
+- [ ] 3.3 Wire overview search; wire or remove doctor filters; mock-only sections → empty states; raw strings → `t()`. _R5.5–5.6_
+- [ ] 3.4 Sub-pages: their SplitBar moves to the utility trailing slot; results grid of `standard` cards.
+- [ ] 3.5 Manifest + baseline; staging spec: hero + shelves, search returns results, quick-view opens (read-only).
+
+## Phase 4 — Social screens · VTID-05110
+- [ ] 4.1 Community overview, Events & Meetups (featured event + list + rail; no empty bento slots), Groups, GroupDetail, Live Rooms, Media Hub, Public profile, Post detail, Messages — each via its archetype. _R1, R3_
+- [ ] 4.2 Remaining adapters (event, liveRoom, group, member).
+- [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+
+## Phase 5 — Tier B adoption · VTID-05111
+- [ ] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
+- [ ] 5.2 PR body: list of every card component still not on VCard (input to Phase 6).
+
+## Phase 7 — Workspace & remaining screens (parallel with 2–4)
+- [ ] 7.1 Admin · VTID-05113 — `workspace`, `AdminTabs` kept, admin-shell contract respected.
+- [ ] 7.2 Backoffice · VTID-05114
+- [ ] 7.3 Dev · VTID-05115
+- [ ] 7.4 Professional + Staff · VTID-05116
+- [ ] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
+
+## Phase 6 — Card consolidation · VTID-05112 (last)
+- [ ] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
+- [ ] 6.2 Design part of the ESLint baseline = 0; mobile screenshots unchanged.
+
+## System-wide done
+- [ ] Manifest 100 % `migrated`; `baseline/design.json` all zero; STAGING-VERIFY design-lint green for every screen.
+- [ ] Owner decision on turning `desktop_spotlight` on in production (separate). Legacy-path removal = separate sparred plan.

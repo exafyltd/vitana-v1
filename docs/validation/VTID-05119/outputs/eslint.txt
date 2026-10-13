@@ -1,0 +1,8 @@
+src/lib/edge-functions-caller-identity.s4.test.ts: errors=0 warnings=0 baseline=0
+src/lib/read-json-body.test.ts: errors=0 warnings=0 baseline=0
+src/lib/recommendation-matches.test.ts: errors=0 warnings=0 baseline=0
+supabase/functions/_shared/read-json-body.ts: errors=0 warnings=0 baseline=0
+supabase/functions/_shared/recommendation-matches.ts: errors=1 warnings=0 baseline=1
+supabase/functions/fetch-user-context/index.ts: errors=43 warnings=0 baseline=43
+supabase/functions/generate-enhanced-recommendations/index.ts: errors=3 warnings=0 baseline=6
+No file above its baseline (ratchet: per-file error counts may only go down).
