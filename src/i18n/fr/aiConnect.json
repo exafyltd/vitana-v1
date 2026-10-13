@@ -14,7 +14,8 @@
       "failed": "Cela n'a pas fonctionné. Réessaie.",
       "loading": "Chargement …",
       "redirecting": "Redirection en cours …",
-      "invalid": "Cette demande a expiré ou n'est pas valide. Relance la connexion dans ton assistant IA."
+      "invalid": "Cette demande a expiré ou n'est pas valide. Relance la connexion dans ton assistant IA.",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "Ton profil",
@@ -25,7 +26,8 @@
       "peopleDesc": "Les membres qui ont choisi d'être trouvables par les assistants IA",
       "activities": "Activités",
       "activitiesDesc": "Les prochains événements et rencontres de la communauté",
-      "commerce": "Outils fournisseurs (Vitanaland Commerce)"
+      "commerce": "Outils fournisseurs (Vitanaland Commerce)",
+      "_pending_review": {}
     },
     "settings": {
       "title": "IA connectée",
@@ -49,7 +51,10 @@
       "loadFailed": "Impossible de charger tes assistants connectés.",
       "findableTitle": "Permettre aux assistants IA des autres membres de me trouver",
       "findableDesc": "Si activé, les membres ayant connecté ChatGPT ou Claude peuvent voir ton nom, ta photo, ta ville publique et tes centres d'intérêt. Désactivé par défaut.",
-      "unknownClient": "Un assistant IA"
-    }
-  }
+      "unknownClient": "Un assistant IA",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
