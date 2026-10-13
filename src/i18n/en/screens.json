@@ -12262,6 +12262,27 @@
       },
       "_pending_review": {
         "eyebrowCommunity": true
+      },
+      "G1": {
+        "eyebrow": "Your profile",
+        "title": "Complete your profile",
+        "description": "A complete profile brings you better matches.",
+        "action": "Continue setup",
+        "metric": "{value} done · {message}"
+      },
+      "G2": {
+        "eyebrow": "Matches",
+        "title": "You have new matches",
+        "description": "See who is a good fit for you.",
+        "action": "See who matched",
+        "metric": "New matches: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Diary",
+        "title": "Your streak is at risk",
+        "description": "You missed yesterday – keep your streak alive today.",
+        "action": "Log today",
+        "metric": "Streak: {count} days · {message}"
       }
     },
     "interests": {

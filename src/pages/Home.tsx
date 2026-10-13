@@ -53,6 +53,7 @@ import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
 import { composeFeed, withHomeNewCards } from "@/lib/feed-compose";
 import { useEnrichmentCards } from "@/hooks/useEnrichmentCards";
 import { getVitanaCardComponent } from "@/components/vitana/card-registry";
+import { pickHomeServerCards } from "@/components/vitana/vitana-card-catalog";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
@@ -201,6 +202,7 @@ export const HomeContent = memo(function HomeContent() {
 
   // VTID-05085: the member's top open enrichment cards (server-ordered) join
   // the Vitana cards on Home — at most 2 here, capped again before composeFeed.
+  // VTID-05143 Phase 3: plus the boost cards (G1–G3) — 3 new cards in total.
   // Paused while News is kept alive behind another tab; a stale list (a card
   // completed meanwhile) is re-read as soon as News is shown again.
   const { cards: homeEnrichmentCards, dismiss: dismissHomeCard } = useEnrichmentCards("home", { active });
@@ -413,17 +415,24 @@ export const HomeContent = memo(function HomeContent() {
       ? streamItems.find((item) => item.kind === "post")?.id
       : undefined;
 
-    // VTID-05085: top 2 open enrichment cards, rendered by the shared card registry.
-    const newCards: { key: string; node: JSX.Element }[] = homeEnrichmentCards
-      .filter((c) => c.category === "enrichment" && getVitanaCardComponent(c.card_type))
-      .slice(0, 2)
-      .map((c) => {
-        const Card = getVitanaCardComponent(c.card_type)!;
-        return {
-          key: `card-enrichment-${c.card_type}`,
-          node: <Card title={c.title} description={c.description} onDismiss={() => dismissHomeCard(c.card_type)} />,
-        };
-      });
+    // VTID-05085 / VTID-05143: top 2 open enrichment cards, then the boost
+    // cards — 3 at most — rendered by the shared card registry.
+    const newCards: { key: string; node: JSX.Element }[] = pickHomeServerCards(
+      homeEnrichmentCards.filter((c) => getVitanaCardComponent(c.card_type)),
+    ).map((c) => {
+      const Card = getVitanaCardComponent(c.card_type)!;
+      return {
+        key: `card-${c.category === "boost" ? "boost" : "enrichment"}-${c.card_type}`,
+        node: (
+          <Card
+            title={c.title}
+            description={c.description}
+            params={c.params}
+            onDismiss={() => dismissHomeCard(c.card_type)}
+          />
+        ),
+      };
+    });
 
     const existingCards: { key: string; node: JSX.Element }[] = [
       { key: "card-vitana-index", node: <VitanaIndexCard /> },

@@ -13619,6 +13619,27 @@
         "title": "Odkryj coś nowego",
         "description": "Produkty, usługi i oferty dla Twojego dobrego samopoczucia.",
         "action": "Przeglądaj"
+      },
+      "G1": {
+        "eyebrow": "Twój profil",
+        "title": "Uzupełnij swój profil",
+        "description": "Pełny profil daje Ci lepsze dopasowania.",
+        "action": "Kontynuuj",
+        "metric": "Ukończono {value} · {message}"
+      },
+      "G2": {
+        "eyebrow": "Dopasowania",
+        "title": "Masz nowe dopasowania",
+        "description": "Zobacz, kto do Ciebie pasuje.",
+        "action": "Zobacz dopasowania",
+        "metric": "Nowe dopasowania: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Dziennik",
+        "title": "Twoja seria jest zagrożona",
+        "description": "Wczoraj nie było wpisu – podtrzymaj swoją serię dziś.",
+        "action": "Wpisz dziś",
+        "metric": "Seria: {count} dni · {message}"
       }
     },
     "interests": {

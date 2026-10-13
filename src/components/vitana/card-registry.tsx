@@ -18,6 +18,9 @@ import { ConnectCalendarCard } from '@/components/enrichment/ConnectCalendarCard
 import { ImportContactsCard } from '@/components/enrichment/ImportContactsCard';
 import { EnableNotificationsCard } from '@/components/enrichment/EnableNotificationsCard';
 import { UploadCoverCard } from '@/components/enrichment/UploadCoverCard';
+import { CompleteProfileCard } from '@/components/enrichment/CompleteProfileCard';
+import { UnreadMatchesCard } from '@/components/enrichment/UnreadMatchesCard';
+import { StreakAtRiskCard } from '@/components/enrichment/StreakAtRiskCard';
 import { DailyDiaryCard } from '@/components/feature/DailyDiaryCard';
 import { TalkToVitanaCard } from '@/components/feature/TalkToVitanaCard';
 import { FindAMatchCard } from '@/components/feature/FindAMatchCard';
@@ -72,6 +75,10 @@ export const VITANA_CARD_REGISTRY: Partial<Record<VitanaCardType, ComponentType<
   F9: CalendarCard,
   F10: UploadMediaCard,
   F11: DiscoverCard,
+  // VTID-05143 Phase 3 — boost cards (G4 "Earn VTNA" is out of scope).
+  G1: CompleteProfileCard,
+  G2: UnreadMatchesCard,
+  G3: StreakAtRiskCard,
 };
 
 export function getVitanaCardComponent(cardType: string): ComponentType<VitanaCardProps> | null {
