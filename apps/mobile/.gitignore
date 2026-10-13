@@ -16,3 +16,5 @@ src/i18n/catalog-map.generated.ts
 *.log
 # Native permission strings generated at prebuild from src/i18n (VTID-05180, scripts/native/gen-native-locales.mjs).
 .generated/
+# VTID-05179 — fake ORB gateway recordings (device checklist evidence, never committed).
+tools/orb-fake-gateway/out/

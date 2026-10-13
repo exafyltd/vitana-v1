@@ -240,13 +240,13 @@ export default withScreenId(function Campaigns() {
                   }
                 }}
               >
-                <CheckSquare className="w-4 h-4 mr-2" />
+                <CheckSquare className="w-4 h-4 me-2" />
                 {bulkMode ? "Exit Bulk Mode" : "Bulk Actions"}
               </Button>
             )}
             
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.sharing.newCampaign')}
             </Button>
           </UtilityActionButton>
@@ -300,7 +300,7 @@ export default withScreenId(function Campaigns() {
                   {t('screens.sharing.createYourFirstCampaignOrganizeTrack')}
                 </p>
                 <Button onClick={() => setCampaignPopupOpen(true)}>
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {t('screens.sharing.createYourFirstCampaign')}
                 </Button>
               </CardContent>

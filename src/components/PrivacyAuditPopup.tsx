@@ -193,7 +193,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               {t('screens.common.closeReport')}
             </Button>
             <Button className="flex-1">
-              <Shield className="w-4 h-4 mr-2" />
+              <Shield className="w-4 h-4 me-2" />
               {t('screens.common.applyAllFixes')}
             </Button>
           </div>

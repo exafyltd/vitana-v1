@@ -56,19 +56,19 @@ export function CreatorPaymentsSection() {
           </div>
           {isFullyOnboarded && (
             <Badge variant="default" className="bg-green-600">
-              <CheckCircle className="w-3 h-3 mr-1" />
+              <CheckCircle className="w-3 h-3 me-1" />
               {t('screens.creator.active')}
             </Badge>
           )}
           {isPartiallyOnboarded && (
             <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-              <AlertCircle className="w-3 h-3 mr-1" />
+              <AlertCircle className="w-3 h-3 me-1" />
               {t('screens.creator.setupIncomplete')}
             </Badge>
           )}
           {notOnboarded && (
             <Badge variant="outline">
-              <AlertCircle className="w-3 h-3 mr-1" />{t('screens.creator.notEnabled')}
+              <AlertCircle className="w-3 h-3 me-1" />{t('screens.creator.notEnabled')}
             </Badge>
           )}
         </div>
@@ -141,7 +141,7 @@ export function CreatorPaymentsSection() {
               onClick={() => openDashboard()}
               disabled={isDashboardLoading}
             >
-              <ExternalLink className="w-4 h-4 mr-2" />
+              <ExternalLink className="w-4 h-4 me-2" />
               {isDashboardLoading ? 'Opening...' : 'View Dashboard'}
             </Button>
           )}

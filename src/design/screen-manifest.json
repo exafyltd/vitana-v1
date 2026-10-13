@@ -18,6 +18,14 @@
       "phase": "7"
     },
     {
+      "path": "/:tenantSlug",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
       "path": "/admin/*",
       "archetype": "workspace",
       "tier": "C",

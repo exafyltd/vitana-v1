@@ -414,7 +414,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         key={key}
                         onClick={() => setSelectedTier(key)}
                         className={cn(
-                          "w-full p-4 rounded-xl border-2 text-left transition-all",
+                          "w-full p-4 rounded-xl border-2 text-start transition-all",
                           isSelected 
                             ? "border-primary bg-primary/5 shadow-md" 
                             : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
@@ -465,7 +465,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   disabled={!selectedTier}
                   className="w-full h-11"
                 >
-                  <Gift className="h-4 w-4 mr-2" />
+                  <Gift className="h-4 w-4 me-2" />
                   {translate('voucher.modal.buyVoucher')} {selectedTier && `· €${tiers[selectedTier].price}`}
                 </Button>
               </div>
@@ -517,9 +517,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   disabled={downloadPdf.isPending}
                 >
                   {downloadPdf.isPending ? (
-                    <Loader2 className="h-4 w-4 mr-3 animate-spin" />
+                    <Loader2 className="h-4 w-4 me-3 animate-spin" />
                   ) : (
-                    <Download className="h-4 w-4 mr-3" />
+                    <Download className="h-4 w-4 me-3" />
                   )}
                   {translate('voucher.success.download')}
                 </Button>
@@ -529,7 +529,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   variant="outline"
                   className="w-full justify-start h-12"
                 >
-                  <Mail className="h-4 w-4 mr-3" />
+                  <Mail className="h-4 w-4 me-3" />
                   {translate('voucher.success.sendEmail')}
                 </Button>
                 
@@ -538,7 +538,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   variant="ghost"
                   className="w-full justify-start h-12 text-muted-foreground"
                 >
-                  <ShoppingBag className="h-4 w-4 mr-3" />
+                  <ShoppingBag className="h-4 w-4 me-3" />
                   {translate('voucher.success.viewOrders')}
                 </Button>
               </div>
@@ -627,9 +627,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   className="flex-1"
                 >
                   {sendEmail.isPending ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="h-4 w-4 me-2 animate-spin" />
                   ) : (
-                    <Send className="h-4 w-4 mr-2" />
+                    <Send className="h-4 w-4 me-2" />
                   )}
                   {translate('voucher.email.send')}
                 </Button>
@@ -709,7 +709,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       onClick={handleShareUrl}
                       className="w-full h-12"
                     >
-                      <Share2 className="h-4 w-4 mr-2" />
+                      <Share2 className="h-4 w-4 me-2" />
                       {translate('voucher.preview.share')}
                     </Button>
                     <Button
@@ -717,7 +717,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       onClick={handleDownloadDirect}
                       className="w-full"
                     >
-                      <Download className="h-4 w-4 mr-2" />
+                      <Download className="h-4 w-4 me-2" />
                       {translate('voucher.preview.downloadPdf')}
                     </Button>
                   </>
@@ -727,7 +727,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       onClick={handleDownloadDirect}
                       className="w-full h-12"
                     >
-                      <Download className="h-4 w-4 mr-2" />
+                      <Download className="h-4 w-4 me-2" />
                       {translate('voucher.preview.downloadPdf')}
                     </Button>
                     <div className="flex gap-2">
@@ -736,7 +736,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         onClick={handleOpenInBrowser}
                         className="flex-1"
                       >
-                        <ExternalLink className="h-4 w-4 mr-2" />
+                        <ExternalLink className="h-4 w-4 me-2" />
                         {translate('voucher.preview.openInBrowser')}
                       </Button>
                       <Button
@@ -744,7 +744,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         onClick={handleCopyLink}
                         className="flex-1"
                       >
-                        <Copy className="h-4 w-4 mr-2" />
+                        <Copy className="h-4 w-4 me-2" />
                         {translate('voucher.preview.copyLink')}
                       </Button>
                     </div>

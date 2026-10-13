@@ -64,10 +64,10 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
     <div className="space-y-4">
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
           placeholder={translate('connectedApps.popup.searchPlaceholder')}
-          className="pl-10"
+          className="ps-10"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -142,7 +142,7 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
                     className="h-7 text-xs rounded-full"
                     onClick={() => handleConnect(app)}
                   >
-                    <Plug className="w-3 h-3 mr-1" />
+                    <Plug className="w-3 h-3 me-1" />
                     {translate('connectedApps.popup.connect')}
                   </Button>
                 )}
@@ -171,7 +171,7 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
       <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
         <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-hidden">
           <SheetHeader className="pb-2">
-            <SheetTitle className="flex items-center gap-2 text-left">
+            <SheetTitle className="flex items-center gap-2 text-start">
               <Plug className="w-5 h-5 text-primary" />
               {translate('connectedApps.popup.title')}
             </SheetTitle>

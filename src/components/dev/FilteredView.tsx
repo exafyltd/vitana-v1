@@ -89,7 +89,7 @@ export function FilteredView() {
                 : "Create new filter"
             }
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.dev.createNewFilter')}
           </Button>
         </div>

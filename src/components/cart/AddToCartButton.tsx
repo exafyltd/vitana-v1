@@ -114,7 +114,7 @@ export function AddToCartButton({
         <ShoppingCart className="h-4 w-4" />
       )}
       {showLabel && size !== "icon" && (
-        <span className="ml-2">
+        <span className="ms-2">
           {isInCart ? t('screens.cart.inCart') : t('screens.cart.addToCart')}
         </span>
       )}

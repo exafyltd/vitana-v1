@@ -115,7 +115,8 @@ const ExafyAdminPortal = lazy(() => import("./pages/portals/ExafyAdminPortal"));
 const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
 // VTID-04508: personal invite links
 const InviteLanding = lazy(() => import("./pages/InviteLanding"));
-const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
+// VTID-05151: generic community portal (/:tenantSlug, and /alkalma as an alias).
+const TenantPortal = lazy(() => import("./pages/portals/TenantPortal"));
 // CommunityPortal removed — orphaned, login handled by tenant portals
 const MaxinaConfirmed = lazy(() => import("./pages/portals/MaxinaConfirmed"));
 const AlkalmaConfirmed = lazy(() => import("./pages/portals/AlkalmaConfirmed"));
@@ -874,7 +875,7 @@ const App = () => {
           <Route path="/commerce-login" element={<CommercePortalLogin />} />
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/i/:code" element={<InviteLanding />} />
-          <Route path="/alkalma" element={<AlkalmaPortal />} />
+          <Route path="/alkalma" element={<TenantPortal slug="alkalma" />} />
           {/* VTID-04836: Earthlinks was retired into Maxina (platform VTID-01985).
               Old links — the portal, /earthlinks/confirmed, anything below —
               land on the Maxina equivalent with path, query and hash kept. */}
@@ -2331,6 +2332,9 @@ const App = () => {
           } />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* VTID-05151: community portal for any registry tenant. Static routes always
+              outrank it; reserved/unknown slugs render NotFound inside it. */}
+          <Route path="/:tenantSlug" element={<TenantPortal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
                   </Suspense>

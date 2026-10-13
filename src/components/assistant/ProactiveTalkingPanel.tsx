@@ -163,7 +163,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
               disabled={isSpeaking || isUpdating}
               className="flex-1"
             >
-              <Play className="mr-2 h-4 w-4" />
+              <Play className="me-2 h-4 w-4" />
               {isSpeaking ? "Speaking..." : "Play Sample Greeting"}
             </Button>
             <Button
@@ -171,7 +171,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
               variant="outline"
               disabled={isUpdating}
             >
-              <RotateCcw className="mr-2 h-4 w-4" />
+              <RotateCcw className="me-2 h-4 w-4" />
               {t('screens.assistant.resetSession')}
             </Button>
           </div>

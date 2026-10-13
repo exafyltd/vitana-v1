@@ -173,7 +173,6 @@ describe('VTID-05117 every page of this phase composes ScreenFrame behind useSpo
   const PAGES: [string, string][] = [
     ['/', 'src/pages/Index.tsx'],
     ['/_intro/:tenantSlug', 'src/pages/IntroExperience.tsx'],
-    ['/alkalma', 'src/pages/portals/AlkalmaPortal.tsx'],
     ['/alkalma/confirmed', 'src/pages/portals/AlkalmaConfirmed.tsx'],
     ['/apply', 'src/pages/Apply.tsx'],
     ['/auth/confirmed', 'src/pages/auth/EmailConfirmed.tsx'],
@@ -223,6 +222,22 @@ describe('VTID-05117 every page of this phase composes ScreenFrame behind useSpo
     expect(archetype, `${route} is in the manifest`).toBeTruthy();
     expect(src).toContain('useSpotlightEnabled()');
     expect(src).toMatch(/ScreenFrame|FrameWhen|PublicMain/);
+    expect(src).toContain(`archetype="${archetype}"`);
+  });
+
+  // VTID-05151: /alkalma and /:tenantSlug render the generic TenantPortal, which
+  // was built Spotlight-native (no legacy layout to switch back to), so it has
+  // no useSpotlightEnabled() branch; it must still frame with its archetype.
+  const NATIVE: [string, string][] = [
+    ['/alkalma', 'src/pages/portals/TenantPortal.tsx'],
+    ['/:tenantSlug', 'src/pages/portals/TenantPortal.tsx'],
+  ];
+
+  it.each(NATIVE)('%s (%s) frames with its archetype (Spotlight-native)', (route, file) => {
+    const src = fs.readFileSync(path.resolve(process.cwd(), file), 'utf8');
+    const archetype = archetypeOf(route);
+    expect(archetype, `${route} is in the manifest`).toBeTruthy();
+    expect(src).toContain('ScreenFrame');
     expect(src).toContain(`archetype="${archetype}"`);
   });
 

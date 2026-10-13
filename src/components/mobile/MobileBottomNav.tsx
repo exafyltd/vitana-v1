@@ -150,7 +150,7 @@ export function MobileBottomNav() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 md:hidden"
+      className="mobile-bottom-nav fixed bottom-0 start-0 end-0 z-50 md:hidden"
     >
       <div className="relative grid grid-cols-5 items-end bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
         {items.slice(0, 2).map((item) => (
@@ -230,7 +230,7 @@ function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0, exact 
             />
             {id === 'inbox' && unreadCount > 0 && (
               <span
-                className="absolute -top-1.5 -right-2 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[9px] font-semibold text-destructive-foreground"
+                className="absolute -top-1.5 -end-2 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[9px] font-semibold text-destructive-foreground"
                 aria-label={`${unreadCount} unread message${unreadCount !== 1 ? 's' : ''}`}
               >
                 {unreadCount > 99 ? '99+' : unreadCount}

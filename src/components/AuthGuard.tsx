@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
 import { readStoredTenantSlug } from "@/lib/retired-tenants";
+import { currentRegistrySync, findBySlug, tenantLoginRoute } from "@/lib/tenant-registry";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
@@ -69,11 +70,10 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
     // `/_intro/<tenant>` and lose the `?redirectTo=` deep-link target.
     // readStoredTenantSlug maps a retired slug (VTID-04836: 'earthlinks')
     // to its successor, so an old browser lands on the Maxina portal.
+    // VTID-05151: any tenant in the registry (snapshot) has its own portal.
     const slug = readStoredTenantSlug('tenant_slug')
       || DOMAIN_TENANT_MAP[window.location.hostname];
-    if (slug === 'maxina') return '/maxina';
-    if (slug === 'alkalma') return '/alkalma';
-    return '/';
+    return tenantLoginRoute(slug, currentRegistrySync(), '/');
   }, []);
 
   // Start processing when OAuth callback is detected
@@ -204,9 +204,10 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
           navigate(`${loginRoute}?redirectTo=${encodeURIComponent(intended)}`);
         } else {
           // Plain launch → route through the brand intro before the sign-up portal.
-          const slug = loginRoute.slice(1); // 'maxina' | 'alkalma' | 'exafy-admin' | ''
-          if (slug === 'maxina' || slug === 'alkalma') {
-            navigate(`/_intro/${slug}`);
+          // VTID-05151: the intro runs for a tenant whose landing data asks for it.
+          const entry = findBySlug(currentRegistrySync(), loginRoute.slice(1)); // '' for '/', 'exafy-admin', …
+          if (entry?.landing.intro) {
+            navigate(`/_intro/${entry.slug}`);
           } else {
             navigate(loginRoute); // exafy-admin / unknown tenant: no intro
           }
@@ -278,7 +279,7 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
             className="w-full"
             variant="default"
           >
-            <RefreshCw className="mr-2 h-4 w-4" />
+            <RefreshCw className="me-2 h-4 w-4" />
             {t('screens.common.tryAppleSigninAgain')}
           </Button>
           <Button
@@ -291,7 +292,7 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
             variant="outline"
             className="w-full"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="me-2 h-4 w-4" />
             {t('screens.common.backLogin')}
           </Button>
         </div>

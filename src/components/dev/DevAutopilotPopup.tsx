@@ -123,7 +123,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
           <div className="flex items-center space-x-2">
             {action.timeEstimate && (
               <Badge variant="outline" className="text-xs">
-                <Clock className="w-3 h-3 mr-1" />
+                <Clock className="w-3 h-3 me-1" />
                 {action.timeEstimate}
               </Badge>
             )}
@@ -132,7 +132,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
               className={cn("text-xs border", getPriorityColor(action.priority))}
             >
               {getPriorityIcon(action.priority)}
-              <span className="ml-1 capitalize">{action.priority}</span>
+              <span className="ms-1 capitalize">{action.priority}</span>
             </Badge>
           </div>
         </div>
@@ -150,7 +150,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
               <Plane className="w-4 h-4 text-red-500" />
             </div>
             <span>{t('screens.dev.devAutopilotActions')}</span>
-            <Badge variant="outline" className="ml-2">{t('screens.dev.lengthLength2Selected', { length: selectedActions.length, length2: pendingActions.length })}
+            <Badge variant="outline" className="ms-2">{t('screens.dev.lengthLength2Selected', { length: selectedActions.length, length2: pendingActions.length })}
             </Badge>
           </DialogTitle>
           <DialogDescription>{t('screens.dev.readyExecuteLengthDevActionValue1', { length: selectedActions.length, value1: selectedActions.length !== 1 ? 's' : '' })}
@@ -192,7 +192,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                       size="sm"
                       onClick={() => setShowOptions(true)}
                     >{t('screens.dev.value0MoreActions', { value0: selectedActions.length - 6 })}
-                      <ChevronRight className="w-4 h-4 ml-1" />
+                      <ChevronRight className="w-4 h-4 ms-1" />
                     </Button>
                   </div>
                 )}
@@ -209,7 +209,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                     disabled={selectedActions.length === 0}
                     className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                   >
-                    <Zap className="w-4 h-4 mr-2" />{t('screens.dev.goLength', { length: selectedActions.length })}
+                    <Zap className="w-4 h-4 me-2" />{t('screens.dev.goLength', { length: selectedActions.length })}
                   </Button>
                   <Button variant="outline" onClick={handleNotNow}>
                     {t('screens.dev.notNow')}
@@ -219,7 +219,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                       variant="outline" 
                       onClick={() => setShowOptions(true)}
                     >
-                      <Settings className="w-4 h-4 mr-1" />
+                      <Settings className="w-4 h-4 me-1" />
                       {t('screens.dev.seeOptions')}
                     </Button>
                   )}

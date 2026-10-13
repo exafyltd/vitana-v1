@@ -9,8 +9,9 @@
 //     GET <gateway>/api/v1/user/limitations and /impact, and both answer 200 JSON;
 //   - no request in the session contains /api/v1/api/v1;
 //   - GET <gateway>/api/v1/admin/partner-health/orders with the test user's
-//     token answers JSON 401/403 (the test user is no admin), not an HTML 404 —
-//     the single-prefix route the admin page now calls exists.
+//     token answers JSON, not an HTML 404 — the single-prefix route the admin
+//     page now calls exists: 200 ok:true for an exafy_admin token (the staging
+//     test account is one), JSON 401/403 ok:false for anyone else.
 // GETs and navigation only — nothing is clicked, nothing is saved.
 import { test, expect } from './staging-guard';
 
@@ -47,13 +48,24 @@ test('limitations page calls the gateway with a single /api/v1, read-only', asyn
   ).json();
   expect(session.access_token, 'sign-in failed').toBeTruthy();
 
-  // 1. The single-prefix admin route exists: JSON 401/403 for a non-admin, never an HTML 404 (GET only).
+  // 1. The single-prefix admin route exists and answers JSON, never an HTML 404 (GET only).
+  //    The exact answer follows the signed-in account's own claim: an exafy_admin
+  //    (the staging test account is one) gets 200 ok:true; anyone else must get a
+  //    JSON 401/403 ok:false. Each case is asserted exactly.
+  const claims = JSON.parse(Buffer.from(session.access_token.split('.')[1], 'base64url').toString('utf8'));
+  const isExafyAdmin = claims?.app_metadata?.exafy_admin === true || claims?.app_metadata?.exafy_admin === 'true';
   const admin = await request.get(`${GATEWAY}/api/v1/admin/partner-health/orders`, {
     headers: { Authorization: `Bearer ${session.access_token}` },
   });
-  expect([401, 403], `admin partner-health status ${admin.status()}`).toContain(admin.status());
   expect(admin.headers()['content-type'] ?? '').toContain('application/json');
-  expect((await admin.json()).ok).toBe(false);
+  const adminBody = await admin.json();
+  if (isExafyAdmin) {
+    expect(admin.status(), 'exafy_admin: admin partner-health status').toBe(200);
+    expect(adminBody.ok).toBe(true);
+  } else {
+    expect([401, 403], `non-admin: admin partner-health status ${admin.status()}`).toContain(admin.status());
+    expect(adminBody.ok).toBe(false);
+  }
 
   // 2. Every request the app makes, and any write to the limitations route.
   const doubled: string[] = [];

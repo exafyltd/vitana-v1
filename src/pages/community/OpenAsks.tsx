@@ -223,7 +223,7 @@ export default function OpenAsks() {
 
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.kind')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.kind')}</span>
           {KIND_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}
@@ -239,7 +239,7 @@ export default function OpenAsks() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.topic')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.topic')}</span>
           {DANCE_FILTERS.map((f) => (
             <button
               key={f.label}
@@ -269,7 +269,7 @@ export default function OpenAsks() {
             key={a.intent_id}
             type="button"
             onClick={() => navigate(`/p/${a.intent_id}`)}
-            className="w-full text-left rounded-lg border border-border bg-card p-4 hover:border-primary/40 transition-colors"
+            className="w-full text-start rounded-lg border border-border bg-card p-4 hover:border-primary/40 transition-colors"
           >
             <div className="flex items-start justify-between gap-2 mb-2">
               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted">

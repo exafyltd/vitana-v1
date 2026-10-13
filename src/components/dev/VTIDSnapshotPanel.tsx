@@ -50,7 +50,7 @@ export function VTIDSnapshotPanel() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="border-b">
-                <tr className="text-left">
+                <tr className="text-start">
                   <th className="pb-2 font-medium">{t('screens.dev.vtidLabel')}</th>
                   <th className="pb-2 font-medium">{t('screens.dev.color')}</th>
                   <th className="pb-2 font-medium">{t('screens.dev.layer')}</th>

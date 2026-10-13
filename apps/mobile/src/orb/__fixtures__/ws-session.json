@@ -1,0 +1,19 @@
+{
+  "_comment": "VTID-05179 — a WS ORB session transcript, hand-written from the protocol sources (never captured from a live gateway: every real ORB session writes to the shared production database, plan F14-F16). Each entry names its provenance on vitana-platform main.",
+  "steps": [
+    { "dir": "server", "source": "routes/orb-live.ts:17767-17775", "msg": { "type": "connected", "session_id": "ws-conn-1", "authenticated": true, "tenant_id": null } },
+    { "dir": "client", "source": "orb-widget.js:2475-2520 (start payload, F6)", "expect": { "type": "start" } },
+    { "dir": "server", "source": "routes/orb-live.ts:18724-18736", "msg": { "type": "session_started", "session_id": "sess-1", "live_api_connected": true, "setupComplete": true, "full_duplex": true, "playback_lead_first_only": true, "conversation_id": "conv-1" } },
+    { "dir": "client", "source": "orb-widget.js:2000-2013 (_signalAudioReady, WS in-band)", "expect": { "type": "audio_ready" } },
+    { "dir": "server", "source": "routes/orb-live.ts:16652 (live_api_ready)", "msg": { "type": "live_api_ready" } },
+    { "dir": "server", "source": "orb-widget.js:2180-2190 (Nova 24 kHz)", "msg": { "type": "audio", "data_b64": "AAABAAIAAwA=", "mime": "audio/pcm;rate=24000" } },
+    { "dir": "server", "source": "orb-widget.js:49-61 (Polly 16 kHz)", "msg": { "type": "audio_out", "data_b64": "AAABAAIAAwA=", "mime": "audio/pcm;rate=16000" } },
+    { "dir": "server", "source": "orb-widget.js:49-61 (no rate ⇒ 24000)", "msg": { "type": "audio", "data_b64": "AAABAAIAAwA=", "mime": "audio/pcm" } },
+    { "dir": "server", "source": "routes/orb-live.ts:17838", "msg": { "type": "heartbeat", "ts": 1 } },
+    { "dir": "server", "source": "orb-widget.js:4028-4043", "msg": { "type": "output_transcript", "text": "<assistant-transcript>" } },
+    { "dir": "server", "source": "routes/orb-live.ts:18659", "msg": { "type": "turn_complete" } },
+    { "dir": "server", "source": "orb-widget.js:4028-4043", "msg": { "type": "input_transcript", "text": "<user-transcript>" } },
+    { "dir": "server", "source": "routes/orb-live.ts:18700", "msg": { "type": "interrupted" } },
+    { "dir": "server", "source": "orb-widget.js:3672", "msg": { "type": "session_ended", "reason": "fixture" } }
+  ]
+}

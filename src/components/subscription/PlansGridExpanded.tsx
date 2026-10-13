@@ -52,7 +52,7 @@ export function PlansGridExpanded({ currentPlanKey }: PlansGridExpandedProps) {
         <CardHeader>
           <button
             onClick={() => setExpanded(!expanded)}
-            className="w-full flex items-center justify-between text-left"
+            className="w-full flex items-center justify-between text-start"
             aria-expanded={expanded}
             aria-controls="plans-expanded-content"
           >

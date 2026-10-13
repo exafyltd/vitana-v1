@@ -10,8 +10,16 @@
  * accident. Identifiers end in `.dev` so nothing here can ever collide with
  * the store apps (com.exafy.maxina / com.vitanaland.app, added only after G3).
  * No googleServicesFile and no plugin that needs native credentials (G2).
+ *
+ * VTID-05178 (N4-APP Change 13) — associated domains per build profile.
+ * APP_LINK_HOSTS (comma-separated hostnames) is read for `test-g1` only and is
+ * meant for the G1 test web host once G1 has one; that host serves its own
+ * AASA / assetlinks.json for the .dev identifiers. `development` never
+ * associates. A production or staging host (`isBlockedHost`, shared with env.ts) fails
+ * the build. Production `public/.well-known/*` is not touched (Change 14).
  */
 import type { ExpoConfig } from 'expo/config';
+import { isBlockedHost } from './src/config/blocked-hosts';
 
 export const PROFILES = ['development', 'test-g1'] as const;
 export type Profile = (typeof PROFILES)[number];
@@ -34,25 +42,69 @@ export function resolveProfile(value: string | undefined): Profile {
   return value as Profile;
 }
 
-export function buildConfig(profileValue: string | undefined): ExpoConfig {
+/** The four link paths the app handles from a universal link / App Link. */
+export const LINK_PATHS = {
+  exact: ['/auth/confirmed', '/reset-password', '/oauth/complete'],
+  prefix: ['/i/'],
+} as const;
+
+const HOSTNAME = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$/;
+
+/** Parses APP_LINK_HOSTS for a profile. Throws on a bad, production or staging host. */
+export function resolveLinkHosts(profile: Profile, value: string | undefined): string[] {
+  const hosts = (value ?? '')
+    .split(',')
+    .map((h) => h.trim().toLowerCase())
+    .filter(Boolean);
+  if (hosts.length === 0) return [];
+  if (profile !== 'test-g1') {
+    throw new Error(`APP_LINK_HOSTS is only for the test-g1 profile (the G1 test web host), not "${profile}" (VTID-05178).`);
+  }
+  for (const host of hosts) {
+    if (!HOSTNAME.test(host)) throw new Error(`APP_LINK_HOSTS: "${host}" is not a bare hostname.`);
+    if (isBlockedHost(`https://${host}`)) {
+      throw new Error(`APP_LINK_HOSTS: refusing ${host} — native dev/test builds never associate with a production or staging host (VTID-05178).`);
+    }
+  }
+  return [...new Set(hosts)];
+}
+
+export function buildConfig(profileValue: string | undefined, linkHostsValue?: string): ExpoConfig {
   const profile = resolveProfile(profileValue);
+  const linkHosts = resolveLinkHosts(profile, linkHostsValue);
+  const ios: ExpoConfig['ios'] = { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false };
+  const android: ExpoConfig['android'] = { package: IDENTIFIERS.android };
+  if (linkHosts.length > 0) {
+    ios.associatedDomains = linkHosts.map((host) => `applinks:${host}`);
+    android.intentFilters = [
+      {
+        action: 'VIEW',
+        autoVerify: true,
+        data: linkHosts.flatMap((host) => [
+          ...LINK_PATHS.exact.map((path) => ({ scheme: 'https', host, path })),
+          ...LINK_PATHS.prefix.map((pathPrefix) => ({ scheme: 'https', host, pathPrefix })),
+        ]),
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
+    ];
+  }
   return {
     name: profile === 'development' ? 'Vitana Dev' : 'Vitana Test',
     slug: 'vitana-mobile',
     version: '0.0.0',
-    // Placeholder; universal links / App Links come in Wave 1.
+    // Custom scheme: the route for `xcrun simctl openurl` / `adb shell am start` link tests (VTID-05178).
     scheme: 'maxina',
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
-    ios: { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false },
-    android: { package: IDENTIFIERS.android },
+    ios,
+    android,
     // VTID-05180: the native ORB voice module. Its microphone usage string comes
     // from the i18n catalog at prebuild (fails closed without the keys); dev-only
     // local networking for the fake gateway.
     plugins: ['expo-router', 'expo-localization', ['./modules/vitana-voice/plugin/withVitanaVoice', { profile }]],
     experiments: { typedRoutes: false },
-    extra: { profile },
+    extra: { profile, linkHosts },
   };
 }
 
-export default (): ExpoConfig => buildConfig(process.env.APP_PROFILE);
+export default (): ExpoConfig => buildConfig(process.env.APP_PROFILE, process.env.APP_LINK_HOSTS);

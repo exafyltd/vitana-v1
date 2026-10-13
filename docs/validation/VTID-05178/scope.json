@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05178",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/**",
+    "docs/validation/VTID-05178/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05178/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
