@@ -5249,13 +5249,11 @@
       "vitanaIndexUpSubtext": "Ótimo trabalho!",
       "vitanaIndexDownSubtext": "Pequenos passos contam.",
       "vitanaIndexStableSubtext": "Mantém a consistência.",
-      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
       "longevityJourneyEyebrow": "SEU AUDIOLIVRO DE LONGEVIDADE",
       "longevityJourneyContinue": "Continue com o episódio {session}: {topic}",
       "longevityJourneyAllDone": "Você ouviu todos os episódios. Muito bem!",
       "longevityJourneyNextStepHeadline": "Seu próximo passo:",
       "longevityJourneySubtext": "O episódio {session} está esperando por você.",
-      "longevityJourneyProgressSubtext": "O episódio {session} te espera · {done} concluídos · hoje {today}/{goal}",
       "longevityJourneyStartSession": "Ouvir episódio {session}",
       "longevityJourneyDoneLabel": "Feito",
       "longevityJourneyNowLabel": "Agora",
@@ -5455,7 +5453,9 @@
       "cancelReply": "Cancelar resposta",
       "likeComment": "Curtir comentário",
       "feedItemError": "Esta publicação não pôde ser exibida.",
-      "playTodaysEpisode": "Ouvir episódio {session}"
+      "playTodaysEpisode": "Ouvir episódio {session}",
+      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
+      "longevityJourneyProgressSubtext": "O episódio {session} te espera · {done} concluídos · hoje {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"
@@ -13645,6 +13645,30 @@
         "title": "Descubra algo novo",
         "description": "Produtos, serviços e ofertas para o seu bem-estar.",
         "action": "Explorar"
+      },
+      "G1": {
+        "eyebrow": "Seu perfil",
+        "title": "Complete seu perfil",
+        "description": "Um perfil completo traz matches mais certeiros para você.",
+        "action": "Continuar configuração",
+        "metric": "{value} concluído · {message}"
+      },
+      "G2": {
+        "eyebrow": "Matches",
+        "title": "Você tem novos matches",
+        "description": "Veja quem combina com você.",
+        "action": "Ver matches",
+        "metric": "Novos matches: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "G3": {
+        "eyebrow": "Diário",
+        "title": "Sua sequência está em risco",
+        "description": "Ontem ficou sem registro – mantenha sua sequência viva hoje.",
+        "action": "Registrar hoje",
+        "metric": "Sequência: {count} dias · {message}"
       }
     },
     "interests": {
