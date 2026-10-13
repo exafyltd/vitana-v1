@@ -6269,7 +6269,8 @@
       "imageDownloadFailed": "无法加载图片",
       "imageShareFailed": "分享失败",
       "imageLoading": "正在加载图片",
-      "unknownSize": "未知大小"
+      "unknownSize": "未知大小",
+      "talkToVitana": "与 Vitana 对话"
     },
     "mobile": {
       "searching": "正在搜索…",
@@ -7695,6 +7696,20 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "title": "来自 Vitana 的消息",
+        "desc": "Vitana 会不时在 Messenger 中给你发送一条个人消息，附上一条此刻适合你的建议。",
+        "enabled": "接收来自 Vitana 的消息",
+        "enabledDesc": "每天最多一条消息。你可以随时关闭。",
+        "topics": "主题",
+        "health": "健康",
+        "healthDesc": "关于你的健康和 Vitana Index 的建议。",
+        "community": "社区",
+        "communityDesc": "适合你的人、群组和活动。",
+        "business": "商业与收入",
+        "businessDesc": "可选：在 Vitanaland 用你的知识赚钱的想法。默认关闭——只有你开启后才会收到。",
+        "loadError": "无法加载你的 Vitana 消息设置。"
       }
     },
     "sharing": {

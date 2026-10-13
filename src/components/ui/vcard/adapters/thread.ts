@@ -10,6 +10,7 @@
  */
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
 import type { VCardData } from './index';
+import { compareInboxThreads } from '@/lib/inboxThreadOrder';
 
 export interface InboxThreadLike {
   id: string;
@@ -41,12 +42,9 @@ export function orderThreadsForList<T extends InboxThreadLike>(
   currentUserId: string | undefined,
 ): T[] {
   const list = filterThreads(threads, filter);
-  const byPinThenDate = (a: T, b: T) => {
-    const ap = pinned.has(a.id) ? 1 : 0;
-    const bp = pinned.has(b.id) ? 1 : 0;
-    if (ap !== bp) return bp - ap;
-    return time(b.updated_at) - time(a.updated_at);
-  };
+  // Same order as every other inbox list (VTID-05100): unread Vitana thread,
+  // then pinned, then latest activity.
+  const byInboxOrder = (a: T, b: T) => compareInboxThreads(a, b, pinned, currentUserId);
 
   if (filter === 'groups') {
     return [...list].sort((a, b) => {
@@ -62,7 +60,7 @@ export function orderThreadsForList<T extends InboxThreadLike>(
 
   // 'all' and 'direct': keep only the newest direct thread per counterpart.
   const out: Array<T & { _dedupeKey: string }> = [];
-  for (const thread of [...list].sort(byPinThenDate)) {
+  for (const thread of [...list].sort(byInboxOrder)) {
     if (thread.type === 'direct') {
       const counterpart = thread.participants?.find((p) => p.user_id !== currentUserId);
       const key = counterpart?.user_id || 'unknown';

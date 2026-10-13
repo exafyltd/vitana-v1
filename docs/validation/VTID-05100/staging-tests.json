@@ -1,0 +1,19 @@
+{
+ "vtid": "VTID-05100",
+ "service": "community-app",
+ "tests": [
+  {
+   "kind": "playwright",
+   "name": "Vitana messages settings section and the Talk to Vitana header button are in the deployed build; GET /api/v1/companion/preferences returns the signed-in member's own settings (200 JSON, four booleans); Settings \u203a Notifications shows the section with its switch enabled and matching the API \u2014 no switch is clicked",
+   "spec": "tests/e2e/staging/vtid-05100-vitana-messages.staging.spec.ts",
+   "cwd": "."
+  },
+  {
+   "kind": "existing",
+   "name": "Vitana thread on top while unread (then pinned, then newest), one bot id everywhere, Talk to Vitana button only in the Vitana DM and it calls activateOrb, settings PATCH sends only the toggled field and disables switches on a load error, vitana_companion_message routes to the Vitana DM",
+   "ref": "npx vitest run src/lib/inboxThreadOrder.vtid-05100.test.ts src/lib/notification-types.companion.vtid-05100.test.ts src/components/settings/VitanaMessagesSettings.vtid-05100.test.tsx src/components/messages/ConversationView.talk-to-vitana.vtid-05100.test.tsx src/pages/settings/SettingsNotifications.vtid-04676.test.tsx",
+   "cwd": ".",
+   "reason": "Thread order needs an unread Vitana message in the test account's inbox and the voice button opens a live ORB session; a toggle would write the member's preferences row into the production database staging shares. Proven with Vitest instead."
+  }
+ ]
+}

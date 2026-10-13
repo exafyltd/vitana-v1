@@ -65,6 +65,7 @@ import { fmtDate } from '@/lib/locale-format';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { ScreenFrame } from '@/components/layout/spotlight';
 import { MessagesSpotlight } from '@/components/messages/spotlight/MessagesSpotlight';
+import { compareInboxThreads } from '@/lib/inboxThreadOrder';
 
 // Session-scoped memory of the last inbox view (context + open conversation)
 // so navigating away (news feed, events, live rooms) and back restores the
@@ -338,14 +339,7 @@ export default function Messages() {
       // in a "Loading group…" loop.
       const sortedThreads = [...displayThreads]
         .filter(t => !isChatGroupThreadId(t.id))
-        .sort((a, b) => {
-          const ap = pinnedThreads.has(a.id) ? 1 : 0;
-          const bp = pinnedThreads.has(b.id) ? 1 : 0;
-          if (ap !== bp) return bp - ap;
-          const ad = new Date(a.updated_at).getTime();
-          const bd = new Date(b.updated_at).getTime();
-          return bd - ad;
-        })
+        .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
         .reduce((acc, thread) => {
           if (thread.type === 'direct') {
             const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
@@ -674,14 +668,7 @@ export default function Messages() {
               />
             ) : (
               [...filteredThreads]
-                .sort((a, b) => {
-                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
-                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
-                  if (ap !== bp) return bp - ap;
-                  const ad = new Date(a.updated_at).getTime();
-                  const bd = new Date(b.updated_at).getTime();
-                  return bd - ad;
-                })
+                .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
                 .reduce((acc, thread) => {
                   if (thread.type === 'direct') {
                     const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
@@ -942,14 +929,7 @@ export default function Messages() {
               </div>
             ) : (
               [...filteredThreads]
-                .sort((a, b) => {
-                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
-                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
-                  if (ap !== bp) return bp - ap;
-                  const ad = new Date(a.updated_at).getTime();
-                  const bd = new Date(b.updated_at).getTime();
-                  return bd - ad;
-                })
+                .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
                 .reduce((acc, thread) => {
                   const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
                   const key = counterpart?.user_id || 'unknown';
@@ -1186,14 +1166,7 @@ export default function Messages() {
 
     // Sort and dedupe threads (use searchFiltered to respect search query)
     const sortedThreads = [...searchFiltered]
-      .sort((a, b) => {
-        const ap = pinnedThreads.has(a.id) ? 1 : 0;
-        const bp = pinnedThreads.has(b.id) ? 1 : 0;
-        if (ap !== bp) return bp - ap;
-        const ad = new Date(a.updated_at).getTime();
-        const bd = new Date(b.updated_at).getTime();
-        return bd - ad;
-      })
+      .sort((a, b) => compareInboxThreads(a, b, pinnedThreads, user?.id))
       .reduce((acc, thread) => {
         if (thread.type === 'direct') {
           const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
