@@ -12275,7 +12275,10 @@
         "title": "You have new matches",
         "description": "See who is a good fit for you.",
         "action": "See who matched",
-        "metric": "New matches: {count} · {message}"
+        "metric": "New matches: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "G3": {
         "eyebrow": "Diary",
