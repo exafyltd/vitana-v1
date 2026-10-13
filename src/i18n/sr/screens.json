@@ -6269,7 +6269,8 @@
       "imageDownloadFailed": "Slika nije mogla da se učita",
       "imageShareFailed": "Deljenje nije uspelo",
       "imageLoading": "Učitavanje slike",
-      "unknownSize": "Nepoznata veličina"
+      "unknownSize": "Nepoznata veličina",
+      "talkToVitana": "Razgovaraj sa Vitanom"
     },
     "mobile": {
       "searching": "Pretražujem…",
@@ -7695,6 +7696,20 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "title": "Poruke od Vitane",
+        "desc": "S vremena na vreme Vitana ti pošalje ličnu poruku u Messengeru, sa savetom koji ti trenutno odgovara.",
+        "enabled": "Primaj poruke od Vitane",
+        "enabledDesc": "Najviše jedna poruka dnevno. Možeš ih isključiti u bilo kom trenutku.",
+        "topics": "Teme",
+        "health": "Zdravlje",
+        "healthDesc": "Saveti za tvoje zdravlje i tvoj Vitana Index.",
+        "community": "Zajednica",
+        "communityDesc": "Ljudi, grupe i događaji koji ti odgovaraju.",
+        "business": "Posao i prihod",
+        "businessDesc": "Opciono: ideje kako da zaradiš od svog znanja u Vitanalandu. Podrazumevano isključeno – samo ako ga uključiš.",
+        "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke."
       }
     },
     "sharing": {

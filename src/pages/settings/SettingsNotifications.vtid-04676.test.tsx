@@ -9,6 +9,8 @@ vi.mock("@/components/AppLayout", () => ({ default: ({ children }: { children: R
 vi.mock("@/components/SubNavigation", () => ({ default: () => null }));
 vi.mock("@/components/SEO", () => ({ default: () => null }));
 vi.mock("@/components/StandardHeader", () => ({ default: () => null }));
+// VTID-05100: the Vitana messages section has its own test (VitanaMessagesSettings.vtid-05100.test.tsx).
+vi.mock("@/components/settings/VitanaMessagesSettings", () => ({ VitanaMessagesSettings: () => null }));
 
 const toggleCategory = vi.fn().mockResolvedValue({});
 let catState: Record<string, unknown>;

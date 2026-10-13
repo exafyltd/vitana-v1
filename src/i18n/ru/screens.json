@@ -6272,7 +6272,8 @@
       "imageDownloadFailed": "Не удалось загрузить изображение",
       "imageShareFailed": "Не удалось поделиться",
       "imageLoading": "Загрузка изображения",
-      "unknownSize": "Неизвестный размер"
+      "unknownSize": "Неизвестный размер",
+      "talkToVitana": "Поговорить с Vitana"
     },
     "mobile": {
       "searching": "Поиск…",
@@ -7698,6 +7699,20 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "title": "Сообщения от Vitana",
+        "desc": "Время от времени Vitana присылает тебе личное сообщение в Messenger с советом, который подходит тебе прямо сейчас.",
+        "enabled": "Получать сообщения от Vitana",
+        "enabledDesc": "Не больше одного сообщения в день. Ты можешь отключить их в любое время.",
+        "topics": "Темы",
+        "health": "Здоровье",
+        "healthDesc": "Советы для твоего здоровья и твоего Vitana Index.",
+        "community": "Сообщество",
+        "communityDesc": "Люди, группы и события, которые тебе подходят.",
+        "business": "Бизнес и доход",
+        "businessDesc": "По желанию: идеи, как зарабатывать на своих знаниях в Vitanaland. По умолчанию выключено – только если ты это включишь.",
+        "loadError": "Не удалось загрузить твои настройки сообщений от Vitana."
       }
     },
     "sharing": {

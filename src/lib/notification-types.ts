@@ -5,6 +5,8 @@
  * Each type defines icon, label, category, channel, priority, and click route.
  */
 
+import { VITANA_BOT_USER_ID } from '@/lib/vitanaBotIdentity';
+
 export type NotificationCategory =
   | 'match'
   | 'community'
@@ -229,7 +231,7 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
 
   // ═══════════════════════════════════════════════════════════
-  // 5. CHAT / CONVERSATION (5)
+  // 5. CHAT / CONVERSATION (7)
   // ═══════════════════════════════════════════════════════════
   new_chat_message: {
     icon: '💬', label: 'New Message', category: 'chat',
@@ -253,6 +255,12 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   orb_suggestion: {
     icon: '💡', label: 'ORB Suggestion', category: 'chat',
     channel: 'push_and_inapp', priority: 'p1',
+  },
+  // VTID-05100 (Companion Messages): Vitana's proactive personal DM. The
+  // message lives in the member's Vitana thread, so the tap opens that DM.
+  vitana_companion_message: {
+    icon: '🌿', label: 'Message from Vitana', category: 'chat',
+    channel: 'push_and_inapp', priority: 'p1', route: `/inbox/u/${VITANA_BOT_USER_ID}`,
   },
   // Emitted by the notify_on_reaction() DB trigger on message_reactions
   // inserts. Always ships with an explicit data.url (built server-side to
