@@ -53,7 +53,7 @@ export function GatewayWalletBalanceCard() {
           size="sm"
           onClick={() => setAddMoneyOpen(true)}
         >
-          <Plus className="mr-1 h-4 w-4" />
+          <Plus className="me-1 h-4 w-4" />
           {t("marketplaceCheckout.balance.addMoney")}
         </Button>
       </CardContent>

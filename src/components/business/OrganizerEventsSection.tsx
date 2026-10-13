@@ -21,7 +21,7 @@ export function OrganizerEventsSection() {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <Skeleton key={i} className="h-[160px] w-full rounded-xl" />
+          <Skeleton key={i} className="h-40 w-full rounded-xl" />
         ))}
       </div>
     );

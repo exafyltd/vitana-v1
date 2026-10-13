@@ -72,7 +72,7 @@ export function FeaturedProductCard({ product, badgeText, reasonText, onClick }:
           subcategory={product.subcategory}
           sizeClass="w-full h-full"
         />
-        <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-card/95 backdrop-blur px-3 py-1.5 text-xs font-semibold text-violet-700 dark:text-violet-300 shadow-sm">
+        <span className="absolute top-3 start-3 inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-card/95 backdrop-blur px-3 py-1.5 text-xs font-semibold text-violet-700 dark:text-violet-300 shadow-sm">
           <Sparkles className="h-3 w-3" /> {badgeText}
         </span>
         <BookmarkButton
@@ -153,7 +153,7 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
         <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 dark:bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-700 dark:text-violet-300">
           <Sparkles className="h-2.5 w-2.5" /> {badgeText}
         </span>
-        <h4 className="text-sm font-medium leading-snug line-clamp-2 min-h-[2.5rem]">{product.title}</h4>
+        <h4 className="text-sm font-medium leading-snug line-clamp-2 min-h-10">{product.title}</h4>
         {product.brand && (
           <p className="text-[11px] text-muted-foreground/80 line-clamp-1">{product.brand}</p>
         )}

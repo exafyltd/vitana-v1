@@ -299,7 +299,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                     type="button"
                     variant="destructive"
                     size="icon"
-                    className="absolute top-2 right-2 h-8 w-8"
+                    className="absolute top-2 end-2 h-8 w-8"
                     onClick={() => setImageUrl(null)}
                   >
                     <X className="w-4 h-4" />
@@ -366,7 +366,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
             <div className="flex items-center justify-between">
               <Label>{t('screens.sharing.includedItems')}</Label>
               <Button type="button" variant="outline" size="sm" onClick={addItem}>
-                <Plus className="w-4 h-4 mr-1" />
+                <Plus className="w-4 h-4 me-1" />
                 {t('screens.sharing.addItem')}
               </Button>
             </div>
@@ -378,7 +378,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                   {t('screens.sharing.addSessionsEventsYourPackage')}
                 </p>
                 <Button type="button" variant="outline" size="sm" onClick={addItem}>
-                  <Plus className="w-4 h-4 mr-1" />
+                  <Plus className="w-4 h-4 me-1" />
                   {t('screens.sharing.addFirstItem')}
                 </Button>
               </div>
@@ -397,7 +397,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                           item_duration_min: ITEM_TYPES_V1.find(t => t.value === v)?.hasDuration ? 60 : undefined,
                         })}
                       >
-                        <SelectTrigger className="w-[160px]">
+                        <SelectTrigger className="w-40">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -510,12 +510,12 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                 <div className="grid gap-2">
                   <Label htmlFor="price">{t('screens.sharing.bundlePrice')}</Label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <DollarSign className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                       id="price"
                       type="number"
                       step="0.01"
-                      className="pl-9"
+                      className="ps-9"
                       placeholder="0.00"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
@@ -525,12 +525,12 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                 <div className="grid gap-2">
                   <Label htmlFor="originalPrice">{t('screens.sharing.originalValue')}</Label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <DollarSign className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                       id="originalPrice"
                       type="number"
                       step="0.01"
-                      className="pl-9"
+                      className="ps-9"
                       placeholder="0.00"
                       value={originalPrice}
                       onChange={(e) => setOriginalPrice(e.target.value)}
@@ -541,7 +541,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
 
               {calculateSavings() > 0 && (
                 <Badge variant="secondary" className="w-fit">
-                  <Sparkles className="w-3 h-3 mr-1" />{t('screens.sharing.value0Savings', { value0: calculateSavings() })}
+                  <Sparkles className="w-3 h-3 me-1" />{t('screens.sharing.value0Savings', { value0: calculateSavings() })}
                 </Badge>
               )}
             </div>
@@ -549,11 +549,11 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
             <div className="grid gap-2">
               <Label htmlFor="validity">{t('screens.sharing.validityPeriodDays')}</Label>
               <div className="relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Clock className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="validity"
                   type="number"
-                  className="pl-9"
+                  className="ps-9"
                   value={validityDays}
                   onChange={(e) => setValidityDays(e.target.value)}
                 />
@@ -607,7 +607,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               variant="outline"
               onClick={() => setStep(step - 1)}
             >
-              <ChevronLeft className="w-4 h-4 mr-1" />
+              <ChevronLeft className="w-4 h-4 me-1" />
               {t('screens.sharing.back')}
             </Button>
           )}
@@ -619,7 +619,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               disabled={!canProceed()}
             >
               {t('screens.sharing.next')}
-              <ChevronRight className="w-4 h-4 ml-1" />
+              <ChevronRight className="w-4 h-4 ms-1" />
             </Button>
           ) : (
             <Button

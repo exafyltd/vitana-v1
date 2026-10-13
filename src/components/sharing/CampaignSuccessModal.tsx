@@ -57,7 +57,7 @@ export function CampaignSuccessModal({
           </div>
 
           {/* Campaign Summary Card */}
-          <Card className="border-2 text-left">
+          <Card className="border-2 text-start">
             <CardContent className="p-4 space-y-3">
               <div>
                 <p className="text-xs text-muted-foreground">{t('screens.sharing.campaignName2')}</p>
@@ -87,7 +87,7 @@ export function CampaignSuccessModal({
           </Card>
 
           {/* Reassurance */}
-          <div className="flex items-start gap-2 p-3 bg-[hsl(var(--pill-hydration-tint))] rounded-lg text-left border border-[hsl(var(--pill-hydration-accent))]/20">
+          <div className="flex items-start gap-2 p-3 bg-[hsl(var(--pill-hydration-tint))] rounded-lg text-start border border-[hsl(var(--pill-hydration-accent))]/20">
             <Info className="w-4 h-4 text-[hsl(var(--pill-hydration-accent))] shrink-0 mt-0.5" />
             <p className="text-xs text-foreground">
               {t('screens.sharing.campaignCreatedAsDraftYouCan')}
@@ -105,7 +105,7 @@ export function CampaignSuccessModal({
                   className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
                   size="lg"
                 >
-                  <Share2 className="w-4 h-4 mr-2" />
+                  <Share2 className="w-4 h-4 me-2" />
                   {t('screens.sharing.shareWithMyContacts')}
                 </Button>
 
@@ -129,7 +129,7 @@ export function CampaignSuccessModal({
                   className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
                   size="lg"
                 >
-                  <LayoutGrid className="w-4 h-4 mr-2" />
+                  <LayoutGrid className="w-4 h-4 me-2" />
                   {t('screens.sharing.managePosts')}
                 </Button>
 
@@ -140,7 +140,7 @@ export function CampaignSuccessModal({
                   }}
                   className="w-full"
                 >
-                  <Share2 className="w-4 h-4 mr-2" />
+                  <Share2 className="w-4 h-4 me-2" />
                   {t('screens.sharing.shareWithMyContacts')}
                 </Button>
               </>
@@ -154,7 +154,7 @@ export function CampaignSuccessModal({
               }}
               className="w-full text-sm"
             >
-              <LayoutGrid className="w-4 h-4 mr-2" />
+              <LayoutGrid className="w-4 h-4 me-2" />
               {t('screens.sharing.viewDashboard')}
             </Button>
           </div>

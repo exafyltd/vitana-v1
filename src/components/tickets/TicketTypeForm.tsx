@@ -84,7 +84,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
           <h3 className="font-semibold">{t('screens.tickets.ticketTypes')}</h3>
         </div>
         <Button type="button" variant="outline" size="sm" onClick={addTicketType}>
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="h-4 w-4 me-1" />
           {t('screens.tickets.addTicket')}
         </Button>
       </div>

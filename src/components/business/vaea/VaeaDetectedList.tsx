@@ -38,7 +38,7 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
       {collapsible && (
         <Button variant="ghost" size="sm" onClick={() => setOpen((v) => !v)}>
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-          <span className="ml-1">{questions.length}</span>
+          <span className="ms-1">{questions.length}</span>
         </Button>
       )}
     </div>

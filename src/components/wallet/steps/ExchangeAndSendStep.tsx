@@ -151,13 +151,13 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           <Label htmlFor="recipient">{t('screens.wallet.send')}</Label>
           <div className="space-y-2">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="recipient"
                 placeholder={t('screens.wallet.searchCommunityMembers')}
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="pl-9"
+                className="ps-9"
               />
             </div>
             
@@ -204,13 +204,13 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
                       onClick={() => handleRecipientSelect(member)}
                       className="justify-start h-auto py-1 px-2"
                     >
-                      <Avatar className="h-5 w-5 mr-2">
+                      <Avatar className="h-5 w-5 me-2">
                         <AvatarImage src={member.avatar_url || ''} />
                         <AvatarFallback className="text-xs">
                           {getInitials(member)}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="text-left">
+                      <div className="text-start">
                         <div className="text-xs font-medium">{getDisplayName(member)}</div>
                       </div>
                     </Button>
@@ -333,7 +333,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.wallet.processing')}
+                <Loader2 className="me-2 h-4 w-4 animate-spin" />{t('screens.wallet.processing')}
               </>
             ) : (
               'Exchange & Send'

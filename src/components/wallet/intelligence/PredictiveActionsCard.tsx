@@ -147,7 +147,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className={priorityConfig.color}>
-                      <div className={`w-2 h-2 rounded-full ${priorityConfig.dot} mr-1`} />{t('screens.wallet.priorityPriority', { priority: action.priority })}
+                      <div className={`w-2 h-2 rounded-full ${priorityConfig.dot} me-1`} />{t('screens.wallet.priorityPriority', { priority: action.priority })}
                     </Badge>
                     <Badge variant="secondary" className={`text-xs ${getCategoryColor(action.category)}`}>{t('screens.wallet.expectedreturnVtn', { expectedReturn: action.expectedReturn })}
                     </Badge>
@@ -182,7 +182,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
 
         {/* Quick Action */}
         <Button className="w-full" variant="default">
-          <Sparkles className="h-4 w-4 mr-2" />
+          <Sparkles className="h-4 w-4 me-2" />
           {t('screens.wallet.actTopRecommendation')}
         </Button>
       </CardContent>
