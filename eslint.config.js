@@ -7,6 +7,38 @@ import noRawJsxText from "./eslint-rules/no-raw-jsx-text.js";
 import noRawToastArg from "./eslint-rules/no-raw-toast-arg.js";
 import noRawLocaleCall from "./eslint-rules/no-raw-locale-call.js";
 import designPlugin from "./eslint-rules/design/index.js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// VTID-05183 — native code reaches web code only through @vitana/core. A
+// relative import is resolved against the importing file, so `../src/…`
+// inside apps/mobile (its own src/) stays allowed while any path that lands
+// in the repo's web src/ is reported, whatever its depth.
+const REPO_ROOT = path.dirname(fileURLToPath(import.meta.url));
+const WEB_SRC = path.join(REPO_ROOT, "src") + path.sep;
+const nativePlugin = {
+  rules: {
+    "no-web-src-import": {
+      meta: {
+        type: "problem",
+        schema: [],
+        messages: { webSrc: "reach web code only through @vitana/core (packages/core/manifest.json). \"{{spec}}\" points into the web src/ (VTID-05183)." },
+      },
+      create(context) {
+        const file = context.physicalFilename ?? context.filename;
+        const check = (node) => {
+          const spec = node && node.source && node.source.value;
+          if (typeof spec !== "string" || !spec.startsWith(".")) return;
+          // The two web clients already get their own, more specific no-restricted-imports message.
+          if (/(^|\/)integrations\/supabase\/client(\.ts)?$|(^|\/)lib\/gateway-base(\.ts)?$/.test(spec)) return;
+          const target = path.resolve(path.dirname(file), spec);
+          if ((target + path.sep).startsWith(WEB_SRC)) context.report({ node: node.source, messageId: "webSrc", data: { spec } });
+        };
+        return { ImportDeclaration: check, ExportNamedDeclaration: check, ExportAllDeclaration: check, ImportExpression: check };
+      },
+    },
+  },
+};
 
 const i18nPlugin = {
   rules: {
@@ -26,6 +58,11 @@ export default tseslint.config(
       // projects, its own node_modules and the generated i18n catalog map.
       "apps/mobile/{.expo,dist,android,ios,node_modules}/**",
       "apps/mobile/src/i18n/catalog-map.generated.ts",
+      // VTID-05183 — generated web extracts / tokens (gen-core-extract.mjs,
+      // gen-tokens.mjs) and the core probe bundles. A global ignore, so no
+      // later `files` block can lint them again.
+      "packages/*/src/**/*.generated.ts",
+      "apps/mobile/probe-dist/**",
     ],
   },
   {
@@ -62,8 +99,10 @@ export default tseslint.config(
   // VTID-05157 — native app (apps/mobile, React Native / Expo). The i18n rules
   // above still apply; this block only swaps the web assumptions out. Web
   // files are not matched, so their lint result is unchanged.
+  // VTID-05183 — packages/** (@vitana/core, @vitana/tokens) runs under React
+  // Native too, so the same rules apply there.
   {
-    files: ["apps/mobile/**/*.{ts,tsx}"],
+    files: ["apps/mobile/**/*.{ts,tsx}", "packages/**/*.{ts,tsx}"],
     languageOptions: {
       globals: {
         // No browser globals in React Native …
@@ -121,6 +160,43 @@ export default tseslint.config(
             {
               regex: "(^|/)integrations/supabase/client(\\.ts)?$|(^|/)lib/gateway-base(\\.ts)?$",
               message: "The web Supabase client / gateway base reach production by default (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  // VTID-05183 — app code reaches web code only through @vitana/core: no `@/`
+  // alias and no relative path into the web src/. `@/` stays allowed in
+  // packages/core/src/*.ts (the re-export files; core-closure.mjs gates them).
+  // Repeats the web-client bans because a later block replaces the options
+  // of the same rule.
+  {
+    files: ["apps/mobile/**/*.{ts,tsx}"],
+    plugins: { "vitana-native": nativePlugin },
+    rules: {
+      "vitana-native/no-web-src-import": "error",
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@/integrations/supabase/client",
+              message: "The web Supabase client falls back to the production project and uses localStorage (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+            {
+              name: "@/lib/gateway-base",
+              message: "The web gateway base defaults to the production gateway (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+          ],
+          patterns: [
+            {
+              regex: "(^|/)integrations/supabase/client(\\.ts)?$|(^|/)lib/gateway-base(\\.ts)?$",
+              message: "The web Supabase client / gateway base reach production by default (VTID-05157). Use apps/mobile/src/config/env.ts.",
+            },
+            {
+              regex: "^@/",
+              message: "reach web code only through @vitana/core (packages/core/manifest.json) (VTID-05183).",
             },
           ],
         },

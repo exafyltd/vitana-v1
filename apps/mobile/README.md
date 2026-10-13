@@ -62,7 +62,43 @@ repo's i18n rule: no hardcoded user-visible text (`accessibilityLabel` / `access
 | Supabase / gateway clients, auth, any network call | G1 (isolated test environment), Wave 1 |
 | Push, React Native Firebase, `google-services` files | G2 |
 | Store identifiers, signing, store listings | G3 |
-| `packages/core`, `packages/tokens`, npm workspaces, NativeWind, UI kit | Wave 1, each with its own sparred plan |
+| npm workspaces, NativeWind, UI kit | Wave 1, each with its own sparred plan |
+
+## Web code: `@vitana/core` and `@vitana/tokens` (VTID-05183)
+
+The app reaches web code **only** through two folders at the repo root, which are plain folders, not npm workspaces:
+
+| Import | Resolves to | What it is |
+|---|---|---|
+| `@vitana/core/<area>` | `packages/core/src/<area>.ts` | re-exports of transitively class-A web modules, declarations generated from web files, config-only clients |
+| `@vitana/tokens` | `packages/tokens/src/index.ts` | design tokens generated from `src/index.css` + `tailwind.config.ts` |
+
+`resolution.js` is the one alias table and resolver; `metro.config.js` and `jest.config.js` use it and
+`tsconfig.json` `paths` mirror it (a test checks they are equal). Two rules hold for every importer, including files
+under the web `src/` and `packages/`:
+
+- **Bare packages resolve from `apps/mobile/node_modules` only.** A resolution into the repo-root `node_modules`
+  (React 18, the web's tree) throws. A package core needs is added to *this* `package.json` (`@supabase/supabase-js`
+  is pinned to the web's `2.56.0`, with `@supabase/storage-js` overridden to the web lock's `2.11.0`).
+- **Guard:** a file under the web `src/` resolves only when it is in `packages/core/closure.generated.json` (or is an
+  i18n catalog shard). The web Supabase client and gateway base, which fall back to production, never are.
+
+ESLint bans `@/` and any relative path into the web `src/` in app code. Clients are built from `endpoints(config)`
+(`src/config/env.ts`), which refuses production and staging hosts and the production publishable key; there is no
+default endpoint anywhere.
+
+```bash
+# from the repo root (needs the root-lock TypeScript/postcss: the root node_modules, or what NATIVE-CI installs)
+node scripts/native/gen-tokens.mjs           # = npm run gen:tokens (here)
+node scripts/native/gen-core-extract.mjs && node scripts/native/core-closure.mjs --write   # = npm run gen:core
+# here
+APP_PROFILE=development npm run bundle:core-probe   # bundles every core entry + tokens for iOS and Android → probe-dist/
+```
+
+The probe (`probe/core-probe.ts`, outside `app/`, so no route) is bundled unminified with sourcemaps;
+`probe/check-probe.js` then asserts no production host string, nothing from the repo-root `node_modules` and exactly
+one `react`. NATIVE-CI runs the full mobile job only when `apps/mobile/**`, `packages/**`, the workflow or a path in
+`scripts/native/mobile-ci-paths.generated.json` changes; every other `src/**` change runs the cheap script job.
 
 ## Fonts
 
