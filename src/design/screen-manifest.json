@@ -1974,7 +1974,7 @@
       "archetype": "focus-feed",
       "tier": "A",
       "area": "News & posts",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
