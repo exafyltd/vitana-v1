@@ -7,13 +7,17 @@
 import { describe, it, expect } from 'vitest';
 import {
   CampaignAudienceError,
+  MEMBER_PAGE_SIZE,
   PROFILE_LOOKUP_CHUNK,
   resolveCampaignAudience,
 } from '../../supabase/functions/_shared/campaign-audience';
 
 type Row = Record<string, unknown>;
 type Filter = { op: 'eq' | 'in'; column: string; value: unknown };
-type Call = { table: string; columns: string; filters: Filter[]; limit?: number };
+type Call = { table: string; columns: string; filters: Filter[]; limit?: number; range?: [number, number]; order?: string };
+
+// PostgREST's max_rows: one response never carries more rows than this.
+const FAKE_MAX_ROWS = 1000;
 
 const OWNER = 'owner-1';
 const TENANT = 'tenant-1';
@@ -30,8 +34,10 @@ function fakeClient(tables: Record<string, Row[]>, failOn: Record<string, boolea
           f.op === 'eq' ? r[f.column] === f.value : (f.value as unknown[]).includes(r[f.column]),
         ),
       );
+      if (call.order) rows = [...rows].sort((a, b) => String(a[call.order!]).localeCompare(String(b[call.order!])));
+      if (call.range) rows = rows.slice(call.range[0], call.range[1] + 1);
       if (call.limit !== undefined) rows = rows.slice(0, call.limit);
-      return { data: rows, error: null };
+      return { data: rows.slice(0, FAKE_MAX_ROWS), error: null };
     };
     const builder = {
       select(columns: string) {
@@ -48,6 +54,14 @@ function fakeClient(tables: Record<string, Row[]>, failOn: Record<string, boolea
       },
       limit(n: number) {
         call.limit = n;
+        return builder;
+      },
+      order(column: string) {
+        call.order = column;
+        return builder;
+      },
+      range(from: number, to: number) {
+        call.range = [from, to];
         return builder;
       },
       maybeSingle() {
@@ -156,6 +170,34 @@ describe('VTID-05120 resolveCampaignAudience', () => {
     const lookups = calls.filter((c) => c.table === 'profiles');
     expect(lookups).toHaveLength(2);
     expect((lookups[0].filters.find((f) => f.op === 'in')!.value as unknown[]).length).toBe(PROFILE_LOOKUP_CHUNK);
+  });
+
+  it('pages followers and attendees past the PostgREST row cap instead of truncating', async () => {
+    const n = MEMBER_PAGE_SIZE * 2 + 500;
+    const ids = Array.from({ length: n }, (_, i) => `m${String(i).padStart(5, '0')}`);
+    const { client, calls } = fakeClient(
+      world({
+        user_follows: ids.map((id) => ({ follower_id: id, following_id: OWNER })),
+        global_event_participants: ids.map((id) => ({ event_id: 'ev-own', user_id: id, status: 'attending' })),
+        profiles: ids.map((id) => profile(id)),
+      }),
+    );
+    const { counts } = await resolve(client, {
+      eventAttendees: { enabled: true, eventIds: ['ev-own'] },
+      yourFollowers: { enabled: true },
+    });
+    expect(counts.your_followers).toBe(n);
+    expect(counts.event_attendees).toBe(n);
+    for (const table of ['user_follows', 'global_event_participants']) {
+      const pages = calls.filter((c) => c.table === table);
+      expect(pages).toHaveLength(3);
+      expect(pages.map((c) => c.range)).toEqual([
+        [0, MEMBER_PAGE_SIZE - 1],
+        [MEMBER_PAGE_SIZE, 2 * MEMBER_PAGE_SIZE - 1],
+        [2 * MEMBER_PAGE_SIZE, 3 * MEMBER_PAGE_SIZE - 1],
+      ]);
+      expect(pages.every((c) => typeof c.order === 'string')).toBe(true);
+    }
   });
 
   it('excludes service_bot_accounts and notification_test_actors from attendees, followers and segments', async () => {

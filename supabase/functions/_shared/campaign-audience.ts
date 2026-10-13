@@ -77,6 +77,22 @@ async function run<T = any>(step: string, query: PromiseLike<{ data: T; error: u
   return data;
 }
 
+/** PostgREST caps a response (max_rows, 1000 by default), so member lists are read page by page. */
+export const MEMBER_PAGE_SIZE = 1000;
+
+async function runAllPages<T = any>(
+  step: string,
+  buildQuery: () => { order: (column: string) => any },
+  orderColumn: string,
+): Promise<T[]> {
+  const rows: T[] = [];
+  for (let from = 0; ; from += MEMBER_PAGE_SIZE) {
+    const page = await run<T[]>(step, buildQuery().order(orderColumn).range(from, from + MEMBER_PAGE_SIZE - 1));
+    rows.push(...(page ?? []));
+    if (!page || page.length < MEMBER_PAGE_SIZE) return rows;
+  }
+}
+
 async function loadExcludedAccountIds(client: any): Promise<Set<string>> {
   const [bots, testActors] = await Promise.all([
     run<Array<{ user_id: string | null }>>('service_bot_accounts', client.from('service_bot_accounts').select('user_id')),
@@ -128,13 +144,15 @@ export async function resolveCampaignAudience(
       );
       if (!ownedEvent) continue;
 
-      const attendees = await run<Array<{ user_id: string | null }>>(
+      const attendees = await runAllPages<{ user_id: string | null }>(
         'event_attendees',
-        client
-          .from('global_event_participants')
-          .select('user_id')
-          .eq('event_id', eventId)
-          .eq('status', 'attending'),
+        () =>
+          client
+            .from('global_event_participants')
+            .select('user_id')
+            .eq('event_id', eventId)
+            .eq('status', 'attending'),
+        'user_id',
       );
       for (const a of attendees ?? []) {
         if (a?.user_id) memberEntries.push({ userId: String(a.user_id), source: 'event_attendees', sourceId: eventId });
@@ -144,9 +162,10 @@ export async function resolveCampaignAudience(
 
   // Your followers: the campaign owner's followers.
   if (audience?.yourFollowers?.enabled) {
-    const followers = await run<Array<{ follower_id: string | null }>>(
+    const followers = await runAllPages<{ follower_id: string | null }>(
       'your_followers',
-      client.from('user_follows').select('follower_id').eq('following_id', ownerId),
+      () => client.from('user_follows').select('follower_id').eq('following_id', ownerId),
+      'follower_id',
     );
     for (const f of followers ?? []) {
       if (f?.follower_id) memberEntries.push({ userId: String(f.follower_id), source: 'your_followers', sourceId: ownerId });
