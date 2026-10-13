@@ -94,8 +94,15 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
 - Orders keeps `StandardHorizontalCard` rows (VCard conversion is Phase 5/6). Detail sub-pages untouched.
 
 ## Phase 4 — Social screens · VTID-05110
-- [ ] 4.1 Community overview, Events & Meetups (featured event + list + rail; no empty bento slots), Groups, GroupDetail, Live Rooms, Media Hub, Public profile, Post detail, Messages — each via its archetype. _R1, R3_
-- [ ] 4.2 Remaining adapters (event, liveRoom, group, member).
+- [~] 4.1 Community overview, Events & Meetups (featured event + list + rail; no empty bento slots), Groups, GroupDetail, Live Rooms, Media Hub, Public profile, Post detail, Messages — each via its archetype. _R1, R3_
+  Part 1 done (VTID-05110): Community overview, Events & Meetups, Groups, Group detail, Live Rooms. Decisions (for Gate 2):
+  Events keeps its `collection` archetype with a stage + rail inside it; full rows as a `standard` grid, the remainder as
+  `row` cards (no empty slots); Community overview shows only real data (live rooms, today, this week, groups you have
+  not joined — the legacy mock rows, invented counters and the console-only search are not rendered; no member list,
+  to keep test accounts out); empty dominant screens show one text-only spotlight card; existing drawers, deep links
+  and dialogs are shared with the legacy render. Left: Media Hub + Messages (in progress), Post detail (after Phase 2),
+  Public profile (needs an owner design call), the Live Rooms "Past" tab with recordings.
+- [x] 4.2 Remaining adapters (event, liveRoom, group, member).
 - [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
 
 ## Phase 5 — Tier B adoption · VTID-05111
