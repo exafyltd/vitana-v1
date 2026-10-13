@@ -134,7 +134,13 @@ describe('auth plugins', () => {
 
   it('adds SecureStore and Sign in with Apple, keeps the .dev ids', () => {
     const cfg = buildConfig('development', undefined, {});
-    expect(names({})).toEqual(['expo-router', 'expo-localization', 'expo-secure-store', 'expo-apple-authentication']);
+    expect(names({})).toEqual([
+      'expo-router',
+      'expo-localization',
+      'expo-secure-store',
+      'expo-apple-authentication',
+      './modules/vitana-voice/plugin/withVitanaVoice',
+    ]);
     expect(cfg.ios?.usesAppleSignIn).toBe(true);
     expect(cfg.ios?.bundleIdentifier).toBe(IDENTIFIERS.ios);
     expect(cfg.scheme).toBe('maxina');
