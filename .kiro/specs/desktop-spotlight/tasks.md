@@ -140,7 +140,8 @@ Decisions taken (for Gate 2):
   `vtid-05113-admin-workspace.staging.spec.ts` checks them (gate for a non-admin, workspace frame for an admin).
 - [x] 7.2 Backoffice · VTID-05114
   Status: implemented (VTID-05114). All 27 `/backoffice/*` routes migrated (`workspace`, BackOfficeTabs kept above the frame). Decisions (for Gate 2): `BackOfficePage` itself is not edited — a page-local `BackOfficeWorkspacePage` wraps it; token fixes apply on both paths (status colours, spacing scale); one reasoned `design-allow-next-line` keeps the flag-off placeholder 404 centring. BackOffice `design/*` errors 12 → 0.
-- [ ] 7.3 Dev · VTID-05115
+- [x] 7.3 Dev · VTID-05115
+  Status: implemented (VTID-05115). 48 `/dev/*` routes migrated (`workspace`, section tabs kept above the frame). Left legacy: `/dev` (redirect to `/dev/dashboard`) and `/dev/login` (sign-in screen outside DevLayout; token fixes only). Decisions (for Gate 2): token fixes apply on both paths (surface tokens, logical directions, spacing scale); unrouted DevReleases / DevDocsBacklog get token fixes only. `src/pages/dev` `design/*` errors 139 → 0.
 - [ ] 7.4 Professional + Staff · VTID-05116
 - [ ] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
 
