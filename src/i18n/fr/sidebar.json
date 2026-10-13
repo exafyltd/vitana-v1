@@ -76,8 +76,6 @@
         "audit": true,
         "settings": true
       }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }

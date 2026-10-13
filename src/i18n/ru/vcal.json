@@ -22,32 +22,27 @@
       "morning": "Доброе утро ☀️",
       "afternoon": "Добрый день 🌤️",
       "evening": "Добрый вечер 🌙",
-      "night": "Доброй ночи 🌙",
-      "_pending_review": {}
+      "night": "Доброй ночи 🌙"
     },
     "day": {
-      "addFor": "Новая запись на {date}",
-      "_pending_review": {}
+      "addFor": "Новая запись на {date}"
     },
     "views": {
       "day": "День",
       "week": "Неделя",
-      "month": "Месяц",
-      "_pending_review": {}
+      "month": "Месяц"
     },
     "rel": {
       "now": "сейчас",
       "minutes": "через {count} мин",
       "hours": "через {count} ч",
-      "days": "через {count} дн.",
-      "_pending_review": {}
+      "days": "через {count} дн."
     },
     "reminder": {
       "eveningBefore": "Накануне в {time}",
       "atStart": "В начале",
       "hoursBefore": "За {count} ч",
-      "minutesBefore": "За {count} мин",
-      "_pending_review": {}
+      "minutesBefore": "За {count} мин"
     },
     "kinds": {
       "nutrition": "Питание",
@@ -83,33 +78,28 @@
     "subscription": {
       "renews": "Premium продлевается",
       "ends": "Premium заканчивается",
-      "trialEnds": "Пробный период заканчивается",
-      "_pending_review": {}
+      "trialEnds": "Пробный период заканчивается"
     },
     "overlap": {
       "title": "Это пересекается",
       "own": "{{title}} · {{time}}",
       "busy": "Занято · {{time}}",
-      "external": "Занято (другой календарь) · {{time}}",
-      "_pending_review": {}
+      "external": "Занято (другой календарь) · {{time}}"
     },
     "findTime": {
       "action": "Найти время",
       "loading": "Ищу свободное время …",
       "pick": "Подходящее время",
       "none": "В ближайшие дни ничего подходящего нет.",
-      "error": "Не удалось загрузить свободное время.",
-      "_pending_review": {}
+      "error": "Не удалось загрузить свободное время."
     },
     "empty": {
       "title": "Ничего не запланировано – спокойный день",
-      "hint": "Скажи Витане, что задумал, и она добавит.",
-      "_pending_review": {}
+      "hint": "Скажи Витане, что задумал, и она добавит."
     },
     "week": {
       "title": "Неделя с {date}",
-      "free": "свободно",
-      "_pending_review": {}
+      "free": "свободно"
     },
     "month": {
       "more": "+{count}",
@@ -145,8 +135,7 @@
       "autopilot_review": "Ждёт твоей проверки",
       "ticket_due": "Срок тикета",
       "erp_approval": "Ждёт одобрения",
-      "readOnly": "Это завершается там, где возникло, – календарь лишь показывает, когда срок.",
-      "_pending_review": {}
+      "readOnly": "Это завершается там, где возникло, – календарь лишь показывает, когда срок."
     },
     "subscribe": {
       "title": "Показать в моём календаре",
@@ -168,28 +157,23 @@
       "titleFor": {
         "google": "Подключить Google Календарь",
         "apple": "Подключить Календарь Apple",
-        "outlook": "Подключить Outlook",
-        "_pending_review": {}
+        "outlook": "Подключить Outlook"
       },
       "introFor": {
         "google": "Твои записи Vitanaland появятся в Google Календаре и будут там обновляться.",
         "apple": "Твои записи Vitanaland появятся в Календаре на iPhone, iPad и Mac и будут там обновляться.",
-        "outlook": "Твои записи Vitanaland появятся в календаре Outlook и будут там обновляться.",
-        "_pending_review": {}
+        "outlook": "Твои записи Vitanaland появятся в календаре Outlook и будут там обновляться."
       },
       "createFor": {
         "google": "Создать ссылку для Google",
         "apple": "Создать ссылку для Apple",
-        "outlook": "Создать ссылку для Outlook",
-        "_pending_review": {}
+        "outlook": "Создать ссылку для Outlook"
       },
       "openIn": {
         "google": "Добавить в Google Календарь",
         "apple": "Добавить в Календарь Apple",
-        "outlook": "Добавить в Outlook",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "outlook": "Добавить в Outlook"
+      }
     },
     "move": {
       "action": "Перенести",
@@ -203,10 +187,8 @@
         "owned_by_source": "Это из брони или плана – перенеси там, иначе вернётся обратно.",
         "recurring": "Серию переносят через саму серию.",
         "completed": "Выполненное остаётся на месте.",
-        "cancelled": "Отменённое нельзя перенести.",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "cancelled": "Отменённое нельзя перенести."
+      }
     },
     "google": {
       "title": "Синхронизация с Google Календарём",
@@ -220,14 +202,12 @@
       "problem": "Последняя синхронизация не удалась – попробуем снова автоматически.",
       "error": "Сейчас не получилось. Попробуй чуть позже.",
       "busy": "Занято (Google)",
-      "busyHint": "Событие из твоего Google Календаря – видно только время",
-      "_pending_review": {}
+      "busyHint": "Событие из твоего Google Календаря – видно только время"
     },
     "quietHours": {
       "title": "Тихие часы",
       "body": "В тихие часы напоминания не приходят – они приходят чуть раньше.",
-      "link": "Настроить тихие часы",
-      "_pending_review": {}
+      "link": "Настроить тихие часы"
     },
     "guide": {
       "eyebrow": "Vitana предлагает",
@@ -244,8 +224,7 @@
       "planWithVitana": "Спланировать с Vitana",
       "seeWeek": "Посмотреть неделю",
       "connectAction": "Подключить календарь",
-      "dismiss": "Скрыть на сегодня",
-      "_pending_review": {}
+      "dismiss": "Скрыть на сегодня"
     },
     "journey": {
       "title": "Твой путь",
@@ -264,16 +243,14 @@
       "dailyAt": "Каждый день в",
       "addConfirm": "Добавить",
       "inCalendar": "В календаре",
-      "habitAdded": "Привычка добавлена в календарь",
-      "_pending_review": {}
+      "habitAdded": "Привычка добавлена в календарь"
     },
     "remindersSection": {
       "title": "Напоминания",
       "none": "Ничего не запланировано",
       "upcoming": "Предстоящих: {count}",
       "upcomingOne": "1 предстоящее",
-      "next": "следующее {when}",
-      "_pending_review": {}
+      "next": "следующее {when}"
     },
     "calendars": {
       "title": "Календари",
@@ -299,14 +276,12 @@
       "connect": "Подключить",
       "reconnect": "Подключить заново",
       "manage": "Управлять в подключённых приложениях",
-      "showInAppHint": "Показывать записи Vitanaland в твоём приложении календаря",
-      "_pending_review": {}
+      "showInAppHint": "Показывать записи Vitanaland в твоём приложении календаря"
     },
     "add": {
       "title": "Новая запись",
       "created": "Добавлено ✨",
-      "error": "Сейчас не удалось сохранить. Попробуй ещё раз чуть позже.",
-      "_pending_review": {}
+      "error": "Сейчас не удалось сохранить. Попробуй ещё раз чуть позже."
     },
     "form": {
       "title": "Название",
@@ -329,10 +304,8 @@
         "health": "Здоровье",
         "workout": "Тренировка",
         "community": "Сообщество",
-        "nutrition": "Питание",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "nutrition": "Питание"
+      }
     },
     "milestone": "Веха: {title}",
     "more": "Ещё {count}",
@@ -341,15 +314,13 @@
       "entriesOne": "1 запись",
       "entries": "Записей: {count}",
       "next": "следующая в {time}",
-      "done": "выполнено: {count}",
-      "_pending_review": {}
+      "done": "выполнено: {count}"
     },
     "workSection": {
       "title": "Работа",
       "waitingOne": "1 дело ждёт тебя",
       "waiting": "Ждут тебя: {count}",
-      "open": "Открыть в админке",
-      "_pending_review": {}
+      "open": "Открыть в админке"
     },
     "indexGain": "+{points} {pillar} в твоём Vitana Index",
     "edit": {
@@ -563,6 +534,5 @@
         "listen": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

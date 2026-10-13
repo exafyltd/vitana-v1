@@ -5276,13 +5276,11 @@
       "vitanaIndexUpSubtext": "عمل رائع!",
       "vitanaIndexDownSubtext": "الخطوات الصغيرة مهمة.",
       "vitanaIndexStableSubtext": "كن متسقًا.",
-      "vitanaIndexScoreSubtext": "المؤشر {score} · {message}",
       "longevityJourneyEyebrow": "كتابك الصوتي عن طول العمر",
       "longevityJourneyContinue": "تابع الحلقة {session}: {topic}",
       "longevityJourneyAllDone": "لقد استمعت إلى كل الحلقات. أحسنت!",
       "longevityJourneyNextStepHeadline": "خطوتك التالية:",
       "longevityJourneySubtext": "الحلقة {session} بانتظارك.",
-      "longevityJourneyProgressSubtext": "الحلقة {session} بانتظارك · أُنجز {done} · اليوم {today}/{goal}",
       "longevityJourneyStartSession": "تشغيل الحلقة {session}",
       "longevityJourneyDoneLabel": "تم",
       "longevityJourneyNowLabel": "الآن",
@@ -6231,7 +6229,8 @@
       "anonymous": "مجهول",
       "vitanaOpenScreen": "افتح الشاشة",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "أنشأ {name} المجموعة",
@@ -7700,6 +7699,20 @@
         "partnerLabsError": true
       },
       "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
         "title": "Messages from Vitana",
         "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
         "enabled": "Receive messages from Vitana",
@@ -8699,18 +8712,7 @@
       "viewIndex": "عرض المؤشر",
       "viewJourney": "عرض رحلتي",
       "viewMatch": "عرض التطابق",
-      "dismissCard": "تجاهل البطاقة",
-      "dailyDiary": "اليوميات",
-      "talkToVitana": "تحدّث مع Vitana",
-      "autopilot": "الطيار الآلي",
-      "calendar": "التقويم",
-      "uploadMedia": "الوسائط",
-      "discover": "اكتشف",
-      "profilePhoto": "صورة الملف الشخصي",
-      "profileSetup": "الملف الشخصي",
-      "socialConnect": "ربط",
-      "importContacts": "جهات الاتصال",
-      "completeProfile": "أكمل ملفك"
+      "dismissCard": "تجاهل البطاقة"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -12539,132 +12541,6 @@
       "startingSoon": "يبدأ قريبًا",
       "startNow": "ابدأ الآن",
       "eventsSectionTitle": "الغرف المباشرة"
-    },
-    "vitanaCards": {
-      "stripLabel": "اقتراحات من Vitana",
-      "eyebrowProfile": "ملفك الشخصي",
-      "eyebrowConnect": "اتصال",
-      "eyebrowCommunity": "المجتمع",
-      "eyebrowNotifications": "الإشعارات",
-      "E1": {
-        "title": "أظهر وجهك",
-        "description": "ارفع صورة للملف الشخصي ليتعرّف عليك الآخرون فورًا.",
-        "action": "رفع"
-      },
-      "E2": {
-        "title": "أخبرنا عن نفسك",
-        "description": "بضع جمل عنك تساعد الآخرين على بدء محادثة معك.",
-        "action": "اكتب نبذة"
-      },
-      "E3": {
-        "title": "شارك منشورك الأول",
-        "description": "قل مرحبًا للمجتمع – تكفي فكرة قصيرة.",
-        "action": "انشر الآن"
-      },
-      "E4": {
-        "title": "ما الذي يشغفك؟",
-        "description": "اختر اهتماماتك لتجد Vitana أشخاصًا ومحتوى يناسبونك.",
-        "action": "اختر اهتماماتك"
-      },
-      "E5": {
-        "title": "أين تقيم؟",
-        "description": "أضف موقعك واكتشف أشخاصًا وفعاليات بالقرب منك.",
-        "action": "أضف موقعك"
-      },
-      "E6": {
-        "title": "اربط Instagram",
-        "description": "شارك لحظاتك من Vitana مباشرةً على Instagram.",
-        "action": "ربط Instagram"
-      },
-      "E7": {
-        "title": "اربط Facebook",
-        "description": "ابقَ قريبًا من أصدقائك وشارك بلمسة واحدة.",
-        "action": "ربط Facebook"
-      },
-      "E8": {
-        "title": "اربط تقويمك",
-        "description": "شاهد مواعيدك وفعاليات Vitana في مكان واحد.",
-        "action": "ربط"
-      },
-      "E9": {
-        "title": "استورد جهات اتصالك",
-        "description": "اعثر على أصدقاء موجودين بالفعل على Vitana.",
-        "action": "استيراد"
-      },
-      "E10": {
-        "title": "لا يفوتك شيء",
-        "description": "فعّل الإشعارات للرسائل والتطابقات والتذكيرات.",
-        "action": "تفعيل"
-      },
-      "E11": {
-        "title": "أضف صورة غلاف",
-        "description": "صورة الغلاف تجعل ملفك الشخصي أكثر تعبيرًا عنك.",
-        "action": "رفع"
-      },
-      "F3": {
-        "eyebrow": "اليوميات",
-        "title": "كيف حالك اليوم؟",
-        "description": "قل بضع جمل في يومياتك – Vitana تستمع إليك.",
-        "action": "تسجيل"
-      },
-      "F4": {
-        "eyebrow": "اسأل Vitana",
-        "title": "هل لديك سؤال؟",
-        "description": "تساعدك Vitana في الصحة والمجتمع وغير ذلك.",
-        "action": "اسأل Vitana"
-      },
-      "F5": {
-        "eyebrow": "التطابقات",
-        "title": "أشخاص يناسبونك",
-        "description": "اكتشف تطابقات اليوم.",
-        "action": "عرض التطابقات"
-      },
-      "F6": {
-        "eyebrow": "الطيار الآلي",
-        "title": "طيارك الآلي جاهز",
-        "description": "دع Vitana تخطط لخطواتك التالية.",
-        "action": "فتح"
-      },
-      "F9": {
-        "eyebrow": "التقويم",
-        "title": "يومك في لمحة",
-        "description": "المواعيد والفعاليات والتذكيرات في مكان واحد.",
-        "action": "افتح التقويم"
-      },
-      "F10": {
-        "eyebrow": "الوسائط",
-        "title": "شارك فيديو أو موسيقى",
-        "description": "ارفع وسائطك وألهم المجتمع.",
-        "action": "إنشاء"
-      },
-      "F11": {
-        "eyebrow": "اكتشف",
-        "title": "اكتشف شيئًا جديدًا",
-        "description": "منتجات وخدمات وعروض لعافيتك.",
-        "action": "تصفّح"
-      }
-    },
-    "interests": {
-      "title": "اهتماماتك",
-      "description": "اختر حتى {max} مواضيع تحبها.",
-      "selectedCount": "تم اختيار {count} من {max}",
-      "save": "حفظ",
-      "cancel": "إلغاء",
-      "fitness": "اللياقة البدنية",
-      "nutrition": "التغذية",
-      "sleep": "النوم",
-      "mindfulness": "اليقظة الذهنية",
-      "longevity": "طول العمر",
-      "biohacking": "البيوهاكينغ",
-      "yoga": "اليوغا",
-      "running": "الجري",
-      "strength": "تمارين القوة",
-      "dance": "الرقص",
-      "nature": "الطبيعة",
-      "cooking": "الطبخ",
-      "social": "التواصل الاجتماعي",
-      "travel": "السفر",
-      "career": "المسيرة المهنية"
     }
   }
 }
