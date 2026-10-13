@@ -6271,7 +6271,8 @@
       "imageDownloadFailed": "تعذّر تحميل الصورة",
       "imageShareFailed": "تعذّرت المشاركة",
       "imageLoading": "جارٍ تحميل الصورة",
-      "unknownSize": "حجم غير معروف"
+      "unknownSize": "حجم غير معروف",
+      "talkToVitana": "تحدّث مع Vitana"
     },
     "mobile": {
       "searching": "جاري البحث…",
@@ -7697,6 +7698,20 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
+      },
+      "vitanaMessages": {
+        "title": "رسائل من Vitana",
+        "desc": "ترسل لك Vitana من حين لآخر رسالة شخصية في Messenger، مع نصيحة تناسبك الآن.",
+        "enabled": "تلقي رسائل من Vitana",
+        "enabledDesc": "رسالة واحدة في اليوم كحد أقصى. يمكنك إيقافها في أي وقت.",
+        "topics": "المواضيع",
+        "health": "الصحة",
+        "healthDesc": "نصائح لصحتك ولمؤشر Vitana Index الخاص بك.",
+        "community": "المجتمع",
+        "communityDesc": "أشخاص ومجموعات وفعاليات تناسبك.",
+        "business": "الأعمال والدخل",
+        "businessDesc": "اختياري: أفكار لكسب المال من معرفتك في Vitanaland. متوقف افتراضيًا – فقط إذا قمت بتفعيله.",
+        "loadError": "تعذّر تحميل إعدادات رسائل Vitana الخاصة بك."
       }
     },
     "sharing": {

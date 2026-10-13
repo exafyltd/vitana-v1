@@ -28,6 +28,7 @@
     "src/pages/MobileSettings.tsx",
     "src/pages/settings/SettingsNotifications.tsx",
     "src/pages/settings/SettingsNotifications.vtid-04676.test.tsx",
+    "src/pages/settings/SettingsNotifications.vtid-05100.test.tsx",
     "tests/e2e/staging/vtid-05100-vitana-messages.staging.spec.ts",
     "docs/validation/VTID-05100/**"
   ],
