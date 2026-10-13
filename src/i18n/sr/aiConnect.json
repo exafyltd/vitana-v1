@@ -14,7 +14,8 @@
       "failed": "Nije uspelo. Pokušaj ponovo.",
       "loading": "Učitava se …",
       "redirecting": "Preusmeravamo te …",
-      "invalid": "Ovaj zahtev je istekao ili nije važeći. Pokreni povezivanje ponovo u svom AI asistentu."
+      "invalid": "Ovaj zahtev je istekao ili nije važeći. Pokreni povezivanje ponovo u svom AI asistentu.",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "Tvoj profil",
@@ -25,7 +26,8 @@
       "peopleDesc": "Članovi koji su izabrali da ih AI asistenti mogu pronaći",
       "activities": "Aktivnosti",
       "activitiesDesc": "Predstojeći događaji i susreti u zajednici",
-      "commerce": "Alati za ponuđače (Vitanaland Commerce)"
+      "commerce": "Alati za ponuđače (Vitanaland Commerce)",
+      "_pending_review": {}
     },
     "settings": {
       "title": "Povezana veštačka inteligencija",
@@ -49,7 +51,10 @@
       "loadFailed": "Tvoji povezani asistenti nisu mogli da se učitaju.",
       "findableTitle": "Dozvoli AI asistentima drugih članova da me pronađu",
       "findableDesc": "Kada je uključeno, članovi sa povezanim ChatGPT-om ili Claude-om mogu da vide tvoje ime, sliku, javni grad i interesovanja. Podrazumevano isključeno.",
-      "unknownClient": "AI asistent"
-    }
-  }
+      "unknownClient": "AI asistent",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

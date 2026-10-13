@@ -6272,8 +6272,7 @@
       "imageDownloadFailed": "Nie udało się wczytać obrazu",
       "imageShareFailed": "Udostępnianie nie powiodło się",
       "imageLoading": "Ładowanie obrazu",
-      "unknownSize": "Nieznany rozmiar",
-      "talkToVitana": "Porozmawiaj z Vitaną"
+      "unknownSize": "Nieznany rozmiar"
     },
     "mobile": {
       "searching": "Szukam…",
@@ -7699,20 +7698,6 @@
         "partnerLabsGrantSuccess": true,
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
-      },
-      "vitanaMessages": {
-        "title": "Wiadomości od Vitany",
-        "desc": "Od czasu do czasu Vitana wysyła Ci osobistą wiadomość w Messengerze ze wskazówką, która właśnie do Ciebie pasuje.",
-        "enabled": "Otrzymuj wiadomości od Vitany",
-        "enabledDesc": "Najwyżej jedna wiadomość dziennie. Możesz je wyłączyć w każdej chwili.",
-        "topics": "Tematy",
-        "health": "Zdrowie",
-        "healthDesc": "Wskazówki dla Twojego zdrowia i Twojego Vitana Index.",
-        "community": "Społeczność",
-        "communityDesc": "Ludzie, grupy i wydarzenia, które do Ciebie pasują.",
-        "business": "Biznes i dochód",
-        "businessDesc": "Opcjonalnie: pomysły, jak zarabiać na swojej wiedzy w Vitanaland. Domyślnie wyłączone – tylko jeśli to włączysz.",
-        "loadError": "Nie udało się wczytać Twoich ustawień wiadomości od Vitany."
       }
     },
     "sharing": {
@@ -8711,7 +8696,10 @@
       "profileSetup": "Profil",
       "socialConnect": "Połącz",
       "importContacts": "Kontakty",
-      "completeProfile": "Uzupełnij profil"
+      "completeProfile": "Uzupełnij profil",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -13600,7 +13588,10 @@
         "eyebrow": "Autopilot",
         "title": "Twój autopilot jest gotowy",
         "description": "Pozwól Vitanie zaplanować Twoje kolejne kroki.",
-        "action": "Otwórz"
+        "action": "Otwórz",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "F9": {
         "eyebrow": "Kalendarz",
@@ -13641,7 +13632,11 @@
       "cooking": "Gotowanie",
       "social": "Wspólnota",
       "travel": "Podróże",
-      "career": "Kariera"
+      "career": "Kariera",
+      "_pending_review": {
+        "fitness": true,
+        "biohacking": true
+      }
     }
   }
 }

@@ -8710,7 +8710,10 @@
       "profileSetup": "Profil",
       "socialConnect": "Connecter",
       "importContacts": "Contacts",
-      "completeProfile": "Compléter le profil"
+      "completeProfile": "Compléter le profil",
+      "_pending_review": {
+        "importContacts": true
+      }
     },
     "voucher": {
       "friendExampleCom": "ami@exemple.com",
@@ -13597,6 +13600,9 @@
         "title": "Découvre quelque chose de nouveau",
         "description": "Produits, services et offres pour ton bien-être.",
         "action": "Parcourir"
+      },
+      "_pending_review": {
+        "eyebrowNotifications": true
       }
     },
     "interests": {
@@ -13619,7 +13625,14 @@
       "cooking": "Cuisine",
       "social": "Vie sociale",
       "travel": "Voyages",
-      "career": "Carrière"
+      "career": "Carrière",
+      "_pending_review": {
+        "fitness": true,
+        "nutrition": true,
+        "biohacking": true,
+        "yoga": true,
+        "nature": true
+      }
     }
   }
 }

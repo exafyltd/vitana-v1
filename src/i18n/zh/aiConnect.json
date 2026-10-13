@@ -14,7 +14,8 @@
       "failed": "操作未成功，请重试。",
       "loading": "加载中 …",
       "redirecting": "正在跳转 …",
-      "invalid": "此请求已过期或无效。请在你的 AI 助手中重新开始连接。"
+      "invalid": "此请求已过期或无效。请在你的 AI 助手中重新开始连接。",
+      "_pending_review": {}
     },
     "categories": {
       "profile": "你的个人资料",
@@ -25,7 +26,8 @@
       "peopleDesc": "选择允许被 AI 助手找到的成员",
       "activities": "活动",
       "activitiesDesc": "社区即将举行的活动和聚会",
-      "commerce": "供应商工具（Vitanaland Commerce）"
+      "commerce": "供应商工具（Vitanaland Commerce）",
+      "_pending_review": {}
     },
     "settings": {
       "title": "已连接的 AI",
@@ -49,7 +51,10 @@
       "loadFailed": "无法加载你已连接的助手。",
       "findableTitle": "允许其他成员的 AI 助手找到我",
       "findableDesc": "开启后，已连接 ChatGPT 或 Claude 的成员可以看到你的名字、头像、公开城市和兴趣。默认关闭。",
-      "unknownClient": "一个 AI 助手"
-    }
-  }
+      "unknownClient": "一个 AI 助手",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

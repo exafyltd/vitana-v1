@@ -13619,7 +13619,11 @@
       "cooking": "Yemek yapmak",
       "social": "Topluluk",
       "travel": "Seyahat",
-      "career": "Kariyer"
+      "career": "Kariyer",
+      "_pending_review": {
+        "fitness": true,
+        "yoga": true
+      }
     }
   }
 }

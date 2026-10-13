@@ -13506,7 +13506,10 @@
         "eyebrow": "Matches",
         "title": "Pessoas que combinam com você",
         "description": "Descubra seus matches de hoje.",
-        "action": "Ver matches"
+        "action": "Ver matches",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "F6": {
         "eyebrow": "Piloto automático",
@@ -13553,7 +13556,13 @@
       "cooking": "Culinária",
       "social": "Convivência",
       "travel": "Viagens",
-      "career": "Carreira"
+      "career": "Carreira",
+      "_pending_review": {
+        "fitness": true,
+        "mindfulness": true,
+        "biohacking": true,
+        "yoga": true
+      }
     }
   }
 }

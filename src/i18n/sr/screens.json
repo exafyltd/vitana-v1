@@ -10565,7 +10565,10 @@
       "profileSetup": "Profil",
       "socialConnect": "Poveži",
       "importContacts": "Kontakti",
-      "completeProfile": "Dovrši profil"
+      "completeProfile": "Dovrši profil",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -12661,7 +12664,10 @@
         "eyebrow": "Autopilot",
         "title": "Tvoj autopilot je spreman",
         "description": "Pusti Vitanu da isplanira tvoje sledeće korake.",
-        "action": "Otvori"
+        "action": "Otvori",
+        "_pending_review": {
+          "eyebrow": true
+        }
       },
       "F9": {
         "eyebrow": "Kalendar",
