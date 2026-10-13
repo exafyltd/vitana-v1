@@ -1,17 +1,21 @@
 {
   "spotlightFeed": {
     "header": {
-      "description": "Longevity science and news from your community"
+      "description": "Longevity science and news from your community",
+      "_pending_review": {}
     },
     "tabs": {
-      "ariaLabel": "Filter news"
+      "ariaLabel": "Filter news",
+      "_pending_review": {}
     },
     "stage": {
-      "label": "Your news feed"
+      "label": "Your news feed",
+      "_pending_review": {}
     },
     "post": {
       "commentsTitle": "Comments",
-      "openComments": "Open comments"
+      "openComments": "Open comments",
+      "_pending_review": {}
     },
     "rail": {
       "label": "Alongside your feed",
@@ -19,13 +23,18 @@
       "today": "Today",
       "journey": "Your journey",
       "people": "People to meet",
-      "goodToKnow": "Good to know"
+      "goodToKnow": "Good to know",
+      "_pending_review": {}
     },
     "today": {
-      "timeAndPlace": "{time} · {place}"
+      "timeAndPlace": "{time} · {place}",
+      "_pending_review": {}
     },
     "index": {
-      "title": "Vitana Index {score}"
-    }
-  }
+      "title": "Vitana Index {score}",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
