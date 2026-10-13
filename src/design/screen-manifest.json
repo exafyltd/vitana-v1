@@ -2206,7 +2206,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {

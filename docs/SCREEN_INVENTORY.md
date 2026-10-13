@@ -5,9 +5,9 @@
 
 ## Summary
 
-- **Pages scanned:** 383
-- **Distinct i18n keys consumed:** 4761
-- **Namespaces in use:** 48
+- **Pages scanned:** 384
+- **Distinct i18n keys consumed:** 4745
+- **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -15,6 +15,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 ---
 
 ## __tests__/
+
+### src/pages/__tests__/gateway-prefix.vtid-05155.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx
 
@@ -1667,7 +1671,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `screens` — used: 1, total in shard: 11763
+- `screens` — used: 1, total in shard: 11778
 
 ### src/pages/backoffice/accounting/ChartOfAccounts.tsx
 
@@ -2708,12 +2712,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/memory/Timeline.tsx
 
-**Status:** ✅ clean — keys consumed: 16, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 15, total in shard: 11778
-- `timeline` — used: 1, total in shard: 1
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## messages/
 
@@ -3057,7 +3056,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 257 |
+| `screens` | 256 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
@@ -3100,7 +3099,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `orders` | 1 |
 | `wellnessServices` | 1 |
 | `support` | 1 |
-| `timeline` | 1 |
 | `archives` | 1 |
 | `discount` | 1 |
 | `portals` | 1 |

@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05170",
+  "kind": "feature",
+  "paths": [
+    "src/pages/memory/Timeline.tsx",
+    "src/components/timeline/**",
+    "src/hooks/useTimeline.ts",
+    "src/lib/timeline-api.ts",
+    "src/i18n/*/timeline.json",
+    "i18n-source-stamps/*.json",
+    "src/design/screen-manifest.json",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "scripts/ci/pr-gate/baseline/eslint.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-05170-life-timeline.staging.spec.ts",
+    "docs/validation/VTID-05170/**"
+  ]
+}
