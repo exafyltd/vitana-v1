@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05108",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, Spotlight on via ?spotlight=1, at 1280/1440/1920 px: /home is ScreenFrame focus-feed, exactly one [data-vcard-size=spotlight] (in the first viewport), context rail visible at >= 1440 px (toggle below), no vertical gap > 48 px between stage cards, J/K move the focused card, no horizontal scroll in LTR and RTL, sidebar chrome intact; and with ?spotlight=0 /home is the unchanged legacy screen (legacy grid, no ScreenFrame, no VCard)",
+      "spec": "tests/e2e/staging/vtid-05108-news-focus-feed.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "feed-compose placement (stream vs rail, order unchanged for phones/legacy), focus-feed model + Up next + Today filter, focus-feed adapters, Home: flag off and phones render the legacy screen, flag on renders ScreenFrame focus-feed with one spotlight lead + standard rows, info cards only in the rail (compact/row), J/K + arrows, dimming on media only, rail blocks hide without data, skeletons not spinners, comments open in a side sheet; keep-alive suite still green",
+      "ref": "npx vitest run src/lib/feed-compose.test.ts src/components/home/desktop src/components/ui/vcard/adapters src/pages/Home.spotlight.vtid-05108.test.tsx src/components/keepalive/NewsKeepAlive.test.tsx",
+      "cwd": ".",
+      "reason": "Placement, focus, dimming and empty-rail behaviour are deterministic only with controlled feed data; staging is read-only and cannot create feed content, so it proves the layout contract on whatever content exists."
+    }
+  ]
+}

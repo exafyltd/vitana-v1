@@ -1,0 +1,31 @@
+{
+  "spotlightFeed": {
+    "header": {
+      "description": "Longevity-Wissenschaft und Neues aus deiner Community"
+    },
+    "tabs": {
+      "ariaLabel": "News filtern"
+    },
+    "stage": {
+      "label": "Dein News-Feed"
+    },
+    "post": {
+      "commentsTitle": "Kommentare",
+      "openComments": "Kommentare öffnen"
+    },
+    "rail": {
+      "label": "Passend zu deinem Feed",
+      "upNext": "Als Nächstes",
+      "today": "Heute",
+      "journey": "Deine Reise",
+      "people": "Menschen zum Kennenlernen",
+      "goodToKnow": "Gut zu wissen"
+    },
+    "today": {
+      "timeAndPlace": "{time} · {place}"
+    },
+    "index": {
+      "title": "Vitana Index {score}"
+    }
+  }
+}

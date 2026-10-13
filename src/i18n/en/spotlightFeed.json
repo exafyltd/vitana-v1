@@ -1,0 +1,31 @@
+{
+  "spotlightFeed": {
+    "header": {
+      "description": "Longevity science and news from your community"
+    },
+    "tabs": {
+      "ariaLabel": "Filter news"
+    },
+    "stage": {
+      "label": "Your news feed"
+    },
+    "post": {
+      "commentsTitle": "Comments",
+      "openComments": "Open comments"
+    },
+    "rail": {
+      "label": "Alongside your feed",
+      "upNext": "Up next",
+      "today": "Today",
+      "journey": "Your journey",
+      "people": "People to meet",
+      "goodToKnow": "Good to know"
+    },
+    "today": {
+      "timeAndPlace": "{time} · {place}"
+    },
+    "index": {
+      "title": "Vitana Index {score}"
+    }
+  }
+}
