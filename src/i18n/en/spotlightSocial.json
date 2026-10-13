@@ -9,7 +9,8 @@
       "back": "Back",
       "errorTitle": "That didn't work just now",
       "errorDesc": "Reload the page or try again in a moment.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "_pending_review": {}
     },
     "community": {
       "title": "Your community",
@@ -24,7 +25,8 @@
       "emptyWeekDesc": "Start an event yourself and invite your community.",
       "emptyGroupsTitle": "No new groups",
       "emptyGroupsDesc": "You're already in every group – or start your own.",
-      "openEvents": "Go to events"
+      "openEvents": "Go to events",
+      "_pending_review": {}
     },
     "events": {
       "title": "Events & Meetups",
@@ -36,7 +38,8 @@
         "hot": "Popular",
         "upcoming": "Upcoming",
         "today": "Today",
-        "following": "Following"
+        "following": "Following",
+        "_pending_review": {}
       },
       "featured": "In focus",
       "more": "More events",
@@ -49,7 +52,8 @@
       "emptyFollowingDesc": "Follow members to see their events here.",
       "emptyFollowedEventsTitle": "No events yet from people you follow",
       "emptyFollowedEventsDesc": "As soon as they plan something, you'll see it here.",
-      "findPeople": "Find members"
+      "findPeople": "Find members",
+      "_pending_review": {}
     },
     "groups": {
       "title": "Find your group",
@@ -59,7 +63,8 @@
       "tabsLabel": "Filter groups",
       "tabs": {
         "mine": "My groups",
-        "discover": "Discover"
+        "discover": "Discover",
+        "_pending_review": {}
       },
       "emptyMineTitle": "You're not in a group yet",
       "emptyMineDesc": "Discover groups and join your first one.",
@@ -70,7 +75,8 @@
       "join": "Join",
       "leave": "Leave",
       "public": "Public",
-      "private": "Private"
+      "private": "Private",
+      "_pending_review": {}
     },
     "groupDetail": {
       "title": "Group",
@@ -81,7 +87,8 @@
       "browse": "All groups",
       "browseMeta": "Discover more groups",
       "notFoundTitle": "Group not found",
-      "notFoundDesc": "This group was removed or doesn't exist."
+      "notFoundDesc": "This group was removed or doesn't exist.",
+      "_pending_review": {}
     },
     "liveRooms": {
       "title": "Live rooms",
@@ -93,7 +100,8 @@
         "all": "All rooms",
         "live": "Live now",
         "scheduled": "Scheduled",
-        "past": "Past"
+        "past": "Past",
+        "_pending_review": {}
       },
       "listening": "{count} listening",
       "join": "Join",
@@ -104,7 +112,10 @@
       "emptyTitle": "No room is open right now",
       "emptyDesc": "Start the first live room for your community.",
       "emptyPastTitle": "No recordings yet",
-      "emptyPastDesc": "Ended rooms with a recording appear here."
-    }
-  }
+      "emptyPastDesc": "Ended rooms with a recording appear here.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
