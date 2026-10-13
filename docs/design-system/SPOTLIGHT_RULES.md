@@ -154,6 +154,12 @@ So **every new file must be clean**, and every migration PR lowers the baselines
 Role-gated operator routes (`/admin`, `/backoffice`, `/dev`, `/professional`, `/staff`) are left out of this loop: the
 community test account cannot open them. Each operator phase ships its own staging spec that checks the screen for an
 account with the role and the gate for one without it (VTID-05113 for admin).
+Public, auth, legal and commerce-portal screens that render without the app shell (`NO_SHELL` in the spec: `/`,
+`/maxina`, `/privacy`, `/logout`, `/oauth/*`, `/universal-cart`, `/shop`, `/commerce/*`, …) and member screens behind a
+role the test account lacks (`ROLE_GATED`: the `/patient/*` screens with `requiredRole="patient"`, `/partner/connections`)
+are left out as well. `vtid-05117-public-leftovers.staging.spec.ts` checks the no-shell screens (signed out, or signed in
+without the sidebar check for the commerce shell and the cart); the VTID-05117 Vitest suites cover the auth hand-off and
+role-gated screens.
 
 `ScreenFrame` exposes `data-archetype` and `VCard` exposes `data-vcard-size`, so these checks read structure, not pixels.
 

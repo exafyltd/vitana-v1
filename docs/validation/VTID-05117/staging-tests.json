@@ -14,6 +14,19 @@
       "ref": "npx vitest run src/pages/member-spotlight.vtid-05117.test.tsx src/components/spotlight/member/member-spotlight.vtid-05117.test.tsx src/pages/messages src/pages/community/LiveRoomViewer.vtid-04906.test.tsx src/pages/settings/__tests__/privacy-data-sharing.test.tsx src/components/patient/PartnerLinkRequestsCard.vtid-05056.test.tsx",
       "cwd": ".",
       "reason": "Loading, empty, error and no-goal states, the flag-off legacy path and the parameterised screens (product, group chat, live room) depend on data the read-only staging account cannot control; the unit suites pin them deterministically, staging proves the real frames end to end."
+    },
+    {
+      "kind": "playwright",
+      "name": "public, auth, legal and commerce-portal screens with ?spotlight=1: signed out at 390/1280/1440 px in LTR and RTL every public screen (landing, Maxina/Alkalma portals, reset password, privacy, terms, apply, commerce login, Maxina app, Exafy admin, Maxina support, download, commerce portal/join/connect/privacy, cinematic intro) is framed with its manifest archetype from 1024 px up and not framed on the phone, has no horizontal scroll and no page spinner after load; privacy and terms show the same legal text with Spotlight on and off; signed in, invite, package success, cart, commerce team and health orders keep their frame (and the sidebar where the app shell renders); the professional/staff placeholders render the workspace frame for an account with the role and stay gated for one without it; nothing is submitted and no sign-in/sign-up/OAuth button is clicked",
+      "spec": "tests/e2e/staging/vtid-05117-public-leftovers.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "flag on/off per public, auth, legal, commerce and operator-placeholder page: today’s tree with the flag off, the manifest archetype with it on (reset password, logout, operator and /patient placeholders, init-events, news detail with one spotlight card), legal text unchanged by the frame, every page of this phase composes ScreenFrame behind useSpotlightEnabled() with its manifest archetype, no raw shadcn Card except the cart",
+      "ref": "npx vitest run src/pages/vtid-05117-public-leftovers.test.tsx",
+      "cwd": ".",
+      "reason": "The auth hand-off screens (/logout, /oauth/complete, /oauth/consent, the e-mail confirmation pages) sign out or consume auth state when opened, and the professional/staff, /patient and /partner/connections screens need roles the read-only staging account does not have; the unit suite renders them deterministically, the staging spec proves the reachable frames end to end."
     }
   ]
 }

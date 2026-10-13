@@ -43,8 +43,35 @@ const manifest = loadManifest();
 // the community test account cannot open them, so their own phase specs verify
 // them (e.g. vtid-05113-admin-workspace, which checks the gate for a non-admin).
 const OPERATOR = /^\/(admin|backoffice|dev|professional|staff)(\/|$)/;
+// Public / auth / legal / commerce-portal screens render WITHOUT the app shell
+// (no AppLayout, so no sidebar to assert) and some of them sign out or consume
+// auth state when opened signed in. Their own phase spec
+// (vtid-05117-public-leftovers.staging.spec.ts) verifies them signed out — and
+// the commerce-shell / cart screens signed in, without the sidebar check; the
+// auth hand-off screens and /shop are proven in src/pages/vtid-05117-public-leftovers.test.tsx.
+const NO_SHELL = new Set([
+  '/', '/maxina', '/alkalma', '/apply', '/reset-password', '/privacy', '/terms', '/maxina_support', '/download',
+  '/maxina/app', '/exafy-admin', '/commerce-login', '/logout', '/oauth/complete', '/oauth/consent', '/auth/confirmed',
+  '/maxina/confirmed', '/alkalma/confirmed', '/onboarding/welcome', '/universal-cart', '/shop', '/commerce',
+  '/commerce/join', '/commerce/team', '/commerce/health-orders', '/commerce/health-orders/inbox', '/commerce/connect',
+  '/commerce/connect/privacy', '/commerce/connect/authorize',
+]);
+// Member screens behind a role the community test account does not have
+// (ProtectedRoute requiredRole="patient" / "admin"). Like OPERATOR, their phase
+// suites cover them (src/pages/member-spotlight.vtid-05117.test.tsx,
+// src/pages/vtid-05117-public-leftovers.test.tsx).
+const ROLE_GATED = new Set([
+  '/patient/dashboard', '/patient/health', '/patient/appointments', '/patient/care-team', '/patient/goals',
+  '/patient/insurance', '/patient/notifications', '/partner/connections',
+]);
 const migrated = manifest.filter(
-  (e) => e.status === 'migrated' && !e.path.includes(':') && !e.path.includes('*') && !OPERATOR.test(e.path),
+  (e) =>
+    e.status === 'migrated' &&
+    !e.path.includes(':') &&
+    !e.path.includes('*') &&
+    !OPERATOR.test(e.path) &&
+    !NO_SHELL.has(e.path) &&
+    !ROLE_GATED.has(e.path),
 );
 
 async function signIn(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext) {

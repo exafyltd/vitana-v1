@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 383
+- **Pages scanned:** 386
 - **Distinct i18n keys consumed:** 4761
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -658,11 +658,19 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
+### src/pages/member-spotlight.vtid-05117.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ### src/pages/role-section-app-layout.test.ts
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/spotlight-tier-b.vtid-05111.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/vtid-05117-public-leftovers.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
@@ -2727,6 +2735,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 31, total in shard: 11778
 
 ### src/pages/messages/GroupChat.mentions.vtid-04926.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/messages/GroupChat.spotlight.vtid-05117.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 

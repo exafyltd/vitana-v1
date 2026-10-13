@@ -144,7 +144,39 @@ Decisions taken (for Gate 2):
   Status: implemented (VTID-05115). 48 `/dev/*` routes migrated (`workspace`, section tabs kept above the frame). Left legacy: `/dev` (redirect to `/dev/dashboard`) and `/dev/login` (sign-in screen outside DevLayout; token fixes only). Decisions (for Gate 2): token fixes apply on both paths (surface tokens, logical directions, spacing scale); unrouted DevReleases / DevDocsBacklog get token fixes only. `src/pages/dev` `design/*` errors 139 → 0.
 - [x] 7.4 Professional + Staff · VTID-05116
   Status: implemented (VTID-05116). Migrated `/professional/dashboard`, `/staff/dashboard`, `/staff/queue` (`workspace`). The other `/professional/*` and `/staff/*` routes render the shared ComingSoonPlaceholder and move with 7.5. Decisions (for Gate 2): content, demo data and the queue card layout unchanged; token fixes on both paths (status tokens, logical border/spacing); the phone bottom-bar clearance (VTID-04001) is kept on the flag-off path. `design/*` errors professional 4 → 0, staff 18 → 0.
-- [ ] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
+- [~] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
+  - [x] Part A: remaining member screens (Memory, Settings Privacy/Preferences, My Journey, Business Hub, Discover
+    lists/detail, Inbox Archived/Inspiration/group chat, Search, Members, Open Asks, Find a Match, Talk to Vitana, Event
+    Game, Creator onboarded, My Tickets, Distribution, live-room viewer, `/patient/*`).
+  - [x] Part B: public, auth, legal, commerce-portal and operator-placeholder screens (`FrameWhen`, `PublicMain`, `Panel`).
+  - [x] Manifest, design + ESLint baselines (61 files lowered each), validation (scope + staging-tests), inventory, EN source stamps.
+  - [ ] Blocked / not done (stay `legacy`): `/home/*`, `/calendar/entry/:entryId`, `/reminders/fire/:fireId`,
+    `/intents/match/:id`, `/sharing/campaigns/:id`, `/redeem`, `/tickets/*`, `/delete-account`, `/dev/login`.
+  Status: implemented (VTID-05117). Migrated: 95 routes (manifest 223 → 318 of 345 with Phases 2–7.4) — public/auth/legal (`/`, `/maxina`,
+  `/alkalma`, `/_intro/:tenantSlug`, `/reset-password`, `/privacy`, `/terms`, `/apply`, `/logout`, `/oauth/*`,
+  `/auth/confirmed`, `/maxina/confirmed`, `/alkalma/confirmed`, `/onboarding/welcome`, `/maxina_support`, `/download`,
+  `/maxina/app`, `/exafy-admin`, `/commerce-login`, `/e/:slug`, `/pub/events/:id`, `/pub/campaigns/:id`), commerce
+  (`/commerce`, `/commerce/join`, `/commerce/team`, `/commerce/health-orders[/inbox]`, `/commerce/connect[/privacy|/authorize]`,
+  `/commerce/invites/:token/accept`, `/universal-cart`, `/shop`, `/checkout/success`, `/packages/success`), member
+  (`/memory/*`, `/settings/privacy`, `/settings/preferences`, `/autopilot`, `/autopilot/audiobook`, `/business` + services/
+  clients/analytics/opportunities/listings, `/discover/ai-picks|marketplace|category/:subcategory|provider/:id|product/:id`,
+  `/inbox/archived|inspiration|g/:groupId[/msg/:messageId]`, `/search`, `/comm/members|open-asks|find-partner|talk-to-vitana`,
+  `/comm/live-rooms/:roomId/view`, `/community/event-game`, `/creator/onboarded`, `/my-tickets`, `/invite`,
+  `/sharing/distribution`, `/news/:id`, `/patient/*` (8), `/partner/connections[/:id]`) and operator placeholders
+  (`/admin/init-events`, 6 `/professional/*`, 6 `/staff/*`). Decisions taken (for Gate 2):
+  - Archetype changes: `/_intro/:tenantSlug` `form` → `immersive` (the cinematic intro keeps its measured full-bleed Orb
+    layout, which only `immersive` preserves); `/autopilot/audiobook` `collection` → `dashboard` (it is the same
+    `AutopilotDashboard` page, which starts the player and settles on `/autopilot`).
+  - Left `legacy`: `/business/sell-earn` (renders `collection` for resellers but falls back to the `storefront` overview
+    for everyone else, so it has no single archetype the design-lint can check); `/e/game/:slug` (only its spinner became
+    a skeleton, no `ScreenFrame`); plus the blocked routes above.
+  - The signed-in staging design-lint (`design-contract.staging.spec.ts`) skips `NO_SHELL` screens (29 public / auth /
+    commerce-portal / cart / `/shop` routes rendered without the app shell; `vtid-05117-public-leftovers` checks them
+    signed out or without the sidebar check) and `ROLE_GATED` member screens (7 `/patient/*` behind
+    `requiredRole="patient"`, `/partner/connections` behind `admin`; Vitest covers them), like the operator exclusion.
+  - `/shop` (`immersive`) and the commerce portal keep rendering without the app shell, as before the phase (no sidebar).
+  - The part-B unit test was aligned with the merged `ComingSoonPlaceholder` (part A routes `/patient/*` through
+    `PatientComingSoonSpotlight`), and stubs `StandardHeader` because the patient frame now carries a header.
 
 ## Phase 6 — Card consolidation · VTID-05112 (last)
 - [ ] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.

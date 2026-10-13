@@ -26,6 +26,9 @@ let spotlightOn = false;
 vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => spotlightOn }));
 vi.mock('@/components/AppLayout', () => ({ default: ({ children }: { children: ReactNode }) => <div data-testid="app-layout">{children}</div> }));
 vi.mock('@/components/SEO', () => ({ default: () => null }));
+// The /patient/* placeholder carries a header (PatientComingSoonSpotlight, 7.5 part A); the real
+// StandardHeader needs React Query, which this structural suite does not set up.
+vi.mock('@/components/StandardHeader', () => ({ default: (p: { title: string }) => <header>{p.title}</header> }));
 vi.mock('@/contexts/LanguageContext', () => ({ useLanguage: () => ({ selectedLanguage: 'de-DE' }) }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: null, loading: false, signOut: vi.fn(() => Promise.resolve()) }) }));
 vi.mock('@/integrations/supabase/client', () => ({
@@ -210,9 +213,9 @@ describe('VTID-05117 every page of this phase composes ScreenFrame behind useSpo
   ];
 
   // Decision (VTID-05117): the cinematic intro keeps its measured, full-bleed
-  // Orb layout, which only the `immersive` frame preserves; the manifest still
-  // says `form` until the integrator updates it.
-  const OVERRIDE: Record<string, string> = { '/_intro/:tenantSlug': 'immersive' };
+  // Orb layout, which only the `immersive` frame preserves; the manifest now
+  // says `immersive` too (integration), so no override is needed.
+  const OVERRIDE: Record<string, string> = {};
 
   it.each(PAGES)('%s (%s) uses its archetype behind the switch', (route, file) => {
     const src = fs.readFileSync(path.resolve(process.cwd(), file), 'utf8');
@@ -225,7 +228,11 @@ describe('VTID-05117 every page of this phase composes ScreenFrame behind useSpo
 
   it('the shared coming-soon placeholder picks the archetype of the route it serves', () => {
     const src = fs.readFileSync(path.resolve(process.cwd(), 'src/components/patient/ComingSoonPlaceholder.tsx'), 'utf8');
-    expect(src).toContain("pathname.startsWith('/patient') ? 'collection' : 'workspace'");
+    // Member /patient/* routes → PatientComingSoonSpotlight (`collection`, 7.5 part A); operator routes → `workspace`.
+    expect(src).toContain("if (spotlight && pathname.startsWith('/patient')) return <PatientComingSoonSpotlight");
+    expect(src).toContain('<ScreenFrame archetype="workspace">');
+    const patientSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/components/spotlight/member/PatientSpotlight.tsx'), 'utf8');
+    expect(patientSrc).toContain('<ScreenFrame archetype="collection"');
     for (const r of ['/professional/schedule', '/professional/tools', '/staff/tasks', '/staff/time']) expect(archetypeOf(r)).toBe('workspace');
     for (const r of ['/patient/goals', '/patient/insurance']) expect(archetypeOf(r)).toBe('collection');
   });
