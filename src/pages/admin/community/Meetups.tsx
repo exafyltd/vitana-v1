@@ -28,7 +28,10 @@ import { useCommunityMeetups, useDeleteEvent } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 export default function Meetups() {
+  const spotlight = useSpotlightEnabled();
   const { data: meetups = [], isLoading, isError, error } = useCommunityMeetups();
   const deleteMutation = useDeleteEvent();
   const [search, setSearch] = useState("");
@@ -102,7 +105,7 @@ export default function Meetups() {
                 <TableHead>{t('screens.admin.location')}</TableHead>
                 <TableHead>{t('screens.admin.capacity')}</TableHead>
                 <TableHead>{t('screens.admin.price')}</TableHead>
-                <TableHead className="w-[60px]" />
+                <TableHead className="w-16" />
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -114,7 +117,7 @@ export default function Meetups() {
                         <img src={m.image_url} alt="" className="h-8 w-12 rounded object-cover" />
                       )}
                       <div className="min-w-0">
-                        <div className="font-medium text-sm truncate max-w-[200px]">{m.title}</div>
+                        <div className="font-medium text-sm truncate max-w-48">{m.title}</div>
                         <div className="text-xs text-muted-foreground capitalize">{m.event_type}</div>
                       </div>
                     </div>
@@ -127,7 +130,7 @@ export default function Meetups() {
                           {(m.organizer?.display_name || "?").slice(0, 2).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="text-sm truncate max-w-[120px]">
+                      <span className="text-sm truncate max-w-32">
                         {m.organizer?.display_name || m.organizer?.email || "Unknown"}
                       </span>
                     </div>
@@ -146,11 +149,11 @@ export default function Meetups() {
                     {m.location ? (
                       <div className="flex items-center gap-1 text-sm">
                         <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="truncate max-w-[120px]">{m.location}</span>
+                        <span className="truncate max-w-32">{m.location}</span>
                       </div>
                     ) : m.virtual_link ? (
                       <a href={m.virtual_link} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                        className="flex items-center gap-1 text-sm text-status-info hover:underline">
                         <ExternalLink className="h-3.5 w-3.5" />
                         {t('screens.admin.virtual')}
                       </a>
@@ -160,7 +163,7 @@ export default function Meetups() {
                   </TableCell>
                   <TableCell>
                     <AdminStatusBadge variant={capacityVariant(m)}>
-                      <Users className="h-3 w-3 mr-1 inline" />
+                      <Users className="h-3 w-3 me-1 inline" />
                       {formatCapacity(m)}
                     </AdminStatusBadge>
                   </TableCell>
@@ -186,10 +189,8 @@ export default function Meetups() {
     );
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="community" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📅"
           title={t('screens.admin.eventsMeetups')}
@@ -215,7 +216,19 @@ export default function Meetups() {
 
         {renderTable(upcoming, "Upcoming Events")}
         {renderTable(past, "Past Events")}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="community" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
 
       {/* Delete confirmation dialog */}
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>

@@ -17,6 +17,8 @@ import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   success: "default",
@@ -50,12 +52,12 @@ const columns = [
   {
     key: "title",
     label: "Title",
-    render: (val: string) => <span className="text-sm line-clamp-1 max-w-[250px]">{val || "-"}</span>,
+    render: (val: string) => <span className="text-sm line-clamp-1 max-w-64">{val || "-"}</span>,
   },
   {
     key: "message",
     label: "Message",
-    render: (val: string) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-[200px]">{val || "-"}</span>,
+    render: (val: string) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-48">{val || "-"}</span>,
   },
   {
     key: "created_at",
@@ -74,6 +76,7 @@ const STATUS_FILTER = [
 ];
 
 export default function AuditEvents() {
+  const spotlight = useSpotlightEnabled();
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(0);
   const pageSize = 50;
@@ -102,10 +105,8 @@ export default function AuditEvents() {
   const errorCount = events.filter((e: any) => e.status === "error").length;
   const warningCount = events.filter((e: any) => e.status === "warning").length;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminAuditNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader title={t('screens.admin.oasisEvents')} description="System-wide event log for state transitions and decisions" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -117,7 +118,7 @@ export default function AuditEvents() {
 
         <div className="flex items-center gap-3">
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(0); }}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-44">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -141,7 +142,19 @@ export default function AuditEvents() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminAuditNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

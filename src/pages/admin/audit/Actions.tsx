@@ -13,9 +13,12 @@ import { useAuditActions } from "@/hooks/useAdminAudit";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const ACTION_TYPES = ["All", "create", "update", "delete", "invite", "grant", "revoke"] as const;
 
 export default function AuditActions() {
+  const spotlight = useSpotlightEnabled();
   const [actionFilter, setActionFilter] = useState<string>("All");
   const [search, setSearch] = useState("");
   const query = useAuditActions({
@@ -27,10 +30,8 @@ export default function AuditActions() {
     ? allActions.filter((a) => a.action.includes(search) || a.target_resource.includes(search))
     : allActions;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="audit" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📝"
           title={t('screens.admin.adminActions')}
@@ -82,7 +83,7 @@ export default function AuditActions() {
                     </TableCell>
                     <TableCell className="text-sm font-medium">{a.action}</TableCell>
                     <TableCell className="text-sm">{a.target_resource}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">
+                    <TableCell className="text-xs text-muted-foreground max-w-48 truncate">
                       {a.before_state || a.after_state
                         ? `${a.before_state ? "before" : ""} ${a.before_state && a.after_state ? "/" : ""} ${a.after_state ? "after" : ""}`
                         : "—"}
@@ -93,7 +94,19 @@ export default function AuditActions() {
             </Table>
           </div>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="audit" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

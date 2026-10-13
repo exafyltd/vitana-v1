@@ -28,6 +28,8 @@ import {
 import { t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const STAGE_ORDER: SpeechJourneyStage[] = ["pre_login", "onboarding", "proactive"];
 
 const STAGE_LABELS: Record<SpeechJourneyStage, string> = {
@@ -86,7 +88,7 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
       </CardHeader>
       <CardContent className="space-y-3">
         {speech.plays_prerecorded_audio && (
-          <div className="rounded-md border border-amber-300 bg-amber-50 dark:border-amber-700/60 dark:bg-amber-900/20 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">{t('screens.admin.thisSpeechCurrentlyPlayedFromPrerecorded')}
+          <div className="rounded-md border border-status-warning/40 bg-status-warning-subtle px-3 py-2 text-xs text-foreground">{t('screens.admin.thisSpeechCurrentlyPlayedFromPrerecorded')}
           </div>
         )}
 
@@ -134,6 +136,7 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
 }
 
 export default function AssistantSpeeches() {
+  const spotlight = useSpotlightEnabled();
   const speechesQuery = useAssistantSpeeches();
   const updateMutation = useUpdateAssistantSpeech();
   const deleteMutation = useDeleteAssistantSpeechOverride();
@@ -168,10 +171,8 @@ export default function AssistantSpeeches() {
     }
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="assistant" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           title={t('screens.admin.assistantSpeeches')}
           description="Manage what Vitana says at each phase of the user journey. Overrides layer on top of global defaults."
@@ -214,7 +215,19 @@ export default function AssistantSpeeches() {
             </section>
           );
         })}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="assistant" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

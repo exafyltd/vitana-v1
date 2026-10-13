@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/table";
 import { useRunsStats } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 function formatMinutes(mins: number): string {
   if (mins < 60) return `${mins}m`;
@@ -27,14 +29,13 @@ function formatMinutes(mins: number): string {
 }
 
 export default function AutopilotGrowth() {
+  const spotlight = useSpotlightEnabled();
   const [days, setDays] = useState(30);
   const statsQuery = useRunsStats(days);
   const stats = statsQuery.data;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="autopilot" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📈"
           title={t('screens.admin.growthImpact')}
@@ -157,7 +158,7 @@ export default function AutopilotGrowth() {
                         <TableHead className="text-center">{t('screens.admin.total')}</TableHead>
                         <TableHead className="text-center">{t('screens.admin.completed')}</TableHead>
                         <TableHead className="text-center">{t('screens.admin.failed')}</TableHead>
-                        <TableHead className="text-right">{t('screens.admin.avgDuration')}</TableHead>
+                        <TableHead className="text-end">{t('screens.admin.avgDuration')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -167,9 +168,9 @@ export default function AutopilotGrowth() {
                           <TableRow key={id}>
                             <TableCell className="font-mono text-sm">{id}</TableCell>
                             <TableCell className="text-center">{entry.total}</TableCell>
-                            <TableCell className="text-center text-green-600 dark:text-green-400">{entry.completed}</TableCell>
-                            <TableCell className="text-center text-red-600 dark:text-red-400">{entry.failed}</TableCell>
-                            <TableCell className="text-right font-mono text-sm">
+                            <TableCell className="text-center text-status-success">{entry.completed}</TableCell>
+                            <TableCell className="text-center text-status-error">{entry.failed}</TableCell>
+                            <TableCell className="text-end font-mono text-sm">
                               {entry.avg_duration_ms > 0 ? `${(entry.avg_duration_ms / 1000).toFixed(1)}s` : "—"}
                             </TableCell>
                           </TableRow>
@@ -181,7 +182,19 @@ export default function AutopilotGrowth() {
             </Card>
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="autopilot" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

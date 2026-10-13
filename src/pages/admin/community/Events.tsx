@@ -17,6 +17,8 @@ import { toast } from "sonner";
 import { notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 interface CommunityEvent {
   id: string;
   title: string;
@@ -35,6 +37,7 @@ interface CommunityEvent {
 }
 
 const EventsModeration = () => {
+  const spotlight = useSpotlightEnabled();
   const [events, setEvents] = useState<CommunityEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("pending");
@@ -109,14 +112,8 @@ const EventsModeration = () => {
     return <Badge variant={config.variant} className={config.color}>{config.label}</Badge>;
   };
 
-  return (
-    <AdminGuard>
-      <AppLayout>
-        <SEO title={t('screens.admin.eventsModerationAdmin')} description="Review and moderate community events" />
-        
-        <SubNavigation items={adminCommunityNavigation} />
-        
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const adminBody = (
+    <>
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
               title={t('screens.admin.eventsModeration')}
@@ -186,7 +183,7 @@ const EventsModeration = () => {
                                       variant="outline"
                                       onClick={() => moderateEvent(event.id, 'approved')}
                                     >
-                                      <CheckCircle className="h-4 w-4 mr-1" />
+                                      <CheckCircle className="h-4 w-4 me-1" />
                                       {t('screens.admin.approve')}
                                     </Button>
                                     <Button
@@ -194,7 +191,7 @@ const EventsModeration = () => {
                                       variant="outline"
                                       onClick={() => moderateEvent(event.id, 'rejected', 'Does not meet community guidelines')}
                                     >
-                                      <XCircle className="h-4 w-4 mr-1" />
+                                      <XCircle className="h-4 w-4 me-1" />
                                       {t('screens.admin.reject')}
                                     </Button>
                                   </>
@@ -205,7 +202,7 @@ const EventsModeration = () => {
                                     variant="outline"
                                     onClick={() => moderateEvent(event.id, 'flagged', 'Flagged for review')}
                                   >
-                                    <Flag className="h-4 w-4 mr-1" />
+                                    <Flag className="h-4 w-4 me-1" />
                                     {t('screens.admin.flag')}
                                   </Button>
                                 )}
@@ -223,7 +220,23 @@ const EventsModeration = () => {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+    </>
+  );
+
+  return (
+    <AdminGuard>
+      <AppLayout>
+        <SEO title={t('screens.admin.eventsModerationAdmin')} description="Review and moderate community events" />
+        
+        <SubNavigation items={adminCommunityNavigation} />
+        
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            {adminBody}
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+        )}
       </AppLayout>
     </AdminGuard>
   );

@@ -6,15 +6,16 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCommunityGroups } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function GroupsNew() {
+  const spotlight = useSpotlightEnabled();
   const { data: groups = [], isLoading, isError, error } = useCommunityGroups();
   const columns = groups.length > 0 ? Object.keys(groups[0]).filter((k) => k !== "id") : [];
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="community" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="👥"
           title={t('screens.admin.groups')}
@@ -43,7 +44,7 @@ export default function GroupsNew() {
                 {groups.map((row: any, idx: number) => (
                   <TableRow key={row.id ?? idx}>
                     {columns.map((col) => (
-                      <TableCell key={col} className="text-sm max-w-[200px] truncate">
+                      <TableCell key={col} className="text-sm max-w-48 truncate">
                         {row[col] == null ? "--" : typeof row[col] === "object" ? JSON.stringify(row[col]) : String(row[col])}
                       </TableCell>
                     ))}
@@ -53,7 +54,19 @@ export default function GroupsNew() {
             </Table>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="community" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

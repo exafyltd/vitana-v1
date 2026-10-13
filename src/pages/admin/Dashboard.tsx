@@ -10,8 +10,11 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function AdminDashboard() {
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
 
   // Total Users
@@ -102,10 +105,8 @@ export default function AdminDashboard() {
     },
   ];
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminDashboardNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.adminDashboard')}
@@ -186,7 +187,7 @@ export default function AdminDashboard() {
                 <CardDescription>{t('screens.admin.recentSystemStateTransitions')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col items-center justify-center h-[360px] text-muted-foreground">
+                <div className="flex flex-col items-center justify-center h-96 text-muted-foreground">
                   <TrendingUp className="h-12 w-12 mb-4 opacity-30" />
                   <p className="text-sm">{t('screens.admin.recentOasisEventsWillAppearHere')}</p>
                   <p className="text-xs mt-1">{t('screens.admin.viewFullLogValue0', { value0: " " })}<button
@@ -201,7 +202,19 @@ export default function AdminDashboard() {
             </Card>
           </div>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminDashboardNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-raised to-surface-page-via min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

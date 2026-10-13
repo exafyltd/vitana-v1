@@ -20,6 +20,8 @@ import {
 } from "@/components/admin/analytics/AnalyticsShared";
 import { BarListCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 function DetailLink({ to }: { to: string }) {
   return (
@@ -30,15 +32,14 @@ function DetailLink({ to }: { to: string }) {
 }
 
 export default function Overview() {
+  const spotlight = useSpotlightEnabled();
   const [days, setDays] = useState(30);
   const { data, isLoading, error } = useAdminAnalyticsSummary(days);
 
   const isEmpty = !!data && data.sessions === 0 && data.screen_views === 0;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="insights" />
-      <div className="space-y-6 p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📊"
           title={t("screens.admin.paOverview")}
@@ -90,7 +91,19 @@ export default function Overview() {
             <PrivacyNote />
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="insights" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="space-y-6 p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

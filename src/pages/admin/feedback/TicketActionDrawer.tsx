@@ -226,7 +226,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
   // queued indicator so the supervisor knows we're waiting.
   if (!execution) {
     return (
-      <Card className="flex flex-col gap-3 border-amber-500/40 bg-amber-500/5 p-3 text-sm">
+      <Card className="flex flex-col gap-3 border-status-warning/40 bg-status-warning/5 p-3 text-sm">
         <div className="flex items-center gap-3">
           <span className="text-2xl">⚙️</span>
           <div className="flex-1 min-w-0">
@@ -237,7 +237,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
         </div>
         <IdChain ticketNumber={ticketNumber} linkedVtid={linkedVtid} findingId={findingId} />
         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-          <div className="h-full w-[5%] animate-pulse rounded-full bg-amber-500" />
+          <div className="h-full w-1/12 animate-pulse rounded-full bg-status-warning" />
         </div>
       </Card>
     );
@@ -281,10 +281,10 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
     <Card
       className={`flex flex-col gap-3 p-3 text-sm ${
         isFailed
-          ? "border-red-500/40 bg-red-500/5"
+          ? "border-status-error/40 bg-status-error/5"
           : isCompleted
-            ? "border-emerald-500/40 bg-emerald-500/5"
-            : "border-amber-500/40 bg-amber-500/5"
+            ? "border-status-success/40 bg-status-success/5"
+            : "border-status-warning/40 bg-status-warning/5"
       }`}
     >
       <div className="flex items-center gap-3">
@@ -301,11 +301,11 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
                   : t('supportTickets.admin.run.running', { stage: PIPELINE_STAGES[idxNow] ? stageLabel(PIPELINE_STAGES[idxNow].key) : status })}
             </span>
             {isFailed && (
-              <span className="rounded-full bg-red-500/10 text-red-700 dark:text-red-300 text-[10px] px-2 py-0.5 font-normal border border-red-500/30">{t('screens.admin.clickActivateRetry')}
+              <span className="rounded-full bg-status-error/10 text-status-error text-[10px] px-2 py-0.5 font-normal border border-status-error/30">{t('screens.admin.clickActivateRetry')}
               </span>
             )}
             {isCompleted && playwrightVerified && (
-              <span className="rounded-full bg-emerald-500 text-white text-[10px] px-2 py-0.5 font-normal">{t('screens.admin.visuallyVerified')}
+              <span className="rounded-full bg-status-success text-primary-foreground text-[10px] px-2 py-0.5 font-normal">{t('screens.admin.visuallyVerified')}
               </span>
             )}
           </div>
@@ -313,7 +313,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
             {execution.pr_url && (
               <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">{t('screens.admin.prValue0', { value0: execution.pr_number ?? "?" })}</a></>
             )}
-            {isStalled && <> · <span className="text-amber-600 font-semibold">{t('screens.admin.stalledValue0Min', { value0: Math.round(stalledMs / 60000) })}</span></>}
+            {isStalled && <> · <span className="text-status-warning font-semibold">{t('screens.admin.stalledValue0Min', { value0: Math.round(stalledMs / 60000) })}</span></>}
             {execution.completed_at && <>{t('screens.admin.finishedValue0', { value0: fmtTime(new Date(execution.completed_at)) })}</>}
           </div>
         </div>
@@ -365,7 +365,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified, ticketNumb
       </div>
 
       {isStalled && !isFailed && (
-        <p className="text-[11px] text-amber-700 dark:text-amber-300">{t('screens.admin.noUpdateForValue0MinutesExecutor', { value0: Math.round(stalledMs / 60000) })}
+        <p className="text-[11px] text-status-warning">{t('screens.admin.noUpdateForValue0MinutesExecutor', { value0: Math.round(stalledMs / 60000) })}
         </p>
       )}
     </Card>
@@ -618,6 +618,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   // Layout
   const renderShell = (body: React.ReactNode) => (
     <div
+      // design-allow-next-line: modal scrim — black in both themes like the shadcn Dialog overlay; the contract has no scrim token
       className="fixed inset-0 z-50 flex justify-end bg-black/40"
       onClick={(e) => { if (e.target === e.currentTarget) safeClose(); }}
     >
@@ -674,7 +675,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           <span className="text-muted-foreground">{t('screens.admin.handledByResolver_agent', { resolver_agent: ticket.resolver_agent })}</span>
         )}
         {ticket.vitana_id && (
-          <span className="ml-auto font-mono text-xs text-muted-foreground">{ticket.vitana_id}</span>
+          <span className="ms-auto font-mono text-xs text-muted-foreground">{ticket.vitana_id}</span>
         )}
       </div>
 
@@ -710,7 +711,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           const elapsedHours = Math.floor((Date.now() - new Date(ticket.resolved_at!).getTime()) / 3_600_000);
           const remainingHours = Math.max(0, 72 - elapsedHours);
           return (
-            <Card className="border-amber-300 bg-amber-50 p-3 dark:border-amber-700 dark:bg-amber-950/30">
+            <Card className="border-status-warning/40 bg-status-warning-subtle p-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1 text-sm">
                   <div className="font-semibold">{t('screens.admin.rollbackAvailable')}</div>
@@ -722,7 +723,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-amber-500 text-amber-900 hover:bg-amber-100 dark:text-amber-100 dark:hover:bg-amber-900/40"
+                  className="border-status-warning text-foreground hover:bg-status-warning-subtle"
                   disabled={isBusy || rollback.isPending}
                   onClick={() => {
                     if (!window.confirm(t('supportTickets.admin.action.rollbackConfirm', { pr: ticket.linked_pr_url ?? "", ticket: ticketNumber }))) return;
@@ -741,7 +742,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           ticket has flipped to `reopened` so the normal action panel
           will reappear below. */}
       {ticket.rolled_back_at && ticket.rollback_pr_url && (
-        <Card className="border-orange-300 bg-orange-50 p-3 text-sm dark:border-orange-700 dark:bg-orange-950/30">
+        <Card className="border-status-warning/40 bg-status-warning-subtle p-3 text-sm">
           <div className="font-semibold">{t('screens.admin.rolledBack')}</div>
           <p className="mt-1 text-muted-foreground">{t('screens.admin.autopilotFixRolledBackValue0Value1', { value0: fmtDateTime(new Date(ticket.rolled_back_at)), value1: " " })}<a href={ticket.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{t('screens.admin.revertPr')}
             </a>{t('screens.admin.ticketHasReopenedRefineInstructionsReactivate')}
@@ -851,6 +852,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 </Button>
                 {generateSpec.isPending && (
                   <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
+                    {/* design-allow-next-line: in-drawer progress indicator of a pending action (next to its status text), not a page loader */}
                     <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                     <span>{t('screens.admin.aiDraftingViaResolverThisCan', { resolver: cfg!.resolver })}
                     </span>
@@ -898,6 +900,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               )}
               {activate.isPending && (
                 <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
+                  {/* design-allow-next-line: in-drawer progress indicator of a pending action (next to its status text), not a page loader */}
                   <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                   <span>{t('screens.admin.activatingDispatchingDevAutopilotAtomicTakes')}</span>
                 </div>
@@ -906,10 +909,10 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   scope hits, safety-gate rejections, etc. inline so the
                   supervisor can revise + Re-generate without leaving Step 3. */}
               {activateViolations && activateViolations.length > 0 && (
-                <div className="mt-3 rounded border border-red-500/40 bg-red-500/5 p-3 text-xs">
-                  <div className="mb-1 font-semibold text-red-700 dark:text-red-300">{t('screens.admin.activateBlockedReviseSpecRegenerate')}
+                <div className="mt-3 rounded border border-status-error/40 bg-status-error/5 p-3 text-xs">
+                  <div className="mb-1 font-semibold text-status-error">{t('screens.admin.activateBlockedReviseSpecRegenerate')}
                   </div>
-                  <ul className="ml-4 list-disc space-y-1 text-foreground/80">
+                  <ul className="ms-4 list-disc space-y-1 text-foreground/80">
                     {activateViolations.map((v, i) => (
                       <li key={i}>
                         <span className="font-mono text-[10px] uppercase opacity-70">{v.code}</span>{" "}
@@ -947,6 +950,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               return (
                 <div
                   key={i}
+                  // design-allow-next-line: chat-bubble width relative to its thread column; the contract has no fractional width token
                   className={`max-w-[85%] rounded-md px-3 py-2 text-sm ${isUser ? "self-end bg-muted" : "self-start bg-primary text-primary-foreground"}`}
                 >
                   <div className="text-[10px] font-semibold uppercase opacity-70">

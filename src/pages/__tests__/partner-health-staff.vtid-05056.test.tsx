@@ -48,6 +48,10 @@ vi.mock("@/components/commerce/CommerceShell", () => ({
   useCommerceSkin: () => ({ inApp: false, portalClass: "" }),
 }));
 vi.mock("@/context/AuthProvider", () => ({ useAuth: () => ({ user: { id: "staff-1" } }) }));
+// VTID-05113: the admin page reads the Spotlight switch (tenant flag + preview
+// override); this harness has no TenantProvider, so it pins the off value
+// (today's layout, the one these assertions were written against).
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/hooks/useOrgMembers", () => ({
   useMyPartnerOrgs: () => ({ data: [{ role: "staff" }], isLoading: false }),
 }));

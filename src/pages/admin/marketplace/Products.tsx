@@ -20,10 +20,12 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
-import { Search, Loader2, EyeOff, CheckCircle, Flag, RefreshCw } from "lucide-react";
+import { Search, EyeOff, CheckCircle, Flag, RefreshCw } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtNumber } from '@/lib/locale-format';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
 interface Product {
@@ -63,6 +65,7 @@ function formatCents(cents: number | null, currency: string | null): string {
 }
 
 export default function MarketplaceProducts() {
+  const spotlight = useSpotlightEnabled();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -156,11 +159,8 @@ export default function MarketplaceProducts() {
     });
   }
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.admin.productsMarketplaceAdmin')} description="Review queue for products flagged by the autonomous analyzer." canonical={typeof window !== "undefined" ? window.location.href : ""} />
-      <SubNavigation items={adminMarketplaceCatalogNavigation} />
-      <div className="p-6 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-4">
           <StandardHeader
             title={t('screens.admin.products')}
@@ -176,7 +176,7 @@ export default function MarketplaceProducts() {
           {/* Filter bar */}
           <Card>
             <CardContent className="pt-6 flex flex-wrap gap-3 items-center">
-              <div className="flex items-center gap-2 flex-1 min-w-[260px]">
+              <div className="flex items-center gap-2 flex-1 min-w-64">
                 <Search className="w-4 h-4 text-muted-foreground" />
                 <Input
                   value={search}
@@ -203,22 +203,22 @@ export default function MarketplaceProducts() {
               <Button size="sm" variant="outline" onClick={load}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
-              <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.value0Total', { value0: fmtNumber(total) })}</span>
+              <span className="text-xs text-muted-foreground ms-auto">{t('screens.admin.value0Total', { value0: fmtNumber(total) })}</span>
             </CardContent>
           </Card>
 
           {/* Bulk action bar — only visible when selection is active */}
           {selected.size > 0 && (
-            <div className="flex gap-2 items-center bg-slate-100 border rounded-md p-3">
+            <div className="flex gap-2 items-center bg-muted border rounded-md p-3">
               <span className="text-sm font-medium">{t('screens.admin.sizeSelected', { size: selected.size })}</span>
               <Button size="sm" variant="outline" onClick={() => bulkAction("clear_review")} disabled={busy}>
-                <CheckCircle className="w-4 h-4 mr-1" /> {t('screens.admin.clearReview')}
+                <CheckCircle className="w-4 h-4 me-1" /> {t('screens.admin.clearReview')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => bulkAction("flag_review")} disabled={busy}>
-                <Flag className="w-4 h-4 mr-1" /> {t('screens.admin.flagForReview')}
+                <Flag className="w-4 h-4 me-1" /> {t('screens.admin.flagForReview')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => bulkAction("hide")} disabled={busy}>
-                <EyeOff className="w-4 h-4 mr-1" /> {t('screens.admin.hide')}
+                <EyeOff className="w-4 h-4 me-1" /> {t('screens.admin.hide')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => setSelected(new Set())}>
                 {t('screens.admin.cancel')}
@@ -228,8 +228,9 @@ export default function MarketplaceProducts() {
 
           {/* Products list */}
           {loading ? (
-            <div className="p-8 flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loading')}
+            <div>
+              <ArchetypeSkeleton archetype="workspace" />
+              <span className="sr-only">{t('screens.admin.loading')}</span>
             </div>
           ) : items.length === 0 ? (
             <Card>
@@ -246,7 +247,7 @@ export default function MarketplaceProducts() {
             <Card>
               <CardContent className="p-0 overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="border-b bg-slate-50">
+                  <thead className="border-b bg-muted/50">
                     <tr>
                       <th className="p-3 w-10">
                         <Checkbox
@@ -254,19 +255,19 @@ export default function MarketplaceProducts() {
                           onCheckedChange={toggleAll}
                         />
                       </th>
-                      <th className="p-3 text-left font-medium">{t('screens.admin.product')}</th>
-                      <th className="p-3 text-left font-medium">{t('screens.admin.brand')}</th>
-                      <th className="p-3 text-left font-medium">{t('screens.admin.category')}</th>
-                      <th className="p-3 text-right font-medium">{t('screens.admin.price')}</th>
-                      <th className="p-3 text-left font-medium">{t('screens.admin.origin')}</th>
-                      <th className="p-3 text-left font-medium">{t('screens.admin.status')}</th>
+                      <th className="p-3 text-start font-medium">{t('screens.admin.product')}</th>
+                      <th className="p-3 text-start font-medium">{t('screens.admin.brand')}</th>
+                      <th className="p-3 text-start font-medium">{t('screens.admin.category')}</th>
+                      <th className="p-3 text-end font-medium">{t('screens.admin.price')}</th>
+                      <th className="p-3 text-start font-medium">{t('screens.admin.origin')}</th>
+                      <th className="p-3 text-start font-medium">{t('screens.admin.status')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {items.map((p) => (
                       <tr
                         key={p.id}
-                        className={`border-b last:border-b-0 ${p.requires_admin_review ? "bg-amber-50/40" : ""} ${!p.is_active ? "opacity-60" : ""}`}
+                        className={`border-b last:border-b-0 ${p.requires_admin_review ? "bg-status-warning-subtle/40" : ""} ${!p.is_active ? "opacity-60" : ""}`}
                       >
                         <td className="p-3">
                           <Checkbox
@@ -283,7 +284,7 @@ export default function MarketplaceProducts() {
                             )}
                           </div>
                           {p.requires_admin_review && p.admin_review_reason && (
-                            <div className="text-xs text-amber-700 mt-0.5">⚠ {p.admin_review_reason}</div>
+                            <div className="text-xs text-status-warning mt-0.5">⚠ {p.admin_review_reason}</div>
                           )}
                         </td>
                         <td className="p-3">{p.brand ?? "—"}</td>
@@ -291,14 +292,14 @@ export default function MarketplaceProducts() {
                           {p.category ?? "—"}
                           {p.subcategory && <span className="text-muted-foreground"> · {p.subcategory}</span>}
                         </td>
-                        <td className="p-3 text-right font-mono">{formatCents(p.price_cents, p.currency)}</td>
+                        <td className="p-3 text-end font-mono">{formatCents(p.price_cents, p.currency)}</td>
                         <td className="p-3">
                           {p.origin_country ?? "—"}
                           {p.origin_region && <span className="text-muted-foreground"> · {p.origin_region}</span>}
                         </td>
                         <td className="p-3">
                           {!p.is_active && <Badge variant="secondary">{t('screens.admin.inactive')}</Badge>}
-                          {p.is_active && p.requires_admin_review && <Badge className="bg-amber-500">{t('screens.admin.review')}</Badge>}
+                          {p.is_active && p.requires_admin_review && <Badge className="bg-status-warning">{t('screens.admin.review')}</Badge>}
                           {p.is_active && !p.requires_admin_review && <Badge variant="outline">{t('screens.admin.live')}</Badge>}
                         </td>
                       </tr>
@@ -309,7 +310,20 @@ export default function MarketplaceProducts() {
             </Card>
           )}
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.admin.productsMarketplaceAdmin')} description="Review queue for products flagged by the autonomous analyzer." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SubNavigation items={adminMarketplaceCatalogNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }
