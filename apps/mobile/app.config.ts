@@ -34,19 +34,42 @@ export function resolveProfile(value: string | undefined): Profile {
   return value as Profile;
 }
 
-export function buildConfig(profileValue: string | undefined): ExpoConfig {
+/**
+ * VTID-05186 (N3, plan change 6) — the Google Sign-In iOS URL scheme is the
+ * reversed iOS client id. No client id → no plugin, so `development` builds
+ * without any Google config.
+ */
+export function googleIosUrlScheme(iosClientId: string | undefined): string | null {
+  const id = iosClientId?.trim();
+  if (!id) return null;
+  const suffix = '.apps.googleusercontent.com';
+  const prefix = id.endsWith(suffix) ? id.slice(0, -suffix.length) : id;
+  return `com.googleusercontent.apps.${prefix}`;
+}
+
+type PluginEntry = string | [string, Record<string, unknown>];
+
+export function buildPlugins(env: Record<string, string | undefined>): PluginEntry[] {
+  const plugins: PluginEntry[] = ['expo-router', 'expo-localization', 'expo-secure-store', 'expo-apple-authentication'];
+  const scheme = googleIosUrlScheme(env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID);
+  if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
+  return plugins;
+}
+
+export function buildConfig(profileValue: string | undefined, env: Record<string, string | undefined> = process.env): ExpoConfig {
   const profile = resolveProfile(profileValue);
   return {
     name: profile === 'development' ? 'Vitana Dev' : 'Vitana Test',
     slug: 'vitana-mobile',
     version: '0.0.0',
-    // Placeholder; universal links / App Links come in Wave 1.
+    // Placeholder; the link scheme and universal links / App Links are N4's (Wave 1).
     scheme: 'maxina',
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
-    ios: { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false },
+    // usesAppleSignIn: Sign in with Apple (VTID-05186); the App ID capability waits for G3.
+    ios: { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false, usesAppleSignIn: true },
     android: { package: IDENTIFIERS.android },
-    plugins: ['expo-router', 'expo-localization'],
+    plugins: buildPlugins(env),
     experiments: { typedRoutes: false },
     extra: { profile },
   };

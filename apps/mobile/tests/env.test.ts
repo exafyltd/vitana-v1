@@ -1,7 +1,7 @@
 /** VTID-05157 — the native config never reaches production or staging. */
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { assertNotProduction, isBlockedHost, loadConfig, requireUrl, config } from '../src/config/env';
+import { assertNotProduction, isBlockedHost, loadConfig, requireUrl, config, ConfigMissingError, missingKeys } from '../src/config/env';
 
 const BLOCKED = [
   'https://gateway.vitanaland.com',
@@ -52,6 +52,69 @@ describe('no fallback', () => {
       const text = readFileSync(join(dir, file), 'utf8');
       for (const url of text.match(/https?:\/\/[^\s'"`)]+/g) ?? []) {
         expect(`${file}: ${url} blocked=${isBlockedHost(url)}`).toBe(`${file}: ${url} blocked=false`);
+      }
+    }
+  });
+});
+
+/** VTID-05186 (N3, plan change 5) — the shell's own keys. */
+describe('authRedirectUrl, webBaseUrl and the Google client ids', () => {
+  it.each(BLOCKED)('refuses %s as authRedirectUrl and webBaseUrl', (url) => {
+    expect(() => loadConfig({ authRedirectUrl: url })).toThrow(/never reach production or staging/);
+    expect(() => loadConfig({ webBaseUrl: url })).toThrow(/never reach production or staging/);
+    expect(() => requireUrl({ webBaseUrl: url }, 'webBaseUrl')).toThrow();
+  });
+
+  it('accepts G1-shaped values and keeps the client ids as plain values', () => {
+    expect(
+      loadConfig({
+        authRedirectUrl: 'https://g1-test.example.org',
+        webBaseUrl: 'https://g1-web.example.org',
+        googleWebClientId: ' 1-web.apps.googleusercontent.com ',
+        googleIosClientId: '',
+      }),
+    ).toEqual({
+      authRedirectUrl: 'https://g1-test.example.org',
+      webBaseUrl: 'https://g1-web.example.org',
+      googleWebClientId: '1-web.apps.googleusercontent.com',
+    });
+  });
+
+  it('an unset key is a ConfigMissingError naming the key, never a fallback', () => {
+    let error: unknown;
+    try {
+      requireUrl({}, 'authRedirectUrl');
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toBeInstanceOf(ConfigMissingError);
+    expect((error as ConfigMissingError).keys).toEqual(['authRedirectUrl']);
+    expect(missingKeys({ webBaseUrl: 'https://g1-web.example.org' }, ['webBaseUrl', 'authRedirectUrl', 'googleWebClientId'])).toEqual([
+      'authRedirectUrl',
+      'googleWebClientId',
+    ]);
+  });
+
+  it('src/ holds no production or staging URL literal outside the blocked-host list', () => {
+    const root = join(__dirname, '../src');
+    const files: string[] = [];
+    const walk = (dir: string) => {
+      for (const name of readdirSync(dir, { withFileTypes: true })) {
+        if (name.isDirectory()) walk(join(dir, name.name));
+        else if (/\.(ts|tsx)$/.test(name.name) && !name.name.endsWith('.generated.ts')) files.push(join(dir, name.name));
+      }
+    };
+    walk(root);
+    for (const file of files) {
+      const text = readFileSync(file, 'utf8');
+      for (const url of text.match(/https?:\/\/[^\s'"`)]+/g) ?? []) {
+        let blocked = false;
+        try {
+          blocked = isBlockedHost(url);
+        } catch {
+          blocked = false;
+        }
+        expect(`${file}: ${url} blocked=${blocked}`).toBe(`${file}: ${url} blocked=false`);
       }
     }
   });

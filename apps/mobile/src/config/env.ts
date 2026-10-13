@@ -11,9 +11,42 @@
  * so a "safer" host is not safer. Native dev/test builds point at G1 only.
  */
 
-export type ConfigKey = 'gatewayUrl' | 'supabaseUrl' | 'dataApiUrl';
+export type ConfigKey = 'gatewayUrl' | 'supabaseUrl' | 'dataApiUrl' | 'authRedirectUrl' | 'webBaseUrl';
 
-export type AppConfig = Partial<Record<ConfigKey, string>>;
+/**
+ * VTID-05186 (N3, plan change 5) — non-URL values. Read with N1's
+ * `requireValue` (through `src/ports/env.ts`); no defaults.
+ */
+export type ValueKey = 'googleWebClientId' | 'googleIosClientId';
+
+export type AppConfig = Partial<Record<ConfigKey | ValueKey, string>>;
+
+/**
+ * Every URL key goes through `assertNotProduction`.
+ *   authRedirectUrl — base for e-mail confirm / password-reset links (VTID-05186)
+ *   webBaseUrl      — where admin consoles open in the system browser (VTID-05186)
+ * Both are unset in `development` and `test-g1` until G1 names them.
+ */
+export const URL_KEYS: readonly ConfigKey[] = ['gatewayUrl', 'supabaseUrl', 'dataApiUrl', 'authRedirectUrl', 'webBaseUrl'];
+export const VALUE_KEYS: readonly ValueKey[] = ['googleWebClientId', 'googleIosClientId'];
+
+/**
+ * A required value is unset. The app renders the ConfigMissing screen for it
+ * (plan change 15), tests see the throw; nothing ever falls back to a default.
+ */
+export class ConfigMissingError extends Error {
+  readonly keys: readonly string[];
+  constructor(keys: readonly string[]) {
+    super(`Native config ${keys.map((k) => `"${k}"`).join(', ')} is not set. There is no default (VTID-05157); set it for the G1 test environment.`);
+    this.name = 'ConfigMissingError';
+    this.keys = keys;
+  }
+}
+
+/** The keys among `keys` that `config` does not set. Names only, never values. */
+export function missingKeys(config: AppConfig, keys: readonly (ConfigKey | ValueKey | string)[]): string[] {
+  return keys.filter((k) => !(config as Record<string, string | undefined>)[k]);
+}
 
 /** Hostnames a native dev/test build may never talk to (exact match). */
 export const BLOCKED_HOSTS: readonly string[] = [
@@ -57,9 +90,13 @@ export function assertNotProduction(url: string): string {
 /** Builds the config from a source of raw values; every set value is checked. */
 export function loadConfig(source: AppConfig): AppConfig {
   const out: AppConfig = {};
-  for (const key of ['gatewayUrl', 'supabaseUrl', 'dataApiUrl'] as const) {
+  for (const key of URL_KEYS) {
     const value = source[key]?.trim();
     if (value) out[key] = assertNotProduction(value);
+  }
+  for (const key of VALUE_KEYS) {
+    const value = source[key]?.trim();
+    if (value) out[key] = value;
   }
   return out;
 }
@@ -67,18 +104,20 @@ export function loadConfig(source: AppConfig): AppConfig {
 /** The value for `key`, or an error. Never a default. */
 export function requireUrl(config: AppConfig, key: ConfigKey): string {
   const value = config[key];
-  if (!value) {
-    throw new Error(`Native config "${key}" is not set. There is no default URL (VTID-05157); set it for the G1 test environment.`);
-  }
+  if (!value) throw new ConfigMissingError([key]);
   return assertNotProduction(value);
 }
 
 /**
  * The build's configuration. Expo inlines EXPO_PUBLIC_* at bundle time; in
- * Wave 0 none of them is set, so this is `{}`.
+ * `development` none of them is set, so this is `{}`.
  */
 export const config: AppConfig = loadConfig({
   gatewayUrl: process.env.EXPO_PUBLIC_GATEWAY_URL,
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
   dataApiUrl: process.env.EXPO_PUBLIC_DATA_API_URL,
+  authRedirectUrl: process.env.EXPO_PUBLIC_AUTH_REDIRECT_URL,
+  webBaseUrl: process.env.EXPO_PUBLIC_WEB_BASE_URL,
+  googleWebClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
 });
