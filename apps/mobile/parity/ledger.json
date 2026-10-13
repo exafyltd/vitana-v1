@@ -7,6 +7,10 @@
       "reason": "Landing redirect (app/index.tsx, VTID-05186): signed in → /home, signed out → /maxina (useSmartRouting.tsx:102-110). Not a port of PUBLIC.LANDING, whose row stays not_started (public-auth lane)."
     },
     {
+      "path": "/dev/orb-bench",
+      "reason": "dev echo bench (app/dev/orb-bench.tsx, VTID-05182, plan N6 Change 11): the native ORB Voice Bench tab 2 — no network, no session; development and test-g1 builds only."
+    },
+    {
       "path": "/*",
       "reason": "Resolver route (app/(app)/[...path].tsx, VTID-05186): registry destinations not yet native render Unported, unknown paths render not-found; internal builds only — program decision 4."
     }

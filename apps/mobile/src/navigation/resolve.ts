@@ -38,7 +38,7 @@ type Row = { key: string; web_path: string; scope: string; source: string };
  * Concrete native route files (app/**, groups stripped). tests/navigation.test.ts
  * keeps this list equal to the files on disk.
  */
-export const NATIVE_ROUTES: readonly string[] = ['/', '/alkalma', '/logout', '/maxina', '/oauth/complete', '/reset-password'];
+export const NATIVE_ROUTES: readonly string[] = ['/', '/alkalma', '/dev/orb-bench', '/logout', '/maxina', '/oauth/complete', '/reset-password'];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 
