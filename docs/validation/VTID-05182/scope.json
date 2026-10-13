@@ -1,0 +1,33 @@
+{
+  "vtid": "VTID-05182",
+  "kind": "feature",
+  "paths": [
+    "src/i18n/*/orbNative.json",
+    "i18n-source-stamps/*.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-05182-orbnative-shard.staging.spec.ts",
+    "apps/mobile/app/_layout.tsx",
+    "apps/mobile/app/dev/**",
+    "apps/mobile/src/orb/**",
+    "apps/mobile/src/navigation/overlay-bus.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/orb/**",
+    "apps/mobile/tests/vitana-voice/**",
+    "apps/mobile/modules/vitana-voice/**",
+    "apps/mobile/app.config.ts",
+    "apps/mobile/.gitignore",
+    "apps/mobile/tests/app-config.test.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/web-aliases.js",
+    "apps/mobile/metro.config.js",
+    "apps/mobile/jest.config.js",
+    "apps/mobile/tsconfig.json",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "scripts/native/__tests__/gen-native-locales.test.mjs",
+    "docs/validation/VTID-05182/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05182/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
