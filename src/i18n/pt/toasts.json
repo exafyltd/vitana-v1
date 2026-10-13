@@ -1393,14 +1393,6 @@
         "grantFailed": true,
         "revokeFailed": true
       }
-    },
-    "vitanaCards": {
-      "dismissFailed": "Não foi possível ocultar o cartão",
-      "connectFailed": "Não foi possível iniciar a conexão",
-      "interestsSaved": "Interesses salvos",
-      "interestsSaveFailed": "Não foi possível salvar seus interesses",
-      "notificationsEnabled": "As notificações estão ativadas",
-      "notificationsFailed": "Não foi possível ativar as notificações"
     }
   }
 }

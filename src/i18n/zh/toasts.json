@@ -1393,14 +1393,6 @@
         "grantFailed": true,
         "revokeFailed": true
       }
-    },
-    "vitanaCards": {
-      "dismissFailed": "无法隐藏卡片",
-      "connectFailed": "无法开始连接",
-      "interestsSaved": "兴趣已保存",
-      "interestsSaveFailed": "无法保存你的兴趣",
-      "notificationsEnabled": "通知已开启",
-      "notificationsFailed": "无法开启通知"
     }
   }
 }

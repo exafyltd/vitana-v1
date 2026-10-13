@@ -1387,14 +1387,6 @@
       "capabilityRevoked": "تم إلغاء الصلاحية",
       "grantFailed": "تعذر منح الصلاحية",
       "revokeFailed": "تعذر إلغاء الصلاحية"
-    },
-    "vitanaCards": {
-      "dismissFailed": "تعذّر إخفاء البطاقة",
-      "connectFailed": "تعذّر بدء الربط",
-      "interestsSaved": "تم حفظ اهتماماتك",
-      "interestsSaveFailed": "تعذّر حفظ اهتماماتك",
-      "notificationsEnabled": "الإشعارات مفعّلة",
-      "notificationsFailed": "تعذّر تفعيل الإشعارات"
     }
   }
 }

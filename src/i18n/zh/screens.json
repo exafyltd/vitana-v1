@@ -5276,13 +5276,11 @@
       "vitanaIndexUpSubtext": "干得好！",
       "vitanaIndexDownSubtext": "小步子也算数。",
       "vitanaIndexStableSubtext": "保持一致。",
-      "vitanaIndexScoreSubtext": "指数 {score} · {message}",
       "longevityJourneyEyebrow": "你的长寿有声书",
       "longevityJourneyContinue": "继续第 {session} 集：{topic}",
       "longevityJourneyAllDone": "你已听完所有剧集。太棒了！",
       "longevityJourneyNextStepHeadline": "你的下一步：",
       "longevityJourneySubtext": "第 {session} 集在等你。",
-      "longevityJourneyProgressSubtext": "第 {session} 集在等你 · 已完成 {done} 集 · 今日 {today}/{goal}",
       "longevityJourneyStartSession": "播放第 {session} 集",
       "longevityJourneyDoneLabel": "完成",
       "longevityJourneyNowLabel": "现在",
@@ -8714,18 +8712,7 @@
       "viewIndex": "查看指数",
       "viewJourney": "查看我的旅程",
       "viewMatch": "查看匹配",
-      "dismissCard": "关闭卡片",
-      "dailyDiary": "日记",
-      "talkToVitana": "与 Vitana 对话",
-      "autopilot": "自动驾驶",
-      "calendar": "日历",
-      "uploadMedia": "媒体",
-      "discover": "发现",
-      "profilePhoto": "头像",
-      "profileSetup": "个人资料",
-      "socialConnect": "连接",
-      "importContacts": "联系人",
-      "completeProfile": "完善资料"
+      "dismissCard": "关闭卡片"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -13513,132 +13500,6 @@
       "startingSoon": "即将开始",
       "startNow": "立即开始",
       "eventsSectionTitle": "直播间"
-    },
-    "vitanaCards": {
-      "stripLabel": "Vitana 的建议",
-      "eyebrowProfile": "你的资料",
-      "eyebrowConnect": "连接",
-      "eyebrowCommunity": "社区",
-      "eyebrowNotifications": "通知",
-      "E1": {
-        "title": "展示你的样子",
-        "description": "上传一张头像，让大家一眼认出你。",
-        "action": "上传"
-      },
-      "E2": {
-        "title": "介绍一下你自己",
-        "description": "几句自我介绍，能让别人更容易和你聊起来。",
-        "action": "写简介"
-      },
-      "E3": {
-        "title": "分享你的第一条动态",
-        "description": "和社区打个招呼吧——一句话就够了。",
-        "action": "立即发布"
-      },
-      "E4": {
-        "title": "你热爱什么？",
-        "description": "选择你的兴趣，让 Vitana 为你找到合适的人和内容。",
-        "action": "选择兴趣"
-      },
-      "E5": {
-        "title": "你住在哪里？",
-        "description": "添加你的所在地，发现身边的人和活动。",
-        "action": "添加位置"
-      },
-      "E6": {
-        "title": "连接 Instagram",
-        "description": "把你在 Vitana 的精彩时刻直接分享到 Instagram。",
-        "action": "连接 Instagram"
-      },
-      "E7": {
-        "title": "连接 Facebook",
-        "description": "与朋友保持联系，一键分享。",
-        "action": "连接 Facebook"
-      },
-      "E8": {
-        "title": "连接你的日历",
-        "description": "在一个地方查看你的日程和 Vitana 活动。",
-        "action": "连接"
-      },
-      "E9": {
-        "title": "导入你的联系人",
-        "description": "找到已经在 Vitana 的朋友。",
-        "action": "导入"
-      },
-      "E10": {
-        "title": "不错过任何消息",
-        "description": "开启消息、匹配和提醒通知。",
-        "action": "开启"
-      },
-      "E11": {
-        "title": "添加封面照片",
-        "description": "封面照片让你的资料更有个性。",
-        "action": "上传"
-      },
-      "F3": {
-        "eyebrow": "日记",
-        "title": "你今天感觉怎么样？",
-        "description": "对着日记说几句话吧——Vitana 在听。",
-        "action": "录音"
-      },
-      "F4": {
-        "eyebrow": "问问 Vitana",
-        "title": "有问题吗？",
-        "description": "Vitana 可以在健康、社区等方面帮助你。",
-        "action": "问 Vitana"
-      },
-      "F5": {
-        "eyebrow": "匹配",
-        "title": "与你契合的人",
-        "description": "看看你今天的匹配。",
-        "action": "查看匹配"
-      },
-      "F6": {
-        "eyebrow": "自动驾驶",
-        "title": "你的自动驾驶已就绪",
-        "description": "让 Vitana 规划你的下一步。",
-        "action": "打开"
-      },
-      "F9": {
-        "eyebrow": "日历",
-        "title": "一眼看清你的一天",
-        "description": "日程、活动和提醒，尽在一处。",
-        "action": "打开日历"
-      },
-      "F10": {
-        "eyebrow": "媒体",
-        "title": "分享视频或音乐",
-        "description": "上传你的媒体，激励社区。",
-        "action": "创建"
-      },
-      "F11": {
-        "eyebrow": "发现",
-        "title": "发现新鲜事物",
-        "description": "为你的健康精选的产品、服务和优惠。",
-        "action": "浏览"
-      }
-    },
-    "interests": {
-      "title": "你的兴趣",
-      "description": "最多选择 {max} 个你喜爱的主题。",
-      "selectedCount": "已选 {count}/{max}",
-      "save": "保存",
-      "cancel": "取消",
-      "fitness": "健身",
-      "nutrition": "营养",
-      "sleep": "睡眠",
-      "mindfulness": "正念",
-      "longevity": "长寿",
-      "biohacking": "生物黑客",
-      "yoga": "瑜伽",
-      "running": "跑步",
-      "strength": "力量训练",
-      "dance": "舞蹈",
-      "nature": "自然",
-      "cooking": "烹饪",
-      "social": "社交",
-      "travel": "旅行",
-      "career": "职业"
     }
   }
 }
