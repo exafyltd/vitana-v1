@@ -13750,7 +13750,28 @@
         "action": "Göz at",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {},
+      "G1": {
+        "eyebrow": "Profilin",
+        "title": "Profilini tamamla",
+        "description": "Eksiksiz bir profil sana daha uygun eşleşmeler getirir.",
+        "action": "Kuruluma devam et",
+        "metric": "{value} tamamlandı · {message}"
+      },
+      "G2": {
+        "eyebrow": "Eşleşmeler",
+        "title": "Yeni eşleşmelerin var",
+        "description": "Sana kimin uyduğuna bak.",
+        "action": "Eşleşmeleri gör",
+        "metric": "Yeni eşleşmeler: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Günlük",
+        "title": "Serin tehlikede",
+        "description": "Dün kayıt yoktu – serini bugün sürdür.",
+        "action": "Bugün kaydet",
+        "metric": "Seri: {count} gün · {message}"
+      }
     },
     "interests": {
       "title": "İlgi alanların",

@@ -12247,6 +12247,27 @@
         "title": "Entdecke etwas Neues",
         "description": "Produkte, Services und Angebote für dein Wohlbefinden.",
         "action": "Stöbern"
+      },
+      "G1": {
+        "eyebrow": "Dein Profil",
+        "title": "Mach dein Profil komplett",
+        "description": "Ein vollständiges Profil bringt dir passendere Matches.",
+        "action": "Weiter einrichten",
+        "metric": "{value} geschafft · {message}"
+      },
+      "G2": {
+        "eyebrow": "Matches",
+        "title": "Du hast neue Matches",
+        "description": "Schau dir an, wer zu dir passt.",
+        "action": "Matches ansehen",
+        "metric": "Neue Matches: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Tagebuch",
+        "title": "Deine Serie ist in Gefahr",
+        "description": "Gestern fehlte dein Eintrag – halte deine Serie heute am Leben.",
+        "action": "Heute eintragen",
+        "metric": "Serie: {count} Tage · {message}"
       }
     },
     "interests": {

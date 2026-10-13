@@ -22,7 +22,7 @@
 
 export const ENRICHMENT_CARD_TYPES = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'E10', 'E11'] as const;
 export const FEATURE_CARD_TYPES = ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11'] as const;
-/** Phase 3 (VTID-05087). Known to the catalog so server rows type-check; no component renders them yet. */
+/** Phase 3 (VTID-05087 plan, built under VTID-05143). G4 "Earn VTNA" is out of scope (owner 2026-10-13). */
 export const BOOST_CARD_TYPES = ['G1', 'G2', 'G3'] as const;
 
 export type EnrichmentCardType = (typeof ENRICHMENT_CARD_TYPES)[number];
@@ -152,7 +152,11 @@ export const CARD_DEEP_LINKS: Partial<Record<VitanaCardType, string>> = {
  *   gateway contract and for a future dedicated page.
  * - `make-a-post` lives inside the create sheet itself and has no gateway
  *   screen of its own, so it asks for `community` and keeps only E3.
- * - Feature lists follow plan §4 (Phase 2, VTID-05086). Boost cards (G*) are Phase 3.
+ * - Feature lists follow plan §4 (Phase 2, VTID-05086).
+ * - `boost` (Phase 3) lists the boost cards plan §4 places on the screen; a
+ *   boost card the server sends for any other screen is not shown. G3 "Streak
+ *   at Risk" goes on My Journey because `/autopilot` is the Longevity
+ *   Journey surface.
  */
 export type CardScreen =
   | 'home'
@@ -169,23 +173,49 @@ export type CardScreen =
 export interface CardScreenConfig {
   server: string | null;
   allow?: readonly VitanaCardType[];
+  /** Boost cards placed on this screen (plan §4); absent = none. */
+  boost?: readonly BoostCardType[];
   features: readonly FeatureCardType[];
 }
 
 export const CARD_SCREENS: Record<CardScreen, CardScreenConfig> = {
   // Home: no new feature cards (plan §4; owner question open) — its existing
   // Vitana cards stay as they are in Home.tsx.
-  home: { server: 'home', features: [] },
-  profile: { server: 'profile', features: ['F2', 'F4', 'F7'] },
-  'vitana-index': { server: 'vitana-index', features: ['F3', 'F4', 'F6'] },
-  autopilot: { server: 'autopilot', features: ['F1', 'F2', 'F3', 'F9'] },
+  home: { server: 'home', boost: ['G1', 'G2', 'G3'], features: [] },
+  profile: { server: 'profile', boost: ['G1'], features: ['F2', 'F4', 'F7'] },
+  'vitana-index': { server: 'vitana-index', boost: ['G3'], features: ['F3', 'F4', 'F6'] },
+  autopilot: { server: 'autopilot', boost: ['G3'], features: ['F1', 'F2', 'F3', 'F9'] },
   community: { server: 'community', features: ['F5', 'F7', 'F10'] },
   'talk-to-vitana': { server: 'talk-to-vitana', features: ['F1', 'F2', 'F3'] },
   calendar: { server: 'calendar', features: ['F1', 'F6', 'F8'] },
-  'longevity-journey': { server: 'longevity-journey', features: ['F1', 'F2', 'F3', 'F5', 'F8'] },
+  'longevity-journey': { server: 'longevity-journey', boost: ['G3'], features: ['F1', 'F2', 'F3', 'F5', 'F8'] },
   messenger: { server: 'messenger', features: [] },
   'make-a-post': { server: 'community', allow: ['E3'], features: ['F5', 'F7', 'F10'] },
 };
+
+/** Is this server card shown on the screen? Boost cards only where plan §4 places them. */
+export function isServerCardPlaced(config: CardScreenConfig, cardType: VitanaCardType): boolean {
+  if (config.allow && !config.allow.includes(cardType)) return false;
+  if (cardCategory(cardType) === 'boost') return (config.boost ?? []).includes(cardType as BoostCardType);
+  return true;
+}
+
+/** Most new cards Home shows in front of its existing Vitana cards (owner decision 2026-10-13). */
+export const HOME_SERVER_CARD_LIMIT = 3;
+/** Of those, at most this many enrichment cards (plan §4: "top 2 incomplete enrichment cards"). */
+export const HOME_ENRICHMENT_CARD_LIMIT = 2;
+
+/**
+ * Home's new cards from the server list: up to 2 enrichment cards, then the
+ * boost cards Home places (server order = trigger urgency), 3 in total.
+ * Home.tsx caps again with withHomeNewCards() right before composeFeed.
+ */
+export function pickHomeServerCards<C extends { card_type: VitanaCardType }>(cards: readonly C[]): C[] {
+  const placed = cards.filter((c) => isVitanaCardType(c.card_type) && isServerCardPlaced(CARD_SCREENS.home, c.card_type));
+  const enrichment = placed.filter((c) => cardCategory(c.card_type) === 'enrichment').slice(0, HOME_ENRICHMENT_CARD_LIMIT);
+  const boost = placed.filter((c) => cardCategory(c.card_type) === 'boost');
+  return [...enrichment, ...boost].slice(0, HOME_SERVER_CARD_LIMIT);
+}
 
 /** Feature cards hidden by the X come back after 7 days (plan §3.4). */
 export const FEATURE_CARD_DISMISS_TTL_MS = 7 * 24 * 60 * 60 * 1000;
