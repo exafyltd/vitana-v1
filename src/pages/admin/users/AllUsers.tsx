@@ -23,6 +23,8 @@ import { useSendInvitation, useRepairProvisioning } from "@/hooks/useSignupFunne
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const ROLE_OPTIONS = [
   { value: "all", label: "All Roles" },
   { value: "community", label: "Community" },
@@ -67,6 +69,7 @@ function formatDate(dateStr?: string | null): string {
 }
 
 export default function AllUsers() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [page, setPage] = useState(0);
@@ -104,7 +107,7 @@ export default function AllUsers() {
             {row.avatar_url && (
               <AvatarImage src={row.avatar_url} alt={row.display_name || row.email} />
             )}
-            <AvatarFallback className="text-xs bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300">
+            <AvatarFallback className="text-xs bg-category-2/15 text-category-2">
               {getInitials(row.display_name, row.email)}
             </AvatarFallback>
           </Avatar>
@@ -171,10 +174,8 @@ export default function AllUsers() {
     />
   ) : null;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminUsersNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.allUsers')}
@@ -224,7 +225,7 @@ export default function AllUsers() {
                 setPage(0);
               }}
             >
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-44">
                 <SelectValue placeholder={t('screens.admin.filterByRole')} />
               </SelectTrigger>
               <SelectContent>
@@ -257,7 +258,19 @@ export default function AllUsers() {
             />
           </SplitDetailPanel>
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminUsersNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-raised to-surface-page-via min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

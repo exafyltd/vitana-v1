@@ -77,6 +77,23 @@ jobs:
           node --test scripts/ci/kiro-steering/guard.test.cjs
           node scripts/ci/kiro-steering/guard.cjs .
 
+      # VTID-05145: Claude Code ↔ Kiro handoff/lane files, state transitions and session/lane trailers.
+      # The one copy of the script lives in vitana-platform (scripts/collab/queue.mjs), fetched like
+      # staging-guard.ts below. Report-only until 2026-10-20: not in the Verdict OUTCOMES yet.
+      - name: Collab handoff
+        id: collab
+        continue-on-error: true
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: |
+          if ! gh api -H 'Accept: application/vnd.github.raw' \
+              "repos/exafyltd/vitana-platform/contents/scripts/collab/queue.mjs?ref=main" > "$RUNNER_TEMP/queue.mjs"; then
+            echo "➖ **collab handoff** — skipped: could not fetch scripts/collab/queue.mjs from vitana-platform" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node "$RUNNER_TEMP/queue.mjs" validate --repo . --base "$BASE" --head "$HEAD" --branch "$HEAD_REF" --summary "$GITHUB_STEP_SUMMARY"
+
       - name: Scope guard
         id: scope
         continue-on-error: true
@@ -127,6 +144,13 @@ jobs:
           npx eslint . -f json -o "$RUNNER_TEMP/eslint.json" || true
           node scripts/ci/pr-gate/gate.mjs ratchet-eslint "$RUNNER_TEMP/eslint.json"
 
+      # VTID-05107: Spotlight design rules (design/*) may only go down per file,
+      # measured against the BASE commit's baseline/design.json.
+      - name: Design ratchet
+        id: design
+        continue-on-error: true
+        run: node scripts/ci/pr-gate/gate.mjs ratchet-design "$RUNNER_TEMP/eslint.json" --base "$BASE" --head "$HEAD"
+
       - name: Regression scripts
         id: regressions
         continue-on-error: true
@@ -149,6 +173,7 @@ jobs:
             migrations=${{ steps.migrations.outcome }}
             tsc=${{ steps.tsc.outcome }}
             eslint=${{ steps.eslint.outcome }}
+            design=${{ steps.design.outcome }}
             regressions=${{ steps.regressions.outcome }}
             build=${{ steps.build.outcome }}
         run: |

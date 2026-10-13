@@ -14,6 +14,8 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent } from "@/components/ui/card";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const EXAMPLE_SEGMENTS = [
   { name: "Active last 7 days", description: "Members with at least one session in the last 7 days", count: null },
@@ -23,10 +25,9 @@ const EXAMPLE_SEGMENTS = [
 ];
 
 export default function MembersSegments() {
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="members" />
-      <div className="p-6 space-y-4">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📊"
           title={t('screens.admin.segments')}
@@ -55,7 +56,19 @@ export default function MembersSegments() {
           title={t('screens.admin.segmentBuilderComingSoon')}
           description="Custom segments with saved queries will ship in a future update. The examples above show the structure."
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="members" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

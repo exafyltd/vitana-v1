@@ -1,0 +1,30 @@
+{
+  "vtid": "VTID-05109",
+  "kind": "feature",
+  "paths": [
+    "docs/validation/VTID-05109/**",
+    "src/pages/Discover.tsx",
+    "src/pages/discover/Supplements.tsx",
+    "src/pages/discover/WellnessServices.tsx",
+    "src/pages/discover/DoctorsCoaches.tsx",
+    "src/pages/discover/DealsOffers.tsx",
+    "src/pages/discover/Orders.tsx",
+    "src/pages/discover-spotlight.vtid-05109.test.tsx",
+    "src/components/discover/ProductDetailsDrawer.tsx",
+    "src/components/discover/spotlight/**",
+    "src/components/ui/vcard/adapters/index.ts",
+    "src/components/ui/vcard/adapters/discover.ts",
+    "src/components/ui/vcard/adapters/discover.vtid-05109.test.ts",
+    "src/i18n/de/spotlightDiscover.json",
+    "src/i18n/en/spotlightDiscover.json",
+    "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts",
+    ".kiro/specs/desktop-spotlight/**",
+    "docs/SCREEN_INVENTORY.md",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "src/design/screen-manifest.json",
+    "i18n-source-stamps/en.json"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

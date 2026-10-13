@@ -27,6 +27,8 @@ import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDate, fmtDateTime, fmtNumber } from '@/lib/locale-format';
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
 interface Limitations {
@@ -155,6 +157,8 @@ function DietaryPicker({ values, onChange }: { values: string[]; onChange: (next
 }
 
 export default function Limitations() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -233,6 +237,20 @@ export default function Limitations() {
   }
 
   if (loading) {
+    // VTID-05111 — Spotlight: the form skeleton inside the frame instead of a spinner line (SR-20).
+    if (spotlight) {
+      return (
+        <AppLayout>
+          <ScreenFrame
+            archetype="form"
+            subNav={{ items: settingsNavigation }}
+            header={{ title: t('screens.settings.preferencesLimitations'), description: t('spotlightTierB.settings.limitationsDescription'), emoji: '🛡️' }}
+          >
+            <ArchetypeSkeleton archetype="form" />
+          </ScreenFrame>
+        </AppLayout>
+      );
+    }
     return (
       <AppLayout>
         <SubNavigation items={settingsNavigation} />
@@ -247,6 +265,237 @@ export default function Limitations() {
   const hiddenTotal = impact?.hidden_total_approx ?? 0;
   const totalProducts = impact?.total_active_products ?? 0;
 
+  const limitationsForm = (
+    <>
+      {/* Live counter */}
+      <Card>
+        <CardContent className="pt-6 flex items-center justify-between">
+          <div>
+            <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
+            <div className="text-2xl font-semibold">
+              {fmtNumber(hiddenTotal)}{" "}
+              <span className="text-sm font-normal text-muted-foreground">{t('screens.settings.value0ActiveProducts', { value0: fmtDateTime(totalProducts) })}
+              </span>
+            </div>
+          </div>
+          <ShieldCheck className="w-10 h-10 text-emerald-600" />
+        </CardContent>
+      </Card>
+
+      {/* Allergies */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-red-600" />
+            {t('screens.settings.allergies')}
+            <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
+          </CardTitle>
+          <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? fmtDate(new Date(lastVerified.allergies)) : "never" })}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <TagEditor
+            label="Allergens"
+            icon={AlertTriangle}
+            values={state.allergies}
+            onChange={(next) => {
+              setState((s) => ({ ...s, allergies: next }));
+            }}
+            placeholder={t('screens.settings.eGPeanutsShellfishLatex')}
+          />
+          <Button className="mt-4" onClick={() => save({ allergies: state.allergies })} disabled={saving}>
+            {t('screens.settings.saveAllergies')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Dietary */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Utensils className="w-5 h-5 text-orange-600" />
+            {t('screens.settings.dietaryRestrictions')}
+          </CardTitle>
+          <CardDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <DietaryPicker
+            values={state.dietary_restrictions}
+            onChange={(next) => setState((s) => ({ ...s, dietary_restrictions: next }))}
+          />
+          <Button onClick={() => save({ dietary_restrictions: state.dietary_restrictions })} disabled={saving}>
+            {t('screens.settings.saveDietary')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Medications */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Pill className="w-5 h-5 text-indigo-600" />
+            {t('screens.settings.currentMedications')}
+            <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
+          </CardTitle>
+          <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? fmtDate(new Date(lastVerified.current_medications)) : "never" })}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <TagEditor
+            label="Medications (generic or class, e.g. SSRI, blood-thinner)"
+            icon={Pill}
+            values={state.current_medications}
+            onChange={(next) => setState((s) => ({ ...s, current_medications: next }))}
+            placeholder={t('screens.settings.eGSsriBloodthinnerStatin')}
+          />
+          <Button className="mt-4" onClick={() => save({ current_medications: state.current_medications })} disabled={saving}>
+            {t('screens.settings.saveMedications')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Pregnancy */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Baby className="w-5 h-5 text-pink-600" />
+            {t('screens.settings.pregnancyNursing')}
+          </CardTitle>
+          <CardDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="max-w-sm space-y-2">
+            <Label>{t('screens.settings.status')}</Label>
+            <Select
+              value={state.pregnancy_status ?? "prefer_not_say"}
+              onValueChange={(v) => setState((s) => ({ ...s, pregnancy_status: v }))}
+            >
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="not_pregnant">{t('screens.settings.notPregnant')}</SelectItem>
+                <SelectItem value="pregnant">{t('screens.settings.pregnant')}</SelectItem>
+                <SelectItem value="nursing">{t('screens.settings.nursing')}</SelectItem>
+                <SelectItem value="prefer_not_say">{t('screens.settings.preferNotSay')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <Button onClick={() => save({ pregnancy_status: state.pregnancy_status as Limitations["pregnancy_status"] })} disabled={saving}>
+            {t('screens.settings.savePregnancyStatus')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Budget */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wallet className="w-5 h-5 text-emerald-600" />
+            {t('screens.settings.budget')}
+          </CardTitle>
+          <CardDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label>{t('screens.settings.maxPerProductEur')}</Label>
+              <Input
+                type="number"
+                min={0}
+                value={state.budget_max_per_product_cents !== null ? state.budget_max_per_product_cents / 100 : ""}
+                onChange={(e) => {
+                  const val = e.target.value === "" ? null : Math.round(Number(e.target.value) * 100);
+                  setState((s) => ({ ...s, budget_max_per_product_cents: val }));
+                }}
+                placeholder="e.g. 40"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>{t('screens.settings.monthlyCapEurOptional')}</Label>
+              <Input
+                type="number"
+                min={0}
+                value={state.budget_monthly_cap_cents !== null ? state.budget_monthly_cap_cents / 100 : ""}
+                onChange={(e) => {
+                  const val = e.target.value === "" ? null : Math.round(Number(e.target.value) * 100);
+                  setState((s) => ({ ...s, budget_monthly_cap_cents: val }));
+                }}
+                placeholder="e.g. 150"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>{t('screens.settings.preferredPriceBand')}</Label>
+              <Select
+                value={state.budget_preferred_band ?? "any"}
+                onValueChange={(v) => setState((s) => ({ ...s, budget_preferred_band: v }))}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="any">{t('screens.settings.any')}</SelectItem>
+                  <SelectItem value="budget">{t('screens.settings.budgetfriendly')}</SelectItem>
+                  <SelectItem value="mid">{t('screens.settings.midrange')}</SelectItem>
+                  <SelectItem value="premium">{t('screens.settings.premium')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <Button
+            onClick={() =>
+              save({
+                budget_max_per_product_cents: state.budget_max_per_product_cents,
+                budget_monthly_cap_cents: state.budget_monthly_cap_cents,
+                budget_preferred_band: state.budget_preferred_band as Limitations["budget_preferred_band"],
+              })
+            }
+            disabled={saving}
+          >{t('screens.settings.saveBudget')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Accessibility */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Accessibility className="w-5 h-5 text-sky-600" />
+            {t('screens.settings.accessibility')}
+          </CardTitle>
+          <CardDescription>{t('screens.settings.preferencesForFormFactorUsability')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <TagEditor
+            label="Accessibility needs"
+            icon={Accessibility}
+            values={state.physical_accessibility_needs}
+            onChange={(next) => setState((s) => ({ ...s, physical_accessibility_needs: next }))}
+            placeholder={t('screens.settings.eGLiquidformLargelabel')}
+          />
+          <Button className="mt-4" onClick={() => save({ physical_accessibility_needs: state.physical_accessibility_needs })} disabled={saving}>
+            {t('screens.settings.saveAccessibility')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      <p className="text-xs text-muted-foreground text-center pt-4">{t('screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR')}
+      </p>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: same content inside ScreenFrame (archetype from the manifest).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.settings.limitationsVitana')} description={t('spotlightTierB.settings.limitationsDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="form"
+          subNav={{ items: settingsNavigation }}
+          header={{ title: t('screens.settings.preferencesLimitations'), description: t('spotlightTierB.settings.limitationsDescription'), emoji: '🛡️' }}
+        >
+          <div className="flex flex-col gap-6">{limitationsForm}</div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title={t('screens.settings.limitationsVitana')} description="Edit the non-negotiable filters that shape your Discover marketplace." canonical={typeof window !== "undefined" ? window.location.href : ""} />
@@ -258,216 +507,7 @@ export default function Limitations() {
             description="These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable."
           />
 
-          {/* Live counter */}
-          <Card>
-            <CardContent className="pt-6 flex items-center justify-between">
-              <div>
-                <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
-                <div className="text-2xl font-semibold">
-                  {fmtNumber(hiddenTotal)}{" "}
-                  <span className="text-sm font-normal text-muted-foreground">{t('screens.settings.value0ActiveProducts', { value0: fmtDateTime(totalProducts) })}
-                  </span>
-                </div>
-              </div>
-              <ShieldCheck className="w-10 h-10 text-emerald-600" />
-            </CardContent>
-          </Card>
-
-          {/* Allergies */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-600" />
-                {t('screens.settings.allergies')}
-                <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
-              </CardTitle>
-              <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? fmtDate(new Date(lastVerified.allergies)) : "never" })}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TagEditor
-                label="Allergens"
-                icon={AlertTriangle}
-                values={state.allergies}
-                onChange={(next) => {
-                  setState((s) => ({ ...s, allergies: next }));
-                }}
-                placeholder={t('screens.settings.eGPeanutsShellfishLatex')}
-              />
-              <Button className="mt-4" onClick={() => save({ allergies: state.allergies })} disabled={saving}>
-                {t('screens.settings.saveAllergies')}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Dietary */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Utensils className="w-5 h-5 text-orange-600" />
-                {t('screens.settings.dietaryRestrictions')}
-              </CardTitle>
-              <CardDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <DietaryPicker
-                values={state.dietary_restrictions}
-                onChange={(next) => setState((s) => ({ ...s, dietary_restrictions: next }))}
-              />
-              <Button onClick={() => save({ dietary_restrictions: state.dietary_restrictions })} disabled={saving}>
-                {t('screens.settings.saveDietary')}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Medications */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Pill className="w-5 h-5 text-indigo-600" />
-                {t('screens.settings.currentMedications')}
-                <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
-              </CardTitle>
-              <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? fmtDate(new Date(lastVerified.current_medications)) : "never" })}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TagEditor
-                label="Medications (generic or class, e.g. SSRI, blood-thinner)"
-                icon={Pill}
-                values={state.current_medications}
-                onChange={(next) => setState((s) => ({ ...s, current_medications: next }))}
-                placeholder={t('screens.settings.eGSsriBloodthinnerStatin')}
-              />
-              <Button className="mt-4" onClick={() => save({ current_medications: state.current_medications })} disabled={saving}>
-                {t('screens.settings.saveMedications')}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Pregnancy */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Baby className="w-5 h-5 text-pink-600" />
-                {t('screens.settings.pregnancyNursing')}
-              </CardTitle>
-              <CardDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="max-w-sm space-y-2">
-                <Label>{t('screens.settings.status')}</Label>
-                <Select
-                  value={state.pregnancy_status ?? "prefer_not_say"}
-                  onValueChange={(v) => setState((s) => ({ ...s, pregnancy_status: v }))}
-                >
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="not_pregnant">{t('screens.settings.notPregnant')}</SelectItem>
-                    <SelectItem value="pregnant">{t('screens.settings.pregnant')}</SelectItem>
-                    <SelectItem value="nursing">{t('screens.settings.nursing')}</SelectItem>
-                    <SelectItem value="prefer_not_say">{t('screens.settings.preferNotSay')}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={() => save({ pregnancy_status: state.pregnancy_status as Limitations["pregnancy_status"] })} disabled={saving}>
-                {t('screens.settings.savePregnancyStatus')}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Budget */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Wallet className="w-5 h-5 text-emerald-600" />
-                {t('screens.settings.budget')}
-              </CardTitle>
-              <CardDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>{t('screens.settings.maxPerProductEur')}</Label>
-                  <Input
-                    type="number"
-                    min={0}
-                    value={state.budget_max_per_product_cents !== null ? state.budget_max_per_product_cents / 100 : ""}
-                    onChange={(e) => {
-                      const val = e.target.value === "" ? null : Math.round(Number(e.target.value) * 100);
-                      setState((s) => ({ ...s, budget_max_per_product_cents: val }));
-                    }}
-                    placeholder="e.g. 40"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>{t('screens.settings.monthlyCapEurOptional')}</Label>
-                  <Input
-                    type="number"
-                    min={0}
-                    value={state.budget_monthly_cap_cents !== null ? state.budget_monthly_cap_cents / 100 : ""}
-                    onChange={(e) => {
-                      const val = e.target.value === "" ? null : Math.round(Number(e.target.value) * 100);
-                      setState((s) => ({ ...s, budget_monthly_cap_cents: val }));
-                    }}
-                    placeholder="e.g. 150"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>{t('screens.settings.preferredPriceBand')}</Label>
-                  <Select
-                    value={state.budget_preferred_band ?? "any"}
-                    onValueChange={(v) => setState((s) => ({ ...s, budget_preferred_band: v }))}
-                  >
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="any">{t('screens.settings.any')}</SelectItem>
-                      <SelectItem value="budget">{t('screens.settings.budgetfriendly')}</SelectItem>
-                      <SelectItem value="mid">{t('screens.settings.midrange')}</SelectItem>
-                      <SelectItem value="premium">{t('screens.settings.premium')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <Button
-                onClick={() =>
-                  save({
-                    budget_max_per_product_cents: state.budget_max_per_product_cents,
-                    budget_monthly_cap_cents: state.budget_monthly_cap_cents,
-                    budget_preferred_band: state.budget_preferred_band as Limitations["budget_preferred_band"],
-                  })
-                }
-                disabled={saving}
-              >{t('screens.settings.saveBudget')}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Accessibility */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Accessibility className="w-5 h-5 text-sky-600" />
-                {t('screens.settings.accessibility')}
-              </CardTitle>
-              <CardDescription>{t('screens.settings.preferencesForFormFactorUsability')}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TagEditor
-                label="Accessibility needs"
-                icon={Accessibility}
-                values={state.physical_accessibility_needs}
-                onChange={(next) => setState((s) => ({ ...s, physical_accessibility_needs: next }))}
-                placeholder={t('screens.settings.eGLiquidformLargelabel')}
-              />
-              <Button className="mt-4" onClick={() => save({ physical_accessibility_needs: state.physical_accessibility_needs })} disabled={saving}>
-                {t('screens.settings.saveAccessibility')}
-              </Button>
-            </CardContent>
-          </Card>
-
-          <p className="text-xs text-muted-foreground text-center pt-4">{t('screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR')}
-          </p>
+          {limitationsForm}
         </div>
       </div>
     </AppLayout>

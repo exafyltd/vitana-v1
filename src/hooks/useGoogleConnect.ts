@@ -380,7 +380,21 @@ function startConnectionsPoller(
   }, 3000);
 }
 
-function useStartSocialOAuth(provider: OAuthBounceProvider) {
+/**
+ * VTID-05143: Instagram / Facebook through the same gateway OAuth start
+ * (GET /api/v1/social-accounts/connect/:provider). They have no Appilix
+ * bounce poller (that store knows Google and YouTube only); the callback
+ * lands the member back in the app as for every provider.
+ */
+export function useStartInstagramConnect() {
+  return useStartSocialOAuth("instagram");
+}
+
+export function useStartFacebookConnect() {
+  return useStartSocialOAuth("facebook");
+}
+
+function useStartSocialOAuth(provider: OAuthBounceProvider | "instagram" | "facebook") {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
@@ -397,7 +411,7 @@ function useStartSocialOAuth(provider: OAuthBounceProvider) {
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
-      if (isAppilixWebView()) {
+      if (isAppilixWebView() && (provider === "google" || provider === "youtube")) {
         useOAuthBounceStore.getState().start(provider);
         startConnectionsPoller(queryClient, provider);
       }

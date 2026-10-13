@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05119",
+  "kind": "fix",
+  "sparring_record": "docs/validation/VTID-05119/plan-sparring.md",
+  "paths": [
+    "supabase/functions/_shared/read-json-body.ts",
+    "supabase/functions/_shared/recommendation-matches.ts",
+    "supabase/functions/fetch-user-context/index.ts",
+    "supabase/functions/generate-enhanced-recommendations/index.ts",
+    "src/lib/read-json-body.test.ts",
+    "src/lib/recommendation-matches.test.ts",
+    "src/lib/edge-functions-caller-identity.s4.test.ts",
+    "docs/validation/VTID-05119/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

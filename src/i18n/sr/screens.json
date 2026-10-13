@@ -5480,10 +5480,14 @@
       "cancelReply": "Otkaži odgovor",
       "likeComment": "Lajkuj komentar",
       "_pending_review": {
-        "feedItemError": true
+        "feedItemError": true,
+        "vitanaIndexScoreSubtext": true,
+        "longevityJourneyProgressSubtext": true
       },
       "feedItemError": "This post couldn't be shown.",
-      "playTodaysEpisode": "Pusti epizodu {session}"
+      "playTodaysEpisode": "Pusti epizodu {session}",
+      "vitanaIndexScoreSubtext": "Index {score} · {message}",
+      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)"
@@ -6229,7 +6233,8 @@
       "anonymous": "Anoniman",
       "vitanaOpenScreen": "Otvori ekran",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} je napravio/la grupu",
@@ -6244,7 +6249,33 @@
       "groupNameCancel": "Otkaži",
       "editGroup": "Uredi grupu",
       "messageGroupPlaceholder": "Poruka za {name}…",
-      "messagePersonPlaceholder": "Poruka za {name}…"
+      "messagePersonPlaceholder": "Poruka za {name}…",
+      "forwardedLabel": "Prosleđeno",
+      "forwardTitle": "Prosledi u",
+      "forwardSearch": "Pretraži razgovore i grupe",
+      "forwardLoading": "Učitavanje razgovora…",
+      "forwardEmpty": "Nema pronađenih razgovora",
+      "forwardLimit": "Izaberi do {max} razgovora ili grupa.",
+      "forwardSend": "Prosledi",
+      "forwardSendCount": "Prosledi ({count})",
+      "forwardDone": "Poruka je prosleđena",
+      "forwardFailedFor": "Prosleđivanje za {name} nije uspelo",
+      "forwardGroup": "Grupa",
+      "forwardChat": "Razgovor",
+      "imageViewer": "Pregled slike",
+      "imageCounter": "{current} od {total}",
+      "previousImage": "Prethodna slika",
+      "nextImage": "Sledeća slika",
+      "copyImage": "Kopiraj sliku",
+      "shareImage": "Podeli sliku",
+      "imageCopied": "Slika je kopirana",
+      "imageCopyUnsupported": "Kopiranje slika ovde nije podržano. Umesto toga preuzmi sliku.",
+      "imageCopyFailed": "Slika nije mogla da se kopira",
+      "imageDownloadFailed": "Slika nije mogla da se učita",
+      "imageShareFailed": "Deljenje nije uspelo",
+      "imageLoading": "Učitavanje slike",
+      "unknownSize": "Nepoznata veličina",
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Pretražujem…",
@@ -7764,6 +7795,34 @@
             "checkbox": "Izričito pristajem da se moji zdravstveni podaci u ovu svrhu koriste u anonimizovanom obliku."
           }
         }
+      },
+      "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -10606,7 +10665,31 @@
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu"
+      "dismissCard": "Odbaci karticu",
+      "_pending_review": {
+        "dailyDiary": true,
+        "talkToVitana": true,
+        "autopilot": true,
+        "calendar": true,
+        "uploadMedia": true,
+        "discover": true,
+        "profilePhoto": true,
+        "profileSetup": true,
+        "socialConnect": true,
+        "importContacts": true,
+        "completeProfile": true
+      },
+      "dailyDiary": "Diary",
+      "talkToVitana": "Talk to Vitana",
+      "autopilot": "Autopilot",
+      "calendar": "Calendar",
+      "uploadMedia": "Media",
+      "discover": "Discover",
+      "profilePhoto": "Profile photo",
+      "profileSetup": "Profile",
+      "socialConnect": "Connect",
+      "importContacts": "Contacts",
+      "completeProfile": "Complete profile"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -11258,7 +11341,34 @@
         "loadFailed": "Nije uspelo učitavanje podešavanja.",
         "retry": "Pokušaj ponovo",
         "salesCta": "Podesi",
-        "edit": "Izmeni"
+        "edit": "Izmeni",
+        "reviewNoteLabel": "Vitanaland traži:",
+        "stillNeeded": "Još je potrebno:",
+        "openAccount": "Tvoj nalog",
+        "openCompany": "Podaci o firmi (pravni naziv i država)",
+        "openVerification": "Provera Vitanaland tima",
+        "openCatalogue": "Tvoji proizvodi ili usluge",
+        "openShopLink": "Povezivanje sa tvojom prodavnicom",
+        "openCompleteOffering": "Jedna potpuna ponuda: naziv, cena, link, zemlja porekla i gde se nudi",
+        "openTrackingTest": "Probna kupovina radi provere praćenja",
+        "openResultsChannel": "Kako šalješ rezultate",
+        "openTerms": "Prihvatanje partnerskih uslova",
+        "openDpa": "Ugovor o obradi podataka",
+        "openBillingMandate": "Ovlašćenje za direktno zaduženje radi naplate",
+        "openTeam": "Tvoj tim",
+        "openOther": "Još jedan korak",
+        "submitCta": "Pošalji na verifikaciju",
+        "resubmitCta": "Pošalji ponovo",
+        "submitConfirmTitle": "Poslati posao na verifikaciju?",
+        "resubmitConfirmTitle": "Ponovo poslati posao?",
+        "submitConfirmBody": "Vitanaland tim proverava tvoj posao. Kada je sve spremno, objavljuje se. Ponude koje se drže van mreže ili su nepotpune se ne objavljuju.",
+        "submitCancel": "Otkaži",
+        "submitConfirm": "Pošalji sada",
+        "submitResultLive": "Objavljen si na Vitanalandu.",
+        "submitResultNeedsAction": "Poslato. Još nekoliko stvari nedostaje – pogledaj ispod.",
+        "submitResultInReview": "Poslato. Vitanaland tim sada proverava tvoj posao.",
+        "submitResultUnchanged": "Primljeno. Tvoj status se nije promenio.",
+        "submitFailed": "Slanje trenutno nije uspelo. Osvežili smo tvoj status – pogledaj šta još nedostaje."
       },
       "setupChooser": {
         "title": "Dodaj svoje proizvode ili usluge",
@@ -12591,6 +12701,279 @@
       "startingSoon": "Uskoro počinje",
       "startNow": "Pokreni sada",
       "eventsSectionTitle": "Sobe uživo"
+    },
+    "vitanaCards": {
+      "_pending_review": {
+        "stripLabel": true,
+        "eyebrowProfile": true,
+        "eyebrowConnect": true,
+        "eyebrowCommunity": true,
+        "eyebrowNotifications": true
+      },
+      "stripLabel": "Suggestions from Vitana",
+      "eyebrowProfile": "Your profile",
+      "eyebrowConnect": "Connect",
+      "eyebrowCommunity": "Community",
+      "eyebrowNotifications": "Notifications",
+      "E1": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Show your face",
+        "description": "Upload a profile photo so others recognise you right away.",
+        "action": "Upload"
+      },
+      "E2": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Tell others about you",
+        "description": "A few sentences about you help others start a conversation.",
+        "action": "Write bio"
+      },
+      "E3": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Share your first post",
+        "description": "Say hello to the community – a short thought is enough.",
+        "action": "Post now"
+      },
+      "E4": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "What are you into?",
+        "description": "Pick your interests so Vitana can find people and content that fit you.",
+        "action": "Pick interests"
+      },
+      "E5": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Where are you based?",
+        "description": "Add your location to discover people and events near you.",
+        "action": "Add location"
+      },
+      "E6": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Connect Instagram",
+        "description": "Share your moments from Vitana straight to Instagram.",
+        "action": "Connect Instagram"
+      },
+      "E7": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Connect Facebook",
+        "description": "Stay close to your friends and share in one tap.",
+        "action": "Connect Facebook"
+      },
+      "E8": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Connect your calendar",
+        "description": "See your appointments and Vitana events in one place.",
+        "action": "Connect"
+      },
+      "E9": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Import your contacts",
+        "description": "Find friends who are already on Vitana.",
+        "action": "Import"
+      },
+      "E10": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Don't miss a thing",
+        "description": "Turn on notifications for messages, matches and reminders.",
+        "action": "Turn on"
+      },
+      "E11": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Add a cover photo",
+        "description": "A cover photo makes your profile feel like you.",
+        "action": "Upload"
+      },
+      "F3": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Diary",
+        "title": "How are you today?",
+        "description": "Speak a few sentences into your diary – Vitana is listening.",
+        "action": "Record"
+      },
+      "F4": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Ask Vitana",
+        "title": "Got a question?",
+        "description": "Vitana helps you with health, community and more.",
+        "action": "Ask Vitana"
+      },
+      "F5": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Matches",
+        "title": "People who match you",
+        "description": "Discover today’s matches.",
+        "action": "See matches"
+      },
+      "F6": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Autopilot",
+        "title": "Your Autopilot is ready",
+        "description": "Let Vitana plan your next steps.",
+        "action": "Open"
+      },
+      "F9": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Calendar",
+        "title": "Your day at a glance",
+        "description": "Appointments, events and reminders in one place.",
+        "action": "Open calendar"
+      },
+      "F10": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Media",
+        "title": "Share a video or music",
+        "description": "Upload your media and inspire the community.",
+        "action": "Create"
+      },
+      "F11": {
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Discover",
+        "title": "Discover something new",
+        "description": "Products, services and offers for your well-being.",
+        "action": "Browse"
+      },
+      "G1": {
+        "eyebrow": "Tvoj profil",
+        "title": "Dovrši svoj profil",
+        "description": "Potpun profil ti donosi bolja poklapanja.",
+        "action": "Nastavi podešavanje",
+        "metric": "{value} završeno · {message}"
+      },
+      "G2": {
+        "eyebrow": "Poklapanja",
+        "title": "Imaš nova poklapanja",
+        "description": "Pogledaj ko ti odgovara.",
+        "action": "Pogledaj poklapanja",
+        "metric": "Nova poklapanja: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Dnevnik",
+        "title": "Tvoj niz je u opasnosti",
+        "description": "Juče nije bilo upisa – sačuvaj svoj niz danas.",
+        "action": "Upiši danas",
+        "metric": "Niz: {count} dana · {message}"
+      }
+    },
+    "interests": {
+      "_pending_review": {
+        "title": true,
+        "description": true,
+        "selectedCount": true,
+        "save": true,
+        "cancel": true,
+        "fitness": true,
+        "nutrition": true,
+        "sleep": true,
+        "mindfulness": true,
+        "longevity": true,
+        "biohacking": true,
+        "yoga": true,
+        "running": true,
+        "strength": true,
+        "dance": true,
+        "nature": true,
+        "cooking": true,
+        "social": true,
+        "travel": true,
+        "career": true
+      },
+      "title": "Your interests",
+      "description": "Pick up to {max} topics you love.",
+      "selectedCount": "{count} of {max} selected",
+      "save": "Save",
+      "cancel": "Cancel",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sleep",
+      "mindfulness": "Mindfulness",
+      "longevity": "Longevity",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Running",
+      "strength": "Strength training",
+      "dance": "Dance",
+      "nature": "Nature",
+      "cooking": "Cooking",
+      "social": "Community",
+      "travel": "Travel",
+      "career": "Career"
     }
   }
 }

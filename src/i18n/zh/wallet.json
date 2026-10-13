@@ -25,7 +25,8 @@
       "purchases": "购买",
       "pending": "待支付款项",
       "withdrawals": "提现",
-      "stakes": "质押"
+      "stakes": "质押",
+      "_pending_review": {}
     },
     "noActivity": "暂无动态",
     "noActivityDesc": "你的交易会显示在这里。",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

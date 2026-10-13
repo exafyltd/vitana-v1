@@ -93,6 +93,13 @@ the STAGING-VERIFY evidence.
 commit (see the scoping rules for in-session approval), then report the
 post-deploy check result in one line.
 
+## 🤝 CLAUDE CODE ↔ KIRO COLLABORATION (STANDING RULE — VTID-05145)
+
+Git is the only channel between Claude Code and Kiro sessions — the owner never relays. At session start run
+`node <vitana-platform>/scripts/collab/queue.mjs --repo <vitana-platform> --repo <vitana-v1>` and work lanes whose
+`next_actor` is you; state your session id + lane in your first reply; claim a lane before touching it, one session per
+lane; push and update the lane file before ending. Full rules: `.claude/rules/collaboration.md`.
+
 ## Overview
 
 VITANA community app (branded "MAXINA - Longevity Community"). React/Vite SPA with 551+ screens spanning community, health, AI, messaging, wallet, and admin features.
@@ -313,6 +320,16 @@ card + push, once, automatically. Do not publish these cards by hand any more.
 `What's New: …` PR with a drafted EN/DE entry for a human to approve — needs a
 VTID in your PR title. Adding the entry yourself is still preferred (you know
 the wording best) and a PR that adds one is never drafted for.
+
+## Spotlight Design Contract — every screen (VTID-05107)
+
+Every screen follows **`docs/design-system/SPOTLIGHT_RULES.md`** (owner decision 2026-10-12, "harden the rules
+across the whole Vitanaland system"). **Adding a page in `App.tsx` also means giving it an archetype** in
+`src/design/screen-manifest.json` (`npm run design:manifest`; `npm test` fails until you do). Compose screens with
+`ScreenFrame` + `VCard`, use design tokens only, never touch the sidebar/ORB chrome. ESLint `design/*` rules run at
+error level on a base-branch ratchet in PR-GATE: new files must be clean, migrations lower the baselines. Details,
+escape hatch and the palette→token table: the contract itself and `.claude/rules/design.md` (loaded when you
+touch `src/pages/**` or `src/components/**`).
 
 ## Voice navigation — the screen registry (VTID-04502)
 

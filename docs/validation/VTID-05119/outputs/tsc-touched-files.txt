@@ -1,0 +1,1 @@
+tsc --noEmit -p tsconfig.app.json: exit 2 with pre-existing errors; grep for read-json-body|recommendation-matches|caller-identity|fetch-user-context|generate-enhanced → no matches

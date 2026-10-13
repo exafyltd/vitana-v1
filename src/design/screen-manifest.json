@@ -1,0 +1,2765 @@
+{
+  "_comment": "VTID-05107 Spotlight screen manifest. One archetype per screen route. Edit archetype/status by hand; run node scripts/design/screen-manifest.mjs --sync after adding or removing routes.",
+  "screens": [
+    {
+      "path": "/",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/_intro/:tenantSlug",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/*",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/activity",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/alerts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/personality",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/playground",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/routing",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/sessions",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/speeches",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/tools",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/assistant/voice",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/access",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/actions",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/apis",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/data-rights",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/events",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/policies",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/security",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/audit/users",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/autopilot/automations",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/autopilot/growth",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/autopilot/guardrails",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/autopilot/planning",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/autopilot/recommendations",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/autopilot/runs",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/creators",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/event-game",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/groups",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/invitations",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/live-rooms",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/meetups",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/moderation",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/community/reported",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/content",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/content/analytics",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/content/music",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/content/podcasts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/content/uploads",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/content/videos",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/dashboard",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/device-preview",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/feedback/:tab",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/health",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/init-events",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/assistant-usage",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/autopilot-impact",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/engagement",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/events",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/features",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/growth",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/interests",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/journeys",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/overview",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/insights/reports",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/intelligence",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/intelligence/embeddings",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/intelligence/relationships",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/intelligence/signals",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/knowledge/documents",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/knowledge/governance",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/knowledge/indexing",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/knowledge/search-test",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/knowledge/topics",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/live",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/live/attendance",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/live/rooms",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/live/sessions",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/marketplace",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/marketplace/partner-health",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/marketplace/products",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/marketplace/rewards",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/members/audit",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/members/directory",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/members/invitations",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/members/roles",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/members/segments",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/navigator",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/navigator/telemetry",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/notifications",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/notifications/activity",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/notifications/categories",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/notifications/compose",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/settings/billing",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/settings/branding",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/settings/domains",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/settings/feature-flags",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/settings/integrations",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/settings/profile",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/system",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/system/bootstrap",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/system/creators",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/admin/system/tenants",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "migrated",
+      "phase": "7"
+    },
+    {
+      "path": "/ai",
+      "archetype": "conversation",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/ai/companion",
+      "archetype": "conversation",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/ai/daily-summary",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/ai/insights",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/ai/recommendations",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/alkalma",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/alkalma/confirmed",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/apply",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/assistant",
+      "archetype": "conversation",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/auth/confirmed",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/autopilot",
+      "archetype": "dashboard",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/autopilot/audiobook",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/backoffice/*",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/accounting/chart-of-accounts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/accounting/journals",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/accounting/periods",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/activity",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/approvals/my-requests",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/approvals/policies",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/approvals/queue",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/audit/erp-log",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/audit/receipts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/audit/trail",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/dashboard",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/finance/bank-reconciliation",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/finance/payments",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/health",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/inbox",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/reports/aging",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/reports/pnl",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/contacts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/credit-notes",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/followups",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/invoices",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/leads",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/opportunities",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/sales/quotations",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/settings/access",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/backoffice/settings/company",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Backoffice",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/business",
+      "archetype": "storefront",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/business/analytics",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/business/clients",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/business/listings",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/business/opportunities",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/business/sell-earn",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/business/services",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/calendar",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Calendar & reminders",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/calendar/entry/:entryId",
+      "archetype": "detail",
+      "tier": "B",
+      "area": "Calendar & reminders",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/checkout/success",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/events-meetups",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/find-partner",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/groups",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/groups/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/live-rooms",
+      "archetype": "focus-feed",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/live-rooms/:roomId/view",
+      "archetype": "immersive",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/media-hub",
+      "archetype": "focus-feed",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/members",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/my-groups/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/open-asks",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/comm/talk-to-vitana",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce-login",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/commerce/connect",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/connect/authorize",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/connect/privacy",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/connections/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/health-orders",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/health-orders/inbox",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/invites/:token/accept",
+      "archetype": "form",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/join",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/commerce/team",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/community/event-game",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/connectors",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Settings",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/creator/onboarded",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/daily-diary",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/delete-account",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/dev",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/agents",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/agents/crew-template",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/agents/qa-test",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/agents/validator",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/agents/worker",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/cicd",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/cicd/artifacts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/cicd/matrix",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/cicd/runs",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/command",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/command/approvals",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/command/autopilot-runs",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/command/compose",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/command/history",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/command/tasks",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/dashboard",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/dashboard/ai-feed",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/dashboard/alerts",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/dashboard/health",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/docs",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/docs/catalogs",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/docs/frontpages",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/docs/role-views",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/docs/screen-lists",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/gateway",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/gateway/mobile",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/gateway/requests",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/gateway/webhooks",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/login",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/oasis",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/oasis/ledger",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/oasis/policies",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/oasis/state",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/observability",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/observability/costs",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/observability/metrics",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/observability/traces",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/pipelines",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/pipelines/canary",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/pipelines/rollbacks",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/pipelines/tests",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/settings",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/settings/auth",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/settings/flags",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/settings/tenants",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/vtid",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/vtid/analytics",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/vtid/issue",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/dev/vtid/search",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Dev",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/discover",
+      "archetype": "storefront",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/ai-picks",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/category/:subcategory",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/deals-offers",
+      "archetype": "storefront",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/doctors-coaches",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/marketplace",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/orders",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/product/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/provider/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/supplements",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/discover/wellness-services",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/download",
+      "archetype": "collection",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/e/:slug",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/e/game/:slug",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/earthlinks/*",
+      "archetype": "collection",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/exafy-admin",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Admin",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/health",
+      "archetype": "dashboard",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/conditions",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/education",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/my-biology",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/pillars",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/plans",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/services-hub",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/health/vitana-index",
+      "archetype": "dashboard",
+      "tier": "B",
+      "area": "Health",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/home",
+      "archetype": "focus-feed",
+      "tier": "A",
+      "area": "News & posts",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/home/comments",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "News & posts",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/home/compose",
+      "archetype": "form",
+      "tier": "A",
+      "area": "News & posts",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/home/notif",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "News & posts",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/i/:code",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/inbox",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/archived",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/g/:groupId",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/g/:groupId/msg/:messageId",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/inspiration",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/t/:threadId",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/t/:threadId/msg/:messageId",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/u/:recipientId",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/inbox/u/:recipientId/msg/:messageId",
+      "archetype": "conversation",
+      "tier": "A",
+      "area": "Messages",
+      "status": "migrated",
+      "phase": "2-4"
+    },
+    {
+      "path": "/intents/board",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/intents/match/:id",
+      "archetype": "detail",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/intents/mine",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/invite",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/logout",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/maxina",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/maxina_support",
+      "archetype": "collection",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/maxina/app",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/maxina/confirmed",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/me/matches",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Profile",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/me/profile",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Profile",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/memory",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/memory/diary",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/memory/permissions",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/memory/recall",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/memory/timeline",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "AI & memory",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/my-tickets",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/news/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "News & posts",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/oauth/complete",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/oauth/consent",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/onboarding/welcome",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/packages/success",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/partner/connections",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/partner/connections/:id",
+      "archetype": "detail",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/appointments",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/care-team",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/dashboard",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/goals",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/health",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/insurance",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/notifications",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/patient/results",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Health",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/post/:source/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "News & posts",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/privacy",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/billing",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/dashboard",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/education",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/patients",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/profile",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/referrals",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/schedule",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/professional/tools",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Professional",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/profile/:id",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Profile",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/profile/me/privacy",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Profile",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/profile/subscriptions",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Profile",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/pub/campaigns/:id",
+      "archetype": "detail",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/pub/events/:id",
+      "archetype": "detail",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/redeem",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/reminders",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Calendar & reminders",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/reminders/fire/:fireId",
+      "archetype": "detail",
+      "tier": "B",
+      "area": "Calendar & reminders",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/reset-password",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/search",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/settings",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/billing",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/connected-apps",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/limitations",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/notifications",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/preferences",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/privacy",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/social",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/settings/tenant-role",
+      "archetype": "form",
+      "tier": "B",
+      "area": "Settings",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/sharing",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Sharing",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/sharing/campaigns",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Sharing",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/sharing/campaigns/:id",
+      "archetype": "detail",
+      "tier": "B",
+      "area": "Sharing",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/sharing/data-consent",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Sharing",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/sharing/distribution",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Sharing",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/shop",
+      "archetype": "immersive",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/staff/communications",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/dashboard",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/queue",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/reports",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/schedule",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/tasks",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/time",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/staff/tools",
+      "archetype": "workspace",
+      "tier": "C",
+      "area": "Staff",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/support",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Settings",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/terms",
+      "archetype": "form",
+      "tier": "P",
+      "area": "Public, auth, legal & portals",
+      "status": "legacy",
+      "phase": "7"
+    },
+    {
+      "path": "/tickets/demo",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/tickets/success",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Other member screens",
+      "status": "legacy",
+      "phase": "5"
+    },
+    {
+      "path": "/u/:identifier",
+      "archetype": "detail",
+      "tier": "A",
+      "area": "Community & social",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/universal-cart",
+      "archetype": "collection",
+      "tier": "A",
+      "area": "Discover & marketplace",
+      "status": "legacy",
+      "phase": "2-4"
+    },
+    {
+      "path": "/wallet",
+      "archetype": "dashboard",
+      "tier": "B",
+      "area": "Wallet",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/wallet/balance",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Wallet",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/wallet/rewards",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Wallet",
+      "status": "migrated",
+      "phase": "5"
+    },
+    {
+      "path": "/wallet/subscriptions",
+      "archetype": "collection",
+      "tier": "B",
+      "area": "Wallet",
+      "status": "migrated",
+      "phase": "5"
+    }
+  ]
+}

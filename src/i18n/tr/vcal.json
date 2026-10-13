@@ -22,27 +22,32 @@
       "morning": "Günaydın ☀️",
       "afternoon": "İyi öğleden sonralar 🌤️",
       "evening": "İyi akşamlar 🌙",
-      "night": "İyi geceler 🌙"
+      "night": "İyi geceler 🌙",
+      "_pending_review": {}
     },
     "day": {
-      "addFor": "{date} için yeni kayıt"
+      "addFor": "{date} için yeni kayıt",
+      "_pending_review": {}
     },
     "views": {
       "day": "Gün",
       "week": "Hafta",
-      "month": "Ay"
+      "month": "Ay",
+      "_pending_review": {}
     },
     "rel": {
       "now": "şimdi",
       "minutes": "{count} dk sonra",
       "hours": "{count} sa sonra",
-      "days": "{count} gün sonra"
+      "days": "{count} gün sonra",
+      "_pending_review": {}
     },
     "reminder": {
       "eveningBefore": "Önceki akşam {time}",
       "atStart": "Başlangıçta",
       "hoursBefore": "{count} sa önce",
-      "minutesBefore": "{count} dk önce"
+      "minutesBefore": "{count} dk önce",
+      "_pending_review": {}
     },
     "kinds": {
       "nutrition": "Beslenme",
@@ -78,28 +83,33 @@
     "subscription": {
       "renews": "Premium yenileniyor",
       "ends": "Premium sona eriyor",
-      "trialEnds": "Deneme süresi bitiyor"
+      "trialEnds": "Deneme süresi bitiyor",
+      "_pending_review": {}
     },
     "overlap": {
       "title": "Bu çakışıyor",
       "own": "{{title}} · {{time}}",
       "busy": "Meşgul · {{time}}",
-      "external": "Meşgul (başka takvim) · {{time}}"
+      "external": "Meşgul (başka takvim) · {{time}}",
+      "_pending_review": {}
     },
     "findTime": {
       "action": "Zaman bul",
       "loading": "Boş zaman arıyorum …",
       "pick": "Uygun zamanlar",
       "none": "Önümüzdeki günlerde uygun boş zaman yok.",
-      "error": "Boş zamanlar şu an yüklenemedi."
+      "error": "Boş zamanlar şu an yüklenemedi.",
+      "_pending_review": {}
     },
     "empty": {
       "title": "Planlanmış bir şey yok – sakin bir gün",
-      "hint": "Ne planladığını Vitana'ya söyle, o eklesin."
+      "hint": "Ne planladığını Vitana'ya söyle, o eklesin.",
+      "_pending_review": {}
     },
     "week": {
       "title": "{date} haftası",
-      "free": "boş"
+      "free": "boş",
+      "_pending_review": {}
     },
     "month": {
       "more": "+{count}",
@@ -135,7 +145,8 @@
       "autopilot_review": "İncelemeni bekliyor",
       "ticket_due": "Talep süresi",
       "erp_approval": "Onay bekliyor",
-      "readOnly": "Bunu oluştuğu yerde bitirirsin – takvim yalnızca ne zaman olduğunu gösterir."
+      "readOnly": "Bunu oluştuğu yerde bitirirsin – takvim yalnızca ne zaman olduğunu gösterir.",
+      "_pending_review": {}
     },
     "subscribe": {
       "title": "Takvim uygulamamda göster",
@@ -157,23 +168,28 @@
       "titleFor": {
         "google": "Google Takvim'i bağla",
         "apple": "Apple Takvim'i bağla",
-        "outlook": "Outlook'u bağla"
+        "outlook": "Outlook'u bağla",
+        "_pending_review": {}
       },
       "introFor": {
         "google": "Vitanaland kayıtların Google Takvim'inde görünür ve orada güncel kalır.",
         "apple": "Vitanaland kayıtların iPhone, iPad ve Mac'indeki Takvim'de görünür ve orada güncel kalır.",
-        "outlook": "Vitanaland kayıtların Outlook takviminde görünür ve orada güncel kalır."
+        "outlook": "Vitanaland kayıtların Outlook takviminde görünür ve orada güncel kalır.",
+        "_pending_review": {}
       },
       "createFor": {
         "google": "Google için bağlantı oluştur",
         "apple": "Apple için bağlantı oluştur",
-        "outlook": "Outlook için bağlantı oluştur"
+        "outlook": "Outlook için bağlantı oluştur",
+        "_pending_review": {}
       },
       "openIn": {
         "google": "Google Takvim'e ekle",
         "apple": "Apple Takvim'e ekle",
-        "outlook": "Outlook'a ekle"
-      }
+        "outlook": "Outlook'a ekle",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "move": {
       "action": "Taşı",
@@ -187,8 +203,10 @@
         "owned_by_source": "Bu bir rezervasyondan ya da plandan geliyor – orada taşı, yoksa geri döner.",
         "recurring": "Bir seriyi serinin kendisinden taşırsın.",
         "completed": "Tamamlanan yerinde kalır.",
-        "cancelled": "İptal edilen taşınamaz."
-      }
+        "cancelled": "İptal edilen taşınamaz.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "google": {
       "title": "Google Takvim ile eşitle",
@@ -202,12 +220,14 @@
       "problem": "Son eşitleme başarısız oldu – otomatik olarak tekrar deneyeceğiz.",
       "error": "Şu an olmadı. Birazdan tekrar dene.",
       "busy": "Dolu (Google)",
-      "busyHint": "Google takviminden bir etkinlik – yalnızca saat görünür"
+      "busyHint": "Google takviminden bir etkinlik – yalnızca saat görünür",
+      "_pending_review": {}
     },
     "quietHours": {
       "title": "Sessiz saatler",
       "body": "Sessiz saatlerinde hatırlatma gelmez – hemen öncesinde gelir.",
-      "link": "Sessiz saatleri ayarla"
+      "link": "Sessiz saatleri ayarla",
+      "_pending_review": {}
     },
     "guide": {
       "eyebrow": "Vitana öneriyor",
@@ -224,7 +244,8 @@
       "planWithVitana": "Vitana ile planla",
       "seeWeek": "Haftayı gör",
       "connectAction": "Takvimi bağla",
-      "dismiss": "Bugünlük gizle"
+      "dismiss": "Bugünlük gizle",
+      "_pending_review": {}
     },
     "journey": {
       "title": "Yolculuğun",
@@ -243,14 +264,16 @@
       "dailyAt": "Her gün saat",
       "addConfirm": "Ekle",
       "inCalendar": "Takvimde",
-      "habitAdded": "Alışkanlık takvimine eklendi"
+      "habitAdded": "Alışkanlık takvimine eklendi",
+      "_pending_review": {}
     },
     "remindersSection": {
       "title": "Hatırlatıcılar",
       "none": "Planlanmış yok",
       "upcoming": "{count} yaklaşan",
       "upcomingOne": "1 yaklaşan",
-      "next": "sıradaki {when}"
+      "next": "sıradaki {when}",
+      "_pending_review": {}
     },
     "calendars": {
       "title": "Takvimler",
@@ -276,12 +299,14 @@
       "connect": "Bağla",
       "reconnect": "Yeniden bağla",
       "manage": "Bağlı Uygulamalar'da yönet",
-      "showInAppHint": "Vitanaland kayıtlarını takvim uygulamanda gör"
+      "showInAppHint": "Vitanaland kayıtlarını takvim uygulamanda gör",
+      "_pending_review": {}
     },
     "add": {
       "title": "Yeni kayıt",
       "created": "Eklendi ✨",
-      "error": "Şu anda kaydedilemedi. Biraz sonra tekrar dene."
+      "error": "Şu anda kaydedilemedi. Biraz sonra tekrar dene.",
+      "_pending_review": {}
     },
     "form": {
       "title": "Başlık",
@@ -304,8 +329,10 @@
         "health": "Sağlık",
         "workout": "Antrenman",
         "community": "Topluluk",
-        "nutrition": "Beslenme"
-      }
+        "nutrition": "Beslenme",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "milestone": "Kilometre taşı: {title}",
     "more": "+{count} daha",
@@ -314,13 +341,15 @@
       "entriesOne": "1 kayıt",
       "entries": "{count} kayıt",
       "next": "sıradaki {time}",
-      "done": "{count} tamamlandı"
+      "done": "{count} tamamlandı",
+      "_pending_review": {}
     },
     "workSection": {
       "title": "İş",
       "waitingOne": "Seni bekleyen 1 şey var",
       "waiting": "Seni bekleyen {count} şey var",
-      "open": "Yönetimde aç"
+      "open": "Yönetimde aç",
+      "_pending_review": {}
     },
     "indexGain": "Vitana Index’inde +{points} {pillar}",
     "edit": {
@@ -383,8 +412,8 @@
       "cancel": "İptal",
       "done": "Paylaşıldı – topluluk katılacağını görüyor",
       "viewPost": "Akışta paylaşıldı – gönderiyi gör",
-      "alreadyShared": "Bu etkinliği zaten paylaştın",
-      "notShareable": "Bu etkinlik artık paylaşılamaz – bitti, iptal edildi ya da herkese açık değil.",
+      "alreadyShared": "Bu kaydı zaten paylaştın",
+      "notShareable": "Bu kayıt artık paylaşılamaz: geçti, iptal edildi ya da tamamlandı.",
       "limit": "Bugün zaten çok paylaştın. Yarın tekrar dene.",
       "duplicate": "Bu metni az önce paylaştın. Başka bir şey yaz ya da biraz bekle.",
       "suspended": "Hesabın şu anda paylaşım yapamıyor.",
@@ -405,8 +434,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Başkalarının gördüğü başlık",
+      "calendarTitle": "Takviminde: {title}",
+      "defaultTextOwn": "{date}: {title}. Kim geliyor?",
+      "placeShown": "Yer gösteriliyor: {place}",
+      "placeHidden": "Yeri göster – kapalı: yer gizli kalır",
+      "showPlace": "Yeri göster",
+      "previewLabel": "Başkaları böyle görür",
+      "sensitiveHint": "Bir sağlık randevusu paylaşıyorsun. Başlığı ve yeri kontrol et – başkaları yalnızca burada gösterileni görür."
     },
     "feedCard": {
       "upcoming": "Yakında",
@@ -427,8 +472,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "Takvimime ekle",
+      "added": "Takvimine eklendi",
+      "alreadyAdded": "Zaten takviminde",
+      "notOpen": "Bu randevu geçti ya da iptal edildi.",
+      "addError": "Olmadı. Birazdan tekrar dene."
     },
     "invite": {
       "action": "Davet et",
@@ -508,5 +563,6 @@
         "listen": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

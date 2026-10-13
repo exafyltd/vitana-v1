@@ -132,6 +132,31 @@ export default {
 						tint: 'hsl(var(--pill-sleep-tint))'
 					}
 				},
+				/* VTID-05107 Spotlight semantic colour roles (SR-18). */
+				status: {
+					success: { DEFAULT: 'hsl(var(--status-success))', subtle: 'hsl(var(--status-success-subtle))' },
+					warning: { DEFAULT: 'hsl(var(--status-warning))', subtle: 'hsl(var(--status-warning-subtle))' },
+					error: { DEFAULT: 'hsl(var(--status-error))', subtle: 'hsl(var(--status-error-subtle))' },
+					info: { DEFAULT: 'hsl(var(--status-info))', subtle: 'hsl(var(--status-info-subtle))' },
+				},
+				severity: {
+					low: 'hsl(var(--severity-low))',
+					medium: 'hsl(var(--severity-medium))',
+					high: 'hsl(var(--severity-high))',
+					critical: 'hsl(var(--severity-critical))',
+				},
+				category: {
+					1: 'hsl(var(--category-1))', 2: 'hsl(var(--category-2))', 3: 'hsl(var(--category-3))', 4: 'hsl(var(--category-4))',
+					5: 'hsl(var(--category-5))', 6: 'hsl(var(--category-6))', 7: 'hsl(var(--category-7))', 8: 'hsl(var(--category-8))',
+				},
+				surface: {
+					page: 'hsl(var(--surface-page))',
+					raised: 'hsl(var(--surface-raised))',
+					sunken: 'hsl(var(--surface-sunken))',
+					'page-from': 'hsl(var(--surface-page-from))',
+					'page-via': 'hsl(var(--surface-page-via))',
+					'page-to': 'hsl(var(--surface-page-to))',
+				},
 				sys: {
 					vitana: {
 						accent: 'hsl(var(--sys-vitana-accent))',
@@ -226,7 +251,29 @@ export default {
 					}
 				}
 			},
+			/* VTID-05105 Spotlight tokens — see src/index.css (--sp-*). */
+			maxWidth: {
+				stage: 'var(--sp-stage-max)',
+				form: 'var(--sp-form)',
+				wide: 'calc(var(--sp-stage-max) + var(--sp-gap) + var(--sp-rail))',
+			},
+			spacing: {
+				'vcard-thumb': '4rem',
+				'vcard-row-thumb': '3rem',
+				'vcard-compact': '4.5rem',
+				'sp-gap': 'var(--sp-gap)',
+			},
+			aspectRatio: {
+				landscape: '4 / 3',
+				portrait: '4 / 5',
+			},
+			boxShadow: {
+				vcard: 'var(--sp-elevation-1)',
+				'vcard-raised': 'var(--sp-elevation-2)',
+			},
 			borderRadius: {
+				vcard: 'var(--sp-card-radius)',
+				'vcard-sm': 'var(--sp-card-radius-sm)',
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'

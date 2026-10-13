@@ -12,6 +12,8 @@ import { adminDashboardNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const PAGE_SIZE = 20;
 
 const statusVariants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
@@ -22,6 +24,7 @@ const statusVariants: Record<string, "default" | "secondary" | "destructive" | "
 };
 
 export default function ActivityFeed() {
+  const spotlight = useSpotlightEnabled();
   const [page, setPage] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
   const [sourceFilter, setSourceFilter] = useState("");
@@ -113,7 +116,7 @@ export default function ActivityFeed() {
       key: "message",
       label: "Message",
       render: (value: string) => (
-        <span className="text-sm text-muted-foreground max-w-[300px] truncate block" title={value}>
+        <span className="text-sm text-muted-foreground max-w-72 truncate block" title={value}>
           {value ? (value.length > 80 ? value.slice(0, 80) + "..." : value) : "--"}
         </span>
       ),
@@ -130,10 +133,8 @@ export default function ActivityFeed() {
     },
   ];
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminDashboardNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
+  const adminBody = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title={t('screens.admin.activityFeed')}
@@ -192,7 +193,19 @@ export default function ActivityFeed() {
             onPageChange={setPage}
           />
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminDashboardNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-raised to-surface-page-via min-h-screen">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

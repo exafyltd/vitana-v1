@@ -37,6 +37,8 @@ vi.mock("@/hooks/useTenant", () => ({
 }));
 vi.mock("@/hooks/useRole", () => ({ useRole: () => ({ hasPermission: () => true, isLoading: false }) }));
 vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => true }));
+// VTID-05108: phones never get Spotlight; this suite renders no QueryClient.
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/lib/i18n-toast", () => ({ t: (k: string) => k, useI18nLocale: () => "en" }));
 vi.mock("@/lib/product-analytics/client", () => ({ track: h.track }));
 vi.mock("@/lib/feature-flags", () => ({ isFeedV2Enabled: () => true }));
@@ -92,6 +94,9 @@ vi.mock("@/components/home/LongevityJourneyCard", () => ({ LongevityJourneyCard:
 vi.mock("@/components/home/InviteFriendCard", () => ({ InviteFriendCard: () => null }));
 vi.mock("@/components/home/NewsFeedItemCard", () => ({ NewsFeedItemCard: () => null }));
 vi.mock("@/components/home/NewMemberCard", () => ({ NewMemberCard: () => null }));
+// VTID-05085: Home now reads the Unified Card System state.
+vi.mock("@/hooks/useEnrichmentCards", () => ({ useEnrichmentCards: () => ({ cards: [], dismiss: vi.fn() }) }));
+vi.mock("@/components/vitana/card-registry", () => ({ getVitanaCardComponent: () => null }));
 vi.mock("@/hooks/useInviteFriendShare", () => ({ useInviteFriendShare: () => ({ shareInvite: vi.fn() }) }));
 vi.mock("@/hooks/useNewsFeed", () => ({
   useLongevityNewsFeed: () => ({ data: undefined, fetchNextPage: vi.fn(), hasNextPage: false, isFetchingNextPage: false, isLoading: false, refetch: vi.fn() }),

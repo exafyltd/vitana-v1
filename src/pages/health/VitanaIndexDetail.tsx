@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
+import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -50,6 +51,11 @@ import { cn } from "@/lib/utils";
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { Button } from "@/components/ui/button";
+import { VitanaIndexHeroCard } from "@/components/spotlight/tier-b/VitanaIndexHeroCard";
+import { TierBError } from "@/components/spotlight/tier-b/TierBKit";
 
 /*
  * VTID-04773 — "Understand index" (from the profile's Vitana Index card).
@@ -560,8 +566,10 @@ export default function VitanaIndexDetail() {
   const { data: hasBloodPanel = false, refetch: refetchBlood } = useHasBloodPanel();
   const [logDialogOpen, setLogDialogOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
 
-  const steps = useMemo(() => buildNextSteps(index, { hasBloodPanel }), [index, hasBloodPanel]);
+  const steps =useMemo(() => buildNextSteps(index, { hasBloodPanel }), [index, hasBloodPanel]);
   const focusStep = steps.find((s) => s.id === "focus");
   const focusPillar = focusStep?.pillar;
 
@@ -614,6 +622,62 @@ export default function VitanaIndexDetail() {
     },
   };
 
+  const dialogs = (
+    <>
+      <VitanaLogDataDialog open={logDialogOpen} onOpenChange={setLogDialogOpen} />
+      <HealthReportUploadSheet
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        defaultCategory="blood_panel"
+        onUploadComplete={() => {
+          refetchBlood();
+          queryClient.invalidateQueries({ queryKey: ["lab-reports"] });
+        }}
+      />
+    </>
+  );
+
+  // VTID-05111 — Spotlight dashboard: the Index is the one spotlight card; the
+  // next steps, goal, pillars and explainer follow in the stage column.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t("screens.health.vitanaIndex")} description={t("spotlightTierB.health.indexDescription")} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="dashboard"
+          header={{ title: t("screens.health.vitanaIndex"), description: t("spotlightTierB.health.indexDescription"), emoji: "📈" }}
+        >
+          <div className="flex flex-col gap-4">
+            <VitanaIndexHeroCard
+              index={index}
+              isLoading={isLoading}
+              showPillars={false}
+              actions={
+                <>
+                  <Button size="sm" className="rounded-full" onClick={() => setLogDialogOpen(true)} data-testid="vitana-index-log">
+                    <Plus className="me-1.5 h-4 w-4" aria-hidden />
+                    {t(k("hero.logToday"))}
+                  </Button>
+                  <Button size="icon" variant="outline" className="rounded-full" onClick={() => refetch()} aria-label={t(k("hero.refreshAria"))}>
+                    <RefreshCw className="h-4 w-4" aria-hidden />
+                  </Button>
+                </>
+              }
+            />
+            {isError && <TierBError onRetry={() => refetch()} />}
+            <NextSteps steps={steps} views={views} />
+            <GoalCard index={index} />
+            <PillarsCard index={index} onLog={() => setLogDialogOpen(true)} />
+            <VitanaPillarAgentsPanel />
+            <MissionAlignmentCard />
+            <HowItWorks onJourney={() => navigate("/autopilot")} />
+          </div>
+        </ScreenFrame>
+        {dialogs}
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO
@@ -629,6 +693,9 @@ export default function VitanaIndexDetail() {
           {isError && (
             <p className="rounded-2xl bg-red-50 p-3 text-sm text-red-700">{t("screens.health.couldNotLoadYourIndexTry")}</p>
           )}
+
+          {/* VTID-05086: Unified Card System — stacked below the index display. */}
+          <EnrichmentCardStrip screen="vitana-index" />
 
           <NextSteps steps={steps} views={views} />
 

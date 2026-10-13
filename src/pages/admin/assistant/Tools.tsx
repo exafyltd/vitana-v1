@@ -14,6 +14,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAssistantSurfaces } from "@/hooks/useAdminAssistant";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const SURFACE_LABELS: Record<string, string> = {
   voice_live: "Voice Live (ORB)",
@@ -25,6 +27,7 @@ const SURFACE_LABELS: Record<string, string> = {
 };
 
 export default function AssistantTools() {
+  const spotlight = useSpotlightEnabled();
   const surfacesQuery = useAssistantSurfaces();
   const surfaces = surfacesQuery.data || [];
 
@@ -35,10 +38,8 @@ export default function AssistantTools() {
     return [];
   }
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="assistant" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🔧"
           title={t('screens.admin.toolConfiguration')}
@@ -98,7 +99,19 @@ export default function AssistantTools() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="assistant" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

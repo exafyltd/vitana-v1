@@ -1,0 +1,29 @@
+{
+  "vtid": "VTID-05107",
+  "kind": "feature",
+  "paths": [
+    "docs/design-system/**",
+    "docs/UNIVERSAL_SCREEN_PATTERN.md",
+    "docs/validation/VTID-05107/**",
+    ".kiro/specs/desktop-spotlight/**",
+    ".kiro/steering/vitana-design.md",
+    ".claude/rules/design.md",
+    "CLAUDE.md",
+    "src/index.css",
+    "tailwind.config.ts",
+    "src/components/StandardHeader.tsx",
+    "src/design/**",
+    "eslint-rules/design/**",
+    "eslint.config.js",
+    "package.json",
+    "scripts/design/**",
+    "scripts/ci/pr-gate/gate.mjs",
+    "scripts/ci/pr-gate/lib.mjs",
+    "scripts/ci/pr-gate/__tests__/design-ratchet.test.mjs",
+    ".github/workflows/PR-GATE.yml",
+    "tests/e2e/staging/design-contract.staging.spec.ts"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

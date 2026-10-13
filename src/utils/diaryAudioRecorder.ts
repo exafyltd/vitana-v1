@@ -10,6 +10,7 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
+import { isAppilixWebView } from "@/lib/webview";
 
 const IS_IOS_DEVICE =
   typeof navigator !== 'undefined' &&
@@ -21,8 +22,32 @@ const HAS_SAFARI_UA =
   /Safari/i.test(navigator.userAgent) &&
   !/CriOS|FxiOS|EdgiOS/i.test(navigator.userAgent);
 
-const IS_APPILIX_WEBVIEW =
-  typeof window !== 'undefined' && !!(window as any).appilix?.postMessage;
+// VTID-05097: set once Web Speech has failed in this page session, so later
+// taps go straight to backend STT. sessionStorage on purpose: one silent
+// fallback per app launch, never sticky for a real browser on the same origin.
+const WEB_SPEECH_UNAVAILABLE_KEY = 'vitana.stt.webSpeechUnavailable';
+
+// Web Speech errors that mean the runtime cannot do recognition at all (an
+// Android WebView, a wrapper without a speech service), as opposed to
+// no-speech/aborted/audio-capture, which the callers already treat as
+// recoverable.
+const WEB_SPEECH_FALLBACK_ERRORS = new Set(['not-allowed', 'service-not-allowed', 'network']);
+
+export function markWebSpeechUnavailable(): void {
+  try {
+    window.sessionStorage.setItem(WEB_SPEECH_UNAVAILABLE_KEY, '1');
+  } catch {
+    /* storage blocked — the caller still switches for this recording */
+  }
+}
+
+function isWebSpeechMarkedUnavailable(): boolean {
+  try {
+    return window.sessionStorage.getItem(WEB_SPEECH_UNAVAILABLE_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Returns true when the runtime cannot reliably use Web Speech API for STT
@@ -33,20 +58,31 @@ const IS_APPILIX_WEBVIEW =
  * `service-not-allowed`. Pure iOS Safari supports the API but only in
  * non-continuous mode; we still fall back to MediaRecorder there for a
  * consistent experience with Android.
+ *
+ * VTID-05097: evaluated at call time (tap), never cached at import — the
+ * Appilix bridge is injected after page load. Some Android Appilix builds
+ * have neither the bridge at tap time nor the `wv` UA token; for those the
+ * callers fall back via shouldFallbackToBackendSTT() and mark the session.
  */
 export function shouldUseBackendSTT(): boolean {
   if (typeof window === 'undefined') return false;
-  if (IS_APPILIX_WEBVIEW) return true;
+  if (isWebSpeechMarkedUnavailable()) return true;
+  if (isAppilixWebView()) return true;
   if (IS_IOS_DEVICE) return true;
   return false;
 }
 
-export function isIOSDevice(): boolean {
-  return IS_IOS_DEVICE;
+/**
+ * VTID-05097: true when a Web Speech error means "this runtime cannot
+ * recognise speech" and nothing was recognised yet in this recording, so the
+ * caller should switch to backend STT silently instead of showing an error.
+ */
+export function shouldFallbackToBackendSTT(error: string, gotResult: boolean): boolean {
+  return !gotResult && WEB_SPEECH_FALLBACK_ERRORS.has(error) && DiaryAudioRecorder.isSupported();
 }
 
-export function isAppilixWebView(): boolean {
-  return IS_APPILIX_WEBVIEW;
+export function isIOSDevice(): boolean {
+  return IS_IOS_DEVICE;
 }
 
 export function isIOSSafari(): boolean {

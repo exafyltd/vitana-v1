@@ -10,6 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const KNOWN_FLAGS = [
   { key: "enable_voice_widget", label: "Voice Widget", description: "Enable the ORB voice assistant widget" },
@@ -18,9 +20,12 @@ const KNOWN_FLAGS = [
   { key: "enable_navigator", label: "Navigator", description: "Enable the guided journey navigator" },
   { key: "enable_notifications", label: "Notifications", description: "Enable push and in-app notifications" },
   { key: "enable_event_game", label: "Maxina Longevity Game", description: "Enable the temporary event-game layer (join/post/leaderboard) and its two scheduled notifications" },
+  // VTID-05105 — Spotlight desktop redesign (docs/plans/desktop-spotlight). Off = today's desktop exactly.
+  { key: "desktop_spotlight", label: "Desktop Spotlight", description: "New desktop design: one dominant card per screen with a context rail (desktop only; phones unchanged)" },
 ] as const;
 
 export default function SettingsFeatureFlags() {
+  const spotlight = useSpotlightEnabled();
   const settingsQuery = useTenantSettings();
   const updateMutation = useUpdateTenantSettings();
   const flags = (settingsQuery.data?.feature_flags || {}) as Record<string, boolean>;
@@ -36,10 +41,8 @@ export default function SettingsFeatureFlags() {
     );
   };
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="settings" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🚩"
           title={t('screens.admin.featureFlags')}
@@ -75,7 +78,19 @@ export default function SettingsFeatureFlags() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="settings" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

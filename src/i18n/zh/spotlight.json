@@ -1,0 +1,30 @@
+{
+  "spotlight": {
+    "rail": {
+      "_pending_review": {
+        "open": true,
+        "title": true,
+        "label": true
+      },
+      "open": "More on this",
+      "title": "More on this",
+      "label": "Related to this screen"
+    },
+    "header": {
+      "_pending_review": {
+        "vitanaIndexLabel": true,
+        "vitanaIndexAria": true
+      },
+      "vitanaIndexLabel": "Vitana Index",
+      "vitanaIndexAria": "Vitana Index: {value}. Tap for details."
+    },
+    "feed": {
+      "_pending_review": {
+        "keyboardHint": true
+      },
+      "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

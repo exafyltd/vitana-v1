@@ -6,6 +6,10 @@ import { healthNavigation } from "@/config/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, FileText, Shield } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { TIER_B_GRID_2 } from "@/components/spotlight/tier-b/TierBKit";
 
 const conditionsItems = [
   { titleKey: "screens.health.riskAssessments", descriptionKey: "screens.health.conditionsSubtitle_riskTools", icon: AlertTriangle, color: "from-orange-500/20 to-amber-500/20" },
@@ -13,6 +17,32 @@ const conditionsItems = [
 ];
 
 export default function ConditionsRisks() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.conditionsRisksHealth')} description={t('spotlightTierB.health.conditionsDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: healthNavigation }}
+          header={{ title: t('screens.health.takeControlYourHealthRisks'), description: t('spotlightTierB.health.conditionsDescription'), emoji: '⚠️' }}
+        >
+          <div className={TIER_B_GRID_2}>
+            {conditionsItems.map((item) => (
+              <VCard
+                key={item.titleKey}
+                size="standard"
+                eyebrow={<item.icon className="h-4 w-4" aria-hidden="true" />}
+                title={t(item.titleKey)}
+                body={t(item.descriptionKey)}
+              />
+            ))}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
   return (
     <AppLayout>
       <SEO title={t('screens.health.conditionsRisksHealth')} description="Assess health risks and create preventive action plans" canonical={window.location.href} />

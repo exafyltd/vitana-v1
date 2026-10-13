@@ -34,6 +34,10 @@ vi.mock('@/components/SEO', () => ({ default: () => null }));
 vi.mock('@/components/RTLProvider', () => ({ useRTL: () => ({ isRTL: false }) }));
 // Phone layout: the section switcher is a native select.
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => true }));
+// VTID-05113: the page reads the Spotlight switch (tenant flag + preview
+// override); phones never get Spotlight, so this harness pins the off value
+// instead of mounting a TenantProvider and a router for it.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 vi.mock('@/components/admin/rewards/image-shrink', async (orig) => ({
   ...(await orig<typeof import('@/components/admin/rewards/image-shrink')>()),
   prepareItemImage: vi.fn(async () => ({ content_type: 'image/webp', data_base64: 'UklGRg==' })),

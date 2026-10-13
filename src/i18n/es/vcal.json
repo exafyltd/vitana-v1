@@ -387,8 +387,8 @@
       "cancel": "Cancelar",
       "done": "Compartido: la comunidad ya sabe que vas",
       "viewPost": "Compartido en el feed – ver publicación",
-      "alreadyShared": "Ya compartiste este evento",
-      "notShareable": "Este evento ya no se puede compartir: terminó, se canceló o no es público.",
+      "alreadyShared": "Ya compartiste esta entrada",
+      "notShareable": "Esta entrada ya no se puede compartir: terminó, se canceló o está hecha.",
       "limit": "Hoy ya compartiste mucho. Vuelve a intentarlo mañana.",
       "duplicate": "Acabas de publicar este texto. Escribe otra cosa o espera un momento.",
       "suspended": "Tu cuenta no puede publicar ahora mismo.",
@@ -409,8 +409,24 @@
         "limit": true,
         "duplicate": true,
         "suspended": true,
-        "error": true
-      }
+        "error": true,
+        "cardTitleLabel": true,
+        "calendarTitle": true,
+        "defaultTextOwn": true,
+        "placeShown": true,
+        "placeHidden": true,
+        "showPlace": true,
+        "previewLabel": true,
+        "sensitiveHint": true
+      },
+      "cardTitleLabel": "Título que ven los demás",
+      "calendarTitle": "En tu calendario: {title}",
+      "defaultTextOwn": "El {date}: {title}. ¿Quién se apunta?",
+      "placeShown": "Lugar visible: {place}",
+      "placeHidden": "Mostrar el lugar – desactivado: el lugar sigue siendo privado",
+      "showPlace": "Mostrar lugar",
+      "previewLabel": "Así lo ven los demás",
+      "sensitiveHint": "Estás compartiendo una cita de salud. Revisa el título y el lugar: los demás solo ven lo que se muestra aquí."
     },
     "feedCard": {
       "upcoming": "Próximamente",
@@ -431,8 +447,18 @@
         "openRoom": true,
         "joinRoom": true,
         "unavailable": true,
-        "untitled": true
-      }
+        "untitled": true,
+        "addToCalendar": true,
+        "added": true,
+        "alreadyAdded": true,
+        "notOpen": true,
+        "addError": true
+      },
+      "addToCalendar": "Añadir a mi calendario",
+      "added": "Añadido a tu calendario",
+      "alreadyAdded": "Ya está en tu calendario",
+      "notOpen": "Esta cita ya pasó o se canceló.",
+      "addError": "No ha funcionado. Inténtalo de nuevo en un momento."
     },
     "invite": {
       "action": "Invitar",

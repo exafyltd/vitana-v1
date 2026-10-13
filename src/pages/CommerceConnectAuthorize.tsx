@@ -13,6 +13,15 @@
  * Submitting for verification is always confirmed by the supplier, and the
  * partner terms are accepted only on Vitanaland itself (owner decision
  * 2026-10-02).
+ *
+ * VTID-05133: Supabase sends EVERY OAuth consent here (one authorization path
+ * per project), including members connecting ChatGPT/Claude to the Maxina
+ * Community connector. The pending authorization's `resource` says which one
+ * asked (ai_connection_authorization_info, resolved server-side): Community →
+ * CommunityConsent (neutral Maxina screen, per-category permissions, recorded
+ * before approving). Commerce or unknown → this supplier screen, unchanged; a
+ * Commerce approval also records a `commerce` grant, best effort, so the
+ * supplier can disconnect it later in Settings.
  */
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -22,13 +31,15 @@ import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { useAuth } from '@/context/AuthProvider';
 import { t } from '@/lib/i18n-toast';
 import { decideConsent, lookupConsent, redirectHostOf, type ConsentDetails } from '@/lib/commerce-mcp';
+import { grantFromAuthorization, lookupAuthorizationInfo, type AuthorizationInfo } from '@/lib/ai-connections';
+import { CommunityConsent } from '@/components/ai-connect/CommunityConsent';
 
 const K = 'screens.commerceconnect';
 const CAN_DO = [`${K}.canDo1`, `${K}.canDo2`, `${K}.canDo3`] as const;
 
 type View =
   | { kind: 'loading' }
-  | { kind: 'consent'; details: ConsentDetails }
+  | { kind: 'consent'; details: ConsentDetails; info: AuthorizationInfo | null }
   | { kind: 'redirecting' }
   | { kind: 'invalid' };
 
@@ -46,13 +57,16 @@ export default function CommerceConnectAuthorize() {
       return;
     }
     let cancelled = false;
-    void lookupConsent(authorizationId).then((r) => {
+    void lookupConsent(authorizationId).then(async (r) => {
       if (cancelled) return;
       if (r.kind === 'redirect') {
         setView({ kind: 'redirecting' });
         window.location.assign(r.url);
-      } else if (r.kind === 'consent') setView({ kind: 'consent', details: r.details });
-      else setView({ kind: 'invalid' });
+      } else if (r.kind === 'consent') {
+        const info = await lookupAuthorizationInfo(authorizationId);
+        if (cancelled) return;
+        setView({ kind: 'consent', details: r.details, info });
+      } else setView({ kind: 'invalid' });
     });
     return () => {
       cancelled = true;
@@ -63,6 +77,8 @@ export default function CommerceConnectAuthorize() {
     setWorking(true);
     setFailed(false);
     try {
+      // VTID-05133: best effort — Commerce keeps working without the row (no row = unchanged).
+      if (approve) await grantFromAuthorization(authorizationId, ['commerce']).catch(() => undefined);
       const next = await decideConsent(authorizationId, approve);
       if (!next) throw new Error('no_redirect');
       setView({ kind: 'redirecting' });
@@ -73,6 +89,23 @@ export default function CommerceConnectAuthorize() {
       setWorking(false);
     }
   };
+
+  if (view.kind === 'consent' && view.info?.product === 'community') {
+    return (
+      <div className="min-h-screen bg-background px-4 py-10">
+        <div className="mx-auto max-w-md rounded-3xl border border-border bg-card p-6 shadow-xl">
+          <CommunityConsent
+            authorizationId={authorizationId}
+            clientName={view.details.clientName || view.info.clientName}
+            redirectHost={redirectHostOf(view.details.redirectUri) ?? view.info.redirectHost}
+            email={user?.email ?? null}
+            decide={(approve) => decideConsent(authorizationId, approve)}
+            go={(url) => window.location.assign(url)}
+          />
+        </div>
+      </div>
+    );
+  }
 
   const client = view.kind === 'consent' && view.details.clientName ? view.details.clientName : t(`${K}.unknownClient`);
   const redirectHost = view.kind === 'consent' ? redirectHostOf(view.details.redirectUri) : null;

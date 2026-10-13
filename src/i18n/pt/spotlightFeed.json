@@ -1,0 +1,60 @@
+{
+  "_pending_review": {},
+  "spotlightFeed": {
+    "_pending_review": {},
+    "header": {
+      "_pending_review": {
+        "description": true
+      },
+      "description": "Longevity science and news from your community"
+    },
+    "tabs": {
+      "_pending_review": {
+        "ariaLabel": true
+      },
+      "ariaLabel": "Filter news"
+    },
+    "stage": {
+      "_pending_review": {
+        "label": true
+      },
+      "label": "Your news feed"
+    },
+    "post": {
+      "_pending_review": {
+        "commentsTitle": true,
+        "openComments": true
+      },
+      "commentsTitle": "Comments",
+      "openComments": "Open comments"
+    },
+    "rail": {
+      "_pending_review": {
+        "label": true,
+        "upNext": true,
+        "today": true,
+        "journey": true,
+        "people": true,
+        "goodToKnow": true
+      },
+      "label": "Alongside your feed",
+      "upNext": "Up next",
+      "today": "Today",
+      "journey": "Your journey",
+      "people": "People to meet",
+      "goodToKnow": "Good to know"
+    },
+    "today": {
+      "_pending_review": {
+        "timeAndPlace": true
+      },
+      "timeAndPlace": "{time} · {place}"
+    },
+    "index": {
+      "_pending_review": {
+        "title": true
+      },
+      "title": "Vitana Index {score}"
+    }
+  }
+}

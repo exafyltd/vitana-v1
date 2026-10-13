@@ -1,0 +1,12 @@
+# VTID-05120 — commands run (local worktree fu/VTID-05120, base origin/main bcae4d0af)
+npm ci --ignore-scripts --no-audit --no-fund
+npx vitest run src/lib/campaign-audience.test.ts src/lib/campaign-queue.vtid-05120.test.ts src/lib/edge-functions-caller-identity.s4.test.ts --reporter=verbose   # → outputs/vitest-vtid-05120.txt (3 files, 66/66)
+# red check: git stash push -- supabase/functions + move _shared/campaign-audience.ts away, re-run the two new files, restore
+npx vitest run src/lib/campaign-audience.test.ts src/lib/campaign-queue.vtid-05120.test.ts                                   # → outputs/vitest-vtid-05120-red-on-main.txt (FAIL, 2 files)
+npx vitest run $(grep -rlE "supabase/functions" src --include=*.test.ts --include=*.test.tsx)                                # → outputs/vitest-edge-source-guards.txt (17 files, 176 tests)
+node scripts/check-edge-data-client.mjs                                                                                       # → outputs/check-edge-data-client.txt
+npx eslint src/lib/campaign-audience.test.ts src/lib/campaign-queue.vtid-05120.test.ts src/lib/edge-functions-caller-identity.s4.test.ts supabase/functions/_shared/campaign-audience.ts   # → outputs/eslint.txt (exit 0, empty)
+npx tsc --noEmit -p tsconfig.app.json                                                                                         # → outputs/tsc-app.txt: 176 errors, identical count on origin/main (pre-existing, none in touched files)
+DENO_NO_PACKAGE_JSON=1 deno check supabase/functions/<each changed file>                                                      # deno 2.3.1 → outputs/deno-check.txt (trigger-scheduled-campaigns: same 2 pre-existing TS18046 errors as origin/main)
+# Read-only SQL on inmkhvwdcuyhnxkgfvsb: information_schema.columns for global_event_participants, user_follows, profiles,
+# contacts, campaign_audience_segments, global_community_events, service_bot_accounts, notification_test_actors (all columns used exist)

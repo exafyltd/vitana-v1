@@ -42,7 +42,8 @@
       "planGenerated": "计划已生成",
       "planGeneratedDesc": "你的个性化计划已创建。",
       "bulkEnabled": "批量选择已启用",
-      "bulkEnabledDesc": "从你的时间线中选择项目以进行批量操作。"
+      "bulkEnabledDesc": "从你的时间线中选择项目以进行批量操作。",
+      "_pending_review": {}
     },
     "error": {
       "generic": "出错了",
@@ -76,7 +77,8 @@
       "importFailed": "导入失败",
       "importFailedDesc": "数据无法导入。",
       "exportFailed": "导出失败",
-      "exportFailedDesc": "数据无法导出。"
+      "exportFailedDesc": "数据无法导出。",
+      "_pending_review": {}
     },
     "info": {
       "processing": "正在处理...",
@@ -86,7 +88,8 @@
       "loading": "正在加载...",
       "loadingDesc": "正在检索数据。",
       "syncing": "正在同步...",
-      "syncingDesc": "正在同步数据。"
+      "syncingDesc": "正在同步数据。",
+      "_pending_review": {}
     },
     "warning": {
       "unsavedChanges": "未保存的更改",
@@ -94,7 +97,8 @@
       "limitReached": "已达到上限",
       "limitReachedDesc": "你已达到最大值。",
       "slowConnection": "连接缓慢",
-      "slowConnectionDesc": "你的网络连接似乎很慢。"
+      "slowConnectionDesc": "你的网络连接似乎很慢。",
+      "_pending_review": {}
     },
     "common": {
       "couldNotCompleteTask": "无法完成任务",
@@ -173,7 +177,8 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "我们很快会分析并更新建议。",
       "activityHidden": "活动已隐藏",
       "success": "成功！🎉",
-      "donTBreakStreakOneSmall": "🔥 不要中断连胜 — 今天一个小行动"
+      "donTBreakStreakOneSmall": "🔥 不要中断连胜 — 今天一个小行动",
+      "_pending_review": {}
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "伴侣覆盖设置已保存 — 语音缓存将在30秒内刷新。",
@@ -346,15 +351,18 @@
       "failedToggleCamera": "切换摄像头失败。",
       "screenSharingStopped": "屏幕共享已停止。",
       "screenSharingStarted": "屏幕共享已启动。",
-      "failedToggleScreenSharing": "切换屏幕共享失败。"
+      "failedToggleScreenSharing": "切换屏幕共享失败。",
+      "_pending_review": {}
     },
     "auth": {
       "confirmationEmailSentPleaseCheckYour": "确认邮件已发送！请检查你的收件箱。",
-      "tooManyAttemptsPleaseWaitFew": "尝试次数过多。请稍等几分钟。"
+      "tooManyAttemptsPleaseWaitFew": "尝试次数过多。请稍等几分钟。",
+      "_pending_review": {}
     },
     "billing": {
       "paymentFailed": "支付失败。",
-      "paymentSuccessful": "支付成功！"
+      "paymentSuccessful": "支付成功！",
+      "_pending_review": {}
     },
     "business": {
       "noAttendeesExport": "没有可导出的参与者。",
@@ -365,23 +373,28 @@
       "ticketPrintingWillAvailableSoon": "票据打印功能即将上线。",
       "confirmationSent": "确认已发送",
       "refund": "退款",
-      "refundFunctionalityWillAvailableSoon": "退款功能即将上线。"
+      "refundFunctionalityWillAvailableSoon": "退款功能即将上线。",
+      "_pending_review": {}
     },
     "calendar": {
-      "calendarUpdated": "日历已更新"
+      "calendarUpdated": "日历已更新",
+      "_pending_review": {}
     },
     "cart": {
       "signRequired": "需要登录",
-      "pleaseSignAddItemsYourCart": "请登录以将商品添加到购物车"
+      "pleaseSignAddItemsYourCart": "请登录以将商品添加到购物车",
+      "_pending_review": {}
     },
     "chat": {
       "error": "错误",
       "pleaseEnterApiKey": "请输入API密钥",
       "success": "成功",
-      "apiKeySavedSecurelyWithEncryption": "API密钥已安全加密保存"
+      "apiKeySavedSecurelyWithEncryption": "API密钥已安全加密保存",
+      "_pending_review": {}
     },
     "coaches": {
-      "bookingStarted": "📅 预订已开始"
+      "bookingStarted": "📅 预订已开始",
+      "_pending_review": {}
     },
     "community": {
       "thumbnailCaptured": "缩略图已捕获",
@@ -430,7 +443,8 @@
       "vitanaWillFollowUp": "Vitana 会跟进的。",
       "couldnTReopen": "无法重新开启",
       "demoRoom": "演示室",
-      "thisExampleRoomCreateYourOwn": "这是一个示例房间。创建你自己的房间，就能上线！"
+      "thisExampleRoomCreateYourOwn": "这是一个示例房间。创建你自己的房间，就能上线！",
+      "_pending_review": {}
     },
     "crossover": {
       "bookingStarted": "📅 预订已开始",
@@ -440,7 +454,8 @@
       "joined": "✓ 已加入",
       "chatStarted": "💬 聊天已开始",
       "linkCopied": "链接已复制",
-      "podcastLinkCopiedClipboard": "播客链接已复制到剪贴板"
+      "podcastLinkCopiedClipboard": "播客链接已复制到剪贴板",
+      "_pending_review": {}
     },
     "dev": {
       "createVtid": "创建 VTID",
@@ -484,7 +499,8 @@
       "documentUploaded": "文档已上传",
       "frontpageUploaded": "首页已上传",
       "diagnosticsCopiedClipboard": "诊断信息已复制到剪贴板",
-      "error": "错误"
+      "error": "错误",
+      "_pending_review": {}
     },
     "diary": {
       "notSupported": "不支持",
@@ -519,7 +535,8 @@
       "saveFailed": "保存失败",
       "failedSaveYourEntryPleaseTry": "保存你的条目失败。请再试一次。",
       "undoAvailable": "可撤销",
-      "deleteLastDiaryEntry": "删除最后一条日记条目"
+      "deleteLastDiaryEntry": "删除最后一条日记条目",
+      "_pending_review": {}
     },
     "discover": {
       "actionSelected": "已选择操作",
@@ -528,18 +545,21 @@
       "appointmentBooked": "预约成功！🎉",
       "yourAppointmentHasConfirmed": "你的预约已确认",
       "bookingFailed": "预订失败",
-      "pleaseTryAgain": "请再试一次"
+      "pleaseTryAgain": "请再试一次",
+      "_pending_review": {}
     },
     "discovery": {
       "connectionRequestSent": "连接请求已发送！💚",
       "theyLlNotifiedYourInterest": "他们会收到你的兴趣通知。",
       "superConnectSent": "超级连接已发送！⭐",
-      "youLlAppearAtTopTheir": "你会在他们的匹配中排在最前面！"
+      "youLlAppearAtTopTheir": "你会在他们的匹配中排在最前面！",
+      "_pending_review": {}
     },
     "events": {
       "eventDeleted": "活动已删除",
       "failedDeleteEvent": "删除活动失败",
-      "pleaseTryAgainLater": "请稍后再试。"
+      "pleaseTryAgainLater": "请稍后再试。",
+      "_pending_review": {}
     },
     "feedback": {
       "notSupported": "不支持",
@@ -553,7 +573,8 @@
       "reportDeleted": "报告已删除",
       "feedbackReportHasRemoved": "反馈报告已移除。",
       "error": "错误",
-      "failedDeleteReportPleaseTryAgain": "删除报告失败。请再试一次。"
+      "failedDeleteReportPleaseTryAgain": "删除报告失败。请再试一次。",
+      "_pending_review": {}
     },
     "health": {
       "couldnTStartThatYetOpen": "还不能开始 — 打开 Autopilot 再试一次。",
@@ -582,7 +603,8 @@
       "noFileAvailable": "无可用文件",
       "couldNotLoadFile": "无法加载文件",
       "recalibrationStarted": "🔄 重新校准已开始",
-      "reportGeneration": "📊 报告生成中"
+      "reportGeneration": "📊 报告生成中",
+      "_pending_review": {}
     },
     "intents": {
       "moreDetailNeeded": "需要更多细节",
@@ -614,7 +636,8 @@
       "themedCoverReady": "主题封面已就绪",
       "youCanReplaceItAnyTime": "你可以随时更换。",
       "coverPhotoRequired": "需要封面图",
-      "uploadOneTapGenerateForMe": "上传一张，或点击 ✨ 为我生成。"
+      "uploadOneTapGenerateForMe": "上传一张，或点击 ✨ 为我生成。",
+      "_pending_review": {}
     },
     "liverooms": {
       "linkCopied": "链接已复制",
@@ -636,7 +659,8 @@
       "followedTitle": "已关注！",
       "followedDesc": "你现在关注了 {name}",
       "unfollowedTitle": "已取消关注",
-      "unfollowedDesc": "你取消关注了 {name}"
+      "unfollowedDesc": "你取消关注了 {name}",
+      "_pending_review": {}
     },
     "meetups": {
       "signRequired": "需要登录",
@@ -655,7 +679,8 @@
       "savedTitle": "已保存",
       "savedDesc": "已保存，稍后查看",
       "unsavedTitle": "已从收藏中移除",
-      "unsavedDesc": "已从你的收藏列表中移除"
+      "unsavedDesc": "已从你的收藏列表中移除",
+      "_pending_review": {}
     },
     "memory": {
       "voiceRecorded": "语音已录制",
@@ -704,7 +729,8 @@
       "pleaseRecordEnterSomeContentBefore": "保存前请先录音或输入一些内容。",
       "entrySaved": "条目已保存",
       "yourDiaryEntryHasAddedYour": "你的日记条目已添加到你的记忆时间线。",
-      "couldNotSaveYourDiaryEntry": "无法保存你的日记条目。请再试一次。"
+      "couldNotSaveYourDiaryEntry": "无法保存你的日记条目。请再试一次。",
+      "_pending_review": {}
     },
     "messages": {
       "newResponse": "🎉 新回复！",
@@ -744,18 +770,21 @@
       "thereErrorSendingYourVoiceMessage": "发送语音消息时出错",
       "groupRenamed": "群组已重命名",
       "failedRenameGroup": "无法重命名群组",
-      "groupNameInvalid": "群组名称须为 1 到 80 个字符。"
+      "groupNameInvalid": "群组名称须为 1 到 80 个字符。",
+      "_pending_review": {}
     },
     "notifications": {
       "bookingConfirmed": "预订已确认！🎉",
       "paymentReceived": "付款已收到！💰",
       "creditsTransferred": "积分已转账！✨",
       "newServiceBooking": "新服务预订！📅",
-      "eventRegistration": "活动报名！🎊"
+      "eventRegistration": "活动报名！🎊",
+      "_pending_review": {}
     },
     "onboarding": {
       "networkError": "网络错误",
-      "thisYourSpeakableIdAcrossVitana": "这是你在 Vitana 上的可读 ID。永久有效 — 请谨慎选择！"
+      "thisYourSpeakableIdAcrossVitana": "这是你在 Vitana 上的可读 ID。永久有效 — 请谨慎选择！",
+      "_pending_review": {}
     },
     "payment": {
       "missingInformation": "信息缺失",
@@ -804,7 +833,8 @@
       "paymentRequestSent": "付款请求已发送！💸",
       "failedSendPaymentRequest": "发送付款请求失败",
       "pleaseFillAllRequiredFields": "请填写所有必填字段",
-      "exchangeSendRequestSent": "兑换与发送请求已发送！✨"
+      "exchangeSendRequestSent": "兑换与发送请求已发送！✨",
+      "_pending_review": {}
     },
     "proactive": {
       "messageGenerated": "消息已生成！",
@@ -813,7 +843,8 @@
       "invitationMessageCopiedClipboard": "邀请消息已复制到剪贴板",
       "autoshareScheduled": "自动分享已安排！",
       "editPost": "编辑帖子",
-      "postEditorComingSoon": "帖子编辑器即将推出！"
+      "postEditorComingSoon": "帖子编辑器即将推出！",
+      "_pending_review": {}
     },
     "profile": {
       "qrCodeDownloaded": "二维码已下载",
@@ -870,7 +901,8 @@
       "universalCoverRemoved": "通用封面照片已移除",
       "libraryPhotoUploaded": "照片已添加到图库",
       "libraryPhotoRemoved": "照片已移除",
-      "categoryRequired": "请先选择一个类别。"
+      "categoryRequired": "请先选择一个类别。",
+      "_pending_review": {}
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "此浏览器不支持通知。",
@@ -886,14 +918,16 @@
       "failedToCreate": "创建提醒失败",
       "failedToDelete": "删除提醒失败",
       "failedToMarkDone": "标记完成失败",
-      "remindersDeleted": "{count} 个提醒已删除"
+      "remindersDeleted": "{count} 个提醒已删除",
+      "_pending_review": {}
     },
     "reseller": {
       "activatingYourResellerProfile": "正在激活你的经销商资料...",
       "linkCopiedClipboard": "链接已复制到剪贴板！",
       "failedCopyPleaseSelectCopyManually": "复制失败。请手动选择并复制。",
       "linkCopiedPasteItYourInstagram": "链接已复制！粘贴到你的 Instagram 个人简介或故事中。",
-      "failedCopyLink": "复制链接失败。"
+      "failedCopyLink": "复制链接失败。",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnected": "Google 已连接",
@@ -918,7 +952,8 @@
       "failedSwitchRolePleaseTryAgain": "切换角色失败。请重试。",
       "organizationSwitched": "组织已切换",
       "errorSwitchingOrganization": "切换组织错误",
-      "failedSwitchOrganizationPleaseTryAgain": "无法更改组织。请重试。"
+      "failedSwitchOrganizationPleaseTryAgain": "无法更改组织。请重试。",
+      "_pending_review": {}
     },
     "sharing": {
       "channelNotConnected": "频道未连接",
@@ -996,7 +1031,8 @@
       "postPublished": "帖子已发布！",
       "campaignsExportedCsv": "活动已导出到CSV",
       "smartrescheduleFeatureComingSoon": "智能改期功能即将推出！",
-      "viberNotDetectedLinkCopiedClipboard": "Viber 未检测到。链接已复制到剪贴板！"
+      "viberNotDetectedLinkCopiedClipboard": "Viber 未检测到。链接已复制到剪贴板！",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketDownloaded": "门票已下载！",
@@ -1009,7 +1045,8 @@
       "ticketDownloadedOpeningEmail": "门票已下载！正在打开邮件...",
       "ticketDownloadedOpeningMessages": "门票已下载！正在打开消息...",
       "ticketSaved": "门票已保存！",
-      "eventDetailsCopied": "活动详情已复制！"
+      "eventDetailsCopied": "活动详情已复制！",
+      "_pending_review": {}
     },
     "wallet": {
       "invalidAmount": "金额无效",
@@ -1060,7 +1097,8 @@
       "withdrawalFailed": "提现失败。",
       "somethingWentWrongPleaseTryAgain": "出错了。请再试。",
       "pleaseSelectRecipientEnterAmount": "请选择收款人并输入金额。",
-      "exchangeSendComplete": "✅ 兑换与发送已完成！"
+      "exchangeSendComplete": "✅ 兑换与发送已完成！",
+      "_pending_review": {}
     },
     "hooks": {
       "error": "错误。",
@@ -1325,45 +1363,56 @@
       "exchangeSendSuccessful": "兑换与发送成功！✨",
       "exchangeSendFailed": "兑换与发送失败",
       "linkAvailable": "链接可用",
-      "errorUpdatingPreferences": "更新偏好设置出错"
+      "errorUpdatingPreferences": "更新偏好设置出错",
+      "_pending_review": {}
     },
     "businesslistings": {
-      "couldNotLoadListings": "无法加载列表"
+      "couldNotLoadListings": "无法加载列表",
+      "_pending_review": {}
     },
     "businessopportunities": {
-      "couldNotLoadOpportunities": "无法加载机会"
+      "couldNotLoadOpportunities": "无法加载机会",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "orderConfirmed": "订单已确认！",
-      "yourPaymentSuccessfulCheckYourEmail": "支付成功。请查收邮件获取订单详情。"
+      "yourPaymentSuccessfulCheckYourEmail": "支付成功。请查收邮件获取订单详情。",
+      "_pending_review": {}
     },
     "intentboard": {
-      "couldNotLoadBoard": "无法加载面板"
+      "couldNotLoadBoard": "无法加载面板",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "无法加载匹配详情",
       "intentClosed": "操作已完成",
-      "couldNotClose": "无法关闭"
+      "couldNotClose": "无法关闭",
+      "_pending_review": {}
     },
     "introexperience": {
       "audioPlaybackFailed": "音频播放失败",
-      "audioUnavailableNow": "音频暂时不可用"
+      "audioUnavailableNow": "音频暂时不可用",
+      "_pending_review": {}
     },
     "invitefriends": {
       "nameRequired": "姓名是必填项",
       "pleaseProvideEmailPhone": "请提供邮箱或电话",
       "contactAdded": "联系人已添加",
-      "failedSendInvites": "发送邀请失败"
+      "failedSendInvites": "发送邀请失败",
+      "_pending_review": {}
     },
     "myintents": {
-      "couldNotLoadIntents": "加载操作失败"
+      "couldNotLoadIntents": "加载操作失败",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "支付已确认！",
-      "yourPackagePurchaseSuccessful": "你的套餐购买成功。"
+      "yourPackagePurchaseSuccessful": "你的套餐购买成功。",
+      "_pending_review": {}
     },
     "privacysettings": {
-      "couldNotSave": "无法保存"
+      "couldNotSave": "无法保存",
+      "_pending_review": {}
     },
     "home": {
       "removedFromMemory": "已从存储中移除",
@@ -1373,14 +1422,17 @@
       "actionExecuted": "操作已执行",
       "yourActionHasCompletedSuccessfully": "你的操作已成功完成。",
       "actionDismissed": "操作已关闭",
-      "thisActionHasRemovedFromYour": "此操作已从你的列表中移除。"
+      "thisActionHasRemovedFromYour": "此操作已从你的列表中移除。",
+      "_pending_review": {}
     },
     "index": {
-      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev 网关 URL 未配置"
+      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev 网关 URL 未配置",
+      "_pending_review": {}
     },
     "dailyGoal": {
       "title": "恭喜！今日目标已达成 🎉",
-      "body": "继续加油。"
+      "body": "继续加油。",
+      "_pending_review": {}
     },
     "backoffice": {
       "capabilityGranted": "Capability granted",
@@ -1393,6 +1445,17 @@
         "grantFailed": true,
         "revokeFailed": true
       }
-    }
-  }
+    },
+    "vitanaCards": {
+      "dismissFailed": "无法隐藏卡片",
+      "connectFailed": "无法开始连接",
+      "interestsSaved": "兴趣已保存",
+      "interestsSaveFailed": "无法保存你的兴趣",
+      "notificationsEnabled": "通知已开启",
+      "notificationsFailed": "无法开启通知",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

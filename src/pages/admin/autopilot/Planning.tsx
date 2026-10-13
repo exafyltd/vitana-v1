@@ -13,13 +13,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Loader2, ChevronDown, ChevronRight, Rocket, Sun, Heart, Activity, Lightbulb, Compass, Calendar, TrendingUp, HeartPulse, Sparkles } from "lucide-react";
+import { ChevronDown, ChevronRight, Rocket, Sun, Heart, Activity, Lightbulb, Compass, Calendar, TrendingUp, HeartPulse, Sparkles } from "lucide-react";
 import {
   useAutopilotWaves,
   useToggleWave,
   type WaveDefinition,
 } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const WAVE_ICONS: Record<string, React.ElementType> = {
   rocket: Rocket,
@@ -34,8 +36,8 @@ const WAVE_ICONS: Record<string, React.ElementType> = {
 };
 
 const WAVE_COLORS = [
-  "bg-blue-500", "bg-amber-500", "bg-rose-500", "bg-green-500",
-  "bg-purple-500", "bg-cyan-500", "bg-orange-500", "bg-emerald-500", "bg-pink-500",
+  "bg-category-3", "bg-category-5", "bg-category-8", "bg-category-6",
+  "bg-category-2", "bg-category-7", "bg-category-1", "bg-category-4",
 ];
 
 function TimelineBar({ waves }: { waves: WaveDefinition[] }) {
@@ -63,9 +65,9 @@ function TimelineBar({ waves }: { waves: WaveDefinition[] }) {
               <div key={wave.id} className="relative h-5">
                 <div
                   className={`absolute h-full rounded-sm ${WAVE_COLORS[i % WAVE_COLORS.length]} ${wave.enabled ? "opacity-80" : "opacity-25"} transition-opacity`}
-                  style={{ left: `${left}%`, width: `${width}%` }}
+                  style={{ insetInlineStart: `${left}%`, width: `${width}%` }}
                 >
-                  <span className="text-[10px] text-white font-medium px-1 truncate block leading-5">
+                  <span className="text-[10px] text-primary-foreground font-medium px-1 truncate block leading-5">
                     {wave.name}
                   </span>
                 </div>
@@ -88,7 +90,7 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
       <CardContent className="p-4">
         <div className="flex items-center gap-3">
           {/* Icon */}
-          <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${WAVE_COLORS[index % WAVE_COLORS.length]} text-white flex-shrink-0`}>
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${WAVE_COLORS[index % WAVE_COLORS.length]} text-primary-foreground flex-shrink-0`}>
             <Icon className="w-4 h-4" />
           </div>
 
@@ -138,7 +140,7 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
 
         {/* Expanded details */}
         {expanded && (
-          <div className="mt-4 pl-12 space-y-3">
+          <div className="mt-4 ps-12 space-y-3">
             {/* Journey Tasks */}
             <div>
               <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t('screens.admin.journeyTasksLength', { length: wave.recommendation_templates.length })}
@@ -164,8 +166,8 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
                         variant="secondary"
                         className={`text-[10px] px-1.5 ${
                           ap.status === "IMPLEMENTED" || ap.status === "LIVE"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                            : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                            ? "bg-status-success-subtle text-status-success"
+                            : "bg-muted text-muted-foreground"
                         }`}
                       >
                         {ap.status}
@@ -185,6 +187,7 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
 }
 
 export default function AutopilotPlanning() {
+  const spotlight = useSpotlightEnabled();
   const wavesQuery = useAutopilotWaves();
   const waves = wavesQuery.data || [];
   const activeCount = waves.filter(w => w.enabled).length;
@@ -194,19 +197,15 @@ export default function AutopilotPlanning() {
   const coreWaves = waves.filter(w => !w.is_initiative);
   const initiatives = waves.filter(w => w.is_initiative);
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="autopilot" />
-      <div className="p-6">
+  const adminBody = (
+    <>
         <AdminHeader
           title={t('screens.admin.autopilotPlanning')}
           description={`Configure autopilot waves — ${activeCount}/${waves.length} active, ${enabledAP}/${totalAP} automations enabled`}
         />
 
         {wavesQuery.isLoading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-          </div>
+          <ArchetypeSkeleton archetype="workspace" />
         ) : (
           <>
             {/* Timeline overview */}
@@ -238,7 +237,19 @@ export default function AutopilotPlanning() {
             )}
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="autopilot" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

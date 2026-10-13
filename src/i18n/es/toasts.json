@@ -1387,6 +1387,15 @@
       "capabilityRevoked": "Capacidad revocada",
       "grantFailed": "No se pudo conceder la capacidad",
       "revokeFailed": "No se pudo revocar la capacidad"
+    },
+    "vitanaCards": {
+      "dismissFailed": "No se pudo ocultar la tarjeta",
+      "connectFailed": "No se pudo iniciar la conexión",
+      "interestsSaved": "Intereses guardados",
+      "interestsSaveFailed": "No se pudieron guardar tus intereses",
+      "notificationsEnabled": "Las notificaciones están activadas",
+      "notificationsFailed": "No se pudieron activar las notificaciones",
+      "_pending_review": {}
     }
   }
 }

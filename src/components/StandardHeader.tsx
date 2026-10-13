@@ -15,13 +15,19 @@ interface StandardHeaderProps {
   emoji?: string;
   syncTimestamp?: string | null;
   className?: string;
+  /**
+   * VTID-05105 — 'compact' is the Spotlight desktop variant (64 px tall, same
+   * emoji/title/description and the same Autopilot + Vitana Index tiles).
+   * Default keeps today's large desktop header unchanged. Mobile ignores it.
+   */
+  density?: 'default' | 'compact';
 }
 
 /**
  * Standard 3-card header pattern for all major pages
  * Ensures consistent Welcome + Autopilot + Vitana Index layout
  */
-export default function StandardHeader({ title, description, emoji, syncTimestamp, className }: StandardHeaderProps) {
+export default function StandardHeader({ title, description, emoji, syncTimestamp, className, density = 'default' }: StandardHeaderProps) {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
@@ -40,6 +46,51 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
           {title}
         </h1>
       </div>
+    );
+  }
+
+  if (density === 'compact') {
+    return (
+      <>
+        <div className={cn("flex items-stretch gap-3", className)} data-header-density="compact">
+          <div className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl border bg-card/85 px-5 py-3 shadow-sm backdrop-blur-sm">
+            {emoji && <span className="text-xl leading-none" aria-hidden="true">{emoji}</span>}
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate text-xl font-bold text-foreground">{title}</h1>
+              <p className="truncate text-xs text-muted-foreground">{description}</p>
+            </div>
+            {syncTimestamp && <p className="shrink-0 text-xs text-muted-foreground">{syncTimestamp}</p>}
+          </div>
+          <button
+            type="button"
+            className="relative flex w-20 shrink-0 flex-col items-center justify-center gap-1 rounded-2xl border bg-card shadow-sm transition-shadow hover:shadow-md"
+            onClick={() => setAutopilotOpen(true)}
+          >
+            {pendingCount > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -end-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
+              >
+                {pendingCount}
+              </Badge>
+            )}
+            <Plane className="h-6 w-6 text-destructive" aria-hidden="true" />
+            <span className="text-xs font-semibold text-destructive">{t('screens.common.autopilot')}</span>
+          </button>
+          <button
+            type="button"
+            className="flex w-20 shrink-0 flex-col items-center justify-center gap-1 rounded-2xl border bg-card shadow-sm transition-shadow hover:shadow-md"
+            onClick={() => navigate('/health/vitana-index')}
+            aria-label={t('spotlight.header.vitanaIndexAria', { value: vitanaIndexDisplay })}
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 text-sm font-bold text-primary">
+              {vitanaIndexDisplay}
+            </span>
+            <span className="text-xs text-muted-foreground">{t('spotlight.header.vitanaIndexLabel')}</span>
+          </button>
+        </div>
+        <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+      </>
     );
   }
 

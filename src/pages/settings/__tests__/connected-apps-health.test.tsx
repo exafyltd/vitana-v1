@@ -26,6 +26,8 @@ const { passthrough, nothing, state } = vi.hoisted(() => ({
 vi.mock("@/components/AppLayout", () => ({ default: passthrough }));
 vi.mock("@/components/SEO", () => ({ default: nothing }));
 vi.mock("@/components/StandardHeader", () => ({ default: nothing }));
+// VTID-05111: the page now reads the Spotlight flag; this harness pins it off (no TenantProvider here).
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/components/ui/utility-action-button", () => ({ UtilityActionButton: nothing }));
 vi.mock("@/components/ui/expandable-search-button", () => ({ ExpandableSearchButton: nothing }));
 vi.mock("@/components/UniversalCalendarButton", () => ({ UniversalCalendarButton: nothing }));
@@ -38,6 +40,8 @@ vi.mock("@/components/settings/SessionExpiredBanner", () => ({ SessionExpiredBan
 vi.mock("@/components/settings/OAuthBouncePendingOverlay", () => ({ OAuthBouncePendingOverlay: nothing }));
 vi.mock("@/components/settings/PartnerLabsConsentDialog", () => ({ PartnerLabsConsentDialog: nothing }));
 vi.mock("@/components/settings/connected-apps/MailCalendarContactsPanel", () => ({ MailCalendarContactsPanel: nothing }));
+// VTID-05133: Connected AI is its own panel (own queries), stubbed like the panels above.
+vi.mock("@/components/ai-connect/ConnectedAiSection", () => ({ ConnectedAiSection: nothing }));
 vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => false }));
 vi.mock("@/components/RTLProvider", () => ({ useRTL: () => ({ isRTL: false }) }));
 vi.mock("@/hooks/useSocialPlatforms", () => ({ useSocialPlatforms: () => ({ allPlatforms: [], loading: false }) }));

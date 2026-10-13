@@ -12,16 +12,55 @@ import ProactiveTalkingPanel from "@/components/assistant/ProactiveTalkingPanel"
 import AutopilotSettingsPanel from "@/components/assistant/AutopilotSettingsPanel";
 import { VaeaConfigPanel } from "@/components/business/vaea/VaeaConfigPanel";
 import { t } from '@/lib/i18n-toast';
+import type * as React from "react";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SplitBarContent } from "@/components/ui/split-bar";
 
 export default function AIAssistant() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
   
   const activeTab = searchParams.get('tab') || 'voice';
+  const spotlight = useSpotlightEnabled();
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
   };
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below):
+  // the tabs move into the utility row (SplitBar), loading shows the archetype skeleton.
+  if (spotlight) {
+    const panels: { value: string; label: string; panel: React.ReactNode }[] = preferences
+      ? [
+          { value: 'voice', label: t('screens.assistant.voice'), panel: <VoiceSettingsPanel preferences={preferences} isUpdating={isUpdating} updatePreferences={updatePreferences} /> },
+          { value: 'ai', label: t('spotlightTierB.ai.assistantTabAi'), panel: <AIModelSettingsPanel preferences={preferences} isUpdating={isUpdating} updatePreferences={updatePreferences} /> },
+          { value: 'autopilot', label: t('screens.assistant.autopilotAmpAutomation'), panel: <AutopilotSettingsPanel preferences={preferences} isUpdating={isUpdating} updatePreferences={updatePreferences} /> },
+          { value: 'proactive', label: t('screens.assistant.proactiveTalking'), panel: <ProactiveTalkingPanel preferences={preferences} isUpdating={isUpdating} updatePreferences={updatePreferences} /> },
+          { value: 'referrals', label: t('screens.assistant.referrals'), panel: <VaeaConfigPanel /> },
+        ]
+      : [];
+    return (
+      <AppLayout>
+        <SEO title={t('screens.assistant.aiAssistant')} description={t('spotlightTierB.ai.assistantDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="conversation"
+          header={{ title: t('screens.assistant.aiAssistant'), description: t('spotlightTierB.ai.assistantDescription'), emoji: '✨' }}
+          tabs={panels.length ? { value: activeTab, onValueChange: handleTabChange, items: panels.map(({ value, label }) => ({ value, label })) } : undefined}
+        >
+          {isLoading ? (
+            <ArchetypeSkeleton archetype="form" />
+          ) : (
+            panels.map((p) => (
+              <SplitBarContent key={p.value} value={p.value} className="space-y-4">
+                {p.panel}
+              </SplitBarContent>
+            ))
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   if (isLoading) {
     return (

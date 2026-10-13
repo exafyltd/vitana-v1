@@ -27,7 +27,61 @@ import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/comp
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { DiscoverRefreshButton, DiscoverUtilityActions } from "@/components/discover/spotlight/DiscoverUtility";
+import { DealsPanes } from "@/components/discover/spotlight/DiscoverSectionPanes";
 export default function DealsOffers() {
+  // VTID-05109 — Spotlight (desktop + flag) gets the storefront layout; phones and flag-off keep the legacy screen.
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) return <DealsOffersSpotlight />;
+  return <DealsOffersLegacy />;
+}
+
+function DealsOffersSpotlight() {
+  const [tab, setTab] = useUrlTab("tab", "flash");
+  const [query, setQuery] = useState("");
+  const [masterActionOpen, setMasterActionOpen] = useState(false);
+  return (
+    <AppLayout>
+      <SEO
+        title={t('screens.discover.dealsOffersDiscover')}
+        description={t('spotlightDiscover.headers.deals')}
+        canonical={window.location.href}
+      />
+      <ScreenFrame
+        archetype="storefront"
+        subNav={{ items: discoverNavigation }}
+        header={{ title: t('screens.discover.dealsOffers'), description: t('spotlightDiscover.headers.deals'), emoji: "🔥" }}
+        utility={{
+          children: (
+            <DiscoverUtilityActions
+              searchPlaceholder={t('screens.discover.searchDealsOffers')}
+              onSearch={setQuery}
+              onAction={() => setMasterActionOpen(true)}
+            />
+          ),
+          trailingElement: <DiscoverRefreshButton />,
+        }}
+        tabs={{
+          value: tab,
+          onValueChange: setTab,
+          items: [
+            { value: "flash", label: t('screens.discover.flashDeals') },
+            { value: "trending", label: t('screens.discover.trending') },
+            { value: "ai", label: t('screens.discover.aiPicks') },
+            { value: "saved", label: t('screens.discover.saved') },
+          ],
+        }}
+      >
+        <DealsPanes query={query} />
+      </ScreenFrame>
+      <DiscoverShopActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
+    </AppLayout>
+  );
+}
+
+function DealsOffersLegacy() {
   return (
     <ProductSelectionProvider>
       <DealsOffersInner />

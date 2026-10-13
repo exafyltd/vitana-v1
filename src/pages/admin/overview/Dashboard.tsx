@@ -22,13 +22,16 @@ import { useOverviewSummary, useAtRiskMembers, useOverviewAlerts } from "@/hooks
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 function DeltaIndicator({ pct }: { pct: number }) {
-  if (pct > 0) return <span className="inline-flex items-center text-xs text-green-600"><TrendingUp className="h-3 w-3 mr-0.5" />+{pct}%</span>;
-  if (pct < 0) return <span className="inline-flex items-center text-xs text-red-600"><TrendingDown className="h-3 w-3 mr-0.5" />{pct}%</span>;
-  return <span className="inline-flex items-center text-xs text-muted-foreground"><Minus className="h-3 w-3 mr-0.5" />0%</span>;
+  if (pct > 0) return <span className="inline-flex items-center text-xs text-status-success"><TrendingUp className="h-3 w-3 me-0.5" />+{pct}%</span>;
+  if (pct < 0) return <span className="inline-flex items-center text-xs text-status-error"><TrendingDown className="h-3 w-3 me-0.5" />{pct}%</span>;
+  return <span className="inline-flex items-center text-xs text-muted-foreground"><Minus className="h-3 w-3 me-0.5" />0%</span>;
 }
 
 export default function OverviewDashboard() {
+  const spotlight = useSpotlightEnabled();
   const summaryQuery = useOverviewSummary();
   const atRiskQuery = useAtRiskMembers();
   const alertsQuery = useOverviewAlerts();
@@ -40,10 +43,8 @@ export default function OverviewDashboard() {
   const roles = summary?.role_distribution || {};
   const inbox = summary?.action_inbox;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="overview" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="📊"
           title={t('screens.admin.dashboard')}
@@ -220,7 +221,7 @@ export default function OverviewDashboard() {
                       <div key={alert.id} className="flex items-center justify-between text-sm border-b pb-2 last:border-0">
                         <div>
                           <AdminStatusBadge variant="error">{alert.status}</AdminStatusBadge>
-                          <span className="ml-2 text-muted-foreground">{alert.topic}</span>
+                          <span className="ms-2 text-muted-foreground">{alert.topic}</span>
                         </div>
                         <span className="text-xs text-muted-foreground">
                           {fmtTime(new Date(alert.created_at))}
@@ -233,7 +234,19 @@ export default function OverviewDashboard() {
             )}
           </>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="overview" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

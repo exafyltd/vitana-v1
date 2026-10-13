@@ -1,0 +1,47 @@
+10:51:40 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 <worktree>
+
+ ❯ src/lib/campaign-audience.test.ts (0 test)
+ ❯ src/lib/campaign-queue.vtid-05120.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/campaign-audience.test.ts [ src/lib/campaign-audience.test.ts ]
+Error: Failed to resolve import "../../supabase/functions/_shared/campaign-audience" from "src/lib/campaign-audience.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: <worktree>/src/lib/campaign-audience.test.ts:12:7
+  5  |   * as erase-user-data.test.ts).
+  6  |   */ import { describe, it, expect } from 'vitest';
+  7  |  ...rror, PROFILE_LOOKUP_CHUNK, resolveCampaignAudience } from '../../supabase/functions/_shared/campaign-audience';
+     |                                                                 ^
+  8  |  const OWNER = 'owner-1';
+  9  |  const TENANT = 'tenant-1';
+ ❯ TransformPluginContext._formatLog node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:30366:39
+ ❯ TransformPluginContext.error node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:30363:14
+ ❯ normalizeUrl node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:27393:18
+ ❯ node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:27456:30
+ ❯ TransformPluginContext.transform node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:27424:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:30151:14
+ ❯ loadAndTransform node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:20098:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/campaign-queue.vtid-05120.test.ts [ src/lib/campaign-queue.vtid-05120.test.ts ]
+Error: ENOENT: no such file or directory, open '<worktree>/supabase/functions/_shared/campaign-audience.ts'
+ ❯ src/lib/campaign-queue.vtid-05120.test.ts:23:21
+     21| const fn = (name: string) => readFileSync(join(FUNCTIONS, name, 'index…
+     22| const handler = (src: string) => src.slice(src.indexOf('serve('));
+     23| const audienceSrc = readFileSync(join(FUNCTIONS, '_shared', 'campaign-…
+       |                     ^
+     24|
+     25| describe('VTID-05120 queue-campaign-recipients', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  22:51:40
+   Duration  1.93s (transform 373ms, setup 633ms, import 0ms, tests 0ms, environment 2.38s)
+

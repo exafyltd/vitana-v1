@@ -4,7 +4,7 @@ import { createDataClient } from "../_shared/data-client.ts";
 import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
 // VTID-04889: Claude via the gateway's Bedrock bridge only — no Gemini path (CLAUDE.md ALWAYS 10a–10c).
 import { generateContent, extractFunctionCall, extractTextFromResponse } from '../_shared/bedrock-bridge-client.ts';
-import { rawMatchesFromResponse, normalizeRecommendationMatches } from '../_shared/recommendation-matches.ts';
+import { rawMatchesFromResponse, normalizeRecommendationMatches, recommendationContextLines } from '../_shared/recommendation-matches.ts';
 
 // Pinned on purpose: a model verified to invoke on this account (gateway .claude/rules/backend.md §2b), so this
 // function never depends on the gateway's BEDROCK_MODEL_ID default.
@@ -36,8 +36,13 @@ serve(async (req) => {
     console.log('[enhanced-recommendations] Generating', type, 'for user:', user.id);
 
     // Fetch user context
-    const { data: contextData } = await supabaseClient.functions.invoke('fetch-user-context');
-    const userContext = contextData || {};
+    const { data: contextData, error: contextError } = await supabaseClient.functions.invoke('fetch-user-context');
+    if (contextError) {
+      // Continue without member context, as before, but no longer silently (VTID-05119).
+      console.warn('[enhanced-recommendations] fetch-user-context failed', contextError?.message);
+    }
+    // VTID-05119: the callee answers { context, cached, … }; map its real fields.
+    const contextLines = recommendationContextLines(contextData);
 
     // Fetch candidates based on type
     let candidates: any[] = [];
@@ -94,10 +99,10 @@ Score range: 0.0 to 1.0. Only include items with score >= 0.3.`,
           content: `Score these candidates for user:
 
 USER CONTEXT:
-Interests: ${userContext.interests?.map((i: any) => i.interest).join(', ') || 'None'}
-Goals: ${userContext.goals?.map((g: any) => g.primary_goal).join(', ') || 'None'}
-Location: ${userContext.profile?.location || 'Not specified'}
-Recent Activities: ${userContext.recentDiaryEntries?.slice(0, 3).map((d: any) => d.text.substring(0, 100)).join('; ') || 'None'}
+Interests: ${contextLines.interests}
+Goals: ${contextLines.goals}
+Location: ${contextLines.location}
+Recent Activities: ${contextLines.recentActivities}
 
 CANDIDATES:
 ${JSON.stringify(candidates.map(c => ({

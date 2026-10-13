@@ -1,0 +1,24 @@
+{
+  "vtid": "VTID-05096",
+  "kind": "feature",
+  "paths": [
+    "src/lib/phone-verification-client.ts",
+    "src/hooks/usePhoneVerificationStatus.ts",
+    "src/components/contacts/VerifyPhoneDialog.tsx",
+    "src/components/contacts/VerifyPhoneDialog.test.tsx",
+    "src/components/contacts/VerifyPhoneHint.tsx",
+    "src/components/contacts/ContactSyncModal.tsx",
+    "src/components/contacts/ContactSyncModal.test.tsx",
+    "src/components/settings/PhoneNumberCard.tsx",
+    "src/pages/settings/Privacy.tsx",
+    "src/i18n/*/mailhub.json",
+    "i18n-source-stamps/*.json",
+    "tests/e2e/staging/vtid-05096-verify-phone.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05096/**",
+    "src/pages/MobileSettings.tsx",
+    "src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

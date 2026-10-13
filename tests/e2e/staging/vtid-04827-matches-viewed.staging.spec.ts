@@ -53,6 +53,16 @@ test('the Matches page marks the shown matches as viewed', async ({ page, reques
     if (r.method() === 'PATCH' && r.url().includes('/rest/v1/daily_matches')) updates.push({ url: decodeURIComponent(r.url()), body: r.postData() ?? '' });
   });
 
+  // VTID-05129: the profile lookup per match is an RPC (POST) the guard
+  // aborts, and useRealMatches drops every match whose profile did not
+  // resolve — so the cards, and the update this spec exists to prove, never
+  // appeared. Answer the lookup here, in the browser, with a stub profile
+  // (read-only, as VTID-04795 stubs its business). Routes added in the test run
+  // before the guard's, so nothing about this reaches the network.
+  await page.route('**/rest/v1/rpc/get_user_profile_by_identifier', (r) =>
+    r.fulfill({ json: [{ display_name: 'Staging Match', full_name: null, avatar_url: null, bio: null, location: null }] }),
+  );
+
   await page.goto('/me/matches', { waitUntil: 'domcontentloaded' });
   const list = page.getByTestId('matches-list');
   const empty = page.getByTestId('matches-empty');

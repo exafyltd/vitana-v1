@@ -19,6 +19,8 @@ vi.mock('@/lib/appilix', () => ({ isIAPRestricted: () => false }));
 vi.mock('@/components/AppLayout', () => ({ default: ({ children }: { children: ReactNode }) => <div>{children}</div> }));
 vi.mock('@/components/SEO', () => ({ default: () => null }));
 vi.mock('@/components/SubNavigation', () => ({ default: () => <nav data-testid="desktop-subnav" /> }));
+// VTID-05111: the page now reads the Spotlight flag; this harness pins it off (no TenantProvider here).
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 vi.mock('@/components/StandardHeader', () => ({ default: () => null }));
 vi.mock('@/components/ui/utility-action-button', () => ({
   UtilityActionButton: ({ children }: { children: ReactNode }) => <div>{children}</div>,

@@ -5276,11 +5276,13 @@
       "vitanaIndexUpSubtext": "Excellent travail !",
       "vitanaIndexDownSubtext": "Les petits pas comptent.",
       "vitanaIndexStableSubtext": "Reste constant.",
+      "vitanaIndexScoreSubtext": "Indice {score} · {message}",
       "longevityJourneyEyebrow": "TON LIVRE AUDIO LONGÉVITÉ",
       "longevityJourneyContinue": "Continuer avec l'épisode {session} : {topic}",
       "longevityJourneyAllDone": "Tu as écouté tous les épisodes. Bravo !",
       "longevityJourneyNextStepHeadline": "Ta prochaine étape :",
       "longevityJourneySubtext": "L'épisode {session} t'attend.",
+      "longevityJourneyProgressSubtext": "L'épisode {session} t'attend · {done} terminés · aujourd'hui {today}/{goal}",
       "longevityJourneyStartSession": "Écouter l'épisode {session}",
       "longevityJourneyDoneLabel": "Terminé",
       "longevityJourneyNowLabel": "Maintenant",
@@ -6244,7 +6246,33 @@
       "groupNameCancel": "Annuler",
       "editGroup": "Modifier le groupe",
       "messageGroupPlaceholder": "Message à {name}…",
-      "messagePersonPlaceholder": "Message à {name}…"
+      "messagePersonPlaceholder": "Message à {name}…",
+      "forwardedLabel": "Transféré",
+      "forwardTitle": "Transférer à",
+      "forwardSearch": "Rechercher des discussions et des groupes",
+      "forwardLoading": "Chargement des discussions…",
+      "forwardEmpty": "Aucune discussion trouvée",
+      "forwardLimit": "Choisis jusqu'à {max} discussions ou groupes.",
+      "forwardSend": "Transférer",
+      "forwardSendCount": "Transférer ({count})",
+      "forwardDone": "Message transféré",
+      "forwardFailedFor": "Impossible de transférer à {name}",
+      "forwardGroup": "Groupe",
+      "forwardChat": "Discussion",
+      "imageViewer": "Visionneuse d'images",
+      "imageCounter": "{current} sur {total}",
+      "previousImage": "Image précédente",
+      "nextImage": "Image suivante",
+      "copyImage": "Copier l'image",
+      "shareImage": "Partager l'image",
+      "imageCopied": "Image copiée",
+      "imageCopyUnsupported": "La copie d'images n'est pas prise en charge ici. Télécharge plutôt l'image.",
+      "imageCopyFailed": "Impossible de copier l'image",
+      "imageDownloadFailed": "Impossible de charger l'image",
+      "imageShareFailed": "Le partage n'a pas fonctionné",
+      "imageLoading": "Chargement de l'image",
+      "unknownSize": "Taille inconnue",
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Recherche…",
@@ -7764,6 +7792,20 @@
             "checkbox": "Je consens expressément à ce que mes données de santé soient utilisées sous forme anonymisée dans ce but."
           }
         }
+      },
+      "vitanaMessages": {
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -8751,7 +8793,21 @@
       "viewIndex": "Voir l'Index",
       "viewJourney": "Voir mon parcours",
       "viewMatch": "Voir la correspondance",
-      "dismissCard": "Ignorer la carte"
+      "dismissCard": "Ignorer la carte",
+      "dailyDiary": "Journal",
+      "talkToVitana": "Parle à Vitana",
+      "autopilot": "Pilote automatique",
+      "calendar": "Calendrier",
+      "uploadMedia": "Médias",
+      "discover": "Découvrir",
+      "profilePhoto": "Photo de profil",
+      "profileSetup": "Profil",
+      "socialConnect": "Connecter",
+      "importContacts": "Contacts",
+      "completeProfile": "Compléter le profil",
+      "_pending_review": {
+        "importContacts": true
+      }
     },
     "voucher": {
       "friendExampleCom": "ami@exemple.com",
@@ -11247,7 +11303,34 @@
         "loadFailed": "Impossible de charger ta configuration.",
         "retry": "Réessayer",
         "salesCta": "Configurer",
-        "edit": "Modifier"
+        "edit": "Modifier",
+        "reviewNoteLabel": "Vitanaland te demande :",
+        "stillNeeded": "Encore à faire :",
+        "openAccount": "Ton compte",
+        "openCompany": "Les informations de l’entreprise (raison sociale et pays)",
+        "openVerification": "La vérification par l’équipe Vitanaland",
+        "openCatalogue": "Tes produits ou services",
+        "openShopLink": "La connexion à ta boutique",
+        "openCompleteOffering": "Une offre complète : titre, prix, lien, pays d’origine et où elle est proposée",
+        "openTrackingTest": "Un achat test pour vérifier le suivi",
+        "openResultsChannel": "La façon dont tu transmets les résultats",
+        "openTerms": "Accepter les conditions partenaires",
+        "openDpa": "L’accord de traitement des données",
+        "openBillingMandate": "Un mandat de prélèvement pour la facturation",
+        "openTeam": "Ton équipe",
+        "openOther": "Une étape de plus",
+        "submitCta": "Envoyer pour vérification",
+        "resubmitCta": "Renvoyer",
+        "submitConfirmTitle": "Envoyer ton entreprise pour vérification ?",
+        "resubmitConfirmTitle": "Renvoyer ton entreprise ?",
+        "submitConfirmBody": "L’équipe Vitanaland examine ton entreprise. Quand tout est en place, elle est mise en ligne. Les offres gardées hors ligne ou incomplètes ne sont pas publiées.",
+        "submitCancel": "Annuler",
+        "submitConfirm": "Envoyer maintenant",
+        "submitResultLive": "Tu es en ligne sur Vitanaland.",
+        "submitResultNeedsAction": "Envoyé. Il manque encore quelques éléments – voir ci-dessous.",
+        "submitResultInReview": "Envoyé. L’équipe Vitanaland examine maintenant ton entreprise.",
+        "submitResultUnchanged": "Reçu. Ton statut n’a pas changé.",
+        "submitFailed": "L’envoi n’a pas fonctionné. Nous avons actualisé ton statut – regarde ce qui reste à faire."
       },
       "setupChooser": {
         "title": "Ajoute tes produits ou services",
@@ -13508,6 +13591,163 @@
       "startingSoon": "Commence bientôt",
       "startNow": "Lancer maintenant",
       "eventsSectionTitle": "Salles en direct"
+    },
+    "vitanaCards": {
+      "stripLabel": "Suggestions de Vitana",
+      "eyebrowProfile": "Ton profil",
+      "eyebrowConnect": "Connecter",
+      "eyebrowCommunity": "Communauté",
+      "eyebrowNotifications": "Notifications",
+      "E1": {
+        "title": "Montre ton visage",
+        "description": "Ajoute une photo de profil pour que les autres te reconnaissent tout de suite.",
+        "action": "Ajouter"
+      },
+      "E2": {
+        "title": "Parle un peu de toi",
+        "description": "Quelques phrases sur toi aident les autres à engager la conversation.",
+        "action": "Écrire ma bio"
+      },
+      "E3": {
+        "title": "Partage ta première publication",
+        "description": "Dis bonjour à la communauté – une petite pensée suffit.",
+        "action": "Publier"
+      },
+      "E4": {
+        "title": "Qu'est-ce qui te passionne ?",
+        "description": "Choisis tes centres d’intérêt pour que Vitana trouve des personnes et contenus faits pour toi.",
+        "action": "Choisir"
+      },
+      "E5": {
+        "title": "Où vis-tu ?",
+        "description": "Ajoute ta ville et découvre des personnes et des événements près de chez toi.",
+        "action": "Ajouter un lieu"
+      },
+      "E6": {
+        "title": "Connecte Instagram",
+        "description": "Partage tes moments Vitana directement sur Instagram.",
+        "action": "Connecter Instagram"
+      },
+      "E7": {
+        "title": "Connecte Facebook",
+        "description": "Reste proche de tes amis et partage en un geste.",
+        "action": "Connecter Facebook"
+      },
+      "E8": {
+        "title": "Connecte ton calendrier",
+        "description": "Retrouve tes rendez-vous et les événements Vitana au même endroit.",
+        "action": "Connecter"
+      },
+      "E9": {
+        "title": "Importe tes contacts",
+        "description": "Retrouve les amis qui sont déjà sur Vitana.",
+        "action": "Importer"
+      },
+      "E10": {
+        "title": "Ne rate plus rien",
+        "description": "Active les notifications pour les messages, les matchs et les rappels.",
+        "action": "Activer"
+      },
+      "E11": {
+        "title": "Ajoute une photo de couverture",
+        "description": "Une photo de couverture rend ton profil plus personnel.",
+        "action": "Ajouter"
+      },
+      "F3": {
+        "eyebrow": "Journal",
+        "title": "Comment vas-tu aujourd’hui ?",
+        "description": "Dis quelques phrases dans ton journal – Vitana t’écoute.",
+        "action": "Enregistrer"
+      },
+      "F4": {
+        "eyebrow": "Demande à Vitana",
+        "title": "Tu as une question ?",
+        "description": "Vitana t’aide pour la santé, la communauté et plus encore.",
+        "action": "Demander à Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matchs",
+        "title": "Des personnes faites pour toi",
+        "description": "Découvre tes matchs du jour.",
+        "action": "Voir les matchs"
+      },
+      "F6": {
+        "eyebrow": "Pilote automatique",
+        "title": "Ton pilote automatique est prêt",
+        "description": "Laisse Vitana planifier tes prochaines étapes.",
+        "action": "Ouvrir"
+      },
+      "F9": {
+        "eyebrow": "Calendrier",
+        "title": "Ta journée en un coup d’œil",
+        "description": "Rendez-vous, événements et rappels au même endroit.",
+        "action": "Ouvrir le calendrier"
+      },
+      "F10": {
+        "eyebrow": "Médias",
+        "title": "Partage une vidéo ou de la musique",
+        "description": "Publie tes médias et inspire la communauté.",
+        "action": "Créer"
+      },
+      "F11": {
+        "eyebrow": "Découvrir",
+        "title": "Découvre quelque chose de nouveau",
+        "description": "Produits, services et offres pour ton bien-être.",
+        "action": "Parcourir"
+      },
+      "_pending_review": {
+        "eyebrowNotifications": true
+      },
+      "G1": {
+        "eyebrow": "Ton profil",
+        "title": "Complète ton profil",
+        "description": "Un profil complet t’apporte des matchs plus justes.",
+        "action": "Continuer",
+        "metric": "{value} fait · {message}"
+      },
+      "G2": {
+        "eyebrow": "Matchs",
+        "title": "Tu as de nouveaux matchs",
+        "description": "Découvre qui te correspond.",
+        "action": "Voir mes matchs",
+        "metric": "Nouveaux matchs : {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "Journal",
+        "title": "Ta série est en danger",
+        "description": "Hier, tu n’as rien noté – garde ta série en vie aujourd’hui.",
+        "action": "Noter aujourd’hui",
+        "metric": "Série : {count} jours · {message}"
+      }
+    },
+    "interests": {
+      "title": "Tes centres d’intérêt",
+      "description": "Choisis jusqu'à {max} sujets qui te plaisent.",
+      "selectedCount": "{count} sur {max} sélectionnés",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sommeil",
+      "mindfulness": "Pleine conscience",
+      "longevity": "Longévité",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Course à pied",
+      "strength": "Musculation",
+      "dance": "Danse",
+      "nature": "Nature",
+      "cooking": "Cuisine",
+      "social": "Vie sociale",
+      "travel": "Voyages",
+      "career": "Carrière",
+      "_pending_review": {
+        "fitness": true,
+        "nutrition": true,
+        "biohacking": true,
+        "yoga": true,
+        "nature": true
+      }
     }
   }
 }

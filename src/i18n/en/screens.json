@@ -5441,7 +5441,9 @@
       "text4NewIdeas": "4 new ideas",
       "executeAllValue0": "Execute All {value0}",
       "noValue0ActionsAvailable": "No {value0}actions available",
-      "playTodaysEpisode": "Play episode {session}"
+      "playTodaysEpisode": "Play episode {session}",
+      "vitanaIndexScoreSubtext": "Index {score} · {message}",
+      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (formerly Twitter)"
@@ -6131,7 +6133,33 @@
       "groupNameCancel": "Cancel",
       "editGroup": "Edit group",
       "messageGroupPlaceholder": "Message {name}…",
-      "messagePersonPlaceholder": "Message {name}…"
+      "messagePersonPlaceholder": "Message {name}…",
+      "forwardedLabel": "Forwarded",
+      "forwardTitle": "Forward to",
+      "forwardSearch": "Search chats and groups",
+      "forwardLoading": "Loading chats…",
+      "forwardEmpty": "No matching chats found",
+      "forwardLimit": "Choose up to {max} chats or groups.",
+      "forwardSend": "Forward",
+      "forwardSendCount": "Forward ({count})",
+      "forwardDone": "Message forwarded",
+      "forwardFailedFor": "Couldn't forward to {name}",
+      "forwardGroup": "Group",
+      "forwardChat": "Chat",
+      "imageViewer": "Image viewer",
+      "imageCounter": "{current} of {total}",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "copyImage": "Copy image",
+      "shareImage": "Share image",
+      "imageCopied": "Image copied",
+      "imageCopyUnsupported": "Copying images isn't supported here. Download the image instead.",
+      "imageCopyFailed": "The image couldn't be copied",
+      "imageDownloadFailed": "The image couldn't be loaded",
+      "imageShareFailed": "Sharing didn't work",
+      "imageLoading": "Loading image",
+      "unknownSize": "Unknown size",
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "Searching…",
@@ -7616,6 +7644,23 @@
             "checkbox": "I explicitly consent to my health data being used in anonymised form for this purpose."
           }
         }
+      },
+      "vitanaMessages": {
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "_pending_review": {
+          "community": true
+        }
       }
     },
     "sharing": {
@@ -8603,7 +8648,21 @@
       "viewIndex": "View Index",
       "viewJourney": "View My Journey",
       "viewMatch": "View Match",
-      "dismissCard": "Dismiss card"
+      "dismissCard": "Dismiss card",
+      "dailyDiary": "Diary",
+      "talkToVitana": "Talk to Vitana",
+      "autopilot": "Autopilot",
+      "calendar": "Calendar",
+      "uploadMedia": "Media",
+      "discover": "Discover",
+      "profilePhoto": "Profile photo",
+      "profileSetup": "Profile",
+      "socialConnect": "Connect",
+      "importContacts": "Contacts",
+      "completeProfile": "Complete profile",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -10246,10 +10305,7 @@
           "cancel": "Cancel",
           "confirmed": "Thanks! The result is being added to your health records.",
           "declined": "Got it. The result will not be added to your records.",
-          "failed": "That didn't work. Please try again.",
-          "_pending_review": {
-            "unknownPartner": true
-          }
+          "failed": "That didn't work. Please try again."
         }
       },
       "comingSoon": {
@@ -10865,7 +10921,34 @@
         "loadFailed": "Couldn't load your setup.",
         "retry": "Try again",
         "salesCta": "Set up",
-        "edit": "Edit"
+        "edit": "Edit",
+        "reviewNoteLabel": "Vitanaland asked for:",
+        "stillNeeded": "Still needed:",
+        "openAccount": "Your account",
+        "openCompany": "Company details (legal name and country)",
+        "openVerification": "The check by the Vitanaland team",
+        "openCatalogue": "Your products or services",
+        "openShopLink": "The link to your shop",
+        "openCompleteOffering": "One complete offering: title, price, link, country of origin and where it is offered",
+        "openTrackingTest": "A test purchase to check tracking",
+        "openResultsChannel": "How you send results",
+        "openTerms": "Accepting the partner terms",
+        "openDpa": "The data processing agreement",
+        "openBillingMandate": "A direct debit mandate for billing",
+        "openTeam": "Your team",
+        "openOther": "One more step",
+        "submitCta": "Submit for verification",
+        "resubmitCta": "Resubmit",
+        "submitConfirmTitle": "Submit your business for verification?",
+        "resubmitConfirmTitle": "Resubmit your business?",
+        "submitConfirmBody": "The Vitanaland team reviews your business. When everything is in place, it goes live. Offerings that are kept offline or incomplete are not published.",
+        "submitCancel": "Cancel",
+        "submitConfirm": "Submit now",
+        "submitResultLive": "You're live on Vitanaland.",
+        "submitResultNeedsAction": "Submitted. A few things are still needed – see below.",
+        "submitResultInReview": "Submitted. The Vitanaland team is now reviewing your business.",
+        "submitResultUnchanged": "Received. Your status has not changed.",
+        "submitFailed": "Couldn't submit right now. We refreshed your status – check what's still needed."
       },
       "setupChooser": {
         "title": "Add your products or services",
@@ -12161,6 +12244,170 @@
       "startingSoon": "Starting soon",
       "startNow": "Start now",
       "eventsSectionTitle": "Live Rooms"
+    },
+    "vitanaCards": {
+      "stripLabel": "Suggestions from Vitana",
+      "eyebrowProfile": "Your profile",
+      "eyebrowConnect": "Connect",
+      "eyebrowCommunity": "Community",
+      "eyebrowNotifications": "Notifications",
+      "E1": {
+        "title": "Show your face",
+        "description": "Upload a profile photo so others recognise you right away.",
+        "action": "Upload"
+      },
+      "E2": {
+        "title": "Tell others about you",
+        "description": "A few sentences about you help others start a conversation.",
+        "action": "Write bio"
+      },
+      "E3": {
+        "title": "Share your first post",
+        "description": "Say hello to the community – a short thought is enough.",
+        "action": "Post now"
+      },
+      "E4": {
+        "title": "What are you into?",
+        "description": "Pick your interests so Vitana can find people and content that fit you.",
+        "action": "Pick interests"
+      },
+      "E5": {
+        "title": "Where are you based?",
+        "description": "Add your location to discover people and events near you.",
+        "action": "Add location"
+      },
+      "E6": {
+        "title": "Connect Instagram",
+        "description": "Share your moments from Vitana straight to Instagram.",
+        "action": "Connect Instagram"
+      },
+      "E7": {
+        "title": "Connect Facebook",
+        "description": "Stay close to your friends and share in one tap.",
+        "action": "Connect Facebook"
+      },
+      "E8": {
+        "title": "Connect your calendar",
+        "description": "See your appointments and Vitana events in one place.",
+        "action": "Connect"
+      },
+      "E9": {
+        "title": "Import your contacts",
+        "description": "Find friends who are already on Vitana.",
+        "action": "Import"
+      },
+      "E10": {
+        "title": "Don't miss a thing",
+        "description": "Turn on notifications for messages, matches and reminders.",
+        "action": "Turn on"
+      },
+      "E11": {
+        "title": "Add a cover photo",
+        "description": "A cover photo makes your profile feel like you.",
+        "action": "Upload"
+      },
+      "F3": {
+        "eyebrow": "Diary",
+        "title": "How are you today?",
+        "description": "Speak a few sentences into your diary – Vitana is listening.",
+        "action": "Record"
+      },
+      "F4": {
+        "eyebrow": "Ask Vitana",
+        "title": "Got a question?",
+        "description": "Vitana helps you with health, community and more.",
+        "action": "Ask Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matches",
+        "title": "People who match you",
+        "description": "Discover today’s matches.",
+        "action": "See matches",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Your Autopilot is ready",
+        "description": "Let Vitana plan your next steps.",
+        "action": "Open",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "F9": {
+        "eyebrow": "Calendar",
+        "title": "Your day at a glance",
+        "description": "Appointments, events and reminders in one place.",
+        "action": "Open calendar"
+      },
+      "F10": {
+        "eyebrow": "Media",
+        "title": "Share a video or music",
+        "description": "Upload your media and inspire the community.",
+        "action": "Create"
+      },
+      "F11": {
+        "eyebrow": "Discover",
+        "title": "Discover something new",
+        "description": "Products, services and offers for your well-being.",
+        "action": "Browse"
+      },
+      "_pending_review": {
+        "eyebrowCommunity": true
+      },
+      "G1": {
+        "eyebrow": "Your profile",
+        "title": "Complete your profile",
+        "description": "A complete profile brings you better matches.",
+        "action": "Continue setup",
+        "metric": "{value} done · {message}"
+      },
+      "G2": {
+        "eyebrow": "Matches",
+        "title": "You have new matches",
+        "description": "See who is a good fit for you.",
+        "action": "See who matched",
+        "metric": "New matches: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "G3": {
+        "eyebrow": "Diary",
+        "title": "Your streak is at risk",
+        "description": "You missed yesterday – keep your streak alive today.",
+        "action": "Log today",
+        "metric": "Streak: {count} days · {message}"
+      }
+    },
+    "interests": {
+      "title": "Your interests",
+      "description": "Pick up to {max} topics you love.",
+      "selectedCount": "{count} of {max} selected",
+      "save": "Save",
+      "cancel": "Cancel",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sleep",
+      "mindfulness": "Mindfulness",
+      "longevity": "Longevity",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Running",
+      "strength": "Strength training",
+      "dance": "Dance",
+      "nature": "Nature",
+      "cooking": "Cooking",
+      "social": "Community",
+      "travel": "Travel",
+      "career": "Career",
+      "_pending_review": {
+        "fitness": true,
+        "biohacking": true,
+        "yoga": true
+      }
     }
   }
 }

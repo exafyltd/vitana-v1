@@ -1,0 +1,76 @@
+10:45:00 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 <worktree>
+
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > eventAttendees reads global_event_participants.status=attending, never response 11ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > yourFollowers reads user_follows.following_id = owner 1ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > looks profiles up by email/phone with a real tenant_id row filter 1ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > chunks the profile lookup 8ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > excludes service_bot_accounts and notification_test_actors from attendees, followers and segments 1ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > never queries a profile id that is on an allowlist 1ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on service_bot_accounts throws CampaignAudienceError naming the step 15ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on notification_test_actors throws CampaignAudienceError naming the step 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on global_community_events throws CampaignAudienceError naming the step 1ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on global_event_participants throws CampaignAudienceError naming the step 5ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on user_follows throws CampaignAudienceError naming the step 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on profiles throws CampaignAudienceError naming the step 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on contacts throws CampaignAudienceError naming the step 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a query error on campaign_audience_segments throws CampaignAudienceError naming the step 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > a member audience without a tenant throws (fail closed) 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > an event the owner does not own contributes nothing 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > eventAttendees alone does not add the organizer's followers 0ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > vitanaContacts uses contacts.contact_*, scoped to the owner, with no member lookup or allowlist query 1ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > csv and manual entries pass through unchanged and make no query 9ms
+ ✓ src/lib/campaign-audience.test.ts > VTID-05120 resolveCampaignAudience > an empty or missing audience resolves to nothing without querying 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > exports requireUser and isServiceRoleCaller 10ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > requireUser verifies the bearer with auth.getUser() on the anon client 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > isServiceRoleCaller accepts an exact service-role key match or a verified service_role claim 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > uses a supabase-js that has getClaims (2.57.2+, VTID-05008) 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > builds its clients through createDataClient (VTID-05023) 16ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > linkedin-import imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > social-media-import imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > queue-campaign-recipients imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > send-welcome-discount imports _shared/caller-auth 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > fetch-user-context imports _shared/caller-auth 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import authenticates with requireUser before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import keys the write on the verified user, and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > social-media-import authenticates with requireUser before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > social-media-import keys the write on the verified user, and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import is flagged for removal 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > honours a body userId only for a service-role caller 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > otherwise uses the verified user and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > rejects any caller that is not service role before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > has no exafy_admin path (service-role only) 11ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > reloads the campaign and refuses one that is not scheduled or active 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > takes the message from the campaign row, never the request 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > scopes every recipient query to the campaign owner or the owner's tenant 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > calls isServiceRoleCaller before reading the body 3ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > reads recipient, code, percent and expiry from user_discount_codes, not the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > HTML-escapes every interpolated value 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 tree-wide: no service-role function trusts a body user id unchecked > the scan sees the known body-id readers 18ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 tree-wide: no service-role function trusts a body user id unchecked > every SERVICE_ROLE function that reads a body user id checks the caller 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 queue-campaign-recipients > still rejects a non-service-role caller first (VTID-05049) 14ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 queue-campaign-recipients > reads the audience from distribution_config.audience_data, the request only as a logged fallback 4ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 queue-campaign-recipients > uses none of the columns or tables that do not exist 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 queue-campaign-recipients > checks CAMPAIGN_QUEUE_ENABLED before any insert or campaign update 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 queue-campaign-recipients > builds every row first and inserts campaign_recipients once, throwing on error 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 queue-campaign-recipients > fails loudly: owner-tenant error throws, no tenant answers 409, audience errors answer 500 with the step 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 process-campaign-queue is service-role only > imports caller-auth and checks isServiceRoleCaller before anything else in the handler 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 process-campaign-queue is service-role only > answers an unauthorised caller with unauthorizedResponse 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 trigger-scheduled-campaigns passes the stored audience key > uses audience_data and has no { vitanaContacts: true } fallback 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > finds every table the resolver reads 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > service_bot_accounts: selected and filtered columns exist 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > notification_test_actors: selected and filtered columns exist 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > global_community_events: selected and filtered columns exist 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > global_event_participants: selected and filtered columns exist 1ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > user_follows: selected and filtered columns exist 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > profiles: selected and filtered columns exist 6ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > contacts: selected and filtered columns exist 3ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > campaign_audience_segments: selected and filtered columns exist 0ms
+ ✓ src/lib/campaign-queue.vtid-05120.test.ts > VTID-05120 schema guard: the resolver reads only real columns > profiles: selected and filtered columns exist 0ms
+
+ Test Files  3 passed (3)
+      Tests  66 passed (66)
+   Start at  22:45:00
+   Duration  6.01s (transform 1.69s, setup 1.48s, import 1.66s, tests 181ms, environment 11.43s)
+

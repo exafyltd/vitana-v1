@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05147",
+  "kind": "infra",
+  "paths": [
+    "src/integrations/supabase/role-tables-no-client-writes.vtid-05147.test.ts",
+    "src/hooks/useRoleSwitch.vtid-05147.wiring.test.ts",
+    "docs/validation/VTID-05147/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

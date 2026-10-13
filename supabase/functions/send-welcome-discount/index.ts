@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 import { createDataClient } from "../_shared/data-client.ts";
-import { isServiceRoleCaller, unauthorizedResponse } from "../_shared/caller-auth.ts";
+import { isServiceRoleCaller, isTriggerSecretCaller, unauthorizedResponse } from "../_shared/caller-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -34,9 +34,11 @@ serve(async (req) => {
 
     // VTID-05049: verify_jwt=false and the body used to choose the recipient,
     // the code and the percentage — open phishing in a Maxina-branded email.
-    // Only the pg_net trigger (service-role key) may call this.
-    if (!(await isServiceRoleCaller(req))) {
-      logStep("Rejected: caller is not service role");
+    // Only a server-side caller may call this. VTID-05118: the pg_net trigger
+    // sends X-Trigger-Secret (vault holds neither supabase_url nor
+    // service_role_key, so the old post had a NULL URL and never went out).
+    if (!(isTriggerSecretCaller(req) || (await isServiceRoleCaller(req)))) {
+      logStep("Rejected: caller is neither trigger secret nor service role");
       return unauthorizedResponse(corsHeaders);
     }
 
@@ -49,8 +51,8 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
-    // The trigger still sends user_id/code/discount_percent/expires_at; they
-    // are ignored. The email is built from the stored discount-code row.
+    // Only discount_code_id is read; any other body field is ignored. The
+    // email is built from the stored discount-code row.
     const { discount_code_id } = await req.json();
     logStep("Payload received", { discount_code_id });
 

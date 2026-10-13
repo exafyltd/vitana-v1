@@ -96,7 +96,7 @@ export function HealthConsentSourcesDialog({ open, onOpenChange, grantedVia = 's
     <>
       {/* One dialog at a time: the list steps aside while a consent is open and comes back after. */}
       <ResponsiveDialog open={open && selected === null} onOpenChange={onOpenChange}>
-        <ResponsiveDialogContent className="sm:max-w-[520px]" data-testid="health-consent-sources-dialog">
+        <ResponsiveDialogContent className="sm:max-w-lg" data-testid="health-consent-sources-dialog">
           <ResponsiveDialogHeader>
             <ResponsiveDialogTitle>{t(`${UI}.manageSourcesTitle`)}</ResponsiveDialogTitle>
             <ResponsiveDialogDescription>{t(`${UI}.manageSourcesDescription`)}</ResponsiveDialogDescription>

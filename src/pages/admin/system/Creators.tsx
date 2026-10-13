@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const columns = [
   {
     key: "user_id",
@@ -49,6 +51,7 @@ const columns = [
 ];
 
 export default function SystemCreators() {
+  const spotlight = useSpotlightEnabled();
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
@@ -68,10 +71,8 @@ export default function SystemCreators() {
   });
 
   if (error) {
-    return (
-      <AppLayout>
-        <SubNavigation items={adminSystemNavigation} />
-        <div className="p-6 space-y-6">
+    const adminBody = (
+      <>
           <AdminHeader title={t('screens.admin.creators')} description="Stripe Connect creator accounts" />
           <div className="rounded-xl border bg-card p-8 text-center">
             <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -80,7 +81,19 @@ export default function SystemCreators() {
               {t('screens.admin.creatorProfileDataWillAppearHere')}
             </p>
           </div>
-        </div>
+      </>
+    );
+
+    return (
+      <AppLayout>
+        <SubNavigation items={adminSystemNavigation} />
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            <div className="space-y-6">{adminBody}</div>
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 space-y-6">{adminBody}</div>
+        )}
       </AppLayout>
     );
   }
@@ -89,10 +102,8 @@ export default function SystemCreators() {
   const total = data?.total || 0;
   const onboardedCount = creators.filter((c: any) => c.stripe_onboarding_complete).length;
 
-  return (
-    <AppLayout>
-      <SubNavigation items={adminSystemNavigation} />
-      <div className="p-6 space-y-6">
+  const adminBody2 = (
+    <>
         <AdminHeader title={t('screens.admin.creators')} description="Stripe Connect creator accounts and onboarding status" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -115,7 +126,19 @@ export default function SystemCreators() {
           total={total}
           onPageChange={setPage}
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SubNavigation items={adminSystemNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody2}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody2}</div>
+      )}
     </AppLayout>
   );
 }

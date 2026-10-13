@@ -1,0 +1,60 @@
+{
+  "aiConnect": {
+    "consent": {
+      "title": "Connect {client} to your Maxina account",
+      "lead": "{client} would like to use your Maxina account. Choose what it may see. You can change or remove this at any time in Maxina.",
+      "signedInAs": "Signed in as {email}",
+      "chooseTitle": "{client} may:",
+      "readOnly": "Read-only: your assistant cannot post, send messages or change anything.",
+      "notShared": "Never shared: health data, Vitana Index, diary, memories and private messages.",
+      "redirectsTo": "After you allow it, you go back to {host}.",
+      "noneSelected": "Choose at least one area.",
+      "approve": "Allow",
+      "deny": "Cancel",
+      "failed": "That did not work. Please try again.",
+      "loading": "Loading …",
+      "redirecting": "Taking you back …",
+      "invalid": "This request has expired or is not valid. Start the connection again in your AI assistant.",
+      "_pending_review": {}
+    },
+    "categories": {
+      "profile": "Your profile",
+      "profileDesc": "Your name, city, interests and goals",
+      "matches": "Your matches",
+      "matchesDesc": "The people Maxina recommends you meet",
+      "people": "Find people",
+      "peopleDesc": "Members who chose to be findable by AI assistants",
+      "activities": "Activities",
+      "activitiesDesc": "Upcoming community events and meetups",
+      "commerce": "Supplier tools (Vitanaland Commerce)",
+      "_pending_review": {}
+    },
+    "settings": {
+      "title": "Connected AI",
+      "lead": "Bring ChatGPT or Claude into your Maxina community. Your assistant reads only what you allow.",
+      "connectChatgpt": "Connect ChatGPT",
+      "connectClaude": "Connect Claude",
+      "howTitle": "Connect {assistant} in three steps",
+      "step1Claude": "In Claude, open Settings → Connectors → Add custom connector.",
+      "step1Chatgpt": "In ChatGPT, open Settings → Apps & Connectors → Create.",
+      "step2": "Paste this address:",
+      "step3": "Sign in with your Maxina account and choose what your assistant may see.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "close": "Close",
+      "empty": "No AI assistant connected yet.",
+      "connectedSince": "Connected since {date}",
+      "disconnect": "Disconnect",
+      "disconnected": "Disconnected",
+      "disconnectedNote": "Disconnected: this assistant can no longer use Maxina. You can also remove it in ChatGPT or Claude.",
+      "saveFailed": "Could not save. Please try again.",
+      "loadFailed": "Your connected assistants could not be loaded.",
+      "findableTitle": "Let other members' AI assistants find me",
+      "findableDesc": "When on, members who connected ChatGPT or Claude can see your name, avatar, public city and interests. Off by default.",
+      "unknownClient": "An AI assistant",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

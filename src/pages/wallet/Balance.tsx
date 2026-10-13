@@ -32,6 +32,18 @@ import { useAuth } from "@/context/AuthProvider";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate, fmtNumber } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard, VCardSkeleton } from "@/components/ui/vcard";
+import {
+  IconThumb,
+  TIER_B_GRID_2,
+  TIER_B_LIST,
+  TierBEmpty,
+  TierBError,
+  TierBListSkeleton,
+  TierBSection,
+} from "@/components/spotlight/tier-b/TierBKit";
 const balanceData = {
   credits: {
     balance: 2450,
@@ -71,6 +83,7 @@ function Balance() {
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { user } = useAuth();
+  const spotlight = useSpotlightEnabled();
 
   const splitBarOptions = [
     { value: "credits", label: "Credits Account" },
@@ -95,10 +108,227 @@ function Balance() {
 
   const contextualAction = getContextualAction();
 
+  const balanceDialogs = (
+    <>
+        {/* Top Up Credits Dialog */}
+        <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{t('screens.wallet.topUpCredits')}</DialogTitle>
+              <DialogDescription>
+                {t('screens.wallet.purchaseCreditsUnlockPremiumHealthServices')}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" className="h-20 flex-col">
+                  <span className="text-lg font-bold">500</span>
+                  <span className="text-sm">$25</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex-col">
+                  <span className="text-lg font-bold">1,200</span>
+                  <span className="text-sm">$50</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex-col">
+                  <span className="text-lg font-bold">2,500</span>
+                  <span className="text-sm">$100</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex-col">
+                  <span className="text-lg font-bold">5,500</span>
+                  <span className="text-sm">$200</span>
+                </Button>
+              </div>
+              <Button className="w-full">
+                <CreditCard className="h-4 w-4 mr-2" />
+                {t('screens.wallet.purchaseCredits')}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Buy/Stake Tokens Dialog */}
+        <Dialog open={isTokensOpen} onOpenChange={setIsTokensOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{t('screens.wallet.buystakeVtnaTokens')}</DialogTitle>
+              <DialogDescription>
+                {t('screens.wallet.purchaseStakeVtnaTokensForGovernance')}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" className="h-16">
+                  <Coins className="h-4 w-4 mr-2" />
+                  {t('screens.wallet.buyTokens')}
+                </Button>
+                <Button variant="outline" className="h-16">
+                  <Shield className="h-4 w-4 mr-2" />
+                  {t('screens.wallet.stakeTokens')}
+                </Button>
+              </div>
+              <Button className="w-full">
+                {t('screens.wallet.continuePurchase')}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Upgrade Plan Dialog */}
+        <Dialog open={isUpgradeOpen} onOpenChange={setIsUpgradeOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{t('screens.wallet.upgradeMembership')}</DialogTitle>
+              <DialogDescription>
+                {t('screens.wallet.upgradePlatinumTierFor90Coverage')}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="border rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-semibold">{t('screens.wallet.platinumTier')}</span>
+                  <span className="text-lg font-bold">{t('screens.wallet.text99month')}</span>
+                </div>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>{t('screens.wallet.text90LabTestCoverage')}</li>
+                  <li>{t('screens.wallet.unlimitedHealthCoaching')}</li>
+                  <li>{t('screens.wallet.prioritySupport247')}</li>
+                  <li>{t('screens.wallet.advancedAnalytics')}</li>
+                </ul>
+              </div>
+              <Button className="w-full">
+                <TrendingUp className="h-4 w-4 mr-2" />
+                {t('screens.wallet.upgradeNow')}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  // Real balances and transactions only: the invented "+12.1 %" changes, the fixed "Active"/"Premium"
+  // status tiles and the click handlers that only logged are not carried over (SR-24, SR-26).
+  if (spotlight) {
+    const spotlightAction = isIAPRestricted()
+      ? null
+      : activeTab === 'tokens'
+        ? { label: t('screens.wallet.buystakeVtnaTokens'), icon: Coins, onClick: () => setIsTokensOpen(true) }
+        : activeTab === 'membership'
+          ? { label: t('screens.wallet.upgradeMembership'), icon: TrendingUp, onClick: () => setIsUpgradeOpen(true) }
+          : { label: t('screens.wallet.topUpCredits'), icon: Plus, onClick: () => setIsTopUpOpen(true) };
+    const balanceCard = (label: string, value: number | null, unitKey: string) =>
+      !isLoaded ? (
+        <VCardSkeleton size="standard" />
+      ) : (
+        <VCard
+          size="standard"
+          eyebrow={label}
+          title={<span className="text-2xl font-extrabold tabular-nums">{value !== null ? t(unitKey, { amount: fmtNumber(value) }) : '—'}</span>}
+        />
+      );
+    const txList = (match: (tx: (typeof transactions)[number]) => boolean, emptyKey: string) => {
+      const rows = transactions.filter(match).slice(0, 5);
+      return (
+        <TierBSection title={t('screens.wallet.recentActivity2')}>
+          {loading ? (
+            <TierBListSkeleton count={3} />
+          ) : error ? (
+            <TierBError />
+          ) : rows.length === 0 ? (
+            <TierBEmpty Icon={Coins} titleKey={emptyKey} />
+          ) : (
+            <div className={TIER_B_LIST}>
+              {rows.map((tx) => (
+                <VCard
+                  key={tx.id}
+                  size="row"
+                  mediaSlot={<IconThumb icon={Coins} />}
+                  title={t(`spotlightTierB.wallet.txType.${tx.transaction_type}`)}
+                  meta={[fmtDate(new Date(tx.created_at)), t(`spotlightTierB.wallet.txStatus.${tx.status}`)].join(' · ')}
+                  actions={
+                    <span className="text-sm font-semibold tabular-nums text-foreground">
+                      {`${tx.amount > 0 ? '+' : ''}${fmtNumber(tx.amount, { maximumFractionDigits: 2 })} ${tx.to_currency || tx.from_currency || ''}`.trim()}
+                    </span>
+                  }
+                />
+              ))}
+            </div>
+          )}
+        </TierBSection>
+      );
+    };
+    const isCredits = (tx: (typeof transactions)[number]) =>
+      ['CREDITS', 'VTNA'].includes(tx.from_currency ?? '') || ['CREDITS', 'VTNA'].includes(tx.to_currency ?? '');
+    const isUsd = (tx: (typeof transactions)[number]) => tx.from_currency === 'USD' || tx.to_currency === 'USD';
+
+    return (
+      <AppLayout>
+        <SEO title={t('screens.wallet.balanceBenefitsVitanaWallet')} description={t('spotlightTierB.wallet.balanceDescription')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: walletNavigation }}
+          header={{ title: t('screens.wallet.balanceBenefits'), description: t('spotlightTierB.wallet.balanceDescription'), emoji: '💳' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.wallet.searchBalancesTransactionsBenefits')} />
+                <UniversalCalendarButton />
+                {spotlightAction && (
+                  <Button size="sm" onClick={spotlightAction.onClick}>
+                    <spotlightAction.icon className="me-2 h-4 w-4" />
+                    {spotlightAction.label}
+                  </Button>
+                )}
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: 'credits', label: t('screens.wallet.creditsAccount') },
+              { value: 'tokens', label: t('screens.wallet.tokensAccount') },
+              { value: 'membership', label: t('screens.wallet.membershipBenefits') },
+              { value: 'optimization', label: t('screens.wallet.earningOptimization') },
+            ],
+          }}
+        >
+          <div className="flex flex-col gap-6">
+            <WalletMotivationalBanner variant="balance" activeTab={activeTab} />
+            <SplitBarContent value="credits" className="mt-0 flex flex-col gap-6">
+              <div className={TIER_B_GRID_2}>
+                {balanceCard(t('screens.wallet.creditsBalance'), getBalance('CREDITS'), 'spotlightTierB.wallet.creditsAmount')}
+                <CreditEarningPredictionCard />
+              </div>
+              {txList(isCredits, 'screens.wallet.noCreditTransactionsYet')}
+            </SplitBarContent>
+            <SplitBarContent value="tokens" className="mt-0 flex flex-col gap-6">
+              <div className={TIER_B_GRID_2}>
+                {balanceCard(t('screens.wallet.vtnaBalance'), getBalance('VTNA'), 'spotlightTierB.wallet.vtnaAmount')}
+                <TokenMarketIntelligenceCard />
+              </div>
+            </SplitBarContent>
+            <SplitBarContent value="membership" className="mt-0 flex flex-col gap-6">
+              <div className={TIER_B_GRID_2}>
+                {balanceCard(t('screens.wallet.usdBalance'), getBalance('USD'), 'spotlightTierB.wallet.usdAmount')}
+                <MembershipROIAnalyticsCard />
+              </div>
+              {txList(isUsd, 'screens.wallet.noUsdTransactionsYet')}
+            </SplitBarContent>
+            <SplitBarContent value="optimization" className="mt-0">
+              <EarningOptimizationSplitScreen />
+            </SplitBarContent>
+          </div>
+        </ScreenFrame>
+        {balanceDialogs}
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
-      <SEO 
-        title={t('screens.wallet.balanceBenefitsVitanaWallet')} 
+      <SEO
+        title={t('screens.wallet.balanceBenefitsVitanaWallet')}
         description="Manage your credits, tokens, and membership benefits in your Vitana wallet."
       />
       <SubNavigation items={walletNavigation} />
@@ -278,98 +508,7 @@ function Balance() {
         </div>
       </div>
 
-      {/* Top Up Credits Dialog */}
-      <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{t('screens.wallet.topUpCredits')}</DialogTitle>
-            <DialogDescription>
-              {t('screens.wallet.purchaseCreditsUnlockPremiumHealthServices')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" className="h-20 flex-col">
-                <span className="text-lg font-bold">500</span>
-                <span className="text-sm">$25</span>
-              </Button>
-              <Button variant="outline" className="h-20 flex-col">
-                <span className="text-lg font-bold">1,200</span>
-                <span className="text-sm">$50</span>
-              </Button>
-              <Button variant="outline" className="h-20 flex-col">
-                <span className="text-lg font-bold">2,500</span>
-                <span className="text-sm">$100</span>
-              </Button>
-              <Button variant="outline" className="h-20 flex-col">
-                <span className="text-lg font-bold">5,500</span>
-                <span className="text-sm">$200</span>
-              </Button>
-            </div>
-            <Button className="w-full">
-              <CreditCard className="h-4 w-4 mr-2" />
-              {t('screens.wallet.purchaseCredits')}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Buy/Stake Tokens Dialog */}
-      <Dialog open={isTokensOpen} onOpenChange={setIsTokensOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{t('screens.wallet.buystakeVtnaTokens')}</DialogTitle>
-            <DialogDescription>
-              {t('screens.wallet.purchaseStakeVtnaTokensForGovernance')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" className="h-16">
-                <Coins className="h-4 w-4 mr-2" />
-                {t('screens.wallet.buyTokens')}
-              </Button>
-              <Button variant="outline" className="h-16">
-                <Shield className="h-4 w-4 mr-2" />
-                {t('screens.wallet.stakeTokens')}
-              </Button>
-            </div>
-            <Button className="w-full">
-              {t('screens.wallet.continuePurchase')}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Upgrade Plan Dialog */}
-      <Dialog open={isUpgradeOpen} onOpenChange={setIsUpgradeOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{t('screens.wallet.upgradeMembership')}</DialogTitle>
-            <DialogDescription>
-              {t('screens.wallet.upgradePlatinumTierFor90Coverage')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="border rounded-lg p-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-semibold">{t('screens.wallet.platinumTier')}</span>
-                <span className="text-lg font-bold">{t('screens.wallet.text99month')}</span>
-              </div>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>{t('screens.wallet.text90LabTestCoverage')}</li>
-                <li>{t('screens.wallet.unlimitedHealthCoaching')}</li>
-                <li>{t('screens.wallet.prioritySupport247')}</li>
-                <li>{t('screens.wallet.advancedAnalytics')}</li>
-              </ul>
-            </div>
-            <Button className="w-full">
-              <TrendingUp className="h-4 w-4 mr-2" />
-              {t('screens.wallet.upgradeNow')}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {balanceDialogs}
     </AppLayout>
   );
 }

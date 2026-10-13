@@ -1,0 +1,16 @@
+{
+  "spotlight": {
+    "rail": {
+      "open": "Mehr dazu",
+      "title": "Mehr dazu",
+      "label": "Passend zu diesem Bildschirm"
+    },
+    "header": {
+      "vitanaIndexLabel": "Vitana Index",
+      "vitanaIndexAria": "Vitana Index: {value}. Tippe für Details."
+    },
+    "feed": {
+      "keyboardHint": "J / K oder ↑ ↓: nächste Karte"
+    }
+  }
+}

@@ -19,6 +19,9 @@ import { Plus, FileText, CheckSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TIER_B_GRID, TierBEmpty } from "@/components/spotlight/tier-b/TierBKit";
 
 export default withScreenId(function Campaigns() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
@@ -28,6 +31,7 @@ export default withScreenId(function Campaigns() {
   const { campaigns, isLoading, duplicateCampaign, deleteCampaign } = useCampaigns();
   const { posts } = useDistributionPosts();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
 
   const handleEditCampaign = (campaign: Campaign) => {
     setEditingCampaign(campaign);
@@ -121,6 +125,89 @@ export default withScreenId(function Campaigns() {
   const handleSmartReschedule = () => {
     notifyInfo('toasts.sharing.smartrescheduleFeatureComingSoon');
   };
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.sharing.campaignManagerVitana')} description={t('spotlightTierB.sharing.campaignsDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: sharingNavigation }}
+          header={{ title: t('screens.sharing.campaignManager'), description: t('spotlightTierB.sharing.campaignsDescription'), emoji: '🗂️' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.sharing.searchCampaigns')} />
+                <UniversalCalendarButton />
+                {campaigns && campaigns.length >= 2 && (
+                  <Button
+                    size="sm"
+                    variant={bulkMode ? "default" : "outline"}
+                    onClick={() => {
+                      setBulkMode(!bulkMode);
+                      if (bulkMode) deselectAll();
+                    }}
+                  >
+                    <CheckSquare className="me-2 h-4 w-4" />
+                    {bulkMode ? t('spotlightTierB.sharing.exitBulkMode') : t('spotlightTierB.sharing.bulkActions')}
+                  </Button>
+                )}
+                <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.sharing.newCampaign')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          {isLoading ? (
+            <ArchetypeSkeleton archetype="collection" />
+          ) : campaigns && campaigns.length > 0 ? (
+            <div className="flex flex-col gap-6">
+              {bulkMode && selectedCampaigns.size > 0 && (
+                <BulkActionToolbar
+                  selectedCount={selectedCampaigns.size}
+                  onDelete={handleBulkDelete}
+                  onDuplicate={handleBulkDuplicate}
+                  onExport={handleBulkExport}
+                  onSmartReschedule={handleSmartReschedule}
+                  onSelectAll={selectAll}
+                  onDeselectAll={deselectAll}
+                  onClose={() => {
+                    setBulkMode(false);
+                    deselectAll();
+                  }}
+                />
+              )}
+              <div className={TIER_B_GRID}>
+                {campaigns.map((campaign) => (
+                  <CampaignCard
+                    key={campaign.id}
+                    campaign={campaign}
+                    stats={getCampaignStats(campaign.id)}
+                    onClick={() => !bulkMode && handleEditCampaign(campaign)}
+                    bulkMode={bulkMode}
+                    isSelected={selectedCampaigns.has(campaign.id)}
+                    onToggleSelect={() => toggleCampaignSelection(campaign.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <TierBEmpty
+              Icon={FileText}
+              titleKey="screens.sharing.noCampaignsYet"
+              descriptionKey="screens.sharing.createYourFirstCampaignOrganizeTrack"
+              actionKey="screens.sharing.createYourFirstCampaign"
+              onAction={() => setCampaignPopupOpen(true)}
+            />
+          )}
+        </ScreenFrame>
+        <CampaignDialog open={campaignPopupOpen} onOpenChange={handleCloseDialog} editingCampaign={editingCampaign} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

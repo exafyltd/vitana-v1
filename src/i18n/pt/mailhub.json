@@ -186,11 +186,13 @@
         "_pending_review": {},
         "file_too_large": {
           "title": "O arquivo é grande demais",
-          "body": "Exporte seus contatos sem fotos ou escolha um arquivo menor (até 10 MB)."
+          "body": "Exporte seus contatos sem fotos ou escolha um arquivo menor (até 10 MB).",
+          "_pending_review": {}
         },
         "file_empty": {
           "title": "Nenhum contato no arquivo",
-          "body": "Escolha um arquivo .vcf exportado do app Contatos do seu celular."
+          "body": "Escolha um arquivo .vcf exportado do app Contatos do seu celular.",
+          "_pending_review": {}
         }
       },
       "consent": {
@@ -218,7 +220,8 @@
         "fileHowTitle": "Como exportar seus contatos:",
         "fileHowIphone": "iPhone: Contatos → Listas → toque e segure “Todos os contatos” → Exportar.",
         "fileHowAndroid": "Android: Contatos → Corrigir e gerenciar → Exportar para arquivo.",
-        "accounts": "Ou de uma conta"
+        "accounts": "Ou de uma conta",
+        "_pending_review": {}
       },
       "results": {
         "summary": "{total} contatos importados · {members} já no Vitanaland",
@@ -231,7 +234,8 @@
         "noContactInfo": "Sem dados de contato",
         "overLimit": "Foram importados os primeiros {limit} contatos.",
         "later": "Você encontra todos os contatos em Mensagens → Contatos.",
-        "done": "Concluído"
+        "done": "Concluído",
+        "_pending_review": {}
       },
       "invite": {
         "whatsapp": "WhatsApp",
@@ -241,27 +245,72 @@
         "message": "Oi, {name}! Estou no Vitanaland, uma comunidade para uma vida longa e saudável. Venha também: {link}",
         "messageGeneric": "Estou no Vitanaland, uma comunidade para uma vida longa e saudável. Venha também: {link}",
         "opened": "Seu convite está pronto – é só enviar.",
-        "linkFailed": "Não foi possível carregar seu link de convite agora. Tente novamente em instantes."
+        "linkFailed": "Não foi possível carregar seu link de convite agora. Tente novamente em instantes.",
+        "_pending_review": {}
       },
       "remove": {
         "button": "Remover contatos importados do celular",
         "confirmTitle": "Remover contatos do celular?",
         "confirmBody": "Todos os contatos importados do seu celular serão apagados do Vitanaland. Nada muda no seu celular.",
         "confirm": "Remover",
-        "done": "Os contatos do seu celular foram removidos."
+        "done": "Os contatos do seu celular foram removidos.",
+        "_pending_review": {}
       },
       "privacy": {
         "title": "Posso ser encontrado pelo meu número",
-        "body": "Quem tem seu número verificado nos contatos vê que você está no Vitanaland."
+        "body": "Quem tem seu número verificado nos contatos vê que você está no Vitanaland.",
+        "_pending_review": {}
       },
       "added": {
         "onPlatformTitle": "Contato adicionado",
         "onPlatformBody": "{name} já está no Vitanaland – mande uma mensagem.",
         "savedTitle": "Contato salvo",
-        "savedBody": "{name} agora está nos seus contatos."
+        "savedBody": "{name} agora está nos seus contatos.",
+        "_pending_review": {}
       },
       "page": {
-        "description": "Convide amigos com seu link pessoal ou encontre-os nos seus contatos."
+        "description": "Convide amigos com seu link pessoal ou encontre-os nos seus contatos.",
+        "_pending_review": {}
+      },
+      "verifyPhone": {
+        "title": "Seu número de telefone",
+        "body": "Verifique seu número para que amigos que o têm salvo encontrem você no Vitanaland.",
+        "verifiedLabel": "Verificado:",
+        "verify": "Verificar número",
+        "change": "Alterar",
+        "remove": "Remover",
+        "removeTitle": "Remover seu número?",
+        "removeBody": "Seus amigos não vão mais encontrar você pelo número. Você pode verificá-lo de novo quando quiser.",
+        "removed": "Seu número foi removido.",
+        "dialogTitle": "Verificar seu número de telefone",
+        "numberLabel": "Número de celular",
+        "numberHelp": "Vamos enviar um código de 6 dígitos por SMS. Seu número continua privado.",
+        "sendCode": "Enviar código",
+        "codeLabel": "Código do SMS",
+        "codeHelp": "Enviamos o código para",
+        "confirm": "Verificar",
+        "resendIn": "Novo código em {seconds} s",
+        "resend": "Enviar novo código",
+        "changeNumber": "Outro número",
+        "done": "Seu número está verificado. Amigos que o têm salvo já podem encontrar você.",
+        "hint": "Verifique seu número para que seus amigos encontrem você.",
+        "hintAction": "Verificar agora",
+        "errors": {
+          "INVALID_PHONE": "Isso não parece um número válido.",
+          "NOT_A_MOBILE_NUMBER": "Digite um número de celular.",
+          "COUNTRY_NOT_SUPPORTED": "Ainda não conseguimos enviar SMS para este país.",
+          "ACCOUNT_NOT_ELIGIBLE": "Isso não é possível com esta conta.",
+          "PHONE_IN_USE": "Este número já está verificado em outra conta.",
+          "TOO_MANY_REQUESTS": "Muitas tentativas. Tente de novo mais tarde.",
+          "SMS_SEND_FAILED": "Não foi possível enviar o SMS. Tente de novo.",
+          "INVALID_CODE": "O código não está correto.",
+          "CODE_EXPIRED": "O código expirou. Peça um novo.",
+          "NO_PENDING_CODE": "Peça um código primeiro.",
+          "TOO_MANY_ATTEMPTS": "Muitas tentativas erradas. Peça um novo código.",
+          "unknown": "Não deu certo. Tente de novo.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       }
     },
     "requested": {

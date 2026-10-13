@@ -9,6 +9,8 @@ import { TrendingUp, Users, Target, Brain, BarChart3 } from "lucide-react";
 import { lifestylePatterns, indexMovement, socialEngagement, productivity, correlations } from "@/mocks/ai";
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -19,6 +21,8 @@ const aiSubItems = [
 ];
 
 export default function Insights() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   
   const handleInsightClick = (insightType: string) => {
@@ -28,6 +32,167 @@ export default function Insights() {
       screen_route: "/ai/insights"
     });
   };
+
+  const insightCards = (
+    <>
+      {/* Pinterest-style Masonry Grid Layout */}
+      <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        {/* Progress Tracking - C-010 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-010">
+          <ProgressStreaksCard
+            streaks={[
+              { type: "Exercise", count: 12, emoji: "🏃" },
+              { type: "Meditation", count: 8, emoji: "🧘" },
+              { type: "Hydration", count: 15, emoji: "💧" }
+            ]}
+          />
+        </div>
+
+        {/* Pattern Recognition - C-006 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-006">
+          <StandardCard
+            title={t('screens.ai.patternRecognition')}
+            subtitle={t('screens.ai.subtitle_aiInsights')}
+            content={t('screens.ai.insightContent_energyPeak')}
+            variant="default"
+            onClick={() => handleInsightClick("C-006")}
+          />
+        </div>
+
+        {/* Behavioral Trends - C-007 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-007">
+          <StandardCard
+            title={t('screens.ai.behavioralTrends')}
+            subtitle={t('screens.ai.subtitle_weeklyTrends')}
+            content={t('screens.ai.insightContent_hydrationWeekly')}
+            variant="default"
+            onClick={() => handleInsightClick("C-007")}
+          />
+        </div>
+
+        {/* Correlation Analysis - C-008 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-008">
+          <StandardCard
+            title={t('screens.ai.correlationAnalysis')}
+            subtitle={t('screens.ai.subtitle_correlations')}
+            content={t('screens.ai.insightContent_sleepMood')}
+            variant="default"
+            onClick={() => handleInsightClick("C-008")}
+          />
+        </div>
+
+        {/* Prediction Models - C-009 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-009">
+          <StandardCard
+            title={t('screens.ai.predictionModels')}
+            subtitle={t('screens.ai.subtitle_aiForecasts')}
+            content={t('screens.ai.insightContent_fitnessGoal')}
+            variant="default"
+            onClick={() => handleInsightClick("C-009")}
+          />
+        </div>
+
+        {/* Smart Calendar - matching Dashboard sizing */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-011">
+          <SmartCalendarCard />
+        </div>
+
+        {/* Lifestyle Patterns - C-012 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-012">
+          <SmartSuggestions
+            suggestions={lifestylePatterns.map(pattern => ({
+              title: pattern,
+              description: t('screens.ai.insightDesc_detectedImprovement'),
+              type: "insight" as const,
+              priority: "medium" as const,
+              action: t('screens.ai.actionLabel_seeDetails')
+            }))}
+            variant="card"
+            maxItems={3}
+          />
+        </div>
+
+        {/* Health Index Movement - C-013 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-013">
+          <SmartSuggestions
+            suggestions={[
+              {
+                title: `Vitana Index: ${indexMovement.vitanaIndex} (+${indexMovement.delta})`,
+                description: t('screens.ai.insightDesc_weeklyImprovement'),
+                type: "insight" as const,
+                priority: "high" as const,
+                action: t('screens.ai.actionLabel_viewBreakdown')
+              },
+              {
+                title: `${t('screens.health.pillar_sleep_title')}: ${indexMovement.pillars.sleep.score} (+${indexMovement.pillars.sleep.delta})`,
+                description: t('screens.ai.insightDesc_bestImprovementDriver'),
+                type: "insight" as const,
+                priority: "medium" as const,
+                action: t('screens.ai.actionLabel_optimize')
+              }
+            ]}
+            variant="card"
+            maxItems={2}
+          />
+        </div>
+
+        {/* Social Engagement - C-014 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-014">
+          <SmartSuggestions
+            suggestions={[
+              {
+                title: t('screens.ai.insightTitle_newFollowers', { n: String(socialEngagement.newFollowers) }),
+                description: t('screens.ai.insightDesc_growingConnection'),
+                type: "insight" as const,
+                priority: "low" as const,
+                action: t('screens.ai.actionLabel_connect')
+              },
+              {
+                title: t('screens.ai.insightTitle_newGroups', { n: String(socialEngagement.groupsJoined) }),
+                description: t('screens.ai.insightDesc_expandingNetwork'),
+                type: "insight" as const,
+                priority: "medium" as const,
+                action: t('screens.ai.actionLabel_exploreGroups')
+              }
+            ]}
+            variant="card"
+            maxItems={2}
+          />
+        </div>
+
+        {/* Smart Correlations - C-015 */}
+        <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-015">
+          <SmartSuggestions
+            suggestions={correlations.map(correlation => ({
+              title: correlation,
+              description: t('screens.ai.insightDesc_aiDiscoveredPattern'),
+              type: "insight" as const,
+              priority: "high" as const,
+              action: t('screens.ai.actionLabel_learnMore')
+            }))}
+            variant="card"
+            maxItems={3}
+          />
+        </div>
+      </div>
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: same content inside ScreenFrame (archetype from the manifest).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.ai.insightsAiIntelligence')} description={t('screens.ai.discoverMeaningfulPatternsTrendsYourWellness')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: aiSubItems }}
+          header={{ title: t('screens.ai.aiInsightsPatterns'), description: t('screens.ai.discoverMeaningfulPatternsTrendsYourWellness'), emoji: '🔍' }}
+        >
+          {insightCards}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -59,146 +224,7 @@ export default function Insights() {
             </div>
           </div>
 
-          {/* Pinterest-style Masonry Grid Layout */}
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-            {/* Progress Tracking - C-010 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-010">
-              <ProgressStreaksCard
-                streaks={[
-                  { type: "Exercise", count: 12, emoji: "🏃" },
-                  { type: "Meditation", count: 8, emoji: "🧘" },
-                  { type: "Hydration", count: 15, emoji: "💧" }
-                ]}
-              />
-            </div>
-
-            {/* Pattern Recognition - C-006 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-006">
-              <StandardCard
-                title={t('screens.ai.patternRecognition')}
-                subtitle={t('screens.ai.subtitle_aiInsights')}
-                content={t('screens.ai.insightContent_energyPeak')}
-                variant="default"
-                onClick={() => handleInsightClick("C-006")}
-              />
-            </div>
-
-            {/* Behavioral Trends - C-007 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-007">
-              <StandardCard
-                title={t('screens.ai.behavioralTrends')}
-                subtitle={t('screens.ai.subtitle_weeklyTrends')}
-                content={t('screens.ai.insightContent_hydrationWeekly')}
-                variant="default"
-                onClick={() => handleInsightClick("C-007")}
-              />
-            </div>
-
-            {/* Correlation Analysis - C-008 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-008">
-              <StandardCard
-                title={t('screens.ai.correlationAnalysis')}
-                subtitle={t('screens.ai.subtitle_correlations')}
-                content={t('screens.ai.insightContent_sleepMood')}
-                variant="default"
-                onClick={() => handleInsightClick("C-008")}
-              />
-            </div>
-
-            {/* Prediction Models - C-009 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-009">
-              <StandardCard
-                title={t('screens.ai.predictionModels')}
-                subtitle={t('screens.ai.subtitle_aiForecasts')}
-                content={t('screens.ai.insightContent_fitnessGoal')}
-                variant="default"
-                onClick={() => handleInsightClick("C-009")}
-              />
-            </div>
-
-            {/* Smart Calendar - matching Dashboard sizing */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-011">
-              <SmartCalendarCard />
-            </div>
-
-            {/* Lifestyle Patterns - C-012 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-012">
-              <SmartSuggestions
-                suggestions={lifestylePatterns.map(pattern => ({
-                  title: pattern,
-                  description: t('screens.ai.insightDesc_detectedImprovement'),
-                  type: "insight" as const,
-                  priority: "medium" as const,
-                  action: t('screens.ai.actionLabel_seeDetails')
-                }))}
-                variant="card"
-                maxItems={3}
-              />
-            </div>
-
-            {/* Health Index Movement - C-013 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-013">
-              <SmartSuggestions
-                suggestions={[
-                  {
-                    title: `Vitana Index: ${indexMovement.vitanaIndex} (+${indexMovement.delta})`,
-                    description: t('screens.ai.insightDesc_weeklyImprovement'),
-                    type: "insight" as const,
-                    priority: "high" as const,
-                    action: t('screens.ai.actionLabel_viewBreakdown')
-                  },
-                  {
-                    title: `${t('screens.health.pillar_sleep_title')}: ${indexMovement.pillars.sleep.score} (+${indexMovement.pillars.sleep.delta})`,
-                    description: t('screens.ai.insightDesc_bestImprovementDriver'),
-                    type: "insight" as const,
-                    priority: "medium" as const,
-                    action: t('screens.ai.actionLabel_optimize')
-                  }
-                ]}
-                variant="card"
-                maxItems={2}
-              />
-            </div>
-
-            {/* Social Engagement - C-014 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-014">
-              <SmartSuggestions
-                suggestions={[
-                  {
-                    title: t('screens.ai.insightTitle_newFollowers', { n: String(socialEngagement.newFollowers) }),
-                    description: t('screens.ai.insightDesc_growingConnection'),
-                    type: "insight" as const,
-                    priority: "low" as const,
-                    action: t('screens.ai.actionLabel_connect')
-                  },
-                  {
-                    title: t('screens.ai.insightTitle_newGroups', { n: String(socialEngagement.groupsJoined) }),
-                    description: t('screens.ai.insightDesc_expandingNetwork'),
-                    type: "insight" as const,
-                    priority: "medium" as const,
-                    action: t('screens.ai.actionLabel_exploreGroups')
-                  }
-                ]}
-                variant="card"
-                maxItems={2}
-              />
-            </div>
-
-            {/* Smart Correlations - C-015 */}
-            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-015">
-              <SmartSuggestions
-                suggestions={correlations.map(correlation => ({
-                  title: correlation,
-                  description: t('screens.ai.insightDesc_aiDiscoveredPattern'),
-                  type: "insight" as const,
-                  priority: "high" as const,
-                  action: t('screens.ai.actionLabel_learnMore')
-                }))}
-                variant="card"
-                maxItems={3}
-              />
-            </div>
-          </div>
+          {insightCards}
 
         </div>
       </div>

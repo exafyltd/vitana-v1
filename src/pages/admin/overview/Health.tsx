@@ -11,6 +11,8 @@ import { useOverviewSummary } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const HEALTH_CHECKS = [
   { key: "members", label: "Members", description: "User provisioning and tenant membership" },
   { key: "assistant", label: "Assistant", description: "AI personality config and voice sessions" },
@@ -20,13 +22,12 @@ const HEALTH_CHECKS = [
 ];
 
 export default function OverviewHealth() {
+  const spotlight = useSpotlightEnabled();
   const summaryQuery = useOverviewSummary();
   const kpi = summaryQuery.data?.kpi;
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="overview" />
-      <div className="p-6 space-y-4">
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="💚"
           title={t('screens.admin.systemHealth')}
@@ -62,7 +63,19 @@ export default function OverviewHealth() {
             </CardContent>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="overview" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

@@ -1387,6 +1387,22 @@
       "capabilityRevoked": "Ovlašćenje opozvano",
       "grantFailed": "Ovlašćenje nije moglo biti dodeljeno",
       "revokeFailed": "Ovlašćenje nije moglo biti opozvano"
+    },
+    "vitanaCards": {
+      "_pending_review": {
+        "dismissFailed": true,
+        "connectFailed": true,
+        "interestsSaved": true,
+        "interestsSaveFailed": true,
+        "notificationsEnabled": true,
+        "notificationsFailed": true
+      },
+      "dismissFailed": "Couldn't hide the card",
+      "connectFailed": "Couldn't start connecting",
+      "interestsSaved": "Interests saved",
+      "interestsSaveFailed": "Couldn't save your interests",
+      "notificationsEnabled": "Notifications are on",
+      "notificationsFailed": "Couldn't turn on notifications"
     }
   }
 }

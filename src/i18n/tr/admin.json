@@ -19,20 +19,16 @@
       "rejected": "Reddedildi",
       "flagged": "İşaretlendi",
       "podcastManagement": "Podcast Yönetimi",
-      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle",
-      "_pending_review": {}
+      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle"
     },
     "notifications": {
       "tabs": {
         "notifications": "Bildirimler",
         "categories": "Kategoriler",
         "activity": "Etkinlik",
-        "compose": "Gönder",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "compose": "Gönder"
+      }
     },
-    "_pending_review": {},
     "rewardsShop": {
       "title": "Ödül mağazasını yönet",
       "description": "Ödül mağazasının ürünleri, kargo ücretleri ve siparişleri.",
@@ -339,6 +335,5 @@
         "sectionLabel": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

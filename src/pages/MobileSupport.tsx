@@ -20,6 +20,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import {
   DiaryAudioRecorder,
+  markWebSpeechUnavailable,
+  shouldFallbackToBackendSTT,
   shouldUseBackendSTT,
   transcribeAudioBlob,
 } from "@/utils/diaryAudioRecorder";
@@ -76,7 +78,9 @@ function MobileSupport() {
   const isAndroid = /Android/i.test(navigator.userAgent);
   // iOS Safari / WKWebView (Appilix) can't reliably use the Web Speech API,
   // so we fall back to MediaRecorder + backend STT on those runtimes.
-  const useBackendSTT = shouldUseBackendSTT();
+  // VTID-05097: re-read at every tap (the Appilix bridge arrives late) and
+  // flipped by the Web Speech fallback.
+  const [useBackendSTT, setUseBackendSTT] = useState(shouldUseBackendSTT);
 
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [, setSearchQuery] = useState("");
@@ -125,6 +129,7 @@ function MobileSupport() {
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastFinalRef = useRef("");
   const lastFinalAtRef = useRef(0);
+  const gotResultRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -232,8 +237,31 @@ function MobileSupport() {
     }, 1000);
   };
 
+  // VTID-05097: Web Speech failed before recognising anything (e.g. an Android
+  // WebView without a speech service). Drop it silently and record + transcribe
+  // instead; later taps in this session go straight to the backend path.
+  const switchToBackendSTT = () => {
+    markWebSpeechUnavailable();
+    setUseBackendSTT(true);
+    isRecordingRef.current = false;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    const stt = sttRef.current;
+    sttRef.current = null;
+    try { stt?.stop(); } catch { /* noop */ }
+    void startBackendRecording();
+  };
+
   const startRecording = () => {
-    if (useBackendSTT) {
+    const backend = shouldUseBackendSTT();
+    setUseBackendSTT(backend);
+    if (backend) {
       void startBackendRecording();
       return;
     }
@@ -253,6 +281,7 @@ function MobileSupport() {
       onResult: (text, isFinal) => {
         const cleaned = text.trim();
         if (!cleaned) return;
+        gotResultRef.current = true;
         if (isFinal) {
           const normalized = cleaned.toLowerCase();
           const now = Date.now();
@@ -270,6 +299,10 @@ function MobileSupport() {
       },
       onError: (error) => {
         if (error === "no-speech" || error === "aborted" || error === "audio-capture") return;
+        if (shouldFallbackToBackendSTT(error, gotResultRef.current)) {
+          switchToBackendSTT();
+          return;
+        }
         // Branch on the specific error instead of mapping everything to
         // "denied". `service-not-allowed` is a recognition-service failure,
         // NOT a microphone-permission denial. (iOS no longer reaches this
@@ -302,6 +335,7 @@ function MobileSupport() {
       },
     });
 
+    gotResultRef.current = false;
     sttRef.current.setLanguage(sttLanguage);
     sttRef.current.start();
     usedVoiceRef.current = true;

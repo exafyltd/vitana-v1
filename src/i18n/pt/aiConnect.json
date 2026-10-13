@@ -1,0 +1,60 @@
+{
+  "aiConnect": {
+    "consent": {
+      "title": "Conecte {client} à sua conta Maxina",
+      "lead": "{client} quer usar a sua conta Maxina. Escolha o que ele pode ver. Você pode alterar ou remover isso a qualquer momento na Maxina.",
+      "signedInAs": "Conectado como {email}",
+      "chooseTitle": "{client} pode:",
+      "readOnly": "Somente leitura: seu assistente não pode publicar, enviar mensagens nem alterar nada.",
+      "notShared": "Nunca compartilhado: dados de saúde, Vitana Index, diário, memórias e mensagens privadas.",
+      "redirectsTo": "Depois de permitir, você volta para {host}.",
+      "noneSelected": "Escolha pelo menos uma área.",
+      "approve": "Permitir",
+      "deny": "Cancelar",
+      "failed": "Não funcionou. Tente de novo.",
+      "loading": "Carregando …",
+      "redirecting": "Redirecionando você …",
+      "invalid": "Esta solicitação expirou ou não é válida. Comece a conexão de novo no seu assistente de IA.",
+      "_pending_review": {}
+    },
+    "categories": {
+      "profile": "Seu perfil",
+      "profileDesc": "Seu nome, cidade, interesses e objetivos",
+      "matches": "Seus matches",
+      "matchesDesc": "As pessoas que a Maxina recomenda que você conheça",
+      "people": "Encontrar pessoas",
+      "peopleDesc": "Membros que escolheram poder ser encontrados por assistentes de IA",
+      "activities": "Atividades",
+      "activitiesDesc": "Próximos eventos e encontros da comunidade",
+      "commerce": "Ferramentas para fornecedores (Vitanaland Commerce)",
+      "_pending_review": {}
+    },
+    "settings": {
+      "title": "IA conectada",
+      "lead": "Traga o ChatGPT ou o Claude para a sua comunidade Maxina. Seu assistente só lê o que você permitir.",
+      "connectChatgpt": "Conectar ChatGPT",
+      "connectClaude": "Conectar Claude",
+      "howTitle": "Conecte {assistant} em três passos",
+      "step1Claude": "No Claude, abra Configurações → Conectores → Adicionar conector personalizado.",
+      "step1Chatgpt": "No ChatGPT, abra Configurações → Apps e conectores → Criar.",
+      "step2": "Cole este endereço:",
+      "step3": "Entre com a sua conta Maxina e escolha o que seu assistente pode ver.",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "close": "Fechar",
+      "empty": "Nenhum assistente de IA conectado ainda.",
+      "connectedSince": "Conectado desde {date}",
+      "disconnect": "Desconectar",
+      "disconnected": "Desconectado",
+      "disconnectedNote": "Desconectado: este assistente não pode mais usar a Maxina. Você também pode removê-lo no ChatGPT ou no Claude.",
+      "saveFailed": "Não foi possível salvar. Tente de novo.",
+      "loadFailed": "Não foi possível carregar seus assistentes conectados.",
+      "findableTitle": "Deixar os assistentes de IA de outros membros me encontrarem",
+      "findableDesc": "Quando ativado, membros com ChatGPT ou Claude conectado podem ver seu nome, sua foto, sua cidade pública e seus interesses. Desativado por padrão.",
+      "unknownClient": "Um assistente de IA",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

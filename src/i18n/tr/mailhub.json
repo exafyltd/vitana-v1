@@ -242,6 +242,44 @@
       },
       "page": {
         "description": "Arkadaşlarını kişisel bağlantınla davet et ya da kişilerinde bul."
+      },
+      "verifyPhone": {
+        "title": "Telefon numaran",
+        "body": "Numaranı doğrula, böylece onu kaydetmiş arkadaşların seni Vitanaland'de bulabilsin.",
+        "verifiedLabel": "Doğrulandı:",
+        "verify": "Numarayı doğrula",
+        "change": "Değiştir",
+        "remove": "Kaldır",
+        "removeTitle": "Numaran kaldırılsın mı?",
+        "removeBody": "Arkadaşların seni artık numaranla bulamayacak. İstediğin zaman yeniden doğrulayabilirsin.",
+        "removed": "Numaran kaldırıldı.",
+        "dialogTitle": "Telefon numaranı doğrula",
+        "numberLabel": "Cep telefonu numarası",
+        "numberHelp": "Sana SMS ile 6 haneli bir kod göndereceğiz. Numaran gizli kalır.",
+        "sendCode": "Kod gönder",
+        "codeLabel": "SMS'teki kod",
+        "codeHelp": "Kodu şu numaraya gönderdik:",
+        "confirm": "Doğrula",
+        "resendIn": "{seconds} sn sonra yeni kod",
+        "resend": "Yeni kod gönder",
+        "changeNumber": "Başka numara",
+        "done": "Numaran doğrulandı. Onu kaydetmiş arkadaşların artık seni bulabilir.",
+        "hint": "Arkadaşların seni bulabilsin diye numaranı doğrula.",
+        "hintAction": "Şimdi doğrula",
+        "errors": {
+          "INVALID_PHONE": "Bu geçerli bir numara gibi görünmüyor.",
+          "NOT_A_MOBILE_NUMBER": "Lütfen bir cep telefonu numarası gir.",
+          "COUNTRY_NOT_SUPPORTED": "Bu ülkeye henüz SMS gönderemiyoruz.",
+          "ACCOUNT_NOT_ELIGIBLE": "Bu hesapla bu mümkün değil.",
+          "PHONE_IN_USE": "Bu numara başka bir hesapta zaten doğrulanmış.",
+          "TOO_MANY_REQUESTS": "Çok fazla deneme. Lütfen daha sonra tekrar dene.",
+          "SMS_SEND_FAILED": "SMS gönderilemedi. Lütfen tekrar dene.",
+          "INVALID_CODE": "Kod doğru değil.",
+          "CODE_EXPIRED": "Kodun süresi doldu. Yeni bir kod iste.",
+          "NO_PENDING_CODE": "Önce bir kod iste.",
+          "TOO_MANY_ATTEMPTS": "Çok fazla yanlış deneme. Yeni bir kod iste.",
+          "unknown": "Olmadı. Lütfen tekrar dene."
+        }
       }
     },
     "requested": {

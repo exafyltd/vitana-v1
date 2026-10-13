@@ -52,6 +52,17 @@ import { CurrencyToggle } from "@/components/wallet/CurrencyToggle";
 import { convertFromUsd, getCurrencySymbol } from "@/lib/exchangeRates";
 
 import { fmtDate, fmtNumber } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard, VCardSkeleton } from "@/components/ui/vcard";
+import {
+  IconThumb,
+  TIER_B_LIST,
+  TierBEmpty,
+  TierBError,
+  TierBListSkeleton,
+  TierBSection,
+} from "@/components/spotlight/tier-b/TierBKit";
 // Mock data has been removed - quickActionsData is defined later in the file
 
 const quickActionsData = [
@@ -101,6 +112,7 @@ export default function Wallet() {
     }
   }, [navigate]);
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   const { translate } = useTranslation();
   const filterType = searchParams.get("filter"); // e.g., "reseller_commission"
   
@@ -515,6 +527,152 @@ export default function Wallet() {
           </div>
         </div>
         
+        {renderPopups()}
+      </AppLayout>
+    );
+  }
+
+  // VTID-05111 — Spotlight dashboard (desktop + flag only; phones and flag-off keep the layouts above/below).
+  // One balance spotlight card with the wallet actions, then the tab panes. Transactions render as
+  // row cards from the member's real data; the sample "special offer" cards are not shown (SR-24).
+  if (spotlight) {
+    const credits = getBalance('CREDITS');
+    const txAmount = (tx: (typeof filteredTransactions)[number]) =>
+      `${tx.amount > 0 ? '+' : ''}${fmtNumber(tx.amount, { maximumFractionDigits: 2 })}${tx.to_currency || tx.from_currency ? ` ${tx.to_currency || tx.from_currency}` : ''}`;
+    return (
+      <AppLayout>
+        <SEO title={t('screens.wallet.vitanaWalletVitana')} description={t('spotlightTierB.wallet.description')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="dashboard"
+          subNav={{ items: walletNavigation }}
+          header={{ title: t('screens.wallet.vitanaWallet'), description: t('spotlightTierB.wallet.description'), emoji: '🏦' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.wallet.searchTransactionsRewardsBenefits')} />
+                <UniversalCalendarButton />
+                <Button size="sm" onClick={() => setMasterActionOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.wallet.walletActions')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: 'balance-overview', label: t('screens.wallet.balanceOverview') },
+              { value: 'recent-activity', label: t('screens.wallet.recentActivity2') },
+              { value: 'quick-actions', label: t('screens.wallet.smartActions') },
+            ],
+          }}
+        >
+          <div className="flex flex-col gap-6">
+            {!isLoaded ? (
+              <VCardSkeleton size="spotlight" />
+            ) : (
+              <VCard
+                size="spotlight"
+                data-testid="spotlight-wallet-hero"
+                eyebrow={t('screens.wallet.usdBalance')}
+                title={<span className="text-2xl font-extrabold tabular-nums">{formatCashBalance()}</span>}
+                meta={credits !== null ? t('spotlightTierB.wallet.creditsLine', { amount: fmtNumber(credits) }) : undefined}
+                body={<CurrencyToggle value={displayCurrency} onChange={setDisplayCurrency} />}
+                actions={
+                  <div className="flex flex-wrap gap-2">
+                    {!isIAPRestricted() && (
+                      <Button size="sm" onClick={() => handleWalletAction('add-funds')}>
+                        <DollarSign className="me-1.5 h-4 w-4" />
+                        {t('screens.wallet.addFunds')}
+                      </Button>
+                    )}
+                    {!isIAPRestricted() && (
+                      <Button size="sm" variant="outline" onClick={() => handleWalletAction('buy-credits')}>
+                        <CreditCard className="me-1.5 h-4 w-4" />
+                        {t('screens.wallet.buyCredits')}
+                      </Button>
+                    )}
+                    <Button size="sm" variant="outline" onClick={() => handleWalletAction('send', 'USD')}>
+                      <Send className="me-1.5 h-4 w-4 rtl:-scale-x-100" />
+                      {t('spotlightTierB.wallet.send')}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => handleWalletAction('request', 'USD')}>
+                      {t('spotlightTierB.wallet.request')}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => handleWalletAction('exchange', 'USD')}>
+                      <ArrowUpDown className="me-1.5 h-4 w-4" />
+                      {t('spotlightTierB.wallet.exchange')}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => handleWalletAction('withdraw')}>
+                      <ArrowUpRight className="me-1.5 h-4 w-4 rtl:-scale-x-100" />
+                      {t('spotlightTierB.wallet.withdraw')}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => handleWalletAction('spend-credits')}>
+                      {t('screens.wallet.spendCredits')}
+                    </Button>
+                  </div>
+                }
+              />
+            )}
+
+            <SplitBarContent value="balance-overview" className="mt-0 flex flex-col gap-6">
+              <WalletMotivationalBanner variant="overview" />
+              <SmartEarningsForecastCard />
+            </SplitBarContent>
+
+            <SplitBarContent value="recent-activity" className="mt-0 flex flex-col gap-6">
+              {filterType && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="secondary" className="flex items-center gap-2 py-1.5 pe-2 ps-3">
+                    <Sparkles className="h-3.5 w-3.5 text-accent" />
+                    <span>{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
+                    <button
+                      type="button"
+                      onClick={clearFilter}
+                      aria-label={t('spotlightTierB.wallet.clearFilter')}
+                      className="ms-1 rounded-full p-0.5 transition-colors hover:bg-muted"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </Badge>
+                </div>
+              )}
+              <IntelligentSpendingCard />
+              <TierBSection title={t('screens.wallet.recentActivity2')}>
+                {loading ? (
+                  <TierBListSkeleton />
+                ) : error ? (
+                  <TierBError onRetry={() => refreshData()} />
+                ) : filteredTransactions.length === 0 ? (
+                  <TierBEmpty
+                    Icon={Sparkles}
+                    titleKey={filterType ? 'spotlightTierB.wallet.noMatchingTransactions' : 'screens.wallet.noTransactionsYet'}
+                  />
+                ) : (
+                  <div className={TIER_B_LIST}>
+                    {filteredTransactions.map((tx) => (
+                      <VCard
+                        key={tx.id}
+                        size="row"
+                        mediaSlot={<IconThumb icon={tx.amount < 0 ? ArrowUpRight : DollarSign} />}
+                        title={t(`spotlightTierB.wallet.txType.${tx.transaction_type}`)}
+                        meta={[fmtDate(new Date(tx.created_at)), t(`spotlightTierB.wallet.txStatus.${tx.status}`)].join(' · ')}
+                        actions={<span className="text-sm font-semibold tabular-nums text-foreground">{txAmount(tx)}</span>}
+                      />
+                    ))}
+                  </div>
+                )}
+              </TierBSection>
+            </SplitBarContent>
+
+            <SplitBarContent value="quick-actions" className="mt-0 flex flex-col gap-6">
+              <PredictiveActionsCard />
+              <DynamicRewardOpportunityCard />
+              <WalletMotivationalBanner variant="overview" />
+            </SplitBarContent>
+          </div>
+        </ScreenFrame>
         {renderPopups()}
       </AppLayout>
     );

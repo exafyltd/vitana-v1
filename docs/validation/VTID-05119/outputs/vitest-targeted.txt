@@ -1,0 +1,71 @@
+ RUN  v4.1.10 <worktree>
+ ✓ src/lib/recommendation-matches.test.ts > rawMatchesFromResponse > takes the tool call when the model called the tool 2ms
+ ✓ src/lib/recommendation-matches.test.ts > rawMatchesFromResponse > falls back to the JSON array in the text when there is no tool call 1ms
+ ✓ src/lib/recommendation-matches.test.ts > rawMatchesFromResponse > falls back to the text when the tool call has no matches array 1ms
+ ✓ src/lib/recommendation-matches.test.ts > rawMatchesFromResponse > returns null when neither path yields an array 0ms
+ ✓ src/lib/recommendation-matches.test.ts > normalizeRecommendationMatches > keeps valid matches for known candidates 1ms
+ ✓ src/lib/recommendation-matches.test.ts > normalizeRecommendationMatches > drops ids the request never read, and type mismatches 0ms
+ ✓ src/lib/recommendation-matches.test.ts > normalizeRecommendationMatches > clamps the score and applies the threshold 0ms
+ ✓ src/lib/recommendation-matches.test.ts > normalizeRecommendationMatches > drops non-numeric scores, malformed items and duplicates 0ms
+ ✓ src/lib/recommendation-matches.test.ts > normalizeRecommendationMatches > keeps at most 3 non-empty string reasons of at most 200 characters 1ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > maps the fetch-user-context response shape onto the four prompt lines 1ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > joins string goals when the callee returns some 1ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for null 0ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for an empty object 0ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for an empty context 0ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for a string 0ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > yields every default for a number 0ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > skips non-string interests 0ms
+ ✓ src/lib/recommendation-matches.test.ts > VTID-05119 recommendationContextLines > caps diary entries at 3 0ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > uses only the Bedrock bridge client — no Google path, key or provider switch 1ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > pins a verified Bedrock model 0ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > sends both answer paths through the validator before any upsert 0ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > still localises the prompt for the member 0ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > maps the fetch-user-context response through recommendationContextLines (VTID-05119) 0ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > logs a fetch-user-context invoke error instead of swallowing it (VTID-05119) 0ms
+ ✓ src/lib/recommendation-matches.test.ts > generate-enhanced-recommendations source contract > retires the uncalled Gemini-only generate-recommendations function 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > exports requireUser and isServiceRoleCaller 30ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > requireUser verifies the bearer with auth.getUser() on the anon client 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > isServiceRoleCaller accepts an exact service-role key match or a verified service_role claim 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > uses a supabase-js that has getClaims (2.57.2+, VTID-05008) 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 _shared/caller-auth.ts > builds its clients through createDataClient (VTID-05023) 22ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > linkedin-import imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > social-media-import imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > queue-campaign-recipients imports _shared/caller-auth 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > send-welcome-discount imports _shared/caller-auth 1ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 the five functions use caller-auth > fetch-user-context imports _shared/caller-auth 8ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import authenticates with requireUser before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import keys the write on the verified user, and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > social-media-import authenticates with requireUser before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > social-media-import keys the write on the verified user, and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 profile imports write only the caller's own profile > linkedin-import is flagged for removal 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > honours a body userId only for a service-role caller 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > otherwise uses the verified user and refuses a different body id with 403 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > parses the body with readJsonBody, never a bare req.json() 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > answers an invalid body with 400 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 fetch-user-context > keeps the empty-body lenience at the call site, with a comment 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > rejects any caller that is not service role before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > has no exafy_admin path (service-role only) 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > reloads the campaign and refuses one that is not scheduled or active 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > takes the message from the campaign row, never the request 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 queue-campaign-recipients is service-role only > scopes every recipient query to the campaign owner or the owner's tenant 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > calls isServiceRoleCaller before reading the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > reads recipient, code, percent and expiry from user_discount_codes, not the body 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 send-welcome-discount is service-role only > HTML-escapes every interpolated value 0ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 tree-wide: no service-role function trusts a body user id unchecked > the scan sees the known body-id readers 48ms
+ ✓ src/lib/edge-functions-caller-identity.s4.test.ts > VTID-05049 tree-wide: no service-role function trusts a body user id unchecked > every SERVICE_ROLE function that reads a body user id checks the caller 0ms
+ ✓ src/lib/vtna-token-name.test.ts > VTID-04860: the token is VTNA > no app source, catalog or edge function uses the bare word "VTN" 738ms
+ ✓ src/lib/vtna-token-name.test.ts > VTID-04860: the token is VTNA > the AI user context reads the VTNA wallet, not the retired VTN currency 1ms
+ ✓ src/lib/vtna-token-name.test.ts > VTID-04860: the token is VTNA > every locale shows VTNA in the reward strings 47ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports an empty body as empty 6ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports a whitespace-only body as empty 1ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > returns a JSON object with its values 1ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports "not json" as invalid 1ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports "[1]" as invalid 1ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports "\"x\"" as invalid 0ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports "3" as invalid 1ms
+ ✓ src/lib/read-json-body.test.ts > VTID-05119 readJsonBody > reports "null" as invalid 1ms
+ Test Files  4 passed (4)
+      Tests  66 passed (66)
+   Start at  22:43:58
+   Duration  6.16s (transform 666ms, setup 2.18s, import 703ms, tests 954ms, environment 8.75s)

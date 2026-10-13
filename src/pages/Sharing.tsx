@@ -19,9 +19,58 @@ import { AnalyticsDashboard } from "@/components/sharing/AnalyticsDashboard";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { SocialShareAutopilot } from "@/components/proactive/SocialShareAutopilot";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TierBSection } from "@/components/spotlight/tier-b/TierBKit";
 
 function Sharing() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    // The sample nudge ("Wellness Workshop starts in 6 days", buttons that only logged) is not shown (SR-24, SR-26).
+    return (
+      <AppLayout>
+        <SEO title={t('screens.sharing.sharingDistributionGrowthVitana')} description={t('spotlightTierB.sharing.description')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: sharingNavigation }}
+          header={{ title: t('screens.sharing.distributionSharing'), description: t('spotlightTierB.sharing.description'), emoji: '📣' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.sharing.searchSharingActivities')} />
+                <UniversalCalendarButton />
+                <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.sharing.newCampaign')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          <div className="flex flex-col gap-6">
+            <SocialShareAutopilot />
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+              <div className="lg:col-span-3">
+                <BlastCenter />
+              </div>
+              <div className="flex flex-col gap-6 lg:col-span-2">
+                <ChannelConnector />
+                <GrowthKPIs />
+                <NextScheduledPosts />
+              </div>
+            </div>
+            <TierBSection title={t('screens.sharing.performanceAnalytics')}>
+              <AnalyticsDashboard />
+            </TierBSection>
+          </div>
+        </ScreenFrame>
+        <CampaignDialog open={campaignPopupOpen} onOpenChange={setCampaignPopupOpen} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

@@ -213,7 +213,7 @@ export function HealthConsentDialog({
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="sm:max-w-[520px]" data-testid="health-consent-dialog">
+      <ResponsiveDialogContent className="sm:max-w-lg" data-testid="health-consent-dialog">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{confirmingRevoke && active ? t(`${UI}.revokeConfirmTitle`) : title}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>{t(`${UI}.dialogDescription`)}</ResponsiveDialogDescription>

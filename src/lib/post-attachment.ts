@@ -10,22 +10,59 @@
  */
 import { supabase } from "@/integrations/supabase/client";
 
-export type PostAttachedRefType = "community_event" | "live_room_session";
+export type PostAttachedRefType = "community_event" | "live_room_session" | "calendar_entry";
+
+/**
+ * VTID-05126: the card a shared own entry carries (others cannot read the
+ * author's calendar). Times and status are kept current by the database.
+ */
+export interface AttachedSnapshot {
+  title: string;
+  start_time: string;
+  end_time: string | null;
+  location: string | null;
+  emoji: string | null;
+  status: string;
+}
 
 export interface PostAttachedRef {
   type: PostAttachedRefType;
   id: string;
+  /** Only for `calendar_entry`. */
+  snapshot?: AttachedSnapshot;
 }
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** The shared event on a profile_posts row, or null (rows from before the migration have neither column). */
-export function attachedRefOf(row: { attached_ref_type?: unknown; attached_ref_id?: unknown } | null | undefined): PostAttachedRef | null {
+function snapshotOf(raw: unknown): AttachedSnapshot | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  if (typeof r.start_time !== "string" || !Number.isFinite(Date.parse(r.start_time))) return null;
+  const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : null);
+  return {
+    title: typeof r.title === "string" ? r.title : "",
+    start_time: r.start_time,
+    end_time: str(r.end_time),
+    location: str(r.location),
+    emoji: str(r.emoji),
+    status: typeof r.status === "string" ? r.status : "confirmed",
+  };
+}
+
+/** The shared event or entry on a profile_posts row, or null (rows from before the migration have neither column). */
+export function attachedRefOf(
+  row: { attached_ref_type?: unknown; attached_ref_id?: unknown; attached_snapshot?: unknown } | null | undefined,
+): PostAttachedRef | null {
   if (!row) return null;
   const type = row.attached_ref_type;
   const id = row.attached_ref_id;
-  if ((type !== "community_event" && type !== "live_room_session") || typeof id !== "string" || !UUID_RE.test(id)) return null;
-  return { type, id };
+  if (typeof id !== "string" || !UUID_RE.test(id)) return null;
+  if (type === "community_event" || type === "live_room_session") return { type, id };
+  if (type === "calendar_entry") {
+    const snapshot = snapshotOf(row.attached_snapshot);
+    return snapshot ? { type, id, snapshot } : null;
+  }
+  return null;
 }
 
 export type AttachedEventState = "upcoming" | "live" | "past" | "cancelled";
@@ -59,8 +96,24 @@ export function attachedEventStateOf(
   return "upcoming";
 }
 
+/**
+ * VTID-05126: a shared own entry, straight from the card on the post row —
+ * no fetch (the viewer cannot read the author's calendar).
+ */
+export function snapshotAttachedEvent(snapshot: AttachedSnapshot, now: Date = new Date()): AttachedEvent {
+  return {
+    title: snapshot.title,
+    start_time: snapshot.start_time,
+    end_time: snapshot.end_time,
+    location: snapshot.location,
+    state: attachedEventStateOf(snapshot.start_time, snapshot.end_time, snapshot.status === "cancelled" ? "cancelled" : null, now),
+    path: "",
+  };
+}
+
 /** Loads the shared event as the viewer may see it (RLS); null when it is gone or hidden. */
 export async function fetchAttachedEvent(ref: PostAttachedRef, now: Date = new Date()): Promise<AttachedEvent | null> {
+  if (ref.type === "calendar_entry") return ref.snapshot ? snapshotAttachedEvent(ref.snapshot, now) : null;
   if (ref.type === "community_event") {
     const { data, error } = await supabase
       .from("global_community_events" as never)

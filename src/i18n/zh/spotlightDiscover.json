@@ -1,0 +1,249 @@
+{
+  "spotlightDiscover": {
+    "_pending_review": {
+      "searchSaved": true
+    },
+    "storefront": {
+      "_pending_review": {
+        "searchPlaceholder": true,
+        "filtersAria": true
+      },
+      "searchPlaceholder": "Search products, services and coaches",
+      "filtersAria": "Marketplace filters",
+      "chips": {
+        "_pending_review": {
+          "all": true,
+          "sleep": true,
+          "energy": true,
+          "gutHealth": true,
+          "strength": true,
+          "longevity": true,
+          "underPrice": true,
+          "topRated": true
+        },
+        "all": "All",
+        "sleep": "Sleep",
+        "energy": "Energy",
+        "gutHealth": "Gut health",
+        "strength": "Strength & recovery",
+        "longevity": "Longevity",
+        "underPrice": "Under {price}",
+        "topRated": "★ {rating}+"
+      },
+      "hero": {
+        "_pending_review": {
+          "pickedForYou": true,
+          "topResult": true
+        },
+        "pickedForYou": "Picked for you",
+        "topResult": "Top result"
+      },
+      "shelves": {
+        "_pending_review": {
+          "picks": true,
+          "supplements": true,
+          "deals": true,
+          "services": true,
+          "coaches": true,
+          "shareEarn": true
+        },
+        "picks": "More for you",
+        "supplements": "Supplements",
+        "deals": "Deals",
+        "services": "Wellness services",
+        "coaches": "Doctors & coaches",
+        "shareEarn": "Share & Earn"
+      },
+      "results": {
+        "_pending_review": {
+          "heading": true,
+          "count": true
+        },
+        "heading": "Search results",
+        "count": "{count} results"
+      },
+      "empty": {
+        "_pending_review": {
+          "feedTitle": true,
+          "feedDesc": true,
+          "shelfTitle": true,
+          "shelfDesc": true,
+          "dealsTitle": true,
+          "dealsDesc": true,
+          "servicesTitle": true,
+          "servicesDesc": true,
+          "coachesTitle": true,
+          "coachesDesc": true,
+          "shareTitle": true,
+          "shareDesc": true,
+          "shareGuestTitle": true,
+          "shareGuestDesc": true,
+          "resultsTitle": true,
+          "resultsDesc": true,
+          "clearFilters": true,
+          "signIn": true
+        },
+        "feedTitle": "No recommendations for you yet",
+        "feedDesc": "As soon as we find products that fit you, they show up here.",
+        "shelfTitle": "Nothing here right now",
+        "shelfDesc": "There are no products in this section at the moment.",
+        "dealsTitle": "No deals right now",
+        "dealsDesc": "When products are discounted, you'll find them here.",
+        "servicesTitle": "Wellness services are coming soon",
+        "servicesDesc": "Bookable services aren't in the marketplace yet. Anything you saved is in the Wellness Services section.",
+        "coachesTitle": "Doctors & coaches are coming soon",
+        "coachesDesc": "Bookable doctors and coaches aren't in the marketplace yet. Anything you saved is in the Doctors & Coaches section.",
+        "shareTitle": "You haven't recommended anything yet",
+        "shareDesc": "Open a product in quick view and tap Recommend — you earn on every purchase made through your link.",
+        "shareGuestTitle": "Sign in to start earning",
+        "shareGuestDesc": "With an account you can recommend products and earn on every purchase made through your link.",
+        "resultsTitle": "No results",
+        "resultsDesc": "Try a different search term or remove a filter.",
+        "clearFilters": "Clear filters",
+        "signIn": "Sign in"
+      },
+      "error": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "retry": true
+        },
+        "title": "Something went wrong",
+        "desc": "We couldn't load this section.",
+        "retry": "Try again"
+      },
+      "share": {
+        "_pending_review": {
+          "meta": true
+        },
+        "meta": "{clicks} clicks · {earned} earned"
+      }
+    },
+    "card": {
+      "_pending_review": {
+        "quickView": true,
+        "openFullPage": true,
+        "seeAll": true,
+        "discount": true
+      },
+      "quickView": "Quick view",
+      "openFullPage": "Open full page",
+      "seeAll": "See all",
+      "discount": "−{percent}%"
+    },
+    "quickView": {
+      "_pending_review": {
+        "title": true,
+        "noDetails": true
+      },
+      "title": "Quick view",
+      "noDetails": "There are no further details for this item yet."
+    },
+    "supplements": {
+      "_pending_review": {
+        "categoriesAria": true,
+        "sortAria": true,
+        "picksTitle": true
+      },
+      "categoriesAria": "Supplement categories",
+      "sortAria": "Sort order",
+      "picksTitle": "Supplements picked for you",
+      "sub": {
+        "_pending_review": {
+          "all": true,
+          "multivitamins": true,
+          "vitamins": true,
+          "minerals": true,
+          "omega3": true,
+          "adaptogens": true,
+          "nootropics": true,
+          "longevity": true,
+          "immunity": true,
+          "antioxidants": true,
+          "sleep": true,
+          "performance": true,
+          "beauty": true,
+          "gutHealth": true,
+          "herbs": true,
+          "heartHealth": true
+        },
+        "all": "All",
+        "multivitamins": "Multivitamins",
+        "vitamins": "Vitamins",
+        "minerals": "Minerals",
+        "omega3": "Omega-3",
+        "adaptogens": "Adaptogens",
+        "nootropics": "Nootropics",
+        "longevity": "Longevity",
+        "immunity": "Immunity",
+        "antioxidants": "Antioxidants",
+        "sleep": "Sleep",
+        "performance": "Performance",
+        "beauty": "Beauty",
+        "gutHealth": "Gut health",
+        "herbs": "Herbs",
+        "heartHealth": "Heart health"
+      },
+      "sort": {
+        "_pending_review": {
+          "relevance": true,
+          "rating": true,
+          "priceAsc": true,
+          "priceDesc": true
+        },
+        "relevance": "Popular",
+        "rating": "Top rated",
+        "priceAsc": "Price: low to high",
+        "priceDesc": "Price: high to low"
+      }
+    },
+    "saved": {
+      "_pending_review": {
+        "servicesTitle": true,
+        "servicesDesc": true,
+        "providersTitle": true,
+        "providersDesc": true,
+        "dealsTitle": true,
+        "dealsDesc": true,
+        "remove": true
+      },
+      "servicesTitle": "No saved services yet",
+      "servicesDesc": "Services you save show up here.",
+      "providersTitle": "No saved doctors or coaches yet",
+      "providersDesc": "Doctors and coaches you save show up here.",
+      "dealsTitle": "No saved deals yet",
+      "dealsDesc": "Deals you save show up here.",
+      "remove": "Remove"
+    },
+    "deals": {
+      "_pending_review": {
+        "trendingTitle": true,
+        "trendingDesc": true
+      },
+      "trendingTitle": "No trends yet",
+      "trendingDesc": "Once we see enough real bookings, we'll show you what's popular right now."
+    },
+    "headers": {
+      "_pending_review": {
+        "supplements": true,
+        "services": true,
+        "coaches": true,
+        "deals": true
+      },
+      "supplements": "Quality supplements for your longevity",
+      "services": "Wellness offers, sorted by health area",
+      "coaches": "Doctors and coaches for your longevity",
+      "deals": "Discounted products and picks for you"
+    },
+    "tabs": {
+      "_pending_review": {
+        "saved": true,
+        "myProviders": true
+      },
+      "saved": "Saved",
+      "myProviders": "My doctors & coaches"
+    },
+    "searchSaved": "Search your saved items"
+  },
+  "_pending_review": {}
+}

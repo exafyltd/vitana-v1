@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05111",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, 31 Tier B routes (Health, Wallet, AI, Settings, Calendar, Intents, Sharing): ?spotlight=1 at 1280 and 1440 px renders [data-archetype] equal to the route's manifest archetype, the sidebar chrome (search, nav items, footer) is intact, no DelayedLoader and no page-level spinner after the screen settled, dashboards show exactly one spotlight card in the first viewport, no horizontal scroll in LTR and RTL; ?spotlight=0 renders no [data-archetype]",
+      "spec": "tests/e2e/staging/vtid-05111-tier-b.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "flag off = legacy tree (no [data-archetype], default header, in-content SplitBar); flag on = ScreenFrame with the manifest archetype, compact header, tabs in the utility row, standard VCards, empty states instead of sample content; Vitana Index hero = exactly one spotlight VCard with real data only and a spotlight skeleton while loading; every migrated page composes ScreenFrame behind useSpotlightEnabled(); manifest test; flag-off regressions (Calendar golden screen, Connected Apps health cards, Wallet Rewards on a phone, Settings > Notifications) with the flag pinned off; share-button guard",
+      "ref": "npx vitest run src/pages/spotlight-tier-b.vtid-05111.test.tsx src/pages/settings/SettingsNotifications.vtid-04676.test.tsx src/pages/settings/__tests__/connected-apps-health.test.tsx src/pages/wallet/mobile-wallet-rewards.test.tsx src/components/calendar/__regression__/calendar-screen.golden.test.tsx src/lib/__guards__/share-button.guard.test.ts src/components/layout/spotlight src/design",
+      "cwd": ".",
+      "reason": "The flag-on/flag-off render and the per-page source contract are deterministic in jsdom; staging proves the frame, chrome and layout on the deployed build without writing anything."
+    }
+  ]
+}

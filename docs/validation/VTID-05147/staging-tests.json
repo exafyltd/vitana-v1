@@ -1,0 +1,20 @@
+{
+  "vtid": "VTID-05147",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "No client writes to the role/membership tables: static guard",
+      "ref": "npx vitest run src/integrations/supabase/role-tables-no-client-writes.vtid-05147.test.ts",
+      "cwd": ".",
+      "reason": "This PR adds build guards only (no runtime behaviour). The database lockdown ships in exafyltd/vitana-platform (VTID-05147 migration 20261013233000) and is verified read-only there after RUN-MIGRATION (docs/validation/VTID-05147/post-apply-checks.sql)."
+    },
+    {
+      "kind": "existing",
+      "name": "Role switch goes only through set_role_preference and handles its refusals",
+      "ref": "npx vitest run src/hooks/useRoleSwitch.vtid-05147.wiring.test.ts",
+      "cwd": ".",
+      "reason": "Wiring test for the unchanged role-switch path after the platform lockdown."
+    }
+  ]
+}

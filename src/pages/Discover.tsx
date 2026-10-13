@@ -45,6 +45,10 @@ import { HiddenByLimitationsFooter } from '@/components/discover/HiddenByLimitat
 import { AffiliateDisclosure } from '@/components/discover/AffiliateDisclosure';
 import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
 import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { DiscoverStorefront } from '@/components/discover/spotlight/DiscoverStorefront';
+import { DiscoverRefreshButton, DiscoverUtilityActions } from '@/components/discover/spotlight/DiscoverUtility';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -84,6 +88,10 @@ function DiscoverInner() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [highlightedMatchId, setHighlightedMatchId] = useState<string | null>(null);
+  // VTID-05109 — Spotlight storefront (desktop + flag only; phones and flag-off keep the legacy screen below).
+  const spotlight = useSpotlightEnabled();
+  const [storefrontQuery, setStorefrontQuery] = useState('');
+  const [storefrontSearchKey, setStorefrontSearchKey] = useState(0);
 
   // VTID-NAV-DISCOVER-TABS: honor ?tab= deep-links (e.g. Vitana navigates to
   // /discover?tab=categories). Only acts on an explicit valid value, so the
@@ -144,6 +152,46 @@ function DiscoverInner() {
   // CTA shows even before the feed resolves.
   const isGuest = !user || feedData?.feed_context?.guest === true;
   const goToSignIn = () => navigate(loginRouteWithRedirect());
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO
+          title={t('screens.discover.discoverMarketplaceVitana')}
+          description={translate('discover.description')}
+          canonical={window.location.href}
+        />
+        <ScreenFrame
+          archetype="storefront"
+          subNav={{ items: discoverNavigation }}
+          header={{ title: translate('discover.title'), description: translate('discover.description'), emoji: '🔍' }}
+          utility={{
+            children: (
+              <DiscoverUtilityActions
+                searchKey={storefrontSearchKey}
+                searchPlaceholder={t('spotlightDiscover.storefront.searchPlaceholder')}
+                onSearch={setStorefrontQuery}
+                onAction={() => setMasterActionOpen(true)}
+              />
+            ),
+            trailingElement: <DiscoverRefreshButton />,
+          }}
+        >
+          <DiscoverStorefront
+            query={storefrontQuery}
+            onClearQuery={() => {
+              setStorefrontQuery('');
+              setStorefrontSearchKey((k) => k + 1);
+            }}
+            isGuest={isGuest}
+            onSignIn={goToSignIn}
+            initialSection={resolveDiscoverTab(searchParams.get('tab'))}
+          />
+        </ScreenFrame>
+        <DiscoverMasterActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
+      </AppLayout>
+    );
+  }
 
   // Map marketplace products to the legacy AIRecommendation shape so
   // MobileDiscoverView doesn't need changes yet.

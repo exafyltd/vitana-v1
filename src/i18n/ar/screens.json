@@ -5483,7 +5483,9 @@
         "feedItemError": true
       },
       "feedItemError": "This post couldn't be shown.",
-      "playTodaysEpisode": "تشغيل الحلقة {session}"
+      "playTodaysEpisode": "تشغيل الحلقة {session}",
+      "vitanaIndexScoreSubtext": "المؤشر {score} · {message}",
+      "longevityJourneyProgressSubtext": "الحلقة {session} بانتظارك · أُنجز {done} · اليوم {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (تويتر سابقًا)"
@@ -6229,7 +6231,8 @@
       "anonymous": "مجهول",
       "vitanaOpenScreen": "افتح الشاشة",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "أنشأ {name} المجموعة",
@@ -6244,7 +6247,33 @@
       "groupNameCancel": "إلغاء",
       "editGroup": "تعديل المجموعة",
       "messageGroupPlaceholder": "رسالة إلى {name}…",
-      "messagePersonPlaceholder": "رسالة إلى {name}…"
+      "messagePersonPlaceholder": "رسالة إلى {name}…",
+      "forwardedLabel": "تم التحويل",
+      "forwardTitle": "تحويل إلى",
+      "forwardSearch": "ابحث في المحادثات والمجموعات",
+      "forwardLoading": "جارٍ تحميل المحادثات…",
+      "forwardEmpty": "لم يتم العثور على محادثات",
+      "forwardLimit": "اختر حتى {max} محادثات أو مجموعات.",
+      "forwardSend": "تحويل",
+      "forwardSendCount": "تحويل ({count})",
+      "forwardDone": "تم تحويل الرسالة",
+      "forwardFailedFor": "تعذّر التحويل إلى {name}",
+      "forwardGroup": "مجموعة",
+      "forwardChat": "محادثة",
+      "imageViewer": "عارض الصور",
+      "imageCounter": "{current} من {total}",
+      "previousImage": "الصورة السابقة",
+      "nextImage": "الصورة التالية",
+      "copyImage": "نسخ الصورة",
+      "shareImage": "مشاركة الصورة",
+      "imageCopied": "تم نسخ الصورة",
+      "imageCopyUnsupported": "نسخ الصور غير مدعوم هنا. نزّل الصورة بدلاً من ذلك.",
+      "imageCopyFailed": "تعذّر نسخ الصورة",
+      "imageDownloadFailed": "تعذّر تحميل الصورة",
+      "imageShareFailed": "تعذّرت المشاركة",
+      "imageLoading": "جارٍ تحميل الصورة",
+      "unknownSize": "حجم غير معروف",
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "جاري البحث…",
@@ -7764,6 +7793,34 @@
             "checkbox": "أوافق صراحةً على استخدام بياناتي الصحية بشكل مجهول الهوية لهذا الغرض."
           }
         }
+      },
+      "vitanaMessages": {
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -8751,7 +8808,18 @@
       "viewIndex": "عرض المؤشر",
       "viewJourney": "عرض رحلتي",
       "viewMatch": "عرض التطابق",
-      "dismissCard": "تجاهل البطاقة"
+      "dismissCard": "تجاهل البطاقة",
+      "dailyDiary": "اليوميات",
+      "talkToVitana": "تحدّث مع Vitana",
+      "autopilot": "الطيار الآلي",
+      "calendar": "التقويم",
+      "uploadMedia": "الوسائط",
+      "discover": "اكتشف",
+      "profilePhoto": "صورة الملف الشخصي",
+      "profileSetup": "الملف الشخصي",
+      "socialConnect": "ربط",
+      "importContacts": "جهات الاتصال",
+      "completeProfile": "أكمل ملفك"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -11254,7 +11322,34 @@
         "loadFailed": "تعذّر تحميل إعدادك.",
         "retry": "حاول مرة أخرى",
         "salesCta": "إعداد",
-        "edit": "تعديل"
+        "edit": "تعديل",
+        "reviewNoteLabel": "طلبت Vitanaland:",
+        "stillNeeded": "ما زال مطلوبًا:",
+        "openAccount": "حسابك",
+        "openCompany": "بيانات الشركة (الاسم القانوني والدولة)",
+        "openVerification": "مراجعة فريق Vitanaland",
+        "openCatalogue": "منتجاتك أو خدماتك",
+        "openShopLink": "ربط متجرك",
+        "openCompleteOffering": "عرض واحد مكتمل: العنوان والسعر والرابط وبلد المنشأ وأين يُقدَّم",
+        "openTrackingTest": "عملية شراء تجريبية للتحقق من التتبع",
+        "openResultsChannel": "طريقة إرسالك للنتائج",
+        "openTerms": "قبول شروط الشركاء",
+        "openDpa": "اتفاقية معالجة البيانات",
+        "openBillingMandate": "تفويض خصم مباشر للفوترة",
+        "openTeam": "فريقك",
+        "openOther": "خطوة أخرى",
+        "submitCta": "أرسل للتحقق",
+        "resubmitCta": "أعد الإرسال",
+        "submitConfirmTitle": "هل تريد إرسال نشاطك التجاري للتحقق؟",
+        "resubmitConfirmTitle": "هل تريد إعادة إرسال نشاطك التجاري؟",
+        "submitConfirmBody": "يراجع فريق Vitanaland نشاطك التجاري. عندما يكتمل كل شيء، يُنشر. العروض التي تبقى غير متصلة أو غير مكتملة لا تُنشر.",
+        "submitCancel": "إلغاء",
+        "submitConfirm": "أرسل الآن",
+        "submitResultLive": "أنت الآن منشور على Vitanaland.",
+        "submitResultNeedsAction": "تم الإرسال. ما زالت بعض الأمور ناقصة – انظر أدناه.",
+        "submitResultInReview": "تم الإرسال. يراجع فريق Vitanaland نشاطك التجاري الآن.",
+        "submitResultUnchanged": "تم الاستلام. لم تتغير حالتك.",
+        "submitFailed": "تعذّر الإرسال الآن. حدّثنا حالتك – تحقّق مما هو ناقص."
       },
       "setupChooser": {
         "title": "أضف منتجاتك أو خدماتك",
@@ -12553,6 +12648,153 @@
       "startingSoon": "يبدأ قريبًا",
       "startNow": "ابدأ الآن",
       "eventsSectionTitle": "الغرف المباشرة"
+    },
+    "vitanaCards": {
+      "stripLabel": "اقتراحات من Vitana",
+      "eyebrowProfile": "ملفك الشخصي",
+      "eyebrowConnect": "اتصال",
+      "eyebrowCommunity": "المجتمع",
+      "eyebrowNotifications": "الإشعارات",
+      "E1": {
+        "title": "أظهر وجهك",
+        "description": "ارفع صورة للملف الشخصي ليتعرّف عليك الآخرون فورًا.",
+        "action": "رفع"
+      },
+      "E2": {
+        "title": "أخبرنا عن نفسك",
+        "description": "بضع جمل عنك تساعد الآخرين على بدء محادثة معك.",
+        "action": "اكتب نبذة"
+      },
+      "E3": {
+        "title": "شارك منشورك الأول",
+        "description": "قل مرحبًا للمجتمع – تكفي فكرة قصيرة.",
+        "action": "انشر الآن"
+      },
+      "E4": {
+        "title": "ما الذي يشغفك؟",
+        "description": "اختر اهتماماتك لتجد Vitana أشخاصًا ومحتوى يناسبونك.",
+        "action": "اختر اهتماماتك"
+      },
+      "E5": {
+        "title": "أين تقيم؟",
+        "description": "أضف موقعك واكتشف أشخاصًا وفعاليات بالقرب منك.",
+        "action": "أضف موقعك"
+      },
+      "E6": {
+        "title": "اربط Instagram",
+        "description": "شارك لحظاتك من Vitana مباشرةً على Instagram.",
+        "action": "ربط Instagram"
+      },
+      "E7": {
+        "title": "اربط Facebook",
+        "description": "ابقَ قريبًا من أصدقائك وشارك بلمسة واحدة.",
+        "action": "ربط Facebook"
+      },
+      "E8": {
+        "title": "اربط تقويمك",
+        "description": "شاهد مواعيدك وفعاليات Vitana في مكان واحد.",
+        "action": "ربط"
+      },
+      "E9": {
+        "title": "استورد جهات اتصالك",
+        "description": "اعثر على أصدقاء موجودين بالفعل على Vitana.",
+        "action": "استيراد"
+      },
+      "E10": {
+        "title": "لا يفوتك شيء",
+        "description": "فعّل الإشعارات للرسائل والتطابقات والتذكيرات.",
+        "action": "تفعيل"
+      },
+      "E11": {
+        "title": "أضف صورة غلاف",
+        "description": "صورة الغلاف تجعل ملفك الشخصي أكثر تعبيرًا عنك.",
+        "action": "رفع"
+      },
+      "F3": {
+        "eyebrow": "اليوميات",
+        "title": "كيف حالك اليوم؟",
+        "description": "قل بضع جمل في يومياتك – Vitana تستمع إليك.",
+        "action": "تسجيل"
+      },
+      "F4": {
+        "eyebrow": "اسأل Vitana",
+        "title": "هل لديك سؤال؟",
+        "description": "تساعدك Vitana في الصحة والمجتمع وغير ذلك.",
+        "action": "اسأل Vitana"
+      },
+      "F5": {
+        "eyebrow": "التطابقات",
+        "title": "أشخاص يناسبونك",
+        "description": "اكتشف تطابقات اليوم.",
+        "action": "عرض التطابقات"
+      },
+      "F6": {
+        "eyebrow": "الطيار الآلي",
+        "title": "طيارك الآلي جاهز",
+        "description": "دع Vitana تخطط لخطواتك التالية.",
+        "action": "فتح"
+      },
+      "F9": {
+        "eyebrow": "التقويم",
+        "title": "يومك في لمحة",
+        "description": "المواعيد والفعاليات والتذكيرات في مكان واحد.",
+        "action": "افتح التقويم"
+      },
+      "F10": {
+        "eyebrow": "الوسائط",
+        "title": "شارك فيديو أو موسيقى",
+        "description": "ارفع وسائطك وألهم المجتمع.",
+        "action": "إنشاء"
+      },
+      "F11": {
+        "eyebrow": "اكتشف",
+        "title": "اكتشف شيئًا جديدًا",
+        "description": "منتجات وخدمات وعروض لعافيتك.",
+        "action": "تصفّح"
+      },
+      "G1": {
+        "eyebrow": "ملفك الشخصي",
+        "title": "أكمل ملفك الشخصي",
+        "description": "الملف المكتمل يجلب لك تطابقات أنسب.",
+        "action": "متابعة الإعداد",
+        "metric": "تم إنجاز {value} · {message}"
+      },
+      "G2": {
+        "eyebrow": "التطابقات",
+        "title": "لديك تطابقات جديدة",
+        "description": "اكتشف من يناسبك.",
+        "action": "عرض التطابقات",
+        "metric": "تطابقات جديدة: {count} · {message}"
+      },
+      "G3": {
+        "eyebrow": "اليوميات",
+        "title": "سلسلتك في خطر",
+        "description": "فاتك تسجيل الأمس – حافظ على سلسلتك اليوم.",
+        "action": "سجّل اليوم",
+        "metric": "السلسلة (أيام): {count} · {message}"
+      }
+    },
+    "interests": {
+      "title": "اهتماماتك",
+      "description": "اختر حتى {max} مواضيع تحبها.",
+      "selectedCount": "تم اختيار {count} من {max}",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "fitness": "اللياقة البدنية",
+      "nutrition": "التغذية",
+      "sleep": "النوم",
+      "mindfulness": "اليقظة الذهنية",
+      "longevity": "طول العمر",
+      "biohacking": "البيوهاكينغ",
+      "yoga": "اليوغا",
+      "running": "الجري",
+      "strength": "تمارين القوة",
+      "dance": "الرقص",
+      "nature": "الطبيعة",
+      "cooking": "الطبخ",
+      "social": "التواصل الاجتماعي",
+      "travel": "السفر",
+      "career": "المسيرة المهنية"
     }
   }
 }

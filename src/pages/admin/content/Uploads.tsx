@@ -13,10 +13,13 @@ import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 const statusVariant = (s: string) =>
   s === "approved" ? "active" : s === "rejected" ? "error" : "warning";
 
 export default function Uploads() {
+  const spotlight = useSpotlightEnabled();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
@@ -49,10 +52,8 @@ export default function Uploads() {
     value: t, label: t.charAt(0).toUpperCase() + t.slice(1),
   }));
 
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="content" />
-      <div className="p-6 space-y-6">
+  const adminBody = (
+    <>
         <AdminHeader emoji="📤" title={t('screens.admin.uploads')} description="Review and moderate all content submissions" />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -104,13 +105,13 @@ export default function Uploads() {
                   <TableHead>{t('screens.admin.type')}</TableHead>
                   <TableHead>{t('screens.admin.status')}</TableHead>
                   <TableHead>{t('screens.admin.submitted')}</TableHead>
-                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
+                  <TableHead className="text-end">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell className="font-medium max-w-[200px] truncate">{item.title}</TableCell>
+                    <TableCell className="font-medium max-w-48 truncate">{item.title}</TableCell>
                     <TableCell className="capitalize text-sm">{item.media_type}</TableCell>
                     <TableCell>
                       <AdminStatusBadge variant={statusVariant(item.status)}>
@@ -120,7 +121,7 @@ export default function Uploads() {
                     <TableCell className="text-sm text-muted-foreground">
                       {fmtDate(new Date(item.created_at))}
                     </TableCell>
-                    <TableCell className="text-right space-x-1">
+                    <TableCell className="text-end space-x-1">
                       <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>{t('screens.admin.approve')}</Button>
                       <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "reject")}>{t('screens.admin.reject')}</Button>
                       <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "flag")}>{t('screens.admin.flag')}</Button>
@@ -131,7 +132,19 @@ export default function Uploads() {
             </Table>
           </Card>
         )}
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="content" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-6">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

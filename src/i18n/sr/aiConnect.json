@@ -1,0 +1,60 @@
+{
+  "aiConnect": {
+    "consent": {
+      "title": "Poveži {client} sa svojim Maxina nalogom",
+      "lead": "{client} želi da koristi tvoj Maxina nalog. Izaberi šta sme da vidi. Ovo možeš bilo kada da promeniš ili ukloniš u Maxini.",
+      "signedInAs": "Prijavljen/a kao {email}",
+      "chooseTitle": "{client} sme da:",
+      "readOnly": "Samo čitanje: tvoj asistent ne može da objavljuje, šalje poruke niti bilo šta menja.",
+      "notShared": "Nikad se ne deli: zdravstveni podaci, Vitana Index, dnevnik, sećanja i privatne poruke.",
+      "redirectsTo": "Kada dozvoliš, vraćaš se na {host}.",
+      "noneSelected": "Izaberi bar jednu oblast.",
+      "approve": "Dozvoli",
+      "deny": "Otkaži",
+      "failed": "Nije uspelo. Pokušaj ponovo.",
+      "loading": "Učitava se …",
+      "redirecting": "Preusmeravamo te …",
+      "invalid": "Ovaj zahtev je istekao ili nije važeći. Pokreni povezivanje ponovo u svom AI asistentu.",
+      "_pending_review": {}
+    },
+    "categories": {
+      "profile": "Tvoj profil",
+      "profileDesc": "Tvoje ime, grad, interesovanja i ciljevi",
+      "matches": "Tvoja poklapanja",
+      "matchesDesc": "Ljudi koje ti Maxina preporučuje da upoznaš",
+      "people": "Pronađi ljude",
+      "peopleDesc": "Članovi koji su izabrali da ih AI asistenti mogu pronaći",
+      "activities": "Aktivnosti",
+      "activitiesDesc": "Predstojeći događaji i susreti u zajednici",
+      "commerce": "Alati za ponuđače (Vitanaland Commerce)",
+      "_pending_review": {}
+    },
+    "settings": {
+      "title": "Povezana veštačka inteligencija",
+      "lead": "Dovedi ChatGPT ili Claude u svoju Maxina zajednicu. Tvoj asistent čita samo ono što dozvoliš.",
+      "connectChatgpt": "Poveži ChatGPT",
+      "connectClaude": "Poveži Claude",
+      "howTitle": "Poveži {assistant} u tri koraka",
+      "step1Claude": "U Claude-u otvori Podešavanja → Konektori → Dodaj prilagođeni konektor.",
+      "step1Chatgpt": "U ChatGPT-u otvori Podešavanja → Aplikacije i konektori → Kreiraj.",
+      "step2": "Nalepi ovu adresu:",
+      "step3": "Prijavi se svojim Maxina nalogom i izaberi šta tvoj asistent sme da vidi.",
+      "copy": "Kopiraj",
+      "copied": "Kopirano",
+      "close": "Zatvori",
+      "empty": "Još nijedan AI asistent nije povezan.",
+      "connectedSince": "Povezano od {date}",
+      "disconnect": "Prekini vezu",
+      "disconnected": "Veza prekinuta",
+      "disconnectedNote": "Veza prekinuta: ovaj asistent više ne može da koristi Maxinu. Možeš ga ukloniti i u ChatGPT-u ili Claude-u.",
+      "saveFailed": "Čuvanje nije uspelo. Pokušaj ponovo.",
+      "loadFailed": "Tvoji povezani asistenti nisu mogli da se učitaju.",
+      "findableTitle": "Dozvoli AI asistentima drugih članova da me pronađu",
+      "findableDesc": "Kada je uključeno, članovi sa povezanim ChatGPT-om ili Claude-om mogu da vide tvoje ime, sliku, javni grad i interesovanja. Podrazumevano isključeno.",
+      "unknownClient": "AI asistent",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -9,12 +9,13 @@ import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function KnowledgeGovernance() {
-  return (
-    <AppLayout>
-      <AdminTabs sectionKey="knowledge" />
-      <div className="p-6 space-y-4">
+  const spotlight = useSpotlightEnabled();
+  const adminBody = (
+    <>
         <AdminHeader
           emoji="🛡️"
           title={t('screens.admin.knowledgeGovernance')}
@@ -25,7 +26,19 @@ export default function KnowledgeGovernance() {
           title={t('screens.admin.comingSoon')}
           description="This tab will include: source attribution tracking (which documents contributed to each answer), document review workflows (approve/reject before indexing), automatic document expiry policies, and content quality scoring. These features are in development."
         />
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <AdminTabs sectionKey="knowledge" />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-4">{adminBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 space-y-4">{adminBody}</div>
+      )}
     </AppLayout>
   );
 }

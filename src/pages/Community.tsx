@@ -49,6 +49,15 @@ import {
 import { notifyError, notifyInfo, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+// VTID-05110: desktop Spotlight (flag `desktop_spotlight`; off → unchanged render).
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { CommunitySpotlightBody } from '@/components/community/spotlight/CommunitySpotlightBody';
+import { CreateGroupPopup } from '@/components/CreateGroupPopup';
+import { useLiveStreams } from '@/hooks/useLiveStreams';
+import { useProfilesByIds } from '@/hooks/useProfiles';
+import { useUserGroups } from '@/hooks/useUserGroups';
+import { useGroupDirectory } from '@/hooks/useGroupDirectory';
 // Mock fallback data for Today Highlights
 const todayHighlights = [
   {
@@ -973,7 +982,78 @@ const renderEventGrid = (
   return { content: <div className="px-6">{rows}</div>, nextRowIndex: currentRowIndex };
 };
 
+/**
+ * VTID-05110 — Community overview on desktop Spotlight (`collection`). Real
+ * data only: rooms live now, today's events, this week, groups to join.
+ * Phones never get here (useSpotlightEnabled is false below 1024 px).
+ */
+function CommunitySpotlight() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { completeBySourceRef } = useAutopilotComplete();
+  useEffect(() => { completeBySourceRef('onboarding_explore'); }, [completeBySourceRef]);
+  const [createGroupOpen, setCreateGroupOpen] = useState(false);
+
+  const { todayEvents, upcomingEvents, loading: eventsLoading } = useCommunityEvents();
+  const { data: liveStreams = [] } = useLiveStreams();
+  const { data: hostProfiles = [] } = useProfilesByIds(liveStreams.map((s) => s.created_by));
+  const { data: myGroups = [] } = useUserGroups(user?.id);
+  const groupDirectory = useGroupDirectory('');
+
+  const weekEnd = new Date();
+  weekEnd.setHours(0, 0, 0, 0);
+  weekEnd.setDate(weekEnd.getDate() + 7);
+  const byStart = (a: { start_time: string }, b: { start_time: string }) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime();
+  const today = [...todayEvents].sort(byStart);
+  const week = upcomingEvents.filter((e) => new Date(e.start_time) < weekEnd).sort(byStart);
+
+  const hostName = (userId: string) => hostProfiles.find((p) => p.user_id === userId)?.display_name || t('spotlightSocial.common.member');
+  const live = liveStreams.map((s) => ({
+    id: s.id,
+    title: s.title,
+    description: s.description ?? undefined,
+    host: { id: s.created_by, name: s.creator_display_name || hostName(s.created_by) },
+    isLive: true,
+    participants: s.viewer_count,
+    imageUrl: s.cover_image_url ?? undefined,
+  }));
+  const myGroupIds = new Set(myGroups.map((g) => g.id));
+  const groups = (groupDirectory.data ?? []).filter((g) => !myGroupIds.has(g.id));
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.community.community')} description={t('spotlightSocial.community.description')} canonical={window.location.href} />
+      <ScreenFrame
+        archetype="collection"
+        subNav={{ items: communityNavigation }}
+        header={{ title: t('spotlightSocial.community.title'), description: t('spotlightSocial.community.description'), emoji: '✨' }}
+        utility={{ children: <UniversalCalendarButton /> }}
+      >
+        <CommunitySpotlightBody
+          live={live}
+          today={today}
+          week={week}
+          eventsLoading={eventsLoading}
+          groups={groups}
+          groupsLoading={groupDirectory.isLoading}
+          groupsError={groupDirectory.isError}
+          onRetryGroups={() => groupDirectory.refetch()}
+          onBrowseEvents={() => navigate('/comm/events-meetups?tab=upcoming')}
+          onCreateGroup={() => setCreateGroupOpen(true)}
+        />
+      </ScreenFrame>
+      <CreateGroupPopup isOpen={createGroupOpen} onClose={() => setCreateGroupOpen(false)} />
+    </AppLayout>
+  );
+}
+
 export default withScreenId(function Community() {
+  // VTID-05110: flag `desktop_spotlight` on a desktop viewport → Spotlight; otherwise exactly today's screen.
+  const spotlight = useSpotlightEnabled();
+  return spotlight ? <CommunitySpotlight /> : <CommunityLegacy />;
+}, SCREEN_IDS.COMMUNITY_OVERVIEW);
+
+function CommunityLegacy() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { todayEvents, upcomingEvents } = useCommunityEvents();
@@ -1806,4 +1886,4 @@ export default withScreenId(function Community() {
       </div>
     </AppLayout>
   );
-}, SCREEN_IDS.COMMUNITY_OVERVIEW);
+}

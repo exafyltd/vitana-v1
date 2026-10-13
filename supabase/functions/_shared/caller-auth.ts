@@ -11,24 +11,21 @@
  * - `isServiceRoleCaller(req)`: true only for a server-side caller holding
  *   the service-role key (another edge function's service client, or a
  *   pg_net trigger).
+ * - `isTriggerSecretCaller(req)` (VTID-05118, from ./trigger-secret.ts): true
+ *   only for a pg_net trigger sending the shared EMAIL_TRIGGER_SECRET.
  */
 import { createClient, type User } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 import { createDataClient } from "./data-client.ts";
+import { timingSafeEqual } from "./trigger-secret.ts";
+
+// VTID-05118: pg_net triggers that send X-Trigger-Secret (no service-role key).
+export { isTriggerSecretCaller } from "./trigger-secret.ts";
 
 export function bearerToken(req: Request): string | null {
   const header = req.headers.get("Authorization") ?? req.headers.get("authorization");
   if (!header) return null;
   const match = /^Bearer\s+(.+)$/i.exec(header.trim());
   return match ? match[1].trim() : null;
-}
-
-function timingSafeEqual(a: string, b: string): boolean {
-  const ea = new TextEncoder().encode(a);
-  const eb = new TextEncoder().encode(b);
-  if (ea.length !== eb.length) return false;
-  let diff = 0;
-  for (let i = 0; i < ea.length; i++) diff |= ea[i] ^ eb[i];
-  return diff === 0;
 }
 
 // Unverified read of a JWT payload. Only used to decide whether a token is

@@ -761,7 +761,9 @@ const App = () => {
                     <Toaster />
                     <SonnerToaster position="top-center" richColors />
                     <PresenceDebugPanel />
-                    <BrowserRouter basename={import.meta.env.BASE_URL}>
+                    {/* VTID-05106: v7_startTransition keeps the current screen while a lazy
+                        route chunk loads (no full-screen RouteFallback on switch). */}
+                    <BrowserRouter basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true }}>
                     {/* AppHooksInitializer must live INSIDE <BrowserRouter> so
                         useOrbVoiceWidget (and any other hook that uses
                         useNavigate / useLocation) has a valid Router context.

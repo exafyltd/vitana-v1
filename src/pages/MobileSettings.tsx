@@ -21,11 +21,14 @@ import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
 import PushDiagnostics from "@/components/PushDiagnostics";
+import { VitanaMessagesSettings } from "@/components/settings/VitanaMessagesSettings";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAIConsent } from "@/hooks/useAIConsent";
+import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
+import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
@@ -259,6 +262,8 @@ export default function MobileSettings() {
               </div>
             </CardContent>
           </Card>
+          {/* VTID-05100: Vitana's proactive personal Messenger messages */}
+          <VitanaMessagesSettings className="rounded-2xl border-border/50 shadow-sm" />
           <PushDiagnostics />
           </>
         );
@@ -288,6 +293,13 @@ export default function MobileSettings() {
                   <Switch defaultChecked={item.defaultChecked} />
                 </div>
               ))}
+              {/* VTID-05096: the same phone number card and "findable by my
+                  number" switch as the desktop Privacy page (VTID-05058); both
+                  hide themselves when unavailable. */}
+              <div className="space-y-4 pt-2" data-testid="mobile-privacy-phone">
+                <PhoneNumberCard />
+                <PhoneDiscoverabilityToggle />
+              </div>
             </CardContent>
           </Card>
         );

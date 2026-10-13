@@ -7,12 +7,47 @@
  * Vitana-authored card names both who's recommending and what it opens.
  */
 
-import { Activity, Lightbulb, UserPlus, Users, Zap, type LucideIcon } from 'lucide-react';
+import {
+  Activity,
+  BadgeCheck,
+  Bot,
+  CalendarDays,
+  Camera,
+  Clapperboard,
+  Compass,
+  Contact,
+  Lightbulb,
+  Link2,
+  MessageCircle,
+  Mic,
+  UserPlus,
+  UserRound,
+  Users,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import { VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { cn } from '@/lib/utils';
 
-export type VitanaFeature = 'vitana-index' | 'guided-journey' | 'find-a-match' | 'invite-friend' | 'did-you-know';
+export type VitanaFeature =
+  | 'vitana-index'
+  | 'guided-journey'
+  | 'find-a-match'
+  | 'invite-friend'
+  | 'did-you-know'
+  // VTID-05085 Unified Card System (plan §5.1) — 16 values, no `earn-vtna`.
+  | 'daily-diary'
+  | 'talk-to-vitana'
+  | 'autopilot'
+  | 'calendar'
+  | 'upload-media'
+  | 'discover'
+  | 'profile-photo'
+  | 'profile-setup'
+  | 'social-connect'
+  | 'import-contacts'
+  | 'complete-profile';
 
 const FEATURE_CONFIG: Record<VitanaFeature, { icon: LucideIcon; labelKey: string }> = {
   'vitana-index': {
@@ -37,6 +72,17 @@ const FEATURE_CONFIG: Record<VitanaFeature, { icon: LucideIcon; labelKey: string
     icon: Lightbulb,
     labelKey: 'featureAnnouncementCard.didYouKnow.eyebrow',
   },
+  'daily-diary': { icon: Mic, labelKey: 'screens.vitanaIdentity.dailyDiary' },
+  'talk-to-vitana': { icon: MessageCircle, labelKey: 'screens.vitanaIdentity.talkToVitana' },
+  autopilot: { icon: Bot, labelKey: 'screens.vitanaIdentity.autopilot' },
+  calendar: { icon: CalendarDays, labelKey: 'screens.vitanaIdentity.calendar' },
+  'upload-media': { icon: Clapperboard, labelKey: 'screens.vitanaIdentity.uploadMedia' },
+  discover: { icon: Compass, labelKey: 'screens.vitanaIdentity.discover' },
+  'profile-photo': { icon: Camera, labelKey: 'screens.vitanaIdentity.profilePhoto' },
+  'profile-setup': { icon: UserRound, labelKey: 'screens.vitanaIdentity.profileSetup' },
+  'social-connect': { icon: Link2, labelKey: 'screens.vitanaIdentity.socialConnect' },
+  'import-contacts': { icon: Contact, labelKey: 'screens.vitanaIdentity.importContacts' },
+  'complete-profile': { icon: BadgeCheck, labelKey: 'screens.vitanaIdentity.completeProfile' },
 };
 
 /** Standard diameter (px) for the ORB avatar — MUST stay identical across every card. */

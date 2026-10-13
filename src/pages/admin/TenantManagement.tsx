@@ -15,6 +15,8 @@ import SubNavigation from "@/components/SubNavigation";
 import { adminTenantManagementNavigation } from "@/config/navigation";
 import { GeminiApiKeySetup } from "@/components/admin/GeminiApiKeySetup";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const TENANT_CONFIGS = {
   maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
@@ -22,6 +24,7 @@ const TENANT_CONFIGS = {
 };
 
 export default function TenantManagement() {
+  const spotlight = useSpotlightEnabled();
   const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
   const { memberships } = useMemberships();
   const { toast } = useToast();
@@ -45,11 +48,8 @@ export default function TenantManagement() {
 
   // Show loading while auth is still loading to prevent premature access denied
   if (authLoading) {
-    return (
-      <AppLayout>
-        <SEO title={t('screens.admin.tenantManagementAdmin')} description="Organization and tenant management" canonical={window.location.href} />
-        <SubNavigation items={adminTenantManagementNavigation} />
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+    const adminBody = (
+      <>
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
               title={t('screens.admin.tenantManagement')}
@@ -60,17 +60,27 @@ export default function TenantManagement() {
               <div className="text-muted-foreground">{t('screens.admin.loading')}</div>
             </div>
           </div>
-        </div>
+      </>
+    );
+
+    return (
+      <AppLayout>
+        <SEO title={t('screens.admin.tenantManagementAdmin')} description="Organization and tenant management" canonical={window.location.href} />
+        <SubNavigation items={adminTenantManagementNavigation} />
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            {adminBody}
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody}</div>
+        )}
       </AppLayout>
     );
   }
 
   if (!isExafyAdmin) {
-    return (
-      <AppLayout>
-        <SEO title={t('screens.admin.tenantManagementAdmin')} description="Organization and tenant management" canonical={window.location.href} />
-        <SubNavigation items={adminTenantManagementNavigation} />
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+    const adminBody2 = (
+      <>
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
               title={t('screens.admin.tenantManagement')}
@@ -88,16 +98,26 @@ export default function TenantManagement() {
               </CardHeader>
             </Card>
           </div>
-        </div>
+      </>
+    );
+
+    return (
+      <AppLayout>
+        <SEO title={t('screens.admin.tenantManagementAdmin')} description="Organization and tenant management" canonical={window.location.href} />
+        <SubNavigation items={adminTenantManagementNavigation} />
+        {spotlight ? (
+          <ScreenFrame archetype="workspace">
+            {adminBody2}
+          </ScreenFrame>
+        ) : (
+          <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody2}</div>
+        )}
       </AppLayout>
     );
   }
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.admin.tenantManagementAdmin')} description="Switch between organizations and manage tenant access" canonical={window.location.href} />
-      <SubNavigation items={adminTenantManagementNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+  const adminBody3 = (
+    <>
         <div className="max-w-7xl mx-auto space-y-6">
       <AdminHeader
         title={t('screens.admin.tenantManagement')}
@@ -202,7 +222,20 @@ export default function TenantManagement() {
       {/* Gemini API Configuration */}
       <GeminiApiKeySetup />
         </div>
-      </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.admin.tenantManagementAdmin')} description="Switch between organizations and manage tenant access" canonical={window.location.href} />
+      <SubNavigation items={adminTenantManagementNavigation} />
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          {adminBody3}
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">{adminBody3}</div>
+      )}
     </AppLayout>
   );
 }
