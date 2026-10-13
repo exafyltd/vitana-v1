@@ -15,6 +15,7 @@
 // While no screen is migrated yet (Phases 1a–1c) only the manifest check runs.
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { test, expect } from './staging-guard';
 
 test.use({
@@ -27,7 +28,11 @@ const SINGLE = new Set(['focus-feed', 'storefront', 'detail', 'dashboard']);
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 
 function loadManifest(): Entry[] {
-  const candidates = [path.resolve(process.cwd(), 'src/design/screen-manifest.json'), path.resolve(__dirname, '../../../src/design/screen-manifest.json')];
+  // ESM spec (package "type": "module"): no __dirname — resolve from cwd, else from this file's URL.
+  const candidates = [
+    path.resolve(process.cwd(), 'src/design/screen-manifest.json'),
+    fileURLToPath(new URL('../../../src/design/screen-manifest.json', import.meta.url)),
+  ];
   const file = candidates.find((p) => fs.existsSync(p));
   if (!file) throw new Error('src/design/screen-manifest.json not found');
   return JSON.parse(fs.readFileSync(file, 'utf8')).screens as Entry[];
