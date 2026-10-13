@@ -158,7 +158,7 @@ export function CoverPhotoPicker({
           disabled={uploading}
           className="flex-1"
         >
-          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4 mr-1.5" />}
+          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4 me-1.5" />}
           {value ? 'Replace photo' : 'Upload a photo'}
         </Button>
       </div>

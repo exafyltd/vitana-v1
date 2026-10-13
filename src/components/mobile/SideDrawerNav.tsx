@@ -353,7 +353,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
-            className="fixed top-0 left-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
+            className="fixed top-0 start-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -375,7 +375,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               <div className="flex items-center gap-3">
               <button
                 onClick={handleProfileClick}
-                className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
+                className="flex items-center gap-3 flex-1 min-w-0 text-start rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
                 aria-label={t('screens.mobile.openMyProfile')}
               >
                 <Avatar className="h-24 w-24 ring-[3px] ring-white/60 shrink-0">
@@ -556,19 +556,19 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                     }
                   }}
                 >
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     autoFocus
                     type="text"
                     placeholder={t('screens.mobile.searchMembersGroups')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
+                    className="ps-9 pe-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
                   />
                   <button
                     type="button"
                     onClick={closeSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
+                    className="absolute end-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
                     aria-label={t('screens.mobile.closeSearch')}
                   >
                     <X className="h-4 w-4" />
@@ -576,7 +576,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
                   {/* Live search dropdown */}
                   {searchQuery.trim().length >= 2 && (
-                    <div className="absolute left-0 right-0 top-full mt-1 bg-background border border-border rounded-xl shadow-lg z-[60] overflow-hidden max-h-72 overflow-y-auto">
+                    <div className="absolute start-0 end-0 top-full mt-1 bg-background border border-border rounded-xl shadow-lg z-[60] overflow-hidden max-h-72 overflow-y-auto">
                       {searching && (
                         <div className="flex items-center justify-center gap-2 px-3 py-3 text-sm text-muted-foreground">
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -644,12 +644,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   >
                     {/* Active accent bar */}
                     {active && (
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+                      <div className="absolute start-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-e-full" />
                     )}
                     <Icon className="h-5 w-5 shrink-0" style={iconStyle} />
-                    <span className="flex-1 text-left">{translate(item.translationKey, item.fallback)}</span>
+                    <span className="flex-1 text-start">{translate(item.translationKey, item.fallback)}</span>
                     {item.id === 'inbox' && unreadCount > 0 && (
-                      <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[11px] font-semibold text-destructive-foreground">
+                      <span className="ms-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[11px] font-semibold text-destructive-foreground">
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
                     )}

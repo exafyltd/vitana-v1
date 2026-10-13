@@ -75,8 +75,8 @@ export function PhotoCarouselModal({
               </CarouselContent>
               {images.length > 1 && (
                 <>
-                  <CarouselPrevious className="left-4 bg-white/20 border-white/30 text-white hover:bg-white/30" />
-                  <CarouselNext className="right-4 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                  <CarouselPrevious className="start-4 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                  <CarouselNext className="end-4 bg-white/20 border-white/30 text-white hover:bg-white/30" />
                 </>
               )}
             </Carousel>

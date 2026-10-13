@@ -165,7 +165,7 @@ export default function IntentBoard() {
           </p>
         </div>
         <Button onClick={() => setComposerOpen(true)} size="sm">
-          <Plus className="h-4 w-4 mr-1" /> {t('screens.intentboard.post')}
+          <Plus className="h-4 w-4 me-1" /> {t('screens.intentboard.post')}
         </Button>
       </div>
 
@@ -187,7 +187,7 @@ export default function IntentBoard() {
 
       {filter === "dance" && (
         <div className="flex flex-wrap gap-1.5">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground self-center mr-1">{t('screens.intentboard.style')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground self-center me-1">{t('screens.intentboard.style')}</span>
           {DANCE_VARIETY_CHIPS.map((c) => (
             <button
               key={c.key ?? "any"}

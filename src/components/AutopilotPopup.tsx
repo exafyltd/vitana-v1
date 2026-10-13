@@ -426,13 +426,13 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               )}
               {isCompleted && (
                 <Badge variant="outline" className="text-xs text-green-600 border-green-300 bg-green-50">
-                  <Check className="w-3 h-3 mr-1" />
+                  <Check className="w-3 h-3 me-1" />
                   {t('screens.common.erledigt')}
                 </Badge>
               )}
               {isPending && action.timeEstimate && (
                 <Badge variant="outline" className="text-xs">
-                  <Clock className="w-3 h-3 mr-1" />
+                  <Clock className="w-3 h-3 me-1" />
                   {action.timeEstimate}
                 </Badge>
               )}
@@ -442,7 +442,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   className={cn("text-xs border", getPriorityColor(action.priority))}
                 >
                   {getPriorityIcon(action.priority)}
-                  <span className="ml-1 capitalize">{translate(`autopilot.priorities.${action.priority}`)}</span>
+                  <span className="ms-1 capitalize">{translate(`autopilot.priorities.${action.priority}`)}</span>
                 </Badge>
               )}
             </div>
@@ -645,9 +645,9 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                 className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
               >
                 {isExecuting ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="w-4 h-4 me-2 animate-spin" />
                 ) : (
-                  <Zap className="w-4 h-4 mr-2" />
+                  <Zap className="w-4 h-4 me-2" />
                 )}{t('screens.common.goLength', { length: selectedActions.length })}
               </Button>
               <Button variant="outline" onClick={handleNotNow}>
@@ -674,14 +674,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         "sm:max-w-2xl sm:max-h-[80vh]",
         isMobile && "p-6 flex flex-col"
       )} fullscreenOnMobile>
-        <ResponsiveDialogHeader className={isMobile ? "text-left border-b-0 px-0 pr-0 pt-0 pb-0" : undefined}>
+        <ResponsiveDialogHeader className={isMobile ? "text-start border-b-0 px-0 pe-0 pt-0 pb-0" : undefined}>
           <ResponsiveDialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
               <Plane className="w-4 h-4 text-red-500" />
             </div>
             <span>{translate('autopilot.popup.title')}</span>
             {!loading && pendingActions.length > 0 && (
-              <Badge variant="outline" className="ml-2">
+              <Badge variant="outline" className="ms-2">
                 {selectedActions.length} / {pendingActions.length}
               </Badge>
             )}

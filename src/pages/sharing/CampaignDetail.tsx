@@ -153,7 +153,7 @@ function CampaignDetail() {
         <div className="p-6 text-center">
           <h2 className="text-xl font-semibold mb-2">{t('screens.sharing.campaignNotFound')}</h2>
           <Button onClick={() => navigate('/sharing/campaigns')}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 me-2" />
             {t('screens.sharing.backCampaigns')}
           </Button>
         </div>
@@ -170,7 +170,7 @@ function CampaignDetail() {
             onClick={() => setShowActivateDialog(true)}
             disabled={!canActivateCampaign}
           >
-            <Rocket className="w-4 h-4 mr-2" />
+            <Rocket className="w-4 h-4 me-2" />
             {t('screens.sharing.activateCampaign')}
           </Button>
         )}
@@ -182,7 +182,7 @@ function CampaignDetail() {
               onClick={handlePauseCampaign}
               disabled={pauseCampaign.isPending}
             >
-              <Pause className="w-4 h-4 mr-2" />
+              <Pause className="w-4 h-4 me-2" />
               {t('screens.sharing.pause')}
             </Button>
             <Button 
@@ -191,7 +191,7 @@ function CampaignDetail() {
               onClick={handleCompleteCampaign}
               disabled={completeCampaign.isPending}
             >
-              <CheckCircle className="w-4 h-4 mr-2" />
+              <CheckCircle className="w-4 h-4 me-2" />
               {t('screens.sharing.complete')}
             </Button>
           </>
@@ -202,7 +202,7 @@ function CampaignDetail() {
             onClick={() => activateCampaign.mutate(id!)}
             disabled={activateCampaign.isPending}
           >
-            <Rocket className="w-4 h-4 mr-2" />
+            <Rocket className="w-4 h-4 me-2" />
             {t('screens.sharing.resume')}
           </Button>
         )}
@@ -211,7 +211,7 @@ function CampaignDetail() {
           size="sm"
           onClick={() => setShowEditDialog(true)}
         >
-          <Edit className="w-4 h-4 mr-2" />
+          <Edit className="w-4 h-4 me-2" />
           {t('screens.sharing.edit')}
         </Button>
       </div>
@@ -268,7 +268,7 @@ function CampaignDetail() {
           <div className="flex items-center justify-between">
             <CardTitle>{t('screens.sharing.campaignPosts')}</CardTitle>
             <Button onClick={() => setShowCreatePostDialog(true)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.sharing.createPost')}
             </Button>
           </div>
@@ -305,14 +305,14 @@ function CampaignDetail() {
                           size="sm"
                           onClick={() => handleSchedulePost(post.id)}
                         >
-                          <Clock className="w-4 h-4 mr-2" />
+                          <Clock className="w-4 h-4 me-2" />
                           {t('screens.sharing.schedule')}
                         </Button>
                         <Button 
                           size="sm"
                           onClick={() => handlePublishNow(post.id)}
                         >
-                          <Rocket className="w-4 h-4 mr-2" />
+                          <Rocket className="w-4 h-4 me-2" />
                           {t('screens.sharing.publishNow')}
                         </Button>
                       </>
@@ -333,7 +333,7 @@ function CampaignDetail() {
                 {t('screens.sharing.createPostsAssignThemThisCampaign')}
               </p>
               <Button onClick={() => setShowCreatePostDialog(true)}>
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-4 h-4 me-2" />
                 {t('screens.sharing.createFirstPost')}
               </Button>
             </div>
@@ -435,7 +435,7 @@ function CampaignDetail() {
                 onClick={() => navigate('/sharing/campaigns')}
                 className="mb-4"
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="w-4 h-4 me-2" />
                 {t('screens.sharing.backCampaigns')}
               </Button>
               <div className="flex items-center gap-3 mb-2">

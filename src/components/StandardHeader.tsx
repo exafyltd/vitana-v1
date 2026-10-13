@@ -107,7 +107,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
             </h1>
             <p className="text-muted-foreground">{description}</p>
             {syncTimestamp && (
-              <p className="text-[10px] text-muted-foreground/80 absolute bottom-2 right-3">
+              <p className="text-[10px] text-muted-foreground/80 absolute bottom-2 end-3">
                 {syncTimestamp}
               </p>
             )}
@@ -124,7 +124,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
           {pendingCount > 0 && (
             <Badge 
               variant="destructive" 
-              className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+              className="absolute -top-2 -end-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
             >
               {pendingCount}
             </Badge>
@@ -138,7 +138,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
           
           {/* Hover Preview */}
           {showPreview && pendingCount > 0 && (
-            <div className="absolute top-full left-0 mt-2 w-64 bg-card border rounded-lg shadow-xl p-3 z-10">
+            <div className="absolute top-full start-0 mt-2 w-64 bg-card border rounded-lg shadow-xl p-3 z-10">
               <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.common.latestActions')}</div>
               {latestActions.map((action, index) => (
                 <div key={action.id} className="flex items-center space-x-2 text-xs py-1">

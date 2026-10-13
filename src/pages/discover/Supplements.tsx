@@ -225,7 +225,7 @@ function SupplementsInner() {
               size="sm"
               onClick={() => setMasterActionOpen(true)}
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
@@ -247,12 +247,12 @@ function SupplementsInner() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder={t('screens.discover.searchSupplements2')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="ps-10"
                 />
               </div>
               
@@ -326,7 +326,7 @@ function SupplementsInner() {
                       sizeClass="w-full h-48"
                     />
                     {!supplement.in_stock && (
-                      <Badge className="absolute top-2 right-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
+                      <Badge className="absolute top-2 end-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
                     )}
                   </div>
                   
@@ -423,7 +423,7 @@ function SupplementsInner() {
                             className="rounded-t-lg"
                             sizeClass="w-full h-32"
                           />
-                          <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
+                          <div className="absolute top-2 end-2 bg-white/90 rounded-full px-2 py-1">
                             <span className="text-xs font-bold text-purple-600">{95 - index * 3}%</span>
                           </div>
                         </div>
@@ -511,7 +511,7 @@ function SupplementsInner() {
                             sizeClass="w-full h-48"
                           />
                           {!supplement.in_stock && (
-                            <Badge className="absolute top-2 right-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
+                            <Badge className="absolute top-2 end-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
                           )}
                         </div>
                         
@@ -547,7 +547,7 @@ function SupplementsInner() {
                                 }`}
                               />
                             ))}
-                            <span className="text-sm text-muted-foreground ml-1">
+                            <span className="text-sm text-muted-foreground ms-1">
                               {supplement.rating} ({fmtNumber(supplement.review_count)})
                             </span>
                           </div>

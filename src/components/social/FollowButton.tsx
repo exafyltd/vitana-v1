@@ -63,7 +63,7 @@ export function FollowButton({
       className={className}
       aria-label={t("common.follow")}
     >
-      <UserPlus className={cn("h-4 w-4", !iconOnly && "mr-1.5")} />
+      <UserPlus className={cn("h-4 w-4", !iconOnly && "me-1.5")} />
       {!iconOnly && t("common.follow")}
     </Button>
   );

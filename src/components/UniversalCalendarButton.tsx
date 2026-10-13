@@ -82,7 +82,7 @@ export function UniversalCalendarButton({
         
         {/* Conflict indicator */}
         {showConflictIndicator && conflictCount > 0 && (
-          <div className="absolute -top-1.5 -left-1.5 h-3 w-3 bg-amber-500 rounded-full border-2 border-background animate-pulse z-10" />
+          <div className="absolute -top-1.5 -start-1.5 h-3 w-3 bg-amber-500 rounded-full border-2 border-background animate-pulse z-10" />
         )}
       </div>
     </>

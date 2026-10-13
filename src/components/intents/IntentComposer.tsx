@@ -220,7 +220,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               size="sm"
               onClick={() => setMode("voice")}
             >
-              <Mic className="h-4 w-4 mr-1.5" />{t('screens.intents.voice')}
+              <Mic className="h-4 w-4 me-1.5" />{t('screens.intents.voice')}
             </Button>
           </div>
 

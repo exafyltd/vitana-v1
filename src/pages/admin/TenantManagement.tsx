@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building, Users, Shield, AlertCircle } from "lucide-react";
 import { useTenant } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
+import { useTenantRegistry } from "@/hooks/useTenantRegistry";
+import { tenantDisplayNameFor } from "@/lib/tenant-registry";
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import AdminHeader from "@/components/admin/AdminHeader";
@@ -18,15 +20,14 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { ScreenFrame } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
-const TENANT_CONFIGS = {
-  maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
-  alkalma: { name: "AlKalma", color: "bg-blue-100 text-blue-800" },
-};
+// VTID-05151: tenant names come from the registry; slug badges use the neutral muted token.
+const TENANT_BADGE = "bg-muted text-muted-foreground";
 
 export default function TenantManagement() {
   const spotlight = useSpotlightEnabled();
   const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
   const { memberships } = useMemberships();
+  const tenantRegistry = useTenantRegistry();
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
   const [selectedTenant, setSelectedTenant] = useState(activeTenantId || "");
@@ -139,7 +140,7 @@ export default function TenantManagement() {
               <p className="font-medium">{tenant?.name}</p>
               <p className="text-sm text-muted-foreground">{t('screens.admin.activeTenant')}</p>
             </div>
-            <Badge className={TENANT_CONFIGS[tenant?.slug as keyof typeof TENANT_CONFIGS]?.color}>
+            <Badge className={TENANT_BADGE}>
               {tenant?.slug}
             </Badge>
           </div>
@@ -202,11 +203,11 @@ export default function TenantManagement() {
             {memberships?.map(membership => (
               <div key={membership.tenant_id} className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
-                  <p className="font-medium">{membership.tenants.name}</p>
+                  <p className="font-medium">{tenantDisplayNameFor(membership.tenants.slug, tenantRegistry) || membership.tenants.name}</p>
                   <p className="text-sm text-muted-foreground">{t('screens.admin.roleRoleStatusStatus', { role: membership.role, status: membership.status })}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge className={TENANT_CONFIGS[membership.tenants.slug as keyof typeof TENANT_CONFIGS]?.color}>
+                  <Badge className={TENANT_BADGE}>
                     {membership.tenants.slug}
                   </Badge>
                   {membership.tenant_id === activeTenantId && (

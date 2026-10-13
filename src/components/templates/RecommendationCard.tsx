@@ -77,7 +77,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
                   onClick={() => onItemClick?.(item)}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-medium text-sm text-foreground pr-2">{item.title}</h4>
+                    <h4 className="font-medium text-sm text-foreground pe-2">{item.title}</h4>
                     {item.priority && (
                       <Badge variant={getPriorityColor(item.priority)} className="text-xs shrink-0">
                         {item.priority}
@@ -104,7 +104,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
               ))}
             </div>
             {!showAll && items.length > maxItems && (
-              <Button variant="ghost" size="sm" onClick={onViewAll} className="mt-3">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ml-1" />
+              <Button variant="ghost" size="sm" onClick={onViewAll} className="mt-3">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ms-1" />
               </Button>
             )}
           </CardContent>
@@ -173,7 +173,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
           )}
           
           {!showAll && items.length > maxItems && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full mt-2">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ml-1" />
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full mt-2">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ms-1" />
             </Button>
           )}
         </CardContent>

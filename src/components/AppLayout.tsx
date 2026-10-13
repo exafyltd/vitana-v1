@@ -54,6 +54,8 @@ import { t } from '@/lib/i18n-toast';
 import PublicAppShell from "@/components/PublicAppShell";
 import { useWindowOverlay } from '@/navigation/overlay-bus';
 import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
+import { useTenantRegistry } from '@/hooks/useTenantRegistry';
+import { logoClickTarget, sidebarTenantName } from '@/lib/tenant-registry';
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -79,6 +81,7 @@ function AppSidebar({
   const { open } = useSidebar();
   const { currentRole, hasPermission } = useRole();
   const { tenant, isExafyAdmin, activeTenantId } = useTenant();
+  const tenantRegistry = useTenantRegistry();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut, user } = useAuth();
@@ -142,56 +145,24 @@ function AppSidebar({
     if (isExafyAdmin) {
       navigate("/exafy-admin");
     } else {
-      switch (tenant?.slug) {
-        case "maxina":
-          navigate("/maxina");
-          break;
-        case "alkalma":
-          navigate("/alkalma");
-          break;
-        default:
-          navigate("/");
-          break;
-      }
+      // VTID-05151: the tenant's portal when the registry knows it, else /.
+      navigate(logoClickTarget(tenant?.slug, tenantRegistry));
     }
   };
 
-  const getTenantDisplayName = () => {
-    // For portal routes, prioritize URL-based detection
-    const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/maxina')) {
-      return 'Maxina';
-    } else if (currentPath.startsWith('/alkalma')) {
-      return 'AlKalma';
-    }
-    
-    // For non-portal routes, check localStorage first (most reliable after tenant switch)
-    // readStoredTenantSlug maps a retired slug (VTID-04836: 'earthlinks' →
-    // 'maxina') so an old persisted value never shows a dead brand.
-    const storedTenant = readStoredTenantSlug('tenant_slug');
-    if (storedTenant) {
-      if (storedTenant === 'maxina') return 'Maxina';
-      if (storedTenant === 'alkalma') return 'AlKalma';
-    }
-    
-    // Then check tenant context from database
-    if (tenant?.name) {
-      // Map database names to display names
-      if (tenant.name === 'Maxina') return 'Maxina';
-      if (tenant.name === 'Alkalma') return 'AlKalma';
-      return tenant.name;
-    }
-    
-    // Check user session metadata as last resort
-    if (user?.user_metadata?.tenant_slug) {
-      const tenantSlug = canonicalTenantSlug(user.user_metadata.tenant_slug);
-      if (tenantSlug === 'maxina') return 'Maxina';
-      if (tenantSlug === 'alkalma') return 'AlKalma';
-    }
-    
-    // Final fallback
-    return 'Community';
-  };
+  // VTID-05151: names come from the registry (display_name), in the same
+  // order as before: portal URL → stored slug → active tenant → sign-up metadata.
+  const getTenantDisplayName = () =>
+    sidebarTenantName(
+      {
+        pathname: window.location.pathname,
+        // readStoredTenantSlug maps a retired slug (VTID-04836: 'earthlinks' → 'maxina').
+        storedSlug: readStoredTenantSlug('tenant_slug'),
+        tenantName: tenant?.name,
+        metadataSlug: canonicalTenantSlug(user?.user_metadata?.tenant_slug ?? null),
+      },
+      tenantRegistry,
+    );
 
 
   return (

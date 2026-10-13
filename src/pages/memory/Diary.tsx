@@ -216,7 +216,7 @@ function Diary() {
           <ExpandableSearchButton placeholder={t('screens.memory.searchDiaryEntriesReflections')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.newEntry')}
           </Button>
         </UtilityActionButton>

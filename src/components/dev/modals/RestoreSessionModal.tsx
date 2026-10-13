@@ -67,7 +67,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="max-h-[400px] pr-4">
+        <ScrollArea className="max-h-[400px] pe-4">
           {sessions.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Clock className="h-12 w-12 mx-auto mb-4 opacity-30" />
@@ -142,7 +142,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
               onClick={handleClearAll}
               className="text-destructive hover:text-destructive hover:bg-destructive/10"
             >
-              <Trash2 className="h-4 w-4 mr-2" />
+              <Trash2 className="h-4 w-4 me-2" />
               {t('screens.dev.clearAllSessions')}
             </Button>
           </div>

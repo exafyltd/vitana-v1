@@ -159,8 +159,8 @@ export default function ProductDetail() {
 
       <div className="p-4 md:p-6 pb-32 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-dvh">
         <div className="max-w-5xl mx-auto space-y-6">
-          <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+          <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ms-2">
+            <ArrowLeft className="h-4 w-4 me-2" />
             {t('screens.discover.back')}
           </Button>
 
@@ -175,10 +175,10 @@ export default function ProductDetail() {
                     category={p.category}
                     subcategory={p.subcategory}
                     sizeClass="w-full h-80 md:h-full"
-                    className="md:rounded-l-xl"
+                    className="md:rounded-s-xl"
                   />
                   {p.availability && p.availability !== "in_stock" && (
-                    <Badge className="absolute top-3 right-3 bg-red-500 text-white">
+                    <Badge className="absolute top-3 end-3 bg-red-500 text-white">
                       {p.availability === "out_of_stock" ? "Out of Stock" : p.availability}
                     </Badge>
                   )}
@@ -211,7 +211,7 @@ export default function ProductDetail() {
                       {hasDiscount && (
                         <>
                           <span className="text-base text-muted-foreground line-through">{compareAtText}</span>
-                          <Badge variant="destructive" className="ml-1">{t('screens.discover.saveValue02', { value0: Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100) })}
+                          <Badge variant="destructive" className="ms-1">{t('screens.discover.saveValue02', { value0: Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100) })}
                           </Badge>
                         </>
                       )}
@@ -239,7 +239,7 @@ export default function ProductDetail() {
                       />
                       <Button asChild variant="outline" size="lg" className="flex-shrink-0">
                         <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-                          {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
+                          {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ms-1.5" />
                         </a>
                       </Button>
                     </div>
@@ -341,7 +341,7 @@ export default function ProductDetail() {
                                 {e.title ?? e.url}
                               </a>
                               {e.source_type && (
-                                <Badge variant="outline" className="ml-2 text-[10px] capitalize">
+                                <Badge variant="outline" className="ms-2 text-[10px] capitalize">
                                   {e.source_type.replace(/_/g, " ")}
                                 </Badge>
                               )}

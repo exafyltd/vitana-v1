@@ -214,7 +214,7 @@ export default function MobileSettings() {
                     </p>
                     {items.map((cat) => (
                       <div key={cat.id} className="flex items-center justify-between py-2.5">
-                        <div className="flex-1 min-w-0 mr-3">
+                        <div className="flex-1 min-w-0 me-3">
                           <span className="text-sm text-foreground/80 block">{cat.display_name}</span>
                           {cat.description && (
                             <p className="text-xs text-muted-foreground mt-0.5 truncate">{cat.description}</p>
@@ -286,7 +286,7 @@ export default function MobileSettings() {
                 { title: "Location Data", desc: "Share approximate location", defaultChecked: false },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
-                  <div className="flex-1 min-w-0 mr-3">
+                  <div className="flex-1 min-w-0 me-3">
                     <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                     <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
@@ -313,17 +313,21 @@ export default function MobileSettings() {
                   <Users className="w-4.5 h-4.5 text-primary" />
                   <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.dataSharing')}</h3>
                 </div>
+                {/* VTID-05173 (Health Hub D4, mobile): no consent record exists yet, so these
+                    data-sharing switches are off and disabled, exactly as on desktop
+                    (VTID-05032). D10 (VTID-05093) replaces them with HealthConsentSwitch.
+                    Never default health-data sharing to on. */}
                 {[
-                  { title: "Health Data Analytics", desc: "Share anonymized health data to improve AI recommendations", defaultChecked: true },
-                  { title: "Community Insights", desc: "Allow your progress to contribute to community statistics", defaultChecked: true },
-                  { title: "Third-party Integrations", desc: "Share data with connected apps and services", defaultChecked: false },
+                  { title: t('screens.settings.healthDataAnalytics'), desc: t('screens.settings.shareAnonymizedHealthDataImproveAi') },
+                  { title: t('screens.settings.communityInsights'), desc: t('screens.settings.allowYourProgressContributeCommunityStatistics') },
+                  { title: t('screens.settings.thirdpartyIntegrations'), desc: t('screens.settings.shareDataWithConnectedAppsServices') },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-2.5">
-                    <div className="flex-1 min-w-0 mr-3">
+                    <div className="flex-1 min-w-0 me-3">
                       <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                       <p className="text-xs text-muted-foreground">{item.desc}</p>
                     </div>
-                    <Switch defaultChecked={item.defaultChecked} />
+                    <Switch checked={false} disabled aria-label={item.title} />
                   </div>
                 ))}
               </CardContent>
@@ -335,7 +339,7 @@ export default function MobileSettings() {
                   <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.aiDataSharing')}</h3>
                 </div>
                 <div className="flex items-center justify-between py-2.5">
-                  <div className="flex-1 min-w-0 mr-3">
+                  <div className="flex-1 min-w-0 me-3">
                     <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.shareDataWithAiProvider')}</h4>
                     <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.allowPersonalDataSentThirdpartyAi')}</p>
                   </div>
@@ -347,13 +351,13 @@ export default function MobileSettings() {
                     }}
                   />
                 </div>
-                <div className="text-xs text-muted-foreground space-y-1 border-l-2 border-muted pl-3">
+                <div className="text-xs text-muted-foreground space-y-1 border-s-2 border-muted ps-3">
                   <p><strong>{t('screens.mobilesettings.data')}</strong> {t('screens.mobilesettings.voiceTranscriptsPromptsChatDiaryWellness')}</p>
                   <p><strong>{t('screens.mobilesettings.recipients')}</strong> {t('screens.mobilesettings.googleGeminiAiCloudAi')}</p>
                   <p><strong>{t('screens.mobilesettings.purpose')}</strong> {t('screens.mobilesettings.aiResponsesVoiceGreetingsHealthCoaching')}</p>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {hasConsent ? "Consent granted. Toggle off to revoke." : "AI features disabled until consent is granted."}
+                  {hasConsent ? t('screens.settings.consentGrantedYouCanRevokeAt') : t('screens.settings.aiFeaturesVoiceAssistantProactiveMessages')}
                 </p>
               </CardContent>
             </Card>
@@ -368,7 +372,8 @@ export default function MobileSettings() {
                   <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-500 rounded-full" /><span>{t('screens.mobilesettings.deleteAccountAllData')}</span></div>
                   <div className="flex items-center gap-2"><div className="w-2 h-2 bg-purple-500 rounded-full" /><span>{t('screens.mobilesettings.viewAllDataSharingActivities')}</span></div>
                 </div>
-                <Button variant="outline" size="sm" className="mt-2">{t('screens.mobilesettings.requestDataExport')}</Button>
+                {/* VTID-05173: no export job exists yet (STATUS follow-up) — disabled, as on desktop. */}
+                <Button variant="outline" size="sm" className="mt-2" disabled>{t('screens.mobilesettings.requestDataExport')}</Button>
               </CardContent>
             </Card>
           </>
@@ -383,28 +388,28 @@ export default function MobileSettings() {
                 <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.security')}</h3>
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.passwordProtection')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.lastChanged30DaysAgo')}</p>
                 </div>
                 <Button variant="outline" size="sm">{t('screens.mobilesettings.change')}</Button>
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.twofactorAuthentication')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.addExtraLayerSecurity')}</p>
                 </div>
                 <Switch />
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.biometricLogin')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.useFingerprintFaceRecognition')}</p>
                 </div>
                 <Switch />
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.loginAlerts')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.getNotifiedNewLogins')}</p>
                 </div>
@@ -473,7 +478,7 @@ export default function MobileSettings() {
                 { title: "Smooth Scrolling", desc: "Enhanced page navigation", defaultChecked: true },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
-                  <div className="flex-1 min-w-0 mr-3">
+                  <div className="flex-1 min-w-0 me-3">
                     <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                     <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
@@ -603,7 +608,7 @@ export default function MobileSettings() {
           <div className="pt-4">
             <button
               onClick={() => navigate('/delete-account')}
-              className="w-full flex items-center gap-4 rounded-2xl px-4 py-4 transition-all duration-150 text-left bg-destructive/5 hover:bg-destructive/10 border border-destructive/20"
+              className="w-full flex items-center gap-4 rounded-2xl px-4 py-4 transition-all duration-150 text-start bg-destructive/5 hover:bg-destructive/10 border border-destructive/20"
             >
               <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-destructive/10">
                 <Trash2 className="w-4.5 h-4.5 text-destructive" />

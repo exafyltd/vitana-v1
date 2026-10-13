@@ -78,7 +78,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           size="sm"
           onClick={() => handleModeChange("all")}
         >
-          <Users className="mr-1 h-4 w-4" />
+          <Users className="me-1 h-4 w-4" />
           {t('screens.admin.allUsers')}
         </Button>
         <Button
@@ -87,7 +87,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           size="sm"
           onClick={() => handleModeChange("role")}
         >
-          <Shield className="mr-1 h-4 w-4" />
+          <Shield className="me-1 h-4 w-4" />
           {t('screens.admin.byRole')}
         </Button>
         <Button
@@ -96,7 +96,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           size="sm"
           onClick={() => handleModeChange("individual")}
         >
-          <UserCheck className="mr-1 h-4 w-4" />
+          <UserCheck className="me-1 h-4 w-4" />
           {t('screens.admin.individual')}
         </Button>
       </div>
@@ -124,12 +124,12 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
       {value.mode === "individual" && (
         <div className="space-y-2">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder={t('screens.admin.searchUsersByNameEmail')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
+              className="ps-9"
             />
           </div>
 
@@ -146,7 +146,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
                     onClick={() => toggleUser(uid)}
                   >
                     {user?.display_name || user?.email || uid.slice(0, 8)}
-                    <span className="ml-1 text-xs">x</span>
+                    <span className="ms-1 text-xs">x</span>
                   </Badge>
                 );
               })}
@@ -173,9 +173,9 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
                         isSelected ? "bg-muted/50" : ""
                       }`}
                     >
-                      <div className="flex-1 text-left">
+                      <div className="flex-1 text-start">
                         <span className="font-medium">{user.display_name || "No name"}</span>
-                        <span className="ml-2 text-muted-foreground">{user.email}</span>
+                        <span className="ms-2 text-muted-foreground">{user.email}</span>
                       </div>
                       {isSelected && <UserCheck className="h-4 w-4 text-green-500" />}
                     </button>

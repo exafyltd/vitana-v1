@@ -277,10 +277,19 @@ function imageCache(page: Page) {
   const servedFromCache = new WeakSet<Request>();
   let step = { networkFetches: [] as string[], refetches: [] as string[], cacheHits: 0 };
 
+  // VTID-05129: a cacheable response is in the phone's HTTP cache the moment
+  // it completes, but this in-test cache only has it once Playwright hands
+  // over the body, which can lag under the CPU/network throttle. A request for
+  // an image whose body is still being captured waits for it (bounded), so a
+  // capture lag is never counted as a re-download.
+  const pending = new Map<string, Promise<void>>();
+
   const onRoute = async (route: Route) => {
     const req = route.request();
     if (req.method() !== 'GET' || req.resourceType() !== 'image') return route.fallback();
     const key = imageKey(req.url());
+    const inFlight = pending.get(key);
+    if (inFlight) await Promise.race([inFlight, new Promise((r) => setTimeout(r, 3_000))]);
     const hit = cache.get(key);
     if (hit && Date.now() - hit.storedAt < hit.freshMs) {
       step.cacheHits++;
@@ -298,16 +307,30 @@ function imageCache(page: Page) {
     const req: Request = res.request();
     if (req.method() !== 'GET' || req.resourceType() !== 'image' || res.status() !== 200 || !/^https?:/.test(req.url())) return;
     const key = imageKey(req.url());
-    if (STORAGE_IMAGE.test(req.url())) everLoaded.add(key);
-    if (cache.has(key) && Date.now() - cache.get(key)!.storedAt < cache.get(key)!.freshMs) return;
-    const headers = { ...(await res.allHeaders().catch(() => ({}) as Record<string, string>)) };
-    // res.body() is already decoded; replaying the original encoding/length would corrupt it.
-    delete headers['content-encoding'];
-    delete headers['content-length'];
-    const freshMs = freshnessMs(headers);
-    if (freshMs <= 0) return;
-    const body = await res.body().catch(() => null);
-    if (body) store(key, { status: 200, headers, body, storedAt: Date.now(), freshMs });
+    const storage = STORAGE_IMAGE.test(req.url());
+    if (cache.has(key) && Date.now() - cache.get(key)!.storedAt < cache.get(key)!.freshMs) {
+      if (storage) everLoaded.add(key);
+      return;
+    }
+    if (pending.has(key)) return;
+    const capture = (async () => {
+      const headers = { ...(await res.allHeaders().catch(() => ({}) as Record<string, string>)) };
+      // res.body() is already decoded; replaying the original encoding/length would corrupt it.
+      delete headers['content-encoding'];
+      delete headers['content-length'];
+      const freshMs = freshnessMs(headers);
+      // Not cacheable: a phone fetches it again too, so a later fetch is a real re-download.
+      if (freshMs <= 0) {
+        if (storage) everLoaded.add(key);
+        return;
+      }
+      const body = await res.body().catch(() => null);
+      if (!body) return; // the test could not keep it; a phone would have — not a re-download
+      store(key, { status: 200, headers, body, storedAt: Date.now(), freshMs });
+      if (storage) everLoaded.add(key);
+    })();
+    pending.set(key, capture);
+    await capture.finally(() => pending.delete(key));
   };
 
   return {
@@ -326,6 +349,7 @@ function imageCache(page: Page) {
       cache.clear();
       cachedBytes = 0;
       everLoaded.clear();
+      pending.clear();
       step = { networkFetches: [], refetches: [], cacheHits: 0 };
     },
     get step() {
