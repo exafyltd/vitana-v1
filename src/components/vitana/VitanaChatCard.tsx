@@ -29,6 +29,12 @@ export function isVitanaCardPayload(value: unknown): value is VitanaCardPayloadV
 export interface VitanaChatCardProps {
   card_type: string;
   params?: Record<string, unknown>;
+  /**
+   * VTID-05100 — false: no X on any card. A Vitana companion message in the
+   * Messenger is part of the conversation history, so its card stays with it.
+   * Defaults to true (E* cards keep their server dismiss, VTID-05143).
+   */
+  dismissible?: boolean;
 }
 
 function DismissibleChatCard({ cardType, params }: { cardType: VitanaCardType; params?: Record<string, unknown> }) {
@@ -47,10 +53,10 @@ function DismissibleChatCard({ cardType, params }: { cardType: VitanaCardType; p
   );
 }
 
-export function VitanaChatCard({ card_type, params }: VitanaChatCardProps) {
+export function VitanaChatCard({ card_type, params, dismissible = true }: VitanaChatCardProps) {
   if (!isVitanaCardType(card_type)) return null;
   const Card = getVitanaCardComponent(card_type);
   if (!Card) return null;
-  if (isServerDismissedCard(card_type)) return <DismissibleChatCard cardType={card_type} params={params} />;
+  if (dismissible && isServerDismissedCard(card_type)) return <DismissibleChatCard cardType={card_type} params={params} />;
   return <Card params={params} />;
 }
