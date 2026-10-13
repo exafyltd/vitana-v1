@@ -118,7 +118,7 @@ export function SuccessStoryCarousel({ className }: SuccessStoryCarouselProps) {
               </div>
               
               {/* Impact Metric */}
-              <div className="text-right">
+              <div className="text-end">
                 <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
                   {currentStory.metric.icon}
                   {currentStory.metric.type}

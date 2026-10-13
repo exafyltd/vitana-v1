@@ -13,6 +13,10 @@ import { Search as SearchIcon, Users, MessageSquare, Video, Heart, Clock, Play, 
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 import { t } from '@/lib/i18n-toast';
 import { fmtNumber } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { MEMBER_ROWS, SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 interface SearchResult {
   id: string;
@@ -93,6 +97,10 @@ export default function Search() {
   const [activeTab, setActiveTab] = useState(searchParams.get('type') || 'all');
   const [results, setResults] = useState<SearchResult[]>([]);
   const { members, loading, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
+  // VTID-05117 — Spotlight (desktop + flag): collection of the REAL results only — community
+  // members from useCommunityMembers(). The legacy groups/content/health results are samples, so
+  // their tabs are left out (SR-24). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
 
   useEffect(() => {
     if (query.trim()) {
@@ -320,6 +328,81 @@ export default function Search() {
         return null;
     }
   };
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('spotlightMember.search.title')} description={t('spotlightMember.search.desc')} />
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t('spotlightMember.search.title'), description: t('spotlightMember.search.desc'), emoji: "🔎" }}
+        >
+          <div className="flex flex-col gap-4">
+            <form
+              role="search"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSearchParams({ q: query, type: 'people' });
+              }}
+              className="flex max-w-stage gap-2"
+            >
+              <div className="relative flex-1">
+                <SearchIcon className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+                <Input
+                  type="search"
+                  aria-label={t('spotlightMember.search.inputLabel')}
+                  placeholder={t('spotlightMember.search.placeholder')}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="ps-10"
+                />
+              </div>
+              <Button type="submit">{t('spotlightMember.search.submit')}</Button>
+            </form>
+            {loading ? (
+              <SpotlightRowsSkeleton />
+            ) : members.length === 0 ? (
+              <SpotlightEmpty Icon={Users} titleKey="spotlightMember.search.emptyTitle" descriptionKey="spotlightMember.search.emptyDesc" />
+            ) : (
+              <ul className={MEMBER_ROWS} aria-label={t('spotlightMember.search.resultsLabel')}>
+                {members.map((member) => {
+                  const name = getDisplayName(member);
+                  return (
+                    <VCard
+                      key={member.user_id}
+                      as="li"
+                      size="row"
+                      mediaSlot={
+                        <ClickableAvatar
+                          userId={member.user_id}
+                          src={member.avatar_url || undefined}
+                          fallback={getInitials(member)}
+                          alt={name}
+                          className="size-full"
+                        />
+                      }
+                      title={<MemberLink userId={member.user_id}>{name}</MemberLink>}
+                      meta={t('spotlightMember.search.memberMeta')}
+                      actions={
+                        <>
+                          <Button size="sm" variant="outline" onClick={() => navigate(`/u/${member.user_id}`)}>
+                            {t('screens.search.viewProfile')}
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${member.user_id}`, { state: { openMessage: true } })}>
+                            {t('screens.search.message')}
+                          </Button>
+                        </>
+                      }
+                    />
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

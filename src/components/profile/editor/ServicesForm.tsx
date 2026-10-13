@@ -87,7 +87,7 @@ export function ServicesForm() {
           <div className="flex items-center justify-between">
             <Label className="text-base font-medium">{t('screens.profile.yourOfferings')}</Label>
             <Button variant="outline" size="sm" onClick={addOffering}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.profile.addOffering')}
             </Button>
           </div>

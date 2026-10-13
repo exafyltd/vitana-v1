@@ -106,7 +106,7 @@ export function ViewModeIntelligence({
           <Button 
             className="w-full bg-gradient-to-r from-[hsl(var(--util-profile-accent))] to-[hsl(var(--domain-community-accent))] hover:from-[hsl(var(--util-profile-accent)/0.9)] hover:to-[hsl(var(--domain-community-accent)/0.9)] text-white border-0"
           >
-            <TrendingUp className="h-4 w-4 mr-2" />
+            <TrendingUp className="h-4 w-4 me-2" />
             {t('screens.profile.boostProfileVisibility')}
           </Button>
         </CardContent>
@@ -165,7 +165,7 @@ export function ViewModeIntelligence({
           className="w-full mt-4 text-[hsl(var(--pill-mental-accent))] hover:bg-[hsl(var(--pill-mental-accent)/0.1)]"
         >
           {t('screens.profile.seeMoreRecommendations')}
-          <ArrowRight className="h-4 w-4 ml-2" />
+          <ArrowRight className="h-4 w-4 ms-2" />
         </Button>
       </CardContent>
     </Card>

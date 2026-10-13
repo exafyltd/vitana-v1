@@ -10,6 +10,14 @@ import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SplitBarContent } from "@/components/ui/split-bar";
+import { VCard } from "@/components/ui/vcard";
+import { Badge } from "@/components/ui/badge";
+import { MEMBER_ROWS, SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 export default function MyTickets() {
   const navigate = useNavigate();
   const { tickets, loading } = useMyTickets();
@@ -21,6 +29,110 @@ export default function MyTickets() {
   const pastTickets = tickets.filter(
     (t) => t.event && isPast(new Date(t.event.start_time))
   );
+  // VTID-05117 — Spotlight (desktop + flag): the tickets inside the Vitanaland frame as a collection of
+  // row cards, skeleton instead of a spinner; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+  const [ticketTab, setTicketTab] = useState("upcoming");
+
+  if (spotlight) {
+    const rows = (list: TicketPurchase[], past: boolean) =>
+      list.length === 0 ? (
+        <SpotlightEmpty Icon={Ticket} titleKey={past ? "screens.mytickets.noPastEvents" : "screens.mytickets.noUpcomingEvents"} />
+      ) : (
+        <ul className={MEMBER_ROWS}>
+          {list.map((ticket) => (
+            <VCard
+              key={ticket.id}
+              as="li"
+              size="row"
+              media={{ src: ticket.event?.image_url ?? null, alt: "" }}
+              title={
+                <button type="button" className="text-start hover:text-primary focus-visible:underline focus-visible:outline-none" onClick={() => setSelectedTicket(ticket)}>
+                  {ticket.event?.title || t('spotlightMember.tickets.eventFallback')}
+                </button>
+              }
+              meta={[
+                ticket.event?.start_time ? formatDate(new Date(ticket.event.start_time), "EEE, d MMM · HH:mm") : null,
+                ticket.event?.location || null,
+                ticket.quantity > 1 ? `× ${ticket.quantity}` : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+              badge={
+                ticket.checked_in_at ? (
+                  <Badge className="bg-status-success-subtle text-status-success">{t('screens.mytickets.checked')}</Badge>
+                ) : ticket.ticket_type?.name ? (
+                  <Badge variant="secondary">{ticket.ticket_type.name}</Badge>
+                ) : undefined
+              }
+              className={past ? "opacity-70" : undefined}
+            />
+          ))}
+        </ul>
+      );
+    return (
+      <AppLayout>
+        <SEO title={t('screens.mytickets.myTickets')} description={t('screens.mytickets.whenYouPurchaseEventTicketsThey')} />
+        <ScreenFrame
+          archetype="collection"
+          header={{
+            title: t('screens.mytickets.myTickets'),
+            description: loading ? "" : t('screens.mytickets.lengthTicketValue1Purchased', { length: tickets.length, value1: tickets.length !== 1 ? "s" : "" }),
+            emoji: "🎟️",
+          }}
+          tabs={
+            !loading && tickets.length > 0
+              ? {
+                  value: ticketTab,
+                  onValueChange: setTicketTab,
+                  items: [
+                    { value: "upcoming", label: t('screens.mytickets.upcomingLength', { length: upcomingTickets.length }) },
+                    { value: "past", label: t('screens.mytickets.pastLength', { length: pastTickets.length }) },
+                  ],
+                }
+              : undefined
+          }
+        >
+          {loading ? (
+            <SpotlightRowsSkeleton />
+          ) : tickets.length === 0 ? (
+            <SpotlightEmpty
+              Icon={Ticket}
+              titleKey="screens.mytickets.noTicketsYet"
+              descriptionKey="screens.mytickets.whenYouPurchaseEventTicketsThey"
+              actionKey="screens.mytickets.browseEvents"
+              onAction={() => navigate("/comm/events-meetups")}
+            />
+          ) : (
+            <>
+              <SplitBarContent value="upcoming">{rows(upcomingTickets, false)}</SplitBarContent>
+              <SplitBarContent value="past">{rows(pastTickets, true)}</SplitBarContent>
+            </>
+          )}
+        </ScreenFrame>
+        <Dialog open={!!selectedTicket} onOpenChange={() => setSelectedTicket(null)}>
+          <DialogContent className="max-w-md overflow-hidden p-0">
+            {selectedTicket && (
+              <div className="p-4">
+                <EventTicket
+                  ticketNumber={selectedTicket.ticket_number}
+                  eventTitle={selectedTicket.event?.title || t('spotlightMember.tickets.eventFallback')}
+                  eventDate={new Date(selectedTicket.event?.start_time || Date.now())}
+                  eventLocation={selectedTicket.event?.location || ""}
+                  eventImageUrl={selectedTicket.event?.image_url || undefined}
+                  ticketType={selectedTicket.ticket_type?.name || t('spotlightMember.tickets.generalAdmission')}
+                  buyerName={selectedTicket.buyer_name}
+                  quantity={selectedTicket.quantity}
+                  qrCodeData={selectedTicket.qr_code_token}
+                  sequence={1}
+                />
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </AppLayout>
+    );
+  }
 
   if (loading) {
     return (

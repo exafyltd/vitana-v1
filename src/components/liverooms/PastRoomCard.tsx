@@ -85,7 +85,7 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/10" />
         )}
-        <Badge className="absolute top-3 left-3 bg-foreground/80 text-background border-0">
+        <Badge className="absolute top-3 start-3 bg-foreground/80 text-background border-0">
           {t('screens.liverooms.past.endedBadge')}
         </Badge>
         {recording && (
@@ -96,7 +96,7 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
             className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors"
           >
             <span className="flex items-center justify-center w-14 h-14 rounded-full bg-white/90">
-              <Play className="w-6 h-6 text-black ml-0.5" />
+              <Play className="w-6 h-6 text-black ms-0.5" />
             </span>
           </button>
         )}
@@ -156,7 +156,7 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
         <div className="mt-auto flex items-center gap-2 pt-1">
           {recording ? (
             <Button size="sm" className="flex-1" onClick={() => setPlayerOpen(true)}>
-              <Play className="w-4 h-4 mr-2" />
+              <Play className="w-4 h-4 me-2" />
               {t('screens.liverooms.past.watchRecording')}
             </Button>
           ) : (

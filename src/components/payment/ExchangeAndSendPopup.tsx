@@ -309,11 +309,11 @@ export default function ExchangeAndSendPopup({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>{t('screens.payment.processing')}
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>
-                  <Send className="w-4 h-4 mr-2" />
+                  <Send className="w-4 h-4 me-2" />
                   {t('screens.payment.exchangeSend')}
                 </>
               )}

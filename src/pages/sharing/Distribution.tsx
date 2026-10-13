@@ -29,6 +29,10 @@ import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Zap, BarChart3, Palette, Plus, ChevronDown, Rocket, Sparkles, Calendar, Clock, Share2, TrendingUp, MessageSquare, Image, BookOpen, FileText, Settings, Repeat } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightEmpty } from "@/components/spotlight/member/MemberSpotlight";
 
 // Transform campaign templates to StandardHorizontalCard format
 const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
@@ -537,6 +541,34 @@ export default withScreenId(function Distribution() {
   const [rulePopupOpen, setRulePopupOpen] = React.useState(false);
   const [templatePopupOpen, setTemplatePopupOpen] = React.useState(false);
   const [guidelinePopupOpen, setGuidelinePopupOpen] = React.useState(false);
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): the template, automation and brand-kit cards are
+  // samples whose buttons only log, with invented reach numbers — so the collection frame shows an
+  // honest empty state that points to the real campaigns (SR-24, SR-26). Phones and flag-off keep
+  // the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.sharing.distributionToolingVitana')} description={t('spotlightMember.sharing.distributionDesc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: sharingNavigation }}
+          header={{ title: t('screens.sharing.distributionTooling'), description: t('spotlightMember.sharing.distributionDesc') }}
+          utility={{ children: <UniversalCalendarButton /> }}
+        >
+          <SpotlightEmpty
+            Icon={Share2}
+            titleKey="spotlightMember.sharing.distributionEmptyTitle"
+            descriptionKey="spotlightMember.sharing.distributionEmptyDesc"
+            actionKey="spotlightMember.sharing.openCampaigns"
+            onAction={() => navigate('/sharing/campaigns')}
+          />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

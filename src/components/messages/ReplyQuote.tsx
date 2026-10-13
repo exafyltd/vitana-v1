@@ -42,7 +42,7 @@ export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
   return (
     <div 
       className={cn(
-        "p-2 mb-2 rounded-lg border-l-4 cursor-pointer transition-colors",
+        "p-2 mb-2 rounded-lg border-s-4 cursor-pointer transition-colors",
         "hover:bg-background/80",
         isOwnMessage 
           ? "bg-primary-foreground/20 border-primary-foreground/40" 

@@ -33,6 +33,9 @@ import { t } from '@/lib/i18n-toast';
 import { decideConsent, lookupConsent, redirectHostOf, type ConsentDetails } from '@/lib/commerce-mcp';
 import { grantFromAuthorization, lookupAuthorizationInfo, type AuthorizationInfo } from '@/lib/ai-connections';
 import { CommunityConsent } from '@/components/ai-connect/CommunityConsent';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const K = 'screens.commerceconnect';
 const CAN_DO = [`${K}.canDo1`, `${K}.canDo2`, `${K}.canDo3`] as const;
@@ -47,6 +50,7 @@ export default function CommerceConnectAuthorize() {
   const [searchParams] = useSearchParams();
   const authorizationId = searchParams.get('authorization_id') ?? '';
   const { user } = useAuth();
+  const spotlight = useSpotlightEnabled();
   const [view, setView] = useState<View>({ kind: 'loading' });
   const [working, setWorking] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -91,8 +95,7 @@ export default function CommerceConnectAuthorize() {
   };
 
   if (view.kind === 'consent' && view.info?.product === 'community') {
-    return (
-      <div className="min-h-screen bg-background px-4 py-10">
+    const consentCard = (
         <div className="mx-auto max-w-md rounded-3xl border border-border bg-card p-6 shadow-xl">
           <CommunityConsent
             authorizationId={authorizationId}
@@ -103,8 +106,16 @@ export default function CommerceConnectAuthorize() {
             go={(url) => window.location.assign(url)}
           />
         </div>
-      </div>
     );
+    // VTID-05117: Spotlight on → the manifest's `collection` frame around the same card.
+    if (spotlight) {
+      return (
+        <ScreenFrame archetype="collection" className="min-h-screen bg-background">
+          {consentCard}
+        </ScreenFrame>
+      );
+    }
+    return <div className="min-h-screen bg-background px-4 py-10">{consentCard}</div>;
   }
 
   const client = view.kind === 'consent' && view.details.clientName ? view.details.clientName : t(`${K}.unknownClient`);
@@ -112,14 +123,19 @@ export default function CommerceConnectAuthorize() {
 
   return (
     <CommerceShell>
+      <FrameWhen on={spotlight} archetype="collection">
       <div className="mx-auto max-w-md py-10">
         <div className="rounded-3xl border border-amber-200 bg-card p-6 shadow-xl shadow-amber-900/5" data-testid="connect-authorize">
-          {view.kind === 'loading' || view.kind === 'redirecting' ? (
+          {view.kind === 'loading' ? (
+            <div className="flex flex-col gap-3 py-4">
+              <ArchetypeSkeleton archetype="form" />
+              <p className="text-center text-sm text-muted-foreground">{t(`${K}.loading`)}</p>
+            </div>
+          ) : view.kind === 'redirecting' ? (
             <div className="flex flex-col items-center gap-3 py-8 text-center">
-              <Loader2 className="h-6 w-6 animate-spin text-amber-700" />
-              <p className="text-sm text-muted-foreground">
-                {view.kind === 'redirecting' ? t(`${K}.redirecting`) : t(`${K}.loading`)}
-              </p>
+              {/* design-allow-next-line: action progress indicator (hand-off back to the assistant in flight), not a data-loading placeholder */}
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">{t(`${K}.redirecting`)}</p>
             </div>
           ) : view.kind === 'invalid' ? (
             <p className="py-6 text-center text-sm text-muted-foreground" data-testid="connect-invalid">
@@ -175,6 +191,7 @@ export default function CommerceConnectAuthorize() {
           )}
         </div>
       </div>
+      </FrameWhen>
     </CommerceShell>
   );
 }

@@ -123,7 +123,7 @@ export function MobilePodcastList({ podcasts, currentUserId }: MobilePodcastList
                     <div className="w-1 h-4 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
                   </div>
                 ) : (
-                  <Play className="h-5 w-5 ml-0.5" />
+                  <Play className="h-5 w-5 ms-0.5" />
                 )}
               </Button>
             </div>

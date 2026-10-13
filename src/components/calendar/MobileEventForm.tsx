@@ -186,7 +186,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }
       <div className="flex gap-3">
         <div className="flex-1">
           <Label className="text-xs text-muted-foreground mb-1.5 block">
-            <Clock className="w-3 h-3 inline mr-1" />
+            <Clock className="w-3 h-3 inline me-1" />
             {t('vcal.form.start')}
           </Label>
           <select
@@ -204,7 +204,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }
         </div>
         <div className="flex-1">
           <Label className="text-xs text-muted-foreground mb-1.5 block">
-            <Clock className="w-3 h-3 inline mr-1" />
+            <Clock className="w-3 h-3 inline me-1" />
             {t('vcal.form.end')}
           </Label>
           <select
@@ -234,7 +234,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate, role = null }
       {/* Location (optional) */}
       <div>
         <Label className="text-xs text-muted-foreground mb-1.5 block">
-          <MapPin className="w-3 h-3 inline mr-1" />
+          <MapPin className="w-3 h-3 inline me-1" />
           {t('vcal.form.location')} <span className="opacity-50">({t('vcal.form.optional')})</span>
         </Label>
         <Input

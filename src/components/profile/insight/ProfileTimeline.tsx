@@ -85,13 +85,13 @@ export function ProfileTimeline({ milestones, className }: ProfileTimelineProps)
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="relative space-y-4 before:absolute before:left-[15px] before:top-2 before:h-[calc(100%-2rem)] before:w-0.5 before:bg-gradient-to-b before:from-[hsl(var(--domain-community-accent))] before:to-transparent">
+        <div className="relative space-y-4 before:absolute before:start-[15px] before:top-2 before:h-[calc(100%-2rem)] before:w-0.5 before:bg-gradient-to-b before:from-[hsl(var(--domain-community-accent))] before:to-transparent">
           {displayMilestones.map((milestone, index) => {
             const IconComponent = getTimelineIcon(milestone.type);
             const color = getTimelineColor(milestone.type);
             
             return (
-              <div key={index} className="relative flex gap-4 items-start pl-2">
+              <div key={index} className="relative flex gap-4 items-start ps-2">
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${color} flex items-center justify-center shadow-md z-10`}>
                   <IconComponent className="h-4 w-4 text-white" />
                 </div>

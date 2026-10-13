@@ -285,7 +285,7 @@ export function LiveRoomDrawer({
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
 
           {/* Navigation Arrows & Creator Menu */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+          <div className="absolute top-4 start-4 end-4 flex items-center justify-between pointer-events-none z-10">
             <Button
               variant="outline"
               size="icon"
@@ -316,7 +316,7 @@ export function LiveRoomDrawer({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem onClick={onEdit}>
-                    <Pencil className="h-4 w-4 mr-2" />
+                    <Pencil className="h-4 w-4 me-2" />
                     {t('screens.liverooms.editStream')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -324,7 +324,7 @@ export function LiveRoomDrawer({
                     onClick={() => setShowDeleteDialog(true)}
                     className="text-destructive focus:text-destructive"
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
+                    <Trash2 className="h-4 w-4 me-2" />
                     {t('screens.liverooms.deleteStream')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -348,7 +348,7 @@ export function LiveRoomDrawer({
           </div>
 
           {/* Title Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-6">
+          <div className="absolute bottom-0 start-0 end-0 p-6">
             <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]">
               {room.title}
             </h2>
@@ -370,7 +370,7 @@ export function LiveRoomDrawer({
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
-                  <div className="flex items-center gap-1.5 pr-2 min-w-0">
+                  <div className="flex items-center gap-1.5 pe-2 min-w-0">
                     <span className="text-sm font-semibold truncate">{room.host.name}</span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                     <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium flex-shrink-0">
@@ -567,7 +567,7 @@ export function LiveRoomDrawer({
       </ScrollArea>
 
       {/* Sticky Action Bar */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 bg-background/95 backdrop-blur-sm border-t">
+      <div className="absolute bottom-0 start-0 end-0 p-6 bg-background/95 backdrop-blur-sm border-t">
         {room.isLive ? (
           isCreator ? (
             <div className="flex items-center gap-2">
@@ -605,7 +605,7 @@ export function LiveRoomDrawer({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Button size="lg" variant="outline" className="flex-1 min-w-0" onClick={handleNotifyMe}>
-                  <Bell className={cn("w-4 h-4 mr-2 shrink-0", isNotifying && "fill-current")} />
+                  <Bell className={cn("w-4 h-4 me-2 shrink-0", isNotifying && "fill-current")} />
                   <span className="truncate">
                     {isNotifying
                       ? t('screens.liverooms.notifying')
@@ -629,7 +629,7 @@ export function LiveRoomDrawer({
                       {t('screens.liverooms.appleCalendar')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("ics")}>
-                      <Download className="w-4 h-4 mr-2" />
+                      <Download className="w-4 h-4 me-2" />
                       {t('screens.liverooms.downloadIcs')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>

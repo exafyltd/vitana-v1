@@ -177,7 +177,7 @@ export function LiveRoomCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
           {/* Top-left badges */}
-          <div className="absolute top-3 left-3 right-12 flex flex-wrap items-center gap-1.5 z-10">
+          <div className="absolute top-3 start-3 end-12 flex flex-wrap items-center gap-1.5 z-10">
             {room.isLive ? (
               <>
                 <Badge data-testid="live-room-badge" className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
@@ -241,7 +241,7 @@ export function LiveRoomCard({
           </div>
 
           {/* Top-right: Viewer count or countdown + Kebab menu */}
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+          <div className="absolute top-3 end-3 z-10 flex items-center gap-2">
             {room.isLive ? (
               <div
                 className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg"
@@ -258,7 +258,7 @@ export function LiveRoomCard({
               <button
                 type="button"
                 data-testid="live-room-interested"
-                className="flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1.5 px-2.5 py-1 min-h-8 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={t('screens.liverooms.interestedAria')}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -282,7 +282,7 @@ export function LiveRoomCard({
                       onEdit?.(e);
                     }}
                   >
-                    <Pencil className="w-4 h-4 mr-2" />
+                    <Pencil className="w-4 h-4 me-2" />
                     {t('screens.liverooms.edit')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -293,7 +293,7 @@ export function LiveRoomCard({
                     }}
                     className="text-destructive focus:text-destructive"
                   >
-                    <Trash2 className="w-4 h-4 mr-2" />
+                    <Trash2 className="w-4 h-4 me-2" />
                     {t('screens.liverooms.delete')}
                   </DropdownMenuItem>
                 </KebabMenu>
@@ -304,9 +304,9 @@ export function LiveRoomCard({
           {/* Bottom overlay content - Grid structure for perfect baseline alignment */}
           <div 
             className={cn(
-              "absolute left-0 right-0 bottom-0 z-10",
+              "absolute start-0 end-0 bottom-0 z-10",
               "grid gap-2 p-4",
-              isFeatured ? "min-h-[184px]" : "min-h-[160px]"
+              isFeatured ? "min-h-[184px]" : "min-h-40"
             )}
             style={{
               gridTemplateRows: '1fr auto auto auto auto'
@@ -358,14 +358,14 @@ export function LiveRoomCard({
               {/* Location/Virtual chip */}
               {room.location && (
                 <Badge variant="secondary" className="bg-white/20 backdrop-blur-sm text-white border-0">
-                  <MapPin className="w-3 h-3 mr-1" />
+                  <MapPin className="w-3 h-3 me-1" />
                   {t('screens.liverooms.virtual')}
                 </Badge>
               )}
             </div>
 
             {/* CTA row - right-aligned - Fixed height 40px */}
-            <div className="flex items-center justify-end gap-3 pr-4 h-10 pointer-events-auto">
+            <div className="flex items-center justify-end gap-3 pe-4 h-10 pointer-events-auto">
               {room.isLive ? (
                 <>
                   {shareButton || (

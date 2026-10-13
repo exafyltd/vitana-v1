@@ -1,0 +1,204 @@
+{
+  "_pending_review": {},
+  "spotlightTierB": {
+    "_pending_review": {},
+    "common": {
+      "_pending_review": {
+        "errorTitle": true,
+        "errorDesc": true,
+        "retry": true
+      },
+      "errorTitle": "This couldn't be loaded right now",
+      "errorDesc": "Please try again in a moment.",
+      "retry": "Try again"
+    },
+    "health": {
+      "_pending_review": {
+        "description": true,
+        "pillarsAria": true,
+        "conditionsDescription": true,
+        "educationDescription": true,
+        "noVideosTitle": true,
+        "noVideosDesc": true,
+        "noPodcastsTitle": true,
+        "noPodcastsDesc": true,
+        "servicesDescription": true,
+        "plansDescription": true,
+        "biologyDescription": true,
+        "reportFallbackTitle": true,
+        "categoryCount": true,
+        "noSupplementsInCategory": true,
+        "indexDescription": true
+      },
+      "description": "Discover health services, programs and knowledge for your wellness journey.",
+      "pillarsAria": "Your five pillars",
+      "conditionsDescription": "Assess your health risks and create preventive plans for your long-term wellness.",
+      "educationDescription": "Curated health knowledge linked to your interests.",
+      "noVideosTitle": "No videos yet",
+      "noVideosDesc": "Videos on your topics will show up here once they exist.",
+      "noPodcastsTitle": "No podcasts yet",
+      "noPodcastsDesc": "Podcasts on your topics will show up here once they exist.",
+      "servicesDescription": "Book appointments, screenings and programs that fit you.",
+      "plansDescription": "AI-powered plans tailored to your health profile and goals.",
+      "biologyDescription": "Medical biomarkers, omics data and supplements in one place.",
+      "reportFallbackTitle": "Health report",
+      "reportType": {
+        "_pending_review": {
+          "blood_panel": true,
+          "genomics": true,
+          "metabolomics": true,
+          "microbiome": true,
+          "allergy": true,
+          "cancer": true,
+          "hormones": true,
+          "imaging": true,
+          "other": true
+        },
+        "blood_panel": "Blood panel",
+        "genomics": "Genomics",
+        "metabolomics": "Metabolomics",
+        "microbiome": "Microbiome",
+        "allergy": "Allergy",
+        "cancer": "Cancer screening",
+        "hormones": "Hormones",
+        "imaging": "Imaging",
+        "other": "Other"
+      },
+      "reportStatus": {
+        "_pending_review": {
+          "uploaded": true,
+          "processing": true,
+          "parsed": true,
+          "failed": true
+        },
+        "uploaded": "Uploaded",
+        "processing": "Processing",
+        "parsed": "Analyzed",
+        "failed": "Failed"
+      },
+      "categoryCount": "{category} ({count})",
+      "noSupplementsInCategory": "No supplements in this category",
+      "indexDescription": "Your one number for longevity across all five pillars."
+    },
+    "wallet": {
+      "_pending_review": {
+        "description": true,
+        "creditsLine": true,
+        "send": true,
+        "request": true,
+        "exchange": true,
+        "withdraw": true,
+        "clearFilter": true,
+        "noMatchingTransactions": true,
+        "balanceDescription": true,
+        "creditsAmount": true,
+        "vtnaAmount": true,
+        "usdAmount": true
+      },
+      "description": "Your digital account for health rewards and benefits.",
+      "creditsLine": "{amount} VTNA Credits",
+      "send": "Send",
+      "request": "Request",
+      "exchange": "Exchange",
+      "withdraw": "Withdraw",
+      "clearFilter": "Clear filter",
+      "noMatchingTransactions": "No matching transactions",
+      "txType": {
+        "_pending_review": {
+          "transfer": true,
+          "exchange": true,
+          "reward": true,
+          "purchase": true,
+          "withdrawal": true,
+          "stake": true,
+          "reseller_commission": true
+        },
+        "transfer": "Transfer",
+        "exchange": "Exchange",
+        "reward": "Reward",
+        "purchase": "Purchase",
+        "withdrawal": "Withdrawal",
+        "stake": "Staking",
+        "reseller_commission": "Sell & earn commission"
+      },
+      "txStatus": {
+        "_pending_review": {
+          "pending": true,
+          "completed": true,
+          "failed": true,
+          "cancelled": true
+        },
+        "pending": "Pending",
+        "completed": "Completed",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "balanceDescription": "Manage your credits, tokens and membership benefits.",
+      "creditsAmount": "{amount} credits",
+      "vtnaAmount": "{amount} VTNA",
+      "usdAmount": "${amount}"
+    },
+    "ai": {
+      "_pending_review": {
+        "overviewDescription": true,
+        "assistantDescription": true,
+        "assistantTabAi": true
+      },
+      "overviewDescription": "Your personal AI insights and recommendations for your wellbeing.",
+      "assistantDescription": "Set up your personal AI assistant here.",
+      "assistantTabAi": "AI"
+    },
+    "settings": {
+      "_pending_review": {
+        "connectorsDescription": true,
+        "limitationsDescription": true,
+        "tenantRoleDescription": true
+      },
+      "connectorsDescription": "Connect your apps and services and keep an eye on your integrations.",
+      "limitationsDescription": "These fixed rules apply to every product recommendation. Allergies, medical contraindications and medication interactions are never overridden.",
+      "tenantRoleDescription": "Manage your context and permissions."
+    },
+    "calendar": {
+      "_pending_review": {
+        "description": true,
+        "viewsAria": true
+      },
+      "description": "Your day, week and month at a glance.",
+      "viewsAria": "Calendar view"
+    },
+    "intents": {
+      "_pending_review": {
+        "filtersAria": true,
+        "anyStyle": true,
+        "emptyBoard": true,
+        "emptyDance": true,
+        "kindPartner": true,
+        "matchTitle": true,
+        "matchDescription": true
+      },
+      "filtersAria": "Filter by kind",
+      "anyStyle": "Any",
+      "emptyBoard": "No open intents in this view yet. Be the first to post.",
+      "emptyDance": "No open dance posts yet. Post yours and be the first.",
+      "kindPartner": "Partner",
+      "matchTitle": "Your intent",
+      "matchDescription": "Your intent and its matches."
+    },
+    "sharing": {
+      "_pending_review": {
+        "description": true,
+        "campaignsDescription": true,
+        "bulkActions": true,
+        "exitBulkMode": true,
+        "consentDescription": true,
+        "campaignDetailDescription": true
+      },
+      "description": "Share your content across channels and manage what data you share.",
+      "campaignsDescription": "Plan, run and track multi-post campaigns.",
+      "bulkActions": "Bulk actions",
+      "exitBulkMode": "Exit bulk mode",
+      "consentDescription": "Control who can access your data and manage permissions.",
+      "campaignDetailDescription": "Details, posts and status of your campaign."
+    }
+  }
+}

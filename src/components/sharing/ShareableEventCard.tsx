@@ -78,7 +78,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
           {/* Content Container */}
           <div className={`relative h-full flex flex-col ${isStory ? "justify-end pb-32" : "justify-end pb-16"} px-12`}>
             {/* VITANA Badge */}
-            <div className="absolute top-12 left-12">
+            <div className="absolute top-12 start-12">
               <div className="flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full">
                 <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
                   <span className="text-primary font-bold text-lg">V</span>
@@ -129,7 +129,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
           </div>
 
           {/* Bottom gradient fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute bottom-0 start-0 end-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
       </div>
     );

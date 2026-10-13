@@ -7,6 +7,10 @@ import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
 import AppLayout from "@/components/AppLayout";
 import { usePatientHealthResults } from '@/hooks/usePatientHealthResults';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { RecentResultsRows } from "@/components/spotlight/member/PatientSpotlight";
+import { SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
 
 function RecentResultsCard() {
   const { data: results, isLoading } = usePatientHealthResults();
@@ -50,6 +54,23 @@ function RecentResultsCard() {
 }
 
 export default function PatientDashboard() {
+  // VTID-05117 — Spotlight (desktop + flag): only the member's real recent results; the sample KPIs,
+  // activity and dead quick actions stay on the legacy screen (SR-24, SR-26).
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t('screens.patient.patientDashboard'), description: t('screens.patient.yourPersonalizedHealthManagementCenter') }}
+        >
+          <SpotlightPanel Icon={FlaskConical} title={t('screens.patient.results.recentResultsTitle')} description={t('screens.patient.results.subtitle')}>
+            <RecentResultsRows />
+          </SpotlightPanel>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
   return (
     <AppLayout>
     <div className="p-6 space-y-6">

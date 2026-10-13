@@ -55,7 +55,7 @@ export function MobileAccountCard({
           <button
             onClick={onEdit}
             aria-label={t('screens.profile.editAccountDetails')}
-            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/60 hover:bg-white/90 text-slate-500 hover:text-slate-800 z-10 flex items-center justify-center transition-colors"
+            className="absolute top-3 end-3 h-8 w-8 rounded-full bg-white/60 hover:bg-white/90 text-slate-500 hover:text-slate-800 z-10 flex items-center justify-center transition-colors"
           >
             <Pencil className="h-4 w-4" />
           </button>
@@ -65,7 +65,7 @@ export function MobileAccountCard({
           {/* Header */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/75 border border-white/80 mb-3 shadow-sm">
-              <ShieldCheck className="h-3.5 w-3.5 text-teal-700 mr-1.5" />
+              <ShieldCheck className="h-3.5 w-3.5 text-teal-700 me-1.5" />
               <span className="text-[11px] font-semibold tracking-[0.2em] text-teal-700 uppercase">
                 {t('screens.profile.account')}
               </span>

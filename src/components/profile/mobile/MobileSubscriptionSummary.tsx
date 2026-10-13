@@ -68,7 +68,7 @@ export function MobileSubscriptionSummary({ className }: { className?: string })
       <button
         onClick={() => navigate("/profile/subscriptions")}
         className={cn(
-          "w-full flex items-center gap-3 px-4 py-3 rounded-2xl border transition-colors text-left",
+          "w-full flex items-center gap-3 px-4 py-3 rounded-2xl border transition-colors text-start",
           toneStyles[tone],
         )}
       >

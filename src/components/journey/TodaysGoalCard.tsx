@@ -84,7 +84,7 @@ export function TodaysGoalCard({
             )}
             <Button variant="ghost" size="sm" className="w-full text-xs h-7" onClick={onOpenAutopilot}>
               {t("screens.autopilotdashboard.seeTodaysPlan")}
-              <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+              <ChevronRight className="w-3.5 h-3.5 ms-0.5" />
             </Button>
           </>
         )}

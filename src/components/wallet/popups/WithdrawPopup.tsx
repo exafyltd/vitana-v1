@@ -239,11 +239,11 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
           >
             {isProcessing ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.wallet.processing')}
+                <Loader2 className="h-4 w-4 me-2 animate-spin" />{t('screens.wallet.processing')}
               </>
             ) : (
               <>
-                <ArrowDown className="h-4 w-4 mr-2" />{t('screens.wallet.withdrawValue0', { value0: withdrawAmountNum.toFixed(2) })}</>
+                <ArrowDown className="h-4 w-4 me-2" />{t('screens.wallet.withdrawValue0', { value0: withdrawAmountNum.toFixed(2) })}</>
             )}
           </Button>
         </ResponsiveDialogFooter>

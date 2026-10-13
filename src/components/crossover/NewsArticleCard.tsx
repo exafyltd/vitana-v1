@@ -181,7 +181,7 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
                 link={link}
                 tags={tags}
                 sourceName={sourceName}
-                className="shrink-0 -mr-1"
+                className="shrink-0 -me-1"
               />
             ) : null}
           </div>

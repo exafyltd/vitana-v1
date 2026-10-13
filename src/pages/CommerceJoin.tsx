@@ -30,6 +30,9 @@ import { useSupabaseOAuthSignIn, type SupportedOAuthProvider } from '@/hooks/use
 import { CONFIRMATION_PATHS, getEmailRedirectUrl } from '@/utils/redirectUrls';
 import { t } from '@/lib/i18n-toast';
 import { oauthReturnUrl, rememberCommerceOAuth } from '@/lib/oauth-return';
+import { ArchetypeSkeleton } from '@/components/layout/spotlight';
+import { PublicMain } from '@/components/layout/spotlight/PublicMain';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const fieldClass = 'border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-amber-500';
 const optionClass =
@@ -91,6 +94,7 @@ function withDeadline<T>(work: Promise<T>): Promise<T> {
 export default function CommerceJoin() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   const reduce = useReducedMotion();
 
@@ -188,8 +192,10 @@ export default function CommerceJoin() {
 
   if (authLoading || user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="w-full max-w-md">
+          <ArchetypeSkeleton archetype="form" />
+        </div>
       </div>
     );
   }
@@ -205,10 +211,16 @@ export default function CommerceJoin() {
       />
 
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 inset-x-0 mx-auto h-[32rem] w-[32rem] rounded-full bg-amber-100/40 blur-[120px]" />
+        <div className="absolute -top-40 inset-x-0 mx-auto h-96 w-96 rounded-full bg-amber-100/40 blur-[120px]" />
       </div>
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-12">
+      <PublicMain
+        spotlight={spotlight}
+        archetype="collection"
+        frameClassName="relative z-10 min-h-screen"
+        className="mx-auto w-full max-w-form py-8"
+        legacyClassName="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-12"
+      >
         <motion.div
           {...(reduce ? {} : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.45, ease: 'easeOut' as const } })}
         >
@@ -404,7 +416,7 @@ export default function CommerceJoin() {
             {t('screens.commerceportal.footNote')}
           </p>
         </motion.div>
-      </main>
+      </PublicMain>
     </div>
   );
 }

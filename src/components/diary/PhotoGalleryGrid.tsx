@@ -35,12 +35,12 @@ export function PhotoGalleryGrid({ entries, onEntryClick }: PhotoGalleryGridProp
             
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 opacity-0 group-hover:opacity-100 transition-opacity" />
             
-            <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">
+            <div className="absolute top-2 start-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">
               {formatDate(new Date(entry.created_at), "MMM d")}
             </div>
             
             {hasMultiplePhotos && (
-              <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
+              <div className="absolute bottom-2 end-2 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
                 {photoCount}
               </div>
             )}

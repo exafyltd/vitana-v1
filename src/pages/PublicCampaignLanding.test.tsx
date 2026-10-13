@@ -50,6 +50,8 @@ vi.mock('@/hooks/useTranslation', () => ({
 vi.mock('@/lib/i18n-toast', () => ({ t: (key: string) => key }));
 vi.mock('@/lib/locale-format', () => ({ formatDate: () => '' }));
 vi.mock('@/components/SEO', () => ({ default: () => null }));
+// VTID-05117: this harness has no TenantProvider / QueryClient — pin Spotlight off (today's layout).
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 vi.mock('@/components/tickets/EventTicketSelector', () => ({ EventTicketSelector: () => null }));
 
 const CAMPAIGN = {

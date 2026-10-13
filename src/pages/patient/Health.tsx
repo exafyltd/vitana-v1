@@ -4,8 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Heart, Activity, TrendingUp, Calendar } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { PatientComingSoonBody } from "@/components/spotlight/member/PatientSpotlight";
 
 export default function PatientHealth() {
+  // VTID-05117 — Spotlight (desktop + flag): every value on the legacy screen is a sample, so the
+  // collection frame shows the honest "not available yet" state (SR-24). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame archetype="collection" header={{ title: t('screens.patient.myHealth'), description: t('screens.patient.trackManageYourHealthMetricsWellness') }}>
+          <PatientComingSoonBody Icon={Heart} />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
   return (
     <AppLayout>
     <div className="p-6 space-y-6">

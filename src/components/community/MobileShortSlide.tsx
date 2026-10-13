@@ -267,7 +267,7 @@ export function MobileShortSlide({
 
   return (
     <div
-      className="h-[100dvh] w-full snap-start snap-always relative bg-black flex-shrink-0"
+      className="h-dvh w-full snap-start snap-always relative bg-black flex-shrink-0"
       onClick={handleTap}
     >
       {/* Thumbnail fallback layer — always behind video */}
@@ -320,7 +320,7 @@ export function MobileShortSlide({
             onClick={handleManualPlay}
             className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all active:scale-95"
           >
-            <Play className="h-10 w-10 text-white ml-1" />
+            <Play className="h-10 w-10 text-white ms-1" />
           </button>
         </div>
       )}
@@ -341,7 +341,7 @@ export function MobileShortSlide({
       )}
 
       {/* Top overlay - Back button and labels */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between z-10 safe-area-inset-top">
+      <div className="absolute top-0 start-0 end-0 p-4 flex items-center justify-between z-10 safe-area-inset-top">
         <Button
           variant="ghost"
           size="icon"
@@ -377,7 +377,7 @@ export function MobileShortSlide({
                       onEdit();
                     }}
                   >
-                    <Edit className="w-4 h-4 mr-2" />
+                    <Edit className="w-4 h-4 me-2" />
                     {t('screens.community.editDetails')}
                   </DropdownMenuItem>
                 )}
@@ -389,7 +389,7 @@ export function MobileShortSlide({
                       onDelete();
                     }}
                   >
-                    <Trash2 className="w-4 h-4 mr-2" />
+                    <Trash2 className="w-4 h-4 me-2" />
                     {t('screens.community.delete')}
                   </DropdownMenuItem>
                 )}
@@ -410,7 +410,7 @@ export function MobileShortSlide({
       </div>
 
       {/* Right side action stack */}
-      <div className="absolute right-4 bottom-32 flex flex-col items-center gap-6 z-20">
+      <div className="absolute end-4 bottom-32 flex flex-col items-center gap-6 z-20">
         {/* Like */}
         <button
           onClick={(e) => {
@@ -467,7 +467,7 @@ export function MobileShortSlide({
       </div>
 
       {/* Bottom overlay - Creator info and caption */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 pb-8 z-10 safe-area-inset-bottom">
+      <div className="absolute bottom-0 start-0 end-0 p-4 pb-8 z-10 safe-area-inset-bottom">
         {/* Creator */}
         <div className="flex items-center gap-3 mb-3">
           <ClickableAvatar
@@ -511,7 +511,7 @@ export function MobileShortSlide({
             {isPlaying ? (
               <Pause className="h-10 w-10 text-white" />
             ) : (
-              <Play className="h-10 w-10 text-white ml-1" />
+              <Play className="h-10 w-10 text-white ms-1" />
             )}
           </div>
         </div>

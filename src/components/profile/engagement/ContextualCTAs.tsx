@@ -105,7 +105,7 @@ export function ContextualCTAs({
           <Badge 
             className="bg-gradient-to-r from-[hsl(var(--domain-community-accent))] to-[hsl(var(--pill-mental-accent))] text-white border-0"
           >
-            <Users className="h-3 w-3 mr-1" />{t('screens.profile.compatibilityscoreCompatible', { compatibilityScore })}
+            <Users className="h-3 w-3 me-1" />{t('screens.profile.compatibilityscoreCompatible', { compatibilityScore })}
           </Badge>
         </div>
       )}
@@ -125,7 +125,7 @@ export function ContextualCTAs({
               {cta.icon}
               {cta.label}
               {cta.badge && (
-                <Badge variant="secondary" className="ml-auto text-xs">
+                <Badge variant="secondary" className="ms-auto text-xs">
                   {cta.badge}
                 </Badge>
               )}

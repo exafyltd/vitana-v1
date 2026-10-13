@@ -142,7 +142,7 @@ export function PromoteToKnowledgeDialog({
             {t('screens.memory.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isCreating || !content.trim()}>
-            {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.memory.saveKnowledgeBase')}
+            {isCreating && <Loader2 className="me-2 h-4 w-4 animate-spin" />}{t('screens.memory.saveKnowledgeBase')}
           </Button>
         </DialogFooter>
       </DialogContent>

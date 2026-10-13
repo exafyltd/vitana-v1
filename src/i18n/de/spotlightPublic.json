@@ -1,0 +1,8 @@
+{
+  "spotlightPublic": {
+    "event": {
+      "free": "Kostenlos",
+      "fromPrice": "Ab {price}"
+    }
+  }
+}

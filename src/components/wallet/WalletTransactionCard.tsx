@@ -191,9 +191,9 @@ export function WalletTransactionCard({
   return (
     <Card 
       className={cn(
-        "group cursor-pointer hover:shadow-lg transition-all duration-300 border-l-4 relative",
-        type === "incoming" || type === "reward" ? "border-l-green-500" : 
-        type === "outgoing" || type === "purchase" ? "border-l-red-500" : "border-l-blue-500",
+        "group cursor-pointer hover:shadow-lg transition-all duration-300 border-s-4 relative",
+        type === "incoming" || type === "reward" ? "border-s-green-500" : 
+        type === "outgoing" || type === "purchase" ? "border-s-red-500" : "border-s-blue-500",
         className
       )}
       onClick={onClick}
@@ -212,7 +212,7 @@ export function WalletTransactionCard({
               alt={title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute top-2 left-2">
+            <div className="absolute top-2 start-2">
               <Badge className="bg-black/50 text-white">
                 {category}
               </Badge>
@@ -262,7 +262,7 @@ export function WalletTransactionCard({
                       <div className="text-xs text-muted-foreground">
                         {transaction.from_currency} → {transaction.to_currency}
                         {transaction.exchange_rate && (
-                          <span className="ml-1">@ {transaction.exchange_rate}</span>
+                          <span className="ms-1">@ {transaction.exchange_rate}</span>
                         )}
                       </div>
                     )}
@@ -281,7 +281,7 @@ export function WalletTransactionCard({
                 )}
               </div>
             </div>
-            <div className="text-right">
+            <div className="text-end">
               <div className={cn("font-bold text-lg", getAmountColor())}>
                 {amount}
               </div>

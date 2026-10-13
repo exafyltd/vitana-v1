@@ -180,7 +180,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
               <Select value={role} onValueChange={(v) => setRole(v as OrgInviteRow['role'])}>
                 <SelectTrigger
                   aria-label={t('screens.commerceportal.orgOnboarding.inviteRole')}
-                  className="w-full focus-visible:ring-amber-500 md:w-[160px]"
+                  className="w-full focus-visible:ring-amber-500 md:w-40"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -231,7 +231,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
                             <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.inviteEmail')}</TableHead>
                             <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.inviteRole')}</TableHead>
                             <TableHead className="text-muted-foreground">{t('screens.commerceportal.orgOnboarding.expiresAtHeader')}</TableHead>
-                            <TableHead className="w-[40px]" />
+                            <TableHead className="w-10" />
                           </TableRow>
                         </TableHeader>
                         <TableBody>

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Sparkles, Stethoscope, Tag, TrendingUp } from 'lucide-react';
 import { SplitBarContent } from '@/components/ui/split-bar';
-import { VCardSkeleton } from '@/components/ui/vcard';
+import { VCard, VCardSkeleton } from '@/components/ui/vcard';
 import {
   bookmarkToProvider,
   bookmarkToService,
@@ -214,7 +214,20 @@ export function DealsPanes({ query }: { query: string }) {
         ) : deals.isError ? (
           <DiscoverError onRetry={() => deals.refetch()} />
         ) : dealItems.length === 0 ? (
-          <DiscoverEmpty Icon={Tag} titleKey="spotlightDiscover.storefront.empty.dealsTitle" descriptionKey="spotlightDiscover.storefront.empty.dealsDesc" />
+          // VTID-05117: no real discount today → the storefront's one hero is an
+          // honest text-only spotlight that says so (SR-06, SR-24), never a sample deal.
+          <VCard
+            size="spotlight"
+            eyebrow={
+              <span className="inline-flex items-center gap-1.5">
+                <Tag className="size-3.5" aria-hidden="true" />
+                {t('screens.discover.flashDeals')}
+              </span>
+            }
+            title={t('spotlightDiscover.storefront.empty.dealsTitle')}
+            body={t('spotlightDiscover.storefront.empty.dealsDesc')}
+            data-deals-empty=""
+          />
         ) : (
           <>
             <ProductHero product={dealItems[0]} label={t('screens.discover.flashDeals')} onOpen={openProduct} />

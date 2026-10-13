@@ -141,11 +141,11 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={handleOpenCheckIn}>
-          <QrCode className="w-4 h-4 mr-2" />
+          <QrCode className="w-4 h-4 me-2" />
           {t('screens.business.checkinMode')}
         </Button>
         <Button variant="outline" size="sm" onClick={handleExportCSV}>
-          <Download className="w-4 h-4 mr-2" />
+          <Download className="w-4 h-4 me-2" />
           {t('screens.business.exportCsv')}
         </Button>
       </div>
@@ -207,7 +207,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
                 <div key={ticket.id} className="flex items-center justify-between text-sm p-2 rounded-lg bg-muted/50">
                   <div>
                     <span className="font-medium">{ticket.name}</span>
-                    <span className="text-muted-foreground ml-2">${ticket.price}</span>
+                    <span className="text-muted-foreground ms-2">${ticket.price}</span>
                   </div>
                   <Badge variant="secondary">
                     {ticket.quantity_sold} / {ticket.quantity_available}

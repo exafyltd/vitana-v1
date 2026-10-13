@@ -181,7 +181,7 @@ export function EditSessionDialog({ open, onOpenChange, room, onSaved }: EditSes
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
+                  className="absolute top-2 end-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
                   aria-label={t("liveRooms.editSession.changeCover")}
                 >
                   <X className="h-4 w-4" />
@@ -218,7 +218,7 @@ export function EditSessionDialog({ open, onOpenChange, room, onSaved }: EditSes
             {t("liveRooms.goLivePopup.cancel")}
           </Button>
           <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+            {isSaving && <Loader2 className="h-4 w-4 me-2 animate-spin" />}
             {isSaving ? t("liveRooms.editSession.saving") : t("common.save")}
           </Button>
         </DialogFooter>

@@ -15,7 +15,7 @@
  * note so users understand the partner_seek redaction rule.
  */
 
-import { useEffect } from "react";
+import { cloneElement, isValidElement, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Lock, Users, Eye, Heart, Briefcase, Cake, Sparkles, FileText } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
@@ -30,6 +30,9 @@ import {
   FieldVisibility,
 } from "@/types/profile";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightNotice, SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
 
 const NEXT_TIER: Record<FieldVisibility, FieldVisibility> = {
   private: "connections",
@@ -47,6 +50,22 @@ const TIER_COLOR: Record<FieldVisibility, string> = {
   private: "bg-rose-50 text-rose-700 border-rose-200",
   connections: "bg-amber-50 text-amber-700 border-amber-200",
   public: "bg-emerald-50 text-emerald-700 border-emerald-200",
+};
+
+// VTID-05117: the same three tiers in design tokens (Spotlight on).
+const TIER_TOKEN: Record<FieldVisibility, string> = {
+  private: "bg-status-error-subtle text-status-error border-status-error/30",
+  connections: "bg-status-warning-subtle text-status-warning border-status-warning/30",
+  public: "bg-status-success-subtle text-status-success border-status-success/30",
+};
+
+// VTID-05117: the section icon colours in design tokens (Spotlight on).
+const SECTION_TOKEN: Partial<Record<AccountFieldKey, string>> = {
+  dancePreferences: "text-category-4",
+  partnerPreferences: "text-category-8",
+  serviceOfferings: "text-category-6",
+  myPosts: "text-category-3",
+  derivedAgeBand: "text-category-5",
 };
 
 const TierIcon = ({ tier }: { tier: FieldVisibility }) => {
@@ -121,11 +140,15 @@ interface VisibilityRowProps {
   indent?: boolean;
   disabled?: boolean;
   disabledNote?: string;
+  /** VTID-05117: Spotlight on → token colours and a logical indent; off → unchanged. */
+  spotlight?: boolean;
 }
 
-function VisibilityRow({ fieldKey, label, current, onCycle, indent, disabled, disabledNote }: VisibilityRowProps) {
+function VisibilityRow({ fieldKey, label, current, onCycle, indent, disabled, disabledNote, spotlight }: VisibilityRowProps) {
+  const indentClass = indent ? (spotlight ? "ps-6" : "pl-6") : "";
+  const tone = spotlight ? TIER_TOKEN[current] : TIER_COLOR[current];
   return (
-    <div className={`flex items-center justify-between gap-3 py-2.5 ${indent ? "pl-6" : ""}`}>
+    <div className={`flex items-center justify-between gap-3 py-2.5 ${indentClass}`}>
       <div className="text-sm text-foreground/90 truncate">
         {label}
         {disabled && disabledNote && (
@@ -137,7 +160,7 @@ function VisibilityRow({ fieldKey, label, current, onCycle, indent, disabled, di
         disabled={disabled}
         onClick={onCycle}
         className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all ${
-          disabled ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-60" : TIER_COLOR[current]
+          disabled ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-60" : tone
         }`}
         aria-label={`${label}: ${TIER_LABEL[current]}. Tap to change.`}
       >
@@ -153,6 +176,7 @@ export default function PrivacySettings() {
   const { user } = useAuth();
   const { profile, refreshProfile, setFieldVisibility } = useProfile();
   const { toast } = useToast();
+  const spotlight = useSpotlightEnabled();
 
   useEffect(() => {
     refreshProfile();
@@ -176,6 +200,83 @@ export default function PrivacySettings() {
       notifyError('toasts.privacysettings.couldNotSave');
     }
   };
+
+  // The rows of one section — shared by the legacy screen and the Spotlight form.
+  const rowsOf = (section: SectionDef, tokens: boolean) => (
+    <>
+      <VisibilityRow
+        fieldKey={section.key}
+        label="Whole section"
+        current={tierFor(section.key)}
+        onCycle={() => cycle(section.key)}
+        spotlight={tokens}
+      />
+      {section.subFields?.map((sf) => (
+        <VisibilityRow
+          key={sf.key}
+          fieldKey={sf.key}
+          label={sf.label}
+          current={tierFor(sf.key)}
+          onCycle={() => cycle(sf.key)}
+          indent
+          spotlight={tokens}
+        />
+      ))}
+      {section.key === "myPosts" && (
+        <VisibilityRow
+          fieldKey={"myPosts.partnerSeek" as AccountFieldKey}
+          label="Partner-search posts"
+          current="private"
+          onCycle={() => undefined}
+          indent
+          disabled
+          disabledNote="Always private. Mutual-reveal protocol gates these regardless of toggle."
+          spotlight={tokens}
+        />
+      )}
+    </>
+  );
+
+  // VTID-05117 — Spotlight (desktop + flag): the `form` archetype; each section
+  // is a panel with the same rows and the same save path (setFieldVisibility).
+  // Phones and flag-off keep the screen below unchanged.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.privacysettings.privacyVisibilityVitana')} description={t('spotlightMember.privacy.desc')} />
+        <ScreenFrame
+          archetype="form"
+          header={{ title: t('screens.privacysettings.privacyVisibility'), description: t('spotlightMember.privacy.desc') }}
+        >
+          {!user ? (
+            <SpotlightNotice>{t('screens.privacysettings.pleaseSignManageYourPrivacySettings')}</SpotlightNotice>
+          ) : (
+            <div className="flex flex-col gap-4" data-privacy-sections="">
+              {SECTIONS.map((section) => (
+                <SpotlightPanel
+                  key={section.key}
+                  title={
+                    <span className="inline-flex items-center gap-2">
+                      {isValidElement<{ className?: string }>(section.icon)
+                        ? cloneElement(section.icon, { className: `size-4 ${SECTION_TOKEN[section.key] ?? "text-primary"}` })
+                        : section.icon}
+                      {section.label}
+                    </span>
+                  }
+                  description={section.description}
+                >
+                  <div className="divide-y divide-border">{rowsOf(section, true)}</div>
+                </SpotlightPanel>
+              ))}
+              <p className="text-center text-xs text-muted-foreground">
+                {t('screens.privacysettings.serverEnforcesTheseTiersEveryCrossuser')}
+              </p>
+            </div>
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   if (!user) {
     return (
@@ -210,35 +311,7 @@ export default function PrivacySettings() {
               </div>
               <p className="text-xs text-muted-foreground mt-1">{section.description}</p>
             </div>
-            <div className="px-3 divide-y divide-border">
-              <VisibilityRow
-                fieldKey={section.key}
-                label="Whole section"
-                current={tierFor(section.key)}
-                onCycle={() => cycle(section.key)}
-              />
-              {section.subFields?.map((sf) => (
-                <VisibilityRow
-                  key={sf.key}
-                  fieldKey={sf.key}
-                  label={sf.label}
-                  current={tierFor(sf.key)}
-                  onCycle={() => cycle(sf.key)}
-                  indent
-                />
-              ))}
-              {section.key === "myPosts" && (
-                <VisibilityRow
-                  fieldKey={"myPosts.partnerSeek" as AccountFieldKey}
-                  label="Partner-search posts"
-                  current="private"
-                  onCycle={() => undefined}
-                  indent
-                  disabled
-                  disabledNote="Always private. Mutual-reveal protocol gates these regardless of toggle."
-                />
-              )}
-            </div>
+            <div className="px-3 divide-y divide-border">{rowsOf(section, false)}</div>
           </section>
         ))}
 

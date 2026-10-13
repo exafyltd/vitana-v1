@@ -95,7 +95,7 @@ const CrossoverCardBase = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
             <Icon className="w-5 h-5 transition-colors duration-300" />
           </div>
           
-          <div className="space-y-1 text-left">
+          <div className="space-y-1 text-start">
             <h3 className="text-base font-bold text-foreground leading-tight tracking-tight">{title}</h3>
             <p className="text-xs text-muted-foreground leading-relaxed">{subtitle}</p>
           </div>

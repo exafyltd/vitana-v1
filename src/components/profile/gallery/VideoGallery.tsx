@@ -95,7 +95,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
         </h3>
         {isOwner && (
           <Button variant="outline" size="sm" className="rounded-full" onClick={() => setUploadOpen(true)}>
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 me-1" />
             {translate("gallery.uploadVideo", "Upload Video")}
           </Button>
         )}
@@ -109,7 +109,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
           </p>
           {isOwner && (
             <Button variant="ghost" size="sm" className="mt-3" onClick={() => setUploadOpen(true)}>
-              <Plus className="h-4 w-4 mr-1" />
+              <Plus className="h-4 w-4 me-1" />
               {translate("gallery.addFirstVideo", "Add your first video")}
             </Button>
           )}
@@ -131,11 +131,11 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
               {/* Play icon overlay */}
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
                 <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
-                  <Play className="h-5 w-5 text-foreground fill-current ml-0.5" />
+                  <Play className="h-5 w-5 text-foreground fill-current ms-0.5" />
                 </div>
               </div>
               {/* Title & duration */}
-              <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+              <div className="absolute bottom-0 start-0 end-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
                 <p className="text-xs text-white font-medium line-clamp-1">{video.title}</p>
                 {video.duration && (
                   <p className="text-[10px] text-white/70">{formatDuration(video.duration)}</p>
@@ -146,7 +146,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
                 <Button
                   variant="destructive"
                   size="icon"
-                  className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 end-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={(e) => { e.stopPropagation(); setDeleteId(video.id); }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />

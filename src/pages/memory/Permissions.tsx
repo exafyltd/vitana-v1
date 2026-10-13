@@ -17,6 +17,11 @@ import { PermissionsMasterActionPopup } from "@/components/memory/PermissionsMas
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { ShieldCheck } from "lucide-react";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
 
 // Mock data for privacy settings information
 const privacySettings = [
@@ -105,6 +110,47 @@ const securityFeatures = [
 function Permissions() {
   const [activeTab, setActiveTab] = useState("privacy");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): the legacy switches are not saved anywhere and the
+  // cards are sample content, so the collection frame points to the real privacy settings instead
+  // (SR-24, SR-26). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.memory.memoryPermissionsVitanaMemory')} description={t('spotlightMember.memory.permissions.desc')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: memoryNavigation }}
+          header={{ title: t('screens.memory.memoryPermissions'), description: t('spotlightMember.memory.permissions.desc'), emoji: "🔒" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.memory.manageAccess')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          <SpotlightPanel
+            Icon={ShieldCheck}
+            title={t('spotlightMember.memory.permissions.panelTitle')}
+            description={t('spotlightMember.memory.permissions.panelDesc')}
+            actions={
+              <Button size="sm" onClick={() => navigate('/settings/privacy')}>
+                {t('spotlightMember.memory.permissions.openPrivacy')}
+              </Button>
+            }
+          />
+        </ScreenFrame>
+        <PermissionsMasterActionPopup open={actionPopupOpen} onOpenChange={setActionPopupOpen} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

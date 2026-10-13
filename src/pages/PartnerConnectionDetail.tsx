@@ -5,7 +5,10 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader, PanelTitle as CardTitle } from '@/components/layout/spotlight/Panel';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { VCard } from '@/components/ui/vcard';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react';
@@ -49,6 +52,7 @@ interface Activation {
 const stateLabel = (state: string) => t(`screens.partnerportal.states.${state}`);
 
 export default function PartnerConnectionDetail() {
+  const spotlight = useSpotlightEnabled();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [detail, setDetail] = useState<Detail | null>(null);
@@ -93,9 +97,16 @@ export default function PartnerConnectionDetail() {
     });
 
   if (!detail) {
+    if (spotlight) {
+      return (
+        <ScreenFrame archetype="detail">
+          <ArchetypeSkeleton archetype="detail" />
+        </ScreenFrame>
+      );
+    }
     return (
-      <div className="flex justify-center py-16">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="mx-auto w-full max-w-4xl p-4">
+        <ArchetypeSkeleton archetype="detail" />
       </div>
     );
   }
@@ -103,21 +114,14 @@ export default function PartnerConnectionDetail() {
   const state = detail.state;
   const canTest = state === 'mapping' || state === 'testing' || state === 'approval_required' || state === 'failed';
 
-  return (
-    <div className="mx-auto w-full max-w-4xl space-y-4 p-4">
-      <div className="flex flex-wrap items-center gap-3">
+  const backButton = (
         <Button variant="ghost" size="icon" onClick={() => navigate('/partner/connections')} aria-label={t('screens.partnerportal.title')}>
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-5 w-5 rtl:-scale-x-100" />
         </Button>
-        <div className="min-w-0 flex-1">
-          <h1 className="truncate text-xl font-semibold text-foreground">{detail.name}</h1>
-          <p className="truncate text-xs text-muted-foreground">
-            {detail.connector_id} · {detail.provider_id}
-          </p>
-        </div>
-        <Badge variant={stateBadgeVariant(state)}>{stateLabel(state)}</Badge>
-      </div>
+  );
 
+  const panels = (
+    <>
       <Card>
         <CardHeader>
           <CardTitle className="text-base">{t('screens.partnerportal.mappingPreview')}</CardTitle>
@@ -137,30 +141,30 @@ export default function PartnerConnectionDetail() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border text-left text-xs text-muted-foreground">
-                      <th className="py-2 pr-3">{t('screens.partnerportal.sourceField')}</th>
-                      <th className="py-2 pr-3">{t('screens.partnerportal.canonicalField')}</th>
-                      <th className="py-2 pr-3">{t('screens.partnerportal.confidence')}</th>
-                      <th className="py-2 pr-3">{t('screens.partnerportal.decidedBy')}</th>
+                    <tr className="border-b border-border text-start text-xs text-muted-foreground">
+                      <th className="py-2 pe-3">{t('screens.partnerportal.sourceField')}</th>
+                      <th className="py-2 pe-3">{t('screens.partnerportal.canonicalField')}</th>
+                      <th className="py-2 pe-3">{t('screens.partnerportal.confidence')}</th>
+                      <th className="py-2 pe-3">{t('screens.partnerportal.decidedBy')}</th>
                       <th className="py-2" />
                     </tr>
                   </thead>
                   <tbody>
                     {preview.mappings.map((m) => (
                       <tr key={m.id} className="border-b border-border/50">
-                        <td className="py-2 pr-3">
+                        <td className="py-2 pe-3">
                           {m.source_schema}.{m.source_field}
                           {m.sensitive && (
-                            <Badge variant="outline" className="ml-2">
+                            <Badge variant="outline" className="ms-2">
                               {t('screens.partnerportal.sensitive')}
                             </Badge>
                           )}
                         </td>
-                        <td className="py-2 pr-3">
+                        <td className="py-2 pe-3">
                           {m.canonical_entity}.{m.canonical_field}
                         </td>
-                        <td className="py-2 pr-3">{Math.round(m.confidence * 100)}%</td>
-                        <td className="py-2 pr-3">{m.decided_by}</td>
+                        <td className="py-2 pe-3">{Math.round(m.confidence * 100)}%</td>
+                        <td className="py-2 pe-3">{m.decided_by}</td>
                         <td className="py-2">
                           {preview.pending_review.includes(m.id) && (
                             <span className="flex gap-1">
@@ -184,7 +188,7 @@ export default function PartnerConnectionDetail() {
             <Button variant="secondary" disabled={busy !== null} onClick={() => void act('test', '/sandbox-tests')}>
               {busy === 'test' ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
                   {t('screens.partnerportal.runningTests')}
                 </>
               ) : (
@@ -210,7 +214,7 @@ export default function PartnerConnectionDetail() {
           <div className="flex flex-wrap gap-2">
             {activation?.can_activate && (
               <Button disabled={busy !== null} onClick={() => void act('activate', '/approve-activation')}>
-                <ShieldCheck className="mr-2 h-4 w-4" />
+                <ShieldCheck className="me-2 h-4 w-4" />
                 {t('screens.partnerportal.approveActivation')}
               </Button>
             )}
@@ -243,6 +247,40 @@ export default function PartnerConnectionDetail() {
           </div>
         </CardContent>
       </Card>
+    </>
+  );
+
+  // VTID-05117: Spotlight on → the `detail` archetype; the connection itself is the one spotlight item.
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="detail">
+        <div className="space-y-4">
+          <VCard
+            size="spotlight"
+            eyebrow={`${detail.connector_id} · ${detail.provider_id}`}
+            title={<h1>{detail.name}</h1>}
+            meta={<Badge variant={stateBadgeVariant(state)}>{stateLabel(state)}</Badge>}
+            actions={backButton}
+          />
+          {panels}
+        </div>
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-4xl space-y-4 p-4">
+      <div className="flex flex-wrap items-center gap-3">
+        {backButton}
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-xl font-semibold text-foreground">{detail.name}</h1>
+          <p className="truncate text-xs text-muted-foreground">
+            {detail.connector_id} · {detail.provider_id}
+          </p>
+        </div>
+        <Badge variant={stateBadgeVariant(state)}>{stateLabel(state)}</Badge>
+      </div>
+      {panels}
     </div>
   );
 }

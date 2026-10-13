@@ -186,15 +186,15 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Button className="flex-1" size="lg" onClick={() => setShowBookingFlow(true)}>
-              <Calendar className="w-4 h-4 mr-2" />
+              <Calendar className="w-4 h-4 me-2" />
               {t('screens.health.bookNow')}
             </Button>
             <Button variant="outline" className="flex-1" size="lg">
-              <Bookmark className="w-4 h-4 mr-2" />
+              <Bookmark className="w-4 h-4 me-2" />
               {t('screens.health.addPlan')}
             </Button>
             <Button variant="outline" size="lg">
-              <MessageSquare className="w-4 h-4 mr-2" />
+              <MessageSquare className="w-4 h-4 me-2" />
               {t('screens.health.askAi')}
             </Button>
           </div>

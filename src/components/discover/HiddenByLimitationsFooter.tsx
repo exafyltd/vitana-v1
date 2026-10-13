@@ -58,7 +58,7 @@ export function HiddenByLimitationsFooter({ breakdown }: { breakdown?: HiddenBre
         {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
       {expanded && (
-        <ul className="mt-3 space-y-1.5 pl-6 text-emerald-900/80">
+        <ul className="mt-3 space-y-1.5 ps-6 text-emerald-900/80">
           {rows.map(([key, count]) => {
             const label = REASON_LABELS[key as keyof HiddenBreakdown];
             if (!label) return null;

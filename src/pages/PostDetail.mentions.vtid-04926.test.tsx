@@ -16,6 +16,8 @@ vi.mock("@/components/home/CommunityPostCard", () => ({
   },
 }));
 vi.mock("@/lib/i18n-toast", () => ({ t: (k: string) => k }));
+// VTID-05117: this harness has no TenantProvider; pin the legacy (flag-off) path.
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 
 const ROW = {
   id: "p1",

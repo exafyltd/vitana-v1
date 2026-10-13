@@ -35,6 +35,12 @@ import { useMarketplaceSearch } from "@/hooks/useMarketplace";
 import { ProductListRow } from "@/components/discover/ProductListRow";
 import { getPersonalizedReason, hasPersonalizationSignal } from "@/lib/discover-reason";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { discoverNavigation } from "@/config/navigation";
+import { ProductVCard } from "@/components/discover/spotlight/DiscoverCards";
+import { DiscoverEmpty, DiscoverError, DiscoverGridSkeleton } from "@/components/discover/spotlight/DiscoverStates";
+import { DISCOVER_GRID } from "@/components/discover/spotlight/storefront-model";
 
 interface SectionMeta {
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -78,7 +84,7 @@ export default function CategoryProducts() {
   const { translate } = useTranslation();
   const meta = SECTION_META[subcategory];
 
-  const { data, isLoading } = useMarketplaceSearch({
+  const { data, isLoading, isError, refetch } = useMarketplaceSearch({
     category: meta?.category ?? "supplements",
     subcategory,
     sort: "rating",
@@ -87,6 +93,38 @@ export default function CategoryProducts() {
 
   const products = data?.items ?? [];
   const title = meta ? translate(`discover.subcategories.${meta.i18nKey}`) : subcategory;
+  // VTID-05117 — Spotlight (desktop + flag): collection of standard VCards; phones and flag-off keep the list below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={title} description={title} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: discoverNavigation }}
+          header={{
+            title,
+            description: isLoading ? "" : translate("discover.productsFound").replace("{count}", String(products.length)),
+          }}
+        >
+          {isLoading ? (
+            <DiscoverGridSkeleton count={8} />
+          ) : isError ? (
+            <DiscoverError onRetry={() => refetch()} />
+          ) : products.length === 0 ? (
+            <DiscoverEmpty Icon={Package} titleKey="discover.noResults" actionKey="screens.discover.discoverMore" onAction={() => navigate("/discover")} />
+          ) : (
+            <ul className={DISCOVER_GRID}>
+              {products.map((product) => (
+                <ProductVCard key={product.id} product={product} onOpen={(p) => navigate(`/discover/product/${p.id}`)} />
+              ))}
+            </ul>
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

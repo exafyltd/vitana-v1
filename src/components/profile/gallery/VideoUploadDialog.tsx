@@ -157,7 +157,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
             {translate("common.cancel", "Cancel")}
           </Button>
           <Button onClick={handleSubmit} disabled={!file || !title.trim() || isUploading}>
-            <Upload className="h-4 w-4 mr-1" />
+            <Upload className="h-4 w-4 me-1" />
             {isUploading ? translate("common.uploading", "Uploading...") : translate("gallery.uploadVideo", "Upload Video")}
           </Button>
         </DialogFooter>

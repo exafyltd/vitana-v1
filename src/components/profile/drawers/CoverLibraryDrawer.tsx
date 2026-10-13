@@ -428,9 +428,9 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
               disabled={universalUploading}
             >
               {universalUploading ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                <Loader2 className="h-4 w-4 animate-spin me-1.5" />
               ) : (
-                <Upload className="h-4 w-4 mr-1.5" />
+                <Upload className="h-4 w-4 me-1.5" />
               )}
               {universalUrl
                 ? translate("profileEditor.coverLibrary.universalReplace")
@@ -444,7 +444,7 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
                 onClick={onUniversalRemove}
                 disabled={universalUploading}
               >
-                <Trash2 className="h-4 w-4 mr-1.5" />
+                <Trash2 className="h-4 w-4 me-1.5" />
                 {translate("profileEditor.coverLibrary.universalRemove")}
               </Button>
             )}
@@ -498,9 +498,9 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
               disabled={libraryUploading || !pendingCategory}
             >
               {libraryUploading ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                <Loader2 className="h-4 w-4 animate-spin me-1.5" />
               ) : (
-                <Plus className="h-4 w-4 mr-1.5" />
+                <Plus className="h-4 w-4 me-1.5" />
               )}
               {translate("profileEditor.coverLibrary.libraryAddPhoto")}
             </Button>
@@ -538,7 +538,7 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
                       )}
                       onClick={() => onLibraryRemove(row)}
                       disabled={libraryDeleting === row.id}
-                      className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
+                      className="absolute top-1 end-1 p-1 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
                     >
                       {libraryDeleting === row.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />

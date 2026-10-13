@@ -278,7 +278,7 @@ export function AboutForm({ onDataChange, onLoadStatusChange }: AboutFormProps) 
         <div className="flex items-center justify-between">
           <Label>{translate('profileEditor.links')}</Label>
           <Button variant="outline" size="sm" onClick={addLink}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {translate('profileEditor.addLink')}
           </Button>
         </div>
@@ -291,7 +291,7 @@ export function AboutForm({ onDataChange, onLoadStatusChange }: AboutFormProps) 
                   placeholder={translate('profileEditor.linkLabelPlaceholder')}
                   value={link.label}
                   onChange={(e) => updateLink(link.id, "label", e.target.value)}
-                  className="flex-1 mr-2"
+                  className="flex-1 me-2"
                 />
                 <Button variant="ghost" size="sm" onClick={() => removeLink(link.id)}>
                   <X className="w-4 h-4" />
@@ -345,7 +345,7 @@ export function AboutForm({ onDataChange, onLoadStatusChange }: AboutFormProps) 
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-auto p-0 ml-1"
+                className="h-auto p-0 ms-1"
                 onClick={() => removeLanguage(language)}
               >
                 <X className="w-3 h-3" />

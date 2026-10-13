@@ -38,7 +38,7 @@ function MobileKPICard({ icon, label, value, gradientFrom, gradientTo, onClick, 
   return (
     <button
       onClick={onClick}
-      className="relative min-w-[110px] bg-card rounded-xl border border-border/40 shadow-sm overflow-hidden text-left transition-all duration-200 hover:shadow-md hover:border-border/60 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 shrink-0"
+      className="relative min-w-[110px] bg-card rounded-xl border border-border/40 shadow-sm overflow-hidden text-start transition-all duration-200 hover:shadow-md hover:border-border/60 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 shrink-0"
     >
       {/* Gradient top bar */}
       <div 

@@ -99,7 +99,7 @@ export function MusicUploadDialog({ open, onOpenChange, onUpload, isUploading, p
             {file ? (
               <div className="flex items-center gap-3 justify-center">
                 <Music className="h-8 w-8 text-primary" />
-                <div className="text-left">
+                <div className="text-start">
                   <p className="text-sm font-medium truncate max-w-[200px]">{file.name}</p>
                   <p className="text-xs text-muted-foreground">{t('screens.profile.value0Mb', { value0: (file.size / 1024 / 1024).toFixed(1) })}</p>
                 </div>
@@ -155,7 +155,7 @@ export function MusicUploadDialog({ open, onOpenChange, onUpload, isUploading, p
             {translate("common.cancel", "Cancel")}
           </Button>
           <Button onClick={handleSubmit} disabled={!file || !title.trim() || isUploading}>
-            <Upload className="h-4 w-4 mr-1" />
+            <Upload className="h-4 w-4 me-1" />
             {isUploading ? translate("common.uploading", "Uploading...") : translate("gallery.uploadMusic", "Upload Music")}
           </Button>
         </DialogFooter>

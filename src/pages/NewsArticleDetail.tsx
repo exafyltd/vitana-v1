@@ -8,6 +8,9 @@ import { NewsArticleCardMenu } from "@/components/crossover/NewsArticleCardMenu"
 import { useTranslation } from "@/hooks/useTranslation";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import type { NewsArticle } from "@/hooks/useNewsFeed";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { VCard } from "@/components/ui/vcard";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 import { formatDistanceToNow } from '@/lib/locale-format';
 export default function NewsArticleDetail() {
@@ -15,6 +18,7 @@ export default function NewsArticleDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { translate } = useTranslation();
+  const spotlight = useSpotlightEnabled();
 
   const article: NewsArticle | undefined = (location.state as any)?.article;
 
@@ -41,8 +45,8 @@ export default function NewsArticleDetail() {
   const avatarLetter = (article.source_name || "•").charAt(0).toUpperCase();
   const isInternalLink = !!article.link && article.link.startsWith("/");
 
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
+  const topBar = (
+    <>
       {/* Sticky top bar */}
       <header className="sticky top-0 z-40 flex items-center gap-2 px-3 py-2 bg-background/95 backdrop-blur-sm border-b border-border/40">
         <Button
@@ -72,49 +76,11 @@ export default function NewsArticleDetail() {
           sourceName={article.source_name}
         />
       </header>
+    </>
+  );
 
-      {/* Scrollable body */}
-      <main className="flex-1 overflow-y-auto">
-        <HeroImage primaryUrl={primaryUrl} fallbackUrl={fallbackUrl} />
-
-        {/* Article header */}
-        <div className="px-4 pt-4 pb-2">
-          {(categoryLabel || timestamp) && (
-            <div className="flex items-center gap-2 text-xs mb-3">
-              {categoryLabel && (
-                <span className="font-bold uppercase tracking-wide text-primary">
-                  {categoryLabel}
-                </span>
-              )}
-              {categoryLabel && timestamp && (
-                <span className="text-muted-foreground">•</span>
-              )}
-              {timestamp && (
-                <span className="text-muted-foreground">{timestamp}</span>
-              )}
-            </div>
-          )}
-          <h1 className="text-xl font-bold leading-tight text-foreground">
-            {article.title}
-          </h1>
-          {article.summary && (
-            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-              {article.summary}
-            </p>
-          )}
-          <div className="flex items-center gap-2 mt-4">
-            <Avatar className="h-7 w-7 shrink-0">
-              <AvatarFallback className="text-xs font-semibold text-foreground/70">
-                {avatarLetter}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-sm text-foreground/70">{article.source_name}</span>
-            {timestamp && (
-              <span className="text-xs text-muted-foreground ml-auto">{timestamp}</span>
-            )}
-          </div>
-        </div>
-
+  const actions = (
+    <>
         {/* New-member card: the card asks the viewer to greet this member, so
             give them the way to do it (VTID-04574). /inbox/u/:id opens the
             direct conversation with that user. */}
@@ -180,6 +146,77 @@ export default function NewsArticleDetail() {
             </Button>
           </div>
         )}
+    </>
+  );
+
+  // VTID-05117: Spotlight on → the `detail` archetype; the article is the one spotlight item.
+  if (spotlight) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        {topBar}
+        <ScreenFrame archetype="detail">
+          <VCard
+            size="spotlight"
+            priority
+            mediaSlot={<HeroImage primaryUrl={primaryUrl} fallbackUrl={fallbackUrl} />}
+            eyebrow={categoryLabel}
+            title={<h1>{article.title}</h1>}
+            meta={[article.source_name, timestamp].filter(Boolean).join(' · ')}
+            body={article.summary || undefined}
+          />
+          {actions}
+        </ScreenFrame>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      {topBar}
+
+      {/* Scrollable body */}
+      <main className="flex-1 overflow-y-auto">
+        <HeroImage primaryUrl={primaryUrl} fallbackUrl={fallbackUrl} />
+
+        {/* Article header */}
+        <div className="px-4 pt-4 pb-2">
+          {(categoryLabel || timestamp) && (
+            <div className="flex items-center gap-2 text-xs mb-3">
+              {categoryLabel && (
+                <span className="font-bold uppercase tracking-wide text-primary">
+                  {categoryLabel}
+                </span>
+              )}
+              {categoryLabel && timestamp && (
+                <span className="text-muted-foreground">•</span>
+              )}
+              {timestamp && (
+                <span className="text-muted-foreground">{timestamp}</span>
+              )}
+            </div>
+          )}
+          <h1 className="text-xl font-bold leading-tight text-foreground">
+            {article.title}
+          </h1>
+          {article.summary && (
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+              {article.summary}
+            </p>
+          )}
+          <div className="flex items-center gap-2 mt-4">
+            <Avatar className="h-7 w-7 shrink-0">
+              <AvatarFallback className="text-xs font-semibold text-foreground/70">
+                {avatarLetter}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm text-foreground/70">{article.source_name}</span>
+            {timestamp && (
+              <span className="text-xs text-muted-foreground ms-auto">{timestamp}</span>
+            )}
+          </div>
+        </div>
+
+        {actions}
       </main>
     </div>
   );

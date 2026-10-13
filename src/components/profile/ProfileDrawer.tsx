@@ -171,7 +171,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           {/* Always show basic actions */}
           <div className="space-y-2">
             <Button variant="ghost" className="w-full justify-start" onClick={handleEditProfile}>
-              <User className="mr-2 h-4 w-4" />
+              <User className="me-2 h-4 w-4" />
               {t('screens.profile.profile')}
             </Button>
           </div>
@@ -183,7 +183,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 <DrawerClose asChild>
                   <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
                     <Link to="/delete-account">
-                      <Trash2 className="mr-2 h-4 w-4" />
+                      <Trash2 className="me-2 h-4 w-4" />
                       {t('screens.profile.deleteAccount')}
                     </Link>
                   </Button>
@@ -226,9 +226,9 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             className="w-full"
           >
             {isLoggingOut ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="me-2 h-4 w-4 animate-spin" />
             ) : (
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="me-2 h-4 w-4" />
             )}
             {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </Button>

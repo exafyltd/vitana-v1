@@ -160,7 +160,7 @@ export function MarketplaceProductCard({
         </div>
 
         {/* Title */}
-        <h3 className="font-medium text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
+        <h3 className="font-medium text-sm leading-tight line-clamp-2 min-h-10">
           {p.title}
         </h3>
 
@@ -202,7 +202,7 @@ export function MarketplaceProductCard({
               {formatPrice(p.price_cents, p.currency)}
             </span>
             {hasDiscount && (
-              <span className="text-xs text-muted-foreground line-through ml-1.5">
+              <span className="text-xs text-muted-foreground line-through ms-1.5">
                 {formatPrice(p.compare_at_price_cents, p.currency)}
               </span>
             )}
