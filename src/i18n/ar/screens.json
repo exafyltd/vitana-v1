@@ -5276,11 +5276,13 @@
       "vitanaIndexUpSubtext": "عمل رائع!",
       "vitanaIndexDownSubtext": "الخطوات الصغيرة مهمة.",
       "vitanaIndexStableSubtext": "كن متسقًا.",
+      "vitanaIndexScoreSubtext": "المؤشر {score} · {message}",
       "longevityJourneyEyebrow": "كتابك الصوتي عن طول العمر",
       "longevityJourneyContinue": "تابع الحلقة {session}: {topic}",
       "longevityJourneyAllDone": "لقد استمعت إلى كل الحلقات. أحسنت!",
       "longevityJourneyNextStepHeadline": "خطوتك التالية:",
       "longevityJourneySubtext": "الحلقة {session} بانتظارك.",
+      "longevityJourneyProgressSubtext": "الحلقة {session} بانتظارك · أُنجز {done} · اليوم {today}/{goal}",
       "longevityJourneyStartSession": "تشغيل الحلقة {session}",
       "longevityJourneyDoneLabel": "تم",
       "longevityJourneyNowLabel": "الآن",
@@ -5483,9 +5485,7 @@
         "feedItemError": true
       },
       "feedItemError": "This post couldn't be shown.",
-      "playTodaysEpisode": "تشغيل الحلقة {session}",
-      "vitanaIndexScoreSubtext": "المؤشر {score} · {message}",
-      "longevityJourneyProgressSubtext": "الحلقة {session} بانتظارك · أُنجز {done} · اليوم {today}/{goal}"
+      "playTodaysEpisode": "تشغيل الحلقة {session}"
     },
     "icons": {
       "xFormerlyTwitter": "X (تويتر سابقًا)"
