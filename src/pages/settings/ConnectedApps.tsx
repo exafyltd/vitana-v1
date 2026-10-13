@@ -55,6 +55,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileConnectedAppsView } from "@/components/settings/MobileConnectedAppsView";
+import { ConnectedAiSection } from "@/components/ai-connect/ConnectedAiSection";
 import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
 // VTID-02403: AI Subscription Connect Phase 1
 import {
@@ -1554,6 +1555,9 @@ function ConnectedApps() {
         {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
         <SplitBarContent value="connected">
           <div className="space-y-8">
+            {/* VTID-05133: Connected AI — a member's ChatGPT / Claude reads their Maxina community */}
+            <ConnectedAiSection />
+
             {/* Shopping & Rewards — commerce providers powering the Discover marketplace */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">

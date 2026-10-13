@@ -1,0 +1,55 @@
+{
+  "aiConnect": {
+    "consent": {
+      "title": "{client} uygulamasını Maxina hesabına bağla",
+      "lead": "{client} Maxina hesabını kullanmak istiyor. Neleri görebileceğini seç. Bunu Maxina'da istediğin zaman değiştirebilir veya kaldırabilirsin.",
+      "signedInAs": "{email} olarak giriş yaptın",
+      "chooseTitle": "{client} şunları yapabilir:",
+      "readOnly": "Yalnızca okuma: asistanın paylaşım yapamaz, mesaj gönderemez ve hiçbir şeyi değiştiremez.",
+      "notShared": "Asla paylaşılmaz: sağlık verileri, Vitana Index, günlük, anılar ve özel mesajlar.",
+      "redirectsTo": "İzin verdikten sonra {host} adresine geri dönersin.",
+      "noneSelected": "En az bir alan seç.",
+      "approve": "İzin ver",
+      "deny": "İptal",
+      "failed": "Olmadı. Lütfen tekrar dene.",
+      "loading": "Yükleniyor …",
+      "redirecting": "Yönlendiriliyorsun …",
+      "invalid": "Bu istek süresi dolmuş veya geçersiz. Bağlantıyı yapay zekâ asistanında yeniden başlat."
+    },
+    "categories": {
+      "profile": "Profilin",
+      "profileDesc": "Adın, şehrin, ilgi alanların ve hedeflerin",
+      "matches": "Eşleşmelerin",
+      "matchesDesc": "Maxina'nın tanışmanı önerdiği kişiler",
+      "people": "Kişi bul",
+      "peopleDesc": "Yapay zekâ asistanlarının kendilerini bulmasına izin veren üyeler",
+      "activities": "Etkinlikler",
+      "activitiesDesc": "Topluluğun yaklaşan etkinlikleri ve buluşmaları",
+      "commerce": "Tedarikçi araçları (Vitanaland Commerce)"
+    },
+    "settings": {
+      "title": "Bağlı yapay zekâ",
+      "lead": "ChatGPT veya Claude'u Maxina topluluğuna getir. Asistanın yalnızca izin verdiğin şeyleri okur.",
+      "connectChatgpt": "ChatGPT'yi bağla",
+      "connectClaude": "Claude'u bağla",
+      "howTitle": "{assistant} uygulamasını üç adımda bağla",
+      "step1Claude": "Claude'da Ayarlar → Bağlayıcılar → Özel bağlayıcı ekle'yi aç.",
+      "step1Chatgpt": "ChatGPT'de Ayarlar → Uygulamalar ve bağlayıcılar → Oluştur'u aç.",
+      "step2": "Bu adresi yapıştır:",
+      "step3": "Maxina hesabınla giriş yap ve asistanının neleri görebileceğini seç.",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "close": "Kapat",
+      "empty": "Henüz bağlı bir yapay zekâ asistanı yok.",
+      "connectedSince": "{date} tarihinden beri bağlı",
+      "disconnect": "Bağlantıyı kes",
+      "disconnected": "Bağlantı kesildi",
+      "disconnectedNote": "Bağlantı kesildi: bu asistan artık Maxina'yı kullanamaz. Onu ChatGPT veya Claude'dan da kaldırabilirsin.",
+      "saveFailed": "Kaydedilemedi. Lütfen tekrar dene.",
+      "loadFailed": "Bağlı asistanların yüklenemedi.",
+      "findableTitle": "Diğer üyelerin yapay zekâ asistanları beni bulabilsin",
+      "findableDesc": "Açıkken ChatGPT veya Claude bağlamış üyeler adını, fotoğrafını, herkese açık şehrini ve ilgi alanlarını görebilir. Varsayılan olarak kapalı.",
+      "unknownClient": "Bir yapay zekâ asistanı"
+    }
+  }
+}
