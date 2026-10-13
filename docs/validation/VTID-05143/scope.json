@@ -39,9 +39,16 @@
     "src/pages/community/MediaHub.tsx",
     "src/pages/community/TalkToVitana.tsx",
     "src/pages/Calendar.tsx",
-    "tests/e2e/staging/vtid-05086-feature-cards.staging.spec.ts"
+    "tests/e2e/staging/vtid-05086-feature-cards.staging.spec.ts",
+    "src/components/audiobook/audiobook-daily.test.tsx",
+    "src/components/proactive/split-tip-copy.ts"
   ],
   "sparring_record": "docs/validation/VTID-05143/plan-sparring.md",
-  "weakens_tests": [],
+  "weakens_tests": [
+    {
+      "file": "src/components/audiobook/audiobook-daily.test.tsx",
+      "reason": "VTID-05143 design review: the Home 'play today's episode' button is now the shared VitanaCardActionButton, so the literal 'e.stopPropagation()' moved from LongevityJourneyCard.tsx into VitanaCardActionButton.tsx. The test still pins audiobook.start({ episode: nextSession.session }) in the card, now also pins the data-testid, and asserts e.stopPropagation() in the shared button; the behaviour (plays, does not open My Journey) is additionally proven by a new rendered test in feature-cards.test.tsx. Intent unchanged, no assertion removed."
+    }
+  ],
   "red_green_exempt": []
 }

@@ -13,13 +13,14 @@ const h = vi.hoisted(() => ({
   shareInvite: vi.fn(),
   accept: vi.fn(() => '/discover'),
   decline: vi.fn(),
+  audiobook: null as null | { start: ReturnType<typeof vi.fn> },
   index: { total: 512, trend: 'up' as const, history: [{ score: 400 }, { score: 512 }] },
   journey: { totalSessions: 10, completedInOrder: 2, nextSession: { session: 3 }, completedToday: 0, dailyGoal: 1, loading: false },
 }));
 
 vi.mock('@/hooks/useVitanaIndex', () => ({ useVitanaIndex: () => ({ index: h.index, isLoading: false }) }));
 vi.mock('@/hooks/useGuidedJourneyProgress', () => ({ useGuidedJourneyProgress: () => h.journey }));
-vi.mock('@/context/AudiobookPlayerProvider', () => ({ useAudiobookPlayer: () => null }));
+vi.mock('@/context/AudiobookPlayerProvider', () => ({ useAudiobookPlayer: () => h.audiobook }));
 vi.mock('@/hooks/useInviteFriendShare', () => ({ useInviteFriendShare: () => ({ shareInvite: h.shareInvite }) }));
 vi.mock('@/hooks/useDidYouKnowTip', () => ({
   useDidYouKnowTip: () => ({
@@ -48,6 +49,7 @@ import { CARD_DEEP_LINKS, CARD_SCREENS, FEATURE_CARD_TYPES, type VitanaCardType 
 import { CreatePostLauncherProvider } from '@/components/vitana/create-post-launcher';
 import { VITANA_INDEX_OPEN_EVENT } from '@/components/health/VitanaIndexSheet';
 import { FeatureAnnouncementCard } from '@/components/home/FeatureAnnouncementCard';
+import { splitTipCopy } from '@/components/proactive/split-tip-copy';
 import de from '@/i18n/de/screens.json';
 
 const deCards = (de as unknown as { screens: { vitanaCards: Record<string, { title: string; action: string }> } }).screens.vitanaCards;
@@ -74,6 +76,7 @@ beforeEach(() => {
   h.shareInvite.mockReset();
   h.accept.mockClear();
   h.decline.mockReset();
+  h.audiobook = null;
 });
 
 describe('feature cards F1–F11', () => {
@@ -141,6 +144,23 @@ describe('restyled existing cards keep their behaviour', () => {
     expect(screen.getByTestId('where').textContent).toBe('/autopilot');
   });
 
+  it('F1 Guided Journey: with the audiobook the shared pill plays today\'s episode and does not open My Journey', () => {
+    h.audiobook = { start: vi.fn() };
+    renderCard('F1');
+    const play = screen.getByTestId('home-play-todays-episode');
+    expect(play.getAttribute('data-shape')).toBe('pill');
+    fireEvent.click(play);
+    expect(h.audiobook.start).toHaveBeenCalledWith({ episode: 3 });
+    expect(screen.queryByTestId('where')).toBeNull();
+  });
+
+  it('F1/F2 keep their live numbers in the text and the action button in the widget slot', () => {
+    renderCard('F1');
+    expect(screen.getByText(/Folge 3 wartet · 2 erledigt · heute 0\/1/)).toBeInTheDocument();
+    renderCard('F2');
+    expect(screen.getByText(/Index 512/)).toBeInTheDocument();
+  });
+
   it('F7 Invite: the rounded-square button shares the invite', () => {
     renderCard('F7', { onDismiss: () => {} });
     const share = screen.getAllByRole('button').find((b) => b.getAttribute('data-shape') === 'rounded-square')!;
@@ -157,7 +177,28 @@ describe('restyled existing cards keep their behaviour', () => {
     unmount();
     renderCard('F8');
     expect(screen.queryByTestId('dyk-card')).toBeInTheDocument();
-    expect(screen.queryAllByRole('button').filter((b) => b.getAttribute('data-shape') !== 'pill')).toHaveLength(0);
+    // VTID-05143: the card body itself is the shell's role="button"; no other control besides the pill.
+    expect(
+      screen.queryAllByRole('button').filter((b) => b.tagName === 'BUTTON' && b.getAttribute('data-shape') !== 'pill'),
+    ).toHaveLength(0);
+  });
+
+  it('F8 Did you know: on the shell, with the tour choices (this tip / not today / stop) behind its X', () => {
+    renderCard('F8', { onDismiss: () => {} });
+    const card = screen.getByTestId('dyk-card');
+    expect(card.querySelector('[data-vitana-card], [role="button"]')?.className).toContain('h-[138px]');
+    const x = screen.getByRole('button', { name: 'Tipp ausblenden' });
+    fireEvent.pointerDown(x, { button: 0, ctrlKey: false });
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Heute nicht' }));
+    expect(h.decline).toHaveBeenCalledWith('today');
+    expect(h.accept).not.toHaveBeenCalled();
+  });
+
+  it('F8 splits the server tip into headline + subtext (Latin, CJK, Arabic; one sentence = headline only)', () => {
+    expect(splitTipCopy('Wusstest du das? Vitana hört zu.')).toEqual({ headline: 'Wusstest du das?', subtext: 'Vitana hört zu.' });
+    expect(splitTipCopy('你知道吗？Vitana 会听。')).toEqual({ headline: '你知道吗？', subtext: 'Vitana 会听。' });
+    expect(splitTipCopy('هل تعلم؟ Vitana تستمع.')).toEqual({ headline: 'هل تعلم؟', subtext: 'Vitana تستمع.' });
+    expect(splitTipCopy('Just one tip')).toEqual({ headline: 'Just one tip', subtext: '' });
   });
 
   it('existing cards with no onDismiss (chat) show no X', () => {

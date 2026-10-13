@@ -81,7 +81,7 @@ export function VitanaActionCard({
           }
         >
           <p className="text-sm font-bold text-foreground leading-tight line-clamp-2">{headline}</p>
-          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{subtext}</p>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{subtext}</p>
         </VitanaRecommendationCard>
       </div>
       {children}

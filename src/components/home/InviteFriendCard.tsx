@@ -55,7 +55,7 @@ export function InviteFriendCard({ onDismiss }: InviteFriendCardProps = {}) {
       <p className="text-sm font-bold text-foreground leading-tight line-clamp-2">
         {t('screens.downloadFlyer.inviteCardTitle')}
       </p>
-      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
         {t('screens.downloadFlyer.inviteCardBody')}
       </p>
     </VitanaRecommendationCard>

@@ -30,6 +30,8 @@ export interface VitanaCardActionButtonProps {
   onClick: () => void;
   disabled?: boolean;
   className?: string;
+  /** Extra icon classes (e.g. `rtl:-scale-x-100` for a direction-bearing icon). */
+  iconClassName?: string;
   'data-testid'?: string;
 }
 
@@ -41,6 +43,7 @@ export function VitanaCardActionButton({
   onClick,
   disabled,
   className,
+  iconClassName,
   'data-testid': testId,
 }: VitanaCardActionButtonProps) {
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -69,7 +72,7 @@ export function VitanaCardActionButton({
         className,
       )}
     >
-      <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <Icon className={cn('h-4 w-4 shrink-0', iconClassName)} aria-hidden="true" />
       {shape === 'pill' && <span className="truncate">{label}</span>}
     </button>
   );

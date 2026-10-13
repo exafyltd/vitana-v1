@@ -4,10 +4,10 @@
  * trend, and opens the existing VitanaIndexSheet overlay (the same
  * destination as the VitanaIndexChip elsewhere in the app) — no new routing.
  *
- * The widget (score circle + 3-bar trend chart) is a destination preview,
- * not a chart: only the score is live data. The 3 bars are a fixed
- * ascending/descending/flat shape picked by `index.trend` — a legible echo
- * of the real Index screen's dial, not a duplicate of its chart.
+ * VTID-05143: on the Unified Card System shell like every other card — the
+ * action button sits in the widget slot. The live score that used to sit in
+ * a score circle (with a decorative 3-bar trend shape) is now part of the
+ * subtext; the trend direction stays as the headline's arrow.
  */
 
 import { useState } from 'react';
@@ -19,33 +19,24 @@ import { VitanaRecommendationCard } from '@/components/vitana/VitanaRecommendati
 import { VitanaCardActionButton } from '@/components/vitana/VitanaCardActionButton';
 import { ACCENT_CLASSES, CARD_STYLE } from '@/components/vitana/vitana-card-catalog';
 import { cn } from '@/lib/utils';
-
-/** Fixed, decorative bar heights (%) per trend — never derived from real per-bar data. */
-const TREND_BARS: Record<'up' | 'down' | 'stable', number[]> = {
-  up: [35, 65, 100],
-  down: [100, 65, 35],
-  stable: [70, 70, 70],
-};
+import { fmtNumber } from '@/lib/locale-format';
 
 const TREND_STYLE = {
   up: {
     icon: TrendingUp,
     textClass: 'text-emerald-600 dark:text-emerald-400',
-    barClass: 'bg-emerald-400',
     headlineKey: 'screens.home.vitanaIndexUpHeadline',
     subtextKey: 'screens.home.vitanaIndexUpSubtext',
   },
   down: {
     icon: TrendingDown,
     textClass: 'text-amber-600 dark:text-amber-400',
-    barClass: 'bg-amber-400',
     headlineKey: 'screens.home.vitanaIndexDownHeadline',
     subtextKey: 'screens.home.vitanaIndexDownSubtext',
   },
   stable: {
     icon: Minus,
     textClass: 'text-foreground',
-    barClass: 'bg-slate-300 dark:bg-slate-600',
     headlineKey: 'screens.home.vitanaIndexStableHeadline',
     subtextKey: 'screens.home.vitanaIndexStableSubtext',
   },
@@ -78,7 +69,6 @@ export function VitanaIndexCard({ onDismiss }: VitanaIndexCardProps = {}) {
   const style = TREND_STYLE[index.trend];
   const TrendIcon = style.icon;
   const pct = Math.abs(weeklyChangePct(index.history));
-  const bars = TREND_BARS[index.trend];
 
   const openIndex = () => window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT));
 
@@ -97,36 +87,25 @@ export function VitanaIndexCard({ onDismiss }: VitanaIndexCardProps = {}) {
       }
       dismissLabel={t('screens.vitanaIdentity.dismissCard')}
       accentClassName={ACCENT_CLASSES[STYLE.accent].border}
+      widgetInteractive
       widget={
-        <div className="flex items-end gap-1">
-          <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-sky-300 shadow-sm">
-            <span className="text-xs font-bold leading-none text-emerald-900">{index.total}</span>
-          </div>
-          <div className="flex items-end gap-0.5 h-9">
-            {bars.map((height, i) => (
-              <div
-                key={i}
-                className={cn('w-1.5 rounded-t-sm', style.barClass)}
-                style={{ height: `${height}%` }}
-              />
-            ))}
-          </div>
-        </div>
+        <VitanaCardActionButton
+          shape={STYLE.shape}
+          accent={STYLE.accent}
+          icon={HeartPulse}
+          label={t('screens.vitanaIdentity.viewIndex')}
+          onClick={openIndex}
+        />
       }
     >
-      <p className={cn('flex items-center gap-1 text-sm font-bold leading-tight line-clamp-2', style.textClass)}>
-        <TrendIcon className="w-3.5 h-3.5 shrink-0" />
+      {/* Inline arrow (not a flex row) so line-clamp keeps working on the headline. */}
+      <p className="text-sm font-bold text-foreground leading-tight line-clamp-2">
+        <TrendIcon className={cn('inline-block h-3.5 w-3.5 me-1 align-text-bottom', style.textClass)} aria-hidden="true" />
         {t(style.headlineKey, { pct })}
       </p>
-      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(style.subtextKey)}</p>
-      <VitanaCardActionButton
-        className="mt-1"
-        shape={STYLE.shape}
-        accent={STYLE.accent}
-        icon={HeartPulse}
-        label={t('screens.vitanaIdentity.viewIndex')}
-        onClick={openIndex}
-      />
+      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+        {t('screens.home.vitanaIndexScoreSubtext', { score: fmtNumber(index.total), message: t(style.subtextKey) })}
+      </p>
     </VitanaRecommendationCard>
   );
 }

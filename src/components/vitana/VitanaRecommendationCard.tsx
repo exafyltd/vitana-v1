@@ -9,9 +9,15 @@
  * differs per card — position, spacing, and card height stay identical
  * because every caller feeds the same number of text rows into `children`.
  */
-import { type ReactNode, type KeyboardEvent } from 'react';
+import { type ReactNode, type KeyboardEvent, type SyntheticEvent } from 'react';
 import { X } from 'lucide-react';
 import { VitanaRecommendationHeader, type VitanaFeature } from '@/components/vitana/VitanaRecommendationHeader';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 /**
@@ -22,6 +28,11 @@ import { cn } from '@/lib/utils';
  * the box to grow.
  */
 const CARD_HEIGHT_CLASS = 'h-[138px]';
+
+const DISMISS_CLASS =
+  'absolute top-2 end-2 z-10 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors';
+
+const stop = (e: SyntheticEvent) => e.stopPropagation();
 
 export interface VitanaRecommendationCardProps {
   /** Destination feature — drives the header badge icon + label. */
@@ -47,6 +58,13 @@ export interface VitanaRecommendationCardProps {
   onDismiss?: () => void;
   dismissLabel?: string;
   /**
+   * VTID-05143: pacing choices behind the same X (the "Did you know" tour:
+   * this tip / not today / stop the tour). When given, the X opens a small
+   * menu with these items instead of calling `onDismiss`; the X keeps its
+   * position, size and icon, so the header stays identical on every card.
+   */
+  dismissMenu?: ReadonlyArray<{ label: string; onSelect: () => void }>;
+  /**
    * VTID-05143 Unified Card System: the card's accent tint (a start-edge
    * border from `ACCENT_CLASSES`). Added to the shell's own classes; the
    * shell, its height and its type stay the same for every card.
@@ -69,6 +87,7 @@ export function VitanaRecommendationCard({
   onOpen,
   onDismiss,
   dismissLabel,
+  dismissMenu,
   accentClassName,
   widgetInteractive,
   children,
@@ -92,17 +111,38 @@ export function VitanaRecommendationCard({
         accentClassName,
       )}
     >
-      {onDismiss && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDismiss();
-          }}
-          className="absolute top-2 end-2 z-10 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
-          aria-label={dismissLabel}
-        >
-          <X className="w-3.5 h-3.5" />
-        </button>
+      {dismissMenu && dismissMenu.length > 0 ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            onClick={stop}
+            onKeyDown={stop}
+            className={DISMISS_CLASS}
+            aria-label={dismissLabel}
+          >
+            <X className="w-3.5 h-3.5" />
+          </DropdownMenuTrigger>
+          {/* Portal content still bubbles React events to the card: stop them. */}
+          <DropdownMenuContent align="end" onClick={stop} onKeyDown={stop}>
+            {dismissMenu.map((item) => (
+              <DropdownMenuItem key={item.label} onSelect={item.onSelect}>
+                {item.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        onDismiss && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDismiss();
+            }}
+            className={DISMISS_CLASS}
+            aria-label={dismissLabel}
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )
       )}
 
       <VitanaRecommendationHeader feature={feature} className="pe-6 mb-1" />

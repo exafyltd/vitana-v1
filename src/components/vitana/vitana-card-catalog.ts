@@ -13,7 +13,11 @@
  * category-3, rose 330° → category-4, sky 199° → category-7, violet 262° →
  * sys-feature-new, indigo 250° → sys-feature-tip, red-orange 8° →
  * sys-autopilot, purple 280° → calendar-primary, discover 265° →
- * domain-discover. Orb steel-blue has no mid-tone token, so it uses primary.
+ * domain-discover, orb steel-blue 199° → sys-vitana-accent (the Vitana
+ * system accent; `primary` is near-black/near-white, not a hue).
+ *
+ * The accent shows twice on every card, identically: the action button's
+ * fill and a 4 px start-edge bar at 70 % (VTID-05143 design review).
  */
 
 export const ENRICHMENT_CARD_TYPES = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'E10', 'E11'] as const;
@@ -59,27 +63,27 @@ export type CardAccent =
 
 export type CardButtonShape = 'round' | 'pill' | 'rounded-square';
 
-/** Token classes per accent: the action button fill and the card's start-edge tint. */
+/** Token classes per accent: the action button fill and the card's 4 px start-edge accent bar. */
 export const ACCENT_CLASSES: Record<CardAccent, { button: string; border: string }> = {
-  amber: { button: 'bg-category-5 hover:bg-category-5/90', border: 'border-s-2 border-s-category-5/30' },
-  orb: { button: 'bg-primary hover:bg-primary/90', border: 'border-s-2 border-s-primary/30' },
-  rose: { button: 'bg-category-4 hover:bg-category-4/90', border: 'border-s-2 border-s-category-4/30' },
-  teal: { button: 'bg-category-1 hover:bg-category-1/90', border: 'border-s-2 border-s-category-1/30' },
-  blue: { button: 'bg-category-3 hover:bg-category-3/90', border: 'border-s-2 border-s-category-3/30' },
-  purple: { button: 'bg-calendar-primary hover:bg-calendar-primary/90', border: 'border-s-2 border-s-calendar-primary/30' },
-  sky: { button: 'bg-category-7 hover:bg-category-7/90', border: 'border-s-2 border-s-category-7/30' },
-  red: { button: 'bg-sys-autopilot-accent hover:bg-sys-autopilot-accent/90', border: 'border-s-2 border-s-sys-autopilot-accent/30' },
+  amber: { button: 'bg-category-5 hover:bg-category-5/90', border: 'border-s-4 border-s-category-5/70' },
+  orb: { button: 'bg-sys-vitana-accent hover:bg-sys-vitana-accent/90', border: 'border-s-4 border-s-sys-vitana-accent/70' },
+  rose: { button: 'bg-category-4 hover:bg-category-4/90', border: 'border-s-4 border-s-category-4/70' },
+  teal: { button: 'bg-category-1 hover:bg-category-1/90', border: 'border-s-4 border-s-category-1/70' },
+  blue: { button: 'bg-category-3 hover:bg-category-3/90', border: 'border-s-4 border-s-category-3/70' },
+  purple: { button: 'bg-calendar-primary hover:bg-calendar-primary/90', border: 'border-s-4 border-s-calendar-primary/70' },
+  sky: { button: 'bg-category-7 hover:bg-category-7/90', border: 'border-s-4 border-s-category-7/70' },
+  red: { button: 'bg-sys-autopilot-accent hover:bg-sys-autopilot-accent/90', border: 'border-s-4 border-s-sys-autopilot-accent/70' },
   violet: {
     button: 'bg-sys-feature-new-accent hover:bg-sys-feature-new-accent/90',
-    border: 'border-s-2 border-s-sys-feature-new-accent/30',
+    border: 'border-s-4 border-s-sys-feature-new-accent/70',
   },
   indigo: {
     button: 'bg-sys-feature-tip-accent hover:bg-sys-feature-tip-accent/90',
-    border: 'border-s-2 border-s-sys-feature-tip-accent/30',
+    border: 'border-s-4 border-s-sys-feature-tip-accent/70',
   },
   discover: {
     button: 'bg-domain-discover-accent hover:bg-domain-discover-accent/90',
-    border: 'border-s-2 border-s-domain-discover-accent/30',
+    border: 'border-s-4 border-s-domain-discover-accent/70',
   },
 };
 
