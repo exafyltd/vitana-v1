@@ -99,8 +99,6 @@
       "openProfile": "View {name}'s profile",
       "pinned": "Pinned",
       "selectDesc": "Pick a conversation from the list to keep writing."
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }
