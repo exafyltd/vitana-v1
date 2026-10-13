@@ -175,7 +175,9 @@ describe('VTID-05170 source contract', () => {
     const de = JSON.parse(fs.readFileSync(path.join(__dirname, '../../i18n/de/timeline.json'), 'utf8')).timeline;
     const en = JSON.parse(fs.readFileSync(path.join(__dirname, '../../i18n/en/timeline.json'), 'utf8')).timeline;
     expect(Object.keys(de.topic).length).toBeGreaterThanOrEqual(80);
-    expect(Object.keys(en.topic).sort()).toEqual(Object.keys(de.topic).sort());
+    // `_pending_review` is translation-review metadata the i18n bot adds, not a topic.
+    const topics = (o: Record<string, unknown>) => Object.keys(o).filter((k) => !k.startsWith("_")).sort();
+    expect(topics(en.topic)).toEqual(topics(de.topic));
     for (const v of Object.values(de.topic) as string[]) expect(v).not.toMatch(/\b(Sie|Ihr|Ihnen)\b/);
   });
 });
