@@ -35,7 +35,7 @@ export function EmptyStatePanel({
           <div className="flex gap-2 justify-center">
             {onRetry && (
               <Button onClick={onRetry} size="sm">
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 {t('screens.dev.retryConnection')}
               </Button>
             )}
@@ -66,7 +66,7 @@ export function EmptyStatePanel({
           <div className="flex gap-2 justify-center">
             {onForceReconnect && (
               <Button onClick={onForceReconnect} size="sm">
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 {t('screens.dev.forceReconnect')}
               </Button>
             )}

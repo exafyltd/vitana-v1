@@ -199,7 +199,7 @@ export default withScreenId(function Memory() {
           <ExpandableSearchButton placeholder={t('screens.memory.searchMemoriesInsightsTimeline')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.addMemory')}
           </Button>
         </UtilityActionButton>

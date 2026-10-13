@@ -65,15 +65,15 @@ export function GeminiApiKeySetup() {
             </div>
             <h3 className="font-semibold">{t('screens.admin.getYourApiKey')}</h3>
           </div>
-          <p className="text-sm text-muted-foreground ml-8">
+          <p className="text-sm text-muted-foreground ms-8">
             {t('screens.admin.visitGoogleAiStudioGenerateYour')}
           </p>
           <Button
             variant="outline"
-            className="ml-8"
+            className="ms-8"
             onClick={() => window.open("https://aistudio.google.com/app/apikey", "_blank")}
           >
-            <ExternalLink className="h-4 w-4 mr-2" />
+            <ExternalLink className="h-4 w-4 me-2" />
             {t('screens.admin.openGoogleAiStudio')}
           </Button>
         </div>
@@ -86,7 +86,7 @@ export function GeminiApiKeySetup() {
             </div>
             <h3 className="font-semibold">{t('screens.admin.testYourApiKey')}</h3>
           </div>
-          <div className="ml-8 space-y-3">
+          <div className="ms-8 space-y-3">
             <div className="flex gap-2">
               <Input
                 type="password"
@@ -98,7 +98,7 @@ export function GeminiApiKeySetup() {
               <Button onClick={testConnection} disabled={isTesting || !apiKey.trim()}>
                 {isTesting ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.admin.testing')}
+                    <Loader2 className="h-4 w-4 me-2 animate-spin" />{t('screens.admin.testing')}
                   </>
                 ) : (
                   "Test"
@@ -132,7 +132,7 @@ export function GeminiApiKeySetup() {
             </div>
             <h3 className="font-semibold">{t('screens.admin.addSupabaseSecrets')}</h3>
           </div>
-          <div className="ml-8 space-y-3">
+          <div className="ms-8 space-y-3">
             <p className="text-sm text-muted-foreground">
               {t('screens.admin.forSecurityStoreYourApiKey')}
             </p>
@@ -159,7 +159,7 @@ export function GeminiApiKeySetup() {
                   )
                 }
               >
-                <ExternalLink className="h-4 w-4 mr-2" />
+                <ExternalLink className="h-4 w-4 me-2" />
                 {t('screens.admin.openSupabaseEdgeFunctionsSettings')}
               </Button>
             </div>
@@ -174,7 +174,7 @@ export function GeminiApiKeySetup() {
             </div>
             <h3 className="font-semibold">{t('screens.admin.testIntegration')}</h3>
           </div>
-          <p className="text-sm text-muted-foreground ml-8">{t('screens.admin.onceYouVeAddedSecretClick')}
+          <p className="text-sm text-muted-foreground ms-8">{t('screens.admin.onceYouVeAddedSecretClick')}
           </p>
         </div>
 

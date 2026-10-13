@@ -71,7 +71,7 @@ const OfferCardBase = React.forwardRef<HTMLDivElement, OfferCardProps>(
               {offer.title}
             </h4>
             {offer.rating && (
-              <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0 ml-2">
+              <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0 ms-2">
                 <Star className="w-3 h-3 fill-calendar-accent text-calendar-accent" />
                 {offer.rating}
               </div>

@@ -397,7 +397,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
+          className="absolute end-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
           aria-label={t('screens.feedback.attachScreenshots')}
         >
           <Plus className="h-5 w-5" />
@@ -432,7 +432,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
               <img src={url} alt={`Attachment ${i + 1}`} className="w-full h-full object-cover" />
               <button
                 onClick={() => removeAttachment(i)}
-                className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
+                className="absolute top-0 end-0 p-0.5 bg-destructive text-destructive-foreground rounded-es-lg"
               >
                 <X className="h-3 w-3" />
               </button>

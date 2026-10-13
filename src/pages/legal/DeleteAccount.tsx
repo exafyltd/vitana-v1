@@ -127,7 +127,7 @@ const DeleteAccount = () => {
             <CardContent className="space-y-4">
               <div className="rounded-lg bg-destructive/5 p-4 space-y-2 text-sm text-foreground/80">
                 <p className="font-medium text-foreground">{t('screens.legal.whenYouDeleteYourAccountWe')}</p>
-                <ul className="list-disc pl-5 space-y-1">
+                <ul className="list-disc ps-5 space-y-1">
                   <li>{t('screens.legal.yourProfilePreferencesPersonalData')}</li>
                   <li>{t('screens.legal.chatMessagesAiConversationsDiaryEntries')}</li>
                   <li>{t('screens.legal.uploadedPhotosVideosFiles')}</li>

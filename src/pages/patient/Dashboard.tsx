@@ -44,7 +44,7 @@ function RecentResultsCard() {
         )}
         <Button asChild variant="outline" className="w-full justify-start">
           <Link to="/patient/results">
-            <TestTube className="mr-2 h-4 w-4" />
+            <TestTube className="me-2 h-4 w-4" />
             {t('screens.patient.results.viewAll')}
           </Link>
         </Button>
@@ -174,15 +174,15 @@ export default function PatientDashboard() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
-              <Calendar className="mr-2 h-4 w-4" />
+              <Calendar className="me-2 h-4 w-4" />
               {t('screens.patient.scheduleAppointment')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
-              <TestTube className="mr-2 h-4 w-4" />
+              <TestTube className="me-2 h-4 w-4" />
               {t('screens.patient.viewTestResults')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
-              <Heart className="mr-2 h-4 w-4" />
+              <Heart className="me-2 h-4 w-4" />
               {t('screens.patient.logHealthData')}
             </Button>
           </CardContent>

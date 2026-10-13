@@ -162,7 +162,7 @@ export default function CreatorOnboarded() {
                   <div className="bg-green-100 rounded-full p-2 mt-0.5">
                     <DollarSign className="w-5 h-5 text-green-600" />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="text-start flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.youKeep90')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.earn90EveryPaidLiveRoom')}
@@ -174,7 +174,7 @@ export default function CreatorOnboarded() {
                   <div className="bg-blue-100 rounded-full p-2 mt-0.5">
                     <CheckCircle className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="text-start flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.instantAccess')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.startCreatingPaidRoomsImmediately')}
@@ -186,7 +186,7 @@ export default function CreatorOnboarded() {
                   <div className="bg-purple-100 rounded-full p-2 mt-0.5">
                     <Sparkles className="w-5 h-5 text-purple-600" />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="text-start flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.directDeposits')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.earningsDepositedDirectlyYourBankAccount')}
@@ -235,7 +235,7 @@ export default function CreatorOnboarded() {
                 </p>
               </div>
 
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-left">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-start">
                 <p className="font-medium text-yellow-900 mb-2">{t('screens.creatoronboarded.whatSNext')}</p>
                 <ul className="space-y-1 text-yellow-700">
                   <li>{t('screens.creatoronboarded.stripeVerifyingYourAccountInformation')}</li>

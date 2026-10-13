@@ -262,7 +262,7 @@ export default function Search() {
                     <Play className="h-6 w-6 text-muted-foreground" />
                   )}
                   {result.duration && (
-                    <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                    <div className="absolute bottom-1 end-1 bg-black/70 text-white text-xs px-1 rounded">
                       {result.duration}
                     </div>
                   )}
@@ -314,7 +314,7 @@ export default function Search() {
                   <p className="text-sm text-foreground/80 mb-3">{result.description}</p>
                   <div className="flex justify-end">
                     <Button size="sm" variant="outline">
-                      <BookOpen className="h-4 w-4 mr-2" />
+                      <BookOpen className="h-4 w-4 me-2" />
                       {t('screens.search.learnMore')}
                     </Button>
                   </div>
@@ -416,13 +416,13 @@ export default function Search() {
         <div className="mb-8">
           <form onSubmit={handleSearch} className="flex gap-2 mb-4">
             <div className="relative flex-1">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <SearchIcon className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder={t('screens.search.searchMembersGroupsContent')}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-10"
+                className="ps-10"
               />
             </div>
             <Button type="submit" disabled={loading}>
@@ -441,31 +441,31 @@ export default function Search() {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="all" className="flex items-center gap-2">
               {t('screens.search.all')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('all')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="people" className="flex items-center gap-2">
               {t('screens.search.people')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('people')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="groups" className="flex items-center gap-2">
               {t('screens.search.groups')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('groups')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               {t('screens.search.content')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('content')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="health" className="flex items-center gap-2">
               {t('screens.search.health')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('health')}
               </Badge>
             </TabsTrigger>

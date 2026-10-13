@@ -154,10 +154,10 @@ export default function GroupDetail() {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="absolute top-4 left-4 text-white hover:bg-white/20"
+            className="absolute top-4 start-4 text-white hover:bg-white/20"
             onClick={() => navigate(-1)}
           >
-            <ArrowLeft className="h-4 w-4 mr-1" /> {translate('groupDetail.back', 'Back')}
+            <ArrowLeft className="h-4 w-4 me-1" /> {translate('groupDetail.back', 'Back')}
           </Button>
         </div>
 

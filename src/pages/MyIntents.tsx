@@ -154,14 +154,14 @@ export default function MyIntents() {
             ) : (
               <p className="text-xs text-muted-foreground mt-1">{t('screens.myintents.lengthPer_kind_slot_capSlotsUsed', { length: intents.length, PER_KIND_SLOT_CAP })}
                 {intents.length >= PER_KIND_SLOT_CAP && (
-                  <span className="ml-2 text-amber-700">{t('screens.myintents.capReachedCloseOnePostNew')} {KIND_TABS.find(k => k.value === tab)?.label.toLowerCase()}</span>
+                  <span className="ms-2 text-amber-700">{t('screens.myintents.capReachedCloseOnePostNew')} {KIND_TABS.find(k => k.value === tab)?.label.toLowerCase()}</span>
                 )}
               </p>
             )
           )}
         </div>
         <Button onClick={() => setComposerOpen(true)} size="sm">
-          <Plus className="h-4 w-4 mr-1" /> {t('screens.myintents.new')}
+          <Plus className="h-4 w-4 me-1" /> {t('screens.myintents.new')}
         </Button>
       </div>
 
