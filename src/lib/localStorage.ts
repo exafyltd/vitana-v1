@@ -1,5 +1,3 @@
-import { TenantType } from "@/hooks/useTenant";
-
 type Environment = "dev" | "staging" | "prod";
 
 function getEnvironment(): Environment {
@@ -19,7 +17,7 @@ function createNamespacedKey(tenant: string, module: string, key: string): strin
 }
 
 export function getLocalStorageItem(
-  tenant: TenantType | "global" | string,
+  tenant: string,
   module: string, 
   key: string,
   defaultValue?: string
@@ -34,7 +32,7 @@ export function getLocalStorageItem(
 }
 
 export function setLocalStorageItem(
-  tenant: TenantType | "global" | string,
+  tenant: string,
   module: string,
   key: string, 
   value: string
@@ -48,7 +46,7 @@ export function setLocalStorageItem(
 }
 
 export function removeLocalStorageItem(
-  tenant: TenantType,
+  tenant: string,
   module: string,
   key: string
 ): void {
@@ -60,7 +58,7 @@ export function removeLocalStorageItem(
   }
 }
 
-export function clearTenantStorage(tenant: TenantType): void {
+export function clearTenantStorage(tenant: string): void {
   try {
     const env = getEnvironment();
     const prefix = `vitana::${tenant}::${env}::`;

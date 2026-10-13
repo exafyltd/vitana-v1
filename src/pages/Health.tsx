@@ -384,7 +384,7 @@ export default withScreenId(function Health() {
                   onClick={() => navigate('/autopilot')}
                   className="text-sm w-full justify-center"
                 >{t('screens.health.viewMyJourney')}
-                  <ChevronRight className="w-4 h-4 ml-0.5" />
+                  <ChevronRight className="w-4 h-4 ms-0.5" />
                 </Button>
               </div>
             </div>
@@ -512,7 +512,7 @@ export default withScreenId(function Health() {
               size="sm"
               onClick={() => setHealthActionsOpen(true)}
             >
-              <Plus className="w-4 h-4 mr-2" />{t('screens.health.healthActions')}
+              <Plus className="w-4 h-4 me-2" />{t('screens.health.healthActions')}
             </Button>
           </UtilityActionButton>
 
@@ -544,7 +544,7 @@ export default withScreenId(function Health() {
               onClick={() => navigate('/autopilot')}
               className="text-sm"
             >{t('screens.health.viewMyJourney')}
-              <ChevronRight className="w-4 h-4 ml-0.5" />
+              <ChevronRight className="w-4 h-4 ms-0.5" />
             </Button>
           </div>
 

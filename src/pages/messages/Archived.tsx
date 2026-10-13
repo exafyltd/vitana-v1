@@ -82,7 +82,7 @@ export default function Archived() {
               />
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setArchiveActionOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-4 h-4 me-2" />
                 {t('screens.messages.archiveActions')}
               </Button>
             </UtilityActionButton>
@@ -110,8 +110,8 @@ export default function Archived() {
                     <CardHeader className="border-b">
                       <h2 className="font-semibold mb-3">{t('screens.messages.archivedMessages')}</h2>
                       <div className="relative mb-4">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input placeholder={t('screens.messages.searchArchives')} className="pl-10" />
+                        <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder={t('screens.messages.searchArchives')} className="ps-10" />
                       </div>
                       <div className="space-y-1">
                         {categories.map((category) => (
@@ -187,7 +187,7 @@ export default function Archived() {
                           <h4 className="font-medium mb-2">{t('screens.messages.quickActions')}</h4>
                           <div className="space-y-2">
                             <Button variant="outline" className="w-full justify-start">
-                              <Archive className="h-4 w-4 mr-2" />
+                              <Archive className="h-4 w-4 me-2" />
                               {t('screens.messages.archiveCurrentChat')}
                             </Button>
                             <Button variant="outline" className="w-full justify-start">

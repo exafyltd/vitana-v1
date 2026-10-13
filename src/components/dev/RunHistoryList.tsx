@@ -106,15 +106,15 @@ export function RunHistoryList() {
                 </div>
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline">
-                    <FileText className="w-3 h-3 mr-2" />
+                    <FileText className="w-3 h-3 me-2" />
                     {t('screens.dev.viewFullLog')}
                   </Button>
                   <Button size="sm" variant="outline">
-                    <Play className="w-3 h-3 mr-2" />
+                    <Play className="w-3 h-3 me-2" />
                     {t('screens.dev.rerun')}
                   </Button>
                   <Button size="sm" variant="outline">
-                    <Copy className="w-3 h-3 mr-2" />
+                    <Copy className="w-3 h-3 me-2" />
                     {t('screens.dev.duplicateAsTemplate')}
                   </Button>
                 </div>

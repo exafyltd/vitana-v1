@@ -124,21 +124,21 @@ export default withScreenId(function DataConsent() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="default">
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {t('screens.sharing.manageAccess')}
-                  <ChevronDown className="w-4 h-4 ml-2" />
+                  <ChevronDown className="w-4 h-4 ms-2" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuItem onClick={() => setGrantAccessOpen(true)}>
-                  <Shield className="w-4 h-4 mr-2" />
+                  <Shield className="w-4 h-4 me-2" />
                   <div className="flex flex-col">
                     <span className="font-medium">{t('screens.sharing.grantPermission')}</span>
                     <span className="text-xs text-muted-foreground">{t('screens.sharing.allowDataAccessEntity')}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setCreatePackageOpen(true)}>
-                  <Package className="w-4 h-4 mr-2" />
+                  <Package className="w-4 h-4 me-2" />
                   <div className="flex flex-col">
                     <span className="font-medium">{t('screens.sharing.createDataPackage')}</span>
                     <span className="text-xs text-muted-foreground">{t('screens.sharing.bundleDataForSharing')}</span>
@@ -146,7 +146,7 @@ export default withScreenId(function DataConsent() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setPrivacySettingsOpen(true)}>
-                  <Database className="w-4 h-4 mr-2" />
+                  <Database className="w-4 h-4 me-2" />
                   <div className="flex flex-col">
                     <span className="font-medium">{t('screens.sharing.privacySettings')}</span>
                     <span className="text-xs text-muted-foreground">{t('screens.sharing.configureGlobalControls')}</span>

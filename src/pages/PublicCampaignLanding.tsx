@@ -16,6 +16,7 @@ import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 import { formatDate } from '@/lib/locale-format';
 import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
+import { currentRegistrySync, tenantLoginRoute } from '@/lib/tenant-registry';
 interface PublicCampaignData {
   id: string;
   name: string;
@@ -162,16 +163,11 @@ export default function PublicCampaignLanding() {
     );
   };
 
-  // Helper to get tenant-specific login route
-  const getTenantLoginRoute = (tenantSlug: string | null): string => {
-    const tenantRoutes: Record<string, string> = {
-      maxina: '/maxina',
-      alkalma: '/alkalma',
-    };
-    // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
-    const slug = canonicalTenantSlug(tenantSlug);
-    return slug && tenantRoutes[slug] ? tenantRoutes[slug] : '/maxina';
-  };
+  // Helper to get tenant-specific login route.
+  // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
+  // VTID-05151: any registry tenant has its own portal; anything else keeps the /maxina default.
+  const getTenantLoginRoute = (tenantSlug: string | null): string =>
+    tenantLoginRoute(canonicalTenantSlug(tenantSlug), currentRegistrySync(), '/maxina');
 
   // Try to detect linked event from campaign metadata
   const linkedEventId = campaign?.metadata?.event_id || campaign?.metadata?.eventId || null;

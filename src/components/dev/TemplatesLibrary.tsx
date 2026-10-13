@@ -101,12 +101,12 @@ export function TemplatesLibrary() {
       {/* Filters */}
       <div className="flex gap-3 flex-wrap items-center">
         <div className="relative flex-1 min-w-[250px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder={t('screens.dev.searchTemplates')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
+            className="ps-9"
           />
         </div>
         <div className="flex gap-2">
@@ -144,7 +144,7 @@ export function TemplatesLibrary() {
               </div>
               <div className="flex gap-2">
                 <Button size="sm" className="flex-1">
-                  <Play className="w-3 h-3 mr-2" />
+                  <Play className="w-3 h-3 me-2" />
                   {t('screens.dev.runNow')}
                 </Button>
                 <Button size="sm" variant="outline">

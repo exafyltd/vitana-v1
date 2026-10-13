@@ -252,15 +252,15 @@ export const ReminderInterruptOverlay: React.FC = () => {
         ) : null}
         <div className="flex flex-col gap-2 mt-4">
           <Button onClick={onComplete} disabled={busy} size="lg" className="w-full">
-            <Check className="h-4 w-4 mr-2" />
+            <Check className="h-4 w-4 me-2" />
             {t('screens.reminders.markDone')}
           </Button>
           <Button onClick={onSnooze} disabled={busy} size="lg" variant="outline" className="w-full">
-            <Clock className="h-4 w-4 mr-2" />
+            <Clock className="h-4 w-4 me-2" />
             {t('screens.reminders.snooze10Min')}
           </Button>
           <Button onClick={onDismiss} disabled={busy} size="lg" variant="ghost" className="w-full">
-            <X className="h-4 w-4 mr-2" />
+            <X className="h-4 w-4 me-2" />
             {t('screens.reminders.dismiss')}
           </Button>
         </div>

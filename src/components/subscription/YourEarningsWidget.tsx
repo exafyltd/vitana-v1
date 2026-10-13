@@ -61,7 +61,7 @@ export function YourEarningsWidget({ data }: YourEarningsWidgetProps) {
         {cashEur > 0 && (
           <Button onClick={handleWithdraw} disabled={portal.isPending} variant="outline" size="sm" className="w-full">
             {t('billing.earnings.withdraw')}
-            <ArrowUpRight className="h-4 w-4 ml-1" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 ms-1" aria-hidden="true" />
           </Button>
         )}
       </CardContent>

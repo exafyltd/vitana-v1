@@ -411,7 +411,7 @@ export default function AutopilotDashboard() {
 
   const keepCheckingIn = (
     <div className="text-center text-sm text-muted-foreground pb-4">
-      <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
+      <Sparkles className="w-4 h-4 inline-block me-1 align-text-top" />
       {t("screens.autopilotdashboard.keepCheckingIn")}
     </div>
   );

@@ -160,7 +160,7 @@ export function AgentProposalCard({
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>{t("universalCart.agent.safetyTitle")}</AlertTitle>
             <AlertDescription>
-              <ul className="list-disc pl-4 space-y-0.5">
+              <ul className="list-disc ps-4 space-y-0.5">
                 {safetyFlags.map((flag) => (
                   <li key={flag} className="break-words">
                     {flag}
@@ -192,7 +192,7 @@ export function AgentProposalCard({
               onClick={() => setKept(true)}
               disabled={kept}
             >
-              <Check className="mr-2 h-4 w-4" />
+              <Check className="me-2 h-4 w-4" />
               {t("universalCart.agent.keep")}
             </Button>
             <Button
@@ -202,7 +202,7 @@ export function AgentProposalCard({
               onClick={() => onRemove(item)}
               disabled={isRemoving}
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="me-2 h-4 w-4" />
               {t("universalCart.agent.remove")}
             </Button>
           </div>

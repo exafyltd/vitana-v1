@@ -375,7 +375,7 @@ function DiscoverInner() {
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 
-                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                      className="absolute -top-1 -end-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                     >
                       {pendingCount}
                     </Badge>
@@ -417,7 +417,7 @@ function DiscoverInner() {
                   onClick={() => setMasterActionOpen(true)}
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="ml-2">{t('screens.discover.action')}</span>
+                  <span className="ms-2">{t('screens.discover.action')}</span>
                 </Button>
               )}
             </div>
@@ -497,10 +497,10 @@ function DiscoverInner() {
                             alt={rec.title}
                             className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
-                          <Badge className="absolute top-2 left-2 bg-purple-500 text-white">
+                          <Badge className="absolute top-2 start-2 bg-purple-500 text-white">
                             {rec.badge}
                           </Badge>
-                          <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
+                          <div className="absolute top-2 end-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
                             <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
                           </div>
                         </div>
@@ -675,7 +675,7 @@ function DiscoverInner() {
                             alt={item.title}
                             className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
-                          <Badge className="absolute top-2 left-2 bg-green-500 text-white">{t('screens.discover.earnCommission', { commission: item.commission })}</Badge>
+                          <Badge className="absolute top-2 start-2 bg-green-500 text-white">{t('screens.discover.earnCommission', { commission: item.commission })}</Badge>
                         </div>
                         <CardContent className={cn("p-4", isMobile && "p-3")}>
                           <h3 className={cn("font-semibold mb-2 group-hover:text-primary transition-colors", isMobile && "text-sm")}>
@@ -689,7 +689,7 @@ function DiscoverInner() {
                           <div className="flex items-center justify-between mb-3">
                             <span className={cn("font-bold", isMobile ? "text-base" : "text-lg")}>{item.price}</span>
                             <div className="text-xs text-muted-foreground">
-                              <Users className="h-3 w-3 inline mr-1" />{t('screens.discover.sharesShares', { shares: item.shares })}
+                              <Users className="h-3 w-3 inline me-1" />{t('screens.discover.sharesShares', { shares: item.shares })}
                             </div>
                           </div>
                           <div className="bg-green-50 dark:bg-green-950/30 p-2 rounded-lg mb-3">

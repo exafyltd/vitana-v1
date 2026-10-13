@@ -182,7 +182,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                 className="w-full justify-start"
                 onClick={onRetryAll}
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 {t('screens.dev.retryAllConnections')}
               </Button>
               <Button
@@ -190,7 +190,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                 className="w-full justify-start"
                 onClick={copyDiagnostics}
               >
-                <Copy className="w-4 h-4 mr-2" />
+                <Copy className="w-4 h-4 me-2" />
                 {t('screens.dev.copyDiagnosticInfo')}
               </Button>
               <Button
@@ -203,7 +203,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ExternalLink className="w-4 h-4 mr-2" />
+                  <ExternalLink className="w-4 h-4 me-2" />
                   {t('screens.dev.openDocumentation')}
                 </a>
               </Button>

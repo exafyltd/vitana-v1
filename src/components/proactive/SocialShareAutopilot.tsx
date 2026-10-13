@@ -141,7 +141,7 @@ export function SocialShareAutopilot() {
             size="sm"
             onClick={toggleAutopilot}
           >
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Sparkles className="h-4 w-4 me-2" />
             {autoShareEnabled ? 'Enabled' : 'Enable'}
           </Button>
         </CardTitle>

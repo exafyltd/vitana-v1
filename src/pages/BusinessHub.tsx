@@ -127,7 +127,7 @@ export default function BusinessHub() {
           ...item,
           indicator: (
             <span 
-              className="ml-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/15"
+              className="ms-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/15"
               aria-hidden="true"
             />
           )
@@ -215,7 +215,7 @@ export default function BusinessHub() {
                     {pendingCount > 0 && (
                       <Badge 
                         variant="destructive" 
-                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                        className="absolute -top-1 -end-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                       >
                         {pendingCount}
                       </Badge>
@@ -551,7 +551,7 @@ export default function BusinessHub() {
               {pendingCount > 0 && (
                 <Badge 
                   variant="destructive" 
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs z-10"
+                  className="absolute -top-2 -end-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs z-10"
                 >
                   {pendingCount}
                 </Badge>
@@ -565,7 +565,7 @@ export default function BusinessHub() {
               
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                <div className="absolute top-full start-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
                   <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.businesshub.latestActions')}</div>
                   {latestActions.map((action) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
@@ -606,7 +606,7 @@ export default function BusinessHub() {
               size="sm"
               onClick={() => setShowBusinessTypeSelector(true)}
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.businesshub.business')}
             </Button>
           </UtilityActionButton>
