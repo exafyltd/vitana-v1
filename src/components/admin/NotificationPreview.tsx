@@ -40,7 +40,7 @@ export function NotificationPreview({
                 <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                   Vitana
                 </span>
-                <span className="ml-auto text-xs text-muted-foreground">{t('screens.admin.now')}</span>
+                <span className="ms-auto text-xs text-muted-foreground">{t('screens.admin.now')}</span>
               </div>
               <p className="text-sm font-semibold leading-tight">
                 {title || "Notification Title"}

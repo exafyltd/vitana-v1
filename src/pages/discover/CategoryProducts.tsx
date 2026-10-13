@@ -135,7 +135,7 @@ export default function CategoryProducts() {
             type="button"
             onClick={() => navigate(-1)}
             aria-label={translate("discover.back")}
-            className="p-1 -ml-1 shrink-0"
+            className="p-1 -ms-1 shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>

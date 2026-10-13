@@ -214,7 +214,7 @@ export default function MobileSettings() {
                     </p>
                     {items.map((cat) => (
                       <div key={cat.id} className="flex items-center justify-between py-2.5">
-                        <div className="flex-1 min-w-0 mr-3">
+                        <div className="flex-1 min-w-0 me-3">
                           <span className="text-sm text-foreground/80 block">{cat.display_name}</span>
                           {cat.description && (
                             <p className="text-xs text-muted-foreground mt-0.5 truncate">{cat.description}</p>
@@ -286,7 +286,7 @@ export default function MobileSettings() {
                 { title: "Location Data", desc: "Share approximate location", defaultChecked: false },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
-                  <div className="flex-1 min-w-0 mr-3">
+                  <div className="flex-1 min-w-0 me-3">
                     <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                     <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
@@ -319,7 +319,7 @@ export default function MobileSettings() {
                   { title: "Third-party Integrations", desc: "Share data with connected apps and services", defaultChecked: false },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-2.5">
-                    <div className="flex-1 min-w-0 mr-3">
+                    <div className="flex-1 min-w-0 me-3">
                       <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                       <p className="text-xs text-muted-foreground">{item.desc}</p>
                     </div>
@@ -335,7 +335,7 @@ export default function MobileSettings() {
                   <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.aiDataSharing')}</h3>
                 </div>
                 <div className="flex items-center justify-between py-2.5">
-                  <div className="flex-1 min-w-0 mr-3">
+                  <div className="flex-1 min-w-0 me-3">
                     <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.shareDataWithAiProvider')}</h4>
                     <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.allowPersonalDataSentThirdpartyAi')}</p>
                   </div>
@@ -347,7 +347,7 @@ export default function MobileSettings() {
                     }}
                   />
                 </div>
-                <div className="text-xs text-muted-foreground space-y-1 border-l-2 border-muted pl-3">
+                <div className="text-xs text-muted-foreground space-y-1 border-s-2 border-muted ps-3">
                   <p><strong>{t('screens.mobilesettings.data')}</strong> {t('screens.mobilesettings.voiceTranscriptsPromptsChatDiaryWellness')}</p>
                   <p><strong>{t('screens.mobilesettings.recipients')}</strong> {t('screens.mobilesettings.googleGeminiAiCloudAi')}</p>
                   <p><strong>{t('screens.mobilesettings.purpose')}</strong> {t('screens.mobilesettings.aiResponsesVoiceGreetingsHealthCoaching')}</p>
@@ -383,28 +383,28 @@ export default function MobileSettings() {
                 <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.security')}</h3>
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.passwordProtection')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.lastChanged30DaysAgo')}</p>
                 </div>
                 <Button variant="outline" size="sm">{t('screens.mobilesettings.change')}</Button>
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.twofactorAuthentication')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.addExtraLayerSecurity')}</p>
                 </div>
                 <Switch />
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.biometricLogin')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.useFingerprintFaceRecognition')}</p>
                 </div>
                 <Switch />
               </div>
               <div className="flex items-center justify-between py-2.5">
-                <div className="flex-1 min-w-0 mr-3">
+                <div className="flex-1 min-w-0 me-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.loginAlerts')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.getNotifiedNewLogins')}</p>
                 </div>
@@ -473,7 +473,7 @@ export default function MobileSettings() {
                 { title: "Smooth Scrolling", desc: "Enhanced page navigation", defaultChecked: true },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
-                  <div className="flex-1 min-w-0 mr-3">
+                  <div className="flex-1 min-w-0 me-3">
                     <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                     <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
@@ -603,7 +603,7 @@ export default function MobileSettings() {
           <div className="pt-4">
             <button
               onClick={() => navigate('/delete-account')}
-              className="w-full flex items-center gap-4 rounded-2xl px-4 py-4 transition-all duration-150 text-left bg-destructive/5 hover:bg-destructive/10 border border-destructive/20"
+              className="w-full flex items-center gap-4 rounded-2xl px-4 py-4 transition-all duration-150 text-start bg-destructive/5 hover:bg-destructive/10 border border-destructive/20"
             >
               <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-destructive/10">
                 <Trash2 className="w-4.5 h-4.5 text-destructive" />

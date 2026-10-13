@@ -218,7 +218,7 @@ export default withScreenId(function Plans() {
               setWizardOpen(true);
             }}
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.health.generateNewPlan')}
           </Button>
           </UtilityActionButton>

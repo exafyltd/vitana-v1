@@ -35,3 +35,12 @@ on the median of three passes with the same budgets, and pause merges for the fi
 journey three times on the same guarded page (storage, Cache Storage and the in-test image cache reset between
 passes; sign-in kept). One slow sample no longer fails a step; two out of three still do. A photo re-download or a
 frame jump fails in any pass. Sparring record: plan-sparring.md, Amendment A1 (converged, 2 rounds).
+
+## Fix-forward 2 — image capture lag is not a re-download
+
+Change run 38458755133 (community-app @ d8bc6635): the journey reported a live-room cover as "re-downloaded" on the
+Events return visit in pass 2. The URL was identical on both visits and the response is cacheable
+(`Cache-Control: public, max-age=3600`, ETag), so a phone serves it from cache. The in-test cache only stores an image
+once Playwright hands over its body, which can lag under the throttle, while the image was already marked "loaded".
+Now a request waits (≤ 3 s) for a body still being captured, and an image counts as loaded only once it is cached —
+or when it is not cacheable at all (then a second fetch is a real re-download, as before).

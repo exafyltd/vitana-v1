@@ -395,7 +395,7 @@ const generateImageUrl = (title: string, description: string) => {
                       onClick={() => handleTagToggle(tag)}
                     >
                       {tag}
-                      {selectedTags.includes(tag) && <X className="w-3 h-3 ml-1" />}
+                      {selectedTags.includes(tag) && <X className="w-3 h-3 ms-1" />}
                     </Badge>
                   ))}
                 </div>
@@ -418,7 +418,7 @@ const generateImageUrl = (title: string, description: string) => {
                       onClick={() => document.getElementById('image-upload')?.click()}
                       className="w-full"
                     >
-                      <Plus className="w-4 h-4 mr-2" />{t('screens.common.uploadCustomImage')}
+                      <Plus className="w-4 h-4 me-2" />{t('screens.common.uploadCustomImage')}
                     </Button>
                   </div>
                   

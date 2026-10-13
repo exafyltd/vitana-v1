@@ -24,34 +24,11 @@ export type ValueKey = 'supabasePublishableKey';
 
 export type AppConfig = Partial<Record<ConfigKey | ValueKey, string>>;
 
-/** Hostnames a native dev/test build may never talk to (exact match). */
-export const BLOCKED_HOSTS: readonly string[] = [
-  'vitanaland.com',
-  'www.vitanaland.com',
-  'gateway.vitanaland.com',
-  'inmkhvwdcuyhnxkgfvsb.supabase.co',
-];
+// The host list and check live in blocked-hosts.js so app.config.ts can share
+// them (VTID-05178); the exports below are unchanged.
+import { BLOCKED_HOSTS, hostnameOf, isBlockedHost } from './blocked-hosts';
 
-/** Staging hosts (preview-aws.vitanaland.com, preview-aws-gateway.vitanaland.com, …). */
-const STAGING_HOST = /^preview-aws[a-z0-9-]*\.vitanaland\.com$/;
-/** The production Supabase project ref, in any subdomain form. */
-const PROD_SUPABASE_REF = /(^|\.)inmkhvwdcuyhnxkgfvsb\./;
-
-function hostnameOf(url: string): string {
-  let parsed: URL;
-  try {
-    parsed = new URL(url);
-  } catch {
-    throw new Error(`Invalid URL in native config: ${JSON.stringify(url)}`);
-  }
-  // hostname, not host: a port or a trailing dot must not slip a host past the check.
-  return parsed.hostname.toLowerCase().replace(/\.$/, '');
-}
-
-export function isBlockedHost(url: string): boolean {
-  const host = hostnameOf(url);
-  return BLOCKED_HOSTS.includes(host) || STAGING_HOST.test(host) || PROD_SUPABASE_REF.test(`${host}.`);
-}
+export { BLOCKED_HOSTS, isBlockedHost };
 
 /** Throws when `url` is a production or staging host. Returns the URL otherwise. */
 export function assertNotProduction(url: string): string {
