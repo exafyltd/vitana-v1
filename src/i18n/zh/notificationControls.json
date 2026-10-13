@@ -1,14 +1,6 @@
 {
   "notificationControls": {
     "_pending_review": {
-      "loading": true,
-      "loadError": true,
-      "summaryOn": true,
-      "summaryNew": true,
-      "summaryRule": true,
-      "summaryRuleText": true,
-      "statsErrorBanner": true,
-      "statsUnavailable": true,
       "noMatch": true,
       "audienceCount": true,
       "newType": true,
@@ -72,14 +64,14 @@
         "description": "Send a message directly to specific members, a role, or everyone."
       }
     },
-    "loading": "Loading …",
-    "loadError": "The notifications could not be loaded: {message}",
-    "summaryOn": "Switched on",
-    "summaryNew": "New, waiting for your decision",
-    "summaryRule": "How it is decided",
-    "summaryRuleText": "A notification goes out only if it is switched on here and the member has not switched its category off. Push additionally only with push on and outside quiet hours.",
-    "statsErrorBanner": "The numbers could not be read ({message}). The switches still work.",
-    "statsUnavailable": "Numbers not available right now",
+    "loading": "加载中…",
+    "loadError": "无法加载通知：{message}",
+    "summaryOn": "已开启",
+    "summaryNew": "新通知，等待你的决定",
+    "summaryRule": "如何决定",
+    "summaryRuleText": "只有当此处开启且成员未关闭其类别时，通知才会发出。此外，仅在推送开启且非勿扰时段时才进行推送。",
+    "statsErrorBanner": "无法读取数字 ({message})。开关仍可使用。",
+    "statsUnavailable": "数字暂不可用",
     "statsLine": "7天: {sent} 已创建 · {pushed} 已推送 · {read} 已阅读 · {blockedAdmin} 被开关阻止 · {blockedMember} 被成员关闭",
     "lastSent": "最近{when}",
     "searchPlaceholder": "按名称或类型搜索",
