@@ -5443,7 +5443,10 @@
       "noValue0ActionsAvailable": "No {value0}actions available",
       "playTodaysEpisode": "Play episode {session}",
       "vitanaIndexScoreSubtext": "Index {score} · {message}",
-      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}"
+      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}",
+      "_pending_review": {
+        "vitanaIndexScoreSubtext": true
+      }
     },
     "icons": {
       "xFormerlyTwitter": "X (formerly Twitter)"
