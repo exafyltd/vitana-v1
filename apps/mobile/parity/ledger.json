@@ -2217,6 +2217,18 @@
       "last_parity_check": null
     },
     {
+      "key": "/:tenantSlug",
+      "web_path": "/:tenantSlug",
+      "kind": "route",
+      "source": "exclusion",
+      "scope": "in",
+      "lane": "public-auth",
+      "status": "not_started",
+      "exception": null,
+      "owner": null,
+      "last_parity_check": null
+    },
+    {
       "key": "/_intro/:tenantSlug",
       "web_path": "/_intro/:tenantSlug",
       "kind": "route",
