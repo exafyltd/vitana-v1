@@ -56,6 +56,10 @@
       "reason": "Sign-up confirmation landing."
     },
     {
+      "path": "/:tenantSlug",
+      "reason": "Community portal/sign-in for a tenant reached by link — not a voice destination (VTID-05151)."
+    },
+    {
       "path": "/earthlinks/*",
       "reason": "Retired tenant (VTID-04836): Earthlinks was merged into Maxina (platform VTID-01985). Every /earthlinks URL is a redirect to the Maxina equivalent (RetiredTenantRedirect), never a destination."
     },

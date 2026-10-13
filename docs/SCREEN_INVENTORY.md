@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 389
-- **Distinct i18n keys consumed:** 4771
+- **Pages scanned:** 390
+- **Distinct i18n keys consumed:** 4742
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -2841,14 +2841,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 2, total in shard: 11778
 
-### src/pages/portals/AlkalmaPortal.tsx
-
-**Status:** ✅ clean — keys consumed: 29, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 29, total in shard: 11778
-
 ### src/pages/portals/CommercePortalLogin.tsx
 
 **Status:** ✅ clean — keys consumed: 9, namespaces: 1
@@ -2883,6 +2875,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `authPage` — used: 7, total in shard: 15
 - `portals` — used: 11, total in shard: 25
 - `screens` — used: 15, total in shard: 11778
+
+### src/pages/portals/TenantPortal.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/portals/TenantPortal.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## professional/
 
@@ -3085,7 +3085,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 258 |
+| `screens` | 257 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
