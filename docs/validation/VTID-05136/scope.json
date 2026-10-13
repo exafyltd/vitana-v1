@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05136",
+  "kind": "feature",
+  "paths": [
+    "src/components/commerce/SetupHub.tsx",
+    "src/components/commerce/SetupHub.test.ts",
+    "src/components/commerce/SetupHub.vtid-05136.test.tsx",
+    "src/i18n/*/screens.json",
+    "tests/e2e/staging/vtid-05136-setup-hub-submit.staging.spec.ts",
+    "docs/validation/VTID-05136/**",
+    "docs/SCREEN_INVENTORY.md"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -1,0 +1,5 @@
+# VTID-05136 — commands run in the session (no production writes; nothing sent to any service)
+node scripts/ci/pr-gate/vtid-scope.mjs init VTID-05136 --kind feature --paths "..."
+python3 vtid05136_i18n.py            # adds 27 setupHub keys to de, en, es, fr, pl, pt, ru, sr, tr, zh, ar
+node scripts/generate-screen-inventory.mjs
+node -e "typescript.transpileModule(SetupHub.tsx / tests)"   # syntax check; the npm registry is blocked here, so Vitest, ESLint and tsc run in CI
