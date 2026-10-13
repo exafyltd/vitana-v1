@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ClipboardList, Clock, Users, Activity } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function StaffDashboard() {
-  return (
-    <AppLayout>
-    <div className="p-6 pb-28 md:pb-6 space-y-6">
+  const spotlight = useSpotlightEnabled();
+  const staffBody = (
+    <>
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.staff.staffDashboard')}</h1>
         <p className="text-muted-foreground">
@@ -108,21 +110,32 @@ export default function StaffDashboard() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
-              <ClipboardList className="mr-2 h-4 w-4" />
+              <ClipboardList className="me-2 h-4 w-4" />
               {t('screens.staff.viewPatientQueue')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
-              <Clock className="mr-2 h-4 w-4" />
+              <Clock className="me-2 h-4 w-4" />
               {t('screens.staff.clockInout')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
-              <Activity className="mr-2 h-4 w-4" />
+              <Activity className="me-2 h-4 w-4" />
               {t('screens.staff.dailyTasks')}
             </Button>
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      {spotlight ? (
+        <ScreenFrame archetype="workspace">
+          <div className="space-y-6">{staffBody}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="p-6 pb-28 md:pb-6 space-y-6">{staffBody}</div>
+      )}
     </AppLayout>
   );
 }

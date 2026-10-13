@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05116",
+  "kind": "feature",
+  "paths": [
+    "docs/validation/VTID-05116/**",
+    "src/pages/professional/Dashboard.tsx",
+    "src/pages/staff/Dashboard.tsx",
+    "src/pages/staff/Queue.tsx",
+    "src/pages/staff/vtid-05116-role-workspace.test.tsx",
+    "tests/e2e/staging/vtid-05116-role-workspace.staging.spec.ts",
+    ".kiro/specs/desktop-spotlight/**",
+    "docs/SCREEN_INVENTORY.md",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "src/design/screen-manifest.json"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
