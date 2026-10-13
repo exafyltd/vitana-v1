@@ -25,7 +25,8 @@
       "purchases": "Compras",
       "pending": "Pagos Pendientes",
       "withdrawals": "Retiros",
-      "stakes": "Participación"
+      "stakes": "Participación",
+      "_pending_review": {}
     },
     "noActivity": "Sin actividad aún",
     "noActivityDesc": "Tus transacciones aparecerán aquí.",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

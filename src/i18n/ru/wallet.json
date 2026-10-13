@@ -25,7 +25,8 @@
       "purchases": "Покупки",
       "pending": "Ожидаемые выплаты",
       "withdrawals": "Выводы",
-      "stakes": "Стейкинг"
+      "stakes": "Стейкинг",
+      "_pending_review": {}
     },
     "noActivity": "Пока нет активности",
     "noActivityDesc": "Твои транзакции появятся здесь.",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

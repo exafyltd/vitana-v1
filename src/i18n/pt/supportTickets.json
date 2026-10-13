@@ -15,7 +15,8 @@
       "account_issue": "Problema na conta",
       "marketplace_claim": "Pedido ou pagamento",
       "feature_request": "Pedido de recurso",
-      "other": "Outro"
+      "other": "Outro",
+      "_pending_review": {}
     },
     "kindHint": {
       "feedback": "Ideias, pensamentos, qualquer outra coisa",
@@ -24,7 +25,8 @@
       "support_question": "Pergunta sobre como usar a Vitana",
       "account_issue": "Login, perfil, dados",
       "marketplace_claim": "Reembolsos, marketplace",
-      "feature_request": "Algo que você gostaria que existisse"
+      "feature_request": "Algo que você gostaria que existisse",
+      "_pending_review": {}
     },
     "status": {
       "received": "Recebido",
@@ -32,7 +34,8 @@
       "in_progress": "Sendo corrigido",
       "fixed": "Resolvido",
       "wont_fix": "Não será feito",
-      "duplicate": "Duplicado"
+      "duplicate": "Duplicado",
+      "_pending_review": {}
     },
     "timelineLabel": "Andamento",
     "reportedOn": "Relatado em {date}",
@@ -49,7 +52,8 @@
       "low": "Baixa",
       "medium": "Média",
       "high": "Alta",
-      "critical": "Crítica"
+      "critical": "Crítica",
+      "_pending_review": {}
     },
     "submittedTitle": "Obrigado – seu ticket foi criado",
     "submittedNumber": "Seu número de ticket: {number}",
@@ -61,7 +65,8 @@
       "seoDescription": "Relate erros, faça perguntas ou compartilhe feedback. A Vitana e seus colegas vão responder.",
       "headerDescription": "Erros, perguntas, feedback – a Vitana passa para um colega especialista quando o assunto está fora da área dela.",
       "send": "Enviar para a Vitana",
-      "sending": "Enviando …"
+      "sending": "Enviando …",
+      "_pending_review": {}
     },
     "support": {
       "seoTitle": "Atendimento ao cliente",
@@ -82,10 +87,12 @@
       "voiceBody": "Basta contar à Vitana o que está acontecendo. Ela cria o ticket para você e diz o número do ticket.",
       "voiceButton": "Relatar por voz",
       "emailTitle": "E-mail",
-      "emailBody": "Você também pode nos escrever diretamente."
+      "emailBody": "Você também pode nos escrever diretamente.",
+      "_pending_review": {}
     },
     "diary": {
-      "title": "Meus relatos"
+      "title": "Meus relatos",
+      "_pending_review": {}
     },
     "admin": {
       "copyVtid": "Copiar VTID",
@@ -108,7 +115,8 @@
         "marketplace_claim": "Reembolso / disputa — Atlas redige a resolução",
         "account_issue": "Login / função / dados — Mira redige a resolução",
         "feedback": "Opinião / seria bom ter — direto para em andamento",
-        "feature_request": "Nova funcionalidade — direto para em andamento"
+        "feature_request": "Nova funcionalidade — direto para em andamento",
+        "_pending_review": {}
       },
       "status": {
         "new": "Enviado",
@@ -126,7 +134,8 @@
         "rejected": "Rejeitado",
         "wont_fix": "Não será corrigido",
         "needs_more_info": "Precisa de informações",
-        "reopened": "Reaberto"
+        "reopened": "Reaberto",
+        "_pending_review": {}
       },
       "stage": {
         "cooling": "Na fila",
@@ -149,32 +158,37 @@
         "verifying": "durante a verificação pós-implantação",
         "plan_gen": "ao gerar o plano",
         "approve_safety": "na barreira de segurança",
-        "other": "na etapa {stage}"
+        "other": "na etapa {stage}",
+        "_pending_review": {}
       },
       "run": {
         "failed": "A execução falhou",
         "failedWhere": "A execução falhou {where}",
         "completed": "Concluído — implantado em produção",
-        "running": "Em execução no Dev Autopilot — {stage}"
+        "running": "Em execução no Dev Autopilot — {stage}",
+        "_pending_review": {}
       },
       "generate": {
         "devon": "Gerar especificação (Devon)",
         "sage": "Gerar resposta (Sage)",
         "atlas": "Gerar resolução (Atlas)",
-        "mira": "Gerar resolução (Mira)"
+        "mira": "Gerar resolução (Mira)",
+        "_pending_review": {}
       },
       "draftNoun": {
         "spec_md": "especificação",
         "draft_answer_md": "rascunho de resposta",
         "resolution_md": "resolução",
-        "none": "item de trabalho"
+        "none": "item de trabalho",
+        "_pending_review": {}
       },
       "placeholder": {
         "devon": "ex.: O bug real está na lógica de reconexão SSE; o usuário vê o sintoma, mas a causa raiz está em orb-live.ts. Mexa só na parte de reconexão. Adicione um teste unitário para o caso de uma única fala.",
         "sage": "ex.: A resposta deve mencionar o novo fluxo de adesão ao beta em /settings, não a chave antiga.",
         "atlas": "ex.: Esta reclamação beira a fraude — comece com uma checagem de elegibilidade e segure qualquer reembolso até a revisão de um operador.",
         "mira": "ex.: Verifique primeiro o e-mail do usuário; a função corrompida provavelmente é um claim OAuth desatualizado, não um problema no DB.",
-        "default": "Sua orientação para o item de trabalho."
+        "default": "Sua orientação para o item de trabalho.",
+        "_pending_review": {}
       },
       "action": {
         "generate": "Gerar",
@@ -191,7 +205,8 @@
         "rollbackConfirm": "Reverter {pr} e reabrir {ticket}?\n\nUm PR de reversão será criado e mesclado automaticamente. Isso implanta uma reversão em produção.",
         "working": "Processando — aguarde",
         "close": "Fechar",
-        "rejectPrompt": "Motivo para rejeitar {ticket}? (opcional)"
+        "rejectPrompt": "Motivo para rejeitar {ticket}? (opcional)",
+        "_pending_review": {}
       },
       "toast": {
         "reclassifiedTitle": "{ticket} reclassificado",
@@ -212,8 +227,10 @@
       "error": {
         "alreadyDispatched": "Este ticket já está em execução no Dev Autopilot. A reclassificação fica bloqueada após o envio.",
         "draftRequired": "Gere um rascunho primeiro — escreva suas instruções e clique em Gerar.",
-        "alreadyInProgress": "Este ticket já está em execução. O autopilot vai fechá-lo quando terminar."
-      }
+        "alreadyInProgress": "Este ticket já está em execução. O autopilot vai fechá-lo quando terminar.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "adminList": {
       "approveAllConfirm": "Aprovar todos os {count} tickets acionáveis de {customer}?",
@@ -234,7 +251,10 @@
       "toggleOn": "Ligar {name}",
       "toggleOff": "Desligar {name}",
       "seoDescription": "Tickets de feedback do tenant e a equipe de especialistas de IA",
-      "pageDescription": "Tickets que seus membros enviaram à Vitana. Especialistas de IA cuidam deles — pessoas aprovam antes que qualquer ação seja aplicada."
-    }
-  }
+      "pageDescription": "Tickets que seus membros enviaram à Vitana. Especialistas de IA cuidam deles — pessoas aprovam antes que qualquer ação seja aplicada.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

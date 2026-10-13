@@ -25,7 +25,8 @@
       "purchases": "المشتريات",
       "pending": "دفعات معلقة",
       "withdrawals": "السحوبات",
-      "stakes": "الرهن"
+      "stakes": "الرهن",
+      "_pending_review": {}
     },
     "noActivity": "لا يوجد نشاط بعد",
     "noActivityDesc": "ستظهر معاملاتك هنا.",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

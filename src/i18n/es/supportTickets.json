@@ -15,7 +15,8 @@
       "account_issue": "Problema con la cuenta",
       "marketplace_claim": "Pedido o pago",
       "feature_request": "Solicitud de función",
-      "other": "Otro"
+      "other": "Otro",
+      "_pending_review": {}
     },
     "kindHint": {
       "feedback": "Ideas, pensamientos, cualquier otra cosa",
@@ -24,7 +25,8 @@
       "support_question": "Pregunta sobre cómo usar Vitana",
       "account_issue": "Inicio de sesión, perfil, datos",
       "marketplace_claim": "Reembolsos, marketplace",
-      "feature_request": "Algo que te gustaría tener"
+      "feature_request": "Algo que te gustaría tener",
+      "_pending_review": {}
     },
     "status": {
       "received": "Recibido",
@@ -32,7 +34,8 @@
       "in_progress": "En corrección",
       "fixed": "Resuelto",
       "wont_fix": "No se hará",
-      "duplicate": "Duplicado"
+      "duplicate": "Duplicado",
+      "_pending_review": {}
     },
     "timelineLabel": "Progreso",
     "reportedOn": "Reportado el {date}",
@@ -49,7 +52,8 @@
       "low": "Baja",
       "medium": "Media",
       "high": "Alta",
-      "critical": "Crítica"
+      "critical": "Crítica",
+      "_pending_review": {}
     },
     "submittedTitle": "Gracias, tu ticket está creado",
     "submittedNumber": "Tu número de ticket: {number}",
@@ -61,7 +65,8 @@
       "seoDescription": "Reporta errores, haz preguntas o comparte comentarios. Vitana y sus colegas te responderán.",
       "headerDescription": "Errores, preguntas, comentarios: Vitana pasa el tema a un colega especialista cuando está fuera de su ámbito.",
       "send": "Enviar a Vitana",
-      "sending": "Enviando …"
+      "sending": "Enviando …",
+      "_pending_review": {}
     },
     "support": {
       "seoTitle": "Atención al cliente",
@@ -82,10 +87,12 @@
       "voiceBody": "Cuéntale a Vitana lo que pasa. Ella crea el ticket por ti y te dice el número de ticket.",
       "voiceButton": "Reportar por voz",
       "emailTitle": "Correo electrónico",
-      "emailBody": "También puedes escribirnos directamente."
+      "emailBody": "También puedes escribirnos directamente.",
+      "_pending_review": {}
     },
     "diary": {
-      "title": "Mis reportes"
+      "title": "Mis reportes",
+      "_pending_review": {}
     },
     "admin": {
       "copyVtid": "Copiar VTID",
@@ -96,7 +103,8 @@
         "marketplace_claim": "Reclamación del marketplace",
         "account_issue": "Problema de cuenta",
         "feedback": "Comentario (sin borrador)",
-        "feature_request": "Solicitud de función"
+        "feature_request": "Solicitud de función",
+        "_pending_review": {}
       },
       "kindDesc": {
         "bug": "Defecto de código — pasa por la especificación de Devon → Dev Autopilot",
@@ -105,7 +113,8 @@
         "marketplace_claim": "Reembolso / disputa — Atlas redacta la resolución",
         "account_issue": "Inicio de sesión / rol / datos — Mira redacta la resolución",
         "feedback": "Opinión / algo deseable — directo a en curso",
-        "feature_request": "Nueva funcionalidad — directo a en curso"
+        "feature_request": "Nueva funcionalidad — directo a en curso",
+        "_pending_review": {}
       },
       "status": {
         "new": "Enviado",
@@ -123,7 +132,8 @@
         "rejected": "Rechazado",
         "wont_fix": "No se corregirá",
         "needs_more_info": "Falta información",
-        "reopened": "Reabierto"
+        "reopened": "Reabierto",
+        "_pending_review": {}
       },
       "stage": {
         "cooling": "En cola",
@@ -146,32 +156,37 @@
         "verifying": "durante la verificación posterior al despliegue",
         "plan_gen": "mientras generaba el plan",
         "approve_safety": "en el control de seguridad",
-        "other": "en {stage}"
+        "other": "en {stage}",
+        "_pending_review": {}
       },
       "run": {
         "failed": "La ejecución falló",
         "failedWhere": "La ejecución falló {where}",
         "completed": "Completado — desplegado en producción",
-        "running": "Ejecutándose en Dev Autopilot — {stage}"
+        "running": "Ejecutándose en Dev Autopilot — {stage}",
+        "_pending_review": {}
       },
       "generate": {
         "devon": "Generar especificación (Devon)",
         "sage": "Generar respuesta (Sage)",
         "atlas": "Generar resolución (Atlas)",
-        "mira": "Generar resolución (Mira)"
+        "mira": "Generar resolución (Mira)",
+        "_pending_review": {}
       },
       "draftNoun": {
         "spec_md": "especificación",
         "draft_answer_md": "borrador de respuesta",
         "resolution_md": "resolución",
-        "none": "tarea"
+        "none": "tarea",
+        "_pending_review": {}
       },
       "placeholder": {
         "devon": "p. ej. El error real está en la lógica de reconexión SSE; el usuario ve el síntoma, pero la causa raíz está en orb-live.ts. Toca solo la parte de reconexión. Añade un test unitario para el caso de una sola frase.",
         "sage": "p. ej. La respuesta debe mencionar el nuevo flujo de inscripción a la beta en /settings, no el interruptor antiguo.",
         "atlas": "p. ej. Esta reclamación roza el fraude — empieza con una comprobación de elegibilidad y retén cualquier reembolso hasta que lo revise un operador.",
         "mira": "p. ej. Verifica primero el correo del usuario; el rol dañado probablemente se debe a un claim de OAuth obsoleto, no a un problema de la DB.",
-        "default": "Tus indicaciones para la tarea."
+        "default": "Tus indicaciones para la tarea.",
+        "_pending_review": {}
       },
       "action": {
         "generate": "Generar",
@@ -188,7 +203,8 @@
         "rollbackConfirm": "¿Revertir {pr} y reabrir {ticket}?\n\nSe creará un PR de reversión que se fusionará automáticamente. Esto despliega una reversión en producción.",
         "working": "Trabajando — espera, por favor",
         "close": "Cerrar",
-        "rejectPrompt": "¿Motivo para rechazar {ticket}? (opcional)"
+        "rejectPrompt": "¿Motivo para rechazar {ticket}? (opcional)",
+        "_pending_review": {}
       },
       "toast": {
         "reclassifiedTitle": "{ticket} reclasificado",
@@ -209,8 +225,10 @@
       "error": {
         "alreadyDispatched": "Este ticket ya se está ejecutando en Dev Autopilot. La reclasificación se bloquea una vez enviado.",
         "draftRequired": "Genera primero un borrador — escribe tus instrucciones y haz clic en Generar.",
-        "alreadyInProgress": "Este ticket ya se está ejecutando. El autopilot lo cerrará al terminar."
-      }
+        "alreadyInProgress": "Este ticket ya se está ejecutando. El autopilot lo cerrará al terminar.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "adminList": {
       "approveAllConfirm": "¿Aprobar los {count} tickets accionables de {customer}?",
@@ -231,7 +249,10 @@
       "toggleOn": "Activar {name}",
       "toggleOff": "Desactivar {name}",
       "seoDescription": "Tickets de comentarios del tenant y el equipo de especialistas de IA",
-      "pageDescription": "Tickets que tus miembros enviaron a Vitana. Los especialistas de IA se encargan de ellos — las personas aprueban antes de que se aplique cualquier acción."
-    }
-  }
+      "pageDescription": "Tickets que tus miembros enviaron a Vitana. Los especialistas de IA se encargan de ellos — las personas aprueban antes de que se aplique cualquier acción.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

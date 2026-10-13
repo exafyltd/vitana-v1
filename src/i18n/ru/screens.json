@@ -2,7 +2,8 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Аудиокнига",
-      "fullLabel": "Полное приложение"
+      "fullLabel": "Полное приложение",
+      "_pending_review": {}
     },
     "guidedCatalog": {
       "allChapters": "Все",
@@ -46,7 +47,8 @@
       "doneToast": "Практика завершена!",
       "doneError": "Не удалось сохранить.",
       "chapter_prolog": "Пролог",
-      "seasonLabel": "Сезон {n} · {name}"
+      "seasonLabel": "Сезон {n} · {name}",
+      "_pending_review": {}
     },
     "common": {
       "languageToggleAriaLabel": "Язык",
@@ -2687,7 +2689,8 @@
       "confidenceConfident": "Уверен на {confidence}%",
       "later": "Позже",
       "value0Trends": "{value0} трендов",
-      "lengthEventsShown": "{length} событий показано"
+      "lengthEventsShown": "{length} событий показано",
+      "_pending_review": {}
     },
     "analysis": {
       "topMatchFactors": "Главные факторы совпадения",
@@ -2715,7 +2718,8 @@
       "explore": "Изучить →",
       "viewSchedule": "Посмотреть расписание →",
       "findCoaches": "Найти тренеров →",
-      "match_scoreMatch": "{match_score}% совпадение"
+      "match_scoreMatch": "{match_score}% совпадение",
+      "_pending_review": {}
     },
     "assistant": {
       "voiceProviderHint_polly": "Amazon Polly обеспечивает высококачественный, естественно звучащий синтез речи",
@@ -2804,7 +2808,8 @@
       "proactive": "Проактивный",
       "referrals": "Рефералы",
       "creativityValue0": "Креативность: {value0}",
-      "languageSettingControlsWhatLanguageText": "Настройка «Язык» контролирует, на каком языке генерируется текст. Настройка «Голос» контролирует, какой голос преобразования текста в речь читает его вслух. Они автоматически синхронизируются для простоты."
+      "languageSettingControlsWhatLanguageText": "Настройка «Язык» контролирует, на каком языке генерируется текст. Настройка «Голос» контролирует, какой голос преобразования текста в речь читает его вслух. Они автоматически синхронизируются для простоты.",
+      "_pending_review": {}
     },
     "audio": {
       "volume": "Громкость",
@@ -2816,7 +2821,8 @@
       "soundscapeValue0": "Звуковой ландшафт {value0}",
       "vitanaAudioMode": "Аудиорежим VITANA",
       "typeYourMessage": "Введи сообщение...",
-      "returnVoice": "Вернуться к голосу"
+      "returnVoice": "Вернуться к голосу",
+      "_pending_review": {}
     },
     "auth": {
       "bundle": "ПАКЕТ:",
@@ -2861,7 +2867,8 @@
       "sendResetLink": "Отправить ссылку для сброса",
       "resendAvailableCooldownS": "Повторная отправка доступна через {cooldown}с",
       "ifYouArenTSentBack": "Если тебя не перенаправит автоматически, нажми ниже – или просто переключись на приложение Vitana, оно обновится через несколько секунд.",
-      "updating": "Обновление…"
+      "updating": "Обновление…",
+      "_pending_review": {}
     },
     "billing": {
       "from": "От:",
@@ -2882,7 +2889,8 @@
       "invoiceId": "Счет №{id}",
       "invoiceDateDate": "Дата счета: {date}",
       "healthCityHc12345": "Город Здоровья, HC 12345",
-      "paymentMethodPaymentmethod": "Способ оплаты: {paymentMethod}"
+      "paymentMethodPaymentmethod": "Способ оплаты: {paymentMethod}",
+      "_pending_review": {}
     },
     "business": {
       "performance": "📊 Эффективность",
@@ -3039,7 +3047,8 @@
       "eGLongevitySleepSupplements": "напр. долголетие, сон, добавки",
       "autopilotHasLengthReferralDraftValue1": "У Автопилота есть {length} черновик рекомендации{value1} для тебя",
       "scoreValue0": "балл {value0}",
-      "viewSource": "Посмотреть источник"
+      "viewSource": "Посмотреть источник",
+      "_pending_review": {}
     },
     "calendar": {
       "noUpcomingEvents": "Нет предстоящих событий",
@@ -3097,7 +3106,8 @@
       "suggestedValue0": "Предложено: {value0}",
       "todaySIndexPulseCompletingYour": "Сегодняшний пульс Индекса: завершение твоего события, отмеченного {totalCount}столпами, {value1}изменит твой Индекс.",
       "urgent": "Срочно",
-      "highPriority": "Высокий приоритет"
+      "highPriority": "Высокий приоритет",
+      "_pending_review": {}
     },
     "cart": {
       "yourCart": "Твоя корзина",
@@ -3121,7 +3131,8 @@
       "secureCheckoutPoweredByStripe": "Безопасная оплата через Stripe",
       "startAddingItemsFromDiscoverMarketplace": "Начни добавлять товары с Маркетплейса Discover",
       "value0Each": "${value0}за штуку",
-      "byProvider": "от {provider}"
+      "byProvider": "от {provider}",
+      "_pending_review": {}
     },
     "chat": {
       "googleCloudApiKey": "Ключ API Google Cloud",
@@ -3135,7 +3146,8 @@
       "yourApiKeyStoredSecurelyOnly": "Твой ключ API надежно хранится и используется только для голосовых функций ИИ.",
       "cancel": "Отмена",
       "go": "Перейти",
-      "saveApiKey": "Сохранить ключ API"
+      "saveApiKey": "Сохранить ключ API",
+      "_pending_review": {}
     },
     "coaches": {
       "topMatchFactors": "Главные факторы совпадения",
@@ -3150,7 +3162,8 @@
       "fromSessions_from": "от €{sessions_from}",
       "bookSession": "Забронировать сессию",
       "member_countMembers": "{member_count} участников",
-      "participant_countAttending": "{participant_count} участвуют"
+      "participant_countAttending": "{participant_count} участвуют",
+      "_pending_review": {}
     },
     "community": {
       "openAsksKind_commercialBuy": "Покупка",
@@ -3620,7 +3633,8 @@
       "autopilotSuggestionsTitle": "Предложения Автопилота",
       "autopilotSuggestionsBody": "Ты ещё не опубликовал желание. Тем временем Автопилот предлагает людей из сообщества, которые могли бы подойти. Опубликуй желание, чтобы ИИ мог найти для тебя настоящие совпадения.",
       "autopilotSuggestionBadge": "Автопилот",
-      "ourAnswer": "Наш ответ"
+      "ourAnswer": "Наш ответ",
+      "_pending_review": {}
     },
     "contacts": {
       "addContact": "Добавить контакт",
@@ -3686,7 +3700,8 @@
       "tipUseValue0IncludeYourPersonal": "Совет: Используй {value0}, чтобы добавить свою личную ссылку-приглашение",
       "sendInvites": "Отправить приглашения",
       "weFoundTotalimportedContactsMatchedThem": "Мы нашли {totalImported} контактов и сопоставили их с VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} из твоих друзей уже в VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} из твоих друзей уже в VITANA!",
+      "_pending_review": {}
     },
     "context": {
       "aiSpotlight": "AI-Фокус 🔮",
@@ -3702,7 +3717,8 @@
       "meditationSuggestion": "Рекомендация медитации 🧘",
       "sleepReadiness": "Готовность ко сну 🌙",
       "social": "Общение 👥",
-      "todaySPlan": "План на сегодня 🗓️"
+      "todaySPlan": "План на сегодня 🗓️",
+      "_pending_review": {}
     },
     "creator": {
       "paymentStatus": "Статус платежа",
@@ -3725,7 +3741,8 @@
       "notEnabled": "Не включено",
       "completeYourPaymentSetupStartReceiving": "Заверши настройку платежей, чтобы начать получать доход от платных Live Rooms.",
       "enablePaymentsCreatePaidLiveRooms": "Включи платежи, чтобы создавать платные Live Rooms и получать 90% дохода. Быстрая 2-минутная настройка со Stripe Connect.",
-      "checkingStatus": "Проверка статуса..."
+      "checkingStatus": "Проверка статуса...",
+      "_pending_review": {}
     },
     "crossover": {
       "keyFactors": "Ключевые факторы:",
@@ -3859,7 +3876,8 @@
       "matchCatFitness": "Фитнес",
       "matchCatLongevity": "Этап долголетия",
       "matchCatCommunity": "Сообщество",
-      "matchCatWellness": "Общее благополучие"
+      "matchCatWellness": "Общее благополучие",
+      "_pending_review": {}
     },
     "debug": {
       "presenceDebug": "Отладка присутствия",
@@ -3869,7 +3887,8 @@
       "connected": "Подключено:",
       "latency": "Задержка:",
       "realtimelatencyMs": "{realtimeLatency}мс",
-      "value0SAgo": "{value0}с назад"
+      "value0SAgo": "{value0}с назад",
+      "_pending_review": {}
     },
     "dev": {
       "currentStep": "Текущий шаг",
@@ -4251,7 +4270,8 @@
       "briefDescriptionDocument": "Краткое описание документа",
       "whatSNewThisFrontpageVersion": "Что нового в этой версии главной страницы?",
       "tryAdjustingYourFiltersWaitFor": "Попробуй настроить фильтры или подожди новых событий.",
-      "statusLastcode": "Статус: {lastCode}"
+      "statusLastcode": "Статус: {lastCode}",
+      "_pending_review": {}
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Начни записывать свой путь к благополучию",
@@ -4304,7 +4324,8 @@
       "tagLabel_voice": "голос",
       "tagLabel_text": "текст",
       "voiceTranscriptCaptured": "Голосовая расшифровка получена. Отредактируй и сохрани свою запись.",
-      "writeYourThoughts": "Напиши свои мысли..."
+      "writeYourThoughts": "Напиши свои мысли...",
+      "_pending_review": {}
     },
     "discover": {
       "marketplaceView_open": "Открыть маркетплейс",
@@ -4600,7 +4621,8 @@
       "bookmarkedValue0": "🔖 {value0} Закладки",
       "exploreName": "Исследуй {name}",
       "exploreItem_name": "Исследуй {item_name}",
-      "value0Services": "{value0} Услуг"
+      "value0Services": "{value0} Услуг",
+      "_pending_review": {}
     },
     "discovery": {
       "filters": "Фильтры:",
@@ -4632,7 +4654,8 @@
       "value0NewTodayViewedcountTotalcount": "{value0} новых сегодня · {viewedCount}/{totalCount} просмотрено",
       "clearFilters": "Очистить фильтры",
       "checkBackTomorrowFor10New": "Загляни завтра за 10 новыми совпадениями ✨",
-      "vitanaIndexVitana_index": "Индекс Vitana: {vitana_index}"
+      "vitanaIndexVitana_index": "Индекс Vitana: {vitana_index}",
+      "_pending_review": {}
     },
     "events": {
       "searchByNameEmail": "Искать по имени или почте...",
@@ -4688,7 +4711,8 @@
       "interimTextAppearsGrayUntilFinalized": "Промежуточный текст отображается серым цветом до завершения...",
       "myReportsLength": "Мои отчеты ({length})",
       "lengthAttachmentS": "📎 {length} вложение(я)",
-      "loadMoreValue0Remaining": "Загрузить еще ({value0} осталось)"
+      "loadMoreValue0Remaining": "Загрузить еще ({value0} осталось)",
+      "_pending_review": {}
     },
     "health": {
       "pillar_hydration_title": "Гидратация",
@@ -5247,15 +5271,18 @@
           "hydration": "Гидратация",
           "exercise": "Упражнения",
           "sleep": "Сон",
-          "mental": "Психическое здоровье"
+          "mental": "Психическое здоровье",
+          "_pending_review": {}
         },
         "economyAxes": {
           "find_match": "Найти совпадение",
           "marketplace": "Торговая площадка",
           "income_generation": "Получение дохода",
-          "business_formation": "Создание бизнеса"
+          "business_formation": "Создание бизнеса",
+          "_pending_review": {}
         },
-        "contractLink": "Просмотреть договор о Конечной Цели"
+        "contractLink": "Просмотреть договор о Конечной Цели",
+        "_pending_review": {}
       },
       "_pending_review": {
         "reportsLoadFailed": true,
@@ -5491,7 +5518,8 @@
       "playTodaysEpisode": "Слушать эпизод {session}"
     },
     "icons": {
-      "xFormerlyTwitter": "X (ранее Twitter)"
+      "xFormerlyTwitter": "X (ранее Twitter)",
+      "_pending_review": {}
     },
     "intents": {
       "kindFilter_all": "Все (с учетом компаса)",
@@ -5571,7 +5599,8 @@
       "kindOptionActivitySeek": "Партнер по активности",
       "kindOptionSocialSeek": "Кофе-чат / менторство",
       "kindOptionMutualAid": "Одолжить / занять / отдать",
-      "kindOptionPartnerSeek": "Спутник жизни"
+      "kindOptionPartnerSeek": "Спутник жизни",
+      "_pending_review": {}
     },
     "layout": {
       "contentRequiresConsent": "Контент требует согласия",
@@ -5579,7 +5608,8 @@
       "reviewSettings": "Просмотреть настройки",
       "tapReviewPrivacySettingsForThis": "Нажми, чтобы просмотреть настройки конфиденциальности для этого типа контента",
       "kindKind": "Тип: {kind}",
-      "idId": "ID: {id}"
+      "idId": "ID: {id}",
+      "_pending_review": {}
     },
     "liverooms": {
       "createLiveRoom": "Создать Live-комнату",
@@ -5670,7 +5700,8 @@
         "emptyHint": "Завершенные комнаты появятся здесь — с обзором, основными моментами и записью.",
         "loading": "Загрузка прошедших комнат…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}"
+        "heldRange": "{date} · {start}–{end}",
+        "_pending_review": {}
       },
       "durationMin": "{value0} мин",
       "durationHour": "{value0} ч",
@@ -5693,7 +5724,8 @@
       "detailsProgram": "Подробности и Программа",
       "undo": "Отменить",
       "closeEventDetails": "Закрыть детали события",
-      "shareMeetup": "Поделиться встречей"
+      "shareMeetup": "Поделиться встречей",
+      "_pending_review": {}
     },
     "memory": {
       "updatedAgo": "Обновлено {distance}",
@@ -6036,7 +6068,8 @@
             },
             "title": "Uncategorized",
             "insight": "Memories awaiting categorization"
-          }
+          },
+          "_pending_review": {}
         },
         "lastUpdated": "Last updated {date}",
         "cardCountOne": "1 memory · {progress}%",
@@ -6045,7 +6078,8 @@
         "countOne": "1 memory",
         "countOther": "{count} memories",
         "loadFailed": "Your memories couldn't be loaded right now."
-      }
+      },
+      "_pending_review": {}
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Утренняя мотивация",
@@ -6234,8 +6268,7 @@
       "vitanaOpenScreen": "Открой экран",
       "viewFullscreen": "Посмотреть на весь экран",
       "_pending_review": {
-        "conversationRowError": true,
-        "talkToVitana": true
+        "conversationRowError": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} создал(а) группу",
@@ -6380,11 +6413,13 @@
       "audiobookReadyTitle": "Твоя аудиокнига готова",
       "audiobookReadyBody": "Нажми «воспроизвести» и послушай эпизод 1. Тебе не нужно ничего делать, только слушать.",
       "playEpisodeOne": "Слушать эпизод 1",
-      "audiobookLater": "Позже"
+      "audiobookLater": "Позже",
+      "_pending_review": {}
     },
     "orders": {
       "friendExampleCom": "друг@example.com",
-      "friendSName": "Имя друга"
+      "friendSName": "Имя друга",
+      "_pending_review": {}
     },
     "payment": {
       "selectDate": "Выбрать дату",
@@ -6485,7 +6520,8 @@
       "conversationspecificPaymentActionWith": "Действие по оплате, специфичное для беседы, с",
       "alreadyActivePleaseCompleteCloseThat": "уже активно. \n                    Пожалуйста, сначала заверши или закрой это действие.",
       "anotherWalletActionCurrentlyProgressPlease": "Другое действие с кошельком уже выполняется. \n                    Пожалуйста, сначала заверши или закрой это действие.",
-      "paymenttypePaymentRequest": "{paymentType}Запрос на оплату"
+      "paymenttypePaymentRequest": "{paymentType}Запрос на оплату",
+      "_pending_review": {}
     },
     "proactive": {
       "proTip": "Совет профи:",
@@ -6515,7 +6551,8 @@
       "personalInvitesGet3xMoreResponses": "Личные приглашения получают в 3 раза больше откликов, чем общие сообщения. \n            Наш ИИ создает подлинные приглашения, которые отражают твой путь к благополучию!",
       "dismissTip": "Закрыть подсказку",
       "seeNextValue0More": "Далее ({value0} ещё)",
-      "membersWhoAutoshareTheirWellnessWins": "Участники, которые автоматически делятся своими успехами в велнесе, вдохновляют 5-10 друзей присоединиться каждый месяц, создавая мощный волновой эффект в своей сети."
+      "membersWhoAutoshareTheirWellnessWins": "Участники, которые автоматически делятся своими успехами в велнесе, вдохновляют 5-10 друзей присоединиться каждый месяц, создавая мощный волновой эффект в своей сети.",
+      "_pending_review": {}
     },
     "profile": {
       "adminAccess": "Доступ администратора",
@@ -6913,7 +6950,8 @@
       "licensedVerifiedHealthcareProvider": "Лицензированный и проверенный поставщик медицинских услуг",
       "media": "Медиа",
       "events": "События",
-      "health": "Здоровье"
+      "health": "Здоровье",
+      "_pending_review": {}
     },
     "reminders": {
       "subtitleDefault": "Что Vitana планирует для тебя. Поговори с ORB, чтобы добавить естественно.",
@@ -7033,7 +7071,8 @@
       "viewDetails": "Посмотреть детали",
       "perTicketSoldViaYourReseller": "за билет, проданный по твоей ссылке реселлера. \n              Комиссия рассчитывается от валовой цены билета до вычета комиссий платформы.",
       "viewWallet2": "Посмотреть в Кошельке →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity} билет{value1}· {value2}"
+      "ticketquantityTicketValue1Value2": "{ticketQuantity} билет{value1}· {value2}",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnectionLiveCheck": "Подключение Google — проверка вживую",
@@ -7704,20 +7743,7 @@
         "partnerLabsError": true
       },
       "vitanaMessages": {
-        "_pending_review": {
-          "title": true,
-          "desc": true,
-          "enabled": true,
-          "enabledDesc": true,
-          "topics": true,
-          "health": true,
-          "healthDesc": true,
-          "community": true,
-          "communityDesc": true,
-          "business": true,
-          "businessDesc": true,
-          "loadError": true
-        },
+        "_pending_review": {},
         "title": "Messages from Vitana",
         "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
         "enabled": "Receive messages from Vitana",
@@ -8540,7 +8566,8 @@
       "imageSpecsHashtagStrategyPostingTimes": "Характеристики изображений, стратегия хештегов, время публикации",
       "canvaFigmaDirectlyInapp": "Canva, Figma или прямо в приложении",
       "copypasteCustomizeForYourNeeds": "Скопируй и вставь или настрой под свои нужды",
-      "createCustomDataPackageBySelecting": "Создай индивидуальный пакет данных, выбрав конкретные показатели здоровья, диапазоны дат и типы данных, адаптированные к требованиям твоего поставщика медицинских услуг или участия в исследованиях."
+      "createCustomDataPackageBySelecting": "Создай индивидуальный пакет данных, выбрав конкретные показатели здоровья, диапазоны дат и типы данных, адаптированные к требованиям твоего поставщика медицинских услуг или участия в исследованиях.",
+      "_pending_review": {}
     },
     "supplements": {
       "supplementName": "Название добавки*",
@@ -8557,7 +8584,8 @@
       "notes": "Примечания",
       "cancel": "Отмена",
       "value0Supplement": "{value0}Добавка",
-      "inactive": "Неактивно"
+      "inactive": "Неактивно",
+      "_pending_review": {}
     },
     "templates": {
       "sendMessages": "Отправить в Сообщения",
@@ -8571,7 +8599,8 @@
       "noDataAvailable": "Данных нет",
       "withWith": "С {with}",
       "spotsSpots": "{spots} мест",
-      "viewAllLengthRecommendations": "Посмотреть все {length} рекомендации"
+      "viewAllLengthRecommendations": "Посмотреть все {length} рекомендации",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketsSold": "Билетов продано",
@@ -8616,7 +8645,8 @@
       "ticketValue0": "Билет {value0}",
       "eGGeneralAdmission": "напр., Общий вход",
       "priceValue0": "Цена ({value0}) *",
-      "whatSIncludedWithThisTicket": "Что входит в этот билет?"
+      "whatSIncludedWithThisTicket": "Что входит в этот билет?",
+      "_pending_review": {}
     },
     "ui": {
       "reconnecting": "Переподключение...",
@@ -8648,7 +8678,8 @@
       "learnMore": "Узнать больше",
       "noItemsDisplay": "Нет элементов для отображения",
       "pointsCredits": "+{points} кредитов",
-      "moreActions": "Больше действий"
+      "moreActions": "Больше действий",
+      "_pending_review": {}
     },
     "vertex": {
       "debugConsole": "Консоль отладки",
@@ -8675,11 +8706,13 @@
       "recording": "Запись...",
       "aiSpeaking": "ИИ говорит...",
       "you": "Ты",
-      "transcriptWillAppearHere": "Транскрипт появится здесь..."
+      "transcriptWillAppearHere": "Транскрипт появится здесь...",
+      "_pending_review": {}
     },
     "vitanaland": {
       "enterVitanalandK": "Войти в Vitanaland (⌘K)",
-      "enterVitanalandCmdK": "Войти в VITANALAND (Cmd+K)"
+      "enterVitanalandCmdK": "Войти в VITANALAND (Cmd+K)",
+      "_pending_review": {}
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -8705,7 +8738,8 @@
       "inviteCardBody": "Поделись флаером для загрузки и начни вместе.",
       "inviteCardCta": "Пригласи друзей",
       "inviteShareTitle": "MAXINA – Сообщество долголетия",
-      "inviteShareText": "Присоединяйся ко мне в MAXINA – сообществе долголетия! Скачай приложение здесь:"
+      "inviteShareText": "Присоединяйся ко мне в MAXINA – сообществе долголетия! Скачай приложение здесь:",
+      "_pending_review": {}
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8728,7 +8762,8 @@
       "profileSetup": "Профиль",
       "socialConnect": "Подключить",
       "importContacts": "Контакты",
-      "completeProfile": "Заполни профиль"
+      "completeProfile": "Заполни профиль",
+      "_pending_review": {}
     },
     "voucher": {
       "friendExampleCom": "друг@example.com",
@@ -8751,7 +8786,8 @@
       "giftFrom": "Подарок от",
       "claiming": "Забираем...",
       "fromBuyer_name": "От {buyer_name}",
-      "createAccount": "Создать аккаунт"
+      "createAccount": "Создать аккаунт",
+      "_pending_review": {}
     },
     "wallet": {
       "currentSubscriptionPerks": "Преимущества текущей подписки",
@@ -9274,7 +9310,8 @@
       "continueToSecureCheckout": "Продолжить безопасную оплату",
       "cardPaymentViaStripe": "Оплата картой, безопасно обработано Stripe",
       "currentBalanceLabel": "Текущий баланс {currency}",
-      "amountAddCurrency": "Сумма для добавления ({currency})"
+      "amountAddCurrency": "Сумма для добавления ({currency})",
+      "_pending_review": {}
     },
     "ai": {
       "subtitle_priorityActions": "Задачи, подобранные ИИ, для максимального влияния на твое самочувствие",
@@ -9447,7 +9484,8 @@
       "dailyLearningsTitle": "Что Vitana узнала",
       "dailyLearningsLoading": "Загружаю твои дни …",
       "dailyLearningsEmpty": "Пока нет итогов дня. Пиши в дневник или поговори с Vitana — каждый вечер Vitana подводит здесь итоги твоего дня.",
-      "dailySummaryOpenIndex": "Открыть Vitana Index"
+      "dailySummaryOpenIndex": "Открыть Vitana Index",
+      "_pending_review": {}
     },
     "authpages": {
       "fullName": "Полное имя",
@@ -9458,7 +9496,8 @@
       "login": "Войти",
       "signUp": "Зарегистрироваться",
       "alreadyHaveAccountValue0": "Уже есть аккаунт? {value0}",
-      "donAposTHaveAccountValue0": "Нет аккаунта? {value0}"
+      "donAposTHaveAccountValue0": "Нет аккаунта? {value0}",
+      "_pending_review": {}
     },
     "autopilotdashboard": {
       "text999": "из 999",
@@ -9601,8 +9640,10 @@
         "advanceCareer": "Развивай карьеру",
         "masterNewSkills": "Освой новые навыки",
         "spiritualLife": "Духовная жизнь",
-        "earnFromRecommendations": "Зарабатывай на рекомендациях"
-      }
+        "earnFromRecommendations": "Зарабатывай на рекомендациях",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "businesshub": {
       "noServicesYet": "Пока нет услуг",
@@ -9622,7 +9663,8 @@
       "businessHub": "Бизнес-центр 💼",
       "growYourWellnessBusinessManageClients": "Развивай свой велнес-бизнес и легко управляй клиентами",
       "business": "Бизнес",
-      "value0MoreActions": "+{value0} других действий"
+      "value0MoreActions": "+{value0} других действий",
+      "_pending_review": {}
     },
     "businesslistings": {
       "myListings": "Мои объявления",
@@ -9632,7 +9674,8 @@
       "backBusinessHub": "Назад в Бизнес-центр",
       "listingsAvailableForProAccounts": "Предложения доступны для Pro-аккаунтов.",
       "noListingsYetClick": "Предложений пока нет. Нажми",
-      "addOneOpenOrbJustSay": "чтобы добавить – или открой ORB и просто скажи"
+      "addOneOpenOrbJustSay": "чтобы добавить – или открой ORB и просто скажи",
+      "_pending_review": {}
     },
     "businessopportunities": {
       "myListings": "Мои объявления",
@@ -9640,7 +9683,8 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Возможности доступны для Pro-аккаунтов. Обновись, чтобы получить доступ к входящим заявкам.",
       "opportunities": "Возможности",
       "incomingLeadsMatchingYourOfferingsExpress": "Входящие заявки, соответствующие твоим предложениям. Прояви интерес, чтобы начать разговор.",
-      "noLeadsYetWeLlNotify": "Лидов пока нет. Мы уведомим тебя, когда появится соответствующий спрос. Убедись, что у тебя есть хотя бы одно предложение commercial_sell в разделе"
+      "noLeadsYetWeLlNotify": "Лидов пока нет. Мы уведомим тебя, когда появится соответствующий спрос. Убедись, что у тебя есть хотя бы одно предложение commercial_sell в разделе",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "whatSNext": "Что дальше?",
@@ -9656,7 +9700,8 @@
       "continueShopping": "Продолжить покупки",
       "ifYouHaveAnyQuestionsAbout": "Если у тебя есть вопросы о твоем заказе, наша служба поддержки готова помочь.",
       "contactSupport": "Связаться со службой поддержки",
-      "viewMyOrders": "Посмотреть мои заказы"
+      "viewMyOrders": "Посмотреть мои заказы",
+      "_pending_review": {}
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "Твой статус платежа проверяется...",
@@ -9679,10 +9724,12 @@
       "createYourFirstPaidRoom": "Создай свою первую платную комнату",
       "viewPaymentSettings": "Посмотреть настройки платежей",
       "value0PaymentSetupComplete": "Настройка платежа {value0} завершена!",
-      "youReAllSetStartEarning": "Ты готов(а) начать зарабатывать на своих Live Rooms"
+      "youReAllSetStartEarning": "Ты готов(а) начать зарабатывать на своих Live Rooms",
+      "_pending_review": {}
     },
     "editprofilepage": {
-      "editProfileVitana": "Редактировать профиль – VITANA"
+      "editProfileVitana": "Редактировать профиль – VITANA",
+      "_pending_review": {}
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "Давай отслеживать твой прогресс вместе! 📊",
@@ -9732,7 +9779,8 @@
       "weeklyActivity": "Еженедельная активность",
       "mentalWellness": "Ментальное благополучие",
       "mindfulness": "Осознанность",
-      "vitanaIndexOverview": "Обзор Индекса Vitana"
+      "vitanaIndexOverview": "Обзор Индекса Vitana",
+      "_pending_review": {}
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Комплексная платформа для здоровья и благополучия",
@@ -9752,7 +9800,8 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA — это комплексная цифровая платформа здоровья, предлагающая несколько специализированных сред для различных велнес-сообществ и профессионального управления здравоохранением.",
       "commercePortal": "Торговый портал",
       "merchantSelfServiceMarketplace": "Торговая площадка самообслуживания",
-      "connectYourBusinessToDiscoverYourself": "Подключи свой бизнес к торговой площадке Discover сам — без проекта интеграции, без ожидания инженеров."
+      "connectYourBusinessToDiscoverYourself": "Подключи свой бизнес к торговой площадке Discover сам — без проекта интеграции, без ожидания инженеров.",
+      "_pending_review": {}
     },
     "intentboard": {
       "communityBoard": "Доска сообщества",
@@ -9762,14 +9811,16 @@
       "style": "Стиль",
       "lookingForYourOwnIntents": "Ищешь свои намерения?",
       "whatOthersLookingFor": "Что ищут другие.",
-      "surfacedForYour": "Отобрано для твоего"
+      "surfacedForYour": "Отобрано для твоего",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "intentNotFound": "Намерение не найдено.",
       "backMyIntents": "Назад к Моим намерениям",
       "closeIntent": "Закрыть намерение",
       "noMatchesYetWeLlKeep": "Пока нет совпадений. Мы продолжим поиск и уведомим тебя, когда кто-то совпадет.",
-      "matchesLength": "Совпадения ({length})"
+      "matchesLength": "Совпадения ({length})",
+      "_pending_review": {}
     },
     "invitefriends": {
       "phoneContacts": "Телефонные контакты",
@@ -9794,10 +9845,12 @@
       "noContactsMatchSearch": "Нет контактов, соответствующих \"{search}\"",
       "importContacts": "Импортировать контакты",
       "selectedcountSelected": "{selectedCount} выбрано",
-      "sendInvitesSelectedcount": "Отправить приглашения ({selectedCount})"
+      "sendInvitesSelectedcount": "Отправить приглашения ({selectedCount})",
+      "_pending_review": {}
     },
     "logout": {
-      "signingOut": "Выходим..."
+      "signingOut": "Выходим...",
+      "_pending_review": {}
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Перенаправляем в App Store",
@@ -9810,7 +9863,8 @@
       "copyLink": "Скопировать ссылку",
       "linkCopied": "Ссылка скопирована — вставь ее в Safari",
       "copyFailed": "Не удалось скопировать ссылку",
-      "iosOpenInBrowser": "Нажми «…» в правом верхнем углу, затем «Открыть в браузере» — App Store откроется сразу."
+      "iosOpenInBrowser": "Нажми «…» в правом верхнем углу, затем «Открыть в браузере» — App Store откроется сразу.",
+      "_pending_review": {}
     },
     "mobilesettings": {
       "pushNotifications": "Push-уведомления",
@@ -9897,7 +9951,8 @@
       "modeBillingPlan": "Текущий план",
       "modeBillingPayment": "Способ оплаты",
       "modeBillingInvoices": "Счета и квитанции",
-      "modeBillingCreator": "Выплаты авторам"
+      "modeBillingCreator": "Выплаты авторам",
+      "_pending_review": {}
     },
     "myintents": {
       "myIntents": "Мои запросы",
@@ -9908,7 +9963,8 @@
       "browseWhatOthersLookingFor": "Посмотри, что ищут другие:",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length} открыто · до {PER_KIND_SLOT_CAP} на категорию",
       "lengthPer_kind_slot_capSlotsUsed": "Использовано {length} из {PER_KIND_SLOT_CAP} слотов",
-      "capReachedCloseOnePostNew": "— лимит достигнут, закрой один, чтобы опубликовать новый"
+      "capReachedCloseOnePostNew": "— лимит достигнут, закрой один, чтобы опубликовать новый",
+      "_pending_review": {}
     },
     "mytickets": {
       "myTickets": "Мои билеты",
@@ -9920,7 +9976,8 @@
       "upcomingLength": "Предстоящие ({length})",
       "pastLength": "Прошлые ({length})",
       "noUpcomingEvents": "Нет предстоящих событий",
-      "noPastEvents": "Нет прошлых событий"
+      "noPastEvents": "Нет прошлых событий",
+      "_pending_review": {}
     },
     "notauthorized": {
       "accessDenied": "Доступ запрещен",
@@ -9928,11 +9985,13 @@
       "youDonTHavePermissionAccess": "Эта область доступна только авторизованному персоналу.",
       "error403Forbidden": "Ошибка 403: Запрещено",
       "returnDashboard": "Вернуться к Панели управления",
-      "contactSupport": "Связаться с поддержкой"
+      "contactSupport": "Связаться с поддержкой",
+      "_pending_review": {}
     },
     "notfound": {
       "oopsPageNotFound": "Ой! Страница не найдена",
-      "returnHome": "Вернуться на Главную"
+      "returnHome": "Вернуться на Главную",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "Отсутствует информация о покупке",
@@ -9948,7 +10007,8 @@
       "viewMyOrders": "Посмотреть мои заказы",
       "redeemNow": "Активировать сейчас",
       "viewOrders": "Посмотреть заказы",
-      "confirmationHasSent": "Подтверждение было отправлено на"
+      "confirmationHasSent": "Подтверждение было отправлено на",
+      "_pending_review": {}
     },
     "privacysettings": {
       "privacyVisibility": "Конфиденциальность & Видимость",
@@ -9956,7 +10016,8 @@
       "pleaseSignManageYourPrivacySettings": "Пожалуйста, войди, чтобы управлять настройками конфиденциальности.",
       "serverEnforcesTheseTiersEveryCrossuser": "Сервер применяет эти уровни при каждом межведомственном запросе – твой переключатель является обязательным, а не рекомендательным.",
       "back": "Назад",
-      "tapAnyTierBadgeCyclePrivate": "Нажми на любой значок уровня, чтобы переключить Приватный → Связи → Публичный. По умолчанию предпочтение отдается конфиденциальности — ты решаешь, чем делиться."
+      "tapAnyTierBadgeCyclePrivate": "Нажми на любой значок уровня, чтобы переключить Приватный → Связи → Публичный. По умолчанию предпочтение отдается конфиденциальности — ты решаешь, чем делиться.",
+      "_pending_review": {}
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Кампания не найдена",
@@ -9972,7 +10033,8 @@
       "lengthChannelValue1": "{length}канал{value1}",
       "youLlSignCreateAccountNext": "Ты войдешь или создашь аккаунт на следующем шаге.",
       "YourLongevityCommunity": "- Твое сообщество долголетия",
-      "getTicketsForValue0": "Получить билеты на {value0}"
+      "getTicketsForValue0": "Получить билеты на {value0}",
+      "_pending_review": {}
     },
     "publiceventlanding": {
       "eventNotFound": "Событие не найдено",
@@ -9989,12 +10051,14 @@
       "fromPricelabel": "От {priceLabel}",
       "youLlSignCreateAccountNext": "Ты войдешь или создашь аккаунт на следующем шаге.",
       "YourLongevityCommunity": "- Твое сообщество долголетия",
-      "getTicketsForTitle": "Получить билеты на {title}"
+      "getTicketsForTitle": "Получить билеты на {title}",
+      "_pending_review": {}
     },
     "publicprofilepage": {
       "loadingProfile": "Загрузка профиля...",
       "userNotFound": "Пользователь не найден",
-      "returnHome": "Вернуться на главную"
+      "returnHome": "Вернуться на главную",
+      "_pending_review": {}
     },
     "redeemvoucher": {
       "invalidLink": "Неверная ссылка",
@@ -10010,7 +10074,8 @@
       "thisVoucherHasExpiredCanNo": "Срок действия этого ваучера истёк, и его больше нельзя использовать. Свяжись с поддержкой, если тебе нужна помощь.",
       "yourValue0VoucherHasAddedYour": "Твой {value0}ваучер был добавлен в твой аккаунт. \n            Изучи мероприятия и впечатления, чтобы использовать свои преимущества.",
       "viewWallet": "Посмотреть кошелёк",
-      "browseEvents": "Просмотр мероприятий"
+      "browseEvents": "Просмотр мероприятий",
+      "_pending_review": {}
     },
     "search": {
       "viewProfile": "Посмотреть профиль",
@@ -10027,7 +10092,8 @@
       "content": "🎬 Контент",
       "health": "❤️ Здоровье",
       "value0Members": "{value0} участников",
-      "showingResultsFor": "Показаны результаты для \""
+      "showingResultsFor": "Показаны результаты для \"",
+      "_pending_review": {}
     },
     "ticketdemo": {
       "ticketPreview": "Предпросмотр билета",
@@ -10044,7 +10110,8 @@
       "downloadAsPngShareOptions": "Скачать как PNG или Поделиться",
       "multitenantBoardingPassDesign": "Дизайн посадочного талона для нескольких арендаторов",
       "thisDemoTicketPreview": "🎫 Это предпросмотр демо-билета",
-      "actualTicketsWillDisplayYourReal": "На настоящих билетах будут отображаться реальные детали события и покупки"
+      "actualTicketsWillDisplayYourReal": "На настоящих билетах будут отображаться реальные детали события и покупки",
+      "_pending_review": {}
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "Неверный запрос",
@@ -10056,7 +10123,8 @@
       "paymentSuccessful": "Оплата прошла успешно!",
       "viewAllMyTickets": "Посмотреть все мои билеты",
       "discoverMoreEvents": "Открой для себя больше событий",
-      "yourTicketHasConfirmedConfirmationEmail": "Твой билет подтвержден. Письмо с подтверждением отправлено на {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Твой билет подтвержден. Письмо с подтверждением отправлено на {value0}",
+      "_pending_review": {}
     },
     "legal": {
       "deleteAccount": "Удалить аккаунт",
@@ -10264,7 +10332,8 @@
       "legalRetentionObligations": "законодательные обязательства по хранению;",
       "securityFraudPreventionReasons": "причины безопасности, предотвращения мошенничества и защиты от злоупотреблений;",
       "legalClaimsDefense": "необходимость устанавливать, осуществлять или защищать правовые требования.",
-      "retentionAnonymizeDelete": "Когда персональные данные больше не нужны, мы удаляем или анонимизируем их, если иное не предусмотрено законодательными обязательствами по хранению."
+      "retentionAnonymizeDelete": "Когда персональные данные больше не нужны, мы удаляем или анонимизируем их, если иное не предусмотрено законодательными обязательствами по хранению.",
+      "_pending_review": {}
     },
     "patient": {
       "myAppointments": "Мои записи",
@@ -10394,7 +10463,8 @@
           "cancel": "Отмена",
           "confirmed": "Спасибо! Результат добавляется в твои данные о здоровье.",
           "declined": "Понятно. Результат не будет добавлен в твои данные.",
-          "failed": "Не получилось. Попробуй ещё раз."
+          "failed": "Не получилось. Попробуй ещё раз.",
+          "_pending_review": {}
         }
       },
       "comingSoon": {
@@ -10404,7 +10474,8 @@
         },
         "title": "Coming soon",
         "body": "We're still building this screen. Check back soon."
-      }
+      },
+      "_pending_review": {}
     },
     "portals": {
       "confirmationError": "Ошибка подтверждения",
@@ -10463,7 +10534,8 @@
       "useDifferentEmail": "← Использовать другой email",
       "creatingAccount": "Создание аккаунта...",
       "tryAppleSigninAgain": "Попробуй войти через Apple еще раз",
-      "backLogin": "Назад ко входу"
+      "backLogin": "Назад ко входу",
+      "_pending_review": {}
     },
     "professional": {
       "professionalDashboard": "Панель специалиста",
@@ -10512,7 +10584,8 @@
       "hypertension": "Гипертония",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "+12% с прошлого месяца"
+      "text12FromLastMonth": "+12% с прошлого месяца",
+      "_pending_review": {}
     },
     "staff": {
       "staffDashboard": "Панель персонала",
@@ -10572,27 +10645,32 @@
       "urgent2": "СРОЧНО",
       "sj": "SJ",
       "waiting2": "ОЖИДАНИЕ",
-      "mw": "MW"
+      "mw": "MW",
+      "_pending_review": {}
     },
     "actions": {
       "doNow": "Сделать сейчас",
       "edit": "Редактировать",
       "details": "Подробнее",
-      "later": "Позже"
+      "later": "Позже",
+      "_pending_review": {}
     },
     "introexperience": {
       "space": "Пробел",
       "esc": "Esc",
       "press": "Нажми",
       "play": "чтобы играть •",
-      "skip": "чтобы пропустить"
+      "skip": "чтобы пропустить",
+      "_pending_review": {}
     },
     "groups": {
       "match_scoreMatch": "{match_score}% Совпадение",
-      "join": "Присоединись"
+      "join": "Присоединись",
+      "_pending_review": {}
     },
     "rewards": {
-      "earnValue0Pts": "Заработай {value0} очков"
+      "earnValue0Pts": "Заработай {value0} очков",
+      "_pending_review": {}
     },
     "autopilotpopup": {
       "indexLoading": "Загрузка индекса…",
@@ -10606,12 +10684,14 @@
       "checkForNew": "Проверь новое",
       "snoozeLater": "Позже",
       "snoozedUntilTomorrow": "Мы покажем это снова завтра.",
-      "snoozeFailed": "Не удалось отложить. Попробуй ещё раз."
+      "snoozeFailed": "Не удалось отложить. Попробуй ещё раз.",
+      "_pending_review": {}
     },
     "postDetail": {
       "title": "Пост",
       "notFound": "Пост не найден",
-      "back": "Назад"
+      "back": "Назад",
+      "_pending_review": {}
     },
     "partnerportal": {
       "title": "Партнерский портал",
@@ -10665,8 +10745,10 @@
         "degraded": "Понижено",
         "suspended": "Приостановлено",
         "revoked": "Отозвано",
-        "failed": "Не удалось"
-      }
+        "failed": "Не удалось",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "commerceportal": {
       "heroTitle": "Приведи свой бизнес в Vitanaland",
@@ -10724,7 +10806,8 @@
         "hint": "Мы проверим URL-адрес и автоматически заполним ID коннектора и провайдера, если распознаем платформу.",
         "detected": "{platform} обнаружена — поля заполнены.",
         "notDetected": "Платформа не распознана. Пожалуйста, заполни ID коннектора и провайдера вручную.",
-        "failed": "Не удалось проверить этот адрес. Пожалуйста, заполни ID коннектора и провайдера вручную."
+        "failed": "Не удалось проверить этот адрес. Пожалуйста, заполни ID коннектора и провайдера вручную.",
+        "_pending_review": {}
       },
       "connectOauth": {
         "title": "Подключить",
@@ -10739,7 +10822,8 @@
         "fhirButton": "Подключить сервер FHIR",
         "connecting": "Подключение...",
         "notConfigured": "Этот тип подключения пока не включен. Пожалуйста, попробуй позже.",
-        "failed": "Не удалось начать подключение. Пожалуйста, проверь свои данные."
+        "failed": "Не удалось начать подключение. Пожалуйста, проверь свои данные.",
+        "_pending_review": {}
       },
       "_pending_review": {
         "portalEyebrow": true,
@@ -11258,7 +11342,8 @@
         "submitResultNeedsAction": "Отправлено. Кое-чего ещё не хватает — смотри ниже.",
         "submitResultInReview": "Отправлено. Команда Vitanaland проверяет твой бизнес.",
         "submitResultUnchanged": "Получено. Твой статус не изменился.",
-        "submitFailed": "Сейчас отправить не удалось. Мы обновили твой статус — посмотри, что ещё нужно."
+        "submitFailed": "Сейчас отправить не удалось. Мы обновили твой статус — посмотри, что ещё нужно.",
+        "_pending_review": {}
       },
       "setupChooser": {
         "title": "Добавь свои товары или услуги",
@@ -11270,7 +11355,8 @@
         "manualTitle": "Добавить товары самому",
         "manualHint": "Создай товары или услуги вручную.",
         "apiTitle": "Подключить через API",
-        "apiHint": "Для технических команд и собственных интеграций."
+        "apiHint": "Для технических команд и собственных интеграций.",
+        "_pending_review": {}
       },
       "addOffer": {
         "title": "Что ты хочешь добавить?",
@@ -11293,7 +11379,8 @@
         "name_service": "Название услуги",
         "name_experience": "Название впечатления",
         "bookUrl": "Ссылка для бронирования",
-        "bookUrlHint": "Страница бронирования на твоём сайте. Туда мы направляем людей."
+        "bookUrlHint": "Страница бронирования на твоём сайте. Туда мы направляем людей.",
+        "_pending_review": {}
       },
       "salesSetup": {
         "title": "Настройка продаж",
@@ -11312,7 +11399,8 @@
         "keepCurrent": "Оставить текущую настройку",
         "save": "Сохранить",
         "saved": "Настройки продаж сохранены",
-        "saveFailed": "Не удалось сохранить настройки продаж."
+        "saveFailed": "Не удалось сохранить настройки продаж.",
+        "_pending_review": {}
       },
       "connect": {
         "title": "Подключи свою систему",
@@ -11332,7 +11420,8 @@
         "pasteOpenapi": "…или вставь спецификацию OpenAPI (JSON)",
         "openapiInvalid": "Это не валидный JSON. Проверь файл или вставь его снова.",
         "created": "Подключение создано",
-        "customApi": "Собственный API"
+        "customApi": "Собственный API",
+        "_pending_review": {}
       },
       "forBusiness": "Для {name}",
       "forBusinessLabel": "Для:",
@@ -11365,7 +11454,8 @@
         "errorRateLimited": "Ты пробовал это много раз подряд. Подожди немного.",
         "errorGeneric": "Не получилось. Попробуй ещё раз.",
         "errorCreate": "Сохранить не удалось. Нажми ещё раз — ничего не создастся дважды.",
-        "talkCta": "Лучше поговорить с Vitana"
+        "talkCta": "Лучше поговорить с Vitana",
+        "_pending_review": {}
       },
       "mcpConnect": {
         "cta": "Подключи своего ИИ-агента",
@@ -11398,7 +11488,8 @@
         "advAuthValue": "OAuth 2.1 с PKCE через твой аккаунт Vitanaland",
         "advMetadata": "Метаданные ресурса",
         "advTools": "Инструменты",
-        "manualFallback": "Лучше зарегистрироваться вручную"
+        "manualFallback": "Лучше зарегистрироваться вручную",
+        "_pending_review": {}
       },
       "guest": {
         "heroTitle": "Присоединяйся к экономике долголетия.",
@@ -11423,7 +11514,8 @@
         "whatIsMcp": "Что такое MCP?",
         "whatIsMcpBody": "MCP — это безопасный стандарт, который позволяет твоему ИИ-ассистенту подключаться к Vitanaland и выполнять за тебя одобренные шаги настройки бизнеса.",
         "closingTitle": "Твоему бизнесу место в экономике долголетия",
-        "closingBody": "Присоединяйся бесплатно, подключись один раз и находи людей, которые инвестируют в долгую и здоровую жизнь."
+        "closingBody": "Присоединяйся бесплатно, подключись один раз и находи людей, которые инвестируют в долгую и здоровую жизнь.",
+        "_pending_review": {}
       },
       "terms": {
         "title": "Партнерские условия",
@@ -11448,7 +11540,8 @@
         "rowReacceptTitle": "Новые условия партнёрства",
         "rowReacceptBody": "Условия партнёрства изменились (версия {version}). Прочитай и прими новую версию.",
         "rowCta": "Прочитать и принять",
-        "view": "Посмотреть"
+        "view": "Посмотреть",
+        "_pending_review": {}
       }
     },
     "oauthconsent": {
@@ -11473,8 +11566,10 @@
         "vitana:partners:read": "Просмотр информации о партнере",
         "vitana:connections:write": "Управление бизнес-связями",
         "vitana:grants:write": "Предложить предоставление данных (согласие остается с тобой)",
-        "vitana:settlement:write": "Запустить подготовленные расчеты Vitana"
-      }
+        "vitana:settlement:write": "Запустить подготовленные расчеты Vitana",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "backoffice": {
       "comingWave1": "Coming in wave 1",
@@ -12298,7 +12393,8 @@
             "emptyHint": true,
             "against": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "finance": {
         "payments": {
@@ -12410,7 +12506,8 @@
             "noSettled": true,
             "settledExplain": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "accounting": {
         "common": {
@@ -12604,7 +12701,8 @@
             "trialBalance": true,
             "closeNote": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "reports": {
         "common": {
@@ -12720,7 +12818,8 @@
             "noAp": true,
             "negativeNote": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "draft": {
         "review": "Review before it is written",
@@ -13190,7 +13289,8 @@
               "title": true,
               "description": true
             }
-          }
+          },
+          "_pending_review": {}
         },
         "noLineRows": "No lines available.",
         "lookupLoading": "Loading …",
@@ -13471,7 +13571,8 @@
       "reminderOffOption": "Выкл.",
       "reminderSaved": "Напоминание каждый день в {time}",
       "reminderOff": "Ежедневное напоминание выключено",
-      "reminderError": "Не удалось сохранить напоминание."
+      "reminderError": "Не удалось сохранить напоминание.",
+      "_pending_review": {}
     },
     "commerceconnect": {
       "title": "Подключить {client} к Vitanaland?",
@@ -13489,7 +13590,8 @@
       "loading": "Минутку …",
       "redirecting": "Возвращаемся к ассистенту …",
       "invalid": "Этот запрос на подключение недействителен или устарел. Начни подключение заново в ассистенте.",
-      "failed": "Не получилось. Попробуй ещё раз."
+      "failed": "Не получилось. Попробуй ещё раз.",
+      "_pending_review": {}
     },
     "liveRoom": {
       "guest": "Гость",
@@ -13522,7 +13624,8 @@
       "notFoundDesc": "Эта комната больше не существует.",
       "startingSoon": "Скоро начнётся",
       "startNow": "Начать сейчас",
-      "eventsSectionTitle": "Прямые эфиры"
+      "eventsSectionTitle": "Прямые эфиры",
+      "_pending_review": {}
     },
     "vitanaCards": {
       "stripLabel": "Предложения от Vitana",
@@ -13533,100 +13636,119 @@
       "E1": {
         "title": "Покажи своё лицо",
         "description": "Загрузи фото профиля, чтобы тебя сразу узнавали.",
-        "action": "Загрузить"
+        "action": "Загрузить",
+        "_pending_review": {}
       },
       "E2": {
         "title": "Расскажи о себе",
         "description": "Пара предложений о тебе поможет другим начать разговор.",
-        "action": "Написать о себе"
+        "action": "Написать о себе",
+        "_pending_review": {}
       },
       "E3": {
         "title": "Поделись первым постом",
         "description": "Поздоровайся с сообществом – хватит и короткой мысли.",
-        "action": "Опубликовать"
+        "action": "Опубликовать",
+        "_pending_review": {}
       },
       "E4": {
         "title": "Что тебя вдохновляет?",
         "description": "Выбери свои интересы, чтобы Vitana подобрала подходящих людей и контент.",
-        "action": "Выбрать интересы"
+        "action": "Выбрать интересы",
+        "_pending_review": {}
       },
       "E5": {
         "title": "Где ты живёшь?",
         "description": "Укажи своё местоположение и находи людей и события рядом.",
-        "action": "Указать место"
+        "action": "Указать место",
+        "_pending_review": {}
       },
       "E6": {
         "title": "Подключи Instagram",
         "description": "Делись моментами из Vitana прямо в Instagram.",
-        "action": "Подключить Instagram"
+        "action": "Подключить Instagram",
+        "_pending_review": {}
       },
       "E7": {
         "title": "Подключи Facebook",
         "description": "Будь ближе к друзьям и делись в одно касание.",
-        "action": "Подключить Facebook"
+        "action": "Подключить Facebook",
+        "_pending_review": {}
       },
       "E8": {
         "title": "Подключи свой календарь",
         "description": "Все встречи и события Vitana в одном месте.",
-        "action": "Подключить"
+        "action": "Подключить",
+        "_pending_review": {}
       },
       "E9": {
         "title": "Импортируй контакты",
         "description": "Найди друзей, которые уже в Vitana.",
-        "action": "Импортировать"
+        "action": "Импортировать",
+        "_pending_review": {}
       },
       "E10": {
         "title": "Ничего не пропусти",
         "description": "Включи уведомления о сообщениях, совпадениях и напоминаниях.",
-        "action": "Включить"
+        "action": "Включить",
+        "_pending_review": {}
       },
       "E11": {
         "title": "Добавь обложку",
         "description": "Обложка делает твой профиль более личным.",
-        "action": "Загрузить"
+        "action": "Загрузить",
+        "_pending_review": {}
       },
       "F3": {
         "eyebrow": "Дневник",
         "title": "Как ты сегодня?",
         "description": "Надиктуй пару фраз в дневник – Vitana слушает.",
-        "action": "Записать"
+        "action": "Записать",
+        "_pending_review": {}
       },
       "F4": {
         "eyebrow": "Спроси Vitana",
         "title": "Есть вопрос?",
         "description": "Vitana поможет со здоровьем, сообществом и не только.",
-        "action": "Спросить Vitana"
+        "action": "Спросить Vitana",
+        "_pending_review": {}
       },
       "F5": {
         "eyebrow": "Совпадения",
         "title": "Люди, которые тебе подходят",
         "description": "Посмотри сегодняшние совпадения.",
-        "action": "Смотреть"
+        "action": "Смотреть",
+        "_pending_review": {}
       },
       "F6": {
         "eyebrow": "Автопилот",
         "title": "Твой автопилот готов",
         "description": "Позволь Vitana спланировать твои следующие шаги.",
-        "action": "Открыть"
+        "action": "Открыть",
+        "_pending_review": {}
       },
       "F9": {
         "eyebrow": "Календарь",
         "title": "Твой день с первого взгляда",
         "description": "Встречи, события и напоминания в одном месте.",
-        "action": "Открыть календарь"
+        "action": "Открыть календарь",
+        "_pending_review": {}
       },
       "F10": {
         "eyebrow": "Медиа",
         "title": "Поделись видео или музыкой",
         "description": "Загрузи свои медиа и вдохнови сообщество.",
-        "action": "Создать"
+        "action": "Создать",
+        "_pending_review": {}
       },
       "F11": {
         "eyebrow": "Обзор",
         "title": "Открой для себя что-то новое",
         "description": "Товары, услуги и предложения для твоего благополучия.",
-        "action": "Смотреть"
-      }
+        "action": "Смотреть",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "interests": {
       "title": "Твои интересы",
@@ -13648,7 +13770,10 @@
       "cooking": "Кулинария",
       "social": "Общение",
       "travel": "Путешествия",
-      "career": "Карьера"
-    }
-  }
+      "career": "Карьера",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

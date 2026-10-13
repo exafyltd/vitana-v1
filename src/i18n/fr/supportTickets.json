@@ -15,7 +15,8 @@
       "account_issue": "Problème de compte",
       "marketplace_claim": "Commande ou paiement",
       "feature_request": "Demande de fonctionnalité",
-      "other": "Autre"
+      "other": "Autre",
+      "_pending_review": {}
     },
     "kindHint": {
       "feedback": "Idées, réflexions, tout le reste",
@@ -24,7 +25,8 @@
       "support_question": "Question sur l'utilisation de Vitana",
       "account_issue": "Connexion, profil, données",
       "marketplace_claim": "Remboursements, marketplace",
-      "feature_request": "Quelque chose que tu aimerais avoir"
+      "feature_request": "Quelque chose que tu aimerais avoir",
+      "_pending_review": {}
     },
     "status": {
       "received": "Reçu",
@@ -32,7 +34,8 @@
       "in_progress": "En correction",
       "fixed": "Résolu",
       "wont_fix": "Ne sera pas fait",
-      "duplicate": "Doublon"
+      "duplicate": "Doublon",
+      "_pending_review": {}
     },
     "timelineLabel": "Avancement",
     "reportedOn": "Signalé le {date}",
@@ -49,7 +52,8 @@
       "low": "Faible",
       "medium": "Moyenne",
       "high": "Élevée",
-      "critical": "Critique"
+      "critical": "Critique",
+      "_pending_review": {}
     },
     "submittedTitle": "Merci – ton ticket est créé",
     "submittedNumber": "Ton numéro de ticket : {number}",
@@ -61,7 +65,8 @@
       "seoDescription": "Signale des bugs, pose des questions ou partage ton avis. Vitana et ses collègues te répondront.",
       "headerDescription": "Bugs, questions, avis – Vitana transmet à un collègue spécialiste quand le sujet sort de son domaine.",
       "send": "Envoyer à Vitana",
-      "sending": "Envoi …"
+      "sending": "Envoi …",
+      "_pending_review": {}
     },
     "support": {
       "seoTitle": "Service client",
@@ -88,7 +93,8 @@
       }
     },
     "diary": {
-      "title": "Mes signalements"
+      "title": "Mes signalements",
+      "_pending_review": {}
     },
     "admin": {
       "copyVtid": "Copier le VTID",
@@ -111,7 +117,8 @@
         "marketplace_claim": "Remboursement / litige — Atlas rédige la résolution",
         "account_issue": "Connexion / rôle / données — Mira rédige la résolution",
         "feedback": "Avis / souhaitable — directement en cours",
-        "feature_request": "Nouvelle fonctionnalité — directement en cours"
+        "feature_request": "Nouvelle fonctionnalité — directement en cours",
+        "_pending_review": {}
       },
       "status": {
         "new": "Soumis",
@@ -129,7 +136,8 @@
         "rejected": "Rejeté",
         "wont_fix": "Ne sera pas corrigé",
         "needs_more_info": "Infos requises",
-        "reopened": "Rouvert"
+        "reopened": "Rouvert",
+        "_pending_review": {}
       },
       "stage": {
         "cooling": "En file d'attente",
@@ -152,19 +160,22 @@
         "verifying": "pendant la vérification après déploiement",
         "plan_gen": "pendant la génération du plan",
         "approve_safety": "au contrôle de sécurité",
-        "other": "à l'étape {stage}"
+        "other": "à l'étape {stage}",
+        "_pending_review": {}
       },
       "run": {
         "failed": "L'exécution a échoué",
         "failedWhere": "L'exécution a échoué {where}",
         "completed": "Terminé — déployé en production",
-        "running": "En cours dans Dev Autopilot — {stage}"
+        "running": "En cours dans Dev Autopilot — {stage}",
+        "_pending_review": {}
       },
       "generate": {
         "devon": "Générer la spec (Devon)",
         "sage": "Générer la réponse (Sage)",
         "atlas": "Générer la résolution (Atlas)",
-        "mira": "Générer la résolution (Mira)"
+        "mira": "Générer la résolution (Mira)",
+        "_pending_review": {}
       },
       "draftNoun": {
         "spec_md": "spec",
@@ -180,7 +191,8 @@
         "sage": "ex. La réponse doit mentionner le nouveau parcours d'inscription à la bêta sur /settings, pas l'ancien interrupteur.",
         "atlas": "ex. Cette réclamation frôle la fraude — commence par une vérification d'éligibilité et bloque tout remboursement en attendant l'examen d'un opérateur.",
         "mira": "ex. Vérifie d'abord l'e-mail de l'utilisateur ; le rôle corrompu vient probablement d'un claim OAuth obsolète, pas d'un problème de DB.",
-        "default": "Tes consignes pour la tâche."
+        "default": "Tes consignes pour la tâche.",
+        "_pending_review": {}
       },
       "action": {
         "generate": "Générer",
@@ -197,7 +209,8 @@
         "rollbackConfirm": "Annuler {pr} et rouvrir {ticket} ?\n\nUne PR de revert sera créée et fusionnée automatiquement. Cela déploie un retour en arrière en production.",
         "working": "En cours — merci de patienter",
         "close": "Fermer",
-        "rejectPrompt": "Motif du rejet de {ticket} ? (facultatif)"
+        "rejectPrompt": "Motif du rejet de {ticket} ? (facultatif)",
+        "_pending_review": {}
       },
       "toast": {
         "reclassifiedTitle": "{ticket} reclassé",
@@ -218,8 +231,10 @@
       "error": {
         "alreadyDispatched": "Ce ticket est déjà en cours dans Dev Autopilot. La reclassification est verrouillée une fois lancé.",
         "draftRequired": "Génère d'abord un brouillon — écris tes instructions et clique sur Générer.",
-        "alreadyInProgress": "Ce ticket est déjà en cours. L'autopilot le fermera une fois terminé."
-      }
+        "alreadyInProgress": "Ce ticket est déjà en cours. L'autopilot le fermera une fois terminé.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "adminList": {
       "approveAllConfirm": "Approuver les {count} tickets traitables de {customer} ?",
@@ -240,7 +255,10 @@
       "toggleOn": "Activer {name}",
       "toggleOff": "Désactiver {name}",
       "seoDescription": "Tickets de retour du locataire et équipe de spécialistes IA",
-      "pageDescription": "Tickets envoyés à Vitana par tes membres. Des spécialistes IA les traitent — des humains valident avant que la moindre action ne s'applique."
-    }
-  }
+      "pageDescription": "Tickets envoyés à Vitana par tes membres. Des spécialistes IA les traitent — des humains valident avant que la moindre action ne s'applique.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
