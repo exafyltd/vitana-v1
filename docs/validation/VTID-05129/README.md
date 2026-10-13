@@ -26,3 +26,12 @@ Proof: a full STAGING-VERIFY community-app run with 0 failures after both PRs me
 | VTID-04901, VTID-04902 | No change. They failed at 07:58, while staging switched to 2a193a17 mid-run (stage deploy 07:54–08:00). |
 | VTID-04989, job timeout | Runner half (vitana-platform #4075). |
 | VTID-05081 phone journey | No change. In 1 of 4 journeys in the same run, Events waited more than 10 s on one live-room cover image; the other 3 were ready in about 1 s. This is re-observed in proof run 2. |
+
+## Amendment A1 — phone journey median of 3 (after proof runs 2 and 3)
+
+Every full run had one of the ~4 phone-journey executions miss one timing budget by 1–11 %, a different step each
+time (run 3: News return 1518 ms vs 1500; the other samples 1030–1250 ms). Owner decision 2026-10-13: judge each step
+on the median of three passes with the same budgets, and pause merges for the final full run. The spec now runs the
+journey three times on the same guarded page (storage, Cache Storage and the in-test image cache reset between
+passes; sign-in kept). One slow sample no longer fails a step; two out of three still do. A photo re-download or a
+frame jump fails in any pass. Sparring record: plan-sparring.md, Amendment A1 (converged, 2 rounds).

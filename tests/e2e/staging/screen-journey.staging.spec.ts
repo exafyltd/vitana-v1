@@ -14,6 +14,10 @@
 // (src/lib/screen-ready.ts): from the tap until the new route is on screen
 // (pathname + two frames), no loading indicator is visible in the first
 // viewport, and every first-viewport <img> is complete. Capped at 10 s.
+// VTID-05129: the journey runs three times on the same guarded page; each
+// step's time is judged on the median of its three samples against the same
+// budgets (one slow sample no longer fails a step, two still do). A photo
+// re-download or frame jump fails in any pass.
 //
 // Image refetch on return visits — and why this spec carries its own HTTP
 // cache: Playwright disables the browser cache (memory cache included) for a
@@ -317,6 +321,13 @@ function imageCache(page: Page) {
     beginStep() {
       step = { networkFetches: [], refetches: [], cacheHits: 0 };
     },
+    /** VTID-05129: a new pass starts as cold as the first — no cached or "already loaded" image. */
+    reset() {
+      cache.clear();
+      cachedBytes = 0;
+      everLoaded.clear();
+      step = { networkFetches: [], refetches: [], cacheHits: 0 };
+    },
     get step() {
       return step;
     },
@@ -326,7 +337,7 @@ function imageCache(page: Page) {
 // ─── The journey ─────────────────────────────────────────────────────────────
 
 test('phone journey: tab switches are ready fast and return visits reload nothing', async ({ page, request }) => {
-  test.setTimeout(5 * 60_000);
+  test.setTimeout(12 * 60_000);
   const email = process.env.TEST_USER_EMAIL ?? '';
   const password = process.env.TEST_USER_PASSWORD ?? '';
   test.skip(!email || !password, 'TEST_USER_EMAIL / TEST_USER_PASSWORD not provided');
@@ -409,73 +420,128 @@ test('phone journey: tab switches are ready fast and return visits reload nothin
   await cdp.send('Profiler.enable');
   await cdp.send('Profiler.setSamplingInterval', { interval: 1000 });
 
-  // Start: cold load of News (covered by LCP RUM; logged, not asserted).
-  images.beginStep();
-  await page.goto('/home', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('a[href="/inbox"]:visible').first(), 'bottom tab bar did not render').toBeVisible({ timeout: 60_000 });
-  const start = await page.evaluate(waitScreenReady, { path: '/home', cap: 60_000, fromNavigationStart: true });
+  type Row = { pass: number; step: string; nav: 'first' | 'return'; ready_ms: number; timed_out: boolean; img_total: number; net_images: number; cache_hits: number; refetches: number; frame_changes: number; problems: string[] };
 
-  type Row = { step: string; nav: 'first' | 'return'; ready_ms: number; timed_out: boolean; img_total: number; net_images: number; cache_hits: number; refetches: number; frame_changes: number; problems: string[] };
-  const rows: Row[] = [
-    { step: 'start /home (cold)', nav: 'first', ready_ms: start.ready_ms, timed_out: start.timed_out, img_total: start.img_total, net_images: images.step.networkFetches.length, cache_hits: images.step.cacheHits, refetches: 0, frame_changes: 0, problems: [] },
-  ];
-  const visited = new Set<string>(['/home']);
-
-  for (const { path, label } of JOURNEY) {
-    const nav: 'first' | 'return' = visited.has(path) ? 'return' : 'first';
-    visited.add(path);
-    images.beginStep();
+  // One pass: cold load of News (covered by LCP RUM; logged, not asserted),
+  // then the five tab taps. Timing problems are collected per sample here and
+  // judged on the median across passes below; refetches and frame jumps are
+  // judged per pass.
+  const runPass = async (pass: number): Promise<Row[]> => {
     downloads = [];
-    await page.evaluate(() => {
-      const w = window as unknown as { __sjArmed?: boolean; __sjTapAt?: number };
-      w.__sjTapAt = undefined;
-      w.__sjArmed = true;
-    });
-    await cdp.send('Profiler.start');
-    await page.locator(`a[href="${path}"]:visible`).first().tap();
-    const ready = await page.evaluate(waitScreenReady, { path, cap: CAP_MS, fromNavigationStart: false });
-    const { profile } = (await cdp.send('Profiler.stop')) as unknown as { profile: { nodes: ProfileNode[]; startTime: number; endTime: number } };
+    images.beginStep();
+    await page.goto('/home', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('a[href="/inbox"]:visible').first(), 'bottom tab bar did not render').toBeVisible({ timeout: 60_000 });
+    const start = await page.evaluate(waitScreenReady, { path: '/home', cap: 60_000, fromNavigationStart: true });
 
-    // Read before the return-visit stability wait, bounded at the ready time.
-    const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
-    const slow = ready.timed_out || ready.ready_ms > budget;
-    const timeline = slow ? ` [${await page.evaluate(stepTimeline, ready.ready_ms)}] [${profileSummary(profile)}]` : '';
+    const rows: Row[] = [
+      { pass, step: 'start /home (cold)', nav: 'first', ready_ms: start.ready_ms, timed_out: start.timed_out, img_total: start.img_total, net_images: images.step.networkFetches.length, cache_hits: images.step.cacheHits, refetches: 0, frame_changes: 0, problems: [] },
+    ];
+    const visited = new Set<string>(['/home']);
 
-    let frameChanges = 0;
-    if (nav === 'return') {
-      const before = await page.evaluate(captureFrameHeights);
-      await page.waitForTimeout(STABILITY_WAIT_MS);
-      const after = await page.evaluate(recheckFrameHeights);
-      frameChanges = before.filter((h, i) => after[i] != null && Math.abs((after[i] as number) - h) > 1).length;
+    for (const { path, label } of JOURNEY) {
+      const nav: 'first' | 'return' = visited.has(path) ? 'return' : 'first';
+      visited.add(path);
+      images.beginStep();
+      downloads = [];
+      await page.evaluate(() => {
+        const w = window as unknown as { __sjArmed?: boolean; __sjTapAt?: number };
+        w.__sjTapAt = undefined;
+        w.__sjArmed = true;
+      });
+      await cdp.send('Profiler.start');
+      await page.locator(`a[href="${path}"]:visible`).first().tap();
+      const ready = await page.evaluate(waitScreenReady, { path, cap: CAP_MS, fromNavigationStart: false });
+      const { profile } = (await cdp.send('Profiler.stop')) as unknown as { profile: { nodes: ProfileNode[]; startTime: number; endTime: number } };
+
+      // Read before the return-visit stability wait, bounded at the ready time.
+      const budget = nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
+      const slow = ready.timed_out || ready.ready_ms > budget;
+      const timeline = slow ? ` [${await page.evaluate(stepTimeline, ready.ready_ms)}] [${profileSummary(profile)}]` : '';
+
+      let frameChanges = 0;
+      if (nav === 'return') {
+        const before = await page.evaluate(captureFrameHeights);
+        await page.waitForTimeout(STABILITY_WAIT_MS);
+        const after = await page.evaluate(recheckFrameHeights);
+        frameChanges = before.filter((h, i) => after[i] != null && Math.abs((after[i] as number) - h) > 1).length;
+      }
+
+      // Timing diagnostics of a slow sample (judged on the median below).
+      const problems: string[] = [];
+      const waited = ready.blocked_by.length ? ` (waiting on: ${ready.blocked_by.join(' | ')})` : '';
+      if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited} [${networkSummary()}]${timeline}`);
+      else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited} [${networkSummary()}]${timeline}`);
+
+      rows.push({
+        pass,
+        step: `${label} ${path}`,
+        nav,
+        ready_ms: ready.ready_ms,
+        timed_out: ready.timed_out,
+        img_total: ready.img_total,
+        net_images: images.step.networkFetches.length,
+        cache_hits: images.step.cacheHits,
+        refetches: images.step.refetches.length,
+        frame_changes: frameChanges,
+        problems,
+      });
+      if (nav === 'return' && images.step.refetches.length) deterministic.push(`pass ${pass} ${label} ${path} (return): re-downloaded ${images.step.refetches.length} photo(s): ${images.step.refetches.slice(0, 3).join(', ')}`);
+      if (frameChanges) deterministic.push(`pass ${pass} ${label} ${path} (${nav}): ${frameChanges} media frame(s) changed height`);
     }
+    return rows;
+  };
 
-    const problems: string[] = [];
-    const waited = ready.blocked_by.length ? ` (waiting on: ${ready.blocked_by.join(' | ')})` : '';
-    if (ready.timed_out) problems.push(`not ready within ${CAP_MS} ms${waited} [${networkSummary()}]${timeline}`);
-    else if (ready.ready_ms > budget) problems.push(`ready ${ready.ready_ms} ms > ${budget} ms${waited} [${networkSummary()}]${timeline}`);
-    if (nav === 'return' && images.step.refetches.length) problems.push(`re-downloaded ${images.step.refetches.length} photo(s): ${images.step.refetches.slice(0, 3).join(', ')}`);
-    if (frameChanges) problems.push(`${frameChanges} media frame(s) changed height`);
-
-    rows.push({
-      step: `${label} ${path}`,
-      nav,
-      ready_ms: ready.ready_ms,
-      timed_out: ready.timed_out,
-      img_total: ready.img_total,
-      net_images: images.step.networkFetches.length,
-      cache_hits: images.step.cacheHits,
-      refetches: images.step.refetches.length,
-      frame_changes: frameChanges,
-      problems,
-    });
+  // VTID-05129: three passes on this same guarded page. A single sample on a
+  // shared, CPU-throttled CI runner spreads more than the budget margin (three
+  // full runs each missed one budget by 1–11 %, a different step each time),
+  // so each step's time is judged on the MEDIAN of three samples against the
+  // unchanged budgets: one slow sample no longer fails a step, two still do.
+  // A re-downloaded photo or a frame jump fails in ANY pass. Between passes
+  // the page starts cold again: storage and Cache Storage cleared (sign-in
+  // written back), the in-test image cache emptied; the browser HTTP cache is
+  // already off (see the header).
+  const PASSES = 3;
+  const deterministic: string[] = [];
+  const passes: Row[][] = [];
+  for (let pass = 1; pass <= PASSES; pass++) {
+    if (pass > 1) {
+      await page.evaluate(async (s) => {
+        localStorage.clear();
+        sessionStorage.clear();
+        if ('caches' in window) for (const k of await caches.keys()) await caches.delete(k);
+        localStorage.setItem('sb-inmkhvwdcuyhnxkgfvsb-auth-token', JSON.stringify(s));
+        localStorage.setItem('vitana.authToken', s.access_token);
+        localStorage.setItem('vitana.viewRole', 'community');
+      }, session);
+      images.reset();
+    }
+    passes.push(await runPass(pass));
   }
 
-  console.log('[screen-journey] per-step summary (Pixel 7, 4x CPU, Fast 4G):');
-  console.table(rows.map((r) => ({ ...r, problems: undefined, verdict: r.problems.length ? 'FAIL' : 'ok' })));
-  for (const r of rows) if (r.problems.length) console.log(`[screen-journey] ${r.step}: ${r.problems.join('; ')}`);
-  await test.info().attach('screen-journey.json', { body: JSON.stringify(rows, null, 2), contentType: 'application/json' });
+  const median = (xs: number[]) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+  const timing: string[] = [];
+  const medians = passes[0].map((first, i) => {
+    const samples = passes.map((rows) => rows[i]);
+    const ms = samples.map((r) => (r.timed_out ? CAP_MS : r.ready_ms));
+    const m = median(ms);
+    const asserted = i > 0; // the cold start is logged, not asserted
+    const budget = first.nav === 'return' ? RETURN_BUDGET_MS : FIRST_BUDGET_MS;
+    if (asserted && m > budget) {
+      const head = m >= CAP_MS ? `median not ready within ${CAP_MS} ms` : `median ${m} ms > ${budget} ms`;
+      const detail = samples.filter((r) => r.problems.length).map((r) => `pass ${r.pass}: ${r.problems.join('; ')}`).join(' | ');
+      timing.push(`${first.step} (${first.nav}): ${head} (samples ${ms.join(' / ')} ms)${detail ? ` — ${detail}` : ''}`);
+    }
+    return { step: first.step, nav: first.nav, samples_ms: ms.join(' / '), median_ms: m, verdict: asserted && m > budget ? 'FAIL' : 'ok' };
+  });
 
-  const failures = rows.flatMap((r) => r.problems.map((p) => `${r.step} (${r.nav}): ${p}`));
+  console.log(`[screen-journey] per-step samples, ${PASSES} passes (Pixel 7, 4x CPU, Fast 4G):`);
+  console.table(passes.flat().map((r) => ({ ...r, problems: undefined, slow_sample: r.problems.length ? 'yes' : '' })));
+  console.log('[screen-journey] per-step median (judged):');
+  console.table(medians);
+  for (const r of passes.flat()) if (r.problems.length) console.log(`[screen-journey] pass ${r.pass} ${r.step}: ${r.problems.join('; ')}`);
+  await test.info().attach('screen-journey.json', { body: JSON.stringify({ passes, medians }, null, 2), contentType: 'application/json' });
+
+  const failures = [...timing, ...deterministic];
   // One line, so the STAGING-VERIFY summary (which keeps the error's first lines) shows every reason.
   expect(failures.length, `screen journey budget failures: ${failures.join(' || ')}`).toBe(0);
 });
