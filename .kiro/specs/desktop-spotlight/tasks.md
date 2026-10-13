@@ -70,12 +70,17 @@ Manifest: 345 screens (workspace 187 · collection 84 · form 32 · detail 18 ·
 storefront 3 · immersive 2), all `legacy`.
 
 ## Phase 2 — News Feed · VTID-05108
-- [ ] 2.1 `feed-compose.ts` `placement: 'stream' | 'rail'` (+ tests); info cards, DidYouKnow, EventGameFeedBadge → rail. _R4.4_
-- [ ] 2.2 Desktop focus feed in `Home.tsx` behind `useSpotlightEnabled()` via `ScreenFrame archetype="focus-feed"`; legacy branch untouched. _R4_
-- [ ] 2.3 Rail: Up next, Today, Vitana Index / journey, People to meet. _R1_
-- [ ] 2.4 Keyboard J/K/↑↓, centre-line focus, dim with AA contrast. _R4.2–4.3_
-- [ ] 2.5 Manifest: `/home` → `migrated`; lower the design baseline for touched files.
-- [ ] 2.6 Staging spec: no gap > 48 px at 1280/1440/1920, one spotlight, rail present, J/K, RTL, chrome invariants. _R4.5_
+- [x] 2.1 `feed-compose.ts` `placement: 'stream' | 'rail'` (+ tests); info cards, DidYouKnow, EventGameFeedBadge → rail. _R4.4_
+- [x] 2.2 Desktop focus feed in `Home.tsx` behind `useSpotlightEnabled()` via `ScreenFrame archetype="focus-feed"`; legacy branch untouched. _R4_
+- [x] 2.3 Rail: Up next, Today, Vitana Index / journey, People to meet. _R1_
+- [x] 2.4 Keyboard J/K/↑↓, centre-line focus, dim with AA contrast. _R4.2–4.3_
+- [x] 2.5 Manifest: `/home` → `migrated`; lower the design baseline for touched files.
+- [x] 2.6 Staging spec: no gap > 48 px at 1280/1440/1920, one spotlight, rail present, J/K, RTL, chrome invariants. _R4.5_
+
+Status: implemented (VTID-05108). Migrated: `/home` (focus-feed). Decisions taken (for Gate 2):
+- Only the Spotlight branch changes; phones and flag-off keep the legacy feed and its order exactly.
+- VTID-05143's Home enrichment cards are Vitana cards, so on desktop Spotlight they sit in the rail with the other info cards.
+- Design baseline: `src/pages/Home.tsx` 13 → 12.
 
 ## Phase 3 — Discover storefront · VTID-05109
 - [x] 3.1 Storefront overview (`ScreenFrame archetype="storefront"`): SubNavigation kept, Overview SplitBar removed, chips, hero, shelves, Share & Earn shelf. _R5.1–5.2_

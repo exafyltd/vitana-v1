@@ -1,0 +1,29 @@
+{
+  "vtid": "VTID-05108",
+  "kind": "feature",
+  "paths": [
+    "docs/validation/VTID-05108/**",
+    ".kiro/specs/desktop-spotlight/**",
+    "src/pages/Home.tsx",
+    "src/pages/Home.spotlight.vtid-05108.test.tsx",
+    "src/lib/feed-compose.ts",
+    "src/lib/feed-compose.test.ts",
+    "src/components/home/desktop/**",
+    "src/components/ui/vcard/adapters/index.ts",
+    "src/components/ui/vcard/adapters/feed.ts",
+    "src/components/ui/vcard/adapters/feed.test.ts",
+    "src/components/keepalive/NewsKeepAlive.test.tsx",
+    "src/i18n/de/spotlightFeed.json",
+    "src/i18n/en/spotlightFeed.json",
+    "src/i18n/*/spotlightFeed.json",
+    "i18n-source-stamps/**",
+    "src/design/screen-manifest.json",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "scripts/ci/pr-gate/baseline/eslint.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-05108-news-focus-feed.staging.spec.ts"
+  ],
+  "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

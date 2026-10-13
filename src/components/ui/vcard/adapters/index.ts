@@ -46,6 +46,8 @@ export function articleToVCard(article: ArticleFeedItem): VCardData {
   };
 }
 
+export { newsArticleToVCard, feedPersonToVCard, communityEventToVCard } from './feed';
+
 /** A marketplace product. Price is formatted with the existing marketplace helper. */
 export function productToVCard(product: MarketplaceProduct): VCardData {
   const price = formatPrice(product.price_cents, product.currency);
