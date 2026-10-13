@@ -226,7 +226,16 @@ Decisions taken (for Gate 2):
     entries were removed (design + eslint, 5 each — `templates/EventCard` had none). No test file existed or changed.
   - Mobile screenshots unchanged by construction: every JS chunk of the build is byte-identical to base (hashes
     aside); only `index.css` loses 442 bytes of utilities no remaining file uses.
-- [ ] 6.2 Design part of the ESLint baseline = 0; mobile screenshots unchanged.
+- [~] 6.2 Design part of the ESLint baseline = 0; mobile screenshots unchanged.
+  Status (VTID-05112, part 1): visually identical fixes in 19 component folders (profile, community, messages, live rooms,
+  crossover, health, journey, diary, memory, calendar, home, sharing, wallet, commerce, payment, business, tickets, event
+  game, discover): `design/*` errors there 3,228 → 2,400 — physical direction 762 → 12, arbitrary size 231 → 179,
+  raw palette 2,235 → 2,209 (26 exact light/dark pairs → tokens). Design + ESLint baselines lowered for 259 files.
+  Left on purpose: `left-1/2 -translate-x-1/2` centring and carousel/sheet overrides (a logical class would misplace them
+  in RTL); arbitrary sizes without an exact scale class (vh/dvh/calc/odd px).
+  **Blocked on an owner decision:** no raw palette colour has a token with the same value in both light and dark mode, so
+  "baseline = 0" and "mobile screenshots unchanged" cannot both hold. Options: accept small colour shifts to existing
+  status/category/surface tokens, or add exact-match tokens (a design-contract change → sparring).
 
 ## System-wide done
 - [ ] Manifest 100 % `migrated`; `baseline/design.json` all zero; STAGING-VERIFY design-lint green for every screen.
