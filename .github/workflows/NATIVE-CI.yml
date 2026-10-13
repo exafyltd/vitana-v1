@@ -2,10 +2,13 @@
 # ledger and the extraction analysis (VTID-05157, Native app Wave 0;
 # program docs/programs/native-app/NATIVE-APP-PLAN.md §4–5).
 #
-# Nothing here deploys, signs, or calls a Vitana service: no secrets, no
-# Expo/EAS token, no store or Firebase calls. Expo runs offline
-# (EXPO_OFFLINE=1). Native builds (prebuild, Gradle/Xcode) are row 8b and
-# wait for macOS minutes / G1 / G2.
+# Nothing here deploys, signs, or calls a Vitana service: no Expo/EAS token,
+# no store or Firebase calls. Expo runs offline (EXPO_OFFLINE=1). Native
+# builds (prebuild, Gradle/Xcode) are row 8b and wait for macOS minutes /
+# G1 / G2. The one secret is PLATFORM_DISPATCH_TOKEN, used only by the
+# `orb-parity` job (VTID-05179) to read four vitana-platform files from
+# `main` through the GitHub API, the same way PR-GATE.yml does; every other
+# job stays secret-free.
 #
 # Not a required status check yet (branch protection is an admin setting).
 
@@ -37,6 +40,10 @@ on:
       - 'eslint-rules/**'
       - 'eslint.config.js'
       - '.github/workflows/NATIVE-CI.yml'
+  # VTID-05179: a platform-side change to the duplex gate or the ORB protocol
+  # turns `orb-parity` red within 24 h. Only that job runs on the schedule.
+  schedule:
+    - cron: '17 5 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -54,6 +61,7 @@ env:
 jobs:
   mobile:
     name: apps/mobile — typecheck, test, bundle (iOS + Android JS)
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     defaults:
@@ -99,6 +107,7 @@ jobs:
 
   parity-ledger:
     name: Parity ledger + native script tests
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -126,6 +135,7 @@ jobs:
 
   lint-rules:
     name: ESLint native override + i18n rule tests
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -141,9 +151,39 @@ jobs:
       - name: Lint apps/mobile
         run: npx eslint apps/mobile
 
+  # VTID-05179 (native Wave 1b N6a, plan Change 6): the native ORB mirrors
+  # vitana-platform code it cannot import — DUPLEX_GATE / evaluateDuplexGateFrame,
+  # the widget's audio literals, the WS message contract. This job reads those
+  # files from platform `main` and fails on any drift (scripts/native/orb-parity.mjs).
+  # It FAILS, never skips, when the token or the fetch is missing — including on
+  # pull requests from forks, which get no secrets.
+  orb-parity:
+    name: ORB parity — duplex gate, widget literals, protocol (vitana-platform main)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install the TypeScript compiler (root lockfile version)
+        run: |
+          TS_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/typescript'].version")
+          mkdir -p "$RUNNER_TEMP/ts"
+          npm install --prefix "$RUNNER_TEMP/ts" --no-save --no-audit --no-fund "typescript@$TS_VERSION"
+          ln -s "$RUNNER_TEMP/ts/node_modules" node_modules
+      - name: Fetch the platform sources (PLATFORM_DISPATCH_TOKEN; fails closed without it)
+        env:
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: node scripts/native/orb-parity.mjs --fetch "$RUNNER_TEMP/platform"
+      - name: Parity check (a)–(e) + vectors drift
+        run: node scripts/native/orb-parity.mjs --check --platform-dir "$RUNNER_TEMP/platform"
+
   extraction-analysis:
     name: Extraction dependency analysis (artefact)
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
