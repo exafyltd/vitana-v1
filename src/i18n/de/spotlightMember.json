@@ -32,7 +32,7 @@
         "emptyAction": "Zum Gedächtnis"
       },
       "permissions": {
-        "desc": "Lege fest, wer deine Gesundheitserinnerungen sehen und nutzen darf.",
+        "desc": "Lege fest, wer deine Gesundheits-Erinnerungen sehen und nutzen darf.",
         "panelTitle": "Datenschutz und Zugriff",
         "panelDesc": "Deine Einstellungen für Sichtbarkeit, Datennutzung und Sicherheit verwaltest du an einem Ort: in den Datenschutz-Einstellungen.",
         "openPrivacy": "Datenschutz öffnen"
