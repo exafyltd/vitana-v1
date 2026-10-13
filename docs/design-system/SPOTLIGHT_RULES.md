@@ -120,7 +120,7 @@ The rules live in `eslint-rules/design/*.js`, are registered in `eslint.config.j
 | Rule | Flags | Contract |
 |---|---|---|
 | `design/no-arbitrary-size` | `h-[…]`, `w-[…]`, `min-h-[…]`, `max-w-[…]`, `size-[…]` | SR-12, SR-14 |
-| `design/no-raw-palette` | Tailwind palette scales (`text-green-600`, `from-purple-50`), `bg-[#…]`, hex/rgb/hsl literals in `style` | SR-17 |
+| `design/no-raw-palette` | Tailwind palette scales (`text-green-600`, `from-purple-50`), `bg-white`/`text-black`, `bg-[#…]`, hex/rgb/hsl literals in `style` | SR-17 |
 | `design/no-physical-direction` | `ml-/mr-/pl-/pr-/left-/right-`, `text-left/right`, `rounded-l/r`, `border-l/r` | SR-19 |
 | `design/no-page-spinner` | `Loader2` or `animate-spin` in `src/pages/**` outside a button | SR-20 |
 | `design/require-screen-frame` | a page that renders `AppLayout` without `ScreenFrame` | SR-03 |
@@ -129,12 +129,13 @@ The rules live in `eslint-rules/design/*.js`, are registered in `eslint.config.j
 **Escape hatch.** Put `// design-allow-next-line: <reason>` (or `{/* … */}` in JSX) on the line directly above the
 offending code. The reason is mandatory; a bare allow is itself an error. `npm run design:allowances` lists every one.
 
-**Ratchets.** All violations that existed when the rules arrived (5,487 in 846 files) are carried as per-file counts.
+**Ratchets.** All violations that existed when the rules arrived (6,345 in 861 files) are carried as per-file counts.
 These counts may only go down:
 - `scripts/ci/pr-gate/baseline/eslint.json` is the existing ESLint ratchet.
 - `scripts/ci/pr-gate/baseline/design.json` is read by PR-GATE's **Design ratchet** step (`gate.mjs ratchet-design`).
   It compares against the copy of `design.json` on the **base commit**, so a PR cannot raise its own baseline. The only
-  exception is a PR that changes `eslint-rules/design/**`, which is a contract change.
+  exception is a PR that changes `eslint-rules/design/**`, which is a contract change; such a PR must commit a baseline
+  that equals the current counts exactly, so it cannot carry stale or inflated slack forward.
 
 So **every new file must be clean**, and every migration PR lowers the baselines with
 `node scripts/ci/pr-gate/gate.mjs baseline-design <eslint-json>` and `… baseline-eslint <eslint-json>`.

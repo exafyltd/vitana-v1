@@ -52,8 +52,8 @@ Status: implemented in PR #1349 (VTID-05105). Decisions taken (inside the plan, 
 - [x] 1c.8 `ratchet-design` in `gate.mjs`/`lib.mjs` reading the base commit's baseline; unit tests prove a raised count fails even when the PR edits the baseline; one step in `PR-GATE.yml`. _R7.5_
 - [x] 1c.9 `tests/e2e/staging/design-contract.staging.spec.ts` (iterates `migrated` manifest entries; empty set passes). _R7_
 
-Status: implemented (VTID-05107). Starting legacy counts carried by the ratchets: 5,487 `design/*` errors in 846 files
-(no-raw-palette 2,985 · no-physical-direction 1,670 · no-arbitrary-size 513 · require-screen-frame 185 ·
+Status: implemented (VTID-05107). Starting legacy counts carried by the ratchets: 6,345 `design/*` errors in 861 files
+(no-raw-palette 3,842 incl. bg-white/text-black · no-physical-direction 1,670 · no-arbitrary-size 513 · require-screen-frame 185 ·
 no-page-spinner 68 · no-raw-content-card 67 — one fixed in this PR: the compact StandardHeader now uses status tokens).
 Manifest: 345 screens (workspace 187 · collection 84 · form 32 · detail 18 · conversation 12 · dashboard 4 · focus-feed 3 ·
 storefront 3 · immersive 2), all `legacy`.

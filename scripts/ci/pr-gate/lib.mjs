@@ -135,6 +135,18 @@ export function chooseDesignBaseline({ changed, baseText, headText }) {
   return { source: 'base commit', counts: parseBaseline(baseText) };
 }
 
+/** Files whose baseline count differs from the current count (either way). */
+export function baselineDrift(baseline, current) {
+  const files = new Set([...Object.keys(baseline), ...Object.keys(current)]);
+  const out = [];
+  for (const file of [...files].sort()) {
+    const b = baseline[file] || 0;
+    const n = current[file] || 0;
+    if (b !== n) out.push({ file, baseline: b, now: n });
+  }
+  return out;
+}
+
 function parseBaseline(text) {
   if (!text) return {};
   try {

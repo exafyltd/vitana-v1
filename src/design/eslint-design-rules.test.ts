@@ -39,6 +39,7 @@ tester.run('design/no-raw-palette', r['no-raw-palette'], {
     { code: '<p className="text-status-success bg-severity-high text-primary bg-pill-sleep-tint from-surface-page-from" />', filename: COMPONENT },
     { code: '<p style={{ color: "hsl(var(--status-error))" }} />', filename: COMPONENT },
     { code: '<p className="text-green" />', filename: COMPONENT },
+    { code: '<p className="bg-transparent text-current bg-card text-foreground" />', filename: COMPONENT },
   ],
   invalid: [
     { code: '<p className="text-green-600 hover:bg-red-50/40" />', filename: COMPONENT, errors: 1 },
@@ -46,6 +47,7 @@ tester.run('design/no-raw-palette', r['no-raw-palette'], {
     { code: '<div className="bg-[#ff0000]" />', filename: COMPONENT, errors: 1 },
     { code: '<div style={{ background: "#18181b", color: "rgb(0,0,0)" }} />', filename: COMPONENT, errors: 2 },
     { code: '<div className={cva("border-slate-200")} />', filename: COMPONENT, errors: 1 },
+    { code: '<div className="bg-white text-black/60" />', filename: COMPONENT, errors: 1 },
   ],
 });
 

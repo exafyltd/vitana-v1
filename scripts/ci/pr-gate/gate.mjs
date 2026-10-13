@@ -108,6 +108,14 @@ const checks = {
     const r = L.compareRatchet(counts, current);
     const total = Object.values(current).reduce((a, b) => a + b, 0);
     const better = r.better.length ? `\n\n${r.better.length} file(s) improved — lower the baseline in this PR: \`node scripts/ci/pr-gate/gate.mjs baseline-design <eslint-json>\`` : '';
+    // A rule-change PR brings its own baseline: it must equal today's counts
+    // exactly, so it cannot carry stale or inflated slack forward.
+    if (source.startsWith('head')) {
+      const stale = L.baselineDrift(counts, current);
+      if (stale.length) {
+        done(false, `❌ **design ratchet** (baseline: ${source}) — a PR that changes the design rules must commit a baseline equal to the current counts; ${stale.length} file(s) differ:\n${stale.slice(0, 40).map((d) => `- \`${d.file}\`: baseline ${d.baseline}, now ${d.now}`).join('\n')}\n\nRegenerate: \`node scripts/ci/pr-gate/gate.mjs baseline-design <eslint-json>\``);
+      }
+    }
     if (!r.ok) {
       done(false, `❌ **design ratchet** (baseline: ${source}) — ${r.worse.length} file(s) gained Spotlight design violations (SPOTLIGHT_RULES.md):\n${r.worse.slice(0, 40).map((w) => `- \`${w.file}\`: ${w.baseline} → ${w.now}`).join('\n')}${better}`);
     }

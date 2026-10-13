@@ -58,3 +58,10 @@ test('missing or unreadable baselines read as empty', () => {
   assert.deepEqual(L.chooseDesignBaseline({ changed: [], baseText: null, headText: null }).counts, {});
   assert.deepEqual(L.chooseDesignBaseline({ changed: [], baseText: '{not json', headText: null }).counts, {});
 });
+
+test('a rule-change PR must commit a baseline equal to the current counts (no inflated slack)', () => {
+  assert.deepEqual(L.baselineDrift({ 'a.tsx': 2 }, { 'a.tsx': 2 }), []);
+  assert.deepEqual(L.baselineDrift({ 'a.tsx': 9 }, { 'a.tsx': 2 }), [{ file: 'a.tsx', baseline: 9, now: 2 }]);
+  assert.deepEqual(L.baselineDrift({ 'stale.tsx': 1 }, {}), [{ file: 'stale.tsx', baseline: 1, now: 0 }]);
+  assert.deepEqual(L.baselineDrift({}, { 'new.tsx': 3 }), [{ file: 'new.tsx', baseline: 0, now: 3 }]);
+});
