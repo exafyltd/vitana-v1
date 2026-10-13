@@ -200,28 +200,19 @@
     "saved": {
       "_pending_review": {
         "servicesTitle": true,
-        "servicesDesc": true,
-        "providersTitle": true,
-        "providersDesc": true,
-        "dealsTitle": true,
-        "dealsDesc": true,
-        "remove": true
+        "servicesDesc": true
       },
       "servicesTitle": "No saved services yet",
       "servicesDesc": "Services you save show up here.",
-      "providersTitle": "No saved doctors or coaches yet",
-      "providersDesc": "Doctors and coaches you save show up here.",
-      "dealsTitle": "No saved deals yet",
-      "dealsDesc": "Deals you save show up here.",
-      "remove": "Remove"
+      "providersTitle": "Aún no tienes médicos o entrenadores guardados.",
+      "providersDesc": "Aquí aparecerán los médicos y entrenadores que guardes.",
+      "dealsTitle": "Aún no tienes ofertas guardadas.",
+      "dealsDesc": "Aquí aparecerán las ofertas que guardes.",
+      "remove": "Eliminar"
     },
     "deals": {
-      "_pending_review": {
-        "trendingTitle": true,
-        "trendingDesc": true
-      },
-      "trendingTitle": "No trends yet",
-      "trendingDesc": "Once we see enough real bookings, we'll show you what's popular right now."
+      "trendingTitle": "Aún no hay tendencias.",
+      "trendingDesc": "Una vez que veamos suficientes reservas reales, te mostraremos lo que es popular ahora mismo."
     },
     "headers": {
       "_pending_review": {

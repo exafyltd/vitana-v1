@@ -1400,7 +1400,8 @@
       "interestsSaved": "Interesses salvos",
       "interestsSaveFailed": "Não foi possível salvar seus interesses",
       "notificationsEnabled": "As notificações estão ativadas",
-      "notificationsFailed": "Não foi possível ativar as notificações"
+      "notificationsFailed": "Não foi possível ativar as notificações",
+      "_pending_review": {}
     }
   }
 }

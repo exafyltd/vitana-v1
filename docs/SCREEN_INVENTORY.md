@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 378
-- **Distinct i18n keys consumed:** 4754
+- **Pages scanned:** 379
+- **Distinct i18n keys consumed:** 4760
 - **Namespaces in use:** 48
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -262,11 +262,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Health.tsx
 
-**Status:** ✅ clean — keys consumed: 22, namespaces: 2
+**Status:** ✅ clean — keys consumed: 23, namespaces: 2
 
 **i18n namespaces:**
 
-- `health` — used: 11, total in shard: 58, **MISSING:** health.pillars.${key}, health.subtitle, health.searchPlaceholder, health.upload
+- `health` — used: 12, total in shard: 58, **MISSING:** health.pillars.${key}, health.subtitle, health.searchPlaceholder, health.upload
 - `screens` — used: 11, total in shard: 11778
 
 ### src/pages/Home.spotlight.vtid-05108.test.tsx
@@ -645,12 +645,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Wallet.tsx
 
-**Status:** ✅ clean — keys consumed: 37, namespaces: 4
+**Status:** ✅ clean — keys consumed: 40, namespaces: 4
 
 **i18n namespaces:**
 
 - `common` — used: 2, total in shard: 37
-- `screens` — used: 14, total in shard: 11778
+- `screens` — used: 17, total in shard: 11778
 - `toasts` — used: 3, total in shard: 1282
 - `wallet` — used: 18, total in shard: 131
 
@@ -659,6 +659,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/role-section-app-layout.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/spotlight-tier-b.vtid-05111.test.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
@@ -2949,11 +2953,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/sharing/CampaignDetail.tsx
 
-**Status:** ✅ clean — keys consumed: 22, namespaces: 2
+**Status:** ✅ clean — keys consumed: 23, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 20, total in shard: 11778
+- `screens` — used: 21, total in shard: 11778
 - `toasts` — used: 2, total in shard: 1282
 
 ### src/pages/sharing/Campaigns.tsx
@@ -3007,11 +3011,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/wallet/Balance.tsx
 
-**Status:** ✅ clean — keys consumed: 32, namespaces: 1
+**Status:** ✅ clean — keys consumed: 33, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 32, total in shard: 11778
+- `screens` — used: 33, total in shard: 11778
 
 ### src/pages/wallet/Rewards.tsx
 

@@ -22,11 +22,83 @@ import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Shield, AlertCircle, Database, Package, Plus, ChevronDown } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { TIER_B_GRID_2 } from "@/components/spotlight/tier-b/TierBKit";
 
 export default withScreenId(function DataConsent() {
   const [grantAccessOpen, setGrantAccessOpen] = React.useState(false);
   const [createPackageOpen, setCreatePackageOpen] = React.useState(false);
   const [privacySettingsOpen, setPrivacySettingsOpen] = React.useState(false);
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
+
+  const dialogs = (
+    <>
+      <GrantAccessDialog open={grantAccessOpen} onOpenChange={setGrantAccessOpen} />
+      <CreatePackageDialog open={createPackageOpen} onOpenChange={setCreatePackageOpen} />
+      <PrivacySettingsDialog open={privacySettingsOpen} onOpenChange={setPrivacySettingsOpen} />
+    </>
+  );
+
+  if (spotlight) {
+    const panels = [
+      { icon: Shield, title: t('screens.sharing.activePermissions'), body: t('screens.sharing.comingSoonViewManageGrantedPermissions') },
+      { icon: AlertCircle, title: t('screens.sharing.pendingRequests'), body: t('screens.sharing.comingSoonReviewPendingConsentRequests') },
+      { icon: Database, title: t('screens.sharing.privacy'), body: t('screens.sharing.statusOverview') },
+      { icon: Package, title: t('screens.sharing.packages'), body: t('screens.sharing.dataPackages') },
+    ];
+    const menuItem = (Icon: typeof Shield, title: string, sub: string, onSelect: () => void) => (
+      <DropdownMenuItem onClick={onSelect}>
+        <Icon className="me-2 h-4 w-4" />
+        <div className="flex flex-col">
+          <span className="font-medium">{title}</span>
+          <span className="text-xs text-muted-foreground">{sub}</span>
+        </div>
+      </DropdownMenuItem>
+    );
+    return (
+      <AppLayout>
+        <SEO title={t('screens.sharing.dataConsentManagementVitana')} description={t('spotlightTierB.sharing.consentDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: sharingNavigation }}
+          header={{ title: t('screens.sharing.dataConsent'), description: t('spotlightTierB.sharing.consentDescription'), emoji: '🔐' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.sharing.searchPermissionsPackages')} />
+                <UniversalCalendarButton />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="sm" variant="default">
+                      <Plus className="me-2 h-4 w-4" />
+                      {t('screens.sharing.manageAccess')}
+                      <ChevronDown className="ms-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    {menuItem(Shield, t('screens.sharing.grantPermission'), t('screens.sharing.allowDataAccessEntity'), () => setGrantAccessOpen(true))}
+                    {menuItem(Package, t('screens.sharing.createDataPackage'), t('screens.sharing.bundleDataForSharing'), () => setCreatePackageOpen(true))}
+                    <DropdownMenuSeparator />
+                    {menuItem(Database, t('screens.sharing.privacySettings'), t('screens.sharing.configureGlobalControls'), () => setPrivacySettingsOpen(true))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            ),
+          }}
+        >
+          <div className={TIER_B_GRID_2}>
+            {panels.map((p) => (
+              <VCard key={p.title} size="standard" eyebrow={<p.icon className="h-4 w-4" aria-hidden="true" />} title={p.title} body={p.body} />
+            ))}
+          </div>
+        </ScreenFrame>
+        {dialogs}
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -154,9 +226,7 @@ export default withScreenId(function DataConsent() {
         </div>
       </div>
 
-      <GrantAccessDialog open={grantAccessOpen} onOpenChange={setGrantAccessOpen} />
-      <CreatePackageDialog open={createPackageOpen} onOpenChange={setCreatePackageOpen} />
-      <PrivacySettingsDialog open={privacySettingsOpen} onOpenChange={setPrivacySettingsOpen} />
+      {dialogs}
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);

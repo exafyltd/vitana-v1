@@ -18,7 +18,12 @@ import { toast } from "sonner";
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
 import { formatDate } from '@/lib/locale-format';
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TierBEmpty } from "@/components/spotlight/tier-b/TierBKit";
 function CampaignDetail() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { campaigns, isLoading, activateCampaign, pauseCampaign, completeCampaign, updateCampaign } = useCampaigns();
@@ -116,6 +121,24 @@ function CampaignDetail() {
     }
   };
 
+  if (spotlight && (isLoading || !campaign)) {
+    // VTID-05111 — Spotlight: detail skeleton while loading, shared empty state when the campaign is gone.
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="detail"
+          header={{ title: t('screens.sharing.campaignManager'), description: t('spotlightTierB.sharing.campaignDetailDescription'), emoji: '🚀' }}
+        >
+          {isLoading ? (
+            <ArchetypeSkeleton archetype="detail" />
+          ) : (
+            <TierBEmpty titleKey="screens.sharing.campaignNotFound" actionKey="screens.sharing.backCampaigns" onAction={() => navigate('/sharing/campaigns')} />
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   if (isLoading) {
     return (
       <AppLayout>
@@ -135,6 +158,263 @@ function CampaignDetail() {
           </Button>
         </div>
       </AppLayout>
+    );
+  }
+
+  const campaignActions = (
+    <>
+      <div className="flex gap-2">
+        {campaign.status === 'draft' && (
+          <Button 
+            size="sm"
+            onClick={() => setShowActivateDialog(true)}
+            disabled={!canActivateCampaign}
+          >
+            <Rocket className="w-4 h-4 mr-2" />
+            {t('screens.sharing.activateCampaign')}
+          </Button>
+        )}
+        {campaign.status === 'active' && (
+          <>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={handlePauseCampaign}
+              disabled={pauseCampaign.isPending}
+            >
+              <Pause className="w-4 h-4 mr-2" />
+              {t('screens.sharing.pause')}
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={handleCompleteCampaign}
+              disabled={completeCampaign.isPending}
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              {t('screens.sharing.complete')}
+            </Button>
+          </>
+        )}
+        {campaign.status === 'paused' && (
+          <Button 
+            size="sm"
+            onClick={() => activateCampaign.mutate(id!)}
+            disabled={activateCampaign.isPending}
+          >
+            <Rocket className="w-4 h-4 mr-2" />
+            {t('screens.sharing.resume')}
+          </Button>
+        )}
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setShowEditDialog(true)}
+        >
+          <Edit className="w-4 h-4 mr-2" />
+          {t('screens.sharing.edit')}
+        </Button>
+      </div>
+    </>
+  );
+
+  const campaignBody = (
+    <>
+      {/* Stats Overview */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.totalPosts')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{campaignPosts.length}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.published')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-green-600">
+              {campaignPosts.filter(p => p.status === 'published').length}
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.scheduled')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-yellow-600">
+              {campaignPosts.filter(p => p.status === 'scheduled').length}
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.drafts')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-gray-600">
+              {campaignPosts.filter(p => p.status === 'draft').length}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Posts List */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>{t('screens.sharing.campaignPosts')}</CardTitle>
+            <Button onClick={() => setShowCreatePostDialog(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              {t('screens.sharing.createPost')}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {campaignPosts.length > 0 ? (
+            <div className="space-y-3">
+              {campaignPosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors"
+                >
+                  <div className="flex-1">
+                    <h3 className="font-semibold">{post.title}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-1">
+                      {post.description}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge className={getStatusColor(post.status)}>
+                        {post.status}
+                      </Badge>
+                      {post.published_at && (
+                        <span className="text-xs text-muted-foreground">
+                          {formatDate(new Date(post.published_at), 'MMM d, yyyy')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {post.status === 'draft' && (
+                      <>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleSchedulePost(post.id)}
+                        >
+                          <Clock className="w-4 h-4 mr-2" />
+                          {t('screens.sharing.schedule')}
+                        </Button>
+                        <Button 
+                          size="sm"
+                          onClick={() => handlePublishNow(post.id)}
+                        >
+                          <Rocket className="w-4 h-4 mr-2" />
+                          {t('screens.sharing.publishNow')}
+                        </Button>
+                      </>
+                    )}
+                    {post.status !== 'draft' && (
+                      <Button variant="outline" size="sm">{t('screens.sharing.view')}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Send className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noPostsYet')}</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {t('screens.sharing.createPostsAssignThemThisCampaign')}
+              </p>
+              <Button onClick={() => setShowCreatePostDialog(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                {t('screens.sharing.createFirstPost')}
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </>
+  );
+
+  const campaignDialogs = (
+    <>
+      <ActivateCampaignDialog
+        open={showActivateDialog}
+        onOpenChange={setShowActivateDialog}
+        onConfirm={handleActivateCampaign}
+        isLoading={activateAllPosts.isPending || activateCampaign.isPending}
+        postsCount={campaignPosts.length}
+        draftCount={draftPosts.length}
+        campaignId={campaign?.id || ''}
+        targetChannels={campaign?.target_channels as Record<string, boolean> | null}
+        campaignData={{
+          channels: (campaign?.target_channels as string[]) || [],
+          audienceData: (campaign?.distribution_config as any)?.audienceData,
+          messageContent: (campaign?.distribution_config as any)?.messageContent,
+        }}
+      />
+
+      <ScheduleDialog
+        open={showScheduleDialog}
+        onOpenChange={setShowScheduleDialog}
+        onConfirm={handleConfirmSchedule}
+        isLoading={updatePost.isPending}
+      />
+
+      <CampaignDialog
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        editingCampaign={campaign}
+      />
+
+      <CreatePostDialog
+        open={showCreatePostDialog}
+        onOpenChange={setShowCreatePostDialog}
+        campaignId={campaign?.id || ''}
+        campaignName={campaign?.name || ''}
+        campaignTargetChannels={campaign?.target_channels as Record<string, boolean> | null}
+        onPostCreated={() => {
+          // Posts list will auto-refresh via useDistributionPosts
+        }}
+      />
+    </>
+  );
+
+  // VTID-05111 — Spotlight Tier B: name and description in the compact header, back + campaign
+  // actions in the utility row, the stats and posts unchanged below.
+  if (spotlight) {
+    return (
+      <>
+        <SEO title={`${campaign.name} | ${t('screens.sharing.campaignManager')}`} description={campaign.description || t('spotlightTierB.sharing.campaignDetailDescription')} />
+        <AppLayout>
+          <ScreenFrame
+            archetype="detail"
+            header={{ title: campaign.name, description: campaign.description || t('spotlightTierB.sharing.campaignDetailDescription'), emoji: '🚀' }}
+            utility={{
+              children: (
+                <>
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/sharing/campaigns')}>
+                    <ArrowLeft className="me-2 h-4 w-4 rtl:rotate-180" />
+                    {t('screens.sharing.backCampaigns')}
+                  </Button>
+                  <Badge variant="outline">{campaign.status}</Badge>
+                  {campaignActions}
+                </>
+              ),
+            }}
+          >
+            <div className="flex flex-col gap-6">{campaignBody}</div>
+          </ScreenFrame>
+        </AppLayout>
+        {campaignDialogs}
+      </>
     );
   }
 
@@ -178,222 +458,14 @@ function CampaignDetail() {
                 </div>
               )}
             </div>
-            <div className="flex gap-2">
-              {campaign.status === 'draft' && (
-                <Button 
-                  size="sm"
-                  onClick={() => setShowActivateDialog(true)}
-                  disabled={!canActivateCampaign}
-                >
-                  <Rocket className="w-4 h-4 mr-2" />
-                  {t('screens.sharing.activateCampaign')}
-                </Button>
-              )}
-              {campaign.status === 'active' && (
-                <>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={handlePauseCampaign}
-                    disabled={pauseCampaign.isPending}
-                  >
-                    <Pause className="w-4 h-4 mr-2" />
-                    {t('screens.sharing.pause')}
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={handleCompleteCampaign}
-                    disabled={completeCampaign.isPending}
-                  >
-                    <CheckCircle className="w-4 h-4 mr-2" />
-                    {t('screens.sharing.complete')}
-                  </Button>
-                </>
-              )}
-              {campaign.status === 'paused' && (
-                <Button 
-                  size="sm"
-                  onClick={() => activateCampaign.mutate(id!)}
-                  disabled={activateCampaign.isPending}
-                >
-                  <Rocket className="w-4 h-4 mr-2" />
-                  {t('screens.sharing.resume')}
-                </Button>
-              )}
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowEditDialog(true)}
-              >
-                <Edit className="w-4 h-4 mr-2" />
-                {t('screens.sharing.edit')}
-              </Button>
-            </div>
+            {campaignActions}
           </div>
 
-          {/* Stats Overview */}
-          <div className="grid gap-4 md:grid-cols-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.totalPosts')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{campaignPosts.length}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.published')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-green-600">
-                  {campaignPosts.filter(p => p.status === 'published').length}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.scheduled')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-yellow-600">
-                  {campaignPosts.filter(p => p.status === 'scheduled').length}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.drafts')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-gray-600">
-                  {campaignPosts.filter(p => p.status === 'draft').length}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Posts List */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>{t('screens.sharing.campaignPosts')}</CardTitle>
-                <Button onClick={() => setShowCreatePostDialog(true)}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  {t('screens.sharing.createPost')}
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {campaignPosts.length > 0 ? (
-                <div className="space-y-3">
-                  {campaignPosts.map((post) => (
-                    <div
-                      key={post.id}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors"
-                    >
-                      <div className="flex-1">
-                        <h3 className="font-semibold">{post.title}</h3>
-                        <p className="text-sm text-muted-foreground line-clamp-1">
-                          {post.description}
-                        </p>
-                        <div className="flex items-center gap-2 mt-2">
-                          <Badge className={getStatusColor(post.status)}>
-                            {post.status}
-                          </Badge>
-                          {post.published_at && (
-                            <span className="text-xs text-muted-foreground">
-                              {formatDate(new Date(post.published_at), 'MMM d, yyyy')}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        {post.status === 'draft' && (
-                          <>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => handleSchedulePost(post.id)}
-                            >
-                              <Clock className="w-4 h-4 mr-2" />
-                              {t('screens.sharing.schedule')}
-                            </Button>
-                            <Button 
-                              size="sm"
-                              onClick={() => handlePublishNow(post.id)}
-                            >
-                              <Rocket className="w-4 h-4 mr-2" />
-                              {t('screens.sharing.publishNow')}
-                            </Button>
-                          </>
-                        )}
-                        {post.status !== 'draft' && (
-                          <Button variant="outline" size="sm">{t('screens.sharing.view')}
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Send className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noPostsYet')}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {t('screens.sharing.createPostsAssignThemThisCampaign')}
-                  </p>
-                  <Button onClick={() => setShowCreatePostDialog(true)}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    {t('screens.sharing.createFirstPost')}
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          {campaignBody}
         </div>
       </AppLayout>
 
-      <ActivateCampaignDialog
-        open={showActivateDialog}
-        onOpenChange={setShowActivateDialog}
-        onConfirm={handleActivateCampaign}
-        isLoading={activateAllPosts.isPending || activateCampaign.isPending}
-        postsCount={campaignPosts.length}
-        draftCount={draftPosts.length}
-        campaignId={campaign?.id || ''}
-        targetChannels={campaign?.target_channels as Record<string, boolean> | null}
-        campaignData={{
-          channels: (campaign?.target_channels as string[]) || [],
-          audienceData: (campaign?.distribution_config as any)?.audienceData,
-          messageContent: (campaign?.distribution_config as any)?.messageContent,
-        }}
-      />
-
-      <ScheduleDialog
-        open={showScheduleDialog}
-        onOpenChange={setShowScheduleDialog}
-        onConfirm={handleConfirmSchedule}
-        isLoading={updatePost.isPending}
-      />
-
-      <CampaignDialog
-        open={showEditDialog}
-        onOpenChange={setShowEditDialog}
-        editingCampaign={campaign}
-      />
-
-      <CreatePostDialog
-        open={showCreatePostDialog}
-        onOpenChange={setShowCreatePostDialog}
-        campaignId={campaign?.id || ''}
-        campaignName={campaign?.name || ''}
-        campaignTargetChannels={campaign?.target_channels as Record<string, boolean> | null}
-        onPostCreated={() => {
-          // Posts list will auto-refresh via useDistributionPosts
-        }}
-      />
+      {campaignDialogs}
     </>
   );
 }

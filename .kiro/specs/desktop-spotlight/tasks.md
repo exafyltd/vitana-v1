@@ -112,8 +112,21 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
 - [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
 
 ## Phase 5 — Tier B adoption · VTID-05111
-- [ ] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
-- [ ] 5.2 PR body: list of every card component still not on VCard (input to Phase 6).
+- [x] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
+- [x] 5.2 PR body: list of every card component still not on VCard (input to Phase 6).
+
+Status: implemented (VTID-05111). Migrated 35 routes (31 static + 4 parameterised): `/ai`, `/ai/companion`,
+`/ai/daily-summary`, `/ai/insights`, `/ai/recommendations`, `/assistant`, `/calendar`, `/calendar/entry/:entryId`,
+`/connectors`, `/health` + 7 health sections, `/intents/board`, `/intents/mine`, `/intents/match/:id`, `/reminders`,
+`/reminders/fire/:fireId`, `/settings/{billing,limitations,notifications,tenant-role}`, `/sharing`, `/sharing/campaigns`,
+`/sharing/campaigns/:id`, `/sharing/data-consent`, `/support`, `/wallet` + balance/rewards/subscriptions.
+Decisions taken (for Gate 2):
+- Only the Spotlight branch changes; phones and flag-off keep the legacy JSX verbatim.
+- Sample content without real data is left out on Spotlight (SR-24/26): Health demo sections, invented ratings and view
+  counts, wallet "special offer" cards, sharing nudge.
+- Main's VTID-05143 Calendar enrichment strip and VTID-05100 Vitana messages settings render on both paths; the
+  VTID-05100 settings harness pins the Spotlight flag off (no assertion changed).
+- Design baseline lowered by one (require-screen-frame) in 31 files.
 
 ## Phase 7 — Workspace & remaining screens (parallel with 2–4)
 - [x] 7.1 Admin · VTID-05113 — `workspace`, `AdminTabs` kept, admin-shell contract respected.

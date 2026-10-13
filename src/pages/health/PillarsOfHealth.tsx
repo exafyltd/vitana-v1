@@ -7,6 +7,10 @@ import { Droplets, Apple, Dumbbell, Moon, Brain, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { healthNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { TIER_B_GRID } from "@/components/spotlight/tier-b/TierBKit";
 
 
 const pillars = [
@@ -19,6 +23,38 @@ const pillars = [
 
 export default function PillarsOfHealth() {
   const navigate = useNavigate();
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  // The compact header carries the Vitana Index tile, so the separate index circle is not repeated.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.pillarsHealthHealth')} description={t('screens.health.exploreFiveFundamentalPillarsHealthDiscover')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: healthNavigation }}
+          header={{
+            title: t('screens.health.buildYourFoundationForWellness'),
+            description: t('screens.health.exploreFiveFundamentalPillarsHealthDiscover'),
+            emoji: '🏛️',
+          }}
+        >
+          <div className={TIER_B_GRID}>
+            {pillars.map((pillar) => (
+              <VCard
+                key={pillar.titleKey}
+                size="standard"
+                eyebrow={<pillar.icon className="h-4 w-4" aria-hidden="true" />}
+                title={t(pillar.titleKey)}
+                body={t(pillar.descriptionKey)}
+              />
+            ))}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

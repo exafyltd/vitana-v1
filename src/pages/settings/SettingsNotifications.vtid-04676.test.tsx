@@ -11,6 +11,8 @@ vi.mock("@/components/SEO", () => ({ default: () => null }));
 vi.mock("@/components/StandardHeader", () => ({ default: () => null }));
 // VTID-05100: the Vitana messages section has its own test (VitanaMessagesSettings.vtid-05100.test.tsx).
 vi.mock("@/components/settings/VitanaMessagesSettings", () => ({ VitanaMessagesSettings: () => null }));
+// VTID-05111: the page now reads the Spotlight flag; this harness pins it off (no router / tenant here).
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 
 const toggleCategory = vi.fn().mockResolvedValue({});
 let catState: Record<string, unknown>;

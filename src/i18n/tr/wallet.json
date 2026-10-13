@@ -25,7 +25,8 @@
       "purchases": "Satın Alımlar",
       "pending": "Bekleyen Ödemeler",
       "withdrawals": "Para Çekimleri",
-      "stakes": "Staking"
+      "stakes": "Staking",
+      "_pending_review": {}
     },
     "noActivity": "Henüz aktivite yok",
     "noActivityDesc": "İşlemlerin burada görünecek.",
@@ -262,5 +263,6 @@
         "tabEarnMore": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }

@@ -89,10 +89,14 @@ import { MailCalendarContactsPanel } from '@/components/settings/connected-apps/
 import { APP_ORDER } from '@/lib/connected-apps-client';
 // VTID-05032 (Health Hub D3): real wearable connection state from the gateway, never hard-coded.
 import { useWearableProviders, connectedProvider } from '@/hooks/useWearableProviders';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 /** The nine hub apps — no longer rendered as static cards (VTID-04406). */
 const HUB_APP_IDS = new Set<string>(Object.values(APP_ORDER).flat());
 function ConnectedApps() {
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
@@ -1492,66 +1496,50 @@ function ConnectedApps() {
     };
   };
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.settings.connectedAppsSettings')} description="Manage your connected apps and integrations" canonical={window.location.href} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <StandardHeader
-            title={t('screens.settings.connectedApps2')}
-            description="Seamless integration, maximum benefit - manage your connected apps and integrations"
-          />
-
-          <div className="grid grid-cols-12 gap-4 mb-4">
-            <div className="col-span-12 md:col-span-3">
-              <StandardCard
-                title={t('screens.settings.connectedApps')}
-                subtitle="Integrations"
-                icon={Link}
-                content={
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-purple-600">3</div>
-                    <div className="text-xs text-muted-foreground">{t('screens.settings.activeConnections')}</div>
-                  </div>
-                }
-              />
-            </div>
-          </div>
-
+  // VTID-05111 — Spotlight Tier B: the tabs move into the utility row; the panes and dialogs are the
+  // same. The fixed "3 active connections" tile has no data behind it and is not shown (SR-24).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.settings.connectedAppsSettings')} description={t('spotlightTierB.settings.connectorsDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t('screens.settings.connectedApps2'), description: t('spotlightTierB.settings.connectorsDescription'), emoji: '🔗' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.settings.searchAppsIntegrationsFitnessTrackers')} />
+                <UniversalCalendarButton />
+                <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.settings.connectApp')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: 'connected', label: <span className="inline-flex items-center gap-1.5"><Link className="h-4 w-4" />{t('screens.settings.connectedApps')}</span> },
+              { value: 'available', label: <span className="inline-flex items-center gap-1.5"><Sparkles className="h-4 w-4" />{t('screens.settings.availableIntegrations')}</span> },
+              { value: 'sync', label: <span className="inline-flex items-center gap-1.5"><RefreshCw className="h-4 w-4" />{t('screens.settings.dataSync')}</span> },
+              { value: 'agent-ingest', label: <span className="inline-flex items-center gap-1.5"><Radio className="h-4 w-4" />{t('screens.settings.autopilot')}</span> },
+            ],
+          }}
+        >
           <SessionExpiredBanner error={socialConnectionsError} />
+          {renderConnectorPanes()}
+        </ScreenFrame>
+        {renderConnectorDialogs()}
+      </AppLayout>
+    );
+  }
 
-          <UtilityActionButton className="min-w-0">
-            <div className="flex items-center gap-2 min-w-max">
-              <ExpandableSearchButton placeholder={t('screens.settings.searchAppsIntegrationsFitnessTrackers')} />
-              <UniversalCalendarButton />
-              <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                {t('screens.settings.connectApp')}
-              </Button>
-            </div>
-          </UtilityActionButton>
-
-          {/* Vertical-scrolling horizontal lists organized by category */}
-      <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <SplitBarList className="w-full bg-white/50 backdrop-blur-sm rounded-lg mb-6 gap-1 overflow-x-auto">
-          <SplitBarTrigger value="connected" className="flex-1 flex items-center justify-center gap-1.5">
-            <Link className="w-4 h-4" />
-            {t('screens.settings.connectedApps')}
-          </SplitBarTrigger>
-          <SplitBarTrigger value="available" className="flex-1 flex items-center justify-center gap-1.5">
-            <Sparkles className="w-4 h-4" />
-            {t('screens.settings.availableIntegrations')}
-          </SplitBarTrigger>
-          <SplitBarTrigger value="sync" className="flex-1 flex items-center justify-center gap-1.5">
-            <RefreshCw className="w-4 h-4" />
-            {t('screens.settings.dataSync')}
-          </SplitBarTrigger>
-          <SplitBarTrigger value="agent-ingest" className="flex-1 flex items-center justify-center gap-1.5">
-            <Radio className="w-4 h-4" />
-            {t('screens.settings.autopilot')}
-          </SplitBarTrigger>
-        </SplitBarList>
-
+  // Hoisted so the Spotlight branch above and the legacy return below share one tree (VTID-05111).
+  function renderConnectorPanes() {
+    return (
+      <>
         {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
         <SplitBarContent value="connected">
           <div className="space-y-8">
@@ -1986,7 +1974,7 @@ function ConnectedApps() {
           {(() => {
             return (
               <div className="space-y-6">
-                
+
                 {/* Section 1: Sync Overview */}
                 <div>
                   <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -2096,44 +2084,118 @@ function ConnectedApps() {
         <SplitBarContent value="agent-ingest">
           <VaeaChannelsPanel />
         </SplitBarContent>
+      </>
+    );
+  }
+
+  // Hoisted so the Spotlight branch above and the legacy return below share one tree (VTID-05111).
+  function renderConnectorDialogs() {
+    return (
+      <>
+        <ConnectAppPopup
+          isOpen={actionPopupOpen}
+          onClose={() => setActionPopupOpen(false)}
+          onConnect={(integration) => {
+            // VTID-03885: DoctorBox opens the real consent dialog from the
+            // "browse all integrations" popup too, not just the two Clinical
+            // & Lab sections further down this page.
+            if (integration.id === 'doctorbox') setDoctorBoxDialogOpen(true);
+          }}
+        />
+
+        {/* VTID-02403: AI Assistant paste-key modal */}
+        <AIAssistantConnectModal
+          open={aiModalProvider !== null}
+          provider={aiModalProvider}
+          onClose={() => setAiModalProvider(null)}
+        />
+
+        {/* VTID-01928: Google connection live verification */}
+        <GoogleConnectionVerifyDialog
+          open={googleVerifyOpen}
+          onOpenChange={setGoogleVerifyOpen}
+        />
+
+        {/* In-app overlay shown while user is bounced to system browser
+            for OAuth, so the button never feels dead. */}
+        <OAuthBouncePendingOverlay />
+
+        {/* VTID-03885: Partner Health Test Integration — DoctorBox consent */}
+        <PartnerLabsConsentDialog
+          open={doctorBoxDialogOpen}
+          onOpenChange={setDoctorBoxDialogOpen}
+          onConnectedChange={setDoctorBoxConnected}
+        />
+      </>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.settings.connectedAppsSettings')} description="Manage your connected apps and integrations" canonical={window.location.href} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
+            title={t('screens.settings.connectedApps2')}
+            description="Seamless integration, maximum benefit - manage your connected apps and integrations"
+          />
+
+          <div className="grid grid-cols-12 gap-4 mb-4">
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title={t('screens.settings.connectedApps')}
+                subtitle="Integrations"
+                icon={Link}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-purple-600">3</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.activeConnections')}</div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
+
+          <SessionExpiredBanner error={socialConnectionsError} />
+
+          <UtilityActionButton className="min-w-0">
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton placeholder={t('screens.settings.searchAppsIntegrationsFitnessTrackers')} />
+              <UniversalCalendarButton />
+              <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                {t('screens.settings.connectApp')}
+              </Button>
+            </div>
+          </UtilityActionButton>
+
+          {/* Vertical-scrolling horizontal lists organized by category */}
+      <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <SplitBarList className="w-full bg-white/50 backdrop-blur-sm rounded-lg mb-6 gap-1 overflow-x-auto">
+          <SplitBarTrigger value="connected" className="flex-1 flex items-center justify-center gap-1.5">
+            <Link className="w-4 h-4" />
+            {t('screens.settings.connectedApps')}
+          </SplitBarTrigger>
+          <SplitBarTrigger value="available" className="flex-1 flex items-center justify-center gap-1.5">
+            <Sparkles className="w-4 h-4" />
+            {t('screens.settings.availableIntegrations')}
+          </SplitBarTrigger>
+          <SplitBarTrigger value="sync" className="flex-1 flex items-center justify-center gap-1.5">
+            <RefreshCw className="w-4 h-4" />
+            {t('screens.settings.dataSync')}
+          </SplitBarTrigger>
+          <SplitBarTrigger value="agent-ingest" className="flex-1 flex items-center justify-center gap-1.5">
+            <Radio className="w-4 h-4" />
+            {t('screens.settings.autopilot')}
+          </SplitBarTrigger>
+        </SplitBarList>
+
+        {renderConnectorPanes()}
       </SplitBar>
         </div>
       </div>
 
-      <ConnectAppPopup
-        isOpen={actionPopupOpen}
-        onClose={() => setActionPopupOpen(false)}
-        onConnect={(integration) => {
-          // VTID-03885: DoctorBox opens the real consent dialog from the
-          // "browse all integrations" popup too, not just the two Clinical
-          // & Lab sections further down this page.
-          if (integration.id === 'doctorbox') setDoctorBoxDialogOpen(true);
-        }}
-      />
-
-      {/* VTID-02403: AI Assistant paste-key modal */}
-      <AIAssistantConnectModal
-        open={aiModalProvider !== null}
-        provider={aiModalProvider}
-        onClose={() => setAiModalProvider(null)}
-      />
-
-      {/* VTID-01928: Google connection live verification */}
-      <GoogleConnectionVerifyDialog
-        open={googleVerifyOpen}
-        onOpenChange={setGoogleVerifyOpen}
-      />
-
-      {/* In-app overlay shown while user is bounced to system browser
-          for OAuth, so the button never feels dead. */}
-      <OAuthBouncePendingOverlay />
-
-      {/* VTID-03885: Partner Health Test Integration — DoctorBox consent */}
-      <PartnerLabsConsentDialog
-        open={doctorBoxDialogOpen}
-        onOpenChange={setDoctorBoxDialogOpen}
-        onConnectedChange={setDoctorBoxConnected}
-      />
+      {renderConnectorDialogs()}
     </AppLayout>
   );
 }

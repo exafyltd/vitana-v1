@@ -17,6 +17,9 @@ import { getIntentBoard, type BoardResponse, type IntentKind } from "@/lib/inten
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { TierBEmpty, TierBListSkeleton } from "@/components/spotlight/tier-b/TierBKit";
 
 const KIND_FILTERS: { value: IntentKind | "all" | "dance"; labelKey: string }[] = [
   { value: "all", labelKey: "screens.intents.kindFilter_all" },
@@ -44,6 +47,7 @@ const DANCE_VARIETY_CHIPS = [
 
 export default function IntentBoard() {
   const { toast } = useToast();
+  const spotlight = useSpotlightEnabled();
   const [data, setData] = useState<BoardResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<IntentKind | "all" | "dance">("all");
@@ -79,6 +83,73 @@ export default function IntentBoard() {
     }
     return list;
   })();
+
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  if (spotlight) {
+    const chip = (active: boolean) =>
+      `rounded-full border px-3 py-1 text-sm transition-colors ${
+        active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:bg-muted"
+      }`;
+    return (
+      <AppLayout>
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t('screens.intentboard.communityBoard'), description: t('screens.intentboard.whatOthersLookingFor'), emoji: '🧭' }}
+          utility={{
+            children: (
+              <Button onClick={() => setComposerOpen(true)} size="sm">
+                <Plus className="me-1 h-4 w-4" /> {t('screens.intentboard.post')}
+              </Button>
+            ),
+          }}
+        >
+          <div className="flex flex-col gap-4">
+            {data?.compass && (
+              <p className="text-sm text-muted-foreground">
+                {t('screens.intentboard.surfacedForYour')} <span className="font-medium text-foreground">{data.compass}</span> {t('screens.intentboard.focus')}
+              </p>
+            )}
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('spotlightTierB.intents.filtersAria')}>
+              {KIND_FILTERS.map((f) => (
+                <button key={f.value} type="button" aria-pressed={filter === f.value} onClick={() => setFilter(f.value)} className={chip(filter === f.value)}>
+                  {t(f.labelKey)}
+                </button>
+              ))}
+            </div>
+            {filter === "dance" && (
+              <div className="flex flex-wrap gap-1.5">
+                <span className="me-1 self-center text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intentboard.style')}</span>
+                {DANCE_VARIETY_CHIPS.map((c) => (
+                  <button key={c.key ?? "any"} type="button" aria-pressed={danceVariety === c.key} onClick={() => setDanceVariety(c.key)} className={chip(danceVariety === c.key)}>
+                    {c.key ? c.label : t('spotlightTierB.intents.anyStyle')}
+                  </button>
+                ))}
+              </div>
+            )}
+            {loading ? (
+              <TierBListSkeleton size="row" count={4} />
+            ) : filteredIntents.length === 0 ? (
+              <TierBEmpty
+                titleKey={filter === "dance" ? "spotlightTierB.intents.emptyDance" : "spotlightTierB.intents.emptyBoard"}
+                actionKey="screens.intentboard.post"
+                onAction={() => setComposerOpen(true)}
+              />
+            ) : (
+              <div className="flex flex-col gap-3">
+                {filteredIntents.map((intent) => (
+                  <IntentCard key={intent.intent_id} intent={intent} showStatus={false} />
+                ))}
+              </div>
+            )}
+            <p className="text-center text-xs text-muted-foreground">
+              {t('screens.intentboard.lookingForYourOwnIntents')} <Link to="/intents/mine" className="underline">{t('screens.intentboard.viewMyIntents')}</Link>
+            </p>
+          </div>
+        </ScreenFrame>
+        <IntentComposer open={composerOpen} onOpenChange={setComposerOpen} onPosted={() => load()} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

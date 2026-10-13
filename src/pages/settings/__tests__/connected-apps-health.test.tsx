@@ -22,6 +22,8 @@ const { passthrough, nothing, state } = vi.hoisted(() => ({
 vi.mock("@/components/AppLayout", () => ({ default: passthrough }));
 vi.mock("@/components/SEO", () => ({ default: nothing }));
 vi.mock("@/components/StandardHeader", () => ({ default: nothing }));
+// VTID-05111: the page now reads the Spotlight flag; this harness pins it off (no TenantProvider here).
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/components/ui/utility-action-button", () => ({ UtilityActionButton: nothing }));
 vi.mock("@/components/ui/expandable-search-button", () => ({ ExpandableSearchButton: nothing }));
 vi.mock("@/components/UniversalCalendarButton", () => ({ UniversalCalendarButton: nothing }));

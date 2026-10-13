@@ -2,7 +2,8 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "有声书",
-      "fullLabel": "完整应用"
+      "fullLabel": "完整应用",
+      "_pending_review": {}
     },
     "guidedCatalog": {
       "allChapters": "全部",
@@ -46,7 +47,8 @@
       "doneToast": "练习完成！",
       "doneError": "无法保存。",
       "chapter_prolog": "序章",
-      "seasonLabel": "第 {n} 季 · {name}"
+      "seasonLabel": "第 {n} 季 · {name}",
+      "_pending_review": {}
     },
     "common": {
       "languageToggleAriaLabel": "语言",
@@ -2684,7 +2686,8 @@
       "confidenceConfident": "{confidence}% 有信心",
       "later": "稍后",
       "value0Trends": "{value0}趋势",
-      "lengthEventsShown": "显示 {length} 个事件"
+      "lengthEventsShown": "显示 {length} 个事件",
+      "_pending_review": {}
     },
     "analysis": {
       "topMatchFactors": "最佳匹配因素",
@@ -2712,7 +2715,8 @@
       "explore": "探索 →",
       "viewSchedule": "查看日程 →",
       "findCoaches": "寻找教练 →",
-      "match_scoreMatch": "{match_score}% 匹配"
+      "match_scoreMatch": "{match_score}% 匹配",
+      "_pending_review": {}
     },
     "assistant": {
       "voiceProviderHint_polly": "Amazon Polly 提供高质量、自然流畅的语音合成",
@@ -2801,7 +2805,8 @@
       "proactive": "主动",
       "referrals": "推荐",
       "creativityValue0": "创造力：{value0}",
-      "languageSettingControlsWhatLanguageText": "“语言”设置控制文本生成的语言。“语音”设置控制哪个文本转语音的声音朗读它。为了简化，它们会自动同步。"
+      "languageSettingControlsWhatLanguageText": "“语言”设置控制文本生成的语言。“语音”设置控制哪个文本转语音的声音朗读它。为了简化，它们会自动同步。",
+      "_pending_review": {}
     },
     "audio": {
       "volume": "音量",
@@ -2813,7 +2818,8 @@
       "soundscapeValue0": "音景 {value0}",
       "vitanaAudioMode": "VITANA 音频模式",
       "typeYourMessage": "输入你的消息...",
-      "returnVoice": "返回语音"
+      "returnVoice": "返回语音",
+      "_pending_review": {}
     },
     "auth": {
       "bundle": "包：",
@@ -2858,7 +2864,8 @@
       "sendResetLink": "发送重置链接",
       "resendAvailableCooldownS": "可在 {cooldown} 秒后重新发送",
       "ifYouArenTSentBack": "如果你没有自动跳转，请点击下方 – 或直接切换到 Vitana 应用，它会在几秒内更新。",
-      "updating": "正在更新…"
+      "updating": "正在更新…",
+      "_pending_review": {}
     },
     "billing": {
       "from": "发件人：",
@@ -2879,7 +2886,8 @@
       "invoiceId": "发票 #{id}",
       "invoiceDateDate": "发票日期：{date}",
       "healthCityHc12345": "健康城, HC 12345",
-      "paymentMethodPaymentmethod": "支付方式：{paymentMethod}"
+      "paymentMethodPaymentmethod": "支付方式：{paymentMethod}",
+      "_pending_review": {}
     },
     "business": {
       "performance": "📊 业绩",
@@ -3036,7 +3044,8 @@
       "eGLongevitySleepSupplements": "例如：长寿、睡眠、补充剂",
       "autopilotHasLengthReferralDraftValue1": "Autopilot 有{length}个推荐草稿{value1}给你",
       "scoreValue0": "分数 {value0}",
-      "viewSource": "查看来源"
+      "viewSource": "查看来源",
+      "_pending_review": {}
     },
     "calendar": {
       "noUpcomingEvents": "没有即将到来的活动",
@@ -3094,7 +3103,8 @@
       "suggestedValue0": "建议: {value0}",
       "todaySIndexPulseCompletingYour": "今日指数提示：完成你{totalCount}个标记为支柱的事件，{value1}将影响你的指数。",
       "urgent": "紧急",
-      "highPriority": "高优先级"
+      "highPriority": "高优先级",
+      "_pending_review": {}
     },
     "cart": {
       "yourCart": "你的购物车",
@@ -3118,7 +3128,8 @@
       "secureCheckoutPoweredByStripe": "由Stripe提供支持的安全结账",
       "startAddingItemsFromDiscoverMarketplace": "从发现市场开始添加商品",
       "value0Each": "每个${value0}",
-      "byProvider": "由{provider}提供"
+      "byProvider": "由{provider}提供",
+      "_pending_review": {}
     },
     "chat": {
       "googleCloudApiKey": "Google Cloud API 密钥",
@@ -3132,7 +3143,8 @@
       "yourApiKeyStoredSecurelyOnly": "你的 API 密钥已安全存储，并且仅用于 AI 语音功能。",
       "cancel": "取消",
       "go": "前往",
-      "saveApiKey": "保存 API 密钥"
+      "saveApiKey": "保存 API 密钥",
+      "_pending_review": {}
     },
     "coaches": {
       "topMatchFactors": "最佳匹配因素",
@@ -3147,7 +3159,8 @@
       "fromSessions_from": "从 €{sessions_from} 起",
       "bookSession": "预订会话",
       "member_countMembers": "{member_count}名成员",
-      "participant_countAttending": "{participant_count}人参加"
+      "participant_countAttending": "{participant_count}人参加",
+      "_pending_review": {}
     },
     "community": {
       "openAsksKind_commercialBuy": "购买",
@@ -3617,7 +3630,8 @@
       "goalWeightLoss": "减肥",
       "goalMentalWellness": "心理健康",
       "goalValues": "价值观一致",
-      "ourAnswer": "我们的答复"
+      "ourAnswer": "我们的答复",
+      "_pending_review": {}
     },
     "contacts": {
       "addContact": "添加联系人",
@@ -3683,7 +3697,8 @@
       "tipUseValue0IncludeYourPersonal": "提示：使用 {value0} 来包含你的个人邀请链接",
       "sendInvites": "发送邀请",
       "weFoundTotalimportedContactsMatchedThem": "我们找到了 {totalImported} 位联系人，并已在 VITANA 中匹配",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 你的 {matchesFound} 位朋友已加入 VITANA！"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 你的 {matchesFound} 位朋友已加入 VITANA！",
+      "_pending_review": {}
     },
     "context": {
       "aiSpotlight": "AI 亮点 🔮",
@@ -3699,7 +3714,8 @@
       "meditationSuggestion": "冥想建议 🧘",
       "sleepReadiness": "睡眠准备度 🌙",
       "social": "社交 👥",
-      "todaySPlan": "今日计划 🗓️"
+      "todaySPlan": "今日计划 🗓️",
+      "_pending_review": {}
     },
     "creator": {
       "paymentStatus": "支付状态",
@@ -3722,7 +3738,8 @@
       "notEnabled": "未启用",
       "completeYourPaymentSetupStartReceiving": "完成你的付款设置，开始从付费直播间获得收益。",
       "enablePaymentsCreatePaidLiveRooms": "启用付款功能，创建付费直播间并获得90%的收益。使用Stripe Connect，2分钟快速设置。",
-      "checkingStatus": "正在检查状态..."
+      "checkingStatus": "正在检查状态...",
+      "_pending_review": {}
     },
     "crossover": {
       "keyFactors": "关键因素：",
@@ -3856,7 +3873,8 @@
       "matchCatFitness": "健身",
       "matchCatLongevity": "寿命阶段",
       "matchCatCommunity": "社区",
-      "matchCatWellness": "共同健康"
+      "matchCatWellness": "共同健康",
+      "_pending_review": {}
     },
     "debug": {
       "presenceDebug": "在线调试",
@@ -3866,7 +3884,8 @@
       "connected": "已连接：",
       "latency": "延迟：",
       "realtimelatencyMs": "{realtimeLatency}毫秒",
-      "value0SAgo": "{value0}秒前"
+      "value0SAgo": "{value0}秒前",
+      "_pending_review": {}
     },
     "dev": {
       "currentStep": "当前步骤",
@@ -4248,7 +4267,8 @@
       "briefDescriptionDocument": "文档简要描述",
       "whatSNewThisFrontpageVersion": "此首页版本有什么新内容？",
       "tryAdjustingYourFiltersWaitFor": "尝试调整你的筛选器或等待新事件到来。",
-      "statusLastcode": "状态: {lastCode}"
+      "statusLastcode": "状态: {lastCode}",
+      "_pending_review": {}
     },
     "diary": {
       "startRecordingYourWellnessJourney": "开始记录你的健康旅程",
@@ -4301,7 +4321,8 @@
       "tagLabel_voice": "语音",
       "tagLabel_text": "文本",
       "voiceTranscriptCaptured": "语音转录已捕获。编辑并保存你的记录。",
-      "writeYourThoughts": "写下你的想法..."
+      "writeYourThoughts": "写下你的想法...",
+      "_pending_review": {}
     },
     "discover": {
       "marketplaceView_open": "打开市场",
@@ -4597,7 +4618,8 @@
       "bookmarkedValue0": "🔖 {value0} 书签",
       "exploreName": "探索 {name}",
       "exploreItem_name": "探索 {item_name}",
-      "value0Services": "{value0}服务"
+      "value0Services": "{value0}服务",
+      "_pending_review": {}
     },
     "discovery": {
       "filters": "筛选条件：",
@@ -4629,7 +4651,8 @@
       "value0NewTodayViewedcountTotalcount": "今天新增 {value0} · 已查看 {viewedCount}/{totalCount}",
       "clearFilters": "清除筛选条件",
       "checkBackTomorrowFor10New": "明天再来看看 10 个新匹配 ✨",
-      "vitanaIndexVitana_index": "维塔纳指数: {vitana_index}"
+      "vitanaIndexVitana_index": "维塔纳指数: {vitana_index}",
+      "_pending_review": {}
     },
     "events": {
       "searchByNameEmail": "按姓名或邮箱搜索...",
@@ -4685,7 +4708,8 @@
       "interimTextAppearsGrayUntilFinalized": "临时文本以灰色显示，直到最终确定...",
       "myReportsLength": "我的报告 ({length})",
       "lengthAttachmentS": "📎 {length}个附件",
-      "loadMoreValue0Remaining": "加载更多 ({value0}剩余)"
+      "loadMoreValue0Remaining": "加载更多 ({value0}剩余)",
+      "_pending_review": {}
     },
     "health": {
       "pillar_hydration_title": "补水",
@@ -5244,15 +5268,18 @@
           "hydration": "补水",
           "exercise": "运动",
           "sleep": "睡眠",
-          "mental": "心理健康"
+          "mental": "心理健康",
+          "_pending_review": {}
         },
         "economyAxes": {
           "find_match": "寻找匹配",
           "marketplace": "市场",
           "income_generation": "创收",
-          "business_formation": "业务建立"
+          "business_formation": "业务建立",
+          "_pending_review": {}
         },
-        "contractLink": "查看终极目标合约"
+        "contractLink": "查看终极目标合约",
+        "_pending_review": {}
       },
       "_pending_review": {
         "reportsLoadFailed": true,
@@ -5488,7 +5515,8 @@
       "playTodaysEpisode": "播放第 {session} 集"
     },
     "icons": {
-      "xFormerlyTwitter": "X (前身为 Twitter)"
+      "xFormerlyTwitter": "X (前身为 Twitter)",
+      "_pending_review": {}
     },
     "intents": {
       "kindFilter_all": "全部（按方向感知）",
@@ -5568,7 +5596,8 @@
       "kindOptionActivitySeek": "活动搭档",
       "kindOptionSocialSeek": "咖啡聊聊/指导",
       "kindOptionMutualAid": "借/借/送",
-      "kindOptionPartnerSeek": "生活伴侣"
+      "kindOptionPartnerSeek": "生活伴侣",
+      "_pending_review": {}
     },
     "layout": {
       "contentRequiresConsent": "内容需同意",
@@ -5576,7 +5605,8 @@
       "reviewSettings": "查看设置",
       "tapReviewPrivacySettingsForThis": "点击查看此内容类型的隐私设置",
       "kindKind": "类型：{kind}",
-      "idId": "ID：{id}"
+      "idId": "ID：{id}",
+      "_pending_review": {}
     },
     "liverooms": {
       "createLiveRoom": "创建直播间",
@@ -5667,7 +5697,8 @@
         "emptyHint": "已完成的房间会显示在这里 — 包含回顾、亮点和录音。",
         "loading": "正在加载过去的房间…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}"
+        "heldRange": "{date} · {start}–{end}",
+        "_pending_review": {}
       },
       "durationMin": "{value0} 分钟",
       "durationHour": "{value0} 小时",
@@ -5690,7 +5721,8 @@
       "detailsProgram": "详情与日程",
       "undo": "撤销",
       "closeEventDetails": "关闭活动详情",
-      "shareMeetup": "分享聚会"
+      "shareMeetup": "分享聚会",
+      "_pending_review": {}
     },
     "memory": {
       "updatedAgo": "已更新 {distance}",
@@ -6033,7 +6065,8 @@
             },
             "title": "Uncategorized",
             "insight": "Memories awaiting categorization"
-          }
+          },
+          "_pending_review": {}
         },
         "lastUpdated": "Last updated {date}",
         "cardCountOne": "1 memory · {progress}%",
@@ -6042,7 +6075,8 @@
         "countOne": "1 memory",
         "countOther": "{count} memories",
         "loadFailed": "Your memories couldn't be loaded right now."
-      }
+      },
+      "_pending_review": {}
     },
     "messages": {
       "inspirationCategory_morningMotivation": "早晨动力",
@@ -6231,7 +6265,8 @@
       "vitanaOpenScreen": "打开屏幕",
       "viewFullscreen": "全屏查看",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} 创建了群组",
@@ -6272,7 +6307,7 @@
       "imageShareFailed": "分享失败",
       "imageLoading": "正在加载图片",
       "unknownSize": "未知大小",
-      "talkToVitana": "与 Vitana 对话"
+      "talkToVitana": "Talk to Vitana"
     },
     "mobile": {
       "searching": "正在搜索…",
@@ -6376,11 +6411,13 @@
       "audiobookReadyTitle": "你的有声书已准备好",
       "audiobookReadyBody": "点按播放，收听第 1 集。你只需要听。",
       "playEpisodeOne": "播放第 1 集",
-      "audiobookLater": "稍后"
+      "audiobookLater": "稍后",
+      "_pending_review": {}
     },
     "orders": {
       "friendExampleCom": "friend@example.com",
-      "friendSName": "朋友的姓名"
+      "friendSName": "朋友的姓名",
+      "_pending_review": {}
     },
     "payment": {
       "selectDate": "选择日期",
@@ -6481,7 +6518,8 @@
       "conversationspecificPaymentActionWith": "与某个对话相关的付款操作",
       "alreadyActivePleaseCompleteCloseThat": "已在进行中。\n                    请先完成或关闭该操作。",
       "anotherWalletActionCurrentlyProgressPlease": "另一个钱包操作正在进行中。请先完成或关闭该操作。",
-      "paymenttypePaymentRequest": "{paymentType}付款请求"
+      "paymenttypePaymentRequest": "{paymentType}付款请求",
+      "_pending_review": {}
     },
     "proactive": {
       "proTip": "小贴士：",
@@ -6511,7 +6549,8 @@
       "personalInvitesGet3xMoreResponses": "个性化邀请的回复率是普通消息的3倍。我们的AI会制作真实反映你健康之旅的邀请函！",
       "dismissTip": "关闭提示",
       "seeNextValue0More": "查看下一个（还有{value0}个）",
-      "membersWhoAutoshareTheirWellnessWins": "自动分享健康成就的会员每月激励5-10位朋友加入，在他们的社交网络中产生强大的涟漪效应。"
+      "membersWhoAutoshareTheirWellnessWins": "自动分享健康成就的会员每月激励5-10位朋友加入，在他们的社交网络中产生强大的涟漪效应。",
+      "_pending_review": {}
     },
     "profile": {
       "adminAccess": "管理权限",
@@ -6909,7 +6948,8 @@
       "licensedVerifiedHealthcareProvider": "持证且经过验证的健康服务提供者",
       "media": "媒体",
       "events": "活动",
-      "health": "健康"
+      "health": "健康",
+      "_pending_review": {}
     },
     "reminders": {
       "subtitleDefault": "Vitana 为你安排的内容。与 ORB 对话即可自然添加。",
@@ -7029,7 +7069,8 @@
       "viewDetails": "查看详情",
       "perTicketSoldViaYourReseller": "通过你的分销链接每售出一张票。\n              佣金按平台费用前的票面总价计算。",
       "viewWallet2": "在钱包中查看 →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity}张票{value1}· {value2}"
+      "ticketquantityTicketValue1Value2": "{ticketQuantity}张票{value1}· {value2}",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnectionLiveCheck": "Google 连接 — 实时检查",
@@ -7700,18 +7741,32 @@
         "partnerLabsError": true
       },
       "vitanaMessages": {
-        "title": "来自 Vitana 的消息",
-        "desc": "Vitana 会不时在 Messenger 中给你发送一条个人消息，附上一条此刻适合你的建议。",
-        "enabled": "接收来自 Vitana 的消息",
-        "enabledDesc": "每天最多一条消息。你可以随时关闭。",
-        "topics": "主题",
-        "health": "健康",
-        "healthDesc": "关于你的健康和 Vitana Index 的建议。",
-        "community": "社区",
-        "communityDesc": "适合你的人、群组和活动。",
-        "business": "商业与收入",
-        "businessDesc": "可选：在 Vitanaland 用你的知识赚钱的想法。默认关闭——只有你开启后才会收到。",
-        "loadError": "无法加载你的 Vitana 消息设置。"
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -8522,7 +8577,8 @@
       "imageSpecsHashtagStrategyPostingTimes": "图片规格、话题标签策略、发布时间",
       "canvaFigmaDirectlyInapp": "Canva、Figma，或直接在应用内",
       "copypasteCustomizeForYourNeeds": "复制粘贴或根据你的需求自定义",
-      "createCustomDataPackageBySelecting": "创建自定义数据包，通过选择特定的健康指标、日期范围和数据类型，以满足你的健康服务提供者或参与研究的要求。"
+      "createCustomDataPackageBySelecting": "创建自定义数据包，通过选择特定的健康指标、日期范围和数据类型，以满足你的健康服务提供者或参与研究的要求。",
+      "_pending_review": {}
     },
     "supplements": {
       "supplementName": "补充剂名称*",
@@ -8539,7 +8595,8 @@
       "notes": "备注",
       "cancel": "取消",
       "value0Supplement": "{value0}补充剂",
-      "inactive": "不活跃"
+      "inactive": "不活跃",
+      "_pending_review": {}
     },
     "templates": {
       "sendMessages": "发送到消息",
@@ -8553,7 +8610,8 @@
       "noDataAvailable": "暂无数据。",
       "withWith": "和 {with}",
       "spotsSpots": "{spots}个名额",
-      "viewAllLengthRecommendations": "查看所有 {length}条推荐"
+      "viewAllLengthRecommendations": "查看所有 {length}条推荐",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketsSold": "已售票数",
@@ -8598,7 +8656,8 @@
       "ticketValue0": "门票 {value0}",
       "eGGeneralAdmission": "例如：普通入场票",
       "priceValue0": "价格 ({value0}) *",
-      "whatSIncludedWithThisTicket": "这张票包含什么？"
+      "whatSIncludedWithThisTicket": "这张票包含什么？",
+      "_pending_review": {}
     },
     "ui": {
       "reconnecting": "正在重新连接...",
@@ -8630,7 +8689,8 @@
       "learnMore": "了解更多",
       "noItemsDisplay": "没有可显示的项目",
       "pointsCredits": "+{points}积分",
-      "moreActions": "更多操作"
+      "moreActions": "更多操作",
+      "_pending_review": {}
     },
     "vertex": {
       "debugConsole": "调试控制台",
@@ -8657,11 +8717,13 @@
       "recording": "正在录制...",
       "aiSpeaking": "AI正在说话...",
       "you": "你",
-      "transcriptWillAppearHere": "对话记录将显示在这里..."
+      "transcriptWillAppearHere": "对话记录将显示在这里...",
+      "_pending_review": {}
     },
     "vitanaland": {
       "enterVitanalandK": "进入Vitanaland (⌘K)",
-      "enterVitanalandCmdK": "进入VITANALAND (Cmd+K)"
+      "enterVitanalandCmdK": "进入VITANALAND (Cmd+K)",
+      "_pending_review": {}
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -8687,7 +8749,8 @@
       "inviteCardBody": "分享下载宣传页，一起开始吧。",
       "inviteCardCta": "邀请朋友",
       "inviteShareTitle": "MAXINA – 长寿社区",
-      "inviteShareText": "来MAXINA和我一起 – 长寿社区！在这里下载应用："
+      "inviteShareText": "来MAXINA和我一起 – 长寿社区！在这里下载应用：",
+      "_pending_review": {}
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8710,7 +8773,8 @@
       "profileSetup": "个人资料",
       "socialConnect": "连接",
       "importContacts": "联系人",
-      "completeProfile": "完善资料"
+      "completeProfile": "完善资料",
+      "_pending_review": {}
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -8733,7 +8797,8 @@
       "giftFrom": "来自",
       "claiming": "正在领取...",
       "fromBuyer_name": "来自 {buyer_name}",
-      "createAccount": "创建账户"
+      "createAccount": "创建账户",
+      "_pending_review": {}
     },
     "wallet": {
       "currentSubscriptionPerks": "当前订阅福利",
@@ -9256,7 +9321,8 @@
       "continueToSecureCheckout": "继续安全结账",
       "cardPaymentViaStripe": "银行卡支付，由Stripe安全处理",
       "currentBalanceLabel": "当前{currency}余额",
-      "amountAddCurrency": "添加金额 ({currency})"
+      "amountAddCurrency": "添加金额 ({currency})",
+      "_pending_review": {}
     },
     "ai": {
       "subtitle_priorityActions": "AI精选任务，实现最大健康效益",
@@ -9429,7 +9495,8 @@
       "dailyLearningsTitle": "Vitana 学到了什么",
       "dailyLearningsLoading": "正在加载你的每一天 …",
       "dailyLearningsEmpty": "还没有每日总结。写日记或和 Vitana 聊聊——每天晚上 Vitana 都会在这里总结你的一天。",
-      "dailySummaryOpenIndex": "打开 Vitana Index"
+      "dailySummaryOpenIndex": "打开 Vitana Index",
+      "_pending_review": {}
     },
     "authpages": {
       "fullName": "姓名",
@@ -9440,7 +9507,8 @@
       "login": "登录",
       "signUp": "注册",
       "alreadyHaveAccountValue0": "已经有账号了？{value0}",
-      "donAposTHaveAccountValue0": "还没有账号？{value0}"
+      "donAposTHaveAccountValue0": "还没有账号？{value0}",
+      "_pending_review": {}
     },
     "autopilotdashboard": {
       "text999": "共999",
@@ -9583,8 +9651,10 @@
         "advanceCareer": "职业发展",
         "masterNewSkills": "掌握新技能",
         "spiritualLife": "精神生活",
-        "earnFromRecommendations": "通过推荐赚取收益"
-      }
+        "earnFromRecommendations": "通过推荐赚取收益",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "businesshub": {
       "noServicesYet": "暂无服务",
@@ -9604,7 +9674,8 @@
       "businessHub": "商业中心 💼",
       "growYourWellnessBusinessManageClients": "发展你的健康业务，轻松管理客户",
       "business": "业务",
-      "value0MoreActions": "还有{value0}个操作"
+      "value0MoreActions": "还有{value0}个操作",
+      "_pending_review": {}
     },
     "businesslistings": {
       "myListings": "我的发布",
@@ -9614,7 +9685,8 @@
       "backBusinessHub": "返回业务中心",
       "listingsAvailableForProAccounts": "发布功能仅限专业版账户使用。",
       "noListingsYetClick": "暂无发布。点击",
-      "addOneOpenOrbJustSay": "添加一个 – 或打开ORB，直接说"
+      "addOneOpenOrbJustSay": "添加一个 – 或打开ORB，直接说",
+      "_pending_review": {}
     },
     "businessopportunities": {
       "myListings": "我的发布",
@@ -9622,7 +9694,8 @@
       "opportunitiesAvailableForProAccountsUpgrade": "商机功能仅限专业版账户使用。升级即可获取潜在客户。",
       "opportunities": "商机",
       "incomingLeadsMatchingYourOfferingsExpress": "与你提供的服务匹配的潜在客户。表达兴趣即可开始对话。",
-      "noLeadsYetWeLlNotify": "暂无潜在客户。当有匹配需求时，我们会通知你。请确保你在“我的发布”下至少有一个 commercial_sell 发布。"
+      "noLeadsYetWeLlNotify": "暂无潜在客户。当有匹配需求时，我们会通知你。请确保你在“我的发布”下至少有一个 commercial_sell 发布。",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "whatSNext": "下一步？",
@@ -9638,7 +9711,8 @@
       "continueShopping": "继续购物",
       "ifYouHaveAnyQuestionsAbout": "如果对订单有任何疑问，我们的支持团队随时为你提供帮助。",
       "contactSupport": "联系客服",
-      "viewMyOrders": "查看我的订单"
+      "viewMyOrders": "查看我的订单",
+      "_pending_review": {}
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "你的支付状态正在审核中...",
@@ -9661,10 +9735,12 @@
       "createYourFirstPaidRoom": "创建你的第一个付费房间",
       "viewPaymentSettings": "查看支付设置",
       "value0PaymentSetupComplete": "{value0} 支付设置已完成！",
-      "youReAllSetStartEarning": "你已准备好开始从你的直播间赚取收益"
+      "youReAllSetStartEarning": "你已准备好开始从你的直播间赚取收益",
+      "_pending_review": {}
     },
     "editprofilepage": {
-      "editProfileVitana": "编辑个人资料 – VITANA"
+      "editProfileVitana": "编辑个人资料 – VITANA",
+      "_pending_review": {}
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "让我们一起追踪你的进度吧！📊",
@@ -9714,7 +9790,8 @@
       "weeklyActivity": "每周活动",
       "mentalWellness": "心理健康",
       "mindfulness": "正念",
-      "vitanaIndexOverview": "Vitana 指数概览"
+      "vitanaIndexOverview": "Vitana 指数概览",
+      "_pending_review": {}
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "综合健康与幸福平台",
@@ -9734,7 +9811,8 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA 是一个综合性数字健康平台，为不同的健康社区和专业医疗管理提供多种专业环境。",
       "commercePortal": "商务门户",
       "merchantSelfServiceMarketplace": "商家自助服务市场",
-      "connectYourBusinessToDiscoverYourself": "将你的业务连接到 Discover 市场 — 无需集成项目，无需等待工程师。"
+      "connectYourBusinessToDiscoverYourself": "将你的业务连接到 Discover 市场 — 无需集成项目，无需等待工程师。",
+      "_pending_review": {}
     },
     "intentboard": {
       "communityBoard": "社区公告板",
@@ -9744,14 +9822,16 @@
       "style": "风格",
       "lookingForYourOwnIntents": "寻找你自己的意图？",
       "whatOthersLookingFor": "别人在找什么。",
-      "surfacedForYour": "为你呈现"
+      "surfacedForYour": "为你呈现",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "intentNotFound": "未找到意图。",
       "backMyIntents": "返回我的意图",
       "closeIntent": "关闭意图",
       "noMatchesYetWeLlKeep": "暂无匹配。我们会继续寻找，并在有人匹配时通知你。",
-      "matchesLength": "匹配 ({length})"
+      "matchesLength": "匹配 ({length})",
+      "_pending_review": {}
     },
     "invitefriends": {
       "phoneContacts": "手机联系人",
@@ -9776,10 +9856,12 @@
       "noContactsMatchSearch": "没有联系人匹配“{search}”",
       "importContacts": "导入联系人",
       "selectedcountSelected": "已选择{selectedCount}个",
-      "sendInvitesSelectedcount": "发送邀请 ({selectedCount})"
+      "sendInvitesSelectedcount": "发送邀请 ({selectedCount})",
+      "_pending_review": {}
     },
     "logout": {
-      "signingOut": "正在退出..."
+      "signingOut": "正在退出...",
+      "_pending_review": {}
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – 正在重定向到应用商店",
@@ -9792,7 +9874,8 @@
       "copyLink": "复制链接",
       "linkCopied": "链接已复制 — 粘贴到Safari中",
       "copyFailed": "无法复制链接",
-      "iosOpenInBrowser": "点击右上角的“…”然后“在浏览器中打开” — App Store就会在那里立即打开。"
+      "iosOpenInBrowser": "点击右上角的“…”然后“在浏览器中打开” — App Store就会在那里立即打开。",
+      "_pending_review": {}
     },
     "mobilesettings": {
       "pushNotifications": "推送通知",
@@ -9879,7 +9962,8 @@
       "modeBillingPlan": "当前方案",
       "modeBillingPayment": "付款方式",
       "modeBillingInvoices": "发票与收据",
-      "modeBillingCreator": "创作者收入"
+      "modeBillingCreator": "创作者收入",
+      "_pending_review": {}
     },
     "myintents": {
       "myIntents": "我的意向",
@@ -9890,7 +9974,8 @@
       "browseWhatOthersLookingFor": "浏览其他人正在寻找的内容：",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length}个开放 · 每个类别最多{PER_KIND_SLOT_CAP}个",
       "lengthPer_kind_slot_capSlotsUsed": "已用{length}/{PER_KIND_SLOT_CAP}个槽位",
-      "capReachedCloseOnePostNew": "— 已达上限，关闭一个即可发布新内容"
+      "capReachedCloseOnePostNew": "— 已达上限，关闭一个即可发布新内容",
+      "_pending_review": {}
     },
     "mytickets": {
       "myTickets": "我的票券",
@@ -9902,7 +9987,8 @@
       "upcomingLength": "即将到来 ({length})",
       "pastLength": "过去 ({length})",
       "noUpcomingEvents": "暂无即将到来的活动",
-      "noPastEvents": "暂无过去的活动"
+      "noPastEvents": "暂无过去的活动",
+      "_pending_review": {}
     },
     "notauthorized": {
       "accessDenied": "访问被拒",
@@ -9910,11 +9996,13 @@
       "youDonTHavePermissionAccess": "此区域仅限授权人员访问。",
       "error403Forbidden": "错误 403: 禁止访问",
       "returnDashboard": "返回仪表盘",
-      "contactSupport": "联系客服"
+      "contactSupport": "联系客服",
+      "_pending_review": {}
     },
     "notfound": {
       "oopsPageNotFound": "哎呀！页面找不到了",
-      "returnHome": "返回首页"
+      "returnHome": "返回首页",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "缺少购买信息",
@@ -9930,7 +10018,8 @@
       "viewMyOrders": "查看我的订单",
       "redeemNow": "立即兑换",
       "viewOrders": "查看订单",
-      "confirmationHasSent": "确认已发送至"
+      "confirmationHasSent": "确认已发送至",
+      "_pending_review": {}
     },
     "privacysettings": {
       "privacyVisibility": "隐私与可见性",
@@ -9938,7 +10027,8 @@
       "pleaseSignManageYourPrivacySettings": "请登录以管理你的隐私设置。",
       "serverEnforcesTheseTiersEveryCrossuser": "服务器在每次跨部门检索时都会强制执行这些级别——你的选择是强制性的，而非建议。",
       "back": "返回",
-      "tapAnyTierBadgeCyclePrivate": "轻触任意层级徽章可在 私人 → 朋友 → 公开 之间切换。\n默认设置偏向隐私——你来决定分享什么。"
+      "tapAnyTierBadgeCyclePrivate": "轻触任意层级徽章可在 私人 → 朋友 → 公开 之间切换。\n默认设置偏向隐私——你来决定分享什么。",
+      "_pending_review": {}
     },
     "publiccampaignlanding": {
       "campaignNotFound": "活动未找到",
@@ -9954,7 +10044,8 @@
       "lengthChannelValue1": "{length}个频道{value1}",
       "youLlSignCreateAccountNext": "下一步你将登录或创建账号。",
       "YourLongevityCommunity": "- 你的长寿社区",
-      "getTicketsForValue0": "获取{value0}的门票"
+      "getTicketsForValue0": "获取{value0}的门票",
+      "_pending_review": {}
     },
     "publiceventlanding": {
       "eventNotFound": "未找到活动",
@@ -9971,12 +10062,14 @@
       "fromPricelabel": "{priceLabel}起",
       "youLlSignCreateAccountNext": "下一步你将登录或创建账号。",
       "YourLongevityCommunity": "- 你的长寿社区",
-      "getTicketsForTitle": "获取{title}的门票"
+      "getTicketsForTitle": "获取{title}的门票",
+      "_pending_review": {}
     },
     "publicprofilepage": {
       "loadingProfile": "正在加载个人资料...",
       "userNotFound": "未找到用户",
-      "returnHome": "返回首页"
+      "returnHome": "返回首页",
+      "_pending_review": {}
     },
     "redeemvoucher": {
       "invalidLink": "无效链接",
@@ -9992,7 +10085,8 @@
       "thisVoucherHasExpiredCanNo": "此礼品券已过期，无法再兑换。如果你需要帮助，请联系客服。",
       "yourValue0VoucherHasAddedYour": "你的 {value0}礼品券已添加到你的账户。\n            探索活动和体验，以使用你的福利。",
       "viewWallet": "查看钱包",
-      "browseEvents": "浏览活动"
+      "browseEvents": "浏览活动",
+      "_pending_review": {}
     },
     "search": {
       "viewProfile": "查看个人资料",
@@ -10009,7 +10103,8 @@
       "content": "🎬 内容",
       "health": "❤️ 健康",
       "value0Members": "{value0}成员",
-      "showingResultsFor": "显示“"
+      "showingResultsFor": "显示“",
+      "_pending_review": {}
     },
     "ticketdemo": {
       "ticketPreview": "票务预览",
@@ -10026,7 +10121,8 @@
       "downloadAsPngShareOptions": "下载为PNG或分享选项",
       "multitenantBoardingPassDesign": "多租户登机牌设计",
       "thisDemoTicketPreview": "🎫 这是一个演示票预览",
-      "actualTicketsWillDisplayYourReal": "实际票券将显示你的真实活动和购买详情"
+      "actualTicketsWillDisplayYourReal": "实际票券将显示你的真实活动和购买详情",
+      "_pending_review": {}
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "无效请求",
@@ -10038,7 +10134,8 @@
       "paymentSuccessful": "支付成功！",
       "viewAllMyTickets": "查看我的所有票券",
       "discoverMoreEvents": "发现更多活动",
-      "yourTicketHasConfirmedConfirmationEmail": "你的票券已确认。确认邮件已发送至{value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "你的票券已确认。确认邮件已发送至{value0}",
+      "_pending_review": {}
     },
     "legal": {
       "deleteAccount": "删除账户",
@@ -10246,7 +10343,8 @@
       "legalRetentionObligations": "法定保留义务；",
       "securityFraudPreventionReasons": "安全、防欺诈和防滥用原因；",
       "legalClaimsDefense": "建立、行使或辩护法律主张的需要。",
-      "retentionAnonymizeDelete": "当个人数据不再需要时，我们会删除或匿名化，除非法定保留义务另有要求。"
+      "retentionAnonymizeDelete": "当个人数据不再需要时，我们会删除或匿名化，除非法定保留义务另有要求。",
+      "_pending_review": {}
     },
     "patient": {
       "myAppointments": "我的预约",
@@ -10376,7 +10474,8 @@
           "cancel": "取消",
           "confirmed": "谢谢！结果正在添加到你的健康数据中。",
           "declined": "明白了。该结果不会被添加到你的数据中。",
-          "failed": "没有成功。请再试一次。"
+          "failed": "没有成功。请再试一次。",
+          "_pending_review": {}
         }
       },
       "comingSoon": {
@@ -10386,7 +10485,8 @@
         },
         "title": "Coming soon",
         "body": "We're still building this screen. Check back soon."
-      }
+      },
+      "_pending_review": {}
     },
     "portals": {
       "confirmationError": "确认错误",
@@ -10445,7 +10545,8 @@
       "useDifferentEmail": "← 用其他邮箱",
       "creatingAccount": "正在创建账号...",
       "tryAppleSigninAgain": "再试一次 Apple 登录",
-      "backLogin": "返回登录"
+      "backLogin": "返回登录",
+      "_pending_review": {}
     },
     "professional": {
       "professionalDashboard": "专业仪表盘",
@@ -10494,7 +10595,8 @@
       "hypertension": "高血压",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "比上月增加12%"
+      "text12FromLastMonth": "比上月增加12%",
+      "_pending_review": {}
     },
     "staff": {
       "staffDashboard": "员工仪表盘",
@@ -10554,27 +10656,32 @@
       "urgent2": "紧急",
       "sj": "SJ",
       "waiting2": "等待中",
-      "mw": "MW"
+      "mw": "MW",
+      "_pending_review": {}
     },
     "actions": {
       "doNow": "立即处理",
       "edit": "编辑",
       "details": "详情",
-      "later": "稍后"
+      "later": "稍后",
+      "_pending_review": {}
     },
     "introexperience": {
       "space": "空格",
       "esc": "Esc",
       "press": "按",
       "play": "播放 •",
-      "skip": "跳过"
+      "skip": "跳过",
+      "_pending_review": {}
     },
     "groups": {
       "match_scoreMatch": "{match_score}% 匹配度",
-      "join": "加入"
+      "join": "加入",
+      "_pending_review": {}
     },
     "rewards": {
-      "earnValue0Pts": "赚取 {value0} 积分"
+      "earnValue0Pts": "赚取 {value0} 积分",
+      "_pending_review": {}
     },
     "autopilotpopup": {
       "indexLoading": "索引加载中...",
@@ -10588,12 +10695,14 @@
       "checkForNew": "检查更新",
       "snoozeLater": "稍后",
       "snoozedUntilTomorrow": "我们明天会再提醒你。",
-      "snoozeFailed": "无法推迟，请重试。"
+      "snoozeFailed": "无法推迟，请重试。",
+      "_pending_review": {}
     },
     "postDetail": {
       "title": "发布",
       "notFound": "帖子未找到",
-      "back": "返回"
+      "back": "返回",
+      "_pending_review": {}
     },
     "partnerportal": {
       "title": "合作伙伴门户",
@@ -10647,8 +10756,10 @@
         "degraded": "性能下降",
         "suspended": "已暂停",
         "revoked": "已撤销",
-        "failed": "失败"
-      }
+        "failed": "失败",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "commerceportal": {
       "heroTitle": "将你的业务带到 Vitanaland",
@@ -10706,7 +10817,8 @@
         "hint": "如果识别出平台，我们将检查 URL 并自动填写连接器和提供商 ID。",
         "detected": "{platform} 已检测到 — 字段已填写。",
         "notDetected": "平台未识别。请手动填写连接器和提供商 ID。",
-        "failed": "无法检查该地址。请手动填写连接器和提供商 ID。"
+        "failed": "无法检查该地址。请手动填写连接器和提供商 ID。",
+        "_pending_review": {}
       },
       "connectOauth": {
         "title": "连接",
@@ -10721,7 +10833,8 @@
         "fhirButton": "连接 FHIR 服务器",
         "connecting": "连接中...",
         "notConfigured": "此连接类型尚未启用。请稍后再试。",
-        "failed": "无法启动连接。请检查你的详细信息。"
+        "failed": "无法启动连接。请检查你的详细信息。",
+        "_pending_review": {}
       },
       "_pending_review": {
         "portalEyebrow": true,
@@ -11233,7 +11346,8 @@
         "submitResultNeedsAction": "已提交。还缺少一些内容——请看下方。",
         "submitResultInReview": "已提交。Vitanaland 团队正在审核你的业务。",
         "submitResultUnchanged": "已收到。你的状态没有变化。",
-        "submitFailed": "暂时无法提交。我们已刷新你的状态——请查看还缺少什么。"
+        "submitFailed": "暂时无法提交。我们已刷新你的状态——请查看还缺少什么。",
+        "_pending_review": {}
       },
       "setupChooser": {
         "title": "添加你的产品或服务",
@@ -11245,7 +11359,8 @@
         "manualTitle": "自己添加产品",
         "manualHint": "手动创建产品或服务。",
         "apiTitle": "通过 API 连接",
-        "apiHint": "适用于技术团队和自定义集成。"
+        "apiHint": "适用于技术团队和自定义集成。",
+        "_pending_review": {}
       },
       "addOffer": {
         "title": "你想添加什么？",
@@ -11268,7 +11383,8 @@
         "name_service": "服务名称",
         "name_experience": "体验名称",
         "bookUrl": "预订链接",
-        "bookUrlHint": "你网站上的预订页面。我们会把用户引导到那里。"
+        "bookUrlHint": "你网站上的预订页面。我们会把用户引导到那里。",
+        "_pending_review": {}
       },
       "salesSetup": {
         "title": "销售设置",
@@ -11287,7 +11403,8 @@
         "keepCurrent": "保留当前设置",
         "save": "保存",
         "saved": "销售设置已保存",
-        "saveFailed": "无法保存你的销售设置。"
+        "saveFailed": "无法保存你的销售设置。",
+        "_pending_review": {}
       },
       "connect": {
         "title": "连接你的系统",
@@ -11307,7 +11424,8 @@
         "pasteOpenapi": "……或粘贴 OpenAPI 规范（JSON）",
         "openapiInvalid": "这不是有效的 JSON。请检查文件或重新粘贴。",
         "created": "已创建连接",
-        "customApi": "自定义 API"
+        "customApi": "自定义 API",
+        "_pending_review": {}
       },
       "forBusiness": "用于 {name}",
       "forBusinessLabel": "用于：",
@@ -11340,7 +11458,8 @@
         "errorRateLimited": "你刚才尝试了很多次，请稍等一下。",
         "errorGeneric": "刚才没有成功，请再试一次。",
         "errorCreate": "保存失败。再点一次即可——不会重复创建。",
-        "talkCta": "改为和 Vitana 对话"
+        "talkCta": "改为和 Vitana 对话",
+        "_pending_review": {}
       },
       "mcpConnect": {
         "cta": "连接你的 AI 助手",
@@ -11373,7 +11492,8 @@
         "advAuthValue": "通过你的 Vitanaland 账号使用 OAuth 2.1 + PKCE",
         "advMetadata": "资源元数据",
         "advTools": "工具",
-        "manualFallback": "我更想手动注册"
+        "manualFallback": "我更想手动注册",
+        "_pending_review": {}
       },
       "guest": {
         "heroTitle": "加入长寿经济。",
@@ -11398,7 +11518,8 @@
         "whatIsMcp": "什么是 MCP？",
         "whatIsMcpBody": "MCP 是一种安全标准，让你的 AI 助手连接到 Vitanaland，并代你执行经批准的企业设置操作。",
         "closingTitle": "你的企业属于长寿经济",
-        "closingBody": "免费加入，连接一次，触达那些投资于更长寿、更健康生活的人。"
+        "closingBody": "免费加入，连接一次，触达那些投资于更长寿、更健康生活的人。",
+        "_pending_review": {}
       },
       "terms": {
         "title": "合作伙伴条款",
@@ -11423,7 +11544,8 @@
         "rowReacceptTitle": "新的合作伙伴条款",
         "rowReacceptBody": "合作伙伴条款已更改（版本 {version}）。请阅读并接受新版本。",
         "rowCta": "阅读并接受",
-        "view": "查看"
+        "view": "查看",
+        "_pending_review": {}
       }
     },
     "oauthconsent": {
@@ -11448,8 +11570,10 @@
         "vitana:partners:read": "查看合作方信息",
         "vitana:connections:write": "管理业务连接",
         "vitana:grants:write": "发起数据授权 (你保留同意权)",
-        "vitana:settlement:write": "启动预设的 VTNA 结算"
-      }
+        "vitana:settlement:write": "启动预设的 VTNA 结算",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "backoffice": {
       "comingWave1": "Coming in wave 1",
@@ -12273,7 +12397,8 @@
             "emptyHint": true,
             "against": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "finance": {
         "payments": {
@@ -12385,7 +12510,8 @@
             "noSettled": true,
             "settledExplain": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "accounting": {
         "common": {
@@ -12579,7 +12705,8 @@
             "trialBalance": true,
             "closeNote": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "reports": {
         "common": {
@@ -12680,7 +12807,8 @@
             "noAp": true,
             "negativeNote": true
           }
-        }
+        },
+        "_pending_review": {}
       },
       "draft": {
         "review": "Review before it is written",
@@ -13165,7 +13293,8 @@
               "title": true,
               "description": true
             }
-          }
+          },
+          "_pending_review": {}
         },
         "noLineRows": "No lines available.",
         "lookupLoading": "Loading …",
@@ -13446,7 +13575,8 @@
       "reminderOffOption": "关闭",
       "reminderSaved": "每天 {time} 提醒",
       "reminderOff": "每日提醒已关闭",
-      "reminderError": "无法保存提醒。"
+      "reminderError": "无法保存提醒。",
+      "_pending_review": {}
     },
     "commerceconnect": {
       "title": "将 {client} 连接到 Vitanaland？",
@@ -13464,7 +13594,8 @@
       "loading": "请稍候…",
       "redirecting": "正在返回你的助手…",
       "invalid": "此连接请求无效或已过期。请在你的助手中重新开始连接。",
-      "failed": "刚才没有成功，请再试一次。"
+      "failed": "刚才没有成功，请再试一次。",
+      "_pending_review": {}
     },
     "liveRoom": {
       "guest": "访客",
@@ -13497,7 +13628,8 @@
       "notFoundDesc": "这个直播间已不存在。",
       "startingSoon": "即将开始",
       "startNow": "立即开始",
-      "eventsSectionTitle": "直播间"
+      "eventsSectionTitle": "直播间",
+      "_pending_review": {}
     },
     "vitanaCards": {
       "stripLabel": "Vitana 的建议",
@@ -13508,100 +13640,119 @@
       "E1": {
         "title": "展示你的样子",
         "description": "上传一张头像，让大家一眼认出你。",
-        "action": "上传"
+        "action": "上传",
+        "_pending_review": {}
       },
       "E2": {
         "title": "介绍一下你自己",
         "description": "几句自我介绍，能让别人更容易和你聊起来。",
-        "action": "写简介"
+        "action": "写简介",
+        "_pending_review": {}
       },
       "E3": {
         "title": "分享你的第一条动态",
         "description": "和社区打个招呼吧——一句话就够了。",
-        "action": "立即发布"
+        "action": "立即发布",
+        "_pending_review": {}
       },
       "E4": {
         "title": "你热爱什么？",
         "description": "选择你的兴趣，让 Vitana 为你找到合适的人和内容。",
-        "action": "选择兴趣"
+        "action": "选择兴趣",
+        "_pending_review": {}
       },
       "E5": {
         "title": "你住在哪里？",
         "description": "添加你的所在地，发现身边的人和活动。",
-        "action": "添加位置"
+        "action": "添加位置",
+        "_pending_review": {}
       },
       "E6": {
         "title": "连接 Instagram",
         "description": "把你在 Vitana 的精彩时刻直接分享到 Instagram。",
-        "action": "连接 Instagram"
+        "action": "连接 Instagram",
+        "_pending_review": {}
       },
       "E7": {
         "title": "连接 Facebook",
         "description": "与朋友保持联系，一键分享。",
-        "action": "连接 Facebook"
+        "action": "连接 Facebook",
+        "_pending_review": {}
       },
       "E8": {
         "title": "连接你的日历",
         "description": "在一个地方查看你的日程和 Vitana 活动。",
-        "action": "连接"
+        "action": "连接",
+        "_pending_review": {}
       },
       "E9": {
         "title": "导入你的联系人",
         "description": "找到已经在 Vitana 的朋友。",
-        "action": "导入"
+        "action": "导入",
+        "_pending_review": {}
       },
       "E10": {
         "title": "不错过任何消息",
         "description": "开启消息、匹配和提醒通知。",
-        "action": "开启"
+        "action": "开启",
+        "_pending_review": {}
       },
       "E11": {
         "title": "添加封面照片",
         "description": "封面照片让你的资料更有个性。",
-        "action": "上传"
+        "action": "上传",
+        "_pending_review": {}
       },
       "F3": {
         "eyebrow": "日记",
         "title": "你今天感觉怎么样？",
         "description": "对着日记说几句话吧——Vitana 在听。",
-        "action": "录音"
+        "action": "录音",
+        "_pending_review": {}
       },
       "F4": {
         "eyebrow": "问问 Vitana",
         "title": "有问题吗？",
         "description": "Vitana 可以在健康、社区等方面帮助你。",
-        "action": "问 Vitana"
+        "action": "问 Vitana",
+        "_pending_review": {}
       },
       "F5": {
         "eyebrow": "匹配",
         "title": "与你契合的人",
         "description": "看看你今天的匹配。",
-        "action": "查看匹配"
+        "action": "查看匹配",
+        "_pending_review": {}
       },
       "F6": {
         "eyebrow": "自动驾驶",
         "title": "你的自动驾驶已就绪",
         "description": "让 Vitana 规划你的下一步。",
-        "action": "打开"
+        "action": "打开",
+        "_pending_review": {}
       },
       "F9": {
         "eyebrow": "日历",
         "title": "一眼看清你的一天",
         "description": "日程、活动和提醒，尽在一处。",
-        "action": "打开日历"
+        "action": "打开日历",
+        "_pending_review": {}
       },
       "F10": {
         "eyebrow": "媒体",
         "title": "分享视频或音乐",
         "description": "上传你的媒体，激励社区。",
-        "action": "创建"
+        "action": "创建",
+        "_pending_review": {}
       },
       "F11": {
         "eyebrow": "发现",
         "title": "发现新鲜事物",
         "description": "为你的健康精选的产品、服务和优惠。",
-        "action": "浏览"
+        "action": "浏览",
+        "_pending_review": {}
       },
+      "_pending_review": {},
       "G1": {
         "eyebrow": "你的资料",
         "title": "完善你的资料",
@@ -13644,7 +13795,10 @@
       "cooking": "烹饪",
       "social": "社交",
       "travel": "旅行",
-      "career": "职业"
-    }
-  }
+      "career": "职业",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

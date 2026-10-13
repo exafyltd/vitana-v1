@@ -14,11 +14,87 @@ import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star, Plus } f
 import { healthNavigation } from "@/config/navigation";
 import { useState } from "react";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { IconEyebrow, TIER_B_GRID, TierBEmpty } from "@/components/spotlight/tier-b/TierBKit";
 
 
 export default function EducationResources() {
   const [activeSection, setActiveSection] = useUrlTab("tab", "articles");
   const [educationActionsOpen, setEducationActionsOpen] = useState(false);
+  // VTID-05111 — Spotlight Tier B (desktop + flag only; phones and flag-off keep the screen below).
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    // Articles are the translated editorial topics; ratings are not shown (no real data behind them).
+    // Videos and podcasts exist only as untranslated samples with invented view counts → empty states (SR-24).
+    const articles = [
+      { title: t('screens.health.eduArticle_vitanaIndex_title'), category: t('screens.health.eduCategory_healthMetrics'), readTime: t('screens.health.eduReadTime', { mins: '5' }) },
+      { title: t('screens.health.eduArticle_nutritionScience_title'), category: t('screens.health.pillar_nutrition_title'), readTime: t('screens.health.eduReadTime', { mins: '8' }) },
+      { title: t('screens.health.eduArticle_sleepRecovery_title'), category: t('screens.health.eduCategory_sleepHealth'), readTime: t('screens.health.eduReadTime', { mins: '6' }) },
+      { title: t('screens.health.eduArticle_exercisePhysiology_title'), category: t('screens.health.eduCategory_fitness'), readTime: t('screens.health.eduReadTime', { mins: '10' }) },
+      { title: t('screens.health.eduArticle_mentalHealth_title'), category: t('screens.health.eduCategory_psychology'), readTime: t('screens.health.eduReadTime', { mins: '7' }) },
+      { title: t('screens.health.eduArticle_preventiveCare_title'), category: t('screens.health.eduCategory_prevention'), readTime: t('screens.health.eduReadTime', { mins: '12' }) },
+    ];
+    return (
+      <AppLayout>
+        <SEO title={t('screens.health.educationResourcesHealth')} description={t('spotlightTierB.health.educationDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: healthNavigation }}
+          header={{ title: t('screens.health.educationScience'), description: t('spotlightTierB.health.educationDescription'), emoji: '📚' }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton placeholder={t('screens.health.searchArticlesVideosPodcastsTopics')} />
+                <UniversalCalendarButton />
+                <Button variant="default" size="sm" onClick={() => setEducationActionsOpen(true)}>
+                  <Plus className="me-2 h-4 w-4" />
+                  {t('screens.health.educationActions')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeSection,
+            onValueChange: setActiveSection,
+            items: [
+              { value: 'articles', label: t('screens.health.articles') },
+              { value: 'videos', label: t('screens.health.videos') },
+              { value: 'podcasts', label: t('screens.health.podcasts') },
+            ],
+          }}
+        >
+          <SplitBarContent value="articles">
+            <div className={TIER_B_GRID}>
+              {articles.map((article) => (
+                <VCard
+                  key={article.title}
+                  size="standard"
+                  eyebrow={<IconEyebrow icon={BookOpen}>{article.category}</IconEyebrow>}
+                  title={article.title}
+                  meta={
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                      {t('screens.health.readtimeRead', { readTime: article.readTime })}
+                    </span>
+                  }
+                />
+              ))}
+            </div>
+          </SplitBarContent>
+          <SplitBarContent value="videos">
+            <TierBEmpty Icon={Video} titleKey="spotlightTierB.health.noVideosTitle" descriptionKey="spotlightTierB.health.noVideosDesc" />
+          </SplitBarContent>
+          <SplitBarContent value="podcasts">
+            <TierBEmpty Icon={Headphones} titleKey="spotlightTierB.health.noPodcastsTitle" descriptionKey="spotlightTierB.health.noPodcastsDesc" />
+          </SplitBarContent>
+        </ScreenFrame>
+        <EducationMasterActionPopup open={educationActionsOpen} onOpenChange={setEducationActionsOpen} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

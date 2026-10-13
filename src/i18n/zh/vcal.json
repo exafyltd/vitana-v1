@@ -22,27 +22,32 @@
       "morning": "早上好 ☀️",
       "afternoon": "下午好 🌤️",
       "evening": "晚上好 🌙",
-      "night": "晚安 🌙"
+      "night": "晚安 🌙",
+      "_pending_review": {}
     },
     "day": {
-      "addFor": "为 {date} 添加新条目"
+      "addFor": "为 {date} 添加新条目",
+      "_pending_review": {}
     },
     "views": {
       "day": "日",
       "week": "周",
-      "month": "月"
+      "month": "月",
+      "_pending_review": {}
     },
     "rel": {
       "now": "现在",
       "minutes": "{count} 分钟后",
       "hours": "{count} 小时后",
-      "days": "{count} 天后"
+      "days": "{count} 天后",
+      "_pending_review": {}
     },
     "reminder": {
       "eveningBefore": "前一晚 {time}",
       "atStart": "开始时",
       "hoursBefore": "提前 {count} 小时",
-      "minutesBefore": "提前 {count} 分钟"
+      "minutesBefore": "提前 {count} 分钟",
+      "_pending_review": {}
     },
     "kinds": {
       "nutrition": "营养",
@@ -78,28 +83,33 @@
     "subscription": {
       "renews": "Premium 将续订",
       "ends": "Premium 将到期",
-      "trialEnds": "试用期结束"
+      "trialEnds": "试用期结束",
+      "_pending_review": {}
     },
     "overlap": {
       "title": "时间有重叠",
       "own": "{{title}} · {{time}}",
       "busy": "忙碌 · {{time}}",
-      "external": "忙碌（其他日历）· {{time}}"
+      "external": "忙碌（其他日历）· {{time}}",
+      "_pending_review": {}
     },
     "findTime": {
       "action": "找个时间",
       "loading": "正在寻找空闲时间 …",
       "pick": "合适的时间",
       "none": "接下来几天没有合适的空闲时间。",
-      "error": "暂时无法加载空闲时间。"
+      "error": "暂时无法加载空闲时间。",
+      "_pending_review": {}
     },
     "empty": {
       "title": "没有安排——平静的一天",
-      "hint": "告诉 Vitana 你的打算，她会帮你添加。"
+      "hint": "告诉 Vitana 你的打算，她会帮你添加。",
+      "_pending_review": {}
     },
     "week": {
       "title": "{date} 这一周",
-      "free": "空闲"
+      "free": "空闲",
+      "_pending_review": {}
     },
     "month": {
       "more": "+{count}",
@@ -135,7 +145,8 @@
       "autopilot_review": "等待你的审核",
       "ticket_due": "工单截止时间",
       "erp_approval": "等待审批",
-      "readOnly": "这件事在它所在的地方完成——日历只显示何时到期。"
+      "readOnly": "这件事在它所在的地方完成——日历只显示何时到期。",
+      "_pending_review": {}
     },
     "subscribe": {
       "title": "在我的日历应用中显示",
@@ -157,23 +168,28 @@
       "titleFor": {
         "google": "连接 Google 日历",
         "apple": "连接 Apple 日历",
-        "outlook": "连接 Outlook"
+        "outlook": "连接 Outlook",
+        "_pending_review": {}
       },
       "introFor": {
         "google": "你的 Vitanaland 安排会显示在 Google 日历中，并保持最新。",
         "apple": "你的 Vitanaland 安排会显示在 iPhone、iPad 和 Mac 的日历中，并保持最新。",
-        "outlook": "你的 Vitanaland 安排会显示在 Outlook 日历中，并保持最新。"
+        "outlook": "你的 Vitanaland 安排会显示在 Outlook 日历中，并保持最新。",
+        "_pending_review": {}
       },
       "createFor": {
         "google": "为 Google 创建链接",
         "apple": "为 Apple 创建链接",
-        "outlook": "为 Outlook 创建链接"
+        "outlook": "为 Outlook 创建链接",
+        "_pending_review": {}
       },
       "openIn": {
         "google": "添加到 Google 日历",
         "apple": "添加到 Apple 日历",
-        "outlook": "添加到 Outlook"
-      }
+        "outlook": "添加到 Outlook",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "move": {
       "action": "移动",
@@ -187,8 +203,10 @@
         "owned_by_source": "这来自预订或计划——请在那里移动，否则会恢复原位。",
         "recurring": "系列日程请在系列本身中移动。",
         "completed": "已完成的保持原位。",
-        "cancelled": "已取消的无法移动。"
-      }
+        "cancelled": "已取消的无法移动。",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "google": {
       "title": "与 Google 日历同步",
@@ -202,12 +220,14 @@
       "problem": "上次同步失败——我们会自动重试。",
       "error": "暂时没有成功，请稍后再试。",
       "busy": "忙碌（Google）",
-      "busyHint": "来自你 Google 日历的活动——仅显示时间"
+      "busyHint": "来自你 Google 日历的活动——仅显示时间",
+      "_pending_review": {}
     },
     "quietHours": {
       "title": "免打扰时段",
       "body": "免打扰时段内不会收到提醒——提醒会在此之前送达。",
-      "link": "设置免打扰时段"
+      "link": "设置免打扰时段",
+      "_pending_review": {}
     },
     "guide": {
       "eyebrow": "Vitana 建议",
@@ -224,7 +244,8 @@
       "planWithVitana": "和 Vitana 一起规划",
       "seeWeek": "查看本周",
       "connectAction": "连接日历",
-      "dismiss": "今天不再显示"
+      "dismiss": "今天不再显示",
+      "_pending_review": {}
     },
     "journey": {
       "title": "你的旅程",
@@ -243,14 +264,16 @@
       "dailyAt": "每天",
       "addConfirm": "加入",
       "inCalendar": "已在日历中",
-      "habitAdded": "习惯已加入你的日历"
+      "habitAdded": "习惯已加入你的日历",
+      "_pending_review": {}
     },
     "remindersSection": {
       "title": "提醒",
       "none": "暂无安排",
       "upcoming": "{count} 个即将到来",
       "upcomingOne": "1 个即将到来",
-      "next": "下一个 {when}"
+      "next": "下一个 {when}",
+      "_pending_review": {}
     },
     "calendars": {
       "title": "日历",
@@ -276,12 +299,14 @@
       "connect": "连接",
       "reconnect": "重新连接",
       "manage": "在已连接应用中管理",
-      "showInAppHint": "在你的日历应用中查看 Vitanaland 条目"
+      "showInAppHint": "在你的日历应用中查看 Vitanaland 条目",
+      "_pending_review": {}
     },
     "add": {
       "title": "新条目",
       "created": "已添加 ✨",
-      "error": "现在无法保存，请稍后再试。"
+      "error": "现在无法保存，请稍后再试。",
+      "_pending_review": {}
     },
     "form": {
       "title": "标题",
@@ -304,8 +329,10 @@
         "health": "健康",
         "workout": "锻炼",
         "community": "社区",
-        "nutrition": "营养"
-      }
+        "nutrition": "营养",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "milestone": "里程碑：{title}",
     "more": "还有 {count} 项",
@@ -314,13 +341,15 @@
       "entriesOne": "1 项安排",
       "entries": "{count} 项安排",
       "next": "下一项 {time}",
-      "done": "已完成 {count} 项"
+      "done": "已完成 {count} 项",
+      "_pending_review": {}
     },
     "workSection": {
       "title": "工作",
       "waitingOne": "有 1 件事在等你",
       "waiting": "有 {count} 件事在等你",
-      "open": "在管理后台打开"
+      "open": "在管理后台打开",
+      "_pending_review": {}
     },
     "indexGain": "你的 Vitana Index {pillar} +{points}",
     "edit": {
@@ -534,5 +563,6 @@
         "listen": true
       }
     }
-  }
+  },
+  "_pending_review": {}
 }
