@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useSyncExternalStore } from 'react';
 import { usePathname, router } from 'expo-router';
 import { businessHomeFor, isBusinessRoute, pickActiveOrg } from '../ports/core';
-import { activeOrgStore } from './device-storage';
+import { activeOrgStore, hydrateActiveOrg } from './device-storage';
 import { useMyPartnerOrgs, type MyOrgRow } from './useMyPartnerOrgs';
 
 const EMPTY: MyOrgRow[] = [];
@@ -18,7 +18,7 @@ export function useBusinessMode() {
   const pathname = usePathname();
   const storedId = useSyncExternalStore(activeOrgStore.subscribe, activeOrgStore.getSnapshot, activeOrgStore.getSnapshot);
   useEffect(() => {
-    void activeOrgStore.hydrate();
+    void hydrateActiveOrg();
   }, []);
   const activeOrg = pickActiveOrg(orgs, storedId);
   const isBusinessMode = activeOrg !== null && isBusinessRoute(pathname);

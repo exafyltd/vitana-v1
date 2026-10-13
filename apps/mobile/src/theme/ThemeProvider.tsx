@@ -9,7 +9,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useColorScheme } from 'react-native';
 import { shellColors, maxinaTopbar, type ColorScheme, type ShellColors } from '../ports/tokens';
-import { canonicalTenantSlug, tenantBrand, type TenantConfig } from '../ports/core';
+import { canonicalTenantSlug, tenantBrand, type TenantBrand } from '../ports/core';
 import { deviceStorage, STORAGE_KEYS } from '../identity/device-storage';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -52,7 +52,7 @@ export function useThemeMode(): ModeValue {
 export type ShellTheme = {
   scheme: ColorScheme;
   colors: ShellColors;
-  brand: TenantConfig;
+  brand: TenantBrand;
   isMaxina: boolean;
   maxinaTopbar: typeof maxinaTopbar;
 };

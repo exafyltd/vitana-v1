@@ -3,11 +3,9 @@
  * state), N1's `createGatewayFetch` with the Supabase access token
  * (web `community-gateway.ts:14`). The origin comes from `endpoints(config)`.
  */
-import { createGatewayFetch, gatewayJson } from '../ports/core';
+import { createGatewayFetch, gatewayJson, type GatewayFetch } from '../ports/core';
 import { config, endpoints } from '../ports/env';
 import { getAccessToken } from './client';
-
-type GatewayFetch = ReturnType<typeof createGatewayFetch>;
 
 let fetcher: GatewayFetch | null = null;
 

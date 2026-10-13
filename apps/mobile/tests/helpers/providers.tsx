@@ -20,7 +20,7 @@ export function fakeGateway(routes: GatewayRoutes) {
   const f = async (path: string) => {
     calls.push(path);
     const body = routes[path];
-    return { ok: body !== undefined, status: body !== undefined ? 200 : 404, json: async () => body ?? null } as unknown as Response;
+    return { ok: body !== undefined, status: body !== undefined ? 200 : 404, text: async () => (body === undefined ? '' : JSON.stringify(body)) } as unknown as Response;
   };
   return { fetch: f, calls };
 }

@@ -3,7 +3,7 @@
  * VTID-05186 (N3, plan change 2 / Interfaces I-N1.1–I-N1.3) — BRANCH-ONLY stub.
  *
  * Hand re-implementation of exactly the names N1's `@vitana/core` exports
- * (N1 plan, "Interfaces exported to other lanes"), so the shell builds and
+ * (N1 branch claude/health-data-integration-plan-dbxyld-n1, commit 6c179f53d, packages/core/src/*), so the shell builds and
  * its unit tests run while N1 is in review. It is imported ONLY by
  * `src/ports/core.ts`; no shell file imports it (tests/ports.test.ts). It is
  * deleted when the port points at `@vitana/core`, before PR-S merges
@@ -24,22 +24,27 @@ export interface KeyValueStorage {
   removeItem(key: string): void | Promise<void>;
 }
 
-export function createMemoryStorage(): KeyValueStorage {
-  const map = new Map<string, string>();
+export function createMemoryStorage(initial: Record<string, string> = {}): KeyValueStorage & { readonly data: Map<string, string> } {
+  const data = new Map(Object.entries(initial));
   return {
-    getItem: (k) => (map.has(k) ? (map.get(k) as string) : null),
-    setItem: (k, v) => void map.set(k, v),
-    removeItem: (k) => void map.delete(k),
+    data,
+    getItem: (key) => (data.has(key) ? (data.get(key) as string) : null),
+    setItem: (key, value) => {
+      data.set(key, value);
+    },
+    removeItem: (key) => {
+      data.delete(key);
+    },
   };
 }
 
 // ── @vitana/core/config ─────────────────────────────────────────────────
-export type CoreEndpoints = {
+export interface CoreEndpoints {
   gatewayOrigin: string;
   supabaseUrl: string;
   supabasePublishableKey: string;
   dataApiUrl?: string;
-};
+}
 
 /** Same normalisation as the web resolveGatewayBase; empty input throws (no fallback origin). */
 export function gatewayApiUrl(origin: string): string {
@@ -50,47 +55,58 @@ export function gatewayApiUrl(origin: string): string {
 }
 
 // ── @vitana/core/gateway ────────────────────────────────────────────────
+export type FetchImpl = (input: string, init?: RequestInit) => Promise<Response>;
+
+export interface GatewayFetchOptions {
+  origin: string;
+  getAccessToken: () => string | null | undefined | Promise<string | null | undefined>;
+  fetchImpl: FetchImpl;
+}
+
+export type GatewayFetch = (path: string, init?: RequestInit) => Promise<Response>;
+
+export function createGatewayFetch({ origin, getAccessToken, fetchImpl }: GatewayFetchOptions): GatewayFetch {
+  if (typeof fetchImpl !== 'function') throw new Error('createGatewayFetch: fetchImpl is required (no global fetch by default)');
+  if (typeof getAccessToken !== 'function') throw new Error('createGatewayFetch: getAccessToken is required');
+  const api = gatewayApiUrl(origin);
+  return async (path, init = {}) => {
+    const rel = path.startsWith('/') ? path : `/${path}`;
+    const headers: Record<string, string> = { ...((init.headers as Record<string, string>) ?? {}) };
+    const token = await getAccessToken();
+    if (token) headers.authorization = `Bearer ${token}`;
+    return fetchImpl(`${api}${rel}`, { ...init, headers });
+  };
+}
+
 export class GatewayError extends Error {
   readonly status: number;
   readonly key?: string;
   readonly params?: Record<string, unknown>;
-  constructor(status: number, body?: { key?: string; params?: Record<string, unknown> } | null) {
-    super(body?.key ?? `gateway ${status}`);
+  readonly body: unknown;
+  constructor(status: number, body: unknown) {
+    const b = (body && typeof body === 'object' ? body : {}) as { key?: unknown; params?: unknown };
+    const key = typeof b.key === 'string' ? b.key : undefined;
+    super(`Gateway request failed with status ${status}${key ? ` (${key})` : ''}`);
     this.name = 'GatewayError';
     this.status = status;
-    this.key = body?.key;
-    this.params = body?.params;
+    this.key = key;
+    this.params = b.params && typeof b.params === 'object' ? (b.params as Record<string, unknown>) : undefined;
+    this.body = body;
   }
 }
 
-type GatewayFetch = (path: string, init?: RequestInit) => Promise<Response>;
-
-export function createGatewayFetch(opts: {
-  origin: string;
-  getAccessToken: () => Promise<string | null> | string | null;
-  fetchImpl: typeof fetch;
-}): GatewayFetch {
-  if (!opts.fetchImpl) throw new Error('createGatewayFetch: fetchImpl is required');
-  const api = gatewayApiUrl(opts.origin);
-  return async (path, init) => {
-    const token = await opts.getAccessToken();
-    const headers: Record<string, string> = { ...((init?.headers as Record<string, string>) ?? {}) };
-    if (token) headers.Authorization = `Bearer ${token}`;
-    if (init?.body && typeof init.body === 'string' && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
-    const rel = path.replace(/^\/api\/v1/, '');
-    return opts.fetchImpl(`${api}${rel.startsWith('/') ? rel : `/${rel}`}`, { ...init, headers });
-  };
-}
-
-export async function gatewayJson<T>(fetcher: GatewayFetch, path: string, init?: RequestInit): Promise<T> {
-  const res = await fetcher(path, init);
+export async function gatewayJson<T>(gatewayFetch: GatewayFetch, path: string, init?: RequestInit): Promise<T> {
+  const res = await gatewayFetch(path, init);
+  const text = await res.text();
   let body: unknown = null;
-  try {
-    body = await res.json();
-  } catch {
-    body = null;
+  if (text) {
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = text;
+    }
   }
-  if (!res.ok) throw new GatewayError(res.status, body as { key?: string; params?: Record<string, unknown> } | null);
+  if (!res.ok) throw new GatewayError(res.status, body);
   return body as T;
 }
 
@@ -98,25 +114,37 @@ export async function gatewayJson<T>(fetcher: GatewayFetch, path: string, init?:
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the generated Database type is N1's
 export type Database = any;
 
-export function createSupabaseClient(opts: {
+export interface SupabaseClientOptions {
   url: string;
   publishableKey: string;
   dataApiUrl?: string;
   storage: KeyValueStorage;
-  /** Request to N1 (Interfaces I-N1.1, additive): passed through to supabase-js. */
+  fetchImpl?: typeof fetch;
+  /**
+   * Request to N1 (Interfaces I-N1.1, additive, still open): passed through to
+   * supabase-js for the Android Apple PKCE flow. N1's factory does not take it
+   * yet; until it does, the port must keep passing it (see src/ports/core.ts).
+   */
   auth?: { flowType?: 'pkce' | 'implicit' };
-}): SupabaseClient<Database> {
-  if (!opts.url?.trim()) throw new Error('createSupabaseClient: url is required');
-  if (!opts.publishableKey?.trim()) throw new Error('createSupabaseClient: publishableKey is required');
-  if (!opts.storage) throw new Error('createSupabaseClient: storage is required');
-  return createClient<Database>(opts.url, opts.publishableKey, {
+}
+
+export type VitanaSupabaseClient = SupabaseClient<Database>;
+
+/** N1's factory, minus createDataFetch (the data-API routing); `auth` is the I-N1.1 request. */
+export function createSupabaseClient({ url, publishableKey, storage, fetchImpl, auth }: SupabaseClientOptions): VitanaSupabaseClient {
+  if (!url || !url.trim()) throw new Error('createSupabaseClient: url is required (no default project)');
+  if (!publishableKey || !publishableKey.trim()) throw new Error('createSupabaseClient: publishableKey is required');
+  if (!storage || typeof storage.getItem !== 'function') throw new Error('createSupabaseClient: storage is required');
+  const base: typeof fetch = fetchImpl ?? ((input, init) => fetch(input, init));
+  return createClient<Database>(url.trim(), publishableKey.trim(), {
     auth: {
-      storage: opts.storage as SupportedStorage,
+      storage: storage as SupportedStorage,
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: false,
-      ...(opts.auth?.flowType ? { flowType: opts.auth.flowType } : {}),
+      ...(auth?.flowType ? { flowType: auth.flowType } : {}),
     },
+    global: { fetch: base },
     realtime: { params: { eventsPerSecond: 10 } },
   });
 }
@@ -220,11 +248,13 @@ export const staffNavigation: NavigationItem[] = [
 ];
 
 // ── @vitana/core/nav (src/components/mobile/MobileBottomNav.tsx, SideDrawerNav.tsx, src/config/drawer-nav.config.ts) ──
-export type IconName =
-  | 'Activity' | 'BarChart3' | 'Bell' | 'BookOpen' | 'Briefcase' | 'Calendar' | 'ClipboardList' | 'Clock' | 'Compass'
-  | 'FileText' | 'FlaskConical' | 'Heart' | 'HeartPulse' | 'Inbox' | 'LayoutDashboard' | 'LayoutGrid' | 'LifeBuoy'
-  | 'LogOut' | 'Mail' | 'MessageSquare' | 'Newspaper' | 'Plug' | 'Settings' | 'Settings2' | 'Shield' | 'ShoppingBag'
-  | 'Stethoscope' | 'Store' | 'Target' | 'TestTube' | 'UserCheck' | 'Users' | 'Video' | 'Wallet' | 'Zap';
+export const ICON_NAMES = [
+  'Activity', 'BarChart3', 'Bell', 'BookOpen', 'Briefcase', 'Calendar', 'ClipboardList', 'Clock', 'Compass', 'FileText',
+  'FlaskConical', 'Heart', 'HeartPulse', 'Inbox', 'LayoutDashboard', 'LayoutGrid', 'LifeBuoy', 'LogOut', 'Mail',
+  'MessageSquare', 'Newspaper', 'Plug', 'Settings', 'Settings2', 'Shield', 'ShoppingBag', 'Stethoscope', 'Store', 'Target',
+  'TestTube', 'UserCheck', 'Users', 'Video', 'Wallet', 'Zap',
+] as const;
+export type IconName = (typeof ICON_NAMES)[number];
 
 export type BottomNavItem = {
   id: string;
@@ -419,41 +449,43 @@ export interface ActiveOrgStore {
   getSnapshot(): string | null;
   set(id: string | null): void;
   subscribe(listener: () => void): () => void;
-  /** Loads the persisted value (async storages); resolves to the snapshot. */
-  hydrate(): Promise<string | null>;
 }
 
-/** business-mode.ts:118-139 over an injected storage; a throwing storage reads as `null`. */
+/** business-mode.ts:118-139 over an injected storage; a throwing (or async) read is `null`. */
 export function createActiveOrgStore(storage: KeyValueStorage): ActiveOrgStore {
   const listeners = new Set<() => void>();
   let memory: string | null | undefined;
-  const emit = () => listeners.forEach((l) => l());
+  const read = (): string | null => {
+    try {
+      const v = storage.getItem(ACTIVE_ORG_STORAGE_KEY);
+      return typeof v === 'string' ? v : null;
+    } catch {
+      return null;
+    }
+  };
+  const write = (id: string | null) => {
+    try {
+      const r = id ? storage.setItem(ACTIVE_ORG_STORAGE_KEY, id) : storage.removeItem(ACTIVE_ORG_STORAGE_KEY);
+      if (r && typeof (r as Promise<void>).catch === 'function') (r as Promise<void>).catch(() => undefined);
+    } catch {
+      /* the in-memory value still carries the session */
+    }
+  };
   return {
-    getSnapshot: () => memory ?? null,
+    getSnapshot() {
+      if (memory === undefined) memory = read();
+      return memory;
+    },
     set(id) {
       memory = id;
-      try {
-        const r = id ? storage.setItem(ACTIVE_ORG_STORAGE_KEY, id) : storage.removeItem(ACTIVE_ORG_STORAGE_KEY);
-        if (r && typeof (r as Promise<void>).catch === 'function') (r as Promise<void>).catch(() => undefined);
-      } catch {
-        /* the in-memory value still carries the session */
-      }
-      emit();
+      write(id);
+      listeners.forEach((l) => l());
     },
     subscribe(listener) {
       listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-    async hydrate() {
-      if (memory !== undefined) return memory;
-      try {
-        const v = await storage.getItem(ACTIVE_ORG_STORAGE_KEY);
-        if (memory === undefined) memory = v ?? null;
-      } catch {
-        if (memory === undefined) memory = null;
-      }
-      emit();
-      return memory ?? null;
+      return () => {
+        listeners.delete(listener);
+      };
     },
   };
 }
@@ -484,10 +516,13 @@ export function canonicalTenantSlug(slug: string | null | undefined): string | n
   return RETIRED_TENANT_SLUGS[slug.toLowerCase()] ?? slug;
 }
 
+export type TenantBrand = Pick<TenantConfig, 'brandAccent' | 'brandBg' | 'brandFg'>;
+
 /** Unknown slug → maxina, the useTenant.tsx fallback. */
-export function tenantBrand(slug: string | null | undefined): TenantConfig {
+export function tenantBrand(slug: string | null | undefined): TenantBrand {
   const canonical = canonicalTenantSlug(slug ?? null);
-  return TENANT_CONFIGS[(canonical ?? '') as TenantType] ?? TENANT_CONFIGS.maxina;
+  const config: TenantConfig = (canonical && TENANT_CONFIGS[canonical as TenantType]) || TENANT_CONFIGS.maxina;
+  return { brandAccent: config.brandAccent, brandBg: config.brandBg, brandFg: config.brandFg };
 }
 
 // ── @vitana/core/language (src/contexts/LanguageContext.tsx, locale-presentation.ts, RTLProvider.tsx) ──
@@ -512,22 +547,22 @@ export interface LocalePresentation {
 }
 
 export const LOCALE_PRESENTATION: Record<string, LocalePresentation> = {
-  'de-DE': { flag: 'flags/de.png', endonym: 'Deutsch' },
-  'en-US': { flag: 'flags/gb.png', endonym: 'English' },
-  'es-ES': { flag: 'flags/es.png', endonym: 'Español' },
-  'sr-RS': { flag: 'flags/rs.png', endonym: 'Srpski' },
-  'fr-FR': { flag: 'flags/fr.png', endonym: 'Français' },
-  'pt-BR': { flag: 'flags/pt.png', endonym: 'Português (BR)' },
-  'ru-RU': { flag: 'flags/ru.png', endonym: 'Русский' },
-  'pl-PL': { flag: 'flags/pl.png', endonym: 'Polski' },
-  'ar-XA': { flag: 'flags/sa.png', endonym: 'العربية' },
-  'zh-CN': { flag: 'flags/cn.png', endonym: '简体中文' },
-  'tr-TR': { flag: 'flags/tr.png', endonym: 'Türkçe' },
+  'de-DE': { flag: 'src/assets/flags/de.png', endonym: 'Deutsch' },
+  'en-US': { flag: 'src/assets/flags/gb.png', endonym: 'English' },
+  'es-ES': { flag: 'src/assets/flags/es.png', endonym: 'Español' },
+  'sr-RS': { flag: 'src/assets/flags/rs.png', endonym: 'Srpski' },
+  'fr-FR': { flag: 'src/assets/flags/fr.png', endonym: 'Français' },
+  'pt-BR': { flag: 'src/assets/flags/pt.png', endonym: 'Português (BR)' },
+  'ru-RU': { flag: 'src/assets/flags/ru.png', endonym: 'Русский' },
+  'pl-PL': { flag: 'src/assets/flags/pl.png', endonym: 'Polski' },
+  'ar-XA': { flag: 'src/assets/flags/sa.png', endonym: 'العربية' },
+  'zh-CN': { flag: 'src/assets/flags/cn.png', endonym: '简体中文' },
+  'tr-TR': { flag: 'src/assets/flags/tr.png', endonym: 'Türkçe' },
 };
 
 /** N1 resolves the path through its generated asset map; the stub has no bundled flags. */
-export function flagAsset(_path: string): number | null {
-  return null;
+export function flagAsset(_path: string): number | undefined {
+  return undefined;
 }
 
 export const RTL_BASE_LANGUAGES: ReadonlySet<string> = new Set(['ar', 'he', 'fa', 'ur']);

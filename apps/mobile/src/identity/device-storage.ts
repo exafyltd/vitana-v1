@@ -43,6 +43,19 @@ export const STORAGE_KEYS = {
 /** The shared active-org store (business-mode.ts:118-139 semantics) over AsyncStorage. */
 export const activeOrgStore = createActiveOrgStore(deviceStorage);
 
+let hydrated = false;
+/**
+ * N1's store reads storage synchronously; AsyncStorage is async, so the
+ * persisted org is loaded once here and handed to the store (unless the
+ * member already picked one this session).
+ */
+export async function hydrateActiveOrg(): Promise<void> {
+  if (hydrated) return;
+  hydrated = true;
+  const stored = await deviceStorage.getItem(STORAGE_KEYS.activeOrg);
+  if (stored && activeOrgStore.getSnapshot() === null) activeOrgStore.set(stored);
+}
+
 /**
  * Sign-out cleanup — the native twin of SideDrawerNav.tsx:251-257 and
  * AuthProvider.tsx:14-30: the persisted query cache, the tenant slug and the
