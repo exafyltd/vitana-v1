@@ -5441,7 +5441,9 @@
       "text4NewIdeas": "4 new ideas",
       "executeAllValue0": "Execute All {value0}",
       "noValue0ActionsAvailable": "No {value0}actions available",
-      "playTodaysEpisode": "Play episode {session}"
+      "playTodaysEpisode": "Play episode {session}",
+      "vitanaIndexScoreSubtext": "Index {score} · {message}",
+      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (formerly Twitter)"
@@ -8552,7 +8554,21 @@
       "viewIndex": "View Index",
       "viewJourney": "View My Journey",
       "viewMatch": "View Match",
-      "dismissCard": "Dismiss card"
+      "dismissCard": "Dismiss card",
+      "dailyDiary": "Diary",
+      "talkToVitana": "Talk to Vitana",
+      "autopilot": "Autopilot",
+      "calendar": "Calendar",
+      "uploadMedia": "Media",
+      "discover": "Discover",
+      "profilePhoto": "Profile photo",
+      "profileSetup": "Profile",
+      "socialConnect": "Connect",
+      "importContacts": "Contacts",
+      "completeProfile": "Complete profile",
+      "_pending_review": {
+        "autopilot": true
+      }
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -12134,6 +12150,146 @@
       "startingSoon": "Starting soon",
       "startNow": "Start now",
       "eventsSectionTitle": "Live Rooms"
+    },
+    "vitanaCards": {
+      "stripLabel": "Suggestions from Vitana",
+      "eyebrowProfile": "Your profile",
+      "eyebrowConnect": "Connect",
+      "eyebrowCommunity": "Community",
+      "eyebrowNotifications": "Notifications",
+      "E1": {
+        "title": "Show your face",
+        "description": "Upload a profile photo so others recognise you right away.",
+        "action": "Upload"
+      },
+      "E2": {
+        "title": "Tell others about you",
+        "description": "A few sentences about you help others start a conversation.",
+        "action": "Write bio"
+      },
+      "E3": {
+        "title": "Share your first post",
+        "description": "Say hello to the community – a short thought is enough.",
+        "action": "Post now"
+      },
+      "E4": {
+        "title": "What are you into?",
+        "description": "Pick your interests so Vitana can find people and content that fit you.",
+        "action": "Pick interests"
+      },
+      "E5": {
+        "title": "Where are you based?",
+        "description": "Add your location to discover people and events near you.",
+        "action": "Add location"
+      },
+      "E6": {
+        "title": "Connect Instagram",
+        "description": "Share your moments from Vitana straight to Instagram.",
+        "action": "Connect Instagram"
+      },
+      "E7": {
+        "title": "Connect Facebook",
+        "description": "Stay close to your friends and share in one tap.",
+        "action": "Connect Facebook"
+      },
+      "E8": {
+        "title": "Connect your calendar",
+        "description": "See your appointments and Vitana events in one place.",
+        "action": "Connect"
+      },
+      "E9": {
+        "title": "Import your contacts",
+        "description": "Find friends who are already on Vitana.",
+        "action": "Import"
+      },
+      "E10": {
+        "title": "Don't miss a thing",
+        "description": "Turn on notifications for messages, matches and reminders.",
+        "action": "Turn on"
+      },
+      "E11": {
+        "title": "Add a cover photo",
+        "description": "A cover photo makes your profile feel like you.",
+        "action": "Upload"
+      },
+      "F3": {
+        "eyebrow": "Diary",
+        "title": "How are you today?",
+        "description": "Speak a few sentences into your diary – Vitana is listening.",
+        "action": "Record"
+      },
+      "F4": {
+        "eyebrow": "Ask Vitana",
+        "title": "Got a question?",
+        "description": "Vitana helps you with health, community and more.",
+        "action": "Ask Vitana"
+      },
+      "F5": {
+        "eyebrow": "Matches",
+        "title": "People who match you",
+        "description": "Discover today’s matches.",
+        "action": "See matches",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "F6": {
+        "eyebrow": "Autopilot",
+        "title": "Your Autopilot is ready",
+        "description": "Let Vitana plan your next steps.",
+        "action": "Open",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "F9": {
+        "eyebrow": "Calendar",
+        "title": "Your day at a glance",
+        "description": "Appointments, events and reminders in one place.",
+        "action": "Open calendar"
+      },
+      "F10": {
+        "eyebrow": "Media",
+        "title": "Share a video or music",
+        "description": "Upload your media and inspire the community.",
+        "action": "Create"
+      },
+      "F11": {
+        "eyebrow": "Discover",
+        "title": "Discover something new",
+        "description": "Products, services and offers for your well-being.",
+        "action": "Browse"
+      },
+      "_pending_review": {
+        "eyebrowCommunity": true
+      }
+    },
+    "interests": {
+      "title": "Your interests",
+      "description": "Pick up to {max} topics you love.",
+      "selectedCount": "{count} of {max} selected",
+      "save": "Save",
+      "cancel": "Cancel",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sleep",
+      "mindfulness": "Mindfulness",
+      "longevity": "Longevity",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Running",
+      "strength": "Strength training",
+      "dance": "Dance",
+      "nature": "Nature",
+      "cooking": "Cooking",
+      "social": "Community",
+      "travel": "Travel",
+      "career": "Career",
+      "_pending_review": {
+        "fitness": true,
+        "biohacking": true,
+        "yoga": true
+      }
     }
   }
 }

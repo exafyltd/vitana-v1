@@ -1438,7 +1438,16 @@
       "revokeFailed": "Could not revoke the capability",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "vitanaCards": {
+      "dismissFailed": "Couldn't hide the card",
+      "connectFailed": "Couldn't start connecting",
+      "interestsSaved": "Interests saved",
+      "interestsSaveFailed": "Couldn't save your interests",
+      "notificationsEnabled": "Notifications are on",
+      "notificationsFailed": "Couldn't turn on notifications",
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }

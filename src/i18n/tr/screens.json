@@ -5276,11 +5276,13 @@
       "vitanaIndexUpSubtext": "Harika iş!",
       "vitanaIndexDownSubtext": "Küçük adımlar önemlidir.",
       "vitanaIndexStableSubtext": "Tutarlı kal.",
+      "vitanaIndexScoreSubtext": "Endeks {score} · {message}",
       "longevityJourneyEyebrow": "UZUN YAŞAM SESLİ KİTABIN",
       "longevityJourneyContinue": "Bölüm {session} ile devam et: {topic}",
       "longevityJourneyAllDone": "Tüm bölümleri dinledin. Harika!",
       "longevityJourneyNextStepHeadline": "Bir sonraki adımın:",
       "longevityJourneySubtext": "Bölüm {session} seni bekliyor.",
+      "longevityJourneyProgressSubtext": "Bölüm {session} seni bekliyor · {done} tamamlandı · bugün {today}/{goal}",
       "longevityJourneyStartSession": "Bölüm {session}'i dinle",
       "longevityJourneyDoneLabel": "Tamam",
       "longevityJourneyNowLabel": "Şimdi",
@@ -8682,7 +8684,18 @@
       "viewIndex": "Endeksi Gör",
       "viewJourney": "Yolculuğumu Gör",
       "viewMatch": "Eşleşmeyi Gör",
-      "dismissCard": "Kartı kapat"
+      "dismissCard": "Kartı kapat",
+      "dailyDiary": "Günlük",
+      "talkToVitana": "Vitana'yla konuş",
+      "autopilot": "Otopilot",
+      "calendar": "Takvim",
+      "uploadMedia": "Medya",
+      "discover": "Keşfet",
+      "profilePhoto": "Profil fotoğrafı",
+      "profileSetup": "Profil",
+      "socialConnect": "Bağla",
+      "importContacts": "Kişiler",
+      "completeProfile": "Profili tamamla"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -13466,6 +13479,132 @@
       "startingSoon": "Birazdan başlıyor",
       "startNow": "Şimdi başlat",
       "eventsSectionTitle": "Canlı Odalar"
+    },
+    "vitanaCards": {
+      "stripLabel": "Vitana'dan öneriler",
+      "eyebrowProfile": "Profilin",
+      "eyebrowConnect": "Bağlan",
+      "eyebrowCommunity": "Topluluk",
+      "eyebrowNotifications": "Bildirimler",
+      "E1": {
+        "title": "Yüzünü göster",
+        "description": "Bir profil fotoğrafı yükle, diğerleri seni hemen tanısın.",
+        "action": "Yükle"
+      },
+      "E2": {
+        "title": "Kendinden bahset",
+        "description": "Hakkında birkaç cümle, başkalarının seninle sohbet başlatmasına yardım eder.",
+        "action": "Biyografi yaz"
+      },
+      "E3": {
+        "title": "İlk gönderini paylaş",
+        "description": "Topluluğa merhaba de – kısa bir düşünce yeter.",
+        "action": "Şimdi paylaş"
+      },
+      "E4": {
+        "title": "Seni ne heyecanlandırıyor?",
+        "description": "İlgi alanlarını seç, Vitana sana uygun insanları ve içerikleri bulsun.",
+        "action": "İlgi alanı seç"
+      },
+      "E5": {
+        "title": "Nerede yaşıyorsun?",
+        "description": "Konumunu ekle, yakınındaki insanları ve etkinlikleri keşfet.",
+        "action": "Konum ekle"
+      },
+      "E6": {
+        "title": "Instagram'ı bağla",
+        "description": "Vitana'daki anlarını doğrudan Instagram'da paylaş.",
+        "action": "Instagram'ı bağla"
+      },
+      "E7": {
+        "title": "Facebook'u bağla",
+        "description": "Arkadaşlarınla bağlantıda kal, tek dokunuşla paylaş.",
+        "action": "Facebook'u bağla"
+      },
+      "E8": {
+        "title": "Takvimini bağla",
+        "description": "Randevularını ve Vitana etkinliklerini tek yerde gör.",
+        "action": "Bağla"
+      },
+      "E9": {
+        "title": "Kişilerini içe aktar",
+        "description": "Zaten Vitana'da olan arkadaşlarını bul.",
+        "action": "İçe aktar"
+      },
+      "E10": {
+        "title": "Hiçbir şeyi kaçırma",
+        "description": "Mesajlar, eşleşmeler ve hatırlatıcılar için bildirimleri aç.",
+        "action": "Aç"
+      },
+      "E11": {
+        "title": "Kapak fotoğrafı ekle",
+        "description": "Kapak fotoğrafı profilini daha kişisel yapar.",
+        "action": "Yükle"
+      },
+      "F3": {
+        "eyebrow": "Günlük",
+        "title": "Bugün nasılsın?",
+        "description": "Günlüğüne birkaç cümle söyle – Vitana dinliyor.",
+        "action": "Kaydet"
+      },
+      "F4": {
+        "eyebrow": "Vitana'ya sor",
+        "title": "Bir sorun mu var?",
+        "description": "Vitana sağlık, topluluk ve daha fazlası konusunda sana yardım eder.",
+        "action": "Vitana'ya sor"
+      },
+      "F5": {
+        "eyebrow": "Eşleşmeler",
+        "title": "Sana uygun insanlar",
+        "description": "Bugünkü eşleşmelerini keşfet.",
+        "action": "Eşleşmeleri gör"
+      },
+      "F6": {
+        "eyebrow": "Otopilot",
+        "title": "Otopilotun hazır",
+        "description": "Sonraki adımlarını Vitana planlasın.",
+        "action": "Aç"
+      },
+      "F9": {
+        "eyebrow": "Takvim",
+        "title": "Günün bir bakışta",
+        "description": "Randevular, etkinlikler ve hatırlatıcılar tek yerde.",
+        "action": "Takvimi aç"
+      },
+      "F10": {
+        "eyebrow": "Medya",
+        "title": "Bir video ya da müzik paylaş",
+        "description": "Medyanı yükle ve topluluğa ilham ver.",
+        "action": "Oluştur"
+      },
+      "F11": {
+        "eyebrow": "Keşfet",
+        "title": "Yeni bir şey keşfet",
+        "description": "İyi oluşun için ürünler, hizmetler ve fırsatlar.",
+        "action": "Göz at"
+      }
+    },
+    "interests": {
+      "title": "İlgi alanların",
+      "description": "Sevdiğin en fazla {max} konu seç.",
+      "selectedCount": "{max} içinden {count} seçildi",
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "fitness": "Fitness",
+      "nutrition": "Beslenme",
+      "sleep": "Uyku",
+      "mindfulness": "Farkındalık",
+      "longevity": "Uzun yaşam",
+      "biohacking": "Biyohacking",
+      "yoga": "Yoga",
+      "running": "Koşu",
+      "strength": "Kuvvet antrenmanı",
+      "dance": "Dans",
+      "nature": "Doğa",
+      "cooking": "Yemek yapmak",
+      "social": "Topluluk",
+      "travel": "Seyahat",
+      "career": "Kariyer"
     }
   }
 }
