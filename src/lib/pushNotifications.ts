@@ -207,8 +207,10 @@ class PushNotificationManager {
             icon: payload.icon || '/favicon.ico',
             badge: payload.badge,
             tag: payload.tag,
+            // A replaced chat card still alerts (VTID-05137).
+            renotify: typeof payload.tag === 'string' && payload.tag.startsWith('chat:'),
             data: payload.data,
-          });
+          } as NotificationOptions);
           return;
         } else {
           new Notification(payload.title, {
@@ -345,11 +347,16 @@ class PushNotificationManager {
 
       // Extract sender name from data payload for better notification titles
       const senderName = data.sender_name || data.senderName || data.sender || data.from_name || data.fromName;
-      const title = senderName || notif.title || data.title || 'Vitana';
+      // VTID-05137: a group push is titled by the group (the body already
+      // starts with the sender), like WhatsApp.
+      const title = (data.group_id ? notif.title : null) || senderName || notif.title || data.title || 'Vitana';
       const body = notif.body || data.body || data.message || '';
 
-      // Stable tag for deduplication
+      // VTID-05137: chat pushes share one tag per conversation ("chat:<key>")
+      // so a new message replaces the conversation's card.
+      const isChatTag = typeof data.tag === 'string' && data.tag.startsWith('chat:');
       const tag =
+        (isChatTag ? data.tag : null) ||
         data.message_id ||
         data.messageId ||
         (data.thread_id ? `thread-${data.thread_id}` : null) ||
@@ -357,9 +364,12 @@ class PushNotificationManager {
         data.tag ||
         'fg-' + Date.now();
 
-      if (shownTags.has(tag)) return;
-      shownTags.add(tag);
-      setTimeout(() => shownTags.delete(tag), 5000);
+      // Same push delivered twice → show once; keyed on the message so two
+      // messages of one conversation are never mistaken for a duplicate.
+      const dedupeKey = data.message_id || data.messageId || tag;
+      if (shownTags.has(dedupeKey)) return;
+      shownTags.add(dedupeKey);
+      setTimeout(() => shownTags.delete(dedupeKey), 5000);
 
       if (title) {
         this.showLocalNotification({ title, body, data, tag });
