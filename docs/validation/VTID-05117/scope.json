@@ -117,9 +117,16 @@
     "src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx",
     "src/pages/vtid-05117-leftovers-2.test.tsx",
     "tests/e2e/staging/vtid-05117-leftovers-2.staging.spec.ts",
-    "src/pages/PostDetail.mentions.vtid-04926.test.tsx"
+    "src/pages/PostDetail.mentions.vtid-04926.test.tsx",
+    "src/pages/portals/TenantPortal.tsx",
+    "src/pages/portals/TenantPortal.test.tsx"
   ],
   "sparring_record": "docs/plans/desktop-spotlight/plan-sparring.md",
-  "weakens_tests": [],
+  "weakens_tests": [
+    {
+      "file": "tests/e2e/staging/vtid-05117-leftovers-2.staging.spec.ts",
+      "reason": "the /e/game/:slug public guest landing (AuthGuard allowGuest) has never had the app shell; its sidebar check is replaced by an exact \"no sidebar\" assertion \u2014 every other route keeps the full chrome check"
+    }
+  ],
   "red_green_exempt": []
 }
