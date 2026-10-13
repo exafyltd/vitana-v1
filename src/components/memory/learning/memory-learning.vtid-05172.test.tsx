@@ -216,7 +216,9 @@ describe("VTID-05172 source contract", () => {
   });
   it("German and English carry the same keys; German is du-form", () => {
     const flat = (o: Record<string, unknown>, pre = ""): string[] =>
-      Object.entries(o).flatMap(([k, v]) => (v && typeof v === "object" ? flat(v as Record<string, unknown>, `${pre}${k}.`) : [`${pre}${k}`]));
+      Object.entries(o)
+        .filter(([k]) => !k.startsWith("_")) // `_pending_review`: the i18n bot's review metadata
+        .flatMap(([k, v]) => (v && typeof v === "object" ? flat(v as Record<string, unknown>, `${pre}${k}.`) : [`${pre}${k}`]));
     const de = JSON.parse(read("i18n/de/memoryLearning.json")).memoryLearning;
     const en = JSON.parse(read("i18n/en/memoryLearning.json")).memoryLearning;
     expect(flat(en).sort()).toEqual(flat(de).sort());
