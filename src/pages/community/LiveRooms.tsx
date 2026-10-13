@@ -54,6 +54,13 @@ import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
 import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
+// VTID-05110: desktop Spotlight (flag `desktop_spotlight`; off → unchanged render).
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { LiveRoomsRail, LiveRoomsStage } from "@/components/community/spotlight/LiveRoomsSpotlight";
+import { pickRailRooms } from "@/components/community/spotlight/listHelpers";
+import { SocialEmpty, StageListSkeleton } from "@/components/community/spotlight/SocialStates";
+import { fmtNumber } from "@/lib/locale-format";
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -63,6 +70,8 @@ export default function LiveRooms() {
   const myRoomQuery = useMyRoom();
   const myRoom = myRoomQuery.data?.room;
   const isMobile = useIsMobile();
+  // VTID-05110: never true on phones (< 1024 px), so mobile is unaffected.
+  const spotlight = useSpotlightEnabled();
   const { translate } = useTranslation();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -624,8 +633,107 @@ export default function LiveRooms() {
     return rows;
   };
 
+  // VTID-05110 — desktop Spotlight: same data and handlers; the drawer and the
+  // dialogs below are shared with the legacy render.
+  let spotlightContent: React.ReactNode = null;
+  if (spotlight) {
+    const tabRooms = activeTab === 'live' ? filteredLiveRooms : activeTab === 'scheduled' ? filteredScheduledRooms : filteredAllRooms;
+    const tabLoading = activeTab === 'live' ? isLoadingLive : activeTab === 'scheduled' ? isLoadingScheduled : isLoadingLive || isLoadingScheduled;
+    const heroId = activeTab === 'past' ? undefined : tabRooms[0]?.id;
+    const { liveItems, nextItems } = pickRailRooms(
+      activeTab === 'live' ? [] : liveRooms,
+      activeTab === 'scheduled' ? [] : scheduledRooms,
+      heroId,
+    );
+    const roomActions = {
+      onOpen: handleCardClick,
+      onJoin: handleJoinRoom,
+      onNotify: handleNotifyClick,
+      canEnter,
+      notifying: notifyingRooms,
+    };
+    const tabLabel = (key: string, count?: number) => (
+      <>
+        {t(key)}
+        {count ? <span className="ms-1.5 text-xs text-muted-foreground">{fmtNumber(count)}</span> : null}
+      </>
+    );
+    spotlightContent = (
+      <>
+        <SEO title={t('screens.community.liveRoomsCommunity')} description={t('screens.liveRoom.listSeoDescription')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="focus-feed"
+          subNav={{ items: communityNavigation }}
+          header={{ title: t('spotlightSocial.liveRooms.title'), description: t('spotlightSocial.liveRooms.description'), emoji: '🎙️' }}
+          utility={{
+            children: (
+              <div className="flex min-w-max items-center gap-2">
+                <ExpandableSearchButton placeholder={t('spotlightSocial.liveRooms.search')} onSearch={(query) => setSearchQuery(query)} />
+                <UniversalCalendarButton />
+                <Button size="sm" className="shrink-0 gap-1.5 rounded-full" onClick={() => setIsGoLiveOpen(true)}>
+                  <Plus className="h-4 w-4" />
+                  {t('spotlightSocial.liveRooms.goLive')}
+                </Button>
+              </div>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            ariaLabel: t('spotlightSocial.liveRooms.tabsLabel'),
+            items: [
+              { value: 'all', label: tabLabel('spotlightSocial.liveRooms.tabs.all', filteredAllRooms.length) },
+              { value: 'live', label: tabLabel('spotlightSocial.liveRooms.tabs.live', filteredLiveRooms.length) },
+              { value: 'scheduled', label: tabLabel('spotlightSocial.liveRooms.tabs.scheduled', filteredScheduledRooms.length) },
+              { value: 'past', label: tabLabel('spotlightSocial.liveRooms.tabs.past') },
+            ],
+          }}
+          rail={liveItems.length > 0 || nextItems.length > 0 ? <LiveRoomsRail liveItems={liveItems} nextItems={nextItems} onOpen={handleCardClick} /> : undefined}
+        >
+          {activeTab === 'past' ? (
+            isLoadingEnded ? (
+              <StageListSkeleton />
+            ) : endedStreams.length === 0 ? (
+              <SocialEmpty spec={{ titleKey: 'spotlightSocial.liveRooms.emptyPastTitle', descriptionKey: 'spotlightSocial.liveRooms.emptyPastDesc' }} />
+            ) : (
+              <div className="flex flex-col gap-4">
+                {endedStreams.map((stream) => {
+                  const profile = profilesMap[stream.created_by];
+                  const isYou = user?.id === stream.created_by;
+                  return (
+                    <PastRoomCard
+                      key={stream.id}
+                      stream={stream}
+                      hostName={profile?.display_name || (isYou ? t('screens.liverooms.you') : t('screens.liverooms.anonymousHost'))}
+                      hostAvatar={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`}
+                      isHost={isYou}
+                      onDelete={handleDeletePastRoom}
+                    />
+                  );
+                })}
+              </div>
+            )
+          ) : (
+            <LiveRoomsStage
+              rooms={tabRooms}
+              loading={tabLoading}
+              actions={roomActions}
+              empty={{
+                titleKey: 'spotlightSocial.liveRooms.emptyTitle',
+                descriptionKey: 'spotlightSocial.liveRooms.emptyDesc',
+                actionKey: 'spotlightSocial.liveRooms.goLive',
+                onAction: () => setIsGoLiveOpen(true),
+              }}
+            />
+          )}
+        </ScreenFrame>
+      </>
+    );
+  }
+
   return (
     <AppLayout>
+      {spotlightContent ?? (<>
       <SEO
         title={t('screens.community.liveRoomsCommunity')}
         description={t('screens.liveRoom.listSeoDescription')}
@@ -938,6 +1046,7 @@ export default function LiveRooms() {
           </SplitBarContent>
         </SplitBar>
       </div>
+      </>)}
 
       <GoLivePopup
         open={isGoLiveOpen}

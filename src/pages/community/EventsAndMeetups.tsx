@@ -52,6 +52,11 @@ import {
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 import { profilePath } from '@/lib/profile-path';
+// VTID-05110: desktop Spotlight (flag `desktop_spotlight`; off → unchanged render).
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { EventsSpotlightBody } from '@/components/community/spotlight/EventsSpotlightBody';
+import type { EmptySpec } from '@/components/community/spotlight/SocialStates';
 
 // Interaction-only surfaces (create/edit/share/promote dialogs) are code-split
 // out of the route chunk: they only matter after a user action, yet statically
@@ -433,7 +438,9 @@ const EventsAndMeetups = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   // Use the mobile hook
   const isMobile = useIsMobile();
-  
+  // VTID-05110: never true on phones (< 1024 px), so mobile is unaffected.
+  const spotlight = useSpotlightEnabled();
+
   // Mobile defaults to "upcoming" since Today is often empty
   const initialTab = searchParams.get('tab') || 'hot';
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -884,15 +891,73 @@ const EventsAndMeetups = () => {
     type: 'event' as const,
   } : null;
 
+  // VTID-05110 — desktop Spotlight: same data, handlers, drawers and dialogs;
+  // only the in-screen chrome and the list render differently.
+  const spotlightLoading = activeTab === 'following'
+    ? followingLoading || (loading && followingIds.length > 0 && followedEvents.length === 0)
+    : loading;
+  const spotlightEmpty: EmptySpec = activeTab === 'following'
+    ? (!isAuthenticated || followingIds.length === 0
+        ? { Icon: Users, titleKey: 'spotlightSocial.events.emptyFollowingTitle', descriptionKey: 'spotlightSocial.events.emptyFollowingDesc', actionKey: 'spotlightSocial.events.findPeople', onAction: () => navigate('/comm/members') }
+        : { Icon: Users, titleKey: 'spotlightSocial.events.emptyFollowedEventsTitle', descriptionKey: 'spotlightSocial.events.emptyFollowedEventsDesc', actionKey: 'spotlightSocial.events.findPeople', onAction: () => navigate('/comm/members') })
+    : { Icon: CalendarIcon, titleKey: 'spotlightSocial.events.emptyTitle', descriptionKey: 'spotlightSocial.events.emptyDesc', actionKey: 'spotlightSocial.events.create', onAction: () => setCreateSelectionOpen(true) };
+  const spotlightBody = spotlight ? (
+    <AppLayout>
+      <ScreenFrame
+        archetype="collection"
+        subNav={{ items: communityNavigation }}
+        header={{ title: t('spotlightSocial.events.title'), description: t('spotlightSocial.events.description'), emoji: '📅' }}
+        utility={{
+          children: (
+            <div className="flex min-w-max items-center gap-1.5">
+              <ExpandableSearchButton
+                placeholder={t('spotlightSocial.events.search')}
+                onSearch={(query) => setSearchQuery(query)}
+                dropdownItems={searchDropdownItems}
+                onItemClick={handleSearchItemClick}
+              />
+              <UniversalCalendarButton />
+              <Button size="sm" className="shrink-0 gap-1.5 rounded-full" onClick={() => setCreateSelectionOpen(true)}>
+                <Plus className="h-4 w-4" />
+                {t('spotlightSocial.events.create')}
+              </Button>
+            </div>
+          ),
+        }}
+        tabs={{
+          value: activeTab,
+          onValueChange: setActiveTab,
+          ariaLabel: t('spotlightSocial.events.tabsLabel'),
+          items: [
+            { value: 'hot', label: t('spotlightSocial.events.tabs.hot') },
+            { value: 'upcoming', label: t('spotlightSocial.events.tabs.upcoming') },
+            { value: 'today', label: t('spotlightSocial.events.tabs.today') },
+            { value: 'following', label: t('spotlightSocial.events.tabs.following') },
+          ],
+        }}
+      >
+        <EventsSpotlightBody
+          events={currentEvents}
+          loading={spotlightLoading}
+          liveNow={dbEvents.filter((e) => isLiveRoomEvent(e) && e.metadata?.is_live === true)}
+          followed={activeTab === 'following' ? followedProfiles : []}
+          onOpen={handleCardClick}
+          empty={spotlightEmpty}
+        />
+      </ScreenFrame>
+    </AppLayout>
+  ) : null;
+
   return (
     <>
-      <SEO 
+      <SEO
         title={eventSEO ? eventSEO.title : "Events & MeetUps"}
         description={eventSEO ? eventSEO.description : "Discover and join community events and casual meetups"}
         image={eventSEO?.image}
         url={eventSEO?.url}
         type={eventSEO?.type || 'website'}
       />
+      {spotlightBody ?? (
       <AppLayout>
         {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
         {!isMobile && <SubNavigation items={communityNavigation} />}
@@ -1309,6 +1374,7 @@ const EventsAndMeetups = () => {
             </SplitBar>
         </div>
       </AppLayout>
+      )}
 
       {/* Create Selection Dialog */}
       <Suspense fallback={null}>
