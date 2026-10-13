@@ -165,13 +165,19 @@ describe('VTID-05049 queue-campaign-recipients is service-role only', () => {
     expect(src).toMatch(/const messageContent = campaign\.distribution_config\?\.messageContent/);
   });
 
+  // VTID-05120 moved the recipient queries into _shared/campaign-audience.ts
+  // (scoped to ownerId = campaign.user_id) and replaced the embedded
+  // `profiles.tenant_id` filter, which only nulled the embed, with a real
+  // `profiles.tenant_id` row filter.
   it('scopes every recipient query to the campaign owner or the owner\'s tenant', () => {
+    const audience = readFileSync(join(FUNCTIONS, '_shared', 'campaign-audience.ts'), 'utf8');
     expect(src).toMatch(/\.from\('user_tenants'\)[\s\S]*?\.eq\('user_id', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('contacts'\)\s*\.select\('\*'\)\s*\.eq\('user_id', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('campaign_audience_segments'\)[\s\S]*?\.eq\('user_id', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('global_community_events'\)[\s\S]*?\.eq\('created_by', campaign\.user_id\)/);
-    expect(src).toMatch(/\.from\('profiles'\)[\s\S]*?\.eq\('tenant_id', tenantId\)/);
-    expect((src.match(/\.eq\('profiles\.tenant_id', tenantId\)/g) || []).length).toBe(2);
+    expect(src).toMatch(/resolveCampaignAudience\(supabaseClient, \{\s*ownerId: campaign\.user_id,\s*tenantId,/);
+    expect(audience).toMatch(/\.from\('contacts'\)\s*\.select\([^)]*\)\s*\.eq\('user_id', ownerId\)/);
+    expect(audience).toMatch(/\.from\('campaign_audience_segments'\)[\s\S]*?\.eq\('user_id', ownerId\)/);
+    expect(audience).toMatch(/\.from\('global_community_events'\)[\s\S]*?\.eq\('created_by', ownerId\)/);
+    expect(audience).toMatch(/\.from\('profiles'\)[\s\S]*?\.eq\('tenant_id', tenantId\)/);
+    expect(src + audience).not.toMatch(/\.eq\('profiles\.tenant_id'/);
   });
 });
 

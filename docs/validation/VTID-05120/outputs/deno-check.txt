@@ -1,0 +1,24 @@
+== deno check supabase/functions/_shared/campaign-audience.ts
+exit 0
+== deno check supabase/functions/queue-campaign-recipients/index.ts
+exit 0
+== deno check supabase/functions/process-campaign-queue/index.ts
+exit 0
+== deno check supabase/functions/trigger-scheduled-campaigns/index.ts
+Check file://<worktree>/supabase/functions/trigger-scheduled-campaigns/index.ts
+TS18046 [ERROR]: 'error' is of type 'unknown'.
+          error: error.message,
+                 ~~~~~
+    at file://<worktree>/supabase/functions/trigger-scheduled-campaigns/index.ts:116:18
+
+TS18046 [ERROR]: 'error' is of type 'unknown'.
+        error: error.message
+               ~~~~~
+    at file://<worktree>/supabase/functions/trigger-scheduled-campaigns/index.ts:137:16
+
+Found 2 errors.
+
+error: Type checking failed.
+
+exit 1
+== origin/main trigger-scheduled-campaigns: the same 2 TS18046 errors (pre-existing, lines 116/137 'error' is of type unknown)
