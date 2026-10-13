@@ -1389,12 +1389,20 @@
       "revokeFailed": "تعذر إلغاء الصلاحية"
     },
     "vitanaCards": {
-      "dismissFailed": "تعذّر إخفاء البطاقة",
-      "connectFailed": "تعذّر بدء الربط",
-      "interestsSaved": "تم حفظ اهتماماتك",
-      "interestsSaveFailed": "تعذّر حفظ اهتماماتك",
-      "notificationsEnabled": "الإشعارات مفعّلة",
-      "notificationsFailed": "تعذّر تفعيل الإشعارات"
+      "_pending_review": {
+        "dismissFailed": true,
+        "connectFailed": true,
+        "interestsSaved": true,
+        "interestsSaveFailed": true,
+        "notificationsEnabled": true,
+        "notificationsFailed": true
+      },
+      "dismissFailed": "Couldn't hide the card",
+      "connectFailed": "Couldn't start connecting",
+      "interestsSaved": "Interests saved",
+      "interestsSaveFailed": "Couldn't save your interests",
+      "notificationsEnabled": "Notifications are on",
+      "notificationsFailed": "Couldn't turn on notifications"
     }
   }
 }

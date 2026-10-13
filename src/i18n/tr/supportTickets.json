@@ -15,8 +15,7 @@
       "account_issue": "Hesap sorunu",
       "marketplace_claim": "Sipariş veya ödeme",
       "feature_request": "Özellik isteği",
-      "other": "Diğer",
-      "_pending_review": {}
+      "other": "Diğer"
     },
     "kindHint": {
       "feedback": "Fikirler, düşünceler, diğer her şey",
@@ -25,8 +24,7 @@
       "support_question": "Vitana'yı kullanma hakkında soru",
       "account_issue": "Giriş, profil, veriler",
       "marketplace_claim": "İadeler, pazar yeri",
-      "feature_request": "Olmasını istediğin bir şey",
-      "_pending_review": {}
+      "feature_request": "Olmasını istediğin bir şey"
     },
     "status": {
       "received": "Alındı",
@@ -34,8 +32,7 @@
       "in_progress": "Düzeltiliyor",
       "fixed": "Çözüldü",
       "wont_fix": "Yapılmayacak",
-      "duplicate": "Mükerrer",
-      "_pending_review": {}
+      "duplicate": "Mükerrer"
     },
     "timelineLabel": "İlerleme",
     "reportedOn": "Bildirim tarihi: {date}",
@@ -52,8 +49,7 @@
       "low": "Düşük",
       "medium": "Orta",
       "high": "Yüksek",
-      "critical": "Kritik",
-      "_pending_review": {}
+      "critical": "Kritik"
     },
     "submittedTitle": "Teşekkürler – talebin oluşturuldu",
     "submittedNumber": "Talep numaran: {number}",
@@ -65,8 +61,7 @@
       "seoDescription": "Hataları bildir, soru sor veya geri bildirim paylaş. Vitana ve meslektaşları sana dönüş yapacak.",
       "headerDescription": "Hatalar, sorular, geri bildirim – konu Vitana'nın alanı dışındaysa bir uzman meslektaşa devreder.",
       "send": "Vitana'ya gönder",
-      "sending": "Gönderiliyor …",
-      "_pending_review": {}
+      "sending": "Gönderiliyor …"
     },
     "support": {
       "seoTitle": "Müşteri desteği",
@@ -87,12 +82,10 @@
       "voiceBody": "Vitana'ya neler olduğunu anlatman yeterli. Talebi senin için oluşturur ve talep numarasını söyler.",
       "voiceButton": "Sesle bildir",
       "emailTitle": "E-posta",
-      "emailBody": "Bize doğrudan da yazabilirsin.",
-      "_pending_review": {}
+      "emailBody": "Bize doğrudan da yazabilirsin."
     },
     "diary": {
-      "title": "Bildirimlerim",
-      "_pending_review": {}
+      "title": "Bildirimlerim"
     },
     "admin": {
       "copyVtid": "VTID'yi kopyala",
@@ -103,8 +96,7 @@
         "marketplace_claim": "Pazar yeri talebi",
         "account_issue": "Hesap sorunu",
         "feedback": "Geri bildirim (taslak yok)",
-        "feature_request": "Özellik isteği",
-        "_pending_review": {}
+        "feature_request": "Özellik isteği"
       },
       "kindDesc": {
         "bug": "Kod hatası — Devon spesifikasyonu → Dev Autopilot üzerinden ilerler",
@@ -113,8 +105,7 @@
         "marketplace_claim": "İade / anlaşmazlık — Atlas çözüm taslağı hazırlar",
         "account_issue": "Giriş / rol / veri — Mira çözüm taslağı hazırlar",
         "feedback": "Görüş / olsa iyi olur — doğrudan devam ediyor durumuna",
-        "feature_request": "Yeni yetenek — doğrudan devam ediyor durumuna",
-        "_pending_review": {}
+        "feature_request": "Yeni yetenek — doğrudan devam ediyor durumuna"
       },
       "status": {
         "new": "Gönderildi",
@@ -132,8 +123,7 @@
         "rejected": "Reddedildi",
         "wont_fix": "Düzeltilmeyecek",
         "needs_more_info": "Bilgi gerekli",
-        "reopened": "Yeniden açıldı",
-        "_pending_review": {}
+        "reopened": "Yeniden açıldı"
       },
       "stage": {
         "cooling": "Sırada",
@@ -156,37 +146,32 @@
         "verifying": "dağıtım sonrası doğrulamada",
         "plan_gen": "plan oluşturulurken",
         "approve_safety": "güvenlik kapısında",
-        "other": "{stage} aşamasında",
-        "_pending_review": {}
+        "other": "{stage} aşamasında"
       },
       "run": {
         "failed": "Çalıştırma başarısız oldu",
         "failedWhere": "Çalıştırma {where} başarısız oldu",
         "completed": "Tamamlandı — canlıya dağıtıldı",
-        "running": "Dev Autopilot'ta çalışıyor — {stage}",
-        "_pending_review": {}
+        "running": "Dev Autopilot'ta çalışıyor — {stage}"
       },
       "generate": {
         "devon": "Spesifikasyon oluştur (Devon)",
         "sage": "Yanıt oluştur (Sage)",
         "atlas": "Çözüm oluştur (Atlas)",
-        "mira": "Çözüm oluştur (Mira)",
-        "_pending_review": {}
+        "mira": "Çözüm oluştur (Mira)"
       },
       "draftNoun": {
         "spec_md": "spesifikasyon",
         "draft_answer_md": "yanıt taslağı",
         "resolution_md": "çözüm",
-        "none": "iş öğesi",
-        "_pending_review": {}
+        "none": "iş öğesi"
       },
       "placeholder": {
         "devon": "örn. Asıl hata SSE yeniden bağlanma mantığında; kullanıcı belirtiyi görüyor ama kök neden orb-live.ts içinde. Yalnızca yeniden bağlanma kısmına dokun. Tek ifade durumu için bir birim testi ekle.",
         "sage": "örn. Yanıt, eski anahtarı değil /settings'teki yeni beta katılım akışını anmalı.",
         "atlas": "örn. Bu talep dolandırıcılık sınırında — uygunluk kontrolüyle başla ve operatör incelemesine kadar her iadeyi beklet.",
         "mira": "örn. Önce kullanıcının e-postasını doğrula; rol bozulması büyük olasılıkla bir DB sorunu değil, eskimiş bir OAuth claim'i.",
-        "default": "İş öğesi için yönlendirmen.",
-        "_pending_review": {}
+        "default": "İş öğesi için yönlendirmen."
       },
       "action": {
         "generate": "Oluştur",
@@ -203,8 +188,7 @@
         "rollbackConfirm": "{pr} geri alınsın ve {ticket} yeniden açılsın mı?\n\nBir geri alma PR'ı oluşturulup otomatik olarak birleştirilecek. Bu, canlı ortama bir geri alma dağıtır.",
         "working": "İşleniyor — lütfen bekle",
         "close": "Kapat",
-        "rejectPrompt": "{ticket} için ret nedeni? (isteğe bağlı)",
-        "_pending_review": {}
+        "rejectPrompt": "{ticket} için ret nedeni? (isteğe bağlı)"
       },
       "toast": {
         "reclassifiedTitle": "{ticket} yeniden sınıflandırıldı",
@@ -225,10 +209,8 @@
       "error": {
         "alreadyDispatched": "Bu talep zaten Dev Autopilot'ta çalışıyor. Gönderildikten sonra yeniden sınıflandırma kilitlenir.",
         "draftRequired": "Önce bir taslak oluştur — talimatlarını yaz ve Oluştur'a tıkla.",
-        "alreadyInProgress": "Bu talep zaten çalışıyor. Otopilot bitince kapatacak.",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "alreadyInProgress": "Bu talep zaten çalışıyor. Otopilot bitince kapatacak."
+      }
     },
     "adminList": {
       "approveAllConfirm": "{customer} kaynaklı işlem yapılabilir {count} talebin tümü onaylansın mı?",
@@ -249,10 +231,7 @@
       "toggleOn": "{name} öğesini aç",
       "toggleOff": "{name} öğesini kapat",
       "seoDescription": "Kiracı geri bildirim talepleri ve yapay zekâ uzman ekibi",
-      "pageDescription": "Üyelerinin Vitana'ya gönderdiği talepler. Yapay zekâ uzmanları bunları ele alır — herhangi bir işlem uygulanmadan önce insanlar onaylar.",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "pageDescription": "Üyelerinin Vitana'ya gönderdiği talepler. Yapay zekâ uzmanları bunları ele alır — herhangi bir işlem uygulanmadan önce insanlar onaylar."
+    }
+  }
 }

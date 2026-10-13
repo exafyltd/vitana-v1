@@ -12491,27 +12491,6 @@
         "title": "Descubre algo nuevo",
         "description": "Productos, servicios y ofertas para tu bienestar.",
         "action": "Explorar"
-      },
-      "G1": {
-        "eyebrow": "Tu perfil",
-        "title": "Completa tu perfil",
-        "description": "Un perfil completo te trae matches más afines.",
-        "action": "Seguir configurando",
-        "metric": "{value} completado · {message}"
-      },
-      "G2": {
-        "eyebrow": "Matches",
-        "title": "Tienes nuevos matches",
-        "description": "Mira quién encaja contigo.",
-        "action": "Ver quién hizo match",
-        "metric": "Matches nuevos: {count} · {message}"
-      },
-      "G3": {
-        "eyebrow": "Diario",
-        "title": "Tu racha está en riesgo",
-        "description": "Ayer no registraste nada: mantén viva tu racha hoy.",
-        "action": "Registrar hoy",
-        "metric": "Racha: {count} días · {message}"
       }
     },
     "interests": {

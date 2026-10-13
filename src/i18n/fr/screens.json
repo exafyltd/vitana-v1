@@ -13603,27 +13603,6 @@
       },
       "_pending_review": {
         "eyebrowNotifications": true
-      },
-      "G1": {
-        "eyebrow": "Ton profil",
-        "title": "Complète ton profil",
-        "description": "Un profil complet t’apporte des matchs plus justes.",
-        "action": "Continuer",
-        "metric": "{value} fait · {message}"
-      },
-      "G2": {
-        "eyebrow": "Matchs",
-        "title": "Tu as de nouveaux matchs",
-        "description": "Découvre qui te correspond.",
-        "action": "Voir mes matchs",
-        "metric": "Nouveaux matchs : {count} · {message}"
-      },
-      "G3": {
-        "eyebrow": "Journal",
-        "title": "Ta série est en danger",
-        "description": "Hier, tu n’as rien noté – garde ta série en vie aujourd’hui.",
-        "action": "Noter aujourd’hui",
-        "metric": "Série : {count} jours · {message}"
       }
     },
     "interests": {
