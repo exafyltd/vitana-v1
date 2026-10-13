@@ -1,0 +1,14 @@
+# VTID-05186 — sign-up lands on the check-email screen; confirming the link lands in /onboarding/welcome. G1 only (writes a G1 user).
+appId: com.exafy.maxina.dev
+---
+- launchApp: { clearState: true }
+- tapOn: { id: portal-tab-signup }
+- tapOn: { id: portal-full-name }
+- inputText: ${G1_SIGNUP_NAME}
+- tapOn: { id: portal-email }
+- inputText: ${G1_SIGNUP_EMAIL}
+- tapOn: { id: portal-password }
+- inputText: ${G1_SIGNUP_PASSWORD}
+- tapOn: { id: portal-submit }
+- assertVisible: { id: portal-check-email }
+- takeScreenshot: sign-up-check-email

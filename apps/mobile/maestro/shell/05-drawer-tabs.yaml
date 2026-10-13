@@ -1,0 +1,21 @@
+# VTID-05186 — drawer via kebab and edge swipe; every community tab. G1 only.
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- extendedWaitUntil: { visible: { id: bottom-nav }, timeout: 20000 }
+- tapOn: { id: top-bar-menu }
+- assertVisible: { id: side-drawer }
+- takeScreenshot: drawer-kebab
+- tapOn: { id: drawer-close }
+- swipe: { start: "2%, 50%", end: "60%, 50%" }
+- assertVisible: { id: side-drawer }
+- takeScreenshot: drawer-swipe
+- tapOn: { id: drawer-close }
+- tapOn: { id: bottom-nav-news }
+- takeScreenshot: tab-news
+- tapOn: { id: bottom-nav-inbox }
+- takeScreenshot: tab-inbox
+- tapOn: { id: bottom-nav-journey }
+- takeScreenshot: tab-journey
+- tapOn: { id: bottom-nav-events }
+- takeScreenshot: tab-events

@@ -1,0 +1,13 @@
+# VTID-05186 — Maxina vs Alkalma member: top bar name and accent; watch for a Maxina flash on an Alkalma sign-in (plan F4). G1 only.
+appId: com.exafy.maxina.dev
+---
+- launchApp: { clearState: true }
+- openLink: maxina://alkalma
+- tapOn: { id: portal-email }
+- inputText: ${G1_ALKALMA_EMAIL}
+- tapOn: { id: portal-password }
+- inputText: ${G1_ALKALMA_PASSWORD}
+- tapOn: { id: portal-submit }
+- extendedWaitUntil: { visible: { id: top-app-bar }, timeout: 20000 }
+- assertVisible: { text: "ALKALMA" }
+- takeScreenshot: alkalma-shell
