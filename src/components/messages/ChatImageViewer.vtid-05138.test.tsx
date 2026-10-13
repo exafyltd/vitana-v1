@@ -158,7 +158,8 @@ describe('copying a picture (VTID-05138)', () => {
       constructor(public items: Record<string, Promise<Blob>>) {}
     }
     (globalThis as { ClipboardItem?: unknown }).ClipboardItem = FakeClipboardItem;
-    vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['x'], { type: 'image/png' }))));
+    // jsdom's Response cannot wrap a jsdom Blob; fetchImageBlob only needs ok + blob().
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, status: 200, blob: async () => new Blob(['x'], { type: 'image/png' }) })));
 
     const result = await actual.copyImageAndNotify('https://img.example/1.png');
     expect(result).toBe('copied');

@@ -20,6 +20,7 @@ const h = vi.hoisted(() => ({
 }));
 
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'me' } }) }));
+vi.mock('@/hooks/useTranslation', () => ({ useTranslation: () => ({ translate: (k: string) => k, t: (k: string) => k }) }));
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => true }));
 vi.mock('@/hooks/useMessageReactions', () => ({
   useMessageReactions: () => ({ reactionSummary: [], addReaction: vi.fn(), removeReaction: vi.fn() }),

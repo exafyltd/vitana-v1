@@ -47,16 +47,27 @@ function attachmentsOf(message: MessageLike): ChatAttachmentLike[] {
   return Array.isArray(raw) ? (raw as ChatAttachmentLike[]) : [];
 }
 
-/** A voice message, by type or by any audio attachment. */
+/** Legacy `content_data.files` entries, where `type` holds the mime. */
+function legacyFilesOf(message: MessageLike): ChatAttachmentLike[] {
+  const raw = message?.content_data?.files;
+  if (!Array.isArray(raw)) return [];
+  return (raw as Array<{ type?: string; name?: string }>).map((f) => ({
+    mime: typeof f?.type === 'string' ? f.type : undefined,
+    filename: f?.name,
+  }));
+}
+
+/** A voice message, by type or by any audio attachment (new or legacy format). */
 export function isVoiceMessage(message: MessageLike): boolean {
   if (message?.message_type === 'voice') return true;
-  return attachmentsOf(message).some(isAudioAttachment);
+  return [...attachmentsOf(message), ...legacyFilesOf(message)].some(isAudioAttachment);
 }
 
 // Cards the gateway builds or that carry a live action — forwarding them as
 // plain text would send an empty or broken message.
 const NON_FORWARDABLE_TYPES = new Set([
   'voice',
+  'template',
   'calendar_invite',
   'service_booking',
   'payment_request',
