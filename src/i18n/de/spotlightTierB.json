@@ -14,7 +14,7 @@
       "noVideosDesc": "Sobald es Videos zu deinen Themen gibt, findest du sie hier.",
       "noPodcastsTitle": "Noch keine Podcasts",
       "noPodcastsDesc": "Sobald es Podcasts zu deinen Themen gibt, findest du sie hier.",
-      "servicesDescription": "Buche Termine, Vorsorgeuntersuchungen und Programme, die zu dir passen.",
+      "servicesDescription": "Buche Termine, Vorsorge-Untersuchungen und Programme, die zu dir passen.",
       "plansDescription": "KI-gestützte Pläne, abgestimmt auf dein Gesundheitsprofil und deine Ziele.",
       "biologyDescription": "Medizinische Biomarker, Omics-Daten und Nahrungsergänzungen an einem Ort.",
       "reportFallbackTitle": "Gesundheitsbericht",
@@ -40,7 +40,7 @@
       "indexDescription": "Deine eine Zahl für Langlebigkeit über alle fünf Säulen."
     },
     "wallet": {
-      "description": "Dein digitales Konto für Gesundheitsbelohnungen und Vorteile.",
+      "description": "Dein digitales Konto für Gesundheits-Belohnungen und Vorteile.",
       "creditsLine": "{amount} VTNA Credits",
       "send": "Senden",
       "request": "Anfordern",
@@ -63,7 +63,7 @@
         "failed": "Fehlgeschlagen",
         "cancelled": "Storniert"
       },
-      "balanceDescription": "Verwalte deine Credits, Tokens und Mitgliedschaftsvorteile.",
+      "balanceDescription": "Verwalte deine Credits, Tokens und Mitgliedschafts-Vorteile.",
       "creditsAmount": "{amount} Credits",
       "vtnaAmount": "{amount} VTNA",
       "usdAmount": "${amount}"
