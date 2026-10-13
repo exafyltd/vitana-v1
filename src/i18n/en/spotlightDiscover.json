@@ -11,10 +11,7 @@
         "strength": "Strength & recovery",
         "longevity": "Longevity",
         "underPrice": "Under {price}",
-        "topRated": "★ {rating}+",
-        "_pending_review": {
-          "topRated": true
-        }
+        "topRated": "★ {rating}+"
       },
       "hero": {
         "pickedForYou": "Picked for you",
@@ -91,10 +88,7 @@
         "beauty": "Beauty",
         "gutHealth": "Gut health",
         "herbs": "Herbs",
-        "heartHealth": "Heart health",
-        "_pending_review": {
-          "omega3": true
-        }
+        "heartHealth": "Heart health"
       },
       "sort": {
         "relevance": "Popular",
