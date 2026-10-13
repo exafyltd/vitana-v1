@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05186",
+  "kind": "feature",
+  "paths": [
+    "src/i18n/*/native.json",
+    "i18n-source-stamps/*.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-05186-native-shard.staging.spec.ts",
+    "docs/validation/VTID-05186/**",
+    "apps/mobile/**",
+    "scripts/native/**",
+    ".github/workflows/NATIVE-CI.yml"
+  ],
+  "sparring_record": "docs/validation/VTID-05186/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
