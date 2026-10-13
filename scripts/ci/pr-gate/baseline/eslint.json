@@ -341,7 +341,6 @@
     "src/components/messages/CreateGroupPopup.tsx": 8,
     "src/components/messages/EmptyStateIllustration.tsx": 5,
     "src/components/messages/GroupMembersModal.tsx": 8,
-    "src/components/messages/ImageZoomModal.tsx": 3,
     "src/components/messages/InspirationMasterActionPopup.tsx": 2,
     "src/components/messages/InviteResponseSummary.tsx": 8,
     "src/components/messages/MessageBubble.tsx": 35,
