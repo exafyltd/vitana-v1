@@ -209,7 +209,7 @@ export function moduleMap(r) {
   L.push('| entry | source | declarations |', '|---|---|---|');
   for (const [entry, e] of Object.entries(r.extract.entries ?? {})) {
     for (const s of e.sources ?? []) {
-      const names = (s.take ?? []).map((t) => (typeof t === 'string' ? t : `${t.name} as ${t.as}`)).join(', ');
+      const names = (s.take ?? []).map((t) => (typeof t === 'string' ? t : t.as ? `${t.name} as ${t.as}` : t.export === false ? `${t.name} (not exported)` : t.name)).join(', ');
       L.push(`| \`${entry}\` | \`${s.file}\` | ${names}${s.stubs ? ` (stub: ${Object.keys(s.stubs).join(', ')})` : ''} |`);
     }
   }

@@ -23,9 +23,12 @@ describe('tokens', () => {
   });
 
   it('brand overlay and derived values', () => {
-    expect(tenantBrand('unknown')).toEqual(tenantBrand('maxina'));
-    const vars = themeVars('light', tenantBrand('alkalma'));
-    expect(vars['--brand-accent']).toBe('#3B82F6');
+    expect(tenantBrand('unknown')).toBeNull();
+    expect(themeVars('light', tenantBrand('unknown'))).toEqual(themeVars('light'));
+    const vars = themeVars('light', tenantBrand('maxina'));
+    expect(vars['--brand-accent']).toBe('#FF7BAC');
+    // An undefined colour keeps the scheme's own value (the web sets only validated values).
+    expect(themeVars('light', { brandAccent: '#3B82F6' })['--brand-bg']).toBe(cssVars.light['--brand-bg']);
     expect(themeVars('light')['--brand-accent']).toBe(cssVars.light['--brand-accent']);
     expect(radius.lg.px).toBe(8);
     expect(screens.md).toBe(1024);

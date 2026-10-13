@@ -18,7 +18,7 @@ node scripts/native/gen-tokens.mjs --check  # what NATIVE-CI runs: fails on any 
 ```
 
 Every custom property declared anywhere in `index.css` must be a token or listed in `excluded` with a reason, so a
-new token can never be silently missed. Tenant brand colours come from `@vitana/core/tenants` (`tenantBrand(slug)`),
+new token can never be silently missed. Tenant brand colours come from `@vitana/core/tenants` (`tenantBrand(slug, registry)`),
 which `themeVars(scheme, brand)` overlays as `--brand-accent/-bg/-fg`, as the web does at runtime.
 
 Exports: `cssVars`, `colors`, `resolved`, `resolvedHsl`, `radius`, `spacing`, `maxWidth`, `shadows`, `fonts`,

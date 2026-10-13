@@ -95,7 +95,7 @@ the analysis' `implicit-storage` signal).
 | `drawer-nav` | `src/config/drawer-nav.config.ts` | DrawerNavItem, DrawerIconTone, drawerNavIconTones, drawerNavItems |
 | `drawer-nav` | `src/components/mobile/SideDrawerNav.tsx` | CROSS_MODE_IDS, BUSINESS_DRAWER_KEYS |
 | `bottom-nav` | `src/components/mobile/MobileBottomNav.tsx` | navItems as communityBottomNav, BottomNavItem, ROLE_NAV_ITEMS, resolveRoleBottomNav, MobileBottomNav#hideNavRoutes, MobileBottomNav#roleSectionRoutes |
-| `tenants` | `src/hooks/useTenant.tsx` | TenantType, TenantConfig, TENANT_CONFIGS |
+| `tenants` | `src/lib/tenant-registry.ts` | TenantSlug, TenantBrand as TenantRegistryBrand, TenantLanding, TenantEntry, RegistrySource, TenantRegistry, SLUG_RE, COMPILED_MAXINA_FALLBACK, FALLBACK_REGISTRY, ResolvedTenant, safeHex, safeInternalPath, normalizeLanding (not exported), normalizeBrand (not exported), normalizeEntry, findBySlug, findById, resolvedTenantFromEntry, neutralTenant, resolveActiveTenant |
 | `tenants` | `src/lib/retired-tenants.ts` | RETIRED_TENANT_SLUGS, canonicalTenantSlug |
 | `language` | `src/contexts/LanguageContext.tsx` | languageOptions |
 | `language` | `src/components/language/locale-presentation.ts` | LocalePresentation, LOCALE_PRESENTATION |

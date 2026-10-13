@@ -62,7 +62,16 @@
     },
     "tenants": {
       "sources": [
-        { "file": "src/hooks/useTenant.tsx", "take": ["TenantType", "TenantConfig", "TENANT_CONFIGS"] },
+        {
+          "file": "src/lib/tenant-registry.ts",
+          "take": [
+            "TenantSlug", { "name": "TenantBrand", "as": "TenantRegistryBrand" }, "TenantLanding", "TenantEntry", "RegistrySource", "TenantRegistry",
+            "SLUG_RE", "COMPILED_MAXINA_FALLBACK", "FALLBACK_REGISTRY", "ResolvedTenant",
+            "safeHex", "safeInternalPath",
+            { "name": "normalizeLanding", "export": false }, { "name": "normalizeBrand", "export": false }, "normalizeEntry",
+            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant"
+          ]
+        },
         { "file": "src/lib/retired-tenants.ts", "take": ["RETIRED_TENANT_SLUGS", "canonicalTenantSlug"] }
       ]
     },

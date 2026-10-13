@@ -14,22 +14,23 @@ export type ColorScheme = 'light' | 'dark';
 
 /** Tenant brand overlay — the shape of `tenantBrand(slug)` from @vitana/core/tenants. */
 export interface BrandOverlay {
-  brandAccent: string;
-  brandBg: string;
-  brandFg: string;
+  brandAccent?: string;
+  brandBg?: string;
+  brandFg?: string;
 }
 
 /**
  * The custom-property map NativeWind's `vars()` takes, for one scheme. A brand
  * overlay sets `--brand-accent/-bg/-fg` exactly as the web does at runtime
- * (src/hooks/useTenant.tsx: `root.style.setProperty('--brand-accent', …)`).
+ * (src/hooks/useTenant.tsx: `if (value) root.style.setProperty('--brand-accent', …)`):
+ * a colour the overlay leaves undefined keeps the scheme's own value.
  */
 export function themeVars(scheme: ColorScheme, brand?: BrandOverlay | null): Record<string, string> {
   const vars: Record<string, string> = { ...cssVars[scheme] };
   if (brand) {
-    vars['--brand-accent'] = brand.brandAccent;
-    vars['--brand-bg'] = brand.brandBg;
-    vars['--brand-fg'] = brand.brandFg;
+    if (brand.brandAccent) vars['--brand-accent'] = brand.brandAccent;
+    if (brand.brandBg) vars['--brand-bg'] = brand.brandBg;
+    if (brand.brandFg) vars['--brand-fg'] = brand.brandFg;
   }
   return vars;
 }
