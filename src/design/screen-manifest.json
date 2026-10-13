@@ -766,7 +766,7 @@
       "archetype": "conversation",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -774,7 +774,7 @@
       "archetype": "conversation",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -782,7 +782,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -790,7 +790,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -798,7 +798,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -830,7 +830,7 @@
       "archetype": "conversation",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1134,7 +1134,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Calendar & reminders",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1142,7 +1142,7 @@
       "archetype": "detail",
       "tier": "B",
       "area": "Calendar & reminders",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1350,7 +1350,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1910,7 +1910,7 @@
       "archetype": "dashboard",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1918,7 +1918,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1926,7 +1926,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1934,7 +1934,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1942,7 +1942,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1950,7 +1950,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1958,7 +1958,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1966,7 +1966,7 @@
       "archetype": "dashboard",
       "tier": "B",
       "area": "Health",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2086,7 +2086,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2094,7 +2094,7 @@
       "archetype": "detail",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2102,7 +2102,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "AI & memory",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2470,7 +2470,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Calendar & reminders",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2478,7 +2478,7 @@
       "archetype": "detail",
       "tier": "B",
       "area": "Calendar & reminders",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2510,7 +2510,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2526,7 +2526,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2534,7 +2534,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2566,7 +2566,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2574,7 +2574,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Sharing",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2582,7 +2582,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Sharing",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2590,7 +2590,7 @@
       "archetype": "detail",
       "tier": "B",
       "area": "Sharing",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2598,7 +2598,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Sharing",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2686,7 +2686,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2734,7 +2734,7 @@
       "archetype": "dashboard",
       "tier": "B",
       "area": "Wallet",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2742,7 +2742,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Wallet",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2750,7 +2750,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Wallet",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2758,7 +2758,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Wallet",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     }
   ]
