@@ -98,23 +98,40 @@
         "activeLabel": "Actif (visible aux membres)",
         "activeHint": "Les nouveaux articles sont inactifs au départ. Active-les quand tout est correct.",
         "save": "Enregistrer",
-        "saving": "Enregistrement…",
+        "saving": "Enregistrement …",
         "cancel": "Annuler",
-        "saved": "Article enregistré"
+        "saved": "Article enregistré",
+        "_pending_review": {
+          "save": true,
+          "saving": true,
+          "cancel": true,
+          "saved": true
+        }
       },
       "validation": {
-        "titleDe": "Saisis un titre allemand.",
-        "slug": "L'identifiant doit contenir 2 à 80 caractères : lettres minuscules, chiffres et tirets.",
+        "titleDe": "Saisis un titre en allemand.",
+        "slug": "L'identifiant doit comporter de 2 à 80 caractères : minuscules, chiffres et tirets.",
         "price": "Le prix doit être un nombre entier supérieur à 0.",
-        "minAge": "L'âge minimum doit être entre 1 et 99.",
-        "countries": "Les articles expédiés nécessitent au moins un pays de livraison.",
-        "country": "Saisis un code pays à deux lettres valide.",
-        "stock": "Le stock doit être un nombre entier de 0 ou plus.",
-        "sortOrder": "L'ordre de tri doit être un nombre entier.",
-        "fee": "Saisis un montant de 0 ou plus, avec au plus deux décimales."
+        "minAge": "L'âge minimum doit être compris entre 1 et 99.",
+        "countries": "Les articles livrés ont besoin d'au moins un pays de livraison.",
+        "country": "Saisis un code pays valide à deux lettres.",
+        "stock": "Le stock doit être un nombre entier supérieur ou égal à 0.",
+        "sortOrder": "L'ordre doit être un nombre entier.",
+        "fee": "Saisis un montant supérieur ou égal à 0, avec deux décimales au maximum.",
+        "_pending_review": {
+          "titleDe": true,
+          "slug": true,
+          "price": true,
+          "minAge": true,
+          "countries": true,
+          "country": true,
+          "stock": true,
+          "sortOrder": true,
+          "fee": true
+        }
       },
       "errors": {
-        "INVALID_ITEM": "Le serveur a rejeté les détails. Vérifie l'identifiant, le titre, le prix et le type.",
+        "INVALID_ITEM": "Le serveur a refusé les données. Vérifie l'identifiant, le titre, le prix et le type.",
         "ITEM_REJECTED": "L'article n'a pas été enregistré.",
         "IMAGE_TOO_LARGE": "La photo est trop grande (1,4 Mo max.).",
         "IMAGE_TYPE_NOT_ALLOWED": "Seuls les formats JPEG, PNG ou WebP sont autorisés.",
@@ -126,7 +143,11 @@
         "ORDER_NOT_FOUND": "La commande n'a pas été trouvée.",
         "FORBIDDEN": "Administrateurs Exafy seulement",
         "generic": "Cela n'a pas fonctionné. Réessaie.",
-        "serverMessage": "Serveur : {message}"
+        "serverMessage": "Serveur : {message}",
+        "_pending_review": {
+          "INVALID_ITEM": true,
+          "ITEM_REJECTED": true
+        }
       },
       "fees": {
         "help": "Un seul forfait de livraison par pays et devise.",
@@ -166,19 +187,36 @@
         "noFee": "Pas encore payé",
         "reason": "Raison : {reason}",
         "newStatus": "Nouveau statut",
-        "chooseStatus": "Choisis un statut",
-        "reasonLabel": "Raison (facultatif)",
+        "chooseStatus": "Choisir un statut",
+        "reasonLabel": "Motif (facultatif)",
         "apply": "Appliquer",
         "readOnly": "Le statut de cette commande ne peut pas être modifié ici.",
         "statusUpdated": "Statut modifié",
         "status": {
-          "awaiting_shipping_payment": "En attente de paiement de l'expédition",
-          "paid": "Payé",
+          "awaiting_shipping_payment": "En attente du paiement de la livraison",
+          "paid": "Payée",
           "fulfilling": "En préparation",
-          "shipped": "Expédié",
-          "delivered": "Livré",
-          "cancelled": "Annulé",
-          "refunded": "Remboursé"
+          "shipped": "Expédiée",
+          "delivered": "Livrée",
+          "cancelled": "Annulée",
+          "refunded": "Remboursée",
+          "_pending_review": {
+            "awaiting_shipping_payment": true,
+            "paid": true,
+            "fulfilling": true,
+            "shipped": true,
+            "delivered": true,
+            "cancelled": true,
+            "refunded": true
+          }
+        },
+        "_pending_review": {
+          "newStatus": true,
+          "chooseStatus": true,
+          "reasonLabel": true,
+          "apply": true,
+          "readOnly": true,
+          "statusUpdated": true
         }
       }
     }
