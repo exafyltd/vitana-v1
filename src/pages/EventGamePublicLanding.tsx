@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { ArchetypeSkeleton } from '@/components/layout/spotlight';
 import { t } from '@/lib/i18n-toast';
 import { useAuth } from '@/context/AuthProvider';
 import SEO from '@/components/SEO';
@@ -43,8 +43,8 @@ export default function EventGamePublicLanding() {
 
   if (gameQuery.isLoading || flagQuery.isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="mx-auto min-h-screen w-full max-w-md px-6 py-10">
+        <ArchetypeSkeleton archetype="detail" />
       </div>
     );
   }

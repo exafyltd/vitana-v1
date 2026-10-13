@@ -21,10 +21,17 @@ import { Loader2, ShoppingBag, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { t } from "@/lib/i18n-toast";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+
+// VTID-05117: the portal keeps its dark look through the app's own dark theme
+// tokens (a `dark` scope) instead of raw slate literals.
+const PAGE = "dark min-h-screen bg-background text-foreground";
 
 const CommercePortalLogin = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -55,45 +62,39 @@ const CommercePortalLogin = () => {
 
   if (authLoading || user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+      <div className={`${PAGE} flex items-center justify-center p-6`}>
+        <div className="w-full max-w-md">
+          <ArchetypeSkeleton archetype="form" />
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-slate-950">
-      <SEO
-        title={t('screens.index.commercePortal')}
-        description="Vitanaland Commerce Portal — merchant self-service sign-in."
-        canonical={window.location.href}
-      />
-
-      <div className="flex flex-col items-center justify-center min-h-screen p-6">
-        <div className="w-full max-w-md rounded-xl border border-amber-500/30 bg-slate-900/80 p-8 shadow-2xl">
+  const card = (
+        <div className="w-full max-w-md rounded-xl border border-amber-500/30 bg-card p-8 shadow-2xl">
           <div className="text-center">
             <div className="flex justify-center mb-3">
               <ShoppingBag className="h-10 w-10 text-amber-400" />
             </div>
             <h1 className="text-3xl font-bold text-amber-400">VITANALAND</h1>
-            <p className="text-slate-400">{t('screens.commerceportal.loginSubtitle')}</p>
+            <p className="text-muted-foreground">{t('screens.commerceportal.loginSubtitle')}</p>
           </div>
 
-          <div className="my-6 border-t border-slate-700" />
+          <div className="my-6 border-t border-border" />
 
-          <p className="text-center text-sm text-slate-400 mb-6">
+          <p className="text-center text-sm text-muted-foreground mb-6">
             {t('screens.commerceportal.loginIntro')}
           </p>
 
           <form onSubmit={handleSignIn} className="space-y-4">
             {error && (
-              <Alert variant="destructive" className="bg-red-950/50 border-red-900 text-red-200">
+              <Alert variant="destructive" className="bg-status-error-subtle border-status-error/40 text-status-error">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="commerce-email" className="text-slate-300">
+              <Label htmlFor="commerce-email" className="text-foreground/80">
                 {t('screens.portals.email')}
               </Label>
               <Input
@@ -103,12 +104,12 @@ const CommercePortalLogin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={loading}
-                className="bg-slate-950 border-amber-500/40 text-slate-100 focus-visible:ring-amber-500"
+                className="bg-background border-amber-500/40 text-foreground focus-visible:ring-amber-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="commerce-password" className="text-slate-300">
+              <Label htmlFor="commerce-password" className="text-foreground/80">
                 {t('screens.portals.password')}
               </Label>
               <div className="relative">
@@ -119,12 +120,12 @@ const CommercePortalLogin = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
-                  className="bg-slate-950 border-amber-500/40 text-slate-100 focus-visible:ring-amber-500 pr-10"
+                  className="bg-background border-amber-500/40 text-foreground focus-visible:ring-amber-500 pe-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -139,7 +140,7 @@ const CommercePortalLogin = () => {
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
                   {t('screens.portals.signing')}
                 </>
               ) : (
@@ -149,11 +150,36 @@ const CommercePortalLogin = () => {
           </form>
 
           <div className="text-center mt-6">
-            <Link to="/" className="text-sm text-slate-500 hover:text-amber-400">
+            <Link to="/" className="text-sm text-muted-foreground hover:text-amber-400">
               {t('screens.portals.backPublicPortal')}
             </Link>
           </div>
         </div>
+  );
+
+  const seo = (
+    <SEO
+      title={t('screens.index.commercePortal')}
+      description="Vitanaland Commerce Portal — merchant self-service sign-in."
+      canonical={window.location.href}
+    />
+  );
+
+  // VTID-05117: Spotlight on → the `form` archetype (single form column, no rail).
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className={PAGE}>
+        {seo}
+        <div className="flex justify-center py-8">{card}</div>
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className={PAGE}>
+      {seo}
+      <div className="flex flex-col items-center justify-center min-h-screen p-6">
+        {card}
       </div>
     </div>
   );

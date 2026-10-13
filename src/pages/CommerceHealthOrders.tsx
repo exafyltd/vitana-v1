@@ -27,7 +27,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ArrowLeft, CheckCircle2, Loader2, RefreshCw, Upload } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, RefreshCw, Upload } from 'lucide-react';
+import { ArchetypeSkeleton } from '@/components/layout/spotlight';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { useAuth } from '@/context/AuthProvider';
 import { useMyPartnerOrgs } from '@/hooks/useOrgMembers';
 import {
@@ -57,6 +60,7 @@ function partnerName(row: { partner_registry?: { display_name: string } | { disp
 
 export default function CommerceHealthOrders() {
   const { user } = useAuth();
+  const spotlight = useSpotlightEnabled();
   // VTID-03999: `/commerce/health-orders/inbox` is the results inbox as its own
   // URL (the business bottom bar points at it); same page, other tab.
   const initialTab = useLocation().pathname.endsWith('/inbox') ? 'inbox' : 'orders';
@@ -145,6 +149,7 @@ export default function CommerceHealthOrders() {
 
   return (
     <CommerceShell>
+      <FrameWhen on={spotlight} archetype="collection">
       <div className="pt-8">
         <Link
           to="/commerce"
@@ -160,9 +165,7 @@ export default function CommerceHealthOrders() {
 
         <div className="mt-6">
           {myOrgsQuery.isLoading ? (
-            <div className="flex justify-center py-16">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
+            <ArchetypeSkeleton archetype="collection" />
           ) : !isMember ? (
             <div className="rounded-2xl border border-dashed border-border bg-card px-5 py-14 text-center">
               <p className="font-medium text-foreground">{t('screens.commerceportal.healthOrders.notAMemberTitle')}</p>
@@ -171,9 +174,7 @@ export default function CommerceHealthOrders() {
               </p>
             </div>
           ) : ordersQuery.isLoading ? (
-            <div className="flex justify-center py-16">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
+            <ArchetypeSkeleton archetype="collection" />
           ) : (
             <Tabs key={initialTab} defaultValue={hasFullAccess ? initialTab : 'orders'}>
               <div className="flex items-center justify-between">
@@ -216,7 +217,7 @@ export default function CommerceHealthOrders() {
                             <TableHead className="text-muted-foreground">{t('screens.admin.partner')}</TableHead>
                             <TableHead className="text-muted-foreground">{t('screens.admin.status')}</TableHead>
                             <TableHead className="text-muted-foreground">{t('screens.admin.updated')}</TableHead>
-                            <TableHead className="w-[140px]" />
+                            <TableHead className="w-36" />
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -234,7 +235,7 @@ export default function CommerceHealthOrders() {
                                     onValueChange={(v) => submitStatus(o.id, v)}
                                     disabled={patchStatus.isPending || o.status === 'result_ready'}
                                   >
-                                    <SelectTrigger className="w-[180px] focus-visible:ring-amber-500">
+                                    <SelectTrigger className="w-44 focus-visible:ring-amber-500">
                                       <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -356,7 +357,7 @@ export default function CommerceHealthOrders() {
                               <TableHead className="text-muted-foreground">{t('screens.admin.partner')}</TableHead>
                               <TableHead className="text-muted-foreground">{t('screens.admin.reason')}</TableHead>
                               <TableHead className="text-muted-foreground">{t('screens.admin.received')}</TableHead>
-                              <TableHead className="w-[120px]" />
+                              <TableHead className="w-32" />
                             </TableRow>
                           </TableHeader>
                           <TableBody>
@@ -437,6 +438,7 @@ export default function CommerceHealthOrders() {
           )}
         </div>
       </div>
+      </FrameWhen>
 
       {/* Upload result dialog */}
       <Dialog open={uploadOrder !== null} onOpenChange={(o) => !o && setUploadOrder(null)}>

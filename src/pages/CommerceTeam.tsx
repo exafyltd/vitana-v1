@@ -9,25 +9,30 @@
  * layout (invite form on top, cards below) is the next slice.
  */
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { CommerceShell } from '@/components/commerce/CommerceShell';
 import { PartnerOrgRoster } from '@/components/commerce/PartnerOrgRoster';
 import { useBusinessMode } from '@/hooks/useBusinessMode';
 import { BUSINESS_ROUTES } from '@/lib/business-mode';
 import { t } from '@/lib/i18n-toast';
+import { ArchetypeSkeleton } from '@/components/layout/spotlight';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 export default function CommerceTeam() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const business = useBusinessMode();
   const org = business.activeOrg;
 
   return (
     <CommerceShell>
+      <FrameWhen on={spotlight} archetype="collection">
       <div className="pt-6">
         <h1 className="text-2xl font-semibold text-foreground">{t('screens.commerceportal.orgOnboarding.teamTitle')}</h1>
         {business.isLoading ? (
-          <div className="flex justify-center py-16">
-            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <div className="py-6">
+            <ArchetypeSkeleton archetype="collection" />
           </div>
         ) : !org ? (
           <div className="mt-6 rounded-2xl border border-dashed border-border bg-muted/30 px-5 py-14 text-center">
@@ -49,6 +54,7 @@ export default function CommerceTeam() {
           </>
         )}
       </div>
+      </FrameWhen>
     </CommerceShell>
   );
 }

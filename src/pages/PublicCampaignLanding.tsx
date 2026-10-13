@@ -10,6 +10,9 @@ import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { VCard } from '@/components/ui/vcard';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 import { formatDate } from '@/lib/locale-format';
 import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
@@ -40,6 +43,7 @@ interface LinkedEventTicketInfo {
 export default function PublicCampaignLanding() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -196,10 +200,10 @@ export default function PublicCampaignLanding() {
   // Determine CTA icon
   const getPrimaryCTAIcon = () => {
     switch (ctaConfig.icon) {
-      case 'ticket': return <Ticket className="h-4 w-4 mr-2" />;
-      case 'eye': return <Eye className="h-4 w-4 mr-2" />;
-      case 'user-plus': return <UserPlus className="h-4 w-4 mr-2" />;
-      default: return <CalendarDays className="h-4 w-4 mr-2" />;
+      case 'ticket': return <Ticket className="h-4 w-4 me-2" />;
+      case 'eye': return <Eye className="h-4 w-4 me-2" />;
+      case 'user-plus': return <UserPlus className="h-4 w-4 me-2" />;
+      default: return <CalendarDays className="h-4 w-4 me-2" />;
     }
   };
 
@@ -246,9 +250,18 @@ export default function PublicCampaignLanding() {
   };
 
   if (loading) {
+    if (spotlight) {
+      return (
+        <ScreenFrame archetype="detail" className="min-h-screen bg-background">
+          <ArchetypeSkeleton archetype="detail" />
+        </ScreenFrame>
+      );
+    }
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="w-full max-w-4xl">
+          <ArchetypeSkeleton archetype="detail" />
+        </div>
       </div>
     );
   }
@@ -283,55 +296,8 @@ export default function PublicCampaignLanding() {
   const isDraft = campaign.status?.toLowerCase() === 'draft';
   const displayStatus = !isDraft ? campaign.status : null;
 
-  return (
+  const details = (
     <>
-      <SEO
-        title={campaign.name}
-        description={shortDescription}
-        image={heroImage || undefined}
-        url={publicCampaignUrl}
-        type="website"
-      />
-      
-      <div className="min-h-screen bg-background flex flex-col">
-        {/* Hero Section - Compact banner */}
-        {heroImage ? (
-          <div className="relative w-full h-[300px] md:h-[380px] overflow-hidden">
-            <img
-              src={heroImage}
-              alt={campaign.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background from-30% via-background/80 via-60% to-transparent" />
-          </div>
-        ) : (
-          <div className="relative w-full h-[200px] md:h-[260px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
-        )}
-
-        {/* Content Section */}
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-36 md:-mt-48 relative z-10">
-            <div className="space-y-1.5 md:space-y-2">
-              {/* Campaign Title */}
-              <div className="space-y-2">
-                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-                  {campaign.name}
-                </h1>
-                <div className="flex items-center gap-2 flex-wrap">
-                  {displayStatus && (
-                    <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
-                      {displayStatus}
-                    </div>
-                  )}
-                  {hasTickets && eventPrice !== null && (
-                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
-                      <Ticket className="h-3.5 w-3.5" />
-                      {eventPrice === 0 ? "Free" : `From ${formatTicketPrice(eventPrice, campaign?.metadata?.display_currency || 'USD')}`}
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* Campaign Details */}
               <div className="grid gap-2 md:gap-3 md:grid-cols-2">
                 {campaign.start_date && (
@@ -373,6 +339,10 @@ export default function PublicCampaignLanding() {
                 </div>
               </div>
 
+    </>
+  );
+  const description = (
+    <>
               {/* Description */}
               {campaign.description && (
                 <div className="max-w-3xl">
@@ -380,9 +350,13 @@ export default function PublicCampaignLanding() {
                 </div>
               )}
 
+    </>
+  );
+  const ctaPanel = (
+    <>
               {/* Dual CTA Panel */}
               <div className="mt-3 md:mt-4">
-                <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
+                <div className="rounded-2xl border border-border/60 bg-card/70 dark:bg-card/40 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
                   <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
                     
                     {/* Left: Event CTA */}
@@ -401,9 +375,9 @@ export default function PublicCampaignLanding() {
                         disabled={ctaConfig.disabled}
                         className={`w-full md:w-auto px-6 ${
                           ctaConfig.variant === 'ticket' 
-                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' 
+                            ? 'bg-gradient-to-r from-status-success to-category-1 hover:from-status-success/90 hover:to-category-1/90' 
                             : ctaConfig.variant === 'view-ticket'
-                            ? 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700'
+                            ? 'bg-gradient-to-r from-category-2 to-sys-member-accent hover:from-category-2/90 hover:to-sys-member-accent/90'
                             : ctaConfig.variant === 'disabled'
                             ? 'bg-muted text-muted-foreground cursor-not-allowed'
                             : ''
@@ -415,16 +389,16 @@ export default function PublicCampaignLanding() {
                     </div>
                     
                     {/* Divider */}
-                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
+                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-border to-transparent" />
                     <div className="flex items-center justify-center gap-3 md:hidden">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-border" />
                       <span className="text-xs text-muted-foreground font-medium">{t('screens.publiccampaignlanding.text')}</span>
-                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-border" />
                     </div>
                     
                     {/* Right: Community CTA */}
                     <div className="flex-1 flex flex-col items-start md:items-end gap-2">
-                      <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
+                      <div className="flex items-start gap-1.5 max-w-72 md:max-w-xs text-start md:text-end">
                         <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
                           {t('screens.publiccampaignlanding.discoverMoreEventsLongevityCommunities')}
@@ -447,7 +421,7 @@ export default function PublicCampaignLanding() {
                         {user ? "Explore VITANA" : "Join in VITANA"}
                       </Button>
                       {!user && (
-                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">{t('screens.publiccampaignlanding.youLlSignCreateAccountNext')}
+                        <p className="text-[11px] text-muted-foreground/70 text-start md:text-end max-w-xs">{t('screens.publiccampaignlanding.youLlSignCreateAccountNext')}
                         </p>
                       )}
                     </div>
@@ -455,10 +429,10 @@ export default function PublicCampaignLanding() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
+    </>
+  );
+  const footer = (
+    <>
         {/* Footer */}
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
@@ -467,11 +441,92 @@ export default function PublicCampaignLanding() {
             </p>
           </div>
         </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO
+        title={campaign.name}
+        description={shortDescription}
+        image={heroImage || undefined}
+        url={publicCampaignUrl}
+        type="website"
+      />
+      
+      {spotlight ? (
+        // VTID-05117: Spotlight on → the `detail` archetype; the campaign is the one spotlight item.
+        <ScreenFrame archetype="detail" className="min-h-screen bg-background">
+          <div className="space-y-5">
+            <VCard
+              size="spotlight"
+              priority
+              media={{ src: heroImage, alt: campaign.name }}
+              eyebrow={displayStatus ?? undefined}
+              title={<h1>{campaign.name}</h1>}
+              body={hasTickets && eventPrice !== null ? (eventPrice === 0 ? t('spotlightPublic.event.free') : t('spotlightPublic.event.fromPrice', { price: formatTicketPrice(eventPrice, campaign?.metadata?.display_currency || 'USD') })) : undefined}
+            />
+            {details}
+            {description}
+            {ctaPanel}
+            {footer}
+          </div>
+        </ScreenFrame>
+      ) : (
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Hero Section - Compact banner */}
+        {heroImage ? (
+          <div className="relative w-full h-72 md:h-96 overflow-hidden">
+            <img
+              src={heroImage}
+              alt={campaign.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background from-30% via-background/80 via-60% to-transparent" />
+          </div>
+        ) : (
+          <div className="relative w-full h-48 md:h-64 overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
+        )}
+
+        {/* Content Section */}
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-36 md:-mt-48 relative z-10">
+            <div className="space-y-1.5 md:space-y-2">
+              {/* Campaign Title */}
+              <div className="space-y-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {campaign.name}
+                </h1>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {displayStatus && (
+                    <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
+                      {displayStatus}
+                    </div>
+                  )}
+                  {hasTickets && eventPrice !== null && (
+                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
+                      <Ticket className="h-3.5 w-3.5" />
+                      {eventPrice === 0 ? "Free" : `From ${formatTicketPrice(eventPrice, campaign?.metadata?.display_currency || 'USD')}`}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {details}
+              {description}
+              {ctaPanel}
+            </div>
+          </div>
+        </div>
+
+        {footer}
       </div>
+      )}
 
       {/* Ticket Purchase Dialog */}
       {linkedEventId && (
         <Dialog open={showTicketDialog} onOpenChange={setShowTicketDialog}>
+          {/* design-allow-next-line: viewport-relative scroll limit of the ticket dialog; the contract has no viewport-height token */}
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">

@@ -11,7 +11,9 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader, PanelTitle as CardTitle } from '@/components/layout/spotlight/Panel';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, ShieldQuestion } from 'lucide-react';
@@ -33,6 +35,7 @@ const PARAM_KEYS = [
 
 export default function OAuthConsent() {
   const [searchParams] = useSearchParams();
+  const spotlight = useSpotlightEnabled();
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [working, setWorking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,8 +106,7 @@ export default function OAuthConsent() {
     }
   };
 
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+  const panel = (
       <Card className="w-full max-w-md">
         <CardHeader className="items-center text-center">
           <ShieldQuestion className="mb-2 h-8 w-8 text-primary" aria-hidden />
@@ -140,7 +142,7 @@ export default function OAuthConsent() {
                 <Button className="flex-1" disabled={working || hasSession !== true} onClick={() => void submit(true)}>
                   {working ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="me-2 h-4 w-4 animate-spin" />
                       {t('screens.oauthconsent.working')}
                     </>
                   ) : (
@@ -155,6 +157,20 @@ export default function OAuthConsent() {
           )}
         </CardContent>
       </Card>
+  );
+
+  // VTID-05117: Spotlight on → the `form` archetype (single form column, no rail).
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className="min-h-screen bg-background">
+        <div className="flex justify-center">{panel}</div>
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      {panel}
     </div>
   );
 }
