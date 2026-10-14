@@ -1,7 +1,6 @@
 /** VTID-05186 (N3, plan changes 10 + 16) — the portal's functional surface and the post-sign-in path. */
 import './helpers/no-network';
 import './helpers/mocks';
-import './fixtures/native-keys';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { router } from 'expo-router';
 import { createSupabaseDouble, fakeSession } from './helpers/supabase-double';

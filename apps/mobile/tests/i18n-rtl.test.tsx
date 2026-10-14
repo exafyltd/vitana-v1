@@ -1,7 +1,6 @@
 /** VTID-05186 (N3, plan changes 12–13) — the shell in all 11 locales, Arabic RTL, no physical left/right. */
 import './helpers/no-network';
 import './helpers/mocks';
-import './fixtures/native-keys';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';

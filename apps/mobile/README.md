@@ -84,9 +84,10 @@ repo's i18n rule: no hardcoded user-visible text (`accessibilityLabel` / `access
 | Theme | `src/theme/` | `light` default (like the web), `dark`, `system`; tenant brand from `tenantBrand(slug)`. RTL: the shell root's `direction` follows the language; styles use start/end only (a test scans for left/right). |
 
 **Ports.** Shell code imports lane code only through `src/ports/*` (`core`, `env`, `tokens` → N1; `ui` → N2; `links` → N4;
-`orb-slot` → N6; `badges`, `soundscape` for screen lanes). `*.stub.ts(x)` files stand in for N1/N2 on the branch only;
-`tests/ports.test.ts` fails as soon as the lane a stub waits for is present and the stub still exists — the port is then
-switched in one file and the stub deleted, before PR-S merges.
+`orb-slot` → N6; `badges`, `soundscape` for screen lanes). `core`/`tokens` re-export `@vitana/core` / `@vitana/tokens`,
+`env` re-exports `src/config/env.ts`, and `ui` adapts `@vitana/ui` to the shell's names. The one non-re-export is
+`createSupabaseClient` (I-N1.1): N1's factory plus `auth.flowType` set on the built client, until N1 takes the option.
+The branch-only stubs are gone; `tests/ports.test.ts` fails if a `*.stub.ts(x)` file comes back.
 
 **Source pins.** `node scripts/native/check-shell-pins.mjs` compares each mirrored web range (token stream, comments and
 whitespace ignored) with `scripts/native/shell-pins.json`, and `src/navigation/guest-paths.ts` with the App.tsx

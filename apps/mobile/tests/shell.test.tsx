@@ -1,7 +1,6 @@
 /** VTID-05186 (N3, plan changes 17–18) — the shell: bars per mode, hide rules, drawer, top bar, mode pill. */
 import './helpers/no-network';
 import './helpers/mocks';
-import './fixtures/native-keys';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { router } from 'expo-router';
