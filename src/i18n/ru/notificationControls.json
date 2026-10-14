@@ -299,15 +299,12 @@
     },
     "audienceNoun": {
       "_pending_review": {
-        "member": true,
-        "admin": true,
-        "developer": true,
-        "staff": true
+        "member": true
       },
       "member": "members",
-      "admin": "admins",
-      "developer": "developers",
-      "staff": "staff"
+      "admin": "администраторы",
+      "developer": "разработчики",
+      "staff": "персонал"
     },
     "statsNone": "7 days: nothing sent"
   }
