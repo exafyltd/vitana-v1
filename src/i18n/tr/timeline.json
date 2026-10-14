@@ -211,12 +211,7 @@
       "system": "Sistem",
       "_pending_review": {}
     },
-    "_pending_review": {},
-    "insight": {
-      "weakest_pillar_streak": "{pillar} günlerdir en zayıf sütunun ve dengeni geride tutuyor.",
-      "pillar_slipping": "{pillar} bu hafta belirgin şekilde düştü.",
-      "pillar_rising": "{pillar} bu hafta belirgin şekilde yükseldi."
-    }
+    "_pending_review": {}
   },
   "_pending_review": {}
 }

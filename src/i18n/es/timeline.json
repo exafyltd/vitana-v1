@@ -28,7 +28,6 @@
       "improve": "Fortalece {pillar}",
       "empty": "Todavía no tienes Vitana Index.",
       "start": "Empieza ahora",
-      "error": "No se pudo cargar tu Vitana Index en este momento.",
       "_pending_review": {}
     },
     "balance": {
@@ -211,12 +210,7 @@
       "system": "Sistema",
       "_pending_review": {}
     },
-    "_pending_review": {},
-    "insight": {
-      "weakest_pillar_streak": "{pillar} lleva días siendo tu pilar más débil y frena tu equilibrio.",
-      "pillar_slipping": "{pillar} bajó claramente esta semana.",
-      "pillar_rising": "{pillar} subió claramente esta semana."
-    }
+    "_pending_review": {}
   },
   "_pending_review": {}
 }

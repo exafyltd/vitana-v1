@@ -28,7 +28,6 @@
       "improve": "Ojačaj {pillar}",
       "empty": "Još nemaš Vitana Index.",
       "start": "Počni sada",
-      "error": "Tvoj Vitana Index trenutno nije moguće učitati.",
       "_pending_review": {}
     },
     "balance": {
@@ -211,12 +210,7 @@
       "system": "Sistem",
       "_pending_review": {}
     },
-    "_pending_review": {},
-    "insight": {
-      "weakest_pillar_streak": "{pillar} je danima tvoj najslabiji stub i koči tvoju ravnotežu.",
-      "pillar_slipping": "{pillar} je ove nedelje primetno opao.",
-      "pillar_rising": "{pillar} je ove nedelje primetno porastao."
-    }
+    "_pending_review": {}
   },
   "_pending_review": {}
 }

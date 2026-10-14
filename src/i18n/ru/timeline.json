@@ -28,7 +28,6 @@
       "improve": "Укрепить: {pillar}",
       "empty": "У тебя пока нет Vitana Index.",
       "start": "Начать",
-      "error": "Не удалось загрузить твой Vitana Index прямо сейчас.",
       "_pending_review": {}
     },
     "balance": {
@@ -211,12 +210,7 @@
       "system": "Система",
       "_pending_review": {}
     },
-    "_pending_review": {},
-    "insight": {
-      "weakest_pillar_streak": "{pillar} уже несколько дней – твоя самая слабая опора и сдерживает баланс.",
-      "pillar_slipping": "{pillar} заметно снизилась на этой неделе.",
-      "pillar_rising": "{pillar} заметно выросла на этой неделе."
-    }
+    "_pending_review": {}
   },
   "_pending_review": {}
 }
