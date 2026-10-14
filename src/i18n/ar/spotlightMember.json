@@ -100,8 +100,8 @@
           "desc": true,
           "accessibilityNote": true
         },
-        "desc": "اضبط المظهر واللغة بالطريقة التي تناسبك.",
-        "accessibilityNote": "يتبع Vitanaland إعدادات إمكانية الوصول في جهازك — مثل «تقليل الحركة» وحجم النص في متصفحك."
+        "desc": "Adjust appearance and language the way that suits you.",
+        "accessibilityNote": "Vitanaland follows your device's accessibility settings — for example “reduce motion” and your browser's text size."
       }
     },
     "journey": {

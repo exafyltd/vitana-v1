@@ -2,20 +2,26 @@
   "native": {
     "unported": {
       "title": "Još nije u aplikaciji",
-      "body": "Ovaj deo još nije dostupan u aplikaciji. Radimo na tome – do tada ga možeš koristiti u veb verziji."
+      "body": "Ovaj deo još nije dostupan u aplikaciji. Radimo na tome – do tada ga možeš koristiti u veb verziji.",
+      "_pending_review": {}
     },
     "adminInBrowser": {
       "title": "Administracija u pregledaču",
-      "body": "Ovaj deo koristiš u pregledaču, a ne u aplikaciji. U ovoj verziji za to još nije podešena veb adresa."
+      "body": "Ovaj deo koristiš u pregledaču, a ne u aplikaciji. U ovoj verziji za to još nije podešena veb adresa.",
+      "_pending_review": {}
     },
     "configMissing": {
       "title": "Nedostaje konfiguracija",
-      "body": "Ovoj verziji aplikacije nedostaju podešavanja potrebna za pokretanje. Vrednosti koje nedostaju navedene su ispod."
+      "body": "Ovoj verziji aplikacije nedostaju podešavanja potrebna za pokretanje. Vrednosti koje nedostaju navedene su ispod.",
+      "_pending_review": {}
     },
     "a11y": {
       "unread": "Nepročitane poruke: {count}",
       "openNotifications": "Otvori obaveštenja, nepročitano: {count}",
-      "openCart": "Otvori korpu, artikala: {count}"
-    }
-  }
+      "openCart": "Otvori korpu, artikala: {count}",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
