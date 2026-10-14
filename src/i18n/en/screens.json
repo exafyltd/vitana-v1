@@ -6159,7 +6159,12 @@
       "imageShareFailed": "Sharing didn't work",
       "imageLoading": "Loading image",
       "unknownSize": "Unknown size",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "In MAXINA",
+      "forwardShareOther": "Share via other apps",
+      "forwardShareLinkHint": "If your device can't share the picture directly, a link that works for {hours} hours is shared instead.",
+      "forwardLinkCopied": "Link copied — paste it into any app. It works for {hours} hours.",
+      "forwardTextCopied": "Text copied — paste it into any app."
     },
     "mobile": {
       "searching": "Searching…",

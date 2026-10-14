@@ -6273,7 +6273,12 @@
       "imageShareFailed": "Le partage n'a pas fonctionné",
       "imageLoading": "Chargement de l'image",
       "unknownSize": "Taille inconnue",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "Dans MAXINA",
+      "forwardShareOther": "Partager via d'autres apps",
+      "forwardShareLinkHint": "Si ton appareil ne peut pas partager l'image directement, un lien valable {hours} heures est partagé à la place.",
+      "forwardLinkCopied": "Lien copié — colle-le dans n'importe quelle app. Il est valable {hours} heures.",
+      "forwardTextCopied": "Texte copié — colle-le dans n'importe quelle app."
     },
     "mobile": {
       "searching": "Recherche…",

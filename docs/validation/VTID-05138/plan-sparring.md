@@ -78,3 +78,33 @@ Local: gateway `npm run typecheck`, `npx jest` for the new suite + notification 
 F1–F10 all closed (F10 rejection upheld: gateway has 11 locale files). No new blockers or majors. Observation: conversation_key is forward-only — first post-deploy message in each conversation always pushes (intended).
 
 ## Verdict: CONVERGED (2 rounds, standard class)
+
+## Amendment A1 (2026-10-14) — owner feedback after staging: "forwarding just takes you back to that chat; it should open the native share drawer so it can be forwarded either within the MAXINA chat or through other channels"
+
+Verified facts:
+- Viewer Forward (`MessageBubble.tsx` handleForward) closes the viewer, whose effect cleanup calls `history.back()` (ChatImageViewer.tsx ~123-139), in the same tick the ForwardMessageSheet opens; the sheet is a shadcn Dialog (z-50) while the viewer is z-[140]. Owner sees the chat, not the sheet.
+- Owner's device (Appilix Android shell) shows no Share button in the viewer: `canShareImageFiles()` is false there. The Appilix bridge exposes only `share(text, subject)` (src/lib/appilix.ts:79); `useNativeShare` notes Appilix may inject `navigator.share` late (text/url only). No file share path exists in the app shell.
+- MAXINA cannot appear inside the OS share drawer: that needs an Android share-target intent filter in the Appilix wrapper (native config, not this repo).
+
+Change (VTID-05138, frontend only):
+A1.1 Forward (bubble long-press drawer, desktop context menu, viewer) opens ONE "Forward" sheet with two parts: (a) "In MAXINA" — the existing chat/group picker (≤5, copy-then-send, forwarded=true), unchanged; (b) a "Share via other apps" button that opens the device's native share drawer.
+A1.2 Native share order: (1) `navigator.canShare({files})` → share the picture file itself (+ message text); (2) else `navigator.share` (browser or Appilix-injected) → text + a time-limited link to the picture; (3) else Appilix bridge `share(text)` with the same link; (4) else copy the link + translated toast. A text-only message shares its text. Voice/card messages stay non-forwardable.
+A1.3 The link is a Supabase signed URL for the forwarder's existing access, expiry 24 h (constant FORWARD_SHARE_LINK_TTL_S; conservative — the sheet says "link works for 24 hours"). No new storage object, no public bucket, nothing written.
+A1.4 From the viewer, the Forward sheet opens ON TOP of the viewer (viewer stays open; sheet z above 140); closing the sheet returns to the viewer. Removes the history.back race.
+A1.5 Vitest: sheet shows both parts; share order (file → url → Appilix → copy) with each API mocked; viewer stays open when Forward is tapped and the sheet renders above it. Staging spec unchanged + one read-only assertion that Forward from the viewer shows the sheet with the share button (no send, no share invoked).
+A1.6 i18n: new keys DE first (du-form), 11 locales.
+
+### Planner responses — A1 round 1
+- F1 major — ACCEPTED (a, c, d), TTL kept at 24 h. (a) Recorded as a conscious trade-off: a "share via other apps" link is a bearer link to one picture for its TTL; the private bucket and RLS are unchanged for everything else, nothing is made public, nothing is written. (c) The sheet states the expiry in the member's language next to the button, before anything is shared. (d) The file path (step 1) is preferred and creates no link; a link is generated only on tap, only for the picture(s) of that one message, only when the file path is unavailable. TTL: 24 h was put to the owner in this session as the proposed value with an explicit invitation to change it; 1 h would make a link sent by WhatsApp/mail dead before most recipients open it, which defeats the owner's request. The TTL is one constant; the trade-off is listed again in Gate 2 for the owner's call.
+- F2 minor — ACKNOWLEDGED (step 2 is link-based by design).
+- F3 minor — ACCEPTED. ForwardMessageSheet gets `aboveViewer?: boolean`; when true, overlay and content carry `z-[150]` (both above the viewer's z-[140]). Bubble/drawer/context-menu callers keep z-50.
+- F4 minor — ACCEPTED. New handleForward: `setForwardOpen(true)` only (no `setViewer` close). Q2: after a successful send or a dismiss, the sheet closes and the member is back on the picture in the viewer; they close the viewer with X/back as usual (no history.back race because the viewer never closes on Forward).
+
+### A1 round 2 — partner disposition
+F1 (24 h link trade-off) closed — recorded, expiry stated in the sheet, file share preferred, TTL is one constant listed in Gate 2 for the owner. F2 closed. F3 closed (`aboveViewer` → z-[150] on sheet and overlay). F4 closed (handleForward only opens the sheet; the viewer stays open). No new blockers or majors.
+
+### A1 verdict: CONVERGED (2 rounds, standard class)
+
+### A1 implementation notes
+- The viewer's Esc handler is suspended while the sheet is open (`keyboardSuspended`), so Esc closes the sheet and returns to the picture instead of closing the viewer underneath it.
+- File share is used only when every attachment is a picture; a message that also carries a non-picture file shares links, so nothing is silently dropped.

@@ -11,7 +11,11 @@
 //     fixture picture message is added on top of it in the browser.
 // The fixture picture must render as an <img> (not the file chip), every
 // other picture in the list too, and tapping it opens the full-screen viewer,
-// which Esc closes. Copy, forward and download are proven in Vitest.
+// which Esc closes. Forward from the viewer opens the forward sheet ON TOP of
+// the viewer with the "share via other apps" button (A1); the spec never taps
+// send or share — opening the sheet only reads the chat list (GETs). Esc
+// closes the sheet back to the picture. Copy, forward-send, share and download
+// are proven in Vitest.
 import { test, expect } from './staging-guard';
 
 test.use({
@@ -117,6 +121,18 @@ test('a chat picture renders inline and opens the full-screen viewer', async ({ 
   await expect(viewer.getByTestId('chat-image-viewer-download')).toBeVisible();
   await expect(viewer.getByTestId('chat-image-viewer-copy')).toBeVisible();
   await expect(viewer.getByTestId('chat-image-viewer-forward')).toBeVisible();
+
+  // A1: Forward keeps the picture open and shows the sheet above it.
+  await viewer.getByTestId('chat-image-viewer-forward').click();
+  const sheet = page.getByTestId('forward-message-sheet');
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toHaveAttribute('data-above-viewer', 'true');
+  await expect(sheet.getByTestId('forward-share-other')).toBeVisible();
+  await expect(sheet.getByTestId('forward-target-list')).toBeVisible();
+  await expect(viewer).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(sheet).toHaveCount(0);
+  await expect(viewer).toBeVisible();
 
   await page.keyboard.press('Escape');
   await expect(viewer).toHaveCount(0);

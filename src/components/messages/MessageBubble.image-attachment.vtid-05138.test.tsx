@@ -42,9 +42,9 @@ vi.mock('@/lib/chatImageActions', async () => ({
   copyImageAndNotify: h.copyImageAndNotify,
 }));
 vi.mock('./ForwardMessageSheet', () => ({
-  ForwardMessageSheet: ({ open, payload }: { open: boolean; payload: unknown }) => {
+  ForwardMessageSheet: ({ open, payload, aboveViewer }: { open: boolean; payload: unknown; aboveViewer?: boolean }) => {
     if (open) h.forwardPayloads.push(payload);
-    return open ? <div data-testid="forward-sheet-stub" /> : null;
+    return open ? <div data-testid="forward-sheet-stub" data-above-viewer={aboveViewer ? 'true' : 'false'} /> : null;
   },
 }));
 
@@ -201,6 +201,19 @@ describe('MessageBubble picture attachments (VTID-05138)', () => {
     const payload = h.forwardPayloads[h.forwardPayloads.length - 1] as { body: string; attachments: Array<{ path: string }> };
     expect(payload.body).toBe('');
     expect(payload.attachments[0].path).toBe('other/me/1_a.png');
+  });
+
+  it('Forward in the viewer opens the sheet above it and keeps the picture open (A1)', async () => {
+    h.sign.mockResolvedValue('https://fresh.example/a.png?token=1');
+    renderBubble(msg());
+    fireEvent.click(await screen.findByTestId('chat-image-attachment'));
+    await screen.findByTestId('chat-image-viewer');
+    fireEvent.click(screen.getByTestId('chat-image-viewer-forward'));
+    const sheet = await screen.findByTestId('forward-sheet-stub');
+    expect(sheet.getAttribute('data-above-viewer')).toBe('true');
+    expect(screen.getByTestId('chat-image-viewer')).toBeTruthy();
+    const payload = h.forwardPayloads[h.forwardPayloads.length - 1] as { shareImages: Array<{ url: string }> };
+    expect(payload.shareImages[0].url).toBe('https://fresh.example/a.png?token=1');
   });
 
   it('hides Forward for a voice message', async () => {

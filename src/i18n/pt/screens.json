@@ -6211,7 +6211,12 @@
       "imageShareFailed": "Não foi possível partilhar",
       "imageLoading": "A carregar imagem",
       "unknownSize": "Tamanho desconhecido",
-      "talkToVitana": "Fale com a Vitana"
+      "talkToVitana": "Fale com a Vitana",
+      "forwardInMaxina": "No MAXINA",
+      "forwardShareOther": "Compartilhar em outros apps",
+      "forwardShareLinkHint": "Se o seu dispositivo não puder compartilhar a imagem diretamente, será compartilhado um link válido por {hours} horas.",
+      "forwardLinkCopied": "Link copiado — cole em qualquer app. Ele é válido por {hours} horas.",
+      "forwardTextCopied": "Texto copiado — cole em qualquer app."
     },
     "mobile": {
       "searching": "A pesquisar…",
