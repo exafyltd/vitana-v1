@@ -11,6 +11,8 @@
  * The full consent behaviour is in privacy-health-consents.vtid-05093.test.tsx.
  */
 import { describe, it, expect, vi } from "vitest";
+// VTID-05117: the page now reads the Spotlight flag; this suite covers the legacy (flag-off) screen.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";

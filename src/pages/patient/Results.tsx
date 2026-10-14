@@ -21,6 +21,9 @@ import { usePatientHealthResults, type PatientHealthResult } from '@/hooks/usePa
 import { PartnerLinkRequestsCard } from '@/components/patient/PartnerLinkRequestsCard';
 import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightEmpty, SpotlightError, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 function orgLabel(result: PatientHealthResult): string {
   if (!result.org) return t('screens.patient.results.selfReported');
@@ -57,9 +60,34 @@ function buildCards(results: PatientHealthResult[], onOpen: (r: PatientHealthRes
 export default function PatientResults() {
   const { data: results, isLoading, isError, refetch } = usePatientHealthResults();
   const [openResult, setOpenResult] = useState<PatientHealthResult | null>(null);
+  // VTID-05117 — Spotlight (desktop + flag): collection frame, skeleton instead of a spinner.
+  const spotlight = useSpotlightEnabled();
+
+  const content = spotlight ? (
+    <ScreenFrame archetype="collection" header={{ title: t('screens.patient.results.title'), description: t('screens.patient.results.subtitle') }}>
+      <div className="flex flex-col gap-6">
+        <PartnerLinkRequestsCard />
+        {isLoading ? (
+          <SpotlightRowsSkeleton />
+        ) : isError ? (
+          <SpotlightError onRetry={() => refetch()} />
+        ) : (
+          <HorizontalCardList
+            items={buildCards(results ?? [], setOpenResult)}
+            variant="standard"
+            screenId="patient-health-results"
+            groupBy="none"
+            gap="md"
+            emptyState={<SpotlightEmpty Icon={FlaskConical} titleKey="screens.patient.results.empty" />}
+          />
+        )}
+      </div>
+    </ScreenFrame>
+  ) : null;
 
   return (
     <AppLayout>
+      {content ?? (
       <div className="p-6 space-y-6">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{t('screens.patient.results.title')}</h1>
@@ -97,6 +125,7 @@ export default function PatientResults() {
           />
         )}
       </div>
+      )}
 
       <Dialog open={openResult !== null} onOpenChange={(open) => !open && setOpenResult(null)}>
         <DialogContent>

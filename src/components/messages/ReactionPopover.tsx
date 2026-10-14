@@ -50,7 +50,7 @@ export function ReactionPopover({
               {group.users.map((user, index) => (
                 <div
                   key={`${group.emoji}-${user.user_id}-${index}`}
-                  className="flex items-center gap-3 py-1.5 pl-1 min-h-[44px]"
+                  className="flex items-center gap-3 py-1.5 ps-1 min-h-11"
                 >
                   <Avatar className="w-6 h-6">
                     <AvatarImage src={user.avatar_url} />

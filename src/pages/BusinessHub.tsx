@@ -53,6 +53,9 @@ import {
 import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { BusinessOverviewSpotlight } from "@/components/spotlight/member/BusinessSpotlight";
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
@@ -110,6 +113,8 @@ export default function BusinessHub() {
   const { earnings } = useUnifiedEarnings();
   const { packages, isLoading: isLoadingPackages } = useBusinessPackages();
   const latestActions = getLatestActions(2);
+  // VTID-05117 — Spotlight (desktop + flag): /business is a storefront, its sections are collections.
+  const spotlight = useSpotlightEnabled();
 
   // Add subtle earnings indicator to Sell & Earn tab
   const navigationWithIndicator = useMemo(() => {
@@ -122,7 +127,7 @@ export default function BusinessHub() {
           ...item,
           indicator: (
             <span 
-              className="ml-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/15"
+              className="ms-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/15"
               aria-hidden="true"
             />
           )
@@ -210,7 +215,7 @@ export default function BusinessHub() {
                     {pendingCount > 0 && (
                       <Badge 
                         variant="destructive" 
-                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                        className="absolute -top-1 -end-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                       >
                         {pendingCount}
                       </Badge>
@@ -442,6 +447,74 @@ export default function BusinessHub() {
     );
   }
 
+  const dialogs = (
+    <>
+      <CreateSelectionDialog
+        open={showSelectionDialog}
+        onOpenChange={setShowSelectionDialog}
+        onSelectEvent={() => {
+          setShowSelectionDialog(false);
+          setShowCreateEvent(true);
+        }}
+        onSelectMeetup={() => {
+          setShowSelectionDialog(false);
+          setShowCreateMeetup(true);
+        }}
+      />
+      <CreateEventPopup isOpen={showCreateEvent} onClose={() => setShowCreateEvent(false)} eventContext="community" />
+      <CreateMeetupPopup isOpen={showCreateMeetup} onClose={() => setShowCreateMeetup(false)} />
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+      <CreateServicePopup isOpen={showCreateService} onClose={() => setShowCreateService(false)} />
+      <BusinessTypeSelector
+        isOpen={showBusinessTypeSelector}
+        onClose={() => setShowBusinessTypeSelector(false)}
+        onSelectEvent={() => setShowSelectionDialog(true)}
+        onSelectService={() => setShowCreateService(true)}
+      />
+      <CampaignDialog open={showCampaignDialog} onOpenChange={setShowCampaignDialog} />
+    </>
+  );
+
+  // VTID-05117 — Spotlight desktop. The search pill is left out: the legacy one only logs (SR-26).
+  // Sell & Earn without reseller access falls back to the overview, exactly like the legacy tab logic.
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.businesshub.businessHubVitana')} description={t('screens.businesshub.growYourWellnessBusinessManageClients')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype={activeTab === "overview" ? "storefront" : "collection"}
+          subNav={{ items: businessHubNavigation }}
+          header={{ title: t('screens.businesshub.businessHub'), description: t('screens.businesshub.growYourWellnessBusinessManageClients'), emoji: "💼" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setShowBusinessTypeSelector(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.businesshub.business')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          {activeTab === "overview" && (
+            <BusinessOverviewSpotlight
+              onCreate={() => setShowBusinessTypeSelector(true)}
+              onCreateService={() => setShowCreateService(true)}
+              onCreateEvent={() => setShowSelectionDialog(true)}
+              onCreateCampaign={() => setShowCampaignDialog(true)}
+            />
+          )}
+          {activeTab === "services" && <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />}
+          {activeTab === "clients" && <ClientsSubTabs />}
+          {activeTab === "sell-earn" && isReseller && <SellAndEarnSubTabs />}
+          {activeTab === "analytics" && <AnalyticsSubTabs />}
+        </ScreenFrame>
+        {dialogs}
+      </AppLayout>
+    );
+  }
+
   // Desktop layout - unchanged
   return (
     <AppLayout>
@@ -478,7 +551,7 @@ export default function BusinessHub() {
               {pendingCount > 0 && (
                 <Badge 
                   variant="destructive" 
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs z-10"
+                  className="absolute -top-2 -end-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs z-10"
                 >
                   {pendingCount}
                 </Badge>
@@ -492,7 +565,7 @@ export default function BusinessHub() {
               
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                <div className="absolute top-full start-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
                   <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.businesshub.latestActions')}</div>
                   {latestActions.map((action) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
@@ -533,7 +606,7 @@ export default function BusinessHub() {
               size="sm"
               onClick={() => setShowBusinessTypeSelector(true)}
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.businesshub.business')}
             </Button>
           </UtilityActionButton>

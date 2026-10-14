@@ -10,9 +10,13 @@ import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { VCard } from '@/components/ui/vcard';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 import { formatDate } from '@/lib/locale-format';
 import { canonicalTenantSlug, readStoredTenantSlug } from '@/lib/retired-tenants';
+import { currentRegistrySync, tenantLoginRoute } from '@/lib/tenant-registry';
 interface PublicEventData {
   id: string;
   title: string;
@@ -34,16 +38,11 @@ interface PublicEventData {
   is_sold_out?: boolean;
 }
 
-// Helper to get tenant-specific login route
-const getTenantLoginRoute = (tenantSlug: string | null): string => {
-  const tenantRoutes: Record<string, string> = {
-    maxina: '/maxina',
-    alkalma: '/alkalma',
-  };
-  // VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
-    const slug = canonicalTenantSlug(tenantSlug);
-    return slug && tenantRoutes[slug] ? tenantRoutes[slug] : '/maxina';
-};
+// Helper to get tenant-specific login route.
+// VTID-04836: a record still tagged with a retired tenant (earthlinks) goes to its successor.
+// VTID-05151: any registry tenant has its own portal; anything else keeps the /maxina default.
+const getTenantLoginRoute = (tenantSlug: string | null): string =>
+  tenantLoginRoute(canonicalTenantSlug(tenantSlug), currentRegistrySync(), '/maxina');
 
 // Check if a string is a valid UUID
 const isUUID = (str: string): boolean => {
@@ -66,6 +65,7 @@ export default function PublicEventLanding() {
   }
   
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -203,10 +203,10 @@ export default function PublicEventLanding() {
   // Get CTA icon based on config
   const getPrimaryCTAIcon = () => {
     switch (ctaConfig.icon) {
-      case 'ticket': return <Ticket className="h-4 w-4 mr-2" />;
-      case 'eye': return <Eye className="h-4 w-4 mr-2" />;
-      case 'user-plus': return <UserPlus className="h-4 w-4 mr-2" />;
-      default: return <CalendarDays className="h-4 w-4 mr-2" />;
+      case 'ticket': return <Ticket className="h-4 w-4 me-2" />;
+      case 'eye': return <Eye className="h-4 w-4 me-2" />;
+      case 'user-plus': return <UserPlus className="h-4 w-4 me-2" />;
+      default: return <CalendarDays className="h-4 w-4 me-2" />;
     }
   };
 
@@ -257,9 +257,18 @@ export default function PublicEventLanding() {
   };
 
   if (loading) {
+    if (spotlight) {
+      return (
+        <ScreenFrame archetype="detail" className="min-h-screen bg-background">
+          <ArchetypeSkeleton archetype="detail" />
+        </ScreenFrame>
+      );
+    }
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="w-full max-w-4xl">
+          <ArchetypeSkeleton archetype="detail" />
+        </div>
       </div>
     );
   }
@@ -283,58 +292,8 @@ export default function PublicEventLanding() {
   const eventTime = event.start_time ? formatDate(new Date(event.start_time), "h:mm a") : "";
   const shortDescription = event.description?.slice(0, 160) || `Join us for ${event.title}`;
 
-  return (
+  const details = (
     <>
-      <SEO
-        title={event.title}
-        description={shortDescription}
-        image={event.image_url}
-        url={publicEventUrl}
-        type="event"
-      />
-      
-      <div className="min-h-screen bg-background flex flex-col">
-        {/* Hero Section - Compact banner */}
-        {event.image_url ? (
-          <div className="relative w-full h-[300px] md:h-[380px] overflow-hidden">
-            <img
-              src={event.image_url}
-              alt={event.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background from-30% via-background/80 via-60% to-transparent" />
-          </div>
-        ) : (
-          <div className="relative w-full h-[200px] md:h-[260px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
-        )}
-
-        {/* Content Section */}
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-36 md:-mt-48 relative z-10">
-            <div className="space-y-1.5 md:space-y-2">
-              {/* Event Title */}
-              <div className="space-y-2">
-                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-                  {event.title}
-                </h1>
-                {event.metadata?.subtitle && (
-                  <p className="text-sm md:text-base font-medium text-muted-foreground">
-                    {event.metadata.subtitle}
-                  </p>
-                )}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                    {event.event_type}
-                  </div>
-                  {event.has_tickets && event.lowest_ticket_price !== null && (
-                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
-                      <Ticket className="h-3.5 w-3.5" />
-                      {event.lowest_ticket_price === 0 ? "Free" : `From ${(event?.metadata?.display_currency || 'USD').toUpperCase() === 'EUR' ? '€' : '$'}${event.lowest_ticket_price}`}
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* Event Details - Vertical stacked layout */}
               <div className="grid gap-2 md:gap-3 md:grid-cols-2">
                 {event.start_time && (
@@ -375,6 +334,10 @@ export default function PublicEventLanding() {
                 </div>
               </div>
 
+    </>
+  );
+  const description = (
+    <>
               {/* Description */}
               {event.description && (
                 <div className="max-w-3xl">
@@ -382,9 +345,13 @@ export default function PublicEventLanding() {
                 </div>
               )}
 
+    </>
+  );
+  const ctaPanel = (
+    <>
               {/* Dual CTA Panel */}
               <div className="mt-3 md:mt-4">
-                <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
+                <div className="rounded-2xl border border-border/60 bg-card/70 dark:bg-card/40 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
                   <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
                     
                     {/* Left: Primary Event CTA */}
@@ -409,9 +376,9 @@ export default function PublicEventLanding() {
                         disabled={ctaConfig.disabled}
                         className={`w-full md:w-auto px-6 ${
                           ctaConfig.variant === 'ticket' 
-                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' 
+                            ? 'bg-gradient-to-r from-status-success to-category-1 hover:from-status-success/90 hover:to-category-1/90' 
                             : ctaConfig.variant === 'view-ticket'
-                            ? 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700'
+                            ? 'bg-gradient-to-r from-category-2 to-sys-member-accent hover:from-category-2/90 hover:to-sys-member-accent/90'
                             : ctaConfig.variant === 'disabled'
                             ? 'bg-muted text-muted-foreground cursor-not-allowed'
                             : ''
@@ -426,16 +393,16 @@ export default function PublicEventLanding() {
                     </div>
                     
                     {/* Divider */}
-                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
+                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-border to-transparent" />
                     <div className="flex items-center justify-center gap-3 md:hidden">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-border" />
                       <span className="text-xs text-muted-foreground font-medium">{t('screens.publiceventlanding.text')}</span>
-                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-border" />
                     </div>
                     
                     {/* Right: Community CTA */}
                     <div className="flex-1 flex flex-col items-start md:items-end gap-2">
-                      <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
+                      <div className="flex items-start gap-1.5 max-w-72 md:max-w-xs text-start md:text-end">
                         <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
                           {t('screens.publiceventlanding.discoverMoreEventsLongevityCommunities')}
@@ -458,7 +425,7 @@ export default function PublicEventLanding() {
                         {user ? "Explore VITANA" : "Join in VITANA"}
                       </Button>
                       {!user && (
-                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">{t('screens.publiceventlanding.youLlSignCreateAccountNext')}
+                        <p className="text-[11px] text-muted-foreground/70 text-start md:text-end max-w-xs">{t('screens.publiceventlanding.youLlSignCreateAccountNext')}
                         </p>
                       )}
                     </div>
@@ -466,10 +433,10 @@ export default function PublicEventLanding() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
+    </>
+  );
+  const footer = (
+    <>
         {/* Footer */}
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
@@ -478,10 +445,95 @@ export default function PublicEventLanding() {
             </p>
           </div>
         </div>
+    </>
+  );
+
+  return (
+    <>
+      <SEO
+        title={event.title}
+        description={shortDescription}
+        image={event.image_url}
+        url={publicEventUrl}
+        type="event"
+      />
+      
+      {spotlight ? (
+        // VTID-05117: Spotlight on → the `detail` archetype; the event is the one spotlight item.
+        <ScreenFrame archetype="detail" className="min-h-screen bg-background">
+          <div className="space-y-5">
+            <VCard
+              size="spotlight"
+              priority
+              media={{ src: event.image_url ?? null, alt: event.title }}
+              eyebrow={event.event_type}
+              title={<h1>{event.title}</h1>}
+              meta={event.metadata?.subtitle}
+              body={event.has_tickets && event.lowest_ticket_price !== null ? (event.lowest_ticket_price === 0 ? t('spotlightPublic.event.free') : t('spotlightPublic.event.fromPrice', { price: `${(event?.metadata?.display_currency || 'USD').toUpperCase() === 'EUR' ? '€' : '$'}${event.lowest_ticket_price}` })) : undefined}
+            />
+            {details}
+            {description}
+            {ctaPanel}
+            {footer}
+          </div>
+        </ScreenFrame>
+      ) : (
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Hero Section - Compact banner */}
+        {event.image_url ? (
+          <div className="relative w-full h-72 md:h-96 overflow-hidden">
+            <img
+              src={event.image_url}
+              alt={event.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background from-30% via-background/80 via-60% to-transparent" />
+          </div>
+        ) : (
+          <div className="relative w-full h-48 md:h-64 overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
+        )}
+
+        {/* Content Section */}
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-36 md:-mt-48 relative z-10">
+            <div className="space-y-1.5 md:space-y-2">
+              {/* Event Title */}
+              <div className="space-y-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {event.title}
+                </h1>
+                {event.metadata?.subtitle && (
+                  <p className="text-sm md:text-base font-medium text-muted-foreground">
+                    {event.metadata.subtitle}
+                  </p>
+                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                    {event.event_type}
+                  </div>
+                  {event.has_tickets && event.lowest_ticket_price !== null && (
+                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
+                      <Ticket className="h-3.5 w-3.5" />
+                      {event.lowest_ticket_price === 0 ? "Free" : `From ${(event?.metadata?.display_currency || 'USD').toUpperCase() === 'EUR' ? '€' : '$'}${event.lowest_ticket_price}`}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {details}
+              {description}
+              {ctaPanel}
+            </div>
+          </div>
+        </div>
+
+        {footer}
       </div>
+      )}
 
       {/* Ticket Purchase Dialog */}
       <Dialog open={showTicketDialog} onOpenChange={setShowTicketDialog}>
+        {/* design-allow-next-line: viewport-relative scroll limit of the ticket dialog; the contract has no viewport-height token */}
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">

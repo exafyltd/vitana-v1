@@ -705,7 +705,7 @@ function MobileSupport() {
                               <img src={url} alt="" className="w-full h-full object-cover" />
                               <button
                                 onClick={() => removeAttachment(i)}
-                                className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
+                                className="absolute top-0 end-0 p-0.5 bg-destructive text-destructive-foreground rounded-es-lg"
                               >
                                 <X className="h-3 w-3" />
                               </button>
@@ -792,7 +792,7 @@ function MobileSupport() {
                   <Accordion type="single" collapsible className="w-full">
                     {FAQ_KEYS.map((k) => (
                       <AccordionItem key={k} value={k}>
-                        <AccordionTrigger className="text-sm text-left">
+                        <AccordionTrigger className="text-sm text-start">
                           {t(`mobilesupport.faq${k}Q`)}
                         </AccordionTrigger>
                         <AccordionContent className="text-sm text-muted-foreground">
@@ -806,7 +806,7 @@ function MobileSupport() {
 
               <button
                 onClick={() => navigate("/maxina_support")}
-                className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 bg-muted/40 border border-border/50 hover:bg-muted/60 transition-colors text-left"
+                className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 bg-muted/40 border border-border/50 hover:bg-muted/60 transition-colors text-start"
               >
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-primary/10 shrink-0">
                   <BookOpen className="w-4 h-4 text-primary" />

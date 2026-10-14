@@ -14,6 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { messagesNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { MEMBER_ROWS } from "@/components/spotlight/member/MemberSpotlight";
 
 const inspirationTemplates = [
   {
@@ -53,6 +57,71 @@ const inspirationTemplates = [
 export default function Inspiration() {
   const [inspirationActionOpen, setInspirationActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("templates");
+  // VTID-05117 — Spotlight (desktop + flag): the templates as row cards with a working Copy; the
+  // legacy "Send" only logs and the Favorites/Recent/Custom tabs are always empty, so they are left
+  // out (SR-26). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.messages.communicationInspirationMessages')} description={t('spotlightMember.inbox.inspirationDesc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="conversation"
+          subNav={{ items: messagesNavigation }}
+          header={{ title: t('screens.messages.communicationInspiration'), description: t('spotlightMember.inbox.inspirationDesc'), emoji: "💡" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setInspirationActionOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.messages.templateActions')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          <div className="mx-auto flex max-w-stage flex-col gap-6">
+            {inspirationTemplates.map((category) => (
+              <section key={category.categoryKey} className="flex flex-col gap-2">
+                <h2 className="flex items-center gap-2 text-base font-semibold">
+                  <Lightbulb className="size-5 text-status-warning" aria-hidden="true" />
+                  {t(category.categoryKey)}
+                </h2>
+                <ul className={MEMBER_ROWS}>
+                  {category.templates.map((template) => {
+                    const text = t(template.textKey);
+                    return (
+                      <VCard
+                        key={template.textKey}
+                        as="li"
+                        size="row"
+                        title={
+                          <span className="flex items-center gap-2">
+                            <span aria-hidden="true">{template.icon}</span>
+                            <span className="min-w-0">{text}</span>
+                          </span>
+                        }
+                        actions={
+                          <Button variant="outline" size="sm" className="gap-1" onClick={() => void navigator.clipboard?.writeText(text)}>
+                            <Copy className="size-3" />
+                            {t('screens.messages.copy')}
+                          </Button>
+                        }
+                      />
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </ScreenFrame>
+        <InspirationMasterActionPopup open={inspirationActionOpen} onOpenChange={setInspirationActionOpen} />
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO 
@@ -77,7 +146,7 @@ export default function Inspiration() {
             />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setInspirationActionOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.messages.templateActions')}
             </Button>
           </UtilityActionButton>
@@ -123,7 +192,7 @@ export default function Inspiration() {
                               size="sm"
                               onClick={() => navigator.clipboard.writeText(text)}
                             >
-                              <Copy className="w-3 h-3 mr-1" />
+                              <Copy className="w-3 h-3 me-1" />
                               {t('screens.messages.copy')}
                             </Button>
                             <Button
@@ -131,7 +200,7 @@ export default function Inspiration() {
                               size="sm"
                               onClick={() => console.log(`Forwarding: ${text}`)}
                             >
-                              <Send className="w-3 h-3 mr-1" />
+                              <Send className="w-3 h-3 me-1" />
                               {t('screens.messages.send')}
                             </Button>
                           </div>

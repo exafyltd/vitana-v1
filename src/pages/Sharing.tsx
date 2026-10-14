@@ -92,7 +92,7 @@ function Sharing() {
             <ExpandableSearchButton placeholder={t('screens.sharing.searchSharingActivities')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.sharing.newCampaign')}
             </Button>
           </UtilityActionButton>

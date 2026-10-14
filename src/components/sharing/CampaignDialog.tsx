@@ -502,7 +502,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                             type="button"
                             variant="destructive"
                             size="icon"
-                            className="absolute top-2 right-2"
+                            className="absolute top-2 end-2"
                             onClick={() => {
                               setSelectedImage(null);
                               setImagePreviewUrl(null);
@@ -563,7 +563,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                         <p className="text-xs text-muted-foreground">{t('screens.sharing.connectYourAccountsAutopublishYourCampaign')}</p>
                       </div>
                     </div>
-                    <div className="grid gap-3 pl-4">
+                    <div className="grid gap-3 ps-4">
                       {['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'tiktok'].map((key) => {
                         const info = CHANNEL_INFO[key];
                         const isConnected = getChannelConnectionStatus(key);
@@ -728,7 +728,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                           <AlertCircle className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
                           <AlertTitle className="text-foreground">{t('screens.sharing.consentRequired')}</AlertTitle>
                           <AlertDescription className="text-muted-foreground text-sm">{t('screens.sharing.someAudienceMembersMayNotHave', { value0: " ", value1: selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS" })}
-                            <Button variant="link" className="h-auto p-0 ml-1 text-foreground underline">
+                            <Button variant="link" className="h-auto p-0 ms-1 text-foreground underline">
                               {t('screens.sharing.requestConsent')}
                             </Button>
                           </AlertDescription>
@@ -760,7 +760,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                         <p className="text-xs text-muted-foreground">{t('screens.sharing.availableAfterYouCreateCampaignVia')}</p>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-2 pl-4">
+                    <div className="flex flex-wrap gap-2 ps-4">
                       {['WhatsApp', 'Viber', 'Email', 'SMS', 'Copy Link'].map((channel) => (
                         <div
                           key={channel}
@@ -770,7 +770,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-muted-foreground pl-4">
+                    <p className="text-xs text-muted-foreground ps-4">
                       {t('screens.sharing.opensYourPersonalAppsShareWith')}
                     </p>
                   </div>
@@ -891,11 +891,11 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
             >
               {step === 1 ? (
                 <>
-                  <X className="w-4 h-4 mr-2" />{t('screens.sharing.cancel')}
+                  <X className="w-4 h-4 me-2" />{t('screens.sharing.cancel')}
                 </>
               ) : (
                 <>
-                  <ChevronLeft className="w-4 h-4 mr-2" />
+                  <ChevronLeft className="w-4 h-4 me-2" />
                   {t('screens.sharing.back')}
                 </>
               )}
@@ -906,9 +906,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 onClick={() => setStep(step + 1)}
                 disabled={!canProceed()}
                 size="lg"
-                className="min-w-[160px] bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-lg transition-all"
+                className="min-w-40 bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-lg transition-all"
               >{t('screens.sharing.continue')}
-                <ChevronRight className="w-4 h-4 ml-2" />
+                <ChevronRight className="w-4 h-4 ms-2" />
               </Button>
             ) : (
               <>
@@ -931,7 +931,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       className="min-w-[180px] bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white hover:shadow-xl transition-all"
                     >
                       {isActivating ? "Activating..." : "Save & Activate"}
-                      <Rocket className="w-4 h-4 ml-2" />
+                      <Rocket className="w-4 h-4 ms-2" />
                     </Button>
                   </div>
                 ) : (
@@ -945,7 +945,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     {createCampaign.isPending || updateCampaign.isPending
                       ? (isEditMode ? "Updating..." : "Creating Campaign...")
                       : (isEditMode ? "Update Campaign" : "Create Campaign")}
-                    <Rocket className="w-4 h-4 ml-2" />
+                    <Rocket className="w-4 h-4 ms-2" />
                   </Button>
                 )}
               </>

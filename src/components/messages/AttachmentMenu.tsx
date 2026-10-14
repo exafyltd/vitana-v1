@@ -71,7 +71,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
           variant="ghost"
           className="w-full justify-start h-10 px-3"
         >
-          <Calendar className="w-5 h-5 mr-3 text-blue-500" />
+          <Calendar className="w-5 h-5 me-3 text-blue-500" />
           <span className="text-sm">{t('screens.messages.sendCalendarInvite')}</span>
         </Button>
       </DialogTrigger>
@@ -202,7 +202,7 @@ export function AttachmentMenu({
             }}
             title={t('screens.messages.sendFunds')}
           >
-            <Send className="w-5 h-5 mr-3 text-green-600" />
+            <Send className="w-5 h-5 me-3 text-green-600" />
             <span className="text-sm font-medium">{t('screens.messages.sendFunds')}</span>
           </Button>
           
@@ -224,7 +224,7 @@ export function AttachmentMenu({
             }}
             title={t('screens.messages.requestPayment')}
           >
-            <DollarSign className="w-5 h-5 mr-3 text-green-500" />
+            <DollarSign className="w-5 h-5 me-3 text-green-500" />
             <span className="text-sm">{t('screens.messages.requestPayment')}</span>
           </Button>
           
@@ -238,7 +238,7 @@ export function AttachmentMenu({
               onFileAttach();
             }}
           >
-            <FileText className="w-5 h-5 mr-3 text-purple-500" />
+            <FileText className="w-5 h-5 me-3 text-purple-500" />
             <span className="text-sm">{t('screens.messages.attachFile')}</span>
           </Button>
         </div>

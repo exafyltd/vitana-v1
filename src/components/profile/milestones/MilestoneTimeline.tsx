@@ -51,7 +51,7 @@ export function MilestoneTimeline({
             className="rounded-full"
             onClick={() => { setEditingMilestone(null); setEditorOpen(true); }}
           >
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 me-1" />
             {translate('milestones.add', 'Add')}
           </Button>
         )}
@@ -69,7 +69,7 @@ export function MilestoneTimeline({
               className="mt-3"
               onClick={() => { setEditingMilestone(null); setEditorOpen(true); }}
             >
-              <Plus className="h-4 w-4 mr-1" />
+              <Plus className="h-4 w-4 me-1" />
               {translate('milestones.addFirst', 'Add your first milestone')}
             </Button>
           )}
@@ -77,7 +77,7 @@ export function MilestoneTimeline({
       ) : (
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-6 top-2 bottom-2 w-0.5 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent" />
+          <div className="absolute start-6 top-2 bottom-2 w-0.5 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent" />
 
           <div className="space-y-4">
             {displayMilestones.map((milestone, index) => (

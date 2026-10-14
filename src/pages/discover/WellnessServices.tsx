@@ -310,7 +310,7 @@ function WellnessServicesLegacy() {
               size="sm"
               onClick={() => setMasterActionOpen(true)}
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
@@ -449,7 +449,7 @@ function WellnessServicesLegacy() {
                     <Card key={bookmark.id} className="group hover:shadow-lg transition-all bg-white/90 relative">
                       <button
                         onClick={() => removeBookmark('wellness_service', bookmark.item_id)}
-                        className="absolute top-2 right-2 bg-yellow-400 p-2 rounded-full hover:bg-yellow-500 transition-colors z-10"
+                        className="absolute top-2 end-2 bg-yellow-400 p-2 rounded-full hover:bg-yellow-500 transition-colors z-10"
                       >
                         <Bookmark className="h-4 w-4 fill-white text-white" />
                       </button>

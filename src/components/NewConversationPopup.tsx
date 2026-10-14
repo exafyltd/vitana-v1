@@ -434,7 +434,7 @@ export default function NewConversationPopup({
                   <Badge
                     key={recipient.user_id}
                     variant="secondary"
-                    className="flex items-center gap-1 pr-1"
+                    className="flex items-center gap-1 pe-1"
                   >
                     <Avatar className="w-4 h-4">
                       <AvatarImage src={recipient.avatar_url} />
@@ -464,9 +464,9 @@ export default function NewConversationPopup({
               {isGroupMode ? translate('inbox.newConversation.addMore') : translate('inbox.newConversation.searchPeople')}
             </Label>
             <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute start-3 top-3 h-4 w-4 text-muted-foreground" />
               {isSearching && (
-                <Loader2 className="absolute right-3 top-3 h-4 w-4 text-muted-foreground animate-spin" />
+                <Loader2 className="absolute end-3 top-3 h-4 w-4 text-muted-foreground animate-spin" />
               )}
               <Input
                 id="search"
@@ -474,7 +474,7 @@ export default function NewConversationPopup({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchUsers()}
-                className="pl-10 pr-10"
+                className="ps-10 pe-10"
               />
             </div>
             {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (

@@ -55,7 +55,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
           {/* Close Buttons */}
           <button
             onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full 
+            className="absolute top-4 end-4 w-10 h-10 rounded-full 
               bg-white/30 backdrop-blur-md hover:bg-white/40 
               flex items-center justify-center transition-all z-10"
           >
@@ -64,7 +64,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
           
           <button
             onClick={() => onOpenChange(false)}
-            className="md:hidden absolute top-4 left-4 w-10 h-10 rounded-full 
+            className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full 
               bg-white/30 backdrop-blur-md hover:bg-white/40 
               flex items-center justify-center transition-all z-10"
           >

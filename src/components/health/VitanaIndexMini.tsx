@@ -67,7 +67,7 @@ function VitanaIndexMiniBase({
   if (variant === "badge") {
     return (
       <div 
-        className="inline-flex items-center gap-1.5 rounded-full cursor-pointer px-2.5 py-1 text-[12.5px] font-medium bg-[color-mix(in_oklab,hsl(var(--accent))_14%,transparent)] ring-1 ring-[hsl(var(--accent))/28] text-foreground before:content-[''] before:inline-block before:h-3 before:w-[2px] before:rounded-full before:bg-[hsl(var(--accent))] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
+        className="inline-flex items-center gap-1.5 rounded-full cursor-pointer px-2.5 py-1 text-[12.5px] font-medium bg-[color-mix(in_oklab,hsl(var(--accent))_14%,transparent)] ring-1 ring-[hsl(var(--accent))/28] text-foreground before:content-[''] before:inline-block before:h-3 before:w-0.5 before:rounded-full before:bg-[hsl(var(--accent))] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
         onClick={handleClick}
         tabIndex={0}
         role="button"

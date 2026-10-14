@@ -61,9 +61,9 @@ export function EventGameCelebration({
           }}
         >
           {/* Decorative glow + footer wave — purely cosmetic */}
-          <div className="pointer-events-none absolute -top-8 -left-8 w-40 h-40 rounded-full bg-white/30 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-white/20 blur-2xl" />
-          <DecorativeWave className="pointer-events-none absolute bottom-0 left-0 w-full h-16 text-white/50" />
+          <div className="pointer-events-none absolute -top-8 -start-8 w-40 h-40 rounded-full bg-white/30 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-6 -end-6 w-32 h-32 rounded-full bg-white/20 blur-2xl" />
+          <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-16 text-white/50" />
 
           <div className="relative w-20 h-20 rounded-full bg-white/60 backdrop-blur flex items-center justify-center ring-4 ring-white/50 shadow-[0_0_30px_rgba(31,143,199,0.5)]">
             <Trophy className="w-10 h-10 text-[#1B8FC7]" />

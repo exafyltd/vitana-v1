@@ -23,7 +23,7 @@ export function WhySubscribeFAQ() {
         <Accordion type="single" collapsible>
           {ITEMS.map((i) => (
             <AccordionItem key={i} value={`q${i}`}>
-              <AccordionTrigger className="text-sm text-left">{t(`billing.faq.q${i}`)}</AccordionTrigger>
+              <AccordionTrigger className="text-sm text-start">{t(`billing.faq.q${i}`)}</AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
                 {t(`billing.faq.a${i}`)}
               </AccordionContent>

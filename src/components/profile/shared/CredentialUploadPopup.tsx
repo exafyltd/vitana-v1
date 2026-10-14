@@ -208,7 +208,7 @@ export function CredentialUploadPopup({
               </div>
 
               <Button onClick={addNewSpecialty} className="mt-4" disabled={!newSpecialtyTitle}>
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 me-2" />
                 {t('screens.profile.addSpecialty')}
               </Button>
             </CardContent>
@@ -304,7 +304,7 @@ export function CredentialUploadPopup({
                     onClick={() => addCertification(specialty.id)}
                     disabled={!certTitle || !certIssuer}
                   >
-                    <Plus className="h-4 w-4 mr-1" />
+                    <Plus className="h-4 w-4 me-1" />
                     {t('screens.profile.addCertification')}
                   </Button>
                 </div>

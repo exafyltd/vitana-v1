@@ -52,6 +52,9 @@ import { AutopilotCard } from "@/components/journey/AutopilotCard";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { JourneyHero, JourneyRail } from "@/components/spotlight/member/JourneySpotlight";
 
 interface Recommendation {
   id: string;
@@ -193,6 +196,8 @@ export default function AutopilotDashboard() {
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const generatePlan = useGenerateGoalPlan();
+  // VTID-05117 — Spotlight (desktop + flag): dashboard frame; phones and flag-off keep the layouts below.
+  const spotlight = useSpotlightEnabled();
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
@@ -406,7 +411,7 @@ export default function AutopilotDashboard() {
 
   const keepCheckingIn = (
     <div className="text-center text-sm text-muted-foreground pb-4">
-      <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
+      <Sparkles className="w-4 h-4 inline-block me-1 align-text-top" />
       {t("screens.autopilotdashboard.keepCheckingIn")}
     </div>
   );
@@ -469,6 +474,67 @@ export default function AutopilotDashboard() {
       </div>
     </UtilityActionButton>
   );
+
+  // ── Spotlight (desktop + flag) ─────────────────────────────────────────
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t("screens.autopilotdashboard.myJourney")} description={t("screens.autopilotdashboard.northStarTagline")} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="dashboard"
+          header={{ title: t("screens.autopilotdashboard.myJourney"), description: t("screens.autopilotdashboard.northStarTagline"), emoji: "🧭" }}
+          utility={{
+            children: (
+              <>
+                <ExpandableSearchButton
+                  placeholder={t("screens.autopilotdashboard.searchTasks")}
+                  onSearch={setSearchQuery}
+                  dropdownItems={searchResults}
+                  onItemClick={() => {
+                    setSearchQuery("");
+                    setAutopilotOpen(true);
+                  }}
+                />
+                <UniversalCalendarButton />
+              </>
+            ),
+            afterGiftVoucherChildren: (
+              <>
+                <VitanaIndexChip />
+                <AutopilotChip pendingCount={autopilotCount} onClick={handleOpenAutopilot} />
+              </>
+            ),
+          }}
+          rail={<JourneyRail pendingCount={autopilotCount} onOpenAutopilot={handleOpenAutopilot} />}
+        >
+          <div className="flex flex-col gap-4">
+            <GuidedModeSwitch className="px-1" />
+            <JourneyHero
+              goal={goal}
+              journey={journey}
+              loading={journeyLoading}
+              error={journeyError}
+              onSetGoal={handleSetGoal}
+              onRetry={() => refetchJourney()}
+              onOpenPlan={() => setPlanSheetOpen(true)}
+            />
+            {todaysGoal}
+            {matchesPreview}
+            {eventsPreview}
+            <VitanaIndexTrajectoryCard />
+            <section className="flex flex-col gap-4" data-testid="desktop-audiobook">
+              <JourneyHowItWorks />
+              <AudiobookReminderControl />
+              <GuidedJourneyCatalog className="pt-1" />
+            </section>
+          </div>
+        </ScreenFrame>
+        <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+        <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} onSaved={handleGoalSaved} />
+        <GoalPlanSheet open={planSheetOpen} onOpenChange={setPlanSheetOpen} />
+      </AppLayout>
+    );
+  }
 
   // ── Mobile layout ──────────────────────────────────────────────────────
   if (isMobile) {

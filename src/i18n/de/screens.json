@@ -12431,6 +12431,12 @@
       "social": "Gemeinschaft",
       "travel": "Reisen",
       "career": "Karriere"
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana liest deine Aktivität, deinen Schlaf, deine Herzwerte und deine Körpermaße aus Apple Health – nur lesend und nur für die Bereiche, denen du in der App zugestimmt hast. Vitana schreibt nie etwas in Apple Health.",
+        "privacyPolicyTitle": "Datenschutzerklärung"
+      }
     }
   }
 }

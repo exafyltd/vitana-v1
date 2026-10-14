@@ -59,7 +59,7 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
             >
               {isActivating ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.business.activating')}
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />{t('screens.business.activating')}
                 </>
               ) : (
                 "Activate Reseller Mode"

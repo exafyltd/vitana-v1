@@ -345,11 +345,11 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "w-full justify-start text-start font-normal",
                           !formData.date && "text-muted-foreground"
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon className="me-2 h-4 w-4" />
                         {formData.date ? formatDate(formData.date, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
@@ -445,7 +445,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
           <div>
             {currentStep > 1 && (
               <Button variant="outline" onClick={handlePrevious}>
-                <ChevronLeft className="w-4 h-4 mr-2" />
+                <ChevronLeft className="w-4 h-4 me-2" />
                 {t('screens.common.previous')}
               </Button>
             )}
@@ -461,7 +461,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                   className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
                   onClick={handlePublish}
                 >
-                  <Sparkles className="w-4 h-4 mr-2" />
+                  <Sparkles className="w-4 h-4 me-2" />
                   {t('screens.common.publishOfferService')}
                 </Button>
               </>
@@ -472,7 +472,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                 </Button>
                 <Button onClick={handleNext} disabled={currentStep === 1 && !selectedServiceType}>
                   {t('screens.common.next')}
-                  <ChevronRight className="w-4 h-4 ml-2" />
+                  <ChevronRight className="w-4 h-4 ms-2" />
                 </Button>
               </>
             )}

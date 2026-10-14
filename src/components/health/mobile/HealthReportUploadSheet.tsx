@@ -231,8 +231,8 @@ export function HealthReportUploadSheet({
             <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.testDate')}</label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="w-full justify-start text-start font-normal">
+                  <CalendarIcon className="me-2 h-4 w-4" />
                   {formatDate(testDate, "PPP")}
                 </Button>
               </PopoverTrigger>
@@ -257,9 +257,9 @@ export function HealthReportUploadSheet({
             onClick={handleUpload}
           >
             {isUploading ? (
-              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t('screens.health.uploading')}</>
+              <><Loader2 className="w-4 h-4 me-2 animate-spin" /> {t('screens.health.uploading')}</>
             ) : (
-              <><CheckCircle className="w-4 h-4 mr-2" /> {t('screens.health.uploadReport')}</>
+              <><CheckCircle className="w-4 h-4 me-2" /> {t('screens.health.uploadReport')}</>
             )}
           </Button>
         </div>

@@ -211,7 +211,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                       onClick={() => handleTagToggle(tag)}
                     >
                       {tag}
-                      {selectedTags.includes(tag) && <X className="w-3 h-3 ml-1" />}
+                      {selectedTags.includes(tag) && <X className="w-3 h-3 ms-1" />}
                     </Badge>
                   ))}
                 </div>

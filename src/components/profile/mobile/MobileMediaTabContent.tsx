@@ -80,7 +80,7 @@ export function MobileMediaTabContent({
             className="mt-2"
             size="sm"
           >
-            <Upload className="h-4 w-4 mr-2" />
+            <Upload className="h-4 w-4 me-2" />
             {translate('profileMedia.uploadCta', 'Upload Media')}
           </Button>
         </div>
@@ -106,7 +106,7 @@ export function MobileMediaTabContent({
             {item.type === 'video' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                 <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                  <Play className="h-4 w-4 text-foreground ml-0.5" />
+                  <Play className="h-4 w-4 text-foreground ms-0.5" />
                 </div>
               </div>
             )}

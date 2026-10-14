@@ -153,11 +153,11 @@ export function ActivateCampaignDialog({
                       <Button
                         variant="outline"
                         className={cn(
-                          "flex-1 justify-start text-left font-normal",
+                          "flex-1 justify-start text-start font-normal",
                           !scheduledDate && "text-muted-foreground"
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon className="me-2 h-4 w-4" />
                         {scheduledDate ? formatDate(scheduledDate, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
@@ -197,12 +197,12 @@ export function ActivateCampaignDialog({
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 me-2 animate-spin" />
                 {mode === "scheduled" ? "Scheduling..." : "Activating..."}
               </>
             ) : (
               <>
-                <CheckCircle className="w-4 h-4 mr-2" />
+                <CheckCircle className="w-4 h-4 me-2" />
                 {mode === "scheduled" ? "Schedule Campaign" : "Activate Campaign"}
               </>
             )}

@@ -358,7 +358,7 @@ export const VideoPlayerModal = ({
         />
 
         {/* Custom premium close button */}
-        <div className="fixed top-6 right-6 z-[9999] pointer-events-none">
+        <div className="fixed top-6 end-6 z-[9999] pointer-events-none">
           <DialogClose asChild>
             <button
               aria-label={t('screens.community.close')}
@@ -387,7 +387,7 @@ export const VideoPlayerModal = ({
                 handleNavigation(onPrevious);
                 handleInteraction();
               }}
-              className={`absolute left-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
+              className={`absolute start-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
                 bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
                 flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto
                 hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
@@ -405,7 +405,7 @@ export const VideoPlayerModal = ({
                 handleNavigation(onNext);
                 handleInteraction();
               }}
-              className={`absolute right-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
+              className={`absolute end-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
                 bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
                 flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto
                 hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
@@ -476,7 +476,7 @@ export const VideoPlayerModal = ({
                     onClick={handleManualPlay}
                     className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110"
                   >
-                    <Play className="w-10 h-10 text-white fill-white ml-1" />
+                    <Play className="w-10 h-10 text-white fill-white ms-1" />
                   </button>
                 </div>
               )}
@@ -516,13 +516,13 @@ export const VideoPlayerModal = ({
                     {isPlaying ? (
                       <Pause className="w-10 h-10 text-white fill-white" />
                     ) : (
-                      <Play className="w-10 h-10 text-white fill-white ml-1" />
+                      <Play className="w-10 h-10 text-white fill-white ms-1" />
                     )}
                   </button>
                 </div>
 
                 {/* Bottom left: Duration & Views */}
-                <div className="absolute bottom-16 left-4 flex items-center gap-3 pointer-events-none">
+                <div className="absolute bottom-16 start-4 flex items-center gap-3 pointer-events-none">
                   <div className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10">
                     <span className="text-white text-sm font-medium">
                       {formatTime(currentTime)} / {formatTime(duration)}
@@ -535,7 +535,7 @@ export const VideoPlayerModal = ({
                 </div>
 
                 {/* Bottom right: Volume & Share */}
-                <div className="absolute bottom-16 right-4 flex items-center gap-2 pointer-events-auto">
+                <div className="absolute bottom-16 end-4 flex items-center gap-2 pointer-events-auto">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -559,7 +559,7 @@ export const VideoPlayerModal = ({
                   >
                     <MessageCircle className="w-5 h-5 text-white" />
                     {!!video.commentsCount && (
-                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
+                      <span className="absolute -top-1 -end-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
                         {video.commentsCount}
                       </span>
                     )}
@@ -589,7 +589,7 @@ export const VideoPlayerModal = ({
               )}
 
               {/* Gradient progress bar */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-10">
+              <div className="absolute bottom-0 start-0 end-0 h-1 bg-white/10 z-10">
                 <div
                   className="h-full transition-all duration-200"
                   style={{
@@ -601,7 +601,7 @@ export const VideoPlayerModal = ({
 
               {/* Title overlay when paused */}
               {!isPlaying && videoState !== 'autoplay-blocked' && videoState !== 'error' && videoState !== 'stalled' && (
-                <div className="absolute top-0 left-0 right-0 p-6 bg-gradient-to-b from-black/70 to-transparent z-10">
+                <div className="absolute top-0 start-0 end-0 p-6 bg-gradient-to-b from-black/70 to-transparent z-10">
                   <h3 className="text-white text-xl font-semibold">{video.title}</h3>
                 </div>
               )}

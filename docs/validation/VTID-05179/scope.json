@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05179",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/orb/**",
+    "apps/mobile/tests/orb/**",
+    "apps/mobile/tools/orb-fake-gateway/**",
+    "apps/mobile/modules/vitana-voice/fixtures/**",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "apps/mobile/.gitignore",
+    "scripts/native/orb-parity.mjs",
+    "scripts/native/__tests__/orb-parity.test.mjs",
+    ".github/workflows/NATIVE-CI.yml",
+    "docs/programs/native-app/NATIVE-APP-PLAN.md",
+    "docs/validation/VTID-05179/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05179/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -101,7 +101,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               </p>
             </div>
             <Button variant="outline" onClick={onEditVisibility} className="rounded-full shadow-sm">
-              <Settings className="h-4 w-4 mr-2" />
+              <Settings className="h-4 w-4 me-2" />
               {t('screens.profile.privacySettings')}
             </Button>
           </div>
@@ -132,7 +132,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               
               {profile.vitanaPercentile && (
                 <Badge className="mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full px-4 py-1.5 shadow-lg">
-                  <Trophy className="h-3.5 w-3.5 mr-1.5" />{t('screens.profile.topValue02', { value0: 100 - profile.vitanaPercentile })}
+                  <Trophy className="h-3.5 w-3.5 me-1.5" />{t('screens.profile.topValue02', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
             </div>
@@ -233,7 +233,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
           <CardTitle className="flex items-center justify-between">
             <span className="text-lg">{t('screens.profile.recentHealthInsights')}</span>
             <Badge variant="outline" className="text-xs rounded-full border-emerald-300 dark:border-emerald-700 bg-emerald-50/80 dark:bg-emerald-950/40">
-              <TrendingUp className="h-3 w-3 mr-1 text-emerald-600 dark:text-emerald-400" />
+              <TrendingUp className="h-3 w-3 me-1 text-emerald-600 dark:text-emerald-400" />
               {t('screens.profile.improving')}
             </Badge>
           </CardTitle>
@@ -271,19 +271,19 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <div className="space-y-3 pt-2">
               <div className="p-4 bg-gradient-to-br from-orange-50/90 to-rose-50/80 dark:from-orange-950/50 dark:to-rose-950/40 rounded-2xl border border-orange-200/50 dark:border-orange-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <span className="text-lg mr-2">🎉</span>
+                  <span className="text-lg me-2">🎉</span>
                   <strong className="text-orange-700 dark:text-orange-400">{t('screens.profile.greatProgress')}</strong>{t('screens.profile.yourExerciseConsistencyHasImprovedBy')}
                 </p>
               </div>
               <div className="p-4 bg-gradient-to-br from-indigo-50/90 to-purple-50/80 dark:from-indigo-950/50 dark:to-purple-950/40 rounded-2xl border border-indigo-200/50 dark:border-indigo-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <span className="text-lg mr-2">😴</span>
+                  <span className="text-lg me-2">😴</span>
                   <strong className="text-indigo-700 dark:text-indigo-400">{t('screens.profile.sleepQuality')}</strong>{t('screens.profile.youReAveraging75Hours')}
                 </p>
               </div>
               <div className="p-4 bg-gradient-to-br from-green-50/90 to-emerald-50/80 dark:from-green-950/50 dark:to-emerald-950/40 rounded-2xl border border-green-200/50 dark:border-green-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <span className="text-lg mr-2">🥗</span>
+                  <span className="text-lg me-2">🥗</span>
                   <strong className="text-green-700 dark:text-green-400">{t('screens.profile.nutritionTip')}</strong>{t('screens.profile.considerAddingMoreLeafyGreensBoost')}
                 </p>
               </div>

@@ -24,12 +24,143 @@ import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
 import { HealthConsentSwitch } from "@/components/settings/HealthConsentSwitch";
 import { HealthConsentSourcesDialog } from "@/components/settings/HealthConsentSourcesDialog";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { KeyRound, Trash2 } from "lucide-react";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
+import { SettingRow } from "@/components/spotlight/member/SettingRow";
 
 function Privacy() {
   const [activeTab, setActiveTab] = useUrlTab("section", "profile");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): form frame with the controls that are really saved
+  // (spotlight consent, phone number, discoverability, AI data consent); sample scores, sample
+  // activity and switches that save nothing stay on the legacy screen only (SR-24, SR-26).
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.settings.privacySettings')} description={t('spotlightMember.settings.privacy.desc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="form"
+          subNav={{ items: settingsNavigation }}
+          header={{ title: t('screens.settings.privacySettings2'), description: t('spotlightMember.settings.privacy.desc') }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.settings.privacyAudit')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: "profile", label: t('screens.settings.profileVisibility') },
+              { value: "data", label: t('screens.settings.dataSharing') },
+              { value: "security", label: t('screens.settings.security') },
+            ],
+          }}
+        >
+          <SplitBarContent value="profile">
+            <SpotlightPanel Icon={Eye} title={t('screens.settings.profileVisibilityControls')}>
+              <div className="flex flex-col gap-4">
+                <SpotlightConsentToggle />
+                <PhoneNumberCard />
+                <PhoneDiscoverabilityToggle />
+              </div>
+            </SpotlightPanel>
+          </SplitBarContent>
+          <SplitBarContent value="data">
+            <div className="flex flex-col gap-4">
+              <SpotlightPanel Icon={Brain} title={t('screens.settings.aiDataSharing')}>
+                <div className="flex flex-col gap-4">
+                  <SettingRow
+                    title={t('screens.settings.shareDataWithAiProvider')}
+                    description={t('screens.settings.allowPersonalDataSentThirdpartyAi')}
+                    control={
+                      <Switch
+                        checked={hasConsent}
+                        aria-label={t('screens.settings.shareDataWithAiProvider')}
+                        onCheckedChange={(checked) => {
+                          if (checked) setConsentDialogOpen(true);
+                          else revokeConsent();
+                        }}
+                      />
+                    }
+                  />
+                  <div className="flex flex-col gap-1 border-s-2 border-muted ps-3 text-xs text-muted-foreground">
+                    <p><strong>{t('screens.settings.dataShared')}</strong> {t('screens.settings.voiceRecordingsTranscriptsTypedPromptsChat')}</p>
+                    <p><strong>{t('screens.settings.recipients')}</strong> {t('screens.settings.googleGeminiAiCloudAi')}</p>
+                    <p><strong>{t('screens.settings.purpose')}</strong> {t('screens.settings.aiResponsesVoiceSynthesisProactiveGreetings')}</p>
+                    <p><strong>{t('screens.settings.control')}</strong> {t('screens.settings.toggleOffHereRevokeConsentAt')}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {hasConsent ? t('screens.settings.consentGrantedYouCanRevokeAt') : t('screens.settings.aiFeaturesVoiceAssistantProactiveMessages')}
+                  </p>
+                </div>
+              </SpotlightPanel>
+              {/* VTID-05032 (Health Hub D4): no consent record exists yet — off and disabled, exactly as on the legacy screen. */}
+              <SpotlightPanel Icon={Users} title={t('screens.settings.dataSharingPreferences')}>
+                <div className="flex flex-col gap-4">
+                  <SettingRow
+                    title={t('screens.settings.healthDataAnalytics')}
+                    description={t('screens.settings.shareAnonymizedHealthDataImproveAi')}
+                    control={<Switch checked={false} disabled aria-label={t('screens.settings.healthDataAnalytics')} />}
+                  />
+                  <SettingRow
+                    title={t('screens.settings.communityInsights')}
+                    description={t('screens.settings.allowYourProgressContributeCommunityStatistics')}
+                    control={<Switch checked={false} disabled aria-label={t('screens.settings.communityInsights')} />}
+                  />
+                  <SettingRow
+                    title={t('screens.settings.thirdpartyIntegrations')}
+                    description={t('screens.settings.shareDataWithConnectedAppsServices')}
+                    control={<Switch checked={false} disabled aria-label={t('screens.settings.thirdpartyIntegrations')} />}
+                  />
+                </div>
+              </SpotlightPanel>
+            </div>
+          </SplitBarContent>
+          <SplitBarContent value="security">
+            <div className="flex flex-col gap-4">
+              <SpotlightPanel
+                Icon={KeyRound}
+                title={t('screens.settings.passwordProtection')}
+                description={t('spotlightMember.settings.privacy.passwordDesc')}
+                actions={
+                  <Button variant="outline" size="sm" onClick={() => navigate('/reset-password')}>
+                    {t('screens.settings.change')}
+                  </Button>
+                }
+              />
+              <SpotlightPanel
+                Icon={Trash2}
+                title={t('spotlightMember.settings.privacy.deleteTitle')}
+                description={t('spotlightMember.settings.privacy.deleteDesc')}
+                actions={
+                  <Button variant="outline" size="sm" onClick={() => navigate('/delete-account')}>
+                    {t('spotlightMember.settings.privacy.deleteAction')}
+                  </Button>
+                }
+              />
+            </div>
+          </SplitBarContent>
+        </ScreenFrame>
+        <PrivacyAuditPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
+        <AIDataConsentDialog open={consentDialogOpen} onOpenChange={setConsentDialogOpen} onConsent={grantConsent} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -116,7 +247,7 @@ function Privacy() {
             <ExpandableSearchButton placeholder={t('screens.settings.searchPrivacyControlsDataSettingsSecurity')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.settings.privacyAudit')}
             </Button>
           </UtilityActionButton>
@@ -337,7 +468,7 @@ function Privacy() {
                             }}
                           />
                         </div>
-                        <div className="text-xs text-muted-foreground space-y-1 border-l-2 border-muted pl-3">
+                        <div className="text-xs text-muted-foreground space-y-1 border-s-2 border-muted ps-3">
                           <p><strong>{t('screens.settings.dataShared')}</strong> {t('screens.settings.voiceRecordingsTranscriptsTypedPromptsChat')}</p>
                           <p><strong>{t('screens.settings.recipients')}</strong> {t('screens.settings.googleGeminiAiCloudAi')}</p>
                           <p><strong>{t('screens.settings.purpose')}</strong> {t('screens.settings.aiResponsesVoiceSynthesisProactiveGreetings')}</p>

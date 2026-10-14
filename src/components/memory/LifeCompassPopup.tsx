@@ -146,7 +146,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
             [&>button]:sr-only selector hides (which is why the previous, direct
             DialogClose was invisible). boxShadow:'none' defeats the WebView/Radix
             auto-focus ring. */}
-        <span className="absolute right-3 top-3 z-10">
+        <span className="absolute end-3 top-3 z-10">
           <DialogClose
             aria-label={translate('lifeCompass.closeAria', 'Close')}
             style={{ boxShadow: 'none' }}
@@ -156,7 +156,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
           </DialogClose>
         </span>
 
-        <DialogHeader className="pr-8">
+        <DialogHeader className="pe-8">
           <div className="flex items-center gap-2 mb-1">
             <Target className="h-5 w-5 sm:h-6 sm:w-6 text-primary shrink-0" />
             <DialogTitle className="text-xl sm:text-2xl break-words">
@@ -196,7 +196,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
                     onClick={() => handleSuggestedGoal(goal)}
                     disabled={isUpdating}
                     className={cn(
-                      "flex items-start gap-3 p-3 sm:p-4 rounded-lg border-2 text-left transition-all w-full min-w-0",
+                      "flex items-start gap-3 p-3 sm:p-4 rounded-lg border-2 text-start transition-all w-full min-w-0",
                       "hover:border-primary hover:shadow-md",
                       "disabled:opacity-50 disabled:cursor-not-allowed",
                       `bg-gradient-to-r ${goal.gradient}`

@@ -27,6 +27,12 @@ import { ProductImage } from '@/components/discover/ProductImage';
 import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
 import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { discoverNavigation } from '@/config/navigation';
+import { ProductVCard } from '@/components/discover/spotlight/DiscoverCards';
+import { DiscoverEmpty, DiscoverGridSkeleton } from '@/components/discover/spotlight/DiscoverStates';
+import { DISCOVER_GRID } from '@/components/discover/spotlight/storefront-model';
 
 interface AIRecommendation {
   id: string;
@@ -60,6 +66,8 @@ function AIPicksInner() {
   const { selectProduct } = useProductSelection();
   const [activeFilter, setActiveFilter] = useState('all');
   const [error, setError] = useState(false);
+  // VTID-05117 — Spotlight (desktop + flag): collection of standard VCards; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
 
   const { data: feedData, isLoading } = useMarketplaceFeed({ limit: 24 });
   
@@ -170,14 +178,14 @@ function AIPicksInner() {
             subcategory={rec.subcategory}
             sizeClass="w-full h-40"
           />
-          <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs">
+          <Badge className="absolute top-2 start-2 bg-purple-500 text-white text-xs">
             {rec.badge}
           </Badge>
-          <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
+          <div className="absolute top-2 end-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
             <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
           </div>
           <div className={cn(
-            "absolute bottom-2 left-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
+            "absolute bottom-2 start-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
             getTypeColor(rec.type)
           )}>
             {getTypeIcon(rec.type)}
@@ -231,6 +239,52 @@ function AIPicksInner() {
     );
   };
 
+  // The feed only yields supplements and deals (services/experts never come back), and the legacy
+  // "match %" falls back to an invented 70 % — so the Spotlight grid offers the real filters only and
+  // shows no match percentage (SR-24, SR-26).
+  if (spotlight) {
+    const filter = activeFilter === 'supplement' || activeFilter === 'deal' ? activeFilter : 'all';
+    const shown = filter === 'all' ? aiRecommendations : aiRecommendations.filter((rec) => rec.type === filter);
+    return (
+      <AppLayout>
+        <SEO title={t('screens.discover.aiPicksVitana')} description={translate('discover.aiPicks.description')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: discoverNavigation }}
+          header={{ title: translate('discover.aiPicks.title'), description: translate('discover.aiPicks.description'), emoji: "🧠" }}
+          tabs={{
+            value: filter,
+            onValueChange: setActiveFilter,
+            items: [
+              { value: 'all', label: translate('discover.filters.all') },
+              { value: 'supplement', label: translate('discover.filters.supplements') },
+              { value: 'deal', label: translate('discover.filters.deals') },
+            ],
+          }}
+        >
+          {isLoading ? (
+            <DiscoverGridSkeleton count={8} />
+          ) : shown.length === 0 ? (
+            <DiscoverEmpty
+              Icon={Brain}
+              titleKey="discover.aiPicks.noRecommendations"
+              descriptionKey="discover.aiPicks.noRecommendationsDesc"
+              actionKey="discover.aiPicks.viewAllPicks"
+              onAction={() => setActiveFilter('all')}
+            />
+          ) : (
+            <ul className={DISCOVER_GRID}>
+              {shown.map((rec) =>
+                rec._product ? <ProductVCard key={rec.id} product={rec._product} onOpen={selectProduct} /> : null,
+              )}
+            </ul>
+          )}
+        </ScreenFrame>
+        <ProductDetailsDrawer />
+      </AppLayout>
+    );
+  }
+
   if (isLoading) {
     return (
       <AppLayout>
@@ -263,9 +317,9 @@ function AIPicksInner() {
               variant="ghost"
               size="sm"
               onClick={() => navigate('/discover')}
-              className="mb-2 -ml-2"
+              className="mb-2 -ms-2"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-4 w-4 me-2" />
               {translate('discover.aiPicks.backToDiscover')}
             </Button>
           )}
@@ -280,23 +334,23 @@ function AIPicksInner() {
           <SplitBar value={activeFilter} onValueChange={setActiveFilter}>
             <SplitBarList className={cn(isMobile && "overflow-x-auto")}>
               <SplitBarTrigger value="all">
-                <Sparkles className="h-4 w-4 mr-1.5" />
+                <Sparkles className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.all')}
               </SplitBarTrigger>
               <SplitBarTrigger value="service">
-                <Heart className="h-4 w-4 mr-1.5" />
+                <Heart className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.services')}
               </SplitBarTrigger>
               <SplitBarTrigger value="supplement">
-                <Pill className="h-4 w-4 mr-1.5" />
+                <Pill className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.supplements')}
               </SplitBarTrigger>
               <SplitBarTrigger value="expert">
-                <Stethoscope className="h-4 w-4 mr-1.5" />
+                <Stethoscope className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.experts')}
               </SplitBarTrigger>
               <SplitBarTrigger value="deal">
-                <Tag className="h-4 w-4 mr-1.5" />
+                <Tag className="h-4 w-4 me-1.5" />
                 {translate('discover.filters.deals')}
               </SplitBarTrigger>
             </SplitBarList>
@@ -322,7 +376,7 @@ function AIPicksInner() {
                   {filteredRecommendations.map((rec) => (
                     <div
                       key={rec.id}
-                      className="flex-none w-[85vw] px-2 first:pl-4 last:pr-4"
+                      className="flex-none w-[85vw] px-2 first:ps-4 last:pe-4"
                     >
                       <RecommendationCard rec={rec} />
                     </div>

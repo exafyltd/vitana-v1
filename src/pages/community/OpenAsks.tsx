@@ -16,6 +16,13 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Sparkles } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { communityNavigation } from "@/config/navigation";
+import { VCard } from "@/components/ui/vcard";
+import { MEMBER_GRID, SpotlightEmpty, SpotlightGridSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -122,6 +129,88 @@ export default function OpenAsks() {
     if (asks.length === 0) return t('screens.community.openAsksSummary_empty');
     return t('screens.community.openAsksSummary_count', { n: String(asks.length) });
   }, [asks.length, loading]);
+  // VTID-05117 — Spotlight (desktop + flag): the feed inside the Vitanaland frame as a collection of
+  // standard (text) cards; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    const chip = (active: boolean) => (active ? "default" : "outline") as "default" | "outline";
+    return (
+      <AppLayout>
+        <SEO title={t('screens.community.openAsksCommunity')} description={summary} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: communityNavigation }}
+          header={{ title: t('screens.community.openAsksCommunity'), description: summary, emoji: "✨" }}
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t('screens.community.kind')}>
+              <span className="me-1 text-xs uppercase tracking-wider text-muted-foreground">{t('screens.community.kind')}</span>
+              {KIND_FILTERS.map((f) => (
+                <Button key={f.key ?? "all"} size="sm" variant={chip(kindFilter === f.key)} className="rounded-full" aria-pressed={kindFilter === f.key} onClick={() => setKindFilter(f.key)}>
+                  {t(f.labelKey)}
+                </Button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t('screens.community.topic')}>
+              <span className="me-1 text-xs uppercase tracking-wider text-muted-foreground">{t('screens.community.topic')}</span>
+              {DANCE_FILTERS.map((f) => (
+                <Button
+                  key={f.labelKey}
+                  size="sm"
+                  variant={chip(danceOnly === Boolean(f.prefix))}
+                  className="rounded-full"
+                  aria-pressed={danceOnly === Boolean(f.prefix)}
+                  onClick={() => setDanceOnly(Boolean(f.prefix))}
+                >
+                  {t(f.labelKey)}
+                </Button>
+              ))}
+            </div>
+            {loading && asks.length === 0 ? (
+              <SpotlightGridSkeleton count={8} />
+            ) : asks.length === 0 ? (
+              <SpotlightEmpty Icon={Sparkles} titleKey={danceOnly ? 'screens.community.openAsksEmpty_dance' : 'screens.community.openAsksEmpty_filter'} />
+            ) : (
+              <ul className={MEMBER_GRID}>
+                {asks.map((a) => (
+                  <VCard
+                    key={a.intent_id}
+                    as="li"
+                    size="standard"
+                    eyebrow={KIND_LABEL_KEY[a.intent_kind] ? t(KIND_LABEL_KEY[a.intent_kind]) : a.intent_kind}
+                    title={
+                      <button type="button" className="text-start hover:text-primary focus-visible:underline focus-visible:outline-none" onClick={() => navigate(`/p/${a.intent_id}`)}>
+                        {a.title}
+                      </button>
+                    }
+                    meta={[
+                      a.requester_vitana_id ? `@${a.requester_vitana_id}` : null,
+                      a.category ? a.category.replace(/_/g, " ") : null,
+                      a.kind_payload?.location_label ?? null,
+                      formatRelative(a.created_at),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                    body={<span className="line-clamp-3">{a.scope_excerpt}</span>}
+                    className="cursor-pointer transition-shadow hover:shadow-vcard-raised"
+                    onClick={() => navigate(`/p/${a.intent_id}`)}
+                  />
+                ))}
+              </ul>
+            )}
+            {hasMore && asks.length > 0 && (
+              <div className="flex justify-center pt-2">
+                <Button variant="outline" disabled={loading} onClick={() => fetchPage(false)}>
+                  {t('screens.community.loadMore')}
+                </Button>
+              </div>
+            )}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <div className="container max-w-3xl mx-auto px-4 py-6 space-y-4">
@@ -134,7 +223,7 @@ export default function OpenAsks() {
 
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.kind')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.kind')}</span>
           {KIND_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}
@@ -150,7 +239,7 @@ export default function OpenAsks() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.topic')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.topic')}</span>
           {DANCE_FILTERS.map((f) => (
             <button
               key={f.label}
@@ -180,7 +269,7 @@ export default function OpenAsks() {
             key={a.intent_id}
             type="button"
             onClick={() => navigate(`/p/${a.intent_id}`)}
-            className="w-full text-left rounded-lg border border-border bg-card p-4 hover:border-primary/40 transition-colors"
+            className="w-full text-start rounded-lg border border-border bg-card p-4 hover:border-primary/40 transition-colors"
           >
             <div className="flex items-start justify-between gap-2 mb-2">
               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted">

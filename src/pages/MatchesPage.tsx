@@ -16,6 +16,16 @@ import { useRealMatches } from "@/hooks/useRealMatches";
 import { useMarkMatchesViewed } from "@/hooks/useMarkMatchesViewed";
 import { localizeMatchReason } from "@/lib/matchReason";
 import { t } from "@/lib/i18n-toast";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { VCard } from "@/components/ui/vcard";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { INTERACTIVE_CARD_CLASS, activateProps } from "@/components/home/desktop/focusCardUtils";
+import {
+  MEMBER_ROWS,
+  SpotlightEmpty,
+  SpotlightError,
+  SpotlightRowsSkeleton,
+} from "@/components/spotlight/member/MemberSpotlight";
 
 function initials(name: string) {
   return (
@@ -31,10 +41,69 @@ function initials(name: string) {
 
 export default function MatchesPage() {
   const navigate = useNavigate();
-  const { data: matches, isLoading } = useRealMatches(50);
+  const { data: matches, isLoading, isError, refetch } = useRealMatches(50);
   const list = matches ?? [];
   // VTID-04827: these cards are on screen — record that the member saw them.
   useMarkMatchesViewed(list.map((m) => m.user_id));
+  // VTID-05117 — Spotlight (desktop + flag): the `collection` archetype, one
+  // `row` VCard per real match (same hook, same order, same profile link).
+  // Phones and flag-off keep the list below unchanged.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <>
+        <SEO
+          title={t("screens.autopilotdashboard.matchesTitle")}
+          description={t("screens.autopilotdashboard.matchesPageDescription")}
+        />
+        <AppLayout>
+          <ScreenFrame
+            archetype="collection"
+            header={{
+              title: t("screens.autopilotdashboard.matchesTitle"),
+              description: t("screens.autopilotdashboard.matchesPageDescription"),
+            }}
+          >
+            {isLoading ? (
+              <SpotlightRowsSkeleton />
+            ) : isError ? (
+              <SpotlightError onRetry={() => void refetch()} />
+            ) : list.length === 0 ? (
+              <div data-testid="matches-empty">
+                <SpotlightEmpty Icon={Heart} titleKey="screens.autopilotdashboard.matchesEmpty" />
+              </div>
+            ) : (
+              <ul className={MEMBER_ROWS} data-testid="matches-list">
+                {list.map((m) => (
+                  <VCard
+                    key={m.user_id}
+                    as="li"
+                    size="row"
+                    media={{ src: m.avatar_url ?? null, alt: m.display_name }}
+                    title={m.display_name}
+                    meta={[
+                      localizeMatchReason(m.match_reason) || t("screens.autopilotdashboard.matchReasonDefault"),
+                      m.location,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                    badge={
+                      <span className="rounded-full bg-primary px-2.5 py-1 text-xs font-bold text-primary-foreground">
+                        {m.compatibility_score}%
+                      </span>
+                    }
+                    className={INTERACTIVE_CARD_CLASS}
+                    {...activateProps(() => navigate(`/u/${m.user_id}`))}
+                  />
+                ))}
+              </ul>
+            )}
+          </ScreenFrame>
+        </AppLayout>
+      </>
+    );
+  }
 
   return (
     <>
@@ -81,7 +150,7 @@ export default function MatchesPage() {
                       <button
                         type="button"
                         onClick={() => navigate(`/u/${m.user_id}`)}
-                        className="w-full flex items-center gap-3 p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-pink-200/50 text-left hover:bg-white dark:hover:bg-white/10 transition-colors shadow-sm"
+                        className="w-full flex items-center gap-3 p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-pink-200/50 text-start hover:bg-white dark:hover:bg-white/10 transition-colors shadow-sm"
                       >
                         <Avatar className="w-12 h-12 ring-2 ring-white shadow-sm shrink-0">
                           <AvatarImage src={m.avatar_url ?? undefined} alt="" />

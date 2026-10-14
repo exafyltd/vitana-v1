@@ -20,6 +20,10 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { ResetDefaultsPopup } from "@/components/ResetDefaultsPopup";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from '@/lib/i18n-toast';
+import { Accessibility } from "lucide-react";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightNotice, SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
 
 function Preferences() {
   const [activeTab, setActiveTab] = useUrlTab("section", "appearance");
@@ -28,6 +32,98 @@ function Preferences() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [themeMounted, setThemeMounted] = useState(false);
   useEffect(() => setThemeMounted(true), []);
+  // VTID-05117 — Spotlight (desktop + flag): form frame with the settings that really apply
+  // (theme, voice/AI language); sample values and switches that save nothing stay on the legacy
+  // screen only (SR-24, SR-26). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.settings.preferencesSettings')} description={t('spotlightMember.settings.preferences.desc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="form"
+          subNav={{ items: settingsNavigation }}
+          header={{ title: t('screens.settings.preferences'), description: t('spotlightMember.settings.preferences.desc') }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.settings.resetDefaults')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: "appearance", label: t('screens.settings.appearance') },
+              { value: "language", label: t('screens.settings.languageRegion') },
+              { value: "accessibility", label: t('screens.settings.accessibility') },
+            ],
+          }}
+        >
+          <SplitBarContent value="appearance">
+            <SpotlightPanel Icon={Palette} title={t('screens.settings.themeSettings')}>
+              <label className="mb-2 block text-sm font-medium" htmlFor="sp-theme">{t('screens.settings.theme')}</label>
+              <Select value={themeMounted ? theme : undefined} onValueChange={setTheme}>
+                <SelectTrigger className="w-full" id="sp-theme">
+                  <SelectValue placeholder={t('screens.settings.selectTheme')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex items-center gap-2">
+                      <Sun className="size-4" />
+                      {t('screens.settings.light')}
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    <div className="flex items-center gap-2">
+                      <Moon className="size-4" />
+                      {t('screens.settings.dark')}
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="system">
+                    <div className="flex items-center gap-2">
+                      <Monitor className="size-4" />
+                      {t('screens.settings.system')}
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </SpotlightPanel>
+          </SplitBarContent>
+          <SplitBarContent value="language">
+            <SpotlightPanel Icon={Globe} title={t('screens.settings.languageRegionSettings')}>
+              <label className="mb-2 block text-sm font-medium" htmlFor="sp-voice-language">{t('screens.settings.voiceAiLanguage')}</label>
+              <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                <SelectTrigger id="sp-voice-language">
+                  <SelectValue placeholder={t('screens.settings.selectLanguage')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {languageOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="mt-1 text-xs text-muted-foreground">{t('screens.settings.thisLanguageUsedForVoiceRecognition')}</p>
+            </SpotlightPanel>
+          </SplitBarContent>
+          <SplitBarContent value="accessibility">
+            <SpotlightPanel Icon={Accessibility} title={t('screens.settings.accessibilitySettings')}>
+              <SpotlightNotice>{t('spotlightMember.settings.preferences.accessibilityNote')}</SpotlightNotice>
+            </SpotlightPanel>
+          </SplitBarContent>
+        </ScreenFrame>
+        <ResetDefaultsPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -44,7 +140,7 @@ function Preferences() {
             <ExpandableSearchButton placeholder={t('screens.settings.searchPreferencesThemesLanguageSettings')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.settings.resetDefaults')}
             </Button>
           </UtilityActionButton>

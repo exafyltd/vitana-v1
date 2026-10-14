@@ -84,7 +84,7 @@ export function MiniAudioPlayer() {
         {/* Floating indicator button */}
         <button
           onClick={() => setDrawerOpen(true)}
-          className="fixed right-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center overflow-hidden bg-primary hover:bg-primary/90 active:scale-95 transition-transform"
+          className="fixed end-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center overflow-hidden bg-primary hover:bg-primary/90 active:scale-95 transition-transform"
           style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px) + 12px)' }}
           aria-label={t('screens.common.openAudioPlayer')}
         >
@@ -175,7 +175,7 @@ export function MiniAudioPlayer() {
                   {isPlaying ? (
                     <Pause className="h-6 w-6 text-primary-foreground" />
                   ) : (
-                    <Play className="h-6 w-6 text-primary-foreground ml-0.5" />
+                    <Play className="h-6 w-6 text-primary-foreground ms-0.5" />
                   )}
                 </Button>
 
@@ -214,7 +214,7 @@ export function MiniAudioPlayer() {
                   }}
                   className="h-8 px-3 text-xs text-muted-foreground"
                 >
-                  <X className="h-3.5 w-3.5 mr-1" />
+                  <X className="h-3.5 w-3.5 me-1" />
                   {t('screens.common.close')}
                 </Button>
               </div>
@@ -227,7 +227,7 @@ export function MiniAudioPlayer() {
 
   // ── Desktop: full-width bottom bar (unchanged) ─────────────────────
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-sidebar border-t border-border shadow-lg z-40">
+    <div className="fixed bottom-0 start-0 end-0 bg-sidebar border-t border-border shadow-lg z-40">
       <div className="max-w-screen-2xl mx-auto px-4 py-3">
         <div className="flex items-center gap-4">
           {/* Media Info */}
@@ -269,7 +269,7 @@ export function MiniAudioPlayer() {
               {isPlaying ? (
                 <Pause className="h-5 w-5 text-primary-foreground" />
               ) : (
-                <Play className="h-5 w-5 text-primary-foreground ml-0.5" />
+                <Play className="h-5 w-5 text-primary-foreground ms-0.5" />
               )}
             </Button>
 

@@ -17,6 +17,14 @@ import { useIsReseller } from "@/hooks/useIsReseller";
 import { getIncomingMatches, type IntentMatch } from "@/lib/intentApi";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { Briefcase, Lock } from "lucide-react";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { businessHubNavigation } from "@/config/navigation";
+import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 export default function BusinessOpportunities() {
   const { toast } = useToast();
@@ -42,6 +50,42 @@ export default function BusinessOpportunities() {
   };
 
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): the screen gets the Vitanaland frame (sidebar + Business
+  // Hub sections) as a collection; phones and flag-off keep the bare screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.businessopportunities.opportunities')} description={t('screens.businessopportunities.incomingLeadsMatchingYourOfferingsExpress')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: businessHubNavigation }}
+          header={{ title: t('screens.businessopportunities.opportunities'), description: t('screens.businessopportunities.incomingLeadsMatchingYourOfferingsExpress'), emoji: "🎯" }}
+        >
+          {!isReseller ? (
+            <SpotlightEmpty Icon={Lock} titleKey="screens.businessopportunities.opportunitiesAvailableForProAccountsUpgrade" />
+          ) : loading ? (
+            <SpotlightRowsSkeleton />
+          ) : matches.length === 0 ? (
+            <SpotlightEmpty
+              Icon={Briefcase}
+              titleKey="spotlightMember.business.opportunitiesEmpty"
+              actionKey="screens.businessopportunities.myListings"
+              onAction={() => navigate('/business/listings')}
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              {matches.map((m) => (
+                <IntentMatchCard key={m.match_id} match={m} perspective="incoming" onAction={() => load()} />
+              ))}
+            </div>
+          )}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   if (!isReseller) {
     return (

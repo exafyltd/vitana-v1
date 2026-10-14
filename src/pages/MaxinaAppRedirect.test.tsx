@@ -21,6 +21,8 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 vi.mock('@/components/SEO', () => ({ default: () => null }));
+// VTID-05117: this harness has no Router / TenantProvider — pin Spotlight off (today's layout).
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 
 vi.mock('@/lib/i18n-toast', () => ({
   t: (key: string) => key,

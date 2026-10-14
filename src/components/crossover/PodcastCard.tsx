@@ -134,7 +134,7 @@ export function PodcastCard({
     >
       {/* Now Playing Accent Bar */}
       {isThisPodcastPlaying && (
-        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-pink-500 rounded-l-2xl" />
+        <div className="absolute start-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-pink-500 rounded-s-2xl" />
       )}
 
       {/* Cover Image */}
@@ -220,7 +220,7 @@ export function PodcastCard({
       </div>
 
       {/* Bottom Interaction Bar */}
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-3 pt-2 bg-gradient-to-t from-white/60 to-transparent backdrop-blur-sm rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute bottom-0 start-0 end-0 px-5 pb-3 pt-2 bg-gradient-to-t from-white/60 to-transparent backdrop-blur-sm rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="flex items-center justify-end gap-2">
           <Button
             size="icon"

@@ -1,55 +1,44 @@
-// tenant-context v2
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+// tenant-context v3 (VTID-05151: tenants come from the registry, not from code)
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { canonicalTenantSlug, readStoredTenantSlug } from "@/lib/retired-tenants";
+import { ensureTenantRegistry, useTenantRegistry } from "@/hooks/useTenantRegistry";
+import {
+  SLUG_RE,
+  findById,
+  findBySlug,
+  isReservedSlug,
+  resolveActiveTenant,
+  safeHex,
+  tenantSlugFromPath,
+  type ResolvedTenant,
+} from "@/lib/tenant-registry";
 
-// VTID-04836: earthlinks was retired (merged into maxina, platform VTID-01985).
-// A retired slug arriving from storage, metadata or a URL is mapped to its
-// successor by canonicalTenantSlug() before it is used.
-export type TenantType = "maxina" | "alkalma";
+// VTID-05151: there is no compiled list of tenants any more. A tenant is any
+// slug the registry (list_public_tenants) returns; a retired slug (VTID-04836:
+// earthlinks) is mapped to its successor by canonicalTenantSlug() first.
+export type { TenantSlug, ResolvedTenant } from "@/lib/tenant-registry";
 
-interface TenantConfig {
-  id: string;
-  name: string;
-  slug: string;
-  brandAccent: string;
-  brandBg: string;
-  brandFg: string;
-}
-
-const TENANT_CONFIGS: Record<TenantType, TenantConfig> = {
-  maxina: {
-    id: "",
-    name: "Maxina",
-    slug: "maxina",
-    brandAccent: "#FF7BAC",
-    brandBg: "#FFF5F8",
-    brandFg: "#1A1A1A",
-  },
-  alkalma: {
-    id: "",
-    name: "AlKalma",
-    slug: "alkalma",
-    brandAccent: "#3B82F6",
-    brandBg: "#EFF6FF",
-    brandFg: "#1A1A1A",
-  },
-};
+export type TenantSwitchResult =
+  | { ok: true; tenantId: string }
+  | { ok: false; code: "not_signed_in" | "unknown_tenant" | "not_joinable" | "rpc_failed"; message?: string };
 
 interface TenantContextValue {
   activeTenantId: string | null;
-  tenant: TenantConfig | null;
+  tenant: ResolvedTenant | null;
   isExafyAdmin: boolean;
   setActiveTenant: (tenantId: string) => Promise<void>;
-  setTenantBySlug: (slug: string) => Promise<void>;
+  setTenantBySlug: (slug: string) => Promise<TenantSwitchResult>;
 }
 
 const TenantContext = createContext<TenantContextValue | undefined>(undefined);
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
-  const { session, user } = useAuth();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const registry = useTenantRegistry();
   const [activeTenantId, setActiveTenantIdState] = useState<string | null>(null);
 
   // Get Exafy admin status
@@ -57,6 +46,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
 
   // Monotonic version counter to prevent stale async overwrites
   const tenantVersionRef = useRef(0);
+  const registrySlugs = registry.tenants.map((t) => `${t.slug}:${t.tenant_id}`).join(",");
 
   // Get active tenant ID from user metadata or deterministic fallback
   // Priority: app_metadata → URL slug → localStorage → no forced tenant
@@ -67,20 +57,21 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         console.debug('[useTenant] Using app_metadata tenant:', userActiveTenantId);
         setActiveTenantIdState(userActiveTenantId);
       } else {
-        // Deterministic fallback: URL slug → localStorage → skip
-        const slugFromUrl = (() => {
-          const path = window.location.pathname;
-          for (const slug of Object.keys(TENANT_CONFIGS)) {
-            if (path.startsWith(`/${slug}`)) return slug;
-          }
-          return null;
-        })();
-        const slugFromStorage = readStoredTenantSlug('tenant_slug');
+        // Deterministic fallback: URL slug → localStorage → skip (registry slugs only)
+        const slugFromUrl = tenantSlugFromPath(window.location.pathname, registry);
+        const slugFromStorage = findBySlug(registry, readStoredTenantSlug('tenant_slug'))?.slug ?? null;
         const fallbackSlug = slugFromUrl || slugFromStorage;
 
         if (fallbackSlug) {
           console.debug('[useTenant] Deterministic fallback to slug:', fallbackSlug);
           const version = ++tenantVersionRef.current;
+          const entry = findBySlug(registry, fallbackSlug);
+          if (entry?.tenant_id) {
+            setActiveTenantIdState(entry.tenant_id);
+            return;
+          }
+          // Only the compiled fallback has no id (the registry call failed):
+          // resolve it from the tenants row, as before VTID-05151.
           const resolveTenant = async () => {
             const { data, error } = await supabase
               .from('tenants')
@@ -88,10 +79,6 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
               .eq('slug', fallbackSlug)
               .single();
             if (error) {
-              // A query failure previously left this branch entirely
-              // silent — a user landing on a tenant-specific route/URL
-              // would never get switched into that tenant's context, with
-              // nothing in the console pointing at why.
               console.warn('[useTenant] Deterministic fallback tenant lookup failed:', error.message);
             }
             // Only apply if no newer call superseded us
@@ -105,39 +92,44 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         }
       }
     }
-  }, [user]);
+    // registrySlugs: re-run once the registry has loaded (the snapshot or
+    // fallback may not know the tenant in the URL yet).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, registrySlugs]);
 
-  // Fetch tenant details
-  const { data: tenantData } = useQuery({
+  // The tenants row, only for an active tenant the registry does not list by id.
+  const listedById = !!findById(registry, activeTenantId);
+  const { data: tenantRow } = useQuery({
     queryKey: ["tenant", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return null;
       const { data, error } = await supabase
         .from('tenants')
-        .select('*')
+        .select('tenant_id, slug, name')
         .eq('tenant_id', activeTenantId)
         .single();
-      
+
       if (error) throw error;
-      return data;
+      return data as { tenant_id: string; slug: string | null; name: string };
     },
-    enabled: !!activeTenantId,
+    enabled: !!activeTenantId && !listedById,
   });
 
-  // Map database tenant to config with styling
-  const tenant = tenantData ? {
-    ...tenantData,
-    ...(TENANT_CONFIGS[canonicalTenantSlug(tenantData.slug) as TenantType] || TENANT_CONFIGS.maxina)
-  } : null;
+  const tenant = useMemo(
+    () => resolveActiveTenant(activeTenantId, registry, tenantRow),
+    [activeTenantId, registry, tenantRow],
+  );
 
-  // Apply tenant CSS variables
+  // Apply tenant CSS variables (validated hex only; nothing consumes them yet — C2).
   useEffect(() => {
-    if (tenant) {
-      const root = document.documentElement;
-      root.style.setProperty("--brand-accent", tenant.brandAccent);
-      root.style.setProperty("--brand-bg", tenant.brandBg);
-      root.style.setProperty("--brand-fg", tenant.brandFg);
-    }
+    if (!tenant) return;
+    const root = document.documentElement;
+    const vars: Array<[string, string | undefined]> = [
+      ["--brand-accent", safeHex(tenant.brandAccent)],
+      ["--brand-bg", safeHex(tenant.brandBg)],
+      ["--brand-fg", safeHex(tenant.brandFg)],
+    ];
+    for (const [name, value] of vars) if (value) root.style.setProperty(name, value);
   }, [tenant]);
 
   const setActiveTenant = async (tenantId: string) => {
@@ -146,7 +138,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('set_active_tenant', {
+      const { error } = await supabase.functions.invoke('set_active_tenant', {
         body: { tenant_id: tenantId }
       });
 
@@ -166,77 +158,85 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const setTenantBySlug = async (requestedSlug: string) => {
+  /**
+   * Switch into (or join) a tenant by slug through switch_to_tenant_by_slug
+   * (VTID-05043: a member or exafy_admin switches; anyone else joins only an
+   * open_signup tenant, otherwise 42501 TENANT_NOT_JOINABLE).
+   *
+   * An unknown or reserved slug is refused before any call. When the RPC
+   * refuses, the tenant is NOT set — there is no local fallback that would put
+   * the user into a tenant the server just refused (VTID-05151).
+   */
+  const setTenantBySlug = async (requestedSlug: string): Promise<TenantSwitchResult> => {
     // Skip tenant switching if no authenticated user
     if (!user) {
-      return;
+      return { ok: false, code: "not_signed_in" };
     }
 
     // VTID-04836: never look up or persist a retired tenant slug.
-    const slug = canonicalTenantSlug(requestedSlug);
+    const slug = canonicalTenantSlug(String(requestedSlug ?? "").trim().toLowerCase());
+    if (!SLUG_RE.test(slug) || isReservedSlug(slug)) {
+      console.warn('[useTenant] Refusing tenant switch to an invalid or reserved slug:', slug);
+      return { ok: false, code: "unknown_tenant" };
+    }
+    const reg = await ensureTenantRegistry(queryClient);
+    const entry = findBySlug(reg, slug);
+    if (!entry) {
+      console.warn('[useTenant] Refusing tenant switch to a slug the registry does not list:', slug, `(registry: ${reg.source})`);
+      return { ok: false, code: "unknown_tenant" };
+    }
 
     try {
-      // Try the RPC to update JWT app_metadata (best path)
-      let rpcOk = false;
-      try {
-        const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
-          p_tenant_slug: slug
-        });
-        if (error) {
-          console.warn('[useTenant] RPC switch_to_tenant_by_slug failed, using local fallback:', error.message);
-        } else {
-          rpcOk = true;
-        }
-      } catch (rpcErr: any) {
-        console.warn('[useTenant] RPC switch_to_tenant_by_slug threw, using local fallback:', rpcErr.message);
+      const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
+        p_tenant_slug: slug
+      });
+      if (error) {
+        console.warn('[useTenant] RPC switch_to_tenant_by_slug refused:', error.code, error.message);
+        return {
+          ok: false,
+          code: error.code === '42501' ? "not_joinable" : "rpc_failed",
+          message: error.message,
+        };
       }
-
-      // If RPC succeeded, refresh session to pick up updated JWT
-      if (rpcOk) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        const { error: refreshError } = await supabase.auth.refreshSession();
-        if (refreshError) {
-          console.warn('[useTenant] Session refresh error:', refreshError.message);
-        }
-      }
-
-      // Always resolve tenant locally (works even if RPC failed)
-      const { data, error: resolveErr } = await supabase
-        .from('tenants')
-        .select('tenant_id, name')
-        .eq('slug', slug)
-        .single();
-
-      if (resolveErr) {
-        // Unlike the RPC branch above (which warns on failure), this
-        // fallback previously had no error captured at all — a user
-        // finishing signup on a tenant-specific portal (MaxinaConfirmed,
-        // AlkalmaConfirmed, etc.) would silently never
-        // get switched into that tenant's branding/context.
-        console.warn('[useTenant] Local tenant resolution failed:', resolveErr.message);
-      }
-
-      if (data) {
-        setActiveTenantIdState(data.tenant_id);
-
-        // Force invalidate all tenant-related queries
-        const queryClient = (window as any).queryClient;
-        if (queryClient) {
-          await queryClient.invalidateQueries({ queryKey: ["tenant"] });
-          await queryClient.refetchQueries({ queryKey: ["tenant", data.tenant_id] });
-        }
-
-        // Store tenant slug in localStorage for persistence
-        localStorage.setItem('tenant_slug', slug);
-
-        // Emit tenant change event
-        window.dispatchEvent(new CustomEvent("tenant.changed", {
-          detail: { from: activeTenantId, to: data.tenant_id, slug: slug }
-        }));
-      }
-    } catch (error) {
-      console.error('[useTenant] Error setting tenant by slug:', error);
+    } catch (rpcErr: any) {
+      console.warn('[useTenant] RPC switch_to_tenant_by_slug threw:', rpcErr?.message);
+      return { ok: false, code: "rpc_failed", message: rpcErr?.message };
     }
+
+    // The RPC updated the active_tenant_id claim; refresh to pick it up.
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+    if (refreshError) {
+      console.warn('[useTenant] Session refresh error:', refreshError.message);
+    }
+    const tenantId: string | undefined =
+      refreshed?.session?.user?.app_metadata?.active_tenant_id || entry.tenant_id || undefined;
+    if (!tenantId) {
+      console.warn('[useTenant] Switched tenant but could not read its id:', slug);
+      return { ok: false, code: "rpc_failed" };
+    }
+
+    setActiveTenantIdState(tenantId);
+
+    // Force invalidate all tenant-related queries
+    const globalQueryClient = (window as any).queryClient;
+    if (globalQueryClient) {
+      await globalQueryClient.invalidateQueries({ queryKey: ["tenant"] });
+      await globalQueryClient.refetchQueries({ queryKey: ["tenant", tenantId] });
+    }
+
+    // Store tenant slug in localStorage for persistence
+    try {
+      localStorage.setItem('tenant_slug', slug);
+    } catch {
+      // Storage unavailable; the session claim is the authority anyway.
+    }
+
+    // Emit tenant change event
+    window.dispatchEvent(new CustomEvent("tenant.changed", {
+      detail: { from: activeTenantId, to: tenantId, slug: slug }
+    }));
+    return { ok: true, tenantId };
   };
 
   const value: TenantContextValue = {

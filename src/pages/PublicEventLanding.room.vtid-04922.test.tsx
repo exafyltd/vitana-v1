@@ -31,6 +31,8 @@ vi.mock('@/integrations/supabase/client', () => ({
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: null }) }));
 vi.mock('@/hooks/useTranslation', () => ({ useTranslation: () => ({ translate: (_k: string, d: string) => d }) }));
 vi.mock('@/components/SEO', () => ({ default: () => null }));
+// VTID-05117: this harness has no TenantProvider / QueryClient — pin Spotlight off (today's layout).
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 vi.mock('@/components/tickets/EventTicketSelector', () => ({ EventTicketSelector: () => null }));
 
 import PublicEventLanding from './PublicEventLanding';

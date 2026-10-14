@@ -160,9 +160,9 @@ export default function CreditTransferPopup({
                 placeholder="0"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="pr-16"
+                className="pe-16"
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+              <div className="absolute end-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                 {t('screens.payment.credits2')}
               </div>
             </div>
@@ -223,11 +223,11 @@ export default function CreditTransferPopup({
             >
               {isProcessing ? (
                 <>
-                  <Coins className="w-4 h-4 mr-2 animate-spin" />{t('screens.payment.sending')}
+                  <Coins className="w-4 h-4 me-2 animate-spin" />{t('screens.payment.sending')}
                 </>
               ) : (
                 <>
-                  <Send className="w-4 h-4 mr-2" />
+                  <Send className="w-4 h-4 me-2" />
                   {t('screens.payment.sendCredits')}
                 </>
               )}

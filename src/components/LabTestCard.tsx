@@ -50,7 +50,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
           <Badge className={getCategoryColor(labTest.category)}>
             {formatCategoryName(labTest.category)}
           </Badge>
-          <div className="text-right">
+          <div className="text-end">
             <div className="text-2xl font-bold text-primary">
               ${labTest.price.toFixed(0)}
             </div>

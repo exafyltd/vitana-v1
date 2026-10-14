@@ -123,7 +123,7 @@ function SmartSuggestionsBase({
                   {suggestion.action && (
                     <Button size="sm" variant="outline" onClick={handleAction(suggestion)} className="mt-2">
                       {suggestion.action}
-                      <ArrowRight className="w-4 h-4 ml-1" />
+                      <ArrowRight className="w-4 h-4 ms-1" />
                     </Button>
                   )}
                 </div>
@@ -170,7 +170,7 @@ function SmartSuggestionsBase({
                     onClick={handleAction(suggestion)}
                     className="mt-1 p-0 h-auto text-calendar-primary hover:text-calendar-primary/80 hover:bg-transparent"
                   >
-                    {suggestion.action} <ArrowRight className="w-3 h-3 ml-1" />
+                    {suggestion.action} <ArrowRight className="w-3 h-3 ms-1" />
                   </Button>
                 )}
               </div>

@@ -354,7 +354,7 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
                         onClick={() => handleTagToggle(tag)}
                       >
                         {tag}
-                        {selectedTags.includes(tag) && <X className="w-3 h-3 ml-1" />}
+                        {selectedTags.includes(tag) && <X className="w-3 h-3 ms-1" />}
                       </Badge>
                     ))}
                   </div>
@@ -435,7 +435,7 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
                       type="button"
                       variant="secondary"
                       size="icon"
-                      className="absolute top-2 right-2 h-7 w-7 rounded-full bg-background/80 backdrop-blur-sm"
+                      className="absolute top-2 end-2 h-7 w-7 rounded-full bg-background/80 backdrop-blur-sm"
                       onClick={removeMedia}
                       aria-label={t('screens.profile.removeMedia')}
                     >
@@ -479,7 +479,7 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
                         onClick={() => handleTagToggle(tag)}
                       >
                         {tag}
-                        {selectedTags.includes(tag) && <X className="w-3 h-3 ml-1" />}
+                        {selectedTags.includes(tag) && <X className="w-3 h-3 ms-1" />}
                       </Badge>
                     ))}
                   </div>
@@ -495,9 +495,9 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
           </Button>
           <Button onClick={handleSubmit} className="flex-1" disabled={isBusy || !canSubmit}>
             {isCompressing ? (
-              <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</>
+              <><Loader2 className="h-4 w-4 me-2 animate-spin" />{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</>
             ) : isSubmitting || createPost.isPending ? (
-              <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.common.posting')}</>
+              <><Loader2 className="h-4 w-4 me-2 animate-spin" />{t('screens.common.posting')}</>
             ) : (
               submitLabel
             )}

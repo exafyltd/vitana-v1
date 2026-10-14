@@ -123,7 +123,7 @@ export function AddProductSheet({
               <select
                 value={org.id}
                 onChange={(e) => onSelectOrg?.(e.target.value)}
-                className="h-11 max-w-[14rem] truncate rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                className="h-11 max-w-56 truncate rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
               >
                 {orgs.map((o) => (
                   <option key={o.id} value={o.id}>

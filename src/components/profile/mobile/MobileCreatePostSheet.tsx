@@ -287,14 +287,14 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
           >
             {isCompressing ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                <Loader2 className="h-4 w-4 animate-spin me-1.5" />
                 <span className="text-xs">{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</span>
               </>
             ) : isSubmitting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>
-                <Send className="h-4 w-4 mr-1" />
+                <Send className="h-4 w-4 me-1" />
                 {translate('profilePosts.post', 'Post')}
               </>
             )}
@@ -357,7 +357,7 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
               <Button
                 variant="secondary"
                 size="icon"
-                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-background/80 backdrop-blur-sm"
+                className="absolute top-2 end-2 h-7 w-7 rounded-full bg-background/80 backdrop-blur-sm"
                 onClick={removeMedia}
                 aria-label={t('screens.profile.removeMedia')}
               >

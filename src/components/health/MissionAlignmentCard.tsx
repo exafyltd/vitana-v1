@@ -119,7 +119,7 @@ function BarRow({ label, count, total, colorClass }: BarRowProps) {
           role="presentation"
         />
       </div>
-      <span className="text-right tabular-nums text-foreground">
+      <span className="text-end tabular-nums text-foreground">
         {count} ({pct}%)
       </span>
     </div>

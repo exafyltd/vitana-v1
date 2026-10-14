@@ -108,7 +108,7 @@ export function MusicGallery({ userId }: MusicGalleryProps) {
         </h3>
         {isOwner && (
           <Button variant="outline" size="sm" className="rounded-full" onClick={() => setUploadOpen(true)}>
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 me-1" />
             {translate("gallery.uploadMusic", "Upload Music")}
           </Button>
         )}
@@ -135,7 +135,7 @@ export function MusicGallery({ userId }: MusicGalleryProps) {
           </p>
           {isOwner && (
             <Button size="sm" className="mt-4" onClick={() => setUploadOpen(true)}>
-              <Plus className="h-4 w-4 mr-1" />
+              <Plus className="h-4 w-4 me-1" />
               {translate("gallery.addFirstTrack", "Add your first track")}
             </Button>
           )}
@@ -163,7 +163,7 @@ export function MusicGallery({ userId }: MusicGalleryProps) {
                   {isTrackPlaying ? (
                     <Pause className="h-4 w-4 text-primary" />
                   ) : (
-                    <Play className="h-4 w-4 text-primary ml-0.5" />
+                    <Play className="h-4 w-4 text-primary ms-0.5" />
                   )}
                 </Button>
 

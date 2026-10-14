@@ -28,7 +28,7 @@ export function MobileInboxEmptyState({
         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
           <MessageSquare className="w-10 h-10 text-primary/60" />
         </div>
-        <div className="absolute -top-1 -right-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg">
+        <div className="absolute -top-1 -end-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg">
           <Users className="w-4 h-4 text-white" />
         </div>
       </div>
@@ -44,7 +44,7 @@ export function MobileInboxEmptyState({
       </p>
 
       {/* CTAs */}
-      <div className="flex flex-col gap-3 w-full max-w-[240px]">
+      <div className="flex flex-col gap-3 w-full max-w-60">
         {onNewMessage && (
           <Button onClick={onNewMessage} className="w-full gap-2">
             <MessageSquare className="w-4 h-4" />

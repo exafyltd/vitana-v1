@@ -89,7 +89,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
               onEdit(event);
             }}
           >
-            <Pencil className="h-4 w-4 mr-2" />
+            <Pencil className="h-4 w-4 me-2" />
             {t('screens.events.edit')}
           </DropdownMenuItem>
         )}
@@ -100,7 +100,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
               onShare(event);
             }}
           >
-            <Share2 className="h-4 w-4 mr-2" />
+            <Share2 className="h-4 w-4 me-2" />
             {t('screens.events.share')}
           </DropdownMenuItem>
         )}
@@ -114,7 +114,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
                 setDeleteDialogOpen(true);
               }}
             >
-              <Trash2 className="h-4 w-4 mr-2" />
+              <Trash2 className="h-4 w-4 me-2" />
               {t('screens.events.delete')}
             </DropdownMenuItem>
           </>

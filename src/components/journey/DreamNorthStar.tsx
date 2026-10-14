@@ -130,7 +130,7 @@ function JourneyStep({
           </div>
           {done && (
             <span
-              className="absolute -top-0.5 -right-0.5 rounded-full flex items-center justify-center"
+              className="absolute -top-0.5 -end-0.5 rounded-full flex items-center justify-center"
               style={{
                 width: badge,
                 height: badge,
@@ -281,7 +281,7 @@ export function DreamNorthStar({
     return (
       <Card className="rounded-[28px] border border-violet-200/50 shadow-lg bg-white/80">
         <div
-          className="p-8 flex min-h-[320px] flex-col items-center justify-center gap-3"
+          className="p-8 flex min-h-80 flex-col items-center justify-center gap-3"
           role="status"
           aria-live="polite"
         >
@@ -603,7 +603,7 @@ export function DreamNorthStar({
                   the card title above; here the ring shows the start affordance:
                   a "click here" prompt, the next-session number, and its label. */}
               <div
-                className="absolute left-2 right-2 font-semibold leading-none truncate"
+                className="absolute start-2 end-2 font-semibold leading-none truncate"
                 style={{
                   top: clickHereTop,
                   color: "#6d28d9",
@@ -618,7 +618,7 @@ export function DreamNorthStar({
                 ).toUpperCase()}
               </div>
               <div
-                className="absolute left-0 right-0 font-bold leading-none"
+                className="absolute start-0 end-0 font-bold leading-none"
                 style={{
                   top: numberTop,
                   transform: "translateY(-50%)",
@@ -632,7 +632,7 @@ export function DreamNorthStar({
               </div>
               {guidedNextSession ? (
                 <div
-                  className="absolute left-2 right-2 px-2 text-xs font-medium leading-tight"
+                  className="absolute start-2 end-2 px-2 text-xs font-medium leading-tight"
                   style={{ top: captionTop, color: "#7c3aed" }}
                 >
                   {t("screens.autopilotdashboard.sessionNumber", {
@@ -641,7 +641,7 @@ export function DreamNorthStar({
                 </div>
               ) : (
                 <div
-                  className="absolute left-2 right-2 px-2 text-xs text-muted-foreground leading-tight"
+                  className="absolute start-2 end-2 px-2 text-xs text-muted-foreground leading-tight"
                   style={{ top: captionTop }}
                 >
                   {t("screens.autopilotdashboard.stepsCompletedOf", {
@@ -661,7 +661,7 @@ export function DreamNorthStar({
                   ? "screens.autopilotdashboard.setGoalCta"
                   : "screens.autopilotdashboard.setDeadlineCta",
               )}
-              className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-left"
+              className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-start"
               style={{
                 inset: stroke + 4,
                 backdropFilter: "blur(8px)",
@@ -669,7 +669,7 @@ export function DreamNorthStar({
               }}
             >
               <div
-                className="absolute left-0 right-0 text-center font-semibold"
+                className="absolute start-0 end-0 text-center font-semibold"
                 style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
               >
                 {t("screens.autopilotdashboard.dayLabel").toUpperCase()}
@@ -685,7 +685,7 @@ export function DreamNorthStar({
                 {ring.hasCountdown ? goalDay : "—"}
               </div>
               <div
-                className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
+                className="absolute start-0 end-0 px-5 text-center text-xs text-muted-foreground leading-tight"
                 style={{ bottom: "15%" }}
               >
                 {hasDeadline
@@ -784,7 +784,7 @@ export function DreamNorthStar({
             // No next session resolved yet (loading) or all sessions done — keep
             // the static learning-goal pill as the calm fallback.
             <div
-              className="text-left rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
+              className="text-start rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
               style={{
                 background: "rgba(255,255,255,0.92)",
                 backdropFilter: "blur(8px)",
@@ -818,7 +818,7 @@ export function DreamNorthStar({
             type="button"
             onClick={onSetGoal}
             aria-label={t("screens.autopilotdashboard.adjustGoalCta")}
-            className="text-left rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="text-start rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             style={{
               background: "rgba(255,255,255,0.92)",
               backdropFilter: "blur(8px)",
@@ -883,7 +883,7 @@ export function DreamNorthStar({
           >
             {t("screens.autopilotdashboard.dreamTagline")}
           </span>
-          <span className="text-amber-400 ml-1">✨</span>
+          <span className="text-amber-400 ms-1">✨</span>
         </div>
       </div>
     </Card>

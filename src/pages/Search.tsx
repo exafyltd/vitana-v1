@@ -13,6 +13,10 @@ import { Search as SearchIcon, Users, MessageSquare, Video, Heart, Clock, Play, 
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 import { t } from '@/lib/i18n-toast';
 import { fmtNumber } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { MEMBER_ROWS, SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 interface SearchResult {
   id: string;
@@ -93,6 +97,10 @@ export default function Search() {
   const [activeTab, setActiveTab] = useState(searchParams.get('type') || 'all');
   const [results, setResults] = useState<SearchResult[]>([]);
   const { members, loading, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
+  // VTID-05117 — Spotlight (desktop + flag): collection of the REAL results only — community
+  // members from useCommunityMembers(). The legacy groups/content/health results are samples, so
+  // their tabs are left out (SR-24). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
 
   useEffect(() => {
     if (query.trim()) {
@@ -254,7 +262,7 @@ export default function Search() {
                     <Play className="h-6 w-6 text-muted-foreground" />
                   )}
                   {result.duration && (
-                    <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                    <div className="absolute bottom-1 end-1 bg-black/70 text-white text-xs px-1 rounded">
                       {result.duration}
                     </div>
                   )}
@@ -306,7 +314,7 @@ export default function Search() {
                   <p className="text-sm text-foreground/80 mb-3">{result.description}</p>
                   <div className="flex justify-end">
                     <Button size="sm" variant="outline">
-                      <BookOpen className="h-4 w-4 mr-2" />
+                      <BookOpen className="h-4 w-4 me-2" />
                       {t('screens.search.learnMore')}
                     </Button>
                   </div>
@@ -321,6 +329,81 @@ export default function Search() {
     }
   };
 
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('spotlightMember.search.title')} description={t('spotlightMember.search.desc')} />
+        <ScreenFrame
+          archetype="collection"
+          header={{ title: t('spotlightMember.search.title'), description: t('spotlightMember.search.desc'), emoji: "🔎" }}
+        >
+          <div className="flex flex-col gap-4">
+            <form
+              role="search"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSearchParams({ q: query, type: 'people' });
+              }}
+              className="flex max-w-stage gap-2"
+            >
+              <div className="relative flex-1">
+                <SearchIcon className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+                <Input
+                  type="search"
+                  aria-label={t('spotlightMember.search.inputLabel')}
+                  placeholder={t('spotlightMember.search.placeholder')}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="ps-10"
+                />
+              </div>
+              <Button type="submit">{t('spotlightMember.search.submit')}</Button>
+            </form>
+            {loading ? (
+              <SpotlightRowsSkeleton />
+            ) : members.length === 0 ? (
+              <SpotlightEmpty Icon={Users} titleKey="spotlightMember.search.emptyTitle" descriptionKey="spotlightMember.search.emptyDesc" />
+            ) : (
+              <ul className={MEMBER_ROWS} aria-label={t('spotlightMember.search.resultsLabel')}>
+                {members.map((member) => {
+                  const name = getDisplayName(member);
+                  return (
+                    <VCard
+                      key={member.user_id}
+                      as="li"
+                      size="row"
+                      mediaSlot={
+                        <ClickableAvatar
+                          userId={member.user_id}
+                          src={member.avatar_url || undefined}
+                          fallback={getInitials(member)}
+                          alt={name}
+                          className="size-full"
+                        />
+                      }
+                      title={<MemberLink userId={member.user_id}>{name}</MemberLink>}
+                      meta={t('spotlightMember.search.memberMeta')}
+                      actions={
+                        <>
+                          <Button size="sm" variant="outline" onClick={() => navigate(`/u/${member.user_id}`)}>
+                            {t('screens.search.viewProfile')}
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${member.user_id}`, { state: { openMessage: true } })}>
+                            {t('screens.search.message')}
+                          </Button>
+                        </>
+                      }
+                    />
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO 
@@ -333,13 +416,13 @@ export default function Search() {
         <div className="mb-8">
           <form onSubmit={handleSearch} className="flex gap-2 mb-4">
             <div className="relative flex-1">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <SearchIcon className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder={t('screens.search.searchMembersGroupsContent')}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-10"
+                className="ps-10"
               />
             </div>
             <Button type="submit" disabled={loading}>
@@ -358,31 +441,31 @@ export default function Search() {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="all" className="flex items-center gap-2">
               {t('screens.search.all')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('all')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="people" className="flex items-center gap-2">
               {t('screens.search.people')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('people')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="groups" className="flex items-center gap-2">
               {t('screens.search.groups')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('groups')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               {t('screens.search.content')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('content')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="health" className="flex items-center gap-2">
               {t('screens.search.health')}
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ms-1">
                 {getResultCount('health')}
               </Badge>
             </TabsTrigger>

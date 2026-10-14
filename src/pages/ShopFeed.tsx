@@ -20,6 +20,10 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ArchetypeSkeleton } from "@/components/layout/spotlight";
+import { FrameWhen } from "@/components/layout/spotlight/FrameWhen";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Link } from "react-router-dom";
 import {
   Drawer,
@@ -196,7 +200,7 @@ function VideoCard({
   return (
     <div
       ref={containerRef}
-      className="relative h-[100dvh] w-full snap-start snap-always overflow-hidden bg-black"
+      className="dark relative h-dvh w-full snap-start snap-always overflow-hidden bg-background"
     >
       <video
         ref={videoRef}
@@ -210,7 +214,7 @@ function VideoCard({
       />
 
       {/* Gradient scrim for legibility */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background/70 to-transparent" />
 
       {/* Mute toggle */}
       <Button
@@ -221,7 +225,7 @@ function VideoCard({
         aria-label={
           muted ? t("videoShop.feed.unmute") : t("videoShop.feed.mute")
         }
-        className="absolute right-3 top-3 z-10 text-white hover:bg-white/20"
+        className="absolute end-3 top-3 z-10 text-foreground hover:bg-foreground/20"
       >
         {muted ? (
           <VolumeX className="h-5 w-5" />
@@ -237,7 +241,7 @@ function VideoCard({
         size="icon"
         onClick={() => onShare(video)}
         aria-label={t("videoShop.feed.share")}
-        className="absolute right-3 top-16 z-10 text-white hover:bg-white/20"
+        className="absolute end-3 top-16 z-10 text-foreground hover:bg-foreground/20"
       >
         <Share2 className="h-5 w-5" />
       </Button>
@@ -245,7 +249,7 @@ function VideoCard({
       {/* Caption */}
       {video.caption && (
         <div className="absolute inset-x-0 bottom-24 z-10 px-4">
-          <p className="line-clamp-2 text-sm font-medium text-white drop-shadow">
+          <p className="line-clamp-2 text-sm font-medium text-foreground drop-shadow">
             {video.caption}
           </p>
         </div>
@@ -256,7 +260,7 @@ function VideoCard({
         <button
           type="button"
           onClick={() => onOpenAnchor(video)}
-          className="absolute bottom-8 left-1/2 z-10 flex max-w-[88%] -translate-x-1/2 items-center gap-2 rounded-full bg-white/95 py-2 pl-2 pr-4 text-left shadow-lg backdrop-blur transition active:scale-95"
+          className="absolute inset-x-6 bottom-8 z-10 mx-auto flex w-fit items-center gap-2 rounded-full bg-card/95 py-2 ps-2 pe-4 text-start shadow-lg backdrop-blur transition active:scale-95"
         >
           <span className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-muted">
             <ProductImage
@@ -341,6 +345,7 @@ function PeekDrawer({
 
   return (
     <Drawer open={open} onOpenChange={(v) => !v && onClose()}>
+      {/* design-allow-next-line: viewport-relative height limit of the bottom drawer; the contract has no viewport-height token */}
       <DrawerContent className="max-h-[88vh]">
         <DrawerHeader className="sr-only">
           <DrawerTitle>
@@ -350,9 +355,13 @@ function PeekDrawer({
 
         <div className="flex flex-col gap-4 px-5 pb-8 pt-2">
           {isLoading && (
-            <div className="flex items-center justify-center gap-2 py-12 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin" />
-              <span>{t("videoShop.drawer.loading")}</span>
+            <div className="flex items-center gap-3 py-12" aria-busy="true">
+              <Skeleton className="h-16 w-16 shrink-0 rounded-lg" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/3" />
+              </div>
+              <span className="sr-only">{t("videoShop.drawer.loading")}</span>
             </div>
           )}
 
@@ -369,7 +378,7 @@ function PeekDrawer({
 
           {!isLoading && unavailable && (
             <div className="space-y-2 py-10 text-center">
-              <AlertTriangle className="mx-auto h-6 w-6 text-amber-500" />
+              <AlertTriangle className="mx-auto h-6 w-6 text-status-warning" />
               <h2 className="text-lg font-medium">
                 {t("videoShop.drawer.unavailableTitle")}
               </h2>
@@ -424,7 +433,7 @@ function PeekDrawer({
                   </div>
                   {product.rating != null && product.rating > 0 && (
                     <div className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      <Star className="h-4 w-4 fill-category-5 text-category-5" />
                       <span className="font-medium text-foreground">
                         {fmtNumber(product.rating, {
                           minimumFractionDigits: 1,
@@ -457,12 +466,12 @@ function PeekDrawer({
                   >
                     {isAdding ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <Loader2 className="me-2 h-4 w-4 animate-spin" />
                         {t("videoShop.drawer.adding")}
                       </>
                     ) : (
                       <>
-                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        <ShoppingCart className="me-2 h-4 w-4" />
                         {inStock
                           ? t("videoShop.drawer.addToCart")
                           : t("videoShop.drawer.notifyMe")}
@@ -603,7 +612,7 @@ function ShopFeedInner() {
   // -- Role-blocked: community-only empty state -------------------------------
   if (roleBlocked) {
     return (
-      <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-2 px-6 text-center">
+      <main className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
         <h1 className="text-xl font-semibold">
           {t("videoShop.feed.roleBlockedTitle")}
         </h1>
@@ -616,16 +625,16 @@ function ShopFeedInner() {
 
   if (isLoading) {
     return (
-      <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-2 text-muted-foreground">
-        <Loader2 className="h-6 w-6 animate-spin" />
-        <span>{t("videoShop.feed.loading")}</span>
+      <main className="dark min-h-dvh bg-background" aria-busy="true">
+        <ArchetypeSkeleton archetype="immersive" />
+        <span className="sr-only">{t("videoShop.feed.loading")}</span>
       </main>
     );
   }
 
   if (error && !roleBlocked) {
     return (
-      <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-3 px-6 text-center">
+      <main className="flex min-h-dvh flex-col items-center justify-center gap-3 px-6 text-center">
         <h1 className="text-xl font-semibold">
           {t("videoShop.feed.errorTitle")}
         </h1>
@@ -641,7 +650,7 @@ function ShopFeedInner() {
 
   if (videos.length === 0) {
     return (
-      <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-2 px-6 text-center">
+      <main className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
         <ShoppingBag className="h-8 w-8 text-muted-foreground" />
         <h1 className="text-xl font-semibold">
           {t("videoShop.feed.emptyTitle")}
@@ -657,7 +666,7 @@ function ShopFeedInner() {
   }
 
   return (
-    <main className="h-[100dvh] w-full overflow-y-scroll bg-black snap-y snap-mandatory">
+    <main className="h-dvh w-full overflow-y-scroll bg-foreground dark:bg-background snap-y snap-mandatory">
       {videos.map((video) => (
         <VideoCard
           key={video.id}
@@ -674,13 +683,14 @@ function ShopFeedInner() {
 
       <div ref={sentinelRef} className="h-1 w-full" aria-hidden />
       {isFetchingNextPage && (
-        <div className="flex items-center justify-center gap-2 bg-black py-6 text-white/80">
+        <div className="dark flex items-center justify-center gap-2 bg-background py-6 text-foreground/80">
+          {/* design-allow-next-line: next-page progress below the feed, next to its status text — not a page loader */}
           <Loader2 className="h-4 w-4 animate-spin" />
           <span>{t("videoShop.feed.loadingMore")}</span>
         </div>
       )}
       {!hasNextPage && (
-        <div className="bg-black py-6 text-center text-sm text-white/60">
+        <div className="dark bg-background py-6 text-center text-sm text-foreground/60">
           {t("videoShop.feed.end")}
         </div>
       )}
@@ -700,9 +710,13 @@ function ShopFeedInner() {
 }
 
 export default function ShopFeed() {
+  const spotlight = useSpotlightEnabled();
   return (
     <ProductSelectionProvider>
-      <ShopFeedInner />
+      {/* VTID-05117: Spotlight on → the full-bleed `immersive` frame (no in-screen chrome). */}
+      <FrameWhen on={spotlight} archetype="immersive">
+        <ShopFeedInner />
+      </FrameWhen>
     </ProductSelectionProvider>
   );
 }

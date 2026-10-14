@@ -13,6 +13,8 @@
  *   - the view stays pinned while the list grows, until the member touches.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+// VTID-05117: the page now reads the Spotlight flag; this suite covers the legacy (flag-off) screen.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 import { render, screen, act } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 

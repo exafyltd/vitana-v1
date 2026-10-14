@@ -98,11 +98,11 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start text-start font-normal",
                         !dateFrom && "text-muted-foreground"
                       )}
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="me-2 h-4 w-4" />
                       {dateFrom ? formatDate(dateFrom, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
@@ -125,11 +125,11 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start text-start font-normal",
                         !dateTo && "text-muted-foreground"
                       )}
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="me-2 h-4 w-4" />
                       {dateTo ? formatDate(dateTo, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
@@ -166,7 +166,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
         <ResponsiveDialogFooter>
           <div className="flex justify-between w-full">
             <Button variant="outline" onClick={handleReset}>
-              <X className="w-4 h-4 mr-2" />
+              <X className="w-4 h-4 me-2" />
               {t('screens.memory.reset')}
             </Button>
             <div className="flex gap-2">
@@ -174,7 +174,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
                 {t('screens.memory.cancel')}
               </Button>
               <Button onClick={handleSearch}>
-                <Search className="w-4 h-4 mr-2" />
+                <Search className="w-4 h-4 me-2" />
                 {t('screens.memory.search')}
               </Button>
             </div>

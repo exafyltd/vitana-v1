@@ -1,7 +1,10 @@
 import { ArrowLeft, Mail, Clock, BookOpen, User, Calendar, CreditCard, HelpCircle, Shield, Trash2, ExternalLink } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
+import { PublicMain } from "@/components/layout/spotlight/PublicMain";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -15,32 +18,33 @@ import { t } from '@/lib/i18n-toast';
 const MaxinaSupport = () => {
   const navigate = useNavigate();
   const { translate } = useTranslation();
+  const spotlight = useSpotlightEnabled();
 
   const helpCategories = [
     {
       id: "gettingStarted",
       icon: BookOpen,
-      color: "bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400",
+      color: "bg-category-4/15 text-category-4",
     },
     {
       id: "account",
       icon: User,
-      color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
+      color: "bg-category-2/15 text-category-2",
     },
     {
       id: "events",
       icon: Calendar,
-      color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
+      color: "bg-category-3/15 text-category-3",
     },
     {
       id: "payments",
       icon: CreditCard,
-      color: "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+      color: "bg-category-6/15 text-category-6",
     },
     {
       id: "technical",
       icon: HelpCircle,
-      color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
+      color: "bg-category-5/15 text-category-5",
     },
   ];
 
@@ -83,7 +87,7 @@ const MaxinaSupport = () => {
       
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+        <div className={cn(spotlight ? "max-w-wide" : "max-w-4xl", "mx-auto px-4 py-4 flex items-center gap-4")}>
           <Button 
             variant="ghost" 
             size="icon"
@@ -93,8 +97,8 @@ const MaxinaSupport = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#FF5C9D] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+            <div className="h-8 w-8 rounded-full bg-ruby flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">M</span>
             </div>
             <h1 className="text-lg font-semibold">{translate("support.maxina.title")}</h1>
           </div>
@@ -102,7 +106,7 @@ const MaxinaSupport = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-10">
+      <PublicMain spotlight={spotlight} archetype="collection" legacyClassName="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-10" className="space-y-10">
         {/* Hero Section */}
         <section className="text-center space-y-2">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">
@@ -155,7 +159,7 @@ const MaxinaSupport = () => {
                     className={index === faqItems.length - 1 ? "border-b-0" : ""}
                   >
                     <AccordionTrigger className="px-4 hover:no-underline hover:bg-muted/50">
-                      <span className="text-left text-sm md:text-base">
+                      <span className="text-start text-sm md:text-base">
                         {translate(`support.maxina.faq.${item}.question`)}
                       </span>
                     </AccordionTrigger>
@@ -174,11 +178,11 @@ const MaxinaSupport = () => {
           <h3 className="text-lg font-semibold text-foreground">
             {translate("support.maxina.contact.title")}
           </h3>
-          <Card className="border-border/50 bg-gradient-to-br from-[#FF7BAC]/5 to-[#FF5C9D]/5">
+          <Card className="border-border/50 bg-gradient-to-br from-ruby/5 to-ruby/10">
             <CardContent className="p-6 space-y-4">
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-full bg-[#FF7BAC]/10 flex items-center justify-center shrink-0">
-                  <Mail className="h-6 w-6 text-[#FF7BAC]" />
+                <div className="h-12 w-12 rounded-full bg-ruby/10 flex items-center justify-center shrink-0">
+                  <Mail className="h-6 w-6 text-ruby" />
                 </div>
                 <div className="space-y-1">
                   <h4 className="font-medium text-foreground">
@@ -186,7 +190,7 @@ const MaxinaSupport = () => {
                   </h4>
                   <a 
                     href="mailto:support@exafy.io"
-                    className="text-[#FF7BAC] hover:underline font-medium"
+                    className="text-ruby hover:underline font-medium"
                   >
                     {t('screens.legal.supportExafyIo')}
                   </a>
@@ -228,7 +232,7 @@ const MaxinaSupport = () => {
         <footer className="pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">{t('screens.legal.value0MaxinaByExafyValue1', { value0: new Date().getFullYear(), value1: translate("support.maxina.footer") })}</p>
         </footer>
-      </main>
+      </PublicMain>
     </div>
   );
 };

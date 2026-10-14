@@ -85,7 +85,7 @@ export function MessageComposeModal({
         </ResponsiveDialogBody>
 
         <ResponsiveDialogFooter className="p-4 sm:p-6 sm:pt-0 border-t sm:border-t-0 border-white/20 dark:border-gray-800/20">
-          <div className="flex items-center justify-between w-full sm:w-auto sm:gap-2 sm:ml-auto">
+          <div className="flex items-center justify-between w-full sm:w-auto sm:gap-2 sm:ms-auto">
             <Button
               variant="ghost"
               size="sm"
@@ -107,7 +107,7 @@ export function MessageComposeModal({
                 disabled={!message.trim() || isSending}
                 className="rounded-full bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--sys-vitana-accent))]/90 hover:to-[hsl(var(--pill-nutrition-accent))]/90 shadow-[0_4px_16px_hsl(var(--sys-vitana-accent)/0.3)] hover:shadow-[0_6px_24px_hsl(var(--sys-vitana-accent)/0.4)] transition-all text-white border-0"
               >
-                <Send className="h-4 w-4 mr-2" />
+                <Send className="h-4 w-4 me-2" />
                 {isSending ? "Sending..." : "Send"}
               </Button>
             </div>

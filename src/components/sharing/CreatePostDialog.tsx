@@ -307,7 +307,7 @@ export function CreatePostDialog({
                       type="button"
                       onClick={() => toggleChannel(channel.key)}
                       className={`
-                        flex items-center gap-2 p-2.5 rounded-lg border transition-all text-left
+                        flex items-center gap-2 p-2.5 rounded-lg border transition-all text-start
                         ${
                           isSelected
                             ? "bg-primary text-primary-foreground border-primary"
@@ -334,9 +334,9 @@ export function CreatePostDialog({
               disabled={createPost.isPending || blastNow.isPending}
             >
               {createPost.isPending || blastNow.isPending ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 me-2 animate-spin" />
               ) : (
-                <Send className="w-4 h-4 mr-2" />
+                <Send className="w-4 h-4 me-2" />
               )}{t('screens.sharing.blastNow')}
             </Button>
             <Button
@@ -345,9 +345,9 @@ export function CreatePostDialog({
               disabled={createPost.isPending}
             >
               {createPost.isPending ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 me-2 animate-spin" />
               ) : (
-                <CalendarIcon className="w-4 h-4 mr-2" />
+                <CalendarIcon className="w-4 h-4 me-2" />
               )}{t('screens.sharing.schedule')}
             </Button>
             <Button

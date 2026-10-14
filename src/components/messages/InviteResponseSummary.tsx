@@ -18,7 +18,7 @@ export const InviteResponseSummary: React.FC<InviteResponseSummaryProps> = ({ re
     return (
       <div className="mt-3">
         <Badge variant="secondary" className="bg-gray-100 text-gray-600 border-gray-200">
-          <Users className="w-3 h-3 mr-1" />
+          <Users className="w-3 h-3 me-1" />
           {t('screens.messages.noResponsesYet')}
         </Badge>
       </div>
@@ -30,17 +30,17 @@ export const InviteResponseSummary: React.FC<InviteResponseSummaryProps> = ({ re
       <div className="flex flex-wrap gap-2">
         {acceptedCount > 0 && (
           <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-            <CheckCircle className="w-3 h-3 mr-1" />{t('screens.messages.acceptedcountAccepted', { acceptedCount })}
+            <CheckCircle className="w-3 h-3 me-1" />{t('screens.messages.acceptedcountAccepted', { acceptedCount })}
           </Badge>
         )}
         {declinedCount > 0 && (
           <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">
-            <X className="w-3 h-3 mr-1" />{t('screens.messages.declinedcountDeclined', { declinedCount })}
+            <X className="w-3 h-3 me-1" />{t('screens.messages.declinedcountDeclined', { declinedCount })}
           </Badge>
         )}
         {maybeCount > 0 && (
           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
-            <Clock className="w-3 h-3 mr-1" />{t('screens.messages.maybecountMaybe', { maybeCount })}
+            <Clock className="w-3 h-3 me-1" />{t('screens.messages.maybecountMaybe', { maybeCount })}
           </Badge>
         )}
       </div>

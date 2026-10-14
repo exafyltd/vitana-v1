@@ -1,0 +1,20 @@
+{
+  "vtid": "VTID-05176",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/ui/**",
+    "apps/mobile/app/native-ui-catalogue.tsx",
+    "apps/mobile/tests/ui/**",
+    "apps/mobile/jest.setup.ts",
+    "apps/mobile/jest.config.js",
+    "apps/mobile/tsconfig.json",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/README.md",
+    "docs/validation/VTID-05176/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05176/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

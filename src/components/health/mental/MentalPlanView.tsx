@@ -32,7 +32,7 @@ export function MentalPlanView() {
           }}
         />
         
-        <div className="border-t border-slate-200/60 dark:border-slate-800/60 pt-6">
+        <div className="border-t border-border/60 pt-6">
           <h3 className="text-xl font-semibold tracking-tight mb-4">{t('screens.health.yourDailyMindTracking')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {planData.dailyStats.map(dayData => (
@@ -45,8 +45,8 @@ export function MentalPlanView() {
           </div>
           
           {/* Summary Strip */}
-          <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
-            <p className="text-sm text-slate-500 dark:text-slate-400">{t('screens.health.avgMoodAvgmoodindexFocusFocusstabilityFocusstabili', { avgMoodIndex: planData.progress.avgMoodIndex, focusStability: planData.progress.focusStability, focusStabilityTrend: planData.progress.focusStabilityTrend, stressRecovery: planData.progress.stressRecovery, mindfulnessStreak: planData.progress.mindfulnessStreak })}
+          <div className="mt-6 pt-4 border-t border-border/60 text-center">
+            <p className="text-sm text-muted-foreground">{t('screens.health.avgMoodAvgmoodindexFocusFocusstabilityFocusstabili', { avgMoodIndex: planData.progress.avgMoodIndex, focusStability: planData.progress.focusStability, focusStabilityTrend: planData.progress.focusStabilityTrend, stressRecovery: planData.progress.stressRecovery, mindfulnessStreak: planData.progress.mindfulnessStreak })}
             </p>
           </div>
         </div>

@@ -4,8 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Plus } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { PatientComingSoonBody } from "@/components/spotlight/member/PatientSpotlight";
 
 export default function PatientAppointments() {
+  // VTID-05117 — Spotlight (desktop + flag): every value on the legacy screen is a sample, so the
+  // collection frame shows the honest "not available yet" state (SR-24). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <ScreenFrame archetype="collection" header={{ title: t('screens.patient.myAppointments'), description: t('screens.patient.manageYourUpcomingPastAppointments') }}>
+          <PatientComingSoonBody Icon={Calendar} />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
   return (
     <AppLayout>
     <div className="p-6 space-y-6">
@@ -17,7 +32,7 @@ export default function PatientAppointments() {
           </p>
         </div>
         <Button>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="me-2 h-4 w-4" />
           {t('screens.patient.scheduleNew')}
         </Button>
       </div>

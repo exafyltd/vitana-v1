@@ -85,7 +85,7 @@ export function SSEConnectionMonitor() {
                 variant="destructive" 
                 onClick={handleForceCloseAll}
               >
-                <XCircle className="w-4 h-4 mr-2" />
+                <XCircle className="w-4 h-4 me-2" />
                 {t('screens.dev.forceCloseAll')}
               </Button>
             </div>

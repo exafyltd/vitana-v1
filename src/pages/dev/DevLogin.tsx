@@ -12,6 +12,8 @@ import SEO from "@/components/SEO";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { notifyError } from '@/lib/i18n-toast';
+import { FrameWhen } from "@/components/layout/spotlight/FrameWhen";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 export default function DevLogin() {
   const { user } = useAuth();
@@ -24,6 +26,7 @@ export default function DevLogin() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const spotlight = useSpotlightEnabled();
 
   // Handle redirect after auth
   useEffect(() => {
@@ -95,7 +98,9 @@ export default function DevLogin() {
         canonical={window.location.href}
       />
       
-      <Card className="w-full max-w-md">
+      {/* VTID-05117: Spotlight (desktop + flag) → the same sign-in card in the operator `workspace` frame (tier C routes are `workspace`). */}
+      <FrameWhen on={spotlight} archetype="workspace" className="w-full">
+      <Card className="mx-auto w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Vitana DEV</CardTitle>
           <CardDescription>Developer & Command Hub</CardDescription>
@@ -193,6 +198,7 @@ export default function DevLogin() {
           </p>
         </CardContent>
       </Card>
+      </FrameWhen>
     </div>
   );
 }

@@ -9,6 +9,9 @@ import { ArrowLeft, Check, Plug } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
+import { PublicMain } from '@/components/layout/spotlight/PublicMain';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { cn } from '@/lib/utils';
 import { COMMERCE_MCP_TOOL_NAMES, COMMERCE_MCP_URL } from '@/lib/commerce-mcp';
 import { t } from '@/lib/i18n-toast';
 
@@ -21,11 +24,12 @@ const STAYS = ['stays1', 'stays2', 'stays3', 'stays4'] as const;
 
 export default function CommerceConnectDocs() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   return (
     <div className="min-h-screen bg-background" data-testid="commerce-connect-docs">
       <SEO title={t(`${K}.seoTitle`)} description={t(`${K}.seoDescription`)} canonical="https://vitanaland.com/commerce/connect" />
       <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
+        <div className={cn("mx-auto flex items-center gap-3 px-4 py-3", spotlight ? "max-w-wide" : "max-w-3xl")}>
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t(`${K}.back`)}>
             <ArrowLeft className="h-5 w-5 rtl:rotate-180" />
           </Button>
@@ -33,8 +37,8 @@ export default function CommerceConnectDocs() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 py-8 md:py-12">
-        <p className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-900">
+      <PublicMain spotlight={spotlight} archetype="collection" legacyClassName="mx-auto max-w-3xl px-4 py-8 md:py-12">
+        <p className="inline-flex items-center gap-2 rounded-full bg-status-warning-subtle px-3 py-1 text-xs font-medium text-status-warning">
           <Plug className="h-3.5 w-3.5" aria-hidden />
           {t(`${K}.badge`)}
         </p>
@@ -68,7 +72,7 @@ export default function CommerceConnectDocs() {
           <ul className="mt-4 space-y-2">
             {CAN_DO.map((k) => (
               <li key={k} className="flex gap-3 text-sm text-foreground/90">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-status-success" aria-hidden />
                 <span>{t(`${K}.${k}`)}</span>
               </li>
             ))}
@@ -114,7 +118,7 @@ export default function CommerceConnectDocs() {
             <Link to="/commerce">{t(`${K}.ctaPortal`)}</Link>
           </Button>
         </section>
-      </main>
+      </PublicMain>
     </div>
   );
 }

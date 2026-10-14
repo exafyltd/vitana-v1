@@ -19,6 +19,14 @@ import { Input } from "@/components/ui/input";
 import { Loader2, MapPin, Users } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { communityNavigation } from "@/config/navigation";
+import { VCard } from "@/components/ui/vcard";
+import { Badge } from "@/components/ui/badge";
+import { MEMBER_ROWS, SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -123,6 +131,107 @@ export default function Members() {
       return name.includes(q) || vid.includes(q);
     });
   }, [members, search]);
+  // VTID-05117 — Spotlight (desktop + flag): the directory inside the Vitanaland frame as a collection
+  // of row cards; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    const chip = (active: boolean) => (active ? "default" : "outline") as "default" | "outline";
+    return (
+      <AppLayout>
+        <SEO title={t('screens.community.communityMembers')} description={t('screens.community.meetEveryoneVitanaCommunityTapCard')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: communityNavigation }}
+          header={{ title: t('screens.community.communityMembers'), description: t('screens.community.meetEveryoneVitanaCommunityTapCard'), emoji: "👥" }}
+        >
+          <div className="flex flex-col gap-4">
+            <Input
+              placeholder={t('screens.community.searchByNameVitanaid')}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              aria-label={t('screens.community.searchMembers')}
+              className="max-w-stage"
+            />
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t('screens.community.sort')}>
+              <span className="me-1 text-xs uppercase tracking-wider text-muted-foreground">{t('screens.community.sort')}</span>
+              {(["newest", "oldest", "name"] as const).map((mode) => (
+                <Button key={mode} size="sm" variant={chip(sort === mode)} className="rounded-full" aria-pressed={sort === mode} onClick={() => setSort(mode)}>
+                  {t(`spotlightMember.members.sort.${mode}`)}
+                </Button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t('screens.community.dance')}>
+              <span className="me-1 text-xs uppercase tracking-wider text-muted-foreground">{t('screens.community.dance')}</span>
+              {VARIETY_FILTERS.map((f) => (
+                <Button
+                  key={f.key ?? "all"}
+                  size="sm"
+                  variant={chip(danceFilter === f.key)}
+                  className="rounded-full"
+                  aria-pressed={danceFilter === f.key}
+                  onClick={() => setDanceFilter(f.key)}
+                >
+                  {t(`spotlightMember.members.dance.${f.key ?? "all"}`)}
+                </Button>
+              ))}
+            </div>
+            {loading && members.length === 0 ? (
+              <SpotlightRowsSkeleton />
+            ) : filtered.length === 0 ? (
+              <SpotlightEmpty Icon={Users} titleKey={danceFilter ? "spotlightMember.members.emptyDance" : "spotlightMember.members.empty"} />
+            ) : (
+              <ul className={MEMBER_ROWS}>
+                {filtered.map((m) => (
+                  <VCard
+                    key={m.vitana_id ?? `${m.registration_seq}`}
+                    as="li"
+                    size="row"
+                    mediaSlot={
+                      <Avatar className="size-full rounded-md">
+                        {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ""} /> : null}
+                        <AvatarFallback className="rounded-md">{initialsFor(m.display_name)}</AvatarFallback>
+                      </Avatar>
+                    }
+                    title={
+                      <button
+                        type="button"
+                        className="text-start hover:text-primary focus-visible:underline focus-visible:outline-none"
+                        onClick={() => m.vitana_id && navigate(`/profile/${m.vitana_id}`)}
+                      >
+                        {m.display_name ?? t('spotlightMember.members.fallbackName')}
+                      </button>
+                    }
+                    meta={[
+                      m.vitana_id ? `@${m.vitana_id}` : null,
+                      m.location,
+                      m.dance_preview?.variety
+                        ? [m.dance_preview.variety, m.dance_preview.level, m.dance_preview.role].filter(Boolean).join(" · ")
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ") || undefined}
+                    badge={
+                      m.registration_seq != null ? (
+                        <Badge variant="secondary">{t('screens.community.memberRegistration_seq', { registration_seq: m.registration_seq })}</Badge>
+                      ) : undefined
+                    }
+                  />
+                ))}
+              </ul>
+            )}
+            {hasMore && members.length > 0 && (
+              <div className="flex justify-center pt-2">
+                <Button variant="outline" disabled={loading} onClick={() => fetchPage(false)}>
+                  {t('screens.community.loadMore')}
+                </Button>
+              </div>
+            )}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <div className="container max-w-3xl mx-auto px-4 py-6 space-y-4">
@@ -144,7 +253,7 @@ export default function Members() {
         />
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.sort')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.sort')}</span>
           {(["newest", "oldest", "name"] as const).map((s) => (
             <button
               key={s}
@@ -160,7 +269,7 @@ export default function Members() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.dance')}</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground me-1">{t('screens.community.dance')}</span>
           {VARIETY_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}
@@ -192,7 +301,7 @@ export default function Members() {
             key={m.vitana_id ?? `${m.registration_seq}`}
             type="button"
             onClick={() => m.vitana_id && navigate(`/profile/${m.vitana_id}`)}
-            className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
+            className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-start"
           >
             <Avatar className="h-12 w-12 flex-shrink-0">
               {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ""} /> : null}

@@ -159,7 +159,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
 
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
-          <Target className="h-4 w-4 mr-2" />
+          <Target className="h-4 w-4 me-2" />
           {t('screens.wallet.viewAllOpportunities')}
         </Button>
       </CardContent>

@@ -189,7 +189,7 @@ export function CommunityPostCard({
     // One-level threading: replying to a reply still attaches to its top-level parent.
     const parentId = comment.parent_id ?? comment.id;
     return (
-      <div key={comment.id} className={cn("flex items-start gap-2", isReply && "ml-8")}>
+      <div key={comment.id} className={cn("flex items-start gap-2", isReply && "ms-8")}>
         <button
           type="button"
           onClick={(e) => {
@@ -282,7 +282,7 @@ export function CommunityPostCard({
         <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
           <MessageCircle className="h-3.5 w-3.5" />
           <span className="truncate">{t(reasonKeyFor(item))}</span>
-          <span className="ml-auto shrink-0 text-muted-foreground">{timeAgo(item.published_at)}</span>
+          <span className="ms-auto shrink-0 text-muted-foreground">{timeAgo(item.published_at)}</span>
         </div>
         {item.content &&
           (background ? (

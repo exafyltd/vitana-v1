@@ -5257,13 +5257,12 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "reportsLoadFailedRetry": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
       "reportsLoadFailedRetry": "Try again",
-      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
+      "coachReplyFailed": "Le coach n'a pas pu répondre pour l'instant. Merci de réessayer dans un instant."
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5481,10 +5480,7 @@
       "replyingTo": "Répondre à {name}",
       "cancelReply": "Annuler la réponse",
       "likeComment": "Aimer le commentaire",
-      "_pending_review": {
-        "feedItemError": true
-      },
-      "feedItemError": "This post couldn't be shown.",
+      "feedItemError": "Ce post n'a pas pu être affiché.",
       "playTodaysEpisode": "Écouter l'épisode {session}"
     },
     "icons": {
@@ -5672,17 +5668,10 @@
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
       "durationHourMin": "{value0} h {value1} min",
-      "_pending_review": {
-        "liveRoomTag": true,
-        "interestedTitle": true,
-        "interestedAria": true,
-        "interestedEmpty": true,
-        "dateTimeChip": true
-      },
-      "liveRoomTag": "Live Room",
-      "interestedTitle": "Who's going",
-      "interestedAria": "Show who wants to join",
-      "interestedEmpty": "Nobody has signed up yet – be the first!",
+      "liveRoomTag": "Salle en direct",
+      "interestedTitle": "Qui participe ?",
+      "interestedAria": "Afficher qui veut participer",
+      "interestedEmpty": "Personne ne s'est encore inscrit – sois le premier !",
       "dateTimeChip": "{date} · {time}",
       "openHostProfile": "Ouvrir le profil de {name}"
     },
@@ -5921,7 +5910,6 @@
       "wellnessDiaryMultimediaDescription": "Enregistre et revois ton parcours bien-être avec des entrées multimédias.",
       "garden": {
         "_pending_review": {
-          "lastUpdated": true,
           "cardCountOne": true,
           "cardCountOther": true,
           "loading": true,
@@ -6035,7 +6023,7 @@
             "insight": "Memories awaiting categorization"
           }
         },
-        "lastUpdated": "Last updated {date}",
+        "lastUpdated": "Dernière mise à jour le {date}",
         "cardCountOne": "1 memory · {progress}%",
         "cardCountOther": "{count} memories · {progress}%",
         "loading": "Loading your memories…",
@@ -13812,6 +13800,12 @@
         "biohacking": true,
         "yoga": true,
         "nature": true
+      }
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana lit ton activité, ton sommeil, tes données cardiaques et tes mensurations dans Apple Health – en lecture seule et uniquement pour les domaines que tu as acceptés dans l’app. Vitana n’écrit jamais rien dans Apple Health.",
+        "privacyPolicyTitle": "Politique de confidentialité"
       }
     }
   }

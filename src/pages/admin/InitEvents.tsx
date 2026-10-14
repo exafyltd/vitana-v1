@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle, XCircle, Copy } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { notify, t } from '@/lib/i18n-toast';
+import { ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const SQL_SCRIPT = `INSERT INTO public.global_community_events (title, description, event_type, location, virtual_link, start_time, end_time, max_participants, participant_count, image_url, created_by, metadata) 
 VALUES
@@ -53,6 +55,7 @@ export default function InitEvents() {
   const [message, setMessage] = useState('Generating Maxina Summer 2026 events...');
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const { toast } = useToast();
   
   const copyToClipboard = () => {
@@ -74,8 +77,7 @@ export default function InitEvents() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-8">
+  const panel = (
       <div className="max-w-3xl w-full bg-card rounded-lg shadow-lg p-8 space-y-6">
         <div className="text-center space-y-4">
           <CheckCircle className="w-16 h-16 mx-auto text-primary" />
@@ -127,6 +129,20 @@ export default function InitEvents() {
           </button>
         </div>
       </div>
+  );
+
+  // VTID-05117: Spotlight on → the manifest's `workspace` frame (full width, no rail) around the same panel.
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="workspace" className="min-h-screen bg-gradient-to-br from-background to-muted">
+        <div className="flex justify-center">{panel}</div>
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-8">
+      {panel}
     </div>
   );
 }
