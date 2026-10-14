@@ -114,28 +114,33 @@ test('VTID-05186: the native i18n shard ships in de and ar with 9 keys; /maxina 
 
   const found: Record<string, Record<string, unknown>> = {};
 
-  for (const lang of LANGS) {
-    // Choose the language the way the picker stores it for a signed-out visitor
-    // (LanguageContext: namespaced `selected_language` + the `vitana.lang`
-    // mirror). Browser-local only.
-    await page.addInitScript((value) => {
-      try {
-        for (const env of ['dev', 'staging', 'prod']) {
-          localStorage.setItem(`vitana::global::${env}::language::selected_language`, value);
-        }
-        localStorage.setItem('vitana.lang', value);
-      } catch {
-        /* storage blocked: the assertions below fail with a clear message */
+  // Choose the language the way the picker stores it for a signed-out visitor
+  // (LanguageContext: namespaced `selected_language` + the `vitana.lang`
+  // mirror). Browser-local only. ONE init script for the whole test: it reads
+  // the wanted value from this navigation's own `e2eLang` query parameter, so
+  // no earlier locale's script can race it (Playwright leaves the order of
+  // several addInitScript calls undefined).
+  await page.addInitScript(() => {
+    try {
+      const value = new URLSearchParams(location.search).get('e2eLang');
+      if (!value) return;
+      for (const env of ['dev', 'staging', 'prod']) {
+        localStorage.setItem(`vitana::global::${env}::language::selected_language`, value);
       }
-    }, lang.value);
+      localStorage.setItem('vitana.lang', value);
+    } catch {
+      /* storage blocked: the assertions below fail with a clear message */
+    }
+  });
 
+  for (const lang of LANGS) {
     let chunkUrl = '';
     const onResponse = (res: import('@playwright/test').Response) => {
       if (new RegExp(`/assets/locale-${lang.code}-[^/]+\\.js$`).test(res.url())) chunkUrl = res.url();
     };
     page.on('response', onResponse);
 
-    await page.goto('/maxina', { waitUntil: 'domcontentloaded' });
+    await page.goto(`/maxina?e2eLang=${encodeURIComponent(lang.value)}`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('body')).toBeVisible();
 
     // 2. Direction follows the language, as before this change.
