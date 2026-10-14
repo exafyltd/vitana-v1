@@ -104,3 +104,27 @@ test('the markdown report names the commit and judges every program §3 candidat
     assert.match(md, /1 import cycle\(s\) in `src\/` in total/);
   } finally { fx.cleanup(); }
 });
+
+test('VTID-05183: zustand persist() without `storage` is implicit-storage (class B); with storage it is not', () => {
+  const without = [
+    "import { create } from 'zustand';",
+    "import { persist } from 'zustand/middleware';",
+    "export const useS = create(persist((set) => ({ a: 1 }), { name: 'x' }));",
+  ].join('\n');
+  const { signals } = scanSource(without, 'src/stores/a.ts');
+  assert.deepEqual(at(signals, 'implicit-storage'), ['zustand persist() without storage → localStorage@3']);
+  const fx = tree({ 'src/stores/a.ts': without });
+  try {
+    assert.equal(analyze(fx.root).modules['src/stores/a.ts'].own, 'B');
+  } finally { fx.cleanup(); }
+  const withStorage = [
+    "import { create } from 'zustand';",
+    "import { persist as keep, createJSONStorage } from 'zustand/middleware';",
+    'export const useS = create(keep((set) => ({ a: 1 }), { name: \'x\', storage: createJSONStorage(() => mem) }));',
+  ].join('\n');
+  assert.deepEqual(at(scanSource(withStorage, 'src/stores/b.ts').signals, 'implicit-storage'), []);
+  const noOptions = "import { persist } from 'zustand/middleware';\nexport const s = persist((set) => ({}));";
+  assert.equal(at(scanSource(noOptions, 'src/stores/c.ts').signals, 'implicit-storage').length, 1);
+  // a local function called persist is not zustand's
+  assert.deepEqual(scanSource('const persist = (x: unknown) => x;\nexport const s = persist(1);', 'src/stores/d.ts').signals, []);
+});

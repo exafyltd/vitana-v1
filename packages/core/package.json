@@ -1,0 +1,6 @@
+{
+  "name": "@vitana/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "VTID-05183 — re-export layer over the web src/ plus generated extracts and config-only clients. Not a workspace: reached through the apps/mobile aliases (apps/mobile/resolution.js)."
+}

@@ -1,7 +1,7 @@
 /**
  * VTID-05176 — the `@vitana/tokens` contract (plan "Interfaces for other
- * lanes"). Runs against whatever the alias resolves to: the N2 stub now, N1's
- * package later.
+ * lanes"). Runs against whatever the alias resolves to: N1's package
+ * (packages/tokens/src/contract.ts) since VTID-05183.
  */
 import { processColor } from 'react-native';
 import * as mod from '@vitana/tokens';

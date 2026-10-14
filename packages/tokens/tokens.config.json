@@ -1,0 +1,29 @@
+{
+  "_doc": "VTID-05183 — inputs of scripts/native/gen-tokens.mjs. Tokens are never edited in packages/tokens: change src/index.css / tailwind.config.ts (a Spotlight contract change) and regenerate.",
+  "css": "src/index.css",
+  "tailwind": "tailwind.config.ts",
+  "out": {
+    "ts": "packages/tokens/src/tokens.generated.ts",
+    "theme": "packages/tokens/tailwind-theme.generated.json"
+  },
+  "gradients": {
+    "maxinaTopbar": ".maxina-topbar"
+  },
+  "excluded": {
+    "--appilix-bottom-nav-height": "Web layout hack: Appilix (web-view wrapper) bottom-bar height fallback; the native app has its own tab bar.",
+    "--appilix-bottom-nav-h": "Web layout hack: alias of --appilix-bottom-nav-height for the Appilix web-view wrapper.",
+    "--orb-gap": "Redeclared outside the token block for the Appilix ORB docking offset (web-view only); the token value in :root stays a token.",
+    "--maxina-orb-size": "Web layout: Maxina intro-page ORB sizing on body.maxina-intro-page, not a design token.",
+    "--maxina-orb-gap": "Web layout: Maxina intro-page ORB spacing on body.maxina-intro-page, not a design token.",
+    "--maxina-orb-slot": "Web layout: computed Maxina intro-page ORB slot (calc of size and gap), not a design token.",
+    "--maxina-orb-content-gap": "Web layout: Maxina intro-page ORB spacing on body.maxina-intro-page, not a design token.",
+    "--maxina-orb-caption-gap": "Web layout: Maxina intro-page ORB caption spacing on body.maxina-intro-page, not a design token.",
+    "--tw-gradient-from": "Tailwind internal: dark-mode overrides of palette gradient classes (from-*-50/100), a web-only fix-up.",
+    "--tw-gradient-via": "Tailwind internal: dark-mode overrides of palette gradient classes (via-*-50/100), a web-only fix-up.",
+    "--tw-gradient-to": "Tailwind internal: dark-mode overrides of palette gradient classes (to-*-50/100), a web-only fix-up.",
+    "--tw-gradient-stops": "Tailwind internal: gradient stop list rebuilt by the dark-mode gradient fix-ups, web-only."
+  },
+  "runtimeVars": {
+    "--radix-accordion-content-height": "Set by Radix Accordion at runtime for the accordion keyframes; not a token."
+  }
+}
