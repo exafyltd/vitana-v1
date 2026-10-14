@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Vremenska linija – Vitana",
       "title": "Tvoja vremenska linija",
-      "description": "Tvoj Vitana Index i sve što ga pokreće – dan po dan."
+      "description": "Tvoj Vitana Index i sve što ga pokreće – dan po dan.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Sve",
       "more": "Više",
       "pillarsLabel": "Filtriraj po stubu",
       "categoriesLabel": "Filtriraj po oblasti",
-      "clear": "Poništi filtere"
+      "clear": "Poništi filtere",
+      "_pending_review": {}
     },
     "day": {
       "today": "Danas",
-      "yesterday": "Juče"
+      "yesterday": "Juče",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Tvojih pet stubova",
       "improve": "Ojačaj {pillar}",
       "empty": "Još nemaš Vitana Index.",
-      "start": "Počni sada"
+      "start": "Počni sada",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Tvoji stubovi su u ravnoteži – pun broj poena.",
-      "held_back": "{pillar} koči tvoju ravnotežu (−{pct} %)."
+      "held_back": "{pillar} koči tvoju ravnotežu (−{pct} %).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "raste",
       "steady": "stabilno",
-      "slipping": "opada"
+      "slipping": "opada",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Računa se za {pillar}"
+      "counted": "Računa se za {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} h",
       "minutes": "{n} min",
       "days": "{n} dana",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "glasom",
       "manual": "ručno",
-      "diary": "iz dnevnika"
+      "diary": "iz dnevnika",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Tvoj Vitana Index je porastao na {score} ({delta})",
       "fell": "Tvoj Vitana Index je pao na {score} ({delta})",
       "changed": "Tvoj Vitana Index se promenio ({delta})",
-      "dailyUpdate": "Dnevno ažuriranje"
+      "dailyUpdate": "Dnevno ažuriranje",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Tvoj dan: {n} sitnica"
+      "title": "Tvoj dan: {n} sitnica",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Učitava se …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana koristi ovaj unos za bolje predloge.",
       "learnOff": "Sakriveno od Vitane – ti ga i dalje vidiš ovde.",
       "open": "Otvori",
-      "delete": "Obriši"
+      "delete": "Obriši",
+      "_pending_review": {}
     },
     "delete": {
       "title": "Obrisati unos?",
       "description": "Unos nestaje sa tvoje vremenske linije i Vitana ga više ne koristi. Ovo se ne može poništiti.",
       "cancel": "Otkaži",
-      "confirm": "Obriši"
+      "confirm": "Obriši",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Unos je obrisan",
       "deleteFailed": "Brisanje nije uspelo",
-      "hideFailed": "Nije uspelo. Pokušaj ponovo."
+      "hideFailed": "Nije uspelo. Pokušaj ponovo.",
+      "_pending_review": {}
     },
     "transparency": "Vitana uči iz tvojih unosa da bi te bolje pratila.",
     "transparencyLink": "Upravljaj podešavanjima",
@@ -171,7 +185,8 @@
       "consent_changed": "Promenio si saglasnost",
       "data_export": "Zatražio si izvoz podataka",
       "settings_other": "Podešavanja promenjena",
-      "notification_opened": "Otvorena obaveštenja"
+      "notification_opened": "Otvorena obaveštenja",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Novčanik",
       "account": "Nalog i privatnost",
       "app_usage": "Korišćenje aplikacije",
-      "system": "Sistem"
+      "system": "Sistem",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },

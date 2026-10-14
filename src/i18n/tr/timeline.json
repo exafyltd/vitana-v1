@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Zaman çizelgesi – Vitana",
       "title": "Zaman çizelgen",
-      "description": "Vitana Index'in ve onu etkileyen her şey – gün gün."
+      "description": "Vitana Index'in ve onu etkileyen her şey – gün gün.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Tümü",
       "more": "Daha fazla",
       "pillarsLabel": "Sütuna göre filtrele",
       "categoriesLabel": "Alana göre filtrele",
-      "clear": "Filtreleri temizle"
+      "clear": "Filtreleri temizle",
+      "_pending_review": {}
     },
     "day": {
       "today": "Bugün",
-      "yesterday": "Dün"
+      "yesterday": "Dün",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Beş sütunun",
       "improve": "{pillar} sütununu güçlendir",
       "empty": "Henüz bir Vitana Index'in yok.",
-      "start": "Şimdi başla"
+      "start": "Şimdi başla",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Sütunların dengede – tam puan.",
-      "held_back": "{pillar} dengeni yavaşlatıyor (−%{pct})."
+      "held_back": "{pillar} dengeni yavaşlatıyor (−%{pct}).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "yükseliyor",
       "steady": "sabit",
-      "slipping": "düşüyor"
+      "slipping": "düşüyor",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "{pillar} için sayılır"
+      "counted": "{pillar} için sayılır",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} sa",
       "minutes": "{n} dk",
       "days": "{n} gün",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "sesle",
       "manual": "elle",
-      "diary": "günlüğünden"
+      "diary": "günlüğünden",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Vitana Index'in {score} değerine yükseldi ({delta})",
       "fell": "Vitana Index'in {score} değerine düştü ({delta})",
       "changed": "Vitana Index'in değişti ({delta})",
-      "dailyUpdate": "Günlük güncelleme"
+      "dailyUpdate": "Günlük güncelleme",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Günün: {n} küçük şey"
+      "title": "Günün: {n} küçük şey",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Yükleniyor …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana bu kaydı daha iyi öneriler için kullanır.",
       "learnOff": "Vitana'dan gizlendi – sen burada görmeye devam edersin.",
       "open": "Aç",
-      "delete": "Sil"
+      "delete": "Sil",
+      "_pending_review": {}
     },
     "delete": {
       "title": "Kayıt silinsin mi?",
       "description": "Kayıt zaman çizelgenden kaybolur ve Vitana onu artık kullanmaz. Bu geri alınamaz.",
       "cancel": "Vazgeç",
-      "confirm": "Sil"
+      "confirm": "Sil",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Kayıt silindi",
       "deleteFailed": "Silinemedi",
-      "hideFailed": "Olmadı. Tekrar dene."
+      "hideFailed": "Olmadı. Tekrar dene.",
+      "_pending_review": {}
     },
     "transparency": "Vitana sana daha iyi eşlik etmek için kayıtlarından öğrenir.",
     "transparencyLink": "Ayarları yönet",
@@ -171,7 +185,8 @@
       "consent_changed": "Bir onayı değiştirdin",
       "data_export": "Veri dışa aktarımı istedin",
       "settings_other": "Ayarlar değiştirildi",
-      "notification_opened": "Açılan bildirimler"
+      "notification_opened": "Açılan bildirimler",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Cüzdan",
       "account": "Hesap ve gizlilik",
       "app_usage": "Uygulama kullanımı",
-      "system": "Sistem"
+      "system": "Sistem",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },

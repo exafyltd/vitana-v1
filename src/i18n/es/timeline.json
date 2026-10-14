@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Línea de tiempo – Vitana",
       "title": "Tu línea de tiempo",
-      "description": "Tu Vitana Index y todo lo que lo mueve, día a día."
+      "description": "Tu Vitana Index y todo lo que lo mueve, día a día.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Todo",
       "more": "Más",
       "pillarsLabel": "Filtrar por pilar",
       "categoriesLabel": "Filtrar por área",
-      "clear": "Quitar filtros"
+      "clear": "Quitar filtros",
+      "_pending_review": {}
     },
     "day": {
       "today": "Hoy",
-      "yesterday": "Ayer"
+      "yesterday": "Ayer",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Tus cinco pilares",
       "improve": "Fortalece {pillar}",
       "empty": "Todavía no tienes Vitana Index.",
-      "start": "Empieza ahora"
+      "start": "Empieza ahora",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Tus pilares están en equilibrio: puntuación completa.",
-      "held_back": "{pillar} está frenando tu equilibrio (−{pct} %)."
+      "held_back": "{pillar} está frenando tu equilibrio (−{pct} %).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "subiendo",
       "steady": "estable",
-      "slipping": "bajando"
+      "slipping": "bajando",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Cuenta para {pillar}"
+      "counted": "Cuenta para {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} h",
       "minutes": "{n} min",
       "days": "{n} días",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "por voz",
       "manual": "a mano",
-      "diary": "desde tu diario"
+      "diary": "desde tu diario",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Tu Vitana Index subió a {score} ({delta})",
       "fell": "Tu Vitana Index bajó a {score} ({delta})",
       "changed": "Tu Vitana Index cambió ({delta})",
-      "dailyUpdate": "Actualización diaria"
+      "dailyUpdate": "Actualización diaria",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Tu día: {n} pequeñas cosas"
+      "title": "Tu día: {n} pequeñas cosas",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Cargando …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana usa esta entrada para darte mejores sugerencias.",
       "learnOff": "Oculto para Vitana: tú lo sigues viendo aquí.",
       "open": "Abrir",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "_pending_review": {}
     },
     "delete": {
       "title": "¿Eliminar la entrada?",
       "description": "La entrada desaparece de tu línea de tiempo y Vitana deja de usarla. No se puede deshacer.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar"
+      "confirm": "Eliminar",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Entrada eliminada",
       "deleteFailed": "No se pudo eliminar",
-      "hideFailed": "No funcionó. Inténtalo de nuevo."
+      "hideFailed": "No funcionó. Inténtalo de nuevo.",
+      "_pending_review": {}
     },
     "transparency": "Vitana aprende de tus entradas para acompañarte mejor.",
     "transparencyLink": "Gestionar ajustes",
@@ -171,7 +185,8 @@
       "consent_changed": "Cambiaste un consentimiento",
       "data_export": "Pediste una exportación de datos",
       "settings_other": "Ajustes cambiados",
-      "notification_opened": "Notificaciones abiertas"
+      "notification_opened": "Notificaciones abiertas",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Monedero",
       "account": "Cuenta y privacidad",
       "app_usage": "Uso de la app",
-      "system": "Sistema"
+      "system": "Sistema",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },

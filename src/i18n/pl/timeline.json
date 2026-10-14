@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Oś czasu – Vitana",
       "title": "Twoja oś czasu",
-      "description": "Twój Vitana Index i wszystko, co na niego wpływa – dzień po dniu."
+      "description": "Twój Vitana Index i wszystko, co na niego wpływa – dzień po dniu.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Wszystko",
       "more": "Więcej",
       "pillarsLabel": "Filtruj według filaru",
       "categoriesLabel": "Filtruj według obszaru",
-      "clear": "Wyczyść filtry"
+      "clear": "Wyczyść filtry",
+      "_pending_review": {}
     },
     "day": {
       "today": "Dziś",
-      "yesterday": "Wczoraj"
+      "yesterday": "Wczoraj",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Twoje pięć filarów",
       "improve": "Wzmocnij: {pillar}",
       "empty": "Nie masz jeszcze Vitana Index.",
-      "start": "Zacznij teraz"
+      "start": "Zacznij teraz",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Twoje filary są w równowadze – pełny wynik.",
-      "held_back": "{pillar} hamuje twoją równowagę (−{pct}%)."
+      "held_back": "{pillar} hamuje twoją równowagę (−{pct}%).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "rośnie",
       "steady": "stabilnie",
-      "slipping": "spada"
+      "slipping": "spada",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Liczy się do: {pillar}"
+      "counted": "Liczy się do: {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} godz.",
       "minutes": "{n} min",
       "days": "{n} dni",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "głosem",
       "manual": "ręcznie",
-      "diary": "z dziennika"
+      "diary": "z dziennika",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Twój Vitana Index wzrósł do {score} ({delta})",
       "fell": "Twój Vitana Index spadł do {score} ({delta})",
       "changed": "Twój Vitana Index się zmienił ({delta})",
-      "dailyUpdate": "Codzienna aktualizacja"
+      "dailyUpdate": "Codzienna aktualizacja",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Twój dzień: {n} drobiazgów"
+      "title": "Twój dzień: {n} drobiazgów",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Ładowanie …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana używa tego wpisu, by lepiej coś proponować.",
       "learnOff": "Ukryte przed Vitaną – nadal widzisz to tutaj.",
       "open": "Otwórz",
-      "delete": "Usuń"
+      "delete": "Usuń",
+      "_pending_review": {}
     },
     "delete": {
       "title": "Usunąć wpis?",
       "description": "Wpis zniknie z twojej osi czasu, a Vitana przestanie go używać. Tego nie można cofnąć.",
       "cancel": "Anuluj",
-      "confirm": "Usuń"
+      "confirm": "Usuń",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Wpis usunięty",
       "deleteFailed": "Nie udało się usunąć",
-      "hideFailed": "Nie udało się. Spróbuj ponownie."
+      "hideFailed": "Nie udało się. Spróbuj ponownie.",
+      "_pending_review": {}
     },
     "transparency": "Vitana uczy się z twoich wpisów, by lepiej ci towarzyszyć.",
     "transparencyLink": "Zarządzaj ustawieniami",
@@ -171,7 +185,8 @@
       "consent_changed": "Zmieniłeś zgodę",
       "data_export": "Poprosiłeś o eksport danych",
       "settings_other": "Zmieniono ustawienia",
-      "notification_opened": "Otwarte powiadomienia"
+      "notification_opened": "Otwarte powiadomienia",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Portfel",
       "account": "Konto i prywatność",
       "app_usage": "Korzystanie z aplikacji",
-      "system": "System"
+      "system": "System",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },

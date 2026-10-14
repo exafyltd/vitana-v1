@@ -25,8 +25,7 @@
       "purchases": "Achats",
       "pending": "Paiements en attente",
       "withdrawals": "Retraits",
-      "stakes": "Mise en jeu",
-      "_pending_review": {}
+      "stakes": "Mise en jeu"
     },
     "noActivity": "Aucune activité pour l'instant",
     "noActivityDesc": "Tes transactions apparaîtront ici.",
@@ -263,6 +262,5 @@
         "tabEarnMore": true
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

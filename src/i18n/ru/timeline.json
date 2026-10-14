@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Лента – Vitana",
       "title": "Твоя лента",
-      "description": "Твой Vitana Index и всё, что на него влияет, день за днём."
+      "description": "Твой Vitana Index и всё, что на него влияет, день за днём.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Все",
       "more": "Ещё",
       "pillarsLabel": "Фильтр по опоре",
       "categoriesLabel": "Фильтр по разделу",
-      "clear": "Сбросить фильтры"
+      "clear": "Сбросить фильтры",
+      "_pending_review": {}
     },
     "day": {
       "today": "Сегодня",
-      "yesterday": "Вчера"
+      "yesterday": "Вчера",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Твои пять опор",
       "improve": "Укрепить: {pillar}",
       "empty": "У тебя пока нет Vitana Index.",
-      "start": "Начать"
+      "start": "Начать",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Твои опоры в балансе — полный балл.",
-      "held_back": "{pillar} сдерживает твой баланс (−{pct} %)."
+      "held_back": "{pillar} сдерживает твой баланс (−{pct} %).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "растёт",
       "steady": "стабильно",
-      "slipping": "снижается"
+      "slipping": "снижается",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Засчитано для: {pillar}"
+      "counted": "Засчитано для: {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} мл",
       "hours": "{n} ч",
       "minutes": "{n} мин",
       "days": "{n} дн.",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "голосом",
       "manual": "вручную",
-      "diary": "из дневника"
+      "diary": "из дневника",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Твой Vitana Index вырос до {score} ({delta})",
       "fell": "Твой Vitana Index снизился до {score} ({delta})",
       "changed": "Твой Vitana Index изменился ({delta})",
-      "dailyUpdate": "Ежедневное обновление"
+      "dailyUpdate": "Ежедневное обновление",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Твой день: {n} мелочей"
+      "title": "Твой день: {n} мелочей",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Загрузка …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana использует эту запись для более точных советов.",
       "learnOff": "Скрыто от Vitana — ты по-прежнему видишь это здесь.",
       "open": "Открыть",
-      "delete": "Удалить"
+      "delete": "Удалить",
+      "_pending_review": {}
     },
     "delete": {
       "title": "Удалить запись?",
       "description": "Запись исчезнет из ленты, и Vitana перестанет её использовать. Это нельзя отменить.",
       "cancel": "Отмена",
-      "confirm": "Удалить"
+      "confirm": "Удалить",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Запись удалена",
       "deleteFailed": "Не удалось удалить",
-      "hideFailed": "Не получилось. Попробуй ещё раз."
+      "hideFailed": "Не получилось. Попробуй ещё раз.",
+      "_pending_review": {}
     },
     "transparency": "Vitana учится на твоих записях, чтобы лучше тебя поддерживать.",
     "transparencyLink": "Управлять настройками",
@@ -171,7 +185,8 @@
       "consent_changed": "Ты изменил согласие",
       "data_export": "Ты запросил экспорт данных",
       "settings_other": "Настройки изменены",
-      "notification_opened": "Открытые уведомления"
+      "notification_opened": "Открытые уведомления",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Кошелёк",
       "account": "Аккаунт и приватность",
       "app_usage": "Использование приложения",
-      "system": "Система"
+      "system": "Система",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },

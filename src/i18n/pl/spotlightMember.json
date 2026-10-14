@@ -1,9 +1,6 @@
 {
-  "_pending_review": {},
   "spotlightMember": {
-    "_pending_review": {},
     "common": {
-      "_pending_review": {},
       "error": {
         "_pending_review": {
           "title": true,
@@ -16,7 +13,6 @@
       }
     },
     "memory": {
-      "_pending_review": {},
       "overview": {
         "_pending_review": {
           "desc": true
@@ -85,7 +81,6 @@
       }
     },
     "settings": {
-      "_pending_review": {},
       "privacy": {
         "_pending_review": {
           "desc": true,

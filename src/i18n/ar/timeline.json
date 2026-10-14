@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "الخط الزمني – Vitana",
       "title": "خطك الزمني",
-      "description": "مؤشر Vitana الخاص بك وكل ما يحرّكه – يومًا بعد يوم."
+      "description": "مؤشر Vitana الخاص بك وكل ما يحرّكه – يومًا بعد يوم.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "الكل",
       "more": "المزيد",
       "pillarsLabel": "التصفية حسب الركيزة",
       "categoriesLabel": "التصفية حسب المجال",
-      "clear": "مسح عوامل التصفية"
+      "clear": "مسح عوامل التصفية",
+      "_pending_review": {}
     },
     "day": {
       "today": "اليوم",
-      "yesterday": "أمس"
+      "yesterday": "أمس",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "مؤشر Vitana",
@@ -24,41 +27,49 @@
       "pillarsLabel": "ركائزك الخمس",
       "improve": "قوِّ {pillar}",
       "empty": "ليس لديك مؤشر Vitana بعد.",
-      "start": "ابدأ الآن"
+      "start": "ابدأ الآن",
+      "_pending_review": {}
     },
     "balance": {
       "full": "ركائزك متوازنة – نقاط كاملة.",
-      "held_back": "{pillar} يُبطئ توازنك (−{pct}٪)."
+      "held_back": "{pillar} يُبطئ توازنك (−{pct}٪).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "يرتفع",
       "steady": "مستقر",
-      "slipping": "ينخفض"
+      "slipping": "ينخفض",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "يُحتسب لـ {pillar}"
+      "counted": "يُحتسب لـ {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} مل",
       "hours": "{n} ساعة",
       "minutes": "{n} دقيقة",
       "days": "{n} أيام",
-      "score": "المؤشر {n}"
+      "score": "المؤشر {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "بالصوت",
       "manual": "يدويًا",
-      "diary": "من يومياتك"
+      "diary": "من يومياتك",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "ارتفع مؤشر Vitana إلى {score} ({delta})",
       "fell": "انخفض مؤشر Vitana إلى {score} ({delta})",
       "changed": "تغيّر مؤشر Vitana ({delta})",
-      "dailyUpdate": "تحديث يومي"
+      "dailyUpdate": "تحديث يومي",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "يومك: {n} أشياء صغيرة"
+      "title": "يومك: {n} أشياء صغيرة",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "جارٍ التحميل …",
@@ -72,18 +83,21 @@
       "learnOn": "تستخدم Vitana هذا الإدخال لاقتراحات أفضل.",
       "learnOff": "مخفي عن Vitana – ما زلت تراه هنا.",
       "open": "فتح",
-      "delete": "حذف"
+      "delete": "حذف",
+      "_pending_review": {}
     },
     "delete": {
       "title": "حذف الإدخال؟",
       "description": "سيختفي الإدخال من خطك الزمني ولن تستخدمه Vitana بعد الآن. لا يمكن التراجع عن ذلك.",
       "cancel": "إلغاء",
-      "confirm": "حذف"
+      "confirm": "حذف",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "تم حذف الإدخال",
       "deleteFailed": "تعذّر الحذف",
-      "hideFailed": "لم ينجح ذلك. حاول مرة أخرى."
+      "hideFailed": "لم ينجح ذلك. حاول مرة أخرى.",
+      "_pending_review": {}
     },
     "transparency": "تتعلّم Vitana من إدخالاتك لترافقك بشكل أفضل.",
     "transparencyLink": "إدارة الإعدادات",
@@ -171,7 +185,8 @@
       "consent_changed": "غيّرت موافقة",
       "data_export": "طلبت تصدير بياناتك",
       "settings_other": "تم تغيير الإعدادات",
-      "notification_opened": "إشعارات مفتوحة"
+      "notification_opened": "إشعارات مفتوحة",
+      "_pending_review": {}
     },
     "category": {
       "index": "مؤشر Vitana",
@@ -192,7 +207,8 @@
       "wallet": "المحفظة",
       "account": "الحساب والخصوصية",
       "app_usage": "استخدام التطبيق",
-      "system": "النظام"
+      "system": "النظام",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },

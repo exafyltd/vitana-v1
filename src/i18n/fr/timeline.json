@@ -5,18 +5,21 @@
     "header": {
       "seoTitle": "Chronologie – Vitana",
       "title": "Ta chronologie",
-      "description": "Ton Vitana Index et tout ce qui le fait bouger, jour après jour."
+      "description": "Ton Vitana Index et tout ce qui le fait bouger, jour après jour.",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Tout",
       "more": "Plus",
       "pillarsLabel": "Filtrer par pilier",
       "categoriesLabel": "Filtrer par domaine",
-      "clear": "Effacer les filtres"
+      "clear": "Effacer les filtres",
+      "_pending_review": {}
     },
     "day": {
       "today": "Aujourd'hui",
-      "yesterday": "Hier"
+      "yesterday": "Hier",
+      "_pending_review": {}
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -24,41 +27,49 @@
       "pillarsLabel": "Tes cinq piliers",
       "improve": "Renforcer : {pillar}",
       "empty": "Tu n'as pas encore de Vitana Index.",
-      "start": "Commencer"
+      "start": "Commencer",
+      "_pending_review": {}
     },
     "balance": {
       "full": "Tes piliers sont équilibrés : score complet.",
-      "held_back": "{pillar} freine ton équilibre (−{pct} %)."
+      "held_back": "{pillar} freine ton équilibre (−{pct} %).",
+      "_pending_review": {}
     },
     "momentum": {
       "rising": "en hausse",
       "steady": "stable",
-      "slipping": "en baisse"
+      "slipping": "en baisse",
+      "_pending_review": {}
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Compte pour {pillar}"
+      "counted": "Compte pour {pillar}",
+      "_pending_review": {}
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} h",
       "minutes": "{n} min",
       "days": "{n} jours",
-      "score": "Index {n}"
+      "score": "Index {n}",
+      "_pending_review": {}
     },
     "via": {
       "voice": "à la voix",
       "manual": "manuellement",
-      "diary": "depuis ton journal"
+      "diary": "depuis ton journal",
+      "_pending_review": {}
     },
     "indexDay": {
       "rose": "Ton Vitana Index est monté à {score} ({delta})",
       "fell": "Ton Vitana Index est descendu à {score} ({delta})",
       "changed": "Ton Vitana Index a changé ({delta})",
-      "dailyUpdate": "Mise à jour quotidienne"
+      "dailyUpdate": "Mise à jour quotidienne",
+      "_pending_review": {}
     },
     "digest": {
-      "title": "Ta journée : {n} petites choses"
+      "title": "Ta journée : {n} petites choses",
+      "_pending_review": {}
     },
     "detail": {
       "loading": "Chargement …",
@@ -72,18 +83,21 @@
       "learnOn": "Vitana utilise cette entrée pour de meilleures suggestions.",
       "learnOff": "Masqué pour Vitana : tu le vois toujours ici.",
       "open": "Ouvrir",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "_pending_review": {}
     },
     "delete": {
       "title": "Supprimer l'entrée ?",
       "description": "L'entrée disparaît de ta chronologie et Vitana ne l'utilise plus. C'est irréversible.",
       "cancel": "Annuler",
-      "confirm": "Supprimer"
+      "confirm": "Supprimer",
+      "_pending_review": {}
     },
     "toast": {
       "deleted": "Entrée supprimée",
       "deleteFailed": "Échec de la suppression",
-      "hideFailed": "Ça n'a pas marché. Réessaie."
+      "hideFailed": "Ça n'a pas marché. Réessaie.",
+      "_pending_review": {}
     },
     "transparency": "Vitana apprend de tes entrées pour mieux t'accompagner.",
     "transparencyLink": "Gérer les réglages",
@@ -171,7 +185,8 @@
       "consent_changed": "Tu as modifié un consentement",
       "data_export": "Tu as demandé un export de tes données",
       "settings_other": "Réglages modifiés",
-      "notification_opened": "Notifications ouvertes"
+      "notification_opened": "Notifications ouvertes",
+      "_pending_review": {}
     },
     "category": {
       "index": "Vitana Index",
@@ -192,7 +207,8 @@
       "wallet": "Portefeuille",
       "account": "Compte & confidentialité",
       "app_usage": "Utilisation de l'app",
-      "system": "Système"
+      "system": "Système",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },
