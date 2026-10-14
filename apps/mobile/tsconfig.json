@@ -2,8 +2,16 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "paths": {
+      "@vitana/core/*": ["../../packages/core/src/*"],
+      "@vitana/tokens": ["../../packages/tokens/src/index.ts"],
+      "@vitana/ui": ["../../apps/mobile/src/ui/index.ts"],
+      "@vitana/ui/*": ["../../apps/mobile/src/ui/*"],
+      "@/*": ["../../src/*"],
+      "@supabase/supabase-js": ["./node_modules/@supabase/supabase-js"]
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", ".expo", "android", "ios"]
+  "include": ["**/*.ts", "**/*.tsx", "../../packages/*/src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "probe-dist", ".expo", "android", "ios"]
 }

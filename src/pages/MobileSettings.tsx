@@ -313,17 +313,21 @@ export default function MobileSettings() {
                   <Users className="w-4.5 h-4.5 text-primary" />
                   <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.dataSharing')}</h3>
                 </div>
+                {/* VTID-05173 (Health Hub D4, mobile): no consent record exists yet, so these
+                    data-sharing switches are off and disabled, exactly as on desktop
+                    (VTID-05032). D10 (VTID-05093) replaces them with HealthConsentSwitch.
+                    Never default health-data sharing to on. */}
                 {[
-                  { title: "Health Data Analytics", desc: "Share anonymized health data to improve AI recommendations", defaultChecked: true },
-                  { title: "Community Insights", desc: "Allow your progress to contribute to community statistics", defaultChecked: true },
-                  { title: "Third-party Integrations", desc: "Share data with connected apps and services", defaultChecked: false },
+                  { title: t('screens.settings.healthDataAnalytics'), desc: t('screens.settings.shareAnonymizedHealthDataImproveAi') },
+                  { title: t('screens.settings.communityInsights'), desc: t('screens.settings.allowYourProgressContributeCommunityStatistics') },
+                  { title: t('screens.settings.thirdpartyIntegrations'), desc: t('screens.settings.shareDataWithConnectedAppsServices') },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-2.5">
                     <div className="flex-1 min-w-0 me-3">
                       <h4 className="text-sm font-medium text-foreground">{item.title}</h4>
                       <p className="text-xs text-muted-foreground">{item.desc}</p>
                     </div>
-                    <Switch defaultChecked={item.defaultChecked} />
+                    <Switch checked={false} disabled aria-label={item.title} />
                   </div>
                 ))}
               </CardContent>
@@ -353,7 +357,7 @@ export default function MobileSettings() {
                   <p><strong>{t('screens.mobilesettings.purpose')}</strong> {t('screens.mobilesettings.aiResponsesVoiceGreetingsHealthCoaching')}</p>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {hasConsent ? "Consent granted. Toggle off to revoke." : "AI features disabled until consent is granted."}
+                  {hasConsent ? t('screens.settings.consentGrantedYouCanRevokeAt') : t('screens.settings.aiFeaturesVoiceAssistantProactiveMessages')}
                 </p>
               </CardContent>
             </Card>
@@ -368,7 +372,8 @@ export default function MobileSettings() {
                   <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-500 rounded-full" /><span>{t('screens.mobilesettings.deleteAccountAllData')}</span></div>
                   <div className="flex items-center gap-2"><div className="w-2 h-2 bg-purple-500 rounded-full" /><span>{t('screens.mobilesettings.viewAllDataSharingActivities')}</span></div>
                 </div>
-                <Button variant="outline" size="sm" className="mt-2">{t('screens.mobilesettings.requestDataExport')}</Button>
+                {/* VTID-05173: no export job exists yet (STATUS follow-up) — disabled, as on desktop. */}
+                <Button variant="outline" size="sm" className="mt-2" disabled>{t('screens.mobilesettings.requestDataExport')}</Button>
               </CardContent>
             </Card>
           </>

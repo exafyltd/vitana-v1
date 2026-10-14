@@ -9,15 +9,22 @@
  * Production AND staging hosts are refused: staging frontends and the staging
  * gateway share the production database (CLAUDE.md "Why no host is exempt"),
  * so a "safer" host is not safer. Native dev/test builds point at G1 only.
+ *
+ * VTID-05183 — also the publishable key (assertNotProductionKey) and
+ * `endpoints(config)`, the only input of the @vitana/core client factories.
+ * This file stays the single production gate; packages/core has no defaults.
  */
+
+import type { CoreEndpoints } from '@vitana/core/config';
 
 export type ConfigKey = 'gatewayUrl' | 'supabaseUrl' | 'dataApiUrl' | 'authRedirectUrl' | 'webBaseUrl';
 
 /**
- * VTID-05186 (N3, plan change 5) — non-URL values. Read with N1's
- * `requireValue` (through `src/ports/env.ts`); no defaults.
+ * Non-URL values; no defaults. `supabasePublishableKey` is N1's (VTID-05183,
+ * checked by assertNotProductionKey); the Google client ids are N3's
+ * (VTID-05186, plan change 5), plain values read with `requireValue`.
  */
-export type ValueKey = 'googleWebClientId' | 'googleIosClientId';
+export type ValueKey = 'supabasePublishableKey' | 'googleWebClientId' | 'googleIosClientId';
 
 export type AppConfig = Partial<Record<ConfigKey | ValueKey, string>>;
 
@@ -28,7 +35,7 @@ export type AppConfig = Partial<Record<ConfigKey | ValueKey, string>>;
  * Both are unset in `development` and `test-g1` until G1 names them.
  */
 export const URL_KEYS: readonly ConfigKey[] = ['gatewayUrl', 'supabaseUrl', 'dataApiUrl', 'authRedirectUrl', 'webBaseUrl'];
-export const VALUE_KEYS: readonly ValueKey[] = ['googleWebClientId', 'googleIosClientId'];
+export const VALUE_KEYS: readonly ValueKey[] = ['supabasePublishableKey', 'googleWebClientId', 'googleIosClientId'];
 
 /**
  * A required value is unset. The app renders the ConfigMissing screen for it
@@ -64,6 +71,53 @@ export function assertNotProduction(url: string): string {
   return url;
 }
 
+/** The production Supabase project ref (src/integrations/supabase/client.ts falls back to it). */
+const PROD_SUPABASE_PROJECT_REF = 'inmkhvwdcuyhnxkgfvsb';
+
+function decodeBase64Url(segment: string): string {
+  const b64 = segment.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4);
+  if (typeof globalThis.atob === 'function') return globalThis.atob(padded);
+  throw new Error('No base64 decoder available to inspect the Supabase key.');
+}
+
+/**
+ * VTID-05183 — throws when `key` is the production project's publishable key.
+ * Two formats exist:
+ *  - a legacy JWT anon key: the payload is decoded (not verified) and a
+ *    `ref` equal to the production project is refused;
+ *  - an `sb_publishable_…` key: refused when the production ref appears in it
+ *    as a `_`-separated segment.
+ * A value in neither format is refused as invalid. The URL check on
+ * `supabaseUrl` stays the primary gate: a key cannot reach production without
+ * the production URL, which assertNotProduction already refuses.
+ */
+export function assertNotProductionKey(key: string): string {
+  const value = (key ?? '').trim();
+  const refuse = () => {
+    throw new Error(
+      'Refusing the production Supabase publishable key: native dev/test builds never reach production or staging (they share the production database). Use the G1 test environment.',
+    );
+  };
+  if (value.startsWith('sb_publishable_')) {
+    if (value.split('_').some((segment) => segment.toLowerCase() === PROD_SUPABASE_PROJECT_REF)) refuse();
+    if (value.length <= 'sb_publishable_'.length) throw new Error('Invalid Supabase publishable key in native config: empty sb_publishable_ key.');
+    return value;
+  }
+  const parts = value.split('.');
+  if (parts.length === 3 && parts.every((p) => /^[A-Za-z0-9_-]+$/.test(p))) {
+    let payload: { ref?: unknown };
+    try {
+      payload = JSON.parse(decodeBase64Url(parts[1]));
+    } catch {
+      throw new Error('Invalid Supabase publishable key in native config: the JWT payload does not decode.');
+    }
+    if (typeof payload.ref === 'string' && payload.ref.toLowerCase() === PROD_SUPABASE_PROJECT_REF) refuse();
+    return value;
+  }
+  throw new Error('Invalid Supabase publishable key in native config: expected a legacy JWT anon key or an sb_publishable_ key.');
+}
+
 /** Builds the config from a source of raw values; every set value is checked. */
 export function loadConfig(source: AppConfig): AppConfig {
   const out: AppConfig = {};
@@ -73,7 +127,7 @@ export function loadConfig(source: AppConfig): AppConfig {
   }
   for (const key of VALUE_KEYS) {
     const value = source[key]?.trim();
-    if (value) out[key] = value;
+    if (value) out[key] = key === 'supabasePublishableKey' ? assertNotProductionKey(value) : value;
   }
   return out;
 }
@@ -83,6 +137,36 @@ export function requireUrl(config: AppConfig, key: ConfigKey): string {
   const value = config[key];
   if (!value) throw new ConfigMissingError([key]);
   return assertNotProduction(value);
+}
+
+/**
+ * A non-URL value, or ConfigMissingError. Never a default. The publishable key
+ * (VTID-05183) passes assertNotProductionKey; the Google client ids
+ * (VTID-05186) are plain values.
+ */
+export function requireValue(config: AppConfig, key: ValueKey): string {
+  const value = config[key]?.trim();
+  if (!value) throw new ConfigMissingError([key]);
+  return key === 'supabasePublishableKey' ? assertNotProductionKey(value) : value;
+}
+
+/**
+ * VTID-05183 — the endpoints every @vitana/core client is built from. Each
+ * value passes requireUrl / requireValue, so a client built from these has
+ * passed the host and key checks. `dataApiUrl` is optional. VTID-05186: the
+ * missing required values are reported together (the ConfigMissing screen
+ * names them all).
+ */
+export function endpoints(cfg: AppConfig): CoreEndpoints {
+  const missing = missingKeys(cfg, ['gatewayUrl', 'supabaseUrl', 'supabasePublishableKey']);
+  if (missing.length > 0) throw new ConfigMissingError(missing);
+  const out: CoreEndpoints = {
+    gatewayOrigin: requireUrl(cfg, 'gatewayUrl'),
+    supabaseUrl: requireUrl(cfg, 'supabaseUrl'),
+    supabasePublishableKey: requireValue(cfg, 'supabasePublishableKey'),
+  };
+  if (cfg.dataApiUrl) out.dataApiUrl = requireUrl(cfg, 'dataApiUrl');
+  return out;
 }
 
 /**
@@ -97,4 +181,5 @@ export const config: AppConfig = loadConfig({
   webBaseUrl: process.env.EXPO_PUBLIC_WEB_BASE_URL,
   googleWebClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
   googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+  supabasePublishableKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
 });

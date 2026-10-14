@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05185",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Health Sync OS permission keys in the deployed build: the vitana-app-version meta is the verified commit (when SHA is set); the de catalogue in the entry bundle and the locale-<code> chunks for ar, en, es, fr, pl, pt, ru, sr, tr, zh each contain screens.nativeHealthSync.osPermission.iosShareUsage and .privacyPolicyTitle, non-empty, with exactly the committed value. No sign-in; GETs of the document and static JS assets only; read-only",
+      "spec": "tests/e2e/staging/vtid-05185-health-sync-permission-keys.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Catalogue shape: both keys in all 11 shards, non-empty, no _pending_review sibling, usage text names Apple Health, no locale copies de/en, German du-form (no Sie/Ihr/Ihnen) and no unhyphenated 22+ character word, no write-permission key",
+      "ref": "npx vitest run src/i18n/native-health-sync-keys.vtid-05185.test.ts",
+      "cwd": ".",
+      "reason": "The staging spec proves the keys reached the deployed catalogues; the Vitest pins the register, compound-word and translation rules on the source shards, which the deployed bundle cannot show."
+    }
+  ]
+}

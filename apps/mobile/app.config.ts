@@ -57,8 +57,17 @@ export function googleIosUrlScheme(iosClientId: string | undefined): string | nu
 
 type PluginEntry = string | [string, Record<string, unknown>];
 
-export function buildPlugins(env: Record<string, string | undefined>): PluginEntry[] {
-  const plugins: PluginEntry[] = ['expo-router', 'expo-localization', 'expo-secure-store', 'expo-apple-authentication'];
+export function buildPlugins(env: Record<string, string | undefined>, profile: Profile): PluginEntry[] {
+  const plugins: PluginEntry[] = [
+    'expo-router',
+    'expo-localization',
+    // VTID-05180: the native ORB voice module. Its microphone usage string comes
+    // from the i18n catalog at prebuild (fails closed without the keys); dev-only
+    // local networking for the fake gateway.
+    ['./modules/vitana-voice/plugin/withVitanaVoice', { profile }],
+    'expo-secure-store',
+    'expo-apple-authentication',
+  ];
   const scheme = googleIosUrlScheme(env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID);
   if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
   return plugins;
@@ -126,7 +135,7 @@ export function buildConfig(
     userInterfaceStyle: 'automatic',
     ios,
     android,
-    plugins: buildPlugins(env),
+    plugins: buildPlugins(env, profile),
     experiments: { typedRoutes: false },
     extra: { profile, linkHosts },
   };
