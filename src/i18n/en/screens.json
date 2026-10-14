@@ -6162,8 +6162,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "In MAXINA",
       "forwardShareOther": "Share via other apps",
-      "forwardShareLinkHint": "If your device can't share the picture directly, a link that works for {hours} hours is shared instead.",
-      "forwardLinkCopied": "Link copied — paste it into any app. It works for {hours} hours.",
+      "forwardShareLinkHint": "If your device can't share the picture directly, a link that works for {days} days is shared instead.",
+      "forwardLinkCopied": "Link copied — paste it into any app. It works for {days} days.",
       "forwardTextCopied": "Text copied — paste it into any app."
     },
     "mobile": {

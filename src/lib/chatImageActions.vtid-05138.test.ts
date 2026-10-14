@@ -115,12 +115,12 @@ describe('shareMessageOutside (VTID-05138 A1)', () => {
     expect(JSON.parse(postMessage.mock.calls[0][0])).toEqual({ action: 'share', text: 'Schau mal\nhttps://signed/a.png?24h' });
   });
 
-  it('4) with no share at all, copies the link and says it works for 24 hours', async () => {
+  it('4) with no share at all, copies the link and says it works for 7 days', async () => {
     delete nav.share;
     delete nav.canShare;
     expect(await shareMessageOutsideAndNotify(picture())).toBe('copied');
     expect(writeText).toHaveBeenCalledWith('Schau mal\nhttps://signed/a.png?24h');
-    expect(h.notify).toHaveBeenCalledWith('screens.messages.forwardLinkCopied', undefined, { hours: 24 });
+    expect(h.notify).toHaveBeenCalledWith('screens.messages.forwardLinkCopied', undefined, { days: 7 });
   });
 
   it('a text-only message shares just its text', async () => {

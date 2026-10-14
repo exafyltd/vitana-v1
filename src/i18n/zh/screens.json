@@ -6276,8 +6276,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "在 MAXINA 内",
       "forwardShareOther": "通过其他应用分享",
-      "forwardShareLinkHint": "如果你的设备无法直接分享图片，将改为分享一个 {hours} 小时内有效的链接。",
-      "forwardLinkCopied": "链接已复制，可粘贴到任意应用中。{hours} 小时内有效。",
+      "forwardShareLinkHint": "如果你的设备无法直接分享图片，将改为分享一个 {days} 天内有效的链接。",
+      "forwardLinkCopied": "链接已复制，可粘贴到任意应用中。{days} 天内有效。",
       "forwardTextCopied": "文本已复制，可粘贴到任意应用中。"
     },
     "mobile": {

@@ -232,8 +232,11 @@ export async function shareImageAndNotify(url: string, filename: string): Promis
  * works. Only used when the device cannot share the file itself; the bucket
  * stays private and nothing is written. One constant, owner's call.
  */
-export const FORWARD_SHARE_LINK_TTL_S = 24 * 60 * 60;
-export const FORWARD_SHARE_LINK_TTL_HOURS = FORWARD_SHARE_LINK_TTL_S / 3600;
+// Owner decision 2026-10-14: longer than the proposed 24 h — 7 days. The
+// member-facing strings say "{days} days", written for a whole number of days
+// of 2 or more; change the strings' plurals before setting this below 2 days.
+export const FORWARD_SHARE_LINK_TTL_DAYS = 7;
+export const FORWARD_SHARE_LINK_TTL_S = FORWARD_SHARE_LINK_TTL_DAYS * 24 * 60 * 60;
 
 export interface ShareOutsideInput {
   /** The message text (may be empty). */
@@ -320,7 +323,7 @@ export async function shareMessageOutsideAndNotify(input: ShareOutsideInput): Pr
   const result = await shareMessageOutside(input);
   const hasFiles = input.images.length > 0 || input.hasOtherFiles;
   if (result === 'copied') {
-    if (hasFiles) notify('screens.messages.forwardLinkCopied', undefined, { hours: FORWARD_SHARE_LINK_TTL_HOURS });
+    if (hasFiles) notify('screens.messages.forwardLinkCopied', undefined, { days: FORWARD_SHARE_LINK_TTL_DAYS });
     else notify('screens.messages.forwardTextCopied');
   } else if (result === 'failed') {
     notifyError('screens.messages.imageShareFailed');

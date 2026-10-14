@@ -6275,8 +6275,8 @@
       "talkToVitana": "Razgovaraj sa Vitanom",
       "forwardInMaxina": "U MAXINA",
       "forwardShareOther": "Podeli preko drugih aplikacija",
-      "forwardShareLinkHint": "Ako tvoj uređaj ne može direktno da podeli sliku, deli se link koji važi {hours} sati.",
-      "forwardLinkCopied": "Link je kopiran – nalepi ga u bilo koju aplikaciju. Važi {hours} sati.",
+      "forwardShareLinkHint": "Ako tvoj uređaj ne može direktno da podeli sliku, deli se link koji važi {days} dana.",
+      "forwardLinkCopied": "Link je kopiran – nalepi ga u bilo koju aplikaciju. Važi {days} dana.",
       "forwardTextCopied": "Tekst je kopiran – nalepi ga u bilo koju aplikaciju."
     },
     "mobile": {

@@ -6242,8 +6242,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "En MAXINA",
       "forwardShareOther": "Compartir con otras apps",
-      "forwardShareLinkHint": "Si tu dispositivo no puede compartir la imagen directamente, se comparte un enlace válido durante {hours} horas.",
-      "forwardLinkCopied": "Enlace copiado: pégalo en cualquier app. Es válido durante {hours} horas.",
+      "forwardShareLinkHint": "Si tu dispositivo no puede compartir la imagen directamente, se comparte un enlace válido durante {days} días.",
+      "forwardLinkCopied": "Enlace copiado: pégalo en cualquier app. Es válido durante {days} días.",
       "forwardTextCopied": "Texto copiado: pégalo en cualquier app."
     },
     "mobile": {
