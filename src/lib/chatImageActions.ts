@@ -5,6 +5,7 @@
  * forward sheet; every outcome a member sees is a translated toast.
  */
 import { notify, notifyError } from '@/lib/i18n-toast';
+import { isAppilix, share as appilixShare } from '@/lib/appilix';
 
 export interface ChatAttachmentLike {
   type?: string;
@@ -223,5 +224,106 @@ export async function shareImage(url: string, filename: string): Promise<ShareIm
 export async function shareImageAndNotify(url: string, filename: string): Promise<ShareImageResult> {
   const result = await shareImage(url, filename);
   if (result === 'failed' || result === 'unsupported') notifyError('screens.messages.imageShareFailed');
+  return result;
+}
+
+/**
+ * VTID-05138 A1 — how long a "share via other apps" link to a chat picture
+ * works. Only used when the device cannot share the file itself; the bucket
+ * stays private and nothing is written. One constant, owner's call.
+ */
+export const FORWARD_SHARE_LINK_TTL_S = 24 * 60 * 60;
+export const FORWARD_SHARE_LINK_TTL_HOURS = FORWARD_SHARE_LINK_TTL_S / 3600;
+
+export interface ShareOutsideInput {
+  /** The message text (may be empty). */
+  text: string;
+  /** The message's pictures with a fresh URL, for sharing as files. */
+  images: { url: string; filename: string }[];
+  /** True when the message has attachments that are not pictures. */
+  hasOtherFiles: boolean;
+  /** Creates the time-limited links; called only when files cannot be shared. */
+  getLinks: () => Promise<string[]>;
+}
+
+export type ShareOutsideResult = 'shared_files' | 'shared' | 'cancelled' | 'copied' | 'failed';
+
+const isAbort = (err: unknown) => err instanceof DOMException && err.name === 'AbortError';
+
+async function tryShareFiles(input: ShareOutsideInput): Promise<ShareOutsideResult | null> {
+  if (input.images.length === 0 || input.hasOtherFiles || !canShareImageFiles()) return null;
+  try {
+    const files = await Promise.all(
+      input.images.map(async (img, i) => {
+        const blob = await fetchImageBlob(img.url);
+        return new File([blob], img.filename || `image-${i + 1}.png`, { type: blob.type || 'image/png' });
+      }),
+    );
+    if (!navigator.canShare({ files })) return null;
+    const text = input.text.trim();
+    await navigator.share(text ? { files, text } : { files });
+    return 'shared_files';
+  } catch (err) {
+    if (isAbort(err)) return 'cancelled';
+    console.warn('[chatImageActions] file share failed, falling back to a link', err);
+    return null;
+  }
+}
+
+/**
+ * Open the device's own share drawer for a chat message, in this order:
+ * 1. the pictures themselves as files (Web Share Level 2);
+ * 2. `navigator.share` with the text and time-limited links;
+ * 3. the Appilix app shell's share bridge with the same text;
+ * 4. copy the text/links to the clipboard and say so.
+ */
+export async function shareMessageOutside(input: ShareOutsideInput): Promise<ShareOutsideResult> {
+  const fileResult = await tryShareFiles(input);
+  if (fileResult) return fileResult;
+
+  const hasFiles = input.images.length > 0 || input.hasOtherFiles;
+  let links: string[] = [];
+  if (hasFiles) {
+    try {
+      links = (await input.getLinks()).filter(Boolean);
+    } catch (err) {
+      console.warn('[chatImageActions] could not create share links', err);
+    }
+    if (links.length === 0) return 'failed';
+  }
+  const shareText = [input.text.trim(), ...links].filter(Boolean).join('\n');
+  if (!shareText) return 'failed';
+
+  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ text: shareText });
+      return 'shared';
+    } catch (err) {
+      if (isAbort(err)) return 'cancelled';
+      console.warn('[chatImageActions] navigator.share failed', err);
+    }
+  }
+
+  if (isAppilix() && appilixShare(shareText)) return 'shared';
+
+  try {
+    await navigator.clipboard.writeText(shareText);
+    return 'copied';
+  } catch (err) {
+    console.warn('[chatImageActions] clipboard fallback failed', err);
+    return 'failed';
+  }
+}
+
+/** Share outside MAXINA and tell the member what happened. */
+export async function shareMessageOutsideAndNotify(input: ShareOutsideInput): Promise<ShareOutsideResult> {
+  const result = await shareMessageOutside(input);
+  const hasFiles = input.images.length > 0 || input.hasOtherFiles;
+  if (result === 'copied') {
+    if (hasFiles) notify('screens.messages.forwardLinkCopied', undefined, { hours: FORWARD_SHARE_LINK_TTL_HOURS });
+    else notify('screens.messages.forwardTextCopied');
+  } else if (result === 'failed') {
+    notifyError('screens.messages.imageShareFailed');
+  }
   return result;
 }

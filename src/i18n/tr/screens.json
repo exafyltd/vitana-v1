@@ -6273,7 +6273,12 @@
       "imageShareFailed": "Paylaşılamadı",
       "imageLoading": "Görsel yükleniyor",
       "unknownSize": "Bilinmeyen boyut",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "MAXINA içinde",
+      "forwardShareOther": "Diğer uygulamalarla paylaş",
+      "forwardShareLinkHint": "Cihazın görseli doğrudan paylaşamazsa, bunun yerine {hours} saat geçerli bir bağlantı paylaşılır.",
+      "forwardLinkCopied": "Bağlantı kopyalandı — istediğin uygulamaya yapıştır. {hours} saat geçerlidir.",
+      "forwardTextCopied": "Metin kopyalandı — istediğin uygulamaya yapıştır."
     },
     "mobile": {
       "searching": "Aranıyor...",

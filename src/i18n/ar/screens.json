@@ -6273,7 +6273,12 @@
       "imageShareFailed": "تعذّرت المشاركة",
       "imageLoading": "جارٍ تحميل الصورة",
       "unknownSize": "حجم غير معروف",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "داخل MAXINA",
+      "forwardShareOther": "المشاركة عبر تطبيقات أخرى",
+      "forwardShareLinkHint": "إذا تعذّر على جهازك مشاركة الصورة مباشرةً، فستتم مشاركة رابط صالح لمدة {hours} ساعة بدلاً من ذلك.",
+      "forwardLinkCopied": "تم نسخ الرابط — الصقه في أي تطبيق. صالح لمدة {hours} ساعة.",
+      "forwardTextCopied": "تم نسخ النص — الصقه في أي تطبيق."
     },
     "mobile": {
       "searching": "جاري البحث…",
