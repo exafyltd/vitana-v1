@@ -105,6 +105,50 @@ jobs:
             done
           } >> "$GITHUB_STEP_SUMMARY"
 
+  # VTID-05181 (native Wave 1b N6c) — the vitana-voice Android module's JVM and
+  # Robolectric unit tests. Linux only, no signing, no secrets, no device. The
+  # native project is generated into apps/mobile/android (gitignored) and only
+  # the module's unit-test task runs; nothing is assembled or installed.
+  android-module:
+    name: vitana-voice Android module — JVM + Robolectric unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/mobile
+    env:
+      APP_PROFILE: development
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Install (apps/mobile only, its own lockfile)
+        run: npm ci
+      # Prebuild downloads the SDK's bare template from the npm registry (the
+      # same registry npm ci uses); no Expo or Vitana service is called.
+      - name: Generate the Android project (no install, never committed)
+        env:
+          EXPO_OFFLINE: '0'
+        run: npx expo prebuild --platform android --no-install
+      - name: vitana-voice unit tests (JVM + Robolectric)
+        working-directory: apps/mobile/android
+        run: ./gradlew :vitana-voice:testDebugUnitTest --no-daemon --stacktrace
+      - name: Test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitana-voice-android-tests-${{ github.sha }}
+          path: apps/mobile/modules/vitana-voice/android/build/reports/tests/
+          retention-days: 14
+          if-no-files-found: ignore
+
   parity-ledger:
     name: Parity ledger + native script tests
     if: github.event_name != 'schedule'
