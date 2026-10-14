@@ -5,21 +5,18 @@
     "header": {
       "seoTitle": "الخط الزمني – Vitana",
       "title": "خطك الزمني",
-      "description": "مؤشر Vitana الخاص بك وكل ما يحرّكه – يومًا بعد يوم.",
-      "_pending_review": {}
+      "description": "مؤشر Vitana الخاص بك وكل ما يحرّكه – يومًا بعد يوم."
     },
     "filters": {
       "all": "الكل",
       "more": "المزيد",
       "pillarsLabel": "التصفية حسب الركيزة",
       "categoriesLabel": "التصفية حسب المجال",
-      "clear": "مسح عوامل التصفية",
-      "_pending_review": {}
+      "clear": "مسح عوامل التصفية"
     },
     "day": {
       "today": "اليوم",
-      "yesterday": "أمس",
-      "_pending_review": {}
+      "yesterday": "أمس"
     },
     "spotlight": {
       "eyebrow": "مؤشر Vitana",
@@ -28,48 +25,44 @@
       "improve": "قوِّ {pillar}",
       "empty": "ليس لديك مؤشر Vitana بعد.",
       "start": "ابدأ الآن",
-      "_pending_review": {}
+      "_pending_review": {
+        "error": true
+      },
+      "error": "Your Vitana Index couldn't be loaded right now."
     },
     "balance": {
       "full": "ركائزك متوازنة – نقاط كاملة.",
-      "held_back": "{pillar} يُبطئ توازنك (−{pct}٪).",
-      "_pending_review": {}
+      "held_back": "{pillar} يُبطئ توازنك (−{pct}٪)."
     },
     "momentum": {
       "rising": "يرتفع",
       "steady": "مستقر",
-      "slipping": "ينخفض",
-      "_pending_review": {}
+      "slipping": "ينخفض"
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "يُحتسب لـ {pillar}",
-      "_pending_review": {}
+      "counted": "يُحتسب لـ {pillar}"
     },
     "unit": {
       "ml": "{n} مل",
       "hours": "{n} ساعة",
       "minutes": "{n} دقيقة",
       "days": "{n} أيام",
-      "score": "المؤشر {n}",
-      "_pending_review": {}
+      "score": "المؤشر {n}"
     },
     "via": {
       "voice": "بالصوت",
       "manual": "يدويًا",
-      "diary": "من يومياتك",
-      "_pending_review": {}
+      "diary": "من يومياتك"
     },
     "indexDay": {
       "rose": "ارتفع مؤشر Vitana إلى {score} ({delta})",
       "fell": "انخفض مؤشر Vitana إلى {score} ({delta})",
       "changed": "تغيّر مؤشر Vitana ({delta})",
-      "dailyUpdate": "تحديث يومي",
-      "_pending_review": {}
+      "dailyUpdate": "تحديث يومي"
     },
     "digest": {
-      "title": "يومك: {n} أشياء صغيرة",
-      "_pending_review": {}
+      "title": "يومك: {n} أشياء صغيرة"
     },
     "detail": {
       "loading": "جارٍ التحميل …",
@@ -83,21 +76,18 @@
       "learnOn": "تستخدم Vitana هذا الإدخال لاقتراحات أفضل.",
       "learnOff": "مخفي عن Vitana – ما زلت تراه هنا.",
       "open": "فتح",
-      "delete": "حذف",
-      "_pending_review": {}
+      "delete": "حذف"
     },
     "delete": {
       "title": "حذف الإدخال؟",
       "description": "سيختفي الإدخال من خطك الزمني ولن تستخدمه Vitana بعد الآن. لا يمكن التراجع عن ذلك.",
       "cancel": "إلغاء",
-      "confirm": "حذف",
-      "_pending_review": {}
+      "confirm": "حذف"
     },
     "toast": {
       "deleted": "تم حذف الإدخال",
       "deleteFailed": "تعذّر الحذف",
-      "hideFailed": "لم ينجح ذلك. حاول مرة أخرى.",
-      "_pending_review": {}
+      "hideFailed": "لم ينجح ذلك. حاول مرة أخرى."
     },
     "transparency": "تتعلّم Vitana من إدخالاتك لترافقك بشكل أفضل.",
     "transparencyLink": "إدارة الإعدادات",
@@ -185,8 +175,7 @@
       "consent_changed": "غيّرت موافقة",
       "data_export": "طلبت تصدير بياناتك",
       "settings_other": "تم تغيير الإعدادات",
-      "notification_opened": "إشعارات مفتوحة",
-      "_pending_review": {}
+      "notification_opened": "إشعارات مفتوحة"
     },
     "category": {
       "index": "مؤشر Vitana",
@@ -207,10 +196,17 @@
       "wallet": "المحفظة",
       "account": "الحساب والخصوصية",
       "app_usage": "استخدام التطبيق",
-      "system": "النظام",
-      "_pending_review": {}
+      "system": "النظام"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "insight": {
+      "_pending_review": {
+        "weakest_pillar_streak": true,
+        "pillar_slipping": true,
+        "pillar_rising": true
+      },
+      "weakest_pillar_streak": "{pillar} has been your weakest pillar for days and is holding back your balance.",
+      "pillar_slipping": "{pillar} dropped noticeably this week.",
+      "pillar_rising": "{pillar} rose noticeably this week."
+    }
+  }
 }

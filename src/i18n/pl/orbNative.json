@@ -7,23 +7,27 @@
       "reconnecting": "Przywracanie połączenia …",
       "ended": "Rozmowa zakończona",
       "muted": "Twój mikrofon jest wyciszony",
-      "unavailable": "Vitana nie jest jeszcze dostępna w tej wersji aplikacji."
+      "unavailable": "Vitana nie jest jeszcze dostępna w tej wersji aplikacji.",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "Porozmawiaj z Vitaną",
       "body": "Żeby Vitana mogła cię słyszeć, aplikacja potrzebuje dostępu do twojego mikrofonu. Mikrofon jest włączony tylko wtedy, gdy rozmowa jest otwarta.",
       "continue": "Dalej",
-      "notNow": "Nie teraz"
+      "notNow": "Nie teraz",
+      "_pending_review": {}
     },
     "denied": {
       "body": "Zezwól na dostęp do mikrofonu w Ustawieniach, żeby porozmawiać z Vitaną.",
-      "openSettings": "Otwórz Ustawienia"
+      "openSettings": "Otwórz Ustawienia",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "Zamknij rozmowę z Vitaną",
       "micMute": "Wycisz mikrofon",
       "micUnmute": "Włącz mikrofon",
-      "restart": "Rozpocznij nową rozmowę z Vitaną"
+      "restart": "Rozpocznij nową rozmowę z Vitaną",
+      "_pending_review": {}
     },
     "bench": {
       "title": "Test echa głosu",
@@ -52,7 +56,10 @@
       "on": "wł.",
       "off": "wył.",
       "share": "Udostępnij wynik",
-      "unavailable": "Test echa jest dostępny tylko w wersjach deweloperskich i testowych aplikacji."
-    }
-  }
+      "unavailable": "Test echa jest dostępny tylko w wersjach deweloperskich i testowych aplikacji.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

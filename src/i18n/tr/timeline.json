@@ -5,21 +5,18 @@
     "header": {
       "seoTitle": "Zaman çizelgesi – Vitana",
       "title": "Zaman çizelgen",
-      "description": "Vitana Index'in ve onu etkileyen her şey – gün gün.",
-      "_pending_review": {}
+      "description": "Vitana Index'in ve onu etkileyen her şey – gün gün."
     },
     "filters": {
       "all": "Tümü",
       "more": "Daha fazla",
       "pillarsLabel": "Sütuna göre filtrele",
       "categoriesLabel": "Alana göre filtrele",
-      "clear": "Filtreleri temizle",
-      "_pending_review": {}
+      "clear": "Filtreleri temizle"
     },
     "day": {
       "today": "Bugün",
-      "yesterday": "Dün",
-      "_pending_review": {}
+      "yesterday": "Dün"
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -28,49 +25,41 @@
       "improve": "{pillar} sütununu güçlendir",
       "empty": "Henüz bir Vitana Index'in yok.",
       "start": "Şimdi başla",
-      "error": "Vitana Index'in şu anda yüklenemedi.",
-      "_pending_review": {}
+      "error": "Vitana Index'in şu anda yüklenemedi."
     },
     "balance": {
       "full": "Sütunların dengede – tam puan.",
-      "held_back": "{pillar} dengeni yavaşlatıyor (−%{pct}).",
-      "_pending_review": {}
+      "held_back": "{pillar} dengeni yavaşlatıyor (−%{pct})."
     },
     "momentum": {
       "rising": "yükseliyor",
       "steady": "sabit",
-      "slipping": "düşüyor",
-      "_pending_review": {}
+      "slipping": "düşüyor"
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "{pillar} için sayılır",
-      "_pending_review": {}
+      "counted": "{pillar} için sayılır"
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} sa",
       "minutes": "{n} dk",
       "days": "{n} gün",
-      "score": "Index {n}",
-      "_pending_review": {}
+      "score": "Index {n}"
     },
     "via": {
       "voice": "sesle",
       "manual": "elle",
-      "diary": "günlüğünden",
-      "_pending_review": {}
+      "diary": "günlüğünden"
     },
     "indexDay": {
       "rose": "Vitana Index'in {score} değerine yükseldi ({delta})",
       "fell": "Vitana Index'in {score} değerine düştü ({delta})",
       "changed": "Vitana Index'in değişti ({delta})",
-      "dailyUpdate": "Günlük güncelleme",
-      "_pending_review": {}
+      "dailyUpdate": "Günlük güncelleme"
     },
     "digest": {
-      "title": "Günün: {n} küçük şey",
-      "_pending_review": {}
+      "title": "Günün: {n} küçük şey"
     },
     "detail": {
       "loading": "Yükleniyor …",
@@ -84,21 +73,18 @@
       "learnOn": "Vitana bu kaydı daha iyi öneriler için kullanır.",
       "learnOff": "Vitana'dan gizlendi – sen burada görmeye devam edersin.",
       "open": "Aç",
-      "delete": "Sil",
-      "_pending_review": {}
+      "delete": "Sil"
     },
     "delete": {
       "title": "Kayıt silinsin mi?",
       "description": "Kayıt zaman çizelgenden kaybolur ve Vitana onu artık kullanmaz. Bu geri alınamaz.",
       "cancel": "Vazgeç",
-      "confirm": "Sil",
-      "_pending_review": {}
+      "confirm": "Sil"
     },
     "toast": {
       "deleted": "Kayıt silindi",
       "deleteFailed": "Silinemedi",
-      "hideFailed": "Olmadı. Tekrar dene.",
-      "_pending_review": {}
+      "hideFailed": "Olmadı. Tekrar dene."
     },
     "transparency": "Vitana sana daha iyi eşlik etmek için kayıtlarından öğrenir.",
     "transparencyLink": "Ayarları yönet",
@@ -186,8 +172,7 @@
       "consent_changed": "Bir onayı değiştirdin",
       "data_export": "Veri dışa aktarımı istedin",
       "settings_other": "Ayarlar değiştirildi",
-      "notification_opened": "Açılan bildirimler",
-      "_pending_review": {}
+      "notification_opened": "Açılan bildirimler"
     },
     "category": {
       "index": "Vitana Index",
@@ -208,10 +193,17 @@
       "wallet": "Cüzdan",
       "account": "Hesap ve gizlilik",
       "app_usage": "Uygulama kullanımı",
-      "system": "Sistem",
-      "_pending_review": {}
+      "system": "Sistem"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "insight": {
+      "_pending_review": {
+        "weakest_pillar_streak": true,
+        "pillar_slipping": true,
+        "pillar_rising": true
+      },
+      "weakest_pillar_streak": "{pillar} has been your weakest pillar for days and is holding back your balance.",
+      "pillar_slipping": "{pillar} dropped noticeably this week.",
+      "pillar_rising": "{pillar} rose noticeably this week."
+    }
+  }
 }
