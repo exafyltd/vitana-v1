@@ -4,7 +4,8 @@
       "overviewTitle": "Память",
       "overviewDescription": "Что Vitana знает о тебе – и как прошла твоя неделя в Vitana Index.",
       "permissionsTitle": "Чему может учиться Vitana",
-      "permissionsDescription": "Ты решаешь, на чём учится Vitana. Никто другой не видит эти данные."
+      "permissionsDescription": "Ты решаешь, на чём учится Vitana. Никто другой не видит эти данные.",
+      "_pending_review": {}
     },
     "week": {
       "title": "Твоя неделя в Vitana Index",
@@ -15,14 +16,16 @@
       "steady": "Все пять опор стабильны.",
       "openTimeline": "Открыть хронологию",
       "empty": "Vitana Index пока нет. Пройди стартовую проверку – и эта карточка каждую неделю покажет, что изменилось.",
-      "start": "Пройти стартовую проверку"
+      "start": "Пройти стартовую проверку",
+      "_pending_review": {}
     },
     "routines": {
       "title": "Привычки, которые заметила Vitana",
       "description": "Так Vitana узнаёт твои будни. Попроси забыть то, что неверно.",
       "empty": "Vitana пока не заметила привычек. Это появится через несколько дней использования.",
       "forget": "Забыть",
-      "manage": "Управлять тем, чему учится Vitana"
+      "manage": "Управлять тем, чему учится Vitana",
+      "_pending_review": {}
     },
     "routine": {
       "screen_habit": "Ты открываешь {screen} {days} из 28 дней",
@@ -32,14 +35,16 @@
       "time_of_day_preference": "Дела из календаря ты обычно делаешь {bucket}",
       "day_of_week_rhythm": "{day} – один из твоих самых активных дней",
       "category_affinity": "Ты часто занимаешься «{tag}»",
-      "generic": "Ритм в твоих буднях"
+      "generic": "Ритм в твоих буднях",
+      "_pending_review": {}
     },
     "bucket": {
       "morning": "утром",
       "midday": "в обед",
       "afternoon": "днём",
       "evening": "вечером",
-      "night": "ночью"
+      "night": "ночью",
+      "_pending_review": {}
     },
     "switches": {
       "title": "На чём может учиться Vitana",
@@ -50,7 +55,8 @@
       "appUsageDescription": "Какие разделы и когда ты открываешь. Никогда не показывается – Vitana лишь узнаёт по этому твои привычки.",
       "appUsageOff": "Выключение также удалит привычки, которые Vitana из этого узнала.",
       "healthNote": "Данные о здоровье дополнительно защищены твоими согласиями.",
-      "unavailable": "Эти переключатели скоро будут доступны."
+      "unavailable": "Эти переключатели скоро будут доступны.",
+      "_pending_review": {}
     },
     "usage": {
       "title": "Твои данные об использовании",
@@ -62,12 +68,16 @@
       "deleteTitle": "Удалить все данные об использовании?",
       "deleteDescription": "Просмотры экранов и технические следы будут удалены вместе с привычками, которые Vitana по ним узнала. Хронология останется.",
       "cancel": "Отмена",
-      "confirm": "Удалить"
+      "confirm": "Удалить",
+      "_pending_review": {}
     },
     "toast": {
       "saveFailed": "Не получилось. Попробуй ещё раз.",
       "forgotten": "Vitana это забыла.",
-      "deleted": "Твои данные об использовании удалены."
-    }
-  }
+      "deleted": "Твои данные об использовании удалены.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

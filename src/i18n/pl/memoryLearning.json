@@ -4,7 +4,8 @@
       "overviewTitle": "Pamięć",
       "overviewDescription": "Co Vitana o tobie wie – i jak minął ci tydzień w Vitana Index.",
       "permissionsTitle": "Czego Vitana może się uczyć",
-      "permissionsDescription": "Ty decydujesz, z czego Vitana się uczy. Nikt inny nie widzi tych danych."
+      "permissionsDescription": "Ty decydujesz, z czego Vitana się uczy. Nikt inny nie widzi tych danych.",
+      "_pending_review": {}
     },
     "week": {
       "title": "Twój tydzień w Vitana Index",
@@ -15,14 +16,16 @@
       "steady": "Wszystkie pięć filarów jest stabilnych.",
       "openTimeline": "Otwórz swoją oś czasu",
       "empty": "Nie masz jeszcze Vitana Index. Zrób test startowy – wtedy ta karta co tydzień pokaże, co się zmieniło.",
-      "start": "Zrób test startowy"
+      "start": "Zrób test startowy",
+      "_pending_review": {}
     },
     "routines": {
       "title": "Rutyny, które zauważyła Vitana",
       "description": "Tak Vitana poznaje twoją codzienność. Każ jej zapomnieć to, co się nie zgadza.",
       "empty": "Vitana nie zauważyła jeszcze żadnej rutyny. Pojawi się po kilku dniach korzystania z aplikacji.",
       "forget": "Zapomnij",
-      "manage": "Decyduj, czego uczy się Vitana"
+      "manage": "Decyduj, czego uczy się Vitana",
+      "_pending_review": {}
     },
     "routine": {
       "screen_habit": "Otwierasz {screen} przez {days} z 28 dni",
@@ -32,14 +35,16 @@
       "time_of_day_preference": "Zadania z kalendarza robisz zwykle {bucket}",
       "day_of_week_rhythm": "{day} to jeden z twoich najaktywniejszych dni",
       "category_affinity": "Często robisz „{tag}”",
-      "generic": "Rytm w twojej codzienności"
+      "generic": "Rytm w twojej codzienności",
+      "_pending_review": {}
     },
     "bucket": {
       "morning": "rano",
       "midday": "w południe",
       "afternoon": "po południu",
       "evening": "wieczorem",
-      "night": "w nocy"
+      "night": "w nocy",
+      "_pending_review": {}
     },
     "switches": {
       "title": "Z czego Vitana może się uczyć",
@@ -50,7 +55,8 @@
       "appUsageDescription": "Które obszary otwierasz i kiedy. Nigdy nie jest pokazywane – Vitana rozpoznaje z tego tylko twoje rutyny.",
       "appUsageOff": "Wyłączenie usuwa też rutyny, których Vitana się z tego nauczyła.",
       "healthNote": "Dane zdrowotne są dodatkowo chronione twoimi zgodami.",
-      "unavailable": "Te przełączniki będą wkrótce dostępne."
+      "unavailable": "Te przełączniki będą wkrótce dostępne.",
+      "_pending_review": {}
     },
     "usage": {
       "title": "Twoje dane o korzystaniu",
@@ -62,12 +68,16 @@
       "deleteTitle": "Usunąć wszystkie dane o korzystaniu?",
       "deleteDescription": "Odwiedziny ekranów i ślady techniczne zostaną usunięte razem z rutynami, których Vitana się z nich nauczyła. Twoja oś czasu zostaje.",
       "cancel": "Anuluj",
-      "confirm": "Usuń"
+      "confirm": "Usuń",
+      "_pending_review": {}
     },
     "toast": {
       "saveFailed": "Nie udało się. Spróbuj ponownie.",
       "forgotten": "Vitana o tym zapomniała.",
-      "deleted": "Twoje dane o korzystaniu zostały usunięte."
-    }
-  }
+      "deleted": "Twoje dane o korzystaniu zostały usunięte.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

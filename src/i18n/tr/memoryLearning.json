@@ -4,7 +4,8 @@
       "overviewTitle": "Hafıza",
       "overviewDescription": "Vitana'nın senin hakkında bildikleri – ve Vitana Index'teki haftan nasıl geçti.",
       "permissionsTitle": "Vitana'nın neler öğrenebileceği",
-      "permissionsDescription": "Vitana'nın neyden öğreneceğine sen karar verirsin. Bu verileri başka kimse görmez."
+      "permissionsDescription": "Vitana'nın neyden öğreneceğine sen karar verirsin. Bu verileri başka kimse görmez.",
+      "_pending_review": {}
     },
     "week": {
       "title": "Vitana Index'te haftan",
@@ -15,14 +16,16 @@
       "steady": "Beş sütunun hepsi istikrarlı.",
       "openTimeline": "Zaman çizelgeni aç",
       "empty": "Henüz Vitana Index yok. Başlangıç kontrolünü yap – bu kart sana her hafta neyin değiştiğini söyler.",
-      "start": "Başlangıç kontrolünü yap"
+      "start": "Başlangıç kontrolünü yap",
+      "_pending_review": {}
     },
     "routines": {
       "title": "Vitana'nın fark ettiği rutinler",
       "description": "Vitana gününü böyle öğrenir. Doğru olmayanı unutturabilirsin.",
       "empty": "Vitana henüz bir rutin fark etmedi. Uygulamayı birkaç gün kullanınca gelir.",
       "forget": "Unut",
-      "manage": "Vitana'nın öğrendiklerini yönet"
+      "manage": "Vitana'nın öğrendiklerini yönet",
+      "_pending_review": {}
     },
     "routine": {
       "screen_habit": "{screen} sayfasını 28 günün {days} gününde açıyorsun",
@@ -32,14 +35,16 @@
       "time_of_day_preference": "Takvim aktivitelerini genelde {bucket} yapıyorsun",
       "day_of_week_rhythm": "{day} en aktif günlerinden biri",
       "category_affinity": "Sık sık \"{tag}\" yapıyorsun",
-      "generic": "Günlük hayatında bir ritim"
+      "generic": "Günlük hayatında bir ritim",
+      "_pending_review": {}
     },
     "bucket": {
       "morning": "sabahları",
       "midday": "öğle saatlerinde",
       "afternoon": "öğleden sonra",
       "evening": "akşamları",
-      "night": "geceleri"
+      "night": "geceleri",
+      "_pending_review": {}
     },
     "switches": {
       "title": "Vitana neyden öğrenebilir",
@@ -50,7 +55,8 @@
       "appUsageDescription": "Hangi alanları ne zaman açtığın. Asla gösterilmez – Vitana bunu sadece rutinlerini tanımak için kullanır.",
       "appUsageOff": "Kapatmak, Vitana'nın bundan öğrendiği rutinleri de siler.",
       "healthNote": "Sağlık verilerin ayrıca onaylarınla korunur.",
-      "unavailable": "Bu anahtarlar kısa süre içinde kullanılabilir olacak."
+      "unavailable": "Bu anahtarlar kısa süre içinde kullanılabilir olacak.",
+      "_pending_review": {}
     },
     "usage": {
       "title": "Kullanım verilerin",
@@ -62,12 +68,16 @@
       "deleteTitle": "Tüm kullanım verileri silinsin mi?",
       "deleteDescription": "Ekran ziyaretleri ve teknik izler, Vitana'nın bunlardan öğrendiği rutinlerle birlikte silinir. Zaman çizelgen kalır.",
       "cancel": "Vazgeç",
-      "confirm": "Sil"
+      "confirm": "Sil",
+      "_pending_review": {}
     },
     "toast": {
       "saveFailed": "Olmadı. Tekrar dene.",
       "forgotten": "Vitana bunu unuttu.",
-      "deleted": "Kullanım verilerin silindi."
-    }
-  }
+      "deleted": "Kullanım verilerin silindi.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -7,23 +7,27 @@
       "reconnecting": "Restableciendo la conexión …",
       "ended": "Conversación terminada",
       "muted": "Tu micrófono está silenciado",
-      "unavailable": "Vitana todavía no está disponible en esta versión de la app."
+      "unavailable": "Vitana todavía no está disponible en esta versión de la app.",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "Habla con Vitana",
       "body": "Para que Vitana pueda oírte, la app necesita acceso a tu micrófono. El micrófono solo está activo mientras la conversación esté abierta.",
       "continue": "Continuar",
-      "notNow": "Ahora no"
+      "notNow": "Ahora no",
+      "_pending_review": {}
     },
     "denied": {
       "body": "Permite el acceso al micrófono en Ajustes para poder hablar con Vitana.",
-      "openSettings": "Abrir Ajustes"
+      "openSettings": "Abrir Ajustes",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "Cerrar la conversación con Vitana",
       "micMute": "Silenciar el micrófono",
       "micUnmute": "Activar el micrófono",
-      "restart": "Empezar una nueva conversación con Vitana"
+      "restart": "Empezar una nueva conversación con Vitana",
+      "_pending_review": {}
     },
     "bench": {
       "title": "Prueba de eco de voz",
@@ -52,7 +56,10 @@
       "on": "activado",
       "off": "desactivado",
       "share": "Compartir resultado",
-      "unavailable": "La prueba de eco solo está disponible en las versiones de desarrollo y de prueba de la app."
-    }
-  }
+      "unavailable": "La prueba de eco solo está disponible en las versiones de desarrollo y de prueba de la app.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

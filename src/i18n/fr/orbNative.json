@@ -7,23 +7,27 @@
       "reconnecting": "Reconnexion en cours …",
       "ended": "Conversation terminée",
       "muted": "Ton micro est coupé",
-      "unavailable": "Vitana n'est pas encore disponible dans cette version de l'app."
+      "unavailable": "Vitana n'est pas encore disponible dans cette version de l'app.",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "Parler à Vitana",
       "body": "Pour que Vitana puisse t'entendre, l'app a besoin d'accéder à ton micro. Le micro n'est actif que tant que la conversation est ouverte.",
       "continue": "Continuer",
-      "notNow": "Pas maintenant"
+      "notNow": "Pas maintenant",
+      "_pending_review": {}
     },
     "denied": {
       "body": "Autorise l'accès au micro dans les Réglages pour pouvoir parler à Vitana.",
-      "openSettings": "Ouvrir les Réglages"
+      "openSettings": "Ouvrir les Réglages",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "Fermer la conversation avec Vitana",
       "micMute": "Couper le micro",
       "micUnmute": "Réactiver le micro",
-      "restart": "Démarrer une nouvelle conversation avec Vitana"
+      "restart": "Démarrer une nouvelle conversation avec Vitana",
+      "_pending_review": {}
     },
     "bench": {
       "title": "Test d'écho de la voix",
@@ -52,7 +56,10 @@
       "on": "activé",
       "off": "désactivé",
       "share": "Partager le résultat",
-      "unavailable": "Le test d'écho n'existe que dans les versions de développement et de test de l'app."
-    }
-  }
+      "unavailable": "Le test d'écho n'existe que dans les versions de développement et de test de l'app.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
