@@ -33,11 +33,11 @@ export interface FileValidationResult {
 /**
  * Generate a signed URL for a chat attachment (private bucket)
  */
-export async function getSignedAttachmentUrl(path: string): Promise<string | null> {
+export async function getSignedAttachmentUrl(path: string, expiresInSeconds = 3600): Promise<string | null> {
   try {
     const { data, error } = await supabase.storage
       .from('chat-attachments')
-      .createSignedUrl(path, 3600); // 1 hour expiry
+      .createSignedUrl(path, expiresInSeconds); // 1 hour unless the caller asks otherwise
 
     if (error || !data?.signedUrl) {
       console.error('Error creating signed URL:', error);

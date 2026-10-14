@@ -6274,7 +6274,12 @@
       "imageShareFailed": "Udostępnianie nie powiodło się",
       "imageLoading": "Ładowanie obrazu",
       "unknownSize": "Nieznany rozmiar",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "W MAXINA",
+      "forwardShareOther": "Udostępnij przez inne aplikacje",
+      "forwardShareLinkHint": "Jeśli twoje urządzenie nie może udostępnić obrazu bezpośrednio, zostanie udostępniony link ważny przez {hours} godz.",
+      "forwardLinkCopied": "Link skopiowany — wklej go w dowolnej aplikacji. Jest ważny przez {hours} godz.",
+      "forwardTextCopied": "Tekst skopiowany — wklej go w dowolnej aplikacji."
     },
     "mobile": {
       "searching": "Szukam…",
