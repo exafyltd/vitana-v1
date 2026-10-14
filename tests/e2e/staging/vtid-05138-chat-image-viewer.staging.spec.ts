@@ -102,19 +102,26 @@ test('a chat picture renders inline and opens the full-screen viewer', async ({ 
       ],
     },
   };
-  await page.route(`${GATEWAY}/api/v1/chat/groups**`, async (route) => {
+  // A URL predicate, not a glob: `groups**` does not match across the `/` of
+  // `/groups/<id>/messages`, so the real gateway answered 403 not_a_member.
+  const gatewayOrigin = new URL(GATEWAY).origin;
+  await page.route((url) => url.origin === gatewayOrigin && url.pathname.startsWith('/api/v1/chat/groups'), async (route) => {
     if (route.request().method() !== 'GET') return route.fallback();
     const path = new URL(route.request().url()).pathname.replace(/\/+$/, '');
+    // Every answer is built on the real staging GET (read-only) so it keeps the
+    // gateway's CORS headers; a bare fulfilled body is rejected cross-origin.
     if (path === '/api/v1/chat/groups') {
       const res = await route.fetch();
-      const json = await res.json();
-      return route.fulfill({ response: res, json: { ...json, data: [group, ...(json.data ?? [])] } });
+      const json = await res.json().catch(() => ({}));
+      return route.fulfill({ response: res, status: 200, json: { ...json, ok: true, data: [group, ...(json.data ?? [])] } });
     }
     if (path === `/api/v1/chat/groups/${GROUP_ID}`) {
-      return route.fulfill({ json: { ok: true, data: { ...group, members, member_count: members.length } } });
+      const res = await route.fetch();
+      return route.fulfill({ response: res, status: 200, json: { ok: true, data: { ...group, members, member_count: members.length } } });
     }
     if (path === `/api/v1/chat/groups/${GROUP_ID}/messages`) {
-      return route.fulfill({ json: { ok: true, data: [fixture] } });
+      const res = await route.fetch();
+      return route.fulfill({ response: res, status: 200, json: { ok: true, data: [fixture] } });
     }
     return route.fallback();
   });
@@ -125,12 +132,26 @@ test('a chat picture renders inline and opens the full-screen viewer', async ({ 
     localStorage.setItem('vitana.viewRole', 'community');
   }, session);
 
+  // Diagnostics for a failure: what the group requests got, and what the page shows.
+  const trace: string[] = [];
+  page.on('response', (r) => {
+    if (r.url().includes('/chat/groups')) trace.push(`${r.request().method()} ${new URL(r.url()).pathname} -> ${r.status()}`);
+  });
+  page.on('requestfailed', (r) => {
+    if (r.url().includes('/chat/groups')) trace.push(`FAILED ${r.method()} ${new URL(r.url()).pathname}: ${r.failure()?.errorText}`);
+  });
+
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`/inbox/g/${GROUP_ID}`, { waitUntil: 'domcontentloaded' });
 
   const fixtureMsg = page.locator(`#msg-${FIXTURE_ID}`);
   const picture = fixtureMsg.locator(`[data-testid="chat-image-attachment"] img[alt="${FIXTURE_NAME}"]`);
-  await expect(picture).toBeVisible({ timeout: 20_000 });
+  try {
+    await expect(picture).toBeVisible({ timeout: 20_000 });
+  } catch (err) {
+    const text = (await page.locator('body').innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+    throw new Error(`fixture picture not shown; group requests: ${trace.join(' | ') || 'none'}; page: ${text}` + ` (${String(err).slice(0, 120)})`);
+  }
   await expect.poll(() => picture.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0), { timeout: 10_000 }).toBe(true);
   await expect(fixtureMsg.locator('[data-testid="chat-file-chip"]')).toHaveCount(0);
 
