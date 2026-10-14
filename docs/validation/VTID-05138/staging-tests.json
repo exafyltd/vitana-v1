@@ -11,7 +11,7 @@
     {
       "kind": "existing",
       "ref": "npx vitest run src/components/messages/MessageBubble.image-attachment.vtid-05138.test.tsx src/components/messages/ChatImageViewer.vtid-05138.test.tsx src/components/messages/ForwardMessageSheet.vtid-05138.test.tsx src/lib/chatImageActions.vtid-05138.test.ts",
-      "reason": "forwarding copies attachments and sends messages, and copying writes to the clipboard, so they are proven in CI with Supabase and the chat API mocked: skeleton until signed, re-sign once then chip, legacy pictures inline, viewer swipe/keys/zoom/toolbar, unsupported-clipboard toast, per-target copy-then-send with forwarded=true, failed copy skips only that target, voice never forwarded, five-target cap; A1: share via other apps tries the picture file, then navigator.share with a 24 h link, then the Appilix bridge, then the clipboard; a cancelled drawer stops there; the sheet sits above the viewer and the viewer stays open"
+      "reason": "forwarding copies attachments and sends messages, and copying writes to the clipboard, so they are proven in CI with Supabase and the chat API mocked: skeleton until signed, re-sign once then chip, legacy pictures inline, viewer swipe/keys/zoom/toolbar, unsupported-clipboard toast, per-target copy-then-send with forwarded=true, failed copy skips only that target, voice never forwarded, five-target cap; A1: share via other apps tries the picture file, then navigator.share with a 7-day link, then the Appilix bridge, then the clipboard; a cancelled drawer stops there; the sheet sits above the viewer and the viewer stays open"
     }
   ]
 }
