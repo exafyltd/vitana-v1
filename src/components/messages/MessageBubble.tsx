@@ -347,6 +347,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       attachments: allAttachments,
     };
   }, [message.body, message.content, message.content_data, allAttachments]);
+  // The sheet's "share via other apps" gets the pictures' fresh URLs.
+  const sheetPayload = useMemo<ForwardPayload>(
+    () => ({ ...forwardPayload, shareImages: viewerImages.filter((img) => !!img.url) }),
+    [forwardPayload, viewerImages]
+  );
   const isForwarded = message.content_data?.forwarded === true;
 
   // Use reactions hook
@@ -504,8 +509,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     navigator.clipboard.writeText(message.body || message.content || '');
   }, [message, forwardPayload.body, imageAttachments.length, viewerImages]);
 
+  // A1: the sheet opens on top of the viewer (if it is open) and closing it
+  // returns to the picture — the viewer is never closed here.
   const handleForward = useCallback(() => {
-    setViewer(v => ({ ...v, open: false }));
     setForwardOpen(true);
   }, []);
 
@@ -1309,6 +1315,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           initialIndex={viewer.index}
           onClose={() => setViewer(v => ({ ...v, open: false }))}
           onForward={canForward ? handleForward : undefined}
+          keyboardSuspended={forwardOpen}
         />
       )}
 
@@ -1317,7 +1324,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         <ForwardMessageSheet
           open={forwardOpen}
           onOpenChange={setForwardOpen}
-          payload={forwardPayload}
+          payload={sheetPayload}
+          aboveViewer={viewer.open}
         />
       )}
 

@@ -6275,7 +6275,12 @@
       "imageShareFailed": "Deljenje nije uspelo",
       "imageLoading": "Učitavanje slike",
       "unknownSize": "Nepoznata veličina",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "U MAXINA",
+      "forwardShareOther": "Podeli preko drugih aplikacija",
+      "forwardShareLinkHint": "Ako tvoj uređaj ne može direktno da podeli sliku, deli se link koji važi {hours} sati.",
+      "forwardLinkCopied": "Link je kopiran – nalepi ga u bilo koju aplikaciju. Važi {hours} sati.",
+      "forwardTextCopied": "Tekst je kopiran – nalepi ga u bilo koju aplikaciju."
     },
     "mobile": {
       "searching": "Pretražujem…",

@@ -6275,7 +6275,12 @@
       "imageShareFailed": "Не удалось поделиться",
       "imageLoading": "Загрузка изображения",
       "unknownSize": "Неизвестный размер",
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Talk to Vitana",
+      "forwardInMaxina": "В MAXINA",
+      "forwardShareOther": "Поделиться через другие приложения",
+      "forwardShareLinkHint": "Если твоё устройство не может поделиться изображением напрямую, вместо него отправится ссылка, действующая {hours} ч.",
+      "forwardLinkCopied": "Ссылка скопирована — вставь её в любое приложение. Она действует {hours} ч.",
+      "forwardTextCopied": "Текст скопирован — вставь его в любое приложение."
     },
     "mobile": {
       "searching": "Поиск…",
