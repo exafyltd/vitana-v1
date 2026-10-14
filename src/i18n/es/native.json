@@ -1,0 +1,21 @@
+{
+  "native": {
+    "unported": {
+      "title": "Aún no está en la app",
+      "body": "Esta sección aún no está disponible en la app. Estamos trabajando en ello; mientras tanto, puedes usarla en la versión web."
+    },
+    "adminInBrowser": {
+      "title": "Administración en el navegador",
+      "body": "Esta sección la usas en el navegador, no en la app. En esta versión aún no hay una dirección web configurada para ello."
+    },
+    "configMissing": {
+      "title": "Falta configuración",
+      "body": "A esta versión de la app le faltan ajustes que necesita para iniciarse. Los valores que faltan aparecen abajo."
+    },
+    "a11y": {
+      "unread": "{count} mensajes sin leer",
+      "openNotifications": "Abrir notificaciones, {count} sin leer",
+      "openCart": "Abrir carrito, {count} artículos"
+    }
+  }
+}

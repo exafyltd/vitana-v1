@@ -1,0 +1,21 @@
+{
+  "native": {
+    "unported": {
+      "title": "Pas encore dans l'app",
+      "body": "Cette section n'est pas encore disponible dans l'app. Nous y travaillons ; en attendant, tu peux l'utiliser dans la version web."
+    },
+    "adminInBrowser": {
+      "title": "Administration dans le navigateur",
+      "body": "Tu utilises cette section dans le navigateur, pas dans l'app. Aucune adresse web n'est encore configurée pour cela dans cette version."
+    },
+    "configMissing": {
+      "title": "Configuration manquante",
+      "body": "Il manque à cette version de l'app des paramètres nécessaires au démarrage. Les valeurs manquantes sont listées ci-dessous."
+    },
+    "a11y": {
+      "unread": "{count} messages non lus",
+      "openNotifications": "Ouvrir les notifications, {count} non lues",
+      "openCart": "Ouvrir le panier, {count} articles"
+    }
+  }
+}
