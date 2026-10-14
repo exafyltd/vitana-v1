@@ -72,3 +72,10 @@ library (package.json has no react-markdown/marked).
 - Q1: `template` — yes, included (body can be Vitana-authored); gated by `isFromVitana`, so a member template is unchanged.
 - Q2: copy (L509) and edit (L594) read `message.body || message.content` — raw; unchanged.
 - Q3: one level of nesting supported; anything deeper or overlapping stays literal.
+
+## Review clarification (PR #1412, Codex P2) — within the approved plan
+
+R3 / Change 2 require links to behave exactly as today. Parsing emphasis before linkify would split a URL that
+contains `_`/`*` (e.g. `https://example.com/__preview__`), leaving only its prefix linked. Implementation rule:
+the helper detects bare URLs first and keeps each as one atomic text leaf that emphasis parsing never touches;
+tests cover a delimiter-containing URL (tasks 2 and 4). No change to the plan text or its hash.

@@ -7,7 +7,11 @@ log it and set `next_actor: claude`).
 
 - [ ] 1. `src/lib/chatMarkdown.ts` — pure parser of the safe subset (R1, R2) into a token tree; one level of
   nesting (italic in bold and vice versa); deeper/overlapping markers stay literal. No React import.
+  **URLs are atomic (R3):** detect bare URLs first (same regex as `renderLinkedText`) and emit each as one
+  literal text leaf that the emphasis/code parser never splits, so `https://example.com/__preview__` or
+  `https://example.com/*draft*` stays one whole link.
 - [ ] 2. `src/lib/chatMarkdown.test.ts` — bold, italic, code, bullets, numbered, headings, URL inside bold,
+  URLs containing `__x__` / `*x*` stay one whole leaf (and one whole link in the bubble test),
   unbalanced `**`, `snake_case_word`, `2*3*4`, `<script>alert(1)</script>` stays text, empty input.
 - [ ] 3. `MessageBubble.tsx` — extract the URL + @mention loop of `renderLinkedText` (L680-798) into an inner
   `linkifyInline(text, keyPrefix)` used by both renderers; add sibling `renderBotMarkdown(text, className,
@@ -17,7 +21,7 @@ log it and set `next_actor: claude`).
   unchanged. The timestamp spacer stays on the last inline run.
 - [ ] 4. `src/components/messages/MessageBubble.vitana-markdown.vtid-05193.test.tsx` — the screenshot text from the
   Vitana bot → `<strong>` nodes, list items, no literal `**`; a URL inside stays a link; the same text from a member
-  renders literally; `dir="rtl"` case asserts logical classes only. Red on origin/main → green.
+  renders literally; a URL containing `__x__` stays one whole link; `dir="rtl"` case asserts logical classes only. Red on origin/main → green.
 - [ ] 5. Checks: `npx eslint` on changed files (no new errors, design ratchet), `npx vitest run src/lib/chatMarkdown.test.ts
   src/components/messages`, `npm run build`. PR gate locally:
   `node scripts/ci/pr-gate/gate.mjs {scope,sparring,weakening,red-green} --base origin/main --title "<PR title>"`.
