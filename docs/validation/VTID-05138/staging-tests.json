@@ -4,7 +4,7 @@
   "tests": [
     {
       "kind": "playwright",
-      "name": "signed in on a phone viewport: the Alle Beisammen group renders a chat picture as an <img> (not the file chip) once its signed URL arrives, no picture in the list falls back to the chip, tapping it opens the full-screen viewer with Download / Copy / Forward, Forward opens the forward sheet above the viewer with the 'share via other apps' button (never tapped), Esc closes the sheet back to the picture, and Esc closes the viewer. Signed-URL requests and the picture are answered in the browser and one fixture message is added to the read message list; nothing is sent; read-only",
+      "name": "signed in on a phone viewport: a fixture group (the test account is in no real group, platform rule 43; group, roster and messages answered in the browser) renders a chat picture as an <img> (not the file chip) once its signed URL arrives, tapping it opens the full-screen viewer with Download / Copy / Forward, Forward opens the forward sheet above the viewer with the 'share via other apps' button (never tapped), Esc closes the sheet back to the picture, and Esc closes the viewer. Signed-URL requests and the picture are answered in the browser too; nothing is sent; read-only",
       "spec": "tests/e2e/staging/vtid-05138-chat-image-viewer.staging.spec.ts",
       "cwd": "."
     },
