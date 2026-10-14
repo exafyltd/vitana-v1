@@ -69,7 +69,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           
           <button
             onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full 
+            className="absolute top-4 end-4 w-10 h-10 rounded-full 
               bg-white/20 backdrop-blur-md hover:bg-white/30 
               flex items-center justify-center transition-all"
           >
@@ -78,14 +78,14 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           
           <button
             onClick={() => onOpenChange(false)}
-            className="md:hidden absolute top-4 left-4 w-10 h-10 rounded-full 
+            className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full 
               bg-white/20 backdrop-blur-md hover:bg-white/30 
               flex items-center justify-center transition-all"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           
-          <div className="absolute bottom-0 left-0 right-0 p-6">
+          <div className="absolute bottom-0 start-0 end-0 p-6">
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="secondary" className="bg-white/90 dark:bg-slate-900/90">
                 {workout.day}
@@ -207,7 +207,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                     )}
                   </div>
                   
-                  <div className="flex gap-4 text-xs text-muted-foreground ml-11">
+                  <div className="flex gap-4 text-xs text-muted-foreground ms-11">
                     <span>
                       <strong>{t('screens.health.sets')}</strong> {exercise.sets}
                     </span>
@@ -253,7 +253,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                   className="flex-1 bg-green-500 hover:bg-green-600"
                   onClick={handleCompleteWorkout}
                 >
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  <CheckCircle2 className="w-4 h-4 me-2" />
                   {t('screens.health.complete')}
                 </Button>
               ) : (

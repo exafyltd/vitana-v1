@@ -275,7 +275,7 @@ export function ProfileLayout({
             <div className="p-4 space-y-4">
               <button 
                 onClick={onEditAbout}
-                className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
+                className="w-full text-start p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
               >
                 <h3 className="text-sm font-semibold mb-2">{t('screens.profile.about')}</h3>
                 <p className="text-sm text-muted-foreground">{profile.bio || "No bio yet"}</p>
@@ -437,7 +437,7 @@ export function ProfileLayout({
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">{t('screens.profile.showcase')}</h3>
                   <Button variant="outline" size="sm" onClick={onEditShowcase}>
-                    <Star className="h-4 w-4 mr-2" />
+                    <Star className="h-4 w-4 me-2" />
                     {t('screens.profile.manageFeaturedContent')}
                   </Button>
                 </div>

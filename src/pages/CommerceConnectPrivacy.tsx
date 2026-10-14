@@ -14,6 +14,9 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { LegalLocaleToggle } from '@/components/LegalLocaleToggle';
 import { Button } from '@/components/ui/button';
+import { PublicMain } from '@/components/layout/spotlight/PublicMain';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { privacyLang } from '@/lib/commerce-connect-lang';
 import { useScopedT } from '@/lib/use-scoped-t';
@@ -33,11 +36,12 @@ export default function CommerceConnectPrivacy() {
   const [searchParams] = useSearchParams();
   const { selectedLanguage } = useLanguage();
   const t = useScopedT(privacyLang(searchParams.get('lang'), selectedLanguage));
+  const spotlight = useSpotlightEnabled();
   return (
     <div className="min-h-screen bg-background" data-testid="commerce-connect-privacy">
       <SEO title={t(`${K}.privacyTitle`)} description={t(`${K}.privacyIntro`)} canonical="https://vitanaland.com/commerce/connect/privacy" />
       <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
+        <div className={cn("mx-auto flex items-center gap-3 px-4 py-3", spotlight ? "max-w-wide" : "max-w-3xl")}>
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t(`${K}.back`)}>
             <ArrowLeft className="h-5 w-5 rtl:rotate-180" />
           </Button>
@@ -47,7 +51,7 @@ export default function CommerceConnectPrivacy() {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-3xl px-4 py-8 md:py-12">
+      <PublicMain spotlight={spotlight} archetype="collection" legacyClassName="mx-auto max-w-3xl px-4 py-8 md:py-12">
         <h1 className="text-2xl font-bold leading-tight text-foreground md:text-3xl">{t(`${K}.privacyTitle`)}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(`${K}.privacyIntro`)}</p>
 
@@ -83,7 +87,7 @@ export default function CommerceConnectPrivacy() {
         <p className="mt-10 text-sm">
           <Link className="text-primary underline underline-offset-2 hover:no-underline" to="/privacy">{t(`${K}.policyLink`)}</Link>
         </p>
-      </main>
+      </PublicMain>
     </div>
   );
 }

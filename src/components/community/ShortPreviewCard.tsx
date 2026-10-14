@@ -116,7 +116,7 @@ export function ShortPreviewCard({
       {/* Owner Menu (Edit & Delete) */}
       {showOwnerMenu && (onEdit || onDelete) && (
         <div
-          className="absolute top-3 right-3 z-20"
+          className="absolute top-3 end-3 z-20"
           onClick={(e) => e.stopPropagation()}
         >
           <KebabMenu>
@@ -128,7 +128,7 @@ export function ShortPreviewCard({
                   onEdit();
                 }}
               >
-                <Edit className="w-4 h-4 mr-2" />
+                <Edit className="w-4 h-4 me-2" />
                 {t('screens.community.editDetails')}
               </DropdownMenuItem>
             )}
@@ -140,7 +140,7 @@ export function ShortPreviewCard({
                   onDelete();
                 }}
               >
-                <Trash2 className="w-4 h-4 mr-2" />
+                <Trash2 className="w-4 h-4 me-2" />
                 {t('screens.community.delete')}
               </DropdownMenuItem>
             )}
@@ -203,7 +203,7 @@ export function ShortPreviewCard({
 
           {/* Live Badge - Top Left */}
           {video.isLive && (
-            <div className="absolute top-3 left-3 z-10">
+            <div className="absolute top-3 start-3 z-10">
               <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
                 {t('screens.community.live2')}
               </Badge>
@@ -211,7 +211,7 @@ export function ShortPreviewCard({
           )}
 
           {/* Duration Badge - Bottom Right (outside overflow) */}
-          <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
+          <div className="absolute bottom-2 end-2 z-10 pointer-events-none">
             <span 
               className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded font-medium backdrop-blur-sm"
             >
@@ -234,13 +234,13 @@ export function ShortPreviewCard({
                 isHovering && !isPreviewing ? 'scale-110' : 'group-hover:scale-110'
               }`}
             >
-              <Play className="w-8 h-8 text-violet-600 fill-violet-600 ml-1" />
+              <Play className="w-8 h-8 text-violet-600 fill-violet-600 ms-1" />
             </div>
           </div>
 
           {/* Progress Bar - Bottom (only during preview) */}
           {isPreviewing && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20 pointer-events-none">
+            <div className="absolute bottom-0 start-0 end-0 h-1 bg-black/20 pointer-events-none">
               <div
                 className="h-full bg-gradient-to-r from-violet-500 to-sky-400 transition-all duration-100"
                 style={{ width: `${previewProgress}%` }}

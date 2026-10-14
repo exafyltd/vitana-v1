@@ -109,7 +109,7 @@ function ChartTooltipContent({
             style={{ backgroundColor: entry.color ?? entry.stroke }}
           />
           <span className="text-muted-foreground">{entry.name}</span>
-          <span className="ml-auto pl-3 font-medium">{fmtNumber(entry.value)}</span>
+          <span className="ms-auto ps-3 font-medium">{fmtNumber(entry.value)}</span>
         </div>
       ))}
     </div>
@@ -161,7 +161,7 @@ export function BarListCard({
                   />
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
-                  <span className="min-w-[2.5rem] text-right text-xs font-medium tabular-nums">
+                  <span className="min-w-[2.5rem] text-end text-xs font-medium tabular-nums">
                     {fmtNumber(row.count)}
                   </span>
                   {row.extra}
@@ -316,9 +316,9 @@ export function DonutCard({
                     style={{ backgroundColor: theme.series[s.colorIndex % theme.series.length] }}
                   />
                   <span className="truncate text-muted-foreground">{s.label}</span>
-                  <span className="ml-auto pl-2 font-medium tabular-nums">
+                  <span className="ms-auto ps-2 font-medium tabular-nums">
                     {fmtNumber(s.value)}
-                    <span className="ml-1 text-muted-foreground">
+                    <span className="ms-1 text-muted-foreground">
                       ({total > 0 ? Math.round((s.value / total) * 100) : 0}%)
                     </span>
                   </span>
@@ -379,7 +379,7 @@ export function StackedBarListCard({
                         v > 0 ? (
                           <span
                             key={series[i]?.key ?? i}
-                            className="h-full first:rounded-l-[4px] last:rounded-r-[4px]"
+                            className="h-full first:rounded-s-[4px] last:rounded-e-[4px]"
                             style={{
                               flexGrow: v,
                               backgroundColor: theme.series[i % theme.series.length],
@@ -388,7 +388,7 @@ export function StackedBarListCard({
                         ) : null,
                       )}
                     </span>
-                    <span className="min-w-[2.5rem] text-right text-xs font-medium tabular-nums">
+                    <span className="min-w-[2.5rem] text-end text-xs font-medium tabular-nums">
                       {fmtNumber(total)}
                     </span>
                   </div>

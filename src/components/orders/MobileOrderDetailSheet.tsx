@@ -182,7 +182,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                   {getTypeIcon()}
                 </div>
                 <div>
-                  <SheetTitle className="text-left text-base">{translate('orders.detailSheet.title')}</SheetTitle>
+                  <SheetTitle className="text-start text-base">{translate('orders.detailSheet.title')}</SheetTitle>
                   <p className="text-xs text-muted-foreground">
                     {order.type.charAt(0).toUpperCase() + order.type.slice(1)} • {order.orderDate}
                   </p>
@@ -381,7 +381,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                         <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
                         <>
-                          <Send className="h-4 w-4 mr-2" />
+                          <Send className="h-4 w-4 me-2" />
                           {translate('orders.detailSheet.send')}
                         </>
                       )}
@@ -394,7 +394,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
         </div>
 
         {/* Fixed action buttons at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 bg-background border-t border-border/20 p-4 pb-6">
+        <div className="absolute bottom-0 start-0 end-0 bg-background border-t border-border/20 p-4 pb-6">
           <div className="flex gap-3">
             <Button 
               variant="outline" 
@@ -406,7 +406,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
-                  <Download className="h-4 w-4 mr-2" />
+                  <Download className="h-4 w-4 me-2" />
                   {translate('orders.detailSheet.downloadPdf')}
                 </>
               )}
@@ -417,7 +417,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 className="flex-1 h-12"
                 onClick={() => setShowEmailForm(true)}
               >
-                <Mail className="h-4 w-4 mr-2" />
+                <Mail className="h-4 w-4 me-2" />
                 {translate('orders.detailSheet.sendToRecipient')}
               </Button>
             )}

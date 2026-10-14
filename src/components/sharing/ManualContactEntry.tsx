@@ -56,7 +56,7 @@ export function ManualContactEntry({
           onClick={addNewContact}
           disabled={contacts.length >= maxContacts}
         >
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="h-4 w-4 me-1" />
           {t('screens.sharing.addContact')}
         </Button>
       </div>

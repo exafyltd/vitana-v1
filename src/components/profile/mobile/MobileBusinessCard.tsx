@@ -82,7 +82,7 @@ export function MobileBusinessCard() {
               <button
                 type="button"
                 onClick={(e) => handleShare(e, item)}
-                className="self-center shrink-0 p-2 -mr-1 rounded-full hover:bg-muted/60 text-muted-foreground"
+                className="self-center shrink-0 p-2 -me-1 rounded-full hover:bg-muted/60 text-muted-foreground"
                 aria-label={t("profile.business.shareRow")}
                 title={t("profile.business.shareRow")}
               >

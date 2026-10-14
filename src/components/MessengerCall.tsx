@@ -183,7 +183,7 @@ export const MessengerCall = ({
 
         {/* Local Video (Picture-in-Picture) */}
         {isVideoCall && localStream && (
-          <Card className="absolute top-4 right-4 w-32 h-24 overflow-hidden">
+          <Card className="absolute top-4 end-4 w-32 h-24 overflow-hidden">
             <video
               ref={localVideoRef}
               autoPlay

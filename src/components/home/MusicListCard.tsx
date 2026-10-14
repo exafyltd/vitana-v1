@@ -72,7 +72,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
             onClick={() => navigate('/comm/media-hub?tab=music')}
             className="border-purple-400/50 hover:border-purple-400"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.home.uploadMusic')}
           </Button>
         </CardContent>
@@ -89,7 +89,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 -z-10" />
       
       {/* Music note watermark */}
-      <Music className="absolute top-4 right-4 w-16 h-16 text-purple-400/10 pointer-events-none z-0" />
+      <Music className="absolute top-4 end-4 w-16 h-16 text-purple-400/10 pointer-events-none z-0" />
       
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
@@ -101,7 +101,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
             variant="ghost"
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=music')}
-            className="text-xs hover:text-purple-600 px-4 py-2 min-h-[40px] cursor-pointer"
+            className="text-xs hover:text-purple-600 px-4 py-2 min-h-10 cursor-pointer"
           >{t('screens.home.viewAll')}
           </Button>
         </div>
@@ -186,7 +186,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
                 {isCurrentlyPlaying ? (
                   <Pause className="w-4 h-4 text-hsl(var(--domain-community-accent))" />
                 ) : (
-                  <Play className="w-4 h-4 text-hsl(var(--domain-community-accent)) ml-0.5" />
+                  <Play className="w-4 h-4 text-hsl(var(--domain-community-accent)) ms-0.5" />
                 )}
               </Button>
             </div>

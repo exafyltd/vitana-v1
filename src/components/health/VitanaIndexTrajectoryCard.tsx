@@ -295,7 +295,7 @@ export function VitanaIndexTrajectoryCard() {
         <div className="relative">
           {/* Y axis labels */}
           <div
-            className="absolute left-0 top-0 bottom-0 w-7 flex flex-col justify-between text-right pr-1 text-[9px] font-semibold text-muted-foreground"
+            className="absolute start-0 top-0 bottom-0 w-7 flex flex-col justify-between text-end pe-1 text-[9px] font-semibold text-muted-foreground"
             style={{ height: H }}
           >
             <span>{yMax}</span>
@@ -306,7 +306,7 @@ export function VitanaIndexTrajectoryCard() {
           <svg
             viewBox={`0 0 ${W} ${H}`}
             preserveAspectRatio="none"
-            className="block ml-7"
+            className="block ms-7"
             style={{ width: "calc(100% - 1.75rem)", height: H }}
             role="img"
             aria-label={t("screens.health.trajectoryAria", { today: index.total })}
@@ -397,7 +397,7 @@ export function VitanaIndexTrajectoryCard() {
           </svg>
 
           {/* X axis labels */}
-          <div className="ml-7 mt-1 flex justify-between text-[10px] font-semibold text-muted-foreground">
+          <div className="ms-7 mt-1 flex justify-between text-[10px] font-semibold text-muted-foreground">
             {xAxisLabels.map((l, i) => (
               <span key={i}>{l}</span>
             ))}

@@ -648,7 +648,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               onBlur={() => { mentionComposer.closeSoon(); handleBlur(); }}
               placeholder={placeholder}
               disabled={disabled}
-              className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
+              className="min-h-6 resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
               enterKeyHint="enter"
               aria-label={t('screens.messages.messageComposer')}

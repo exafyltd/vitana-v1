@@ -16,6 +16,13 @@ import { listMyIntents, type UserIntent } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { Lock, Store } from "lucide-react";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { businessHubNavigation } from "@/config/navigation";
+import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 export default function BusinessListings() {
   const { toast } = useToast();
@@ -37,6 +44,54 @@ export default function BusinessListings() {
   };
 
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  // VTID-05117 — Spotlight (desktop + flag): the screen gets the Vitanaland frame (sidebar + Business
+  // Hub sections) as a collection; phones and flag-off keep the bare screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.businesslistings.myListings')} description={t('screens.businesslistings.servicesProductsYouReOfferingMatches')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: businessHubNavigation }}
+          header={{ title: t('screens.businesslistings.myListings'), description: t('screens.businesslistings.servicesProductsYouReOfferingMatches'), emoji: "🏷️" }}
+          utility={
+            isReseller
+              ? {
+                  children: (
+                    <Button size="sm" className="gap-2" onClick={() => setComposerOpen(true)}>
+                      <Plus className="size-4" />
+                      {t('screens.businesslistings.newListing')}
+                    </Button>
+                  ),
+                }
+              : undefined
+          }
+        >
+          {!isReseller ? (
+            <SpotlightEmpty Icon={Lock} titleKey="screens.businesslistings.listingsAvailableForProAccounts" />
+          ) : loading ? (
+            <SpotlightRowsSkeleton />
+          ) : listings.length === 0 ? (
+            <SpotlightEmpty
+              Icon={Store}
+              titleKey="spotlightMember.business.listingsEmpty"
+              actionKey="screens.businesslistings.newListing"
+              onAction={() => setComposerOpen(true)}
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              {listings.map((intent) => (
+                <IntentCard key={intent.intent_id} intent={intent} to={`/intents/match/${intent.intent_id}`} />
+              ))}
+            </div>
+          )}
+        </ScreenFrame>
+        <IntentComposer open={composerOpen} onOpenChange={setComposerOpen} defaultKind="commercial_sell" onPosted={() => load()} />
+      </AppLayout>
+    );
+  }
 
   if (!isReseller) {
     return (
@@ -63,7 +118,7 @@ export default function BusinessListings() {
           <p className="text-sm text-muted-foreground">{t('screens.businesslistings.servicesProductsYouReOfferingMatches')}</p>
         </div>
         <Button size="sm" onClick={() => setComposerOpen(true)}>
-          <Plus className="h-4 w-4 mr-1" /> {t('screens.businesslistings.newListing')}
+          <Plus className="h-4 w-4 me-1" /> {t('screens.businesslistings.newListing')}
         </Button>
       </div>
 

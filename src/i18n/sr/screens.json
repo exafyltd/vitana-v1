@@ -12774,6 +12774,12 @@
       "social": "Zajedništvo",
       "travel": "Putovanja",
       "career": "Karijera"
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana čita tvoju aktivnost, san, podatke o srcu i telesne mere iz Apple Health – samo za čitanje i samo za oblasti za koje postoji tvoja saglasnost u aplikaciji. Vitana nikada ništa ne upisuje u Apple Health.",
+        "privacyPolicyTitle": "Politika privatnosti"
+      }
     }
   }
 }

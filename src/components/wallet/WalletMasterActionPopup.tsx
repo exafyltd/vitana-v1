@@ -95,7 +95,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
               onClick={() => handleStepNavigation('send')}
             >
               <Send className="h-4 w-4" />
-              <div className="text-left">
+              <div className="text-start">
                 <div className="font-medium">{t('screens.wallet.sendFunds')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.sendCommunityMembers')}</div>
               </div>
@@ -107,7 +107,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
               onClick={() => handleStepNavigation('exchange')}
             >
               <ArrowUpDown className="h-4 w-4" />
-              <div className="text-left">
+              <div className="text-start">
                 <div className="font-medium">{t('screens.wallet.exchangeCurrency')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.convertBetweenCreditsVtnaUsd')}</div>
               </div>
@@ -119,11 +119,11 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
               onClick={() => handleStepNavigation('exchange-and-send')}
             >
               <Zap className="h-4 w-4 text-purple-600" />
-              <div className="text-left">
+              <div className="text-start">
                 <div className="font-medium text-purple-700">{t('screens.wallet.exchangeSend')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.convertCurrencySendOneStep')}</div>
               </div>
-              <Badge variant="secondary" className="ml-auto bg-purple-100 text-purple-700">{t('screens.wallet.quick')}</Badge>
+              <Badge variant="secondary" className="ms-auto bg-purple-100 text-purple-700">{t('screens.wallet.quick')}</Badge>
             </Button>
           </div>
         </div>

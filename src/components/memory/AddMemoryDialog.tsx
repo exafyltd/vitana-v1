@@ -167,7 +167,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               onClick={() => setInputMode("text")}
               className="flex-1"
             >
-              <Type className="w-4 h-4 mr-2" />
+              <Type className="w-4 h-4 me-2" />
               {t('screens.memory.text')}
             </Button>
             <Button
@@ -177,7 +177,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               onClick={() => setInputMode("voice")}
               className="flex-1"
             >
-              <Mic className="w-4 h-4 mr-2" />
+              <Mic className="w-4 h-4 me-2" />
               {t('screens.memory.voice')}
             </Button>
             <Button
@@ -190,7 +190,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               }}
               className="flex-1"
             >
-              <Camera className="w-4 h-4 mr-2" />
+              <Camera className="w-4 h-4 me-2" />
               {t('screens.memory.photo')}
             </Button>
           </div>
@@ -222,7 +222,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                     {t('screens.memory.clickBelowStartRecordingYourVoice')}
                   </p>
                   <Button onClick={() => setIsRecording(true)}>
-                    <Mic className="w-4 h-4 mr-2" />
+                    <Mic className="w-4 h-4 me-2" />
                     {t('screens.memory.startRecording')}
                   </Button>
                 </div>
@@ -288,7 +288,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                   <p className="text-sm text-muted-foreground mb-4">{t('screens.memory.clickBelowUploadPhotoMemory')}
                   </p>
                   <Button onClick={() => document.getElementById('image-upload')?.click()}>
-                    <Camera className="w-4 h-4 mr-2" />{t('screens.memory.choosePhoto')}
+                    <Camera className="w-4 h-4 me-2" />{t('screens.memory.choosePhoto')}
                   </Button>
                 </div>
               ) : (
@@ -303,7 +303,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                       type="button"
                       variant="destructive"
                       size="sm"
-                      className="absolute top-2 right-2"
+                      className="absolute top-2 end-2"
                       onClick={() => {
                         setImageFile(null);
                         setImagePreview(null);
@@ -358,7 +358,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
             >
               {isCreating ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.memory.saving')}
+                  <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.memory.saving')}
                 </>
               ) : (
                 "Save Memory"

@@ -1,48 +1,41 @@
 /**
- * useTenant.tsx — tenant-slug resolution error-visibility fix.
+ * useTenant.tsx — tenant resolution error visibility.
  *
- * Two `.from('tenants')` call sites destructured only `{ data }`:
+ * Originally (pre-VTID-05151) three `.from('tenants')` call sites, two of
+ * which destructured only `{ data }`, so a failed lookup left a member
+ * silently outside their tenant. VTID-05151 moved slug→id resolution to the
+ * tenant registry (list_public_tenants); what remains must stay loud:
  *
- *   1. The deterministic-fallback `resolveTenant()` closure (inside a
- *      useEffect) — a query failure previously left the branch entirely
- *      silent, so a user landing on a tenant-specific route/URL would
- *      never get switched into that tenant's context.
- *   2. `setTenantBySlug()`'s local-resolution fallback — called from
- *      TenantDetector on every route change plus every portal-
- *      confirmation page (MaxinaConfirmed, AlkalmaConfirmed,
- *      EarthlinksPortal, etc.). Unlike the RPC branch two lines above it
- *      (which does console.warn on failure), this branch had no error
- *      captured at all.
+ *   1. Every remaining `.from('tenants')` call site destructures `error`.
+ *   2. The deterministic fallback's tenants lookup (only for the compiled
+ *      Maxina fallback, which has no id) logs its error before applying the
+ *      data-present check.
+ *   3. setTenantBySlug logs a refused switch and never falls back to a local
+ *      lookup that would set a tenant the server refused (the old
+ *      `select('tenant_id, name')` branch is gone).
+ *   4. A failed registry call says so (`[tenant-registry] fallback`).
  *
- * A third `.from('tenants')` call site (the `tenantData` useQuery) was
- * already correct — it destructures `error` and `throw`s it — and is
- * unchanged.
- *
- * Pinned at the source level — this is a context/hook file with
- * localStorage, react-query, and auth-context entanglement and no
- * existing render-test harness, matching this repo's
- * IntroExperience.orb-placement.test.ts precedent.
+ * Pinned at the source level, matching this file's original precedent; the
+ * behaviour is covered by useTenant.registry.test.tsx.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
 const SRC = readFileSync(join(__dirname, 'useTenant.tsx'), 'utf8');
+const REGISTRY_HOOK = readFileSync(join(__dirname, 'useTenantRegistry.ts'), 'utf8');
 
-describe('useTenant — tenants table query error logging', () => {
+describe('useTenant — tenants query error logging', () => {
   it('every `.from(\'tenants\')` call site destructures `error`, not just `data`', () => {
     const callSites = [...SRC.matchAll(/\.from\('tenants'\)/g)];
-    expect(callSites.length).toBe(3);
-
-    // For each call site, the destructuring pattern lives on the line(s)
-    // immediately preceding it in source order.
+    expect(callSites.length).toBe(2);
     for (const site of callSites) {
       const before = SRC.slice(Math.max(0, site.index! - 150), site.index!);
       expect(before).toMatch(/const \{\s*data(?:: \w+)?,\s*error(?::\s*\w+)?\s*\}\s*=\s*await supabase\s*$/);
     }
   });
 
-  it('the deterministic-fallback resolveTenant() logs its error before applying the unchanged data-present check', () => {
+  it('the deterministic-fallback resolveTenant() logs its error before applying the data-present check', () => {
     const idx = SRC.indexOf("select('tenant_id')\n              .eq('slug', fallbackSlug)");
     expect(idx).toBeGreaterThan(-1);
     const after = SRC.slice(idx, idx + 700);
@@ -51,12 +44,17 @@ describe('useTenant — tenants table query error logging', () => {
     expect(after).toContain('if (data && tenantVersionRef.current === version)');
   });
 
-  it('setTenantBySlug()\'s local-resolution fallback logs its error before applying the unchanged data-present check', () => {
-    const idx = SRC.indexOf("select('tenant_id, name')");
+  it('setTenantBySlug logs a refused switch and has no local fallback lookup', () => {
+    expect(SRC).not.toContain("select('tenant_id, name')");
+    expect(SRC).not.toContain('using local fallback');
+    const idx = SRC.indexOf("supabase.rpc('switch_to_tenant_by_slug'");
     expect(idx).toBeGreaterThan(-1);
-    const after = SRC.slice(idx, idx + 700);
-    expect(after).toMatch(/if \(resolveErr\) \{/);
-    expect(after).toContain('console.warn(');
-    expect(after).toContain('if (data) {');
+    const after = SRC.slice(idx, idx + 600);
+    expect(after).toMatch(/if \(error\) \{\s*console\.warn\(/);
+    expect(after).toMatch(/return \{\s*ok: false,/);
+  });
+
+  it('a failed registry call is logged, not swallowed', () => {
+    expect(REGISTRY_HOOK).toContain("console.warn('[tenant-registry] fallback', err);");
   });
 });

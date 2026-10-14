@@ -151,7 +151,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
           <div className="flex items-center gap-2 mb-2">
             <Crown className="h-4 w-4 text-purple-600" />
             <span className="text-sm font-medium">{t('screens.wallet.upgradeAnalysis')}</span>
-            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 ml-auto">{t('screens.wallet.confidenceConfidence', { confidence: upgradeRecommendation.confidence })}
+            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 ms-auto">{t('screens.wallet.confidenceConfidence', { confidence: upgradeRecommendation.confidence })}
             </Badge>
           </div>
           
@@ -161,11 +161,11 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
                 <span className="text-muted-foreground">{t('screens.wallet.additionalCost')}</span>
-                <span className="font-semibold ml-1">{t('screens.wallet.costincreasemo', { costIncrease: upgradeRecommendation.costIncrease })}</span>
+                <span className="font-semibold ms-1">{t('screens.wallet.costincreasemo', { costIncrease: upgradeRecommendation.costIncrease })}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">{t('screens.wallet.breakeven')}</span>
-                <span className="font-semibold ml-1">{upgradeRecommendation.breakEven}</span>
+                <span className="font-semibold ms-1">{upgradeRecommendation.breakEven}</span>
               </div>
             </div>
           </div>
@@ -182,12 +182,12 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
           <div className="flex items-center justify-between">
             <div className="text-xs">
               <span className="text-muted-foreground">{t('screens.wallet.projectedMonthlySavings')}</span>
-              <span className="font-semibold text-emerald-600 ml-1">
+              <span className="font-semibold text-emerald-600 ms-1">
                 ${upgradeRecommendation.projectedSavings}
               </span>
             </div>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-              <Crown className="h-3 w-3 mr-1" />
+              <Crown className="h-3 w-3 me-1" />
               {t('screens.wallet.upgrade')}
             </Button>
           </div>

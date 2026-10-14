@@ -16,6 +16,10 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightEmpty } from "@/components/spotlight/member/MemberSpotlight";
 
 export default function Archived() {
   const [activeTab, setActiveTab] = useState("all");
@@ -30,6 +34,33 @@ export default function Archived() {
   ];
 
   const categories = ["All", "Healthcare", "Fitness", "Nutrition", "Activities"];
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): there is no conversation archive behind this screen
+  // (the legacy list, statistics and switches are samples), so the frame shows an honest empty
+  // state (SR-24, SR-26). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.messages.archivedMessages2')} description={t('spotlightMember.inbox.archivedDesc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="conversation"
+          subNav={{ items: messagesNavigation }}
+          header={{ title: t('screens.messages.neverLoseImportantConversations'), description: t('spotlightMember.inbox.archivedDesc'), emoji: "📦" }}
+          utility={{ children: <UniversalCalendarButton /> }}
+        >
+          <SpotlightEmpty
+            Icon={Archive}
+            titleKey="spotlightMember.inbox.archivedEmptyTitle"
+            descriptionKey="spotlightMember.inbox.archivedEmptyDesc"
+            actionKey="spotlightMember.inbox.openInbox"
+            onAction={() => navigate('/inbox')}
+          />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
@@ -51,7 +82,7 @@ export default function Archived() {
               />
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setArchiveActionOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-4 h-4 me-2" />
                 {t('screens.messages.archiveActions')}
               </Button>
             </UtilityActionButton>
@@ -79,8 +110,8 @@ export default function Archived() {
                     <CardHeader className="border-b">
                       <h2 className="font-semibold mb-3">{t('screens.messages.archivedMessages')}</h2>
                       <div className="relative mb-4">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input placeholder={t('screens.messages.searchArchives')} className="pl-10" />
+                        <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder={t('screens.messages.searchArchives')} className="ps-10" />
                       </div>
                       <div className="space-y-1">
                         {categories.map((category) => (
@@ -156,7 +187,7 @@ export default function Archived() {
                           <h4 className="font-medium mb-2">{t('screens.messages.quickActions')}</h4>
                           <div className="space-y-2">
                             <Button variant="outline" className="w-full justify-start">
-                              <Archive className="h-4 w-4 mr-2" />
+                              <Archive className="h-4 w-4 me-2" />
                               {t('screens.messages.archiveCurrentChat')}
                             </Button>
                             <Button variant="outline" className="w-full justify-start">

@@ -13704,6 +13704,12 @@
         "fitness": true,
         "yoga": true
       }
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana, Apple Health’ten aktiviteni, uykunu, kalp verilerini ve vücut ölçülerini okur – yalnızca okuma amaçlı ve yalnızca uygulamada onay verdiğin alanlar için. Vitana, Apple Health’e asla bir şey yazmaz.",
+        "privacyPolicyTitle": "Gizlilik politikası"
+      }
     }
   }
 }

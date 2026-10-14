@@ -12358,6 +12358,12 @@
         "biohacking": true,
         "yoga": true
       }
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana reads your activity, sleep, heart data and body measurements from Apple Health – read-only, and only for the areas you agreed to in the app. Vitana never writes anything to Apple Health.",
+        "privacyPolicyTitle": "Privacy policy"
+      }
     }
   }
 }

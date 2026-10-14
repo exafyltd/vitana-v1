@@ -5,6 +5,10 @@
     {
       "path": "/",
       "reason": "Wave 0 placeholder (app/index.tsx, VTID-05157); it is not a port of PUBLIC.LANDING, whose row stays not_started."
+    },
+    {
+      "path": "/native-ui-catalogue",
+      "reason": "dev-only UI kit catalogue (N2 VTID-05176); not a member screen"
     }
   ],
   "rows": [
@@ -2211,6 +2215,18 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
+      "status": "not_started",
+      "exception": null,
+      "owner": null,
+      "last_parity_check": null
+    },
+    {
+      "key": "/:tenantSlug",
+      "web_path": "/:tenantSlug",
+      "kind": "route",
+      "source": "exclusion",
+      "scope": "in",
+      "lane": "public-auth",
       "status": "not_started",
       "exception": null,
       "owner": null,

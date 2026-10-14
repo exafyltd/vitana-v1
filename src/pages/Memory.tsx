@@ -21,6 +21,8 @@ import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 // Mock data for Memory Overview - Recent Memories
 const recentMemories = [
   {
@@ -126,7 +128,56 @@ const diaryEntries = [
 export default withScreenId(function Memory() {
   const [activeTab, setActiveTab] = useUrlTab("tab", "categories");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
-  
+  // VTID-05117 — Spotlight (desktop + flag): collection frame; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.memory.memoryHubVitana')} description={t('spotlightMember.memory.overview.desc')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: memoryNavigation }}
+          header={{ title: t('screens.memory.memoryHub'), description: t('spotlightMember.memory.overview.desc'), emoji: "🧠" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.memory.addMemory')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: "categories", label: t('screens.memory.categories') },
+              { value: "timeline", label: t('screens.memory.timeline') },
+              { value: "education", label: t('screens.memory.education') },
+            ],
+          }}
+        >
+          <SplitBarContent value="categories">
+            <div className="flex flex-col gap-4">
+              <WhatVitanaKnows />
+              <MemoryCategoryGrid />
+            </div>
+          </SplitBarContent>
+          <SplitBarContent value="timeline">
+            <MemoryTimelineTab />
+          </SplitBarContent>
+          <SplitBarContent value="education">
+            <MemoryEducationTab />
+          </SplitBarContent>
+        </ScreenFrame>
+        <AddMemoryDialog open={actionPopupOpen} onOpenChange={setActionPopupOpen} />
+      </AppLayout>
+    );
+  }
+
   // Mock sync timestamp - will be replaced with real data
   const mockSyncTimestamp = formatDistanceToNow(new Date(Date.now() - 2 * 60 * 60 * 1000), { addSuffix: true });
 
@@ -148,7 +199,7 @@ export default withScreenId(function Memory() {
           <ExpandableSearchButton placeholder={t('screens.memory.searchMemoriesInsightsTimeline')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.addMemory')}
           </Button>
         </UtilityActionButton>

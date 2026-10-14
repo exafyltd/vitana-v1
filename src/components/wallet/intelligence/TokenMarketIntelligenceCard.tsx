@@ -148,7 +148,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
                       <p className="text-xs text-muted-foreground">{insight.description}</p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <Badge variant="outline" className={`text-xs mb-1 ${config.badgeColor}`}>{t('screens.wallet.confidenceConfidence', { confidence: insight.confidence })}
                     </Badge>
                   </div>
@@ -189,11 +189,11 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-2">
           <Button size="sm" variant="outline">
-            <Shield className="h-3 w-3 mr-1" />
+            <Shield className="h-3 w-3 me-1" />
             {t('screens.wallet.optimizeStake')}
           </Button>
           <Button size="sm" variant="outline">
-            <BarChart3 className="h-3 w-3 mr-1" />
+            <BarChart3 className="h-3 w-3 me-1" />
             {t('screens.wallet.viewAnalysis')}
           </Button>
         </div>

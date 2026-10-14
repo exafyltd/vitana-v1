@@ -270,7 +270,7 @@ export function NewsPostModerationMenu({
                 }}
                 className="text-sm"
               >
-                <Pencil className="mr-2 h-4 w-4" />
+                <Pencil className="me-2 h-4 w-4" />
                 {t("screens.home.editPost")}
               </DropdownMenuItem>
             )}
@@ -278,26 +278,26 @@ export function NewsPostModerationMenu({
               onClick={removeOwnPost}
               className="text-sm text-destructive focus:text-destructive"
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="me-2 h-4 w-4" />
               {t("screens.home.deletePost")}
             </DropdownMenuItem>
           </>
         ) : (
           <>
             <DropdownMenuItem onClick={() => setReportOpen(true)} className="text-sm">
-              <Flag className="mr-2 h-4 w-4" />
+              <Flag className="me-2 h-4 w-4" />
               {t("screens.home.reportPost")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={hidePost} className="text-sm">
-              <EyeOff className="mr-2 h-4 w-4" />
+              <EyeOff className="me-2 h-4 w-4" />
               {t("screens.home.hidePost")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={muteAuthor} className="text-sm">
-              <VolumeX className="mr-2 h-4 w-4" />
+              <VolumeX className="me-2 h-4 w-4" />
               {t("screens.home.muteAuthor")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={blockAuthor} className="text-sm">
-              <UserX className="mr-2 h-4 w-4" />
+              <UserX className="me-2 h-4 w-4" />
               {t("screens.home.blockAuthor")}
             </DropdownMenuItem>
           </>
@@ -307,11 +307,11 @@ export function NewsPostModerationMenu({
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={removePost} className="text-sm text-destructive focus:text-destructive">
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="me-2 h-4 w-4" />
               {t("screens.home.modRemove")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={banAuthor} className="text-sm text-destructive focus:text-destructive">
-              <Ban className="mr-2 h-4 w-4" />
+              <Ban className="me-2 h-4 w-4" />
               {t("screens.home.modBan")}
             </DropdownMenuItem>
           </>
@@ -321,7 +321,7 @@ export function NewsPostModerationMenu({
       {/* Report reason sheet — keeps the kebab clean and makes reporting intentional. */}
       <Sheet open={reportOpen} onOpenChange={setReportOpen}>
         <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
-          <SheetHeader className="text-left">
+          <SheetHeader className="text-start">
             <SheetTitle>{t("screens.home.reportSheetTitle")}</SheetTitle>
             <SheetDescription>{t("screens.home.reportSheetDesc")}</SheetDescription>
           </SheetHeader>
@@ -332,7 +332,7 @@ export function NewsPostModerationMenu({
                 key={r.value}
                 type="button"
                 onClick={() => setReportReason(r.value)}
-                className={`flex w-full items-center gap-2 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors ${
+                className={`flex w-full items-center gap-2 rounded-lg border px-3 py-2.5 text-start text-sm transition-colors ${
                   reportReason === r.value
                     ? "border-primary bg-primary/10 text-foreground"
                     : "border-border hover:bg-accent"
@@ -353,7 +353,7 @@ export function NewsPostModerationMenu({
               value={reportDetails}
               onChange={(e) => setReportDetails(e.target.value)}
               placeholder={t("screens.home.reportDetailsPlaceholder")}
-              className="min-h-[80px]"
+              className="min-h-20"
               maxLength={500}
             />
           </div>

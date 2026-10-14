@@ -5,7 +5,9 @@ import { useTenant } from "@/hooks/useTenant";
 import { useSmartRouting } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelDescription as CardDescription, PanelHeader as CardHeader, PanelTitle as CardTitle } from "@/components/layout/spotlight/Panel";
+import { FrameWhen } from "@/components/layout/spotlight/FrameWhen";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Heart, BookOpen, Shield, Terminal, ExternalLink, ShoppingBag } from "lucide-react";
 import { getCommandHubUrl } from "@/config/devHub.config";
 import { toast } from "sonner";
@@ -17,6 +19,7 @@ const Index = () => {
   const { user, loading: authLoading } = useAuth();
   const { isExafyAdmin } = useTenant();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
 
   // Use smart routing to redirect authenticated users
@@ -39,10 +42,12 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
       <SEO title={t('screens.index.vitanaDigitalSolutions')} description="Welcome to VITANA. Choose your health platform and experience innovation in wellness." canonical={window.location.href} />
       
-      <div className="flex flex-col items-center justify-center min-h-screen p-6">
+      {/* VTID-05117: Spotlight on → the portal choice in the `form` archetype column. */}
+      <FrameWhen on={spotlight} archetype="form">
+      <div className={spotlight ? "py-6" : "flex flex-col items-center justify-center min-h-screen p-6"}>
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h1 className="text-6xl font-bold text-foreground mb-4">VITANA</h1>
           <p className="text-xl text-muted-foreground mb-8">
@@ -53,13 +58,13 @@ const Index = () => {
           </p>
           
           {/* Platform Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className={spotlight ? "grid grid-cols-1 gap-4 sm:grid-cols-2" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"}>
             {/* Maxina Portal */}
             <div onClick={handleMaxinaClick}>
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
-                    <Heart className="h-12 w-12 text-[#FF7BAC] group-hover:scale-110 transition-transform" />
+                    <Heart className="h-12 w-12 text-category-4 group-hover:scale-110 transition-transform" />
                   </div>
                   <CardTitle className="text-xl">Maxina</CardTitle>
                   <CardDescription>{t('screens.index.comprehensiveHealthWellnessPlatform')}</CardDescription>
@@ -77,7 +82,7 @@ const Index = () => {
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
-                    <BookOpen className="h-12 w-12 text-[#3B82F6] group-hover:scale-110 transition-transform" />
+                    <BookOpen className="h-12 w-12 text-category-3 group-hover:scale-110 transition-transform" />
                   </div>
                   <CardTitle className="text-xl">{t('screens.index.alkalma')}</CardTitle>
                   <CardDescription>{t('screens.index.culturallyawareHealthSolutions')}</CardDescription>
@@ -92,12 +97,12 @@ const Index = () => {
 
             {/* Exafy Admin Portal */}
             <Link to="/exafy-admin">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-slate-200">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-border">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
-                    <Shield className="h-12 w-12 text-slate-600 group-hover:scale-110 transition-transform" />
+                    <Shield className="h-12 w-12 text-muted-foreground group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl text-slate-700">{t('screens.index.exafyAdmin')}</CardTitle>
+                  <CardTitle className="text-xl text-foreground/80">{t('screens.index.exafyAdmin')}</CardTitle>
                   <CardDescription>{t('screens.index.systemAdministrationPortal')}</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -121,12 +126,12 @@ const Index = () => {
                 }
               }}
             >
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-blue-200 bg-gradient-to-br from-blue-50/50 to-slate-50/50">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-category-7/30 bg-gradient-to-br from-category-7/5 to-muted/50">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
-                    <Terminal className="h-12 w-12 text-blue-600 group-hover:scale-110 transition-transform" />
+                    <Terminal className="h-12 w-12 text-category-7 group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl text-blue-700 flex items-center justify-center gap-2">
+                  <CardTitle className="text-xl text-category-7 flex items-center justify-center gap-2">
                     {t('screens.index.vitanaDev')}
                     <ExternalLink className="h-4 w-4 opacity-50" />
                   </CardTitle>
@@ -142,12 +147,12 @@ const Index = () => {
 
             {/* Commerce Portal - Merchant self-service (VTID-03555) */}
             <Link to="/commerce-login">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-amber-200 bg-gradient-to-br from-amber-50/50 to-orange-50/50">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-category-5/30 bg-gradient-to-br from-category-5/5 to-category-5/10">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
-                    <ShoppingBag className="h-12 w-12 text-amber-600 group-hover:scale-110 transition-transform" />
+                    <ShoppingBag className="h-12 w-12 text-category-5 group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl text-amber-700">{t('screens.index.commercePortal')}</CardTitle>
+                  <CardTitle className="text-xl text-category-5">{t('screens.index.commercePortal')}</CardTitle>
                   <CardDescription>{t('screens.index.merchantSelfServiceMarketplace')}</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -166,6 +171,7 @@ const Index = () => {
           </div>
         </div>
       </div>
+      </FrameWhen>
     </div>
   );
 };

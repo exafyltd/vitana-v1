@@ -303,9 +303,9 @@ export default function BookingPaymentFlow({
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full justify-start text-left font-normal"
+                        className="w-full justify-start text-start font-normal"
                       >
-                        <Calendar className="mr-2 h-4 w-4" />
+                        <Calendar className="me-2 h-4 w-4" />
                         {selectedDate ? formatDate(selectedDate, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
@@ -326,7 +326,7 @@ export default function BookingPaymentFlow({
                   <Select value={selectedTime} onValueChange={setSelectedTime}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center">
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className="me-2 h-4 w-4" />
                         <SelectValue placeholder={t('screens.payment.pickTime')} />
                       </div>
                     </SelectTrigger>
@@ -372,7 +372,7 @@ export default function BookingPaymentFlow({
                       <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.credits || 0, 'CREDITS') })}</p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-medium">{formatCurrency(getRequiredAmount('CREDITS'), 'CREDITS')}</p>
                     <p className="text-xs text-muted-foreground">≈ ${booking.price.toFixed(2)}</p>
                   </div>
@@ -394,7 +394,7 @@ export default function BookingPaymentFlow({
                       <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.usd || 0, 'USD') })}</p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-medium">${booking.price.toFixed(2)}</p>
                   </div>
                 </div>
@@ -417,7 +417,7 @@ export default function BookingPaymentFlow({
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-medium">${booking.price.toFixed(2)}</p>
                   </div>
                 </div>
@@ -456,7 +456,7 @@ export default function BookingPaymentFlow({
                 </span>
               </div>
               {paymentMethod !== 'cash' && paymentMethod !== 'usd' && (
-                <p className="text-sm text-muted-foreground text-right mt-1">{t('screens.payment.convertsValue0Usd', { value0: booking.price.toFixed(2) })}
+                <p className="text-sm text-muted-foreground text-end mt-1">{t('screens.payment.convertsValue0Usd', { value0: booking.price.toFixed(2) })}
                 </p>
               )}
             </CardContent>
@@ -474,11 +474,11 @@ export default function BookingPaymentFlow({
             >
               {isProcessing ? (
                 <>
-                  <Clock className="w-4 h-4 mr-2 animate-spin" />{t('screens.payment.processing')}
+                  <Clock className="w-4 h-4 me-2 animate-spin" />{t('screens.payment.processing')}
                 </>
               ) : (
                 <>
-                  <CheckCircle className="w-4 h-4 mr-2" />
+                  <CheckCircle className="w-4 h-4 me-2" />
                   {t('screens.payment.confirmBooking')}
                 </>
               )}

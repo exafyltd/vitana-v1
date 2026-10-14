@@ -72,7 +72,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
             onClick={() => navigate('/comm/media-hub?tab=podcasts')}
             className="border-orange-400/50 hover:border-orange-400"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.home.uploadPodcast')}
           </Button>
         </CardContent>
@@ -89,7 +89,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/10 to-orange-500/10 -z-10" />
       
       {/* Radio icon watermark */}
-      <Radio className="absolute top-4 right-4 w-16 h-16 text-orange-400/10 pointer-events-none z-0" />
+      <Radio className="absolute top-4 end-4 w-16 h-16 text-orange-400/10 pointer-events-none z-0" />
       
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
@@ -101,7 +101,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
             variant="ghost"
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=podcasts')}
-            className="text-xs hover:text-orange-600 px-4 py-2 min-h-[40px] cursor-pointer"
+            className="text-xs hover:text-orange-600 px-4 py-2 min-h-10 cursor-pointer"
           >{t('screens.home.viewAll')}
           </Button>
         </div>

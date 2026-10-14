@@ -13732,6 +13732,12 @@
         "fitness": true,
         "biohacking": true
       }
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana odczytuje twoją aktywność, sen, dane dotyczące serca i pomiary ciała z Apple Health – wyłącznie do odczytu i tylko w obszarach objętych twoją zgodą w aplikacji. Vitana nigdy niczego nie zapisuje w Apple Health.",
+        "privacyPolicyTitle": "Polityka prywatności"
+      }
     }
   }
 }

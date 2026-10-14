@@ -109,7 +109,9 @@ Status: implemented (VTID-05109). Migrated: `/discover`, `/discover/supplements`
   (conversation; same ConversationView props, data hooks/realtime/keep-alive untouched). Left: Post detail (after Phase 2),
   Public profile (needs an owner design call), the Live Rooms "Past" tab with recordings.
 - [x] 4.2 Remaining adapters (event, liveRoom, group, member).
-- [ ] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+- [x] 4.3 Manifest + baseline; per-screen staging spec + screenshots.
+  Done with VTID-05110: Phase 4 routes `migrated` in the manifest, baselines lowered, staging specs
+  `vtid-05110-social-spotlight` + `vtid-05110-media-messages-spotlight` passed STAGING-VERIFY at `e634f79`.
 
 ## Phase 5 — Tier B adoption · VTID-05111
 - [x] 5.1 Health, Wallet, AI, Settings, Calendar, Intents, Sharing: `ScreenFrame` (compact header + SplitBar in utility bar), skeletons, VCard, width token — no stage/rail re-layout.
@@ -144,11 +146,106 @@ Decisions taken (for Gate 2):
   Status: implemented (VTID-05115). 48 `/dev/*` routes migrated (`workspace`, section tabs kept above the frame). Left legacy: `/dev` (redirect to `/dev/dashboard`) and `/dev/login` (sign-in screen outside DevLayout; token fixes only). Decisions (for Gate 2): token fixes apply on both paths (surface tokens, logical directions, spacing scale); unrouted DevReleases / DevDocsBacklog get token fixes only. `src/pages/dev` `design/*` errors 139 → 0.
 - [x] 7.4 Professional + Staff · VTID-05116
   Status: implemented (VTID-05116). Migrated `/professional/dashboard`, `/staff/dashboard`, `/staff/queue` (`workspace`). The other `/professional/*` and `/staff/*` routes render the shared ComingSoonPlaceholder and move with 7.5. Decisions (for Gate 2): content, demo data and the queue card layout unchanged; token fixes on both paths (status tokens, logical border/spacing); the phone bottom-bar clearance (VTID-04001) is kept on the flag-off path. `design/*` errors professional 4 → 0, staff 18 → 0.
-- [ ] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
+- [~] 7.5 Leftover `form` / `immersive` screens → manifest 100 % `migrated` · VTID-05117
+  - [x] Part A: remaining member screens (Memory, Settings Privacy/Preferences, My Journey, Business Hub, Discover
+    lists/detail, Inbox Archived/Inspiration/group chat, Search, Members, Open Asks, Find a Match, Talk to Vitana, Event
+    Game, Creator onboarded, My Tickets, Distribution, live-room viewer, `/patient/*`).
+  - [x] Part B: public, auth, legal, commerce-portal and operator-placeholder screens (`FrameWhen`, `PublicMain`, `Panel`).
+  - [x] Manifest, design + ESLint baselines (61 files lowered each), validation (scope + staging-tests), inventory, EN source stamps.
+  - [x] Part C: the remaining legacy routes that need no owner decision (below).
+  - [ ] Still `legacy` (17 of 345, each with its reason under part C): owner decisions, pure redirects, `/business/sell-earn`,
+    `/me/profile`.
+  Status: implemented (VTID-05117). Migrated: 95 routes (manifest 223 → 318 of 345 with Phases 2–7.4) — public/auth/legal (`/`, `/maxina`,
+  `/alkalma`, `/_intro/:tenantSlug`, `/reset-password`, `/privacy`, `/terms`, `/apply`, `/logout`, `/oauth/*`,
+  `/auth/confirmed`, `/maxina/confirmed`, `/alkalma/confirmed`, `/onboarding/welcome`, `/maxina_support`, `/download`,
+  `/maxina/app`, `/exafy-admin`, `/commerce-login`, `/e/:slug`, `/pub/events/:id`, `/pub/campaigns/:id`), commerce
+  (`/commerce`, `/commerce/join`, `/commerce/team`, `/commerce/health-orders[/inbox]`, `/commerce/connect[/privacy|/authorize]`,
+  `/commerce/invites/:token/accept`, `/universal-cart`, `/shop`, `/checkout/success`, `/packages/success`), member
+  (`/memory/*`, `/settings/privacy`, `/settings/preferences`, `/autopilot`, `/autopilot/audiobook`, `/business` + services/
+  clients/analytics/opportunities/listings, `/discover/ai-picks|marketplace|category/:subcategory|provider/:id|product/:id`,
+  `/inbox/archived|inspiration|g/:groupId[/msg/:messageId]`, `/search`, `/comm/members|open-asks|find-partner|talk-to-vitana`,
+  `/comm/live-rooms/:roomId/view`, `/community/event-game`, `/creator/onboarded`, `/my-tickets`, `/invite`,
+  `/sharing/distribution`, `/news/:id`, `/patient/*` (8), `/partner/connections[/:id]`) and operator placeholders
+  (`/admin/init-events`, 6 `/professional/*`, 6 `/staff/*`). Decisions taken (for Gate 2):
+  - Archetype changes: `/_intro/:tenantSlug` `form` → `immersive` (the cinematic intro keeps its measured full-bleed Orb
+    layout, which only `immersive` preserves); `/autopilot/audiobook` `collection` → `dashboard` (it is the same
+    `AutopilotDashboard` page, which starts the player and settles on `/autopilot`).
+  - Left `legacy`: `/business/sell-earn` (renders `collection` for resellers but falls back to the `storefront` overview
+    for everyone else, so it has no single archetype the design-lint can check); `/e/game/:slug` (only its spinner became
+    a skeleton, no `ScreenFrame`); plus the blocked routes above.
+  - The signed-in staging design-lint (`design-contract.staging.spec.ts`) skips `NO_SHELL` screens (29 public / auth /
+    commerce-portal / cart / `/shop` routes rendered without the app shell; `vtid-05117-public-leftovers` checks them
+    signed out or without the sidebar check) and `ROLE_GATED` member screens (7 `/patient/*` behind
+    `requiredRole="patient"`, `/partner/connections` behind `admin`; Vitest covers them), like the operator exclusion.
+  - `/shop` (`immersive`) and the commerce portal keep rendering without the app shell, as before the phase (no sidebar).
+  - The part-B unit test was aligned with the merged `ComingSoonPlaceholder` (part A routes `/patient/*` through
+    `PatientComingSoonSpotlight`), and stubs `StandardHeader` because the patient frame now carries a header.
+  Part C status: implemented (VTID-05117). Migrated 10 routes (manifest 318 → 328 of 345): `/home/compose`,
+  `/home/comments`, `/home/notif` (`focus-feed` — they render the News page), `/post/:source/:id` (`detail`, the post is
+  the one spotlight card with the feed's like / comments / moderation controls), `/me/matches` (`collection`, row cards of
+  the real matches), `/profile/me/privacy` (`form`, one panel per section, same save path), `/dev/login` (`workspace`, same
+  sign-in card), `/e/game/:slug` (`detail`, the game is the one spotlight card with Join + Leaderboard),
+  `/discover/deals-offers` (`storefront`) and `/professional/patients` (`workspace`, the shared placeholder was already
+  framed). Remaining `legacy`, with reasons:
+  - Owner decision / not ours: `/redeem`, `/tickets/demo`, `/tickets/success`, `/delete-account`, `/u/:identifier` and
+    `/profile/:id` (public profile design call), `/dev` (redirect to `/dev/dashboard`).
+  - `/me/profile`: renders the shared `ProfileLayout` of the public profile (`/u/:identifier`) in edit mode, so its
+    desktop design follows the owner's public-profile design call.
+  - `/business/sell-earn`: unchanged reason — `collection` for resellers, the `storefront` overview for everyone else.
+  - Pure redirects that render no screen (the inventory only recognises `<Navigate>` elements): `/settings` and
+    `/profile/subscriptions` (desktop redirects; MobileSettings / MobileSubscriptions on phones only),
+    `/settings/connected-apps`, `/settings/social` (→ `/connectors`), `/commerce/connections/:id` (→ `/commerce`),
+    `/earthlinks/*` (→ `/maxina`), `/i/:code` (→ `/maxina?tab=signup`), and `/daily-diary` (desktop → `/memory/diary`,
+    the mobile diary otherwise). Each target screen carries the contract.
+  Decisions taken (for Gate 2):
+  - Archetype changes: `/home/compose|comments|notif` `form`/`collection` → `focus-feed` (the same News page as `/home`);
+    `/profile/me/privacy` `collection` → `form` (a settings screen is `form` in the contract). `/dev/login` keeps `workspace`:
+    the manifest test pins every operator (tier C) route to `workspace`, so the sign-in card sits in the workspace frame
+    (a `form` archetype for operator sign-in screens would be a contract change).
+  - `/discover/deals-offers`: without a real discount the storefront's hero is an honest text-only spotlight card
+    ("Gerade keine Angebote") instead of the dashed empty state, so the screen keeps exactly one spotlight (SR-06) without
+    sample data (SR-24) — the Phase 3 note "stays legacy until staging shows a real discounted product" no longer applies.
+  - `/post/:source/:id` and `/e/game/:slug`: a missing post / unavailable game is one text-only spotlight card. The
+    post page renders inside `AppLayout` with Spotlight on (member screen, SR-01); the public QR landing does not.
+  - Legacy paths unchanged (phones and flag-off): Privacy & Visibility uses token colours only in its Spotlight branch;
+    shared rows/dialogs were extracted, not changed.
+  - `design-contract.staging.spec.ts` accepts the aborted `daily_matches` PATCH that `/me/matches` sends (VTID-04827,
+    the guard aborts it; nothing is written).
 
 ## Phase 6 — Card consolidation · VTID-05112 (last)
-- [ ] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
-- [ ] 6.2 Design part of the ESLint baseline = 0; mobile screenshots unchanged.
+  Fix-forward (VTID-05117): VTID-05151 (#1382) replaced the migrated AlkalmaPortal with TenantPortal, which framed
+  unconditionally (also on phones / flag off, against the contract) — TenantPortal now frames only while Spotlight is on
+  (plain column + in-content SplitBar otherwise; 3 Vitest cases, red on the old page). Staging spec: `/e/game/:slug` is a
+  public guest landing without the app shell, so it asserts *no* sidebar instead of the member chrome.
+- [x] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
+  Status: implemented (VTID-05112). Inventory of 150 card-like components (`docs/validation/VTID-05112/card-inventory.md`):
+  6 have zero static and zero dynamic references and are retired — `templates/EventCard`, `templates/StatCard`,
+  `wallet/WalletRewardCard`, `wallet/intelligence/{CommissionForecastingCard,EarningStreaksAnalyticsCard,SocialEarningIntelligenceCard}`;
+  144 stay. 6 ≤ 20, so no 6.1b. Decisions taken (for Gate 2):
+  - Phase 5's PR body did not enumerate card components (5.2's list was not published in it). The plan defines the list
+    as every card component still not on VCard, so the whole `src/components/**/*Card*.tsx` set plus the card modules
+    the Phase-5 pages import was inventoried; none of the six retired files renders through VCard. No used component
+    was modified.
+  - `templates/StatCard` counts as zero dynamic references: the two plain-string hits are an unrelated local
+    `function StatCard` (`admin/marketplace/Overview.tsx`) and `interface StatCard` (`dev/AnalyticsView.tsx`).
+  - Lint-ratchet path lists (`baseline/*.json`) and `docs/` mentions are not references; the retired files' baseline
+    entries were removed (design + eslint, 5 each — `templates/EventCard` had none). No test file existed or changed.
+  - Mobile screenshots unchanged by construction: every JS chunk of the build is byte-identical to base (hashes
+    aside); only `index.css` loses 442 bytes of utilities no remaining file uses.
+- [~] 6.2 Design part of the ESLint baseline = 0; mobile screenshots unchanged.
+  Status (VTID-05112, part 1): visually identical fixes in 19 component folders (profile, community, messages, live rooms,
+  crossover, health, journey, diary, memory, calendar, home, sharing, wallet, commerce, payment, business, tickets, event
+  game, discover): `design/*` errors there 3,228 → 2,400 — physical direction 762 → 12, arbitrary size 231 → 179,
+  raw palette 2,235 → 2,209 (26 exact light/dark pairs → tokens). Design + ESLint baselines lowered for 259 files.
+  Part 2 (VTID-05112): the same mechanical physical→logical rewrite for the remaining 173 files (pages, dev, admin,
+  meetups, mobile, intents, voucher, popups …): `design/no-physical-direction` 597 → 2 there, no file worse on any rule,
+  Vitest 420/420. Not rewritten: sidebar chrome (`AppLayout`, `DevSidebar`), lines with `translate-x`, slide animations,
+  carousels or `side`/`direction`-bound sheets (e.g. the `direction="right"` Meetup drawer stays physical).
+  Left on purpose: `left-1/2 -translate-x-1/2` centring and carousel/sheet overrides (a logical class would misplace them
+  in RTL); arbitrary sizes without an exact scale class (vh/dvh/calc/odd px).
+  **Blocked on an owner decision:** no raw palette colour has a token with the same value in both light and dark mode, so
+  "baseline = 0" and "mobile screenshots unchanged" cannot both hold. Options: accept small colour shifts to existing
+  status/category/surface tokens, or add exact-match tokens (a design-contract change → sparring).
 
 ## System-wide done
 - [ ] Manifest 100 % `migrated`; `baseline/design.json` all zero; STAGING-VERIFY design-lint green for every screen.

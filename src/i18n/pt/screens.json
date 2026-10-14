@@ -13596,47 +13596,29 @@
         "description": "Produtos, serviços e ofertas para o seu bem-estar.",
         "action": "Explorar"
       },
-      "G1": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true,
-          "metric": true
-        },
-        "eyebrow": "Your profile",
-        "title": "Complete your profile",
-        "description": "A complete profile brings you better matches.",
-        "action": "Continue setup",
-        "metric": "{value} done · {message}"
-      },
       "G2": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true,
-          "metric": true
-        },
         "eyebrow": "Matches",
-        "title": "You have new matches",
-        "description": "See who is a good fit for you.",
-        "action": "See who matched",
-        "metric": "New matches: {count} · {message}"
+        "title": "Você tem novos matches",
+        "description": "Veja quem combina com você.",
+        "action": "Ver matches",
+        "metric": "Novos matches: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "G1": {
+        "eyebrow": "Seu perfil",
+        "title": "Complete seu perfil",
+        "description": "Um perfil completo traz matches mais certeiros para você.",
+        "action": "Continuar configuração",
+        "metric": "{value} concluído · {message}"
       },
       "G3": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true,
-          "metric": true
-        },
-        "eyebrow": "Diary",
-        "title": "Your streak is at risk",
-        "description": "You missed yesterday – keep your streak alive today.",
-        "action": "Log today",
-        "metric": "Streak: {count} days · {message}"
+        "eyebrow": "Diário",
+        "title": "Sua sequência está em risco",
+        "description": "Ontem ficou sem registro – mantenha sua sequência viva hoje.",
+        "action": "Registrar hoje",
+        "metric": "Sequência: {count} dias · {message}"
       }
     },
     "interests": {
@@ -13665,6 +13647,12 @@
         "mindfulness": true,
         "biohacking": true,
         "yoga": true
+      }
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "A Vitana lê sua atividade, seu sono, seus dados cardíacos e suas medidas corporais do Apple Health – somente leitura e apenas para as áreas que você aceitou no app. A Vitana nunca grava nada no Apple Health.",
+        "privacyPolicyTitle": "Política de privacidade"
       }
     }
   }

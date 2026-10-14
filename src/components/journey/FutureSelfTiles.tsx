@@ -86,7 +86,7 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
         }}
       >
         <div
-          className="absolute -top-6 -right-4 w-24 h-24 rounded-full"
+          className="absolute -top-6 -end-4 w-24 h-24 rounded-full"
           style={{ background: "radial-gradient(closest-side, rgba(252,211,77,0.45), transparent)" }}
           aria-hidden
         />
@@ -115,10 +115,10 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
               }}
               aria-hidden
             />
-            <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-violet-700 backdrop-blur-sm shadow-sm">
+            <div className="absolute top-2 start-2 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-violet-700 backdrop-blur-sm shadow-sm">
               <tile.icon className="w-3.5 h-3.5" />
             </div>
-            <div className="absolute left-2.5 right-2 bottom-2.5 text-white">
+            <div className="absolute start-2.5 end-2 bottom-2.5 text-white">
               <div
                 className="font-bold leading-tight"
                 style={{ ...SERIF, fontSize: 16, textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
@@ -139,7 +139,7 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
         style={{ ...SERIF, color: "#6d28d9", fontSize: 15.5 }}
       >
         {t("screens.autopilotdashboard.futureSelfBecoming")}
-        <span className="not-italic text-amber-400 ml-1">✨</span>
+        <span className="not-italic text-amber-400 ms-1">✨</span>
       </p>
     </div>
   );

@@ -490,7 +490,7 @@ export default function EditProfilePage() {
                 <button
                   type="button"
                   onClick={() => setCoverLibraryDrawerOpen(true)}
-                  className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
+                  className="w-full text-start p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
                 >
                   <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                     <ImagePlus className="h-5 w-5" />
@@ -524,7 +524,7 @@ export default function EditProfilePage() {
                 {/* About content - tap to edit */}
                 <button 
                   onClick={handleEditAbout}
-                  className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
+                  className="w-full text-start p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
                 >
                   <h3 className="text-sm font-semibold mb-2">{translate('editProfile.about', 'About')}</h3>
                   <p className="text-sm text-muted-foreground">{profile.bio || translate('editProfile.addBio', 'Add a bio...')}</p>
@@ -704,7 +704,7 @@ export default function EditProfilePage() {
         <button
           type="button"
           onClick={() => setCoverLibraryDrawerOpen(true)}
-          className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
+          className="w-full text-start p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
         >
           <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
             <ImagePlus className="h-5 w-5" />

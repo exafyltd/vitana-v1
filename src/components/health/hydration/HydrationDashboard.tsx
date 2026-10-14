@@ -72,7 +72,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
           <p className="text-2xl font-bold">{(progress.avgDailyIntake / 1000).toFixed(1)}L</p>
           <p className="text-xs text-muted-foreground">{t('screens.health.avgIntake')}</p>
           <Badge variant="outline" className="mt-1 text-xs">
-            <TrendingUp className="w-3 h-3 mr-1" />
+            <TrendingUp className="w-3 h-3 me-1" />
             +{progress.weeklyTrend}%
           </Badge>
         </div>

@@ -29,6 +29,10 @@ import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Zap, BarChart3, Palette, Plus, ChevronDown, Rocket, Sparkles, Calendar, Clock, Share2, TrendingUp, MessageSquare, Image, BookOpen, FileText, Settings, Repeat } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightEmpty } from "@/components/spotlight/member/MemberSpotlight";
 
 // Transform campaign templates to StandardHorizontalCard format
 const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
@@ -54,7 +58,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
       <div className="p-4 space-y-3">
         <div>
           <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.campaignPlaybook')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc ps-5">
             <li>{t('screens.sharing.week1TeaserPosts3xShortform')}</li>
             <li>{t('screens.sharing.launchDayHeroAnnouncementEmailBlast')}</li>
             <li>{t('screens.sharing.week2SocialProofTestimonialsMicrofaq')}</li>
@@ -88,7 +92,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
       <div className="p-4 space-y-3">
         <div>
           <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.educationalSeries')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc ps-5">
             <li>{t('screens.sharing.phase1FoundationConceptsWeeks12')}</li>
             <li>{t('screens.sharing.phase2PracticalApplicationsWeeks34')}</li>
             <li>{t('screens.sharing.phase3AdvancedStrategiesWeeks56')}</li>
@@ -121,7 +125,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
       <div className="p-4 space-y-3">
         <div>
           <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.countdownTimeline')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc ps-5">
             <li>{t('screens.sharing.t14DaysSaveDateAnnouncement')}</li>
             <li>{t('screens.sharing.t7DaysSpeakeragendaReveal')}</li>
             <li>{t('screens.sharing.t3DaysLastChanceReminder')}</li>
@@ -154,7 +158,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
       <div className="p-4 space-y-3">
         <div>
           <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.launchSequence')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc ps-5">
             <li>{t('screens.sharing.prelaunchWaitlistBuilding2Weeks')}</li>
             <li>{t('screens.sharing.launchWeekDailyFeatureHighlights')}</li>
             <li>{t('screens.sharing.week2CustomerTestimonialsSocialProof')}</li>
@@ -187,7 +191,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
       <div className="p-4 space-y-3">
         <div>
           <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.urgencyTactics')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc ps-5">
             <li>{t('screens.sharing.hour0FlashAnnouncementAcrossAll')}</li>
             <li>{t('screens.sharing.hour350ClaimedUrgencyUpdate')}</li>
             <li>{t('screens.sharing.hour6Last3HoursCountdown')}</li>
@@ -394,7 +398,7 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
       <div className="p-4 space-y-3">
         <div>
           <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.voiceGuidelines')}</h4>
-          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-muted-foreground space-y-1.5 list-disc ps-5">
             <li><strong>{t('screens.sharing.professional')}</strong> {t('screens.sharing.sciencebackedCredibleExpert')}</li>
             <li><strong>{t('screens.sharing.encouraging')}</strong> {t('screens.sharing.positiveSupportiveEmpowering')}</li>
             <li><strong>{t('screens.sharing.accessible')}</strong> {t('screens.sharing.clearJargonfreeRelatable')}</li>
@@ -537,6 +541,34 @@ export default withScreenId(function Distribution() {
   const [rulePopupOpen, setRulePopupOpen] = React.useState(false);
   const [templatePopupOpen, setTemplatePopupOpen] = React.useState(false);
   const [guidelinePopupOpen, setGuidelinePopupOpen] = React.useState(false);
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): the template, automation and brand-kit cards are
+  // samples whose buttons only log, with invented reach numbers — so the collection frame shows an
+  // honest empty state that points to the real campaigns (SR-24, SR-26). Phones and flag-off keep
+  // the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.sharing.distributionToolingVitana')} description={t('spotlightMember.sharing.distributionDesc')} canonical={window.location.href} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: sharingNavigation }}
+          header={{ title: t('screens.sharing.distributionTooling'), description: t('spotlightMember.sharing.distributionDesc') }}
+          utility={{ children: <UniversalCalendarButton /> }}
+        >
+          <SpotlightEmpty
+            Icon={Share2}
+            titleKey="spotlightMember.sharing.distributionEmptyTitle"
+            descriptionKey="spotlightMember.sharing.distributionEmptyDesc"
+            actionKey="spotlightMember.sharing.openCampaigns"
+            onAction={() => navigate('/sharing/campaigns')}
+          />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -562,21 +594,21 @@ export default withScreenId(function Distribution() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="default">
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {t('screens.sharing.createAsset')}
-                  <ChevronDown className="w-4 h-4 ml-2" />
+                  <ChevronDown className="w-4 h-4 ms-2" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuItem onClick={() => setTemplatePopupOpen(true)}>
-                  <Palette className="w-4 h-4 mr-2" />
+                  <Palette className="w-4 h-4 me-2" />
                   <div className="flex flex-col">
                     <span className="font-medium">{t('screens.sharing.campaignTemplate')}</span>
                     <span className="text-xs text-muted-foreground">{t('screens.sharing.prebuiltDistributionPattern')}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setRulePopupOpen(true)}>
-                  <Zap className="w-4 h-4 mr-2" />
+                  <Zap className="w-4 h-4 me-2" />
                   <div className="flex flex-col">
                     <span className="font-medium">{t('screens.sharing.automationRule')}</span>
                     <span className="text-xs text-muted-foreground">{t('screens.sharing.ifthenWorkflowLogic')}</span>
@@ -584,7 +616,7 @@ export default withScreenId(function Distribution() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setGuidelinePopupOpen(true)}>
-                  <BarChart3 className="w-4 h-4 mr-2" />
+                  <BarChart3 className="w-4 h-4 me-2" />
                   <div className="flex flex-col">
                     <span className="font-medium">{t('screens.sharing.brandGuideline')}</span>
                     <span className="text-xs text-muted-foreground">{t('screens.sharing.channelspecificRules')}</span>

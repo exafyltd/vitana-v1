@@ -248,7 +248,7 @@ export default function Profile() {
                       <CardTitle>{t('screens.profile.frustrations')}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                      <ul className="list-disc ps-5 text-sm text-muted-foreground space-y-2">
                         <li>{t('screens.profile.tooMuchTimeSpentPlanningWhen')}</li>
                         <li>{t('screens.profile.tooManyAppsForOnePurpose')}</li>
                         <li>{t('screens.profile.prefersSimpleFlowsOverComplexSettings')}</li>
@@ -261,7 +261,7 @@ export default function Profile() {
                       <CardTitle>{t('screens.profile.goals')}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                      <ul className="list-disc ps-5 text-sm text-muted-foreground space-y-2">
                         <li>{t('screens.profile.spendLessTimeBookingOrganizing')}</li>
                         <li>{t('screens.profile.keepHealthyHabitsWhileTraveling')}</li>
                       </ul>

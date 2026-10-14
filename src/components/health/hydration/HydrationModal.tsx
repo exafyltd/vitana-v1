@@ -71,7 +71,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           {/* Close Buttons */}
           <button
             onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full 
+            className="absolute top-4 end-4 w-10 h-10 rounded-full 
               bg-white/30 backdrop-blur-md hover:bg-white/40 
               flex items-center justify-center transition-all z-10"
           >
@@ -80,7 +80,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           
           <button
             onClick={() => onOpenChange(false)}
-            className="md:hidden absolute top-4 left-4 w-10 h-10 rounded-full 
+            className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full 
               bg-white/30 backdrop-blur-md hover:bg-white/40 
               flex items-center justify-center transition-all z-10"
           >
@@ -96,12 +96,12 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
               
               {/* Water Fill Level */}
               <div 
-                className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-cyan-400 to-cyan-300 
+                className="absolute bottom-0 start-0 end-0 bg-gradient-to-t from-cyan-400 to-cyan-300 
                   dark:from-cyan-600 dark:to-cyan-500 rounded-b-3xl transition-all duration-700"
                 style={{ height: `${data.completionPercentage}%` }}
               >
                 {/* Animated Ripple Effect */}
-                <div className="absolute top-0 left-0 right-0 h-2 bg-cyan-200 dark:bg-cyan-400 opacity-50 animate-pulse" />
+                <div className="absolute top-0 start-0 end-0 h-2 bg-cyan-200 dark:bg-cyan-400 opacity-50 animate-pulse" />
               </div>
               
               {/* Percentage Label */}

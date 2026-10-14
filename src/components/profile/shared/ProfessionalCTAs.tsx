@@ -57,18 +57,18 @@ export function ProfessionalCTAs({
                 >
                   {isCurrentlyLive ? (
                     <>
-                      <Zap className="h-4 w-4 mr-2" />{t('screens.profile.manageLiveSession')}
+                      <Zap className="h-4 w-4 me-2" />{t('screens.profile.manageLiveSession')}
                     </>
                   ) : (
                     <>
-                      <Video className="h-4 w-4 mr-2" />
+                      <Video className="h-4 w-4 me-2" />
                       {t('screens.profile.goLive')}
                     </>
                   )}
                 </Button>
               )}
               <Button variant="outline" onClick={onBookSession} className="w-full">
-                <Calendar className="h-4 w-4 mr-2" />
+                <Calendar className="h-4 w-4 me-2" />
                 {t('screens.profile.manageAvailability')}
               </Button>
             </>
@@ -81,17 +81,17 @@ export function ProfessionalCTAs({
                   className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white"
                   size="lg"
                 >
-                  <Play className="h-4 w-4 mr-2" />
+                  <Play className="h-4 w-4 me-2" />
                   {t('screens.profile.joinLiveSession')}
                 </Button>
               )}
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={onBookSession} className="flex-1">
-                  <Calendar className="h-4 w-4 mr-2" />
+                  <Calendar className="h-4 w-4 me-2" />
                   {t('screens.profile.bookSession')}
                 </Button>
                 <Button variant="outline" onClick={onMessage} className="flex-1">
-                  <MessageCircle className="h-4 w-4 mr-2" />
+                  <MessageCircle className="h-4 w-4 me-2" />
                   {t('screens.profile.message')}
                 </Button>
               </div>

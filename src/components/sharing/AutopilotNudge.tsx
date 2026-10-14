@@ -53,7 +53,7 @@ export function AutopilotNudge({
                 {t('screens.sharing.postNow')}
               </Button>
               <Button variant="outline" size="sm" onClick={onSchedule}>
-                <Calendar className="w-4 h-4 mr-2" />
+                <Calendar className="w-4 h-4 me-2" />
                 {t('screens.sharing.schedule')}
               </Button>
             </div>

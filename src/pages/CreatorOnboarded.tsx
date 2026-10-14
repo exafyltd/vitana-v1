@@ -11,6 +11,11 @@ import { useCreatorStatus } from '@/hooks/useCreator';
 import { CheckCircle, DollarSign, Sparkles, ArrowRight, ExternalLink } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { t } from '@/lib/i18n-toast';
+import { Clock } from 'lucide-react';
+import AppLayout from '@/components/AppLayout';
+import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { SpotlightNotice, SpotlightPanel } from '@/components/spotlight/member/MemberSpotlight';
 
 export default function CreatorOnboarded() {
   const navigate = useNavigate();
@@ -28,6 +33,81 @@ export default function CreatorOnboarded() {
   }, [refetch]);
 
   const isFullyOnboarded = status?.charges_enabled && status?.payouts_enabled;
+  // VTID-05117 — Spotlight (desktop + flag): the Stripe return page inside the Vitanaland frame,
+  // skeleton instead of a spinner; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    const loadingStatus = isLoading || isRefetching;
+    const benefits = [
+      { Icon: DollarSign, title: 'screens.creatoronboarded.youKeep90', desc: 'screens.creatoronboarded.earn90EveryPaidLiveRoom' },
+      { Icon: CheckCircle, title: 'screens.creatoronboarded.instantAccess', desc: 'screens.creatoronboarded.startCreatingPaidRoomsImmediately' },
+      { Icon: Sparkles, title: 'screens.creatoronboarded.directDeposits', desc: 'screens.creatoronboarded.earningsDepositedDirectlyYourBankAccount' },
+    ];
+    return (
+      <AppLayout>
+        <SEO title={t('screens.creatoronboarded.paymentSetupCompleteVitana')} description={t('screens.creatoronboarded.youReAllSetStartEarning')} canonical={window.location.href} />
+        <ScreenFrame archetype="collection">
+          <div className="mx-auto flex max-w-stage flex-col gap-4">
+            {loadingStatus ? (
+              <ArchetypeSkeleton archetype="form" />
+            ) : isFullyOnboarded ? (
+              <SpotlightPanel
+                Icon={CheckCircle}
+                title={t('screens.creatoronboarded.value0PaymentSetupComplete', { value0: '' })}
+                description={t('screens.creatoronboarded.youReAllSetStartEarning')}
+              >
+                <ul className="flex flex-col gap-4">
+                  {benefits.map(({ Icon, title, desc }) => (
+                    <li key={title} className="flex items-start gap-3">
+                      <Icon className="mt-0.5 size-5 shrink-0 text-status-success" aria-hidden="true" />
+                      <div>
+                        <div className="font-semibold">{t(title)}</div>
+                        <p className="text-sm text-muted-foreground">{t(desc)}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Button onClick={() => navigate('/community')} className="gap-2">
+                    {t('screens.creatoronboarded.createYourFirstPaidRoom')}
+                    <ArrowRight className="size-4 rtl:rotate-180" />
+                  </Button>
+                  <Button variant="outline" onClick={() => navigate('/settings/billing')} className="gap-2">
+                    {t('screens.creatoronboarded.viewPaymentSettings')}
+                    <ExternalLink className="size-4" />
+                  </Button>
+                </div>
+              </SpotlightPanel>
+            ) : (
+              <SpotlightPanel
+                Icon={Clock}
+                title={t('screens.creatoronboarded.setupProgress')}
+                description={t('screens.creatoronboarded.yourPaymentSetupProcessedThisCan')}
+              >
+                <SpotlightNotice tone="warning">
+                  <p className="mb-1 font-medium">{t('screens.creatoronboarded.whatSNext')}</p>
+                  <ul className="flex list-disc flex-col gap-1 ps-5">
+                    <li>{t('screens.creatoronboarded.stripeVerifyingYourAccountInformation')}</li>
+                    <li>{t('screens.creatoronboarded.youLlReceiveEmailWhenSetup')}</li>
+                    <li>{t('screens.creatoronboarded.thisUsuallyTakes510Minutes')}</li>
+                  </ul>
+                </SpotlightNotice>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Button onClick={() => refetch()} variant="outline">
+                    {t('screens.creatoronboarded.refreshStatus')}
+                  </Button>
+                  <Button onClick={() => navigate('/settings/billing')} variant="secondary">
+                    {t('screens.creatoronboarded.goSettings')}
+                  </Button>
+                </div>
+              </SpotlightPanel>
+            )}
+          </div>
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-6">
@@ -82,7 +162,7 @@ export default function CreatorOnboarded() {
                   <div className="bg-green-100 rounded-full p-2 mt-0.5">
                     <DollarSign className="w-5 h-5 text-green-600" />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="text-start flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.youKeep90')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.earn90EveryPaidLiveRoom')}
@@ -94,7 +174,7 @@ export default function CreatorOnboarded() {
                   <div className="bg-blue-100 rounded-full p-2 mt-0.5">
                     <CheckCircle className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="text-start flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.instantAccess')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.startCreatingPaidRoomsImmediately')}
@@ -106,7 +186,7 @@ export default function CreatorOnboarded() {
                   <div className="bg-purple-100 rounded-full p-2 mt-0.5">
                     <Sparkles className="w-5 h-5 text-purple-600" />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="text-start flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.directDeposits')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.earningsDepositedDirectlyYourBankAccount')}
@@ -155,7 +235,7 @@ export default function CreatorOnboarded() {
                 </p>
               </div>
 
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-left">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-start">
                 <p className="font-medium text-yellow-900 mb-2">{t('screens.creatoronboarded.whatSNext')}</p>
                 <ul className="space-y-1 text-yellow-700">
                   <li>{t('screens.creatoronboarded.stripeVerifyingYourAccountInformation')}</li>

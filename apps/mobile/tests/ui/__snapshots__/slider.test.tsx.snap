@@ -1,0 +1,574 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider dark snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    style={
+      [
+        {
+          "height": 20,
+          "justifyContent": "center",
+          "width": "100%",
+        },
+        {
+          "opacity": 1,
+        },
+        undefined,
+      ]
+    }
+    testID="slider"
+  >
+    <View
+      onLayout={[Function]}
+      style={
+        [
+          {
+            "height": 8,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "hsl(217.2, 32.6%, 17.5%)",
+            "borderRadius": 9999,
+          },
+        ]
+      }
+      testID="slider-track"
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "hsl(210, 40%, 98%)",
+              "start": "25%",
+              "width": "50%",
+            },
+          ]
+        }
+        testID="slider-range"
+      />
+    </View>
+    <View
+      accessibilityActions={
+        [
+          {
+            "name": "increment",
+          },
+          {
+            "name": "decrement",
+          },
+        ]
+      }
+      accessibilityRole="adjustable"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": 100,
+          "min": 0,
+          "now": 25,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      hitSlop={12}
+      onAccessibilityAction={[Function]}
+      style={
+        [
+          {
+            "borderWidth": 2,
+            "height": 20,
+            "marginStart": -10,
+            "position": "absolute",
+            "width": 20,
+          },
+          {
+            "backgroundColor": "hsl(222.2, 84%, 4.9%)",
+            "borderColor": "hsl(210, 40%, 98%)",
+            "borderRadius": 9999,
+            "start": "25%",
+          },
+        ]
+      }
+      testID="slider-thumb-0"
+    />
+    <View
+      accessibilityActions={
+        [
+          {
+            "name": "increment",
+          },
+          {
+            "name": "decrement",
+          },
+        ]
+      }
+      accessibilityRole="adjustable"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": 100,
+          "min": 0,
+          "now": 75,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      hitSlop={12}
+      onAccessibilityAction={[Function]}
+      style={
+        [
+          {
+            "borderWidth": 2,
+            "height": 20,
+            "marginStart": -10,
+            "position": "absolute",
+            "width": 20,
+          },
+          {
+            "backgroundColor": "hsl(222.2, 84%, 4.9%)",
+            "borderColor": "hsl(210, 40%, 98%)",
+            "borderRadius": 9999,
+            "start": "75%",
+          },
+        ]
+      }
+      testID="slider-thumb-1"
+    />
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Slider ltr snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    style={
+      [
+        {
+          "height": 20,
+          "justifyContent": "center",
+          "width": "100%",
+        },
+        {
+          "opacity": 1,
+        },
+        undefined,
+      ]
+    }
+    testID="slider"
+  >
+    <View
+      onLayout={[Function]}
+      style={
+        [
+          {
+            "height": 8,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "hsl(210, 40%, 96.1%)",
+            "borderRadius": 9999,
+          },
+        ]
+      }
+      testID="slider-track"
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+              "start": "25%",
+              "width": "50%",
+            },
+          ]
+        }
+        testID="slider-range"
+      />
+    </View>
+    <View
+      accessibilityActions={
+        [
+          {
+            "name": "increment",
+          },
+          {
+            "name": "decrement",
+          },
+        ]
+      }
+      accessibilityRole="adjustable"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": 100,
+          "min": 0,
+          "now": 25,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      hitSlop={12}
+      onAccessibilityAction={[Function]}
+      style={
+        [
+          {
+            "borderWidth": 2,
+            "height": 20,
+            "marginStart": -10,
+            "position": "absolute",
+            "width": 20,
+          },
+          {
+            "backgroundColor": "hsl(0, 0%, 100%)",
+            "borderColor": "hsl(222.2, 47.4%, 11.2%)",
+            "borderRadius": 9999,
+            "start": "25%",
+          },
+        ]
+      }
+      testID="slider-thumb-0"
+    />
+    <View
+      accessibilityActions={
+        [
+          {
+            "name": "increment",
+          },
+          {
+            "name": "decrement",
+          },
+        ]
+      }
+      accessibilityRole="adjustable"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": 100,
+          "min": 0,
+          "now": 75,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      hitSlop={12}
+      onAccessibilityAction={[Function]}
+      style={
+        [
+          {
+            "borderWidth": 2,
+            "height": 20,
+            "marginStart": -10,
+            "position": "absolute",
+            "width": 20,
+          },
+          {
+            "backgroundColor": "hsl(0, 0%, 100%)",
+            "borderColor": "hsl(222.2, 47.4%, 11.2%)",
+            "borderRadius": 9999,
+            "start": "75%",
+          },
+        ]
+      }
+      testID="slider-thumb-1"
+    />
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Slider rtl snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    style={
+      [
+        {
+          "height": 20,
+          "justifyContent": "center",
+          "width": "100%",
+        },
+        {
+          "opacity": 1,
+        },
+        undefined,
+      ]
+    }
+    testID="slider"
+  >
+    <View
+      onLayout={[Function]}
+      style={
+        [
+          {
+            "height": 8,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "hsl(210, 40%, 96.1%)",
+            "borderRadius": 9999,
+          },
+        ]
+      }
+      testID="slider-track"
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+              "start": "25%",
+              "width": "50%",
+            },
+          ]
+        }
+        testID="slider-range"
+      />
+    </View>
+    <View
+      accessibilityActions={
+        [
+          {
+            "name": "increment",
+          },
+          {
+            "name": "decrement",
+          },
+        ]
+      }
+      accessibilityRole="adjustable"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": 100,
+          "min": 0,
+          "now": 25,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      hitSlop={12}
+      onAccessibilityAction={[Function]}
+      style={
+        [
+          {
+            "borderWidth": 2,
+            "height": 20,
+            "marginStart": -10,
+            "position": "absolute",
+            "width": 20,
+          },
+          {
+            "backgroundColor": "hsl(0, 0%, 100%)",
+            "borderColor": "hsl(222.2, 47.4%, 11.2%)",
+            "borderRadius": 9999,
+            "start": "25%",
+          },
+        ]
+      }
+      testID="slider-thumb-0"
+    />
+    <View
+      accessibilityActions={
+        [
+          {
+            "name": "increment",
+          },
+          {
+            "name": "decrement",
+          },
+        ]
+      }
+      accessibilityRole="adjustable"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": 100,
+          "min": 0,
+          "now": 75,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      hitSlop={12}
+      onAccessibilityAction={[Function]}
+      style={
+        [
+          {
+            "borderWidth": 2,
+            "height": 20,
+            "marginStart": -10,
+            "position": "absolute",
+            "width": 20,
+          },
+          {
+            "backgroundColor": "hsl(0, 0%, 100%)",
+            "borderColor": "hsl(222.2, 47.4%, 11.2%)",
+            "borderRadius": 9999,
+            "start": "75%",
+          },
+        ]
+      }
+      testID="slider-thumb-1"
+    />
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;

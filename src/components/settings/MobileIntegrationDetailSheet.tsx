@@ -100,7 +100,7 @@ export function MobileIntegrationDetailSheet({
           </div>
         ) : (
           <Button className="w-full" size="lg" onClick={handleConnect}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 me-2" />
             {translate('connectedApps.actions.connect')}
           </Button>
         )}

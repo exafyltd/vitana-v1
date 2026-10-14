@@ -57,7 +57,7 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">{t('billing.state.freeBody')}</p>
           <Button onClick={handleSeePlans} className="w-full">
-            <Sparkles className="h-4 w-4 mr-2" aria-hidden="true" />
+            <Sparkles className="h-4 w-4 me-2" aria-hidden="true" />
             {t('billing.state.viewPlans')}
           </Button>
         </CardContent>
@@ -72,7 +72,7 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
           <CardTitle className="flex items-center justify-between">
             <span>{t('billing.state.pastDue')}</span>
             <Badge variant="destructive">
-              <AlertCircle className="h-3 w-3 mr-1" aria-hidden="true" />
+              <AlertCircle className="h-3 w-3 me-1" aria-hidden="true" />
               {plan.status}
             </Badge>
           </CardTitle>
@@ -80,7 +80,7 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">{t('billing.state.pastDueBody')}</p>
           <Button onClick={handleManage} disabled={openPortal.isPending} className="w-full" variant="destructive">
-            <CreditCard className="h-4 w-4 mr-2" aria-hidden="true" />
+            <CreditCard className="h-4 w-4 me-2" aria-hidden="true" />
             {t('billing.state.manage')}
           </Button>
         </CardContent>
@@ -96,7 +96,7 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
         <CardTitle className="flex items-center justify-between">
           <span>{t('billing.state.premiumActive')}</span>
           <Badge variant="default">
-            <Check className="h-3 w-3 mr-1" aria-hidden="true" />
+            <Check className="h-3 w-3 me-1" aria-hidden="true" />
             {isTrialing ? t('billing.state.trialingBadge') : t('billing.state.activeBadge')}
           </Badge>
         </CardTitle>
@@ -122,7 +122,7 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
           className="w-full"
           variant="outline"
         >
-          <CreditCard className="h-4 w-4 mr-2" aria-hidden="true" />
+          <CreditCard className="h-4 w-4 me-2" aria-hidden="true" />
           {t('billing.state.manage')}
         </Button>
       </CardContent>

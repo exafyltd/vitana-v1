@@ -97,7 +97,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
             className="text-xs text-muted-foreground h-7 px-2"
             onClick={() => navigate('/discover/ai-picks')}
           >
-            {translate('discover.seeAll')} <ChevronRight className="h-3 w-3 ml-0.5" />
+            {translate('discover.seeAll')} <ChevronRight className="h-3 w-3 ms-0.5" />
           </Button>
         </div>
 
@@ -118,7 +118,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider shrink-0">
                 {translate('discover.moreToExplore')}
               </span>
-              <div className="h-[1px] flex-1 bg-border/50" />
+              <div className="h-px flex-1 bg-border/50" />
             </div>
 
             <div className="flex items-stretch gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
@@ -161,7 +161,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
             className="text-xs text-muted-foreground h-7 px-2"
             onClick={() => navigate('/discover/supplements')}
           >
-            {translate('discover.all')} <LayoutGrid className="h-3 w-3 ml-0.5" />
+            {translate('discover.all')} <LayoutGrid className="h-3 w-3 ms-0.5" />
           </Button>
         </div>
 
@@ -179,7 +179,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
               type="button"
               onClick={() => navigate(category.path)}
               className={cn(
-                "flex items-center gap-2 rounded-full pl-2 pr-3 py-1.5",
+                "flex items-center gap-2 rounded-full ps-2 pe-3 py-1.5",
                 "bg-card border border-border/50 text-xs font-medium",
                 "active:scale-[0.97] transition-transform"
               )}

@@ -503,7 +503,7 @@ export const HomeContent = memo(function HomeContent() {
       {isLoadingFeedV2 && feedItems.length === 0 && (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <span className="ml-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
+          <span className="ms-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
         </div>
       )}
       {!isLoadingFeedV2 && feedItems.length === 0 && (
@@ -511,7 +511,7 @@ export const HomeContent = memo(function HomeContent() {
           <p className="text-lg text-muted-foreground">{t('screens.home.noNewsArticlesYet')}</p>
           <p className="text-sm text-muted-foreground mt-1">{t('screens.home.articlesWillAppearOnceFeedSources')}</p>
           <Button variant="outline" className="mt-4" onClick={handleRefresh}>
-            <RefreshCw className="h-4 w-4 mr-2" />{t('screens.home.refresh')}
+            <RefreshCw className="h-4 w-4 me-2" />{t('screens.home.refresh')}
           </Button>
         </div>
       )}
@@ -525,7 +525,7 @@ export const HomeContent = memo(function HomeContent() {
       {isFetchingNextV2 && (
         <div className="flex items-center justify-center py-8">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
+          <span className="ms-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
         </div>
       )}
       {!isLoadingFeedV2 && !hasNextV2 && !isFetchingNextV2 && feedItems.length > 0 && (
@@ -563,7 +563,7 @@ export const HomeContent = memo(function HomeContent() {
       {isLoading && articles.length === 0 && (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <span className="ml-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
+          <span className="ms-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
         </div>
       )}
       {!isLoading && articles.length === 0 && (
@@ -571,7 +571,7 @@ export const HomeContent = memo(function HomeContent() {
           <p className="text-lg text-muted-foreground">{t('screens.home.noNewsArticlesYet')}</p>
           <p className="text-sm text-muted-foreground mt-1">{t('screens.home.articlesWillAppearOnceFeedSources')}</p>
           <Button variant="outline" className="mt-4" onClick={handleRefresh}>
-            <RefreshCw className="h-4 w-4 mr-2" />{t('screens.home.refresh')}
+            <RefreshCw className="h-4 w-4 me-2" />{t('screens.home.refresh')}
           </Button>
         </div>
       )}
@@ -651,7 +651,7 @@ export const HomeContent = memo(function HomeContent() {
       {isFetchingNextPage && (
         <div className="flex items-center justify-center py-8">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
+          <span className="ms-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
         </div>
       )}
       {!hasNextPage && !isFetchingNextPage && articles.length > 0 && activeTab !== "community" && (

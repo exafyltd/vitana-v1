@@ -188,7 +188,7 @@ export function MobileShortsFeed({
       })}
 
       {/* Progress indicator */}
-      <div className="fixed top-16 left-0 right-0 flex justify-center gap-1 z-[62] pointer-events-none">
+      <div className="fixed top-16 start-0 end-0 flex justify-center gap-1 z-[62] pointer-events-none">
         {shorts.length <= 10 && shorts.map((_, index) => (
           <div
             key={index}

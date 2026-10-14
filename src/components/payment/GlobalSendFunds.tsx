@@ -161,7 +161,7 @@ export default function GlobalSendFunds({
               <div>
                 <Label htmlFor="search">{t('screens.payment.searchUsers')}</Label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="search"
                     placeholder={t('screens.payment.searchByNameEmail')}
@@ -170,7 +170,7 @@ export default function GlobalSendFunds({
                       setSearchQuery(e.target.value);
                       searchUsers(e.target.value);
                     }}
-                    className="pl-10"
+                    className="ps-10"
                   />
                 </div>
                 
@@ -184,7 +184,7 @@ export default function GlobalSendFunds({
                           setSearchQuery('');
                           setSearchResults([]);
                         }}
-                        className="w-full flex items-center gap-3 p-3 hover:bg-muted text-left"
+                        className="w-full flex items-center gap-3 p-3 hover:bg-muted text-start"
                       >
                         <Avatar className="w-8 h-8">
                           <AvatarImage src={user.avatar_url} />

@@ -257,7 +257,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         </p>
         {isOwnProfile && (
           <Button variant="solid" onClick={() => navigate('/community/meetups')}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.profile.createEvent')}
           </Button>
         )}
@@ -273,12 +273,12 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
           <TabsList className="inline-flex h-auto items-center justify-start gap-8 bg-transparent p-0 border-b border-white/20 w-full">
             <TabsTrigger 
               value="created"
-              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
+              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:start-0 after:end-0 after:h-0.5 after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
             >{t('screens.profile.createdLength', { length: createdEvents.length })}
             </TabsTrigger>
             <TabsTrigger 
               value="joined"
-              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
+              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:start-0 after:end-0 after:h-0.5 after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
             >{t('screens.profile.joinedLength', { length: joinedEvents.length })}
             </TabsTrigger>
           </TabsList>
@@ -298,7 +298,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                   variant="solid"
                   onClick={() => navigate('/community/meetups')}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {t('screens.profile.createEvent')}
                 </Button>
               )}
@@ -324,7 +324,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     location={event.location || "Virtual"}
                     attendees={event.participant_count}
                     timestamp={formatTimestamp(event.start_time)}
-                    className="min-h-[320px] md:min-h-[360px]"
+                    className="min-h-80 md:min-h-[360px]"
                     showSmartAction={!isMock}
                     eventId={isMock ? undefined : event.id}
                     data-event-id={event.id}
@@ -370,7 +370,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                 onClick={() => navigate('/community/meetups')}
               >
                 {t('screens.profile.exploreMoreEvents')}
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 ms-2 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
           )}
@@ -390,7 +390,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                   variant="solid"
                   onClick={() => navigate('/community/meetups')}
                 >
-                  <Calendar className="w-4 h-4 mr-2" />
+                  <Calendar className="w-4 h-4 me-2" />
                   {t('screens.profile.browseEvents')}
                 </Button>
               )}
@@ -415,7 +415,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     location={event.location || "Virtual"}
                     attendees={event.participant_count}
                     timestamp={formatTimestamp(event.start_time)}
-                    className="min-h-[320px] md:min-h-[360px]"
+                    className="min-h-80 md:min-h-[360px]"
                     showSmartAction={!isMock}
                     eventId={isMock ? undefined : event.id}
                     data-event-id={event.id}
@@ -449,7 +449,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                 onClick={() => navigate('/community/meetups')}
               >
                 {t('screens.profile.exploreMoreEvents')}
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 ms-2 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
           )}

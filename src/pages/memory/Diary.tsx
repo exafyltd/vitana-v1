@@ -25,6 +25,9 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
 
 interface SelectedEntry {
   images: string[];
@@ -62,6 +65,140 @@ function Diary() {
       return data;
     },
   });
+  // VTID-05117 — Spotlight (desktop + flag): collection frame; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    const photoList =
+      photoViewMode === "list" ? (
+        <DiaryEntryList entryType="photo" />
+      ) : (
+        <PhotoGalleryGrid
+          entries={(photoEntries || []).map((entry) => ({
+            ...entry,
+            attachments: Array.isArray(entry.attachments) ? (entry.attachments as string[]) : [],
+          }))}
+          onEntryClick={(entry) => {
+            setSelectedEntry({
+              images: entry.attachments,
+              caption: entry.text,
+              tags: entry.tags || [],
+              createdAt: entry.created_at,
+              initialIndex: 0,
+            });
+          }}
+        />
+      );
+    return (
+      <AppLayout>
+        <SEO title={t('screens.memory.wellnessDiaryVitanaMemory')} description={t('screens.memory.wellnessDiaryMultimediaDescription')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: memoryNavigation }}
+          header={{ title: t('screens.memory.wellnessDiary'), description: t('screens.memory.wellnessDiaryMultimediaDescription'), emoji: "📔" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.memory.newEntry')}
+                </Button>
+              </>
+            ),
+          }}
+          tabs={{
+            value: activeTab,
+            onValueChange: setActiveTab,
+            items: [
+              { value: "voice", label: t('screens.memory.voice') },
+              { value: "photos", label: t('screens.memory.photos') },
+              { value: "text", label: t('screens.memory.text') },
+            ],
+          }}
+        >
+          <SplitBarContent value="voice">
+            <div className="flex flex-col gap-6">
+              <SpotlightPanel
+                Icon={Mic}
+                title={t('screens.memory.recordTodaySEntry')}
+                description={t('screens.memory.shareYourThoughtsFeelingsWellnessObservations')}
+              >
+                <VoiceDiaryRecorder />
+              </SpotlightPanel>
+              <DiaryEntryList entryType="voice" />
+            </div>
+          </SplitBarContent>
+          <SplitBarContent value="photos">
+            <div className="flex flex-col gap-6">
+              <SpotlightPanel
+                Icon={Image}
+                title={t('screens.memory.uploadTodaySEntry')}
+                description={t('screens.memory.captureShareYourWellnessMomentsThrough')}
+                actions={
+                  <>
+                    <Button
+                      variant={photoViewMode === "list" ? "default" : "outline"}
+                      size="sm"
+                      aria-pressed={photoViewMode === "list"}
+                      aria-label={t('spotlightMember.memory.diary.listView')}
+                      onClick={() => setPhotoViewMode("list")}
+                    >
+                      <List className="size-4" />
+                    </Button>
+                    <Button
+                      variant={photoViewMode === "gallery" ? "default" : "outline"}
+                      size="sm"
+                      aria-pressed={photoViewMode === "gallery"}
+                      aria-label={t('spotlightMember.memory.diary.galleryView')}
+                      onClick={() => setPhotoViewMode("gallery")}
+                    >
+                      <LayoutGrid className="size-4" />
+                    </Button>
+                  </>
+                }
+              >
+                <PhotoDiaryUploader />
+              </SpotlightPanel>
+              {photoList}
+            </div>
+          </SplitBarContent>
+          <SplitBarContent value="text">
+            <div className="flex flex-col gap-6">
+              <SpotlightPanel
+                Icon={PenSquare}
+                title={t('screens.memory.typeYourTodaySEntry')}
+                description={t('screens.memory.expressYourWellnessJourneyThroughWritten')}
+              >
+                <TextDiaryEditor />
+              </SpotlightPanel>
+              <DiaryEntryList entryType="text" />
+            </div>
+          </SplitBarContent>
+          <div className="mt-8 flex flex-col gap-6 border-t pt-8">
+            <SpotlightPanel
+              Icon={Bug}
+              title={t('screens.memory.testFeedback')}
+              description={t('screens.memory.helpExafyImproveVitanalandReportBugs')}
+            >
+              <FeedbackRecorder onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)} />
+            </SpotlightPanel>
+            <FeedbackReportList refreshKey={feedbackRefreshKey} />
+          </div>
+        </ScreenFrame>
+        <DiaryMasterActionPopup open={actionPopupOpen} onOpenChange={setActionPopupOpen} />
+        <PhotoCarouselModal
+          open={!!selectedEntry}
+          onOpenChange={(open) => !open && setSelectedEntry(null)}
+          images={selectedEntry?.images || []}
+          caption={selectedEntry?.caption}
+          tags={selectedEntry?.tags}
+          createdAt={selectedEntry?.createdAt}
+          initialIndex={selectedEntry?.initialIndex || 0}
+        />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -79,7 +216,7 @@ function Diary() {
           <ExpandableSearchButton placeholder={t('screens.memory.searchDiaryEntriesReflections')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.newEntry')}
           </Button>
         </UtilityActionButton>

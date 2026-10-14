@@ -112,7 +112,7 @@ export function FeatureAnnouncementCard({
         }
       }}
       className={cn(
-        'group relative w-full overflow-hidden rounded-2xl border p-4 text-left shadow-sm transition-all duration-300',
+        'group relative w-full overflow-hidden rounded-2xl border p-4 text-start shadow-sm transition-all duration-300',
         'hover:-translate-y-0.5 hover:shadow-md cursor-pointer',
         'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
         'animate-fade-in',

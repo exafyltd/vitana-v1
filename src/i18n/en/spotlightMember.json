@@ -1,0 +1,165 @@
+{
+  "spotlightMember": {
+    "common": {
+      "error": {
+        "title": "That didn't work",
+        "desc": "We couldn't load this right now. Please try again in a moment.",
+        "retry": "Try again",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "memory": {
+      "overview": {
+        "desc": "Track and review your wellness journey through AI-driven insights.",
+        "_pending_review": {}
+      },
+      "timeline": {
+        "desc": "Track your activity history across all areas.",
+        "categoryEmpty": "There is no activity in this category yet.",
+        "categories": {
+          "chat": "Chat",
+          "memory": "Memory",
+          "wallet": "Wallet",
+          "discover": "Discover",
+          "calendar": "Calendar",
+          "autopilot": "Autopilot",
+          "health": "Health",
+          "community": "Community",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "recall": {
+        "desc": "Ask Vitana about your memories and find patterns in your wellness journey.",
+        "emptyTitle": "Just ask Vitana",
+        "emptyDesc": "Say for example “What improved my sleep?” — Vitana searches your memory and answers. Saved results appear here as soon as there are any.",
+        "emptyAction": "Go to Memory",
+        "_pending_review": {}
+      },
+      "permissions": {
+        "desc": "Decide who may see and use your health memories.",
+        "panelTitle": "Privacy and access",
+        "panelDesc": "You manage visibility, data use and security in one place: your privacy settings.",
+        "openPrivacy": "Open privacy settings",
+        "_pending_review": {}
+      },
+      "diary": {
+        "listView": "List view",
+        "galleryView": "Gallery view",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "settings": {
+      "privacy": {
+        "desc": "Your data, your decision — choose who sees what and what is shared.",
+        "passwordDesc": "Change your password or get a reset link by email.",
+        "deleteTitle": "Delete account",
+        "deleteDesc": "Permanently delete your account and all your data.",
+        "deleteAction": "Continue to deletion",
+        "_pending_review": {}
+      },
+      "preferences": {
+        "desc": "Adjust appearance and language the way that suits you.",
+        "accessibilityNote": "Vitanaland follows your device's accessibility settings — for example “reduce motion” and your browser's text size.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "journey": {
+      "eyebrow": "Your goal",
+      "indexPending": "Being calculated",
+      "_pending_review": {}
+    },
+    "business": {
+      "hero": {
+        "eyebrow": "Your earnings",
+        "meta": "{last30} in the last 30 days · {pending} pending",
+        "_pending_review": {}
+      },
+      "history": "Recent transactions",
+      "opportunitiesEmpty": "No leads yet. We'll let you know as soon as someone is looking for what you offer — keep your listings up to date.",
+      "listingsEmpty": "No listings yet. Add one — or just tell Vitana “I'm offering …”.",
+      "_pending_review": {}
+    },
+    "discover": {
+      "productDesc": "Product details on the Vitana marketplace.",
+      "outOfStock": "Out of stock",
+      "wasPrice": "was {price}",
+      "providerEyebrow": "Doctors & coaches",
+      "providerSoonTitle": "Provider profiles are coming soon",
+      "providerSoonDesc": "We only show real, verified providers here. As soon as there are some, you'll find their profile, availability and reviews in this place.",
+      "marketplaceDesc": "Buy and sell with the Vitana community.",
+      "marketplaceMineEmpty": "Post a buy or sell request — Vitana connects you with the right people.",
+      "_pending_review": {}
+    },
+    "inbox": {
+      "archivedDesc": "Archived conversations in one place.",
+      "archivedEmptyTitle": "No archive yet",
+      "archivedEmptyDesc": "Archiving conversations isn't available yet. All your conversations stay in your inbox.",
+      "openInbox": "Go to inbox",
+      "inspirationDesc": "Templates you can copy and use in your conversations.",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "Search",
+      "desc": "Find members of the community.",
+      "inputLabel": "Search members",
+      "placeholder": "Type a name …",
+      "submit": "Search",
+      "emptyTitle": "No members found",
+      "emptyDesc": "Try a different name — at least two letters.",
+      "resultsLabel": "Search results",
+      "memberMeta": "Community member",
+      "_pending_review": {}
+    },
+    "members": {
+      "sort": {
+        "newest": "Newest",
+        "oldest": "Founders first",
+        "name": "By name",
+        "_pending_review": {}
+      },
+      "dance": {
+        "all": "All",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Ballroom",
+        "hiphop": "Hip-hop",
+        "_pending_review": {}
+      },
+      "empty": "No members yet.",
+      "emptyDance": "Nobody has set this dance as a preference yet — be the first!",
+      "fallbackName": "Member",
+      "_pending_review": {}
+    },
+    "sharing": {
+      "distributionDesc": "Templates, automations and brand guidelines for your campaigns.",
+      "distributionEmptyTitle": "Distribution tools are coming soon",
+      "distributionEmptyDesc": "Templates, rules and brand guidelines aren't available yet. You can already plan and send your campaigns under Campaigns.",
+      "openCampaigns": "Go to campaigns",
+      "_pending_review": {}
+    },
+    "tickets": {
+      "eventFallback": "Event",
+      "generalAdmission": "General admission",
+      "_pending_review": {}
+    },
+    "post": {
+      "desc": "The post your notification is about.",
+      "notFoundDesc": "It may have been deleted or is no longer visible. The News feed has everything new from the community.",
+      "backToFeed": "Go to News",
+      "_pending_review": {}
+    },
+    "privacy": {
+      "desc": "Choose who sees which parts of your profile. Tap a tier to change it.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

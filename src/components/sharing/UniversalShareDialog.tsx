@@ -292,7 +292,7 @@ export function UniversalShareDialog({
                           <div className="relative">
                             <Icon className={`h-6 w-6 ${isConnected ? channel.color : "text-muted-foreground"}`} />
                             {isConnected && (
-                              <CheckCircle2 className="absolute -top-1 -right-1 h-3.5 w-3.5 text-green-600 bg-background rounded-full" />
+                              <CheckCircle2 className="absolute -top-1 -end-1 h-3.5 w-3.5 text-green-600 bg-background rounded-full" />
                             )}
                           </div>
                           <span className={`text-xs font-medium text-center ${!isConnected && "text-muted-foreground"}`}>
@@ -306,7 +306,7 @@ export function UniversalShareDialog({
                               e.stopPropagation();
                               handleConnectPlatform(channel.id);
                             }}
-                            className="absolute top-1 right-1 p-1 rounded bg-background/80 hover:bg-background border border-border hover:border-primary transition-colors"
+                            className="absolute top-1 end-1 p-1 rounded bg-background/80 hover:bg-background border border-border hover:border-primary transition-colors"
                             title={`Connect ${channel.name}`}
                           >
                             <Plus className="h-3 w-3 text-muted-foreground" />
@@ -328,7 +328,7 @@ export function UniversalShareDialog({
               className="flex-1"
               onClick={handleCreateCampaign}
             >
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="me-2 h-4 w-4" />
               {t('screens.sharing.createCampaign')}
             </Button>
             <Button
@@ -339,11 +339,11 @@ export function UniversalShareDialog({
             >
               {isSharing ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.sharing.sharing')}
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />{t('screens.sharing.sharing')}
                 </>
               ) : (
                 <>
-                  <Send className="mr-2 h-4 w-4" />
+                  <Send className="me-2 h-4 w-4" />
                   {t('screens.sharing.blastNow')}
                 </>
               )}

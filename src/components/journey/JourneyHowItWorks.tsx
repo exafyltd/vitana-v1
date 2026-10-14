@@ -71,16 +71,16 @@ export function JourneyHowItWorks({ className }: { className?: string }) {
         <span className="absolute -top-6 left-1/2 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border border-violet-200 bg-white shadow-md">
           <MousePointerClick className="h-6 w-6 text-violet-600" />
         </span>
-        <span aria-hidden className="absolute left-4 top-8 text-violet-400/70">
+        <span aria-hidden className="absolute start-4 top-8 text-violet-400/70">
           <Sparkles className="h-4 w-4" />
         </span>
-        <span aria-hidden className="absolute right-4 top-12 text-violet-400/70">
+        <span aria-hidden className="absolute end-4 top-12 text-violet-400/70">
           <Sparkles className="h-5 w-5" />
         </span>
         <h3 className="text-lg font-extrabold text-violet-700">
           {t("screens.guidedCatalog.clickSessionTitle")}
         </h3>
-        <p className="mx-auto mt-1.5 max-w-[16rem] text-sm font-medium leading-relaxed text-violet-900/80">
+        <p className="mx-auto mt-1.5 max-w-64 text-sm font-medium leading-relaxed text-violet-900/80">
           {t("screens.guidedCatalog.clickSessionBody")}
         </p>
         <div className="mx-auto mt-3 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 shadow-sm">

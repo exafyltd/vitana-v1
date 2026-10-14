@@ -174,7 +174,7 @@ function CompanionFieldRow({
   overridden: boolean;
 }) {
   return (
-    <div className="border-l-2 border-muted pl-3 py-1">
+    <div className="border-s-2 border-muted ps-3 py-1">
       <div className="flex items-center gap-2 mb-1">
         <span className="text-xs font-mono font-medium">{fieldKey}</span>
         {overridden && <Badge variant="default" className="text-[10px] h-4 px-1">{t('screens.admin.custom')}</Badge>}

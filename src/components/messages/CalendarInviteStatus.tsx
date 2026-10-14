@@ -98,21 +98,21 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
       case 'accepted':
         return (
           <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-            <CheckCircle className="w-3 h-3 mr-1" />
+            <CheckCircle className="w-3 h-3 me-1" />
             {t('screens.messages.accepted')}
           </Badge>
         );
       case 'declined':
         return (
           <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">
-            <X className="w-3 h-3 mr-1" />
+            <X className="w-3 h-3 me-1" />
             {t('screens.messages.declined')}
           </Badge>
         );
       case 'maybe':
         return (
           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
-            <Clock className="w-3 h-3 mr-1" />
+            <Clock className="w-3 h-3 me-1" />
             {t('screens.messages.maybe')}
           </Badge>
         );
@@ -180,9 +180,9 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
               }
             }}
           >
-            {button.action === 'calendar_accept' && <CheckCircle className="w-3 h-3 mr-1" />}
-            {button.action === 'calendar_decline' && <X className="w-3 h-3 mr-1" />}
-            {button.action === 'calendar_maybe' && <Clock className="w-3 h-3 mr-1" />}
+            {button.action === 'calendar_accept' && <CheckCircle className="w-3 h-3 me-1" />}
+            {button.action === 'calendar_decline' && <X className="w-3 h-3 me-1" />}
+            {button.action === 'calendar_maybe' && <Clock className="w-3 h-3 me-1" />}
             {button.label}
           </Button>
         ))}

@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FrameWhen } from "@/components/layout/spotlight/FrameWhen";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -94,6 +96,7 @@ const INSTAGRAM_RX = /^@?[A-Za-z0-9._]{1,30}$/;
 
 export default function Apply() {
   const [searchParams] = useSearchParams();
+  const spotlight = useSpotlightEnabled();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
@@ -242,7 +245,7 @@ export default function Apply() {
       <div className="min-h-screen w-full bg-[radial-gradient(120%_120%_at_50%_0%,#FFF1D6_0%,#FFD7B5_35%,#F8A48A_65%,#C77BB8_100%)] text-neutral-900">
         {/* LOCALE TOGGLE */}
         <div
-          className="absolute right-4 top-4 z-10 flex items-center gap-0.5 rounded-full border border-white/60 bg-white/60 p-0.5 text-xs shadow-sm backdrop-blur md:right-8 md:top-6"
+          className="absolute end-4 top-4 z-10 flex items-center gap-0.5 rounded-full border border-white/60 bg-white/60 p-0.5 text-xs shadow-sm backdrop-blur md:end-8 md:top-6"
           role="group"
           aria-label="Language"
         >
@@ -274,6 +277,8 @@ export default function Apply() {
           </button>
         </div>
 
+        {/* VTID-05117: Spotlight on → hero, explainer, form and footer in the `form` archetype column. */}
+        <FrameWhen on={spotlight} archetype="form">
         {/* HERO */}
         <section className="relative overflow-hidden px-5 pb-10 pt-12 md:px-10 md:pb-12 md:pt-28">
           {HERO_VIDEO_URL && (
@@ -338,7 +343,7 @@ export default function Apply() {
               className="mt-5 h-11 rounded-full bg-neutral-900 px-8 text-sm font-semibold tracking-wide text-white hover:bg-neutral-800 md:mt-9 md:h-12"
             >
               {t("apply.ctaScroll")}
-              <ArrowDown className="ml-2 h-4 w-4" />
+              <ArrowDown className="ms-2 h-4 w-4" />
             </Button>
           </motion.div>
         </section>
@@ -512,7 +517,7 @@ export default function Apply() {
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-neutral-800">
                       {t("apply.deviceLabel")}
-                      <span className="ml-1 text-rose-600">*</span>
+                      <span className="ms-1 text-rose-600">*</span>
                     </Label>
                     <RadioGroup
                       value={form.device}
@@ -618,6 +623,7 @@ export default function Apply() {
             </div>
           </div>
         </footer>
+        </FrameWhen>
       </div>
     </>
   );
@@ -719,7 +725,7 @@ function Field({
     <div className="space-y-1.5">
       <Label htmlFor={id} className="text-sm font-medium text-neutral-800">
         {label}
-        {required && <span className="ml-1 text-rose-600">*</span>}
+        {required && <span className="ms-1 text-rose-600">*</span>}
       </Label>
       {children}
       {help && <p className="text-xs text-neutral-500">{help}</p>}
@@ -778,7 +784,7 @@ function ConsentRow({
       />
       <span className="text-sm leading-relaxed text-neutral-700">
         {label}
-        {required && <span className="ml-1 text-rose-600">*</span>}
+        {required && <span className="ms-1 text-rose-600">*</span>}
       </span>
     </label>
   );

@@ -21,6 +21,10 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime } from '@/lib/locale-format';
 import { useShareOrCopy } from '@/hooks/useShareOrCopy';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
+import { discoverNavigation } from "@/config/navigation";
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
   const { shareOrCopy } = useShareOrCopy({ contentId: id ?? 'provider', contentType: 'provider' });
@@ -29,6 +33,10 @@ export default function ProviderProfile() {
   const queryClient = useQueryClient();
   const [bookingOpen, setBookingOpen] = useState(false);
   const { getBalance } = useWallet();
+  // VTID-05117 — Spotlight (desktop + flag): there is no provider catalogue yet — the legacy page
+  // shows three sample providers — so the detail screen's one spotlight card says so honestly
+  // (SR-06, SR-24). Phones and flag-off keep the page below.
+  const spotlight = useSpotlightEnabled();
   
   // Mock provider data - matches DoctorsCoaches.tsx
   const providers = [
@@ -128,6 +136,26 @@ export default function ProviderProfile() {
     setBookingOpen(false);
   };
   
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.discover.providerNotFound')} description={t('spotlightMember.discover.providerSoonDesc')} />
+        <ScreenFrame archetype="detail" subNav={{ items: discoverNavigation }}>
+          <VCard
+            size="spotlight"
+            eyebrow={t('spotlightMember.discover.providerEyebrow')}
+            title={t('spotlightMember.discover.providerSoonTitle')}
+            body={t('spotlightMember.discover.providerSoonDesc')}
+            actions={
+              <Button onClick={() => navigate('/discover/doctors-coaches')}>{t('screens.discover.backProviders')}</Button>
+            }
+            data-provider-placeholder=""
+          />
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
   if (!provider) {
     return (
       <AppLayout>
@@ -155,7 +183,7 @@ export default function ProviderProfile() {
           onClick={() => navigate(-1)}
           className="mb-4"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 me-2" />
           {t('screens.discover.back')}
         </Button>
         
@@ -171,7 +199,7 @@ export default function ProviderProfile() {
                   className="w-32 h-32 rounded-full object-cover border-4 border-border shadow-lg"
                 />
                 {provider.badges.includes("Verified") && (
-                  <div className="absolute -bottom-2 -right-2 bg-primary rounded-full p-2">
+                  <div className="absolute -bottom-2 -end-2 bg-primary rounded-full p-2">
                     <Verified className="h-6 w-6 text-primary-foreground" />
                   </div>
                 )}
@@ -187,7 +215,7 @@ export default function ProviderProfile() {
                       location: provider.location
                     }
                   }}
-                  className="absolute top-0 right-0"
+                  className="absolute top-0 end-0"
                 />
               </div>
               
@@ -203,8 +231,8 @@ export default function ProviderProfile() {
                       variant={badge === "Top Rated" ? "default" : "secondary"}
                       className="px-3 py-1"
                     >
-                      {badge === "Top Rated" && <Award className="h-4 w-4 mr-1" />}
-                      {badge === "Verified" && <Verified className="h-4 w-4 mr-1" />}
+                      {badge === "Top Rated" && <Award className="h-4 w-4 me-1" />}
+                      {badge === "Verified" && <Verified className="h-4 w-4 me-1" />}
                       {badge}
                     </Badge>
                   ))}
@@ -228,11 +256,11 @@ export default function ProviderProfile() {
                     className="flex-1"
                     onClick={() => setBookingOpen(true)}
                   >
-                    <Calendar className="h-4 w-4 mr-2" />
+                    <Calendar className="h-4 w-4 me-2" />
                     {t('screens.discover.bookAppointment')}
                   </Button>
                   <Button size="lg" variant="outline">
-                    <MessageCircle className="h-4 w-4 mr-2" />
+                    <MessageCircle className="h-4 w-4 me-2" />
                     {t('screens.discover.message')}
                   </Button>
                   <Button

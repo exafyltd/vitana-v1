@@ -164,7 +164,7 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
             size="sm"
             onClick={handleDownload}
           >
-            <Download className="h-4 w-4 mr-2" />
+            <Download className="h-4 w-4 me-2" />
             {t('screens.common.download')}
           </Button>
         </div>

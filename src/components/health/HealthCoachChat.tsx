@@ -106,7 +106,7 @@ function HealthCoachChatBase({
     return (
       <>
         {consentDialog}
-        <div className="fixed bottom-6 right-6 w-80 z-50">
+        <div className="fixed bottom-6 end-6 w-80 z-50">
           <Card className="shadow-xl border-calendar-primary/20 bg-card/95 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">

@@ -493,7 +493,7 @@ export default function GroupMembersModal({
           {canManageMembers && (
             <div>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   value={searchTerm}
                   onChange={(e) => {
@@ -501,7 +501,7 @@ export default function GroupMembersModal({
                     searchUsers(e.target.value);
                   }}
                   placeholder={t('screens.messages.searchUsersAdd')}
-                  className="pl-10"
+                  className="ps-10"
                 />
               </div>
               
@@ -564,7 +564,7 @@ export default function GroupMembersModal({
                           <p className="font-medium truncate">
                             <MemberLink userId={participant.user_id}>{displayName}</MemberLink>
                             {isCurrentUser && (
-                              <span className="text-muted-foreground text-sm ml-1">{t('screens.messages.you')}</span>
+                              <span className="text-muted-foreground text-sm ms-1">{t('screens.messages.you')}</span>
                             )}
                           </p>
                           {getRoleIcon(participant.role)}
@@ -586,7 +586,7 @@ export default function GroupMembersModal({
                               onClick={() => removeMember(participant.id, participant.user_id, displayName)}
                               className="text-destructive focus:text-destructive"
                             >
-                              <UserMinus className="w-4 h-4 mr-2" />{t('screens.messages.removeFromGroup')}
+                              <UserMinus className="w-4 h-4 me-2" />{t('screens.messages.removeFromGroup')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
