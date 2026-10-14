@@ -36,6 +36,8 @@ interface ChatImageViewerProps {
   onClose: () => void;
   /** Shown only when the message can be forwarded. */
   onForward?: () => void;
+  /** A dialog (the forward sheet) is open above the viewer: leave keys to it. */
+  keyboardSuspended?: boolean;
 }
 
 const MIN_SCALE = 1;
@@ -55,7 +57,14 @@ interface Point {
   y: number;
 }
 
-export function ChatImageViewer({ open, images, initialIndex = 0, onClose, onForward }: ChatImageViewerProps) {
+export function ChatImageViewer({
+  open,
+  images,
+  initialIndex = 0,
+  onClose,
+  onForward,
+  keyboardSuspended = false,
+}: ChatImageViewerProps) {
   useI18nLocale();
   const [index, setIndex] = useState(initialIndex);
   const [scale, setScale] = useState(1);
@@ -102,7 +111,7 @@ export function ChatImageViewer({ open, images, initialIndex = 0, onClose, onFor
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
   useEffect(() => {
-    if (!open) return;
+    if (!open || keyboardSuspended) return;
     const onKey = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') {
         ev.stopImmediatePropagation();
@@ -116,7 +125,7 @@ export function ChatImageViewer({ open, images, initialIndex = 0, onClose, onFor
     };
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
-  }, [open, go]);
+  }, [open, go, keyboardSuspended]);
 
   // The phone's back gesture closes the viewer instead of leaving the chat.
   useEffect(() => {

@@ -9,10 +9,16 @@
  * first copied into `{me}/{target}/…` for that target; if a copy fails the
  * target is skipped (nothing half-sent) and the member is told which one.
  * Targets are processed one after another.
+ *
+ * A1 (owner feedback 2026-10-14): the same sheet also opens the device's own
+ * share drawer ("Share via other apps") so a message can go to WhatsApp,
+ * mail and so on — see `shareMessageOutside` for the order it tries. Opened
+ * from the picture viewer, the sheet sits above it (`aboveViewer`) and closing
+ * it returns to the picture.
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Check, MessageCircle, Users } from 'lucide-react';
+import { Check, MessageCircle, Share2, Users } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,8 +29,15 @@ import { fetchGroups, sendChatMessage, sendGroupMessage } from '@/hooks/useChatA
 import { buildGlobalThreadsQueryFn } from '@/hooks/useGlobalMessages';
 import { chatGroupsQueryKey } from '@/hooks/useChatGroupsAsThreads';
 import { dmTargets, type InviteTarget } from '@/components/calendar/vcal/InviteToChatSheet';
-import { copyChatAttachmentForThread } from '@/lib/fileUpload';
-import { isAudioAttachment, type ChatAttachmentLike } from '@/lib/chatImageActions';
+import { copyChatAttachmentForThread, getSignedAttachmentUrl } from '@/lib/fileUpload';
+import {
+  FORWARD_SHARE_LINK_TTL_HOURS,
+  FORWARD_SHARE_LINK_TTL_S,
+  isAudioAttachment,
+  isImageAttachment,
+  shareMessageOutsideAndNotify,
+  type ChatAttachmentLike,
+} from '@/lib/chatImageActions';
 
 export const MAX_FORWARD_TARGETS = 5;
 
@@ -33,6 +46,19 @@ export type ForwardTarget = InviteTarget;
 export interface ForwardPayload {
   body: string;
   attachments: ChatAttachmentLike[];
+  /** The message's pictures with a fresh URL, for sharing them as files. */
+  shareImages?: { url: string; filename: string }[];
+}
+
+/** Time-limited links to the message's files, for sharing outside MAXINA. */
+export async function createShareLinks(attachments: ChatAttachmentLike[]): Promise<string[]> {
+  const links: string[] = [];
+  for (const att of attachments) {
+    if (isAudioAttachment(att)) continue;
+    const link = att.path ? await getSignedAttachmentUrl(att.path, FORWARD_SHARE_LINK_TTL_S) : att.url;
+    if (link) links.push(link);
+  }
+  return links;
 }
 
 /**
@@ -86,17 +112,20 @@ interface ForwardMessageSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   payload: ForwardPayload;
+  /** Opened from the full-screen picture viewer: sit above it. */
+  aboveViewer?: boolean;
 }
 
 const keyOf = (x: ForwardTarget) => `${x.kind}:${x.id}`;
 
-export function ForwardMessageSheet({ open, onOpenChange, payload }: ForwardMessageSheetProps) {
+export function ForwardMessageSheet({ open, onOpenChange, payload, aboveViewer = false }: ForwardMessageSheetProps) {
   useI18nLocale();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [query, setQuery] = useState('');
   const [picked, setPicked] = useState<ForwardTarget[]>([]);
   const [sending, setSending] = useState(false);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => {
     if (!open) {
@@ -158,13 +187,42 @@ export function ForwardMessageSheet({ open, onOpenChange, payload }: ForwardMess
 
   const loading = threads.isLoading || groups.isLoading;
 
+  const fileAttachments = useMemo(() => payload.attachments.filter((a) => !isAudioAttachment(a)), [payload.attachments]);
+  const hasFiles = fileAttachments.length > 0;
+
+  const shareOutside = async () => {
+    if (sharing || sending) return;
+    setSharing(true);
+    try {
+      const result = await shareMessageOutsideAndNotify({
+        text: payload.body,
+        images: (payload.shareImages ?? []).filter((img) => !!img.url),
+        hasOtherFiles: fileAttachments.some((a) => !isImageAttachment(a)),
+        getLinks: () => createShareLinks(fileAttachments),
+      });
+      if (result === 'shared' || result === 'shared_files' || result === 'copied') onOpenChange(false);
+    } finally {
+      setSharing(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={(next) => !sending && onOpenChange(next)}>
-      <DialogContent className="flex flex-col gap-4 sm:max-w-md" style={{ maxHeight: '85vh' }} data-testid="forward-message-sheet">
+      <DialogContent
+        className={cn('flex flex-col gap-4 sm:max-w-md', aboveViewer && 'z-[150]')}
+        overlayClassName={aboveViewer ? 'z-[150]' : undefined}
+        style={{ maxHeight: '85vh' }}
+        data-testid="forward-message-sheet"
+        data-above-viewer={aboveViewer ? 'true' : undefined}
+      >
         <DialogHeader>
           <DialogTitle>{t('screens.messages.forwardTitle')}</DialogTitle>
           <DialogDescription>{t('screens.messages.forwardLimit', { max: MAX_FORWARD_TARGETS })}</DialogDescription>
         </DialogHeader>
+
+        <p className="m-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {t('screens.messages.forwardInMaxina')}
+        </p>
 
         <Input
           type="search"
@@ -232,6 +290,25 @@ export function ForwardMessageSheet({ open, onOpenChange, payload }: ForwardMess
               ? t('screens.messages.forwardSendCount', { count: picked.length })
               : t('screens.messages.forwardSend')}
           </Button>
+        </div>
+
+        {/* A1: the device's own share drawer — WhatsApp, mail, any other app. */}
+        <div className="flex shrink-0 flex-col gap-2 border-t border-border pt-4">
+          <Button
+            variant="outline"
+            className="w-full gap-2"
+            onClick={shareOutside}
+            disabled={sharing || sending}
+            data-testid="forward-share-other"
+          >
+            <Share2 className="h-4 w-4" aria-hidden />
+            {t('screens.messages.forwardShareOther')}
+          </Button>
+          {hasFiles && (
+            <p className="m-0 text-xs text-muted-foreground" data-testid="forward-share-link-hint">
+              {t('screens.messages.forwardShareLinkHint', { hours: FORWARD_SHARE_LINK_TTL_HOURS })}
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
