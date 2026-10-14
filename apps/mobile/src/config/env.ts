@@ -15,7 +15,8 @@
  * This file stays the single production gate; packages/core has no defaults.
  */
 
-import type { CoreEndpoints } from '@vitana/core/config';
+// VTID-05186: through the core port (tests/ports.test.ts — app code reaches lane packages only via src/ports).
+import type { CoreEndpoints } from '../ports/core';
 
 export type ConfigKey = 'gatewayUrl' | 'supabaseUrl' | 'dataApiUrl' | 'authRedirectUrl' | 'webBaseUrl';
 

@@ -1,13 +1,15 @@
 /**
- * VTID-05186 (N3, Interfaces I-N1.4) — design tokens through one port. Until
- * `@vitana/tokens` (N1) merges, the values come from the branch-only
- * `./tokens.stub`; the swap changes the import line (and, if N1's shapes
- * differ, the two small adapters below), never a shell file.
+ * VTID-05186 (N3, Interfaces I-N1.4) — design tokens through one port, from
+ * N1's `@vitana/tokens` (VTID-05183, generated from src/index.css and
+ * tailwind.config.ts). Shell files read colours only through `shellColors`
+ * and `maxinaTopbar`; a change in N1's shapes is absorbed here.
  */
-import { resolved, gradients, radius, type ColorScheme } from './tokens.stub';
+import { color, gradients, radius as tokenRadius, type ColorScheme } from '@vitana/tokens';
 
 export type { ColorScheme };
-export { radius };
+
+/** `--radius` and its steps in px (tailwind `rounded-lg/md/sm`). */
+export const radius = { lg: tokenRadius.lg.px, md: tokenRadius.md.px, sm: tokenRadius.sm.px } as const;
 
 export type ShellColors = {
   background: string;
@@ -24,7 +26,7 @@ export type ShellColors = {
 };
 
 export function shellColors(scheme: ColorScheme): ShellColors {
-  const c = (name: string) => resolved[scheme][name].hsl;
+  const c = (name: string) => color(name, scheme);
   return {
     background: c('background'),
     foreground: c('foreground'),
@@ -40,5 +42,13 @@ export function shellColors(scheme: ColorScheme): ShellColors {
   };
 }
 
-/** The Maxina top bar (`.maxina-topbar`), the same in both schemes. */
-export const maxinaTopbar = { backgroundImage: gradients['maxina-topbar'].css, color: gradients['maxina-topbar'].color };
+/**
+ * The Maxina top bar (`.maxina-topbar`), the same in both schemes. The
+ * gradient is rebuilt from the generated stops' hex colours, which React
+ * Native's colour parser always reads.
+ */
+const topbar = gradients.maxinaTopbar;
+export const maxinaTopbar = {
+  backgroundImage: `linear-gradient(${topbar.angle}deg, ${topbar.stops.map((s) => `${s.color} ${s.at * 100}%`).join(', ')})`,
+  color: topbar.foreground.css,
+};
