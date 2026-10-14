@@ -9,8 +9,10 @@
  * and classifies each module:
  *
  *   A  portable as is
- *   B  portable behind an adapter (only Vite env, browser storage or a
- *      production-host literal: inject config + storage)
+ *   B  portable behind an adapter (only Vite env, browser storage — incl. a
+ *      zustand persist() with no `storage`, which defaults to localStorage
+ *      (implicit-storage, VTID-05183) — or a production-host literal: inject
+ *      config + storage)
  *   C  web-only (DOM globals, DOM JSX, web-only packages, stylesheets)
  *
  * The transitive class is the worst class over the module's import closure,
@@ -170,6 +172,8 @@ export function scanSource(text, rel) {
   const signals = [];
   const imports = [];
   const sig = (type, detail, node) => signals.push({ type, detail, line: lineOf(sf, node) });
+  // VTID-05183: local names bound to zustand's `persist` middleware.
+  const persistNames = new Set();
 
   const visit = (n) => {
     // Type positions never carry runtime coupling.
@@ -178,6 +182,10 @@ export function scanSource(text, rel) {
 
     if (ts.isImportDeclaration(n) && ts.isStringLiteral(n.moduleSpecifier)) {
       if (!isTypeOnlyImport(n)) imports.push({ spec: n.moduleSpecifier.text, line: lineOf(sf, n) });
+      const nb = n.importClause?.namedBindings;
+      if (/^zustand(\/|$)/.test(n.moduleSpecifier.text) && nb && ts.isNamedImports(nb)) {
+        for (const e of nb.elements) if ((e.propertyName ?? e.name).text === 'persist') persistNames.add(e.name.text);
+      }
       return;
     }
     if (ts.isExportDeclaration(n) && n.moduleSpecifier && ts.isStringLiteral(n.moduleSpecifier)) {
@@ -188,6 +196,13 @@ export function scanSource(text, rel) {
       if (n.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(n.expression) && n.expression.text === 'require')) {
         imports.push({ spec: n.arguments[0].text, line: lineOf(sf, n) });
       }
+    }
+    // VTID-05183: zustand persist(...) without a `storage` option defaults to
+    // localStorage at runtime — storage, so class B (implicit-storage).
+    if (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && persistNames.has(n.expression.text)) {
+      const opts = n.arguments[1];
+      const hasStorage = opts && ts.isObjectLiteralExpression(opts) && opts.properties.some((p) => p.name && (ts.isIdentifier(p.name) || ts.isStringLiteralLike(p.name)) && p.name.text === 'storage');
+      if (!hasStorage) sig('implicit-storage', 'zustand persist() without storage → localStorage', n);
     }
     if (ts.isMetaProperty(n) && n.keywordToken === ts.SyntaxKind.ImportKeyword) {
       const p = n.parent;
@@ -215,7 +230,7 @@ export function scanSource(text, rel) {
 
 export function ownClass(signals) {
   let c = 'A';
-  for (const s of signals) c = worst(c, s.type === 'vite' || s.type === 'storage' || s.type === 'prod-fallback' ? 'B' : 'C');
+  for (const s of signals) c = worst(c, s.type === 'vite' || s.type === 'storage' || s.type === 'implicit-storage' || s.type === 'prod-fallback' ? 'B' : 'C');
   return c;
 }
 
@@ -335,7 +350,7 @@ export function recommend(modules, rel) {
     if (hard.length) action = 'native-only replacement';
     else if (pkgs.length && pkgs.every((p) => p === 'lucide-react')) action = 'split data from icons';
     else action = `split the portable part from its web-only imports (${pkgs.join(', ')})`;
-    if (own.some((s) => s.type === 'vite' || s.type === 'storage' || s.type === 'prod-fallback')) action += '; inject config+storage';
+    if (own.some((s) => s.type === 'vite' || s.type === 'storage' || s.type === 'implicit-storage' || s.type === 'prod-fallback')) action += '; inject config+storage';
   } else if (m.own === 'B') {
     action = own.some((s) => s.detail === 'import.meta.glob')
       ? 'native-only loader (Metro has no import.meta.glob; a generated static map, as apps/mobile/src/i18n does)'

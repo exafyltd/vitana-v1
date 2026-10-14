@@ -2,7 +2,7 @@
  * VTID-05176 — static guards over the kit's source (src/ui/**):
  *  - no physical style keys (RTL, SR-19) except lines marked `physical-ok`
  *    (sheet.tsx's documented physical-side mapping, RN `Insets` objects);
- *  - no colour literal outside theme/legacy-literals.ts and the tokens stub (SR-17);
+ *  - no colour literal outside theme/legacy-literals.ts (SR-17);
  *  - every i18n key the kit renders exists in all 11 locales (no `de` fallback);
  *  - no network module and no src/config/env.ts import (the kit is pure UI).
  */
@@ -66,7 +66,7 @@ describe('no physical style keys in src/ui (SR-19)', () => {
 
 describe('no colour literals outside the theme layer (SR-17)', () => {
   const COLOR = [/#[0-9a-fA-F]{3,8}\b/, /\b(?:rgb|rgba|hsl|hsla)\(\s*\d/, /['"](?:white|black|transparent|red|green|blue|gray|grey)['"]/];
-  const ALLOWED = new Set(['theme/legacy-literals.ts', 'theme/tokens-stub.ts']);
+  const ALLOWED = new Set(['theme/legacy-literals.ts']);
 
   it.each(FILES.filter((f) => !ALLOWED.has(f.path)).map((f) => [f.path, f.text]))('%s', (path, text) => {
     const hits: string[] = [];

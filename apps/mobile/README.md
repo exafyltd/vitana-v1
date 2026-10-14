@@ -80,12 +80,48 @@ repo's i18n rule: no hardcoded user-visible text (`accessibilityLabel` / `access
 | Supabase / gateway clients, auth, any network call | G1 (isolated test environment), Wave 1 |
 | Push, React Native Firebase, `google-services` files | G2 |
 | Store identifiers, signing, store listings | G3 |
-| `packages/core`, `packages/tokens`, npm workspaces, NativeWind, UI kit | Wave 1, each with its own sparred plan (UI kit core primitives: N2, below) |
+| npm workspaces, NativeWind | Wave 1, each with its own sparred plan (`packages/core` + `packages/tokens`: N1; UI kit core primitives: N2 — both below) |
+
+## Web code: `@vitana/core` and `@vitana/tokens` (VTID-05183)
+
+The app reaches web code **only** through two folders at the repo root, which are plain folders, not npm workspaces:
+
+| Import | Resolves to | What it is |
+|---|---|---|
+| `@vitana/core/<area>` | `packages/core/src/<area>.ts` | re-exports of transitively class-A web modules, declarations generated from web files, config-only clients |
+| `@vitana/tokens` | `packages/tokens/src/index.ts` | design tokens generated from `src/index.css` + `tailwind.config.ts` |
+
+`resolution.js` is the one alias table and resolver; `metro.config.js` and `jest.config.js` use it and
+`tsconfig.json` `paths` mirror it (a test checks they are equal). Two rules hold for every importer, including files
+under the web `src/` and `packages/`:
+
+- **Bare packages resolve from `apps/mobile/node_modules` only.** A resolution into the repo-root `node_modules`
+  (React 18, the web's tree) throws. A package core needs is added to *this* `package.json` (`@supabase/supabase-js`
+  is pinned to the web's `2.56.0`, with `@supabase/storage-js` overridden to the web lock's `2.11.0`).
+- **Guard:** a file under the web `src/` resolves only when it is in `packages/core/closure.generated.json` (or is an
+  i18n catalog shard). The web Supabase client and gateway base, which fall back to production, never are.
+
+ESLint bans `@/` and any relative path into the web `src/` in app code. Clients are built from `endpoints(config)`
+(`src/config/env.ts`), which refuses production and staging hosts and the production publishable key; there is no
+default endpoint anywhere.
+
+```bash
+# from the repo root (needs the root-lock TypeScript/postcss: the root node_modules, or what NATIVE-CI installs)
+node scripts/native/gen-tokens.mjs           # = npm run gen:tokens (here)
+node scripts/native/gen-core-extract.mjs && node scripts/native/core-closure.mjs --write   # = npm run gen:core
+# here
+APP_PROFILE=development npm run bundle:core-probe   # bundles every core entry + tokens for iOS and Android → probe-dist/
+```
+
+The probe (`probe/core-probe.ts`, outside `app/`, so no route) is bundled unminified with sourcemaps;
+`probe/check-probe.js` then asserts no production host string, nothing from the repo-root `node_modules` and exactly
+one `react`. NATIVE-CI runs the full mobile job only when `apps/mobile/**`, `packages/**`, the workflow or a path in
+`scripts/native/mobile-ci-paths.generated.json` changes; every other `src/**` change runs the cheap script job.
 
 ## Vitana Native UI (`@vitana/ui`, Wave 1 N2 — VTID-05176)
 
-The core primitives live in `src/ui/` and are imported as **`@vitana/ui`** (`tsconfig.json` `paths`, which Metro
-resolves through Expo's tsconfig-paths support, plus the matching jest `moduleNameMapper`). Moving the kit to a
+The core primitives live in `src/ui/` and are imported as **`@vitana/ui`** (an alias in `resolution.js`, the table Metro and Jest
+share; `tsconfig.json` `paths` mirror it). Moving the kit to a
 workspace package later is a one-line alias change. The sonner-compatible `toast` is `@vitana/ui/sonner`. Each
 primitive is the native twin of the shadcn/Radix component today's **phone** UI renders (only the phone branch where
 the web has two — `use-mobile` is 1024 px), with the web's export names and prop names wherever React Native allows.
@@ -94,11 +130,12 @@ no `className` in v1. Two dependencies were added: `react-native-svg` 15.15.4 (t
 `lucide-react-native` 1.48.0 (the web's icon family). Sheets, slider, popover and toasts are built on Reanimated +
 Gesture Handler; there is no bottom-sheet, slider or NativeWind package.
 
-**Tokens.** Everything visual comes from `@vitana/tokens` through `src/ui/theme/index.ts`. Until N1's package lands,
-the alias points at `src/ui/theme/tokens-stub.ts`, which is the module shape N1 must export (`TOKENS_VERSION`,
-`ColorScheme`, `ShadowStyle`, `TenantId`, `SemanticColors`, `VitanaTokens`, `tokens`) with the values copied from
-`src/index.css` / `tailwind.config.ts` (source line per group). `tests/ui/tokens-contract.test.ts` checks whatever
-the alias resolves to. When N1 lands: point both aliases at the package and delete the stub. The raw colours the web
+**Tokens.** Everything visual comes from `@vitana/tokens` (N1's package, `packages/tokens`) through
+`src/ui/theme/index.ts`. The kit reads the package's contract export (`packages/tokens/src/contract.ts`:
+`TOKENS_VERSION`, `ColorScheme`, `ShadowStyle`, `TenantId`, `SemanticColors`, `VitanaTokens`, `tokens`), which is
+built from the generated tokens (colours, `radius` sm/md/lg/vcard, the `vcard` elevations) plus the Tailwind defaults
+the web uses without declaring them (font sizes, `rounded-xl/2xl/full`, `shadow-sm/md/lg`, the motion durations).
+`tests/ui/tokens-contract.test.ts` checks that contract. The raw colours the web
 primitives still use (button `solid`/`soft`/`pill`, badge `success`, select trigger, progress gradient, overlay
 scrims) are in `src/ui/theme/legacy-literals.ts` with their web line; a guard test forbids colour literals anywhere
 else in `src/ui/`.

@@ -3,7 +3,7 @@
  *
  * Mirroring them keeps the phone UI identical to today's web build
  * (SPOTLIGHT_RULES.md:118 exempts src/components/ui/** from the design lint).
- * This is the ONLY file in src/ui/** besides the tokens stub that may hold a
+ * This is the ONLY file in src/ui/** that may hold a
  * colour literal (tests/ui/guards.test.ts). N1 turns each entry into a named
  * token later; the web source line is next to every value.
  */
