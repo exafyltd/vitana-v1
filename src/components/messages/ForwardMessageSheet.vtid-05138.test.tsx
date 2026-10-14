@@ -199,7 +199,7 @@ describe('ForwardMessageSheet — share via other apps (VTID-05138 A1)', () => {
     expect(await screen.findByText('screens.messages.forwardInMaxina')).toBeTruthy();
     expect(screen.getByTestId('forward-target-list')).toBeTruthy();
     expect(screen.getByTestId('forward-share-other').textContent).toContain('screens.messages.forwardShareOther');
-    expect(screen.getByTestId('forward-share-link-hint').textContent).toBe('screens.messages.forwardShareLinkHint:{"hours":24}');
+    expect(screen.getByTestId('forward-share-link-hint').textContent).toBe('screens.messages.forwardShareLinkHint:{"days":7}');
   });
 
   it('says nothing about links for a text-only message', async () => {
@@ -246,7 +246,7 @@ describe('ForwardMessageSheet — share via other apps (VTID-05138 A1)', () => {
 });
 
 describe('createShareLinks (VTID-05138 A1)', () => {
-  it('signs each stored file for 24 hours, skips audio, keeps a plain URL as is', async () => {
+  it('signs each stored file for 7 days, skips audio, keeps a plain URL as is', async () => {
     h.sign.mockImplementation(async (path: string) => `https://signed/${path}`);
     const links = await createShareLinks([
       PICTURE,
@@ -255,6 +255,6 @@ describe('createShareLinks (VTID-05138 A1)', () => {
     ]);
     expect(links).toEqual(['https://signed/other/me/1_a.png', 'https://cdn.example/x.jpg']);
     expect(h.sign).toHaveBeenCalledTimes(1);
-    expect(h.sign).toHaveBeenCalledWith('other/me/1_a.png', 24 * 60 * 60);
+    expect(h.sign).toHaveBeenCalledWith('other/me/1_a.png', 7 * 24 * 60 * 60);
   });
 });

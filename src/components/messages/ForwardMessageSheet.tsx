@@ -31,7 +31,7 @@ import { chatGroupsQueryKey } from '@/hooks/useChatGroupsAsThreads';
 import { dmTargets, type InviteTarget } from '@/components/calendar/vcal/InviteToChatSheet';
 import { copyChatAttachmentForThread, getSignedAttachmentUrl } from '@/lib/fileUpload';
 import {
-  FORWARD_SHARE_LINK_TTL_HOURS,
+  FORWARD_SHARE_LINK_TTL_DAYS,
   FORWARD_SHARE_LINK_TTL_S,
   isAudioAttachment,
   isImageAttachment,
@@ -306,7 +306,7 @@ export function ForwardMessageSheet({ open, onOpenChange, payload, aboveViewer =
           </Button>
           {hasFiles && (
             <p className="m-0 text-xs text-muted-foreground" data-testid="forward-share-link-hint">
-              {t('screens.messages.forwardShareLinkHint', { hours: FORWARD_SHARE_LINK_TTL_HOURS })}
+              {t('screens.messages.forwardShareLinkHint', { days: FORWARD_SHARE_LINK_TTL_DAYS })}
             </p>
           )}
         </div>

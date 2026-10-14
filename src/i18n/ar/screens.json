@@ -6276,8 +6276,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "داخل MAXINA",
       "forwardShareOther": "المشاركة عبر تطبيقات أخرى",
-      "forwardShareLinkHint": "إذا تعذّر على جهازك مشاركة الصورة مباشرةً، فستتم مشاركة رابط صالح لمدة {hours} ساعة بدلاً من ذلك.",
-      "forwardLinkCopied": "تم نسخ الرابط — الصقه في أي تطبيق. صالح لمدة {hours} ساعة.",
+      "forwardShareLinkHint": "إذا تعذّر على جهازك مشاركة الصورة مباشرةً، فستتم مشاركة رابط صالح لمدة {days} أيام بدلاً من ذلك.",
+      "forwardLinkCopied": "تم نسخ الرابط — الصقه في أي تطبيق. صالح لمدة {days} أيام.",
       "forwardTextCopied": "تم نسخ النص — الصقه في أي تطبيق."
     },
     "mobile": {
