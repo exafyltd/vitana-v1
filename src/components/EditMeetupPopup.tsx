@@ -460,7 +460,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <Users className="w-6 h-6 text-orange-600" />
+            <Users className="w-6 h-6 text-status-warning" />
             {event.event_type === 'event' ? 'Edit Event' : 'Edit Meetup'}
           </DialogTitle>
         </DialogHeader>
@@ -837,7 +837,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Share className="w-5 h-5 text-green-600" />
+                  <Share className="w-5 h-5 text-status-success" />
                   {t('screens.common.resellerOptions')}
                 </CardTitle>
               </CardHeader>

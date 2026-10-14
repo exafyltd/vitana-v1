@@ -132,7 +132,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                           {m.display_name || "Unknown User"}
                         </p>
                         {m.role === 'admin' && (
-                          <Crown className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
+                          <Crown className="h-3.5 w-3.5 text-status-warning flex-shrink-0" />
                         )}
                       </div>
                       {m.handle && (

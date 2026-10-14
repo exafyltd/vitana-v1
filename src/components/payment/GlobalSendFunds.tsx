@@ -149,7 +149,7 @@ export default function GlobalSendFunds({
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
-            <Send className="w-5 h-5 text-green-600" />
+            <Send className="w-5 h-5 text-status-success" />
             {t('screens.payment.sendFunds')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>

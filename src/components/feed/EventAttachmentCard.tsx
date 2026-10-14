@@ -130,7 +130,7 @@ export function EventAttachmentCard({
             className={cn(
               "mt-0.5 inline-block text-xs font-medium",
               ev.state === "live"
-                ? "text-red-600"
+                ? "text-status-error"
                 : ev.state === "cancelled"
                   ? "text-destructive"
                   : "text-muted-foreground",

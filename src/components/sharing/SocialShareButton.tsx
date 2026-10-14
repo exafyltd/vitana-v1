@@ -299,7 +299,7 @@ export default function SocialShareButton({
                           <div className="relative">
                             <Icon className={`h-5 w-5 ${isConnected ? option.color : "text-muted-foreground"}`} />
                             {isConnected && (
-                              <CheckCircle2 className="absolute -top-1 -end-1 h-3 w-3 text-green-600 bg-background rounded-full" />
+                              <CheckCircle2 className="absolute -top-1 -end-1 h-3 w-3 text-status-success bg-background rounded-full" />
                             )}
                           </div>
                           <span className={`text-[10px] ${!isConnected && "text-muted-foreground"}`}>

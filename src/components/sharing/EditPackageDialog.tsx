@@ -590,7 +590,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                   <span className="font-medium">{formatCents(dollarsToCents(parseFloat(price) || 0))}</span>
                 </div>
                 {parseFloat(originalPrice) > 0 && (
-                  <div className="flex justify-between text-emerald-600">
+                  <div className="flex justify-between text-status-success">
                     <span>{t('screens.sharing.savings')}</span>
                     <span>{formatCents(dollarsToCents(parseFloat(originalPrice) - parseFloat(price)))}</span>
                   </div>

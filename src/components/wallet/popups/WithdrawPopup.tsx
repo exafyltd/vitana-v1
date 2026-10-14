@@ -118,7 +118,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
       <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
-            <ArrowDown className="h-5 w-5 text-blue-600" />
+            <ArrowDown className="h-5 w-5 text-status-info" />
             {t('screens.wallet.withdrawFunds')}
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription>{t('screens.wallet.transferMoneyFromYourVitanaWallet')}
@@ -131,7 +131,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">{t('screens.wallet.availableBalance')}</span>
               <div className="flex items-center gap-1">
-                <DollarSign className="h-4 w-4 text-green-600" />
+                <DollarSign className="h-4 w-4 text-status-success" />
                 <span className="font-semibold text-lg">${usdBalance.toFixed(2)}</span>
               </div>
             </div>

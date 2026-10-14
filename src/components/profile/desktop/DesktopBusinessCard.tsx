@@ -64,7 +64,7 @@ export function DesktopBusinessCard({ className }: DesktopBusinessCardProps) {
                 <img
                   src={item.product_thumbnail_url}
                   alt={item.product_title ?? ""}
-                  className="h-16 w-16 rounded-lg object-cover shrink-0 bg-white"
+                  className="h-16 w-16 rounded-lg object-cover shrink-0 bg-card"
                 />
               ) : (
                 <div className="h-16 w-16 rounded-lg bg-muted shrink-0" />
@@ -79,7 +79,7 @@ export function DesktopBusinessCard({ className }: DesktopBusinessCardProps) {
                     <ShoppingBag className="h-3.5 w-3.5" /> {t("profile.business.conversions", { count: item.conversion_count })}
                   </span>
                 </div>
-                <div className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+                <div className="text-sm font-semibold text-status-success mt-1">
                   {formatPrice(item.commission_earned_minor, item.currency)}
                 </div>
               </div>

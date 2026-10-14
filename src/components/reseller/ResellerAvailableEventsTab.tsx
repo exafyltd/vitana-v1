@@ -331,7 +331,7 @@ export function ResellerAvailableEventsTab() {
                   },
                   // Scale motivation: show potential earnings for 10 tickets
                   ...(earningPerTicket > 0 ? [{
-                    icon: <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />,
+                    icon: <TrendingUp className="h-3.5 w-3.5 text-status-success" />,
                     text: `Sell 10 → ${scaledEarning}`,
                     color: 'text-emerald-600 dark:text-emerald-400'
                   }] : [])

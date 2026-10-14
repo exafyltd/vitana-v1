@@ -103,7 +103,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
 
         <DialogHeader className="pe-8">
           <div className="flex items-center gap-2 mb-1">
-            <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-green-500 shrink-0" />
+            <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-status-success shrink-0" />
             <DialogTitle className="text-xl sm:text-2xl break-words">{t('screens.common.healthActions')}
             </DialogTitle>
           </div>

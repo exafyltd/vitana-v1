@@ -245,7 +245,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
                 <span>{t('screens.wallet.amountSend')}</span>
                 <span>{parseFloat(amount).toFixed(2)} {currency}</span>
               </div>
-              <div className="flex justify-between text-sm text-green-600">
+              <div className="flex justify-between text-sm text-status-success">
                 <span>{t('screens.wallet.transferFees')}</span>
                 <span>{t('screens.wallet.free')}</span>
               </div>

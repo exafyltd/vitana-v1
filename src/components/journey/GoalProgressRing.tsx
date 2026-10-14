@@ -110,7 +110,7 @@ export function GoalProgressRing({
     >
       <svg width={size} height={size}>
         {/* track */}
-        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-slate-400/30" />
+        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-muted-foreground/30" />
 
         {hasPhases ? (
           <>

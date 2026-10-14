@@ -292,7 +292,7 @@ export function UniversalShareDialog({
                           <div className="relative">
                             <Icon className={`h-6 w-6 ${isConnected ? channel.color : "text-muted-foreground"}`} />
                             {isConnected && (
-                              <CheckCircle2 className="absolute -top-1 -end-1 h-3.5 w-3.5 text-green-600 bg-background rounded-full" />
+                              <CheckCircle2 className="absolute -top-1 -end-1 h-3.5 w-3.5 text-status-success bg-background rounded-full" />
                             )}
                           </div>
                           <span className={`text-xs font-medium text-center ${!isConnected && "text-muted-foreground"}`}>

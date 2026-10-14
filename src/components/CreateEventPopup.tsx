@@ -447,7 +447,7 @@ export function CreateEventPopup({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <Calendar className="w-6 h-6 text-blue-600" />
+            <Calendar className="w-6 h-6 text-status-info" />
             {translate('createEventPopup.title')}
           </DialogTitle>
         </DialogHeader>

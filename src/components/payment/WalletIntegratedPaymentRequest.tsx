@@ -95,7 +95,7 @@ export default function WalletIntegratedPaymentRequest({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Send className="w-5 h-5 text-blue-600" />
+            <Send className="w-5 h-5 text-status-info" />
             {t('screens.payment.requestPayment')}
           </DialogTitle>
         </DialogHeader>

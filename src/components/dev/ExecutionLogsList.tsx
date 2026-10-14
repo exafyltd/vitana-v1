@@ -103,7 +103,7 @@ export function ExecutionLogsList() {
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
+      <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex flex-wrap gap-4 items-center">
           <div className="flex-1 min-w-[200px]">
             <label className="text-sm font-medium mb-2 block">{t('screens.dev.status')}</label>
@@ -139,7 +139,7 @@ export function ExecutionLogsList() {
       </Card>
 
       {/* Execution Logs Table */}
-      <Card className="bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden">
+      <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-border/50">

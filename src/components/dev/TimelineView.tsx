@@ -86,13 +86,13 @@ export function TimelineView() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "success":
-        return <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />;
+        return <CheckCircle2 className="w-5 h-5 text-status-success" />;
       case "failed":
-        return <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />;
+        return <XCircle className="w-5 h-5 text-status-error" />;
       case "running":
-        return <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-pulse" />;
+        return <Clock className="w-5 h-5 text-status-info animate-pulse" />;
       default:
-        return <Clock className="w-5 h-5 text-gray-600 dark:text-gray-400" />;
+        return <Clock className="w-5 h-5 text-muted-foreground" />;
     }
   };
 
@@ -112,7 +112,7 @@ export function TimelineView() {
   return (
     <div className="space-y-4">
       {/* Time Range Filter */}
-      <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
+      <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex items-center gap-4">
           <label className="text-sm font-medium">{t('screens.dev.timeRange')}</label>
           <Select value={timeRange} onValueChange={setTimeRange}>
@@ -134,7 +134,7 @@ export function TimelineView() {
           <Card
             key={event.id}
             className={cn(
-              "bg-white/50 dark:bg-card/50 backdrop-blur-sm border-s-4 transition-all duration-200",
+              "bg-card/50 backdrop-blur-sm border-s-4 transition-all duration-200",
               getStatusColor(event.status),
               expandedEvent === event.id && "ring-2 ring-primary/20"
             )}
@@ -191,7 +191,7 @@ export function TimelineView() {
       </div>
 
       {MOCK_EVENTS.length === 0 && (
-        <Card className="p-12 text-center bg-white/50 dark:bg-card/50 backdrop-blur-sm">
+        <Card className="p-12 text-center bg-card/50 backdrop-blur-sm">
           <p className="text-muted-foreground">
             {t('screens.dev.noTimelineEventsForSelectedTime')}
           </p>

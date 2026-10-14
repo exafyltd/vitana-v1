@@ -94,7 +94,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                   >
                     <div className="flex items-center gap-3">
                       {service.status === "UP" ? (
-                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <CheckCircle className="w-4 h-4 text-status-success" />
                       ) : (
                         <XCircle className="w-4 h-4 text-destructive" />
                       )}

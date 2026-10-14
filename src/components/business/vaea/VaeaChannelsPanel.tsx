@@ -57,7 +57,7 @@ export function VaeaChannelsPanel() {
           </p>
         ) : (
           channels.map((channel) => (
-            <div key={channel.id} className="rounded border bg-white/60 p-3 space-y-2">
+            <div key={channel.id} className="rounded border bg-card/60 p-3 space-y-2">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline" className="capitalize">{channel.platform}</Badge>

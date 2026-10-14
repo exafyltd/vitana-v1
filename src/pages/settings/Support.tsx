@@ -141,7 +141,7 @@ function Support() {
               <CardContent className="space-y-4 p-5">
                 {created ? (
                   <div className="flex flex-col items-center gap-3 py-6 text-center" data-testid="ticket-created">
-                    <CheckCircle2 className="h-10 w-10 text-emerald-600" />
+                    <CheckCircle2 className="h-10 w-10 text-status-success" />
                     <h3 className="text-lg font-semibold">{t("supportTickets.submittedTitle")}</h3>
                     <p className="text-base font-semibold" dir="auto">
                       {t("supportTickets.submittedNumber", { number: created.ticket_number })}

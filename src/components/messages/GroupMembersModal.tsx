@@ -400,9 +400,9 @@ export default function GroupMembersModal({
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin':
-        return <Crown className="w-4 h-4 text-amber-500" />;
+        return <Crown className="w-4 h-4 text-status-warning" />;
       case 'moderator':
-        return <Shield className="w-4 h-4 text-blue-500" />;
+        return <Shield className="w-4 h-4 text-status-info" />;
       default:
         return <User className="w-4 h-4 text-muted-foreground" />;
     }

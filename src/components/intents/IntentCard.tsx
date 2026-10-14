@@ -187,13 +187,13 @@ export function IntentCard({
               {overlayLocationChips.map((c, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-foreground text-xs shadow-sm"
+                  className="inline-flex items-center px-2 py-0.5 rounded-md bg-card/90 backdrop-blur-sm text-foreground text-xs shadow-sm"
                 >
                   {c}
                 </span>
               ))}
               {matchesLabel && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-foreground text-xs shadow-sm">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-card/90 backdrop-blur-sm text-foreground text-xs shadow-sm">
                   {matchesLabel}
                 </span>
               )}

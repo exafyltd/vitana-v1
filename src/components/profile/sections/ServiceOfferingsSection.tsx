@@ -61,7 +61,7 @@ export function ServiceOfferingsSection({ offers, visibility, viewerRelationship
   return (
     <section className="rounded-xl border border-border bg-card p-4 space-y-3">
       <header className="flex items-center gap-2">
-        <Briefcase className="h-4 w-4 text-emerald-600" />
+        <Briefcase className="h-4 w-4 text-status-success" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           {t('screens.profile.servicesIOffer')}
         </h3>
@@ -87,7 +87,7 @@ export function ServiceOfferingsSection({ offers, visibility, viewerRelationship
                   )}
                 </div>
                 {price && (
-                  <span className="shrink-0 text-sm font-medium text-emerald-700">
+                  <span className="shrink-0 text-sm font-medium text-status-success">
                     {price}
                   </span>
                 )}
